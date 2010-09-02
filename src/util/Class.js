@@ -5,7 +5,6 @@
 L.Class = function() {}; 
 
 L.Class.extend = function(props) {
-	debugger;
 	var _super = this.prototype, statics;
 	
 	// instantiate class without calling constructor
@@ -53,10 +52,15 @@ L.Class.extend = function(props) {
 	
 	// mix static properties into the class
 	if (statics) {
-		NewClass.include(statics);
+		L.Util.extend(NewClass, statics);
 	}
 	
-	//TODO inherit parent's statics?
+	//inherit parent's statics
+	for (var i in this) {
+		if (this.hasOwnProperty(i) && i != 'prototype') {
+			NewClass[i] = this[i];
+		}
+	}
 	
 	return NewClass;
 };

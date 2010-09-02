@@ -1,18 +1,25 @@
 describe("Class", function() {
 	
 	describe("#extend", function() {
-		var Klass;
+		var Klass,
+			constructor,
+			method;
 		
-		it("should create a class with the given constructor & properties", function() {
-			var constructor = jasmine.createSpy('constructor'),
-				method = jasmine.createSpy('method');
-			
+		beforeEach(function() {
+			constructor = jasmine.createSpy(),
+			method = jasmine.createSpy();
+
 			Klass = L.Class.extend({
+				statics: {bla: 1},
+				includes: {mixin: true},
+				
 				initialize: constructor,
 				foo: 5,
 				bar: method
 			});
-			
+		});
+		
+		it("should create a class with the given constructor & properties", function() {
 			var a = new Klass();
 			
 			expect(constructor).toHaveBeenCalled();
@@ -23,5 +30,57 @@ describe("Class", function() {
 			expect(method).toHaveBeenCalled();
 		});
 		
+		it("should inherit parent classes' constructor & properties", function() {
+			var Klass2 = Klass.extend({baz: 2});
+			
+			var b = new Klass2();
+			
+			expect(b instanceof Klass).toBeTruthy();
+			
+			expect(constructor).toHaveBeenCalled();
+			expect(b.baz).toEqual(2);
+			
+			b.bar();
+			
+			expect(method).toHaveBeenCalled();
+		});
+		
+		it("should grant the ability to call parent methods, including constructor", function() {
+			var Klass2 = Klass.extend({
+				initialize: function() {},
+				bar: function() {}
+			});
+			
+			var b = new Klass2();
+			
+			expect(constructor).not.toHaveBeenCalled();
+			b.callParent('initialize');
+			expect(constructor).toHaveBeenCalled();
+
+			b.callParent('bar');
+			expect(method).toHaveBeenCalled();
+		});
+		
+		it("should support static properties", function() {
+			expect(Klass.bla).toEqual(1);
+		});
+		
+		it("should inherit parent static properties", function() {
+			var Klass2 = Klass.extend({});
+			
+			expect(Klass2.bla).toEqual(1);
+		});
+		
+		it("should include the given mixins", function() {
+			var a = new Klass();
+			expect(a.mixin).toBeTruthy();
+		});
+		
+		it("should grant the ability to include the given mixin", function() {
+			Klass.include({mixin2: true});
+			
+			var a = new Klass();
+			expect(a.mixin2).toBeTruthy();
+		});
 	});
 });
