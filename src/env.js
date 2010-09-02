@@ -1,4 +1,4 @@
-var originalL = L, 
+var originalL = window.L, 
 	L = {};
 
 L.noConflict = function() {

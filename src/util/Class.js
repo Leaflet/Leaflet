@@ -1,11 +1,11 @@
 /*
- * Class powers the OOP facilities of the library.
+ * Class powers the OOP facilities of the library. Thanks to John Resig and Dean Edwards for inspiration!
  */
 
 L.Class = function() {}; 
 
-//Thanks to John Resig and Dean Edwards for inspiration
-L.Class.extend = function(props) {
+L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
+	
 	// extended class with the new prototype
 	function NewClass() {
 		if (!L.Class._prototyping && this.initialize) {
