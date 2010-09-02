@@ -2,9 +2,10 @@
  * Class powers the OOP facilities of the library.
  */
 
-L.Class = function() {};
+L.Class = function() {}; 
 
 L.Class.extend = function(props) {
+	debugger;
 	var _super = this.prototype, statics;
 	
 	// instantiate class without calling constructor
