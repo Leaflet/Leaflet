@@ -1,7 +1,7 @@
 L.Mixin = {};
 
 L.Mixin.Events = {
-	addEventListener: function(type, fn, context) {
+	addEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
 		this._events = this._events || {};
 		this._events[type] = this._events[type] || [];
 		this._events[type].push({
@@ -10,11 +10,11 @@ L.Mixin.Events = {
 		});
 	},
 	
-	hasEventListeners: function(type) {
+	hasEventListeners: function(/*String*/ type) /*-> Boolean*/ {
 		return ('_events' in this) && (type in this._events) && (this._events[type].length > 0);
 	},
 	
-	removeEventListener: function(type, fn, context) {
+	removeEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
 		if (!this.hasEventListeners(type)) { return; }
 		
 		for (var i = 0, len = this._events[type].length; i < len; i++) {
@@ -28,7 +28,7 @@ L.Mixin.Events = {
 		}
 	},
 	
-	fireEvent: function(type, data) {
+	fireEvent: function(/*String*/ type, /*(optional) Object*/ data) {
 		if (!this.hasEventListeners(type)) { return; }
 		
 		var event = data || {};
