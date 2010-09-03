@@ -7,7 +7,11 @@
 	<script type="text/javascript" src="../lib/jasmine/jasmine-html.js"></script>
 	
 	<!-- source files -->
-	
+		
+		<script type="text/javascript">
+			L = 'test'; //to test L#noConflict later
+		</script>
+		
 		<script type="text/javascript" src="../src/env.js"></script>
 	  
 		<!-- /core -->
@@ -20,6 +24,8 @@
 		<script type="text/javascript" src="../src/geometry/Transformation.js"></script>
 	
 	<!-- spec files -->
+		
+		<script type="text/javascript" src="suites/envSpec.js"></script>
 	
 		<!-- /core -->
 		<script type="text/javascript" src="suites/core/UtilSpec.js"></script>
