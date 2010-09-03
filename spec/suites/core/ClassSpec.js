@@ -71,9 +71,19 @@ describe("Class", function() {
 			expect(Klass2.bla).toEqual(1);
 		});
 		
-		it("should include the given mixins", function() {
+		it("should include the given mixin", function() {
 			var a = new Klass();
 			expect(a.mixin).toBeTruthy();
+		});
+		
+		it("should be able to include multiple mixins", function() {
+			var Klass2 = L.Class.extend({
+				includes: [{mixin: true}, {mixin2: true}]
+			});
+			var a = new Klass2();
+			
+			expect(a.mixin).toBeTruthy();
+			expect(a.mixin2).toBeTruthy();
 		});
 		
 		it("should grant the ability to include the given mixin", function() {
