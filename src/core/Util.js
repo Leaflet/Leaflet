@@ -5,9 +5,8 @@
 L.Util = {};
 
 L.Util.extend = function(/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
-	var sources = Array.prototype.slice.call(arguments, 1),
-		src;
-	for (var j = 0, len = sources.length; j < len; j++) {
+	var sources = Array.prototype.slice.call(arguments, 1);
+	for (var j = 0, len = sources.length, src; j < len; j++) {
 		src = sources[j] || {};
 		for (var i in src) {
 			if (src.hasOwnProperty(i)) {
@@ -23,3 +22,11 @@ L.Util.bind = function(/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
 		return fn.apply(obj, arguments);
 	};
 };
+
+L.Util.stamp = (function() {
+	var lastId = 0;
+	return function(/*Object*/ obj) {
+		obj.id = obj.id || ++lastId;
+		return obj.id;
+	};
+})();

@@ -45,4 +45,23 @@ describe('L.Util', function() {
 			expect(fn2()).toEqual(5);
 		});
 	});
+	
+	describe('#stamp', function() {
+		it('should set a unique id on the given object and return it', function() {
+			var a = {},
+				id = L.Util.stamp(a);
+			
+			expect(typeof a.id).toEqual('number');
+			expect(a.id).toEqual(id);
+			
+			L.Util.stamp(a);
+			
+			expect(a.id).toEqual(id);
+			
+			var b = {},
+				id2 = L.Util.stamp(b);
+			
+			expect(id2).not.toEqual(id);
+		});
+	});
 });
