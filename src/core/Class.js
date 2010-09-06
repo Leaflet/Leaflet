@@ -23,10 +23,7 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	
 	// add callParent method
 	if (this != L.Class) {
-		var _super = this.prototype;
-		proto.callParent = function(fnName) {
-			_super[fnName].apply(this, Array.prototype.slice.call(arguments, 1));
-		};
+		proto.superclass = this.prototype;
 	}
 	
 	// mix static properties into the class
@@ -39,6 +36,11 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	if (props.includes) {
 		L.Util.extend.apply(null, [proto].concat(props.includes));
 		delete props.includes;
+	}
+	
+	// merge options
+	if (props.options && proto.options) {
+		props.options = L.Util.extend(proto.options, props.options);
 	}
 
 	// mix given properties into the prototype

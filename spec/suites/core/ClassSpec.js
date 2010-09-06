@@ -54,10 +54,10 @@ describe("Class", function() {
 			var b = new Klass2();
 			
 			expect(constructor).not.toHaveBeenCalled();
-			b.callParent('initialize');
+			b.superclass.initialize.call(this);
 			expect(constructor).toHaveBeenCalled();
 
-			b.callParent('bar');
+			b.superclass.bar.call(this);
 			expect(method).toHaveBeenCalled();
 		});
 		
@@ -91,6 +91,29 @@ describe("Class", function() {
 			
 			var a = new Klass();
 			expect(a.mixin2).toBeTruthy();
+		});
+		
+		it("should merge options instead of replacing them", function() {
+			var KlassWithOptions1 = L.Class.extend({
+				options: {
+					foo1: 1,
+					foo2: 2
+				}
+			});
+			var KlassWithOptions2 = KlassWithOptions1.extend({
+				options: {
+					foo2: 3,
+					foo3: 4
+				}
+			});
+			
+			var a = new KlassWithOptions2();
+			
+			expect(a.options).toEqual({
+				foo1: 1,
+				foo2: 3,
+				foo3: 4
+			});
 		});
 	});
 });
