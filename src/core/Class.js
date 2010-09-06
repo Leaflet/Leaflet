@@ -21,10 +21,8 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	proto.constructor = NewClass;
 	NewClass.prototype = proto;
 	
-	// add callParent method
-	if (this != L.Class) {
-		proto.superclass = this.prototype;
-	}
+	// add superclass access
+	proto.superclass = this.prototype;
 	
 	// mix static properties into the class
 	if (props.statics) {
