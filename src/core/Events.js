@@ -1,3 +1,7 @@
+/*
+ * L.Mixin.Events adds custom events functionality to Leaflet classes 
+ */
+
 L.Mixin = {};
 
 L.Mixin.Events = {
@@ -31,9 +35,10 @@ L.Mixin.Events = {
 	fireEvent: function(/*String*/ type, /*(optional) Object*/ data) {
 		if (!this.hasEventListeners(type)) { return; }
 		
-		var event = data || {};
-		event.type = type;
-		event.target = this;
+		var event = L.Util.extend({
+			type: type,
+			target: this
+		}, data);
 		
 		var listeners = this._events[type].slice();
 		
