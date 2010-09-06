@@ -36,6 +36,7 @@ describe("Class", function() {
 			var b = new Klass2();
 			
 			expect(b instanceof Klass).toBeTruthy();
+			expect(b instanceof Klass2).toBeTruthy();
 			
 			expect(constructor).toHaveBeenCalled();
 			expect(b.baz).toEqual(2);
