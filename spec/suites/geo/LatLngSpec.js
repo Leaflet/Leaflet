@@ -1,4 +1,4 @@
-describe('L.LatLng', function() {
+describe('LatLng', function() {
 	describe('constructor', function() {
 		it("should set lat and lng", function() {
 			var a = new L.LatLng(25, 74);

@@ -1,4 +1,4 @@
-describe('L.Util', function() {
+describe('Util', function() {
 
 	describe('#extend', function() {
 		var a;
