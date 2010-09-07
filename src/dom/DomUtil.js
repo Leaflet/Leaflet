@@ -3,6 +3,10 @@
  */
 
 L.DomUtil = {
+	get: function(id) {
+		return (typeof id == 'string' ? document.getElementById(id) : id);
+	},
+		
 	getCumulativeOffset: function(el) {
 		var top = 0, 
 			left = 0;
