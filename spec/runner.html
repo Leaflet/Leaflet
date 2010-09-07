@@ -12,7 +12,7 @@
 			L = 'test'; //to test L#noConflict later
 		</script>
 		
-		<script type="text/javascript" src="../src/env.js"></script>
+		<script type="text/javascript" src="../src/Leaflet.js"></script>
 	  
 		<!-- /core -->
 		<script type="text/javascript" src="../src/core/Util.js"></script>
@@ -27,10 +27,15 @@
 		<!-- /geo -->
 		<script type="text/javascript" src="../src/geo/LatLng.js"></script>
 		<script type="text/javascript" src="../src/geo/Projection.js"></script>
+
+		<!-- /dom -->
+		<script type="text/javascript" src="../src/dom/DomEvent.js"></script>
+		<script type="text/javascript" src="../src/dom/DomUtil.js"></script>
 	
 	<!-- spec files -->
 		
-		<script type="text/javascript" src="suites/envSpec.js"></script>
+		<script type="text/javascript" src="suites/SpecHelper.js"></script>
+		<script type="text/javascript" src="suites/LeafletSpec.js"></script>
 	
 		<!-- /core -->
 		<script type="text/javascript" src="suites/core/UtilSpec.js"></script>
@@ -45,6 +50,11 @@
 		<!-- /geo -->
 		<script type="text/javascript" src="suites/geo/LatLngSpec.js"></script>
 		<script type="text/javascript" src="suites/geo/ProjectionSpec.js"></script>
+
+		<!-- /dom -->
+		<script type="text/javascript" src="suites/dom/DomEventSpec.js"></script>
+		<script type="text/javascript" src="suites/dom/DomUtilSpec.js"></script>
+
 </head>
 <body>
 

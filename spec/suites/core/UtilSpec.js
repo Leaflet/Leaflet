@@ -51,12 +51,8 @@ describe('Util', function() {
 			var a = {},
 				id = L.Util.stamp(a);
 			
-			expect(typeof a.id).toEqual('number');
-			expect(a.id).toEqual(id);
-			
-			L.Util.stamp(a);
-			
-			expect(a.id).toEqual(id);
+			expect(typeof id).toEqual('number');
+			expect(L.Util.stamp(a)).toEqual(id);
 			
 			var b = {},
 				id2 = L.Util.stamp(b);
