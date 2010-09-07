@@ -24,9 +24,9 @@ L.Util.bind = function(/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
 };
 
 L.Util.stamp = (function() {
-	var lastId = 0;
+	var lastId = 0, key = '_leaflet_id';
 	return function(/*Object*/ obj) {
-		obj.id = obj.id || ++lastId;
-		return obj.id;
+		obj[key] = obj[key] || ++lastId;
+		return obj[key];
 	};
 })();
