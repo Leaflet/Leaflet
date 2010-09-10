@@ -66,14 +66,14 @@ describe('Events', function() {
 		});
 	});
 	
-	describe('#on & #off', function() {
+	describe('#on, #off & #fire', function() {
 		
 		it('should work like #addEventListener && #removeEventListener', function() {
 			var obj = new Klass(),
 				spy = jasmine.createSpy();
 			
 			obj.on('test', spy);
-			obj.fireEvent('test');
+			obj.fire('test');
 			
 			expect(spy).toHaveBeenCalled();
 			
@@ -85,12 +85,14 @@ describe('Events', function() {
 		
 		it('should not override existing methods with the same name', function() {
 			var spy1 = jasmine.createSpy(),
-				spy2 = jasmine.createSpy();
+				spy2 = jasmine.createSpy(),
+				spy3 = jasmine.createSpy();
 			
 			var Klass2 = L.Class.extend({
 				includes: L.Mixin.Events,
 				on: spy1,
-				off: spy2
+				off: spy2,
+				fire: spy3
 			});
 			
 			var obj = new Klass2();
@@ -100,6 +102,9 @@ describe('Events', function() {
 			
 			obj.off();
 			expect(spy2).toHaveBeenCalled();
+			
+			obj.fire();
+			expect(spy3).toHaveBeenCalled();
 		});
 	});
 });

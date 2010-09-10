@@ -50,3 +50,4 @@ L.Mixin.Events = {
 
 L.Mixin.Events.on = L.Mixin.Events.addEventListener;
 L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
+L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
