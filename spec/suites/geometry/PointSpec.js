@@ -14,4 +14,10 @@ describe("Point", function() {
 			expect(p.y).toEqual(3);
 		});
 	});
+	
+	describe('#subtract', noSpecs);
+	
+	describe('#add', noSpecs);
+	
+	describe('#divideBy', noSpecs);
 });
