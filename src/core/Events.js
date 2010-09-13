@@ -6,27 +6,28 @@ L.Mixin = {};
 
 L.Mixin.Events = {
 	addEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		this._events = this._events || {};
-		this._events[type] = this._events[type] || [];
-		this._events[type].push({
+		var events = this._leaflet_events = this._leaflet_events || {};
+		events[type] = events[type] || [];
+		events[type].push({
 			action: fn,
 			context: context
 		});
 	},
 	
 	hasEventListeners: function(/*String*/ type) /*-> Boolean*/ {
-		return ('_events' in this) && (type in this._events) && (this._events[type].length > 0);
+		var k = '_leaflet_events';
+		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
 	},
 	
 	removeEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
 		if (!this.hasEventListeners(type)) { return; }
 		
-		for (var i = 0, len = this._events[type].length; i < len; i++) {
+		for (var i = 0, events = this._leaflet_events, len = events[type].length; i < len; i++) {
 			if (
-				(this._events[type][i].action === fn) && 
-				(!context || (this._events[type][i].context === context))
+				(events[type][i].action === fn) && 
+				(!context || (events[type][i].context === context))
 			) {
-				this._events[type].splice(i, 1);
+				events[type].splice(i, 1);
 				return;
 			}
 		}
@@ -40,7 +41,7 @@ L.Mixin.Events = {
 			target: this
 		}, data);
 		
-		var listeners = this._events[type].slice();
+		var listeners = this._leaflet_events[type].slice();
 		
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			listeners[i].action.call(listeners[i].context || this, event);
