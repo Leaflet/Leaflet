@@ -15,9 +15,23 @@ describe("Point", function() {
 		});
 	});
 	
-	describe('#subtract', noSpecs);
+	describe('#subtract', function() {
+		it('should subtract the given point from this one', function() {
+			var a = new L.Point(50, 30),
+				b = new L.Point(20, 10);
+			expect(a.subtract(b)).toEqual(new L.Point(30, 20));
+		});
+	});
 	
-	describe('#add', noSpecs);
+	describe('#add', function() {
+		it('should add the given point to this one', function() {
+			expect(new L.Point(50, 30).add(new L.Point(20, 10))).toEqual(new L.Point(70, 40));
+		});
+	});
 	
-	describe('#divideBy', noSpecs);
+	describe('#divideBy', function() {
+		it('should divide this point by the given amount', function() {
+			expect(new L.Point(50, 30).divideBy(5)).toEqual(new L.Point(10, 6));
+		});
+	});
 });

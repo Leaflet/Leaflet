@@ -9,14 +9,14 @@ L.Point = function(/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
 
 L.Point.prototype = {
 	add: function(point) {
-		return L.Point(this.x + point.x, this.y + point.y);
+		return new L.Point(this.x + point.x, this.y + point.y);
 	},
 		
 	subtract: function(point) {
-		return L.Point(this.x - point.x, this.y - point.y);
+		return new L.Point(this.x - point.x, this.y - point.y);
 	},
 	
 	divideBy: function(num, round) {
-		return L.Point(this.x/2, this.y/2, round);
+		return new L.Point(this.x/num, this.y/num, round);
 	}
 };
