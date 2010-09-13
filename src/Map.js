@@ -21,7 +21,7 @@ L.Map = L.Class.extend({
 		L.Util.extend(this.options, options);
 		
 		this._initLayout();
-		//TODO this._initLayers();
+		this._initLayers(this._options.layers);
 		
 		this.setView(this.options.center, this.options.zoom, true);
 	},
@@ -30,11 +30,11 @@ L.Map = L.Class.extend({
 	setView: function(center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 		
+		var zoomChanged = (this._zoom != zoom);
+
 		if (!forceReset) {
-			var zoomChanged = (this._zoom != zoom);
-			
 			// difference between the new and current centers in pixels
-			var offset = this._getCenterOffset(center); 
+			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint()); 
 			
 			var done = (zoomChanged ? 
 						this._zoomToIfCenterInView(zoom, offset) : 
@@ -57,19 +57,13 @@ L.Map = L.Class.extend({
 	
 	getCenter: function(unbounded) {
 		var viewHalf = this.getSize().divideBy(2),
-			topLeftPoint = this._topLeftPoint.add(this._getMapPaneOffset()),
-			centerPoint = topLeftPoint.add(viewHalf);
-		return this.unproject(centerPoint, this._zoom, true);
+			centerPoint = this._getTopLeftPoint().add(viewHalf);
+		return this.unproject(centerPoint, this._zoom, unbounded);
 	},
 	
 	
 	addLayer: function(layer) {
-		this._layers.push(layer);
-		
-		layer.onAdd(this);
-		map.on('viewreset', layer.draw);
-		map.on('viewload', layer.load);
-		
+		this._addLayer(layer);
 		this.setView(this.getCenter(), this._zoom, true);
 	},
 	
@@ -103,7 +97,6 @@ L.Map = L.Class.extend({
 		return new L.Bounds(
 				this._topLeftPoint, 
 				this._topLeftPoint.add(this.getSize()));
-		//TODO L.Bounds
 	},
 	
 	
@@ -126,47 +119,35 @@ L.Map = L.Class.extend({
 	},
 	
 	_limitZoom: function(zoom) {
-		//TODO minZoom, maxZoom?
-		return Math.max(this._minZoom, Math.min(zoom, this._maxZoom));
+		var min = this.options.minZoom || this._layersMinZoom || 0;
+		var max = this.options.maxZoom || this._layersMaxZoom || Infinity;
+		return Math.max(min, Math.min(max, zoom));
 	},
 	
 	_resetView: function(center, zoom) {
 		this._zoom = zoom;
 		this._topLeftPoint = this._getNewTopLeftPoint(center);
 		
-		this._setMapPaneOffset(new L.Point(0, 0));
+		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		
 		this.fire('viewreset');
 		this.fire('viewload');
 	},
 	
 	
-	_getCenterOffset: function(center) {
-		var oldTopLeftPoint = this._topLeftPoint.add(this._getMapPaneOffset()),
-			newTopLeftPoint = this._getNewTopLeftPoint(center);
-		return newTopLeftPoint.subtract(oldTopLeftPoint);
+	_getTopLeftPoint: function() {
+		var offset = L.DomUtil.getPosition(this._mapPane);
+		return this._topLeftPoint.add(offset);
 	},
-	
 	_getNewTopLeftPoint: function(center) {
 		var viewHalf = this.getSize().divideBy(2, true);
 		return this.project(center).subtract(viewHalf);
 	},
 	
-	_getMapPaneOffset: function() {
-		return L.Point(
-				parseInt(this._mapPane.style.left),
-				parseInt(this._mapPane.style.top));
-		//TODO translate instead of top/left for webkit
-	},
-	_setMapPaneOffset: function(offset) {
-		this._mapPane.style.left = offset.x + 'px';
-		this._mapPane.style.top = offset.y + 'px';
-		//TODO translate instead of top/left for webkit
-	},
-	
 		
 	_rawPanBy: function(offset) {
-		this._setMapPaneOffset(this._getMapPaneOffset().add(offset));
+		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane);
+		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.add(offset));
 	},
 	
 	_panByIfClose: function(offset) {
@@ -189,8 +170,28 @@ L.Map = L.Class.extend({
 	
 	_offsetIsWithinView: function(offset, multiplyFactor) {
 		var m = multiplyFactor || 1,
-			size = map.getSize();
+			size = this.getSize();
 		return (Math.abs(offset.x) <= size.width * m) && 
 				(Math.abs(offset.y) <= size.height * m);
+	},
+	
+	
+	_initLayers: function(layers) {
+		for (var i = 0, len = layers.length; i < len; i++) {
+			this._addLayer(layers[i]);
+		}
+	},
+	
+	_addLayer: function(layer) {
+		this._layers.push(layer);
+		
+		layer.onAdd(this);
+		this.on('viewreset', layer.draw);
+		this.on('viewload', layer.load);
+		
+		this._layersMaxZoom = Math.max(this._layersMaxZoom, layer.options.maxZoomLevel);
+		this._layersMinZoom = Math.min(this._layersMinZoom, layer.options.minZoomLevel);
+		
+		this.fire('layeradded', {layer: layer});
 	}
 });
