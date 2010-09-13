@@ -22,4 +22,6 @@ describe('DomUtil', function() {
 			expect(L.DomUtil.get(el)).toBe(el);
 		});
 	});
+	
+	describe('#setPosition', noSpecs);
 });
