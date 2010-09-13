@@ -17,6 +17,19 @@ L.DomUtil = {
 		} while (el);
 		return new L.Point(left, top);
 	},
+	
+	setPosition: function(el, point) {
+		el._leaflet_pos = point;
+		if (L.Browser.webkit) {
+			el.style.webkitTransform = 'translate(' + point.x + 'px,' + point.y + 'px)';
+		} else {
+			el.style.left = point.x;
+			el.style.top = point.y;
+		}
+	},
+	getPosition: function(el) {
+		return el._leaflet_pos;
+	},
 		
 	// used for disabling text selection while dragging
 	disableTextSelection: function() {
