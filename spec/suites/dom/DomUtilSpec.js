@@ -24,4 +24,6 @@ describe('DomUtil', function() {
 	});
 	
 	describe('#setPosition', noSpecs);
+	
+	describe('#getStyle', noSpecs);
 });
