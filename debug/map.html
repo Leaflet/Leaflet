@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="../src/Leaflet.js"></script>
+	 
+	<!-- /core -->
+	<script type="text/javascript" src="../src/core/Util.js"></script>
+	<script type="text/javascript" src="../src/core/Class.js"></script>
+	<script type="text/javascript" src="../src/core/Events.js"></script>
+	<script type="text/javascript" src="../src/core/Browser.js"></script>
+	
+	<!-- /dom -->
+	<script type="text/javascript" src="../src/dom/DomEvent.js"></script>
+	<script type="text/javascript" src="../src/dom/DomUtil.js"></script>
+	
+	<!-- /geo -->
+	<script type="text/javascript" src="../src/geo/LatLng.js"></script>
+	<script type="text/javascript" src="../src/geo/Projection.js"></script>
+	
+	<!-- /geometry -->
+	<script type="text/javascript" src="../src/geometry/Point.js"></script>
+	<script type="text/javascript" src="../src/geometry/Bounds.js"></script>
+	<script type="text/javascript" src="../src/geometry/Transformation.js"></script>
+	
+	<!-- /layer -->
+	<script type="text/javascript" src="../src/layer/TileLayer.js"></script>
+
+	<script type="text/javascript" src="../src/Map.js"></script>
+	
+	<style type="text/css">
+		#map {
+			width: 500px;
+			height: 500px;
+		}
+		.leaflet-container {
+			background: #ddd;
+			overflow: hidden;
+		}
+		.leaflet-map-pane {
+			position: absolute;
+			top: 0;
+			left: 0;
+		}
+		.leaflet-tile {
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+		var osm = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 18}),
+			latlng = new L.LatLng(50.5, 30.5);
+	
+		var map = new L.Map('map').addLayer(osm).setView(latlng, 10);
+	</script>
+</body>
+</html>
