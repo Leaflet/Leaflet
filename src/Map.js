@@ -3,36 +3,45 @@
  */
 
 L.Map = L.Class.extend({
-	includes: [L.Mixin.Events, L.Mixin.Options],
+	includes: L.Mixin.Events,
 	
 	options: {
+		// projection
 		projection: L.Projection.Mercator,
 		transformation: new L.Transformation(0.5/Math.PI, 0.5, -0.5/Math.PI, 0.5), 
 		scaling: function(zoom) { return 256 * (1 << zoom); },
 		
+		// state
 		center: new L.LatLng(0, 0),
 		zoom: 0,
 		layers: []
 	},
 	
 	
+	// constructor
+	
 	initialize: function(/*HTMLElement or String*/ id, /*Object*/ options) {
 		this._container = L.DomUtil.get(id);
 		L.Util.extend(this.options, options);
 		
 		this._initLayout();
-		this._initLayers(this._options.layers);
+		
+		var layers = this.options.layers;
+		layers = (layers instanceof Array ? layers : [layers]); 
+		this._initLayers(layers);
 		
 		this.setView(this.options.center, this.options.zoom, true);
 	},
 	
+	
+	// public methods that modify map state
 	
 	setView: function(center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 		
 		var zoomChanged = (this._zoom != zoom);
 
-		if (!forceReset) {
+		if (!forceReset && this._layers) {
 			// difference between the new and current centers in pixels
 			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint()); 
 			
@@ -41,7 +50,7 @@ L.Map = L.Class.extend({
 						this._panByIfClose(offset));
 			
 			// exit if animated pan or zoom started
-			if (done) { return; }
+			if (done) { return this; }
 		}
 		
 		this.fire('movestart');
@@ -52,8 +61,29 @@ L.Map = L.Class.extend({
 		this.fire('move');
 		if (zoomChanged) { this.fire('zoomend'); }
 		this.fire('moveend');
+		
+		return this;
 	},
 	
+	panBy: function(offset) {
+		this._rawPanBy(offset);
+		this.fire('viewload');
+	},
+	
+	addLayer: function(layer) {
+		this._addLayer(layer);
+		this.setView(this.getCenter(), this._zoom, true);
+		return this;
+	},
+	
+	invalidateSize: function() {
+		this._sizeChanged = true;
+		this.fire('viewload');
+		return this;
+	},
+	
+	
+	// public methods for getting map state	
 	
 	getCenter: function(unbounded) {
 		var viewHalf = this.getSize().divideBy(2),
@@ -61,13 +91,27 @@ L.Map = L.Class.extend({
 		return this.unproject(centerPoint, this._zoom, unbounded);
 	},
 	
-	
-	addLayer: function(layer) {
-		this._addLayer(layer);
-		this.setView(this.getCenter(), this._zoom, true);
+	getZoom: function() {
+		return this._zoom;
 	},
 	
-	
+	getSize: function() {
+		if (!this._size || this._sizeChanged) {
+			this._size = new L.Point(this._container.clientWidth, this._container.clientHeight);
+			this._sizeChanged = false;
+		}
+		return this._size;
+	},
+
+	getPixelBounds: function() {
+		var topLeftPoint = this._getTopLeftPoint(),
+			size = this.getSize();
+		return new L.Bounds(topLeftPoint, topLeftPoint.add(size));
+	},
+	getPixelOrigin: function() {
+		return this._initialTopLeftPoint;
+	},
+
 	project: function(/*Object*/ coord, /*(optional) Number*/ zoom)/*-> Point*/ {
 		var projectedPoint = this.options.projection.project(coord),
 			scale = this.options.scaling(this._zoom || zoom);
@@ -79,26 +123,12 @@ L.Map = L.Class.extend({
 		return this.options.projection.unproject(untransformedPoint, unbounded);
 	},
 	
-	
-	getSize: function() {
-		if (!this._size || this._sizeChanged) {
-			this._size = new L.Point(this._container.clientWidth, this._container.clientHeight);
-			this._sizeChanged = false;
-		}
-		return this._size;
-	},
-	invalidateSize: function() {
-		this._sizeChanged = true;
-		this.fire('viewload');
+	getPanes: function() {
+		return this._panes;
 	},
 	
 	
-	getPixelBounds: function() {
-		return new L.Bounds(
-				this._topLeftPoint, 
-				this._topLeftPoint.add(this.getSize()));
-	},
-	
+	// private methods that modify map state
 	
 	_initLayout: function() {
 		this._container.className += ' leaflet-container';
@@ -118,15 +148,9 @@ L.Map = L.Class.extend({
 		return pane;
 	},
 	
-	_limitZoom: function(zoom) {
-		var min = this.options.minZoom || this._layersMinZoom || 0;
-		var max = this.options.maxZoom || this._layersMaxZoom || Infinity;
-		return Math.max(min, Math.min(max, zoom));
-	},
-	
 	_resetView: function(center, zoom) {
 		this._zoom = zoom;
-		this._topLeftPoint = this._getNewTopLeftPoint(center);
+		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 		
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		
@@ -134,20 +158,29 @@ L.Map = L.Class.extend({
 		this.fire('viewload');
 	},
 	
-	
-	_getTopLeftPoint: function() {
-		var offset = L.DomUtil.getPosition(this._mapPane);
-		return this._topLeftPoint.add(offset);
-	},
-	_getNewTopLeftPoint: function(center) {
-		var viewHalf = this.getSize().divideBy(2, true);
-		return this.project(center).subtract(viewHalf);
+	_initLayers: function(layers) {
+		this._layers = [];
+		for (var i = 0, len = layers.length; i < len; i++) {
+			this._addLayer(layers[i]);
+		}
 	},
 	
+	_addLayer: function(layer) {
+		this._layers.push(layer);
 		
+		layer.onAdd(this);
+		this.on('viewreset', layer.draw, layer);
+		this.on('viewload', layer.load, layer);
+		
+		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
+		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		
+		this.fire('layeradded', {layer: layer});
+	},
+	
 	_rawPanBy: function(offset) {
 		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane);
-		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.add(offset));
+		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.subtract(offset));
 	},
 	
 	_panByIfClose: function(offset) {
@@ -158,14 +191,26 @@ L.Map = L.Class.extend({
 		}
 		return false;
 	},
-	
-	_zoomByIfCenterInView: function(offset, oldZoom) {
+
+	_zoomToIfCenterInView: function(offset, oldZoom) {
 		//if offset does not exceed half of the view
 		if (this._offsetIsWithinView(offset, 0.5)) {
 			//TODO animated zoom
 			return true;
 		}
 		return false;
+	},
+
+	
+	// private methods for getting map state
+	
+	_getTopLeftPoint: function() {
+		var offset = L.DomUtil.getPosition(this._mapPane);
+		return this._initialTopLeftPoint.subtract(offset);
+	},
+	_getNewTopLeftPoint: function(center) {
+		var viewHalf = this.getSize().divideBy(2, true);
+		return this.project(center).subtract(viewHalf);
 	},
 	
 	_offsetIsWithinView: function(offset, multiplyFactor) {
@@ -175,23 +220,9 @@ L.Map = L.Class.extend({
 				(Math.abs(offset.y) <= size.height * m);
 	},
 	
-	
-	_initLayers: function(layers) {
-		for (var i = 0, len = layers.length; i < len; i++) {
-			this._addLayer(layers[i]);
-		}
-	},
-	
-	_addLayer: function(layer) {
-		this._layers.push(layer);
-		
-		layer.onAdd(this);
-		this.on('viewreset', layer.draw);
-		this.on('viewload', layer.load);
-		
-		this._layersMaxZoom = Math.max(this._layersMaxZoom, layer.options.maxZoomLevel);
-		this._layersMinZoom = Math.min(this._layersMinZoom, layer.options.minZoomLevel);
-		
-		this.fire('layeradded', {layer: layer});
+	_limitZoom: function(zoom) {
+		var min = this.options.minZoom || this._layersMinZoom || 0;
+		var max = this.options.maxZoom || this._layersMaxZoom || Infinity;
+		return Math.max(min, Math.min(max, zoom));
 	}
 });
