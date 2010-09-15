@@ -20,7 +20,7 @@ L.Transformation = L.Class.extend({
 	untransform: function(/*Point*/ point, /*Number*/ scale) /*-> Point*/ {
 		scale = scale || 1;
 		return new L.Point(
-			((point.x - this._b) / this._a) / scale,
-			((point.y - this._d) / this._c) / scale);
+			(point.x/scale - this._b) / this._a,
+			(point.y/scale - this._d) / this._c);
 	}
 });
