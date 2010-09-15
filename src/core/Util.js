@@ -30,3 +30,5 @@ L.Util.stamp = (function() {
 		return obj[key];
 	};
 })();
+
+L.Util.falseFn = function() { return false; };
