@@ -18,5 +18,9 @@ L.Point.prototype = {
 	
 	divideBy: function(num, round) {
 		return new L.Point(this.x/num, this.y/num, round);
+	},
+	
+	multiplyBy: function(num) {
+		return new L.Point(this.x * num, this.y * num);
 	}
 };

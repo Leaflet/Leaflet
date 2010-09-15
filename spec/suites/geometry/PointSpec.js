@@ -34,4 +34,10 @@ describe("Point", function() {
 			expect(new L.Point(50, 30).divideBy(5)).toEqual(new L.Point(10, 6));
 		});
 	});
+	
+	describe('#multiplyBy', function() {
+		it('should multiply this point by the given amount', function() {
+			expect(new L.Point(50, 30).multiplyBy(2)).toEqual(new L.Point(100, 60));
+		});
+	});
 });
