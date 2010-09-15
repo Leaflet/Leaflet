@@ -5,7 +5,8 @@ L.TileLayer = L.Class.extend({
 		tileSize: 256,
 		minZoom: 0,
 		maxZoom: 18,
-		subdomains: 'abc'
+		subdomains: 'abc',
+		copyright: ''
 	},
 	
 	initialize: function(url, options) {
@@ -31,8 +32,6 @@ L.TileLayer = L.Class.extend({
 			className: 'leaflet-tile',
 			galleryimg: 'no'
 		});
-		//TODO fire tileload?
-		//TODO fire layerload?
 		
 		var tileSize = this.options.tileSize;
 		
@@ -61,6 +60,7 @@ L.TileLayer = L.Class.extend({
 				Math.floor(bounds.max.y / tileSize));
 		
 		this._loadTiles(nwTilePoint, seTilePoint);
+		//TODO fire layerload?
 	},
 	
 	getTileUrl: function(tilePoint, zoom) {
@@ -107,6 +107,7 @@ L.TileLayer = L.Class.extend({
 		
 		tile.onload = this._tileOnLoad;
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
+		tile._leaflet_layer = this;
 		
 		tile.src = this.getTileUrl(tilePoint, zoom);
 		
@@ -116,5 +117,6 @@ L.TileLayer = L.Class.extend({
 	
 	_tileOnLoad: function() {
 		this.style.visibility = 'visible';
+		this._leaflet_layer.fire('tileload', {tile: this});
 	}
 });
