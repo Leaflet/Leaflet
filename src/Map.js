@@ -14,7 +14,13 @@ L.Map = L.Class.extend({
 		// state
 		center: new L.LatLng(0, 0),
 		zoom: 0,
-		layers: []
+		layers: [],
+		
+		//interaction
+		draggable: true,
+		
+		//misc
+		viewLoadOnDragEnd: false || L.Browser.mobileWebkit
 	},
 	
 	
@@ -29,6 +35,8 @@ L.Map = L.Class.extend({
 		var layers = this.options.layers;
 		layers = (layers instanceof Array ? layers : [layers]); 
 		this._initLayers(layers);
+		
+		this._initInteraction();
 		
 		this.setView(this.options.center, this.options.zoom, true);
 	},
@@ -46,28 +54,44 @@ L.Map = L.Class.extend({
 			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint()); 
 			
 			var done = (zoomChanged ? 
-						this._zoomToIfCenterInView(zoom, offset) : 
+						this._zoomToIfCenterInView(center, zoom, offset) : 
 						this._panByIfClose(offset));
 			
 			// exit if animated pan or zoom started
 			if (done) { return this; }
 		}
 		
-		this.fire('movestart');
-		
 		// reset the map view 
 		this._resetView(center, zoom);
-		
-		this.fire('move');
-		if (zoomChanged) { this.fire('zoomend'); }
-		this.fire('moveend');
 		
 		return this;
 	},
 	
+	setZoom: function(zoom) {
+		return this.setView(this.getCenter(), zoom);
+	},
+	
+	zoomIn: function() {
+		return this.setZoom(this._zoom+1);
+	},
+	
+	zoomOut: function() {
+		return this.setZoom(this, zoom-1);
+	},
+	
+	panTo: function(center) {
+		return this.setView(center, this._zoom);
+	},
+	
 	panBy: function(offset) {
+		//TODO animated panBy
+		this.fire('movestart');
+		
 		this._rawPanBy(offset);
+		
 		this.fire('viewload');
+		this.fire('move');
+		this.fire('moveend');
 	},
 	
 	addLayer: function(layer) {
@@ -108,6 +132,7 @@ L.Map = L.Class.extend({
 			size = this.getSize();
 		return new L.Bounds(topLeftPoint, topLeftPoint.add(size));
 	},
+	
 	getPixelOrigin: function() {
 		return this._initialTopLeftPoint;
 	},
@@ -117,6 +142,7 @@ L.Map = L.Class.extend({
 			scale = this.options.scaling(this._zoom || zoom);
 		return this.options.transformation.transform(projectedPoint, scale);
 	},
+	
 	unproject: function(/*Point*/ point, /*(optional) Number*/ zoom, /*(optional) Boolean*/ unbounded)/*-> Object*/ {
 		var scale = this.options.scaling(this._zoom || zoom),
 			untransformedPoint = this.options.transformation.untransform(point, scale);
@@ -149,6 +175,10 @@ L.Map = L.Class.extend({
 	},
 	
 	_resetView: function(center, zoom) {
+		var zoomChanged = (this._zoom != zoom);
+		
+		this.fire('movestart');
+		
 		this._zoom = zoom;
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 		
@@ -156,6 +186,10 @@ L.Map = L.Class.extend({
 		
 		this.fire('viewreset');
 		this.fire('viewload');
+
+		this.fire('move');
+		if (zoomChanged) { this.fire('zoomend'); }
+		this.fire('moveend');
 	},
 	
 	_initLayers: function(layers) {
@@ -178,6 +212,28 @@ L.Map = L.Class.extend({
 		this.fire('layeradded', {layer: layer});
 	},
 	
+	_initInteraction: function() {
+		if (this.options.draggable) {
+			this.dragging = new L.Draggable(this._mapPane, this._container);
+			
+			var fireViewLoad = L.Util.limitExecByInterval(function() {
+				this.fire('viewload');
+			}, 200, this, true);
+			
+			this.dragging.on('drag', function() {
+				this.fire('drag');
+				this.fire('move');
+				if (!this.options.viewLoadOnDragEnd) { fireViewLoad(); }
+			}, this);
+			
+			this.dragging.on('dragend', function() {
+				this.fire('dragend');
+				this.fire('moveend');
+				if (this.options.viewLoadOnDragEnd) { fireViewLoad(); }
+			}, this);
+		}
+	},
+	
 	_rawPanBy: function(offset) {
 		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane);
 		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.subtract(offset));
@@ -185,17 +241,17 @@ L.Map = L.Class.extend({
 	
 	_panByIfClose: function(offset) {
 		if (this._offsetIsWithinView(offset)) {
-			//TODO animated panBy
-			//this.panBy(offset);
+			this.panBy(offset);
 			return true;
 		}
 		return false;
 	},
 
-	_zoomToIfCenterInView: function(offset, oldZoom) {
+	_zoomToIfCenterInView: function(center, offset, oldZoom) {
 		//if offset does not exceed half of the view
 		if (this._offsetIsWithinView(offset, 0.5)) {
 			//TODO animated zoom
+			this._resetView(center, zoom);
 			return true;
 		}
 		return false;
@@ -208,6 +264,7 @@ L.Map = L.Class.extend({
 		var offset = L.DomUtil.getPosition(this._mapPane);
 		return this._initialTopLeftPoint.subtract(offset);
 	},
+	
 	_getNewTopLeftPoint: function(center) {
 		var viewHalf = this.getSize().divideBy(2, true);
 		return this.project(center).subtract(viewHalf);
