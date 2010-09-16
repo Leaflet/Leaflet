@@ -11,6 +11,7 @@
 .leaflet-tile {
 	position: absolute;
 	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 
 
@@ -18,6 +19,6 @@
 
 .leaflet-container {
 	background: #ddd;
-	-moz-box-shadow: 1px 1px 12px #999;
-	-webkit-box-shadow: 1px 1px 12px #999;
+	/*-moz-box-shadow: 1px 1px 12px #999;
+	-webkit-box-shadow: 1px 1px 12px #999;*/
 }
