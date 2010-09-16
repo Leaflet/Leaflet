@@ -1,5 +1,5 @@
 /*
- * LL.Map is the central class of the API - it is used to create a map.
+ * L.Map is the central class of the API - it is used to create a map.
  */
 
 L.Map = L.Class.extend({
