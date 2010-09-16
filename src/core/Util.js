@@ -30,5 +30,30 @@ L.Util = {
 		};
 	})(),
 
-	falseFn: function() { return false; }	
+	limitExecByInterval: function(fn, time, context, delayFirstExec) {	
+		var lock, execOnUnlock, args;
+		return function() {
+			args = arguments;
+			if (!lock) {				
+				lock = true;
+				setTimeout(function(){
+					lock = false;
+					if (execOnUnlock) {
+						args.callee.apply(context, args);
+						execOnUnlock = false;
+					}
+				}, time);
+				if (!delayFirstExec) {
+					fn.apply(context, args);
+				} else {
+					delayFirstExec = false;
+					execOnUnlock = true;
+				}
+			} else {
+				execOnUnlock = true;
+			}
+		};
+	},
+	
+	falseFn: function() { return false; }
 };
