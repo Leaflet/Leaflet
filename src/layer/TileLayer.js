@@ -6,7 +6,8 @@ L.TileLayer = L.Class.extend({
 		minZoom: 0,
 		maxZoom: 18,
 		subdomains: 'abc',
-		copyright: ''
+		copyright: '',
+		unloadInvisibleTiles: false || L.Browser.mobileWebkit
 	},
 	
 	initialize: function(url, options) {
@@ -43,9 +44,8 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	draw: function() {
-		this._tileLoaded = {};
+		this._tiles = {};
 		this._container.innerHTML = '';
-		//TODO draw?
 	},
 	
 	load: function() {
@@ -60,6 +60,10 @@ L.TileLayer = L.Class.extend({
 				Math.floor(bounds.max.y / tileSize));
 		
 		this._loadTiles(nwTilePoint, seTilePoint);
+		
+		if (this.options.unloadInvisibleTiles) {
+			this._unloadOtherTiles(nwTilePoint, seTilePoint);
+		}
 		//TODO fire layerload?
 	},
 	
@@ -85,6 +89,20 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
+	_unloadOtherTiles: function(nwTilePoint, seTilePoint) {
+		var k, x, y, key;
+		for (key in this._tiles) {
+			kArr = key.split(':'),
+			x = parseInt(kArr[0]),
+			y = parseInt(kArr[1]);
+			
+			if (x < nwTilePoint.x || x > seTilePoint.x || y < nwTilePoint.y || y > seTilePoint.y) {
+				this._container.removeChild(this._tiles[key]);
+				delete this._tiles[key];
+			}
+		}		
+	},
+	
 	_loadTile: function(tilePoint) {
 		var origin = this._map.getPixelOrigin(),
 			tileSize = this.options.tileSize,
@@ -92,8 +110,7 @@ L.TileLayer = L.Class.extend({
 			zoom = this._map.getZoom();
 			
 		var key = tilePoint.x + ':' + tilePoint.y;
-		if (key in this._tileLoaded) { return; }
-		this._tileLoaded[key] = true;
+		if (key in this._tiles) { return; }
 
 		var tileLimit = (1 << zoom);
 		tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
@@ -101,9 +118,9 @@ L.TileLayer = L.Class.extend({
 		
 		
 		var tile = this._tileImg.cloneNode(false);
+		this._tiles[key] = tile;
 		
-		tile.style.left = tilePos.x + 'px';
-		tile.style.top = tilePos.y + 'px';
+		L.DomUtil.setPosition(tile, tilePos);
 		
 		tile.onload = this._tileOnLoad;
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
