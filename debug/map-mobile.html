@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	
 	<script type="text/javascript" src="../src/Leaflet.js"></script>
 	 
 	<!-- /core -->
@@ -30,10 +32,19 @@
 	<script type="text/javascript" src="../src/Map.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css" />
+	
+	<style type="text/css">
+		html, body, #map {
+			margin: 0;
+			padding: 0;
+			width: 100%;
+			height: 100%;
+		}
+	</style>
 </head>
-<body style="padding: 10px">
+<body>
 
-	<div id="map" style="width: 500px; height: 500px"></div>
+	<div id="map"></div>
 
 	<script type="text/javascript">
 
@@ -42,6 +53,7 @@
 			latlng = new L.LatLng(50.5, 30.51);
 	
 		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15);
+		 
 	</script>
 </body>
 </html>
