@@ -30,15 +30,20 @@ L.DomUtil = {
 		return new L.Point(left, top);
 	},
 	
+	translateOpen: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
+	translateClose: L.Browser.webkit3d ? ',0)' : ')',
+	
 	setPosition: function(el, point) {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit) {
-			el.style.webkitTransform = 'translate(' + point.x + 'px,' + point.y + 'px)';
+			el.style.webkitTransform =  L.DomUtil.translateOpen + 
+					point.x + 'px,' + point.y + 'px' + L.DomUtil.translateClose;
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
 		}
 	},
+	
 	getPosition: function(el) {
 		return el._leaflet_pos;
 	},
@@ -55,6 +60,6 @@ L.DomUtil = {
 	},
 	enableTextSelection: function() {
 		document.onselectstart = L.DomUtil._onselectstart;
-		CM.DomEvent._onselectstart = null;
+		L.DomUtil._onselectstart = null;
 	}
 };
