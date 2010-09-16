@@ -30,14 +30,14 @@ L.DomUtil = {
 		return new L.Point(left, top);
 	},
 	
-	translateOpen: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
-	translateClose: L.Browser.webkit3d ? ',0)' : ')',
+	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
+	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')',
 	
 	setPosition: function(el, point) {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit) {
-			el.style.webkitTransform =  L.DomUtil.translateOpen + 
-					point.x + 'px,' + point.y + 'px' + L.DomUtil.translateClose;
+			el.style.webkitTransform =  L.DomUtil.TRANSLATE_OPEN + 
+					point.x + 'px,' + point.y + 'px' + L.DomUtil.TRANSLATE_CLOSE;
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -46,20 +46,5 @@ L.DomUtil = {
 	
 	getPosition: function(el) {
 		return el._leaflet_pos;
-	},
-		
-	// used for disabling text selection while dragging
-	disableTextSelection: function() {
-		if (document.selection && document.selection.empty) { 
-			document.selection.empty();
-		}
-		if (!L.DomUtil._onselectstart) {
-			L.DomUtil._onselectstart = document.onselectstart;
-			document.onselectstart = function() { return false; };
-		}
-	},
-	enableTextSelection: function() {
-		document.onselectstart = L.DomUtil._onselectstart;
-		L.DomUtil._onselectstart = null;
 	}
 };

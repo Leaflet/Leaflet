@@ -1,3 +1,7 @@
+/*
+ * L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
+ */
+
 L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,
 	
@@ -10,8 +14,6 @@ L.Draggable = L.Class.extend({
 	initialize: function(element, dragStartTarget) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
-		
-		this.enable();
 	},
 	
 	enable: function() {
@@ -31,16 +33,14 @@ L.Draggable = L.Class.extend({
 		
 		L.DomEvent.preventDefault(e);
 
-		if (e.touches) {
-			if (e.touches.length == 1) { e = e.touches[0]; }
-			else return;
-		}
+		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
 		this._dragStartPos = L.DomUtil.getPosition(this._element);
 		this._startX = e.clientX;
 		this._startY = e.clientY;
 		
-		L.DomUtil.disableTextSelection();
+		this._disableTextSelection();
 		
 		this._setMovingCursor();
 		
@@ -51,10 +51,8 @@ L.Draggable = L.Class.extend({
 	_onMove: function(e) {
 		L.DomEvent.preventDefault(e);
 
-		if (e.touches) {
-			if (e.touches.length == 1) { e = e.touches[0]; }
-			else return;
-		}
+		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
 		var offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY),
 			newPos = this._dragStartPos.add(offset);
@@ -70,7 +68,7 @@ L.Draggable = L.Class.extend({
 	},
 	
 	_onUp: function(e) {
-		L.DomUtil.enableTextSelection();
+		this._enableTextSelection();
 		
 		this._restoreCursor();
 		
@@ -87,5 +85,20 @@ L.Draggable = L.Class.extend({
 	
 	_restoreCursor: function() {
 		document.body.style.cursor = this._bodyCursor;
+	},
+	
+	_disableTextSelection: function() {
+		if (document.selection && document.selection.empty) { 
+			document.selection.empty();
+		}
+		if (!this._onselectstart) {
+			this._onselectstart = document.onselectstart;
+			document.onselectstart = L.Util.falseFn;
+		}
+	},
+	
+	_enableTextSelection: function() {
+		document.onselectstart = this._onselectstart;
+		this._onselectstart = null;
 	}
 });
