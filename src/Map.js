@@ -17,7 +17,7 @@ L.Map = L.Class.extend({
 		layers: [],
 		
 		//interaction
-		draggable: true,
+		dragging: true,
 		
 		//misc
 		viewLoadOnDragEnd: false || L.Browser.mobileWebkit
@@ -36,7 +36,7 @@ L.Map = L.Class.extend({
 		layers = (layers instanceof Array ? layers : [layers]); 
 		this._initLayers(layers);
 		
-		this._initInteraction();
+		if (L.Handler) { this._initInteraction(); }
 		
 		this.setView(this.options.center, this.options.zoom, true);
 	},
@@ -213,24 +213,8 @@ L.Map = L.Class.extend({
 	},
 	
 	_initInteraction: function() {
-		if (this.options.draggable) {
-			this.dragging = new L.Draggable(this._mapPane, this._container);
-			
-			var fireViewLoad = L.Util.limitExecByInterval(function() {
-				this.fire('viewload');
-			}, 200, this, true);
-			
-			this.dragging.on('drag', function() {
-				this.fire('drag');
-				this.fire('move');
-				if (!this.options.viewLoadOnDragEnd) { fireViewLoad(); }
-			}, this);
-			
-			this.dragging.on('dragend', function() {
-				this.fire('dragend');
-				this.fire('moveend');
-				if (this.options.viewLoadOnDragEnd) { fireViewLoad(); }
-			}, this);
+		if (L.Handler.MapDrag) {
+			this.dragging = new L.Handler.MapDrag(this, this.options.dragging);
 		}
 	},
 	
