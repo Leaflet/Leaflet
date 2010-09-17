@@ -27,7 +27,6 @@ L.Handler.MapDrag = L.Handler.extend({
 	_onDragStart: function() {
 		this._map.fire('movestart');
 		this._map.fire('dragstart');
-		if (this._map.options.viewLoadOnDragEnd) { this._fireViewLoad(); }
 	},
 	
 	_onDrag: function() {
@@ -39,5 +38,6 @@ L.Handler.MapDrag = L.Handler.extend({
 	_onDragEnd: function() {
 		this._map.fire('dragend');
 		this._map.fire('moveend');
+		if (this._map.options.viewLoadOnDragEnd) { this._fireViewLoad(); }
 	}
 });
