@@ -22,5 +22,19 @@ L.Point.prototype = {
 	
 	multiplyBy: function(num) {
 		return new L.Point(this.x * num, this.y * num);
+	},
+	
+	distanceTo: function(point) {
+		var x = point.x - this.x,
+			y = point.y - this.y;
+		return Math.sqrt(x*x + y*y);
+	},
+	
+	round: function() {
+		return new L.Point(Math.round(this.x), Math.round(this.y));
+	},
+	
+	toString: function() {
+		return 'Point(' + this.x + ',' + this.y + ')'; 
 	}
 };

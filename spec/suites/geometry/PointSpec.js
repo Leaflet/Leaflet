@@ -40,4 +40,6 @@ describe("Point", function() {
 			expect(new L.Point(50, 30).multiplyBy(2)).toEqual(new L.Point(100, 60));
 		});
 	});
+	
+	describe('#distanceTo', noSpecs);
 });
