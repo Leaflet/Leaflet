@@ -18,6 +18,7 @@ L.Map = L.Class.extend({
 		
 		//interaction
 		dragging: true,
+		touchZoom: true,
 		
 		//misc
 		viewLoadOnDragEnd: false || L.Browser.mobileWebkit
@@ -213,9 +214,8 @@ L.Map = L.Class.extend({
 	},
 	
 	_initInteraction: function() {
-		if (L.Handler.MapDrag) {
-			this.dragging = new L.Handler.MapDrag(this, this.options.dragging);
-		}
+		this.dragging = L.Handler.MapDrag && new L.Handler.MapDrag(this, this.options.dragging);
+		this.touchZoom = L.Handler.TouchZoom && new L.Handler.TouchZoom(this, this.options.touchZoom);
 	},
 	
 	_rawPanBy: function(offset) {
@@ -251,7 +251,7 @@ L.Map = L.Class.extend({
 	
 	_getNewTopLeftPoint: function(center) {
 		var viewHalf = this.getSize().divideBy(2, true);
-		return this.project(center).subtract(viewHalf);
+		return this.project(center).subtract(viewHalf).round();
 	},
 	
 	_offsetIsWithinView: function(offset, multiplyFactor) {
