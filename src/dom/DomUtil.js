@@ -32,12 +32,17 @@ L.DomUtil = {
 	
 	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
 	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')',
+			
+	getTranslateString: function(point) {
+		return L.DomUtil.TRANSLATE_OPEN + 
+				point.x + 'px,' + point.y + 'px' + 
+				L.DomUtil.TRANSLATE_CLOSE;
+	},
 	
 	setPosition: function(el, point) {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit) {
-			el.style.webkitTransform =  L.DomUtil.TRANSLATE_OPEN + 
-					point.x + 'px,' + point.y + 'px' + L.DomUtil.TRANSLATE_CLOSE;
+			el.style.webkitTransform =  L.DomUtil.getTranslateString(point);
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
