@@ -51,21 +51,27 @@ L.Draggable = L.Class.extend({
 	
 	_onMove: function(e) {
 		L.DomEvent.preventDefault(e);
+		//L.DomEvent.stopPropagation(e);
 
 		if (e.touches && e.touches.length > 1) { return; }
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
-		var offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY),
-			newPos = this._dragStartPos.add(offset);
+		var offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY);
+			
+		this._newPos = this._dragStartPos.add(offset);
+		
+		this._updatePosition();
 		
 		if (!this._moved) {
 			this.fire('dragstart');
 			this._moved = true;
 		}
 		
-		L.DomUtil.setPosition(this._element, newPos);
-		
 		this.fire('drag');
+	},
+	
+	_updatePosition: function() {
+		L.DomUtil.setPosition(this._element, this._newPos);
 	},
 	
 	_onUp: function(e) {
