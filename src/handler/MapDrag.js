@@ -15,7 +15,7 @@ L.Handler.MapDrag = L.Handler.extend({
 						this._draggable._updatePosition, 0, this._draggable);
 			}
 			
-			this._deferredFireViewLoad = L.Util.deferExecByInterval(this._fireViewLoad, 200, this);
+			this._deferredFireViewLoad = L.Util.deferExecByInterval(this._fireViewLoad, 100, this);
 			
 			this._draggable.on('dragstart', this._onDragStart, this);
 			this._draggable.on('drag', this._onDrag, this);
