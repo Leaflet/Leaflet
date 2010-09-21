@@ -29,10 +29,8 @@ L.Draggable = L.Class.extend({
 	},
 	
 	_onDown: function(e) {
-		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
+		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return true; }
 		
-		L.DomEvent.preventDefault(e);
-
 		if (e.touches && e.touches.length > 1) { return; }
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
