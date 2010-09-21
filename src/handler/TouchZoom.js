@@ -7,7 +7,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 	
 	disable: function() {
-		if (!L.Browser.mobileWebkit || !this._enabled) { return; }
+		if (!this._enabled) { return; }
 		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
 		this._enabled = false;
 	},
