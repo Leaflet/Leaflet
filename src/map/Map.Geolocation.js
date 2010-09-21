@@ -1,3 +1,7 @@
+/*
+ * Provides L.Map with convenient shortcuts for W3C geolocation.
+ */
+
 L.Map.include({
 	locate: function() {
 		if (navigator.geolocation) {
