@@ -1,5 +1,5 @@
 /*
- * CM.Point represents a point with x and y coordinates.
+ * L.Point represents a point with x and y coordinates.
  */
 
 L.Point = function(/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
