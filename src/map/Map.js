@@ -21,7 +21,7 @@ L.Map = L.Class.extend({
 		touchZoom: true,
 		
 		//misc
-		viewLoadOnDragEnd: false || L.Browser.mobileWebkit
+		viewLoadOnDragEnd: L.Browser.mobileWebkit
 	},
 	
 	
@@ -126,11 +126,11 @@ L.Map = L.Class.extend({
 	},
 	
 	getMinZoom: function() {
-		return this.options.minZoom || this._layersMinZoom || 0;
+		return isNaN(this.options.minZoom) ?  this._layersMinZoom || 0 : this.options.minZoom;
 	},
 	
 	getMaxZoom: function() {
-		return this.options.maxZoom || this._layersMaxZoom || Infinity;
+		return isNaN(this.options.maxZoom) ?  this._layersMaxZoom || Infinity : this.options.maxZoom;
 	},
 	
 	getBoundsZoom: function(/*LatLngBounds*/ bounds) {
