@@ -88,6 +88,7 @@ L.TileLayer = L.Class.extend({
 		//TODO load from center
 		for (var j = nwTilePoint.y; j <= seTilePoint.y; j++) {
 			for (var i = nwTilePoint.x; i <= seTilePoint.x; i++) {				
+				if ((i+':'+j) in this._tiles) { continue; }
 				this._loadTile(new L.Point(i, j));
 			}
 		}
@@ -113,16 +114,13 @@ L.TileLayer = L.Class.extend({
 			tilePos = tilePoint.multiplyBy(tileSize).subtract(origin),
 			zoom = this._map.getZoom();
 			
-		var key = tilePoint.x + ':' + tilePoint.y;
-		if (key in this._tiles) { return; }
-
 		var tileLimit = (1 << zoom);
 		tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
 		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
 		
 		
 		var tile = this._tileImg.cloneNode(false);
-		this._tiles[key] = tile;
+		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 		
 		L.DomUtil.setPosition(tile, tilePos);
 		
