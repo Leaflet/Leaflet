@@ -29,8 +29,11 @@ L.Draggable = L.Class.extend({
 	},
 	
 	_onDown: function(e) {
-		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return true; }
+		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
 		
+		if (!e.touches) {
+			L.DomEvent.preventDefault(e);
+		}
 		if (e.touches && e.touches.length > 1) { return; }
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
@@ -73,7 +76,10 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.removeListener(document, L.Draggable.MOVE, this._onMove);
 		L.DomEvent.removeListener(document, L.Draggable.END, this._onUp);
 		
-		this.fire('dragend');
+		if (this._moved) {
+			this.fire('dragend');
+			this._moved = false;
+		}
 	},
 	
 	_setMovingCursor: function() {
