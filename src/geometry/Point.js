@@ -35,6 +35,6 @@ L.Point.prototype = {
 	},
 	
 	toString: function() {
-		return 'Point(' + this.x + ',' + this.y + ')'; 
+		return 'Point( ' + this.x + ', ' + this.y + ' )'; 
 	}
 };

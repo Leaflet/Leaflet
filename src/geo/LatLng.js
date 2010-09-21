@@ -24,5 +24,10 @@ L.LatLng = L.Class.extend({
 		
 		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
 		return margin <= L.LatLng.MAX_MARGIN;
+	},
+	
+	toString: function() {
+		return 'LatLng( ' + L.Util.formatNum(this.lat, 5) + ', ' + 
+				L.Util.formatNum(this.lng, 5) + ' )';
 	}
 });
