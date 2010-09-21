@@ -9,6 +9,7 @@
 		ie6: ie && !window.XMLHttpRequest,
 		webkit: webkit,
 		webkit3d: webkit && ('WebKitCSSMatrix' in window) && ('m11' in new WebKitCSSMatrix()),
-		mobileWebkit: webkit && mobile
+		mobileWebkit: webkit && mobile,
+		gecko: ua.indexOf("gecko") != -1
 	};
 })();
