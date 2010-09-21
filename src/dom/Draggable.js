@@ -55,9 +55,9 @@ L.Draggable = L.Class.extend({
 		var offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY),
 			newPos = this._dragStartPos.add(offset);
 		
-		if (!this._notFirstMove) {
+		if (!this._moved) {
 			this.fire('dragstart');
-			this._notFirstMove = true;
+			this._moved = true;
 		}
 		
 		L.DomUtil.setPosition(this._element, newPos);

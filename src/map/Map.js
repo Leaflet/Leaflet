@@ -38,7 +38,10 @@ L.Map = L.Class.extend({
 		layers = (layers instanceof Array ? layers : [layers]); 
 		this._initLayers(layers);
 		
-		if (L.Handler) { this._initInteraction(); }
+		if (L.DomEvent) { 
+			this._initEvents(); 
+			if (L.Handler) { this._initInteraction(); }
+		}
 		
 		this.setView(this.options.center, this.options.zoom, true);
 	},
@@ -262,13 +265,6 @@ L.Map = L.Class.extend({
 		this.fire('layeradded', {layer: layer});
 	},
 	
-	_initInteraction: function() {
-		this.dragging = L.Handler.MapDrag && new L.Handler.MapDrag(this, this.options.dragging);
-		this.touchZoom = L.Handler.TouchZoom && new L.Handler.TouchZoom(this, this.options.touchZoom);
-		this.doubleClickZoom = L.Handler.DoubleClickZoom &&
-				new L.Handler.DoubleClickZoom(this, this.options.doubleClickZoom);
-	},
-	
 	_rawPanBy: function(offset) {
 		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane);
 		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.subtract(offset));
@@ -293,6 +289,34 @@ L.Map = L.Class.extend({
 	},
 
 	
+	// map events
+	
+	_initEvents: function() {
+		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+		L.DomEvent.addListener(this._container, 'dblclick', this._fireMouseEvent, this);
+	},
+	
+	_onMouseClick: function(e) {
+		if (this.dragging && this.dragging._moved) { return; }
+		this._fireMouseEvent(e);
+	},
+	
+	_fireMouseEvent: function(e) {
+		if (!this.hasEventListeners(e.type)) { return; }
+		this.fire(e.type, {
+			position: this.mouseEventToLatLng(e),
+			layerPoint: this.mouseEventToLayerPoint(e)
+		});
+	},
+	
+	_initInteraction: function() {
+		this.dragging = L.Handler.MapDrag && new L.Handler.MapDrag(this, this.options.dragging);
+		this.touchZoom = L.Handler.TouchZoom && new L.Handler.TouchZoom(this, this.options.touchZoom);
+		this.doubleClickZoom = L.Handler.DoubleClickZoom &&
+				new L.Handler.DoubleClickZoom(this, this.options.doubleClickZoom);
+	},
+	
+
 	// private methods for getting map state
 	
 	_getTopLeftPoint: function() {
