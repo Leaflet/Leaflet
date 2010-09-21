@@ -16,6 +16,7 @@
 	
 	<!-- /geo -->
 	<script type="text/javascript" src="../src/geo/LatLng.js"></script>
+	<script type="text/javascript" src="../src/geo/LatLngBounds.js"></script>
 	<script type="text/javascript" src="../src/geo/Projection.js"></script>
 	
 	<!-- /geometry -->
@@ -30,8 +31,9 @@
 	<script type="text/javascript" src="../src/handler/Handler.js"></script>
 	<script type="text/javascript" src="../src/handler/MapDrag.js"></script>
 
-	<!-- / -->
-	<script type="text/javascript" src="../src/Map.js"></script>
+	<!-- /map -->
+	<script type="text/javascript" src="../src/map/Map.js"></script>
+	<script type="text/javascript" src="../src/map/MapGeolocationExt.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css" />
 </head>
@@ -45,7 +47,7 @@
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18}),
 			latlng = new L.LatLng(50.5, 30.51);
 	
-		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15);
+		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15).locate();
 		
 	</script>
 </body>

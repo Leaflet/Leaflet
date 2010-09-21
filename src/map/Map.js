@@ -80,6 +80,11 @@ L.Map = L.Class.extend({
 		return this.setZoom(this, zoom-1);
 	},
 	
+	fitBounds: function(/*LatLngBounds*/ bounds) {
+		var zoom = this.getBoundsZoom(bounds);
+		return this.setView(bounds.getCenter(), zoom, true);
+	},
+	
 	panTo: function(center) {
 		return this.setView(center, this._zoom);
 	},
@@ -120,6 +125,32 @@ L.Map = L.Class.extend({
 		return this._zoom;
 	},
 	
+	getMinZoom: function() {
+		return this.options.minZoom || this._layersMinZoom || 0;
+	},
+	
+	getMaxZoom: function() {
+		return this.options.maxZoom || this._layersMaxZoom || Infinity;
+	},
+	
+	getBoundsZoom: function(/*LatLngBounds*/ bounds) {
+		var size = this.getSize(),
+			zoom = this.getMinZoom(),
+			maxZoom = this.getMaxZoom(),
+			boundsSize, 
+			nePoint, swPoint,
+			boundsSize;
+		do {
+			nePoint = this.project(bounds.northEast, zoom);
+			swPoint = this.project(bounds.southWest, zoom);
+			boundsSize = new L.Point(nePoint.x - swPoint.x, swPoint.y - nePoint.y);
+			zoom++;
+		} while ((boundsSize.x <= size.x) && 
+				 (boundsSize.y <= size.y) && (zoom <= maxZoom));
+		
+		return zoom - 1;
+	},
+	
 	getSize: function() {
 		if (!this._size || this._sizeChanged) {
 			this._size = new L.Point(this._container.clientWidth, this._container.clientHeight);
@@ -140,12 +171,12 @@ L.Map = L.Class.extend({
 
 	project: function(/*Object*/ coord, /*(optional) Number*/ zoom)/*-> Point*/ {
 		var projectedPoint = this.options.projection.project(coord),
-			scale = this.options.scaling(this._zoom || zoom);
+			scale = this.options.scaling(isNaN(zoom) ? this._zoom : zoom);
 		return this.options.transformation.transform(projectedPoint, scale);
 	},
 	
 	unproject: function(/*Point*/ point, /*(optional) Number*/ zoom, /*(optional) Boolean*/ unbounded)/*-> Object*/ {
-		var scale = this.options.scaling(this._zoom || zoom),
+		var scale = this.options.scaling(isNaN(zoom) ? this._zoom : zoom),
 			untransformedPoint = this.options.transformation.untransform(point, scale);
 		return this.options.projection.unproject(untransformedPoint, unbounded);
 	},
@@ -231,7 +262,7 @@ L.Map = L.Class.extend({
 		return false;
 	},
 
-	_zoomToIfCenterInView: function(center, offset, oldZoom) {
+	_zoomToIfCenterInView: function(center, zoom, offset) {
 		//if offset does not exceed half of the view
 		if (this._offsetIsWithinView(offset, 0.5)) {
 			//TODO animated zoom
@@ -262,8 +293,8 @@ L.Map = L.Class.extend({
 	},
 	
 	_limitZoom: function(zoom) {
-		var min = this.options.minZoom || this._layersMinZoom || 0;
-		var max = this.options.maxZoom || this._layersMaxZoom || Infinity;
+		var min = this.getMinZoom();
+		var max = this.getMaxZoom();
 		return Math.max(min, Math.min(max, zoom));
 	}
 });
