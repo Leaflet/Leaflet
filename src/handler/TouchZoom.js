@@ -1,3 +1,7 @@
+/*
+ * L.Handler.TouchZoom is used internally by L.Map to add touch-zooming on Webkit-powered mobile browsers.
+ */
+
 L.Handler.TouchZoom = L.Handler.extend({
 	
 	enable: function() {
@@ -10,10 +14,6 @@ L.Handler.TouchZoom = L.Handler.extend({
 		if (!this._enabled) { return; }
 		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
 		this._enabled = false;
-	},
-	
-	enabled: function() {
-		return !!this._enabled;
 	},
 	
 	_getClientPoint: function(e) {

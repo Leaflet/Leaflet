@@ -1,9 +1,10 @@
 /*
- * L.Handler.MapDrag makes the map draggable
+ * L.Handler.MapDrag is used internally by L.Map to make the map draggable.
  */
 
 L.Handler.MapDrag = L.Handler.extend({
 	enable: function() {
+		if (this._enabled) { return; }
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 			
@@ -14,10 +15,13 @@ L.Handler.MapDrag = L.Handler.extend({
 			this._draggable.on('dragend', this._onDragEnd, this);
 		}
 		this._draggable.enable();
+		this._enabled = true;
 	},
 	
 	disable: function() {
+		if (!this._enabled) { return; }
 		this._draggable.disable();
+		this._enabled = false;
 	},
 	
 	_fireViewLoad: function() {
