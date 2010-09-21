@@ -30,27 +30,38 @@ L.Util = {
 		};
 	})(),
 
-	limitExecByInterval: function(fn, time, context, delayFirstExec) {	
+	limitExecByInterval: function(fn, time, context) {	
 		var lock, execOnUnlock, args;
+		function exec(){
+			lock = false;
+			if (execOnUnlock) {
+				args.callee.apply(context, args);
+				execOnUnlock = false;
+			}
+		}
 		return function() {
 			args = arguments;
 			if (!lock) {				
 				lock = true;
-				setTimeout(function(){
-					lock = false;
-					if (execOnUnlock) {
-						args.callee.apply(context, args);
-						execOnUnlock = false;
-					}
-				}, time);
-				if (!delayFirstExec) {
-					fn.apply(context, args);
-				} else {
-					delayFirstExec = false;
-					execOnUnlock = true;
-				}
+				setTimeout(exec, time);
+				fn.apply(context, args);
 			} else {
 				execOnUnlock = true;
+			}
+		};
+	},
+	
+	deferExecByInterval: function(fn, time, context) {
+		var args, lock;
+		function exec() {
+			lock = false;
+			fn.apply(context, args);
+		}
+		return function() {
+			args = arguments;
+			if (!lock) {
+				lock = true;
+				setTimeout(exec, time);
 			}
 		};
 	},
