@@ -62,6 +62,17 @@ L.DomEvent = {
 		} else {
 			e.returnValue = false;
 		}
+	},
+	
+	getMousePosition: function(e, container) {
+		var x = e.pageX ? e.pageX : e.clientX + 
+				document.body.scrollLeft + document.documentElement.scrollLeft,
+			y = e.pageY ? e.pageY : e.clientY + 
+					document.body.scrollTop + document.documentElement.scrollTop,
+			pos = new L.Point(x, y);
+			
+		return (container ? 
+					pos.subtract(L.DomUtil.getCumulativeOffset(container)) : pos);
 	}
 };
 

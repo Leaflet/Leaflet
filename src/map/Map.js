@@ -19,6 +19,7 @@ L.Map = L.Class.extend({
 		//interaction
 		dragging: true,
 		touchZoom: L.Browser.mobileWebkit,
+		doubleClickZoom: true,
 		
 		//misc
 		viewLoadOnDragEnd: L.Browser.mobileWebkit
@@ -168,6 +169,23 @@ L.Map = L.Class.extend({
 	getPixelOrigin: function() {
 		return this._initialTopLeftPoint;
 	},
+	
+	mouseEventToLayerPoint: function(e) {
+		var mousePos = L.DomEvent.getMousePosition(e, this._container);
+		return this.containerPointToLayerPoint(mousePos);
+	},
+	
+	mouseEventToLatLng: function(e) {
+		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
+	},
+	
+	containerPointToLayerPoint: function(point) {
+		return point.subtract(L.DomUtil.getPosition(this._mapPane));
+	},
+	
+	layerPointToLatLng: function(point) {
+		return this.unproject(point.add(this._initialTopLeftPoint));
+	},
 
 	project: function(/*Object*/ coord, /*(optional) Number*/ zoom)/*-> Point*/ {
 		var projectedPoint = this.options.projection.project(coord),
@@ -247,6 +265,8 @@ L.Map = L.Class.extend({
 	_initInteraction: function() {
 		this.dragging = L.Handler.MapDrag && new L.Handler.MapDrag(this, this.options.dragging);
 		this.touchZoom = L.Handler.TouchZoom && new L.Handler.TouchZoom(this, this.options.touchZoom);
+		this.doubleClickZoom = L.Handler.DoubleClickZoom &&
+				new L.Handler.DoubleClickZoom(this, this.options.doubleClickZoom);
 	},
 	
 	_rawPanBy: function(offset) {

@@ -16,24 +16,18 @@ L.Handler.TouchZoom = L.Handler.extend({
 		this._enabled = false;
 	},
 	
-	_getClientPoint: function(e) {
-		return new L.Point(e.clientX, e.clientY);
-	},
-	
 	_onTouchStart: function(e) {
 		if (!e.touches || e.touches.length != 2) { return; }
 		
-		var p1 = this._getClientPoint(e.touches[0]),
-			p2 = this._getClientPoint(e.touches[1]),
-			mapPanePos = L.DomUtil.getPosition(this._map._mapPane),
-			containerOffset = L.DomUtil.getCumulativeOffset(this._map._container);
+		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
+			p2 = this._map.mouseEventToLayerPoint(e.touches[1]),
+			viewCenter = this._map.containerPointToLayerPoint(this._map.getSize().divideBy(2));
 		
-		this._clientStartCenter = p1.add(p2).divideBy(2, true);
-		this._startCenter = this._clientStartCenter.subtract(containerOffset).subtract(mapPanePos);
+		this._startCenter = p1.add(p2).divideBy(2, true);
 		this._startDist = p1.distanceTo(p2);
 		this._startTransform = this._map._mapPane.style.webkitTransform;
 
-		this._centerOffset = this._map.getSize().divideBy(2).subtract(mapPanePos).subtract(this._startCenter);
+		this._centerOffset = viewCenter.subtract(this._startCenter);
 
 		L.DomEvent.addListener(document, 'touchmove', this._onTouchMove, this);
 		L.DomEvent.addListener(document, 'touchend', this._onTouchEnd, this);
@@ -44,11 +38,11 @@ L.Handler.TouchZoom = L.Handler.extend({
 	_onTouchMove: function(e) {
 		if (!e.touches || e.touches.length != 2) { return; }
 		
-		var p1 = this._getClientPoint(e.touches[0]),
-			p2 = this._getClientPoint(e.touches[1]);
+		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
+			p2 = this._map.mouseEventToLayerPoint(e.touches[1]);
 		
 		this._scale = p1.distanceTo(p2) / this._startDist;
-		this._delta = p1.add(p2).divideBy(2, true).subtract(this._clientStartCenter);
+		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
 		
 		/*
 		 * Used 2 translates instead of transform-origin because of a very strange bug - 
