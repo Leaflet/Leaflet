@@ -12,6 +12,7 @@ L.Mixin.Events = {
 			action: fn,
 			context: context
 		});
+		return this;
 	},
 	
 	hasEventListeners: function(/*String*/ type) /*-> Boolean*/ {
@@ -20,7 +21,7 @@ L.Mixin.Events = {
 	},
 	
 	removeEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		if (!this.hasEventListeners(type)) { return; }
+		if (!this.hasEventListeners(type)) { return this; }
 		
 		for (var i = 0, events = this._leaflet_events, len = events[type].length; i < len; i++) {
 			if (
@@ -28,9 +29,10 @@ L.Mixin.Events = {
 				(!context || (events[type][i].context === context))
 			) {
 				events[type].splice(i, 1);
-				return;
+				return this;
 			}
 		}
+		return this;
 	},
 	
 	fireEvent: function(/*String*/ type, /*(optional) Object*/ data) {
@@ -46,6 +48,8 @@ L.Mixin.Events = {
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			listeners[i].action.call(listeners[i].context || this, event);
 		}
+		
+		return this;
 	}
 };
 
