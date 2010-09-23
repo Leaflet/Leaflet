@@ -18,9 +18,9 @@ var L = {
 	})(),
 	
 	noConflict: function() {
-		window.L = this._originalL;
+		L = this._originalL;
 		return this;
 	},
 	
-	_originalL: window.L
+	_originalL: L
 };
