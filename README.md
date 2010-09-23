@@ -10,11 +10,13 @@ We really look forward to any help with the development! But first, in order to 
 ## What's left to do for initial version
 
 Interaction:
+
  - mouse wheel zoom
  - shift-drag zoom
  - double tap on iOS
 
 Overlays:
+
  - markers
  - info window
  - vectors (polyline, polygon)
@@ -22,20 +24,24 @@ Overlays:
  - image overlays
  
 Overlay formats:
+
  - KML
  - GeoRSS
  - GeoJSON
 
 Controls:
+
  - control infrastructure (smart positioning)
  - copyright control
  - basic zoom control
  - zoom slider
 
 Core:
+
  - ÑSS transitions with timer-based fallback
  
 Visual appearance:
+
  - panning animation
  - zooming animation
  - show scaled background until tiles are loaded
@@ -43,7 +49,9 @@ Visual appearance:
  - spiral tile loading
  
 Misc:
+
  - map mouseover/mouseout/mousemove events
 
 Browser issues:
+
  - alpha-transparent tiles on IE
