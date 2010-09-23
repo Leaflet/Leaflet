@@ -1,2 +1,23 @@
 @echo off
-java -jar compiler.jar --js ../src/Leaflet.js --js ../src/core/Util.js --js ../src/core/Class.js --js ../src/core/Events.js --js ../src/core/Browser.js --js ../src/dom/DomEvent.js --js ../src/dom/DomUtil.js --js ../src/dom/Draggable.js --js ../src/geo/LatLng.js --js ../src/geo/LatLngBounds.js --js ../src/geo/Projection.js --js ../src/geometry/Point.js --js ../src/geometry/Bounds.js --js ../src/geometry/Transformation.js --js ../src/layer/TileLayer.js --js ../src/handler/Handler.js --js ../src/handler/MapDrag.js --js ../src/handler/TouchZoom.js --js ../src/map/Map.js --js ../src/map/Map.Geolocation.js --js_output_file ../dist/leaflet.js
+java -jar compiler.jar ^
+--js ../src/Leaflet.js ^
+--js ../src/core/Util.js ^
+--js ../src/core/Class.js ^
+--js ../src/core/Events.js ^
+--js ../src/core/Browser.js ^
+--js ../src/dom/DomEvent.js ^
+--js ../src/dom/DomUtil.js ^
+--js ../src/dom/Draggable.js ^
+--js ../src/geo/LatLng.js ^
+--js ../src/geo/LatLngBounds.js ^
+--js ../src/geo/Projection.js ^
+--js ../src/geometry/Point.js ^
+--js ../src/geometry/Bounds.js ^
+--js ../src/geometry/Transformation.js ^
+--js ../src/layer/TileLayer.js ^
+--js ../src/handler/Handler.js ^
+--js ../src/handler/MapDrag.js ^
+--js ../src/handler/TouchZoom.js ^
+--js ../src/map/Map.js ^
+--js ../src/map/Map.Geolocation.js ^
+--js_output_file ../dist/leaflet.js
