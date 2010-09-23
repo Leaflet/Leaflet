@@ -1,5 +1,7 @@
-/*
- * Leaflet namespace config, allows using any global variable instead of L & restoring the original value
+/**
+ * @preserve Copyright (c) 2010, CloudMade
+ * Leaflet is a BSD-licensed JavaScript library for map display and interaction.
+ * Check out the source on GitHub: http://github.com/CloudMade/Leaflet/
  */
 
 L = {
