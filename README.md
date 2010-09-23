@@ -38,7 +38,7 @@ Controls:
 
 Core:
 
- - ÑSS transitions with timer-based fallback
+ - CSS transitions with timer-based fallback
  
 Visual appearance:
 
