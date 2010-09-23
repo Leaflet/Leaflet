@@ -4,7 +4,7 @@
  * Check out the source on GitHub: http://github.com/CloudMade/Leaflet/
  */
 
-L = {
+var L = {
 	VERSION: '0.0.2',
 	
 	ROOT_URL: (function() {
