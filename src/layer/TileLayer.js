@@ -47,12 +47,14 @@ L.TileLayer = L.Class.extend({
 		});
 	},
 	
-	draw: function() {
+	//TODO onRemove
+	
+	onReset: function() {
 		this._tiles = {};
 		this._container.innerHTML = '';
 	},
 	
-	load: function() {
+	onUpdate: function() {
 		var bounds = this._map.getPixelBounds(),
 			tileSize = this.options.tileSize;
 		
@@ -131,7 +133,6 @@ L.TileLayer = L.Class.extend({
 		tile.src = this.getTileUrl(tilePoint, zoom);
 		
 		this._container.appendChild(tile);
-		//TODO tile queue
 	},
 	
 	_tileOnLoad: function() {

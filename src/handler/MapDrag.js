@@ -15,7 +15,7 @@ L.Handler.MapDrag = L.Handler.extend({
 						this._draggable._updatePosition, 0, this._draggable);
 			}
 			
-			this._deferredFireViewLoad = L.Util.deferExecByInterval(this._fireViewLoad, 100, this);
+			this._deferredFireViewUpdate = L.Util.deferExecByInterval(this._fireViewUpdate, 100, this);
 			
 			this._draggable.on('dragstart', this._onDragStart, this);
 			this._draggable.on('drag', this._onDrag, this);
@@ -31,8 +31,8 @@ L.Handler.MapDrag = L.Handler.extend({
 		this._enabled = false;
 	},
 	
-	_fireViewLoad: function() {
-		this._map.fire('viewload');
+	_fireViewUpdate: function() {
+		this._map.fire('viewupdate');
 	},
 	
 	_onDragStart: function() {
@@ -42,13 +42,13 @@ L.Handler.MapDrag = L.Handler.extend({
 	
 	_onDrag: function() {
 		this._map.fire('move');
+		if (!this._map.options.updateWhenIdle) { this._deferredFireViewUpdate(); }
 		this._map.fire('drag');
-		if (!this._map.options.viewLoadOnDragEnd) { this._deferredFireViewLoad(); }
 	},
 	
 	_onDragEnd: function() {
-		this._map.fire('dragend');
 		this._map.fire('moveend');
-		if (this._map.options.viewLoadOnDragEnd) { this._fireViewLoad(); }
+		if (this._map.options.updateWhenIdle) { this._fireViewUpdate(); }
+		this._map.fire('dragend');
 	}
 });

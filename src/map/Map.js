@@ -22,7 +22,7 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		
 		//misc
-		viewLoadOnDragEnd: L.Browser.mobileWebkit
+		updateWhenIdle: L.Browser.mobileWebkit
 	},
 	
 	
@@ -99,7 +99,7 @@ L.Map = L.Class.extend({
 		
 		this._rawPanBy(offset);
 		
-		this.fire('viewload');
+		this.fire('viewupdate');
 		this.fire('move');
 		this.fire('moveend');
 	},
@@ -112,7 +112,7 @@ L.Map = L.Class.extend({
 	
 	invalidateSize: function() {
 		this._sizeChanged = true;
-		this.fire('viewload');
+		this.fire('viewupdate');
 		return this;
 	},
 	
@@ -245,7 +245,7 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		
 		this.fire('viewreset');
-		this.fire('viewload');
+		this.fire('viewupdate');
 
 		this.fire('move');
 		if (zoomChanged) { this.fire('zoomend'); }
@@ -263,11 +263,12 @@ L.Map = L.Class.extend({
 		this._layers.push(layer);
 		
 		layer.onAdd(this);
-		if (layer.draw) { this.on('viewreset', layer.draw, layer); }
-		if (layer.load) { this.on('viewload', layer.load, layer); }
+		if (layer.onReset) { this.on('viewreset', layer.onReset, layer); }
+		if (layer.onUpdate) { this.on('viewupdate', layer.onUpdate, layer); }
 		
 		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
 		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		//TODO getMaxZoom, getMinZoom
 		
 		this.fire('layeradded', {layer: layer});
 	},
