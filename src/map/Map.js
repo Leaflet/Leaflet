@@ -263,8 +263,8 @@ L.Map = L.Class.extend({
 		this._layers.push(layer);
 		
 		layer.onAdd(this);
-		this.on('viewreset', layer.draw, layer);
-		this.on('viewload', layer.load, layer);
+		if (layer.draw) { this.on('viewreset', layer.draw, layer); }
+		if (layer.load) { this.on('viewload', layer.load, layer); }
 		
 		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
 		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
