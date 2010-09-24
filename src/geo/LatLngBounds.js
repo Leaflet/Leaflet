@@ -12,28 +12,40 @@ L.LatLngBounds = L.Class.extend({
 	
 	// extend the bounds to contain the given point
 	extend: function(/*LatLng*/ latlng) {
-		if (!this.southWest && !this.northEast) {
-			this.southWest = new L.LatLng(latlng.lat, latlng.lng);
-			this.northEast = new L.LatLng(latlng.lat, latlng.lng);
+		if (!this._southWest && !this._northEast) {
+			this._southWest = new L.LatLng(latlng.lat, latlng.lng);
+			this._northEast = new L.LatLng(latlng.lat, latlng.lng);
 		} else {
-			this.southWest.lat = Math.min(latlng.lat, this.southWest.lat);
-			this.southWest.lng = Math.min(latlng.lng, this.southWest.lng);
-			this.northEast.lat = Math.max(latlng.lat, this.northEast.lat);
-			this.northEast.lng = Math.max(latlng.lng, this.northEast.lng);
+			this._southWest.lat = Math.min(latlng.lat, this._southWest.lat);
+			this._southWest.lng = Math.min(latlng.lng, this._southWest.lng);
+			this._northEast.lat = Math.max(latlng.lat, this._northEast.lat);
+			this._northEast.lng = Math.max(latlng.lng, this._northEast.lng);
 		}
 	},
 	
 	getCenter: function() /*-> LatLng*/ {
 		return new L.LatLng(
-				(this.southWest.lat + this.northEast.lat) / 2, 
-				(this.southWest.lng + this.northEast.lng) / 2);
+				(this._southWest.lat + this._northEast.lat) / 2, 
+				(this._southWest.lng + this._northEast.lng) / 2);
+	},
+	
+	getSouthWest: function() { return this._southWest; },
+	
+	getNorthEast: function() { return this._northEast; },
+	
+	getNorthWest: function() {
+		return new L.LatLng(this._northEast.lat, this._southWest.lng);
+	},
+	
+	getSouthEast: function() {
+		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 	
 	contains: function(/*LatLngBounds*/ bounds) /*-> Boolean*/ {
-		var sw = this.southWest,
-			ne = this.northEast,
-			sw2 = bounds.southWest,
-			ne2 = bounds.northEast;
+		var sw = this._southWest,
+			ne = this._northEast,
+			sw2 = bounds.getSouthWest(),
+			ne2 = bounds.getNorthEast();
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
 				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	}

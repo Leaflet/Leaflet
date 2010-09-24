@@ -141,12 +141,14 @@ L.Map = L.Class.extend({
 		var size = this.getSize(),
 			zoom = this.getMinZoom(),
 			maxZoom = this.getMaxZoom(),
+			ne = bounds.getNorthEast(),
+			sw = bounds.getSouthWest(),
 			boundsSize, 
 			nePoint, swPoint,
 			boundsSize;
 		do {
-			nePoint = this.project(bounds.northEast, zoom);
-			swPoint = this.project(bounds.southWest, zoom);
+			nePoint = this.project(ne, zoom);
+			swPoint = this.project(sw, zoom);
 			boundsSize = new L.Point(nePoint.x - swPoint.x, swPoint.y - nePoint.y);
 			zoom++;
 		} while ((boundsSize.x <= size.x) && 
@@ -189,6 +191,10 @@ L.Map = L.Class.extend({
 	layerPointToLatLng: function(point) {
 		return this.unproject(point.add(this._initialTopLeftPoint));
 	},
+	
+	latLngToLayerPoint: function(latlng) {
+		return this.project(latlng).subtract(this._initialTopLeftPoint);
+	},
 
 	project: function(/*Object*/ coord, /*(optional) Number*/ zoom)/*-> Point*/ {
 		var projectedPoint = this.options.projection.project(coord),
@@ -218,6 +224,7 @@ L.Map = L.Class.extend({
 		this._panes = {};
 		this._panes.mapPane = this._mapPane = this._createPane('leaflet-map-pane');
 		this._panes.tilePane = this._createPane('leaflet-tile-pane');
+		this._panes.overlayPane = this._createPane('leaflet-overlay-pane');
 	},
 	
 	_createPane: function(className) {
