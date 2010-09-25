@@ -105,8 +105,16 @@ L.Map = L.Class.extend({
 	},
 	
 	addLayer: function(layer) {
-		this._addLayer(layer);
-		this.setView(this.getCenter(), this._zoom, true);
+		this._layers.push(layer);
+		
+		layer.onAdd(this);
+		
+		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
+		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		//TODO getMaxZoom, getMinZoom
+		
+		this.fire('layeradded', {layer: layer});
+
 		return this;
 	},
 	
@@ -257,20 +265,6 @@ L.Map = L.Class.extend({
 		for (var i = 0, len = layers.length; i < len; i++) {
 			this._addLayer(layers[i]);
 		}
-	},
-	
-	_addLayer: function(layer) {
-		this._layers.push(layer);
-		
-		layer.onAdd(this);
-		if (layer.onReset) { this.on('viewreset', layer.onReset, layer); }
-		if (layer.onUpdate) { this.on('viewupdate', layer.onUpdate, layer); }
-		
-		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
-		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
-		//TODO getMaxZoom, getMinZoom
-		
-		this.fire('layeradded', {layer: layer});
 	},
 	
 	_rawPanBy: function(offset) {

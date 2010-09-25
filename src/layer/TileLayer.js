@@ -11,7 +11,8 @@ L.TileLayer = L.Class.extend({
 		maxZoom: 18,
 		subdomains: 'abc',
 		copyright: '',
-		unloadInvisibleTiles: false || L.Browser.mobileWebkit
+		unloadInvisibleTiles: L.Browser.mobileWebkit,
+		updateWhenIdle: L.Browser.mobileWebkit
 	},
 	
 	initialize: function(url, options) {
@@ -45,16 +46,28 @@ L.TileLayer = L.Class.extend({
 			height: tileSize + 'px',
 			visibility: 'hidden'
 		});
+		
+		this._map.on('viewreset', this._reset, this);
+		
+		if (this.options.updateWhenIdle) {
+			this._map.on('moveend', this._update, this);
+		} else {
+			this._update = L.Util.limitExecByInterval(this._update, 100, this);
+			this._map.on('move', this._update, this);
+		}
+		
+		this._reset();
+		this._update();
 	},
 	
 	//TODO onRemove
 	
-	onReset: function() {
+	_reset: function() {
 		this._tiles = {};
 		this._container.innerHTML = '';
 	},
 	
-	onUpdate: function() {
+	_update: function() {
 		var bounds = this._map.getPixelBounds(),
 			tileSize = this.options.tileSize;
 		
