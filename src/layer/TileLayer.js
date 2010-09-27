@@ -150,6 +150,7 @@ L.TileLayer = L.Class.extend({
 	
 	_tileOnLoad: function() {
 		this.style.visibility = 'visible';
+		this.className += ' leaflet-tile-loaded';
 		this._leaflet_layer.fire('tileload', {tile: this});
 	}
 });
