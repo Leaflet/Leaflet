@@ -11,7 +11,6 @@ We really look forward to any help with the development! But first, in order to 
 
  Interaction: 
  
- - mouse wheel zoom
  - shift-drag zoom
  - double tap on iOS
  
