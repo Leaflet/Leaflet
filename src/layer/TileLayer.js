@@ -110,12 +110,11 @@ L.TileLayer = L.Class.extend({
 	
 	_loadTilesFromCenterOut: function(bounds) {
 		var queue = [],
-			center = bounds.getCenter(),
-			key = i + ':' + j;
+			center = bounds.getCenter();
 		
 		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
 			for (var i = bounds.min.x; i <= bounds.max.x; i++) {				
-				if (key in this._tiles) { continue; }
+				if ((i + ':' + j) in this._tiles) { continue; }
 				queue.push(new L.Point(i, j));
 			}
 		}
