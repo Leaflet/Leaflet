@@ -147,10 +147,10 @@ L.TileLayer = L.Class.extend({
 		
 		L.DomUtil.setPosition(tile, tilePos);
 		
-		tile.onload = this._tileOnLoad;
-		//TODO tile onerror
-		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 		tile._leaflet_layer = this;
+		tile.onload = this._tileOnLoad;
+		tile.onerror = this._tileOnError;
+		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 		
 		tile.src = this.getTileUrl(tilePoint, zoom);
 		
@@ -160,5 +160,9 @@ L.TileLayer = L.Class.extend({
 	_tileOnLoad: function() {
 		this.className += ' leaflet-tile-loaded';
 		this._leaflet_layer.fire('tileload', {tile: this});
+	},
+	
+	_tileOnError: function() {
+		this.src = this._leaflet_layer.options.errorTileUrl;
 	}
 });
