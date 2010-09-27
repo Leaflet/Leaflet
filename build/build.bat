@@ -15,9 +15,12 @@ java -jar compiler.jar ^
 --js ../src/geometry/Bounds.js ^
 --js ../src/geometry/Transformation.js ^
 --js ../src/layer/TileLayer.js ^
+--js ../src/layer/ImageOverlay.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^
+--js ../src/handler/ScrollWheelZoom.js ^
+--js ../src/handler/DoubleClickZoom.js ^
 --js ../src/map/Map.js ^
 --js ../src/map/Map.Geolocation.js ^
 --js_output_file ../dist/leaflet.js
