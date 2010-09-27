@@ -96,8 +96,6 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	getTileUrl: function(tilePoint, zoom) {
-		var url = this._url;
-		
 		var subdomains = this.options.subdomains,
 			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
 
@@ -130,17 +128,19 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_unloadOtherTiles: function(bounds) {
-		var k, x, y, key;
+		var kArr, x, y, key;
 		
 		for (key in this._tiles) {
-			kArr = key.split(':');
-			x = parseInt(kArr[0]);
-			y = parseInt(kArr[1]);
-			
-			// remove tile if it's out of bounds
-			if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-				this._container.removeChild(this._tiles[key]);
-				delete this._tiles[key];
+			if (this._tiles.hasOwnProperty(key)) {
+				kArr = key.split(':');
+				x = parseInt(kArr[0], 10);
+				y = parseInt(kArr[1], 10);
+				
+				// remove tile if it's out of bounds
+				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
+					this._container.removeChild(this._tiles[key]);
+					delete this._tiles[key];
+				}
 			}
 		}		
 	},

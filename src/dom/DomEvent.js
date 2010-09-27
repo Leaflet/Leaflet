@@ -8,7 +8,7 @@ L.DomEvent = {
 		var id = L.Util.stamp(fn);
 		function handler(e) {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
-		};
+		}
 		obj['_leaflet_' + type + id] = handler;
 		if ('addEventListener' in obj) {
 			if (type == 'mousewheel') {

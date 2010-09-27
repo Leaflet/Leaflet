@@ -8,15 +8,15 @@ L.DomUtil = {
 	},
 	
 	getStyle: function(el, style) {
-	    var value = el.style[style];
-	    if ((typeof value == 'undefined') && el.currentStyle) {
-	    	value = el.currentStyle[style];
-	    }
-	    if (typeof value == 'undefined') {
-	      var css = document.defaultView.getComputedStyle(el, null);
-	      value = css ? css[style] : null;
-	    }
-	    return (value == 'auto' ? null : value);
+		var value = el.style[style];
+		if ((typeof value == 'undefined') && el.currentStyle) {
+			value = el.currentStyle[style];
+		}
+		if (typeof value == 'undefined') {
+			var css = document.defaultView.getComputedStyle(el, null);
+			value = css ? css[style] : null;
+		}
+		return (value == 'auto' ? null : value);
 	},
 	
 	getCumulativeOffset: function(el) {

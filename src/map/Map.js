@@ -78,11 +78,11 @@ L.Map = L.Class.extend({
 	},
 	
 	zoomIn: function() {
-		return this.setZoom(this._zoom+1);
+		return this.setZoom(this._zoom + 1);
 	},
 	
 	zoomOut: function() {
-		return this.setZoom(this, zoom-1);
+		return this.setZoom(this, this._zoom - 1);
 	},
 	
 	fitBounds: function(/*LatLngBounds*/ bounds) {
@@ -167,8 +167,7 @@ L.Map = L.Class.extend({
 			ne = bounds.getNorthEast(),
 			sw = bounds.getSouthWest(),
 			boundsSize, 
-			nePoint, swPoint,
-			boundsSize;
+			nePoint, swPoint;
 		do {
 			nePoint = this.project(ne, zoom);
 			swPoint = this.project(sw, zoom);

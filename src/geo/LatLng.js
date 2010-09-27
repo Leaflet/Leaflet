@@ -11,8 +11,8 @@ L.LatLng = L.Class.extend({
 	
 	initialize: function(/*Number*/ lat, /*Number*/ lng, /*Boolean*/ noWrap) {
 		if (noWrap !== true) {
-			lat = Math.max(Math.min(lat, 90), -90); 				// clamp latitude into -90..90
-			lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180); 	// wrap longtitude into -180..180
+			lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
+			lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
 		}
 		
 		this.lat = lat;

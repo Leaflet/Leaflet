@@ -71,7 +71,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
 			center = this._map.unproject(centerPoint);
 		
-		map.setView(center, zoom, true);
+		this._map.setView(center, zoom, true);
 		
 		this._scale = null;
 		L.DomEvent.removeListener(document, 'touchmove', this._onTouchMove);
