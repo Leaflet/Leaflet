@@ -106,30 +106,30 @@ L.Map = L.Class.extend({
 	},
 	
 	addLayer: function(layer) {
-		this._layers.push(layer);
+		var id = L.Util.stamp(layer);
 		
-		layer.onAdd(this);
+		if (!this._layers[id]) {
+			layer.onAdd(this);
 		
-		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom || Infinity);
-		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom || 0);
-		//TODO getMaxZoom, getMinZoom
-		
-		this.fire('layeradd', {layer: layer});
-
+			this._layers[id] = layer;
+			
+			this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom || Infinity);
+			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom || 0);
+			//TODO getMaxZoom, getMinZoom
+			
+			this.fire('layeradd', {layer: layer});
+		}
 		return this;
 	},
 	
 	removeLayer: function(layer) {
-		layer.onRemove(this);
+		var id = L.Util.stamp(layer);
 		
-		for (var i = 0, len = this._layers.length; i < len; i++) {
-			if (this._layers[i] === layer) {
-				this._layers.splice(i, 1);
-				this.fire('layerremove', {layer: layer});
-				break;
-			}
+		if (this._layers[id]) {
+			layer.onRemove(this);
+			delete this._layers[id];
+			this.fire('layerremove', {layer: layer});
 		}
-		
 		return this;
 	},
 	
@@ -279,9 +279,9 @@ L.Map = L.Class.extend({
 	},
 	
 	_initLayers: function(layers) {
-		this._layers = [];
+		this._layers = {};
 		for (var i = 0, len = layers.length; i < len; i++) {
-			this._addLayer(layers[i]);
+			this.addLayer(layers[i]);
 		}
 	},
 	
