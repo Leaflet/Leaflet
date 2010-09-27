@@ -20,7 +20,6 @@ We really look forward to any help with the development! But first, in order to 
  - vectors (polyline, polygon, circle)
  - popup window (with smart autosizing)
  - KML, GeoRSS, GeoJSON layers
- - image overlay
  
 Controls:
 
