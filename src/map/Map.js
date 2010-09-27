@@ -19,6 +19,7 @@ L.Map = L.Class.extend({
 		//interaction
 		dragging: true,
 		touchZoom: L.Browser.mobileWebkit,
+		scrollWheelZoom: !L.Browser.mobileWebkit,
 		doubleClickZoom: true,
 		
 		//misc
@@ -183,9 +184,12 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint;
 	},
 	
+	mouseEventToContainerPoint: function(e) {
+		return L.DomEvent.getMousePosition(e, this._container);
+	},
+	
 	mouseEventToLayerPoint: function(e) {
-		var mousePos = L.DomEvent.getMousePosition(e, this._container);
-		return this.containerPointToLayerPoint(mousePos);
+		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 	
 	mouseEventToLatLng: function(e) {
@@ -312,10 +316,17 @@ L.Map = L.Class.extend({
 	},
 	
 	_initInteraction: function() {
-		this.dragging = L.Handler.MapDrag && new L.Handler.MapDrag(this, this.options.dragging);
-		this.touchZoom = L.Handler.TouchZoom && new L.Handler.TouchZoom(this, this.options.touchZoom);
-		this.doubleClickZoom = L.Handler.DoubleClickZoom &&
-				new L.Handler.DoubleClickZoom(this, this.options.doubleClickZoom);
+		var handlers = {
+			dragging: L.Handler.MapDrag,
+			touchZoom: L.Handler.TouchZoom,
+			doubleClickZoom: L.Handler.DoubleClickZoom,
+			scrollWheelZoom: L.Handler.ScrollWheelZoom
+		};
+		for (var i in handlers) {
+			if (handlers.hasOwnProperty(i) && handlers[i]) {
+				this[i] = new handlers[i](this, this.options[i]);
+			}
+		}
 	},
 	
 
