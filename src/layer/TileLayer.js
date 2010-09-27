@@ -12,7 +12,8 @@ L.TileLayer = L.Class.extend({
 		subdomains: 'abc',
 		copyright: '',
 		unloadInvisibleTiles: L.Browser.mobileWebkit,
-		updateWhenIdle: L.Browser.mobileWebkit
+		updateWhenIdle: L.Browser.mobileWebkit,
+		errorTileUrl: ''
 	},
 	
 	initialize: function(url, options) {
@@ -140,6 +141,7 @@ L.TileLayer = L.Class.extend({
 		L.DomUtil.setPosition(tile, tilePos);
 		
 		tile.onload = this._tileOnLoad;
+		//TODO tile onerror
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 		tile._leaflet_layer = this;
 		
