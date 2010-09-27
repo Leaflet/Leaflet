@@ -84,12 +84,13 @@ L.TileLayer = L.Class.extend({
 				Math.floor(bounds.min.y / tileSize)),
 			seTilePoint = new L.Point(
 				Math.floor(bounds.max.x / tileSize),
-				Math.floor(bounds.max.y / tileSize));
+				Math.floor(bounds.max.y / tileSize)),
+			tileBounds = new L.Bounds(nwTilePoint, seTilePoint);
 		
-		this._loadTiles(nwTilePoint, seTilePoint);
+		this._loadTilesFromCenterOut(tileBounds);
 		
 		if (this.options.unloadInvisibleTiles) {
-			this._unloadOtherTiles(nwTilePoint, seTilePoint);
+			this._unloadOtherTiles(tileBounds);
 		}
 		//TODO fire layerload?
 	},
@@ -107,24 +108,38 @@ L.TileLayer = L.Class.extend({
 				.replace('{y}', tilePoint.y);
 	},
 	
-	_loadTiles: function(nwTilePoint, seTilePoint) {
-		//TODO load from center
-		for (var j = nwTilePoint.y; j <= seTilePoint.y; j++) {
-			for (var i = nwTilePoint.x; i <= seTilePoint.x; i++) {				
-				if ((i+':'+j) in this._tiles) { continue; }
-				this._loadTile(new L.Point(i, j));
+	_loadTilesFromCenterOut: function(bounds) {
+		var queue = [],
+			center = bounds.getCenter(),
+			key = i + ':' + j;
+		
+		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
+			for (var i = bounds.min.x; i <= bounds.max.x; i++) {				
+				if (key in this._tiles) { continue; }
+				queue.push(new L.Point(i, j));
 			}
+		}
+		
+		// load tiles in order of their distance to center
+		queue.sort(function(a, b) {
+			return a.distanceTo(center) - b.distanceTo(center);
+		});
+		
+		for (var k = 0, len = queue.length; k < len; k++) {
+			this._loadTile(queue[k]);
 		}
 	},
 	
-	_unloadOtherTiles: function(nwTilePoint, seTilePoint) {
+	_unloadOtherTiles: function(bounds) {
 		var k, x, y, key;
+		
 		for (key in this._tiles) {
-			kArr = key.split(':'),
-			x = parseInt(kArr[0]),
+			kArr = key.split(':');
+			x = parseInt(kArr[0]);
 			y = parseInt(kArr[1]);
 			
-			if (x < nwTilePoint.x || x > seTilePoint.x || y < nwTilePoint.y || y > seTilePoint.y) {
+			// remove tile if it's out of bounds
+			if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
 				this._container.removeChild(this._tiles[key]);
 				delete this._tiles[key];
 			}
@@ -137,11 +152,12 @@ L.TileLayer = L.Class.extend({
 			tilePos = tilePoint.multiplyBy(tileSize).subtract(origin),
 			zoom = this._map.getZoom();
 			
+		// wrap tile coordinates
 		var tileLimit = (1 << zoom);
 		tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
 		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
 		
-		
+		// create tile
 		var tile = this._tileImg.cloneNode(false);
 		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 		
@@ -163,6 +179,7 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_tileOnError: function() {
+		this._leaflet_layer.fire('tileerror', {tile: this, url: this.src});
 		this.src = this._leaflet_layer.options.errorTileUrl;
 	}
 });
