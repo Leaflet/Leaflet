@@ -29,39 +29,46 @@ L.TileLayer = L.Class.extend({
 	onAdd: function(map) {
 		this._map = map;
 		
+		// create a container div for tiles
 		this._container = document.createElement('div');
 		this._container.className = 'leaflet-layer';
-		this._map.getPanes().tilePane.appendChild(this._container);
+		map.getPanes().tilePane.appendChild(this._container);
 		
+		// create an image to clone for tiles
 		this._tileImg = document.createElement('img');
 		
-		L.Util.extend(this._tileImg, {
-			className: 'leaflet-tile',
-			galleryimg: 'no'
-		});
+		this._tileImg.className = 'leaflet-tile';
+		this._tileImg.galleryimg = 'no';
 		
 		var tileSize = this.options.tileSize;
+		this._tileImg.style.width = tileSize + 'px';
+		this._tileImg.style.height = tileSize + 'px';
 		
-		L.Util.extend(this._tileImg.style, {
-			width: tileSize + 'px',
-			height: tileSize + 'px',
-			visibility: 'hidden'
-		});
-		
-		this._map.on('viewreset', this._reset, this);
+		// set up events
+		map.on('viewreset', this._reset, this);
 		
 		if (this.options.updateWhenIdle) {
-			this._map.on('moveend', this._update, this);
+			map.on('moveend', this._update, this);
 		} else {
-			this._update = L.Util.limitExecByInterval(this._update, 100, this);
-			this._map.on('move', this._update, this);
+			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 100, this);
+			map.on('move', this._limitedUpdate, this);
 		}
 		
 		this._reset();
 		this._update();
 	},
 	
-	//TODO onRemove
+	onRemove: function(map) {
+		this._map.getPanes().tilePane.removeChild(this._container);
+		
+		this._map.off('viewreset', this._reset);
+		
+		if (this.options.updateWhenIdle) {
+			this._map.off('moveend', this._update);
+		} else {
+			this._map.off('move', this._limitedUpdate);
+		}
+	},
 	
 	_reset: function() {
 		this._tiles = {};
@@ -151,7 +158,6 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_tileOnLoad: function() {
-		this.style.visibility = 'visible';
 		this.className += ' leaflet-tile-loaded';
 		this._leaflet_layer.fire('tileload', {tile: this});
 	}

@@ -110,12 +110,26 @@ L.Map = L.Class.extend({
 		
 		layer.onAdd(this);
 		
-		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
-		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom || Infinity);
+		this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom || 0);
 		//TODO getMaxZoom, getMinZoom
 		
-		this.fire('layeradded', {layer: layer});
+		this.fire('layeradd', {layer: layer});
 
+		return this;
+	},
+	
+	removeLayer: function(layer) {
+		layer.onRemove(this);
+		
+		for (var i = 0, len = this._layers.length; i < len; i++) {
+			if (this._layers[i] === layer) {
+				this._layers.splice(i, 1);
+				this.fire('layerremove', {layer: layer});
+				break;
+			}
+		}
+		
 		return this;
 	},
 	
