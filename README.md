@@ -30,6 +30,5 @@ Controls:
 
 Visual appearance:
 
- - panning animation
  - zooming animation
  - show scaled background until tiles are loaded

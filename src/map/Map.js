@@ -95,13 +95,15 @@ L.Map = L.Class.extend({
 	},
 	
 	panBy: function(offset) {
-		//TODO animated panBy
+		// replaced with animated panBy in Map.Animation.js
 		this.fire('movestart');
 		
 		this._rawPanBy(offset);
 		
 		this.fire('move');
 		this.fire('moveend');
+		
+		return this;
 	},
 	
 	addLayer: function(layer) {

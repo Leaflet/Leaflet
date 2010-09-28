@@ -14,6 +14,11 @@
 	<script type="text/javascript" src="../src/dom/DomUtil.js"></script>
 	<script type="text/javascript" src="../src/dom/Draggable.js"></script>
 	
+	<!-- /dom/transition -->
+	<script type="text/javascript" src="../src/dom/transition/Transition.js"></script>
+	<script type="text/javascript" src="../src/dom/transition/Transition.Native.js"></script>
+	<script type="text/javascript" src="../src/dom/transition/Transition.Timer.js"></script>
+	
 	<!-- /geo -->
 	<script type="text/javascript" src="../src/geo/LatLng.js"></script>
 	<script type="text/javascript" src="../src/geo/LatLngBounds.js"></script>
@@ -37,6 +42,7 @@
 	<!-- /map -->
 	<script type="text/javascript" src="../src/map/Map.js"></script>
 	<script type="text/javascript" src="../src/map/Map.Geolocation.js"></script>
+	<script type="text/javascript" src="../src/map/Map.Animation.js"></script>
 	
 	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css" />
 </head>
@@ -51,7 +57,6 @@
 			latlng = new L.LatLng(50.5, 30.51);
 	
 		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15);
-		
 	</script>
 </body>
 </html>

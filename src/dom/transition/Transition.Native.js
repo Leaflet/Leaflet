@@ -46,10 +46,6 @@ L.Transition = L.Transition.extend({
 		this._el = el;
 		L.Util.extend(this.options, options);
 
-		el.style[L.Transition.PROPERTY] = 'none';
-		el.style[L.Transition.DURATION] = this.options.duration + 's';
-		el.style[L.Transition.EASING] = this.options.easing;
-
 		L.DomEvent.addListener(el, L.Transition.END, this._onTransitionEnd, this);
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
@@ -66,6 +62,8 @@ L.Transition = L.Transition.extend({
 			}
 		}
 		
+		this._el.style[L.Transition.DURATION] = this.options.duration + 's';
+		this._el.style[L.Transition.EASING] = this.options.easing;
 		this._el.style[L.Transition.PROPERTY] = propsList.join(', ');
 		
 		for (prop in props) {
