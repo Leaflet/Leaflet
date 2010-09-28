@@ -13,7 +13,8 @@ We really look forward to any help with the development! But first, in order to 
  
  - shift-drag zoom
  - double tap on mobile webkit
- 
+ - panning intertia on mobile webkit
+  
  Overlays:
  
  - markers
@@ -32,4 +33,3 @@ Visual appearance:
 
  - zooming animation
  - show scaled background until tiles are loaded
- - panning intertia on mobile webkit
