@@ -12,7 +12,7 @@ We really look forward to any help with the development! But first, in order to 
  Interaction: 
  
  - shift-drag zoom
- - double tap on iOS
+ - double tap on mobile webkit
  
  Overlays:
  
@@ -32,3 +32,4 @@ Visual appearance:
 
  - zooming animation
  - show scaled background until tiles are loaded
+ - panning intertia on mobile webkit
