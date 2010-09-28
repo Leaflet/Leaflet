@@ -23,7 +23,7 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		
 		//misc
-		updateWhenIdle: L.Browser.mobileWebkit
+		trackResize: true
 	},
 	
 	
@@ -100,7 +100,6 @@ L.Map = L.Class.extend({
 		
 		this._rawPanBy(offset);
 		
-		this.fire('viewupdate');
 		this.fire('move');
 		this.fire('moveend');
 	},
@@ -135,7 +134,14 @@ L.Map = L.Class.extend({
 	
 	invalidateSize: function() {
 		this._sizeChanged = true;
-		this.fire('viewupdate');
+		
+		this.fire('move');
+		
+		clearTimeout(this._sizeTimer);
+		this._sizeTimer = setTimeout(L.Util.bind(function() {
+			this.fire('moveend');
+		}, this), 200); 
+
 		return this;
 	},
 	
@@ -270,7 +276,6 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		
 		this.fire('viewreset');
-		this.fire('viewupdate');
 
 		this.fire('move');
 		if (zoomChanged) { this.fire('zoomend'); }
