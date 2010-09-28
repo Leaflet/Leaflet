@@ -8,6 +8,9 @@ java -jar compiler.jar ^
 --js ../src/dom/DomEvent.js ^
 --js ../src/dom/DomUtil.js ^
 --js ../src/dom/Draggable.js ^
+--js ../src/dom/transition/Transition.js ^
+--js ../src/dom/transition/Transition.Native.js ^
+--js ../src/dom/transition/Transition.Timer.js ^
 --js ../src/geo/LatLng.js ^
 --js ../src/geo/LatLngBounds.js ^
 --js ../src/geo/Projection.js ^
