@@ -4,6 +4,7 @@
 
 L.LatLng = L.Class.extend({
 	statics: {
+		//TODO change to latRadians() & lngRadians()
 		DEG_TO_RAD: Math.PI / 180,
 		RAD_TO_DEG: 180 / Math.PI,
 		MAX_MARGIN: 1.0E-9	// max margin of error for the "equals" check
@@ -15,6 +16,7 @@ L.LatLng = L.Class.extend({
 			lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
 		}
 		
+		//TODO change to lat() & lng()
 		this.lat = lat;
 		this.lng = lng;
 	},
