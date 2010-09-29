@@ -54,7 +54,7 @@ L.Map = L.Class.extend({
 		zoom = this._limitZoom(zoom);
 		var zoomChanged = (this._zoom != zoom);
 
-		if (!forceReset && this._layers) {
+		if (!forceReset && this._layers && L.Transition && L.Transition.implemented()) {
 			// difference between the new and current centers in pixels
 			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint()); 
 			

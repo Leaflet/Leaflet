@@ -1,4 +1,4 @@
-if (L.Transition && (L.Transition.NATIVE || L.Transition.TIMER)) {
+if (L.Transition && L.Transition.implemented()) {
 	L.Map.include({
 		panBy: function(offset) {
 			if (!this._panTransition) {

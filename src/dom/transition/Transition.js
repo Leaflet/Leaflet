@@ -5,6 +5,10 @@ L.Transition = L.Class.extend({
 		CUSTOM_PROPS_SETTERS: {
 			position: L.DomUtil.setPosition
 			//TODO transform custom attr
+		},
+		
+		implemented: function() {
+			return L.Transition.NATIVE || L.Transition.TIMER;
 		}
 	},
 	
