@@ -50,22 +50,11 @@ L.Map = L.Class.extend({
 	
 	// public methods that modify map state
 	
+	// replaced by animation-powered implementation in Map.Animation.js
 	setView: function(center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 		var zoomChanged = (this._zoom != zoom);
 
-		if (!forceReset && this._layers && L.Transition && L.Transition.implemented()) {
-			// difference between the new and current centers in pixels
-			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint()); 
-			
-			var done = (zoomChanged ? 
-						this._zoomToIfCenterInView(center, zoom, offset) : 
-						this._panByIfClose(offset));
-			
-			// exit if animated pan or zoom started
-			if (done) { return this; }
-		}
-		
 		// reset the map view 
 		this._resetView(center, zoom);
 		
@@ -295,24 +284,6 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.subtract(offset));
 	},
 	
-	_panByIfClose: function(offset) {
-		if (this._offsetIsWithinView(offset)) {
-			this.panBy(offset);
-			return true;
-		}
-		return false;
-	},
-
-	_zoomToIfCenterInView: function(center, zoom, offset) {
-		//if offset does not exceed half of the view
-		if (this._offsetIsWithinView(offset, 0.5)) {
-			//TODO animated zoom
-			this._resetView(center, zoom);
-			return true;
-		}
-		return false;
-	},
-
 	
 	// map events
 	
@@ -363,13 +334,6 @@ L.Map = L.Class.extend({
 	_getNewTopLeftPoint: function(center) {
 		var viewHalf = this.getSize().divideBy(2, true);
 		return this.project(center).subtract(viewHalf).round();
-	},
-	
-	_offsetIsWithinView: function(offset, multiplyFactor) {
-		var m = multiplyFactor || 1,
-			size = this.getSize();
-		return (Math.abs(offset.x) <= size.x * m) && 
-				(Math.abs(offset.y) <= size.y * m);
 	},
 	
 	_limitZoom: function(zoom) {
