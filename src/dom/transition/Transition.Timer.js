@@ -4,8 +4,6 @@
  */
 
 L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
-	//TODO timer-based Transition
-	
 	statics: {
 		getTime: Date.now || function() { return +new Date(); },
 		
