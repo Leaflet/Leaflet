@@ -18,7 +18,8 @@ var deps = {
 	
 	TileLayer: {
 		src: ['layer/TileLayer.js'],
-		desc: 'The base class for displaying tile layers on the map.'
+		desc: 'The base class for displaying tile layers on the map.',
+		heading: 'Layers'
 	},
 	
 	ImageOverlay: {
@@ -26,61 +27,52 @@ var deps = {
 		desc: 'Used to display an image over a particular rectangular area of the map.'
 	},
 	
-	DomEvent: {
-		src: ['dom/DomEvent.js'],
-		desc: 'Functions for cross-browser DOM events handling.' 
-	},
-	
-	Draggable: {
-		src: ['dom/Draggable.js'],
-		deps: ['DomEvent'],
-		desc: 'Used to make any element draggable. Powers map and marker dragging.'
-	},
-
 	MapDrag: {
-		src: ['handler/Handler.js',
+		src: ['dom/DomEvent.js',
+		      'dom/Draggable.js',
+		      'handler/Handler.js',
 		      'handler/MapDrag.js'],
-		deps: ['Draggable'],
-		desc: 'Makes the map draggable (on both desktop and mobile webkit browsers).'
+		deps: [],
+		desc: 'Makes the map draggable (on both desktop and mobile webkit browsers).',
+		heading: 'Interaction'
 	},
 	
 	MouseZoom: {
-		src: ['handler/Handler.js',
+		src: ['dom/DomEvent.js',
+		      'handler/Handler.js',
 		      'handler/DoubleClickZoom.js',
 		      'handler/ScrollWheelZoom.js'],
-		deps: ['DomEvent'], 
+		deps: [], 
 		desc: 'Scroll wheel zoom and double click zoom on the map.'
 	},
 	
 	TouchZoom: {
-		src: ['handler/Handler.js',
+		src: ['dom/DomEvent.js',
+		      'handler/Handler.js',
 		      'handler/TouchZoom.js'],
-		deps: ['DomEvent'],
+		deps: [],
 		desc: 'Enables smooth touch zooming on mobile webkit-powered devices (iPhone, iPod Touch, iPad, Android).'
 	},
 	
-	TransitionNative: {
-		src: ['dom/transition/Transition.js',
-		      'dom/transition/Transition.Native.js'],
-		deps: ['DomEvent'],
-		desc: 'Native CSS3 Transitions class for doing basic animations. Works on mobile webkit-powered browsers and some modern desktop browsers.'
-	},
-	
-	TransitionTimer: {
-		src: ['dom/transition/Transition.Timer.js'],
-		deps: ['TransitionNative'],
-		desc: 'Transition implementation for browsers that don\'t support CSS3 transitions.'
-	},
-	
-	MapAnimation: {
-		src: ['dom/transition/Transition.Timer.js',
+	MapAnimationNative: {
+		src: ['dom/DomEvent.js',
+		      'dom/transition/Transition.js',
+		      'dom/transition/Transition.Native.js',
 		      'map/Map.Animation.js'],
-		deps: ['TransitionNative'],
-		desc: 'Panning animation on the map (zooming animation coming later).'
+		deps: [],
+		desc: 'Panning animation through CSS3 Transitions on the map (zooming animation coming later). Works on mobile webkit-powered browsers and some modern desktop browsers.',
+		heading: 'Visual effects'
+	},
+	
+	MapAnimationFallback: {
+		src: ['dom/transition/Transition.Timer.js'],
+		deps: ['MapAnimationNative'],
+		desc: 'Animation for browsers that don\'t support CSS3 transitions.'
 	},
 	
 	MapGeolocation: {
 		src: ['map/Map.Geolocation.js'],
-		desc: 'Adds Map#locate method and related events to make geolocation easier.'
+		desc: 'Adds Map#locate method and related events to make geolocation easier.',
+		heading: 'Misc'
 	}
 };

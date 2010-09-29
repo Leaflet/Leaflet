@@ -21,9 +21,15 @@
 			padding: 0;
 		}
 		#deplist li {
-			margin-bottom: 10px;
+			padding-top: 10px;
 			padding-bottom: 10px;
-			border-bottom: 1px solid #eee;
+			border-top: 1px solid #eee;
+		}
+		#deplist li.heading {
+			border: none;
+			background: #eee;
+			padding: 5px 10px;
+			margin-top: 10px;
 		}
 		#deplist input {
 			float: left;
@@ -32,7 +38,7 @@
 		}
 		#deplist label {
 			float: left;
-			width: 150px;
+			width: 190px;
 			font-weight: bold;
 		}
 		#deplist div {
@@ -149,6 +155,13 @@
 	
 		for (var name in deps) {
 			var li = document.createElement('li');
+			
+			if (deps[name].heading) {
+				var heading = document.createElement('li');
+				heading.className = 'heading';
+				heading.appendChild(document.createTextNode(deps[name].heading));
+				deplist.appendChild(heading);
+			}
 			
 			var div = document.createElement('div');
 
