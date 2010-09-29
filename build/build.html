@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Build Helper</title>
+	
+	<script type="text/javascript" src="deps.js"></script>
+	
+	<style type="text/css">
+		body {
+			font: 12px/1.4 Verdana, sans-serif;
+			text-align: center;
+			padding: 2em 0;
+		}
+		#container {
+			text-align: left;
+			margin: 0 auto;
+			width: 600px;
+		}
+		#deplist {
+			list-style: none;
+			padding: 0;
+		}
+		#deplist li {
+			margin-bottom: 10px;
+			padding-bottom: 10px;
+			border-bottom: 1px solid #eee;
+		}
+		#deplist input {
+			float: left;
+			margin-right: 5px;
+			display: inline;
+		}
+		#deplist label {
+			float: left;
+			width: 150px;
+			font-weight: bold;
+		}
+		#deplist div {
+			display: table-cell;
+			height: 1%;
+		}
+		#deplist .desc {
+		} 
+		
+		#deplist .deps {
+			color: #777;
+		}
+		
+		#command {
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<h1>Leaflet Build Helper</h1>
+		
+		<p>
+			<a id="select-all" href="#all">Select All</a> | 
+			<a id="deselect-all" href="#none">Deselect All</a>
+		</p>
+		
+		<ul id="deplist"></ul>
+		
+		<p>
+			Put <a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Google Closure Compiler (compiler.jar)</a> in the build directory and run this command there:<br />
+			<input type="text" id="command" />
+		</p>
+	</div>
+	
+	<script type="text/javascript">
+		var deplist = document.getElementById('deplist'),
+			commandInput = document.getElementById('command');
+		
+		document.getElementById('select-all').onclick = function() {
+			var checks = deplist.getElementsByTagName('input');
+			for (var i = 0; i < checks.length; i++) {
+				checks[i].checked = true;
+			}
+			updateCommand();
+			return false;
+		};
+		
+		document.getElementById('deselect-all').onclick = function() {
+			var checks = deplist.getElementsByTagName('input');
+			for (var i = 0; i < checks.length; i++) {
+				if (!checks[i].disabled) {
+					checks[i].checked = false;
+				}
+			}
+			updateCommand();
+			return false;
+		};
+		
+		function updateCommand() {
+			var files = {};
+			var checks = deplist.getElementsByTagName('input');
+			for (var i = 0; i < checks.length; i++) {
+				if (checks[i].checked) {
+					var srcs = deps[checks[i].id].src;
+					for (var j = 0; j < srcs.length; j++) {
+						files[srcs[j]] = true;
+					}
+				}
+			}
+			
+			var command = 'java -jar compiler.jar ';
+			for (var src in files) {
+				command += '--js ../src/' + src + ' ';
+			}
+			command += '--js_output_file ../dist/leaflet-custom.js';
+			
+			commandInput.value = command;
+		}
+		
+		commandInput.onclick = function() {
+			commandInput.focus();
+			commandInput.select();
+		};
+		
+		function onCheckboxChange() {
+			if (this.checked) {
+				var depDeps = deps[this.id].deps;
+				if (!depDeps) { return; }
+				for (var i = 0; i < depDeps.length; i++) {
+					var check = document.getElementById(depDeps[i]);
+					if (!check.checked) {
+						check.checked = true;
+						check.onchange();
+					}
+				}
+			} else {
+				var checks = deplist.getElementsByTagName('input');
+				for (var i = 0; i < checks.length; i++) {
+					var dep = deps[checks[i].id];
+					if (!dep.deps) { continue; }
+					for (var j = 0; j < dep.deps.length; j++) {
+						if (dep.deps[j] == this.id) {
+							if (checks[i].checked) {
+								checks[i].checked = false;
+								checks[i].onchange();
+							}
+						}
+					}
+				}
+			}
+			updateCommand();
+		}
+	
+		for (var name in deps) {
+			var li = document.createElement('li');
+			
+			var div = document.createElement('div');
+
+			var label = document.createElement('label');
+
+			var check = document.createElement('input');
+			check.type = 'checkbox';
+			check.id = name;
+			label.appendChild(check);
+			check.onchange = onCheckboxChange;
+			
+			if (name == 'Core') {
+				check.checked = true;
+				check.disabled = true;
+			}
+			
+			label.appendChild(document.createTextNode(name));
+			label.htmlFor = name;
+			
+			li.appendChild(label);
+			
+			var desc = document.createElement('span');
+			desc.className = 'desc';
+			desc.appendChild(document.createTextNode(deps[name].desc));
+
+			var depText = deps[name].deps && deps[name].deps.join(', ');
+			if (depText) {
+				var depspan = document.createElement('span');
+				depspan.className = 'deps';
+				depspan.appendChild(document.createTextNode('Deps: ' + depText));
+			}
+			
+			div.appendChild(desc);
+			div.appendChild(document.createElement('br'));
+			if (depText) { div.appendChild(depspan); }
+			
+			li.appendChild(div);
+			
+			deplist.appendChild(li);
+		}
+		updateCommand();
+	</script>
+</body>
+</html>
