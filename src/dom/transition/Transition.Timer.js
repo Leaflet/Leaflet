@@ -9,6 +9,8 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 	statics: {
 		getTime: Date.now || function() { return +new Date(); },
 		
+		TIMER: true,
+		
 		EASINGS: {
 			'ease': [0.25, 0.1, 0.25, 1.0],
 			'linear': [0.0, 0.0, 1.0, 1.0],

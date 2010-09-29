@@ -75,7 +75,12 @@ L.Transition = L.Transition.extend({
 		this._inProgress = true;
 		
 		this.fire('start');
-		this._timer = setInterval(this._onFakeStep, this.options.fakeStepInterval);
+		
+		if (L.Transition.NATIVE) {
+			this._timer = setInterval(this._onFakeStep, this.options.fakeStepInterval);
+		} else {
+			this._onTransitionEnd();
+		}
 	},
 	
 	_onFakeStep: function() {
