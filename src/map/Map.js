@@ -52,7 +52,6 @@ L.Map = L.Class.extend({
 	
 	setView: function(center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
-		
 		var zoomChanged = (this._zoom != zoom);
 
 		if (!forceReset && this._layers) {
@@ -369,8 +368,8 @@ L.Map = L.Class.extend({
 	_offsetIsWithinView: function(offset, multiplyFactor) {
 		var m = multiplyFactor || 1,
 			size = this.getSize();
-		return (Math.abs(offset.x) <= size.width * m) && 
-				(Math.abs(offset.y) <= size.height * m);
+		return (Math.abs(offset.x) <= size.x * m) && 
+				(Math.abs(offset.y) <= size.y * m);
 	},
 	
 	_limitZoom: function(zoom) {
