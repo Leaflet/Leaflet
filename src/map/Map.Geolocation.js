@@ -30,7 +30,8 @@ L.Map.include({
 		
 		this.fire('locationfound', {
 			latlng: new L.LatLng(lat, lng), 
-			bounds: bounds
+			bounds: bounds,
+			accuracy: pos.coords.accuracy
 		});
 	}
 });
