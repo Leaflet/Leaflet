@@ -70,7 +70,7 @@ L.Map = L.Class.extend({
 	},
 	
 	zoomOut: function() {
-		return this.setZoom(this, this._zoom - 1);
+		return this.setZoom(this._zoom - 1);
 	},
 	
 	fitBounds: function(/*LatLngBounds*/ bounds) {
@@ -102,8 +102,12 @@ L.Map = L.Class.extend({
 		
 			this._layers[id] = layer;
 			
-			this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom || Infinity);
-			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom || 0);
+			if (layer.options && !isNaN(layer.options.maxZoom)) {
+				this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
+			}
+			if (layer.options && !isNaN(layer.options.minZoom)) {
+				this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+			}
 			//TODO getMaxZoom, getMinZoom
 			
 			this.fire('layeradd', {layer: layer});
