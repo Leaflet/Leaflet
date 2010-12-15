@@ -15,6 +15,7 @@ L.Popup = L.Class.extend({
 		
 		if (!this._container) {
 			this._initLayout();
+			this._container.style.opacity = '0';
 		}
 		this._contentNode.innerHTML = this._content;
 		
@@ -24,17 +25,21 @@ L.Popup = L.Class.extend({
 		
 		if (this.options.closeOnClick) {
 			map.on('click', map.closePopup, map);
+			//TODO move closeOnClick to Map
 		}
 		
 		this._container.style.visibility = 'hidden';
 		this._updateLayout();
 		this._updatePosition();
 		this._container.style.visibility = '';
+		this._container.style.opacity = '1';
+		//TODO fix ugly opacity hack
 	},
 	
 	onRemove: function(map) {
 		map._panes.popupPane.removeChild(this._container);
 		map.off('viewreset', this._updatePosition, this);
+		this._container.style.opacity = '0';
 	},
 	
 	setData: function(latlng, content, offset) {
@@ -81,5 +86,9 @@ L.Popup = L.Class.extend({
 		
 		this._container.style.bottom = (-pos.y - this._offset.y) + 'px';
 		this._container.style.left = (pos.x - this._containerWidth/2 + this._offset.x) + 'px';
+	},
+	
+	_adjustPan: function() {
+		
 	}
 });

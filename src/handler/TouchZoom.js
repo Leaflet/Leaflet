@@ -41,6 +41,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 		if (!e.touches || e.touches.length != 2) { return; }
 		
 		if (!this._moved) {
+			//TODO do this more gracefully
 			this._map._panes.popupPane.style.display = 'none';
 			this._moved = true;
 		}
