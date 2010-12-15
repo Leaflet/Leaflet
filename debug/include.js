@@ -27,6 +27,8 @@
 		'layer/TileLayer.js',
 		'layer/ImageOverlay.js',
 		'layer/Marker.js',
+		'layer/Popup.js',
+		'layer/Marker.Popup.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',
@@ -36,7 +38,8 @@
 		
 		'map/Map.js',
 		'map/Map.Geolocation.js',
-		'map/Map.Animation.js'
+		'map/Map.Animation.js',
+		'map/Map.Popup.js'
 	];
 	
 	for (var i = 0; i < scripts.length; i++) {

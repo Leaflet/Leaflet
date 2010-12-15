@@ -6,6 +6,7 @@ L.Icon = L.Class.extend({
 	//shadowSize: new L.Point(42, 37),
 	
 	iconAnchor: new L.Point(12, 37),
+	popupAnchor: new L.Point(0, -29),
 	
 	initialize: function(iconUrl) {
 		if (iconUrl) {

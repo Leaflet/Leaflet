@@ -17,9 +17,7 @@ Please send your pull requests to [mourner](http://github.com/mourner) - we'll b
   
  Overlays:
  
- - markers
  - vectors (polyline, polygon, circle)
- - popup window (with smart autosizing)
  - KML, GeoRSS, GeoJSON layers
  
 Controls:
@@ -33,3 +31,4 @@ Visual appearance:
 
  - zooming animation
  - show scaled background until tiles are loaded
+ - popup autopan

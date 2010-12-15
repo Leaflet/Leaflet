@@ -29,6 +29,10 @@ L.Handler.MapDrag = L.Handler.extend({
 		this._enabled = false;
 	},
 	
+	moved: function() {
+		return this._draggable._moved;
+	},
+	
 	_onDragStart: function() {
 		this._map.fire('movestart');
 		this._map.fire('dragstart');

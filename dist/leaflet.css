@@ -25,9 +25,47 @@
 .leaflet-clickable {
 	cursor: pointer;
 	}
+	
+.leaflet-popup {
+	position: absolute;
+	}
 
 /* visual appearance */
 
 .leaflet-container {
 	background: #ddd;
+	}
+.leaflet-popup {
+	text-align: center;
+	}
+.leaflet-popup-content {
+	background: white;
+	padding: 0 15px;
+	text-align: left;
+	}
+.leaflet-popup-tip-container {
+	margin: 0 auto;
+	width: 26px;
+	height: 15px;
+	position: relative;
+	margin-top: -1px;
+	overflow: hidden;
+	}
+.leaflet-popup-tip {
+	width: 15px;
+	height: 15px;
+	
+	-moz-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	-moz-transform-origin: 0 0;
+	-webkit-transform-origin: 0 0;
+	
+	background: white;
+	margin-top: -12px;
+	margin-left: 12px;
+	}
+.leaflet-popup-content, .leaflet-popup-tip {
+	border: 1px solid white;
+	 -moz-box-shadow: 0px 0px 8px #777;
+	 -webkit-box-shadow: 0px 0px 8px #777;
 	}

@@ -41,6 +41,8 @@ L.Draggable = L.Class.extend({
 		this._startX = e.clientX;
 		this._startY = e.clientY;
 		
+		this._moved = false;
+
 		this._disableTextSelection();
 		
 		this._setMovingCursor();
@@ -84,7 +86,6 @@ L.Draggable = L.Class.extend({
 		
 		if (this._moved) {
 			this.fire('dragend');
-			this._moved = false;
 		}
 	},
 	

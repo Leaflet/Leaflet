@@ -252,6 +252,7 @@ L.Map = L.Class.extend({
 		this._panes.shadowPane = this._createPane('leaflet-shadow-pane');
 		this._panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		this._panes.markerPane = this._createPane('leaflet-marker-pane');
+		this._panes.popupPane = this._createPane('leaflet-popup-pane');
 	},
 	
 	_createPane: function(className) {
@@ -303,7 +304,7 @@ L.Map = L.Class.extend({
 	},
 	
 	_onMouseClick: function(e) {
-		if (this.dragging && this.dragging._moved) { return; }
+		if (this.dragging && this.dragging.moved()) { return; }
 		this._fireMouseEvent(e);
 	},
 	
