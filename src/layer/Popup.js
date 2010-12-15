@@ -26,8 +26,10 @@ L.Popup = L.Class.extend({
 			map.on('click', map.closePopup, map);
 		}
 		
+		this._container.style.visibility = 'hidden';
 		this._updateLayout();
 		this._updatePosition();
+		this._container.style.visibility = '';
 	},
 	
 	onRemove: function(map) {

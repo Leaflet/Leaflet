@@ -45,10 +45,9 @@
 	}
 .leaflet-popup-tip-container {
 	margin: 0 auto;
-	width: 26px;
+	width: 32px;
 	height: 15px;
 	position: relative;
-	margin-top: -1px;
 	overflow: hidden;
 	}
 .leaflet-popup-tip {
@@ -62,7 +61,7 @@
 	
 	background: white;
 	margin-top: -12px;
-	margin-left: 12px;
+	margin-left: 16px;
 	}
 .leaflet-popup-content, .leaflet-popup-tip {
 	border: 1px solid white;

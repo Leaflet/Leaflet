@@ -26,6 +26,8 @@ L.Handler.TouchZoom = L.Handler.extend({
 		this._startCenter = p1.add(p2).divideBy(2, true);
 		this._startDist = p1.distanceTo(p2);
 		this._startTransform = this._map._mapPane.style.webkitTransform;
+		
+		this._moved = false;
 
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
@@ -37,6 +39,11 @@ L.Handler.TouchZoom = L.Handler.extend({
 	
 	_onTouchMove: function(e) {
 		if (!e.touches || e.touches.length != 2) { return; }
+		
+		if (!this._moved) {
+			this._map._panes.popupPane.style.display = 'none';
+			this._moved = true;
+		}
 		
 		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = this._map.mouseEventToLayerPoint(e.touches[1]);
@@ -72,6 +79,8 @@ L.Handler.TouchZoom = L.Handler.extend({
 			center = this._map.unproject(centerPoint);
 		
 		this._map.setView(center, zoom, true);
+		
+		this._map._panes.popupPane.style.display = '';
 		
 		this._scale = null;
 		L.DomEvent.removeListener(document, 'touchmove', this._onTouchMove);

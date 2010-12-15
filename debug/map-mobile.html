@@ -27,12 +27,16 @@
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18}),
 			latlng = new L.LatLng(50.5, 30.51);
 	
-		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15).locate();
+		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15);
 		
-		var marker = new L.Marker(latlng);
-		map.addLayer(marker);
+		map.on('locationfound', function(e) {
+			var marker = new L.Marker(e.latlng);
+			map.addLayer(marker);
+			
+			marker.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>");
+		});
 		
-		marker.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>");
+		map.locate();
 	</script>
 </body>
 </html>

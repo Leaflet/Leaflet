@@ -297,6 +297,7 @@ L.Map = L.Class.extend({
 	_initEvents: function() {
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 		L.DomEvent.addListener(this._container, 'dblclick', this._fireMouseEvent, this);
+		L.DomEvent.addListener(this._container, 'mousedown', this._fireMouseEvent, this);
 		
 		if (this.options.trackResize) {
 			L.DomEvent.addListener(window, 'resize', this.invalidateSize, this);

@@ -53,13 +53,13 @@ L.Marker = L.Class.extend({
 	_initInteraction: function() {
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
-			L.DomEvent.addListener(this._icon, 'mousedown', L.DomEvent.stopPropagation);
-			L.DomEvent.addListener(this._icon, 'click', this._onClick, this);
+			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
+			L.DomEvent.addListener(this._icon, 'click', this._fireMouseEvent, this);
 		}
 	},
 	
-	_onClick: function(e) {
-		this.fire('click');
+	_fireMouseEvent: function(e) {
+		this.fire(e.type);
 		L.DomEvent.stopPropagation(e);
 	}
 });
