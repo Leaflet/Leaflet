@@ -7,6 +7,10 @@
 		'core/Events.js',
 		'core/Browser.js',
 		
+		'geometry/Point.js',
+		'geometry/Bounds.js',
+		'geometry/Transformation.js',
+		
 		'dom/DomEvent.js',
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
@@ -19,10 +23,6 @@
 		'geo/LatLng.js',
 		'geo/LatLngBounds.js',
 		'geo/Projection.js',
-		
-		'geometry/Point.js',
-		'geometry/Bounds.js',
-		'geometry/Transformation.js',
 		
 		'layer/TileLayer.js',
 		'layer/ImageOverlay.js',
