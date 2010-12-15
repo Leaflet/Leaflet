@@ -27,6 +27,11 @@ var deps = {
 		desc: 'Used to display an image over a particular rectangular area of the map.'
 	},
 	
+	Marker: {
+		src: ['layer/Icon.js', 'layer/Marker.js'],
+		desc: 'Markers to put on the map.'
+	},
+	
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',
