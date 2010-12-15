@@ -1,46 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+	<title>Leaflet debug page</title>
+
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	
-	<script type="text/javascript" src="../src/Leaflet.js"></script>
-	 
-	<!-- /core -->
-	<script type="text/javascript" src="../src/core/Util.js"></script>
-	<script type="text/javascript" src="../src/core/Class.js"></script>
-	<script type="text/javascript" src="../src/core/Events.js"></script>
-	<script type="text/javascript" src="../src/core/Browser.js"></script>
-	
-	<!-- /dom -->
-	<script type="text/javascript" src="../src/dom/DomEvent.js"></script>
-	<script type="text/javascript" src="../src/dom/DomUtil.js"></script>
-	<script type="text/javascript" src="../src/dom/Draggable.js"></script>
-	
-	<!-- /geo -->
-	<script type="text/javascript" src="../src/geo/LatLng.js"></script>
-	<script type="text/javascript" src="../src/geo/LatLngBounds.js"></script>
-	<script type="text/javascript" src="../src/geo/Projection.js"></script>
-	
-	<!-- /geometry -->
-	<script type="text/javascript" src="../src/geometry/Point.js"></script>
-	<script type="text/javascript" src="../src/geometry/Bounds.js"></script>
-	<script type="text/javascript" src="../src/geometry/Transformation.js"></script>
-	
-	<!-- /layer -->
-	<script type="text/javascript" src="../src/layer/TileLayer.js"></script>
-
-	<!-- /handlers -->
-	<script type="text/javascript" src="../src/handler/Handler.js"></script>
-	<script type="text/javascript" src="../src/handler/MapDrag.js"></script>
-	<script type="text/javascript" src="../src/handler/TouchZoom.js"></script>
-	<script type="text/javascript" src="../src/handler/DoubleClickZoom.js"></script>
-	<script type="text/javascript" src="../src/handler/ScrollWheelZoom.js"></script>
-
-	<!-- /map -->
-	<script type="text/javascript" src="../src/map/Map.js"></script>
-	<script type="text/javascript" src="../src/map/Map.Geolocation.js"></script>
-	
 	<link rel="stylesheet" type="text/css" href="../dist/leaflet.css" />
+	<script type="text/javascript" src="include.js"></script>
 	
 	<style type="text/css">
 		html, body, #map {
@@ -62,6 +28,9 @@
 			latlng = new L.LatLng(50.5, 30.51);
 	
 		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15).locate();
+		
+		var marker = new L.Marker(latlng).on('click', function() { alert("Hi!"); });
+		map.addLayer(marker);
 		
 	</script>
 </body>
