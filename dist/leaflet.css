@@ -17,6 +17,14 @@
 .leaflet-tile-loaded {
 	visibility: visible;
 	}
+	
+.leaflet-marker-icon, .leaflet-marker-shadow {
+	position: absolute;
+	display: block;
+	}
+.leaflet-clickable {
+	cursor: pointer;
+	}
 
 /* visual appearance */
 
