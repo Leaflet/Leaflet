@@ -28,7 +28,7 @@ var deps = {
 	},
 	
 	Marker: {
-		src: ['layer/Icon.js', 'layer/Marker.js'],
+		src: ['dom/Icon.js', 'layer/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
 	

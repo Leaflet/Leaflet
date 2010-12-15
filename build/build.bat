@@ -8,6 +8,7 @@ java -jar compiler.jar ^
 --js ../src/dom/DomEvent.js ^
 --js ../src/dom/DomUtil.js ^
 --js ../src/dom/Draggable.js ^
+--js ../src/dom/Icon.js ^
 --js ../src/dom/transition/Transition.js ^
 --js ../src/dom/transition/Transition.Native.js ^
 --js ../src/dom/transition/Transition.Timer.js ^
@@ -19,6 +20,7 @@ java -jar compiler.jar ^
 --js ../src/geometry/Transformation.js ^
 --js ../src/layer/TileLayer.js ^
 --js ../src/layer/ImageOverlay.js ^
+--js ../src/layer/Marker.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^

@@ -10,6 +10,7 @@
 		'dom/DomEvent.js',
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
+		'dom/Icon.js',
 		
 		'dom/transition/Transition.js',
 		'dom/transition/Transition.Native.js',
@@ -25,7 +26,6 @@
 		
 		'layer/TileLayer.js',
 		'layer/ImageOverlay.js',
-		'layer/Icon.js',
 		'layer/Marker.js',
 		
 		'handler/Handler.js',
