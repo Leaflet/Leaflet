@@ -23,8 +23,10 @@ L.Popup = L.Class.extend({
 		map.on('viewreset', this._updatePosition, this);
 		
 		this._container.style.visibility = 'hidden';
+		
 		this._updateLayout();
 		this._updatePosition();
+		
 		this._container.style.visibility = '';
 		this._container.style.opacity = '1';
 		//TODO fix ugly opacity hack
@@ -45,8 +47,8 @@ L.Popup = L.Class.extend({
 	_initLayout: function() {
 		this._container = document.createElement('div');
 		this._container.className = 'leaflet-popup';
-		L.DomEvent.addListener(this._container, 'click', L.DomEvent.stopPropagation);
-		L.DomEvent.addListener(this._container, 'mousedown', L.DomEvent.stopPropagation);
+		
+		L.DomEvent.disableClickPropagation(this._container);
 		
 		this._contentNode = document.createElement('div');
 		this._contentNode.className = 'leaflet-popup-content';

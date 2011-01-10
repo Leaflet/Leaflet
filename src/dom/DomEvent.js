@@ -56,6 +56,12 @@ L.DomEvent = {
 		}
 	},
 	
+	disableClickPropagation: function(/*HTMLElement*/ el) {
+		L.DomEvent.addListener(el, 'mousedown', L.DomEvent.stopPropagation);
+		L.DomEvent.addListener(el, 'click', L.DomEvent.stopPropagation);
+		L.DomEvent.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
+	},
+	
 	preventDefault: function(/*Event*/ e) {
 		if (e.preventDefault) {
 			e.preventDefault();
