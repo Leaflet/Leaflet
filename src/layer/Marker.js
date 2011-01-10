@@ -47,7 +47,7 @@ L.Marker = L.Class.extend({
 		L.DomUtil.setPosition(this._icon, pos);
 		L.DomUtil.setPosition(this._shadow, pos);
 		
-		this._icon.style.zIndex = pos.top;
+		this._icon.style.zIndex = pos.y;
 	},
 	
 	_initInteraction: function() {
