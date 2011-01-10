@@ -30,6 +30,9 @@ L.DomUtil = {
 		return new L.Point(left, top);
 	},
 	
+	
+	//TODO refactor away this ugly translate/position mess
+	
 	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
 	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')',
 			
