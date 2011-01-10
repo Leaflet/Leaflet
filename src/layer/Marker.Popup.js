@@ -2,7 +2,7 @@
 L.Marker.include({
 	bindPopup: function(content) {
 		this._popupContent = content;
-		this.on('mousedown', this._onMouseDown, this);
+		this.on('click', this._onMouseDown, this);
 	},
 	
 	_onMouseDown: function() {
