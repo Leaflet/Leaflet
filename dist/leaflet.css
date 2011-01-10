@@ -41,6 +41,7 @@
 .leaflet-popup {
 	position: absolute;
 	text-align: center;
+	-webkit-transform: translate3d(0,0,0);
 	}
 .leaflet-popup-content {
 	padding: 0 15px;
