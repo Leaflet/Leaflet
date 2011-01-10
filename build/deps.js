@@ -32,6 +32,12 @@ var deps = {
 		desc: 'Markers to put on the map.'
 	},
 	
+	Popup: {
+		src: ['layer/Popup.js', 'layer/Marker.Popup.js', 'map/Map.Popup.js'],
+		deps: ['Marker'],
+		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
+	},
+	
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',

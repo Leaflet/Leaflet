@@ -21,6 +21,8 @@ java -jar compiler.jar ^
 --js ../src/layer/TileLayer.js ^
 --js ../src/layer/ImageOverlay.js ^
 --js ../src/layer/Marker.js ^
+--js ../src/layer/Popup.js ^
+--js ../src/layer/Marker.Popup.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^
@@ -29,4 +31,5 @@ java -jar compiler.jar ^
 --js ../src/map/Map.js ^
 --js ../src/map/Map.Geolocation.js ^
 --js ../src/map/Map.Animation.js ^
+--js ../src/map/Map.Popup.js ^
 --js_output_file ../dist/leaflet.js
