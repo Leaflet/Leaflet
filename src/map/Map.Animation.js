@@ -57,6 +57,21 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		//if offset does not exceed half of the view
 		if (this._offsetIsWithinView(offset, 0.5)) {
 			//TODO animated zoom
+//			if (!this._zoomTransition) {
+//				this._zoomTransition = new L.Transition(this._mapPane, {duration: 0.3});
+//			}
+			var centerPoint = this.latLngToLayerPoint(center);
+			
+//			this._mapPane.style['-webkit-transform-origin'] = '50% 50%';
+//			this._zoomTransition.run({
+//				'-webkit-transform': [
+//				                      //this._mapPane.style.webkitTransform,
+//				                      L.DomUtil.getTranslateString(centerPoint),
+//				                      'scale(' + 5 + ')',
+//				                      L.DomUtil.getTranslateString(centerPoint.multiplyBy(-1))
+//				                  ].join(' ')
+//			});
+			
 			this._resetView(center, zoom);
 			return true;
 		}
