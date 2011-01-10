@@ -23,7 +23,8 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		
 		//misc
-		trackResize: true
+		trackResize: true,
+		closePopupOnClick: true
 	},
 	
 	

@@ -3,8 +3,7 @@ L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 	
 	options: {
-		maxWidth: 300,
-		closeOnClick: true
+		maxWidth: 300
 	},
 	
 	initialize: function() {
@@ -22,11 +21,6 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 		
 		map.on('viewreset', this._updatePosition, this);
-		
-		if (this.options.closeOnClick) {
-			map.on('click', map.closePopup, map);
-			//TODO move closeOnClick to Map
-		}
 		
 		this._container.style.visibility = 'hidden';
 		this._updateLayout();
