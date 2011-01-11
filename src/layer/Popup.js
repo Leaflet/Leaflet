@@ -3,10 +3,13 @@ L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 	
 	options: {
-		maxWidth: 300
+		maxWidth: 300,
+		autoPan: true,
+		autoPanPadding: new L.Point(5, 5)
 	},
 	
 	initialize: function() {
+		//TODO override default options
 	},
 	
 	onAdd: function(map) {
@@ -26,6 +29,7 @@ L.Popup = L.Class.extend({
 		
 		this._updateLayout();
 		this._updatePosition();
+		this._adjustPan();
 		
 		this._container.style.visibility = '';
 		this._container.style.opacity = '1';
@@ -63,6 +67,8 @@ L.Popup = L.Class.extend({
 		
 		this._container.appendChild(this._contentNode);
 		this._container.appendChild(this._tipContainer);
+		
+		//TODO popup close button
 	},
 	
 	_updateLayout: function() {
@@ -80,11 +86,40 @@ L.Popup = L.Class.extend({
 	_updatePosition: function() {
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 		
-		this._container.style.bottom = (-pos.y - this._offset.y) + 'px';
-		this._container.style.left = (pos.x - this._containerWidth/2 + this._offset.x) + 'px';
+		this._containerBottom = -pos.y - this._offset.y;
+		this._containerLeft = pos.x - this._containerWidth/2 + this._offset.x;
+		
+		this._container.style.bottom = this._containerBottom + 'px';
+		this._container.style.left = this._containerLeft + 'px';
 	},
 	
 	_adjustPan: function() {
+		if (!this.options.autoPan) { return; }
 		
+		var containerHeight = this._container.offsetHeight,
+			layerPos = new L.Point(
+				this._containerLeft, 
+				-containerHeight - this._containerBottom),
+			containerPos = this._map.layerPointToContainerPoint(layerPos),
+			adjustOffset = new L.Point(0, 0),
+			padding = this.options.autoPanPadding,
+			size = this._map.getSize();
+		
+		if (containerPos.x < 0) {
+			adjustOffset.x = containerPos.x - padding.x;
+		}
+		if (containerPos.x + this._containerWidth > size.x) {
+			adjustOffset.x = containerPos.x + this._containerWidth - size.x + padding.x;
+		}
+		if (containerPos.y < 0) {
+			adjustOffset.y = containerPos.y - padding.y;
+		}
+		if (containerPos.y + containerHeight > size.y) {
+			adjustOffset.y = containerPos.y + containerHeight - size.y + padding.y;
+		}
+		
+		if (adjustOffset.x || adjustOffset.y) {
+			this._map.panBy(adjustOffset);
+		}
 	}
 });
