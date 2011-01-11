@@ -8,7 +8,7 @@ L.Marker = L.Class.extend({
 	
 	initialize: function(latlng, options) {
 		this._latlng = latlng;	
-		//TODO override default options
+		L.Util.extend(this.options, options);
 	},
 	
 	onAdd: function(map) {

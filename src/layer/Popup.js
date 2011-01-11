@@ -8,8 +8,8 @@ L.Popup = L.Class.extend({
 		autoPanPadding: new L.Point(5, 5)
 	},
 	
-	initialize: function() {
-		//TODO override default options
+	initialize: function(options) {
+		L.Util.extend(this.options, options);
 	},
 	
 	onAdd: function(map) {
@@ -32,6 +32,7 @@ L.Popup = L.Class.extend({
 		this._adjustPan();
 		
 		this._container.style.visibility = '';
+		
 		this._container.style.opacity = '1';
 		//TODO fix ugly opacity hack
 	},
