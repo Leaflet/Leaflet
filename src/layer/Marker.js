@@ -8,6 +8,7 @@ L.Marker = L.Class.extend({
 	
 	initialize: function(latlng, options) {
 		this._latlng = latlng;	
+		//TODO override default options
 	},
 	
 	onAdd: function(map) {
@@ -55,6 +56,7 @@ L.Marker = L.Class.extend({
 			this._icon.className += ' leaflet-clickable';
 			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
 			L.DomEvent.addListener(this._icon, 'click', this._fireMouseEvent, this);
+			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
 	},
 	
