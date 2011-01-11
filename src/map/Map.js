@@ -214,6 +214,10 @@ L.Map = L.Class.extend({
 		return point.subtract(L.DomUtil.getPosition(this._mapPane));
 	},
 	
+	layerPointToContainerPoint: function(point) {
+		return point.add(L.DomUtil.getPosition(this._mapPane));
+	},
+	
 	layerPointToLatLng: function(point) {
 		return this.unproject(point.add(this._initialTopLeftPoint));
 	},
