@@ -5,8 +5,8 @@ L.Icon = L.Class.extend({
 	//iconSize: new L.Point(24, 37),
 	//shadowSize: new L.Point(42, 37),
 	
-	iconAnchor: new L.Point(12, 37),
-	popupAnchor: new L.Point(0, -29),
+	iconAnchor: new L.Point(13, 41),
+	popupAnchor: new L.Point(0, -33),
 	
 	initialize: function(iconUrl) {
 		if (iconUrl) {

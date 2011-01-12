@@ -1,3 +1,8 @@
+/*
+ * L.Marker is used to display clickable/draggable icons on the map.
+ */
+
+
 L.Marker = L.Class.extend({
 	includes: L.Mixin.Events,
 	
@@ -43,7 +48,7 @@ L.Marker = L.Class.extend({
 	},
 	
 	_reset: function() {
-		var pos = this._map.latLngToLayerPoint(this._latlng);
+		var pos = this._map.latLngToLayerPoint(this._latlng).round();
 		
 		L.DomUtil.setPosition(this._icon, pos);
 		L.DomUtil.setPosition(this._shadow, pos);
