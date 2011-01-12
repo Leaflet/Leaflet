@@ -1,5 +1,5 @@
 @echo off
-java -jar compiler.jar ^
+java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/Leaflet.js ^
 --js ../src/core/Util.js ^
 --js ../src/core/Class.js ^
