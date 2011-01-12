@@ -1,6 +1,7 @@
 
 L.Map.include({
 	openPopup: function(latlng, content, offset) {
+		//TODO ability to pass popup options
 		if (!this._popup) {
 			this._popup = new L.Popup();
 			

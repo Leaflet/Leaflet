@@ -19,6 +19,7 @@ L.Popup = L.Class.extend({
 			this._initLayout();
 			this._container.style.opacity = '0';
 		}
+		//TODO accept DOM nodes along with HTML strings
 		this._contentNode.innerHTML = this._content;
 		
 		map._panes.popupPane.appendChild(this._container);
