@@ -5,10 +5,16 @@ L.Popup = L.Class.extend({
 	options: {
 		maxWidth: 300,
 		autoPan: true,
+		closeButton: true,
+		closeOnMapClick: true,
+		
+		offset: new L.Point(0, 0),
 		autoPanPadding: new L.Point(5, 5)
 	},
 	
-	initialize: function(options) {
+	initialize: function(latlng, content, options) {
+		this._latlng = latlng; 
+		this._content = content;
 		L.Util.extend(this.options, options);
 	},
 	
@@ -17,42 +23,40 @@ L.Popup = L.Class.extend({
 		
 		if (!this._container) {
 			this._initLayout();
-			this._container.style.opacity = '0';
+			this._updateContent();
 		}
-		//TODO accept DOM nodes along with HTML strings
-		this._contentNode.innerHTML = this._content;
 		
-		map._panes.popupPane.appendChild(this._container);
+		this._container.style.opacity = '0';
+
+		this._map._panes.popupPane.appendChild(this._container);
+		this._map.on('viewreset', this._updatePosition, this);
+		this._map.on('click', this._close, this);
+		this._update();
 		
-		map.on('viewreset', this._updatePosition, this);
-		
-		this._container.style.visibility = 'hidden';
-		
-		this._updateLayout();
-		this._updatePosition();
-		this._adjustPan();
-		
-		this._container.style.visibility = '';
-		
-		this._container.style.opacity = '1';
-		//TODO fix ugly opacity hack
+		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
 	},
 	
 	onRemove: function(map) {
 		map._panes.popupPane.removeChild(this._container);
 		map.off('viewreset', this._updatePosition, this);
+		map.off('click', this._close, this);
+
 		this._container.style.opacity = '0';
 	},
 	
-	setData: function(latlng, content, offset) {
-		this._latlng = latlng; 
-		this._content = content;
-		this._offset = offset;
+	_close: function() {
+		this._map.removeLayer(this);
 	},
 	
 	_initLayout: function() {
+		//TODO replace with L.DomUtil.create
 		this._container = document.createElement('div');
 		this._container.className = 'leaflet-popup';
+		
+		this._closeButton = document.createElement('a');
+		this._closeButton.href = '#close';
+		this._closeButton.className = 'leaflet-popup-close-button';
+		this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
 		
 		this._wrapper = document.createElement('div');
 		this._wrapper.className = 'leaflet-popup-content-wrapper';
@@ -68,6 +72,7 @@ L.Popup = L.Class.extend({
 		this._tip = document.createElement('div');
 		this._tip.className = 'leaflet-popup-tip';
 		
+		this._container.appendChild(this._closeButton);
 		
 		this._wrapper.appendChild(this._contentNode);
 		this._container.appendChild(this._wrapper);
@@ -76,6 +81,22 @@ L.Popup = L.Class.extend({
 		this._container.appendChild(this._tipContainer);
 		
 		//TODO popup close button
+	},
+	
+	_update: function() {
+		this._container.style.visibility = 'hidden';
+		
+		this._updateLayout();
+		this._updatePosition();
+		
+		this._container.style.visibility = '';
+
+		this._adjustPan();
+	},
+	
+	_updateContent: function() {
+		//TODO accept DOM nodes along with HTML strings
+		this._contentNode.innerHTML = this._content;
 	},
 	
 	_updateLayout: function() {
@@ -93,8 +114,8 @@ L.Popup = L.Class.extend({
 	_updatePosition: function() {
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 		
-		this._containerBottom = -pos.y - this._offset.y;
-		this._containerLeft = pos.x - this._containerWidth/2 + this._offset.x;
+		this._containerBottom = -pos.y - this.options.offset.y;
+		this._containerLeft = pos.x - this._containerWidth/2 + this.options.offset.x;
 		
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
@@ -128,5 +149,10 @@ L.Popup = L.Class.extend({
 		if (adjustOffset.x || adjustOffset.y) {
 			this._map.panBy(adjustOffset);
 		}
+	},
+	
+	_onCloseButtonClick: function() {
+		this._close();
+		return false;
 	}
 });
