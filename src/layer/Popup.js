@@ -54,6 +54,9 @@ L.Popup = L.Class.extend({
 		this._container = document.createElement('div');
 		this._container.className = 'leaflet-popup';
 		
+		this._wrapper = document.createElement('div');
+		this._wrapper.className = 'leaflet-popup-content-wrapper';
+		
 		L.DomEvent.disableClickPropagation(this._container);
 		
 		this._contentNode = document.createElement('div');
@@ -65,9 +68,11 @@ L.Popup = L.Class.extend({
 		this._tip = document.createElement('div');
 		this._tip.className = 'leaflet-popup-tip';
 		
-		this._tipContainer.appendChild(this._tip);
 		
-		this._container.appendChild(this._contentNode);
+		this._wrapper.appendChild(this._contentNode);
+		this._container.appendChild(this._wrapper);
+		
+		this._tipContainer.appendChild(this._tip);
 		this._container.appendChild(this._tipContainer);
 		
 		//TODO popup close button
