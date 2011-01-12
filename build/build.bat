@@ -5,6 +5,9 @@ java -jar compiler.jar ^
 --js ../src/core/Class.js ^
 --js ../src/core/Events.js ^
 --js ../src/core/Browser.js ^
+--js ../src/geometry/Point.js ^
+--js ../src/geometry/Bounds.js ^
+--js ../src/geometry/Transformation.js ^
 --js ../src/dom/DomEvent.js ^
 --js ../src/dom/DomUtil.js ^
 --js ../src/dom/Draggable.js ^
@@ -15,9 +18,6 @@ java -jar compiler.jar ^
 --js ../src/geo/LatLng.js ^
 --js ../src/geo/LatLngBounds.js ^
 --js ../src/geo/Projection.js ^
---js ../src/geometry/Point.js ^
---js ../src/geometry/Bounds.js ^
---js ../src/geometry/Transformation.js ^
 --js ../src/layer/TileLayer.js ^
 --js ../src/layer/ImageOverlay.js ^
 --js ../src/layer/Marker.js ^
