@@ -153,6 +153,13 @@ L.Map = L.Class.extend({
 		return this._zoom;
 	},
 	
+	getBounds: function() {
+		var bounds = this.getPixelBounds(),
+			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y)),
+			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y));
+		return new L.LatLngBounds(sw, ne);
+	},
+	
 	getMinZoom: function() {
 		return isNaN(this.options.minZoom) ?  this._layersMinZoom || 0 : this.options.minZoom;
 	},
