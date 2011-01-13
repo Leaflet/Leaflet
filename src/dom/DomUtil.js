@@ -30,6 +30,15 @@ L.DomUtil = {
 		return new L.Point(left, top);
 	},
 	
+	create: function(tagName, className, container) {
+		var el = document.createElement(tagName);
+		el.className = className;
+		if (container) {
+			container.appendChild(el);
+		}
+		return el;
+	},
+	
 	
 	//TODO refactor away this ugly translate/position mess
 	

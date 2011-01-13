@@ -49,38 +49,18 @@ L.Popup = L.Class.extend({
 	},
 	
 	_initLayout: function() {
-		//TODO replace with L.DomUtil.create
-		this._container = document.createElement('div');
-		this._container.className = 'leaflet-popup';
-		
-		this._closeButton = document.createElement('a');
-		this._closeButton.href = '#close';
-		this._closeButton.className = 'leaflet-popup-close-button';
-		this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
-		
-		this._wrapper = document.createElement('div');
-		this._wrapper.className = 'leaflet-popup-content-wrapper';
-		
+		this._container = L.DomUtil.create('div', 'leaflet-popup');
 		L.DomEvent.disableClickPropagation(this._container);
 		
-		this._contentNode = document.createElement('div');
-		this._contentNode.className = 'leaflet-popup-content';
+		this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
+		this._closeButton.href = '#close';
+		this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
 		
-		this._tipContainer = document.createElement('div');
-		this._tipContainer.className = 'leaflet-popup-tip-container';
+		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
+		this._contentNode = L.DomUtil.create('div', 'leaflet-popup-content', this._wrapper);
 		
-		this._tip = document.createElement('div');
-		this._tip.className = 'leaflet-popup-tip';
-		
-		this._container.appendChild(this._closeButton);
-		
-		this._wrapper.appendChild(this._contentNode);
-		this._container.appendChild(this._wrapper);
-		
-		this._tipContainer.appendChild(this._tip);
-		this._container.appendChild(this._tipContainer);
-		
-		//TODO popup close button
+		this._tipContainer = L.DomUtil.create('div', 'leaflet-popup-tip-container', this._container);
+		this._tip = L.DomUtil.create('div', 'leaflet-popup-tip', this._tipContainer);
 	},
 	
 	_update: function() {

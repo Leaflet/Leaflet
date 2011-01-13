@@ -30,14 +30,10 @@ L.TileLayer = L.Class.extend({
 		this._map = map;
 		
 		// create a container div for tiles
-		this._container = document.createElement('div');
-		this._container.className = 'leaflet-layer';
-		map.getPanes().tilePane.appendChild(this._container);
+		this._container = L.DomUtil.create('div', 'leaflet-layer', map.getPanes().tilePane);
 		
 		// create an image to clone for tiles
-		this._tileImg = document.createElement('img');
-		
-		this._tileImg.className = 'leaflet-tile';
+		this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
 		this._tileImg.galleryimg = 'no';
 		
 		var tileSize = this.options.tileSize;

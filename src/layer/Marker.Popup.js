@@ -1,3 +1,6 @@
+/*
+ * Popup extension to L.Marker, adding openPopup & bindPopup methods. 
+ */
 
 L.Marker.include({
 	openPopup: function() {

@@ -268,10 +268,7 @@ L.Map = L.Class.extend({
 	},
 	
 	_createPane: function(className) {
-		var pane = document.createElement('div');
-		pane.className = className;
-		(this._mapPane || this._container).appendChild(pane);
-		return pane;
+		return L.DomUtil.create('div', className, this._mapPane || this._container);
 	},
 	
 	_resetView: function(center, zoom) {

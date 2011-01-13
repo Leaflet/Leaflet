@@ -23,10 +23,9 @@ L.Icon = L.Class.extend({
 	},
 	
 	_createImg: function(name) {
-		var img = document.createElement('img');
+		var img = L.DomUtil.create('img', 'leaflet-marker-' + name);
 		
 		img.src = this[name + 'Url'];
-		img.className = 'leaflet-marker-' + name;
 		
 		if (this.iconAnchor) {
 			img.style.marginLeft = (-this.iconAnchor.x) + 'px';

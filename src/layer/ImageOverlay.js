@@ -9,20 +9,20 @@ L.ImageOverlay = L.Class.extend({
 	onAdd: function(map) {
 		this._map = map;
 		
-		this._image = document.createElement('img');
+		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 		
 		this._image.style.visibility = 'hidden';
 		this._image.style.position = 'absolute';
 		//TODO opacity option
 		
 		L.Util.extend(this._image, {
-			className: 'leaflet-image-layer',
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,
 			onmousemove: L.Util.falseFn,
 			onload: this._onImageLoad,
 			src: this._url
 		});
+		
 		this._map.getPanes().overlayPane.appendChild(this._image);
 		
 		this._map.on('viewreset', this._reset, this);

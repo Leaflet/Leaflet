@@ -1,4 +1,5 @@
 (function() {
+	//TODO replace script list with the one from ../buid/deps.js
 	var scripts = [
 		'Leaflet.js',
 		
