@@ -27,17 +27,14 @@ Controls:
  - basic zoom control
  - zoom slider
 
-Visual appearance:
-
- - zooming animation
- - show scaled background until tiles are loaded
- 
 Known issues to be fixed:
 
- - touch zooming on Android is broken
  - no IE6/7 support yet, some IE8 glitches 
+ - touch zooming on Android is broken
+ - zoom animation breaks if you rapidly zoom multiple times
+ - show scaled background until tiles are loaded in browsers with no transition support
 
 ## Leaflet developers
 
-Lead Developer: [Vladimir Agafonkin](http://github.com/mourner)
+Lead Developer: [Vladimir Agafonkin](http://github.com/mourner)  
 Contributors: be the first!

@@ -63,9 +63,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 		this._map._mapPane.style.webkitTransform = [
             this._startTransform,
             L.DomUtil.getTranslateString(this._delta),
-            L.DomUtil.getTranslateString(this._startCenter),
-            'scale(' + this._scale + ')',
-            L.DomUtil.getTranslateString(this._startCenter.multiplyBy(-1))
+            L.DomUtil.getScaleString(this._scale, this._startCenter)
         ].join(" ");
 		
 		L.DomEvent.preventDefault(e);

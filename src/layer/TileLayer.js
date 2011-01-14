@@ -30,7 +30,7 @@ L.TileLayer = L.Class.extend({
 		this._map = map;
 		
 		// create a container div for tiles
-		this._container = L.DomUtil.create('div', 'leaflet-layer', map.getPanes().tilePane);
+		this._initContainer();
 		
 		// create an image to clone for tiles
 		this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
@@ -66,8 +66,16 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
+	_initContainer: function() {
+		var tilePane = this._map.getPanes().tilePane;
+		if (!this._container || tilePane.expired) {
+			this._container = L.DomUtil.create('div', 'leaflet-layer', tilePane);
+		}
+	},
+	
 	_reset: function() {
 		this._tiles = {};
+		this._initContainer();
 		this._container.innerHTML = '';
 	},
 	

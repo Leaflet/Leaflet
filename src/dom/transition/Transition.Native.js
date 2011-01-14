@@ -5,21 +5,9 @@
 
 L.Transition = L.Transition.extend({
 	statics: (function() {
-		var style = document.documentElement.style,
-			names = ['transition', 'webkitTransition', 'OTransition', 'MozTransition'],
-			transition = '',
-			transitionEnd = 'transitionend';
-			
-		for (var i = 0; i < names.length; i++) {
-			if (names[i] in style) {
-				transition = names[i];
-				break;
-			}
-		}
-		
-		if (transition == 'webkitTransition' || transition == 'OTransition') {
-			transitionEnd = transition + 'End';
-		}
+		var transition = L.DomUtil.TRANSITION_PROPERTY,
+			transitionEnd = (transition == 'webkitTransition' || transition == 'OTransition' ? 
+				transition + 'End' : 'transitionend');
 		
 		return {
 			NATIVE: !!transition,
@@ -32,8 +20,7 @@ L.Transition = L.Transition.extend({
 			
 			// transition-property value to use with each particular custom property
 			CUSTOM_PROPS_PROPERTIES: {
-				position: L.Browser.webkit ? '-webkit-transform' : 'top, left'
-				//TODO enable native position animation for other transition-capable browsers?
+				position: L.Browser.webkit ? L.DomUtil.TRANSFORM_PROPERTY : 'top, left'
 			}
 		};
 	})(),
@@ -58,6 +45,7 @@ L.Transition = L.Transition.extend({
 		for (prop in props) {
 			if (props.hasOwnProperty(prop)) {
 				prop = customProp[prop] ? customProp[prop] : prop;
+				prop = prop.replace(/([A-Z])/g, function(w) { return '-' + w.toLowerCase(); });
 				propsList.push(prop);
 			}
 		}

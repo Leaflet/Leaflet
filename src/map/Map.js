@@ -36,16 +36,16 @@ L.Map = L.Class.extend({
 		
 		this._initLayout();
 		
-		var layers = this.options.layers;
-		layers = (layers instanceof Array ? layers : [layers]); 
-		this._initLayers(layers);
-		
 		if (L.DomEvent) { 
 			this._initEvents(); 
 			if (L.Handler) { this._initInteraction(); }
 		}
 		
 		this.setView(this.options.center, this.options.zoom, true);
+
+		var layers = this.options.layers;
+		layers = (layers instanceof Array ? layers : [layers]); 
+		this._initLayers(layers);
 	},
 	
 	
@@ -259,7 +259,8 @@ L.Map = L.Class.extend({
 		this._container.style.position = (position == 'absolute' ? 'absolute' : 'relative');
 		
 		this._panes = {};
-		this._panes.mapPane = this._mapPane = this._createPane('leaflet-map-pane');
+		this._mapPane = this._panes.mapPane = this._createPane('leaflet-map-pane', this._container);
+		
 		this._panes.tilePane = this._createPane('leaflet-tile-pane');
 		this._panes.shadowPane = this._createPane('leaflet-shadow-pane');
 		this._panes.overlayPane = this._createPane('leaflet-overlay-pane');
@@ -267,8 +268,8 @@ L.Map = L.Class.extend({
 		this._panes.popupPane = this._createPane('leaflet-popup-pane');
 	},
 	
-	_createPane: function(className) {
-		return L.DomUtil.create('div', className, this._mapPane || this._container);
+	_createPane: function(className, container) {
+		return L.DomUtil.create('div', className, container || this._mapPane);
 	},
 	
 	_resetView: function(center, zoom) {

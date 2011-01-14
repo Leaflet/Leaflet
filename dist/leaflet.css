@@ -9,6 +9,9 @@
 .leaflet-container {
 	overflow: hidden;
 	}
+.leaflet-tile-pane {
+	-webkit-transform: translate3d(0,0,0);
+	}
 .leaflet-tile, 
 .leaflet-marker-icon, 
 .leaflet-marker-shadow {
@@ -19,7 +22,7 @@
 	visibility: hidden;
 	}
 .leaflet-tile-loaded {
-	visibility: visible;
+	visibility: inherit;
 	}
 .leaflet-marker-icon, 
 .leaflet-marker-shadow {
@@ -37,11 +40,17 @@
 	position: relative; 
 	}
 
-.leaflet-tile-pane { z-index: 1; }
-.leaflet-overlay-pane { z-index: 2; }
-.leaflet-shadow-pane { z-index: 3; }
-.leaflet-marker-pane { z-index: 4; }
-.leaflet-popup-pane { z-index: 5; }
+.leaflet-tile-pane { z-index: 2; }
+.leaflet-overlay-pane { z-index: 3; }
+.leaflet-shadow-pane { z-index: 4; }
+.leaflet-marker-pane { z-index: 5; }
+.leaflet-popup-pane { z-index: 6; }
+
+.leaflet-animating .leaflet-marker-pane, 
+.leaflet-animating .leaflet-shadow-pane,
+.leaflet-animating .leaflet-popup-pane {
+	visibility: hidden;
+	}
 
 
 /* Popup layout */

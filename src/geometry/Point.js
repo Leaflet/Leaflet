@@ -34,6 +34,10 @@ L.Point.prototype = {
 		return new L.Point(Math.round(this.x), Math.round(this.y));
 	},
 	
+	clone: function() {
+		return new L.Point(this.x, this.y);
+	},
+	
 	toString: function() {
 		return 'Point( ' + this.x + ', ' + this.y + ' )'; 
 	}

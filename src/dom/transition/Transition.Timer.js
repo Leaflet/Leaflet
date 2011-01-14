@@ -33,7 +33,8 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this._el = el;
 		L.Util.extend(this.options, options);
 
-		var easings = L.Transition.EASINGS[this.options.easing];
+		var easings = L.Transition.EASINGS[this.options.easing] || L.Transition.EASINGS['ease'];
+		
 		this._p1 = new L.Point(0, 0);
 		this._p2 = new L.Point(easings[0], easings[1]);
 		this._p3 = new L.Point(easings[2], easings[3]);
@@ -75,9 +76,9 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		var time = L.Transition.getTime(),
 			elapsed = time - this._startTime,
 			duration = this.options.duration * 1000;
+		
 		if (elapsed < duration) {
-			var percentComplete = this._cubicBezier(elapsed / duration);
-			this._runFrame(percentComplete);
+			this._runFrame(this._cubicBezier(elapsed / duration));
 		} else {
 			this._runFrame(1);
 			this._complete();

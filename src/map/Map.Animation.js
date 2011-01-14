@@ -53,29 +53,68 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return false;
 	},
 	
-	_zoomToIfCenterInView: function(center, zoom, offset) {
+	_zoomToIfCenterInView: function(center, zoom, centerOffset) {
+		
+		if (!L.Transition.NATIVE) { return false; }
+		
+		var zoomDelta = zoom - this._zoom,
+			scale = Math.pow(2, zoomDelta),
+			offset = centerOffset.divideBy(1 - 1/scale);
+		
 		//if offset does not exceed half of the view
-		if (this._offsetIsWithinView(offset, 0.5)) {
-			//TODO animated zoom
-//			if (!this._zoomTransition) {
-//				this._zoomTransition = new L.Transition(this._mapPane, {duration: 0.3});
-//			}
-			var centerPoint = this.latLngToLayerPoint(center);
-			
-//			this._mapPane.style['-webkit-transform-origin'] = '50% 50%';
-//			this._zoomTransition.run({
-//				'-webkit-transform': [
-//				                      //this._mapPane.style.webkitTransform,
-//				                      L.DomUtil.getTranslateString(centerPoint),
-//				                      'scale(' + 5 + ')',
-//				                      L.DomUtil.getTranslateString(centerPoint.multiplyBy(-1))
-//				                  ].join(' ')
-//			});
-			
-			this._resetView(center, zoom);
-			return true;
+		if(!this._offsetIsWithinView(offset, 0.5)) { return false; }
+		
+		if (!this._tileBg) {
+			this._tileBg = this._createPane('leaflet-tile-pane');
+			this._tileBg.style.zIndex = 1;
 		}
-		return false;
+		
+		this._swapFrontAndBg(); //TODO refactor away tile layer swapping to share it with touch zoom
+		
+		if (!this._tileBg.transition) {
+			this._tileBg.transition = new L.Transition(this._tileBg, {duration: 0.25, easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'});
+			this._tileBg.transition.on('end', this._onZoomTransitionEnd, this);
+		}
+		
+		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
+			mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
+			origin = centerPoint.add(offset).subtract(mapPaneOffset.divideBy(scale - 1)),
+			transformStr = L.DomUtil.getScaleString(scale, origin);
+		
+		this._mapPane.className += ' leaflet-animating';
+
+		this._resetView(center, zoom);
+		
+		this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY] = L.DomUtil.getTranslateString(mapPaneOffset);
+
+		//TODO eliminate this ugly hack
+		setTimeout(L.Util.bind(function() {
+			var options = {};
+			options[L.DomUtil.TRANSFORM_PROPERTY] = transformStr;
+			this._tileBg.transition.run(options);
+		}, this), 20);
+		
+		return true;
+	},
+	
+	_swapFrontAndBg: function() {
+		var oldTilePane = this._panes.tilePane;
+		
+		this._tileBg.innerHTML = '';
+		this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY] = '';
+		this._tileBg.expired = true;  //TODO better name for property
+		this._tileBg.style.visibility = 'hidden';
+		oldTilePane.expired = false;
+		
+		this._panes.tilePane = this._tileBg;
+		this._tileBg = oldTilePane;
+	},
+	
+	_onZoomTransitionEnd: function() {
+		this._panes.tilePane.style.visibility = '';
+		this._panes.tilePane.style.zIndex = 2;
+		this._tileBg.style.zIndex = 1;
+		this._mapPane.className = this._mapPane.className.replace(' leaflet-animating', ''); //TODO toggleClass util
 	},
 
 	_offsetIsWithinView: function(offset, multiplyFactor) {

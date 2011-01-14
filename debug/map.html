@@ -17,7 +17,7 @@
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18}),
 			latlng = new L.LatLng(50.5, 30.51);
 	
-		var map = new L.Map('map').addLayer(cloudmade).setView(latlng, 15);
+		var map = new L.Map('map', {center: latlng, zoom: 15}).addLayer(cloudmade);
 		
 		function createMarker(latlng) {
 			var marker = new L.Marker(latlng);
