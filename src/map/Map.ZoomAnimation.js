@@ -1,5 +1,8 @@
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	_zoomToIfCenterInView: function(center, zoom, centerOffset) {
+		if (this._animatingZoom) {
+			return true;
+		}
 		
 		if (!L.Transition.NATIVE) { return false; }
 		
@@ -8,7 +11,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 			offset = centerOffset.divideBy(1 - 1/scale);
 		
 		//if offset does not exceed half of the view
-		if(!this._offsetIsWithinView(offset, 0.5)) { return false; }
+		if (!this._offsetIsWithinView(offset, 0.5)) { return false; }
 		
 		this._initPanes();
 		this._runAnimation(center, zoom, scale, offset);
@@ -36,6 +39,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 			origin = centerPoint.add(offset).subtract(mapPaneOffset.divideBy(scale - 1));
 		
 		this._mapPane.className += ' leaflet-animating';
+		this._animatingZoom = true;
 
 		//load tiles in the main tile pane
 		this._resetView(center, zoom);
@@ -72,5 +76,6 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		this._tilePane.style.zIndex = 2;
 		this._tileBg.style.zIndex = 1;
 		this._mapPane.className = this._mapPane.className.replace(' leaflet-animating', ''); //TODO toggleClass util
+		this._animatingZoom = false;
 	}
 });
