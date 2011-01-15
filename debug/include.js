@@ -39,8 +39,9 @@
 		
 		'map/Map.js',
 		'map/Map.Geolocation.js',
-		'map/Map.Animation.js',
-		'map/Map.Popup.js'
+		'map/Map.Popup.js',
+		'map/Map.PanAnimation.js',
+		'map/Map.ZoomAnimation.js'
 	];
 	
 	for (var i = 0; i < scripts.length; i++) {

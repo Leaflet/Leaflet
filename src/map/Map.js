@@ -261,7 +261,7 @@ L.Map = L.Class.extend({
 		this._panes = {};
 		this._mapPane = this._panes.mapPane = this._createPane('leaflet-map-pane', this._container);
 		
-		this._panes.tilePane = this._createPane('leaflet-tile-pane');
+		this._tilePane = this._panes.tilePane = this._createPane('leaflet-tile-pane');
 		this._panes.shadowPane = this._createPane('leaflet-shadow-pane');
 		this._panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		this._panes.markerPane = this._createPane('leaflet-marker-pane');

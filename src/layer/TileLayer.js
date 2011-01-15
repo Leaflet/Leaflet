@@ -68,7 +68,7 @@ L.TileLayer = L.Class.extend({
 	
 	_initContainer: function() {
 		var tilePane = this._map.getPanes().tilePane;
-		if (!this._container || tilePane.expired) {
+		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer', tilePane);
 		}
 	},

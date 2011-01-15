@@ -30,6 +30,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/handler/DoubleClickZoom.js ^
 --js ../src/map/Map.js ^
 --js ../src/map/Map.Geolocation.js ^
---js ../src/map/Map.Animation.js ^
 --js ../src/map/Map.Popup.js ^
+--js ../src/map/Map.PanAnimation.js ^
+--js ../src/map/Map.ZoomAnimation.js ^
 --js_output_file ../dist/leaflet.js

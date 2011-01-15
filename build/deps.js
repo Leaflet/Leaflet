@@ -38,6 +38,7 @@ var deps = {
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
 	},
 	
+	
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',
@@ -65,21 +66,34 @@ var deps = {
 		desc: 'Enables smooth touch zooming on mobile webkit-powered devices (iPhone, iPod Touch, iPad, Android).'
 	},
 	
+	
 	MapAnimationNative: {
 		src: ['dom/DomEvent.js',
 		      'dom/transition/Transition.js',
-		      'dom/transition/Transition.Native.js',
-		      'map/Map.Animation.js'],
+		      'dom/transition/Transition.Native.js'],
 		deps: [],
-		desc: 'Panning animation through CSS3 Transitions on the map (zooming animation coming later). Works on mobile webkit-powered browsers and some modern desktop browsers.',
+		desc: 'Animation core that uses CSS3 Transitions (for powering pan & zoom animations). Works on mobile webkit-powered browsers and some modern desktop browsers.',
 		heading: 'Visual effects'
 	},
 	
 	MapAnimationFallback: {
 		src: ['dom/transition/Transition.Timer.js'],
 		deps: ['MapAnimationNative'],
-		desc: 'Animation for browsers that don\'t support CSS3 transitions.'
+		desc: 'Timer-based animation fallback for browsers that don\'t support CSS3 transitions.'
 	},
+	
+	MapAnimationPan: {
+		src: ['map/Map.PanAnimation.js'],
+		deps: ['MapAnimationNative'],
+		desc: 'Panning animation. Can use both native and timer-based animation.'
+	},
+	
+	MapAnimationZoom: {
+		src: ['map/Map.ZoomAnimation.js'],
+		deps: ['MapAnimationPan', 'MapAnimationNative'],
+		desc: 'Smooth zooming animation. So far it works only on browsers that support CSS3 Transitions.'
+	},
+	
 	
 	MapGeolocation: {
 		src: ['map/Map.Geolocation.js'],
