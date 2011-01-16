@@ -31,8 +31,7 @@ Known issues to be fixed:
 
  - no IE6/7 support yet, some IE8 glitches 
  - touch zooming on Android is broken
- - zoom animation breaks if you rapidly zoom multiple times
- - show scaled background until tiles are loaded in browsers with no transition support
+ - show scaled background until tiles are loaded even with animation disabled
 
 ## Leaflet developers
 
