@@ -1,6 +1,7 @@
 
 L.Map.include({
 	openPopup: function(popup) {
+		this.closePopup();
 		this._popup = popup;
 		this.addLayer(popup);
 	},
