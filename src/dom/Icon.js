@@ -2,8 +2,8 @@ L.Icon = L.Class.extend({
 	iconUrl: L.ROOT_URL + 'images/marker.png',
 	shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
 	
-	//iconSize: new L.Point(24, 37),
-	//shadowSize: new L.Point(42, 37),
+	iconSize: new L.Point(25, 41),
+	shadowSize: new L.Point(41, 41),
 	
 	iconAnchor: new L.Point(13, 41),
 	popupAnchor: new L.Point(0, -33),
@@ -23,15 +23,22 @@ L.Icon = L.Class.extend({
 	},
 	
 	_createImg: function(name) {
-		var img = L.DomUtil.create('img', 'leaflet-marker-' + name);
+		var img = L.DomUtil.create('img', 'leaflet-marker-' + name),
+			size = this[name + 'Size'],
+			src = this[name + 'Url'];
 		
-		img.src = this[name + 'Url'];
+		img.src = src;
 		
 		if (this.iconAnchor) {
 			img.style.marginLeft = (-this.iconAnchor.x) + 'px';
 			img.style.marginTop = (-this.iconAnchor.y) + 'px';
 		} else {
 			L.DomEvent.addListener(img, 'load', this._setAnchorToCenter);
+		}
+		
+		if (size) {
+			img.width = size.x;
+			img.height = size.y;
 		}
 		
 		return img;
