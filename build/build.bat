@@ -11,7 +11,6 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/dom/DomEvent.js ^
 --js ../src/dom/DomUtil.js ^
 --js ../src/dom/Draggable.js ^
---js ../src/dom/Icon.js ^
 --js ../src/dom/transition/Transition.js ^
 --js ../src/dom/transition/Transition.Native.js ^
 --js ../src/dom/transition/Transition.Timer.js ^
@@ -20,17 +19,18 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/geo/Projection.js ^
 --js ../src/layer/TileLayer.js ^
 --js ../src/layer/ImageOverlay.js ^
---js ../src/layer/Marker.js ^
 --js ../src/layer/Popup.js ^
---js ../src/layer/Marker.Popup.js ^
+--js ../src/layer/marker/Icon.js ^
+--js ../src/layer/marker/Marker.js ^
+--js ../src/layer/marker/Marker.Popup.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^
 --js ../src/handler/ScrollWheelZoom.js ^
 --js ../src/handler/DoubleClickZoom.js ^
 --js ../src/map/Map.js ^
---js ../src/map/Map.Geolocation.js ^
---js ../src/map/Map.Popup.js ^
---js ../src/map/Map.PanAnimation.js ^
---js ../src/map/Map.ZoomAnimation.js ^
+--js ../src/map/ext/Map.Geolocation.js ^
+--js ../src/map/ext/Map.Popup.js ^
+--js ../src/map/ext/Map.PanAnimation.js ^
+--js ../src/map/ext/Map.ZoomAnimation.js ^
 --js_output_file ../dist/leaflet.js

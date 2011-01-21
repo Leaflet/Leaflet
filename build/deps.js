@@ -28,12 +28,12 @@ var deps = {
 	},
 	
 	Marker: {
-		src: ['dom/Icon.js', 'layer/Marker.js'],
+		src: ['layer/marker/Icon.js', 'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
 	
 	Popup: {
-		src: ['layer/Popup.js', 'layer/Marker.Popup.js', 'map/Map.Popup.js'],
+		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
 	},
@@ -83,20 +83,20 @@ var deps = {
 	},
 	
 	MapAnimationPan: {
-		src: ['map/Map.PanAnimation.js'],
+		src: ['map/ext/Map.PanAnimation.js'],
 		deps: ['MapAnimationNative'],
 		desc: 'Panning animation. Can use both native and timer-based animation.'
 	},
 	
 	MapAnimationZoom: {
-		src: ['map/Map.ZoomAnimation.js'],
+		src: ['map/ext/Map.ZoomAnimation.js'],
 		deps: ['MapAnimationPan', 'MapAnimationNative'],
 		desc: 'Smooth zooming animation. So far it works only on browsers that support CSS3 Transitions.'
 	},
 	
 	
 	MapGeolocation: {
-		src: ['map/Map.Geolocation.js'],
+		src: ['map/ext/Map.Geolocation.js'],
 		desc: 'Adds Map#locate method and related events to make geolocation easier.',
 		heading: 'Misc'
 	}
