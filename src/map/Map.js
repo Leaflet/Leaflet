@@ -177,10 +177,10 @@ L.Map = L.Class.extend({
 			boundsSize, 
 			nePoint, swPoint;
 		do {
+			zoom++;
 			nePoint = this.project(ne, zoom);
 			swPoint = this.project(sw, zoom);
 			boundsSize = new L.Point(nePoint.x - swPoint.x, swPoint.y - nePoint.y);
-			zoom++;
 		} while ((boundsSize.x <= size.x) && 
 				 (boundsSize.y <= size.y) && (zoom <= maxZoom));
 		

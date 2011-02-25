@@ -11,6 +11,7 @@
 		'geometry/Point.js',
 		'geometry/Bounds.js',
 		'geometry/Transformation.js',
+		'geometry/LineUtil.js',
 		
 		'dom/DomEvent.js',
 		'dom/DomUtil.js',
@@ -27,9 +28,13 @@
 		'layer/TileLayer.js',
 		'layer/ImageOverlay.js',
 		'layer/Popup.js',
+		
 		'layer/marker/Icon.js',
 		'layer/marker/Marker.js',
 		'layer/marker/Marker.Popup.js',
+		
+		'layer/vector/Path.js',
+		'layer/vector/Polyline.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',

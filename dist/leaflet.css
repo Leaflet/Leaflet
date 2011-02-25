@@ -37,7 +37,7 @@
 .leaflet-shadow-pane,
 .leaflet-marker-pane,
 .leaflet-popup-pane { 
-	position: relative; 
+	position: absolute; 
 	}
 
 .leaflet-tile-pane { z-index: 2; }
@@ -48,8 +48,13 @@
 
 .leaflet-animating .leaflet-marker-pane, 
 .leaflet-animating .leaflet-shadow-pane,
-.leaflet-animating .leaflet-popup-pane {
+.leaflet-animating .leaflet-popup-pane,
+.leaflet-animating .leaflet-overlay-pane {
 	visibility: hidden;
+	}
+
+.leaflet-overlay-pane svg {
+	position: absolute;
 	}
 
 

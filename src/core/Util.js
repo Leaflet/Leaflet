@@ -69,7 +69,7 @@ L.Util = {
 	falseFn: function() { return false; },
 	
 	formatNum: function(num, digits) {
-		var pow = Math.pow(10, digits);
+		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
 	}
 };

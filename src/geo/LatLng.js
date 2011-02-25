@@ -29,7 +29,8 @@ L.LatLng = L.Class.extend({
 	},
 	
 	toString: function() {
-		return 'LatLng( ' + L.Util.formatNum(this.lat, 5) + ', ' + 
-				L.Util.formatNum(this.lng, 5) + ' )';
+		return 'LatLng(' + 
+				L.Util.formatNum(this.lat) + ', ' + 
+				L.Util.formatNum(this.lng) + ')';
 	}
 });

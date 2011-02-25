@@ -183,6 +183,11 @@ L.TileLayer = L.Class.extend({
 	
 	_tileOnError: function() {
 		this._leaflet_layer.fire('tileerror', {tile: this, url: this.src});
-		this.src = this._leaflet_layer.options.errorTileUrl;
+		
+		var newUrl = this._leaflet_layer.options.errorTileUrl;
+		if (newUrl) {
+			this.src = newUrl;
+		}
+			
 	}
 });

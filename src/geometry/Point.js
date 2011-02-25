@@ -39,6 +39,8 @@ L.Point.prototype = {
 	},
 	
 	toString: function() {
-		return 'Point( ' + this.x + ', ' + this.y + ' )'; 
+		return 'Point(' + 
+				L.Util.formatNum(this.x) + ', ' + 
+				L.Util.formatNum(this.y) + ')'; 
 	}
 };
