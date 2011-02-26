@@ -90,6 +90,9 @@
 	-webkit-transform: rotate(45deg);
 	-webkit-transform-origin: 0 0;
 	
+	-ms-transform: rotate(45deg);
+	-ms-transform-origin: 0 0;
+	
 	margin-top: -12px;
 	margin-left: 20px;
 	}
@@ -113,6 +116,7 @@
 	}
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;
+	box-shadow: 0 1px 10px #888;
 	 -moz-box-shadow: 0 1px 10px #888;
 	 -webkit-box-shadow: 0 1px 14px #999;
 	}
