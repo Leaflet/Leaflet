@@ -38,13 +38,17 @@ var deps = {
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
 	},
 	
+	Vector: {
+		src: ['geometry/LineUtil.js', 'layer/vector/Path.js', 'layer/vector/Polyline.js'],
+		desc: 'SVG-powered overlays, including polylines, polygons and circles.'
+	},
+	
 	
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',
 		      'handler/Handler.js',
 		      'handler/MapDrag.js'],
-		deps: [],
 		desc: 'Makes the map draggable (on both desktop and mobile webkit browsers).',
 		heading: 'Interaction'
 	},
@@ -54,7 +58,6 @@ var deps = {
 		      'handler/Handler.js',
 		      'handler/DoubleClickZoom.js',
 		      'handler/ScrollWheelZoom.js'],
-		deps: [], 
 		desc: 'Scroll wheel zoom and double click zoom on the map.'
 	},
 	
@@ -62,7 +65,6 @@ var deps = {
 		src: ['dom/DomEvent.js',
 		      'handler/Handler.js',
 		      'handler/TouchZoom.js'],
-		deps: [],
 		desc: 'Enables smooth touch zooming on mobile webkit-powered devices (iPhone, iPod Touch, iPad, Android).'
 	},
 	
@@ -71,7 +73,6 @@ var deps = {
 		src: ['dom/DomEvent.js',
 		      'dom/transition/Transition.js',
 		      'dom/transition/Transition.Native.js'],
-		deps: [],
 		desc: 'Animation core that uses CSS3 Transitions (for powering pan & zoom animations). Works on mobile webkit-powered browsers and some modern desktop browsers.',
 		heading: 'Visual effects'
 	},
