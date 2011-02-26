@@ -1,11 +1,12 @@
 
 L.Path = L.Class.extend({
 	statics: (function() {
-		var svgns = 'http://www.w3.org/2000/svg';
+		var svgns = 'http://www.w3.org/2000/svg',
+			ce = 'createElementNS';
 		
 		return {
 			SVG_NS: svgns,
-			SVG: !!(document.createElementNS && document.createElementNS(svgns, 'svg').createSVGRect),
+			SVG: !!(document[ce] && document[ce](svgns, 'svg').createSVGRect),
 			
 			// how much to extend the clip area around the map view 
 			// (relative to its size, e.g. 0.5 is half the screen in each direction)
