@@ -6,13 +6,16 @@ L.Polyline = L.Path.extend({
 	},
 	
 	options: {
-		smoothFactor: 1
+		// how much to simplify the polyline on each zoom level
+		// more = better performance and smoother look, less = more accurate
+		smoothFactor: 1,
+		noClip: false
 	},
 	
 	onAdd: function(map) {
 		this._map = map;
 		
-		this._init();
+		this._initElements();
 		
 		this._projectLatlngs();
 		this._updatePath();
@@ -43,13 +46,18 @@ L.Polyline = L.Path.extend({
 	},
 	
 	_clipPoints: function() {
-		var len = this._originalPoints.length,
-			points = this._originalPoints,
-			i, segment, k = 0;
+		var points = this._originalPoints,
+			len = points.length,
+			i, k, segment;
 
+		if (this.options.noClip) {
+			this._parts = [points];
+			return;
+		}
+		
 		this._parts = [];
 		
-		for (i = 0; i < len - 1; i++) {
+		for (i = 0, k = 0; i < len - 1; i++) {
 			segment = L.LineUtil.clipSegment(points[i], points[i+1], this._map._pathViewport);
 			if (!segment) continue;
 			
@@ -65,12 +73,12 @@ L.Polyline = L.Path.extend({
 	},
 	
 	_simplifyPoints: function() {
-		var l1 = 0, l2 = 0;
+		//var l1 = 0, l2 = 0;
 		// simplify each clipped part of the polyline
 		for (var i = 0, len = this._parts.length; i < len; i++) {
-			l1 += this._parts[i].length;
+			//l1 += this._parts[i].length;
 			this._parts[i] = L.LineUtil.simplify(this._parts[i], this.options.smoothFactor);
-			l2 += this._parts[i].length;
+			//l2 += this._parts[i].length;
 		}
 		//console.log(l1, l2, l2/l1);
 	},

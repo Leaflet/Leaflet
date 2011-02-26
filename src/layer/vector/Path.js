@@ -5,7 +5,11 @@ L.Path = L.Class.extend({
 		
 		return {
 			SVG_NS: svgns,
-			SVG: !!(document.createElementNS && document.createElementNS(svgns, 'svg').createSVGRect)
+			SVG: !!(document.createElementNS && document.createElementNS(svgns, 'svg').createSVGRect),
+			
+			// how much to extend the clip area around the map view 
+			// (relative to its size, e.g. 0.5 is half the screen in each direction)
+			CLIP_PADDING: 0.5
 		};
 	})(),
 	
@@ -17,11 +21,7 @@ L.Path = L.Class.extend({
 		
 		fill: false,
 		fillColor: null, //same as color by default
-		fillOpacity: 0.2,
-		
-		// how much to extend the clip area around the map view 
-		// (relative to its size, e.g. 0.5 is half the screen in each direction)
-		clipPadding: 0.5
+		fillOpacity: 0.2
 	},
 	
 	initialize: function(options) {
@@ -30,12 +30,12 @@ L.Path = L.Class.extend({
 	
 	onAdd: function(map) {
 		this._map = map;
-		this._init();
+		this._initElements();
 		this._updatePath();
 	},
 	
 	onRemove: function(map) {
-		this._root.removeChild(this._container);
+		map._pathRoot.removeChild(this._container);
 	},
 	
 	setPathString: function(str) {
@@ -45,7 +45,7 @@ L.Path = L.Class.extend({
 		}
 	},
 	
-	_init: function() {
+	_initElements: function() {
 		this._initRoot();
 		this._initPath();
 		this._initStyle();
@@ -53,14 +53,12 @@ L.Path = L.Class.extend({
 	
 	_initRoot: function() {
 		if (!this._map._pathRoot) {
-			var root = this._createElement('svg');
-			this._map._panes.overlayPane.appendChild(root);
-			this._map._pathRoot = root;
+			this._map._pathRoot = this._createElement('svg');
+			this._map._panes.overlayPane.appendChild(this._map._pathRoot);
+
 			this._map.on('moveend', this._updateSvgViewport, this);
+			this._updateSvgViewport();
 		}
-		this._root = this._map._pathRoot;
-		
-		this._updateSvgViewport();
 	},
 	
 	_updateSvgViewport: function() {
@@ -71,7 +69,7 @@ L.Path = L.Class.extend({
 			max = vp.max,
 			width = max.x - min.x,
 			height = max.y - min.y,
-			root = this._root;
+			root = this._map._pathRoot;
 	
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
@@ -80,13 +78,12 @@ L.Path = L.Class.extend({
 	},
 	
 	_updateViewport: function() {
-		var p = this.options.clipPadding,
+		var p = L.Path.CLIP_PADDING,
 			size = this._map.getSize(),
-			panePos = L.DomUtil.getPosition(this._map._mapPane),
-			min = new L.Point(	- panePos.x - size.x * p,
-								- panePos.y - size.y * p),
-			max = new L.Point(	- panePos.x + size.x * (1 + p),
-								- panePos.y + size.y * (1 + p));
+			//TODO this._map._getMapPanePos()
+			panePos = L.DomUtil.getPosition(this._map._mapPane), 
+			min = panePos.multiplyBy(-1).subtract(size.multiplyBy(p)),
+			max = min.add(size.multiplyBy(1 + p * 2));
 		
 		this._map._pathViewport = new L.Bounds(min, max);
 	},
@@ -97,7 +94,7 @@ L.Path = L.Class.extend({
 		this._path = this._createElement('path');
 		this._container.appendChild(this._path);
 		
-		this._root.appendChild(this._container);
+		this._map._pathRoot.appendChild(this._container);
 	},
 	
 	_initStyle: function() {
