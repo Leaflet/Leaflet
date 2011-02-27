@@ -28,8 +28,7 @@ L.Polyline = L.Path.extend({
 		this._originalPoints = [];
 		
 		for (var i = 0, len = this._latlngs.length, point; i < len; i++) {
-			point = this._map.latLngToLayerPoint(this._latlngs[i]);
-			this._originalPoints.push(point);
+			this._originalPoints[i] = this._map.latLngToLayerPoint(this._latlngs[i]);
 		}
 	},
 	
