@@ -62,16 +62,10 @@ L.Util.extend(L.LineUtil, {
 	},
 	
 	_sqPointToSegmentDist: function(p, p1, p2) {
-		var l2 = this._sqDist(p1, p2);
-		
-		if (l2 == 0) return this._sqDist(p, p1);
-		
-		var x1 = p.x - p1.x,
-			x2 = p2.x - p1.x,
-			y1 = p.y - p1.y,
+		var x2 = p2.x - p1.x,
 			y2 = p2.y - p1.y,
-			dot = x1 * x2 + y1 * y2,
-			t = dot / l2;
+			dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
+			t = dot / this._sqDist(p1, p2);
 		
 		if (t < 0) return this._sqDist(p, p1);
 		if (t > 1) return this._sqDist(p, p2);
@@ -84,12 +78,15 @@ L.Util.extend(L.LineUtil, {
 L.Util.extend(L.LineUtil, {
 	// Cohen-Sutherland line segment clipping algorithm
 	// it's considered the fastest in case most clippings are trivial accepts or rejects
-	clipSegment: function(a, b, bounds) {
+	clipSegment: function(a, b, bounds, useLastCode) {
 		var min = bounds.min,
 			max = bounds.max;
 		
-		var codeA = this._getBitCode(a, bounds),
+		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
 			codeB = this._getBitCode(b, bounds);
+		
+		// save 2nd code to avoid calculating it on the next segment
+		this._lastCode = codeB;
 		
 		while (true) {
 			if (!(codeA | codeB)) {

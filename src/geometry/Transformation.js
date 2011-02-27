@@ -10,11 +10,16 @@ L.Transformation = L.Class.extend({
 		this._d = d;
 	},
 
-	transform: function(/*Point*/ point, /*Number*/ scale) /*-> Point*/ {	
+	transform: function(point, scale) {
+		return this._transform(point.clone(), scale);
+	},
+	
+	// destructive transform (faster)
+	_transform: function(/*Point*/ point, /*Number*/ scale) /*-> Point*/ {	
 		scale = scale || 1;
-		return new L.Point(
-			scale * (this._a * point.x + this._b), 
-			scale * (this._c * point.y + this._d));
+		point.x = scale * (this._a * point.x + this._b); 
+		point.y = scale * (this._c * point.y + this._d);
+		return point;
 	},
 	
 	untransform: function(/*Point*/ point, /*Number*/ scale) /*-> Point*/ {

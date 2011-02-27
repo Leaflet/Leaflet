@@ -29,7 +29,6 @@ Controls:
 
 Known issues to be fixed:
 
- - some IE7/8 glitches 
  - show scaled background until tiles are loaded even with animation disabled
  
 ## Browser support

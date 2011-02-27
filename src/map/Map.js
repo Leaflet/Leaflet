@@ -230,13 +230,13 @@ L.Map = L.Class.extend({
 	},
 	
 	latLngToLayerPoint: function(latlng) {
-		return this.project(latlng).subtract(this._initialTopLeftPoint);
+		return this.project(latlng)._subtract(this._initialTopLeftPoint);
 	},
 
 	project: function(/*Object*/ coord, /*(optional) Number*/ zoom)/*-> Point*/ {
 		var projectedPoint = this.options.projection.project(coord),
 			scale = this.options.scaling(isNaN(zoom) ? this._zoom : zoom);
-		return this.options.transformation.transform(projectedPoint, scale);
+		return this.options.transformation._transform(projectedPoint, scale);
 	},
 	
 	unproject: function(/*Point*/ point, /*(optional) Number*/ zoom, /*(optional) Boolean*/ unbounded)/*-> Object*/ {

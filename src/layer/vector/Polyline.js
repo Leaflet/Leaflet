@@ -58,7 +58,7 @@ L.Polyline = L.Path.extend({
 		this._parts = [];
 		
 		for (i = 0, k = 0; i < len - 1; i++) {
-			segment = L.LineUtil.clipSegment(points[i], points[i+1], this._map._pathViewport);
+			segment = L.LineUtil.clipSegment(points[i], points[i+1], this._map._pathViewport, i);
 			if (!segment) continue;
 			
 			this._parts[k] = this._parts[k] || [];

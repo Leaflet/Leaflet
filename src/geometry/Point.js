@@ -13,7 +13,14 @@ L.Point.prototype = {
 	},
 		
 	subtract: function(point) {
-		return new L.Point(this.x - point.x, this.y - point.y);
+		return this.clone()._subtract(point);
+	},
+	
+	// destructive subtract (faster)
+	_subtract: function(point) {
+		this.x -= point.x;
+		this.y -= point.y;
+		return this;
 	},
 	
 	divideBy: function(num, round) {
