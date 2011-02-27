@@ -73,36 +73,33 @@
 	margin: 19px;
 	}
 .leaflet-popup-tip-container {
-	margin: -1px auto 0;
+	margin: 0 auto;
 	width: 40px;
 	height: 16px;
 	position: relative;
 	overflow: hidden;
 	}
 .leaflet-popup-tip {
-	width: 16px;
-	height: 16px;
+	width: 15px;
+	height: 15px;
 	padding: 1px;
 	
+	margin: -8px auto 0;
+	
 	-moz-transform: rotate(45deg);
-	-moz-transform-origin: 0 0;
-	
 	-webkit-transform: rotate(45deg);
-	-webkit-transform-origin: 0 0;
-	
 	-ms-transform: rotate(45deg);
-	-ms-transform-origin: 0 0;
-	
-	margin-top: -12px;
-	margin-left: 20px;
 	}
 .leaflet-popup-close-button {
 	position: absolute;
 	top: 9px;
 	right: 9px;
+	
 	width: 8px;
 	height: 8px;
 	padding: 1px;
+	
+	overflow: hidden;
 	}
 .leaflet-popup-content p {
 	margin: 18px 0;

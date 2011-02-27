@@ -30,25 +30,23 @@ Controls:
 Known issues to be fixed:
 
  - some IE7/8 glitches 
- - touch zooming on Android is broken
  - show scaled background until tiles are loaded even with animation disabled
  
 ## Browser support
 
 On desktop: 
 
- - Firefox 3.6+ (Win/Mac)
- - Chrome (Win)
- - Safari 5 (Mac)
-
- - IE 7/8/9 (full support)
- - IE6 (accessible)
+ - Firefox 3.6+
+ - Chrome
+ - Safari 5
+ - IE 9
+ 
+ - IE 6-8 (not perfect but fully accessible)
  
 On mobile:
  
  - Safari for iOS 3/4+
- - WebKit for Android 2.2+ 
-
+ - WebKit for Android 2.2+
 
 ## Leaflet developers
 

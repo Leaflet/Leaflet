@@ -1,0 +1,12 @@
+.leaflet-popup-tip {
+	width: 21px;
+	margin: 0 auto;
+	filter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);
+	-ms-filter: "progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";
+	}
+.leaflet-popup-tip-container {
+	margin-top: -1px;
+	}
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+	border: 1px solid #bbb;
+	}
