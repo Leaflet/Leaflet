@@ -62,7 +62,7 @@ L.Map = L.Class.extend({
 		return this;
 	},
 	
-	setZoom: function(zoom) {
+	setZoom: function(/*Number*/ zoom) {
 		return this.setView(this.getCenter(), zoom);
 	},
 	
@@ -79,11 +79,11 @@ L.Map = L.Class.extend({
 		return this.setView(bounds.getCenter(), zoom, true);
 	},
 	
-	panTo: function(center) {
+	panTo: function(/*LatLng*/ center) {
 		return this.setView(center, this._zoom);
 	},
 	
-	panBy: function(offset) {
+	panBy: function(/*Point*/ offset) {
 		// replaced with animated panBy in Map.Animation.js
 		this.fire('movestart');
 		
@@ -143,7 +143,7 @@ L.Map = L.Class.extend({
 	
 	// public methods for getting map state	
 	
-	getCenter: function(unbounded) {
+	getCenter: function(/*Boolean*/ unbounded) {
 		var viewHalf = this.getSize().divideBy(2),
 			centerPoint = this._getTopLeftPoint().add(viewHalf);
 		return this.unproject(centerPoint, this._zoom, unbounded);
@@ -205,38 +205,39 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint;
 	},
 	
-	mouseEventToContainerPoint: function(e) {
+	mouseEventToContainerPoint: function(/*MouseEvent*/ e) {
 		return L.DomEvent.getMousePosition(e, this._container);
 	},
 	
-	mouseEventToLayerPoint: function(e) {
+	mouseEventToLayerPoint: function(/*MouseEvent*/ e) {
 		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 	
-	mouseEventToLatLng: function(e) {
+	mouseEventToLatLng: function(/*MouseEvent*/ e) {
 		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
 	},
 	
-	containerPointToLayerPoint: function(point) {
+	containerPointToLayerPoint: function(/*Point*/ point) {
 		return point.subtract(L.DomUtil.getPosition(this._mapPane));
 	},
 	
-	layerPointToContainerPoint: function(point) {
+	layerPointToContainerPoint: function(/*Point*/ point) {
 		return point.add(L.DomUtil.getPosition(this._mapPane));
 	},
 	
-	layerPointToLatLng: function(point) {
+	layerPointToLatLng: function(/*Point*/ point) {
 		return this.unproject(point.add(this._initialTopLeftPoint));
 	},
 	
-	latLngToLayerPoint: function(latlng) {
+	latLngToLayerPoint: function(/*LatLng*/ latlng) {
 		return this.project(latlng)._subtract(this._initialTopLeftPoint);
 	},
 
-	project: function(/*Object*/ coord, /*(optional) Number*/ zoom)/*-> Point*/ {
-		var projectedPoint = this.options.projection.project(coord),
-			scale = this.options.scaling(isNaN(zoom) ? this._zoom : zoom);
-		return this.options.transformation._transform(projectedPoint, scale);
+	project: function(/*LatLng*/ latlng, /*(optional) Number*/ zoom)/*-> Point*/ {
+		var options = this.options,
+			projectedPoint = options.projection.project(latlng),
+			scale = options.scaling(isNaN(zoom) ? this._zoom : zoom);
+		return options.transformation._transform(projectedPoint, scale);
 	},
 	
 	unproject: function(/*Point*/ point, /*(optional) Number*/ zoom, /*(optional) Boolean*/ unbounded)/*-> Object*/ {
