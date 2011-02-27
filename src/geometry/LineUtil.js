@@ -82,45 +82,57 @@ L.Util.extend(L.LineUtil, {
 });
 
 L.Util.extend(L.LineUtil, {
-	// Liang-Barsky line clipping algorithm
+	// Cohen-Sutherland line segment clipping algorithm
+	// it's considered the fastest in case most clippings are trivial accepts or rejects
 	clipSegment: function(a, b, bounds) {
-		var tMin = 0,
-			tMax = 1,
-			dx = b.x - a.x,
-			dy = b.y - a.y;
+		var min = bounds.min,
+			max = bounds.max;
 		
-		function clip(p, q) {
-			if (p === 0) {
-				return (q >= 0);
+		var codeA = this._getBitCode(a, bounds),
+			codeB = this._getBitCode(b, bounds);
+		
+		while (true) {
+			if (!(codeA | codeB)) {
+				return [a, b];
+			} else if (codeA & codeB) {
+				return false;
 			} else {
-				var r = q/p;
-				if (p < 0) {
-					if (r > tMax) { return false; }
-					else if (r > tMin) { tMin = r; }
-				} else {
-					if (r < tMin) { return false; }
-					else if (r < tMax) { tMax = r; }
+				var codeOut = codeA || codeB,
+					dx = b.x - a.x,
+					dy = b.y - a.y,
+					p;
+				
+				if (codeOut & 8) {
+					p = new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
+				} else if (codeOut & 4) {
+					p = new L.Point(a.x + dx * (min.y - a.y) / dy, min.y);
+				} else if (codeOut & 2){
+					p = new L.Point(max.x, a.y + dy * (max.x - a.x) / dx);
+				} else if (codeOut & 1) {
+					p = new L.Point(min.x, a.y + dy * (min.x - a.x) / dx);
 				}
-				return true;
+				
+				var newCode = this._getBitCode(p, bounds);
+				
+				if (codeOut == codeA) {
+					a = p;
+					codeA = newCode;
+				} else {
+					b = p;
+					codeB = newCode;
+				}
 			}
 		}
+	},
+	
+	_getBitCode: function(/*Point*/ p, bounds) {
+		var code = 0;
 		
-		if (	clip(-dx, a.x - bounds.min.x) && 
-				clip( dx, bounds.max.x - a.x) && 
-				clip(-dy, a.y - bounds.min.y) && 
-				clip( dy, bounds.max.y - a.y)) {
-			if (tMax < 1) {
-				b = new L.Point(
-						a.x + dx * tMax,
-						a.y + dy * tMax);
-			}
-			if (tMin > 0) {
-				a = new L.Point(
-						a.x + dx * tMin,
-						a.y + dy * tMin);
-			}
-			return [a, b];
-		}
-		return false;
-	}
+		if (p.x < bounds.min.x) code |= 1;
+		else if (p.x > bounds.max.x) code |= 2;
+		if (p.y < bounds.min.y) code |= 4;
+		else if (p.y > bounds.max.y) code |= 8;
+		
+		return code;
+	}	
 });

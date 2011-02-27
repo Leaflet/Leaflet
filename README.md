@@ -40,7 +40,6 @@ On desktop:
  - Chrome
  - Safari 5
  - IE 9
- 
  - IE 6-8 (not perfect but fully accessible)
  
 On mobile:
