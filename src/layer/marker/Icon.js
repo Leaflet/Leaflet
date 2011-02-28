@@ -15,37 +15,40 @@ L.Icon = L.Class.extend({
 	},
 	
 	createIcon: function() {
-		return this._createImg('icon');
+		return this._createIcon('icon');
 	},
 	
 	createShadow: function() {
-		return this._createImg('shadow');
+		return this._createIcon('shadow');
 	},
 	
-	_createImg: function(name) {
-		var img = L.DomUtil.create('img', 'leaflet-marker-' + name),
-			size = this[name + 'Size'],
-			src = this[name + 'Url'];
+	_createIcon: function(name) {
+		var size = this[name + 'Size'],
+			src = this[name + 'Url'],
+			img = this._createImg(src);
 		
-		img.src = src;
+		img.className = 'leaflet-marker-' + name;
 		
-		if (this.iconAnchor) {
-			img.style.marginLeft = (-this.iconAnchor.x) + 'px';
-			img.style.marginTop = (-this.iconAnchor.y) + 'px';
-		} else {
-			L.DomEvent.addListener(img, 'load', this._setAnchorToCenter);
-		}
+		img.style.marginLeft = (-this.iconAnchor.x) + 'px';
+		img.style.marginTop = (-this.iconAnchor.y) + 'px';
 		
 		if (size) {
-			img.width = size.x;
-			img.height = size.y;
+			img.style.width = size.x + 'px';
+			img.style.height = size.y + 'px';
 		}
 		
 		return img;
 	},
 	
-	_setAnchorToCenter: function() {
-		this.style.marginLeft = (-this.width/2) + 'px';
-		this.style.marginTop = (-this.height/2) + 'px';
+	_createImg: function(src) {
+		var el;
+		if (!L.Browser.ie6) {
+			el = document.createElement('img');
+			el.src = src;
+		} else {
+			el = document.createElement('div');
+			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
+		}
+		return el;
 	}
 });
