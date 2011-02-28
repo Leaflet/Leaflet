@@ -1,6 +1,5 @@
-L.LineUtil = {};
 
-L.Util.extend(L.LineUtil, {
+L.LineUtil = {
 	simplify: function(points, tolerance) {
 		if (!tolerance) return points.slice();
 		
@@ -76,12 +75,8 @@ L.Util.extend(L.LineUtil, {
 		
 		var proj = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
 		return this._sqDist(p, proj);
-	}
-});
-
-L.Util.extend(L.LineUtil, {
-	// Cohen-Sutherland line segment clipping algorithm
-	// it's considered the fastest in case most clippings are trivial accepts or rejects
+	}, 
+	
 	clipSegment: function(a, b, bounds, useLastCode) {
 		var min = bounds.min,
 			max = bounds.max;
@@ -99,21 +94,8 @@ L.Util.extend(L.LineUtil, {
 				return false;
 			} else {
 				var codeOut = codeA || codeB,
-					dx = b.x - a.x,
-					dy = b.y - a.y,
-					p;
-				
-				if (codeOut & 8) {
-					p = new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
-				} else if (codeOut & 4) {
-					p = new L.Point(a.x + dx * (min.y - a.y) / dy, min.y);
-				} else if (codeOut & 2){
-					p = new L.Point(max.x, a.y + dy * (max.x - a.x) / dx);
-				} else if (codeOut & 1) {
-					p = new L.Point(min.x, a.y + dy * (min.x - a.x) / dx);
-				}
-				
-				var newCode = this._getBitCode(p, bounds);
+					p = this._getEdgeIntersection(a, b, codeOut, bounds),
+					newCode = this._getBitCode(p, bounds);
 				
 				if (codeOut == codeA) {
 					a = p;
@@ -126,6 +108,23 @@ L.Util.extend(L.LineUtil, {
 		}
 	},
 	
+	_getEdgeIntersection: function(a, b, code, bounds) {
+		var dx = b.x - a.x,
+			dy = b.y - a.y,
+			min = bounds.min,
+			max = bounds.max;
+		
+		if (code & 8) {
+			return new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
+		} else if (code & 4) {
+			return new L.Point(a.x + dx * (min.y - a.y) / dy, min.y);
+		} else if (code & 2){
+			return new L.Point(max.x, a.y + dy * (max.x - a.x) / dx);
+		} else if (code & 1) {
+			return new L.Point(min.x, a.y + dy * (min.x - a.x) / dx);
+		}
+	},
+	
 	_getBitCode: function(/*Point*/ p, bounds) {
 		var code = 0;
 		
@@ -135,5 +134,35 @@ L.Util.extend(L.LineUtil, {
 		else if (p.y > bounds.max.y) code |= 8;
 		
 		return code;
+	},
+	
+	clipPolygon: function(points, bounds) {
+		var min = bounds.min,
+			max = bounds.max,
+			clippedPoints = [],
+			codes = [],
+			i, j, len, edgeId, code;
+		
+		for (i = 0, len = points.length; i < len; i++) {
+			codes[i] = this._getBitCode(points[i]);
+		}
+		for (edgeId = 0; edgeId < 4; edgeId++) {
+			code = 1 << edgeId;
+			for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
+				if (!(codes[j] & code)) {
+					if (!(codes[i] & code)) {
+						clippedPoints.push(points[i]);
+					} else {
+						clippedPoints.push(this._getEdgeIntersection(points[j], points[i], code, bounds));
+					}
+				} else if (!(codes[i] & code)) {
+					clippedPoints.push(this._getEdgeIntersection(points[j], points[i], code, bounds));
+					clippedPoints.push(points[i]);
+				}
+			}
+			points = clippedPoints;
+			clippedPoints = [];
+		}
+		return points;
 	}
-});
+};
