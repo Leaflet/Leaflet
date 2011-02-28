@@ -34,6 +34,7 @@
 		'layer/marker/Marker.Popup.js',
 		
 		'layer/vector/Path.js',
+		'layer/vector/Path.VML.js',
 		'layer/vector/Polyline.js',
 		
 		'handler/Handler.js',

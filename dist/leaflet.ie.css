@@ -10,3 +10,7 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	border: 1px solid #bbb;
 	}
+.leaflet-vml-shape {
+	width: 1px;
+	height: 1px;
+	}

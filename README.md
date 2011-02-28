@@ -30,6 +30,7 @@ Controls:
 Known issues to be fixed:
 
  - show scaled background until tiles are loaded even with animation disabled
+ - tile loading glitch on double click zoom
  
 ## Browser support
 
@@ -38,8 +39,8 @@ On desktop:
  - Firefox 3.6+
  - Chrome
  - Safari 5
- - IE 9
- - IE 6-8 (not perfect but fully accessible)
+ - IE 7-9
+ - IE 6 (not perfect but accessible)
  
 On mobile:
  

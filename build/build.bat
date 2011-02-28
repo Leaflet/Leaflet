@@ -25,6 +25,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/layer/marker/Marker.js ^
 --js ../src/layer/marker/Marker.Popup.js ^
 --js ../src/layer/vector/Path.js ^
+--js ../src/layer/vector/Path.VML.js ^
 --js ../src/layer/vector/Polyline.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^

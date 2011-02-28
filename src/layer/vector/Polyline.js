@@ -8,7 +8,7 @@ L.Polyline = L.Path.extend({
 	options: {
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
-		smoothFactor: 1,
+		smoothFactor: 1.0,
 		noClip: false
 	},
 	
@@ -27,18 +27,22 @@ L.Polyline = L.Path.extend({
 	_projectLatlngs: function() {
 		this._originalPoints = [];
 		
-		for (var i = 0, len = this._latlngs.length, point; i < len; i++) {
+		for (var i = 0, len = this._latlngs.length; i < len; i++) {
 			this._originalPoints[i] = this._map.latLngToLayerPoint(this._latlngs[i]);
 		}
 	},
 	
 	_buildPathStr: function() {
+		var round = L.Path.VML;
+		
 		this._pathStr = '';
+		
 		for (var i = 0, len = this._parts.length, part; i < len; i++) {
 			part = this._parts[i];
 			
 			for (var j = 0, len2 = part.length, p; j < len2; j++) {
 				p = part[j];
+				if (round) p._round();
 				this._pathStr += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 			}
 		}
@@ -56,30 +60,33 @@ L.Polyline = L.Path.extend({
 		
 		this._parts = [];
 		
+		var parts = this._parts,
+			vp = this._map._pathViewport,
+			lu = L.LineUtil;
+		
 		for (i = 0, k = 0; i < len - 1; i++) {
-			segment = L.LineUtil.clipSegment(points[i], points[i+1], this._map._pathViewport, i);
+			segment = lu.clipSegment(points[i], points[i+1], vp, i);
 			if (!segment) continue;
 			
-			this._parts[k] = this._parts[k] || [];
-			this._parts[k].push(segment[0]);
+			parts[k] = parts[k] || [];
+			parts[k].push(segment[0]);
 			
 			// if segment goes out of screen, or it's the last one, it's the end of the line part
 			if ((segment[1] != points[i+1]) || (i == len - 2)) {
-				this._parts[k].push(segment[1]);
+				parts[k].push(segment[1]);
 				k++;  
 			}
 		}
 	},
 	
+	// simplify each clipped part of the polyline
 	_simplifyPoints: function() {
-		//var l1 = 0, l2 = 0;
-		// simplify each clipped part of the polyline
-		for (var i = 0, len = this._parts.length; i < len; i++) {
-			//l1 += this._parts[i].length;
-			this._parts[i] = L.LineUtil.simplify(this._parts[i], this.options.smoothFactor);
-			//l2 += this._parts[i].length;
+		var parts = this._parts,
+			lu = L.LineUtil;
+		
+		for (var i = 0, len = parts.length; i < len; i++) {
+			parts[i] = lu.simplify(parts[i], this.options.smoothFactor);
 		}
-		//console.log(l1, l2, l2/l1);
 	},
 	
 	_updatePath: function() {

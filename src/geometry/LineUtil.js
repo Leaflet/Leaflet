@@ -15,6 +15,10 @@ L.Util.extend(L.LineUtil, {
 		return points; 
 	},
 	
+	pointToSegmentDistance:  function(p, p1, p2) {
+		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));
+	},
+	
 	// Douglas-Peucker simplification algorithm, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
 	_dpSimplify: function(points, t2) {
 		var maxDist2 = 0,
@@ -131,5 +135,5 @@ L.Util.extend(L.LineUtil, {
 		else if (p.y > bounds.max.y) code |= 8;
 		
 		return code;
-	}	
+	}
 });

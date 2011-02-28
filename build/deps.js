@@ -38,11 +38,22 @@ var deps = {
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
 	},
 	
-	Vector: {
-		src: ['geometry/LineUtil.js', 'layer/vector/Path.js', 'layer/vector/Polyline.js'],
-		desc: 'SVG-powered overlays, including polylines, polygons and circles.'
+	Path: {
+		src: ['layer/vector/Path.js'],
+		desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
+		heading: 'Vector layers'
 	},
 	
+	PathVML: {
+		src: ['layer/vector/PathVML.js'],
+		desc: 'VML fallback for vector rendering core (IE 6-8).'
+	},
+	
+	Polyline: {
+		src: ['geometry/LineUtil.js', 'layer/vector/Polyline.js'],
+		deps: ['Path'],
+		desc: 'Polyline overlays.'
+	},
 	
 	MapDrag: {
 		src: ['dom/DomEvent.js',

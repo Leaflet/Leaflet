@@ -38,7 +38,14 @@ L.Point.prototype = {
 	},
 	
 	round: function() {
-		return new L.Point(Math.round(this.x), Math.round(this.y));
+		return this.clone()._round();
+	},
+	
+	// destructive round
+	_round: function() {
+		this.x = Math.round(this.x);
+		this.y = Math.round(this.y);
+		return this;
 	},
 	
 	clone: function() {
