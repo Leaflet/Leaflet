@@ -55,6 +55,18 @@ var deps = {
 		desc: 'Polyline overlays.'
 	},
 	
+	Polygon: {
+		src: ['geometry/PolyUtil.js', 'layer/vector/Polygon.js'],
+		deps: ['Polyline'],
+		desc: 'Polygon overlays.'
+	},
+
+	Circle: {
+		src: ['layer/vector/Circle.js'],
+		deps: ['Path'],
+		desc: 'Circle overlays.'
+	},
+
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',

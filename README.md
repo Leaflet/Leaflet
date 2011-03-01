@@ -11,8 +11,8 @@ Please send your pull requests to [mourner](http://github.com/mourner) - we'll b
 
  Overlays:
  
- - vectors (polyline, polygon, circle)
  - KML, GeoRSS, GeoJSON layers
+ - mouse events in polylines, polygons and circles
 
  Interaction: 
  

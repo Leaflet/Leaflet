@@ -42,7 +42,7 @@ L.Polygon = L.Polyline.extend({
 		if (this.options.noClip) return;
 		
 		for (var i = 0, len = this._parts.length; i < len; i++) {
-			this._parts[i] = L.LineUtil.clipPolygon(this._parts[i], this._map._pathViewport);
+			this._parts[i] = L.PolyUtil.clipPolygon(this._parts[i], this._map._pathViewport);
 		}
 	},
 	

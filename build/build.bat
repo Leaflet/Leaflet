@@ -9,6 +9,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/geometry/Bounds.js ^
 --js ../src/geometry/Transformation.js ^
 --js ../src/geometry/LineUtil.js ^
+--js ../src/geometry/PolyUtil.js ^
 --js ../src/dom/DomEvent.js ^
 --js ../src/dom/DomUtil.js ^
 --js ../src/dom/Draggable.js ^
@@ -27,6 +28,8 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/layer/vector/Path.js ^
 --js ../src/layer/vector/Path.VML.js ^
 --js ../src/layer/vector/Polyline.js ^
+--js ../src/layer/vector/Polygon.js ^
+--js ../src/layer/vector/Circle.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^

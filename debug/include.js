@@ -12,6 +12,7 @@
 		'geometry/Bounds.js',
 		'geometry/Transformation.js',
 		'geometry/LineUtil.js',
+		'geometry/PolyUtil.js',
 		
 		'dom/DomEvent.js',
 		'dom/DomUtil.js',
@@ -37,6 +38,7 @@
 		'layer/vector/Path.VML.js',
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
+		'layer/vector/Circle.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',
