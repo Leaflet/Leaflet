@@ -9,12 +9,12 @@ Please send your pull requests to [mourner](http://github.com/mourner) - we'll b
 
 ## What's left to do for a feature-complete version
 
- Overlays:
+Overlays:
  
- - KML, GeoRSS, GeoJSON layers
+ - GeoJSON, KML, GeoRSS layers
  - mouse events in polylines, polygons and circles
 
- Interaction: 
+Interaction: 
  
  - shift-drag zoom
  - double tap on mobile webkit
@@ -23,9 +23,8 @@ Please send your pull requests to [mourner](http://github.com/mourner) - we'll b
 Controls:
 
  - control infrastructure (smart positioning)
+ - basic zoom control, zoom slider
  - copyright control
- - basic zoom control
- - zoom slider
 
 Known issues to be fixed:
 
