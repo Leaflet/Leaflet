@@ -29,7 +29,7 @@ L.Path = L.Class.extend({
 	},
 	
 	initialize: function(options) {
-		this.options = L.Util.extend({}, this.options, options);
+		L.Util.setOptions(this, options);
 	},
 	
 	onAdd: function(map) {

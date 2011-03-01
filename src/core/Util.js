@@ -71,5 +71,9 @@ L.Util = {
 	formatNum: function(num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
-	}
+	},
+	
+	setOptions: function(obj, options) {
+		obj.options = L.Util.extend({}, obj.options, options);
+	} 
 };

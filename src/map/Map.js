@@ -31,8 +31,9 @@ L.Map = L.Class.extend({
 	// constructor
 	
 	initialize: function(/*HTMLElement or String*/ id, /*Object*/ options) {
+		L.Util.setOptions(this, options);
+		
 		this._container = L.DomUtil.get(id);
-		L.Util.extend(this.options, options);
 		
 		this._initLayout();
 		

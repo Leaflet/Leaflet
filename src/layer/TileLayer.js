@@ -17,7 +17,7 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	initialize: function(url, options) {
-		L.Util.extend(this.options, options);
+		L.Util.setOptions(this, options);
 		
 		this._url = url;
 		

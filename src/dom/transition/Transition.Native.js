@@ -31,7 +31,7 @@ L.Transition = L.Transition.extend({
 	
 	initialize: function(/*HTMLElement*/ el, /*Object*/ options) {
 		this._el = el;
-		L.Util.extend(this.options, options);
+		L.Util.setOptions(this, options);
 
 		L.DomEvent.addListener(el, L.Transition.END, this._onTransitionEnd, this);
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);

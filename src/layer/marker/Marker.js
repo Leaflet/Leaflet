@@ -12,8 +12,8 @@ L.Marker = L.Class.extend({
 	},
 	
 	initialize: function(latlng, options) {
+		L.Util.setOptions(this, options);
 		this._latlng = latlng;	
-		L.Util.extend(this.options, options);
 	},
 	
 	onAdd: function(map) {

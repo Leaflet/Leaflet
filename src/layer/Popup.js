@@ -13,9 +13,9 @@ L.Popup = L.Class.extend({
 	},
 	
 	initialize: function(latlng, content, options) {
+		L.Util.setOptions(this, options);
 		this._latlng = latlng; 
 		this._content = content;
-		L.Util.extend(this.options, options);
 	},
 	
 	onAdd: function(map) {
