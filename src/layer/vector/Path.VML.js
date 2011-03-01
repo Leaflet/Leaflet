@@ -54,6 +54,8 @@ L.Path = !L.Path.VML? L.Path : L.Path.extend({
 			this._stroke = this._createElement('stroke');
 			this._stroke.endcap = 'round';
 			this._container.appendChild(this._stroke);
+		} else {
+			this._container.stroked = false;
 		}
 		if (this.options.fill) {
 			this._container.filled = true;
