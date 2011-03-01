@@ -42,8 +42,8 @@ L.LineUtil = {
 		if (maxDist2 >= t2) {
 			var part1 = points.slice(0, index),
 				part2 = points.slice(index),
-				simplifiedPart1 = this.simplifyDP(part1, t2).slice(0, len - 2),
-				simplifiedPart2 = this.simplifyDP(part2, t2);
+				simplifiedPart1 = this.simplifyDP(part1, tol).slice(0, len - 2),
+				simplifiedPart2 = this.simplifyDP(part2, tol);
 			
 			return simplifiedPart1.concat(simplifiedPart2);
 		} else {
