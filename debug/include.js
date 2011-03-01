@@ -36,6 +36,7 @@
 		'layer/vector/Path.js',
 		'layer/vector/Path.VML.js',
 		'layer/vector/Polyline.js',
+		'layer/vector/Polygon.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',

@@ -140,28 +140,30 @@ L.LineUtil = {
 		var min = bounds.min,
 			max = bounds.max,
 			clippedPoints = [],
-			codes = [],
-			i, j, len, edgeId, code;
+			codes = [1, 4, 2, 8],
+			i, j, len, edgeId, code, point;
 		
 		for (i = 0, len = points.length; i < len; i++) {
-			codes[i] = this._getBitCode(points[i]);
+			points[i]._code = this._getBitCode(points[i], bounds);
 		}
-		for (edgeId = 0; edgeId < 4; edgeId++) {
-			code = 1 << edgeId;
+		for (k = 0; k < 4; k++) {
+			code = codes[k];
+			clippedPoints = [];
 			for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
-				if (!(codes[j] & code)) {
-					if (!(codes[i] & code)) {
-						clippedPoints.push(points[i]);
-					} else {
-						clippedPoints.push(this._getEdgeIntersection(points[j], points[i], code, bounds));
+				if (!(points[i]._code & code)) {
+					if (points[j]._code & code) {
+						point = this._getEdgeIntersection(points[j], points[i], code, bounds);
+						point._code = this._getBitCode(point, bounds);
+						clippedPoints.push(point);
 					}
-				} else if (!(codes[i] & code)) {
-					clippedPoints.push(this._getEdgeIntersection(points[j], points[i], code, bounds));
 					clippedPoints.push(points[i]);
+				} else if (!(points[j]._code & code)) {
+					point = this._getEdgeIntersection(points[j], points[i], code, bounds);
+					point._code = this._getBitCode(point, bounds);
+					clippedPoints.push(point);
 				}
 			}
 			points = clippedPoints;
-			clippedPoints = [];
 		}
 		return points;
 	}

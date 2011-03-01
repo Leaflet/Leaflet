@@ -33,18 +33,20 @@ L.Polyline = L.Path.extend({
 	},
 	
 	_buildPathStr: function() {
-		var round = L.Path.VML;
-		
 		this._pathStr = '';
 		
-		for (var i = 0, len = this._parts.length, part; i < len; i++) {
-			part = this._parts[i];
-			
-			for (var j = 0, len2 = part.length, p; j < len2; j++) {
-				p = part[j];
-				if (round) p._round();
-				this._pathStr += (j ? 'L' : 'M') + p.x + ' ' + p.y;
-			}
+		for (var i = 0, len = this._parts.length; i < len; i++) {
+			this._buildPathPartStr(this._parts[i]);
+		}
+	},
+	
+	_buildPathPartStr: function(points) {
+		var round = L.Path.VML;
+		
+		for (var j = 0, len2 = points.length, p; j < len2; j++) {
+			p = points[j];
+			if (round) p._round();
+			this._pathStr += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 		}
 	},
 	
