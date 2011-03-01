@@ -13,18 +13,17 @@ L.Polyline = L.Path.extend({
 	},
 	
 	onAdd: function(map) {
-		this._map = map;
+		L.Path.prototype.onAdd.call(this, map);
 		
-		this._initElements();
-		
-		this._projectLatlngs();
-		this._updatePath();
-
-		map.on('viewreset', this._projectLatlngs, this);
 		map.on('moveend', this._updatePath, this);
 	},
 	
-	_projectLatlngs: function() {
+	onRemove: function(map) {
+		L.Path.prototype.onRemove.call(this, map);
+		map.off('moveend', this._updatePath, this);
+	},
+	
+	projectLatlngs: function() {
 		this._originalPoints = [];
 		
 		for (var i = 0, len = this._latlngs.length; i < len; i++) {
@@ -32,22 +31,22 @@ L.Polyline = L.Path.extend({
 		}
 	},
 	
-	_buildPathStr: function() {
-		this._pathStr = '';
-		
-		for (var i = 0, len = this._parts.length; i < len; i++) {
-			this._buildPathPartStr(this._parts[i]);
+	getPathString: function() {
+		for (var i = 0, len = this._parts.length, str = ''; i < len; i++) {
+			str += this._getPathPartStr(this._parts[i]);
 		}
+		return str;
 	},
 	
-	_buildPathPartStr: function(points) {
+	_getPathPartStr: function(points) {
 		var round = L.Path.VML;
 		
-		for (var j = 0, len2 = points.length, p; j < len2; j++) {
+		for (var j = 0, len2 = points.length, str = '', p; j < len2; j++) {
 			p = points[j];
 			if (round) p._round();
-			this._pathStr += (j ? 'L' : 'M') + p.x + ' ' + p.y;
+			str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 		}
+		return str;
 	},
 	
 	_clipPoints: function() {
@@ -94,8 +93,6 @@ L.Polyline = L.Path.extend({
 	_updatePath: function() {
 		this._clipPoints();
 		this._simplifyPoints();
-		
-		this._buildPathStr();
 		
 		L.Path.prototype._updatePath.call(this);
 	}

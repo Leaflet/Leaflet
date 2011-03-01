@@ -1,3 +1,6 @@
+/*
+ * L.Path is a base class for rendering vector paths on a map. It's inherited by Polyline, Circle, etc.
+ */
 
 L.Path = L.Class.extend({
 	statics: (function() {
@@ -26,24 +29,30 @@ L.Path = L.Class.extend({
 	},
 	
 	initialize: function(options) {
-		L.Util.extend(this.options, options);
+		this.options = L.Util.extend({}, this.options, options);
 	},
 	
 	onAdd: function(map) {
 		this._map = map;
+		
 		this._initElements();
+		this.projectLatlngs();
 		this._updatePath();
+
+		map.on('viewreset', this.projectLatlngs, this);
 	},
 	
 	onRemove: function(map) {
 		map._pathRoot.removeChild(this._container);
+		map.off('viewreset', this._projectLatlngs, this);
 	},
 	
-	setPathString: function(str) {
-		this._pathStr = str;
-		if (this._path) {
-			this._updatePath();
-		}
+	projectLatlngs: function() {
+		// do all projection stuff here
+	},
+	
+	getPathString: function() {
+		// form path string here
 	},
 	
 	_initElements: function() {
@@ -124,7 +133,7 @@ L.Path = L.Class.extend({
 	},
 	
 	_updatePath: function() {
-		this._path.setAttribute('d', this._pathStr);
+		this._path.setAttribute('d', this.getPathString());
 	},
 	
 	_createElement: function(name) {

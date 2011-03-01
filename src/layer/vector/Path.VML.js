@@ -1,5 +1,6 @@
 /*
- * Vector rendering for IE6-8 through VML. Thanks to Raphael library for inspiration!
+ * Vector rendering for IE6-8 through VML. 
+ * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
 
 L.Path.VML = (function() {
@@ -13,7 +14,7 @@ L.Path.VML = (function() {
 
 L.Path = !L.Path.VML? L.Path : L.Path.extend({
 	_createElement: (function() { 
-		document.createStyleSheet().addRule('.lvml', 'behavior:url(#default#VML);display: inline-block; position: absolute;');
+		document.createStyleSheet().addRule('.lvml', 'behavior:url(#default#VML); display: inline-block; position: absolute;');
 		try {
 			document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
 			return function(name) {
@@ -78,7 +79,7 @@ L.Path = !L.Path.VML? L.Path : L.Path.extend({
 	
 	_updatePath: function() {
 		this._container.style.display = 'none';
-		this._path.v = this._pathStr;
+		this._path.v = this.getPathString();
 		this._container.style.display = '';
 	}
 });

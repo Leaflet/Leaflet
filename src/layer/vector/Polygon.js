@@ -16,8 +16,8 @@ L.Polygon = L.Polyline.extend({
 		}
 	},
 	
-	_projectLatlngs: function() {
-		L.Polyline.prototype._projectLatlngs.call(this);
+	projectLatlngs: function() {
+		L.Polyline.prototype.projectLatlngs.call(this);
 		
 		// project polygon holes points
 		// TODO move this logic to Polyline to get rid of duplication
@@ -46,8 +46,8 @@ L.Polygon = L.Polyline.extend({
 		}
 	},
 	
-	_buildPathPartStr: function(points) {
-		L.Polyline.prototype._buildPathPartStr.call(this, points);
-		this._pathStr += L.Path.SVG ? 'z' : 'x';
+	_getPathPartStr: function(points) {
+		var str = L.Polyline.prototype._getPathPartStr.call(this, points);
+		return str + (L.Path.SVG ? 'z' : 'x');
 	}
 });
