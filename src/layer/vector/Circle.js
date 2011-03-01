@@ -11,16 +11,6 @@ L.Circle = L.Path.extend({
 		fill: true
 	},
 	
-	onAdd: function(map) {
-		L.Path.prototype.onAdd.call(this, map);
-		map.on('viewreset', this._updatePath, this);
-	},
-	
-	onRemove: function(map) {
-		L.Path.prototype.onRemove.call(this, map);
-		map.off('viewreset', this._updatePath, this);
-	},
-	
 	projectLatlngs: function() {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 	},

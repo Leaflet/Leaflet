@@ -25,7 +25,9 @@ L.Path = L.Class.extend({
 		
 		fill: false,
 		fillColor: null, //same as color by default
-		fillOpacity: 0.2
+		fillOpacity: 0.2,
+		
+		updateOnMoveEnd: false
 	},
 	
 	initialize: function(options) {
@@ -40,11 +42,15 @@ L.Path = L.Class.extend({
 		this._updatePath();
 
 		map.on('viewreset', this.projectLatlngs, this);
+		
+		this._updateTrigger = this.options.updateOnMoveEnd ? 'moveend' : 'viewreset';
+		map.on(this._updateTrigger, this._updatePath, this);
 	},
 	
 	onRemove: function(map) {
 		map._pathRoot.removeChild(this._container);
 		map.off('viewreset', this._projectLatlngs, this);
+		map.off(this._updateTrigger, this._updatePath, this);
 	},
 	
 	projectLatlngs: function() {

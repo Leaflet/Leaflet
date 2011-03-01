@@ -9,18 +9,9 @@ L.Polyline = L.Path.extend({
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
 		smoothFactor: 1.0,
-		noClip: false
-	},
-	
-	onAdd: function(map) {
-		L.Path.prototype.onAdd.call(this, map);
+		noClip: false,
 		
-		map.on('moveend', this._updatePath, this);
-	},
-	
-	onRemove: function(map) {
-		L.Path.prototype.onRemove.call(this, map);
-		map.off('moveend', this._updatePath, this);
+		updateOnMoveEnd: true
 	},
 	
 	projectLatlngs: function() {
