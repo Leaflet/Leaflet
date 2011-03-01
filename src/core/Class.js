@@ -7,11 +7,11 @@ L.Class = function() {};
 L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	
 	// extended class with the new prototype
-	function NewClass() {
+	var NewClass = function() {
 		if (!L.Class._prototyping && this.initialize) {
 			this.initialize.apply(this, arguments);
 		}
-	}
+	};
 
 	// instantiate class without calling constructor
 	L.Class._prototyping = true;
@@ -38,7 +38,7 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	
 	// merge options
 	if (props.options && proto.options) {
-		props.options = L.Util.extend(proto.options, props.options);
+		props.options = L.Util.extend({}, proto.options, props.options);
 	}
 
 	// mix given properties into the prototype
