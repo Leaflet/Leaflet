@@ -1,27 +1,35 @@
+/*
+ * L.LineUtil contains different utility functions for line segments, 
+ * polylines and polygons (clipping, simplification, distances, etc.)
+ */
 
 L.LineUtil = {
-	simplify: function(points, tolerance) {
+	/*
+	 * Simplify polyline with vertex reduction and Douglas-Peucker simplification.
+	 * Improves rendering performance dramatically by lessening the number of points to draw.
+	 */
+	simplify: function(/*Point[]*/ points, /*Number*/ tolerance) {
 		if (!tolerance) return points.slice();
 		
-		var t2 = tolerance * tolerance;
-		
 		// stage 1: vertex reduction
-		points = this._reducePoints(points, t2);
+		points = this.reducePoints(points, tolerance);
 		
 		// stage 2: Douglas-Peucker simplification
-		points = this._dpSimplify(points, t2);
+		points = this.simplifyDP(points, tolerance);
 		
 		return points; 
 	},
 	
-	pointToSegmentDistance:  function(p, p1, p2) {
-		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));
+	// distance from a point to a segment between two points
+	pointToSegmentDistance:  function(/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
+		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));	
 	},
 	
-	// Douglas-Peucker simplification algorithm, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
-	_dpSimplify: function(points, t2) {
+	// Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
+	simplifyDP: function(points, tol) {
 		var maxDist2 = 0,
-			index = 0;
+			index = 0,
+			t2 = tol * tol;
 
 		for (var i = 1, len = points.length, dist2; i < len - 1; i++) {
 			dist2 = this._sqPointToSegmentDist(points[i], points[0], points[len - 1]);
@@ -34,8 +42,8 @@ L.LineUtil = {
 		if (maxDist2 >= t2) {
 			var part1 = points.slice(0, index),
 				part2 = points.slice(index),
-				simplifiedPart1 = this._dpSimplify(part1, t2).slice(0, len - 2),
-				simplifiedPart2 = this._dpSimplify(part2, t2);
+				simplifiedPart1 = this.simplifyDP(part1, t2).slice(0, len - 2),
+				simplifiedPart2 = this.simplifyDP(part2, t2);
 			
 			return simplifiedPart1.concat(simplifiedPart2);
 		} else {
@@ -44,8 +52,9 @@ L.LineUtil = {
 	},
 	
 	// reduce points that are too close to each other to a single point
-	_reducePoints: function(points, t2) {
-		var reducedPoints = [points[0]];
+	reducePoints: function(points, tol) {
+		var reducedPoints = [points[0]],
+			t2 = tol * tol;
 		
 		for (var i = 1, prev = 0, len = points.length; i < len; i++) {
 			if (this._sqDist(points[i], points[prev]) < t2) continue;
@@ -58,25 +67,10 @@ L.LineUtil = {
 		return reducedPoints;
 	},
 	
-	_sqDist: function(p1, p2) {
-		var dx = p2.x - p1.x,
-			dy = p2.y - p1.y;
-		return dx * dx + dy * dy;
-	},
-	
-	_sqPointToSegmentDist: function(p, p1, p2) {
-		var x2 = p2.x - p1.x,
-			y2 = p2.y - p1.y,
-			dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
-			t = dot / this._sqDist(p1, p2);
-		
-		if (t < 0) return this._sqDist(p, p1);
-		if (t > 1) return this._sqDist(p, p2);
-		
-		var proj = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
-		return this._sqDist(p, proj);
-	}, 
-	
+	/*
+	 * Cohen-Sutherland line clipping algorithm.
+	 * Used to avoid rendering parts of a polyline that are not currently visible.
+	 */
 	clipSegment: function(a, b, bounds, useLastCode) {
 		var min = bounds.min,
 			max = bounds.max;
@@ -88,10 +82,13 @@ L.LineUtil = {
 		this._lastCode = codeB;
 		
 		while (true) {
+			// if a,b is inside the clip window (trivial accept)
 			if (!(codeA | codeB)) {
 				return [a, b];
+			// if a,b is outside the clip window (trivial reject)
 			} else if (codeA & codeB) {
 				return false;
+			// other cases
 			} else {
 				var codeOut = codeA || codeB,
 					p = this._getEdgeIntersection(a, b, codeOut, bounds),
@@ -108,19 +105,68 @@ L.LineUtil = {
 		}
 	},
 	
+	/*
+	 * Sutherland-Hodgeman polygon clipping algorithm.
+	 * Used to avoid rendering parts of a polygon that are not currently visible.
+	 */
+	clipPolygon: function(points, bounds) {
+		var min = bounds.min,
+			max = bounds.max,
+			clippedPoints,
+			edges = [1, 4, 2, 8],
+			i, j, k,
+			a, b,
+			len, edge, p;
+		
+		for (i = 0, len = points.length; i < len; i++) {
+			points[i]._code = this._getBitCode(points[i], bounds);
+		}
+		
+		// for each edge (left, bottom, right, top)
+		for (k = 0; k < 4; k++) {
+			edge = edges[k];
+			clippedPoints = [];
+			
+			for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
+				a = points[i];
+				b = points[j];
+				
+				// if a is inside the clip window
+				if (!(a._code & edge)) {
+					// if b is outside the clip window (a->b goes out of screen)
+					if (b._code & edge) {
+						p = this._getEdgeIntersection(b, a, edge, bounds);
+						p._code = this._getBitCode(p, bounds);
+						clippedPoints.push(p);
+					}
+					clippedPoints.push(a);
+					
+				// else if b is inside the clip window (a->b enters the screen)
+				} else if (!(b._code & edge)) {
+					p = this._getEdgeIntersection(b, a, edge, bounds);
+					p._code = this._getBitCode(p, bounds);
+					clippedPoints.push(p);
+				}
+			}
+			points = clippedPoints;
+		}
+		
+		return points;
+	},
+	
 	_getEdgeIntersection: function(a, b, code, bounds) {
 		var dx = b.x - a.x,
 			dy = b.y - a.y,
 			min = bounds.min,
 			max = bounds.max;
 		
-		if (code & 8) {
+		if (code & 8) { // top
 			return new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
-		} else if (code & 4) {
+		} else if (code & 4) { // bottom
 			return new L.Point(a.x + dx * (min.y - a.y) / dy, min.y);
-		} else if (code & 2){
+		} else if (code & 2){ // right
 			return new L.Point(max.x, a.y + dy * (max.x - a.x) / dx);
-		} else if (code & 1) {
+		} else if (code & 1) { // left
 			return new L.Point(min.x, a.y + dy * (min.x - a.x) / dx);
 		}
 	},
@@ -128,43 +174,32 @@ L.LineUtil = {
 	_getBitCode: function(/*Point*/ p, bounds) {
 		var code = 0;
 		
-		if (p.x < bounds.min.x) code |= 1;
-		else if (p.x > bounds.max.x) code |= 2;
-		if (p.y < bounds.min.y) code |= 4;
-		else if (p.y > bounds.max.y) code |= 8;
+		if (p.x < bounds.min.x) code |= 1; // left
+		else if (p.x > bounds.max.x) code |= 2; // right
+		if (p.y < bounds.min.y) code |= 4; // bottom
+		else if (p.y > bounds.max.y) code |= 8; // top
 		
 		return code;
 	},
 	
-	clipPolygon: function(points, bounds) {
-		var min = bounds.min,
-			max = bounds.max,
-			clippedPoints = [],
-			codes = [1, 4, 2, 8],
-			i, j, len, edgeId, code, point;
+	// square distance (to avoid unnecessary Math.sqrt calls)
+	_sqDist: function(p1, p2) {
+		var dx = p2.x - p1.x,
+			dy = p2.y - p1.y;
+		return dx * dx + dy * dy;
+	},
+	
+	// square distance from point to a segment
+	_sqPointToSegmentDist: function(p, p1, p2) {
+		var x2 = p2.x - p1.x,
+			y2 = p2.y - p1.y,
+			dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
+			t = dot / this._sqDist(p1, p2);
 		
-		for (i = 0, len = points.length; i < len; i++) {
-			points[i]._code = this._getBitCode(points[i], bounds);
-		}
-		for (k = 0; k < 4; k++) {
-			code = codes[k];
-			clippedPoints = [];
-			for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
-				if (!(points[i]._code & code)) {
-					if (points[j]._code & code) {
-						point = this._getEdgeIntersection(points[j], points[i], code, bounds);
-						point._code = this._getBitCode(point, bounds);
-						clippedPoints.push(point);
-					}
-					clippedPoints.push(points[i]);
-				} else if (!(points[j]._code & code)) {
-					point = this._getEdgeIntersection(points[j], points[i], code, bounds);
-					point._code = this._getBitCode(point, bounds);
-					clippedPoints.push(point);
-				}
-			}
-			points = clippedPoints;
-		}
-		return points;
-	}
+		if (t < 0) return this._sqDist(p, p1);
+		if (t > 1) return this._sqDist(p, p2);
+		
+		var proj = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
+		return this._sqDist(p, proj);
+	}	
 };
