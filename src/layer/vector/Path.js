@@ -85,12 +85,19 @@ L.Path = L.Class.extend({
 			max = vp.max,
 			width = max.x - min.x,
 			height = max.y - min.y,
-			root = this._map._pathRoot;
+			root = this._map._pathRoot,
+			pane = this._map._panes.overlayPane;
 	
+		// Hack to make flicker on drag end on mobile webkit less irritating
+		// Unfortunately I haven't found a good workaround for this yet
+		if (L.Browser.mobileWebkit) { pane.removeChild(root); }
+		
+		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
 		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
-		L.DomUtil.setPosition(root, min);
+		
+		if (L.Browser.mobileWebkit) { pane.appendChild(root); }
 	},
 	
 	_updateViewport: function() {

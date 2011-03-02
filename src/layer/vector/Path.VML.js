@@ -13,6 +13,10 @@ L.Path.VML = (function() {
 })();
 
 L.Path = !L.Path.VML? L.Path : L.Path.extend({
+	statics: {
+		CLIP_PADDING: 0.02
+	},
+	
 	_createElement: (function() { 
 		document.createStyleSheet().addRule('.lvml', 'behavior:url(#default#VML); display: inline-block; position: absolute;');
 		try {
