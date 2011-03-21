@@ -45,6 +45,7 @@
 		'handler/TouchZoom.js',
 		'handler/DoubleClickZoom.js',
 		'handler/ScrollWheelZoom.js',
+		'handler/ShiftDragZoom.js',
 		
 		'map/Map.js',
 		'map/ext/Map.Geolocation.js',

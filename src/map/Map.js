@@ -21,6 +21,7 @@ L.Map = L.Class.extend({
 		touchZoom: L.Browser.mobileWebkit,
 		scrollWheelZoom: !L.Browser.mobileWebkit,
 		doubleClickZoom: true,
+		shiftDragZoom: true,
 		
 		//misc
 		trackResize: true,
@@ -77,7 +78,7 @@ L.Map = L.Class.extend({
 	
 	fitBounds: function(/*LatLngBounds*/ bounds) {
 		var zoom = this.getBoundsZoom(bounds);
-		return this.setView(bounds.getCenter(), zoom, true);
+		return this.setView(bounds.getCenter(), zoom);
 	},
 	
 	panTo: function(/*LatLng*/ center) {
@@ -334,7 +335,8 @@ L.Map = L.Class.extend({
 			dragging: L.Handler.MapDrag,
 			touchZoom: L.Handler.TouchZoom,
 			doubleClickZoom: L.Handler.DoubleClickZoom,
-			scrollWheelZoom: L.Handler.ScrollWheelZoom
+			scrollWheelZoom: L.Handler.ScrollWheelZoom,
+			shiftDragZoom: L.Handler.ShiftDragZoom
 		};
 		for (var i in handlers) {
 			if (handlers.hasOwnProperty(i) && handlers[i]) {

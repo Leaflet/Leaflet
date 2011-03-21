@@ -3,7 +3,14 @@
 .leaflet-map-pane,
 .leaflet-tile,
 .leaflet-marker-icon, 
-.leaflet-marker-shadow {
+.leaflet-marker-shadow,
+.leaflet-tile-pane, 
+.leaflet-overlay-pane,
+.leaflet-shadow-pane,
+.leaflet-marker-pane,
+.leaflet-popup-pane,
+.leaflet-overlay-pane svg,
+.leaflet-zoom-box { 
 	position: absolute;
 	}
 .leaflet-container {
@@ -32,14 +39,6 @@
 	cursor: pointer;
 	}
 
-.leaflet-tile-pane, 
-.leaflet-overlay-pane,
-.leaflet-shadow-pane,
-.leaflet-marker-pane,
-.leaflet-popup-pane { 
-	position: absolute; 
-	}
-
 .leaflet-tile-pane { z-index: 2; }
 .leaflet-overlay-pane { z-index: 3; }
 .leaflet-shadow-pane { z-index: 4; }
@@ -53,9 +52,10 @@
 	visibility: hidden;
 	}
 
-.leaflet-overlay-pane svg {
-	position: absolute;
-	}
+.leaflet-zoom-box {
+	width: 0;
+	height: 0;
+}
 
 
 /* Popup layout */
@@ -110,6 +110,11 @@
 
 .leaflet-container {
 	background: #ddd;
+	}
+.leaflet-zoom-box {
+	border: 2px dotted #05f;
+	background: white;
+	opacity: 0.5;
 	}
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;

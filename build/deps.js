@@ -16,6 +16,7 @@ var deps = {
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections and the base Map class.'
 	},
 	
+	
 	TileLayer: {
 		src: ['layer/TileLayer.js'],
 		desc: 'The base class for displaying tile layers on the map.',
@@ -37,6 +38,7 @@ var deps = {
 		deps: ['Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
 	},
+	
 	
 	Path: {
 		src: ['layer/vector/Path.js'],
@@ -67,6 +69,7 @@ var deps = {
 		desc: 'Circle overlays.'
 	},
 
+	
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',
@@ -89,6 +92,11 @@ var deps = {
 		      'handler/Handler.js',
 		      'handler/TouchZoom.js'],
 		desc: 'Enables smooth touch zooming on mobile webkit-powered devices (iPhone, iPod Touch, iPad, Android).'
+	},
+	
+	ShiftDragZoom: {
+		src: ['handler/ShiftDragZoom.js'],
+		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
 	
 	

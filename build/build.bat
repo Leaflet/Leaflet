@@ -35,6 +35,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/handler/TouchZoom.js ^
 --js ../src/handler/ScrollWheelZoom.js ^
 --js ../src/handler/DoubleClickZoom.js ^
+--js ../src/handler/ShiftDragZoom.js ^
 --js ../src/map/Map.js ^
 --js ../src/map/ext/Map.Geolocation.js ^
 --js ../src/map/ext/Map.Popup.js ^

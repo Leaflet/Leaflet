@@ -27,7 +27,7 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
 	},
-	
+
 	_onDown: function(e) {
 		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
 		
@@ -38,12 +38,13 @@ L.Draggable = L.Class.extend({
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
 		this._dragStartPos = L.DomUtil.getPosition(this._element);
+		
 		this._startX = e.clientX;
 		this._startY = e.clientY;
 		
 		this._moved = false;
 
-		this._disableTextSelection();
+		L.DomUtil.disableTextSelection();
 		
 		this._setMovingCursor();
 		
@@ -58,9 +59,9 @@ L.Draggable = L.Class.extend({
 		if (e.touches && e.touches.length > 1) { return; }
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
 		
-		var offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY);
+		this._offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY);
 			
-		this._newPos = this._dragStartPos.add(offset);
+		this._newPos = this._dragStartPos.add(this._offset);
 		
 		this._updatePosition();
 		
@@ -77,7 +78,7 @@ L.Draggable = L.Class.extend({
 	},
 	
 	_onUp: function(e) {
-		this._enableTextSelection();
+		L.DomUtil.enableTextSelection();
 		
 		this._restoreCursor();
 		
@@ -96,20 +97,5 @@ L.Draggable = L.Class.extend({
 	
 	_restoreCursor: function() {
 		document.body.style.cursor = this._bodyCursor;
-	},
-	
-	_disableTextSelection: function() {
-		if (document.selection && document.selection.empty) { 
-			document.selection.empty();
-		}
-		if (!this._onselectstart) {
-			this._onselectstart = document.onselectstart;
-			document.onselectstart = L.Util.falseFn;
-		}
-	},
-	
-	_enableTextSelection: function() {
-		document.onselectstart = this._onselectstart;
-		this._onselectstart = null;
 	}
 });

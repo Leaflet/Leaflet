@@ -39,6 +39,21 @@ L.DomUtil = {
 		return el;
 	},
 	
+	disableTextSelection: function() {
+		if (document.selection && document.selection.empty) { 
+			document.selection.empty();
+		}
+		if (!this._onselectstart) {
+			this._onselectstart = document.onselectstart;
+			document.onselectstart = L.Util.falseFn;
+		}
+	},
+	
+	enableTextSelection: function() {
+		document.onselectstart = this._onselectstart;
+		this._onselectstart = null;
+	},
+	
 	
 	//TODO refactor away this ugly translate/position mess
 	
