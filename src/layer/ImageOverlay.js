@@ -12,7 +12,6 @@ L.ImageOverlay = L.Class.extend({
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 		
 		this._image.style.visibility = 'hidden';
-		this._image.style.position = 'absolute';
 		//TODO opacity option
 		
 		L.Util.extend(this._image, {
