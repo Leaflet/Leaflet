@@ -1,5 +1,6 @@
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	_zoomToIfCenterInView: function(center, zoom, centerOffset) {
+
 		if (this._animatingZoom) {
 			return true;
 		}
@@ -11,7 +12,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 			offset = centerOffset.divideBy(1 - 1/scale);
 		
 		//if offset does not exceed half of the view
-		if (!this._offsetIsWithinView(offset, 0.5)) { return false; }
+		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 		
 		this._initPanes();
 		this._runAnimation(center, zoom, scale, offset);
