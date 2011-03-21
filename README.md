@@ -16,7 +16,6 @@ Overlays:
 
 Interaction: 
  
- - shift-drag zoom
  - double tap on mobile webkit
  - panning intertia on mobile webkit
   
@@ -29,7 +28,6 @@ Controls:
 Known issues to be fixed:
 
  - show scaled background until tiles are loaded even with animation disabled
- - tile loading glitch on double click zoom
  
 ## Browser support
 
