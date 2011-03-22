@@ -14,6 +14,7 @@ L.ImageOverlay = L.Class.extend({
 		this._image.style.visibility = 'hidden';
 		//TODO opacity option
 		
+		//TODO createImage util method to remove duplication
 		L.Util.extend(this._image, {
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,

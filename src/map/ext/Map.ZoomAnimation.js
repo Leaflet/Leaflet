@@ -14,13 +14,13 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		//if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 		
-		this._initPanes();
+		this._initTilePanes();
 		this._runAnimation(center, zoom, scale, offset);
 		
 		return true;
 	},
 	
-	_initPanes: function() {
+	_initTilePanes: function() {
 		if (!this._tileBg) {
 			this._tileBg = this._createPane('leaflet-tile-pane');
 			this._tileBg.style.zIndex = 1;

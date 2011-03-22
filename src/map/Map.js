@@ -12,8 +12,8 @@ L.Map = L.Class.extend({
 		scaling: function(zoom) { return 256 * (1 << zoom); },
 		
 		// state
-		center: new L.LatLng(0, 0),
-		zoom: 0,
+		center: null,
+		zoom: null,
 		layers: [],
 		
 		//interaction
@@ -43,7 +43,12 @@ L.Map = L.Class.extend({
 			if (L.Handler) { this._initInteraction(); }
 		}
 		
-		this.setView(this.options.center, this.options.zoom, true);
+		var center = this.options.center,
+			zoom = this.options.zoom;
+		
+		if (center !== null && zoom !== null) {
+			this.setView(center, zoom, true);
+		}
 
 		var layers = this.options.layers;
 		layers = (layers instanceof Array ? layers : [layers]); 
@@ -53,14 +58,10 @@ L.Map = L.Class.extend({
 	
 	// public methods that modify map state
 	
-	// replaced by animation-powered implementation in Map.Animation.js
+	// replaced by animation-powered implementation in Map.PanAnimation.js
 	setView: function(center, zoom, forceReset) {
-		zoom = this._limitZoom(zoom);
-		var zoomChanged = (this._zoom != zoom);
-
 		// reset the map view 
-		this._resetView(center, zoom);
-		
+		this._resetView(center, this._limitZoom(zoom));
 		return this;
 	},
 	
@@ -101,8 +102,6 @@ L.Map = L.Class.extend({
 		var id = L.Util.stamp(layer);
 		
 		if (!this._layers[id]) {
-			layer.onAdd(this);
-		
 			this._layers[id] = layer;
 			
 			if (layer.options && !isNaN(layer.options.maxZoom)) {
@@ -113,7 +112,16 @@ L.Map = L.Class.extend({
 			}
 			//TODO getMaxZoom, getMinZoom
 			
-			this.fire('layeradd', {layer: layer});
+			function addLayer() {
+				layer.onAdd(this);
+				this.fire('layeradd', {layer: layer});
+			}
+			
+			if (this._loaded) {
+				addLayer.call(this);
+			} else {
+				this.on('load', addLayer, this);
+			}
 		}
 		return this;
 	},
@@ -207,6 +215,13 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint;
 	},
 	
+	getPanes: function() {
+		return this._panes;
+	},
+	
+	
+	// conversion methods
+	
 	mouseEventToContainerPoint: function(/*MouseEvent*/ e) {
 		return L.DomEvent.getMousePosition(e, this._container);
 	},
@@ -248,27 +263,32 @@ L.Map = L.Class.extend({
 		return this.options.projection.unproject(untransformedPoint, unbounded);
 	},
 	
-	getPanes: function() {
-		return this._panes;
-	},
-	
 	
 	// private methods that modify map state
 	
 	_initLayout: function() {
-		this._container.className += ' leaflet-container';
+		var container = this._container;
 		
-		var position = L.DomUtil.getStyle(this._container, 'position');
-		this._container.style.position = (position == 'absolute' ? 'absolute' : 'relative');
+		container.className += ' leaflet-container';
 		
-		this._panes = {};
-		this._mapPane = this._panes.mapPane = this._createPane('leaflet-map-pane', this._container);
+		var position = L.DomUtil.getStyle(container, 'position');
+		container.style.position = (position == 'absolute' ? 'absolute' : 'relative');
 		
-		this._tilePane = this._panes.tilePane = this._createPane('leaflet-tile-pane');
-		this._panes.shadowPane = this._createPane('leaflet-shadow-pane');
-		this._panes.overlayPane = this._createPane('leaflet-overlay-pane');
-		this._panes.markerPane = this._createPane('leaflet-marker-pane');
-		this._panes.popupPane = this._createPane('leaflet-popup-pane');
+		this._initPanes();
+		
+		if (this._initControlPos) this._initControlPos();
+	},
+	
+	_initPanes: function() {
+		var panes = this._panes = {};
+		
+		this._mapPane = panes.mapPane = this._createPane('leaflet-map-pane', this._container);
+		
+		this._tilePane = panes.tilePane = this._createPane('leaflet-tile-pane');
+		panes.shadowPane = this._createPane('leaflet-shadow-pane');
+		panes.overlayPane = this._createPane('leaflet-overlay-pane');
+		panes.markerPane = this._createPane('leaflet-marker-pane');
+		panes.popupPane = this._createPane('leaflet-popup-pane');
 	},
 	
 	_createPane: function(className, container) {
@@ -290,6 +310,11 @@ L.Map = L.Class.extend({
 		this.fire('move');
 		if (zoomChanged) { this.fire('zoomend'); }
 		this.fire('moveend');
+		
+		if (!this._loaded) {
+			this._loaded = true;
+			this.fire('load');
+		}
 	},
 	
 	_initLayers: function(layers) {
@@ -349,6 +374,7 @@ L.Map = L.Class.extend({
 	// private methods for getting map state
 	
 	_getTopLeftPoint: function() {
+		if (!this._loaded) throw new Error('Set map center and zoom first.');
 		var offset = L.DomUtil.getPosition(this._mapPane);
 		return this._initialTopLeftPoint.subtract(offset);
 	},
