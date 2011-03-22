@@ -3,11 +3,15 @@
  */
 
 L.Handler.ShiftDragZoom = L.Handler.extend({
+	initialize: function(map, enabled) {
+		this._container = map._container;
+		this._pane = map._panes.overlayPane;
+
+		L.Handler.prototype.initialize.apply(this, arguments);
+	},
+	
 	enable: function() {
 		if (this._enabled) { return; }
-		
-		this._container = this._map._container;
-		this._pane = this._map._panes.overlayPane;
 		
 		L.DomEvent.addListener(this._container, 'mousedown', this._onMouseDown, this);
 		
