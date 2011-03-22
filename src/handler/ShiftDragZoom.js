@@ -17,7 +17,7 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 	disable: function() {
 		if (!this._enabled) { return; }
 		
-		L.DomEvent.removeListener(container, 'mousedown', this._onMouseDown);
+		L.DomEvent.removeListener(this._container, 'mousedown', this._onMouseDown);
 		
 		this._enabled = false;
 	},
