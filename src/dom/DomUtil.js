@@ -54,6 +54,18 @@ L.DomUtil = {
 		this._onselectstart = null;
 	},
 	
+	CLASS_RE: /(\\s|^)'+cls+'(\\s|$)/,
+	
+	hasClass: function(el, name) {
+		return (el.className.length > 0) && 
+				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
+	},
+	
+	addClass: function(el, name) {
+		if (!L.DomUtil.hasClass(el, name)) {
+			el.className += (el.className ? ' ' : '') + name; 
+		}
+	},
 	
 	//TODO refactor away this ugly translate/position mess
 	
