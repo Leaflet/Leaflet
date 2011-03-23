@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a lightweight JavaScript library for map display and interaction by CloudMade</title>
+	
+	<meta charset="utf-8" />
+	
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="css/screen.css" media="screen, projection" />
+
+	<script src="highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<script src="../dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Lightweight Open-Source JavaScript Library for Map Display and Interaction by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<hr />
+		<p class="nav large quiet">
+			<a href="index.html">Home</a> |
+			<a href="#">Features</a> |  
+			<span>API Reference</span> | 
+			<a href="#">Examples</a> | 
+			<a href="http://github.com/CloudMade/Leaflet/zipball/master">Download (zip)</a> | 
+			<a href="http://github.com/CloudMade/Leaflet">Fork on GitHub &rarr;</a> | 
+			<a href="http://twitter.com/LeafletJS">Follow on Twitter &rarr;</a>
+		</p>
+		<hr />
+		
+		<h2>L.Map</h2>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Map( &lt;HTMLElement|String&gt;&nbsp;<i>id</i>, &lt;<a href="#map-options">Map&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a map object given a div element (or its id) and optionally an object literal with map options described below.</td>
+			</tr>
+		</table>
+		
+		<h3 id="map-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>center</code></td>
+				<td><code>LatLng</code></td>
+				<td><code>LatLng(0,&nbsp;0)</code></td>
+				<td>Initial geographical center of the map.</td>
+			</tr>
+			<tr>
+				<td><code>zoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>Initial map zoom.</td>
+			</tr>
+			<tr>
+				<td><code>layers</code></td>
+				<td><code>ILayer[]</code></td>
+				<td><code>[]</code></td>
+				<td>Layers that will be added to the map initially.</td>
+			</tr>
+			<tr>
+				<td><code>dragging</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map be draggable with mouse/touch or not.</td>
+			</tr>
+			<tr>
+				<td><code>touchZoom</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map can be zoomed by touch-dragging with two fingers.</td>
+			</tr>
+			<tr>
+				<td><code>scrollWheelZoom</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map can be zoomed by using the mouse wheel.</td>
+			</tr>
+			<tr>
+				<td><code>doubleClickZoom</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map can be zoomed in by double clicking on it.</td>
+			</tr>
+			<tr>
+				<td><code>trackResize</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map automatically handles browser window resize to update itself.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods that modify map state</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setView( &lt;LatLng&gt; <i>center</i>, &lt;Number&gt;&nbsp;<i>zoom</i>, &lt;Boolean&gt;&nbsp;<i>forceReset?</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Sets the view of the map (geographical center and zoom). If <code>forceReset</code> is set to <code>true</code>, the map is reloaded even if it's eligible for pan animation (<code>false</code> by default).</td>
+			</tr>
+			<tr>
+				<td><code>setZoom( &lt;Number&gt;&nbsp;<i>zoom</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Sets the zoom of the map.</td>
+			</tr>
+			<tr>
+				<td><code>zoomIn()</code></td>
+				<td><code>this</code></td>
+				<td>Increases the zoom of the map by 1.</td>
+			</tr>
+			<tr>
+				<td><code>zoomOut()</code></td>
+				<td><code>this</code></td>
+				<td>Decreases the zoom of the map by 1.</td>
+			</tr>
+			<tr>
+				<td><code>fitBounds( &lt;LatLngBounds&gt; <i>bounds</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
+			</tr>
+			<tr>
+				<td><code>panTo( &lt;LatLng&gt; <i>latlng</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
+			</tr>
+			<tr>
+				<td><code>panBy( &lt;Point&gt; <i>point</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Pans the map by a given number of pixels (animated).</td>
+			</tr>
+			<tr id="map-addlayer">
+				<td><code>addLayer( &lt;ILayer&gt; <i>layer</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Adds a given layer to the map.</td>
+			</tr>
+			<tr>
+				<td><code>removeLayer( &lt;ILayer&gt; <i>layer</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Removes the given layer from the map.</td>
+			</tr>
+			<tr>
+				<td><code>invalidateSize()</code></td>
+				<td><code>this</code></td>
+				<td>Checks f the map container size changed and updates the map if so (loads tiles, etc.)</td>
+			</tr>
+		</table>
+
+		<h3>Methods that get map state</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>getCenter()</code></td>
+				<td><code>LatLng</code></td>
+				<td>Returns the geographical center of the map view.</td>
+			</tr>
+			<tr>
+				<td><code>getZoom()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the current zoom of the map view.</td>
+			</tr>
+			<tr>
+				<td><code>getMinZoom()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the minimum zoom level of the map.</td>
+			</tr>
+			<tr>
+				<td><code>getMaxZoom()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the maximum zoom level of the map.</td>
+			</tr>
+			<tr>
+				<td><code>getBoundsZoom( &lt;LatLngBounds&gt; <i>bounds</i> )</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the maximum zoom level on which the given bounds fit to the map view in its entirety.</td>
+			</tr>
+			<tr>
+				<td><code>getSize()</code></td>
+				<td><code>Point</code></td>
+				<td>Returns the current size of the map container.</td>
+			</tr>
+			<tr>
+				<td><code>getPixelBounds()</code></td>
+				<td><code>Bounds</code></td>
+				<td>Returns the bounds of the current map view in projected pixel coordinates (sometimes useful in layer and overlay implementations).</td>
+			</tr>
+			<tr>
+				<td><code>getPixelBounds()</code></td>
+				<td><code>Bounds</code></td>
+				<td>Returns the bounds of the current map view in projected pixel coordinates (useful in custom layer and overlay implementations).</td>
+			</tr>
+			<tr>
+				<td><code>getPixelOrigin()</code></td>
+				<td><code>Point</code></td>
+				<td>Returns the projected pixel coordinates of the top left point of the map layer (useful in custom layer and overlay implementations).</td>
+			</tr>
+			<tr>
+				<td><code>getPanes()</code></td>
+				<td><code>Panes</code></td>
+				<td>Returns an object for accessing different panes of the map (tile pane, marker pane, etc.).</td>
+			</tr>
+		</table>
+			
+	
+		<h3>Conversion methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>mouseEventToContainerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Returns the pixel coordinates of a mouse click (relative to the top left corner of the map) given its event object.</td>
+			</tr>
+			<tr>
+				<td><code>mouseEventToLayerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Returns the pixel coordinates of a mouse click relative to the map layer given its event object (useful for placing overlays on the map).</td>
+			</tr>
+			<tr>
+				<td><code>mouseEventToLatLng( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
+				<td><code>LatLng</code></td>
+				<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
+			</tr>
+			<tr>
+				<td><code>containerPointToLayerPoint( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Converts the point relative to the map container to a point relative to the map layer.</td>
+			</tr>
+			<tr>
+				<td><code>layerPointToContainerPoint( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Converts the point relative to the map layer to a point relative to the map container.</td>
+			</tr>
+			<tr>
+				<td><code>layerPointToLatLng( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>LatLng</code></td>
+				<td>Return the geographical coordinates of a given map layer point.</td>
+			</tr>
+			<tr>
+				<td><code>latLngToLayerPoint( &lt;LatLng&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Return the map layer point that corresponds to the given geographical coordinates.</td>
+			</tr>
+			<tr>
+				<td><code>project( &lt;LatLng&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Projects the given geographical coordinates to pixel coordinates for the given zoom level (current zoom level by default).</td>
+			</tr>
+			<tr>
+				<td><code>unproject( &lt;Point&gt;&nbsp;<i>point</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
+				<td><code>LatLng</code></td>
+				<td>Projects the given pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
+			</tr>
+		</table>
+		
+		
+		<h2>L.Path</h2>
+		<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
+		
+		<h3 id="path-options">Options</h3>
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>stroke</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether to draw stroke along the path. Set it to <code>false</code> to disable borders on polygons or circles.</td>
+			</tr>
+			<tr>
+				<td><code>color</code></td>
+				<td><code>String</code></td>
+				<td><code>'#03f'</code></td>
+				<td>Stroke color.</td>
+			</tr>
+			<tr>
+				<td><code>weight</code></td>
+				<td><code>Number</code></td>
+				<td><code>5</code></td>
+				<td>Stroke width in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>opacity</code></td>
+				<td><code>Number</code></td>
+				<td><code>0.5</code></td>
+				<td>Stroke opacity.</td>
+			</tr>
+			<tr>
+				<td><code>fill</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>Whether to fill the path with color. Set it to <code>false</code> to disable filling on polygons or circles.</td>
+			</tr>
+			<tr>
+				<td><code>fillColor</code></td>
+				<td><code>String</code></td>
+				<td>same as color</td>
+				<td>Fill color.</td>
+			</tr>
+			<tr>
+				<td><code>fillOpacity</code></td>
+				<td><code>Number</code></td>
+				<td>0.2</td>
+				<td>Fill opacity.</td>
+			</tr>
+		</table>
+		
+		<h3>Constants</h3>
+		<table>
+			<tr>
+				<th>Constant</th>
+				<th>Type</th>
+				<th>Value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Path.SVG</code></th>
+				<td><code>Boolean</code></th>
+				<td>depends</th>
+				<td>True if SVG is used for vector rendering (true for most modern browsers).</th>
+			</tr>
+			<tr>
+				<td><code>L.Path.VML</code></th>
+				<td><code>Boolean</code></th>
+				<td>depends</th>
+				<td>True if VML is used for vector rendering (IE 6-8).</th>
+			</tr>
+			<tr>
+				<td><code>L.Path.CLIP_PADDING</code></th>
+				<td><code>Number</code></th>
+				<td>0.5&nbsp;for&nbsp;SVG<br />0.02&nbsp;for&nbsp;VML</th>
+				<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance. </th>
+			</tr>
+		</table>
+		
+		
+		<h2>Polyline</h2>
+		
+		<p>A class for drawing polyline overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Polyline( &lt;LatLng[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a polyline object given an array of geographical points and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="polyline-options">Options</h3>
+		
+		<p>You can use <a href="path-options">Path options</a> and additionally the following options:</p>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>smoothFactor</code></td>
+				<td><code>Number</code></td>
+				<td><code>1.0</code></td>
+				<td>How much to simplify the polyline on each zoom level. More means better performance and smoother look, and less means more accurate representation.</td>
+			</tr>
+			<tr>
+				<td><code>noClip</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>Disabled polyline clipping.</td>
+			</tr>
+		</table>
+		
+		
+		<h2>Polygon</h2>
+		
+		<p>A class for drawing polygon overlays on a map. Extends Polyline. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Polygon( &lt;LatLng[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline).</td>
+			</tr>
+		</table>
+		
+		
+		<h2>Circle</h2>
+		
+		<p>A class for drawing circle overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Circle( &lt;LatLng&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>radius</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a polygon object given an geographical point, a radius in pixels and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		
+		<hr />
+
+		<p class="quiet">&copy; 2010 CloudMade. Map data &copy; 2010 OpenStreetMap.org contributors.</p>
+	</div>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+</body>
+</html>

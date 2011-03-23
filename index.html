@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a lightweight JavaScript library for map display and interaction by CloudMade</title>
+	
+	<meta charset="utf-8" />
+	
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="docs/css/screen.css" media="screen, projection" />
+
+	<script src="docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="dist/leaflet.ie.css" /><![endif]-->
+	<script src="dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Lightweight Open-Source JavaScript Library for Map Display and Interaction by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<hr />
+		<p class="nav large quiet">
+			<span>Home</span> |
+			<a href="#">Features</a> |  
+			<a href="reference.html">API Reference</a> | 
+			<a href="#">Examples</a> | 
+			<a href="http://github.com/CloudMade/Leaflet/zipball/master">Download (zip)</a> | 
+			<a href="http://github.com/CloudMade/Leaflet">Fork on GitHub &rarr;</a> | 
+			<a href="http://twitter.com/LeafletJS">Follow on Twitter &rarr;</a>
+		</p>
+		<hr />
+		
+		<h3>About the library</h3>
+		<p>Leaflet is a lightweight BSD-licensed JavaScript library for tile-based map display and interaction. It will form the core of CloudMade's next generation JavaScript API.</p>
+		
+		<p>Leaflet is built from the ground up to work well on <em>both desktop and mobile</em> web browsers, utilizing cutting-edge technologies included in HTML5. It's main priorities are <em>usability, performance, A-grade browser support, flexibility and easy to use API</em>. The OOP-based code of the library is designed to be modular, extensible and very easy to understand and modify.</p>
+		<!-- <p><strong>Supported browsers:</strong> IE6+, Firefox 3.6+, Safari 5+, Chrome, iOS 3+, Android 2.2+</p> -->
+	
+		<hr />
+		
+		<h3>Basic usage example</h3>
+		<div id="map"></div>
+		<script>
+			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+				cloudmadeCopyright = '&copy; 2011 CloudMade, map data by OpenStreetMap contributors, CCBYSA',
+				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, copyright: cloudmadeCopyright});
+			
+			var map = new L.Map('map');
+			map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+			
+			var marker = new L.Marker(new L.LatLng(51.5, -0.09));
+			map.addLayer(marker);
+
+			marker.bindPopup('A pretty CSS3 popup.<br />Easily customizable.').openPopup();
+		</script>
+			
+		<pre><code class="javascript">var map = new L.Map('map'),
+	cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+	
+map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+
+var marker = new L.Marker(new L.LatLng(51.5, -0.09));
+	
+map.addLayer(marker);
+marker.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.").openPopup();</code></pre><!-- .addControl(new L.Control.Nav()) -->
+
+		<hr />
+			
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+</body>
+</html>
+<!-- <a href="http://github.com/CloudMade/Leaflet/zipball/master">
+        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+        <a href="http://github.com/CloudMade/Leaflet"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a> -->
