@@ -1,0 +1,56 @@
+.container {
+	padding-top: 40px;
+	width: 790px;
+	}
+code {
+	font-family: Courier, monospace;
+	}
+.container pre code {
+	padding: 0;
+	background: white;
+	font-family: Courier, monospace;
+	color: #444;
+}
+	
+h1 {
+	text-shadow: 1px 1px 3px #888;
+	}
+h2 {
+	margin-top: 1.5em;
+	border-bottom: 1px solid #ccc;
+	}
+/*.container p {
+	margin-right: 160px;
+	}*/
+.alt {
+	color: #666;
+	font-family: "Warnock Pro", "Goudy Old Style","Palatino","Book Antiqua", Georgia, serif;
+	font-style: italic;
+	font-weight: normal;
+	}
+
+#map {
+	height: 250px;
+	border: 1px solid #ccc;
+	-moz-box-shadow: 0px 0px 10px #aaa; 
+	-webkit-box-shadow: 0px 0px 10px #aaa; 
+	box-shadow: 0px 0px 10px #aaa; 
+	}
+
+.nav {
+	margin-left: -5px;
+	line-height: 1em;
+	}
+	.nav a, .nav span {
+		padding: 0 5px;
+		}
+	.nav span a {
+		padding: 0;
+		}
+		
+table { border-collapse: collapse; }
+th { background:#e5ecf9; }
+
+th, td {
+	padding: 4px 5px;
+	}
