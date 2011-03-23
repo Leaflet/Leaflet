@@ -112,15 +112,15 @@ L.Map = L.Class.extend({
 			}
 			//TODO getMaxZoom, getMinZoom
 			
-			function addLayer() {
+			var onMapLoad = function() {
 				layer.onAdd(this);
 				this.fire('layeradd', {layer: layer});
-			}
+			};
 			
 			if (this._loaded) {
-				addLayer.call(this);
+				onMapLoad.call(this);
 			} else {
-				this.on('load', addLayer, this);
+				this.on('load', onMapLoad, this);
 			}
 		}
 		return this;
