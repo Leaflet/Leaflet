@@ -27,6 +27,7 @@ Controls:
 
 Known issues to be fixed:
 
+ - flickering of vector layers on drag end under mobile webkit
  - show scaled background until tiles are loaded even with animation disabled
  
 ## Browser support
