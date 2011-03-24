@@ -23,7 +23,7 @@ L.DomUtil = {
 		var top = 0, 
 			left = 0;
 		do {
-			top += (el.offsetTop - el.scrollTop) || 0;
+			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
 			el = el.offsetParent;
 		} while (el);
