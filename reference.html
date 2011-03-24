@@ -184,7 +184,7 @@ map.addLayer(cloudmade);</code></pre>
 			<tr>
 				<td><code>invalidateSize()</code></td>
 				<td><code>this</code></td>
-				<td>Checks f the map container size changed and updates the map if so (loads tiles, etc.)</td>
+				<td>Checks if the map container size changed and updates the map if so — call it after you've changed the map size dynamically.</td>
 			</tr>
 		</table>
 
@@ -232,11 +232,6 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Returns the bounds of the current map view in projected pixel coordinates (sometimes useful in layer and overlay implementations).</td>
 			</tr>
 			<tr>
-				<td><code>getPixelBounds()</code></td>
-				<td><code>Bounds</code></td>
-				<td>Returns the bounds of the current map view in projected pixel coordinates (useful in custom layer and overlay implementations).</td>
-			</tr>
-			<tr>
 				<td><code>getPixelOrigin()</code></td>
 				<td><code>Point</code></td>
 				<td>Returns the projected pixel coordinates of the top left point of the map layer (useful in custom layer and overlay implementations).</td>
@@ -258,6 +253,16 @@ map.addLayer(cloudmade);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
+				<td><code>latLngToLayerPoint( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>Point</code></td>
+				<td>Returns the map layer point that corresponds to the given geographical coordinates (useful for placing overlays on the map).</td>
+			</tr>
+			<tr>
+				<td><code>layerPointToLatLng( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the geographical coordinates of a given map layer point.</td>
+			</tr>
+			<tr>
 				<td><code>mouseEventToContainerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
 				<td><code>Point</code></td>
 				<td>Returns the pixel coordinates of a mouse click (relative to the top left corner of the map) given its event object.</td>
@@ -265,7 +270,7 @@ map.addLayer(cloudmade);</code></pre>
 			<tr>
 				<td><code>mouseEventToLayerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
 				<td><code>Point</code></td>
-				<td>Returns the pixel coordinates of a mouse click relative to the map layer given its event object (useful for placing overlays on the map).</td>
+				<td>Returns the pixel coordinates of a mouse click relative to the map layer given its event object.
 			</tr>
 			<tr>
 				<td><code>mouseEventToLatLng( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
@@ -281,16 +286,6 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code>layerPointToContainerPoint( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
 				<td><code>Point</code></td>
 				<td>Converts the point relative to the map layer to a point relative to the map container.</td>
-			</tr>
-			<tr>
-				<td><code>layerPointToLatLng( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
-				<td><code><a href="#latlng">LatLng</a></code></td>
-				<td>Return the geographical coordinates of a given map layer point.</td>
-			</tr>
-			<tr>
-				<td><code>latLngToLayerPoint( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
-				<td>Return the map layer point that corresponds to the given geographical coordinates.</td>
 			</tr>
 			<tr>
 				<td><code>project( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
