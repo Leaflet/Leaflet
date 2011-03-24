@@ -42,10 +42,10 @@ h2 {
 	line-height: 1em;
 	}
 	.nav a, .nav span {
-		padding: 0 5px;
+		margin: 0 5px;
 		}
 	.nav span a {
-		padding: 0;
+		margin: 0;
 		}
 		
 table { border-collapse: collapse; }
@@ -60,4 +60,13 @@ th, td {
 	top: 0; 
 	right: 0; 
 	border: 0;
+	}
+	
+a.github-link {
+	background: url(https://github.com/favicon.png) left center no-repeat;
+	padding-left: 20px;
+	}
+a.twitter-link {
+	background: url(http://twitter.com/phoenix/favicon.ico) left center no-repeat;
+	padding-left: 20px;
 	}
