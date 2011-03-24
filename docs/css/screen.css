@@ -6,7 +6,8 @@ code {
 	font-family: Courier, monospace;
 	}
 .container pre code {
-	padding: 0;
+	padding: 10px 15px;
+	border: 1px solid #ccc;
 	background: white;
 	font-family: Courier, monospace;
 	color: #444;
@@ -69,4 +70,7 @@ a.github-link {
 a.twitter-link {
 	background: url(http://twitter.com/phoenix/favicon.ico) left center no-repeat;
 	padding-left: 20px;
+	}
+	
+.javascript .keyword {
 	}

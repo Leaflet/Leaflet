@@ -66,15 +66,21 @@
 			marker.bindPopup('A pretty CSS3 popup.<br />Easily customizable.').openPopup();
 		</script>
 			
-		<pre><code class="javascript">var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+		<pre><code class="javascript">// create a CloudMade tile layer
+var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
 	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
-	
+
+// initialize the map on the "map" div
 var map = new L.Map('map');
+
+// set the map view to a given center and zoom and add the CloudMade layer
 map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
 
+// create a marker in the given location and add it to the map
 var marker = new L.Marker(new L.LatLng(51.5, -0.09));
 map.addLayer(marker);
 
+// attach a given HTML content to the marker and immediately open it
 marker.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.").openPopup();</code></pre>
 
 		<hr />

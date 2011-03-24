@@ -39,6 +39,23 @@
 		
 		<h2>L.Map</h2>
 		
+		<p>The central class of the API — it is used to create a map on a page and manipulate it.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">// initialize the map on the "map" div with a given center and zoom 
+var map = new L.Map('map', {
+	center: new L.LatLng(51.505, -0.09), 
+	zoom: 13
+});
+
+// create a CloudMade tile layer
+var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+// add the CloudMade layer to the map
+map.addLayer(cloudmade);</code></pre>
+		
 		<h3>Constructor</h3>
 		
 		<table>
@@ -63,8 +80,8 @@
 			</tr>
 			<tr>
 				<td><code>center</code></td>
-				<td><code>LatLng</code></td>
-				<td><code>LatLng(0,&nbsp;0)</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td><code><a href="#latlng">LatLng</a>(0,&nbsp;0)</code></td>
 				<td>Initial geographical center of the map.</td>
 			</tr>
 			<tr>
@@ -120,7 +137,7 @@
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>setView( &lt;LatLng&gt; <i>center</i>, &lt;Number&gt;&nbsp;<i>zoom</i>, &lt;Boolean&gt;&nbsp;<i>forceReset?</i> )</code></td>
+				<td><code>setView( &lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>, &lt;Number&gt;&nbsp;<i>zoom</i>, &lt;Boolean&gt;&nbsp;<i>forceReset?</i> )</code></td>
 				<td><code>this</code></td>
 				<td>Sets the view of the map (geographical center and zoom). If <code>forceReset</code> is set to <code>true</code>, the map is reloaded even if it's eligible for pan animation (<code>false</code> by default).</td>
 			</tr>
@@ -145,7 +162,7 @@
 				<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
 			</tr>
 			<tr>
-				<td><code>panTo( &lt;LatLng&gt; <i>latlng</i> )</code></td>
+				<td><code>panTo( &lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</code></td>
 				<td><code>this</code></td>
 				<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
 			</tr>
@@ -181,7 +198,7 @@
 			</tr>
 			<tr>
 				<td><code>getCenter()</code></td>
-				<td><code>LatLng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the geographical center of the map view.</td>
 			</tr>
 			<tr>
@@ -252,7 +269,7 @@
 			</tr>
 			<tr>
 				<td><code>mouseEventToLatLng( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
-				<td><code>LatLng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
 			</tr>
 			<tr>
@@ -267,25 +284,113 @@
 			</tr>
 			<tr>
 				<td><code>layerPointToLatLng( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
-				<td><code>LatLng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Return the geographical coordinates of a given map layer point.</td>
 			</tr>
 			<tr>
-				<td><code>latLngToLayerPoint( &lt;LatLng&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>latLngToLayerPoint( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
 				<td><code>Point</code></td>
 				<td>Return the map layer point that corresponds to the given geographical coordinates.</td>
 			</tr>
 			<tr>
-				<td><code>project( &lt;LatLng&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
+				<td><code>project( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
 				<td><code>Point</code></td>
 				<td>Projects the given geographical coordinates to pixel coordinates for the given zoom level (current zoom level by default).</td>
 			</tr>
 			<tr>
 				<td><code>unproject( &lt;Point&gt;&nbsp;<i>point</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
-				<td><code>LatLng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Projects the given pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
 			</tr>
 		</table>
+		
+		
+		<h2 id="latlng">L.LatLng</h2>
+		
+		<p>Represents a geographical point with a certain latitude and longitude.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LatLng( &lt;Number&gt;&nbsp;<i>latitude</i>, &lt;Number&gt;&nbsp;<i>longitude</i>, &lt;Boolean&gt;&nbsp;<i>noWrap?</i> )</code></td>
+				<td>Creates a LatLng object with the given latitude and longitude. Wraps longitude to lie between -180 and 180 and clamps longitude between -90 and 90 by default — you can disable this with the noWrap argument.</td>
+			</tr>
+		</table>
+		
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>lat</code></td>
+				<td><code>Number</code></td>
+				<td>Latitude in degrees.</td>
+			</tr>
+			<tr>
+				<td><code>lng</code></td>
+				<td><code>Number</code></td>
+				<td>Longitude in degrees.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>equals( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns true if the given LatLng point is at the same position (within a small margin of error).</td>
+			</tr>
+			<tr>
+				<td><code>toString()</code></td>
+				<td><code>String</code></td>
+				<td>Returns a string representation of the point (for debugging purposes).</td>
+			</tr>
+		</table>
+		
+		<h3>Constants</h3>
+		
+		<table>
+			<tr>
+				<th>Constant</th>
+				<th>Type</th>
+				<th>Value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>DEG_TO_RAD</code></td>
+				<td><code>Number</code></td>
+				<td><code>Math.PI / 180</code></td>
+				<td>A multiplier for converting degrees into radians.</td>
+			</tr>
+			<tr>
+				<td><code>RAD_TO_DEG</code></td>
+				<td><code>Number</code></td>
+				<td><code>180 / Math.PI</code></td>
+				<td>A multiplier for converting radians into degrees.</td>
+			</tr>
+			<tr>
+				<td><code>MAX_MARGIN</code></td>
+				<td><code>Number</code></td>
+				<td><code>1.0E-9</code></td>
+				<td>Max margin of error for the equality check.</td>
+			</tr>
+		</table>
+		
 		
 		
 		<h2>L.Path</h2>
@@ -376,6 +481,16 @@
 		
 		<p>A class for drawing polyline overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
+		<h3>Usage example</h3>
+		<pre><code class="javascript">// create a red polyline from an arrays of LatLng points
+var polyline = new L.Polyline(latlngs, {color: 'red'});
+
+// zoom the map to the polyline
+map.fitBounds(new L.LatLngBounds(latlngs));
+
+// add the polyline to the map
+map.addLayer(polyline);</code></pre>
+		
 		<h3>Constructor</h3>
 		
 		<table>
@@ -384,7 +499,7 @@
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Polyline( &lt;LatLng[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td><code>L.Polyline( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
 				<td>Instantiates a polyline object given an array of geographical points and optionally an options object.</td>
 			</tr>
 		</table>
@@ -427,7 +542,7 @@
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Polygon( &lt;LatLng[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td><code>L.Polygon( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
 				<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline).</td>
 			</tr>
 		</table>
@@ -445,7 +560,7 @@
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Circle( &lt;LatLng&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>radius</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td><code>L.Circle( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>radius</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
 				<td>Instantiates a polygon object given an geographical point, a radius in pixels and optionally an options object.</td>
 			</tr>
 		</table>
