@@ -74,3 +74,15 @@ a.twitter-link {
 	
 .javascript .keyword {
 	}
+	
+#toc ul {
+	list-style-type: none;
+	padding-left: 0;
+	}
+	
+#map-class {
+	margin-top: 0.5em;
+	}
+a.nodocs {
+	color: #f44;
+	}
