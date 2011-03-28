@@ -81,7 +81,7 @@
 			<div class="span-4">
 				<h3>Basic types</h3>
 				<ul>
-					<li><a class="nodocs" href="#">Point</a></li>
+					<li><a href="#point">Point</a></li>
 					<li><a class="nodocs" href="#">Bounds</a></li>
 					<li><a href="#latlng">LatLng</a></li>
 					<li><a class="nodocs" href="#">LatLngBounds</a></li>
@@ -164,13 +164,13 @@ map.addLayer(cloudmade);</code></pre>
 			<tr>
 				<td><code>center</code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
-				<td><code><a href="#latlng">LatLng</a>(0,&nbsp;0)</code></td>
+				<td><code>null</code></td>
 				<td>Initial geographical center of the map.</td>
 			</tr>
 			<tr>
 				<td><code>zoom</code></td>
 				<td><code>Number</code></td>
-				<td><code>0</code></td>
+				<td><code>null</code></td>
 				<td>Initial map zoom.</td>
 			</tr>
 			<tr>
@@ -250,7 +250,7 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
 			</tr>
 			<tr>
-				<td><code>panBy( &lt;Point&gt; <i>point</i> )</code></td>
+				<td><code>panBy( &lt;<a href="#point">Point</a>&gt; <i>point</i> )</code></td>
 				<td><code>this</code></td>
 				<td>Pans the map by a given number of pixels (animated).</td>
 			</tr>
@@ -306,7 +306,7 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 			<tr>
 				<td><code>getSize()</code></td>
-				<td><code>Point</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Returns the current size of the map container.</td>
 			</tr>
 			<tr>
@@ -316,7 +316,7 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 			<tr>
 				<td><code>getPixelOrigin()</code></td>
-				<td><code>Point</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Returns the projected pixel coordinates of the top left point of the map layer (useful in custom layer and overlay implementations).</td>
 			</tr>
 			<tr>
@@ -337,22 +337,22 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 			<tr>
 				<td><code>latLngToLayerPoint( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Returns the map layer point that corresponds to the given geographical coordinates (useful for placing overlays on the map).</td>
 			</tr>
 			<tr>
-				<td><code>layerPointToLatLng( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>layerPointToLatLng( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the geographical coordinates of a given map layer point.</td>
 			</tr>
 			<tr>
 				<td><code>mouseEventToContainerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Returns the pixel coordinates of a mouse click (relative to the top left corner of the map) given its event object.</td>
 			</tr>
 			<tr>
 				<td><code>mouseEventToLayerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Returns the pixel coordinates of a mouse click relative to the map layer given its event object.
 			</tr>
 			<tr>
@@ -361,116 +361,29 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
 			</tr>
 			<tr>
-				<td><code>containerPointToLayerPoint( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
+				<td><code>containerPointToLayerPoint( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Converts the point relative to the map container to a point relative to the map layer.</td>
 			</tr>
 			<tr>
-				<td><code>layerPointToContainerPoint( &lt;Point&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
+				<td><code>layerPointToContainerPoint( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Converts the point relative to the map layer to a point relative to the map container.</td>
 			</tr>
 			<tr>
 				<td><code>project( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
-				<td><code>Point</code></td>
+				<td><code><a href="#point">Point</a></code></td>
 				<td>Projects the given geographical coordinates to pixel coordinates for the given zoom level (current zoom level by default).</td>
 			</tr>
 			<tr>
-				<td><code>unproject( &lt;Point&gt;&nbsp;<i>point</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
+				<td><code>unproject( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Projects the given pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
 			</tr>
 		</table>
 		
 		
-		<h2 id="latlng">L.LatLng</h2>
-		
-		<p>Represents a geographical point with a certain latitude and longitude.</p>
-		
-		<h3>Constructor</h3>
-		
-		<table>
-			<tr>
-				<th>Constructor</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code>L.LatLng( &lt;Number&gt;&nbsp;<i>latitude</i>, &lt;Number&gt;&nbsp;<i>longitude</i>, &lt;Boolean&gt;&nbsp;<i>noWrap?</i> )</code></td>
-				<td>Creates a LatLng object with the given latitude and longitude. Wraps longitude to lie between -180 and 180 and clamps longitude between -90 and 90 by default — you can disable this with the noWrap argument.</td>
-			</tr>
-		</table>
-		
-		<h3>Properties</h3>
-		
-		<table>
-			<tr>
-				<th>Property</th>
-				<th>Type</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code>lat</code></td>
-				<td><code>Number</code></td>
-				<td>Latitude in degrees.</td>
-			</tr>
-			<tr>
-				<td><code>lng</code></td>
-				<td><code>Number</code></td>
-				<td>Longitude in degrees.</td>
-			</tr>
-		</table>
-		
-		<h3>Methods</h3>
-		
-		<table>
-			<tr>
-				<th>Method</th>
-				<th>Returns</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code>equals( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
-				<td><code>Boolean</code></td>
-				<td>Returns true if the given LatLng point is at the same position (within a small margin of error).</td>
-			</tr>
-			<tr>
-				<td><code>toString()</code></td>
-				<td><code>String</code></td>
-				<td>Returns a string representation of the point (for debugging purposes).</td>
-			</tr>
-		</table>
-		
-		<h3>Constants</h3>
-		
-		<table>
-			<tr>
-				<th>Constant</th>
-				<th>Type</th>
-				<th>Value</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code>DEG_TO_RAD</code></td>
-				<td><code>Number</code></td>
-				<td><code>Math.PI / 180</code></td>
-				<td>A multiplier for converting degrees into radians.</td>
-			</tr>
-			<tr>
-				<td><code>RAD_TO_DEG</code></td>
-				<td><code>Number</code></td>
-				<td><code>180 / Math.PI</code></td>
-				<td>A multiplier for converting radians into degrees.</td>
-			</tr>
-			<tr>
-				<td><code>MAX_MARGIN</code></td>
-				<td><code>Number</code></td>
-				<td><code>1.0E-9</code></td>
-				<td>Max margin of error for the equality check.</td>
-			</tr>
-		</table>
-		
-		
-		
+
 		<h2 id="path">L.Path</h2>
 		<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
 		
@@ -644,6 +557,185 @@ map.addLayer(polyline);</code></pre>
 		</table>
 		
 		
+		
+		<h2 id="point">L.Point</h2>
+		
+		<p>Represents a point with x and y coordinates in pixels.
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Point( &lt;Number&gt;&nbsp;<i>x</i>, &lt;Number&gt;&nbsp;<i>y</i> )</code></td>
+				<td>Creates a Point object with the given x and y coordinates.</td>
+			</tr>
+		</table>
+
+		<h3>Properties</h3>
+
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>x</code></td>
+				<td><code>Number</code></td>
+				<td>The x coordinate.</td>
+			</tr>
+			<tr>
+				<td><code>y</code></td>
+				<td><code>Number</code></td>
+				<td>The y coordinate.</td>
+			</tr>
+		</table>
+
+		<h3>Methods</h3>
+
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>add( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>otherPoint</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of addition of the current and the given points.</td>
+			</tr>
+			<tr>
+				<td><code>subtract( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>otherPoint</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of subtraction of the given point from the current.</td>
+			</tr>
+			<tr>
+				<td><code>multiplyBy( &lt;Number&gt;&nbsp;<i>number</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of multiplication of the current point by the given number.</td>
+			</tr>
+			<tr>
+				<td><code>divideBy( &lt;Number&gt;&nbsp;<i>number</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of division of the current point by the given number.</td>
+			</tr>
+			<tr>
+				<td><code>distanceTo( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>otherPoint</i>&nbsp;)</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the distance between the current and the given points.</td>
+			</tr>
+			<tr>
+				<td><code>clone()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns a copy of the current point.</td>
+			</tr>
+			<tr>
+				<td><code>round()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns a copy of the current point with rounded coordinates.</td>
+			</tr>
+			<tr>
+				<td><code>toString()</code></td>
+				<td><code>String</code></td>
+				<td>Returns a string representation of the point for debugging purposes.</td>
+			</tr>
+		</table>
+
+
+		
+
+		<h2 id="latlng">L.LatLng</h2>
+		
+		<p>Represents a geographical point with a certain latitude and longitude.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LatLng( &lt;Number&gt;&nbsp;<i>latitude</i>, &lt;Number&gt;&nbsp;<i>longitude</i>, &lt;Boolean&gt;&nbsp;<i>noWrap?</i> )</code></td>
+				<td>Creates a LatLng object with the given latitude and longitude. Wraps longitude to lie between -180 and 180 and clamps longitude between -90 and 90 by default — you can disable this with the noWrap argument.</td>
+			</tr>
+		</table>
+		
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>lat</code></td>
+				<td><code>Number</code></td>
+				<td>Latitude in degrees.</td>
+			</tr>
+			<tr>
+				<td><code>lng</code></td>
+				<td><code>Number</code></td>
+				<td>Longitude in degrees.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>equals( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns true if the given LatLng point is at the same position (within a small margin of error).</td>
+			</tr>
+			<tr>
+				<td><code>toString()</code></td>
+				<td><code>String</code></td>
+				<td>Returns a string representation of the point (for debugging purposes).</td>
+			</tr>
+		</table>
+		
+		<h3>Constants</h3>
+		
+		<table>
+			<tr>
+				<th>Constant</th>
+				<th>Type</th>
+				<th>Value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>DEG_TO_RAD</code></td>
+				<td><code>Number</code></td>
+				<td><code>Math.PI / 180</code></td>
+				<td>A multiplier for converting degrees into radians.</td>
+			</tr>
+			<tr>
+				<td><code>RAD_TO_DEG</code></td>
+				<td><code>Number</code></td>
+				<td><code>180 / Math.PI</code></td>
+				<td>A multiplier for converting radians into degrees.</td>
+			</tr>
+			<tr>
+				<td><code>MAX_MARGIN</code></td>
+				<td><code>Number</code></td>
+				<td><code>1.0E-9</code></td>
+				<td>Max margin of error for the equality check.</td>
+			</tr>
+		</table>
+		
+		
+
 		<hr />
 
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
