@@ -365,7 +365,8 @@ L.Map = L.Class.extend({
 		};
 		for (var i in handlers) {
 			if (handlers.hasOwnProperty(i) && handlers[i]) {
-				this[i] = new handlers[i](this, this.options[i]);
+				this[i] = new handlers[i](this);
+				if (this.options[i]) this[i].enable();
 			}
 		}
 	},

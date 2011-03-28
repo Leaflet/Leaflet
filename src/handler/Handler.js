@@ -3,9 +3,8 @@
  */
 
 L.Handler = L.Class.extend({
-	initialize: function(map, enabled) {
+	initialize: function(map) {
 		this._map = map;
-		if (enabled) { this.enable(); }
 	},
 	
 	enabled: function() {

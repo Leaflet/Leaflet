@@ -3,7 +3,6 @@
  */
 
 L.Handler.TouchZoom = L.Handler.extend({
-	
 	enable: function() {
 		if (!L.Browser.mobileWebkit || this._enabled) { return; }
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
