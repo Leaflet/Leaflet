@@ -20,6 +20,13 @@ h2 {
 	margin-top: 1.5em;
 	border-bottom: 1px solid #ccc;
 	}
+h4 {
+	margin-bottom: 0.2em;
+	line-height: inherit;
+	font-size: 1em;
+	font-weight: bold;
+	color: #555;
+	}
 /*.container p {
 	margin-right: 160px;
 	}*/
@@ -81,7 +88,6 @@ a.twitter-link {
 	}
 	
 #map-class {
-	margin-top: 0.5em;
 	}
 a.nodocs {
 	color: #f44;
