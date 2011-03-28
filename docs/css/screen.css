@@ -18,7 +18,7 @@ h1 {
 	}
 h2 {
 	margin-top: 1.5em;
-	border-bottom: 1px solid #ccc;
+	border-bottom: 1px solid #ddd;
 	}
 h4 {
 	margin-bottom: 0.2em;
@@ -80,6 +80,10 @@ a.twitter-link {
 	}
 	
 .javascript .keyword {
+	}
+	
+#toc {
+	padding-left: 20px;
 	}
 	
 #toc ul {
