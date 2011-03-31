@@ -1,11 +1,11 @@
 Leaflet
 =======
-Leaflet is a lightweight JavaScript library for map display and interaction by [CloudMade](http://cloudmade.com). It will form the core of CloudMade's next generation JavaScript API.
+Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by [CloudMade](http://cloudmade.com) to form the core of its next generation JavaScript API.
 
-It is built from the ground up to work well on both desktop and mobile web browsers, utilizing cutting-edge technologies included in HTML5. It focuses on performance, usability, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
+It is built from the ground up to work efficiently and smoothly on both platforms, utilizing cutting-edge technologies included in HTML5. Its top priorities are usability, performance and small size, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
 
 ## Contributing to Leaflet
-Please send your pull requests to [mourner](http://github.com/mourner) - we'll be happy to accept your contributions!
+Let's make the best open-source library for maps that can possibly exist! Please send your pull requests to [mourner](http://github.com/mourner) -- we'll be happy to accept your contributions!
 
 ## What's left to do for a feature-complete version
 
@@ -28,7 +28,7 @@ Controls:
 Known issues to be fixed:
 
  - flickering of vector layers on drag end under mobile webkit
- - show scaled background until tiles are loaded even with animation disabled
+ - show scaled background until tiles are loaded on mobile webkit
  
 ## Browser support
 
@@ -47,5 +47,6 @@ On mobile:
 
 ## Leaflet developers
 
-Lead Developer: [Vladimir Agafonkin](http://github.com/mourner)  
-Contributors: be the first!
+Maintainer: [Vladimir Agafonkin](http://github.com/mourner), CloudMade
+
+Contributors: (be the first!)

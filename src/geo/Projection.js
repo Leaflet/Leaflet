@@ -23,9 +23,9 @@ L.Projection.Mercator = {
 	},
 	
 	unproject: function(/*Point*/ point, /*Boolean*/ unbounded) /*-> LatLng*/ {	
-		var d = L.LatLng.DEG_TO_RAD,
-			lng = point.x / d,
-			lat = (2 * Math.atan(Math.exp(point.y)) - Math.PI/2) / d;
+		var d = L.LatLng.RAD_TO_DEG,
+			lng = point.x * d,
+			lat = (2 * Math.atan(Math.exp(point.y)) - Math.PI/2) * d;
 			
 		return new L.LatLng(lat, lng, unbounded);
 	}

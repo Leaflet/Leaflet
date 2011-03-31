@@ -37,7 +37,7 @@ L.Marker = L.Class.extend({
 		if (this._icon) {
 			map._panes.markerPane.removeChild(this._icon);
 		}
-		if (!this._shadow) {
+		if (this._shadow) {
 			map._panes.shadowPane.removeChild(this._shadow);
 		}
 		map.off('viewreset', this._reset, this);

@@ -82,6 +82,12 @@ L.Map = L.Class.extend({
 		return this.setView(bounds.getCenter(), zoom);
 	},
 	
+	fitWorld: function() {
+		var sw = new L.LatLng(-60, -170),
+			ne = new L.LatLng(85, 179);
+		return this.fitBounds(new L.LatLngBounds(sw, ne));
+	},
+	
 	panTo: function(/*LatLng*/ center) {
 		return this.setView(center, this._zoom);
 	},
@@ -365,7 +371,8 @@ L.Map = L.Class.extend({
 		};
 		for (var i in handlers) {
 			if (handlers.hasOwnProperty(i) && handlers[i]) {
-				this[i] = new handlers[i](this, this.options[i]);
+				this[i] = new handlers[i](this);
+				if (this.options[i]) this[i].enable();
 			}
 		}
 	},
