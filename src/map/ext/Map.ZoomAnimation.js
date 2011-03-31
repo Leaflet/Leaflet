@@ -37,7 +37,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		
 		this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY] = startTransform;
 		
-		this._tileBg.offsetWidth; //hack to make sure transform is updated before running animation
+		L.Util.falseFn(this._tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 			
 		var options = {};
 		options[L.DomUtil.TRANSFORM_PROPERTY] = startTransform + ' ' + L.DomUtil.getScaleString(scale, origin);
