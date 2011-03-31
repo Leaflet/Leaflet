@@ -82,6 +82,12 @@ L.Map = L.Class.extend({
 		return this.setView(bounds.getCenter(), zoom);
 	},
 	
+	fitWorld: function() {
+		var sw = new L.LatLng(-60, -170),
+			ne = new L.LatLng(85, 179);
+		return this.fitBounds(new L.LatLngBounds(sw, ne));
+	},
+	
 	panTo: function(/*LatLng*/ center) {
 		return this.setView(center, this._zoom);
 	},
