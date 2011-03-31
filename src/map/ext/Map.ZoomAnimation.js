@@ -14,48 +14,42 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		//if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 		
-		this._initTilePanes();
-		this._runAnimation(center, zoom, scale, offset);
+		this._prepareTileBg();
+		
+		this._mapPane.className += ' leaflet-animating';
+
+		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
+			centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
+			origin = centerPoint.add(offset),
+			startTransform = L.DomUtil.getTranslateString(mapPaneOffset);
+	
+		this._runAnimation(center, zoom, scale, startTransform, origin);
 		
 		return true;
 	},
 	
-	_initTilePanes: function() {
-		if (!this._tileBg) {
-			this._tileBg = this._createPane('leaflet-tile-pane');
-			this._tileBg.style.zIndex = 1;
-		}
-		
-		this._swapFrontAndBg(); //TODO refactor away tile layer swapping to share it with touch zoom
-		
-		if (!this._tileBg.transition) {
-			this._tileBg.transition = new L.Transition(this._tileBg, {duration: 0.25, easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'});
-			this._tileBg.transition.on('end', this._onZoomTransitionEnd, this);
-		}
-	},
 	
-	_runAnimation: function(center, zoom, scale, offset) {
-		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
-			centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
-			origin = centerPoint.add(offset).subtract(mapPaneOffset.divideBy(scale - 1));
-		
-		this._mapPane.className += ' leaflet-animating';
+	_runAnimation: function(center, zoom, scale, startTransform, origin) {
 		this._animatingZoom = true;
 
 		//load tiles in the main tile pane
 		this._resetView(center, zoom);
 		
-		this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY] = L.DomUtil.getTranslateString(mapPaneOffset);
-
-		//TODO eliminate this ugly setTimeout hack
-		setTimeout(L.Util.bind(function() {
-			var options = {};
-			options[L.DomUtil.TRANSFORM_PROPERTY] = L.DomUtil.getScaleString(scale, origin);
-			this._tileBg.transition.run(options);
-		}, this), 20);
+		this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY] = startTransform;
+		
+		this._tileBg.offsetWidth; //hack to make sure transform is updated before running animation
+			
+		var options = {};
+		options[L.DomUtil.TRANSFORM_PROPERTY] = startTransform + ' ' + L.DomUtil.getScaleString(scale, origin);
+		this._tileBg.transition.run(options);
 	},
 	
-	_swapFrontAndBg: function() {
+	_prepareTileBg: function() {
+		if (!this._tileBg) {
+			this._tileBg = this._createPane('leaflet-tile-pane', this._mapPane);
+			this._tileBg.style.zIndex = 1;
+		}
+
 		var oldTilePane = this._tilePane,
 			newTilePane = this._tileBg;
 		
@@ -70,13 +64,23 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		
 		this._tilePane = this._panes.tilePane = newTilePane;
 		this._tileBg = oldTilePane;
+		
+		if (!this._tileBg.transition) {
+			this._tileBg.transition = new L.Transition(this._tileBg, {duration: 0.25, easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'});
+			this._tileBg.transition.on('end', this._onZoomTransitionEnd, this);
+		}
 	},
 	
 	_onZoomTransitionEnd: function() {
+		this._restoreTileFront();
+		
+		this._mapPane.className = this._mapPane.className.replace(' leaflet-animating', ''); //TODO toggleClass util
+		this._animatingZoom = false;
+	},
+	
+	_restoreTileFront: function() {
 		this._tilePane.style.visibility = '';
 		this._tilePane.style.zIndex = 2;
 		this._tileBg.style.zIndex = 1;
-		this._mapPane.className = this._mapPane.className.replace(' leaflet-animating', ''); //TODO toggleClass util
-		this._animatingZoom = false;
 	}
 });

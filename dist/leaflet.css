@@ -46,10 +46,7 @@
 .leaflet-marker-pane { z-index: 5; }
 .leaflet-popup-pane { z-index: 6; }
 
-.leaflet-animating .leaflet-marker-pane, 
-.leaflet-animating .leaflet-shadow-pane,
-.leaflet-animating .leaflet-popup-pane,
-.leaflet-animating .leaflet-overlay-pane {
+.leaflet-animating .leaflet-objects-pane {
 	visibility: hidden;
 	}
 

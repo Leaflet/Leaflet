@@ -24,9 +24,10 @@ L.Handler.TouchZoom = L.Handler.extend({
 		
 		this._startCenter = p1.add(p2).divideBy(2, true);
 		this._startDist = p1.distanceTo(p2);
-		this._startTransform = this._map._mapPane.style.webkitTransform;
+		//this._startTransform = this._map._mapPane.style.webkitTransform;
 		
 		this._moved = false;
+		this._zooming = true;
 
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
@@ -40,8 +41,8 @@ L.Handler.TouchZoom = L.Handler.extend({
 		if (!e.touches || e.touches.length != 2) { return; }
 		
 		if (!this._moved) {
-			//TODO do this more gracefully
-			this._map._panes.popupPane.style.display = 'none';
+			this._map._mapPane.className += ' leaflet-animating';
+			this._map._prepareTileBg();
 			this._moved = true;
 		}
 		
@@ -56,11 +57,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 		 * it didn't count the origin on the first touch-zoom but worked correctly afterwards 
 		 */
 		
-		/*this._map._mapPane.style.webkitTransformOrigin = 
-		this._startCenter.x + 'px ' + this._startCenter.y + 'px';*/
-
-		this._map._mapPane.style.webkitTransform = [
-            this._startTransform,
+		this._map._tileBg.style.webkitTransform = [
             L.DomUtil.getTranslateString(this._delta),
             L.DomUtil.getScaleString(this._scale, this._startCenter)
         ].join(" ");
@@ -69,19 +66,26 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 	
 	_onTouchEnd: function(e) {
-		if (!e.touches || e.touches.length >= 2 || !this._scale) { return; }
+		if (!e.touches || e.touches.length >= 2 || !this._moved) { return; }
 		
-		var zoom = this._map.getZoom() + Math.round(Math.log(this._scale)/Math.LN2),
+		// prevent touchEnd from firing twice
+		if (!this._zooming)  { return; }
+		this._zooming = false;
+		
+		var oldZoom = this._map.getZoom(),
+			zoom = this._map._limitZoom(oldZoom + Math.round(Math.log(this._scale)/Math.LN2)),
+			zoomDelta = zoom - oldZoom,
 			centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
 			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
 			center = this._map.unproject(centerPoint);
 		
-		this._map.setView(center, zoom, true);
-		
-		this._map._panes.popupPane.style.display = '';
-		
-		this._scale = null;
 		L.DomEvent.removeListener(document, 'touchmove', this._onTouchMove);
 		L.DomEvent.removeListener(document, 'touchend', this._onTouchEnd);
+
+		var finalScale = Math.pow(2, zoomDelta),
+			mapPaneOffset = L.DomUtil.getPosition(this._map._mapPane),
+			startTransform = L.DomUtil.getTranslateString(mapPaneOffset) + ' ' + this._map._tileBg.style.webkitTransform;
+		
+		this._map._runAnimation(center, zoom, finalScale / this._scale, startTransform, this._startCenter.add(centerOffset));
 	}
 });
