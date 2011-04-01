@@ -112,3 +112,6 @@ a.nodocs {
 #features .quiet {
 	color: #777;
 	}
+.noimpl {
+	color: #bbb;
+	}
