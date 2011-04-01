@@ -91,6 +91,7 @@ var deps = {
 		src: ['dom/DomEvent.js',
 		      'handler/Handler.js',
 		      'handler/TouchZoom.js'],
+		deps: ['MapAnimationZoom'],
 		desc: 'Enables smooth touch zooming on mobile webkit-powered devices (iPhone, iPod Touch, iPad, Android).'
 	},
 	
