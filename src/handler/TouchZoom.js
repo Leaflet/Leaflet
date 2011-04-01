@@ -73,7 +73,9 @@ L.Handler.TouchZoom = L.Handler.extend({
 		this._zooming = false;
 		
 		var oldZoom = this._map.getZoom(),
-			zoom = this._map._limitZoom(oldZoom + Math.round(Math.log(this._scale)/Math.LN2)),
+			floatZoomDelta = Math.log(this._scale)/Math.LN2,
+			roundZoomDelta = (floatZoomDelta > 0 ? Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
+			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
 			zoomDelta = zoom - oldZoom,
 			centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
 			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),

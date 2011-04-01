@@ -20,6 +20,12 @@ h2 {
 	margin-top: 1.5em;
 	border-bottom: 1px solid #ddd;
 	}
+h3 {
+	margin-top: 1.5em;
+	}
+h3.alt {
+	margin-top: 0;
+	}
 h4 {
 	margin-bottom: 0.2em;
 	line-height: inherit;
@@ -84,13 +90,16 @@ a.twitter-link {
 	
 #toc {
 	padding-left: 20px;
-	}
+}
 	
 #toc ul {
 	list-style-type: none;
 	padding-left: 0;
 	}
-	
+#toc .colborder {
+	padding-right: 14px;
+	}	
+
 #map-class {
 	}
 a.nodocs {

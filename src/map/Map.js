@@ -358,7 +358,7 @@ L.Map = L.Class.extend({
 	_fireMouseEvent: function(e) {
 		if (!this.hasEventListeners(e.type)) { return; }
 		this.fire(e.type, {
-			position: this.mouseEventToLatLng(e),
+			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
 		});
 	},
