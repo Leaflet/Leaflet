@@ -105,3 +105,10 @@ a.twitter-link {
 a.nodocs {
 	color: #f44;
 	}
+	
+#features {
+	margin-top: -1.5em;
+	}
+#features .quiet {
+	color: #777;
+	}
