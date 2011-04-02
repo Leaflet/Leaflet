@@ -60,7 +60,7 @@
 				<h4>UI layers</h4>
 				<ul>
 					<li><a href="#marker">Marker</a></li>
-					<li><a class="nodocs" href="#">Popup</a></li>
+					<li><a href="#popup">Popup</a></li>
 				</ul>
 				<h4>Raster layers</h4>
 				<ul>
@@ -481,6 +481,73 @@ map.addLayer(marker);</code></pre>
 				<td><code>getLatLng()</code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the current geographical position of the marker.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="popup">L.Popup</h2>
+		
+		<p>Used to open popups in certain places of the map.</p>
+		
+		<h3>Usage example</h3>
+		<pre><code class="javascript">var popupContent = '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;', 
+	popup = new L.Popup(latlng, popupContent);
+map.openPopup(popup);</code></pre>
+		<p>If you want to bind a popup to marker click and then open it, it's even easier:</p>
+		<pre><code class="javascript">marker.bindPopup(popupContent).openPopup();</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Popup( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a Popup object given the geographical point where it will open, the HTML content it will have and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="popup-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>maxWidth</code></td>
+				<td><code>Number</code></td>
+				<td><code>300</code></td>
+				<td>Max width of the popup.</td>
+			</tr>
+			<tr>
+				<td><code>autoPan</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Set it to false if you don't want the map to do panning animation to fit the opened popup.'</td>
+			</tr>
+			<tr>
+				<td><code>closeButton</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Controls the presense of a close button in the popup.</td>
+			</tr>
+			<tr>
+				<td><code>closeMapOnClick</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Set it to false if you don't want the popup to close when user clicks the map.</td>
+			</tr>
+			<tr>
+				<td><code>offset</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td><code>Point(0,&nbsp;0)</code></td>
+				<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
 			</tr>
 		</table>
 		
