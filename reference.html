@@ -297,12 +297,22 @@ map.addLayer(cloudmade);</code></pre>
 			<tr id="map-addlayer">
 				<td><code>addLayer( &lt;ILayer&gt; <i>layer</i> )</code></td>
 				<td><code>this</code></td>
-				<td>Adds a given layer to the map.</td>
+				<td>Adds the given layer to the map.</td>
 			</tr>
 			<tr>
 				<td><code>removeLayer( &lt;ILayer&gt; <i>layer</i> )</code></td>
 				<td><code>this</code></td>
 				<td>Removes the given layer from the map.</td>
+			</tr>
+			<tr id="map-openpopup">
+				<td><code>openPopup( &lt;<a href="#popup">Popup</a>&gt;&nbsp;<i>popup</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
+			</tr>
+			<tr id="map-closepopup">
+				<td><code>closePopup()</code></td>
+				<td><code>this</code></td>
+				<td>Closes the popup opened with <a href="#map-openpopup">openPopup</a>.</td>
 			</tr>
 			<tr>
 				<td><code>invalidateSize()</code></td>
@@ -482,13 +492,23 @@ map.addLayer(marker);</code></pre>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the current geographical position of the marker.</td>
 			</tr>
+			<tr id="#marker-bindpopup">
+				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
+			</tr>
+			<tr id="#marker-openpopup">
+				<td><code>openPopup()</code></td>
+				<td><code>this</code></td>
+				<td>Opens the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
+			</tr>
 		</table>
 		
 		
 		
 		<h2 id="popup">L.Popup</h2>
 		
-		<p>Used to open popups in certain places of the map.</p>
+		<p>Used to open popups in certain places of the map. Use <a href="#map-openpopup">Map#openPopup</a> to open popups while making sure that only one popup is open at one time (recommended for usability), or use <a href="#map-addlayer">Map#addLayer</a> to open as many as you want.</p>
 		
 		<h3>Usage example</h3>
 		<pre><code class="javascript">var popupContent = '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;', 
@@ -637,7 +657,7 @@ map.openPopup(popup);</code></pre>
 		</table>
 		
 		
-		<h2 id="polyline">Polyline</h2>
+		<h2 id="polyline">L.Polyline</h2>
 		
 		<p>A class for drawing polyline overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
@@ -690,7 +710,7 @@ map.addLayer(polyline);</code></pre>
 		</table>
 		
 		
-		<h2 id="polygon">Polygon</h2>
+		<h2 id="polygon">L.Polygon</h2>
 		
 		<p>A class for drawing polygon overlays on a map. Extends Polyline. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
@@ -708,7 +728,7 @@ map.addLayer(polyline);</code></pre>
 		</table>
 		
 		
-		<h2 id="circle">Circle</h2>
+		<h2 id="circle">L.Circle</h2>
 		
 		<p>A class for drawing circle overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
