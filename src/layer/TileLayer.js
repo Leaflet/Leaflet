@@ -6,14 +6,15 @@ L.TileLayer = L.Class.extend({
 	includes: L.Mixin.Events,
 	
 	options: {
-		tileSize: 256,
 		minZoom: 0,
 		maxZoom: 18,
+		tileSize: 256,
 		subdomains: 'abc',
-		copyright: '',
+		errorTileUrl: '',
+		attribution: '',
+		
 		unloadInvisibleTiles: L.Browser.mobileWebkit,
-		updateWhenIdle: L.Browser.mobileWebkit,
-		errorTileUrl: ''
+		updateWhenIdle: L.Browser.mobileWebkit
 	},
 	
 	initialize: function(url, options) {
