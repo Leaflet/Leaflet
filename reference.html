@@ -64,7 +64,7 @@
 				</ul>
 				<h4>Raster layers</h4>
 				<ul>
-					<li><a class="nodocs" href="#">TileLayer</a></li>
+					<li><a href="#tilelayer">TileLayer</a></li>
 					<li><a class="nodocs" href="#">ImageOverlay</a></li>
 				</ul>
 				<h4>Vector layers</h4>
@@ -572,6 +572,90 @@ map.openPopup(popup);</code></pre>
 		</table>
 		
 		
+		
+		<h2 id="tilelayer">L.TileLayer</h2>
+		
+		<p>Used to load and display tile layers on the map, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer( &lt;String&gt;&nbsp;<i><a href="url-template">urlTemplate</a></i>, &lt;<a href="#tilelayer-options">TileLayer&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a tile layer object given a <a href="#url-template">URL template</a> and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="url-template">URL template</h3>
+		<p>A string of the following form:</p>
+		<pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'</code></pre>
+		<p><code>{s}</code> means one of the randomly chosen subdomains (their range is specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>		
+
+		<h3 id="tilelayer-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>minZoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>Minimum zoom number.</td>
+			</tr>		
+			<tr>
+				<td><code>maxZoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>18</code></td>
+				<td>Maximum zoom number.</td>
+			</tr>
+			<tr>
+				<td><code>tileSize</code></td>
+				<td><code>Number</code></td>
+				<td><code>256</code></td>
+				<td>Tile size (width and height in pixels, assuming tiles are square).</td>
+			</tr>
+			<tr>
+				<td><code>subdomains</code></td>
+				<td><code>String</code> or <code>String[]</code></td>
+				<td><code>'abc'</code></td>
+				<td>Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.</td>
+			</tr>
+			<tr>
+				<td><code>errorTileUrl</code></td>
+				<td><code>String</code></td>
+				<td><code>''</code></td>
+				<td>URL to the tile image to show in place of the tile that failed to load.</td>
+			</tr>
+			<tr>
+				<td><code>attribution</code></td>
+				<td><code>String</code></td>
+				<td><code>''</code></td>
+				<td>e.g. "&copy; CloudMade" &mdash; the string used by the attribution control, describes the layer data.</td>
+			</tr>
+			<tr>
+				<td><code>unloadInvisibleTiles</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>If <code>true</code>, all the tiles that are not visible after panning are removed (for better performance). <code>true</code> by default on mobile WebKit, otherwise <code>false</code>.</td>
+			</tr>
+			<tr>
+				<td><code>updateWhenIdle</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile WebKit, otherwise <code>false</code>.</td>
+			</tr>
+		</table>
+
+
+
 
 		<h2 id="path">L.Path</h2>
 		<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
