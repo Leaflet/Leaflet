@@ -11,15 +11,24 @@ code {
 	background: white;
 	font-family: Courier, monospace;
 	color: #444;
+	
+	box-shadow: 0 0 15px #ddd;
 }
 	
 h1 {
 	text-shadow: 1px 1px 3px #888;
 	}
 h2 {
-	margin-top: 1.5em;
-	border-bottom: 1px solid #ddd;
-	}
+	margin-top: 2.5em;
+	padding: 0.3em 0.5em 0.2em;
+	background: #eee;
+	border-right: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
 h3 {
 	margin-top: 1.5em;
 	}
@@ -101,6 +110,7 @@ a.twitter-link {
 	}	
 
 #map-class {
+	margin-top: 1.5em;
 	}
 a.nodocs {
 	color: #f44;

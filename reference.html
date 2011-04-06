@@ -45,7 +45,7 @@
 					<li><a href="#map-constructor">Constructor</a></li>
 					<li><a href="#map-options">Options</a></li>
 					<li><a href="#map-interaction-handlers">Interaction handlers</a></li>
-					<li><a href="#map-events">Events</a></li>
+					<li><a class="nodocs" href="#map-events">Events</a></li>
 				</ul>
 				<h4>Map methods</h4>
 				<ul>
@@ -65,7 +65,7 @@
 				<h4>Raster layers</h4>
 				<ul>
 					<li><a href="#tilelayer">TileLayer</a></li>
-					<li><a class="nodocs" href="#">ImageOverlay</a></li>
+					<li><a href="#imageoverlay">ImageOverlay</a></li>
 				</ul>
 				<h4>Vector layers</h4>
 				<ul>
@@ -79,7 +79,7 @@
 				<h4>Basic types</h4>
 				<ul>
 					<li><a href="#latlng">LatLng</a></li>
-					<li><a class="nodocs" href="#">LatLngBounds</a></li>
+					<li><a href="#latlngbounds">LatLngBounds</a></li>
 					<li><a href="#point">Point</a></li>
 					<li><a class="nodocs" href="#">Bounds</a></li>
 					<li><a class="nodocs" href="#">Icon</a></li>
@@ -279,7 +279,7 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code>this</code></td>
 				<td>Decreases the zoom of the map by 1.</td>
 			</tr>
-			<tr>
+			<tr id="map-fitbounds">
 				<td><code>fitBounds( &lt;LatLngBounds&gt; <i>bounds</i> )</code></td>
 				<td><code>this</code></td>
 				<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
@@ -577,6 +577,11 @@ map.openPopup(popup);</code></pre>
 		
 		<p>Used to load and display tile layers on the map, implements <a href="#ilayer">ILayer</a> interface.</p>
 		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});</code></pre>
+		
 		<h3>Constructor</h3>
 				
 		<table>
@@ -656,6 +661,34 @@ map.openPopup(popup);</code></pre>
 
 
 
+		<h2 id="imageoverlay">L.ImageOverlay</h2>
+		
+		<p>Used to load and display a single image over specific bounds of the map, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var imageBounds = new L.LatLngBounds(
+		new L.LatLng(40.712216,-74.22655),
+		new L.LatLng(40.773941,-74.12544));
+		
+var image = new L.ImageOverlay(
+		"http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", imageBounds);</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.ImageOverlay( &lt;String&gt;&nbsp;<i>imageUrl</i>, &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>bounds</i><!--, &lt;<a href="#imageoverlay-options">ImageOverlay&nbsp;options</a>&gt;&nbsp;<i>options?</i>-->&nbsp;)</code></td>
+				<td>Instantiates an image overlay object given the URL of the image and the geographical bounds it is tied to.</td>
+			</tr>
+		</table>
+		
+	
+
 
 		<h2 id="path">L.Path</h2>
 		<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
@@ -721,22 +754,22 @@ map.openPopup(popup);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Path.SVG</code></th>
-				<td><code>Boolean</code></th>
-				<td>depends</th>
-				<td>True if SVG is used for vector rendering (true for most modern browsers).</th>
+				<td><code>L.Path.SVG</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>True if SVG is used for vector rendering (true for most modern browsers).</td>
 			</tr>
 			<tr>
-				<td><code>L.Path.VML</code></th>
-				<td><code>Boolean</code></th>
-				<td>depends</th>
-				<td>True if VML is used for vector rendering (IE 6-8).</th>
+				<td><code>L.Path.VML</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>True if VML is used for vector rendering (IE 6-8).</td>
 			</tr>
 			<tr>
-				<td><code>L.Path.CLIP_PADDING</code></th>
-				<td><code>Number</code></th>
-				<td>0.5&nbsp;for&nbsp;SVG<br />0.02&nbsp;for&nbsp;VML</th>
-				<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance. </th>
+				<td><code>L.Path.CLIP_PADDING</code></td>
+				<td><code>Number</code></td>
+				<td>0.5&nbsp;for&nbsp;SVG<br />0.02&nbsp;for&nbsp;VML</td>
+				<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance.</td>
 			</tr>
 		</table>
 		
@@ -917,6 +950,79 @@ map.addLayer(polyline);</code></pre>
 				<td>Max margin of error for the equality check.</td>
 			</tr>
 		</table>
+		
+		
+		
+		
+		<h2 id="latlngbounds">L.LatLngBounds</h2>
+		
+		<p>Represents a rectangular geographical area on a map.</p>
+		<pre><code class="javascript">var southWest = new L.LatLng(40.712,-74.227),
+	northEast = new L.LatLng(40.774,-74.125),
+	bounds = new L.LatLngBounds(southWest, northEast);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LatLngBounds( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>southWest</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>northEast</i>&nbsp;)</code></td>
+				<td>Creates a LatLngBounds object by defining south-west and north-east corners of the rectangle.</td>
+			</tr>
+			<tr>
+				<td><code>L.LatLngBounds( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>&nbsp;)</code></td>
+				<td>Creates a LatLngBounds object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with <a href="#map-fitbounds">fitBounds</a>.</td>
+			</tr>
+		</table>
+				
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>extend( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Extends the bounds to contain the given LatLng point.</td>
+			</tr>
+			<tr>
+				<td><code>getSouthWest()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the south-west point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getNorthEast()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the north-east point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getNorthWest()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the north-west point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getSouthEast()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the south-east point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getCenter()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the center point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+			</tr>
+		</table>
+		
 		
 		
 
