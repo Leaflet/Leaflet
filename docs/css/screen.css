@@ -2,18 +2,6 @@
 	padding-top: 40px;
 	width: 790px;
 	}
-code {
-	font-family: Courier, monospace;
-	}
-.container pre code {
-	padding: 10px 15px;
-	border: 1px solid #ccc;
-	background: white;
-	font-family: Courier, monospace;
-	color: #444;
-	
-	box-shadow: 0 0 15px #ddd;
-}
 	
 h1 {
 	text-shadow: 1px 1px 3px #888;
@@ -44,57 +32,71 @@ h4 {
 	font-weight: bold;
 	color: #555;
 	}
-/*.container p {
-	margin-right: 160px;
-	}*/
-.alt {
+h3.alt {
 	color: #999;
 	font-family: Georgia, serif;
 	font-style: italic;
 	font-weight: normal;
 	}
-
-#map {
-	height: 250px;
+	
+code {
+	font-family: Courier, monospace;
+	}
+.container pre code {
+	padding: 10px 15px;
 	border: 1px solid #ccc;
-	-moz-box-shadow: 0px 0px 10px #aaa; 
-	-webkit-box-shadow: 0px 0px 10px #aaa; 
-	box-shadow: 0px 0px 10px #aaa; 
+	background: white;
+	font-family: Courier, monospace;
+	color: #444;
+	
+	box-shadow: 0 0 15px #ddd;
+	}
+	
+table { 
+	border-collapse: collapse; 
+	}
+th { 
+	background:/*#e5ecf9;*/ #f3f3f3; 
+	}
+th, td {
+	padding: 4px 5px;
 	}
 
+
 .nav {
-	list-style: none;
 	padding: 0;
+	margin: 2em -15px;
+	
+	list-style: none;
 	font-size: 1.2em;
-	margin-left: -15px;
-	margin-right: -15px;
-	margin-top: 2em;
-	margin-bottom: 2em;
 	border: 1px solid #dcddde;
 	overflow: hidden;
 	
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.3, white),color-stop(1, #eff0f1));
+	
 	border-radius: 15px;
+	
 	box-shadow: 0 0 8px #eee;
 	}
+	.nav li a, .nav li span {
+		float: left;
+		padding: 10px 15px;
+		border-right: 1px solid #ddd;
+		}
 	.nav a {
 		text-decoration: none;
 		color: #555657;
 	}
 	.nav li span {
-		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.3, #f8f9fa),color-stop(1, #d4d5d6));
 		color: #333;
+
+		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.3, #f8f9fa),color-stop(1, #d4d5d6));
 	}
 	.nav li a:hover {
-		background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.4, #f6f7f8),color-stop(1, #eff0f1));
 		color: black;
+		
+		background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.4, #f6f7f8),color-stop(1, #eff0f1));
 	}
-	.nav li a, .nav li span {
-		float: left;
-		display: inline;
-		padding: 10px 15px;
-		border-right: 1px solid #ddd;
-		}
 	.nav li a.github-link,
 	.nav li a.twitter-link {
 		padding-left: 35px;
@@ -118,14 +120,6 @@ h4 {
 		background: url(http://twitter.com/phoenix/favicon.ico) 15px center no-repeat;
 		}
 	
-
-table { border-collapse: collapse; }
-th { background:/*#e5ecf9;*/ #f3f3f3; }
-
-th, td {
-	padding: 4px 5px;
-	}
-
 #forkme {
 	position: absolute; 
 	top: 0; 
@@ -137,23 +131,19 @@ a:hover #forkme {
 	opacity: 1;
 	}
 	
-.javascript .keyword {
-	}
-	
 #toc {
 	padding-left: 20px;
-}
-	
-#toc ul {
-	list-style-type: none;
-	padding-left: 0;
 	}
-#toc .colborder {
-	padding-right: 14px;
-	}	
-
+	#toc ul {
+		list-style-type: none;
+		padding-left: 0;
+		}
+	#toc .colborder {
+		padding-right: 14px;
+		}
+		
 #map-class {
-	margin-top: 1.5em;
+	margin-top: 1em;
 	}
 a.nodocs {
 	color: #f44;
@@ -162,9 +152,25 @@ a.nodocs {
 #features {
 	margin-top: -1.5em;
 	}
-#features .quiet {
-	color: #777;
+	#features .quiet {
+		color: #777;
+		}
+	.noimpl {
+		color: #bbb;
+		}
+		
+#map {
+	height: 250px;
+	border: 1px solid #ccc;
+	margin-bottom: 20px;
+	
+	box-shadow: 0px 0px 10px #ccc; 
+	-moz-box-shadow: 0px 0px 10px #ccc; 
+	-webkit-box-shadow: 0px 0px 10px #ccc; 
 	}
-.noimpl {
-	color: #bbb;
+/*#basic-example {
+	margin-top: 0;
 	}
+#basic-example code {
+	padding-top: 15px;
+	}*/
