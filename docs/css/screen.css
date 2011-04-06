@@ -20,8 +20,10 @@ h1 {
 	}
 h2 {
 	margin-top: 2.5em;
-	padding: 0.3em 0.5em 0.2em;
-	background: #eee;
+	padding: 0.3em 20px 0.2em;
+	margin-left: -20px;
+	margin-right: -12px;
+	background: #edeeef;
 	border-right: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
 
@@ -46,8 +48,8 @@ h4 {
 	margin-right: 160px;
 	}*/
 .alt {
-	color: #666;
-	font-family: /*"Warnock Pro", "Goudy Old Style",*/"Palatino","Book Antiqua", Georgia, serif;
+	color: #999;
+	font-family: Georgia, serif;
 	font-style: italic;
 	font-weight: normal;
 	}
@@ -61,18 +63,64 @@ h4 {
 	}
 
 .nav {
-	margin-left: -5px;
-	line-height: 1em;
+	list-style: none;
+	padding: 0;
+	font-size: 1.2em;
+	margin-left: -15px;
+	margin-right: -15px;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	border: 1px solid #dcddde;
+	overflow: hidden;
+	
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.3, white),color-stop(1, #eff0f1));
+	border-radius: 15px;
+	box-shadow: 0 0 8px #eee;
 	}
-	.nav a, .nav span {
-		margin: 0 5px;
+	.nav a {
+		text-decoration: none;
+		color: #555657;
+	}
+	.nav li span {
+		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0.3, #f8f9fa),color-stop(1, #d4d5d6));
+		color: #333;
+	}
+	.nav li a:hover {
+		background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0.4, #f6f7f8),color-stop(1, #eff0f1));
+		color: black;
+	}
+	.nav li a, .nav li span {
+		float: left;
+		display: inline;
+		padding: 10px 15px;
+		border-right: 1px solid #ddd;
 		}
-	.nav span a {
+	.nav li a.github-link,
+	.nav li a.twitter-link {
+		padding-left: 35px;
+		font-weight: normal;
+		float: right;
+		border-right: none;
+		border-left: 1px solid #ddd;
+		}
+	.nav li a.cloudmade-link {
+		padding: 4px 8px;
+		opacity: 0.7;
+		}
+	.nav li a.cloudmade-link img {
 		margin: 0;
+		display: block;
 		}
-		
+	.nav li a.github-link {
+		background: url(https://github.com/favicon.png) 15px center no-repeat;
+		}
+	.nav li a.twitter-link {
+		background: url(http://twitter.com/phoenix/favicon.ico) 15px center no-repeat;
+		}
+	
+
 table { border-collapse: collapse; }
-th { background:#e5ecf9; }
+th { background:/*#e5ecf9;*/ #f3f3f3; }
 
 th, td {
 	padding: 4px 5px;
@@ -83,15 +131,10 @@ th, td {
 	top: 0; 
 	right: 0; 
 	border: 0;
+	opacity: 0.4;
 	}
-	
-a.github-link {
-	background: url(https://github.com/favicon.png) left center no-repeat;
-	padding-left: 20px;
-	}
-a.twitter-link {
-	background: url(http://twitter.com/phoenix/favicon.ico) left center no-repeat;
-	padding-left: 20px;
+a:hover #forkme {
+	opacity: 1;
 	}
 	
 .javascript .keyword {
