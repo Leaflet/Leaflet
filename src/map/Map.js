@@ -389,7 +389,7 @@ L.Map = L.Class.extend({
 	},
 	
 	_getNewTopLeftPoint: function(center) {
-		var viewHalf = this.getSize().divideBy(2, true);
+		var viewHalf = this.getSize().divideBy(2);
 		return this.project(center).subtract(viewHalf).round();
 	},
 	
