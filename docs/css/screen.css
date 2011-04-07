@@ -1,6 +1,10 @@
 .container {
-	padding-top: 40px;
+	padding: 40px 40px 20px;
 	width: 790px;
+	
+	box-shadow: 0 0 60px #eee;
+	-moz-box-shadow: 0 0 60px #eee;
+	-webkit-box-shadow: 0 0 60px #eee;
 	}
 	
 h1 {
