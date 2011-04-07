@@ -6,14 +6,15 @@ L.TileLayer = L.Class.extend({
 	includes: L.Mixin.Events,
 	
 	options: {
-		tileSize: 256,
 		minZoom: 0,
 		maxZoom: 18,
+		tileSize: 256,
 		subdomains: 'abc',
-		copyright: '',
+		errorTileUrl: '',
+		attribution: '',
+		
 		unloadInvisibleTiles: L.Browser.mobileWebkit,
-		updateWhenIdle: L.Browser.mobileWebkit,
-		errorTileUrl: ''
+		updateWhenIdle: L.Browser.mobileWebkit
 	},
 	
 	initialize: function(url, options) {
@@ -96,7 +97,6 @@ L.TileLayer = L.Class.extend({
 		if (this.options.unloadInvisibleTiles) {
 			this._unloadOtherTiles(tileBounds);
 		}
-		//TODO fire layerload?
 	},
 	
 	getTileUrl: function(tilePoint, zoom) {
@@ -126,7 +126,8 @@ L.TileLayer = L.Class.extend({
 			return a.distanceTo(center) - b.distanceTo(center);
 		});
 		
-		for (var k = 0, len = queue.length; k < len; k++) {
+		this._tilesToLoad = queue.length;
+		for (var k = 0, len = this._tilesToLoad; k < len; k++) {
 			this._loadTile(queue[k]);
 		}
 	},
@@ -162,11 +163,11 @@ L.TileLayer = L.Class.extend({
 		
 		// create tile
 		var tile = this._tileImg.cloneNode(false);
-		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 		
 		L.DomUtil.setPosition(tile, tilePos);
 		
 		tile._leaflet_layer = this;
+		tile._key = tilePoint.x + ':' + tilePoint.y;
 		tile.onload = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
@@ -177,8 +178,18 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_tileOnLoad: function() {
-		this.className += ' leaflet-tile-loaded';
-		this._leaflet_layer.fire('tileload', {tile: this});
+		this.className += ' leaflet-tile-loaded'; //TODO DomEvent#addListener target 
+
+		var layer = this._leaflet_layer;
+		
+		layer._tiles[this._key] = this;
+		
+		layer.fire('tileload', {tile: this});
+		
+		layer._tilesToLoad--;
+		if (!layer._tilesToLoad) {
+			layer.fire('load');
+		}
 	},
 	
 	_tileOnError: function() {

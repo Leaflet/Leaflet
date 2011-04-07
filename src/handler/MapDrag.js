@@ -9,11 +9,11 @@ L.Handler.MapDrag = L.Handler.extend({
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 			
 			//optimizes map dragging in FF on big screens
-			var size = this._map.getSize();
+			/*var size = this._map.getSize();
 			if (size.x * size.y >= 7e5 && L.Browser.gecko) {
 				this._draggable._updatePosition = L.Util.deferExecByInterval(
 						this._draggable._updatePosition, 0, this._draggable);
-			}
+			}*/
 			
 			this._draggable.on('dragstart', this._onDragStart, this);
 			this._draggable.on('drag', this._onDrag, this);
