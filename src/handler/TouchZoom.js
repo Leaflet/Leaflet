@@ -16,7 +16,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 	
 	_onTouchStart: function(e) {
-		if (!e.touches || e.touches.length != 2) { return; }
+		if (!e.touches || e.touches.length != 2 || this._animatingZoom) { return; }
 		
 		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = this._map.mouseEventToLayerPoint(e.touches[1]),
@@ -51,12 +51,11 @@ L.Handler.TouchZoom = L.Handler.extend({
 		
 		this._scale = p1.distanceTo(p2) / this._startDist;
 		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
-		
+
 		/*
 		 * Used 2 translates instead of transform-origin because of a very strange bug - 
 		 * it didn't count the origin on the first touch-zoom but worked correctly afterwards 
 		 */
-		
 		this._map._tileBg.style.webkitTransform = [
             L.DomUtil.getTranslateString(this._delta),
             L.DomUtil.getScaleString(this._scale, this._startCenter)
@@ -84,10 +83,8 @@ L.Handler.TouchZoom = L.Handler.extend({
 		L.DomEvent.removeListener(document, 'touchmove', this._onTouchMove);
 		L.DomEvent.removeListener(document, 'touchend', this._onTouchEnd);
 
-		var finalScale = Math.pow(2, zoomDelta),
-			mapPaneOffset = L.DomUtil.getPosition(this._map._mapPane),
-			startTransform = L.DomUtil.getTranslateString(mapPaneOffset) + ' ' + this._map._tileBg.style.webkitTransform;
+		var finalScale = Math.pow(2, zoomDelta);
 		
-		this._map._runAnimation(center, zoom, finalScale / this._scale, startTransform, this._startCenter.add(centerOffset));
+		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset));
 	}
 });
