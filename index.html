@@ -27,22 +27,21 @@
 		<h1>Leaflet</h1>
 		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
 		
-		<hr />
-		<p class="nav large quiet">
-			<span>Home</span> |
-			<a href="features.html">Features</a> |  
-			<a href="reference.html">Documentation</a> | 
-			<a href="#">Examples</a> | 
-			<a href="http://github.com/CloudMade/Leaflet/zipball/master">Download (zip)</a> | 
-			<a class="github-link" href="http://github.com/CloudMade/Leaflet">Source on GitHub</a> | 
-			<a class="twitter-link" href="http://twitter.com/LeafletJS">Follow on Twitter</a>
-		</p>
-		<hr />
+		<ul class="nav clearfix">
+			<!-- <li><a class="cloudmade-link" href="http://cloudmade.com"><img src="http://cloudmade.com/images/layout/cloudmade-logo.png" width="32" /></a></li> --> 
+			<li><span>Overview</span></li>
+			<li><a href="features.html">Features</a></li>  
+			<li><a href="reference.html">Documentation</a></li> 
+			<li><a href="#">Examples</a></li> 
+			<li><a href="http://github.com/CloudMade/Leaflet/zipball/master">Download (zip)</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li>
+		</ul>
 		
 		<h3>About the library</h3>
 		<p>Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for <em>both desktop and mobile</em> web browsers, developed by <a href="http://cloudmade.com">CloudMade</a> to form the core of its next generation JavaScript API.</p>
 			
-		<p>It is built from the ground up to work efficiently and smoothly on both platforms, utilizing cutting-edge technologies included in HTML5. Its top priorities are usability, performance and small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.</p>
+		<p>It is built from the ground up to work efficiently and smoothly on both platforms, utilizing cutting-edge technologies included in HTML5. Its top priorities are usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.</p>
 		<!-- <p><strong>Supported browsers:</strong> IE6+, Firefox 3.6+, Safari 5+, Chrome, iOS 3+, Android 2.2+</p> -->
 		
 		<p>
@@ -50,8 +49,6 @@
 			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fcloudmade.github.com%2FLeaflet%2F&amp;layout=standard&amp;show_faces=false&amp;width=660&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:660px; height:24px;" allowTransparency="true"></iframe>
 		</p>
 	
-		<hr />
-		
 		<h3>Basic usage example</h3>
 		<div id="map"></div>
 		<script>
@@ -67,6 +64,7 @@
 			marker.bindPopup('A pretty CSS3 popup.<br />Easily customizable.').openPopup();
 		</script>
 			
+		<p>Here we create a map with a CloudMade tile layer, add a marker and bind a popup with some text to it:</p>
 		<pre><code class="javascript">// create a CloudMade tile layer
 var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
 	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
@@ -84,8 +82,9 @@ map.addLayer(marker);
 // attach a given HTML content to the marker and immediately open it
 marker.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.").openPopup();</code></pre>
 
+		<p>Check out the <a href="examples.html">examples</a> section for more examples, or head straight to the <a href="reference.html">documentation</a>.</p>
+
 		<hr />
-			
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
 	</div>
 	
