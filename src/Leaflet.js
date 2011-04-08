@@ -14,7 +14,7 @@ var L = {
 				res = src && src.match(/^(.*\/)leaflet-*\w*\.js.*$/);
 			if (res && res[1]) { return res[1]; }
 		}
-		return '../dist/';
+		return '../../dist/';
 	})(),
 	
 	noConflict: function() {

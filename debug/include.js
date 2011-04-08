@@ -56,6 +56,6 @@
 	];
 	
 	for (var i = 0; i < scripts.length; i++) {
-		document.writeln("<script type='text/javascript' src='../src/" + scripts[i] + "'></script>");
+		document.writeln("<script type='text/javascript' src='../../src/" + scripts[i] + "'></script>");
 	}
 })();
