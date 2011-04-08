@@ -20,7 +20,6 @@ L.Popup = L.Class.extend({
 	
 	onAdd: function(map) {
 		this._map = map;
-		
 		if (!this._container) {
 			this._initLayout();
 			this._updateContent();

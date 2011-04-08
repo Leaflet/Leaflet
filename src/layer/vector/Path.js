@@ -3,6 +3,8 @@
  */
 
 L.Path = L.Class.extend({
+	includes: [L.Mixin.Events],
+	
 	statics: (function() {
 		var svgns = 'http://www.w3.org/2000/svg',
 			ce = 'createElementNS';
@@ -38,6 +40,7 @@ L.Path = L.Class.extend({
 		this._map = map;
 		
 		this._initElements();
+		this._initEvents();
 		this.projectLatlngs();
 		this._updatePath();
 
@@ -151,5 +154,26 @@ L.Path = L.Class.extend({
 	
 	_createElement: function(name) {
 		return document.createElementNS(L.Path.SVG_NS, name);
-	}	
+	},
+	
+	// TODO remove duplication with L.Map
+	_initEvents: function() {
+		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+		L.DomEvent.addListener(this._container, 'dblclick', this._fireMouseEvent, this);
+		L.DomEvent.addListener(this._container, 'mousedown', this._fireMouseEvent, this);
+	},
+	
+	_onMouseClick: function(e) {
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		this._fireMouseEvent(e);
+	},
+	
+	_fireMouseEvent: function(e) {
+		if (!this.hasEventListeners(e.type)) { return; }
+		this.fire(e.type, {
+			position: this._map.mouseEventToLatLng(e),
+			layerPoint: this._map.mouseEventToLayerPoint(e)
+		});
+		L.DomEvent.stopPropagation(e);
+	}
 });
