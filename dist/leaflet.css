@@ -26,12 +26,6 @@
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	}
-.leaflet-tile {
-	visibility: hidden;
-	}
-.leaflet-tile-loaded {
-	visibility: inherit;
-	}
 .leaflet-marker-icon, 
 .leaflet-marker-shadow {
 	display: block;
@@ -54,6 +48,30 @@
 	width: 0;
 	height: 0;
 }
+
+
+.leaflet-tile {
+	opacity: 0;
+	
+	-webkit-transition: opacity 0.2s linear;
+	-moz-transition: opacity 0.2s linear;
+	-o-transition: opacity 0.2s linear;
+	transition: opacity 0.2s linear;
+}
+.leaflet-tile-loaded {
+	opacity: 1;
+}
+		
+
+.leaflet-popup {
+	-webkit-transition: opacity 0.2s linear;
+	opacity: 0;
+}
+.leaflet-map-pane .leaflet-popup {
+	opacity: 1;
+}
+
+
 
 
 /* Popup layout */

@@ -18,3 +18,13 @@
 	width: 1px;
 	height: 1px;
 	}
+	
+.leaflet-tile {
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+.leaflet-popup {
+	opacity: 1;
+	}
