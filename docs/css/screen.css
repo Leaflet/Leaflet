@@ -1,6 +1,9 @@
 .container {
-	padding: 40px 40px 20px;
+	padding: 15px 40px 20px;
 	width: 790px;
+	
+	border: 1px solid #dfdfdf;
+	border-top: 0;
 	
 	box-shadow: 0 0 50px #e0e0e0;
 	-moz-box-shadow: 0 0 50px #e0e0e0;
@@ -8,22 +11,42 @@
 	}
 	
 h1 {
-	font-family: "Century Gothic", Arial, sans-serif;
-	text-shadow: 1px 1px 3px #888;
+	display: block;
+	height: 0;
+	padding-top: 65px;
+	width: 187px;
+	overflow: hidden;
+	background: url(../images/logo.png) 0 0 no-repeat;
+	margin-left: -10px;
+	margin-bottom: 15px;
 	}
 h2 {
+	font-size: 1.8em;
+	font-weight: bold;
 	margin-top: 2.5em;
-	padding: 0.3em 20px 0.2em;
-	margin-left: -20px;
-	margin-right: -20px;
+	padding: 0.3em 12px 0.2em;
+	margin-left: 0;
+	margin-right: 0;
 	background: #edeeef;
 	border-right: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
+	
+	color: white;
 
-	border-radius: 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-}
+	background-color: #b0de5c;
+	background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); /* FF3.6 */
+	background-image: -o-linear-gradient(top, #b0de5c, #82cb00); /* Opera 11.10+ */
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#b0de5c), to(#82cb00)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
+	background-image: linear-gradient(top, #b0de5c, #82cb00);
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6–IE9 */
+            
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	
+	text-shadow: 0 1px 0 #999;
+	}
 h3 {
 	margin-top: 1.5em;
 	}
@@ -71,7 +94,7 @@ th, td {
 
 .nav {
 	padding: 0;
-	margin: 2em -15px;
+	margin: 2em 0;
 	
 	list-style: none;
 	font-size: 1.2em;
@@ -86,9 +109,9 @@ th, td {
 	background-image: linear-gradient(top, #ffffff, #eff0f1);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eff0f1'); /* IE6–IE9 */
 
-	border-radius: 15px;
-	-moz-border-radius: 15px;
-	-webkit-border-radius: 15px;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
 	
 	box-shadow: 0 0 8px #eee;
 	-moz-box-shadow: 0 0 8px #eee;
@@ -101,10 +124,10 @@ th, td {
 		}
 	.nav a {
 		text-decoration: none;
-		color: #555657;
+		color: #000;
 	}
 	.nav li span {
-		color: #333;
+		color: #000;
 
 		background-color: #f8f9fa;
 		background-image: -moz-linear-gradient(top, #f8f9fa, #d4d5d6); 
@@ -143,10 +166,10 @@ th, td {
 		display: block;
 		}*/
 	.nav li a.github-link {
-		background: url(https://github.com/favicon.png) 15px center no-repeat;
+		background: url(https://github.com/favicon.png) 15px 12px no-repeat;
 		}
 	.nav li a.twitter-link {
-		background: url(http://twitter.com/phoenix/favicon.ico) 15px center no-repeat;
+		background: url(http://twitter.com/phoenix/favicon.ico) 15px 12px no-repeat;
 		}
 	
 #forkme {
@@ -175,7 +198,7 @@ a:hover #forkme {
 	margin-top: 1em;
 	}
 a.nodocs {
-	color: #f44;
+	color: #bbb;
 	}
 	
 #features {
