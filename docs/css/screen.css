@@ -1,13 +1,19 @@
+body {
+	background: #f7f7f7;
+	}
+
 .container {
+	background: white;
+	
 	padding: 15px 40px 20px;
 	width: 790px;
 	
 	border: 1px solid #dfdfdf;
 	border-top: 0;
 	
-	box-shadow: 0 0 50px #e0e0e0;
-	-moz-box-shadow: 0 0 50px #e0e0e0;
-	-webkit-box-shadow: 0 0 50px #e0e0e0;
+	box-shadow: 0 0 20px #e0e0e0;
+	-moz-box-shadow: 0 0 20px #e0e0e0;
+	-webkit-box-shadow: 0 0 20px #e0e0e0;
 	}
 	
 h1 {
@@ -24,7 +30,7 @@ h2 {
 	font-size: 1.8em;
 	font-weight: bold;
 	margin-top: 2.5em;
-	padding: 0.3em 12px 0.2em;
+	padding: 4px 12px 3px;
 	margin-left: 0;
 	margin-right: 0;
 	background: #edeeef;
@@ -45,7 +51,7 @@ h2 {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	
-	text-shadow: 0 1px 0 #999;
+	text-shadow: -1px -1px 0 #999;
 	}
 h3 {
 	margin-top: 1.5em;
