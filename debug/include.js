@@ -36,6 +36,7 @@
 		
 		'layer/vector/Path.js',
 		'layer/vector/Path.VML.js',
+		'layer/vector/Path.Popup.js',
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
 		'layer/vector/Circle.js',
@@ -47,14 +48,18 @@
 		'handler/ScrollWheelZoom.js',
 		'handler/ShiftDragZoom.js',
 		
+		'control/Control.js',
+		'control/Control.Zoom.js',
+		
 		'map/Map.js',
 		'map/ext/Map.Geolocation.js',
 		'map/ext/Map.Popup.js',
 		'map/ext/Map.PanAnimation.js',
-		'map/ext/Map.ZoomAnimation.js'
+		'map/ext/Map.ZoomAnimation.js',
+		'map/ext/Map.Control.js'
 	];
 	
 	for (var i = 0; i < scripts.length; i++) {
-		document.writeln("<script type='text/javascript' src='../src/" + scripts[i] + "'></script>");
+		document.writeln("<script type='text/javascript' src='../../src/" + scripts[i] + "'></script>");
 	}
 })();

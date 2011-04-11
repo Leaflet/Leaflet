@@ -3,10 +3,12 @@
 <head>
 	<title>Leaflet debug page</title>
 
-	<link rel="stylesheet" href="../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
-
-	<script src="include.js"></script>
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../include.js"></script>
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
@@ -29,6 +31,8 @@
 		map.addLayer(new L.Marker(latlngs[len - 1]));
 		
 		map.addLayer(path);
+		
+		path.bindPopup("Hello world");
 	</script>
 </body>
 </html>

@@ -36,12 +36,12 @@ var deps = {
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
-		desc: 'Used to display the map popup (used mostly for binding HTML data to markers on click).'
+		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
 	},
 	
 	
 	Path: {
-		src: ['layer/vector/Path.js'],
+		src: ['layer/vector/Path.js', 'layer/vector/Path.Popup.js'],
 		desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
 		heading: 'Vector layers'
 	},
@@ -98,6 +98,14 @@ var deps = {
 	ShiftDragZoom: {
 		src: ['handler/ShiftDragZoom.js'],
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
+	},
+	
+	ControlZoom: {
+		src: ['control/Control.js', 
+		      'map/ext/Map.Control.js', 
+		      'control/Control.Zoom.js'],
+		heading: 'Controls',
+		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
 	},
 	
 	
