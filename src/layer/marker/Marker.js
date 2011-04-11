@@ -4,16 +4,18 @@
 
 
 L.Marker = L.Class.extend({
+
 	includes: L.Mixin.Events,
 	
 	options: {
 		icon: new L.Icon(),
-		clickable: true
+		clickable: true,
+		draggable: false
 	},
 	
 	initialize: function(latlng, options) {
 		L.Util.setOptions(this, options);
-		this._latlng = latlng;	
+		this._latlng = latlng;
 	},
 	
 	onAdd: function(map) {
@@ -44,7 +46,8 @@ L.Marker = L.Class.extend({
 	},
 	
 	getLatLng: function() {
-		return this._latlng;
+		var pos = L.DomUtil.getPosition(this._icon);
+		return this._map.layerPointToLatLng(pos);
 	},
 	
 	_reset: function() {
@@ -57,16 +60,35 @@ L.Marker = L.Class.extend({
 	},
 	
 	_initInteraction: function() {
+	
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
 			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
 			L.DomEvent.addListener(this._icon, 'click', this._fireMouseEvent, this);
 			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
+		
+		var handlers = {
+			draggable: L.Handler.MarkerDrag
+		}
+			
+		for (var i in handlers) {
+			if (handlers.hasOwnProperty(i) && handlers[i]) {
+				this[i] = new handlers[i](this);
+				if (this.options[i]) this[i].enable();
+			}
+		}
+		
 	},
 	
 	_fireMouseEvent: function(e) {
 		this.fire(e.type);
 		L.DomEvent.stopPropagation(e);
-	}
+	},
+	
+	moved: function() {
+		return this._draggable._moved;
+	},
+	
+	
 });
