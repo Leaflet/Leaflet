@@ -5,7 +5,7 @@
  */
 
 var L = {
-	VERSION: '0.1a4',
+	VERSION: '0.1b1',
 	
 	ROOT_URL: (function() {
 		var scripts = document.getElementsByTagName('script');
