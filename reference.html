@@ -488,6 +488,12 @@ map.addLayer(marker);</code></pre>
 				<td><code>true</code></td>
 				<td>If false, the marker will not emit mouse events and will act as a part of the underlying map.</td>
 			</tr>
+			<tr>
+				<td><code>draggable</code></td>
+				<td>Boolean</td>
+				<td><code>false</code></td>
+				<td>Whether the marker is draggable with mouse/touch or not.</td>
+			</tr>
 		</table>
 		
 		<h3>Methods</h3>
@@ -515,7 +521,24 @@ map.addLayer(marker);</code></pre>
 			</tr>
 		</table>
 		
+		<h3 id="marker-interaction-handlers">Interaction handlers</h3>
 		
+		<p>Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see <a href="#ihandler">IHandler</a> methods). Example:</p>
+		
+		<pre><code class="javascript">marker.draggable.disable();</code></pre>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>draggable</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Marker dragging handler (by both mouse and touch).</td>
+			</tr>
+		</table>
 		
 		<h2 id="popup">L.Popup</h2>
 		
