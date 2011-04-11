@@ -100,6 +100,14 @@ var deps = {
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
 	
+	ControlZoom: {
+		src: ['control/Control.js', 
+		      'map/ext/Map.Control.js', 
+		      'control/Control.Zoom.js'],
+		heading: 'Controls',
+		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
+	},
+	
 	
 	MapAnimationNative: {
 		src: ['dom/DomEvent.js',

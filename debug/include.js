@@ -48,11 +48,15 @@
 		'handler/ScrollWheelZoom.js',
 		'handler/ShiftDragZoom.js',
 		
+		'control/Control.js',
+		'control/Control.Zoom.js',
+		
 		'map/Map.js',
 		'map/ext/Map.Geolocation.js',
 		'map/ext/Map.Popup.js',
 		'map/ext/Map.PanAnimation.js',
-		'map/ext/Map.ZoomAnimation.js'
+		'map/ext/Map.ZoomAnimation.js',
+		'map/ext/Map.Control.js'
 	];
 	
 	for (var i = 0; i < scripts.length; i++) {
