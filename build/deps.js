@@ -75,7 +75,7 @@ var deps = {
 		      'dom/Draggable.js',
 		      'handler/Handler.js',
 		      'handler/MapDrag.js'],
-		desc: 'Makes the map draggable (on both desktop and mobile webkit browsers).',
+		desc: 'Makes the map draggable (by mouse or touch).',
 		heading: 'Interaction'
 	},
 	
@@ -99,6 +99,12 @@ var deps = {
 		src: ['handler/ShiftDragZoom.js'],
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
+	
+	MarkerDrag: {
+		src: ['handler/MarkerDrag.js'],
+		desc: 'Makes markers draggable (by mouse or touch).'
+	},
+	
 	
 	ControlZoom: {
 		src: ['control/Control.js', 

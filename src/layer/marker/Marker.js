@@ -2,7 +2,6 @@
  * L.Marker is used to display clickable/draggable icons on the map.
  */
 
-
 L.Marker = L.Class.extend({
 
 	includes: L.Mixin.Events,
@@ -46,8 +45,7 @@ L.Marker = L.Class.extend({
 	},
 	
 	getLatLng: function() {
-		var pos = L.DomUtil.getPosition(this._icon);
-		return this._map.layerPointToLatLng(pos);
+		return this._latlng;
 	},
 	
 	_reset: function() {
@@ -60,35 +58,27 @@ L.Marker = L.Class.extend({
 	},
 	
 	_initInteraction: function() {
-	
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
 			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
-			L.DomEvent.addListener(this._icon, 'click', this._fireMouseEvent, this);
+			L.DomEvent.addListener(this._icon, 'click', this._onMouseClick, this);
 			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
 		
-		var handlers = {
-			draggable: L.Handler.MarkerDrag
+		if (this.options.draggable) {
+			this.dragging = new L.Handler.MarkerDrag(this);
+			this.dragging.enable();
 		}
-			
-		for (var i in handlers) {
-			if (handlers.hasOwnProperty(i) && handlers[i]) {
-				this[i] = new handlers[i](this);
-				if (this.options[i]) this[i].enable();
-			}
-		}
-		
+	},
+	
+	_onMouseClick: function(e) {
+		L.DomEvent.stopPropagation(e);
+		if (this.dragging && this.dragging.moved()) { return; }
+		this.fire(e.type);
 	},
 	
 	_fireMouseEvent: function(e) {
 		this.fire(e.type);
 		L.DomEvent.stopPropagation(e);
-	},
-	
-	moved: function() {
-		return this._draggable._moved;
-	},
-	
-	
+	}
 });

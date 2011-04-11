@@ -3,11 +3,14 @@
  */
 
 L.Handler.MarkerDrag = L.Handler.extend({
-
+	initialize: function(marker) {
+		this._marker = marker;
+	},
+	
 	enable: function() {
 		if (this._enabled) { return; }
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(this._handlee._icon, this._handlee._icon);
+			this._draggable = new L.Draggable(this._marker._icon, this._marker._icon);
 			this._draggable.on('dragstart', this._onDragStart, this);
 			this._draggable.on('drag', this._onDrag, this);
 			this._draggable.on('dragend', this._onDragEnd, this);
@@ -27,25 +30,25 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 	
 	_onDragStart: function(e) {
-		this._handlee.fire('movestart',this);
-		this._handlee.fire('dragstart',"hello");
-		this._dragStartShadowPos = L.DomUtil.getPosition(this._handlee._shadow);
+		this._marker.closePopup();
+		
+		this._marker.fire('movestart');
+		this._marker.fire('dragstart');
 	},
 	
 	_onDrag: function(e) {
-		
 		// update shadow position
-		var newShadowPos = this._dragStartShadowPos.add(e.target._offset);
-		L.DomUtil.setPosition(this._handlee._shadow, newShadowPos);
-	
-		this._handlee.fire('move',this);
-		this._handlee.fire('drag',this);
+		var iconPos = L.DomUtil.getPosition(this._marker._icon);
+		L.DomUtil.setPosition(this._marker._shadow, iconPos);
 		
+		this._marker._latlng = this._marker._map.layerPointToLatLng(iconPos);
+	
+		this._marker.fire('move');
+		this._marker.fire('drag');
 	},
 	
 	_onDragEnd: function() {
-		this._handlee.fire('moveend',this);
-		this._handlee.fire('dragend',this);
+		this._marker.fire('moveend');
+		this._marker.fire('dragend');
 	}
-	
 });

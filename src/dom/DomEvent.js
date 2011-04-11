@@ -35,19 +35,6 @@ L.DomEvent = {
 		obj[key] = null; 
 	},
 	
-	fireEvent: function (/*HTMLElement*/ obj, /*String*/ type) {
-		if (document.createEventObject){
-			// dispatch for IE
-			var evt = document.createEventObject();
-			return obj.fireEvent('on'+type,evt)
-		} else{
-			// dispatch for firefox + others
-			var evt = document.createEvent("HTMLEvents");
-			evt.initEvent(type, true, true ); // event type,bubbling,cancelable
-			return !obj.dispatchEvent(evt);
-		}
-	},
-	
 	_getEvent: function()/*->Event*/ {
 		var e = window.event;
 		if (!e) {
