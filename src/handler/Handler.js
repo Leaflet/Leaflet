@@ -3,8 +3,13 @@
  */
 
 L.Handler = L.Class.extend({
-	initialize: function(map) {
-		this._map = map;
+	initialize: function(handlee) {
+		// not sure this is the best name for this property
+		this._handlee = handlee;
+		// this ensures map handles looking for ._map can still find it
+		// I would remove this and change them but with out full test coverage
+		// am worried I will break something
+		this._map = handlee;
 	},
 	
 	enabled: function() {

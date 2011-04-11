@@ -3,6 +3,7 @@
  */
 
 L.Map = L.Class.extend({
+	
 	includes: L.Mixin.Events,
 	
 	options: {

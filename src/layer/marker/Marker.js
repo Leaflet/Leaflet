@@ -4,6 +4,7 @@
 
 
 L.Marker = L.Class.extend({
+
 	includes: L.Mixin.Events,
 	
 	options: {
@@ -67,22 +68,21 @@ L.Marker = L.Class.extend({
 			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
 		
-		if (this.options.draggable) {
-		  this._draggable = new L.Draggable(this._icon, this._icon);
-			this._draggable.on('dragstart', this._onDragStart, this);
-			this._draggable.on('drag', this._onDrag, this);
-			this._draggable.on('dragend', this._onDragEnd, this);
-		  this._draggable.enable();
+		var handlers = {
+			draggable: L.Handler.MarkerDrag
+		}
+			
+		for (var i in handlers) {
+			if (handlers.hasOwnProperty(i) && handlers[i]) {
+				this[i] = new handlers[i](this);
+				if (this.options[i]) this[i].enable();
+			}
 		}
 		
 	},
 	
 	_fireMouseEvent: function(e) {
 		this.fire(e.type);
-		if (e.type == 'mouseup') {
-			// Draggable stops listening on document mouseup so because we are stopping propagation we will explicitaly fire it
-			L.DomEvent.fireEvent(document,'mouseup');
-		}
 		L.DomEvent.stopPropagation(e);
 	},
 	
@@ -90,19 +90,5 @@ L.Marker = L.Class.extend({
 		return this._draggable._moved;
 	},
 	
-	_onDragStart: function(e) {
-		this.fire('movestart',this);
-		this.fire('dragstart',"hello");
-	},
-	
-	_onDrag: function() {
-		this.fire('move',this);
-		this.fire('drag',this);
-	},
-	
-	_onDragEnd: function() {
-		this.fire('moveend',this);
-		this.fire('dragend',this);
-	}
 	
 });
