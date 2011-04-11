@@ -35,6 +35,19 @@ L.DomEvent = {
 		obj[key] = null; 
 	},
 	
+	fireEvent: function (/*HTMLElement*/ obj, /*String*/ type) {
+		if (document.createEventObject){
+			// dispatch for IE
+			var evt = document.createEventObject();
+			return obj.fireEvent('on'+type,evt)
+		} else{
+			// dispatch for firefox + others
+			var evt = document.createEvent("HTMLEvents");
+			evt.initEvent(type, true, true ); // event type,bubbling,cancelable
+			return !obj.dispatchEvent(evt);
+		}
+	},
+	
 	_getEvent: function()/*->Event*/ {
 		var e = window.event;
 		if (!e) {
@@ -84,8 +97,8 @@ L.DomEvent = {
 	getWheelDelta: function(e) {
 		var delta = 0;
 		if (e.wheelDelta) { delta = e.wheelDelta/120; }
-	    if (e.detail) { delta = -e.detail/3; }
-	    return delta;
+			if (e.detail) { delta = -e.detail/3; }
+			return delta;
 	}
 };
 

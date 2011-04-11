@@ -8,12 +8,13 @@ L.Marker = L.Class.extend({
 	
 	options: {
 		icon: new L.Icon(),
-		clickable: true
+		clickable: true,
+		draggable: false
 	},
 	
 	initialize: function(latlng, options) {
 		L.Util.setOptions(this, options);
-		this._latlng = latlng;	
+		this._latlng = latlng;
 	},
 	
 	onAdd: function(map) {
@@ -44,7 +45,8 @@ L.Marker = L.Class.extend({
 	},
 	
 	getLatLng: function() {
-		return this._latlng;
+		var pos = L.DomUtil.getPosition(this._icon);
+		return this._map.layerPointToLatLng(pos);
 	},
 	
 	_reset: function() {
@@ -57,16 +59,50 @@ L.Marker = L.Class.extend({
 	},
 	
 	_initInteraction: function() {
+	
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
 			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
 			L.DomEvent.addListener(this._icon, 'click', this._fireMouseEvent, this);
 			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
+		
+		if (this.options.draggable) {
+		  this._draggable = new L.Draggable(this._icon, this._icon);
+			this._draggable.on('dragstart', this._onDragStart, this);
+			this._draggable.on('drag', this._onDrag, this);
+			this._draggable.on('dragend', this._onDragEnd, this);
+		  this._draggable.enable();
+		}
+		
 	},
 	
 	_fireMouseEvent: function(e) {
 		this.fire(e.type);
+		if (e.type == 'mouseup') {
+			// Draggable stops listening on document mouseup so because we are stopping propagation we will explicitaly fire it
+			L.DomEvent.fireEvent(document,'mouseup');
+		}
 		L.DomEvent.stopPropagation(e);
+	},
+	
+	moved: function() {
+		return this._draggable._moved;
+	},
+	
+	_onDragStart: function(e) {
+		this.fire('movestart',this);
+		this.fire('dragstart',"hello");
+	},
+	
+	_onDrag: function() {
+		this.fire('move',this);
+		this.fire('drag',this);
+	},
+	
+	_onDragEnd: function() {
+		this.fire('moveend',this);
+		this.fire('dragend',this);
 	}
+	
 });
