@@ -352,7 +352,6 @@ L.Map = L.Class.extend({
 	},
 	
 	_onMouseClick: function(e) {
-		console.log(e);
 		if (this.dragging && this.dragging.moved()) { return; }
 		this._fireMouseEvent(e);
 	},
