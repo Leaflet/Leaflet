@@ -28,3 +28,10 @@
 .leaflet-popup {
 	opacity: 1;
 	}
+	
+.leaflet-control-zoom {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
+	}
+.leaflet-control-zoom a {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BFFFFFFF',EndColorStr='#BFFFFFFF');
+	}
