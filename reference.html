@@ -525,7 +525,7 @@ map.addLayer(marker);</code></pre>
 		
 		<p>Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see <a href="#ihandler">IHandler</a> methods). Example:</p>
 		
-		<pre><code class="javascript">marker.draggable.disable();</code></pre>
+		<pre><code class="javascript">marker.dragging.disable();</code></pre>
 		
 		<table>
 			<tr>
@@ -534,11 +534,13 @@ map.addLayer(marker);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td>draggable</td>
+				<td>dragging</td>
 				<td><a href="#ihandler">IHandler</a></td>
 				<td>Marker dragging handler (by both mouse and touch).</td>
 			</tr>
 		</table>
+		
+		
 		
 		<h2 id="popup">L.Popup</h2>
 		
