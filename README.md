@@ -4,7 +4,7 @@ Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile
 
 It is built from the ground up to work efficiently and smoothly on both platforms, utilizing cutting-edge technologies included in HTML5. Its top priorities are usability, performance and small size, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
 
-Visit [the official website](http://cloudmade.github.com/Leaflet) for more information, documentation and examples.
+Check out the website for more information: [http://leaflet.cloudmade.com]
 
 ## Contributing to Leaflet
 Let's make the best open-source library for maps that can possibly exist! Please send your pull requests to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer) - we'll be happy to accept your contributions!
