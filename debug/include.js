@@ -47,6 +47,7 @@
 		'handler/DoubleClickZoom.js',
 		'handler/ScrollWheelZoom.js',
 		'handler/ShiftDragZoom.js',
+		'handler/MarkerDrag.js',
 		
 		'control/Control.js',
 		'control/Control.Zoom.js',

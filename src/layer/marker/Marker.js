@@ -2,18 +2,19 @@
  * L.Marker is used to display clickable/draggable icons on the map.
  */
 
-
 L.Marker = L.Class.extend({
+
 	includes: L.Mixin.Events,
 	
 	options: {
 		icon: new L.Icon(),
-		clickable: true
+		clickable: true,
+		draggable: false
 	},
 	
 	initialize: function(latlng, options) {
 		L.Util.setOptions(this, options);
-		this._latlng = latlng;	
+		this._latlng = latlng;
 	},
 	
 	onAdd: function(map) {
@@ -60,9 +61,20 @@ L.Marker = L.Class.extend({
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
 			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
-			L.DomEvent.addListener(this._icon, 'click', this._fireMouseEvent, this);
+			L.DomEvent.addListener(this._icon, 'click', this._onMouseClick, this);
 			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
+		
+		if (this.options.draggable) {
+			this.dragging = new L.Handler.MarkerDrag(this);
+			this.dragging.enable();
+		}
+	},
+	
+	_onMouseClick: function(e) {
+		L.DomEvent.stopPropagation(e);
+		if (this.dragging && this.dragging.moved()) { return; }
+		this.fire(e.type);
 	},
 	
 	_fireMouseEvent: function(e) {

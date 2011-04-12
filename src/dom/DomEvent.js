@@ -84,8 +84,8 @@ L.DomEvent = {
 	getWheelDelta: function(e) {
 		var delta = 0;
 		if (e.wheelDelta) { delta = e.wheelDelta/120; }
-	    if (e.detail) { delta = -e.detail/3; }
-	    return delta;
+			if (e.detail) { delta = -e.detail/3; }
+			return delta;
 	}
 };
 

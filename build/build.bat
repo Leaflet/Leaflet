@@ -37,6 +37,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/handler/ScrollWheelZoom.js ^
 --js ../src/handler/DoubleClickZoom.js ^
 --js ../src/handler/ShiftDragZoom.js ^
+--js ../src/handler/MarkerDrag.js ^
 --js ../src/control/Control.js ^
 --js ../src/control/Control.Zoom.js ^
 --js ../src/map/Map.js ^

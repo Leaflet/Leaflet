@@ -1,5 +1,5 @@
 /*
- * L.Handler classes are used internally to inject interaction features to the Map class.
+ * L.Handler classes are used internally to inject interaction features to classes like Map and Marker.
  */
 
 L.Handler = L.Class.extend({

@@ -129,6 +129,7 @@ L.Map = L.Class.extend({
 				this.on('load', onMapLoad, this);
 			}
 		}
+		
 		return this;
 	},
 	
