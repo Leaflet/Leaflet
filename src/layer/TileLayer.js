@@ -166,8 +166,9 @@ L.TileLayer = L.Class.extend({
 		
 		L.DomUtil.setPosition(tile, tilePos);
 		
+		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
+
 		tile._leaflet_layer = this;
-		tile._key = tilePoint.x + ':' + tilePoint.y;
 		tile.onload = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
@@ -181,8 +182,6 @@ L.TileLayer = L.Class.extend({
 		this.className += ' leaflet-tile-loaded'; //TODO DomEvent#addListener target 
 
 		var layer = this._leaflet_layer;
-		
-		layer._tiles[this._key] = this;
 		
 		layer.fire('tileload', {tile: this});
 		
