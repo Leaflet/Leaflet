@@ -171,7 +171,7 @@ L.Path = L.Class.extend({
 	_fireMouseEvent: function(e) {
 		if (!this.hasEventListeners(e.type)) { return; }
 		this.fire(e.type, {
-			position: this._map.mouseEventToLatLng(e),
+			latlng: this._map.mouseEventToLatLng(e),
 			layerPoint: this._map.mouseEventToLayerPoint(e)
 		});
 		L.DomEvent.stopPropagation(e);

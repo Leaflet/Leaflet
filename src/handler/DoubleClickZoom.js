@@ -16,6 +16,6 @@ L.Handler.DoubleClickZoom = L.Handler.extend({
 	},
 	
 	_onDoubleClick: function(e) {
-		this.setView(e.position, this._zoom + 1);
+		this.setView(e.latlng, this._zoom + 1);
 	}
 });

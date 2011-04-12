@@ -16,14 +16,17 @@ L.Map = L.Class.extend({
 		zoom: null,
 		layers: [],
 		
-		//interaction
+		// interaction
 		dragging: true,
 		touchZoom: L.Browser.mobileWebkit,
 		scrollWheelZoom: !L.Browser.mobileWebkit,
 		doubleClickZoom: true,
 		shiftDragZoom: true,
 		
-		//misc
+		// controls
+		zoomControl: true,
+		
+		// misc
 		trackResize: true,
 		closePopupOnClick: true
 	},
@@ -41,6 +44,7 @@ L.Map = L.Class.extend({
 		if (L.DomEvent) { 
 			this._initEvents(); 
 			if (L.Handler) { this._initInteraction(); }
+			if (L.Control) { this._initControls(); }
 		}
 		
 		var center = this.options.center,
@@ -377,6 +381,12 @@ L.Map = L.Class.extend({
 				this[i] = new handlers[i](this);
 				if (this.options[i]) this[i].enable();
 			}
+		}
+	},
+	
+	_initControls: function() {
+		if (this.options.zoomControl) {
+			this.addControl(new L.Control.Zoom());
 		}
 	},
 	

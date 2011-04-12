@@ -15,6 +15,7 @@
 		'geometry/PolyUtil.js',
 		
 		'dom/DomEvent.js',
+		'dom/DomEvent.DoubleTap.js',
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
 		
