@@ -91,6 +91,8 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 				tiles[i].src = '';
 				tiles[i].parentNode.removeChild(tiles[i]);
 			}
+			// workaround for a webkit bug (zoom transition doesn't run if fade transition on tiles in progress) 
+			tiles[i].style[L.Transition.PROPERTY] = 'none';
 		}
 	},
 	
