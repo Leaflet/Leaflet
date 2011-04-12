@@ -24,6 +24,9 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	// add superclass access
 	proto.superclass = this.prototype;
 	
+	// add class name
+	//proto.className = props;
+	
 	// mix static properties into the class
 	if (props.statics) {
 		L.Util.extend(NewClass, props.statics);

@@ -12,10 +12,8 @@ L.Popup = L.Class.extend({
 		autoPanPadding: new L.Point(5, 5)
 	},
 	
-	initialize: function(latlng, content, options) {
+	initialize: function(options) {
 		L.Util.setOptions(this, options);
-		this._latlng = latlng; 
-		this._content = content;
 	},
 	
 	onAdd: function(map) {
@@ -33,6 +31,8 @@ L.Popup = L.Class.extend({
 		this._update();
 		
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
+		
+		this._opened = true;
 	},
 	
 	onRemove: function(map) {
@@ -41,10 +41,28 @@ L.Popup = L.Class.extend({
 		map.off('click', this._close, this);
 
 		this._container.style.opacity = '0';
+		
+		this._opened = false;
+	},
+	
+	setLatLng: function(latlng) {
+		this._latlng = latlng;
+		if (this._opened) {
+			this._update();
+		}
+	},
+	
+	setContent: function(content) {
+		this._content = content;
+		if (this._opened) {
+			this._update();
+		}
 	},
 	
 	_close: function() {
-		this._map.removeLayer(this);
+		if (this._opened) {
+			this._map.removeLayer(this);
+		}
 	},
 	
 	_initLayout: function() {

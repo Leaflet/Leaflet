@@ -4,18 +4,14 @@
 
 L.Path.include({
 	bindPopup: function(content, options) {
-		this._popup = new L.Popup(null, content, options);
+		this._popup = new L.Popup(options);
+		this._popup.setContent(content);
 		this.on('click', this._openPopup, this);
 		return this;
 	},
 	
 	_openPopup: function(e) {
-		this._popup._latlng = e.position;
-		if (this._popup._map) {
-			this._popup._updatePosition();
-		}
-
-		this._map.closePopup();
+		this._popup.setLatLng(e.position);
 		this._map.openPopup(this._popup);
 	}	
 });
