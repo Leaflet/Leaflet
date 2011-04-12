@@ -6,11 +6,16 @@ L.DomEvent = {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function(/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
 		var id = L.Util.stamp(fn);
+		
 		function handler(e) {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
-		}
+		};
+		
 		obj['_leaflet_' + type + id] = handler;
-		if ('addEventListener' in obj) {
+
+		if (L.Browser.mobileWebkit && (type == 'dblclick') && this.addDoubleTapListener) {
+			this.addDoubleTapListener(obj, handler, id);
+		} else if ('addEventListener' in obj) {
 			if (type == 'mousewheel') {
 				obj.addEventListener('DOMMouseScroll', handler, false); 
 			}
@@ -24,7 +29,9 @@ L.DomEvent = {
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id;
 			handler = obj[key];
-		if ('removeEventListener' in obj) {
+		if (L.Browser.mobileWebkit && (type == 'dblclick') && this.removeDoubleTapListener) {
+			this.removeDoubleTapListener(obj, id);
+		} else if ('removeEventListener' in obj) {
 			if (type == 'mousewheel') {
 				obj.removeEventListener('DOMMouseScroll', handler, false); 
 			}

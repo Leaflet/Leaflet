@@ -11,6 +11,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/geometry/LineUtil.js ^
 --js ../src/geometry/PolyUtil.js ^
 --js ../src/dom/DomEvent.js ^
+--js ../src/dom/DomEvent.DoubleTap.js ^
 --js ../src/dom/DomUtil.js ^
 --js ../src/dom/Draggable.js ^
 --js ../src/dom/transition/Transition.js ^

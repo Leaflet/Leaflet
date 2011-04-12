@@ -89,10 +89,11 @@ var deps = {
 	
 	TouchZoom: {
 		src: ['dom/DomEvent.js',
+		      'dom/DomEvent.DoubleTap.js',
 		      'handler/Handler.js',
 		      'handler/TouchZoom.js'],
 		deps: ['MapAnimationZoom'],
-		desc: 'Enables smooth touch zooming on mobile webkit-powered devices (iPhone, iPod Touch, iPad, Android).'
+		desc: 'Enables smooth touch zooming on iOS and double tap on iOS/Android.'
 	},
 	
 	ShiftDragZoom: {
