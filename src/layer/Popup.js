@@ -6,7 +6,6 @@ L.Popup = L.Class.extend({
 		maxWidth: 300,
 		autoPan: true,
 		closeButton: true,
-		closeOnMapClick: true,
 		
 		offset: new L.Point(0, 0),
 		autoPanPadding: new L.Point(5, 5)
@@ -27,7 +26,9 @@ L.Popup = L.Class.extend({
 
 		this._map._panes.popupPane.appendChild(this._container);
 		this._map.on('viewreset', this._updatePosition, this);
-		this._map.on('click', this._close, this);
+		if (this._map.options.closePopupOnClick) {
+			this._map.on('click', this._close, this);
+		}
 		this._update();
 		
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
