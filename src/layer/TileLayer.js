@@ -143,7 +143,9 @@ L.TileLayer = L.Class.extend({
 				
 				// remove tile if it's out of bounds
 				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-					this._container.removeChild(this._tiles[key]);
+					if (this._tiles[key].parentNode == this._container) {
+						this._container.removeChild(this._tiles[key]);
+					}
 					delete this._tiles[key];
 				}
 			}
