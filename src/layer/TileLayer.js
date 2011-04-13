@@ -185,7 +185,7 @@ L.TileLayer = L.Class.extend({
 
 		var layer = this._leaflet_layer;
 		
-		layer.fire('tileload', {tile: this});
+		layer.fire('tileload', {tile: this, url: this.src});
 		
 		layer._tilesToLoad--;
 		if (!layer._tilesToLoad) {
