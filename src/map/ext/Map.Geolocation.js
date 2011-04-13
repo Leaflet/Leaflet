@@ -3,8 +3,9 @@
  */
 
 L.Map.include({
-	locate: function() {
+	locate: function(/*Boolean*/ noFitBounds) {
 		if (navigator.geolocation) {
+			this._fitBoundsOnLocate = !noFitBounds;
 			navigator.geolocation.getCurrentPosition(
 					L.Util.bind(this._handleGeolocationResponse, this),
 					L.Util.bind(this._handleGeolocationError, this));
@@ -26,7 +27,9 @@ L.Map.include({
 			ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
 			bounds = new L.LatLngBounds(sw, ne);
 		
-		this.fitBounds(bounds);
+		if (this._fitBoundsOnLocate) {
+			this.fitBounds(bounds);
+		}
 		
 		this.fire('locationfound', {
 			latlng: new L.LatLng(lat, lng), 
