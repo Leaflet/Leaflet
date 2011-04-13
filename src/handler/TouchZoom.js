@@ -16,7 +16,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 	
 	_onTouchStart: function(e) {
-		if (!e.touches || e.touches.length != 2 || this._animatingZoom) { return; }
+		if (!e.touches || e.touches.length != 2 || this._map._animatingZoom) { return; }
 		
 		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = this._map.mouseEventToLayerPoint(e.touches[1]),
@@ -65,10 +65,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 	
 	_onTouchEnd: function(e) {
-		if (!e.touches || e.touches.length >= 2 || !this._moved) { return; }
-		
-		// prevent touchEnd from firing twice
-		if (!this._zooming)  { return; }
+		if (!this._moved || !this._zooming) { return; }
 		this._zooming = false;
 		
 		var oldZoom = this._map.getZoom(),
