@@ -18,7 +18,7 @@ L.Map = L.Class.extend({
 		
 		// interaction
 		dragging: true,
-		touchZoom: L.Browser.mobileWebkit,
+		touchZoom: L.Browser.mobileWebkit && !L.Browser.android,
 		scrollWheelZoom: !L.Browser.mobileWebkit,
 		doubleClickZoom: true,
 		shiftDragZoom: true,
@@ -27,6 +27,7 @@ L.Map = L.Class.extend({
 		zoomControl: true,
 		
 		// misc
+		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
 		trackResize: true,
 		closePopupOnClick: true
 	},
@@ -282,6 +283,10 @@ L.Map = L.Class.extend({
 		
 		container.className += ' leaflet-container';
 		
+		if (this.options.fadeAnimation) {
+			container.className += ' leaflet-fade-anim';
+		}
+		
 		var position = L.DomUtil.getStyle(container, 'position');
 		container.style.position = (position == 'absolute' ? 'absolute' : 'relative');
 		
@@ -308,15 +313,21 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._objectsPane);
 	},
 	
-	_resetView: function(center, zoom) {
+	_resetView: function(center, zoom, preserveMapOffset) {
 		var zoomChanged = (this._zoom != zoom);
 		
 		this.fire('movestart');
 		
 		this._zoom = zoom;
+		
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 		
-		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
+		if (!preserveMapOffset) {
+			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
+		} else {
+			var offset = L.DomUtil.getPosition(this._mapPane);
+			this._initialTopLeftPoint._add(offset);
+		}
 		
 		this.fire('viewreset');
 

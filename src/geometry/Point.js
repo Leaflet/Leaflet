@@ -9,7 +9,13 @@ L.Point = function(/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
 
 L.Point.prototype = {
 	add: function(point) {
-		return new L.Point(this.x + point.x, this.y + point.y);
+		return this.clone()._add(point);
+	},
+	
+	_add: function(point) {
+		this.x += point.x;
+		this.y += point.y;
+		return this;		
 	},
 		
 	subtract: function(point) {

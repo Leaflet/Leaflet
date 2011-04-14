@@ -10,6 +10,7 @@
 		webkit: webkit,
 		webkit3d: webkit && ('WebKitCSSMatrix' in window) && ('m11' in new WebKitCSSMatrix()),
 		mobileWebkit: webkit && mobile,
-		gecko: ua.indexOf("gecko") != -1
+		gecko: ua.indexOf("gecko") != -1,
+		android: ua.indexOf("android") != -1
 	};
 })();

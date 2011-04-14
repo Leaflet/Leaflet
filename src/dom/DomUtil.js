@@ -95,7 +95,7 @@ L.DomUtil = {
 	setPosition: function(el, point) {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit) {
-			el.style[L.DomUtil.TRANSFORM_PROPERTY] =  L.DomUtil.getTranslateString(point);
+			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -108,8 +108,8 @@ L.DomUtil = {
 };
 
 L.Util.extend(L.DomUtil, {
-	TRANSITION_PROPERTY: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM_PROPERTY: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
+	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
+	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
 	
 	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
 	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')'

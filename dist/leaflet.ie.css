@@ -19,16 +19,6 @@
 	height: 1px;
 	}
 	
-.leaflet-tile {
-	visibility: hidden;
-	}
-.leaflet-tile-loaded {
-	visibility: inherit;
-	}
-.leaflet-popup {
-	opacity: 1;
-	}
-	
 .leaflet-control-zoom {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
 	}

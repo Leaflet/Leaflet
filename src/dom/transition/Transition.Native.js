@@ -5,7 +5,7 @@
 
 L.Transition = L.Transition.extend({
 	statics: (function() {
-		var transition = L.DomUtil.TRANSITION_PROPERTY,
+		var transition = L.DomUtil.TRANSITION,
 			transitionEnd = (transition == 'webkitTransition' || transition == 'OTransition' ? 
 				transition + 'End' : 'transitionend');
 		
@@ -20,7 +20,7 @@ L.Transition = L.Transition.extend({
 			
 			// transition-property value to use with each particular custom property
 			CUSTOM_PROPS_PROPERTIES: {
-				position: L.Browser.webkit ? L.DomUtil.TRANSFORM_PROPERTY : 'top, left'
+				position: L.Browser.webkit ? L.DomUtil.TRANSFORM : 'top, left'
 			}
 		};
 	})(),
