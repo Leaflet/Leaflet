@@ -25,6 +25,7 @@ L.Map = L.Class.extend({
 		
 		// controls
 		zoomControl: true,
+		attributionControl: true,
 		
 		// animation
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
@@ -128,9 +129,12 @@ L.Map = L.Class.extend({
 		}
 		//TODO getMaxZoom, getMinZoom in ILayer (instead of options)
 		
-		if (L.TileLayer && (layer instanceof L.TileLayer)) {
+		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum++;
 			layer.on('load', this._onTileLayerLoad, this);
+		}
+		if (this.attributionControl && layer.getAttribution) {
+			this.attributionControl.addAttribution(layer.getAttribution());
 		}
 		
 		var onMapLoad = function() {
@@ -154,8 +158,11 @@ L.Map = L.Class.extend({
 			layer.onRemove(this);
 			delete this._layers[id];
 			
-			if (L.TileLayer && (layer instanceof L.TileLayer)) {
+			if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 				this._tileLayersNum--;
+			}
+			if (this.attributionControl && layer.getAttribution) {
+				this.attributionControl.removeAttribution(layer.getAttribution());
 			}
 			
 			this.fire('layerremove', {layer: layer});
@@ -365,6 +372,10 @@ L.Map = L.Class.extend({
 	_initControls: function() {
 		if (this.options.zoomControl) {
 			this.addControl(new L.Control.Zoom());
+		}
+		if (this.options.attributionControl) {
+			this.attributionControl = new L.Control.Attribution();
+			this.addControl(this.attributionControl);
 		}
 	},
 
