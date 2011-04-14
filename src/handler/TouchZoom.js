@@ -85,4 +85,3 @@ L.Handler.TouchZoom = L.Handler.extend({
 		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset));
 	}
 });
-});
