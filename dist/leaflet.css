@@ -49,13 +49,6 @@
 	height: 0;
 	}
 
-.leaflet-tile {
-	visibility: hidden;
-	}
-.leaflet-tile-loaded {
-	visibility: inherit;
-	}
-
 
 /* Leaflet controls */
 
@@ -131,6 +124,13 @@
 
 /* Fade animations */
 
+.leaflet-tile {
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
+
 .leaflet-fade-anim .leaflet-tile {
 	opacity: 0;
 	
@@ -150,6 +150,13 @@
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
 	opacity: 1;
 }
+
+.leaflet-animating .leaflet-tile {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+	}
 
 
 
