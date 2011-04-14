@@ -14,7 +14,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		//if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 		
-		this._mapPane.className += ' leaflet-animating';
+		this._mapPane.className += ' leaflet-zoom-anim';
 
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
@@ -33,15 +33,29 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
 		
-		var transform = L.DomUtil.TRANSFORM_PROPERTY;
+		var transform = L.DomUtil.TRANSFORM;
 		
-		//dumb FireFox hack, I have no idea why this magic zero translate fixes the problem (webkit is OK)
-		this._tileBg.style[transform] = this._tileBg.style[transform] + ' translate(0,0)';
+		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
+		if (L.Browser.gecko) {
+			this._tileBg.style[transform] += ' translate(0,0)';
+		}
+		
+		var scaleStr;
+		
+		// Android doesn't like translate/scale chains, transformOrigin + scale works better but 
+		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
+		// TODO work around this prettier
+		if (L.Browser.android) {
+			this._tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
+			scaleStr = 'scale(' + scale + ')';
+		} else {
+			scaleStr = L.DomUtil.getScaleString(scale, origin);
+		}
 		
 		L.Util.falseFn(this._tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 		
 		var options = {};
-		options[transform] = this._tileBg.style[transform] + ' ' + L.DomUtil.getScaleString(scale, origin);
+		options[transform] = this._tileBg.style[transform] + ' ' + scaleStr;
 		this._tileBg.transition.run(options);
 	},
 	
@@ -54,17 +68,17 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		var tilePane = this._tilePane,
 			tileBg = this._tileBg;
 		
-		this._tilePane = this._panes.tilePane = tileBg;
-		this._tileBg = tilePane;
-		
 		// prepare the background pane to become the main tile pane
-		this._tilePane.innerHTML = '';
-		this._tilePane.style[L.DomUtil.TRANSFORM_PROPERTY] = '';
-		this._tilePane.style.visibility = 'hidden';
+		tileBg.innerHTML = '';
+		tileBg.style[L.DomUtil.TRANSFORM] = '';
+		tileBg.style.display = 'none';
 		
 		// tells tile layers to reinitialize their containers
-		this._tilePane.empty = true;
-		this._tileBg.empty = false;
+		tileBg.empty = true;
+		tilePane.empty = false;
+
+		this._tilePane = this._panes.tilePane = tileBg;
+		this._tileBg = tilePane;
 		
 		if (!this._tileBg.transition) {
 			this._tileBg.transition = new L.Transition(this._tileBg, {duration: 0.3, easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'});
@@ -91,31 +105,30 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 				tiles[i].src = '';
 				tiles[i].parentNode.removeChild(tiles[i]);
 			}
-			// workaround for a webkit bug (zoom transition doesn't run if fade transition on tiles in progress) 
-			tiles[i].style[L.Transition.PROPERTY] = 'none';
 		}
 	},
 	
 	_onZoomTransitionEnd: function() {
 		this._restoreTileFront();
 		
-		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
-			offsetTransform = L.DomUtil.getTranslateString(mapPaneOffset);
-		
-		//load tiles in the main tile pane
-		this._resetView(this._animateToCenter, this._animateToZoom);
-		
-		this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY] = offsetTransform + ' ' + this._tileBg.style[L.DomUtil.TRANSFORM_PROPERTY];
+		L.Util.falseFn(this._tileBg.offsetWidth);
+		this._resetView(this._animateToCenter, this._animateToZoom, true);
 		
 		//TODO clear tileBg on map layersload
 		
-		this._mapPane.className = this._mapPane.className.replace(' leaflet-animating', ''); //TODO toggleClass util
+		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
 		this._animatingZoom = false;
 	},
 	
 	_restoreTileFront: function() {
-		this._tilePane.style.visibility = '';
+		this._tilePane.style.display = '';
 		this._tilePane.style.zIndex = 2;
 		this._tileBg.style.zIndex = 1;
+	},
+	
+	_clearTileBg: function() {
+		if (!this._animatingZoom) {
+			this._tileBg.innerHTML = '';
+		}
 	}
 });

@@ -18,7 +18,7 @@ L.Map = L.Class.extend({
 		
 		// interaction
 		dragging: true,
-		touchZoom: L.Browser.mobileWebkit,
+		touchZoom: L.Browser.mobileWebkit && !L.Browser.android,
 		scrollWheelZoom: !L.Browser.mobileWebkit,
 		doubleClickZoom: true,
 		shiftDragZoom: true,
@@ -27,6 +27,7 @@ L.Map = L.Class.extend({
 		zoomControl: true,
 		
 		// misc
+		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
 		trackResize: true,
 		closePopupOnClick: true
 	},
@@ -55,7 +56,8 @@ L.Map = L.Class.extend({
 		}
 
 		var layers = this.options.layers;
-		layers = (layers instanceof Array ? layers : [layers]); 
+		layers = (layers instanceof Array ? layers : [layers]);
+		this._tileLayersNum = 0;
 		this._initLayers(layers);
 	},
 	
@@ -111,27 +113,32 @@ L.Map = L.Class.extend({
 	addLayer: function(layer) {
 		var id = L.Util.stamp(layer);
 		
-		if (!this._layers[id]) {
-			this._layers[id] = layer;
-			
-			if (layer.options && !isNaN(layer.options.maxZoom)) {
-				this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
-			}
-			if (layer.options && !isNaN(layer.options.minZoom)) {
-				this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
-			}
-			//TODO getMaxZoom, getMinZoom
-			
-			var onMapLoad = function() {
-				layer.onAdd(this);
-				this.fire('layeradd', {layer: layer});
-			};
-			
-			if (this._loaded) {
-				onMapLoad.call(this);
-			} else {
-				this.on('load', onMapLoad, this);
-			}
+		if (this._layers[id]) return this;
+		
+		this._layers[id] = layer;
+		
+		if (layer.options && !isNaN(layer.options.maxZoom)) {
+			this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
+		}
+		if (layer.options && !isNaN(layer.options.minZoom)) {
+			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		}
+		//TODO getMaxZoom, getMinZoom in ILayer (instead of options)
+		
+		if (L.TileLayer && (layer instanceof L.TileLayer)) {
+			this._tileLayersNum++;
+			layer.on('load', this._onTileLayerLoad, this);
+		}
+		
+		var onMapLoad = function() {
+			layer.onAdd(this);
+			this.fire('layeradd', {layer: layer});
+		};
+		
+		if (this._loaded) {
+			onMapLoad.call(this);
+		} else {
+			this.on('load', onMapLoad, this);
 		}
 		
 		return this;
@@ -143,6 +150,11 @@ L.Map = L.Class.extend({
 		if (this._layers[id]) {
 			layer.onRemove(this);
 			delete this._layers[id];
+			
+			if (L.TileLayer && (layer instanceof L.TileLayer)) {
+				this._tileLayersNum--;
+			}
+			
 			this.fire('layerremove', {layer: layer});
 		}
 		return this;
@@ -282,6 +294,10 @@ L.Map = L.Class.extend({
 		
 		container.className += ' leaflet-container';
 		
+		if (this.options.fadeAnimation) {
+			container.className += ' leaflet-fade-anim';
+		}
+		
 		var position = L.DomUtil.getStyle(container, 'position');
 		container.style.position = (position == 'absolute' ? 'absolute' : 'relative');
 		
@@ -308,15 +324,21 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._objectsPane);
 	},
 	
-	_resetView: function(center, zoom) {
+	_resetView: function(center, zoom, preserveMapOffset) {
 		var zoomChanged = (this._zoom != zoom);
 		
 		this.fire('movestart');
 		
 		this._zoom = zoom;
+		
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 		
-		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
+		if (!preserveMapOffset) {
+			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
+		} else {
+			var offset = L.DomUtil.getPosition(this._mapPane);
+			this._initialTopLeftPoint._add(offset);
+		}
 		
 		this.fire('viewreset');
 
@@ -337,6 +359,12 @@ L.Map = L.Class.extend({
 		}
 	},
 	
+	_initControls: function() {
+		if (this.options.zoomControl) {
+			this.addControl(new L.Control.Zoom());
+		}
+	},
+
 	_rawPanBy: function(offset) {
 		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane);
 		L.DomUtil.setPosition(this._mapPane, mapPaneOffset.subtract(offset));
@@ -384,9 +412,11 @@ L.Map = L.Class.extend({
 		}
 	},
 	
-	_initControls: function() {
-		if (this.options.zoomControl) {
-			this.addControl(new L.Control.Zoom());
+	_onTileLayerLoad: function() {
+		// clear scaled tiles after all new tiles are loaded (for performance)
+		this._tileLayersToLoad--;
+		if (this._tileLayersNum && !this._tileLayersToLoad && this._tileBg) {
+			setTimeout(L.Util.bind(this._clearTileBg, this), 500);
 		}
 	},
 	
@@ -409,4 +439,5 @@ L.Map = L.Class.extend({
 		var max = this.getMaxZoom();
 		return Math.max(min, Math.min(max, zoom));
 	}
+});
 });

@@ -41,7 +41,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 		if (!e.touches || e.touches.length != 2) { return; }
 		
 		if (!this._moved) {
-			this._map._mapPane.className += ' leaflet-animating';
+			this._map._mapPane.className += ' leaflet-zoom-anim';
 			this._map._prepareTileBg();
 			this._moved = true;
 		}
@@ -84,4 +84,5 @@ L.Handler.TouchZoom = L.Handler.extend({
 		
 		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset));
 	}
+});
 });

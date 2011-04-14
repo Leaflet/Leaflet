@@ -40,14 +40,17 @@
 .leaflet-marker-pane { z-index: 5; }
 .leaflet-popup-pane { z-index: 6; }
 
-.leaflet-animating .leaflet-objects-pane {
-	visibility: hidden;
-	}
-
 .leaflet-zoom-box {
 	width: 0;
 	height: 0;
-}
+	}
+
+.leaflet-tile {
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
+	}
 
 
 /* Leaflet controls */
@@ -109,6 +112,10 @@
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	}
+.leaflet-big-buttons .leaflet-control-zoom a {
+	width: 27px;
+	height: 27px;
+	}
 .leaflet-control-zoom-in {
 	background-image: url(images/zoom-in.png);
 	margin-bottom: 5px;
@@ -119,8 +126,8 @@
 
 
 /* Fade animations */
-	
-.leaflet-tile {
+
+.leaflet-fade-anim .leaflet-tile {
 	opacity: 0;
 	
 	-webkit-transition: opacity 0.2s linear;
@@ -128,19 +135,28 @@
 	-o-transition: opacity 0.2s linear;
 	transition: opacity 0.2s linear;
 }
-.leaflet-tile-loaded {
+.leaflet-fade-anim .leaflet-tile-loaded {
 	opacity: 1;
 }
 
-.leaflet-popup {
+.leaflet-fade-anim .leaflet-popup {
 	-webkit-transition: opacity 0.2s linear;
 	opacity: 0;
 }
-.leaflet-map-pane .leaflet-popup {
+.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
 	opacity: 1;
 }
 
+.leaflet-zoom-anim .leaflet-tile {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
+	}
 
+.leaflet-zoom-anim .leaflet-objects-pane {
+	visibility: hidden;
+	}
 
 
 /* Popup layout */
