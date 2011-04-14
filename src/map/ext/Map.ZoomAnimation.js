@@ -1,11 +1,8 @@
-L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
+L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_zoomToIfCenterInView: function(center, zoom, centerOffset) {
-
-		if (this._animatingZoom) {
-			return true;
-		}
 		
-		if (!L.Transition.NATIVE) { return false; }
+		if (this._animatingZoom) { return true; }
+		if (!this.options.zoomAnimation) { return false; }
 		
 		var zoomDelta = zoom - this._zoom,
 			scale = Math.pow(2, zoomDelta),
