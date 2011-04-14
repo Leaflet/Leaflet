@@ -14,7 +14,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		//if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 		
-		this._mapPane.className += ' leaflet-animating';
+		this._mapPane.className += ' leaflet-zoom-anim';
 
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
@@ -116,7 +116,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		
 		//TODO clear tileBg on map layersload
 		
-		this._mapPane.className = this._mapPane.className.replace(' leaflet-animating', ''); //TODO toggleClass util
+		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
 		this._animatingZoom = false;
 	},
 	

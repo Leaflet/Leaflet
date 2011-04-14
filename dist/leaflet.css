@@ -40,13 +40,16 @@
 .leaflet-marker-pane { z-index: 5; }
 .leaflet-popup-pane { z-index: 6; }
 
-.leaflet-animating .leaflet-objects-pane {
-	visibility: hidden;
-	}
-
 .leaflet-zoom-box {
 	width: 0;
 	height: 0;
+	}
+
+.leaflet-tile {
+	visibility: hidden;
+	}
+.leaflet-tile-loaded {
+	visibility: inherit;
 	}
 
 
@@ -124,13 +127,6 @@
 
 /* Fade animations */
 
-.leaflet-tile {
-	visibility: hidden;
-	}
-.leaflet-tile-loaded {
-	visibility: inherit;
-	}
-
 .leaflet-fade-anim .leaflet-tile {
 	opacity: 0;
 	
@@ -151,13 +147,16 @@
 	opacity: 1;
 }
 
-.leaflet-animating .leaflet-tile {
+.leaflet-zoom-anim .leaflet-tile {
 	-webkit-transition: none;
 	-moz-transition: none;
 	-o-transition: none;
 	transition: none;
 	}
 
+.leaflet-zoom-anim .leaflet-objects-pane {
+	visibility: hidden;
+	}
 
 
 /* Popup layout */
