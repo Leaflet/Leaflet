@@ -419,7 +419,8 @@ L.Map = L.Class.extend({
 		// clear scaled tiles after all new tiles are loaded (for performance)
 		this._tileLayersToLoad--;
 		if (this._tileLayersNum && !this._tileLayersToLoad && this._tileBg) {
-			setTimeout(L.Util.bind(this._clearTileBg, this), 500);
+			clearTimeout(this._clearTileBgTimer);
+			this._clearTileBgTimer = setTimeout(L.Util.bind(this._clearTileBg, this), 500);
 		}
 	},
 	
