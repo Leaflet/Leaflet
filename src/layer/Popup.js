@@ -93,7 +93,8 @@ L.Popup = L.Class.extend({
 	
 	_updateContent: function() {
 		//TODO accept DOM nodes along with HTML strings
-		this._contentNode.innerHTML = this._content;
+		if (this._content != undefined)
+			this._contentNode.innerHTML = this._content;
 	},
 	
 	_updateLayout: function() {
