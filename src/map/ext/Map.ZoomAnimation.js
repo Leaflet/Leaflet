@@ -124,5 +124,11 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		this._tilePane.style.display = '';
 		this._tilePane.style.zIndex = 2;
 		this._tileBg.style.zIndex = 1;
+	},
+	
+	_clearTileBg: function() {
+		if (!this._animatingZoom) {
+			this._tileBg.innerHTML = '';
+		}
 	}
 });
