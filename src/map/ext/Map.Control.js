@@ -8,6 +8,10 @@ L.Map.include({
 			right = classPart + 'right',
 			controlContainer = L.DomUtil.create('div', classPart + 'control-container', this._container);
 		
+		if (L.Browser.mobileWebkit) {
+			controlContainer.className += ' ' + classPart + 'big-buttons';
+		}
+		
 		corners.topLeft = L.DomUtil.create('div', top + ' ' + left, controlContainer);
 		corners.topRight = L.DomUtil.create('div', top + ' ' + right, controlContainer);
 		corners.bottomLeft = L.DomUtil.create('div', bottom + ' ' + left, controlContainer);

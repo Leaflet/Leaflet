@@ -116,6 +116,10 @@
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	}
+.leaflet-big-buttons .leaflet-control-zoom a {
+	width: 27px;
+	height: 27px;
+	}
 .leaflet-control-zoom-in {
 	background-image: url(images/zoom-in.png);
 	margin-bottom: 5px;

@@ -18,8 +18,7 @@ L.Control.Zoom = L.Class.extend({
 	},
 	
 	getPosition: function() {
-		var pos = L.Control.Position;
-		return L.Browser.mobileWebkit ? pos.BOTTOM_LEFT : pos.TOP_LEFT;
+		return L.Control.Position.TOP_LEFT;
 	},
 	
 	_createButton: function(title, className, fn, context) {
