@@ -53,7 +53,8 @@
 		<div id="map"></div>
 		<script>
 			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+				cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 			
 			var map = new L.Map('map');
 			map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
@@ -67,7 +68,8 @@
 		<p>Here we create a map with a CloudMade tile layer, add a marker and bind a popup with some text to it:</p>
 		<pre><code class="javascript">// create a CloudMade tile layer
 var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
-	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
 
 // initialize the map on the "map" div
 var map = new L.Map('map');
