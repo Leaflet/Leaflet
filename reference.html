@@ -647,11 +647,16 @@ map.addLayer(marker);</code></pre>
 		<p>Used to open popups in certain places of the map. Use <a href="#map-openpopup">Map#openPopup</a> to open popups while making sure that only one popup is open at one time (recommended for usability), or use <a href="#map-addlayer">Map#addLayer</a> to open as many as you want.</p>
 		
 		<h3>Usage example</h3>
-		<pre><code class="javascript">var popupContent = '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;', 
-	popup = new L.Popup(latlng, popupContent);
-map.openPopup(popup);</code></pre>
-		<p>If you want to bind a popup to marker click and then open it, it's even easier:</p>
+		<p>If you want to just bind a popup to marker click and then open it, it's really easy:</p>
 		<pre><code class="javascript">marker.bindPopup(popupContent).openPopup();</code></pre>
+		<p>Path overlays like polylines also have a <code>bindPopup</code> method. Here's a more complicated way to open a popup on a map:</p>
+		<pre><code class="javascript">var popupContent = '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;', 
+	popup = new L.Popup();
+
+popup.setLatLng(latlng);
+popup.setContent(popupContent);
+
+map.openPopup(popup);</code></pre>
 		
 		<h3>Constructor</h3>
 		
@@ -661,7 +666,7 @@ map.openPopup(popup);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Popup( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td><code>L.Popup( &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
 				<td>Instantiates a Popup object given the geographical point where it will open, the HTML content it will have and optionally an options object.</td>
 			</tr>
 		</table>
@@ -704,6 +709,26 @@ map.openPopup(popup);</code></pre>
 				<td><code><a href="#point">Point</a></code></td>
 				<td><code>Point(0,&nbsp;0)</code></td>
 				<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets the geographical point where the popup will open.</td>
+			</tr>
+			<tr>
+				<td><code>setContent( &lt;String&gt;&nbsp;<i>htmlContent</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets the HTML content of the popup.</td>
 			</tr>
 		</table>
 		
