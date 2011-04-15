@@ -226,3 +226,8 @@ a.nodocs {
 	-moz-box-shadow: 0px 0px 10px #ccc; 
 	-webkit-box-shadow: 0px 0px 10px #ccc;*/ 
 	}
+	
+h3 span {
+	color: #888;
+	}
+	
