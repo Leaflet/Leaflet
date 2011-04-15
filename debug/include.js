@@ -52,6 +52,7 @@
 		
 		'control/Control.js',
 		'control/Control.Zoom.js',
+		'control/Control.Attribution.js',
 		
 		'map/Map.js',
 		'map/ext/Map.Geolocation.js',

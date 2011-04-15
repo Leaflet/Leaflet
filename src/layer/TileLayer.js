@@ -67,6 +67,10 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
+	getAttribution: function() {
+		return this.options.attribution;
+	},
+	
 	_initContainer: function() {
 		var tilePane = this._map.getPanes().tilePane;
 		if (!this._container || tilePane.empty) {
@@ -202,4 +206,5 @@ L.TileLayer = L.Class.extend({
 		}
 			
 	}
+});
 });

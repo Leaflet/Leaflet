@@ -18,10 +18,17 @@
 	width: 1px;
 	height: 1px;
 	}
-	
+
+.leaflet-control {
+	position: relative;
+	z-index: 2;
+	}
 .leaflet-control-zoom {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
 	}
 .leaflet-control-zoom a {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#BFFFFFFF',EndColorStr='#BFFFFFFF');
+	background-color: white;
+	}
+.leaflet-control-attribution {
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#B2FFFFFF,endColorstr=#B2FFFFFF);
 	}
