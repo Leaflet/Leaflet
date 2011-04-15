@@ -2,8 +2,9 @@ L.Control.Attribution = L.Class.extend({
 	onAdd: function(map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		this._map = map;
-		this._prefix = 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a> &mdash; ';
+		this._prefix = 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
 		this._attributions = {};
+		this._update();
 	},
 	
 	getPosition: function() {
@@ -41,6 +42,6 @@ L.Control.Attribution = L.Class.extend({
 			}
 		}
 		
-		this._container.innerHTML = this._prefix + attribs.join(', ');
+		this._container.innerHTML = [this._prefix, attribs.join(', ')].join(' &mdash; ');
 	}
 });
