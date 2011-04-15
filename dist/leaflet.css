@@ -55,6 +55,10 @@
 
 /* Leaflet controls */
 
+.leaflet-control {
+	position: relative;
+	z-index: 7;
+	}
 .leaflet-top,
 .leaflet-bottom {
 	position: absolute;
