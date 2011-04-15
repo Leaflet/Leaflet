@@ -105,7 +105,7 @@ var deps = {
 		src: ['handler/MarkerDrag.js'],
 		desc: 'Makes markers draggable (by mouse or touch).'
 	},
-	
+		
 	
 	ControlZoom: {
 		src: ['control/Control.js', 
@@ -113,6 +113,13 @@ var deps = {
 		      'control/Control.Zoom.js'],
 		heading: 'Controls',
 		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
+	},
+	
+	ControlZoom: {
+		src: ['control/Control.js', 
+		      'map/ext/Map.Control.js', 
+		      'control/Control.Attribution.js'],
+		desc: 'Attribution control.'
 	},
 	
 	

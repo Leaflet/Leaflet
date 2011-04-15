@@ -131,7 +131,8 @@
 	font: 11px/1.5 Arial, sans-serif;
 	color: #333;
 	
-	background: rgba(255, 255, 255, 0.7);
+	background-color: rgba(255, 255, 255, 0.7);
+            
 	box-shadow: 0 0 7px #ccc;
 	}
 
