@@ -65,9 +65,12 @@ L.Marker = L.Class.extend({
 			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
 		}
 		
-		if (this.options.draggable) {
+		if (L.Handler.MarkerDrag) {
 			this.dragging = new L.Handler.MarkerDrag(this);
-			this.dragging.enable();
+			
+			if (this.options.draggable) {
+				this.dragging.enable();
+			}
 		}
 	},
 	
