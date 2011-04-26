@@ -7,4 +7,4 @@ It is built from the ground up to work efficiently and smoothly on both platform
 Check out the website for more information: [leaflet.cloudmade.com](http://leaflet.cloudmade.com)
 
 ## Contributing to Leaflet
-Let's make the best open-source library for maps that can possibly exist! Please send your pull requests to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer) - we'll be happy to accept your contributions!
+Let's make the best open-source library for maps that can possibly exist! Please send your pull requests to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer) - we'll be happy to accept your contributions! [List of Leaflet contributors](http://github.com/CloudMade/Leaflet/contributors)

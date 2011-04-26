@@ -55,6 +55,10 @@
 
 /* Leaflet controls */
 
+.leaflet-control {
+	position: relative;
+	z-index: 7;
+	}
 .leaflet-top,
 .leaflet-bottom {
 	position: absolute;
@@ -111,6 +115,9 @@
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
+	}
+.leaflet-control-zoom a:hover {
+	background-color: #fff;
 	}
 .leaflet-big-buttons .leaflet-control-zoom a {
 	width: 27px;
