@@ -27,7 +27,7 @@ L.Popup = L.Class.extend({
 		this._map._panes.popupPane.appendChild(this._container);
 		this._map.on('viewreset', this._updatePosition, this);
 		if (this._map.options.closePopupOnClick) {
-			this._map.on('click', this._close, this);
+			this._map.on('preclick', this._close, this);
 		}
 		this._update();
 		
