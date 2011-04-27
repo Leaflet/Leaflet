@@ -19,8 +19,8 @@ L.Popup = L.Class.extend({
 		this._map = map;
 		if (!this._container) {
 			this._initLayout();
-			this._updateContent();
 		}
+		this._updateContent();
 		
 		this._container.style.opacity = '0';
 
