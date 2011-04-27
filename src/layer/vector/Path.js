@@ -29,6 +29,8 @@ L.Path = L.Class.extend({
 		fillColor: null, //same as color by default
 		fillOpacity: 0.2,
 		
+		clickable: true,
+		
 		updateOnMoveEnd: false
 	},
 	
@@ -158,9 +160,12 @@ L.Path = L.Class.extend({
 	
 	// TODO remove duplication with L.Map
 	_initEvents: function() {
-		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
-		L.DomEvent.addListener(this._container, 'dblclick', this._fireMouseEvent, this);
-		L.DomEvent.addListener(this._container, 'mousedown', this._fireMouseEvent, this);
+		if (this.options.clickable) {
+			this._path.setAttribute('class', 'leaflet-clickable');
+			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+			L.DomEvent.addListener(this._container, 'dblclick', this._fireMouseEvent, this);
+			L.DomEvent.addListener(this._container, 'mousedown', this._fireMouseEvent, this);
+		}
 	},
 	
 	_onMouseClick: function(e) {
