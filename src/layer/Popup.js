@@ -7,7 +7,7 @@ L.Popup = L.Class.extend({
 		autoPan: true,
 		closeButton: true,
 		
-		offset: new L.Point(0, 0),
+		offset: new L.Point(0, 2),
 		autoPanPadding: new L.Point(5, 5)
 	},
 	
@@ -115,7 +115,7 @@ L.Popup = L.Class.extend({
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 		
 		this._containerBottom = -pos.y - this.options.offset.y;
-		this._containerLeft = pos.x - this._containerWidth/2 + this.options.offset.x;
+		this._containerLeft = pos.x - Math.round(this._containerWidth/2) + this.options.offset.x;
 		
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
