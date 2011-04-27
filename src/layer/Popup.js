@@ -51,6 +51,7 @@ L.Popup = L.Class.extend({
 		if (this._opened) {
 			this._update();
 		}
+		return this;
 	},
 	
 	setContent: function(content) {
@@ -58,6 +59,7 @@ L.Popup = L.Class.extend({
 		if (this._opened) {
 			this._update();
 		}
+		return this;
 	},
 	
 	_close: function() {
