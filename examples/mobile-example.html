@@ -32,14 +32,21 @@
 	
 		map.addLayer(cloudmade);
 		
-		map.on('locationfound', function(e) {
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+		
+		map.locateAndSetView();
+		
+		function onLocationFound(e) {
 			var marker = new L.Marker(e.latlng);
 			map.addLayer(marker);
 			
 			marker.bindPopup("You are within " + e.accuracy + " meters from this point").openPopup();
-		});
+		}
 		
-		map.locateAndSetView();
+		function onLocationError(e) {
+			alert(e.message);
+		}
 	</script>
 </body>
 </html>
