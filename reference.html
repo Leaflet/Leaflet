@@ -110,9 +110,10 @@
 					<li><a class="nodocs" href="#">Transformation</a></li>
 					<li><a class="nodocs" href="#">Projection.Mercator</a></li>
 				</ul> -->
-				<h4>Mixins</h4>
+				<h4>Events</h4>
 				<ul>
-					<li><a href="#events">Events</a></li>
+					<li><a href="#events">Events methods</a></li>
+					<li><a href="#event-objects">Event objects</a></li>
 				</ul>
 			</div>
 			<div class="span-3 last">
@@ -122,14 +123,6 @@
 					<li><a class="nodocs" href="#">ILayer</a></li>
 					<li><a class="nodocs" href="#">IControl</a></li>
 					<li><a class="nodocs" href="#">IProjection</a></li>
-				</ul>
-				<h4>Event objects</h4>
-				<ul>
-					<li><a class="nodocs" href="#">Event</a></li>
-					<li><a class="nodocs" href="#">MouseEvent</a></li>
-					<li><a class="nodocs" href="#">LocationEvent</a></li>
-					<li><a class="nodocs" href="#">LayerEvent</a></li>
-					<li><a class="nodocs" href="#">TileEvent</a></li>
 				</ul>
 			</div>
 		</div>
@@ -1490,9 +1483,9 @@ map.addLayer(polyline);</code></pre>
 		
 
 		
-		<h2 id="events">L.Mixin.Events</h2>
+		<h2 id="events">Events methods</h2>
 		
-		<p>A set of methods shared between classes that fire events. Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map 'fire' event).</p>
+		<p>A set of methods shared between event-powered classes (like Map). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map 'fire' event).</p>
 
 		<h3>Example</h3>
 		
@@ -1543,6 +1536,100 @@ map.addLayer(polyline);</code></pre>
 				<td>Alias to <code>fireEvent</code>.</td>
 			</tr>
 		</table>
+
+
+		<h2 id="event-objects">Event objects</h2>
+		
+		<p>Event object is an object that you recieve as an argument in a listener function when some event is fired, containing useful information about that event. For example:</p>
+		
+		<pre><code class="javascript">map.on('click', function(e) {
+	alert(e.latlng); // e is an event object (MouseEvent in this case)
+});</code></pre>   
+		
+		<h3 id="event">Event</h3>
+		
+		<p>The base event object. All other event objects contain these properties too.</p>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>type</code></td>
+				<td><code>String</code></td>
+				<td>The event type (e.g. "click").</td>
+			</tr>
+			<tr>
+				<td><code>target</code></td>
+				<td><code>Object</code></td>
+				<td>The object that fired the event.</td>
+			</tr>
+		</table>
+		
+		<h3 id="mouse-event">MouseEvent</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>latlng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>The geographical point where the mouse event occured.</td>
+			</tr>
+			<tr>
+				<td><code>layerPoint</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
+			</tr>
+		</table>
+		
+		<h3 id="location-event">LocationEvent</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>latlng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Detected geographical location of the user.</td>
+			</tr>
+			<tr>
+				<td><code>bounds</code></td>
+				<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+				<td>Geographical bounds of the area user is located in (with respect to the accuracy of location).</td>
+			</tr>
+			<tr>
+				<td><code>accuracy</code></td>
+				<td><code>Number</code></td>
+				<td>Accuracy of location in meters.</td>
+			</tr>
+		</table>
+		
+		<h3 id="layer-event">LayerEvent</h3>
+
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>layer</code></td>
+				<td><code><a href="#ilayer">ILayer</a></code></td>
+				<td>The layer that was added or removed.</td>
+			</tr>
+		</table>
+
+		<!-- <h3>TileEvent</h3> -->
+
 		
 		
 
@@ -1573,7 +1660,7 @@ map.addLayer(polyline);</code></pre>
 		</table>
 
 
-
+	
 		<hr />
 
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
