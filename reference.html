@@ -91,6 +91,20 @@
 				</ul>
 			</div>
 			<div class="span-3">
+				<h4>Events</h4>
+				<ul>
+					<li><a href="#events">Events methods</a></li>
+					<li><a href="#event-objects">Event objects</a></li>
+				</ul>
+				<h4>Interfaces</h4>
+				<ul>
+					<li><a href="#ihandler">IHandler</a></li>
+					<li><a class="nodocs" href="#">ILayer</a></li>
+					<li><a class="nodocs" href="#">IControl</a></li>
+					<li><a class="nodocs" href="#">IProjection</a></li>
+				</ul>
+			</div>
+			<div class="span-3 last">
 				<h4>Utility</h4>
 				<ul>
 					<li><a class="nodocs" href="#">Class</a></li>
@@ -103,27 +117,13 @@
 				<ul>
 					<li><a class="nodocs" href="#">DomEvent</a></li>
 					<li><a class="nodocs" href="#">DomUtil</a></li>
-					<!-- <li><a class="nodocs" href="#">Transition</a></li>
-					<li><a class="nodocs" href="#">Draggable</a></li> -->
+					<li><a class="nodocs" href="#">Transition</a></li>
+					<li><a class="nodocs" href="#">Draggable</a></li>
 				</ul>
 				<!-- <ul>
 					<li><a class="nodocs" href="#">Transformation</a></li>
 					<li><a class="nodocs" href="#">Projection.Mercator</a></li>
 				</ul> -->
-				<h4>Events</h4>
-				<ul>
-					<li><a href="#events">Events methods</a></li>
-					<li><a href="#event-objects">Event objects</a></li>
-				</ul>
-			</div>
-			<div class="span-3 last">
-				<h4>Interfaces</h4>
-				<ul>
-					<li><a href="#ihandler">IHandler</a></li>
-					<li><a class="nodocs" href="#">ILayer</a></li>
-					<li><a class="nodocs" href="#">IControl</a></li>
-					<li><a class="nodocs" href="#">IProjection</a></li>
-				</ul>
 			</div>
 		</div>
 		
@@ -672,6 +672,28 @@ map.addLayer(marker);</code></pre>
 			</tr>
 		</table>
 		
+		<h3>Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user clicks (or taps) the marker.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the marker.</td>
+			</tr>
+		</table>
+		
 		<h3>Methods</h3>
 		
 		<table>
@@ -979,6 +1001,28 @@ var image = new L.ImageOverlay(
 				<td><code>Number</code></td>
 				<td>0.2</td>
 				<td>Fill opacity.</td>
+			</tr>
+		</table>
+		
+		<h3>Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user clicks (or taps) the object.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the object.</td>
 			</tr>
 		</table>
 		
