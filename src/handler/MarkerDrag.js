@@ -26,7 +26,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 	
 	moved: function() {
-		return this._draggable._moved;
+		return this._draggable && this._draggable._moved;
 	},
 	
 	_onDragStart: function(e) {

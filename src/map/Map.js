@@ -399,10 +399,12 @@ L.Map = L.Class.extend({
 	
 	_onMouseClick: function(e) {
 		if (this.dragging && this.dragging.moved()) { return; }
+		
 		this._fireMouseEvent(e);
 	},
 	
 	_fireMouseEvent: function(e) {
+		this.fire('pre' + e.type);
 		if (!this.hasEventListeners(e.type)) { return; }
 		this.fire(e.type, {
 			latlng: this.mouseEventToLatLng(e),

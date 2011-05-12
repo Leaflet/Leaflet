@@ -3,14 +3,20 @@
  */
 
 L.Map.include({
-	locate: function(/*Boolean*/ noFitBounds) {
+	locate: function() {
 		if (navigator.geolocation) {
-			this._fitBoundsOnLocate = !noFitBounds;
 			navigator.geolocation.getCurrentPosition(
 					L.Util.bind(this._handleGeolocationResponse, this),
 					L.Util.bind(this._handleGeolocationError, this));
+		} else {
+			this.fire('locationerror', {message: "Geolocation not supported."});
 		}
 		return this;
+	},
+	
+	locateAndSetView: function(maxZoom) {
+		this._setViewOnLocate = true;
+		return this.locate();
 	},
 	
 	_handleGeolocationError: function(error) {
@@ -27,8 +33,9 @@ L.Map.include({
 			ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
 			bounds = new L.LatLngBounds(sw, ne);
 		
-		if (this._fitBoundsOnLocate) {
+		if (this._setViewOnLocate) {
 			this.fitBounds(bounds);
+			this._setViewOnLocate = false;
 		}
 		
 		this.fire('locationfound', {
