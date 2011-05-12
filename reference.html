@@ -45,7 +45,7 @@
 					<li><a href="#map-constructor">Constructor</a></li>
 					<li><a href="#map-options">Options</a></li>
 					<li><a href="#map-properties">Properties</a></li>
-					<li><a class="nodocs" href="#map-events">Events</a></li>
+					<li><a href="#map-events">Events</a></li>
 				</ul>
 				<h4>Map methods</h4>
 				<ul>
@@ -112,7 +112,7 @@
 				</ul> -->
 				<h4>Mixins</h4>
 				<ul>
-					<li><a class="nodocs" href="#">Events</a></li>
+					<li><a href="#events">Events</a></li>
 				</ul>
 			</div>
 			<div class="span-3 last">
@@ -128,6 +128,7 @@
 					<li><a class="nodocs" href="#">Event</a></li>
 					<li><a class="nodocs" href="#">MouseEvent</a></li>
 					<li><a class="nodocs" href="#">LocationEvent</a></li>
+					<li><a class="nodocs" href="#">LayerEvent</a></li>
 					<li><a class="nodocs" href="#">TileEvent</a></li>
 				</ul>
 			</div>
@@ -281,6 +282,79 @@ map.addLayer(cloudmade);</code></pre>
 				<td>attributionControl</td>
 				<td><a href="#control-attribution">Control.Attribution</a></td>
 				<td>Attribution control.</td>
+			</tr>
+		</table>
+		
+		
+		<h3 id="map-events">Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user clicks (or taps) the map.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the map.</td>
+			</tr>
+			<tr>
+				<td><code>mousedown</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user pushes the mouse button on the map.</td>
+			</tr>
+			<tr>
+				<td><code>load</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the map is initialized (when its center and zoom are set for the first time).</td>
+			</tr>
+			<tr>
+				<td><code>viewreset</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the map needs to redraw its content (this usually happens on map zoom or load). Very useful for creating custom overlays.</td>
+			</tr>
+			<tr>
+				<td><code>movestart</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the view of the map starts changing (e.g. user starts dragging the map).</td>
+			</tr>
+			<tr>
+				<td><code>move</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired on any movement of the map view.</td>
+			</tr>
+			<tr>
+				<td><code>moveend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the view of the map ends changed (e.g. user stopped dragging the map).</td>
+			</tr>
+			<tr>
+				<td><code>zoomend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the map zoom changes.</td>
+			</tr>
+			<tr>
+				<td><code>layeradd</code></td>
+				<td><code><a href="#layer-event">LayerEvent</a></code>
+				<td>Fired when a new layer is added to the map.</td>
+			</tr>
+			<tr>
+				<td><code>layerremove</code></td>
+				<td><code><a href="#layer-event">LayerEvent</a></code>
+				<td>Fired when some layer is removed from the map.</td>
+			</tr>
+			<tr>
+				<td><code>locationfound</code></td>
+				<td><code><a href="#location-event">LocationEvent</a></code>
+				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) went successfully.</td>
 			</tr>
 		</table>
 		
@@ -1415,6 +1489,62 @@ map.addLayer(polyline);</code></pre>
 		</table>
 		
 
+		
+		<h2 id="events">L.Mixin.Events</h2>
+		
+		<p>A set of methods shared between classes that fire events. Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map 'fire' event).</p>
+
+		<h3>Example</h3>
+		
+		<pre><code class="javascript">map.on('click', function(e) {
+	alert(e.latlng);
+});</code></pre>
+		
+		<h3>Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addEventListener( &lt;String&gt;&nbsp;<i>type</i>, &lt;Function&gt;&nbsp;<i>fn</i>, &lt;Object&gt;&nbsp;<i>context?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code>this</code> keyword will point to).</td>
+			</tr>
+			<tr>
+				<td><code>removeEventListener( &lt;String&gt;&nbsp;<i>type</i>, &lt;Function&gt;&nbsp;<i>fn</i>, &lt;Object&gt;&nbsp;<i>context?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Removes a previously added listener function.</td>
+			</tr>
+			<tr>
+				<td><code>on( &hellip;&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Alias to <code>addEventListener</code>.</td>
+			</tr>
+			<tr>
+				<td><code>off( &hellip;&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Alias to <code>removeEventListener</code>.</td>
+			</tr>
+			<tr>
+				<td><code>hasListeners( &lt;String&gt;&nbsp;<i>type</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns true if a particular event type has some listeners attached to it.</td>
+			</tr>
+			<tr>
+				<td><code>fireEvent( &lt;String&gt;&nbsp;<i>type</i>, &lt;Object&gt;&nbsp;<i>data?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
+			</tr>
+			<tr>
+				<td><code>fire( &hellip;&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Alias to <code>fireEvent</code>.</td>
+			</tr>
+		</table>
+		
+		
 
 		<h2 id="ihandler">IHandler</h2>
 		<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
