@@ -85,7 +85,7 @@ L.Path = !L.Path.VML? L.Path : L.Path.extend({
 	
 	_updatePath: function() {
 		this._container.style.display = 'none';
-		this._path.v = this.getPathString();
+		this._path.v = this.getPathString() + ' '; // the space fixes IE empty path string bug
 		this._container.style.display = '';
 	}
 });
