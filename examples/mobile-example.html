@@ -41,11 +41,12 @@
 			var marker = new L.Marker(e.latlng);
 			map.addLayer(marker);
 			
-			marker.bindPopup("You are within " + e.accuracy + " meters from this point").openPopup();
+			marker.bindPopup("You are within " + (e.accuracy/2) + " meters from this point").openPopup();
 		}
 		
 		function onLocationError(e) {
-			alert(e.message);
+			alert("Geolocation error: " + e.message);
+			map.fitWorld();
 		}
 	</script>
 </body>

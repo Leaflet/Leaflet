@@ -88,7 +88,7 @@ function onLocationFound(e) {
 	var marker = new L.Marker(e.latlng);
 	map.addLayer(marker);
 	
-	marker.bindPopup("You are within " + e.accuracy + " meters from this point").openPopup();
+	marker.bindPopup("You are within " + (e.accuracy / 2) + " meters from this point").openPopup();
 }</code></pre>
 
 		<p>Excellent! But it would also be nice to show an error message if the geolocation failed:</p>
@@ -97,6 +97,7 @@ function onLocationFound(e) {
 		
 function onLocationError(e) {
 	alert(e.message);
+	map.fitWorld();
 }</code></pre>
 
 		<p>Now the example is complete &mdash; try it on your mobile phone: <a target="_blank" href="mobile-example.html">View the full example &rarr;</a></p>
