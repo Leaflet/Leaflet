@@ -29,7 +29,7 @@ L.Map = L.Class.extend({
 		
 		// animation
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
-		zoomAnimation: L.DomUtil.TRANSITION,
+		zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
 		
 		// misc
 		trackResize: true,
