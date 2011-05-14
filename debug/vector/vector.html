@@ -18,21 +18,18 @@
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
 	
-		for (var i = 0, latlngs = [], len = route.length; i < len; i++) {
-			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
-		}
-		var path = new L.Polyline(latlngs);
+		var map = new L.Map('map');
+		
+		var london = new L.LatLng(51.505, -0.09); // geographical point (longitude and latitude)
+		map.setView(london, 13).addLayer(cloudmade);
 
-		var map = new L.Map('map', {layers: [cloudmade]});
+		var p1 = new L.LatLng(51.509, -0.08),
+	    p2 = new L.LatLng(51.503, -0.06),
+	    p3 = new L.LatLng(51.51, -0.047),
+	    polygonPoints = [p1, p2, p3];
 
-		map.fitBounds(new L.LatLngBounds(latlngs));
-		
-		map.addLayer(new L.Marker(latlngs[0]));
-		map.addLayer(new L.Marker(latlngs[len - 1]));
-		
-		map.addLayer(path);
-		
-		path.bindPopup("Hello world");
+	var polygon = new L.Polygon(polygonPoints);
+	map.addLayer(polygon);
 	</script>
 </body>
 </html>
