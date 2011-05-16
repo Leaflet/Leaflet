@@ -151,7 +151,12 @@ L.Path = L.Class.extend({
 	},
 	
 	_updatePath: function() {
-		this._path.setAttribute('d', this.getPathString());
+		var str = this.getPathString();
+		if (!str) {
+			// fix webkit empty string parsing bug
+			str = 'M0 0';
+		}
+		this._path.setAttribute('d', str);
 	},
 	
 	_createElement: function(name) {

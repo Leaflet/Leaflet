@@ -35,15 +35,20 @@ L.Polygon = L.Polyline.extend({
 	},
 	
 	_clipPoints: function() {
-		var points = this._originalPoints;
+		var points = this._originalPoints,
+			newParts = [];
 		
 		this._parts = [points].concat(this._holePoints);
 		
 		if (this.options.noClip) return;
 		
 		for (var i = 0, len = this._parts.length; i < len; i++) {
-			this._parts[i] = L.PolyUtil.clipPolygon(this._parts[i], this._map._pathViewport);
+			var clipped = L.PolyUtil.clipPolygon(this._parts[i], this._map._pathViewport);
+			if (!clipped.length) continue;
+			newParts.push(clipped);
 		}
+		
+		this._parts = newParts;
 	},
 	
 	_getPathPartStr: function(points) {
