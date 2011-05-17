@@ -23,6 +23,12 @@ var deps = {
 		heading: 'Layers'
 	},
 	
+	TileLayerWMS: {
+		src: ['layer/TileLayer.WMS.js'],
+		desc: 'WMS tile layer, currently only supports EPSG:3857.',
+		deps: 'TileLayer'
+	},
+	
 	ImageOverlay: {
 		src: ['layer/ImageOverlay.js'],
 		desc: 'Used to display an image over a particular rectangular area of the map.'

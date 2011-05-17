@@ -350,6 +350,7 @@ L.Map = L.Class.extend({
 			this._initialTopLeftPoint._add(offset);
 		}
 		
+		this._tileLayersToLoad = this._tileLayersNum;
 		this.fire('viewreset');
 
 		this.fire('move');

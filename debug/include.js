@@ -28,6 +28,7 @@
 		'geo/Projection.js',
 		
 		'layer/TileLayer.js',
+		'layer/TileLayer.WMS.js',
 		'layer/ImageOverlay.js',
 		'layer/Popup.js',
 		
