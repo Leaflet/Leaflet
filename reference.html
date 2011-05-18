@@ -82,7 +82,7 @@
 					<li><a href="#latlngbounds">LatLngBounds</a></li>
 					<li><a href="#point">Point</a></li>
 					<li><a href="#bounds">Bounds</a></li>
-					<li><a class="nodocs" href="#">Icon</a></li>
+					<li><a href="#icon">Icon</a></li>
 				</ul>
 				<h4>Controls</h4>
 				<ul>
@@ -1480,6 +1480,77 @@ map.addLayer(polyline);</code></pre>
 				<td><code>contains( &lt;<a href="#bounds">Bounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
 				<td><code>Boolean</code></td>
 				<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+			</tr>
+		</table>
+		
+		
+		<h2 id="icon">L.Icon</h2>
+		
+		<p>Represents an icon to provide when creating a marker. If you want to create your own icon, you need to extend this class like this:</p>
+		
+		<pre><code class="javascript">var MyIcon = L.Icon.extend({
+	iconUrl: 'my-icon.png',
+	shadowUrl: 'my-icon-shadow.png',
+	iconSize: new L.Point(38, 95),
+	shadowSize: new L.Point(68, 95),
+	iconAnchor: new L.Point(22, 94),
+	popupAnchor: new L.Point(-3, -76)
+});
+
+var icon = new MyIcon();
+
+var marker = new L.Marker(marker, {icon: icon});</code></pre>
+
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>iconUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon image (absolute or relative to your script path).</td>
+			</tr>
+			<tr>
+				<td><code>shadowUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon shadow image. The shadow image must be cropped in such way the that if you align them on top of each other, top left corners of the images are in the same spot.</td>
+			</tr>
+			<tr>
+				<td><code>iconSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the icon image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>shadowSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the shadow image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>iconAnchor</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.</td>
+			</tr>
+			<tr>
+				<td><code>popupAnchor</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The point from which the marker popup opens, relative to the anchor point.</td>
+			</tr>
+		</table>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Icon( &lt;String&gt;&nbsp;<i>iconUrl?</i>&nbsp;)</code></td>
+				<td>Creates an icon instance. You can optionally pass an iconUrl that will replace the default one (useful for creating many similar markers that only differ in the icon image).</td>
 			</tr>
 		</table>
 		
