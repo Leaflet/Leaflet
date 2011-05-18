@@ -33,6 +33,9 @@
 .leaflet-clickable {
 	cursor: pointer;
 	}
+.leaflet-container img {
+	max-width: auto;
+	}
 
 .leaflet-tile-pane { z-index: 2; }
 .leaflet-overlay-pane { z-index: 3; }
