@@ -7,20 +7,32 @@ L.Map.include({
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 					L.Util.bind(this._handleGeolocationResponse, this),
-					L.Util.bind(this._handleGeolocationError, this));
+					L.Util.bind(this._handleGeolocationError, this),
+					{timeout: 10000});
 		} else {
-			this.fire('locationerror', {message: "Geolocation not supported."});
+			this.fire('locationerror', {
+				code: 0,
+				message: "Geolocation not supported."
+			});
 		}
 		return this;
 	},
 	
 	locateAndSetView: function(maxZoom) {
 		this._setViewOnLocate = true;
+		this._maxLocateZoom = maxZoom || Infinity;
 		return this.locate();
 	},
 	
 	_handleGeolocationError: function(error) {
-		this.fire('locationerror', {message: error.message});
+		var c = error.code,
+			message = (c == 1 ? "permission denied" : 
+				(c == 2 ? "position unavailable" : "timeout"));
+		
+		this.fire('locationerror', {
+			code: c,
+			message: "Geolocation error: " + message + "." 
+		});
 	},
 	
 	_handleGeolocationResponse: function(pos) {
@@ -34,7 +46,8 @@ L.Map.include({
 			bounds = new L.LatLngBounds(sw, ne);
 		
 		if (this._setViewOnLocate) {
-			this.fitBounds(bounds);
+			var zoom = Math.min(this.getBoundsZoom(bounds), this._maxLocateZoom);
+			this.setView(bounds.getCenter(), zoom);
 			this._setViewOnLocate = false;
 		}
 		

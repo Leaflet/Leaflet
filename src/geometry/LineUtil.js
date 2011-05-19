@@ -143,8 +143,11 @@ L.LineUtil = {
 	// square distance from point to a segment
 	_sqPointToSegmentDist: function(p, p1, p2) {
 		var x2 = p2.x - p1.x,
-			y2 = p2.y - p1.y,
-			dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
+			y2 = p2.y - p1.y;
+		
+		if (!x2 && !y2) return this._sqDist(p, p1);
+		
+		var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
 			t = dot / this._sqDist(p1, p2);
 		
 		if (t < 0) return this._sqDist(p, p1);

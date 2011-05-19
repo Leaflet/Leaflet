@@ -42,6 +42,7 @@
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
 		'layer/vector/Circle.js',
+		'layer/vector/CircleMarker.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',

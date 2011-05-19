@@ -72,7 +72,13 @@ var deps = {
 	Circle: {
 		src: ['layer/vector/Circle.js'],
 		deps: ['Path'],
-		desc: 'Circle overlays.'
+		desc: 'Circle overlays (with radius in meters).'
+	},
+	
+	CircleMarker: {
+		src: ['layer/vector/CircleMarker.js'],
+		deps: ['Circle'],
+		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
 	
