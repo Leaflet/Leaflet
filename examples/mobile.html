@@ -76,19 +76,23 @@ map.addLayer(cloudmade);</code></pre>
 		
 		<h3>Geolocation</h3>
 		
-		<p>Leaflet has a very handy shortcut for zooming the map view to the detected location, replacing the usual <code>setView</code> method in the code:</p>
+		<p>Leaflet has a very handy shortcut for zooming the map view to the detected location &mdash; locateAndSetView method, replacing the usual <code>setView</code> method in the code:</p>
 		
-		<pre><code class="javascript">map.locateAndSetView();</code></pre>
+		<pre><code class="javascript">map.locateAndSetView(16);</code></pre>
 		
-		<p>Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the <code>locationfound</code> and <code>locationerror</code> events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to <code>locationfound</code> event before the <code>locateAndSetView</code> call:</p>
+		<p>Here we specify 16 as the maximum zoom when setting the map view automatically. Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the <code>locationfound</code> and <code>locationerror</code> events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to <code>locationfound</code> event before the <code>locateAndSetView</code> call:</p>
 		
 		<pre><code class="javascript">map.on('locationfound', onLocationFound);
 		
 function onLocationFound(e) {
+	var radius = e.accuracy / 2;
+
 	var marker = new L.Marker(e.latlng);
 	map.addLayer(marker);
+	marker.bindPopup("You are within " + radius + " meters from this point").openPopup();
 	
-	marker.bindPopup("You are within " + (e.accuracy / 2) + " meters from this point").openPopup();
+	var circle = new L.Circle(e.latlng, radius);
+	map.addLayer(circle);	
 }</code></pre>
 
 		<p>Excellent! But it would also be nice to show an error message if the geolocation failed:</p>
@@ -97,7 +101,6 @@ function onLocationFound(e) {
 		
 function onLocationError(e) {
 	alert(e.message);
-	map.fitWorld();
 }</code></pre>
 
 		<p>Now the example is complete &mdash; try it on your mobile phone: <a target="_blank" href="mobile-example.html">View the full example &rarr;</a></p>
