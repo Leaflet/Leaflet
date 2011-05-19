@@ -18,66 +18,21 @@
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
 	
+		for (var i = 0, latlngs = [], len = route.length; i < len; i++) {
+			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
+		}
+		var path = new L.Polyline(latlngs);
+
 		var map = new L.Map('map', {layers: [cloudmade]});
 
-		var t0p0 = new L.LatLng(42.2209295062042, 111.005859375);
-		var t0p1 = new L.LatLng(41.8175942893144, 108.3251953125);
-		var t0p2 = new L.LatLng(40.9798980696201, 105.3369140625);
-		var t0p3 = new L.LatLng(41.38323328651, 100.9423828125);
-		var t0p4 = new L.LatLng(41.693491145656, 96.943359375);
-		var t0p5 = new L.LatLng(43.0275999399839, 94.6142578125);
-		var t0p6 = new L.LatLng(44.1445282329095, 93.1201171875);
-		var t0p7 = new L.LatLng(44.6099150216286, 91.1865234375);
-		var t0p8 = new L.LatLng(45.819920672298, 89.736328125);
-		var t0p9 = new L.LatLng(47.2471068243697, 88.9892578125);
-		var t0p10 = new L.LatLng(47.929674114491, 87.5830078125);
-		var t0p11 = new L.LatLng(47.3712099680281, 86.30859375);
-		var t0p12 = new L.LatLng(46.2853074610171, 85.6494140625);
-		var t0p13 = new L.LatLng(45.664791742725, 83.8037109375);
-		var t0p14 = new L.LatLng(44.4547860920555, 82.353515625);
-		var t0p15 = new L.LatLng(42.8724710104108, 81.4306640625);
-		var t0p16 = new L.LatLng(41.5693880019976, 80.595703125);
-		var t0p17 = new L.LatLng(40.5214583594219, 78.8818359375);
-		var t0p18 = new L.LatLng(39.6045789390256, 76.025390625);
-		var t0p19 = new L.LatLng(37.9824076567858, 75.8056640625);
-		var t0p20 = new L.LatLng(36.8186760847442, 76.81640625);
-		var t0p21 = new L.LatLng(35.9017966643478, 78.9697265625);
-		var t0p22 = new L.LatLng(35.4080923610575, 80.244140625);
-		var t0p23 = new L.LatLng(35.9723258505322, 83.3642578125);
-		var t0p24 = new L.LatLng(36.1133842229009, 86.748046875);
-		var t0p25 = new L.LatLng(35.3728277679653, 90.5712890625);
-		var t0p26 = new L.LatLng(33.6801272995412, 92.021484375);
-		var t0p27 = new L.LatLng(32.4458665413153, 93.9111328125);
-		var t0p28 = new L.LatLng(31.3656905561156, 96.6796875);
-		var t0p29 = new L.LatLng(29.2543925012418, 99.052734375);
-		var t0p30 = new L.LatLng(26.7521133250951, 99.66796875);
-		var t0p31 = new L.LatLng(24.2498341489484, 100.1953125);
-		var t0p32 = new L.LatLng(23.663362467039, 101.77734375);
-		var t0p33 = new L.LatLng(23.7024605791663, 105.3369140625);
-		var t0p34 = new L.LatLng(22.7641058881113, 109.0283203125);
-		var t0p35 = new L.LatLng(21.9430455334382, 111.533203125);
-		var t0p36 = new L.LatLng(21.1861565261137, 113.3349609375);
-		var t0p37 = new L.LatLng(22.5686153274749, 116.5869140625);
-		var t0p38 = new L.LatLng(25.3836794006399, 120.05859375);
-		var t0p39 = new L.LatLng(27.3776831191318, 121.025390625);
-		var t0p40 = new L.LatLng(30.622826425697, 123.0029296875);
-		var t0p41 = new L.LatLng(32.375337355131, 122.2998046875);
-		var t0p42 = new L.LatLng(34.4206837544768, 120.4541015625);
-		var t0p43 = new L.LatLng(36.0075904436244, 121.2451171875);
-		var t0p44 = new L.LatLng(36.9597344571129, 122.8271484375);
-		var t0p45 = new L.LatLng(37.7355555051406, 122.6953125);
-		var t0p46 = new L.LatLng(38.1587306222466, 119.794921875);
-		var t0p47 = new L.LatLng(39.1814038219195, 120.1904296875);
-		var t0p48 = new L.LatLng(39.7456373113942, 120.673828125);
-		var t0p49 = new L.LatLng(41.5073364301684, 114.3017578125);
-		var t0p50 = new L.LatLng(42.158877934375, 111.4013671875);
-		var t0p51 = new L.LatLng(42.2209295062042, 111.005859375);
-		var polylinePoints0 = [t0p0,t0p1,t0p2,t0p3,t0p4,t0p5,t0p6,t0p7,t0p8,t0p9,t0p10,t0p11,t0p12,t0p13,t0p14,t0p15,t0p16,t0p17,t0p18,t0p19,t0p20,t0p21,t0p22,t0p23,t0p24,t0p25,t0p26,t0p27,t0p28,t0p29,t0p30,t0p31,t0p32,t0p33,t0p34,t0p35,t0p36,t0p37,t0p38,t0p39,t0p40,t0p41,t0p42,t0p43,t0p44,t0p45,t0p46,t0p47,t0p48,t0p49,t0p50,t0p51]
-		var polylineOptions0 = {color: 'blue', opacity: 0.7};
-		var polyline0 = new L.Polyline(polylinePoints0, polylineOptions0);
-		map.addLayer(polyline0);
+		map.fitBounds(new L.LatLngBounds(latlngs));
 		
-		map.fitBounds(new L.LatLngBounds(polylinePoints0));
+		map.addLayer(new L.Marker(latlngs[0]));
+		map.addLayer(new L.Marker(latlngs[len - 1]));
+		
+		map.addLayer(path);
+		
+		path.bindPopup("Hello world");
 	</script>
 </body>
 </html>
