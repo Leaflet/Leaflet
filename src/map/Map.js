@@ -390,8 +390,11 @@ L.Map = L.Class.extend({
 	
 	_initEvents: function() {
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
-		L.DomEvent.addListener(this._container, 'dblclick', this._fireMouseEvent, this);
-		L.DomEvent.addListener(this._container, 'mousedown', this._fireMouseEvent, this);
+		
+		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove'];
+		for (var i = 0; i < events.length; i++) {
+			L.DomEvent.addListener(this._container, events[i], this._fireMouseEvent, this);
+		}
 		
 		if (this.options.trackResize) {
 			L.DomEvent.addListener(window, 'resize', this.invalidateSize, this);
@@ -401,13 +404,15 @@ L.Map = L.Class.extend({
 	_onMouseClick: function(e) {
 		if (this.dragging && this.dragging.moved()) { return; }
 		
+		this.fire('pre' + e.type);
 		this._fireMouseEvent(e);
 	},
 	
 	_fireMouseEvent: function(e) {
-		this.fire('pre' + e.type);
-		if (!this.hasEventListeners(e.type)) { return; }
-		this.fire(e.type, {
+		var type = e.type;
+		type = (type == 'mouseenter' ? 'mouseover' : (type == 'mouseleave' ? 'mouseout' : type));
+		if (!this.hasEventListeners(type)) { return; }
+		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
 		});
