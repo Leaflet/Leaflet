@@ -1,4 +1,4 @@
-![Leaflet][http://leaflet.cloudmade.com/docs/images/logo.png]
+<img src="http://leaflet.cloudmade.com/docs/images/logo.png" alt="Leaflet" />
 
 Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by [CloudMade](http://cloudmade.com) to form the core of its next generation JavaScript API.
 
