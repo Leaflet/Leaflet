@@ -29,6 +29,11 @@ L.Map.include({
 			message = (c == 1 ? "permission denied" : 
 				(c == 2 ? "position unavailable" : "timeout"));
 		
+		if (this._setViewOnLocate) {
+			this.fitWorld();
+			this._setViewOnLocate = false;
+		}
+		
 		this.fire('locationerror', {
 			code: c,
 			message: "Geolocation error: " + message + "." 
