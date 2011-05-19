@@ -48,6 +48,11 @@ L.Marker = L.Class.extend({
 		return this._latlng;
 	},
 	
+	setLatLng: function(latlng) {
+		this._latlng = latlng;
+		this._reset();
+	},
+	
 	_reset: function() {
 		var pos = this._map.latLngToLayerPoint(this._latlng).round();
 		
@@ -60,9 +65,13 @@ L.Marker = L.Class.extend({
 	_initInteraction: function() {
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
-			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
+			
 			L.DomEvent.addListener(this._icon, 'click', this._onMouseClick, this);
-			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
+
+			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+			for (var i = 0; i < events.length; i++) {
+				L.DomEvent.addListener(this._icon, events[i], this._fireMouseEvent, this);
+			}
 		}
 		
 		if (L.Handler.MarkerDrag) {
