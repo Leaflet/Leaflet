@@ -33,6 +33,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/layer/vector/Polyline.js ^
 --js ../src/layer/vector/Polygon.js ^
 --js ../src/layer/vector/Circle.js ^
+--js ../src/layer/vector/CircleMarker.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^
