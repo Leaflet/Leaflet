@@ -48,6 +48,11 @@ L.Marker = L.Class.extend({
 		return this._latlng;
 	},
 	
+	setLatLng: function(latlng) {
+		this._latlng = latlng;
+		this._reset();
+	},
+	
 	_reset: function() {
 		var pos = this._map.latLngToLayerPoint(this._latlng).round();
 		
