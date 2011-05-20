@@ -33,7 +33,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		var transform = L.DomUtil.TRANSFORM;
 		
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
-		if (L.Browser.gecko) {
+		if (L.Browser.gecko || window.opera) {
 			this._tileBg.style[transform] += ' translate(0,0)';
 		}
 		

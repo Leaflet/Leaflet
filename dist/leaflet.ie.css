@@ -18,6 +18,11 @@
 	width: 1px;
 	height: 1px;
 	}
+.lvml {
+	behavior: url(#default#VML); 
+	display: inline-block; 
+	position: absolute;
+	}
 
 .leaflet-control-zoom {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
