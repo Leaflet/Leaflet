@@ -44,7 +44,8 @@ L.Path = !L.Path.VML? L.Path : L.Path.extend({
 	
 	_initPath: function() {
 		this._container = this._createElement('shape');
-		this._container.className += ' leaflet-vml-shape';
+		this._container.className += ' leaflet-vml-shape' + 
+				(this.options.clickable ? ' leaflet-clickable' : '');
 		this._container.coordsize = '1 1';
 		
 		this._path = this._createElement('path');
