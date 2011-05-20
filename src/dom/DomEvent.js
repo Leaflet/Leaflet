@@ -15,7 +15,8 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		} else if ('addEventListener' in obj) {
 			if (type == 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false); 
+				obj.addEventListener('DOMMouseScroll', handler, false);
+				obj.addEventListener(type, handler, false);
 			} else if ((type == 'mouseenter') || (type == 'mouseleave')) {
 				var originalHandler = handler,
 					newType = (type == 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -43,7 +44,8 @@ L.DomEvent = {
 			this.removeDoubleTapListener(obj, id);
 		} else if ('removeEventListener' in obj) {
 			if (type == 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false); 
+				obj.removeEventListener('DOMMouseScroll', handler, false);
+				obj.removeEventListener(type, handler, false);
 			} else if ((type == 'mouseenter') || (type == 'mouseleave')) {
 				obj.removeEventListener((type == 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
