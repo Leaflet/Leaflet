@@ -13,7 +13,9 @@ Leaflet Changelog
  * Fixed a bug where paths would not appear in IE8. 
  * Fixed a bug where zooming is broken if the map contains a polygon and you zoom to an area where it's not visible. [#47](https://github.com/CloudMade/Leaflet/issues/47)
  * Fixed a bug where closed polylines would not appear on the map.
+ * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
  * Fixed a bug where map isn't displayed in Firefox when there's an `img { max-width: 100% }` rule.
+ * Fixed inability to remove ImageOverlay layer.
 
 ## 0.1 (2011-05-13)
 
