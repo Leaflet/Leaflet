@@ -15,6 +15,8 @@ Leaflet Changelog
  * Fixed a bug where zooming is broken if the map contains a polygon and you zoom to an area where it's not visible. [#47](http://github.com/CloudMade/Leaflet/issues/47)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](http://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where closed polylines would not appear on the map.
+ * Fixed a bug where marker that was added, removed and then added again would not appear on the map. [#66](http://github.com/CloudMade/Leaflet/issues/66)
+ * Fixed a bug that caused an error when trying to add a marker without shadow in its icon.
  * Fixed incorrect zoom animation & popup styling in Opera 11.11.
  * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
  * Fixed a bug where map isn't displayed in Firefox when there's an `img { max-width: 100% }` rule.
