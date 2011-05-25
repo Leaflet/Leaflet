@@ -21,6 +21,7 @@ Leaflet Changelog
  * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
  * Fixed a bug where map isn't displayed in Firefox when there's an `img { max-width: 100% }` rule.
  * Fixed inability to remove ImageOverlay layer.
+ * Fixed popup fade animation in Firefox and Opera
 
 ## 0.1 (2011-05-13)
 
