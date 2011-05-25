@@ -12,6 +12,7 @@ L.TileLayer = L.Class.extend({
 		subdomains: 'abc',
 		errorTileUrl: '',
 		attribution: '',
+		opacity: 1,
 		
 		unloadInvisibleTiles: L.Browser.mobileWebkit,
 		updateWhenIdle: L.Browser.mobileWebkit
@@ -73,8 +74,13 @@ L.TileLayer = L.Class.extend({
 	
 	_initContainer: function() {
 		var tilePane = this._map.getPanes().tilePane;
+		
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer', tilePane);
+			
+			if (this.options.opacity < 1) {
+				L.DomUtil.setOpacity(this._container, this.options.opacity);
+			}
 		}
 	},
 	

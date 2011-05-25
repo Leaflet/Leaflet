@@ -26,7 +26,7 @@ var deps = {
 	TileLayerWMS: {
 		src: ['layer/TileLayer.WMS.js'],
 		desc: 'WMS tile layer, currently only supports EPSG:3857.',
-		deps: 'TileLayer'
+		deps: ['TileLayer']
 	},
 	
 	ImageOverlay: {

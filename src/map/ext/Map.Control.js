@@ -16,7 +16,7 @@ L.Map.include({
 		return this;
 	},
 	
-	removeControl: function(conrol) {
+	removeControl: function(control) {
 		var pos = control.getPosition(),
 			corner = this._controlCorners[pos],
 			container = control.getContainer();

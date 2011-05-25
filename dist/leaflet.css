@@ -163,6 +163,8 @@
 
 .leaflet-fade-anim .leaflet-popup {
 	-webkit-transition: opacity 0.2s linear;
+	-moz-transition: opacity 0.2s linear;
+	-o-transition: opacity 0.2s linear;
 	opacity: 0;
 }
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {

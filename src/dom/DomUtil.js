@@ -67,6 +67,14 @@ L.DomUtil = {
 		}
 	},
 	
+	setOpacity: function(el, value) {
+		if (L.Browser.ie) {
+			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
+		} else {
+			el.style.opacity = value;
+		}
+	},
+	
 	//TODO refactor away this ugly translate/position mess
 	
 	testProp: function(props) {
