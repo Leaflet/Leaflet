@@ -3,10 +3,11 @@ Leaflet Changelog
 
 ## 0.2 (master)
 
- * Added **WMS support** (L.TileLayer.WMS), currently EPSG:3857 only.
- * `L.Circle` is now zoom-dependent (with radius in meters); circle of a permanent size is now called `L.CircleMarker`.
+ * Added **WMS support** (`TileLayer.WMS`), currently EPSG:3857 only.
+ * `Circle` is now zoom-dependent (with radius in meters); circle of a permanent size is now called `L.CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
+ * `LatLngBounds contains` method now accepts `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
  * Added `opacity` option for tile layers.
  * Added `setLatLng` method to `L.Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.

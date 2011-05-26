@@ -29,10 +29,19 @@ L.Bounds = L.Class.extend({
 				(this.min.y + this.max.y) / 2, round);
 	},
 	
-	contains: function(/*Bounds*/ bounds)/*->Boolean*/ {
-		return (bounds.min.x >= this.min.x) && 
-				(bounds.max.x <= this.max.x) &&
-				(bounds.min.y >= this.min.y) && 
-				(bounds.max.y <= this.max.y);
+	contains: function(/*Bounds or Point*/ obj)/*->Boolean*/ {
+		var min, max;
+		
+		if (obj instanceof L.Bounds) {
+			min = obj.min;
+			max = obj.max;
+		} else {
+			max = max = obj;
+		}
+		
+		return (min.x >= this.min.x) && 
+				(max.x <= this.max.x) &&
+				(min.y >= this.min.y) && 
+				(max.y <= this.max.y);
 	}
 });
