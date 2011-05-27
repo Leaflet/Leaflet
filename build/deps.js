@@ -18,14 +18,20 @@ var deps = {
 	
 	
 	TileLayer: {
-		src: ['layer/TileLayer.js'],
+		src: ['layer/tile/TileLayer.js'],
 		desc: 'The base class for displaying tile layers on the map.',
 		heading: 'Layers'
 	},
 	
 	TileLayerWMS: {
-		src: ['layer/TileLayer.WMS.js'],
+		src: ['layer/tile/TileLayer.WMS.js'],
 		desc: 'WMS tile layer, currently only supports EPSG:3857.',
+		deps: ['TileLayer']
+	},
+	
+	TileLayerCanvas: {
+		src: ['layer/tile/TileLayer.Canvas.js'],
+		desc: 'Tile layer made from canvases (for custom drawing purposes).',
 		deps: ['TileLayer']
 	},
 	

@@ -18,12 +18,11 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 	
 	_loadTile: function(tile, tilePoint, zoom) {
-		var ctx = tile.getContext('2d');
-		this.drawTile(ctx, tilePoint, zoom);
+		this.drawTile(tile, tilePoint, zoom);
 		this._tileOnLoad({target: tile});
 	},
 	
-	drawTile: function(ctx, tilePoint, zoom) {
+	drawTile: function(tile, tilePoint, zoom) {
 		// override with rendering code
 	}
 });
