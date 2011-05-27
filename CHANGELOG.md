@@ -11,6 +11,7 @@ Leaflet Changelog
  * Added `opacity` option for tile layers.
  * Added `setLatLng` method to `L.Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
+ * Added `DomEvent.getTarget` method.
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](http://github.com/CloudMade/Leaflet/issues/61)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](http://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](http://github.com/CloudMade/Leaflet/issues/32)
