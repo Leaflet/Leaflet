@@ -22,6 +22,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/geo/Projection.js ^
 --js ../src/layer/TileLayer.js ^
 --js ../src/layer/TileLayer.WMS.js ^
+--js ../src/layer/TileLayer.Canvas.js ^
 --js ../src/layer/ImageOverlay.js ^
 --js ../src/layer/Popup.js ^
 --js ../src/layer/marker/Icon.js ^

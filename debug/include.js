@@ -29,6 +29,7 @@
 		
 		'layer/TileLayer.js',
 		'layer/TileLayer.WMS.js',
+		'layer/TileLayer.Canvas.js',
 		'layer/ImageOverlay.js',
 		'layer/Popup.js',
 		

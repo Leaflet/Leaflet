@@ -104,17 +104,6 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	getTileUrl: function(tilePoint, zoom) {
-		var subdomains = this.options.subdomains,
-			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
-
-		return this._url
-				.replace('{s}', s)
-				.replace('{z}', zoom)
-				.replace('{x}', tilePoint.x)
-				.replace('{y}', tilePoint.y);
-	},
-	
 	_addTilesFromCenterOut: function(bounds) {
 		var queue = [],
 			center = bounds.getCenter();
@@ -186,6 +175,17 @@ L.TileLayer = L.Class.extend({
 	
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 	
+	getTileUrl: function(tilePoint, zoom) {
+		var subdomains = this.options.subdomains,
+			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
+
+		return this._url
+				.replace('{s}', s)
+				.replace('{z}', zoom)
+				.replace('{x}', tilePoint.x)
+				.replace('{y}', tilePoint.y);
+	},
+	
 	_createTileProto: function() {
 		this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
 		this._tileImg.galleryimg = 'no';
@@ -197,7 +197,6 @@ L.TileLayer = L.Class.extend({
 	
 	_createTile: function() {
 		var tile = this._tileImg.cloneNode(false);
-		tile._leaflet_layer = this;
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 		return tile;
 	},
