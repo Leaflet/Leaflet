@@ -13,6 +13,7 @@ L.TileLayer = L.Class.extend({
 		errorTileUrl: '',
 		attribution: '',
 		opacity: 1,
+    scheme: 'xyz',
 		
 		unloadInvisibleTiles: L.Browser.mobileWebkit,
 		updateWhenIdle: L.Browser.mobileWebkit
@@ -171,6 +172,7 @@ L.TileLayer = L.Class.extend({
 		// wrap tile coordinates
 		var tileLimit = (1 << zoom);
 		tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
+        if (this.options.scheme === 'tms') tilePoint.y = Math.pow(2, zoom) - tilePoint.y - 1;
 		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
 		
 		// create tile
