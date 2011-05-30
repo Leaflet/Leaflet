@@ -20,8 +20,9 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/geo/LatLng.js ^
 --js ../src/geo/LatLngBounds.js ^
 --js ../src/geo/Projection.js ^
---js ../src/layer/TileLayer.js ^
---js ../src/layer/TileLayer.WMS.js ^
+--js ../src/layer/tile/TileLayer.js ^
+--js ../src/layer/tile/TileLayer.WMS.js ^
+--js ../src/layer/tile/TileLayer.Canvas.js ^
 --js ../src/layer/ImageOverlay.js ^
 --js ../src/layer/Popup.js ^
 --js ../src/layer/marker/Icon.js ^

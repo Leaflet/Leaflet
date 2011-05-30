@@ -4,13 +4,16 @@ Leaflet Changelog
 ## 0.2 (master)
 
  * Added **WMS support** (`TileLayer.WMS`), currently EPSG:3857 only.
+ * Added `TileLayer.Canvas` for easy creation of canvas-based tile layers.
  * `Circle` is now zoom-dependent (with radius in meters); circle of a permanent size is now called `L.CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
  * `LatLngBounds contains` method now accepts `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
+ * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)). 
  * Added `opacity` option for tile layers.
  * Added `setLatLng` method to `L.Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
+ * Added `DomEvent.getTarget` method.
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](http://github.com/CloudMade/Leaflet/issues/61)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](http://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](http://github.com/CloudMade/Leaflet/issues/32)

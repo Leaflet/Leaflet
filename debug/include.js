@@ -27,8 +27,9 @@
 		'geo/LatLngBounds.js',
 		'geo/Projection.js',
 		
-		'layer/TileLayer.js',
-		'layer/TileLayer.WMS.js',
+		'layer/tile/TileLayer.js',
+		'layer/tile/TileLayer.WMS.js',
+		'layer/tile/TileLayer.Canvas.js',
 		'layer/ImageOverlay.js',
 		'layer/Popup.js',
 		
