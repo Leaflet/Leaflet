@@ -107,6 +107,7 @@ L.DomEvent = {
 	},
 	
 	getTarget: function(e) {
+		e = e || window.event;
 		var target = e.target || e.srcElement;
 		
 		if (target && target.nodeType == 3) {
