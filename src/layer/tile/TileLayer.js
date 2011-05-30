@@ -204,32 +204,31 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_loadTile: function(tile, tilePoint, zoom) {
-		tile.onload = L.Util.bind(this._tileOnLoad, this);
-		tile.onerror = L.Util.bind(this._tileOnError, this);
+		tile._layer = this;
+		tile.onload = this._tileOnLoad;
+		tile.onerror = this._tileOnError;
 		tile.src = this.getTileUrl(tilePoint, zoom);
 	},
 	
 	_tileOnLoad: function(e) {
-		var tile = L.DomEvent.getTarget(e);
+		var layer = this._layer;
 		
-		tile.className += ' leaflet-tile-loaded'; 
+		this.className += ' leaflet-tile-loaded'; 
 
-		this.fire('tileload', {tile: tile, url: tile.src});
+		layer.fire('tileload', {tile: this, url: this.src});
 		
-		this._tilesToLoad--;
-		if (!this._tilesToLoad) {
-			this.fire('load');
+		layer._tilesToLoad--;
+		if (!layer._tilesToLoad) {
+			layer.fire('load');
 		}
 	},
 	
 	_tileOnError: function(e) {
-		var tile = L.DomEvent.getTarget(e);
+		this.fire('tileerror', {tile: this, url: this.src});
 		
-		this.fire('tileerror', {tile: tile, url: tile.src});
-		
-		var newUrl = this.options.errorTileUrl;
+		var newUrl = this._layer.options.errorTileUrl;
 		if (newUrl) {
-			tile.src = newUrl;
+			this.src = newUrl;
 		}
 	}
 });
