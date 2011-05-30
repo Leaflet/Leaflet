@@ -66,6 +66,7 @@
 				<ul>
 					<li><a href="#tilelayer">TileLayer</a></li>
 					<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
+					<li><a href="#tilelayer-canvas">TileLayer.Canvas</a></li>
 					<li><a href="#imageoverlay">ImageOverlay</a></li>
 				</ul>
 				<h4>Vector layers</h4>
@@ -974,6 +975,12 @@ map.openPopup(popup);</code></pre>
 				<td>e.g. "&copy; CloudMade" &mdash; the string used by the attribution control, describes the layer data.</td>
 			</tr>
 			<tr>
+				<td><code>scheme</code></td>
+				<td><code>String</code></td>
+				<td><code>'xyz'</code></td>
+				<td>Either <code>'xyz'</code> or <code>'tms'</code>, affects tile numbering (TMS servers use inverse Y axis numbering).</td>
+			</tr>
+			<tr>
 				<td><code>unloadInvisibleTiles</code></td>
 				<td><code>Boolean</code></td>
 				<td>depends</td>
@@ -1057,7 +1064,49 @@ map.openPopup(popup);</code></pre>
 				<td>Version of the WMS service to use.</td>
 			</tr>
 		</table>
-
+		
+		
+		
+		<h2 id="tilelayer-canvas">L.TileLayer.Canvas</h2>
+		
+		<p>Used to create Canvas-based tile layers where tiles get drawn on the browser side. Extends <a href="#tilelayer">TileLayer</a>, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var canvasTiles = new L.TileLayer.Canvas();
+		
+canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+	var ctx = canvas.getContext('2d');
+	// draw something on the tile canvas
+}</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer.Canvas( &lt;<a href="#tilelayer-options">TileLayer&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a Canvas tile layer object given an options object (optionally).</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>drawTile( &lt;HTMLCanvasElement&gt;&nbsp;<i>canvas</i>, &lt;<a href="#point">Point</a>&gt;&nbsp;<i>tilePoint</i>, &lt;Number&gt;&nbsp;<i>zoom</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
+			</tr>
+		</table>
 
 
 		<h2 id="imageoverlay">L.ImageOverlay</h2>
