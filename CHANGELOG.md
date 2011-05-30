@@ -19,7 +19,7 @@ Leaflet Changelog
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](http://github.com/CloudMade/Leaflet/issues/61)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](http://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](http://github.com/CloudMade/Leaflet/issues/32)
- * Fixed a bug with extremely slow panning on HTC Android (by [@Miroff](https://github.com/Miroff).
+ * Fixed a bug with extremely slow panning on HTC Android (by [@Miroff](https://github.com/Miroff)).
  * Fixed a bug where paths would not appear in IE8. 
  * Fixed a bug where zooming is broken if the map contains a polygon and you zoom to an area where it's not visible. [#47](http://github.com/CloudMade/Leaflet/issues/47)
  * Fixed a bug where closed polylines would not appear on the map.
