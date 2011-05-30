@@ -193,6 +193,12 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Layers that will be added to the map initially.</td>
 			</tr>
 			<tr>
+				<td><code>crs</code></td>
+				<td><code>L.CRS.*</code></td>
+				<td><code>new&nbsp;L.CRS.EPSG3857()</code></td>
+				<td>Coordinate Reference System to use. Don't change this if you're not sure what it means. Currently supported: EPSG:3587 (Spherical Mercator), EPSG:4326 (Plate Carree).</td>
+			</tr>
+			<tr>
 				<td><code>dragging</code></td>
 				<td><code>Boolean</code></td>
 				<td><code>true</code></td>
