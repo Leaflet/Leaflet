@@ -10,8 +10,9 @@ Leaflet Changelog
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
  * `LatLngBounds contains` method now accepts `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
  * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)). 
- * Added `opacity` option for tile layers.
- * Added `setLatLng` method to `L.Marker`.
+ * Added `opacity` option to `TileLayer`.
+ * Added `setLatLng` method to `Marker`.
+ * Added `title` option to `Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
  * Added `DomEvent.getTarget` method.
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](http://github.com/CloudMade/Leaflet/issues/61)
