@@ -8,6 +8,7 @@ L.Marker = L.Class.extend({
 	
 	options: {
 		icon: new L.Icon(),
+		title: '',
 		clickable: true,
 		draggable: false
 	},
@@ -22,6 +23,11 @@ L.Marker = L.Class.extend({
 		
 		if (!this._icon) {
 			this._icon = this.options.icon.createIcon();
+			
+			if (this.options.title) {
+				this._icon.title = this.options.title;
+			}
+			
 			this._initInteraction();
 		}
 		if (!this._shadow) {

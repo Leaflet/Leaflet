@@ -7,9 +7,8 @@ L.Map = L.Class.extend({
 	
 	options: {
 		// projection
-		projection: L.Projection.Mercator,
-		transformation: new L.Transformation(0.5/Math.PI, 0.5, -0.5/Math.PI, 0.5), 
-		scaling: function(zoom) { return 256 * (1 << zoom); },
+		crs: new L.CRS.EPSG3857(),
+		scale: function(zoom) { return 256 * (1 << zoom); },
 		
 		// state
 		center: null,
@@ -284,16 +283,13 @@ L.Map = L.Class.extend({
 	},
 
 	project: function(/*LatLng*/ latlng, /*(optional) Number*/ zoom)/*-> Point*/ {
-		var options = this.options,
-			projectedPoint = options.projection.project(latlng),
-			scale = options.scaling(isNaN(zoom) ? this._zoom : zoom);
-		return options.transformation._transform(projectedPoint, scale);
+		zoom = (typeof zoom == 'undefined' ? this._zoom : zoom);
+		return this.options.crs.latLngToPoint(latlng, this.options.scale(zoom));
 	},
 	
 	unproject: function(/*Point*/ point, /*(optional) Number*/ zoom, /*(optional) Boolean*/ unbounded)/*-> Object*/ {
-		var scale = this.options.scaling(isNaN(zoom) ? this._zoom : zoom),
-			untransformedPoint = this.options.transformation.untransform(point, scale);
-		return this.options.projection.unproject(untransformedPoint, unbounded);
+		zoom = (typeof zoom == 'undefined' ? this._zoom : zoom);
+		return this.options.crs.pointToLatLng(point, this.options.scale(zoom), unbounded);
 	},
 	
 	

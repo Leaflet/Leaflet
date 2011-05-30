@@ -18,8 +18,9 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 	
 	_loadTile: function(tile, tilePoint, zoom) {
+		tile._layer = this;
 		this.drawTile(tile, tilePoint, zoom);
-		this._tileOnLoad({target: tile});
+		this._tileOnLoad();
 	},
 	
 	drawTile: function(tile, tilePoint, zoom) {

@@ -21,21 +21,25 @@ L.TileLayer.WMS = L.TileLayer.extend({
 				this.wmsParams[i] = options[i];
 			}
 		}
-		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
-		this.wmsParams[projectionKey] = 'EPSG:3857';
 
 		L.Util.setOptions(this, options);
+	},
+	
+	onAdd: function(map) {
+		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
+		this.wmsParams[projectionKey] = map.options.crs.code;		
+
+		L.TileLayer.prototype.onAdd.call(this, map);
 	},
 	
 	getTileUrl: function(/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {
 		var tileSize = this.options.tileSize,
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
-			nwMerc = this._map.unproject(nwPoint),
-			seMerc = this._map.unproject(sePoint),
-			r = 6378137,
-			nw = L.Projection.Mercator.project(nwMerc).multiplyBy(r),
-			se = L.Projection.Mercator.project(seMerc).multiplyBy(r),
+			nwMap = this._map.unproject(nwPoint, this._zoom, true),
+			seMap = this._map.unproject(sePoint, this._zoom, true),
+			nw = this._map.options.crs.project(nwMap),
+			se = this._map.options.crs.project(seMap),
 			bbox = [nw.x, se.y, se.x, nw.y].join(',');
 		
 		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;

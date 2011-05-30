@@ -20,6 +20,7 @@
 	--js ../src/geo/LatLng.js \
 	--js ../src/geo/LatLngBounds.js \
 	--js ../src/geo/Projection.js \
+	--js ../src/geo/CRS.js \
 	--js ../src/layer/tile/TileLayer.js \
 	--js ../src/layer/tile/TileLayer.WMS.js \
 	--js ../src/layer/tile/TileLayer.Canvas.js \

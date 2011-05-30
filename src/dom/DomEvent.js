@@ -106,16 +106,6 @@ L.DomEvent = {
 		}
 	},
 	
-	getTarget: function(e) {
-		var target = e.target || e.srcElement;
-		
-		if (target && target.nodeType == 3) {
-			target = target.parentNode;
-		}
-		
-		return target;
-	},
-	
 	getMousePosition: function(e, container) {
 		var x = e.pageX ? e.pageX : e.clientX + 
 				document.body.scrollLeft + document.documentElement.scrollLeft,

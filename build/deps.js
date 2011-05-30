@@ -9,6 +9,7 @@ var deps = {
 		      'geo/LatLng.js',
 		      'geo/LatLngBounds.js',
 		      'geo/Projection.js',
+		      'geo/CRS.js',
 		      'geometry/Bounds.js',
 		      'geometry/Point.js',
 		      'geometry/Transformation.js',
@@ -25,7 +26,7 @@ var deps = {
 	
 	TileLayerWMS: {
 		src: ['layer/tile/TileLayer.WMS.js'],
-		desc: 'WMS tile layer, currently only supports EPSG:3857.',
+		desc: 'WMS tile layer.',
 		deps: ['TileLayer']
 	},
 	
