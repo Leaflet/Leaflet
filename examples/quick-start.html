@@ -61,7 +61,7 @@
 			
 			var circleLocation = new L.LatLng(51.508, -0.11),
 				circleOptions = {color: '#f03', opacity: 0.7},
-				circle = new L.Circle(circleLocation, 20, circleOptions);
+				circle = new L.Circle(circleLocation, 500, circleOptions);
 			
 			circle.bindPopup("I am a circle.");
 			map.addLayer(circle);
@@ -152,7 +152,7 @@ map.setView(london, 13).addLayer(cloudmade);</code></pre>
 			var marker2 = new L.Marker(markerLocation);
 			map2.addLayer(marker2);
 			
-			var circle2 = new L.Circle(circleLocation, 20, circleOptions);	
+			var circle2 = new L.Circle(circleLocation, 500, circleOptions);	
 			map2.addLayer(circle2);
 			
 			var polygon2 = new L.Polygon(polygonPoints);
@@ -166,7 +166,7 @@ map.setView(london, 13).addLayer(cloudmade);</code></pre>
 var marker = new L.Marker(markerLocation);
 map.addLayer(marker);</code></pre>
 
-		<p>Adding a circle is the same, but lets configure it by passing options as a third argument when creating the object (the second argument is the radius in pixels):</p>
+		<p>Adding a circle is the same (except for specifying the radius in meters), but lets configure it by passing options as a third argument when creating the object (the second argument is the radius in pixels):</p>
 		
 		<pre><code class="javascript">var circleLocation = new L.LatLng(51.508, -0.11),
 	circleOptions = {
@@ -175,7 +175,7 @@ map.addLayer(marker);</code></pre>
 		fillOpacity: 0.5
 	};
 	
-var circle = new L.Circle(circleLocation, 20, circleOptions);
+var circle = new L.Circle(circleLocation, 500, circleOptions);
 map.addLayer(circle);</code></pre>
 
 		<p>Add a polygon is easy too:</p>
@@ -208,7 +208,7 @@ map.addLayer(polygon);</code></pre>
 				marker2.openPopup();
 			});*/
 			
-			var circle3 = new L.Circle(circleLocation, 20, circleOptions);
+			var circle3 = new L.Circle(circleLocation, 500, circleOptions);
 			circle3.bindPopup("I am a circle.");
 			map3.addLayer(circle3);
 			

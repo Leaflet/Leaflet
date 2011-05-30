@@ -27,6 +27,8 @@ L.Icon = L.Class.extend({
 			src = this[name + 'Url'],
 			img = this._createImg(src);
 		
+		if (!src) { return null; }
+		
 		img.className = 'leaflet-marker-' + name;
 		
 		img.style.marginLeft = (-this.iconAnchor.x) + 'px';

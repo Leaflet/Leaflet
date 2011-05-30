@@ -29,6 +29,33 @@ L.Polyline = L.Path.extend({
 		return str;
 	},
 	
+	getLatLngs: function() {
+		return this._latlngs;
+	},
+	
+	setLatLngs: function(latlngs) {
+		this._latlngs = latlngs;
+		this._redraw();
+		return this;
+	},
+	
+	addLatLng: function(latlng) {
+		this._latlngs.push(latlng);
+		this._redraw();
+		return this;
+	},
+	
+	spliceLatLngs: function(index, howMany) {
+		var removed = [].splice.apply(this._latlngs, arguments);
+		this._redraw();
+		return removed;
+	},
+	
+	_redraw: function() {
+		this.projectLatlngs();
+		this._updatePath();
+	},
+	
 	_getPathPartStr: function(points) {
 		var round = L.Path.VML;
 		

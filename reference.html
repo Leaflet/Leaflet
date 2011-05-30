@@ -65,6 +65,8 @@
 				<h4>Raster layers</h4>
 				<ul>
 					<li><a href="#tilelayer">TileLayer</a></li>
+					<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
+					<li><a href="#tilelayer-canvas">TileLayer.Canvas</a></li>
 					<li><a href="#imageoverlay">ImageOverlay</a></li>
 				</ul>
 				<h4>Vector layers</h4>
@@ -73,6 +75,7 @@
 					<li><a href="#polyline">Polyline</a></li>
 					<li><a href="#polygon">Polygon</a></li>
 					<li><a href="#circle">Circle</a></li>
+					<li><a href="#circlemarker">CircleMarker</a></li>
 				</ul>
 			</div>
 			<div class="span-3">
@@ -82,29 +85,20 @@
 					<li><a href="#latlngbounds">LatLngBounds</a></li>
 					<li><a href="#point">Point</a></li>
 					<li><a href="#bounds">Bounds</a></li>
-					<li><a class="nodocs" href="#">Icon</a></li>
+					<li><a href="#icon">Icon</a></li>
 				</ul>
 				<h4>Controls</h4>
 				<ul>
 					<li><a href="#control-zoom">Zoom</a></li>
 					<li><a href="#control-attribution">Attribution</a></li>
 				</ul>
-			</div>
-			<div class="span-3">
 				<h4>Events</h4>
 				<ul>
 					<li><a href="#events">Events methods</a></li>
 					<li><a href="#event-objects">Event objects</a></li>
 				</ul>
-				<h4>Interfaces</h4>
-				<ul>
-					<li><a href="#ihandler">IHandler</a></li>
-					<li><a class="nodocs" href="#">ILayer</a></li>
-					<li><a class="nodocs" href="#">IControl</a></li>
-					<li><a class="nodocs" href="#">IProjection</a></li>
-				</ul>
 			</div>
-			<div class="span-3 last">
+			<div class="span-3">
 				<h4>Utility</h4>
 				<ul>
 					<li><a class="nodocs" href="#">Class</a></li>
@@ -124,6 +118,15 @@
 					<li><a class="nodocs" href="#">Transformation</a></li>
 					<li><a class="nodocs" href="#">Projection.Mercator</a></li>
 				</ul> -->
+			</div>
+			<div class="span-3 last">
+				<h4>Interfaces</h4>
+				<ul>
+					<li><a href="#ihandler">IHandler</a></li>
+					<li><a class="nodocs" href="#">ILayer</a></li>
+					<li><a class="nodocs" href="#">IControl</a></li>
+					<li><a class="nodocs" href="#">IProjection</a></li>
+				</ul>
 			</div>
 		</div>
 		
@@ -354,6 +357,21 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Fired when the view of the map ends changed (e.g. user stopped dragging the map).</td>
 			</tr>
 			<tr>
+				<td><code>dragstart</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user starts dragging the map.</td>
+			</tr>
+			<tr>
+				<td><code>drag</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired repeatedly while the user drags the map.</td>
+			</tr>
+			<tr>
+				<td><code>dragend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user stops dragging the map.</td>
+			</tr>
+			<tr>
 				<td><code>zoomend</code></td>
 				<td><code><a href="#event">Event</a></code>
 				<td>Fired when the map zoom changes.</td>
@@ -372,6 +390,11 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code>locationfound</code></td>
 				<td><code><a href="#location-event">LocationEvent</a></code>
 				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) went successfully.</td>
+			</tr>
+			<tr>
+				<td><code>locationerror</code></td>
+				<td><code><a href="#error-event">ErrorEvent</a></code>
+				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) failed.</td>
 			</tr>
 		</table>
 		
@@ -405,17 +428,17 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Decreases the zoom of the map by 1.</td>
 			</tr>
 			<tr id="map-fitbounds">
-				<td><code>fitBounds( &lt;LatLngBounds&gt; <i>bounds</i> )</code></td>
+				<td><code>fitBounds( &lt;LatLngBounds&gt;&nbsp;<i>bounds</i>&nbsp;)</code></td>
 				<td><code>this</code></td>
 				<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
 			</tr>
 			<tr>
-				<td><code>panTo( &lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</code></td>
+				<td><code>panTo( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
 				<td><code>this</code></td>
 				<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
 			</tr>
 			<tr>
-				<td><code>panBy( &lt;<a href="#point">Point</a>&gt; <i>point</i> )</code></td>
+				<td><code>panBy( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
 				<td><code>this</code></td>
 				<td>Pans the map by a given number of pixels (animated).</td>
 			</tr>
@@ -425,9 +448,18 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
 			</tr>
 			<tr>
-				<td><code>locate( &lt;Boolean&gt;&nbsp;<i>noAutoFitBounds?</i>&nbsp;)</code></td>
+				<td><code>locate()</code></td>
 				<td><code>this</code></td>
-				<td>Tries to locate the user using Geolocation API and zooms the map if successful, firing <code>locationfound</code> (with location data) or <code>locationerror</code> event. Set <code>noAutoFitBounds</code> to <code>true</code> if you don't want the map view to be set automatically (<code>false</code> by default).</td>
+				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure.<!-- Usage example:
+				<pre><code class="javascript">map
+	.on('locationfound', function(e) { map.fitBounds(e.bounds); })
+	.on('locationerror', function(e) { alert(e.message); })
+	.locate();</code></pre> --></td>
+			</tr>
+			<tr>
+				<td><code>locateAndSetView( &lt;Number&gt;&nbsp;maxZoom&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>The same as <code>locate</code> method, but it automatically sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). You can optionally specify the maximum zoom of the view.</td>
 			</tr>
 		</table>
 
@@ -716,6 +748,21 @@ map.addLayer(marker);</code></pre>
 				<td><code><a href="#event">Event</a></code>
 				<td>Fired when the user double-clicks (or double-taps) the marker.</td>
 			</tr>
+			<tr>
+				<td><code>dragstart</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user starts dragging the marker.</td>
+			</tr>
+			<tr>
+				<td><code>drag</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired repeatedly while the user drags the marker.</td>
+			</tr>
+			<tr>
+				<td><code>dragend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user stops dragging the marker.</td>
+			</tr>
 		</table>
 		
 		<h3>Methods</h3>
@@ -730,6 +777,11 @@ map.addLayer(marker);</code></pre>
 				<td><code>getLatLng()</code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the current geographical position of the marker.</td>
+			</tr>
+			<tr>
+				<td><code>setLatLng(&lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Changes the marker position to the given point.</td>
 			</tr>
 			<tr id="#marker-bindpopup">
 				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
@@ -929,6 +981,12 @@ map.openPopup(popup);</code></pre>
 				<td>e.g. "&copy; CloudMade" &mdash; the string used by the attribution control, describes the layer data.</td>
 			</tr>
 			<tr>
+				<td><code>scheme</code></td>
+				<td><code>String</code></td>
+				<td><code>'xyz'</code></td>
+				<td>Either <code>'xyz'</code> or <code>'tms'</code>, affects tile numbering (TMS servers use inverse Y axis numbering).</td>
+			</tr>
+			<tr>
 				<td><code>unloadInvisibleTiles</code></td>
 				<td><code>Boolean</code></td>
 				<td>depends</td>
@@ -941,7 +999,120 @@ map.openPopup(popup);</code></pre>
 				<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile WebKit, otherwise <code>false</code>.</td>
 			</tr>
 		</table>
-
+		
+		
+		
+		<h2 id="tilelayer-wms">L.TileLayer.WMS</h2>
+		
+		<p>Used to display WMS services as tile layers on the map. Extends <a href="#tilelayer">TileLayer</a>, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+	layers: 'nexrad-n0r-900913',
+	format: 'image/png',
+	transparent: true,
+	attribution: "Weather data &copy; 2011 IEM Nexrad"
+});</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer.WMS( &lt;String&gt;&nbsp;<i>baseUrl</i>, &lt;<a href="#tilelayer-wms-options">TileLayer.WMS&nbsp;options</a>&gt;&nbsp;<i>options</i>&nbsp;)</code></td>
+				<td>Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="tilelayer-wms-options">Options</h3>
+		
+		<p>Includes all <a href="#tilelayer-options">TileLayer options</a> and additionally:</p>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>layers</code></td>
+				<td><code>String</code></td>
+				<td>-</td>
+				<td><b>(required)</b> Comma-separated list of WMS layers to show.</td>
+			</tr>		
+			<tr>
+				<td><code>styles</code></td>
+				<td><code>String</code></td>
+				<td></td>
+				<td>Comma-separated list of WMS styles.</td>
+			</tr>
+			<tr>
+				<td><code>format</code></td>
+				<td><code>String</code></td>
+				<td><code>image/jpeg</code></td>
+				<td>WMS image format (use 'image/png' for layers with transparency).</td>
+			</tr>
+			<tr>
+				<td><code>transparent</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If true, the WMS service will return images with transparency.</td>
+			</tr>
+			<tr>
+				<td><code>version</code></td>
+				<td><code>String</code></td>
+				<td><code>1.1.1</code></td>
+				<td>Version of the WMS service to use.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="tilelayer-canvas">L.TileLayer.Canvas</h2>
+		
+		<p>Used to create Canvas-based tile layers where tiles get drawn on the browser side. Extends <a href="#tilelayer">TileLayer</a>, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var canvasTiles = new L.TileLayer.Canvas();
+		
+canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+	var ctx = canvas.getContext('2d');
+	// draw something on the tile canvas
+}</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer.Canvas( &lt;<a href="#tilelayer-options">TileLayer&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a Canvas tile layer object given an options object (optionally).</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>drawTile( &lt;HTMLCanvasElement&gt;&nbsp;<i>canvas</i>, &lt;<a href="#point">Point</a>&gt;&nbsp;<i>tilePoint</i>, &lt;Number&gt;&nbsp;<i>zoom</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
+			</tr>
+		</table>
 
 
 		<h2 id="imageoverlay">L.ImageOverlay</h2>
@@ -1129,12 +1300,38 @@ map.addLayer(polyline);</code></pre>
 				<td><code>false</code></td>
 				<td>Disabled polyline clipping.</td>
 			</tr>
+		</table>		
+
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a given point to the polyline.</td>
+			</tr>
+			<tr>
+				<td><code>setLatLngs( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Replaces all the points in the polyline with the given array of geographical points.</td>
+			</tr>
+			<tr>
+				<td><code>spliceLatLngs( &lt;Number&gt;&nbsp;<i>index</i>, &lt;Number&gt;&nbsp;<i>pointsToRemove</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng1?</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng2?</i>,&nbsp;&hellip;&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a>[]</code></td>
+				<td>Allows adding, removing or replacing points in the polyline. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
+			</tr>
 		</table>
+		
 		
 		
 		<h2 id="polygon">L.Polygon</h2>
 		
-		<p>A class for drawing polygon overlays on a map. Extends Polyline. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		<p>A class for drawing polygon overlays on a map. Extends <a href="#polyline">Polyline</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
 		<h3>Constructor</h3>
 		
@@ -1149,10 +1346,12 @@ map.addLayer(polyline);</code></pre>
 			</tr>
 		</table>
 		
+		<p>Polygon the same options and methods as Polyline.</p>
+		
 		
 		<h2 id="circle">L.Circle</h2>
 		
-		<p>A class for drawing circle overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		<p>A class for drawing circle overlays on a map. Extends <a href="#path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
 		<h3>Constructor</h3>
 		
@@ -1163,10 +1362,27 @@ map.addLayer(polyline);</code></pre>
 			</tr>
 			<tr>
 				<td><code>L.Circle( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>radius</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
-				<td>Instantiates a polygon object given an geographical point, a radius in pixels and optionally an options object.</td>
+				<td>Instantiates a circle object given a geographical point, a radius in meters and optionally an options object.</td>
 			</tr>
 		</table>
 		
+		
+		<h2 id="circlemarker">L.CircleMarker</h2>
+		
+		<p>A circle of a fixed size with radius specified in pixels. Extends <a href="#circle">Circe</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.CircleMarker( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>radius</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a circle marker given a geographical point, a radius in pixels and optionally an options object.</td>
+			</tr>
+		</table>
 		
 		
 		<h2 id="latlng">L.LatLng</h2>
@@ -1325,6 +1541,11 @@ map.addLayer(polyline);</code></pre>
 				<td><code>contains( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
 				<td><code>Boolean</code></td>
 				<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given point.</td>
 			</tr>
 		</table>
 		
@@ -1486,6 +1707,82 @@ map.addLayer(polyline);</code></pre>
 				<td><code>contains( &lt;<a href="#bounds">Bounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
 				<td><code>Boolean</code></td>
 				<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given point.</td>
+			</tr>
+		</table>
+		
+		
+		<h2 id="icon">L.Icon</h2>
+		
+		<p>Represents an icon to provide when creating a marker. If you want to create your own icon, you need to extend this class like this:</p>
+		
+		<pre><code class="javascript">var MyIcon = L.Icon.extend({
+	iconUrl: 'my-icon.png',
+	shadowUrl: 'my-icon-shadow.png',
+	iconSize: new L.Point(38, 95),
+	shadowSize: new L.Point(68, 95),
+	iconAnchor: new L.Point(22, 94),
+	popupAnchor: new L.Point(-3, -76)
+});
+
+var icon = new MyIcon();
+
+var marker = new L.Marker(marker, {icon: icon});</code></pre>
+
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>iconUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon image (absolute or relative to your script path).</td>
+			</tr>
+			<tr>
+				<td><code>shadowUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon shadow image. The shadow image must be cropped in such way the that if you align them on top of each other, top left corners of the images are in the same spot.</td>
+			</tr>
+			<tr>
+				<td><code>iconSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the icon image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>shadowSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the shadow image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>iconAnchor</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.</td>
+			</tr>
+			<tr>
+				<td><code>popupAnchor</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The point from which the marker popup opens, relative to the anchor point.</td>
+			</tr>
+		</table>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Icon( &lt;String&gt;&nbsp;<i>iconUrl?</i>&nbsp;)</code></td>
+				<td>Creates an icon instance. You can optionally pass an iconUrl that will replace the default one (useful for creating many similar markers that only differ in the icon image).</td>
 			</tr>
 		</table>
 		
@@ -1678,6 +1975,26 @@ map.addLayer(polyline);</code></pre>
 				<td><code>accuracy</code></td>
 				<td><code>Number</code></td>
 				<td>Accuracy of location in meters.</td>
+			</tr>
+		</table>
+		
+		<h3 id="error-event">ErrorEvent</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>message</code></td>
+				<td><code>String</code></td>
+				<td>Error message.</td>
+			</tr>
+			<tr>
+				<td><code>code</code></td>
+				<td><code>Number</code></td>
+				<td>Error code (if applicable).</td>
 			</tr>
 		</table>
 		

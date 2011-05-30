@@ -38,15 +38,18 @@
 		map.locateAndSetView();
 		
 		function onLocationFound(e) {
+			var radius = e.accuracy / 2;
+
 			var marker = new L.Marker(e.latlng);
 			map.addLayer(marker);
+			marker.bindPopup("You are within " + radius + " meters from this point").openPopup();
 			
-			marker.bindPopup("You are within " + (e.accuracy/2) + " meters from this point").openPopup();
+			var circle = new L.Circle(e.latlng, radius);
+			map.addLayer(circle);
 		}
 		
 		function onLocationError(e) {
-			alert("Geolocation error: " + e.message);
-			map.fitWorld();
+			alert(e.message);
 		}
 	</script>
 </body>

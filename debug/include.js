@@ -27,7 +27,9 @@
 		'geo/LatLngBounds.js',
 		'geo/Projection.js',
 		
-		'layer/TileLayer.js',
+		'layer/tile/TileLayer.js',
+		'layer/tile/TileLayer.WMS.js',
+		'layer/tile/TileLayer.Canvas.js',
 		'layer/ImageOverlay.js',
 		'layer/Popup.js',
 		
@@ -41,6 +43,7 @@
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
 		'layer/vector/Circle.js',
+		'layer/vector/CircleMarker.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',

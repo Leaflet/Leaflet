@@ -22,11 +22,14 @@ L.Marker = L.Class.extend({
 		
 		if (!this._icon) {
 			this._icon = this.options.icon.createIcon();
-			map._panes.markerPane.appendChild(this._icon);
 			this._initInteraction();
 		}
 		if (!this._shadow) {
 			this._shadow = this.options.icon.createShadow();
+		}
+
+		map._panes.markerPane.appendChild(this._icon);
+		if (this._shadow) {
 			map._panes.shadowPane.appendChild(this._shadow);
 		}
 		
@@ -35,12 +38,11 @@ L.Marker = L.Class.extend({
 	},
 	
 	onRemove: function(map) {
-		if (this._icon) {
-			map._panes.markerPane.removeChild(this._icon);
-		}
+		map._panes.markerPane.removeChild(this._icon);
 		if (this._shadow) {
 			map._panes.shadowPane.removeChild(this._shadow);
 		}
+		
 		map.off('viewreset', this._reset, this);
 	},
 	
@@ -48,11 +50,18 @@ L.Marker = L.Class.extend({
 		return this._latlng;
 	},
 	
+	setLatLng: function(latlng) {
+		this._latlng = latlng;
+		this._reset();
+	},
+	
 	_reset: function() {
 		var pos = this._map.latLngToLayerPoint(this._latlng).round();
 		
 		L.DomUtil.setPosition(this._icon, pos);
-		L.DomUtil.setPosition(this._shadow, pos);
+		if (this._shadow) {
+			L.DomUtil.setPosition(this._shadow, pos);
+		}
 		
 		this._icon.style.zIndex = pos.y;
 	},
@@ -60,9 +69,13 @@ L.Marker = L.Class.extend({
 	_initInteraction: function() {
 		if (this.options.clickable) {
 			this._icon.className += ' leaflet-clickable';
-			L.DomEvent.addListener(this._icon, 'mousedown', this._fireMouseEvent, this);
+			
 			L.DomEvent.addListener(this._icon, 'click', this._onMouseClick, this);
-			L.DomEvent.addListener(this._icon, 'dblclick', this._fireMouseEvent, this);
+
+			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+			for (var i = 0; i < events.length; i++) {
+				L.DomEvent.addListener(this._icon, events[i], this._fireMouseEvent, this);
+			}
 		}
 		
 		if (L.Handler.MarkerDrag) {

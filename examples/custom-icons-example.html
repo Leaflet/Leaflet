@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Quick Start Guide Example</title>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+</head>
+<body>
+	<div id="map" style="width: 600px; height: 400px"></div>
+
+	<script src="../dist/leaflet.js"></script>
+	<script>
+		var map = new L.Map('map');
+		
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+		
+		map.setView(new L.LatLng(51.5, -0.09), 13).addLayer(cloudmade);
+		
+		var LeafIcon = L.Icon.extend({
+			iconUrl: '../docs/images/leaf-green.png',
+			shadowUrl: '../docs/images/leaf-shadow.png',
+			iconSize: new L.Point(38, 95),
+			shadowSize: new L.Point(68, 95),
+			iconAnchor: new L.Point(22, 94),
+			popupAnchor: new L.Point(-3, -76)
+		});
+		
+		var greenIcon = new LeafIcon(),
+			redIcon = new LeafIcon('../docs/images/leaf-red.png'),
+			orangeIcon = new LeafIcon('../docs/images/leaf-orange.png');
+		
+		var marker1 = new L.Marker(new L.LatLng(51.5, -0.09), {icon: greenIcon}),
+			marker2 = new L.Marker(new L.LatLng(51.495, -0.083), {icon: redIcon}),
+			marker3 = new L.Marker(new L.LatLng(51.49, -0.1), {icon: orangeIcon});
+		
+		marker1.bindPopup("I am a green leaf.");
+		marker2.bindPopup("I am a red leaf.");
+		marker3.bindPopup("I am an orange leaf.");
+		
+		map.addLayer(marker1).addLayer(marker2).addLayer(marker3);
+	</script>
+</body>
+</html>

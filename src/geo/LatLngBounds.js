@@ -41,11 +41,18 @@ L.LatLngBounds = L.Class.extend({
 		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 	
-	contains: function(/*LatLngBounds*/ bounds) /*-> Boolean*/ {
+	contains: function(/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
 		var sw = this._southWest,
 			ne = this._northEast,
-			sw2 = bounds.getSouthWest(),
-			ne2 = bounds.getNorthEast();
+			sw2, ne2;
+		
+		if (obj instanceof L.LatLngBounds) {
+			sw2 = obj.getSouthWest();
+			ne2 = obj.getNorthEast();
+		} else {
+			sw2 = ne2 = obj;
+		}
+		
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
 				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	}

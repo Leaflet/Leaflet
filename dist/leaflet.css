@@ -33,6 +33,9 @@
 .leaflet-clickable {
 	cursor: pointer;
 	}
+.leaflet-container img {
+	max-width: auto;
+	}
 
 .leaflet-tile-pane { z-index: 2; }
 .leaflet-overlay-pane { z-index: 3; }
@@ -160,6 +163,8 @@
 
 .leaflet-fade-anim .leaflet-popup {
 	-webkit-transition: opacity 0.2s linear;
+	-moz-transition: opacity 0.2s linear;
+	-o-transition: opacity 0.2s linear;
 	opacity: 0;
 }
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
@@ -209,6 +214,7 @@
 	-moz-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
 	}
 .leaflet-popup-close-button {
 	position: absolute;
