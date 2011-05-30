@@ -9,6 +9,22 @@ L.ImageOverlay = L.Class.extend({
 	onAdd: function(map) {
 		this._map = map;
 		
+		if (!this._image) {
+			this._initImage();
+		}
+		
+		map.getPanes().overlayPane.appendChild(this._image);
+		
+		map.on('viewreset', this._reset, this);
+		this._reset();
+	},
+	
+	onRemove: function(map) {
+		map.getPanes().overlayPane.removeChild(this._image);
+		map.off('viewreset', this._reset, this);
+	},
+	
+	_initImage: function() {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 		
 		this._image.style.visibility = 'hidden';
@@ -22,11 +38,6 @@ L.ImageOverlay = L.Class.extend({
 			onload: this._onImageLoad,
 			src: this._url
 		});
-		
-		this._map.getPanes().overlayPane.appendChild(this._image);
-		
-		this._map.on('viewreset', this._reset, this);
-		this._reset();
 	},
 	
 	_reset: function() {

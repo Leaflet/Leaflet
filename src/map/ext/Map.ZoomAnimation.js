@@ -33,7 +33,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		var transform = L.DomUtil.TRANSFORM;
 		
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
-		if (L.Browser.gecko) {
+		if (L.Browser.gecko || window.opera) {
 			this._tileBg.style[transform] += ' translate(0,0)';
 		}
 		
@@ -66,9 +66,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg = this._tileBg;
 		
 		// prepare the background pane to become the main tile pane
-		tileBg.innerHTML = '';
+		//tileBg.innerHTML = '';
 		tileBg.style[L.DomUtil.TRANSFORM] = '';
-		tileBg.style.display = 'none';
+		tileBg.style.visibility = 'hidden';
 		
 		// tells tile layers to reinitialize their containers
 		tileBg.empty = true;
@@ -118,13 +118,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 	
 	_restoreTileFront: function() {
-		this._tilePane.style.display = '';
+		this._tilePane.innerHTML = '';
+		this._tilePane.style.visibility = '';
 		this._tilePane.style.zIndex = 2;
 		this._tileBg.style.zIndex = 1;
 	},
 	
 	_clearTileBg: function() {
-		if (!this._animatingZoom) {
+		if (!this._animatingZoom && !this.touchZoom._zooming) {
 			this._tileBg.innerHTML = '';
 		}
 	}

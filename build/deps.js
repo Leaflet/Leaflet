@@ -18,9 +18,21 @@ var deps = {
 	
 	
 	TileLayer: {
-		src: ['layer/TileLayer.js'],
+		src: ['layer/tile/TileLayer.js'],
 		desc: 'The base class for displaying tile layers on the map.',
 		heading: 'Layers'
+	},
+	
+	TileLayerWMS: {
+		src: ['layer/tile/TileLayer.WMS.js'],
+		desc: 'WMS tile layer, currently only supports EPSG:3857.',
+		deps: ['TileLayer']
+	},
+	
+	TileLayerCanvas: {
+		src: ['layer/tile/TileLayer.Canvas.js'],
+		desc: 'Tile layer made from canvases (for custom drawing purposes).',
+		deps: ['TileLayer']
 	},
 	
 	ImageOverlay: {
@@ -66,7 +78,13 @@ var deps = {
 	Circle: {
 		src: ['layer/vector/Circle.js'],
 		deps: ['Path'],
-		desc: 'Circle overlays.'
+		desc: 'Circle overlays (with radius in meters).'
+	},
+	
+	CircleMarker: {
+		src: ['layer/vector/CircleMarker.js'],
+		deps: ['Circle'],
+		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
 	

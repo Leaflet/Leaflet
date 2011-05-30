@@ -12,13 +12,12 @@ L.Path.VML = (function() {
 	return (s && (typeof s.adj == 'object'));
 })();
 
-L.Path = !L.Path.VML? L.Path : L.Path.extend({
+L.Path = L.Path.SVG || !L.Path.VML ? L.Path : L.Path.extend({
 	statics: {
 		CLIP_PADDING: 0.02
 	},
 	
 	_createElement: (function() { 
-		document.createStyleSheet().addRule('.lvml', 'behavior:url(#default#VML); display: inline-block; position: absolute;');
 		try {
 			document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
 			return function(name) {
@@ -44,7 +43,8 @@ L.Path = !L.Path.VML? L.Path : L.Path.extend({
 	
 	_initPath: function() {
 		this._container = this._createElement('shape');
-		this._container.className += ' leaflet-vml-shape';
+		this._container.className += ' leaflet-vml-shape' + 
+				(this.options.clickable ? ' leaflet-clickable' : '');
 		this._container.coordsize = '1 1';
 		
 		this._path = this._createElement('path');

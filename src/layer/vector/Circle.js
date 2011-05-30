@@ -1,10 +1,13 @@
+/*
+ * L.Circle is a circle overlay (with a certain radius in meters). 
+ */
 
 L.Circle = L.Path.extend({
 	initialize: function(latlng, radius, options) {
 		L.Path.prototype.initialize.call(this, options);
 		
 		this._latlng = latlng;
-		this._radius = radius;
+		this._mRadius = radius;
 	},
 	
 	options: {
@@ -12,7 +15,11 @@ L.Circle = L.Path.extend({
 	},
 	
 	projectLatlngs: function() {
+		var equatorLength = 40075017,
+			scale = this._map.options.scaling(this._map._zoom);
+		
 		this._point = this._map.latLngToLayerPoint(this._latlng);
+		this._radius = (this._mRadius / equatorLength) * scale; 
 	},
 	
 	getPathString: function() {
