@@ -26,6 +26,7 @@
 		'geo/LatLng.js',
 		'geo/LatLngBounds.js',
 		'geo/Projection.js',
+		'geo/CRS.js',
 		
 		'layer/tile/TileLayer.js',
 		'layer/tile/TileLayer.WMS.js',

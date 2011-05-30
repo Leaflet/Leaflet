@@ -4,7 +4,7 @@
 
 L.Projection = {};
 
-// Mercator Projection - see http://en.wikipedia.org/wiki/Mercator_projection
+//Mercator Projection - see http://en.wikipedia.org/wiki/Mercator_projection
 L.Projection.Mercator = {
 	MAX_LATITUDE: (function() {
 		var a = Math.exp(2 * Math.PI);
@@ -28,19 +28,6 @@ L.Projection.Mercator = {
 			lat = (2 * Math.atan(Math.exp(point.y)) - Math.PI/2) * d;
 			
 		return new L.LatLng(lat, lng, unbounded);
-	},
-	
-	transformation: new L.Transformation(0.5/Math.PI, 0.5, -0.5/Math.PI, 0.5),
-	
-	projectTransform: function(/*LatLng*/ latlng, /*Number*/ scale)/*-> Point*/ {
-		var projectedPoint = this.project(latlng);
-		return this.transformation._transform(projectedPoint, scale);
-	},
-	
-	unprojectTransform: function(/*Point*/ point, /*(optional) Number*/ zoom, /*(optional) Boolean*/ unbounded)/*-> Object*/ {
-		var scale = this.options.scaling(isNaN(zoom) ? this._zoom : zoom),
-			untransformedPoint = this.options.transformation.untransform(point, scale);
-		return this.options.projection.unproject(untransformedPoint, unbounded);
 	}
 };
 
@@ -51,6 +38,6 @@ L.Projection.LonLat = {
 	},
 	
 	unproject: function(point, unbounded) {
-		
+		return new L.LatLng(point.y, point.x, unbounded);
 	}
 };

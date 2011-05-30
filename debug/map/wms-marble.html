@@ -12,10 +12,10 @@
 </head>
 <body>
 
-	<div id="map" style="width: 1024px; height: 768px; border: 1px solid #ccc"></div>
+	<div id="map" style="width: 1024px; height: 440px; border: 1px solid #ccc"></div>
 
 	<script type="text/javascript">
-		var map = new L.Map('map');
+		var map = new L.Map('map', {crs: new L.CRS.EPSG4326()});
 	
 		var bluemarble = new L.TileLayer.WMS("http://maps.opengeo.org/geowebcache/service/wms", {
 			layers: 'bluemarble',
