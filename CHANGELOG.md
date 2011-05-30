@@ -9,6 +9,7 @@ Leaflet Changelog
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
  * `LatLngBounds contains` method now accepts `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
+ * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)). 
  * Added `opacity` option for tile layers.
  * Added `setLatLng` method to `L.Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
