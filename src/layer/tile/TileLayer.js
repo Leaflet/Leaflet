@@ -224,9 +224,11 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_tileOnError: function(e) {
-		this.fire('tileerror', {tile: this, url: this.src});
+		var layer = this._layer;
 		
-		var newUrl = this._layer.options.errorTileUrl;
+		layer.fire('tileerror', {tile: this, url: this.src});
+		
+		var newUrl = layer.options.errorTileUrl;
 		if (newUrl) {
 			this.src = newUrl;
 		}
