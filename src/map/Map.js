@@ -7,7 +7,7 @@ L.Map = L.Class.extend({
 	
 	options: {
 		// projection
-		crs: new L.CRS.EPSG3857(),
+		crs: L.CRS.EPSG3857 || L.CRS.EPSG4326,
 		scale: function(zoom) { return 256 * (1 << zoom); },
 		
 		// state

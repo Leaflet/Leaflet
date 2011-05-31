@@ -19,8 +19,14 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/dom/transition/Transition.Timer.js ^
 --js ../src/geo/LatLng.js ^
 --js ../src/geo/LatLngBounds.js ^
---js ../src/geo/Projection.js ^
---js ../src/geo/CRS.js ^
+--js ../src/geo/projection/Projection.js ^
+--js ../src/geo/projection/Projection.SphericalMercator.js ^
+--js ../src/geo/projection/Projection.LonLat.js ^
+--js ../src/geo/projection/Projection.Mercator.js ^
+--js ../src/geo/crs/CRS.js ^
+--js ../src/geo/crs/CRS.EPSG3857.js ^
+--js ../src/geo/crs/CRS.EPSG4326.js ^
+--js ../src/geo/crs/CRS.EPSG3395.js ^
 --js ../src/layer/tile/TileLayer.js ^
 --js ../src/layer/tile/TileLayer.WMS.js ^
 --js ../src/layer/tile/TileLayer.Canvas.js ^
