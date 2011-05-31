@@ -46,6 +46,8 @@
 					<li><a href="#map-options">Options</a></li>
 					<li><a href="#map-properties">Properties</a></li>
 					<li><a href="#map-events">Events</a></li>
+					<li><a href="#map-projections">Projections</a></li>
+					<li><a href="#map-panes">Panes</a></li>
 				</ul>
 				<h4>Map methods</h4>
 				<ul>
@@ -197,7 +199,7 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 			<tr>
 				<td><code>crs</code></td>
-				<td><code><a href="#projections">CRS</a></code></td>
+				<td><code><a href="#map-projections">CRS</a></code></td>
 				<td><code>L.CRS.EPSG3857</code></td>
 				<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
 			</tr>
@@ -399,7 +401,7 @@ map.addLayer(cloudmade);</code></pre>
 		</table>
 		
 		
-		<h3 id="projections">Projections</h3>
+		<h3 id="map-projections">Projections</h3>
 		
 		<p>You can specify different CRS for map to use through its <code>crs</code> option. Here's the list of available CRS:</p>
 		
@@ -421,6 +423,55 @@ map.addLayer(cloudmade);</code></pre>
 				<td>EPSG:4326 (Mercator), used by some map providers.</td>
 			</tr>
 		</table>
+		
+		
+		<h3 id="map-panes">Map panes</h3>
+		
+		<p>An object literal that contains different map panes that you can use to put your custom overlays in. The difference is mostly in zIndex order that such overlays get.</p>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>mapPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane that contains all other map panes.</td>
+			</tr>
+			<tr>
+				<td><code>tilePane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for tile layers.</td>
+			</tr>
+			<tr>
+				<td><code>objectsPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane that contains all the panes except tile pane.</td>
+			</tr>
+			<tr>
+				<td><code>shadowPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for overlay shadows (e.g. marker shadows).</td>
+			</tr>
+			<tr>
+				<td><code>overlayPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for overlays like polylines and polygons.</td>
+			</tr>
+			<tr>
+				<td><code>markerPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for marker icons.</td>
+			</tr>
+			<tr>
+				<td><code>popupPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for popups.</td>
+			</tr>
+		</table>
+		
 		
 		
 		<h3 id="map-set-methods">Methods that modify map state</h3>
@@ -654,52 +705,7 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 		</table>
 		
-		<h3 id="map-panes">Map panes</h3>
 		
-		<p>An object literal that contains different map panes that you can use to put your custom overlays in. The difference is mostly in zIndex order that such overlays get.</p>
-		
-		<table>
-			<tr>
-				<th>Property</th>
-				<th>Type</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code>mapPane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane that contains all other map panes.</td>
-			</tr>
-			<tr>
-				<td><code>tilePane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane for tile layers.</td>
-			</tr>
-			<tr>
-				<td><code>objectsPane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane that contains all the panes except tile pane.</td>
-			</tr>
-			<tr>
-				<td><code>shadowPane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane for overlay shadows (e.g. marker shadows).</td>
-			</tr>
-			<tr>
-				<td><code>overlayPane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane for overlays like polylines and polygons.</td>
-			</tr>
-			<tr>
-				<td><code>markerPane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane for marker icons.</td>
-			</tr>
-			<tr>
-				<td><code>popupPane</code></td>
-				<td><code>HTMLElement</code></td>
-				<td>Pane for popups.</td>
-			</tr>
-		</table>
 		
 		
 		<h2 id="marker">L.Marker</h2>
