@@ -25,8 +25,16 @@
 		
 		'geo/LatLng.js',
 		'geo/LatLngBounds.js',
-		'geo/Projection.js',
-		'geo/CRS.js',
+		
+		'geo/projection/Projection.js',
+		'geo/projection/Projection.SphericalMercator.js',
+		'geo/projection/Projection.LonLat.js',
+		'geo/projection/Projection.Mercator.js',
+		
+		'geo/crs/CRS.js',
+		'geo/crs/CRS.EPSG3857.js',
+		'geo/crs/CRS.EPSG4326.js',
+		'geo/crs/CRS.EPSG3395.js',
 		
 		'layer/tile/TileLayer.js',
 		'layer/tile/TileLayer.WMS.js',

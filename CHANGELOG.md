@@ -4,7 +4,7 @@ Leaflet Changelog
 ## 0.2 (master)
 
  * Added **WMS support** (`TileLayer.WMS`).
- * Improved different projections support (through `crs` option in `Map`).
+ * Improved **different projections support**, having `EPSG:3857`, `EPSG:4326` and `EPSG:3395` out of the box (through `crs` option in `Map`).
  * Added `TileLayer.Canvas` for easy creation of canvas-based tile layers.
  * `Circle` is now zoom-dependent (with radius in meters); circle of a permanent size is now called `L.CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.

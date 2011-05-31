@@ -8,15 +8,26 @@ var deps = {
 		      'dom/DomUtil.js',
 		      'geo/LatLng.js',
 		      'geo/LatLngBounds.js',
-		      'geo/Projection.js',
-		      'geo/CRS.js',
+		      'geo/projection/Projection.js',
+		      'geo/projection/Projection.SphericalMercator.js',
+		      'geo/projection/Projection.LonLat.js',
+		      'geo/crs/CRS.js',
+		      'geo/crs/CRS.EPSG3857.js',
+		      'geo/crs/CRS.EPSG4326.js',
 		      'geometry/Bounds.js',
 		      'geometry/Point.js',
 		      'geometry/Transformation.js',
 		      'map/Map.js'],
-		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections and the base Map class.'
+		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
 	
+	
+	EPSG3395: {
+		src: ['geo/projection/Projection.Mercator.js',
+		      'geo/crs/CRS.EPSG3395.js'],
+		desc: 'EPSG:3395 projection (used by some map providers).',
+		heading: 'Additional projections'
+	},
 	
 	TileLayer: {
 		src: ['layer/tile/TileLayer.js'],
