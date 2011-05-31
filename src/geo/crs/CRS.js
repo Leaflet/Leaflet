@@ -12,6 +12,6 @@ L.CRS = {
 	},
 	
 	project: function(latlng) {
- 		return this.projection.project(latlng);
- 	}
+		return this.projection.project(latlng);
+	}
 };

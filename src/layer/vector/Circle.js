@@ -16,7 +16,7 @@ L.Circle = L.Path.extend({
 	
 	projectLatlngs: function() {
 		var equatorLength = 40075017,
-			scale = this._map.options.scaling(this._map._zoom);
+			scale = this._map.options.scale(this._map._zoom);
 		
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 		this._radius = (this._mRadius / equatorLength) * scale; 
