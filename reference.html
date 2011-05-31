@@ -197,9 +197,9 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 			<tr>
 				<td><code>crs</code></td>
-				<td><code>L.CRS.*</code></td>
-				<td><code>new&nbsp;L.CRS.EPSG3857()</code></td>
-				<td>Coordinate Reference System to use. Don't change this if you're not sure what it means. Currently supported: EPSG:3587 (Spherical Mercator), EPSG:4326 (Plate Carree).</td>
+				<td><code><a href="#projections">CRS</a></code></td>
+				<td><code>L.CRS.EPSG3857</code></td>
+				<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
 			</tr>
 			<tr>
 				<td><code>dragging</code></td>
@@ -395,6 +395,30 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code>locationerror</code></td>
 				<td><code><a href="#error-event">ErrorEvent</a></code>
 				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) failed.</td>
+			</tr>
+		</table>
+		
+		
+		<h3 id="projections">Projections</h3>
+		
+		<p>You can specify different CRS for map to use through its <code>crs</code> option. Here's the list of available CRS:</p>
+		
+		<table>
+			<tr>
+				<th>CRS</th>
+				<th>Data</th>
+			</tr>
+			<tr>
+				<td><code>L.CRS.EPSG3857</code></td>
+				<td>EPSG:3857 (Spherical Mercator), used by most of commercial map providers (CloudMade, Google, Yahoo, Bing, etc.).</td>
+			</tr>
+			<tr>
+				<td><code>L.CRS.EPSG4326</code></td>
+				<td>EPSG:4326 (Plate Carree), very popular among GIS enthusiasts.</td>
+			</tr>
+			<tr>
+				<td><code>L.CRS.EPSG3395</code></td>
+				<td>EPSG:4326 (Mercator), used by some map providers.</td>
 			</tr>
 		</table>
 		
