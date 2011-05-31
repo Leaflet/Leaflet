@@ -148,7 +148,7 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_addTile: function(tilePoint) {
-		var tilePos = this._getTilePos(tilePoint);
+		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom();
 			
 		// wrap tile coordinates
