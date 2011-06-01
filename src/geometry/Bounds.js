@@ -4,6 +4,7 @@
 
 L.Bounds = L.Class.extend({
 	initialize: function(min, max) {	//(Point, Point) or Point[]
+		if (!min) return;
 		var points = (min instanceof Array ? min : [min, max]);
 		for (var i = 0, len = points.length; i < len; i++) {
 			this.extend(points[i]);
