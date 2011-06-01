@@ -74,7 +74,10 @@
 		'map/ext/Map.Control.js'
 	];
 	
+	var scriptTags = document.getElementsByTagName('script');
+	// Last script tag inserted/evaluated "should" be include.js
+	var path = scriptTags[scriptTags.length - 1].src.split('include.js')[0];
 	for (var i = 0; i < scripts.length; i++) {
-		document.writeln("<script type='text/javascript' src='../../src/" + scripts[i] + "'></script>");
+		document.writeln("<script type='text/javascript' src='" + path + "../src/" + scripts[i] + "'></script>");
 	}
 })();
