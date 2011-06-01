@@ -4,9 +4,11 @@
 
 L.LatLngBounds = L.Class.extend({
 	initialize: function(southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
-		var latlngs = (southWest instanceof Array ? southWest : [southWest, northEast]);
-		for (var i = 0, len = latlngs.length; i < len; i++) {
-			this.extend(latlngs[i]);
+		if (typeof southWest !== 'undefined') {
+			var latlngs = (southWest instanceof Array ? southWest : [southWest, northEast]);
+			for (var i = 0, len = latlngs.length; i < len; i++) {
+				this.extend(latlngs[i]);
+			}
 		}
 	},
 	
