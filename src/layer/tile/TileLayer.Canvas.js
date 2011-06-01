@@ -20,7 +20,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	_loadTile: function(tile, tilePoint, zoom) {
 		tile._layer = this;
 		this.drawTile(tile, tilePoint, zoom);
-		this._tileOnLoad();
+		this._tileOnLoad.call(tile);
 	},
 	
 	drawTile: function(tile, tilePoint, zoom) {
