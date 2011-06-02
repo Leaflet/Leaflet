@@ -74,9 +74,20 @@
 		'map/ext/Map.Control.js'
 	];
 	
-	var scriptTags = document.getElementsByTagName('script');
-	// Last script tag inserted/evaluated "should" be include.js
-	var path = scriptTags[scriptTags.length - 1].src.split('include.js')[0];
+	function getSrcUrl() {
+		var scripts = document.getElementsByTagName('script');
+		for (var i = 0; i < scripts.length; i++) {
+			var src = scripts[i].src;
+			if (src) {
+				var res = src.match(/^(.*)leaflet-include\.js$/);
+				if (res.length) {
+					return res[1] + '../src/';
+				}
+			}
+		}
+	}
+	
+	var path = getSrcUrl();
 	for (var i = 0; i < scripts.length; i++) {
 		document.writeln("<script type='text/javascript' src='" + path + "../src/" + scripts[i] + "'></script>");
 	}

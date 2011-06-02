@@ -8,11 +8,16 @@ var L = {
 	VERSION: '0.2',
 	
 	ROOT_URL: (function() {
-		var scripts = document.getElementsByTagName('script');
+		var scripts = document.getElementsByTagName('script'),
+			leafletRe = /^(.*\/)leaflet-?([\w-]*)\.js.*$/;
 		for (var i = 0, len = scripts.length; i < len; i++) {
 			var src = scripts[i].src,
-				res = src && src.match(/^(.*\/)leaflet-*\w*\.js.*$/);
-			if (res && res[1]) { return res[1]; }
+				res = src && src.match(leafletRe);
+			
+			if (res) {
+				if (res[2] == 'include') break;
+				return res[1];
+			}
 		}
 		return '../../dist/';
 	})(),
