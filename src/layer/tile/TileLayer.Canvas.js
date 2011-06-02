@@ -1,4 +1,8 @@
 L.TileLayer.Canvas = L.TileLayer.extend({
+	options: {
+		async: false
+	},
+	
 	initialize: function(options) {
 		L.Util.setOptions(this, options);
 	},
@@ -19,11 +23,19 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	
 	_loadTile: function(tile, tilePoint, zoom) {
 		tile._layer = this;
+		
 		this.drawTile(tile, tilePoint, zoom);
-		this._tileOnLoad.call(tile);
+		
+		if (!this.options.async) {
+			this.tileDrawn();
+		}
 	},
 	
 	drawTile: function(tile, tilePoint, zoom) {
 		// override with rendering code
+	},
+	
+	tileDrawn: function(tile) {
+		this._tileOnLoad.call(tile);
 	}
 });
