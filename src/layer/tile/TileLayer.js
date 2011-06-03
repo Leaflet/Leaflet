@@ -149,7 +149,8 @@ L.TileLayer = L.Class.extend({
 	
 	_addTile: function(tilePoint) {
 		var tilePos = this._getTilePos(tilePoint),
-			zoom = this._map.getZoom();
+			zoom = this._map.getZoom(),
+			key = tilePoint.x + ':' + tilePoint.y;
 			
 		// wrap tile coordinates
 		var tileLimit = (1 << zoom);
@@ -160,7 +161,7 @@ L.TileLayer = L.Class.extend({
 		var tile = this._createTile();
 		L.DomUtil.setPosition(tile, tilePos);
 		
-		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
+		this._tiles[key] = tile;
         
 		if (this.options.scheme == 'tms') {
 			tilePoint.y = tileLimit - tilePoint.y - 1;

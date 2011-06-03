@@ -20,16 +20,19 @@ Leaflet Changelog
  * Added `setLatLng` method to `Marker`.
  * Added `title` option to `Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
- * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](http://github.com/CloudMade/Leaflet/issues/61)
+ * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
+ * Improved `LatLngBounds` & `Bounds` to allow their instantiation without arguments (by [@snc](https://github.com/snc)).
  
 ### Bug fixes
  
- * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](http://github.com/CloudMade/Leaflet/issues/32)
- * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](http://github.com/CloudMade/Leaflet/issues/32)
+ * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](https://github.com/CloudMade/Leaflet/issues/32)
+ * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where paths would not appear in IE8. 
- * Fixed a bug where zooming is broken if the map contains a polygon and you zoom to an area where it's not visible. [#47](http://github.com/CloudMade/Leaflet/issues/47)
+ * Fixed a bug where zooming is broken if the map contains a polygon and you zoom to an area where it's not visible. [#47](https://github.com/CloudMade/Leaflet/issues/47)
  * Fixed a bug where closed polylines would not appear on the map.
- * Fixed a bug where marker that was added, removed and then added again would not appear on the map. [#66](http://github.com/CloudMade/Leaflet/issues/66)
+ * Fixed a bug where marker that was added, removed and then added again would not appear on the map. [#66](https://github.com/CloudMade/Leaflet/issues/66)
+ * Fixed a bug where some tiles would not load when panning across the date line. [#97](https://github.com/CloudMade/Leaflet/issues/97)
+ * Fixed a bug where map div with `position: absolute` is reset to `relative`. [#100](https://github.com/CloudMade/Leaflet/issues/100) 
  * Fixed a bug that caused an error when trying to add a marker without shadow in its icon.
  * Fixed incorrect zoom animation & popup styling in Opera 11.11.
  * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
