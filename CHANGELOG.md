@@ -24,6 +24,7 @@ Leaflet Changelog
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
  * Improved `LatLngBounds` & `Bounds` to allow their instantiation without arguments (by [@snc](https://github.com/snc)).
  * Improved `debug/leaflet-include.js` script to allow using it outside of `debug` folder (by [@antonj](https://github.com/antonj)).
+ * Added `Makefile` for building `leaflet.js` on non-Windows machines (by [@tmcw](https://github.com/tmcw)). 
  
 ### Bug fixes
  
@@ -39,9 +40,10 @@ Leaflet Changelog
  * Fixed a bug where popup content would not update on `setContent` call. [#94](https://github.com/CloudMade/Leaflet/issues/94)
  * Fixed incorrect zoom animation & popup styling in Opera 11.11.
  * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
+ * Fixed a bug with click propagation on popup close button. [#99](https://github.com/CloudMade/Leaflet/issues/99)
  * Fixed a bug where map isn't displayed in Firefox when there's an `img { max-width: 100% }` rule.
  * Fixed inability to remove ImageOverlay layer.
- * Fixed popup fade animation in Firefox and Opera
+ * Fixed popup fade animation in Firefox and Opera.
 
 ## 0.1 (2011-05-13)
 

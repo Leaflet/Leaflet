@@ -154,8 +154,8 @@ L.Popup = L.Class.extend({
 		}
 	},
 	
-	_onCloseButtonClick: function() {
+	_onCloseButtonClick: function(e) {
 		this._close();
-		return false;
+		L.DomEvent.stop(e);
 	}
 });

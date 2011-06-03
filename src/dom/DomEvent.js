@@ -106,6 +106,11 @@ L.DomEvent = {
 		}
 	},
 	
+	stop: function(e) {
+		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
+	},
+	
 	getMousePosition: function(e, container) {
 		var x = e.pageX ? e.pageX : e.clientX + 
 				document.body.scrollLeft + document.documentElement.scrollLeft,
