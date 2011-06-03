@@ -22,6 +22,7 @@ Leaflet Changelog
  * Added `maxZoom` argument to `map.locateAndSetView` method.
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
  * Improved `LatLngBounds` & `Bounds` to allow their instantiation without arguments (by [@snc](https://github.com/snc)).
+ * Improved `debug/leaflet-include.js` script to allow using it outside of `debug` folder (by [@antonj](https://github.com/antonj)).
  
 ### Bug fixes
  
@@ -34,6 +35,7 @@ Leaflet Changelog
  * Fixed a bug where some tiles would not load when panning across the date line. [#97](https://github.com/CloudMade/Leaflet/issues/97)
  * Fixed a bug where map div with `position: absolute` is reset to `relative`. [#100](https://github.com/CloudMade/Leaflet/issues/100) 
  * Fixed a bug that caused an error when trying to add a marker without shadow in its icon.
+ * Fixed a bug where popup content would not update on `setContent` call. [#94](https://github.com/CloudMade/Leaflet/issues/94)
  * Fixed incorrect zoom animation & popup styling in Opera 11.11.
  * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
  * Fixed a bug where map isn't displayed in Firefox when there's an `img { max-width: 100% }` rule.

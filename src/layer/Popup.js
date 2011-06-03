@@ -86,6 +86,7 @@ L.Popup = L.Class.extend({
 	_update: function() {
 		this._container.style.visibility = 'hidden';
 		
+		this._updateContent();
 		this._updateLayout();
 		this._updatePosition();
 		
