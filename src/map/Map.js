@@ -159,6 +159,7 @@ L.Map = L.Class.extend({
 			
 			if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 				this._tileLayersNum--;
+				layer.off('load', this._onTileLayerLoad, this);
 			}
 			if (this.attributionControl && layer.getAttribution) {
 				this.attributionControl.removeAttribution(layer.getAttribution());

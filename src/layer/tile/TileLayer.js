@@ -54,6 +54,7 @@ L.TileLayer = L.Class.extend({
 	
 	onRemove: function(map) {
 		this._map.getPanes().tilePane.removeChild(this._container);
+		this._container = null;
 		
 		this._map.off('viewreset', this._reset);
 		
