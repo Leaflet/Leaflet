@@ -80,7 +80,7 @@
 			var src = scripts[i].src;
 			if (src) {
 				var res = src.match(/^(.*)leaflet-include\.js$/);
-				if (res.length) {
+				if (res) {
 					return res[1] + '../src/';
 				}
 			}
