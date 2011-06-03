@@ -305,7 +305,9 @@ L.Map = L.Class.extend({
 		}
 		
 		var position = L.DomUtil.getStyle(container, 'position');
-		container.style.position = (position == 'absolute' ? 'absolute' : 'relative');
+		if (position != 'absolute' && position != 'relative') {
+			container.style.position = 'relative';
+		}
 		
 		this._initPanes();
 		
