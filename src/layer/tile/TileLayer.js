@@ -54,13 +54,14 @@ L.TileLayer = L.Class.extend({
 	
 	onRemove: function(map) {
 		this._map.getPanes().tilePane.removeChild(this._container);
+		this._container = null;
 		
-		this._map.off('viewreset', this._reset);
+		this._map.off('viewreset', this._reset, this);
 		
 		if (this.options.updateWhenIdle) {
-			this._map.off('moveend', this._update);
+			this._map.off('moveend', this._update, this);
 		} else {
-			this._map.off('move', this._limitedUpdate);
+			this._map.off('move', this._limitedUpdate, this);
 		}
 	},
 	
@@ -149,19 +150,23 @@ L.TileLayer = L.Class.extend({
 	
 	_addTile: function(tilePoint) {
 		var tilePos = this._getTilePos(tilePoint),
-			zoom = this._map.getZoom();
+			zoom = this._map.getZoom(),
+			key = tilePoint.x + ':' + tilePoint.y;
 			
 		// wrap tile coordinates
 		var tileLimit = (1 << zoom);
 		tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
-        if (this.options.scheme == 'tms') tilePoint.y = tileLimit - tilePoint.y - 1;
 		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
 		
 		// create tile
 		var tile = this._createTile();
 		L.DomUtil.setPosition(tile, tilePos);
 		
-		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
+		this._tiles[key] = tile;
+        
+		if (this.options.scheme == 'tms') {
+			tilePoint.y = tileLimit - tilePoint.y - 1;
+		}
 
 		this._loadTile(tile, tilePoint, zoom);
 		

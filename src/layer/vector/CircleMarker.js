@@ -10,5 +10,11 @@ L.CircleMarker = L.Circle.extend({
 	
 	projectLatlngs: function() {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
-	}
+	},
+	
+	setRadius: function(radius) {
+		this._radius = radius;
+		this._redraw();
+		return this;
+	}	
 });

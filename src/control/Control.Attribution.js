@@ -42,6 +42,14 @@ L.Control.Attribution = L.Class.extend({
 			}
 		}
 		
-		this._container.innerHTML = [this._prefix, attribs.join(', ')].join(' &mdash; ');
+		var prefixAndAttribs = [];
+		if (this._prefix) {
+			prefixAndAttribs.push(this._prefix);
+		}
+		if (attribs.length) {
+			prefixAndAttribs.push(attribs.join(', '));
+		}
+		
+		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
 	}
 });

@@ -86,6 +86,7 @@ L.Popup = L.Class.extend({
 	_update: function() {
 		this._container.style.visibility = 'hidden';
 		
+		this._updateContent();
 		this._updateLayout();
 		this._updatePosition();
 		
@@ -95,9 +96,13 @@ L.Popup = L.Class.extend({
 	},
 	
 	_updateContent: function() {
-		//TODO accept DOM nodes along with HTML strings
-		if (this._content) {
+		if (!this._content) return;
+		
+		if (typeof this._content == 'string') {
 			this._contentNode.innerHTML = this._content;
+		} else {
+			this._contentNode.innerHTML = '';
+			this._contentNode.appendChild(this._content);
 		}
 	},
 	
@@ -153,8 +158,8 @@ L.Popup = L.Class.extend({
 		}
 	},
 	
-	_onCloseButtonClick: function() {
+	_onCloseButtonClick: function(e) {
 		this._close();
-		return false;
+		L.DomEvent.stop(e);
 	}
 });

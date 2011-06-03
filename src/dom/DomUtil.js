@@ -9,10 +9,10 @@ L.DomUtil = {
 	
 	getStyle: function(el, style) {
 		var value = el.style[style];
-		if ((typeof value == 'undefined') && el.currentStyle) {
+		if (!value && el.currentStyle) {
 			value = el.currentStyle[style];
 		}
-		if (typeof value == 'undefined') {
+		if (!value || value == 'auto') {
 			var css = document.defaultView.getComputedStyle(el, null);
 			value = css ? css[style] : null;
 		}
