@@ -56,12 +56,12 @@ L.TileLayer = L.Class.extend({
 		this._map.getPanes().tilePane.removeChild(this._container);
 		this._container = null;
 		
-		this._map.off('viewreset', this._reset);
+		this._map.off('viewreset', this._reset, this);
 		
 		if (this.options.updateWhenIdle) {
-			this._map.off('moveend', this._update);
+			this._map.off('moveend', this._update, this);
 		} else {
-			this._map.off('move', this._limitedUpdate);
+			this._map.off('move', this._limitedUpdate, this);
 		}
 	},
 	
