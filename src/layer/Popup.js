@@ -96,9 +96,13 @@ L.Popup = L.Class.extend({
 	},
 	
 	_updateContent: function() {
-		//TODO accept DOM nodes along with HTML strings
-		if (this._content) {
+		if (!this._content) return;
+		
+		if (typeof this._content == 'string') {
 			this._contentNode.innerHTML = this._content;
+		} else {
+			this._contentNode.innerHTML = '';
+			this._contentNode.appendChild(this._content);
 		}
 	},
 	
