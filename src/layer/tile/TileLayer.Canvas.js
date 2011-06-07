@@ -27,7 +27,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		this.drawTile(tile, tilePoint, zoom);
 		
 		if (!this.options.async) {
-			this.tileDrawn();
+			this.tileDrawn(tile);
 		}
 	},
 	
