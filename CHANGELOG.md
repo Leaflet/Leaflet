@@ -40,6 +40,7 @@ Leaflet Changelog
  * Fixed a bug where map div with `position: absolute` is reset to `relative`. [#100](https://github.com/CloudMade/Leaflet/issues/100) 
  * Fixed a bug that caused an error when trying to add a marker without shadow in its icon.
  * Fixed a bug where popup content would not update on `setContent` call. [#94](https://github.com/CloudMade/Leaflet/issues/94)
+ * Fixed memory leak in webkit when unloading tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)
  * Fixed incorrect zoom animation & popup styling in Opera 11.11.
  * Fixed a bug where double click zoom wouldn't work if popup is opened on map click
  * Fixed a bug with click propagation on popup close button. [#99](https://github.com/CloudMade/Leaflet/issues/99)
