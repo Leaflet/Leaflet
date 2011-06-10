@@ -4,9 +4,16 @@
 
 L.Path.include({
 	bindPopup: function(content, options) {
-		this._popup = new L.Popup(options);
+		if (!this._popup || this._popup.options !== options) {
+			this._popup = new L.Popup(options);
+		}
 		this._popup.setContent(content);
-		this.on('click', this._openPopup, this);
+		
+		if (!this._openPopupAdded) {
+			this.on('click', this._openPopup, this);
+			this._openPopupAdded = true;
+		}
+		
 		return this;
 	},
 	

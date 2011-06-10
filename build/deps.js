@@ -63,6 +63,17 @@ var deps = {
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
 	},
 	
+	LayerGroup: {
+		src: ['layer/LayerGroup.js'],
+		desc: 'Allows grouping several layers to handle them as one.'
+	},
+	
+	FeatureGroup: {
+		src: ['layer/FeatureGroup.js'],
+		deps: ['LayerGroup', 'Popup'],
+		desc: 'Extends LayerGroup with mouse events and bindPopup method shared between layers.'
+	},
+	
 	
 	Path: {
 		src: ['layer/vector/Path.js', 'layer/vector/Path.Popup.js'],
@@ -87,6 +98,12 @@ var deps = {
 		desc: 'Polygon overlays.'
 	},
 
+	MultiPoly: {
+		src: ['layer/vector/MultiPoly.js'],
+		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
+		desc: 'MultiPolygon and MultyPolyline layers.'
+	},
+
 	Circle: {
 		src: ['layer/vector/Circle.js'],
 		deps: ['Path'],
@@ -97,6 +114,12 @@ var deps = {
 		src: ['layer/vector/CircleMarker.js'],
 		deps: ['Circle'],
 		desc: 'Circle overlays with a constant pixel radius.'
+	},
+	
+	GeoJSON: {
+		src: ['layer/GeoJSON.js'],
+		deps: ['Marker', 'MultiPoly', 'FeatureGroup'],
+		desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
 	},
 
 	

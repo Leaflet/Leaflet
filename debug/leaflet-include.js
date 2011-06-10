@@ -36,6 +36,9 @@
 		'geo/crs/CRS.EPSG4326.js',
 		'geo/crs/CRS.EPSG3395.js',
 		
+		'layer/LayerGroup.js',
+		'layer/FeatureGroup.js',
+		
 		'layer/tile/TileLayer.js',
 		'layer/tile/TileLayer.WMS.js',
 		'layer/tile/TileLayer.Canvas.js',
@@ -51,8 +54,11 @@
 		'layer/vector/Path.Popup.js',
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
+		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
 		'layer/vector/CircleMarker.js',
+		
+		'layer/GeoJSON.js',
 		
 		'handler/Handler.js',
 		'handler/MapDrag.js',

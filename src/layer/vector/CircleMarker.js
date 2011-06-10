@@ -3,9 +3,14 @@
  */
 
 L.CircleMarker = L.Circle.extend({
-	initialize: function(latlng, radius, options) {
-		L.Circle.prototype.initialize.apply(this, arguments);
-		this._radius = radius;
+	options: {
+		radius: 10,
+		weight: 2
+	},
+	
+	initialize: function(latlng, options) {
+		L.Circle.prototype.initialize.call(this, latlng, null, options);
+		this._radius = this.options.radius;
 	},
 	
 	projectLatlngs: function() {
