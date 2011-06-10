@@ -30,7 +30,16 @@
 		
 		var geojson = new L.GeoJSON();
 		
+		/* 
+		points are rendered as markers by default, but you can change this:
+			
+		var geojson = new L.GeoJSON(null, {
+			pointToLayer: function(latlng) { return new L.CircleMarker(latlng, 5) }
+		});
+		*/
+		
 		geojson.on('featureparse', function(e) {
+			// you can style features depending on their properties, etc.
 			if (e.layer instanceof L.Path) {
 				e.layer.setStyle({color: e.properties.color});
 			}
