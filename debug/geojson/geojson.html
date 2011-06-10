@@ -30,13 +30,13 @@
 		
 		var geojson = new L.GeoJSON();
 		
-		/* 
-		points are rendered as markers by default, but you can change this:
+		/* points are rendered as markers by default, but you can change this:
 			
 		var geojson = new L.GeoJSON(null, {
-			pointToLayer: function(latlng) { return new L.CircleMarker(latlng, 5) }
+			pointToLayer: function(latlng) { return new L.CircleMarker(latlng); }
 		});
 		*/
+		
 		
 		geojson.on('featureparse', function(e) {
 			// you can style features depending on their properties, etc.
