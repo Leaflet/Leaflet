@@ -24,12 +24,7 @@
 	
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
 		
-		function createMarker(latlng) {
-			var marker = new L.Marker(latlng);
-			map.addLayer(marker);
-			marker.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>");
-			return marker;
-		}
+		var markers = new L.FeatureGroup();
 		
 		function populate() {
 			var bounds = map.getBounds(),
@@ -42,11 +37,16 @@
 				var latlng = new L.LatLng(
 						southWest.lat + latSpan * Math.random(),
 			        	southWest.lng + lngSpan * Math.random());
-				createMarker(latlng);
+				
+				markers.addLayer(new L.Marker(latlng));
 			}
 
 			return false;
 		};
+
+		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>");
+		
+		map.addLayer(markers);
 		
 		populate();
 		L.DomUtil.get('populate').onclick = populate;
