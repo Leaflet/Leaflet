@@ -75,9 +75,9 @@
 				<ul>
 					<li><a href="#path">Path</a></li>
 					<li><a href="#polyline">Polyline</a></li>
-					<li><a href="#multipolyline" class="nodocs">MultiPolyline</a></li>
+					<li><a href="#multipolyline">MultiPolyline</a></li>
 					<li><a href="#polygon">Polygon</a></li>
-					<li><a href="#multipolygon" class="nodocs">MultiPolygon</a></li>
+					<li><a href="#multipolygon">MultiPolygon</a></li>
 					<li><a href="#circle">Circle</a></li>
 					<li><a href="#circlemarker">CircleMarker</a></li>
 				</ul>
@@ -1294,10 +1294,24 @@ var image = new L.ImageOverlay(
 			</tr>
 		</table>
 		
+		<h3 id="path-methods">Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr id="#path-bindpopup">
+				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Binds a popup with a particular HTML content to a click on this path.</td>
+			</tr>
+		</table>			
+		
 		
 		<h2 id="polyline">L.Polyline</h2>
 		
-		<p>A class for drawing polyline overlays on a map. Extends Path. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		<p>A class for drawing polyline overlays on a map. Extends <a href="path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 		
 		<h3>Usage example</h3>
 		<pre><code class="javascript">// create a red polyline from an arrays of LatLng points
@@ -1349,6 +1363,8 @@ map.addLayer(polyline);</code></pre>
 
 		<h3>Methods</h3>
 		
+		<p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
+		
 		<table>
 			<tr>
 				<th>Method</th>
@@ -1374,6 +1390,25 @@ map.addLayer(polyline);</code></pre>
 		
 		
 		
+		<h2 id="multipolyline">L.MultiPolyline</h2>
+		
+		<p>Extends <a href="#featuregroup">FeatureGroup</a> to allow creating multi-polylines (single layer that consists of several polylines that share styling/popup).</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.MultiPolyline( &lt;<a href="#latlng">LatLng</a>[][]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a multi-polyline object given an array of arrays of geographical points (one for each individual polyline) and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		
+		
 		<h2 id="polygon">L.Polygon</h2>
 		
 		<p>A class for drawing polygon overlays on a map. Extends <a href="#polyline">Polyline</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
@@ -1386,12 +1421,33 @@ map.addLayer(polyline);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Polygon( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
-				<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline).</td>
+				<td><code>L.Polygon( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside.</td>
 			</tr>
 		</table>
 		
 		<p>Polygon the same options and methods as Polyline.</p>
+		
+		
+		
+		<h2 id="multipolygon">L.MultiPolygon</h2>
+		
+		<p>Extends <a href="#featuregroup">FeatureGroup</a> to allow creating multi-polygons (single layer that consists of several polygons that share styling/popup).</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.MultiPolygon( &lt;<a href="#latlng">LatLng</a>[][]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a multi-polyline object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
+			</tr>
+		</table>
+		
+		
 		
 		
 		<h2 id="circle">L.Circle</h2>
