@@ -21,6 +21,37 @@ L.Marker = L.Class.extend({
 	onAdd: function(map) {
 		this._map = map;
 		
+		this._initIcon();
+		
+		map.on('viewreset', this._reset, this);
+		this._reset();
+	},
+	
+	onRemove: function(map) {
+		this._removeIcon();
+		
+		map.off('viewreset', this._reset, this);
+	},
+	
+	getLatLng: function() {
+		return this._latlng;
+	},
+	
+	setLatLng: function(latlng) {
+		this._latlng = latlng;
+		this._reset();
+	},
+	
+	setIcon: function(icon) {
+		this._removeIcon();
+		
+		this._icon = this._shadow = null;
+		this.options.icon = icon;
+		
+		this._initIcon();
+	},
+	
+	_initIcon: function() {
 		if (!this._icon) {
 			this._icon = this.options.icon.createIcon();
 			
@@ -37,28 +68,14 @@ L.Marker = L.Class.extend({
 		map._panes.markerPane.appendChild(this._icon);
 		if (this._shadow) {
 			map._panes.shadowPane.appendChild(this._shadow);
-		}
-		
-		map.on('viewreset', this._reset, this);
-		this._reset();
+		}		
 	},
 	
-	onRemove: function(map) {
+	_removeIcon: function() {
 		map._panes.markerPane.removeChild(this._icon);
 		if (this._shadow) {
 			map._panes.shadowPane.removeChild(this._shadow);
 		}
-		
-		map.off('viewreset', this._reset, this);
-	},
-	
-	getLatLng: function() {
-		return this._latlng;
-	},
-	
-	setLatLng: function(latlng) {
-		this._latlng = latlng;
-		this._reset();
 	},
 	
 	_reset: function() {

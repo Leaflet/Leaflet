@@ -8,9 +8,15 @@ L.FeatureGroup = L.LayerGroup.extend({
 	addLayer: function(layer) {
 		this._initEvents(layer);
 		L.LayerGroup.prototype.addLayer.call(this, layer);
+		
+		if (this._popupContent && layer.bindPopup) {
+			layer.bindPopup(this._popupContent);
+		} 
 	},
 	
 	bindPopup: function(content) {
+		this._popupContent = content;
+		
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i) && this._layers[i].bindPopup) {
 				this._layers[i].bindPopup(content);

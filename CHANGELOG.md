@@ -21,7 +21,7 @@ Leaflet Changelog
  * Improved `LatLngBounds` & `Bounds` to allow their instantiation without arguments (by [@snc](https://github.com/snc)).
  * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)). 
  * Added `opacity` option and `setOpacity` method to `TileLayer`.
- * Added `setLatLng` method to `Marker`.
+ * Added `setLatLng` and `setIcon` methods to `Marker`.
  * Added `title` option to `Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
