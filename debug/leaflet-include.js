@@ -54,6 +54,7 @@
 		'layer/vector/Path.Popup.js',
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
+		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
 		'layer/vector/CircleMarker.js',
 		
