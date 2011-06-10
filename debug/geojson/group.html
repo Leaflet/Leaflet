@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+	<button id="populate">Populate with 10 markers</button>
+
+	<script type="text/javascript">
+
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
+			latlng = new L.LatLng(50.5, 30.51);
+	
+		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
+		
+		var markers = new L.FeatureGroup();
+		
+		function populate() {
+			var bounds = map.getBounds(),
+				southWest = bounds.getSouthWest(),
+				northEast = bounds.getNorthEast(),
+				lngSpan = northEast.lng - southWest.lng,
+				latSpan = northEast.lat - southWest.lat;
+			
+			for (var i = 0; i < 10; i++) {
+				var latlng = new L.LatLng(
+						southWest.lat + latSpan * Math.random(),
+			        	southWest.lng + lngSpan * Math.random());
+				
+				markers.addLayer(new L.Marker(latlng));
+			}
+
+			return false;
+		};
+		
+		populate();
+		L.DomUtil.get('populate').onclick = populate;
+		
+		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>");
+		
+		map.addLayer(markers);
+		
+	</script>
+</body>
+</html>
