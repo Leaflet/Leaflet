@@ -66,6 +66,13 @@ L.Path = L.Class.extend({
 		// form path string here
 	},
 	
+	setStyle: function(style) {
+		L.Util.setOptions(this, style);
+		if (this._path) {
+			this._updateStyle();
+		}
+	},
+	
 	_initElements: function() {
 		this._initRoot();
 		this._initPath();

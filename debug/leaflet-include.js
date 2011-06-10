@@ -58,6 +58,8 @@
 		'layer/vector/Circle.js',
 		'layer/vector/CircleMarker.js',
 		
+		'layer/GeoJSON.js',
+		
 		'handler/Handler.js',
 		'handler/MapDrag.js',
 		'handler/TouchZoom.js',
