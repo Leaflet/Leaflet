@@ -69,15 +69,32 @@ L.TileLayer = L.Class.extend({
 		return this.options.attribution;
 	},
 	
+	setOpacity: function(opacity) {
+		this.options.opacity = opacity;
+		
+		this._setOpacity(opacity);
+		
+		// stupid webkit hack to force redrawing of tiles
+		if (L.Browser.webkit) {
+			for (i in this._tiles) {
+				this._tiles[i].style.webkitTransform += ' translate(0,0)';
+			}
+		}
+	},
+	
+	_setOpacity: function(opacity) {
+		if (opacity < 1) {
+			L.DomUtil.setOpacity(this._container, opacity);
+		}
+	},
+	
 	_initContainer: function() {
 		var tilePane = this._map.getPanes().tilePane;
 		
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer', tilePane);
 			
-			if (this.options.opacity < 1) {
-				L.DomUtil.setOpacity(this._container, this.options.opacity);
-			}
+			this._setOpacity(this.options.opacity);
 		}
 	},
 	

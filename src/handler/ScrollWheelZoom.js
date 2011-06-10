@@ -45,6 +45,6 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 			viewHalf = this._map.getSize().divideBy(2),
 			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - Math.pow(2, -delta)),
 			newCenterPoint = centerPoint.add(centerOffset);
-		return this._map.unproject(newCenterPoint);
+		return this._map.unproject(newCenterPoint, this._map._zoom, true);
 	}
 });

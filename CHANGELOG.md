@@ -17,7 +17,7 @@ Leaflet Changelog
  * Added `setLatLng` and `setRadius` methods to `Circle` and `CircleMarker`.
  * `LatLngBounds contains` method now accepts `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
  * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)). 
- * Added `opacity` option to `TileLayer`.
+ * Added `opacity` option and `setOpacity` method to `TileLayer`.
  * Added `setLatLng` method to `Marker`.
  * Added `title` option to `Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
