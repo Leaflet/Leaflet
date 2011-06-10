@@ -27,6 +27,8 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/geo/crs/CRS.EPSG3857.js ^
 --js ../src/geo/crs/CRS.EPSG4326.js ^
 --js ../src/geo/crs/CRS.EPSG3395.js ^
+--js ../src/layer/LayerGroup.js ^
+--js ../src/layer/FeatureGroup.js ^
 --js ../src/layer/tile/TileLayer.js ^
 --js ../src/layer/tile/TileLayer.WMS.js ^
 --js ../src/layer/tile/TileLayer.Canvas.js ^
@@ -40,8 +42,10 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/layer/vector/Path.Popup.js ^
 --js ../src/layer/vector/Polyline.js ^
 --js ../src/layer/vector/Polygon.js ^
+--js ../src/layer/vector/MultiPoly.js ^
 --js ../src/layer/vector/Circle.js ^
 --js ../src/layer/vector/CircleMarker.js ^
+--js ../src/layer/GeoJSON.js ^
 --js ../src/handler/Handler.js ^
 --js ../src/handler/MapDrag.js ^
 --js ../src/handler/TouchZoom.js ^
