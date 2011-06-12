@@ -40,12 +40,12 @@
 		
 		geojson.on('featureparse', function(e) {
 			// you can style features depending on their properties, etc.
+			var popupText = 'geometry type: ' + e.geometryType + '<br/>';
 			if (e.layer instanceof L.Path) {
 				e.layer.setStyle({color: e.properties.color});
+				popupText += 'color: ' + e.properties.color;
 			}
-			e.layer.bindPopup(
-					'geometry type: ' + e.geometryType + '<br/>' + 
-					'color: ' + e.properties.color);
+			e.layer.bindPopup(popupText);
 		});
 		
 		geojson.addGeoJSON(geojsonSample);
