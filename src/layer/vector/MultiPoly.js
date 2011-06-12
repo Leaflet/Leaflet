@@ -10,6 +10,14 @@
 				for (var i = 0, len = latlngs.length; i < len; i++) {
 					this.addLayer(new klass(latlngs[i], options));
 				}
+			},
+
+			setStyle: function(style) {
+				for (var i in this._layers) {
+					if (this._layers.hasOwnProperty(i) && this._layers[i].setStyle) {
+						this._layers[i].setStyle(style);
+					}
+				}
 			}
 		});
 	}
