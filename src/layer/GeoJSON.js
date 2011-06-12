@@ -70,7 +70,7 @@ L.Util.extend(L.GeoJSON, {
 				return new L.MultiPolyline(latlngs);
 				
 			case "MultiPolygon":
-				latlngs = this.coordsToLatlngs(coords[i], 2);
+				latlngs = this.coordsToLatlngs(coords, 2);
 				return new L.MultiPolygon(latlngs);
 				
 			case "GeometryCollection":
