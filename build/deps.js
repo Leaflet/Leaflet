@@ -82,7 +82,7 @@ var deps = {
 	},
 	
 	PathVML: {
-		src: ['layer/vector/PathVML.js'],
+		src: ['layer/vector/Path.VML.js'],
 		desc: 'VML fallback for vector rendering core (IE 6-8).'
 	},
 	
