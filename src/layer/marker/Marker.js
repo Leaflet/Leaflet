@@ -72,9 +72,9 @@ L.Marker = L.Class.extend({
 	},
 	
 	_removeIcon: function() {
-		map._panes.markerPane.removeChild(this._icon);
+		this._map._panes.markerPane.removeChild(this._icon);
 		if (this._shadow) {
-			map._panes.shadowPane.removeChild(this._shadow);
+			this._map._panes.shadowPane.removeChild(this._shadow);
 		}
 	},
 	
