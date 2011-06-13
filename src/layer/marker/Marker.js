@@ -65,9 +65,9 @@ L.Marker = L.Class.extend({
 			this._shadow = this.options.icon.createShadow();
 		}
 
-		map._panes.markerPane.appendChild(this._icon);
+		this._map._panes.markerPane.appendChild(this._icon);
 		if (this._shadow) {
-			map._panes.shadowPane.appendChild(this._shadow);
+			this._map._panes.shadowPane.appendChild(this._shadow);
 		}		
 	},
 	
