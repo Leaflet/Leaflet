@@ -3,12 +3,14 @@
  */
 
 L.Map.include({
-	locate: function() {
+	locate: function(/*Object*/ options) {
+		var opts = {timeout: 10000};
+		L.Util.extend(opts, options); // W3C Geolocation API Spec position options, http://dev.w3.org/geo/api/spec-source.html#position-options
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 					L.Util.bind(this._handleGeolocationResponse, this),
 					L.Util.bind(this._handleGeolocationError, this),
-					{timeout: 10000});
+					opts);
 		} else {
 			this.fire('locationerror', {
 				code: 0,
