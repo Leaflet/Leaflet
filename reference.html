@@ -538,9 +538,9 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
 			</tr>
 			<tr>
-				<td><code>locate()</code></td>
+				<td><code>locate( &lt;Object&gt;&nbsp;<code>options?</code> )</code></td>
 				<td><code>this</code></td>
-				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure.<!-- Usage example:
+				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure. Options are PositionOptions from the <a href="http://dev.w3.org/geo/api/spec-source.html#position-options">W3C Geolocation API</a>.<!-- Usage example:
 				<pre><code class="javascript">map
 	.on('locationfound', function(e) { map.fitBounds(e.bounds); })
 	.on('locationerror', function(e) { alert(e.message); })
