@@ -87,8 +87,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	
 	// stops loading all tiles in the background layer and removes tiles that not in the current bbox
 	_removeExcessiveBgTiles: function() {
-		var tiles = [].slice.call(this._tileBg.getElementsByTagName('img')),
-			mapRect = this._container.getBoundingClientRect();
+		if (!this._container.getBoundingClientRect) return;
+		
+		var mapRect = this._container.getBoundingClientRect(),
+			tiles = [].slice.call(this._tileBg.getElementsByTagName('img'));
 		
 		for (var i = 0, len = tiles.length; i < len; i++) {
 			var tileRect = tiles[i].getBoundingClientRect();
