@@ -29,6 +29,7 @@ Leaflet Changelog
  * Improved `Popup` to accept HTML elements in addition to strings as its content.
  * Added `Makefile` for building `leaflet.js` on non-Windows machines (by [@tmcw](https://github.com/tmcw)).
  * Improved `debug/leaflet-include.js` script to allow using it outside of `debug` folder (by [@antonj](https://github.com/antonj)).
+ * Improved `L` definition to be compatible with CommonJS. [#122](https://github.com/CloudMade/Leaflet/issues/122)
  
 ### Bug fixes
  
