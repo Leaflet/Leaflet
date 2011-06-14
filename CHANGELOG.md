@@ -25,6 +25,7 @@ Leaflet Changelog
  * Added `title` option to `Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
  * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
+ * Added ability to pass Geolocation options to map `locate` and `locateAndSetView` methods (by [@JasonSanford](https://github.com/JasonSanford)).
  * Improved `Popup` to accept HTML elements in addition to strings as its content.
  * Added `Makefile` for building `leaflet.js` on non-Windows machines (by [@tmcw](https://github.com/tmcw)).
  * Improved `debug/leaflet-include.js` script to allow using it outside of `debug` folder (by [@antonj](https://github.com/antonj)).
