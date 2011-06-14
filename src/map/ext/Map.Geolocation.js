@@ -4,8 +4,10 @@
 
 L.Map.include({
 	locate: function(/*Object*/ options) {
+		// W3C Geolocation API Spec position options, http://dev.w3.org/geo/api/spec-source.html#position-options
 		var opts = {timeout: 10000};
-		L.Util.extend(opts, options); // W3C Geolocation API Spec position options, http://dev.w3.org/geo/api/spec-source.html#position-options
+		L.Util.extend(opts, options);
+		
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 					L.Util.bind(this._handleGeolocationResponse, this),
@@ -20,10 +22,10 @@ L.Map.include({
 		return this;
 	},
 	
-	locateAndSetView: function(maxZoom) {
+	locateAndSetView: function(maxZoom, options) {
 		this._setViewOnLocate = true;
 		this._maxLocateZoom = maxZoom || Infinity;
-		return this.locate();
+		return this.locate(options);
 	},
 	
 	_handleGeolocationError: function(error) {
