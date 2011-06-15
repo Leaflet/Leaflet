@@ -1491,7 +1491,13 @@ map.addLayer(polyline);</code></pre>
 		
 		<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display on the map. Extends <a href="#layergroup">LayerGroup</a>.</p>
 		
-		<pre><code class="javascript">var geojson = new L.GeoJSON(geojsonObj);
+		<pre><code class="javascript">var geojson = new L.GeoJSON();
+
+geojson.on('featureparse', function(e) {
+	// do something with e.layer depending on e.properties
+});
+geojson.addGeoJSON(geojsonObj);
+		
 map.addLayer(geojson);</code></pre>
 		
 		<h3>Constructor</h3>
@@ -1523,6 +1529,26 @@ map.addLayer(geojson);</code></pre>
 				<td>Function of the form <code>(LatLng)->ILayer</code> that will be used for creating layers for GeoJSON points (if not specified, markers will be created).</td>
 			</tr>
 		</table>
+		
+		
+		<h3 id="geojson-events">Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>featureparse</code></td>
+				<td><code><a href="#geojson-event">GeoJSONEvent</a></code>
+				<td>Fired before an object converted from a GeoJSON feature is added to the map. This event can be used to add interaction or change styling of objects depending on feature properties.</td>
+			</tr>
+		</table>
+		
+		
 					
 		<h3>Methods</h3>
 		
@@ -2194,6 +2220,37 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 				<td>The layer that was added or removed.</td>
 			</tr>
 		</table>
+
+		<h3 id="geojson-event">GeoJSON event</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>layer</code></td>
+				<td><code><a href="#ilayer">ILayer</a></code></td>
+				<td>The layer for the GeoJSON feature that is being added to the map.</td>
+			</tr>
+			<tr>
+				<td><code>properties</code></td>
+				<td><code>Object</code></td>
+				<td>GeoJSON properties of the feature.</td>
+			</tr>
+			<tr>
+				<td><code>geometryType</code></td>
+				<td><code>String</code></td>
+				<td>GeoJSON geometry type of the feature.</td>
+			</tr>
+			<tr>
+				<td><code>id</code></td>
+				<td><code>String</code></td>
+				<td>GeoJSON ID of the feature (if present).</td>
+			</tr>
+		</table>
+		
 
 		<!-- <h3>TileEvent</h3> -->
 
