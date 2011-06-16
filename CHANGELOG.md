@@ -57,6 +57,7 @@ Leaflet Changelog
 
 #### Mobile browsers bugfixes
 
+ * Fixed a bug that prevented panning on HTC Hero (and possibly some other old Android devices). [#84](https://github.com/CloudMade/Leaflet/issues/84)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)

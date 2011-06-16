@@ -31,52 +31,55 @@ L.Draggable = L.Class.extend({
 	_onDown: function(e) {
 		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
 		
-		if (!L.Browser.mobileWebkit) {
-			L.DomEvent.preventDefault(e);
-		}
 		if (e.touches && e.touches.length > 1) { return; }
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
-		
-		this._dragStartPos = L.DomUtil.getPosition(this._element);
-		
-		this._startX = e.clientX;
-		this._startY = e.clientY;
 		
 		this._moved = false;
 
 		L.DomUtil.disableTextSelection();
-		
 		this._setMovingCursor();
+		
+		this._startPos = L.DomUtil.getPosition(this._element);
+		this._startPoint = new L.Point(e.clientX, e.clientY);
 		
 		L.DomEvent.addListener(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.addListener(document, L.Draggable.END, this._onUp, this);
+
+		if (!L.Browser.mobileWebkit || L.Browser.android) {
+			L.DomEvent.preventDefault(e);
+		}
+		if (L.Browser.android) {
+			this._simulateEvent(e);
+		}
 	},
 	
 	_onMove: function(e) {
-		L.DomEvent.preventDefault(e);
-
 		if (e.touches && e.touches.length > 1) { return; }
 		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
-		
-		this._offset = new L.Point(e.clientX - this._startX, e.clientY - this._startY);
-			
-		this._newPos = this._dragStartPos.add(this._offset);
-		
-		this._updatePosition();
 		
 		if (!this._moved) {
 			this.fire('dragstart');
 			this._moved = true;
 		}
+
+		var newPoint = new L.Point(e.clientX, e.clientY);
+		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
+		this._updatePosition();
 		
 		this.fire('drag');
+
+		L.DomEvent.preventDefault(e);
+		
+		if (L.Browser.android) {
+			this._simulateEvent(e);
+		}
 	},
 	
 	_updatePosition: function() {
 		L.DomUtil.setPosition(this._element, this._newPos);
 	},
 	
-	_onUp: function(e) {
+	_onUp: function() {
 		L.DomUtil.enableTextSelection();
 		
 		this._restoreCursor();
@@ -87,6 +90,9 @@ L.Draggable = L.Class.extend({
 		if (this._moved) {
 			this.fire('dragend');
 		}
+		if (L.Browser.android) {
+			this._simulateEvent(e);
+		}
 	},
 	
 	_setMovingCursor: function() {
@@ -96,5 +102,23 @@ L.Draggable = L.Class.extend({
 	
 	_restoreCursor: function() {
 		document.body.style.cursor = this._bodyCursor;
+	},
+	
+	_simulateEvent: function(e) {
+		var type;
+		
+		switch(e.type) {
+			case 'touchstart': type = 'mousedown'; break;
+			case 'touchmove': type = 'mousemove'; break;        
+			case 'touchend': type = 'mouseup';
+		}
+		
+		var simulatedEvent = document.createEvent('MouseEvent');
+			simulatedEvent.initMouseEvent(type, true, true, window, 1, 
+									  e.screenX, e.screenY, 
+									  e.clientX, e.clientY, false, 
+									  false, false, false, 0, null);
+																					
+		e.target.dispatchEvent(simulatedEvent);
 	}
 });
