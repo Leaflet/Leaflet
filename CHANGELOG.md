@@ -13,6 +13,7 @@ Leaflet Changelog
 ### Improvements
  
  * Added `TileLayer.Canvas` for easy creation of canvas-based tile layers.
+ * Improved panning performance considerably with the help of `requestAnimationFrame`. [#130](https://github.com/CloudMade/Leaflet/issues/130)
  * Changed `Circle` to be zoom-dependent (with radius in meters); circle of a permanent size is now called `CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
@@ -57,6 +58,7 @@ Leaflet Changelog
 
 #### Mobile browsers bugfixes
 
+ * Fixed a bug that prevented panning on HTC Hero (and possibly some other old Android devices). [#84](https://github.com/CloudMade/Leaflet/issues/84)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)
