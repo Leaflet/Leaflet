@@ -11,6 +11,10 @@
 	display: inline-block; 
 	position: absolute;
 	}
+	
+.leaflet-control {
+	display: inline;
+	}
 
 .leaflet-popup-tip {
 	width: 21px;
