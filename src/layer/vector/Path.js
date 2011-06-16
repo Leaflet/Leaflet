@@ -198,5 +198,10 @@ L.Path = L.Class.extend({
 			layerPoint: this._map.mouseEventToLayerPoint(e)
 		});
 		L.DomEvent.stopPropagation(e);
+	},
+	
+	_redraw: function() {
+		this.projectLatlngs();
+		this._updatePath();
 	}
 });

@@ -51,11 +51,6 @@ L.Polyline = L.Path.extend({
 		return removed;
 	},
 	
-	_redraw: function() {
-		this.projectLatlngs();
-		this._updatePath();
-	},
-	
 	_getPathPartStr: function(points) {
 		var round = L.Path.VML;
 		
