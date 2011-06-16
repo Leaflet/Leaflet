@@ -58,7 +58,9 @@
 					<li>Popups</li>
 					<li>Image overlays</li>
 					<li>WMS layers</li>
-					<li class="noimpl">GeoJSON</li>
+					<li>GeoJSON</li>
+					<li class="noimpl">KML</li>
+					<li class="noimpl">GeoRSS</li>
 				</ul>
 				
 				<h3>Interaction features</h3> 
@@ -82,7 +84,7 @@
 				<h3>Visual features</h3>
 				<ul>
 					<li>Panning animation</li>
-					<li>Zooming animation on modern browsers (except IE)</li>
+					<li>Zooming animation on modern browsers <span class="quiet">(except IE)</span></li>
 					<li>Smooth continuous zoom on iOS</li>
 					<li>Tile and popup fade animation</li>
 					<li>Very nice default design for markers and popups</li>
@@ -94,12 +96,13 @@
 					<!-- <li>Customizable marker icons</li> -->
 					<li><span class="quiet">A simple interface for implementing</span> custom map layers</li>
 					<li><span class="quiet">The same for</span> custom map controls</li>
-					<li><span class="quiet">Ability to implement</span> custom map projections</li>
+					<li>Custom map projections <span class="quiet">(with <code>EPSG:4326</code>, <code>EPSG:3857</code> and <code>EPSG:3395</code> out of the box)</span></li>
 				</ul>
 
 				<h3>Performance features</h3>
 				<ul>
 					<li>Hardware acceleration on iOS <span class="quiet">makes it feel as smooth as native apps</span></li>
+					<li><span class="quiet">Clever tricks to make</span> panning and zooming really smooth</li>
 					<li>Smart polyline/polygon rendering <span class="quiet">makes it responsive even when displaying objects with thousands of points</span></li>
 					<li>Modular build system <span class="quiet">allows you to reduce the size of the library by leaving out the code you don't need</span></li>
 				</ul>			
@@ -129,13 +132,16 @@
 		 		<ul>
 		 			<li>Safari for iOS 3/4+</li>
 					<li>WebKit for Android 2.2+</li>
+					<li class="noimpl">Windows Phone 7</li>
+					<li class="noimpl">Firefox for Android</li>
 				</ul>
 			</div>
 		</div>
 		
 		<p>If you find some feature really missing in Leaflet, please submit it to the <a href="https://github.com/CloudMade/Leaflet/issues">issue tracker</a>.</p>
 
-
+		<p class="noimpl">* Grayed out features are in the roadmap and coming soon.</p>
+		
 		<hr />
 			
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
