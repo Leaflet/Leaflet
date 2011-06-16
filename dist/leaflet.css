@@ -138,7 +138,7 @@
 	margin: 0;
 	padding: 0 5px;
 	
-	font: 11px/1.5 Arial, sans-serif;
+	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	color: #333;
 	
 	background-color: rgba(255, 255, 255, 0.7);
@@ -262,7 +262,7 @@
 	border-radius: 20px;
 	}
 .leaflet-popup-content {
-	font: 12px/1.4 Arial, Helvetica, sans-serif;
+	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
