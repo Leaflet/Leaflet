@@ -47,10 +47,5 @@ L.Circle = L.Path.extend({
 			r = Math.round(r);
 			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
 		}
-	}, 
-	
-	_redraw: function() {
-		this.projectLatlngs();
-		this._updatePath();
 	}
 });
