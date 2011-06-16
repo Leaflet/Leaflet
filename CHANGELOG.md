@@ -21,7 +21,7 @@ Leaflet Changelog
  * Improved `LatLngBounds contains` method to accept `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
  * Improved `LatLngBounds` & `Bounds` to allow their instantiation without arguments (by [@snc](https://github.com/snc)).
  * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)).
- * Added `TileLayer noWrap` option to disable wrapping `x` tile coordinate (by [@jasondavies](https://github.com/jasondavies).
+ * Added `TileLayer` `noWrap` option to disable wrapping `x` tile coordinate (by [@jasondavies](https://github.com/jasondavies)).
  * Added `opacity` option and `setOpacity` method to `TileLayer`.
  * Added `setLatLng` and `setIcon` methods to `Marker`.
  * Added `title` option to `Marker`.
