@@ -46,31 +46,31 @@ L.Util.extend(L.GeoJSON, {
 
 		switch (geometry.type) {
 			case 'Point':
-				latlng = this.coordsToLatlng(coords);
+				latlng = this.coordsToLatLng(coords);
 				return pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
 				
 			case 'MultiPoint':
 				for (i = 0, len = coords.length; i < len; i++) {
-					latlng = this.coordsToLatlng(coords[i]);
+					latlng = this.coordsToLatLng(coords[i]);
 					layer = pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
 					layers.push(layer);
 				}
 				return new L.FeatureGroup(layers);
 				
 			case 'LineString':
-				latlngs = this.coordsToLatlngs(coords);
+				latlngs = this.coordsToLatLngs(coords);
 				return new L.Polyline(latlngs);
 				
 			case 'Polygon':
-				latlngs = this.coordsToLatlngs(coords, 1);
+				latlngs = this.coordsToLatLngs(coords, 1);
 				return new L.Polygon(latlngs);
 				
 			case 'MultiLineString':
-				latlngs = this.coordsToLatlngs(coords, 1);
+				latlngs = this.coordsToLatLngs(coords, 1);
 				return new L.MultiPolyline(latlngs);
 				
 			case "MultiPolygon":
-				latlngs = this.coordsToLatlngs(coords, 2);
+				latlngs = this.coordsToLatLngs(coords, 2);
 				return new L.MultiPolygon(latlngs);
 				
 			case "GeometryCollection":
@@ -85,18 +85,20 @@ L.Util.extend(L.GeoJSON, {
 		}
 	},
 
-	coordsToLatlng: function(coords) {
-		return new L.LatLng(coords[1], coords[0]);
+	coordsToLatLng: function(/*Array*/ coords, /*Boolean*/ reverse)/*: LatLng*/ {
+		var lat = coords[reverse ? 0 : 1],
+			lng = coords[reverse ? 1 : 0];
+		return new L.LatLng(lat, lng);
 	},
 
-	coordsToLatlngs: function(coords, levelsDeep) {
+	coordsToLatLngs: function(/*Array*/ coords, /*Number*/ levelsDeep, /*Boolean*/ reverse)/*: Array*/ {
 		var latlng, latlngs = [],
 			i, len = coords.length;
 		
 		for (i = 0; i < len; i++) {
 			latlng = levelsDeep ? 
-					this.coordsToLatlngs(coords[i], levelsDeep - 1) : 
-					this.coordsToLatlng(coords[i]);
+					this.coordsToLatLngs(coords[i], levelsDeep - 1, reverse) : 
+					this.coordsToLatLng(coords[i], reverse);
 			latlngs.push(latlng);
 		}
 		return latlngs;
