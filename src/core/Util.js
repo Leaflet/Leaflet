@@ -29,6 +29,24 @@ L.Util = {
 			return obj[key];
 		};
 	})(),
+	
+	requestAnimFrame: (function() {
+		function timeoutDefer(callback) {
+			window.setTimeout(callback, 1000 / 60);
+		}
+		
+		var requestFn = window.requestAnimationFrame || 
+			window.webkitRequestAnimationFrame || 
+			window.mozRequestAnimationFrame || 
+			window.oRequestAnimationFrame || 
+			window.msRequestAnimationFrame || 
+			timeoutDefer;
+		
+		return function(callback, context) {
+			callback = context ? L.Util.bind(callback, context) : context;
+			requestFn(callback);
+		};
+	})(),
 
 	limitExecByInterval: function(fn, time, context) {	
 		var lock, execOnUnlock, args;
@@ -47,21 +65,6 @@ L.Util = {
 				fn.apply(context, args);
 			} else {
 				execOnUnlock = true;
-			}
-		};
-	},
-	
-	deferExecByInterval: function(fn, time, context) {
-		var args, lock;
-		function exec() {
-			lock = false;
-			fn.apply(context, args);
-		}
-		return function() {
-			args = arguments;
-			if (!lock) {
-				lock = true;
-				setTimeout(exec, time);
 			}
 		};
 	},

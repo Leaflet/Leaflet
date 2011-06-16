@@ -64,7 +64,8 @@ L.Draggable = L.Class.extend({
 
 		var newPoint = new L.Point(e.clientX, e.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
-		this._updatePosition();
+		
+		L.Util.requestAnimFrame(this._updatePosition, this);
 		
 		this.fire('drag');
 

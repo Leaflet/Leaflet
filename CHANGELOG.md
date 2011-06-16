@@ -13,6 +13,7 @@ Leaflet Changelog
 ### Improvements
  
  * Added `TileLayer.Canvas` for easy creation of canvas-based tile layers.
+ * Improved panning performance considerably with the help of `requestAnimationFrame`. [#130](https://github.com/CloudMade/Leaflet/issues/130)
  * Changed `Circle` to be zoom-dependent (with radius in meters); circle of a permanent size is now called `CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
