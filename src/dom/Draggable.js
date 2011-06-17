@@ -32,55 +32,63 @@ L.Draggable = L.Class.extend({
 		if (e.shiftKey || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
 		
 		if (e.touches && e.touches.length > 1) { return; }
-		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
+
+		var first = (e.touches && e.touches.length == 1 ? e.touches[0] : e);
+		
+		L.DomEvent.preventDefault(e);
+			
+		if (L.Browser.mobileWebkit) {
+			first.target.className += ' leaflet-active';
+		}
 		
 		this._moved = false;
-
+		
 		L.DomUtil.disableTextSelection();
 		this._setMovingCursor();
 		
 		this._startPos = L.DomUtil.getPosition(this._element);
-		this._startPoint = new L.Point(e.clientX, e.clientY);
+		this._startPoint = new L.Point(first.clientX, first.clientY);
 		
 		L.DomEvent.addListener(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.addListener(document, L.Draggable.END, this._onUp, this);
-
-		if (!L.Browser.mobileWebkit || L.Browser.android) {
-			L.DomEvent.preventDefault(e);
-		}
-		if (L.Browser.android) {
-			this._simulateEvent(e);
-		}
 	},
 	
 	_onMove: function(e) {
 		if (e.touches && e.touches.length > 1) { return; }
-		if (e.touches && e.touches.length == 1) { e = e.touches[0]; }
+
+		L.DomEvent.preventDefault(e);
+		
+		var first = (e.touches && e.touches.length == 1 ? e.touches[0] : e);
 		
 		if (!this._moved) {
 			this.fire('dragstart');
 			this._moved = true;
+			
+			if (L.Browser.mobileWebkit) {
+				this._removeActiveClass(first.target);
+			}
 		}
 
-		var newPoint = new L.Point(e.clientX, e.clientY);
+		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
 		
 		L.Util.requestAnimFrame(this._updatePosition, this);
 		
 		this.fire('drag');
-
-		L.DomEvent.preventDefault(e);
-		
-		if (L.Browser.android) {
-			this._simulateEvent(e);
-		}
 	},
 	
 	_updatePosition: function() {
 		L.DomUtil.setPosition(this._element, this._newPos);
 	},
 	
-	_onUp: function() {
+	_onUp: function(e) {
+		if (!this._moved && e.changedTouches) {
+			var first = e.changedTouches[0];
+			
+			this._removeActiveClass(first.target);
+			this._simulateEvent('click', first);
+		}
+		
 		L.DomUtil.enableTextSelection();
 		
 		this._restoreCursor();
@@ -91,9 +99,10 @@ L.Draggable = L.Class.extend({
 		if (this._moved) {
 			this.fire('dragend');
 		}
-		if (L.Browser.android) {
-			this._simulateEvent(e);
-		}
+	},
+	
+	_removeActiveClass: function(el) {
+		el.className = el.className.replace(' leaflet-active', '');
 	},
 	
 	_setMovingCursor: function() {
@@ -105,21 +114,15 @@ L.Draggable = L.Class.extend({
 		document.body.style.cursor = this._bodyCursor;
 	},
 	
-	_simulateEvent: function(e) {
-		var type;
-		
-		switch(e.type) {
-			case 'touchstart': type = 'mousedown'; break;
-			case 'touchmove': type = 'mousemove'; break;        
-			case 'touchend': type = 'mouseup';
-		}
-		
+	_simulateEvent: function(type, e) {
 		var simulatedEvent = document.createEvent('MouseEvent');
-			simulatedEvent.initMouseEvent(type, true, true, window, 1, 
-									  e.screenX, e.screenY, 
-									  e.clientX, e.clientY, false, 
-									  false, false, false, 0, null);
-																					
+		
+		simulatedEvent.initMouseEvent(
+				type, true, true, window, 1, 
+				e.screenX, e.screenY, 
+				e.clientX, e.clientY, 
+				false, false, false, false, 0, null);
+		
 		e.target.dispatchEvent(simulatedEvent);
 	}
 });

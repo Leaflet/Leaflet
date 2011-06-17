@@ -5,22 +5,24 @@ Leaflet Changelog
 
 ### Highlights
 
- * Added **WMS** layer (`TileLayer.WMS`).
+ * Added **WMS** support (`TileLayer.WMS` layer).
  * Added different **projections** support, having `EPSG:3857`, `EPSG:4326` and `EPSG:3395` out of the box (through `crs` option in `Map`). Thanks to [@Miroff](https://github.com/Miroff) & [@Komzpa](https://github.com/Komzpa) for great advice and explanation regarding this.
- * Added **GeoJSON** layer.
+ * Added **GeoJSON** layer support.
  * Added **MultiPolyline** and **MultiPolygon** layers. [#77](https://github.com/CloudMade/Leaflet/issues/77) 
+ * Added **TileLayer.Canvas** for easy creation of canvas-based tile layers.
  
 ### Improvements
  
- * Added `TileLayer.Canvas` for easy creation of canvas-based tile layers.
- * Improved panning performance considerably with the help of `requestAnimationFrame`. [#130](https://github.com/CloudMade/Leaflet/issues/130)
+ * Improved panning performance in Chrome and FF considerably with the help of `requestAnimationFrame`. [#130](https://github.com/CloudMade/Leaflet/issues/130)
+ * Improved click responsiveness in iOS and Android.
  * Changed `Circle` to be zoom-dependent (with radius in meters); circle of a permanent size is now called `CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
  * Added `setLatLng` and `setRadius` methods to `Circle` and `CircleMarker`.
  * Improved `LatLngBounds contains` method to accept `LatLng` in addition to `LatLngBounds`, the same for `Bounds contains` and `Point` 
  * Improved `LatLngBounds` & `Bounds` to allow their instantiation without arguments (by [@snc](https://github.com/snc)).
- * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)). 
+ * Added TMS tile numbering support through `TileLayer` `scheme: 'tms'` option (by [@tmcw](https://github.com/tmcw)).
+ * Added `TileLayer` `noWrap` option to disable wrapping `x` tile coordinate (by [@jasondavies](https://github.com/jasondavies)).
  * Added `opacity` option and `setOpacity` method to `TileLayer`.
  * Added `setLatLng` and `setIcon` methods to `Marker`.
  * Added `title` option to `Marker`.
@@ -58,7 +60,7 @@ Leaflet Changelog
 
 #### Mobile browsers bugfixes
 
- * Fixed a bug that prevented panning on HTC Hero (and possibly some other old Android devices). [#84](https://github.com/CloudMade/Leaflet/issues/84)
+ * Fixed a bug that prevented panning on some Android 2.1 devices. [#84](https://github.com/CloudMade/Leaflet/issues/84)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)

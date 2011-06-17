@@ -56,6 +56,10 @@
 	visibility: inherit;
 	}
 
+a.leaflet-active {
+	outline: 2px solid orange;
+	}
+
 
 /* Leaflet controls */
 
