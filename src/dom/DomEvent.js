@@ -11,7 +11,7 @@ L.DomEvent = {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
 		}
 		
-		if (L.Browser.mobileWebkit && (type == 'dblclick') && this.addDoubleTapListener) {
+		if (L.Browser.touch && (type == 'dblclick') && this.addDoubleTapListener) {
 			this.addDoubleTapListener(obj, handler, id);
 		} else if ('addEventListener' in obj) {
 			if (type == 'mousewheel') {
