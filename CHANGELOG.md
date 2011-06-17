@@ -1,7 +1,9 @@
 Leaflet Changelog
 =================
 
-## 0.2 (master)
+## 0.3 (master)
+
+## 0.2 (2011-06-17)
 
 ### Highlights
 
