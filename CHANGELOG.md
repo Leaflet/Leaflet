@@ -11,7 +11,7 @@ Leaflet Changelog
  * Added different **projections** support, having `EPSG:3857`, `EPSG:4326` and `EPSG:3395` out of the box (through `crs` option in `Map`). Thanks to [@Miroff](https://github.com/Miroff) & [@Komzpa](https://github.com/Komzpa) for great advice and explanation regarding this.
  * Added **GeoJSON** layer support.
  * Added **MultiPolyline** and **MultiPolygon** layers. [#77](https://github.com/CloudMade/Leaflet/issues/77) 
- * Added **LayerGroup** and **FeatureGruop** for grouping layers.
+ * Added **LayerGroup** and **FeatureGroup** layers for grouping other layers.
  * Added **TileLayer.Canvas** for easy creation of canvas-based tile layers.
  
 ### Improvements
