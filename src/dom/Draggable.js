@@ -8,7 +8,8 @@ L.Draggable = L.Class.extend({
 	statics: {
 		START: L.Browser.mobileWebkit ? 'touchstart' : 'mousedown',
 		END: L.Browser.mobileWebkit ? 'touchend' : 'mouseup',
-		MOVE: L.Browser.mobileWebkit ? 'touchmove' : 'mousemove'
+		MOVE: L.Browser.mobileWebkit ? 'touchmove' : 'mousemove',
+		TAP_TOLERANCE: 15
 	},
 	
 	initialize: function(element, dragStartTarget) {
@@ -63,10 +64,6 @@ L.Draggable = L.Class.extend({
 		if (!this._moved) {
 			this.fire('dragstart');
 			this._moved = true;
-			
-			if (L.Browser.mobileWebkit) {
-				this._removeActiveClass(first.target);
-			}
 		}
 
 		var newPoint = new L.Point(first.clientX, first.clientY);
@@ -82,11 +79,16 @@ L.Draggable = L.Class.extend({
 	},
 	
 	_onUp: function(e) {
-		if (!this._moved && e.changedTouches) {
-			var first = e.changedTouches[0];
+		if (e.changedTouches) {
+			var first = e.changedTouches[0],
+				el = first.target,
+				dist = this._newPos && this._newPos.distanceTo(this._startPos) || 0;
 			
-			this._removeActiveClass(first.target);
-			this._simulateEvent('click', first);
+			el.className = el.className.replace(' leaflet-active', '');
+			
+			if (dist < L.Draggable.TAP_TOLERANCE) {
+				this._simulateEvent('click', first);
+			}
 		}
 		
 		L.DomUtil.enableTextSelection();
@@ -102,7 +104,6 @@ L.Draggable = L.Class.extend({
 	},
 	
 	_removeActiveClass: function(el) {
-		el.className = el.className.replace(' leaflet-active', '');
 	},
 	
 	_setMovingCursor: function() {

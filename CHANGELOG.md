@@ -13,8 +13,15 @@ Leaflet Changelog
  
 ### Improvements
  
+#### Usability improvements
+ 
  * Improved panning performance in Chrome and FF considerably with the help of `requestAnimationFrame`. [#130](https://github.com/CloudMade/Leaflet/issues/130)
- * Improved click responsiveness in iOS and Android.
+ * Improved click responsiveness in mobile WebKit (now it happens without delay). [#26](https://github.com/CloudMade/Leaflet/issues/26)
+ * Added tap tolerance (so click happens even if you moved your finger slighly when tapping).
+ * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
+ 
+#### API improvements
+
  * Changed `Circle` to be zoom-dependent (with radius in meters); circle of a permanent size is now called `CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
@@ -27,9 +34,11 @@ Leaflet Changelog
  * Added `setLatLng` and `setIcon` methods to `Marker`.
  * Added `title` option to `Marker`.
  * Added `maxZoom` argument to `map.locateAndSetView` method.
- * Improved geolocation error handling: better error messages, explicit timeout, set world view on locateAndSetView failure. [#61](https://github.com/CloudMade/Leaflet/issues/61)
  * Added ability to pass Geolocation options to map `locate` and `locateAndSetView` methods (by [@JasonSanford](https://github.com/JasonSanford)).
  * Improved `Popup` to accept HTML elements in addition to strings as its content.
+ 
+#### Development workflow improvements
+ 
  * Added `Makefile` for building `leaflet.js` on non-Windows machines (by [@tmcw](https://github.com/tmcw)).
  * Improved `debug/leaflet-include.js` script to allow using it outside of `debug` folder (by [@antonj](https://github.com/antonj)).
  * Improved `L` definition to be compatible with CommonJS. [#122](https://github.com/CloudMade/Leaflet/issues/122)
@@ -60,7 +69,7 @@ Leaflet Changelog
 
 #### Mobile browsers bugfixes
 
- * Fixed a bug that prevented panning on some Android 2.1 devices. [#84](https://github.com/CloudMade/Leaflet/issues/84)
+ * Fixed a bug that prevented panning on some Android 2.1 (and possibly older) devices. [#84](https://github.com/CloudMade/Leaflet/issues/84)
  * Disabled zoom animation on Android by default because it's buggy on some devices (will be enabled back when it's stable enough). [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed a bug where map would occasionally break while multi-touch-zooming on iOS. [#32](https://github.com/CloudMade/Leaflet/issues/32)
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)
