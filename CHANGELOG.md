@@ -10,9 +10,6 @@ Leaflet Changelog
  * Added **WMS** support (`TileLayer.WMS` layer).
  * Added different **projections** support, having `EPSG:3857`, `EPSG:4326` and `EPSG:3395` out of the box (through `crs` option in `Map`). Thanks to [@Miroff](https://github.com/Miroff) & [@Komzpa](https://github.com/Komzpa) for great advice and explanation regarding this.
  * Added **GeoJSON** layer support.
- * Added **MultiPolyline** and **MultiPolygon** layers. [#77](https://github.com/CloudMade/Leaflet/issues/77) 
- * Added **LayerGroup** and **FeatureGroup** layers for grouping other layers.
- * Added **TileLayer.Canvas** for easy creation of canvas-based tile layers.
  
 ### Improvements
  
@@ -25,6 +22,9 @@ Leaflet Changelog
  
 #### API improvements
 
+ * Added **MultiPolyline** and **MultiPolygon** layers. [#77](https://github.com/CloudMade/Leaflet/issues/77) 
+ * Added **LayerGroup** and **FeatureGroup** layers for grouping other layers.
+ * Added **TileLayer.Canvas** for easy creation of canvas-based tile layers.
  * Changed `Circle` to be zoom-dependent (with radius in meters); circle of a permanent size is now called `CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.
