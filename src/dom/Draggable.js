@@ -6,9 +6,9 @@ L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,
 	
 	statics: {
-		START: L.Browser.mobileWebkit ? 'touchstart' : 'mousedown',
-		END: L.Browser.mobileWebkit ? 'touchend' : 'mouseup',
-		MOVE: L.Browser.mobileWebkit ? 'touchmove' : 'mousemove',
+		START: L.Browser.touch ? 'touchstart' : 'mousedown',
+		END: L.Browser.touch ? 'touchend' : 'mouseup',
+		MOVE: L.Browser.touch ? 'touchmove' : 'mousemove',
 		TAP_TOLERANCE: 15
 	},
 	
@@ -47,7 +47,7 @@ L.Draggable = L.Class.extend({
 		L.DomUtil.disableTextSelection();
 		this._setMovingCursor();
 		
-		this._startPos = L.DomUtil.getPosition(this._element);
+		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		
 		L.DomEvent.addListener(document, L.Draggable.MOVE, this._onMove, this);
@@ -82,7 +82,7 @@ L.Draggable = L.Class.extend({
 		if (e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
-				dist = this._newPos && this._newPos.distanceTo(this._startPos) || 0;
+				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 			
 			el.className = el.className.replace(' leaflet-active', '');
 			
