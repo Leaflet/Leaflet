@@ -85,8 +85,8 @@
 			<div class="span-3">
 				<h4>Other layers</h4>
 				<ul>
-					<li><a href="#layergroup" class="nodocs">LayerGroup</a></li>
-					<li><a href="#featuregroup" class="nodocs">FeatureGroup</a></li>
+					<li><a href="#layergroup">LayerGroup</a></li>
+					<li><a href="#featuregroup">FeatureGroup</a></li>
 					<li><a href="#geojson">GeoJSON</a></li>
 				</ul>
 				<h4>Basic types</h4>
@@ -1519,6 +1519,125 @@ map.addLayer(polyline);</code></pre>
 			</tr>
 		</table>
 		
+		
+		
+		<h2 id="layergroup">L.LayerGroup</h2>
+		
+		<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<pre><code class="javascript">var group = new L.LayerGroup();
+
+group.addLayer(marker1);
+group.addLayer(marker2);
+group.addLayer(polyline);
+		
+map.addLayer(group);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LayerGroup( &lt;<a href="#ilayer">ILayer</a>[]&gt;&nbsp;<i>layers?</i>&nbsp;)</code></td>
+				<td>Create a layer group, optionally given an initial set of layers.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addLayer( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a given layer to the group.</td>
+			</tr>
+			<tr>
+				<td><code>removeLayer( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Removes a given layer from the group.</td>
+			</tr>
+			<tr>
+				<td><code>clearLayers()</code></td>
+				<td><code>this</code></td>
+				<td>Removes all the layers from the group.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="layergroup">L.FeatureGroup</h2>
+		
+		<p>Extended <a href="#layergroup">LayerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">IFeature</a> interface.</p>
+		
+		<pre><code class="javascript">var group = new L.FeatureGroup([marker1, marker2, polyline]);
+
+group.bindPopup('Hello world!');
+
+group.on('click', function() { 
+	alert('Clicked on a group!'); 
+});
+		
+map.addLayer(group);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.FeatureGroup( &lt;<a href="#ilayer">IFeature</a>[]&gt;&nbsp;<i>layers?</i>&nbsp;)</code></td>
+				<td>Create a layer group, optionally given an initial set of layers.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<p>Has all <a href="#layergroup">LayerGroup</a> methods and additionally:</p>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Binds a popup with a particular HTML content to a click on any layer from the group.</td>
+			</tr>
+		</table>
+		
+		<h3>Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user clicks (or taps) on the group.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user double-clicks (or double-taps) on the group.</td>
+			</tr>
+		</table>
 		
 		
 		<h2 id="geojson">L.GeoJSON</h2>
