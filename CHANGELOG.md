@@ -3,6 +3,10 @@ Leaflet Changelog
 
 ## 0.3 (master)
 
+## 0.2.1 (2011-06-18)
+
+ * Fixed regression that caused error in `TileLayer.Canvas`
+
 ## 0.2 (2011-06-17)
 
 ### Major features
