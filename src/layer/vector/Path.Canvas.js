@@ -7,7 +7,7 @@ L.Path.Canvas = (function() {
 	return !!document.createElement('canvas').getContext;
 })();
 
-L.Path = L.Path.SVG && 1 < 0? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
+L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
 	statics: {
 		CLIP_PADDING: 0.02
 	},
