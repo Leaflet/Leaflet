@@ -30,7 +30,27 @@
 		map.addLayer(new L.Marker(latlngs[0]));
 		map.addLayer(new L.Marker(latlngs[len - 1]));
 		
+		var circleLocation = new L.LatLng(51.508, -0.11),
+		circleOptions = {
+		    color: 'red', 
+		    fillColor: '#f03', 
+		    fillOpacity: 0.5
+		};
+		
+		var circle = new L.Circle(circleLocation, 500000, circleOptions);
+		map.addLayer(circle);
+		
 		map.addLayer(path);
+		
+		var p1 = latlngs[0],
+			p2 = latlngs[parseInt(len/2)],
+			p3 = latlngs[len - 1],
+			polygonPoints = [p1, p2, p3];
+
+		var polygon = new L.Polygon(polygonPoints, {
+			fillColor: "#333"
+		});
+		map.addLayer(polygon);
 		
 		path.bindPopup("Hello world");
 	</script>
