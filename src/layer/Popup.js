@@ -6,7 +6,7 @@ L.Popup = L.Class.extend({
 		maxWidth: 300,
 		autoPan: true,
 		closeButton: true,
-
+        closePopupOnClick: true,
 		offset: new L.Point(0, 2),
 		autoPanPadding: new L.Point(5, 5)
 	},
@@ -26,7 +26,7 @@ L.Popup = L.Class.extend({
 
 		this._map._panes.popupPane.appendChild(this._container);
 		this._map.on('viewreset', this._updatePosition, this);
-		if (this._map.options.closePopupOnClick) {
+		if (this.options.closePopupOnClick) {
 			this._map.on('preclick', this._close, this);
 		}
 		this._update();
