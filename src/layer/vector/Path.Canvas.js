@@ -1,6 +1,5 @@
 /*
  * Vector rendering for all browsers that support canvas.
- * Florian Falkner, General Solutions Steiner GmbH
  */
 
 L.Path.Canvas = (function() {
@@ -8,8 +7,16 @@ L.Path.Canvas = (function() {
 })();
 
 L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
+	initialize: function(options) {
+		L.Util.setOptions(this, options);
+	},
+	
 	statics: {
 		CLIP_PADDING: 0.02
+	},
+	
+	options :  {
+		updateOnMoveEnd: true
 	},
 		
 	_initRoot: function() {
@@ -30,80 +37,56 @@ L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
 	_initStyle: function() {
 		//NOOP.
 	},
-	
-	_hexToRGB : function(h) {
-		h = (h.charAt(0)=="#") ? h.substring(1,h.length):h;
-		while (h.length < 6) {
-			h += h;
-		}
 		
-		return parseInt(h.substring(0,2),16) + "," +
-			parseInt(h.substring(2,4),16) + "," + 
-			parseInt(h.substring(4,6),16)
-	},
-	
-	_getStyle : function(color, opacity) {
-		return "rgba(" + this._hexToRGB(color) +"," + opacity + ")";
-	},
-	
 	_updateStyle: function() {
 		if (this.options.stroke) {
 			this._ctx.lineWidth = this.options.weight;
-			this._ctx.strokeStyle = this._getStyle(this.options.color, this.options.opacity);
+			this._ctx.strokeStyle = this.options.color;
 		}
 		if (this.options.fill) {
-			this._ctx.fillStyle = this._getStyle(this.options.fillColor || this.options.color, this.options.fillOpacity);
+			this._ctx.fillStyle = this.options.fillColor || this.options.color;
 		}
 	},
 	
-	_drawPath : function() {					
-		this._updateStyle();
-			
-		if (this.setRadius) {
-			var p = this._point,
-			r = this._radius;
-			this._ctx.arc(p.x,p.y,r, 0,Math.PI*2);
-		}
-		else {
-			this._ctx.beginPath();
+	_drawPath : function() {	
+		this._updateStyle();				
+		this._ctx.beginPath();
 						
-			for (var i = 0, len = this._parts.length; i < len; i++) {
-				for (var j=0;j<this._parts[i].length;j++) {
-					var point = this._parts[i][j];
-					if (i == 0 && j == 0) {
-						this._ctx.moveTo(point.x, point.y);
+		for (var i = 0, len = this._parts.length; i < len; i++) {
+			for (var j=0;j<this._parts[i].length;j++) {
+				var point = this._parts[i][j];
+				
+				if (j === 0) {
+					if (i > 0) {
+						this._ctx.closePath();
 					}
-					else {
-						this._ctx.lineTo(point.x,point.y);
-					}
+					this._ctx.moveTo(point.x, point.y);
+				}
+				else {
+					this._ctx.lineTo(point.x,point.y);
 				}
 			}
 		}
+		
+		
 	},
 	
 	_updatePath: function() {
 		this._drawPath();
 		
 		if (this.options.fill) {
-			if (!this.setRadius) {
-				this._ctx.closePath();
-			}
+			this._ctx.globalAlpha = this.options.fillOpacity;
+			this._ctx.closePath();
 			this._ctx.fill();	
 		}
 		
 		if (this.options.stroke) {
+			this._ctx.globalAlpha = this.options.opacity;
 			this._ctx.stroke();
 		}
 		
 	},
 
-	_resetCanvas : function() {		
-		this._ctx.clearRect(0, 0, this._map._pathRoot.width, this._map._pathRoot.height);
-		var w = this._map._pathRoot.width;
-		this._map._pathRoot.width = 1;
-		this._map._pathRoot.width = w;
-	},
-	
 	_updateCanvasViewport: function() {
 		this._updateViewport();
 		
@@ -117,18 +100,17 @@ L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
 	
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		// Unfortunately I haven't found a good workaround for this yet
-		//if (L.Browser.mobileWebkit) { pane.removeChild(root); }
+		if (L.Browser.mobileWebkit) { pane.removeChild(root); }
 				
 		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);		//Attention resets canvas, but not on mobile webkit!
 		root.setAttribute('height', height);
 		
-		this._resetCanvas();
 		var vp = this._map._pathViewport;
 		this._ctx.translate(-vp.min.x, -vp.min.y);
 
 		
-		//if (L.Browser.mobileWebkit) { pane.appendChild(root); }
+		if (L.Browser.mobileWebkit) { pane.appendChild(root); }
 	},
 		
 	_initEvents :function() {

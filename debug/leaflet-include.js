@@ -57,6 +57,7 @@
 		'layer/vector/Polygon.js',
 		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
+		'layer/vector/Circle.Canvas.js',
 		'layer/vector/CircleMarker.js',
 		
 		'layer/GeoJSON.js',
