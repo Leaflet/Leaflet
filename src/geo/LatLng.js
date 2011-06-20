@@ -2,7 +2,14 @@
 	CM.LatLng represents a geographical point with latitude and longtitude coordinates.
 */
 
-L.LatLng = function(/*Number*/ lat, /*Number*/ lng, /*Boolean*/ noWrap) {
+L.LatLng = function(/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
+	var lat = parseFloat(rawLat),
+		lng = parseFloat(rawLng);
+	
+	if (isNaN(lat) || isNaN(lng)) {
+		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')'); 
+	}
+	
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
 		lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
