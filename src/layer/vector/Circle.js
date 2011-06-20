@@ -11,7 +11,8 @@ L.Circle = L.Path.extend({
 	},
 	
 	options: {
-		fill: true
+		fill: true,
+		updateOnMoveEnd: true
 	},
 	
 	setLatLng: function(latlng) {

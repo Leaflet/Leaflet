@@ -51,6 +51,7 @@
 		
 		'layer/vector/Path.js',
 		'layer/vector/Path.VML.js',
+		'layer/vector/Path.Canvas.js',
 		'layer/vector/Path.Popup.js',
 		'layer/vector/Polyline.js',
 		'layer/vector/Polygon.js',
