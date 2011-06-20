@@ -3,9 +3,11 @@ Leaflet Changelog
 
 ## 0.3 (master)
 
+ * Improved LatLng constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)  
+
 ## 0.2.1 (2011-06-18)
 
- * Fixed regression that caused error in `TileLayer.Canvas`
+ * Fixed regression that caused error in `TileLayer.Canvas`.
 
 ## 0.2 (2011-06-17)
 
