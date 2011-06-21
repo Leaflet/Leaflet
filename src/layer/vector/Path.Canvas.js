@@ -2,17 +2,19 @@
  * Vector rendering for all browsers that support canvas.
  */
 
-L.Path.Canvas = (function() {
+L.Path.CANVAS = (function() {
 	return !!document.createElement('canvas').getContext;
 })();
 
 /*
- * TODO define L.Path.Canvas as a separate class instead of extending L.Path,
+ * TODO define L.Path.Canvas as a separate class instead of replacing L.Path,
  * and implement class factories for Polyline and Circle that choose the right
  * renderer based on constructor options
  */
 
-L.Path = /*L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML :*/ L.Path.extend({
+L.Path.SVG = false; // TODO temporary (for debugging)
+
+L.Path = L.Path.SVG || !L.Path.CANVAS ? L.Path : L.Path.extend({
 	initialize: function(options) {
 		L.Util.setOptions(this, options);
 	},
@@ -28,7 +30,7 @@ L.Path = /*L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML :*/ L.Path.extend({
 	_initElements: function() {
 		this._initRoot();
 	},
-		
+	
 	_initRoot: function() {
 		var root = this._map._pathRoot;
 		
@@ -44,6 +46,9 @@ L.Path = /*L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML :*/ L.Path.extend({
 	},
 		
 	_updateStyle: function() {
+		this._ctx.lineCap = "round";
+		this._ctx.lineJoin = "round";
+
 		if (this.options.stroke) {
 			this._ctx.lineWidth = this.options.weight;
 			this._ctx.strokeStyle = this.options.color;

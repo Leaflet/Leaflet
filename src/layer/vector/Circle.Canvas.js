@@ -2,7 +2,7 @@
  * Circle canvas specific drawing parts.
  */
 
-L.Circle = /*L.Path.SVG || !L.Path.Canvas ? L.Circle :*/ L.Circle.extend({
+L.Circle.include(L.Path.SVG || !L.Path.CANVAS ? {} : {
 	_drawPath: function() {
 		var p = this._point;
 		
@@ -20,10 +20,10 @@ L.Circle = /*L.Path.SVG || !L.Path.Canvas ? L.Circle :*/ L.Circle.extend({
 	
 	_onClick: function(e) {
 		var p1 = this._point, 
-			p2 = e.layerPoint;
+			p2 = e.layerPoint,
+			w2 = this.options.stroke ? this.options.weight / 2 : 0;
 		
-		// TODO take strokeWidth into account
-		if (p1.distanceTo(p2) <= this._radius) {
+		if (p1.distanceTo(p2) <= this._radius + w2) {
 			this.fire('click', e);
 		}
 	}

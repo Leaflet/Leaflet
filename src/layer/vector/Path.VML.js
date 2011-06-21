@@ -12,7 +12,7 @@ L.Path.VML = (function() {
 	return (s && (typeof s.adj == 'object'));
 })();
 
-L.Path = L.Path.SVG || !L.Path.VML ? L.Path : L.Path.extend({
+L.Path = L.Path.SVG || L.Path.CANVAS || !L.Path.VML ? L.Path : L.Path.extend({
 	statics: {
 		CLIP_PADDING: 0.02
 	},

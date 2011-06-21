@@ -54,9 +54,5 @@ L.Polygon = L.Polyline.extend({
 	_getPathPartStr: function(points) {
 		var str = L.Polyline.prototype._getPathPartStr.call(this, points);
 		return str + (L.Path.SVG ? 'z' : 'x');
-	},
-	
-	_initEvents: function() {
-		// TODO polygon events (through http://en.wikipedia.org/wiki/Point_in_polygon)
 	}
 });
