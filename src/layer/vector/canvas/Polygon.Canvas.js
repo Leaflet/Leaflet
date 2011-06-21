@@ -1,13 +1,5 @@
 
 L.Polygon.include(!L.Path.CANVAS ? {} : {
-	_initEvents: function() {
-		if (this.options.clickable) {
-			// TODO hand cursor
-			// TODO mouseover, mouseout, dblclick 
-			this._map.on('click', this._onClick, this);
-		}
-	},
-	
 	_containsPoint: function(p) {
 		var inside = false,
 			part, p1, p2,
@@ -38,11 +30,5 @@ L.Polygon.include(!L.Path.CANVAS ? {} : {
 		}
 		
 		return inside;
-	},
-	
-	_onClick: function(e) {
-		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', e);
-		}
 	}
 });

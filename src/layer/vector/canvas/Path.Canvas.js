@@ -103,6 +103,17 @@ L.Path = (L.Path.SVG && !L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path : L.Path
 		root.getContext('2d').translate(-min.x, -min.y);
 	},
 		
-	// will be implemented for each of the children classes
-	_initEvents: L.Util.falseFn
+	_initEvents: function() {
+		if (this.options.clickable) {
+			// TODO hand cursor
+			// TODO mouseover, mouseout, dblclick 
+			this._map.on('click', this._onClick, this);
+		}
+	},
+	
+	_onClick: function(e) {
+		if (this._containsPoint(e.layerPoint)) {
+			this.fire('click', e);
+		}
+	}
 });

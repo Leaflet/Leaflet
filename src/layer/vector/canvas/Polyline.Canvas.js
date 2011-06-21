@@ -1,13 +1,5 @@
 
 L.Polyline.include(!L.Path.CANVAS ? {} : {
-	_initEvents: function() {
-		if (this.options.clickable) {
-			// TODO hand cursor
-			// TODO mouseover, mouseout, dblclick 
-			this._map.on('click', this._onClick, this);
-		}
-	},
-	
 	_containsPoint: function(p, closed) {
 		var i, j, k, len, len2, dist, part;
 		
@@ -24,11 +16,5 @@ L.Polyline.include(!L.Path.CANVAS ? {} : {
 			}
 		}
 		return false;
-	},
-	
-	_onClick: function(e) {
-		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', e);
-		}
 	}
 });
