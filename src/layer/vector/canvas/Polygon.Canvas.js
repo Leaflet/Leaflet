@@ -16,7 +16,7 @@ L.Polygon.include(L.Path.SVG || !L.Path.CANVAS ? {} : {
 
 		// TODO optimization: check if within bounds first
 		
-		if (L.Polyline.prototype._containsPoint.call(this, p)) {
+		if (L.Polyline.prototype._containsPoint.call(this, p, true)) {
 			// click on polygon border
 			return true;
 		}
