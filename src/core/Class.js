@@ -27,6 +27,13 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	// add class name
 	//proto.className = props;
 	
+	//inherit parent's statics
+	for (var i in this) {
+		if (this.hasOwnProperty(i) && i != 'prototype') {
+			NewClass[i] = this[i];
+		}
+	}
+
 	// mix static properties into the class
 	if (props.statics) {
 		L.Util.extend(NewClass, props.statics);
@@ -54,13 +61,6 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	NewClass.include = function(props) {
 		L.Util.extend(this.prototype, props);
 	};
-	
-	//inherit parent's statics
-	for (var i in this) {
-		if (this.hasOwnProperty(i) && i != 'prototype') {
-			NewClass[i] = this[i];
-		}
-	}
 	
 	return NewClass;
 };
