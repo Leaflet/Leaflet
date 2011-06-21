@@ -30,8 +30,50 @@
 		map.addLayer(new L.Marker(latlngs[0]));
 		map.addLayer(new L.Marker(latlngs[len - 1]));
 		
+		var circleLocation = new L.LatLng(51.508, -0.11),
+		circleOptions = {
+		    color: 'red', 
+		    fillColor: 'blue', 
+		    fillOpacity: 0.7
+		};
+		
+		var circle = new L.Circle(circleLocation, 500000, circleOptions);
+		map.addLayer(circle);
+		
 		map.addLayer(path);
 		
+		var p1 = latlngs[0],
+			p2 = latlngs[parseInt(len/4)],
+			p3 = latlngs[parseInt(len/3)],
+			p4 = latlngs[parseInt(len/2)],
+			p5 = latlngs[len - 1],
+			polygonPoints = [p1, p2, p3, p4, p5];
+
+		var h1 = new L.LatLng(p1.lat, p1.lng),
+			h2 = new L.LatLng(p2.lat, p2.lng),
+			h3 = new L.LatLng(p3.lat, p3.lng),
+			h4 = new L.LatLng(p4.lat, p4.lng),
+			h5 = new L.LatLng(p5.lat, p5.lng);
+		
+		h1.lng += 20;
+		h2.lat -= 5;
+		h3.lat -= 5;
+		h4.lng -= 10;
+		h5.lng -= 8;
+		h5.lat += 10;
+		
+		var holePoints = [h5, h4, h3, h2, h1];
+
+		var polygon = new L.Polygon([polygonPoints, holePoints], {
+			fillColor: "#333"
+		});
+		map.addLayer(polygon);
+		
+		/*var hole = new L.Polygon([h1,h2,h3,h4,h5], {
+			fillColor: "green"
+		});
+		map.addLayer(hole);
+		*/
 		path.bindPopup("Hello world");
 	</script>
 </body>
