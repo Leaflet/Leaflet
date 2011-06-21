@@ -27,9 +27,6 @@
 
 		map.fitBounds(new L.LatLngBounds(latlngs));
 		
-		map.addLayer(new L.Marker(latlngs[0]));
-		map.addLayer(new L.Marker(latlngs[len - 1]));
-		
 		var circleLocation = new L.LatLng(51.508, -0.11),
 		circleOptions = {
 		    color: 'red', 
@@ -40,10 +37,10 @@
 		
 		var circle = new L.Circle(circleLocation, 500000, circleOptions);
 		map.addLayer(circle);
-		
 		circle.bindPopup('I am a circle');
 		
-		map.addLayer(path);
+		map.addLayer(path);		
+		path.bindPopup('I am a polyline');
 		
 		var p1 = latlngs[0],
 			p2 = latlngs[parseInt(len/4)],
@@ -72,13 +69,7 @@
 			weight: 20
 		});
 		map.addLayer(polygon);
-		
-		/*var hole = new L.Polygon([h1,h2,h3,h4,h5], {
-			fillColor: "green"
-		});
-		map.addLayer(hole);
-		*/
-		path.bindPopup("Hello world");
+
 	</script>
 </body>
 </html>
