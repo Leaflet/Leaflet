@@ -1,14 +1,16 @@
 
+L.Path.SVG_NS = 'http://www.w3.org/2000/svg';
+
+L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.SVG_NS, 'svg').createSVGRect);
+
 L.Path = L.Path.extend({
-	statics: (function() {
-		var svgns = 'http://www.w3.org/2000/svg',
-			ce = 'createElementNS';
-		
-		return {
-			SVG_NS: svgns,
-			SVG: !!(document[ce] && document[ce](svgns, 'svg').createSVGRect)
-		};
-	})(),
+	statics: {
+		SVG: L.Browser.svg
+	},
+	
+	getPathString: function() {
+		// form path string here
+	},
 	
 	_initElements: function() {
 		this._initRoot();
@@ -99,7 +101,7 @@ L.Path = L.Path.extend({
 	// TODO remove duplication with L.Map
 	_initEvents: function() {
 		if (this.options.clickable) {
-			if (!L.Path.VML) {
+			if (!L.Browser.vml) {
 				this._path.setAttribute('class', 'leaflet-clickable');
 			}
 			

@@ -53,6 +53,6 @@ L.Polygon = L.Polyline.extend({
 	
 	_getPathPartStr: function(points) {
 		var str = L.Polyline.prototype._getPathPartStr.call(this, points);
-		return str + (L.Path.SVG ? 'z' : 'x');
+		return str + (L.Browser.svg ? 'z' : 'x');
 	}
 });

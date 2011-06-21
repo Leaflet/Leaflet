@@ -2,7 +2,7 @@
  * Circle canvas specific drawing parts.
  */
 
-L.Circle.include(L.Path.SVG || !L.Path.CANVAS ? {} : {
+L.Circle.include(!L.Path.CANVAS ? {} : {
 	_drawPath: function() {
 		var p = this._point;
 		

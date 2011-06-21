@@ -54,10 +54,6 @@ L.Path = L.Class.extend({
 		// do all projection stuff here
 	},
 	
-	getPathString: function() {
-		// form path string here
-	},
-	
 	setStyle: function(style) {
 		L.Util.setOptions(this, style);
 		if (this._container) {

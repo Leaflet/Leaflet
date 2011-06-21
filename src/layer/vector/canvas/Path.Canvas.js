@@ -2,26 +2,16 @@
  * Vector rendering for all browsers that support canvas.
  */
 
-L.Path.CANVAS = (function() {
+L.Browser.canvas = (function() {
 	return !!document.createElement('canvas').getContext;
 })();
 
-/*
- * TODO define L.Path.Canvas as a separate class instead of replacing L.Path,
- * and implement class factories for Polyline and Circle that choose the right
- * renderer based on constructor options
- */
-
-//L.Path.SVG = false; // TODO temporary (for debugging)
-
-L.Path = L.Path.SVG || !L.Path.CANVAS ? L.Path : L.Path.extend({
-	initialize: function(options) {
-		L.Util.setOptions(this, options);
+L.Path = (L.Path.SVG && !L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path : L.Path.extend({
+	statics: {
+		//CLIP_PADDING: 0.02, // not sure if there's a need to set it to a small value
+		CANVAS: true,
+		SVG: false
 	},
-	
-	/*statics: {
-		CLIP_PADDING: 0.02 // not sure if there's a need to set it to a small value 
-	},*/
 	
 	options: {
 		updateOnMoveEnd: true

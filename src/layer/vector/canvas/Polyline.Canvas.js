@@ -1,5 +1,5 @@
 
-L.Polyline.include(L.Path.SVG || !L.Path.CANVAS ? {} : {
+L.Polyline.include(!L.Path.CANVAS ? {} : {
 	_initEvents: function() {
 		if (this.options.clickable) {
 			// TODO hand cursor
