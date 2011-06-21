@@ -33,9 +33,8 @@
 		var circleLocation = new L.LatLng(51.508, -0.11),
 		circleOptions = {
 		    color: 'red', 
-		    fillColor: 'blue', 
-		    fillOpacity: 0.7,
-		    weight: 20
+		    fillColor: 'yellow', 
+		    fillOpacity: 0.7
 		};
 		
 		var circle = new L.Circle(circleLocation, 500000, circleOptions);
@@ -69,7 +68,7 @@
 
 		var polygon = new L.Polygon([polygonPoints, holePoints], {
 			fillColor: "#333",
-			weight: 20
+			color: 'green'
 		});
 		map.addLayer(polygon);
 		
