@@ -6,36 +6,41 @@ L.Path.Canvas = (function() {
 	return !!document.createElement('canvas').getContext;
 })();
 
-L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
+/*
+ * TODO define L.Path.Canvas as a separate class instead of extending L.Path,
+ * and implement class factories for Polyline and Circle that choose the right
+ * renderer based on constructor options
+ */
+
+L.Path = /*L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML :*/ L.Path.extend({
 	initialize: function(options) {
 		L.Util.setOptions(this, options);
 	},
 	
-	statics: {
-		CLIP_PADDING: 0.02
+	/*statics: {
+		CLIP_PADDING: 0.02 // not sure if there's a need to set it to a small value 
+	},*/
+	
+	options: {
+		updateOnMoveEnd: true
 	},
 	
-	options :  {
-		updateOnMoveEnd: true
+	_initElements: function() {
+		this._initRoot();
 	},
 		
 	_initRoot: function() {
-		if (!this._map._pathRoot) {
-			this._map._pathRoot = document.createElement("canvas");
-			this._ctx = this._map._pathRoot.getContext('2d');
-			
-			this._map._panes.overlayPane.appendChild(this._map._pathRoot);
+		var root = this._map._pathRoot;
+		
+		if (!root) {
+			root = this._map._pathRoot = document.createElement("canvas");
+			this._map._panes.overlayPane.appendChild(root);
 
 			this._map.on('moveend', this._updateCanvasViewport, this);
 			this._updateCanvasViewport();
 		}
-		else {
-			this._ctx = this._map._pathRoot.getContext('2d');
-		}
-	},
 		
-	_initStyle: function() {
-		//NOOP.
+		this._ctx = root.getContext('2d');
 	},
 		
 	_updateStyle: function() {
@@ -48,35 +53,32 @@ L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
 		}
 	},
 	
-	_drawPath : function() {	
-		this._updateStyle();				
+	_drawPath: function() {	
+		var i, j, len, len2, point, drawMethod;
+		
 		this._ctx.beginPath();
-						
-		for (var i = 0, len = this._parts.length; i < len; i++) {
-			for (var j=0;j<this._parts[i].length;j++) {
-				var point = this._parts[i][j];
+
+		for (i = 0, len = this._parts.length; i < len; i++) {
+			for (j = 0, len2 = this._parts[i].length; j < len2; j++) {
+				point = this._parts[i][j];
+				drawMethod = (j === 0 ? 'move' : 'line') + 'To';
 				
-				if (j === 0) {
-					if (i > 0) {
-						this._ctx.closePath();
-					}
-					this._ctx.moveTo(point.x, point.y);
-				}
-				else {
-					this._ctx.lineTo(point.x,point.y);
-				}
+				this._ctx[drawMethod](point.x, point.y);
+			}
+			// TODO refactor ugly hack
+			if (this instanceof L.Polygon) {
+				this._ctx.closePath();
 			}
 		}
-		
-		
 	},
 	
 	_updatePath: function() {
 		this._drawPath();
 		
+		this._updateStyle();
+		
 		if (this.options.fill) {
 			this._ctx.globalAlpha = this.options.fillOpacity;
-			this._ctx.closePath();
 			this._ctx.fill();	
 		}
 		
@@ -85,6 +87,10 @@ L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
 			this._ctx.stroke();
 		}
 		
+		/*
+		 * TODO not sure if possible to implement, but a great optimization would be to do 
+		 * 1 fill/stroke for all features with equal style instead of 1 for each feature 
+		 */
 	},
 
 	_updateCanvasViewport: function() {
@@ -92,28 +98,16 @@ L.Path = L.Path.SVG ? L.Path : !L.Path.Canvas ? L.Path.VML : L.Path.extend({
 		
 		var vp = this._map._pathViewport,
 			min = vp.min,
-			max = vp.max,
-			width = max.x - min.x,
-			height = max.y - min.y,
-			root = this._map._pathRoot,
-			pane = this._map._panes.overlayPane;
+			size = vp.max.subtract(min),
+			root = this._map._pathRoot;
 	
-		// Hack to make flicker on drag end on mobile webkit less irritating
-		// Unfortunately I haven't found a good workaround for this yet
-		if (L.Browser.mobileWebkit) { pane.removeChild(root); }
-				
+		//TODO check if it's works properly on mobile webkit
 		L.DomUtil.setPosition(root, min);
-		root.setAttribute('width', width);		//Attention resets canvas, but not on mobile webkit!
-		root.setAttribute('height', height);
-		
-		var vp = this._map._pathViewport;
-		this._ctx.translate(-vp.min.x, -vp.min.y);
-
-		
-		if (L.Browser.mobileWebkit) { pane.appendChild(root); }
+		root.width = size.x;
+		root.height = size.y;
+		root.getContext('2d').translate(-min.x, -min.y);
 	},
 		
-	_initEvents :function() {
-		//doesn't work currently.
-	}
+	// will be implemented for each of the children classes
+	_initEvents: L.Util.falseFn
 });

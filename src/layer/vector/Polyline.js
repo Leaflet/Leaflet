@@ -108,5 +108,9 @@ L.Polyline = L.Path.extend({
 		this._simplifyPoints();
 		
 		L.Path.prototype._updatePath.call(this);
+	},
+	
+	_initEvents: function() {
+		// TODO polyline events (through loop with pointToSegmentDistance)
 	}
 });
