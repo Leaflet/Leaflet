@@ -3,7 +3,8 @@ Leaflet Changelog
 
 ## 0.3 (master)
 
- * Improved LatLng constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)  
+ * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
+ * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)  
 
 ## 0.2.1 (2011-06-18)
 

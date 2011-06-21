@@ -6,7 +6,6 @@ L.Popup = L.Class.extend({
 		maxWidth: 300,
 		autoPan: true,
 		closeButton: true,
-        closePopupOnClick: true,
 		offset: new L.Point(0, 2),
 		autoPanPadding: new L.Point(5, 5)
 	},
@@ -26,7 +25,7 @@ L.Popup = L.Class.extend({
 
 		this._map._panes.popupPane.appendChild(this._container);
 		this._map.on('viewreset', this._updatePosition, this);
-		if (this.options.closePopupOnClick) {
+		if (this._map.options.closePopupOnClick) {
 			this._map.on('preclick', this._close, this);
 		}
 		this._update();
@@ -72,10 +71,10 @@ L.Popup = L.Class.extend({
 		this._container = L.DomUtil.create('div', 'leaflet-popup');
 
 		if (this.options.closeButton) {
-    		this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
-    		this._closeButton.href = '#close';
-    		this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
-    	}
+			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
+			this._closeButton.href = '#close';
+			this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
+		}
 
 		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
 		L.DomEvent.disableClickPropagation(this._wrapper);
