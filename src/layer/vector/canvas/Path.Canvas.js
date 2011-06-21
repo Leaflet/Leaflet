@@ -12,7 +12,7 @@ L.Path.CANVAS = (function() {
  * renderer based on constructor options
  */
 
-L.Path.SVG = false; // TODO temporary (for debugging)
+//L.Path.SVG = false; // TODO temporary (for debugging)
 
 L.Path = L.Path.SVG || !L.Path.CANVAS ? L.Path : L.Path.extend({
 	initialize: function(options) {
