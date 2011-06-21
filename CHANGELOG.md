@@ -3,8 +3,14 @@ Leaflet Changelog
 
 ## 0.3 (master)
 
- * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
+### Improvements
+
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)  
+
+### Bugfixes
+
+ * Fixed a bug where static properties of a child class would not override the parent ones.
+ * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
 
 ## 0.2.1 (2011-06-18)
 
