@@ -1,7 +1,12 @@
 
 L.Polyline.include(!L.Path.CANVAS ? {} : {
 	_containsPoint: function(p, closed) {
-		var i, j, k, len, len2, dist, part;
+		var i, j, k, len, len2, dist, part,
+			w = this.options.weight / 2;
+		
+		if (L.Browser.touch) {
+			w += 10; // polyline click tolerance on touch devices
+		}
 		
 		for (i = 0, len = this._parts.length; i < len; i++) {
 			part = this._parts[i];
@@ -10,7 +15,7 @@ L.Polyline.include(!L.Path.CANVAS ? {} : {
 				
 				dist = L.LineUtil.pointToSegmentDistance(p, part[k], part[j]);
 				
-				if (dist <= this.options.weight / 2) {
+				if (dist <= w) {
 					return true;
 				}
 			}
