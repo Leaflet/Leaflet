@@ -70,7 +70,16 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		}
 	},
 	
+	_checkIfEmpty: function() {
+		return !this._parts.length;
+	},
+	
 	_updatePath: function() {
+		if (this._checkIfEmpty()) {
+			console.log('not drawn');
+			return;
+		}
+		
 		this._drawPath();
 		
 		this._ctx.save();
