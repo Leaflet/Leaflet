@@ -6,7 +6,7 @@ L.Browser.canvas = (function() {
 	return !!document.createElement('canvas').getContext;
 })();
 
-L.Path = (L.Path.SVG && !L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path : L.Path.extend({
+L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path : L.Path.extend({
 	statics: {
 		//CLIP_PADDING: 0.02, // not sure if there's a need to set it to a small value
 		CANVAS: true,
