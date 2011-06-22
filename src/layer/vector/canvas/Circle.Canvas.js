@@ -5,6 +5,7 @@
 L.Circle.include(!L.Path.CANVAS ? {} : {
 	_drawPath: function() {
 		var p = this._point;
+		this._ctx.beginPath();
 		this._ctx.arc(p.x, p.y, this._radius, 0, Math.PI * 2);
 	},
 	

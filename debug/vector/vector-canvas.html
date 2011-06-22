@@ -37,9 +37,13 @@
 		    fillOpacity: 0.7
 		};
 		
-		var circle = new L.Circle(circleLocation, 500000, circleOptions);
-		map.addLayer(circle);
+		var circle = new L.Circle(circleLocation, 500000, circleOptions),
+			circleMarker = new L.CircleMarker(circleLocation, {fillColor: 'blue', fillOpacity: 1, stroke: false});
+		
+		map.addLayer(circle).addLayer(circleMarker);
+		
 		circle.bindPopup('I am a circle');
+		circleMarker.bindPopup('I am a circle marker');
 		
 		map.addLayer(path);		
 		path.bindPopup('I am a polyline');
