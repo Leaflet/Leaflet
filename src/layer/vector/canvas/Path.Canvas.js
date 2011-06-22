@@ -22,23 +22,26 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 	
 	_initRoot: function() {
-		var root = this._map._pathRoot;
+		var root = this._map._pathRoot,
+			ctx = this._map._canvasCtx;
 		
 		if (!root) {
 			root = this._map._pathRoot = document.createElement("canvas");
+			ctx = this._map._canvasCtx = root.getContext('2d');
+			
+			ctx.lineCap = "round";
+			ctx.lineJoin = "round";
+
 			this._map._panes.overlayPane.appendChild(root);
 
 			this._map.on('moveend', this._updateCanvasViewport, this);
 			this._updateCanvasViewport();
 		}
 		
-		this._ctx = root.getContext('2d');
+		this._ctx = ctx;
 	},
 		
 	_updateStyle: function() {
-		this._ctx.lineCap = "round";
-		this._ctx.lineJoin = "round";
-
 		if (this.options.stroke) {
 			this._ctx.lineWidth = this.options.weight;
 			this._ctx.strokeStyle = this.options.color;
@@ -70,17 +73,28 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	_updatePath: function() {
 		this._drawPath();
 		
+		this._ctx.save();
+		
 		this._updateStyle();
 		
+		var opacity = this.options.opacity,
+			fillOpacity = this.options.fillOpacity;
+		
 		if (this.options.fill) {
-			this._ctx.globalAlpha = this.options.fillOpacity;
+			if (fillOpacity < 1) {
+				this._ctx.globalAlpha = fillOpacity;
+			}
 			this._ctx.fill();	
 		}
 		
 		if (this.options.stroke) {
-			this._ctx.globalAlpha = this.options.opacity;
+			if (opacity < 1) {
+				this._ctx.globalAlpha = opacity;
+			}
 			this._ctx.stroke();
 		}
+		
+		this._ctx.restore();
 		
 		/*
 		 * TODO not sure if possible to implement, but a great optimization would be to do 
