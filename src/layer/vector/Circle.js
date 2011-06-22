@@ -38,7 +38,9 @@ L.Circle = L.Path.extend({
 		var p = this._point,
 			r = this._radius;
 		
-		if (L.Path.SVG) {
+		if (this._checkIfEmpty()) { return ''; }
+		
+		if (L.Browser.svg) {
 			return "M" + p.x + "," + (p.y - r) + 
 					"A" + r + "," + r + ",0,1,1," + 
 					(p.x - 0.1) + "," + (p.y - r) + " z";
@@ -47,5 +49,14 @@ L.Circle = L.Path.extend({
 			r = Math.round(r);
 			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
 		}
+	},
+	
+	_checkIfEmpty: function() {
+		var vp = this._map._pathViewport,
+			r = this._radius,
+			p = this._point;
+		
+		return p.x - r > vp.max.x || p.y - r > vp.max.y || 
+			p.x + r < vp.min.x || p.y + r < vp.min.y;
 	}
 });

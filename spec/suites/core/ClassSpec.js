@@ -72,6 +72,12 @@ describe("Class", function() {
 			expect(Klass2.bla).toEqual(1);
 		});
 		
+		it("should override parent static properties", function() {
+			var Klass2 = Klass.extend({statics: {bla: 2}});
+			
+			expect(Klass2.bla).toEqual(2);
+		});
+		
 		it("should include the given mixin", function() {
 			var a = new Klass();
 			expect(a.mixin).toBeTruthy();

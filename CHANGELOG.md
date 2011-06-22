@@ -1,15 +1,32 @@
 Leaflet Changelog
 =================
 
-## 0.2 (master)
+## 0.3 (master)
 
-### Highlights
+### Major features
+
+ * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
+
+### Improvements
+
+ * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)  
+
+### Bugfixes
+
+ * Fixed a bug where static properties of a child class would not override the parent ones.
+ * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
+
+## 0.2.1 (2011-06-18)
+
+ * Fixed regression that caused error in `TileLayer.Canvas`.
+
+## 0.2 (2011-06-17)
+
+### Major features
 
  * Added **WMS** support (`TileLayer.WMS` layer).
  * Added different **projections** support, having `EPSG:3857`, `EPSG:4326` and `EPSG:3395` out of the box (through `crs` option in `Map`). Thanks to [@Miroff](https://github.com/Miroff) & [@Komzpa](https://github.com/Komzpa) for great advice and explanation regarding this.
  * Added **GeoJSON** layer support.
- * Added **MultiPolyline** and **MultiPolygon** layers. [#77](https://github.com/CloudMade/Leaflet/issues/77) 
- * Added **TileLayer.Canvas** for easy creation of canvas-based tile layers.
  
 ### Improvements
  
@@ -22,6 +39,9 @@ Leaflet Changelog
  
 #### API improvements
 
+ * Added **MultiPolyline** and **MultiPolygon** layers. [#77](https://github.com/CloudMade/Leaflet/issues/77) 
+ * Added **LayerGroup** and **FeatureGroup** layers for grouping other layers.
+ * Added **TileLayer.Canvas** for easy creation of canvas-based tile layers.
  * Changed `Circle` to be zoom-dependent (with radius in meters); circle of a permanent size is now called `CircleMarker`.
  * Added `mouseover` and `mouseout` events to map, markers and paths; added map `mousemove` event.
  * Added `setLatLngs`, `spliceLatLngs`, `addLatLng`, `getLatLngs` methods to polylines and polygons.

@@ -3,7 +3,7 @@
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
 
-L.Path.VML = (function() {
+L.Browser.vml = (function() {
 	var d = document.createElement('div'), s;
 	d.innerHTML = '<v:shape adj="1"/>';
 	s = d.firstChild;
@@ -12,8 +12,9 @@ L.Path.VML = (function() {
 	return (s && (typeof s.adj == 'object'));
 })();
 
-L.Path = L.Path.SVG || !L.Path.VML ? L.Path : L.Path.extend({
+L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	statics: {
+		VML: true,
 		CLIP_PADDING: 0.02
 	},
 	

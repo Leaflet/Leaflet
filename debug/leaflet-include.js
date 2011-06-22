@@ -50,12 +50,17 @@
 		'layer/marker/Marker.Popup.js',
 		
 		'layer/vector/Path.js',
-		'layer/vector/Path.VML.js',
 		'layer/vector/Path.Popup.js',
+		'layer/vector/Path.SVG.js',
+		'layer/vector/Path.VML.js',
+		'layer/vector/canvas/Path.Canvas.js',
 		'layer/vector/Polyline.js',
+		'layer/vector/canvas/Polyline.Canvas.js',
 		'layer/vector/Polygon.js',
+		'layer/vector/canvas/Polygon.Canvas.js',
 		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
+		'layer/vector/canvas/Circle.Canvas.js',
 		'layer/vector/CircleMarker.js',
 		
 		'layer/GeoJSON.js',
