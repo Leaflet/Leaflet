@@ -280,7 +280,7 @@ L.Map = L.Class.extend({
 	},
 	
 	latLngToLayerPoint: function(/*LatLng*/ latlng) {
-		return this.project(latlng)._subtract(this._initialTopLeftPoint);
+		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
 	},
 
 	project: function(/*LatLng*/ latlng, /*(optional) Number*/ zoom)/*-> Point*/ {

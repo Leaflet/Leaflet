@@ -27,6 +27,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		
 		if (!root) {
 			root = this._map._pathRoot = document.createElement("canvas");
+			root.style.position = 'absolute';
 			ctx = this._map._canvasCtx = root.getContext('2d');
 			
 			ctx.lineCap = "round";
