@@ -14,7 +14,7 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		opacity: 1,
 		scheme: 'xyz',
-    noWrap: false,
+		noWrap: false,
 		
 		unloadInvisibleTiles: L.Browser.mobileWebkit,
 		updateWhenIdle: L.Browser.mobileWebkit
@@ -45,7 +45,7 @@ L.TileLayer = L.Class.extend({
 		if (this.options.updateWhenIdle) {
 			map.on('moveend', this._update, this);
 		} else {
-			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 100, this);
+			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
 			map.on('move', this._limitedUpdate, this);
 		}
 		
@@ -140,10 +140,14 @@ L.TileLayer = L.Class.extend({
 			return a.distanceTo(center) - b.distanceTo(center);
 		});
 		
+		var fragment = document.createDocumentFragment();
+		
 		this._tilesToLoad = queue.length;
 		for (var k = 0, len = this._tilesToLoad; k < len; k++) {
-			this._addTile(queue[k]);
+			this._addTile(queue[k], fragment);
 		}
+		
+		this._container.appendChild(fragment);
 	},
 	
 	_removeOtherTiles: function(bounds) {
@@ -167,16 +171,16 @@ L.TileLayer = L.Class.extend({
 		}		
 	},
 	
-	_addTile: function(tilePoint) {
+	_addTile: function(tilePoint, container) {
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
-			key = tilePoint.x + ':' + tilePoint.y;
+			key = tilePoint.x + ':' + tilePoint.y,
+			tileLimit = (1 << zoom);
 			
 		// wrap tile coordinates
-		var tileLimit = (1 << zoom);
 		if (!this.options.noWrap) {
-      tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
-    }
+			tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
+		}
 		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
 		
 		// create tile
@@ -191,7 +195,7 @@ L.TileLayer = L.Class.extend({
 
 		this._loadTile(tile, tilePoint, zoom);
 		
-		this._container.appendChild(tile);
+		container.appendChild(tile);
 	},
 	
 	_getTilePos: function(tilePoint) {
