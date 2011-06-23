@@ -14,6 +14,7 @@ Leaflet Changelog
 
 ### Bugfixes
 
+ * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
 
