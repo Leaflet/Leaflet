@@ -216,6 +216,18 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Layers that will be added to the map initially.</td>
 			</tr>
 			<tr>
+				<td><code>minZoom</code></td>
+				<td><code>Number</code></td>
+				<td>0</td>
+				<td>Minimum zoom level of the map. Overrides any <code>minZoom</code> set on map layers.</td>
+			</tr>
+			<tr>
+				<td><code>maxZoom</code></td>
+				<td><code>Number</code></td>
+				<td>18</td>
+				<td>Maximum zoom level of the map. This overrides any <code>maxZoom</code> set on map layers.</td>
+			</tr>
+			<tr>
 				<td><code>crs</code></td>
 				<td><code><a href="#map-projections">CRS</a></code></td>
 				<td><code>L.CRS.EPSG3857</code></td>
@@ -276,16 +288,10 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Whether the tile fade animation is enabled. By default it's enabled in all browsers that support CSS3 Transitions except Android.</td>
 			</tr>
 			<tr>
-				<td><code>minZoom</code></td>
-				<td><code>Number</code></td>
-				<td>0</td>
-				<td>Minimum zoom level of map. This overrides any minZoom set on a layer.</td>
-			</tr>
-			<tr>
-				<td><code>maxZoom</code></td>
-				<td><code>Number</code></td>
-				<td>18</td>
-				<td>Maximum zoom level of map. This overrides any maxZoom set on a layer.</td>
+				<td><code>closePopupOnClick</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Set it to <code>false</code> if you don't want popups to close when user clicks the map.</td>
 			</tr>
 		</table>
 		
@@ -931,12 +937,6 @@ map.openPopup(popup);</code></pre>
 				<td><code>Boolean</code></td>
 				<td><code>true</code></td>
 				<td>Controls the presense of a close button in the popup.</td>
-			</tr>
-			<tr>
-				<td><code>closeMapOnClick</code></td>
-				<td><code>Boolean</code></td>
-				<td><code>true</code></td>
-				<td>Set it to false if you don't want the popup to close when user clicks the map.</td>
 			</tr>
 			<tr>
 				<td><code>offset</code></td>
