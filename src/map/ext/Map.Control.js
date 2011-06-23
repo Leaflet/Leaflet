@@ -38,7 +38,7 @@ L.Map.include({
 			right = classPart + 'right',
 			controlContainer = L.DomUtil.create('div', classPart + 'control-container', this._container);
 		
-		if (L.Browser.mobileWebkit) {
+		if (L.Browser.touch) {
 			controlContainer.className += ' ' + classPart + 'big-buttons';
 		}
 		

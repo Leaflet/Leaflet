@@ -16,8 +16,8 @@ L.TileLayer = L.Class.extend({
 		scheme: 'xyz',
 		noWrap: false,
 		
-		unloadInvisibleTiles: L.Browser.mobileWebkit,
-		updateWhenIdle: L.Browser.mobileWebkit
+		unloadInvisibleTiles: L.Browser.mobile,
+		updateWhenIdle: L.Browser.mobile
 	},
 	
 	initialize: function(url, options) {

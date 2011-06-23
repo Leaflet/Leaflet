@@ -40,7 +40,7 @@ L.DomEvent = {
 			key = '_leaflet_' + type + id;
 			handler = obj[key];
 			
-		if (L.Browser.mobileWebkit && (type == 'dblclick') && this.removeDoubleTapListener) {
+		if (L.Browser.touch && (type == 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 		} else if ('removeEventListener' in obj) {
 			if (type == 'mousewheel') {
