@@ -16,7 +16,7 @@ L.TileLayer = L.Class.extend({
 		scheme: 'xyz',
 		noWrap: false,
 		
-		unloadInvisibleTiles: L.Browser.mobile,
+		unloadInvisibleTiles: L.Browser.mobile && !L.Browser.android,
 		updateWhenIdle: L.Browser.mobile
 	},
 	
