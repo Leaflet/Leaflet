@@ -161,7 +161,8 @@ L.TileLayer = L.Class.extend({
 				
 				// remove tile if it's out of bounds
 				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-					this._tiles[key].src = '';
+					// Don't do that, crashes Android 3.1 Webkit browser
+					//this._tiles[key].src = '';
 					if (this._tiles[key].parentNode == this._container) {
 						this._container.removeChild(this._tiles[key]);
 					}
