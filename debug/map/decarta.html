@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page (deCarta Test)</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script type="text/javascript">
+		var map = new L.Map('map');
+	
+		var decartaAttribution = 'Map data &copy; 2011 Navteq via <a href="http://decarta.com/" target="_blank">deCarta DDS Platform</a>',
+			decarta = new L.TileLayer.deCarta('http://wsdds3.dz.sv.decartahws.com/', {
+				maxZoom: 18, 
+				attribution: decartaAttribution,
+				// you really should get your own client name @ http://developer.decarta.com/
+				clientName: 'dc-demo-nt'
+			});
+	
+		var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
+		
+		map.addLayer(decarta).fitBounds(bounds);
+	</script>
+</body>
+</html>
