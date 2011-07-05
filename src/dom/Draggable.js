@@ -38,7 +38,7 @@ L.Draggable = L.Class.extend({
 		
 		L.DomEvent.preventDefault(e);
 			
-		if (L.Browser.mobileWebkit) {
+		if (L.Browser.touch) {
 			first.target.className += ' leaflet-active';
 		}
 		

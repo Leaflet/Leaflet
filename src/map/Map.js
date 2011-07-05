@@ -17,8 +17,8 @@ L.Map = L.Class.extend({
 		
 		// interaction
 		dragging: true,
-		touchZoom: L.Browser.mobileWebkit && !L.Browser.android,
-		scrollWheelZoom: !L.Browser.mobileWebkit,
+		touchZoom: L.Browser.touch && !L.Browser.android,
+		scrollWheelZoom: !L.Browser.touch,
 		doubleClickZoom: true,
 		shiftDragZoom: true,
 		
