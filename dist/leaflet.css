@@ -103,6 +103,31 @@ a.leaflet-active {
 	margin-right: 10px;
 	}
 
+.leaflet-control-checkboxes {
+	background: rgba(0, 0, 0, 0.75);
+	border-radius: 7px;
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	color: white;
+	font-family: sans-serif;
+	font-size: small;
+	padding: 5px;
+	}
+.leaflet-control-checkboxes input {
+	vertical-align: middle;
+	}
+.leaflet-control-checkboxes label {
+	cursor: pointer;
+	margin-left: 0.5em;
+	margin-right: 0.5em;
+	vertical-align: middle;
+	}
+.leaflet-control-checkboxes ul {
+	list-style-type: none;
+	padding-left: 0;
+	margin: 0;
+	}
+
 .leaflet-control-zoom {
 	padding: 5px;
 	background: rgba(0, 0, 0, 0.25);
