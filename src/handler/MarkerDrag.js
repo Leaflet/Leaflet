@@ -39,7 +39,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	_onDrag: function(e) {
 		// update shadow position
 		var iconPos = L.DomUtil.getPosition(this._marker._icon);
-		L.DomUtil.setPosition(this._marker._shadow, iconPos);
+		if (this._marker._shadow) L.DomUtil.setPosition(this._marker._shadow, iconPos);
 		
 		this._marker._latlng = this._marker._map.layerPointToLatLng(iconPos);
 	
