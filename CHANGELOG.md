@@ -19,6 +19,7 @@ Leaflet Changelog
  * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
+ * Fixed a bug that caused en error when dragging marker with icon without shadow (by [@anru](https://github.com/anru)).
 
 ## 0.2.1 (2011-06-18)
 
