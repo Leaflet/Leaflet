@@ -12,6 +12,7 @@ Leaflet Changelog
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
  * Improved circles performance by not drawing them if they're off the clip region.  
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
+ * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
 
 ### Bugfixes
 
@@ -19,7 +20,7 @@ Leaflet Changelog
  * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
- * Fixed a bug that caused en error when dragging marker with icon without shadow (by [@anru](https://github.com/anru)).
+ * Fixed a bug that caused en error when dragging marker with icon without shadow (by [@anru](https://github.com/anru)). [#178](https://github.com/CloudMade/Leaflet/issues/178)
 
 ## 0.2.1 (2011-06-18)
 
