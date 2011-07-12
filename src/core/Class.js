@@ -8,28 +8,28 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	
 	// extended class with the new prototype
 	var NewClass = function() {
-		if (!L.Class._prototyping && this.initialize) {
+		if (this.initialize) {
 			this.initialize.apply(this, arguments);
 		}
 	};
 
 	// instantiate class without calling constructor
-	L.Class._prototyping = true;
-	var proto = new this();
-	L.Class._prototyping = false;
-
+	var F = function() {};
+	F.prototype = this.prototype;
+	var proto = new F();
+	
 	proto.constructor = NewClass;
 	NewClass.prototype = proto;
 	
 	// add superclass access
-	proto.superclass = this.prototype;
+	NewClass.superclass = this.prototype;
 	
 	// add class name
 	//proto.className = props;
 	
 	//inherit parent's statics
 	for (var i in this) {
-		if (this.hasOwnProperty(i) && i != 'prototype') {
+		if (this.hasOwnProperty(i) && i != 'prototype' && i != 'superclass') {
 			NewClass[i] = this[i];
 		}
 	}
