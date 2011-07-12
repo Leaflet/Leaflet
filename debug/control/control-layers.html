@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+	
+		function getCloudMadeUrl(styleId) {
+			return 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + styleId + '/256/{z}/{x}/{y}.png';
+		}
+
+		var cloudmade = new L.TileLayer(getCloudMadeUrl(997)),
+			cloudmade2 = new L.TileLayer(getCloudMadeUrl(998));
+		
+		var map = new L.Map('map').addLayer(cloudmade).setView(new L.LatLng(50.5, 30.51), 15);
+		
+		var marker = new L.Marker(map.getCenter());
+		map.addLayer(marker);
+		
+		var layersControl = new L.Control.Layers();
+		map.addControl(layersControl);
+		
+		layersControl.addBaseLayer(cloudmade, 'CloudMade Fresh');
+		layersControl.addBaseLayer(cloudmade2, 'CloudMade Pale Dawn');
+		layersControl.addOverlay(marker, 'Marker in center');
+		
+	</script>
+</body>
+</html>

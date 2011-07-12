@@ -6,6 +6,7 @@ Leaflet Changelog
 ### Major features
 
  * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
+ * `Control.Layers` control for convenient layer switching.
 
 ### Improvements
 
