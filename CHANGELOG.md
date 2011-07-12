@@ -13,6 +13,8 @@ Leaflet Changelog
  * Improved circles performance by not drawing them if they're off the clip region.  
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
+ * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
+ * Added `hasLayer` method to `Map`.
 
 ### Bugfixes
 
