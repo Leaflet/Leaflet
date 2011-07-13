@@ -147,7 +147,7 @@ a.leaflet-active {
 	-webkit-box-shadow: 0 0 7px #999;
 	box-shadow: 0 0 7px #999;
 	
-	background-color: #fff;
+	background: #f8f8f9;
 	}
 .leaflet-control-layers a {
 	background-image: url(images/layers.png);
@@ -170,6 +170,7 @@ a.leaflet-active {
 	padding: 6px 10px 6px 6px;
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	color: #333;
+	background: #fff;
 	}
 .leaflet-control-layers input {
 	margin-top: 2px;

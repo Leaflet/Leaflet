@@ -45,6 +45,8 @@ L.Control.Layers = L.Class.extend({
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
 		L.DomEvent.disableClickPropagation(this._container);
 		
+		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
+
 		if (this.options.collapsed) {
 			L.DomEvent.addListener(this._container, 'mouseover', this._expand, this);
 			L.DomEvent.addListener(this._container, 'mouseout', this._collapse, this);
@@ -53,12 +55,14 @@ L.Control.Layers = L.Class.extend({
 			link.href = '#';
 			link.title = 'Layers';
 		
+			L.DomEvent.addListener(link, 'focus', this._expand, this);
+			L.DomEvent.addListener(this._map, L.Draggable.START, this._collapse, this);
+			// TODO keyboard accessibility
+
 			this._container.appendChild(link);
 		} else {
 			this._expand();
-		}			
-
-		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
+		}
 
 		this._baseLayersList = L.DomUtil.create('div', 'leaflet-control-layers-base', this._form);
 		this._separator = L.DomUtil.create('div', 'leaflet-control-layers-separator', this._form);

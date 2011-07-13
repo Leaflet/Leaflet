@@ -20,8 +20,9 @@
 			return 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + styleId + '/256/{z}/{x}/{y}.png';
 		}
 
-		var cloudmade = new L.TileLayer(getCloudMadeUrl(997)),
-			cloudmade2 = new L.TileLayer(getCloudMadeUrl(998));
+		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(getCloudMadeUrl(997), {attribution: cloudmadeAttribution}),
+			cloudmade2 = new L.TileLayer(getCloudMadeUrl(998), {attribution: cloudmadeAttribution});
 		
 		var map = new L.Map('map').addLayer(cloudmade).setView(new L.LatLng(50.5, 30.51), 15);
 		
@@ -33,7 +34,7 @@
 		
 		layersControl.addBaseLayer(cloudmade, 'CloudMade Fresh');
 		layersControl.addBaseLayer(cloudmade2, 'CloudMade Pale Dawn');
-		layersControl.addOverlay(marker, 'Marker in center');
+		layersControl.addOverlay(marker, 'Some marker');
 		
 	</script>
 </body>
