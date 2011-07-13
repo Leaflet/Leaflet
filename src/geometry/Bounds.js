@@ -37,7 +37,7 @@ L.Bounds = L.Class.extend({
 			min = obj.min;
 			max = obj.max;
 		} else {
-			max = max = obj;
+			min = max = obj;
 		}
 		
 		return (min.x >= this.min.x) && 
