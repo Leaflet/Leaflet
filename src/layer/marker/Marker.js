@@ -28,6 +28,7 @@ L.Marker = L.Class.extend({
 	},
 	
 	onRemove: function(map) {
+    this.closePopup();
 		this._removeIcon();
 		
 		map.off('viewreset', this._reset, this);
