@@ -6,12 +6,16 @@ Leaflet Changelog
 ### Major features
 
  * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
+ * `Control.Layers` control for convenient layer switching.
 
 ### Improvements
 
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
  * Improved circles performance by not drawing them if they're off the clip region.  
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
+ * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
+ * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
+ * Added `hasLayer` method to `Map`.
 
 ### Bugfixes
 
@@ -19,6 +23,8 @@ Leaflet Changelog
  * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
+ * Fixed a bug that caused en error when dragging marker with icon without shadow (by [@anru](https://github.com/anru)). [#178](https://github.com/CloudMade/Leaflet/issues/178)
+ * Fixed a typo in `Bounds` `contains` method (by [@anru](https://github.com/anru)). [#180](https://github.com/CloudMade/Leaflet/pull/180)
 
 ## 0.2.1 (2011-06-18)
 

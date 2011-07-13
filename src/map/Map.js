@@ -113,7 +113,7 @@ L.Map = L.Class.extend({
 		return this;
 	},
 	
-	addLayer: function(layer) {
+	addLayer: function(layer, insertAtTheTop) {
 		var id = L.Util.stamp(layer);
 		
 		if (this._layers[id]) return this;
@@ -137,7 +137,7 @@ L.Map = L.Class.extend({
 		}
 		
 		var onMapLoad = function() {
-			layer.onAdd(this);
+			layer.onAdd(this, insertAtTheTop);
 			this.fire('layeradd', {layer: layer});
 		};
 		
@@ -168,6 +168,12 @@ L.Map = L.Class.extend({
 			this.fire('layerremove', {layer: layer});
 		}
 		return this;
+	},
+	
+	hasLayer: function(layer) {
+		var id = L.Util.stamp(layer);
+		
+		return (id in this._layers);
 	},
 	
 	invalidateSize: function() {

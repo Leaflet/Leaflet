@@ -103,25 +103,29 @@ a.leaflet-active {
 	margin-right: 10px;
 	}
 
-.leaflet-control-zoom {
-	padding: 5px;
-	background: rgba(0, 0, 0, 0.25);
-	
+.leaflet-control-zoom, .leaflet-control-layers {
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
 	}
+.leaflet-control-zoom {
+	padding: 5px;
+	background: rgba(0, 0, 0, 0.25);
+	}
 .leaflet-control-zoom a {
-	display: block;
-	width: 19px;
-	height: 19px;
+	background-color: rgba(255, 255, 255, 0.75);
+	}
+.leaflet-control-zoom a, .leaflet-control-layers a {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	background-color: rgba(255, 255, 255, 0.75);
-	
+	display: block;
+	}
+.leaflet-control-zoom a {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
+	width: 19px;
+	height: 19px;
 	}
 .leaflet-control-zoom a:hover {
 	background-color: #fff;
@@ -138,6 +142,50 @@ a.leaflet-active {
 	background-image: url(images/zoom-out.png);
 	}
 	
+.leaflet-control-layers {
+	-moz-box-shadow: 0 0 7px #999;
+	-webkit-box-shadow: 0 0 7px #999;
+	box-shadow: 0 0 7px #999;
+	
+	background: #f8f8f9;
+	}
+.leaflet-control-layers a {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-big-buttons .leaflet-control-layers a {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers input {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
 .leaflet-container .leaflet-control-attribution {
 	margin: 0;
 	padding: 0 5px;

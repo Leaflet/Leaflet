@@ -40,4 +40,14 @@ describe('Bounds', function() {
 			expect(a.getCenter()).toEqual(new L.Point(22, 26));
 		});
 	});
+    
+	describe('#contains', function() {
+	    it('should contains other bounds or point', function() {
+	        a.extend(new L.Point(50, 10));
+	        expect(a.contains(b)).toBeTruthy();
+	        expect(b.contains(a)).toBeFalsy();
+	        expect(a.contains(new L.Point(24, 25))).toBeTruthy();
+	        expect(a.contains(new L.Point(54, 65))).toBeFalsy();
+	    });
+	});
 });

@@ -1,5 +1,5 @@
 function noSpecs() {
-	it('should have specs', function() {
+	xit('should have specs', function() {
 		expect('specs').toBe();
 	});
 }
