@@ -4,10 +4,22 @@ L.Control.Layers = L.Class.extend({
 		collapsed: true
 	},
 	
-	initialize: function(options) {
+	initialize: function(baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 		
 		this._layers = {};
+
+		for (var i in baseLayers) {
+			if (baseLayers.hasOwnProperty(i)) {
+				this._addLayer(baseLayers[i], i);
+			}
+		}
+		
+		for (i in overlays) {
+			if (overlays.hasOwnProperty(i)) {
+				this._addLayer(overlays[i], i, true);
+			}
+		}
 	},
 	
 	onAdd: function(map) {
@@ -28,17 +40,20 @@ L.Control.Layers = L.Class.extend({
 	addBaseLayer: function(layer, name) {
 		this._addLayer(layer, name);
 		this._update();
+		return this;
 	},
 	
 	addOverlay: function(layer, name) {
 		this._addLayer(layer, name, true);
 		this._update();
+		return this;
 	},
 	
 	removeLayer: function(layer) {
 		var id = L.Util.stamp(layer);
 		delete this._layers[id];
 		this._update();
+		return this;
 	},
 	
 	_initLayout: function() {

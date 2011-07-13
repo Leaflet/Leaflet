@@ -26,15 +26,21 @@
 		
 		var map = new L.Map('map').addLayer(cloudmade).setView(new L.LatLng(50.5, 30.51), 15);
 		
-		var marker = new L.Marker(map.getCenter());
+		var marker = new L.Marker(new L.LatLng(50.5, 30.505));
 		map.addLayer(marker);
 		
-		var layersControl = new L.Control.Layers();
-		map.addControl(layersControl);
+		var marker2 = new L.Marker(new L.LatLng(50.502, 30.515));
+		map.addLayer(marker2);
 		
-		layersControl.addBaseLayer(cloudmade, 'CloudMade Fresh');
-		layersControl.addBaseLayer(cloudmade2, 'CloudMade Pale Dawn');
-		layersControl.addOverlay(marker, 'Some marker');
+		var layersControl = new L.Control.Layers({
+			'CloudMade Fresh': cloudmade,
+			'CloudMade Pale Dawn': cloudmade2,
+		}, {
+			'Some marker': marker,
+			'Another marker': marker2
+		});
+		
+		map.addControl(layersControl);
 		
 	</script>
 </body>
