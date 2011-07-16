@@ -47,9 +47,10 @@ Leaflet Changelog
  * Fixed a bug with click propagation on popup close button. [#99](https://github.com/CloudMade/Leaflet/issues/99)
  * Fixed inability to remove ImageOverlay layer.
  
-#### Desktop browsers bugfixes
+#### Browser bugfixes
  
  * Fixed a bug where paths would not appear in IE8. 
+ * Fixed a bug where there were occasional slowdowns before zoom animation in WebKit. [#123](https://github.com/CloudMade/Leaflet/issues/123)
  * Fixed incorrect zoom animation & popup styling in Opera 11.11.
  * Fixed popup fade animation in Firefox and Opera.
  * Fixed a bug where map isn't displayed in Firefox when there's an `img { max-width: 100% }` rule.
