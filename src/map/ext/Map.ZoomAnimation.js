@@ -82,25 +82,15 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			this._tileBg.transition.on('end', this._onZoomTransitionEnd, this);
 		}
 		
-		this._removeExcessiveBgTiles();
+		this._stopLoadingBgTiles();
 	},
 	
-	// stops loading all tiles in the background layer and removes tiles that not in the current bbox
-	_removeExcessiveBgTiles: function() {
-		if (!this._container.getBoundingClientRect) return;
-		
-		var mapRect = this._container.getBoundingClientRect(),
-			tiles = [].slice.call(this._tileBg.getElementsByTagName('img'));
+	// stops loading all tiles in the background layer
+	_stopLoadingBgTiles: function() {
+		var tiles = [].slice.call(this._tileBg.getElementsByTagName('img'));
 		
 		for (var i = 0, len = tiles.length; i < len; i++) {
-			var tileRect = tiles[i].getBoundingClientRect();
-			
-			if (!tiles[i].complete ||
-				(tileRect.right <= mapRect.left) || 
-				(tileRect.left >= mapRect.right) ||
-				(tileRect.top >= mapRect.bottom) ||
-				(tileRect.bottom <= mapRect.top)) {
-				
+			if (!tiles[i].complete) {
 				tiles[i].src = '';
 				tiles[i].parentNode.removeChild(tiles[i]);
 			}
