@@ -48,11 +48,46 @@ L.Mixin.Events = {
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			listeners[i].action.call(listeners[i].context || this, event);
 		}
-		
+		return this;
+	},
+	
+	/**
+	 * The function accepts a different set of parameters depending on the arguments passed:
+	 * type, method, context
+	 * or
+	 * hash array of types and handlers, context
+	 */
+	on: function(/*String or map of listeners*/ x,/* Function or context*/ fn, context) {
+		if (typeof x == 'string') {
+			this.addEventListener(x, fn, context);
+		} else {
+			for (var type in x) {
+				if (x.hasOwnProperty(type)) {
+					this.addEventListener(type, x[type], fn);
+				}
+			}
+		}
+		return this;
+	},
+	
+	/**
+	 * The function accepts a different set of parameters depending on the arguments passed:
+	 * type, method, context
+	 * or
+	 * hash array of types and handlers, context
+	 */
+	off: function(/*String or map of listeners*/ x,/* Function or context*/ fn, context) {
+		if (typeof x == 'string') {
+			this.removeEventListener(x, fn, context);
+		} else {
+			for (var type in x) {
+				if (x.hasOwnProperty(type)) {
+					this.removeEventListener(type, x[type], fn);
+				}
+			}
+		}
 		return this;
 	}
 };
 
-L.Mixin.Events.on = L.Mixin.Events.addEventListener;
-L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
 L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
