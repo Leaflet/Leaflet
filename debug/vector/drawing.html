@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+  <div id="menu">
+    <table>
+      <tr>
+        <td><input type="submit" value="Enable Drawing" onclick="polyline.enableDrawing();" /></td>
+        <td><input type="submit" value="Disable Drawing" onclick="polyline.disableDrawing();" /></td>
+        <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polyline.drawingEnabled());" /></td>
+      </tr>
+    </table>
+  </div>
+	<script>
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+		var map = new L.Map('map', {layers: [cloudmade]});
+    map.setView(new L.LatLng(45.417, -75.7), 13).addLayer(cloudmade);
+
+    var line = [new L.LatLng(45.417, -75.7), new L.LatLng(45.4, -75.72)],
+        polyline = new L.Polyline(line);
+
+    map.addLayer(polyline);
+
+	</script>
+</body>
+</html>
+
