@@ -18,6 +18,15 @@ L.Polyline = L.Polyline.extend({
   drawingEnabled: function () {
     return !!this._drawingEnabled;
   },
+  enableEditing: function() {
+    this._editingEnabled = true;
+  },
+  disableEditing: function() {
+    this._editingEnabled = false;
+  },
+  editingEnabled: function() {
+    return !!this._editingEnabled;
+  },
   _onDrawingClick: function (e) {
     this.addLatLng(e.latlng);
 //    if (this._editingEnabled) {
