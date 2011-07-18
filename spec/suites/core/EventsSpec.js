@@ -11,11 +11,13 @@ describe('Events', function() {
 		
 		it('should fire all listeners added through #addEventListener', function() {
 			var obj = new Klass(),
+				parentObj = new Klass(),
 				spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
 				spy3 = jasmine.createSpy();
+			obj._setParentEventTarget(parentObj);
 			
-			obj.addEventListener('test', spy);
+			parentObj.addEventListener('test', spy);
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
 			
@@ -28,6 +30,27 @@ describe('Events', function() {
 			expect(spy).toHaveBeenCalled();
 			expect(spy2).toHaveBeenCalled();
 			expect(spy3).not.toHaveBeenCalled();
+		});
+		
+		it('should stop propagation firing event to parent', function() {
+			var obj = new Klass(),
+				parentObj = new Klass(),
+				spy = jasmine.createSpy(),
+				spy2 = jasmine.createSpy();
+			obj._setParentEventTarget(parentObj);
+			
+			spy.andCallFake(function(e) {
+				e.stopPropagation();
+			});
+			
+			
+			obj.addEventListener('test', spy);
+			parentObj.addEventListener('test', spy2);
+			
+			obj.fireEvent('test');
+			
+			expect(spy).toHaveBeenCalled();
+			expect(spy2).not.toHaveBeenCalled();
 		});
 
 		it('should provide event object to listeners and execute them in the right context', function() {
