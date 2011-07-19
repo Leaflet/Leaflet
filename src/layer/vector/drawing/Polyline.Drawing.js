@@ -48,16 +48,30 @@ L.Polyline = L.Polyline.extend({
     }
   },
   _createMarker: function(latlng) {
-    // TODO
-//    var m = new L.Circle(latlng, 100);
-//    this._map.addLayer(m);
-//    this._attachMarkerOnDrag(m);
-//    return m
-    var s = this._make_square(latlng, 125);
-    this._map.addLayer(s);
-    return s;
+    var m = new L.Marker(latlng, {icon: this._fetchIcon(), draggable: true});
+    this._map.addLayer(m);
+    return m;
+
+// TODO: It would be nice to have SVG squares instead of icon, but
+//       then it must be draggable.
+//    var s = this._makeSquare(latlng, 125);
+//    this._map.addLayer(s);
+//    return s;
   },
-  _make_square: function(latlng, width) {
+  _fetchIcon: function() {
+    if (!this._pointIcon) {
+      var i = new L.Icon({
+        iconUrl: L.ROOT_URL + 'images/square.gif',
+      	includeShadow: false,
+        iconSize: new L.Point(10, 10),
+	    	iconAnchor: new L.Point(5, 5),
+	      popupAnchor: new L.Point(5, 5)
+      });
+      this._pointIcon = i;
+    }
+    return this._pointIcon;
+  },
+  _makeSquare: function(latlng, width) {
     var s = new L.Polygon(this._square_size(latlng, width), {color: '#000000',
       weight: 2,
       opacity: 1,
