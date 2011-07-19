@@ -62,7 +62,8 @@ L.Polyline = L.Polyline.extend({
       weight: 2,
       opacity: 1,
 		  fillColor: "#FFFFFF",
-      fillOpacity: 1});
+      fillOpacity: 1,
+      draggable: true});
     this._map.on('zoomend', this._refreshMarkers, this);
     return s;
   },
@@ -83,7 +84,7 @@ L.Polyline = L.Polyline.extend({
   },
   _square_size: function(latlng, width) {
     var point = this._map.latLngToLayerPoint(latlng),
-        adjust = width / (2 * this._map.getZoom()),
+        adjust = width / (2 * this._map.getZoom()), // relative to zoom level
         bl = this._map.layerPointToLatLng(new L.Point(point.x - adjust, point.y + adjust)),
         br = this._map.layerPointToLatLng(new L.Point(point.x + adjust, point.y + adjust)),
         tl = this._map.layerPointToLatLng(new L.Point(point.x - adjust, point.y - adjust)),
@@ -105,8 +106,9 @@ L.Polyline = L.Polyline.extend({
 //      }
     }
   },
-  _attachMarkerOnDrag: function(m) {
+  _dragAction: function(m) {
     //TODO
+    alert("drag!");
   }
 
 });

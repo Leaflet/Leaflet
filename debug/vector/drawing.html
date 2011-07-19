@@ -36,6 +36,16 @@
     var line = [new L.LatLng(45.417, -75.7), new L.LatLng(45.4, -75.72)],
         polyline = new L.Polyline(line);
 
+
+
+		var circle = new L.Circle(new L.LatLng(45.42, -75.72), 400, {clickable: true, draggable: true});
+
+
+
+    map.addLayer(circle);
+
+//    var m = new L.Marker(new L.LatLng(45.42, -75.72), {draggable: true});
+//    map.addLayer(m);
     map.addLayer(polyline);
 
 	</script>
