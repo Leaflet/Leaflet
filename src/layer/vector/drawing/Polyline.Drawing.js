@@ -101,7 +101,7 @@ L.Polyline = L.Polyline.extend({
 
   _removeMarkers: function() {
     for (var a = 0; a < this._markers.length; a++) {
-      this._removeMarker(this._markers[a]);
+      this._map.removeLayer(this._markers[a]);
 //         TODO
 //        if (this._markers[a].middleRight) {
 //          this.map.removeOverlay(this._markers[a].middleRight)
@@ -110,9 +110,9 @@ L.Polyline = L.Polyline.extend({
     this._markers = [];
   },
 
-  _removeMarker: function(m) {
-    this._map.removeLayer(m);
+  _removeSingleMarker: function(m) {
     this._markers.splice(L.Util.indexOf(this._markers, m), 1);
+    this._map.removeLayer(m);
   },
 
   _square_size: function(latlng, width) {
@@ -156,7 +156,7 @@ L.Polyline = L.Polyline.extend({
     m.on('click', function(e) {
       var i = L.Util.indexOf(this._latlngs, e.target._latlng);
       this._removeVertex(i);
-      this._removeMarker(e.target);
+      this._removeSingleMarker(e.target);
     }, this);
   },
 
