@@ -91,8 +91,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		
 		for (var i = 0, len = tiles.length; i < len; i++) {
 			if (!tiles[i].complete) {
-				tiles[i].src = '';
+				// tiles[i].src = '' - evil, doesn't cancel the request!
 				tiles[i].parentNode.removeChild(tiles[i]);
+				tiles[i] = null;
 			}
 		}
 	},

@@ -67,6 +67,13 @@ L.DomUtil = {
 		}
 	},
 	
+	removeClass: function(el, name) {
+		el.className = el.className.replace(/(\w+)\s*/g, function(w, match) {
+			if (match == name) return '';
+			return w;
+		}).replace(/^\s+/, '');
+	},
+	
 	setOpacity: function(el, value) {
 		if (L.Browser.ie) {
 			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
