@@ -6,12 +6,18 @@ Leaflet Changelog
 ### Major features
 
  * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
- * `Control.Layers` control for convenient layer switching.
+ * Added **layers control** (`Control.Layers`) for convenient layer switching.
 
 ### Improvements
 
- * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
+#### Usability improvements
+
+ * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Improved circles performance by not drawing them if they're off the clip region.  
+
+#### API improvements
+
+ * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
