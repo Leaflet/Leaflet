@@ -9,7 +9,7 @@ L.LineUtil = {
 	 * Improves rendering performance dramatically by lessening the number of points to draw.
 	 */
 	simplify: function(/*Point[]*/ points, /*Number*/ tolerance) {
-		if (!tolerance) return points.slice();
+		if (!tolerance || !points.length) return points.slice();
 		
 		// stage 1: vertex reduction
 		points = this.reducePoints(points, tolerance);
@@ -22,7 +22,13 @@ L.LineUtil = {
 	
 	// distance from a point to a segment between two points
 	pointToSegmentDistance:  function(/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
-		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));	
+		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));
+	},
+	
+	closestPointOnSegment: function(/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
+		var point = this._sqClosestPointOnSegment(p, p1, p2);
+		point.distance = Math.sqrt(point._sqDist);
+		return point;
 	},
 	
 	// Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
@@ -140,8 +146,10 @@ L.LineUtil = {
 		return dx * dx + dy * dy;
 	},
 	
-	// square distance from point to a segment
-	_sqPointToSegmentDist: function(p, p1, p2) {
+	/**
+	 * @return L.Point point on segment with attribute _sqDist - square distance to segment
+	 */	
+	_sqClosestPointOnSegment: function(p, p1, p2) {
 		var x2 = p2.x - p1.x,
 			y2 = p2.y - p1.y;
 		
@@ -150,10 +158,18 @@ L.LineUtil = {
 		var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
 			t = dot / this._sqDist(p1, p2);
 		
-		if (t < 0) return this._sqDist(p, p1);
-		if (t > 1) return this._sqDist(p, p2);
-		
-		var proj = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
-		return this._sqDist(p, proj);
-	}	
+		var apoint = p1;
+		if (t > 1) {
+			apoint = p2;
+		} else if (t > 0) {
+			apoint = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
+		}
+		apoint._sqDist = this._sqDist(p, apoint);
+		return apoint;
+	},
+	
+	// distance from a point to a segment between two points
+	_sqPointToSegmentDist: function(p, p1, p2) {
+		return this._sqClosestPointOnSegment(p, p1, p2)._sqDist;
+	}
 };
