@@ -151,18 +151,17 @@ L.LineUtil = {
 	 */	
 	_sqClosestPointOnSegment: function(p, p1, p2) {
 		var x2 = p2.x - p1.x,
-			y2 = p2.y - p1.y;
-		
-		if (!x2 && !y2) return this._sqDist(p, p1);
-		
-		var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
-			t = dot / this._sqDist(p1, p2);
-		
-		var apoint = p1;
-		if (t > 1) {
-			apoint = p2;
-		} else if (t > 0) {
-			apoint = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
+			y2 = p2.y - p1.y,
+			apoint = p1;
+		if (x2 || y2) {
+			var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
+				t = dot / this._sqDist(p1, p2);
+			
+			if (t > 1) {
+				apoint = p2;
+			} else if (t > 0) {
+				apoint = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
+			}
 		}
 		apoint._sqDist = this._sqDist(p, apoint);
 		return apoint;
