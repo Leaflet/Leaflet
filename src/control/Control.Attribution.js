@@ -17,6 +17,7 @@ L.Control.Attribution = L.Class.extend({
 	
 	setPrefix: function(prefix) {
 		this._prefix = prefix;
+		this._update();
 	},
 	
 	addAttribution: function(text) {
