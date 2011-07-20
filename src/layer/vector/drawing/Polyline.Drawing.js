@@ -9,15 +9,18 @@ L.Polyline = L.Polyline.extend({
       this._drawingEnabled = true;
     }
   },
+
   disableDrawing: function () {
     if (this._drawingEnabled) {
       this._map.off('click', this._onDrawingClick, this);
       this._drawingEnabled = false;
     }
   },
+
   drawingEnabled: function () {
     return !!this._drawingEnabled;
   },
+
   enableEditing: function() {
     var a, b;
     if (!this.editingEnabled()) {
@@ -25,15 +28,18 @@ L.Polyline = L.Polyline.extend({
       this._editingEnabled = true;
     }
   },
+
   disableEditing: function() {
     if (this.editingEnabled()) {
       this._removeMarkers();
       this._editingEnabled = false;
     }
   },
+
   editingEnabled: function() {
     return !!this._editingEnabled;
   },
+
   _createEndMarkers: function() {
     this._markers = [];
     for (a = 0; a < this._latlngs.length; a++) {
@@ -47,9 +53,11 @@ L.Polyline = L.Polyline.extend({
 //        this._createMiddleMarker(this._markers[b], this._markers[a])
     }
   },
+
   _createMarker: function(latlng) {
     var m = new L.Marker(latlng, {icon: this._fetchIcon(), draggable: true});
     this._map.addLayer(m);
+    this._attachDragAction(m);
     return m;
 
 // TODO: It would be nice to have SVG squares instead of icon, but
@@ -58,6 +66,7 @@ L.Polyline = L.Polyline.extend({
 //    this._map.addLayer(s);
 //    return s;
   },
+
   _fetchIcon: function() {
     if (!this._pointIcon) {
       var i = new L.Icon({
@@ -71,6 +80,7 @@ L.Polyline = L.Polyline.extend({
     }
     return this._pointIcon;
   },
+
   _makeSquare: function(latlng, width) {
     var s = new L.Polygon(this._square_size(latlng, width), {color: '#000000',
       weight: 2,
@@ -81,11 +91,13 @@ L.Polyline = L.Polyline.extend({
     this._map.on('zoomend', this._refreshMarkers, this);
     return s;
   },
+
   _refreshMarkers: function() {
     // keep square size relative to zoom level
     this._removeMarkers();
     this._createEndMarkers();
   },
+
   _removeMarkers: function() {
     for (var a = 0; a < this._markers.length; a++) {
       this._map.removeLayer(this._markers[a]);
@@ -96,6 +108,7 @@ L.Polyline = L.Polyline.extend({
     }
     this._markers = [];
   },
+
   _square_size: function(latlng, width) {
     var point = this._map.latLngToLayerPoint(latlng),
         adjust = width / (2 * this._map.getZoom()), // relative to zoom level
@@ -105,6 +118,7 @@ L.Polyline = L.Polyline.extend({
         tr = this._map.layerPointToLatLng(new L.Point(point.x + adjust, point.y - adjust))
     return [tl, bl, br, tr];
   },
+
   _onDrawingClick: function (e) {
     this.addLatLng(e.latlng);
     if (this._editingEnabled) {
@@ -120,9 +134,35 @@ L.Polyline = L.Polyline.extend({
 //      }
     }
   },
-  _dragAction: function(m) {
-    //TODO
-    alert("drag!");
+
+  _setVertex: function(i, latlng) {
+    this._latlngs[i] = latlng;
+    this._redraw();
+    this.fire('lineupdated');
+  },
+
+  _attachDragAction: function(m) {
+    m.on('drag', function(e) {
+      var i = L.Util.indexOf(this._markers, e.target)
+          latlng = e.target._latlng;
+
+      this._setVertex(i, latlng);
+
+//    CM.Event.addListener(d, 'drag', function () {
+//      var a = this._getIndex(d);
+//      this.setVertex(a, d.getLatLng());
+//      var b = this._markers[(a > 0 ? a - 1 : this._markers.length - 1)];
+//      var c = this._markers[(a < this._markers.length - 1 ? a + 1 : 0)];
+//      if (d.middleLeft) {
+//        d.middleLeft.setLatLng(this._getMiddleLatLng(b, d))
+//      }
+//      if (d.middleRight) {
+//        d.middleRight.setLatLng(this._getMiddleLatLng(d, c))
+//      }
+//    }, this)
+
+    }, this);
+
   }
 
 });
