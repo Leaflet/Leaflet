@@ -17,7 +17,8 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 	},
 	
 	_onWheelScroll: function(e) {
-		this._delta += L.DomEvent.getWheelDelta(e);
+		var delta = L.DomEvent.getWheelDelta(e);
+		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 		
 		clearTimeout(this._timer);
@@ -28,6 +29,7 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 	
 	_performZoom: function() {
 		var delta = Math.round(this._delta);
+		delta = Math.max(Math.min(delta, 4), -4);
 		this._delta = 0;
 		
 		if (!delta) { return; }
