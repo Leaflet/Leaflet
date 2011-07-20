@@ -29,19 +29,19 @@ L.Util = {
 			return obj[key];
 		};
 	})(),
-	
+
 	requestAnimFrame: (function() {
 		function timeoutDefer(callback) {
 			window.setTimeout(callback, 1000 / 60);
 		}
-		
-		var requestFn = window.requestAnimationFrame || 
-			window.webkitRequestAnimationFrame || 
-			window.mozRequestAnimationFrame || 
-			window.oRequestAnimationFrame || 
-			window.msRequestAnimationFrame || 
+
+		var requestFn = window.requestAnimationFrame ||
+			window.webkitRequestAnimationFrame ||
+			window.mozRequestAnimationFrame ||
+			window.oRequestAnimationFrame ||
+			window.msRequestAnimationFrame ||
 			timeoutDefer;
-		
+
 		return function(callback, context, immediate) {
 			callback = context ? L.Util.bind(callback, context) : context;
 			if (immediate && requestFn === timeoutDefer) {
@@ -52,7 +52,7 @@ L.Util = {
 		};
 	})(),
 
-	limitExecByInterval: function(fn, time, context) {	
+	limitExecByInterval: function(fn, time, context) {
 		var lock, execOnUnlock, args;
 		function exec(){
 			lock = false;
@@ -63,7 +63,7 @@ L.Util = {
 		}
 		return function() {
 			args = arguments;
-			if (!lock) {				
+			if (!lock) {
 				lock = true;
 				setTimeout(exec, time);
 				fn.apply(context, args);
@@ -72,18 +72,18 @@ L.Util = {
 			}
 		};
 	},
-	
+
 	falseFn: function() { return false; },
-	
+
 	formatNum: function(num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
 	},
-	
+
 	setOptions: function(obj, options) {
 		obj.options = L.Util.extend({}, obj.options, options);
 	},
-	
+
 	getParamString: function(obj) {
 		var params = [];
 		for (var i in obj) {
@@ -92,5 +92,26 @@ L.Util = {
 			}
 		}
 		return '?' + params.join('&');
-	}
+	},
+
+	indexOf: function(haystack, needle, /*From Index*/ from) {
+    if (Array.prototype.indexOf) {
+      return Array.prototype.indexOf.call(haystack, needle, from)
+    } else {
+      var len = a.length;
+      from = from || 0;
+      from = from < 0 ? Math.ceil(from) : Math.floor(from);
+      if (from < 0) {
+        from += len;
+      }
+      for (; from < len; from++) {
+        if (from in haystack && haystack[from] === needle) {
+          return from
+        }
+      }
+      return -1
+    }
+  }
+
 };
+
