@@ -57,6 +57,7 @@ L.Polyline = L.Polyline.extend({
   _createMarker: function(latlng) {
     var m = new L.Marker(latlng, {icon: this._fetchIcon(), draggable: true});
     this._map.addLayer(m);
+    this._attachRemoveAction(m);
     this._attachDragAction(m);
     return m;
 
@@ -100,13 +101,18 @@ L.Polyline = L.Polyline.extend({
 
   _removeMarkers: function() {
     for (var a = 0; a < this._markers.length; a++) {
-      this._map.removeLayer(this._markers[a]);
+      this._removeMarker(this._markers[a]);
 //         TODO
 //        if (this._markers[a].middleRight) {
 //          this.map.removeOverlay(this._markers[a].middleRight)
 //        }
     }
     this._markers = [];
+  },
+
+  _removeMarker: function(m) {
+    this._map.removeLayer(m);
+    this._markers.splice(L.Util.indexOf(this._markers, m), 1);
   },
 
   _square_size: function(latlng, width) {
@@ -141,9 +147,22 @@ L.Polyline = L.Polyline.extend({
     this.fire('lineupdated');
   },
 
+  _removeVertex: function(i) {
+    this.spliceLatLngs(i, 1);
+    this.fire('lineupdated');
+  },
+
+  _attachRemoveAction: function(m) {
+    m.on('click', function(e) {
+      var i = L.Util.indexOf(this._latlngs, e.target._latlng);
+      this._removeVertex(i);
+      this._removeMarker(e.target);
+    }, this);
+  },
+
   _attachDragAction: function(m) {
     m.on('drag', function(e) {
-      var i = L.Util.indexOf(this._markers, e.target)
+      var i = L.Util.indexOf(this._markers, e.target),
           latlng = e.target._latlng;
 
       this._setVertex(i, latlng);
