@@ -51,6 +51,25 @@ L.Polyline = L.Path.extend({
 		return removed;
 	},
 	
+	closestLayerPoint: function(p) {
+		var minDistance = Infinity, parts = this._parts, p1, p2, minPoint = null;
+
+		for (var j = 0, jLen = parts.length; j < jLen; j++) {
+			var points = parts[j];
+			for (var i = 1, len = points.length; i < len; i++) {
+				p1 = points[i-1];
+				p2 = points[i];
+				var point = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
+				if (point._sqDist < minDistance) {
+					minDistance = point._sqDist;
+					minPoint = point;
+				}
+			}			
+		}
+		if (minPoint) minPoint.distance = Math.sqrt(minDistance);
+		return minPoint;
+	},
+
 	_getPathPartStr: function(points) {
 		var round = L.Path.VML;
 		
