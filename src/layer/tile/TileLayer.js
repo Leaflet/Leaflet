@@ -30,11 +30,12 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	onAdd: function(map, insertAtTheTop) {
+	onAdd: function(map, insertAtTheBottom) {
 		this._map = map;
+		this._insertAtTheBottom = insertAtTheBottom;
 		
 		// create a container div for tiles
-		this._initContainer(insertAtTheTop);
+		this._initContainer();
 		
 		// create an image to clone for tiles
 		this._createTileProto();
@@ -89,14 +90,14 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	_initContainer: function(insertAtTheTop) {
+	_initContainer: function() {
 		var tilePane = this._map.getPanes().tilePane,
 			first = tilePane.firstChild;
 		
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
 			
-			if (insertAtTheTop && first) {
+			if (this._insertAtTheBottom && first) {
 				tilePane.insertBefore(this._container, first);
 			} else {
 				tilePane.appendChild(this._container);
