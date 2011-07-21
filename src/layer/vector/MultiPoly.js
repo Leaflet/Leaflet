@@ -7,9 +7,8 @@
 		return L.FeatureGroup.extend({
 			initialize: function(latlngs, options) {
 				this._layers = {};
-				for (var i = 0, len = latlngs.length; i < len; i++) {
-					this.addLayer(new klass(latlngs[i], options));
-				}
+				this._options = options;
+				this.setLatLngs(latlngs);
 			},
 
 			setStyle: function(style) {
@@ -17,6 +16,22 @@
 					if (this._layers.hasOwnProperty(i) && this._layers[i].setStyle) {
 						this._layers[i].setStyle(style);
 					}
+				}
+			},
+			
+			setLatLngs: function(latlngs) {
+				var i = 0, len = latlngs.length;
+				
+				this._iterateLayers(function(layer) {
+					if (i < len) {
+						layer.setLatLngs(latlngs[i++]);
+					} else {
+						this.removeLayer(layer);
+					}
+				}, this);
+				
+				while (i < len) {
+					this.addLayer(new klass(latlngs[i++], this._options));
 				}
 			}
 		});
