@@ -6,18 +6,38 @@ Leaflet Changelog
 ### Major features
 
  * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
+ * Added **layers control** (`Control.Layers`) for convenient layer switching.
 
 ### Improvements
 
- * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
+#### Usability improvements
+
+ * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Improved circles performance by not drawing them if they're off the clip region.  
+
+#### API improvements
+
+ * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
+ * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
+ * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
+ * Added `hasLayer` method to `Map`.
+ * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
+ * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194) 
+ * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).
 
 ### Bugfixes
 
+ * Fixed crash on Android 3+ when panning or zooming (by [@florian](https://github.com/florianf)). [#137](https://github.com/CloudMade/Leaflet/issues/137)
+ * Fixed occasional crashes on Mac Safari (thanks to [@lapinos03](https://github.com/lapinos03)). [#191](https://github.com/CloudMade/Leaflet/issues/191)
  * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
+ * Fixed a bug that caused en error when dragging marker with icon without shadow (by [@anru](https://github.com/anru)). [#178](https://github.com/CloudMade/Leaflet/issues/178)
+ * Fixed a typo in `Bounds` `contains` method (by [@anru](https://github.com/anru)). [#180](https://github.com/CloudMade/Leaflet/pull/180)
+ * Fixed a bug where drag event fired before the actual movement of layer (by [@anru](https://github.com/anru)). [#197](https://github.com/CloudMade/Leaflet/pull/197)
+ * Fixed a bug where map click caused an error if dragging is initially disabled. [#196](https://github.com/CloudMade/Leaflet/issues/196)
+ * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)  
 
 ## 0.2.1 (2011-06-18)
 

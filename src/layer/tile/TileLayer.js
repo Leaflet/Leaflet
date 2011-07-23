@@ -30,8 +30,9 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	onAdd: function(map) {
+	onAdd: function(map, insertAtTheBottom) {
 		this._map = map;
+		this._insertAtTheBottom = insertAtTheBottom;
 		
 		// create a container div for tiles
 		this._initContainer();
@@ -90,10 +91,17 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_initContainer: function() {
-		var tilePane = this._map.getPanes().tilePane;
+		var tilePane = this._map.getPanes().tilePane,
+			first = tilePane.firstChild;
 		
 		if (!this._container || tilePane.empty) {
-			this._container = L.DomUtil.create('div', 'leaflet-layer', tilePane);
+			this._container = L.DomUtil.create('div', 'leaflet-layer');
+			
+			if (this._insertAtTheBottom && first) {
+				tilePane.insertBefore(this._container, first);
+			} else {
+				tilePane.appendChild(this._container);
+			}
 			
 			this._setOpacity(this.options.opacity);
 		}
@@ -161,8 +169,10 @@ L.TileLayer = L.Class.extend({
 				
 				// remove tile if it's out of bounds
 				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-					// Don't do that, crashes Android 3.1 Webkit browser
-					//this._tiles[key].src = '';
+					
+					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
+					// this._tiles[key].src = ''; 
+					
 					if (this._tiles[key].parentNode == this._container) {
 						this._container.removeChild(this._tiles[key]);
 					}

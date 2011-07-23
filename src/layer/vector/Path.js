@@ -59,6 +59,7 @@ L.Path = L.Class.extend({
 		if (this._container) {
 			this._updateStyle();
 		}
+		return this;
 	},
 	
 	_initElements: function() {

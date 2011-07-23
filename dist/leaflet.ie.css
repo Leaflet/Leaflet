@@ -41,6 +41,8 @@
 .leaflet-control-zoom a:hover {
 	background-color: #fff;
 	}
-.leaflet-control-attribution {
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#B2FFFFFF,endColorstr=#B2FFFFFF);
+.leaflet-control-layers-toggle {
+	}
+.leaflet-control-attribution, .leaflet-control-layers {
+	background: white;
 	}

@@ -76,6 +76,7 @@
 		'control/Control.js',
 		'control/Control.Zoom.js',
 		'control/Control.Attribution.js',
+		'control/Control.Layers.js',
 		
 		'map/Map.js',
 		'map/ext/Map.Geolocation.js',
