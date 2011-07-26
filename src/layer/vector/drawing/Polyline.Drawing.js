@@ -43,7 +43,7 @@ L.Polyline = L.Polyline.extend({
   _createEndMarkers: function() {
     this._markers = [];
     for (a = 0; a < this._latlngs.length; a++) {
-      this._markers.push(this._createMarker(this._latlngs[a]))
+      this._markers.push(this._createMarker(this._latlngs[a], a))
     }
     for (a = 0, b = this._markers.length - 1; a < this._markers.length; b = a++) {
       // TODO
@@ -54,8 +54,9 @@ L.Polyline = L.Polyline.extend({
     }
   },
 
-  _createMarker: function(latlng) {
+  _createMarker: function(latlng, vertexIndex) {
     var m = new L.Marker(latlng, {icon: this._fetchIcon(), draggable: true});
+    m._vertexIndex = vertexIndex;
     this._map.addLayer(m);
     this._attachRemoveAction(m);
     this._attachDragAction(m);
@@ -95,7 +96,7 @@ L.Polyline = L.Polyline.extend({
   _onDrawingClick: function (e) {
     this.addLatLng(e.latlng);
     if (this._editingEnabled) {
-      this._markers.push(this._createMarker(e.latlng));
+      this._markers.push(this._createMarker(e.latlng, this._latlngs.length - 1));
 //      if (b > 0) {
 //        if (this._markers[b - 1].middleRight) {
 //          this.map.removeOverlay(this._markers[b - 1].middleRight)
@@ -106,6 +107,7 @@ L.Polyline = L.Polyline.extend({
 //        }
 //      }
     }
+    this.fire('lineupdated');
   },
 
   _setVertex: function(i, latlng) {
@@ -119,20 +121,25 @@ L.Polyline = L.Polyline.extend({
     this.fire('lineupdated');
   },
 
+  _reassignVertices: function() {
+    // at this point, there should be the same number of markers as vertices
+    // and they should still be in order
+    for (var i = 0; i < this._latlngs.length; i++) {
+      this._markers[i]._vertexIndex = i;
+    }
+  },
+
   _attachRemoveAction: function(m) {
     m.on('click', function(e) {
-      var i = L.Util.indexOf(this._latlngs, e.target._latlng);
-      this._removeVertex(i);
+      this._removeVertex(e.target._vertexIndex);
       this._removeSingleMarker(e.target);
+      this._reassignVertices();
     }, this);
   },
 
   _attachDragAction: function(m) {
     m.on('drag', function(e) {
-      var i = L.Util.indexOf(this._markers, e.target),
-          latlng = e.target._latlng;
-
-      this._setVertex(i, latlng);
+      this._setVertex(e.target._vertexIndex, e.target._latlng);
 
 //    CM.Event.addListener(d, 'drag', function () {
 //      var a = this._getIndex(d);
