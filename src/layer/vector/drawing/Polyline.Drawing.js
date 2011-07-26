@@ -60,12 +60,6 @@ L.Polyline = L.Polyline.extend({
     this._attachRemoveAction(m);
     this._attachDragAction(m);
     return m;
-
-// TODO: It would be nice to have SVG squares instead of icon, but
-//       then it must be draggable.
-//    var s = this._makeSquare(latlng, 125);
-//    this._map.addLayer(s);
-//    return s;
   },
 
   _fetchIcon: function() {
@@ -82,23 +76,6 @@ L.Polyline = L.Polyline.extend({
     return this._pointIcon;
   },
 
-  _makeSquare: function(latlng, width) {
-    var s = new L.Polygon(this._square_size(latlng, width), {color: '#000000',
-      weight: 2,
-      opacity: 1,
-		  fillColor: "#FFFFFF",
-      fillOpacity: 1,
-      draggable: true});
-    this._map.on('zoomend', this._refreshMarkers, this);
-    return s;
-  },
-
-  _refreshMarkers: function() {
-    // keep square size relative to zoom level
-    this._removeMarkers();
-    this._createEndMarkers();
-  },
-
   _removeMarkers: function() {
     for (var a = 0; a < this._markers.length; a++) {
       this._map.removeLayer(this._markers[a]);
@@ -113,16 +90,6 @@ L.Polyline = L.Polyline.extend({
   _removeSingleMarker: function(m) {
     this._markers.splice(L.Util.indexOf(this._markers, m), 1);
     this._map.removeLayer(m);
-  },
-
-  _square_size: function(latlng, width) {
-    var point = this._map.latLngToLayerPoint(latlng),
-        adjust = width / (2 * this._map.getZoom()), // relative to zoom level
-        bl = this._map.layerPointToLatLng(new L.Point(point.x - adjust, point.y + adjust)),
-        br = this._map.layerPointToLatLng(new L.Point(point.x + adjust, point.y + adjust)),
-        tl = this._map.layerPointToLatLng(new L.Point(point.x - adjust, point.y - adjust)),
-        tr = this._map.layerPointToLatLng(new L.Point(point.x + adjust, point.y - adjust))
-    return [tl, bl, br, tr];
   },
 
   _onDrawingClick: function (e) {
