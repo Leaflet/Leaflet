@@ -65,8 +65,8 @@
 
     'layer/vector/drawing/Drawing.js',
     'layer/vector/drawing/Drawing.LineUtils.js',
-		'layer/vector/drawing/Polyline.Drawing.js',
-		'layer/vector/drawing/Polygon.Drawing.js',
+		'layer/vector/drawing/Drawing.Polyline.js',
+		'layer/vector/drawing/Drawing.Polygon.js',
 
 		'layer/GeoJSON.js',
 
