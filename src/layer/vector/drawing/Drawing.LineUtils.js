@@ -8,11 +8,6 @@ L.Drawing.LineUtils = {
       this._markers.push(this._createMarker(this._latlngs[a], a))
     }
     for (a = 0, b = this._markers.length - 1; a < this._markers.length; b = a++) {
-      // TODO
-//        if (a === 0 && !(CM.Polygon && (this instanceof CM.Polygon))) {
-//          continue
-//        }
-//        this._createMiddleMarker(this._markers[b], this._markers[a])
     }
   },
 
@@ -42,10 +37,6 @@ L.Drawing.LineUtils = {
   _removeMarkers: function() {
     for (var a = 0; a < this._markers.length; a++) {
       this._map.removeLayer(this._markers[a]);
-//         TODO
-//        if (this._markers[a].middleRight) {
-//          this.map.removeOverlay(this._markers[a].middleRight)
-//        }
     }
     this._markers = [];
   },
@@ -59,15 +50,6 @@ L.Drawing.LineUtils = {
     this.addLatLng(e.latlng);
     if (this._editingEnabled) {
       this._markers.push(this._createMarker(e.latlng, this._latlngs.length - 1));
-//      if (b > 0) {
-//        if (this._markers[b - 1].middleRight) {
-//          this.map.removeOverlay(this._markers[b - 1].middleRight)
-//        }
-//        this._createMiddleMarker(this._markers[b - 1], this._markers[b]);
-//        if (CM.Polygon && (this instanceof CM.Polygon)) {
-//          this._createMiddleMarker(this._markers[b], this._markers[0])
-//        }
-//      }
     }
     this.fire('lineupdated');
   },
@@ -102,20 +84,6 @@ L.Drawing.LineUtils = {
   _attachDragAction: function(m) {
     m.on('drag', function(e) {
       this._setVertex(e.target._vertexIndex, e.target._latlng);
-
-//    CM.Event.addListener(d, 'drag', function () {
-//      var a = this._getIndex(d);
-//      this.setVertex(a, d.getLatLng());
-//      var b = this._markers[(a > 0 ? a - 1 : this._markers.length - 1)];
-//      var c = this._markers[(a < this._markers.length - 1 ? a + 1 : 0)];
-//      if (d.middleLeft) {
-//        d.middleLeft.setLatLng(this._getMiddleLatLng(b, d))
-//      }
-//      if (d.middleRight) {
-//        d.middleRight.setLatLng(this._getMiddleLatLng(d, c))
-//      }
-//    }, this)
-
     }, this);
 
   }
