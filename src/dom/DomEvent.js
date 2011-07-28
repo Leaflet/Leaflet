@@ -117,7 +117,7 @@ L.DomEvent = {
 			y = e.pageY ? e.pageY : e.clientY + 
 					document.body.scrollTop + document.documentElement.scrollTop,
 			pos = new L.Point(x, y);
-			
+			pos=pos.add(L.DomUtil.getCumulativeScroll(container))
 		return (container ? 
 					pos.subtract(L.DomUtil.getCumulativeOffset(container)) : pos);
 	},
