@@ -15,6 +15,9 @@
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+    <button onclick="map.removeLayer(path)">Remove path</button>
+    <button onclick="map.removeLayer(circle)">Remove circle</button>
+
 
 	<script src="route.js"></script>
 	<script>
@@ -79,9 +82,6 @@
 		polygon.bindPopup('I am a polygon');
 
 	</script>
-
-    <div style='position:absolute;z-index:100;right: 10px; top: 10px; cursor:pointer; background-color: #ccc' onclick="map.removeLayer(path)">Remove path</div>
-    <div style='position:absolute;z-index:100;right: 10px; top: 30px; cursor:pointer; background-color: #ccc' onclick="map.removeLayer(circle)">Remove circle</div>
 
 </body>
 </html>
