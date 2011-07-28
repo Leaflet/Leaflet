@@ -9,22 +9,70 @@
 	<link rel="stylesheet" href="../css/screen.css" />
 
 	<script src="../leaflet-include.js"></script>
+	<style type="text/css">
+	  h2{
+  	  margin: 0px 0px 5px 0px;
+	  }
+	  div#map{
+	    float: left;
+	    width: 800px;
+	    height: 600px;
+	    border: 1px solid #ccc;
+	  }
+	  div#polyline,
+	  div#polygon{
+	    float: right;
+	    margin: 20px;
+	  }
+	  div#polyline{
+	    color: blue;
+	  }
+	  div#polyline table{
+	    border: 1px solid blue;
+	    margin-bottom: 20px;
+	  }
+	  div#polygon{
+	    color: red;
+	  }
+	  div#polygon table{
+	    border: 1px solid red;
+	    margin-bottom: 20px;
+	  }
+	</style>
 </head>
 <body>
-	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+	<div id="map"></div>
   <div id="menu">
-    <table>
-      <tr>
-        <td><input type="submit" value="Enable Drawing" onclick="polyline.enableDrawing();" /></td>
-        <td><input type="submit" value="Disable Drawing" onclick="polyline.disableDrawing();" /></td>
-        <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polyline.drawingEnabled());" /></td>
-      </tr>
-      <tr>
-        <td><input type="submit" value="Enable Editing" onclick="polyline.enableEditing();" /></td>
-        <td><input type="submit" value="Disable Editing" onclick="polyline.disableEditing();" /></td>
-        <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polyline.editingEnabled());" /></td>
-      </tr>
-    </table>
+    <div id="polyline">
+      <h2>Polyline</h2>
+      <table>
+        <tr>
+          <td><input type="submit" value="Enable Drawing" onclick="polyline.enableDrawing();" /></td>
+          <td><input type="submit" value="Disable Drawing" onclick="polyline.disableDrawing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polyline.drawingEnabled());" /></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Enable Editing" onclick="polyline.enableEditing();" /></td>
+          <td><input type="submit" value="Disable Editing" onclick="polyline.disableEditing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polyline.editingEnabled());" /></td>
+        </tr>
+      </table>
+    </div>
+    <div id="polygon">
+      <h2>Polygon</h2>
+      <table>
+        <tr>
+          <td><input type="submit" value="Enable Drawing" onclick="polygon.enableDrawing();" /></td>
+          <td><input type="submit" value="Disable Drawing" onclick="polygon.disableDrawing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polygon.drawingEnabled());" /></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Enable Editing" onclick="polygon.enableEditing();" /></td>
+          <td><input type="submit" value="Disable Editing" onclick="polygon.disableEditing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polygon.editingEnabled());" /></td>
+        </tr>
+      </table>
+    </div>
   </div>
 	<script>
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
@@ -36,17 +84,12 @@
     var line = [new L.LatLng(45.417, -75.7), new L.LatLng(45.4, -75.72)],
         polyline = new L.Polyline(line);
 
+		var line2 = [new L.LatLng(45.418, -75.72), new L.LatLng(45.418, -75.729),
+		             new L.LatLng(45.412, -75.733), new L.LatLng(45.408, -75.718)],
+		    polygon = new L.Polygon(line2, {color: '#FF0000'})
 
-
-		var circle = new L.Circle(new L.LatLng(45.42, -75.72), 400, {clickable: true, draggable: true});
-
-
-
-    map.addLayer(circle);
-
-//    var m = new L.Marker(new L.LatLng(45.42, -75.72), {draggable: true});
-//    map.addLayer(m);
     map.addLayer(polyline);
+    map.addLayer(polygon);
 
 	</script>
 </body>
