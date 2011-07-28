@@ -28,7 +28,16 @@ L.DomUtil = {
 			el = el.offsetParent;
 		} while (el);
 		return new L.Point(left, top);
-	},
+	},getCumulativeScroll: function(el){
+        var top=0,
+            left=0;
+        do {
+            top+=el.scrollTop || 0;
+            left+=el.scrollLeft || 0;
+            el=el.parentNode;
+        }while(el);
+        return new L.Point(left,top)
+    },
 	
 	create: function(tagName, className, container) {
 		var el = document.createElement(tagName);
