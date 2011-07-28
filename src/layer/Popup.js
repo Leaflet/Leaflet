@@ -114,10 +114,10 @@ L.Popup = L.Class.extend({
 
 		var width = this._container.offsetWidth;
 
-		this._containerWidth = (width > this.options.maxWidth ? this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width ) );
-
-		this._container.style.width = this._containerWidth + 'px';
+		this._container.style.width = (width > this.options.maxWidth ? this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width ) ) + 'px';
 		this._container.style.whiteSpace = '';
+
+		this._containerWidth = this._container.offsetWidth;
 	},
 
 	_updatePosition: function() {
