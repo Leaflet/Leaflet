@@ -39,6 +39,6 @@ L.Drawing = {
 
   editingEnabled: function() {
     return !!this._editingEnabled;
-  },
+  }
 };
 

@@ -5,7 +5,7 @@ L.Drawing.LineUtils = {
   _createEndMarkers: function() {
     this._markers = [];
     for (a = 0; a < this._latlngs.length; a++) {
-      this._markers.push(this._createMarker(this._latlngs[a], a))
+      this._markers.push(this._createMarker(this._latlngs[a], a));
     }
     for (a = 0, b = this._markers.length - 1; a < this._markers.length; b = a++) {
     }
