@@ -38,12 +38,17 @@
 	--js ../src/layer/marker/Marker.js \
 	--js ../src/layer/marker/Marker.Popup.js \
 	--js ../src/layer/vector/Path.js \
-	--js ../src/layer/vector/Path.VML.js \
 	--js ../src/layer/vector/Path.Popup.js \
+	--js ../src/layer/vector/Path.SVG.js \
+	--js ../src/layer/vector/Path.VML.js \
+	--js ../src/layer/vector/canvas/Path.Canvas.js \
 	--js ../src/layer/vector/Polyline.js \
+	--js ../src/layer/vector/canvas/Polyline.Canvas.js \
 	--js ../src/layer/vector/Polygon.js \
+	--js ../src/layer/vector/canvas/Polygon.Canvas.js \
 	--js ../src/layer/vector/MultiPoly.js \
 	--js ../src/layer/vector/Circle.js \
+	--js ../src/layer/vector/canvas/Circle.Canvas.js \
 	--js ../src/layer/vector/CircleMarker.js \
 	--js ../src/layer/GeoJSON.js \
 	--js ../src/handler/Handler.js \
@@ -56,6 +61,7 @@
 	--js ../src/control/Control.js \
 	--js ../src/control/Control.Zoom.js \
 	--js ../src/control/Control.Attribution.js \
+	--js ../src/control/Control.Layers.js \
 	--js ../src/map/Map.js \
 	--js ../src/map/ext/Map.Geolocation.js \
 	--js ../src/map/ext/Map.Popup.js \

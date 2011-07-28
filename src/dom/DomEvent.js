@@ -117,9 +117,8 @@ L.DomEvent = {
 			y = e.pageY ? e.pageY : e.clientY + 
 					document.body.scrollTop + document.documentElement.scrollTop,
 			pos = new L.Point(x, y);
-			
 		return (container ? 
-					pos.subtract(L.DomUtil.getCumulativeOffset(container)) : pos);
+					pos.subtract(L.DomUtil.getViewportOffset(container)) : pos);
 	},
 	
 	getWheelDelta: function(e) {
