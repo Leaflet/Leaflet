@@ -3,6 +3,7 @@ L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
+		minWidth: 50,
 		maxWidth: 300,
 		autoPan: true,
 		closeButton: true,
@@ -113,7 +114,7 @@ L.Popup = L.Class.extend({
 
 		var width = this._container.offsetWidth;
 
-		this._container.style.width = (width > this.options.maxWidth ? this.options.maxWidth : width) + 'px';
+		this._container.style.width = (width > this.options.maxWidth ? this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width ) ) + 'px';
 		this._container.style.whiteSpace = '';
 
 		this._containerWidth = this._container.offsetWidth;
