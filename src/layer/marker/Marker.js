@@ -54,6 +54,7 @@ L.Marker = L.Class.extend({
 		this.options.icon = icon;
 		
 		this._initIcon();
+		this._reset();
 	},
 	
 	_initIcon: function() {
