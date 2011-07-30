@@ -86,7 +86,7 @@ L.DomUtil = {
 	},
 	
 	removeClass: function(el, name) {
-		el.className = el.className.replace(/(\w+)\s*/g, function(w, match) {
+		el.className = el.className.replace(/(\S+)\s*/g, function(w, match) {
 			if (match == name) return '';
 			return w;
 		}).replace(/^\s+/, '');
