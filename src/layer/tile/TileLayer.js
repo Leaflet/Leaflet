@@ -109,8 +109,8 @@ L.TileLayer = L.Class.extend({
 	
 	_reset: function() {
 		this._tiles = {};
-		this._initContainer();
 		this._container.innerHTML = '';
+		this._initContainer();
 	},
 	
 	_update: function() {
