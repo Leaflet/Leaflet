@@ -23,7 +23,7 @@ L.Path = L.Class.extend({
 		
 		clickable: true,
 		
-		updateOnMoveEnd: false
+		updateOnMoveEnd: true
 	},
 	
 	initialize: function(options) {
