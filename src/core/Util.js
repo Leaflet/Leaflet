@@ -92,26 +92,7 @@ L.Util = {
 			}
 		}
 		return '?' + params.join('&');
-	},
-
-	indexOf: function(haystack, needle, /*From Index*/ from) {
-    if (Array.prototype.indexOf) {
-      return Array.prototype.indexOf.call(haystack, needle, from)
-    } else {
-      var len = a.length;
-      from = from || 0;
-      from = from < 0 ? Math.ceil(from) : Math.floor(from);
-      if (from < 0) {
-        from += len;
-      }
-      for (; from < len; from++) {
-        if (from in haystack && haystack[from] === needle) {
-          return from
-        }
-      }
-      return -1
-    }
-  }
+	}
 
 };
 
