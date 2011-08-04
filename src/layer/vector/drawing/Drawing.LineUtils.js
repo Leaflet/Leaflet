@@ -42,7 +42,7 @@ L.Drawing.LineUtils = {
   },
 
   _removeSingleMarker: function(m) {
-    this._markers.splice(L.Util.indexOf(this._markers, m), 1);
+    this._markers.splice(m._vertexIndex, 1);
     this._map.removeLayer(m);
   },
 
