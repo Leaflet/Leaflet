@@ -1,6 +1,8 @@
 Leaflet Changelog
 =================
 
+(all changes without explicitly stated author are done by [@mourner](https://github.com/mourner))
+
 ## 0.3 (master)
 
 ### Major features
