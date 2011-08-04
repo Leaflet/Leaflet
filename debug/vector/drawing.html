@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+	<style type="text/css">
+	  h2{
+  	  margin: 0px 0px 5px 0px;
+	  }
+	  div#map{
+	    float: left;
+	    width: 55%;
+	    height: 550px;
+	    border: 1px solid #ccc;
+	  }
+	  div#menu{
+	    width: 43%;
+	    float: right;
+	  }
+	  div#polyline,
+	  div#polygon{
+	    float: left;
+	    margin: 20px;
+	  }
+	  div#polyline{
+	    color: blue;
+	  }
+	  div#polyline table{
+	    border: 1px solid blue;
+	    margin-bottom: 20px;
+	  }
+	  div#polygon{
+	    color: red;
+	  }
+	  div#polygon table{
+	    border: 1px solid red;
+	    margin-bottom: 20px;
+	  }
+	</style>
+</head>
+<body>
+	<div id="map"></div>
+  <div id="menu">
+    <div id="inst">
+      <p>This example makes use of Drawing.js, Drawing.LineUtils.js, Drawing.Polygon.js,
+      and Drawing.Polyline.js.  Use the buttons below to experiment.  </p>
+      <p>The enable drawing button will enable drawing for the respective element.  With
+      drawing enabled, new vertices will be added in sequencial order to that element.</p>
+      <p>The enable editing button will enable edditing for that element.  With editing
+      enabled, markers will be placed at each vertex for that element.  This allows a user
+       to drag the marker and change the location of the vertex for the element.  A single
+        click on a marker will remove that marker and the vertex from the element.</p>
+      <p>Drawing and Editing modes can be enabled at the same time.</p>
+    </div>
+    <div id="polyline">
+      <h2>Polyline</h2>
+      <table>
+        <tr>
+          <td><input type="submit" value="Enable Drawing" onclick="polyline.enableDrawing();" /></td>
+          <td><input type="submit" value="Disable Drawing" onclick="polyline.disableDrawing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polyline.drawingEnabled());" /></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Enable Editing" onclick="polyline.enableEditing();" /></td>
+          <td><input type="submit" value="Disable Editing" onclick="polyline.disableEditing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polyline.editingEnabled());" /></td>
+        </tr>
+      </table>
+    </div>
+    <div id="polygon">
+      <h2>Polygon</h2>
+      <table>
+        <tr>
+          <td><input type="submit" value="Enable Drawing" onclick="polygon.enableDrawing();" /></td>
+          <td><input type="submit" value="Disable Drawing" onclick="polygon.disableDrawing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polygon.drawingEnabled());" /></td>
+        </tr>
+        <tr>
+          <td><input type="submit" value="Enable Editing" onclick="polygon.enableEditing();" /></td>
+          <td><input type="submit" value="Disable Editing" onclick="polygon.disableEditing();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polygon.editingEnabled());" /></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+	<script>
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+		var map = new L.Map('map', {layers: [cloudmade]});
+    map.setView(new L.LatLng(45.417, -75.7), 13).addLayer(cloudmade);
+
+    var line = [new L.LatLng(45.417, -75.7), new L.LatLng(45.4, -75.72)],
+        polyline = new L.Polyline(line);
+
+		var line2 = [new L.LatLng(45.418, -75.72), new L.LatLng(45.418, -75.729),
+		             new L.LatLng(45.412, -75.733), new L.LatLng(45.408, -75.718)],
+		    polygon = new L.Polygon(line2, {color: '#FF0000'})
+
+    map.addLayer(polyline);
+    map.addLayer(polygon);
+
+	</script>
+</body>
+</html>
+
