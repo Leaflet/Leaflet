@@ -63,11 +63,6 @@
 		'layer/vector/canvas/Circle.Canvas.js',
 		'layer/vector/CircleMarker.js',
 
-    'layer/vector/drawing/Drawing.js',
-    'layer/vector/drawing/Drawing.LineUtils.js',
-		'layer/vector/drawing/Drawing.Polyline.js',
-		'layer/vector/drawing/Drawing.Polygon.js',
-
 		'layer/GeoJSON.js',
 
 		'handler/Handler.js',
@@ -77,6 +72,8 @@
 		'handler/ScrollWheelZoom.js',
 		'handler/ShiftDragZoom.js',
 		'handler/MarkerDrag.js',
+		'handler/PolyDraw.js',
+		'handler/PolyEdit.js',
 
 		'control/Control.js',
 		'control/Control.Zoom.js',

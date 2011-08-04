@@ -24,9 +24,6 @@ L.Icon = L.Class.extend({
 	},
 
 	_createIcon: function(name) {
-//		var size = this.options.iconSize,
-//			img = this._createImg(this.options.iconUrl);
-
     var size = this[name + 'Size'],
       src = this[name + 'Url'],
       img = this._createImg(src);
@@ -37,9 +34,6 @@ L.Icon = L.Class.extend({
 
     img.style.marginLeft = (-this.iconAnchor.x) + 'px';
     img.style.marginTop = (-this.iconAnchor.y) + 'px';
-
-//		img.style.marginLeft = (-this.options.iconAnchor.x) + 'px';
-//		img.style.marginTop = (-this.options.iconAnchor.y) + 'px';
 
 		if (size) {
 			img.style.width = size.x + 'px';

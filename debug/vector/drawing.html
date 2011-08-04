@@ -62,14 +62,14 @@
       <h2>Polyline</h2>
       <table>
         <tr>
-          <td><input type="submit" value="Enable Drawing" onclick="polyline.enableDrawing();" /></td>
-          <td><input type="submit" value="Disable Drawing" onclick="polyline.disableDrawing();" /></td>
-          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polyline.drawingEnabled());" /></td>
+          <td><input type="submit" value="Enable Drawing" onclick="polyline.drawing.enable();" /></td>
+          <td><input type="submit" value="Disable Drawing" onclick="polyline.drawing.disable();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polyline.drawing.enabled());" /></td>
         </tr>
         <tr>
-          <td><input type="submit" value="Enable Editing" onclick="polyline.enableEditing();" /></td>
-          <td><input type="submit" value="Disable Editing" onclick="polyline.disableEditing();" /></td>
-          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polyline.editingEnabled());" /></td>
+          <td><input type="submit" value="Enable Editing" onclick="polyline.editing.enable();" /></td>
+          <td><input type="submit" value="Disable Editing" onclick="polyline.editing.disable();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polyline.editing.enabled());" /></td>
         </tr>
       </table>
     </div>
@@ -77,14 +77,14 @@
       <h2>Polygon</h2>
       <table>
         <tr>
-          <td><input type="submit" value="Enable Drawing" onclick="polygon.enableDrawing();" /></td>
-          <td><input type="submit" value="Disable Drawing" onclick="polygon.disableDrawing();" /></td>
-          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polygon.drawingEnabled());" /></td>
+          <td><input type="submit" value="Enable Drawing" onclick="polygon.drawing.enable();" /></td>
+          <td><input type="submit" value="Disable Drawing" onclick="polygon.drawing.disable();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Drawing Enabled? ' + polygon.drawing.enabled());" /></td>
         </tr>
         <tr>
-          <td><input type="submit" value="Enable Editing" onclick="polygon.enableEditing();" /></td>
-          <td><input type="submit" value="Disable Editing" onclick="polygon.disableEditing();" /></td>
-          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polygon.editingEnabled());" /></td>
+          <td><input type="submit" value="Enable Editing" onclick="polygon.editing.enable();" /></td>
+          <td><input type="submit" value="Disable Editing" onclick="polygon.editing.disable();" /></td>
+          <td><input type="submit" value="Check Enabled" onclick="alert('Editing Enabled? ' + polygon.editing.enabled());" /></td>
         </tr>
       </table>
     </div>

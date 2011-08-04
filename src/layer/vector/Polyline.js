@@ -1,8 +1,10 @@
 
 L.Polyline = L.Path.extend({
+
 	initialize: function(latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
 		this._latlngs = latlngs;
+		this._initInteraction();
 	},
 
 	options: {
@@ -12,6 +14,15 @@ L.Polyline = L.Path.extend({
 		noClip: false,
 
 		updateOnMoveEnd: true
+	},
+
+	_initInteraction: function() {
+	  if (L.Handler.PolyDraw) {
+			this.drawing = new L.Handler.PolyDraw(this);
+		}
+		if (L.Handler.PolyEdit) {
+			this.editing = new L.Handler.PolyEdit(this);
+		}
 	},
 
 	projectLatlngs: function() {
