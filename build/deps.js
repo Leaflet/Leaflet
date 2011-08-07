@@ -47,6 +47,12 @@ var deps = {
 		deps: ['TileLayer']
 	},
 	
+	TileLayerCloudMade: {
+		src: ['layer/tile/TileLayer.CloudMade.js'],
+		desc: 'Tile layer for CloudMade tile server',
+		deps: ['TileLayer']
+	},
+	
 	ImageOverlay: {
 		src: ['layer/ImageOverlay.js'],
 		desc: 'Used to display an image over a particular rectangular area of the map.'
