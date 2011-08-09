@@ -192,7 +192,10 @@ L.TileLayer = L.Class.extend({
 		if (!this.options.noWrap) {
 			tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
 		}
-		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
+		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
+			this._tilesToLoad--;
+			return;
+		}
 		
 		// create tile
 		var tile = this._createTile();
