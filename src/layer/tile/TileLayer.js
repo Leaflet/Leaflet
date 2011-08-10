@@ -41,7 +41,11 @@ L.TileLayer = L.Class.extend({
 		this._createTileProto();
 		
 		// set up events
-		map.on('viewreset', this._reset, this);
+		map.on('viewreset', 
+			function(e) {
+				this._reset(e.hard);
+			},
+			this);
 		
 		if (this.options.updateWhenIdle) {
 			map.on('moveend', this._update, this);
@@ -107,8 +111,10 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	_reset: function() {
+	_reset: function(clearOldContainer) {
 		this._tiles = {};
+		if (clearOldContainer)
+			this._container.innerHTML = "";			
 		this._initContainer();
 		this._container.innerHTML = '';
 	},
