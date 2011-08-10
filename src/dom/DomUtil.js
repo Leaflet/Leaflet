@@ -31,7 +31,7 @@ L.DomUtil = {
 			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
 			
-			if (L.DomUtil.getStyle(el, 'position') == 'absolute') break;
+			//if (L.DomUtil.getStyle(el, 'position') == 'absolute') break;
 			
 		} while (el = el.offsetParent);
 		
