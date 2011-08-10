@@ -191,7 +191,11 @@ L.TileLayer = L.Class.extend({
 		// wrap tile coordinates
 		if (!this.options.noWrap) {
 			tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
+		} else if (tilePoint.x < 0 || tilePoint.x >= tileLimit) {
+			this._tilesToLoad--;
+			return;
 		}
+
 		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
 			this._tilesToLoad--;
 			return;
