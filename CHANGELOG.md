@@ -1,7 +1,7 @@
 Leaflet Changelog
 =================
 
-(all changes without explicitly stated author are done by [@mourner](https://github.com/mourner))
+(all changes without author notice are by [@mourner](https://github.com/mourner))
 
 ## 0.3 (master)
 
@@ -22,6 +22,7 @@ Leaflet Changelog
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
  * Added `hasLayer` method to `Map`.
+ * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
  * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
  * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194) 
  * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).
@@ -41,7 +42,8 @@ Leaflet Changelog
  * Fixed a typo in `Bounds` `contains` method (by [@anru](https://github.com/anru)). [#180](https://github.com/CloudMade/Leaflet/pull/180)
  * Fixed a bug where drag event fired before the actual movement of layer (by [@anru](https://github.com/anru)). [#197](https://github.com/CloudMade/Leaflet/pull/197)
  * Fixed a bug where map click caused an error if dragging is initially disabled. [#196](https://github.com/CloudMade/Leaflet/issues/196)
- * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)  
+ * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)
+ * Fixed a bug where `TileLayer` `load` event wouldn't fire in some edge cases (by [@giscloud](https://github.com/giscloud)).  
 
 #### Browser bugfixes
 

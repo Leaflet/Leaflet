@@ -51,6 +51,26 @@
 		populate();
 		L.DomUtil.get('populate').onclick = populate;
 		
+		var ng1 = new L.LatLng(13.403, 5.361),
+		ng2 = new L.LatLng(13.623, 14.370),
+		ng3 = new L.LatLng(11.338, 15.469),
+		ng4 = new L.LatLng(11.118, 14.722),
+		ng5 = new L.LatLng(6.328, 12.129),
+		ng6 = new L.LatLng(7.031, 11.250),
+		ng7 = new L.LatLng(5.625, 9.888),
+		ng8 = new L.LatLng(4.570, 9.536),
+		ng9 = new L.LatLng(4.219, 7.075),
+		ng10 = new L.LatLng(6.152, 5.625),
+		ng11 = new L.LatLng(6.372, 3.604),
+		ng12 = new L.LatLng(8.965, 3.647),
+		ng13 = new L.LatLng(10.283, 4.878),
+		ng14 = new L.LatLng(11.470, 4.482),
+		ng15 = new L.LatLng(13.447, 5.142), 
+		polygonPoints = [ng1, ng2, ng3, ng4, ng5, ng6, ng7, ng8, ng9, ng10, ng11, ng12, ng13, ng14, ng15];
+
+		var polygonNG = new L.Polygon(polygonPoints, {stroke: false, fillOpacity: 0.5});
+		map.addLayer(polygonNG);
+		
 	</script>
 </body>
 </html>

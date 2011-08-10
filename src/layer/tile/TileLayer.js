@@ -14,6 +14,7 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		opacity: 1,
 		scheme: 'xyz',
+		continuousWorld: false,
 		noWrap: false,
 		
 		unloadInvisibleTiles: L.Browser.mobile,
@@ -189,16 +190,18 @@ L.TileLayer = L.Class.extend({
 			tileLimit = (1 << zoom);
 			
 		// wrap tile coordinates
-		if (!this.options.noWrap) {
-			tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
-		} else if (tilePoint.x < 0 || tilePoint.x >= tileLimit) {
-			this._tilesToLoad--;
-			return;
-		}
-
-		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
-			this._tilesToLoad--;
-			return;
+		if (!this.options.continuousWorld) {
+			if (!this.options.noWrap) {
+				tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
+			} else if (tilePoint.x < 0 || tilePoint.x >= tileLimit) {
+				this._tilesToLoad--;
+				return;
+			}
+			
+			if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
+				this._tilesToLoad--;
+				return;
+			}
 		}
 		
 		// create tile
