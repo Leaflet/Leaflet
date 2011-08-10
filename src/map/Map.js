@@ -356,7 +356,7 @@ L.Map = L.Class.extend({
 		}
 		
 		this._tileLayersToLoad = this._tileLayersNum;
-		this.fire('viewreset');
+		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
 		if (zoomChanged) { this.fire('zoomend'); }
