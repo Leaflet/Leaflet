@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script src="route.js"></script>
+	<script>
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18}),
+			map = new L.Map('map', {layers: [cloudmade], center: new L.LatLng(50.5, 30.5), zoom: 15});
+	
+		
+		var latlngs = [];
+		latlngs.push(getRandomLatLng(map));
+		latlngs.push(getRandomLatLng(map));
+		latlngs.push(getRandomLatLng(map));
+		
+		var path = new L.Polygon(latlngs);
+
+		console.log(latlngs);
+		
+		var marker = new L.Marker(latlngs[0], {draggable: true});
+		map.addLayer(marker);
+		
+		marker.on('drag', function() {
+			latlngs[0] = marker.getLatLng();
+			path.setLatLngs(latlngs);
+		});
+		
+		map.addLayer(path);
+	</script>
+</body>
+</html>
