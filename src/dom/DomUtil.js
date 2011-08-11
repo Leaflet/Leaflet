@@ -26,10 +26,11 @@ L.DomUtil = {
 			docBody = document.body;
 		
 		do {
-			if (el === docBody) break;
-			
 			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
+			
+			if (el.offsetParent == docBody && 
+					L.DomUtil.getStyle(el, 'position') == 'absolute') break;
 			
 		} while (el = el.offsetParent);
 		
@@ -69,8 +70,6 @@ L.DomUtil = {
 		document.onselectstart = this._onselectstart;
 		this._onselectstart = null;
 	},
-	
-	CLASS_RE: /(\\s|^)'+cls+'(\\s|$)/,
 	
 	hasClass: function(el, name) {
 		return (el.className.length > 0) && 
