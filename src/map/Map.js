@@ -177,7 +177,9 @@ L.Map = L.Class.extend({
 	},
 	
 	invalidateSize: function() {
+		var oldSize = map.getSize();
 		this._sizeChanged = true;
+		this._rawPanBy(oldSize.subtract(map.getSize()).divideBy(2));
 		
 		this.fire('move');
 		
@@ -402,8 +404,12 @@ L.Map = L.Class.extend({
 		}
 		
 		if (this.options.trackResize) {
-			L.DomEvent.addListener(window, 'resize', this.invalidateSize, this);
+			L.DomEvent.addListener(window, 'resize', this._onResize, this);
 		}
+	},
+	
+	_onResize: function() {
+		L.Util.requestAnimFrame(this.invalidateSize, this);
 	},
 	
 	_onMouseClick: function(e) {
