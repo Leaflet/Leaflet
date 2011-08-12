@@ -9,6 +9,7 @@ L.TileLayer = L.Class.extend({
 		minZoom: 0,
 		maxZoom: 18,
 		tileSize: 256,
+		zoomOffset: 0,
 		subdomains: 'abc',
 		errorTileUrl: '',
 		attribution: '',
@@ -193,7 +194,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = (1 << zoom);
+			tileLimit = (1 << zoom + this.options.zoomOffset);
 			
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -240,7 +241,7 @@ L.TileLayer = L.Class.extend({
 
 		return this._url
 				.replace('{s}', s)
-				.replace('{z}', zoom)
+				.replace('{z}', zoom + this.options.zoomOffset)
 				.replace('{x}', tilePoint.x)
 				.replace('{y}', tilePoint.y);
 	},
