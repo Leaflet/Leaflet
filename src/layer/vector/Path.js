@@ -63,15 +63,6 @@ L.Path = L.Class.extend({
 		return this;
 	},
 	
-	getBounds: function() {
-	    var b = new L.LatLngBounds();
-	    var latLngs = this.getLatLngs();
-	    for (var i = 0, len = latLngs.length; i < len; i++) {
-	        b.extend(latLngs[i]);
-	    }
-	    return b;
-	},
-	
 	_initElements: function() {
 		this._initRoot();
 		this._initPath();
