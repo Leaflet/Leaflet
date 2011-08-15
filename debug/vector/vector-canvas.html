@@ -15,6 +15,10 @@
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+    <button onclick="group.removeLayer(path)">Remove path</button>
+    <button onclick="group.removeLayer(circle)">Remove circle</button>
+    <button onclick="group.clearLayers()">Remove all layers</button>
+
 
 	<script src="route.js"></script>
 	<script>
@@ -27,6 +31,8 @@
 		var path = new L.Polyline(latlngs);
 
 		var map = new L.Map('map', {layers: [cloudmade]});
+		
+		var group = new L.LayerGroup();
 
 		map.fitBounds(new L.LatLngBounds(latlngs));
 		
@@ -40,12 +46,12 @@
 		var circle = new L.Circle(circleLocation, 500000, circleOptions),
 			circleMarker = new L.CircleMarker(circleLocation, {fillColor: 'blue', fillOpacity: 1, stroke: false});
 		
-		map.addLayer(circle).addLayer(circleMarker);
+		group.addLayer(circle).addLayer(circleMarker);
 		
 		circle.bindPopup('I am a circle');
 		circleMarker.bindPopup('I am a circle marker');
 		
-		map.addLayer(path);		
+		group.addLayer(path);		
 		path.bindPopup('I am a polyline');
 		
 		var p1 = latlngs[0],
@@ -74,10 +80,13 @@
 			fillColor: "#333",
 			color: 'green'
 		});
-		map.addLayer(polygon);
+		group.addLayer(polygon);
 		
 		polygon.bindPopup('I am a polygon');
+		
+		map.addLayer(group);
 
 	</script>
+
 </body>
 </html>

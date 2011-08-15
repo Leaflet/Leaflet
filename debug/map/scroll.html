@@ -12,8 +12,13 @@
 </head>
 <body>
 
-	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
-	<button id="populate">Populate with 10 markers</button>
+	<div style="position: absolute; top: 100px; left: 100px; border: 1px solid green">
+		<div style="position: relative; margin-top: 500px; width: 800px; border: 1px solid red; margin-left: 200px">
+			<div style="height: 600px; overflow: auto">
+				<div id="map" style="width: 600px; height: 1000px; border: 1px solid #ccc"></div>
+			</div>
+		</div>
+	</div>
 
 	<script type="text/javascript">
 
@@ -23,22 +28,7 @@
 			latlng = new L.LatLng(50.5, 30.51);
 	
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
-		
-		var markers = new L.FeatureGroup();
-		
-		function populate() {
-			for (var i = 0; i < 10; i++) {
-				markers.addLayer(new L.Marker(getRandomLatLng(map)));
-			}
-			return false;
-		};
-
-		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>");
-		
-		map.addLayer(markers);
-		
-		populate();
-		L.DomUtil.get('populate').onclick = populate;
+	
 		
 	</script>
 </body>

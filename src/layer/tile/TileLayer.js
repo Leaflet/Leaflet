@@ -14,6 +14,7 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		opacity: 1,
 		scheme: 'xyz',
+		continuousWorld: false,
 		noWrap: false,
 		
 		unloadInvisibleTiles: L.Browser.mobile,
@@ -30,17 +31,22 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	onAdd: function(map, insertAtTheTop) {
+	onAdd: function(map, insertAtTheBottom) {
 		this._map = map;
+		this._insertAtTheBottom = insertAtTheBottom;
 		
 		// create a container div for tiles
-		this._initContainer(insertAtTheTop);
+		this._initContainer();
 		
 		// create an image to clone for tiles
 		this._createTileProto();
 		
 		// set up events
-		map.on('viewreset', this._reset, this);
+		map.on('viewreset', 
+			function(e) {
+				this._reset(e.hard);
+			},
+			this);
 		
 		if (this.options.updateWhenIdle) {
 			map.on('moveend', this._update, this);
@@ -89,14 +95,14 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	_initContainer: function(insertAtTheTop) {
+	_initContainer: function() {
 		var tilePane = this._map.getPanes().tilePane,
 			first = tilePane.firstChild;
 		
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
 			
-			if (insertAtTheTop && first) {
+			if (this._insertAtTheBottom && first) {
 				tilePane.insertBefore(this._container, first);
 			} else {
 				tilePane.appendChild(this._container);
@@ -106,8 +112,10 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
-	_reset: function() {
+	_reset: function(clearOldContainer) {
 		this._tiles = {};
+		if (clearOldContainer && this._container)
+			this._container.innerHTML = "";			
 		this._initContainer();
 		this._container.innerHTML = '';
 	},
@@ -188,10 +196,19 @@ L.TileLayer = L.Class.extend({
 			tileLimit = (1 << zoom);
 			
 		// wrap tile coordinates
-		if (!this.options.noWrap) {
-			tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
+		if (!this.options.continuousWorld) {
+			if (!this.options.noWrap) {
+				tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
+			} else if (tilePoint.x < 0 || tilePoint.x >= tileLimit) {
+				this._tilesToLoad--;
+				return;
+			}
+			
+			if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
+				this._tilesToLoad--;
+				return;
+			}
 		}
-		if (tilePoint.y < 0 || tilePoint.y >= tileLimit) { return; }
 		
 		// create tile
 		var tile = this._createTile();

@@ -3,6 +3,7 @@ L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
+		minWidth: 50,
 		maxWidth: 300,
 		autoPan: true,
 		closeButton: true,
@@ -73,7 +74,7 @@ L.Popup = L.Class.extend({
 		if (this.options.closeButton) {
 			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
 			this._closeButton.href = '#close';
-			this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
+			L.DomEvent.addListener(this._closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
@@ -113,7 +114,7 @@ L.Popup = L.Class.extend({
 
 		var width = this._container.offsetWidth;
 
-		this._container.style.width = (width > this.options.maxWidth ? this.options.maxWidth : width) + 'px';
+		this._container.style.width = (width > this.options.maxWidth ? this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width ) ) + 'px';
 		this._container.style.whiteSpace = '';
 
 		this._containerWidth = this._container.offsetWidth;
