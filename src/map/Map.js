@@ -409,7 +409,7 @@ L.Map = L.Class.extend({
 	},
 	
 	_onResize: function() {
-		L.Util.requestAnimFrame(this.invalidateSize, this);
+		L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
 	},
 	
 	_onMouseClick: function(e) {
