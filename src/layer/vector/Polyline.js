@@ -69,6 +69,15 @@ L.Polyline = L.Path.extend({
 		if (minPoint) minPoint.distance = Math.sqrt(minDistance);
 		return minPoint;
 	},
+	
+	getBounds: function() {
+	    var b = new L.LatLngBounds();
+	    var latLngs = this.getLatLngs();
+	    for (var i = 0, len = latLngs.length; i < len; i++) {
+	        b.extend(latLngs[i]);
+	    }
+	    return b;
+	},
 
 	_getPathPartStr: function(points) {
 		var round = L.Path.VML;
