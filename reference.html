@@ -1332,6 +1332,11 @@ var image = new L.ImageOverlay(
 				<td><code>this</code></td>
 				<td>Changes the appearance of a Path based on the options in the <a href="#path-options">Path options</a> object.</td>
 			</tr>
+			<tr id="#path-getbounds">
+			    <td><code>getBounds()</code></td>
+			    <td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+			    <td>Returns the LatLngBounds of the path.</td>
+			</tr>
 		</table>			
 		
 		
@@ -1408,9 +1413,19 @@ map.addLayer(polyline);</code></pre>
 				<td>Replaces all the points in the polyline with the given array of geographical points.</td>
 			</tr>
 			<tr>
+				<td><code>getLatLngs()</code></td>
+				<td><code><a href="#latlng">LatLng</a>[]</code></td>
+				<td>Returns an array of the points in the path.</td>
+			</tr>
+			<tr>
 				<td><code>spliceLatLngs( &lt;Number&gt;&nbsp;<i>index</i>, &lt;Number&gt;&nbsp;<i>pointsToRemove</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng1?</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng2?</i>,&nbsp;&hellip;&nbsp;)</code></td>
 				<td><code><a href="#latlng">LatLng</a>[]</code></td>
 				<td>Allows adding, removing or replacing points in the polyline. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
+			</tr>
+			<tr id="#path-getbounds">
+			    <td><code>getBounds()</code></td>
+			    <td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+			    <td>Returns the LatLngBounds of the polyline.</td>
 			</tr>
 		</table>
 		
@@ -1684,7 +1699,7 @@ map.addLayer(geojson);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.GeoJSON( &lt;Object&gt;&nbsp;<i>geojson?</i>, &lt;<a href="geojson-options">GeoJSON options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>L.GeoJSON( &lt;Object&gt;&nbsp;<i>geojson?</i>, &lt;<a href="#geojson-options">GeoJSON options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
 				<td>Creates a GeoJSON layer. Optionally accepts an object in <a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map (you can alternatively add it with <code>addGeoJSON</code> method) and an options object.</td>
 			</tr>
 		</table>
