@@ -176,7 +176,9 @@ L.TileLayer = L.Class.extend({
 				
 				// remove tile if it's out of bounds
 				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-					
+
+					this.fire("tileunload",this._tiles[key]);
+
 					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
 					// this._tiles[key].src = ''; 
 					
