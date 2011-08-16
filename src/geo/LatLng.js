@@ -3,6 +3,10 @@
 */
 
 L.LatLng = function(/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
+	if (! (this instanceof arguments.callee)) {
+	  return new arguments.callee(arguments);
+	}
+
 	var lat = parseFloat(rawLat),
 		lng = parseFloat(rawLng);
 	
