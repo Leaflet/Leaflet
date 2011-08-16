@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+    <button onclick="map.fitBounds(path.getBounds())">Zoom to path</button>
+    <button onclick="map.fitBounds(poly.getBounds())">Zoom to polygon</button>
+	<script src="route.js"></script>
+	<script>
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+			
+		var poly_points = [
+			[39.70348880963439, -104.98603820800781],
+			[39.69926245589766, -104.95582580566406],
+			[39.67918374111695, -104.94483947753906],
+			[39.663856582926165, -104.95307922363281],
+			[39.66279941218785, -104.98672485351562],
+			[39.70348880963439, -104.98603820800781]
+		];
+		
+		var path_points = [
+			[39.72567292003209, -104.98672485351562],
+			[39.717222671644635, -104.96612548828124],
+			[39.71405356154611, -104.95513916015625],
+			[39.70982785491674, -104.94758605957031],
+			[39.70454535762547, -104.93247985839844],
+			[39.696092520737224, -104.91874694824217],
+			[39.687638648548635, -104.90432739257812],
+			[39.67759833072648, -104.89471435546875]
+		];
+	
+		for (var i = 0, latlngs = [], len = path_points.length; i < len; i++) {
+			latlngs.push(new L.LatLng(path_points[i][0], path_points[i][1]));
+		}
+		var path = new L.Polyline(latlngs);
+		
+		for (var i = 0, latlngs2 = [], len = poly_points.length; i < len; i++) {
+		    latlngs2.push(new L.LatLng(poly_points[i][0], poly_points[i][1]));
+		}
+		var poly = new L.Polygon(latlngs2);
+
+		var map = new L.Map('map', {
+		    layers: [cloudmade],
+		    center: new L.LatLng(39.69596043694606, -104.95084762573242),
+		    zoom: 12
+		});
+
+		//map.fitBounds(new L.LatLngBounds(latlngs));
+		
+		//map.addLayer(new L.Marker(latlngs[0]));
+		//map.addLayer(new L.Marker(latlngs[len - 1]));
+		
+		map.addLayer(path);
+		map.addLayer(poly);
+		
+		path.bindPopup("Hello world");
+	</script>
+</body>
+</html>
