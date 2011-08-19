@@ -356,8 +356,18 @@ L.Map = L.Class.extend({
 			var offset = L.DomUtil.getPosition(this._mapPane);
 			this._initialTopLeftPoint._add(offset);
 		}
-		
-		this._tileLayersToLoad = this._tileLayersNum;
+
+		this._tileLayersToLoad = 0;
+		var layer, id;
+		for (id in this._layers) {
+			if (this._layers.hasOwnProperty(id)) {
+				layer = this._layers[id];
+				if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer) && layer.getVisible()) {
+					this._tileLayersToLoad++;
+				}
+			}
+		}
+
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');

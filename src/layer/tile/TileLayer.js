@@ -178,6 +178,9 @@ L.TileLayer = L.Class.extend({
 			this._addTile(queue[k], fragment);
 		}
 		
+		if (this._tilesToLoad === 0 && this._map._tileLayersToLoad > 0)
+			this._map._tileLayersToLoad--;
+		
 		this._container.appendChild(fragment);
 	},
 	
