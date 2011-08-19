@@ -119,7 +119,7 @@ L.Marker = L.Class.extend({
 			
 			L.DomEvent.addListener(this._icon, 'click', this._onMouseClick, this);
 
-			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+			var events = ['dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout'];
 			for (var i = 0; i < events.length; i++) {
 				L.DomEvent.addListener(this._icon, events[i], this._fireMouseEvent, this);
 			}

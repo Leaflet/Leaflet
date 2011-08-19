@@ -94,6 +94,7 @@ L.DomEvent = {
 	
 	disableClickPropagation: function(/*HTMLElement*/ el) {
 		L.DomEvent.addListener(el, 'mousedown', L.DomEvent.stopPropagation);
+		L.DomEvent.addListener(el, 'mouseup', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(el, 'click', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
 	},
