@@ -319,3 +319,6 @@ a.leaflet-active {
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
 	}
+.leaflet-hidden {
+	display: none !important;
+	}

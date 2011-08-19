@@ -9,6 +9,7 @@ L.Marker = L.Class.extend({
 	options: {
 		icon: new L.Icon(),
 		title: '',
+		visible: true,
 		clickable: true,
 		draggable: false
 	},
@@ -59,6 +60,17 @@ L.Marker = L.Class.extend({
 		this._reset();
 	},
 	
+	setVisible: function(onoff) {
+		this._icon && L.DomUtil.setVisible(this._icon, onoff);
+		this._shadow && L.DomUtil.setVisible(this._shadow, onoff);
+		this.options.visible = onoff;
+		return this;
+	},
+	
+	getVisible: function(onoff) {
+		return this.options.visible;	    
+	},
+	
 	_initIcon: function() {
 		if (!this._icon) {
 			this._icon = this.options.icon.createIcon();
@@ -71,6 +83,10 @@ L.Marker = L.Class.extend({
 		}
 		if (!this._shadow) {
 			this._shadow = this.options.icon.createShadow();
+		}
+
+		if (!this.options.visible) {
+			this.setVisible(false);
 		}
 
 		this._map._panes.markerPane.appendChild(this._icon);

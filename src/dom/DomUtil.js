@@ -96,6 +96,18 @@ L.DomUtil = {
 			el.style.opacity = value;
 		}
 	},
+
+	setVisible: function(element, onoff) {
+		if (onoff) {
+			L.DomUtil.removeClass(element, "leaflet-hidden");
+		} else {
+			L.DomUtil.addClass(element, "leaflet-hidden");
+		}
+	},
+
+	getVisible: function(element) {
+		return !L.DomUtil.hasClass(element, "leaflet-hidden");
+	},
 	
 	//TODO refactor away this ugly translate/position mess
 	
