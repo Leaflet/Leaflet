@@ -56,6 +56,10 @@ L.LatLngBounds = L.Class.extend({
 		
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
 				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
+	},
+		
+	toBBoxString: function() {
+		return this._southWest.lng + "," + this._southWest.lat + "," + this._northEast.lng + "," + this._northEast.lat;
 	}
 });
 
