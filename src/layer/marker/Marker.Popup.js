@@ -24,5 +24,9 @@ L.Marker.include({
 		this.on('click', this.openPopup, this);
 		
 		return this;
+	},
+
+	movePopup: function() {
+		this._popup.setLatLng(this._latlng);
 	}
 });
