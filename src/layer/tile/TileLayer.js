@@ -13,6 +13,7 @@ L.TileLayer = L.Class.extend({
 		errorTileUrl: '',
 		attribution: '',
 		opacity: 1,
+		visible: true,
 		scheme: 'xyz',
 		continuousWorld: false,
 		noWrap: false,
@@ -89,6 +90,17 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 	
+	setVisible: function(onoff) {
+		this._container && L.DomUtil.setVisible(this._container, onoff);
+		this.options.visible = onoff;
+		this._update();
+		return this;
+	},
+	
+	getVisible: function(onoff) {
+		return this.options.visible;	    
+	},
+	
 	_setOpacity: function(opacity) {
 		if (opacity < 1) {
 			L.DomUtil.setOpacity(this._container, opacity);
@@ -121,6 +133,10 @@ L.TileLayer = L.Class.extend({
 	},
 	
 	_update: function() {
+		if (!this.options.visible) {
+			return;
+		}
+
 		var bounds = this._map.getPixelBounds(),
 			tileSize = this.options.tileSize;
 		
@@ -161,6 +177,9 @@ L.TileLayer = L.Class.extend({
 		for (var k = 0, len = this._tilesToLoad; k < len; k++) {
 			this._addTile(queue[k], fragment);
 		}
+		
+		if (this._tilesToLoad === 0 && this._map._tileLayersToLoad > 0)
+			this._map._tileLayersToLoad--;
 		
 		this._container.appendChild(fragment);
 	},
