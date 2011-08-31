@@ -7,7 +7,7 @@ L.Handler.MapDrag = L.Handler.extend({
 	enable: function() {
 		if (this._enabled) { return; }
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
+			this._draggable = new L.Draggable(this._map._mapPane, this._map._container, this._map);
 			
 			this._draggable.on('dragstart', this._onDragStart, this);
 			this._draggable.on('drag', this._onDrag, this);

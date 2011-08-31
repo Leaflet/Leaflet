@@ -126,6 +126,9 @@ L.Map = L.Class.extend({
 		if (layer.options && !isNaN(layer.options.minZoom)) {
 			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
 		}
+		if (layer.options && layer.options.maxBounds != null) {
+			this._layersMaxBounds = layer.options.maxBounds;
+		}
 		//TODO getMaxZoom, getMinZoom in ILayer (instead of options)
 		
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
@@ -217,6 +220,10 @@ L.Map = L.Class.extend({
 	
 	getMaxZoom: function() {
 		return isNaN(this.options.maxZoom) ?  this._layersMaxZoom || Infinity : this.options.maxZoom;
+	},
+	
+	getMaxBounds: function() {
+		return this._layersMaxBounds ?  this._layersMaxBounds : null;
 	},
 	
 	getBoundsZoom: function(/*LatLngBounds*/ bounds) {
@@ -349,6 +356,27 @@ L.Map = L.Class.extend({
 		this._zoom = zoom;
 		
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
+		
+		var maxBounds = this.getMaxBounds();
+		if (maxBounds != null) {
+			var northwest = maxBounds.getNorthWest();
+			var southeast = maxBounds.getSouthEast();
+			var nwPoint = this.latLngToLayerPoint(northwest).round();
+			var sePoint = this.latLngToLayerPoint(southeast).round();
+			var size = this.getSize();
+			if (nwPoint.x > 0) {
+				this._initialTopLeftPoint.x += nwPoint.x;
+			}
+			if (nwPoint.y > 0) {
+				this._initialTopLeftPoint.y += nwPoint.y;
+			}
+			if (sePoint.x < size.x) {
+				this._initialTopLeftPoint.x -= (size.x- sePoint.x);
+			}
+			if (sePoint.y < size.y) {
+				this._initialTopLeftPoint.y -= (size.y - sePoint.y);
+			}
+		}
 		
 		if (!preserveMapOffset) {
 			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
