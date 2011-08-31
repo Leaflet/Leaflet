@@ -12,9 +12,12 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 	
-	initialize: function(element, dragStartTarget) {
+	initialize: function(element, dragStartTarget, map) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
+                if ( map ) {
+                        this._map = map;
+                }
 	},
 	
 	enable: function() {
@@ -69,6 +72,26 @@ L.Draggable = L.Class.extend({
 		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
 		
+		var maxBounds = this._map.getMaxBounds();
+		if (maxBounds != null) {
+                        var northwest = maxBounds.getNorthWest();
+                        var southeast = maxBounds.getSouthEast();
+			var nwPoint = this._map.latLngToLayerPoint(northwest).round();
+			var sePoint = this._map.latLngToLayerPoint(southeast).round();
+                        var size = this._map.getSize();  
+			if (nwPoint.x + this._newPos.x > 0) {
+				this._newPos.x = 0 - nwPoint.x;
+			}
+			if (nwPoint.y + this._newPos.y > 0) {
+				this._newPos.y = 0 - nwPoint.y;
+			}
+			if (sePoint.x + this._newPos.x < size.x) {
+				this._newPos.x = size.x - sePoint.x;
+			}
+			if (sePoint.y + this._newPos.y < size.y) {
+				this._newPos.y = size.y - sePoint.y;
+			}
+		}
 		L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 	
