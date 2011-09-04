@@ -43,11 +43,7 @@ L.TileLayer = L.Class.extend({
 		this._createTileProto();
 
 		// set up events
-		map.on('viewreset',
-			function(e) {
-				this._reset(e.hard);
-			},
-			this);
+		map.on('viewreset', this._resetCallback, this);
 
 		if (this.options.updateWhenIdle) {
 			map.on('moveend', this._update, this);
@@ -64,7 +60,7 @@ L.TileLayer = L.Class.extend({
 		this._map.getPanes().tilePane.removeChild(this._container);
 		this._container = null;
 
-		this._map.off('viewreset', this._reset, this);
+		this._map.off('viewreset', this._resetCallback, this);
 
 		if (this.options.updateWhenIdle) {
 			this._map.off('moveend', this._update, this);
@@ -122,6 +118,10 @@ L.TileLayer = L.Class.extend({
 
 			this._setOpacity(this.options.opacity);
 		}
+	},
+
+	_resetCallback: function(e) {
+		this._reset(e.hard);
 	},
 
 	_reset: function(clearOldContainer) {
