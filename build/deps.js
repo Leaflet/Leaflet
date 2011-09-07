@@ -1,10 +1,13 @@
 var deps = {
 	Core: {
 		src: ['Leaflet.js',
-		      'core/Browser.js',
+		      'core/Util.js',
 		      'core/Class.js',
 		      'core/Events.js',
-		      'core/Util.js',
+		      'core/Browser.js',
+		      'geometry/Point.js',
+		      'geometry/Bounds.js',
+		      'geometry/Transformation.js',
 		      'dom/DomUtil.js',
 		      'geo/LatLng.js',
 		      'geo/LatLngBounds.js',
@@ -14,9 +17,6 @@ var deps = {
 		      'geo/crs/CRS.js',
 		      'geo/crs/CRS.EPSG3857.js',
 		      'geo/crs/CRS.EPSG4326.js',
-		      'geometry/Bounds.js',
-		      'geometry/Point.js',
-		      'geometry/Transformation.js',
 		      'map/Map.js'],
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
@@ -76,7 +76,7 @@ var deps = {
 
 
 	Path: {
-		src: ['layer/vector/Path.js', 'layer/vector/Path.Popup.js'],
+		src: ['layer/vector/Path.js', 'layer/vector/Path.SVG.js', 'layer/vector/Path.Popup.js'],
 		desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
 		heading: 'Vector layers'
 	},
@@ -114,6 +114,15 @@ var deps = {
 		src: ['layer/vector/CircleMarker.js'],
 		deps: ['Circle'],
 		desc: 'Circle overlays with a constant pixel radius.'
+	},
+
+	PathCanvas: {
+		src: ['layer/vector/canvas/Path.Canvas.js',
+		      'layer/vector/canvas/Polyline.Canvas.js',
+		      'layer/vector/canvas/Polygon.Canvas.js',
+		      'layer/vector/canvas/Circle.Canvas.js'],
+		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector layers (makes them work on Android 2+).'
 	},
 
 	GeoJSON: {
@@ -177,11 +186,26 @@ var deps = {
 		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
 	},
 
+
 	ControlZoom: {
 		src: ['control/Control.js',
 		      'map/ext/Map.Control.js',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
+	},
+
+	ControlAttrib: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Attribution.js'],
+		desc: 'Attribution control.'
+	},
+
+	ControlLayers: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Layers.js'],
+		desc: 'Layer Switcher control.'
 	},
 
 

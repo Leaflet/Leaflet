@@ -44,7 +44,9 @@ L.Marker = L.Class.extend({
 	
 	setLatLng: function(latlng) {
 		this._latlng = latlng;
-		this._reset();
+		if (this._icon) {
+			this._reset();
+		}
 	},
 	
 	setIcon: function(icon) {

@@ -74,7 +74,7 @@ L.Popup = L.Class.extend({
 		if (this.options.closeButton) {
 			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
 			this._closeButton.href = '#close';
-			this._closeButton.onclick = L.Util.bind(this._onCloseButtonClick, this);
+			L.DomEvent.addListener(this._closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
