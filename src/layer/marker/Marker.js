@@ -47,6 +47,10 @@ L.Marker = L.Class.extend({
 		if (this._icon) {
 			this._reset();
 		}
+
+		if (this._popup) {
+			this.movePopup();
+		}
 	},
 	
 	setIcon: function(icon) {
