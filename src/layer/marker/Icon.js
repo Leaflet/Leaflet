@@ -5,7 +5,6 @@ L.Icon = L.Class.extend({
   shadowSize: new L.Point(41, 41),
   iconAnchor: new L.Point(13, 41),
   popupAnchor: new L.Point(0, -33),
-  includeShadow: true,
 
   initialize: function(iconUrl) {
     if (iconUrl) {
@@ -18,9 +17,7 @@ L.Icon = L.Class.extend({
 	},
 
 	createShadow: function() {
-	  if (this.includeShadow) {
-  		return this._createIcon('shadow');
-		}
+		return this._createIcon('shadow');
 	},
 
 	_createIcon: function(name) {

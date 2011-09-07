@@ -47,7 +47,7 @@ L.Handler.PolyEdit = L.Handler.extend({
     if (!this._pointIcon) {
       var i = L.Icon.extend({
         iconUrl: L.ROOT_URL + 'images/square.gif',
-      	includeShadow: false,
+      	shadowUrl: null,
         iconSize: new L.Point(10, 10),
 	    	iconAnchor: new L.Point(5, 5),
 	      popupAnchor: new L.Point(5, 5)
