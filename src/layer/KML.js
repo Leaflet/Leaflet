@@ -1,3 +1,5 @@
+/*global L: true */
+
 L.KML = L.FeatureGroup.extend({
 	initialize: function(kml, options) {
 		L.Util.setOptions(this, options);
@@ -24,10 +26,10 @@ L.KML = L.FeatureGroup.extend({
 L.Util.extend(L.KML, {
 	parseKML: function(xml) {
 		var style = this.parseStyle(xml);
-		var el = xml.getElementsByTagName("Placemark");
+		var el = xml.getElementsByTagName("Folder");
 		var layers = [];
 		for (var i = 0; i < el.length; i++) {
-			var l = this.parsePlacemark(el[i], xml, style);
+			var l = this.parseFolder(xml, style);
 			if (l) layers.push(l);
 		}
 		return layers;
@@ -40,24 +42,46 @@ L.Util.extend(L.KML, {
 		//for (var i = 0; i < sl.length; i++) {
 		var attributes = {color:true, width:true};
 
-		for (var i = 0; i < sl.length; i++) {
-			var e = sl[i];
+		function _parse(xml) {
 			var options = {};
-			var ls = e.getElementsByTagName("LineStyle");
-			if (!ls.length) continue;
-			ls = ls[0];
-			for (var c = 0; c < ls.childNodes.length; c++) {
-				var ce = ls.childNodes[c];
-				var key = ce.tagName;
+			for (var i = 0; i < xml.childNodes.length; i++) {
+				var e = xml.childNodes[i];
+				var key = e.tagName;
 				if (!attributes[key]) continue;
-				var value = ce.childNodes[0].nodeValue;
-				if (key == 'color') value = "#" + value.substring(2,8);
-				if (key == 'width') key = 'weight';
-				options[key] = value;
+				var value = e.childNodes[0].nodeValue;
+				if (key == 'color') {
+					options.opacity = parseInt(value.substring(0,2),16)/255.0;
+					options.color = "#" + value.substring(2,8);
+				} else if (key == 'width')
+					options.weight = value;
 			}
+			return options;
+		}
+
+		for (var i = 0; i < sl.length; i++) {
+			var e = sl[i], el;
+			var options = {}, poptions = {};
+			el = e.getElementsByTagName("LineStyle");
+			if (el && el[0]) options = _parse(el[0]);
+			el = e.getElementsByTagName("PolyStyle");
+			if (el && el[0]) poptions = _parse(el[0]);
+			if (poptions.color) options.fillColor = poptions.color;
+			if (poptions.opacity) options.fillOpacity = poptions.opacity;
 			style['#' + e.getAttribute('id')] = options;
 		}
 		return style;
+	},
+
+	parseFolder: function(xml, style) {
+		var layers = [];
+		var el = xml.getElementsByTagName('Placemark');
+		for (var i = 0; i < el.length; i++) {
+			var l = this.parsePlacemark(el[i], xml, style);
+			if (l) layers.push(l);
+		}
+		if (!layers.length) return;
+		if (layers.length == 1) return layers[0];
+		return new L.FeatureGroup(layers);
 	},
 
 	parsePlacemark: function(place, xml, style) {
@@ -68,26 +92,24 @@ L.Util.extend(L.KML, {
 			for (var a in style[url])
 				options[a] = style[url][a];
 		}
-		var layers = [];
+		var layer = null;
 
 		el = place.getElementsByTagName('LineString');
-		for (i = 0; i < el.length; i++) {
-			var l = this.parseLine(el[i], xml, options);
-			if (l) layers.push(l);
+		if (el && el[0]) layer = this.parseLine(el[0], xml, options);
+
+		if (!layer) {
+			el = place.getElementsByTagName('Polygon');
+			if (el && el[0]) layer = this.parsePolygon(el[0], xml, options);
 		}
 
-		el = place.getElementsByTagName('Point');
-		for (i = 0; i < el.length; i++) {
-			var l = this.parsePoint(el[i], xml, options);
-			if (l) layers.push(l);
+		if (!layer) {
+			el = place.getElementsByTagName('Point');
+			if (el && el[0]) layer = this.parsePoint(el[0], xml, options);
 		}
 
-		if (!layers.length) return;
-		var layer = layers[0];
-		if (layers.length > 1) 
-			layer = new L.FeatureGroup(layers);
+		if (!layer) return;
 
-		var name=undefined, descr="";
+		var name, descr="";
 		el = place.getElementsByTagName('name');
 		if (el.length) name = el[0].childNodes[0].nodeValue;
 		el = place.getElementsByTagName('description');
@@ -96,15 +118,14 @@ L.Util.extend(L.KML, {
 				descr = descr + el[i].childNodes[j].nodeValue;
 		}
 
-		if (name) {
+		if (name)
 			layer.bindPopup("<h2>" + name + "</h2>" + descr);
-		}
+
 		return layer;
 	},
 
-	parseLine: function(line, xml, options) {
-		var el = line.getElementsByTagName('coordinates');
-		if (!el.length) return;
+	parseCoords: function(xml) {
+		var el = xml.getElementsByTagName('coordinates');
 		var coords = [];
 		var text = el[0].childNodes[0].nodeValue.split(' ');
 		for (var i = 0; i < text.length; i++) {
@@ -112,6 +133,12 @@ L.Util.extend(L.KML, {
 			if (ll.length < 2) continue;
 			coords.push(new L.LatLng(ll[1], ll[0]));
 		}
+		return coords;
+	},
+
+	parseLine: function(line, xml, options) {
+		var coords = this.parseCoords(line);
+		if (!coords.length) return;
 		return new L.Polyline(coords, options);
 	},
 
@@ -120,5 +147,19 @@ L.Util.extend(L.KML, {
 		if (!el.length) return;
 		var ll = el[0].childNodes[0].nodeValue.split(',');
 		return new L.Marker(new L.LatLng(ll[1], ll[0]), options);
+	},
+
+	parsePolygon: function(line, xml, options) {
+		var el = line.getElementsByTagName('outerBoundaryIs');
+		var polys = [];
+		for (var i = 0; i < el.length; i++) {
+			var coords = this.parseCoords(el[i]);
+			if (coords) polys.push(coords);
+		}
+		if (!polys.length) return;
+		if (options.fillColor) options.fill = true;
+		if (polys.length == 1) return new L.Polygon(polys, options);
+		return new L.MoltiPolygon(polys, options);
 	}
+
 });
