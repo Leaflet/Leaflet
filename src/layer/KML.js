@@ -170,15 +170,20 @@ L.Util.extend(L.KML, {
 	},
 
 	parsePolygon: function(line, xml, options) {
-		var el = line.getElementsByTagName('outerBoundaryIs');
-		var polys = [];
+		var el, polys = [], inner = [];
+		el = line.getElementsByTagName('outerBoundaryIs');
 		for (var i = 0; i < el.length; i++) {
 			var coords = this.parseCoords(el[i]);
 			if (coords) polys.push(coords);
 		}
+		el = line.getElementsByTagName('innerBoundaryIs');
+		for (var i = 0; i < el.length; i++) {
+			var coords = this.parseCoords(el[i]);
+			if (coords) inner.push(coords);
+		}
 		if (!polys.length) return;
 		if (options.fillColor) options.fill = true;
-		if (polys.length == 1) return new L.Polygon(polys, options);
+		if (polys.length == 1) return new L.Polygon(polys.concat(inner), options);
 		return new L.MoltiPolygon(polys, options);
 	}
 
