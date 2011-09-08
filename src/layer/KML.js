@@ -105,29 +105,29 @@ L.Util.extend(L.KML, {
 	},
 
 	parsePlacemark: function(place, xml, style) {
-		var i, el, options = {};
+		var i, j, el, options = {};
 		el = place.getElementsByTagName('styleUrl');
 		for (i = 0; i < el.length; i++) {
 			var url = el[i].childNodes[0].nodeValue;
 			for (var a in style[url])
 				options[a] = style[url][a];
 		}
-		var layer = null;
+		var layers = [];
 
-		el = place.getElementsByTagName('LineString');
-		if (el && el[0]) layer = this.parseLine(el[0], xml, options);
-
-		if (!layer) {
-			el = place.getElementsByTagName('Polygon');
-			if (el && el[0]) layer = this.parsePolygon(el[0], xml, options);
+		var parse = ['LineString', 'Polygon', 'Point'];
+		for (j in parse) {
+			var tag = parse[j];
+			el = place.getElementsByTagName(tag);
+			for (i = 0; i < el.length; i++) {
+				var l = this["parse" + tag](el[i], xml, options);
+				if (l) layers.push(l);
+			}
 		}
 
-		if (!layer) {
-			el = place.getElementsByTagName('Point');
-			if (el && el[0]) layer = this.parsePoint(el[0], xml, options);
-		}
-
-		if (!layer) return;
+		if (!layers.length) return;
+		var layer = layers[0];
+		if (layers.length > 1)
+		layer = new L.FeatureGroup(layers);
 
 		var name, descr="";
 		el = place.getElementsByTagName('name');
@@ -156,7 +156,7 @@ L.Util.extend(L.KML, {
 		return coords;
 	},
 
-	parseLine: function(line, xml, options) {
+	parseLineString: function(line, xml, options) {
 		var coords = this.parseCoords(line);
 		if (!coords.length) return;
 		return new L.Polyline(coords, options);
