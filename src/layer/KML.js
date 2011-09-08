@@ -32,7 +32,20 @@ L.Util.extend(L.KML, {
 			var l = this.parseFolder(xml, style);
 			if (l) layers.push(l);
 		}
+		el = xml.getElementsByTagName('Placemark');
+		for (var i = 0; i < el.length; i++) {
+			if (!this._check_folder(el[i])) continue;
+			var l = this.parsePlacemark(el[i], xml, style);
+			if (l) layers.push(l);
+		}
 		return layers;
+	},
+
+	_check_folder: function(e, folder) {
+		e = e.parentElement;
+		while (e && e.tagName != "Folder" && e != folder)
+			e = e.parentElement;
+		return e || e == folder;
 	},
 
 	parseStyle: function(xml) {
@@ -73,9 +86,16 @@ L.Util.extend(L.KML, {
 	},
 
 	parseFolder: function(xml, style) {
-		var layers = [];
-		var el = xml.getElementsByTagName('Placemark');
+		var el, layers = [];
+		el = xml.getElementsByTagName('Folder');
 		for (var i = 0; i < el.length; i++) {
+			if (!this._check_folder(el[i], xml)) continue;
+			var l = this.parseFolder(el[i], style);
+			if (l) layers.push(l);
+		}
+		el = xml.getElementsByTagName('Placemark');
+		for (var i = 0; i < el.length; i++) {
+			if (!this._check_folder(el[i], xml)) continue;
 			var l = this.parsePlacemark(el[i], xml, style);
 			if (l) layers.push(l);
 		}
