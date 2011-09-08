@@ -53,6 +53,7 @@ Leaflet Changelog
  * Fixed a bug related to clearing background tiles after zooming (by [@neno-giscloud](https://github.com/neno-giscloud) & [@dravnic](https://github.com/dravnic)).
  * Fixed a bug related to cleaning up after removing tile layers (by [@dravnic](https://github.com/dravnic)). [#276](https://github.com/CloudMade/Leaflet/pull/276)
  * Fixed a bug that made selecting text in the attribution control impossible. [#279](https://github.com/CloudMade/Leaflet/issues/279)
+ * Fixed a bug when initializing a map in a non-empty div. [#278](https://github.com/CloudMade/Leaflet/issues/278)
 
 #### Browser bugfixes
 
