@@ -50,6 +50,7 @@ Leaflet Changelog
  * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)
  * Fixed a bug where `TileLayer` `load` event wouldn't fire in some edge cases (by [@dravnic](https://github.com/dravnic)).
  * Fixed a bug related to clearing background tiles after zooming (by [@neno-giscloud](https://github.com/neno-giscloud) & [@dravnic](https://github.com/dravnic)).
+ * Fixed a bug related to cleaning up after removing tile layers (by [@dravnic](https://github.com/dravnic)). [#276](https://github.com/CloudMade/Leaflet/pull/276)
 
 #### Browser bugfixes
 
