@@ -17,6 +17,7 @@ Leaflet Changelog
  * Map now preserves its center after resize.
  * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Improved circles performance by not drawing them if they're off the clip region.
+ * When panning to another copy of the world (that's infinite horizontally), map overlays now jump to corresponding positions. [#273](https://github.com/CloudMade/Leaflet/issues/273)
 
 #### API improvements
 

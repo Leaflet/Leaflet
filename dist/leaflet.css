@@ -2,16 +2,17 @@
 
 .leaflet-map-pane,
 .leaflet-tile,
-.leaflet-marker-icon, 
+.leaflet-marker-icon,
 .leaflet-marker-shadow,
-.leaflet-tile-pane, 
+.leaflet-tile-pane,
+.leaflet-objects-pane,
 .leaflet-overlay-pane,
 .leaflet-shadow-pane,
 .leaflet-marker-pane,
 .leaflet-popup-pane,
 .leaflet-overlay-pane svg,
 .leaflet-zoom-box,
-.leaflet-image-layer { /* TODO optimize classes */ 
+.leaflet-image-layer { /* TODO optimize classes */
 	position: absolute;
 	}
 .leaflet-container {
@@ -20,14 +21,14 @@
 .leaflet-tile-pane {
 	-webkit-transform: translate3d(0,0,0);
 	}
-.leaflet-tile, 
-.leaflet-marker-icon, 
+.leaflet-tile,
+.leaflet-marker-icon,
 .leaflet-marker-shadow {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
 	}
-.leaflet-marker-icon, 
+.leaflet-marker-icon,
 .leaflet-marker-shadow {
 	display: block;
 	}
@@ -79,7 +80,7 @@ a.leaflet-active {
 	}
 .leaflet-bottom {
 	bottom: 0;
-	}	
+	}
 .leaflet-left {
 	left: 0;
 	}
@@ -141,12 +142,12 @@ a.leaflet-active {
 .leaflet-control-zoom-out {
 	background-image: url(images/zoom-out.png);
 	}
-	
+
 .leaflet-control-layers {
 	-moz-box-shadow: 0 0 7px #999;
 	-webkit-box-shadow: 0 0 7px #999;
 	box-shadow: 0 0 7px #999;
-	
+
 	background: #f8f8f9;
 	}
 .leaflet-control-layers a {
@@ -189,12 +190,12 @@ a.leaflet-active {
 .leaflet-container .leaflet-control-attribution {
 	margin: 0;
 	padding: 0 5px;
-	
+
 	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	color: #333;
-	
+
 	background-color: rgba(255, 255, 255, 0.7);
-            
+
 	-moz-box-shadow: 0 0 7px #ccc;
 	-webkit-box-shadow: 0 0 7px #ccc;
 	box-shadow: 0 0 7px #ccc;
@@ -205,7 +206,7 @@ a.leaflet-active {
 
 .leaflet-fade-anim .leaflet-tile {
 	opacity: 0;
-	
+
 	-webkit-transition: opacity 0.2s linear;
 	-moz-transition: opacity 0.2s linear;
 	-o-transition: opacity 0.2s linear;
@@ -264,9 +265,9 @@ a.leaflet-active {
 	width: 15px;
 	height: 15px;
 	padding: 1px;
-	
+
 	margin: -8px auto 0;
-	
+
 	-moz-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
@@ -277,10 +278,10 @@ a.leaflet-active {
 	position: absolute;
 	top: 9px;
 	right: 9px;
-	
+
 	width: 10px;
 	height: 10px;
-	
+
 	overflow: hidden;
 	}
 .leaflet-popup-content p {
@@ -303,13 +304,13 @@ a.leaflet-active {
 	}
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;
-	
+
 	box-shadow: 0 1px 10px #888;
 	-moz-box-shadow: 0 1px 10px #888;
 	 -webkit-box-shadow: 0 1px 14px #999;
 	}
 .leaflet-popup-content-wrapper {
-	-moz-border-radius: 20px; 
+	-moz-border-radius: 20px;
 	-webkit-border-radius: 20px;
 	border-radius: 20px;
 	}
