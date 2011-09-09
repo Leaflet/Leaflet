@@ -16,6 +16,7 @@ L.TileLayer = L.Class.extend({
 		scheme: 'xyz',
 		continuousWorld: false,
 		noWrap: false,
+		zoomOffset: 0,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -196,7 +197,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = (1 << zoom);
+			tileLimit = (1 << (zoom + this.options.zoomOffset));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -243,7 +244,7 @@ L.TileLayer = L.Class.extend({
 
 		return this._url
 				.replace('{s}', s)
-				.replace('{z}', zoom)
+				.replace('{z}', zoom + this.options.zoomOffset)
 				.replace('{x}', tilePoint.x)
 				.replace('{y}', tilePoint.y);
 	},
