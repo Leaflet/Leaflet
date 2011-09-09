@@ -64,6 +64,7 @@ Leaflet Changelog
 
 #### Mobile browser bugfixes
 
+ * Fixed a bug that caused an error when clicking vector layers under iOS. [#204](https://github.com/CloudMade/Leaflet/issues/204)
  * Fixed crash on Android 3+ when panning or zooming (by [@florian](https://github.com/florianf)). [#137](https://github.com/CloudMade/Leaflet/issues/137)
 
 
