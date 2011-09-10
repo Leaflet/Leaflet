@@ -7,17 +7,32 @@ L.GPX = L.FeatureGroup.extend({
 		this._layers = {};
 		
 		if (gpx) {
-			this.addGPX(gpx, options);
+			this.addGPX(gpx, options, this.options.async);
 		}
 	},
 	
-	addGPX: function(gpx, options) {
+	loadXML: function(url, cb, options, async) {
+		if (async == undefined) async = this.options.async;
+		if (options == undefined) options = this.options;
+
 		var req = new window.XMLHttpRequest();
-		req.open('GET', gpx, false);
+		req.open('GET', url, async);
 		req.overrideMimeType('text/xml');
+		req.onreadystatechange = function() {
+			if (req.readyState != 4) return;
+			if(req.status == 200) cb(req.responseXML, options);
+		};
 		req.send(null);
-		if (req.status != 200) return;
-		var layers = L.GPX.parseGPX(req.responseXML, options);
+	},
+
+	addGPX: function(url, options, async) {
+		var _this = this;
+		var cb = function(gpx, options) { _this._addGPX(gpx, options) };
+		this.loadXML(url, cb, options, async);
+	},
+
+	_addGPX: function(gpx, options) {
+		var layers = L.GPX.parseGPX(gpx, options);
 		if (layers) this.addLayer(layers);
 	}
 });
