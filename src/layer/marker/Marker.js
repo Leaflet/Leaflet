@@ -30,6 +30,11 @@ L.Marker = L.Class.extend({
 	onRemove: function(map) {
 		this._removeIcon();
 		
+		// TODO move to Marker.Popup.js
+		if (this.closePopup) {
+			this.closePopup();
+		}
+		
 		map.off('viewreset', this._reset, this);
 	},
 	
@@ -39,7 +44,9 @@ L.Marker = L.Class.extend({
 	
 	setLatLng: function(latlng) {
 		this._latlng = latlng;
-		this._reset();
+		if (this._icon) {
+			this._reset();
+		}
 	},
 	
 	setIcon: function(icon) {
@@ -49,6 +56,7 @@ L.Marker = L.Class.extend({
 		this.options.icon = icon;
 		
 		this._initIcon();
+		this._reset();
 	},
 	
 	_initIcon: function() {

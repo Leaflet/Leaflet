@@ -136,5 +136,11 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		if (this._containsPoint(e.layerPoint)) {
 			this.fire('click', e);
 		}
-	}
+	},
+
+    onRemove: function(map) {
+        map.off('viewreset', this._projectLatlngs, this);
+        map.off(this._updateTrigger, this._updatePath, this);
+        map.fire(this._updateTrigger);
+    }
 });

@@ -2,16 +2,17 @@
 
 .leaflet-map-pane,
 .leaflet-tile,
-.leaflet-marker-icon, 
+.leaflet-marker-icon,
 .leaflet-marker-shadow,
-.leaflet-tile-pane, 
+.leaflet-tile-pane,
+.leaflet-objects-pane,
 .leaflet-overlay-pane,
 .leaflet-shadow-pane,
 .leaflet-marker-pane,
 .leaflet-popup-pane,
 .leaflet-overlay-pane svg,
 .leaflet-zoom-box,
-.leaflet-image-layer { /* TODO optimize classes */ 
+.leaflet-image-layer { /* TODO optimize classes */
 	position: absolute;
 	}
 .leaflet-container {
@@ -20,14 +21,14 @@
 .leaflet-tile-pane {
 	-webkit-transform: translate3d(0,0,0);
 	}
-.leaflet-tile, 
-.leaflet-marker-icon, 
+.leaflet-tile,
+.leaflet-marker-icon,
 .leaflet-marker-shadow {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
 	}
-.leaflet-marker-icon, 
+.leaflet-marker-icon,
 .leaflet-marker-shadow {
 	display: block;
 	}
@@ -79,7 +80,7 @@ a.leaflet-active {
 	}
 .leaflet-bottom {
 	bottom: 0;
-	}	
+	}
 .leaflet-left {
 	left: 0;
 	}
@@ -103,25 +104,29 @@ a.leaflet-active {
 	margin-right: 10px;
 	}
 
-.leaflet-control-zoom {
-	padding: 5px;
-	background: rgba(0, 0, 0, 0.25);
-	
+.leaflet-control-zoom, .leaflet-control-layers {
 	-moz-border-radius: 7px;
 	-webkit-border-radius: 7px;
 	border-radius: 7px;
 	}
+.leaflet-control-zoom {
+	padding: 5px;
+	background: rgba(0, 0, 0, 0.25);
+	}
 .leaflet-control-zoom a {
-	display: block;
-	width: 19px;
-	height: 19px;
+	background-color: rgba(255, 255, 255, 0.75);
+	}
+.leaflet-control-zoom a, .leaflet-control-layers a {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
-	background-color: rgba(255, 255, 255, 0.75);
-	
+	display: block;
+	}
+.leaflet-control-zoom a {
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	border-radius: 4px;
+	width: 19px;
+	height: 19px;
 	}
 .leaflet-control-zoom a:hover {
 	background-color: #fff;
@@ -137,16 +142,60 @@ a.leaflet-active {
 .leaflet-control-zoom-out {
 	background-image: url(images/zoom-out.png);
 	}
-	
+
+.leaflet-control-layers {
+	-moz-box-shadow: 0 0 7px #999;
+	-webkit-box-shadow: 0 0 7px #999;
+	box-shadow: 0 0 7px #999;
+
+	background: #f8f8f9;
+	}
+.leaflet-control-layers a {
+	background-image: url(images/layers.png);
+	width: 36px;
+	height: 36px;
+	}
+.leaflet-big-buttons .leaflet-control-layers a {
+	width: 44px;
+	height: 44px;
+	}
+.leaflet-control-layers .leaflet-control-layers-list,
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+	display: none;
+	}
+.leaflet-control-layers-expanded .leaflet-control-layers-list {
+	display: block;
+	position: relative;
+	}
+.leaflet-control-layers-expanded {
+	padding: 6px 10px 6px 6px;
+	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	color: #333;
+	background: #fff;
+	}
+.leaflet-control-layers input {
+	margin-top: 2px;
+	position: relative;
+	top: 1px;
+	}
+.leaflet-control-layers label {
+	display: block;
+	}
+.leaflet-control-layers-separator {
+	height: 0;
+	border-top: 1px solid #ddd;
+	margin: 5px -10px 5px -6px;
+	}
+
 .leaflet-container .leaflet-control-attribution {
 	margin: 0;
 	padding: 0 5px;
-	
+
 	font: 11px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	color: #333;
-	
+
 	background-color: rgba(255, 255, 255, 0.7);
-            
+
 	-moz-box-shadow: 0 0 7px #ccc;
 	-webkit-box-shadow: 0 0 7px #ccc;
 	box-shadow: 0 0 7px #ccc;
@@ -157,7 +206,7 @@ a.leaflet-active {
 
 .leaflet-fade-anim .leaflet-tile {
 	opacity: 0;
-	
+
 	-webkit-transition: opacity 0.2s linear;
 	-moz-transition: opacity 0.2s linear;
 	-o-transition: opacity 0.2s linear;
@@ -216,9 +265,9 @@ a.leaflet-active {
 	width: 15px;
 	height: 15px;
 	padding: 1px;
-	
+
 	margin: -8px auto 0;
-	
+
 	-moz-transform: rotate(45deg);
 	-webkit-transform: rotate(45deg);
 	-ms-transform: rotate(45deg);
@@ -229,10 +278,10 @@ a.leaflet-active {
 	position: absolute;
 	top: 9px;
 	right: 9px;
-	
+
 	width: 10px;
 	height: 10px;
-	
+
 	overflow: hidden;
 	}
 .leaflet-popup-content p {
@@ -255,13 +304,13 @@ a.leaflet-active {
 	}
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;
-	
+
 	box-shadow: 0 1px 10px #888;
 	-moz-box-shadow: 0 1px 10px #888;
 	 -webkit-box-shadow: 0 1px 14px #999;
 	}
 .leaflet-popup-content-wrapper {
-	-moz-border-radius: 20px; 
+	-moz-border-radius: 20px;
 	-webkit-border-radius: 20px;
 	border-radius: 20px;
 	}

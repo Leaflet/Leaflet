@@ -19,17 +19,34 @@ L.DomUtil = {
 		return (value == 'auto' ? null : value);
 	},
 	
-	getCumulativeOffset: function(el) {
+	getViewportOffset: function(element) {
 		var top = 0, 
-			left = 0;
+			left = 0,
+			el = element,
+			docBody = document.body;
+		
 		do {
 			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
-			el = el.offsetParent;
-		} while (el);
+			
+			if (el.offsetParent == docBody && 
+					L.DomUtil.getStyle(el, 'position') == 'absolute') break;
+			
+		} while (el = el.offsetParent);
+		
+		el = element;
+		
+		do {
+			if (el === docBody) break;
+			
+			top -= el.scrollTop || 0;
+			left -= el.scrollLeft || 0;
+			
+		} while (el = el.parentNode);
+		
 		return new L.Point(left, top);
 	},
-	
+
 	create: function(tagName, className, container) {
 		var el = document.createElement(tagName);
 		el.className = className;
@@ -54,8 +71,6 @@ L.DomUtil = {
 		this._onselectstart = null;
 	},
 	
-	CLASS_RE: /(\\s|^)'+cls+'(\\s|$)/,
-	
 	hasClass: function(el, name) {
 		return (el.className.length > 0) && 
 				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
@@ -65,6 +80,13 @@ L.DomUtil = {
 		if (!L.DomUtil.hasClass(el, name)) {
 			el.className += (el.className ? ' ' : '') + name; 
 		}
+	},
+	
+	removeClass: function(el, name) {
+		el.className = el.className.replace(/(\S+)\s*/g, function(w, match) {
+			if (match == name) return '';
+			return w;
+		}).replace(/^\s+/, '');
 	},
 	
 	setOpacity: function(el, value) {

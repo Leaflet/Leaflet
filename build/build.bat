@@ -61,6 +61,7 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/control/Control.js ^
 --js ../src/control/Control.Zoom.js ^
 --js ../src/control/Control.Attribution.js ^
+--js ../src/control/Control.Layers.js ^
 --js ../src/map/Map.js ^
 --js ../src/map/ext/Map.Geolocation.js ^
 --js ../src/map/ext/Map.Popup.js ^

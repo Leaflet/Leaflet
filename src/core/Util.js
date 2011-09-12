@@ -42,12 +42,12 @@ L.Util = {
 			window.msRequestAnimationFrame || 
 			timeoutDefer;
 		
-		return function(callback, context, immediate) {
-			callback = context ? L.Util.bind(callback, context) : context;
+		return function(callback, context, immediate, contextEl) {
+			callback = context ? L.Util.bind(callback, context) : callback;
 			if (immediate && requestFn === timeoutDefer) {
 				callback();
 			} else {
-				requestFn(callback);
+				requestFn(callback, contextEl);
 			}
 		};
 	})(),
