@@ -42,7 +42,6 @@
 		'layer/tile/TileLayer.js',
 		'layer/tile/TileLayer.WMS.js',
 		'layer/tile/TileLayer.Canvas.js',
-		'layer/tile/TileLayer.deCarta.js',
 		'layer/ImageOverlay.js',
 		'layer/Popup.js',
 		
