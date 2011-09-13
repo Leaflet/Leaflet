@@ -253,8 +253,10 @@ L.TileLayer = L.Class.extend({
 		this._tileImg.galleryimg = 'no';
 
 		var tileSize = this.options.tileSize;
-		this._tileImg.style.width = tileSize + 'px';
-		this._tileImg.style.height = tileSize + 'px';
+		if (tileSize > 0) {
+      this._tileImg.style.width = tileSize + 'px';
+		  this._tileImg.style.height = tileSize + 'px';
+    }
 	},
 
 	_createTile: function() {
