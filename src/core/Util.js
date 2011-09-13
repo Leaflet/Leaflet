@@ -8,7 +8,7 @@ L.Util = {
 		for (var j = 0, len = sources.length, src; j < len; j++) {
 			src = sources[j] || {};
 			for (var i in src) {
-				if (src.hasOwnProperty(i)) {
+				if (Object.hasOwnProperty.call(src, i)) {
 					dest[i] = src[i];
 				}
 			}
@@ -87,7 +87,7 @@ L.Util = {
 	getParamString: function(obj) {
 		var params = [];
 		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
+			if (Object.hasOwnProperty.call(obj, i)) {
 				params.push(i + '=' + obj[i]);
 			}
 		}

@@ -169,7 +169,7 @@ L.TileLayer = L.Class.extend({
 		var kArr, x, y, key, tile;
 
 		for (key in this._tiles) {
-			if (this._tiles.hasOwnProperty(key)) {
+			if (Object.hasOwnProperty.call(this._tiles, key)) {
 				kArr = key.split(':');
 				x = parseInt(kArr[0], 10);
 				y = parseInt(kArr[1], 10);

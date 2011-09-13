@@ -13,7 +13,7 @@
 
 			setStyle: function(style) {
 				for (var i in this._layers) {
-					if (this._layers.hasOwnProperty(i) && this._layers[i].setStyle) {
+					if (Object.hasOwnProperty.call(this._layers, i) && this._layers[i].setStyle) {
 						this._layers[i].setStyle(style);
 					}
 				}

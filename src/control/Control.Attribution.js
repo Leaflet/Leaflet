@@ -1,4 +1,4 @@
-L.Control.Attribution = L.Class.extend({
+L.Control.Attribution = L.Class.extend({
 	onAdd: function(map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		this._map = map;
@@ -38,7 +38,7 @@ L.Control.Attribution = L.Class.extend({
 		var attribs = [];
 		
 		for (var i in this._attributions) {
-			if (this._attributions.hasOwnProperty(i)) {
+			if (Object.hasOwnProperty.call(this._attributions, i)) {
 				attribs.push(i);
 			}
 		}

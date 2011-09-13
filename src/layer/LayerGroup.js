@@ -50,7 +50,7 @@ L.LayerGroup = L.Class.extend({
 	
 	_iterateLayers: function(method, context) {
 		for (var i in this._layers) {
-			if (this._layers.hasOwnProperty(i)) {
+			if (Object.hasOwnProperty.call(this._layers, i)) {
 				method.call(context, this._layers[i]);
 			}
 		}

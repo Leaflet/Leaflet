@@ -43,7 +43,7 @@ L.Transition = L.Transition.extend({
 			customProp = L.Transition.CUSTOM_PROPS_PROPERTIES;
 		
 		for (prop in props) {
-			if (props.hasOwnProperty(prop)) {
+			if (Object.hasOwnProperty.call(props, prop)) {
 				prop = customProp[prop] ? customProp[prop] : prop;
 				prop = prop.replace(/([A-Z])/g, function(w) { return '-' + w.toLowerCase(); });
 				propsList.push(prop);
@@ -55,7 +55,7 @@ L.Transition = L.Transition.extend({
 		this._el.style[L.Transition.PROPERTY] = propsList.join(', ');
 		
 		for (prop in props) {
-			if (props.hasOwnProperty(prop)) {
+			if (Object.hasOwnProperty.call(props, prop)) {
 				this._setProperty(prop, props[prop]);
 			}
 		}

@@ -10,13 +10,13 @@ L.Control.Layers = L.Class.extend({
 		this._layers = {};
 
 		for (var i in baseLayers) {
-			if (baseLayers.hasOwnProperty(i)) {
+			if (Object.hasOwnProperty.call(baseLayers, i)) {
 				this._addLayer(baseLayers[i], i);
 			}
 		}
 		
 		for (i in overlays) {
-			if (overlays.hasOwnProperty(i)) {
+			if (Object.hasOwnProperty.call(overlays, i)) {
 				this._addLayer(overlays[i], i, true);
 			}
 		}
@@ -105,7 +105,7 @@ L.Control.Layers = L.Class.extend({
 			overlaysPresent = false;
 		
 		for (var i in this._layers) {
-			if (this._layers.hasOwnProperty(i)) {
+			if (Object.hasOwnProperty.call(this._layers, i)) {
 				var obj = this._layers[i];
 				this._addItem(obj);
 				overlaysPresent = overlaysPresent || obj.overlay;

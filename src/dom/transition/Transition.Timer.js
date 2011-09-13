@@ -53,7 +53,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this.fire('start');
 		
 		for (var prop in props) {
-			if (props.hasOwnProperty(prop)) {
+			if (Object.hasOwnProperty.call(props, prop)) {
 				var p = {};
 				if (prop in getters) {
 					p.from = getters[prop](this._el);
@@ -90,7 +90,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 			prop, p, value;
 		
 		for (prop in this._props) {
-			if (this._props.hasOwnProperty(prop)) {
+			if (Object.hasOwnProperty.call(this._props, prop)) {
 				p = this._props[prop];
 				if (prop in setters) {
 					value = p.to.subtract(p.from).multiplyBy(percentComplete).add(p.from);
