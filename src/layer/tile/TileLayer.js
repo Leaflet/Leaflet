@@ -114,7 +114,14 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_reset: function(clearOldContainer) {
+		var key;
+		for (key in this._tiles) {
+			if (this._tiles.hasOwnProperty(key)) {
+				this.fire("tileunload", { tile: this._tiles[key] });
+			}
+		}
 		this._tiles = {};
+
 		if (clearOldContainer && this._container)
 			this._container.innerHTML = "";
 		this._initContainer();
