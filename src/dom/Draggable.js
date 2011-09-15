@@ -42,6 +42,11 @@ L.Draggable = L.Class.extend({
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
 			el.className += ' leaflet-active';
 		}
+		
+		if(this._moving){
+			this._onUp(this);	
+			return;
+		}
 
 		this._moved = false;
 
@@ -71,6 +76,8 @@ L.Draggable = L.Class.extend({
 
 		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
+		
+		this._moving = true;
 
 		L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
@@ -104,6 +111,7 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.removeListener(document, L.Draggable.END, this._onUp);
 
 		if (this._moved) {
+			this._moving = false;
 			this.fire('dragend');
 		}
 	},
