@@ -415,13 +415,15 @@ L.Map = L.Class.extend({
 	},
 
 	_onMouseClick: function(e) {
-		if (this.dragging && this.dragging.moved()) { return; }
+		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
 
 		this.fire('pre' + e.type);
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function(e) {
+		if (!this._loaded) return;
+
 		var type = e.type;
 		type = (type == 'mouseenter' ? 'mouseover' : (type == 'mouseleave' ? 'mouseout' : type));
 		if (!this.hasEventListeners(type)) { return; }
