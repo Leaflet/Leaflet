@@ -68,7 +68,7 @@ L.Map = L.Class.extend({
 	// public methods that modify map state
 
 	// replaced by animation-powered implementation in Map.PanAnimation.js
-	setView: function(center, zoom, forceReset) {
+	setView: function(center, zoom/*, forceReset*/) {
 		// reset the map view
 		this._resetView(center, this._limitZoom(zoom));
 		return this;

@@ -26,14 +26,14 @@ L.Path = L.Class.extend({
 		// TODO remove this, as all paths now update on moveend
 		updateOnMoveEnd: true
 	},
-	
+
 	initialize: function(options) {
 		L.Util.setOptions(this, options);
 	},
 	
 	onAdd: function(map) {
 		this._map = map;
-		
+
 		this._initElements();
 		this._initEvents();
 		this.projectLatlngs();
@@ -47,7 +47,7 @@ L.Path = L.Class.extend({
 	
 	onRemove: function(map) {
 		map._pathRoot.removeChild(this._container);
-		map.off('viewreset', this._projectLatlngs, this);
+		map.off('viewreset', this.projectLatlngs, this);
 		map.off(this._updateTrigger, this._updatePath, this);
 	},
 	
