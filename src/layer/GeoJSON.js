@@ -1,7 +1,5 @@
 
-L.GeoJSON = L.LayerGroup.extend({
-	includes: L.Mixin.Events,
-	
+L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function(geojson, options) {
 		L.Util.setOptions(this, options);
 		this._geojson = geojson;
