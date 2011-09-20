@@ -184,7 +184,7 @@ L.Util.extend(L.KML, {
 		if (!polys.length) return;
 		if (options.fillColor) options.fill = true;
 		if (polys.length == 1) return new L.Polygon(polys.concat(inner), options);
-		return new L.MoltiPolygon(polys, options);
+		return new L.MultiPolygon(polys, options);
 	}
 
 });
