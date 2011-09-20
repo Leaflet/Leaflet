@@ -43,7 +43,7 @@ L.Draggable = L.Class.extend({
 			el.className += ' leaflet-active';
 		}
 
-        if (this._moved) { return; }
+		if (this._moved) { return; }
 
 		if (!L.Browser.touch) {
 			L.DomUtil.disableTextSelection();
@@ -105,7 +105,7 @@ L.Draggable = L.Class.extend({
 
 		if (this._moved) {
 			this.fire('dragend');
-            this._moved = false;
+			this._moved = false;
 		}
 	},
 
