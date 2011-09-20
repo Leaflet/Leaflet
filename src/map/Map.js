@@ -177,6 +177,8 @@ L.Map = L.Class.extend({
 	},
 
 	invalidateSize: function() {
+		if (!this._loaded) return this;
+
 		var oldSize = this.getSize();
 		this._sizeChanged = true;
 		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
