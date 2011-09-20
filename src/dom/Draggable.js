@@ -109,9 +109,6 @@ L.Draggable = L.Class.extend({
 		}
 	},
 
-	_removeActiveClass: function(el) {
-	},
-
 	_setMovingCursor: function() {
 		this._bodyCursor = document.body.style.cursor;
 		document.body.style.cursor = 'move';
