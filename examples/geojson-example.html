@@ -1,55 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet debug page</title>
-
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	<title>Leaflet GeoJSON example</title>
 	
-	<link rel="stylesheet" href="../css/screen.css" />
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
 	
 	<script src="../dist/leaflet.js"></script>
+	<script src="sample-geojson.js" type="text/javascript"></script>
 </head>
 <body>
+	<div id="map" style="width: 600px; height: 400px"></div>
 
-	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
-	<button id="populate">Populate with 10 markers</button>
-
-	<script type="text/javascript" src="geojson-sample.js"></script>
-	<script type="text/javascript">
-
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+	<script>
+		var map = new L.Map('map');
+	
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 	
-		var map = new L.Map('map', {
-			center: new L.LatLng(0.78, 102.37), 
-			zoom: 7, 
-			layers: [cloudmade]
-		});
+		map.setView(new L.LatLng(39.74402223643582, -104.99264717102051), 14)
+		    .addLayer(cloudmade);
+		    
+		var geojson_layer = new L.GeoJSON();
 		
-		var geojson = new L.GeoJSON();
+		geojson_layer.on( "featureparse", function( e ) {
+		    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+		    if ( e.properties && e.properties.popup_content ) {
+		        popup_content += e.properties.popup_content;
+		    }
+		    e.layer.bindPopup( popup_content );
+		} );
 		
-		/* points are rendered as markers by default, but you can change this:
-			
-		var geojson = new L.GeoJSON(null, {
-			pointToLayer: function(latlng) { return new L.CircleMarker(latlng); }
-		});
-		*/
+		map.addLayer( geojson_layer );
 		
-		geojson.on('featureparse', function(e) {
-			// you can style features depending on their properties, etc.
-			var popupText = 'geometry type: ' + e.geometryType + '<br/>';
-			if (e.layer instanceof L.Path) {
-				e.layer.setStyle({color: e.properties.color});
-				popupText += 'color: ' + e.properties.color;
-			}
-			e.layer.bindPopup(popupText);
-		});
+		geojson_layer.addGeoJSON( free_bus );
+		geojson_layer.addGeoJSON( bicycle_rental );
 		
-		geojson.addGeoJSON(geojsonSample);
-		
-		map.addLayer(geojson);
 	</script>
 </body>
 </html>
