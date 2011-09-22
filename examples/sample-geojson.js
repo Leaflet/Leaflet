@@ -183,6 +183,11 @@ var free_bus = {
     },
     "properties": {
         "name": "16th Street Free Bus",
+        "style": {
+            color: "#004070",
+            weight: 4,
+            opacity: 0.9
+        },
         "popup_content": "This is the 16th street free bus in Denver, a good way to cross town."
     },
     "id": 1
@@ -295,7 +300,14 @@ var bicycle_rental = {
 var campus = {
     "type": "Feature",
     "properties": {
-        "popup_content": "This is the Auraria West Campus"
+        "popup_content": "This is the Auraria West Campus",
+        "style": {
+            weight: 2,
+            color: "#999",
+            opacity: 1,
+            fillColor: "#B0DE5C",
+            fillOpacity: 0.8
+        }
     },
     "geometry": {
         "type": "MultiPolygon",

@@ -30,6 +30,9 @@
 		        popup_content += e.properties.popup_content;
 		    }
 		    e.layer.bindPopup( popup_content );
+		    if ( e.properties && e.properties.style ) {
+		        e.layer.setStyle( e.properties.style );
+		    }
 		} );
 		
 		map.addLayer( geojson_layer );
