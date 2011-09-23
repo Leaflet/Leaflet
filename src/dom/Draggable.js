@@ -76,6 +76,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_updatePosition: function() {
+		this.fire('predrag');
 		L.DomUtil.setPosition(this._element, this._newPos);
 		this.fire('drag');
 	},
