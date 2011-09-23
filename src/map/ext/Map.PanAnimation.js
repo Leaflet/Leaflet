@@ -24,6 +24,8 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 	
 	panBy: function(offset) {
+		if (!(offset.x || offset.y)) { return this; }
+		
 		if (!this._panTransition) {
 			this._panTransition = new L.Transition(this._mapPane, {duration: 0.3});
 			
