@@ -63,7 +63,7 @@ L.Handler.MapDrag = L.Handler.extend({
 	},
 
 	_onDragEnd: function() {
-		map.fire('moveend');
-		map.fire('dragend');
+		this._map.fire('moveend');
+		this._map.fire('dragend');
 	}
 });
