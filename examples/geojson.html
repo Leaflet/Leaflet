@@ -42,70 +42,103 @@
 		<p><a href="../examples.html">&larr; Back to the list of examples</a></p>
 		<h3>Using GeoJSON with Leaflet</h3>
 		
-		<p>In this example, you'll learn how to create and interact with map vectors created from <a href="http://geojson.org/">GeoJSON</a>.</p>
+		<p>In this example, you'll learn how to create and interact with map vectors created from <a href="http://geojson.org/">GeoJSON</a> objects.</p>
 		
 		<p><a target="_blank" href="geojson-example.html">View example &rarr;</a></p>
 		
-		<h3>Preparing the page</h3>
+		<h3>About GeoJSON</h3>
 		
-		<p>First we'll take a look at the HTML &amp; CSS code of the page. To make our map <code>div</code> element stretch to all available space (fullscreen), we can use the following CSS code:</p>
+		<p>According to <a href="http://geojson.org">http://geojson.org</a>:</p>
 		
-		<pre><code class="css">body {
-	padding: 0;
-	margin: 0;
-}
-html, body, #map {
-	height: 100%;
-}</code></pre>
+		<blockquote>GeoJSON is a format for encoding a variety of geographic data structures. A GeoJSON object may represent a geometry, a feature, or a collection of features. GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a geometry object and additional properties, and a feature collection represents a list of features.</blockquote>
+		
+		<p>Leaflet supports all of the GeoJSON types above but <a href="http://geojson.org/geojson-spec.html#feature-objects">Features</a> and <a href="http://geojson.org/geojson-spec.html#feature-collection-objects">FeatureCollections</a> allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. (<a target="_blank" href="geojson-example.html">see example</a>)</p>
+		
+		<h3>The GeoJSON layer</h3>
+		
+		<p>GeoJSON objects are added to the map through a <a href="http://leaflet.cloudmade.com/reference.html#geojson">GeoJSON layer</a>. To create a GeoJSON layer and add it to a map we can use the following code.</p>
+		
+		<pre><code class="css">var geojson_layer = new L.GeoJSON();
 
-		<p>Also, we need to tell the mobile browser to disable scaling of the page and set it to its actual size by placing the following line in the <code>head</code> section:</p>
-		
-		<pre><code class="html">&lt;meta name="viewport" content="initial-scale=1.0, user-scalable=no" /&gt;</code></pre>
-		
-		<h3>Initializing the map</h3>
-		
-		<p>We'll now initialize the map in the JavaScript code exactly like we did in the <a href="quick-start">quick start guide</a>, but won't set the map view yet:</p>
-		
-		<pre><code class="javascript">var map = new L.Map('map');
-	
-var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
-	cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+map.addLayer( geojson_layer );</code></pre>
 
-map.addLayer(cloudmade);</code></pre>
-		
-		<h3>Geolocation</h3>
-		
-		<p>Leaflet has a very handy shortcut for zooming the map view to the detected location &mdash; locateAndSetView method, replacing the usual <code>setView</code> method in the code:</p>
-		
-		<pre><code class="javascript">map.locateAndSetView(16);</code></pre>
-		
-		<p>Here we specify 16 as the maximum zoom when setting the map view automatically. Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the <code>locationfound</code> and <code>locationerror</code> events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to <code>locationfound</code> event before the <code>locateAndSetView</code> call:</p>
-		
-		<pre><code class="javascript">map.on('locationfound', onLocationFound);
-		
-function onLocationFound(e) {
-	var radius = e.accuracy / 2;
+        <p>This creates an empty GeoJSON layer that we can easily add vectors to.</p>
+        
+        <pre><code>var a_geojson_feature = {
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-104.99404, 39.75621]
+    }
+};
 
-	var marker = new L.Marker(e.latlng);
-	map.addLayer(marker);
-	marker.bindPopup("You are within " + radius + " meters from this point").openPopup();
-	
-	var circle = new L.Circle(e.latlng, radius);
-	map.addLayer(circle);	
-}</code></pre>
+geojson_layer.addGeoJSON( a_geojson_feature );</code></pre>
+        
+        <p>We can also instantiate the GeoJSON layer with a GeoJSON object to show it immediately, without having to call <code>addGeoJSON</code>.</p>
+        
+        <pre><code>var a_geojson_feature = {
+    "type": "Feature",
+    "properties": {
+        "name": "Coors Field",
+        "amenity": "Baseball Stadium"
+    },
+    "geometry": {
+        "type": "Point",
+        "coordinates": [-104.99404, 39.75621]
+    }
+};
+        
+var geojson_layer = new L.GeoJSON( a_geojson_feature );
 
-		<p>Excellent! But it would also be nice to show an error message if the geolocation failed:</p>
-		
-		<pre><code class="javascript">map.on('locationerror', onLocationError);
-		
-function onLocationError(e) {
-	alert(e.message);
-}</code></pre>
+map.addLayer( geojson_layer );</code></pre>
 
-		<p>Now the example is complete &mdash; try it on your mobile phone: <a target="_blank" href="mobile-example.html">View the full example &rarr;</a></p>
+        <h3>Popups</h3>
+        
+        <p>We can use popups to show information about these features when they are clicked. To accomplish this we'll listen to the <code>featureparse</code> event of the GeoJSON layer. Here we're checking to see if a feature has a property named "popup_content" and if so binding a popup to the feature so this text (or HTML) appears when clicked.</p>
+        
+        <pre><code>geojson_layer.on( "featureparse", function ( e ) {
+    if ( e.properties &amp;&amp; e.properties.popup_content ) {
+        e.layer.bindPopup( e.properties.popup_content );
+    }
+} );</code></pre>
+        
+        <h3>Styling Features</h3>
+
+		<p>We can also listen to the <code>featureparse</code> event to style our LineString and Polygon features. As with our popup content, we can store our styling information in the properties of the GeoJSON object as well. These style properties should match those found in <a href="http://leaflet.cloudmade.com/reference.html#path-options">path options</a>. Our feature with styling information might look something like:</p>
 		
-		<p>Next steps would be to take a look at the detailed <a href="../reference.html">documentation</a> and browse <a href="../examples.html">other examples</a>.</p>
+		<pre><code>var free_bus = {
+    "type": "Feature",
+    "geometry": {
+        "type": "LineString",
+        "coordinates": [
+            [-104.98726, 39.74136],
+            [-104.98720, 39.74132],
+            [-104.98715, 39.74127],
+            [-104.98713, 39.74117],
+            [-104.98712, 39.74106], ...
+        ]
+    },
+    "properties": {
+        "name": "16th Street Free Bus",
+        "style": {
+            "color": "#004070",
+            "weight": 4,
+            "opacity": 0.9
+        },
+        "popup_content": "This is the 16th street free bus ..."
+    }
+};</code></pre>
+		
+		<pre><code>geojson_layer.on( "featureparse", function ( e ) {
+	if ( e.properties &amp;&amp; e.properties.style &amp;&amp; e.layer.setStyle ) {
+	    // The setStyle method isn't available for Points. More on that later ...
+		e.layer.setStyle( e.properties.style );
+	}
+} );</code></pre>
 		
 		<hr />
 			
