@@ -53,32 +53,51 @@
 		    }
 		} );
 		
+		var light_rail_geojson_layer = new L.GeoJSON();
+		
 		geojson_layer.on( "featureparse", function( e ) {
 		    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+		    if ( e.geometryType == "Point" ) {
+		        popup_content += "<p>This GeoJSON Point has been transformed into a <a href='http://leaflet.cloudmade.com/reference.html#circlemarker'>CircleMarker</a> by passing a <code>pointToLayer</code> function in the <a href='http://leaflet.cloudmade.com/reference.html#geojson-options'>GeoJSON options</a> when instantiating the GeoJSON layer. View source for details.</p>";
+		    }
 		    if ( e.properties && e.properties.popup_content ) {
 		        popup_content += e.properties.popup_content;
 		    }
 		    e.layer.bindPopup( popup_content );
-		    if ( e.properties && e.properties.style ) {
+		    if ( e.properties && e.properties.style && e.layer.setStyle ) {
 		        e.layer.setStyle( e.properties.style );
 		    }
 		} );
 		
 		another_geojson_layer.on( "featureparse", function ( e ) {
 		    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+		    popup_content += "<p>This GeoJSON Point has been transformed into a custom Marker by passing a <code>pointToLayer</code> function in the <a href='http://leaflet.cloudmade.com/reference.html#geojson-options'>GeoJSON options</a> when instantiating the GeoJSON layer. View source for details.</p>";
 		    if ( e.properties && e.properties.popup_content ) {
 		        popup_content += e.properties.popup_content;
 		    }
 		    e.layer.bindPopup( popup_content );
 		} );
 		
-		map.addLayer( geojson_layer ).addLayer( another_geojson_layer );
+		light_rail_geojson_layer.on( "featureparse", function ( e ) {
+		    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+		    popup_content += "<p>This is the default look of a GeoJSON Point.</p>";
+		    if ( e.properties && e.properties.popup_content ) {
+		        popup_content += e.properties.popup_content;
+		    }
+		    e.layer.bindPopup( popup_content );
+		} );
+		
+		map.addLayer( geojson_layer )
+		    .addLayer( another_geojson_layer )
+		    .addLayer( light_rail_geojson_layer );
 		
 		geojson_layer.addGeoJSON( free_bus );
 		geojson_layer.addGeoJSON( bicycle_rental );
 		geojson_layer.addGeoJSON( campus );
 		
 		another_geojson_layer.addGeoJSON( coors_field );
+		
+		light_rail_geojson_layer.addGeoJSON( light_rail_stop );
 		
 	</script>
 </body>

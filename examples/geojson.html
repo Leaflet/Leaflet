@@ -212,7 +212,7 @@ map.addLayer( geojson_layer );</code></pre>
 		
 		<pre><code>geojson_layer.on( "featureparse", function ( e ) {
 	if ( e.properties &amp;&amp; e.properties.style &amp;&amp; e.layer.setStyle ) {
-	    // The setStyle method isn't available for Points. More on that later ...
+	    // The setStyle method isn't available for Points. More on that below ...
 		e.layer.setStyle( e.properties.style );
 	}
 } );</code></pre>
@@ -220,6 +220,8 @@ map.addLayer( geojson_layer );</code></pre>
         <h3>Styling Points</h3>
         
         <p>Points are handled differently than LineStrings and Polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="http://leaflet.cloudmade.com/reference.html#geojson-options">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="http://leaflet.cloudmade.com/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="http://leaflet.cloudmade.com/reference.html#marker">Marker</a> or <a href="http://leaflet.cloudmade.com/reference.html#circlemarker">CircleMarker</a>.</p>
+        
+        <p>Here we're using a CircleMarker:</p>
         
         <pre><code>var geojson_layer = new L.GeoJSON( null, {
     pointToLayer: function ( latlng ) {
@@ -234,7 +236,17 @@ map.addLayer( geojson_layer );</code></pre>
     }
 } );</code></pre>
 
-        <p>View the <a href="geojson-example.html">example page</a> to see how to use custom markers.</p>
+        <p>And here's an example of using a custom Marker:</p>
+        
+        <pre><code>var geojson_layer = new L.GeoJSON( null, {
+    pointToLayer: function ( latlng ) {
+        return new L.Marker( latlng, {
+            icon: new MyCustomIcon()
+        } );
+    }
+} );</code></pre>
+
+        <p>View the <a href="geojson-example.html">example page</a> to view in detail what all is possible with the GeoJSON layer.</p>
 		
 		<hr />
 			

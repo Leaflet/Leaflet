@@ -193,6 +193,31 @@ var free_bus = {
     "id": 1
 };
 
+var light_rail_stop = {
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "properties": {
+                "popup_content": "18th & California Light Rail Stop"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-104.98999178409576, 39.74683938093904]
+            }
+        },{
+            "type": "Feature",
+            "properties": {
+                "popup_content": "20th & Welton Light Rail Stop"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [-104.98689115047453, 39.747924136466565]
+            }
+        }
+    ]
+};
+
 var bicycle_rental = {
     "type": "FeatureCollection",
     "features": [
