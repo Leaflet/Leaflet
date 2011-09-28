@@ -44,6 +44,79 @@
 		
 		<p>In this example, you'll learn how to create and interact with map vectors created from <a href="http://geojson.org/">GeoJSON</a> objects.</p>
 		
+		<div id="map" style="height: 220px; margin-bottom: 18px"></div>
+		
+		<script src="sample-geojson.js" type="text/javascript"></script>
+		<script>
+			var map = new L.Map('map');
+		
+			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
+				cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+		
+			map.setView(new L.LatLng(39.74738794765598, -105.00002861022949), 13)
+			    .addLayer(cloudmade);
+			
+			var BaseballIcon = L.Icon.extend({
+				iconUrl: 'baseball-marker.png',
+				shadowUrl: null,
+				iconSize: new L.Point(32, 37),
+				shadowSize: null,
+				iconAnchor: new L.Point(14, 37),
+				popupAnchor: new L.Point(2, -32)
+			});
+			    
+			var geojson_layer = new L.GeoJSON( null, {
+			    pointToLayer: function ( latlng ) {
+			        return new L.CircleMarker( latlng, {
+			            radius: 8,
+			            fillColor: "#ff7800",
+			            color: "#000",
+			            weight: 1,
+			            opacity: 1,
+			            fillOpacity: 0.8
+			        } );
+			        
+			    }
+			} );
+			
+			var another_geojson_layer = new L.GeoJSON( coors_field, {
+			    pointToLayer: function ( latlng ) {
+			        return new L.Marker( latlng, {
+			            icon: new BaseballIcon()
+			        } );
+			    }
+			} );
+			
+			geojson_layer.on( "featureparse", function( e ) {
+			    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+			    if ( e.properties && e.properties.popup_content ) {
+			        popup_content += e.properties.popup_content;
+			    }
+			    e.layer.bindPopup( popup_content );
+			    if ( e.properties && e.properties.style ) {
+			        e.layer.setStyle( e.properties.style );
+			    }
+			} );
+			
+			another_geojson_layer.on( "featureparse", function ( e ) {
+			    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+			    if ( e.properties && e.properties.popup_content ) {
+			        popup_content += e.properties.popup_content;
+			    }
+			    e.layer.bindPopup( popup_content );
+			} );
+			
+			map.addLayer( geojson_layer ).addLayer( another_geojson_layer );
+			
+			geojson_layer.addGeoJSON( free_bus );
+			geojson_layer.addGeoJSON( bicycle_rental );
+			geojson_layer.addGeoJSON( campus );
+			
+			another_geojson_layer.addGeoJSON( coors_field );
+			
+		</script>
+		
 		<p><a target="_blank" href="geojson-example.html">View example &rarr;</a></p>
 		
 		<h3>About GeoJSON</h3>
@@ -52,7 +125,7 @@
 		
 		<blockquote>GeoJSON is a format for encoding a variety of geographic data structures. A GeoJSON object may represent a geometry, a feature, or a collection of features. GeoJSON supports the following geometry types: Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon, and GeometryCollection. Features in GeoJSON contain a geometry object and additional properties, and a feature collection represents a list of features.</blockquote>
 		
-		<p>Leaflet supports all of the GeoJSON types above but <a href="http://geojson.org/geojson-spec.html#feature-objects">Features</a> and <a href="http://geojson.org/geojson-spec.html#feature-collection-objects">FeatureCollections</a> allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. (<a target="_blank" href="geojson-example.html">see example</a>)</p>
+		<p>Leaflet supports all of the GeoJSON types above but <a href="http://geojson.org/geojson-spec.html#feature-objects">Features</a> and <a href="http://geojson.org/geojson-spec.html#feature-collection-objects">FeatureCollections</a> work best as they allow you to describe features with a set of properties. We can even use these properties to style our Leaflet vectors. (<a target="_blank" href="geojson-example.html">see example</a>)</p>
 		
 		<h3>The GeoJSON layer</h3>
 		
@@ -62,13 +135,14 @@
 
 map.addLayer( geojson_layer );</code></pre>
 
-        <p>This creates an empty GeoJSON layer that we can easily add vectors to.</p>
+        <p>This creates an empty GeoJSON layer that we can easily add vectors to with the <code>addGeoJSON</code> method.</p>
         
         <pre><code>var a_geojson_feature = {
     "type": "Feature",
     "properties": {
         "name": "Coors Field",
-        "amenity": "Baseball Stadium"
+        "amenity": "Baseball Stadium",
+        "popup_content": "This is where the Rockies play!"
     },
     "geometry": {
         "type": "Point",
@@ -84,7 +158,8 @@ geojson_layer.addGeoJSON( a_geojson_feature );</code></pre>
     "type": "Feature",
     "properties": {
         "name": "Coors Field",
-        "amenity": "Baseball Stadium"
+        "amenity": "Baseball Stadium",
+        "popup_content": "This is where the Rockies play!"
     },
     "geometry": {
         "type": "Point",
@@ -132,6 +207,8 @@ map.addLayer( geojson_layer );</code></pre>
         "popup_content": "This is the 16th street free bus ..."
     }
 };</code></pre>
+
+        <p>To change the feature's style from the Leaflet default, we simply call the <code>setStyle</code> method on our layer ( <code>e.layer</code> ) in our <code>featureparse</code> event listener.</p>
 		
 		<pre><code>geojson_layer.on( "featureparse", function ( e ) {
 	if ( e.properties &amp;&amp; e.properties.style &amp;&amp; e.layer.setStyle ) {
@@ -139,6 +216,25 @@ map.addLayer( geojson_layer );</code></pre>
 		e.layer.setStyle( e.properties.style );
 	}
 } );</code></pre>
+
+        <h3>Styling Points</h3>
+        
+        <p>Points are handled differently than LineStrings and Polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="http://leaflet.cloudmade.com/reference.html#geojson-options">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="http://leaflet.cloudmade.com/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="http://leaflet.cloudmade.com/reference.html#marker">Marker</a> or <a href="http://leaflet.cloudmade.com/reference.html#circlemarker">CircleMarker</a>.</p>
+        
+        <pre><code>var geojson_layer = new L.GeoJSON( null, {
+    pointToLayer: function ( latlng ) {
+        return new L.CircleMarker( latlng, {
+            radius: 8,
+            fillColor: "#ff7800",
+            color: "#000",
+            weight: 1,
+            opacity: 1,
+            fillOpacity: 0.8
+        } );
+    }
+} );</code></pre>
+
+        <p>View the <a href="geojson-example.html">example page</a> to see how to use custom markers.</p>
 		
 		<hr />
 			
