@@ -32,7 +32,8 @@ L.Map = L.Class.extend({
 
 		// misc
 		trackResize: true,
-		closePopupOnClick: true
+		closePopupOnClick: true,
+		worldCopyJump: true
 	},
 
 
