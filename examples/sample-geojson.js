@@ -1,4 +1,4 @@
-var free_bus = {
+var freeBus = {
     "type": "Feature",
     "geometry": {
         "type": "LineString",
@@ -188,18 +188,18 @@ var free_bus = {
             weight: 4,
             opacity: 0.9
         },
-        "popup_content": "This is the 16th street free bus in Denver, a good way to cross town."
+        "popupContent": "This is the 16th street free bus in Denver, a good way to cross town."
     },
     "id": 1
 };
 
-var light_rail_stop = {
+var lightRailStop = {
     "type": "FeatureCollection",
     "features": [
         {
             "type": "Feature",
             "properties": {
-                "popup_content": "18th & California Light Rail Stop"
+                "popupContent": "18th & California Light Rail Stop"
             },
             "geometry": {
                 "type": "Point",
@@ -208,7 +208,7 @@ var light_rail_stop = {
         },{
             "type": "Feature",
             "properties": {
-                "popup_content": "20th & Welton Light Rail Stop"
+                "popupContent": "20th & Welton Light Rail Stop"
             },
             "geometry": {
                 "type": "Point",
@@ -218,7 +218,7 @@ var light_rail_stop = {
     ]
 };
 
-var bicycle_rental = {
+var bicycleRental = {
     "type": "FeatureCollection",
     "features": [
         {
@@ -231,7 +231,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 51
         },
@@ -245,7 +245,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 52
         },
@@ -259,7 +259,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 54
         },
@@ -273,7 +273,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 55
         },
@@ -287,7 +287,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 57
         },
@@ -301,7 +301,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 58
         },
@@ -315,7 +315,7 @@ var bicycle_rental = {
             },
             "type": "Feature",
             "properties": {
-                "popup_content": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
+                "popupContent": "This is a B-Cycle Station. Come pick up a bike and pay by the hour. What a deal!"
             },
             "id": 74
         }
@@ -325,7 +325,7 @@ var bicycle_rental = {
 var campus = {
     "type": "Feature",
     "properties": {
-        "popup_content": "This is the Auraria West Campus",
+        "popupContent": "This is the Auraria West Campus",
         "style": {
             weight: 2,
             color: "#999",
@@ -380,10 +380,10 @@ var campus = {
     }
 };
 
-var coors_field = {
+var coorsField = {
     "type": "Feature",
     "properties": {
-        "popup_content": "Coors Field"
+        "popupContent": "Coors Field"
     },
     "geometry": {
         "type": "Point",

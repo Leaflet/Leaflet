@@ -66,54 +66,54 @@
 				popupAnchor: new L.Point(2, -32)
 			});
 			    
-			var geojson_layer = new L.GeoJSON( null, {
-			    pointToLayer: function ( latlng ) {
-			        return new L.CircleMarker( latlng, {
+			var geojsonLayer = new L.GeoJSON(null, {
+			    pointToLayer: function (latlng){
+			        return new L.CircleMarker(latlng, {
 			            radius: 8,
 			            fillColor: "#ff7800",
 			            color: "#000",
 			            weight: 1,
 			            opacity: 1,
 			            fillOpacity: 0.8
-			        } );
+			        });
 			        
 			    }
-			} );
+			});
 			
-			var another_geojson_layer = new L.GeoJSON( coors_field, {
-			    pointToLayer: function ( latlng ) {
-			        return new L.Marker( latlng, {
+			var anotherGeojsonLayer = new L.GeoJSON(coorsField, {
+			    pointToLayer: function (latlng){
+			        return new L.Marker(latlng, {
 			            icon: new BaseballIcon()
-			        } );
+			        });
 			    }
-			} );
+			});
 			
-			geojson_layer.on( "featureparse", function( e ) {
-			    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
-			    if ( e.properties && e.properties.popup_content ) {
-			        popup_content += e.properties.popup_content;
+			geojsonLayer.on("featureparse", function(e){
+			    var popupContent = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+			    if (e.properties && e.properties.popupContent){
+			        popupContent += e.properties.popupContent;
 			    }
-			    e.layer.bindPopup( popup_content );
-			    if ( e.properties && e.properties.style ) {
-			        e.layer.setStyle( e.properties.style );
+			    e.layer.bindPopup(popupContent);
+			    if (e.properties && e.properties.style){
+			        e.layer.setStyle(e.properties.style);
 			    }
-			} );
+			});
 			
-			another_geojson_layer.on( "featureparse", function ( e ) {
-			    var popup_content = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
-			    if ( e.properties && e.properties.popup_content ) {
-			        popup_content += e.properties.popup_content;
+			anotherGeojsonLayer.on("featureparse", function (e){
+			    var popupContent = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
+			    if (e.properties && e.properties.popupContent){
+			        popupContent += e.properties.popupContent;
 			    }
-			    e.layer.bindPopup( popup_content );
-			} );
+			    e.layer.bindPopup(popupContent);
+			});
 			
-			map.addLayer( geojson_layer ).addLayer( another_geojson_layer );
+			map.addLayer(geojsonLayer).addLayer(anotherGeojsonLayer);
 			
-			geojson_layer.addGeoJSON( free_bus );
-			geojson_layer.addGeoJSON( bicycle_rental );
-			geojson_layer.addGeoJSON( campus );
+			geojsonLayer.addGeoJSON(freeBus);
+			geojsonLayer.addGeoJSON(bicycleRental);
+			geojsonLayer.addGeoJSON(campus);
 			
-			another_geojson_layer.addGeoJSON( coors_field );
+			anotherGeojsonLayer.addGeoJSON(coorsField);
 			
 		</script>
 		
@@ -131,18 +131,18 @@
 		
 		<p>GeoJSON objects are added to the map through a <a href="http://leaflet.cloudmade.com/reference.html#geojson">GeoJSON layer</a>. To create a GeoJSON layer and add it to a map we can use the following code.</p>
 		
-		<pre><code class="css">var geojson_layer = new L.GeoJSON();
+		<pre><code class="css">var geojsonLayer = new L.GeoJSON();
 
-map.addLayer( geojson_layer );</code></pre>
+map.addLayer(geojsonLayer);</code></pre>
 
         <p>This creates an empty GeoJSON layer that we can easily add vectors to with the <code>addGeoJSON</code> method.</p>
         
-        <pre><code>var a_geojson_feature = {
+        <pre><code>var geojsonFeature = {
     "type": "Feature",
     "properties": {
         "name": "Coors Field",
         "amenity": "Baseball Stadium",
-        "popup_content": "This is where the Rockies play!"
+        "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
         "type": "Point",
@@ -150,16 +150,16 @@ map.addLayer( geojson_layer );</code></pre>
     }
 };
 
-geojson_layer.addGeoJSON( a_geojson_feature );</code></pre>
+geojsonLayer.addGeoJSON(geojsonFeature);</code></pre>
         
         <p>We can also instantiate the GeoJSON layer with a GeoJSON object to show it immediately, without having to call <code>addGeoJSON</code>.</p>
         
-        <pre><code>var a_geojson_feature = {
+        <pre><code>var geojsonFeature = {
     "type": "Feature",
     "properties": {
         "name": "Coors Field",
         "amenity": "Baseball Stadium",
-        "popup_content": "This is where the Rockies play!"
+        "popupContent": "This is where the Rockies play!"
     },
     "geometry": {
         "type": "Point",
@@ -167,25 +167,25 @@ geojson_layer.addGeoJSON( a_geojson_feature );</code></pre>
     }
 };
         
-var geojson_layer = new L.GeoJSON( a_geojson_feature );
+var geojsonLayer = new L.GeoJSON(geojsonFeature);
 
-map.addLayer( geojson_layer );</code></pre>
+map.addLayer(geojsonLayer);</code></pre>
 
         <h3>Popups</h3>
         
-        <p>We can use popups to show information about these features when they are clicked. To accomplish this we'll listen to the <code>featureparse</code> event of the GeoJSON layer. Here we're checking to see if a feature has a property named "popup_content" and if so binding a popup to the feature so this text (or HTML) appears when clicked.</p>
+        <p>We can use popups to show information about these features when they are clicked. To accomplish this we'll listen to the <code>featureparse</code> event of the GeoJSON layer. Here we're checking to see if a feature has a property named "popupContent" and if so binding a popup to the feature so this text (or HTML) appears when clicked.</p>
         
-        <pre><code>geojson_layer.on( "featureparse", function ( e ) {
-    if ( e.properties &amp;&amp; e.properties.popup_content ) {
-        e.layer.bindPopup( e.properties.popup_content );
+        <pre><code>geojsonLayer.on("featureparse", function (e){
+    if (e.properties &amp;&amp; e.properties.popupContent){
+        e.layer.bindPopup(e.properties.popupContent);
     }
-} );</code></pre>
+});</code></pre>
         
         <h3>Styling Features</h3>
 
 		<p>We can also listen to the <code>featureparse</code> event to style our LineString and Polygon features. As with our popup content, we can store our styling information in the properties of the GeoJSON object as well. These style properties should match those found in <a href="http://leaflet.cloudmade.com/reference.html#path-options">path options</a>. Our feature with styling information might look something like:</p>
 		
-		<pre><code>var free_bus = {
+		<pre><code>var freeBus = {
     "type": "Feature",
     "geometry": {
         "type": "LineString",
@@ -204,18 +204,18 @@ map.addLayer( geojson_layer );</code></pre>
             "weight": 4,
             "opacity": 0.9
         },
-        "popup_content": "This is the 16th street free bus ..."
+        "popupContent": "This is the 16th street free bus ..."
     }
 };</code></pre>
 
-        <p>To change the feature's style from the Leaflet default, we simply call the <code>setStyle</code> method on our layer ( <code>e.layer</code> ) in our <code>featureparse</code> event listener.</p>
+        <p>To change the feature's style from the Leaflet default, we simply call the <code>setStyle</code> method on our layer (<code>e.layer</code>) in our <code>featureparse</code> event listener.</p>
 		
-		<pre><code>geojson_layer.on( "featureparse", function ( e ) {
-	if ( e.properties &amp;&amp; e.properties.style &amp;&amp; e.layer.setStyle ) {
+		<pre><code>geojsonLayer.on("featureparse", function (e){
+	if (e.properties &amp;&amp; e.properties.style &amp;&amp; e.layer.setStyle){
 	    // The setStyle method isn't available for Points. More on that below ...
-		e.layer.setStyle( e.properties.style );
+		e.layer.setStyle(e.properties.style);
 	}
-} );</code></pre>
+});</code></pre>
 
         <h3>Styling Points</h3>
         
@@ -223,28 +223,28 @@ map.addLayer( geojson_layer );</code></pre>
         
         <p>Here we're using a CircleMarker:</p>
         
-        <pre><code>var geojson_layer = new L.GeoJSON( null, {
-    pointToLayer: function ( latlng ) {
-        return new L.CircleMarker( latlng, {
+        <pre><code>var geojsonLayer = new L.GeoJSON(null, {
+    pointToLayer: function (latlng){
+        return new L.CircleMarker(latlng, {
             radius: 8,
             fillColor: "#ff7800",
             color: "#000",
             weight: 1,
             opacity: 1,
             fillOpacity: 0.8
-        } );
+        });
     }
-} );</code></pre>
+});</code></pre>
 
         <p>And here's an example of using a custom Marker:</p>
         
-        <pre><code>var geojson_layer = new L.GeoJSON( null, {
-    pointToLayer: function ( latlng ) {
-        return new L.Marker( latlng, {
+        <pre><code>var geojsonLayer = new L.GeoJSON(null, {
+    pointToLayer: function (latlng){
+        return new L.Marker(latlng, {
             icon: new MyCustomIcon()
-        } );
+        });
     }
-} );</code></pre>
+});</code></pre>
 
         <p>View the <a href="geojson-example.html">example page</a> to view in detail what all is possible with the GeoJSON layer.</p>
 		
@@ -265,7 +265,7 @@ map.addLayer( geojson_layer );</code></pre>
 		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
 		_gaq.push([ '_trackPageview' ]);
 
-		(function() {
+		(function(){
 			var ga = document.createElement('script');
 			ga.type = 'text/javascript';
 			ga.async = true;
