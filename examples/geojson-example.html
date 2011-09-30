@@ -20,8 +20,7 @@
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 	
-		map.setView(new L.LatLng(39.74738794765598, -105.00002861022949), 14)
-		    .addLayer(cloudmade);
+		map.setView(new L.LatLng(39.747, -105), 14).addLayer(cloudmade);
 		
 		var BaseballIcon = L.Icon.extend({
 			iconUrl: 'baseball-marker.png',
@@ -55,41 +54,41 @@
 		
 		var lightRailGeojsonLayer = new L.GeoJSON();
 		
-		geojsonLayer.on("featureparse", function(e){
+		geojsonLayer.on("featureparse", function (e) {
 		    var popupContent = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
-		    if (e.geometryType == "Point"){
+		    if (e.geometryType == "Point") {
 		        popupContent += "<p>This GeoJSON Point has been transformed into a <a href='http://leaflet.cloudmade.com/reference.html#circlemarker'>CircleMarker</a> by passing a <code>pointToLayer</code> function in the <a href='http://leaflet.cloudmade.com/reference.html#geojson-options'>GeoJSON options</a> when instantiating the GeoJSON layer. View source for details.</p>";
 		    }
-		    if (e.properties && e.properties.popupContent){
+		    if (e.properties && e.properties.popupContent) {
 		        popupContent += e.properties.popupContent;
 		    }
 		    e.layer.bindPopup(popupContent);
-		    if (e.properties && e.properties.style && e.layer.setStyle){
+		    if (e.properties && e.properties.style && e.layer.setStyle) {
 		        e.layer.setStyle(e.properties.style);
 		    }
 		});
 		
-		anotherGeojsonLayer.on("featureparse", function (e){
+		anotherGeojsonLayer.on("featureparse", function (e) {
 		    var popupContent = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
 		    popupContent += "<p>This GeoJSON Point has been transformed into a custom Marker by passing a <code>pointToLayer</code> function in the <a href='http://leaflet.cloudmade.com/reference.html#geojson-options'>GeoJSON options</a> when instantiating the GeoJSON layer. View source for details.</p>";
-		    if (e.properties && e.properties.popupContent){
+		    if (e.properties && e.properties.popupContent) {
 		        popupContent += e.properties.popupContent;
 		    }
 		    e.layer.bindPopup(popupContent);
 		});
 		
-		lightRailGeojsonLayer.on("featureparse", function (e){
+		lightRailGeojsonLayer.on("featureparse", function (e) {
 		    var popupContent = "<p>I started out as a GeoJSON " + e.geometryType + ", but now I'm a Leaflet vector!</p>";
 		    popupContent += "<p>This is the default look of a GeoJSON Point.</p>";
-		    if (e.properties && e.properties.popupContent){
+		    if (e.properties && e.properties.popupContent) {
 		        popupContent += e.properties.popupContent;
 		    }
 		    e.layer.bindPopup(popupContent);
 		});
 		
 		map.addLayer(geojsonLayer)
-		    .addLayer(anotherGeojsonLayer)
-		    .addLayer(lightRailGeojsonLayer);
+		   .addLayer(anotherGeojsonLayer)
+		   .addLayer(lightRailGeojsonLayer);
 		
 		geojsonLayer.addGeoJSON(freeBus);
 		geojsonLayer.addGeoJSON(bicycleRental);
