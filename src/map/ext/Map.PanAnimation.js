@@ -5,7 +5,9 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 		if (this._loaded && !forceReset && this._layers) {
 			// difference between the new and current centers in pixels
-			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint()); 
+			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
+
+			center = new L.LatLng(center.lat, center.lng);
 			
 			var done = (zoomChanged ? 
 						!!this._zoomToIfCenterInView && this._zoomToIfCenterInView(center, zoom, offset) : 
@@ -22,6 +24,8 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 	
 	panBy: function(offset) {
+		if (!(offset.x || offset.y)) { return this; }
+		
 		if (!this._panTransition) {
 			this._panTransition = new L.Transition(this._mapPane, {duration: 0.3});
 			

@@ -4,8 +4,10 @@
  * See http://leaflet.cloudmade.com for more information.
  */
 
+/*global L */
+
 (function (root) {
-	var L = {
+	root.L = {
 		VERSION: '0.3',
 
 		ROOT_URL: (function () {
@@ -33,6 +35,4 @@
 
 		_originalL: root.L
 	};
-
-	root.L = L;
 }(this));

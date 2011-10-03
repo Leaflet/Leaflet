@@ -44,6 +44,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._moved = false;
+		if (this._moving) { return; }
 
 		if (!L.Browser.touch) {
 			L.DomUtil.disableTextSelection();
@@ -68,6 +69,7 @@ L.Draggable = L.Class.extend({
 			this.fire('dragstart');
 			this._moved = true;
 		}
+		this._moving = true;
 
 		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
@@ -76,6 +78,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_updatePosition: function() {
+		this.fire('predrag');
 		L.DomUtil.setPosition(this._element, this._newPos);
 		this.fire('drag');
 	},
@@ -106,9 +109,7 @@ L.Draggable = L.Class.extend({
 		if (this._moved) {
 			this.fire('dragend');
 		}
-	},
-
-	_removeActiveClass: function(el) {
+		this._moving = false;
 	},
 
 	_setMovingCursor: function() {

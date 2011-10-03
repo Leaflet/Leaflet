@@ -12,6 +12,11 @@ L.Handler.MapDrag = L.Handler.extend({
 			this._draggable.on('dragstart', this._onDragStart, this);
 			this._draggable.on('drag', this._onDrag, this);
 			this._draggable.on('dragend', this._onDragEnd, this);
+
+			if (this._map.options.worldCopyJump) {
+				this._draggable.on('predrag', this._onPreDrag, this);
+				this._map.on('viewreset', this._onViewReset, this);
+			}
 		}
 		this._draggable.enable();
 		this._enabled = true;
@@ -37,16 +42,28 @@ L.Handler.MapDrag = L.Handler.extend({
 		this._map.fire('drag');
 	},
 
-	_onDragEnd: function() {
+	_onViewReset: function() {
+		var pxCenter = this._map.getSize().divideBy(2),
+			pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0,0));
+
+		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter);
+	},
+
+	_onPreDrag: function() {
 		var map = this._map,
-			pane = map._panes.objectsPane,
-			left = map._getTopLeftPoint().x,
-			worldWidth = map.options.scale(this._map.getZoom()),
-			rest = ((left % worldWidth) + worldWidth) % worldWidth;
+			worldWidth = map.options.scale(map.getZoom()),
+			halfWidth = Math.round(worldWidth / 2),
+			dx = this._initialWorldOffset.x,
+			x = this._draggable._newPos.x,
+			newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
+			newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
+			newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
 
-		pane.style.left = (left - rest) + 'px';
+		this._draggable._newPos.x = newX;
+	},
 
-		map.fire('moveend');
-		map.fire('dragend');
+	_onDragEnd: function() {
+		this._map.fire('moveend');
+		this._map.fire('dragend');
 	}
 });

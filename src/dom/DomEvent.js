@@ -59,7 +59,7 @@ L.DomEvent = {
 		} else if ('detachEvent' in obj) {
 			obj.detachEvent("on" + type, handler);
 		}
-		delete obj[key];
+		obj[key] = null;
 	},
 
 	_checkMouse: function(el, e) {
