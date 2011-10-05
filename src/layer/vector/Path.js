@@ -46,7 +46,10 @@ L.Path = L.Class.extend({
 	},
 	
 	onRemove: function(map) {
+		this._map = null;
+		
 		map._pathRoot.removeChild(this._container);
+		
 		map.off('viewreset', this.projectLatlngs, this);
 		map.off(this._updateTrigger, this._updatePath, this);
 	},
@@ -81,7 +84,9 @@ L.Path = L.Class.extend({
 	},
 	
 	_redraw: function() {
-		this.projectLatlngs();
-		this._updatePath();
+		if (this._map) {
+			this.projectLatlngs();
+			this._updatePath();
+		}
 	}
 });

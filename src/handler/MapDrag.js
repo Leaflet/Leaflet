@@ -13,7 +13,9 @@ L.Handler.MapDrag = L.Handler.extend({
 			this._draggable.on('drag', this._onDrag, this);
 			this._draggable.on('dragend', this._onDragEnd, this);
 
-			if (this._map.options.worldCopyJump) {
+			var options = this._map.options;
+
+			if (options.worldCopyJump && !options.continuousWorld) {
 				this._draggable.on('predrag', this._onPreDrag, this);
 				this._map.on('viewreset', this._onViewReset, this);
 			}
@@ -63,7 +65,7 @@ L.Handler.MapDrag = L.Handler.extend({
 	},
 
 	_onDragEnd: function() {
-		map.fire('moveend');
-		map.fire('dragend');
+		this._map.fire('moveend');
+		this._map.fire('dragend');
 	}
 });
