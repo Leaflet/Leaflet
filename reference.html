@@ -560,12 +560,12 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
 			</tr>
 			<tr>
-				<td><code>locate( &lt;<a href="#map-locate-options">Locate options</a>&gt;&nbsp;<code>options?</code> )</code></td>
+				<td><code>locate( &lt;<a href="#map-locate-options">Locate&nbsp;options</a>&gt;&nbsp;<code>options?</code> )</code></td>
 				<td><code>this</code></td>
 				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure. See <a href="#map-locate-options">Locate options</a> for more details.</td>
 			</tr>
 			<tr>
-				<td><code>locateAndSetView( &lt;Number&gt;&nbsp;maxZoom, &lt;<a href="#map-locate-options">Locate options</a>&gt;&nbsp;<code>options?</code>)</code></td>
+				<td><code>locateAndSetView( &lt;Number&gt;&nbsp;<code>maxZoom?</code>, &lt;<a href="#map-locate-options">Locate&nbsp;options</a>&gt;&nbsp;<code>options?</code>)</code></td>
 				<td><code>this</code></td>
 				<td>Automatically sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). A shortcut for <code>map.locate({setView: true, maxZoom: maxZoom});</code>.</td>
 			</tr>
@@ -1374,17 +1374,17 @@ var image = new L.ImageOverlay(
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
-			<tr id="#path-bindpopup">
+			<tr id="path-bindpopup">
 				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
 				<td><code>this</code></td>
 				<td>Binds a popup with a particular HTML content to a click on this path.</td>
 			</tr>
-			<tr id="#path-setstyle">
+			<tr id="path-setstyle">
 				<td><code>setStyle( &lt;<a href="#path-options">Path options</a>&gt;&nbsp;<i>object</i>)</code></td>
 				<td><code>this</code></td>
 				<td>Changes the appearance of a Path based on the options in the <a href="#path-options">Path options</a> object.</td>
 			</tr>
-			<tr id="#path-getbounds">
+			<tr id="path-getbounds">
 			    <td><code>getBounds()</code></td>
 			    <td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 			    <td>Returns the LatLngBounds of the path.</td>
@@ -1663,7 +1663,7 @@ map.addLayer(group);</code></pre>
 		
 		
 		
-		<h2 id="layergroup">L.FeatureGroup</h2>
+		<h2 id="featuregroup">L.FeatureGroup</h2>
 		
 		<p>Extended <a href="#layergroup">LayerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">IFeature</a> interface.</p>
 		
