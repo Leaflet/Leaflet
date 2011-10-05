@@ -560,18 +560,19 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
 			</tr>
 			<tr>
-				<td><code>locate( &lt;Object&gt;&nbsp;<code>options?</code> )</code></td>
+				<td><code>locate( &lt;<a href="#map-locate-options">Locate options</a>&gt;&nbsp;<code>options?</code> )</code></td>
 				<td><code>this</code></td>
-				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure. Options are PositionOptions from the <a href="http://dev.w3.org/geo/api/spec-source.html#position-options">W3C Geolocation API</a>.<!-- Usage example:
-				<pre><code class="javascript">map
-	.on('locationfound', function(e) { map.fitBounds(e.bounds); })
-	.on('locationerror', function(e) { alert(e.message); })
-	.locate();</code></pre> --></td>
+				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure. See <a href="#map-locate-options">Locate options</a> for more details.</td>
 			</tr>
 			<tr>
-				<td><code>locateAndSetView( &lt;Number&gt;&nbsp;maxZoom&nbsp;)</code></td>
+				<td><code>locateAndSetView( &lt;Number&gt;&nbsp;maxZoom, &lt;<a href="#map-locate-options">Locate options</a>&gt;&nbsp;<code>options?</code>)</code></td>
 				<td><code>this</code></td>
-				<td>The same as <code>locate</code> method, but it automatically sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). You can optionally specify the maximum zoom of the view.</td>
+				<td>Automatically sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). A shortcut for <code>map.locate({setView: true, maxZoom: maxZoom});</code>.</td>
+			</tr>
+			<tr>
+				<td><code>stopLocate()</code></td>
+				<td><code>this</code></td>
+				<td>Stops watching location previously initiated by <code>map.locate({watch: true})</code>.</td>
 			</tr>
 		</table>
 
@@ -746,8 +747,53 @@ map.addLayer(cloudmade);</code></pre>
 				<td>Returns an object with different map panes (to render overlays in).</td>
 			</tr>
 		</table>
-		
-		
+
+		<h3 id="map-locate-options">Locate options</h3>
+
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>watch</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If true, starts continous watching of location changes (instead of detecting it once) using W3C <code>watchPosition</code> method. You can later stop watching using <code>map.stopLocate()</code> method.</td>
+			</tr>
+			<tr>
+				<td><code>setView</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If true, automatically sets the map view to the user location with respect to detection accuracy.</td>
+			</tr>
+			<tr>
+				<td><code>maxZoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>Infinity</code></td>
+				<td>The maximum zoom for automatic view setting when using `setView` option.</td>
+			</tr>
+			<tr>
+				<td><code>timeout</code></td>
+				<td><code>Number</code></td>
+				<td><code>10000</code></td>
+				<td>Number of millisecond to wait for a response from geolocation before firing a <code>locationerror</code> event.</td>
+			</tr>
+			<tr>
+				<td><code>maximumAge</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>Maximum age of detected location. If less than this amount of milliseconds passed since last geolocation response, <code>locate</code> will return a cached location.</td>
+			</tr>
+			<tr>
+				<td><code>enableHighAccuracy</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>Enables high accuracy, see <a href="http://dev.w3.org/geo/api/spec-source.html#high-accuracy">description in the W3C spec</a>.</td>
+			</tr>
+		</table>
 		
 		
 		<h2 id="marker">L.Marker</h2>
