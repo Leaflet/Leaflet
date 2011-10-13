@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Layers Control Example</title>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+</head>
+<body>
+	<div id="map" style="width: 600px; height: 400px"></div>
+
+	<script src="../dist/leaflet.js"></script>
+	<script>
+		var map = new L.Map('map');
+		
+		var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
+			minimalAttribution = 'Minimal Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			minimal = new L.TileLayer(minimalUrl, {maxZoom: 18, attribution: minimalAttribution});
+			
+		var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
+			midnightCommanderAttribution = 'Night View Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			midnightCommander = new L.TileLayer(midnightCommanderUrl, {maxZoom: 18, attribution: midnightCommanderAttribution});
+			
+		var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
+			motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
+		
+		map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways);
+		
+		baseMaps = {
+		    "Minimal": minimal,
+		    "Night View": midnightCommander
+		};
+		
+		overlayMaps = {
+		    "Motorways": motorways
+		};
+		
+		layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+	    
+	    map.addControl(layersControl);
+	</script>
+</body>
+</html>
