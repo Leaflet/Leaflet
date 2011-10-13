@@ -28,16 +28,16 @@
 		
 		map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways);
 		
-		baseMaps = {
+		var baseMaps = {
 		    "Minimal": minimal,
 		    "Night View": midnightCommander
 		};
 		
-		overlayMaps = {
+		var overlayMaps = {
 		    "Motorways": motorways
 		};
 		
-		layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+		var layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 	    
 	    map.addControl(layersControl);
 	</script>
