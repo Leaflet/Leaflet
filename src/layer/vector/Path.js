@@ -46,7 +46,7 @@ L.Path = L.Class.extend({
 	},
 	
 	onRemove: function(map) {
-		this._map = null;
+		this._map = map;
 		
 		map._pathRoot.removeChild(this._container);
 		
