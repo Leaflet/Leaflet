@@ -1,4 +1,3 @@
-
 L.Path.SVG_NS = 'http://www.w3.org/2000/svg';
 
 L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.SVG_NS, 'svg').createSVGRect);
@@ -107,7 +106,7 @@ L.Path = L.Path.extend({
 			
 			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
-			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove'];
 			for (var i = 0; i < events.length; i++) {
 				L.DomEvent.addListener(this._container, events[i], this._fireMouseEvent, this);
 			}
