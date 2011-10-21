@@ -58,6 +58,8 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/handler/DoubleClickZoom.js ^
 --js ../src/handler/ShiftDragZoom.js ^
 --js ../src/handler/MarkerDrag.js ^
+--js ../src/handler/PolyDraw.js ^
+--js ../src/handler/PolyEdit.js ^
 --js ../src/control/Control.js ^
 --js ../src/control/Control.Zoom.js ^
 --js ../src/control/Control.Attribution.js ^
@@ -69,3 +71,4 @@ java -jar ../lib/closure-compiler/compiler.jar ^
 --js ../src/map/ext/Map.ZoomAnimation.js ^
 --js ../src/map/ext/Map.Control.js ^
 --js_output_file ../dist/leaflet.js
+
