@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Layers Control Example</title>
+	
+	<meta charset="utf-8" />
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" /> 
+	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
+	
+	<link rel="icon" type="image/png" href="../docs/images/favicon.png" />
+
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="../docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="../docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="../docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="../docs/css/screen.css" media="screen, projection" />
+
+	<script src="../docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="../docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+	<script src="../dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<ul class="nav clearfix">
+			<li><a href="../index.html">Overview</a></li>
+			<li><a href="../features.html">Features</a></li>  
+			<li><a href="../examples.html">Examples</a></li> 
+			<li><a href="../reference.html">Documentation</a></li> 
+			<li><a href="../download.html">Download</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li> 
+		</ul>
+		
+		<p><a href="../examples.html">&larr; Back to the list of examples</a></p>
+		<h3>Layers Control</h3>
+		
+		<p>This guide will show to add a simple layers control to your map that will control the visibility of base maps and overlays. Base layers are mutually exclusive, so only one is visble at a time while any number of overlays can be visible at any given time.</p>
+		
+		<div id="map" style="height: 250px; margin-bottom: 18px"></div>
+		<script>
+		    var cities = [
+		        {
+		            "name": "Littleton",
+		            "lat": 39.61296190377325,
+		            "lng": -105.01968383789061
+		        },{
+		            "name": "Denver",
+		            "lat": 39.741778337617845,
+		            "lng": -104.99187469482422
+		        },{
+		            "name": "Aurora",
+		            "lat": 39.72699317780526,
+		            "lng": -104.80854034423828
+		        },{
+		            "name": "Golden",
+		            "lat": 39.76632525654491,
+		            "lng": -105.2325439453125
+		        }
+		    ];	    
+		    
+			var map = new L.Map('map');
+			
+			var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
+				minimalAttribution = 'Minimal Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				minimal = new L.TileLayer(minimalUrl, {maxZoom: 18, attribution: minimalAttribution});
+				
+			var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
+				midnightCommanderAttribution = 'Night View Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				midnightCommander = new L.TileLayer(midnightCommanderUrl, {maxZoom: 18, attribution: midnightCommanderAttribution});
+				
+			var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
+				motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
+			
+			var citiesLayer = new L.LayerGroup();
+			
+			map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);
+			
+			baseMaps = {
+			    "Minimal": minimal,
+			    "Night View": midnightCommander
+			};
+			
+			overlayMaps = {
+			    "Motorways": motorways,
+			    "Cities": citiesLayer
+			};
+			
+			layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+			
+			map.addControl(layersControl);
+			
+			for (var i = 0, length = cities.length; i < length; i++) {
+			    var marker = new L.Marker(new L.LatLng(cities[i].lat, cities[i].lng));
+			    marker.bindPopup("This is " + cities[i].name + ", CO.");
+			    citiesLayer.addLayer(marker);
+			}
+		</script>
+		
+		<p><a target="_blank" href="layers-control-example.html">View example on a separate page &rarr;</a></p>
+		
+		<p>The first steps are to create a map and some layers, and to add at least one of those layers to the map. The <code>minimal</code> and <code>midnightCommander</code> layers will be our base layers. <code>citiesLayer</code> and <code>motorways</code> will be overlays. Only one base layer should be added but multiple overlays can be added initially. The <code>citiesLayer</code> is a <a href="http://leaflet.cloudmade.com/reference.html#layergroup">LayerGroup</a> which makes it very easy to add lots of markers, linestrings or polygons to the map and easily remove all of them by unchecking the layer in the layers control.</p>
+		
+		<pre><code>var map = new L.Map('map');
+		
+var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
+	minimalAttribution = 'Minimal Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+	minimal = new L.TileLayer(minimalUrl, {maxZoom: 18, attribution: minimalAttribution});
+			
+var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
+	midnightCommanderAttribution = 'Night View Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+	midnightCommander = new L.TileLayer(midnightCommanderUrl, {maxZoom: 18, attribution: midnightCommanderAttribution});
+			
+var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
+	motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+	motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
+
+var citiesLayer = new L.LayerGroup();
+// Create some markers. Add them to citiesLayer. View source to see in detail.
+		
+map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);</code></pre>
+		
+		<p>Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are very simple objects with simple key/value pairs. The key is what sets the text for the layer in the control ( "Night View" ). The corresponding value is just a reference to the layer ( <code>midnightCommander</code> ).</p>
+		
+		<pre><code>var baseMaps = {
+	"Minimal": minimal,
+	"Night View": midnightCommander
+};
+		
+var overlayMaps = {
+    "Motorways": motorways,
+    "Cities": citiesLayer
+};</code></pre>
+		
+		<!-- TODO: Link "Layers Control" to the Layers Control docs when they are created -->
+		<p>Now, all that's left to do is to create a Layers Control and add it to the map. The first parameter passed when creating the layers control is the base layers object. The second, and optional, parameter is the overlays object.</p>
+		
+		<pre><code>var layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+		
+map.addControl(layersControl);</code></pre>
+		
+		<hr />
+			
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>
