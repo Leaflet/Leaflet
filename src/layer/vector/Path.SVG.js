@@ -118,13 +118,13 @@ L.Map.include({
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		// Unfortunately I haven't found a good workaround for this yet
-		if (L.Browser.mobileWebkit) { pane.removeChild(root); }
+		if (L.Browser.webkit) { pane.removeChild(root); }
 
 		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
 		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
 
-		if (L.Browser.mobileWebkit) { pane.appendChild(root); }
+		if (L.Browser.webkit) { pane.appendChild(root); }
 	}
 });
