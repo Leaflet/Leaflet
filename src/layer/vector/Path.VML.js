@@ -79,7 +79,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	}
 });
 
-L.Map.include({
+L.Map.include(L.Browser.svg || !L.Browser.vml ? {} : {
 	_initPathRoot: function() {
 		if (!this._pathRoot) {
 			this._pathRoot = document.createElement('div');
