@@ -18,30 +18,10 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 	
 	_initElements: function() {
-		this._initRoot();
+		this._map._initPathRoot();
+		this._ctx = this._map._canvasCtx;
 	},
 	
-	_initRoot: function() {
-		var root = this._map._pathRoot,
-			ctx = this._map._canvasCtx;
-		
-		if (!root) {
-			root = this._map._pathRoot = document.createElement("canvas");
-			root.style.position = 'absolute';
-			ctx = this._map._canvasCtx = root.getContext('2d');
-			
-			ctx.lineCap = "round";
-			ctx.lineJoin = "round";
-
-			this._map._panes.overlayPane.appendChild(root);
-
-			this._map.on('moveend', this._updateCanvasViewport, this);
-			this._updateCanvasViewport();
-		}
-		
-		this._ctx = ctx;
-	},
-		
 	_updateStyle: function() {
 		if (this.options.stroke) {
 			this._ctx.lineWidth = this.options.weight;
@@ -109,21 +89,6 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		 */
 	},
 
-	_updateCanvasViewport: function() {
-		this._updateViewport();
-		
-		var vp = this._map._pathViewport,
-			min = vp.min,
-			size = vp.max.subtract(min),
-			root = this._map._pathRoot;
-	
-		//TODO check if it's works properly on mobile webkit
-		L.DomUtil.setPosition(root, min);
-		root.width = size.x;
-		root.height = size.y;
-		root.getContext('2d').translate(-min.x, -min.y);
-	},
-		
 	_initEvents: function() {
 		if (this.options.clickable) {
 			// TODO hand cursor
@@ -143,4 +108,40 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
         map.off(this._updateTrigger, this._updatePath, this);
         map.fire(this._updateTrigger);
     }
+});
+
+L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} : {
+	_initPathRoot: function() {
+		var root = this._pathRoot,
+			ctx;
+
+		if (!root) {
+			root = this._pathRoot = document.createElement("canvas");
+			root.style.position = 'absolute';
+			ctx = this._canvasCtx = root.getContext('2d');
+
+			ctx.lineCap = "round";
+			ctx.lineJoin = "round";
+
+			this._panes.overlayPane.appendChild(root);
+
+			this.on('moveend', this._updateCanvasViewport);
+			this._updateCanvasViewport();
+		}
+	},
+
+	_updateCanvasViewport: function() {
+		this._updatePathViewport();
+
+		var vp = this._pathViewport,
+			min = vp.min,
+			size = vp.max.subtract(min),
+			root = this._pathRoot;
+
+		//TODO check if it's works properly on mobile webkit
+		L.DomUtil.setPosition(root, min);
+		root.width = size.x;
+		root.height = size.y;
+		root.getContext('2d').translate(-min.x, -min.y);
+	}
 });

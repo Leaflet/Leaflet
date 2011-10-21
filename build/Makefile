@@ -27,6 +27,12 @@
 	--js ../src/geo/crs/CRS.EPSG3857.js \
 	--js ../src/geo/crs/CRS.EPSG4326.js \
 	--js ../src/geo/crs/CRS.EPSG3395.js \
+	--js ../src/map/Map.js \
+	--js ../src/map/ext/Map.Geolocation.js \
+	--js ../src/map/ext/Map.Popup.js \
+	--js ../src/map/ext/Map.PanAnimation.js \
+	--js ../src/map/ext/Map.ZoomAnimation.js \
+	--js ../src/map/ext/Map.Control.js \
 	--js ../src/layer/LayerGroup.js \
 	--js ../src/layer/FeatureGroup.js \
 	--js ../src/layer/tile/TileLayer.js \
@@ -62,10 +68,4 @@
 	--js ../src/control/Control.Zoom.js \
 	--js ../src/control/Control.Attribution.js \
 	--js ../src/control/Control.Layers.js \
-	--js ../src/map/Map.js \
-	--js ../src/map/ext/Map.Geolocation.js \
-	--js ../src/map/ext/Map.Popup.js \
-	--js ../src/map/ext/Map.PanAnimation.js \
-	--js ../src/map/ext/Map.ZoomAnimation.js \
-	--js ../src/map/ext/Map.Control.js \
 	--js_output_file ../dist/leaflet.js

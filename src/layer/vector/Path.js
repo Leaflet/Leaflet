@@ -66,27 +66,23 @@ L.Path = L.Class.extend({
 		return this;
 	},
 	
-	_initElements: function() {
-		this._initRoot();
-		this._initPath();
-		this._initStyle();
-	},
-	
-	_updateViewport: function() {
-		var p = L.Path.CLIP_PADDING,
-			size = this._map.getSize(),
-			//TODO this._map._getMapPanePos()
-			panePos = L.DomUtil.getPosition(this._map._mapPane), 
-			min = panePos.multiplyBy(-1).subtract(size.multiplyBy(p)),
-			max = min.add(size.multiplyBy(1 + p * 2));
-		
-		this._map._pathViewport = new L.Bounds(min, max);
-	},
-	
 	_redraw: function() {
 		if (this._map) {
 			this.projectLatlngs();
 			this._updatePath();
 		}
+	}
+});
+
+L.Map.include({
+	_updatePathViewport: function() {
+		var p = L.Path.CLIP_PADDING,
+			size = this.getSize(),
+			//TODO this._map._getMapPanePos()
+			panePos = L.DomUtil.getPosition(this._mapPane),
+			min = panePos.multiplyBy(-1).subtract(size.multiplyBy(p)),
+			max = min.add(size.multiplyBy(1 + p * 2));
+
+		this._pathViewport = new L.Bounds(min, max);
 	}
 });
