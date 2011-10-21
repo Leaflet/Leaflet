@@ -12,6 +12,26 @@
 
 	<script src="../dist/leaflet.js"></script>
 	<script>
+	    var cities = [
+	        {
+	            "name": "Littleton",
+	            "lat": 39.61296190377325,
+	            "lng": -105.01968383789061
+	        },{
+	            "name": "Denver",
+	            "lat": 39.741778337617845,
+	            "lng": -104.99187469482422
+	        },{
+	            "name": "Aurora",
+	            "lat": 39.72699317780526,
+	            "lng": -104.80854034423828
+	        },{
+	            "name": "Golden",
+	            "lat": 39.76632525654491,
+	            "lng": -105.2325439453125
+	        }
+	    ];	    
+	    
 		var map = new L.Map('map');
 		
 		var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
@@ -26,7 +46,9 @@
 			motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
 		
-		map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways);
+		var citiesLayer = new L.LayerGroup();
+		
+		map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);
 		
 		var baseMaps = {
 		    "Minimal": minimal,
@@ -34,12 +56,19 @@
 		};
 		
 		var overlayMaps = {
-		    "Motorways": motorways
+		    "Motorways": motorways,
+		    "Cities": citiesLayer
 		};
 		
 		var layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 	    
 	    map.addControl(layersControl);
+	    
+	    for (var i = 0, length = cities.length; i < length; i++) {
+	        var marker = new L.Marker(new L.LatLng(cities[i].lat, cities[i].lng));
+	        marker.bindPopup("This is " + cities[i].name + ", CO.");
+	        citiesLayer.addLayer(marker);
+	    }
 	</script>
 </body>
 </html>

@@ -46,6 +46,26 @@
 		
 		<div id="map" style="height: 250px; margin-bottom: 18px"></div>
 		<script>
+		    var cities = [
+		        {
+		            "name": "Littleton",
+		            "lat": 39.61296190377325,
+		            "lng": -105.01968383789061
+		        },{
+		            "name": "Denver",
+		            "lat": 39.741778337617845,
+		            "lng": -104.99187469482422
+		        },{
+		            "name": "Aurora",
+		            "lat": 39.72699317780526,
+		            "lng": -104.80854034423828
+		        },{
+		            "name": "Golden",
+		            "lat": 39.76632525654491,
+		            "lng": -105.2325439453125
+		        }
+		    ];	    
+		    
 			var map = new L.Map('map');
 			
 			var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
@@ -60,7 +80,9 @@
 				motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 				motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
 			
-			map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways);
+			var citiesLayer = new L.LayerGroup();
+			
+			map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);
 			
 			baseMaps = {
 			    "Minimal": minimal,
@@ -68,17 +90,24 @@
 			};
 			
 			overlayMaps = {
-			    "Motorways": motorways
+			    "Motorways": motorways,
+			    "Cities": citiesLayer
 			};
 			
 			layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			
 			map.addControl(layersControl);
+			
+			for (var i = 0, length = cities.length; i < length; i++) {
+			    var marker = new L.Marker(new L.LatLng(cities[i].lat, cities[i].lng));
+			    marker.bindPopup("This is " + cities[i].name + ", CO.");
+			    citiesLayer.addLayer(marker);
+			}
 		</script>
 		
 		<p><a target="_blank" href="layers-control-example.html">View example on a separate page &rarr;</a></p>
 		
-		<p>The first steps are to create a map and some layers, and to add at least one of those layers to the map. The <code>minimal</code> and <code>midnightCommander</code> layers will be our base layers and <code>motorways</code> will be an overlay. Only one base layer should be added but multiple overlays can be added initially.</p>
+		<p>The first steps are to create a map and some layers, and to add at least one of those layers to the map. The <code>minimal</code> and <code>midnightCommander</code> layers will be our base layers. <code>citiesLayer</code> and <code>motorways</code> will be overlays. Only one base layer should be added but multiple overlays can be added initially. The <code>citiesLayer</code> is a <a href="http://leaflet.cloudmade.com/reference.html#layergroup">LayerGroup</a> which makes it very easy to add lots of markers, linestrings or polygons to the map and easily remove all of them by unchecking the layer in the layers control.</p>
 		
 		<pre><code>var map = new L.Map('map');
 		
@@ -93,8 +122,11 @@ var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0
 var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
 	motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 	motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
+
+var citiesLayer = new L.LayerGroup();
+// Create some markers. Add them to citiesLayer. View source to see in detail.
 		
-map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways);</code></pre>
+map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);</code></pre>
 		
 		<p>Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are very simple objects with simple key/value pairs. The key is what sets the text for the layer in the control ( "Night View" ). The corresponding value is just a reference to the layer ( <code>midnightCommander</code> ).</p>
 		
@@ -104,7 +136,8 @@ map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(mot
 };
 		
 var overlayMaps = {
-    "Motorways": motorways
+    "Motorways": motorways,
+    "Cities": citiesLayer
 };</code></pre>
 		
 		<!-- TODO: Link "Layers Control" to the Layers Control docs when they are created -->
