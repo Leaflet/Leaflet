@@ -23,7 +23,7 @@
 		
 		mobile: mobile,
 		touch: (function() {
-			var touchSupported = false;;
+			var touchSupported = false;
 
 			// WebKit, etc
 			if ('ontouchstart' in document.documentElement) {
