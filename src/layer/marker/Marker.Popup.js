@@ -14,6 +14,7 @@ L.Marker.include({
 		if (this._popup) {
 			this._popup._close();
 		}
+		return this;
 	},
 	
 	bindPopup: function(content, options) {
@@ -26,6 +27,14 @@ L.Marker.include({
 		this._popup = new L.Popup(options);
 		this._popup.setContent(content);
 
+		return this;
+	},
+
+	unbindPopup: function() {
+		if (this._popup) {
+			this._popup = null;
+			this.off('click', this.openPopup);
+		}
 		return this;
 	}
 });
