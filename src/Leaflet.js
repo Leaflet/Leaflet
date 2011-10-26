@@ -24,7 +24,7 @@
 					if (matches[1] === 'include') {
 						return '../../dist/';
 					}
-					return src.replace(leafletRe, '');
+					return src.replace(leafletRe, '') + '/';
 				}
 			}
 			return '';
