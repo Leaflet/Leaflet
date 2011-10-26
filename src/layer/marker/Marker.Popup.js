@@ -19,10 +19,13 @@ L.Marker.include({
 	bindPopup: function(content, options) {
 		options = L.Util.extend({offset: this.options.icon.popupAnchor}, options);
 		
+		if (!this._popup) {
+			this.on('click', this.openPopup, this);
+		}
+
 		this._popup = new L.Popup(options);
 		this._popup.setContent(content);
-		this.on('click', this.openPopup, this);
-		
+
 		return this;
 	}
 });
