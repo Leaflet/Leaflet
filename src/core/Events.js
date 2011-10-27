@@ -10,7 +10,7 @@ L.Mixin.Events = {
 		events[type] = events[type] || [];
 		events[type].push({
 			action: fn,
-			context: context
+			context: context || this
 		});
 		return this;
 	},

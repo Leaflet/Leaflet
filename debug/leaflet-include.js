@@ -36,6 +36,13 @@
 		'geo/crs/CRS.EPSG4326.js',
 		'geo/crs/CRS.EPSG3395.js',
 		
+		'map/Map.js',
+		'map/ext/Map.Geolocation.js',
+		'map/ext/Map.Popup.js',
+		'map/ext/Map.PanAnimation.js',
+		'map/ext/Map.ZoomAnimation.js',
+		'map/ext/Map.Control.js',
+		
 		'layer/LayerGroup.js',
 		'layer/FeatureGroup.js',
 		
@@ -77,13 +84,6 @@
 		'control/Control.Zoom.js',
 		'control/Control.Attribution.js',
 		'control/Control.Layers.js',
-		
-		'map/Map.js',
-		'map/ext/Map.Geolocation.js',
-		'map/ext/Map.Popup.js',
-		'map/ext/Map.PanAnimation.js',
-		'map/ext/Map.ZoomAnimation.js',
-		'map/ext/Map.Control.js'
 	];
 	
 	function getSrcUrl() {

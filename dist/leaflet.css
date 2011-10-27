@@ -35,7 +35,7 @@
 	cursor: pointer;
 	}
 .leaflet-container img {
-	max-width: auto;
+	max-width: none !important;
 	}
 
 .leaflet-tile-pane { z-index: 2; }

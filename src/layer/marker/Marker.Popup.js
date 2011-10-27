@@ -14,15 +14,27 @@ L.Marker.include({
 		if (this._popup) {
 			this._popup._close();
 		}
+		return this;
 	},
 	
 	bindPopup: function(content, options) {
 		options = L.Util.extend({offset: this.options.icon.popupAnchor}, options);
 		
+		if (!this._popup) {
+			this.on('click', this.openPopup, this);
+		}
+
 		this._popup = new L.Popup(options);
 		this._popup.setContent(content);
-		this.on('click', this.openPopup, this);
-		
+
+		return this;
+	},
+
+	unbindPopup: function() {
+		if (this._popup) {
+			this._popup = null;
+			this.off('click', this.openPopup);
+		}
 		return this;
 	}
 });
