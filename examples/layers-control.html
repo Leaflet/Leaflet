@@ -59,16 +59,12 @@
 			citiesLayer.addLayer(goldenMarker);
 
 			var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution};
+				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution},
+				cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
 			
-			var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
-				minimal = new L.TileLayer(minimalUrl, cloudmadeOptions);
-				
-			var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
-				midnightCommander = new L.TileLayer(midnightCommanderUrl, cloudmadeOptions);
-				
-			var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
-				motorways = new L.TileLayer(motorwaysUrl, cloudmadeOptions);
+			var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
+				midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
+				motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
 			
 			var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
 			
@@ -117,17 +113,13 @@ map.addLayer(citiesLayer);</code></pre>
 
 		<p>There are two types of layers &mdash; base layers that are mutually exclusive (only one can be visible on your map), e.g. tile layers, and overlays &mdash; all the other stuff you put over the base layers. In this example, we want to have two base layers (minimal and night-style base map) to switch between, and two overlays to switch on and off &mdash; a pink motorways overlay and city markers (those we created earlier). Lets create those layers and add the default ones to the map:</p>
 
-		<pre><code>var cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
+		<pre><code>var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/{styleId}/256/{z}/{x}/{y}.png',
+	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
 	cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution};
 
-var minimalUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/22677/256/{z}/{x}/{y}.png',
-	minimal = new L.TileLayer(minimalUrl, cloudmadeOptions);
-
-var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/999/256/{z}/{x}/{y}.png',
-	midnightCommander = new L.TileLayer(midnightCommanderUrl, cloudmadeOptions);
-
-var motorwaysUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/46561/256/{z}/{x}/{y}.png',
-	motorways = new L.TileLayer(motorwaysUrl, cloudmadeOptions);
+var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
+	midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
+	motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
 
 var map = new L.Map('map', {
 	center: new L.LatLng(39.73, -104.99),
