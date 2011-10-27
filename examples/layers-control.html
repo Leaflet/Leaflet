@@ -40,56 +40,44 @@
 		</ul>
 		
 		<p><a href="../examples.html">&larr; Back to the list of examples</a></p>
-		<h3>Layers Control</h3>
+		<h3>Layer Groups and Layers Control</h3>
 		
-		<p>This guide will show to add a simple layers control to your map that will control the visibility of base maps and overlays. Base layers are mutually exclusive, so only one is visble at a time while any number of overlays can be visible at any given time.</p>
+		<p>This guide will show you how to group several layers into one, and how to use the layers control to allow users to easily switch different layers on your map.</p>
 		
 		<div id="map" style="height: 250px; margin-bottom: 18px"></div>
 		<script>
-		    var cities = [
-		        {
-		            "name": "Littleton",
-		            "lat": 39.61296190377325,
-		            "lng": -105.01968383789061
-		        },{
-		            "name": "Denver",
-		            "lat": 39.741778337617845,
-		            "lng": -104.99187469482422
-		        },{
-		            "name": "Aurora",
-		            "lat": 39.72699317780526,
-		            "lng": -104.80854034423828
-		        },{
-		            "name": "Golden",
-		            "lat": 39.76632525654491,
-		            "lng": -105.2325439453125
-		        }
-		    ];	    
-		    
-			var map = new L.Map('map');
+			var littletonMarker = new L.Marker(new L.LatLng(39.61, -105.02)).bindPopup("This is Littleton, CO."),
+				denverMarker = new L.Marker(new L.LatLng(39.74, -104.99)).bindPopup("This is Denver, CO."),
+				auroraMarker = new L.Marker(new L.LatLng(39.73, -104.8)).bindPopup("This is Aurora, CO."),
+				goldenMarker = new L.Marker(new L.LatLng(39.77, -105.23)).bindPopup("This is Golden, CO.");
+
+			var citiesLayer = new L.LayerGroup();
+
+			citiesLayer.addLayer(littletonMarker);
+			citiesLayer.addLayer(denverMarker);
+			citiesLayer.addLayer(auroraMarker);
+			citiesLayer.addLayer(goldenMarker);
+
+			var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution};
 			
 			var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
-				minimalAttribution = 'Minimal Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-				minimal = new L.TileLayer(minimalUrl, {maxZoom: 18, attribution: minimalAttribution});
+				minimal = new L.TileLayer(minimalUrl, cloudmadeOptions);
 				
 			var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
-				midnightCommanderAttribution = 'Night View Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-				midnightCommander = new L.TileLayer(midnightCommanderUrl, {maxZoom: 18, attribution: midnightCommanderAttribution});
+				midnightCommander = new L.TileLayer(midnightCommanderUrl, cloudmadeOptions);
 				
 			var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
-				motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-				motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
+				motorways = new L.TileLayer(motorwaysUrl, cloudmadeOptions);
 			
-			var citiesLayer = new L.LayerGroup();
+			var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
 			
-			map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);
-			
-			baseMaps = {
+			var baseMaps = {
 			    "Minimal": minimal,
 			    "Night View": midnightCommander
 			};
 			
-			overlayMaps = {
+			var overlayMaps = {
 			    "Motorways": motorways,
 			    "Cities": citiesLayer
 			};
@@ -97,38 +85,57 @@
 			layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 			
 			map.addControl(layersControl);
-			
-			for (var i = 0, length = cities.length; i < length; i++) {
-			    var marker = new L.Marker(new L.LatLng(cities[i].lat, cities[i].lng));
-			    marker.bindPopup("This is " + cities[i].name + ", CO.");
-			    citiesLayer.addLayer(marker);
-			}
 		</script>
 		
 		<p><a target="_blank" href="layers-control-example.html">View example on a separate page &rarr;</a></p>
-		
-		<p>The first steps are to create a map and some layers, and to add at least one of those layers to the map. The <code>minimal</code> and <code>midnightCommander</code> layers will be our base layers. <code>citiesLayer</code> and <code>motorways</code> will be overlays. Only one base layer should be added but multiple overlays can be added initially. The <code>citiesLayer</code> is a <a href="http://leaflet.cloudmade.com/reference.html#layergroup">LayerGroup</a> which makes it very easy to add lots of markers, linestrings or polygons to the map and easily remove all of them by unchecking the layer in the layers control.</p>
-		
-		<pre><code>var map = new L.Map('map');
-		
-var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
-	minimalAttribution = 'Minimal Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-	minimal = new L.TileLayer(minimalUrl, {maxZoom: 18, attribution: minimalAttribution});
-			
-var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
-	midnightCommanderAttribution = 'Night View Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-	midnightCommander = new L.TileLayer(midnightCommanderUrl, {maxZoom: 18, attribution: midnightCommanderAttribution});
-			
-var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
-	motorwaysAttribution = 'Motorways Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-	motorways = new L.TileLayer(motorwaysUrl, {maxZoom: 18, attribution: motorwaysAttribution});
 
-var citiesLayer = new L.LayerGroup();
-// Create some markers. Add them to citiesLayer. View source to see in detail.
-		
-map.setView(new L.LatLng(39.7346, -104.9894), 10).addLayer(minimal).addLayer(motorways).addLayer(citiesLayer);</code></pre>
-		
-		<p>Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are very simple objects with simple key/value pairs. The key is what sets the text for the layer in the control ( "Night View" ). The corresponding value is just a reference to the layer ( <code>midnightCommander</code> ).</p>
+		<h3>Layer Groups</h3>
+
+		<p>Lets suppose you have a bunch of layers you want to combine into a group to handle them as one in your code:</p>
+
+		<pre><code>var littletonMarker = new L.Marker(new L.LatLng(39.61, -105.02)).bindPopup("This is Littleton, CO."),
+	denverMarker = new L.Marker(new L.LatLng(39.74, -104.99)).bindPopup("This is Denver, CO."),
+	auroraMarker = new L.Marker(new L.LatLng(39.73, -104.8)).bindPopup("This is Aurora, CO."),
+	goldenMarker = new L.Marker(new L.LatLng(39.77, -105.23)).bindPopup("This is Golden, CO.");</code></pre>
+
+		<p>Instead of adding them directly to the map, you can do the following, using the <a href="http://leaflet.cloudmade.com/reference.html#layergroup">LayerGroup</a> class:</p>
+
+		<pre><code>var citiesLayer = new L.LayerGroup();
+
+citiesLayer.addLayer(littletonMarker)
+           .addLayer(denverMarker)
+           .addLayer(auroraMarker)
+           .addLayer(goldenMarker);
+
+map.addLayer(citiesLayer);</code></pre>
+
+		<p>Easy enough! Now you have <code>citiesLayer</code> that combines your city markers into one layer you can add or remove from the map at once.</p>
+
+		<h3>Layers Control</h3>
+
+		<p>Leaflet has a nice little control that allows your users control what layers they want to see on your map. In addition to showing you how to use it, we'll show another handy use for layer groups.</p>
+
+		<p>There are two types of layers &mdash; base layers that are mutually exclusive (only one can be visible on your map), e.g. tile layers, and overlays &mdash; all the other stuff you put over the base layers. In this example, we want to have two base layers (minimal and night-style base map) to switch between, and two overlays to switch on and off &mdash; a pink motorways overlay and city markers (those we created earlier). Lets create those layers and add the default ones to the map:</p>
+
+		<pre><code>var cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
+	cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution};
+
+var minimalUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/22677/256/{z}/{x}/{y}.png',
+	minimal = new L.TileLayer(minimalUrl, cloudmadeOptions);
+
+var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/999/256/{z}/{x}/{y}.png',
+	midnightCommander = new L.TileLayer(midnightCommanderUrl, cloudmadeOptions);
+
+var motorwaysUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/46561/256/{z}/{x}/{y}.png',
+	motorways = new L.TileLayer(motorwaysUrl, cloudmadeOptions);
+
+var map = new L.Map('map', {
+	center: new L.LatLng(39.73, -104.99),
+	zoom: 10,
+	layers: [minimal, motorways, citiesLayer]
+});</code></pre>
+
+	<p>Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are just simple objects with key/value pairs. The key is what sets the text for the layer in the control (e.g. "Night View"). The corresponding value is a reference to the layer (e.g. <code>midnightCommander</code>).</p>
 		
 		<pre><code>var baseMaps = {
 	"Minimal": minimal,
@@ -141,12 +148,14 @@ var overlayMaps = {
 };</code></pre>
 		
 		<!-- TODO: Link "Layers Control" to the Layers Control docs when they are created -->
-		<p>Now, all that's left to do is to create a Layers Control and add it to the map. The first parameter passed when creating the layers control is the base layers object. The second, and optional, parameter is the overlays object.</p>
+		<p>Now, all that's left to do is to create a Layers Control and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional &mdash; for example, you can pass just a base layers object by ommiting the second argument, or just an overlays objects by passing <code>null</code> as the first argument.</p>
 		
 		<pre><code>var layersControl = new L.Control.Layers(baseMaps, overlayMaps);
 		
 map.addControl(layersControl);</code></pre>
-		
+
+		<p>Now lets <a target="_blank" href="layers-control-example.html">view the result on a separate page &rarr;</a></p>
+
 		<hr />
 			
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
