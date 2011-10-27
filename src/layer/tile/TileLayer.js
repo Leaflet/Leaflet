@@ -22,10 +22,11 @@ L.TileLayer = L.Class.extend({
 		updateWhenIdle: L.Browser.mobile
 	},
 
-	initialize: function(url, options) {
+	initialize: function(url, options, urlParams) {
 		L.Util.setOptions(this, options);
 
 		this._url = url;
+		this._urlParams = urlParams;
 
 		if (typeof this.options.subdomains == 'string') {
 			this.options.subdomains = this.options.subdomains.split('');
@@ -249,11 +250,12 @@ L.TileLayer = L.Class.extend({
 		var subdomains = this.options.subdomains,
 			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
 
-		return this._url
-				.replace('{s}', s)
-				.replace('{z}', zoom + this.options.zoomOffset)
-				.replace('{x}', tilePoint.x)
-				.replace('{y}', tilePoint.y);
+		return L.Util.template(this._url, L.Util.extend({
+			s: s,
+			z: zoom + this.options.zoomOffset,
+			x: tilePoint.x,
+			y: tilePoint.y
+		}, this._urlParams));
 	},
 
 	_createTileProto: function() {
