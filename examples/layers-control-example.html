@@ -25,16 +25,12 @@
 		citiesLayer.addLayer(goldenMarker);
 
 		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution};
+				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution},
+				cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
 
-		var minimalUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/22677/256/{z}/{x}/{y}.png',
-			minimal = new L.TileLayer(minimalUrl, cloudmadeOptions);
-
-		var midnightCommanderUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/999/256/{z}/{x}/{y}.png',
-			midnightCommander = new L.TileLayer(midnightCommanderUrl, cloudmadeOptions);
-
-		var motorwaysUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/46561/256/{z}/{x}/{y}.png',
-			motorways = new L.TileLayer(motorwaysUrl, cloudmadeOptions);
+		var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
+			midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
+			motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
 
 		var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
 
