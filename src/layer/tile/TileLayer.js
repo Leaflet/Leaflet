@@ -16,15 +16,17 @@ L.TileLayer = L.Class.extend({
 		scheme: 'xyz',
 		continuousWorld: false,
 		noWrap: false,
+		zoomOffset: 0,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
 	},
 
-	initialize: function(url, options) {
+	initialize: function(url, options, urlParams) {
 		L.Util.setOptions(this, options);
 
 		this._url = url;
+		this._urlParams = urlParams;
 
 		if (typeof this.options.subdomains == 'string') {
 			this.options.subdomains = this.options.subdomains.split('');
@@ -42,11 +44,7 @@ L.TileLayer = L.Class.extend({
 		this._createTileProto();
 
 		// set up events
-		map.on('viewreset',
-			function(e) {
-				this._reset(e.hard);
-			},
-			this);
+		map.on('viewreset', this._resetCallback, this);
 
 		if (this.options.updateWhenIdle) {
 			map.on('moveend', this._update, this);
@@ -63,7 +61,7 @@ L.TileLayer = L.Class.extend({
 		this._map.getPanes().tilePane.removeChild(this._container);
 		this._container = null;
 
-		this._map.off('viewreset', this._reset, this);
+		this._map.off('viewreset', this._resetCallback, this);
 
 		if (this.options.updateWhenIdle) {
 			this._map.off('moveend', this._update, this);
@@ -112,8 +110,19 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
+	_resetCallback: function(e) {
+		this._reset(e.hard);
+	},
+
 	_reset: function(clearOldContainer) {
+		var key;
+		for (key in this._tiles) {
+			if (this._tiles.hasOwnProperty(key)) {
+				this.fire("tileunload", { tile: this._tiles[key] });
+			}
+		}
 		this._tiles = {};
+
 		if (clearOldContainer && this._container)
 			this._container.innerHTML = "";
 		this._initContainer();
@@ -196,7 +205,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = (1 << zoom);
+			tileLimit = (1 << (zoom + this.options.zoomOffset));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -241,11 +250,12 @@ L.TileLayer = L.Class.extend({
 		var subdomains = this.options.subdomains,
 			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
 
-		return this._url
-				.replace('{s}', s)
-				.replace('{z}', zoom)
-				.replace('{x}', tilePoint.x)
-				.replace('{y}', tilePoint.y);
+		return L.Util.template(this._url, L.Util.extend({
+			s: s,
+			z: zoom + this.options.zoomOffset,
+			x: tilePoint.x,
+			y: tilePoint.y
+		}, this._urlParams));
 	},
 
 	_createTileProto: function() {

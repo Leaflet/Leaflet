@@ -4,32 +4,37 @@
  * See http://leaflet.cloudmade.com for more information.
  */
 
-(function(root) {
-	var L = {
+/*global L*/ /*jslint browser: true, sloppy: true, vars: true, nomen: true, plusplus: true */
+
+(function (root) {
+	root.L = {
 		VERSION: '0.3',
-		
-		ROOT_URL: (function() {
+
+		ROOT_URL: root.L_ROOT_URL || (function () {
 			var scripts = document.getElementsByTagName('script'),
-				leafletRe = /^(.*\/)leaflet-?([\w-]*)\.js.*$/;
-			for (var i = 0, len = scripts.length; i < len; i++) {
-				var src = scripts[i].src,
-					res = src && src.match(leafletRe);
-				
-				if (res) {
-					if (res[2] == 'include') break;
-					return res[1];
+				leafletRe = /\/?leaflet\-?([\w\-]*)\.js\??/;
+
+			var i, len, src, matches;
+
+			for (i = 0, len = scripts.length; i < len; i++) {
+				src = scripts[i].src;
+				matches = src.match(leafletRe);
+
+				if (matches) {
+					if (matches[1] === 'include') {
+						return '../../dist/';
+					}
+					return src.replace(leafletRe, '') + '/';
 				}
 			}
-			return '../../dist/';
-		})(),
-		
-		noConflict: function() {
+			return '';
+		}()),
+
+		noConflict: function () {
 			root.L = this._originalL;
 			return this;
 		},
-		
+
 		_originalL: root.L
 	};
-	
-	window.L = L;
 }(this));

@@ -15,12 +15,16 @@ Leaflet Changelog
 #### Usability improvements
 
  * Map now preserves its center after resize.
+ * When panning to another copy of the world (that's infinite horizontally), map overlays now jump to corresponding positions. [#273](https://github.com/CloudMade/Leaflet/issues/273)
  * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Improved circles performance by not drawing them if they're off the clip region.
 
 #### API improvements
 
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
+ * Added `urlParams` third optional argument to `TileLayer` constructor for convenience: an object with properties that will be evaluated in the URL template.
+ * Added `L.Util.template` method for simple string template evaluation.
+ * Improved `map` `locate` method, added ability to watch location continuously and more options. [#212](https://github.com/CloudMade/Leaflet/issues/212)
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
  * Added `hasLayer` method to `Map`.
  * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
@@ -31,6 +35,7 @@ Leaflet Changelog
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
  * Added `minWidth` option to `Popup` (by [@marphi](https://github.com/marphi)). [#214](https://github.com/CloudMade/Leaflet/pull/214)
  * Added `TileLayer` `tileunload` event fired when tile gets removed after panning (by [@CodeJosch](https://github.com/CodeJosch)). [#256](https://github.com/CloudMade/Leaflet/pull/256)
+ * Added `TileLayer` `zoomOffset` option useful for non-256px tiles (by [@msaspence](https://github.com/msaspence)).
  * Added `LatLngBounds` `toBBoxString` method for convenience (by [@JasonSanford](https://github.com/JasonSanford)). [#263](https://github.com/CloudMade/Leaflet/pull/263)
  * Added `getBounds` method to `Polyline` and `Polygon` (by [@JasonSanford](https://github.com/JasonSanford)). [#253](https://github.com/CloudMade/Leaflet/pull/253)
 
@@ -38,8 +43,12 @@ Leaflet Changelog
 
 #### General bugfixes
 
+ * Fixed a bug where `Circle` was rendered with incorrect radius (didn't take projection exagerration into account). [#331](https://github.com/CloudMade/Leaflet/issues/331)
+ * Fixed a bug where map panning would stuck forever after releasing the mouse over an iframe or a flash object (thanks to [@sten82](https://github.com/sten82)). [#297](https://github.com/CloudMade/Leaflet/pull/297) [#64](https://github.com/CloudMade/Leaflet/issues/64)
  * Fixed a bug where mouse zoom worked incorrectly if map is inside scrolled container (partially by [@chrillo](https://github.com/chrillo)). [#206](https://github.com/CloudMade/Leaflet/issues/206)
- * Fixed a bug where `Marker` `setIcon` was not working properly (by [@marphi](https://github.com/marphi)). [#218](https://github.com/CloudMade/Leaflet/pull/218)
+ * Fixed a bug where it was possible to add the same listener twice. [#281](https://github.com/CloudMade/Leaflet/issues/281)
+ * Fixed a bug where `Circle` was rendered with incorrect radius (didn't take projection exaggeration into account). [#331](https://github.com/CloudMade/Leaflet/issues/331)
+ * Fixed a bug where `Marker` `setIcon` was not working properly (by [@marphi](https://github.com/marphi)). [#218](https://github.com/CloudMade/Leaflet/pull/218) [#311](https://github.com/CloudMade/Leaflet/issues/311)
  * Fixed a bug where `Marker` `setLatLng` was not working if it's set before adding the marker to a map. [#222](https://github.com/CloudMade/Leaflet/issues/222)
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
@@ -50,16 +59,21 @@ Leaflet Changelog
  * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)
  * Fixed a bug where `TileLayer` `load` event wouldn't fire in some edge cases (by [@dravnic](https://github.com/dravnic)).
  * Fixed a bug related to clearing background tiles after zooming (by [@neno-giscloud](https://github.com/neno-giscloud) & [@dravnic](https://github.com/dravnic)).
+ * Fixed a bug related to cleaning up after removing tile layers (by [@dravnic](https://github.com/dravnic)). [#276](https://github.com/CloudMade/Leaflet/pull/276)
+ * Fixed a bug that made selecting text in the attribution control impossible. [#279](https://github.com/CloudMade/Leaflet/issues/279)
+ * Fixed a bug when initializing a map in a non-empty div. [#278](https://github.com/CloudMade/Leaflet/issues/278)
 
 #### Browser bugfixes
 
  * Fixed occasional crashes on Mac Safari (thanks to [@lapinos03](https://github.com/lapinos03)). [#191](https://github.com/CloudMade/Leaflet/issues/191)
  * Fixed a bug that raised error in IE6-8 when clicking on popup close button. [#235](https://github.com/CloudMade/Leaflet/issues/235)
+ * Fixed a bug that caused performance drop and high CPU usage when calling `setView` or `panTo` to the current center. [#231](https://github.com/CloudMade/Leaflet/issues/231)
  * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug that was causing errors in some Webkit/Linux builds (requestAnimationFrame-related), thanks to Chris Martens.
 
 #### Mobile browser bugfixes
 
+ * Fixed a bug that caused an error when clicking vector layers under iOS. [#204](https://github.com/CloudMade/Leaflet/issues/204)
  * Fixed crash on Android 3+ when panning or zooming (by [@florian](https://github.com/florianf)). [#137](https://github.com/CloudMade/Leaflet/issues/137)
 
 
@@ -144,5 +158,3 @@ Leaflet Changelog
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)
 
 ## 0.1 (2011-05-13)
-
- * Initial Leaflet release.

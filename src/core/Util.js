@@ -92,5 +92,15 @@ L.Util = {
 			}
 		}
 		return '?' + params.join('&');
+	},
+
+	template: function (str, data) {
+		return str.replace(/\{ *([^} ]+) *\}/g, function (str, key) {
+			var value = data[key];
+			if (!data.hasOwnProperty(key)) {
+				throw new Error('No value provided for variable ' + str);
+			}
+			return value;
+		});
 	}
 };
