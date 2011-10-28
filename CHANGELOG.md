@@ -158,3 +158,5 @@ Leaflet Changelog
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)
 
 ## 0.1 (2011-05-13)
+
+Initial Leaflet release.
