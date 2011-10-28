@@ -1,7 +1,7 @@
 
 L.Control.Layers = L.Class.extend({
 	options: {
-		collapsed: true
+		collapsed: !L.Browser.touch
 	},
 	
 	initialize: function(baseLayers, overlays, options) {
