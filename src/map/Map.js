@@ -44,6 +44,11 @@ L.Map = L.Class.extend({
 
 		this._container = L.DomUtil.get(id);
 
+		if (this._container._leaflet) {
+			throw new Error("Map container is already initialized.");
+		}
+		this._container._leaflet = true;
+
 		this._initLayout();
 
 		if (L.DomEvent) {
