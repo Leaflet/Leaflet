@@ -25,7 +25,7 @@ L.Util.extend(L.GeoJSON, {
 
 		if (geojson.features) {
 			for (i = 0, len = geojson.features.length; i < len; i++) {
-				layers.push(L.GeoJSON.geoJSONToLayer(geojson.features[i], pointToLayer));
+				layers.push(L.GeoJSON.geoJSONToLayer(geojson.features[i], pointToLayer, onFeatureParse));
 			}
 			return new L.FeatureGroup(layers);
 		}
