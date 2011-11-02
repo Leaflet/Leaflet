@@ -19,7 +19,7 @@ L.Projection.Mercator = {
 		con = Math.pow((1 - con)/(1 + con), eccent * 0.5);
 		
 		var ts = Math.tan(0.5 * ((Math.PI * 0.5) - y)) / con;
-		y = -r * Math.log(ts);
+		y = -this.R_MINOR * Math.log(ts);
 		
 		return new L.Point(x, y);
 	},
@@ -30,7 +30,7 @@ L.Projection.Mercator = {
 			lng = point.x * d / r,
 			tmp = this.R_MINOR / r,
 			eccent = Math.sqrt(1 - (tmp * tmp)),
-			ts = Math.exp(- point.y / r),
+			ts = Math.exp(- point.y / this.R_MINOR),
 			phi = Math.PI/2 - 2 * Math.atan(ts),
 			numIter = 15,
 			tol = 1e-7,
