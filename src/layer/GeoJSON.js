@@ -9,32 +9,41 @@ L.GeoJSON = L.FeatureGroup.extend({
 			this.addGeoJSON(geojson);
 		}
 	},
-	
+
 	addGeoJSON: function(geojson) {
-		if (geojson.features) {
-			for (var i = 0, len = geojson.features.length; i < len; i++) {
-				this.addGeoJSON(geojson.features[i]);
-			}
-			return;
-		}
-				
-		var isFeature = (geojson.type == 'Feature'),
-			geometry = (isFeature ? geojson.geometry : geojson),
-			layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
-		
-		this.fire('featureparse', {
-			layer: layer, 
-			properties: geojson.properties,
-			geometryType: geometry.type,
-			bbox: geojson.bbox,
-			id: geojson.id
-		});
-		
+		var onFeatureParse = function(x) { return function(e) { x.fire('featureparse', e); } }(this),
+			layer = L.GeoJSON.geoJSONToLayer(geojson, this.options.pointToLayer, onFeatureParse);
 		this.addLayer(layer);
 	}
 });
 
 L.Util.extend(L.GeoJSON, {
+	geoJSONToLayer: function(geojson, pointToLayer, onFeatureParse) {
+		var i, len, layer, geometry,
+			layers = [],
+			isFeature = (geojson.type == 'Feature');
+
+		if (geojson.features) {
+			for (i = 0, len = geojson.features.length; i < len; i++) {
+				layers.push(L.GeoJSON.geoJSONToLayer(geojson.features[i], pointToLayer, onFeatureParse));
+			}
+			return new L.FeatureGroup(layers);
+		}
+		
+		geometry = isFeature ? geojson.geometry	: geojson;
+		layer = L.GeoJSON.geometryToLayer(geometry, pointToLayer);
+
+		onFeatureParse && onFeatureParse({
+			layer: layer,
+			properties: geojson.properties,
+			geometryType: geometry.type,
+			bbox: geojson.bbox,
+			id: geojson.id
+		});
+
+		return layer;
+	},			
+	
 	geometryToLayer: function(geometry, pointToLayer) {
 		var coords = geometry.coordinates, 
 			latlng, latlngs, 
