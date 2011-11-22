@@ -30,12 +30,12 @@ L.Marker = L.Class.extend({
 	onRemove: function(map) {
 		this._removeIcon();
 		
-		this._map = null;
-
 		// TODO move to Marker.Popup.js
 		if (this.closePopup) {
 			this.closePopup();
 		}
+		
+		this._map = null;
 		
 		map.off('viewreset', this._reset, this);
 	},
