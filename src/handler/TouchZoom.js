@@ -28,7 +28,9 @@ L.Handler.TouchZoom = L.Handler.extend({
 		
 		this._moved = false;
 		this._zooming = true;
-
+		
+		this._map.fire('zoomstart');
+		
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
 		L.DomEvent.addListener(document, 'touchmove', this._onTouchMove, this);
