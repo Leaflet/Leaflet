@@ -28,18 +28,20 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 	},
 	
 	_performZoom: function() {
-		var delta = Math.round(this._delta);
+		var delta = Math.round(this._delta),
+			zoom = this._map.getZoom();
+
 		delta = Math.max(Math.min(delta, 4), -4);
+		delta = this._map._limitZoom(zoom + delta) - zoom;
+
 		this._delta = 0;
 		
 		if (!delta) { return; }
 		
-		var center = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
-			zoom = this._map.getZoom() + delta;
+		var newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
+			newZoom = zoom + delta;
 		
-		if (this._map._limitZoom(zoom) == this._map._zoom) { return; }
-
-		this._map.setView(center, zoom);
+		this._map.setView(newCenter, newZoom);
 	},
 	
 	_getCenterForScrollWheelZoom: function(mousePos, delta) {

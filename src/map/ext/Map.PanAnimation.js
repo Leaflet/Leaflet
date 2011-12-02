@@ -32,12 +32,12 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 			this._panTransition.on('step', this._onPanTransitionStep, this);
 			this._panTransition.on('end', this._onPanTransitionEnd, this);
 		}
-		this.fire(this, 'movestart');
-		
+		this.fire('movestart');
+
 		this._panTransition.run({
 			position: L.DomUtil.getPosition(this._mapPane).subtract(offset)
 		});
-		
+
 		return this;
 	},
 	
