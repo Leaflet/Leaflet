@@ -65,7 +65,18 @@ L.Handler.MapDrag = L.Handler.extend({
 	},
 
 	_onDragEnd: function() {
-		this._map.fire('moveend');
-		this._map.fire('dragend');
+		var map = this._map;
+
+		map.fire('moveend');
+		map.fire('dragend');
+
+		if (this._map.options.maxBounds) {
+			// TODO predrag validation instead of animation
+			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
+		}
+	},
+
+	_panInsideMaxBounds: function () {
+		this.panInsideBounds(this.options.maxBounds);
 	}
 });

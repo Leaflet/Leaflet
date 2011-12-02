@@ -9,6 +9,7 @@ Leaflet Changelog
 
  * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
  * Added **layers control** (`Control.Layers`) for convenient layer switching.
+ * Added ability to set max geographical bounds within which users can pan/zoom. [#93](https://github.com/CloudMade/Leaflet/issues/93)
 
 ### Improvements
 
@@ -24,6 +25,7 @@ Leaflet Changelog
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
  * Added `urlParams` third optional argument to `TileLayer` constructor for convenience: an object with properties that will be evaluated in the URL template.
  * Added `L.Util.template` method for simple string template evaluation.
+ * Added second argument `inside` to `map` `getBoundsZoom` method that allows you to get appropriate zoom for the view to fit *inside* the given bounds.
  * Improved `map` `locate` method, added ability to watch location continuously and more options. [#212](https://github.com/CloudMade/Leaflet/issues/212)
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
  * Added `hasLayer` method to `Map`.

@@ -57,6 +57,10 @@ L.Map = L.Class.extend({
 			if (L.Control) { this._initControls(); }
 		}
 
+		if (this.options.maxBounds) {
+			this.setMaxBounds(this.options.maxBounds);
+		}
+
 		var center = this.options.center,
 			zoom = this.options.zoom;
 
@@ -117,6 +121,48 @@ L.Map = L.Class.extend({
 		this.fire('moveend');
 
 		return this;
+	},
+
+	setMaxBounds: function (bounds) {
+		this.options.maxBounds = bounds;
+
+		var minZoom = this.getBoundsZoom(bounds, true);
+
+		this.options.minZoom = minZoom;
+
+		if (this._loaded) {
+			if (this._zoom < minZoom) {
+				this.setView(bounds.getCenter(), minZoom);
+			} else {
+				this.panInsideBounds(bounds);
+			}
+		}
+		return this;
+	},
+
+	panInsideBounds: function (bounds) {
+		var viewBounds = this.getBounds(),
+			viewSw = this.project(viewBounds.getSouthWest()),
+			viewNe = this.project(viewBounds.getNorthEast()),
+			sw = this.project(bounds.getSouthWest()),
+			ne = this.project(bounds.getNorthEast()),
+			dx = 0,
+			dy = 0;
+
+		if (viewNe.y < ne.y) { // north
+			dy = ne.y - viewNe.y;
+		}
+		if (viewNe.x > ne.x) { // east
+			dx = ne.x - viewNe.x;
+		}
+		if (viewSw.y > sw.y) { // south
+			dy = sw.y - viewSw.y;
+		}
+		if (viewSw.x < sw.x) { // west
+			dx = sw.x - viewSw.x;
+		}
+
+		return this.panBy(new L.Point(dx, dy, true));
 	},
 
 	addLayer: function (layer, insertAtTheTop) {
@@ -226,7 +272,7 @@ L.Map = L.Class.extend({
 		return isNaN(this.options.maxZoom) ?  this._layersMaxZoom || Infinity : this.options.maxZoom;
 	},
 
-	getBoundsZoom: function (bounds) { // (LatLngBounds)
+	getBoundsZoom: function (bounds, inside) { // (LatLngBounds)
 		var size = this.getSize(),
 			zoom = this.getMinZoom(),
 			maxZoom = this.getMaxZoom(),
@@ -234,17 +280,23 @@ L.Map = L.Class.extend({
 			sw = bounds.getSouthWest(),
 			boundsSize,
 			nePoint,
-			swPoint;
+			swPoint,
+			zoomNotFound = true;
 
 		do {
 			zoom++;
 			nePoint = this.project(ne, zoom);
 			swPoint = this.project(sw, zoom);
 			boundsSize = new L.Point(nePoint.x - swPoint.x, swPoint.y - nePoint.y);
-		} while ((boundsSize.x <= size.x) &&
-		         (boundsSize.y <= size.y) && (zoom <= maxZoom));
 
-		return zoom - 1;
+			if (!inside) {
+				zoomNotFound = (boundsSize.x <= size.x) && (boundsSize.y <= size.y);
+			} else {
+				zoomNotFound = (boundsSize.x < size.x) || (boundsSize.y < size.y);
+			}
+		} while (zoomNotFound && (zoom <= maxZoom));
+
+		return inside ? zoom : zoom - 1;
 	},
 
 	getSize: function () {
