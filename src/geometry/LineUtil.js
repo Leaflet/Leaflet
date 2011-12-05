@@ -13,10 +13,10 @@ L.LineUtil = {
 		
 		// stage 1: vertex reduction
 		points = this.reducePoints(points, tolerance);
-		
+
 		// stage 2: Douglas-Peucker simplification
 		points = this.simplifyDP(points, tolerance);
-		
+
 		return points; 
 	},
 	
@@ -35,23 +35,32 @@ L.LineUtil = {
 	simplifyDP: function(points, tol) {
 		var maxDist2 = 0,
 			index = 0,
-			t2 = tol * tol;
+			t2 = tol * tol,
+			len = points.length,
+			i, dist2;
 
-		for (var i = 1, len = points.length, dist2; i < len - 1; i++) {
+		if (len < 3) {
+			return points;
+		}
+
+		for (i = 0; i < len - 1; i++) {
 			dist2 = this._sqPointToSegmentDist(points[i], points[0], points[len - 1]);
 			if (dist2 > maxDist2) {
 				index = i;
 				maxDist2 = dist2;
 			}
 		}
-		
+
+		var part1, part2;
+
 		if (maxDist2 >= t2) {
-			var part1 = points.slice(0, index),
-				part2 = points.slice(index),
-				simplifiedPart1 = this.simplifyDP(part1, tol).slice(0, len - 2),
-				simplifiedPart2 = this.simplifyDP(part2, tol);
+			part1 = points.slice(0, index),
+			part2 = points.slice(index);
 			
-			return simplifiedPart1.concat(simplifiedPart2);
+			part1 = this.simplifyDP(part1, tol),
+			part2 = this.simplifyDP(part2, tol);
+			
+			return part1.concat(part2);
 		} else {
 			return [points[0], points[len - 1]];
 		}

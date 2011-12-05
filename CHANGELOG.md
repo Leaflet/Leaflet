@@ -9,7 +9,7 @@ Leaflet Changelog
 
  * Added **Canvas backend** for vector layers (polylines, polygons, circles). This enables vector support on Android < 3, and it can also be optionally preferred over SVG for a performance gain in some cases. Thanks to [@florianf](https://github.com/florianf) for a big part of this work.
  * Added **layers control** (`Control.Layers`) for convenient layer switching.
- * Added ability to set max geographical bounds within which users can pan/zoom. [#93](https://github.com/CloudMade/Leaflet/issues/93)
+ * Added ability to set **max bounds** within which users can pan/zoom. [#93](https://github.com/CloudMade/Leaflet/issues/93)
 
 ### Improvements
 
@@ -46,6 +46,7 @@ Leaflet Changelog
 #### General bugfixes
 
  * Fixed a bug where `Circle` was rendered with incorrect radius (didn't take projection exagerration into account). [#331](https://github.com/CloudMade/Leaflet/issues/331)
+ * Fixed a bug where polygons and polylines sometimes rendered incorrectly on some zoom levels. [#381](https://github.com/CloudMade/Leaflet/issues/381)
  * Fixed a bug where fast mouse wheel zoom worked incorrectly when approaching min/max zoom values.
  * Fixed a bug where map panning would stuck forever after releasing the mouse over an iframe or a flash object (thanks to [@sten82](https://github.com/sten82)). [#297](https://github.com/CloudMade/Leaflet/pull/297) [#64](https://github.com/CloudMade/Leaflet/issues/64)
  * Fixed a bug where mouse wheel zoom worked incorrectly if map is inside scrolled container (partially by [@chrillo](https://github.com/chrillo)). [#206](https://github.com/CloudMade/Leaflet/issues/206)

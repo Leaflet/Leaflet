@@ -128,6 +128,7 @@ L.Map = L.Class.extend({
 
 		var minZoom = this.getBoundsZoom(bounds, true);
 
+		// TODO recalculate on resize
 		this.options.minZoom = minZoom;
 
 		if (this._loaded) {
