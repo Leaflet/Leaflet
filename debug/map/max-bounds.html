@@ -21,7 +21,7 @@
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
-			bounds = new L.LatLngBounds(new L.LatLng(49.41097, -11.29395), new L.LatLng(62.85515, 2.50488));
+			bounds = new L.LatLngBounds(new L.LatLng(49.5, -11.3), new L.LatLng(61.2, 2.5));
 	
 		var map = new L.Map('map', {
 			center: bounds.getCenter(),

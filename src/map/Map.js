@@ -128,8 +128,7 @@ L.Map = L.Class.extend({
 
 		var minZoom = this.getBoundsZoom(bounds, true);
 
-		// TODO recalculate on resize
-		this.options.minZoom = minZoom;
+		this._boundsMinZoom = minZoom;
 
 		if (this._loaded) {
 			if (this._zoom < minZoom) {
@@ -229,10 +228,16 @@ L.Map = L.Class.extend({
 	},
 
 	invalidateSize: function () {
+		var oldSize = this.getSize();
+
+		this._sizeChanged = true;
+
+		if (this.options.maxBounds) {
+			this.setMaxBounds(this.options.maxBounds);
+		}
+
 		if (!this._loaded) { return this; }
 
-		var oldSize = this.getSize();
-		this._sizeChanged = true;
 		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
 
 		this.fire('move');
@@ -266,16 +271,23 @@ L.Map = L.Class.extend({
 	},
 
 	getMinZoom: function () {
-		return isNaN(this.options.minZoom) ?  this._layersMinZoom || 0 : this.options.minZoom;
+		var z1 = this.options.minZoom || 0,
+			z2 = this._layersMinZoom || 0,
+			z3 = this._boundsMinZoom || 0;
+
+		return Math.max(z1, z2, z3);
 	},
 
 	getMaxZoom: function () {
-		return isNaN(this.options.maxZoom) ?  this._layersMaxZoom || Infinity : this.options.maxZoom;
+		var z1 = isNaN(this.options.maxZoom) ? Infinity : this.options.maxZoom,
+			z2 = this._layersMaxZoom || Infinity;
+		
+		return Math.min(z1, z2);
 	},
 
 	getBoundsZoom: function (bounds, inside) { // (LatLngBounds)
 		var size = this.getSize(),
-			zoom = this.getMinZoom(),
+			zoom = this.options.minZoom || 0,
 			maxZoom = this.getMaxZoom(),
 			ne = bounds.getNorthEast(),
 			sw = bounds.getSouthWest(),
@@ -283,6 +295,10 @@ L.Map = L.Class.extend({
 			nePoint,
 			swPoint,
 			zoomNotFound = true;
+
+		if (inside) {
+			zoom--;
+		}
 
 		do {
 			zoom++;
@@ -296,6 +312,10 @@ L.Map = L.Class.extend({
 				zoomNotFound = (boundsSize.x < size.x) || (boundsSize.y < size.y);
 			}
 		} while (zoomNotFound && (zoom <= maxZoom));
+
+		if (zoomNotFound) {
+			return null;
+		}
 
 		return inside ? zoom : zoom - 1;
 	},
