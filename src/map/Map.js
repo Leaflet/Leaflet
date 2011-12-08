@@ -8,7 +8,9 @@ L.Map = L.Class.extend({
 	options: {
 		// projection
 		crs: L.CRS.EPSG3857 || L.CRS.EPSG4326,
-		scale: function (zoom) { return 256 * Math.pow(2, zoom); },
+		scale: function (zoom) {
+			return 256 * Math.pow(2, zoom);
+		},
 
 		// state
 		center: null,
@@ -53,8 +55,12 @@ L.Map = L.Class.extend({
 
 		if (L.DomEvent) {
 			this._initEvents();
-			if (L.Handler) { this._initInteraction(); }
-			if (L.Control) { this._initControls(); }
+			if (L.Handler) {
+				this._initInteraction();
+			}
+			if (L.Control) {
+				this._initControls();
+			}
 		}
 
 		if (this.options.maxBounds) {
@@ -168,7 +174,9 @@ L.Map = L.Class.extend({
 	addLayer: function (layer, insertAtTheTop) {
 		var id = L.Util.stamp(layer);
 
-		if (this._layers[id]) { return this; }
+		if (this._layers[id]) {
+			return this;
+		}
 
 		this._layers[id] = layer;
 
@@ -236,7 +244,9 @@ L.Map = L.Class.extend({
 			this.setMaxBounds(this.options.maxBounds);
 		}
 
-		if (!this._loaded) { return this; }
+		if (!this._loaded) {
+			return this;
+		}
 
 		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
 
@@ -281,7 +291,7 @@ L.Map = L.Class.extend({
 	getMaxZoom: function () {
 		var z1 = isNaN(this.options.maxZoom) ? Infinity : this.options.maxZoom,
 			z2 = this._layersMaxZoom || Infinity;
-		
+
 		return Math.min(z1, z2);
 	},
 

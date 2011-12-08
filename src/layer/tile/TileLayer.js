@@ -28,7 +28,7 @@ L.TileLayer = L.Class.extend({
 		this._url = url;
 		this._urlParams = urlParams;
 
-		if (typeof this.options.subdomains == 'string') {
+		if (typeof this.options.subdomains === 'string') {
 			this.options.subdomains = this.options.subdomains.split('');
 		}
 	},
@@ -81,8 +81,10 @@ L.TileLayer = L.Class.extend({
 
 		// stupid webkit hack to force redrawing of tiles
 		if (L.Browser.webkit) {
-			for (i in this._tiles) {
-				this._tiles[i].style.webkitTransform += ' translate(0,0)';
+			for (var i in this._tiles) {
+				if (this._tiles.hasOwnProperty(i)) {
+					this._tiles[i].style.webkitTransform += ' translate(0,0)';
+				}
 			}
 		}
 	},
@@ -123,10 +125,10 @@ L.TileLayer = L.Class.extend({
 		}
 		this._tiles = {};
 
-		if (clearOldContainer && this._container)
+		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
+		}
 		this._initContainer();
-		this._container.innerHTML = '';
 	},
 
 	_update: function() {

@@ -4,8 +4,6 @@
  * See http://leaflet.cloudmade.com for more information.
  */
 
-/*global L*/ /*jslint browser: true, sloppy: true, vars: true, nomen: true, plusplus: true */
-
 (function (root) {
 	root.L = {
 		VERSION: '0.3',

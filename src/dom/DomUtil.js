@@ -6,7 +6,7 @@ L.DomUtil = {
 	get: function(id) {
 		return (typeof id == 'string' ? document.getElementById(id) : id);
 	},
-	
+
 	getStyle: function(el, style) {
 		var value = el.style[style];
 		if (!value && el.currentStyle) {
@@ -18,32 +18,32 @@ L.DomUtil = {
 		}
 		return (value == 'auto' ? null : value);
 	},
-	
+
 	getViewportOffset: function(element) {
-		var top = 0, 
+		var top = 0,
 			left = 0,
 			el = element,
 			docBody = document.body;
-		
+
 		do {
 			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
-			
-			if (el.offsetParent == docBody && 
+
+			if (el.offsetParent == docBody &&
 					L.DomUtil.getStyle(el, 'position') == 'absolute') break;
-			
+
 		} while (el = el.offsetParent);
-		
+
 		el = element;
-		
+
 		do {
 			if (el === docBody) break;
-			
+
 			top -= el.scrollTop || 0;
 			left -= el.scrollLeft || 0;
-			
+
 		} while (el = el.parentNode);
-		
+
 		return new L.Point(left, top);
 	},
 
@@ -55,9 +55,9 @@ L.DomUtil = {
 		}
 		return el;
 	},
-	
+
 	disableTextSelection: function() {
-		if (document.selection && document.selection.empty) { 
+		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
 		if (!this._onselectstart) {
@@ -65,30 +65,30 @@ L.DomUtil = {
 			document.onselectstart = L.Util.falseFn;
 		}
 	},
-	
+
 	enableTextSelection: function() {
 		document.onselectstart = this._onselectstart;
 		this._onselectstart = null;
 	},
-	
+
 	hasClass: function(el, name) {
-		return (el.className.length > 0) && 
+		return (el.className.length > 0) &&
 				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
 	},
-	
+
 	addClass: function(el, name) {
 		if (!L.DomUtil.hasClass(el, name)) {
-			el.className += (el.className ? ' ' : '') + name; 
+			el.className += (el.className ? ' ' : '') + name;
 		}
 	},
-	
+
 	removeClass: function(el, name) {
 		el.className = el.className.replace(/(\S+)\s*/g, function(w, match) {
 			if (match == name) return '';
 			return w;
 		}).replace(/^\s+/, '');
 	},
-	
+
 	setOpacity: function(el, value) {
 		if (L.Browser.ie) {
 			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
@@ -96,12 +96,12 @@ L.DomUtil = {
 			el.style.opacity = value;
 		}
 	},
-	
+
 	//TODO refactor away this ugly translate/position mess
-	
+
 	testProp: function(props) {
 		var style = document.documentElement.style;
-		
+
 		for (var i = 0; i < props.length; i++) {
 			if (props[i] in style) {
 				return props[i];
@@ -109,19 +109,19 @@ L.DomUtil = {
 		}
 		return false;
 	},
-	
+
 	getTranslateString: function(point) {
-		return L.DomUtil.TRANSLATE_OPEN + 
-				point.x + 'px,' + point.y + 'px' + 
+		return L.DomUtil.TRANSLATE_OPEN +
+				point.x + 'px,' + point.y + 'px' +
 				L.DomUtil.TRANSLATE_CLOSE;
 	},
-	
+
 	getScaleString: function(scale, origin) {
-		 return L.DomUtil.getTranslateString(origin) + 
+		return L.DomUtil.getTranslateString(origin) +
          		' scale(' + scale + ') ' +
          		L.DomUtil.getTranslateString(origin.multiplyBy(-1));
 	},
-	
+
 	setPosition: function(el, point) {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit) {
@@ -131,7 +131,7 @@ L.DomUtil = {
 			el.style.top = point.y + 'px';
 		}
 	},
-	
+
 	getPosition: function(el) {
 		return el._leaflet_pos;
 	}
@@ -140,7 +140,7 @@ L.DomUtil = {
 L.Util.extend(L.DomUtil, {
 	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
 	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
-	
+
 	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
 	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')'
 });
