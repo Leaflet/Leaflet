@@ -3,19 +3,19 @@
  */
 
 L.Handler.TouchZoom = L.Handler.extend({
-	enable: function() {
+	enable: function () {
 		if (!L.Browser.touch || this._enabled) { return; }
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
 		this._enabled = true;
 	},
 
-	disable: function() {
+	disable: function () {
 		if (!this._enabled) { return; }
 		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
 		this._enabled = false;
 	},
 
-	_onTouchStart: function(e) {
+	_onTouchStart: function (e) {
 		if (!e.touches || e.touches.length !== 2 || this._map._animatingZoom) { return; }
 
 		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
@@ -37,7 +37,7 @@ L.Handler.TouchZoom = L.Handler.extend({
 		L.DomEvent.preventDefault(e);
 	},
 
-	_onTouchMove: function(e) {
+	_onTouchMove: function (e) {
 		if (!e.touches || e.touches.length !== 2) { return; }
 
 		if (!this._moved) {
@@ -63,12 +63,12 @@ L.Handler.TouchZoom = L.Handler.extend({
 		L.DomEvent.preventDefault(e);
 	},
 
-	_onTouchEnd: function(e) {
+	_onTouchEnd: function (e) {
 		if (!this._moved || !this._zooming) { return; }
 		this._zooming = false;
 
 		var oldZoom = this._map.getZoom(),
-			floatZoomDelta = Math.log(this._scale)/Math.LN2,
+			floatZoomDelta = Math.log(this._scale) / Math.LN2,
 			roundZoomDelta = (floatZoomDelta > 0 ? Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
 			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
 			zoomDelta = zoom - oldZoom,

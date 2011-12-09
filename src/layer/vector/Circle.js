@@ -3,7 +3,7 @@
  */
 
 L.Circle = L.Path.extend({
-	initialize: function(latlng, radius, options) {
+	initialize: function (latlng, radius, options) {
 		L.Path.prototype.initialize.call(this, options);
 
 		this._latlng = latlng;
@@ -14,19 +14,19 @@ L.Circle = L.Path.extend({
 		fill: true
 	},
 
-	setLatLng: function(latlng) {
+	setLatLng: function (latlng) {
 		this._latlng = latlng;
 		this._redraw();
 		return this;
 	},
 
-	setRadius: function(radius) {
+	setRadius: function (radius) {
 		this._mRadius = radius;
 		this._redraw();
 		return this;
 	},
 
-	projectLatlngs: function() {
+	projectLatlngs: function () {
 		var equatorLength = 40075017,
 			hLength = equatorLength * Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
 
@@ -38,7 +38,7 @@ L.Circle = L.Path.extend({
 		this._radius = Math.round(this._point.x - point2.x);
 	},
 
-	getPathString: function() {
+	getPathString: function () {
 		var p = this._point,
 			r = this._radius;
 
@@ -55,7 +55,7 @@ L.Circle = L.Path.extend({
 		}
 	},
 
-	_checkIfEmpty: function() {
+	_checkIfEmpty: function () {
 		var vp = this._map._pathViewport,
 			r = this._radius,
 			p = this._point;

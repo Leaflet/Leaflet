@@ -3,7 +3,7 @@
  */
 
 L.LayerGroup = L.Class.extend({
-	initialize: function(layers) {
+	initialize: function (layers) {
 		this._layers = {};
 
 		if (layers) {
@@ -13,7 +13,7 @@ L.LayerGroup = L.Class.extend({
 		}
 	},
 
-	addLayer: function(layer) {
+	addLayer: function (layer) {
 		var id = L.Util.stamp(layer);
 		this._layers[id] = layer;
 
@@ -23,7 +23,7 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
-	removeLayer: function(layer) {
+	removeLayer: function (layer) {
 		var id = L.Util.stamp(layer);
 		delete this._layers[id];
 
@@ -33,22 +33,22 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
-	clearLayers: function() {
+	clearLayers: function () {
 		this._iterateLayers(this.removeLayer, this);
 		return this;
 	},
 
-	onAdd: function(map) {
+	onAdd: function (map) {
 		this._map = map;
 		this._iterateLayers(map.addLayer, map);
 	},
 
-	onRemove: function(map) {
+	onRemove: function (map) {
 		this._iterateLayers(map.removeLayer, map);
 		delete this._map;
 	},
 
-	_iterateLayers: function(method, context) {
+	_iterateLayers: function (method, context) {
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {
 				method.call(context, this._layers[i]);

@@ -1,5 +1,5 @@
 L.Control.Attribution = L.Class.extend({
-	onAdd: function(map) {
+	onAdd: function (map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
@@ -8,20 +8,20 @@ L.Control.Attribution = L.Class.extend({
 		this._update();
 	},
 
-	getPosition: function() {
+	getPosition: function () {
 		return L.Control.Position.BOTTOM_RIGHT;
 	},
 
-	getContainer: function() {
+	getContainer: function () {
 		return this._container;
 	},
 
-	setPrefix: function(prefix) {
+	setPrefix: function (prefix) {
 		this._prefix = prefix;
 		this._update();
 	},
 
-	addAttribution: function(text) {
+	addAttribution: function (text) {
 		if (!text) {
 			return;
 		}
@@ -29,7 +29,7 @@ L.Control.Attribution = L.Class.extend({
 		this._update();
 	},
 
-	removeAttribution: function(text) {
+	removeAttribution: function (text) {
 		if (!text) {
 			return;
 		}
@@ -37,7 +37,7 @@ L.Control.Attribution = L.Class.extend({
 		this._update();
 	},
 
-	_update: function() {
+	_update: function () {
 		if (!this._map) {
 			return;
 		}

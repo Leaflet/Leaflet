@@ -5,7 +5,7 @@
 L.Mixin = {};
 
 L.Mixin.Events = {
-	addEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+	addEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
 		var events = this._leaflet_events = this._leaflet_events || {};
 		events[type] = events[type] || [];
 		events[type].push({
@@ -15,12 +15,12 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	hasEventListeners: function(/*String*/ type) /*-> Boolean*/ {
+	hasEventListeners: function (/*String*/ type) /*-> Boolean*/ {
 		var k = '_leaflet_events';
 		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
 	},
 
-	removeEventListener: function(/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+	removeEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
 		if (!this.hasEventListeners(type)) { return this; }
 
 		for (var i = 0, events = this._leaflet_events, len = events[type].length; i < len; i++) {
@@ -35,7 +35,7 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	fireEvent: function(/*String*/ type, /*(optional) Object*/ data) {
+	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
 		if (!this.hasEventListeners(type)) { return; }
 
 		var event = L.Util.extend({

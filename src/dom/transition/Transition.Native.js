@@ -4,7 +4,7 @@
  */
 
 L.Transition = L.Transition.extend({
-	statics: (function() {
+	statics: (function () {
 		var transition = L.DomUtil.TRANSITION,
 			transitionEnd = (transition === 'webkitTransition' || transition === 'OTransition' ?
 				transition + 'End' : 'transitionend');
@@ -29,7 +29,7 @@ L.Transition = L.Transition.extend({
 		fakeStepInterval: 100
 	},
 
-	initialize: function(/*HTMLElement*/ el, /*Object*/ options) {
+	initialize: function (/*HTMLElement*/ el, /*Object*/ options) {
 		this._el = el;
 		L.Util.setOptions(this, options);
 
@@ -37,7 +37,7 @@ L.Transition = L.Transition.extend({
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
 
-	run: function(/*Object*/ props) {
+	run: function (/*Object*/ props) {
 		var prop,
 			propsList = [],
 			customProp = L.Transition.CUSTOM_PROPS_PROPERTIES;
@@ -77,16 +77,16 @@ L.Transition = L.Transition.extend({
 
 		function replaceFn(w) { return '-' + w.toLowerCase(); }
 
-		return function(str) {
+		return function (str) {
 			return str.replace(re, replaceFn);
 		};
 	}()),
 
-	_onFakeStep: function() {
+	_onFakeStep: function () {
 		this.fire('step');
 	},
 
-	_onTransitionEnd: function() {
+	_onTransitionEnd: function () {
 		if (this._inProgress) {
 			this._inProgress = false;
 			clearInterval(this._timer);

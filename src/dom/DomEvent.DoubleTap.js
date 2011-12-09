@@ -1,6 +1,6 @@
 L.Util.extend(L.DomEvent, {
 	// inspired by Zepto touch code by Thomas Fuchs
-	addDoubleTapListener: function(obj, handler, id) {
+	addDoubleTapListener: function (obj, handler, id) {
 		var last,
 			doubleTap = false,
 			delay = 250,
@@ -35,7 +35,7 @@ L.Util.extend(L.DomEvent, {
 		obj.addEventListener(touchend, onTouchEnd, false);
 	},
 
-	removeDoubleTapListener: function(obj, id) {
+	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
 		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);
 		obj.removeEventListener(obj, obj[pre + 'touchend' + id], false);

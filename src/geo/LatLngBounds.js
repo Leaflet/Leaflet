@@ -3,7 +3,7 @@
  */
 
 L.LatLngBounds = L.Class.extend({
-	initialize: function(southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
+	initialize: function (southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
 		if (!southWest) {
 			return;
 		}
@@ -14,7 +14,7 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	// extend the bounds to contain the given point
-	extend: function(/*LatLng*/ latlng) {
+	extend: function (/*LatLng*/ latlng) {
 		if (!this._southWest && !this._northEast) {
 			this._southWest = new L.LatLng(latlng.lat, latlng.lng);
 			this._northEast = new L.LatLng(latlng.lat, latlng.lng);
@@ -26,25 +26,25 @@ L.LatLngBounds = L.Class.extend({
 		}
 	},
 
-	getCenter: function() /*-> LatLng*/ {
+	getCenter: function () /*-> LatLng*/ {
 		return new L.LatLng(
 				(this._southWest.lat + this._northEast.lat) / 2,
 				(this._southWest.lng + this._northEast.lng) / 2);
 	},
 
-	getSouthWest: function() { return this._southWest; },
+	getSouthWest: function () { return this._southWest; },
 
-	getNorthEast: function() { return this._northEast; },
+	getNorthEast: function () { return this._northEast; },
 
-	getNorthWest: function() {
+	getNorthWest: function () {
 		return new L.LatLng(this._northEast.lat, this._southWest.lng);
 	},
 
-	getSouthEast: function() {
+	getSouthEast: function () {
 		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 
-	contains: function(/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
+	contains: function (/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
 		var sw = this._southWest,
 			ne = this._northEast,
 			sw2, ne2;
@@ -60,7 +60,7 @@ L.LatLngBounds = L.Class.extend({
 				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
-	toBBoxString: function() {
+	toBBoxString: function () {
 		var sw = this._southWest,
 			ne = this._northEast;
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');

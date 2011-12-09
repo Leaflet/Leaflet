@@ -8,21 +8,21 @@ L.Icon = L.Class.extend({
 	iconAnchor: new L.Point(13, 41),
 	popupAnchor: new L.Point(0, -33),
 
-	initialize: function(iconUrl) {
+	initialize: function (iconUrl) {
 		if (iconUrl) {
 			this.iconUrl = iconUrl;
 		}
 	},
 
-	createIcon: function() {
+	createIcon: function () {
 		return this._createIcon('icon');
 	},
 
-	createShadow: function() {
+	createShadow: function () {
 		return this._createIcon('shadow');
 	},
 
-	_createIcon: function(name) {
+	_createIcon: function (name) {
 		var size = this[name + 'Size'],
 			src = this[name + 'Url'],
 			img = this._createImg(src);
@@ -42,7 +42,7 @@ L.Icon = L.Class.extend({
 		return img;
 	},
 
-	_createImg: function(src) {
+	_createImg: function (src) {
 		var el;
 		if (!L.Browser.ie6) {
 			el = document.createElement('img');

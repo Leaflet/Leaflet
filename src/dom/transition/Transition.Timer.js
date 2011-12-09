@@ -5,7 +5,7 @@
 
 L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 	statics: {
-		getTime: Date.now || function() { return +new Date(); },
+		getTime: Date.now || function () { return +new Date(); },
 
 		TIMER: true,
 
@@ -29,7 +29,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		fps: 50
 	},
 
-	initialize: function(el, options) {
+	initialize: function (el, options) {
 		this._el = el;
 		L.Util.extend(this.options, options);
 
@@ -44,7 +44,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this._interval = Math.round(1000 / this.options.fps);
 	},
 
-	run: function(props) {
+	run: function (props) {
 		this._props = {};
 
 		var getters = L.Transition.CUSTOM_PROPS_GETTERS,
@@ -72,7 +72,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this._startTime = L.Transition.getTime();
 	},
 
-	_step: function() {
+	_step: function () {
 		var time = L.Transition.getTime(),
 			elapsed = time - this._startTime,
 			duration = this.options.duration * 1000;
@@ -85,7 +85,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		}
 	},
 
-	_runFrame: function(percentComplete) {
+	_runFrame: function (percentComplete) {
 		var setters = L.Transition.CUSTOM_PROPS_SETTERS,
 			prop, p, value;
 
@@ -104,12 +104,12 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this.fire('step');
 	},
 
-	_complete: function() {
+	_complete: function () {
 		clearInterval(this._timer);
 		this.fire('end');
 	},
 
-	_cubicBezier: function(t) {
+	_cubicBezier: function (t) {
 		var a = Math.pow(1 - t, 3),
 			b = 3 * Math.pow(1 - t, 2) * t,
 			c = 3 * (1 - t) * Math.pow(t, 2),

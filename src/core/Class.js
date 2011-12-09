@@ -2,19 +2,19 @@
  * Class powers the OOP facilities of the library. Thanks to John Resig and Dean Edwards for inspiration!
  */
 
-L.Class = function() {};
+L.Class = function () {};
 
-L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
+L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	// extended class with the new prototype
-	var NewClass = function() {
+	var NewClass = function () {
 		if (this.initialize) {
 			this.initialize.apply(this, arguments);
 		}
 	};
 
 	// instantiate class without calling constructor
-	var F = function() {};
+	var F = function () {};
 	F.prototype = this.prototype;
 	var proto = new F();
 
@@ -58,7 +58,7 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 	NewClass.extend = L.Class.extend;
 
 	// method for adding properties to prototype
-	NewClass.include = function(props) {
+	NewClass.include = function (props) {
 		L.Util.extend(this.prototype, props);
 	};
 

@@ -7,7 +7,7 @@ L.Transition = L.Class.extend({
 			//TODO transform custom attr
 		},
 
-		implemented: function() {
+		implemented: function () {
 			return L.Transition.NATIVE || L.Transition.TIMER;
 		}
 	},
@@ -17,7 +17,7 @@ L.Transition = L.Class.extend({
 		duration: 0.5
 	},
 
-	_setProperty: function(prop, value) {
+	_setProperty: function (prop, value) {
 		var setters = L.Transition.CUSTOM_PROPS_SETTERS;
 		if (prop in setters) {
 			setters[prop](this._el, value);

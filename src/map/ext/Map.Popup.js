@@ -1,12 +1,12 @@
 
 L.Map.include({
-	openPopup: function(popup) {
+	openPopup: function (popup) {
 		this.closePopup();
 		this._popup = popup;
 		return this.addLayer(popup);
 	},
 
-	closePopup: function() {
+	closePopup: function () {
 		if (this._popup) {
 			this.removeLayer(this._popup);
 		}

@@ -27,11 +27,11 @@ L.Path = L.Class.extend({
 		updateOnMoveEnd: true
 	},
 
-	initialize: function(options) {
+	initialize: function (options) {
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function(map) {
+	onAdd: function (map) {
 		this._map = map;
 
 		this._initElements();
@@ -45,7 +45,7 @@ L.Path = L.Class.extend({
 		map.on(this._updateTrigger, this._updatePath, this);
 	},
 
-	onRemove: function(map) {
+	onRemove: function (map) {
 		this._map = null;
 
 		map._pathRoot.removeChild(this._container);
@@ -54,11 +54,11 @@ L.Path = L.Class.extend({
 		map.off(this._updateTrigger, this._updatePath, this);
 	},
 
-	projectLatlngs: function() {
+	projectLatlngs: function () {
 		// do all projection stuff here
 	},
 
-	setStyle: function(style) {
+	setStyle: function (style) {
 		L.Util.setOptions(this, style);
 		if (this._container) {
 			this._updateStyle();
@@ -66,7 +66,7 @@ L.Path = L.Class.extend({
 		return this;
 	},
 
-	_redraw: function() {
+	_redraw: function () {
 		if (this._map) {
 			this.projectLatlngs();
 			this._updatePath();
@@ -75,7 +75,7 @@ L.Path = L.Class.extend({
 });
 
 L.Map.include({
-	_updatePathViewport: function() {
+	_updatePathViewport: function () {
 		var p = L.Path.CLIP_PADDING,
 			size = this.getSize(),
 			//TODO this._map._getMapPanePos()

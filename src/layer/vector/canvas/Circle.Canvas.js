@@ -3,13 +3,13 @@
  */
 
 L.Circle.include(!L.Path.CANVAS ? {} : {
-	_drawPath: function() {
+	_drawPath: function () {
 		var p = this._point;
 		this._ctx.beginPath();
 		this._ctx.arc(p.x, p.y, this._radius, 0, Math.PI * 2);
 	},
 
-	_containsPoint: function(p) {
+	_containsPoint: function (p) {
 		var center = this._point,
 			w2 = this.options.stroke ? this.options.weight / 2 : 0;
 

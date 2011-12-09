@@ -3,7 +3,7 @@
  */
 
 L.Map.include({
-	locate: function(/*Object*/ options) {
+	locate: function (/*Object*/ options) {
 
 		this._locationOptions = options = L.Util.extend({
 			watch: false,
@@ -32,13 +32,13 @@ L.Map.include({
 		return this;
 	},
 
-	stopLocate: function() {
+	stopLocate: function () {
 		if (navigator.geolocation) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
 		}
 	},
 
-	locateAndSetView: function(maxZoom, options) {
+	locateAndSetView: function (maxZoom, options) {
 		options = L.Util.extend({
 			maxZoom: maxZoom || Infinity,
 			setView: true
@@ -46,7 +46,7 @@ L.Map.include({
 		return this.locate(options);
 	},
 
-	_handleGeolocationError: function(error) {
+	_handleGeolocationError: function (error) {
 		var c = error.code,
 			message = (c === 1 ? "permission denied" :
 				(c === 2 ? "position unavailable" : "timeout"));
@@ -61,7 +61,7 @@ L.Map.include({
 		});
 	},
 
-	_handleGeolocationResponse: function(pos) {
+	_handleGeolocationResponse: function (pos) {
 		var latAccuracy = 180 * pos.coords.accuracy / 4e7,
 			lngAccuracy = latAccuracy * 2,
 			lat = pos.coords.latitude,

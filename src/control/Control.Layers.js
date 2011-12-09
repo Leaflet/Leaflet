@@ -4,7 +4,7 @@ L.Control.Layers = L.Class.extend({
 		collapsed: !L.Browser.touch
 	},
 
-	initialize: function(baseLayers, overlays, options) {
+	initialize: function (baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 
 		this._layers = {};
@@ -22,41 +22,41 @@ L.Control.Layers = L.Class.extend({
 		}
 	},
 
-	onAdd: function(map) {
+	onAdd: function (map) {
 		this._map = map;
 
 		this._initLayout();
 		this._update();
 	},
 
-	getContainer: function() {
+	getContainer: function () {
 		return this._container;
 	},
 
-	getPosition: function() {
+	getPosition: function () {
 		return L.Control.Position.TOP_RIGHT;
 	},
 
-	addBaseLayer: function(layer, name) {
+	addBaseLayer: function (layer, name) {
 		this._addLayer(layer, name);
 		this._update();
 		return this;
 	},
 
-	addOverlay: function(layer, name) {
+	addOverlay: function (layer, name) {
 		this._addLayer(layer, name, true);
 		this._update();
 		return this;
 	},
 
-	removeLayer: function(layer) {
+	removeLayer: function (layer) {
 		var id = L.Util.stamp(layer);
 		delete this._layers[id];
 		this._update();
 		return this;
 	},
 
-	_initLayout: function() {
+	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
 		L.DomEvent.disableClickPropagation(this._container);
 
@@ -86,7 +86,7 @@ L.Control.Layers = L.Class.extend({
 		this._container.appendChild(this._form);
 	},
 
-	_addLayer: function(layer, name, overlay) {
+	_addLayer: function (layer, name, overlay) {
 		var id = L.Util.stamp(layer);
 		this._layers[id] = {
 			layer: layer,
@@ -95,7 +95,7 @@ L.Control.Layers = L.Class.extend({
 		};
 	},
 
-	_update: function() {
+	_update: function () {
 		if (!this._container) { return; }
 
 		this._baseLayersList.innerHTML = '';
@@ -116,7 +116,7 @@ L.Control.Layers = L.Class.extend({
 		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
 	},
 
-	_addItem: function(obj, onclick) {
+	_addItem: function (obj, onclick) {
 		var label = document.createElement('label');
 
 		var input = document.createElement('input');
@@ -138,7 +138,7 @@ L.Control.Layers = L.Class.extend({
 		container.appendChild(label);
 	},
 
-	_onInputClick: function() {
+	_onInputClick: function () {
 		var i, input, obj,
 			inputs = this._form.getElementsByTagName('input'),
 			inputsLen = inputs.length;
@@ -155,11 +155,11 @@ L.Control.Layers = L.Class.extend({
 		}
 	},
 
-	_expand: function() {
+	_expand: function () {
 		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
 	},
 
-	_collapse: function() {
+	_collapse: function () {
 		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
 	}
 });

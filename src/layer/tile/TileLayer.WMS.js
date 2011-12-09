@@ -9,7 +9,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		transparent: false
 	},
 
-	initialize: function(/*String*/ url, /*Object*/ options) {
+	initialize: function (/*String*/ url, /*Object*/ options) {
 		this._url = url;
 
 		this.wmsParams = L.Util.extend({}, this.defaultWmsParams);
@@ -25,14 +25,14 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function(map) {
+	onAdd: function (map) {
 		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
 		L.TileLayer.prototype.onAdd.call(this, map);
 	},
 
-	getTileUrl: function(/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {
+	getTileUrl: function (/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {
 		var tileSize = this.options.tileSize,
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),

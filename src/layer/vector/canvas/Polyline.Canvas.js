@@ -1,6 +1,6 @@
 
 L.Polyline.include(!L.Path.CANVAS ? {} : {
-	_containsPoint: function(p, closed) {
+	_containsPoint: function (p, closed) {
 		var i, j, k, len, len2, dist, part,
 			w = this.options.weight / 2;
 

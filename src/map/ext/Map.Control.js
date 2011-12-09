@@ -1,5 +1,5 @@
 L.Map.include({
-	addControl: function(control) {
+	addControl: function (control) {
 		control.onAdd(this);
 
 		var pos = control.getPosition(),
@@ -16,7 +16,7 @@ L.Map.include({
 		return this;
 	},
 
-	removeControl: function(control) {
+	removeControl: function (control) {
 		var pos = control.getPosition(),
 			corner = this._controlCorners[pos],
 			container = control.getContainer();
@@ -29,7 +29,7 @@ L.Map.include({
 		return this;
 	},
 
-	_initControlPos: function() {
+	_initControlPos: function () {
 		var corners = this._controlCorners = {},
 			classPart = 'leaflet-',
 			top = classPart + 'top',

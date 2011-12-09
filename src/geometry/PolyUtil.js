@@ -10,7 +10,7 @@ L.PolyUtil = {};
  * Sutherland-Hodgeman polygon clipping algorithm.
  * Used to avoid rendering parts of a polygon that are not currently visible.
  */
-L.PolyUtil.clipPolygon = function(points, bounds) {
+L.PolyUtil.clipPolygon = function (points, bounds) {
 	var min = bounds.min,
 		max = bounds.max,
 		clippedPoints,

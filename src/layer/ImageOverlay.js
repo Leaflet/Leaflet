@@ -1,12 +1,12 @@
 L.ImageOverlay = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	initialize: function(/*String*/ url, /*LatLngBounds*/ bounds) {
+	initialize: function (/*String*/ url, /*LatLngBounds*/ bounds) {
 		this._url = url;
 		this._bounds = bounds;
 	},
 
-	onAdd: function(map) {
+	onAdd: function (map) {
 		this._map = map;
 
 		if (!this._image) {
@@ -19,12 +19,12 @@ L.ImageOverlay = L.Class.extend({
 		this._reset();
 	},
 
-	onRemove: function(map) {
+	onRemove: function (map) {
 		map.getPanes().overlayPane.removeChild(this._image);
 		map.off('viewreset', this._reset, this);
 	},
 
-	_initImage: function() {
+	_initImage: function () {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
 		this._image.style.visibility = 'hidden';
@@ -40,7 +40,7 @@ L.ImageOverlay = L.Class.extend({
 		});
 	},
 
-	_reset: function() {
+	_reset: function () {
 		var topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
 			bottomRight = this._map.latLngToLayerPoint(this._bounds.getSouthEast()),
 			size = bottomRight.subtract(topLeft);
@@ -51,7 +51,7 @@ L.ImageOverlay = L.Class.extend({
 		this._image.style.height = size.y + 'px';
 	},
 
-	_onImageLoad: function() {
+	_onImageLoad: function () {
 		this.style.visibility = '';
 		//TODO fire layerload
 	}

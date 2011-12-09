@@ -11,11 +11,11 @@ L.Popup = L.Class.extend({
 		autoPanPadding: new L.Point(5, 5)
 	},
 
-	initialize: function(options) {
+	initialize: function (options) {
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function(map) {
+	onAdd: function (map) {
 		this._map = map;
 		if (!this._container) {
 			this._initLayout();
@@ -36,7 +36,7 @@ L.Popup = L.Class.extend({
 		this._opened = true;
 	},
 
-	onRemove: function(map) {
+	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 		map.off('viewreset', this._updatePosition, this);
 		map.off('click', this._close, this);
@@ -46,7 +46,7 @@ L.Popup = L.Class.extend({
 		this._opened = false;
 	},
 
-	setLatLng: function(latlng) {
+	setLatLng: function (latlng) {
 		this._latlng = latlng;
 		if (this._opened) {
 			this._update();
@@ -54,7 +54,7 @@ L.Popup = L.Class.extend({
 		return this;
 	},
 
-	setContent: function(content) {
+	setContent: function (content) {
 		this._content = content;
 		if (this._opened) {
 			this._update();
@@ -62,13 +62,13 @@ L.Popup = L.Class.extend({
 		return this;
 	},
 
-	_close: function() {
+	_close: function () {
 		if (this._opened) {
 			this._map.removeLayer(this);
 		}
 	},
 
-	_initLayout: function() {
+	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-popup');
 
 		if (this.options.closeButton) {
@@ -85,7 +85,7 @@ L.Popup = L.Class.extend({
 		this._tip = L.DomUtil.create('div', 'leaflet-popup-tip', this._tipContainer);
 	},
 
-	_update: function() {
+	_update: function () {
 		this._container.style.visibility = 'hidden';
 
 		this._updateContent();
@@ -97,7 +97,7 @@ L.Popup = L.Class.extend({
 		this._adjustPan();
 	},
 
-	_updateContent: function() {
+	_updateContent: function () {
 		if (!this._content) {
 			return;
 		}
@@ -110,29 +110,30 @@ L.Popup = L.Class.extend({
 		}
 	},
 
-	_updateLayout: function() {
+	_updateLayout: function () {
 		this._container.style.width = '';
 		this._container.style.whiteSpace = 'nowrap';
 
 		var width = this._container.offsetWidth;
 
-		this._container.style.width = (width > this.options.maxWidth ? this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width ) ) + 'px';
+		this._container.style.width = (width > this.options.maxWidth ?
+				this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width)) + 'px';
 		this._container.style.whiteSpace = '';
 
 		this._containerWidth = this._container.offsetWidth;
 	},
 
-	_updatePosition: function() {
+	_updatePosition: function () {
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 
 		this._containerBottom = -pos.y - this.options.offset.y;
-		this._containerLeft = pos.x - Math.round(this._containerWidth/2) + this.options.offset.x;
+		this._containerLeft = pos.x - Math.round(this._containerWidth / 2) + this.options.offset.x;
 
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
 	},
 
-	_adjustPan: function() {
+	_adjustPan: function () {
 		if (!this.options.autoPan) { return; }
 
 		var containerHeight = this._container.offsetHeight,
@@ -162,7 +163,7 @@ L.Popup = L.Class.extend({
 		}
 	},
 
-	_onCloseButtonClick: function(e) {
+	_onCloseButtonClick: function (e) {
 		this._close();
 		L.DomEvent.stop(e);
 	}

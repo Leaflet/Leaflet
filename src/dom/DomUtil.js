@@ -3,11 +3,11 @@
  */
 
 L.DomUtil = {
-	get: function(id) {
+	get: function (id) {
 		return (typeof id === 'string' ? document.getElementById(id) : id);
 	},
 
-	getStyle: function(el, style) {
+	getStyle: function (el, style) {
 		var value = el.style[style];
 		if (!value && el.currentStyle) {
 			value = el.currentStyle[style];
@@ -19,7 +19,7 @@ L.DomUtil = {
 		return (value === 'auto' ? null : value);
 	},
 
-	getViewportOffset: function(element) {
+	getViewportOffset: function (element) {
 		var top = 0,
 			left = 0,
 			el = element,
@@ -52,7 +52,7 @@ L.DomUtil = {
 		return new L.Point(left, top);
 	},
 
-	create: function(tagName, className, container) {
+	create: function (tagName, className, container) {
 		var el = document.createElement(tagName);
 		el.className = className;
 		if (container) {
@@ -61,7 +61,7 @@ L.DomUtil = {
 		return el;
 	},
 
-	disableTextSelection: function() {
+	disableTextSelection: function () {
 		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
@@ -71,24 +71,24 @@ L.DomUtil = {
 		}
 	},
 
-	enableTextSelection: function() {
+	enableTextSelection: function () {
 		document.onselectstart = this._onselectstart;
 		this._onselectstart = null;
 	},
 
-	hasClass: function(el, name) {
+	hasClass: function (el, name) {
 		return (el.className.length > 0) &&
 				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
 	},
 
-	addClass: function(el, name) {
+	addClass: function (el, name) {
 		if (!L.DomUtil.hasClass(el, name)) {
 			el.className += (el.className ? ' ' : '') + name;
 		}
 	},
 
-	removeClass: function(el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function(w, match) {
+	removeClass: function (el, name) {
+		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
 			if (match === name) {
 				return '';
 			}
@@ -96,7 +96,7 @@ L.DomUtil = {
 		}).replace(/^\s+/, '');
 	},
 
-	setOpacity: function(el, value) {
+	setOpacity: function (el, value) {
 		if (L.Browser.ie) {
 			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
 		} else {
@@ -106,7 +106,7 @@ L.DomUtil = {
 
 	//TODO refactor away this ugly translate/position mess
 
-	testProp: function(props) {
+	testProp: function (props) {
 		var style = document.documentElement.style;
 
 		for (var i = 0; i < props.length; i++) {
@@ -117,13 +117,13 @@ L.DomUtil = {
 		return false;
 	},
 
-	getTranslateString: function(point) {
+	getTranslateString: function (point) {
 		return L.DomUtil.TRANSLATE_OPEN +
 				point.x + 'px,' + point.y + 'px' +
 				L.DomUtil.TRANSLATE_CLOSE;
 	},
 
-	getScaleString: function(scale, origin) {
+	getScaleString: function (scale, origin) {
 		var preTranslateStr = L.DomUtil.getTranslateString(origin),
 			scaleStr = ' scale(' + scale + ') ',
 			postTranslateStr = L.DomUtil.getTranslateString(origin.multiplyBy(-1));
@@ -131,7 +131,7 @@ L.DomUtil = {
 		return preTranslateStr + scaleStr + postTranslateStr;
 	},
 
-	setPosition: function(el, point) {
+	setPosition: function (el, point) {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
@@ -141,7 +141,7 @@ L.DomUtil = {
 		}
 	},
 
-	getPosition: function(el) {
+	getPosition: function (el) {
 		return el._leaflet_pos;
 	}
 };

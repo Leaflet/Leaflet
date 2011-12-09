@@ -3,13 +3,13 @@
  */
 
 L.Handler.ShiftDragZoom = L.Handler.extend({
-	initialize: function(map) {
+	initialize: function (map) {
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 	},
 
-	enable: function() {
+	enable: function () {
 		if (this._enabled) { return; }
 
 		L.DomEvent.addListener(this._container, 'mousedown', this._onMouseDown, this);
@@ -17,7 +17,7 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 		this._enabled = true;
 	},
 
-	disable: function() {
+	disable: function () {
 		if (!this._enabled) { return; }
 
 		L.DomEvent.removeListener(this._container, 'mousedown', this._onMouseDown);
@@ -25,7 +25,7 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 		this._enabled = false;
 	},
 
-	_onMouseDown: function(e) {
+	_onMouseDown: function (e) {
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		L.DomUtil.disableTextSelection();
@@ -44,7 +44,7 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 		L.DomEvent.preventDefault(e);
 	},
 
-	_onMouseMove: function(e) {
+	_onMouseMove: function (e) {
 		var layerPoint = this._map.mouseEventToLayerPoint(e),
 			dx = layerPoint.x - this._startLayerPoint.x,
 			dy = layerPoint.y - this._startLayerPoint.y;
@@ -59,7 +59,7 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 		this._box.style.height = (Math.abs(dy) - 4) + 'px';
 	},
 
-	_onMouseUp: function(e) {
+	_onMouseUp: function (e) {
 		this._pane.removeChild(this._box);
 		this._container.style.cursor = '';
 

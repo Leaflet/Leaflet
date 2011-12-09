@@ -1,6 +1,6 @@
 
 L.Polygon.include(!L.Path.CANVAS ? {} : {
-	_containsPoint: function(p) {
+	_containsPoint: function (p) {
 		var inside = false,
 			part, p1, p2,
 			i, j, k,

@@ -1,5 +1,5 @@
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
-	setView: function(center, zoom, forceReset) {
+	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 		var zoomChanged = (this._zoom !== zoom);
 
@@ -23,7 +23,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return this;
 	},
 
-	panBy: function(offset) {
+	panBy: function (offset) {
 		if (!(offset.x || offset.y)) { return this; }
 
 		if (!this._panTransition) {
@@ -41,15 +41,15 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return this;
 	},
 
-	_onPanTransitionStep: function() {
+	_onPanTransitionStep: function () {
 		this.fire('move');
 	},
 
-	_onPanTransitionEnd: function() {
+	_onPanTransitionEnd: function () {
 		this.fire('moveend');
 	},
 
-	_panByIfClose: function(offset) {
+	_panByIfClose: function (offset) {
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);
 			return true;
@@ -57,7 +57,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return false;
 	},
 
-	_offsetIsWithinView: function(offset, multiplyFactor) {
+	_offsetIsWithinView: function (offset, multiplyFactor) {
 		var m = multiplyFactor || 1,
 			size = this.getSize();
 		return (Math.abs(offset.x) <= size.x * m) &&

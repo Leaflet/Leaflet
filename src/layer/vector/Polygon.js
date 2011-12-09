@@ -7,7 +7,7 @@ L.Polygon = L.Polyline.extend({
 		fill: true
 	},
 
-	initialize: function(latlngs, options) {
+	initialize: function (latlngs, options) {
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs[0] instanceof Array) {
@@ -16,7 +16,7 @@ L.Polygon = L.Polyline.extend({
 		}
 	},
 
-	projectLatlngs: function() {
+	projectLatlngs: function () {
 		L.Polyline.prototype.projectLatlngs.call(this);
 
 		// project polygon holes points
@@ -30,13 +30,13 @@ L.Polygon = L.Polyline.extend({
 		for (var i = 0, len = this._holes.length, hole; i < len; i++) {
 			this._holePoints[i] = [];
 
-			for(var j = 0, len2 = this._holes[i].length; j < len2; j++) {
+			for (var j = 0, len2 = this._holes[i].length; j < len2; j++) {
 				this._holePoints[i][j] = this._map.latLngToLayerPoint(this._holes[i][j]);
 			}
 		}
 	},
 
-	_clipPoints: function() {
+	_clipPoints: function () {
 		var points = this._originalPoints,
 			newParts = [];
 
@@ -57,7 +57,7 @@ L.Polygon = L.Polyline.extend({
 		this._parts = newParts;
 	},
 
-	_getPathPartStr: function(points) {
+	_getPathPartStr: function (points) {
 		var str = L.Polyline.prototype._getPathPartStr.call(this, points);
 		return str + (L.Browser.svg ? 'z' : 'x');
 	}

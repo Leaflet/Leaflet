@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	var ua = navigator.userAgent.toLowerCase(),
 		ie = !!window.ActiveXObject,
 		webkit = ua.indexOf("webkit") !== -1,
@@ -22,7 +22,7 @@
 		mobileOpera: mobile && opera,
 
 		mobile: mobile,
-		touch: (function() {
+		touch: (function () {
 			var touchSupported = false,
 				startName = 'ontouchstart';
 

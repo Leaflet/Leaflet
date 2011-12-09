@@ -4,7 +4,7 @@
 
 L.DomEvent = {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function(/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
+	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id;
 
@@ -25,7 +25,7 @@ L.DomEvent = {
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				var originalHandler = handler,
 					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
-				handler = function(e) {
+				handler = function (e) {
 					if (!L.DomEvent._checkMouse(obj, e)) {
 						return;
 					}
@@ -42,7 +42,7 @@ L.DomEvent = {
 		obj[key] = handler;
 	},
 
-	removeListener: function(/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
+	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id,
 			handler = obj[key];
@@ -66,7 +66,7 @@ L.DomEvent = {
 		obj[key] = null;
 	},
 
-	_checkMouse: function(el, e) {
+	_checkMouse: function (el, e) {
 		var related = e.relatedTarget;
 
 		if (!related) {
@@ -77,13 +77,15 @@ L.DomEvent = {
 			while (related && (related !== el)) {
 				related = related.parentNode;
 			}
-		} catch(err) { return false; }
+		} catch (err) {
+			return false;
+		}
 
 		return (related !== el);
 	},
 
 	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function() {
+	_getEvent: function () {
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
@@ -99,7 +101,7 @@ L.DomEvent = {
 	},
 	/*jshint noarg:false */
 
-	stopPropagation: function(/*Event*/ e) {
+	stopPropagation: function (/*Event*/ e) {
 		if (e.stopPropagation) {
 			e.stopPropagation();
 		} else {
@@ -107,13 +109,13 @@ L.DomEvent = {
 		}
 	},
 
-	disableClickPropagation: function(/*HTMLElement*/ el) {
+	disableClickPropagation: function (/*HTMLElement*/ el) {
 		L.DomEvent.addListener(el, 'mousedown', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(el, 'click', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
 	},
 
-	preventDefault: function(/*Event*/ e) {
+	preventDefault: function (/*Event*/ e) {
 		if (e.preventDefault) {
 			e.preventDefault();
 		} else {
@@ -121,12 +123,12 @@ L.DomEvent = {
 		}
 	},
 
-	stop: function(e) {
+	stop: function (e) {
 		L.DomEvent.preventDefault(e);
 		L.DomEvent.stopPropagation(e);
 	},
 
-	getMousePosition: function(e, container) {
+	getMousePosition: function (e, container) {
 		var x = e.pageX ? e.pageX : e.clientX +
 				document.body.scrollLeft + document.documentElement.scrollLeft,
 			y = e.pageY ? e.pageY : e.clientY +
@@ -136,11 +138,15 @@ L.DomEvent = {
 					pos.subtract(L.DomUtil.getViewportOffset(container)) : pos);
 	},
 
-	getWheelDelta: function(e) {
+	getWheelDelta: function (e) {
 		var delta = 0;
-		if (e.wheelDelta) { delta = e.wheelDelta/120; }
-			if (e.detail) { delta = -e.detail/3; }
-			return delta;
+		if (e.wheelDelta) {
+			delta = e.wheelDelta / 120;
+		}
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
+		return delta;
 	}
 };
 

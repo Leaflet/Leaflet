@@ -3,11 +3,11 @@
  */
 
 L.Handler = L.Class.extend({
-	initialize: function(map) {
+	initialize: function (map) {
 		this._map = map;
 	},
 
-	enabled: function() {
+	enabled: function () {
 		return !!this._enabled;
 	}
 });

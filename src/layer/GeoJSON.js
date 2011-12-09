@@ -1,6 +1,6 @@
 
 L.GeoJSON = L.FeatureGroup.extend({
-	initialize: function(geojson, options) {
+	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
 		this._geojson = geojson;
 		this._layers = {};
@@ -10,7 +10,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 	},
 
-	addGeoJSON: function(geojson) {
+	addGeoJSON: function (geojson) {
 		if (geojson.features) {
 			for (var i = 0, len = geojson.features.length; i < len; i++) {
 				this.addGeoJSON(geojson.features[i]);
@@ -35,7 +35,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 });
 
 L.Util.extend(L.GeoJSON, {
-	geometryToLayer: function(geometry, pointToLayer) {
+	geometryToLayer: function (geometry, pointToLayer) {
 		var coords = geometry.coordinates,
 			latlng, latlngs,
 			i, len,
@@ -83,13 +83,13 @@ L.Util.extend(L.GeoJSON, {
 		}
 	},
 
-	coordsToLatLng: function(/*Array*/ coords, /*Boolean*/ reverse)/*: LatLng*/ {
+	coordsToLatLng: function (/*Array*/ coords, /*Boolean*/ reverse)/*: LatLng*/ {
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
 			lng = parseFloat(coords[reverse ? 1 : 0]);
 		return new L.LatLng(lat, lng);
 	},
 
-	coordsToLatLngs: function(/*Array*/ coords, /*Number*/ levelsDeep, /*Boolean*/ reverse)/*: Array*/ {
+	coordsToLatLngs: function (/*Array*/ coords, /*Number*/ levelsDeep, /*Boolean*/ reverse)/*: Array*/ {
 		var latlng, latlngs = [],
 			i, len = coords.length;
 

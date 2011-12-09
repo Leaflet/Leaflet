@@ -3,11 +3,11 @@
  */
 
 L.Handler.MarkerDrag = L.Handler.extend({
-	initialize: function(marker) {
+	initialize: function (marker) {
 		this._marker = marker;
 	},
 
-	enable: function() {
+	enable: function () {
 		if (this._enabled) { return; }
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._marker._icon, this._marker._icon);
@@ -19,24 +19,24 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		this._enabled = true;
 	},
 
-	disable: function() {
+	disable: function () {
 		if (!this._enabled) { return; }
 		this._draggable.disable();
 		this._enabled = false;
 	},
 
-	moved: function() {
+	moved: function () {
 		return this._draggable && this._draggable._moved;
 	},
 
-	_onDragStart: function(e) {
+	_onDragStart: function (e) {
 		this._marker.closePopup();
 
 		this._marker.fire('movestart');
 		this._marker.fire('dragstart');
 	},
 
-	_onDrag: function(e) {
+	_onDrag: function (e) {
 		// update shadow position
 		var iconPos = L.DomUtil.getPosition(this._marker._icon);
 		if (this._marker._shadow) {
@@ -49,7 +49,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		this._marker.fire('drag');
 	},
 
-	_onDragEnd: function() {
+	_onDragEnd: function () {
 		this._marker.fire('moveend');
 		this._marker.fire('dragend');
 	}

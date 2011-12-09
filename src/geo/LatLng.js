@@ -2,7 +2,7 @@
 	CM.LatLng represents a geographical point with latitude and longtitude coordinates.
 */
 
-L.LatLng = function(/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
+L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 	var lat = parseFloat(rawLat),
 		lng = parseFloat(rawLng);
 
@@ -27,14 +27,14 @@ L.Util.extend(L.LatLng, {
 });
 
 L.LatLng.prototype = {
-	equals: function(/*LatLng*/ obj) {
+	equals: function (/*LatLng*/ obj) {
 		if (!(obj instanceof L.LatLng)) { return false; }
 
 		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
 		return margin <= L.LatLng.MAX_MARGIN;
 	},
 
-	toString: function() {
+	toString: function () {
 		return 'LatLng(' +
 				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
