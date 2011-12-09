@@ -55,6 +55,9 @@
 		#command {
 			width: 100%;
 		}
+		#jsb {
+            width: 100%;
+        }
 	</style>
 </head>
 <body>
@@ -70,13 +73,16 @@
 		
 		<p>
 			Run this command in the build directory:<br />
-			<input type="text" id="command" />
+			<input type="text" id="command" /><br />
+			OR for JSBuilder v3 (Sencha) paste this into your jsb3 file:<br />
+            <textarea id="jsb" height="300"></textarea>
 		</p>
 	</div>
 	
 	<script type="text/javascript">
 		var deplist = document.getElementById('deplist'),
-			commandInput = document.getElementById('command');
+			commandInput = document.getElementById('command'),
+			jsbInput = document.getElementById('jsb');
 		
 		document.getElementById('select-all').onclick = function() {
 			var checks = deplist.getElementsByTagName('input');
@@ -110,19 +116,61 @@
 				}
 			}
 			
+			var jsb = {
+                "projectName": "LeafletAll",
+                "licenseText": "Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin",
+                "packages": [
+                    {
+                        "name"  : "LeafletAll",
+                        "target": "build/leaflet-combined.js",
+                        "id"    : "app-all",
+                        "files" : []
+                    }
+                ],
+                "builds": [
+                    {
+                        "name": "Leaflet",
+                        "target": "leaflet.js",
+                       "options": {
+                          "minVersion": 0.1
+                       },
+                        "packages": [
+                            "app-all"
+                        ]
+                    },
+                    {
+                        "name": "Leaflet Debug",
+                        "target": "leaflet-debug.js",
+                        "debug": true,
+                       "options": {
+                          "minVersion": 0.1
+                       },
+                        "packages": [
+                            "app-all"
+                        ]
+                    }
+                ]
+            };
 			var command = 'java -jar ../lib/closure-compiler/compiler.jar ';
 			for (var src in files) {
 				command += '--js ../src/' + src + ' ';
+				jsb.packages[0].files.push({"path": "src/",      "name": src});
 			}
 			command += '--js_output_file ../dist/leaflet-custom.js';
 			
 			commandInput.value = command;
+			jsbInput.value = JSON.stringify(jsb);
 		}
 		
 		commandInput.onclick = function() {
 			commandInput.focus();
 			commandInput.select();
 		};
+		
+		jsbInput.onclick = function() {
+            jsbInput.focus();
+            jsbInput.select();
+        };
 		
 		function onCheckboxChange() {
 			if (this.checked) {
