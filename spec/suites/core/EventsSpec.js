@@ -11,11 +11,13 @@ describe('Events', function() {
 		
 		it('should fire all listeners added through #addEventListener', function() {
 			var obj = new Klass(),
+				parentObj = new Klass(),
 				spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
 				spy3 = jasmine.createSpy();
+			obj._setParentEventTarget(parentObj);
 			
-			obj.addEventListener('test', spy);
+			parentObj.addEventListener('test', spy);
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
 			
@@ -28,6 +30,27 @@ describe('Events', function() {
 			expect(spy).toHaveBeenCalled();
 			expect(spy2).toHaveBeenCalled();
 			expect(spy3).not.toHaveBeenCalled();
+		});
+		
+		it('should stop propagation firing event to parent', function() {
+			var obj = new Klass(),
+				parentObj = new Klass(),
+				spy = jasmine.createSpy(),
+				spy2 = jasmine.createSpy();
+			obj._setParentEventTarget(parentObj);
+			
+			spy.andCallFake(function(e) {
+				e.stopPropagation();
+			});
+			
+			
+			obj.addEventListener('test', spy);
+			parentObj.addEventListener('test', spy2);
+			
+			obj.fireEvent('test');
+			
+			expect(spy).toHaveBeenCalled();
+			expect(spy2).not.toHaveBeenCalled();
 		});
 
 		it('should provide event object to listeners and execute them in the right context', function() {
@@ -70,7 +93,7 @@ describe('Events', function() {
 		
 		it('should work like #addEventListener && #removeEventListener', function() {
 			var obj = new Klass(),
-				spy = jasmine.createSpy();
+				spy = jasmine.createSpy('#test');
 			
 			obj.on('test', spy);
 			obj.fire('test');
@@ -81,6 +104,50 @@ describe('Events', function() {
 			obj.fireEvent('test');
 			
 			expect(spy.callCount).toBeLessThan(2);
+		});
+		
+		it('should add all listeners produced through #on', function() {
+			var calling_ctx = {'desc': 'calling context'};
+			
+			var obj = new Klass(),
+				spy = jasmine.createSpy('#spy'),
+				spy2 = jasmine.createSpy('#spy2'),
+				spy3 = jasmine.createSpy('#spy3');
+				
+			
+			
+			var listeners = {
+				'test': spy,
+				'foo': spy2,
+				'bar': spy3
+			};
+			
+			obj.on(listeners, calling_ctx);
+			
+			expect(spy).not.toHaveBeenCalled();
+			expect(spy2).not.toHaveBeenCalled();
+			expect(spy3).not.toHaveBeenCalled();
+			
+			obj.fireEvent('foo');
+			
+			expect(spy).not.toHaveBeenCalled();
+			expect(spy2).toHaveBeenCalled();
+			expect(spy2.mostRecentCall.object).toBe(calling_ctx);
+			expect(spy3).not.toHaveBeenCalled();
+			
+			obj.fireEvent('test');
+			obj.fireEvent('foo');
+			
+			expect(spy2.callCount).toEqual(2);
+			expect(spy).toHaveBeenCalled();
+			expect(spy.mostRecentCall.object).toBe(calling_ctx);
+			expect(spy3).not.toHaveBeenCalled();
+			
+			obj.off(listeners);
+			
+			obj.fireEvent('bar');
+			expect(spy2.callCount).toEqual(2);
+			expect(spy3).not.toHaveBeenCalled();
 		});
 		
 		it('should not override existing methods with the same name', function() {

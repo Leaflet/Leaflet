@@ -6,8 +6,8 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	addLayer: function(layer) {
-		this._initEvents(layer);
 		L.LayerGroup.prototype.addLayer.call(this, layer);
+		layer._setParentEventTarget(this); // propagate layer events to feature group
 		
 		if (this._popupContent && layer.bindPopup) {
 			layer.bindPopup(this._popupContent);
@@ -22,19 +22,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 				this._layers[i].bindPopup(content);
 			}
 		}
-	},
-	
-	_events: ['click', 'dblclick', 'mouseover', 'mouseout'],
-	
-	_initEvents: function(layer) {
-		for (var i = 0, len = this._events.length; i < len; i++) {
-			layer.on(this._events[i], this._propagateEvent, this);
-		}
-	},
-	
-	_propagateEvent: function(e) {
-		e.layer = e.target;
-		e.target = this;
-		this.fire(e.type, e);
 	}
+
 });
