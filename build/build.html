@@ -2,9 +2,9 @@
 <html>
 <head>
 	<title>Leaflet Build Helper</title>
-	
+
 	<script type="text/javascript" src="deps.js"></script>
-	
+
 	<style type="text/css">
 		body {
 			font: 12px/1.4 Verdana, sans-serif;
@@ -46,12 +46,12 @@
 			height: 1%;
 		}
 		#deplist .desc {
-		} 
-		
+		}
+
 		#deplist .deps {
 			color: #777;
 		}
-		
+
 		#command {
 			width: 100%;
 		}
@@ -60,24 +60,24 @@
 <body>
 	<div id="container">
 		<h1>Leaflet Build Helper</h1>
-		
+
 		<p>
-			<a id="select-all" href="#all">Select All</a> | 
+			<a id="select-all" href="#all">Select All</a> |
 			<a id="deselect-all" href="#none">Deselect All</a>
 		</p>
-		
+
 		<ul id="deplist"></ul>
-		
+
 		<p>
-			Run this command in the build directory:<br />
+			Download <a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Closure Compiler</a>, extract it into <code>lib/closure-compiler</code> directory and run this command in the <code>build</code> directory:<br />
 			<input type="text" id="command" />
 		</p>
 	</div>
-	
+
 	<script type="text/javascript">
 		var deplist = document.getElementById('deplist'),
 			commandInput = document.getElementById('command');
-		
+
 		document.getElementById('select-all').onclick = function() {
 			var checks = deplist.getElementsByTagName('input');
 			for (var i = 0; i < checks.length; i++) {
@@ -86,7 +86,7 @@
 			updateCommand();
 			return false;
 		};
-		
+
 		document.getElementById('deselect-all').onclick = function() {
 			var checks = deplist.getElementsByTagName('input');
 			for (var i = 0; i < checks.length; i++) {
@@ -97,7 +97,7 @@
 			updateCommand();
 			return false;
 		};
-		
+
 		function updateCommand() {
 			var files = {};
 			var checks = deplist.getElementsByTagName('input');
@@ -109,21 +109,21 @@
 					}
 				}
 			}
-			
+
 			var command = 'java -jar ../lib/closure-compiler/compiler.jar ';
 			for (var src in files) {
 				command += '--js ../src/' + src + ' ';
 			}
 			command += '--js_output_file ../dist/leaflet-custom.js';
-			
+
 			commandInput.value = command;
 		}
-		
+
 		commandInput.onclick = function() {
 			commandInput.focus();
 			commandInput.select();
 		};
-		
+
 		function onCheckboxChange() {
 			if (this.checked) {
 				var depDeps = deps[this.id].deps;
@@ -152,17 +152,17 @@
 			}
 			updateCommand();
 		}
-	
+
 		for (var name in deps) {
 			var li = document.createElement('li');
-			
+
 			if (deps[name].heading) {
 				var heading = document.createElement('li');
 				heading.className = 'heading';
 				heading.appendChild(document.createTextNode(deps[name].heading));
 				deplist.appendChild(heading);
 			}
-			
+
 			var div = document.createElement('div');
 
 			var label = document.createElement('label');
@@ -172,17 +172,17 @@
 			check.id = name;
 			label.appendChild(check);
 			check.onchange = onCheckboxChange;
-			
+
 			if (name == 'Core') {
 				check.checked = true;
 				check.disabled = true;
 			}
-			
+
 			label.appendChild(document.createTextNode(name));
 			label.htmlFor = name;
-			
+
 			li.appendChild(label);
-			
+
 			var desc = document.createElement('span');
 			desc.className = 'desc';
 			desc.appendChild(document.createTextNode(deps[name].desc));
@@ -193,13 +193,13 @@
 				depspan.className = 'deps';
 				depspan.appendChild(document.createTextNode('Deps: ' + depText));
 			}
-			
+
 			div.appendChild(desc);
 			div.appendChild(document.createElement('br'));
 			if (depText) { div.appendChild(depspan); }
-			
+
 			li.appendChild(div);
-			
+
 			deplist.appendChild(li);
 		}
 		updateCommand();
