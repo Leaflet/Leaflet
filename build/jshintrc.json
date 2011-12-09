@@ -14,7 +14,7 @@
 	"bitwise": true,
 	"boss": false,
 	"curly": true,
-	"eqeqeq": true,
+	"eqeqeq": false, // todo
 	"eqnull": false,
 	"evil": false,
 	"expr": false,
@@ -37,7 +37,7 @@
 	"onevar": false,
 	"plusplus": false,
 	"sub": false,
-	"trailing": false,
-	"white": false,
+	"trailing": false, // todo
+	"white": false, // todo
 	"indent": 4
 }

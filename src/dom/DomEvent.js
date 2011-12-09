@@ -40,7 +40,7 @@ L.DomEvent = {
 
 	removeListener: function(/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
 		var id = L.Util.stamp(fn),
-			key = '_leaflet_' + type + id;
+			key = '_leaflet_' + type + id,
 			handler = obj[key];
 
 		if (!handler) { return; }
@@ -76,6 +76,7 @@ L.DomEvent = {
 		return (related != el);
 	},
 
+	/*jshint noarg:false */ // evil magic for IE
 	_getEvent: function()/*->Event*/ {
 		var e = window.event;
 		if (!e) {
@@ -88,6 +89,7 @@ L.DomEvent = {
 		}
 		return e;
 	},
+	/*jshint noarg:false */
 
 	stopPropagation: function(/*Event*/ e) {
 		if (e.stopPropagation) {

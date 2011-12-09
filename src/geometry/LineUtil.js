@@ -1,5 +1,5 @@
 /*
- * L.LineUtil contains different utility functions for line segments 
+ * L.LineUtil contains different utility functions for line segments
  * and polylines (clipping, simplification, distances, etc.)
  */
 
@@ -10,27 +10,27 @@ L.LineUtil = {
 	 */
 	simplify: function(/*Point[]*/ points, /*Number*/ tolerance) {
 		if (!tolerance || !points.length) return points.slice();
-		
+
 		// stage 1: vertex reduction
 		points = this.reducePoints(points, tolerance);
 
 		// stage 2: Douglas-Peucker simplification
 		points = this.simplifyDP(points, tolerance);
 
-		return points; 
+		return points;
 	},
-	
+
 	// distance from a point to a segment between two points
 	pointToSegmentDistance:  function(/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
 		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));
 	},
-	
+
 	closestPointOnSegment: function(/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
 		var point = this._sqClosestPointOnSegment(p, p1, p2);
 		point.distance = Math.sqrt(point._sqDist);
 		return point;
 	},
-	
+
 	// Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
 	simplifyDP: function(points, tol) {
 		var maxDist2 = 0,
@@ -56,21 +56,21 @@ L.LineUtil = {
 		if (maxDist2 >= t2) {
 			part1 = points.slice(0, index),
 			part2 = points.slice(index);
-			
+
 			part1 = this.simplifyDP(part1, tol),
 			part2 = this.simplifyDP(part2, tol);
-			
+
 			return part1.concat(part2);
 		} else {
 			return [points[0], points[len - 1]];
 		}
 	},
-	
+
 	// reduce points that are too close to each other to a single point
 	reducePoints: function(points, tol) {
 		var reducedPoints = [points[0]],
 			t2 = tol * tol;
-		
+
 		for (var i = 1, prev = 0, len = points.length; i < len; i++) {
 			if (this._sqDist(points[i], points[prev]) < t2) continue;
 			reducedPoints.push(points[i]);
@@ -81,7 +81,9 @@ L.LineUtil = {
 		}
 		return reducedPoints;
 	},
-	
+
+	/*jshint bitwise:false */ // temporarily allow bitwise oprations
+
 	/*
 	 * Cohen-Sutherland line clipping algorithm.
 	 * Used to avoid rendering parts of a polyline that are not currently visible.
@@ -89,13 +91,13 @@ L.LineUtil = {
 	clipSegment: function(a, b, bounds, useLastCode) {
 		var min = bounds.min,
 			max = bounds.max;
-		
+
 		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
 			codeB = this._getBitCode(b, bounds);
-		
+
 		// save 2nd code to avoid calculating it on the next segment
 		this._lastCode = codeB;
-		
+
 		while (true) {
 			// if a,b is inside the clip window (trivial accept)
 			if (!(codeA | codeB)) {
@@ -108,7 +110,7 @@ L.LineUtil = {
 				var codeOut = codeA || codeB,
 					p = this._getEdgeIntersection(a, b, codeOut, bounds),
 					newCode = this._getBitCode(p, bounds);
-				
+
 				if (codeOut == codeA) {
 					a = p;
 					codeA = newCode;
@@ -119,13 +121,13 @@ L.LineUtil = {
 			}
 		}
 	},
-	
+
 	_getEdgeIntersection: function(a, b, code, bounds) {
 		var dx = b.x - a.x,
 			dy = b.y - a.y,
 			min = bounds.min,
 			max = bounds.max;
-		
+
 		if (code & 8) { // top
 			return new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
 		} else if (code & 4) { // bottom
@@ -136,28 +138,30 @@ L.LineUtil = {
 			return new L.Point(min.x, a.y + dy * (min.x - a.x) / dx);
 		}
 	},
-	
+
 	_getBitCode: function(/*Point*/ p, bounds) {
 		var code = 0;
-		
+
 		if (p.x < bounds.min.x) code |= 1; // left
 		else if (p.x > bounds.max.x) code |= 2; // right
 		if (p.y < bounds.min.y) code |= 4; // bottom
 		else if (p.y > bounds.max.y) code |= 8; // top
-		
+
 		return code;
 	},
-	
+
+	/*jshint bitwise:true */
+
 	// square distance (to avoid unnecessary Math.sqrt calls)
 	_sqDist: function(p1, p2) {
 		var dx = p2.x - p1.x,
 			dy = p2.y - p1.y;
 		return dx * dx + dy * dy;
 	},
-	
+
 	/**
 	 * @return L.Point point on segment with attribute _sqDist - square distance to segment
-	 */	
+	 */
 	_sqClosestPointOnSegment: function(p, p1, p2) {
 		var x2 = p2.x - p1.x,
 			y2 = p2.y - p1.y,
@@ -165,7 +169,7 @@ L.LineUtil = {
 		if (x2 || y2) {
 			var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
 				t = dot / this._sqDist(p1, p2);
-			
+
 			if (t > 1) {
 				apoint = p2;
 			} else if (t > 0) {
@@ -175,7 +179,7 @@ L.LineUtil = {
 		apoint._sqDist = this._sqDist(p, apoint);
 		return apoint;
 	},
-	
+
 	// distance from a point to a segment between two points
 	_sqPointToSegmentDist: function(p, p1, p2) {
 		return this._sqClosestPointOnSegment(p, p1, p2)._sqDist;
