@@ -58,6 +58,24 @@ L.LatLngBounds = L.Class.extend({
 				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
+	intersects: function(/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
+		var sw = this._southWest,
+			ne = this._northEast,
+			sw2, ne2;
+
+		if (obj instanceof L.LatLngBounds) {
+			sw2 = obj.getSouthWest();
+			ne2 = obj.getNorthEast();
+		} else {
+			sw2 = ne2 = obj;
+		}
+
+		return (((sw2.lat >= sw.lat && sw2.lat <= ne.lat) || (sw.lat >= sw2.lat && sw.lat <= ne2.lat) || 
+						 (ne2.lat >= sw.lat && ne2.lat <= ne.lat) || (ne.lat > sw2.lat && ne.lat < ne2.lat)) && 
+						((sw2.lng >= sw.lng && sw2.lng <= ne.lng) || (sw.lng >= sw2.lng && sw.lng <= ne2.lng) || 
+						 (ne2.lng >= sw.lng && ne2.lng <= ne.lng) || (ne.lng >= sw2.lng && ne.lng <= ne2.lng)));
+	},
+
 	toBBoxString: function() {
 		var sw = this._southWest,
 			ne = this._northEast;
