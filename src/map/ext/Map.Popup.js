@@ -5,7 +5,7 @@ L.Map.include({
 		this._popup = popup;
 		return this.addLayer(popup);
 	},
-	
+
 	closePopup: function() {
 		if (this._popup) {
 			this.removeLayer(this._popup);

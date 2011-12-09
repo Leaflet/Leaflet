@@ -4,7 +4,7 @@
 
 L.DomUtil = {
 	get: function(id) {
-		return (typeof id == 'string' ? document.getElementById(id) : id);
+		return (typeof id === 'string' ? document.getElementById(id) : id);
 	},
 
 	getStyle: function(el, style) {
@@ -12,11 +12,11 @@ L.DomUtil = {
 		if (!value && el.currentStyle) {
 			value = el.currentStyle[style];
 		}
-		if (!value || value == 'auto') {
+		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(el, null);
 			value = css ? css[style] : null;
 		}
-		return (value == 'auto' ? null : value);
+		return (value === 'auto' ? null : value);
 	},
 
 	getViewportOffset: function(element) {
@@ -29,20 +29,25 @@ L.DomUtil = {
 			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
 
-			if (el.offsetParent == docBody &&
-					L.DomUtil.getStyle(el, 'position') == 'absolute') break;
-
-		} while (el = el.offsetParent);
+			if (el.offsetParent === docBody &&
+					L.DomUtil.getStyle(el, 'position') === 'absolute') {
+				break;
+			}
+			el = el.offsetParent;
+		} while (el);
 
 		el = element;
 
 		do {
-			if (el === docBody) break;
+			if (el === docBody) {
+				break;
+			}
 
 			top -= el.scrollTop || 0;
 			left -= el.scrollLeft || 0;
 
-		} while (el = el.parentNode);
+			el = el.parentNode;
+		} while (el);
 
 		return new L.Point(left, top);
 	},
@@ -84,7 +89,9 @@ L.DomUtil = {
 
 	removeClass: function(el, name) {
 		el.className = el.className.replace(/(\S+)\s*/g, function(w, match) {
-			if (match == name) return '';
+			if (match === name) {
+				return '';
+			}
 			return w;
 		}).replace(/^\s+/, '');
 	},
@@ -117,9 +124,11 @@ L.DomUtil = {
 	},
 
 	getScaleString: function(scale, origin) {
-		return L.DomUtil.getTranslateString(origin) +
-         		' scale(' + scale + ') ' +
-         		L.DomUtil.getTranslateString(origin.multiplyBy(-1));
+		var preTranslateStr = L.DomUtil.getTranslateString(origin),
+			scaleStr = ' scale(' + scale + ') ',
+			postTranslateStr = L.DomUtil.getTranslateString(origin.multiplyBy(-1));
+
+		return preTranslateStr + scaleStr + postTranslateStr;
 	},
 
 	setPosition: function(el, point) {

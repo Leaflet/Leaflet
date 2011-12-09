@@ -194,7 +194,7 @@ L.TileLayer = L.Class.extend({
 					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
 					// this._tiles[key].src = '';
 
-					if (tile.parentNode == this._container) {
+					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
 					delete this._tiles[key];
@@ -207,7 +207,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = (1 << (zoom + this.options.zoomOffset));
+			tileLimit = Math.pow(2, (zoom + this.options.zoomOffset));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -230,7 +230,7 @@ L.TileLayer = L.Class.extend({
 
 		this._tiles[key] = tile;
 
-		if (this.options.scheme == 'tms') {
+		if (this.options.scheme === 'tms') {
 			tilePoint.y = tileLimit - tilePoint.y - 1;
 		}
 

@@ -8,23 +8,27 @@ L.DomEvent = {
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id;
 
-		if (obj[key]) { return; }
-
-		function handler(e) {
-			return fn.call(context || obj, e || L.DomEvent._getEvent());
+		if (obj[key]) {
+			return;
 		}
 
-		if (L.Browser.touch && (type == 'dblclick') && this.addDoubleTapListener) {
+		var handler = function (e) {
+			return fn.call(context || obj, e || L.DomEvent._getEvent());
+		};
+
+		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			this.addDoubleTapListener(obj, handler, id);
 		} else if ('addEventListener' in obj) {
-			if (type == 'mousewheel') {
+			if (type === 'mousewheel') {
 				obj.addEventListener('DOMMouseScroll', handler, false);
 				obj.addEventListener(type, handler, false);
-			} else if ((type == 'mouseenter') || (type == 'mouseleave')) {
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				var originalHandler = handler,
-					newType = (type == 'mouseenter' ? 'mouseover' : 'mouseout');
+					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
 				handler = function(e) {
-					if (!L.DomEvent._checkMouse(obj, e)) return;
+					if (!L.DomEvent._checkMouse(obj, e)) {
+						return;
+					}
 					return originalHandler(e);
 				};
 				obj.addEventListener(newType, handler, false);
@@ -45,14 +49,14 @@ L.DomEvent = {
 
 		if (!handler) { return; }
 
-		if (L.Browser.touch && (type == 'dblclick') && this.removeDoubleTapListener) {
+		if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 		} else if ('removeEventListener' in obj) {
-			if (type == 'mousewheel') {
+			if (type === 'mousewheel') {
 				obj.removeEventListener('DOMMouseScroll', handler, false);
 				obj.removeEventListener(type, handler, false);
-			} else if ((type == 'mouseenter') || (type == 'mouseleave')) {
-				obj.removeEventListener((type == 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
 			}
@@ -65,25 +69,29 @@ L.DomEvent = {
 	_checkMouse: function(el, e) {
 		var related = e.relatedTarget;
 
-		if (!related) return true;
+		if (!related) {
+			return true;
+		}
 
 		try {
-			while (related && (related != el)) {
+			while (related && (related !== el)) {
 				related = related.parentNode;
 			}
 		} catch(err) { return false; }
 
-		return (related != el);
+		return (related !== el);
 	},
 
 	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function()/*->Event*/ {
+	_getEvent: function() {
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
 			while (caller) {
 				e = caller['arguments'][0];
-				if (e && Event == e.constructor) { break; }
+				if (e && window.Event === e.constructor) {
+					break;
+				}
 				caller = caller.caller;
 			}
 		}

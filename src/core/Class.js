@@ -29,7 +29,7 @@ L.Class.extend = function(/*Object*/ props) /*-> Class*/ {
 
 	//inherit parent's statics
 	for (var i in this) {
-		if (this.hasOwnProperty(i) && i != 'prototype' && i != 'superclass') {
+		if (this.hasOwnProperty(i) && i !== 'prototype' && i !== 'superclass') {
 			NewClass[i] = this[i];
 		}
 	}

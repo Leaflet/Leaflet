@@ -55,3 +55,5 @@ L.PolyUtil.clipPolygon = function(points, bounds) {
 
 	return points;
 };
+
+/*jshint bitwise:true */

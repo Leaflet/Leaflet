@@ -8,13 +8,15 @@ L.Util.extend(L.DomEvent, {
 			pre = '_leaflet_',
 			touchstart = 'touchstart',
 			touchend = 'touchend';
-		
+
 		function onTouchStart(e) {
-			if (e.touches.length != 1) return;
-			
-			var now = Date.now(), 
+			if (e.touches.length !== 1) {
+				return;
+			}
+
+			var now = Date.now(),
 				delta = now - (last || now);
-			
+
 			touch = e.touches[0];
 			doubleTap = (delta > 0 && delta <= delay);
 			last = now;
@@ -28,11 +30,11 @@ L.Util.extend(L.DomEvent, {
 		}
 		obj[pre + touchstart + id] = onTouchStart;
 		obj[pre + touchend + id] = onTouchEnd;
-		
+
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
 	},
-	
+
 	removeDoubleTapListener: function(obj, id) {
 		var pre = '_leaflet_';
 		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);

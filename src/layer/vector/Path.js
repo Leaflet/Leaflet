@@ -4,25 +4,25 @@
 
 L.Path = L.Class.extend({
 	includes: [L.Mixin.Events],
-	
+
 	statics: {
-		// how much to extend the clip area around the map view 
+		// how much to extend the clip area around the map view
 		// (relative to its size, e.g. 0.5 is half the screen in each direction)
 		CLIP_PADDING: 0.5
 	},
-	
+
 	options: {
 		stroke: true,
 		color: '#0033ff',
 		weight: 5,
 		opacity: 0.5,
-		
+
 		fill: false,
 		fillColor: null, //same as color by default
 		fillOpacity: 0.2,
-		
+
 		clickable: true,
-		
+
 		// TODO remove this, as all paths now update on moveend
 		updateOnMoveEnd: true
 	},
@@ -30,7 +30,7 @@ L.Path = L.Class.extend({
 	initialize: function(options) {
 		L.Util.setOptions(this, options);
 	},
-	
+
 	onAdd: function(map) {
 		this._map = map;
 
@@ -40,24 +40,24 @@ L.Path = L.Class.extend({
 		this._updatePath();
 
 		map.on('viewreset', this.projectLatlngs, this);
-		
+
 		this._updateTrigger = this.options.updateOnMoveEnd ? 'moveend' : 'viewreset';
 		map.on(this._updateTrigger, this._updatePath, this);
 	},
-	
+
 	onRemove: function(map) {
 		this._map = null;
-		
+
 		map._pathRoot.removeChild(this._container);
-		
+
 		map.off('viewreset', this.projectLatlngs, this);
 		map.off(this._updateTrigger, this._updatePath, this);
 	},
-	
+
 	projectLatlngs: function() {
 		// do all projection stuff here
 	},
-	
+
 	setStyle: function(style) {
 		L.Util.setOptions(this, style);
 		if (this._container) {
@@ -65,7 +65,7 @@ L.Path = L.Class.extend({
 		}
 		return this;
 	},
-	
+
 	_redraw: function() {
 		if (this._map) {
 			this.projectLatlngs();

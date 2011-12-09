@@ -18,7 +18,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 			return;
 		}
 
-		var isFeature = (geojson.type == 'Feature'),
+		var isFeature = (geojson.type === 'Feature'),
 			geometry = (isFeature ? geojson.geometry : geojson),
 			layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
 

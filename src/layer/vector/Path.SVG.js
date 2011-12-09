@@ -9,26 +9,26 @@ L.Path = L.Path.extend({
 			return document.createElementNS(L.Path.SVG_NS, name);
 		}
 	},
-	
+
 	getPathString: function() {
 		// form path string here
 	},
-	
+
 	_initElements: function() {
 		this._map._initPathRoot();
 		this._initPath();
 		this._initStyle();
 	},
-	
+
 	_initPath: function() {
 		this._container = L.Path._createElement('g');
-		
+
 		this._path = L.Path._createElement('path');
 		this._container.appendChild(this._path);
-		
+
 		this._map._pathRoot.appendChild(this._container);
 	},
-	
+
 	_initStyle: function() {
 		if (this.options.stroke) {
 			this._path.setAttribute('stroke-linejoin', 'round');
@@ -41,7 +41,7 @@ L.Path = L.Path.extend({
 		}
 		this._updateStyle();
 	},
-	
+
 	_updateStyle: function() {
 		if (this.options.stroke) {
 			this._path.setAttribute('stroke', this.options.color);
@@ -53,7 +53,7 @@ L.Path = L.Path.extend({
 			this._path.setAttribute('fill-opacity', this.options.fillOpacity);
 		}
 	},
-	
+
 	_updatePath: function() {
 		var str = this.getPathString();
 		if (!str) {
@@ -62,14 +62,14 @@ L.Path = L.Path.extend({
 		}
 		this._path.setAttribute('d', str);
 	},
-	
+
 	// TODO remove duplication with L.Map
 	_initEvents: function() {
 		if (this.options.clickable) {
 			if (!L.Browser.vml) {
 				this._path.setAttribute('class', 'leaflet-clickable');
 			}
-			
+
 			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
 			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove'];
@@ -78,12 +78,12 @@ L.Path = L.Path.extend({
 			}
 		}
 	},
-	
+
 	_onMouseClick: function(e) {
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this._fireMouseEvent(e);
 	},
-	
+
 	_fireMouseEvent: function(e) {
 		if (!this.hasEventListeners(e.type)) { return; }
 		this.fire(e.type, {

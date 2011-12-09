@@ -1,5 +1,5 @@
 /*
- * Vector rendering for IE6-8 through VML. 
+ * Vector rendering for IE6-8 through VML.
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
 
@@ -8,9 +8,9 @@ L.Browser.vml = (function() {
 	d.innerHTML = '<v:shape adj="1"/>';
 	s = d.firstChild;
 	s.style.behavior = 'url(#default#VML)';
-	
-	return (s && (typeof s.adj == 'object'));
-})();
+
+	return (s && (typeof s.adj === 'object'));
+}());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	statics: {
@@ -27,21 +27,21 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 					return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
 				};
 			}
-		})()
+		}())
 	},
-	
+
 	_initPath: function() {
 		this._container = L.Path._createElement('shape');
-		this._container.className += ' leaflet-vml-shape' + 
+		this._container.className += ' leaflet-vml-shape' +
 				(this.options.clickable ? ' leaflet-clickable' : '');
 		this._container.coordsize = '1 1';
-		
+
 		this._path = L.Path._createElement('path');
 		this._container.appendChild(this._path);
-		
+
 		this._map._pathRoot.appendChild(this._container);
 	},
-	
+
 	_initStyle: function() {
 		if (this.options.stroke) {
 			this._stroke = L.Path._createElement('stroke');
@@ -59,7 +59,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 		}
 		this._updateStyle();
 	},
-	
+
 	_updateStyle: function() {
 		if (this.options.stroke) {
 			this._stroke.weight = this.options.weight + 'px';
@@ -71,7 +71,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			this._fill.opacity = this.options.fillOpacity;
 		}
 	},
-	
+
 	_updatePath: function() {
 		this._container.style.display = 'none';
 		this._path.v = this.getPathString() + ' '; // the space fixes IE empty path string bug

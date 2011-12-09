@@ -1,5 +1,5 @@
 /*
- * Popup extension to L.Path (polylines, polygons, circles), adding bindPopup method. 
+ * Popup extension to L.Path (polylines, polygons, circles), adding bindPopup method.
  */
 
 L.Path.include({
@@ -8,17 +8,17 @@ L.Path.include({
 			this._popup = new L.Popup(options);
 		}
 		this._popup.setContent(content);
-		
+
 		if (!this._openPopupAdded) {
 			this.on('click', this._openPopup, this);
 			this._openPopupAdded = true;
 		}
-		
+
 		return this;
 	},
-	
+
 	_openPopup: function(e) {
 		this._popup.setLatLng(e.latlng);
 		this._map.openPopup(this._popup);
-	}	
+	}
 });

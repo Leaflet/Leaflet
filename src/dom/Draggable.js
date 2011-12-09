@@ -30,11 +30,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onDown: function(e) {
-		if ((!L.Browser.touch && e.shiftKey) || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
+		if ((!L.Browser.touch && e.shiftKey) || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		if (e.touches && e.touches.length > 1) { return; }
 
-		var first = (e.touches && e.touches.length == 1 ? e.touches[0] : e),
+		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 			el = first.target;
 
 		L.DomEvent.preventDefault(e);
@@ -63,7 +63,7 @@ L.Draggable = L.Class.extend({
 
 		L.DomEvent.preventDefault(e);
 
-		var first = (e.touches && e.touches.length == 1 ? e.touches[0] : e);
+		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
 
 		if (!this._moved) {
 			this.fire('dragstart');

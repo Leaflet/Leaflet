@@ -28,7 +28,7 @@ L.Util = {
 			obj[key] = obj[key] || ++lastId;
 			return obj[key];
 		};
-	})(),
+	}()),
 
 	requestAnimFrame: (function() {
 		function timeoutDefer(callback) {
@@ -50,7 +50,7 @@ L.Util = {
 				requestFn(callback, contextEl);
 			}
 		};
-	})(),
+	}()),
 
 	limitExecByInterval: function(fn, time, context) {
 		var lock, execOnUnlock, args;

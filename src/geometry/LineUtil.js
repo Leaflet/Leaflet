@@ -4,12 +4,14 @@
  */
 
 L.LineUtil = {
-	/*
-	 * Simplify polyline with vertex reduction and Douglas-Peucker simplification.
-	 * Improves rendering performance dramatically by lessening the number of points to draw.
-	 */
+
+	// Simplify polyline with vertex reduction and Douglas-Peucker simplification.
+	// Improves rendering performance dramatically by lessening the number of points to draw.
+
 	simplify: function(/*Point[]*/ points, /*Number*/ tolerance) {
-		if (!tolerance || !points.length) return points.slice();
+		if (!tolerance || !points.length) {
+			return points.slice();
+		}
 
 		// stage 1: vertex reduction
 		points = this.reducePoints(points, tolerance);
@@ -54,10 +56,10 @@ L.LineUtil = {
 		var part1, part2;
 
 		if (maxDist2 >= t2) {
-			part1 = points.slice(0, index),
+			part1 = points.slice(0, index);
 			part2 = points.slice(index);
 
-			part1 = this.simplifyDP(part1, tol),
+			part1 = this.simplifyDP(part1, tol);
 			part2 = this.simplifyDP(part2, tol);
 
 			return part1.concat(part2);
@@ -72,7 +74,9 @@ L.LineUtil = {
 			t2 = tol * tol;
 
 		for (var i = 1, prev = 0, len = points.length; i < len; i++) {
-			if (this._sqDist(points[i], points[prev]) < t2) continue;
+			if (this._sqDist(points[i], points[prev]) < t2) {
+				continue;
+			}
 			reducedPoints.push(points[i]);
 			prev = i;
 		}
@@ -84,10 +88,9 @@ L.LineUtil = {
 
 	/*jshint bitwise:false */ // temporarily allow bitwise oprations
 
-	/*
-	 * Cohen-Sutherland line clipping algorithm.
-	 * Used to avoid rendering parts of a polyline that are not currently visible.
-	 */
+	// Cohen-Sutherland line clipping algorithm.
+	// Used to avoid rendering parts of a polyline that are not currently visible.
+
 	clipSegment: function(a, b, bounds, useLastCode) {
 		var min = bounds.min,
 			max = bounds.max;
@@ -111,7 +114,7 @@ L.LineUtil = {
 					p = this._getEdgeIntersection(a, b, codeOut, bounds),
 					newCode = this._getBitCode(p, bounds);
 
-				if (codeOut == codeA) {
+				if (codeOut === codeA) {
 					a = p;
 					codeA = newCode;
 				} else {
@@ -142,10 +145,16 @@ L.LineUtil = {
 	_getBitCode: function(/*Point*/ p, bounds) {
 		var code = 0;
 
-		if (p.x < bounds.min.x) code |= 1; // left
-		else if (p.x > bounds.max.x) code |= 2; // right
-		if (p.y < bounds.min.y) code |= 4; // bottom
-		else if (p.y > bounds.max.y) code |= 8; // top
+		if (p.x < bounds.min.x) { // left
+			code |= 1;
+		} else if (p.x > bounds.max.x) { // right
+			code |= 2;
+		}
+		if (p.y < bounds.min.y) { // bottom
+			code |= 4;
+		} else if (p.y > bounds.max.y) { // top
+			code |= 8;
+		}
 
 		return code;
 	},
@@ -159,9 +168,7 @@ L.LineUtil = {
 		return dx * dx + dy * dy;
 	},
 
-	/**
-	 * @return L.Point point on segment with attribute _sqDist - square distance to segment
-	 */
+	// return closest point on segment with attribute _sqDist - square distance to segment
 	_sqClosestPointOnSegment: function(p, p1, p2) {
 		var x2 = p2.x - p1.x,
 			y2 = p2.y - p1.y,

@@ -22,19 +22,25 @@ L.Control.Attribution = L.Class.extend({
 	},
 
 	addAttribution: function(text) {
-		if (!text) return;
+		if (!text) {
+			return;
+		}
 		this._attributions[text] = true;
 		this._update();
 	},
 
 	removeAttribution: function(text) {
-		if (!text) return;
+		if (!text) {
+			return;
+		}
 		delete this._attributions[text];
 		this._update();
 	},
 
 	_update: function() {
-		if (!this._map) return;
+		if (!this._map) {
+			return;
+		}
 
 		var attribs = [];
 

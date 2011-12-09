@@ -9,24 +9,24 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 		this._delta = 0;
 		this._enabled = true;
 	},
-	
+
 	disable: function() {
 		if (!this._enabled) { return; }
 		L.DomEvent.removeListener(this._map._container, 'mousewheel', this._onWheelScroll);
 		this._enabled = false;
 	},
-	
+
 	_onWheelScroll: function(e) {
 		var delta = L.DomEvent.getWheelDelta(e);
 		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
-		
+
 		clearTimeout(this._timer);
 		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 50);
-		
+
 		L.DomEvent.preventDefault(e);
 	},
-	
+
 	_performZoom: function() {
 		var delta = Math.round(this._delta),
 			zoom = this._map.getZoom();
@@ -35,15 +35,15 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 		delta = this._map._limitZoom(zoom + delta) - zoom;
 
 		this._delta = 0;
-		
+
 		if (!delta) { return; }
-		
+
 		var newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
 			newZoom = zoom + delta;
-		
+
 		this._map.setView(newCenter, newZoom);
 	},
-	
+
 	_getCenterForScrollWheelZoom: function(mousePos, delta) {
 		var centerPoint = this._map.getPixelBounds().getCenter(),
 			viewHalf = this._map.getSize().divideBy(2),

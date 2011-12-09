@@ -66,7 +66,9 @@ L.Polyline = L.Path.extend({
 				}
 			}
 		}
-		if (minPoint) minPoint.distance = Math.sqrt(minDistance);
+		if (minPoint) {
+			minPoint.distance = Math.sqrt(minDistance);
+		}
 		return minPoint;
 	},
 
@@ -84,7 +86,9 @@ L.Polyline = L.Path.extend({
 
 		for (var j = 0, len2 = points.length, str = '', p; j < len2; j++) {
 			p = points[j];
-			if (round) p._round();
+			if (round) {
+				p._round();
+			}
 			str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 		}
 		return str;
@@ -108,13 +112,15 @@ L.Polyline = L.Path.extend({
 
 		for (i = 0, k = 0; i < len - 1; i++) {
 			segment = lu.clipSegment(points[i], points[i+1], vp, i);
-			if (!segment) continue;
+			if (!segment) {
+				continue;
+			}
 
 			parts[k] = parts[k] || [];
 			parts[k].push(segment[0]);
 
 			// if segment goes out of screen, or it's the last one, it's the end of the line part
-			if ((segment[1] != points[i+1]) || (i == len - 2)) {
+			if ((segment[1] !== points[i+1]) || (i === len - 2)) {
 				parts[k].push(segment[1]);
 				k++;
 			}

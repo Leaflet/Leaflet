@@ -8,7 +8,7 @@ L.Map.include({
 
 		L.DomUtil.addClass(container, 'leaflet-control');
 
-		if (pos.indexOf('bottom') != -1) {
+		if (pos.indexOf('bottom') !== -1) {
 			corner.insertBefore(container, corner.firstChild);
 		} else {
 			corner.appendChild(container);

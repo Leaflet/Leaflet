@@ -13,7 +13,7 @@ L.Map.include({
 			maximumAge: 0,
 			enableHighAccuracy: false
 		}, options);
-		
+
 		if (!navigator.geolocation) {
 			return this.fire('locationerror', {
 				code: 0,
@@ -48,35 +48,35 @@ L.Map.include({
 
 	_handleGeolocationError: function(error) {
 		var c = error.code,
-			message = (c == 1 ? "permission denied" : 
-				(c == 2 ? "position unavailable" : "timeout"));
-		
+			message = (c === 1 ? "permission denied" :
+				(c === 2 ? "position unavailable" : "timeout"));
+
 		if (this._locationOptions.setView && !this._loaded) {
 			this.fitWorld();
 		}
-		
+
 		this.fire('locationerror', {
 			code: c,
-			message: "Geolocation error: " + message + "." 
+			message: "Geolocation error: " + message + "."
 		});
 	},
-	
+
 	_handleGeolocationResponse: function(pos) {
 		var latAccuracy = 180 * pos.coords.accuracy / 4e7,
 			lngAccuracy = latAccuracy * 2,
 			lat = pos.coords.latitude,
 			lng = pos.coords.longitude,
 			latlng = new L.LatLng(lat, lng);
-		
+
 		var sw = new L.LatLng(lat - latAccuracy, lng - lngAccuracy),
 			ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
 			bounds = new L.LatLngBounds(sw, ne);
-		
+
 		if (this._locationOptions.setView) {
 			var zoom = Math.min(this.getBoundsZoom(bounds), this._locationOptions.maxZoom);
 			this.setView(latlng, zoom);
 		}
-		
+
 		this.fire('locationfound', {
 			latlng: latlng,
 			bounds: bounds,
