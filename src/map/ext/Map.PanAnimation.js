@@ -3,6 +3,9 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		zoom = this._limitZoom(zoom);
 		var zoomChanged = (this._zoom != zoom);
 
+		if (zoomChanged)
+			this.fire('zoomstart');
+		
 		if (this._loaded && !forceReset && this._layers) {
 			// difference between the new and current centers in pixels
 			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
