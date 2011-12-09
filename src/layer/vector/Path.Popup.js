@@ -5,7 +5,7 @@
 L.Path.include({
 	bindPopup: function(content, options) {
 		if (!this._popup || this._popup.options !== options) {
-			this._popup = new L.Popup(options);
+			this._popup = new L.Popup(options, this);
 		}
 		this._popup.setContent(content);
 		

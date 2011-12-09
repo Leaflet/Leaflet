@@ -11,8 +11,10 @@ L.Popup = L.Class.extend({
 		autoPanPadding: new L.Point(5, 5)
 	},
 
-	initialize: function(options) {
+	initialize: function(options, source) {
 		L.Util.setOptions(this, options);
+	
+		this._source = source;
 	},
 
 	onAdd: function(map) {
@@ -64,7 +66,7 @@ L.Popup = L.Class.extend({
 
 	_close: function() {
 		if (this._opened) {
-			this._map.removeLayer(this);
+			this._map.closePopup();
 		}
 	},
 
