@@ -120,7 +120,7 @@ L.TileLayer = L.Class.extend({
 		var key;
 		for (key in this._tiles) {
 			if (this._tiles.hasOwnProperty(key)) {
-				this.fire("tileunload", { tile: this._tiles[key] });
+				this.fire("tileunload", {tile: this._tiles[key]});
 			}
 		}
 		this._tiles = {};
@@ -156,7 +156,9 @@ L.TileLayer = L.Class.extend({
 
 		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
 			for (var i = bounds.min.x; i <= bounds.max.x; i++) {
-				if ((i + ':' + j) in this._tiles) { continue; }
+				if ((i + ':' + j) in this._tiles) {
+					continue;
+				}
 				queue.push(new L.Point(i, j));
 			}
 		}

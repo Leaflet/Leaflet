@@ -1,15 +1,21 @@
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_zoomToIfCenterInView: function (center, zoom, centerOffset) {
 
-		if (this._animatingZoom) { return true; }
-		if (!this.options.zoomAnimation) { return false; }
+		if (this._animatingZoom) {
+			return true;
+		}
+		if (!this.options.zoomAnimation) {
+			return false;
+		}
 
 		var zoomDelta = zoom - this._zoom,
 			scale = Math.pow(2, zoomDelta),
 			offset = centerOffset.divideBy(1 - 1 / scale);
 
 		//if offset does not exceed half of the view
-		if (!this._offsetIsWithinView(offset, 1)) { return false; }
+		if (!this._offsetIsWithinView(offset, 1)) {
+			return false;
+		}
 
 		this._mapPane.className += ' leaflet-zoom-anim';
 

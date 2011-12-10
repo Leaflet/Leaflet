@@ -5,7 +5,9 @@
 
 L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 	statics: {
-		getTime: Date.now || function () { return +new Date(); },
+		getTime: Date.now || function () {
+			return +new Date();
+		},
 
 		TIMER: true,
 

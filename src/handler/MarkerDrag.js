@@ -8,7 +8,9 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	enable: function () {
-		if (this._enabled) { return; }
+		if (this._enabled) {
+			return;
+		}
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._marker._icon, this._marker._icon);
 			this._draggable.on('dragstart', this._onDragStart, this);
@@ -20,7 +22,9 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	disable: function () {
-		if (!this._enabled) { return; }
+		if (!this._enabled) {
+			return;
+		}
 		this._draggable.disable();
 		this._enabled = false;
 	},

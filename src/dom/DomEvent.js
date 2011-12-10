@@ -47,7 +47,9 @@ L.DomEvent = {
 			key = '_leaflet_' + type + id,
 			handler = obj[key];
 
-		if (!handler) { return; }
+		if (!handler) {
+			return;
+		}
 
 		if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);

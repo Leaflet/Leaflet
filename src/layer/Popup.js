@@ -134,7 +134,9 @@ L.Popup = L.Class.extend({
 	},
 
 	_adjustPan: function () {
-		if (!this.options.autoPan) { return; }
+		if (!this.options.autoPan) {
+			return;
+		}
 
 		var containerHeight = this._container.offsetHeight,
 			layerPos = new L.Point(

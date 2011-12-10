@@ -80,12 +80,16 @@ L.Path = L.Path.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		if (this._map.dragging && this._map.dragging.moved()) {
+			return;
+		}
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		if (!this.hasEventListeners(e.type)) { return; }
+		if (!this.hasEventListeners(e.type)) {
+			return;
+		}
 		this.fire(e.type, {
 			latlng: this._map.mouseEventToLatLng(e),
 			layerPoint: this._map.mouseEventToLayerPoint(e)
@@ -118,13 +122,17 @@ L.Map.include({
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		// Unfortunately I haven't found a good workaround for this yet
-		if (L.Browser.webkit) { pane.removeChild(root); }
+		if (L.Browser.webkit) {
+			pane.removeChild(root);
+		}
 
 		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
 		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
 
-		if (L.Browser.webkit) { pane.appendChild(root); }
+		if (L.Browser.webkit) {
+			pane.appendChild(root);
+		}
 	}
 });

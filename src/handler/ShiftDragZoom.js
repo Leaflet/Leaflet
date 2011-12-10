@@ -10,7 +10,9 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 	},
 
 	enable: function () {
-		if (this._enabled) { return; }
+		if (this._enabled) {
+			return;
+		}
 
 		L.DomEvent.addListener(this._container, 'mousedown', this._onMouseDown, this);
 
@@ -18,7 +20,9 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 	},
 
 	disable: function () {
-		if (!this._enabled) { return; }
+		if (!this._enabled) {
+			return;
+		}
 
 		L.DomEvent.removeListener(this._container, 'mousedown', this._onMouseDown);
 
@@ -26,7 +30,9 @@ L.Handler.ShiftDragZoom = L.Handler.extend({
 	},
 
 	_onMouseDown: function (e) {
-		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
+		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) {
+			return false;
+		}
 
 		L.DomUtil.disableTextSelection();
 

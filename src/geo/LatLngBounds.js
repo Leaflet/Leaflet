@@ -32,9 +32,13 @@ L.LatLngBounds = L.Class.extend({
 				(this._southWest.lng + this._northEast.lng) / 2);
 	},
 
-	getSouthWest: function () { return this._southWest; },
+	getSouthWest: function () {
+		return this._southWest;
+	},
 
-	getNorthEast: function () { return this._northEast; },
+	getNorthEast: function () {
+		return this._northEast;
+	},
 
 	getNorthWest: function () {
 		return new L.LatLng(this._northEast.lat, this._southWest.lng);

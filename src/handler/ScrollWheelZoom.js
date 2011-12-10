@@ -4,14 +4,18 @@
 
 L.Handler.ScrollWheelZoom = L.Handler.extend({
 	enable: function () {
-		if (this._enabled) { return; }
+		if (this._enabled) {
+			return;
+		}
 		L.DomEvent.addListener(this._map._container, 'mousewheel', this._onWheelScroll, this);
 		this._delta = 0;
 		this._enabled = true;
 	},
 
 	disable: function () {
-		if (!this._enabled) { return; }
+		if (!this._enabled) {
+			return;
+		}
 		L.DomEvent.removeListener(this._map._container, 'mousewheel', this._onWheelScroll);
 		this._enabled = false;
 	},
@@ -36,7 +40,9 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 
 		this._delta = 0;
 
-		if (!delta) { return; }
+		if (!delta) {
+			return;
+		}
 
 		var newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
 			newZoom = zoom + delta;

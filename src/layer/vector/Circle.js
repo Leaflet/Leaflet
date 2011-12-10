@@ -42,7 +42,9 @@ L.Circle = L.Path.extend({
 		var p = this._point,
 			r = this._radius;
 
-		if (this._checkIfEmpty()) { return ''; }
+		if (this._checkIfEmpty()) {
+			return '';
+		}
 
 		if (L.Browser.svg) {
 			return "M" + p.x + "," + (p.y - r) +

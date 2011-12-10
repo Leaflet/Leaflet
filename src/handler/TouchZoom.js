@@ -4,19 +4,25 @@
 
 L.Handler.TouchZoom = L.Handler.extend({
 	enable: function () {
-		if (!L.Browser.touch || this._enabled) { return; }
+		if (!L.Browser.touch || this._enabled) {
+			return;
+		}
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
 		this._enabled = true;
 	},
 
 	disable: function () {
-		if (!this._enabled) { return; }
+		if (!this._enabled) {
+			return;
+		}
 		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
 		this._enabled = false;
 	},
 
 	_onTouchStart: function (e) {
-		if (!e.touches || e.touches.length !== 2 || this._map._animatingZoom) { return; }
+		if (!e.touches || e.touches.length !== 2 || this._map._animatingZoom) {
+			return;
+		}
 
 		var p1 = this._map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = this._map.mouseEventToLayerPoint(e.touches[1]),
@@ -38,7 +44,9 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchMove: function (e) {
-		if (!e.touches || e.touches.length !== 2) { return; }
+		if (!e.touches || e.touches.length !== 2) {
+			return;
+		}
 
 		if (!this._moved) {
 			this._map._mapPane.className += ' leaflet-zoom-anim';
@@ -64,7 +72,9 @@ L.Handler.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchEnd: function (e) {
-		if (!this._moved || !this._zooming) { return; }
+		if (!this._moved || !this._zooming) {
+			return;
+		}
 		this._zooming = false;
 
 		var oldZoom = this._map.getZoom(),

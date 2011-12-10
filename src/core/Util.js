@@ -73,7 +73,9 @@ L.Util = {
 		};
 	},
 
-	falseFn: function () { return false; },
+	falseFn: function () {
+		return false;
+	},
 
 	formatNum: function (num, digits) {
 		var pow = Math.pow(10, digits || 5);

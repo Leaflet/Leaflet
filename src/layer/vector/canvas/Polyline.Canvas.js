@@ -11,7 +11,9 @@ L.Polyline.include(!L.Path.CANVAS ? {} : {
 		for (i = 0, len = this._parts.length; i < len; i++) {
 			part = this._parts[i];
 			for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
-				if (!closed && (j === 0)) { continue; }
+				if (!closed && (j === 0)) {
+					continue;
+				}
 
 				dist = L.LineUtil.pointToSegmentDistance(p, part[k], part[j]);
 

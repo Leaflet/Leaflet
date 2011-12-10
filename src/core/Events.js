@@ -21,7 +21,9 @@ L.Mixin.Events = {
 	},
 
 	removeEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		if (!this.hasEventListeners(type)) { return this; }
+		if (!this.hasEventListeners(type)) {
+			return this;
+		}
 
 		for (var i = 0, events = this._leaflet_events, len = events[type].length; i < len; i++) {
 			if (
@@ -36,7 +38,9 @@ L.Mixin.Events = {
 	},
 
 	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
-		if (!this.hasEventListeners(type)) { return; }
+		if (!this.hasEventListeners(type)) {
+			return;
+		}
 
 		var event = L.Util.extend({
 			type: type,

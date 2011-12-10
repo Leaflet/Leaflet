@@ -28,7 +28,9 @@ L.Util.extend(L.LatLng, {
 
 L.LatLng.prototype = {
 	equals: function (/*LatLng*/ obj) {
-		if (!(obj instanceof L.LatLng)) { return false; }
+		if (!(obj instanceof L.LatLng)) {
+			return false;
+		}
 
 		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
 		return margin <= L.LatLng.MAX_MARGIN;

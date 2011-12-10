@@ -5,7 +5,9 @@
 L.Handler.MapDrag = L.Handler.extend({
 
 	enable: function () {
-		if (this._enabled) { return; }
+		if (this._enabled) {
+			return;
+		}
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 
@@ -25,7 +27,9 @@ L.Handler.MapDrag = L.Handler.extend({
 	},
 
 	disable: function () {
-		if (!this._enabled) { return; }
+		if (!this._enabled) {
+			return;
+		}
 		this._draggable.disable();
 		this._enabled = false;
 	},

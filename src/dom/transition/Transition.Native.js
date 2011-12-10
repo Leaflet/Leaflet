@@ -75,7 +75,9 @@ L.Transition = L.Transition.extend({
 	_dasherize: (function () {
 		var re = /([A-Z])/g;
 
-		function replaceFn(w) { return '-' + w.toLowerCase(); }
+		function replaceFn(w) {
+			return '-' + w.toLowerCase();
+		}
 
 		return function (str) {
 			return str.replace(re, replaceFn);

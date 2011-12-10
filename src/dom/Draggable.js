@@ -18,21 +18,29 @@ L.Draggable = L.Class.extend({
 	},
 
 	enable: function () {
-		if (this._enabled) { return; }
+		if (this._enabled) {
+			return;
+		}
 		L.DomEvent.addListener(this._dragStartTarget, L.Draggable.START, this._onDown, this);
 		this._enabled = true;
 	},
 
 	disable: function () {
-		if (!this._enabled) { return; }
+		if (!this._enabled) {
+			return;
+		}
 		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
 	},
 
 	_onDown: function (e) {
-		if ((!L.Browser.touch && e.shiftKey) || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if ((!L.Browser.touch && e.shiftKey) || ((e.which !== 1) && (e.button !== 1) && !e.touches)) {
+			return;
+		}
 
-		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length > 1) {
+			return;
+		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 			el = first.target;
@@ -44,7 +52,9 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._moved = false;
-		if (this._moving) { return; }
+		if (this._moving) {
+			return;
+		}
 
 		if (!L.Browser.touch) {
 			L.DomUtil.disableTextSelection();
@@ -59,7 +69,9 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onMove: function (e) {
-		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length > 1) {
+			return;
+		}
 
 		L.DomEvent.preventDefault(e);
 

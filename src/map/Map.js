@@ -414,7 +414,9 @@ L.Map = L.Class.extend({
 
 		this._initPanes();
 
-		if (this._initControlPos) { this._initControlPos(); }
+		if (this._initControlPos) {
+			this._initControlPos();
+		}
 	},
 
 	_initPanes: function () {
@@ -455,7 +457,9 @@ L.Map = L.Class.extend({
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
-		if (zoomChanged) { this.fire('zoomend'); }
+		if (zoomChanged) {
+			this.fire('zoomend');
+		}
 		this.fire('moveend');
 
 		if (!this._loaded) {
@@ -513,19 +517,25 @@ L.Map = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
+		if (!this._loaded || (this.dragging && this.dragging.moved())) {
+			return;
+		}
 
 		this.fire('pre' + e.type);
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		if (!this._loaded) { return; }
+		if (!this._loaded) {
+			return;
+		}
 
 		var type = e.type;
 		type = (type === 'mouseenter' ? 'mouseover' : (type === 'mouseleave' ? 'mouseout' : type));
 
-		if (!this.hasEventListeners(type)) { return; }
+		if (!this.hasEventListeners(type)) {
+			return;
+		}
 
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
@@ -546,7 +556,9 @@ L.Map = L.Class.extend({
 		for (i in handlers) {
 			if (handlers.hasOwnProperty(i) && handlers[i]) {
 				this[i] = new handlers[i](this);
-				if (this.options[i]) { this[i].enable(); }
+				if (this.options[i]) {
+					this[i].enable();
+				}
 			}
 		}
 	},

@@ -96,7 +96,9 @@ L.Control.Layers = L.Class.extend({
 	},
 
 	_update: function () {
-		if (!this._container) { return; }
+		if (!this._container) {
+			return;
+		}
 
 		this._baseLayersList.innerHTML = '';
 		this._overlaysList.innerHTML = '';
