@@ -132,6 +132,11 @@ L.Map = L.Class.extend({
 	setMaxBounds: function (bounds) {
 		this.options.maxBounds = bounds;
 
+		if (!bounds) {
+			this._boundsMinZoom = null;
+			return this;
+		}
+		
 		var minZoom = this.getBoundsZoom(bounds, true);
 
 		this._boundsMinZoom = minZoom;

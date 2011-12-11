@@ -225,3 +225,7 @@ var deps = {
 		heading: 'Misc'
 	}
 };
+
+if (typeof exports !== 'undefined') {
+	exports.deps = deps;
+}
