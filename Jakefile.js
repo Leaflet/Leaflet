@@ -1,63 +1,4 @@
-var fs = require('fs'),
-	uglify = require('uglify-js'),
-	//jshint = require('jshint'),
-	deps = require('./build/deps.js').deps;
-
-function getFiles(compsBase32) {
-	var memo = {},
-		comps;
-
-	if (compsBase32) {
-		comps = parseInt(compsBase32, 32).toString(2).split('');
-		console.log('Managing dependencies...')
-	}
-
-	function addFiles(srcs) {
-		for (var j = 0, len = srcs.length; j < len; j++) {
-			memo[srcs[j]] = true;
-		}
-	}
-
-	for (var i in deps) {
-		if (comps) {
-			if (parseInt(comps.pop(), 2) === 1) {
-				console.log('\t* ' + i);
-				addFiles(deps[i].src);
-			} else {
-				console.log('\t  ' + i);
-			}
-		} else {
-			addFiles(deps[i].src);
-		}
-	}
-
-	var files = [];
-
-	for (var src in memo) {
-		files.push('src/' + src);
-	}
-
-	return files;
-}
-
-function myUglify(code) {
-	var pro = uglify.uglify;
-
-	var ast = uglify.parser.parse(code);
-	ast = pro.ast_mangle(ast);
-	ast = pro.ast_squeeze(ast, {keep_comps: false});
-	ast = pro.ast_squeeze_more(ast);
-
-	return pro.gen_code(ast);
-}
-
-function combineFiles(files) {
-	var content = '';
-	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
-	}
-	return content;
-}
+var build = require('./build/build.js');
 
 var COPYRIGHT = "/*\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" +
                 " Leaflet is a modern open source JavaScript library for interactive maps.\n" +
@@ -67,20 +8,20 @@ task('build', function (compsBase32, buildName) {
 	var name = buildName || 'custom',
 		savePath = 'dist/leaflet' + (compsBase32 ? '-' + name : '') + '.js';
 
-	var files = getFiles(compsBase32);
+	var files = build.getFiles(compsBase32);
 
 	console.log('Concatenating ' + files.length + ' files...');
 
-	var content = combineFiles(files);
+	var content = build.combineFiles(files);
 
 	console.log('Uncompressed size: ' + content.length);
 	console.log('Compressing...');
 
-	var compressed = COPYRIGHT + myUglify(content);
+	var compressed = COPYRIGHT + build.uglify(content);
 
 	console.log('Compressed size: ' + compressed.length);
 
-	fs.writeFileSync(savePath, compressed, 'utf8');
+	build.save(savePath, compressed);
 
 	console.log('Saved to ' + savePath);
 });
