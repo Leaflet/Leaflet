@@ -37,7 +37,7 @@ exports.getFiles = function (compsBase32) {
 	}
 
 	return files;
-}
+};
 
 exports.uglify = function (code) {
 	var pro = uglifyjs.uglify;
@@ -48,7 +48,7 @@ exports.uglify = function (code) {
 	ast = pro.ast_squeeze_more(ast);
 
 	return pro.gen_code(ast);
-}
+};
 
 exports.combineFiles = function (files) {
 	var content = '';
@@ -56,8 +56,24 @@ exports.combineFiles = function (files) {
 		content += fs.readFileSync(files[i], 'utf8') + '\r\n\r\n';
 	}
 	return content;
-}
+};
 
 exports.save = function (savePath, compressed) {
-	fs.writeFileSync(savePath, compressed, 'utf8');
-}
+	return fs.writeFileSync(savePath, compressed, 'utf8');
+};
+
+exports.load = function (loadPath) {
+	try {
+		return fs.readFileSync(loadPath, 'utf8');
+	} catch (e) {
+		return null;
+	}
+};
+
+exports.getSizeDelta = function (newContent, oldContent) {
+	if (!oldContent) {
+		return 'new';
+	}
+	var delta = newContent.length - oldContent.length;
+	return (delta >= 0 ? '+' : '') + delta;
+};

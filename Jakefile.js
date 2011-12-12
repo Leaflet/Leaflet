@@ -24,24 +24,42 @@ task('lint', function () {
 
 desc('Combine and compress Leaflet source files');
 task('build', ['lint'], function (compsBase32, buildName) {
-	var name = buildName || 'custom',
-		path = 'dist/leaflet' + (compsBase32 ? '-' + name : '');
+	var pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
+		srcPath = pathPart + '-src.js',
+		path = pathPart + '.js';
 
 	var files = build.getFiles(compsBase32);
 
 	console.log('Concatenating ' + files.length + ' files...');
 	var content = build.combineFiles(files);
-	console.log('\tUncompressed size: ' + content.length);
 	
-	build.save(path + '-src.js', COPYRIGHT + content);
-	console.log('\tSaved to ' + path);
+	var oldSrc = build.load(srcPath),
+		newSrc = COPYRIGHT + content,
+		srcDelta = build.getSizeDelta(newSrc, oldSrc);
+		
+	console.log('\tUncompressed size: ' + newSrc.length + ' bytes (' + srcDelta + ')');
+		
+	if (newSrc === oldSrc) {
+		console.log('\tNo changes');
+	} else {
+		build.save(srcPath, newSrc);
+		console.log('\tSaved to ' + srcPath);
+	}
 	
 	console.log('Compressing...');
-	var compressed = COPYRIGHT + build.uglify(content);
-	console.log('\tCompressed size: ' + compressed.length);
 
-	build.save(path + '.js', compressed);
-	console.log('\tSaved to ' + path);
+	var oldCompressed = build.load(path),
+		newCompressed = COPYRIGHT + build.uglify(content),
+		delta = build.getSizeDelta(newCompressed, oldCompressed);
+		
+	console.log('\tCompressed size: ' + newCompressed.length + ' bytes (' + delta + ')');
+
+	if (newCompressed === oldCompressed) {
+		console.log('\tNo changes');
+	} else {
+		build.save(path, newCompressed);
+		console.log('\tSaved to ' + path);
+	}
 });
 
 task('default', ['build']);
