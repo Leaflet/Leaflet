@@ -14,22 +14,23 @@
 		#container {
 			text-align: left;
 			margin: 0 auto;
-			width: 600px;
+			width: 780px;
 		}
 		#deplist {
 			list-style: none;
 			padding: 0;
 		}
 		#deplist li {
-			padding-top: 10px;
-			padding-bottom: 10px;
-			border-top: 1px solid #eee;
+			padding-top: 7px;
+			padding-bottom: 7px;
+			border-bottom: 1px solid #ddd;
 		}
 		#deplist li.heading {
 			border: none;
-			background: #eee;
+			background: #ddd;
 			padding: 5px 10px;
-			margin-top: 10px;
+			margin-top: 25px;
+			border-radius: 5px;
 		}
 		#deplist input {
 			float: left;
@@ -38,7 +39,7 @@
 		}
 		#deplist label {
 			float: left;
-			width: 190px;
+			width: 160px;
 			font-weight: bold;
 		}
 		#deplist div {
@@ -55,25 +56,36 @@
 		#command, #command2 {
 			width: 100%;
 		}
+
+		#toolbar {
+			padding-bottom: 10px;
+			border-bottom: 1px solid #ddd;
+		}
+
+		h2 {
+			margin-top: 2em;
+		}
 	</style>
 </head>
 <body>
 	<div id="container">
 		<h1>Leaflet Build Helper</h1>
 
-		<p>
+		<p id="toolbar">
 			<a id="select-all" href="#all">Select All</a> |
 			<a id="deselect-all" href="#none">Deselect All</a>
 		</p>
 
 		<ul id="deplist"></ul>
 
+		<h2>Building using Node and UglifyJS</h2>
 		<p>
-			To build using UglifyJS, <a href="http://nodejs.org/#download">install Node</a>, run <code>npm install -g jake</code>, then <code>npm install -g uglify-js</code>, then run this in the root Leaflet directory:<br />
+			<a href="http://nodejs.org/#download">Install Node</a>, install Jake & UglifyJS (<code>npm install -g jake</code>; <code>npm install -g uglify-js</code>), then run this in the root Leaflet directory:<br />
 			<input type="text" id="command2" />
 		</p>
+		<h2>Building using Closure Compiler</h2>
 		<p>
-			To build using Closure Compiler, <a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">download</a> and extract it into <code>lib/closure-compiler</code> directory and run this command in the root Leaflet directory:<br />
+			<a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Download Closure Compiler</a> and extract it into <code>lib/closure-compiler</code> directory and run this command in the root Leaflet directory:<br />
 			<input type="text" id="command" />
 		</p>
 	</div>
@@ -108,10 +120,10 @@
 			var checks = deplist.getElementsByTagName('input');
 			var compsStr = '';
 
-			for (var i = 0; i < checks.length; i++) {
+			for (var i = 0, len = checks.length; i < len; i++) {
 				if (checks[i].checked) {
 					var srcs = deps[checks[i].id].src;
-					for (var j = 0; j < srcs.length; j++) {
+					for (var j = 0, len2 = srcs.length; j < len2; j++) {
 						files[srcs[j]] = true;
 					}
 					compsStr = '1' + compsStr;
