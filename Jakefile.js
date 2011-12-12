@@ -1,7 +1,7 @@
 var build = require('./build/build.js'),
 	lint = require('./build/hint.js');
 
-var COPYRIGHT = "/*\r\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" +
+var COPYRIGHT = "/*\r\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\r\n" +
                 " Leaflet is a modern open-source JavaScript library for interactive maps.\n" +
                 " http://leaflet.cloudmade.com\r\n*/\r\n";
 
