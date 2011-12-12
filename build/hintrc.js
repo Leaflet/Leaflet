@@ -1,4 +1,4 @@
-{
+exports.config = {
 	"browser": true,
 	"predef": ["L"],
 
@@ -41,4 +41,4 @@
 	"eqeqeq": true,
 	"trailing": true,
 	"white": true
-}
+};
