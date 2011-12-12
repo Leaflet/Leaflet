@@ -53,8 +53,11 @@
 			color: #777;
 		}
 
-		#command, #command2 {
+		#command {
 			width: 100%;
+		}
+		#command2 {
+			width: 200px;
 		}
 
 		#toolbar {
@@ -79,15 +82,19 @@
 		<ul id="deplist"></ul>
 
 		<h2>Building using Node and UglifyJS</h2>
-		<p>
-			<a href="http://nodejs.org/#download">Install Node</a>, install Jake & UglifyJS (<code>npm install -g jake</code>; <code>npm install -g uglify-js</code>), then run this in the root Leaflet directory:<br />
-			<input type="text" id="command2" />
-		</p>
+		<ol>
+			<li><a href="http://nodejs.org/#download">Download and install Node</a></li>
+			<li>Run this in the command line:<br />
+			<pre><code>npm install -g jake
+npm install -g jshint
+npm install -g uglify-js</code></pre></li>
+			<li>Run this command inside the Leaflet directory: <br /><input type="text" id="command2" />
+		</ol>
 		<h2>Building using Closure Compiler</h2>
-		<p>
-			<a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Download Closure Compiler</a> and extract it into <code>lib/closure-compiler</code> directory and run this command in the root Leaflet directory:<br />
-			<input type="text" id="command" />
-		</p>
+		<ol>
+			<li><a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Download Closure Compiler</a> and extract it into <code>lib/closure-compiler</code> directory</li>
+			<li>Run this command in the root Leaflet directory: <br /><input type="text" id="command" /></li>
+		</ol>
 	</div>
 
 	<script type="text/javascript">
@@ -140,13 +147,16 @@
 
 			commandInput.value = command;
 
-			commandInput2.value = 'jake build[' + parseInt(compsStr, 2).toString(32) + ']';
+			commandInput2.value = 'jake build[' + parseInt(compsStr, 2).toString(32) + ',custom]';
 		}
 
-		commandInput.onclick = function() {
-			commandInput.focus();
-			commandInput.select();
+		function inputSelect() {
+			this.focus();
+			this.select();
 		};
+		
+		commandInput.onclick = inputSelect;
+		commandInput2.onclick = inputSelect;
 
 		function onCheckboxChange() {
 			if (this.checked) {
