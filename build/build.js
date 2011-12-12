@@ -53,7 +53,7 @@ exports.uglify = function (code) {
 exports.combineFiles = function (files) {
 	var content = '';
 	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
+		content += fs.readFileSync(files[i], 'utf8') + '\r\n\r\n';
 	}
 	return content;
 }

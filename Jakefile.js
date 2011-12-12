@@ -1,9 +1,9 @@
 var build = require('./build/build.js'),
 	lint = require('./build/hint.js');
 
-var COPYRIGHT = "/*\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" +
+var COPYRIGHT = "/*\r\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" +
                 " Leaflet is a modern open-source JavaScript library for interactive maps.\n" +
-                " http://leaflet.cloudmade.com\n*/\n";
+                " http://leaflet.cloudmade.com\r\n*/\r\n";
 
 desc('Check Leaflet source for errors with JSHint');
 task('lint', function () {
