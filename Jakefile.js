@@ -2,9 +2,10 @@ var build = require('./build/build.js'),
 	lint = require('./build/hint.js');
 
 var COPYRIGHT = "/*\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" +
-                " Leaflet is a modern open source JavaScript library for interactive maps.\n" +
+                " Leaflet is a modern open-source JavaScript library for interactive maps.\n" +
                 " http://leaflet.cloudmade.com\n*/\n";
 
+desc('Check Leaflet source for errors with JSHint');
 task('lint', function () {
 	var files = build.getFiles();
 	
@@ -20,6 +21,7 @@ task('lint', function () {
 	}
 });
 
+desc('Combine and compress Leaflet source files');
 task('build', ['lint'], function (compsBase32, buildName) {
 	var name = buildName || 'custom',
 		path = 'dist/leaflet' + (compsBase32 ? '-' + name : '');
