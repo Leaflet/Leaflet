@@ -1,90 +1,72 @@
-var deps = require('./build/deps.js').deps,
-	fs = require('fs'),
+var fs = require('fs'),
 	uglify = require('uglify-js'),
-	jshint = require('jshint');
-
-var copyright = "/*\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" + 
-                " Leaflet is a modern open source JavaScript library for interactive maps.\n" +
-                " http://leaflet.cloudmade.com\n*/\n";
-	
-var savePath = 'dist/leaflet.js';
+	jshint = require('jshint'),
+	deps = require('./build/deps.js').deps;
 
 function getFiles() {
 	var memo = {},
-		files = [];
-		
-	var i, j, src, srcs, len;
-	
+		i, srcs, j, len;
+
 	for (i in deps) {
 		srcs = deps[i].src;
 		for (j = 0, len = srcs.length; j < len; j++) {
 			memo[srcs[j]] = true;
 		}
 	}
-	
+
+	var files = [],
+		src;
+
 	for (src in memo) {
 		files.push('src/' + src);
 	}
-	
+
 	return files;
 }
 
-var files = getFiles();
-
 function myUglify(code){
-	var jsp = uglify.parser,
-		pro = uglify.uglify;
+	var pro = uglify.uglify;
 
-	var ast = jsp.parse(code);
+	var ast = uglify.parser.parse(code);
 	ast = pro.ast_mangle(ast);
 	ast = pro.ast_squeeze(ast, {keep_comps: false});
 	ast = pro.ast_squeeze_more(ast);
-	
+
 	return pro.gen_code(ast);
 };
 
-function compress(content) {
+function combineFiles(files) {
+	var content = '';
+	for (var i = 0, len = files.length; i < len; i++) {
+		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
+	}
+	return content;
+}
+
+var COPYRIGHT = "/*\n Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin\n" +
+                " Leaflet is a modern open source JavaScript library for interactive maps.\n" +
+                " http://leaflet.cloudmade.com\n*/\n";
+
+var SAVE_PATH = 'dist/leaflet.js';
+
+var files = getFiles();
+
+task('build', function () {
+	console.log('Concatenating ' + files.length + ' files...');
+
+	var content = combineFiles(files);
+	
 	console.log('Uncompressed size: ' + content.length);
 	console.log('Compressing...');
-	
-	var compressed = copyright + myUglify(content);
-	
+
+	var compressed = COPYRIGHT + myUglify(content);
+	fail("Helo world");
+
 	console.log('Compressed size: ' + compressed.length);
-	
-	return compressed;
-}
 
-function combineFiles(files, callback) {
-	var remaining = files.length,
-		fileContents = new Array(remaining);
-		
-	console.log('Concatenating ' + remaining + ' files...');
-	
-	var i, len;
-	
-	for (i = 0, len = files.length; i < len; i++) {
-		(function (i) {
-			fs.readFile(files[i], 'utf8', function (err, contents) {
-				if (err) { throw err; }
-				fileContents[i] = contents;
-				remaining--;
-				if (remaining === 0) {
-					callback(fileContents.join('\n\n'));
-				}
-			});
-		}(i));
-	}
-}
+	fs.writeFileSync(SAVE_PATH, compressed, 'utf8');
 
-task('default', function () {
-	combineFiles(files, function (content) {
-		var compressed = compress(content);
-		
-		fs.writeFile(savePath, compressed, 'utf8', function (err) {
-			if (err) { throw err; }
-			console.log('Saved to ' + savePath);
-		});
-	});
+	console.log('Saved to ' + SAVE_PATH);
 });
 
-task('build', ['default']);
+task('default', ['build']);
