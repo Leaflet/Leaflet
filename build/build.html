@@ -52,7 +52,7 @@
 			color: #777;
 		}
 
-		#command {
+		#command, #command2 {
 			width: 100%;
 		}
 	</style>
@@ -69,14 +69,19 @@
 		<ul id="deplist"></ul>
 
 		<p>
-			Download <a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Closure Compiler</a>, extract it into <code>lib/closure-compiler</code> directory and run this command in the <code>build</code> directory:<br />
+			To build using UglifyJS, <a href="http://nodejs.org/#download">install Node</a>, run <code>npm install -g jake</code>, then <code>npm install -g uglify-js</code>, then run this in the root Leaflet directory:<br />
+			<input type="text" id="command2" />
+		</p>
+		<p>
+			To build using Closure Compiler, <a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">download</a> and extract it into <code>lib/closure-compiler</code> directory and run this command in the root Leaflet directory:<br />
 			<input type="text" id="command" />
 		</p>
 	</div>
 
 	<script type="text/javascript">
 		var deplist = document.getElementById('deplist'),
-			commandInput = document.getElementById('command');
+			commandInput = document.getElementById('command'),
+			commandInput2 = document.getElementById('command2');
 
 		document.getElementById('select-all').onclick = function() {
 			var checks = deplist.getElementsByTagName('input');
@@ -101,22 +106,29 @@
 		function updateCommand() {
 			var files = {};
 			var checks = deplist.getElementsByTagName('input');
+			var compsStr = '';
+
 			for (var i = 0; i < checks.length; i++) {
 				if (checks[i].checked) {
 					var srcs = deps[checks[i].id].src;
 					for (var j = 0; j < srcs.length; j++) {
 						files[srcs[j]] = true;
 					}
+					compsStr = '1' + compsStr;
+				} else {
+					compsStr = '0' + compsStr;
 				}
 			}
 
-			var command = 'java -jar ../lib/closure-compiler/compiler.jar ';
+			var command = 'java -jar lib/closure-compiler/compiler.jar ';
 			for (var src in files) {
-				command += '--js ../src/' + src + ' ';
+				command += '--js src/' + src + ' ';
 			}
-			command += '--js_output_file ../dist/leaflet-custom.js';
+			command += '--js_output_file dist/leaflet-custom.js';
 
 			commandInput.value = command;
+
+			commandInput2.value = 'jake build[' + parseInt(compsStr, 2).toString(32) + ']';
 		}
 
 		commandInput.onclick = function() {
@@ -127,12 +139,13 @@
 		function onCheckboxChange() {
 			if (this.checked) {
 				var depDeps = deps[this.id].deps;
-				if (!depDeps) { return; }
-				for (var i = 0; i < depDeps.length; i++) {
-					var check = document.getElementById(depDeps[i]);
-					if (!check.checked) {
-						check.checked = true;
-						check.onchange();
+				if (depDeps) {
+					for (var i = 0; i < depDeps.length; i++) {
+						var check = document.getElementById(depDeps[i]);
+						if (!check.checked) {
+							check.checked = true;
+							check.onchange();
+						}
 					}
 				}
 			} else {
@@ -141,7 +154,7 @@
 					var dep = deps[checks[i].id];
 					if (!dep.deps) { continue; }
 					for (var j = 0; j < dep.deps.length; j++) {
-						if (dep.deps[j] == this.id) {
+						if (dep.deps[j] === this.id) {
 							if (checks[i].checked) {
 								checks[i].checked = false;
 								checks[i].onchange();
