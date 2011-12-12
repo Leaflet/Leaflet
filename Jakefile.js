@@ -1,11 +1,10 @@
 var fs = require('fs'),
 	uglify = require('uglify-js'),
-	jshint = require('jshint'),
+	//jshint = require('jshint'),
 	deps = require('./build/deps.js').deps;
 
 function getFiles(compsBase32) {
 	var memo = {},
-		i, srcs, j, len,
 		comps;
 
 	if (compsBase32) {
@@ -13,27 +12,28 @@ function getFiles(compsBase32) {
 		console.log('Managing dependencies...')
 	}
 
-	var log = [];
-
-	for (i in deps) {
-		srcs = deps[i].src;
-
-		if (!comps || (parseInt(comps.pop(), 2) === 1)) {
-			if (comps) {
-				console.log('\t* ' + i);
-			}
-			for (j = 0, len = srcs.length; j < len; j++) {
-				memo[srcs[j]] = true;
-			}
-		} else if (comps) {
-			console.log('\t  ' + i);
+	function addFiles(srcs) {
+		for (var j = 0, len = srcs.length; j < len; j++) {
+			memo[srcs[j]] = true;
 		}
 	}
 
-	var files = [],
-		src;
+	for (var i in deps) {
+		if (comps) {
+			if (parseInt(comps.pop(), 2) === 1) {
+				console.log('\t* ' + i);
+				addFiles(deps[i].src);
+			} else {
+				console.log('\t  ' + i);
+			}
+		} else {
+			addFiles(deps[i].src);
+		}
+	}
 
-	for (src in memo) {
+	var files = [];
+
+	for (var src in memo) {
 		files.push('src/' + src);
 	}
 
