@@ -11,8 +11,10 @@ L.Popup = L.Class.extend({
 		autoPanPadding: new L.Point(5, 5)
 	},
 
-	initialize: function (options) {
+	initialize: function (options, source) {
 		L.Util.setOptions(this, options);
+
+		this._source = source;
 	},
 
 	onAdd: function (map) {
@@ -26,9 +28,11 @@ L.Popup = L.Class.extend({
 
 		this._map._panes.popupPane.appendChild(this._container);
 		this._map.on('viewreset', this._updatePosition, this);
+
 		if (this._map.options.closePopupOnClick) {
 			this._map.on('preclick', this._close, this);
 		}
+
 		this._update();
 
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
@@ -64,7 +68,7 @@ L.Popup = L.Class.extend({
 
 	_close: function () {
 		if (this._opened) {
-			this._map.removeLayer(this);
+			this._map.closePopup();
 		}
 	},
 

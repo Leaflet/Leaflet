@@ -30,12 +30,12 @@ L.Marker = L.Class.extend({
 	onRemove: function (map) {
 		this._removeIcon();
 
-		this._map = null;
-
 		// TODO move to Marker.Popup.js
 		if (this.closePopup) {
 			this.closePopup();
 		}
+
+		this._map = null;
 
 		map.off('viewreset', this._reset, this);
 	},
@@ -126,9 +126,7 @@ L.Marker = L.Class.extend({
 
 	_onMouseClick: function (e) {
 		L.DomEvent.stopPropagation(e);
-		if (this.dragging && this.dragging.moved()) {
-			return;
-		}
+		if (this.dragging && this.dragging.moved()) { return; }
 		this.fire(e.type);
 	},
 

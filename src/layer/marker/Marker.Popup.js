@@ -24,7 +24,7 @@ L.Marker.include({
 			this.on('click', this.openPopup, this);
 		}
 
-		this._popup = new L.Popup(options);
+		this._popup = new L.Popup(options, this);
 		this._popup.setContent(content);
 
 		return this;

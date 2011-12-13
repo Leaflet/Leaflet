@@ -2098,12 +2098,12 @@ L.Marker = L.Class.extend({
 	onRemove: function (map) {
 		this._removeIcon();
 
-		this._map = null;
-
 		// TODO move to Marker.Popup.js
 		if (this.closePopup) {
 			this.closePopup();
 		}
+
+		this._map = null;
 
 		map.off('viewreset', this._reset, this);
 	},
@@ -2194,9 +2194,7 @@ L.Marker = L.Class.extend({
 
 	_onMouseClick: function (e) {
 		L.DomEvent.stopPropagation(e);
-		if (this.dragging && this.dragging.moved()) {
-			return;
-		}
+		if (this.dragging && this.dragging.moved()) { return; }
 		this.fire(e.type);
 	},
 
@@ -2220,8 +2218,10 @@ L.Popup = L.Class.extend({
 		autoPanPadding: new L.Point(5, 5)
 	},
 
-	initialize: function (options) {
+	initialize: function (options, source) {
 		L.Util.setOptions(this, options);
+
+		this._source = source;
 	},
 
 	onAdd: function (map) {
@@ -2235,9 +2235,11 @@ L.Popup = L.Class.extend({
 
 		this._map._panes.popupPane.appendChild(this._container);
 		this._map.on('viewreset', this._updatePosition, this);
+
 		if (this._map.options.closePopupOnClick) {
 			this._map.on('preclick', this._close, this);
 		}
+
 		this._update();
 
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
@@ -2273,7 +2275,7 @@ L.Popup = L.Class.extend({
 
 	_close: function () {
 		if (this._opened) {
-			this._map.removeLayer(this);
+			this._map.closePopup();
 		}
 	},
 
@@ -2407,7 +2409,7 @@ L.Marker.include({
 			this.on('click', this.openPopup, this);
 		}
 
-		this._popup = new L.Popup(options);
+		this._popup = new L.Popup(options, this);
 		this._popup.setContent(content);
 
 		return this;
@@ -2428,12 +2430,17 @@ L.Map.include({
 	openPopup: function (popup) {
 		this.closePopup();
 		this._popup = popup;
-		return this.addLayer(popup);
+		this.addLayer(popup);
+		this.fire('popupopen', { popup: this._popup });
+	
+		return this;
 	},
 
 	closePopup: function () {
 		if (this._popup) {
 			this.removeLayer(this._popup);
+			this.fire('popupclose', { popup: this._popup });
+			this._popup = null;
 		}
 		return this;
 	}

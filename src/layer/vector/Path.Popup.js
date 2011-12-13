@@ -3,7 +3,7 @@
  */
 
 L.Path.include({
-	bindPopup: function (content, options) {
+	bindPopup: function(content, options) {
 		if (!this._popup || this._popup.options !== options) {
 			this._popup = new L.Popup(options);
 		}
@@ -17,7 +17,7 @@ L.Path.include({
 		return this;
 	},
 
-	_openPopup: function (e) {
+	_openPopup: function(e) {
 		this._popup.setLatLng(e.latlng);
 		this._map.openPopup(this._popup);
 	}
