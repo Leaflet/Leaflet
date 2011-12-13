@@ -69,6 +69,7 @@ Leaflet Changelog
  * Fixed a bug that made selecting text in the attribution control impossible. [#279](https://github.com/CloudMade/Leaflet/issues/279)
  * Fixed a bug when initializing a map in a non-empty div. [#278](https://github.com/CloudMade/Leaflet/issues/278)
  * Fixed a bug where `movestart` didn't fire on panning animation.
+ * Fixed a bug in Elliptical Mercator formula that affeted `EPSG:3395` CRS (by [@Savvkin](https://github.com/Savvkin)). [#358](https://github.com/CloudMade/Leaflet/pull/358)
 
 #### Browser bugfixes
 
