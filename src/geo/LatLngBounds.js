@@ -65,13 +65,15 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	intersects: function (/*LatLngBounds*/ bounds) {
-		var sw = bounds.getSouthWest(),
-			ne = bounds.getNorthEast(),
-			nw = bounds.getNorthWest(),
-			se = bounds.getSouthEast();
+		var sw = this._southWest,
+			ne = this._northEast,
+			sw2 = bounds.getSouthWest(),
+			ne2 = bounds.getNorthEast();
 
-		return this.contains(sw) || this.contains(ne) ||
-				this.contains(nw) || this.contains(se);
+		var latIntersects = (ne2.lat >= sw.lat) && (sw2.lat <= ne.lat),
+			lngIntersects = (ne2.lng >= sw.lng) && (sw2.lng <= ne.lng);
+
+		return latIntersects && lngIntersects;
 	},
 
 	toBBoxString: function () {
