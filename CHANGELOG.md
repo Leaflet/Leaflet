@@ -23,6 +23,7 @@ Leaflet Changelog
 #### API improvements
 
  * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
+ * Added `LatLngBounds` `intersects(otherBounds)` method (thanks to [@pagameba](https://github.com/pagameba)). [#350](https://github.com/CloudMade/Leaflet/pull/350)
  * Added `urlParams` third optional argument to `TileLayer` constructor for convenience: an object with properties that will be evaluated in the URL template.
  * Added `L.Util.template` method for simple string template evaluation.
  * Added second argument `inside` to `map` `getBoundsZoom` method that allows you to get appropriate zoom for the view to fit *inside* the given bounds.
