@@ -435,6 +435,15 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code><a href="#error-event">ErrorEvent</a></code>
 				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) failed.</td>
 			</tr>
+                        <tr>
+                                <td><code>popupopen</code></td>
+                                <td><code><a href="#popup-event">PopupEvent</a></code>
+                                <td>Fired when a popup is opened (using <code>openPopup</code> method).</td>
+                        </tr>
+                        <tr>
+                                <td><code>popupclose</code></td>
+                                <td><code><a href="#popup-event">PopupEvent</a></code>
+                                <td>Fired when a popup is closed (using <code>closePopup</code> method).</td>
 		</table>
 		
 		
@@ -958,8 +967,8 @@ map.openPopup(popup);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Popup( &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
-				<td>Instantiates a Popup object given the geographical point where it will open, the HTML content it will have and optionally an options object.</td>
+				<td><code>L.Popup( &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>, &lt;object&gt;&nbsp;<i>source?</i>&nbsp;)</code></td>
+				<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional object that is used to tag the popup with a reference to the source object to which it refers.</td>
 			</tr>
 		</table>
 		
@@ -2494,6 +2503,20 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 			</tr>
 		</table>
 		
+                <h3 id="popup-event">Popup event</h3>
+
+                <table>
+                        <tr>
+                                <th>property</th>
+                                <th>type</th>
+                                <th>description</th>
+                        </tr>
+                        <tr>
+                                <td><code>popup</code></td>
+                                <td><code><a href="#popup">Popup</a></code></td>
+                                <td>The popup that was opened or closed.</td>
+                        </tr>
+                </table>
 
 		<!-- <h3>TileEvent</h3> -->
 
