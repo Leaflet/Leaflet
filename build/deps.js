@@ -135,36 +135,36 @@ var deps = {
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',
-		      'handler/Handler.js',
-		      'handler/MapDrag.js'],
+		      'core/Handler.js',
+		      'map/handler/Map.Drag.js'],
 		desc: 'Makes the map draggable (by mouse or touch).',
 		heading: 'Interaction'
 	},
 
 	MouseZoom: {
 		src: ['dom/DomEvent.js',
-		      'handler/Handler.js',
-		      'handler/DoubleClickZoom.js',
-		      'handler/ScrollWheelZoom.js'],
+		      'core/Handler.js',
+		      'map/handler/Map.DoubleClickZoom.js',
+		      'map/handler/Map.ScrollWheelZoom.js'],
 		desc: 'Scroll wheel zoom and double click zoom on the map.'
 	},
 
 	TouchZoom: {
 		src: ['dom/DomEvent.js',
 		      'dom/DomEvent.DoubleTap.js',
-		      'handler/Handler.js',
-		      'handler/TouchZoom.js'],
+		      'core/Handler.js',
+		      'map/handler/Map.TouchZoom.js'],
 		deps: ['MapAnimationZoom'],
 		desc: 'Enables smooth touch zooming on iOS and double tap on iOS/Android.'
 	},
 
-	ShiftDragZoom: {
-		src: ['handler/ShiftDragZoom.js'],
+	BoxZoom: {
+		src: ['map/handler/Map.BoxZoom.js'],
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
 
 	MarkerDrag: {
-		src: ['handler/MarkerDrag.js'],
+		src: ['layer/marker/Marker.Drag.js'],
 		desc: 'Makes markers draggable (by mouse or touch).'
 	},
 
@@ -207,13 +207,13 @@ var deps = {
 	},
 
 	AnimationPan: {
-		src: ['map/ext/Map.PanAnimation.js'],
+		src: ['map/anim/Map.PanAnimation.js'],
 		deps: ['AnimationPan'],
 		desc: 'Panning animation. Can use both native and timer-based animation.'
 	},
 
 	AnimationZoom: {
-		src: ['map/ext/Map.ZoomAnimation.js'],
+		src: ['map/anim/Map.ZoomAnimation.js'],
 		deps: ['AnimationPan', 'AnimationNative'],
 		desc: 'Smooth zooming animation. So far it works only on browsers that support CSS3 Transitions.'
 	},

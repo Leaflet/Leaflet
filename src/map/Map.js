@@ -22,7 +22,7 @@ L.Map = L.Class.extend({
 		touchZoom: L.Browser.touch && !L.Browser.android,
 		scrollWheelZoom: !L.Browser.touch,
 		doubleClickZoom: true,
-		shiftDragZoom: true,
+		boxZoom: true,
 
 		// controls
 		zoomControl: true,
@@ -136,7 +136,7 @@ L.Map = L.Class.extend({
 			this._boundsMinZoom = null;
 			return this;
 		}
-		
+
 		var minZoom = this.getBoundsZoom(bounds, true);
 
 		this._boundsMinZoom = minZoom;
@@ -550,20 +550,21 @@ L.Map = L.Class.extend({
 
 	_initInteraction: function () {
 		var handlers = {
-			dragging: L.Handler.MapDrag,
-			touchZoom: L.Handler.TouchZoom,
-			doubleClickZoom: L.Handler.DoubleClickZoom,
-			scrollWheelZoom: L.Handler.ScrollWheelZoom,
-			shiftDragZoom: L.Handler.ShiftDragZoom
+			dragging: L.Map.MapDrag,
+			touchZoom: L.Map.TouchZoom,
+			doubleClickZoom: L.Map.DoubleClickZoom,
+			scrollWheelZoom: L.Map.ScrollWheelZoom,
+			boxZoom: L.Map.BoxZoom
 		};
-		var i;
 
+		var i;
 		for (i in handlers) {
 			if (handlers.hasOwnProperty(i) && handlers[i]) {
 				this[i] = new handlers[i](this);
 				if (this.options[i]) {
 					this[i].enable();
 				}
+				// TODO move enabling to handler contructor
 			}
 		}
 	},
