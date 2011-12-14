@@ -39,7 +39,7 @@ L.Mixin.Events = {
 
 	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
 		if (!this.hasEventListeners(type)) {
-			return;
+			return this;
 		}
 
 		var event = L.Util.extend({

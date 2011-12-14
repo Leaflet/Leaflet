@@ -3,17 +3,14 @@
  */
 
 L.Handler.MapDrag = L.Handler.extend({
-
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+	addHooks: function () {
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 
-			this._draggable.on('dragstart', this._onDragStart, this);
-			this._draggable.on('drag', this._onDrag, this);
-			this._draggable.on('dragend', this._onDragEnd, this);
+			this._draggable
+				.on('dragstart', this._onDragStart, this)
+				.on('drag', this._onDrag, this)
+				.on('dragend', this._onDragEnd, this);
 
 			var options = this._map.options;
 
@@ -23,15 +20,10 @@ L.Handler.MapDrag = L.Handler.extend({
 			}
 		}
 		this._draggable.enable();
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		this._draggable.disable();
-		this._enabled = false;
 	},
 
 	moved: function () {
@@ -39,13 +31,15 @@ L.Handler.MapDrag = L.Handler.extend({
 	},
 
 	_onDragStart: function () {
-		this._map.fire('movestart');
-		this._map.fire('dragstart');
+		this._map
+			.fire('movestart')
+			.fire('dragstart');
 	},
 
 	_onDrag: function () {
-		this._map.fire('move');
-		this._map.fire('drag');
+		this._map
+			.fire('move')
+			.fire('drag');
 	},
 
 	_onViewReset: function () {
@@ -71,10 +65,11 @@ L.Handler.MapDrag = L.Handler.extend({
 	_onDragEnd: function () {
 		var map = this._map;
 
-		map.fire('moveend');
-		map.fire('dragend');
+		map
+			.fire('moveend')
+			.fire('dragend');
 
-		if (this._map.options.maxBounds) {
+		if (map.options.maxBounds) {
 			// TODO predrag validation instead of animation
 			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
 		}

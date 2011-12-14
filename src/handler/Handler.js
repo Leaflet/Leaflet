@@ -7,6 +7,22 @@ L.Handler = L.Class.extend({
 		this._map = map;
 	},
 
+	enable: function () {
+		if (this._enabled) {
+			return;
+		}
+		this._enabled = true;
+		this.addHooks();
+	},
+
+	disable: function () {
+		if (!this._enabled) {
+			return;
+		}
+		this._enabled = false;
+		this.removeHooks();
+	},
+
 	enabled: function () {
 		return !!this._enabled;
 	}

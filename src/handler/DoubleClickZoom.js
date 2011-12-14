@@ -3,20 +3,13 @@
  */
 
 L.Handler.DoubleClickZoom = L.Handler.extend({
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+	addHooks: function () {
 		this._map.on('dblclick', this._onDoubleClick, this._map);
-		this._enabled = true;
+		// TODO remove 3d argument?
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		this._map.off('dblclick', this._onDoubleClick, this._map);
-		this._enabled = false;
 	},
 
 	_onDoubleClick: function (e) {

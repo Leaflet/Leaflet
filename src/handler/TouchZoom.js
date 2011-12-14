@@ -3,20 +3,12 @@
  */
 
 L.Handler.TouchZoom = L.Handler.extend({
-	enable: function () {
-		if (!L.Browser.touch || this._enabled) {
-			return;
-		}
+	addHooks: function () {
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
-		this._enabled = false;
 	},
 
 	_onTouchStart: function (e) {
