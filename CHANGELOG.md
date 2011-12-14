@@ -31,6 +31,7 @@ Leaflet Changelog
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
  * Added `hasLayer` method to `Map`.
  * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
+ * Added `Map` `zoomstart` event (thanks to [@Fabiz](https://github.com/Fabiz)). [#377](https://github.com/CloudMade/Leaflet/pull/377)
  * Added `ImageOverlay` `load` event. [#213](https://github.com/CloudMade/Leaflet/issues/213)
  * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
  * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194)
@@ -64,6 +65,7 @@ Leaflet Changelog
  * Fixed a typo in `Bounds` `contains` method (by [@anru](https://github.com/anru)). [#180](https://github.com/CloudMade/Leaflet/pull/180)
  * Fixed a bug where drag event fired before the actual movement of layer (by [@anru](https://github.com/anru)). [#197](https://github.com/CloudMade/Leaflet/pull/197)
  * Fixed a bug where map click caused an error if dragging is initially disabled. [#196](https://github.com/CloudMade/Leaflet/issues/196)
+ * Fixed a bug where map `movestart` event would fire after zoom animation.
  * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)
  * Fixed a bug where `TileLayer` `load` event wouldn't fire in some edge cases (by [@dravnic](https://github.com/dravnic)).
  * Fixed a bug related to clearing background tiles after zooming (by [@neno-giscloud](https://github.com/neno-giscloud) & [@dravnic](https://github.com/dravnic)).

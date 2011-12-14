@@ -42,7 +42,12 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (!this._moved) {
 			this._map._mapPane.className += ' leaflet-zoom-anim';
-			this._map._prepareTileBg();
+
+			this._map
+				.fire('zoomstart')
+				.fire('movestart')
+				._prepareTileBg();
+
 			this._moved = true;
 		}
 

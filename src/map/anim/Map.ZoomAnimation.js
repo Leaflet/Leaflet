@@ -19,6 +19,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this._mapPane.className += ' leaflet-zoom-anim';
 
+        this
+			.fire('movestart')
+			.fire('zoomstart');
+
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
 
@@ -108,9 +112,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._restoreTileFront();
 
 		L.Util.falseFn(this._tileBg.offsetWidth);
-		this._resetView(this._animateToCenter, this._animateToZoom, true);
-
-		//TODO clear tileBg on map layersload
+		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
 		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
 		this._animatingZoom = false;

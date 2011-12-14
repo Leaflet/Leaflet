@@ -442,10 +442,16 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._objectsPane);
 	},
 
-	_resetView: function (center, zoom, preserveMapOffset) {
+	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
 		var zoomChanged = (this._zoom !== zoom);
 
-		this.fire('movestart');
+		if (!afterZoomAnim) {
+			this.fire('movestart');
+
+			if (zoomChanged) {
+				this.fire('zoomstart');
+			}
+		}
 
 		this._zoom = zoom;
 
@@ -462,7 +468,7 @@ L.Map = L.Class.extend({
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
-		if (zoomChanged) {
+		if (zoomChanged || afterZoomAnim) {
 			this.fire('zoomend');
 		}
 		this.fire('moveend');

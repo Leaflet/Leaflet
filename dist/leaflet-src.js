@@ -1314,10 +1314,16 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._objectsPane);
 	},
 
-	_resetView: function (center, zoom, preserveMapOffset) {
+	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
 		var zoomChanged = (this._zoom !== zoom);
 
-		this.fire('movestart');
+		if (!afterZoomAnim) {
+			this.fire('movestart');
+
+			if (zoomChanged) {
+				this.fire('zoomstart');
+			}
+		}
 
 		this._zoom = zoom;
 
@@ -1334,7 +1340,7 @@ L.Map = L.Class.extend({
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
-		if (zoomChanged) {
+		if (zoomChanged || afterZoomAnim) {
 			this.fire('zoomend');
 		}
 		this.fire('moveend');
@@ -4442,7 +4448,12 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (!this._moved) {
 			this._map._mapPane.className += ' leaflet-zoom-anim';
-			this._map._prepareTileBg();
+
+			this._map
+				.fire('zoomstart')
+				.fire('movestart')
+				._prepareTileBg();
+
 			this._moved = true;
 		}
 
@@ -5312,6 +5323,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this._mapPane.className += ' leaflet-zoom-anim';
 
+        this
+			.fire('movestart')
+			.fire('zoomstart');
+
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
 
@@ -5401,9 +5416,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._restoreTileFront();
 
 		L.Util.falseFn(this._tileBg.offsetWidth);
-		this._resetView(this._animateToCenter, this._animateToZoom, true);
-
-		//TODO clear tileBg on map layersload
+		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
 		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
 		this._animatingZoom = false;

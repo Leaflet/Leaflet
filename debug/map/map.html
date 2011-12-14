@@ -5,9 +5,9 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
 	<link rel="stylesheet" href="../css/screen.css" />
-	
+
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -21,25 +21,34 @@
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
 			latlng = new L.LatLng(50.5, 30.51);
-	
+
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
-		
+
 		var markers = new L.FeatureGroup();
-		
+
 		function populate() {
 			for (var i = 0; i < 10; i++) {
 				markers.addLayer(new L.Marker(getRandomLatLng(map)));
 			}
 			return false;
-		};
+		}
 
 		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>");
-		
+
 		map.addLayer(markers);
-		
+
 		populate();
 		L.DomUtil.get('populate').onclick = populate;
-		
+
+//		function logEvent(e) { console.log(e.type); }
+//
+//		map.on('movestart', logEvent);
+//		map.on('move', logEvent);
+//		map.on('moveend', logEvent);
+//
+//		map.on('zoomstart', logEvent);
+//		map.on('zoomend', logEvent);
+
 	</script>
 </body>
 </html>
