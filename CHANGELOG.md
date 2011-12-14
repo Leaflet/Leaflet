@@ -57,6 +57,7 @@ Leaflet Changelog
  * Fixed a bug where `Circle` was rendered with incorrect radius (didn't take projection exaggeration into account). [#331](https://github.com/CloudMade/Leaflet/issues/331)
  * Fixed a bug where `Marker` `setIcon` was not working properly (by [@marphi](https://github.com/marphi)). [#218](https://github.com/CloudMade/Leaflet/pull/218) [#311](https://github.com/CloudMade/Leaflet/issues/311)
  * Fixed a bug where `Marker` `setLatLng` was not working if it's set before adding the marker to a map. [#222](https://github.com/CloudMade/Leaflet/issues/222)
+ * Fixed a bug where marker popup would not move on `Marker` `setLatLng` (by [@tjarratt](https://github.com/tjarratt)). [#272](https://github.com/CloudMade/Leaflet/pull/272)
  * Fixed a bug where static properties of a child class would not override the parent ones.
  * Fixed broken popup `closePopup` option (by [@jgerigmeyer](https://github.com/jgerigmeyer)).
  * Fixed a bug that caused en error when dragging marker with icon without shadow (by [@anru](https://github.com/anru)). [#178](https://github.com/CloudMade/Leaflet/issues/178)

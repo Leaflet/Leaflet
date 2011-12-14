@@ -48,6 +48,10 @@ L.Marker = L.Class.extend({
 		this._latlng = latlng;
 		if (this._icon) {
 			this._reset();
+
+			if (this._popup) {
+				this._popup.setLatLng(this._latlng);
+			}
 		}
 	},
 
