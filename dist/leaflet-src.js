@@ -257,7 +257,7 @@ L.Mixin.Events = {
 
 	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
 		if (!this.hasEventListeners(type)) {
-			return;
+			return this;
 		}
 
 		var event = L.Util.extend({
@@ -894,7 +894,7 @@ L.Map = L.Class.extend({
 		touchZoom: L.Browser.touch && !L.Browser.android,
 		scrollWheelZoom: !L.Browser.touch,
 		doubleClickZoom: true,
-		shiftDragZoom: true,
+		boxZoom: true,
 
 		// controls
 		zoomControl: true,
@@ -1008,7 +1008,7 @@ L.Map = L.Class.extend({
 			this._boundsMinZoom = null;
 			return this;
 		}
-		
+
 		var minZoom = this.getBoundsZoom(bounds, true);
 
 		this._boundsMinZoom = minZoom;
@@ -1422,20 +1422,21 @@ L.Map = L.Class.extend({
 
 	_initInteraction: function () {
 		var handlers = {
-			dragging: L.Handler.MapDrag,
-			touchZoom: L.Handler.TouchZoom,
-			doubleClickZoom: L.Handler.DoubleClickZoom,
-			scrollWheelZoom: L.Handler.ScrollWheelZoom,
-			shiftDragZoom: L.Handler.ShiftDragZoom
+			dragging: L.Map.MapDrag,
+			touchZoom: L.Map.TouchZoom,
+			doubleClickZoom: L.Map.DoubleClickZoom,
+			scrollWheelZoom: L.Map.ScrollWheelZoom,
+			boxZoom: L.Map.BoxZoom
 		};
-		var i;
 
+		var i;
 		for (i in handlers) {
 			if (handlers.hasOwnProperty(i) && handlers[i]) {
 				this[i] = new handlers[i](this);
 				if (this.options[i]) {
 					this[i].enable();
 				}
+				// TODO move enabling to handler contructor
 			}
 		}
 	},
@@ -1983,7 +1984,7 @@ L.ImageOverlay = L.Class.extend({
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,
 			onmousemove: L.Util.falseFn,
-			onload: this._onImageLoad,
+			onload: L.Util.bind(this._onImageLoad, this),
 			src: this._url
 		});
 	},
@@ -2000,8 +2001,8 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_onImageLoad: function () {
-		this.style.visibility = '';
-		//TODO fire layerload
+		this._image.style.visibility = '';
+		this.fire('load');
 	}
 });
 
@@ -2116,6 +2117,10 @@ L.Marker = L.Class.extend({
 		this._latlng = latlng;
 		if (this._icon) {
 			this._reset();
+
+			if (this._popup) {
+				this._popup.setLatLng(this._latlng);
+			}
 		}
 	},
 
@@ -4165,6 +4170,22 @@ L.Handler = L.Class.extend({
 		this._map = map;
 	},
 
+	enable: function () {
+		if (this._enabled) {
+			return;
+		}
+		this._enabled = true;
+		this.addHooks();
+	},
+
+	disable: function () {
+		if (!this._enabled) {
+			return;
+		}
+		this._enabled = false;
+		this.removeHooks();
+	},
+
 	enabled: function () {
 		return !!this._enabled;
 	}
@@ -4175,18 +4196,15 @@ L.Handler = L.Class.extend({
  * L.Handler.MapDrag is used internally by L.Map to make the map draggable.
  */
 
-L.Handler.MapDrag = L.Handler.extend({
-
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+L.Map.Drag = L.Handler.extend({
+	addHooks: function () {
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 
-			this._draggable.on('dragstart', this._onDragStart, this);
-			this._draggable.on('drag', this._onDrag, this);
-			this._draggable.on('dragend', this._onDragEnd, this);
+			this._draggable
+				.on('dragstart', this._onDragStart, this)
+				.on('drag', this._onDrag, this)
+				.on('dragend', this._onDragEnd, this);
 
 			var options = this._map.options;
 
@@ -4196,15 +4214,10 @@ L.Handler.MapDrag = L.Handler.extend({
 			}
 		}
 		this._draggable.enable();
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		this._draggable.disable();
-		this._enabled = false;
 	},
 
 	moved: function () {
@@ -4212,13 +4225,15 @@ L.Handler.MapDrag = L.Handler.extend({
 	},
 
 	_onDragStart: function () {
-		this._map.fire('movestart');
-		this._map.fire('dragstart');
+		this._map
+			.fire('movestart')
+			.fire('dragstart');
 	},
 
 	_onDrag: function () {
-		this._map.fire('move');
-		this._map.fire('drag');
+		this._map
+			.fire('move')
+			.fire('drag');
 	},
 
 	_onViewReset: function () {
@@ -4244,10 +4259,11 @@ L.Handler.MapDrag = L.Handler.extend({
 	_onDragEnd: function () {
 		var map = this._map;
 
-		map.fire('moveend');
-		map.fire('dragend');
+		map
+			.fire('moveend')
+			.fire('dragend');
 
-		if (this._map.options.maxBounds) {
+		if (map.options.maxBounds) {
 			// TODO predrag validation instead of animation
 			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
 		}
@@ -4263,21 +4279,14 @@ L.Handler.MapDrag = L.Handler.extend({
  * L.Handler.DoubleClickZoom is used internally by L.Map to add double-click zooming.
  */
 
-L.Handler.DoubleClickZoom = L.Handler.extend({
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
-		this._map.on('dblclick', this._onDoubleClick, this._map);
-		this._enabled = true;
+L.Map.DoubleClickZoom = L.Handler.extend({
+	addHooks: function () {
+		this._map.on('dblclick', this._onDoubleClick);
+		// TODO remove 3d argument?
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
-		this._map.off('dblclick', this._onDoubleClick, this._map);
-		this._enabled = false;
+	removeHooks: function () {
+		this._map.off('dblclick', this._onDoubleClick);
 	},
 
 	_onDoubleClick: function (e) {
@@ -4290,22 +4299,14 @@ L.Handler.DoubleClickZoom = L.Handler.extend({
  * L.Handler.ScrollWheelZoom is used internally by L.Map to enable mouse scroll wheel zooming on the map.
  */
 
-L.Handler.ScrollWheelZoom = L.Handler.extend({
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+L.Map.ScrollWheelZoom = L.Handler.extend({
+	addHooks: function () {
 		L.DomEvent.addListener(this._map._container, 'mousewheel', this._onWheelScroll, this);
 		this._delta = 0;
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		L.DomEvent.removeListener(this._map._container, 'mousewheel', this._onWheelScroll);
-		this._enabled = false;
 	},
 
 	_onWheelScroll: function (e) {
@@ -4320,11 +4321,12 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_performZoom: function () {
-		var delta = Math.round(this._delta),
-			zoom = this._map.getZoom();
+		var map = this._map,
+			delta = Math.round(this._delta),
+			zoom = map.getZoom();
 
 		delta = Math.max(Math.min(delta, 4), -4);
-		delta = this._map._limitZoom(zoom + delta) - zoom;
+		delta = map._limitZoom(zoom + delta) - zoom;
 
 		this._delta = 0;
 
@@ -4335,15 +4337,17 @@ L.Handler.ScrollWheelZoom = L.Handler.extend({
 		var newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
 			newZoom = zoom + delta;
 
-		this._map.setView(newCenter, newZoom);
+		map.setView(newCenter, newZoom);
 	},
 
 	_getCenterForScrollWheelZoom: function (mousePos, delta) {
-		var centerPoint = this._map.getPixelBounds().getCenter(),
-			viewHalf = this._map.getSize().divideBy(2),
+		var map = this._map,
+			centerPoint = map.getPixelBounds().getCenter(),
+			viewHalf = map.getSize().divideBy(2),
 			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - Math.pow(2, -delta)),
 			newCenterPoint = centerPoint.add(centerOffset);
-		return this._map.unproject(newCenterPoint, this._map._zoom, true);
+
+		return map.unproject(newCenterPoint, map._zoom, true);
 	}
 });
 
@@ -4397,21 +4401,13 @@ L.Util.extend(L.DomEvent, {
  * L.Handler.TouchZoom is used internally by L.Map to add touch-zooming on Webkit-powered mobile browsers.
  */
 
-L.Handler.TouchZoom = L.Handler.extend({
-	enable: function () {
-		if (!L.Browser.touch || this._enabled) {
-			return;
-		}
+L.Map.TouchZoom = L.Handler.extend({
+	addHooks: function () {
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
-		this._enabled = false;
 	},
 
 	_onTouchStart: function (e) {
@@ -4495,31 +4491,19 @@ L.Handler.TouchZoom = L.Handler.extend({
  * L.Handler.ShiftDragZoom is used internally by L.Map to add shift-drag zoom (zoom to a selected bounding box).
  */
 
-L.Handler.ShiftDragZoom = L.Handler.extend({
+L.Map.BoxZoom = L.Handler.extend({
 	initialize: function (map) {
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
 	},
 
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
-
+	addHooks: function () {
 		L.DomEvent.addListener(this._container, 'mousedown', this._onMouseDown, this);
-
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
-
+	removeHooks: function () {
 		L.DomEvent.removeListener(this._container, 'mousedown', this._onMouseDown);
-
-		this._enabled = false;
 	},
 
 	_onMouseDown: function (e) {
@@ -4587,26 +4571,21 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		this._marker = marker;
 	},
 
-	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+	addHooks: function () {
+		var icon = this._marker._icon;
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(this._marker._icon, this._marker._icon);
-			this._draggable.on('dragstart', this._onDragStart, this);
-			this._draggable.on('drag', this._onDrag, this);
-			this._draggable.on('dragend', this._onDragEnd, this);
+			this._draggable = new L.Draggable(icon, icon);
+
+			this._draggable
+				.on('dragstart', this._onDragStart, this)
+				.on('drag', this._onDrag, this)
+				.on('dragend', this._onDragEnd, this);
 		}
 		this._draggable.enable();
-		this._enabled = true;
 	},
 
-	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+	removeHooks: function () {
 		this._draggable.disable();
-		this._enabled = false;
 	},
 
 	moved: function () {
@@ -4614,10 +4593,10 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	_onDragStart: function (e) {
-		this._marker.closePopup();
-
-		this._marker.fire('movestart');
-		this._marker.fire('dragstart');
+		this._marker
+			.closePopup()
+			.fire('movestart')
+			.fire('dragstart');
 	},
 
 	_onDrag: function (e) {
@@ -4629,13 +4608,15 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 		this._marker._latlng = this._marker._map.layerPointToLatLng(iconPos);
 
-		this._marker.fire('move');
-		this._marker.fire('drag');
+		this._marker
+			.fire('move')
+			.fire('drag');
 	},
 
 	_onDragEnd: function () {
-		this._marker.fire('moveend');
-		this._marker.fire('dragend');
+		this._marker
+			.fire('moveend')
+			.fire('dragend');
 	}
 });
 
