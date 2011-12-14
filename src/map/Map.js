@@ -550,7 +550,7 @@ L.Map = L.Class.extend({
 
 	_initInteraction: function () {
 		var handlers = {
-			dragging: L.Map.MapDrag,
+			dragging: L.Map.Drag,
 			touchZoom: L.Map.TouchZoom,
 			doubleClickZoom: L.Map.DoubleClickZoom,
 			scrollWheelZoom: L.Map.ScrollWheelZoom,

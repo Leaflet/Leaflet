@@ -105,6 +105,7 @@ L.Marker = L.Class.extend({
 		}
 
 		this._icon.style.zIndex = pos.y;
+		// TODO zIndex offset
 	},
 
 	_initInteraction: function () {
