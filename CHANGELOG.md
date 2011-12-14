@@ -31,6 +31,7 @@ Leaflet Changelog
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
  * Added `hasLayer` method to `Map`.
  * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
+ * Added `ImageOverlay` `load` event. [#213](https://github.com/CloudMade/Leaflet/issues/213)
  * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
  * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194)
  * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).

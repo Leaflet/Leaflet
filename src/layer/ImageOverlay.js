@@ -35,7 +35,7 @@ L.ImageOverlay = L.Class.extend({
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,
 			onmousemove: L.Util.falseFn,
-			onload: this._onImageLoad,
+			onload: L.Util.bind(this._onImageLoad, this),
 			src: this._url
 		});
 	},
@@ -52,7 +52,7 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_onImageLoad: function () {
-		this.style.visibility = '';
-		//TODO fire layerload
+		this._image.style.visibility = '';
+		this.fire('load');
 	}
 });
