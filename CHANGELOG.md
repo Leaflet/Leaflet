@@ -82,6 +82,7 @@ Leaflet Changelog
 
  * Fixed occasional crashes on Mac Safari (thanks to [@lapinos03](https://github.com/lapinos03)). [#191](https://github.com/CloudMade/Leaflet/issues/191)
  * Fixed a bug that raised error in IE6-8 when clicking on popup close button. [#235](https://github.com/CloudMade/Leaflet/issues/235)
+ * Fixed a bug with Safari not redrawing UI immediately after closing a popup. [#296](https://github.com/CloudMade/Leaflet/issues/296)
  * Fixed a bug that caused performance drop and high CPU usage when calling `setView` or `panTo` to the current center. [#231](https://github.com/CloudMade/Leaflet/issues/231)
  * Fixed a bug that caused map overlays to appear blurry in some cases under WebKit browsers.
  * Fixed a bug that was causing errors in some Webkit/Linux builds (requestAnimationFrame-related), thanks to Chris Martens.

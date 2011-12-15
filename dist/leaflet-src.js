@@ -2261,6 +2261,8 @@ L.Popup = L.Class.extend({
 
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
+		L.Util.falseFn(this._container.offsetWidth);
+
 		map.off('viewreset', this._updatePosition, this);
 		map.off('click', this._close, this);
 
