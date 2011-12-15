@@ -2,24 +2,24 @@
 	CM.LatLng represents a geographical point with latitude and longtitude coordinates.
 */
 
-L.LatLng = function(/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
+L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 	var lat = parseFloat(rawLat),
 		lng = parseFloat(rawLng);
-	
+
 	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')'); 
+		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
 	}
-	
+
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
 		lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
 	}
-	
+
 	//TODO change to lat() & lng()
 	this.lat = lat;
 	this.lng = lng;
 };
-	
+
 L.Util.extend(L.LatLng, {
 	DEG_TO_RAD: Math.PI / 180,
 	RAD_TO_DEG: 180 / Math.PI,
@@ -27,16 +27,18 @@ L.Util.extend(L.LatLng, {
 });
 
 L.LatLng.prototype = {
-	equals: function(/*LatLng*/ obj) {
-		if (!(obj instanceof L.LatLng)) { return false; }
-		
+	equals: function (/*LatLng*/ obj) {
+		if (!(obj instanceof L.LatLng)) {
+			return false;
+		}
+
 		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
 		return margin <= L.LatLng.MAX_MARGIN;
 	},
-	
-	toString: function() {
-		return 'LatLng(' + 
-				L.Util.formatNum(this.lat) + ', ' + 
+
+	toString: function () {
+		return 'LatLng(' +
+				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
 	}
 };

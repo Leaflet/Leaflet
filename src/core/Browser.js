@@ -1,32 +1,33 @@
-(function() {
+(function () {
 	var ua = navigator.userAgent.toLowerCase(),
 		ie = !!window.ActiveXObject,
-		webkit = ua.indexOf("webkit") != -1,
-		mobile = typeof orientation != 'undefined' ? true : false,
-		android = ua.indexOf("android") != -1,
+		webkit = ua.indexOf("webkit") !== -1,
+		mobile = typeof orientation !== 'undefined' ? true : false,
+		android = ua.indexOf("android") !== -1,
 		opera = window.opera;
-	
+
 	L.Browser = {
 		ie: ie,
 		ie6: ie && !window.XMLHttpRequest,
-		
+
 		webkit: webkit,
-		webkit3d: webkit && ('WebKitCSSMatrix' in window) && ('m11' in new WebKitCSSMatrix()),
-		
-		gecko: ua.indexOf("gecko") != -1,
-		
+		webkit3d: webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
+
+		gecko: ua.indexOf("gecko") !== -1,
+
 		opera: opera,
-		
+
 		android: android,
 		mobileWebkit: mobile && webkit,
 		mobileOpera: mobile && opera,
-		
+
 		mobile: mobile,
-		touch: (function() {
-			var touchSupported = false;
+		touch: (function () {
+			var touchSupported = false,
+				startName = 'ontouchstart';
 
 			// WebKit, etc
-			if ('ontouchstart' in document.documentElement) {
+			if (startName in document.documentElement) {
 				return true;
 			}
 
@@ -38,15 +39,15 @@
 				return false;
 			}
 
-			e.setAttribute('ontouchstart', 'return;');
-			if (typeof e['ontouchstart'] == 'function') {
+			e.setAttribute(startName, 'return;');
+			if (typeof e[startName] === 'function') {
 				touchSupported = true;
 			}
 
-			e.removeAttribute('ontouchstart');
+			e.removeAttribute(startName);
 			e = null;
 
 			return touchSupported;
-		})()
+		}())
 	};
-})();
+}());

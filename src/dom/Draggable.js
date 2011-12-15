@@ -12,29 +12,37 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 
-	initialize: function(element, dragStartTarget) {
+	initialize: function (element, dragStartTarget) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 	},
 
-	enable: function() {
-		if (this._enabled) { return; }
+	enable: function () {
+		if (this._enabled) {
+			return;
+		}
 		L.DomEvent.addListener(this._dragStartTarget, L.Draggable.START, this._onDown, this);
 		this._enabled = true;
 	},
 
-	disable: function() {
-		if (!this._enabled) { return; }
+	disable: function () {
+		if (!this._enabled) {
+			return;
+		}
 		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
 	},
 
-	_onDown: function(e) {
-		if ((!L.Browser.touch && e.shiftKey) || ((e.which != 1) && (e.button != 1) && !e.touches)) { return; }
+	_onDown: function (e) {
+		if ((!L.Browser.touch && e.shiftKey) || ((e.which !== 1) && (e.button !== 1) && !e.touches)) {
+			return;
+		}
 
-		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length > 1) {
+			return;
+		}
 
-		var first = (e.touches && e.touches.length == 1 ? e.touches[0] : e),
+		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 			el = first.target;
 
 		L.DomEvent.preventDefault(e);
@@ -44,7 +52,9 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._moved = false;
-		if (this._moving) { return; }
+		if (this._moving) {
+			return;
+		}
 
 		if (!L.Browser.touch) {
 			L.DomUtil.disableTextSelection();
@@ -58,12 +68,14 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.addListener(document, L.Draggable.END, this._onUp, this);
 	},
 
-	_onMove: function(e) {
-		if (e.touches && e.touches.length > 1) { return; }
+	_onMove: function (e) {
+		if (e.touches && e.touches.length > 1) {
+			return;
+		}
 
 		L.DomEvent.preventDefault(e);
 
-		var first = (e.touches && e.touches.length == 1 ? e.touches[0] : e);
+		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
 
 		if (!this._moved) {
 			this.fire('dragstart');
@@ -77,13 +89,13 @@ L.Draggable = L.Class.extend({
 		L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
-	_updatePosition: function() {
+	_updatePosition: function () {
 		this.fire('predrag');
 		L.DomUtil.setPosition(this._element, this._newPos);
 		this.fire('drag');
 	},
 
-	_onUp: function(e) {
+	_onUp: function (e) {
 		if (e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
@@ -112,16 +124,16 @@ L.Draggable = L.Class.extend({
 		this._moving = false;
 	},
 
-	_setMovingCursor: function() {
+	_setMovingCursor: function () {
 		this._bodyCursor = document.body.style.cursor;
 		document.body.style.cursor = 'move';
 	},
 
-	_restoreCursor: function() {
+	_restoreCursor: function () {
 		document.body.style.cursor = this._bodyCursor;
 	},
 
-	_simulateEvent: function(type, e) {
+	_simulateEvent: function (type, e) {
 		var simulatedEvent = document.createEvent('MouseEvents');
 
 		simulatedEvent.initMouseEvent(

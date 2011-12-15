@@ -5,31 +5,31 @@ L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.S
 L.Path = L.Path.extend({
 	statics: {
 		SVG: L.Browser.svg,
-		_createElement: function(name) {
+		_createElement: function (name) {
 			return document.createElementNS(L.Path.SVG_NS, name);
 		}
 	},
-	
-	getPathString: function() {
+
+	getPathString: function () {
 		// form path string here
 	},
-	
-	_initElements: function() {
+
+	_initElements: function () {
 		this._map._initPathRoot();
 		this._initPath();
 		this._initStyle();
 	},
-	
-	_initPath: function() {
+
+	_initPath: function () {
 		this._container = L.Path._createElement('g');
-		
+
 		this._path = L.Path._createElement('path');
 		this._container.appendChild(this._path);
-		
+
 		this._map._pathRoot.appendChild(this._container);
 	},
-	
-	_initStyle: function() {
+
+	_initStyle: function () {
 		if (this.options.stroke) {
 			this._path.setAttribute('stroke-linejoin', 'round');
 			this._path.setAttribute('stroke-linecap', 'round');
@@ -41,8 +41,8 @@ L.Path = L.Path.extend({
 		}
 		this._updateStyle();
 	},
-	
-	_updateStyle: function() {
+
+	_updateStyle: function () {
 		if (this.options.stroke) {
 			this._path.setAttribute('stroke', this.options.color);
 			this._path.setAttribute('stroke-opacity', this.options.opacity);
@@ -53,8 +53,8 @@ L.Path = L.Path.extend({
 			this._path.setAttribute('fill-opacity', this.options.fillOpacity);
 		}
 	},
-	
-	_updatePath: function() {
+
+	_updatePath: function () {
 		var str = this.getPathString();
 		if (!str) {
 			// fix webkit empty string parsing bug
@@ -62,14 +62,14 @@ L.Path = L.Path.extend({
 		}
 		this._path.setAttribute('d', str);
 	},
-	
+
 	// TODO remove duplication with L.Map
-	_initEvents: function() {
+	_initEvents: function () {
 		if (this.options.clickable) {
 			if (!L.Browser.vml) {
 				this._path.setAttribute('class', 'leaflet-clickable');
 			}
-			
+
 			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
 			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove'];
@@ -78,14 +78,18 @@ L.Path = L.Path.extend({
 			}
 		}
 	},
-	
-	_onMouseClick: function(e) {
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
+
+	_onMouseClick: function (e) {
+		if (this._map.dragging && this._map.dragging.moved()) {
+			return;
+		}
 		this._fireMouseEvent(e);
 	},
-	
-	_fireMouseEvent: function(e) {
-		if (!this.hasEventListeners(e.type)) { return; }
+
+	_fireMouseEvent: function (e) {
+		if (!this.hasEventListeners(e.type)) {
+			return;
+		}
 		this.fire(e.type, {
 			latlng: this._map.mouseEventToLatLng(e),
 			layerPoint: this._map.mouseEventToLayerPoint(e)
@@ -95,7 +99,7 @@ L.Path = L.Path.extend({
 });
 
 L.Map.include({
-	_initPathRoot: function() {
+	_initPathRoot: function () {
 		if (!this._pathRoot) {
 			this._pathRoot = L.Path._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
@@ -105,7 +109,7 @@ L.Map.include({
 		}
 	},
 
-	_updateSvgViewport: function() {
+	_updateSvgViewport: function () {
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
@@ -118,13 +122,17 @@ L.Map.include({
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		// Unfortunately I haven't found a good workaround for this yet
-		if (L.Browser.webkit) { pane.removeChild(root); }
+		if (L.Browser.webkit) {
+			pane.removeChild(root);
+		}
 
 		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
 		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
 
-		if (L.Browser.webkit) { pane.appendChild(root); }
+		if (L.Browser.webkit) {
+			pane.appendChild(root);
+		}
 	}
 });
