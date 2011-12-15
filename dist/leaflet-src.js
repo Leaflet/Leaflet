@@ -2499,6 +2499,22 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
+	invoke: function (methodName) {
+		var args = Array.prototype.slice.call(arguments, 1),
+			i, layer;
+
+		for (i in this._layers) {
+			if (this._layers.hasOwnProperty(i)) {
+				layer = this._layers[i];
+
+				if (layer[methodName]) {
+					layer[methodName].apply(layer, args);
+				}
+			}
+		}
+		return this;
+	},
+
 	onAdd: function (map) {
 		this._map = map;
 		this._iterateLayers(map.addLayer, map);
@@ -2538,11 +2554,11 @@ L.FeatureGroup = L.LayerGroup.extend({
 	bindPopup: function (content) {
 		this._popupContent = content;
 
-		for (var i in this._layers) {
-			if (this._layers.hasOwnProperty(i) && this._layers[i].bindPopup) {
-				this._layers[i].bindPopup(content);
-			}
-		}
+		return this.invoke('bindPopup', content);
+	},
+
+	setStyle: function (style) {
+		return this.invoke('setStyle', style);
 	},
 
 	_events: ['click', 'dblclick', 'mouseover', 'mouseout'],
@@ -3394,14 +3410,6 @@ L.Polygon = L.Polyline.extend({
 				this._layers = {};
 				this._options = options;
 				this.setLatLngs(latlngs);
-			},
-
-			setStyle: function (style) {
-				for (var i in this._layers) {
-					if (this._layers.hasOwnProperty(i) && this._layers[i].setStyle) {
-						this._layers[i].setStyle(style);
-					}
-				}
 			},
 
 			setLatLngs: function (latlngs) {

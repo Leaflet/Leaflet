@@ -37,10 +37,10 @@
 		});
 		*/
 
-
 		geojson.on('featureparse', function(e) {
 			// you can style features depending on their properties, etc.
 			var popupText = 'geometry type: ' + e.geometryType;
+
 			if (e.layer.setStyle && e.properties && e.properties.color) {
 				e.layer.setStyle({color: e.properties.color});
 				popupText += '<br/>color: ' + e.properties.color;

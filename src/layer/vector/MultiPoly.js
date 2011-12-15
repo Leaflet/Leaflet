@@ -11,14 +11,6 @@
 				this.setLatLngs(latlngs);
 			},
 
-			setStyle: function (style) {
-				for (var i in this._layers) {
-					if (this._layers.hasOwnProperty(i) && this._layers[i].setStyle) {
-						this._layers[i].setStyle(style);
-					}
-				}
-			},
-
 			setLatLngs: function (latlngs) {
 				var i = 0, len = latlngs.length;
 

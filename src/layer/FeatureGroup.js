@@ -17,11 +17,11 @@ L.FeatureGroup = L.LayerGroup.extend({
 	bindPopup: function (content) {
 		this._popupContent = content;
 
-		for (var i in this._layers) {
-			if (this._layers.hasOwnProperty(i) && this._layers[i].bindPopup) {
-				this._layers[i].bindPopup(content);
-			}
-		}
+		return this.invoke('bindPopup', content);
+	},
+
+	setStyle: function (style) {
+		return this.invoke('setStyle', style);
 	},
 
 	_events: ['click', 'dblclick', 'mouseover', 'mouseout'],

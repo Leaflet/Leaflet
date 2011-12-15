@@ -38,6 +38,22 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
+	invoke: function (methodName) {
+		var args = Array.prototype.slice.call(arguments, 1),
+			i, layer;
+
+		for (i in this._layers) {
+			if (this._layers.hasOwnProperty(i)) {
+				layer = this._layers[i];
+
+				if (layer[methodName]) {
+					layer[methodName].apply(layer, args);
+				}
+			}
+		}
+		return this;
+	},
+
 	onAdd: function (map) {
 		this._map = map;
 		this._iterateLayers(map.addLayer, map);
