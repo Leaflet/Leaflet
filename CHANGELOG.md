@@ -52,6 +52,7 @@ Leaflet Changelog
  * Fixed a bug where polygons and polylines sometimes rendered incorrectly on some zoom levels. [#381](https://github.com/CloudMade/Leaflet/issues/381)
  * Fixed a bug where fast mouse wheel zoom worked incorrectly when approaching min/max zoom values.
  * Fixed a bug where `GeoJSON` `pointToLayer` option wouldn't work in a `GeometryCollection`. [#391](https://github.com/CloudMade/Leaflet/issues/391)
+ * Fixed a bug with incorrect rendering of GeoJSON on a date line cross. [#354](https://github.com/CloudMade/Leaflet/issues/354)
  * Fixed a bug where map panning would stuck forever after releasing the mouse over an iframe or a flash object (thanks to [@sten82](https://github.com/sten82)). [#297](https://github.com/CloudMade/Leaflet/pull/297) [#64](https://github.com/CloudMade/Leaflet/issues/64)
  * Fixed a bug where mouse wheel zoom worked incorrectly if map is inside scrolled container (partially by [@chrillo](https://github.com/chrillo)). [#206](https://github.com/CloudMade/Leaflet/issues/206)
  * Fixed a bug where it was possible to add the same listener twice. [#281](https://github.com/CloudMade/Leaflet/issues/281)

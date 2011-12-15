@@ -3845,7 +3845,7 @@ L.Util.extend(L.GeoJSON, {
 	coordsToLatLng: function (/*Array*/ coords, /*Boolean*/ reverse)/*: LatLng*/ {
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
 			lng = parseFloat(coords[reverse ? 1 : 0]);
-		return new L.LatLng(lat, lng);
+		return new L.LatLng(lat, lng, true);
 	},
 
 	coordsToLatLngs: function (/*Array*/ coords, /*Number*/ levelsDeep, /*Boolean*/ reverse)/*: Array*/ {
