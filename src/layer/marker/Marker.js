@@ -10,7 +10,8 @@ L.Marker = L.Class.extend({
 		icon: new L.Icon(),
 		title: '',
 		clickable: true,
-		draggable: false
+		draggable: false,
+		zIndexOffset: 0
 	},
 
 	initialize: function (latlng, options) {
@@ -104,8 +105,7 @@ L.Marker = L.Class.extend({
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		this._icon.style.zIndex = pos.y;
-		// TODO zIndex offset
+		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
 	_initInteraction: function () {

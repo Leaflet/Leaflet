@@ -27,6 +27,7 @@ Leaflet Changelog
  * Improved `Map` `locate` method, added ability to watch location continuously and more options. [#212](https://github.com/CloudMade/Leaflet/issues/212)
  * Added second argument `inside` to `Map` `getBoundsZoom` method that allows you to get appropriate zoom for the view to fit *inside* the given bounds.
  * Added `hasLayer` method to `Map`.
+ * Added `Marker` `zIndexOffset` option to be able to set certain markers below/above others. [#65](https://github.com/CloudMade/Leaflet/issues/65)
  * Added `urlParams` third optional argument to `TileLayer` constructor for convenience: an object with properties that will be evaluated in the URL template.
  * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
  * Added `TileLayer` `tileunload` event fired when tile gets removed after panning (by [@CodeJosch](https://github.com/CodeJosch)). [#256](https://github.com/CloudMade/Leaflet/pull/256)
