@@ -328,7 +328,7 @@ L.Map = L.Class.extend({
 			}
 		} while (zoomNotFound && (zoom <= maxZoom));
 
-		if (zoomNotFound) {
+		if (zoomNotFound && inside) {
 			return null;
 		}
 
