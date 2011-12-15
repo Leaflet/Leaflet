@@ -22,27 +22,38 @@ Leaflet Changelog
 
 #### API improvements
 
- * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
- * Added `LatLngBounds` `intersects(otherBounds)` method (thanks to [@pagameba](https://github.com/pagameba)). [#350](https://github.com/CloudMade/Leaflet/pull/350)
- * Added `urlParams` third optional argument to `TileLayer` constructor for convenience: an object with properties that will be evaluated in the URL template.
- * Added `L.Util.template` method for simple string template evaluation.
- * Added second argument `inside` to `map` `getBoundsZoom` method that allows you to get appropriate zoom for the view to fit *inside* the given bounds.
- * Improved `map` `locate` method, added ability to watch location continuously and more options. [#212](https://github.com/CloudMade/Leaflet/issues/212)
+##### Map
+
  * Added ability to add a tile layer below all others (`map.addLayer(layer, true)`) (useful for switching base tile layers).
- * Added `hasLayer` method to `Map`.
- * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
  * Added `Map` `zoomstart` event (thanks to [@Fabiz](https://github.com/Fabiz)). [#377](https://github.com/CloudMade/Leaflet/pull/377)
- * Added `ImageOverlay` `load` event. [#213](https://github.com/CloudMade/Leaflet/issues/213)
+ * Improved `Map` `locate` method, added ability to watch location continuously and more options. [#212](https://github.com/CloudMade/Leaflet/issues/212)
+ * Added second argument `inside` to `Map` `getBoundsZoom` method that allows you to get appropriate zoom for the view to fit *inside* the given bounds.
+ * Added `hasLayer` method to `Map`.
+
+##### Layers
+
+ * Added `urlParams` third optional argument to `TileLayer` constructor for convenience: an object with properties that will be evaluated in the URL template.
+ * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
+ * Added `TileLayer` `tileunload` event fired when tile gets removed after panning (by [@CodeJosch](https://github.com/CodeJosch)). [#256](https://github.com/CloudMade/Leaflet/pull/256)
+ * Added `TileLayer` `zoomOffset` option useful for non-256px tiles (by [@msaspence](https://github.com/msaspence)).
  * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
  * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194)
+ * Added `getBounds` method to `Polyline` and `Polygon` (by [@JasonSanford](https://github.com/JasonSanford)). [#253](https://github.com/CloudMade/Leaflet/pull/253)
+ * Added `ImageOverlay` `load` event. [#213](https://github.com/CloudMade/Leaflet/issues/213)
+ * Added `minWidth` option to `Popup` (by [@marphi](https://github.com/marphi)). [#214](https://github.com/CloudMade/Leaflet/pull/214)
+
+##### Basic types
+
+ * Improved `LatLng` constructor to be more tolerant (and throw descriptive error if latitude or longitude can't be interpreted as a number). [#136](https://github.com/CloudMade/Leaflet/issues/136)
+ * Added `LatLngBounds` `toBBoxString` method for convenience (by [@JasonSanford](https://github.com/JasonSanford)). [#263](https://github.com/CloudMade/Leaflet/pull/263)
+ * Added `LatLngBounds` `intersects(otherBounds)` method (thanks to [@pagameba](https://github.com/pagameba)). [#350](https://github.com/CloudMade/Leaflet/pull/350)
+
+##### Misc. improvements
+
+ * Added `L.Util.template` method for simple string template evaluation.
  * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
- * Added `minWidth` option to `Popup` (by [@marphi](https://github.com/marphi)). [#214](https://github.com/CloudMade/Leaflet/pull/214)
- * Added `TileLayer` `tileunload` event fired when tile gets removed after panning (by [@CodeJosch](https://github.com/CodeJosch)). [#256](https://github.com/CloudMade/Leaflet/pull/256)
- * Added `TileLayer` `zoomOffset` option useful for non-256px tiles (by [@msaspence](https://github.com/msaspence)).
- * Added `LatLngBounds` `toBBoxString` method for convenience (by [@JasonSanford](https://github.com/JasonSanford)). [#263](https://github.com/CloudMade/Leaflet/pull/263)
- * Added `getBounds` method to `Polyline` and `Polygon` (by [@JasonSanford](https://github.com/JasonSanford)). [#253](https://github.com/CloudMade/Leaflet/pull/253)
 
 ### Bugfixes
 
