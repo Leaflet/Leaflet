@@ -52,6 +52,7 @@ Leaflet Changelog
 #### General bugfixes
 
  * Fixed a bug where `Circle` was rendered with incorrect radius (didn't take projection exagerration into account). [#331](https://github.com/CloudMade/Leaflet/issues/331)
+ * Fixed a bug where `Map` `getBounds` would work incorrectly on a date line cross. [#295](https://github.com/CloudMade/Leaflet/issues/295)
  * Fixed a bug where polygons and polylines sometimes rendered incorrectly on some zoom levels. [#381](https://github.com/CloudMade/Leaflet/issues/381)
  * Fixed a bug where fast mouse wheel zoom worked incorrectly when approaching min/max zoom values.
  * Fixed a bug where `GeoJSON` `pointToLayer` option wouldn't work in a `GeometryCollection`. [#391](https://github.com/CloudMade/Leaflet/issues/391)

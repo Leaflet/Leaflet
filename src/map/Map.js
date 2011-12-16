@@ -280,8 +280,8 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y)),
-			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y));
+			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
+			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
 		return new L.LatLngBounds(sw, ne);
 	},
 
