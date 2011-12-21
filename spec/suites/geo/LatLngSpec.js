@@ -21,7 +21,7 @@ describe('LatLng', function() {
 		it("should clamp longtitude to lie between -180 and 180", function() {
 			var a = new L.LatLng(0, 190).lng;
 			expect(a).toEqual(-170);
-	
+
 			var b = new L.LatLng(0, 360).lng;
 			expect(b).toEqual(0);
 			
@@ -36,7 +36,13 @@ describe('LatLng', function() {
 	
 			var f = new L.LatLng(0, -380).lng;
 			expect(f).toEqual(-20);
-		});
+
+			var g = new L.LatLng(0, 90).lng;
+			expect(g).toEqual(90);
+
+			var h = new L.LatLng(0, 180).lng;
+			expect(h).toEqual(180);
+	 });
 		
 		it("should not clamp latitude and longtitude if unbounded flag set to true", function() {
 			var a = new L.LatLng(150, 0, true).lat;

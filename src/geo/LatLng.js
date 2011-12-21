@@ -12,7 +12,7 @@ L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
+		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
 	}
 
 	//TODO change to lat() & lng()
