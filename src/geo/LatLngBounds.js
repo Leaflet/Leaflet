@@ -82,7 +82,7 @@ L.LatLngBounds = L.Class.extend({
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
 	},
 	
-	equals: function(bounds) {
+	equals: function(/*LatLngBounds*/ bounds) {
 	    var equals = false;
 	    if (bounds != null) {
 	        equals = ((this._southWest.lat == bounds.getSouthWest().lat) &&
