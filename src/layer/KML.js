@@ -53,7 +53,7 @@ L.Util.extend(L.KML, {
 		var sl = xml.getElementsByTagName("Style");
 
 		//for (var i = 0; i < sl.length; i++) {
-		var attributes = {color:true, width:true};
+		var attributes = {color:true, width:true, Icon:true, href:true};
 
 		function _parse(xml) {
 			var options = {};
@@ -67,19 +67,30 @@ L.Util.extend(L.KML, {
 					options.color = "#" + value.substring(2,8);
 				} else if (key == 'width')
 					options.weight = value;
+				else if (key == 'Icon') {
+					ioptions = _parse(e)
+					if (ioptions.href) options.href = ioptions.href;
+				} else if (key == 'href')
+					options.href = value;
 			}
 			return options;
 		}
 
 		for (var i = 0; i < sl.length; i++) {
 			var e = sl[i], el;
-			var options = {}, poptions = {};
+			var options = {}, poptions = {}, ioptions = {};
 			el = e.getElementsByTagName("LineStyle");
 			if (el && el[0]) options = _parse(el[0]);
 			el = e.getElementsByTagName("PolyStyle");
 			if (el && el[0]) poptions = _parse(el[0]);
 			if (poptions.color) options.fillColor = poptions.color;
 			if (poptions.opacity) options.fillOpacity = poptions.opacity;
+			el = e.getElementsByTagName("IconStyle");
+			if (el && el[0]) ioptions = _parse(el[0]);
+			if (ioptions.href) {
+				var Icon = L.Icon.extend({iconUrl:ioptions.href,shadowUrl:null});
+				options.icon = new Icon();
+			}
 			style['#' + e.getAttribute('id')] = options;
 		}
 		return style;
