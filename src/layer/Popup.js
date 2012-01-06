@@ -8,7 +8,8 @@ L.Popup = L.Class.extend({
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
-		autoPanPadding: new L.Point(5, 5)
+		autoPanPadding: new L.Point(5, 5),
+		className: 'leaflet-popup'
 	},
 
 	initialize: function (options, source) {
@@ -75,7 +76,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup');
+		this._container = L.DomUtil.create('div', this.options.className);
 
 		if (this.options.closeButton) {
 			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
