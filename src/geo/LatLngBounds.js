@@ -85,10 +85,11 @@ L.LatLngBounds = L.Class.extend({
 	equals: function (/*LatLngBounds*/ bounds) {
 		var equals = false;
 		if (bounds !== null) {
-			equals = ((this._southWest.lat !== bounds.getSouthWest().lat) &&
-				(this._southWest.lng !== bounds.getSouthWest().lng) &&
-				(this._northEast.lat !== bounds.getNorthEast().lat) &&
-				(this._northEast.lng !== bounds.getNorthEast().lng));
+			equals = (
+				(this._southWest.lat === bounds.getSouthWest().lat) &&
+				(this._southWest.lng === bounds.getSouthWest().lng) &&
+				(this._northEast.lat === bounds.getNorthEast().lat) &&
+				(this._northEast.lng === bounds.getNorthEast().lng));
 		}
 		return equals;
 	}
