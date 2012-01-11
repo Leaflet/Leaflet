@@ -659,7 +659,7 @@ L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
+		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
 	}
 
 	//TODO change to lat() & lng()
@@ -773,6 +773,12 @@ L.LatLngBounds = L.Class.extend({
 		var sw = this._southWest,
 			ne = this._northEast;
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+	},
+	
+	toUrlValue: function () {
+		var sw = this._southWest,
+			ne = this._northEast;
+		return [sw.lat, sw.lng, ne.lat, ne.lng].join(',');
 	}
 });
 
@@ -2227,7 +2233,8 @@ L.Popup = L.Class.extend({
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
-		autoPanPadding: new L.Point(5, 5)
+		autoPanPadding: new L.Point(5, 5),
+		className: ''
 	},
 
 	initialize: function (options, source) {
@@ -2294,7 +2301,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup');
+		this._container = L.DomUtil.create('div', 'leaflet-popup ' + this.options.className);
 
 		if (this.options.closeButton) {
 			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
@@ -3347,7 +3354,7 @@ L.Polygon = L.Polyline.extend({
 	initialize: function (latlngs, options) {
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
-		if (latlngs[0] instanceof Array) {
+		if (latlngs && (latlngs[0] instanceof Array)) {
 			this._latlngs = latlngs[0];
 			this._holes = latlngs.slice(1);
 		}
