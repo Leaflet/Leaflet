@@ -550,7 +550,7 @@ L.Map = L.Class.extend({
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
-		}		
+		}
 		
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
