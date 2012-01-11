@@ -510,7 +510,7 @@ L.Map = L.Class.extend({
 	_initEvents: function () {
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove'];
+		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
 		var i, len;
 
@@ -548,6 +548,10 @@ L.Map = L.Class.extend({
 			return;
 		}
 
+		if (type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}		
+		
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
