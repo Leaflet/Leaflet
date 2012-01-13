@@ -37,14 +37,14 @@ L.Control.Layers = L.Class.extend({
 		return L.Control.Position.TOP_RIGHT;
 	},
 
-	addBaseLayer: function (layer, name) {
-		this._addLayer(layer, name);
+	addBaseLayer: function (layer, name, iconUrl) {
+		this._addLayer(layer, name, iconUrl);
 		this._update();
 		return this;
 	},
 
-	addOverlay: function (layer, name) {
-		this._addLayer(layer, name, true);
+	addOverlay: function (layer, name, iconUrl) {
+		this._addLayer(layer, name, iconUrl, true);
 		this._update();
 		return this;
 	},
@@ -86,11 +86,12 @@ L.Control.Layers = L.Class.extend({
 		this._container.appendChild(this._form);
 	},
 
-	_addLayer: function (layer, name, overlay) {
+	_addLayer: function (layer, name, iconUrl, overlay) {
 		var id = L.Util.stamp(layer);
 		this._layers[id] = {
 			layer: layer,
 			name: name,
+			iconUrl: iconUrl,
 			overlay: overlay
 		};
 	},
@@ -134,6 +135,11 @@ L.Control.Layers = L.Class.extend({
 		var name = document.createTextNode(' ' + obj.name);
 
 		label.appendChild(input);
+		if (obj.iconUrl) {
+			var icon = L.DomUtil.create('img', 'leaflet-control-layers-icon');
+			icon.src = obj.iconUrl;
+			label.appendChild(icon);
+		}
 		label.appendChild(name);
 
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
