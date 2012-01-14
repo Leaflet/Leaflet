@@ -5,7 +5,9 @@
 L.Marker.include({
 	openPopup: function () {
 		this._popup.setLatLng(this._latlng);
-		this._map.openPopup(this._popup);
+		if (this._map) {
+			this._map.openPopup(this._popup);
+		}
 
 		return this;
 	},
