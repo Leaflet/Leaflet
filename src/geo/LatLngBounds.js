@@ -80,6 +80,12 @@ L.LatLngBounds = L.Class.extend({
 		var sw = this._southWest,
 			ne = this._northEast;
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+	},
+	
+	toUrlValue: function () {
+		var sw = this._southWest,
+			ne = this._northEast;
+		return [sw.lat, sw.lng, ne.lat, ne.lng].join(',');
 	}
 });
 
