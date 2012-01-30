@@ -53,8 +53,6 @@ L.TileLayer.deCarta = L.TileLayer.extend({
 		var tileSize = this.options.tileSize,
 			numTilesHalf = 2 << (zoom - 2);
 			
-		console.log((numTilesHalf - tilePoint.y) - 1);
-			
 		return this._url + '/openls/image-cache/TILE?'+
 		   'LLMIN=0.0,0.0' +
 		   '&LLMAX=' + this.llLUT[zoom] +
