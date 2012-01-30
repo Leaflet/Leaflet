@@ -1,18 +1,11 @@
-/**
- * @preserve Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin
- * Leaflet is a BSD-licensed JavaScript library for map display and interaction.
- * See http://leaflet.cloudmade.com for more information.
- */
-
-/*global L */
 
 (function (root) {
 	root.L = {
 		VERSION: '0.3',
 
-		ROOT_URL: (function () {
+		ROOT_URL: root.L_ROOT_URL || (function () {
 			var scripts = document.getElementsByTagName('script'),
-				leafletRe = /^(.*\/)leaflet\-?([\w\-]*)\.js.*$/;
+				leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 			var i, len, src, matches;
 
@@ -21,11 +14,13 @@
 				matches = src.match(leafletRe);
 
 				if (matches) {
-					if (matches[2] === 'include') { break; }
-					return matches[1];
+					if (matches[1] === 'include') {
+						return '../../dist/';
+					}
+					return src.replace(leafletRe, '') + '/';
 				}
 			}
-			return '../../dist/';
+			return '';
 		}()),
 
 		noConflict: function () {

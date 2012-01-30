@@ -35,14 +35,16 @@
 	cursor: pointer;
 	}
 .leaflet-container img {
-	max-width: auto;
+	max-width: none !important;
 	}
 
 .leaflet-tile-pane { z-index: 2; }
-.leaflet-overlay-pane { z-index: 3; }
-.leaflet-shadow-pane { z-index: 4; }
-.leaflet-marker-pane { z-index: 5; }
-.leaflet-popup-pane { z-index: 6; }
+
+.leaflet-objects-pane { z-index: 3; }
+.leaflet-overlay-pane { z-index: 4; }
+.leaflet-shadow-pane { z-index: 5; }
+.leaflet-marker-pane { z-index: 6; }
+.leaflet-popup-pane { z-index: 7; }
 
 .leaflet-zoom-box {
 	width: 0;

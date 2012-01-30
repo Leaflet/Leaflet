@@ -22,17 +22,18 @@ L.TileLayer = L.Class.extend({
 		updateWhenIdle: L.Browser.mobile
 	},
 
-	initialize: function(url, options) {
+	initialize: function (url, options, urlParams) {
 		L.Util.setOptions(this, options);
 
 		this._url = url;
+		this._urlParams = urlParams;
 
-		if (typeof this.options.subdomains == 'string') {
+		if (typeof this.options.subdomains === 'string') {
 			this.options.subdomains = this.options.subdomains.split('');
 		}
 	},
 
-	onAdd: function(map, insertAtTheBottom) {
+	onAdd: function (map, insertAtTheBottom) {
 		this._map = map;
 		this._insertAtTheBottom = insertAtTheBottom;
 
@@ -56,7 +57,7 @@ L.TileLayer = L.Class.extend({
 		this._update();
 	},
 
-	onRemove: function(map) {
+	onRemove: function (map) {
 		this._map.getPanes().tilePane.removeChild(this._container);
 		this._container = null;
 
@@ -69,30 +70,32 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	getAttribution: function() {
+	getAttribution: function () {
 		return this.options.attribution;
 	},
 
-	setOpacity: function(opacity) {
+	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
 		this._setOpacity(opacity);
 
 		// stupid webkit hack to force redrawing of tiles
 		if (L.Browser.webkit) {
-			for (i in this._tiles) {
-				this._tiles[i].style.webkitTransform += ' translate(0,0)';
+			for (var i in this._tiles) {
+				if (this._tiles.hasOwnProperty(i)) {
+					this._tiles[i].style.webkitTransform += ' translate(0,0)';
+				}
 			}
 		}
 	},
 
-	_setOpacity: function(opacity) {
+	_setOpacity: function (opacity) {
 		if (opacity < 1) {
 			L.DomUtil.setOpacity(this._container, opacity);
 		}
 	},
 
-	_initContainer: function() {
+	_initContainer: function () {
 		var tilePane = this._map.getPanes().tilePane,
 			first = tilePane.firstChild;
 
@@ -109,26 +112,26 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	_resetCallback: function(e) {
+	_resetCallback: function (e) {
 		this._reset(e.hard);
 	},
 
-	_reset: function(clearOldContainer) {
+	_reset: function (clearOldContainer) {
 		var key;
 		for (key in this._tiles) {
 			if (this._tiles.hasOwnProperty(key)) {
-				this.fire("tileunload", { tile: this._tiles[key] });
+				this.fire("tileunload", {tile: this._tiles[key]});
 			}
 		}
 		this._tiles = {};
 
-		if (clearOldContainer && this._container)
+		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
+		}
 		this._initContainer();
-		this._container.innerHTML = '';
 	},
 
-	_update: function() {
+	_update: function () {
 		var bounds = this._map.getPixelBounds(),
 			tileSize = this.options.tileSize;
 
@@ -147,19 +150,21 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	_addTilesFromCenterOut: function(bounds) {
+	_addTilesFromCenterOut: function (bounds) {
 		var queue = [],
 			center = bounds.getCenter();
 
 		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
 			for (var i = bounds.min.x; i <= bounds.max.x; i++) {
-				if ((i + ':' + j) in this._tiles) { continue; }
+				if ((i + ':' + j) in this._tiles) {
+					continue;
+				}
 				queue.push(new L.Point(i, j));
 			}
 		}
 
 		// load tiles in order of their distance to center
-		queue.sort(function(a, b) {
+		queue.sort(function (a, b) {
 			return a.distanceTo(center) - b.distanceTo(center);
 		});
 
@@ -173,7 +178,7 @@ L.TileLayer = L.Class.extend({
 		this._container.appendChild(fragment);
 	},
 
-	_removeOtherTiles: function(bounds) {
+	_removeOtherTiles: function (bounds) {
 		var kArr, x, y, key, tile;
 
 		for (key in this._tiles) {
@@ -191,7 +196,7 @@ L.TileLayer = L.Class.extend({
 					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
 					// this._tiles[key].src = '';
 
-					if (tile.parentNode == this._container) {
+					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
 					delete this._tiles[key];
@@ -200,11 +205,11 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	_addTile: function(tilePoint, container) {
+	_addTile: function (tilePoint, container) {
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = (1 << (zoom + this.options.zoomOffset));
+			tileLimit = Math.pow(2, (zoom + this.options.zoomOffset));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -227,7 +232,7 @@ L.TileLayer = L.Class.extend({
 
 		this._tiles[key] = tile;
 
-		if (this.options.scheme == 'tms') {
+		if (this.options.scheme === 'tms') {
 			tilePoint.y = tileLimit - tilePoint.y - 1;
 		}
 
@@ -236,7 +241,7 @@ L.TileLayer = L.Class.extend({
 		container.appendChild(tile);
 	},
 
-	_getTilePos: function(tilePoint) {
+	_getTilePos: function (tilePoint) {
 		var origin = this._map.getPixelOrigin(),
 			tileSize = this.options.tileSize;
 
@@ -245,18 +250,19 @@ L.TileLayer = L.Class.extend({
 
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
-	getTileUrl: function(tilePoint, zoom) {
+	getTileUrl: function (tilePoint, zoom) {
 		var subdomains = this.options.subdomains,
 			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
 
-		return this._url
-				.replace('{s}', s)
-				.replace('{z}', zoom + this.options.zoomOffset)
-				.replace('{x}', tilePoint.x)
-				.replace('{y}', tilePoint.y);
+		return L.Util.template(this._url, L.Util.extend({
+			s: s,
+			z: zoom + this.options.zoomOffset,
+			x: tilePoint.x,
+			y: tilePoint.y
+		}, this._urlParams));
 	},
 
-	_createTileProto: function() {
+	_createTileProto: function () {
 		this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
 		this._tileImg.galleryimg = 'no';
 
@@ -265,20 +271,20 @@ L.TileLayer = L.Class.extend({
 		this._tileImg.style.height = tileSize + 'px';
 	},
 
-	_createTile: function() {
+	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 		return tile;
 	},
 
-	_loadTile: function(tile, tilePoint, zoom) {
+	_loadTile: function (tile, tilePoint, zoom) {
 		tile._layer = this;
 		tile.onload = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 		tile.src = this.getTileUrl(tilePoint, zoom);
 	},
 
-	_tileOnLoad: function(e) {
+	_tileOnLoad: function (e) {
 		var layer = this._layer;
 
 		this.className += ' leaflet-tile-loaded';
@@ -291,7 +297,7 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	_tileOnError: function(e) {
+	_tileOnError: function (e) {
 		var layer = this._layer;
 
 		layer.fire('tileerror', {tile: this, url: this.src});
