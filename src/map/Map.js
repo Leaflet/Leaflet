@@ -253,7 +253,7 @@ L.Map = L.Class.extend({
 			return this;
 		}
 
-		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
+		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2, true));
 
 		this.fire('move');
 
