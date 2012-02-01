@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade</title>
+	
+	<meta charset="utf-8" />
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" /> 
+	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
+	<meta property="og:image" content="http://leaflet.cloudmade.com/docs/images/logo.png" />
+	
+	<link rel="icon" type="image/png" href="docs/images/favicon.png" />
+	
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="docs/css/screen.css" media="screen, projection" />
+	
+	<script src="docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="dist/leaflet.ie.css" /><![endif]-->
+	<script src="dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<ul class="nav clearfix">
+			<!-- <li><a class="cloudmade-link" href="http://cloudmade.com"></a></li> --> 
+			<li><span>Overview</span></li>
+			<li><a href="features.html">Features</a></li>  
+			<li><a href="examples.html">Examples</a></li> 
+			<li><a href="reference.html">Documentation</a></li> 
+			<li><a href="download.html">Download</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li>
+		</ul>
+		
+		<!-- <h3>About the library</h3> -->
+		<p>Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for <em>both desktop and mobile</em> web browsers, developed by <a href="http://cloudmade.com">CloudMade</a> to form the core of its next generation JavaScript API.</p>
+		<p>It is built from the ground up to work efficiently and smoothly on both platforms, utilizing cutting-edge technologies included in HTML5. Its top priorities are usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand. Find out more on the <a href="features.html">features</a> page.</p>
+		
+		<p>
+			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leaflet.cloudmade.com" data-text="Leaflet — a modern, lightweight open-source JavaScript library for interactive maps by @cloudmade" data-count="horizontal" data-via="LeafletJS" data-related="CloudMade">Tweet</a>
+			<a href="http://twitter.com/LeafletJS" data-show-count="false" data-width="140px" class="twitter-follow-button">Follow @LeafletJS</a>
+			<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			
+			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=standard&amp;show_faces=false&amp;width=530&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:530px; height:24px;" allowTransparency="true"></iframe>
+		</p>
+	
+		<h3>Basic usage example</h3>
+		<div id="map"></div>
+		<script>
+			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+				cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+			
+			var map = new L.Map('map');
+			map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+			
+			var marker = new L.Marker(new L.LatLng(51.5, -0.09));
+			map.addLayer(marker);
+
+			marker.bindPopup('A pretty CSS3 popup.<br />Easily customizable.').openPopup();
+		</script>
+			
+		<p>Here we create a map with a CloudMade tile layer, add a marker and bind a popup with some text to it:</p>
+		<pre><code class="javascript">// create a CloudMade tile layer
+var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+
+// initialize the map on the "map" div
+var map = new L.Map('map');
+
+// set the map view to a given center and zoom and add the CloudMade layer
+map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+
+// create a marker in the given location and add it to the map
+var marker = new L.Marker(new L.LatLng(51.5, -0.09));
+map.addLayer(marker);
+
+// attach a given HTML content to the marker and immediately open it
+marker.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.").openPopup();</code></pre>
+
+		<p>Check out the <a href="examples.html">examples</a> section for more examples, or head straight to the <a href="reference.html">documentation</a>.</p>
+
+		<h3>Contributing to Leaflet</h3>
+		<p>The project is <a href="http://github.com/CloudMade/Leaflet">hosted on GitHub</a>, waiting for your contributions — just send your pull requests to <a href="http://github.com/mourner">Vladimir Agafonkin</a> (Leaflet maintainer). Let's make the best library for maps that can possibly exist! </p>
+		<p>You can also help the project a lot by reporting bugs and discussing features on the <a href="http://github.com/CloudMade/Leaflet/issues">issues page</a> or tweeting to <a href="http://twitter.com/LeafletJS">@LeafletJS</a>. 
+		
+		<hr />
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script>
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>
+<!-- <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a> -->
