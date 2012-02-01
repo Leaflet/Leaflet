@@ -17,6 +17,7 @@ L.TileLayer = L.Class.extend({
 		continuousWorld: false,
 		noWrap: false,
 		zoomOffset: 0,
+		bounds: null,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -131,17 +132,23 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function () {
-		var bounds = this._map.getPixelBounds(),
-			tileSize = this.options.tileSize;
+	_tileBounds: function (pixelBounds) {
+		var tileSize = this.options.tileSize;
 
 		var nwTilePoint = new L.Point(
-				Math.floor(bounds.min.x / tileSize),
-				Math.floor(bounds.min.y / tileSize)),
+				Math.floor(pixelBounds.min.x / tileSize),
+				Math.floor(pixelBounds.min.y / tileSize)),
 			seTilePoint = new L.Point(
-				Math.floor(bounds.max.x / tileSize),
-				Math.floor(bounds.max.y / tileSize)),
-			tileBounds = new L.Bounds(nwTilePoint, seTilePoint);
+				Math.floor(pixelBounds.max.x / tileSize),
+				Math.floor(pixelBounds.max.y / tileSize));
+		
+		return new L.Bounds(nwTilePoint, seTilePoint);
+	},
+
+	_update: function () {
+		var bounds = this._map.getPixelBounds();
+
+		var tileBounds = this._tileBounds(bounds);
 
 		this._addTilesFromCenterOut(tileBounds);
 
@@ -152,14 +159,25 @@ L.TileLayer = L.Class.extend({
 
 	_addTilesFromCenterOut: function (bounds) {
 		var queue = [],
+			tileBounds = null,
 			center = bounds.getCenter();
+
+		if (this.options.bounds) {
+			var pixelBounds = new L.Bounds(
+				this._map.project(this.options.bounds.getNorthWest()),
+				this._map.project(this.options.bounds.getSouthEast()));
+
+			tileBounds = this._tileBounds(pixelBounds);
+		}
 
 		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
 			for (var i = bounds.min.x; i <= bounds.max.x; i++) {
-				if ((i + ':' + j) in this._tiles) {
+				var point = new L.Point(i, j);
+				if (tileBounds !== null && !tileBounds.contains(point) ||
+						(i + ':' + j) in this._tiles) {
 					continue;
 				}
-				queue.push(new L.Point(i, j));
+				queue.push(point);
 			}
 		}
 
