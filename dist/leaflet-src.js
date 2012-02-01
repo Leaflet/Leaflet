@@ -659,7 +659,7 @@ L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
+		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
 	}
 
 	//TODO change to lat() & lng()
@@ -1382,7 +1382,7 @@ L.Map = L.Class.extend({
 	_initEvents: function () {
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove'];
+		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
 		var i, len;
 
@@ -1420,6 +1420,10 @@ L.Map = L.Class.extend({
 			return;
 		}
 
+		if (type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+		
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
@@ -2227,7 +2231,8 @@ L.Popup = L.Class.extend({
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
-		autoPanPadding: new L.Point(5, 5)
+		autoPanPadding: new L.Point(5, 5),
+		className: ''
 	},
 
 	initialize: function (options, source) {
@@ -2294,7 +2299,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup');
+		this._container = L.DomUtil.create('div', 'leaflet-popup ' + this.options.className);
 
 		if (this.options.closeButton) {
 			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
@@ -2404,7 +2409,9 @@ L.Popup = L.Class.extend({
 L.Marker.include({
 	openPopup: function () {
 		this._popup.setLatLng(this._latlng);
-		this._map.openPopup(this._popup);
+		if (this._map) {
+			this._map.openPopup(this._popup);
+		}
 
 		return this;
 	},
@@ -2816,7 +2823,7 @@ L.Map.include({
 L.Path.include({
 	bindPopup: function (content, options) {
 		if (!this._popup || this._popup.options !== options) {
-			this._popup = new L.Popup(options);
+			this._popup = new L.Popup(options, this);
 		}
 		this._popup.setContent(content);
 
@@ -3347,7 +3354,7 @@ L.Polygon = L.Polyline.extend({
 	initialize: function (latlngs, options) {
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
-		if (latlngs[0] instanceof Array) {
+		if (latlngs && (latlngs[0] instanceof Array)) {
 			this._latlngs = latlngs[0];
 			this._holes = latlngs.slice(1);
 		}
@@ -4745,12 +4752,15 @@ L.Control.Zoom = L.Class.extend({
 
 
 L.Control.Attribution = L.Class.extend({
+	initialize: function (prefix) {
+		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
+		this._attributions = {};
+	},
+	
 	onAdd: function (map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
-		this._prefix = 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
-		this._attributions = {};
 		this._update();
 	},
 
@@ -5491,7 +5501,7 @@ L.Map.include({
 		options = L.Util.extend({
 			maxZoom: maxZoom || Infinity,
 			setView: true
-		});
+		}, options);
 		return this.locate(options);
 	},
 
