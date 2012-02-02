@@ -17,6 +17,7 @@ L.TileLayer = L.Class.extend({
 		continuousWorld: false,
 		noWrap: false,
 		zoomOffset: 0,
+		reuseTiles: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -125,6 +126,10 @@ L.TileLayer = L.Class.extend({
 		}
 		this._tiles = {};
 
+		if (this.options.reuseTiles) {
+			this._unusedTiles = [];
+		}
+
 		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
 		}
@@ -145,7 +150,8 @@ L.TileLayer = L.Class.extend({
 
 		this._addTilesFromCenterOut(tileBounds);
 
-		if (this.options.unloadInvisibleTiles) {
+		if (this.options.unloadInvisibleTiles ||
+			this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
 	},
@@ -199,6 +205,9 @@ L.TileLayer = L.Class.extend({
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
+					if (this.options.reuseTiles) {
+						this._unusedTiles.push(this._tiles[key]);
+					}
 					delete this._tiles[key];
 				}
 			}
@@ -226,8 +235,8 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		// create tile
-		var tile = this._createTile();
+		// get unused tile - or create a new tile
+		var tile = this._getTile();
 		L.DomUtil.setPosition(tile, tilePos);
 
 		this._tiles[key] = tile;
@@ -269,6 +278,19 @@ L.TileLayer = L.Class.extend({
 		var tileSize = this.options.tileSize;
 		this._tileImg.style.width = tileSize + 'px';
 		this._tileImg.style.height = tileSize + 'px';
+	},
+
+	_getTile: function () {
+		if (this.options.reuseTiles && this._unusedTiles.length > 0) {
+			var tile = this._unusedTiles.pop();
+			this._resetTile(tile);
+			return tile;
+		}
+		return this._createTile();
+	},
+
+	_resetTile: function (tile) {
+		// Override if data stored on a tile needs to be cleaned up before reuse
 	},
 
 	_createTile: function () {
