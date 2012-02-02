@@ -24,11 +24,17 @@ L.Icon = L.Class.extend({
 
 	_createIcon: function (name) {
 		var size = this[name + 'Size'],
-			src = this[name + 'Url'],
-			img = this._createImg(src);
-
-		if (!src) {
+			src = this[name + 'Url'];
+		if (!src && name === 'shadow') {
 			return null;
+		}
+
+		var img;
+		if (!src) {
+			img = this._createDiv();
+		}
+		else {
+			img = this._createImg(src);
 		}
 
 		img.className = 'leaflet-marker-' + name;
@@ -54,5 +60,9 @@ L.Icon = L.Class.extend({
 			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
+	},
+
+	_createDiv: function () {
+		return document.createElement('div');
 	}
 });
