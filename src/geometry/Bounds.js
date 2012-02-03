@@ -46,5 +46,18 @@ L.Bounds = L.Class.extend({
 				(max.x <= this.max.x) &&
 				(min.y >= this.min.y) &&
 				(max.y <= this.max.y);
+	},
+
+	intersects: function (/*Bounds*/ bounds) {
+		var min = this.min,
+			max = this.max,
+			min2 = bounds.min,
+			max2 = bounds.max;
+
+		var xIntersects = (max2.x >= min.x) && (min2.x <= max.x),
+			yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
+
+		return xIntersects && yIntersects;
 	}
+
 });
