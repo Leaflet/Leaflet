@@ -43,16 +43,18 @@ L.LatLng.prototype = {
 	},
 
 	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
-	distanceTo: function (/*LatLng*/ that)/*->Double*/ {
-		var R = 6378137; // earth radius in meters
-		var dLat = (that.lat - this.lat) * L.LatLng.DEG_TO_RAD;
-		var dLon = (that.lng - this.lng) * L.LatLng.DEG_TO_RAD;
-		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-			Math.sin(dLon / 2) * Math.sin(dLon / 2) *
-			Math.cos(this.lat * L.LatLng.DEG_TO_RAD) *
-			Math.cos(that.lat * L.LatLng.DEG_TO_RAD);
-		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-		var d = R * c;
-		return d;
+	distanceTo: function (/*LatLng*/ other)/*->Double*/ {
+		var R = 6378137, // earth radius in meters
+			d2r = L.LatLng.DEG_TO_RAD,
+			dLat = (other.lat - this.lat) * d2r,
+			dLon = (other.lng - this.lng) * d2r,
+			lat1 = this.lat * d2r,
+			lat2 = other.lat * d2r,
+			sin1 = Math.sin(dLat / 2),
+			sin2 = Math.sin(dLon / 2);
+
+		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
+
+		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	}
 };
