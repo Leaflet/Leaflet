@@ -17,7 +17,7 @@ L.TileLayer = L.Class.extend({
 		continuousWorld: false,
 		noWrap: false,
 		zoomOffset: 0,
-		reuseTiles: false,
+		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -218,7 +218,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = Math.pow(2, (zoom + this.options.zoomOffset));
+			tileLimit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -250,6 +250,11 @@ L.TileLayer = L.Class.extend({
 		container.appendChild(tile);
 	},
 
+	_getOffsetZoom: function(zoom) {
+		zoom = this.options.zoomReverse ? this.options.maxZoom - zoom : zoom;
+		return zoom + this.options.zoomOffset;
+	},
+
 	_getTilePos: function (tilePoint) {
 		var origin = this._map.getPixelOrigin(),
 			tileSize = this.options.tileSize;
@@ -265,7 +270,7 @@ L.TileLayer = L.Class.extend({
 
 		return L.Util.template(this._url, L.Util.extend({
 			s: s,
-			z: zoom + this.options.zoomOffset,
+			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this._urlParams));

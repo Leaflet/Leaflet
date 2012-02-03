@@ -33,6 +33,7 @@ Leaflet Changelog
  * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
  * Added `TileLayer` `tileunload` event fired when tile gets removed after panning (by [@CodeJosch](https://github.com/CodeJosch)). [#256](https://github.com/CloudMade/Leaflet/pull/256)
  * Added `TileLayer` `zoomOffset` option useful for non-256px tiles (by [@msaspence](https://github.com/msaspence)).
+ * Added `TileLayer` `zoomReverse` option to reverse zoom numbering (by [@Majiir](https://github.com/Majiir)). [#406](https://github.com/CloudMade/Leaflet/pull/406)
  * Added `TileLayer.Canvas` `redraw` method (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#459](https://github.com/CloudMade/Leaflet/pull/459)
  * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
  * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194)
