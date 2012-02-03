@@ -40,5 +40,19 @@ L.LatLng.prototype = {
 		return 'LatLng(' +
 				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
+	},
+
+	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
+	distanceTo: function (/*LatLng*/ that)/*->Double*/ {
+		var R = 6378137; // earth radius in meters
+		var dLat = (that.lat - this.lat) * L.LatLng.DEG_TO_RAD;
+		var dLon = (that.lng - this.lng) * L.LatLng.DEG_TO_RAD;
+		var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+			Math.sin(dLon / 2) * Math.sin(dLon / 2) *
+			Math.cos(this.lat * L.LatLng.DEG_TO_RAD) *
+			Math.cos(that.lat * L.LatLng.DEG_TO_RAD);
+		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		var d = R * c;
+		return d;
 	}
 };
