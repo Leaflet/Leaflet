@@ -250,7 +250,7 @@ L.TileLayer = L.Class.extend({
 		container.appendChild(tile);
 	},
 
-	_getOffsetZoom: function(zoom) {
+	_getOffsetZoom: function (zoom) {
 		zoom = this.options.zoomReverse ? this.options.maxZoom - zoom : zoom;
 		return zoom + this.options.zoomOffset;
 	},

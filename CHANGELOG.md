@@ -53,6 +53,11 @@ Leaflet Changelog
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
 
+#### Development workflow improvements
+
+ * Build system completely overhauled to be based on Node.js, Jake, JSHint and UglifyJS.
+ * All code is now linted for errors and conformity with a strict code style (with JSHint), and wont build unless the check passes.
+
 ### Bugfixes
 
 #### General bugfixes

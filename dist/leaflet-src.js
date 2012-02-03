@@ -451,7 +451,20 @@ L.Bounds = L.Class.extend({
 				(max.x <= this.max.x) &&
 				(min.y >= this.min.y) &&
 				(max.y <= this.max.y);
+	},
+
+	intersects: function (/*Bounds*/ bounds) {
+		var min = this.min,
+			max = this.max,
+			min2 = bounds.min,
+			max2 = bounds.max;
+
+		var xIntersects = (max2.x >= min.x) && (min2.x <= max.x),
+			yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
+
+		return xIntersects && yIntersects;
 	}
+
 });
 
 
@@ -687,6 +700,22 @@ L.LatLng.prototype = {
 		return 'LatLng(' +
 				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
+	},
+
+	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
+	distanceTo: function (/*LatLng*/ other)/*->Double*/ {
+		var R = 6378137, // earth radius in meters
+			d2r = L.LatLng.DEG_TO_RAD,
+			dLat = (other.lat - this.lat) * d2r,
+			dLon = (other.lng - this.lng) * d2r,
+			lat1 = this.lat * d2r,
+			lat2 = other.lat * d2r,
+			sin1 = Math.sin(dLat / 2),
+			sin2 = Math.sin(dLon / 2);
+
+		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
+
+		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	}
 };
 
@@ -1125,7 +1154,7 @@ L.Map = L.Class.extend({
 			return this;
 		}
 
-		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
+		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2, true));
 
 		this.fire('move');
 
@@ -1572,6 +1601,7 @@ L.TileLayer = L.Class.extend({
 		continuousWorld: false,
 		noWrap: false,
 		zoomOffset: 0,
+		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -1680,6 +1710,10 @@ L.TileLayer = L.Class.extend({
 		}
 		this._tiles = {};
 
+		if (this.options.reuseTiles) {
+			this._unusedTiles = [];
+		}
+
 		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
 		}
@@ -1700,7 +1734,8 @@ L.TileLayer = L.Class.extend({
 
 		this._addTilesFromCenterOut(tileBounds);
 
-		if (this.options.unloadInvisibleTiles) {
+		if (this.options.unloadInvisibleTiles ||
+			this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
 	},
@@ -1754,6 +1789,9 @@ L.TileLayer = L.Class.extend({
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
+					if (this.options.reuseTiles) {
+						this._unusedTiles.push(this._tiles[key]);
+					}
 					delete this._tiles[key];
 				}
 			}
@@ -1764,7 +1802,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = Math.pow(2, (zoom + this.options.zoomOffset));
+			tileLimit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -1781,8 +1819,8 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		// create tile
-		var tile = this._createTile();
+		// get unused tile - or create a new tile
+		var tile = this._getTile();
 		L.DomUtil.setPosition(tile, tilePos);
 
 		this._tiles[key] = tile;
@@ -1794,6 +1832,11 @@ L.TileLayer = L.Class.extend({
 		this._loadTile(tile, tilePoint, zoom);
 
 		container.appendChild(tile);
+	},
+
+	_getOffsetZoom: function (zoom) {
+		zoom = this.options.zoomReverse ? this.options.maxZoom - zoom : zoom;
+		return zoom + this.options.zoomOffset;
 	},
 
 	_getTilePos: function (tilePoint) {
@@ -1811,7 +1854,7 @@ L.TileLayer = L.Class.extend({
 
 		return L.Util.template(this._url, L.Util.extend({
 			s: s,
-			z: zoom + this.options.zoomOffset,
+			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this._urlParams));
@@ -1824,6 +1867,19 @@ L.TileLayer = L.Class.extend({
 		var tileSize = this.options.tileSize;
 		this._tileImg.style.width = tileSize + 'px';
 		this._tileImg.style.height = tileSize + 'px';
+	},
+
+	_getTile: function () {
+		if (this.options.reuseTiles && this._unusedTiles.length > 0) {
+			var tile = this._unusedTiles.pop();
+			this._resetTile(tile);
+			return tile;
+		}
+		return this._createTile();
+	},
+
+	_resetTile: function (tile) {
+		// Override if data stored on a tile needs to be cleaned up before reuse
 	},
 
 	_createTile: function () {
@@ -1923,6 +1979,17 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
+	redraw: function () {
+		for (var i in this._tiles) {
+			var tile = this._tiles[i];
+			this._redrawTile(tile);
+		}
+	},
+
+	_redrawTile: function (tile) {
+		this.drawTile(tile, tile._tilePoint, tile._zoom);
+	},
+
 	_createTileProto: function () {
 		this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
 
@@ -1939,6 +2006,8 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 
 	_loadTile: function (tile, tilePoint, zoom) {
 		tile._layer = this;
+		tile._tilePoint = tilePoint;
+		tile._zoom = zoom;
 
 		this.drawTile(tile, tilePoint, zoom);
 
@@ -2043,11 +2112,17 @@ L.Icon = L.Class.extend({
 
 	_createIcon: function (name) {
 		var size = this[name + 'Size'],
-			src = this[name + 'Url'],
-			img = this._createImg(src);
-
-		if (!src) {
+			src = this[name + 'Url'];
+		if (!src && name === 'shadow') {
 			return null;
+		}
+
+		var img;
+		if (!src) {
+			img = this._createDiv();
+		}
+		else {
+			img = this._createImg(src);
 		}
 
 		img.className = 'leaflet-marker-' + name;
@@ -2073,6 +2148,10 @@ L.Icon = L.Class.extend({
 			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
+	},
+
+	_createDiv: function () {
+		return document.createElement('div');
 	}
 });
 
@@ -2952,72 +3031,80 @@ L.LineUtil = {
 			return points.slice();
 		}
 
+		var sqTolerance = tolerance * tolerance;
+
 		// stage 1: vertex reduction
-		points = this.reducePoints(points, tolerance);
+		points = this._reducePoints(points, sqTolerance);
 
 		// stage 2: Douglas-Peucker simplification
-		points = this.simplifyDP(points, tolerance);
+		points = this._simplifyDP(points, sqTolerance);
 
 		return points;
 	},
 
 	// distance from a point to a segment between two points
 	pointToSegmentDistance:  function (/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
-		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));
+		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
 	closestPointOnSegment: function (/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
-		var point = this._sqClosestPointOnSegment(p, p1, p2);
-		point.distance = Math.sqrt(point._sqDist);
-		return point;
+		return this._sqClosestPointOnSegment(p, p1, p2);
 	},
 
 	// Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
-	simplifyDP: function (points, tol) {
-		var maxDist2 = 0,
-			index = 0,
-			t2 = tol * tol,
-			len = points.length,
-			i, dist2;
+	_simplifyDP: function (points, sqTolerance) {
 
-		if (len < 3) {
-			return points;
-		}
+		var len = points.length,
+			ArrayConstructor = typeof Uint8Array !== 'undefined' ? Uint8Array : Array,
+			markers = new ArrayConstructor(len);
 
-		for (i = 0; i < len - 1; i++) {
-			dist2 = this._sqPointToSegmentDist(points[i], points[0], points[len - 1]);
-			if (dist2 > maxDist2) {
-				index = i;
-				maxDist2 = dist2;
+		markers[0] = markers[len - 1] = 1;
+
+		this._simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
+
+		var i,
+			newPoints = [];
+
+		for (i = 0; i < len; i++) {
+			if (markers[i]) {
+				newPoints.push(points[i]);
 			}
 		}
 
-		var part1, part2;
+		return newPoints;
+	},
 
-		if (maxDist2 >= t2) {
-			part1 = points.slice(0, index);
-			part2 = points.slice(index);
+	_simplifyDPStep: function (points, markers, sqTolerance, first, last) {
 
-			part1 = this.simplifyDP(part1, tol);
-			part2 = this.simplifyDP(part2, tol);
+		var maxSqDist = 0,
+			index, i, sqDist;
 
-			return part1.concat(part2);
-		} else {
-			return [points[0], points[len - 1]];
+		for (i = first + 1; i <= last - 1; i++) {
+			sqDist = this._sqClosestPointOnSegment(points[i], points[first], points[last], true);
+
+			if (sqDist > maxSqDist) {
+				index = i;
+				maxSqDist = sqDist;
+			}
+		}
+
+		if (maxSqDist > sqTolerance) {
+			markers[index] = 1;
+
+			this._simplifyDPStep(points, markers, sqTolerance, first, index);
+			this._simplifyDPStep(points, markers, sqTolerance, index, last);
 		}
 	},
 
 	// reduce points that are too close to each other to a single point
-	reducePoints: function (points, tol) {
-		var reducedPoints = [points[0]],
-			t2 = tol * tol;
+	_reducePoints: function (points, sqTolerance) {
+		var reducedPoints = [points[0]];
 
 		for (var i = 1, prev = 0, len = points.length; i < len; i++) {
-			if (this._sqDist(points[i], points[prev]) < t2) {
-				continue;
+			if (this._sqDist(points[i], points[prev]) > sqTolerance) {
+				reducedPoints.push(points[i]);
+				prev = i;
 			}
-			reducedPoints.push(points[i]);
-			prev = i;
 		}
 		if (prev < len - 1) {
 			reducedPoints.push(points[len - 1]);
@@ -3107,28 +3194,31 @@ L.LineUtil = {
 		return dx * dx + dy * dy;
 	},
 
-	// return closest point on segment with attribute _sqDist - square distance to segment
-	_sqClosestPointOnSegment: function (p, p1, p2) {
-		var x2 = p2.x - p1.x,
-			y2 = p2.y - p1.y,
-			apoint = p1;
-		if (x2 || y2) {
-			var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
-				t = dot / this._sqDist(p1, p2);
+	// return closest point on segment or distance to that point
+	_sqClosestPointOnSegment: function (p, p1, p2, sqDist) {
+		var x = p1.x,
+			y = p1.y,
+			dx = p2.x - x,
+			dy = p2.y - y,
+			dot = dx * dx + dy * dy,
+			t;
+
+		if (dot > 0) {
+			t = ((p.x - x) * dx + (p.y - y) * dy) / dot;
 
 			if (t > 1) {
-				apoint = p2;
+				x = p2.x;
+				y = p2.y;
 			} else if (t > 0) {
-				apoint = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
+				x += dx * t;
+				y += dy * t;
 			}
 		}
-		apoint._sqDist = this._sqDist(p, apoint);
-		return apoint;
-	},
 
-	// distance from a point to a segment between two points
-	_sqPointToSegmentDist: function (p, p1, p2) {
-		return this._sqClosestPointOnSegment(p, p1, p2)._sqDist;
+		dx = p.x - x;
+		dy = p.y - y;
+
+		return sqDist ? dx * dx + dy * dy : new L.Point(x, y);
 	}
 };
 
