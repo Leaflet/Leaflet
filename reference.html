@@ -1123,6 +1123,12 @@ map.openPopup(popup);</code></pre>
 				<td>depends</td>
 				<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile WebKit, otherwise <code>false</code>.</td>
 			</tr>
+			<tr>
+				<td><code>reuseTiles</code></td>
+				<td><code>Boolean</code></td>
+				<td>false</td>
+				<td>If <code>true</code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
+			</tr>
 		</table>
 
 
@@ -1236,6 +1242,11 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 				<td><code>drawTile( &lt;HTMLCanvasElement&gt;&nbsp;<i>canvas</i>, &lt;<a href="#point">Point</a>&gt;&nbsp;<i>tilePoint</i>, &lt;Number&gt;&nbsp;<i>zoom</i>&nbsp;)</code></td>
 				<td><code>this</code></td>
 				<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
+			</tr>
+			<tr>
+				<td><code>redraw()</code></td>
+				<td>-</td>
+				<td>Calling <code>redraw</code> will cause the <code>drawTile</code> method to be called for all tiles. May be used for updating dynamic content drawn on the Canvas</td>
 			</tr>
 		</table>
 
@@ -1896,6 +1907,11 @@ map.addLayer(geojson);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
+				<td><code>distanceTo( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the distance (in meters) to the given LatLng calculated using the Haversine formula. See <a href="http://en.wikipedia.org/wiki/Haversine_formula">description on wikipedia</a></td>
+			</tr>
+			<tr>
 				<td><code>equals( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
 				<td><code>Boolean</code></td>
 				<td>Returns true if the given LatLng point is at the same position (within a small margin of error).</td>
@@ -2010,6 +2026,11 @@ map.addLayer(geojson);</code></pre>
 				<td><code>contains( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
 				<td><code>Boolean</code></td>
 				<td>Returns <code>true</code> if the rectangle contains the given point.</td>
+			</tr>
+			<tr>
+				<td><code>intersects( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle intersects the given bounds.</td>
 			</tr>
 		</table>
 
@@ -2177,6 +2198,11 @@ map.addLayer(geojson);</code></pre>
 				<td><code>Boolean</code></td>
 				<td>Returns <code>true</code> if the rectangle contains the given point.</td>
 			</tr>
+			<tr>
+				<td><code>intersects( &lt;<a href="#bounds">Bounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle intersects the given bounds.</td>
+			</tr>
 		</table>
 
 
@@ -2208,12 +2234,12 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 			<tr>
 				<td><code>iconUrl</code></td>
 				<td><code>String</code>
-				<td>The URL to the icon image (absolute or relative to your script path).</td>
+				<td>The URL to the icon image (absolute or relative to your script path). If iconUrl is <code>null</code> then a <code>&lt;div&gt;</code> element will be created instead of an image element. This is useful for adding click and hover targets to the map while drawing icons in another fashion (e.g. using <a href="#tilelayer-canvas">TileLayer.Canvas</a>)</td>
 			</tr>
 			<tr>
 				<td><code>shadowUrl</code></td>
 				<td><code>String</code>
-				<td>The URL to the icon shadow image. The shadow image must be cropped in such way the that if you align them on top of each other, top left corners of the images are in the same spot.</td>
+				<td>The URL to the icon shadow image. The shadow image must be cropped in such way the that if you align them on top of each other, top left corners of the images are in the same spot. If shadowUrl is <code>null</code> then no shadow image will be created.</td>
 			</tr>
 			<tr>
 				<td><code>iconSize</code></td>
@@ -2350,7 +2376,7 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 				<td>Alias to <code>removeEventListener</code>.</td>
 			</tr>
 			<tr>
-				<td><code>hasListeners( &lt;String&gt;&nbsp;<i>type</i>&nbsp;)</code></td>
+				<td><code>hasEventListeners( &lt;String&gt;&nbsp;<i>type</i>&nbsp;)</code></td>
 				<td><code>Boolean</code></td>
 				<td>Returns true if a particular event type has some listeners attached to it.</td>
 			</tr>
