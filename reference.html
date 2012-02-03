@@ -1,0 +1,2609 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Documentation</title>
+	
+	<meta charset="utf-8" />
+	
+	<link rel="icon" type="image/png" href="docs/images/favicon.png" />
+
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="docs/css/screen.css" media="screen, projection" />
+
+	<script src="docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="dist/leaflet.ie.css" /><![endif]-->
+	<script src="dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<ul class="nav clearfix">
+			<li><a href="index.html">Overview</a></li>
+			<li><a href="features.html">Features</a></li>  
+			<li><a href="examples.html">Examples</a></li> 
+			<li><span>Documentation</span></li> 
+			<li><a href="download.html">Download</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li> 
+		</ul>
+		
+		<div id="toc" class="clearfix">
+			<div class="span-5 colborder">
+				<h4>Map</h4>
+				<ul>
+					<li><a href="#map-usage">Usage example</a></li>
+					<li><a href="#map-constructor">Constructor</a></li>
+					<li><a href="#map-options">Options</a></li>
+					<li><a href="#map-properties">Properties</a></li>
+					<li><a href="#map-events">Events</a></li>
+					<li><a href="#map-projections">Projections</a></li>
+					<li><a href="#map-panes">Panes</a></li>
+				</ul>
+				<h4>Map methods</h4>
+				<ul>
+					<li><a href="#map-set-methods">Methods that modify map state</a></li>
+					<li><a href="#map-get-methods">Methods that get map state</a></li>
+					<li><a href="#map-stuff-methods">Methods for layers and controls</a></li>
+					<li><a href="#map-conversion-methods">Conversion methods</a></li>
+					<li><a href="#map-misc-methods">Other methods</a></li>
+				</ul>
+			</div>
+			<div class="span-3">
+				<h4>UI layers</h4>
+				<ul>
+					<li><a href="#marker">Marker</a></li>
+					<li><a href="#popup">Popup</a></li>
+				</ul>
+				<h4>Raster layers</h4>
+				<ul>
+					<li><a href="#tilelayer">TileLayer</a></li>
+					<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
+					<li><a href="#tilelayer-canvas">TileLayer.Canvas</a></li>
+					<li><a href="#imageoverlay">ImageOverlay</a></li>
+				</ul>
+				<h4>Vector layers</h4>
+				<ul>
+					<li><a href="#path">Path</a></li>
+					<li><a href="#polyline">Polyline</a></li>
+					<li><a href="#multipolyline">MultiPolyline</a></li>
+					<li><a href="#polygon">Polygon</a></li>
+					<li><a href="#multipolygon">MultiPolygon</a></li>
+					<li><a href="#circle">Circle</a></li>
+					<li><a href="#circlemarker">CircleMarker</a></li>
+				</ul>
+			</div>
+			<div class="span-3">
+				<h4>Other layers</h4>
+				<ul>
+					<li><a href="#layergroup">LayerGroup</a></li>
+					<li><a href="#featuregroup">FeatureGroup</a></li>
+					<li><a href="#geojson">GeoJSON</a></li>
+				</ul>
+				<h4>Basic types</h4>
+				<ul>
+					<li><a href="#latlng">LatLng</a></li>
+					<li><a href="#latlngbounds">LatLngBounds</a></li>
+					<li><a href="#point">Point</a></li>
+					<li><a href="#bounds">Bounds</a></li>
+					<li><a href="#icon">Icon</a></li>
+				</ul>
+				<h4>Controls</h4>
+				<ul>
+					<li><a href="#control-zoom">Zoom</a></li>
+					<li><a href="#control-attribution">Attribution</a></li>
+					<li><a class="nodocs" href="#control-layers">Layers</a></li>
+				</ul>
+			</div>
+			<div class="span-3">
+				<h4>Events</h4>
+				<ul>
+					<li><a href="#events">Events methods</a></li>
+					<li><a href="#event-objects">Event objects</a></li>
+				</ul>
+				<h4>Utility</h4>
+				<ul>
+					<li><a class="nodocs" href="#">Class</a></li>
+					<li><a class="nodocs" href="#">Browser</a></li>
+					<li><a class="nodocs" href="#">Util</a></li>
+					<!-- <li><a class="nodocs" href="#">LineUtil</a></li>
+					<li><a class="nodocs" href="#">PolyUtil</a></li> -->
+				</ul>
+				<h4>DOM utility</h4>
+				<ul>
+					<li><a class="nodocs" href="#">DomEvent</a></li>
+					<li><a class="nodocs" href="#">DomUtil</a></li>
+					<li><a class="nodocs" href="#">Transition</a></li>
+					<li><a class="nodocs" href="#">Draggable</a></li>
+				</ul>
+				<!-- <ul>
+					<li><a class="nodocs" href="#">Transformation</a></li>
+					<li><a class="nodocs" href="#">Projection.Mercator</a></li>
+				</ul> -->
+			</div>
+			<div class="span-3 last">
+				<h4>Interfaces</h4>
+				<ul>
+					<li><a href="#ihandler">IHandler</a></li>
+					<li><a class="nodocs" href="#">ILayer</a></li>
+					<li><a class="nodocs" href="#">IFeature</a></li>
+					<li><a class="nodocs" href="#">IControl</a></li>
+					<li><a class="nodocs" href="#">IProjection</a></li>
+					<li><a class="nodocs" href="#">ICRS</a></li>
+				</ul>
+				
+				<h4>Misc</h4>
+				<ul>
+					<li><a href="#noconflict" class="nodocs">noConflict</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<hr />
+		<p>
+			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leaflet.cloudmade.com" data-text="Leaflet — a modern, lightweight open-source JavaScript library for interactive maps by @cloudmade" data-count="horizontal" data-via="LeafletJS" data-related="CloudMade">Tweet</a>
+			<a href="http://twitter.com/LeafletJS" data-show-count="false" data-width="140px" class="twitter-follow-button">Follow @LeafletJS</a>
+			<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			
+			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=standard&amp;show_faces=false&amp;width=530&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:530px; height:24px;" allowTransparency="true"></iframe>
+		</p>
+
+		<h2 id="map-class">L.Map</h2>
+		
+		<p>The central class of the API &mdash; it is used to create a map on a page and manipulate it.</p>
+		
+		<h3 id="map-usage">Usage example</h3>
+		
+		<pre><code class="javascript">// initialize the map on the "map" div with a given center and zoom 
+var map = new L.Map('map', {
+	center: new L.LatLng(51.505, -0.09), 
+	zoom: 13
+});
+
+// create a CloudMade tile layer
+var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+// add the CloudMade layer to the map
+map.addLayer(cloudmade);</code></pre>
+		
+		<h3 id="map-constructor">Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Map( &lt;HTMLElement|String&gt;&nbsp;<i>id</i>, &lt;<a href="#map-options">Map&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a map object given a div element (or its id) and optionally an object literal with map options described below.</td>
+			</tr>
+		</table>
+		
+		<h3 id="map-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>center</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td><code>null</code></td>
+				<td>Initial geographical center of the map.</td>
+			</tr>
+			<tr>
+				<td><code>zoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>null</code></td>
+				<td>Initial map zoom.</td>
+			</tr>
+			<tr>
+				<td><code>layers</code></td>
+				<td><code>ILayer[]</code></td>
+				<td><code>[]</code></td>
+				<td>Layers that will be added to the map initially.</td>
+			</tr>
+			<tr>
+				<td><code>minZoom</code></td>
+				<td><code>Number</code></td>
+				<td>0</td>
+				<td>Minimum zoom level of the map. Overrides any <code>minZoom</code> set on map layers.</td>
+			</tr>
+			<tr>
+				<td><code>maxZoom</code></td>
+				<td><code>Number</code></td>
+				<td>18</td>
+				<td>Maximum zoom level of the map. This overrides any <code>maxZoom</code> set on map layers.</td>
+			</tr>
+			<tr>
+				<td><code>crs</code></td>
+				<td><code><a href="#map-projections">CRS</a></code></td>
+				<td><code>L.CRS.EPSG3857</code></td>
+				<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
+			</tr>
+			<tr>
+				<td><code>dragging</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map be draggable with mouse/touch or not.</td>
+			</tr>
+			<tr>
+				<td><code>touchZoom</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map can be zoomed by touch-dragging with two fingers.</td>
+			</tr>
+			<tr>
+				<td><code>scrollWheelZoom</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map can be zoomed by using the mouse wheel.</td>
+			</tr>
+			<tr>
+				<td><code>doubleClickZoom</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map can be zoomed in by double clicking on it.</td>
+			</tr>
+			<tr>
+				<td><code>zoomControl</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the <a href="#control-zoom">zoom control</a> is added to the map by default.</td>
+			</tr>
+			<tr>
+				<td><code>attributionControl</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the <a href="#control-attribution">attribution control</a> is added to the map by default.</td>
+			</tr>
+			<tr>
+				<td><code>trackResize</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether the map automatically handles browser window resize to update itself.</td>
+			</tr>
+			<tr>
+				<td><code>fadeAnimation</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>Whether the tile fade animation is enabled. By default it's enabled in all browsers that support CSS3 Transitions except Android.</td>
+			</tr>
+			<tr>
+				<td><code>zoomAnimation</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>Whether the tile fade animation is enabled. By default it's enabled in all browsers that support CSS3 Transitions except Android.</td>
+			</tr>
+			<tr>
+				<td><code>closePopupOnClick</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Set it to <code>false</code> if you don't want popups to close when user clicks the map.</td>
+			</tr>
+		</table>
+		
+		<h3 id="map-properties">Properties</h3>
+		
+		<p>Map properties include interaction handlers that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging or touch zoom (see <a href="#ihandler">IHandler</a> methods). Example:</p>
+		
+		<pre><code class="javascript">map.doubleClickZoom.disable();</code></pre>
+		
+		<p>You can also access default map controls like attribution control through map properties:</p>
+		
+		<pre><code class="javascript">map.attributionControl.addAttribution("Earthquake data &amp;copy; GeoNames");</code></pre>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>dragging</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Map dragging handler (by both mouse and touch).</td>
+			</tr>
+			<tr>
+				<td>touchZoom</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Touch zoom handler.</td>
+			</tr>
+			<tr>
+				<td>doubleClickZoom</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Double click zoom handler.</td>
+			</tr>
+			<tr>
+				<td>scrollWheelZoom</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Scroll wheel zoom handler.</td>
+			</tr>
+			<tr>
+				<td>shiftDragZoom</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Shift-drag zoom handler.</td>
+			</tr>
+			<tr>
+				<td>attributionControl</td>
+				<td><a href="#control-attribution">Control.Attribution</a></td>
+				<td>Attribution control.</td>
+			</tr>
+		</table>
+		
+		
+		<h3 id="map-events">Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user clicks (or taps) the map.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the map.</td>
+			</tr>
+			<tr>
+				<td><code>mousedown</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user pushes the mouse button on the map.</td>
+			</tr>
+			<tr>
+				<td><code>load</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the map is initialized (when its center and zoom are set for the first time).</td>
+			</tr>
+			<tr>
+				<td><code>viewreset</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the map needs to redraw its content (this usually happens on map zoom or load). Very useful for creating custom overlays.</td>
+			</tr>
+			<tr>
+				<td><code>movestart</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the view of the map starts changing (e.g. user starts dragging the map).</td>
+			</tr>
+			<tr>
+				<td><code>move</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired on any movement of the map view.</td>
+			</tr>
+			<tr>
+				<td><code>moveend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the view of the map ends changed (e.g. user stopped dragging the map).</td>
+			</tr>
+			<tr>
+				<td><code>dragstart</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user starts dragging the map.</td>
+			</tr>
+			<tr>
+				<td><code>drag</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired repeatedly while the user drags the map.</td>
+			</tr>
+			<tr>
+				<td><code>dragend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user stops dragging the map.</td>
+			</tr>
+			<tr>
+				<td><code>zoomend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the map zoom changes.</td>
+			</tr>
+			<tr>
+				<td><code>layeradd</code></td>
+				<td><code><a href="#layer-event">LayerEvent</a></code>
+				<td>Fired when a new layer is added to the map.</td>
+			</tr>
+			<tr>
+				<td><code>layerremove</code></td>
+				<td><code><a href="#layer-event">LayerEvent</a></code>
+				<td>Fired when some layer is removed from the map.</td>
+			</tr>
+			<tr>
+				<td><code>locationfound</code></td>
+				<td><code><a href="#location-event">LocationEvent</a></code>
+				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) went successfully.</td>
+			</tr>
+			<tr>
+				<td><code>locationerror</code></td>
+				<td><code><a href="#error-event">ErrorEvent</a></code>
+				<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) failed.</td>
+			</tr>
+                        <tr>
+                                <td><code>popupopen</code></td>
+                                <td><code><a href="#popup-event">PopupEvent</a></code>
+                                <td>Fired when a popup is opened (using <code>openPopup</code> method).</td>
+                        </tr>
+                        <tr>
+                                <td><code>popupclose</code></td>
+                                <td><code><a href="#popup-event">PopupEvent</a></code>
+                                <td>Fired when a popup is closed (using <code>closePopup</code> method).</td>
+		</table>
+		
+		
+		<h3 id="map-projections">Projections</h3>
+		
+		<p>You can specify different CRS for map to use through its <code>crs</code> option. Here's the list of available CRS:</p>
+		
+		<table>
+			<tr>
+				<th>CRS</th>
+				<th>Data</th>
+			</tr>
+			<tr>
+				<td><code>L.CRS.EPSG3857</code></td>
+				<td>EPSG:3857 (Spherical Mercator), used by most of commercial map providers (CloudMade, Google, Yahoo, Bing, etc.).</td>
+			</tr>
+			<tr>
+				<td><code>L.CRS.EPSG4326</code></td>
+				<td>EPSG:4326 (Plate Carree), very popular among GIS enthusiasts.</td>
+			</tr>
+			<tr>
+				<td><code>L.CRS.EPSG3395</code></td>
+				<td>EPSG:4326 (Mercator), used by some map providers.</td>
+			</tr>
+		</table>
+		
+		
+		<h3 id="map-panes">Map panes</h3>
+		
+		<p>An object literal that contains different map panes that you can use to put your custom overlays in. The difference is mostly in zIndex order that such overlays get.</p>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>mapPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane that contains all other map panes.</td>
+			</tr>
+			<tr>
+				<td><code>tilePane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for tile layers.</td>
+			</tr>
+			<tr>
+				<td><code>objectsPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane that contains all the panes except tile pane.</td>
+			</tr>
+			<tr>
+				<td><code>shadowPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for overlay shadows (e.g. marker shadows).</td>
+			</tr>
+			<tr>
+				<td><code>overlayPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for overlays like polylines and polygons.</td>
+			</tr>
+			<tr>
+				<td><code>markerPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for marker icons.</td>
+			</tr>
+			<tr>
+				<td><code>popupPane</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Pane for popups.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h3 id="map-set-methods">Methods that modify map state</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setView( &lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>, &lt;Number&gt;&nbsp;<i>zoom</i>, &lt;Boolean&gt;&nbsp;<i>forceReset?</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Sets the view of the map (geographical center and zoom). If <code>forceReset</code> is set to <code>true</code>, the map is reloaded even if it's eligible for pan or zoom animation (<code>false</code> by default).</td>
+			</tr>
+			<tr>
+				<td><code>setZoom( &lt;Number&gt;&nbsp;<i>zoom</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Sets the zoom of the map.</td>
+			</tr>
+			<tr>
+				<td><code>zoomIn()</code></td>
+				<td><code>this</code></td>
+				<td>Increases the zoom of the map by 1.</td>
+			</tr>
+			<tr>
+				<td><code>zoomOut()</code></td>
+				<td><code>this</code></td>
+				<td>Decreases the zoom of the map by 1.</td>
+			</tr>
+			<tr id="map-fitbounds">
+				<td><code>fitBounds( &lt;LatLngBounds&gt;&nbsp;<i>bounds</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
+			</tr>
+			<tr>
+				<td><code>panTo( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
+			</tr>
+			<tr>
+				<td><code>panBy( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Pans the map by a given number of pixels (animated).</td>
+			</tr>
+			<tr>
+				<td><code>invalidateSize()</code></td>
+				<td><code>this</code></td>
+				<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
+			</tr>
+			<tr>
+				<td><code>locate( &lt;<a href="#map-locate-options">Locate&nbsp;options</a>&gt;&nbsp;<code>options?</code> )</code></td>
+				<td><code>this</code></td>
+				<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure. See <a href="#map-locate-options">Locate options</a> for more details.</td>
+			</tr>
+			<tr>
+				<td><code>locateAndSetView( &lt;Number&gt;&nbsp;<code>maxZoom?</code>, &lt;<a href="#map-locate-options">Locate&nbsp;options</a>&gt;&nbsp;<code>options?</code>)</code></td>
+				<td><code>this</code></td>
+				<td>Automatically sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). A shortcut for <code>map.locate({setView: true, maxZoom: maxZoom});</code>.</td>
+			</tr>
+			<tr>
+				<td><code>stopLocate()</code></td>
+				<td><code>this</code></td>
+				<td>Stops watching location previously initiated by <code>map.locate({watch: true})</code>.</td>
+			</tr>
+		</table>
+
+		<h3 id="map-get-methods">Methods that get map state</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>getCenter()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the geographical center of the map view.</td>
+			</tr>
+			<tr>
+				<td><code>getZoom()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the current zoom of the map view.</td>
+			</tr>
+			<tr>
+				<td><code>getMinZoom()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the minimum zoom level of the map.</td>
+			</tr>
+			<tr>
+				<td><code>getMaxZoom()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the maximum zoom level of the map.</td>
+			</tr>
+			<tr>
+				<td><code>getBounds()</code></td>
+				<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+				<td>Returns the LatLngBounds of the current map view.</td>
+			</tr>
+			<tr>
+				<td><code>getBoundsZoom( &lt;LatLngBounds&gt; <i>bounds</i> )</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the maximum zoom level on which the given bounds fit to the map view in its entirety.</td>
+			</tr>
+			<tr>
+				<td><code>getSize()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the current size of the map container.</td>
+			</tr>
+			<tr>
+				<td><code>getPixelBounds()</code></td>
+				<td><code>Bounds</code></td>
+				<td>Returns the bounds of the current map view in projected pixel coordinates (sometimes useful in layer and overlay implementations).</td>
+			</tr>
+			<tr>
+				<td><code>getPixelOrigin()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the projected pixel coordinates of the top left point of the map layer (useful in custom layer and overlay implementations).</td>
+			</tr>
+			<tr>
+				<td><code>getPanes()</code></td>
+				<td><code>Panes</code></td>
+				<td>Returns an object for accessing different panes of the map (tile pane, marker pane, etc.).</td>
+			</tr>
+		</table>
+		
+		<h3 id="map-stuff-methods">Methods for layers and controls</h3>
+			
+		<table>
+			<tr id="map-addlayer">
+				<td><code>addLayer( &lt;ILayer&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds the given layer to the map.</td>
+			</tr>
+			<tr>
+				<td><code>removeLayer( &lt;ILayer&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Removes the given layer from the map.</td>
+			</tr>
+			
+			<tr id="map-openpopup">
+				<td><code>openPopup( &lt;<a href="#popup">Popup</a>&gt;&nbsp;<i>popup</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
+			</tr>
+			<tr id="map-closepopup">
+				<td><code>closePopup()</code></td>
+				<td><code>this</code></td>
+				<td>Closes the popup opened with <a href="#map-openpopup">openPopup</a>.</td>
+			</tr>
+			<tr id="map-addcontrol">
+				<td><code>addControl( &lt;<a href="#icontrol">IControl</a>&gt;&nbsp;<i>control</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds the given control to the map.</td>
+			</tr>
+			<tr>
+				<td><code>removeControl( &lt;<a href="#icontrol">IControl</a>&gt;&nbsp;<i>control</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Removes the given control from the map.</td>
+			</tr>
+		</table>
+		
+	
+		<h3 id="map-conversion-methods">Conversion methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>latLngToLayerPoint( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the map layer point that corresponds to the given geographical coordinates (useful for placing overlays on the map).</td>
+			</tr>
+			<tr>
+				<td><code>layerPointToLatLng( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the geographical coordinates of a given map layer point.</td>
+			</tr>
+			<tr>
+				<td><code>mouseEventToContainerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the pixel coordinates of a mouse click (relative to the top left corner of the map) given its event object.</td>
+			</tr>
+			<tr>
+				<td><code>mouseEventToLayerPoint( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the pixel coordinates of a mouse click relative to the map layer given its event object.
+			</tr>
+			<tr>
+				<td><code>mouseEventToLatLng( &lt;MouseEvent&gt;&nbsp;<i>event</i>&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
+			</tr>
+			<tr>
+				<td><code>containerPointToLayerPoint( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Converts the point relative to the map container to a point relative to the map layer.</td>
+			</tr>
+			<tr>
+				<td><code>layerPointToContainerPoint( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Converts the point relative to the map layer to a point relative to the map container.</td>
+			</tr>
+			<tr>
+				<td><code>project( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Projects the given geographical coordinates to pixel coordinates for the given zoom level (current zoom level by default).</td>
+			</tr>
+			<tr>
+				<td><code>unproject( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>, &lt;Number&gt;&nbsp;<i>zoom?</i>&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Projects the given pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
+			</tr>
+		</table>
+		
+		<h3 id="map-misc-methods">Other methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>getContainer()</code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Returns the container element of the map.</td>
+			</tr>
+			<tr>
+				<td><code>getPanes()</code></td>
+				<td><code><a href="#map-panes">MapPanes</a></code></td>
+				<td>Returns an object with different map panes (to render overlays in).</td>
+			</tr>
+		</table>
+
+		<h3 id="map-locate-options">Locate options</h3>
+
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>watch</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If true, starts continous watching of location changes (instead of detecting it once) using W3C <code>watchPosition</code> method. You can later stop watching using <code>map.stopLocate()</code> method.</td>
+			</tr>
+			<tr>
+				<td><code>setView</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If true, automatically sets the map view to the user location with respect to detection accuracy.</td>
+			</tr>
+			<tr>
+				<td><code>maxZoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>Infinity</code></td>
+				<td>The maximum zoom for automatic view setting when using `setView` option.</td>
+			</tr>
+			<tr>
+				<td><code>timeout</code></td>
+				<td><code>Number</code></td>
+				<td><code>10000</code></td>
+				<td>Number of millisecond to wait for a response from geolocation before firing a <code>locationerror</code> event.</td>
+			</tr>
+			<tr>
+				<td><code>maximumAge</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>Maximum age of detected location. If less than this amount of milliseconds passed since last geolocation response, <code>locate</code> will return a cached location.</td>
+			</tr>
+			<tr>
+				<td><code>enableHighAccuracy</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>Enables high accuracy, see <a href="http://dev.w3.org/geo/api/spec-source.html#high-accuracy">description in the W3C spec</a>.</td>
+			</tr>
+		</table>
+		
+		
+		<h2 id="marker">L.Marker</h2>
+		
+		<p>Used to put markers on the map.</p>
+		
+		<h3>Usage example</h3>
+		<pre><code class="javascript">var marker = new L.Marker(latlng);
+map.addLayer(marker);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Marker( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;<a href="#marker-options">Marker&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a Marker object given a geographical point and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="marker-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>icon</code></td>
+				<td>Class<br />(<code><a href="#icon">L.Icon</a></code>&nbsp;or&nbsp;its&nbsp;child)</td>
+				<td><code>L.Icon</code></td>
+				<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon.</td>
+			</tr>
+			<tr>
+				<td><code>clickable</code></td>
+				<td>Boolean</td>
+				<td><code>true</code></td>
+				<td>If false, the marker will not emit mouse events and will act as a part of the underlying map.</td>
+			</tr>
+			<tr>
+				<td><code>draggable</code></td>
+				<td>Boolean</td>
+				<td><code>false</code></td>
+				<td>Whether the marker is draggable with mouse/touch or not.</td>
+			</tr>
+		</table>
+		
+		<h3>Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user clicks (or taps) the marker.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the marker.</td>
+			</tr>
+			<tr>
+				<td><code>dragstart</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user starts dragging the marker.</td>
+			</tr>
+			<tr>
+				<td><code>drag</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired repeatedly while the user drags the marker.</td>
+			</tr>
+			<tr>
+				<td><code>dragend</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user stops dragging the marker.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>getLatLng()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the current geographical position of the marker.</td>
+			</tr>
+			<tr>
+				<td><code>setLatLng(&lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Changes the marker position to the given point.</td>
+			</tr>
+			<tr id="#marker-bindpopup">
+				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
+			</tr>
+			<tr id="#marker-openpopup">
+				<td><code>openPopup()</code></td>
+				<td><code>this</code></td>
+				<td>Opens the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
+			</tr>
+		</table>
+		
+		<h3 id="marker-interaction-handlers">Interaction handlers</h3>
+		
+		<p>Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see <a href="#ihandler">IHandler</a> methods). Example:</p>
+		
+		<pre><code class="javascript">marker.dragging.disable();</code></pre>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td>dragging</td>
+				<td><a href="#ihandler">IHandler</a></td>
+				<td>Marker dragging handler (by both mouse and touch).</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="popup">L.Popup</h2>
+		
+		<p>Used to open popups in certain places of the map. Use <a href="#map-openpopup">Map#openPopup</a> to open popups while making sure that only one popup is open at one time (recommended for usability), or use <a href="#map-addlayer">Map#addLayer</a> to open as many as you want.</p>
+		
+		<h3>Usage example</h3>
+		<p>If you want to just bind a popup to marker click and then open it, it's really easy:</p>
+		<pre><code class="javascript">marker.bindPopup(popupContent).openPopup();</code></pre>
+		<p>Path overlays like polylines also have a <code>bindPopup</code> method. Here's a more complicated way to open a popup on a map:</p>
+		<pre><code class="javascript">var popupContent = '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;', 
+	popup = new L.Popup();
+
+popup.setLatLng(latlng);
+popup.setContent(popupContent);
+
+map.openPopup(popup);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Popup( &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>, &lt;object&gt;&nbsp;<i>source?</i>&nbsp;)</code></td>
+				<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional object that is used to tag the popup with a reference to the source object to which it refers.</td>
+			</tr>
+		</table>
+		
+		<h3 id="popup-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>maxWidth</code></td>
+				<td><code>Number</code></td>
+				<td><code>300</code></td>
+				<td>Max width of the popup.</td>
+			</tr>
+			<tr>
+				<td><code>autoPan</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Set it to false if you don't want the map to do panning animation to fit the opened popup.'</td>
+			</tr>
+			<tr>
+				<td><code>closeButton</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Controls the presense of a close button in the popup.</td>
+			</tr>
+			<tr>
+				<td><code>offset</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td><code>Point(0,&nbsp;0)</code></td>
+				<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets the geographical point where the popup will open.</td>
+			</tr>
+			<tr>
+				<td><code>setContent( &lt;String&gt;&nbsp;<i>htmlContent</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets the HTML content of the popup.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="tilelayer">L.TileLayer</h2>
+		
+		<p>Used to load and display tile layers on the map, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer( &lt;String&gt;&nbsp;<i><a href="#url-template">urlTemplate</a></i>, &lt;<a href="#tilelayer-options">TileLayer&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a tile layer object given a <a href="#url-template">URL template</a> and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="url-template">URL template</h3>
+		<p>A string of the following form:</p>
+		<pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'</code></pre>
+		<p><code>{s}</code> means one of the randomly chosen subdomains (their range is specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>		
+
+		<h3 id="tilelayer-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>minZoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>Minimum zoom number.</td>
+			</tr>		
+			<tr>
+				<td><code>maxZoom</code></td>
+				<td><code>Number</code></td>
+				<td><code>18</code></td>
+				<td>Maximum zoom number.</td>
+			</tr>
+			<tr>
+				<td><code>tileSize</code></td>
+				<td><code>Number</code></td>
+				<td><code>256</code></td>
+				<td>Tile size (width and height in pixels, assuming tiles are square).</td>
+			</tr>
+			<tr>
+				<td><code>subdomains</code></td>
+				<td><code>String</code> or <code>String[]</code></td>
+				<td><code>'abc'</code></td>
+				<td>Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.</td>
+			</tr>
+			<tr>
+				<td><code>errorTileUrl</code></td>
+				<td><code>String</code></td>
+				<td><code>''</code></td>
+				<td>URL to the tile image to show in place of the tile that failed to load.</td>
+			</tr>
+			<tr>
+				<td><code>attribution</code></td>
+				<td><code>String</code></td>
+				<td><code>''</code></td>
+				<td>e.g. "&copy; CloudMade" &mdash; the string used by the attribution control, describes the layer data.</td>
+			</tr>
+			<tr>
+				<td><code>scheme</code></td>
+				<td><code>String</code></td>
+				<td><code>'xyz'</code></td>
+				<td>Either <code>'xyz'</code> or <code>'tms'</code>, affects tile numbering (TMS servers use inverse Y axis numbering).</td>
+			</tr>
+			<tr>
+				<td><code>unloadInvisibleTiles</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>If <code>true</code>, all the tiles that are not visible after panning are removed (for better performance). <code>true</code> by default on mobile WebKit, otherwise <code>false</code>.</td>
+			</tr>
+			<tr>
+				<td><code>updateWhenIdle</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>If <code>false</code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code>true</code> by default on mobile WebKit, otherwise <code>false</code>.</td>
+			</tr>
+			<tr>
+				<td><code>reuseTiles</code></td>
+				<td><code>Boolean</code></td>
+				<td>false</td>
+				<td>If <code>true</code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="tilelayer-wms">L.TileLayer.WMS</h2>
+		
+		<p>Used to display WMS services as tile layers on the map. Extends <a href="#tilelayer">TileLayer</a>, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+	layers: 'nexrad-n0r-900913',
+	format: 'image/png',
+	transparent: true,
+	attribution: "Weather data &copy; 2011 IEM Nexrad"
+});</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer.WMS( &lt;String&gt;&nbsp;<i>baseUrl</i>, &lt;<a href="#tilelayer-wms-options">TileLayer.WMS&nbsp;options</a>&gt;&nbsp;<i>options</i>&nbsp;)</code></td>
+				<td>Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="tilelayer-wms-options">Options</h3>
+		
+		<p>Includes all <a href="#tilelayer-options">TileLayer options</a> and additionally:</p>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>layers</code></td>
+				<td><code>String</code></td>
+				<td>-</td>
+				<td><b>(required)</b> Comma-separated list of WMS layers to show.</td>
+			</tr>		
+			<tr>
+				<td><code>styles</code></td>
+				<td><code>String</code></td>
+				<td></td>
+				<td>Comma-separated list of WMS styles.</td>
+			</tr>
+			<tr>
+				<td><code>format</code></td>
+				<td><code>String</code></td>
+				<td><code>image/jpeg</code></td>
+				<td>WMS image format (use 'image/png' for layers with transparency).</td>
+			</tr>
+			<tr>
+				<td><code>transparent</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If true, the WMS service will return images with transparency.</td>
+			</tr>
+			<tr>
+				<td><code>version</code></td>
+				<td><code>String</code></td>
+				<td><code>1.1.1</code></td>
+				<td>Version of the WMS service to use.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="tilelayer-canvas">L.TileLayer.Canvas</h2>
+		
+		<p>Used to create Canvas-based tile layers where tiles get drawn on the browser side. Extends <a href="#tilelayer">TileLayer</a>, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var canvasTiles = new L.TileLayer.Canvas();
+		
+canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
+	var ctx = canvas.getContext('2d');
+	// draw something on the tile canvas
+}</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.TileLayer.Canvas( &lt;<a href="#tilelayer-options">TileLayer&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a Canvas tile layer object given an options object (optionally).</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>drawTile( &lt;HTMLCanvasElement&gt;&nbsp;<i>canvas</i>, &lt;<a href="#point">Point</a>&gt;&nbsp;<i>tilePoint</i>, &lt;Number&gt;&nbsp;<i>zoom</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
+			</tr>
+			<tr>
+				<td><code>redraw()</code></td>
+				<td>-</td>
+				<td>Calling <code>redraw</code> will cause the <code>drawTile</code> method to be called for all tiles. May be used for updating dynamic content drawn on the Canvas</td>
+			</tr>
+		</table>
+
+
+		<h2 id="imageoverlay">L.ImageOverlay</h2>
+		
+		<p>Used to load and display a single image over specific bounds of the map, implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<h3>Usage example</h3>
+		
+		<pre><code class="javascript">var imageBounds = new L.LatLngBounds(
+		new L.LatLng(40.712216,-74.22655),
+		new L.LatLng(40.773941,-74.12544));
+		
+var image = new L.ImageOverlay(
+		"http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", imageBounds);</code></pre>
+		
+		<h3>Constructor</h3>
+				
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.ImageOverlay( &lt;String&gt;&nbsp;<i>imageUrl</i>, &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>bounds</i><!--, &lt;<a href="#imageoverlay-options">ImageOverlay&nbsp;options</a>&gt;&nbsp;<i>options?</i>-->&nbsp;)</code></td>
+				<td>Instantiates an image overlay object given the URL of the image and the geographical bounds it is tied to.</td>
+			</tr>
+		</table>
+		
+	
+
+
+		<h2 id="path">L.Path</h2>
+		<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
+		
+		<h3 id="path-options">Options</h3>
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>stroke</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>Whether to draw stroke along the path. Set it to <code>false</code> to disable borders on polygons or circles.</td>
+			</tr>
+			<tr>
+				<td><code>color</code></td>
+				<td><code>String</code></td>
+				<td><code>'#03f'</code></td>
+				<td>Stroke color.</td>
+			</tr>
+			<tr>
+				<td><code>weight</code></td>
+				<td><code>Number</code></td>
+				<td><code>5</code></td>
+				<td>Stroke width in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>opacity</code></td>
+				<td><code>Number</code></td>
+				<td><code>0.5</code></td>
+				<td>Stroke opacity.</td>
+			</tr>
+			<tr>
+				<td><code>fill</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>Whether to fill the path with color. Set it to <code>false</code> to disable filling on polygons or circles.</td>
+			</tr>
+			<tr>
+				<td><code>fillColor</code></td>
+				<td><code>String</code></td>
+				<td>same as color</td>
+				<td>Fill color.</td>
+			</tr>
+			<tr>
+				<td><code>fillOpacity</code></td>
+				<td><code>Number</code></td>
+				<td>0.2</td>
+				<td>Fill opacity.</td>
+			</tr>
+			<tr>
+				<td><code>clickable</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>If false, the vector will not emit mouse events and will act as a part of the underlying map.</td>
+			</tr>
+		</table>
+		
+		<h3>Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user clicks (or taps) the object.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the object.</td>
+			</tr>
+		</table>
+		
+		<h3>Constants</h3>
+		<table>
+			<tr>
+				<th>Constant</th>
+				<th>Type</th>
+				<th>Value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Path.SVG</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>True if SVG is used for vector rendering (true for most modern browsers).</td>
+			</tr>
+			<tr>
+				<td><code>L.Path.VML</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>True if VML is used for vector rendering (IE 6-8).</td>
+			</tr>
+			<tr>
+				<td><code>L.Path.CLIP_PADDING</code></td>
+				<td><code>Number</code></td>
+				<td>0.5&nbsp;for&nbsp;SVG<br />0.02&nbsp;for&nbsp;VML</td>
+				<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance.</td>
+			</tr>
+		</table>
+		
+		<h3 id="path-methods">Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr id="path-bindpopup">
+				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Binds a popup with a particular HTML content to a click on this path.</td>
+			</tr>
+			<tr id="path-setstyle">
+				<td><code>setStyle( &lt;<a href="#path-options">Path options</a>&gt;&nbsp;<i>object</i>)</code></td>
+				<td><code>this</code></td>
+				<td>Changes the appearance of a Path based on the options in the <a href="#path-options">Path options</a> object.</td>
+			</tr>
+			<tr id="path-getbounds">
+			    <td><code>getBounds()</code></td>
+			    <td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+			    <td>Returns the LatLngBounds of the path.</td>
+			</tr>
+		</table>			
+		
+		
+		<h2 id="polyline">L.Polyline</h2>
+		
+		<p>A class for drawing polyline overlays on a map. Extends <a href="path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Usage example</h3>
+		<pre><code class="javascript">// create a red polyline from an arrays of LatLng points
+var polyline = new L.Polyline(latlngs, {color: 'red'});
+
+// zoom the map to the polyline
+map.fitBounds(new L.LatLngBounds(latlngs));
+
+// add the polyline to the map
+map.addLayer(polyline);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Polyline( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a polyline object given an array of geographical points and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="polyline-options">Options</h3>
+		
+		<p>You can use <a href="#path-options">Path options</a> and additionally the following options:</p>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>smoothFactor</code></td>
+				<td><code>Number</code></td>
+				<td><code>1.0</code></td>
+				<td>How much to simplify the polyline on each zoom level. More means better performance and smoother look, and less means more accurate representation.</td>
+			</tr>
+			<tr>
+				<td><code>noClip</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>Disabled polyline clipping.</td>
+			</tr>
+		</table>		
+
+		<h3>Methods</h3>
+		
+		<p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a given point to the polyline.</td>
+			</tr>
+			<tr>
+				<td><code>setLatLngs( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Replaces all the points in the polyline with the given array of geographical points.</td>
+			</tr>
+			<tr>
+				<td><code>getLatLngs()</code></td>
+				<td><code><a href="#latlng">LatLng</a>[]</code></td>
+				<td>Returns an array of the points in the path.</td>
+			</tr>
+			<tr>
+				<td><code>spliceLatLngs( &lt;Number&gt;&nbsp;<i>index</i>, &lt;Number&gt;&nbsp;<i>pointsToRemove</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng1?</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng2?</i>,&nbsp;&hellip;&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a>[]</code></td>
+				<td>Allows adding, removing or replacing points in the polyline. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
+			</tr>
+			<tr id="#path-getbounds">
+			    <td><code>getBounds()</code></td>
+			    <td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+			    <td>Returns the LatLngBounds of the polyline.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="multipolyline">L.MultiPolyline</h2>
+		
+		<p>Extends <a href="#featuregroup">FeatureGroup</a> to allow creating multi-polylines (single layer that consists of several polylines that share styling/popup).</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.MultiPolyline( &lt;<a href="#latlng">LatLng</a>[][]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a multi-polyline object given an array of arrays of geographical points (one for each individual polyline) and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="polygon">L.Polygon</h2>
+		
+		<p>A class for drawing polygon overlays on a map. Extends <a href="#polyline">Polyline</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Polygon( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside.</td>
+			</tr>
+		</table>
+		
+		<p>Polygon the same options and methods as Polyline.</p>
+		
+		
+		
+		<h2 id="multipolygon">L.MultiPolygon</h2>
+		
+		<p>Extends <a href="#featuregroup">FeatureGroup</a> to allow creating multi-polygons (single layer that consists of several polygons that share styling/popup).</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.MultiPolygon( &lt;<a href="#latlng">LatLng</a>[][]&gt;&nbsp;<i>latlngs</i>, &lt;<a href="#polyline-options">Polyline&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a multi-polyline object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
+			</tr>
+		</table>
+		
+		
+		
+		
+		<h2 id="circle">L.Circle</h2>
+		
+		<p>A class for drawing circle overlays on a map. Extends <a href="#path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Circle( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;Number&gt;&nbsp;<i>radius</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a circle object given a geographical point, a radius in meters and optionally an options object.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets the position of a circle to a new location.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="circlemarker">L.CircleMarker</h2>
+		
+		<p>A circle of a fixed size with radius specified in pixels. Extends <a href="#circle">Circe</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.CircleMarker( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a circle marker given a geographical point and optionally an options object. The default radius is 10 and can be altered by passing a "radius" member in the path options object.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Sets the position of a circle marker to a new location.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="layergroup">L.LayerGroup</h2>
+		
+		<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Implements <a href="#ilayer">ILayer</a> interface.</p>
+		
+		<pre><code class="javascript">var group = new L.LayerGroup();
+
+group.addLayer(marker1);
+group.addLayer(marker2);
+group.addLayer(polyline);
+		
+map.addLayer(group);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LayerGroup( &lt;<a href="#ilayer">ILayer</a>[]&gt;&nbsp;<i>layers?</i>&nbsp;)</code></td>
+				<td>Create a layer group, optionally given an initial set of layers.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addLayer( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a given layer to the group.</td>
+			</tr>
+			<tr>
+				<td><code>removeLayer( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Removes a given layer from the group.</td>
+			</tr>
+			<tr>
+				<td><code>clearLayers()</code></td>
+				<td><code>this</code></td>
+				<td>Removes all the layers from the group.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="featuregroup">L.FeatureGroup</h2>
+		
+		<p>Extended <a href="#layergroup">LayerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">IFeature</a> interface.</p>
+		
+		<pre><code class="javascript">var group = new L.FeatureGroup([marker1, marker2, polyline]);
+
+group.bindPopup('Hello world!');
+
+group.on('click', function() { 
+	alert('Clicked on a group!'); 
+});
+		
+map.addLayer(group);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.FeatureGroup( &lt;<a href="#ilayer">IFeature</a>[]&gt;&nbsp;<i>layers?</i>&nbsp;)</code></td>
+				<td>Create a layer group, optionally given an initial set of layers.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<p>Has all <a href="#layergroup">LayerGroup</a> methods and additionally:</p>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>bindPopup( &lt;String&gt;&nbsp;<i>htmlContent</i>, &lt;<a href="#popup-options">Popup&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Binds a popup with a particular HTML content to a click on any layer from the group.</td>
+			</tr>
+		</table>
+		
+		<h3>Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>click</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user clicks (or taps) on the group.</td>
+			</tr>
+			<tr>
+				<td><code>dblclick</code></td>
+				<td><code><a href="#event">Event</a></code>
+				<td>Fired when the user double-clicks (or double-taps) on the group.</td>
+			</tr>
+		</table>
+		
+		
+		<h2 id="geojson">L.GeoJSON</h2>
+		
+		<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display on the map. Extends <a href="#layergroup">LayerGroup</a>.</p>
+		
+		<pre><code class="javascript">var geojson = new L.GeoJSON();
+
+geojson.on('featureparse', function(e) {
+	// do something with e.layer depending on e.properties
+});
+geojson.addGeoJSON(geojsonObj);
+		
+map.addLayer(geojson);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.GeoJSON( &lt;Object&gt;&nbsp;<i>geojson?</i>, &lt;<a href="#geojson-options">GeoJSON options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Creates a GeoJSON layer. Optionally accepts an object in <a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map (you can alternatively add it with <code>addGeoJSON</code> method) and an options object.</td>
+			</tr>
+		</table>
+		
+		<h3 id="geojson-options">Options</h3>
+		
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr id="geojson-pointtolayer">
+				<td><code>pointToLayer</code></td>
+				<td><code>Function</code></td>
+				<td><code>null</code></td>
+				<td>Function of the form <code>(LatLng)->ILayer</code> that will be used for creating layers for GeoJSON points (if not specified, markers will be created).</td>
+			</tr>
+		</table>
+		
+		
+		<h3 id="geojson-events">Events</h3>
+		
+		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Event</th>
+				<th>Data</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>featureparse</code></td>
+				<td><code><a href="#geojson-event">GeoJSONEvent</a></code>
+				<td>Fired before an object converted from a GeoJSON feature is added to the map. This event can be used to add interaction or change styling of objects depending on feature properties.</td>
+			</tr>
+		</table>
+		
+		
+					
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addGeoJSON( &lt;Object&gt;&nbsp;<i>geojson</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Adds a GeoJSON object to the layer.</td>
+			</tr>
+		</table>
+		
+		<h3>Static methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>geometryToLayer( &lt;Object&gt;&nbsp;<i>geojson</i>, &lt;<a href="#geojson-pointtolayer">Function</a>&gt;&nbsp;<i>pointToLayer?</i>&nbsp;)</code></td>
+				<td><code>ILayer</code></td>
+				<td>Creates a layer from a given GeoJSON geometry.</td>
+			</tr>
+			<tr>
+				<td><code>coordsToLatlng( &lt;Array&gt;&nbsp;<i>coords</i>&nbsp;)</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Creates a LatLng object from an array of 2 numbers used in GeoJSON for points.</td>
+			</tr>
+			<tr>
+				<td><code>coordsToLatlngs( &lt;Array&gt;&nbsp;<i>coords</i>, &lt;Number&gt;&nbsp;<i>levelsDeep?</i>&nbsp;)</code></td>
+				<td><code>Array</code></td>
+				<td>Creates a multidimensional array of LatLng objects from a GeoJSON coordinates array. <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).</td>
+			</tr>
+		</table>
+		
+		
+		
+		
+		<h2 id="latlng">L.LatLng</h2>
+		
+		<p>Represents a geographical point with a certain latitude and longitude.</p>
+		<pre><code class="javascript">var latlng = new L.LatLng(50.5, 30.5);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LatLng( &lt;Number&gt;&nbsp;<i>latitude</i>, &lt;Number&gt;&nbsp;<i>longitude</i>, &lt;Boolean&gt;&nbsp;<i>noWrap?</i> )</code></td>
+				<td>Creates a LatLng object with the given latitude and longitude. Wraps longitude to lie between -180 and 180 and clamps longitude between -90 and 90 by default &mdash; you can disable this with the noWrap argument.</td>
+			</tr>
+		</table>
+		
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>lat</code></td>
+				<td><code>Number</code></td>
+				<td>Latitude in degrees.</td>
+			</tr>
+			<tr>
+				<td><code>lng</code></td>
+				<td><code>Number</code></td>
+				<td>Longitude in degrees.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>distanceTo( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the distance (in meters) to the given LatLng calculated using the Haversine formula. See <a href="http://en.wikipedia.org/wiki/Haversine_formula">description on wikipedia</a></td>
+			</tr>
+			<tr>
+				<td><code>equals( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>otherLatlng</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns true if the given LatLng point is at the same position (within a small margin of error).</td>
+			</tr>
+			<tr>
+				<td><code>toString()</code></td>
+				<td><code>String</code></td>
+				<td>Returns a string representation of the point (for debugging purposes).</td>
+			</tr>
+		</table>
+		
+		<h3>Constants</h3>
+		
+		<table>
+			<tr>
+				<th>Constant</th>
+				<th>Type</th>
+				<th>Value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>DEG_TO_RAD</code></td>
+				<td><code>Number</code></td>
+				<td><code>Math.PI / 180</code></td>
+				<td>A multiplier for converting degrees into radians.</td>
+			</tr>
+			<tr>
+				<td><code>RAD_TO_DEG</code></td>
+				<td><code>Number</code></td>
+				<td><code>180 / Math.PI</code></td>
+				<td>A multiplier for converting radians into degrees.</td>
+			</tr>
+			<tr>
+				<td><code>MAX_MARGIN</code></td>
+				<td><code>Number</code></td>
+				<td><code>1.0E-9</code></td>
+				<td>Max margin of error for the equality check.</td>
+			</tr>
+		</table>
+		
+		
+		
+		
+		<h2 id="latlngbounds">L.LatLngBounds</h2>
+		
+		<p>Represents a rectangular geographical area on a map.</p>
+		<pre><code class="javascript">var southWest = new L.LatLng(40.712,-74.227),
+	northEast = new L.LatLng(40.774,-74.125),
+	bounds = new L.LatLngBounds(southWest, northEast);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.LatLngBounds( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>southWest</i>, &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>northEast</i>&nbsp;)</code></td>
+				<td>Creates a LatLngBounds object by defining south-west and north-east corners of the rectangle.</td>
+			</tr>
+			<tr>
+				<td><code>L.LatLngBounds( &lt;<a href="#latlng">LatLng</a>[]&gt;&nbsp;<i>latlngs</i>&nbsp;)</code></td>
+				<td>Creates a LatLngBounds object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with <a href="#map-fitbounds">fitBounds</a>.</td>
+			</tr>
+		</table>
+				
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>extend( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Extends the bounds to contain the given LatLng point.</td>
+			</tr>
+			<tr>
+				<td><code>getSouthWest()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the south-west point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getNorthEast()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the north-east point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getNorthWest()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the north-west point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getSouthEast()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the south-east point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>getCenter()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the center point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given point.</td>
+			</tr>
+			<tr>
+				<td><code>intersects( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle intersects the given bounds.</td>
+			</tr>
+		</table>
+		
+		
+		
+
+		<h2 id="point">L.Point</h2>
+		
+		<p>Represents a point with x and y coordinates in pixels.
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Point( &lt;Number&gt;&nbsp;<i>x</i>, &lt;Number&gt;&nbsp;<i>y</i> )</code></td>
+				<td>Creates a Point object with the given x and y coordinates.</td>
+			</tr>
+		</table>
+
+		<h3>Properties</h3>
+
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>x</code></td>
+				<td><code>Number</code></td>
+				<td>The x coordinate.</td>
+			</tr>
+			<tr>
+				<td><code>y</code></td>
+				<td><code>Number</code></td>
+				<td>The y coordinate.</td>
+			</tr>
+		</table>
+
+		<h3>Methods</h3>
+
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>add( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>otherPoint</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of addition of the current and the given points.</td>
+			</tr>
+			<tr>
+				<td><code>subtract( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>otherPoint</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of subtraction of the given point from the current.</td>
+			</tr>
+			<tr>
+				<td><code>multiplyBy( &lt;Number&gt;&nbsp;<i>number</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of multiplication of the current point by the given number.</td>
+			</tr>
+			<tr>
+				<td><code>divideBy( &lt;Number&gt;&nbsp;<i>number</i>&nbsp;)</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the result of division of the current point by the given number.</td>
+			</tr>
+			<tr>
+				<td><code>distanceTo( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>otherPoint</i>&nbsp;)</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the distance between the current and the given points.</td>
+			</tr>
+			<tr>
+				<td><code>clone()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns a copy of the current point.</td>
+			</tr>
+			<tr>
+				<td><code>round()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns a copy of the current point with rounded coordinates.</td>
+			</tr>
+			<tr>
+				<td><code>toString()</code></td>
+				<td><code>String</code></td>
+				<td>Returns a string representation of the point for debugging purposes.</td>
+			</tr>
+		</table>
+
+
+		
+		<h2 id="bounds">L.Bounds</h2>
+		
+		<p>Represents a rectangular area in pixel coordinates.</p>
+		<pre><code class="javascript">var p1 = new L.Point(10, 10),
+	p2 = new L.Point(40, 60),
+	bounds = new L.Bounds(p1, p2);</code></pre>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Bounds( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>topLeft</i>, &lt;<a href="#point">Point</a>&gt;&nbsp;<i>bottomRight</i>&nbsp;)</code></td>
+				<td>Creates a Bounds object by defining top-left and bottom-right coordinates of the rectangle.</td>
+			</tr>
+			<tr>
+				<td><code>L.LatLngBounds( &lt;<a href="#point">Point</a>[]&gt;points&nbsp;)</code></td>
+				<td>Creates a Bounds object defined by the points it contains.</td>
+			</tr>
+		</table>
+		
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>min</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The top left corner of the rectangle.</td>
+			</tr>
+			<tr>
+				<td><code>max</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The bottom right corner of the rectangle.</td>
+			</tr>
+		</table>
+				
+		<h3>Methods</h3>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>extend( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Extends the bounds to contain the given point.</td>
+			</tr>
+			<tr>
+				<td><code>getCenter()</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Returns the center point of the bounds.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#bounds">Bounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given one.</td>
+			</tr>
+			<tr>
+				<td><code>contains( &lt;<a href="#point">Point</a>&gt;&nbsp;<i>point</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle contains the given point.</td>
+			</tr>
+			<tr>
+				<td><code>intersects( &lt;<a href="#bounds">Bounds</a>&gt;&nbsp;<i>otherBounds</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the rectangle intersects the given bounds.</td>
+			</tr>
+		</table>
+		
+		
+		<h2 id="icon">L.Icon</h2>
+		
+		<p>Represents an icon to provide when creating a marker. If you want to create your own icon, you need to extend this class like this:</p>
+		
+		<pre><code class="javascript">var MyIcon = L.Icon.extend({
+	iconUrl: 'my-icon.png',
+	shadowUrl: 'my-icon-shadow.png',
+	iconSize: new L.Point(38, 95),
+	shadowSize: new L.Point(68, 95),
+	iconAnchor: new L.Point(22, 94),
+	popupAnchor: new L.Point(-3, -76)
+});
+
+var icon = new MyIcon();
+
+var marker = new L.Marker(marker, {icon: icon});</code></pre>
+
+		<h3>Properties</h3>
+		
+		<table>
+			<tr>
+				<th>Property</th>
+				<th>Type</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>iconUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon image (absolute or relative to your script path). If iconUrl is <code>null</code> then a <code>&lt;div&gt;</code> element will be created instead of an image element. This is useful for adding click and hover targets to the map while drawing icons in another fashion (e.g. using <a href="#tilelayer-canvas">TileLayer.Canvas</a>)</td>
+			</tr>
+			<tr>
+				<td><code>shadowUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon shadow image. The shadow image must be cropped in such way the that if you align them on top of each other, top left corners of the images are in the same spot. If shadowUrl is <code>null</code> then no shadow image will be created.</td>
+			</tr>
+			<tr>
+				<td><code>iconSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the icon image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>shadowSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the shadow image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>iconAnchor</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.</td>
+			</tr>
+			<tr>
+				<td><code>popupAnchor</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>The point from which the marker popup opens, relative to the anchor point.</td>
+			</tr>
+		</table>
+		
+		<h3>Constructor</h3>
+		
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Icon( &lt;String&gt;&nbsp;<i>iconUrl?</i>&nbsp;)</code></td>
+				<td>Creates an icon instance. You can optionally pass an iconUrl that will replace the default one (useful for creating many similar markers that only differ in the icon image).</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="control-zoom">L.Control.Zoom</h2>
+		
+		<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code>false</code>. Implements <a href="#icontrol">IControl</a> interface.</p>
+		
+		<h3>Constructor</h3>
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Control.Zoom()</code></td>
+				<td>Creates a zoom control.</td>
+			</tr>
+		</table>
+		
+		
+		
+		<h2 id="control-attribution">L.Control.Attribution</h2>
+		
+		<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code>false</code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Implements <a href="#icontrol">IControl</a> interface.</p>
+		
+		<h3>Constructor</h3>
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Control.Attribution()</code></td>
+				<td>Creates an attribution control.</td>
+			</tr>
+		</table>
+		
+		<h3>Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setPrefix( &lt;String&gt;&nbsp;<i>prefix</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Sets the string before the attributions ("Powered by Leaflet" by default).</td>
+			</tr>
+			<tr>
+				<td><code>addAttribution( &lt;String&gt;&nbsp;<i>text</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Adds an attribution text (e.g. "Vector data &amp;copy; CloudMade").</td>
+			</tr>
+			<tr>
+				<td><code>removeAttribution( &lt;String&gt;&nbsp;<i>text</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Removes an attribution text.</td>
+			</tr>
+		</table>
+		
+
+		
+		<h2 id="events">Events methods</h2>
+		
+		<p>A set of methods shared between event-powered classes (like Map). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map 'fire' event).</p>
+
+		<h3>Example</h3>
+		
+		<pre><code class="javascript">map.on('click', function(e) {
+	alert(e.latlng);
+});</code></pre>
+		
+		<h3>Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addEventListener( &lt;String&gt;&nbsp;<i>type</i>, &lt;Function&gt;&nbsp;<i>fn</i>, &lt;Object&gt;&nbsp;<i>context?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code>this</code> keyword will point to).</td>
+			</tr>
+			<tr>
+				<td><code>removeEventListener( &lt;String&gt;&nbsp;<i>type</i>, &lt;Function&gt;&nbsp;<i>fn</i>, &lt;Object&gt;&nbsp;<i>context?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Removes a previously added listener function.</td>
+			</tr>
+			<tr>
+				<td><code>on( &hellip;&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Alias to <code>addEventListener</code>.</td>
+			</tr>
+			<tr>
+				<td><code>off( &hellip;&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Alias to <code>removeEventListener</code>.</td>
+			</tr>
+			<tr>
+				<td><code>hasListeners( &lt;String&gt;&nbsp;<i>type</i>&nbsp;)</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns true if a particular event type has some listeners attached to it.</td>
+			</tr>
+			<tr>
+				<td><code>fireEvent( &lt;String&gt;&nbsp;<i>type</i>, &lt;Object&gt;&nbsp;<i>data?</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
+			</tr>
+			<tr>
+				<td><code>fire( &hellip;&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Alias to <code>fireEvent</code>.</td>
+			</tr>
+		</table>
+
+
+		<h2 id="event-objects">Event objects</h2>
+		
+		<p>Event object is an object that you recieve as an argument in a listener function when some event is fired, containing useful information about that event. For example:</p>
+		
+		<pre><code class="javascript">map.on('click', function(e) {
+	alert(e.latlng); // e is an event object (MouseEvent in this case)
+});</code></pre>   
+		
+		<h3 id="event">Event</h3>
+		
+		<p>The base event object. All other event objects contain these properties too.</p>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>type</code></td>
+				<td><code>String</code></td>
+				<td>The event type (e.g. "click").</td>
+			</tr>
+			<tr>
+				<td><code>target</code></td>
+				<td><code>Object</code></td>
+				<td>The object that fired the event.</td>
+			</tr>
+		</table>
+		
+		<h3 id="mouse-event">MouseEvent</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>latlng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>The geographical point where the mouse event occured.</td>
+			</tr>
+			<tr>
+				<td><code>layerPoint</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
+			</tr>
+		</table>
+		
+		<h3 id="location-event">LocationEvent</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>latlng</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Detected geographical location of the user.</td>
+			</tr>
+			<tr>
+				<td><code>bounds</code></td>
+				<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+				<td>Geographical bounds of the area user is located in (with respect to the accuracy of location).</td>
+			</tr>
+			<tr>
+				<td><code>accuracy</code></td>
+				<td><code>Number</code></td>
+				<td>Accuracy of location in meters.</td>
+			</tr>
+		</table>
+		
+		<h3 id="error-event">ErrorEvent</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>message</code></td>
+				<td><code>String</code></td>
+				<td>Error message.</td>
+			</tr>
+			<tr>
+				<td><code>code</code></td>
+				<td><code>Number</code></td>
+				<td>Error code (if applicable).</td>
+			</tr>
+		</table>
+		
+		<h3 id="layer-event">LayerEvent</h3>
+
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>layer</code></td>
+				<td><code><a href="#ilayer">ILayer</a></code></td>
+				<td>The layer that was added or removed.</td>
+			</tr>
+		</table>
+
+		<h3 id="geojson-event">GeoJSON event</h3>
+		
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>layer</code></td>
+				<td><code><a href="#ilayer">ILayer</a></code></td>
+				<td>The layer for the GeoJSON feature that is being added to the map.</td>
+			</tr>
+			<tr>
+				<td><code>properties</code></td>
+				<td><code>Object</code></td>
+				<td>GeoJSON properties of the feature.</td>
+			</tr>
+			<tr>
+				<td><code>geometryType</code></td>
+				<td><code>String</code></td>
+				<td>GeoJSON geometry type of the feature.</td>
+			</tr>
+			<tr>
+				<td><code>id</code></td>
+				<td><code>String</code></td>
+				<td>GeoJSON ID of the feature (if present).</td>
+			</tr>
+		</table>
+		
+                <h3 id="popup-event">Popup event</h3>
+
+                <table>
+                        <tr>
+                                <th>property</th>
+                                <th>type</th>
+                                <th>description</th>
+                        </tr>
+                        <tr>
+                                <td><code>popup</code></td>
+                                <td><code><a href="#popup">Popup</a></code></td>
+                                <td>The popup that was opened or closed.</td>
+                        </tr>
+                </table>
+
+		<!-- <h3>TileEvent</h3> -->
+
+		
+		
+
+		<h2 id="ihandler">IHandler</h2>
+		<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
+		
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>enable()</code></td>
+				<td>-</td>
+				<td>Enables the handler.</td>
+			</tr>
+			<tr>
+				<td><code>disable()</code></td>
+				<td>-</td>
+				<td>Disables the handler.</td>
+			</tr>
+			<tr>
+				<td><code>enabled()</code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns true if the handler is enabled.</td>
+			</tr>
+		</table>
+
+
+	
+		<hr />
+
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>

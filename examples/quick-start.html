@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Quick Start Guide</title>
+	
+	<meta charset="utf-8" />
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" /> 
+	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
+	
+	<link rel="icon" type="image/png" href="../docs/images/favicon.png" />
+
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="../docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="../docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="../docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="../docs/css/screen.css" media="screen, projection" />
+
+	<script src="../docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="../docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+	<script src="../dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<ul class="nav clearfix">
+			<li><a href="../index.html">Overview</a></li>
+			<li><a href="../features.html">Features</a></li>  
+			<li><a href="../examples.html">Examples</a></li> 
+			<li><a href="../reference.html">Documentation</a></li> 
+			<li><a href="../download.html">Download</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li> 
+		</ul>
+		
+		<p><a href="../examples.html">&larr; Back to the list of examples</a></p>
+		<h3>Leaflet Quick Start Guide</h3>
+		
+		<p>This step-by-step guide will quickly get you started on Leaflet basics, including setting up a Leaflet map, working with markers, polylines and popups, and dealing with events.</p>
+		
+		<div id="map" style="height: 180px; margin-bottom: 18px"></div>
+		<script>
+			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+				cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+			
+			var map = new L.Map('map');
+			map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+			
+			var markerLocation = new L.LatLng(51.5, -0.09),
+				marker = new L.Marker(markerLocation);
+			
+			map.addLayer(marker);
+			marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+			
+			var circleLocation = new L.LatLng(51.508, -0.11),
+				circleOptions = {color: '#f03', opacity: 0.7},
+				circle = new L.Circle(circleLocation, 500, circleOptions);
+			
+			circle.bindPopup("I am a circle.");
+			map.addLayer(circle);
+			
+			var p1 = new L.LatLng(51.509, -0.08),
+				p2 = new L.LatLng(51.503, -0.06),
+				p3 = new L.LatLng(51.51, -0.047),
+				polygonPoints = [p1, p2, p3],
+				polygon = new L.Polygon(polygonPoints);
+			
+			polygon.bindPopup("I am a polygon.");
+			map.addLayer(polygon);
+			
+			map.on('click', onMapClick);
+			
+			var popup = new L.Popup();
+					
+			function onMapClick(e) {
+				var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
+						
+				popup.setLatLng(e.latlng);
+				popup.setContent("You clicked the map at " + latlngStr);
+				
+				map.openPopup(popup);
+			}
+		</script>
+		
+		<p><a target="_blank" href="quick-start-example.html">View example on a separate page &rarr;</a></p>
+		
+		<h3>Preparing your page</h3>
+		
+		<p>Before writing any code for the map, you need to do the following preparation steps on your page:</p>
+		
+		<ol>
+			<li>Include Leaflet CSS files in the head section of your document:
+			<pre><code class="html">&lt;link rel="stylesheet" href="leaflet/leaflet.css" /&gt;
+&lt;!--[if lte IE 8]&gt;&lt;link rel="stylesheet" href="leaflet/leaflet.ie.css" /&gt;&lt;![endif]--&gt;</code></pre>
+			</li>
+			
+			<li>Include Leaflet JavaScript file somewhere on the page (preferably before <code>body</code> close tag):
+			<pre><code class="html">&lt;script src="leaflet/leaflet.js"&gt;&lt;/script&gt;</code></li>
+			
+			<li>Put a <code>div</code> element with a certain <code>id</code> where you want your map to be and make sure it has defined width and height:
+			<pre><code class="html">&lt;div id="map" style="height: 200px"&gt;&lt;/div&gt; &lt;!-- width equals available horizontal space by default --&gt;</code></pre></li>
+		</ol>
+		
+		<p>Now you're ready to initialize the map and do some stuff with it.</p>
+		
+		
+		<h3>Setting up the map</h3>
+		
+		<div id="map1" style="height: 180px"></div>
+		<script>
+			var cloudmade1 = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+			
+			var map1 = new L.Map('map1');
+			map1.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade1);
+		</script>
+		
+		<p>Let's create a map instance, set its view to the center of London and add a pretty CloudMade tile layer to it. First we'll initialize the map:</p>
+		
+		<pre><code class="javascript">var map = new L.Map('map');</code></pre>
+
+<p>By default (as we didn't pass any options when creating the map instance), all mouse and touch interactions on the map are enabled, and it has zoom and attribution controls.</p>
+
+<p>Next we'll create a tile layer to add to our map, in this case it's a CloudMade tile layer with Fresh style. Creating a tile layer usually involves setting the URL template for the tile images (get yours at <a href="http://cloudmade.com/register">CloudMade</a>), the attribution text and the maximum zoom level of the layer:</p>
+
+<pre><code class="javascript">var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmadeAttrib = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
+    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttrib});</code></pre>
+
+<p>Finally we'll set the map view to the center of London at 13th zoom level and add our tile layer (see the resulting map above):</p>
+
+<pre><code class="javascript">var london = new L.LatLng(51.505, -0.09); // geographical point (longitude and latitude)
+map.setView(london, 13).addLayer(cloudmade);</code></pre>
+
+		<p>Make sure this code is below both the map <code>div</code> and <code>leaflet.js</code> inclusion, or in a <code>window.load</code> or <code>document.ready</code> event handler.</p>
+
+		<h3>Markers, circles and polygons</h3>
+		
+		<div id="map2" style="height: 180px; margin-bottom: 18px"></div>
+		<script>
+			var cloudmade2 = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+			
+			var map2 = new L.Map('map2');
+			map2.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade2);
+			
+			var marker2 = new L.Marker(markerLocation);
+			map2.addLayer(marker2);
+			
+			var circle2 = new L.Circle(circleLocation, 500, circleOptions);	
+			map2.addLayer(circle2);
+			
+			var polygon2 = new L.Polygon(polygonPoints);
+			map2.addLayer(polygon2);
+		</script>
+
+		<p>Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let's add a marker:</p>
+		
+		<pre><code class="javascript">var markerLocation = new L.LatLng(51.5, -0.09);
+
+var marker = new L.Marker(markerLocation);
+map.addLayer(marker);</code></pre>
+
+		<p>Adding a circle is the same (except for specifying the radius in meters), but lets configure it by passing options as a third argument when creating the object (the second argument is the radius in pixels):</p>
+		
+		<pre><code class="javascript">var circleLocation = new L.LatLng(51.508, -0.11),
+	circleOptions = {
+		color: 'red', 
+		fillColor: '#f03', 
+		fillOpacity: 0.5
+	};
+	
+var circle = new L.Circle(circleLocation, 500, circleOptions);
+map.addLayer(circle);</code></pre>
+
+		<p>Add a polygon is easy too:</p>
+		<pre><code class="javascript">var p1 = new L.LatLng(51.509, -0.08),
+	p2 = new L.LatLng(51.503, -0.06),
+	p3 = new L.LatLng(51.51, -0.047),
+	polygonPoints = [p1, p2, p3];
+
+var polygon = new L.Polygon(polygonPoints);
+map.addLayer(polygon);</code></pre>
+
+
+		<h3>Working with popups</h3>
+		
+		<div id="map3" style="height: 180px; margin-bottom: 18px"></div>
+		<script>
+			var cloudmade3 = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+			
+			var map3 = new L.Map('map3');
+			map3.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade3);
+			
+			var marker3 = new L.Marker(markerLocation);
+			map3.addLayer(marker3);
+			marker3.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+			
+			/*marker3.dragging.enable();
+			marker3.on('dragend', function() {
+				marker2._popup.setContent('Marker dragged.');
+				marker2._popup._updateContent();
+				marker2.openPopup();
+			});*/
+			
+			var circle3 = new L.Circle(circleLocation, 500, circleOptions);
+			circle3.bindPopup("I am a circle.");
+			map3.addLayer(circle3);
+			
+			var polygon3 = new L.Polygon(polygonPoints);
+			polygon3.bindPopup("I am a polygon.");
+			map3.addLayer(polygon3);
+		</script>
+		
+		<p>Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:</p>
+		
+		<pre><code class="javascript">marker.bindPopup("&lt;b&gt;Hello world!&lt;/b&gt;&lt;br /&gt;I am a popup.").openPopup();
+circle.bindPopup("I am a circle.");
+polygon.bindPopup("I am a polygon.");</code></pre>
+		
+		<p>Try clicking on our objects. The <code>bindPopup</code> method attaches a popup with the specified HTML content to your marker so the popup appears when you click on the object, and the <code>openPopup</code> method (for markers only) immediately opens the attached popup.</p>
+		
+		<p>You can also use popups as layers (when you need something more than attching a popup to an object):</p>
+		
+		<pre><code class="javascript">var popup = new L.Popup();
+
+popup.setLatLng(new L.LatLng(51.5, -0.09));
+popup.setContent("I am a standalone popup.");
+		
+map.openPopup(popup);</code></pre>
+		
+		<p>Here we use <code>openPopup</code> instead of <code>addLayer</code> because it handles automatic closing of a previously opened popup when opening a new one which is good for usability.</p>
+		
+		
+		<h3>Dealing with events</h3>
+		
+		<p>Every time something happens in Leaflet, e.g. user clicks on a marker or map zoom changes, the corresponding object sends an event which you can subscribe to with a function. It allows you to react to user interaction:</p>
+		<pre><code class="javascript">map.on('click', onMapClick);
+		
+function onMapClick(e) {
+	alert("You clicked the map at " + e.latlng);
+}</code></pre>
+		
+		<p>Each object has its own set of events &mdash; see <a href="../reference.html">documentation</a> for details. The first argument of the listener function is an event object &mdash; it contains useful information about the event that happened. For example, map click event object (<code>e</code> in the example above) has <code>latlng</code> property which is a location at which the click occured.</p>
+		
+		<p>Lets improve our example by using a popup instead of an alert and formatting the location string:</p>
+		
+		<pre><code class="javascript">map.on('click', onMapClick);
+		
+var popup = new L.Popup();
+		
+function onMapClick(e) {
+	var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
+			
+	popup.setLatLng(e.latlng);
+	popup.setContent("You clicked the map at " + latlngStr);
+	
+	map.openPopup(popup);
+}</code></pre>
+
+		<p>Try clicking on the map and you will see the coordinates in a popup. <a target="_blank" href="quick-start-example.html">View the full example &rarr;</a></p>
+		<p>Now you've learned Leaflet basics and can start building map apps straight away! Don't forget to take a look at the detailed <a href="../reference.html">documentation</a> or <a href="../examples.html">other examples</a>.</p>
+		
+		<hr />
+			
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>

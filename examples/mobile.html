@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Leaflet on Mobile Example</title>
+	
+	<meta charset="utf-8" />
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" /> 
+	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
+	
+	<link rel="icon" type="image/png" href="../docs/images/favicon.png" />
+
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="../docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="../docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="../docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="../docs/css/screen.css" media="screen, projection" />
+
+	<script src="../docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="../docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+	<script src="../dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<ul class="nav clearfix">
+			<li><a href="../index.html">Overview</a></li>
+			<li><a href="../features.html">Features</a></li>  
+			<li><a href="../examples.html">Examples</a></li> 
+			<li><a href="../reference.html">Documentation</a></li> 
+			<li><a href="../download.html">Download</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li> 
+		</ul>
+		
+		<p><a href="../examples.html">&larr; Back to the list of examples</a></p>
+		<h3>Leaflet on Mobile</h3>
+		
+		<p>In this example, you'll learn how to create a fullscreen map tuned for mobile devices like iPhone, iPad or Android phones, and how to easily detect and use the current user location.</p>
+		
+		<p><a target="_blank" href="mobile-example.html">View example &rarr;</a></p>
+		
+		<h3>Preparing the page</h3>
+		
+		<p>First we'll take a look at the HTML & CSS code of the page. To make our map <code>div</code> element stretch to all available space (fullscreen), we can use the following CSS code:</p>
+		
+		<pre><code class="css">body {
+	padding: 0;
+	margin: 0;
+}
+html, body, #map {
+	height: 100%;
+}</code></pre>
+
+		<p>Also, we need to tell the mobile browser to disable scaling of the page and set it to its actual size by placing the following line in the <code>head</code> section:</p>
+		
+		<pre><code class="html">&lt;meta name="viewport" content="initial-scale=1.0, user-scalable=no" /&gt;</code></pre>
+		
+		<h3>Initializing the map</h3>
+		
+		<p>We'll now initialize the map in the JavaScript code exactly like we did in the <a href="quick-start">quick start guide</a>, but won't set the map view yet:</p>
+		
+		<pre><code class="javascript">var map = new L.Map('map');
+	
+var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
+	cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+
+map.addLayer(cloudmade);</code></pre>
+		
+		<h3>Geolocation</h3>
+		
+		<p>Leaflet has a very handy shortcut for zooming the map view to the detected location &mdash; locateAndSetView method, replacing the usual <code>setView</code> method in the code:</p>
+		
+		<pre><code class="javascript">map.locateAndSetView(16);</code></pre>
+		
+		<p>Here we specify 16 as the maximum zoom when setting the map view automatically. Now we have a working fullscreen mobile map! But what if we need to do something after the geolocation completed? Here's what the <code>locationfound</code> and <code>locationerror</code> events are for. Let's for example add a marker in the detected location, showing accuracy in a popup, by adding an event listener to <code>locationfound</code> event before the <code>locateAndSetView</code> call:</p>
+		
+		<pre><code class="javascript">map.on('locationfound', onLocationFound);
+		
+function onLocationFound(e) {
+	var radius = e.accuracy / 2;
+
+	var marker = new L.Marker(e.latlng);
+	map.addLayer(marker);
+	marker.bindPopup("You are within " + radius + " meters from this point").openPopup();
+	
+	var circle = new L.Circle(e.latlng, radius);
+	map.addLayer(circle);	
+}</code></pre>
+
+		<p>Excellent! But it would also be nice to show an error message if the geolocation failed:</p>
+		
+		<pre><code class="javascript">map.on('locationerror', onLocationError);
+		
+function onLocationError(e) {
+	alert(e.message);
+}</code></pre>
+
+		<p>Now the example is complete &mdash; try it on your mobile phone: <a target="_blank" href="mobile-example.html">View the full example &rarr;</a></p>
+		
+		<p>Next steps would be to take a look at the detailed <a href="../reference.html">documentation</a> and browse <a href="../examples.html">other examples</a>.</p>
+		
+		<hr />
+			
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Features</title>
+	
+	<meta charset="utf-8" />
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" /> 
+	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
+	
+	<link rel="icon" type="image/png" href="docs/images/favicon.png" />
+
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="docs/css/screen.css" media="screen, projection" />
+
+	<script src="docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="dist/leaflet.ie.css" /><![endif]-->
+	<script src="dist/leaflet.js"></script>
+</head>
+<body>
+	<div class="container">
+		<h1>Leaflet</h1>
+		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		
+		<ul class="nav clearfix">
+			<li><a href="index.html">Overview</a></li>
+			<li><span>Features</span></li>  
+			<li><a href="examples.html">Examples</a></li> 
+			<li><a href="reference.html">Documentation</a></li> 
+			<li><a href="download.html">Download</a></li> 
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li> 
+		</ul>
+		
+		<h3>Leaflet features</h3>
+		
+		<p>Leaflet doesn't try to do everything for everyone. Instead it focuses on making <em>the basic things work perfectly</em>. It should still satisfy the needs of the vast majority of map apps developers while being flexible enough to be easily extended by writing third-party plugins.</p>
+		
+		<p>
+			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leaflet.cloudmade.com" data-text="Leaflet — a modern, lightweight open-source JavaScript library for interactive maps by @cloudmade" data-count="horizontal" data-via="LeafletJS" data-related="CloudMade">Tweet</a>
+			<a href="http://twitter.com/LeafletJS" data-show-count="false" data-width="140px" class="twitter-follow-button">Follow @LeafletJS</a>
+			<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			
+			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=standard&amp;show_faces=false&amp;width=530&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:530px; height:24px;" allowTransparency="true"></iframe>
+		</p>
+
+		<div class="span-20" id="features">
+			<div class="span-6">
+				<h3>Available map layers</h3>
+				<ul>
+					<li>Tile layers</li>
+					<li>Polylines, polygons, circles</li>
+					<li>Markers</li>
+					<li>Popups</li>
+					<li>Image overlays</li>
+					<li>WMS layers</li>
+					<li>GeoJSON</li>
+					<li class="noimpl">KML</li>
+					<li class="noimpl">GeoRSS</li>
+				</ul>
+				
+				<h3>Interaction features</h3> 
+				<h4>On desktop browsers</h4>
+				<ul>
+					<li>Drag panning</li>
+					<li>Scroll wheel zoom</li>
+					<li>Double click zoom</li>
+					<li>Shift-drag zoom to bounding box</li>
+				</ul>
+				<h4>On mobile browsers (iOS, Android)</h4>
+				<ul>
+					<li>Touch-drag panning</li>
+					<li>Multi-touch zoom (iOS only)</li>
+					<li>Double tap zoom</li>
+					<li class="noimpl">Panning inertia</li>
+				</ul>
+			</div>			
+			
+			<div class="span-9">
+				<h3>Visual features</h3>
+				<ul>
+					<li>Panning animation</li>
+					<li>Zooming animation on modern browsers <span class="quiet">(except IE)</span></li>
+					<li>Smooth continuous zoom on iOS</li>
+					<li>Tile and popup fade animation</li>
+					<li>Very nice default design for markers and popups</li>
+				</ul>
+				
+				<h3>Customization features</h3>
+				<ul>
+					<li>Pure CSS3 popups and controls <span class="quiet">for easy restyling</span></li>
+					<!-- <li>Customizable marker icons</li> -->
+					<li><span class="quiet">A simple interface for implementing</span> custom map layers</li>
+					<li><span class="quiet">The same for</span> custom map controls</li>
+					<li>Custom map projections <span class="quiet">(with <code>EPSG:4326</code>, <code>EPSG:3857</code> and <code>EPSG:3395</code> out of the box)</span></li>
+				</ul>
+
+				<h3>Performance features</h3>
+				<ul>
+					<li>Hardware acceleration on iOS <span class="quiet">makes it feel as smooth as native apps</span></li>
+					<li><span class="quiet">Clever tricks to make</span> panning and zooming really smooth</li>
+					<li>Smart polyline/polygon rendering <span class="quiet">makes it responsive even when displaying objects with thousands of points</span></li>
+					<li>Modular build system <span class="quiet">allows you to reduce the size of the library by leaving out the code you don't need</span></li>
+				</ul>			
+			</div>
+			
+			<div class="span-5 last">
+				<h3>Map controls</h3>
+				<ul>
+					<li>Zoom buttons</li>
+					<li>Attribution</li>
+					<li class="noimpl">Zoom slider</li>
+					<li>Layer switcher</li>
+					<!-- <li>Scale</li> -->
+				</ul>
+			
+				<h3>Browser support</h3>
+				<h4>On desktop</h4>
+				<ul>
+					<li>Firefox 3.6+</li>
+					<li>Chrome</li>
+					<li>Safari 5+</li>
+					<li>Opera 11.11+</li>
+		 			<li>IE 7&ndash;9</li>
+					<li>IE 6 <span class="quiet">(not perfect but accessible)</span></li>
+		 		</ul>
+				<h4>On mobile</h4>
+		 		<ul>
+		 			<li>Safari for iOS 3/4+</li>
+					<li>WebKit for Android 2.2+</li>
+					<li class="noimpl">webOS browser</li>
+					<li class="noimpl">Blackberry 6+</li>
+					<li class="noimpl">Windows Phone 7</li>
+					<li class="noimpl">Firefox for Android</li>
+				</ul>
+			</div>
+		</div>
+		
+		<p>If you find some feature really missing in Leaflet, please submit it to the <a href="https://github.com/CloudMade/Leaflet/issues">issue tracker</a>.</p>
+
+		<p class="noimpl">* Grayed out features are in the roadmap and coming soon.</p>
+		
+		<hr />
+			
+		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+	</div>
+	
+	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+	
+	<script>
+		hljs.tabReplace = '    ';
+		hljs.initHighlightingOnLoad();
+	</script> 
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</body>
+</html>
+<!-- <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a> -->

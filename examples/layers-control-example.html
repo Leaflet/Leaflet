@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet Layers Control Example</title>
+	<meta charset="utf-8" />
+	
+	<link rel="stylesheet" href="../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../dist/leaflet.ie.css" /><![endif]-->
+</head>
+<body>
+	<div id="map" style="width: 600px; height: 400px"></div>
+
+	<script src="../dist/leaflet.js"></script>
+	<script>
+	    var littletonMarker = new L.Marker(new L.LatLng(39.61, -105.02)).bindPopup("This is Littleton, CO."),
+			denverMarker = new L.Marker(new L.LatLng(39.74, -104.99)).bindPopup("This is Denver, CO."),
+			auroraMarker = new L.Marker(new L.LatLng(39.73, -104.8)).bindPopup("This is Aurora, CO."),
+			goldenMarker = new L.Marker(new L.LatLng(39.77, -105.23)).bindPopup("This is Golden, CO.");
+
+		var citiesLayer = new L.LayerGroup();
+
+		citiesLayer.addLayer(littletonMarker);
+		citiesLayer.addLayer(denverMarker);
+		citiesLayer.addLayer(auroraMarker);
+		citiesLayer.addLayer(goldenMarker);
+
+		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution},
+				cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+
+		var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
+			midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
+			motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
+
+		var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
+
+		var baseMaps = {
+			"Minimal": minimal,
+			"Night View": midnightCommander
+		};
+
+		var overlayMaps = {
+			"Motorways": motorways,
+			"Cities": citiesLayer
+		};
+
+		layersControl = new L.Control.Layers(baseMaps, overlayMaps);
+
+		map.addControl(layersControl);
+	</script>
+</body>
+</html>
