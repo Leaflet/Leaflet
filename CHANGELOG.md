@@ -33,6 +33,7 @@ Leaflet Changelog
  * Added `TileLayer` `continuousWorld` option to disable tile coordinates checking/wrapping.
  * Added `TileLayer` `tileunload` event fired when tile gets removed after panning (by [@CodeJosch](https://github.com/CodeJosch)). [#256](https://github.com/CloudMade/Leaflet/pull/256)
  * Added `TileLayer` `zoomOffset` option useful for non-256px tiles (by [@msaspence](https://github.com/msaspence)).
+ * Added `TileLayer.Canvas` `redraw` method (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#459](https://github.com/CloudMade/Leaflet/pull/459)
  * Added `Polyline` `closestLayerPoint` method that's can be useful for interaction features (by [@anru](https://github.com/anru)). [#186](https://github.com/CloudMade/Leaflet/pull/186)
  * Added `setLatLngs` method to `MultiPolyline` and `MultiPolygon` (by [@anru](https://github.com/anru)). [#194](https://github.com/CloudMade/Leaflet/pull/194)
  * Added `getBounds` method to `Polyline` and `Polygon` (by [@JasonSanford](https://github.com/JasonSanford)). [#253](https://github.com/CloudMade/Leaflet/pull/253)
@@ -44,8 +45,10 @@ Leaflet Changelog
  * Added `LatLng` `distanceTo` method (great circle distance) (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#462](https://github.com/CloudMade/Leaflet/pull/462)
  * Added `LatLngBounds` `toBBoxString` method for convenience (by [@JasonSanford](https://github.com/JasonSanford)). [#263](https://github.com/CloudMade/Leaflet/pull/263)
  * Added `LatLngBounds` `intersects(otherBounds)` method (thanks to [@pagameba](https://github.com/pagameba)). [#350](https://github.com/CloudMade/Leaflet/pull/350)
+ * Added `Bounds` `intersects(otherBounds)` method. [#461](https://github.com/CloudMade/Leaflet/issues/461)
  * Added `L.Util.template` method for simple string template evaluation.
  * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).
+ * Added ability to pass empty imageUrl to icons for creating transparent clickable regions (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#460](https://github.com/CloudMade/Leaflet/pull/460)
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
 
@@ -86,6 +89,7 @@ Leaflet Changelog
 #### Browser bugfixes
 
  * Fixed occasional crashes on Mac Safari (thanks to [@lapinos03](https://github.com/lapinos03)). [#191](https://github.com/CloudMade/Leaflet/issues/191)
+ * Fixed a bug where resizing the map would sometimes make it blurry on WebKit (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#453](https://github.com/CloudMade/Leaflet/pull/453)
  * Fixed a bug that raised error in IE6-8 when clicking on popup close button. [#235](https://github.com/CloudMade/Leaflet/issues/235)
  * Fixed a bug with Safari not redrawing UI immediately after closing a popup. [#296](https://github.com/CloudMade/Leaflet/issues/296)
  * Fixed a bug that caused performance drop and high CPU usage when calling `setView` or `panTo` to the current center. [#231](https://github.com/CloudMade/Leaflet/issues/231)
