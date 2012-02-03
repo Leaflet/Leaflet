@@ -42,7 +42,7 @@ L.Map.include({
 		options = L.Util.extend({
 			maxZoom: maxZoom || Infinity,
 			setView: true
-		});
+		}, options);
 		return this.locate(options);
 	},
 

@@ -253,7 +253,7 @@ L.Map = L.Class.extend({
 			return this;
 		}
 
-		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
+		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2, true));
 
 		this.fire('move');
 
@@ -280,8 +280,8 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y)),
-			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y));
+			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
+			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
 		return new L.LatLngBounds(sw, ne);
 	},
 
@@ -328,7 +328,7 @@ L.Map = L.Class.extend({
 			}
 		} while (zoomNotFound && (zoom <= maxZoom));
 
-		if (zoomNotFound) {
+		if (zoomNotFound && inside) {
 			return null;
 		}
 
@@ -510,7 +510,7 @@ L.Map = L.Class.extend({
 	_initEvents: function () {
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove'];
+		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
 		var i, len;
 
@@ -548,6 +548,10 @@ L.Map = L.Class.extend({
 			return;
 		}
 
+		if (type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+		
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
