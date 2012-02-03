@@ -20,7 +20,8 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile
+		updateWhenIdle: L.Browser.mobile,
+		reuseTiles: false
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -150,8 +151,7 @@ L.TileLayer = L.Class.extend({
 
 		this._addTilesFromCenterOut(tileBounds);
 
-		if (this.options.unloadInvisibleTiles ||
-			this.options.reuseTiles) {
+		if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
 	},
@@ -201,6 +201,8 @@ L.TileLayer = L.Class.extend({
 
 					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
 					// this._tiles[key].src = '';
+
+					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
