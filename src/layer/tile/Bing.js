@@ -12,7 +12,7 @@ L.BingLayer = L.TileLayer.extend({
 		this.meta = {};
 		this._update_tile = this._update;
 		this._update = function() {
-			if (this._url == null) return;
+			if (this._url == null || !this._map) return;
 			this._update_attribution();
 			this._update_tile();
 		};
