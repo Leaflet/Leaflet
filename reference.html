@@ -114,7 +114,7 @@
 				<ul>
 					<li><a href="#control-zoom">Zoom</a></li>
 					<li><a href="#control-attribution">Attribution</a></li>
-					<li><a class="nodocs" href="#control-layers">Layers</a></li>
+					<li><a href="#control-layers">Layers</a></li>
 				</ul>
 			</div>
 			<div class="span-3">
@@ -2335,6 +2335,88 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 				<td>Removes an attribution text.</td>
 			</tr>
 		</table>
+
+
+		<h2 id="control-layers">L.Control.Layers</h2>
+
+		<p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="examples/layers-control.html">detailed example</a>). It should be created and added explicitly to the map using <a href=="#map-addcontrol">Map#addControl</a> method. Implements <a href="#icontrol">IControl</a> interface.</p>
+
+		<pre><code>var baseLayers = {
+	"CloudMade": cloudmade,
+	"OpenStreetMap": osm
+};
+
+var overlays = {
+	"Marker": marker,
+	"Roads": roadsLayer
+};
+
+layersControl = new L.Control.Layers(baseLayers, overlays);
+
+map.addControl(layersControl);</code></pre>
+
+		<h3>Constructor</h3>
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Control.Layers( &lt;<a href="#control-layers-config">Layer&nbsp;Config</a>&gt;&nbsp;<i>baseLayers?</i>, &lt;<a href="#control-layers-config">Layer&nbsp;Config</a>&gt;&nbsp;<i>overlays?</i>, &lt;<a href="#control-layers-options">Control.Layers&nbsp;options</a>&gt;&nbsp;<i>options?</i>&nbsp;)</code></td>
+				<td>Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes.</td>
+			</tr>
+		</table>
+
+		<h3>Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>addBaseLayer( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>, &lt;String&gt;&nbsp;<i>name</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds a base layer (radio button entry) with the given name to the control.</td>
+			</tr>
+			<tr>
+				<td><code>addOverlay( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>, &lt;String&gt;&nbsp;<i>name</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Adds an overlay (checkbox entry) with the given name to the control.</td>
+			</tr>
+			<tr>
+				<td><code>removeLayer( &lt;<a href="#ilayer">ILayer</a>&gt;&nbsp;<i>layer</i>&nbsp;)</code></td>
+				<td><code>this</code></td>
+				<td>Remove the given layer from the control.</td>
+			</tr>
+		</table>
+
+		<h3 id="control-layers-options">Options</h3>
+
+		<table>
+			<tr>
+				<th>Option</th>
+				<th>Type</th>
+				<th>Default value</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>collapsed</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code></td>
+				<td>If true, the control will be collapsed into an icon and expanded on mouse hover or touch.</td>
+			</tr>
+		</table>
+
+
+		<h3 id="control-layers-config">Layer Config</h3>
+
+		<p>An object literal with layer names as keys and layer objects as values:</p>
+
+		<pre><code>{
+	"&lt;someName1&gt;": layer1,
+	"&lt;someName2&gt;": layer2
+}</code></pre>
 
 
 
