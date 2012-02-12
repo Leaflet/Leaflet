@@ -1604,7 +1604,8 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile
+		updateWhenIdle: L.Browser.mobile,
+		reuseTiles: false
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -1734,8 +1735,7 @@ L.TileLayer = L.Class.extend({
 
 		this._addTilesFromCenterOut(tileBounds);
 
-		if (this.options.unloadInvisibleTiles ||
-			this.options.reuseTiles) {
+		if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
 	},
@@ -1785,6 +1785,8 @@ L.TileLayer = L.Class.extend({
 
 					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
 					// this._tiles[key].src = '';
+
+					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
@@ -5456,6 +5458,8 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var transform = L.DomUtil.TRANSFORM;
 
+		clearTimeout(this._clearTileBgTimer);
+
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
 		if (L.Browser.gecko || window.opera) {
 			this._tileBg.style[transform] += ' translate(0,0)';
@@ -5515,7 +5519,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		for (var i = 0, len = tiles.length; i < len; i++) {
 			if (!tiles[i].complete) {
-				// tiles[i].src = '' - evil, doesn't cancel the request!
+				tiles[i].onload = L.Util.falseFn;
+				tiles[i].onerror = L.Util.falseFn;
+				tiles[i].src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
 				tiles[i].parentNode.removeChild(tiles[i]);
 				tiles[i] = null;
 			}
