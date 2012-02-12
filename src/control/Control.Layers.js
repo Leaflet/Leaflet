@@ -1,7 +1,7 @@
 
 L.Control.Layers = L.Class.extend({
 	options: {
-		collapsed: !L.Browser.touch
+		collapsed: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -58,7 +58,9 @@ L.Control.Layers = L.Class.extend({
 
 	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
-		L.DomEvent.disableClickPropagation(this._container);
+		if (!L.Browser.touch) {
+			L.DomEvent.disableClickPropagation(this._container);
+		}
 
 		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
 
@@ -70,8 +72,13 @@ L.Control.Layers = L.Class.extend({
 			link.href = '#';
 			link.title = 'Layers';
 
-			L.DomEvent.addListener(link, 'focus', this._expand, this);
-			L.DomEvent.addListener(this._map, L.Draggable.START, this._collapse, this);
+			if (L.Browser.touch) {
+				L.DomEvent.addListener(link, 'click', this._expand, this);
+				//L.DomEvent.disableClickPropagation(link);
+			} else {
+				L.DomEvent.addListener(link, 'focus', this._expand, this);
+			}
+			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
 
 			this._container.appendChild(link);

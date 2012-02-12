@@ -27,7 +27,9 @@ L.Control.Zoom = L.Class.extend({
 		link.title = title;
 		link.className = className;
 
-		L.DomEvent.disableClickPropagation(link);
+		if (!L.Browser.touch) {
+			L.DomEvent.disableClickPropagation(link);
+		}
 		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
 		L.DomEvent.addListener(link, 'click', fn, context);
 
