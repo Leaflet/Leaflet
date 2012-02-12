@@ -451,7 +451,20 @@ L.Bounds = L.Class.extend({
 				(max.x <= this.max.x) &&
 				(min.y >= this.min.y) &&
 				(max.y <= this.max.y);
+	},
+
+	intersects: function (/*Bounds*/ bounds) {
+		var min = this.min,
+			max = this.max,
+			min2 = bounds.min,
+			max2 = bounds.max;
+
+		var xIntersects = (max2.x >= min.x) && (min2.x <= max.x),
+			yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
+
+		return xIntersects && yIntersects;
 	}
+
 });
 
 
@@ -659,7 +672,7 @@ L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + (lng < -180 ? 180 : -180);	// wrap longtitude into -180..180
+		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
 	}
 
 	//TODO change to lat() & lng()
@@ -687,6 +700,22 @@ L.LatLng.prototype = {
 		return 'LatLng(' +
 				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
+	},
+
+	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
+	distanceTo: function (/*LatLng*/ other)/*->Double*/ {
+		var R = 6378137, // earth radius in meters
+			d2r = L.LatLng.DEG_TO_RAD,
+			dLat = (other.lat - this.lat) * d2r,
+			dLon = (other.lng - this.lng) * d2r,
+			lat1 = this.lat * d2r,
+			lat2 = other.lat * d2r,
+			sin1 = Math.sin(dLat / 2),
+			sin2 = Math.sin(dLon / 2);
+
+		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
+
+		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	}
 };
 
@@ -709,8 +738,8 @@ L.LatLngBounds = L.Class.extend({
 	// extend the bounds to contain the given point
 	extend: function (/*LatLng*/ latlng) {
 		if (!this._southWest && !this._northEast) {
-			this._southWest = new L.LatLng(latlng.lat, latlng.lng);
-			this._northEast = new L.LatLng(latlng.lat, latlng.lng);
+			this._southWest = new L.LatLng(latlng.lat, latlng.lng, true);
+			this._northEast = new L.LatLng(latlng.lat, latlng.lng, true);
 		} else {
 			this._southWest.lat = Math.min(latlng.lat, this._southWest.lat);
 			this._southWest.lng = Math.min(latlng.lng, this._southWest.lng);
@@ -734,11 +763,11 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	getNorthWest: function () {
-		return new L.LatLng(this._northEast.lat, this._southWest.lng);
+		return new L.LatLng(this._northEast.lat, this._southWest.lng, true);
 	},
 
 	getSouthEast: function () {
-		return new L.LatLng(this._southWest.lat, this._northEast.lng);
+		return new L.LatLng(this._southWest.lat, this._northEast.lng, true);
 	},
 
 	contains: function (/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
@@ -1125,7 +1154,7 @@ L.Map = L.Class.extend({
 			return this;
 		}
 
-		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2));
+		this._rawPanBy(oldSize.subtract(this.getSize()).divideBy(2, true));
 
 		this.fire('move');
 
@@ -1152,8 +1181,8 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y)),
-			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y));
+			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
+			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
 		return new L.LatLngBounds(sw, ne);
 	},
 
@@ -1200,7 +1229,7 @@ L.Map = L.Class.extend({
 			}
 		} while (zoomNotFound && (zoom <= maxZoom));
 
-		if (zoomNotFound) {
+		if (zoomNotFound && inside) {
 			return null;
 		}
 
@@ -1382,7 +1411,7 @@ L.Map = L.Class.extend({
 	_initEvents: function () {
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove'];
+		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
 		var i, len;
 
@@ -1420,6 +1449,10 @@ L.Map = L.Class.extend({
 			return;
 		}
 
+		if (type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+		
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
@@ -1568,9 +1601,11 @@ L.TileLayer = L.Class.extend({
 		continuousWorld: false,
 		noWrap: false,
 		zoomOffset: 0,
+		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile
+		updateWhenIdle: L.Browser.mobile,
+		reuseTiles: false
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -1676,6 +1711,10 @@ L.TileLayer = L.Class.extend({
 		}
 		this._tiles = {};
 
+		if (this.options.reuseTiles) {
+			this._unusedTiles = [];
+		}
+
 		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
 		}
@@ -1696,7 +1735,7 @@ L.TileLayer = L.Class.extend({
 
 		this._addTilesFromCenterOut(tileBounds);
 
-		if (this.options.unloadInvisibleTiles) {
+		if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
 	},
@@ -1747,8 +1786,13 @@ L.TileLayer = L.Class.extend({
 					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
 					// this._tiles[key].src = '';
 
+					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
+					}
+					if (this.options.reuseTiles) {
+						this._unusedTiles.push(this._tiles[key]);
 					}
 					delete this._tiles[key];
 				}
@@ -1760,7 +1804,7 @@ L.TileLayer = L.Class.extend({
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
 			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = Math.pow(2, (zoom + this.options.zoomOffset));
+			tileLimit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
@@ -1777,8 +1821,8 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		// create tile
-		var tile = this._createTile();
+		// get unused tile - or create a new tile
+		var tile = this._getTile();
 		L.DomUtil.setPosition(tile, tilePos);
 
 		this._tiles[key] = tile;
@@ -1790,6 +1834,11 @@ L.TileLayer = L.Class.extend({
 		this._loadTile(tile, tilePoint, zoom);
 
 		container.appendChild(tile);
+	},
+
+	_getOffsetZoom: function (zoom) {
+		zoom = this.options.zoomReverse ? this.options.maxZoom - zoom : zoom;
+		return zoom + this.options.zoomOffset;
 	},
 
 	_getTilePos: function (tilePoint) {
@@ -1807,7 +1856,7 @@ L.TileLayer = L.Class.extend({
 
 		return L.Util.template(this._url, L.Util.extend({
 			s: s,
-			z: zoom + this.options.zoomOffset,
+			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this._urlParams));
@@ -1820,6 +1869,19 @@ L.TileLayer = L.Class.extend({
 		var tileSize = this.options.tileSize;
 		this._tileImg.style.width = tileSize + 'px';
 		this._tileImg.style.height = tileSize + 'px';
+	},
+
+	_getTile: function () {
+		if (this.options.reuseTiles && this._unusedTiles.length > 0) {
+			var tile = this._unusedTiles.pop();
+			this._resetTile(tile);
+			return tile;
+		}
+		return this._createTile();
+	},
+
+	_resetTile: function (tile) {
+		// Override if data stored on a tile needs to be cleaned up before reuse
 	},
 
 	_createTile: function () {
@@ -1919,6 +1981,17 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
+	redraw: function () {
+		for (var i in this._tiles) {
+			var tile = this._tiles[i];
+			this._redrawTile(tile);
+		}
+	},
+
+	_redrawTile: function (tile) {
+		this.drawTile(tile, tile._tilePoint, tile._zoom);
+	},
+
 	_createTileProto: function () {
 		this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
 
@@ -1935,6 +2008,8 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 
 	_loadTile: function (tile, tilePoint, zoom) {
 		tile._layer = this;
+		tile._tilePoint = tilePoint;
+		tile._zoom = zoom;
 
 		this.drawTile(tile, tilePoint, zoom);
 
@@ -2039,11 +2114,17 @@ L.Icon = L.Class.extend({
 
 	_createIcon: function (name) {
 		var size = this[name + 'Size'],
-			src = this[name + 'Url'],
-			img = this._createImg(src);
-
-		if (!src) {
+			src = this[name + 'Url'];
+		if (!src && name === 'shadow') {
 			return null;
+		}
+
+		var img;
+		if (!src) {
+			img = this._createDiv();
+		}
+		else {
+			img = this._createImg(src);
 		}
 
 		img.className = 'leaflet-marker-' + name;
@@ -2069,6 +2150,10 @@ L.Icon = L.Class.extend({
 			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
+	},
+
+	_createDiv: function () {
+		return document.createElement('div');
 	}
 });
 
@@ -2085,7 +2170,8 @@ L.Marker = L.Class.extend({
 		icon: new L.Icon(),
 		title: '',
 		clickable: true,
-		draggable: false
+		draggable: false,
+		zIndexOffset: 0
 	},
 
 	initialize: function (latlng, options) {
@@ -2179,8 +2265,7 @@ L.Marker = L.Class.extend({
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		this._icon.style.zIndex = pos.y;
-		// TODO zIndex offset
+		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
 	_initInteraction: function () {
@@ -2227,7 +2312,8 @@ L.Popup = L.Class.extend({
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
-		autoPanPadding: new L.Point(5, 5)
+		autoPanPadding: new L.Point(5, 5),
+		className: ''
 	},
 
 	initialize: function (options, source) {
@@ -2294,7 +2380,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup');
+		this._container = L.DomUtil.create('div', 'leaflet-popup ' + this.options.className);
 
 		if (this.options.closeButton) {
 			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
@@ -2404,7 +2490,9 @@ L.Popup = L.Class.extend({
 L.Marker.include({
 	openPopup: function () {
 		this._popup.setLatLng(this._latlng);
-		this._map.openPopup(this._popup);
+		if (this._map) {
+			this._map.openPopup(this._popup);
+		}
 
 		return this;
 	},
@@ -2816,7 +2904,7 @@ L.Map.include({
 L.Path.include({
 	bindPopup: function (content, options) {
 		if (!this._popup || this._popup.options !== options) {
-			this._popup = new L.Popup(options);
+			this._popup = new L.Popup(options, this);
 		}
 		this._popup.setContent(content);
 
@@ -2945,72 +3033,80 @@ L.LineUtil = {
 			return points.slice();
 		}
 
+		var sqTolerance = tolerance * tolerance;
+
 		// stage 1: vertex reduction
-		points = this.reducePoints(points, tolerance);
+		points = this._reducePoints(points, sqTolerance);
 
 		// stage 2: Douglas-Peucker simplification
-		points = this.simplifyDP(points, tolerance);
+		points = this._simplifyDP(points, sqTolerance);
 
 		return points;
 	},
 
 	// distance from a point to a segment between two points
 	pointToSegmentDistance:  function (/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
-		return Math.sqrt(this._sqPointToSegmentDist(p, p1, p2));
+		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
 	closestPointOnSegment: function (/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
-		var point = this._sqClosestPointOnSegment(p, p1, p2);
-		point.distance = Math.sqrt(point._sqDist);
-		return point;
+		return this._sqClosestPointOnSegment(p, p1, p2);
 	},
 
 	// Douglas-Peucker simplification, see http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm
-	simplifyDP: function (points, tol) {
-		var maxDist2 = 0,
-			index = 0,
-			t2 = tol * tol,
-			len = points.length,
-			i, dist2;
+	_simplifyDP: function (points, sqTolerance) {
 
-		if (len < 3) {
-			return points;
-		}
+		var len = points.length,
+			ArrayConstructor = typeof Uint8Array !== 'undefined' ? Uint8Array : Array,
+			markers = new ArrayConstructor(len);
 
-		for (i = 0; i < len - 1; i++) {
-			dist2 = this._sqPointToSegmentDist(points[i], points[0], points[len - 1]);
-			if (dist2 > maxDist2) {
-				index = i;
-				maxDist2 = dist2;
+		markers[0] = markers[len - 1] = 1;
+
+		this._simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
+
+		var i,
+			newPoints = [];
+
+		for (i = 0; i < len; i++) {
+			if (markers[i]) {
+				newPoints.push(points[i]);
 			}
 		}
 
-		var part1, part2;
+		return newPoints;
+	},
 
-		if (maxDist2 >= t2) {
-			part1 = points.slice(0, index);
-			part2 = points.slice(index);
+	_simplifyDPStep: function (points, markers, sqTolerance, first, last) {
 
-			part1 = this.simplifyDP(part1, tol);
-			part2 = this.simplifyDP(part2, tol);
+		var maxSqDist = 0,
+			index, i, sqDist;
 
-			return part1.concat(part2);
-		} else {
-			return [points[0], points[len - 1]];
+		for (i = first + 1; i <= last - 1; i++) {
+			sqDist = this._sqClosestPointOnSegment(points[i], points[first], points[last], true);
+
+			if (sqDist > maxSqDist) {
+				index = i;
+				maxSqDist = sqDist;
+			}
+		}
+
+		if (maxSqDist > sqTolerance) {
+			markers[index] = 1;
+
+			this._simplifyDPStep(points, markers, sqTolerance, first, index);
+			this._simplifyDPStep(points, markers, sqTolerance, index, last);
 		}
 	},
 
 	// reduce points that are too close to each other to a single point
-	reducePoints: function (points, tol) {
-		var reducedPoints = [points[0]],
-			t2 = tol * tol;
+	_reducePoints: function (points, sqTolerance) {
+		var reducedPoints = [points[0]];
 
 		for (var i = 1, prev = 0, len = points.length; i < len; i++) {
-			if (this._sqDist(points[i], points[prev]) < t2) {
-				continue;
+			if (this._sqDist(points[i], points[prev]) > sqTolerance) {
+				reducedPoints.push(points[i]);
+				prev = i;
 			}
-			reducedPoints.push(points[i]);
-			prev = i;
 		}
 		if (prev < len - 1) {
 			reducedPoints.push(points[len - 1]);
@@ -3100,28 +3196,31 @@ L.LineUtil = {
 		return dx * dx + dy * dy;
 	},
 
-	// return closest point on segment with attribute _sqDist - square distance to segment
-	_sqClosestPointOnSegment: function (p, p1, p2) {
-		var x2 = p2.x - p1.x,
-			y2 = p2.y - p1.y,
-			apoint = p1;
-		if (x2 || y2) {
-			var dot = (p.x - p1.x) * x2 + (p.y - p1.y) * y2,
-				t = dot / this._sqDist(p1, p2);
+	// return closest point on segment or distance to that point
+	_sqClosestPointOnSegment: function (p, p1, p2, sqDist) {
+		var x = p1.x,
+			y = p1.y,
+			dx = p2.x - x,
+			dy = p2.y - y,
+			dot = dx * dx + dy * dy,
+			t;
+
+		if (dot > 0) {
+			t = ((p.x - x) * dx + (p.y - y) * dy) / dot;
 
 			if (t > 1) {
-				apoint = p2;
+				x = p2.x;
+				y = p2.y;
 			} else if (t > 0) {
-				apoint = new L.Point(p1.x + x2 * t, p1.y + y2 * t);
+				x += dx * t;
+				y += dy * t;
 			}
 		}
-		apoint._sqDist = this._sqDist(p, apoint);
-		return apoint;
-	},
 
-	// distance from a point to a segment between two points
-	_sqPointToSegmentDist: function (p, p1, p2) {
-		return this._sqClosestPointOnSegment(p, p1, p2)._sqDist;
+		dx = p.x - x;
+		dy = p.y - y;
+
+		return sqDist ? dx * dx + dy * dy : new L.Point(x, y);
 	}
 };
 
@@ -3347,7 +3446,7 @@ L.Polygon = L.Polyline.extend({
 	initialize: function (latlngs, options) {
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
-		if (latlngs[0] instanceof Array) {
+		if (latlngs && (latlngs[0] instanceof Array)) {
 			this._latlngs = latlngs[0];
 			this._holes = latlngs.slice(1);
 		}
@@ -3987,7 +4086,7 @@ L.DomEvent = {
 	},
 
 	disableClickPropagation: function (/*HTMLElement*/ el) {
-		L.DomEvent.addListener(el, 'mousedown', L.DomEvent.stopPropagation);
+		L.DomEvent.addListener(el, L.Draggable.START, L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(el, 'click', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
 	},
@@ -4745,12 +4844,15 @@ L.Control.Zoom = L.Class.extend({
 
 
 L.Control.Attribution = L.Class.extend({
+	initialize: function (prefix) {
+		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
+		this._attributions = {};
+	},
+	
 	onAdd: function (map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
-		this._prefix = 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
-		this._attributions = {};
 		this._update();
 	},
 
@@ -5356,6 +5458,8 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var transform = L.DomUtil.TRANSFORM;
 
+		clearTimeout(this._clearTileBgTimer);
+
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
 		if (L.Browser.gecko || window.opera) {
 			this._tileBg.style[transform] += ' translate(0,0)';
@@ -5415,7 +5519,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		for (var i = 0, len = tiles.length; i < len; i++) {
 			if (!tiles[i].complete) {
-				// tiles[i].src = '' - evil, doesn't cancel the request!
+				tiles[i].onload = L.Util.falseFn;
+				tiles[i].onerror = L.Util.falseFn;
+				tiles[i].src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
 				tiles[i].parentNode.removeChild(tiles[i]);
 				tiles[i] = null;
 			}
@@ -5491,7 +5598,7 @@ L.Map.include({
 		options = L.Util.extend({
 			maxZoom: maxZoom || Infinity,
 			setView: true
-		});
+		}, options);
 		return this.locate(options);
 	},
 

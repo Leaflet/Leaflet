@@ -1,10 +1,13 @@
 L.Control.Attribution = L.Class.extend({
+	initialize: function (prefix) {
+		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
+		this._attributions = {};
+	},
+	
 	onAdd: function (map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
-		this._prefix = 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
-		this._attributions = {};
 		this._update();
 	},
 
