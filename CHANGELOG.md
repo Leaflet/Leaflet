@@ -3,7 +3,11 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.3 (master)
+## 0.4 (master)
+
+No changes from 0.3 so far.
+
+## 0.3 (13.02.2012)
 
 ### Major features
 
@@ -20,6 +24,7 @@ Leaflet Changelog
  * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Significantly improved line simplification performance (noticeable when rendering polylines/polygons with tens of thousands of points)
  * Improved circles performance by not drawing them if they're off the clip region.
+ * Improved stability of zoom animation (less flickering of tiles).
 
 #### API improvements
 
