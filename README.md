@@ -21,8 +21,8 @@ Leaflet build system is powered by the Node.js platform and Jake, JSHint and Ugl
  
  ```
  npm install -g jake
- npm install -g jshint
- npm install -g uglify-js
+ npm install jshint
+ npm install uglify-js
  ```
 
 Now that you have everything installed, run `jake` inside the Leaflet directory. This will check Leaflet source files for JavaScript errors and inconsistencies, and then combine and compress it to the `dist` folder.
