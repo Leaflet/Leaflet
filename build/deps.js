@@ -86,6 +86,12 @@ var deps = {
 		desc: 'VML fallback for vector rendering core (IE 6-8).'
 	},
 
+	PathCanvas: {
+		src: ['layer/vector/canvas/Path.Canvas.js'],
+		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
+	},
+
 	Polyline: {
 		src: ['geometry/LineUtil.js', 'layer/vector/Polyline.js'],
 		deps: ['Path'],
@@ -116,13 +122,12 @@ var deps = {
 		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
-	PathCanvas: {
-		src: ['layer/vector/canvas/Path.Canvas.js',
-		      'layer/vector/canvas/Polyline.Canvas.js',
+	VectorsCanvas: {
+		src: ['layer/vector/canvas/Polyline.Canvas.js',
 		      'layer/vector/canvas/Polygon.Canvas.js',
 		      'layer/vector/canvas/Circle.Canvas.js'],
-		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
-		desc: 'Canvas fallback for vector layers (makes them work on Android 2+).'
+		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector layers (polygons, polylines, circles)'
 	},
 
 	GeoJSON: {
