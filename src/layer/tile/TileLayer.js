@@ -139,7 +139,12 @@ L.TileLayer = L.Class.extend({
 
 	_update: function () {
 		var bounds = this._map.getPixelBounds(),
+			zoom = this._map.getZoom(),
 			tileSize = this.options.tileSize;
+			
+		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
+			return;
+		}
 
 		var nwTilePoint = new L.Point(
 				Math.floor(bounds.min.x / tileSize),
