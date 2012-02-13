@@ -56,6 +56,13 @@ L.Marker = L.Class.extend({
 		}
 	},
 
+	setZIndexOffset: function (offset) {
+		this.options.zIndexOffset = offset;
+		if (this._icon) {
+			this._reset();
+		}
+	},
+
 	setIcon: function (icon) {
 		if (this._map) {
 			this._removeIcon();

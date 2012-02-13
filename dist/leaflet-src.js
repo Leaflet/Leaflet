@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2010-2011, CloudMade, Vladimir Agafonkin
+ Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin
  Leaflet is a modern open-source JavaScript library for interactive maps.
  http://leaflet.cloudmade.com
 */
@@ -636,8 +636,13 @@ L.DomUtil = {
 
 	setPosition: function (el, point) {
 		el._leaflet_pos = point;
-		if (L.Browser.webkit) {
+		if (L.Browser.webkit3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
+
+			if (L.Browser.android) {
+				el.style['-webkit-perspective'] = '1000';
+				el.style['-webkit-backface-visibility'] = 'hidden';
+			}
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -1605,7 +1610,7 @@ L.TileLayer = L.Class.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: false
+		reuseTiles: L.Browser.mobile
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -1723,7 +1728,12 @@ L.TileLayer = L.Class.extend({
 
 	_update: function () {
 		var bounds = this._map.getPixelBounds(),
+			zoom = this._map.getZoom(),
 			tileSize = this.options.tileSize;
+
+		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
+			return;
+		}
 
 		var nwTilePoint = new L.Point(
 				Math.floor(bounds.min.x / tileSize),
@@ -1783,17 +1793,14 @@ L.TileLayer = L.Class.extend({
 					tile = this._tiles[key];
 					this.fire("tileunload", {tile: tile, url: tile.src});
 
-					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
-					// this._tiles[key].src = '';
-
-					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
 					if (this.options.reuseTiles) {
 						this._unusedTiles.push(this._tiles[key]);
 					}
+					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
 					delete this._tiles[key];
 				}
 			}
@@ -2213,6 +2220,13 @@ L.Marker = L.Class.extend({
 			if (this._popup) {
 				this._popup.setLatLng(this._latlng);
 			}
+		}
+	},
+
+	setZIndexOffset: function (offset) {
+		this.options.zIndexOffset = offset;
+		if (this._icon) {
+			this._reset();
 		}
 	},
 
@@ -4834,7 +4848,9 @@ L.Control.Zoom = L.Class.extend({
 		link.title = title;
 		link.className = className;
 
-		L.DomEvent.disableClickPropagation(link);
+		if (!L.Browser.touch) {
+			L.DomEvent.disableClickPropagation(link);
+		}
 		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
 		L.DomEvent.addListener(link, 'click', fn, context);
 
@@ -4848,7 +4864,7 @@ L.Control.Attribution = L.Class.extend({
 		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
 		this._attributions = {};
 	},
-	
+
 	onAdd: function (map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
@@ -4873,7 +4889,10 @@ L.Control.Attribution = L.Class.extend({
 		if (!text) {
 			return;
 		}
-		this._attributions[text] = true;
+		if (!this._attributions[text]) {
+			this._attributions[text] = 0;
+		}
+		this._attributions[text]++;
 		this._update();
 	},
 
@@ -4881,7 +4900,7 @@ L.Control.Attribution = L.Class.extend({
 		if (!text) {
 			return;
 		}
-		delete this._attributions[text];
+		this._attributions[text]--;
 		this._update();
 	},
 
@@ -4914,7 +4933,7 @@ L.Control.Attribution = L.Class.extend({
 
 L.Control.Layers = L.Class.extend({
 	options: {
-		collapsed: !L.Browser.touch
+		collapsed: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -4971,7 +4990,9 @@ L.Control.Layers = L.Class.extend({
 
 	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
-		L.DomEvent.disableClickPropagation(this._container);
+		if (!L.Browser.touch) {
+			L.DomEvent.disableClickPropagation(this._container);
+		}
 
 		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
 
@@ -4983,8 +5004,13 @@ L.Control.Layers = L.Class.extend({
 			link.href = '#';
 			link.title = 'Layers';
 
-			L.DomEvent.addListener(link, 'focus', this._expand, this);
-			L.DomEvent.addListener(this._map, L.Draggable.START, this._collapse, this);
+			if (L.Browser.touch) {
+				L.DomEvent.addListener(link, 'click', this._expand, this);
+				//L.DomEvent.disableClickPropagation(link);
+			} else {
+				L.DomEvent.addListener(link, 'focus', this._expand, this);
+			}
+			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
 
 			this._container.appendChild(link);

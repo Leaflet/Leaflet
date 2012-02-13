@@ -21,7 +21,7 @@ L.TileLayer = L.Class.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: false
+		reuseTiles: L.Browser.mobile
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -139,7 +139,12 @@ L.TileLayer = L.Class.extend({
 
 	_update: function () {
 		var bounds = this._map.getPixelBounds(),
+			zoom = this._map.getZoom(),
 			tileSize = this.options.tileSize;
+
+		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
+			return;
+		}
 
 		var nwTilePoint = new L.Point(
 				Math.floor(bounds.min.x / tileSize),
@@ -199,17 +204,14 @@ L.TileLayer = L.Class.extend({
 					tile = this._tiles[key];
 					this.fire("tileunload", {tile: tile, url: tile.src});
 
-					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
-					// this._tiles[key].src = '';
-
-					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
 					if (this.options.reuseTiles) {
 						this._unusedTiles.push(this._tiles[key]);
 					}
+					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
 					delete this._tiles[key];
 				}
 			}

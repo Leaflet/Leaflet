@@ -3,7 +3,11 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.3 (master)
+## 0.4 (master)
+
+No changes from 0.3 so far.
+
+## 0.3 (13.02.2012)
 
 ### Major features
 
@@ -20,6 +24,7 @@ Leaflet Changelog
  * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Significantly improved line simplification performance (noticeable when rendering polylines/polygons with tens of thousands of points)
  * Improved circles performance by not drawing them if they're off the clip region.
+ * Improved stability of zoom animation (less flickering of tiles).
 
 #### API improvements
 
@@ -86,6 +91,7 @@ Leaflet Changelog
  * Fixed a bug where attribution prefix would not update on `setPrefix`. [#195](https://github.com/CloudMade/Leaflet/issues/195)
  * Fixed a bug where `TileLayer` `load` event wouldn't fire in some edge cases (by [@dravnic](https://github.com/dravnic)).
  * Fixed a bug related to clearing background tiles after zooming (by [@neno-giscloud](https://github.com/neno-giscloud) & [@dravnic](https://github.com/dravnic)).
+ * Fixed a bug that sometimes caused map flickering after zoom animation.
  * Fixed a bug related to cleaning up after removing tile layers (by [@dravnic](https://github.com/dravnic)). [#276](https://github.com/CloudMade/Leaflet/pull/276)
  * Fixed a bug that made selecting text in the attribution control impossible. [#279](https://github.com/CloudMade/Leaflet/issues/279)
  * Fixed a bug when initializing a map in a non-empty div. [#278](https://github.com/CloudMade/Leaflet/issues/278)
@@ -106,7 +112,10 @@ Leaflet Changelog
 
  * Fixed a bug that caused an error when clicking vector layers under iOS. [#204](https://github.com/CloudMade/Leaflet/issues/204)
  * Fixed crash on Android 3+ when panning or zooming (by [@florian](https://github.com/florianf)). [#137](https://github.com/CloudMade/Leaflet/issues/137)
+ * Fixed a bug on Android 2/3 that sometimes caused the map to disappear after zooming. [#69](https://github.com/CloudMade/Leaflet/issues/69)
+ * Fixed a bug on Android 3 that caused tiles to shift position on a big map.
  * Fixed a bug that caused the map to pan when touch-panning inside a popup. [#452](https://github.com/CloudMade/Leaflet/issues/452)
+ * Fixed a bug that caused click delays on zoom control.
 
 
 ## 0.2.1 (2011-06-18)

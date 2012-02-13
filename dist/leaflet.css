@@ -17,7 +17,7 @@
 .leaflet-container {
 	overflow: hidden;
 	}
-.leaflet-tile-pane {
+.leaflet-tile-pane, .leaflet-container {
 	-webkit-transform: translate3d(0,0,0);
 	}
 .leaflet-tile,
