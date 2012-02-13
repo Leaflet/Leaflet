@@ -636,8 +636,13 @@ L.DomUtil = {
 
 	setPosition: function (el, point) {
 		el._leaflet_pos = point;
-		if (L.Browser.webkit && !L.Browser.android) {
+		if (L.Browser.webkit3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
+
+			if (L.Browser.android) {
+				el.style['-webkit-perspective'] = '1000';
+				el.style['-webkit-backface-visibility'] = 'hidden';
+			}
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -1605,7 +1610,7 @@ L.TileLayer = L.Class.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: false
+		reuseTiles: L.Browser.mobile
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -1725,7 +1730,7 @@ L.TileLayer = L.Class.extend({
 		var bounds = this._map.getPixelBounds(),
 			zoom = this._map.getZoom(),
 			tileSize = this.options.tileSize;
-			
+
 		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
 			return;
 		}
@@ -1788,17 +1793,14 @@ L.TileLayer = L.Class.extend({
 					tile = this._tiles[key];
 					this.fire("tileunload", {tile: tile, url: tile.src});
 
-					// evil, don't do this! crashes Android 3, produces load errors, doesn't solve memory leaks
-					// this._tiles[key].src = '';
-
-					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
 					if (tile.parentNode === this._container) {
 						this._container.removeChild(tile);
 					}
 					if (this.options.reuseTiles) {
 						this._unusedTiles.push(this._tiles[key]);
 					}
+					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
 					delete this._tiles[key];
 				}
 			}

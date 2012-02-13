@@ -107,6 +107,8 @@ Leaflet Changelog
 
  * Fixed a bug that caused an error when clicking vector layers under iOS. [#204](https://github.com/CloudMade/Leaflet/issues/204)
  * Fixed crash on Android 3+ when panning or zooming (by [@florian](https://github.com/florianf)). [#137](https://github.com/CloudMade/Leaflet/issues/137)
+ * Fixed a bug on Android 2/3 that sometimes caused the map to disappear after zooming. [#69](https://github.com/CloudMade/Leaflet/issues/69)
+ * Fixed a bug on Android 3 that caused tiles to shift position on a big map.
  * Fixed a bug that caused the map to pan when touch-panning inside a popup. [#452](https://github.com/CloudMade/Leaflet/issues/452)
  * Fixed a bug that caused click delays on zoom control.
 
