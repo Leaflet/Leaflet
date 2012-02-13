@@ -636,7 +636,7 @@ L.DomUtil = {
 
 	setPosition: function (el, point) {
 		el._leaflet_pos = point;
-		if (L.Browser.webkit) {
+		if (L.Browser.webkit && !L.Browser.android) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 		} else {
 			el.style.left = point.x + 'px';
@@ -2218,6 +2218,13 @@ L.Marker = L.Class.extend({
 			if (this._popup) {
 				this._popup.setLatLng(this._latlng);
 			}
+		}
+	},
+
+	setZIndexOffset: function (offset) {
+		this.options.zIndexOffset = offset;
+		if (this._icon) {
+			this._reset();
 		}
 	},
 
