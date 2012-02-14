@@ -1,5 +1,9 @@
 
 L.Control.Zoom = L.Class.extend({
+	initialize: function () {
+		this._zoomPosition = L.Control.Position.TOP_LEFT;
+	},
+
 	onAdd: function (map) {
 		this._map = map;
 		this._container = L.DomUtil.create('div', 'leaflet-control-zoom');
@@ -18,7 +22,11 @@ L.Control.Zoom = L.Class.extend({
 	},
 
 	getPosition: function () {
-		return L.Control.Position.TOP_LEFT;
+		return this._zoomPosition;
+	},
+
+	setPosition: function (position) {
+		this._zoomPosition = position;
 	},
 
 	_createButton: function (title, className, fn, context) {
