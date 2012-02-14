@@ -3,7 +3,24 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.3 (master)
+## 0.4 (master)
+
+### Improvements
+
+ * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
+ * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
+ * Made controls implementation easier (now more magic happens under the hood).
+
+### Bug fixes
+
+ * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
+
+## 0.3.1 (14.02.2012)
+
+ * Fixed a regression where default marker icons wouldn't work if Leaflet include url contained a query string.
+ * Fixed a regression where tiles sometimes flickered with black on panning in iOS.
+
+## 0.3 (13.02.2012)
 
 ### Major features
 
@@ -20,6 +37,7 @@ Leaflet Changelog
  * Limited maximum zoom change on a single mouse wheel movement (so you won't zoom across the whole zoom range in one scroll). [#149](https://github.com/CloudMade/Leaflet/issues/149)
  * Significantly improved line simplification performance (noticeable when rendering polylines/polygons with tens of thousands of points)
  * Improved circles performance by not drawing them if they're off the clip region.
+ * Improved stability of zoom animation (less flickering of tiles).
 
 #### API improvements
 
