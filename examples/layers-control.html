@@ -2,11 +2,13 @@
 <html>
 <head>
 	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Layers Control Example</title>
-	
+
 	<meta charset="utf-8" />
-	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" /> 
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
-	
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 	<link rel="icon" type="image/png" href="../docs/images/favicon.png" />
 
 	<!-- Blueprint -->
@@ -28,23 +30,23 @@
 	<div class="container">
 		<h1>Leaflet</h1>
 		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
-		
+
 		<ul class="nav clearfix">
 			<li><a href="../index.html">Overview</a></li>
-			<li><a href="../features.html">Features</a></li>  
-			<li><a href="../examples.html">Examples</a></li> 
-			<li><a href="../reference.html">Documentation</a></li> 
-			<li><a href="../download.html">Download</a></li> 
+			<li><a href="../features.html">Features</a></li>
+			<li><a href="../examples.html">Examples</a></li>
+			<li><a href="../reference.html">Documentation</a></li>
+			<li><a href="../download.html">Download</a></li>
 			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
-			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li> 
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li>
 		</ul>
-		
+
 		<p><a href="../examples.html">&larr; Back to the list of examples</a></p>
 		<h3>Layer Groups and Layers Control</h3>
-		
+
 		<p>This guide will show you how to group several layers into one, and how to use the layers control to allow users to easily switch different layers on your map.</p>
 		<p>Note: this only works in the latest (master) version of Leaflet.</p>
-		
+
 		<div id="map" style="height: 250px; margin-bottom: 18px"></div>
 		<script>
 			var littletonMarker = new L.Marker(new L.LatLng(39.61, -105.02)).bindPopup("This is Littleton, CO."),
@@ -62,28 +64,28 @@
 			var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution},
 				cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
-			
+
 			var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
 				midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
 				motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
-			
+
 			var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
-			
+
 			var baseMaps = {
 			    "Minimal": minimal,
 			    "Night View": midnightCommander
 			};
-			
+
 			var overlayMaps = {
 			    "Motorways": motorways,
 			    "Cities": citiesLayer
 			};
-			
+
 			layersControl = new L.Control.Layers(baseMaps, overlayMaps);
-			
+
 			map.addControl(layersControl);
 		</script>
-		
+
 		<p><a target="_blank" href="layers-control-example.html">View example on a separate page &rarr;</a></p>
 
 		<h3>Layer Groups</h3>
@@ -129,37 +131,37 @@ var map = new L.Map('map', {
 });</code></pre>
 
 	<p>Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are just simple objects with key/value pairs. The key is what sets the text for the layer in the control (e.g. "Night View"). The corresponding value is a reference to the layer (e.g. <code>midnightCommander</code>).</p>
-		
+
 		<pre><code>var baseMaps = {
 	"Minimal": minimal,
 	"Night View": midnightCommander
 };
-		
+
 var overlayMaps = {
     "Motorways": motorways,
     "Cities": citiesLayer
 };</code></pre>
-		
+
 		<!-- TODO: Link "Layers Control" to the Layers Control docs when they are created -->
 		<p>Now, all that's left to do is to create a Layers Control and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional &mdash; for example, you can pass just a base layers object by ommiting the second argument, or just an overlays objects by passing <code>null</code> as the first argument.</p>
-		
+
 		<pre><code>var layersControl = new L.Control.Layers(baseMaps, overlayMaps);
-		
+
 map.addControl(layersControl);</code></pre>
 
 		<p>Now lets <a target="_blank" href="layers-control-example.html">view the result on a separate page &rarr;</a></p>
 
 		<hr />
-			
+
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
 	</div>
-	
+
 	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
-	
+
 	<script>
 		hljs.tabReplace = '    ';
 		hljs.initHighlightingOnLoad();
-	</script> 
+	</script>
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
