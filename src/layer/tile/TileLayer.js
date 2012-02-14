@@ -21,7 +21,7 @@ L.TileLayer = L.Class.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: L.Browser.mobile
+		reuseTiles: false
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -210,7 +210,7 @@ L.TileLayer = L.Class.extend({
 					if (this.options.reuseTiles) {
 						this._unusedTiles.push(this._tiles[key]);
 					}
-					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+					tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 					delete this._tiles[key];
 				}
