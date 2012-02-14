@@ -4783,12 +4783,6 @@ L.Control = L.Class.extend({
 	}
 });
 
-L.Control.Position = {
-	TOP_LEFT: 'topleft',
-	TOP_RIGHT: 'topright',
-	BOTTOM_LEFT: 'bottomleft',
-	BOTTOM_RIGHT: 'bottomright'
-};
 
 
 L.Map.include({
