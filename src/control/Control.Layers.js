@@ -1,7 +1,8 @@
 
-L.Control.Layers = L.Class.extend({
+L.Control.Layers = L.Control.extend({
 	options: {
-		collapsed: true
+		collapsed: true,
+		position: 'topright'
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -27,14 +28,8 @@ L.Control.Layers = L.Class.extend({
 
 		this._initLayout();
 		this._update();
-	},
 
-	getContainer: function () {
 		return this._container;
-	},
-
-	getPosition: function () {
-		return L.Control.Position.TOP_RIGHT;
 	},
 
 	addBaseLayer: function (layer, name) {

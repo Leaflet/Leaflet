@@ -25,11 +25,11 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
+	onAdd: function (map, insertAtTheBottom) {
 		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
-		L.TileLayer.prototype.onAdd.call(this, map);
+		L.TileLayer.prototype.onAdd.call(this, map, insertAtTheBottom);
 	},
 
 	getTileUrl: function (/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {

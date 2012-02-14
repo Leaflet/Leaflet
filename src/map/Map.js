@@ -176,7 +176,7 @@ L.Map = L.Class.extend({
 		return this.panBy(new L.Point(dx, dy, true));
 	},
 
-	addLayer: function (layer, insertAtTheTop) {
+	addLayer: function (layer, insertAtTheBottom) {
 		var id = L.Util.stamp(layer);
 
 		if (this._layers[id]) {
@@ -202,7 +202,7 @@ L.Map = L.Class.extend({
 		}
 
 		var onMapLoad = function () {
-			layer.onAdd(this, insertAtTheTop);
+			layer.onAdd(this, insertAtTheBottom);
 			this.fire('layeradd', {layer: layer});
 		};
 
@@ -490,8 +490,11 @@ L.Map = L.Class.extend({
 	},
 
 	_initControls: function () {
+		// TODO refactor, this should happen automatically
+
 		if (this.options.zoomControl) {
-			this.addControl(new L.Control.Zoom());
+			this.zoomControl = new L.Control.Zoom();
+			this.addControl(this.zoomControl);
 		}
 		if (this.options.attributionControl) {
 			this.attributionControl = new L.Control.Attribution();
@@ -551,7 +554,7 @@ L.Map = L.Class.extend({
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		
+
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)

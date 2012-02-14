@@ -1,5 +1,11 @@
-L.Control.Attribution = L.Class.extend({
-	initialize: function (prefix) {
+L.Control.Attribution = L.Control.extend({
+	options: {
+		position: 'bottomright'
+	},
+
+	initialize: function (prefix, options) {
+		L.Util.setOptions(this, options);
+
 		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
 		this._attributions = {};
 	},
@@ -9,13 +15,7 @@ L.Control.Attribution = L.Class.extend({
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
 		this._update();
-	},
 
-	getPosition: function () {
-		return L.Control.Position.BOTTOM_RIGHT;
-	},
-
-	getContainer: function () {
 		return this._container;
 	},
 

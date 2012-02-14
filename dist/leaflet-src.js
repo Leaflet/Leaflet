@@ -6,7 +6,7 @@
 
 (function (root) {
 	root.L = {
-		VERSION: '0.3',
+		VERSION: '0.4',
 
 		ROOT_URL: root.L_ROOT_URL || (function () {
 			var scripts = document.getElementsByTagName('script'),
@@ -22,7 +22,7 @@
 					if (matches[1] === 'include') {
 						return '../../dist/';
 					}
-					return src.replace(leafletRe, '') + '/';
+					return src.split(leafletRe)[0] + '/';
 				}
 			}
 			return '';
@@ -1082,7 +1082,7 @@ L.Map = L.Class.extend({
 		return this.panBy(new L.Point(dx, dy, true));
 	},
 
-	addLayer: function (layer, insertAtTheTop) {
+	addLayer: function (layer, insertAtTheBottom) {
 		var id = L.Util.stamp(layer);
 
 		if (this._layers[id]) {
@@ -1108,7 +1108,7 @@ L.Map = L.Class.extend({
 		}
 
 		var onMapLoad = function () {
-			layer.onAdd(this, insertAtTheTop);
+			layer.onAdd(this, insertAtTheBottom);
 			this.fire('layeradd', {layer: layer});
 		};
 
@@ -1396,8 +1396,11 @@ L.Map = L.Class.extend({
 	},
 
 	_initControls: function () {
+		// TODO refactor, this should happen automatically
+
 		if (this.options.zoomControl) {
-			this.addControl(new L.Control.Zoom());
+			this.zoomControl = new L.Control.Zoom();
+			this.addControl(this.zoomControl);
 		}
 		if (this.options.attributionControl) {
 			this.attributionControl = new L.Control.Attribution();
@@ -1457,7 +1460,7 @@ L.Map = L.Class.extend({
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		
+
 		this.fire(type, {
 			latlng: this.mouseEventToLatLng(e),
 			layerPoint: this.mouseEventToLayerPoint(e)
@@ -1610,7 +1613,7 @@ L.TileLayer = L.Class.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: L.Browser.mobile
+		reuseTiles: false
 	},
 
 	initialize: function (url, options, urlParams) {
@@ -1957,11 +1960,11 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
+	onAdd: function (map, insertAtTheBottom) {
 		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
-		L.TileLayer.prototype.onAdd.call(this, map);
+		L.TileLayer.prototype.onAdd.call(this, map, insertAtTheBottom);
 	},
 
 	getTileUrl: function (/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {
@@ -4757,23 +4760,40 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 
 
-L.Control = {};
+L.Control = L.Class.extend({
+	options: {
+		position: 'topright'
+	},
 
-L.Control.Position = {
-	TOP_LEFT: 'topLeft',
-	TOP_RIGHT: 'topRight',
-	BOTTOM_LEFT: 'bottomLeft',
-	BOTTOM_RIGHT: 'bottomRight'
-};
+	initialize: function (options) {
+		L.Util.setOptions(this, options);
+	},
+
+	getPosition: function () {
+		return this.options.position;
+	},
+
+	setPosition: function (position) {
+		this.options.position = position;
+
+		if (this._map) {
+			this._map.removeControl(this);
+			this._map.addControl(this);
+		}
+	}
+});
+
 
 
 L.Map.include({
 	addControl: function (control) {
-		control.onAdd(this);
+		var container = control.onAdd(this);
+
+		control._container = container;
+		control._map = this;
 
 		var pos = control.getPosition(),
-			corner = this._controlCorners[pos],
-			container = control.getContainer();
+			corner = this._controlCorners[pos];
 
 		L.DomUtil.addClass(container, 'leaflet-control');
 
@@ -4787,10 +4807,10 @@ L.Map.include({
 
 	removeControl: function (control) {
 		var pos = control.getPosition(),
-			corner = this._controlCorners[pos],
-			container = control.getContainer();
+			corner = this._controlCorners[pos];
 
-		corner.removeChild(container);
+		corner.removeChild(control._container);
+		control._map = null;
 
 		if (control.onRemove) {
 			control.onRemove(this);
@@ -4811,35 +4831,30 @@ L.Map.include({
 			controlContainer.className += ' ' + classPart + 'big-buttons';
 		}
 
-		corners.topLeft = L.DomUtil.create('div', top + ' ' + left, controlContainer);
-		corners.topRight = L.DomUtil.create('div', top + ' ' + right, controlContainer);
-		corners.bottomLeft = L.DomUtil.create('div', bottom + ' ' + left, controlContainer);
-		corners.bottomRight = L.DomUtil.create('div', bottom + ' ' + right, controlContainer);
+		corners.topleft = L.DomUtil.create('div', top + ' ' + left, controlContainer);
+		corners.topright = L.DomUtil.create('div', top + ' ' + right, controlContainer);
+		corners.bottomleft = L.DomUtil.create('div', bottom + ' ' + left, controlContainer);
+		corners.bottomright = L.DomUtil.create('div', bottom + ' ' + right, controlContainer);
 	}
 });
 
 
 
-L.Control.Zoom = L.Class.extend({
+L.Control.Zoom = L.Control.extend({
+	options: {
+		position: 'topleft'
+	},
+
 	onAdd: function (map) {
-		this._map = map;
-		this._container = L.DomUtil.create('div', 'leaflet-control-zoom');
+		var className = 'leaflet-control-zoom',
+			container = L.DomUtil.create('div', className),
+			zoomInButton = this._createButton('Zoom in', className + '-in', map.zoomIn, map),
+			zoomOutButton = this._createButton('Zoom out', className + '-out', map.zoomOut, map);
 
-		this._zoomInButton = this._createButton(
-				'Zoom in', 'leaflet-control-zoom-in', this._map.zoomIn, this._map);
-		this._zoomOutButton = this._createButton(
-				'Zoom out', 'leaflet-control-zoom-out', this._map.zoomOut, this._map);
+		container.appendChild(zoomInButton);
+		container.appendChild(zoomOutButton);
 
-		this._container.appendChild(this._zoomInButton);
-		this._container.appendChild(this._zoomOutButton);
-	},
-
-	getContainer: function () {
-		return this._container;
-	},
-
-	getPosition: function () {
-		return L.Control.Position.TOP_LEFT;
+		return container;
 	},
 
 	_createButton: function (title, className, fn, context) {
@@ -4859,8 +4874,14 @@ L.Control.Zoom = L.Class.extend({
 });
 
 
-L.Control.Attribution = L.Class.extend({
-	initialize: function (prefix) {
+L.Control.Attribution = L.Control.extend({
+	options: {
+		position: 'bottomright'
+	},
+
+	initialize: function (prefix, options) {
+		L.Util.setOptions(this, options);
+
 		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
 		this._attributions = {};
 	},
@@ -4870,13 +4891,7 @@ L.Control.Attribution = L.Class.extend({
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
 		this._update();
-	},
 
-	getPosition: function () {
-		return L.Control.Position.BOTTOM_RIGHT;
-	},
-
-	getContainer: function () {
 		return this._container;
 	},
 
@@ -4931,9 +4946,10 @@ L.Control.Attribution = L.Class.extend({
 
 
 
-L.Control.Layers = L.Class.extend({
+L.Control.Layers = L.Control.extend({
 	options: {
-		collapsed: true
+		collapsed: true,
+		position: 'topright'
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -4959,14 +4975,8 @@ L.Control.Layers = L.Class.extend({
 
 		this._initLayout();
 		this._update();
-	},
 
-	getContainer: function () {
 		return this._container;
-	},
-
-	getPosition: function () {
-		return L.Control.Position.TOP_RIGHT;
 	},
 
 	addBaseLayer: function (layer, name) {
