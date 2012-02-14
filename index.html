@@ -55,14 +55,14 @@
 		</p>
 
 		<!-- <h3>About the library</h3> -->
-		<p>Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for <em>both desktop and mobile</em> web browsers, developed by <a href="http://cloudmade.com">CloudMade</a> to form the core of its next generation JavaScript API.</p>
-		<p>It is built from the ground up to work efficiently and smoothly on both platforms, utilizing cutting-edge technologies included in HTML5. Its top priorities are usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand. Find out more on the <a href="features.html">features</a> page.</p>
+		<p>Leaflet is a modern, lightweight open-source JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by <a href="http://cloudmade.com">CloudMade</a> to form the core of its next generation JavaScript API. Weighting just about 21kb of gzipped JS code, it still has all the <a href="features.html">features</a> you will ever need for you web mapping needs while providing a fast, smooth, pleasant user experience.</p>
+		<p>It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android, utilizing cutting-edge technologies included in HTML5 and CSS3, focusing on usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support, flexibility and easy to use API. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.</p>
 
 		<h3>Basic usage example</h3>
 		<div id="map"></div>
 		<script>
 			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-				cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>',
 				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 
 			var map = new L.Map('map');
@@ -74,17 +74,18 @@
 			marker.bindPopup('A pretty CSS3 popup.<br />Easily customizable.').openPopup();
 		</script>
 
-		<p>Here we create a map with a CloudMade tile layer, add a marker and bind a popup with some text to it:</p>
-		<pre><code class="javascript">// create a CloudMade tile layer
-var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
-	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
-	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
-
-// initialize the map on the "map" div
+		<p>Here we create a map with tiles of our choice, add a marker and bind a popup with some text to it:</p>
+		<pre><code class="javascript">// initialize the map on the "map" div
 var map = new L.Map('map');
 
-// set the map view to a given center and zoom and add the CloudMade layer
-map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+// create a CloudMade tile layer (or use other provider of your choice)
+var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/<span class="text-cut" data-cut="[your-API-key]">YOUR-API-KEY</span>/997/256/{z}/{x}/{y}.png', {
+	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>',
+	maxZoom: 18
+});
+
+// add the CloudMade layer to the map set the view to a given center and zoom
+map.addLayer(cloudmade).setView(new L.LatLng(51.505, -0.09), 13);
 
 // create a marker in the given location and add it to the map
 var marker = new L.Marker(new L.LatLng(51.5, -0.09));
@@ -97,7 +98,7 @@ marker.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.").openPop
 
 		<h3>Contributing to Leaflet</h3>
 		<p>The project is <a href="http://github.com/CloudMade/Leaflet">hosted on GitHub</a>, waiting for your contributions — just send your pull requests to <a href="http://github.com/mourner">Vladimir Agafonkin</a> (Leaflet maintainer). Let's make the best library for maps that can possibly exist! </p>
-		<p>You can also help the project a lot by reporting bugs and discussing features on the <a href="http://github.com/CloudMade/Leaflet/issues">issues page</a> or tweeting to <a href="http://twitter.com/LeafletJS">@LeafletJS</a>.
+		<p>You can also help the project a lot by reporting bugs and discussing features on the <a href="http://github.com/CloudMade/Leaflet/issues">issues page</a>, tweeting to <a href="http://twitter.com/LeafletJS">@LeafletJS</a> or joining the <a href="https://groups.google.com/group/leaflet-js">Leaflet&nbsp;mailing&nbsp;list</a>.
 
 		<hr />
 		<p class="quiet">&copy; 2011 <a href="http://cloudmade.com">CloudMade</a>. Map data &copy; 2011 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>

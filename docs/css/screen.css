@@ -4,18 +4,18 @@ body {
 
 .container {
 	background: white;
-	
+
 	padding: 15px 40px 20px;
 	width: 790px;
-	
+
 	border: 1px solid #dfdfdf;
 	border-top: 0;
-	
+
 	box-shadow: 0 0 40px #e0e0e0;
 	-moz-box-shadow: 0 0 40px #e0e0e0;
 	-webkit-box-shadow: 0 0 40px #e0e0e0;
 	}
-	
+
 h1 {
 	display: block;
 	height: 0;
@@ -36,7 +36,7 @@ h2 {
 	background: #edeeef;
 	border-right: 1px solid #ccc;
 	border-bottom: 1px solid #ccc;
-	
+
 	color: white;
 
 	background-color: #b0de5c;
@@ -45,12 +45,12 @@ h2 {
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#b0de5c), to(#82cb00)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
 	background-image: linear-gradient(top, #b0de5c, #82cb00);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6–IE9 */
-            
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6ï¿½IE9 */
+
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
-	
+
 	text-shadow: -1px -1px 0 #999;
 	}
 h3 {
@@ -72,7 +72,7 @@ h3.alt {
 	font-style: italic;
 	font-weight: normal;
 	}
-	
+
 code {
 	font-family: "Courier New", monospace;
 	}
@@ -81,17 +81,17 @@ code {
 	border: 1px solid #ccc;
 	background: white;
 	color: #444;
-	
+
 	box-shadow: 0 0 15px #ddd;
 	-moz-box-shadow: 0 0 15px #ddd;
 	-webkit-box-shadow: 0 0 15px #ddd;
 	}
-	
-table { 
-	border-collapse: collapse; 
+
+table {
+	border-collapse: collapse;
 	}
-th { 
-	background:/*#e5ecf9;*/ #f3f3f3; 
+th {
+	background:/*#e5ecf9;*/ #f3f3f3;
 	}
 th, td {
 	padding: 4px 5px;
@@ -101,24 +101,24 @@ th, td {
 .nav {
 	padding: 0;
 	margin: 2em 0;
-	
+
 	list-style: none;
 	font-size: 1.2em;
 	border: 1px solid #dcddde;
 	overflow: hidden;
-	
+
 	background-color: #ffffff;
 	background-image: -moz-linear-gradient(top, #ffffff, #eff0f1); /* FF3.6 */
 	background-image: -o-linear-gradient(top, #ffffff, #eff0f1); /* Opera 11.10+ */
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffffff),color-stop(1, #eff0f1)); /* Saf4+, Chrome */
 	background-image: -webkit-linear-gradient(#ffffff, #eff0f1); /* Chrome 10+, Saf5.1+ */
 	background-image: linear-gradient(top, #ffffff, #eff0f1);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eff0f1'); /* IE6–IE9 */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eff0f1'); /* IE6ï¿½IE9 */
 
 	border-radius: 10px;
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
-	
+
 	box-shadow: 0 0 8px #eee;
 	-moz-box-shadow: 0 0 8px #eee;
 	-webkit-box-shadow: 0 0 8px #eee;
@@ -136,23 +136,23 @@ th, td {
 		color: #000;
 
 		background-color: #f8f9fa;
-		background-image: -moz-linear-gradient(top, #f8f9fa, #d4d5d6); 
-		background-image: -o-linear-gradient(top, #f8f9fa, #d4d5d6); 
-		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f8f9fa),color-stop(1, #d4d5d6)); 
-		background-image: -webkit-linear-gradient(#f8f9fa, #d4d5d6); 
+		background-image: -moz-linear-gradient(top, #f8f9fa, #d4d5d6);
+		background-image: -o-linear-gradient(top, #f8f9fa, #d4d5d6);
+		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f8f9fa),color-stop(1, #d4d5d6));
+		background-image: -webkit-linear-gradient(#f8f9fa, #d4d5d6);
 		background-image: linear-gradient(top, #f8f9fa, #d4d5d6);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f8f9fa', EndColorStr='#d4d5d6'); 
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f8f9fa', EndColorStr='#d4d5d6');
 	}
 	.nav li a:hover {
 		color: black;
-				
+
 		background-color: #eff0f1;
-		background-image: -moz-linear-gradient(top, #eff0f1, #f6f7f8); 
-		background-image: -o-linear-gradient(top, #eff0f1, #f6f7f8); 
-		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eff0f1),color-stop(1, #f6f7f8)); 
-		background-image: -webkit-linear-gradient(#eff0f1, #f6f7f8); 
+		background-image: -moz-linear-gradient(top, #eff0f1, #f6f7f8);
+		background-image: -o-linear-gradient(top, #eff0f1, #f6f7f8);
+		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eff0f1),color-stop(1, #f6f7f8));
+		background-image: -webkit-linear-gradient(#eff0f1, #f6f7f8);
 		background-image: linear-gradient(top, #eff0f1, #f6f7f8);
-		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8'); 
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
 	.nav li a.github-link,
 	.nav li a.twitter-link {
@@ -177,18 +177,18 @@ th, td {
 	.nav li a.twitter-link {
 		background: url(http://twitter.com/phoenix/favicon.ico) 15px 12px no-repeat;
 		}
-	
+
 #forkme {
-	position: absolute; 
-	top: 0; 
-	right: 0; 
+	position: absolute;
+	top: 0;
+	right: 0;
 	border: 0;
 	opacity: 0.4;
 	}
 a:hover #forkme {
 	opacity: 1;
 	}
-	
+
 #toc {
 	padding-left: 20px;
 	}
@@ -199,14 +199,14 @@ a:hover #forkme {
 	#toc .colborder {
 		padding-right: 14px;
 		}
-		
+
 #map-class {
 	margin-top: 1em;
 	}
 a.nodocs {
 	color: #bbb;
 	}
-	
+
 #features {
 	margin-top: -1.5em;
 	}
@@ -216,23 +216,23 @@ a.nodocs {
 	.noimpl {
 		color: #bbb;
 		}
-		
+
 #map {
 	height: 300px;
 	border: 1px solid #ccc;
 	margin-bottom: 20px;
-	
-	/*box-shadow: 0px 0px 10px #ccc; 
-	-moz-box-shadow: 0px 0px 10px #ccc; 
-	-webkit-box-shadow: 0px 0px 10px #ccc;*/ 
+
+	/*box-shadow: 0px 0px 10px #ccc;
+	-moz-box-shadow: 0px 0px 10px #ccc;
+	-webkit-box-shadow: 0px 0px 10px #ccc;*/
 	}
-	
+
 h3 span {
 	color: #888;
 	}
-	
+
 .example-img {
-	float: left; 
+	float: left;
 	margin: 0 18px 18px 0;
 	padding: 1px;
 	}
@@ -240,3 +240,14 @@ h3 span {
 	padding: 0;
 	border: 1px solid #ddd;
 	}
+
+.text-cut[class] {
+	font-size: 0;
+	color: white;
+}
+
+.text-cut:after {
+	content: attr(data-cut);
+	font-size: 12px;
+	color: #777;
+}
