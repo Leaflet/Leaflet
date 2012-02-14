@@ -13,7 +13,7 @@ Leaflet Changelog
 
 ### Bug fixes
 
- * Fixed a bug where urls for markers were incorrect if you Leaflet include url contained a query string.
+ * Fixed a bug where default marker icons wouldn't work if Leaflet include url contained a query string.
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
 
 ## 0.3 (13.02.2012)
