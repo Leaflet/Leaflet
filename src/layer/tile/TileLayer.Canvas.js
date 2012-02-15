@@ -57,7 +57,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	// NW attempt at saving the whole visible viewport to a data URL
-	toDataURL: function (format) {
+	toViewportCanvas: function (format) {
 		format = format || 'image/png';
 		var pixelBounds = this._map.getPixelBounds();
 		var tileW = Math.floor(pixelBounds.min.x / this.options.tileSize),
@@ -92,6 +92,10 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 			}
 			destY += partTileH;
 		}
-		return vpCanvas.toDataURL(format);
+		return vpCanvas;
+	},
+
+	toDataURL: function (format) {
+		return this.toViewportCanvas(format).toDataURL();
 	}
 });
