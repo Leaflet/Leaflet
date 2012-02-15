@@ -2290,6 +2290,14 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 
 		<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code>false</code>. Implements <a href="#icontrol">IControl</a> interface.</p>
 
+		<h3>Example</h3>
+
+		<pre><code class="javascript">var map = new L.Map('map', {zoomControl: false});
+var zoomControl = new L.Control.Zoom();
+zoomControl.setPosition(L.Control.Position.TOP_RIGHT);
+map.addControl(zoomControl);
+</code></pre>
+
 		<h3>Constructor</h3>
 		<table>
 			<tr>
@@ -2302,11 +2310,33 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 			</tr>
 		</table>
 
+		<h3>Methods</h3>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setPosition( &lt;Control.Position&gt;&nbsp;<i>position</i>&nbsp;)</code></td>
+				<td>-</td>
+				<td>Sets the position of the zoom control (e.g. TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT)</td>
+			</tr>
+		</table>
 
 
 		<h2 id="control-attribution">L.Control.Attribution</h2>
 
 		<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code>false</code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Implements <a href="#icontrol">IControl</a> interface.</p>
+
+		<h3>Example</h3>
+
+		<pre><code class="javascript">var map = new L.Map('map', {attributionControl: false});
+var attrControl = new L.Control.Attribution();
+attrControl.setPrefix('Powered by <a href="http://<website>">My Website</a>');
+attrControl.addAttribution('Map data <span>&</span>#169; 2012 OpenStreetMap');
+map.addControl(attrControl);
+</code></pre>
 
 		<h3>Constructor</h3>
 		<table>
