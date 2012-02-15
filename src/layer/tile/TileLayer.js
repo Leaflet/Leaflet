@@ -233,7 +233,7 @@ L.TileLayer = L.Class.extend({
 			this._unusedTiles.push(tile);
 		}
 
-		tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+		tile.src = L.Util.emptyImageUrl;
 
 		delete this._tiles[key];
 	},

@@ -10,6 +10,10 @@ Leaflet Changelog
  * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
  * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
  * Made controls implementation easier (now more magic happens under the hood).
+ * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
+ * Added `containerPoint` property to `MouseEvent`.
+ * Added chaining to `DomEvent` methods
+ * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
 
 ### Bug fixes
 

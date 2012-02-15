@@ -40,6 +40,8 @@ L.DomEvent = {
 		}
 
 		obj[key] = handler;
+
+		return this;
 	},
 
 	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
@@ -66,6 +68,8 @@ L.DomEvent = {
 			obj.detachEvent("on" + type, handler);
 		}
 		obj[key] = null;
+
+		return this;
 	},
 
 	_checkMouse: function (el, e) {
@@ -109,12 +113,14 @@ L.DomEvent = {
 		} else {
 			e.cancelBubble = true;
 		}
+		return this;
 	},
 
 	disableClickPropagation: function (/*HTMLElement*/ el) {
-		L.DomEvent.addListener(el, L.Draggable.START, L.DomEvent.stopPropagation);
-		L.DomEvent.addListener(el, 'click', L.DomEvent.stopPropagation);
-		L.DomEvent.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
+		return L.DomEvent
+			.addListener(el, L.Draggable.START, L.DomEvent.stopPropagation)
+			.addListener(el, 'click', L.DomEvent.stopPropagation)
+			.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
 	},
 
 	preventDefault: function (/*Event*/ e) {
@@ -123,11 +129,13 @@ L.DomEvent = {
 		} else {
 			e.returnValue = false;
 		}
+		return this;
 	},
 
 	stop: function (e) {
-		L.DomEvent.preventDefault(e);
-		L.DomEvent.stopPropagation(e);
+		return L.DomEvent
+			.preventDefault(e)
+			.stopPropagation(e);
 	},
 
 	getMousePosition: function (e, container) {
@@ -136,6 +144,7 @@ L.DomEvent = {
 			y = e.pageY ? e.pageY : e.clientY +
 					document.body.scrollTop + document.documentElement.scrollTop,
 			pos = new L.Point(x, y);
+
 		return (container ?
 					pos.subtract(L.DomUtil.getViewportOffset(container)) : pos);
 	},

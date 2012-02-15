@@ -20,6 +20,7 @@
 					return src.split(leafletRe)[0] + '/';
 				}
 			}
+
 			return '';
 		}()),
 

@@ -32,21 +32,16 @@ L.Map.include({
 	},
 
 	_initControlPos: function () {
-		var corners = this._controlCorners = {},
-			classPart = 'leaflet-',
-			top = classPart + 'top',
-			bottom = classPart + 'bottom',
-			left = classPart + 'left',
-			right = classPart + 'right',
-			controlContainer = L.DomUtil.create('div', classPart + 'control-container', this._container);
+		var top = 'leaflet-top',
+			bottom = 'leaflet-bottom',
+			left = 'leaflet-left',
+			right = 'leaflet-right',
+			container = L.DomUtil.create('div', 'leaflet-control-container', this._container),
+			corners = this._controlCorners = {};
 
-		if (L.Browser.touch) {
-			controlContainer.className += ' ' + classPart + 'big-buttons';
-		}
-
-		corners.topleft = L.DomUtil.create('div', top + ' ' + left, controlContainer);
-		corners.topright = L.DomUtil.create('div', top + ' ' + right, controlContainer);
-		corners.bottomleft = L.DomUtil.create('div', bottom + ' ' + left, controlContainer);
-		corners.bottomright = L.DomUtil.create('div', bottom + ' ' + right, controlContainer);
+		corners.topleft     = L.DomUtil.create('div', top    + ' ' + left,  container);
+		corners.topright    = L.DomUtil.create('div', top    + ' ' + right, container);
+		corners.bottomleft  = L.DomUtil.create('div', bottom + ' ' + left,  container);
+		corners.bottomright = L.DomUtil.create('div', bottom + ' ' + right, container);
 	}
 });

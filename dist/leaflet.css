@@ -132,7 +132,7 @@ a.leaflet-active {
 .leaflet-control-zoom a:hover {
 	background-color: #fff;
 	}
-.leaflet-big-buttons .leaflet-control-zoom a {
+.leaflet-touch .leaflet-control-zoom a {
 	width: 27px;
 	height: 27px;
 	}
@@ -156,7 +156,7 @@ a.leaflet-active {
 	width: 36px;
 	height: 36px;
 	}
-.leaflet-big-buttons .leaflet-control-layers a {
+.leaflet-touch .leaflet-control-layers a {
 	width: 44px;
 	height: 44px;
 	}
