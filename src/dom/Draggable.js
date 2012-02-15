@@ -31,6 +31,7 @@ L.Draggable = L.Class.extend({
 		}
 		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
+		this._moved = false;
 	},
 
 	_onDown: function (e) {
