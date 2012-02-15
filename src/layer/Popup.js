@@ -72,26 +72,28 @@ L.Popup = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup ' + this.options.className);
+		var prefix = 'leaflet-popup',
+			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className),
+			closeButton;
 
 		if (this.options.closeButton) {
-			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
-			this._closeButton.href = '#close';
-			L.DomEvent.addListener(this._closeButton, 'click', this._onCloseButtonClick, this);
+			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
+			closeButton.href = '#close';
+
+			L.DomEvent.addListener(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
-		L.DomEvent.disableClickPropagation(this._wrapper);
-		this._contentNode = L.DomUtil.create('div', 'leaflet-popup-content', this._wrapper);
+		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
+		L.DomEvent.disableClickPropagation(wrapper);
 
-		this._tipContainer = L.DomUtil.create('div', 'leaflet-popup-tip-container', this._container);
-		this._tip = L.DomUtil.create('div', 'leaflet-popup-tip', this._tipContainer);
+		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
+
+		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
+		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
 	},
 
 	_update: function () {
-		if (!this._map) {
-			return;
-		}
+		if (!this._map) { return; }
 
 		this._container.style.visibility = 'hidden';
 
@@ -105,9 +107,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateContent: function () {
-		if (!this._content) {
-			return;
-		}
+		if (!this._content) { return; }
 
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
@@ -127,7 +127,7 @@ L.Popup = L.Class.extend({
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		container.style.width = width + 'px';
+		container.style.width = (width + 1) + 'px';
 		container.style.whiteSpace = '';
 
 		this._containerWidth = container.offsetWidth;
@@ -144,9 +144,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_adjustPan: function () {
-		if (!this.options.autoPan) {
-			return;
-		}
+		if (!this.options.autoPan) { return; }
 
 		var map = this._map,
 			containerHeight = this._container.offsetHeight,

@@ -9,9 +9,7 @@ L.Polyline = L.Path.extend({
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
 		smoothFactor: 1.0,
-		noClip: false,
-
-		updateOnMoveEnd: true
+		noClip: false
 	},
 
 	projectLatlngs: function () {

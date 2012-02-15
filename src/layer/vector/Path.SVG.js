@@ -4,14 +4,15 @@ L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.S
 
 L.Path = L.Path.extend({
 	statics: {
-		SVG: L.Browser.svg,
-		_createElement: function (name) {
-			return document.createElementNS(L.Path.SVG_NS, name);
-		}
+		SVG: L.Browser.svg
 	},
 
 	getPathString: function () {
 		// form path string here
+	},
+
+	_createElement: function (name) {
+		return document.createElementNS(L.Path.SVG_NS, name);
 	},
 
 	_initElements: function () {
@@ -21,9 +22,9 @@ L.Path = L.Path.extend({
 	},
 
 	_initPath: function () {
-		this._container = L.Path._createElement('g');
+		this._container = this._createElement('g');
 
-		this._path = L.Path._createElement('path');
+		this._path = this._createElement('path');
 		this._container.appendChild(this._path);
 
 		this._map._pathRoot.appendChild(this._container);
@@ -108,7 +109,7 @@ L.Path = L.Path.extend({
 L.Map.include({
 	_initPathRoot: function () {
 		if (!this._pathRoot) {
-			this._pathRoot = L.Path._createElement('svg');
+			this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			this.on('moveend', this._updateSvgViewport);

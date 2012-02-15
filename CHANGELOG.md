@@ -14,6 +14,7 @@ Leaflet Changelog
  * Added `containerPoint` property to `MouseEvent`.
  * Added chaining to `DomEvent` methods
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
+ * Fixed a bug where popup size was calculated incorrectly in IE.
 
 ### Bug fixes
 

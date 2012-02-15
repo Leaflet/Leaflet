@@ -2474,26 +2474,28 @@ L.Popup = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup ' + this.options.className);
+		var prefix = 'leaflet-popup',
+			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className),
+			closeButton;
 
 		if (this.options.closeButton) {
-			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
-			this._closeButton.href = '#close';
-			L.DomEvent.addListener(this._closeButton, 'click', this._onCloseButtonClick, this);
+			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
+			closeButton.href = '#close';
+
+			L.DomEvent.addListener(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
-		L.DomEvent.disableClickPropagation(this._wrapper);
-		this._contentNode = L.DomUtil.create('div', 'leaflet-popup-content', this._wrapper);
+		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
+		L.DomEvent.disableClickPropagation(wrapper);
 
-		this._tipContainer = L.DomUtil.create('div', 'leaflet-popup-tip-container', this._container);
-		this._tip = L.DomUtil.create('div', 'leaflet-popup-tip', this._tipContainer);
+		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
+
+		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
+		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
 	},
 
 	_update: function () {
-		if (!this._map) {
-			return;
-		}
+		if (!this._map) { return; }
 
 		this._container.style.visibility = 'hidden';
 
@@ -2507,9 +2509,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateContent: function () {
-		if (!this._content) {
-			return;
-		}
+		if (!this._content) { return; }
 
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
@@ -2529,7 +2529,7 @@ L.Popup = L.Class.extend({
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		container.style.width = width + 'px';
+		container.style.width = (width + 1) + 'px';
 		container.style.whiteSpace = '';
 
 		this._containerWidth = container.offsetWidth;
@@ -2546,9 +2546,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_adjustPan: function () {
-		if (!this.options.autoPan) {
-			return;
-		}
+		if (!this.options.autoPan) { return; }
 
 		var map = this._map,
 			containerHeight = this._container.offsetHeight,
@@ -2810,10 +2808,7 @@ L.Path = L.Class.extend({
 		fillColor: null, //same as color by default
 		fillOpacity: 0.2,
 
-		clickable: true,
-
-		// TODO remove this, as all paths now update on moveend
-		updateOnMoveEnd: true
+		clickable: true
 	},
 
 	initialize: function (options) {
@@ -2828,10 +2823,9 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		map.on('viewreset', this.projectLatlngs, this);
-
-		this._updateTrigger = this.options.updateOnMoveEnd ? 'moveend' : 'viewreset';
-		map.on(this._updateTrigger, this._updatePath, this);
+		map
+			.on('viewreset', this.projectLatlngs, this)
+			.on('moveend', this._updatePath, this);
 	},
 
 	onRemove: function (map) {
@@ -2839,8 +2833,9 @@ L.Path = L.Class.extend({
 
 		map._pathRoot.removeChild(this._container);
 
-		map.off('viewreset', this.projectLatlngs, this);
-		map.off(this._updateTrigger, this._updatePath, this);
+		map
+			.off('viewreset', this.projectLatlngs, this)
+			.off('moveend', this._updatePath, this);
 	},
 
 	projectLatlngs: function () {
@@ -2849,9 +2844,11 @@ L.Path = L.Class.extend({
 
 	setStyle: function (style) {
 		L.Util.setOptions(this, style);
+
 		if (this._container) {
 			this._updateStyle();
 		}
+
 		return this;
 	},
 
@@ -2867,9 +2864,8 @@ L.Map.include({
 	_updatePathViewport: function () {
 		var p = L.Path.CLIP_PADDING,
 			size = this.getSize(),
-			//TODO this._map._getMapPanePos()
 			panePos = L.DomUtil.getPosition(this._mapPane),
-			min = panePos.multiplyBy(-1).subtract(size.multiplyBy(p)),
+			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)),
 			max = min.add(size.multiplyBy(1 + p * 2));
 
 		this._pathViewport = new L.Bounds(min, max);
@@ -2883,14 +2879,15 @@ L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.S
 
 L.Path = L.Path.extend({
 	statics: {
-		SVG: L.Browser.svg,
-		_createElement: function (name) {
-			return document.createElementNS(L.Path.SVG_NS, name);
-		}
+		SVG: L.Browser.svg
 	},
 
 	getPathString: function () {
 		// form path string here
+	},
+
+	_createElement: function (name) {
+		return document.createElementNS(L.Path.SVG_NS, name);
 	},
 
 	_initElements: function () {
@@ -2900,9 +2897,9 @@ L.Path = L.Path.extend({
 	},
 
 	_initPath: function () {
-		this._container = L.Path._createElement('g');
+		this._container = this._createElement('g');
 
-		this._path = L.Path._createElement('path');
+		this._path = this._createElement('path');
 		this._container.appendChild(this._path);
 
 		this._map._pathRoot.appendChild(this._container);
@@ -2987,7 +2984,7 @@ L.Path = L.Path.extend({
 L.Map.include({
 	_initPathRoot: function () {
 		if (!this._pathRoot) {
-			this._pathRoot = L.Path._createElement('svg');
+			this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			this.on('moveend', this._updateSvgViewport);
@@ -3056,91 +3053,103 @@ L.Path.include({
  */
 
 L.Browser.vml = (function () {
-	var d = document.createElement('div'), s;
-	d.innerHTML = '<v:shape adj="1"/>';
-	s = d.firstChild;
-	s.style.behavior = 'url(#default#VML)';
+	var div = document.createElement('div');
+	div.innerHTML = '<v:shape adj="1"/>';
 
-	return (s && (typeof s.adj === 'object'));
+	var shape = div.firstChild;
+	shape.style.behavior = 'url(#default#VML)';
+
+	return shape && (typeof shape.adj === 'object');
 }());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	statics: {
 		VML: true,
-		CLIP_PADDING: 0.02,
-		_createElement: (function () {
-			try {
-				document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
-				return function (name) {
-					return document.createElement('<lvml:' + name + ' class="lvml">');
-				};
-			} catch (e) {
-				return function (name) {
-					return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
-				};
-			}
-		}())
+		CLIP_PADDING: 0.02
 	},
 
+	_createElement: (function () {
+		try {
+			document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
+			return function (name) {
+				return document.createElement('<lvml:' + name + ' class="lvml">');
+			};
+		} catch (e) {
+			return function (name) {
+				return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+			};
+		}
+	}()),
+
 	_initPath: function () {
-		this._container = L.Path._createElement('shape');
-		this._container.className += ' leaflet-vml-shape' +
+		var container = this._container = this._createElement('shape');
+		container.className += ' leaflet-vml-shape' +
 				(this.options.clickable ? ' leaflet-clickable' : '');
-		this._container.coordsize = '1 1';
+		container.coordsize = '1 1';
 
-		this._path = L.Path._createElement('path');
-		this._container.appendChild(this._path);
+		this._path = this._createElement('path');
+		container.appendChild(this._path);
 
-		this._map._pathRoot.appendChild(this._container);
+		this._map._pathRoot.appendChild(container);
 	},
 
 	_initStyle: function () {
+		var container = this._container,
+			stroke,
+			fill;
+
 		if (this.options.stroke) {
-			this._stroke = L.Path._createElement('stroke');
-			this._stroke.endcap = 'round';
-			this._container.appendChild(this._stroke);
+			stroke = this._stroke = this._createElement('stroke');
+			stroke.endcap = 'round';
+			container.appendChild(stroke);
 		} else {
-			this._container.stroked = false;
+			container.stroked = false;
 		}
 		if (this.options.fill) {
-			this._container.filled = true;
-			this._fill = L.Path._createElement('fill');
-			this._container.appendChild(this._fill);
+			container.filled = true;
+			fill = this._fill = this._createElement('fill');
+			container.appendChild(fill);
 		} else {
-			this._container.filled = false;
+			container.filled = false;
 		}
 		this._updateStyle();
 	},
 
 	_updateStyle: function () {
-		if (this.options.stroke) {
-			this._stroke.weight = this.options.weight + 'px';
-			this._stroke.color = this.options.color;
-			this._stroke.opacity = this.options.opacity;
+		var stroke = this._stroke,
+			fill = this._fill,
+			options = this.options;
+
+		if (options.stroke) {
+			stroke.weight  = options.weight + 'px';
+			stroke.color   = options.color;
+			stroke.opacity = options.opacity;
 		}
-		if (this.options.fill) {
-			this._fill.color = this.options.fillColor || this.options.color;
-			this._fill.opacity = this.options.fillOpacity;
+		if (options.fill) {
+			fill.color   = options.fillColor || options.color;
+			fill.opacity = options.fillOpacity;
 		}
 	},
 
 	_updatePath: function () {
-		this._container.style.display = 'none';
+		var style = this._container.style;
+
+		style.display = 'none';
 		this._path.v = this.getPathString() + ' '; // the space fixes IE empty path string bug
-		this._container.style.display = '';
+		style.display = '';
 	}
 });
 
 L.Map.include(L.Browser.svg || !L.Browser.vml ? {} : {
 	_initPathRoot: function () {
-		if (!this._pathRoot) {
-			this._pathRoot = document.createElement('div');
-			this._pathRoot.className = 'leaflet-vml-container';
-			this._panes.overlayPane.appendChild(this._pathRoot);
+		if (this._pathRoot) { return; }
 
-			this.on('moveend', this._updatePathViewport);
-			this._updatePathViewport();
-		}
+		var root = this._pathRoot = document.createElement('div');
+		root.className = 'leaflet-vml-container';
+		this._panes.overlayPane.appendChild(root);
+
+		this.on('moveend', this._updatePathViewport);
+		this._updatePathViewport();
 	}
 });
 
@@ -3511,9 +3520,7 @@ L.Polyline = L.Path.extend({
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
 		smoothFactor: 1.0,
-		noClip: false,
-
-		updateOnMoveEnd: true
+		noClip: false
 	},
 
 	projectLatlngs: function () {
@@ -3981,7 +3988,7 @@ L.Circle.include(!L.Path.CANVAS ? {} : {
 	_drawPath: function () {
 		var p = this._point;
 		this._ctx.beginPath();
-		this._ctx.arc(p.x, p.y, this._radius, 0, Math.PI * 2);
+		this._ctx.arc(p.x, p.y, this._radius, 0, Math.PI * 2, false);
 	},
 
 	_containsPoint: function (p) {
