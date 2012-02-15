@@ -9,11 +9,12 @@ Leaflet Changelog
 
 #### API Improvements
 
+ * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
  * Made controls implementation easier (now more magic happens under the hood).
  * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
  * Added `containerPoint` property to `MouseEvent`.
- * Added chaining to `DomEvent` methods
+ * Added chaining to `DomEvent` methods.
  * Fixed a bug where popup size was calculated incorrectly in IE.
 
 #### Breaking API changes
