@@ -1625,10 +1625,14 @@ L.TileLayer = L.Class.extend({
 		L.Util.setOptions(this, options);
 
 		this._url = url;
+
+		// TODO move urlParams to options
 		this._urlParams = urlParams;
 
-		if (typeof this.options.subdomains === 'string') {
-			this.options.subdomains = this.options.subdomains.split('');
+		var subdomains = this.options.subdomains;
+
+		if (typeof subdomains === 'string') {
+			this.options.subdomains = subdomains.split('');
 		}
 	},
 
@@ -1657,16 +1661,18 @@ L.TileLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		this._map.getPanes().tilePane.removeChild(this._container);
-		this._container = null;
+		map._panes.tilePane.removeChild(this._container);
 
-		this._map.off('viewreset', this._resetCallback, this);
+		map.off('viewreset', this._resetCallback, this);
 
 		if (this.options.updateWhenIdle) {
-			this._map.off('moveend', this._update, this);
+			map.off('moveend', this._update, this);
 		} else {
-			this._map.off('move', this._limitedUpdate, this);
+			map.off('move', this._limitedUpdate, this);
 		}
+
+		this._container = null;
+		this._map = null;
 	},
 
 	getAttribution: function () {
@@ -1679,10 +1685,13 @@ L.TileLayer = L.Class.extend({
 		this._setOpacity(opacity);
 
 		// stupid webkit hack to force redrawing of tiles
+		var i,
+			tiles = this._tiles;
+
 		if (L.Browser.webkit) {
-			for (var i in this._tiles) {
-				if (this._tiles.hasOwnProperty(i)) {
-					this._tiles[i].style.webkitTransform += ' translate(0,0)';
+			for (i in tiles) {
+				if (tiles.hasOwnProperty(i)) {
+					tiles[i].style.webkitTransform += ' translate(0,0)';
 				}
 			}
 		}
@@ -1695,7 +1704,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_initContainer: function () {
-		var tilePane = this._map.getPanes().tilePane,
+		var tilePane = this._map._panes.tilePane,
 			first = tilePane.firstChild;
 
 		if (!this._container || tilePane.empty) {
@@ -1716,12 +1725,15 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_reset: function (clearOldContainer) {
-		var key;
-		for (key in this._tiles) {
-			if (this._tiles.hasOwnProperty(key)) {
-				this.fire("tileunload", {tile: this._tiles[key]});
+		var key,
+			tiles = this._tiles;
+
+		for (key in tiles) {
+			if (tiles.hasOwnProperty(key)) {
+				this.fire('tileunload', {tile: tiles[key]});
 			}
 		}
+
 		this._tiles = {};
 
 		if (this.options.reuseTiles) {
@@ -1731,13 +1743,14 @@ L.TileLayer = L.Class.extend({
 		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
 		}
+
 		this._initContainer();
 	},
 
 	_update: function () {
-		var bounds = this._map.getPixelBounds(),
-			zoom = this._map.getZoom(),
-			tileSize = this.options.tileSize;
+		var bounds   = this._map.getPixelBounds(),
+		    zoom     = this._map.getZoom(),
+		    tileSize = this.options.tileSize;
 
 		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
 			return;
@@ -1762,12 +1775,12 @@ L.TileLayer = L.Class.extend({
 		var queue = [],
 			center = bounds.getCenter();
 
-		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
-			for (var i = bounds.min.x; i <= bounds.max.x; i++) {
-				if ((i + ':' + j) in this._tiles) {
-					continue;
+		var j, i;
+		for (j = bounds.min.y; j <= bounds.max.y; j++) {
+			for (i = bounds.min.x; i <= bounds.max.x; i++) {
+				if (!((i + ':' + j) in this._tiles)) {
+					queue.push(new L.Point(i, j));
 				}
-				queue.push(new L.Point(i, j));
 			}
 		}
 
@@ -1779,7 +1792,9 @@ L.TileLayer = L.Class.extend({
 		var fragment = document.createDocumentFragment();
 
 		this._tilesToLoad = queue.length;
-		for (var k = 0, len = this._tilesToLoad; k < len; k++) {
+
+		var k, len;
+		for (k = 0, len = this._tilesToLoad; k < len; k++) {
 			this._addTile(queue[k], fragment);
 		}
 
@@ -1797,40 +1812,40 @@ L.TileLayer = L.Class.extend({
 
 				// remove tile if it's out of bounds
 				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-
-					tile = this._tiles[key];
-					this.fire("tileunload", {tile: tile, url: tile.src});
-
-					if (tile.parentNode === this._container) {
-						this._container.removeChild(tile);
-					}
-					if (this.options.reuseTiles) {
-						this._unusedTiles.push(this._tiles[key]);
-					}
-					tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
-					delete this._tiles[key];
+					this._removeTile(key);
 				}
 			}
 		}
 	},
 
+	_removeTile: function (key) {
+		var tile = this._tiles[key];
+
+		this.fire("tileunload", {tile: tile, url: tile.src});
+
+		if (tile.parentNode === this._container) {
+			this._container.removeChild(tile);
+		}
+		if (this.options.reuseTiles) {
+			this._unusedTiles.push(tile);
+		}
+
+		tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+
+		delete this._tiles[key];
+	},
+
 	_addTile: function (tilePoint, container) {
-		var tilePos = this._getTilePos(tilePoint),
-			zoom = this._map.getZoom(),
-			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = Math.pow(2, this._getOffsetZoom(zoom));
+		var zoom  = this._map.getZoom(),
+		    key   = tilePoint.x + ':' + tilePoint.y,
+		    limit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
 			if (!this.options.noWrap) {
-				tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
-			} else if (tilePoint.x < 0 || tilePoint.x >= tileLimit) {
-				this._tilesToLoad--;
-				return;
-			}
+				tilePoint.x = ((tilePoint.x % limit) + limit) % limit;
 
-			if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
+			} else if (tilePoint.x < 0 || tilePoint.x >= limit || tilePoint.y < 0 || tilePoint.y >= limit) {
 				this._tilesToLoad--;
 				return;
 			}
@@ -1838,12 +1853,12 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, tilePos);
+		L.DomUtil.setPosition(tile, this._getTilePos(tilePoint));
 
 		this._tiles[key] = tile;
 
 		if (this.options.scheme === 'tms') {
-			tilePoint.y = tileLimit - tilePoint.y - 1;
+			tilePoint.y = limit - tilePoint.y - 1;
 		}
 
 		this._loadTile(tile, tilePoint, zoom);
@@ -1852,8 +1867,9 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_getOffsetZoom: function (zoom) {
-		zoom = this.options.zoomReverse ? this.options.maxZoom - zoom : zoom;
-		return zoom + this.options.zoomOffset;
+		var options = this.options;
+		zoom = options.zoomReverse ? options.maxZoom - zoom : zoom;
+		return zoom + options.zoomOffset;
 	},
 
 	_getTilePos: function (tilePoint) {
@@ -1867,7 +1883,8 @@ L.TileLayer = L.Class.extend({
 
 	getTileUrl: function (tilePoint, zoom) {
 		var subdomains = this.options.subdomains,
-			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
+			index = (tilePoint.x + tilePoint.y) % subdomains.length,
+			s = this.options.subdomains[index];
 
 		return L.Util.template(this._url, L.Util.extend({
 			s: s,
@@ -1878,12 +1895,12 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_createTileProto: function () {
-		this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
-		this._tileImg.galleryimg = 'no';
+		var img = this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
+		img.galleryimg = 'no';
 
 		var tileSize = this.options.tileSize;
-		this._tileImg.style.width = tileSize + 'px';
-		this._tileImg.style.height = tileSize + 'px';
+		img.style.width = tileSize + 'px';
+		img.style.height = tileSize + 'px';
 	},
 
 	_getTile: function () {
@@ -1906,10 +1923,10 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_loadTile: function (tile, tilePoint, zoom) {
-		tile._layer = this;
-		tile.onload = this._tileOnLoad;
+		tile._layer  = this;
+		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
-		tile.src = this.getTileUrl(tilePoint, zoom);
+		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
 
 	_tileOnLoad: function (e) {
@@ -1917,7 +1934,10 @@ L.TileLayer = L.Class.extend({
 
 		this.className += ' leaflet-tile-loaded';
 
-		layer.fire('tileload', {tile: this, url: this.src});
+		layer.fire('tileload', {
+			tile: this,
+			url: this.src
+		});
 
 		layer._tilesToLoad--;
 		if (!layer._tilesToLoad) {
@@ -1928,7 +1948,10 @@ L.TileLayer = L.Class.extend({
 	_tileOnError: function (e) {
 		var layer = this._layer;
 
-		layer.fire('tileerror', {tile: this, url: this.src});
+		layer.fire('tileerror', {
+			tile: this,
+			url: this.src
+		});
 
 		var newUrl = layer.options.errorTileUrl;
 		if (newUrl) {
@@ -1949,37 +1972,46 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		transparent: false
 	},
 
-	initialize: function (/*String*/ url, /*Object*/ options) {
+	initialize: function (url, options) { // (String, Object)
 		this._url = url;
 
-		this.wmsParams = L.Util.extend({}, this.defaultWmsParams);
-		this.wmsParams.width = this.wmsParams.height = this.options.tileSize;
+		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
+		wmsParams.width = wmsParams.height = this.options.tileSize;
 
 		for (var i in options) {
 			// all keys that are not TileLayer options go to WMS params
 			if (!this.options.hasOwnProperty(i)) {
-				this.wmsParams[i] = options[i];
+				wmsParams[i] = options[i];
 			}
 		}
+
+		this.wmsParams = wmsParams;
 
 		L.Util.setOptions(this, options);
 	},
 
 	onAdd: function (map, insertAtTheBottom) {
-		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
+		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
 		L.TileLayer.prototype.onAdd.call(this, map, insertAtTheBottom);
 	},
 
-	getTileUrl: function (/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {
-		var tileSize = this.options.tileSize,
+	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
+		var map = this._map,
+			crs = map.options.crs,
+
+			tileSize = this.options.tileSize,
+
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
-			nwMap = this._map.unproject(nwPoint, this._zoom, true),
-			seMap = this._map.unproject(sePoint, this._zoom, true),
-			nw = this._map.options.crs.project(nwMap),
-			se = this._map.options.crs.project(seMap),
+
+			nwMap = map.unproject(nwPoint, zoom, true),
+			seMap = map.unproject(sePoint, zoom, true),
+
+			nw = crs.project(nwMap),
+			se = crs.project(seMap),
+
 			bbox = [nw.x, se.y, se.x, nw.y].join(',');
 
 		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
@@ -1997,9 +2029,13 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	redraw: function () {
-		for (var i in this._tiles) {
-			var tile = this._tiles[i];
-			this._redrawTile(tile);
+		var i,
+			tiles = this._tiles;
+
+		for (i in tiles) {
+			if (tiles.hasOwnProperty(i)) {
+				this._redrawTile(tiles[i]);
+			}
 		}
 	},
 
@@ -2008,11 +2044,11 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	_createTileProto: function () {
-		this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
+		var proto = this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
 
 		var tileSize = this.options.tileSize;
-		this._canvasProto.width = tileSize;
-		this._canvasProto.height = tileSize;
+		proto.width = tileSize;
+		proto.height = tileSize;
 	},
 
 	_createTile: function () {
@@ -2058,7 +2094,7 @@ L.ImageOverlay = L.Class.extend({
 			this._initImage();
 		}
 
-		map.getPanes().overlayPane.appendChild(this._image);
+		map._panes.overlayPane.appendChild(this._image);
 
 		map.on('viewreset', this._reset, this);
 		this._reset();
@@ -2086,14 +2122,14 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_reset: function () {
-		var topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-			bottomRight = this._map.latLngToLayerPoint(this._bounds.getSouthEast()),
-			size = bottomRight.subtract(topLeft);
+		var image   = this._image,
+		    topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+		    size    = this._map.latLngToLayerPoint(this._bounds.getSouthEast()).subtract(topLeft);
 
-		L.DomUtil.setPosition(this._image, topLeft);
+		L.DomUtil.setPosition(image, topLeft);
 
-		this._image.style.width = size.x + 'px';
-		this._image.style.height = size.y + 'px';
+		image.style.width  = size.x + 'px';
+		image.style.height = size.y + 'px';
 	},
 
 	_onImageLoad: function () {
@@ -2129,26 +2165,23 @@ L.Icon = L.Class.extend({
 
 	_createIcon: function (name) {
 		var size = this[name + 'Size'],
-			src = this[name + 'Url'];
-		if (!src && name === 'shadow') {
+			src  = this[name + 'Url'],
+			img;
+
+		if (!src && (name === 'shadow')) {
 			return null;
 		}
 
-		var img;
-		if (!src) {
-			img = this._createDiv();
-		}
-		else {
-			img = this._createImg(src);
-		}
+		img = src ? this._createImg(src)
+		          : document.createElement('div');
 
 		img.className = 'leaflet-marker-' + name;
 
 		img.style.marginLeft = (-this.iconAnchor.x) + 'px';
-		img.style.marginTop = (-this.iconAnchor.y) + 'px';
+		img.style.marginTop  = (-this.iconAnchor.y) + 'px';
 
 		if (size) {
-			img.style.width = size.x + 'px';
+			img.style.width  = size.x + 'px';
 			img.style.height = size.y + 'px';
 		}
 
@@ -2165,10 +2198,6 @@ L.Icon = L.Class.extend({
 			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
-	},
-
-	_createDiv: function () {
-		return document.createElement('div');
 	}
 });
 
@@ -2197,9 +2226,9 @@ L.Marker = L.Class.extend({
 	onAdd: function (map) {
 		this._map = map;
 
-		this._initIcon();
-
 		map.on('viewreset', this._reset, this);
+
+		this._initIcon();
 		this._reset();
 	},
 
@@ -2211,9 +2240,9 @@ L.Marker = L.Class.extend({
 			this.closePopup();
 		}
 
-		this._map = null;
-
 		map.off('viewreset', this._reset, this);
+
+		this._map = null;
 	},
 
 	getLatLng: function () {
@@ -2222,20 +2251,17 @@ L.Marker = L.Class.extend({
 
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
-		if (this._icon) {
-			this._reset();
 
-			if (this._popup) {
-				this._popup.setLatLng(this._latlng);
-			}
+		this._reset();
+
+		if (this._popup) {
+			this._popup.setLatLng(latlng);
 		}
 	},
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
-		if (this._icon) {
-			this._reset();
-		}
+		this._reset();
 	},
 
 	setIcon: function (icon) {
@@ -2252,62 +2278,83 @@ L.Marker = L.Class.extend({
 	},
 
 	_initIcon: function () {
-		if (!this._icon) {
-			this._icon = this.options.icon.createIcon();
+		var options = this.options;
 
-			if (this.options.title) {
-				this._icon.title = this.options.title;
+		if (!this._icon) {
+			this._icon = options.icon.createIcon();
+
+			if (options.title) {
+				this._icon.title = options.title;
 			}
 
 			this._initInteraction();
 		}
 		if (!this._shadow) {
-			this._shadow = this.options.icon.createShadow();
+			this._shadow = options.icon.createShadow();
 		}
 
-		this._map._panes.markerPane.appendChild(this._icon);
+		var panes = this._map._panes;
+
+		panes.markerPane.appendChild(this._icon);
+
 		if (this._shadow) {
-			this._map._panes.shadowPane.appendChild(this._shadow);
+			panes.shadowPane.appendChild(this._shadow);
 		}
 	},
 
 	_removeIcon: function () {
-		this._map._panes.markerPane.removeChild(this._icon);
+		var panes = this._map._panes;
+
+		panes.markerPane.removeChild(this._icon);
+
 		if (this._shadow) {
-			this._map._panes.shadowPane.removeChild(this._shadow);
+			panes.shadowPane.removeChild(this._shadow);
 		}
+
 		this._icon = this._shadow = null;
 	},
 
 	_reset: function () {
+		var icon = this._icon;
+
+		if (!icon) {
+			return;
+		}
+
 		var pos = this._map.latLngToLayerPoint(this._latlng).round();
 
-		L.DomUtil.setPosition(this._icon, pos);
+		L.DomUtil.setPosition(icon, pos);
+
 		if (this._shadow) {
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
+		icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
 	_initInteraction: function () {
-		if (this.options.clickable) {
-			this._icon.className += ' leaflet-clickable';
-
-			L.DomEvent.addListener(this._icon, 'click', this._onMouseClick, this);
-
-			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
-			for (var i = 0; i < events.length; i++) {
-				L.DomEvent.addListener(this._icon, events[i], this._fireMouseEvent, this);
-			}
+		if (!this.options.clickable) {
+			return;
 		}
 
-		if (L.Handler.MarkerDrag) {
-			this.dragging = new L.Handler.MarkerDrag(this);
+		var icon = this._icon,
+			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
 
-			if (this.options.draggable) {
-				this.dragging.enable();
-			}
+		icon.className += ' leaflet-clickable';
+		L.DomEvent.addListener(icon, 'click', this._onMouseClick, this);
+
+		for (var i = 0; i < events.length; i++) {
+			L.DomEvent.addListener(icon, events[i], this._fireMouseEvent, this);
+		}
+
+		if (!L.Handler.MarkerDrag) {
+			return;
+		}
+
+		this.dragging = new L.Handler.MarkerDrag(this);
+
+		if (this.options.draggable) {
+			this.dragging.enable();
 		}
 	},
 
@@ -2346,57 +2393,53 @@ L.Popup = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
+
 		if (!this._container) {
 			this._initLayout();
 		}
 		this._updateContent();
 
 		this._container.style.opacity = '0';
+		map._panes.popupPane.appendChild(this._container);
 
-		this._map._panes.popupPane.appendChild(this._container);
-		this._map.on('viewreset', this._updatePosition, this);
-
-		if (this._map.options.closePopupOnClick) {
-			this._map.on('preclick', this._close, this);
+		map.on('viewreset', this._updatePosition, this);
+		if (map.options.closePopupOnClick) {
+			map.on('preclick', this._close, this);
 		}
 
 		this._update();
 
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
-
-		this._opened = true;
 	},
 
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
+
 		L.Util.falseFn(this._container.offsetWidth);
 
-		map.off('viewreset', this._updatePosition, this);
-		map.off('click', this._close, this);
+		map.off('viewreset', this._updatePosition, this)
+		   .off('click', this._close, this);
 
 		this._container.style.opacity = '0';
 
-		this._opened = false;
+		this._map = null;
 	},
 
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
-		if (this._opened) {
-			this._update();
-		}
+		this._update();
 		return this;
 	},
 
 	setContent: function (content) {
 		this._content = content;
-		if (this._opened) {
-			this._update();
-		}
+		this._update();
 		return this;
 	},
 
 	_close: function () {
-		if (this._opened) {
+		// TODO popup should be able to close itself
+		if (this._map) {
 			this._map.closePopup();
 		}
 	},
@@ -2419,6 +2462,10 @@ L.Popup = L.Class.extend({
 	},
 
 	_update: function () {
+		if (!this._map) {
+			return;
+		}
+
 		this._container.style.visibility = 'hidden';
 
 		this._updateContent();
@@ -2444,16 +2491,19 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		this._container.style.width = '';
-		this._container.style.whiteSpace = 'nowrap';
+		var container = this._container;
 
-		var width = this._container.offsetWidth;
+		container.style.width = '';
+		container.style.whiteSpace = 'nowrap';
 
-		this._container.style.width = (width > this.options.maxWidth ?
-				this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width)) + 'px';
-		this._container.style.whiteSpace = '';
+		var width = container.offsetWidth;
+		width = Math.min(width, this.options.maxWidth);
+		width = Math.max(width, this.options.minWidth);
 
-		this._containerWidth = this._container.offsetWidth;
+		container.style.width = width + 'px';
+		container.style.whiteSpace = '';
+
+		this._containerWidth = container.offsetWidth;
 	},
 
 	_updatePosition: function () {
@@ -2471,20 +2521,24 @@ L.Popup = L.Class.extend({
 			return;
 		}
 
-		var containerHeight = this._container.offsetHeight,
+		var map = this._map,
+			containerHeight = this._container.offsetHeight,
+			containerWidth = this._containerWidth,
+
 			layerPos = new L.Point(
 				this._containerLeft,
 				-containerHeight - this._containerBottom),
-			containerPos = this._map.layerPointToContainerPoint(layerPos),
+
+			containerPos = map.layerPointToContainerPoint(layerPos),
 			adjustOffset = new L.Point(0, 0),
-			padding = this.options.autoPanPadding,
-			size = this._map.getSize();
+			padding      = this.options.autoPanPadding,
+			size         = map.getSize();
 
 		if (containerPos.x < 0) {
 			adjustOffset.x = containerPos.x - padding.x;
 		}
-		if (containerPos.x + this._containerWidth > size.x) {
-			adjustOffset.x = containerPos.x + this._containerWidth - size.x + padding.x;
+		if (containerPos.x + containerWidth > size.x) {
+			adjustOffset.x = containerPos.x + containerWidth - size.x + padding.x;
 		}
 		if (containerPos.y < 0) {
 			adjustOffset.y = containerPos.y - padding.y;
@@ -2494,7 +2548,7 @@ L.Popup = L.Class.extend({
 		}
 
 		if (adjustOffset.x || adjustOffset.y) {
-			this._map.panBy(adjustOffset);
+			map.panBy(adjustOffset);
 		}
 	},
 
@@ -2512,6 +2566,7 @@ L.Popup = L.Class.extend({
 L.Marker.include({
 	openPopup: function () {
 		this._popup.setLatLng(this._latlng);
+
 		if (this._map) {
 			this._map.openPopup(this._popup);
 		}
@@ -2527,14 +2582,16 @@ L.Marker.include({
 	},
 
 	bindPopup: function (content, options) {
-		options = L.Util.extend({offset: this.options.icon.popupAnchor}, options);
+		options = L.Util.extend({
+			offset: this.options.icon.popupAnchor
+		}, options);
 
 		if (!this._popup) {
 			this.on('click', this.openPopup, this);
 		}
 
-		this._popup = new L.Popup(options, this);
-		this._popup.setContent(content);
+		this._popup = new L.Popup(options, this)
+			.setContent(content);
 
 		return this;
 	},
@@ -2579,8 +2636,10 @@ L.LayerGroup = L.Class.extend({
 	initialize: function (layers) {
 		this._layers = {};
 
+		var i, len;
+
 		if (layers) {
-			for (var i = 0, len = layers.length; i < len; i++) {
+			for (i = 0, len = layers.length; i < len; i++) {
 				this.addLayer(layers[i]);
 			}
 		}
@@ -2588,21 +2647,25 @@ L.LayerGroup = L.Class.extend({
 
 	addLayer: function (layer) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = layer;
 
 		if (this._map) {
 			this._map.addLayer(layer);
 		}
+
 		return this;
 	},
 
 	removeLayer: function (layer) {
 		var id = L.Util.stamp(layer);
+
 		delete this._layers[id];
 
 		if (this._map) {
 			this._map.removeLayer(layer);
 		}
+
 		return this;
 	},
 
@@ -2624,6 +2687,7 @@ L.LayerGroup = L.Class.extend({
 				}
 			}
 		}
+
 		return this;
 	},
 
@@ -2634,7 +2698,7 @@ L.LayerGroup = L.Class.extend({
 
 	onRemove: function (map) {
 		this._iterateLayers(map.removeLayer, map);
-		delete this._map;
+		this._map = null;
 	},
 
 	_iterateLayers: function (method, context) {
@@ -2656,6 +2720,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 	addLayer: function (layer) {
 		this._initEvents(layer);
+
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
 		if (this._popupContent && layer.bindPopup) {
@@ -2665,7 +2730,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 	bindPopup: function (content) {
 		this._popupContent = content;
-
 		return this.invoke('bindPopup', content);
 	},
 
@@ -2673,17 +2737,19 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('setStyle', style);
 	},
 
-	_events: ['click', 'dblclick', 'mouseover', 'mouseout'],
-
 	_initEvents: function (layer) {
-		for (var i = 0, len = this._events.length; i < len; i++) {
-			layer.on(this._events[i], this._propagateEvent, this);
+		var events = ['click', 'dblclick', 'mouseover', 'mouseout'],
+			i, len;
+
+		for (i = 0, len = events.length; i < len; i++) {
+			layer.on(events[i], this._propagateEvent, this);
 		}
 	},
 
 	_propagateEvent: function (e) {
-		e.layer = e.target;
+		e.layer  = e.target;
 		e.target = this;
+
 		this.fire(e.type, e);
 	}
 });
@@ -3892,6 +3958,7 @@ L.Circle.include(!L.Path.CANVAS ? {} : {
 L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
+
 		this._geojson = geojson;
 		this._layers = {};
 
@@ -3901,15 +3968,18 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	addGeoJSON: function (geojson) {
-		if (geojson.features) {
-			for (var i = 0, len = geojson.features.length; i < len; i++) {
-				this.addGeoJSON(geojson.features[i]);
+		var features = geojson.features,
+			i, len;
+
+		if (features) {
+			for (i = 0, len = features.length; i < len; i++) {
+				this.addGeoJSON(features[i]);
 			}
 			return;
 		}
 
 		var isFeature = (geojson.type === 'Feature'),
-			geometry = (isFeature ? geojson.geometry : geojson),
+			geometry = isFeature ? geojson.geometry : geojson,
 			layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
 
 		this.fire('featureparse', {
@@ -3927,10 +3997,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 L.Util.extend(L.GeoJSON, {
 	geometryToLayer: function (geometry, pointToLayer) {
 		var coords = geometry.coordinates,
-			latlng, latlngs,
-			i, len,
-			layer,
-			layers = [];
+			layers = [],
+			latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
@@ -3973,22 +4041,26 @@ L.Util.extend(L.GeoJSON, {
 		}
 	},
 
-	coordsToLatLng: function (/*Array*/ coords, /*Boolean*/ reverse)/*: LatLng*/ {
+	coordsToLatLng: function (coords, reverse) { // (Array, Boolean) -> LatLng
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
 			lng = parseFloat(coords[reverse ? 1 : 0]);
+
 		return new L.LatLng(lat, lng, true);
 	},
 
-	coordsToLatLngs: function (/*Array*/ coords, /*Number*/ levelsDeep, /*Boolean*/ reverse)/*: Array*/ {
-		var latlng, latlngs = [],
-			i, len = coords.length;
+	coordsToLatLngs: function (coords, levelsDeep, reverse) { // (Array, Number, Boolean) -> Array
+		var latlng,
+			latlngs = [],
+			i,
+			len;
 
-		for (i = 0; i < len; i++) {
+		for (i = 0, len = coords.length; i < len; i++) {
 			latlng = levelsDeep ?
 					this.coordsToLatLngs(coords[i], levelsDeep - 1, reverse) :
 					this.coordsToLatLng(coords[i], reverse);
 			latlngs.push(latlng);
 		}
+
 		return latlngs;
 	}
 });
@@ -4717,9 +4789,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	addHooks: function () {
 		var icon = this._marker._icon;
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(icon, icon);
-
-			this._draggable
+			this._draggable = new L.Draggable(icon, icon)
 				.on('dragstart', this._onDragStart, this)
 				.on('drag', this._onDrag, this)
 				.on('dragend', this._onDragEnd, this);

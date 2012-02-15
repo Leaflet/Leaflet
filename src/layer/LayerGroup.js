@@ -6,8 +6,10 @@ L.LayerGroup = L.Class.extend({
 	initialize: function (layers) {
 		this._layers = {};
 
+		var i, len;
+
 		if (layers) {
-			for (var i = 0, len = layers.length; i < len; i++) {
+			for (i = 0, len = layers.length; i < len; i++) {
 				this.addLayer(layers[i]);
 			}
 		}
@@ -15,21 +17,25 @@ L.LayerGroup = L.Class.extend({
 
 	addLayer: function (layer) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = layer;
 
 		if (this._map) {
 			this._map.addLayer(layer);
 		}
+
 		return this;
 	},
 
 	removeLayer: function (layer) {
 		var id = L.Util.stamp(layer);
+
 		delete this._layers[id];
 
 		if (this._map) {
 			this._map.removeLayer(layer);
 		}
+
 		return this;
 	},
 
@@ -51,6 +57,7 @@ L.LayerGroup = L.Class.extend({
 				}
 			}
 		}
+
 		return this;
 	},
 
@@ -61,7 +68,7 @@ L.LayerGroup = L.Class.extend({
 
 	onRemove: function (map) {
 		this._iterateLayers(map.removeLayer, map);
-		delete this._map;
+		this._map = null;
 	},
 
 	_iterateLayers: function (method, context) {
