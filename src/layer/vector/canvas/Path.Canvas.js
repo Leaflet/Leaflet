@@ -100,7 +100,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
         map
 	        .off('viewreset', this._projectLatlngs, this)
             .off('moveend', this._updatePath, this)
-            .fire('moveend')
+            .fire('moveend');
     }
 });
 
