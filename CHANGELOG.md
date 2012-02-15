@@ -15,7 +15,11 @@ Leaflet Changelog
 
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
 
-## 0.3.1 (February 14, 2012) (Happy Valentine's ;)
+## 0.3.2 RC
+
+ * Fixed a regression where removeLayer would not remove corresponding attribution. [#488](https://github.com/CloudMade/Leaflet/issues/488)
+
+## 0.3.1 (February 14, 2012)
 
  * Fixed a regression where default marker icons wouldn't work if Leaflet include url contained a query string.
  * Fixed a regression where tiles sometimes flickered with black on panning in iOS.
@@ -135,11 +139,11 @@ Leaflet Changelog
  * Fixed a bug that caused click delays on zoom control.
 
 
-## 0.2.1 (June 18, 2011)
+## 0.2.1 (2011-06-18)
 
  * Fixed regression that caused error in `TileLayer.Canvas`.
 
-## 0.2 (June 17, 2011)
+## 0.2 (2011-06-17)
 
 ### Major features
 
@@ -215,6 +219,6 @@ Leaflet Changelog
  * Fixed a bug that prevented panning/clicking on Opera Mobile. [#138](https://github.com/CloudMade/Leaflet/issues/138)
  * Fixed potentional memory leak on WebKit when removing tiles, thanks to [@Scalar4eg](https://github.com/Scalar4eg). [#107](https://github.com/CloudMade/Leaflet/issues/107)
 
-## 0.1 (May 13, 2011)
+## 0.1 (2011-05-13)
 
 Initial Leaflet release.
