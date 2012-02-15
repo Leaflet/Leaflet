@@ -15,6 +15,10 @@ Leaflet Changelog
 
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
 
+## 0.3.2 RC
+
+ * Fixed a regression where removeLayer would not remove corresponding attribution. [#488](https://github.com/CloudMade/Leaflet/issues/488)
+
 ## 0.3.1 (14.02.2012)
 
  * Fixed a regression where default marker icons wouldn't work if Leaflet include url contained a query string.
