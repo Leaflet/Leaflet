@@ -154,7 +154,7 @@ L.Control.Layers = L.Control.extend({
 			if (input.checked) {
 				this._map.addLayer(obj.layer, !obj.overlay);
 				if (!obj.overlay) {
-+					this._map.fire('layerswitched', { layer: obj.layer });
+					this._map.fire('layerswitched', { layer: obj.layer });
 				}
 			} else {
 				this._map.removeLayer(obj.layer);
