@@ -24,13 +24,10 @@ L.TileLayer = L.Class.extend({
 		reuseTiles: false
 	},
 
-	initialize: function (url, options, urlParams) {
+	initialize: function (url, options) {
 		L.Util.setOptions(this, options);
 
 		this._url = url;
-
-		// TODO move urlParams to options
-		this._urlParams = urlParams;
 
 		var subdomains = this.options.subdomains;
 
@@ -294,7 +291,7 @@ L.TileLayer = L.Class.extend({
 			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
-		}, this._urlParams));
+		}, this.options));
 	},
 
 	_createTileProto: function () {
