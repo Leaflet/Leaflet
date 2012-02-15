@@ -26,6 +26,17 @@ L.LatLngBounds = L.Class.extend({
 		}
 	},
 
+	// extends the bounds by a percentage
+	padBounds: function (/*Number*/ bufferRatio) {
+		var heightBuffer = Math.abs(this._southWest.lat - this._northEast.lat) * bufferRatio,
+			widthBuffer = Math.abs(this._southWest.lng - this._northEast.lng) * bufferRatio;
+
+		return new L.LatLngBounds(
+			new L.LatLng(this._southWest.lat - heightBuffer, this._southWest.lng - widthBuffer),
+			new L.LatLng(this._northEast.lat + heightBuffer, this._northEast.lng + widthBuffer)
+		);
+	},
+
 	getCenter: function () /*-> LatLng*/ {
 		return new L.LatLng(
 				(this._southWest.lat + this._northEast.lat) / 2,
