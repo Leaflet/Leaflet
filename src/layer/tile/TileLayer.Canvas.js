@@ -56,7 +56,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		this._tileOnLoad.call(tile);
 	},
 
-	// NW attempt at saving the whole visible canvas to a data URL
+	// NW attempt at saving the whole visible viewport to a data URL
 	toDataURL: function (format) {
 		format = format || 'image/png';
 		var pixelBounds = this._map.getPixelBounds();
@@ -70,16 +70,14 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		vpCanvas.height = this._map.getSize().y;
 		var img, ctx, partTileW, partTileH, destX, destY = 0;
 		ctx = vpCanvas.getContext("2d");
-		for (var yt = tileN; yt <= tileS; yt++)
-		{
+		for (var yt = tileN; yt <= tileS; yt++) {
 			destX = 0;
 			srcY = (yt === tileN) ?  pixelBounds.min.y %
 				this.options.tileSize : 0;
 			srcYEnd = (yt === tileS) ?  pixelBounds.max.y %
 				this.options.tileSize : this.options.tileSize;
 			partTileH = srcYEnd - srcY;
-			for (var xt = tileW; xt <= tileE; xt++)
-			{
+			for (var xt = tileW; xt <= tileE; xt++) {
 				srcX = (xt === tileW) ?
 					pixelBounds.min.x % this.options.tileSize : 0;
 				srcXEnd = (xt === tileE) ?
