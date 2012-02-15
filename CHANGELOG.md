@@ -15,12 +15,16 @@ Leaflet Changelog
 
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
 
-## 0.3.1 (14.02.2012)
+## 0.3.2 RC
+
+ * Fixed a regression where removeLayer would not remove corresponding attribution. [#488](https://github.com/CloudMade/Leaflet/issues/488)
+
+## 0.3.1 (February 14, 2012)
 
  * Fixed a regression where default marker icons wouldn't work if Leaflet include url contained a query string.
  * Fixed a regression where tiles sometimes flickered with black on panning in iOS.
 
-## 0.3 (13.02.2012)
+## 0.3 (February 13, 2012)
 
 ### Major features
 
@@ -70,6 +74,10 @@ Leaflet Changelog
  * Added ability to pass empty imageUrl to icons for creating transparent clickable regions (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#460](https://github.com/CloudMade/Leaflet/pull/460)
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
+
+#### Breaking API changes
+
+ * `shiftDragZoom` map option/property renamed to `boxZoom`.
 
 #### Development workflow improvements
 

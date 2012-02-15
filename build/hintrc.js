@@ -40,5 +40,6 @@ exports.config = {
 
 	"eqeqeq": true,
 	"trailing": true,
-	"white": true
+	"white": true,
+	"smarttabs": true
 };

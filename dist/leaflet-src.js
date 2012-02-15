@@ -807,6 +807,11 @@ L.LatLngBounds = L.Class.extend({
 		var sw = this._southWest,
 			ne = this._northEast;
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+	},
+
+	equals: function (/*LatLngBounds*/ bounds) {
+		return bounds ? this._southWest.equals(bounds.getSouthWest()) &&
+		                this._northEast.equals(bounds.getNorthEast()) : false;
 	}
 });
 
@@ -1802,7 +1807,7 @@ L.TileLayer = L.Class.extend({
 					if (this.options.reuseTiles) {
 						this._unusedTiles.push(this._tiles[key]);
 					}
-					//tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+					tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
 
 					delete this._tiles[key];
 				}
@@ -4927,7 +4932,7 @@ L.Control.Attribution = L.Control.extend({
 		var attribs = [];
 
 		for (var i in this._attributions) {
-			if (this._attributions.hasOwnProperty(i)) {
+			if (this._attributions.hasOwnProperty(i) && this._attributions[i]) {
 				attribs.push(i);
 			}
 		}
