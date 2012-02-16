@@ -33,19 +33,17 @@ L.Polyline = L.Path.extend({
 
 	setLatLngs: function (latlngs) {
 		this._latlngs = latlngs;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	addLatLng: function (latlng) {
 		this._latlngs.push(latlng);
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	spliceLatLngs: function (index, howMany) {
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._redraw();
+		this.redraw();
 		return removed;
 	},
 

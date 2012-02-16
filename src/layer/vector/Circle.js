@@ -16,14 +16,12 @@ L.Circle = L.Path.extend({
 
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	setRadius: function (radius) {
 		this._mRadius = radius;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	projectLatlngs: function () {
