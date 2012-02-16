@@ -228,6 +228,12 @@ var deps = {
 		src: ['map/ext/Map.Geolocation.js'],
 		desc: 'Adds Map#locate method and related events to make geolocation easier.',
 		heading: 'Misc'
+	},
+
+	Compositer: {
+		src: ['map/compositer/Map.Compositer.js'],
+		desc: 'Adds Map#compositeCanvases method to composite canvas layers.',
+		heading: 'Misc'
 	}
 };
 
