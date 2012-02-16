@@ -22,7 +22,7 @@ L.Marker.include({
 
 	bindPopup: function (content, options) {
 		options = L.Util.extend({
-			offset: this.options.icon.popupAnchor
+			offset: this.options.icon.options.popupAnchor
 		}, options);
 
 		if (!this._popup) {
