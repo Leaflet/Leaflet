@@ -84,6 +84,11 @@ L.Path = L.Path.extend({
 		if (this._map.dragging && this._map.dragging.moved()) {
 			return;
 		}
+
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		this._fireMouseEvent(e);
 	},
 
