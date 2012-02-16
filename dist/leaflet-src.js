@@ -2167,19 +2167,21 @@ L.ImageOverlay = L.Class.extend({
 
 
 L.Icon = L.Class.extend({
-	iconUrl: L.ROOT_URL + 'images/marker.png',
-	shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
+	options: {
+		iconUrl: L.ROOT_URL + 'images/marker.png',
+		iconSize: new L.Point(25, 41),
+		iconAnchor: new L.Point(13, 41),
+		popupAnchor: new L.Point(0, -33),
 
-	iconSize: new L.Point(25, 41),
-	shadowSize: new L.Point(41, 41),
+		shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
+		shadowSize: new L.Point(41, 41),
+		shadowOffset: new L.Point(0, 0),
 
-	iconAnchor: new L.Point(13, 41),
-	popupAnchor: new L.Point(0, -33),
+		className: ''
+	},
 
-	initialize: function (iconUrl) {
-		if (iconUrl) {
-			this.iconUrl = iconUrl;
-		}
+	initialize: function (options) {
+		L.Util.setOptions(this, options);
 	},
 
 	createIcon: function () {
@@ -2191,28 +2193,29 @@ L.Icon = L.Class.extend({
 	},
 
 	_createIcon: function (name) {
-		var size = this[name + 'Size'],
-			src  = this[name + 'Url'],
-			img;
+		var img = this._createImg(this.options[name + 'Url']);
+		this._setIconStyles(img, name);
+		return img;
+	},
 
-		if (!src && (name === 'shadow')) {
-			return null;
+	_setIconStyles: function (img, name) {
+		var options = this.options,
+			size = options[name + 'Size'],
+			anchor = options.iconAnchor || size.divideBy(2, true);
+
+		if (name === 'shadow') {
+			anchor._add(options.shadowOffset);
 		}
 
-		img = src ? this._createImg(src)
-		          : document.createElement('div');
+		img.className = 'leaflet-marker-' + name + ' ' + options.className;
 
-		img.className = 'leaflet-marker-' + name;
+		img.style.marginLeft = (-anchor.x) + 'px';
+		img.style.marginTop  = (-anchor.y) + 'px';
 
-		img.style.marginLeft = (-this.iconAnchor.x) + 'px';
-		img.style.marginTop  = (-this.iconAnchor.y) + 'px';
-
-		if (size) {
+		if (options.iconSize) {
 			img.style.width  = size.x + 'px';
 			img.style.height = size.y + 'px';
 		}
-
-		return img;
 	},
 
 	_createImg: function (src) {
@@ -2394,6 +2397,26 @@ L.Marker = L.Class.extend({
 	_fireMouseEvent: function (e) {
 		this.fire(e.type);
 		L.DomEvent.stopPropagation(e);
+	}
+});
+
+
+L.DivIcon = L.Icon.extend({
+	options: {
+		iconSize: new L.Point(12, 12),
+		iconAnchor: null,
+		popupAnchor: new L.Point(0, -8),
+		className: 'leaflet-div-icon'
+	},
+
+	createIcon: function () {
+		var div = document.createElement('div');
+		this._setIconStyles(div, 'icon');
+		return div;
+	},
+
+	createShadow: function () {
+		return null;
 	}
 });
 
@@ -2608,7 +2631,7 @@ L.Marker.include({
 
 	bindPopup: function (content, options) {
 		options = L.Util.extend({
-			offset: this.options.icon.popupAnchor
+			offset: this.options.icon.options.popupAnchor
 		}, options);
 
 		if (!this._popup) {
@@ -2850,11 +2873,12 @@ L.Path = L.Class.extend({
 		return this;
 	},
 
-	_redraw: function () {
+	redraw: function () {
 		if (this._map) {
 			this.projectLatlngs();
 			this._updatePath();
 		}
+		return this;
 	}
 });
 
@@ -3537,19 +3561,17 @@ L.Polyline = L.Path.extend({
 
 	setLatLngs: function (latlngs) {
 		this._latlngs = latlngs;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	addLatLng: function (latlng) {
 		this._latlngs.push(latlng);
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	spliceLatLngs: function (index, howMany) {
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._redraw();
+		this.redraw();
 		return removed;
 	},
 
@@ -3831,14 +3853,12 @@ L.Circle = L.Path.extend({
 
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	setRadius: function (radius) {
 		this._mRadius = radius;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	projectLatlngs: function () {
@@ -3921,8 +3941,7 @@ L.CircleMarker = L.Circle.extend({
 
 	setRadius: function (radius) {
 		this._radius = radius;
-		this._redraw();
-		return this;
+		return this.redraw();
 	}
 });
 
@@ -4322,6 +4341,7 @@ L.Draggable = L.Class.extend({
 		}
 		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
+		this._moved = false;
 	},
 
 	_onDown: function (e) {
@@ -4417,11 +4437,12 @@ L.Draggable = L.Class.extend({
 
 	_setMovingCursor: function () {
 		this._bodyCursor = document.body.style.cursor;
-		document.body.style.cursor = 'move';
+		this._dragStartTarget.style.cursor = document.body.style.cursor = 'move';
 	},
 
 	_restoreCursor: function () {
 		document.body.style.cursor = this._bodyCursor;
+		this._dragStartTarget.style.cursor = '';
 	},
 
 	_simulateEvent: function (type, e) {

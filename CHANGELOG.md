@@ -7,24 +7,29 @@ Leaflet Changelog
 
 ### Improvements
 
+#### Breaking API changes
+
+ * Converted `Icon` properties (like `iconUrl`) to options, changed constructor signature to `Icon(options)`.
+ * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
+ * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
+ * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
+
 #### API Improvements
 
+ * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
+ * Added `Icon` `className` option to assign a custom class to an icon.
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
+ * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
  * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
  * Made controls implementation easier (now more magic happens under the hood).
  * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
  * Added `containerPoint` property to `MouseEvent`.
  * Added chaining to `DomEvent` methods.
- * Fixed a bug where popup size was calculated incorrectly in IE.
-
-#### Breaking API changes
-
- * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
- * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
- * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
 
 ### Bug fixes
 
+ * Fixed a bug where popup size was calculated incorrectly in IE.
+ * Fixed a bug where cursor would flicker when dragging a marker.
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
  * Fixed a bug where marker click event would stop working if you dragged it and then disabled dragging. [#434](https://github.com/CloudMade/Leaflet/issues/434)
 

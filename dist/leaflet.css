@@ -37,6 +37,13 @@
 .leaflet-container img {
 	max-width: none !important;
 	}
+.leaflet-div-icon {
+	background: #fff;
+	box-shadow: 0 0 6px #000;
+}
+.leaflet-editing-icon {
+	border-radius: 2px;
+}
 
 .leaflet-tile-pane { z-index: 2; }
 

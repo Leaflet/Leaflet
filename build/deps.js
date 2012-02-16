@@ -57,6 +57,12 @@ var deps = {
 		desc: 'Markers to put on the map.'
 	},
 
+	DivIcon: {
+		src: ['layer/marker/DivIcon.js'],
+		deps: ['Marker'],
+		desc: 'Lightweight div-based icon for markers.'
+	},
+
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
