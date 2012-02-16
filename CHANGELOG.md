@@ -5,6 +5,11 @@ Leaflet Changelog
 
 ## 0.4 (master)
 
+### Major features
+
+ * Added **polyline and polygon editing**. [#174](https://github.com/CloudMade/Leaflet/issues/174)
+ * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
+
 ### Improvements
 
 #### Breaking API changes
@@ -16,9 +21,9 @@ Leaflet Changelog
 
 #### API Improvements
 
- * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
  * Added `Icon` `className` option to assign a custom class to an icon.
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
+ * Added `Marker` `opacity` option.
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
  * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
  * Made controls implementation easier (now more magic happens under the hood).
@@ -33,6 +38,7 @@ Leaflet Changelog
  * Fixed a bug where cursor would flicker when dragging a marker.
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
  * Fixed a bug where marker click event would stop working if you dragged it and then disabled dragging. [#434](https://github.com/CloudMade/Leaflet/issues/434)
+ * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
 
 ## 0.3.2 RC
 

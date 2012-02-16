@@ -11,7 +11,8 @@ L.Marker = L.Class.extend({
 		title: '',
 		clickable: true,
 		draggable: false,
-		zIndexOffset: 0
+		zIndexOffset: 0,
+		opacity: 1
 	},
 
 	initialize: function (latlng, options) {
@@ -84,6 +85,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
+			this._updateOpacity();
 		}
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
@@ -161,5 +163,16 @@ L.Marker = L.Class.extend({
 	_fireMouseEvent: function (e) {
 		this.fire(e.type);
 		L.DomEvent.stopPropagation(e);
+	},
+
+	setOpacity: function (opacity) {
+		this.options.opacity = opacity;
+		if (this._map) {
+			this._updateOpacity();
+		}
+	},
+
+	_updateOpacity: function (opacity) {
+		L.DomUtil.setOpacity(this._icon, this.options.opacity);
 	}
 });

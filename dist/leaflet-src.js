@@ -1722,7 +1722,9 @@ L.TileLayer = L.Class.extend({
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
-		this._setOpacity(opacity);
+		if (this._map) {
+			this._updateOpacity();
+		}
 
 		// stupid webkit hack to force redrawing of tiles
 		var i,
@@ -1737,10 +1739,8 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	_setOpacity: function (opacity) {
-		if (opacity < 1) {
-			L.DomUtil.setOpacity(this._container, opacity);
-		}
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._container, this.options.opacity);
 	},
 
 	_initContainer: function () {
@@ -1756,7 +1756,9 @@ L.TileLayer = L.Class.extend({
 				tilePane.appendChild(this._container);
 			}
 
-			this._setOpacity(this.options.opacity);
+			if (this.options.opacity < 1) {
+				this._updateOpacity();
+			}
 		}
 	},
 
@@ -2258,7 +2260,8 @@ L.Marker = L.Class.extend({
 		title: '',
 		clickable: true,
 		draggable: false,
-		zIndexOffset: 0
+		zIndexOffset: 0,
+		opacity: 1
 	},
 
 	initialize: function (latlng, options) {
@@ -2331,6 +2334,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
+			this._updateOpacity();
 		}
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
@@ -2408,6 +2412,17 @@ L.Marker = L.Class.extend({
 	_fireMouseEvent: function (e) {
 		this.fire(e.type);
 		L.DomEvent.stopPropagation(e);
+	},
+
+	setOpacity: function (opacity) {
+		this.options.opacity = opacity;
+		if (this._map) {
+			this._updateOpacity();
+		}
+	},
+
+	_updateOpacity: function (opacity) {
+		L.DomUtil.setOpacity(this._icon, this.options.opacity);
 	}
 });
 
@@ -4954,38 +4969,44 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		if (!this._markers) {
+		if (!this._markerGroup) {
 			this._initMarkers();
 		}
-		this._poly._map.addLayer(this._markers);
+		this._poly._map.addLayer(this._markerGroup);
 	},
 
 	removeHooks: function () {
-		this._poly._map.removeLayer(this._markers);
+		this._poly._map.removeLayer(this._markerGroup);
 	},
 
 	updateMarkers: function () {
-		this._markers.clearLayers();
+		this._markerGroup.clearLayers();
 		this._initMarkers();
 	},
 
 	_initMarkers: function () {
-		this._markers = new L.LayerGroup();
+		this._markerGroup = new L.LayerGroup();
+		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-			i, len;
+			i, j, len, marker;
 
-		// TODO refactor holes implementation in Polygon
-		/* var holes = this._poly._holes;
-		if (holes) {
-			for (i = 0, len = holes.length; i < len; i++) {
-				latlngs = latlngs.concat(holes[i]);
-			}
-		} */
+		// TODO refactor holes implementation in Polygon to support it here
 
 		for (i = 0, len = latlngs.length; i < len; i++) {
-			var marker = this._createMarker(latlngs[i], i);
-			this._markers.addLayer(marker);
+			marker = this._createMarker(latlngs[i], i);
+			marker.on('click', this._onMarkerClick, this);
+			this._markers.push(marker);
+		}
+
+		var markerLeft, markerRight;
+
+		for (i = 0, j = len - 1; i < len; i++, j = i - 1) {
+			markerLeft = this._markers[j];
+			markerRight = this._markers[i];
+
+			this._createMiddleMarker(markerLeft, markerRight);
+			this._updatePrevNext(markerLeft, markerRight);
 		}
 	},
 
@@ -4999,14 +5020,24 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
-		marker.on('click', this._onMarkerClick, this);
+
+		this._markerGroup.addLayer(marker);
 
 		return marker;
 	},
 
 	_onMarkerDrag: function (e) {
 		var marker = e.target;
+
 		L.Util.extend(marker._origLatLng, marker._latlng);
+
+		if (marker._middleLeft) {
+			marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
+		}
+		if (marker._middleRight) {
+			marker._middleRight.setLatLng(this._getMiddleLatLng(marker, marker._next));
+		}
+
 		this._poly.redraw();
 	},
 
@@ -5014,17 +5045,76 @@ L.Handler.PolyEdit = L.Handler.extend({
 		var marker = e.target,
 			i = marker._index;
 
-		this._markers.removeLayer(marker);
+		this._createMiddleMarker(marker._prev, marker._next);
+		this._updatePrevNext(marker._prev, marker._next);
+
+		this._markerGroup
+			.removeLayer(marker._middleLeft)
+			.removeLayer(marker._middleRight)
+			.removeLayer(marker);
+
 		this._poly.spliceLatLngs(i, 1);
-		this._updateIndexes(i);
+		this._updateIndexes(i, -1);
 	},
 
-	_updateIndexes: function (removedIndex) {
-		this._markers._iterateLayers(function (marker) {
-			if (marker._index > removedIndex) {
-				marker._index--;
+	_updateIndexes: function (index, delta) {
+		this._markerGroup._iterateLayers(function (marker) {
+			if (marker._index > index) {
+				marker._index += delta;
 			}
 		});
+	},
+
+	_createMiddleMarker: function (marker1, marker2) {
+		var latlng = this._getMiddleLatLng(marker1, marker2),
+			marker = this._createMarker(latlng);
+
+		marker.setOpacity(0.5);
+
+		marker1._middleRight = marker2._middleLeft = marker;
+
+		function onDragstart() {
+			var i = marker2._index;
+
+			marker._index = i;
+			marker.on('click', this._onMarkerClick, this);
+
+			this._poly.spliceLatLngs(i, 0, latlng);
+			this._markers.splice(i, 0, marker);
+
+			marker.setOpacity(1);
+
+			this._updateIndexes(i, 1);
+			marker2._index++;
+			this._updatePrevNext(marker1, marker);
+			this._updatePrevNext(marker, marker2);
+		}
+
+		function onDragend() {
+			marker.off('dragstart', onDragstart, this);
+			marker.off('dragend', onDragend, this);
+
+			this._createMiddleMarker(marker1, marker);
+			this._createMiddleMarker(marker, marker2);
+		}
+
+		marker.on('dragstart', onDragstart, this);
+		marker.on('dragend', onDragend, this);
+
+		this._markerGroup.addLayer(marker);
+	},
+
+	_updatePrevNext: function (marker1, marker2) {
+		marker1._next = marker2;
+		marker2._prev = marker1;
+	},
+
+	_getMiddleLatLng: function (marker1, marker2) {
+		var map = this._poly._map,
+			p1 = map.latLngToLayerPoint(marker1.getLatLng()),
+			p2 = map.latLngToLayerPoint(marker2.getLatLng());
+
+		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
 	}
 });
 
