@@ -17,19 +17,27 @@
 	<script>
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18}),
-			map = new L.Map('map', {layers: [cloudmade], center: new L.LatLng(50.5, 30.5), zoom: 15});
+			map = new L.Map('map', {layers: [cloudmade], center: new L.LatLng(51.505, -0.04), zoom: 13});
 
 
-		var latlngs = [];
+		var polygon = new L.Polygon([
+			new L.LatLng(51.51, -0.1),
+			new L.LatLng(51.5, -0.06),
+			new L.LatLng(51.52, -0.03)
+		]);
 
-		for (var i = 0; i < 3; i++) {
-			latlngs.push(getRandomLatLng(map));
-		}
+		map.addLayer(polygon);
 
-		var path = new L.Polygon(latlngs, {clickable: false});
-		map.addLayer(path);
+		var polyline = new L.Polyline([
+			new L.LatLng(51.49, -0.02),
+			new L.LatLng(51.51, 0),
+			new L.LatLng(51.52, -0.02)
+		]);
 
-		path.editing.enable();
+		map.addLayer(polyline);
+
+		polygon.editing.enable();
+		polyline.editing.enable();
 	</script>
 </body>
 </html>

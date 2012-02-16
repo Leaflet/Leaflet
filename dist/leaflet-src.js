@@ -3007,6 +3007,11 @@ L.Path = L.Path.extend({
 		if (this._map.dragging && this._map.dragging.moved()) {
 			return;
 		}
+
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		this._fireMouseEvent(e);
 	},
 
@@ -4994,6 +4999,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		// TODO refactor holes implementation in Polygon to support it here
 
 		for (i = 0, len = latlngs.length; i < len; i++) {
+
 			marker = this._createMarker(latlngs[i], i);
 			marker.on('click', this._onMarkerClick, this);
 			this._markers.push(marker);
@@ -5001,7 +5007,11 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 		var markerLeft, markerRight;
 
-		for (i = 0, j = len - 1; i < len; i++, j = i - 1) {
+		for (i = 0, j = len - 1; i < len; j = i++) {
+			if (i === 0 && !(L.Polygon && (this._poly instanceof L.Polygon))) {
+				continue;
+			}
+
 			markerLeft = this._markers[j];
 			markerRight = this._markers[i];
 
@@ -5070,15 +5080,18 @@ L.Handler.PolyEdit = L.Handler.extend({
 		var latlng = this._getMiddleLatLng(marker1, marker2),
 			marker = this._createMarker(latlng);
 
-		marker.setOpacity(0.5);
+		marker.setOpacity(0.6);
 
 		marker1._middleRight = marker2._middleLeft = marker;
 
-		function onDragstart() {
+		function onDragStart() {
 			var i = marker2._index;
 
 			marker._index = i;
-			marker.on('click', this._onMarkerClick, this);
+
+			marker
+				.off('click', onClick)
+				.on('click', this._onMarkerClick, this);
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
@@ -5092,16 +5105,23 @@ L.Handler.PolyEdit = L.Handler.extend({
 			this._updatePrevNext(marker, marker2);
 		}
 
-		function onDragend() {
-			marker.off('dragstart', onDragstart, this);
-			marker.off('dragend', onDragend, this);
+		function onDragEnd() {
+			marker.off('dragstart', onDragStart, this);
+			marker.off('dragend', onDragEnd, this);
 
 			this._createMiddleMarker(marker1, marker);
 			this._createMiddleMarker(marker, marker2);
 		}
 
-		marker.on('dragstart', onDragstart, this);
-		marker.on('dragend', onDragend, this);
+		function onClick() {
+			onDragStart.call(this);
+			onDragEnd.call(this);
+		}
+
+		marker
+			.on('click', onClick, this)
+			.on('dragstart', onDragStart, this)
+			.on('dragend', onDragEnd, this);
 
 		this._markerGroup.addLayer(marker);
 	},
