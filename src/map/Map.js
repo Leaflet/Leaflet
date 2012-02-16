@@ -616,6 +616,14 @@ L.Map = L.Class.extend({
 		}
 	},
 
+	layerInfo: function () {
+		for (var i in this._layers) {
+			if (this._layers[i] instanceof L.TileLayer.Canvas) {
+				window.alert('layer: ' + i + ' is a canvas layer');
+			}
+		}
+	},
+
 
 	// private methods for getting map state
 
