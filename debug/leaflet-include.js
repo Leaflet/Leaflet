@@ -62,6 +62,7 @@
 		'layer/Popup.js',
 
 		'layer/marker/Icon.js',
+		'layer/marker/Icon.Label.js',
 		'layer/marker/Marker.js',
 		'layer/marker/Marker.Popup.js',
 		'layer/marker/Marker.Drag.js',
