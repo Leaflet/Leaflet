@@ -24,17 +24,19 @@ L.LatLngBounds = L.Class.extend({
 			this._northEast.lat = Math.max(latlng.lat, this._northEast.lat);
 			this._northEast.lng = Math.max(latlng.lng, this._northEast.lng);
 		}
+		return this;
 	},
 
-	// extends the bounds by a percentage
-	padBounds: function (/*Number*/ bufferRatio) {
-		var heightBuffer = Math.abs(this._southWest.lat - this._northEast.lat) * bufferRatio,
-			widthBuffer = Math.abs(this._southWest.lng - this._northEast.lng) * bufferRatio;
+	// extend the bounds by a percentage
+	pad: function (bufferRatio) { // (Number) -> LatLngBounds
+		var sw = this._southWest,
+			ne = this._northEast,
+			heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
+			widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
 
 		return new L.LatLngBounds(
-			new L.LatLng(this._southWest.lat - heightBuffer, this._southWest.lng - widthBuffer),
-			new L.LatLng(this._northEast.lat + heightBuffer, this._northEast.lng + widthBuffer)
-		);
+			new L.LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
+			new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	},
 
 	getCenter: function () /*-> LatLng*/ {

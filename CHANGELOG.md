@@ -23,7 +23,8 @@ Leaflet Changelog
  * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
  * Made controls implementation easier (now more magic happens under the hood).
  * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
- * Added `containerPoint` property to `MouseEvent`.
+ * Added `containerPoint` property to `MouseEvent`. [#413](https://github.com/CloudMade/Leaflet/issues/413)
+ * Added `LatLngBounds` `pad` method that returns bounds extended by a percentage (by [@jacobtoye](https://github.com/jacobtoye)). [#492](https://github.com/CloudMade/Leaflet/pull/492)
  * Added chaining to `DomEvent` methods.
 
 ### Bug fixes
