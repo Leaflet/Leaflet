@@ -77,6 +77,14 @@ L.Polyline = L.Path.extend({
 		return b;
 	},
 
+	_initEvents: function () {
+		L.Polyline.superclass._initEvents.call(this);
+
+		if (L.Handler.PolyEdit) {
+			this.editing = new L.Handler.PolyEdit(this);
+		}
+	},
+
 	_getPathPartStr: function (points) {
 		var round = L.Path.VML;
 

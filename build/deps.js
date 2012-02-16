@@ -176,7 +176,14 @@ var deps = {
 
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
+		deps: ['Marker'],
 		desc: 'Makes markers draggable (by mouse or touch).'
+	},
+
+	PolyEdit: {
+		src: ['layer/vector/Polyline.Edit.js'],
+		deps: ['Polyline', 'DivIcon'],
+		desc: 'Polyline and polygon editing.'
 	},
 
 

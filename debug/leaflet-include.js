@@ -73,6 +73,7 @@
 		'layer/vector/Path.VML.js',
 		'layer/vector/canvas/Path.Canvas.js',
 		'layer/vector/Polyline.js',
+		'layer/vector/Polyline.Edit.js',
 		'layer/vector/canvas/Polyline.Canvas.js',
 		'layer/vector/Polygon.js',
 		'layer/vector/canvas/Polygon.Canvas.js',

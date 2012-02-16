@@ -143,14 +143,12 @@ L.Marker = L.Class.extend({
 			L.DomEvent.addListener(icon, events[i], this._fireMouseEvent, this);
 		}
 
-		if (!L.Handler.MarkerDrag) {
-			return;
-		}
+		if (L.Handler.MarkerDrag) {
+			this.dragging = new L.Handler.MarkerDrag(this);
 
-		this.dragging = new L.Handler.MarkerDrag(this);
-
-		if (this.options.draggable) {
-			this.dragging.enable();
+			if (this.options.draggable) {
+				this.dragging.enable();
+			}
 		}
 	},
 

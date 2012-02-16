@@ -20,34 +20,16 @@
 			map = new L.Map('map', {layers: [cloudmade], center: new L.LatLng(50.5, 30.5), zoom: 15});
 
 
-		var icon = new L.DivIcon({
-			iconSize: new L.Point(8, 8),
-			className: 'leaflet-div-icon leaflet-editing-icon'
-		});
-
-		var latlngs = [],
-			path;
+		var latlngs = [];
 
 		for (var i = 0; i < 5; i++) {
 			latlngs.push(getRandomLatLng(map));
-
-			(function (i) {
-				var marker = new L.Marker(latlngs[i], {
-					draggable: true,
-					icon: icon
-				});
-				map.addLayer(marker);
-
-				marker.on('drag', function() {
-					latlngs[i] = marker.getLatLng();
-					path.redraw();
-				});
-			}(i));
 		}
 
-		path = new L.Polygon(latlngs, {clickable: false});
-
+		var path = new L.Polygon(latlngs, {clickable: false});
 		map.addLayer(path);
+
+		path.editing.enable();
 	</script>
 </body>
 </html>
