@@ -40,6 +40,7 @@ Leaflet Changelog
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
  * Fixed a bug where marker click event would stop working if you dragged it and then disabled dragging. [#434](https://github.com/CloudMade/Leaflet/issues/434)
  * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
+ * Fixed a bug where vector layer `setStyle({stroke: false})` wouldn't remove stroke and the same for fill. [#441](https://github.com/CloudMade/Leaflet/issues/441)
 
 ## 0.3.2 RC
 

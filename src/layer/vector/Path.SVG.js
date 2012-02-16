@@ -37,8 +37,6 @@ L.Path = L.Path.extend({
 		}
 		if (this.options.fill) {
 			this._path.setAttribute('fill-rule', 'evenodd');
-		} else {
-			this._path.setAttribute('fill', 'none');
 		}
 		this._updateStyle();
 	},
@@ -48,10 +46,14 @@ L.Path = L.Path.extend({
 			this._path.setAttribute('stroke', this.options.color);
 			this._path.setAttribute('stroke-opacity', this.options.opacity);
 			this._path.setAttribute('stroke-width', this.options.weight);
+		} else {
+			this._path.setAttribute('stroke', 'none');
 		}
 		if (this.options.fill) {
 			this._path.setAttribute('fill', this.options.fillColor || this.options.color);
 			this._path.setAttribute('fill-opacity', this.options.fillOpacity);
+		} else {
+			this._path.setAttribute('fill', 'none');
 		}
 	},
 

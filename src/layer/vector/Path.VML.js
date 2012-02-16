@@ -53,29 +53,31 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			stroke = this._stroke = this._createElement('stroke');
 			stroke.endcap = 'round';
 			container.appendChild(stroke);
-		} else {
-			container.stroked = false;
 		}
+
 		if (this.options.fill) {
-			container.filled = true;
 			fill = this._fill = this._createElement('fill');
 			container.appendChild(fill);
-		} else {
-			container.filled = false;
 		}
+
 		this._updateStyle();
 	},
 
 	_updateStyle: function () {
 		var stroke = this._stroke,
 			fill = this._fill,
-			options = this.options;
+			options = this.options,
+			container = this._container;
+
+		container.stroked = options.stroke;
+		container.filled = options.fill;
 
 		if (options.stroke) {
 			stroke.weight  = options.weight + 'px';
 			stroke.color   = options.color;
 			stroke.opacity = options.opacity;
 		}
+
 		if (options.fill) {
 			fill.color   = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
