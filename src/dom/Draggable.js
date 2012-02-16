@@ -127,11 +127,12 @@ L.Draggable = L.Class.extend({
 
 	_setMovingCursor: function () {
 		this._bodyCursor = document.body.style.cursor;
-		document.body.style.cursor = 'move';
+		this._dragStartTarget.style.cursor = document.body.style.cursor = 'move';
 	},
 
 	_restoreCursor: function () {
 		document.body.style.cursor = this._bodyCursor;
+		this._dragStartTarget.style.cursor = '';
 	},
 
 	_simulateEvent: function (type, e) {
