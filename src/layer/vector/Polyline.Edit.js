@@ -98,6 +98,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 		this._poly.spliceLatLngs(i, 1);
 		this._updateIndexes(i, -1);
+		this._poly.fire('edit');
 	},
 
 	_updateIndexes: function (index, delta) {
@@ -124,6 +125,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
+			this._poly.fire('edit');
 
 			marker.setOpacity(1);
 
