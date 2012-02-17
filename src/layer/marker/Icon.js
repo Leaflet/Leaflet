@@ -21,7 +21,7 @@ L.Icon = L.Class.extend({
 	},
 
 	createShadow: function () {
-		return this._createIcon('shadow');
+		return this.options.shadowUrl ? this._createIcon('shadow') : null;
 	},
 
 	_createIcon: function (name) {
