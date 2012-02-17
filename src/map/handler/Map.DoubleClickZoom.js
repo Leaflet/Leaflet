@@ -5,7 +5,6 @@
 L.Map.DoubleClickZoom = L.Handler.extend({
 	addHooks: function () {
 		this._map.on('dblclick', this._onDoubleClick);
-		// TODO remove 3d argument?
 	},
 
 	removeHooks: function () {

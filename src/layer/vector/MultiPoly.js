@@ -25,6 +25,8 @@
 				while (i < len) {
 					this.addLayer(new Klass(latlngs[i++], this._options));
 				}
+
+				return this;
 			}
 		});
 	}

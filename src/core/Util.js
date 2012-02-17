@@ -104,5 +104,7 @@ L.Util = {
 			}
 			return value;
 		});
-	}
+	},
+
+	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };

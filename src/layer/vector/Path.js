@@ -21,10 +21,7 @@ L.Path = L.Class.extend({
 		fillColor: null, //same as color by default
 		fillOpacity: 0.2,
 
-		clickable: true,
-
-		// TODO remove this, as all paths now update on moveend
-		updateOnMoveEnd: true
+		clickable: true
 	},
 
 	initialize: function (options) {
@@ -39,10 +36,9 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		map.on('viewreset', this.projectLatlngs, this);
-
-		this._updateTrigger = this.options.updateOnMoveEnd ? 'moveend' : 'viewreset';
-		map.on(this._updateTrigger, this._updatePath, this);
+		map
+			.on('viewreset', this.projectLatlngs, this)
+			.on('moveend', this._updatePath, this);
 	},
 
 	onRemove: function (map) {
@@ -50,8 +46,9 @@ L.Path = L.Class.extend({
 
 		map._pathRoot.removeChild(this._container);
 
-		map.off('viewreset', this.projectLatlngs, this);
-		map.off(this._updateTrigger, this._updatePath, this);
+		map
+			.off('viewreset', this.projectLatlngs, this)
+			.off('moveend', this._updatePath, this);
 	},
 
 	projectLatlngs: function () {
@@ -60,17 +57,20 @@ L.Path = L.Class.extend({
 
 	setStyle: function (style) {
 		L.Util.setOptions(this, style);
+
 		if (this._container) {
 			this._updateStyle();
 		}
+
 		return this;
 	},
 
-	_redraw: function () {
+	redraw: function () {
 		if (this._map) {
 			this.projectLatlngs();
 			this._updatePath();
 		}
+		return this;
 	}
 });
 
@@ -78,9 +78,8 @@ L.Map.include({
 	_updatePathViewport: function () {
 		var p = L.Path.CLIP_PADDING,
 			size = this.getSize(),
-			//TODO this._map._getMapPanePos()
 			panePos = L.DomUtil.getPosition(this._mapPane),
-			min = panePos.multiplyBy(-1).subtract(size.multiplyBy(p)),
+			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)),
 			max = min.add(size.multiplyBy(1 + p * 2));
 
 		this._pathViewport = new L.Bounds(min, max);
