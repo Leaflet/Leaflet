@@ -93,7 +93,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		if (!newTileBg.transition) {
 			// TODO move to Map options
 			newTileBg.transition = new L.Transition(this._tileBg, {
-				duration: 0.3,
+				duration: 0.25,
 				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
 			});
 			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
