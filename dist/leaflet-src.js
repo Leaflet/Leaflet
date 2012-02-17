@@ -1198,6 +1198,18 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
+	addHandler: function (name, HandlerClass) {
+		if (!HandlerClass) { return; }
+
+		this[name] = new HandlerClass(this);
+
+		if (this.options[name]) {
+			this[name].enable();
+		}
+
+		return this;
+	},
+
 
 	// public methods for getting map state
 
@@ -1513,24 +1525,12 @@ L.Map = L.Class.extend({
 	},
 
 	_initInteraction: function () {
-		// TODO ugly, refactor to move to corresponding handler classes
-		var handlers = {
-			dragging: L.Map.Drag,
-			touchZoom: L.Map.TouchZoom,
-			doubleClickZoom: L.Map.DoubleClickZoom,
-			scrollWheelZoom: L.Map.ScrollWheelZoom,
-			boxZoom: L.Map.BoxZoom
-		};
-
-		var i;
-		for (i in handlers) {
-			if (handlers.hasOwnProperty(i) && handlers[i]) {
-				this[i] = new handlers[i](this);
-				if (this.options[i]) {
-					this[i].enable();
-				}
-			}
-		}
+		this
+			.addHandler('dragging', L.Map.Drag)
+			.addHandler('touchZoom', L.Map.TouchZoom)
+			.addHandler('doubleClickZoom', L.Map.DoubleClickZoom)
+			.addHandler('scrollWheelZoom', L.Map.ScrollWheelZoom)
+			.addHandler('boxZoom', L.Map.BoxZoom);
 	},
 
 	_onTileLayerLoad: function () {
@@ -2454,6 +2454,7 @@ L.Popup = L.Class.extend({
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
+		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
@@ -2536,6 +2537,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
+		L.DomEvent.addListener(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -2567,7 +2569,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		var container = this._container;
+		var container = this._contentNode;
 
 		container.style.width = '';
 		container.style.whiteSpace = 'nowrap';
@@ -2579,7 +2581,20 @@ L.Popup = L.Class.extend({
 		container.style.width = (width + 1) + 'px';
 		container.style.whiteSpace = '';
 
-		this._containerWidth = container.offsetWidth;
+		container.style.height = '';
+
+		var height = container.offsetHeight,
+			maxHeight = this.options.maxHeight,
+			scrolledClass = ' leaflet-popup-scrolled';
+
+		if (maxHeight && height > maxHeight) {
+			container.style.height = maxHeight + 'px';
+			container.className += scrolledClass;
+		} else {
+			container.className = container.className.replace(scrolledClass, '');
+		}
+
+		this._containerWidth = this._container.offsetWidth;
 	},
 
 	_updatePosition: function () {
@@ -5794,7 +5809,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 		if (!this._panTransition) {
 			// TODO make duration configurable
-			this._panTransition = new L.Transition(this._mapPane, {duration: 0.3});
+			this._panTransition = new L.Transition(this._mapPane, {duration: 0.25});
 
 			this._panTransition.on('step', this._onPanTransitionStep, this);
 			this._panTransition.on('end', this._onPanTransitionEnd, this);
@@ -5929,7 +5944,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		if (!newTileBg.transition) {
 			// TODO move to Map options
 			newTileBg.transition = new L.Transition(this._tileBg, {
-				duration: 0.3,
+				duration: 0.25,
 				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
 			});
 			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);

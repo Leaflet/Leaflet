@@ -12,6 +12,10 @@ Leaflet Changelog
 
 ### Improvements
 
+#### Usabiliy improvements
+
+ * Slightly improved default popup styling.
+
 #### Breaking API changes
 
  * Converted `Icon` properties (like `iconUrl`) to options, changed constructor signature to `Icon(options)`.
@@ -26,15 +30,18 @@ Leaflet Changelog
  * Added `Marker` `opacity` option.
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
  * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
+ * Added `Popup` `maxHeight` option that makes content inside the popup scrolled if it doesn't fit the specified max height.
  * Made controls implementation easier (now more magic happens under the hood).
  * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
  * Added `containerPoint` property to `MouseEvent`. [#413](https://github.com/CloudMade/Leaflet/issues/413)
  * Added `LatLngBounds` `pad` method that returns bounds extended by a percentage (by [@jacobtoye](https://github.com/jacobtoye)). [#492](https://github.com/CloudMade/Leaflet/pull/492)
  * Added `contextmenu` event to vector layers (by [@ErrorProne](https://github.com/ErrorProne)). [#500](https://github.com/CloudMade/Leaflet/pull/500)
  * Added chaining to `DomEvent` methods.
+ * Added `Map` `addHandler` method.
 
 ### Bug fixes
 
+ * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
  * Fixed a bug where popup size was calculated incorrectly in IE.
  * Fixed a bug where cursor would flicker when dragging a marker.
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
