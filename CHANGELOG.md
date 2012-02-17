@@ -22,8 +22,9 @@ Leaflet Changelog
  * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
  * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
+ * Changed popup `minWidth` and `maxWidth` options to be applied to content element, not the whole popup.
 
-#### API Improvements
+#### Other API improvements
 
  * Added `Icon` `className` option to assign a custom class to an icon.
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
