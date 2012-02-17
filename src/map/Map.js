@@ -271,6 +271,18 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
+	addHandler: function (name, HandlerClass) {
+		if (!HandlerClass) { return; }
+
+		this[name] = new HandlerClass(this);
+
+		if (this.options[name]) {
+			this[name].enable();
+		}
+
+		return this;
+	},
+
 
 	// public methods for getting map state
 
@@ -586,24 +598,12 @@ L.Map = L.Class.extend({
 	},
 
 	_initInteraction: function () {
-		// TODO ugly, refactor to move to corresponding handler classes
-		var handlers = {
-			dragging: L.Map.Drag,
-			touchZoom: L.Map.TouchZoom,
-			doubleClickZoom: L.Map.DoubleClickZoom,
-			scrollWheelZoom: L.Map.ScrollWheelZoom,
-			boxZoom: L.Map.BoxZoom
-		};
-
-		var i;
-		for (i in handlers) {
-			if (handlers.hasOwnProperty(i) && handlers[i]) {
-				this[i] = new handlers[i](this);
-				if (this.options[i]) {
-					this[i].enable();
-				}
-			}
-		}
+		this
+			.addHandler('dragging', L.Map.Drag)
+			.addHandler('touchZoom', L.Map.TouchZoom)
+			.addHandler('doubleClickZoom', L.Map.DoubleClickZoom)
+			.addHandler('scrollWheelZoom', L.Map.ScrollWheelZoom)
+			.addHandler('boxZoom', L.Map.BoxZoom);
 	},
 
 	_onTileLayerLoad: function () {
