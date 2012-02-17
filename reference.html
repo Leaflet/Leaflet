@@ -2040,6 +2040,11 @@ map.addLayer(geojson);</code></pre>
 				<td><code>Boolean</code></td>
 				<td>Returns <code>true</code> if the rectangle is equivalent (within a small margin of error) to the given bounds.</td>
 			</tr>
+			<tr>
+				<td><code>toBBoxString()</code></td>
+				<td><code>String</code></td>
+				<td>Returns a string with bounding box coordinates in a "southwest_lng,southwest_lat,northeast_lng,northeast_lat" format. Useful for sending requests to web services that return geo data.</td>
+			</tr>
 		</table>
 
 
