@@ -3,7 +3,9 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.4 (ongoing development on master branch)
+## 0.4 (master)
+
+An in-progress version being developed on the master branch.
 
 ### Major features
 
