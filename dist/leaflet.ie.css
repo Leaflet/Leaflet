@@ -44,5 +44,5 @@
 .leaflet-control-layers-toggle {
 	}
 .leaflet-control-attribution, .leaflet-control-layers {
-	background: white;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#B2FFFFFF,endColorstr=#B2FFFFFF);
 	}
