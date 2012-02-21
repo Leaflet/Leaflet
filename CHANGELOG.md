@@ -16,11 +16,13 @@ An in-progress version being developed on the master branch.
 
 #### Usabiliy improvements
 
+ * Drag-panning now works even when there are markers in the starting point (helps on maps with lots of markers). [#506](https://github.com/CloudMade/Leaflet/issues/506)
  * Slightly improved default popup styling.
 
 #### Breaking API changes
 
  * Converted `Icon` properties (like `iconUrl`) to options, changed constructor signature to `Icon(options)`.
+ * Moved default marker icon options to `L.Icon.Default` class (which extends from `L.Icon`).
  * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
  * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
@@ -30,6 +32,7 @@ An in-progress version being developed on the master branch.
 
  * Added `Icon` `className` option to assign a custom class to an icon.
  * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
+ * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Marker` `opacity` option.
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
@@ -42,16 +45,23 @@ An in-progress version being developed on the master branch.
  * Added `contextmenu` event to vector layers (by [@ErrorProne](https://github.com/ErrorProne)). [#500](https://github.com/CloudMade/Leaflet/pull/500)
  * Added chaining to `DomEvent` methods.
  * Added `Map` `addHandler` method.
+ * Moved dragging cursor styles from JS code to CSS.
+ * Improved `Marker` `openPopup` not to raise an error if it doesn't have a popup. [#507](https://github.com/CloudMade/Leaflet/issues/507)
 
 ### Bug fixes
 
+ * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
+ * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
+ * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
+ * Fixed a bug where popup close button wouldn't work on manually added popups. [#423](https://github.com/CloudMade/Leaflet/issues/423)
  * Fixed a bug where popup size was calculated incorrectly in IE.
  * Fixed a bug where cursor would flicker when dragging a marker.
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
  * Fixed a bug where marker click event would stop working if you dragged it and then disabled dragging. [#434](https://github.com/CloudMade/Leaflet/issues/434)
  * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
  * Fixed a bug where vector layer `setStyle({stroke: false})` wouldn't remove stroke and the same for fill. [#441](https://github.com/CloudMade/Leaflet/issues/441)
+ * Fixed a bug where `Marker` `bindPopup` method wouldn't take `offset` option into account.
 
 ## 0.3.2 RC
 
@@ -116,6 +126,7 @@ An in-progress version being developed on the master branch.
 #### Breaking API changes
 
  * `shiftDragZoom` map option/property renamed to `boxZoom`.
+ * Removed `mouseEventToLatLng` method (bringed back in 0.4).
 
 #### Development workflow improvements
 

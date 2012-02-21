@@ -17,7 +17,11 @@
 .leaflet-container {
 	overflow: hidden;
 	}
-.leaflet-tile-pane, .leaflet-container {
+.leaflet-tile-pane,
+.leaflet-container,
+.leaflet-control-container,
+.leaflet-popup {
+	/* TODO make this configurable */
 	-webkit-transform: translate3d(0,0,0);
 	}
 .leaflet-tile,
@@ -33,6 +37,12 @@
 	}
 .leaflet-clickable {
 	cursor: pointer;
+	}
+.leaflet-dragging {
+	cursor: move;
+	}
+.leaflet-dragging .leaflet-clickable {
+	cursor: move;
 	}
 .leaflet-container img {
 	max-width: none !important;
@@ -241,7 +251,6 @@ a.leaflet-active {
 .leaflet-popup {
 	position: absolute;
 	text-align: center;
-	-webkit-transform: translate3d(0,0,0);
 	}
 .leaflet-popup-content-wrapper {
 	padding: 1px;

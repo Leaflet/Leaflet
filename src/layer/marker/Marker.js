@@ -7,7 +7,7 @@ L.Marker = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
-		icon: new L.Icon(),
+		icon: new L.Icon.Default(),
 		title: '',
 		clickable: true,
 		draggable: false,
@@ -157,12 +157,15 @@ L.Marker = L.Class.extend({
 	_onMouseClick: function (e) {
 		L.DomEvent.stopPropagation(e);
 		if (this.dragging && this.dragging.moved()) { return; }
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this.fire(e.type);
 	},
 
 	_fireMouseEvent: function (e) {
 		this.fire(e.type);
-		L.DomEvent.stopPropagation(e);
+		if (e.type !== 'mousedown') {
+			L.DomEvent.stopPropagation(e);
+		}
 	},
 
 	setOpacity: function (opacity) {

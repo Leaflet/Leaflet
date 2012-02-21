@@ -26,6 +26,8 @@
 
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
 
+		//map.on('click', function () { alert('hi'); });
+
 		var markers = new L.FeatureGroup();
 
 		function populate() {

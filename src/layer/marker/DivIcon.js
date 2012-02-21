@@ -1,8 +1,10 @@
 L.DivIcon = L.Icon.extend({
 	options: {
-		iconSize: new L.Point(12, 12),
-		iconAnchor: null,
-		popupAnchor: new L.Point(0, -8),
+		iconSize: new L.Point(12, 12), // also can be set through CSS
+		/*
+		iconAnchor: (Point)
+		popupAnchor: (Point)
+		*/
 		className: 'leaflet-div-icon'
 	},
 

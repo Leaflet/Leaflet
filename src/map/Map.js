@@ -390,6 +390,10 @@ L.Map = L.Class.extend({
 		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 
+	mouseEventToLatLng: function (e) { // (MouseEvent)
+		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
+	},
+
 	containerPointToLayerPoint: function (point) { // (Point)
 		return point.subtract(L.DomUtil.getPosition(this._mapPane));
 	},

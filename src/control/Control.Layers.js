@@ -53,8 +53,11 @@ L.Control.Layers = L.Control.extend({
 
 	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
+
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(this._container);
+		} else {
+			L.DomEvent.addListener(this._container, 'click', L.DomEvent.stopPropagation);
 		}
 
 		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');

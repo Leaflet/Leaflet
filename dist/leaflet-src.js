@@ -1317,6 +1317,10 @@ L.Map = L.Class.extend({
 		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 
+	mouseEventToLatLng: function (e) { // (MouseEvent)
+		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
+	},
+
 	containerPointToLayerPoint: function (point) { // (Point)
 		return point.subtract(L.DomUtil.getPosition(this._mapPane));
 	},
@@ -2183,15 +2187,14 @@ L.ImageOverlay = L.Class.extend({
 
 L.Icon = L.Class.extend({
 	options: {
-		iconUrl: L.ROOT_URL + 'images/marker.png',
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
-
-		shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
-		shadowSize: new L.Point(41, 41),
-		shadowOffset: new L.Point(0, 0),
-
+		/*
+		iconUrl: (String) (required)
+		iconSize: (Point) (can be set through CSS)
+		iconAnchor: (Point) (centered by default if size is specified, can be set in CSS with negative margins)
+		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
+		shadowUrl: (Point) (no shadow by default)
+		shadowSize: (Point)
+		*/
 		className: ''
 	},
 
@@ -2204,7 +2207,7 @@ L.Icon = L.Class.extend({
 	},
 
 	createShadow: function () {
-		return this._createIcon('shadow');
+		return this.options.shadowUrl ? this._createIcon('shadow') : null;
 	},
 
 	_createIcon: function (name) {
@@ -2216,18 +2219,24 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 			size = options[name + 'Size'],
-			anchor = options.iconAnchor || size.divideBy(2, true);
+			anchor = options.iconAnchor;
 
-		if (name === 'shadow') {
+		if (!anchor && size) {
+			anchor = size.divideBy(2, true);
+		}
+
+		if (name === 'shadow' && anchor && options.shadowOffset) {
 			anchor._add(options.shadowOffset);
 		}
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className;
 
-		img.style.marginLeft = (-anchor.x) + 'px';
-		img.style.marginTop  = (-anchor.y) + 'px';
+		if (anchor) {
+			img.style.marginLeft = (-anchor.x) + 'px';
+			img.style.marginTop  = (-anchor.y) + 'px';
+		}
 
-		if (options.iconSize) {
+		if (size) {
 			img.style.width  = size.x + 'px';
 			img.style.height = size.y + 'px';
 		}
@@ -2246,6 +2255,18 @@ L.Icon = L.Class.extend({
 	}
 });
 
+L.Icon.Default = L.Icon.extend({
+	options: {
+		iconUrl: L.ROOT_URL + 'images/marker.png',
+		iconSize: new L.Point(25, 41),
+		iconAnchor: new L.Point(13, 41),
+		popupAnchor: new L.Point(0, -33),
+
+		shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
+		shadowSize: new L.Point(41, 41)
+	}
+});
+
 
 /*
  * L.Marker is used to display clickable/draggable icons on the map.
@@ -2256,7 +2277,7 @@ L.Marker = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
-		icon: new L.Icon(),
+		icon: new L.Icon.Default(),
 		title: '',
 		clickable: true,
 		draggable: false,
@@ -2406,12 +2427,15 @@ L.Marker = L.Class.extend({
 	_onMouseClick: function (e) {
 		L.DomEvent.stopPropagation(e);
 		if (this.dragging && this.dragging.moved()) { return; }
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this.fire(e.type);
 	},
 
 	_fireMouseEvent: function (e) {
 		this.fire(e.type);
-		L.DomEvent.stopPropagation(e);
+		if (e.type !== 'mousedown') {
+			L.DomEvent.stopPropagation(e);
+		}
 	},
 
 	setOpacity: function (opacity) {
@@ -2429,9 +2453,11 @@ L.Marker = L.Class.extend({
 
 L.DivIcon = L.Icon.extend({
 	options: {
-		iconSize: new L.Point(12, 12),
-		iconAnchor: null,
-		popupAnchor: new L.Point(0, -8),
+		iconSize: new L.Point(12, 12), // also can be set through CSS
+		/*
+		iconAnchor: (Point)
+		popupAnchor: (Point)
+		*/
 		className: 'leaflet-div-icon'
 	},
 
@@ -2480,6 +2506,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+
 		if (map.options.closePopupOnClick) {
 			map.on('preclick', this._close, this);
 		}
@@ -2495,7 +2522,7 @@ L.Popup = L.Class.extend({
 		L.Util.falseFn(this._container.offsetWidth);
 
 		map.off('viewreset', this._updatePosition, this)
-		   .off('click', this._close, this);
+		   .off('preclick', this._close, this);
 
 		this._container.style.opacity = '0';
 
@@ -2515,9 +2542,9 @@ L.Popup = L.Class.extend({
 	},
 
 	_close: function () {
-		// TODO popup should be able to close itself
 		if (this._map) {
-			this._map.closePopup();
+			this._map._popup = null;
+			this._map.removeLayer(this);
 		}
 	},
 
@@ -2654,9 +2681,8 @@ L.Popup = L.Class.extend({
 
 L.Marker.include({
 	openPopup: function () {
-		this._popup.setLatLng(this._latlng);
-
-		if (this._map) {
+		if (this._popup && this._map) {
+			this._popup.setLatLng(this._latlng);
 			this._map.openPopup(this._popup);
 		}
 
@@ -2671,9 +2697,13 @@ L.Marker.include({
 	},
 
 	bindPopup: function (content, options) {
-		options = L.Util.extend({
-			offset: this.options.icon.options.popupAnchor
-		}, options);
+		var anchor = this.options.icon.options.popupAnchor || new L.Point(0, 0);
+
+		if (options && options.offset) {
+			anchor = anchor.add(options.offset);
+		}
+
+		options = L.Util.extend({offset: anchor}, options);
 
 		if (!this._popup) {
 			this.on('click', this.openPopup, this);
@@ -4407,7 +4437,10 @@ L.Draggable = L.Class.extend({
 			return;
 		}
 
+		this._simulateClick = true;
+
 		if (e.touches && e.touches.length > 1) {
+			this._simulateClick = false;
 			return;
 		}
 
@@ -4465,7 +4498,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
-		if (e.changedTouches) {
+		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
 				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
@@ -4494,13 +4527,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_setMovingCursor: function () {
-		this._bodyCursor = document.body.style.cursor;
-		this._dragStartTarget.style.cursor = document.body.style.cursor = 'move';
+		document.body.className += ' leaflet-dragging';
 	},
 
 	_restoreCursor: function () {
-		document.body.style.cursor = this._bodyCursor;
-		this._dragStartTarget.style.cursor = '';
+		document.body.className = document.body.className.replace(/ leaflet-dragging/g, '');
 	},
 
 	_simulateEvent: function (type, e) {
@@ -4767,7 +4798,7 @@ L.Map.TouchZoom = L.Handler.extend({
 	_onTouchStart: function (e) {
 		var map = this._map;
 
-		if (!e.touches || e.touches.length !== 2 || map._animatingZoom) { return; }
+		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
 		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
 			p2 = map.mouseEventToContainerPoint(e.touches[1]),
@@ -4793,6 +4824,14 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var map = this._map;
 
+		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
+			p2 = map.mouseEventToContainerPoint(e.touches[1]);
+
+		this._scale = p1.distanceTo(p2) / this._startDist;
+		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
+
+		if (this._scale === 1) { return; }
+
 		if (!this._moved) {
 			map._mapPane.className += ' leaflet-zoom-anim';
 
@@ -4803,12 +4842,6 @@ L.Map.TouchZoom = L.Handler.extend({
 
 			this._moved = true;
 		}
-
-		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
-			p2 = map.mouseEventToContainerPoint(e.touches[1]);
-
-		this._scale = p1.distanceTo(p2) / this._startDist;
-		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
 
 		// Used 2 translates instead of transform-origin because of a very strange bug -
 		// it didn't count the origin on the first touch-zoom but worked correctly afterwards
@@ -5259,9 +5292,7 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 		link.className = className;
 
-		if (!L.Browser.touch) {
-			L.DomEvent.disableClickPropagation(link);
-		}
+		L.DomEvent.addListener(link, 'click', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
 		L.DomEvent.addListener(link, 'click', fn, context);
 
@@ -5396,8 +5427,11 @@ L.Control.Layers = L.Control.extend({
 
 	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
+
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(this._container);
+		} else {
+			L.DomEvent.addListener(this._container, 'click', L.DomEvent.stopPropagation);
 		}
 
 		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
