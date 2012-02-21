@@ -53,6 +53,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
  * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
  * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
+ * Fixed a regression where removeLayer would not remove corresponding attribution. [#488](https://github.com/CloudMade/Leaflet/issues/488)
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
  * Fixed a bug where popup close button wouldn't work on manually added popups. [#423](https://github.com/CloudMade/Leaflet/issues/423)
  * Fixed a bug where popup size was calculated incorrectly in IE.
@@ -62,10 +63,6 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
  * Fixed a bug where vector layer `setStyle({stroke: false})` wouldn't remove stroke and the same for fill. [#441](https://github.com/CloudMade/Leaflet/issues/441)
  * Fixed a bug where `Marker` `bindPopup` method wouldn't take `offset` option into account.
-
-## 0.3.2 RC
-
- * Fixed a regression where removeLayer would not remove corresponding attribution. [#488](https://github.com/CloudMade/Leaflet/issues/488)
 
 ## 0.3.1 (February 14, 2012)
 
