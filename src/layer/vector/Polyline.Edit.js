@@ -12,14 +12,18 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		if (!this._markerGroup) {
-			this._initMarkers();
+		if (this._poly._map) {
+			if (!this._markerGroup) {
+				this._initMarkers();
+			}
+			this._poly._map.addLayer(this._markerGroup);
 		}
-		this._poly._map.addLayer(this._markerGroup);
 	},
 
 	removeHooks: function () {
-		this._poly._map.removeLayer(this._markerGroup);
+		if (this._poly._map) {
+			this._poly._map.removeLayer(this._markerGroup);
+		}
 	},
 
 	updateMarkers: function () {
