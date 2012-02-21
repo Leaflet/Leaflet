@@ -12,5 +12,15 @@ L.Rectangle = L.Polygon.extend({
 			latLngBounds.getSouthWest()
 		];
 		L.Polygon.prototype.initialize.call(this, latlngs, options);
+	},
+
+	setBounds: function (latLngBounds) {
+		this.setLatLngs([
+			latLngBounds.getSouthWest(),
+			latLngBounds.getNorthWest(),
+			latLngBounds.getNorthEast(),
+			latLngBounds.getSouthEast(),
+			latLngBounds.getSouthWest()
+		]);
 	}
 });
