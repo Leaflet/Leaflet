@@ -5,6 +5,8 @@ Leaflet Changelog
 
 ## 0.4 (master)
 
+An in-progress version being developed on the master branch.
+
 ### Major features
 
  * Added **polyline and polygon editing**. [#174](https://github.com/CloudMade/Leaflet/issues/174)
@@ -27,6 +29,7 @@ Leaflet Changelog
 #### Other API improvements
 
  * Added `Icon` `className` option to assign a custom class to an icon.
+ * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Marker` `opacity` option.
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
