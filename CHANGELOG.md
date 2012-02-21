@@ -46,6 +46,7 @@ An in-progress version being developed on the master branch.
  * Added chaining to `DomEvent` methods.
  * Added `Map` `addHandler` method.
  * Moved dragging cursor styles from JS code to CSS.
+ * Improved `Marker` `openPopup` not to raise an error if it doesn't have a popup. [#507](https://github.com/CloudMade/Leaflet/issues/507)
 
 ### Bug fixes
 
