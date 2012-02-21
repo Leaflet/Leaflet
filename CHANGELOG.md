@@ -116,6 +116,7 @@ An in-progress version being developed on the master branch.
 #### Breaking API changes
 
  * `shiftDragZoom` map option/property renamed to `boxZoom`.
+ * Removed `mouseEventToLatLng` method (bringed back in 0.4).
 
 #### Development workflow improvements
 
