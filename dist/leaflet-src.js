@@ -2506,6 +2506,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+
 		if (map.options.closePopupOnClick) {
 			map.on('preclick', this._close, this);
 		}
@@ -2521,7 +2522,7 @@ L.Popup = L.Class.extend({
 		L.Util.falseFn(this._container.offsetWidth);
 
 		map.off('viewreset', this._updatePosition, this)
-		   .off('click', this._close, this);
+		   .off('preclick', this._close, this);
 
 		this._container.style.opacity = '0';
 
@@ -2541,9 +2542,9 @@ L.Popup = L.Class.extend({
 	},
 
 	_close: function () {
-		// TODO popup should be able to close itself
 		if (this._map) {
-			this._map.closePopup();
+			this._map._popup = null;
+			this._map.removeLayer(this);
 		}
 	},
 
@@ -4437,7 +4438,10 @@ L.Draggable = L.Class.extend({
 			return;
 		}
 
+		this._simulateClick = true;
+
 		if (e.touches && e.touches.length > 1) {
+			this._simulateClick = false;
 			return;
 		}
 
@@ -4495,7 +4499,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
-		if (e.changedTouches) {
+		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
 				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
@@ -4795,7 +4799,7 @@ L.Map.TouchZoom = L.Handler.extend({
 	_onTouchStart: function (e) {
 		var map = this._map;
 
-		if (!e.touches || e.touches.length !== 2 || map._animatingZoom) { return; }
+		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
 		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
 			p2 = map.mouseEventToContainerPoint(e.touches[1]),
@@ -4821,6 +4825,14 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var map = this._map;
 
+		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
+			p2 = map.mouseEventToContainerPoint(e.touches[1]);
+
+		this._scale = p1.distanceTo(p2) / this._startDist;
+		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
+
+		if (this._scale === 1) { return; }
+
 		if (!this._moved) {
 			map._mapPane.className += ' leaflet-zoom-anim';
 
@@ -4831,12 +4843,6 @@ L.Map.TouchZoom = L.Handler.extend({
 
 			this._moved = true;
 		}
-
-		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
-			p2 = map.mouseEventToContainerPoint(e.touches[1]);
-
-		this._scale = p1.distanceTo(p2) / this._startDist;
-		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
 
 		// Used 2 translates instead of transform-origin because of a very strange bug -
 		// it didn't count the origin on the first touch-zoom but worked correctly afterwards
@@ -5287,9 +5293,7 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 		link.className = className;
 
-		if (!L.Browser.touch) {
-			L.DomEvent.disableClickPropagation(link);
-		}
+		L.DomEvent.addListener(link, 'click', L.DomEvent.stopPropagation);
 		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
 		L.DomEvent.addListener(link, 'click', fn, context);
 
@@ -5424,8 +5428,11 @@ L.Control.Layers = L.Control.extend({
 
 	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
+
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(this._container);
+		} else {
+			L.DomEvent.addListener(this._container, 'click', L.DomEvent.stopPropagation);
 		}
 
 		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');

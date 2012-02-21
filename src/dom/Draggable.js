@@ -39,7 +39,10 @@ L.Draggable = L.Class.extend({
 			return;
 		}
 
+		this._simulateClick = true;
+
 		if (e.touches && e.touches.length > 1) {
+			this._simulateClick = false;
 			return;
 		}
 
@@ -97,7 +100,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
-		if (e.changedTouches) {
+		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
 				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
