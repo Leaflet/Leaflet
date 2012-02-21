@@ -52,6 +52,7 @@ An in-progress version being developed on the master branch.
 
  * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
  * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
+ * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
  * Fixed a bug where popup close button wouldn't work on manually added popups. [#423](https://github.com/CloudMade/Leaflet/issues/423)
  * Fixed a bug where popup size was calculated incorrectly in IE.
