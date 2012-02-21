@@ -31,6 +31,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+
 		if (map.options.closePopupOnClick) {
 			map.on('preclick', this._close, this);
 		}
@@ -46,7 +47,7 @@ L.Popup = L.Class.extend({
 		L.Util.falseFn(this._container.offsetWidth);
 
 		map.off('viewreset', this._updatePosition, this)
-		   .off('click', this._close, this);
+		   .off('preclick', this._close, this);
 
 		this._container.style.opacity = '0';
 
@@ -66,9 +67,9 @@ L.Popup = L.Class.extend({
 	},
 
 	_close: function () {
-		// TODO popup should be able to close itself
 		if (this._map) {
-			this._map.closePopup();
+			this._map._popup = null;
+			this._map.removeLayer(this);
 		}
 	},
 

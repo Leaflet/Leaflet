@@ -50,6 +50,7 @@ An in-progress version being developed on the master branch.
 ### Bug fixes
 
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
+ * Fixed a bug where popup close button wouldn't work on manually added popups. [#423](https://github.com/CloudMade/Leaflet/issues/423)
  * Fixed a bug where popup size was calculated incorrectly in IE.
  * Fixed a bug where cursor would flicker when dragging a marker.
  * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
