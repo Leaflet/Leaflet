@@ -21,6 +21,7 @@ An in-progress version being developed on the master branch.
 #### Breaking API changes
 
  * Converted `Icon` properties (like `iconUrl`) to options, changed constructor signature to `Icon(options)`.
+ * Moved default marker icon options to `L.Icon.Default` class (which extends from `L.Icon`).
  * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
  * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
@@ -30,6 +31,7 @@ An in-progress version being developed on the master branch.
 
  * Added `Icon` `className` option to assign a custom class to an icon.
  * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
+ * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Marker` `opacity` option.
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
@@ -52,6 +54,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where marker click event would stop working if you dragged it and then disabled dragging. [#434](https://github.com/CloudMade/Leaflet/issues/434)
  * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
  * Fixed a bug where vector layer `setStyle({stroke: false})` wouldn't remove stroke and the same for fill. [#441](https://github.com/CloudMade/Leaflet/issues/441)
+ * Fixed a bug where `Marker` `bindPopup` method wouldn't take `offset` option into account.
 
 ## 0.3.2 RC
 

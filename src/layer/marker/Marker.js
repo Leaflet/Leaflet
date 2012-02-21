@@ -7,7 +7,7 @@ L.Marker = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
-		icon: new L.Icon(),
+		icon: new L.Icon.Default(),
 		title: '',
 		clickable: true,
 		draggable: false,

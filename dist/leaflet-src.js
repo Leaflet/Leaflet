@@ -1317,6 +1317,10 @@ L.Map = L.Class.extend({
 		return this.containerPointToLayerPoint(this.mouseEventToContainerPoint(e));
 	},
 
+	mouseEventToLatLng: function (e) { // (MouseEvent)
+		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
+	},
+
 	containerPointToLayerPoint: function (point) { // (Point)
 		return point.subtract(L.DomUtil.getPosition(this._mapPane));
 	},
@@ -2183,15 +2187,14 @@ L.ImageOverlay = L.Class.extend({
 
 L.Icon = L.Class.extend({
 	options: {
-		iconUrl: L.ROOT_URL + 'images/marker.png',
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
-
-		shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
-		shadowSize: new L.Point(41, 41),
-		shadowOffset: new L.Point(0, 0),
-
+		/*
+		iconUrl: (String) (required)
+		iconSize: (Point) (can be set through CSS)
+		iconAnchor: (Point) (centered by default if size is specified, can be set in CSS with negative margins)
+		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
+		shadowUrl: (Point) (no shadow by default)
+		shadowSize: (Point)
+		*/
 		className: ''
 	},
 
@@ -2204,7 +2207,7 @@ L.Icon = L.Class.extend({
 	},
 
 	createShadow: function () {
-		return this._createIcon('shadow');
+		return this.options.shadowUrl ? this._createIcon('shadow') : null;
 	},
 
 	_createIcon: function (name) {
@@ -2216,18 +2219,24 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 			size = options[name + 'Size'],
-			anchor = options.iconAnchor || size.divideBy(2, true);
+			anchor = options.iconAnchor;
 
-		if (name === 'shadow') {
+		if (!anchor && size) {
+			anchor = size.divideBy(2, true);
+		}
+
+		if (name === 'shadow' && anchor && options.shadowOffset) {
 			anchor._add(options.shadowOffset);
 		}
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className;
 
-		img.style.marginLeft = (-anchor.x) + 'px';
-		img.style.marginTop  = (-anchor.y) + 'px';
+		if (anchor) {
+			img.style.marginLeft = (-anchor.x) + 'px';
+			img.style.marginTop  = (-anchor.y) + 'px';
+		}
 
-		if (options.iconSize) {
+		if (size) {
 			img.style.width  = size.x + 'px';
 			img.style.height = size.y + 'px';
 		}
@@ -2246,6 +2255,18 @@ L.Icon = L.Class.extend({
 	}
 });
 
+L.Icon.Default = L.Icon.extend({
+	options: {
+		iconUrl: L.ROOT_URL + 'images/marker.png',
+		iconSize: new L.Point(25, 41),
+		iconAnchor: new L.Point(13, 41),
+		popupAnchor: new L.Point(0, -33),
+
+		shadowUrl: L.ROOT_URL + 'images/marker-shadow.png',
+		shadowSize: new L.Point(41, 41)
+	}
+});
+
 
 /*
  * L.Marker is used to display clickable/draggable icons on the map.
@@ -2256,7 +2277,7 @@ L.Marker = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
-		icon: new L.Icon(),
+		icon: new L.Icon.Default(),
 		title: '',
 		clickable: true,
 		draggable: false,
@@ -2429,9 +2450,11 @@ L.Marker = L.Class.extend({
 
 L.DivIcon = L.Icon.extend({
 	options: {
-		iconSize: new L.Point(12, 12),
-		iconAnchor: null,
-		popupAnchor: new L.Point(0, -8),
+		iconSize: new L.Point(12, 12), // also can be set through CSS
+		/*
+		iconAnchor: (Point)
+		popupAnchor: (Point)
+		*/
 		className: 'leaflet-div-icon'
 	},
 
@@ -2671,9 +2694,13 @@ L.Marker.include({
 	},
 
 	bindPopup: function (content, options) {
-		options = L.Util.extend({
-			offset: this.options.icon.options.popupAnchor
-		}, options);
+		var anchor = this.options.icon.options.popupAnchor || new L.Point(0, 0);
+
+		if (options && options.offset) {
+			anchor = anchor.add(options.offset);
+		}
+
+		options = L.Util.extend({offset: anchor}, options);
 
 		if (!this._popup) {
 			this.on('click', this.openPopup, this);
