@@ -13,6 +13,7 @@
 <body>
 
 	<div id="map" style="width: 500px; height: 500px;"></div>
+	<input type="button" value="Set blue rectangle bounds as current map extent." onclick="resetBounds();" />
 
 	<script type="text/javascript">
 
@@ -42,6 +43,10 @@
 		});
 
 		map.addLayer(rectangle).addLayer(styledRectangle);
+
+		function resetBounds() {
+			rectangle.setBounds(map.getBounds());
+		}
 
 	</script>
 </body>
