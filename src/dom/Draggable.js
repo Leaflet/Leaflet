@@ -126,13 +126,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_setMovingCursor: function () {
-		this._bodyCursor = document.body.style.cursor;
-		this._dragStartTarget.style.cursor = document.body.style.cursor = 'move';
+		document.body.className += ' leaflet-dragging';
 	},
 
 	_restoreCursor: function () {
-		document.body.style.cursor = this._bodyCursor;
-		this._dragStartTarget.style.cursor = '';
+		document.body.className = document.body.className.replace(/ leaflet-dragging/g, '');
 	},
 
 	_simulateEvent: function (type, e) {

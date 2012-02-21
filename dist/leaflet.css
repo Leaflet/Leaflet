@@ -34,6 +34,12 @@
 .leaflet-clickable {
 	cursor: pointer;
 	}
+.leaflet-dragging {
+	cursor: move;
+	}
+.leaflet-dragging .leaflet-clickable {
+	cursor: move;
+	}
 .leaflet-container img {
 	max-width: none !important;
 	}

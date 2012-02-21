@@ -16,6 +16,7 @@ An in-progress version being developed on the master branch.
 
 #### Usabiliy improvements
 
+ * Drag-panning now works even when there are markers in the starting point (helps on maps with lots of markers). [#506](https://github.com/CloudMade/Leaflet/issues/506)
  * Slightly improved default popup styling.
 
 #### Breaking API changes
@@ -44,6 +45,7 @@ An in-progress version being developed on the master branch.
  * Added `contextmenu` event to vector layers (by [@ErrorProne](https://github.com/ErrorProne)). [#500](https://github.com/CloudMade/Leaflet/pull/500)
  * Added chaining to `DomEvent` methods.
  * Added `Map` `addHandler` method.
+ * Moved dragging cursor styles from JS code to CSS.
 
 ### Bug fixes
 

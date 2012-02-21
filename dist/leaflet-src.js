@@ -2427,12 +2427,15 @@ L.Marker = L.Class.extend({
 	_onMouseClick: function (e) {
 		L.DomEvent.stopPropagation(e);
 		if (this.dragging && this.dragging.moved()) { return; }
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this.fire(e.type);
 	},
 
 	_fireMouseEvent: function (e) {
 		this.fire(e.type);
-		L.DomEvent.stopPropagation(e);
+		if (e.type !== 'mousedown') {
+			L.DomEvent.stopPropagation(e);
+		}
 	},
 
 	setOpacity: function (opacity) {
@@ -4521,13 +4524,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_setMovingCursor: function () {
-		this._bodyCursor = document.body.style.cursor;
-		this._dragStartTarget.style.cursor = document.body.style.cursor = 'move';
+		document.body.className += ' leaflet-dragging';
 	},
 
 	_restoreCursor: function () {
-		document.body.style.cursor = this._bodyCursor;
-		this._dragStartTarget.style.cursor = '';
+		document.body.className = document.body.className.replace(/ leaflet-dragging/g, '');
 	},
 
 	_simulateEvent: function (type, e) {
