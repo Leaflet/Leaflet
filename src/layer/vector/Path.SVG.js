@@ -107,7 +107,7 @@ L.Path = L.Path.extend({
 			latlng: latlng,
 			layerPoint: layerPoint,
 			containerPoint: containerPoint,
-			ctrlKey: e.ctrlKey
+			originalEvent : e
 		});
 
 		L.DomEvent.stopPropagation(e);
