@@ -91,6 +91,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		}
 
 		this._poly.redraw();
+                this._poly.fire('edit');
 	},
 
 	_onMarkerClick: function (e) {
