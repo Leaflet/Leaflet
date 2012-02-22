@@ -56,6 +56,11 @@ var deps = {
 		src: ['layer/marker/Icon.js', 'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
+	
+	MarkerClusterer: {
+		src: ['layer/marker/Marker.Clusterer.js', 'layer/marker/Marker.Cluster.js', 'layer/marker/Marker.Label.js'],
+		desc: 'combines multiple markers / points into groups on the map'
+	},
 
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],

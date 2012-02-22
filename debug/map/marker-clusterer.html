@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+	<button id="addPoints">Add 10 random points</button><br/>
+	<button id="clearPoints">Clear Clusters</button>
+
+	<script type="text/javascript">
+
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
+			latlng = new L.LatLng(50.5, 30.51),
+			
+			map = new L.Map('map', {center: latlng, zoom: 8, layers: [cloudmade]}),
+			clusterer = new L.Marker.Clusterer(),
+			markers = [];
+
+
+		map.addLayer(clusterer);
+        
+        clusterer.addMarkers(addRandomLatLngs(10));
+        
+        L.DomUtil.get('addPoints').onclick = injectPoints;
+        L.DomUtil.get('clearPoints').onclick = removePoints;
+        
+        function addRandomLatLngs (numToAdd) {
+            var loopCount = "number" === typeof numToAdd ? numToAdd : 10,
+                coords = [];
+            
+            for (var i = 0; i < loopCount; i++) {
+    			coords.push(getRandomLatLng(map));
+    		}
+    		
+    		return coords;
+        }
+        
+        function injectPoints () {
+            clusterer.addMarkers(addRandomLatLngs(10));
+        }
+        
+        function removePoints () {
+            clusterer.clearClusters();
+        }
+        
+	</script>
+</body>
+</html>
