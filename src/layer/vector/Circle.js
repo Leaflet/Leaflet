@@ -16,26 +16,34 @@ L.Circle = L.Path.extend({
 
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	setRadius: function (radius) {
 		this._mRadius = radius;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	projectLatlngs: function () {
-		var equatorLength = 40075017,
-			hLength = equatorLength * Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
-
-		var lngSpan = (this._mRadius / hLength) * 360,
-			latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngSpan, true),
+		var lngRadius = this._getLngRadius(),
+			latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius, true),
 			point2 = this._map.latLngToLayerPoint(latlng2);
 
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 		this._radius = Math.round(this._point.x - point2.x);
+	},
+
+	getBounds: function () {
+		var map = this._map,
+			delta = this._radius * Math.cos(Math.PI / 4),
+			point = map.project(this._latlng),
+			swPoint = new L.Point(point.x - delta, point.y + delta),
+			nePoint = new L.Point(point.x + delta, point.y - delta),
+			zoom = map.getZoom(),
+			sw = map.unproject(swPoint, zoom, true),
+			ne = map.unproject(nePoint, zoom, true);
+
+		return new L.LatLngBounds(sw, ne);
 	},
 
 	getPathString: function () {
@@ -55,6 +63,13 @@ L.Circle = L.Path.extend({
 			r = Math.round(r);
 			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
 		}
+	},
+
+	_getLngRadius: function () {
+		var equatorLength = 40075017,
+			hLength = equatorLength * Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
+
+		return (this._mRadius / hLength) * 360;
 	},
 
 	_checkIfEmpty: function () {

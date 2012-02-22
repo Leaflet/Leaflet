@@ -5,10 +5,12 @@ L.Popup = L.Class.extend({
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
+		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
-		autoPanPadding: new L.Point(5, 5)
+		autoPanPadding: new L.Point(5, 5),
+		className: ''
 	},
 
 	initialize: function (options, source) {
@@ -19,79 +21,83 @@ L.Popup = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
+
 		if (!this._container) {
 			this._initLayout();
 		}
 		this._updateContent();
 
 		this._container.style.opacity = '0';
+		map._panes.popupPane.appendChild(this._container);
 
-		this._map._panes.popupPane.appendChild(this._container);
-		this._map.on('viewreset', this._updatePosition, this);
+		map.on('viewreset', this._updatePosition, this);
 
-		if (this._map.options.closePopupOnClick) {
-			this._map.on('preclick', this._close, this);
+		if (map.options.closePopupOnClick) {
+			map.on('preclick', this._close, this);
 		}
 
 		this._update();
 
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
-
-		this._opened = true;
 	},
 
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
+
 		L.Util.falseFn(this._container.offsetWidth);
 
-		map.off('viewreset', this._updatePosition, this);
-		map.off('click', this._close, this);
+		map.off('viewreset', this._updatePosition, this)
+		   .off('preclick', this._close, this);
 
 		this._container.style.opacity = '0';
 
-		this._opened = false;
+		this._map = null;
 	},
 
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
-		if (this._opened) {
-			this._update();
-		}
+		this._update();
 		return this;
 	},
 
 	setContent: function (content) {
 		this._content = content;
-		if (this._opened) {
-			this._update();
-		}
+		this._update();
 		return this;
 	},
 
 	_close: function () {
-		if (this._opened) {
-			this._map.closePopup();
+		if (this._map) {
+			this._map._popup = null;
+			this._map.removeLayer(this);
 		}
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-popup');
+		var prefix = 'leaflet-popup',
+			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className),
+			closeButton;
 
 		if (this.options.closeButton) {
-			this._closeButton = L.DomUtil.create('a', 'leaflet-popup-close-button', this._container);
-			this._closeButton.href = '#close';
-			L.DomEvent.addListener(this._closeButton, 'click', this._onCloseButtonClick, this);
+			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
+			closeButton.href = '#close';
+
+			L.DomEvent.addListener(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		this._wrapper = L.DomUtil.create('div', 'leaflet-popup-content-wrapper', this._container);
-		L.DomEvent.disableClickPropagation(this._wrapper);
-		this._contentNode = L.DomUtil.create('div', 'leaflet-popup-content', this._wrapper);
+		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
+		L.DomEvent.disableClickPropagation(wrapper);
 
-		this._tipContainer = L.DomUtil.create('div', 'leaflet-popup-tip-container', this._container);
-		this._tip = L.DomUtil.create('div', 'leaflet-popup-tip', this._tipContainer);
+		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
+		L.DomEvent.addListener(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
+
+		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
+		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
 	},
 
 	_update: function () {
+		if (!this._map) { return; }
+
 		this._container.style.visibility = 'hidden';
 
 		this._updateContent();
@@ -104,9 +110,7 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateContent: function () {
-		if (!this._content) {
-			return;
-		}
+		if (!this._content) { return; }
 
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
@@ -117,14 +121,30 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		this._container.style.width = '';
-		this._container.style.whiteSpace = 'nowrap';
+		var container = this._contentNode;
 
-		var width = this._container.offsetWidth;
+		container.style.width = '';
+		container.style.whiteSpace = 'nowrap';
 
-		this._container.style.width = (width > this.options.maxWidth ?
-				this.options.maxWidth : (width < this.options.minWidth ? this.options.minWidth : width)) + 'px';
-		this._container.style.whiteSpace = '';
+		var width = container.offsetWidth;
+		width = Math.min(width, this.options.maxWidth);
+		width = Math.max(width, this.options.minWidth);
+
+		container.style.width = (width + 1) + 'px';
+		container.style.whiteSpace = '';
+
+		container.style.height = '';
+
+		var height = container.offsetHeight,
+			maxHeight = this.options.maxHeight,
+			scrolledClass = ' leaflet-popup-scrolled';
+
+		if (maxHeight && height > maxHeight) {
+			container.style.height = maxHeight + 'px';
+			container.className += scrolledClass;
+		} else {
+			container.className = container.className.replace(scrolledClass, '');
+		}
 
 		this._containerWidth = this._container.offsetWidth;
 	},
@@ -140,24 +160,26 @@ L.Popup = L.Class.extend({
 	},
 
 	_adjustPan: function () {
-		if (!this.options.autoPan) {
-			return;
-		}
+		if (!this.options.autoPan) { return; }
 
-		var containerHeight = this._container.offsetHeight,
+		var map = this._map,
+			containerHeight = this._container.offsetHeight,
+			containerWidth = this._containerWidth,
+
 			layerPos = new L.Point(
 				this._containerLeft,
 				-containerHeight - this._containerBottom),
-			containerPos = this._map.layerPointToContainerPoint(layerPos),
+
+			containerPos = map.layerPointToContainerPoint(layerPos),
 			adjustOffset = new L.Point(0, 0),
-			padding = this.options.autoPanPadding,
-			size = this._map.getSize();
+			padding      = this.options.autoPanPadding,
+			size         = map.getSize();
 
 		if (containerPos.x < 0) {
 			adjustOffset.x = containerPos.x - padding.x;
 		}
-		if (containerPos.x + this._containerWidth > size.x) {
-			adjustOffset.x = containerPos.x + this._containerWidth - size.x + padding.x;
+		if (containerPos.x + containerWidth > size.x) {
+			adjustOffset.x = containerPos.x + containerWidth - size.x + padding.x;
 		}
 		if (containerPos.y < 0) {
 			adjustOffset.y = containerPos.y - padding.y;
@@ -167,7 +189,7 @@ L.Popup = L.Class.extend({
 		}
 
 		if (adjustOffset.x || adjustOffset.y) {
-			this._map.panBy(adjustOffset);
+			map.panBy(adjustOffset);
 		}
 	},
 

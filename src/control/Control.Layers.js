@@ -1,7 +1,8 @@
 
-L.Control.Layers = L.Class.extend({
+L.Control.Layers = L.Control.extend({
 	options: {
-		collapsed: !L.Browser.touch
+		collapsed: true,
+		position: 'topright'
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -27,14 +28,8 @@ L.Control.Layers = L.Class.extend({
 
 		this._initLayout();
 		this._update();
-	},
 
-	getContainer: function () {
 		return this._container;
-	},
-
-	getPosition: function () {
-		return L.Control.Position.TOP_RIGHT;
 	},
 
 	addBaseLayer: function (layer, name) {
@@ -58,7 +53,12 @@ L.Control.Layers = L.Class.extend({
 
 	_initLayout: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
-		L.DomEvent.disableClickPropagation(this._container);
+
+		if (!L.Browser.touch) {
+			L.DomEvent.disableClickPropagation(this._container);
+		} else {
+			L.DomEvent.addListener(this._container, 'click', L.DomEvent.stopPropagation);
+		}
 
 		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
 
@@ -70,8 +70,13 @@ L.Control.Layers = L.Class.extend({
 			link.href = '#';
 			link.title = 'Layers';
 
-			L.DomEvent.addListener(link, 'focus', this._expand, this);
-			L.DomEvent.addListener(this._map, L.Draggable.START, this._collapse, this);
+			if (L.Browser.touch) {
+				L.DomEvent.addListener(link, 'click', this._expand, this);
+				//L.DomEvent.disableClickPropagation(link);
+			} else {
+				L.DomEvent.addListener(link, 'focus', this._expand, this);
+			}
+			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
 
 			this._container.appendChild(link);

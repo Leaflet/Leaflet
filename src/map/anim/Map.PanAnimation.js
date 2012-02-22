@@ -1,6 +1,7 @@
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
+
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (this._loaded && !forceReset && this._layers) {
@@ -10,8 +11,8 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 			center = new L.LatLng(center.lat, center.lng);
 
 			var done = (zoomChanged ?
-						!!this._zoomToIfCenterInView && this._zoomToIfCenterInView(center, zoom, offset) :
-						this._panByIfClose(offset));
+					this._zoomToIfCenterInView && this._zoomToIfCenterInView(center, zoom, offset) :
+					this._panByIfClose(offset));
 
 			// exit if animated pan or zoom started
 			if (done) {
@@ -31,7 +32,8 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		}
 
 		if (!this._panTransition) {
-			this._panTransition = new L.Transition(this._mapPane, {duration: 0.3});
+			// TODO make duration configurable
+			this._panTransition = new L.Transition(this._mapPane, {duration: 0.25});
 
 			this._panTransition.on('step', this._onPanTransitionStep, this);
 			this._panTransition.on('end', this._onPanTransitionEnd, this);
@@ -64,6 +66,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	_offsetIsWithinView: function (offset, multiplyFactor) {
 		var m = multiplyFactor || 1,
 			size = this.getSize();
+
 		return (Math.abs(offset.x) <= size.x * m) &&
 				(Math.abs(offset.y) <= size.y * m);
 	}

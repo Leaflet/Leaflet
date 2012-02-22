@@ -62,6 +62,12 @@ var deps = {
 		desc: 'combines multiple markers / points into groups on the map'
 	},
 
+	DivIcon: {
+		src: ['layer/marker/DivIcon.js'],
+		deps: ['Marker'],
+		desc: 'Lightweight div-based icon for markers.'
+	},
+
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
@@ -89,6 +95,12 @@ var deps = {
 	PathVML: {
 		src: ['layer/vector/Path.VML.js'],
 		desc: 'VML fallback for vector rendering core (IE 6-8).'
+	},
+
+	PathCanvas: {
+		src: ['layer/vector/canvas/Path.Canvas.js'],
+		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
 	},
 
 	Polyline: {
@@ -121,13 +133,12 @@ var deps = {
 		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
-	PathCanvas: {
-		src: ['layer/vector/canvas/Path.Canvas.js',
-		      'layer/vector/canvas/Polyline.Canvas.js',
+	VectorsCanvas: {
+		src: ['layer/vector/canvas/Polyline.Canvas.js',
 		      'layer/vector/canvas/Polygon.Canvas.js',
 		      'layer/vector/canvas/Circle.Canvas.js'],
-		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
-		desc: 'Canvas fallback for vector layers (makes them work on Android 2+).'
+		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector layers (polygons, polylines, circles)'
 	},
 
 	GeoJSON: {
@@ -170,7 +181,14 @@ var deps = {
 
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
+		deps: ['Marker'],
 		desc: 'Makes markers draggable (by mouse or touch).'
+	},
+
+	PolyEdit: {
+		src: ['layer/vector/Polyline.Edit.js'],
+		deps: ['Polyline', 'DivIcon'],
+		desc: 'Polyline and polygon editing.'
 	},
 
 

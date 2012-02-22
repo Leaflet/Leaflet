@@ -1,9 +1,24 @@
 
-L.Control = {};
+L.Control = L.Class.extend({
+	options: {
+		position: 'topright'
+	},
 
-L.Control.Position = {
-	TOP_LEFT: 'topLeft',
-	TOP_RIGHT: 'topRight',
-	BOTTOM_LEFT: 'bottomLeft',
-	BOTTOM_RIGHT: 'bottomRight'
-};
+	initialize: function (options) {
+		L.Util.setOptions(this, options);
+	},
+
+	getPosition: function () {
+		return this.options.position;
+	},
+
+	setPosition: function (position) {
+		this.options.position = position;
+
+		if (this._map) {
+			this._map.removeControl(this);
+			this._map.addControl(this);
+		}
+	}
+});
+

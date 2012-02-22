@@ -1,18 +1,21 @@
-L.Control.Attribution = L.Class.extend({
+L.Control.Attribution = L.Control.extend({
+	options: {
+		position: 'bottomright'
+	},
+
+	initialize: function (prefix, options) {
+		L.Util.setOptions(this, options);
+
+		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
+		this._attributions = {};
+	},
+
 	onAdd: function (map) {
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
 		this._map = map;
-		this._prefix = 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
-		this._attributions = {};
 		this._update();
-	},
 
-	getPosition: function () {
-		return L.Control.Position.BOTTOM_RIGHT;
-	},
-
-	getContainer: function () {
 		return this._container;
 	},
 
@@ -25,7 +28,10 @@ L.Control.Attribution = L.Class.extend({
 		if (!text) {
 			return;
 		}
-		this._attributions[text] = true;
+		if (!this._attributions[text]) {
+			this._attributions[text] = 0;
+		}
+		this._attributions[text]++;
 		this._update();
 	},
 
@@ -33,7 +39,7 @@ L.Control.Attribution = L.Class.extend({
 		if (!text) {
 			return;
 		}
-		delete this._attributions[text];
+		this._attributions[text]--;
 		this._update();
 	},
 
@@ -45,7 +51,7 @@ L.Control.Attribution = L.Class.extend({
 		var attribs = [];
 
 		for (var i in this._attributions) {
-			if (this._attributions.hasOwnProperty(i)) {
+			if (this._attributions.hasOwnProperty(i) && this._attributions[i]) {
 				attribs.push(i);
 			}
 		}

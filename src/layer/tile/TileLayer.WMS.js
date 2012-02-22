@@ -9,37 +9,46 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		transparent: false
 	},
 
-	initialize: function (/*String*/ url, /*Object*/ options) {
+	initialize: function (url, options) { // (String, Object)
 		this._url = url;
 
-		this.wmsParams = L.Util.extend({}, this.defaultWmsParams);
-		this.wmsParams.width = this.wmsParams.height = this.options.tileSize;
+		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
+		wmsParams.width = wmsParams.height = this.options.tileSize;
 
 		for (var i in options) {
 			// all keys that are not TileLayer options go to WMS params
 			if (!this.options.hasOwnProperty(i)) {
-				this.wmsParams[i] = options[i];
+				wmsParams[i] = options[i];
 			}
 		}
+
+		this.wmsParams = wmsParams;
 
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
-		var projectionKey = (parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs');
+	onAdd: function (map, insertAtTheBottom) {
+		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
-		L.TileLayer.prototype.onAdd.call(this, map);
+		L.TileLayer.prototype.onAdd.call(this, map, insertAtTheBottom);
 	},
 
-	getTileUrl: function (/*Point*/ tilePoint, /*Number*/ zoom)/*-> String*/ {
-		var tileSize = this.options.tileSize,
+	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
+		var map = this._map,
+			crs = map.options.crs,
+
+			tileSize = this.options.tileSize,
+
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
-			nwMap = this._map.unproject(nwPoint, this._zoom, true),
-			seMap = this._map.unproject(sePoint, this._zoom, true),
-			nw = this._map.options.crs.project(nwMap),
-			se = this._map.options.crs.project(seMap),
+
+			nwMap = map.unproject(nwPoint, zoom, true),
+			seMap = map.unproject(sePoint, zoom, true),
+
+			nw = crs.project(nwMap),
+			se = crs.project(seMap),
+
 			bbox = [nw.x, se.y, se.x, nw.y].join(',');
 
 		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
