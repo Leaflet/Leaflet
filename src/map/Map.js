@@ -597,7 +597,8 @@ L.Map = L.Class.extend({
 		this.fire(type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			ctrlKey: e.ctrlKey
 		});
 	},
 
