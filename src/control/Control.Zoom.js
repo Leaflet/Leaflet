@@ -1,4 +1,3 @@
-
 L.Control.Zoom = L.Control.extend({
 	options: {
 		position: 'topleft'
@@ -6,25 +5,23 @@ L.Control.Zoom = L.Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoom',
-			container = L.DomUtil.create('div', className),
-			zoomInButton = this._createButton('Zoom in', className + '-in', map.zoomIn, map),
-			zoomOutButton = this._createButton('Zoom out', className + '-out', map.zoomOut, map);
-
-		container.appendChild(zoomInButton);
-		container.appendChild(zoomOutButton);
+		    container = L.DomUtil.create('div', className);
+		    
+		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
+		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
 
 		return container;
 	},
 
-	_createButton: function (title, className, fn, context) {
-		var link = document.createElement('a');
+	_createButton: function (title, className, container, fn, context) {
+		var link = L.DomUtil.create('a', className, container);
 		link.href = '#';
 		link.title = title;
-		link.className = className;
 
-		L.DomEvent.addListener(link, 'click', L.DomEvent.stopPropagation);
-		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
-		L.DomEvent.addListener(link, 'click', fn, context);
+		L.DomEvent
+			.addListener(link, 'click', L.DomEvent.stopPropagation)
+			.addListener(link, 'click', L.DomEvent.preventDefault)
+			.addListener(link, 'click', fn, context);
 
 		return link;
 	}
