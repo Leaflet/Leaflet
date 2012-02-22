@@ -26,18 +26,21 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return this;
 	},
 
-	panBy: function (offset) {
+	panBy: function (offset, options) {
 		if (!(offset.x || offset.y)) {
 			return this;
 		}
 
 		if (!this._panTransition) {
-			// TODO make duration configurable
-			this._panTransition = new L.Transition(this._mapPane, {duration: 0.25});
+
+			this._panTransition = new L.Transition(this._mapPane);
 
 			this._panTransition.on('step', this._onPanTransitionStep, this);
 			this._panTransition.on('end', this._onPanTransitionEnd, this);
 		}
+
+		L.Util.setOptions(this._panTransition, L.Util.extend({duration: 0.25}, options));
+
 		this.fire('movestart');
 
 		this._panTransition.run({

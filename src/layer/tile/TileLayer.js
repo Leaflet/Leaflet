@@ -20,7 +20,7 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile,
+		updateWhenIdle: true,
 		reuseTiles: false
 	},
 
@@ -167,6 +167,7 @@ L.TileLayer = L.Class.extend({
 			tileBounds = new L.Bounds(nwTilePoint, seTilePoint);
 
 		this._addTilesFromCenterOut(tileBounds);
+		console.log('tiles load');
 
 		if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);

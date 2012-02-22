@@ -65,8 +65,8 @@ L.Transition = L.Transition.extend({
 		this.fire('start');
 
 		if (L.Transition.NATIVE) {
-			clearInterval(this._timer);
-			this._timer = setInterval(this._onFakeStep, this.options.fakeStepInterval);
+			//clearInterval(this._timer);
+			//this._timer = setInterval(this._onFakeStep, this.options.fakeStepInterval);
 		} else {
 			this._onTransitionEnd();
 		}

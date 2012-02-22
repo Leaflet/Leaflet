@@ -34,9 +34,29 @@ L.Map.Drag = L.Handler.extend({
 		this._map
 			.fire('movestart')
 			.fire('dragstart');
+
+		this._directions = [];
+		this._times = [];
+		this._prevPos = this._prevTime = null;
 	},
 
 	_onDrag: function () {
+		var newTime = new Date();
+
+		if (this._prevPos) {
+			this._directions.push(this._draggable._newPos.subtract(this._prevPos));
+			var delta = newTime - this._prevTime;
+			this._times.push(delta);
+
+			if (this._directions.length > 10) {
+				this._directions.shift();
+				this._times.shift();
+			}
+		}
+
+		this._prevPos = this._draggable._newPos;
+		this._prevTime = newTime;
+
 		this._map
 			.fire('move')
 			.fire('drag');
@@ -65,9 +85,30 @@ L.Map.Drag = L.Handler.extend({
 	_onDragEnd: function () {
 		var map = this._map;
 
-		map
+		/*map
 			.fire('moveend')
-			.fire('dragend');
+			.fire('dragend');*/
+
+		var p = new L.Point(0, 0),
+			len = this._directions.length,
+			totalDir,
+			dir,
+			duration = 0;
+
+		totalDir = this._directions[len - 1];
+		duration = this._times[len - 1] + (new Date() - this._prevTime);
+
+		var a = 5000,
+			v0v = totalDir.divideBy(duration / 1000),
+			v0 = v0v.distanceTo(p),
+			t = v0 / a,
+			offset = v0v.multiplyBy(- t / 2).round();
+
+		console.log(offset.distanceTo(p), t);
+
+		L.Util.requestAnimFrame(L.Util.bind(function() {
+			this._map.panBy(offset, {duration: Math.round(t * 100) / 100});
+		}, this));
 
 		if (map.options.maxBounds) {
 			// TODO predrag validation instead of animation
