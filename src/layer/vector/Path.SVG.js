@@ -106,7 +106,8 @@ L.Path = L.Path.extend({
 		this.fire(e.type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			ctrlKey: e.ctrlKey
 		});
 
 		L.DomEvent.stopPropagation(e);
