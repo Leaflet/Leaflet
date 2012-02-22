@@ -598,7 +598,7 @@ L.Map = L.Class.extend({
 			latlng: latlng,
 			layerPoint: layerPoint,
 			containerPoint: containerPoint,
-			ctrlKey: e.ctrlKey
+			originalEvent: e
 		});
 	},
 
