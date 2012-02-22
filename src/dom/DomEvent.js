@@ -9,7 +9,7 @@ L.DomEvent = {
 			key = '_leaflet_' + type + id;
 
 		if (obj[key]) {
-			return;
+			return this;
 		}
 
 		var handler = function (e) {
