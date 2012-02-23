@@ -71,6 +71,9 @@ L.Util = {
 		};
 	}()),
 
+
+	// TODO refactor: remove repetition
+
 	requestAnimFrame: (function () {
 		function timeoutDefer(callback) {
 			window.setTimeout(callback, 1000 / 60);
@@ -88,8 +91,21 @@ L.Util = {
 			if (immediate && requestFn === timeoutDefer) {
 				callback();
 			} else {
-				requestFn(callback, contextEl);
+				return requestFn.call(window, callback, contextEl);
 			}
+		};
+	}()),
+
+	cancelAnimFrame: (function () {
+		var requestFn = window.cancelAnimationFrame ||
+			window.webkitCancelRequestAnimationFrame ||
+			window.mozCancelRequestAnimationFrame ||
+			window.oCancelRequestAnimationFrame ||
+			window.msCancelRequestAnimationFrame ||
+			clearTimeout;
+
+		return function (handle) {
+			return requestFn.call(window, handle);
 		};
 	}()),
 
@@ -1524,7 +1540,8 @@ L.Map = L.Class.extend({
 		this.fire(type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 	},
 
@@ -3074,7 +3091,8 @@ L.Path = L.Path.extend({
 		this.fire(e.type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 
 		L.DomEvent.stopPropagation(e);
@@ -4264,7 +4282,7 @@ L.DomEvent = {
 			key = '_leaflet_' + type + id;
 
 		if (obj[key]) {
-			return;
+			return this;
 		}
 
 		var handler = function (e) {
@@ -4510,7 +4528,8 @@ L.Draggable = L.Class.extend({
 		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
 
-		L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
+		L.Util.cancelAnimFrame(this._animRequest);
+		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
 	_updatePosition: function () {
@@ -5294,7 +5313,6 @@ L.Map.include({
 });
 
 
-
 L.Control.Zoom = L.Control.extend({
 	options: {
 		position: 'topleft'
@@ -5302,25 +5320,23 @@ L.Control.Zoom = L.Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoom',
-			container = L.DomUtil.create('div', className),
-			zoomInButton = this._createButton('Zoom in', className + '-in', map.zoomIn, map),
-			zoomOutButton = this._createButton('Zoom out', className + '-out', map.zoomOut, map);
-
-		container.appendChild(zoomInButton);
-		container.appendChild(zoomOutButton);
+		    container = L.DomUtil.create('div', className);
+		    
+		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
+		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
 
 		return container;
 	},
 
-	_createButton: function (title, className, fn, context) {
-		var link = document.createElement('a');
+	_createButton: function (title, className, container, fn, context) {
+		var link = L.DomUtil.create('a', className, container);
 		link.href = '#';
 		link.title = title;
-		link.className = className;
 
-		L.DomEvent.addListener(link, 'click', L.DomEvent.stopPropagation);
-		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
-		L.DomEvent.addListener(link, 'click', fn, context);
+		L.DomEvent
+			.addListener(link, 'click', L.DomEvent.stopPropagation)
+			.addListener(link, 'click', L.DomEvent.preventDefault)
+			.addListener(link, 'click', fn, context);
 
 		return link;
 	}
