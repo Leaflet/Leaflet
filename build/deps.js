@@ -115,6 +115,12 @@ var deps = {
 		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
 		desc: 'MultiPolygon and MultyPolyline layers.'
 	},
+	
+	Rectangle: {
+		src: ['layer/vector/Rectangle.js'],
+		deps: ['Polygon'],
+		desc: ['Rectangle overlays.']
+	},
 
 	Circle: {
 		src: ['layer/vector/Circle.js'],
