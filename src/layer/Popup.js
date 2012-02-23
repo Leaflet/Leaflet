@@ -1,10 +1,10 @@
-
 L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
+		minHeight: null,
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
@@ -137,12 +137,17 @@ L.Popup = L.Class.extend({
 
 		var height = container.offsetHeight,
 			maxHeight = this.options.maxHeight,
+			minHeight = this.options.minHeight,
 			scrolledClass = ' leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
 			container.style.height = maxHeight + 'px';
 			container.className += scrolledClass;
 		} else {
+			if (height < minHeight) {
+                                container.style.height = minHeight + 'px';
+                        }
+
 			container.className = container.className.replace(scrolledClass, '');
 		}
 
