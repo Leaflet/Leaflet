@@ -180,8 +180,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_getMiddleLatLng: function (marker1, marker2) {
 		var map = this._poly._map,
-			p1 = map.latLngToLayerPoint(marker1.getLatLng()),
-			p2 = map.latLngToLayerPoint(marker2.getLatLng());
+		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
+		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
 
 		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
 	}

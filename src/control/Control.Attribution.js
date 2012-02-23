@@ -1,52 +1,51 @@
 L.Control.Attribution = L.Control.extend({
 	options: {
-		position: 'bottomright'
+		position: 'bottomright',
+		prefix: 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>'
 	},
 
-	initialize: function (prefix, options) {
+	initialize: function (options) {
 		L.Util.setOptions(this, options);
 
-		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
 		this._attributions = {};
 	},
 
 	onAdd: function (map) {
+		this._map = map;
+
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
-		this._map = map;
+
 		this._update();
 
 		return this._container;
 	},
 
 	setPrefix: function (prefix) {
-		this._prefix = prefix;
+		this.options.prefix = prefix;
 		this._update();
 	},
 
 	addAttribution: function (text) {
-		if (!text) {
-			return;
-		}
+		if (!text) { return; }
+
 		if (!this._attributions[text]) {
 			this._attributions[text] = 0;
 		}
 		this._attributions[text]++;
+
 		this._update();
 	},
 
 	removeAttribution: function (text) {
-		if (!text) {
-			return;
-		}
+		if (!text) { return; }
+
 		this._attributions[text]--;
 		this._update();
 	},
 
 	_update: function () {
-		if (!this._map) {
-			return;
-		}
+		if (!this._map) { return; }
 
 		var attribs = [];
 
@@ -57,8 +56,9 @@ L.Control.Attribution = L.Control.extend({
 		}
 
 		var prefixAndAttribs = [];
-		if (this._prefix) {
-			prefixAndAttribs.push(this._prefix);
+		
+		if (this.options.prefix) {
+			prefixAndAttribs.push(this.options.prefix);
 		}
 		if (attribs.length) {
 			prefixAndAttribs.push(attribs.join(', '));

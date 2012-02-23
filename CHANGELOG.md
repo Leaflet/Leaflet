@@ -29,6 +29,7 @@ An in-progress version being developed on the master branch.
  * Replaced ugly control position constants (e.g. L.Control.Position.TOP_LEFT) with light strings ('topleft', 'bottomright', etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
  * Changed popup `minWidth` and `maxWidth` options to be applied to content element, not the whole popup.
+ * Moved `prefix` argument to `options` in `Control.Attribution` constructor.
 
 #### Other API improvements
 

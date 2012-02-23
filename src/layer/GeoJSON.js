@@ -13,7 +13,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 	addGeoJSON: function (geojson) {
 		var features = geojson.features,
-			i, len;
+		    i, len;
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
@@ -23,8 +23,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 
 		var isFeature = (geojson.type === 'Feature'),
-			geometry = isFeature ? geojson.geometry : geojson,
-			layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
+		    geometry = isFeature ? geojson.geometry : geojson,
+		    layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
 
 		this.fire('featureparse', {
 			layer: layer,
@@ -41,8 +41,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 L.Util.extend(L.GeoJSON, {
 	geometryToLayer: function (geometry, pointToLayer) {
 		var coords = geometry.coordinates,
-			layers = [],
-			latlng, latlngs, i, len, layer;
+		    layers = [],
+		    latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
@@ -87,16 +87,15 @@ L.Util.extend(L.GeoJSON, {
 
 	coordsToLatLng: function (coords, reverse) { // (Array, Boolean) -> LatLng
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
-			lng = parseFloat(coords[reverse ? 1 : 0]);
+		    lng = parseFloat(coords[reverse ? 1 : 0]);
 
 		return new L.LatLng(lat, lng, true);
 	},
 
 	coordsToLatLngs: function (coords, levelsDeep, reverse) { // (Array, Number, Boolean) -> Array
 		var latlng,
-			latlngs = [],
-			i,
-			len;
+		    latlngs = [],
+		    i, len;
 
 		for (i = 0, len = coords.length; i < len; i++) {
 			latlng = levelsDeep ?
