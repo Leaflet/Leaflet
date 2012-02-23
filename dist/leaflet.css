@@ -19,7 +19,7 @@
 	}
 .leaflet-tile-pane,
 .leaflet-container,
-.leaflet-control-container,
+.leaflet-corner,
 .leaflet-popup {
 	/* TODO make this configurable */
 	-webkit-transform: translate3d(0,0,0);
@@ -82,9 +82,6 @@ a.leaflet-active {
 
 /* Leaflet controls */
 
-.leaflet-control-container {
-	height: 100%;
-	}
 .leaflet-control {
 	position: relative;
 	z-index: 7;
