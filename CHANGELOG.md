@@ -15,7 +15,7 @@ An in-progress version being developed on the master branch.
 
 ### Improvements
 
-#### Usabiliy improvements
+#### Usability improvements
 
  * Drag-panning now works even when there are markers in the starting point (helps on maps with lots of markers). [#506](https://github.com/CloudMade/Leaflet/issues/506)
  * Improved panning performance even more (there are no wasted frames now).
