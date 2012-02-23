@@ -36,7 +36,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-			i, j, len, marker;
+		    i, j, len, marker;
 
 		// TODO refactor holes implementation in Polygon to support it here
 
@@ -72,13 +72,15 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
-		marker.on('dragend', function () {
-			this._poly.fire('edit');
-		}, this);
+		marker.on('dragend', this._fireEdit, this);
 
 		this._markerGroup.addLayer(marker);
 
 		return marker;
+	},
+
+	_fireEdit: function () {
+		this._poly.fire('edit');
 	},
 
 	_onMarkerDrag: function (e) {
@@ -98,7 +100,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_onMarkerClick: function (e) {
 		var marker = e.target,
-			i = marker._index;
+		    i = marker._index;
 
 		this._createMiddleMarker(marker._prev, marker._next);
 		this._updatePrevNext(marker._prev, marker._next);
