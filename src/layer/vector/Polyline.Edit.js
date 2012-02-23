@@ -160,6 +160,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		function onClick() {
 			onDragStart.call(this);
 			onDragEnd.call(this);
+                        this._poly.fire('edit');
 		}
 
 		marker
