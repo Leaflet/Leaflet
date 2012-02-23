@@ -3611,6 +3611,15 @@ L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
 		this._latlngs = latlngs;
+
+		// TODO refactor: move to Polyline.Edit.js
+		if (L.Handler.PolyEdit) {
+			this.editing = new L.Handler.PolyEdit(this);
+
+			if (this.options.editable) {
+				this.editing.enable();
+			}
+		}
 	},
 
 	options: {
@@ -3685,12 +3694,25 @@ L.Polyline = L.Path.extend({
 		return b;
 	},
 
+	// TODO refactor: move to Polyline.Edit.js
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	},
+
+	onRemove: function (map) {
+		if (this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+
+		L.Path.prototype.onRemove.call(this, map);
+	},
+
 	_initEvents: function () {
 		L.Polyline.superclass._initEvents.call(this);
-
-		if (L.Handler.PolyEdit) {
-			this.editing = new L.Handler.PolyEdit(this);
-		}
 	},
 
 	_getPathPartStr: function (points) {
@@ -5026,14 +5048,18 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		if (!this._markerGroup) {
-			this._initMarkers();
+		if (this._poly._map) {
+			if (!this._markerGroup) {
+				this._initMarkers();
+			}
+			this._poly._map.addLayer(this._markerGroup);
 		}
-		this._poly._map.addLayer(this._markerGroup);
 	},
 
 	removeHooks: function () {
-		this._poly._map.removeLayer(this._markerGroup);
+		if (this._poly._map) {
+			this._poly._map.removeLayer(this._markerGroup);
+		}
 	},
 
 	updateMarkers: function () {

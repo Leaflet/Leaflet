@@ -82,6 +82,9 @@ a.leaflet-active {
 
 /* Leaflet controls */
 
+.leaflet-control-container {
+	height: 100%;
+	}
 .leaflet-control {
 	position: relative;
 	z-index: 7;
