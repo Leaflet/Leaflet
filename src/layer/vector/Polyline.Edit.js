@@ -72,6 +72,9 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
+                marker.on('dragend', function() {
+                    this._poly.fire('edit');
+                }, this);
 
 		this._markerGroup.addLayer(marker);
 
@@ -91,7 +94,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 		}
 
 		this._poly.redraw();
-                this._poly.fire('edit');
 	},
 
 	_onMarkerClick: function (e) {
@@ -138,7 +140,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
-			this._poly.fire('edit');
 
 			marker.setOpacity(1);
 
