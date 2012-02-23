@@ -145,8 +145,8 @@ L.Popup = L.Class.extend({
 			container.className += scrolledClass;
 		} else {
 			if (height < minHeight) {
-                                container.style.height = minHeight + 'px';
-                        }
+				container.style.height = minHeight + 'px';
+			}
 
 			container.className = container.className.replace(scrolledClass, '');
 		}
