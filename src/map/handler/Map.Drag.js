@@ -91,15 +91,18 @@ L.Map.Drag = L.Handler.extend({
 
 		var p = new L.Point(0, 0),
 			len = this._directions.length,
-			totalDir,
 			dir,
 			duration = 0;
 
-		totalDir = this._directions[len - 1];
-		duration = this._times[len - 1] + (new Date() - this._prevTime);
+		dir = this._directions.reduce(function (a, b) {
+			return a.add(b);
+		});
+		duration = this._times.reduce(function (a, b) {
+			return a + b;
+		}) + (+new Date() - this._prevTime);
 
-		var a = 5000,
-			v0v = totalDir.divideBy(duration / 1000),
+		var a = 10000,
+			v0v = dir.divideBy(duration / 1000),
 			v0 = v0v.distanceTo(p),
 			t = v0 / a,
 			offset = v0v.multiplyBy(- t / 2).round();
@@ -107,7 +110,10 @@ L.Map.Drag = L.Handler.extend({
 		console.log(offset.distanceTo(p), t);
 
 		L.Util.requestAnimFrame(L.Util.bind(function() {
-			this._map.panBy(offset, {duration: Math.round(t * 100) / 100});
+			this._map.panBy(offset, {
+				duration: Math.round(t * 100) / 100,
+				easing: 'cubic-bezier(.39,.3,.36,.98)'
+			});
 		}, this));
 
 		if (map.options.maxBounds) {
