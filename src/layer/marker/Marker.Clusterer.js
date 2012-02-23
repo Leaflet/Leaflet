@@ -23,8 +23,10 @@ L.Marker.Clusterer = L.Class.extend({
         this._map = map;
         this._featureGroup = new L.FeatureGroup();
         
+        map.addLayer(this._featureGroup);
+        
         map.on('zoomend', this._resetView, this);
-        map.on('dragend', this._resetView, this);
+        map.on('moveend', this._resetView, this);
         
         this._resetView();
     },
@@ -198,9 +200,6 @@ L.Marker.Clusterer = L.Class.extend({
         }
         
         this.addMarkers(orphanPoints);
-        
-        this._map.removeLayer(this._featureGroup);
-        this._map.addLayer(this._featureGroup);
     }
     
 });

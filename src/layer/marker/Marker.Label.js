@@ -1,7 +1,3 @@
-/* 
-  FIXME: 
-  issues with marker labels at lower zooms
-*/
 
 L.Marker.Label = L.Class.extend({
 
@@ -29,15 +25,9 @@ L.Marker.Label = L.Class.extend({
 		this._map = map;
 		this._zoom = this._map._zoom;
 		this._initLabel();
-		
-        // map.on('viewreset', this._reset, this);
-		
-		this._reset();
 	},
 
 	onRemove: function (map) {
-		map.off('viewreset', this._reset, this);
-		
 		this._removeLabel();
 		this._map = null;
 	},
@@ -63,21 +53,27 @@ L.Marker.Label = L.Class.extend({
 	_initLabel: function () {
         var options =  this.options,
             newLabel;
-
-        if (null === this._label) {
-			
-			newLabel = L.DomUtil.create("div", options.labelClass, this._map.overlayPane);
-			newLabel.innerHTML = options.labelMarkup;
-			
-			if ("string" === typeof options.color) {
-                newLabel.style.color = options.color;
-			}
-			if ("number" === typeof options.zIndexOffset) {
-                newLabel.style.zIndex = options.zIndexOffset;
-			}
-			
-			this._label = newLabel;
+        
+        if (this._label !== null) { 
+            this._removeLabel();
+        }
+        
+        newLabel = L.DomUtil.create("div", options.labelClass, this._map.overlayPane);
+		newLabel.innerHTML = options.labelMarkup;
+		
+		if ("string" === typeof options.color) {
+            newLabel.style.color = options.color;
 		}
+		if ("number" === typeof options.zIndexOffset) {
+            newLabel.style.zIndex = options.zIndexOffset;
+		}
+		
+		this._label = newLabel;
+		
+		L.DomUtil.setPosition(this._label, this._point);
+		this._applyOffsets(this.options.offsets);
+
+		this._map._panes.overlayPane.appendChild(this._label);
 	},
 
 	_removeLabel: function () {
@@ -85,16 +81,5 @@ L.Marker.Label = L.Class.extend({
 			this._map._panes.overlayPane.removeChild(this._label);
 			this._label = null;
 		}
-	},
-
-	_reset: function () {
-		if (this._zoom !== this._map._zoom) {
-			this.onRemove(this._map);
-		}
-		
-		L.DomUtil.setPosition(this._label, this._point);
-		this._applyOffsets(this.options.offsets);
-		
-		this._map._panes.overlayPane.appendChild(this._label);
 	}
 });
