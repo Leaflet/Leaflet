@@ -65,7 +65,7 @@ L.Util = {
 
 		return function (handle) {
 			return requestFn.call(window, handle);
-		}
+		};
 	}()),
 
 	limitExecByInterval: function (fn, time, context) {

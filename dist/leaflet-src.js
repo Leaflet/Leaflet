@@ -71,6 +71,9 @@ L.Util = {
 		};
 	}()),
 
+
+	// TODO refactor: remove repetition
+
 	requestAnimFrame: (function () {
 		function timeoutDefer(callback) {
 			window.setTimeout(callback, 1000 / 60);
@@ -88,8 +91,21 @@ L.Util = {
 			if (immediate && requestFn === timeoutDefer) {
 				callback();
 			} else {
-				requestFn(callback, contextEl);
+				return requestFn.call(window, callback, contextEl);
 			}
+		};
+	}()),
+
+	cancelAnimFrame: (function () {
+		var requestFn = window.cancelAnimationFrame ||
+			window.webkitCancelRequestAnimationFrame ||
+			window.mozCancelRequestAnimationFrame ||
+			window.oCancelRequestAnimationFrame ||
+			window.msCancelRequestAnimationFrame ||
+			clearTimeout;
+
+		return function (handle) {
+			return requestFn.call(window, handle);
 		};
 	}()),
 
@@ -1524,7 +1540,8 @@ L.Map = L.Class.extend({
 		this.fire(type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 	},
 
@@ -3074,7 +3091,8 @@ L.Path = L.Path.extend({
 		this.fire(e.type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 
 		L.DomEvent.stopPropagation(e);
@@ -3611,6 +3629,15 @@ L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
 		this._latlngs = latlngs;
+
+		// TODO refactor: move to Polyline.Edit.js
+		if (L.Handler.PolyEdit) {
+			this.editing = new L.Handler.PolyEdit(this);
+
+			if (this.options.editable) {
+				this.editing.enable();
+			}
+		}
 	},
 
 	options: {
@@ -3685,12 +3712,25 @@ L.Polyline = L.Path.extend({
 		return b;
 	},
 
+	// TODO refactor: move to Polyline.Edit.js
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	},
+
+	onRemove: function (map) {
+		if (this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+
+		L.Path.prototype.onRemove.call(this, map);
+	},
+
 	_initEvents: function () {
 		L.Polyline.superclass._initEvents.call(this);
-
-		if (L.Handler.PolyEdit) {
-			this.editing = new L.Handler.PolyEdit(this);
-		}
 	},
 
 	_getPathPartStr: function (points) {
@@ -4242,7 +4282,7 @@ L.DomEvent = {
 			key = '_leaflet_' + type + id;
 
 		if (obj[key]) {
-			return;
+			return this;
 		}
 
 		var handler = function (e) {
@@ -4488,7 +4528,8 @@ L.Draggable = L.Class.extend({
 		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
 
-		L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
+		L.Util.cancelAnimFrame(this._animRequest);
+		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
 	_updatePosition: function () {
@@ -5026,14 +5067,18 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		if (!this._markerGroup) {
-			this._initMarkers();
+		if (this._poly._map) {
+			if (!this._markerGroup) {
+				this._initMarkers();
+			}
+			this._poly._map.addLayer(this._markerGroup);
 		}
-		this._poly._map.addLayer(this._markerGroup);
 	},
 
 	removeHooks: function () {
-		this._poly._map.removeLayer(this._markerGroup);
+		if (this._poly._map) {
+			this._poly._map.removeLayer(this._markerGroup);
+		}
 	},
 
 	updateMarkers: function () {
@@ -5082,6 +5127,9 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
+		marker.on('dragend', function () {
+			this._poly.fire('edit');
+		}, this);
 
 		this._markerGroup.addLayer(marker);
 
@@ -5147,7 +5195,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
-			this._poly.fire('edit');
 
 			marker.setOpacity(1);
 
@@ -5168,6 +5215,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		function onClick() {
 			onDragStart.call(this);
 			onDragEnd.call(this);
+			this._poly.fire('edit');
 		}
 
 		marker
@@ -5257,16 +5305,16 @@ L.Map.include({
 			bottom = 'leaflet-bottom',
 			left = 'leaflet-left',
 			right = 'leaflet-right',
-			container = L.DomUtil.create('div', 'leaflet-control-container', this._container),
+			corner = 'leaflet-corner',
+			container = this._container,
 			corners = this._controlCorners = {};
 
-		corners.topleft     = L.DomUtil.create('div', top    + ' ' + left,  container);
-		corners.topright    = L.DomUtil.create('div', top    + ' ' + right, container);
-		corners.bottomleft  = L.DomUtil.create('div', bottom + ' ' + left,  container);
-		corners.bottomright = L.DomUtil.create('div', bottom + ' ' + right, container);
+		corners.topleft = L.DomUtil.create('div', [corner, top, left].join(' '),  container);
+		corners.topright = L.DomUtil.create('div', [corner, top, right].join(' '), container);
+		corners.bottomleft = L.DomUtil.create('div', [corner, bottom, left].join(' '),  container);
+		corners.bottomright = L.DomUtil.create('div', [corner, bottom, right].join(' '), container);
 	}
 });
-
 
 
 L.Control.Zoom = L.Control.extend({
@@ -5276,25 +5324,23 @@ L.Control.Zoom = L.Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoom',
-			container = L.DomUtil.create('div', className),
-			zoomInButton = this._createButton('Zoom in', className + '-in', map.zoomIn, map),
-			zoomOutButton = this._createButton('Zoom out', className + '-out', map.zoomOut, map);
-
-		container.appendChild(zoomInButton);
-		container.appendChild(zoomOutButton);
+		    container = L.DomUtil.create('div', className);
+		    
+		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
+		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
 
 		return container;
 	},
 
-	_createButton: function (title, className, fn, context) {
-		var link = document.createElement('a');
+	_createButton: function (title, className, container, fn, context) {
+		var link = L.DomUtil.create('a', className, container);
 		link.href = '#';
 		link.title = title;
-		link.className = className;
 
-		L.DomEvent.addListener(link, 'click', L.DomEvent.stopPropagation);
-		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
-		L.DomEvent.addListener(link, 'click', fn, context);
+		L.DomEvent
+			.addListener(link, 'click', L.DomEvent.stopPropagation)
+			.addListener(link, 'click', L.DomEvent.preventDefault)
+			.addListener(link, 'click', fn, context);
 
 		return link;
 	}
