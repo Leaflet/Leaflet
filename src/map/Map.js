@@ -24,6 +24,11 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		boxZoom: true,
 
+		inertia: true,
+		inertiaDecceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
+		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
+
 		// controls
 		zoomControl: true,
 		attributionControl: true,
@@ -70,7 +75,7 @@ L.Map = L.Class.extend({
 		}
 
 		var center = options.center,
-			zoom = options.zoom;
+		    zoom = options.zoom;
 
 		if (center && typeof zoom !== 'undefined') {
 			this.setView(center, zoom, true);
@@ -108,7 +113,7 @@ L.Map = L.Class.extend({
 
 	fitWorld: function () {
 		var sw = new L.LatLng(-60, -170),
-			ne = new L.LatLng(85, 179);
+		    ne = new L.LatLng(85, 179);
 
 		return this.fitBounds(new L.LatLngBounds(sw, ne));
 	},
@@ -152,12 +157,12 @@ L.Map = L.Class.extend({
 
 	panInsideBounds: function (bounds) {
 		var viewBounds = this.getBounds(),
-			viewSw = this.project(viewBounds.getSouthWest()),
-			viewNe = this.project(viewBounds.getNorthEast()),
-			sw = this.project(bounds.getSouthWest()),
-			ne = this.project(bounds.getNorthEast()),
-			dx = 0,
-			dy = 0;
+		    viewSw = this.project(viewBounds.getSouthWest()),
+		    viewNe = this.project(viewBounds.getNorthEast()),
+		    sw = this.project(bounds.getSouthWest()),
+		    ne = this.project(bounds.getNorthEast()),
+		    dx = 0,
+		    dy = 0;
 
 		if (viewNe.y < ne.y) { // north
 			dy = ne.y - viewNe.y;
@@ -288,7 +293,7 @@ L.Map = L.Class.extend({
 
 	getCenter: function (unbounded) { // (Boolean)
 		var viewHalf = this.getSize().divideBy(2),
-			centerPoint = this._getTopLeftPoint().add(viewHalf);
+		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
 		return this.unproject(centerPoint, this._zoom, unbounded);
 	},
@@ -299,37 +304,37 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
-			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
+		    sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
+		    ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
 
 		return new L.LatLngBounds(sw, ne);
 	},
 
 	getMinZoom: function () {
 		var z1 = this.options.minZoom || 0,
-			z2 = this._layersMinZoom || 0,
-			z3 = this._boundsMinZoom || 0;
+		    z2 = this._layersMinZoom || 0,
+		    z3 = this._boundsMinZoom || 0;
 
 		return Math.max(z1, z2, z3);
 	},
 
 	getMaxZoom: function () {
 		var z1 = typeof this.options.maxZoom === 'undefined' ? Infinity : this.options.maxZoom,
-			z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
+		    z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
 
 		return Math.min(z1, z2);
 	},
 
 	getBoundsZoom: function (bounds, inside) { // (LatLngBounds, Boolean) -> Number
 		var size = this.getSize(),
-			zoom = this.options.minZoom || 0,
-			maxZoom = this.getMaxZoom(),
-			ne = bounds.getNorthEast(),
-			sw = bounds.getSouthWest(),
-			boundsSize,
-			nePoint,
-			swPoint,
-			zoomNotFound = true;
+		    zoom = this.options.minZoom || 0,
+		    maxZoom = this.getMaxZoom(),
+		    ne = bounds.getNorthEast(),
+		    sw = bounds.getSouthWest(),
+		    boundsSize,
+		    nePoint,
+		    swPoint,
+		    zoomNotFound = true;
 
 		if (inside) {
 			zoom--;
@@ -597,7 +602,8 @@ L.Map = L.Class.extend({
 		this.fire(type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 	},
 

@@ -36,7 +36,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-			i, j, len, marker;
+		    i, j, len, marker;
 
 		// TODO refactor holes implementation in Polygon to support it here
 
@@ -72,10 +72,15 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
+		marker.on('dragend', this._fireEdit, this);
 
 		this._markerGroup.addLayer(marker);
 
 		return marker;
+	},
+
+	_fireEdit: function () {
+		this._poly.fire('edit');
 	},
 
 	_onMarkerDrag: function (e) {
@@ -95,7 +100,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_onMarkerClick: function (e) {
 		var marker = e.target,
-			i = marker._index;
+		    i = marker._index;
 
 		this._createMiddleMarker(marker._prev, marker._next);
 		this._updatePrevNext(marker._prev, marker._next);
@@ -137,7 +142,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
-			this._poly.fire('edit');
 
 			marker.setOpacity(1);
 
@@ -158,6 +162,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		function onClick() {
 			onDragStart.call(this);
 			onDragEnd.call(this);
+			this._poly.fire('edit');
 		}
 
 		marker
@@ -175,8 +180,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_getMiddleLatLng: function (marker1, marker2) {
 		var map = this._poly._map,
-			p1 = map.latLngToLayerPoint(marker1.getLatLng()),
-			p2 = map.latLngToLayerPoint(marker2.getLatLng());
+		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
+		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
 
 		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
 	}

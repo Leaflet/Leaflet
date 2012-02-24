@@ -135,11 +135,7 @@ L.DomUtil = {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
-
-			if (L.Browser.android) {
-				el.style['-webkit-perspective'] = '1000';
-				el.style['-webkit-backface-visibility'] = 'hidden';
-			}
+			el.style['-webkit-backface-visibility'] = 'hidden';
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';

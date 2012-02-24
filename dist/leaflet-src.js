@@ -10,7 +10,7 @@
 
 		ROOT_URL: root.L_ROOT_URL || (function () {
 			var scripts = document.getElementsByTagName('script'),
-				leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+			    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 			var i, len, src, matches;
 
@@ -71,6 +71,9 @@ L.Util = {
 		};
 	}()),
 
+
+	// TODO refactor: remove repetition
+
 	requestAnimFrame: (function () {
 		function timeoutDefer(callback) {
 			window.setTimeout(callback, 1000 / 60);
@@ -88,8 +91,21 @@ L.Util = {
 			if (immediate && requestFn === timeoutDefer) {
 				callback();
 			} else {
-				requestFn(callback, contextEl);
+				return requestFn.call(window, callback, contextEl);
 			}
+		};
+	}()),
+
+	cancelAnimFrame: (function () {
+		var requestFn = window.cancelAnimationFrame ||
+			window.webkitCancelRequestAnimationFrame ||
+			window.mozCancelRequestAnimationFrame ||
+			window.oCancelRequestAnimationFrame ||
+			window.msCancelRequestAnimationFrame ||
+			clearTimeout;
+
+		return function (handle) {
+			return requestFn.call(window, handle);
 		};
 	}()),
 
@@ -641,11 +657,7 @@ L.DomUtil = {
 		el._leaflet_pos = point;
 		if (L.Browser.webkit3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
-
-			if (L.Browser.android) {
-				el.style['-webkit-perspective'] = '1000';
-				el.style['-webkit-backface-visibility'] = 'hidden';
-			}
+			el.style['-webkit-backface-visibility'] = 'hidden';
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -951,6 +963,11 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		boxZoom: true,
 
+		inertia: true,
+		inertiaDecceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
+		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
+
 		// controls
 		zoomControl: true,
 		attributionControl: true,
@@ -997,7 +1014,7 @@ L.Map = L.Class.extend({
 		}
 
 		var center = options.center,
-			zoom = options.zoom;
+		    zoom = options.zoom;
 
 		if (center && typeof zoom !== 'undefined') {
 			this.setView(center, zoom, true);
@@ -1035,7 +1052,7 @@ L.Map = L.Class.extend({
 
 	fitWorld: function () {
 		var sw = new L.LatLng(-60, -170),
-			ne = new L.LatLng(85, 179);
+		    ne = new L.LatLng(85, 179);
 
 		return this.fitBounds(new L.LatLngBounds(sw, ne));
 	},
@@ -1079,12 +1096,12 @@ L.Map = L.Class.extend({
 
 	panInsideBounds: function (bounds) {
 		var viewBounds = this.getBounds(),
-			viewSw = this.project(viewBounds.getSouthWest()),
-			viewNe = this.project(viewBounds.getNorthEast()),
-			sw = this.project(bounds.getSouthWest()),
-			ne = this.project(bounds.getNorthEast()),
-			dx = 0,
-			dy = 0;
+		    viewSw = this.project(viewBounds.getSouthWest()),
+		    viewNe = this.project(viewBounds.getNorthEast()),
+		    sw = this.project(bounds.getSouthWest()),
+		    ne = this.project(bounds.getNorthEast()),
+		    dx = 0,
+		    dy = 0;
 
 		if (viewNe.y < ne.y) { // north
 			dy = ne.y - viewNe.y;
@@ -1215,7 +1232,7 @@ L.Map = L.Class.extend({
 
 	getCenter: function (unbounded) { // (Boolean)
 		var viewHalf = this.getSize().divideBy(2),
-			centerPoint = this._getTopLeftPoint().add(viewHalf);
+		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
 		return this.unproject(centerPoint, this._zoom, unbounded);
 	},
@@ -1226,37 +1243,37 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-			sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
-			ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
+		    sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
+		    ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
 
 		return new L.LatLngBounds(sw, ne);
 	},
 
 	getMinZoom: function () {
 		var z1 = this.options.minZoom || 0,
-			z2 = this._layersMinZoom || 0,
-			z3 = this._boundsMinZoom || 0;
+		    z2 = this._layersMinZoom || 0,
+		    z3 = this._boundsMinZoom || 0;
 
 		return Math.max(z1, z2, z3);
 	},
 
 	getMaxZoom: function () {
 		var z1 = typeof this.options.maxZoom === 'undefined' ? Infinity : this.options.maxZoom,
-			z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
+		    z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
 
 		return Math.min(z1, z2);
 	},
 
 	getBoundsZoom: function (bounds, inside) { // (LatLngBounds, Boolean) -> Number
 		var size = this.getSize(),
-			zoom = this.options.minZoom || 0,
-			maxZoom = this.getMaxZoom(),
-			ne = bounds.getNorthEast(),
-			sw = bounds.getSouthWest(),
-			boundsSize,
-			nePoint,
-			swPoint,
-			zoomNotFound = true;
+		    zoom = this.options.minZoom || 0,
+		    maxZoom = this.getMaxZoom(),
+		    ne = bounds.getNorthEast(),
+		    sw = bounds.getSouthWest(),
+		    boundsSize,
+		    nePoint,
+		    swPoint,
+		    zoomNotFound = true;
 
 		if (inside) {
 			zoom--;
@@ -1524,7 +1541,8 @@ L.Map = L.Class.extend({
 		this.fire(type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 	},
 
@@ -1664,7 +1682,7 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile,
+		updateWhenIdle: true,
 		reuseTiles: false
 	},
 
@@ -1692,10 +1710,9 @@ L.TileLayer = L.Class.extend({
 
 		// set up events
 		map.on('viewreset', this._resetCallback, this);
+		map.on('moveend', this._update, this);
 
-		if (this.options.updateWhenIdle) {
-			map.on('moveend', this._update, this);
-		} else {
+		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
 			map.on('move', this._limitedUpdate, this);
 		}
@@ -1708,10 +1725,9 @@ L.TileLayer = L.Class.extend({
 		map._panes.tilePane.removeChild(this._container);
 
 		map.off('viewreset', this._resetCallback, this);
+		map.off('moveend', this._update, this);
 
-		if (this.options.updateWhenIdle) {
-			map.off('moveend', this._update, this);
-		} else {
+		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
 		}
 
@@ -1793,7 +1809,9 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function () {
+	_update: function (e) {
+		if (this._map._panTransition && this._map._panTransition._inProgress) { return; }
+
 		var bounds   = this._map.getPixelBounds(),
 		    zoom     = this._map.getZoom(),
 		    tileSize = this.options.tileSize;
@@ -1882,16 +1900,21 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_addTile: function (tilePoint, container) {
-		var zoom  = this._map.getZoom(),
-		    key   = tilePoint.x + ':' + tilePoint.y,
+		var tilePos = this._getTilePos(tilePoint),
+			zoom = this._map.getZoom(),
+		    key = tilePoint.x + ':' + tilePoint.y,
 		    limit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
 			if (!this.options.noWrap) {
 				tilePoint.x = ((tilePoint.x % limit) + limit) % limit;
+			} else if (tilePoint.x < 0 || tilePoint.x >= limit) {
+				this._tilesToLoad--;
+				return;
+			}
 
-			} else if (tilePoint.x < 0 || tilePoint.x >= limit || tilePoint.y < 0 || tilePoint.y >= limit) {
+			if (tilePoint.y < 0 || tilePoint.y >= limit) {
 				this._tilesToLoad--;
 				return;
 			}
@@ -1899,7 +1922,7 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, this._getTilePos(tilePoint));
+		L.DomUtil.setPosition(tile, tilePos);
 
 		this._tiles[key] = tile;
 
@@ -1972,6 +1995,7 @@ L.TileLayer = L.Class.extend({
 		tile._layer  = this;
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
+
 		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
 
@@ -2447,440 +2471,6 @@ L.Marker = L.Class.extend({
 
 	_updateOpacity: function (opacity) {
 		L.DomUtil.setOpacity(this._icon, this.options.opacity);
-	}
-});
-
-
-
-L.Marker.Clusterer = L.Class.extend({
-    
-    options: {
-        clusterRadius: 100,
-        svgDefaults: {
-            stroke: true,
-            color: '#4159bb',
-            opacity: 0.75,
-            fillOpacity: 0.5,
-            fillColor: '#4159ff'
-        }
-    },
-    
-    initialize: function (options) {
-        L.Util.setOptions(this, options);
-        
-        this._clusters = {};
-        this._dirtyClusters = {};
-    },
-    
-    onAdd: function (map, options) {
-        this._map = map;
-        this._featureGroup = new L.FeatureGroup();
-        
-        map.on('zoomend', this._resetView, this);
-        map.on('dragend', this._resetView, this);
-        
-        this._resetView();
-    },
-    
-    onRemove: function () {
-        this.clearClusters();
-        this._map.off('zoomend', this._resetView, this);
-        this._map.off('dragend', this._resetView, this);
-        
-        this._map = null;
-        this._featureGroup = null;
-    },
-    
-    /**
-     * add new markers
-     * @param latLngs - Array of markers to add to the Clusterer
-     */
-    addMarkers: function (latLngs) {
-        for (var i = latLngs.length; i--;) {
-            var coord = latLngs[i];
-            this.addPointToClusterer(coord, true);
-        }
-
-        this._redrawClusters();
-    },
-    
-    /**
-    * ask the controller to add a new point to the correct cluster
-    * @param marker - L.LatLng
-    * @param batch - boolean - used with addMarkers to prevent a redraw on each addition
-    */
-    addPointToClusterer: function (latLng, batch) {
-        var radius = this.options.clusterRadius,
-            point = this._map.latLngToLayerPoint(latLng),
-            clusters = this._clusters,
-            zoom = this._map.getZoom(),
-            cluster, clusterCenter, targetCluster;
-
-        for (cluster in clusters) {
-            if (clusters.hasOwnProperty(cluster)) {
-
-                clusterCenter = this._map.latLngToLayerPoint(clusters[cluster].getCenter());
-
-                if (point.distanceTo(clusterCenter) < radius) {
-                    targetCluster = clusters[cluster];
-                    break;
-                }
-            }
-        }
-
-        if (!targetCluster) {
-            targetCluster = new L.Marker.Cluster(this, latLng);
-            this._clusters[targetCluster._id] = targetCluster;
-        } else {
-            targetCluster.addPoint(latLng);
-        }
-
-        if (batch) {
-            this._dirtyClusters[targetCluster._id] = targetCluster;
-        } else {
-            this._redrawClusters();
-        }
-    },
-    
-    /**
-     * clear the existing markers, and terminate all references to clusters, effectively resetting the board
-     */
-    clearClusters: function () {
-        this._clearLayers();
-        
-        this._clusters = {};
-        this._dirtyClusters = {};
-        this._coords = [];
-    },
-    
-    /*
-     * convenience method to clear markers
-     */
-    _clearLayers: function () {
-        if (this._featureGroup && "function" === typeof this._featureGroup.clearLayers) {
-            this._featureGroup.clearLayers();
-        }
-    },
-
-    /**
-    * return the feature group for assignment / manipulation
-    * @return L.FeatureGroup
-    */
-    getFeatureGroup: function () {
-        return this._featureGroup;
-    },
-
-    /**
-    * by collecting all the bounds from each cluster, we can make one huge bounds representing the area of the map with clusters
-    * @return L.LatLngBounds - the computed bounds object
-    */
-    getClustererBounds: function () {
-        var clusters = this._clusters,
-           finalBounds, cluster;
-
-        for (cluster in clusters) {
-            if (clusters.hasOwnProperty(cluster)) {
-                if ("undefined" === typeof finalBounds) {
-                    finalBounds = clusters[cluster].getBounds();
-                } else {
-                    //extend allows a single latLng at present, so extend by bounds using SW / NE points
-                    finalBounds.extend(clusters[cluster].getBounds().getSouthWest());
-                    finalBounds.extend(clusters[cluster].getBounds().getNorthEast());
-                }
-            }
-        }
-        return finalBounds;
-    },
-
-    /**
-     * @return obj. literal - subset of clusters that are in the current viewport
-     * @param bounds - L.LatLngBounds - optional parameter to restrict the clusters returned to a different bounds
-     */
-    _getClustersInView: function (bounds) {
-        var mapBounds = "undefined" === typeof bounds ? this._map.getBounds() : bounds,
-            clusters = this._clusters,
-            clustersInView = [],
-            zoom = this._map.getZoom(),
-            minZoom = this._map.getMinZoom(),
-            cluster, currentCluster, clusterCenter;
-            
-        for (cluster in clusters) {
-            if (clusters.hasOwnProperty(cluster)) {
-                
-                currentCluster = clusters[cluster];
-                clusterCenter = currentCluster.getCenter();
-    
-                //if zoomed all the way out, redraw them ALL
-                if ((zoom === minZoom) || mapBounds.contains(clusterCenter)) {
-                    clustersInView.push(currentCluster);
-                }
-            }
-        }
-        return clustersInView;
-    },
-    
-    /**
-     * iterate over "dirty" clusters in need of redraw
-     */
-    _redrawClusters: function () {
-        for (var cluster in this._dirtyClusters) {
-            if (this._dirtyClusters.hasOwnProperty(cluster)) {
-                this._dirtyClusters[cluster].redrawCluster();
-            }
-        }
-        this._dirtyClusters = {};
-    },
-    
-    /**
-     * callback to map change
-     */
-    _resetView: function () {
-        var clustersToRedraw = this._getClustersInView(),
-            mapZoom = this._map.getZoom(),
-            orphanPoints = [],
-            currentCluster, i;
-             
-        for (i = clustersToRedraw.length; i--;) {
-            currentCluster = clustersToRedraw[i];
-             
-            if (currentCluster._zoom !== mapZoom) {
-                orphanPoints = orphanPoints.concat(currentCluster._coords);
-                currentCluster.remove();
-                delete this._clusters[currentCluster._id];
-            }
-        }
-        
-        this.addMarkers(orphanPoints);
-        
-        this._map.removeLayer(this._featureGroup);
-        this._map.addLayer(this._featureGroup);
-    }
-    
-});
-
-
-
-L.Marker.Cluster = L.Class.extend({
-    
-    initialize: function (clusterer, initialLatLng) {
-        this._clusterer = clusterer;
-        this._id = Math.round(Math.random() * 100000) + new Date().getMilliseconds();
-        this._coords = [];
-        this._map = clusterer._map;
-        this._marker = null;
-        this._zoom = clusterer._map.getZoom();
-        
-        this.addPoint(initialLatLng);
-	},
-    
-    /**
-     * add a point to the cluster
-     * @param latLng - L.LatLng
-     * @throws Exception if passed an object that is not an instance of L.LatLng
-     */
-    addPoint: function (latLng) {
-        if (latLng instanceof L.LatLng) {
-            this._coords.push(latLng);
-        } else {
-            //TODO: improve upon this.  Allow Points?
-            throw "Marker Clusterer can't add objects that are not an instance of L.LatLng";
-        }
-    },
-    
-    /**
-     * put a cluster on the map.
-     */
-    redrawCluster: function () {
-        this.remove();
-        this._clusterer._featureGroup.addLayer(this.getMarker());
-        this._clusterer._featureGroup.addLayer(this.getLabel());
-    },
-    
-    /**
-     * zoom the map to this cluster's bounds
-     */
-    fitViewportToCluster: function () {
-        var map = this._map,
-            clusterBounds = this.getBounds();
-        
-        if (map.getBoundsZoom(clusterBounds) > map.getZoom()) {
-            map.fitBounds(clusterBounds);
-        }
-        else { //can't zoom in, so center on the cluster
-            map.panTo(this.getCenter());
-        }
-    },
-    
-    /**
-     * @return L.LatLngBounds of the cluster
-     */
-    getBounds: function () {
-        if (this._coords.length === 1) {
-            return new L.LatLngBounds(this._coords[0], this._coords[0]);
-        } else {
-            return new L.LatLngBounds(this._coords);
-        }
-    },
-        
-    /**
-     * @return L.LatLng @cluster's center [initial point]
-     * TODO: determine a way to find the center programtically / more accurately (K-Means?)
-     */
-    getCenter: function () {
-        return this._coords[0];
-    },
-    
-    /**
-     * returns an HTML node who's text value is the number of coodinates at this cluster
-     * @return L.MarkerLabel
-     */
-    getLabel: function () {
-        var markerText = this._coords.length.toString(),
-            textOffset =  1 === markerText.length ? -2 : markerText.length,
-            options = {
-                labelClass: 'leaflet-cluster leaflet-cluster-' + this._id,
-                labelMarkup: markerText,
-                offsets: {
-                    x: (-1 * this.radius * 0.5) - textOffset
-                },
-                'zIndexOffset': 10 //FIXME: this should not be hardcoded
-            },
-            point = this._map.latLngToLayerPoint(this.getCenter());
-
-        this._markerLabel = new L.Marker.Label(point, options);
-        // this._markerLabel.on('click', console.log, this);
-        
-        return this._markerLabel;
-    },
-    
-    /**
-     * @return L.MarkerClusterer.Marker (currently L.CircleMarker - plans to augment with diff types)
-     */
-    getMarker: function () {
-        var numDigits = this._coords.length.toString().length,
-            options = this._clusterer.options.svgDefaults;
-        
-        this.radius = Math.max(numDigits * 5, 10);
-        options = L.Util.extend(options, { 'radius': this.radius });
-        
-        this._marker = new L.CircleMarker(this.getCenter(), options);
-        this._marker.on('click', this.fitViewportToCluster, this);
-        
-        return this._marker;
-    },
-    
-    /**
-     * remove this cluster from view.
-     */
-    remove: function () {
-        if (this._marker) {
-            this._clusterer._featureGroup.removeLayer(this._marker);
-            this._clusterer._featureGroup.removeLayer(this._markerLabel);
-        }
-        this._marker = null;
-        this._markerLabel = null;
-    }
-});
-
-
-/*
-  FIXME:
-  issues with marker labels at lower zooms
-*/
-
-L.Marker.Label = L.Class.extend({
-
-	includes: L.Mixin.Events,
-
-	options: {
-		color: '',
-		labelClass: '',
-		labelMarkup: '',
-		offsets: {
-			x: 0,
-			y: 0
-		},
-		zIndexOffset: 0
-	},
-
-	initialize: function (point, options) {
-		L.Util.setOptions(this, options);
-		
-		this._point = point;
-		this._label = null;
-	},
-
-	onAdd: function (map) {
-		this._map = map;
-		this._zoom = this._map._zoom;
-		this._initLabel();
-		
-        // map.on('viewreset', this._reset, this);
-		
-		this._reset();
-	},
-
-	onRemove: function (map) {
-		map.off('viewreset', this._reset, this);
-		
-		this._removeLabel();
-		this._map = null;
-	},
-
-	getPoint: function () {
-		return this._point;
-	},
-
-	setPoint: function (point) {
-		this._point = point;
-	},
-	
-	_applyOffsets: function (offsets) {
-        //account for IE 8 failing to report typeof number properly when number = 0
-		if ("undefined" !== typeof offsets.x && 0 !== offsets.x) {
-			this._label.style.marginLeft = offsets.x + "px";
-		}
-        if ("undefined" !== typeof  offsets.y && 0 !== offsets.y) {
-            this._label.style.marginTop = offsets.y + "px";
-		}
-	},
-
-	_initLabel: function () {
-        var options =  this.options,
-            newLabel;
-
-        if (null === this._label) {
-			
-			newLabel = L.DomUtil.create("div", options.labelClass, this._map.overlayPane);
-			newLabel.innerHTML = options.labelMarkup;
-			
-			if ("string" === typeof options.color) {
-                newLabel.style.color = options.color;
-			}
-			if ("number" === typeof options.zIndexOffset) {
-                newLabel.style.zIndex = options.zIndexOffset;
-			}
-			
-			this._label = newLabel;
-		}
-	},
-
-	_removeLabel: function () {
-		if (this._label) {
-			this._map._panes.overlayPane.removeChild(this._label);
-			this._label = null;
-		}
-	},
-
-	_reset: function () {
-		if (this._zoom !== this._map._zoom) {
-			this.onRemove(this._map);
-		}
-		
-		L.DomUtil.setPosition(this._label, this._point);
-		this._applyOffsets(this.options.offsets);
-		
-		this._map._panes.overlayPane.appendChild(this._label);
 	}
 });
 
@@ -3508,7 +3098,8 @@ L.Path = L.Path.extend({
 		this.fire(e.type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
-			containerPoint: containerPoint
+			containerPoint: containerPoint,
+			originalEvent: e
 		});
 
 		L.DomEvent.stopPropagation(e);
@@ -4380,6 +3971,31 @@ L.Polygon = L.Polyline.extend({
 
 
 /*
+ * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds
+ */
+
+L.Rectangle = L.Polygon.extend({
+	initialize: function (latLngBounds, options) {
+		L.Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
+	},
+
+	setBounds: function (latLngBounds) {
+		this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+	},
+	
+	_boundsToLatLngs: function (latLngBounds) {
+	    return [
+	        latLngBounds.getSouthWest(),
+	        latLngBounds.getNorthWest(),
+	        latLngBounds.getNorthEast(),
+	        latLngBounds.getSouthEast(),
+	        latLngBounds.getSouthWest()
+	    ];
+	}
+});
+
+
+/*
  * L.Circle is a circle overlay (with a certain radius in meters).
  */
 
@@ -4590,7 +4206,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 	addGeoJSON: function (geojson) {
 		var features = geojson.features,
-			i, len;
+		    i, len;
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
@@ -4600,8 +4216,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 
 		var isFeature = (geojson.type === 'Feature'),
-			geometry = isFeature ? geojson.geometry : geojson,
-			layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
+		    geometry = isFeature ? geojson.geometry : geojson,
+		    layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
 
 		this.fire('featureparse', {
 			layer: layer,
@@ -4618,8 +4234,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 L.Util.extend(L.GeoJSON, {
 	geometryToLayer: function (geometry, pointToLayer) {
 		var coords = geometry.coordinates,
-			layers = [],
-			latlng, latlngs, i, len, layer;
+		    layers = [],
+		    latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
@@ -4664,16 +4280,15 @@ L.Util.extend(L.GeoJSON, {
 
 	coordsToLatLng: function (coords, reverse) { // (Array, Boolean) -> LatLng
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
-			lng = parseFloat(coords[reverse ? 1 : 0]);
+		    lng = parseFloat(coords[reverse ? 1 : 0]);
 
 		return new L.LatLng(lat, lng, true);
 	},
 
 	coordsToLatLngs: function (coords, levelsDeep, reverse) { // (Array, Number, Boolean) -> Array
 		var latlng,
-			latlngs = [],
-			i,
-			len;
+		    latlngs = [],
+		    i, len;
 
 		for (i = 0, len = coords.length; i < len; i++) {
 			latlng = levelsDeep ?
@@ -4698,7 +4313,7 @@ L.DomEvent = {
 			key = '_leaflet_' + type + id;
 
 		if (obj[key]) {
-			return;
+			return this;
 		}
 
 		var handler = function (e) {
@@ -4944,7 +4559,8 @@ L.Draggable = L.Class.extend({
 		var newPoint = new L.Point(first.clientX, first.clientY);
 		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
 
-		L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
+		L.Util.cancelAnimFrame(this._animRequest);
+		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
 	_updatePosition: function () {
@@ -5068,12 +4684,36 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onDragStart: function () {
-		this._map
+		var map = this._map;
+
+		map
 			.fire('movestart')
 			.fire('dragstart');
+
+		if (map._panTransition) {
+			map._panTransition._onTransitionEnd(true);
+		}
+
+		if (map.options.inertia) {
+			this._positions = [];
+			this._times = [];
+		}
 	},
 
 	_onDrag: function () {
+		if (this._map.options.inertia) {
+			var time = this._lastTime = +new Date(),
+			    pos = this._lastPos = this._draggable._newPos;
+
+			this._positions.push(pos);
+			this._times.push(time);
+
+			if (time - this._times[0] > 200) {
+				this._positions.shift();
+				this._times.shift();
+			}
+		}
+
 		this._map
 			.fire('move')
 			.fire('drag');
@@ -5100,15 +4740,43 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onDragEnd: function () {
-		var map = this._map;
+		var map = this._map,
+			options = map.options,
+			delay = +new Date() - this._lastTime;
 
-		map
-			.fire('moveend')
-			.fire('dragend');
+		if (!options.inertia || delay > options.inertiaTreshold) {
+			map
+				.fire('moveend')
+				.fire('dragend');
 
-		if (map.options.maxBounds) {
-			// TODO predrag validation instead of animation
-			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
+		} else {
+
+			var direction = this._lastPos.subtract(this._positions[0]),
+				duration = (this._lastTime + delay - this._times[0]) / 1000,
+
+				speedVector = direction.multiplyBy(0.58 / duration),
+				speed = speedVector.distanceTo(new L.Point(0, 0)),
+
+				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
+				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
+
+				deccelerationDuration = limitedSpeed / options.inertiaDecceleration,
+				offset = limitedSpeedVector.multiplyBy(-deccelerationDuration / 2).round();
+
+			var panOptions = {
+				duration: deccelerationDuration,
+				easing: 'ease-out'
+			};
+
+			L.Util.requestAnimFrame(L.Util.bind(function () {
+				this._map.panBy(offset, panOptions);
+			}, this));
+
+
+			if (options.maxBounds) {
+				// TODO predrag validation instead of animation
+				L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
+			}
 		}
 	},
 
@@ -5506,7 +5174,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-			i, j, len, marker;
+		    i, j, len, marker;
 
 		// TODO refactor holes implementation in Polygon to support it here
 
@@ -5542,10 +5210,15 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
+		marker.on('dragend', this._fireEdit, this);
 
 		this._markerGroup.addLayer(marker);
 
 		return marker;
+	},
+
+	_fireEdit: function () {
+		this._poly.fire('edit');
 	},
 
 	_onMarkerDrag: function (e) {
@@ -5565,7 +5238,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_onMarkerClick: function (e) {
 		var marker = e.target,
-			i = marker._index;
+		    i = marker._index;
 
 		this._createMiddleMarker(marker._prev, marker._next);
 		this._updatePrevNext(marker._prev, marker._next);
@@ -5607,7 +5280,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
-			this._poly.fire('edit');
 
 			marker.setOpacity(1);
 
@@ -5628,6 +5300,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		function onClick() {
 			onDragStart.call(this);
 			onDragEnd.call(this);
+			this._poly.fire('edit');
 		}
 
 		marker
@@ -5645,8 +5318,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_getMiddleLatLng: function (marker1, marker2) {
 		var map = this._poly._map,
-			p1 = map.latLngToLayerPoint(marker1.getLatLng()),
-			p2 = map.latLngToLayerPoint(marker2.getLatLng());
+		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
+		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
 
 		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
 	}
@@ -5717,13 +5390,14 @@ L.Map.include({
 			bottom = 'leaflet-bottom',
 			left = 'leaflet-left',
 			right = 'leaflet-right',
-			container = L.DomUtil.create('div', 'leaflet-control-container', this._container),
+			corner = 'leaflet-corner',
+			container = this._container,
 			corners = this._controlCorners = {};
 
-		corners.topleft     = L.DomUtil.create('div', top    + ' ' + left,  container);
-		corners.topright    = L.DomUtil.create('div', top    + ' ' + right, container);
-		corners.bottomleft  = L.DomUtil.create('div', bottom + ' ' + left,  container);
-		corners.bottomright = L.DomUtil.create('div', bottom + ' ' + right, container);
+		corners.topleft = L.DomUtil.create('div', [corner, top, left].join(' '),  container);
+		corners.topright = L.DomUtil.create('div', [corner, top, right].join(' '), container);
+		corners.bottomleft = L.DomUtil.create('div', [corner, bottom, left].join(' '),  container);
+		corners.bottomright = L.DomUtil.create('div', [corner, bottom, right].join(' '), container);
 	}
 });
 
@@ -5760,53 +5434,52 @@ L.Control.Zoom = L.Control.extend({
 
 L.Control.Attribution = L.Control.extend({
 	options: {
-		position: 'bottomright'
+		position: 'bottomright',
+		prefix: 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>'
 	},
 
-	initialize: function (prefix, options) {
+	initialize: function (options) {
 		L.Util.setOptions(this, options);
 
-		this._prefix = prefix || 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>';
 		this._attributions = {};
 	},
 
 	onAdd: function (map) {
+		this._map = map;
+
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
-		this._map = map;
+
 		this._update();
 
 		return this._container;
 	},
 
 	setPrefix: function (prefix) {
-		this._prefix = prefix;
+		this.options.prefix = prefix;
 		this._update();
 	},
 
 	addAttribution: function (text) {
-		if (!text) {
-			return;
-		}
+		if (!text) { return; }
+
 		if (!this._attributions[text]) {
 			this._attributions[text] = 0;
 		}
 		this._attributions[text]++;
+
 		this._update();
 	},
 
 	removeAttribution: function (text) {
-		if (!text) {
-			return;
-		}
+		if (!text) { return; }
+
 		this._attributions[text]--;
 		this._update();
 	},
 
 	_update: function () {
-		if (!this._map) {
-			return;
-		}
+		if (!this._map) { return; }
 
 		var attribs = [];
 
@@ -5817,8 +5490,9 @@ L.Control.Attribution = L.Control.extend({
 		}
 
 		var prefixAndAttribs = [];
-		if (this._prefix) {
-			prefixAndAttribs.push(this._prefix);
+		
+		if (this.options.prefix) {
+			prefixAndAttribs.push(this.options.prefix);
 		}
 		if (attribs.length) {
 			prefixAndAttribs.push(attribs.join(', '));
@@ -6123,7 +5797,7 @@ L.Transition = L.Transition.extend({
 		this.fire('step');
 	},
 
-	_onTransitionEnd: function () {
+	_onTransitionEnd: function (e) {
 		if (this._inProgress) {
 			this._inProgress = false;
 			clearInterval(this._timer);
@@ -6131,7 +5805,10 @@ L.Transition = L.Transition.extend({
 			this._el.style[L.Transition.PROPERTY] = 'none';
 
 			this.fire('step');
-			this.fire('end');
+			
+			if (e instanceof window.Event) {
+				this.fire('end');
+			}
 		}
 	}
 });
@@ -6293,19 +5970,23 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return this;
 	},
 
-	panBy: function (offset) {
+	panBy: function (offset, options) {
 		if (!(offset.x || offset.y)) {
 			return this;
 		}
 
 		if (!this._panTransition) {
-			// TODO make duration configurable
-			this._panTransition = new L.Transition(this._mapPane, {duration: 0.25});
+			this._panTransition = new L.Transition(this._mapPane);
 
-			this._panTransition.on('step', this._onPanTransitionStep, this);
+			//this._panTransition.on('step', this._onPanTransitionStep, this);
 			this._panTransition.on('end', this._onPanTransitionEnd, this);
 		}
+
+		L.Util.setOptions(this._panTransition, L.Util.extend({duration: 0.25}, options));
+
 		this.fire('movestart');
+
+		this._mapPane.className += ' leaflet-pan-anim';
 
 		this._panTransition.run({
 			position: L.DomUtil.getPosition(this._mapPane).subtract(offset)
@@ -6319,6 +6000,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 
 	_onPanTransitionEnd: function () {
+		this._mapPane.className = this._mapPane.className.replace(/ leaflet-pan-anim/g, '');
 		this.fire('moveend');
 	},
 
@@ -6434,23 +6116,24 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		if (!newTileBg.transition) {
 			// TODO move to Map options
-			newTileBg.transition = new L.Transition(this._tileBg, {
+			newTileBg.transition = new L.Transition(newTileBg, {
 				duration: 0.25,
 				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
 			});
 			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
 		}
 
-		this._stopLoadingBgTiles();
+		this._stopLoadingImages(newTileBg);
 	},
 
 	// stops loading all tiles in the background layer
-	_stopLoadingBgTiles: function () {
-		var tiles = Array.prototype.slice.call(this._tileBg.getElementsByTagName('img')),
+	_stopLoadingImages: function (container) {
+		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
 			i, len, tile;
 
 		for (i = 0, len = tiles.length; i < len; i++) {
 			tile = tiles[i];
+
 			if (!tile.complete) {
 				tile.onload = L.Util.falseFn;
 				tile.onerror = L.Util.falseFn;

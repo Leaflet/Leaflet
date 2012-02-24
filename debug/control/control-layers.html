@@ -28,6 +28,7 @@
 
 		var marker = new L.Marker(new L.LatLng(50.5, 30.505));
 		map.addLayer(marker);
+		marker.bindPopup("Hello World").openPopup();
 
 		var marker2 = new L.Marker(new L.LatLng(50.502, 30.515));
 		map.addLayer(marker2);

@@ -30,6 +30,9 @@ L.Util = {
 		};
 	}()),
 
+
+	// TODO refactor: remove repetition
+
 	requestAnimFrame: (function () {
 		function timeoutDefer(callback) {
 			window.setTimeout(callback, 1000 / 60);
@@ -47,8 +50,21 @@ L.Util = {
 			if (immediate && requestFn === timeoutDefer) {
 				callback();
 			} else {
-				requestFn(callback, contextEl);
+				return requestFn.call(window, callback, contextEl);
 			}
+		};
+	}()),
+
+	cancelAnimFrame: (function () {
+		var requestFn = window.cancelAnimationFrame ||
+			window.webkitCancelRequestAnimationFrame ||
+			window.mozCancelRequestAnimationFrame ||
+			window.oCancelRequestAnimationFrame ||
+			window.msCancelRequestAnimationFrame ||
+			clearTimeout;
+
+		return function (handle) {
+			return requestFn.call(window, handle);
 		};
 	}()),
 
