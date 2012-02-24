@@ -4744,7 +4744,7 @@ L.Map.Drag = L.Handler.extend({
 			options = map.options,
 			delay = +new Date() - this._lastTime;
 
-		if (!options.inertia || delay > options.inertiaTreshold) {
+		if (!options.inertia || delay > options.inertiaThreshold) {
 			map
 				.fire('moveend')
 				.fire('dragend');
