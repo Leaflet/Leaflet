@@ -964,7 +964,7 @@ L.Map = L.Class.extend({
 		boxZoom: true,
 
 		inertia: true,
-		inertiaDecceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+		inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
 		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
 		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
 
@@ -4760,11 +4760,11 @@ L.Map.Drag = L.Handler.extend({
 				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-				deccelerationDuration = limitedSpeed / options.inertiaDecceleration,
-				offset = limitedSpeedVector.multiplyBy(-deccelerationDuration / 2).round();
+				decelerationDuration = limitedSpeed / options.inertiaDeceleration,
+				offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			var panOptions = {
-				duration: deccelerationDuration,
+				duration: decelerationDuration,
 				easing: 'ease-out'
 			};
 

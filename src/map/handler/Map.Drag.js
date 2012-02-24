@@ -107,11 +107,11 @@ L.Map.Drag = L.Handler.extend({
 				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-				deccelerationDuration = limitedSpeed / options.inertiaDecceleration,
-				offset = limitedSpeedVector.multiplyBy(-deccelerationDuration / 2).round();
+				decelerationDuration = limitedSpeed / options.inertiaDeceleration,
+				offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			var panOptions = {
-				duration: deccelerationDuration,
+				duration: decelerationDuration,
 				easing: 'ease-out'
 			};
 
