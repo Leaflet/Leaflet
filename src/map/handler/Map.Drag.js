@@ -31,31 +31,35 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onDragStart: function () {
-		this._map
+		var map = this._map;
+
+		map
 			.fire('movestart')
 			.fire('dragstart');
 
-		this._directions = [];
-		this._times = [];
-		this._prevPos = this._prevTime = null;
+		if (map._panTransition) {
+			map._panTransition._onTransitionEnd(true);
+		}
+
+		if (map.options.inertia) {
+			this._positions = [];
+			this._times = [];
+		}
 	},
 
 	_onDrag: function () {
-		var newTime = new Date();
+		if (this._map.options.inertia) {
+			var time = this._lastTime = +new Date(),
+			    pos = this._lastPos = this._draggable._newPos;
 
-		if (this._prevPos) {
-			this._directions.push(this._draggable._newPos.subtract(this._prevPos));
-			var delta = newTime - this._prevTime;
-			this._times.push(delta);
+			this._positions.push(pos);
+			this._times.push(time);
 
-			if (this._directions.length > 10) {
-				this._directions.shift();
+			if (time - this._times[0] > 200) {
+				this._positions.shift();
 				this._times.shift();
 			}
 		}
-
-		this._prevPos = this._draggable._newPos;
-		this._prevTime = newTime;
 
 		this._map
 			.fire('move')
@@ -83,42 +87,43 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onDragEnd: function () {
-		var map = this._map;
+		var map = this._map,
+			options = map.options,
+			delay = +new Date() - this._lastTime;
 
-		/*map
-			.fire('moveend')
-			.fire('dragend');*/
+		if (!options.inertia || delay > options.inertiaTreshold) {
+			map
+				.fire('moveend')
+				.fire('dragend');
 
-		var p = new L.Point(0, 0),
-			len = this._directions.length,
-			dir,
-			duration = 0;
+		} else {
 
-		dir = this._directions.reduce(function (a, b) {
-			return a.add(b);
-		});
-		duration = this._times.reduce(function (a, b) {
-			return a + b;
-		}) + (+new Date() - this._prevTime);
+			var direction = this._lastPos.subtract(this._positions[0]),
+				duration = (this._lastTime + delay - this._times[0]) / 1000,
 
-		var a = 10000,
-			v0v = dir.divideBy(duration / 1000),
-			v0 = v0v.distanceTo(p),
-			t = v0 / a,
-			offset = v0v.multiplyBy(- t / 2).round();
+				speedVector = direction.multiplyBy(0.58 / duration),
+				speed = speedVector.distanceTo(new L.Point(0, 0)),
 
-		console.log(offset.distanceTo(p), t);
+				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
+				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-		L.Util.requestAnimFrame(L.Util.bind(function() {
-			this._map.panBy(offset, {
-				duration: Math.round(t * 100) / 100,
-				easing: 'cubic-bezier(.39,.3,.36,.98)'
-			});
-		}, this));
+				deccelerationDuration = limitedSpeed / options.inertiaDecceleration,
+				offset = limitedSpeedVector.multiplyBy(-deccelerationDuration / 2).round();
 
-		if (map.options.maxBounds) {
-			// TODO predrag validation instead of animation
-			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
+			var panOptions = {
+				duration: deccelerationDuration,
+				easing: 'ease-out'
+			};
+
+			L.Util.requestAnimFrame(L.Util.bind(function () {
+				this._map.panBy(offset, panOptions);
+			}, this));
+
+
+			if (options.maxBounds) {
+				// TODO predrag validation instead of animation
+				L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
+			}
 		}
 	},
 
