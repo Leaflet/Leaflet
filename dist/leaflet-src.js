@@ -4924,8 +4924,8 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
-			p2 = map.mouseEventToContainerPoint(e.touches[1]),
+		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
+			p2 = map.mouseEventToLayerPoint(e.touches[1]),
 			viewCenter = map.containerPointToLayerPoint(map.getSize().divideBy(2));
 
 		this._startCenter = p1.add(p2).divideBy(2, true);
@@ -4948,8 +4948,8 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var map = this._map;
 
-		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
-			p2 = map.mouseEventToContainerPoint(e.touches[1]);
+		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
+			p2 = map.mouseEventToLayerPoint(e.touches[1]);
 
 		this._scale = p1.distanceTo(p2) / this._startDist;
 		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
