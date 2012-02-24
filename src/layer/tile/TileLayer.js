@@ -20,7 +20,7 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: true,
+		updateWhenIdle: L.Browser.mobile,
 		reuseTiles: false
 	},
 
