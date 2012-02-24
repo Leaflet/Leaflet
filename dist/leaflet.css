@@ -239,7 +239,7 @@ a.leaflet-active {
 	opacity: 1;
 	}
 
-.leaflet-zoom-anim .leaflet-tile {
+.leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile {
 	-webkit-transition: none;
 	-moz-transition: none;
 	-o-transition: none;

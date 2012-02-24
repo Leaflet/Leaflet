@@ -65,8 +65,8 @@ L.Transition = L.Transition.extend({
 		this.fire('start');
 
 		if (L.Transition.NATIVE) {
-			//clearInterval(this._timer);
-			//this._timer = setInterval(this._onFakeStep, this.options.fakeStepInterval);
+			clearInterval(this._timer);
+			this._timer = setInterval(this._onFakeStep, this.options.fakeStepInterval);
 		} else {
 			this._onTransitionEnd();
 		}
@@ -88,7 +88,7 @@ L.Transition = L.Transition.extend({
 		this.fire('step');
 	},
 
-	_onTransitionEnd: function () {
+	_onTransitionEnd: function (e) {
 		if (this._inProgress) {
 			this._inProgress = false;
 			clearInterval(this._timer);
@@ -96,7 +96,10 @@ L.Transition = L.Transition.extend({
 			this._el.style[L.Transition.PROPERTY] = 'none';
 
 			this.fire('step');
-			this.fire('end');
+			
+			if (e instanceof window.Event) {
+				this.fire('end');
+			}
 		}
 	}
 });
