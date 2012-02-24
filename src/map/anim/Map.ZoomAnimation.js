@@ -92,23 +92,24 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		if (!newTileBg.transition) {
 			// TODO move to Map options
-			newTileBg.transition = new L.Transition(this._tileBg, {
+			newTileBg.transition = new L.Transition(newTileBg, {
 				duration: 0.25,
 				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
 			});
 			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
 		}
 
-		this._stopLoadingBgTiles();
+		this._stopLoadingImages(newTileBg);
 	},
 
 	// stops loading all tiles in the background layer
-	_stopLoadingBgTiles: function () {
-		var tiles = Array.prototype.slice.call(this._tileBg.getElementsByTagName('img')),
+	_stopLoadingImages: function (container) {
+		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
 			i, len, tile;
 
 		for (i = 0, len = tiles.length; i < len; i++) {
 			tile = tiles[i];
+
 			if (!tile.complete) {
 				tile.onload = L.Util.falseFn;
 				tile.onerror = L.Util.falseFn;

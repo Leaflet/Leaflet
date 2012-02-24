@@ -24,6 +24,11 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		boxZoom: true,
 
+		inertia: true,
+		inertiaDecceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
+		inertiaTreshold:      L.Browser.touch ? 32   : 16, // ms
+
 		// controls
 		zoomControl: true,
 		attributionControl: true,

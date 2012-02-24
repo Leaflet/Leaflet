@@ -88,7 +88,7 @@ L.Transition = L.Transition.extend({
 		this.fire('step');
 	},
 
-	_onTransitionEnd: function () {
+	_onTransitionEnd: function (e) {
 		if (this._inProgress) {
 			this._inProgress = false;
 			clearInterval(this._timer);
@@ -96,7 +96,10 @@ L.Transition = L.Transition.extend({
 			this._el.style[L.Transition.PROPERTY] = 'none';
 
 			this.fire('step');
-			this.fire('end');
+			
+			if (e instanceof window.Event) {
+				this.fire('end');
+			}
 		}
 	}
 });
