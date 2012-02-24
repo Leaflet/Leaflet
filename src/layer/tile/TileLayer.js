@@ -48,10 +48,9 @@ L.TileLayer = L.Class.extend({
 
 		// set up events
 		map.on('viewreset', this._resetCallback, this);
+		map.on('moveend', this._update, this);
 
-		if (this.options.updateWhenIdle) {
-			map.on('moveend', this._update, this);
-		} else {
+		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
 			map.on('move', this._limitedUpdate, this);
 		}
@@ -64,10 +63,9 @@ L.TileLayer = L.Class.extend({
 		map._panes.tilePane.removeChild(this._container);
 
 		map.off('viewreset', this._resetCallback, this);
-
-		if (this.options.updateWhenIdle) {
-			map.off('moveend', this._update, this);
-		} else {
+		map.off('moveend', this._update, this);
+		
+		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
 		}
 
@@ -149,7 +147,9 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function () {
+	_update: function (e) {
+		if (this._map._panTransition && this._map._panTransition._inProgress) { return; }
+
 		var bounds   = this._map.getPixelBounds(),
 		    zoom     = this._map.getZoom(),
 		    tileSize = this.options.tileSize;
@@ -167,7 +167,6 @@ L.TileLayer = L.Class.extend({
 			tileBounds = new L.Bounds(nwTilePoint, seTilePoint);
 
 		this._addTilesFromCenterOut(tileBounds);
-		console.log('tiles load');
 
 		if (this.options.unloadInvisibleTiles || this.options.reuseTiles) {
 			this._removeOtherTiles(tileBounds);
@@ -329,6 +328,7 @@ L.TileLayer = L.Class.extend({
 		tile._layer  = this;
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
+		
 		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
 
