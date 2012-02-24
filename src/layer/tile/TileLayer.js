@@ -64,7 +64,7 @@ L.TileLayer = L.Class.extend({
 
 		map.off('viewreset', this._resetCallback, this);
 		map.off('moveend', this._update, this);
-		
+
 		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
 		}
@@ -238,16 +238,21 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_addTile: function (tilePoint, container) {
-		var zoom  = this._map.getZoom(),
-		    key   = tilePoint.x + ':' + tilePoint.y,
+		var tilePos = this._getTilePos(tilePoint),
+			zoom = this._map.getZoom(),
+		    key = tilePoint.x + ':' + tilePoint.y,
 		    limit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
 			if (!this.options.noWrap) {
 				tilePoint.x = ((tilePoint.x % limit) + limit) % limit;
+			} else if (tilePoint.x < 0 || tilePoint.x >= limit) {
+				this._tilesToLoad--;
+				return;
+			}
 
-			} else if (tilePoint.x < 0 || tilePoint.x >= limit || tilePoint.y < 0 || tilePoint.y >= limit) {
+			if (tilePoint.y < 0 || tilePoint.y >= limit) {
 				this._tilesToLoad--;
 				return;
 			}
@@ -255,7 +260,7 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, this._getTilePos(tilePoint));
+		L.DomUtil.setPosition(tile, tilePos);
 
 		this._tiles[key] = tile;
 
@@ -328,7 +333,7 @@ L.TileLayer = L.Class.extend({
 		tile._layer  = this;
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
-		
+
 		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
 
