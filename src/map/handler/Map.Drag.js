@@ -91,11 +91,8 @@ L.Map.Drag = L.Handler.extend({
 			options = map.options,
 			delay = +new Date() - this._lastTime;
 
-		if (!options.inertia || delay > options.inertiaThreshold) {
-			map
-				.fire('moveend')
-				.fire('dragend');
-
+		if (!options.inertia || delay > options.inertiaThreshold || this._positions[0] === undefined) {
+			map.fire('moveend')
 		} else {
 
 			var direction = this._lastPos.subtract(this._positions[0]),
@@ -125,6 +122,7 @@ L.Map.Drag = L.Handler.extend({
 				L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
 			}
 		}
+		map.fire('dragend');
 	},
 
 	_panInsideMaxBounds: function () {
