@@ -52,27 +52,30 @@
 			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=button_count&amp;show_faces=false&amp;width=430&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:20px;" allowTransparency="true"></iframe>
 		</p>
 
+
+		<h3>Using a hosted version of Leaflet</h3>
+
+		<p>The latest stable release of Leaflet is hosted on a CDN &mdash; to start using it straight away, place this code in the <code>head</code> section of your HTML:</p>
+		<pre><code class="html">&lt;link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" /&gt;
+&lt;!--[if lte IE 8]&gt;
+	&lt;link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /&gt;
+&lt;![endif]--&gt;
+
+&lt;script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"&gt;&lt;/script&gt;</code></pre>
+
+
 		<h3>Download Leaflet</h3>
 
-		<p>Besides the library itself, the download package contains full source code, unit tests, files for debugging and a build system.</p>
+		<p>Besides the library itself, the download package contains full source code, unit tests, files for debugging and a build system. The production files (included the same way as in the code above) are in the <code>dist</code> folder.</p>
 
 		<p>
-			<a href="https://github.com/CloudMade/Leaflet/zipball/v0.3.1">Download Leaflet 0.3.1</a> (zip, stable, 14.02.2012)<br />
-			<a href="http://github.com/CloudMade/Leaflet/zipball/master">Download Leaflet master</a> (zip, development version)
+			<a href="https://github.com/CloudMade/Leaflet/zipball/v0.3.1">Download Leaflet 0.3.1 stable</a> (February 14, 2012)<br />
+			<a href="http://github.com/CloudMade/Leaflet/zipball/master">Download Leaflet 0.4 master</a> (in-progress version)
 		</p>
 
 		<p>
 			<a href="https://github.com/CloudMade/Leaflet/blob/master/CHANGELOG.md">View Changelog</a>
 		</p>
-
-		<h3>Including Leaflet on your page</h3>
-		<p>Place the contents of the <code>dist</code> folder somewhere in your directory tree and include it in the <code>head</code> section of your HTML with the following code:</p>
-		<pre><code class="html">&lt;!-- Leaflet CSS --&gt;
-&lt;link rel="stylesheet" href="&lt;path_to_dist&gt;/leaflet.css" /&gt;
-&lt;!--[if lte IE 8]&gt;&lt;link rel="stylesheet" href="&lt;path_to_dist&gt;/leaflet.ie.css" /&gt;&lt;![endif]--&gt;
-
-&lt;!-- Leaflet JavaScript --&gt;
-&lt;script src="&lt;path_to_dist&gt;/leaflet.js"&gt;&lt;/script&gt;</code></pre>
 
 		<h3>Building a custom version of Leaflet</h3>
 		<p>Open <code>build/build.html</code> page from the download package, check the components you want to see in your build and then follow the instructions there.</p>
