@@ -64,6 +64,7 @@ L.Util = {
 			clearTimeout;
 
 		return function (handle) {
+			if (!handle) { return; }
 			return requestFn.call(window, handle);
 		};
 	}()),
