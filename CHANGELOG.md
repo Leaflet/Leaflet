@@ -11,6 +11,7 @@ An in-progress version being developed on the master branch.
 
  * Added configurable **panning inertia** - after a quick pan, the map slows down in the same direction.
  * Added **polyline and polygon editing**. [#174](https://github.com/CloudMade/Leaflet/issues/174)
+ * Adde an unobtrusive **scale control**.
  * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
  * Added `Rectangle` vector layer (by [@JasonSanford](https://github.com/JasonSanford)). [#504](https://github.com/CloudMade/Leaflet/pull/504)
 
@@ -65,14 +66,14 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
  * Fixed a bug where vector layer `setStyle({stroke: false})` wouldn't remove stroke and the same for fill. [#441](https://github.com/CloudMade/Leaflet/issues/441)
  * Fixed a bug where `Marker` `bindPopup` method wouldn't take `offset` option into account.
- 
+
 #### Browser bugfixes
 
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
  * Fixed a bug that caused jumping/stuttering of panning animation in some cases.
  * Fixed a bug where popup size was calculated incorrectly in IE.
  * Fixed a bug where cursor would flicker when dragging a marker.
- 
+
 #### Mobile browser bugfixes
 
  * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
