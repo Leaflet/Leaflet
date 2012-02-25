@@ -963,7 +963,7 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		boxZoom: true,
 
-		inertia: true,
+		inertia: !L.Browser.android,
 		inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
 		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
 		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
@@ -4742,12 +4742,14 @@ L.Map.Drag = L.Handler.extend({
 	_onDragEnd: function () {
 		var map = this._map,
 			options = map.options,
-			delay = +new Date() - this._lastTime;
+			delay = +new Date() - this._lastTime,
+			
+			noInertia = !options.inertia ||
+					delay > options.inertiaThreshold ||
+					typeof this._positions[0] === 'undefined';
 
-		if (!options.inertia || delay > options.inertiaThreshold) {
-			map
-				.fire('moveend')
-				.fire('dragend');
+		if (noInertia) {
+			map.fire('moveend');
 
 		} else {
 
@@ -4771,12 +4773,13 @@ L.Map.Drag = L.Handler.extend({
 			L.Util.requestAnimFrame(L.Util.bind(function () {
 				this._map.panBy(offset, panOptions);
 			}, this));
+		}
 
+		map.fire('dragend');
 
-			if (options.maxBounds) {
-				// TODO predrag validation instead of animation
-				L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
-			}
+		if (options.maxBounds) {
+			// TODO predrag validation instead of animation
+			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
 		}
 	},
 
@@ -5805,8 +5808,8 @@ L.Transition = L.Transition.extend({
 			this._el.style[L.Transition.PROPERTY] = 'none';
 
 			this.fire('step');
-			
-			if (e instanceof window.Event) {
+
+			if (e && e.type) {
 				this.fire('end');
 			}
 		}

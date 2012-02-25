@@ -97,7 +97,7 @@ L.Transition = L.Transition.extend({
 
 			this.fire('step');
 
-			if (e instanceof Object) {
+			if (e && e.type) {
 				this.fire('end');
 			}
 		}

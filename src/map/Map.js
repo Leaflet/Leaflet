@@ -24,7 +24,7 @@ L.Map = L.Class.extend({
 		doubleClickZoom: true,
 		boxZoom: true,
 
-		inertia: true,
+		inertia: !L.Browser.android,
 		inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
 		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
 		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
