@@ -92,7 +92,7 @@ L.Map.Drag = L.Handler.extend({
 			delay = +new Date() - this._lastTime;
 
 		if (!options.inertia || delay > options.inertiaThreshold || this._positions[0] === undefined) {
-			map.fire('moveend')
+			map.fire('moveend');
 		} else {
 
 			var direction = this._lastPos.subtract(this._positions[0]),
