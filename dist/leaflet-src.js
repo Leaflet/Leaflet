@@ -105,6 +105,7 @@ L.Util = {
 			clearTimeout;
 
 		return function (handle) {
+			if (!handle) { return; }
 			return requestFn.call(window, handle);
 		};
 	}()),
@@ -2452,11 +2453,15 @@ L.Marker = L.Class.extend({
 		L.DomEvent.stopPropagation(e);
 		if (this.dragging && this.dragging.moved()) { return; }
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
-		this.fire(e.type);
+		this.fire(e.type, {
+			originalEvent: e
+		});
 	},
 
 	_fireMouseEvent: function (e) {
-		this.fire(e.type);
+		this.fire(e.type, {
+			originalEvent: e
+		});
 		if (e.type !== 'mousedown') {
 			L.DomEvent.stopPropagation(e);
 		}
@@ -5595,11 +5600,9 @@ L.Control.Scale = L.Control.extend({
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
 		    d = num / pow10;
 
-		return pow10 * (d >= 10 ?
-			10 :
-			d >= 5 ?
-				5 :
-				d >= 2 ? 2 : 1);
+		d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 2 ? 2 : 1;
+
+		return pow10 * d;
 	}
 });
 

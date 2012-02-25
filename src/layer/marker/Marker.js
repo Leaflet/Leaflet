@@ -158,11 +158,15 @@ L.Marker = L.Class.extend({
 		L.DomEvent.stopPropagation(e);
 		if (this.dragging && this.dragging.moved()) { return; }
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
-		this.fire(e.type);
+		this.fire(e.type, {
+			originalEvent: e
+		});
 	},
 
 	_fireMouseEvent: function (e) {
-		this.fire(e.type);
+		this.fire(e.type, {
+			originalEvent: e
+		});
 		if (e.type !== 'mousedown') {
 			L.DomEvent.stopPropagation(e);
 		}
