@@ -11,7 +11,7 @@ An in-progress version being developed on the master branch.
 
  * Added configurable **panning inertia** - after a quick pan, the map slows down in the same direction.
  * Added **polyline and polygon editing**. [#174](https://github.com/CloudMade/Leaflet/issues/174)
- * Adde an unobtrusive **scale control**.
+ * Added an unobtrusive **scale control**.
  * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
  * Added `Rectangle` vector layer (by [@JasonSanford](https://github.com/JasonSanford)). [#504](https://github.com/CloudMade/Leaflet/pull/504)
 
