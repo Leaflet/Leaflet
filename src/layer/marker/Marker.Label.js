@@ -23,8 +23,9 @@ L.Marker.Label = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._zoom = this._map._zoom;
 		this._initLabel();
+		
+		L.DomEvent.addListener(this._label, 'click', this._onMouseClick, this);
 	},
 
 	onRemove: function (map) {
@@ -53,11 +54,7 @@ L.Marker.Label = L.Class.extend({
 	_initLabel: function () {
         var options =  this.options,
             newLabel;
-        
-        if (this._label !== null) { 
-            this._removeLabel();
-        }
-        
+    
         newLabel = L.DomUtil.create("div", options.labelClass, this._map.overlayPane);
 		newLabel.innerHTML = options.labelMarkup;
 		
@@ -74,6 +71,33 @@ L.Marker.Label = L.Class.extend({
 		this._applyOffsets(this.options.offsets);
 
 		this._map._panes.overlayPane.appendChild(this._label);
+	},
+	
+	_onMouseClick: function (e) {
+		if (this._map.dragging && this._map.dragging.moved()) {
+			return;
+		}
+
+		this._fireMouseEvent(e);
+	},
+	
+	_fireMouseEvent: function (e) {
+		if (!this.hasEventListeners(e.type)) {
+			return;
+		}
+		var map = this._map,
+			containerPoint = map.mouseEventToContainerPoint(e),
+			layerPoint = map.containerPointToLayerPoint(containerPoint),
+			latlng = map.layerPointToLatLng(layerPoint);
+
+		this.fire(e.type, {
+			latlng: latlng,
+			layerPoint: layerPoint,
+			containerPoint: containerPoint,
+			originalEvent: e
+		});
+
+		L.DomEvent.stopPropagation(e);
 	},
 
 	_removeLabel: function () {

@@ -22,22 +22,23 @@ L.Marker.Clusterer = L.Class.extend({
     onAdd: function (map, options) {
         this._map = map;
         this._featureGroup = new L.FeatureGroup();
-        
         map.addLayer(this._featureGroup);
         
-        map.on('zoomend', this._resetView, this);
-        map.on('moveend', this._resetView, this);
+        map
+            .on('zoomend', this._resetView, this)
+            .on('dragend', this._resetView, this); //moveend has an issue with L.CircleMarker
         
         this._resetView();
     },
     
     onRemove: function () {
         this.clearClusters();
-        this._map.off('zoomend', this._resetView, this);
-        this._map.off('dragend', this._resetView, this);
+        
+        this._map
+            .off('zoomend', this._resetView, this)
+            .off('dragend', this._resetView, this);
         
         this._map = null;
-        this._featureGroup = null;
     },
     
     /**
@@ -172,9 +173,13 @@ L.Marker.Clusterer = L.Class.extend({
      * iterate over "dirty" clusters in need of redraw
      */
     _redrawClusters: function () {
+        var currentCluster;
+        
         for (var cluster in this._dirtyClusters) {
             if (this._dirtyClusters.hasOwnProperty(cluster)) {
-                this._dirtyClusters[cluster].redrawCluster();
+                currentCluster = this._dirtyClusters[cluster];
+                currentCluster.redrawCluster();
+                this._featureGroup.addLayer(currentCluster.getLayers());
             }
         }
         this._dirtyClusters = {};
@@ -189,14 +194,13 @@ L.Marker.Clusterer = L.Class.extend({
             orphanPoints = [],
             currentCluster, i;
              
+        this._clearLayers();
+        
         for (i = clustersToRedraw.length; i--;) {
             currentCluster = clustersToRedraw[i];
-             
-            if (currentCluster._zoom !== mapZoom) {
-                orphanPoints = orphanPoints.concat(currentCluster._coords);
-                currentCluster.remove();
-                delete this._clusters[currentCluster._id];
-            }
+            orphanPoints = orphanPoints.concat(currentCluster._coords);
+            currentCluster.remove();
+            delete this._clusters[currentCluster._id];
         }
         
         this.addMarkers(orphanPoints);

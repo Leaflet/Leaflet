@@ -8,8 +8,11 @@ L.Marker.Cluster = L.Class.extend({
         this._map = clusterer._map;
         this._marker = null;
         this._zoom = clusterer._map.getZoom();
+        this._radius = 0;
+        this._layers = new L.FeatureGroup();
         
         this.addPoint(initialLatLng);
+        this._layers.on("click", this.fitViewportToCluster, this);
 	},
     
     /**
@@ -24,15 +27,6 @@ L.Marker.Cluster = L.Class.extend({
             //TODO: improve upon this.  Allow Points?
             throw "Marker Clusterer can't add objects that are not an instance of L.LatLng";
         }
-    },
-    
-    /**
-     * put a cluster on the map.
-     */
-    redrawCluster: function () {
-        this.remove();
-        this._clusterer._featureGroup.addLayer(this.getMarker());
-        this._clusterer._featureGroup.addLayer(this.getLabel());
     },
     
     /**
@@ -70,8 +64,15 @@ L.Marker.Cluster = L.Class.extend({
     },
     
     /**
+     * @return {L.FeatureGroup}
+     */
+    getLayers: function () {
+        return this._layers;
+    },
+    
+    /**
      * returns an HTML node who's text value is the number of coodinates at this cluster
-     * @return L.MarkerLabel
+     * @return {L.MarkerLabel}
      */
     getLabel: function () {
         var markerText = this._coords.length.toString(),
@@ -80,32 +81,39 @@ L.Marker.Cluster = L.Class.extend({
                 labelClass: 'leaflet-cluster leaflet-cluster-' + this._id,
                 labelMarkup: markerText,
                 offsets: {
-                    x: (-1 * this.radius * 0.5) - textOffset
+                    x: (-1 * this._radius * 0.5) - textOffset
                 },
                 'zIndexOffset': 10 //FIXME: this should not be hardcoded
             },
-            point = this._map.latLngToLayerPoint(this.getCenter());
+            point = this._map.latLngToLayerPoint(this.getCenter()),
+            elem;
 
-        this._markerLabel = new L.Marker.Label(point, options);
-        // this._markerLabel.on('click', console.log, this);
-        
-        return this._markerLabel;
+        return this._markerLabel = new L.Marker.Label(point, options);
+
     },
     
     /**
-     * @return L.MarkerClusterer.Marker (currently L.CircleMarker - plans to augment with diff types)
+     * @return {L.CircleMarker}
+     * TODO: augment to allow different types
      */
     getMarker: function () {
         var numDigits = this._coords.length.toString().length,
             options = this._clusterer.options.svgDefaults;
         
-        this.radius = Math.max(numDigits * 5, 10);
-        options = L.Util.extend(options, { 'radius': this.radius });
+        this._radius = Math.max(numDigits * 5, 10);
+        options = L.Util.extend(options, { 'radius': this._radius });
         
-        this._marker = new L.CircleMarker(this.getCenter(), options);
-        this._marker.on('click', this.fitViewportToCluster, this);
-        
-        return this._marker;
+        return this._marker = new L.CircleMarker(this.getCenter(), options);
+    },
+    
+    /**
+     * put a cluster on the map.
+     */
+    redrawCluster: function () {
+        this.remove();
+        //TODO: procedural; marker does some calculations necessary for label.  Improve?
+        this._layers.addLayer(this.getMarker());
+        this._layers.addLayer(this.getLabel());
     },
     
     /**
@@ -113,8 +121,10 @@ L.Marker.Cluster = L.Class.extend({
      */
     remove: function () {
         if (this._marker) {
-            this._clusterer._featureGroup.removeLayer(this._marker);
-            this._clusterer._featureGroup.removeLayer(this._markerLabel);
+            this._layers.off("click", this.fitViewportToCluster, this);
+            
+            this._layers.removeLayer(this._marker);
+            this._layers.removeLayer(this._markerLabel);
         }
         this._marker = null;
         this._markerLabel = null;
