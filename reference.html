@@ -94,6 +94,7 @@
 					<li><a href="#multipolyline">MultiPolyline</a></li>
 					<li><a href="#polygon">Polygon</a></li>
 					<li><a href="#multipolygon">MultiPolygon</a></li>
+					<li><a href="#rectangle">Rectangle</a></li>
 					<li><a href="#circle">Circle</a></li>
 					<li><a href="#circlemarker">CircleMarker</a></li>
 				</ul>
@@ -128,7 +129,7 @@
 				</ul>
 				<h4>Utility</h4>
 				<ul>
-					<li><a class="nodocs" href="#">Class</a></li>
+					<li><a href="#class">Class</a></li>
 					<li><a class="nodocs" href="#">Browser</a></li>
 					<li><a class="nodocs" href="#">Util</a></li>
 					<!-- <li><a class="nodocs" href="#">LineUtil</a></li>
@@ -160,6 +161,7 @@
 				<h4>Misc</h4>
 				<ul>
 					<li><a href="#noconflict" class="nodocs">noConflict</a></li>
+					<li><a href="#version">VERSION</a></li>
 				</ul>
 			</div>
 		</div>
@@ -1567,8 +1569,57 @@ map.addLayer(polyline);</code></pre>
 			</tr>
 		</table>
 
+		<h2 id="rectangle">L.Rectangle</h2>
 
+		<p>A class for drawing rectangle overlays on a map. Extends <a href="#polygon">Polygon</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
+		<h3>Usage example</h3>
+		<pre><code class="javascript">// create an orange rectangle from a LatLngBounds
+var bounds = new L.LatLngBounds(new L.LatLng(54.559322, -5.767822), new L.LatLng(56.1210604, -3.021240));
+
+// zoom the map to the rectangle
+map.fitBounds(bounds);
+
+// create the rectangle
+var rectangle = new L.Rectangle(bounds, {
+	fillColor: "#ff7800",
+	color: "#000000",
+	opacity: 1,
+	weight: 2
+});
+
+// add the rectangle to the map
+map.addLayer(rectangle);</code></pre>
+
+		<h3>Constructor</h3>
+
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Rectangle( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>bounds</i>, &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i> )</code></td>
+				<td>Instantiates a rectangle object given a LatLngBounds and optionally an options object.</td>
+			</tr>
+		</table>
+
+		<h3>Methods</h3>
+
+		<p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
+
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setBounds( &lt;<a href="#latlngbounds">LatLngBounds</a>&gt;&nbsp;<i>bounds</i> )</code></td>
+				<td><code>this</code></td>
+				<td>Redraws the rectangle with the passed bounds.</td>
+			</tr>
+		</table>
 
 		<h2 id="circle">L.Circle</h2>
 
@@ -2683,6 +2734,12 @@ map.addControl(layersControl);</code></pre>
 				<td>Returns true if the handler is enabled.</td>
 			</tr>
 		</table>
+
+		<h2 id="version">L.VERSION</h2>
+
+		<p>A constant that represents the Leaflet version in use.<p>
+
+		<pre><code>L.VERSION // returns "0.3" (or whatever version is currently in use)</code></pre>
 
 
 

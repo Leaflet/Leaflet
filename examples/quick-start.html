@@ -49,7 +49,7 @@
 		<div id="map" style="height: 180px; margin-bottom: 18px"></div>
 		<script>
 			var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-				cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+				cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>',
 				cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 
 			var map = new L.Map('map');
@@ -99,15 +99,17 @@
 
 		<ol>
 			<li>Include Leaflet CSS files in the head section of your document:
-			<pre><code class="html">&lt;link rel="stylesheet" href="leaflet/leaflet.css" /&gt;
-&lt;!--[if lte IE 8]&gt;&lt;link rel="stylesheet" href="leaflet/leaflet.ie.css" /&gt;&lt;![endif]--&gt;</code></pre>
+			<pre><code class="html">&lt;link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" /&gt;
+&lt;!--[if lte IE 8]&gt;
+	&lt;link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /&gt;
+&lt;![endif]--&gt;</code></pre>
 			</li>
 
 			<li>Include Leaflet JavaScript file somewhere on the page (preferably before <code>body</code> close tag):
-			<pre><code class="html">&lt;script src="leaflet/leaflet.js"&gt;&lt;/script&gt;</code></li>
+			<pre><code class="html">&lt;script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"&gt;&lt;/script&gt;</code></li>
 
-			<li>Put a <code>div</code> element with a certain <code>id</code> where you want your map to be and make sure it has defined width and height:
-			<pre><code class="html">&lt;div id="map" style="height: 200px"&gt;&lt;/div&gt; &lt;!-- width equals available horizontal space by default --&gt;</code></pre></li>
+			<li>Put a <code>div</code> element with a certain <code>id</code> where you want your map to be (making sure it has defined height):
+			<pre><code class="html">&lt;div id="map" style="height: 200px"&gt;&lt;/div&gt;</code></pre></li>
 		</ol>
 
 		<p>Now you're ready to initialize the map and do some stuff with it.</p>
@@ -131,9 +133,12 @@
 
 <p>Next we'll create a tile layer to add to our map, in this case it's a CloudMade tile layer with Fresh style. Creating a tile layer usually involves setting the URL template for the tile images (get yours at <a href="http://cloudmade.com/register">CloudMade</a>), the attribution text and the maximum zoom level of the layer:</p>
 
-<pre><code class="javascript">var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
-	cloudmadeAttrib = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
-    cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttrib});</code></pre>
+<pre><code class="javascript">var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/<span class="text-cut" data-cut="[your-API-key]">YOUR-API-KEY</span>/997/256/{z}/{x}/{y}.png', {
+	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>',
+	maxZoom: 18
+});</code></pre>
+
+<p>It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles, and it doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to (we'd recommend CloudMade though, it looks beautiful).</p>
 
 <p>Finally we'll set the map view to the center of London at 13th zoom level and add our tile layer (see the resulting map above):</p>
 
