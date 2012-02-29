@@ -56,11 +56,6 @@ var deps = {
 		src: ['layer/marker/Icon.js', 'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
-	
-	MarkerClusterer: {
-		src: ['layer/marker/Marker.Clusterer.js', 'layer/marker/Marker.Cluster.js', 'layer/marker/Marker.Label.js'],
-		desc: 'combines multiple markers / points into groups on the map'
-	},
 
 	DivIcon: {
 		src: ['layer/marker/DivIcon.js'],
@@ -137,6 +132,12 @@ var deps = {
 		src: ['layer/vector/CircleMarker.js'],
 		deps: ['Circle'],
 		desc: 'Circle overlays with a constant pixel radius.'
+	},
+	
+	MarkerClusterer: {
+		src: ['layer/marker/Marker.Clusterer.js', 'layer/marker/Marker.Cluster.js', 'layer/marker/Marker.Label.js'],
+		deps: ['CircleMarker', 'FeatureGroup'],
+		desc: 'combines multiple markers / points into groups on the map'
 	},
 
 	VectorsCanvas: {

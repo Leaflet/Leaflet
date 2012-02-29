@@ -2475,462 +2475,6 @@ L.Marker = L.Class.extend({
 });
 
 
-
-L.Marker.Clusterer = L.Class.extend({
-    
-    options: {
-        clusterRadius: 100,
-        svgDefaults: {
-            stroke: true,
-            color: '#4159bb',
-            opacity: 0.75,
-            fillOpacity: 0.5,
-            fillColor: '#4159ff'
-        }
-    },
-    
-    initialize: function (options) {
-        L.Util.setOptions(this, options);
-        
-        this._clusters = {};
-        this._dirtyClusters = {};
-    },
-    
-    onAdd: function (map, options) {
-        this._map = map;
-        this._featureGroup = new L.FeatureGroup();
-        map.addLayer(this._featureGroup);
-        
-        map
-            .on('zoomend', this._resetView, this)
-            .on('dragend', this._resetView, this); //moveend has an issue with L.CircleMarker
-        
-        this._resetView();
-    },
-    
-    onRemove: function () {
-        this.clearClusters();
-        
-        this._map
-            .off('zoomend', this._resetView, this)
-            .off('dragend', this._resetView, this);
-        
-        this._map = null;
-    },
-    
-    /**
-     * add new markers
-     * @param latLngs - Array of markers to add to the Clusterer
-     */
-    addMarkers: function (latLngs) {
-        for (var i = latLngs.length; i--;) {
-            var coord = latLngs[i];
-            this.addPointToClusterer(coord, true);
-        }
-
-        this._redrawClusters();
-    },
-    
-    /**
-    * ask the controller to add a new point to the correct cluster
-    * @param marker - L.LatLng
-    * @param batch - boolean - used with addMarkers to prevent a redraw on each addition
-    */
-    addPointToClusterer: function (latLng, batch) {
-        var radius = this.options.clusterRadius,
-            point = this._map.latLngToLayerPoint(latLng),
-            clusters = this._clusters,
-            zoom = this._map.getZoom(),
-            cluster, clusterCenter, targetCluster;
-
-        for (cluster in clusters) {
-            if (clusters.hasOwnProperty(cluster)) {
-
-                clusterCenter = this._map.latLngToLayerPoint(clusters[cluster].getCenter());
-
-                if (point.distanceTo(clusterCenter) < radius) {
-                    targetCluster = clusters[cluster];
-                    break;
-                }
-            }
-        }
-
-        if (!targetCluster) {
-            targetCluster = new L.Marker.Cluster(this, latLng);
-            this._clusters[targetCluster._id] = targetCluster;
-        } else {
-            targetCluster.addPoint(latLng);
-        }
-
-        if (batch) {
-            this._dirtyClusters[targetCluster._id] = targetCluster;
-        } else {
-            this._redrawClusters();
-        }
-    },
-    
-    /**
-     * clear the existing markers, and terminate all references to clusters, effectively resetting the board
-     */
-    clearClusters: function () {
-        this._clearLayers();
-        
-        this._clusters = {};
-        this._dirtyClusters = {};
-        this._coords = [];
-    },
-    
-    /*
-     * convenience method to clear markers
-     */
-    _clearLayers: function () {
-        if (this._featureGroup && "function" === typeof this._featureGroup.clearLayers) {
-            this._featureGroup.clearLayers();
-        }
-    },
-
-    /**
-    * return the feature group for assignment / manipulation
-    * @return L.FeatureGroup
-    */
-    getFeatureGroup: function () {
-        return this._featureGroup;
-    },
-
-    /**
-    * by collecting all the bounds from each cluster, we can make one huge bounds representing the area of the map with clusters
-    * @return L.LatLngBounds - the computed bounds object
-    */
-    getClustererBounds: function () {
-        var clusters = this._clusters,
-           finalBounds, cluster;
-
-        for (cluster in clusters) {
-            if (clusters.hasOwnProperty(cluster)) {
-                if ("undefined" === typeof finalBounds) {
-                    finalBounds = clusters[cluster].getBounds();
-                } else {
-                    //extend allows a single latLng at present, so extend by bounds using SW / NE points
-                    finalBounds.extend(clusters[cluster].getBounds().getSouthWest());
-                    finalBounds.extend(clusters[cluster].getBounds().getNorthEast());
-                }
-            }
-        }
-        return finalBounds;
-    },
-
-    /**
-     * @return obj. literal - subset of clusters that are in the current viewport
-     * @param bounds - L.LatLngBounds - optional parameter to restrict the clusters returned to a different bounds
-     */
-    _getClustersInView: function (bounds) {
-        var mapBounds = "undefined" === typeof bounds ? this._map.getBounds() : bounds,
-            clusters = this._clusters,
-            clustersInView = [],
-            zoom = this._map.getZoom(),
-            minZoom = this._map.getMinZoom(),
-            cluster, currentCluster, clusterCenter;
-            
-        for (cluster in clusters) {
-            if (clusters.hasOwnProperty(cluster)) {
-                
-                currentCluster = clusters[cluster];
-                clusterCenter = currentCluster.getCenter();
-    
-                //if zoomed all the way out, redraw them ALL
-                if ((zoom === minZoom) || mapBounds.contains(clusterCenter)) {
-                    clustersInView.push(currentCluster);
-                }
-            }
-        }
-        return clustersInView;
-    },
-    
-    /**
-     * iterate over "dirty" clusters in need of redraw
-     */
-    _redrawClusters: function () {
-        var currentCluster;
-        
-        for (var cluster in this._dirtyClusters) {
-            if (this._dirtyClusters.hasOwnProperty(cluster)) {
-                currentCluster = this._dirtyClusters[cluster];
-                currentCluster.redrawCluster();
-                this._featureGroup.addLayer(currentCluster.getLayers());
-            }
-        }
-        this._dirtyClusters = {};
-    },
-    
-    /**
-     * callback to map change
-     */
-    _resetView: function () {
-        var clustersToRedraw = this._getClustersInView(),
-            mapZoom = this._map.getZoom(),
-            orphanPoints = [],
-            currentCluster, i;
-             
-        this._clearLayers();
-        
-        for (i = clustersToRedraw.length; i--;) {
-            currentCluster = clustersToRedraw[i];
-            orphanPoints = orphanPoints.concat(currentCluster._coords);
-            currentCluster.remove();
-            delete this._clusters[currentCluster._id];
-        }
-        
-        this.addMarkers(orphanPoints);
-    }
-    
-});
-
-
-
-L.Marker.Cluster = L.Class.extend({
-    
-    initialize: function (clusterer, initialLatLng) {
-        this._clusterer = clusterer;
-        this._id = Math.round(Math.random() * 100000) + new Date().getMilliseconds();
-        this._coords = [];
-        this._map = clusterer._map;
-        this._marker = null;
-        this._zoom = clusterer._map.getZoom();
-        this._radius = 0;
-        this._layers = new L.FeatureGroup();
-        
-        this.addPoint(initialLatLng);
-        this._layers.on("click", this.fitViewportToCluster, this);
-	},
-    
-    /**
-     * add a point to the cluster
-     * @param latLng - L.LatLng
-     * @throws Exception if passed an object that is not an instance of L.LatLng
-     */
-    addPoint: function (latLng) {
-        if (latLng instanceof L.LatLng) {
-            this._coords.push(latLng);
-        } else {
-            //TODO: improve upon this.  Allow Points?
-            throw "Marker Clusterer can't add objects that are not an instance of L.LatLng";
-        }
-    },
-    
-    /**
-     * zoom the map to this cluster's bounds
-     */
-    fitViewportToCluster: function () {
-        var map = this._map,
-            clusterBounds = this.getBounds();
-        
-        if (map.getBoundsZoom(clusterBounds) > map.getZoom()) {
-            map.fitBounds(clusterBounds);
-        }
-        else { //can't zoom in, so center on the cluster
-            map.panTo(this.getCenter());
-        }
-    },
-    
-    /**
-     * @return L.LatLngBounds of the cluster
-     */
-    getBounds: function () {
-        if (this._coords.length === 1) {
-            return new L.LatLngBounds(this._coords[0], this._coords[0]);
-        } else {
-            return new L.LatLngBounds(this._coords);
-        }
-    },
-        
-    /**
-     * @return L.LatLng @cluster's center [initial point]
-     * TODO: determine a way to find the center programtically / more accurately (K-Means?)
-     */
-    getCenter: function () {
-        return this._coords[0];
-    },
-    
-    /**
-     * @return {L.FeatureGroup}
-     */
-    getLayers: function () {
-        return this._layers;
-    },
-    
-    /**
-     * returns an HTML node who's text value is the number of coodinates at this cluster
-     * @return {L.MarkerLabel}
-     */
-    getLabel: function () {
-        var markerText = this._coords.length.toString(),
-            textOffset =  1 === markerText.length ? -2 : markerText.length,
-            options = {
-                labelClass: 'leaflet-cluster leaflet-cluster-' + this._id,
-                labelMarkup: markerText,
-                offsets: {
-                    x: (-1 * this._radius * 0.5) - textOffset
-                },
-                'zIndexOffset': 10 //FIXME: this should not be hardcoded
-            },
-            point = this._map.latLngToLayerPoint(this.getCenter()),
-            elem;
-
-        return this._markerLabel = new L.Marker.Label(point, options);
-
-    },
-    
-    /**
-     * @return {L.CircleMarker}
-     * TODO: augment to allow different types
-     */
-    getMarker: function () {
-        var numDigits = this._coords.length.toString().length,
-            options = this._clusterer.options.svgDefaults;
-        
-        this._radius = Math.max(numDigits * 5, 10);
-        options = L.Util.extend(options, { 'radius': this._radius });
-        
-        return this._marker = new L.CircleMarker(this.getCenter(), options);
-    },
-    
-    /**
-     * put a cluster on the map.
-     */
-    redrawCluster: function () {
-        this.remove();
-        //TODO: procedural; marker does some calculations necessary for label.  Improve?
-        this._layers.addLayer(this.getMarker());
-        this._layers.addLayer(this.getLabel());
-    },
-    
-    /**
-     * remove this cluster from view.
-     */
-    remove: function () {
-        if (this._marker) {
-            this._layers.off("click", this.fitViewportToCluster, this);
-            
-            this._layers.removeLayer(this._marker);
-            this._layers.removeLayer(this._markerLabel);
-        }
-        this._marker = null;
-        this._markerLabel = null;
-    }
-});
-
-
-
-L.Marker.Label = L.Class.extend({
-
-	includes: L.Mixin.Events,
-
-	options: {
-		color: '',
-		labelClass: '',
-		labelMarkup: '',
-		offsets: {
-			x: 0,
-			y: 0
-		},
-		zIndexOffset: 0
-	},
-
-	initialize: function (point, options) {
-		L.Util.setOptions(this, options);
-		
-		this._point = point;
-		this._label = null;
-	},
-
-	onAdd: function (map) {
-		this._map = map;
-		this._initLabel();
-		
-		L.DomEvent.addListener(this._label, 'click', this._onMouseClick, this);
-	},
-
-	onRemove: function (map) {
-		this._removeLabel();
-		this._map = null;
-	},
-
-	getPoint: function () {
-		return this._point;
-	},
-
-	setPoint: function (point) {
-		this._point = point;
-	},
-	
-	_applyOffsets: function (offsets) {
-        //account for IE 8 failing to report typeof number properly when number = 0
-		if ("undefined" !== typeof offsets.x && 0 !== offsets.x) {
-			this._label.style.marginLeft = offsets.x + "px";
-		}
-        if ("undefined" !== typeof  offsets.y && 0 !== offsets.y) {
-            this._label.style.marginTop = offsets.y + "px";
-		}
-	},
-
-	_initLabel: function () {
-        var options =  this.options,
-            newLabel;
-    
-        newLabel = L.DomUtil.create("div", options.labelClass, this._map.overlayPane);
-		newLabel.innerHTML = options.labelMarkup;
-		
-		if ("string" === typeof options.color) {
-            newLabel.style.color = options.color;
-		}
-		if ("number" === typeof options.zIndexOffset) {
-            newLabel.style.zIndex = options.zIndexOffset;
-		}
-		
-		this._label = newLabel;
-		
-		L.DomUtil.setPosition(this._label, this._point);
-		this._applyOffsets(this.options.offsets);
-
-		this._map._panes.overlayPane.appendChild(this._label);
-	},
-	
-	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) {
-			return;
-		}
-
-		this._fireMouseEvent(e);
-	},
-	
-	_fireMouseEvent: function (e) {
-		if (!this.hasEventListeners(e.type)) {
-			return;
-		}
-		var map = this._map,
-			containerPoint = map.mouseEventToContainerPoint(e),
-			layerPoint = map.containerPointToLayerPoint(containerPoint),
-			latlng = map.layerPointToLatLng(layerPoint);
-
-		this.fire(e.type, {
-			latlng: latlng,
-			layerPoint: layerPoint,
-			containerPoint: containerPoint,
-			originalEvent: e
-		});
-
-		L.DomEvent.stopPropagation(e);
-	},
-
-	_removeLabel: function () {
-		if (this._label) {
-			this._map._panes.overlayPane.removeChild(this._label);
-			this._label = null;
-		}
-	}
-});
-
-
 L.DivIcon = L.Icon.extend({
 	options: {
 		iconSize: new L.Point(12, 12), // also can be set through CSS
@@ -4526,6 +4070,9 @@ L.Circle = L.Path.extend({
 	},
 
 	_checkIfEmpty: function () {
+	    if (!this._map) {
+	        return true;
+	    }
 		var vp = this._map._pathViewport,
 			r = this._radius,
 			p = this._point;
@@ -4558,6 +4105,397 @@ L.CircleMarker = L.Circle.extend({
 	setRadius: function (radius) {
 		this._radius = radius;
 		return this.redraw();
+	}
+});
+
+
+
+L.Marker.Clusterer = L.Class.extend({
+    
+    options: {
+        clusterRadius: 100,
+        svgDefaults: {
+            stroke: true,
+            color: '#4159bb',
+            opacity: 0.75,
+            fillOpacity: 0.5,
+            fillColor: '#4159ff'
+        }
+    },
+    
+    initialize: function (options) {
+        L.Util.setOptions(this, options);
+        
+        this._clusters = {};
+        this._dirtyClusters = {};
+    },
+    
+    onAdd: function (map, options) {
+        this._map = map;
+        this._featureGroup = new L.FeatureGroup();
+        map.addLayer(this._featureGroup);
+        
+        map.on('moveend', this._resetView, this);
+        
+        this._resetView();
+    },
+    
+    onRemove: function () {
+        this.clearClusters();
+        
+        this._map.off('movend', this._resetView, this);
+        
+        this._map = null;
+    },
+    
+    /**
+     * add new markers
+     * @param latLngs - Array of markers to add to the Clusterer
+     */
+    addMarkers: function (latLngs) {
+        for (var i = latLngs.length; i--;) {
+            var coord = latLngs[i];
+            this.addPointToClusterer(coord, true);
+        }
+
+        this._redrawClusters();
+    },
+    
+    /**
+    * ask the controller to add a new point to the correct cluster
+    * @param marker - L.LatLng
+    * @param batch - boolean - used with addMarkers to prevent a redraw on each addition
+    */
+    addPointToClusterer: function (latLng, batch) {
+        var radius = this.options.clusterRadius,
+            point = this._map.latLngToLayerPoint(latLng),
+            clusters = this._clusters,
+            zoom = this._map.getZoom(),
+            cluster, clusterCenter, targetCluster;
+
+        for (cluster in clusters) {
+            if (clusters.hasOwnProperty(cluster)) {
+
+                clusterCenter = this._map.latLngToLayerPoint(clusters[cluster].getCenter());
+
+                if (point.distanceTo(clusterCenter) < radius) {
+                    targetCluster = clusters[cluster];
+                    break;
+                }
+            }
+        }
+
+        if (!targetCluster) {
+            targetCluster = new L.Marker.Cluster(this, latLng);
+            this._clusters[targetCluster._id] = targetCluster;
+        } else {
+            targetCluster.addPoint(latLng);
+        }
+
+        if (batch) {
+            this._dirtyClusters[targetCluster._id] = targetCluster;
+        } else {
+            this._redrawClusters();
+        }
+    },
+    
+    /**
+     * clear the existing markers, and terminate all references to clusters, effectively resetting the board
+     */
+    clearClusters: function () {
+        this._clearLayers();
+        
+        this._clusters = {};
+        this._dirtyClusters = {};
+        this._coords = [];
+    },
+    
+    /*
+     * convenience method to clear markers
+     */
+    _clearLayers: function () {
+        if (this._featureGroup && "function" === typeof this._featureGroup.clearLayers) {
+            this._featureGroup.clearLayers();
+        }
+    },
+
+    /**
+    * return the feature group for assignment / manipulation
+    * @return L.FeatureGroup
+    */
+    getFeatureGroup: function () {
+        return this._featureGroup;
+    },
+
+    /**
+    * by collecting all the bounds from each cluster, we can make one huge bounds representing the area of the map with clusters
+    * @return L.LatLngBounds - the computed bounds object
+    */
+    getClustererBounds: function () {
+        var clusters = this._clusters,
+           finalBounds, cluster;
+
+        for (cluster in clusters) {
+            if (clusters.hasOwnProperty(cluster)) {
+                if ("undefined" === typeof finalBounds) {
+                    finalBounds = clusters[cluster].getBounds();
+                } else {
+                    //extend allows a single latLng at present, so extend by bounds using SW / NE points
+                    finalBounds.extend(clusters[cluster].getBounds().getSouthWest());
+                    finalBounds.extend(clusters[cluster].getBounds().getNorthEast());
+                }
+            }
+        }
+        return finalBounds;
+    },
+
+    /**
+     * @return obj. literal - subset of clusters that are in the current viewport
+     * @param bounds - L.LatLngBounds - optional parameter to restrict the clusters returned to a different bounds
+     */
+    _getClustersInView: function (bounds) {
+        var mapBounds = "undefined" === typeof bounds ? this._map.getBounds() : bounds,
+            clusters = this._clusters,
+            clustersInView = [],
+            zoom = this._map.getZoom(),
+            minZoom = this._map.getMinZoom(),
+            cluster, currentCluster, clusterCenter;
+            
+        for (cluster in clusters) {
+            if (clusters.hasOwnProperty(cluster)) {
+                
+                currentCluster = clusters[cluster];
+                clusterCenter = currentCluster.getCenter();
+    
+                //if zoomed all the way out, redraw them ALL
+                if ((zoom === minZoom) || mapBounds.contains(clusterCenter)) {
+                    clustersInView.push(currentCluster);
+                }
+            }
+        }
+        return clustersInView;
+    },
+    
+    /**
+     * iterate over "dirty" clusters in need of redraw
+     */
+    _redrawClusters: function () {
+        var currentCluster;
+        
+        for (var cluster in this._dirtyClusters) {
+            if (this._dirtyClusters.hasOwnProperty(cluster)) {
+                currentCluster = this._dirtyClusters[cluster];
+                currentCluster.redrawCluster();
+                this._featureGroup.addLayer(currentCluster.getLayers());
+            }
+        }
+        this._dirtyClusters = {};
+    },
+    
+    /**
+     * callback to map change
+     */
+    _resetView: function () {
+        var clustersToRedraw = this._getClustersInView(),
+            mapZoom = this._map.getZoom(),
+            orphanPoints = [],
+            currentCluster, i;
+             
+        this._clearLayers();
+        
+        for (i = clustersToRedraw.length; i--;) {
+            currentCluster = clustersToRedraw[i];
+            orphanPoints = orphanPoints.concat(currentCluster._coords);
+            currentCluster.remove();
+            delete this._clusters[currentCluster._id];
+        }
+        
+        this.addMarkers(orphanPoints);
+    }
+    
+});
+
+
+
+L.Marker.Cluster = L.Class.extend({
+    
+    initialize: function (clusterer, initialLatLng) {
+        this._clusterer = clusterer;
+        this._id = Math.round(Math.random() * 100000) + new Date().getMilliseconds();
+        this._coords = [];
+        this._map = clusterer._map;
+        this._marker = null;
+        this._zoom = clusterer._map.getZoom();
+        this._radius = 0;
+        this._layers = new L.FeatureGroup();
+        
+        this.addPoint(initialLatLng);
+        this._layers.on("click", this.fitViewportToCluster, this);
+	},
+    
+    /**
+     * add a point to the cluster
+     * @param latLng - L.LatLng
+     * @throws Exception if passed an object that is not an instance of L.LatLng
+     */
+    addPoint: function (latLng) {
+        if (latLng instanceof L.LatLng) {
+            this._coords.push(latLng);
+        } else {
+            //TODO: improve upon this.  Allow Points?
+            throw "Marker Clusterer can't add objects that are not an instance of L.LatLng";
+        }
+    },
+    
+    /**
+     * zoom the map to this cluster's bounds
+     */
+    fitViewportToCluster: function () {
+        var map = this._map,
+            clusterBounds = this.getBounds();
+        
+        if (map.getBoundsZoom(clusterBounds) > map.getZoom()) {
+            map.fitBounds(clusterBounds);
+        }
+        else { //can't zoom in, so center on the cluster
+            map.panTo(this.getCenter());
+        }
+    },
+    
+    /**
+     * @return L.LatLngBounds of the cluster
+     */
+    getBounds: function () {
+        if (this._coords.length === 1) {
+            return new L.LatLngBounds(this._coords[0], this._coords[0]);
+        } else {
+            return new L.LatLngBounds(this._coords);
+        }
+    },
+        
+    /**
+     * @return L.LatLng @cluster's center [initial point]
+     * TODO: determine a way to find the center programtically / more accurately (K-Means?)
+     */
+    getCenter: function () {
+        return this._coords[0];
+    },
+    
+    /**
+     * @return {L.FeatureGroup}
+     */
+    getLayers: function () {
+        return this._layers;
+    },
+    
+    
+    /**
+     * @return {L.CircleMarker}
+     * TODO: augment to allow different types
+     */
+    getMarker: function () {
+        var numDigits = this._coords.length.toString().length,
+            offset = 1 === numDigits ? 0 : numDigits,
+            options = this._clusterer.options.svgDefaults;
+            
+        this._radius = Math.max(numDigits * 5, 10);
+        
+        options = L.Util.extend(options, {
+            offsets: {
+                x: (-0.5 * this._radius) - offset
+            },
+            radius: this._radius,
+            textValue: this._coords.length.toString()
+        });
+        
+        return this._marker = new L.Marker.Label(this.getCenter(), options);
+    },
+    
+    /**
+     * put a cluster on the map.
+     */
+    redrawCluster: function () {
+        this.remove();
+        this._layers.addLayer(this.getMarker());
+    },
+    
+    /**
+     * remove this cluster from view.
+     */
+    remove: function () {
+        if (this._marker) {
+            this._layers.off("click", this.fitViewportToCluster, this);
+            this._layers.removeLayer(this._marker);
+        }
+        this._marker = null;
+    }
+});
+
+
+
+L.Marker.Label = L.CircleMarker.extend({
+
+    options: {
+        textColor: '#fff',
+        textSize: 14,
+        textValue: '',
+        styleString: 'font-weight:bold; text-shadow: 1px 1px 1px #333;',
+        offsets: {
+            x: 0,
+            y: 0
+        }
+    },
+
+    initialize: function (latlng, options) {
+        L.CircleMarker.prototype.initialize.call(this, latlng, options);
+    },
+
+    onAdd: function (map) {
+        this._map = map;
+        L.Path.prototype.onAdd.call(this, map);
+        this._initLabel();
+    },
+
+    onRemove: function (map) {
+        this._map = null;
+        L.Path.prototype.onRemove.call(this, map);
+    },
+
+    _initLabel: function () {
+        if (!this._container) {
+            return;
+        }
+        
+        this._textElement = L.Path.prototype._createElement('text');
+        this._textElement.textContent = this.options.textValue;
+        
+        this._applyOffsets();
+        this._applyStyles();
+        
+        this._container.appendChild(this._textElement);
+    },
+    
+    _applyStyles: function () {
+        var options =  this.options,
+            text = this._textElement;
+        
+        text.setAttribute("fill", options.textColor);
+        text.setAttribute("font-size", options.textSize);
+        text.setAttribute("style", options.styleString);
+    },
+    
+    /**
+     * move the label left and up by user supplied values
+     * NOTE: typeof changed to account for IE 8 failing to report typeof number properly when number = 0
+     */
+    _applyOffsets: function () {
+        var offsets = this.options.offsets,
+            point = this._map.latLngToLayerPoint(this._latlng),
+            left = ("undefined" !== typeof offsets.x && 0 !== offsets.x) ?  offsets.x : 0,
+            top = ("undefined" !== typeof offsets.y && 0 !== offsets.y) ?  offsets.y : 0;
+        
+        this._textElement.setAttribute("x", point.x + left);
+        this._textElement.setAttribute("y", point.y + top + (0.25 * this.options.textSize));
 	}
 });
 

@@ -24,9 +24,7 @@ L.Marker.Clusterer = L.Class.extend({
         this._featureGroup = new L.FeatureGroup();
         map.addLayer(this._featureGroup);
         
-        map
-            .on('zoomend', this._resetView, this)
-            .on('dragend', this._resetView, this); //moveend has an issue with L.CircleMarker
+        map.on('moveend', this._resetView, this);
         
         this._resetView();
     },
@@ -34,9 +32,7 @@ L.Marker.Clusterer = L.Class.extend({
     onRemove: function () {
         this.clearClusters();
         
-        this._map
-            .off('zoomend', this._resetView, this)
-            .off('dragend', this._resetView, this);
+        this._map.off('movend', this._resetView, this);
         
         this._map = null;
     },

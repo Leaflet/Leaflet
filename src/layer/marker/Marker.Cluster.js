@@ -70,27 +70,6 @@ L.Marker.Cluster = L.Class.extend({
         return this._layers;
     },
     
-    /**
-     * returns an HTML node who's text value is the number of coodinates at this cluster
-     * @return {L.MarkerLabel}
-     */
-    getLabel: function () {
-        var markerText = this._coords.length.toString(),
-            textOffset =  1 === markerText.length ? -2 : markerText.length,
-            options = {
-                labelClass: 'leaflet-cluster leaflet-cluster-' + this._id,
-                labelMarkup: markerText,
-                offsets: {
-                    x: (-1 * this._radius * 0.5) - textOffset
-                },
-                'zIndexOffset': 10 //FIXME: this should not be hardcoded
-            },
-            point = this._map.latLngToLayerPoint(this.getCenter()),
-            elem;
-
-        return this._markerLabel = new L.Marker.Label(point, options);
-
-    },
     
     /**
      * @return {L.CircleMarker}
@@ -98,12 +77,20 @@ L.Marker.Cluster = L.Class.extend({
      */
     getMarker: function () {
         var numDigits = this._coords.length.toString().length,
+            offset = 1 === numDigits ? 0 : numDigits,
             options = this._clusterer.options.svgDefaults;
-        
+            
         this._radius = Math.max(numDigits * 5, 10);
-        options = L.Util.extend(options, { 'radius': this._radius });
         
-        return this._marker = new L.CircleMarker(this.getCenter(), options);
+        options = L.Util.extend(options, {
+            offsets: {
+                x: (-0.5 * this._radius) - offset
+            },
+            radius: this._radius,
+            textValue: this._coords.length.toString()
+        });
+        
+        return this._marker = new L.Marker.Label(this.getCenter(), options);
     },
     
     /**
@@ -111,9 +98,7 @@ L.Marker.Cluster = L.Class.extend({
      */
     redrawCluster: function () {
         this.remove();
-        //TODO: procedural; marker does some calculations necessary for label.  Improve?
         this._layers.addLayer(this.getMarker());
-        this._layers.addLayer(this.getLabel());
     },
     
     /**
@@ -122,11 +107,8 @@ L.Marker.Cluster = L.Class.extend({
     remove: function () {
         if (this._marker) {
             this._layers.off("click", this.fitViewportToCluster, this);
-            
             this._layers.removeLayer(this._marker);
-            this._layers.removeLayer(this._markerLabel);
         }
         this._marker = null;
-        this._markerLabel = null;
     }
 });
