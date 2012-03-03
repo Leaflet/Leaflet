@@ -4,10 +4,15 @@
 
 L.Map.mergeOptions({
 	dragging: true,
+
 	inertia: !L.Browser.android,
 	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
 	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
-	inertiaThreshold:    L.Browser.touch ? 32   : 16 // ms
+	inertiaThreshold:    L.Browser.touch ? 32   : 16, // ms
+
+	// TODO refactor, move to CRS
+	worldCopyJump: true,
+	continuousWorld: false
 });
 
 L.Map.Drag = L.Handler.extend({
@@ -83,7 +88,7 @@ L.Map.Drag = L.Handler.extend({
 
 	_onPreDrag: function () {
 		var map = this._map,
-			worldWidth = map.options.scale(map.getZoom()),
+			worldWidth = map.options.crs.scale(map.getZoom()),
 			halfWidth = Math.round(worldWidth / 2),
 			dx = this._initialWorldOffset.x,
 			x = this._draggable._newPos.x,
@@ -142,3 +147,5 @@ L.Map.Drag = L.Handler.extend({
 		this.panInsideBounds(this.options.maxBounds);
 	}
 });
+
+L.Map.addInitHook('addHandler', 'dragging', L.Map.Drag);

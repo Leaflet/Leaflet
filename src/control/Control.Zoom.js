@@ -6,7 +6,7 @@ L.Control.Zoom = L.Control.extend({
 	onAdd: function (map) {
 		var className = 'leaflet-control-zoom',
 		    container = L.DomUtil.create('div', className);
-		    
+
 		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
 		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
 
@@ -24,5 +24,16 @@ L.Control.Zoom = L.Control.extend({
 			.addListener(link, 'click', fn, context);
 
 		return link;
+	}
+});
+
+L.Map.mergeOptions({
+	zoomControl: true
+});
+
+L.Map.addInitHook(function () {
+	if (this.options.zoomControl) {
+		this.zoomControl = new L.Control.Zoom();
+		this.addControl(this.zoomControl);
 	}
 });

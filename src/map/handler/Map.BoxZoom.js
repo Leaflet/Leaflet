@@ -78,3 +78,5 @@ L.Map.BoxZoom = L.Handler.extend({
 		map.fitBounds(bounds);
 	}
 });
+
+L.Map.addInitHook('addHandler', 'boxZoom', L.Map.BoxZoom);
