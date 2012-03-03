@@ -118,6 +118,7 @@ L.Popup = L.Class.extend({
 			this._contentNode.innerHTML = '';
 			this._contentNode.appendChild(this._content);
 		}
+		this.fire('contentupdate');
 	},
 
 	_updateLayout: function () {
