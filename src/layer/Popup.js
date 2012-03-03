@@ -1,4 +1,8 @@
 
+L.Map.mergeOptions({
+	closePopupOnClick: true
+});
+
 L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 

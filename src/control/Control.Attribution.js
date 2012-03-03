@@ -56,7 +56,7 @@ L.Control.Attribution = L.Control.extend({
 		}
 
 		var prefixAndAttribs = [];
-		
+
 		if (this.options.prefix) {
 			prefixAndAttribs.push(this.options.prefix);
 		}

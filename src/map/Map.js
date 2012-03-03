@@ -17,18 +17,6 @@ L.Map = L.Class.extend({
 		zoom: null,
 		layers: [],
 
-		// interaction
-		dragging: true,
-		touchZoom: L.Browser.touch && !L.Browser.android,
-		scrollWheelZoom: !L.Browser.touch,
-		doubleClickZoom: true,
-		boxZoom: true,
-
-		inertia: !L.Browser.android,
-		inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
-		inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
-		inertiaThreshold:    L.Browser.touch ? 32   : 16, // ms
-
 		// controls
 		zoomControl: true,
 		attributionControl: true,
@@ -39,7 +27,6 @@ L.Map = L.Class.extend({
 
 		// misc
 		trackResize: true,
-		closePopupOnClick: true,
 		worldCopyJump: true
 	},
 

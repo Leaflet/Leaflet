@@ -2,6 +2,10 @@
  * L.Handler.ShiftDragZoom is used internally by L.Map to add shift-drag zoom (zoom to a selected bounding box).
  */
 
+L.Map.mergeOptions({
+	boxZoom: true
+});
+
 L.Map.BoxZoom = L.Handler.extend({
 	initialize: function (map) {
 		this._map = map;

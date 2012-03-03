@@ -2,6 +2,14 @@
  * L.Handler.MapDrag is used internally by L.Map to make the map draggable.
  */
 
+L.Map.mergeOptions({
+	dragging: true,
+	inertia: !L.Browser.android,
+	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
+	inertiaThreshold:    L.Browser.touch ? 32   : 16 // ms
+});
+
 L.Map.Drag = L.Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
@@ -90,7 +98,7 @@ L.Map.Drag = L.Handler.extend({
 		var map = this._map,
 			options = map.options,
 			delay = +new Date() - this._lastTime,
-			
+
 			noInertia = !options.inertia ||
 					delay > options.inertiaThreshold ||
 					typeof this._positions[0] === 'undefined';

@@ -2,6 +2,10 @@
  * L.Handler.TouchZoom is used internally by L.Map to add touch-zooming on Webkit-powered mobile browsers.
  */
 
+L.Map.mergeOptions({
+	touchZoom: L.Browser.touch && !L.Browser.android
+});
+
 L.Map.TouchZoom = L.Handler.extend({
 	addHooks: function () {
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
