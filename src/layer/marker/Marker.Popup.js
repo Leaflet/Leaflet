@@ -7,6 +7,7 @@ L.Marker.include({
 		if (this._popup && this._map) {
 			this._popup.setLatLng(this._latlng);
 			this._map.openPopup(this._popup);
+			
 		}
 
 		return this;
@@ -29,7 +30,7 @@ L.Marker.include({
 		options = L.Util.extend({offset: anchor}, options);
 
 		if (!this._popup) {
-			this.on('click', this.openPopup, this);
+			this.on('click', this.togglePopup, this);
 		}
 
 		this._popup = new L.Popup(options, this)
@@ -37,7 +38,18 @@ L.Marker.include({
 
 		return this;
 	},
-
+	
+	togglePopup: function (event) {
+		if (this._popup) {
+			if (this._popup.isOpen()) {
+				this.closePopup();
+			}
+			else {
+				this.openPopup();
+			}
+		}
+	},
+	
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
