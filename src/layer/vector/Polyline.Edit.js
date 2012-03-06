@@ -23,6 +23,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 	removeHooks: function () {
 		if (this._poly._map) {
 			this._poly._map.removeLayer(this._markerGroup);
+			delete this._markerGroup;
+			delete this._markers;
 		}
 	},
 
@@ -137,13 +139,16 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_createMiddleMarker: function (marker1, marker2) {
 		var latlng = this._getMiddleLatLng(marker1, marker2),
-			marker = this._createMarker(latlng);
+			marker = this._createMarker(latlng),
+			onClick,
+			onDragStart,
+			onDragEnd;
 
 		marker.setOpacity(0.6);
 
 		marker1._middleRight = marker2._middleLeft = marker;
 
-		function onDragStart() {
+		onDragStart = function () {
 			var i = marker2._index;
 
 			marker._index = i;
@@ -161,21 +166,21 @@ L.Handler.PolyEdit = L.Handler.extend({
 			marker2._index++;
 			this._updatePrevNext(marker1, marker);
 			this._updatePrevNext(marker, marker2);
-		}
+		};
 
-		function onDragEnd() {
+		onDragEnd = function () {
 			marker.off('dragstart', onDragStart, this);
 			marker.off('dragend', onDragEnd, this);
 
 			this._createMiddleMarker(marker1, marker);
 			this._createMiddleMarker(marker, marker2);
-		}
+		};
 
-		function onClick() {
+		onClick = function () {
 			onDragStart.call(this);
 			onDragEnd.call(this);
 			this._poly.fire('edit');
-		}
+		};
 
 		marker
 			.on('click', onClick, this)
