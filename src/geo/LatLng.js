@@ -41,6 +41,17 @@ L.LatLng.prototype = {
 				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
 	},
+	
+	toUrlValue: function(/*Number*/ precision) {
+		
+		precision = parseInt(precision);
+		
+		if (isNaN(precision)) {
+			precision = 6;	
+		}
+		
+		return L.Util.formatNum(this.lat, precision) + ',' + L.Util.formatNum(this.lng, precision)
+	}
 
 	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
 	distanceTo: function (/*LatLng*/ other)/*->Double*/ {
