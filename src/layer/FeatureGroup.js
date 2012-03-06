@@ -24,6 +24,14 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('setStyle', style);
 	},
 
+	getBounds: function () {
+		var bounds = new L.LatLngBounds();
+		this._iterateLayers(function (layer) {
+			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
+		}, this);
+		return bounds;
+	},
+
 	_initEvents: function (layer) {
 		var events = ['click', 'dblclick', 'mouseover', 'mouseout'],
 			i, len;
