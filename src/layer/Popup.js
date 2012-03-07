@@ -20,7 +20,7 @@ L.Popup = L.Class.extend({
 	},
 	
 	isOpen: function () {
-		return (this._map);
+		return (!!this._map);
 	},
 
 	onAdd: function (map) {
