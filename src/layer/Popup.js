@@ -1,4 +1,3 @@
-
 L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
@@ -68,8 +67,9 @@ L.Popup = L.Class.extend({
 
 	_close: function () {
 		if (this._map) {
-			this._map._popup = null;
 			this._map.removeLayer(this);
+			this._map.fire('popupclose', {popup: this});
+			this._map._popup = null;
 		}
 	},
 
