@@ -77,6 +77,7 @@
 		'layer/vector/canvas/Polyline.Canvas.js',
 		'layer/vector/Polygon.js',
 		'layer/vector/Rectangle.js',
+		'layer/vector/Rectangle.Resize.js',
 		'layer/vector/canvas/Polygon.Canvas.js',
 		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
