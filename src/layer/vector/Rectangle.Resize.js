@@ -1,119 +1,178 @@
-/* Added  resizable to Rectangle */
+/* This class adds the capability to Rectangle to be resizable */
 L.Rectangle.Resize = L.Handler.extend({
 
-	initialize : function(rectangle) {
+	initialize : function (rectangle) {
 		this._rectangle = rectangle;
 	},
 
-	addHooks : function() {
+	addHooks : function () {
 		this._initCorners();
 	},
 
-	removeHooks : function() {
+	removeHooks : function () {
 		this._destroyCorners();
 	},
 
-	_initCorners : function() {
-		if (!this._rectangle._map)
+	_initCorners : function () {
+	  
+		if (!this._rectangle._map) {
 			return;
-		if (!!this._cornersGroup)
+		}
+		
+		if (!!this._cornersGroup) {
 			return;
+		}
+		
+		this._rectangle.on('move', this._onMove, this)
+		               .on('moveend', this._onMove, this);
+		
+			
+		var icon = this._rectangle.options.resizeIcon || new L.Icon.Default();
+		
 		var latLngs = this._rectangle._latlngs;
 		this._cornersGroup = new L.LayerGroup();
 		this._cornerMarkers = {
 			southWest : new L.Marker(latLngs[0], {
-				draggable : true
+				draggable : true,
+				icon : icon
 			}),
 			northWest : new L.Marker(latLngs[1], {
-				draggable : true
+				draggable : true,
+				icon : icon
 			}),
 			northEast : new L.Marker(latLngs[2], {
-				draggable : true
+				draggable : true,
+				icon : icon
 			}),
 			southEast : new L.Marker(latLngs[3], {
-				draggable : true
+				draggable : true,
+				icon : icon
 			})
 		};
 		
 		for (var i in this._cornerMarkers) {
-			var cornerMarker = this._cornerMarkers[i];
-			cornerMarker._editRectangle = this;
-			cornerMarker.on('dragstart', this._onCornerDragStart, this);
-			this._cornersGroup.addLayer(cornerMarker);
+		  if (this._cornerMarkers.hasOwnProperty(i)) {
+		    var cornerMarker = this._cornerMarkers[i];
+		    cornerMarker._editRectangle = this;
+		    cornerMarker.on('dragstart', this._onCornerDragStart, this);
+		    this._cornersGroup.addLayer(cornerMarker);
+		  }
 		}
+		
 		this._rectangle._map.addLayer(this._cornersGroup);
 		
 	},
 
-	_destroyCornersGroup : function() {
-		for (i in this._cornerMarkers) {
-			var cornerMarker = this._cornerMarkers[i];
-			cornerMarker.off('dragstart', this._onCornerDragStart);
-			this._cornersGroup.removeLayer(cornerMarker);
+	_destroyCorners : function () {
+	  if(!this._cornerMarkers || !this._cornersGroup) {
+	     return;
+	  }
+	  
+                   
+		for (var i in this._cornerMarkers) {
+		  if (this._cornerMarkers.hasOwnProperty(i)) {
+  			var cornerMarker = this._cornerMarkers[i];
+  			cornerMarker.off('dragstart', this._onCornerDragStart);
+  			this._cornersGroup.removeLayer(cornerMarker);
+			}
 		}
 		this._rectangle._map.removeLayer(this._cornersGroup);
+		
+    this._rectangle.off('move', this._onMove, this)
+                   .off('moveend', this._onMove, this);
 
 		delete this._cornerMarkers;
 		delete this._cornersGroup;
 	},
 
-	_onCornerDragStart : function(event) {
+	_onCornerDragStart : function (event) {
 			var marker = event.target;
-			var latlng = marker.getLatLng();
-			var corners = this._cornerMarkers;
-			console.log("Got dragstart in rectangle.resize: LatLng: " + latlng);
 			
 			marker.on('drag', this._onCornerDragMove, this);
 			marker.on('dragend', this._onCornerDragEnd, this);
 	},
 
-	_onCornerDragMove : function(event) {
-
-		console.log('Got dragmove in rectangle.resize');
+	_onCornerDragMove : function (event) {
 		this._updateRectangle(event);
 	},
 	
-	_updateRectangle: function(event) {
+	_updateRectangle: function (event) {
 		var marker = event.target;
-		var newLatlng = marker.getLatLng();
 		var corners = this._cornerMarkers;
 		var latlngs = this._rectangle.getLatLngs();
 		
+		
+		var swLatLngOld = latlngs[0], nwLatLngOld = latlngs[1],
+		    neLatLngOld = latlngs[2], seLatLngOld = latlngs[3];
+		    
+		var swLatLng, seLatLng, neLatLng, nwLatLng;
+		
 		switch(marker){
 			case corners.southWest:
-				latlngs[0] = latlngs[4] = newLatlng;
-				this._rectangle.setLatLngs(latlngs);
-				console.log("southWest");
+			  swLatLng = marker.getLatLng();
+			  seLatLng = new L.LatLng(marker.getLatLng().lat, seLatLngOld.lng);
+			  neLatLng = neLatLngOld;
+			  nwLatLng = new L.LatLng(nwLatLngOld.lat, marker.getLatLng().lng);
+			  corners.southEast.setLatLng(seLatLng);
+			  corners.northEast.setLatLng(neLatLng);
+			  corners.northWest.setLatLng(nwLatLng);
 				break;
 			case corners.southEast:
-				latlngs[3] = newLatlng;
-				console.log("southEast");
+        swLatLng = new L.LatLng(marker.getLatLng().lat, swLatLngOld.lng);
+        seLatLng = marker.getLatLng();
+        neLatLng = new L.LatLng(neLatLngOld.lat, marker.getLatLng().lng);
+        nwLatLng = nwLatLngOld;
+        corners.southWest.setLatLng(swLatLng);
+        corners.northEast.setLatLng(neLatLng);
+        corners.northWest.setLatLng(nwLatLng);
 				break;
 			case corners.northEast:
-				latlngs[2] = newLatlng;
-				console.log("northEast");
+        swLatLng = swLatLngOld;
+        seLatLng = new L.LatLng(seLatLngOld.lat, marker.getLatLng().lng);
+        neLatLng = marker.getLatLng();
+        nwLatLng = new L.LatLng(marker.getLatLng().lat, nwLatLngOld.lng);
+        corners.southWest.setLatLng(swLatLng);
+        corners.southEast.setLatLng(seLatLng);
+        corners.northWest.setLatLng(nwLatLng);
 				break;
 			case corners.northWest:
-				latlngs[1] = newLatlng;
-				console.log("northWest");
+        swLatLng = new L.LatLng(swLatLngOld.lat, marker.getLatLng().lng);
+        seLatLng = seLatLngOld;
+        neLatLng = new L.LatLng(marker.getLatLng().lat, neLatLngOld.lng);
+        nwLatLng = marker.getLatLng();
+        
+        corners.southWest.setLatLng(swLatLng);
+        corners.southEast.setLatLng(seLatLng);
+        corners.northEast.setLatLng(neLatLng);
 				break;
-			default:
-				console.log("error, unknown corner");
 		};
-		this._rectangle.setLatLngs(latlngs);
+		this._rectangle.setBounds(new L.LatLngBounds(swLatLng, neLatLng));
 	},
 	
-	_onCornerDragEnd : function(event) {
+	_onCornerDragEnd : function (event) {
 		var marker = event.target;
-		
-		console.log('Got dragend in rectangle.resize');
-		this._updateRectangle(event);
 		marker.off('drag', this._onCornerDragMove, this);
 		marker.off('dragend', this._onCornerDragEnd, this);
+		
+    this._updateRectangle(event);
 	},
-
+	
+  _onMove : function () {
+    var bounds = this._rectangle.getBounds();
+    var corners = this._cornerMarkers;
+    
+    corners.southWest.setLatLng(bounds.getSouthWest());
+    corners.southEast.setLatLng(bounds.getSouthEast());
+    corners.northEast.setLatLng(bounds.getNorthEast());
+    corners.northWest.setLatLng(bounds.getNorthWest());
+    
+  }
 });
 
+//
+// The following code wraps the rectangles initalize, onAdd
+// and onRemove functions to call into the Rectangle.Resize Handler
+//
 L.Rectangle.prototype._preResize = {
 		initialize:  L.Rectangle.prototype.initialize,
 		onAdd     :  L.Rectangle.prototype.onAdd,
@@ -126,14 +185,14 @@ L.Rectangle.prototype.initialize = function (latlngBounds, options){
 	this.resizing = new L.Rectangle.Resize(this);
 };
 
-L.Rectangle.prototype.onAdd = function(map) {
+L.Rectangle.prototype.onAdd = function (map) {
 	L.Rectangle.prototype._preResize.onAdd.call(this, map);
 	if (this.options.resizable && !this.options.editable) {
 		this.resizing.addHooks();
 	}
 };
 
-L.Rectangle.prototype.onRemove = function(map) {
+L.Rectangle.prototype.onRemove = function (map) {
 	if(this.options.resizable && !this.options.editable) {
 		this.resizing.removeHooks();
 	}
