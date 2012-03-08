@@ -200,7 +200,7 @@ var deps = {
 	
   LayerDrag: {
     src: ['layer/Layer.Drag.js'],
-    deps: ['MarkerDrag', 'MapDrag'],
+    deps: ['MarkerDrag', 'MapDrag', 'DivIcon'],
     desc: 'Makes layers draggable (by mouse or touch).'
   },
   

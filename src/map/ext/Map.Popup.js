@@ -12,11 +12,7 @@ L.Map.include({
 
 	closePopup: function () {
 		if (this._popup) {
-			this
-				.removeLayer(this._popup)
-				.fire('popupclose', {popup: this._popup});
-
-			this._popup = null;
+			this._popup._close();
 		}
 		return this;
 	}

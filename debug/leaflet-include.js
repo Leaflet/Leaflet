@@ -53,7 +53,6 @@
 		'map/handler/Map.BoxZoom.js',
 
 		'layer/LayerGroup.js',
-    'layer/Layer.Drag.js',
 		'layer/FeatureGroup.js',
 
 		'layer/tile/TileLayer.js',
@@ -67,6 +66,7 @@
 		'layer/marker/Marker.js',
 		'layer/marker/Marker.Popup.js',
 		'layer/marker/Marker.Drag.js',
+    'layer/Layer.Drag.js',
 
 		'layer/vector/Path.js',
 		'layer/vector/Path.Popup.js',

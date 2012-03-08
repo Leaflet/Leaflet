@@ -186,20 +186,15 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 	// instantiate class without calling constructor
 	var F = function () {};
 	F.prototype = this.prototype;
+
 	var proto = new F();
-
 	proto.constructor = NewClass;
+
 	NewClass.prototype = proto;
-
-	// add superclass access
-	NewClass.superclass = this.prototype;
-
-	// add class name
-	//proto.className = props;
 
 	//inherit parent's statics
 	for (var i in this) {
-		if (this.hasOwnProperty(i) && i !== 'prototype' && i !== 'superclass') {
+		if (this.hasOwnProperty(i) && i !== 'prototype') {
 			NewClass[i] = this[i];
 		}
 	}
@@ -224,17 +219,18 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 	// mix given properties into the prototype
 	L.Util.extend(proto, props);
 
-	// allow inheriting further
-	NewClass.extend = L.Class.extend;
-
-	// method for adding properties to prototype
-	NewClass.include = function (props) {
-		L.Util.extend(this.prototype, props);
-	};
-
 	return NewClass;
 };
 
+
+// method for adding properties to prototype
+L.Class.include = function (props) {
+	L.Util.extend(this.prototype, props);
+};
+
+L.Class.mergeOptions = function (options) {
+	L.Util.extend(this.prototype.options, options);
+};
 
 /*
  * L.Mixin.Events adds custom events functionality to Leaflet classes
@@ -957,18 +953,6 @@ L.Map = L.Class.extend({
 		zoom: null,
 		layers: [],
 
-		// interaction
-		dragging: true,
-		touchZoom: L.Browser.touch && !L.Browser.android,
-		scrollWheelZoom: !L.Browser.touch,
-		doubleClickZoom: true,
-		boxZoom: true,
-
-		inertia: !L.Browser.android,
-		inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
-		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
-		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
-
 		// controls
 		zoomControl: true,
 		attributionControl: true,
@@ -979,7 +963,6 @@ L.Map = L.Class.extend({
 
 		// misc
 		trackResize: true,
-		closePopupOnClick: true,
 		worldCopyJump: true
 	},
 
@@ -2503,6 +2486,10 @@ L.DivIcon = L.Icon.extend({
 
 
 
+L.Map.mergeOptions({
+	closePopupOnClick: true
+});
+
 L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
@@ -2777,7 +2764,6 @@ L.Map.include({
 		return this;
 	}
 });
-
 
 /*
  * L.LayerGroup is a class to combine several layers so you can manipulate the group (e.g. add/remove it) as one layer.
@@ -4660,6 +4646,14 @@ L.Handler = L.Class.extend({
  * L.Handler.MapDrag is used internally by L.Map to make the map draggable.
  */
 
+L.Map.mergeOptions({
+	dragging: true,
+	inertia: !L.Browser.android,
+	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
+	inertiaThreshold:    L.Browser.touch ? 32   : 16 // ms
+});
+
 L.Map.Drag = L.Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
@@ -4748,7 +4742,7 @@ L.Map.Drag = L.Handler.extend({
 		var map = this._map,
 			options = map.options,
 			delay = +new Date() - this._lastTime,
-			
+
 			noInertia = !options.inertia ||
 					delay > options.inertiaThreshold ||
 					typeof this._positions[0] === 'undefined';
@@ -4798,6 +4792,10 @@ L.Map.Drag = L.Handler.extend({
  * L.Handler.DoubleClickZoom is used internally by L.Map to add double-click zooming.
  */
 
+L.Map.mergeOptions({
+	doubleClickZoom: true
+});
+
 L.Map.DoubleClickZoom = L.Handler.extend({
 	addHooks: function () {
 		this._map.on('dblclick', this._onDoubleClick);
@@ -4816,6 +4814,10 @@ L.Map.DoubleClickZoom = L.Handler.extend({
 /*
  * L.Handler.ScrollWheelZoom is used internally by L.Map to enable mouse scroll wheel zooming on the map.
  */
+
+L.Map.mergeOptions({
+	scrollWheelZoom: !L.Browser.touch
+});
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
@@ -4918,6 +4920,10 @@ L.Util.extend(L.DomEvent, {
  * L.Handler.TouchZoom is used internally by L.Map to add touch-zooming on Webkit-powered mobile browsers.
  */
 
+L.Map.mergeOptions({
+	touchZoom: L.Browser.touch && !L.Browser.android
+});
+
 L.Map.TouchZoom = L.Handler.extend({
 	addHooks: function () {
 		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
@@ -5012,6 +5018,10 @@ L.Map.TouchZoom = L.Handler.extend({
 /*
  * L.Handler.ShiftDragZoom is used internally by L.Map to add shift-drag zoom (zoom to a selected bounding box).
  */
+
+L.Map.mergeOptions({
+	boxZoom: true
+});
 
 L.Map.BoxZoom = L.Handler.extend({
 	initialize: function (map) {
@@ -5245,17 +5255,29 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_onMarkerClick: function (e) {
+		// Default action on marker click is to remove that marker, but if we remove the marker when latlng count < 3, we don't have a valid polyline anymore
+		if (this._poly._latlngs.length < 3) {
+			return;
+		}
+		
 		var marker = e.target,
 		    i = marker._index;
+		
+		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
+		if (marker._prev && marker._next) {
+			this._createMiddleMarker(marker._prev, marker._next);
+			this._updatePrevNext(marker._prev, marker._next);
+		}
 
-		this._createMiddleMarker(marker._prev, marker._next);
-		this._updatePrevNext(marker._prev, marker._next);
-
-		this._markerGroup
-			.removeLayer(marker._middleLeft)
-			.removeLayer(marker._middleRight)
-			.removeLayer(marker);
-
+		// The marker itself is guaranteed to exist and present in the layer, since we managed to click on it
+		this._markerGroup.removeLayer(marker);
+		// Check for the existence of middle left or middle right
+		if (marker._middleLeft) {
+			this._markerGroup.removeLayer(marker._middleLeft);
+		}
+		if (marker._middleRight) {
+			this._markerGroup.removeLayer(marker._middleRight);
+		}
 		this._poly.spliceLatLngs(i, 1);
 		this._updateIndexes(i, -1);
 		this._poly.fire('edit');
@@ -5355,20 +5377,14 @@ L.Control = L.Class.extend({
 			this._map.removeControl(this);
 			this._map.addControl(this);
 		}
-	}
-});
+	},
 
+	addTo: function (map) {
+		this._map = map;
 
-
-L.Map.include({
-	addControl: function (control) {
-		var container = control.onAdd(this);
-
-		control._container = container;
-		control._map = this;
-
-		var pos = control.getPosition(),
-			corner = this._controlCorners[pos];
+		var container = this._container = this.onAdd(map),
+		    pos = this.getPosition(),
+			corner = map._controlCorners[pos];
 
 		L.DomUtil.addClass(container, 'leaflet-control');
 
@@ -5377,35 +5393,55 @@ L.Map.include({
 		} else {
 			corner.appendChild(container);
 		}
+
+		return this;
+	},
+
+	removeFrom: function (map) {
+		var pos = this.getPosition(),
+			corner = map._controlCorners[pos];
+
+		corner.removeChild(this._container);
+		this._map = null;
+
+		if (this.onRemove) {
+			this.onRemove(map);
+		}
+
+		return this;
+	}
+});
+
+
+
+L.Map.include({
+	addControl: function (control) {
+		control.addTo(this);
 		return this;
 	},
 
 	removeControl: function (control) {
-		var pos = control.getPosition(),
-			corner = this._controlCorners[pos];
-
-		corner.removeChild(control._container);
-		control._map = null;
-
-		if (control.onRemove) {
-			control.onRemove(this);
-		}
+		control.removeFrom(this);
 		return this;
 	},
 
 	_initControlPos: function () {
-		var top = 'leaflet-top',
-			bottom = 'leaflet-bottom',
-			left = 'leaflet-left',
-			right = 'leaflet-right',
-			corner = 'leaflet-corner',
-			container = this._container,
-			corners = this._controlCorners = {};
+		var corners = this._controlCorners = {},
+		    l = 'leaflet-',
+		    container = this._controlContainer =
+				L.DomUtil.create('div', l + 'control-container', this._container);
 
-		corners.topleft = L.DomUtil.create('div', [corner, top, left].join(' '),  container);
-		corners.topright = L.DomUtil.create('div', [corner, top, right].join(' '), container);
-		corners.bottomleft = L.DomUtil.create('div', [corner, bottom, left].join(' '),  container);
-		corners.bottomright = L.DomUtil.create('div', [corner, bottom, right].join(' '), container);
+		function createCorner(vSide, hSide) {
+			var className = l + vSide + ' ' + l + hSide;
+
+			corners[vSide + hSide] =
+					L.DomUtil.create('div', className, container);
+		}
+
+		createCorner('top', 'left');
+		createCorner('top', 'right');
+		createCorner('bottom', 'left');
+		createCorner('bottom', 'right');
 	}
 });
 
@@ -5498,7 +5534,7 @@ L.Control.Attribution = L.Control.extend({
 		}
 
 		var prefixAndAttribs = [];
-		
+
 		if (this.options.prefix) {
 			prefixAndAttribs.push(this.options.prefix);
 		}
@@ -5632,8 +5668,6 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		this._initLayout();
 		this._update();
 
@@ -5660,43 +5694,39 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
+		var className = 'leaflet-control-layers',
+		    container = this._container = L.DomUtil.create('div', className);
 
 		if (!L.Browser.touch) {
-			L.DomEvent.disableClickPropagation(this._container);
+			L.DomEvent.disableClickPropagation(container);
 		} else {
-			L.DomEvent.addListener(this._container, 'click', L.DomEvent.stopPropagation);
+			L.DomEvent.addListener(container, 'click', L.DomEvent.stopPropagation);
 		}
 
-		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
+		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			L.DomEvent.addListener(this._container, 'mouseover', this._expand, this);
-			L.DomEvent.addListener(this._container, 'mouseout', this._collapse, this);
+			L.DomEvent
+				.addListener(container, 'mouseover', this._expand, this)
+				.addListener(container, 'mouseout', this._collapse, this);
 
-			var link = this._layersLink = L.DomUtil.create('a', 'leaflet-control-layers-toggle');
+			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
 			link.title = 'Layers';
 
-			if (L.Browser.touch) {
-				L.DomEvent.addListener(link, 'click', this._expand, this);
-				//L.DomEvent.disableClickPropagation(link);
-			} else {
-				L.DomEvent.addListener(link, 'focus', this._expand, this);
-			}
+			L.DomEvent.addListener(link, L.Browser.touch ? 'click' : 'focus', this._expand, this);
+
 			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
-
-			this._container.appendChild(link);
 		} else {
 			this._expand();
 		}
 
-		this._baseLayersList = L.DomUtil.create('div', 'leaflet-control-layers-base', this._form);
-		this._separator = L.DomUtil.create('div', 'leaflet-control-layers-separator', this._form);
-		this._overlaysList = L.DomUtil.create('div', 'leaflet-control-layers-overlays', this._form);
+		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
+		this._separator = L.DomUtil.create('div', className + '-separator', form);
+		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
-		this._container.appendChild(this._form);
+		container.appendChild(form);
 	},
 
 	_addLayer: function (layer, name, overlay) {

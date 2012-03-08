@@ -3,6 +3,7 @@ L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
 	code: 'EPSG:3395',
 
 	projection: L.Projection.Mercator,
+
 	transformation: (function () {
 		var m = L.Projection.Mercator,
 			r = m.R_MAJOR,

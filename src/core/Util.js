@@ -16,9 +16,10 @@ L.Util = {
 		return dest;
 	},
 
-	bind: function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
+	bind: function (fn, obj) { // (Function, Object) -> Function
+		var args = Array.prototype.slice.call(arguments, 2);
 		return function () {
-			return fn.apply(obj, arguments);
+			return fn.apply(obj, args || arguments);
 		};
 	},
 
@@ -101,6 +102,7 @@ L.Util = {
 
 	setOptions: function (obj, options) {
 		obj.options = L.Util.extend({}, obj.options, options);
+		return obj.options;
 	},
 
 	getParamString: function (obj) {
