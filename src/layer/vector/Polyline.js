@@ -104,7 +104,7 @@ L.Polyline = L.Path.extend({
 	},
 
 	_initEvents: function () {
-		L.Polyline.superclass._initEvents.call(this);
+		L.Path.prototype._initEvents.call(this);
 	},
 
 	_getPathPartStr: function (points) {
