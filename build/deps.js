@@ -121,18 +121,6 @@ var deps = {
 		deps: ['Polygon'],
 		desc: ['Rectangle overlays.']
 	},
-	
-	RectangleResize: {
-    src: ['layer/vector/Rectangle.Resize.js'],
-    deps: ['Rectangle'],
-    desc: ['Allows Rectangle to be Resizable.']
-	},
-	
-	RectangleDrag: {
-    src: ['layer/vector/Rectangle.Drag.js'],
-    deps: ['LayerDrag', 'Rectangle'],
-    desc: ['Allows Rectangle to be Draggable.']
-	},
 
 	Circle: {
 		src: ['layer/vector/Circle.js'],
@@ -199,9 +187,25 @@ var deps = {
 	},
 	
   LayerDrag: {
-    src: ['layer/Layer.Drag.js'],
+    src: ['layer/Layer.Drag.js',
+          'core/Handler.js'],
     deps: ['MarkerDrag', 'MapDrag', 'DivIcon'],
     desc: 'Makes layers draggable (by mouse or touch).'
+  },
+
+  
+  RectangleResize: {
+    src: ['layer/vector/Rectangle.Resize.js',
+          'core/Handler.js'],
+    deps: ['LayerDrag',  'MarkerDrag'],
+    desc: ['Allows Rectangle to be Resizable.']
+  },
+  
+  RectangleDrag: {
+    src: ['layer/vector/Rectangle.Drag.js',
+          'core/Handler.js'],
+    deps: ['LayerDrag', 'Rectangle'],
+    desc: ['Allows Rectangle to be Draggable.']
   },
   
 	PolyEdit: {
