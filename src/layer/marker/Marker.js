@@ -164,6 +164,7 @@ L.Marker = L.Class.extend({
 	},
 
 	_fireMouseEvent: function (e) {
+                if (!this.hasEventListeners(e.type)) { return; }
 		if (e.type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
