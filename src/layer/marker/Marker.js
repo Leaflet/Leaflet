@@ -135,13 +135,14 @@ L.Marker = L.Class.extend({
 			return;
 		}
 
-		var icon = this._icon,
-			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout','contextmenu'];
+		var icon = this._icon;
+		var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
 
 		icon.className += ' leaflet-clickable';
 		L.DomEvent.addListener(icon, 'click', this._onMouseClick, this);
 
-		for (var i = 0; i < events.length; i++) {
+		var i;
+		for (i = 0; i < events.length; i++) {
 			L.DomEvent.addListener(icon, events[i], this._fireMouseEvent, this);
 		}
 
@@ -164,7 +165,7 @@ L.Marker = L.Class.extend({
 	},
 
 	_fireMouseEvent: function (e) {
-                if (!this.hasEventListeners(e.type)) { return; }
+		if (!this.hasEventListeners(e.type)) { return; }
 		if (e.type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
