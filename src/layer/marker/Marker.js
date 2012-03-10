@@ -136,7 +136,7 @@ L.Marker = L.Class.extend({
 		}
 
 		var icon = this._icon,
-			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout','contextmenu'];
 
 		icon.className += ' leaflet-clickable';
 		L.DomEvent.addListener(icon, 'click', this._onMouseClick, this);
@@ -164,6 +164,10 @@ L.Marker = L.Class.extend({
 	},
 
 	_fireMouseEvent: function (e) {
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		this.fire(e.type, {
 			originalEvent: e
 		});
