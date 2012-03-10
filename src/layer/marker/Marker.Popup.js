@@ -44,5 +44,14 @@ L.Marker.include({
 			this.off('click', this.openPopup);
 		}
 		return this;
+	},
+
+	updatePopup: function (content) {
+		if (this._popup) {
+			this._popup.setContent(content);
+		} else {
+			this.bindPopup(content);
+		}
+		return this;
 	}
 });
