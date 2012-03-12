@@ -33,7 +33,7 @@
 				markers.addLayer(
 					new L.Marker(
 						getRandomLatLng(map),
-						{ icon: new L.Icon.Label("A label") }
+						{ icon: new L.Icon.Label.Default({ labelText: "A label" }) }
 					)
 				);
 			}
