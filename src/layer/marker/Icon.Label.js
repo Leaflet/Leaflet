@@ -13,7 +13,7 @@ L.Icon.Label = L.Icon.extend({
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
 		shadowSize: (Point)
-		*/	
+		*/
 		labelClassName: ''
 	},
 	
