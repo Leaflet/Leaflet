@@ -5,13 +5,13 @@ L.Icon.Label = L.Icon.extend({
 	labelText: null,
 	
 	//This is now the top left position of the icon within the wrapper.
-	//If the label height is greater than the icon you will need to set the y value. 
+	//If the label height is greater than the icon you will need to set the y value.
 	//y = (label height - icon height) / 2
 	iconAnchor: new L.Point(0, 0),
 	
-	//This is the top left position of the label within the wrapper. By default it will display at the right 
+	//This is the top left position of the label within the wrapper. By default it will display at the right
 	//middle position of the default icon. x = width of icon + padding
-	//If the icon height is greater than the label height you will need to set the y value. 
+	//If the icon height is greater than the label height you will need to set the y value.
 	//y = (icon height - label height) / 2
 	labelAnchor: new L.Point(29, 8),
 	
@@ -30,10 +30,10 @@ L.Icon.Label = L.Icon.extend({
 		return this._createLabel(L.Icon.prototype._createIcon.call(this, 'icon'));
 	},
 	
-	createShadow: function() {
+	createShadow: function () {
 		var shadow = L.Icon.prototype._createIcon.call(this, 'shadow');
 		//need to reposition the shadow
-		if(shadow) {
+		if (shadow) {
 			shadow.style.marginLeft = (-this.wrapperAnchor.x) + 'px';
 			shadow.style.marginTop = (-this.wrapperAnchor.y) + 'px';
 		}
@@ -41,11 +41,12 @@ L.Icon.Label = L.Icon.extend({
 	},
 
 	_createLabel: function (img) {
-		if (!this.labelText)
+		if (!this.labelText) {
 			return img;
+		}
 
 		var wrapper = document.createElement('div'),
-		    label = document.createElement('span');
+			label = document.createElement('span');
 
 		label.className = 'leaflet-marker-iconlabel ' + this.iconLabelClass;
 
