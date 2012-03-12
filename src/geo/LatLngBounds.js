@@ -13,28 +13,35 @@ L.LatLngBounds = L.Class.extend({
 		}
 	},
 
-	// extend the bounds to contain the given point
-	extend: function (/*LatLng*/ latlng) {
-		if (!this._southWest && !this._northEast) {
-			this._southWest = new L.LatLng(latlng.lat, latlng.lng, true);
-			this._northEast = new L.LatLng(latlng.lat, latlng.lng, true);
-		} else {
-			this._southWest.lat = Math.min(latlng.lat, this._southWest.lat);
-			this._southWest.lng = Math.min(latlng.lng, this._southWest.lng);
-			this._northEast.lat = Math.max(latlng.lat, this._northEast.lat);
-			this._northEast.lng = Math.max(latlng.lng, this._northEast.lng);
+	// extend the bounds to contain the given point or bounds
+	extend: function (/*LatLng or LatLngBounds*/ obj) {
+		if (obj instanceof L.LatLng) {
+			if (!this._southWest && !this._northEast) {
+				this._southWest = new L.LatLng(obj.lat, obj.lng, true);
+				this._northEast = new L.LatLng(obj.lat, obj.lng, true);
+			} else {
+				this._southWest.lat = Math.min(obj.lat, this._southWest.lat);
+				this._southWest.lng = Math.min(obj.lng, this._southWest.lng);
+				this._northEast.lat = Math.max(obj.lat, this._northEast.lat);
+				this._northEast.lng = Math.max(obj.lng, this._northEast.lng);
+			}
+		} else if (obj instanceof L.LatLngBounds) {
+			this.extend(obj._southWest);
+            this.extend(obj._northEast);
 		}
+		return this;
 	},
 
-	// extends the bounds by a percentage
-	padBounds: function (/*Number*/ bufferRatio) {
-		var heightBuffer = Math.abs(this._southWest.lat - this._northEast.lat) * bufferRatio,
-			widthBuffer = Math.abs(this._southWest.lng - this._northEast.lng) * bufferRatio;
+	// extend the bounds by a percentage
+	pad: function (bufferRatio) { // (Number) -> LatLngBounds
+		var sw = this._southWest,
+			ne = this._northEast,
+			heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
+			widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
 
 		return new L.LatLngBounds(
-			new L.LatLng(this._southWest.lat - heightBuffer, this._southWest.lng - widthBuffer),
-			new L.LatLng(this._northEast.lat + heightBuffer, this._northEast.lng + widthBuffer)
-		);
+			new L.LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
+			new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	},
 
 	getCenter: function () /*-> LatLng*/ {

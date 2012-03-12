@@ -14,7 +14,7 @@
 </head>
 <body>
 
-	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+	<div id="map"></div>
 	<button id="populate">Populate with 10 markers</button>
 
 	<script type="text/javascript">
@@ -25,6 +25,8 @@
 			latlng = new L.LatLng(50.5, 30.51);
 
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
+
+		//map.on('click', function () { alert('hi'); });
 
 		var markers = new L.FeatureGroup();
 

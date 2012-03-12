@@ -63,6 +63,12 @@ var deps = {
 		desc: 'Markers with a label.'
 	},
 
+	DivIcon: {
+		src: ['layer/marker/DivIcon.js'],
+		deps: ['Marker'],
+		desc: 'Lightweight div-based icon for markers.'
+	},
+
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
@@ -114,6 +120,12 @@ var deps = {
 		src: ['layer/vector/MultiPoly.js'],
 		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
 		desc: 'MultiPolygon and MultyPolyline layers.'
+	},
+
+	Rectangle: {
+		src: ['layer/vector/Rectangle.js'],
+		deps: ['Polygon'],
+		desc: ['Rectangle overlays.']
 	},
 
 	Circle: {
@@ -176,7 +188,14 @@ var deps = {
 
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
+		deps: ['Marker'],
 		desc: 'Makes markers draggable (by mouse or touch).'
+	},
+
+	PolyEdit: {
+		src: ['layer/vector/Polyline.Edit.js'],
+		deps: ['Polyline', 'DivIcon'],
+		desc: 'Polyline and polygon editing.'
 	},
 
 
@@ -193,6 +212,13 @@ var deps = {
 		      'map/ext/Map.Control.js',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
+	},
+
+	ControlScale: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Scale.js'],
+		desc: 'Scale control.'
 	},
 
 	ControlLayers: {

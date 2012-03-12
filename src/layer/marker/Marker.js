@@ -7,11 +7,12 @@ L.Marker = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
-		icon: new L.Icon(),
+		icon: new L.Icon.Default(),
 		title: '',
 		clickable: true,
 		draggable: false,
-		zIndexOffset: 0
+		zIndexOffset: 0,
+		opacity: 1
 	},
 
 	initialize: function (latlng, options) {
@@ -84,6 +85,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
+			this._updateOpacity();
 		}
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
@@ -143,25 +145,41 @@ L.Marker = L.Class.extend({
 			L.DomEvent.addListener(icon, events[i], this._fireMouseEvent, this);
 		}
 
-		if (!L.Handler.MarkerDrag) {
-			return;
-		}
+		if (L.Handler.MarkerDrag) {
+			this.dragging = new L.Handler.MarkerDrag(this);
 
-		this.dragging = new L.Handler.MarkerDrag(this);
-
-		if (this.options.draggable) {
-			this.dragging.enable();
+			if (this.options.draggable) {
+				this.dragging.enable();
+			}
 		}
 	},
 
 	_onMouseClick: function (e) {
 		L.DomEvent.stopPropagation(e);
 		if (this.dragging && this.dragging.moved()) { return; }
-		this.fire(e.type);
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		this.fire(e.type, {
+			originalEvent: e
+		});
 	},
 
 	_fireMouseEvent: function (e) {
-		this.fire(e.type);
-		L.DomEvent.stopPropagation(e);
+		this.fire(e.type, {
+			originalEvent: e
+		});
+		if (e.type !== 'mousedown') {
+			L.DomEvent.stopPropagation(e);
+		}
+	},
+
+	setOpacity: function (opacity) {
+		this.options.opacity = opacity;
+		if (this._map) {
+			this._updateOpacity();
+		}
+	},
+
+	_updateOpacity: function (opacity) {
+		L.DomUtil.setOpacity(this._icon, this.options.opacity);
 	}
 });

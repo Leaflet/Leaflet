@@ -86,13 +86,13 @@
 			<li><a href="http://nodejs.org/#download">Download and install Node</a></li>
 			<li>Run this in the command line:<br />
 			<pre><code>npm install -g jake
-npm install -g jshint
-npm install -g uglify-js</code></pre></li>
+npm install jshint
+npm install uglify-js</code></pre></li>
 			<li>Run this command inside the Leaflet directory: <br /><input type="text" id="command2" />
 		</ol>
 		<h2>Building using Closure Compiler</h2>
 		<ol>
-			<li><a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Download Closure Compiler</a> and extract it into <code>lib/closure-compiler</code> directory</li>
+			<li><a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Download Closure Compiler</a>, extract it into <code>closure-compiler</code> directory</li>
 			<li>Run this command in the root Leaflet directory: <br /><input type="text" id="command" /></li>
 		</ol>
 	</div>
@@ -139,7 +139,7 @@ npm install -g uglify-js</code></pre></li>
 				}
 			}
 
-			var command = 'java -jar lib/closure-compiler/compiler.jar ';
+			var command = 'java -jar closure-compiler/compiler.jar ';
 			for (var src in files) {
 				command += '--js src/' + src + ' ';
 			}
@@ -154,7 +154,7 @@ npm install -g uglify-js</code></pre></li>
 			this.focus();
 			this.select();
 		};
-		
+
 		commandInput.onclick = inputSelect;
 		commandInput2.onclick = inputSelect;
 

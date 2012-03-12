@@ -2,6 +2,10 @@
  * L.Handler.ScrollWheelZoom is used internally by L.Map to enable mouse scroll wheel zooming on the map.
  */
 
+L.Map.mergeOptions({
+	scrollWheelZoom: !L.Browser.touch
+});
+
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
 		L.DomEvent.addListener(this._map._container, 'mousewheel', this._onWheelScroll, this);
@@ -52,3 +56,5 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		return map.unproject(newCenterPoint, map._zoom, true);
 	}
 });
+
+L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);

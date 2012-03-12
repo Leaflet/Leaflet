@@ -1,10 +1,15 @@
 
+L.Map.mergeOptions({
+	closePopupOnClick: true
+});
+
 L.Popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
+		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
 		offset: new L.Point(0, 2),
@@ -30,6 +35,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+
 		if (map.options.closePopupOnClick) {
 			map.on('preclick', this._close, this);
 		}
@@ -45,7 +51,7 @@ L.Popup = L.Class.extend({
 		L.Util.falseFn(this._container.offsetWidth);
 
 		map.off('viewreset', this._updatePosition, this)
-		   .off('click', this._close, this);
+		   .off('preclick', this._close, this);
 
 		this._container.style.opacity = '0';
 
@@ -65,9 +71,14 @@ L.Popup = L.Class.extend({
 	},
 
 	_close: function () {
-		// TODO popup should be able to close itself
-		if (this._map) {
-			this._map.closePopup();
+		var map = this._map;
+
+		if (map) {
+			map._popup = null;
+
+			map
+				.removeLayer(this)
+				.fire('popupclose', {popup: this});
 		}
 	},
 
@@ -87,6 +98,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
+		L.DomEvent.addListener(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -115,10 +127,11 @@ L.Popup = L.Class.extend({
 			this._contentNode.innerHTML = '';
 			this._contentNode.appendChild(this._content);
 		}
+		this.fire('contentupdate');
 	},
 
 	_updateLayout: function () {
-		var container = this._container;
+		var container = this._contentNode;
 
 		container.style.width = '';
 		container.style.whiteSpace = 'nowrap';
@@ -130,7 +143,20 @@ L.Popup = L.Class.extend({
 		container.style.width = (width + 1) + 'px';
 		container.style.whiteSpace = '';
 
-		this._containerWidth = container.offsetWidth;
+		container.style.height = '';
+
+		var height = container.offsetHeight,
+			maxHeight = this.options.maxHeight,
+			scrolledClass = ' leaflet-popup-scrolled';
+
+		if (maxHeight && height > maxHeight) {
+			container.style.height = maxHeight + 'px';
+			container.className += scrolledClass;
+		} else {
+			container.className = container.className.replace(scrolledClass, '');
+		}
+
+		this._containerWidth = this._container.offsetWidth;
 	},
 
 	_updatePosition: function () {
