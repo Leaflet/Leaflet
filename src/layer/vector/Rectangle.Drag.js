@@ -46,9 +46,9 @@ L.Rectangle.Drag = L.Handler.extend({
 
         var boundsNew = new L.LatLngBounds(
                 new L.LatLng(boundsOld.getSouthWest().lat + difference.lat,
-                        boundsOld.getSouthWest().lng + difference.lng),
+                        boundsOld.getSouthWest().lng + difference.lng, true).clamp(),
                 new L.LatLng(boundsOld.getNorthEast().lat + difference.lat,
-                        boundsOld.getNorthEast().lng + difference.lng));
+                        boundsOld.getNorthEast().lng + difference.lng, true).clamp());
 
         this._rectangle.setBounds(boundsNew);
 

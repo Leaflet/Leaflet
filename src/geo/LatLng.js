@@ -56,5 +56,19 @@ L.LatLng.prototype = {
 		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
 
 		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	},
+	
+	clampLat: function () {
+	    this.lat = Math.max(Math.min(this.lat, 90), -90);
+	},
+	
+	clampLng: function () {
+	    this.lng = Math.max(Math.min(this.lng, 180), -180);
+	},
+	
+	clamp: function () {
+	    this.clampLat();
+	    this.clampLng();
+	    return this;
 	}
 };

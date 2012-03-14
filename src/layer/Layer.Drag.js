@@ -71,6 +71,8 @@ L.Layer.Drag = L.Handler.extend({
 
     _onDragStart : function (event) {
         this._currentLatLng = this._originalLatLng = event.target.getLatLng();
+        this._difference = new L.LatLng(0, 0);
+        
         this.fire('dragstart', event.target.getLatLng());
         
     },
@@ -78,19 +80,21 @@ L.Layer.Drag = L.Handler.extend({
     _onDrag : function (event) {
         this._moved = true;
         this._updateState(event.target.getLatLng());
+        
         this.fire('drag', this._currentLatLng);
     },
 
     _onDragEnd : function (event) {
         this._updateState(event.target.getLatLng());
-        this._layer._map.removeLayer(this._marker);
-        this.fire('dragend', this._currentLatLng);
         this._deleteMarker();
+
+        this.fire('dragend', this._currentLatLng);
     },
 
     _onUp : function () {
         this._deleteMarker();
     },
+    
     _deleteMarker : function () {
         if (this._marker) {
             if (this._layer._map) {
@@ -110,6 +114,7 @@ L.Layer.Drag = L.Handler.extend({
         var lngDiff = this._currentLatLng.lng - this._lastLatLng.lng;
 
         this._difference = new L.LatLng(latDiff, lngDiff);
+        
     }
 
 });
