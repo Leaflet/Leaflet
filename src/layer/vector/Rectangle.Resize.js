@@ -113,35 +113,35 @@ L.Rectangle.Resize = L.Handler.extend({
       
       
       // 
-      // Touch is where the drag was started, and how the various lat lng of each drag
+      // Drag Direction is where the drag direction is, and how the various lat lng of each drag
       // event will be interpreted. If the drag was started on the north border
       // then all updates will cause the northwest and northeast lat lngs to update
       // but nothing else
       //
       
       if(nePointDiff < MAX_PIXELS) {
-        this._startTouch = 'ne';
+        this._dragDirection = 'ne';
       }
       else if (nwPointDiff < MAX_PIXELS) {
-        this._startTouch = 'nw';
+        this._dragDirection = 'nw';
       }
       else if(swPointDiff < MAX_PIXELS) {
-        this._startTouch = 'sw;'
+        this._dragDirection = 'sw;'
       }
       else if(sePointDiff < MAX_PIXELS) {
-        this._startTouch = 'se';
+        this._dragDirection = 'se';
       }
       else if (nLatDiff == min) {
-        this._startTouch = 'n'
+        this._dragDirection = 'n'
       }
       else if (sLatDiff == min) {
-        this._startTouch = 's';
+        this._dragDirection = 's';
       }
       else if (eLngDiff == min) {
-        this._startTouch = 'e';
+        this._dragDirection = 'e';
       }
       else if (wLngDiff == min) {
-        this._startTouch = 'w';
+        this._dragDirection = 'w';
       }
     },
     
@@ -154,7 +154,7 @@ L.Rectangle.Resize = L.Handler.extend({
       var swLatLngOld = this._rectangle.getBounds().getSouthWest();
       var swLatLngNew, neLatLngNew;
       
-      switch (this._startTouch) {
+      switch (this._dragDirection) {
         case 'n':
           neLatLngNew = new L.LatLng(neLatLngOld.lat + difference.lat, neLatLngOld.lng);
           swLatLngNew = swLatLngOld;
