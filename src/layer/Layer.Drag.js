@@ -70,9 +70,9 @@ L.Layer.Drag = L.Handler.extend({
     },
 
     _onDragStart : function (event) {
+        this._currentLatLng = this._originalLatLng = event.target.getLatLng();
         this.fire('dragstart', event.target.getLatLng());
         
-        this._currentLatLng = this._originalLatLng = event.target.getLatLng();
     },
 
     _onDrag : function (event) {
