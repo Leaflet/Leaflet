@@ -79,7 +79,11 @@ L.Map.include({
 		this.fire('locationfound', {
 			latlng: latlng,
 			bounds: bounds,
-			accuracy: pos.coords.accuracy
+			accuracy: pos.coords.accuracy,
+			heading: pos.coords.heading,
+			speed: pos.coords.speed,
+			altitudeAccuracy: pos.coords.altitudeAccuracy,
+			altitude: pos.coords.altitude
 		});
 	}
 });
