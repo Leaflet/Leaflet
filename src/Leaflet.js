@@ -1,7 +1,6 @@
-
 (function (root) {
 	root.L = {
-		VERSION: '0.4',
+		VERSION: 0.4,
 
 		ROOT_URL: root.L_ROOT_URL || (function () {
 			var scripts = document.getElementsByTagName('script'),
