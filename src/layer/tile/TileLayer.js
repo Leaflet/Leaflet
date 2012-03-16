@@ -27,6 +27,13 @@ L.TileLayer = L.Class.extend({
 	initialize: function (url, options) {
 		L.Util.setOptions(this, options);
 
+		// detecting retina displays, adjusting tileSize
+		if (typeof window.devicePixelRatio != 'undefined') {
+			if (window.devicePixelRatio > 1) {
+				this.options.tileSize >>= 1;
+			}
+		}
+
 		this._url = url;
 
 		var subdomains = this.options.subdomains;
