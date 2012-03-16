@@ -28,10 +28,8 @@ L.TileLayer = L.Class.extend({
 		L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize
-		if (typeof window.devicePixelRatio != 'undefined') {
-			if (window.devicePixelRatio > 1) {
-				this.options.tileSize >>= 1;
-			}
+		if (window.devicePixelRatio > 1) {
+			this.options.tileSize >>= 1;
 		}
 
 		this._url = url;
