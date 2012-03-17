@@ -17,7 +17,7 @@ L.Util = {
 	},
 
 	bind: function (fn, obj) { // (Function, Object) -> Function
-		var args = Array.prototype.slice.call(arguments, 2);
+		var args = arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : null;
 		return function () {
 			return fn.apply(obj, args || arguments);
 		};
