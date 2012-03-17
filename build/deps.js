@@ -185,7 +185,29 @@ var deps = {
 		deps: ['Marker'],
 		desc: 'Makes markers draggable (by mouse or touch).'
 	},
+	
+  LayerDrag: {
+    src: ['layer/Layer.Drag.js',
+          'core/Handler.js'],
+    deps: ['MarkerDrag', 'MapDrag', 'DivIcon'],
+    desc: 'Makes layers draggable (by mouse or touch).'
+  },
 
+  
+  RectangleResize: {
+    src: ['layer/vector/Rectangle.Resize.js',
+          'core/Handler.js'],
+    deps: ['LayerDrag',  'MarkerDrag'],
+    desc: ['Allows Rectangle to be Resizable.']
+  },
+  
+  RectangleDrag: {
+    src: ['layer/vector/Rectangle.Drag.js',
+          'core/Handler.js'],
+    deps: ['LayerDrag', 'Rectangle'],
+    desc: ['Allows Rectangle to be Draggable.']
+  },
+  
 	PolyEdit: {
 		src: ['layer/vector/Polyline.Edit.js'],
 		deps: ['Polyline', 'DivIcon'],

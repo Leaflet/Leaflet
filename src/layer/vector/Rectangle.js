@@ -8,16 +8,22 @@ L.Rectangle = L.Polygon.extend({
 	},
 
 	setBounds: function (latLngBounds) {
-		this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+	        this.setLatLngs(this._boundsToLatLngs(latLngBounds));
+	    },
+	
+	getBounds: function () {
+	    var latLngs = this.getLatLngs();
+	  
+	    return new L.LatLngBounds(latLngs[0], latLngs[2]);
 	},
 	
 	_boundsToLatLngs: function (latLngBounds) {
 	    return [
-	        latLngBounds.getSouthWest(),
-	        latLngBounds.getNorthWest(),
-	        latLngBounds.getNorthEast(),
-	        latLngBounds.getSouthEast(),
-	        latLngBounds.getSouthWest()
+            latLngBounds.getSouthWest(),
+            latLngBounds.getNorthWest(),
+            latLngBounds.getNorthEast(),
+            latLngBounds.getSouthEast(),
+            latLngBounds.getSouthWest()
 	    ];
 	}
 });

@@ -66,6 +66,7 @@
 		'layer/marker/Marker.js',
 		'layer/marker/Marker.Popup.js',
 		'layer/marker/Marker.Drag.js',
+    'layer/Layer.Drag.js',
 
 		'layer/vector/Path.js',
 		'layer/vector/Path.Popup.js',
@@ -77,6 +78,8 @@
 		'layer/vector/canvas/Polyline.Canvas.js',
 		'layer/vector/Polygon.js',
 		'layer/vector/Rectangle.js',
+    'layer/vector/Rectangle.Resize.js',
+		'layer/vector/Rectangle.Drag.js',
 		'layer/vector/canvas/Polygon.Canvas.js',
 		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
