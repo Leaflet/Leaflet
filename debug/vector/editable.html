@@ -26,6 +26,8 @@
 			new L.LatLng(51.52, -0.03)
 		]);
 
+		polygon.editing.enable();
+
 		map.addLayer(polygon);
 
 		var polyline = new L.Polyline([
@@ -34,10 +36,16 @@
 			new L.LatLng(51.52, -0.02)
 		]);
 
+		polyline.editing.enable();
+
 		map.addLayer(polyline);
 
-		polygon.editing.enable();
-		polyline.editing.enable();
+                polygon.on('edit', function() {
+                    console.log('Polygon was edited!');
+                });
+                polyline.on('edit', function() {
+                    console.log('Polyline was edited!');
+                });
 	</script>
 </body>
 </html>

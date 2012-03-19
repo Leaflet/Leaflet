@@ -116,6 +116,12 @@ var deps = {
 		desc: 'MultiPolygon and MultyPolyline layers.'
 	},
 
+	Rectangle: {
+		src: ['layer/vector/Rectangle.js'],
+		deps: ['Polygon'],
+		desc: ['Rectangle overlays.']
+	},
+
 	Circle: {
 		src: ['layer/vector/Circle.js'],
 		deps: ['Path'],
@@ -200,6 +206,13 @@ var deps = {
 		      'map/ext/Map.Control.js',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
+	},
+
+	ControlScale: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Scale.js'],
+		desc: 'Scale control.'
 	},
 
 	ControlLayers: {

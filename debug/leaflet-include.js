@@ -76,6 +76,7 @@
 		'layer/vector/Polyline.Edit.js',
 		'layer/vector/canvas/Polyline.Canvas.js',
 		'layer/vector/Polygon.js',
+		'layer/vector/Rectangle.js',
 		'layer/vector/canvas/Polygon.Canvas.js',
 		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
@@ -88,6 +89,7 @@
 		'control/Control.Zoom.js',
 		'control/Control.Attribution.js',
 		'control/Control.Layers.js',
+		'control/Control.Scale.js'
 	];
 
 	function getSrcUrl() {

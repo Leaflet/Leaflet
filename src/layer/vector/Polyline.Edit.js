@@ -12,14 +12,20 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		if (!this._markerGroup) {
-			this._initMarkers();
+		if (this._poly._map) {
+			if (!this._markerGroup) {
+				this._initMarkers();
+			}
+			this._poly._map.addLayer(this._markerGroup);
 		}
-		this._poly._map.addLayer(this._markerGroup);
 	},
 
 	removeHooks: function () {
-		this._poly._map.removeLayer(this._markerGroup);
+		if (this._poly._map) {
+			this._poly._map.removeLayer(this._markerGroup);
+			delete this._markerGroup;
+			delete this._markers;
+		}
 	},
 
 	updateMarkers: function () {
@@ -32,7 +38,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-			i, j, len, marker;
+		    i, j, len, marker;
 
 		// TODO refactor holes implementation in Polygon to support it here
 
@@ -68,10 +74,15 @@ L.Handler.PolyEdit = L.Handler.extend({
 		marker._index = index;
 
 		marker.on('drag', this._onMarkerDrag, this);
+		marker.on('dragend', this._fireEdit, this);
 
 		this._markerGroup.addLayer(marker);
 
 		return marker;
+	},
+
+	_fireEdit: function () {
+		this._poly.fire('edit');
 	},
 
 	_onMarkerDrag: function (e) {
@@ -90,17 +101,29 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_onMarkerClick: function (e) {
+		// Default action on marker click is to remove that marker, but if we remove the marker when latlng count < 3, we don't have a valid polyline anymore
+		if (this._poly._latlngs.length < 3) {
+			return;
+		}
+		
 		var marker = e.target,
-			i = marker._index;
+		    i = marker._index;
+		
+		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
+		if (marker._prev && marker._next) {
+			this._createMiddleMarker(marker._prev, marker._next);
+			this._updatePrevNext(marker._prev, marker._next);
+		}
 
-		this._createMiddleMarker(marker._prev, marker._next);
-		this._updatePrevNext(marker._prev, marker._next);
-
-		this._markerGroup
-			.removeLayer(marker._middleLeft)
-			.removeLayer(marker._middleRight)
-			.removeLayer(marker);
-
+		// The marker itself is guaranteed to exist and present in the layer, since we managed to click on it
+		this._markerGroup.removeLayer(marker);
+		// Check for the existence of middle left or middle right
+		if (marker._middleLeft) {
+			this._markerGroup.removeLayer(marker._middleLeft);
+		}
+		if (marker._middleRight) {
+			this._markerGroup.removeLayer(marker._middleRight);
+		}
 		this._poly.spliceLatLngs(i, 1);
 		this._updateIndexes(i, -1);
 		this._poly.fire('edit');
@@ -116,13 +139,16 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_createMiddleMarker: function (marker1, marker2) {
 		var latlng = this._getMiddleLatLng(marker1, marker2),
-			marker = this._createMarker(latlng);
+			marker = this._createMarker(latlng),
+			onClick,
+			onDragStart,
+			onDragEnd;
 
 		marker.setOpacity(0.6);
 
 		marker1._middleRight = marker2._middleLeft = marker;
 
-		function onDragStart() {
+		onDragStart = function () {
 			var i = marker2._index;
 
 			marker._index = i;
@@ -133,7 +159,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
-			this._poly.fire('edit');
 
 			marker.setOpacity(1);
 
@@ -141,20 +166,21 @@ L.Handler.PolyEdit = L.Handler.extend({
 			marker2._index++;
 			this._updatePrevNext(marker1, marker);
 			this._updatePrevNext(marker, marker2);
-		}
+		};
 
-		function onDragEnd() {
+		onDragEnd = function () {
 			marker.off('dragstart', onDragStart, this);
 			marker.off('dragend', onDragEnd, this);
 
 			this._createMiddleMarker(marker1, marker);
 			this._createMiddleMarker(marker, marker2);
-		}
+		};
 
-		function onClick() {
+		onClick = function () {
 			onDragStart.call(this);
 			onDragEnd.call(this);
-		}
+			this._poly.fire('edit');
+		};
 
 		marker
 			.on('click', onClick, this)
@@ -171,8 +197,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_getMiddleLatLng: function (marker1, marker2) {
 		var map = this._poly._map,
-			p1 = map.latLngToLayerPoint(marker1.getLatLng()),
-			p2 = map.latLngToLayerPoint(marker2.getLatLng());
+		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
+		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
 
 		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
 	}
