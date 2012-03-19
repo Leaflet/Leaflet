@@ -8,6 +8,6 @@ L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
 			r = m.R_MAJOR,
 			r2 = m.R_MINOR;
 		
-		return new L.Transformation(0.5/(Math.PI * r), 0.5, -0.5/(Math.PI * r), 0.5);
-	})()
+		return new L.Transformation(0.5 / (Math.PI * r), 0.5, -0.5 / (Math.PI * r), 0.5);
+	}())
 });
