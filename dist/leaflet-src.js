@@ -1623,7 +1623,6 @@ L.Projection.Mercator = {
 };
 
 
-
 L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
 	code: 'EPSG:3395',
 
@@ -1632,11 +1631,10 @@ L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
 		var m = L.Projection.Mercator,
 			r = m.R_MAJOR,
 			r2 = m.R_MINOR;
-
-		return new L.Transformation(0.5 / (Math.PI * r), 0.5, -0.5 / (Math.PI * r2), 0.5);
+		
+		return new L.Transformation(0.5 / (Math.PI * r), 0.5, -0.5 / (Math.PI * r), 0.5);
 	}())
 });
-
 
 /*
  * L.TileLayer is used for standard xyz-numbered tile layers.
@@ -2204,7 +2202,7 @@ L.Icon = L.Class.extend({
 	},
 
 	createShadow: function () {
-		return this._createIcon('shadow');
+		return this.options.shadowUrl ? this._createIcon('shadow') : null;
 	},
 
 	_createIcon: function (name) {
