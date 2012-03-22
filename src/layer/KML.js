@@ -158,7 +158,7 @@ L.Util.extend(L.KML, {
 	parseCoords: function(xml) {
 		var el = xml.getElementsByTagName('coordinates');
 		var coords = [];
-		var text = el[0].childNodes[0].nodeValue.split(' ');
+		var text = el[0].childNodes[0].nodeValue.split(/[\s\n]+/);
 		for (var i = 0; i < text.length; i++) {
 			var ll = text[i].split(',');
 			if (ll.length < 2) continue;
