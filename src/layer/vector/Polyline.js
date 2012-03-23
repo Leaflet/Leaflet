@@ -3,15 +3,22 @@ L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
 		this._latlngs = latlngs;
+
+		// TODO refactor: move to Polyline.Edit.js
+		if (L.Handler.PolyEdit) {
+			this.editing = new L.Handler.PolyEdit(this);
+
+			if (this.options.editable) {
+				this.editing.enable();
+			}
+		}
 	},
 
 	options: {
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
 		smoothFactor: 1.0,
-		noClip: false,
-
-		updateOnMoveEnd: true
+		noClip: false
 	},
 
 	projectLatlngs: function () {
@@ -35,19 +42,17 @@ L.Polyline = L.Path.extend({
 
 	setLatLngs: function (latlngs) {
 		this._latlngs = latlngs;
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	addLatLng: function (latlng) {
 		this._latlngs.push(latlng);
-		this._redraw();
-		return this;
+		return this.redraw();
 	},
 
 	spliceLatLngs: function (index, howMany) {
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._redraw();
+		this.redraw();
 		return removed;
 	},
 
@@ -79,6 +84,27 @@ L.Polyline = L.Path.extend({
 			b.extend(latLngs[i]);
 		}
 		return b;
+	},
+
+	// TODO refactor: move to Polyline.Edit.js
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	},
+
+	onRemove: function (map) {
+		if (this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+
+		L.Path.prototype.onRemove.call(this, map);
+	},
+
+	_initEvents: function () {
+		L.Path.prototype._initEvents.call(this);
 	},
 
 	_getPathPartStr: function (points) {

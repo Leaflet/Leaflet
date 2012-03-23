@@ -7,12 +7,27 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
+	redraw: function () {
+		var i,
+			tiles = this._tiles;
+
+		for (i in tiles) {
+			if (tiles.hasOwnProperty(i)) {
+				this._redrawTile(tiles[i]);
+			}
+		}
+	},
+
+	_redrawTile: function (tile) {
+		this.drawTile(tile, tile._tilePoint, tile._zoom);
+	},
+
 	_createTileProto: function () {
-		this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
+		var proto = this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
 
 		var tileSize = this.options.tileSize;
-		this._canvasProto.width = tileSize;
-		this._canvasProto.height = tileSize;
+		proto.width = tileSize;
+		proto.height = tileSize;
 	},
 
 	_createTile: function () {
@@ -23,6 +38,8 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 
 	_loadTile: function (tile, tilePoint, zoom) {
 		tile._layer = this;
+		tile._tilePoint = tilePoint;
+		tile._zoom = zoom;
 
 		this.drawTile(tile, tilePoint, zoom);
 

@@ -47,7 +47,7 @@ exports.uglify = function (code) {
 	ast = pro.ast_squeeze(ast, {keep_comps: false});
 	ast = pro.ast_squeeze_more(ast);
 
-	return pro.gen_code(ast);
+	return pro.gen_code(ast) + ';';
 };
 
 exports.combineFiles = function (files) {

@@ -1,7 +1,8 @@
 
-L.Control.Layers = L.Class.extend({
+L.Control.Layers = L.Control.extend({
 	options: {
-		collapsed: !L.Browser.touch
+		collapsed: true,
+		position: 'topright'
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -23,18 +24,10 @@ L.Control.Layers = L.Class.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		this._initLayout();
 		this._update();
-	},
 
-	getContainer: function () {
 		return this._container;
-	},
-
-	getPosition: function () {
-		return L.Control.Position.TOP_RIGHT;
 	},
 
 	addBaseLayer: function (layer, name, iconUrl) {
@@ -57,33 +50,39 @@ L.Control.Layers = L.Class.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
-		L.DomEvent.disableClickPropagation(this._container);
+		var className = 'leaflet-control-layers',
+		    container = this._container = L.DomUtil.create('div', className);
 
-		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
+		if (!L.Browser.touch) {
+			L.DomEvent.disableClickPropagation(container);
+		} else {
+			L.DomEvent.addListener(container, 'click', L.DomEvent.stopPropagation);
+		}
+
+		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			L.DomEvent.addListener(this._container, 'mouseover', this._expand, this);
-			L.DomEvent.addListener(this._container, 'mouseout', this._collapse, this);
+			L.DomEvent
+				.addListener(container, 'mouseover', this._expand, this)
+				.addListener(container, 'mouseout', this._collapse, this);
 
-			var link = this._layersLink = L.DomUtil.create('a', 'leaflet-control-layers-toggle');
+			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
 			link.title = 'Layers';
 
-			L.DomEvent.addListener(link, 'focus', this._expand, this);
-			L.DomEvent.addListener(this._map, L.Draggable.START, this._collapse, this);
-			// TODO keyboard accessibility
+			L.DomEvent.addListener(link, L.Browser.touch ? 'click' : 'focus', this._expand, this);
 
-			this._container.appendChild(link);
+			this._map.on('movestart', this._collapse, this);
+			// TODO keyboard accessibility
 		} else {
 			this._expand();
 		}
 
-		this._baseLayersList = L.DomUtil.create('div', 'leaflet-control-layers-base', this._form);
-		this._separator = L.DomUtil.create('div', 'leaflet-control-layers-separator', this._form);
-		this._overlaysList = L.DomUtil.create('div', 'leaflet-control-layers-overlays', this._form);
+		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
+		this._separator = L.DomUtil.create('div', className + '-separator', form);
+		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
-		this._container.appendChild(this._form);
+		container.appendChild(form);
 	},
 
 	_addLayer: function (layer, name, iconUrl, overlay) {

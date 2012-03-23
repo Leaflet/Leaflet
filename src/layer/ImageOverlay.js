@@ -13,7 +13,7 @@ L.ImageOverlay = L.Class.extend({
 			this._initImage();
 		}
 
-		map.getPanes().overlayPane.appendChild(this._image);
+		map._panes.overlayPane.appendChild(this._image);
 
 		map.on('viewreset', this._reset, this);
 		this._reset();
@@ -41,14 +41,14 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_reset: function () {
-		var topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-			bottomRight = this._map.latLngToLayerPoint(this._bounds.getSouthEast()),
-			size = bottomRight.subtract(topLeft);
+		var image   = this._image,
+		    topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+		    size    = this._map.latLngToLayerPoint(this._bounds.getSouthEast()).subtract(topLeft);
 
-		L.DomUtil.setPosition(this._image, topLeft);
+		L.DomUtil.setPosition(image, topLeft);
 
-		this._image.style.width = size.x + 'px';
-		this._image.style.height = size.y + 'px';
+		image.style.width  = size.x + 'px';
+		image.style.height = size.y + 'px';
 	},
 
 	_onImageLoad: function () {

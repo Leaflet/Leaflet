@@ -1,36 +1,39 @@
+L.Control.Zoom = L.Control.extend({
+	options: {
+		position: 'topleft'
+	},
 
-L.Control.Zoom = L.Class.extend({
 	onAdd: function (map) {
-		this._map = map;
-		this._container = L.DomUtil.create('div', 'leaflet-control-zoom');
+		var className = 'leaflet-control-zoom',
+		    container = L.DomUtil.create('div', className);
 
-		this._zoomInButton = this._createButton(
-				'Zoom in', 'leaflet-control-zoom-in', this._map.zoomIn, this._map);
-		this._zoomOutButton = this._createButton(
-				'Zoom out', 'leaflet-control-zoom-out', this._map.zoomOut, this._map);
+		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
+		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
 
-		this._container.appendChild(this._zoomInButton);
-		this._container.appendChild(this._zoomOutButton);
+		return container;
 	},
 
-	getContainer: function () {
-		return this._container;
-	},
-
-	getPosition: function () {
-		return L.Control.Position.TOP_LEFT;
-	},
-
-	_createButton: function (title, className, fn, context) {
-		var link = document.createElement('a');
+	_createButton: function (title, className, container, fn, context) {
+		var link = L.DomUtil.create('a', className, container);
 		link.href = '#';
 		link.title = title;
-		link.className = className;
 
-		L.DomEvent.disableClickPropagation(link);
-		L.DomEvent.addListener(link, 'click', L.DomEvent.preventDefault);
-		L.DomEvent.addListener(link, 'click', fn, context);
+		L.DomEvent
+			.addListener(link, 'click', L.DomEvent.stopPropagation)
+			.addListener(link, 'click', L.DomEvent.preventDefault)
+			.addListener(link, 'click', fn, context);
 
 		return link;
+	}
+});
+
+L.Map.mergeOptions({
+	zoomControl: true
+});
+
+L.Map.addInitHook(function () {
+	if (this.options.zoomControl) {
+		this.zoomControl = new L.Control.Zoom();
+		this.addControl(this.zoomControl);
 	}
 });

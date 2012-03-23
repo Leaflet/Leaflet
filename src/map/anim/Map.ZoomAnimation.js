@@ -1,3 +1,7 @@
+L.Map.mergeOptions({
+	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android && !L.Browser.mobileOpera
+});
+
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_zoomToIfCenterInView: function (center, zoom, centerOffset) {
 
@@ -8,11 +12,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			return false;
 		}
 
-		var zoomDelta = zoom - this._zoom,
-			scale = Math.pow(2, zoomDelta),
+		var scale = Math.pow(2, zoom - this._zoom),
 			offset = centerOffset.divideBy(1 - 1 / scale);
 
-		//if offset does not exceed half of the view
+		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) {
 			return false;
 		}
@@ -23,10 +26,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
+		this._prepareTileBg();
+
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
-
-		this._prepareTileBg();
 
 		this._runAnimation(center, zoom, scale, origin);
 
@@ -40,43 +43,47 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
 
-		var transform = L.DomUtil.TRANSFORM;
+		var transform = L.DomUtil.TRANSFORM,
+			tileBg = this._tileBg;
+
+		clearTimeout(this._clearTileBgTimer);
 
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
 		if (L.Browser.gecko || window.opera) {
-			this._tileBg.style[transform] += ' translate(0,0)';
+			tileBg.style[transform] += ' translate(0,0)';
 		}
 
 		var scaleStr;
 
-		// Android doesn't like translate/scale chains, transformOrigin + scale works better but
+		// Android 2.* doesn't like translate/scale chains, transformOrigin + scale works better but
 		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
+
 		// TODO work around this prettier
 		if (L.Browser.android) {
-			this._tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
+			tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
 			scaleStr = 'scale(' + scale + ')';
 		} else {
 			scaleStr = L.DomUtil.getScaleString(scale, origin);
 		}
 
-		L.Util.falseFn(this._tileBg.offsetWidth); //hack to make sure transform is updated before running animation
+		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
 		var options = {};
-		options[transform] = this._tileBg.style[transform] + ' ' + scaleStr;
-		this._tileBg.transition.run(options);
+		options[transform] = tileBg.style[transform] + ' ' + scaleStr;
+
+		tileBg.transition.run(options);
 	},
 
 	_prepareTileBg: function () {
-		if (!this._tileBg) {
-			this._tileBg = this._createPane('leaflet-tile-pane', this._mapPane);
-			this._tileBg.style.zIndex = 1;
-		}
-
 		var tilePane = this._tilePane,
 			tileBg = this._tileBg;
 
+		if (!tileBg) {
+			tileBg = this._tileBg = this._createPane('leaflet-tile-pane', this._mapPane);
+			tileBg.style.zIndex = 1;
+		}
+
 		// prepare the background pane to become the main tile pane
-		//tileBg.innerHTML = '';
 		tileBg.style[L.DomUtil.TRANSFORM] = '';
 		tileBg.style.visibility = 'hidden';
 
@@ -85,25 +92,34 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		tilePane.empty = false;
 
 		this._tilePane = this._panes.tilePane = tileBg;
-		this._tileBg = tilePane;
+		var newTileBg = this._tileBg = tilePane;
 
-		if (!this._tileBg.transition) {
-			this._tileBg.transition = new L.Transition(this._tileBg, {duration: 0.3, easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'});
-			this._tileBg.transition.on('end', this._onZoomTransitionEnd, this);
+		if (!newTileBg.transition) {
+			// TODO move to Map options
+			newTileBg.transition = new L.Transition(newTileBg, {
+				duration: 0.25,
+				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
+			});
+			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
 		}
 
-		this._stopLoadingBgTiles();
+		this._stopLoadingImages(newTileBg);
 	},
 
 	// stops loading all tiles in the background layer
-	_stopLoadingBgTiles: function () {
-		var tiles = [].slice.call(this._tileBg.getElementsByTagName('img'));
+	_stopLoadingImages: function (container) {
+		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
+			i, len, tile;
 
-		for (var i = 0, len = tiles.length; i < len; i++) {
-			if (!tiles[i].complete) {
-				// tiles[i].src = '' - evil, doesn't cancel the request!
-				tiles[i].parentNode.removeChild(tiles[i]);
-				tiles[i] = null;
+		for (i = 0, len = tiles.length; i < len; i++) {
+			tile = tiles[i];
+
+			if (!tile.complete) {
+				tile.onload = L.Util.falseFn;
+				tile.onerror = L.Util.falseFn;
+				tile.src = L.Util.emptyImageUrl;
+
+				tile.parentNode.removeChild(tile);
 			}
 		}
 	},

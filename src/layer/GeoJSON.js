@@ -2,6 +2,7 @@
 L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
+
 		this._geojson = geojson;
 		this._layers = {};
 
@@ -11,16 +12,19 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	addGeoJSON: function (geojson) {
-		if (geojson.features) {
-			for (var i = 0, len = geojson.features.length; i < len; i++) {
-				this.addGeoJSON(geojson.features[i]);
+		var features = geojson.features,
+		    i, len;
+
+		if (features) {
+			for (i = 0, len = features.length; i < len; i++) {
+				this.addGeoJSON(features[i]);
 			}
 			return;
 		}
 
 		var isFeature = (geojson.type === 'Feature'),
-			geometry = (isFeature ? geojson.geometry : geojson),
-			layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
+		    geometry = isFeature ? geojson.geometry : geojson,
+		    layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
 
 		this.fire('featureparse', {
 			layer: layer,
@@ -37,10 +41,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 L.Util.extend(L.GeoJSON, {
 	geometryToLayer: function (geometry, pointToLayer) {
 		var coords = geometry.coordinates,
-			latlng, latlngs,
-			i, len,
-			layer,
-			layers = [];
+		    layers = [],
+		    latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
@@ -83,22 +85,25 @@ L.Util.extend(L.GeoJSON, {
 		}
 	},
 
-	coordsToLatLng: function (/*Array*/ coords, /*Boolean*/ reverse)/*: LatLng*/ {
+	coordsToLatLng: function (coords, reverse) { // (Array, Boolean) -> LatLng
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
-			lng = parseFloat(coords[reverse ? 1 : 0]);
+		    lng = parseFloat(coords[reverse ? 1 : 0]);
+
 		return new L.LatLng(lat, lng, true);
 	},
 
-	coordsToLatLngs: function (/*Array*/ coords, /*Number*/ levelsDeep, /*Boolean*/ reverse)/*: Array*/ {
-		var latlng, latlngs = [],
-			i, len = coords.length;
+	coordsToLatLngs: function (coords, levelsDeep, reverse) { // (Array, Number, Boolean) -> Array
+		var latlng,
+		    latlngs = [],
+		    i, len;
 
-		for (i = 0; i < len; i++) {
+		for (i = 0, len = coords.length; i < len; i++) {
 			latlng = levelsDeep ?
 					this.coordsToLatLngs(coords[i], levelsDeep - 1, reverse) :
 					this.coordsToLatLng(coords[i], reverse);
 			latlngs.push(latlng);
 		}
+
 		return latlngs;
 	}
 });

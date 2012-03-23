@@ -1,11 +1,11 @@
 
 (function (root) {
 	root.L = {
-		VERSION: '0.3',
+		VERSION: '0.4',
 
 		ROOT_URL: root.L_ROOT_URL || (function () {
 			var scripts = document.getElementsByTagName('script'),
-				leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+			    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 			var i, len, src, matches;
 
@@ -17,9 +17,10 @@
 					if (matches[1] === 'include') {
 						return '../../dist/';
 					}
-					return src.replace(leafletRe, '') + '/';
+					return src.split(leafletRe)[0] + '/';
 				}
 			}
+
 			return '';
 		}()),
 

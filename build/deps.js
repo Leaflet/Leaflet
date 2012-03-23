@@ -57,6 +57,12 @@ var deps = {
 		desc: 'Markers to put on the map.'
 	},
 
+	DivIcon: {
+		src: ['layer/marker/DivIcon.js'],
+		deps: ['Marker'],
+		desc: 'Lightweight div-based icon for markers.'
+	},
+
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
@@ -86,6 +92,12 @@ var deps = {
 		desc: 'VML fallback for vector rendering core (IE 6-8).'
 	},
 
+	PathCanvas: {
+		src: ['layer/vector/canvas/Path.Canvas.js'],
+		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
+	},
+
 	Polyline: {
 		src: ['geometry/LineUtil.js', 'layer/vector/Polyline.js'],
 		deps: ['Path'],
@@ -104,6 +116,12 @@ var deps = {
 		desc: 'MultiPolygon and MultyPolyline layers.'
 	},
 
+	Rectangle: {
+		src: ['layer/vector/Rectangle.js'],
+		deps: ['Polygon'],
+		desc: ['Rectangle overlays.']
+	},
+
 	Circle: {
 		src: ['layer/vector/Circle.js'],
 		deps: ['Path'],
@@ -116,13 +134,12 @@ var deps = {
 		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
-	PathCanvas: {
-		src: ['layer/vector/canvas/Path.Canvas.js',
-		      'layer/vector/canvas/Polyline.Canvas.js',
+	VectorsCanvas: {
+		src: ['layer/vector/canvas/Polyline.Canvas.js',
 		      'layer/vector/canvas/Polygon.Canvas.js',
 		      'layer/vector/canvas/Circle.Canvas.js'],
-		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
-		desc: 'Canvas fallback for vector layers (makes them work on Android 2+).'
+		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle'],
+		desc: 'Canvas fallback for vector layers (polygons, polylines, circles)'
 	},
 
 	GeoJSON: {
@@ -165,7 +182,14 @@ var deps = {
 
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
+		deps: ['Marker'],
 		desc: 'Makes markers draggable (by mouse or touch).'
+	},
+
+	PolyEdit: {
+		src: ['layer/vector/Polyline.Edit.js'],
+		deps: ['Polyline', 'DivIcon'],
+		desc: 'Polyline and polygon editing.'
 	},
 
 
@@ -182,6 +206,13 @@ var deps = {
 		      'map/ext/Map.Control.js',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
+	},
+
+	ControlScale: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Scale.js'],
+		desc: 'Scale control.'
 	},
 
 	ControlLayers: {

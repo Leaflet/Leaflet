@@ -16,20 +16,15 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 	// instantiate class without calling constructor
 	var F = function () {};
 	F.prototype = this.prototype;
+
 	var proto = new F();
-
 	proto.constructor = NewClass;
+
 	NewClass.prototype = proto;
-
-	// add superclass access
-	NewClass.superclass = this.prototype;
-
-	// add class name
-	//proto.className = props;
 
 	//inherit parent's statics
 	for (var i in this) {
-		if (this.hasOwnProperty(i) && i !== 'prototype' && i !== 'superclass') {
+		if (this.hasOwnProperty(i) && i !== 'prototype') {
 			NewClass[i] = this[i];
 		}
 	}
@@ -54,13 +49,15 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 	// mix given properties into the prototype
 	L.Util.extend(proto, props);
 
-	// allow inheriting further
-	NewClass.extend = L.Class.extend;
-
-	// method for adding properties to prototype
-	NewClass.include = function (props) {
-		L.Util.extend(this.prototype, props);
-	};
-
 	return NewClass;
+};
+
+
+// method for adding properties to prototype
+L.Class.include = function (props) {
+	L.Util.extend(this.prototype, props);
+};
+
+L.Class.mergeOptions = function (options) {
+	L.Util.extend(this.prototype.options, options);
 };
