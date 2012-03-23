@@ -5,15 +5,20 @@
 L.Mixin = {};
 
 L.Mixin.Events = {
-	addEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+	addEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context, /*(optional) boolean*/ once) {
 		var events = this._leaflet_events = this._leaflet_events || {};
 		events[type] = events[type] || [];
 		events[type].push({
 			action: fn,
-			context: context || this
+			context: context || this,
+            once: !!once
 		});
 		return this;
 	},
+
+    addEventListenerOnce: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+        return this.addEventListener(type, fn, context, true);
+    },
 
 	hasEventListeners: function (/*String*/ type) /*-> Boolean*/ {
 		var k = '_leaflet_events';
@@ -53,10 +58,18 @@ L.Mixin.Events = {
 			listeners[i].action.call(listeners[i].context || this, event);
 		}
 
+        listeners = this._leaflet_events[type];
+        for (i = listeners.length-1; i >= 0; i--) {
+            if (listeners[i].once) {
+                listeners.splice(i, 1);
+            }
+        }
+
 		return this;
 	}
 };
 
 L.Mixin.Events.on = L.Mixin.Events.addEventListener;
+L.Mixin.Events.onOnce = L.Mixin.Events.addEventListenerOnce;
 L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
 L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
