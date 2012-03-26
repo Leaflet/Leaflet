@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page (deCarta Test)</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+	<script src="../../src/layer/tile/TileLayer.deCarta.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script type="text/javascript">
+		var map = new L.Map('map', {
+				crs: L.CRS.EPSG3395
+			}),
+			center = new L.LatLng(-27.46837362209769, 153.02405834197998); // king george square brisbane
+	
+		var decartaAttribution = 'Map data &copy; 2011 Navteq via <a href="http://decarta.com/" target="_blank">deCarta DDS Platform</a>',
+			decarta = new L.TileLayer.deCarta("http://bne3-0236d.server-web.com", {
+				maxZoom: 18, 
+				attribution: decartaAttribution,
+				// you really should get your own client name @ http://developer.decarta.com/
+				clientName: 'RACQ:',
+				mapConfig: 'AustraliaV13'
+			});
+	
+		// var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
+		
+		map.addLayer(decarta).setView(center, 6);
+		
+		// add a marker at brisbane
+		map.addLayer(new L.Marker(center));
+	</script>
+</body>
+</html>

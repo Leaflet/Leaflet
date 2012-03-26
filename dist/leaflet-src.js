@@ -58,7 +58,7 @@ L.Util = {
 	},
 
 	bind: function (fn, obj) { // (Function, Object) -> Function
-		var args = Array.prototype.slice.call(arguments, 2);
+		var args = arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : null;
 		return function () {
 			return fn.apply(obj, args || arguments);
 		};
@@ -619,7 +619,7 @@ L.DomUtil = {
 
 	setOpacity: function (el, value) {
 		if (L.Browser.ie) {
-			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
+		    el.style.filter = value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		} else {
 			el.style.opacity = value;
 		}
@@ -1605,7 +1605,6 @@ L.Projection.Mercator = {
 };
 
 
-
 L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
 	code: 'EPSG:3395',
 
@@ -1615,11 +1614,10 @@ L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
 		var m = L.Projection.Mercator,
 			r = m.R_MAJOR,
 			r2 = m.R_MINOR;
-
-		return new L.Transformation(0.5 / (Math.PI * r), 0.5, -0.5 / (Math.PI * r2), 0.5);
+		
+		return new L.Transformation(0.5 / (Math.PI * r), 0.5, -0.5 / (Math.PI * r), 0.5);
 	}())
 });
-
 
 /*
  * L.TileLayer is used for standard xyz-numbered tile layers.
