@@ -18,6 +18,7 @@ L.TileLayer = L.Class.extend({
 		noWrap: false,
 		zoomOffset: 0,
 		zoomReverse: false,
+		detectRetina: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
@@ -28,7 +29,7 @@ L.TileLayer = L.Class.extend({
 		L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize
-		if (window.devicePixelRatio > 1) {
+		if (this.options.detectRetina && window.devicePixelRatio > 1) {
 			this.options.tileSize >>= 1;
 		}
 
