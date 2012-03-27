@@ -32,13 +32,13 @@
 	border: 1px solid #bbb;
 	}
 
-.leaflet-control-zoom {
+.leaflet-control-zoom, .leaflet-control-fullscreen {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
 	}
-.leaflet-control-zoom a {
+.leaflet-control-zoom a, .leaflet-control-fullscreen a {
 	background-color: #eee;
 	}
-.leaflet-control-zoom a:hover {
+.leaflet-control-zoom a:hover, .leaflet-control-fullscreen a:hover {
 	background-color: #fff;
 	}
 .leaflet-control-layers-toggle {

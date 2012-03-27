@@ -221,6 +221,13 @@ var deps = {
 		      'control/Control.Layers.js'],
 		desc: 'Layer Switcher control.'
 	},
+	
+	ControlFullscreen: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Fullscreen.js'],
+		desc: 'Fullscreen control.'
+	},
 
 
 	AnimationNative: {

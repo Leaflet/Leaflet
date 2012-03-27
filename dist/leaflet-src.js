@@ -58,7 +58,7 @@ L.Util = {
 	},
 
 	bind: function (fn, obj) { // (Function, Object) -> Function
-		var args = Array.prototype.slice.call(arguments, 2);
+		var args = arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : null;
 		return function () {
 			return fn.apply(obj, args || arguments);
 		};
@@ -1007,6 +1007,41 @@ L.Map = L.Class.extend({
 
 	zoomOut: function () {
 		return this.setZoom(this._zoom - 1);
+	},
+	
+	fullscreen: function () {
+		if (!this._isFullscreen) {
+
+			this._container.style.position = 'fixed';
+			this._container.style.left = 0;
+			this._container.style.top = 0;
+			this._container.style.width = '100%';
+			this._container.style.height = '100%';
+
+			L.DomUtil.addClass(this._container, 'leaflet-fullscreen');
+			this._isFullscreen = true;
+
+			L.DomEvent.addListener(document, 'keyup', this.fullscreen, this);
+
+			this.fire('enterFullscreen');
+
+		} else {
+
+			this._container.removeAttribute('style');
+			this._container.style.position = 'relative';
+
+			L.DomUtil.removeClass(this._container, 'leaflet-fullscreen');
+			this._isFullscreen = false;
+
+			L.DomEvent.removeListener(document, 'keyup', this.fullscreen);
+
+			this.fire('exitFullscreen');
+
+		}
+
+		this.invalidateSize();
+
+		return this;
 	},
 
 	fitBounds: function (bounds) { // (LatLngBounds)
@@ -5858,6 +5893,47 @@ L.Control.Layers = L.Control.extend({
 	}
 });
 
+
+L.Control.Fullscreen = L.Control.extend({
+	options: {
+		position: 'topleft'
+	},
+
+	onAdd: function (map) {
+		map._isFullscreen = false;
+	  
+		var className = 'leaflet-control-fullscreen',
+				container = L.DomUtil.create('div', className);
+
+		this._createButton('Fullscreen', '', container, map.fullscreen, map);
+
+		return container;
+	},
+
+	_createButton: function (title, className, container, fn, context) {
+		var link = L.DomUtil.create('a', className, container);
+		link.href = '#';
+		link.title = title;
+
+		L.DomEvent
+			.addListener(link, 'click', L.DomEvent.stopPropagation)
+			.addListener(link, 'click', L.DomEvent.preventDefault)
+			.addListener(link, 'click', fn, context);
+
+		return link;
+	}
+});
+
+L.Map.mergeOptions({
+	fullscreenControl: false
+});
+
+L.Map.addInitHook(function () {
+	if (this.options.fullscreenControl) {
+		this.fullscreenControl = new L.Control.Fullscreen();
+		this.addControl(this.fullscreenControl);
+	}
+});
 
 L.Transition = L.Class.extend({
 	includes: L.Mixin.Events,

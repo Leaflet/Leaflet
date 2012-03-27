@@ -57,6 +57,41 @@ L.Map = L.Class.extend({
 	zoomOut: function () {
 		return this.setZoom(this._zoom - 1);
 	},
+	
+	fullscreen: function () {
+		if (!this._isFullscreen) {
+
+			this._container.style.position = 'fixed';
+			this._container.style.left = 0;
+			this._container.style.top = 0;
+			this._container.style.width = '100%';
+			this._container.style.height = '100%';
+
+			L.DomUtil.addClass(this._container, 'leaflet-fullscreen');
+			this._isFullscreen = true;
+
+			L.DomEvent.addListener(document, 'keyup', this.fullscreen, this);
+
+			this.fire('enterFullscreen');
+
+		} else {
+
+			this._container.removeAttribute('style');
+			this._container.style.position = 'relative';
+
+			L.DomUtil.removeClass(this._container, 'leaflet-fullscreen');
+			this._isFullscreen = false;
+
+			L.DomEvent.removeListener(document, 'keyup', this.fullscreen);
+
+			this.fire('exitFullscreen');
+
+		}
+
+		this.invalidateSize();
+
+		return this;
+	},
 
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
