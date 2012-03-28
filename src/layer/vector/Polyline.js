@@ -68,6 +68,8 @@ L.Polyline = L.Path.extend({
 				if (point._sqDist < minDistance) {
 					minDistance = point._sqDist;
 					minPoint = point;
+                    minPoint.startSegIndex = i-1;
+                    minPoint.endSegIndex = i;
 				}
 			}
 		}
