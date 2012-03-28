@@ -57,6 +57,22 @@ L.Map = L.Class.extend({
 	zoomOut: function () {
 		return this.setZoom(this._zoom - 1);
 	},
+	
+	zoomBounds: function () {
+		var latlngs = [];
+		for(var k in this._layers)
+		{
+			layer = this._layers[k];
+			if (typeof(layer._latlngs) != 'undefined')
+			{
+				for (var j = 0; j < layer._latlngs.length; j++)
+				{
+					latlngs.push(layer._latlngs[j]);
+				}
+			}
+		}
+		this.fitBounds(new L.LatLngBounds(latlngs));		
+	},
 
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
