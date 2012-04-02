@@ -223,6 +223,14 @@ var deps = {
 	},
 
 
+	ControlZoomBounds: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.ZoomBounds.js'],
+		desc: 'Zoom to objects shown'
+	},
+
+
 	AnimationNative: {
 		src: ['dom/DomEvent.js',
 		      'dom/transition/Transition.js',
