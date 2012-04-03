@@ -58,7 +58,7 @@ L.Map = L.Class.extend({
 		return this.setZoom(this._zoom - 1);
 	},
 	
-	fullscreen: function () {
+	fullscreen: function (event) {
 		if (!this._isFullscreen) {
 
 			this._container.style.position = 'fixed';
@@ -75,6 +75,10 @@ L.Map = L.Class.extend({
 			this.fire('enterFullscreen');
 
 		} else {
+
+			if (event.type === 'keyup' && event.keyCode !== 27) {
+				return;
+			}
 
 			this._container.removeAttribute('style');
 			this._container.style.position = 'relative';
