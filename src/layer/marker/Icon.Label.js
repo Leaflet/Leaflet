@@ -27,6 +27,9 @@ L.Icon.Label = L.Icon.extend({
 	},
 	
 	createShadow: function () {
+		if (!this.options.shadowUrl) {
+			return null;
+		}
 		var shadow = L.Icon.prototype._createIcon.call(this, 'shadow');
 		//need to reposition the shadow
 		if (shadow) {
