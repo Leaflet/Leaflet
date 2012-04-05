@@ -141,13 +141,10 @@ L.Map = L.Class.extend({
 
 		this._layers[id] = layer;
 
-		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		if (layer.options && !isNaN(layer.options.maxZoom)) {
-			this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
-		}
-		if (layer.options && !isNaN(layer.options.minZoom)) {
-			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
-		}
+		this._updateMinMaxZoomLevels();
+		if (this._loaded) {
+		    this.setZoom(this.getZoom());
+		}    
 
 		// TODO looks ugly, refactor!!!
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
@@ -177,6 +174,8 @@ L.Map = L.Class.extend({
 		layer.onRemove(this);
 
 		delete this._layers[id];
+
+		this._updateMinMaxZoomLevels();
 
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
@@ -497,7 +496,18 @@ L.Map = L.Class.extend({
 		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
 		L.DomUtil.setPosition(this._mapPane, newPos);
 	},
-
+    
+        _updateMinMaxZoomLevels: function () {
+            var i;
+            this._layersMinZoom = 0;
+            this._layersMaxZoom = Infinity;
+            for (i in this._layers) {
+		var layer = this._layers[i];
+		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
+		this._layersMinZoom = Math.max(this._layersMinZoom, layer.options.minZoom);
+		this._layersMaxZoom = Math.min(this._layersMaxZoom, layer.options.maxZoom);
+            }
+	},
 
 	// map events
 
