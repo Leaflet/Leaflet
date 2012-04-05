@@ -143,7 +143,7 @@ L.Map = L.Class.extend({
 
 		this._updateMinMaxZoomLevels();
 		if (this._loaded) {
-		    this.setZoom(this.getZoom());
+			this.setZoom(this.getZoom());
 		}    
 
 		// TODO looks ugly, refactor!!!
@@ -498,15 +498,15 @@ L.Map = L.Class.extend({
 	},
     
         _updateMinMaxZoomLevels: function () {
-            var i;
-            this._layersMinZoom = 0;
-            this._layersMaxZoom = Infinity;
-            for (i in this._layers) {
+		var i;
+		this._layersMinZoom = 0;
+		this._layersMaxZoom = Infinity;
+		for (i in this._layers) {
 		var layer = this._layers[i];
-		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		this._layersMinZoom = Math.max(this._layersMinZoom, layer.options.minZoom);
-		this._layersMaxZoom = Math.min(this._layersMaxZoom, layer.options.maxZoom);
-            }
+			// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
+			this._layersMinZoom = Math.max(this._layersMinZoom, layer.options.minZoom);
+			this._layersMaxZoom = Math.min(this._layersMaxZoom, layer.options.maxZoom);
+		}
 	},
 
 	// map events
