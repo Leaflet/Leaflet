@@ -134,7 +134,7 @@ a.leaflet-active {
 .leaflet-control-zoom a, .leaflet-control-fullscreen a {
 	background-color: rgba(255, 255, 255, 0.75);
 	}
-.leaflet-control-zoom a, .leaflet-control-layers a {
+.leaflet-control-zoom a, .leaflet-control-layers a, .leaflet-control-fullscreen a {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
@@ -169,13 +169,10 @@ a.leaflet-active {
 	background: rgba(0, 0, 0, 0.25);
   }
 .leaflet-control-fullscreen a {
-	background-image: url(images/fullscreen.png);
-	background-position: 50% 3px;
-	background-repeat: no-repeat;
-	display: block;
+	background-image: url(images/fullscreen-enter.png);
 	}
 .leaflet-fullscreen .leaflet-control-fullscreen a {
-	background-position: 50% -21px;
+	background-image: url(images/fullscreen-exit.png);
 	}
 .leaflet-control-zoom + .leaflet-control-fullscreen {
 	margin-top: 5px;
