@@ -502,10 +502,12 @@ L.Map = L.Class.extend({
 		this._layersMinZoom = 0;
 		this._layersMaxZoom = Infinity;
 		for (i in this._layers) {
-		var layer = this._layers[i];
+			var layer = this._layers[i];
 			// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-			this._layersMinZoom = Math.max(this._layersMinZoom, layer.options.minZoom);
-			this._layersMaxZoom = Math.min(this._layersMaxZoom, layer.options.maxZoom);
+			if (layer.options) {
+				this._layersMinZoom = Math.max(this._layersMinZoom, layer.options.minZoom ? layer.options.minZoom : 0);
+				this._layersMaxZoom = Math.min(this._layersMaxZoom, layer.options.maxZoom ? layer.options.maxZoom : Infinity);
+			}
 		}
 	},
 
