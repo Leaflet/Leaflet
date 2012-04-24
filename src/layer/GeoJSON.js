@@ -35,6 +35,32 @@ L.GeoJSON = L.FeatureGroup.extend({
 		});
 
 		this.addLayer(layer);
+	},
+	getGeoJSON: function () {
+	
+		coord2str = function (obj) {  
+		    if(obj.lng) return '[' + obj.lng + ', '+obj.lat+']';
+		    var n, json = [];  
+	        for (n in obj) {
+	            json.push(coord2str(obj[n]));
+	        }
+	        return ("[" + String(json) + "]");    
+		};  
+	
+		var geojson = [];
+		this._iterateLayers(function(layer) {
+		    if(layer.getLatLng) geojson.push('{"type": "Feature", "geometry": {"type": "Point", "coordinates": '+coord2str(layer.getLatLng())+'}}');
+		    if(layer.getLatLngs) {
+		    	if(layer instanceof L.Polygon) {
+		    		geojson.push('{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": ['+coord2str(layer.getLatLngs())+']}}');
+		    	} else {
+			    	if(layer instanceof L.MultiPolygon) geojson.push('{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": '+coord2str(layer.getLatLngs())+'}}');
+			    	if(layer instanceof L.Polyline) geojson.push('{"type": "Feature", "geometry": {"type": "LineString", "coordinates": '+coord2str(layer.getLatLngs())+'}}');
+			    	if(layer instanceof L.MultiPolyline) geojson.push('{"type": "Feature", "geometry": {"type": "MultiLineString", "coordinates": '+coord2str(layer.getLatLngs())+'}}');
+		    	}
+		    }
+		}, this);
+		return '{"type": "FeatureCollection", "features": ['+String(geojson)+']}';
 	}
 });
 
