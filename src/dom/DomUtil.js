@@ -33,11 +33,11 @@ L.DomUtil = {
 					L.DomUtil.getStyle(el, 'position') === 'absolute') {
 				break;
 			}
-			if ( L.DomUtil.getStyle(el, 'position') === 'fixed'){
-                    		top += docBody.scrollTop || 0;
-                    		left += docBody.scrollLeft || 0;
-                    		break;
-                	}
+			if (L.DomUtil.getStyle(el, 'position') === 'fixed') {
+				top += docBody.scrollTop || 0;
+				left += docBody.scrollLeft || 0;
+				break;
+			}
 
 			el = el.offsetParent;
 		} while (el);
