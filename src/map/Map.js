@@ -58,6 +58,46 @@ L.Map = L.Class.extend({
 		return this.setZoom(this._zoom - 1);
 	},
 
+	zoomBounds: function () {
+		var latlngs = [];
+		for (var k in this._layers)
+		{
+			// For jshint
+			if (this._layers[k]._map)
+			{
+				latlngs = latlngs.concat(this.zoomBoundsLayer(this._layers[k]));
+			}
+		}
+		this.fitBounds(new L.LatLngBounds(latlngs));
+	},
+
+	zoomBoundsLayer: function (layer) {
+		var latlngs = [];
+		if (typeof(layer._layers) !== 'undefined')
+		{
+			for (var k in layer._layers)
+			{
+				// For jshint
+				if (layer._layers[k]._map)
+				{
+					latlngs = this.zoomBoundsLayer(layer._layers[k]);
+				}
+			}
+		}
+		if (typeof(layer._latlngs) !== 'undefined')
+		{
+			for (var j = 0; j < layer._latlngs.length; j++)
+			{
+				latlngs.push(layer._latlngs[j]);
+			}
+		}
+		if (typeof(layer._latlng) !== 'undefined')
+		{
+			latlngs.push(layer._latlng);
+		}
+		return latlngs;
+	},
+
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
 		return this.setView(bounds.getCenter(), zoom);

@@ -58,7 +58,7 @@ L.Util = {
 	},
 
 	bind: function (fn, obj) { // (Function, Object) -> Function
-		var args = Array.prototype.slice.call(arguments, 2);
+		var args = arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : null;
 		return function () {
 			return fn.apply(obj, args || arguments);
 		};
@@ -619,7 +619,7 @@ L.DomUtil = {
 
 	setOpacity: function (el, value) {
 		if (L.Browser.ie) {
-			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
+		    el.style.filter = value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		} else {
 			el.style.opacity = value;
 		}
@@ -1007,6 +1007,46 @@ L.Map = L.Class.extend({
 
 	zoomOut: function () {
 		return this.setZoom(this._zoom - 1);
+	},
+
+	zoomBounds: function () {
+		var latlngs = [];
+		for (var k in this._layers)
+		{
+			// For jshint
+			if (this._layers[k]._map)
+			{
+				latlngs = latlngs.concat(this.zoomBoundsLayer(this._layers[k]));
+			}
+		}
+		this.fitBounds(new L.LatLngBounds(latlngs));
+	},
+
+	zoomBoundsLayer: function (layer) {
+		var latlngs = [];
+		if (typeof(layer._layers) !== 'undefined')
+		{
+			for (var k in layer._layers)
+			{
+				// For jshint
+				if (layer._layers[k]._map)
+				{
+					latlngs = this.zoomBoundsLayer(layer._layers[k]);
+				}
+			}
+		}
+		if (typeof(layer._latlngs) !== 'undefined')
+		{
+			for (var j = 0; j < layer._latlngs.length; j++)
+			{
+				latlngs.push(layer._latlngs[j]);
+			}
+		}
+		if (typeof(layer._latlng) !== 'undefined')
+		{
+			latlngs.push(layer._latlng);
+		}
+		return latlngs;
 	},
 
 	fitBounds: function (bounds) { // (LatLngBounds)
@@ -1551,6 +1591,7 @@ L.Map.addInitHook = function (fn) {
 
 	this.prototype._initializers.push(init);
 };
+
 
 
 L.Projection.Mercator = {
@@ -5857,6 +5898,48 @@ L.Control.Layers = L.Control.extend({
 		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
 	}
 });
+
+
+L.Control.ZoomBounds = L.Control.extend({
+	options: {
+		position: 'topleft'
+	},
+
+	onAdd: function (map) {
+		var className = 'leaflet-control-zoombounds',
+		    container = L.DomUtil.create('div', className);
+
+		this._createButton('Show all overlays', className + '-pan', container,
+							map.zoomBounds, map);
+
+		return container;
+	},
+
+	_createButton: function (title, className, container, fn, context) {
+		var link = L.DomUtil.create('a', className, container);
+		link.href = '#';
+		link.title = title;
+
+		L.DomEvent
+			.addListener(link, 'click', L.DomEvent.stopPropagation)
+			.addListener(link, 'click', L.DomEvent.preventDefault)
+			.addListener(link, 'click', fn, context);
+
+		return link;
+	}
+});
+
+L.Map.mergeOptions({
+	ZoomBoundsControl: true
+});
+
+L.Map.addInitHook(function () {
+	if (this.options.ZoomBoundsControl) {
+		this.ZoomBoundsControl = new L.Control.ZoomBounds();
+		this.addControl(this.ZoomBoundsControl);
+	}
+});
+
 
 
 L.Transition = L.Class.extend({
