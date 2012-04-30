@@ -45,6 +45,10 @@ L.Circle = L.Path.extend({
 
 		return new L.LatLngBounds(sw, ne);
 	},
+	
+	getLatLng: function () {
+		return this._latlng;
+	},
 
 	getPathString: function () {
 		var p = this._point,
@@ -63,6 +67,10 @@ L.Circle = L.Path.extend({
 			r = Math.round(r);
 			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
 		}
+	},
+	
+	getRadius: function () {
+		return this._mRadius;
 	},
 
 	_getLngRadius: function () {
