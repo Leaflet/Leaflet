@@ -16,20 +16,83 @@ L.Map.Keyboard = L.Handler.extend({
 	//      IE 9
 	//      Firefox 4
 	//      Chrome 18
-	_upArrow: {38: true},
-	_rightArrow: {39: true},
-	_downArrow: {40: true},
-	_leftArrow: {37: true},
-	_plusKey: {187: true, 61: true, 107: true},
-	_minusKey: {189: true, 109: true, 0: true},
+	_leftKeys: [37],
+	_rightKeys: [39],
+	_downKeys: [40],
+	_upKeys: [38],
 
-	options: {
-		panDistance: 50 // Pixels
-	},
-	
-	initialize: function (map) {
+	_inKeys: [187, 61, 107],
+	_outKeys: [189, 109, 0],
+
+	panKeys: {},
+	zoomKeys: {},
+
+	initialize: function (map, pan, zoom) {
 		this._map = map;
 		this._container = map._container;
+		
+		this.setPanOffset(pan);
+		this.setZoomOffset(zoom);
+	},
+
+	setPanOffset: function (pan) {
+		var panKeys = {},
+		    keyCode = null,
+		          i = 0;
+
+		if (typeof pan !== 'number') {
+			pan = L.Map.Keyboard.DEFAULT_PAN;
+		}
+
+		// Left
+		for (i = 0; i < this._leftKeys.length; i++) {
+			keyCode = this._leftKeys[i];
+			panKeys[keyCode] = new L.Point(-1 * pan, 0);
+		}
+
+		// Right
+		for (i = 0; i < this._rightKeys.length; i++) {
+			keyCode = this._rightKeys[i];
+			panKeys[keyCode] = new L.Point(pan, 0);
+		}
+
+		// Down
+		for (i = 0; i < this._downKeys.length; i++) {
+			keyCode = this._downKeys[i];
+			panKeys[keyCode] = new L.Point(0, -1 * pan);
+		}
+
+		// Up
+		for (i = 0; i < this._upKeys.length; i++) {
+			keyCode = this._upKeys[i];
+			panKeys[keyCode] = new L.Point(0, pan);
+		}
+
+		this.panKeys = panKeys;
+	},
+
+	setZoomOffset: function (zoom) {
+		var zoomKeys = {},
+		     keyCode = null,
+		           i = 0;
+
+		if (typeof zoom !== 'number') {
+			zoom = L.Map.Keyboard.DEFAULT_ZOOM;
+		}
+
+		// In
+		for (i = 0; i < this._inKeys.length; i++) {
+			keyCode = this._inKeys[i];
+			zoomKeys[keyCode] = zoom;
+		}
+
+		// Out
+		for (i = 0; i < this._outKeys.length; i++) {
+			keyCode = this._outKeys[i];
+			zoomKeys[keyCode] = -1 * zoom;
+		}
+
+		this.zoomKeys = zoomKeys;
 	},
 
 	addHooks: function () {
@@ -65,20 +128,12 @@ L.Map.Keyboard = L.Handler.extend({
 
 	_onKeyDown: function (e) {
 		var key = e.keyCode,
-		   dist = this.options.panDistance;
+		    map = this._map;
 
-		if (key in this._leftArrow) {
-			this._map.panBy(new L.Point(-1 * dist, 0));
-		} else if (key in this._rightArrow) {
-			this._map.panBy(new L.Point(dist, 0));
-		} else if (key in this._upArrow) {
-			this._map.panBy(new L.Point(0, -1 * dist));
-		} else if (key in this._downArrow) {
-			this._map.panBy(new L.Point(0, dist));
-		} else if (key in this._plusKey) {
-			this._map.zoomIn();
-		} else if (key in this._minusKey) {
-			this._map.zoomOut();
+		if (this.panKeys.hasOwnProperty(key)) {
+			map.panBy(this.panKeys[key]);
+		} else if (this.zoomKeys.hasOwnProperty(key)) {
+			map.setZoom(map.getZoom() + this.zoomKeys[key]);
 		} else {
 			return;
 		}
@@ -99,4 +154,8 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 	}
 });
+
+L.Map.Keyboard.DEFAULT_PAN = 50; // Pixels
+L.Map.Keyboard.DEFAULT_ZOOM = 1; // Zoom levels
+
 L.Map.addInitHook('addHandler', 'keyboard', L.Map.Keyboard);
