@@ -41,19 +41,26 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_onClick: function (e) {
-		if (this._checkInMap(e.target || e.srcElement)) {
-			this._addHooks();
-		} else {
+		this._addHooks();
+	},
+
+	_onClickOut: function (e) {
+		if (!this._checkInMap(e.target || e.srcElement)) {
 			this._removeHooks();
 		}
 	},
 
 	_addHooks: function () {
-		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent
+			.addListener(document, 'keydown', this._onKeyDown, this)
+			.addListener(document, 'click', this._onClickOut, this);
+
 	},
 
 	_removeHooks: function () {
-		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent
+			.removeListener(document, 'keydown', this._onKeyDown, this)
+			.removeListener(document, 'click', this._onClickOut, this);
 	},
 
 	_onKeyDown: function (e) {
