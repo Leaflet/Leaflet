@@ -196,9 +196,10 @@ var deps = {
 	ControlZoom: {
 		src: ['control/Control.js',
 		      'map/ext/Map.Control.js',
-		      'control/Control.Zoom.js'],
+		      'control/Control.Zoom.js',
+		      'control/Control.ZoomSlider.js'],
 		heading: 'Controls',
-		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
+		desc: 'Basic zoom control with two buttons (zoom in / zoom out) or slider.'
 	},
 
 	ControlAttrib: {

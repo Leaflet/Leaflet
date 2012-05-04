@@ -49,6 +49,13 @@ L.Map = L.Class.extend({
 	setZoom: function (zoom) { // (Number)
 		return this.setView(this.getCenter(), zoom);
 	},
+	
+	setCenter: function (center) {
+		if (this.getCenter() !== center)
+		{
+			this.panBy(this.project(center).subtract(this.project(this.getCenter()))._round());
+		}
+	},
 
 	zoomIn: function () {
 		return this.setZoom(this._zoom + 1);
