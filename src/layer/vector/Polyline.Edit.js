@@ -196,6 +196,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_getMiddleLatLng: function (marker1, marker2) {
-		return new L.LatLngBounds(marker1.getLatLng(), marker2.getLatLng()).getCenter();
+		var p1 = this._poly._map.project(marker1.getLatLng()),
+			p2 = this._poly._map.project(marker2.getLatLng());
+		return this._poly._map.unproject(p1._add(p2).divideBy(2), this._poly._map.getZoom(), true);
 	}
 });

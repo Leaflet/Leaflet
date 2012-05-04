@@ -27,10 +27,10 @@ L.Circle = L.Path.extend({
 	projectLatlngs: function () {
 		var lngRadius = this._getLngRadius(),
 			latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius, true),
-			point2 = this._map.latLngToLayerPoint(latlng2);
-
-		this._point = this._map.latLngToLayerPoint(this._latlng);
-		this._radius = Math.round(this._point.x - point2.x);
+			point2 = this._map.project(latlng2);
+		this._point = this._map.project(this._latlng);
+		this._radius = this._point.x - point2.x;
+		this._point = this._map.latLngToLayerPoint(this._map.unproject(this._point));
 	},
 
 	getBounds: function () {
@@ -76,7 +76,6 @@ L.Circle = L.Path.extend({
 	_getLngRadius: function () {
 		var equatorLength = 40075017,
 			hLength = equatorLength * Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
-
 		return (this._mRadius / hLength) * 360;
 	},
 
