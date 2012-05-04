@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
 	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Documentation</title>
@@ -1423,7 +1422,7 @@ var image = new L.ImageOverlay(
 
 		<h2 id="polyline">L.Polyline</h2>
 
-		<p>A class for drawing polyline overlays on a map. Extends <a href="path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+		<p>A class for drawing polyline overlays on a map. Extends <a href="#path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
 		<h3>Usage example</h3>
 		<pre><code class="javascript">// create a red polyline from an arrays of LatLng points
@@ -1645,6 +1644,16 @@ map.addLayer(rectangle);</code></pre>
 				<th>Method</th>
 				<th>Returns</th>
 				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>getLatLng()</code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Returns the current geographical position of the circle.</td>
+			</tr>
+			<tr>
+				<td><code>getRadius()</code></td>
+				<td><code>Number</code></td>
+				<td>Returns the current radius of a circle. Units are in meters.</td>
 			</tr>
 			<tr>
 				<td><code>setLatLng( &lt;<a href="#latlng">LatLng</a>&gt;&nbsp;<i>latlng</i>&nbsp;)</code></td>
