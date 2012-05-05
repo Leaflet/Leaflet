@@ -119,16 +119,11 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_addHooks: function () {
-		L.DomEvent
-			.addListener(document, 'keydown', this._onKeyDown, this)
-			.addListener(document, 'click', this._onClickOut, this);
-
+		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_removeHooks: function () {
-		L.DomEvent
-			.removeListener(document, 'keydown', this._onKeyDown, this)
-			.removeListener(document, 'click', this._onClickOut, this);
+		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_onKeyDown: function (e) {
