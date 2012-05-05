@@ -59,13 +59,13 @@ L.Map.Keyboard = L.Handler.extend({
 		// Down
 		for (i = 0; i < this._downKeys.length; i++) {
 			keyCode = this._downKeys[i];
-			panKeys[keyCode] = new L.Point(0, -1 * pan);
+			panKeys[keyCode] = new L.Point(0, pan);
 		}
 
 		// Up
 		for (i = 0; i < this._upKeys.length; i++) {
 			keyCode = this._upKeys[i];
-			panKeys[keyCode] = new L.Point(0, pan);
+			panKeys[keyCode] = new L.Point(0, -1 * pan);
 		}
 
 		this.panKeys = panKeys;
