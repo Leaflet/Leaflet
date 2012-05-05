@@ -338,6 +338,9 @@ a.leaflet-active {
 .leaflet-container {
 	background: #ddd;
 	}
+.leaflet-container-nofocus {
+	outline:0;
+}
 .leaflet-container a {
 	color: #0078A8;
 	}

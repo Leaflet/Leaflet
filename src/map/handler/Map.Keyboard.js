@@ -47,11 +47,15 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		L.DomEvent.addListener(this._container, 'click', this._onClick, this);
+		this._map.on('focus', this._addHooks, this)
+			.on('blur', this._removeHooks, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._container, 'click', this._onClick, this);
+		this._removeHooks();
+
+		this._map.off('focus', this._addHooks, this)
+			.off('blur', this._addHooks, this);
 	},
 
 	_setPanOffset: function (pan) {
@@ -114,16 +118,6 @@ L.Map.Keyboard = L.Handler.extend({
 		this.zoomKeys = zoomKeys;
 	},
 
-	_onClick: function (e) {
-		this._addHooks();
-	},
-
-	_onClickOut: function (e) {
-		if (!this._checkInMap(e.target || e.srcElement)) {
-			this._removeHooks();
-		}
-	},
-
 	_addHooks: function () {
 		L.DomEvent
 			.addListener(document, 'keydown', this._onKeyDown, this)
@@ -149,20 +143,6 @@ L.Map.Keyboard = L.Handler.extend({
 			return;
 		}
 		L.DomEvent.stop(e);
-	},
-
-	_checkInMap: function (element) {
-		try {
-			if (element === this._container) {
-				return true;
-			} else if (!element.parentNode) {
-				return false;
-			} else {
-				return this._checkInMap(element.parentNode);
-			}
-		} catch (e) {
-			return false;
-		}
 	}
 });
 
