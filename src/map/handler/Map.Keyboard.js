@@ -1,5 +1,7 @@
 L.Map.mergeOptions({
-	keyboard: true
+	keyboard: true,
+	keyboardPanOffset: 50,
+	keyboardZoomOffset: 1
 });
 
 L.Map.Keyboard = L.Handler.extend({
@@ -27,15 +29,32 @@ L.Map.Keyboard = L.Handler.extend({
 	panKeys: {},
 	zoomKeys: {},
 
-	initialize: function (map, pan, zoom) {
+	initialize: function (map) {
 		this._map = map;
 		this._container = map._container;
-		
-		this.setPanOffset(pan);
-		this.setZoomOffset(zoom);
+		var panOffset = map.options.keyboardPanOffset;
+		var zoomOffset = map.options.keyboardZoomOffset;
+
+		if (typeof panOffset !== 'number') {
+			panOffset = 50;
+		}
+		if (typeof zoomOffset !== 'number') {
+			zoomOffset = 1;
+		}
+
+		this._setPanOffset(panOffset);
+		this._setZoomOffset(zoomOffset);
 	},
 
-	setPanOffset: function (pan) {
+	addHooks: function () {
+		L.DomEvent.addListener(this._container, 'click', this._onClick, this);
+	},
+
+	removeHooks: function () {
+		L.DomEvent.removeListener(this._container, 'click', this._onClick, this);
+	},
+
+	_setPanOffset: function (pan) {
 		var panKeys = {},
 		    keyCode = null,
 		          i = 0;
@@ -71,7 +90,7 @@ L.Map.Keyboard = L.Handler.extend({
 		this.panKeys = panKeys;
 	},
 
-	setZoomOffset: function (zoom) {
+	_setZoomOffset: function (zoom) {
 		var zoomKeys = {},
 		     keyCode = null,
 		           i = 0;
@@ -93,14 +112,6 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 
 		this.zoomKeys = zoomKeys;
-	},
-
-	addHooks: function () {
-		L.DomEvent.addListener(this._container, 'click', this._onClick, this);
-	},
-
-	removeHooks: function () {
-		L.DomEvent.removeListener(this._container, 'click', this._onClick, this);
 	},
 
 	_onClick: function (e) {
