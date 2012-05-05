@@ -32,18 +32,9 @@ L.Map.Keyboard = L.Handler.extend({
 	initialize: function (map) {
 		this._map = map;
 		this._container = map._container;
-		var panOffset = map.options.keyboardPanOffset;
-		var zoomOffset = map.options.keyboardZoomOffset;
 
-		if (typeof panOffset !== 'number') {
-			panOffset = 50;
-		}
-		if (typeof zoomOffset !== 'number') {
-			zoomOffset = 1;
-		}
-
-		this._setPanOffset(panOffset);
-		this._setZoomOffset(zoomOffset);
+		this._setPanOffset(map.options.keyboardPanOffset);
+		this._setZoomOffset(map.options.keyboardZoomOffset);
 	},
 
 	addHooks: function () {
