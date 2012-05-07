@@ -69,7 +69,7 @@ L.Path = L.Path.extend({
 	// TODO remove duplication with L.Map
 	_initEvents: function () {
 		if (this.options.clickable) {
-			if (!L.Browser.vml) {
+			if (L.Browser.svg || !L.Browser.vml) {
 				this._path.setAttribute('class', 'leaflet-clickable');
 			}
 
