@@ -71,7 +71,23 @@ L.Path = L.Class.extend({
 			this._updatePath();
 		}
 		return this;
-	}
+	},
+
+    getColor: function() {
+        return this.options.color;
+    },
+
+    getFillColor: function() {
+        return this.options.fillColor;
+    },
+
+    getOpacity: function() {
+        return this.options.opacity;
+    },
+
+    getFillOpacity: function() {
+        return this.options.fillOpacity;
+    }
 });
 
 L.Map.include({
