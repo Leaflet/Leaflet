@@ -1,5 +1,7 @@
 L.Map.mergeOptions({
-	keyboard: true
+	keyboard: true,
+	keyboardPanOffset: 50,
+	keyboardZoomOffset: 1
 });
 
 L.Map.Keyboard = L.Handler.extend({
@@ -27,15 +29,27 @@ L.Map.Keyboard = L.Handler.extend({
 	panKeys: {},
 	zoomKeys: {},
 
-	initialize: function (map, pan, zoom) {
+	initialize: function (map) {
 		this._map = map;
 		this._container = map._container;
-		
-		this.setPanOffset(pan);
-		this.setZoomOffset(zoom);
+
+		this._setPanOffset(map.options.keyboardPanOffset);
+		this._setZoomOffset(map.options.keyboardZoomOffset);
 	},
 
-	setPanOffset: function (pan) {
+	addHooks: function () {
+		this._map.on('focus', this._addHooks, this)
+			.on('blur', this._removeHooks, this);
+	},
+
+	removeHooks: function () {
+		this._removeHooks();
+
+		this._map.off('focus', this._addHooks, this)
+			.off('blur', this._addHooks, this);
+	},
+
+	_setPanOffset: function (pan) {
 		var panKeys = {},
 		    keyCode = null,
 		          i = 0;
@@ -59,19 +73,19 @@ L.Map.Keyboard = L.Handler.extend({
 		// Down
 		for (i = 0; i < this._downKeys.length; i++) {
 			keyCode = this._downKeys[i];
-			panKeys[keyCode] = new L.Point(0, -1 * pan);
+			panKeys[keyCode] = new L.Point(0, pan);
 		}
 
 		// Up
 		for (i = 0; i < this._upKeys.length; i++) {
 			keyCode = this._upKeys[i];
-			panKeys[keyCode] = new L.Point(0, pan);
+			panKeys[keyCode] = new L.Point(0, -1 * pan);
 		}
 
 		this.panKeys = panKeys;
 	},
 
-	setZoomOffset: function (zoom) {
+	_setZoomOffset: function (zoom) {
 		var zoomKeys = {},
 		     keyCode = null,
 		           i = 0;
@@ -95,35 +109,12 @@ L.Map.Keyboard = L.Handler.extend({
 		this.zoomKeys = zoomKeys;
 	},
 
-	addHooks: function () {
-		L.DomEvent.addListener(this._container, 'click', this._onClick, this);
-	},
-
-	removeHooks: function () {
-		L.DomEvent.removeListener(this._container, 'click', this._onClick, this);
-	},
-
-	_onClick: function (e) {
-		this._addHooks();
-	},
-
-	_onClickOut: function (e) {
-		if (!this._checkInMap(e.target || e.srcElement)) {
-			this._removeHooks();
-		}
-	},
-
 	_addHooks: function () {
-		L.DomEvent
-			.addListener(document, 'keydown', this._onKeyDown, this)
-			.addListener(document, 'click', this._onClickOut, this);
-
+		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_removeHooks: function () {
-		L.DomEvent
-			.removeListener(document, 'keydown', this._onKeyDown, this)
-			.removeListener(document, 'click', this._onClickOut, this);
+		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_onKeyDown: function (e) {
@@ -138,20 +129,6 @@ L.Map.Keyboard = L.Handler.extend({
 			return;
 		}
 		L.DomEvent.stop(e);
-	},
-
-	_checkInMap: function (element) {
-		try {
-			if (element === this._container) {
-				return true;
-			} else if (!element.parentNode) {
-				return false;
-			} else {
-				return this._checkInMap(element.parentNode);
-			}
-		} catch (e) {
-			return false;
-		}
 	}
 });
 
