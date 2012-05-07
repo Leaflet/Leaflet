@@ -90,7 +90,7 @@ L.Polyline = L.Path.extend({
 	onAdd: function (map) {
 		L.Path.prototype.onAdd.call(this, map);
 
-		if (this.editing.enabled()) {
+		if (this.editing && this.editing.enabled()) {
 			this.editing.addHooks();
 		}
 	},
