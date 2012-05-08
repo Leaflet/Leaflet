@@ -73,20 +73,8 @@ L.Path = L.Class.extend({
 		return this;
 	},
 
-    getColor: function() {
-        return this.options.color;
-    },
-
-    getFillColor: function() {
-        return this.options.fillColor;
-    },
-
-    getOpacity: function() {
-        return this.options.opacity;
-    },
-
-    getFillOpacity: function() {
-        return this.options.fillOpacity;
+    getOptions: function() {
+        return this.options;
     }
 });
 
