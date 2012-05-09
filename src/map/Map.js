@@ -230,11 +230,11 @@ L.Map = L.Class.extend({
 
 	// public methods for getting map state
 
-	getCenter: function (unbounded) { // (Boolean) -> LatLng
+	getCenter: function () { // (Boolean) -> LatLng
 		var viewHalf = this.getSize().divideBy(2),
 		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
-		return this.unproject(centerPoint, this._zoom, unbounded);
+		return this.unproject(centerPoint, this._zoom);
 	},
 
 	getZoom: function () {
@@ -243,10 +243,10 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-		    sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
-		    ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
+		    sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom),
+		    ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom);
 
-		return new L.LatLngBounds(sw, ne);
+		return new L.LatLngBounds(sw, ne, this.options.crs.unbounded);
 	},
 
 	getMinZoom: function () {
@@ -371,10 +371,9 @@ L.Map = L.Class.extend({
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
-	unproject: function (point, zoom, unbounded) { // (Point[, Number, Boolean]) -> LatLng
-		// TODO remove unbounded, making it true all the time?
+	unproject: function (point, zoom) { // (Point[, Number, Boolean]) -> LatLng
 		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom, unbounded);
+		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
 
