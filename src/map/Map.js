@@ -322,6 +322,10 @@ L.Map = L.Class.extend({
 	getPanes: function () {
 		return this._panes;
 	},
+	
+	getContainer: function () {
+		return this._container;
+	},
 
 
 	// conversion methods
