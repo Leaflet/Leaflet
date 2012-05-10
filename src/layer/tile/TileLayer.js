@@ -33,7 +33,7 @@ L.TileLayer = L.Class.extend({
 			this.options.tileSize = Math.floor(this.options.tileSize / 2);
 			this.options.zoomOffset++;
 			if (this.options.minZoom > 0) {
-			    this.options.minZoom--;
+				this.options.minZoom--;
 			}
 			this.options.maxZoom--;
 		}
