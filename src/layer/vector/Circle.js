@@ -30,7 +30,7 @@ L.Circle = L.Path.extend({
 			point2 = this._map.latLngToLayerPoint(latlng2);
 
 		this._point = this._map.latLngToLayerPoint(this._latlng);
-		this._radius = Math.round(this._point.x - point2.x);
+		this._radius = Math.max(Math.round(this._point.x - point2.x), 1);
 	},
 
 	getBounds: function () {
