@@ -26,14 +26,16 @@ L.TileLayer = L.Class.extend({
 	},
 
 	initialize: function (url, options) {
-		L.Util.setOptions(this, options);
+		options = L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (this.options.detectRetina && window.devicePixelRatio > 1 && this.options.maxZoom > 0) {
-			this.options.tileSize = Math.floor(this.options.tileSize / 2);
-			this.options.zoomOffset++;
-			if (this.options.minZoom > 0) {
-				this.options.minZoom--;
+		if (options.detectRetina && window.devicePixelRatio > 1 && options.maxZoom > 0) {
+
+			options.tileSize = Math.floor(options.tileSize / 2);
+			options.zoomOffset++;
+
+			if (options.minZoom > 0) {
+				options.minZoom--;
 			}
 			this.options.maxZoom--;
 		}
