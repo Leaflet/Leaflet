@@ -6,15 +6,23 @@
 L.CRS.Cartesian = L.Class.extend({
     includes: L.CRS,
 
-    initialize: function(bounds)
+    initialize: function(bounds, options)
     {
+        L.Util.setOptions(this, options);
         this.unbounded = true;
         this._bounds = bounds;
+
         var boundsWidth = bounds.max.x - bounds.min.x;
         var boundsHeight = bounds.max.y - bounds.min.y;
 
+        var xOffset = options.falseEasting || 0;
+        var xOffsetPercentage = 0 + xOffset / (boundsWidth * 1.0)
+
+        var yOffset = options.falseNorthing || 0;
+        var yOffsetPercentage = 1 - yOffset / (boundsHeight * 1.0)
+
         this.projection = L.Projection.Identity;
-        this.transformation = new L.Transformation(1.0/boundsWidth, 0,
-                                                  -1.0/boundsHeight, 1);
+        this.transformation = new L.Transformation(1.0/boundsWidth, xOffsetPercentage,
+            -1.0/boundsHeight, yOffsetPercentage);
     }
 });
