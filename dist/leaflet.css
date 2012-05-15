@@ -159,6 +159,15 @@ a.leaflet-active {
 	}
 .leaflet-control-zoom-out {
 	background-image: url(images/zoom-out.png);
+	margin-top: 5px;
+	}
+a.leaflet-control-zoom-bar {
+	height: 7px;
+	margin-bottom: 2px;
+	border-radius: 2px;
+	}
+.leaflet-control-zoom a.current {
+	background-color:black;
 	}
 
 .leaflet-control-layers {
