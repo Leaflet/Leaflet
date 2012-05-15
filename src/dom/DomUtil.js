@@ -6,6 +6,25 @@ L.DomUtil = {
 	get: function (id) {
 		return (typeof id === 'string' ? document.getElementById(id) : id);
 	},
+	
+	getByClass: function (container, className) {
+		if (document.getElementsByClassName === undefined) { // for ie
+			var hasClassName = new RegExp("(?:^|\\s)" + className + "(?:$|\\s)");
+			var allElements = document.getElementsByTagName("*");
+			var results = [];
+
+			for (var i = 0; i < allElements.length; i++) {
+				var elementClass = allElements[i].className;
+				
+				if (elementClass !== null && elementClass && elementClass.indexOf(className) !== -1 && hasClassName.test(elementClass)) {
+					results.push(allElements[i]);
+				}
+			}
+			return results;
+		} else {
+			return container.getElementsByClassName(className);
+		}
+	},
 
 	getStyle: function (el, style) {
 		var value = el.style[style];
