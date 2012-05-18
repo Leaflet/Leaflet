@@ -43,6 +43,25 @@
 	}
 .leaflet-control-layers-toggle {
 	}
+.leaflet-control-scale-line {
+	background:transparent;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#85FFFFFF, endColorstr=#85FFFFFF);
+	}
 .leaflet-control-attribution, .leaflet-control-layers {
 	background: white;
+	}
+.leaflet-control-layers {
+	filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=5, Direction=0),
+         progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=5, Direction=90),
+         progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=5, Direction=180),
+         progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=5, Direction=270);
+	position:relative;
+	top: -5px;
+	left: -5px;
+	}
+.leaflet-container .leaflet-control-attribution {
+	background:transparent;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#99FFFFFF, endColorstr=#99FFFFFF);
+	border-left: 1px solid #cccccc;
+	border-top: 1px solid #cccccc;
 	}
