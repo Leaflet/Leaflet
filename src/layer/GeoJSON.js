@@ -47,14 +47,18 @@ L.GeoJSON = L.FeatureGroup.extend({
 		};
 		var json = '';
 		if(layer.getLatLng) json = '{"type": "Feature", "geometry": {"type": "Point", "coordinates": '+coord2str(layer.getLatLng())+'}}';
-		if(layer.getLatLngs) {
-	    	if(layer instanceof L.Polygon) {
-	    		json = '{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": ['+coord2str(layer.getLatLngs())+']}}';
-	    	} else {
-		    	if(layer instanceof L.MultiPolygon) json = '{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": '+coord2str(layer.getLatLngs())+'}}';
-		    	if(layer instanceof L.Polyline) json = '{"type": "Feature", "geometry": {"type": "LineString", "coordinates": '+coord2str(layer.getLatLngs())+'}}';
-		    	if(layer instanceof L.MultiPolyline) json = '{"type": "Feature", "geometry": {"type": "MultiLineString", "coordinates": '+coord2str(layer.getLatLngs())+'}}';
-	    	}
+		else {
+		    if(layer.getLatLngs) {
+	        	if(layer instanceof L.Polygon) json = '{"type": "Feature", "geometry": {"type": "Polygon", "coordinates": ['+coord2str(layer.getLatLngs())+']}}';
+	        	if(layer instanceof L.Polyline) json = '{"type": "Feature", "geometry": {"type": "LineString", "coordinates": '+coord2str(layer.getLatLngs())+'}}';
+	        } else {
+	            if(layer._layers) {
+	                var coords = [];
+	                layer._iterateLayers(function(l) {coords.push(coord2str(l.getLatLngs()));});
+		        	if(layer instanceof L.MultiPolygon) json = '{"type": "Feature", "geometry": {"type": "MultiPolygon", "coordinates": ['+String(coords)+']}}';
+		            if(layer instanceof L.MultiPolyline) json = '{"type": "Feature", "geometry": {"type": "MultiLineString", "coordinates": ['+String(coords)+']}}';
+	            }
+	        }
 	    }
 		return json;
 	},
