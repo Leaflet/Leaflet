@@ -158,6 +158,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 				.off('click', onClick)
 				.on('click', this._onMarkerClick, this);
 
+			latlng.lat = marker.getLatLng().lat;
+			latlng.lng = marker.getLatLng().lng;
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
 
