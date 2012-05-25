@@ -124,6 +124,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 		if (marker._middleRight) {
 			this._markerGroup.removeLayer(marker._middleRight);
 		}
+		this._markers.splice(i, 1);
 		this._poly.spliceLatLngs(i, 1);
 		this._updateIndexes(i, -1);
 		this._poly.fire('edit');
