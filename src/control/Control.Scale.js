@@ -40,14 +40,17 @@ L.Control.Scale = L.Control.extend({
 
 		    size = this._map.getSize(),
 		    options = this.options,
+                    maxMeters = 0;
 
-		    maxMeters = left.distanceTo(right) * (options.maxWidth / size.x);
+		if (size.x > 0) {
+			maxMeters = left.distanceTo(right) * (options.maxWidth / size.x);
+		}
 
-		if (options.metric) {
+		if (options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
 
-		if (options.imperial) {
+		if (options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
 	},
