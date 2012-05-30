@@ -14,6 +14,7 @@
 
 	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
 	<button id="populate">Populate with 10 markers</button>
+    <button id="export" onclick="alert(geojson.getGeoJSON())">Show GeoJSON</button>
 
 	<script type="text/javascript" src="geojson-sample.js"></script>
 	<script type="text/javascript">
@@ -40,11 +41,11 @@
 		geojson.on('featureparse', function(e) {
 			// you can style features depending on their properties, etc.
 			var popupText = 'geometry type: ' + e.geometryType;
-
 			if (e.layer.setStyle && e.properties && e.properties.color) {
 				e.layer.setStyle({color: e.properties.color});
 				popupText += '<br/>color: ' + e.properties.color;
 			}
+            popupText += "<br/>json: " + geojson.layerToJSON(e.layer);
 			e.layer.bindPopup(popupText);
 		});
 
