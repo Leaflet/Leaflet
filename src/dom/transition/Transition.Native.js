@@ -96,8 +96,8 @@ L.Transition = L.Transition.extend({
 			this._el.style[L.Transition.PROPERTY] = 'none';
 
 			this.fire('step');
-			
-			if (e instanceof window.Event) {
+
+			if (e && e.type) {
 				this.fire('end');
 			}
 		}

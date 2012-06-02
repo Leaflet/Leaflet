@@ -1,3 +1,4 @@
+
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
@@ -34,7 +35,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		if (!this._panTransition) {
 			this._panTransition = new L.Transition(this._mapPane);
 
-			//this._panTransition.on('step', this._onPanTransitionStep, this);
+			this._panTransition.on('step', this._onPanTransitionStep, this);
 			this._panTransition.on('end', this._onPanTransitionEnd, this);
 		}
 

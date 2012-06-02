@@ -6,79 +6,32 @@ L.Map = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
-		// projection
-		crs: L.CRS.EPSG3857 || L.CRS.EPSG4326,
-		scale: function (zoom) {
-			return 256 * Math.pow(2, zoom);
-		},
+		crs: L.CRS.EPSG3857,
 
-		// state
-		center: null,
-		zoom: null,
-		layers: [],
+		/*
+		center: LatLng,
+		zoom: Number,
+		layers: Array,
+		*/
 
-		// interaction
-		dragging: true,
-		touchZoom: L.Browser.touch && !L.Browser.android,
-		scrollWheelZoom: !L.Browser.touch,
-		doubleClickZoom: true,
-		boxZoom: true,
-
-		inertia: true,
-		inertiaDecceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
-		inertiaMaxSpeed:      L.Browser.touch ? 1500 : 1000, // px/s
-		inertiaThreshold:      L.Browser.touch ? 32   : 16, // ms
-
-		// controls
-		zoomControl: true,
-		attributionControl: true,
-
-		// animation
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
-		zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android && !L.Browser.mobileOpera,
-
-		// misc
-		trackResize: true,
-		closePopupOnClick: true,
-		worldCopyJump: true
+		trackResize: true
 	},
 
-
 	initialize: function (id, options) { // (HTMLElement or String, Object)
-		L.Util.setOptions(this, options);
+		options = L.Util.setOptions(this, options);
 
-		// TODO method is too big, refactor
-
-		var container = this._container = L.DomUtil.get(id);
-
-		if (container._leaflet) {
-			throw new Error("Map container is already initialized.");
-		}
-		container._leaflet = true;
-
+		this._initContainer(id);
 		this._initLayout();
-
-		if (L.DomEvent) {
-			this._initEvents();
-			if (L.Handler) {
-				this._initInteraction();
-			}
-			if (L.Control) {
-				this._initControls();
-			}
-		}
-
-		options = this.options;
+		this._initHooks();
+		this._initEvents();
 
 		if (options.maxBounds) {
 			this.setMaxBounds(options.maxBounds);
 		}
 
-		var center = options.center,
-		    zoom = options.zoom;
-
-		if (center && typeof zoom !== 'undefined') {
-			this.setView(center, zoom, true);
+		if (options.center && typeof options.zoom !== 'undefined') {
+			this.setView(options.center, options.zoom, true);
 		}
 
 		this._initLayers(options.layers);
@@ -89,7 +42,6 @@ L.Map = L.Class.extend({
 
 	// replaced by animation-powered implementation in Map.PanAnimation.js
 	setView: function (center, zoom) {
-		// reset the map view
 		this._resetView(center, this._limitZoom(zoom));
 		return this;
 	},
@@ -185,9 +137,7 @@ L.Map = L.Class.extend({
 
 		var id = L.Util.stamp(layer);
 
-		if (this._layers[id]) {
-			return this;
-		}
+		if (this._layers[id]) { return this; }
 
 		this._layers[id] = layer;
 
@@ -202,11 +152,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor!!!
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum++;
-			layer.on('load', this._onTileLayerLoad, this);
-		}
-
-		if (this.attributionControl && layer.getAttribution) {
-			this.attributionControl.addAttribution(layer.getAttribution());
+            this._tileLayersToLoad++;
+            layer.on('load', this._onTileLayerLoad, this);
 		}
 
 		var onMapLoad = function () {
@@ -235,11 +182,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum--;
-			layer.off('load', this._onTileLayerLoad, this);
-		}
-
-		if (this.attributionControl && layer.getAttribution) {
-			this.attributionControl.removeAttribution(layer.getAttribution());
+            this._tileLayersToLoad--;
+            layer.off('load', this._onTileLayerLoad, this);
 		}
 
 		return this.fire('layerremove', {layer: layer});
@@ -266,16 +210,13 @@ L.Map = L.Class.extend({
 
 		this.fire('move');
 
-		function fireMoveEnd() {
-			this.fire('moveend');
-		}
-
 		clearTimeout(this._sizeTimer);
-		this._sizeTimer = setTimeout(L.Util.bind(fireMoveEnd, this), 200);
+		this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
 
 		return this;
 	},
 
+	// TODO handler.addTo
 	addHandler: function (name, HandlerClass) {
 		if (!HandlerClass) { return; }
 
@@ -291,7 +232,7 @@ L.Map = L.Class.extend({
 
 	// public methods for getting map state
 
-	getCenter: function (unbounded) { // (Boolean)
+	getCenter: function (unbounded) { // (Boolean) -> LatLng
 		var viewHalf = this.getSize().divideBy(2),
 		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
@@ -383,6 +324,10 @@ L.Map = L.Class.extend({
 	getPanes: function () {
 		return this._panes;
 	},
+	
+	getContainer: function () {
+		return this._container;
+	},
 
 
 	// conversion methods
@@ -425,17 +370,27 @@ L.Map = L.Class.extend({
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
 		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(latlng, this.options.scale(zoom));
+		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
 	unproject: function (point, zoom, unbounded) { // (Point[, Number, Boolean]) -> LatLng
 		// TODO remove unbounded, making it true all the time?
 		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, this.options.scale(zoom), unbounded);
+		return this.options.crs.pointToLatLng(point, zoom, unbounded);
 	},
 
 
 	// private methods that modify map state
+
+	_initContainer: function (id) {
+		var container = this._container = L.DomUtil.get(id);
+
+		if (container._leaflet) {
+			throw new Error("Map container is already initialized.");
+		}
+
+		container._leaflet = true;
+	},
 
 	_initLayout: function () {
 		var container = this._container;
@@ -482,6 +437,15 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._objectsPane);
 	},
 
+	_initializers: [],
+
+	_initHooks: function () {
+		var i, len;
+		for (i = 0, len = this._initializers.length; i < len; i++) {
+			this._initializers[i].call(this);
+		}
+	},
+
 	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
 
 		var zoomChanged = (this._zoom !== zoom);
@@ -523,7 +487,7 @@ L.Map = L.Class.extend({
 	},
 
 	_initLayers: function (layers) {
-		layers = layers instanceof Array ? layers : [layers];
+		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
 
 		this._layers = {};
 		this._tileLayersNum = 0;
@@ -532,18 +496,6 @@ L.Map = L.Class.extend({
 
 		for (i = 0, len = layers.length; i < len; i++) {
 			this.addLayer(layers[i]);
-		}
-	},
-
-	_initControls: function () {
-		// TODO refactor, this should happen automatically
-		if (this.options.zoomControl) {
-			this.zoomControl = new L.Control.Zoom();
-			this.addControl(this.zoomControl);
-		}
-		if (this.options.attributionControl) {
-			this.attributionControl = new L.Control.Attribution();
-			this.addControl(this.attributionControl);
 		}
 	},
 
@@ -556,6 +508,8 @@ L.Map = L.Class.extend({
 	// map events
 
 	_initEvents: function () {
+		if (!L.DomEvent) { return; }
+
 		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
 
 		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
@@ -607,15 +561,6 @@ L.Map = L.Class.extend({
 		});
 	},
 
-	_initInteraction: function () {
-		this
-			.addHandler('dragging', L.Map.Drag)
-			.addHandler('touchZoom', L.Map.TouchZoom)
-			.addHandler('doubleClickZoom', L.Map.DoubleClickZoom)
-			.addHandler('scrollWheelZoom', L.Map.ScrollWheelZoom)
-			.addHandler('boxZoom', L.Map.BoxZoom);
-	},
-
 	_onTileLayerLoad: function () {
 		// TODO super-ugly, refactor!!!
 		// clear scaled tiles after all new tiles are loaded (for performance)
@@ -651,3 +596,13 @@ L.Map = L.Class.extend({
 		return Math.max(min, Math.min(max, zoom));
 	}
 });
+
+L.Map.addInitHook = function (fn) {
+	var args = Array.prototype.slice.call(arguments, 1);
+
+	var init = typeof fn === 'function' ? fn : function () {
+		this[fn].apply(this, args);
+	};
+
+	this.prototype._initializers.push(init);
+};

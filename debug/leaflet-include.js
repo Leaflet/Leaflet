@@ -92,6 +92,7 @@
 		'control/Control.Zoom.js',
 		'control/Control.Attribution.js',
 		'control/Control.Layers.js',
+		'control/Control.Scale.js'
 	];
 
 	function getSrcUrl() {
@@ -108,9 +109,10 @@
 	}
 
 	var path = getSrcUrl();
-	for (var i = 0; i < scripts.length; i++) {
-		document.writeln("<script type='text/javascript' src='" + path + "../src/" + scripts[i] + "'></script>");
+    for (var i = 0; i < scripts.length; i++) {
+		document.writeln("<script src='" + path + scripts[i] + "'></script>");
 	}
+    document.writeln('<script>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();
 
 function getRandomLatLng(map) {

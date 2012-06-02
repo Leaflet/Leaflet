@@ -115,7 +115,7 @@ var deps = {
 		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
 		desc: 'MultiPolygon and MultyPolyline layers.'
 	},
-	
+
 	Rectangle: {
 		src: ['layer/vector/Rectangle.js'],
 		deps: ['Polygon'],
@@ -212,6 +212,13 @@ var deps = {
 		      'map/ext/Map.Control.js',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
+	},
+
+	ControlScale: {
+		src: ['control/Control.js',
+		      'map/ext/Map.Control.js',
+		      'control/Control.Scale.js'],
+		desc: 'Scale control.'
 	},
 
 	ControlLayers: {

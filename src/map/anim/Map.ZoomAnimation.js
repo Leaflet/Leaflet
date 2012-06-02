@@ -1,3 +1,7 @@
+L.Map.mergeOptions({
+	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android && !L.Browser.mobileOpera
+});
+
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_zoomToIfCenterInView: function (center, zoom, centerOffset) {
 

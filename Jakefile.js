@@ -1,10 +1,9 @@
 var build = require('./build/build.js'),
 	lint = require('./build/hint.js');
 
-var crlf = '\r\n',
-	COPYRIGHT = '/*' + crlf + ' Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin' + crlf +
-                ' Leaflet is a modern open-source JavaScript library for interactive maps.' + crlf +
-                ' http://leaflet.cloudmade.com' + crlf + '*/' + crlf;
+var COPYRIGHT = '/*\n Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin\n' +
+                ' Leaflet is a modern open-source JavaScript library for interactive maps.\n' + 
+                ' http://leaflet.cloudmade.com\n*/\n';
 
 desc('Check Leaflet source for errors with JSHint');
 task('lint', function () {
@@ -31,6 +30,7 @@ task('build', ['lint'], function (compsBase32, buildName) {
 	var files = build.getFiles(compsBase32);
 
 	console.log('Concatenating ' + files.length + ' files...');
+	
 	var content = build.combineFiles(files);
 
 	var oldSrc = build.load(srcPath),

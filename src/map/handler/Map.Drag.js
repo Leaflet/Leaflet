@@ -2,6 +2,19 @@
  * L.Handler.MapDrag is used internally by L.Map to make the map draggable.
  */
 
+L.Map.mergeOptions({
+	dragging: true,
+
+	inertia: !L.Browser.android,
+	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
+	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
+	inertiaThreshold:    L.Browser.touch ? 32   : 16, // ms
+
+	// TODO refactor, move to CRS
+	worldCopyJump: true,
+	continuousWorld: false
+});
+
 L.Map.Drag = L.Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
@@ -75,7 +88,7 @@ L.Map.Drag = L.Handler.extend({
 
 	_onPreDrag: function () {
 		var map = this._map,
-			worldWidth = map.options.scale(map.getZoom()),
+			worldWidth = map.options.crs.scale(map.getZoom()),
 			halfWidth = Math.round(worldWidth / 2),
 			dx = this._initialWorldOffset.x,
 			x = this._draggable._newPos.x,
@@ -89,12 +102,14 @@ L.Map.Drag = L.Handler.extend({
 	_onDragEnd: function () {
 		var map = this._map,
 			options = map.options,
-			delay = +new Date() - this._lastTime;
+			delay = +new Date() - this._lastTime,
 
-		if (!options.inertia || delay > options.inertiaTreshold) {
-			map
-				.fire('moveend')
-				.fire('dragend');
+			noInertia = !options.inertia ||
+					delay > options.inertiaThreshold ||
+					typeof this._positions[0] === 'undefined';
+
+		if (noInertia) {
+			map.fire('moveend');
 
 		} else {
 
@@ -107,23 +122,24 @@ L.Map.Drag = L.Handler.extend({
 				limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 				limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-				deccelerationDuration = limitedSpeed / options.inertiaDecceleration,
-				offset = limitedSpeedVector.multiplyBy(-deccelerationDuration / 2).round();
+				decelerationDuration = limitedSpeed / options.inertiaDeceleration,
+				offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			var panOptions = {
-				duration: deccelerationDuration,
+				duration: decelerationDuration,
 				easing: 'ease-out'
 			};
 
 			L.Util.requestAnimFrame(L.Util.bind(function () {
 				this._map.panBy(offset, panOptions);
 			}, this));
+		}
 
+		map.fire('dragend');
 
-			if (options.maxBounds) {
-				// TODO predrag validation instead of animation
-				L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
-			}
+		if (options.maxBounds) {
+			// TODO predrag validation instead of animation
+			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
 		}
 	},
 
@@ -131,3 +147,5 @@ L.Map.Drag = L.Handler.extend({
 		this.panInsideBounds(this.options.maxBounds);
 	}
 });
+
+L.Map.addInitHook('addHandler', 'dragging', L.Map.Drag);

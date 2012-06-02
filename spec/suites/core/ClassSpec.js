@@ -46,6 +46,7 @@ describe("Class", function() {
 			expect(method).toHaveBeenCalled();
 		});
 		
+		/* superclass deprecated
 		it("should grant the ability to call parent methods, including constructor", function() {
 			var Klass2 = Klass.extend({
 				initialize: function() {},
@@ -60,7 +61,7 @@ describe("Class", function() {
 
 			b.constructor.superclass.bar.call(this);
 			expect(method).toHaveBeenCalled();
-		});
+		}); */
 		
 		it("should support static properties", function() {
 			expect(Klass.bla).toEqual(1);
@@ -123,6 +124,7 @@ describe("Class", function() {
 			});
 		});
 		
+		/* superclass deprecated
 		it("should have working superclass access with inheritance level > 2", function() {
 			var constructor2 = jasmine.createSpy("Klass2 constructor"),
 				constructor3 = jasmine.createSpy("Klass3 constructor");
@@ -149,5 +151,6 @@ describe("Class", function() {
 			expect(constructor2).toHaveBeenCalled();
 			expect(constructor).toHaveBeenCalled();
 		});
+		*/
 	});
 });
