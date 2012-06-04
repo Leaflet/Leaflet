@@ -31,7 +31,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 			geometryType: geometry.type,
 			bbox: geojson.bbox,
 			id: geojson.id,
-			coords: geojson.coordinates
+			geometry: geojson.geometry
 		});
 
 		this.addLayer(layer);
