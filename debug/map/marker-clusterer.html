@@ -13,7 +13,7 @@
 <body>
 
 	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc; margin-bottom:15px"></div>
-	<button id="addPoints">Add 10 random points</button><button id="clearPoints">Clear Clusters</button>
+	<button id="addPoints">Add 50 random points</button><button id="clearPoints">Clear Clusters</button>
 
 	<script type="text/javascript">
 
@@ -45,7 +45,7 @@
         }
         
         function injectPoints () {
-            clusterer.addMarkers(addRandomLatLngs(10));
+            clusterer.addMarkers(addRandomLatLngs(50));
         }
         
         function removePoints () {
