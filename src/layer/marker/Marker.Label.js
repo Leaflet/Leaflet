@@ -63,7 +63,6 @@ L.Marker.Label = L.CircleMarker.extend({
             left = ("undefined" !== typeof offsets.x && 0 !== offsets.x) ?  offsets.x : 0,
             top = ("undefined" !== typeof offsets.y && 0 !== offsets.y) ?  offsets.y : 0;
         
-        debugger;
         this._textElement.setAttribute("x", point.x + left + xOffset);
         this._textElement.setAttribute("y", point.y + top + yOffset);
 	}
