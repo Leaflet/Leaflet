@@ -56,11 +56,15 @@ L.Marker.Label = L.CircleMarker.extend({
      */
     _applyOffsets: function () {
         var offsets = this.options.offsets,
+            numChars = this.options.textValue.length,
+            xOffset = (0.25 * this._radius - numChars),
+            yOffset = (0.40 * this._radius),
             point = this._map.latLngToLayerPoint(this._latlng),
             left = ("undefined" !== typeof offsets.x && 0 !== offsets.x) ?  offsets.x : 0,
             top = ("undefined" !== typeof offsets.y && 0 !== offsets.y) ?  offsets.y : 0;
         
-        this._textElement.setAttribute("x", point.x + left);
-        this._textElement.setAttribute("y", point.y + top + (0.25 * this.options.textSize));
+        debugger;
+        this._textElement.setAttribute("x", point.x + left + xOffset);
+        this._textElement.setAttribute("y", point.y + top + yOffset);
 	}
 });
