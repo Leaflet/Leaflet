@@ -84,6 +84,7 @@ L.Circle = L.Path.extend({
 		if (!this._map) {
 			return false;
 		}
+
 		var vp = this._map._pathViewport,
 			r = this._radius,
 			p = this._point;

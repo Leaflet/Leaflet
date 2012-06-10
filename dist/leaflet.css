@@ -364,3 +364,14 @@ a.leaflet-active {
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
 	}
+
+
+/* Marker Clusterer */
+.leaflet-cluster {
+  position:absolute;
+  font: 700 11px Arial,sans-serif;
+  color: #000;
+  cursor:pointer;
+  line-height:12px;
+  margin-top:-6px; /* move up half the line height */
+  }

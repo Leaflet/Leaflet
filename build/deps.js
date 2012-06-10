@@ -133,6 +133,12 @@ var deps = {
 		deps: ['Circle'],
 		desc: 'Circle overlays with a constant pixel radius.'
 	},
+	
+	MarkerClusterer: {
+		src: ['layer/marker/Marker.Clusterer.js', 'layer/marker/Marker.Cluster.js', 'layer/marker/Marker.Label.js'],
+		deps: ['CircleMarker', 'FeatureGroup'],
+		desc: 'combines multiple markers / points into groups on the map'
+	},
 
 	VectorsCanvas: {
 		src: ['layer/vector/canvas/Polyline.Canvas.js',
