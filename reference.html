@@ -162,6 +162,14 @@
 					<li><a href="#noconflict" class="nodocs">noConflict</a></li>
 					<li><a href="#version">VERSION</a></li>
 				</ul>
+				
+                <h4>Marker Clusters</h4>
+                <ul>
+                    <li><a href="#markerclusterer">MarkerClusterer</a></li>
+                    <li><a href="#markercluster">MarkerCluster</a></li>
+                    <li><a href="#markerlabel">MarkerLabel</a></li>
+                </ul>
+				
 			</div>
 		</div>
 
@@ -2750,7 +2758,85 @@ map.addControl(layersControl);</code></pre>
 
 		<pre><code>L.VERSION // returns "0.3" (or whatever version is currently in use)</code></pre>
 
+        
+         <h2 id="markerclusterer">MarkerClusterer</h2>
+    		<p>
+    		    A container that aggregates points on the map within a given radius. 
+    		    Extends <a href="#circlemarker">CircleMarker</a>.
+    		    Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.
+    		</p>
 
+
+    		<h3>Constructor</h3>
+
+    		<table>
+    			<tr>
+    				<th>Constructor</th>
+    				<th>Description</th>
+    			</tr>
+    			<tr>
+    				<td><code>L.Marker.Clusterer( &lt;<a href="#path-options">Path&nbsp;options</a>&gt;&nbsp;<i>options?</i>, &lt;array&gt;&nbsp;<i>markers?</i>&nbsp;)</code></td>
+    				<td>Instantiates a MarkerClusterer object given an optional options object that describes the appearance of it's children (markers), with an optional array of <a href="#latlng">LatLngs</a>.</td>
+    			</tr>
+    		</table>
+
+    		<h3 id="markerclusterer-options">Options</h3>
+
+    		<table>
+    			<tr>
+    				<th>Option</th>
+    				<th>Type</th>
+    				<th>Default value</th>
+    				<th>Description</th>
+    			</tr>			
+
+                <tr>
+                    <td>clusterRadius</td>
+                    <td>Number</td>
+                    <td>100</td>
+                    <td>The distance from the center-point used to determine if a marker is within a "cluster" (collection of markers).</td>
+                </tr>            
+
+    		</table>
+
+    		<table>
+    			<tr>
+    				<th>Method</th>
+    				<th>Returns</th>
+    				<th>Description</th>
+    			</tr>
+
+    			<tr>
+    				<td><code>addMarkers()</code></td>
+    				<td>-</td>
+    				<td>takes an array of markers and adds them to the collection.</td>
+    			</tr>
+
+    			<tr>
+    				<td><code>addPointToClusterer()</code></td>
+    				<td>-</td>
+    				<td>adds a single <a href="#latlng">LatLng</a> to the collection.</td>
+    			</tr>
+
+    			<tr>
+    				<td><code>clearClusters()</code></td>
+    				<td>-</td>
+    				<td>removes the points from the map, and deletes the references in the collection.</td>
+    			</tr>
+
+    			<tr>
+    				<td><code>getFeatureGroup()</code></td>
+    				<td><a href="#featuregroup">L.FeatureGroup</a></td>
+    				<td>returns a reference to the feature group where the collection is stored.</td>
+    			</tr>
+
+    			<tr>
+    				<td><code>getClustererBounds()</code></td>
+    				<td><a href="#latlngbounds">L.LatLngBounds</a></td>
+    				<td>returns the bounds that all associated markers occupy.</td>
+    			</tr>
+
+    		</table>
 
 		<hr />
 
