@@ -106,10 +106,10 @@
 	}
 
 	var path = getSrcUrl();
-	for (var i = 0; i < scripts.length; i++) {
+    for (var i = 0; i < scripts.length; i++) {
 		document.writeln("<script src='" + path + scripts[i] + "'></script>");
 	}
-	document.writeln('<script>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
+    document.writeln('<script>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();
 
 function getRandomLatLng(map) {

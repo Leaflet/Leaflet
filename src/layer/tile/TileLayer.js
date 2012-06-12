@@ -350,6 +350,13 @@ L.TileLayer = L.Class.extend({
 		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
 
+    _tileLoaded: function () {
+        this._tilesToLoad--;
+        if (!this._tilesToLoad) {
+            this.fire('load');
+        }
+    },
+
 	_tileOnLoad: function (e) {
 		var layer = this._layer;
 
@@ -360,10 +367,7 @@ L.TileLayer = L.Class.extend({
 			url: this.src
 		});
 
-		layer._tilesToLoad--;
-		if (!layer._tilesToLoad) {
-			layer.fire('load');
-		}
+        layer._tileLoaded();
 	},
 
 	_tileOnError: function (e) {
@@ -378,5 +382,7 @@ L.TileLayer = L.Class.extend({
 		if (newUrl) {
 			this.src = newUrl;
 		}
-	}
+
+        layer._tileLoaded();
+    }
 });
