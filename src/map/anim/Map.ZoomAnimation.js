@@ -26,12 +26,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		if (this._tileBg)
-			console.log("bg : " + this._getLoadedTilesPercentage(this._tileBg) + ", fg: " + this._getLoadedTilesPercentage(this._tilePane));
-		//Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
-		if (this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) { //fg isn't very loaded and BG is
+		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
+		if (this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) {
 			//Leave current bg and just zoom it some more
-			console.log("Skipping");
 
 			this._tilePane.style.visibility = 'hidden';
 			this._tilePane.empty = true;
