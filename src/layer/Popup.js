@@ -159,16 +159,17 @@ L.Popup = L.Class.extend({
 		}
 
 		this._containerWidth = this._container.offsetWidth;
+		this._containerBottom = -this.options.offset.y;
+		this._containerLeft = -Math.round(this._containerWidth / 2) + this.options.offset.x;
 	},
 
 	_updatePosition: function () {
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 
-		this._containerBottom = -pos.y - this.options.offset.y;
-		this._containerLeft = pos.x - Math.round(this._containerWidth / 2) + this.options.offset.x;
-
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
+
+		L.DomUtil.setPosition(this._container, pos);
 	},
 
 	_adjustPan: function () {
