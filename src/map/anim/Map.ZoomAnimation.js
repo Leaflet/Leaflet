@@ -36,7 +36,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			this._tilePane.style.visibility = 'hidden';
 			this._tilePane.empty = true;
 			this._stopLoadingImages(this._tilePane);
-			this._stopLoadingImages(this._tileBg);
 		} else {
 			this._prepareTileBg();
 		}
@@ -82,7 +81,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
 		var options = {};
-		options[transform] = tileBg.style[transform] + ' ' + scaleStr;
+		options[transform] = scaleStr + ' ' + tileBg.style[transform];
 
 		tileBg.transition.run(options);
 	},
