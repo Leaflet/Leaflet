@@ -56,18 +56,18 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 			//L.Util.falseFn(box.offsetWidth);
 
-			box.style["webkitTransitionDuration"] = '0.25s';
-			box.style["webkitTransitionTimingFunction"] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
-			box.style["webkitTransitionProperty"] = '-webkit-transform';
+			box.style[L.Transition.DURATION] = '0.25s';
+			box.style[L.Transition.EASING] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
+			box.style[L.Transition.PROPERTY] = this._tileBg.transition._dasherize(L.DomUtil.TRANSFORM);
 
-			box.style['WebkitTransform'] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
+			box.style[L.DomUtil.TRANSFORM] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
 
-			var box = this._layers[i]._shadow;
-			box.style["webkitTransitionDuration"] = '0.25s';
-			box.style["webkitTransitionTimingFunction"] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
-			box.style["webkitTransitionProperty"] = '-webkit-transform';
+			box = this._layers[i]._shadow;
+			box.style[L.Transition.DURATION] = '0.25s';
+			box.style[L.Transition.EASING] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
+			box.style[L.Transition.PROPERTY] = this._tileBg.transition._dasherize(L.DomUtil.TRANSFORM);
 
-			box.style['WebkitTransform'] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
+			box.style[L.DomUtil.TRANSFORM] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
 		}
 		this._zoom = zoomBackup;
 		this._initialTopLeftPoint = tlBackup;
