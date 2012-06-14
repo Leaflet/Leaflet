@@ -276,6 +276,12 @@ a.leaflet-active {
 	transition: none;
 	}
 
+.leaflet-zoom-anim .leaflet-overlay-pane svg {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	}
 /*.leaflet-zoom-anim .leaflet-objects-pane {
 	visibility: hidden;
 	}

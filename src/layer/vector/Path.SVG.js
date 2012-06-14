@@ -120,9 +120,25 @@ L.Map.include({
 			this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
+			this.on('zoomstart', this._animateSvgZoom);
 			this.on('moveend', this._updateSvgViewport);
 			this._updateSvgViewport();
 		}
+	},
+
+	_animateSvgZoom: function (opt) {
+		var center = opt.center,
+			zoom = opt.zoom,
+			centerOffset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
+
+		var scale = Math.pow(2, zoom - this._zoom),
+			offset = centerOffset.divideBy(1 - 1 / scale);
+
+		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
+			origin = centerPoint.add(offset);
+
+		origin = origin.subtract(this.getSize());
+		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + this._pathRoot.style[L.DomUtil.TRANSFORM];
 	},
 
 	_updateSvgViewport: function () {
@@ -141,8 +157,6 @@ L.Map.include({
 		if (L.Browser.mobileWebkit) {
 			pane.removeChild(root);
 		}
-		//Make sure this isn't animated
-		root.style[L.Transition.PROPERTY] = 'none';
 
 		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);

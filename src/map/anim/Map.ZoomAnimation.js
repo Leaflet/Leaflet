@@ -24,7 +24,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this
 			.fire('movestart')
-			.fire('zoomstart');
+			.fire('zoomstart', { center: center, zoom: zoom });
 
 		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
 		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
