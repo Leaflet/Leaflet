@@ -24,6 +24,9 @@ L.Marker = L.Class.extend({
 		this._map = map;
 
 		map.on('viewreset', this._reset, this);
+		if (L.Browser.webkit3d || L.Browser.gecko3d) {
+			map.on('zoomstart', this._zoomAnimation, this);
+		}
 
 		this._initIcon();
 		this._reset();
@@ -37,7 +40,8 @@ L.Marker = L.Class.extend({
 			this.closePopup();
 		}
 
-		map.off('viewreset', this._reset, this);
+		map.off('viewreset', this._reset, this)
+		   .off('zoomstart', this._zoomAnimation, this);
 
 		this._map = null;
 	},
@@ -128,6 +132,15 @@ L.Marker = L.Class.extend({
 		}
 
 		icon.style.zIndex = pos.y + this.options.zIndexOffset;
+	},
+
+	_zoomAnimation: function (opt) {
+		var pos = this._map.containerPointToLayerPoint(this._map.project(this._latlng, opt.zoom))._subtract(opt.newTopLeft)._round();
+
+		L.DomUtil.setPosition(this._icon, pos);
+		if (this._shadow) {
+			L.DomUtil.setPosition(this._shadow, pos);
+		}
 	},
 
 	_initInteraction: function () {

@@ -24,7 +24,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this
 			.fire('movestart')
-			.fire('zoomstart', { center: center, zoom: zoom });
+			.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._getNewTopLeftPoint(center, zoom) });
 
 		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
 		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
@@ -40,34 +40,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
-
-		var zoomBackup = this._zoom;
-		this._zoom = zoom;
-
-		var tlBackup = this._initialTopLeftPoint;
-		this._initialTopLeftPoint = this._getNewTopLeftPoint(center).add(L.DomUtil.getPosition(this._mapPane)); // this._getNewTopLeftPoint(center);
-
-		for (var i in this._layers) {
-			if ((!this._layers[i]._icon && !this._layers[i]._container) || !this._layers[i]._latlng || this._layers[i]._path)
-			//if ((!this._layers[i]._icon && !this._layers[i]._container) || !this._layers[i]._latlng)
-				continue;
-
-			var box = this._layers[i]._icon || this._layers[i]._container;
-			var np = this.latLngToLayerPoint(this._layers[i]._latlng);
-
-			//L.Util.falseFn(box.offsetWidth);
-
-			box.style[L.DomUtil.TRANSFORM] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
-
-			box = this._layers[i]._shadow;
-			if (box) {
-				box.style[L.DomUtil.TRANSFORM] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
-			}
-		}
-		this._zoom = zoomBackup;
-		this._initialTopLeftPoint = tlBackup;
-
-
+		
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;

@@ -454,7 +454,7 @@ L.Map = L.Class.extend({
 			this.fire('movestart');
 
 			if (zoomChanged) {
-				this.fire('zoomstart', { center: center, zoom: zoom });
+				this.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._getNewTopLeftPoint(center, zoom) });
 			}
 		}
 
@@ -583,10 +583,10 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint.subtract(mapPanePos);
 	},
 
-	_getNewTopLeftPoint: function (center) {
+	_getNewTopLeftPoint: function (center, zoom) {
 		var viewHalf = this.getSize().divideBy(2);
 		// TODO round on display, not calculation to increase precision?
-		return this.project(center)._subtract(viewHalf)._round();
+		return this.project(center, zoom)._subtract(viewHalf)._round();
 	},
 
 	_limitZoom: function (zoom) {
