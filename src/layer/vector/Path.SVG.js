@@ -127,18 +127,14 @@ L.Map.include({
 	},
 
 	_animateSvgZoom: function (opt) {
-		var center = opt.center,
-			zoom = opt.zoom,
-			centerOffset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
+		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
+			scale = Math.pow(2, opt.zoom - this._zoom),
+			offset = centerOffset.divideBy(1 - 1 / scale),
+			centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(-2)),
+			origin = centerPoint.add(offset),
+			pathRootStyle = this._pathRoot.style;
 
-		var scale = Math.pow(2, zoom - this._zoom),
-			offset = centerOffset.divideBy(1 - 1 / scale);
-
-		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
-			origin = centerPoint.add(offset);
-
-		origin = origin.subtract(this.getSize());
-		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + this._pathRoot.style[L.DomUtil.TRANSFORM];
+		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + pathRootStyle[L.DomUtil.TRANSFORM];
 	},
 
 	_updateSvgViewport: function () {
