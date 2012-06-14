@@ -127,7 +127,7 @@ L.Marker = L.Class.extend({
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		icon.style.zIndex = pos.y + this.options.zIndexOffset;
+		icon.style.zIndex = this.options.zIndexOffset;
 	},
 
 	_initInteraction: function () {
