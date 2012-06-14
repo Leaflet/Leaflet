@@ -120,6 +120,13 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			options[transform] = scaleStr + ' ' + tileBg.style[transform];
 		}
 
+		origin.x -= this._pathRoot.offsetWidth / 2;
+		origin.y -= this._pathRoot.offsetHeight / 2;
+		this._pathRoot.style[L.Transition.DURATION] = '0.25s';
+		this._pathRoot.style[L.Transition.EASING] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
+		this._pathRoot.style[L.Transition.PROPERTY] = '-webkit-transform';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + this._pathRoot.style[L.DomUtil.TRANSFORM];
+
 		tileBg.transition.run(options);
 	},
 

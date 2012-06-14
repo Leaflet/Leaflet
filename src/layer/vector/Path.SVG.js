@@ -141,6 +141,8 @@ L.Map.include({
 		if (L.Browser.mobileWebkit) {
 			pane.removeChild(root);
 		}
+		//Make sure this isn't animated
+		root.style[L.Transition.PROPERTY] = 'none';
 
 		L.DomUtil.setPosition(root, min);
 		root.setAttribute('width', width);
