@@ -57,18 +57,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 			//L.Util.falseFn(box.offsetWidth);
 
-			box.style[L.Transition.DURATION] = '0.25s';
-			box.style[L.Transition.EASING] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
-			box.style[L.Transition.PROPERTY] = this._tileBg.transition._dasherize(L.DomUtil.TRANSFORM);
-
 			box.style[L.DomUtil.TRANSFORM] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
 
 			box = this._layers[i]._shadow;
 			if (box) {
-				box.style[L.Transition.DURATION] = '0.25s';
-				box.style[L.Transition.EASING] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
-				box.style[L.Transition.PROPERTY] = this._tileBg.transition._dasherize(L.DomUtil.TRANSFORM);
-
 				box.style[L.DomUtil.TRANSFORM] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
 			}
 		}

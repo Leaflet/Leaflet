@@ -276,7 +276,7 @@ a.leaflet-active {
 	transition: none;
 	}
 
-.leaflet-zoom-anim .leaflet-overlay-pane svg {
+.leaflet-zoom-anim .leaflet-overlay-pane svg, .leaflet-zoom-anim .leaflet-marker-icon, .leaflet-zoom-anim .leaflet-popup, .leaflet-zoom-anim .leaflet-marker-shadow {
 	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
