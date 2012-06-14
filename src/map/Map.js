@@ -454,7 +454,7 @@ L.Map = L.Class.extend({
 			this.fire('movestart');
 
 			if (zoomChanged) {
-				this.fire('zoomstart', center, zoom);
+				this.fire('zoomstart', { center: center, zoom: zoom });
 			}
 		}
 
