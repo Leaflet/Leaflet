@@ -46,7 +46,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 
 
-	_runAnimation: function (center, zoom, scale, origin) {
+	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
 		this._animatingZoom = true;
 
 		this._animateToCenter = center;
@@ -78,7 +78,11 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
 		var options = {};
-		options[transform] = scaleStr + ' ' + tileBg.style[transform];
+		if (backwardsTransform) {
+			options[transform] = tileBg.style[transform] + ' ' + scaleStr;
+		} else {
+			options[transform] = scaleStr + ' ' + tileBg.style[transform];
+		}
 
 		tileBg.transition.run(options);
 	},
