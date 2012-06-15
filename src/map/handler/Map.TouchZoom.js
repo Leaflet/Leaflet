@@ -25,8 +25,6 @@ L.Map.TouchZoom = L.Handler.extend({
 			viewCenter = map.containerPointToLayerPoint(map.getSize().divideBy(2));
 
 		this._startCenter = p1.add(p2).divideBy(2, true);
-		this._startLatLng = this._map.layerPointToLatLng(this._startCenter);
-		console.log("center: " + this._startLatLng);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
@@ -56,22 +54,21 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var zoom = this._map._zoom + Math.log(this._scale) / Math.log(2);
 
-		//console.log("scale: " + this._scale);
-		console.log("zoom: " + zoom);
-		console.log("newTopLeft: " + this._map._getNewTopLeftPoint(this._startLatLng, zoom));
+		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
+			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
+			center = this._map.unproject(centerPoint);
 
 		if (!this._moved) {
 			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
 
 			map
-				//.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) })
-			.fire('zoomstart', { center: this._startLatLng, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(this._startLatLng, zoom) })
-			.fire('movestart')
+				.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) })
+				.fire('movestart')
 				._prepareTileBg();
 
 			this._moved = true;
 		} else {
-			map.fire('zoomstart', { center: this._startLatLng, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(this._startLatLng, zoom) });
+			map.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) });
 		}
 
 		// Used 2 translates instead of transform-origin because of a very strange bug -
@@ -103,6 +100,8 @@ L.Map.TouchZoom = L.Handler.extend({
 			roundZoomDelta = (floatZoomDelta > 0 ? Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
 			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
 			finalScale = Math.pow(2, zoom - oldZoom);
+
+		this._map.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) });
 
 		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset), true);
 	}
