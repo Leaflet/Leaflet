@@ -282,11 +282,14 @@ a.leaflet-active {
 	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	}
-/*.leaflet-zoom-anim .leaflet-objects-pane {
-	visibility: hidden;
+
+.leaflet-touching .leaflet-overlay-pane svg, .leaflet-touching .leaflet-marker-icon, .leaflet-touching .leaflet-popup, .leaflet-touching .leaflet-marker-shadow {
+	-webkit-transition: none;
+	-moz-transition: none;
+	-o-transition: none;
+	transition: none;
 	}
 
-*/
 /* Popup layout */
 
 .leaflet-popup {
