@@ -41,6 +41,38 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
 
+		var zoomBackup = this._zoom;
+		this._zoom = zoom;
+
+		var tlBackup = this._initialTopLeftPoint;
+		this._initialTopLeftPoint = this._getNewTopLeftPoint(center).add(L.DomUtil.getPosition(this._mapPane)); // this._getNewTopLeftPoint(center);
+
+		for (var i in this._layers) {
+			if (!this._layers[i]._icon)
+				continue;
+
+			var box = this._layers[i]._icon;
+			var np = this.latLngToLayerPoint(this._layers[i]._latlng);
+
+			//L.Util.falseFn(box.offsetWidth);
+
+			box.style["webkitTransitionDuration"] = '0.25s';
+			box.style["webkitTransitionTimingFunction"] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
+			box.style["webkitTransitionProperty"] = '-webkit-transform';
+
+			box.style['WebkitTransform'] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
+
+			var box = this._layers[i]._shadow;
+			box.style["webkitTransitionDuration"] = '0.25s';
+			box.style["webkitTransitionTimingFunction"] = 'cubic-bezier(0.25,0.1,0.25,0.75)';
+			box.style["webkitTransitionProperty"] = '-webkit-transform';
+
+			box.style['WebkitTransform'] = 'translate3d(' + np.x + 'px,' + np.y + 'px,0)';
+		}
+		this._zoom = zoomBackup;
+		this._initialTopLeftPoint = tlBackup;
+
+
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;

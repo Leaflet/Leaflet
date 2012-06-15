@@ -276,11 +276,11 @@ a.leaflet-active {
 	transition: none;
 	}
 
-.leaflet-zoom-anim .leaflet-objects-pane {
+/*.leaflet-zoom-anim .leaflet-objects-pane {
 	visibility: hidden;
 	}
 
-
+*/
 /* Popup layout */
 
 .leaflet-popup {
