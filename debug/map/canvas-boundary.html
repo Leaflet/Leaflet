@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+	<script src="../../src/layer/tile/TileLayer.BoundaryCanvas.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script type="text/javascript">
+
+    var testGeom = {"type":"POLYGON","coordinates":[
+        [[[36.375733,56.475540], [37.661133,56.699837], [39.089356,56.402508], [39.572754,55.627130], [39.155274,55.051062], [38.089600,54.817004], [36.672364,54.886732], [35.727541,55.377699], [35.815432,56.072117], [36.375733,56.475540]],
+         [[37.488099,55.890415], [37.372743,55.810070], [37.380983,55.728008], [37.485353,55.600703], [37.677613,55.577371], [37.825929,55.639560], [37.839662,55.763641], [37.820436,55.837900], [37.589723,55.905846], [37.488099,55.890415]]],
+        
+        [[[41.539307,57.370676], [43.077393,57.471439], [43.813477,57.329104], [43.692627,56.572696], [43.352051,55.664406], [41.978760,55.321357], [40.759278,55.352667], [40.111084,55.874975], [40.187989,56.536291], [40.627442,56.958829], [41.539307,57.370676]]]
+    ]};
+    
+    //convert test data to latlng array
+    var latLngGeom = [],
+        c, r, k;
+    for (c = 0; c < testGeom.coordinates.length; c++) {
+        latLngGeom[c] = [];
+        for (r = 0; r < testGeom.coordinates[c].length; r++) {
+            latLngGeom[c][r] = [];
+            for (k = 0; k < testGeom.coordinates[c][r].length; k++){
+                latLngGeom[c][r].push(new L.LatLng(testGeom.coordinates[c][r][k][1], testGeom.coordinates[c][r][k][0]));
+            }
+        }
+    }
+    
+    var map = new L.Map('map'),
+        cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+        cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade';
+    
+    var osm = new L.TileLayer.BoundaryCanvas(cloudmadeUrl, {boundary: latLngGeom, attribution: cloudmadeAttribution});
+    
+    map.setView(new L.LatLng(55.7, 38), 7).addLayer(osm);
+		
+	</script>
+</body>
+</html>
