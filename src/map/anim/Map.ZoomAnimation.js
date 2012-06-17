@@ -26,8 +26,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
+		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
 		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
-		if (this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) {
+		if (!L.Browser.android && this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) {
 			//Leave current bg and just zoom it some more
 
 			this._tilePane.style.visibility = 'hidden';
