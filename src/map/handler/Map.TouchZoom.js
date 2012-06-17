@@ -92,7 +92,7 @@ L.Map.TouchZoom = L.Handler.extend({
 			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
 			finalScale = Math.pow(2, zoom - oldZoom);
 
-		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset));
+		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset), true);
 	}
 });
 
