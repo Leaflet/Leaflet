@@ -69,7 +69,8 @@
 	}
 
 .leaflet-tile {
-	visibility: hidden;
+    filter: inherit;
+    visibility: hidden;
 	}
 .leaflet-tile-loaded {
 	visibility: inherit;
