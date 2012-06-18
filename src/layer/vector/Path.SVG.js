@@ -120,7 +120,7 @@ L.Map.include({
 			this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
-			if (L.Browser.webkit3d || L.Browser.gecko3d) {
+			if (L.Browser.any3d) {
 				this.on('zoomstart', this._animateSvgZoom);
 			}
 			this.on('moveend', this._updateSvgViewport);

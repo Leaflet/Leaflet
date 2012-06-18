@@ -139,7 +139,7 @@ L.DomUtil = {
 
 	setPosition: function (el, point) {
 		el._leaflet_pos = point;
-		if (L.Browser.webkit3d || L.Browser.gecko3d) {
+		if (L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 			el.style[(L.Browser.webkit3d ? '-webkit' : '-moz') + '-backface-visibility'] = 'hidden';
 		} else {

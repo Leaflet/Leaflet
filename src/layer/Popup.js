@@ -35,7 +35,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
-		if (L.Browser.webkit3d || L.Browser.gecko3d) {
+		if (L.Browser.any3d) {
 			map.on('zoomstart', this._zoomAnimation, this);
 		}
 

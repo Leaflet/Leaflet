@@ -18,6 +18,7 @@
 		gecko3d: gecko && ('MozPerspective' in document.createElement('div').style),
 
 		opera: opera,
+		opera3d: opera && ('OTransition' in document.createElement('div').style),
 
 		android: android,
 		mobileWebkit: mobile && webkit,
@@ -52,4 +53,6 @@
 			return touchSupported;
 		}())
 	};
+	L.Browser.any3d = !!L.Browser.webkit3d || !!L.Browser.gecko3d || !!L.Browser.opera3d;
+		
 }());
