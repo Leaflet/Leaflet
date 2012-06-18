@@ -34,8 +34,9 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_initMarkers: function () {
-		if (!this._markerGroup)
+		if (!this._markerGroup) {
 			this._markerGroup = new L.LayerGroup();
+		}
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
