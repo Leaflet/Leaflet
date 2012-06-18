@@ -200,6 +200,14 @@ L.LineUtil = {
 		dx = p.x - x;
 		dy = p.y - y;
 
-		return sqDist ? dx * dx + dy * dy : new L.Point(x, y);
+        var sqDistValue = dx * dx + dy * dy;
+        var value;
+        if (sqDist) {
+            value = sqDistValue;
+        } else {
+            value = new L.Point(x, y);
+            value._sqDist = sqDistValue;
+        }
+        return value;
 	}
 };
