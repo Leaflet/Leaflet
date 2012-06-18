@@ -34,7 +34,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_initMarkers: function () {
-		this._markerGroup = new L.LayerGroup();
+		if (!this._markerGroup)
+			this._markerGroup = new L.LayerGroup();
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
@@ -158,6 +159,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 				.off('click', onClick)
 				.on('click', this._onMarkerClick, this);
 
+			latlng.lat = marker.getLatLng().lat;
+			latlng.lng = marker.getLatLng().lng;
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
 
