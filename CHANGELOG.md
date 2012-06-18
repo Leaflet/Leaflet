@@ -19,6 +19,7 @@ An in-progress version being developed on the master branch.
 
 #### Usability improvements
 
+ * Improved zooming so that you don't get a blank map when you zoom in or out twice quickly (by [@danzel](https://github.com/danzel)). [#7](https://github.com/CloudMade/Leaflet/issues/7) [#729](https://github.com/CloudMade/Leaflet/pull/729)
  * Drag-panning now works even when there are markers in the starting point (helps on maps with lots of markers). [#506](https://github.com/CloudMade/Leaflet/issues/506)
  * Improved panning performance even more (there are no wasted frames now).
  * Replaced box-shadow with border on controls for mobile devices to improve performance.
