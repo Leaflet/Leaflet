@@ -276,14 +276,14 @@ a.leaflet-active {
 	transition: none;
 	}
 
-.leaflet-zoom-anim .leaflet-overlay-pane svg, .leaflet-zoom-anim .leaflet-marker-icon, .leaflet-zoom-anim .leaflet-popup, .leaflet-zoom-anim .leaflet-marker-shadow {
+.leaflet-zoom-anim .leaflet-overlay-pane svg, .leaflet-zoom-anim .leaflet-overlay-pane canvas, .leaflet-zoom-anim .leaflet-marker-icon, .leaflet-zoom-anim .leaflet-popup, .leaflet-zoom-anim .leaflet-marker-shadow {
 	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	}
 
-.leaflet-touching .leaflet-overlay-pane svg, .leaflet-touching .leaflet-marker-icon, .leaflet-touching .leaflet-popup, .leaflet-touching .leaflet-marker-shadow {
+.leaflet-touching .leaflet-overlay-pane svg, .leaflet-touching .leaflet-overlay-pane canvas, .leaflet-touching .leaflet-marker-icon, .leaflet-touching .leaflet-popup, .leaflet-touching .leaflet-marker-shadow {
 	-webkit-transition: none;
 	-moz-transition: none;
 	-o-transition: none;

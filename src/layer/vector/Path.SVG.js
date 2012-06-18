@@ -121,7 +121,7 @@ L.Map.include({
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			if (L.Browser.any3d) {
-				this.on('zoomstart', this._animateSvgZoom);
+				this.on('zoomstart', this._animatePathZoom);
 				this.on('zoomend', this._endZoom);
 			}
 			this.on('moveend', this._updateSvgViewport);
@@ -129,7 +129,7 @@ L.Map.include({
 		}
 	},
 
-	_animateSvgZoom: function (opt) {
+	_animatePathZoom: function (opt) {
 		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
 			scale = Math.pow(2, opt.zoom - this._zoom),
 			offset = centerOffset.divideBy(1 - 1 / scale),
