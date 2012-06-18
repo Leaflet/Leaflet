@@ -122,6 +122,7 @@ L.Map.include({
 
 			if (L.Browser.any3d) {
 				this.on('zoomstart', this._animateSvgZoom);
+				this.on('zoomend', this._endZoom);
 			}
 			this.on('moveend', this._updateSvgViewport);
 			this._updateSvgViewport();
@@ -137,9 +138,21 @@ L.Map.include({
 			pathRootStyle = this._pathRoot.style;
 
 		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + pathRootStyle[L.DomUtil.TRANSFORM];
+		this._zooming = true;
+	},
+
+	_endZoom: function () {
+		this._zooming = false;
 	},
 
 	_updateSvgViewport: function () {
+		if (this._zooming) {
+			//Do not update SVGs while a zoom animation is going on otherwise the animation will break.
+			//When the zoom animation ends we will be updated again anyway
+			//This fixes the case where you do a momentum move and zoom while the move is still ongoing.
+			return;
+		}
+
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
