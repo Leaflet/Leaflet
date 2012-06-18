@@ -137,7 +137,7 @@ L.Map.include({
 			origin = centerPoint.add(offset),
 			pathRootStyle = this._pathRoot.style;
 
-		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + pathRootStyle[L.DomUtil.TRANSFORM];
+		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + L.DomUtil.getTranslateString(L.DomUtil.getPosition(this._pathRoot));
 		this._zooming = true;
 	},
 
