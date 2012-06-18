@@ -141,7 +141,7 @@ L.DomUtil = {
 		el._leaflet_pos = point;
 		if (L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
-			el.style[(L.Browser.webkit3d ? '-webkit' : '-moz') + '-backface-visibility'] = 'hidden';
+			el.style[L.DomUtil.BACKFACEVISIBILITY] = 'hidden';
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -156,6 +156,7 @@ L.DomUtil = {
 L.Util.extend(L.DomUtil, {
 	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
 	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
+	BACKFACEVISIBILITY: L.DomUtil.testProp(['backfaceVisibility', 'WebkitBackfaceVisibility', 'OBackfaceVisibility', 'MozBackfaceVisibility', 'msBackfaceVisibility']),
 
 	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
 	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')'
