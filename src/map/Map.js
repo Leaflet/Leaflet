@@ -356,15 +356,8 @@ L.Map = L.Class.extend({
 		return this.unproject(point.add(this._initialTopLeftPoint));
 	},
 
-	latLngToLayerPoint: function (latlng, zoom) { // (LatLng)
+	latLngToLayerPoint: function (latlng) { // (LatLng)
 		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
-	},
-
-	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
-		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
-			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
-
-		return this.project(latlng, newZoom)._round()._subtract(topLeft);
 	},
 
 	containerPointToLatLng: function (point) {
@@ -594,6 +587,13 @@ L.Map = L.Class.extend({
 		var viewHalf = this.getSize().divideBy(2);
 		// TODO round on display, not calculation to increase precision?
 		return this.project(center, zoom)._subtract(viewHalf)._round();
+	},
+
+	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
+		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
+			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
+
+		return this.project(latlng, newZoom)._round()._subtract(topLeft);
 	},
 
 	_limitZoom: function (zoom) {
