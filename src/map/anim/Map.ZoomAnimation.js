@@ -24,7 +24,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this
 			.fire('movestart')
-			.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._getNewTopLeftPoint(center, zoom) });
+			.fire('zoomstart');
 
 		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
 		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
@@ -40,6 +40,11 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
+
+		this.fire('zoomanim', {
+			center: center,
+			zoom: zoom
+		});
 		
 		this._runAnimation(center, zoom, scale, origin);
 

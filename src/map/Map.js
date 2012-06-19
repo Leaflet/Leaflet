@@ -356,8 +356,15 @@ L.Map = L.Class.extend({
 		return this.unproject(point.add(this._initialTopLeftPoint));
 	},
 
-	latLngToLayerPoint: function (latlng) { // (LatLng)
+	latLngToLayerPoint: function (latlng, zoom) { // (LatLng)
 		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
+	},
+
+	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
+		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
+			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
+
+		return this.project(latlng, newZoom)._round()._subtract(topLeft);
 	},
 
 	containerPointToLatLng: function (point) {
@@ -454,7 +461,7 @@ L.Map = L.Class.extend({
 			this.fire('movestart');
 
 			if (zoomChanged) {
-				this.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._getNewTopLeftPoint(center, zoom) });
+				this.fire('zoomstart');
 			}
 		}
 

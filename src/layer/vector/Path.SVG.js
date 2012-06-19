@@ -121,9 +121,10 @@ L.Map.include({
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			if (L.Browser.any3d) {
-				this.on('zoomstart', this._animatePathZoom);
-				this.on('zoomend', this._endZoom);
+				this.on('zoomanim', this._animatePathZoom);
+				this.on('zoomend', this._endPathZoom);
 			}
+
 			this.on('moveend', this._updateSvgViewport);
 			this._updateSvgViewport();
 		}
@@ -138,10 +139,11 @@ L.Map.include({
 			pathRootStyle = this._pathRoot.style;
 
 		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + L.DomUtil.getTranslateString(L.DomUtil.getPosition(this._pathRoot));
+
 		this._pathZooming = true;
 	},
 
-	_endZoom: function () {
+	_endPathZoom: function () {
 		this._pathZooming = false;
 	},
 

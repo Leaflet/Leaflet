@@ -62,14 +62,16 @@ L.Map.TouchZoom = L.Handler.extend({
 			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
 
 			map
-				.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) })
 				.fire('movestart')
 				._prepareTileBg();
 
 			this._moved = true;
-		} else {
-			map.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) });
 		}
+
+		map.fire('zoomanim', {
+			center: center,
+			zoom: zoom
+		});
 
 		// Used 2 translates instead of transform-origin because of a very strange bug -
 		// it didn't count the origin on the first touch-zoom but worked correctly afterwards
@@ -101,7 +103,10 @@ L.Map.TouchZoom = L.Handler.extend({
 			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
 			finalScale = Math.pow(2, zoom - oldZoom);
 
-		this._map.fire('zoomstart', { center: center, zoom: zoom, newTopLeft: this._map._getNewTopLeftPoint(center, zoom) });
+		this._map.fire('zoomanim', {
+			center: center,
+			zoom: zoom
+		});
 
 		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset), true);
 	}

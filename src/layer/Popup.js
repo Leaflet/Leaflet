@@ -35,8 +35,9 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+
 		if (L.Browser.any3d) {
-			map.on('zoomstart', this._zoomAnimation, this);
+			map.on('zoomanim', this._zoomAnimation, this);
 		}
 
 		if (map.options.closePopupOnClick) {
@@ -55,7 +56,7 @@ L.Popup = L.Class.extend({
 
 		map.off('viewreset', this._updatePosition, this)
 		   .off('preclick', this._close, this)
-		   .off('zoomstart', this._zoomAnimation, this);
+		   .off('zoomanim', this._zoomAnimation, this);
 
 		this._container.style.opacity = '0';
 
@@ -177,7 +178,7 @@ L.Popup = L.Class.extend({
 	},
 	
 	_zoomAnimation: function (opt) {
-		var pos = this._map.containerPointToLayerPoint(this._map.project(this._latlng, opt.zoom))._subtract(opt.newTopLeft)._round();
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
 
 		L.DomUtil.setPosition(this._container, pos);
 	},
@@ -189,9 +190,8 @@ L.Popup = L.Class.extend({
 			containerHeight = this._container.offsetHeight,
 			containerWidth = this._containerWidth,
 
-			layerPos = new L.Point(
-				this._containerLeft,
-				-containerHeight - this._containerBottom),
+			layerPos = L.DomUtil.getPosition(this._container).add(
+				new L.Point(this._containerLeft, -containerHeight - this._containerBottom)),
 
 			containerPos = map.layerPointToContainerPoint(layerPos),
 			adjustOffset = new L.Point(0, 0),

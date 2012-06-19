@@ -120,7 +120,7 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 			this._panes.overlayPane.appendChild(root);
 
 			if (L.Browser.any3d) {
-				this.on('zoomstart', this._animatePathZoom);
+				this.on('zoomanim', this._animatePathZoom);
 				this.on('zoomend', this._endZoom);
 			}
 			this.on('moveend', this._updateCanvasViewport);

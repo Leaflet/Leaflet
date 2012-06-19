@@ -24,8 +24,9 @@ L.Marker = L.Class.extend({
 		this._map = map;
 
 		map.on('viewreset', this._reset, this);
+
 		if (L.Browser.any3d) {
-			map.on('zoomstart', this._zoomAnimation, this);
+			map.on('zoomanim', this._zoomAnimation, this);
 		}
 
 		this._initIcon();
@@ -41,7 +42,7 @@ L.Marker = L.Class.extend({
 		}
 
 		map.off('viewreset', this._reset, this)
-		   .off('zoomstart', this._zoomAnimation, this);
+		   .off('zoomanim', this._zoomAnimation, this);
 
 		this._map = null;
 	},
@@ -117,30 +118,25 @@ L.Marker = L.Class.extend({
 	},
 
 	_reset: function () {
-		var icon = this._icon;
-
-		if (!icon) {
-			return;
-		}
+		if (!this._icon) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng).round();
+		this._setPos(pos);
+		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
+	},
 
-		L.DomUtil.setPosition(icon, pos);
+	_setPos: function (pos) {
+		L.DomUtil.setPosition(this._icon, pos);
 
 		if (this._shadow) {
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
-
-		icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
 	_zoomAnimation: function (opt) {
-		var pos = this._map.containerPointToLayerPoint(this._map.project(this._latlng, opt.zoom))._subtract(opt.newTopLeft)._round();
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center);
 
-		L.DomUtil.setPosition(this._icon, pos);
-		if (this._shadow) {
-			L.DomUtil.setPosition(this._shadow, pos);
-		}
+		this._setPos(pos);
 	},
 
 	_initInteraction: function () {
