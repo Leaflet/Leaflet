@@ -129,7 +129,7 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 	},
 
 	_updateCanvasViewport: function () {
-		if (this._zooming) {
+		if (this._pathZooming) {
 			//Don't redraw while zooming. See _updateSvgViewport for more details
 			return;
 		}

@@ -52,7 +52,7 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (this._scale === 1) { return; }
 
-		var zoom = this._map._zoom + Math.log(this._scale) / Math.log(2);
+		var zoom = this._map._zoom + Math.log(this._scale) / Math.LN2;
 
 		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
 			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),

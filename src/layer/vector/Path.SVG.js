@@ -134,19 +134,19 @@ L.Map.include({
 			scale = Math.pow(2, opt.zoom - this._zoom),
 			offset = centerOffset.divideBy(1 - 1 / scale),
 			centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(-2)),
-			origin = centerPoint.add(offset),
+			origin = centerPoint.add(offset).round(),
 			pathRootStyle = this._pathRoot.style;
 
 		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getScaleString(scale, origin) + ' ' + L.DomUtil.getTranslateString(L.DomUtil.getPosition(this._pathRoot));
-		this._zooming = true;
+		this._pathZooming = true;
 	},
 
 	_endZoom: function () {
-		this._zooming = false;
+		this._pathZooming = false;
 	},
 
 	_updateSvgViewport: function () {
-		if (this._zooming) {
+		if (this._pathZooming) {
 			//Do not update SVGs while a zoom animation is going on otherwise the animation will break.
 			//When the zoom animation ends we will be updated again anyway
 			//This fixes the case where you do a momentum move and zoom while the move is still ongoing.
