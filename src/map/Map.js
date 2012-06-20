@@ -36,14 +36,8 @@ L.Map = L.Class.extend({
 		}
 
 		if (!options.animateMarkerZoom) {
-			this.on('zoomstart', function () {
-				this._panes.markerPane.style.visibility = 'hidden';
-				this._panes.shadowPane.style.visibility = 'hidden';
-			});
-			this.on('zoomend', function () {
-				this._panes.markerPane.style.visibility = 'visible';
-				this._panes.shadowPane.style.visibility = 'visible';
-			});
+			this._panes.markerPane.className += ' leaflet-zoom-hide';
+			this._panes.shadowPane.className += ' leaflet-zoom-hide';
 		}
 
 		this._initLayers(options.layers);

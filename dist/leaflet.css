@@ -290,6 +290,10 @@ a.leaflet-active {
 	transition: none;
 	}
 
+.leaflet-zoom-anim .leaflet-zoom-hide {
+	visibility: hidden;
+	}
+
 /* Popup layout */
 
 .leaflet-popup {
