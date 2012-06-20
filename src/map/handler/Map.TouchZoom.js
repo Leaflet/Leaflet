@@ -63,6 +63,7 @@ L.Map.TouchZoom = L.Handler.extend({
 
 			map
 				.fire('movestart')
+				.fire('zoomstart')
 				._prepareTileBg();
 
 			this._moved = true;
