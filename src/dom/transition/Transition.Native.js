@@ -20,7 +20,7 @@ L.Transition = L.Transition.extend({
 
 			// transition-property value to use with each particular custom property
 			CUSTOM_PROPS_PROPERTIES: {
-				position: L.Browser.webkit ? L.DomUtil.TRANSFORM : 'top, left'
+				position: L.Browser.any3d ? L.DomUtil.TRANSFORM : 'top, left'
 			}
 		};
 	}()),
@@ -93,7 +93,7 @@ L.Transition = L.Transition.extend({
 			this._inProgress = false;
 			clearInterval(this._timer);
 
-			this._el.style[L.Transition.PROPERTY] = 'none';
+			this._el.style[L.Transition.TRANSITION] = '';
 
 			this.fire('step');
 
