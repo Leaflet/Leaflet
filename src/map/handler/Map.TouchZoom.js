@@ -77,7 +77,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		// Used 2 translates instead of transform-origin because of a very strange bug -
 		// it didn't count the origin on the first touch-zoom but worked correctly afterwards
 
-		map._tileBg.style.webkitTransform =
+		map._tileBg.style[L.DomUtil.TRANSFORM] =
 			L.DomUtil.getTranslateString(this._delta) + ' ' +
             L.DomUtil.getScaleString(this._scale, this._startCenter);
 
