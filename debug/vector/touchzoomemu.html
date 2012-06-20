@@ -52,7 +52,7 @@
 		function Hack1() {
 			_timerAt = 0;
 			clearInterval(_timer);
-			_timer = setInterval(Hack1Timer, 100);
+			_timer = setInterval(Hack1Timer, 1000);
 		}
 		function Hack1Timer() {
 			switch (_timerAt) {
@@ -63,39 +63,26 @@
 					map.touchZoom._onTouchMove({ touches: [{ pageX: 412, pageY: 312 }, { pageX: 236, pageY: 322 }] });
 					break;
 				case 2:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 412, pageY: 312 }, { pageX: 236, pageY: 322 }] });
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 423, pageY: 313 }, { pageX: 243, pageY: 321 }] });
 					break;
 				case 3:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 423, pageY: 313 }, { pageX: 243, pageY: 321 }] });
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 476, pageY: 326 }, { pageX: 299, pageY: 321 }] });
 					break;
 				case 4:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 423, pageY: 313 }, { pageX: 243, pageY: 321 }] });
-					break;
-				case 5:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 443, pageY: 319 }, { pageX: 261, pageY: 321 }] });
-					break;
-				case 6:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 443, pageY: 319 }, { pageX: 261, pageY: 321 }] });
-					break;
-				case 7:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 476, pageY: 326 }, { pageX: 299, pageY: 321 }] });
-					break;
-				case 8:
-					map.touchZoom._onTouchMove({ touches: [{ pageX: 476, pageY: 326 }, { pageX: 299, pageY: 321 }] });
-					break;
-				case 9:
 					map.touchZoom._onTouchEnd();
 					break;
-				case 10:
+				case 5:
 					clearInterval(_timer);
 					break;
 			}
 			_timerAt++;
 		}
 		function Hack2() {
-			_timerAt = 0;
-			clearInterval(_timer);
-			_timer = setInterval(Hack2Timer, 100);
+			map.touchZoom._onTouchStart({ touches: [{ pageX: 405, pageY: 312 }, { pageX: 233, pageY: 321 }] });
+			map.touchZoom._onTouchMove({ touches: [{ pageX: 476, pageY: 326 }, { pageX: 299, pageY: 321 }] });
+			//_timerAt = 0;
+			//clearInterval(_timer);
+			//_timer = setInterval(Hack2Timer, 100);
 		}
 		function Hack2Timer() {
 			switch (_timerAt) {
