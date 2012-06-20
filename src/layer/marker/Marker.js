@@ -25,7 +25,7 @@ L.Marker = L.Class.extend({
 
 		map.on('viewreset', this._reset, this);
 
-		if (L.Browser.any3d) {
+		if (L.Browser.any3d && map.options.animateMarkerZoom) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 

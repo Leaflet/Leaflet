@@ -15,7 +15,8 @@ L.Map = L.Class.extend({
 		*/
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
-		trackResize: true
+		trackResize: true,
+		animateMarkerZoom: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -32,6 +33,17 @@ L.Map = L.Class.extend({
 
 		if (options.center && typeof options.zoom !== 'undefined') {
 			this.setView(options.center, options.zoom, true);
+		}
+
+		if (!options.animateMarkerZoom) {
+			this.on('zoomstart', function () {
+				this._panes.markerPane.style.visibility = 'hidden';
+				this._panes.shadowPane.style.visibility = 'hidden';
+			});
+			this.on('zoomend', function () {
+				this._panes.markerPane.style.visibility = 'visible';
+				this._panes.shadowPane.style.visibility = 'visible';
+			});
 		}
 
 		this._initLayers(options.layers);
