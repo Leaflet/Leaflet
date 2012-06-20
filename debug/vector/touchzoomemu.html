@@ -12,7 +12,8 @@
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
-	<div style="background-color:chartreuse; width: 100px; height:100px" onclick="Hack1()">HackTouch</div>
+	<div style="background-color:chartreuse; width: 100px; height:100px; position: absolute; left: 850px; top: 10px" onclick="Hack1()">Hack1Touch</div>
+	<div style="background-color:coral; width: 100px; height:100px; position: absolute; left: 850px; top: 120px" onclick="Hack2()">Hack2Touch</div>
 	<script src="route.js"></script>
 	<script>
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
@@ -47,10 +48,11 @@
 			console.log('Polyline was edited!');
 		});
 
-		var _timerAt;
+		var _timerAt, _timer;
 		function Hack1() {
 			_timerAt = 0;
-			setInterval(Hack1Timer, 100);
+			clearInterval(_timer);
+			_timer = setInterval(Hack1Timer, 100);
 		}
 		function Hack1Timer() {
 			switch (_timerAt) {
@@ -83,6 +85,46 @@
 					break;
 				case 9:
 					map.touchZoom._onTouchEnd();
+					break;
+				case 10:
+					clearInterval(_timer);
+					break;
+			}
+			_timerAt++;
+		}
+		function Hack2() {
+			_timerAt = 0;
+			clearInterval(_timer);
+			_timer = setInterval(Hack2Timer, 100);
+		}
+		function Hack2Timer() {
+			switch (_timerAt) {
+				case 0:
+					map.touchZoom._onTouchStart({ touches: [{ pageX: 100, pageY: 100 }, { pageX: 50, pageY: 100}] });
+					break;
+				case 1:
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 100, pageY: 100 }, { pageX: 50, pageY: 100 }] });
+					break;
+				case 2:
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 110, pageY: 100 }, { pageX: 50, pageY: 100 }] });
+					break;
+				case 3:
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 120, pageY: 100 }, { pageX: 50, pageY: 100 }] });
+					break;
+				case 4:
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 130, pageY: 100 }, { pageX: 50, pageY: 100 }] });
+					break;
+				case 5:
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 140, pageY: 100 }, { pageX: 50, pageY: 100 }] });
+					break;
+				case 6:
+					map.touchZoom._onTouchMove({ touches: [{ pageX: 150, pageY: 100 }, { pageX: 50, pageY: 100 }] });
+					break;
+				case 7:
+					map.touchZoom._onTouchEnd();
+					break;
+				case 8:
+					clearInterval(_timer);
 					break;
 			}
 			_timerAt++;
