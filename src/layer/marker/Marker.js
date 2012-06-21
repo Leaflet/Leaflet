@@ -122,7 +122,6 @@ L.Marker = L.Class.extend({
 
 		var pos = this._map.latLngToLayerPoint(this._latlng).round();
 		this._setPos(pos);
-		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
 	_setPos: function (pos) {
@@ -131,6 +130,8 @@ L.Marker = L.Class.extend({
 		if (this._shadow) {
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
+
+		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
 	_zoomAnimation: function (opt) {
