@@ -15,7 +15,8 @@ L.Map = L.Class.extend({
 		*/
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
-		trackResize: true
+		trackResize: true,
+		animateMarkerZoom: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -431,6 +432,12 @@ L.Map = L.Class.extend({
 		panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
+
+		if (!this.options.animateMarkerZoom) {
+			panes.markerPane.className += ' leaflet-zoom-hide';
+			panes.shadowPane.className += ' leaflet-zoom-hide';
+			panes.popupPane.className += ' leaflet-zoom-hide';
+		}
 	},
 
 	_createPane: function (className, container) {
@@ -583,10 +590,17 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint.subtract(mapPanePos);
 	},
 
-	_getNewTopLeftPoint: function (center) {
+	_getNewTopLeftPoint: function (center, zoom) {
 		var viewHalf = this.getSize().divideBy(2);
 		// TODO round on display, not calculation to increase precision?
-		return this.project(center)._subtract(viewHalf)._round();
+		return this.project(center, zoom)._subtract(viewHalf)._round();
+	},
+
+	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
+		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
+			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
+
+		return this.project(latlng, newZoom)._round()._subtract(topLeft);
 	},
 
 	_limitZoom: function (zoom) {

@@ -41,6 +41,11 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
 
+		this.fire('zoomanim', {
+			center: center,
+			zoom: zoom
+		});
+		
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;
