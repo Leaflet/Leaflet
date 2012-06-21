@@ -23,17 +23,19 @@
 		map.setView(new L.LatLng(51.5, -0.09), 13).addLayer(cloudmade);
 
 		var LeafIcon = L.Icon.extend({
-			iconUrl: '../docs/images/leaf-green.png',
-			shadowUrl: '../docs/images/leaf-shadow.png',
-			iconSize: new L.Point(38, 95),
-			shadowSize: new L.Point(68, 95),
-			iconAnchor: new L.Point(22, 94),
-			popupAnchor: new L.Point(-3, -76)
+			options: {
+				iconUrl: '../docs/images/leaf-green.png',
+				shadowUrl: '../docs/images/leaf-shadow.png',
+				iconSize: new L.Point(38, 95),
+				shadowSize: new L.Point(68, 95),
+				iconAnchor: new L.Point(22, 94),
+				popupAnchor: new L.Point(-3, -76)
+			}
 		});
 
 		var greenIcon = new LeafIcon(),
-			redIcon = new LeafIcon('../docs/images/leaf-red.png'),
-			orangeIcon = new LeafIcon('../docs/images/leaf-orange.png');
+			redIcon = new LeafIcon({iconUrl: '../docs/images/leaf-red.png'}),
+			orangeIcon = new LeafIcon({iconUrl: '../docs/images/leaf-orange.png'});
 
 		var marker1 = new L.Marker(new L.LatLng(51.5, -0.09), {icon: greenIcon}),
 			marker2 = new L.Marker(new L.LatLng(51.495, -0.083), {icon: redIcon}),

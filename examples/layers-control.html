@@ -62,12 +62,11 @@
 			citiesLayer.addLayer(goldenMarker);
 
 			var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution},
 				cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
 
-			var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
-				midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
-				motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
+			var minimal = new L.TileLayer(cloudmadeUrl, {styleId: 22677, attribution: cloudmadeAttribution}),
+				midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999, attribution: cloudmadeAttribution}),
+				motorways = new L.TileLayer(cloudmadeUrl, {styleId: 46561, attribution: cloudmadeAttribution});
 
 			var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
 
@@ -118,11 +117,11 @@ map.addLayer(citiesLayer);</code></pre>
 
 		<pre><code>var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/{styleId}/256/{z}/{x}/{y}.png',
 	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade',
-	cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution};
+	cloudmadeOptions = {maxZoom: 18, };
 
-var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
-	midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
-	motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
+var minimal = new L.TileLayer(cloudmadeUrl, {styleId: 22677, attribution: cloudmadeAttribution}),
+	midnightCommander = new L.TileLayer(cloudmadeUrl, {styleId: 999, attribution: cloudmadeAttribution}),
+	motorways = new L.TileLayer(cloudmadeUrl, {styleId: 46561, attribution: cloudmadeAttribution});
 
 var map = new L.Map('map', {
 	center: new L.LatLng(39.73, -104.99),
