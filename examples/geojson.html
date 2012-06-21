@@ -60,12 +60,14 @@
 			    .addLayer(cloudmade);
 
 			var BaseballIcon = L.Icon.extend({
-				iconUrl: 'baseball-marker.png',
-				shadowUrl: null,
-				iconSize: new L.Point(32, 37),
-				shadowSize: null,
-				iconAnchor: new L.Point(14, 37),
-				popupAnchor: new L.Point(2, -32)
+				options: {
+					iconUrl: 'baseball-marker.png',
+					shadowUrl: null,
+					iconSize: new L.Point(32, 37),
+					shadowSize: null,
+					iconAnchor: new L.Point(14, 37),
+					popupAnchor: new L.Point(2, -32)
+				}
 			});
 
 			var geojsonLayer = new L.GeoJSON(null, {
