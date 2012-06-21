@@ -89,7 +89,7 @@ L.Popup = L.Class.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className),
+			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className + ' leaflet-zoom-animated'),
 			closeButton;
 
 		if (this.options.closeButton) {

@@ -121,6 +121,7 @@ L.Map.include({
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			if (this.options.zoomAnimation) {
+				this._pathRoot.setAttribute('class', ' leaflet-zoom-animated');
 				this.on('zoomanim', this._animatePathZoom);
 				this.on('zoomend', this._endPathZoom);
 			}

@@ -35,11 +35,6 @@ L.Map = L.Class.extend({
 			this.setView(options.center, options.zoom, true);
 		}
 
-		if (!options.animateMarkerZoom) {
-			this._panes.markerPane.className += ' leaflet-zoom-hide';
-			this._panes.shadowPane.className += ' leaflet-zoom-hide';
-		}
-
 		this._initLayers(options.layers);
 	},
 
@@ -437,6 +432,12 @@ L.Map = L.Class.extend({
 		panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
+
+		if (!this.options.animateMarkerZoom) {
+			panes.markerPane.className += ' leaflet-zoom-hide';
+			panes.shadowPane.className += ' leaflet-zoom-hide';
+			panes.popupPane.className += ' leaflet-zoom-hide';
+		}
 	},
 
 	_createPane: function (className, container) {

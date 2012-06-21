@@ -120,6 +120,7 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 			this._panes.overlayPane.appendChild(root);
 
 			if (this.options.zoomAnimation) {
+				this._pathRoot.className = 'leaflet-zoom-animated';
 				this.on('zoomanim', this._animatePathZoom);
 				this.on('zoomend', this._endZoom);
 			}
