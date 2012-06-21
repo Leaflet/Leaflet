@@ -16,7 +16,7 @@ L.Map = L.Class.extend({
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
 		trackResize: true,
-		animateMarkerZoom: true
+		markerZoomAnimation: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -433,7 +433,7 @@ L.Map = L.Class.extend({
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
 
-		if (!this.options.animateMarkerZoom) {
+		if (!this.options.markerZoomAnimation) {
 			panes.markerPane.className += ' leaflet-zoom-hide';
 			panes.shadowPane.className += ' leaflet-zoom-hide';
 			panes.popupPane.className += ' leaflet-zoom-hide';
