@@ -98,15 +98,16 @@
 		<p>Before writing any code for the map, you need to do the following preparation steps on your page:</p>
 
 		<ol>
+			<li><a href="../download.html">Download Leaflet</a> and put the contents of the <code>dist</code> folder somewhere in your project directory</li>
 			<li>Include Leaflet CSS files in the head section of your document:
-			<pre><code class="html">&lt;link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.css" /&gt;
+			<pre><code class="html">&lt;link rel="stylesheet" href="[path-to-dist]/leaflet.css" /&gt;
 &lt;!--[if lte IE 8]&gt;
-	&lt;link rel="stylesheet" href="http://code.leafletjs.com/leaflet-0.3.1/leaflet.ie.css" /&gt;
+	&lt;link rel="stylesheet" href="[path-to-dist]/leaflet.ie.css" /&gt;
 &lt;![endif]--&gt;</code></pre>
 			</li>
 
 			<li>Include Leaflet JavaScript file somewhere on the page (preferably before <code>body</code> close tag):
-			<pre><code class="html">&lt;script src="http://code.leafletjs.com/leaflet-0.3.1/leaflet.js"&gt;&lt;/script&gt;</code></li>
+			<pre><code class="html">&lt;script src="[path-to-dist]/leaflet.js"&gt;&lt;/script&gt;</code></li>
 
 			<li>Put a <code>div</code> element with a certain <code>id</code> where you want your map to be (making sure it has defined height):
 			<pre><code class="html">&lt;div id="map" style="height: 200px"&gt;&lt;/div&gt;</code></pre></li>
