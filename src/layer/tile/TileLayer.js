@@ -18,20 +18,34 @@ L.TileLayer = L.Class.extend({
 		noWrap: false,
 		zoomOffset: 0,
 		zoomReverse: false,
+		detectRetina: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
 		reuseTiles: false
 	},
 
-	initialize: function (url, options, urlParams) {
-		L.Util.setOptions(this, options);
+	initialize: function (url, options) {
+		options = L.Util.setOptions(this, options);
+
+		// detecting retina displays, adjusting tileSize and zoom levels
+		if (options.detectRetina && window.devicePixelRatio > 1 && options.maxZoom > 0) {
+
+			options.tileSize = Math.floor(options.tileSize / 2);
+			options.zoomOffset++;
+
+			if (options.minZoom > 0) {
+				options.minZoom--;
+			}
+			this.options.maxZoom--;
+		}
 
 		this._url = url;
-		this._urlParams = urlParams;
 
-		if (typeof this.options.subdomains === 'string') {
-			this.options.subdomains = this.options.subdomains.split('');
+		var subdomains = this.options.subdomains;
+
+		if (typeof subdomains === 'string') {
+			this.options.subdomains = subdomains.split('');
 		}
 	},
 
@@ -47,10 +61,9 @@ L.TileLayer = L.Class.extend({
 
 		// set up events
 		map.on('viewreset', this._resetCallback, this);
+		map.on('moveend', this._update, this);
 
-		if (this.options.updateWhenIdle) {
-			map.on('moveend', this._update, this);
-		} else {
+		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
 			map.on('move', this._limitedUpdate, this);
 		}
@@ -60,16 +73,17 @@ L.TileLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		this._map.getPanes().tilePane.removeChild(this._container);
-		this._container = null;
+		map._panes.tilePane.removeChild(this._container);
 
-		this._map.off('viewreset', this._resetCallback, this);
+		map.off('viewreset', this._resetCallback, this);
+		map.off('moveend', this._update, this);
 
-		if (this.options.updateWhenIdle) {
-			this._map.off('moveend', this._update, this);
-		} else {
-			this._map.off('move', this._limitedUpdate, this);
+		if (!this.options.updateWhenIdle) {
+			map.off('move', this._limitedUpdate, this);
 		}
+
+		this._container = null;
+		this._map = null;
 	},
 
 	getAttribution: function () {
@@ -79,26 +93,29 @@ L.TileLayer = L.Class.extend({
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
-		this._setOpacity(opacity);
+		if (this._map) {
+			this._updateOpacity();
+		}
 
 		// stupid webkit hack to force redrawing of tiles
+		var i,
+			tiles = this._tiles;
+
 		if (L.Browser.webkit) {
-			for (var i in this._tiles) {
-				if (this._tiles.hasOwnProperty(i)) {
-					this._tiles[i].style.webkitTransform += ' translate(0,0)';
+			for (i in tiles) {
+				if (tiles.hasOwnProperty(i)) {
+					tiles[i].style.webkitTransform += ' translate(0,0)';
 				}
 			}
 		}
 	},
 
-	_setOpacity: function (opacity) {
-		if (opacity < 1) {
-			L.DomUtil.setOpacity(this._container, opacity);
-		}
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._container, this.options.opacity);
 	},
 
 	_initContainer: function () {
-		var tilePane = this._map.getPanes().tilePane,
+		var tilePane = this._map._panes.tilePane,
 			first = tilePane.firstChild;
 
 		if (!this._container || tilePane.empty) {
@@ -110,7 +127,9 @@ L.TileLayer = L.Class.extend({
 				tilePane.appendChild(this._container);
 			}
 
-			this._setOpacity(this.options.opacity);
+			if (this.options.opacity < 1) {
+				this._updateOpacity();
+			}
 		}
 	},
 
@@ -119,12 +138,15 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_reset: function (clearOldContainer) {
-		var key;
-		for (key in this._tiles) {
-			if (this._tiles.hasOwnProperty(key)) {
-				this.fire("tileunload", {tile: this._tiles[key]});
+		var key,
+			tiles = this._tiles;
+
+		for (key in tiles) {
+			if (tiles.hasOwnProperty(key)) {
+				this.fire('tileunload', {tile: tiles[key]});
 			}
 		}
+
 		this._tiles = {};
 
 		if (this.options.reuseTiles) {
@@ -134,13 +156,16 @@ L.TileLayer = L.Class.extend({
 		if (clearOldContainer && this._container) {
 			this._container.innerHTML = "";
 		}
+
 		this._initContainer();
 	},
 
-	_update: function () {
-		var bounds = this._map.getPixelBounds(),
-			zoom = this._map.getZoom(),
-			tileSize = this.options.tileSize;
+	_update: function (e) {
+		if (this._map._panTransition && this._map._panTransition._inProgress) { return; }
+
+		var bounds   = this._map.getPixelBounds(),
+		    zoom     = this._map.getZoom(),
+		    tileSize = this.options.tileSize;
 
 		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
 			return;
@@ -165,12 +190,12 @@ L.TileLayer = L.Class.extend({
 		var queue = [],
 			center = bounds.getCenter();
 
-		for (var j = bounds.min.y; j <= bounds.max.y; j++) {
-			for (var i = bounds.min.x; i <= bounds.max.x; i++) {
-				if ((i + ':' + j) in this._tiles) {
-					continue;
+		var j, i;
+		for (j = bounds.min.y; j <= bounds.max.y; j++) {
+			for (i = bounds.min.x; i <= bounds.max.x; i++) {
+				if (!((i + ':' + j) in this._tiles)) {
+					queue.push(new L.Point(i, j));
 				}
-				queue.push(new L.Point(i, j));
 			}
 		}
 
@@ -182,7 +207,9 @@ L.TileLayer = L.Class.extend({
 		var fragment = document.createDocumentFragment();
 
 		this._tilesToLoad = queue.length;
-		for (var k = 0, len = this._tilesToLoad; k < len; k++) {
+
+		var k, len;
+		for (k = 0, len = this._tilesToLoad; k < len; k++) {
 			this._addTile(queue[k], fragment);
 		}
 
@@ -200,40 +227,45 @@ L.TileLayer = L.Class.extend({
 
 				// remove tile if it's out of bounds
 				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-
-					tile = this._tiles[key];
-					this.fire("tileunload", {tile: tile, url: tile.src});
-
-					if (tile.parentNode === this._container) {
-						this._container.removeChild(tile);
-					}
-					if (this.options.reuseTiles) {
-						this._unusedTiles.push(this._tiles[key]);
-					}
-					tile.src = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-
-					delete this._tiles[key];
+					this._removeTile(key);
 				}
 			}
 		}
 	},
 
+	_removeTile: function (key) {
+		var tile = this._tiles[key];
+
+		this.fire("tileunload", {tile: tile, url: tile.src});
+
+		if (tile.parentNode === this._container) {
+			this._container.removeChild(tile);
+		}
+		if (this.options.reuseTiles) {
+			this._unusedTiles.push(tile);
+		}
+
+		tile.src = L.Util.emptyImageUrl;
+
+		delete this._tiles[key];
+	},
+
 	_addTile: function (tilePoint, container) {
 		var tilePos = this._getTilePos(tilePoint),
 			zoom = this._map.getZoom(),
-			key = tilePoint.x + ':' + tilePoint.y,
-			tileLimit = Math.pow(2, this._getOffsetZoom(zoom));
+		    key = tilePoint.x + ':' + tilePoint.y,
+		    limit = Math.pow(2, this._getOffsetZoom(zoom));
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld) {
 			if (!this.options.noWrap) {
-				tilePoint.x = ((tilePoint.x % tileLimit) + tileLimit) % tileLimit;
-			} else if (tilePoint.x < 0 || tilePoint.x >= tileLimit) {
+				tilePoint.x = ((tilePoint.x % limit) + limit) % limit;
+			} else if (tilePoint.x < 0 || tilePoint.x >= limit) {
 				this._tilesToLoad--;
 				return;
 			}
 
-			if (tilePoint.y < 0 || tilePoint.y >= tileLimit) {
+			if (tilePoint.y < 0 || tilePoint.y >= limit) {
 				this._tilesToLoad--;
 				return;
 			}
@@ -246,7 +278,7 @@ L.TileLayer = L.Class.extend({
 		this._tiles[key] = tile;
 
 		if (this.options.scheme === 'tms') {
-			tilePoint.y = tileLimit - tilePoint.y - 1;
+			tilePoint.y = limit - tilePoint.y - 1;
 		}
 
 		this._loadTile(tile, tilePoint, zoom);
@@ -255,8 +287,9 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_getOffsetZoom: function (zoom) {
-		zoom = this.options.zoomReverse ? this.options.maxZoom - zoom : zoom;
-		return zoom + this.options.zoomOffset;
+		var options = this.options;
+		zoom = options.zoomReverse ? options.maxZoom - zoom : zoom;
+		return zoom + options.zoomOffset;
 	},
 
 	_getTilePos: function (tilePoint) {
@@ -270,23 +303,24 @@ L.TileLayer = L.Class.extend({
 
 	getTileUrl: function (tilePoint, zoom) {
 		var subdomains = this.options.subdomains,
-			s = this.options.subdomains[(tilePoint.x + tilePoint.y) % subdomains.length];
+			index = (tilePoint.x + tilePoint.y) % subdomains.length,
+			s = this.options.subdomains[index];
 
 		return L.Util.template(this._url, L.Util.extend({
 			s: s,
 			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
-		}, this._urlParams));
+		}, this.options));
 	},
 
 	_createTileProto: function () {
-		this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
-		this._tileImg.galleryimg = 'no';
+		var img = this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
+		img.galleryimg = 'no';
 
 		var tileSize = this.options.tileSize;
-		this._tileImg.style.width = tileSize + 'px';
-		this._tileImg.style.height = tileSize + 'px';
+		img.style.width = tileSize + 'px';
+		img.style.height = tileSize + 'px';
 	},
 
 	_getTile: function () {
@@ -309,33 +343,46 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_loadTile: function (tile, tilePoint, zoom) {
-		tile._layer = this;
-		tile.onload = this._tileOnLoad;
+		tile._layer  = this;
+		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
-		tile.src = this.getTileUrl(tilePoint, zoom);
+
+		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
+
+    _tileLoaded: function () {
+        this._tilesToLoad--;
+        if (!this._tilesToLoad) {
+            this.fire('load');
+        }
+    },
 
 	_tileOnLoad: function (e) {
 		var layer = this._layer;
 
 		this.className += ' leaflet-tile-loaded';
 
-		layer.fire('tileload', {tile: this, url: this.src});
+		layer.fire('tileload', {
+			tile: this,
+			url: this.src
+		});
 
-		layer._tilesToLoad--;
-		if (!layer._tilesToLoad) {
-			layer.fire('load');
-		}
+        layer._tileLoaded();
 	},
 
 	_tileOnError: function (e) {
 		var layer = this._layer;
 
-		layer.fire('tileerror', {tile: this, url: this.src});
+		layer.fire('tileerror', {
+			tile: this,
+			url: this.src
+		});
 
 		var newUrl = layer.options.errorTileUrl;
 		if (newUrl) {
 			this.src = newUrl;
 		}
-	}
+
+        layer._tileLoaded();
+    }
 });

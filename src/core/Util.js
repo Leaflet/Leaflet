@@ -16,9 +16,10 @@ L.Util = {
 		return dest;
 	},
 
-	bind: function (/*Function*/ fn, /*Object*/ obj) /*-> Object*/ {
+	bind: function (fn, obj) { // (Function, Object) -> Function
+		var args = arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : null;
 		return function () {
-			return fn.apply(obj, arguments);
+			return fn.apply(obj, args || arguments);
 		};
 	},
 
@@ -29,6 +30,9 @@ L.Util = {
 			return obj[key];
 		};
 	}()),
+
+
+	// TODO refactor: remove repetition
 
 	requestAnimFrame: (function () {
 		function timeoutDefer(callback) {
@@ -47,29 +51,48 @@ L.Util = {
 			if (immediate && requestFn === timeoutDefer) {
 				callback();
 			} else {
-				requestFn(callback, contextEl);
+				return requestFn.call(window, callback, contextEl);
 			}
 		};
 	}()),
 
+	cancelAnimFrame: (function () {
+		var requestFn = window.cancelAnimationFrame ||
+			window.webkitCancelRequestAnimationFrame ||
+			window.mozCancelRequestAnimationFrame ||
+			window.oCancelRequestAnimationFrame ||
+			window.msCancelRequestAnimationFrame ||
+			clearTimeout;
+
+		return function (handle) {
+			if (!handle) { return; }
+			return requestFn.call(window, handle);
+		};
+	}()),
+
 	limitExecByInterval: function (fn, time, context) {
-		var lock, execOnUnlock, args;
-		function exec() {
-			lock = false;
-			if (execOnUnlock) {
-				args.callee.apply(context, args);
-				execOnUnlock = false;
-			}
-		}
-		return function () {
-			args = arguments;
-			if (!lock) {
-				lock = true;
-				setTimeout(exec, time);
-				fn.apply(context, args);
-			} else {
+		var lock, execOnUnlock;
+		
+		return function wrapperFn() {
+			var args = arguments;
+
+			if (lock) {
 				execOnUnlock = true;
+				return;
 			}
+
+			lock = true;
+			
+			setTimeout(function () {
+				lock = false;
+				
+				if (execOnUnlock) {
+					wrapperFn.apply(context, args);
+					execOnUnlock = false;
+				}
+			}, time);
+
+			fn.apply(context, args);
 		};
 	},
 
@@ -84,6 +107,7 @@ L.Util = {
 
 	setOptions: function (obj, options) {
 		obj.options = L.Util.extend({}, obj.options, options);
+		return obj.options;
 	},
 
 	getParamString: function (obj) {
@@ -104,5 +128,7 @@ L.Util = {
 			}
 			return value;
 		});
-	}
+	},
+
+	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };

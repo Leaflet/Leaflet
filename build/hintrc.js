@@ -1,5 +1,6 @@
 exports.config = {
 	"browser": true,
+	"node": true,
 	"predef": ["L"],
 
 	"debug": false,
@@ -17,7 +18,7 @@ exports.config = {
 	"eqnull": false,
 	"evil": false,
 	"expr": false,
-	"forin": false,
+	"forin": true,
 	"immed": true,
 	"latedef": true,
 	"loopfunc": false,
@@ -28,6 +29,7 @@ exports.config = {
 	"shadow": false,
 	"supernew": false,
 	"undef": true,
+	"funcscope": false,
 
 	"newcap": true,
 	"noempty": true,

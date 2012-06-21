@@ -10,9 +10,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	addHooks: function () {
 		var icon = this._marker._icon;
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(icon, icon);
-
-			this._draggable
+			this._draggable = new L.Draggable(icon, icon)
 				.on('dragstart', this._onDragStart, this)
 				.on('drag', this._onDrag, this)
 				.on('dragend', this._onDragEnd, this);

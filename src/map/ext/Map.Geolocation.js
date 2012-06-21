@@ -3,16 +3,18 @@
  */
 
 L.Map.include({
+	_defaultLocateOptions: {
+		watch: false,
+		setView: false,
+		maxZoom: Infinity,
+		timeout: 10000,
+		maximumAge: 0,
+		enableHighAccuracy: false
+	},
+
 	locate: function (/*Object*/ options) {
 
-		this._locationOptions = options = L.Util.extend({
-			watch: false,
-			setView: false,
-			maxZoom: Infinity,
-			timeout: 10000,
-			maximumAge: 0,
-			enableHighAccuracy: false
-		}, options);
+		options = this._locationOptions = L.Util.extend(this._defaultLocateOptions, options);
 
 		if (!navigator.geolocation) {
 			return this.fire('locationerror', {
@@ -36,19 +38,13 @@ L.Map.include({
 		if (navigator.geolocation) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
 		}
-	},
-
-	locateAndSetView: function (maxZoom, options) {
-		options = L.Util.extend({
-			maxZoom: maxZoom || Infinity,
-			setView: true
-		}, options);
-		return this.locate(options);
+		return this;
 	},
 
 	_handleGeolocationError: function (error) {
 		var c = error.code,
-			message = (c === 1 ? "permission denied" :
+			message =
+				(c === 1 ? "permission denied" :
 				(c === 2 ? "position unavailable" : "timeout"));
 
 		if (this._locationOptions.setView && !this._loaded) {
@@ -64,16 +60,19 @@ L.Map.include({
 	_handleGeolocationResponse: function (pos) {
 		var latAccuracy = 180 * pos.coords.accuracy / 4e7,
 			lngAccuracy = latAccuracy * 2,
+
 			lat = pos.coords.latitude,
 			lng = pos.coords.longitude,
-			latlng = new L.LatLng(lat, lng);
+			latlng = new L.LatLng(lat, lng),
 
-		var sw = new L.LatLng(lat - latAccuracy, lng - lngAccuracy),
+			sw = new L.LatLng(lat - latAccuracy, lng - lngAccuracy),
 			ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
-			bounds = new L.LatLngBounds(sw, ne);
+			bounds = new L.LatLngBounds(sw, ne),
 
-		if (this._locationOptions.setView) {
-			var zoom = Math.min(this.getBoundsZoom(bounds), this._locationOptions.maxZoom);
+			options = this._locationOptions;
+
+		if (options.setView) {
+			var zoom = Math.min(this.getBoundsZoom(bounds), options.maxZoom);
 			this.setView(latlng, zoom);
 		}
 

@@ -13,22 +13,20 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		SVG: false
 	},
 
-	options: {
-		updateOnMoveEnd: true
-	},
-
 	_initElements: function () {
 		this._map._initPathRoot();
 		this._ctx = this._map._canvasCtx;
 	},
 
 	_updateStyle: function () {
-		if (this.options.stroke) {
-			this._ctx.lineWidth = this.options.weight;
-			this._ctx.strokeStyle = this.options.color;
+		var options = this.options;
+
+		if (options.stroke) {
+			this._ctx.lineWidth = options.weight;
+			this._ctx.strokeStyle = options.color;
 		}
-		if (this.options.fill) {
-			this._ctx.fillStyle = this.options.fillColor || this.options.color;
+		if (options.fill) {
+			this._ctx.fillStyle = options.fillColor || options.color;
 		}
 	},
 
@@ -56,34 +54,30 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	_updatePath: function () {
-		if (this._checkIfEmpty()) {
-			return;
-		}
+		if (this._checkIfEmpty()) { return; }
+
+		var ctx = this._ctx,
+			options = this.options;
 
 		this._drawPath();
-
-		this._ctx.save();
-
+		ctx.save();
 		this._updateStyle();
 
-		var opacity = this.options.opacity,
-			fillOpacity = this.options.fillOpacity;
-
-		if (this.options.fill) {
-			if (fillOpacity < 1) {
-				this._ctx.globalAlpha = fillOpacity;
+		if (options.fill) {
+			if (options.fillOpacity < 1) {
+				ctx.globalAlpha = options.fillOpacity;
 			}
-			this._ctx.fill();
+			ctx.fill();
 		}
 
-		if (this.options.stroke) {
-			if (opacity < 1) {
-				this._ctx.globalAlpha = opacity;
+		if (options.stroke) {
+			if (options.opacity < 1) {
+				ctx.globalAlpha = options.opacity;
 			}
-			this._ctx.stroke();
+			ctx.stroke();
 		}
 
-		this._ctx.restore();
+		ctx.restore();
 
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
@@ -103,9 +97,10 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
     onRemove: function (map) {
-        map.off('viewreset', this._projectLatlngs, this);
-        map.off(this._updateTrigger, this._updatePath, this);
-        map.fire(this._updateTrigger);
+        map
+	        .off('viewreset', this._projectLatlngs, this)
+            .off('moveend', this._updatePath, this)
+            .fire('moveend');
     }
 });
 
@@ -124,12 +119,21 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 
 			this._panes.overlayPane.appendChild(root);
 
+			if (this.options.zoomAnimation) {
+				this._pathRoot.className = 'leaflet-zoom-animated';
+				this.on('zoomanim', this._animatePathZoom);
+				this.on('zoomend', this._endPathZoom);
+			}
 			this.on('moveend', this._updateCanvasViewport);
 			this._updateCanvasViewport();
 		}
 	},
 
 	_updateCanvasViewport: function () {
+		if (this._pathZooming) {
+			//Don't redraw while zooming. See _updateSvgViewport for more details
+			return;
+		}
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
@@ -137,7 +141,7 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 			size = vp.max.subtract(min),
 			root = this._pathRoot;
 
-		//TODO check if it's works properly on mobile webkit
+		//TODO check if this works properly on mobile webkit
 		L.DomUtil.setPosition(root, min);
 		root.width = size.x;
 		root.height = size.y;
