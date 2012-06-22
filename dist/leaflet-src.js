@@ -654,9 +654,9 @@ L.DomUtil = {
 		return preTranslateStr + scaleStr + postTranslateStr;
 	},
 
-	setPosition: function (el, point) {
+	setPosition: function (el, point, disable3D) {
 		el._leaflet_pos = point;
-		if (L.Browser.any3d) {
+		if (!disable3D && L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 			el.style[L.DomUtil.BACKFACEVISIBILITY] = 'hidden';
 		} else {
@@ -970,7 +970,7 @@ L.Map = L.Class.extend({
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
 		trackResize: true,
-		animateMarkerZoom: true
+		markerZoomAnimation: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -1387,7 +1387,7 @@ L.Map = L.Class.extend({
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
 
-		if (!this.options.animateMarkerZoom) {
+		if (!this.options.markerZoomAnimation) {
 			panes.markerPane.className += ' leaflet-zoom-hide';
 			panes.shadowPane.className += ' leaflet-zoom-hide';
 			panes.popupPane.className += ' leaflet-zoom-hide';
@@ -1863,7 +1863,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_removeOtherTiles: function (bounds) {
-		var kArr, x, y, key, tile;
+		var kArr, x, y, key;
 
 		for (key in this._tiles) {
 			if (this._tiles.hasOwnProperty(key)) {
@@ -1884,11 +1884,11 @@ L.TileLayer = L.Class.extend({
 
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
-		if (tile.parentNode === this._container) {
-			this._container.removeChild(tile);
-		}
 		if (this.options.reuseTiles) {
+			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
 			this._unusedTiles.push(tile);
+		} else if (tile.parentNode === this._container) {
+			this._container.removeChild(tile);
 		}
 
 		tile.src = L.Util.emptyImageUrl;
@@ -1919,7 +1919,7 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, tilePos);
+		L.DomUtil.setPosition(tile, tilePos, true);
 
 		this._tiles[key] = tile;
 
@@ -1929,7 +1929,9 @@ L.TileLayer = L.Class.extend({
 
 		this._loadTile(tile, tilePoint, zoom);
 
-		container.appendChild(tile);
+		if (tile.parentNode !== this._container) {
+			container.appendChild(tile);
+		}
 	},
 
 	_getOffsetZoom: function (zoom) {
@@ -2006,14 +2008,17 @@ L.TileLayer = L.Class.extend({
 	_tileOnLoad: function (e) {
 		var layer = this._layer;
 
-		this.className += ' leaflet-tile-loaded';
+		//Only if we are loading an actual image
+		if (this.src !== L.Util.emptyImageUrl) {
+			this.className += ' leaflet-tile-loaded';
 
-		layer.fire('tileload', {
-			tile: this,
-			url: this.src
-		});
+			layer.fire('tileload', {
+				tile: this,
+				url: this.src
+			});
+		}
 
-        layer._tileLoaded();
+		layer._tileLoaded();
 	},
 
 	_tileOnError: function (e) {
@@ -2357,7 +2362,7 @@ L.Marker = L.Class.extend({
 
 		map.on('viewreset', this._reset, this);
 
-		if (map.options.zoomAnimation && map.options.animateMarkerZoom) {
+		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 

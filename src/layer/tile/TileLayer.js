@@ -283,7 +283,7 @@ L.TileLayer = L.Class.extend({
 
 		this._loadTile(tile, tilePoint, zoom);
 
-		if (tile.parentNode != this._container) {
+		if (tile.parentNode !== this._container) {
 			container.appendChild(tile);
 		}
 	},
@@ -363,7 +363,7 @@ L.TileLayer = L.Class.extend({
 		var layer = this._layer;
 
 		//Only if we are loading an actual image
-		if (this.src != L.Util.emptyImageUrl) {
+		if (this.src !== L.Util.emptyImageUrl) {
 			this.className += ' leaflet-tile-loaded';
 
 			layer.fire('tileload', {
