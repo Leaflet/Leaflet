@@ -875,12 +875,13 @@ L.Projection.SphericalMercator = {
 		return new L.Point(x, y);
 	},
 
-	unproject: function (point, unbounded) { // (Point, Boolean) -> LatLng
+	unproject: function (point) { // (Point, Boolean) -> LatLng
 		var d = L.LatLng.RAD_TO_DEG,
 			lng = point.x * d,
 			lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
 
-		return new L.LatLng(lat, lng, unbounded);
+		// TODO refactor LatLng wrapping
+		return new L.LatLng(lat, lng, true);
 	}
 };
 
@@ -891,8 +892,8 @@ L.Projection.LonLat = {
 		return new L.Point(latlng.lng, latlng.lat);
 	},
 
-	unproject: function (point, unbounded) {
-		return new L.LatLng(point.y, point.x, unbounded);
+	unproject: function (point) {
+		return new L.LatLng(point.y, point.x, true);
 	}
 };
 
@@ -906,12 +907,11 @@ L.CRS = {
 		return this.transformation._transform(projectedPoint, scale);
 	},
 
-	pointToLatLng: function (point, zoom, unbounded) { // (Point, Number[, Boolean]) -> LatLng
+	pointToLatLng: function (point, zoom) { // (Point, Number[, Boolean]) -> LatLng
 		var scale = this.scale(zoom),
 		    untransformedPoint = this.transformation.untransform(point, scale);
 
-		return this.projection.unproject(untransformedPoint, unbounded);
-		//TODO get rid of 'unbounded' everywhere
+		return this.projection.unproject(untransformedPoint);
 	},
 
 	project: function (latlng) {
@@ -1187,11 +1187,11 @@ L.Map = L.Class.extend({
 
 	// public methods for getting map state
 
-	getCenter: function (unbounded) { // (Boolean) -> LatLng
+	getCenter: function () { // (Boolean) -> LatLng
 		var viewHalf = this.getSize().divideBy(2),
 		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
-		return this.unproject(centerPoint, this._zoom, unbounded);
+		return this.unproject(centerPoint, this._zoom);
 	},
 
 	getZoom: function () {
@@ -1328,10 +1328,9 @@ L.Map = L.Class.extend({
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
-	unproject: function (point, zoom, unbounded) { // (Point[, Number, Boolean]) -> LatLng
-		// TODO remove unbounded, making it true all the time?
+	unproject: function (point, zoom) { // (Point[, Number, Boolean]) -> LatLng
 		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom, unbounded);
+		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
 
@@ -1602,7 +1601,7 @@ L.Projection.Mercator = {
 		return new L.Point(x, y);
 	},
 
-	unproject: function (point, unbounded) { // (Point, Boolean) -> LatLng
+	unproject: function (point) { // (Point, Boolean) -> LatLng
 		var d = L.LatLng.RAD_TO_DEG,
 			r = this.R_MAJOR,
 			r2 = this.R_MINOR,
@@ -1623,7 +1622,7 @@ L.Projection.Mercator = {
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, lng, unbounded);
+		return new L.LatLng(phi * d, lng, true);
 	}
 };
 

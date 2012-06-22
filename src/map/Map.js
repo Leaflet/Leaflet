@@ -233,11 +233,11 @@ L.Map = L.Class.extend({
 
 	// public methods for getting map state
 
-	getCenter: function (unbounded) { // (Boolean) -> LatLng
+	getCenter: function () { // (Boolean) -> LatLng
 		var viewHalf = this.getSize().divideBy(2),
 		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
-		return this.unproject(centerPoint, this._zoom, unbounded);
+		return this.unproject(centerPoint, this._zoom);
 	},
 
 	getZoom: function () {
@@ -374,10 +374,9 @@ L.Map = L.Class.extend({
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
-	unproject: function (point, zoom, unbounded) { // (Point[, Number, Boolean]) -> LatLng
-		// TODO remove unbounded, making it true all the time?
+	unproject: function (point, zoom) { // (Point[, Number, Boolean]) -> LatLng
 		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom, unbounded);
+		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
 
