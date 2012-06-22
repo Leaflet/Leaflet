@@ -9,7 +9,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 			// difference between the new and current centers in pixels
 			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
 
-			center = new L.LatLng(center.lat, center.lng);
+			center = new L.LatLng(center.lat, center.lng, this.options.crs.unbounded);
 
 			var done = (zoomChanged ?
 					this._zoomToIfCenterInView && this._zoomToIfCenterInView(center, zoom, offset) :
