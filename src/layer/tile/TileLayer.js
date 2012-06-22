@@ -238,11 +238,11 @@ L.TileLayer = L.Class.extend({
 
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
-		if (tile.parentNode === this._container) {
-			this._container.removeChild(tile);
-		}
 		if (this.options.reuseTiles) {
+			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
 			this._unusedTiles.push(tile);
+		} else if (tile.parentNode === this._container) {
+			this._container.removeChild(tile);
 		}
 
 		tile.src = L.Util.emptyImageUrl;
@@ -283,7 +283,9 @@ L.TileLayer = L.Class.extend({
 
 		this._loadTile(tile, tilePoint, zoom);
 
-		container.appendChild(tile);
+		if (tile.parentNode != this._container) {
+			container.appendChild(tile);
+		}
 	},
 
 	_getOffsetZoom: function (zoom) {
