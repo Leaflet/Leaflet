@@ -217,7 +217,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_removeOtherTiles: function (bounds) {
-		var kArr, x, y, key, tile;
+		var kArr, x, y, key;
 
 		for (key in this._tiles) {
 			if (this._tiles.hasOwnProperty(key)) {
@@ -360,14 +360,17 @@ L.TileLayer = L.Class.extend({
 	_tileOnLoad: function (e) {
 		var layer = this._layer;
 
-		this.className += ' leaflet-tile-loaded';
+		//Only if we are loading an actual image
+		if (this.src != L.Util.emptyImageUrl) {
+			this.className += ' leaflet-tile-loaded';
 
-		layer.fire('tileload', {
-			tile: this,
-			url: this.src
-		});
+			layer.fire('tileload', {
+				tile: this,
+				url: this.src
+			});
+		}
 
-        layer._tileLoaded();
+		layer._tileLoaded();
 	},
 
 	_tileOnError: function (e) {
