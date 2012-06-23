@@ -935,6 +935,18 @@ map.addLayer(marker);</code></pre>
 				<td><code>false</code></td>
 				<td>Whether the marker is draggable with mouse/touch or not.</td>
 			</tr>
+			<tr>
+				<td><code>title</code></td>
+				<td><code>String</code></td>
+				<td></td>
+				<td>Text for the browser tooltip that appear on marker hover (no tooltip by default).</td>
+			</tr>
+			<tr id="marker-zindexoffset">
+				<td><code>zIndexOffset</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>By default, marker images zIndex is set automatically based on its latitude. You this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
+			</tr>
 		</table>
 
 		<h3>Events</h3>
@@ -949,13 +961,28 @@ map.addLayer(marker);</code></pre>
 			</tr>
 			<tr>
 				<td><code>click</code></td>
-				<td><code><a href="#event">Event</a></code>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
 				<td>Fired when the user clicks (or taps) the marker.</td>
 			</tr>
 			<tr>
 				<td><code>dblclick</code></td>
-				<td><code><a href="#event">Event</a></code>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
 				<td>Fired when the user double-clicks (or double-taps) the marker.</td>
+			</tr>
+			<tr>
+				<td><code>mousedown</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user pushes the mouse button on the marker.</td>
+			</tr>
+			<tr>
+				<td><code>mouseover</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the mouse enters the marker.</td>
+			</tr>
+			<tr>
+				<td><code>mouseout</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the mouse leaves the marker.</td>
 			</tr>
 			<tr>
 				<td><code>dragstart</code></td>
@@ -992,15 +1019,35 @@ map.addLayer(marker);</code></pre>
 				<td><code>this</code></td>
 				<td>Changes the marker position to the given point.</td>
 			</tr>
+			<tr>
+				<td><code>setIcon( <nobr>&lt;<a href="#icon">Icon</a>&gt; <i>icon</i> )</nobr></code></td>
+				<td><code>this</code></td>
+				<td>Changes the marker icon.</td>
+			</tr>
+			<tr>
+				<td><code>setZIndexOffset( <nobr>&lt;Number&gt; <i>offset</i> )</nobr></code></td>
+				<td><code>this</code></td>
+				<td>Changes the <a href="#marker-zindexoffset">zIndex offset</a> of the marker.</td>
+			</tr>
 			<tr id="#marker-bindpopup">
 				<td><code>bindPopup( <nobr>&lt;String&gt; <i>htmlContent</i>,</nobr> <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr></code></td>
 				<td><code>this</code></td>
 				<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
 			</tr>
+			<tr id="#marker-unbindpopup">
+				<td><code>unbindPopup()</code></td>
+				<td><code>this</code></td>
+				<td>Unbinds the popup previously bound to the marker with <code>bindPopup</code>.</td>
+			</tr>
 			<tr id="#marker-openpopup">
 				<td><code>openPopup()</code></td>
 				<td><code>this</code></td>
 				<td>Opens the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
+			</tr>
+			<tr id="#marker-closepopup">
+				<td><code>closePopup()</code></td>
+				<td><code>this</code></td>
+				<td>Closes the bound popup of the marker if it's opened.</td>
 			</tr>
 		</table>
 
@@ -1070,10 +1117,16 @@ map.openPopup(popup);</code></pre>
 				<td>Max width of the popup.</td>
 			</tr>
 			<tr>
+				<td><code>maxWidth</code></td>
+				<td><code>Number</code></td>
+				<td><code>50</code></td>
+				<td>Min width of the popup.</td>
+			</tr>
+			<tr>
 				<td><code>autoPan</code></td>
 				<td><code>Boolean</code></td>
 				<td><code>true</code></td>
-				<td>Set it to false if you don't want the map to do panning animation to fit the opened popup.'</td>
+				<td>Set it to false if you don't want the map to do panning animation to fit the opened popup.</td>
 			</tr>
 			<tr>
 				<td><code>closeButton</code></td>
@@ -1086,6 +1139,12 @@ map.openPopup(popup);</code></pre>
 				<td><code><a href="#point">Point</a></code></td>
 				<td><code><nobr>Point(0, 0)</nobr></code></td>
 				<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
+			</tr>
+			<tr>
+				<td><code>autoPanPadding</code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td><code><nobr>Point(5, 5)</nobr></code></td>
+				<td>The margin between the popup and the edges of the map view after autopanning was performed.</td>
 			</tr>
 		</table>
 
@@ -1197,6 +1256,36 @@ map.openPopup(popup);</code></pre>
 				<td>Either <code>'xyz'</code> or <code>'tms'</code>, affects tile numbering (TMS servers use inverse Y axis numbering).</td>
 			</tr>
 			<tr>
+				<td><code>continuousWorld</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If set to <code>true</code>, the tile coordinates won't be wrapped by world width (-180 to 180 longitude) or clamped to lie within world height (-90 to 90). Use this if you use Leaflet for maps that don't reflect the real world (e.g. game, indoor or photo maps).</td>
+			</tr>
+			<tr>
+				<td><code>noWrap</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If set to <code>true</code>, the tiles just won't load outside the world width (-180 to 180 longitude) instead of repeating.</td>
+			</tr>
+			<tr>
+				<td><code>zoomOffset</code></td>
+				<td><code>Number</code></td>
+				<td><code>0</code></td>
+				<td>The zoom number used in tile URLs will be offset with this value.</td>
+			</tr>
+			<tr>
+				<td><code>zoomReverse</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>false</code></td>
+				<td>If set to <code>true</code>, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>)</td>
+			</tr>
+			<tr>
+				<td><code>opacity</code></td>
+				<td><code>Number</code></td>
+				<td><code>1.0</code></td>
+				<td>The opacity of the tile layer.</td>
+			</tr>
+			<tr>
 				<td><code>unloadInvisibleTiles</code></td>
 				<td><code>Boolean</code></td>
 				<td>depends</td>
@@ -1212,7 +1301,27 @@ map.openPopup(popup);</code></pre>
 				<td><code>reuseTiles</code></td>
 				<td><code><code>Boolean</code></code></td>
 				<td>false</td>
-				<td>If <code>true</code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
+				<td>If <code>true</code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will in theory keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
+			</tr>
+		</table>
+
+		<h3>Methods</h3>
+
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>setOpacity( <nobr>&lt;Number&gt; <i>opacity</i> )</nobr></code></td>
+				<td><code>this</code></td>
+				<td>Changes the opacity of the tile layer.</td>
+			</tr>
+			<tr>
+				<td><code>redraw()</code></td>
+				<td>-</td>
+				<td>Calling <code>redraw</code> will cause the <code>drawTile</code> method to be called for all tiles. May be used for updating dynamic content drawn on the Canvas</td>
 			</tr>
 		</table>
 
@@ -1438,13 +1547,28 @@ var image = new L.ImageOverlay(
 			</tr>
 			<tr>
 				<td><code>click</code></td>
-				<td><code><a href="#event">Event</a></code>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
 				<td>Fired when the user clicks (or taps) the object.</td>
 			</tr>
 			<tr>
 				<td><code>dblclick</code></td>
-				<td><code><a href="#event">Event</a></code>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
 				<td>Fired when the user double-clicks (or double-taps) the object.</td>
+			</tr>
+			<tr>
+				<td><code>mousedown</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user pushes the mouse button on the object.</td>
+			</tr>
+			<tr>
+				<td><code>mouseover</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the mouse enters the object.</td>
+			</tr>
+			<tr>
+				<td><code>mouseout</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the mouse leaves the object.</td>
 			</tr>
 		</table>
 
