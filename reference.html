@@ -96,7 +96,7 @@
 					<li><a href="#multipolyline">MultiPolyline</a></li>
 					<li><a href="#polygon">Polygon</a></li>
 					<li><a href="#multipolygon">MultiPolygon</a></li>
-					<!--<li><a href="#rectangle">Rectangle</a></li>-->
+					<li><a href="#rectangle">Rectangle</a></li>
 					<li><a href="#circle">Circle</a></li>
 					<li><a href="#circlemarker">CircleMarker</a></li>
 				</ul>
@@ -163,13 +163,13 @@
 				<h4>Misc</h4>
 				<ul>
 					<li><a href="#noconflict" class="nodocs">noConflict</a></li>
-					<li><a href="#version">VERSION</a></li>
+					<li><a href="#version">version</a></li>
 				</ul>
 			</div>
 		</div>
 
 		<hr />
-		<p>This reference reflects Leaflet 0.3.1. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/CloudMade/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.</p>
+		<p>This reference reflects Leaflet 0.4. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/CloudMade/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.</p>
 
 		<h2 id="map-class">L.Map</h2>
 
@@ -708,11 +708,11 @@ map.addLayer(cloudmade);</code></pre>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
-			<!--<tr>
+			<tr>
 				<td><code>getContainer()</code></td>
 				<td><code>HTMLElement</code></td>
 				<td>Returns the container element of the map.</td>
-			</tr>-->
+			</tr>
 			<tr id="map-getpanes">
 				<td><code>getPanes()</code></td>
 				<td><code><a href="#map-panes">MapPanes</a></code></td>
@@ -1655,7 +1655,7 @@ map.addLayer(polyline);</code></pre>
 			</tr>
 		</table>
 
-		<!--<h2 id="rectangle">L.Rectangle</h2>
+		<h2 id="rectangle">L.Rectangle</h2>
 
 		<p>A class for drawing rectangle overlays on a map. Extends <a href="#polygon">Polygon</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
@@ -1705,7 +1705,7 @@ map.addLayer(rectangle);</code></pre>
 				<td><code>this</code></td>
 				<td>Redraws the rectangle with the passed bounds.</td>
 			</tr>
-		</table>-->
+		</table>
 
 
 		<h2 id="circle">L.Circle</h2>
@@ -2832,11 +2832,11 @@ map.addControl(layersControl);</code></pre>
 			</tr>
 		</table>
 
-		<h2 id="version">L.VERSION</h2>
+		<h2 id="version">L.version</h2>
 
 		<p>A constant that represents the Leaflet version in use.<p>
 
-		<pre><code>L.VERSION // returns "0.3" (or whatever version is currently in use)</code></pre>
+		<pre><code>L.version // returns "0.4" (or whatever version is currently in use)</code></pre>
 
 
 
