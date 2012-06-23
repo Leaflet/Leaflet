@@ -2519,9 +2519,9 @@ map.addLayer(geojson);</code></pre>
 
 		<h2 id="icon">L.Icon</h2>
 
-		<p>Represents an icon to provide when creating a marker. If you want to create your own icon, you need to extend this class like this:</p>
+		<p>Represents an icon to provide when creating a marker.</p>
 
-		<pre><code class="javascript">var MyIcon = L.Icon.extend({
+		<pre><code class="javascript">var myIcon = new L.Icon({
 	iconUrl: 'my-icon.png',
 	shadowUrl: 'my-icon-shadow.png',
 	iconSize: new L.Point(38, 95),
@@ -2530,11 +2530,24 @@ map.addLayer(geojson);</code></pre>
 	popupAnchor: new L.Point(-3, -76)
 });
 
-var icon = new MyIcon();
+var marker = new L.Marker(marker, {icon: myIcon});</code></pre>
 
-var marker = new L.Marker(marker, {icon: icon});</code></pre>
+		<p><code>L.Icon.Default</code> extends <code>L.Icon</code> and is the blue icon Leaflet uses for markers by default.</p>
 
-		<h3>Properties</h3>
+		<h3>Constructor</h3>
+
+		<table>
+			<tr>
+				<th>Constructor</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>L.Icon( <nobr>&lt;<a href="#icon-properties">Icon properties</a>&gt; <i>props</i> )</nobr></code></td>
+				<td>Creates an icon instance with the given properties.</td>
+			</tr>
+		</table>
+
+		<h3 id="icon-properties">Properties</h3>
 
 		<table>
 			<tr>
@@ -2545,12 +2558,7 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 			<tr>
 				<td><code>iconUrl</code></td>
 				<td><code>String</code>
-				<td>The URL to the icon image (absolute or relative to your script path). If iconUrl is <code>null</code> then a <code>&lt;div&gt;</code> element will be created instead of an image element. This is useful for adding click and hover targets to the map while drawing icons in another fashion (e.g. using <a href="#tilelayer-canvas">TileLayer.Canvas</a>)</td>
-			</tr>
-			<tr>
-				<td><code>shadowUrl</code></td>
-				<td><code>String</code>
-				<td>The URL to the icon shadow image. The shadow image must be cropped in such way the that if you align them on top of each other, top left corners of the images are in the same spot. If shadowUrl is <code>null</code> then no shadow image will be created.</td>
+				<td>(required) The URL to the icon image (absolute or relative to your script path).</td>
 			</tr>
 			<tr>
 				<td><code>iconSize</code></td>
@@ -2558,32 +2566,29 @@ var marker = new L.Marker(marker, {icon: icon});</code></pre>
 				<td>Size of the icon image in pixels.</td>
 			</tr>
 			<tr>
-				<td><code>shadowSize</code></td>
-				<td><code><a href="#point">Point</a></code>
-				<td>Size of the shadow image in pixels.</td>
-			</tr>
-			<tr>
 				<td><code>iconAnchor</code></td>
 				<td><code><a href="#point">Point</a></code>
 				<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.</td>
 			</tr>
 			<tr>
+				<td><code>shadowUrl</code></td>
+				<td><code>String</code>
+				<td>The URL to the icon shadow image. If <code>shadowUrl</code> is <code>null</code> then no shadow image will be created.</td>
+			</tr>
+			<tr>
+				<td><code>shadowSize</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Size of the shadow image in pixels.</td>
+			</tr>
+			<tr>
+				<td><code>shadowOffset</code></td>
+				<td><code><a href="#point">Point</a></code>
+				<td>Position of the shadow relative to the icon (<code>(0, 0)</code> by default)</td>
+			</tr>
+			<tr>
 				<td><code>popupAnchor</code></td>
 				<td><code><a href="#point">Point</a></code>
 				<td>The point from which the marker popup opens, relative to the anchor point.</td>
-			</tr>
-		</table>
-
-		<h3>Constructor</h3>
-
-		<table>
-			<tr>
-				<th>Constructor</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code>L.Icon( <nobr>&lt;String&gt; <i>iconUrl?</i> )</nobr></code></td>
-				<td>Creates an icon instance. You can optionally pass an iconUrl that will replace the default one (useful for creating many similar markers that only differ in the icon image).</td>
 			</tr>
 		</table>
 
