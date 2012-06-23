@@ -162,7 +162,7 @@
 
 				<h4>Misc</h4>
 				<ul>
-					<li><a href="#noconflict" class="nodocs">noConflict</a></li>
+					<li><a href="#noconflict">noConflict</a></li>
 					<li><a href="#version">VERSION</a></li>
 				</ul>
 			</div>
@@ -2971,6 +2971,18 @@ map.addControl(layersControl);</code></pre>
 		<p>A constant that represents the Leaflet version in use.<p>
 
 		<pre><code>L.VERSION // returns "0.3" (or whatever version is currently in use)</code></pre>
+
+
+		<h2 id="noconflict">L.noConflict()</h2>
+
+		<p>This method restores the L global variale to the original value it had before Leaflet inclusion, and returns the real Leaflet namespace so you can put it elsewhere, like this:<p>
+
+		<pre><code>// L points to some other library
+...
+// you include Leaflet, it replaces the L variable to Leaflet namespace
+
+var Leaflet = L.noConflict(); 
+// now L points to that other library again, and you can use Leaflet.Map etc.</code></pre>
 
 
 
