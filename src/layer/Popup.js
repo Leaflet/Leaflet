@@ -47,9 +47,13 @@ L.Popup = L.Class.extend({
 		this._update();
 
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
+
+		this.fire('open');
 	},
 
 	onRemove: function (map) {
+		this.fire('close');
+
 		map._panes.popupPane.removeChild(this._container);
 
 		L.Util.falseFn(this._container.offsetWidth);

@@ -35,11 +35,24 @@ L.Marker.include({
 		this._popup = new L.Popup(options, this)
 			.setContent(content);
 
+		var self = this;
+		this._popupOpen = function () {
+			self.fire('popupopen', {popup: this});
+		};
+		this._popupClose = function () {
+			self.fire('popupclose', {popup: this});
+		};
+
+		this._popup.on('open', this._popupOpen);
+		this._popup.on('close', this._popupClose);
+
 		return this;
 	},
 
 	unbindPopup: function () {
 		if (this._popup) {
+			this._popup.off('open', this._popupOpen);
+			this._popup.off('close', this._popupClose);
 			this._popup = null;
 			this.off('click', this.openPopup);
 		}
