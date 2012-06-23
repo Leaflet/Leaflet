@@ -1593,6 +1593,12 @@ var image = new L.ImageOverlay(
 				<td>True if VML is used for vector rendering (IE 6-8).</td>
 			</tr>
 			<tr>
+				<td><code>L.Path.CANVAS</code></td>
+				<td><code>Boolean</code></td>
+				<td>depends</td>
+				<td>True if Canvas is used for vector rendering (Android 2). You can also force this by setting global variable <code>L_PREFER_CANVAS</code> to true <em>before</em> the Leaflet include on your page — sometimes it can increase performance dramatically when rendering thousands of circle markers, but currently suffers from a bug that causes removing such layers to be extremely slow.</td>
+			</tr>
+			<tr>
 				<td><code>L.Path.CLIP_PADDING</code></td>
 				<td><code>Number</code></td>
 				<td><nobr><code>0.5</code> for SVG</nobr><br /><nobr><code>0.02</code> for VML</nobr></td>
@@ -2022,20 +2028,30 @@ map.addLayer(group);</code></pre>
 			</tr>
 			<tr>
 				<td><code>click</code></td>
-				<td><code><a href="#event">Event</a></code>
-				<td>Fired when the user clicks (or taps) on the group.</td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user clicks (or taps) the group.</td>
 			</tr>
 			<tr>
 				<td><code>dblclick</code></td>
-				<td><code><a href="#event">Event</a></code>
-				<td>Fired when the user double-clicks (or double-taps) on the group.</td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the user double-clicks (or double-taps) the group.</td>
+			</tr>
+			<tr>
+				<td><code>mouseover</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the mouse enters the group.</td>
+			</tr>
+			<tr>
+				<td><code>mouseout</code></td>
+				<td><code><a href="#mouse-event">MouseEvent</a></code>
+				<td>Fired when the mouse leaves the group.</td>
 			</tr>
 		</table>
 
 
 		<h2 id="geojson">L.GeoJSON</h2>
 
-		<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display on the map. Extends <a href="#layergroup">LayerGroup</a>.</p>
+		<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display on the map. Extends <a href="#featuregroup">FeatureGroup</a>.</p>
 
 		<pre><code class="javascript">var geojson = new L.GeoJSON();
 
@@ -2125,14 +2141,14 @@ map.addLayer(geojson);</code></pre>
 				<td>Creates a layer from a given GeoJSON geometry.</td>
 			</tr>
 			<tr>
-				<td><code>coordsToLatlng( <nobr>&lt;Array&gt; <i>coords</i> )</nobr></code></td>
+				<td><code>coordsToLatlng( <nobr>&lt;Array&gt; <i>coords</i></nobr>, <nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr></code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
-				<td>Creates a LatLng object from an array of 2 numbers used in GeoJSON for points.</td>
+				<td>Creates a LatLng object from an array of 2 numbers (latitude, longitude) used in GeoJSON for points. If <code>reverse</code> is set to <code>true</code>, the numbers will be interpreted as (longitude, latitude).</td>
 			</tr>
 			<tr>
-				<td><code>coordsToLatlngs( <nobr>&lt;Array&gt; <i>coords</i></nobr>, <nobr>&lt;Number&gt; <i>levelsDeep?</i> )</nobr></code></td>
+				<td><code>coordsToLatlngs( <nobr>&lt;Array&gt; <i>coords</i></nobr>, <nobr>&lt;Number&gt; <i>levelsDeep?</i></nobr>, <nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr></code></td>
 				<td><code>Array</code></td>
-				<td>Creates a multidimensional array of LatLng objects from a GeoJSON coordinates array. <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).</td>
+				<td>Creates a multidimensional array of LatLng objects from a GeoJSON coordinates array. <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default). If <code>reverse</code> is set to <code>true</code>, the numbers will be interpreted as (longitude, latitude).</td>
 			</tr>
 		</table>
 
@@ -2153,7 +2169,7 @@ map.addLayer(geojson);</code></pre>
 			</tr>
 			<tr>
 				<td><code>L.LatLng( <nobr>&lt;Number&gt; <i>latitude</i></nobr>, <nobr>&lt;Number&gt; <i>longitude</i></nobr>, <nobr>&lt;Boolean&gt; <i>noWrap?</i> )</nobr></code></td>
-				<td>Creates a LatLng object with the given latitude and longitude. Wraps longitude to lie between -180 and 180 and clamps longitude between -90 and 90 by default &mdash; you can disable this with the noWrap argument.</td>
+				<td>Creates an object representing a geographical point with the given latitude and longitude. Wraps longitude to lie between <code>-180</code> and <code>180</code> and clamps longitude between <code>-90</code> and <code>90</code> by default &mdash; you can disable this with the <code>noWrap</code> argument.</td>
 			</tr>
 		</table>
 
@@ -2319,7 +2335,7 @@ map.addLayer(geojson);</code></pre>
 			<tr>
 				<td><code>toBBoxString()</code></td>
 				<td><code>String</code></td>
-				<td>Returns a string with bounding box coordinates in a "southwest_lng,southwest_lat,northeast_lng,northeast_lat" format. Useful for sending requests to web services that return geo data.</td>
+				<td>Returns a string with bounding box coordinates in a <code>"southwest_lng,southwest_lat,northeast_lng,northeast_lat"</code> format. Useful for sending requests to web services that return geo data.</td>
 			</tr>
 		</table>
 
@@ -2338,8 +2354,8 @@ map.addLayer(geojson);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Point( <nobr>&lt;Number&gt; <i>x</i>, &lt;Number&gt; <i>y</i> )</nobr></code></td>
-				<td>Creates a Point object with the given x and y coordinates.</td>
+				<td><code>L.Point( <nobr>&lt;Number&gt; <i>x</i>, &lt;Number&gt; <i>y</i></nobr>, <nobr>&lt;Boolean&gt; <i>round?</i> )</nobr></code></td>
+				<td>Creates a Point object with the given <code>x</code> and <code>y</code> coordinates. If optional <code>round</code> is set to <code>true</code>, rounds the <code>x</code> and <code>y</code> values.</td>
 			</tr>
 		</table>
 
@@ -2387,9 +2403,9 @@ map.addLayer(geojson);</code></pre>
 				<td>Returns the result of multiplication of the current point by the given number.</td>
 			</tr>
 			<tr>
-				<td><code>divideBy( <nobr>&lt;Number&gt; <i>number</i> )</nobr></code></td>
+				<td><code>divideBy( <nobr>&lt;Number&gt; <i>number</i></nobr>, <nobr>&lt;Boolean&gt; <i>round?</i> )</nobr></code></td>
 				<td><code><a href="#point">Point</a></code></td>
-				<td>Returns the result of division of the current point by the given number.</td>
+				<td>Returns the result of division of the current point by the given number. If optional <code>round</code> is set to <code>true</code>, returns a rounded result.</td>
 			</tr>
 			<tr>
 				<td><code>distanceTo( <nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr></code></td>
@@ -2431,10 +2447,10 @@ map.addLayer(geojson);</code></pre>
 			</tr>
 			<tr>
 				<td><code>L.Bounds( <nobr>&lt;<a href="#point">Point</a>&gt; <i>topLeft</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>bottomRight</i> )</nobr></code></td>
-				<td>Creates a Bounds object by defining top-left and bottom-right coordinates of the rectangle.</td>
+				<td>Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).</td>
 			</tr>
 			<tr>
-				<td><code>L.LatLngBounds( <nobr>&lt;<a href="#point">Point</a>[]&gt;points )</nobr></code></td>
+				<td><code>L.LatLngBounds( <nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i> )</nobr></code></td>
 				<td>Creates a Bounds object defined by the points it contains.</td>
 			</tr>
 		</table>
@@ -2904,20 +2920,20 @@ map.addControl(layersControl);</code></pre>
 			</tr>
 		</table>
 
-				<h3 id="popup-event">Popup event</h3>
+		<h3 id="popup-event">Popup event</h3>
 
-				<table>
-						<tr>
-								<th>property</th>
-								<th>type</th>
-								<th>description</th>
-						</tr>
-						<tr>
-								<td><code>popup</code></td>
-								<td><code><a href="#popup">Popup</a></code></td>
-								<td>The popup that was opened or closed.</td>
-						</tr>
-				</table>
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>popup</code></td>
+				<td><code><a href="#popup">Popup</a></code></td>
+				<td>The popup that was opened or closed.</td>
+			</tr>
+		</table>
 
 		<!-- <h3>TileEvent</h3> -->
 
