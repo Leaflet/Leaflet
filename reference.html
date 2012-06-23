@@ -131,8 +131,8 @@
 				</ul>
 				<h4>Utility</h4>
 				<ul>
-					<li><a href="#class">Class</a></li>
-					<li><a class="nodocs" href="#">Browser</a></li>
+					<li><a class="nodocs" href="#class">Class</a></li>
+					<li><a href="#">Browser</a></li>
 					<li><a class="nodocs" href="#">Util</a></li>
 					<!-- <li><a class="nodocs" href="#">LineUtil</a></li>
 					<li><a class="nodocs" href="#">PolyUtil</a></li> -->
@@ -162,7 +162,7 @@
 
 				<h4>Misc</h4>
 				<ul>
-					<li><a href="#noconflict" class="nodocs">noConflict</a></li>
+					<li><a href="#noconflict">noConflict</a></li>
 					<li><a href="#version">version</a></li>
 				</ul>
 			</div>
@@ -2950,6 +2950,74 @@ map.addControl(layersControl);</code></pre>
 
 
 
+		<h2 id="browser">L.Browser</h2>
+
+		<p>A namespace with properties for browser/feature detection used by Leaflet internally.</p>
+
+		<table>
+			<tr>
+				<th>property</th>
+				<th>type</th>
+				<th>description</th>
+			</tr>
+			<tr>
+				<td><code>ie</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for all old Internet Explorer versions (6-8).</td>
+			</tr>
+			<tr>
+				<td><code>ie6</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for Internet Explorer 6.</td>
+			</tr>
+			<tr>
+				<td><code>webkit</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
+			</tr>
+			<tr>
+				<td><code>webkit3d</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for webkit-based browsers that support CSS 3D transformations.</td>
+			</tr>
+			<tr>
+				<td><code>gecko</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for Gecko-based browsers like Firefox and Mozilla.</td>
+			</tr>
+			<tr>
+				<td><code>opera</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for Opera.</td>
+			</tr>
+			<tr>
+				<td><code>android</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for Android mobile browser.</td>
+			</tr>
+			<tr>
+				<td><code>mobile</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for modern mobile browsers (including iOS Safari and different Android browsers).</td>
+			</tr>
+			<tr>
+				<td><code>mobileWebkit</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for mobile webkit-based browsers.</td>
+			</tr>
+			<tr>
+				<td><code>mobileOpera</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for mobile Opera.</td>
+			</tr>
+			<tr>
+				<td><code>touch</code></td>
+				<td><code>Boolean</code></td>
+				<td><code>true</code> for all browsers on touch devices.</td>
+			</tr>
+		</table>
+
+
 
 		<h2 id="ihandler">IHandler</h2>
 		<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
@@ -2982,6 +3050,18 @@ map.addControl(layersControl);</code></pre>
 		<p>A constant that represents the Leaflet version in use.<p>
 
 		<pre><code>L.version // returns "0.4" (or whatever version is currently in use)</code></pre>
+
+
+		<h2 id="noconflict">L.noConflict()</h2>
+
+		<p>This method restores the L global variale to the original value it had before Leaflet inclusion, and returns the real Leaflet namespace so you can put it elsewhere, like this:<p>
+
+		<pre><code>// L points to some other library
+...
+// you include Leaflet, it replaces the L variable to Leaflet namespace
+
+var Leaflet = L.noConflict(); 
+// now L points to that other library again, and you can use Leaflet.Map etc.</code></pre>
 
 
 
