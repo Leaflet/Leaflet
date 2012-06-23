@@ -75,11 +75,17 @@ L.Popup = L.Class.extend({
 		return this;
 	},
 
+	getSource: function () {
+		return this._source;
+	},
+
 	_close: function () {
 		var map = this._map;
 
 		if (map) {
 			map._popup = null;
+
+			this.getSource().fire('popupclose');
 
 			map
 				.removeLayer(this)

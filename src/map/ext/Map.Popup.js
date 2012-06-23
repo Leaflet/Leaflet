@@ -5,6 +5,8 @@ L.Map.include({
 
 		this._popup = popup;
 
+		popup.getSource().fire('popupopen');
+
 		return this
 			.addLayer(popup)
 			.fire('popupopen', {popup: this._popup});
