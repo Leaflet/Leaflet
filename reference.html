@@ -131,7 +131,7 @@
 				</ul>
 				<h4>Utility</h4>
 				<ul>
-					<li><a class="nodocs" href="#class">Class</a></li>
+					<li><a href="#class">Class</a></li>
 					<li><a href="#">Browser</a></li>
 					<li><a class="nodocs" href="#">Util</a></li>
 					<!-- <li><a class="nodocs" href="#">LineUtil</a></li>
@@ -2735,6 +2735,13 @@ map.addControl(layersControl);</code></pre>
 	alert(e.latlng);
 });</code></pre>
 
+		<p>Leaflet deals with event listeners by reference, so if you want to add a listener and then remove it, define it as a function:</p>
+
+		<pre><code>function onClick(e) { ... }
+
+map.on('click', onClick);
+map.off('click', onClick);</code></pre>
+
 		<h3>Methods</h3>
 		<table>
 			<tr>
@@ -2939,9 +2946,141 @@ map.addControl(layersControl);</code></pre>
 
 
 
+		<h2 id="class">L.Class</h2>
+
+		<p><code>L.Class</code> powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.</p>
+		<p>In addition to implementing a simple classical inheritance model, it introduces several special properties for convenient code organization &mdash; <code>options</code>, <code>includes</code> and <code>statics</code>.</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	initialize: function (greeter) {
+		this.greeter = greeter;
+		// class constructor
+	},
+
+	greet: function (name) {
+		alert(this.greeter + ', ' + name)
+	}
+});
+
+// create instance of MyClass, passing "Hello" to the constructor
+var a = new MyClass("Hello");
+
+// call greet method, alerting "Hello, World"
+a.greet("World");
+</code></pre>
+
+		<h3>Inheritance</h3>
+
+		<p>You use <code>L.Class.extend</code> to define new classes, but you can use the same method on any class to inherit from it:</p>
+
+<pre><code>var MyChildClass = MyClass.extend({
+	// ... new properties and methods 
+});</code></pre>
+
+		<p>This will create a class that inherits all methods and properties of the parent class (through a proper prototype chain), adding or overriding the ones you pass to <code>extend</code>. It will also properly react to <code>instanceof</code>:</p>
+
+<pre><code>var a = new MyChildClass();
+a instanceof MyChildClass; // true
+a instanceof MyClass; // true
+</code></pre>
+
+		<p>You can call parent methods (including constructor) from corresponding child ones (as you do with <code>super</code> calls in other languages) by accessing parent class prototype and using JavaScript's <code>call</code> or <code>apply</code>:</p>
+
+<pre><code>var MyChildClass = MyClass.extend({
+	initialize: function () {
+		MyClass.prototype.initialize.call("Yo");
+	},
+
+	greet: function (name) {
+		MyClass.prototype.greet.call(this, 'bro ' + name + '!');
+	}
+});
+
+var a = new MyChildClass();
+a.greet('Jason'); // alerts "Yo, bro Jason!"</code></pre>
+
+		<h3>Options</h3>
+
+		<p><code>options</code> is a special property that unlike other objects that you pass to <code>extend</code> will be merged with the parent one instead of overriding it completely, which makes managing configuration of objects and default values convenient:</p> 
+
+<pre><code>var MyClass = L.Class.extend({
+	options: {
+		myOption1: 'foo',
+		myOption2: 'bar'
+	}
+});
+
+var MyChildClass = L.Class.extend({
+	options: {
+		myOption1: 'baz',
+		myOption3: 5
+	}
+});
+
+var a = new MyChildClass();
+a.options.myOption1; // 'baz'
+a.options.myOption2; // 'bar'
+a.options.myOption3; // 5</code></pre>
+
+		<p>There's also <code>L.Util.setOptions</code>, a method for conveniently merging options passed to constructor with the defauls defines in the class:</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	options: {
+		foo: 'bar',
+		bla: 5
+	},
+
+	initialize: function (options) {
+		L.Util.setOptions(this, options);
+		...
+	}
+});
+
+var a = new MyClass({bla: 10});
+a.options; // {foo: 'bar', bla: 10}</code></pre>
+
+		<h3>Includes</h3>
+
+		<p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins). A good example of this is <code>L.Mixin.Events</code> that <a href="#events">event-related methods</a> like <code>on</code>, <code>off</code> and <code>fire</code> to the class.</p>
+
+<pre><code> var MyMixin = {
+	foo: function () { ... },
+	bar: 5
+};
+
+var MyClass = L.Class.extend({
+	includes: MyMixin
+});
+
+var a = new MyClass();
+a.foo();</code></pre>
+
+		<p>You can also do such includes in runtime with the <code>include</code> method:</p>
+
+<pre><code>MyClass.include(MyMixin);</code></pre>
+
+		<h3>Statics</h3>
+
+		<p><code>statics</code> is just a convenience property that injects specified object properties as the static properties of the class, useful for defining constants:</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	statics: {
+		FOO: 'bar',
+		BLA: 5
+	}
+});
+
+MyClass.FOO; // 'bar'</code></pre>
+
+
+
 		<h2 id="browser">L.Browser</h2>
 
 		<p>A namespace with properties for browser/feature detection used by Leaflet internally.</p>
+
+<pre><code>if (L.Browser.ie6) {
+	alert('Upgrade your browser, dude!');
+}</code></pre>
 
 		<table>
 			<tr>
