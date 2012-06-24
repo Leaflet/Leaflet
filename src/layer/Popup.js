@@ -164,15 +164,15 @@ L.Popup = L.Class.extend({
 		}
 
 		this._containerWidth = this._container.offsetWidth;
-		this._containerBottom = -this.options.offset.y;
+		this._containerTop = this.options.offset.y - this._container.offsetHeight;
 		this._containerLeft = -Math.round(this._containerWidth / 2) + this.options.offset.x;
 	},
 
 	_updatePosition: function () {
 		var pos = this._map.latLngToLayerPoint(this._latlng);
 
-		this._container.style.bottom = this._containerBottom + 'px';
-		this._container.style.left = this._containerLeft + 'px';
+		this._container.style.marginTop = this._containerTop + 'px';
+		this._container.style.marginLeft = this._containerLeft + 'px';
 
 		L.DomUtil.setPosition(this._container, pos);
 	},
@@ -191,7 +191,7 @@ L.Popup = L.Class.extend({
 			containerWidth = this._containerWidth,
 
 			layerPos = L.DomUtil.getPosition(this._container).add(
-				new L.Point(this._containerLeft, -containerHeight - this._containerBottom)),
+				new L.Point(this._containerLeft, this._containerTop)),
 
 			containerPos = map.layerPointToContainerPoint(layerPos),
 			adjustOffset = new L.Point(0, 0),
