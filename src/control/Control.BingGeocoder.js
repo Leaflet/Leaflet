@@ -3,6 +3,7 @@ L.Control.BingGeocoder = L.Control.extend({
 	options: {
 		collapsed: true,
 		position: 'topright',
+		text: 'Locate',
 		callback: function (results) {
 			var bbox = results.resourceSets[0].resources[0].bbox,
 				first = new L.LatLng(bbox[0], bbox[1]),
@@ -37,7 +38,7 @@ L.Control.BingGeocoder = L.Control.extend({
 
 		var submit = document.createElement('button');
 		submit.type = "submit";
-		submit.innerHTML = "Locate";
+		submit.innerHTML = this.options.text;
 
 		form.appendChild(input);
 		form.appendChild(submit);
