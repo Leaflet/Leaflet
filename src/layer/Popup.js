@@ -164,17 +164,22 @@ L.Popup = L.Class.extend({
 		}
 
 		this._containerWidth = this._container.offsetWidth;
-		this._containerBottom = -this.options.offset.y;
-		this._containerLeft = -Math.round(this._containerWidth / 2) + this.options.offset.x;
 	},
 
 	_updatePosition: function () {
-		var pos = this._map.latLngToLayerPoint(this._latlng);
+		var pos = this._map.latLngToLayerPoint(this._latlng),
+			is3d = L.Browser.any3d,
+			offset = this.options.offset;
+
+		if (is3d) {
+			L.DomUtil.setPosition(this._container, pos);
+		}
+
+		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
+		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
 
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
-
-		L.DomUtil.setPosition(this._container, pos);
 	},
 	
 	_zoomAnimation: function (opt) {
@@ -190,29 +195,33 @@ L.Popup = L.Class.extend({
 			containerHeight = this._container.offsetHeight,
 			containerWidth = this._containerWidth,
 
-			layerPos = L.DomUtil.getPosition(this._container).add(
-				new L.Point(this._containerLeft, -containerHeight - this._containerBottom)),
+			layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-			containerPos = map.layerPointToContainerPoint(layerPos),
-			adjustOffset = new L.Point(0, 0),
-			padding      = this.options.autoPanPadding,
-			size         = map.getSize();
+		if (L.Browser.any3d) {
+			layerPos._add(L.DomUtil.getPosition(this._container));
+		}
+
+		var containerPos = map.layerPointToContainerPoint(layerPos),
+			padding = this.options.autoPanPadding,
+			size = map.getSize(),
+			dx = 0,
+			dy = 0;
 
 		if (containerPos.x < 0) {
-			adjustOffset.x = containerPos.x - padding.x;
+			dx = containerPos.x - padding.x;
 		}
 		if (containerPos.x + containerWidth > size.x) {
-			adjustOffset.x = containerPos.x + containerWidth - size.x + padding.x;
+			dx = containerPos.x + containerWidth - size.x + padding.x;
 		}
 		if (containerPos.y < 0) {
-			adjustOffset.y = containerPos.y - padding.y;
+			dy = containerPos.y - padding.y;
 		}
 		if (containerPos.y + containerHeight > size.y) {
-			adjustOffset.y = containerPos.y + containerHeight - size.y + padding.y;
+			dy = containerPos.y + containerHeight - size.y + padding.y;
 		}
 
-		if (adjustOffset.x || adjustOffset.y) {
-			map.panBy(adjustOffset);
+		if (dx || dy) {
+			map.panBy(new L.Point(dx, dy));
 		}
 	},
 
