@@ -10,6 +10,7 @@
 	L.Browser = {
 		ie: ie,
 		ie6: ie && !window.XMLHttpRequest,
+		ie3d: ie && ('transition' in document.createElement('div').style),
 
 		webkit: webkit,
 		webkit3d: webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
@@ -53,6 +54,6 @@
 			return touchSupported;
 		}())
 	};
-	L.Browser.any3d = !!L.Browser.webkit3d || !!L.Browser.gecko3d || !!L.Browser.opera3d;
+	L.Browser.any3d = !!L.Browser.webkit3d || !!L.Browser.gecko3d || !!L.Browser.opera3d || !!L.Browser.ie3d;
 		
 }());
