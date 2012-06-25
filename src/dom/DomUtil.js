@@ -124,7 +124,10 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		var is3d = L.Browser.mobileWebkit3d,
+		//On webkit browsers (Chrome/Safari/MobileSafari/Android) using translate3d instead of translate
+		// makes animation smoother as it ensures HW accel is used.
+		//Firefox 13 doesn't care (same speed either way), Opera 12 doesn't support translate3d
+		var is3d = L.Browser.webkit3d,
 			open = 'translate' + (is3d ? '3d' : '') + '(',
 			close = (is3d ? ',0' : '') + ')';
 
