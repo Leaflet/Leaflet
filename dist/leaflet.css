@@ -135,7 +135,9 @@ a.leaflet-active {
 .leaflet-control-zoom a {
 	background-color: rgba(255, 255, 255, 0.75);
 	}
-.leaflet-control-zoom a, .leaflet-control-layers a {
+.leaflet-control-zoom a,
+.leaflet-control-layers a,
+.leaflet-control-geocoder a {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
@@ -162,27 +164,37 @@ a.leaflet-active {
 	background-image: url(images/zoom-out.png);
 	}
 
-.leaflet-control-layers {
+.leaflet-control-layers,
+.leaflet-control-geocoder {
 	box-shadow: 0 1px 7px #999;
 	background: #f8f8f9;
 	-moz-border-radius: 8px;
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
 	}
-.leaflet-control-layers a {
+.leaflet-control-layers a,
+.leaflet-control-geocoder a {
 	background-image: url(images/layers.png);
 	width: 36px;
 	height: 36px;
 	}
-.leaflet-touch .leaflet-control-layers a {
+.leaflet-control-geocoder a {
+	background-image: url(images/geocoder.png);
+	}
+
+.leaflet-touch .leaflet-control-layers a,
+.leaflet-touch .leaflet-control-geocoder a {
 	width: 44px;
 	height: 44px;
 	}
 .leaflet-control-layers .leaflet-control-layers-list,
-.leaflet-control-layers-expanded .leaflet-control-layers-toggle {
+.leaflet-control-layers-expanded .leaflet-control-layers-toggle,
+.leaflet-control-geocoder .leaflet-control-geocoder-form,
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-toggle {
 	display: none;
 	}
-.leaflet-control-layers-expanded .leaflet-control-layers-list {
+.leaflet-control-layers-expanded .leaflet-control-layers-list,
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
 	display: block;
 	position: relative;
 	}
@@ -204,6 +216,10 @@ a.leaflet-active {
 	height: 0;
 	border-top: 1px solid #ddd;
 	margin: 5px -10px 5px -6px;
+	}
+
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form {
+	padding: 5px;
 	}
 
 .leaflet-container .leaflet-control-attribution {
@@ -379,47 +395,3 @@ a.leaflet-active {
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
 	}
-
-.leaflet-control-geocoder a {
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
-	display: block;
-}
-
-.leaflet-control-geocoder {
-	box-shadow: 0 1px 7px #999;
-	background: #f8f8f9;
-	-moz-border-radius: 8px;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;
-}
-
-.leaflet-control-geocoder a {
-	background-image: url(images/geocoder.png);
-	width: 36px;
-	height: 36px;
-}
-
-.leaflet-touch .leaflet-control-geocoder a {
-	width: 44px;
-	height: 44px;
-}
-
-.leaflet-control-geocoder-form,
-.leaflet-touch-geocoder-form,
-.leaflet-control-geocoder-expanded a,
-.leaflet-touch-geocoder-expanded a {
-    display: none;
-}
-
-.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form,
-.leaflet-touch-geocoder-expanded .leaflet-touch-geocoder-form {
-    padding: 5px;
-    display: block;
-}
-
-.leaflet-control-geocoder-expanded input[type=text], 
-.leaflet-touch-geocoder-expanded input[type=text] {
-    padding: 2px;
-    width: 150px;
-}
