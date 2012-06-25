@@ -632,8 +632,6 @@ L.DomUtil = {
 		}
 	},
 
-	//TODO refactor away this ugly translate/position mess
-
 	testProp: function (props) {
 		var style = document.documentElement.style;
 
@@ -646,7 +644,11 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		var is3d = L.Browser.mobileWebkit3d,
+		// On webkit browsers (Chrome/Safari/MobileSafari/Android) using translate3d instead of translate
+		// makes animation smoother as it ensures HW accel is used. Firefox 13 doesn't care
+		// (same speed either way), Opera 12 doesn't support translate3d
+
+		var is3d = L.Browser.webkit3d,
 			open = 'translate' + (is3d ? '3d' : '') + '(',
 			close = (is3d ? ',0' : '') + ')';
 
@@ -666,6 +668,7 @@ L.DomUtil = {
 		if (!disable3D && L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 
+			// workaround for Android 2/3 stability (https://github.com/CloudMade/Leaflet/issues/69)
 			if (L.Browser.mobileWebkit3d) {
 				el.style.WebkitBackfaceVisibility = 'hidden';
 			}
@@ -1737,6 +1740,19 @@ L.TileLayer = L.Class.extend({
 		this._map = null;
 	},
 
+	bringToFront: function () {
+		if (this._container) {
+			this._map._panes.tilePane.appendChild(this._container);
+		}
+	},
+
+	bringToBack: function () {
+		var pane = this._map._panes.tilePane;
+		if (this._container) {
+			pane.insertBefore(this._container, pane.firstChild);
+		}
+	},
+
 	getAttribution: function () {
 		return this.options.attribution;
 	},
@@ -2383,14 +2399,14 @@ L.Marker = L.Class.extend({
 	onAdd: function (map) {
 		this._map = map;
 
-		map.on('viewreset', this._reset, this);
+		map.on('viewreset', this.update, this);
 
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 
 		this._initIcon();
-		this._reset();
+		this.update();
 	},
 
 	onRemove: function (map) {
@@ -2401,7 +2417,7 @@ L.Marker = L.Class.extend({
 			this.closePopup();
 		}
 
-		map.off('viewreset', this._reset, this)
+		map.off('viewreset', this.update, this)
 		   .off('zoomanim', this._zoomAnimation, this);
 
 		this._map = null;
@@ -2414,7 +2430,7 @@ L.Marker = L.Class.extend({
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
 
-		this._reset();
+		this.update();
 
 		if (this._popup) {
 			this._popup.setLatLng(latlng);
@@ -2423,7 +2439,7 @@ L.Marker = L.Class.extend({
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
-		this._reset();
+		this.update();
 	},
 
 	setIcon: function (icon) {
@@ -2435,8 +2451,15 @@ L.Marker = L.Class.extend({
 
 		if (this._map) {
 			this._initIcon();
-			this._reset();
+			this.update();
 		}
+	},
+
+	update: function () {
+		if (!this._icon) { return; }
+
+		var pos = this._map.latLngToLayerPoint(this._latlng).round();
+		this._setPos(pos);
 	},
 
 	_initIcon: function () {
@@ -2475,13 +2498,6 @@ L.Marker = L.Class.extend({
 		}
 
 		this._icon = this._shadow = null;
-	},
-
-	_reset: function () {
-		if (!this._icon) { return; }
-
-		var pos = this._map.latLngToLayerPoint(this._latlng).round();
-		this._setPos(pos);
 	},
 
 	_setPos: function (pos) {
@@ -2757,6 +2773,7 @@ L.Popup = L.Class.extend({
 		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
 		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
 
+		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
 	},
