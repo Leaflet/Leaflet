@@ -5923,9 +5923,24 @@ L.Control.Layers = L.Control.extend({
 		return this;
 	},
 
+	getVisibleLayers: function () {
+		var i, input,
+			visible = [],
+			inputs = this._form.getElementsByTagName('input'),
+			inputsLen = inputs.length;
+
+		for (i = 0; i < inputsLen; i++) {
+			input = inputs[i];
+			if (input.checked) {
+				visible.push(input.value);
+			}
+		}
+		return visible;
+	},
+
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
-		    container = this._container = L.DomUtil.create('div', className);
+			container = this._container = L.DomUtil.create('div', className);
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
@@ -6008,6 +6023,7 @@ L.Control.Layers = L.Control.extend({
 		}
 		input.type = obj.overlay ? 'checkbox' : 'radio';
 		input.layerId = L.Util.stamp(obj.layer);
+		input.value = obj.name;
 		input.defaultChecked = this._map.hasLayer(obj.layer);
 
 		L.DomEvent.addListener(input, 'click', this._onInputClick, this);
