@@ -2731,7 +2731,7 @@ L.Popup = L.Class.extend({
 
 		L.DomUtil.setPosition(this._container, pos);
 	},
-	
+
 	_zoomAnimation: function (opt) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
 
@@ -2767,6 +2767,7 @@ L.Popup = L.Class.extend({
 		}
 
 		if (adjustOffset.x || adjustOffset.y) {
+			map.fire('autopanstart');
 			map.panBy(adjustOffset);
 		}
 	},
