@@ -347,7 +347,9 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		mobile: mobile,
 		mobileWebkit: mobile && webkit,
 		mobileWebkit3d: mobile && webkit3d,
-		mobileOpera: mobile && opera
+		mobileOpera: mobile && opera,
+
+		touch: touch
 	};
 }());
 
