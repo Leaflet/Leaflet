@@ -3,15 +3,17 @@ L.Control.BingGeocoder = L.Control.extend({
 	options: {
 		collapsed: true,
 		position: 'topright',
+		key: null,
 		callback: function (results) {
 			var bbox = results.resourceSets[0].resources[0].bbox,
 				first = new L.LatLng(bbox[0], bbox[1]),
 				second = new L.LatLng(bbox[2], bbox[3]),
 				bounds = new L.LatLngBounds([first, second]);
 			this._map.fitBounds(bounds);
-		},
-		key: null
+		}
 	},
+
+	_callbackId: 0,
 
 	initialize: function (options) {
 		L.Util.setOptions(this, options);
@@ -29,13 +31,13 @@ L.Control.BingGeocoder = L.Control.extend({
 		}
 
 		var form = this._form = L.DomUtil.create('form', className + '-form');
-		
+
 		var input = this._input = document.createElement('input');
 		input.type = "text";
 
 		var submit = document.createElement('button');
 		submit.type = "submit";
-		submit.innerHTML = "Localiser";
+		submit.innerHTML = "Locate";
 
 		form.appendChild(input);
 		form.appendChild(submit);
@@ -61,22 +63,24 @@ L.Control.BingGeocoder = L.Control.extend({
 
 		return container;
 	},
-	
-	_geocode: function (event) {
+
+	_geocode : function (event) {
 		L.DomEvent.preventDefault(event);
-		var $ = window.JQuery || window.$;
-		$.getJSON("http://dev.virtualearth.net/REST/v1/Locations?jsonp=?",
-			{
-				key: this._options.key,
-				query: this._input.value
-			}
-		)
-		.success(this._options.callback)
-		.error(
-			function (error) {
-				console.info(error);
-			}
-		);
+		this._callbackId = "_l_binggeocoder_" + (this._callbackId++);
+		window[this._callbackId] = L.Util.bind(this.options.callback, this);
+
+		var params = {
+			query: this._input.value,
+			key : this.options.key,
+			jsonp : this._callbackId
+		},
+		url = "http://dev.virtualearth.net/REST/v1/Locations" + L.Util.getParamString(params),
+		script = document.createElement("script");
+
+		script.type = "text/javascript";
+		script.src = url;
+		script.id = this._callbackId;
+		document.getElementsByTagName("head")[0].appendChild(script);
 	},
 
 	_expand: function () {
