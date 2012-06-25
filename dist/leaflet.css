@@ -379,3 +379,47 @@ a.leaflet-active {
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
 	}
+
+.leaflet-control-geocoder a {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+}
+
+.leaflet-control-geocoder {
+	box-shadow: 0 1px 7px #999;
+	background: #f8f8f9;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	border-radius: 8px;
+}
+
+.leaflet-control-geocoder a {
+	background-image: url(images/geocoder.png);
+	width: 36px;
+	height: 36px;
+}
+
+.leaflet-touch .leaflet-control-geocoder a {
+	width: 44px;
+	height: 44px;
+}
+
+.leaflet-control-geocoder-form,
+.leaflet-touch-geocoder-form,
+.leaflet-control-geocoder-expanded a,
+.leaflet-touch-geocoder-expanded a {
+    display: none;
+}
+
+.leaflet-control-geocoder-expanded .leaflet-control-geocoder-form,
+.leaflet-touch-geocoder-expanded .leaflet-touch-geocoder-form {
+    padding: 5px;
+    display: block;
+}
+
+.leaflet-control-geocoder-expanded input[type=text], 
+.leaflet-touch-geocoder-expanded input[type=text] {
+    padding: 2px;
+    width: 150px;
+}
