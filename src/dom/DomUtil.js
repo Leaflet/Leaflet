@@ -124,7 +124,10 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		var is3d = L.Browser.mobileWebkit3d,
+		//On webkit browsers (Chrome/Safari/MobileSafari/Android) using translate3d instead of translate
+		// makes animation smoother as it ensures HW accel is used.
+		//Firefox 13 doesn't care (same speed either way), Opera 12 doesn't support translate3d
+		var is3d = L.Browser.webkit3d,
 			open = 'translate' + (is3d ? '3d' : '') + '(',
 			close = (is3d ? ',0' : '') + ')';
 
@@ -144,6 +147,7 @@ L.DomUtil = {
 		if (!disable3D && L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 
+			//Work around for android 2/3 stability (https://github.com/CloudMade/Leaflet/issues/69)
 			if (L.Browser.mobileWebkit3d) {
 				el.style.WebkitBackfaceVisibility = 'hidden';
 			}
