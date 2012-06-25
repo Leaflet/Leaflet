@@ -206,14 +206,17 @@ L.TileLayer = L.Class.extend({
 
 		var fragment = document.createDocumentFragment();
 
-		this._tilesToLoad = queue.length;
+		if (queue.length > 0) {
 
-		var k, len;
-		for (k = 0, len = this._tilesToLoad; k < len; k++) {
-			this._addTile(queue[k], fragment);
+			this._tilesToLoad = queue.length;
+
+			var k, len;
+			for (k = 0, len = this._tilesToLoad; k < len; k++) {
+				this._addTile(queue[k], fragment);
+			}
+
+			this._container.appendChild(fragment);
 		}
-
-		this._container.appendChild(fragment);
 	},
 
 	_removeOtherTiles: function (bounds) {
