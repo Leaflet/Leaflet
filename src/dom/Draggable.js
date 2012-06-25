@@ -73,19 +73,15 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onMove: function (e) {
-		if (e.touches && e.touches.length > 1) {
-			return;
-		}
+		if (e.touches && e.touches.length > 1) { return; }
 
-		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
-		var newPoint = new L.Point(first.clientX, first.clientY);
-		var diffVec = newPoint.subtract(this._startPoint);
-		if (!diffVec.x && !diffVec.y) {
-			return;
-		}
+		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
+			newPoint = new L.Point(first.clientX, first.clientY),
+			diffVec = newPoint.subtract(this._startPoint);
+
+		if (!diffVec.x && !diffVec.y) { return; }
 
 		L.DomEvent.preventDefault(e);
-
 
 		if (!this._moved) {
 			this.fire('dragstart');
