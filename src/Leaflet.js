@@ -3,13 +3,14 @@ var L, originalL;
 if (typeof exports !== 'undefined') {
 	L = exports;
 } else {
-	L = {};
-	
+
 	originalL = window.L;
+	L = {};
 
 	L.noConflict = function () {
+		var l = window.L;
 		window.L = originalL;
-		return L;
+		return l;
 	};
 
 	window.L = L;
