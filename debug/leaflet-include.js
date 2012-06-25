@@ -89,7 +89,8 @@
 		'control/Control.Zoom.js',
 		'control/Control.Attribution.js',
 		'control/Control.Layers.js',
-		'control/Control.Scale.js'
+		'control/Control.Scale.js',
+		'control/Control.BingGeocoder.js'
 	];
 
 	function getSrcUrl() {
