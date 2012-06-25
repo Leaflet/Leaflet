@@ -6069,7 +6069,6 @@ L.Control.BingGeocoder = L.Control.extend({
 	options: {
 		collapsed: true,
 		position: 'topright',
-		key: null,
 		callback: function (results) {
 			var bbox = results.resourceSets[0].resources[0].bbox,
 				first = new L.LatLng(bbox[0], bbox[1]),
@@ -6081,7 +6080,8 @@ L.Control.BingGeocoder = L.Control.extend({
 
 	_callbackId: 0,
 
-	initialize: function (options) {
+	initialize: function (key, options) {
+		this.key = key;
 		L.Util.setOptions(this, options);
 	},
 
@@ -6137,7 +6137,7 @@ L.Control.BingGeocoder = L.Control.extend({
 
 		var params = {
 			query: this._input.value,
-			key : this.options.key,
+			key : this.key,
 			jsonp : this._callbackId
 		},
 		url = "http://dev.virtualearth.net/REST/v1/Locations" + L.Util.getParamString(params),
