@@ -124,6 +124,9 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.removeListener(document, L.Draggable.END, this._onUp);
 
 		if (this._moved) {
+			// ensure drag is not fired after dragend
+			L.Util.cancelAnimFrame(this._animRequest);
+
 			this.fire('dragend');
 		}
 		this._moving = false;
