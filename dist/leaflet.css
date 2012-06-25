@@ -277,6 +277,13 @@ a.leaflet-active {
 	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	}
 
+.leaflet-zoom-anim .leaflet-image-layer {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75), width 0.25s cubic-bezier(0.25,0.1,0.25,0.75), height 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75), width 0.25s cubic-bezier(0.25,0.1,0.25,0.75), height 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75), width 0.25s cubic-bezier(0.25,0.1,0.25,0.75), height 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75), width 0.25s cubic-bezier(0.25,0.1,0.25,0.75), height 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+}
+
 .leaflet-touching .leaflet-zoom-animated {
 	-webkit-transition: none;
 	-moz-transition: none;
