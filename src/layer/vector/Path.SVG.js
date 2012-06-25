@@ -132,6 +132,7 @@ L.Map.include({
 	},
 
 	_animatePathZoom: function (opt) {
+		// TODO refactor into something more manageble
 		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
 			scale = Math.pow(2, opt.zoom - this._zoom),
 			offset = centerOffset.divideBy(1 - 1 / scale),

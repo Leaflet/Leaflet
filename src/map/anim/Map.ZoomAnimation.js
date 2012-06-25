@@ -45,7 +45,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			center: center,
 			zoom: zoom
 		});
-		
+
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;

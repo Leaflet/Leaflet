@@ -96,6 +96,10 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+	},
+
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
 		// stupid webkit hack to force redrawing of tiles
 		var i,
@@ -108,10 +112,6 @@ L.TileLayer = L.Class.extend({
 				}
 			}
 		}
-	},
-
-	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
 	},
 
 	_initContainer: function () {

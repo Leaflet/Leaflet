@@ -1747,6 +1747,10 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+	},
+
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
 		// stupid webkit hack to force redrawing of tiles
 		var i,
@@ -1759,10 +1763,6 @@ L.TileLayer = L.Class.extend({
 				}
 			}
 		}
-	},
-
-	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
 	},
 
 	_initContainer: function () {
@@ -2167,9 +2167,15 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 L.ImageOverlay = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	initialize: function (/*String*/ url, /*LatLngBounds*/ bounds) {
+	options: {
+		opacity: 1
+	},
+
+	initialize: function (url, bounds, options) { // (String, LatLngBounds)
 		this._url = url;
 		this._bounds = bounds;
+
+		L.Util.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
@@ -2190,11 +2196,17 @@ L.ImageOverlay = L.Class.extend({
 		map.off('viewreset', this._reset, this);
 	},
 
+	setOpacity: function (opacity) {
+		this.options.opacity = opacity;
+		this._updateOpacity();
+	},
+
 	_initImage: function () {
-		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
+		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-hide');
 
 		this._image.style.visibility = 'hidden';
-		//TODO opacity option
+
+		this._updateOpacity();
 
 		//TODO createImage util method to remove duplication
 		L.Util.extend(this._image, {
@@ -2220,6 +2232,10 @@ L.ImageOverlay = L.Class.extend({
 	_onImageLoad: function () {
 		this._image.style.visibility = '';
 		this.fire('load');
+	},
+
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._image, this.options.opacity);
 	}
 });
 
@@ -3223,6 +3239,7 @@ L.Map.include({
 	},
 
 	_animatePathZoom: function (opt) {
+		// TODO refactor into something more manageble
 		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
 			scale = Math.pow(2, opt.zoom - this._zoom),
 			offset = centerOffset.divideBy(1 - 1 / scale),
@@ -6460,7 +6477,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			center: center,
 			zoom: zoom
 		});
-		
+
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;
