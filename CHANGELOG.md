@@ -94,6 +94,7 @@ An in-progress version being developed on the master branch.
 
 #### Browser bugfixes
 
+ * Fixed broken zooming on IE10 beta (by [@danzel](https://github.com/danzel)). [#650](https://github.com/CloudMade/Leaflet/issues/650) [#751](https://github.com/CloudMade/Leaflet/pull/751)
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
  * Fixed a bug that caused jumping/stuttering of panning animation in some cases.
  * Fixed a bug where popup size was calculated incorrectly in IE.
