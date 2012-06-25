@@ -178,6 +178,7 @@ L.Popup = L.Class.extend({
 		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
 		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
 
+		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
 	},
