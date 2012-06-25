@@ -17,13 +17,6 @@
 .leaflet-container {
 	overflow: hidden;
 	}
-.leaflet-tile-pane,
-.leaflet-container,
-.leaflet-corner,
-.leaflet-popup {
-	/* TODO make this configurable */
-	-webkit-transform: translate3d(0,0,0);
-	}
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
