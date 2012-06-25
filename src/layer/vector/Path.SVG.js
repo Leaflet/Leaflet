@@ -7,6 +7,19 @@ L.Path = L.Path.extend({
 		SVG: L.Browser.svg
 	},
 
+	bringToFront: function () {
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
+	},
+
+	bringToBack: function () {
+		if (this._container) {
+			var root = this._map._pathRoot;
+			root.insertBefore(this._container, root.firstChild);
+		}
+	},
+
 	getPathString: function () {
 		// form path string here
 	},
@@ -132,7 +145,7 @@ L.Map.include({
 	},
 
 	_animatePathZoom: function (opt) {
-		// TODO refactor into something more manageble
+		// TODO refactor into something more manageable
 		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
 			scale = Math.pow(2, opt.zoom - this._zoom),
 			offset = centerOffset.divideBy(1 - 1 / scale),
