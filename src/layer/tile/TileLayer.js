@@ -199,6 +199,8 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
+		if (queue.length === 0) { return; }
+
 		// load tiles in order of their distance to center
 		queue.sort(function (a, b) {
 			return a.distanceTo(center) - b.distanceTo(center);
@@ -206,17 +208,14 @@ L.TileLayer = L.Class.extend({
 
 		var fragment = document.createDocumentFragment();
 
-		if (queue.length > 0) {
+		this._tilesToLoad = queue.length;
 
-			this._tilesToLoad = queue.length;
-
-			var k, len;
-			for (k = 0, len = this._tilesToLoad; k < len; k++) {
-				this._addTile(queue[k], fragment);
-			}
-
-			this._container.appendChild(fragment);
+		var k, len;
+		for (k = 0, len = this._tilesToLoad; k < len; k++) {
+			this._addTile(queue[k], fragment);
 		}
+
+		this._container.appendChild(fragment);
 	},
 
 	_removeOtherTiles: function (bounds) {

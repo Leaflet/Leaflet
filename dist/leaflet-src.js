@@ -10,13 +10,12 @@ var L, originalL;
 if (typeof exports !== 'undefined') {
 	L = exports;
 } else {
-	L = {};
-	
 	originalL = window.L;
+	L = {};
 
 	L.noConflict = function () {
 		window.L = originalL;
-		return L;
+		return this;
 	};
 
 	window.L = L;
@@ -301,6 +300,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	L.Browser = {
 		ie: ie,
 		ie6: ie && !window.XMLHttpRequest,
+		ie3d: ie && ('transition' in document.createElement('div').style),
 
 		webkit: webkit,
 		webkit3d: webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
@@ -344,7 +344,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 			return touchSupported;
 		}())
 	};
-	L.Browser.any3d = !!L.Browser.webkit3d || !!L.Browser.gecko3d || !!L.Browser.opera3d;
+	L.Browser.any3d = !!L.Browser.webkit3d || !!L.Browser.gecko3d || !!L.Browser.opera3d || !!L.Browser.ie3d;
 		
 }());
 
@@ -672,7 +672,7 @@ L.DomUtil = {
 
 L.Util.extend(L.DomUtil, {
 	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
+	TRANSFORM: L.DomUtil.testProp(['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
 	BACKFACEVISIBILITY: L.DomUtil.testProp(['backfaceVisibility', 'WebkitBackfaceVisibility', 'OBackfaceVisibility', 'MozBackfaceVisibility', 'msBackfaceVisibility']),
 
 	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
@@ -1844,6 +1844,8 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
+		if (queue.length === 0) { return; }
+
 		// load tiles in order of their distance to center
 		queue.sort(function (a, b) {
 			return a.distanceTo(center) - b.distanceTo(center);
@@ -2719,19 +2721,24 @@ L.Popup = L.Class.extend({
 		}
 
 		this._containerWidth = this._container.offsetWidth;
-		this._containerBottom = -this.options.offset.y;
-		this._containerLeft = -Math.round(this._containerWidth / 2) + this.options.offset.x;
 	},
 
 	_updatePosition: function () {
-		var pos = this._map.latLngToLayerPoint(this._latlng);
+		var pos = this._map.latLngToLayerPoint(this._latlng),
+			is3d = L.Browser.any3d,
+			offset = this.options.offset;
+
+		if (is3d) {
+			L.DomUtil.setPosition(this._container, pos);
+		}
+
+		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
+		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
 
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
-
-		L.DomUtil.setPosition(this._container, pos);
 	},
-
+	
 	_zoomAnimation: function (opt) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
 
@@ -2745,30 +2752,33 @@ L.Popup = L.Class.extend({
 			containerHeight = this._container.offsetHeight,
 			containerWidth = this._containerWidth,
 
-			layerPos = L.DomUtil.getPosition(this._container).add(
-				new L.Point(this._containerLeft, -containerHeight - this._containerBottom)),
+			layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-			containerPos = map.layerPointToContainerPoint(layerPos),
-			adjustOffset = new L.Point(0, 0),
-			padding      = this.options.autoPanPadding,
-			size         = map.getSize();
+		if (L.Browser.any3d) {
+			layerPos._add(L.DomUtil.getPosition(this._container));
+		}
+
+		var containerPos = map.layerPointToContainerPoint(layerPos),
+			padding = this.options.autoPanPadding,
+			size = map.getSize(),
+			dx = 0,
+			dy = 0;
 
 		if (containerPos.x < 0) {
-			adjustOffset.x = containerPos.x - padding.x;
+			dx = containerPos.x - padding.x;
 		}
 		if (containerPos.x + containerWidth > size.x) {
-			adjustOffset.x = containerPos.x + containerWidth - size.x + padding.x;
+			dx = containerPos.x + containerWidth - size.x + padding.x;
 		}
 		if (containerPos.y < 0) {
-			adjustOffset.y = containerPos.y - padding.y;
+			dy = containerPos.y - padding.y;
 		}
 		if (containerPos.y + containerHeight > size.y) {
-			adjustOffset.y = containerPos.y + containerHeight - size.y + padding.y;
+			dy = containerPos.y + containerHeight - size.y + padding.y;
 		}
 
-		if (adjustOffset.x || adjustOffset.y) {
-			map.fire('autopanstart');
-			map.panBy(adjustOffset);
+		if (dx || dy) {
+			map.panBy(new L.Point(dx, dy));
 		}
 	},
 
@@ -3818,10 +3828,10 @@ L.Polyline = L.Path.extend({
 			for (var i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
-				var point = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
-				if (point._sqDist < minDistance) {
-					minDistance = point._sqDist;
-					minPoint = point;
+				var sqDist = L.LineUtil._sqClosestPointOnSegment(p, p1, p2, true);
+				if (sqDist < minDistance) {
+					minDistance = sqDist;
+					minPoint = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
 				}
 			}
 		}
