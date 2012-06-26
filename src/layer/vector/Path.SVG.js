@@ -38,6 +38,9 @@ L.Path = L.Path.extend({
 		this._container = this._createElement('g');
 
 		this._path = this._createElement('path');
+		this._path.id = this.options.id;
+		L.DomUtil.addClass(this._path, this.options.className);
+
 		this._container.appendChild(this._path);
 
 		this._map._pathRoot.appendChild(this._container);
@@ -83,7 +86,7 @@ L.Path = L.Path.extend({
 	_initEvents: function () {
 		if (this.options.clickable) {
 			if (L.Browser.svg || !L.Browser.vml) {
-				this._path.setAttribute('class', 'leaflet-clickable');
+				L.DomUtil.addClass(this._path, "leaflet-clickable");
 			}
 
 			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
@@ -134,7 +137,7 @@ L.Map.include({
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			if (this.options.zoomAnimation) {
-				this._pathRoot.setAttribute('class', ' leaflet-zoom-animated');
+				L.DomUtil.addClass(this._pathRoot, 'leaflet-zoom-animated');
 				this.on('zoomanim', this._animatePathZoom);
 				this.on('zoomend', this._endPathZoom);
 			}

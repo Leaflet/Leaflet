@@ -21,7 +21,10 @@ L.Path = L.Class.extend({
 		fillColor: null, //same as color by default
 		fillOpacity: 0.2,
 
-		clickable: true
+		clickable: true,
+
+		className: null,
+		id: null
 	},
 
 	initialize: function (options) {

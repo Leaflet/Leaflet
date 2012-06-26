@@ -39,6 +39,9 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 		container.coordsize = '1 1';
 
 		this._path = this._createElement('path');
+		this._path.id = this.options.id;
+		L.DomUtil.addClass(this._path, this.options.className);
+
 		container.appendChild(this._path);
 
 		this._map._pathRoot.appendChild(container);
