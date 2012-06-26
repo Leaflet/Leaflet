@@ -71,7 +71,11 @@ L.Path = L.Class.extend({
 			this._updatePath();
 		}
 		return this;
-	}
+	},
+
+    getOptions: function() {
+        return this.options;
+    }
 });
 
 L.Map.include({
