@@ -86,6 +86,19 @@ L.TileLayer = L.Class.extend({
 		this._map = null;
 	},
 
+	bringToFront: function () {
+		if (this._container) {
+			this._map._panes.tilePane.appendChild(this._container);
+		}
+	},
+
+	bringToBack: function () {
+		var pane = this._map._panes.tilePane;
+		if (this._container) {
+			pane.insertBefore(this._container, pane.firstChild);
+		}
+	},
+
 	getAttribution: function () {
 		return this.options.attribution;
 	},
@@ -96,6 +109,10 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+	},
+
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
 		// stupid webkit hack to force redrawing of tiles
 		var i,
@@ -108,10 +125,6 @@ L.TileLayer = L.Class.extend({
 				}
 			}
 		}
-	},
-
-	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
 	},
 
 	_initContainer: function () {

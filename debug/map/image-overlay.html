@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	<button id="populate">Populate with 10 markers</button>
+
+	<script type="text/javascript">
+
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
+			latlng = new L.LatLng(50.5, 30.51);
+
+		var map = new L.Map('map');
+		map.addLayer(cloudmade);
+
+		var	bounds = new L.LatLngBounds(
+      		new L.LatLng(40.71222,-74.22655),
+      		new L.LatLng(40.77394,-74.12544));
+
+		map.fitBounds(bounds);
+
+		var overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
+			opacity: 0.5
+		});
+		map.addLayer(overlay);
+
+	</script>
+</body>
+</html>

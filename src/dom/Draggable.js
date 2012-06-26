@@ -73,22 +73,23 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onMove: function (e) {
-		if (e.touches && e.touches.length > 1) {
-			return;
-		}
+		if (e.touches && e.touches.length > 1) { return; }
+
+		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
+			newPoint = new L.Point(first.clientX, first.clientY),
+			diffVec = newPoint.subtract(this._startPoint);
+
+		if (!diffVec.x && !diffVec.y) { return; }
 
 		L.DomEvent.preventDefault(e);
-
-		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e);
 
 		if (!this._moved) {
 			this.fire('dragstart');
 			this._moved = true;
 		}
-		this._moving = true;
 
-		var newPoint = new L.Point(first.clientX, first.clientY);
-		this._newPos = this._startPos.add(newPoint).subtract(this._startPoint);
+		this._newPos = this._startPos.add(diffVec);
+		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
 		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
