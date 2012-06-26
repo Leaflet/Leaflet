@@ -83,23 +83,28 @@ L.DomUtil = {
 	},
 
 	hasClass: function (el, name) {
-		return (el.className.length > 0) &&
-				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
+		var cls = el.getAttribute("class") || "";
+		return cls && (cls.length > 0) &&
+				new RegExp("(^|\\s)" + name + "(\\s|$)").test(cls);
 	},
 
 	addClass: function (el, name) {
 		if (!L.DomUtil.hasClass(el, name)) {
-			el.className += (el.className ? ' ' : '') + name;
+			var cls = el.getAttribute("class") || "";
+			var newcls = cls + (cls.length ? " " : "") + name;
+			el.setAttribute("class", newcls);
 		}
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
+		var cls = el.getAttribute("class");
+		cls = cls.replace(/(\S+)\s*/g, function (w, match) {
 			if (match === name) {
 				return '';
 			}
 			return w;
 		}).replace(/^\s+/, '');
+		el.setAttribute("class", cls);
 	},
 
 	setOpacity: function (el, value) {

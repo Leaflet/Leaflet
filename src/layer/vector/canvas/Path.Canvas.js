@@ -16,6 +16,8 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	_initElements: function () {
 		this._map._initPathRoot();
 		this._ctx = this._map._canvasCtx;
+		this._path.id = this.options.id;
+		L.DomUtil.addClass(this._path, this.options.className);
 	},
 
 	_updateStyle: function () {
