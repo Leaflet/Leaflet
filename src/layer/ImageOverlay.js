@@ -21,6 +21,7 @@ L.ImageOverlay = L.Class.extend({
 
 		map._panes.overlayPane.appendChild(this._image);
 
+		map.on('zoomanim', this._zoomAnimation, this);
 		map.on('viewreset', this._reset, this);
 		this._reset();
 	},
@@ -36,7 +37,7 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_initImage: function () {
-		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-hide');
+		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-animated');
 
 		this._image.style.visibility = 'hidden';
 
@@ -50,6 +51,16 @@ L.ImageOverlay = L.Class.extend({
 			onload: L.Util.bind(this._onImageLoad, this),
 			src: this._url
 		});
+	},
+
+	_zoomAnimation: function (opt) {
+		var image = this._image,
+		    scale = Math.pow(2, opt.zoom - this._map._zoom),
+		    topLeft = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), opt.zoom, opt.center),
+		    size = this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), opt.zoom, opt.center).subtract(topLeft),
+		    currentSize = this._map.latLngToLayerPoint(this._bounds.getSouthEast()).subtract(this._map.latLngToLayerPoint(this._bounds.getNorthWest()));
+
+		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(topLeft.add(size.subtract(currentSize).divideBy(2))) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {
