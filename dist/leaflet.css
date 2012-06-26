@@ -3,6 +3,7 @@
 .leaflet-map-pane,
 .leaflet-tile,
 .leaflet-marker-icon,
+.leaflet-marker-icon-wrapper,
 .leaflet-marker-shadow,
 .leaflet-tile-pane,
 .leaflet-overlay-pane,
@@ -19,12 +20,14 @@
 	}
 .leaflet-tile,
 .leaflet-marker-icon,
+.leaflet-marker-iconlabel,
 .leaflet-marker-shadow {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
 	}
 .leaflet-marker-icon,
+.leaflet-marker-iconlabel,
 .leaflet-marker-shadow {
 	display: block;
 	}
@@ -354,7 +357,9 @@ a.leaflet-active {
 	background: white;
 	opacity: 0.5;
 	}
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip,
+.leaflet-marker-iconlabel {
 	background: white;
 
 	box-shadow: 0 3px 10px #888;
@@ -366,9 +371,17 @@ a.leaflet-active {
 	-webkit-border-radius: 20px;
 	border-radius: 20px;
 	}
-.leaflet-popup-content {
+.leaflet-popup-content,
+.leaflet-marker-iconlabel {
 	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
 .leaflet-popup-close-button {
 	background: white url(images/popup-close.png);
+	}
+.leaflet-marker-iconlabel {
+	-moz-border-radius: 7px; 
+	-webkit-border-radius: 7px;
+	border-radius: 7px;
+	padding: 4px 6px;
+	white-space: nowrap;
 	}

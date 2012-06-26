@@ -56,6 +56,12 @@ var deps = {
 		src: ['layer/marker/Icon.js', 'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
+	
+	IconLabel: {
+		src: ['layer/marker/Icon.Label.js'],
+		deps: ['Marker'],
+		desc: 'Markers with a label.'
+	},
 
 	DivIcon: {
 		src: ['layer/marker/DivIcon.js'],
