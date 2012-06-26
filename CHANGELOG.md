@@ -19,7 +19,7 @@ An in-progress version being developed on the master branch.
 
 #### Usability improvements
 
- * Added smooth **zoom animation of markers, vector layers and popups** (by [@danzel](https://github.com/danzel)). [#740](https://github.com/CloudMade/Leaflet/pull/740)
+ * Added smooth **zoom animation of markers, vector layers, image overlays and popups** (by [@danzel](https://github.com/danzel)). [#740](https://github.com/CloudMade/Leaflet/pull/740) [#758](https://github.com/CloudMade/Leaflet/issues/758)
  * Improved zooming so that you don't get a blank map when you zoom in or out twice quickly (by [@danzel](https://github.com/danzel)). [#7](https://github.com/CloudMade/Leaflet/issues/7) [#729](https://github.com/CloudMade/Leaflet/pull/729)
  * Drag-panning now works even when there are markers in the starting point (helps on maps with lots of markers). [#506](https://github.com/CloudMade/Leaflet/issues/506)
  * Improved panning performance even more (there are no wasted frames now).
@@ -104,6 +104,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where `Control.Layers` didn't work on IE7. [#652](https://github.com/CloudMade/Leaflet/issues/652)
  * Fixed a bug that caused popups to be empty in IE when passing a DOM node as the content (by [@nrenner](https://github.com/nrenner)). [#472](https://github.com/CloudMade/Leaflet/pull/472)
  * Fixed a bug that could cause false `mousemove` events on click in Chrome (by [@stsydow](https://github.com/stsydow)). [#757](https://github.com/CloudMade/Leaflet/pull/757)
+ * Fixed a bug in IE6-8 where adding fill or stroke on vector layers after initialization with `setStyle` would break the map. [#641](https://github.com/CloudMade/Leaflet/issues/641)
 
 #### Mobile browser bugfixes
 
@@ -111,6 +112,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
  * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
  * Fixed a bug where opening the layers control would propagate a click to the map (by [jacobtoye](https://github.com/jacobtoye)). [#638](https://github.com/CloudMade/Leaflet/pull/638)
+ * Fixed a bug where `ImageOverlay` wouldn't stretch properly on zoom on Android 2. [#651](https://github.com/CloudMade/Leaflet/issues/651)
 
 ## 0.3.1 (February 14, 2012)
 

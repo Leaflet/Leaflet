@@ -2203,6 +2203,7 @@ L.ImageOverlay = L.Class.extend({
 
 		map._panes.overlayPane.appendChild(this._image);
 
+		map.on('zoomanim', this._zoomAnimation, this);
 		map.on('viewreset', this._reset, this);
 		this._reset();
 	},
@@ -2218,7 +2219,7 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_initImage: function () {
-		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-hide');
+		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-animated');
 
 		this._image.style.visibility = 'hidden';
 
@@ -2232,6 +2233,16 @@ L.ImageOverlay = L.Class.extend({
 			onload: L.Util.bind(this._onImageLoad, this),
 			src: this._url
 		});
+	},
+
+	_zoomAnimation: function (opt) {
+		var image = this._image,
+		    scale = Math.pow(2, opt.zoom - this._map._zoom),
+		    topLeft = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), opt.zoom, opt.center),
+		    size = this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), opt.zoom, opt.center).subtract(topLeft),
+		    currentSize = this._map.latLngToLayerPoint(this._bounds.getSouthEast()).subtract(this._map.latLngToLayerPoint(this._bounds.getNorthWest()));
+
+		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(topLeft.add(size.subtract(currentSize).divideBy(2))) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {
@@ -3395,21 +3406,6 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	},
 
 	_initStyle: function () {
-		var container = this._container,
-			stroke,
-			fill;
-
-		if (this.options.stroke) {
-			stroke = this._stroke = this._createElement('stroke');
-			stroke.endcap = 'round';
-			container.appendChild(stroke);
-		}
-
-		if (this.options.fill) {
-			fill = this._fill = this._createElement('fill');
-			container.appendChild(fill);
-		}
-
 		this._updateStyle();
 	},
 
@@ -3423,14 +3419,29 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 		container.filled = options.fill;
 
 		if (options.stroke) {
-			stroke.weight  = options.weight + 'px';
-			stroke.color   = options.color;
+			if (!stroke) {
+				stroke = this._stroke = this._createElement('stroke');
+				stroke.endcap = 'round';
+				container.appendChild(stroke);
+			}
+			stroke.weight = options.weight + 'px';
+			stroke.color = options.color;
 			stroke.opacity = options.opacity;
+		} else if (stroke) {
+			container.removeChild(stroke);
+			this._stroke = null;
 		}
 
 		if (options.fill) {
-			fill.color   = options.fillColor || options.color;
+			if (!fill) {
+				fill = this._fill = this._createElement('fill');
+				container.appendChild(fill);
+			}
+			fill.color = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
+		} else if (fill) {
+			container.removeChild(fill);
+			this._fill = null;
 		}
 	},
 
