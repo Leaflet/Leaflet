@@ -27,7 +27,7 @@ L.Icon = L.Class.extend({
 		var src = this._getIconUrl(name);
 
 		if (!src) { return null; }
-		
+
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
 
@@ -36,27 +36,55 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			size = options[name + 'Size'],
-			anchor = options.iconAnchor;
+			anchor = options.iconAnchor,
+			popupAnchor = options.popupAnchor;
 
-		if (!anchor && size) {
-			anchor = size.divideBy(2, true);
-		}
+		/* If size is defined, use defined value. Otherwise, set size equal to
+		 * the actual size of the imageUrl upon image load */
+		var size;
+		/* Size is defined */
+		if (options[name + 'Size']) {
+			size = options[name + 'Size'];
+			if (!anchor && size) {
+				anchor = new L.Point(Math.round(size.x / 2), size.y);
+			}
+			if (name === 'icon' && !popupAnchor && size) {
+				popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+			}
+			if (name === 'shadow' && anchor && options.shadowOffset) {
+				anchor._add(options.shadowOffset);
+			}
 
-		if (name === 'shadow' && anchor && options.shadowOffset) {
-			anchor._add(options.shadowOffset);
-		}
-
-		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
-
-		if (anchor) {
-			img.style.marginLeft = (-anchor.x) + 'px';
-			img.style.marginTop  = (-anchor.y) + 'px';
-		}
-
-		if (size) {
-			img.style.width  = size.x + 'px';
+			img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+			img.style.width	 = size.x + 'px';
 			img.style.height = size.y + 'px';
+
+			if (anchor) {
+				img.style.marginLeft = (-anchor.x) + 'px';
+				img.style.marginTop	 = (-anchor.y) + 'px';
+			}
+		}
+		/* Otherwise, size is not defined. Load in size from image */
+		else {
+			img.onload = function () {
+				size = new L.Point(this.width, this.height);
+				if (!anchor && size) {
+					anchor = new L.Point(Math.round(size.x / 2), size.y);
+				}
+				if (name === 'icon' && !popupAnchor && size) {
+					popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+				}
+				if (name === 'shadow' && anchor && options.shadowOffset) {
+					anchor._add(options.shadowOffset);
+				}
+
+				this.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+
+				if (anchor) {
+					this.style.marginLeft = (-anchor.x) + 'px';
+					this.style.marginTop  = (-anchor.y) + 'px';
+				}
+			};
 		}
 	},
 
@@ -82,13 +110,7 @@ L.Icon = L.Class.extend({
 // TODO move to a separate file
 
 L.Icon.Default = L.Icon.extend({
-	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
-
-		shadowSize: new L.Point(41, 41)
-	},
+	options: {},
 
 	_getIconUrl: function (name) {
 		var path = L.Icon.Default.imagePath;
@@ -102,7 +124,7 @@ L.Icon.Default = L.Icon.extend({
 
 L.Icon.Default.imagePath = (function () {
 	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+		leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 	var i, len, src, matches;
 
