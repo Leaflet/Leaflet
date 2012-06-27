@@ -27,7 +27,7 @@ L.Icon = L.Class.extend({
 		var src = this._getIconUrl(name);
 
 		if (!src) { return null; }
-		
+
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
 
@@ -83,7 +83,6 @@ L.Icon = L.Class.extend({
 
 L.Icon.Default = L.Icon.extend({
 	options: {
-		iconSize: new L.Point(25, 41),
 		iconAnchor: new L.Point(13, 41),
 		popupAnchor: new L.Point(0, -33),
 
@@ -114,4 +113,12 @@ L.Icon.Default.imagePath = (function () {
 			return src.split(leafletRe)[0] + '/images';
 		}
 	}
+}());
+
+/* Default icon size determined by default icon URL image size */
+L.Icon.Default.iconSize = (function () {
+	var imagePath = L.Icon.Default.imagePath;
+	var img = new Image();
+	img.src = imagePath;
+	return new L.Point(img.width, img.height);
 }());
