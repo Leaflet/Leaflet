@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet - a modern, lightweight JavaScript library for interactive maps by CloudMade - Documentation</title>
+	<title>Leaflet - a JavaScript library for mobile-friendly interactive maps by CloudMade - Documentation</title>
 
 	<meta charset="utf-8" />
 
@@ -27,12 +27,12 @@
 <body>
 	<div class="container">
 		<h1>Leaflet</h1>
-		<h3 class="alt">A Modern, Lightweight Open-Source JavaScript Library for Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
+		<h3 class="alt">An Open-Source JavaScript Library for Mobile-Friendly Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
 
 		<ul class="nav clearfix">
 			<li><a href="index.html">Overview</a></li>
 			<li><a href="features.html">Features</a></li>
-			<li><a href="examples.html">Examples</a></li>
+			<li><a href="examples.html">Tutorials</a></li>
 			<li><span>Documentation</span></li>
 			<li><a href="download.html">Download</a></li>
 			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
@@ -328,7 +328,7 @@ map.addLayer(cloudmade);</code></pre>
 			</tr>
 		</table>
 
-		
+
 		<h3 id="map-events">Events</h3>
 
 		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
@@ -1193,15 +1193,15 @@ map.openPopup(popup);</code></pre>
 		</table>
 
 		<h3 id="url-template">URL template</h3>
-		
+
 		<p>A string of the following form:</p>
-		
+
 		<pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'</code></pre>
-		
+
 		<p><code>{s}</code> means one of the randomly chosen subdomains (their range is specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
-		
+
 		<p>You can use custom keys in the template, which will be evaluated from TileLayer options, like this:</p>
-		
+
 		<pre><code class="javascript">new L.TileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});</code></pre>
 
 		<h3 id="tilelayer-options">Options</h3>
@@ -2974,7 +2974,7 @@ a.greet("World");
 		<p>You use <code>L.Class.extend</code> to define new classes, but you can use the same method on any class to inherit from it:</p>
 
 <pre><code>var MyChildClass = MyClass.extend({
-	// ... new properties and methods 
+	// ... new properties and methods
 });</code></pre>
 
 		<p>This will create a class that inherits all methods and properties of the parent class (through a proper prototype chain), adding or overriding the ones you pass to <code>extend</code>. It will also properly react to <code>instanceof</code>:</p>
@@ -3001,7 +3001,7 @@ a.greet('Jason'); // alerts "Yo, bro Jason!"</code></pre>
 
 		<h3>Options</h3>
 
-		<p><code>options</code> is a special property that unlike other objects that you pass to <code>extend</code> will be merged with the parent one instead of overriding it completely, which makes managing configuration of objects and default values convenient:</p> 
+		<p><code>options</code> is a special property that unlike other objects that you pass to <code>extend</code> will be merged with the parent one instead of overriding it completely, which makes managing configuration of objects and default values convenient:</p>
 
 <pre><code>var MyClass = L.Class.extend({
 	options: {
@@ -3188,7 +3188,7 @@ MyClass.FOO; // 'bar'</code></pre>
 ...
 // you include Leaflet, it replaces the L variable to Leaflet namespace
 
-var Leaflet = L.noConflict(); 
+var Leaflet = L.noConflict();
 // now L points to that other library again, and you can use Leaflet.Map etc.</code></pre>
 
 
