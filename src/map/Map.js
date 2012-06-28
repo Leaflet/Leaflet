@@ -59,6 +59,25 @@ L.Map = L.Class.extend({
 		return this.setZoom(this._zoom - 1);
 	},
 
+	fullscreen: function (force) {
+		var fullScreenClass = 'leaflet-fullscreen',
+			isFullScreen = L.DomUtil.hasClass(this._container, fullScreenClass),
+			enterFullScreen = (typeof force !== 'undefined') ? force : !isFullScreen;
+
+		if (enterFullScreen && !isFullScreen) {
+			L.DomUtil.addClass(this._container, fullScreenClass);
+			this.fire('enterFullscreen');
+			L.DomEvent.addListener(document, 'keyup', L.DomEvent.stop).addListener(document, 'keyup', this._escapeFullScreen, this);
+			this.invalidateSize();
+		} else if (!enterFullScreen && isFullScreen) {
+			L.DomUtil.removeClass(this._container, fullScreenClass);
+			this.fire('exitFullscreen');
+			L.DomEvent.removeListener(document, 'keyup', L.DomEvent.stop).removeListener(document, 'keyup', this._escapeFullScreen);
+			this.invalidateSize();
+		}
+		return this;
+	},
+
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
 		return this.setView(bounds.getCenter(), zoom);
@@ -510,6 +529,11 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, newPos);
 	},
 
+	_escapeFullScreen: function (event) {
+		if (event && event.type === 'keyup' && event.keyCode === 27) {
+			this.fullscreen(false);
+		}
+	},
 
 	// map events
 
