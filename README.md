@@ -1,6 +1,6 @@
 <img src="http://leaflet.cloudmade.com/docs/images/logo.png" alt="Leaflet" />
 
-Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps, developed by [CloudMade](http://cloudmade.com) to form the core of its next generation JavaScript API. Weighting just about 21kb of gzipped JS code, it still has all the [features](http://leaflet.cloudmade.com/features.html) you will ever need for you web mapping needs while providing a fast, smooth, pleasant user experience.
+Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps, developed by [CloudMade](http://cloudmade.com) to form the core of its next generation JavaScript API. Weighting just about 21kb of gzipped JS code, it still has all the [features](http://leaflet.cloudmade.com/features.html) you will ever need for your web mapping needs while providing a fast, smooth, pleasant user experience.
 
 It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android, utilizing cutting-edge technologies included in HTML5 and CSS3, focusing on usability, performance, small size, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and [easy to use API](http://leaflet.cloudmade.com/reference.html). The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
 

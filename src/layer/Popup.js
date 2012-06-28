@@ -36,6 +36,10 @@ L.Popup = L.Class.extend({
 
 		map.on('viewreset', this._updatePosition, this);
 
+		if (L.Browser.any3d) {
+			map.on('zoomanim', this._zoomAnimation, this);
+		}
+
 		if (map.options.closePopupOnClick) {
 			map.on('preclick', this._close, this);
 		}
@@ -51,7 +55,8 @@ L.Popup = L.Class.extend({
 		L.Util.falseFn(this._container.offsetWidth);
 
 		map.off('viewreset', this._updatePosition, this)
-		   .off('preclick', this._close, this);
+		   .off('preclick', this._close, this)
+		   .off('zoomanim', this._zoomAnimation, this);
 
 		this._container.style.opacity = '0';
 
@@ -84,7 +89,7 @@ L.Popup = L.Class.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className),
+			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className + ' leaflet-zoom-animated'),
 			closeButton;
 
 		if (this.options.closeButton) {
@@ -124,7 +129,9 @@ L.Popup = L.Class.extend({
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
 		} else {
-			this._contentNode.innerHTML = '';
+			while (this._contentNode.hasChildNodes()) {
+				this._contentNode.removeChild(this._contentNode.firstChild);
+			}
 			this._contentNode.appendChild(this._content);
 		}
 		this.fire('contentupdate');
@@ -160,13 +167,26 @@ L.Popup = L.Class.extend({
 	},
 
 	_updatePosition: function () {
-		var pos = this._map.latLngToLayerPoint(this._latlng);
+		var pos = this._map.latLngToLayerPoint(this._latlng),
+			is3d = L.Browser.any3d,
+			offset = this.options.offset;
 
-		this._containerBottom = -pos.y - this.options.offset.y;
-		this._containerLeft = pos.x - Math.round(this._containerWidth / 2) + this.options.offset.x;
+		if (is3d) {
+			L.DomUtil.setPosition(this._container, pos);
+		}
 
+		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
+		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
+
+		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
+	},
+	
+	_zoomAnimation: function (opt) {
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
+
+		L.DomUtil.setPosition(this._container, pos);
 	},
 
 	_adjustPan: function () {
@@ -176,30 +196,33 @@ L.Popup = L.Class.extend({
 			containerHeight = this._container.offsetHeight,
 			containerWidth = this._containerWidth,
 
-			layerPos = new L.Point(
-				this._containerLeft,
-				-containerHeight - this._containerBottom),
+			layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-			containerPos = map.layerPointToContainerPoint(layerPos),
-			adjustOffset = new L.Point(0, 0),
-			padding      = this.options.autoPanPadding,
-			size         = map.getSize();
+		if (L.Browser.any3d) {
+			layerPos._add(L.DomUtil.getPosition(this._container));
+		}
+
+		var containerPos = map.layerPointToContainerPoint(layerPos),
+			padding = this.options.autoPanPadding,
+			size = map.getSize(),
+			dx = 0,
+			dy = 0;
 
 		if (containerPos.x < 0) {
-			adjustOffset.x = containerPos.x - padding.x;
+			dx = containerPos.x - padding.x;
 		}
 		if (containerPos.x + containerWidth > size.x) {
-			adjustOffset.x = containerPos.x + containerWidth - size.x + padding.x;
+			dx = containerPos.x + containerWidth - size.x + padding.x;
 		}
 		if (containerPos.y < 0) {
-			adjustOffset.y = containerPos.y - padding.y;
+			dy = containerPos.y - padding.y;
 		}
 		if (containerPos.y + containerHeight > size.y) {
-			adjustOffset.y = containerPos.y + containerHeight - size.y + padding.y;
+			dy = containerPos.y + containerHeight - size.y + padding.y;
 		}
 
-		if (adjustOffset.x || adjustOffset.y) {
-			map.panBy(adjustOffset);
+		if (dx || dy) {
+			map.panBy(new L.Point(dx, dy));
 		}
 	},
 

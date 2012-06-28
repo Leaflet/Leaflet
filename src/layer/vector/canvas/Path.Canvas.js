@@ -119,12 +119,21 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 
 			this._panes.overlayPane.appendChild(root);
 
+			if (this.options.zoomAnimation) {
+				this._pathRoot.className = 'leaflet-zoom-animated';
+				this.on('zoomanim', this._animatePathZoom);
+				this.on('zoomend', this._endPathZoom);
+			}
 			this.on('moveend', this._updateCanvasViewport);
 			this._updateCanvasViewport();
 		}
 	},
 
 	_updateCanvasViewport: function () {
+		if (this._pathZooming) {
+			//Don't redraw while zooming. See _updateSvgViewport for more details
+			return;
+		}
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,

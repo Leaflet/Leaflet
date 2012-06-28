@@ -17,13 +17,6 @@
 .leaflet-container {
 	overflow: hidden;
 	}
-.leaflet-tile-pane,
-.leaflet-container,
-.leaflet-corner,
-.leaflet-popup {
-	/* TODO make this configurable */
-	-webkit-transform: translate3d(0,0,0);
-	}
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
@@ -38,47 +31,37 @@
 .leaflet-clickable {
 	cursor: pointer;
 	}
-.leaflet-dragging {
-	cursor: move;
-	}
-.leaflet-dragging .leaflet-clickable {
+.leaflet-dragging, .leaflet-dragging .leaflet-clickable {
 	cursor: move;
 	}
 .leaflet-container img {
+    /* map is broken in FF if you have max-width: 100% on tiles */
 	max-width: none !important;
 	}
-.leaflet-div-icon {
-	background: #fff;
-	border: 1px solid #666;
-}
-.leaflet-editing-icon {
-	border-radius: 2px;
-}
+.leaflet-container img.leaflet-image-layer {
+    /* stupid Android 2 doesn't understand "max-width: none" properly */
+    max-width: 15000px !important;
+    }
 
 .leaflet-tile-pane { z-index: 2; }
-
 .leaflet-objects-pane { z-index: 3; }
 .leaflet-overlay-pane { z-index: 4; }
 .leaflet-shadow-pane { z-index: 5; }
 .leaflet-marker-pane { z-index: 6; }
 .leaflet-popup-pane { z-index: 7; }
 
-.leaflet-zoom-box {
-	width: 0;
-	height: 0;
-	}
-
 .leaflet-tile {
-	visibility: hidden;
+    filter: inherit;
+    visibility: hidden;
 	}
 .leaflet-tile-loaded {
 	visibility: inherit;
 	}
 
-a.leaflet-active {
-	outline: 2px solid orange;
-	}
-
+.leaflet-zoom-box {
+    width: 0;
+    height: 0;
+    }
 
 /* Leaflet controls */
 
@@ -226,7 +209,7 @@ a.leaflet-active {
 	background-color: rgba(255, 255, 255, 0.7);
 	box-shadow: 0 0 5px #bbb;
 	margin: 0;
-}
+    }
 
 .leaflet-control-attribution,
 .leaflet-control-scale-line {
@@ -271,7 +254,7 @@ a.leaflet-active {
 	}
 
 
-/* Fade animations */
+/* Zoom and fade animations */
 
 .leaflet-fade-anim .leaflet-tile, .leaflet-fade-anim .leaflet-popup {
 	opacity: 0;
@@ -285,14 +268,23 @@ a.leaflet-active {
 	opacity: 1;
 	}
 
-.leaflet-zoom-anim .leaflet-tile, .leaflet-pan-anim .leaflet-tile {
-	-webkit-transition: none;
-	-moz-transition: none;
-	-o-transition: none;
-	transition: none;
+.leaflet-zoom-anim .leaflet-zoom-animated {
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
 	}
 
-.leaflet-zoom-anim .leaflet-objects-pane {
+.leaflet-zoom-anim .leaflet-tile,
+.leaflet-pan-anim .leaflet-tile,
+.leaflet-touching .leaflet-zoom-animated {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none;
+    }
+
+.leaflet-zoom-anim .leaflet-zoom-hide {
 	visibility: hidden;
 	}
 
@@ -358,17 +350,27 @@ a.leaflet-active {
 .leaflet-container a {
 	color: #0078A8;
 	}
+.leaflet-container a.leaflet-active {
+    outline: 2px solid orange;
+    }
 .leaflet-zoom-box {
 	border: 2px dotted #05f;
 	background: white;
 	opacity: 0.5;
 	}
+.leaflet-div-icon {
+    background: #fff;
+    border: 1px solid #666;
+    }
+.leaflet-editing-icon {
+    border-radius: 2px;
+    }
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;
 
 	box-shadow: 0 3px 10px #888;
 	-moz-box-shadow: 0 3px 10px #888;
-	 -webkit-box-shadow: 0 3px 14px #999;
+	-webkit-box-shadow: 0 3px 14px #999;
 	}
 .leaflet-popup-content-wrapper {
 	-moz-border-radius: 20px;

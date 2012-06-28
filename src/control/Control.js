@@ -13,11 +13,16 @@ L.Control = L.Class.extend({
 	},
 
 	setPosition: function (position) {
+		var map = this._map;
+
+		if (map) {
+			map.removeControl(this);
+		}
+
 		this.options.position = position;
 
-		if (this._map) {
-			this._map.removeControl(this);
-			this._map.addControl(this);
+		if (map) {
+			map.addControl(this);
 		}
 	},
 

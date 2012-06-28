@@ -15,7 +15,8 @@ L.Map = L.Class.extend({
 		*/
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
-		trackResize: true
+		trackResize: true,
+		markerZoomAnimation: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -191,7 +192,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor!!!
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum++;
-			layer.on('load', this._onTileLayerLoad, this);
+            this._tileLayersToLoad++;
+            layer.on('load', this._onTileLayerLoad, this);
 		}
 
 		var onMapLoad = function () {
@@ -220,7 +222,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum--;
-			layer.off('load', this._onTileLayerLoad, this);
+            this._tileLayersToLoad--;
+            layer.off('load', this._onTileLayerLoad, this);
 		}
 
 		return this.fire('layerremove', {layer: layer});
@@ -269,11 +272,11 @@ L.Map = L.Class.extend({
 
 	// public methods for getting map state
 
-	getCenter: function (unbounded) { // (Boolean) -> LatLng
+	getCenter: function () { // (Boolean) -> LatLng
 		var viewHalf = this.getSize().divideBy(2),
 		    centerPoint = this._getTopLeftPoint().add(viewHalf);
 
-		return this.unproject(centerPoint, this._zoom, unbounded);
+		return this.unproject(centerPoint, this._zoom);
 	},
 
 	getZoom: function () {
@@ -361,6 +364,10 @@ L.Map = L.Class.extend({
 	getPanes: function () {
 		return this._panes;
 	},
+	
+	getContainer: function () {
+		return this._container;
+	},
 
 
 	// conversion methods
@@ -406,10 +413,9 @@ L.Map = L.Class.extend({
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
-	unproject: function (point, zoom, unbounded) { // (Point[, Number, Boolean]) -> LatLng
-		// TODO remove unbounded, making it true all the time?
+	unproject: function (point, zoom) { // (Point[, Number, Boolean]) -> LatLng
 		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom, unbounded);
+		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
 
@@ -441,7 +447,7 @@ L.Map = L.Class.extend({
 
 		var position = L.DomUtil.getStyle(container, 'position');
 
-		if (position !== 'absolute' && position !== 'relative') {
+		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed') {
 			container.style.position = 'relative';
 		}
 
@@ -464,6 +470,12 @@ L.Map = L.Class.extend({
 		panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
+
+		if (!this.options.markerZoomAnimation) {
+			panes.markerPane.className += ' leaflet-zoom-hide';
+			panes.shadowPane.className += ' leaflet-zoom-hide';
+			panes.popupPane.className += ' leaflet-zoom-hide';
+		}
 	},
 
 	_createPane: function (className, container) {
@@ -616,10 +628,17 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint.subtract(mapPanePos);
 	},
 
-	_getNewTopLeftPoint: function (center) {
+	_getNewTopLeftPoint: function (center, zoom) {
 		var viewHalf = this.getSize().divideBy(2);
 		// TODO round on display, not calculation to increase precision?
-		return this.project(center)._subtract(viewHalf)._round();
+		return this.project(center, zoom)._subtract(viewHalf)._round();
+	},
+
+	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
+		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
+			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
+
+		return this.project(latlng, newZoom)._round()._subtract(topLeft);
 	},
 
 	_limitZoom: function (zoom) {

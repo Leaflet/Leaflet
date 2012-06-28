@@ -1,4 +1,3 @@
-
 L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
@@ -64,10 +63,10 @@ L.Polyline = L.Path.extend({
 			for (var i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
-				var point = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
-				if (point._sqDist < minDistance) {
-					minDistance = point._sqDist;
-					minPoint = point;
+				var sqDist = L.LineUtil._sqClosestPointOnSegment(p, p1, p2, true);
+				if (sqDist < minDistance) {
+					minDistance = sqDist;
+					minPoint = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
 				}
 			}
 		}
@@ -90,13 +89,13 @@ L.Polyline = L.Path.extend({
 	onAdd: function (map) {
 		L.Path.prototype.onAdd.call(this, map);
 
-		if (this.editing.enabled()) {
+		if (this.editing && this.editing.enabled()) {
 			this.editing.addHooks();
 		}
 	},
 
 	onRemove: function (map) {
-		if (this.editing.enabled()) {
+		if (this.editing && this.editing.enabled()) {
 			this.editing.removeHooks();
 		}
 

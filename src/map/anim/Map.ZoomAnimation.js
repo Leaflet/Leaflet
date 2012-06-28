@@ -22,14 +22,29 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this._mapPane.className += ' leaflet-zoom-anim';
 
-        this
+		this
 			.fire('movestart')
 			.fire('zoomstart');
 
-		this._prepareTileBg();
+		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
+		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
+		if (!L.Browser.android && this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) {
+			//Leave current bg and just zoom it some more
+
+			this._tilePane.style.visibility = 'hidden';
+			this._tilePane.empty = true;
+			this._stopLoadingImages(this._tilePane);
+		} else {
+			this._prepareTileBg();
+		}
 
 		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
 			origin = centerPoint.add(offset);
+
+		this.fire('zoomanim', {
+			center: center,
+			zoom: zoom
+		});
 
 		this._runAnimation(center, zoom, scale, origin);
 
@@ -37,7 +52,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 
 
-	_runAnimation: function (center, zoom, scale, origin) {
+	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
 		this._animatingZoom = true;
 
 		this._animateToCenter = center;
@@ -69,7 +84,11 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
 		var options = {};
-		options[transform] = tileBg.style[transform] + ' ' + scaleStr;
+		if (backwardsTransform) {
+			options[transform] = tileBg.style[transform] + ' ' + scaleStr;
+		} else {
+			options[transform] = scaleStr + ' ' + tileBg.style[transform];
+		}
 
 		tileBg.transition.run(options);
 	},
@@ -88,9 +107,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		tileBg.style.visibility = 'hidden';
 
 		// tells tile layers to reinitialize their containers
-		tileBg.empty = true;
-		tilePane.empty = false;
+		tileBg.empty = true; //new FG
+		tilePane.empty = false; //new BG
 
+		//Switch out the current layer to be the new bg layer (And vice-versa)
 		this._tilePane = this._panes.tilePane = tileBg;
 		var newTileBg = this._tileBg = tilePane;
 
@@ -104,6 +124,18 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		}
 
 		this._stopLoadingImages(newTileBg);
+	},
+
+	_getLoadedTilesPercentage: function (container) {
+		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
+			i, len, count = 0;
+
+		for (i = 0, len = tiles.length; i < len; i++) {
+			if (tiles[i].complete) {
+				count++;
+			}
+		}
+		return count / len;
 	},
 
 	// stops loading all tiles in the background layer

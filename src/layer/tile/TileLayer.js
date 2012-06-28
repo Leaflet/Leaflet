@@ -18,6 +18,7 @@ L.TileLayer = L.Class.extend({
 		noWrap: false,
 		zoomOffset: 0,
 		zoomReverse: false,
+		detectRetina: false,
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
@@ -25,7 +26,19 @@ L.TileLayer = L.Class.extend({
 	},
 
 	initialize: function (url, options) {
-		L.Util.setOptions(this, options);
+		options = L.Util.setOptions(this, options);
+
+		// detecting retina displays, adjusting tileSize and zoom levels
+		if (options.detectRetina && window.devicePixelRatio > 1 && options.maxZoom > 0) {
+
+			options.tileSize = Math.floor(options.tileSize / 2);
+			options.zoomOffset++;
+
+			if (options.minZoom > 0) {
+				options.minZoom--;
+			}
+			this.options.maxZoom--;
+		}
 
 		this._url = url;
 
@@ -73,6 +86,19 @@ L.TileLayer = L.Class.extend({
 		this._map = null;
 	},
 
+	bringToFront: function () {
+		if (this._container) {
+			this._map._panes.tilePane.appendChild(this._container);
+		}
+	},
+
+	bringToBack: function () {
+		var pane = this._map._panes.tilePane;
+		if (this._container) {
+			pane.insertBefore(this._container, pane.firstChild);
+		}
+	},
+
 	getAttribution: function () {
 		return this.options.attribution;
 	},
@@ -83,6 +109,10 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+	},
+
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
 		// stupid webkit hack to force redrawing of tiles
 		var i,
@@ -95,10 +125,6 @@ L.TileLayer = L.Class.extend({
 				}
 			}
 		}
-	},
-
-	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
 	},
 
 	_initContainer: function () {
@@ -186,6 +212,8 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
+		if (queue.length === 0) { return; }
+
 		// load tiles in order of their distance to center
 		queue.sort(function (a, b) {
 			return a.distanceTo(center) - b.distanceTo(center);
@@ -204,7 +232,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_removeOtherTiles: function (bounds) {
-		var kArr, x, y, key, tile;
+		var kArr, x, y, key;
 
 		for (key in this._tiles) {
 			if (this._tiles.hasOwnProperty(key)) {
@@ -225,11 +253,11 @@ L.TileLayer = L.Class.extend({
 
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
-		if (tile.parentNode === this._container) {
-			this._container.removeChild(tile);
-		}
 		if (this.options.reuseTiles) {
+			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
 			this._unusedTiles.push(tile);
+		} else if (tile.parentNode === this._container) {
+			this._container.removeChild(tile);
 		}
 
 		tile.src = L.Util.emptyImageUrl;
@@ -260,7 +288,7 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, tilePos);
+		L.DomUtil.setPosition(tile, tilePos, true);
 
 		this._tiles[key] = tile;
 
@@ -270,7 +298,9 @@ L.TileLayer = L.Class.extend({
 
 		this._loadTile(tile, tilePoint, zoom);
 
-		container.appendChild(tile);
+		if (tile.parentNode !== this._container) {
+			container.appendChild(tile);
+		}
 	},
 
 	_getOffsetZoom: function (zoom) {
@@ -337,20 +367,27 @@ L.TileLayer = L.Class.extend({
 		tile.src     = this.getTileUrl(tilePoint, zoom);
 	},
 
+    _tileLoaded: function () {
+        this._tilesToLoad--;
+        if (!this._tilesToLoad) {
+            this.fire('load');
+        }
+    },
+
 	_tileOnLoad: function (e) {
 		var layer = this._layer;
 
-		this.className += ' leaflet-tile-loaded';
+		//Only if we are loading an actual image
+		if (this.src !== L.Util.emptyImageUrl) {
+			this.className += ' leaflet-tile-loaded';
 
-		layer.fire('tileload', {
-			tile: this,
-			url: this.src
-		});
-
-		layer._tilesToLoad--;
-		if (!layer._tilesToLoad) {
-			layer.fire('load');
+			layer.fire('tileload', {
+				tile: this,
+				url: this.src
+			});
 		}
+
+		layer._tileLoaded();
 	},
 
 	_tileOnError: function (e) {
@@ -365,5 +402,7 @@ L.TileLayer = L.Class.extend({
 		if (newUrl) {
 			this.src = newUrl;
 		}
-	}
+
+        layer._tileLoaded();
+    }
 });

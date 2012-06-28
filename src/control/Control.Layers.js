@@ -70,7 +70,15 @@ L.Control.Layers = L.Control.extend({
 			link.href = '#';
 			link.title = 'Layers';
 
-			L.DomEvent.addListener(link, L.Browser.touch ? 'click' : 'focus', this._expand, this);
+			if (L.Browser.touch) {
+				L.DomEvent
+					.addListener(link, 'click', L.DomEvent.stopPropagation)
+					.addListener(link, 'click', L.DomEvent.preventDefault)
+					.addListener(link, 'click', this._expand, this);
+			}
+			else {
+				L.DomEvent.addListener(link, 'focus', this._expand, this);
+			}
 
 			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
@@ -125,8 +133,8 @@ L.Control.Layers = L.Control.extend({
 			input.name = 'leaflet-base-layers';
 		}
 		input.type = obj.overlay ? 'checkbox' : 'radio';
-		input.checked = this._map.hasLayer(obj.layer);
 		input.layerId = L.Util.stamp(obj.layer);
+		input.defaultChecked = this._map.hasLayer(obj.layer);
 
 		L.DomEvent.addListener(input, 'click', this._onInputClick, this);
 

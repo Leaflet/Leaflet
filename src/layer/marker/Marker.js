@@ -23,10 +23,14 @@ L.Marker = L.Class.extend({
 	onAdd: function (map) {
 		this._map = map;
 
-		map.on('viewreset', this._reset, this);
+		map.on('viewreset', this.update, this);
+
+		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
+			map.on('zoomanim', this._zoomAnimation, this);
+		}
 
 		this._initIcon();
-		this._reset();
+		this.update();
 	},
 
 	onRemove: function (map) {
@@ -37,7 +41,8 @@ L.Marker = L.Class.extend({
 			this.closePopup();
 		}
 
-		map.off('viewreset', this._reset, this);
+		map.off('viewreset', this.update, this)
+		   .off('zoomanim', this._zoomAnimation, this);
 
 		this._map = null;
 	},
@@ -49,7 +54,7 @@ L.Marker = L.Class.extend({
 	setLatLng: function (latlng) {
 		this._latlng = latlng;
 
-		this._reset();
+		this.update();
 
 		if (this._popup) {
 			this._popup.setLatLng(latlng);
@@ -58,7 +63,7 @@ L.Marker = L.Class.extend({
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
-		this._reset();
+		this.update();
 	},
 
 	setIcon: function (icon) {
@@ -70,8 +75,15 @@ L.Marker = L.Class.extend({
 
 		if (this._map) {
 			this._initIcon();
-			this._reset();
+			this.update();
 		}
+	},
+
+	update: function () {
+		if (!this._icon) { return; }
+
+		var pos = this._map.latLngToLayerPoint(this._latlng).round();
+		this._setPos(pos);
 	},
 
 	_initIcon: function () {
@@ -112,22 +124,20 @@ L.Marker = L.Class.extend({
 		this._icon = this._shadow = null;
 	},
 
-	_reset: function () {
-		var icon = this._icon;
-
-		if (!icon) {
-			return;
-		}
-
-		var pos = this._map.latLngToLayerPoint(this._latlng).round();
-
-		L.DomUtil.setPosition(icon, pos);
+	_setPos: function (pos) {
+		L.DomUtil.setPosition(this._icon, pos);
 
 		if (this._shadow) {
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		icon.style.zIndex = pos.y + this.options.zIndexOffset;
+		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
+	},
+
+	_zoomAnimation: function (opt) {
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center);
+
+		this._setPos(pos);
 	},
 
 	_initInteraction: function () {
