@@ -427,6 +427,7 @@ L.Point.prototype = {
  */
 
 L.Bounds = L.Class.extend({
+	
 	initialize: function (min, max) {	//(Point, Point) or Point[]
 		if (!min) {
 			return;
@@ -450,10 +451,18 @@ L.Bounds = L.Class.extend({
 		}
 	},
 
-	getCenter: function (round)/*->Point*/ {
+	getCenter: function (round) { // (Boolean) -> Point
 		return new L.Point(
 				(this.min.x + this.max.x) / 2,
 				(this.min.y + this.max.y) / 2, round);
+	},
+
+	getBottomLeft: function () { // -> Point
+		return new L.Point(this.min.x, this.max.y);
+	},
+
+	getTopRight: function () { // -> Point
+		return new L.Point(this.max.x, this.min.y);
 	},
 
 	contains: function (/*Bounds or Point*/ obj)/*->Boolean*/ {
@@ -966,6 +975,7 @@ L.CRS.EPSG4326 = L.Util.extend({}, L.CRS, {
  */
 
 L.Map = L.Class.extend({
+
 	includes: L.Mixin.Events,
 
 	options: {
@@ -1197,10 +1207,7 @@ L.Map = L.Class.extend({
 	// public methods for getting map state
 
 	getCenter: function () { // (Boolean) -> LatLng
-		var viewHalf = this.getSize().divideBy(2),
-		    centerPoint = this._getTopLeftPoint().add(viewHalf);
-
-		return this.unproject(centerPoint, this._zoom);
+		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
 
 	getZoom: function () {
@@ -1209,9 +1216,9 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-		    sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
-		    ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
-
+		    sw = this.unproject(bounds.getBottomLeft()),
+		    ne = this.unproject(bounds.getTopRight());
+		
 		return new L.LatLngBounds(sw, ne);
 	},
 
@@ -1249,7 +1256,7 @@ L.Map = L.Class.extend({
 			zoom++;
 			nePoint = this.project(ne, zoom);
 			swPoint = this.project(sw, zoom);
-			boundsSize = new L.Point(nePoint.x - swPoint.x, swPoint.y - nePoint.y);
+			boundsSize = new L.Point(Math.abs(nePoint.x - swPoint.x), Math.abs(swPoint.y - nePoint.y));
 
 			if (!inside) {
 				zoomNotFound = boundsSize.x <= size.x && boundsSize.y <= size.y;
@@ -1296,6 +1303,40 @@ L.Map = L.Class.extend({
 
 	// conversion methods
 
+	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
+		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		return this.options.crs.latLngToPoint(latlng, zoom);
+	},
+
+	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
+		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		return this.options.crs.pointToLatLng(point, zoom);
+	},
+
+	layerPointToLatLng: function (point) { // (Point)
+		return this.unproject(point.add(this._initialTopLeftPoint));
+	},
+
+	latLngToLayerPoint: function (latlng) { // (LatLng)
+		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
+	},
+
+	containerPointToLayerPoint: function (point) { // (Point)
+		return point.subtract(this._getMapPanePos());
+	},
+
+	layerPointToContainerPoint: function (point) { // (Point)
+		return point.add(this._getMapPanePos());
+	},
+
+	containerPointToLatLng: function (point) {
+		return this.layerPointToLatLng(this.containerPointToLayerPoint(point));
+	},
+
+	latLngToContainerPoint: function (latlng) {
+		return this.layerPointToContainerPoint(this.latLngToLayerPoint(latlng));
+	},
+
 	mouseEventToContainerPoint: function (e) { // (MouseEvent)
 		return L.DomEvent.getMousePosition(e, this._container);
 	},
@@ -1308,42 +1349,8 @@ L.Map = L.Class.extend({
 		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
 	},
 
-	containerPointToLayerPoint: function (point) { // (Point)
-		return point.subtract(L.DomUtil.getPosition(this._mapPane));
-	},
 
-	layerPointToContainerPoint: function (point) { // (Point)
-		return point.add(L.DomUtil.getPosition(this._mapPane));
-	},
-
-	layerPointToLatLng: function (point) { // (Point)
-		return this.unproject(point.add(this._initialTopLeftPoint));
-	},
-
-	latLngToLayerPoint: function (latlng) { // (LatLng)
-		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
-	},
-
-	containerPointToLatLng: function (point) {
-		return this.layerPointToLatLng(this.containerPointToLayerPoint(point));
-	},
-
-	latLngToContainerPoint: function (latlng) {
-		return this.layerPointToContainerPoint(this.latLngToLayerPoint(latlng));
-	},
-
-	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(latlng, zoom);
-	},
-
-	unproject: function (point, zoom) { // (Point[, Number, Boolean]) -> LatLng
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom);
-	},
-
-
-	// private methods that modify map state
+	// map initialization methods
 
 	_initContainer: function (id) {
 		var container = this._container = L.DomUtil.get(id);
@@ -1415,6 +1422,22 @@ L.Map = L.Class.extend({
 		}
 	},
 
+	_initLayers: function (layers) {
+		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
+
+		this._layers = {};
+		this._tileLayersNum = 0;
+
+		var i, len;
+
+		for (i = 0, len = layers.length; i < len; i++) {
+			this.addLayer(layers[i]);
+		}
+	},
+
+
+	// private methods that modify map state
+
 	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
 
 		var zoomChanged = (this._zoom !== zoom);
@@ -1434,7 +1457,7 @@ L.Map = L.Class.extend({
 		if (!preserveMapOffset) {
 			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		} else {
-			this._initialTopLeftPoint._add(L.DomUtil.getPosition(this._mapPane));
+			this._initialTopLeftPoint._add(this._getMapPanePos());
 		}
 
 		this._tileLayersToLoad = this._tileLayersNum;
@@ -1455,22 +1478,8 @@ L.Map = L.Class.extend({
 		}
 	},
 
-	_initLayers: function (layers) {
-		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
-
-		this._layers = {};
-		this._tileLayersNum = 0;
-
-		var i, len;
-
-		for (i = 0, len = layers.length; i < len; i++) {
-			this.addLayer(layers[i]);
-		}
-	},
-
 	_rawPanBy: function (offset) {
-		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
-		L.DomUtil.setPosition(this._mapPane, newPos);
+		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
 
@@ -1495,13 +1504,14 @@ L.Map = L.Class.extend({
 	},
 
 	_onResize: function () {
+		// TODO cancel previous frame
 		L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {
 		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
-
-		this.fire('pre' + e.type);
+		
+		this.fire('preclick');
 		this._fireMouseEvent(e);
 	},
 
@@ -1543,13 +1553,16 @@ L.Map = L.Class.extend({
 
 	// private methods for getting map state
 
+	_getMapPanePos: function () {
+		return L.DomUtil.getPosition(this._mapPane);
+	},
+
 	_getTopLeftPoint: function () {
 		if (!this._loaded) {
 			throw new Error('Set map center and zoom first.');
 		}
 
-		var mapPanePos = L.DomUtil.getPosition(this._mapPane);
-		return this._initialTopLeftPoint.subtract(mapPanePos);
+		return this._initialTopLeftPoint.subtract(this._getMapPanePos());
 	},
 
 	_getNewTopLeftPoint: function (center, zoom) {
@@ -1559,10 +1572,16 @@ L.Map = L.Class.extend({
 	},
 
 	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
-		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
-			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
+		var topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(this._getMapPanePos());
+		return this.project(latlng, newZoom)._subtract(topLeft)._round();
+	},
 
-		return this.project(latlng, newZoom)._round()._subtract(topLeft);
+	_getCenterLayerPoint: function () {
+		return this.containerPointToLayerPoint(this.getSize().divideBy(2));
+	},
+
+	_getCenterOffset: function (center) {
+		return this.latLngToLayerPoint(center).subtract(this._getCenterLayerPoint());
 	},
 
 	_limitZoom: function (zoom) {
@@ -2107,8 +2126,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nwMap = map.unproject(nwPoint, zoom, true),
-			seMap = map.unproject(sePoint, zoom, true),
+			nwMap = map.unproject(nwPoint, zoom),
+			seMap = map.unproject(sePoint, zoom),
 
 			nw = crs.project(nwMap),
 			se = crs.project(seMap),
@@ -4231,9 +4250,8 @@ L.Circle = L.Path.extend({
 			point = map.project(this._latlng),
 			swPoint = new L.Point(point.x - delta, point.y + delta),
 			nePoint = new L.Point(point.x + delta, point.y - delta),
-			zoom = map.getZoom(),
-			sw = map.unproject(swPoint, zoom, true),
-			ne = map.unproject(nePoint, zoom, true);
+			sw = map.unproject(swPoint),
+			ne = map.unproject(nePoint);
 
 		return new L.LatLngBounds(sw, ne);
 	},
@@ -4950,6 +4968,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onPreDrag: function () {
+		// TODO refactor to be able to adjust map pane position after zoom
 		var map = this._map,
 			worldWidth = map.options.crs.scale(map.getZoom()),
 			halfWidth = Math.round(worldWidth / 2),
@@ -5087,12 +5106,12 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_getCenterForScrollWheelZoom: function (mousePos, delta) {
 		var map = this._map,
-			centerPoint = map.getPixelBounds().getCenter(),
+			scale = Math.pow(2, delta),
 			viewHalf = map.getSize().divideBy(2),
-			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - Math.pow(2, -delta)),
-			newCenterPoint = centerPoint.add(centerOffset);
+			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - 1 / scale),
+			newCenterPoint = map.getPixelOrigin().add(viewHalf).add(centerOffset);
 
-		return map.unproject(newCenterPoint, map._zoom, true);
+		return map.unproject(newCenterPoint);
 	}
 });
 
@@ -6397,25 +6416,19 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 
 
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
+	
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (this._loaded && !forceReset && this._layers) {
-			// difference between the new and current centers in pixels
-			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
-
-			center = new L.LatLng(center.lat, center.lng);
-
 			var done = (zoomChanged ?
-					this._zoomToIfCenterInView && this._zoomToIfCenterInView(center, zoom, offset) :
-					this._panByIfClose(offset));
+					this._zoomToIfClose && this._zoomToIfClose(center, zoom) :
+					this._panByIfClose(center));
 
 			// exit if animated pan or zoom started
-			if (done) {
-				return this;
-			}
+			if (done) { return this; }
 		}
 
 		// reset the map view
@@ -6458,7 +6471,10 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		this.fire('moveend');
 	},
 
-	_panByIfClose: function (offset) {
+	_panByIfClose: function (center) {
+		// difference between the new and current centers in pixels
+		var offset = this._getCenterOffset(center);
+
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);
 			return true;
@@ -6481,22 +6497,17 @@ L.Map.mergeOptions({
 });
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
-	_zoomToIfCenterInView: function (center, zoom, centerOffset) {
+	
+	_zoomToIfClose: function (center, zoom) {
 
-		if (this._animatingZoom) {
-			return true;
-		}
-		if (!this.options.zoomAnimation) {
-			return false;
-		}
+		if (this._animatingZoom) { return true; }
+		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = Math.pow(2, zoom - this._zoom),
-			offset = centerOffset.divideBy(1 - 1 / scale);
+			offset = this._getCenterOffset(center).divideBy(1 - 1 / scale);
 
 		// if offset does not exceed half of the view
-		if (!this._offsetIsWithinView(offset, 1)) {
-			return false;
-		}
+		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
 		this._mapPane.className += ' leaflet-zoom-anim';
 
@@ -6504,25 +6515,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
-		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
-		if (!L.Browser.android && this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) {
-			//Leave current bg and just zoom it some more
-
-			this._tilePane.style.visibility = 'hidden';
-			this._tilePane.empty = true;
-			this._stopLoadingImages(this._tilePane);
-		} else {
-			this._prepareTileBg();
-		}
-
-		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
-			origin = centerPoint.add(offset);
+		this._prepareTileBg();
 
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom
 		});
+
+		var origin = this._getCenterLayerPoint().add(offset);
 
 		this._runAnimation(center, zoom, scale, origin);
 
@@ -6575,6 +6575,18 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		var tilePane = this._tilePane,
 			tileBg = this._tileBg;
 
+		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
+		// (disable this for Android due to it not supporting double translate)
+		if (!L.Browser.android && tileBg &&
+				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
+				this._getLoadedTilesPercentage(tilePane) < 0.5) {
+
+			tilePane.style.visibility = 'hidden';
+			tilePane.empty = true;
+			this._stopLoadingImages(tilePane);
+			return;
+		}
+
 		if (!tileBg) {
 			tileBg = this._tileBg = this._createPane('leaflet-tile-pane', this._mapPane);
 			tileBg.style.zIndex = 1;
@@ -6605,7 +6617,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 
 	_getLoadedTilesPercentage: function (container) {
-		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
+		var tiles = container.getElementsByTagName('img'),
 			i, len, count = 0;
 
 		for (i = 0, len = tiles.length; i < len; i++) {

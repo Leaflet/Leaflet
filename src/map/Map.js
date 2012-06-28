@@ -3,6 +3,7 @@
  */
 
 L.Map = L.Class.extend({
+
 	includes: L.Mixin.Events,
 
 	options: {
@@ -234,10 +235,7 @@ L.Map = L.Class.extend({
 	// public methods for getting map state
 
 	getCenter: function () { // (Boolean) -> LatLng
-		var viewHalf = this.getSize().divideBy(2),
-		    centerPoint = this._getTopLeftPoint().add(viewHalf);
-
-		return this.unproject(centerPoint, this._zoom);
+		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
 
 	getZoom: function () {
@@ -246,9 +244,9 @@ L.Map = L.Class.extend({
 
 	getBounds: function () {
 		var bounds = this.getPixelBounds(),
-		    sw = this.unproject(new L.Point(bounds.min.x, bounds.max.y), this._zoom, true),
-		    ne = this.unproject(new L.Point(bounds.max.x, bounds.min.y), this._zoom, true);
-
+		    sw = this.unproject(bounds.getBottomLeft()),
+		    ne = this.unproject(bounds.getTopRight());
+		
 		return new L.LatLngBounds(sw, ne);
 	},
 
@@ -333,6 +331,40 @@ L.Map = L.Class.extend({
 
 	// conversion methods
 
+	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
+		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		return this.options.crs.latLngToPoint(latlng, zoom);
+	},
+
+	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
+		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		return this.options.crs.pointToLatLng(point, zoom);
+	},
+
+	layerPointToLatLng: function (point) { // (Point)
+		return this.unproject(point.add(this._initialTopLeftPoint));
+	},
+
+	latLngToLayerPoint: function (latlng) { // (LatLng)
+		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
+	},
+
+	containerPointToLayerPoint: function (point) { // (Point)
+		return point.subtract(this._getMapPanePos());
+	},
+
+	layerPointToContainerPoint: function (point) { // (Point)
+		return point.add(this._getMapPanePos());
+	},
+
+	containerPointToLatLng: function (point) {
+		return this.layerPointToLatLng(this.containerPointToLayerPoint(point));
+	},
+
+	latLngToContainerPoint: function (latlng) {
+		return this.layerPointToContainerPoint(this.latLngToLayerPoint(latlng));
+	},
+
 	mouseEventToContainerPoint: function (e) { // (MouseEvent)
 		return L.DomEvent.getMousePosition(e, this._container);
 	},
@@ -345,42 +377,8 @@ L.Map = L.Class.extend({
 		return this.layerPointToLatLng(this.mouseEventToLayerPoint(e));
 	},
 
-	containerPointToLayerPoint: function (point) { // (Point)
-		return point.subtract(L.DomUtil.getPosition(this._mapPane));
-	},
 
-	layerPointToContainerPoint: function (point) { // (Point)
-		return point.add(L.DomUtil.getPosition(this._mapPane));
-	},
-
-	layerPointToLatLng: function (point) { // (Point)
-		return this.unproject(point.add(this._initialTopLeftPoint));
-	},
-
-	latLngToLayerPoint: function (latlng) { // (LatLng)
-		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
-	},
-
-	containerPointToLatLng: function (point) {
-		return this.layerPointToLatLng(this.containerPointToLayerPoint(point));
-	},
-
-	latLngToContainerPoint: function (latlng) {
-		return this.layerPointToContainerPoint(this.latLngToLayerPoint(latlng));
-	},
-
-	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(latlng, zoom);
-	},
-
-	unproject: function (point, zoom) { // (Point[, Number, Boolean]) -> LatLng
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom);
-	},
-
-
-	// private methods that modify map state
+	// map initialization methods
 
 	_initContainer: function (id) {
 		var container = this._container = L.DomUtil.get(id);
@@ -452,6 +450,22 @@ L.Map = L.Class.extend({
 		}
 	},
 
+	_initLayers: function (layers) {
+		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
+
+		this._layers = {};
+		this._tileLayersNum = 0;
+
+		var i, len;
+
+		for (i = 0, len = layers.length; i < len; i++) {
+			this.addLayer(layers[i]);
+		}
+	},
+
+
+	// private methods that modify map state
+
 	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
 
 		var zoomChanged = (this._zoom !== zoom);
@@ -471,7 +485,7 @@ L.Map = L.Class.extend({
 		if (!preserveMapOffset) {
 			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		} else {
-			this._initialTopLeftPoint._add(L.DomUtil.getPosition(this._mapPane));
+			this._initialTopLeftPoint._add(this._getMapPanePos());
 		}
 
 		this._tileLayersToLoad = this._tileLayersNum;
@@ -492,22 +506,8 @@ L.Map = L.Class.extend({
 		}
 	},
 
-	_initLayers: function (layers) {
-		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
-
-		this._layers = {};
-		this._tileLayersNum = 0;
-
-		var i, len;
-
-		for (i = 0, len = layers.length; i < len; i++) {
-			this.addLayer(layers[i]);
-		}
-	},
-
 	_rawPanBy: function (offset) {
-		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
-		L.DomUtil.setPosition(this._mapPane, newPos);
+		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
 
@@ -532,13 +532,14 @@ L.Map = L.Class.extend({
 	},
 
 	_onResize: function () {
+		// TODO cancel previous frame
 		L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {
 		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
-
-		this.fire('pre' + e.type);
+		
+		this.fire('preclick');
 		this._fireMouseEvent(e);
 	},
 
@@ -580,13 +581,16 @@ L.Map = L.Class.extend({
 
 	// private methods for getting map state
 
+	_getMapPanePos: function () {
+		return L.DomUtil.getPosition(this._mapPane);
+	},
+
 	_getTopLeftPoint: function () {
 		if (!this._loaded) {
 			throw new Error('Set map center and zoom first.');
 		}
 
-		var mapPanePos = L.DomUtil.getPosition(this._mapPane);
-		return this._initialTopLeftPoint.subtract(mapPanePos);
+		return this._initialTopLeftPoint.subtract(this._getMapPanePos());
 	},
 
 	_getNewTopLeftPoint: function (center, zoom) {
@@ -596,10 +600,16 @@ L.Map = L.Class.extend({
 	},
 
 	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
-		var mapPaneOffset = L.DomUtil.getPosition(this._mapPane),
-			topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(mapPaneOffset);
+		var topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(this._getMapPanePos());
+		return this.project(latlng, newZoom)._subtract(topLeft)._round();
+	},
 
-		return this.project(latlng, newZoom)._round()._subtract(topLeft);
+	_getCenterLayerPoint: function () {
+		return this.containerPointToLayerPoint(this.getSize().divideBy(2));
+	},
+
+	_getCenterOffset: function (center) {
+		return this.latLngToLayerPoint(center).subtract(this._getCenterLayerPoint());
 	},
 
 	_limitZoom: function (zoom) {

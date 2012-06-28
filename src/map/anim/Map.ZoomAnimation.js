@@ -3,22 +3,17 @@ L.Map.mergeOptions({
 });
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
-	_zoomToIfCenterInView: function (center, zoom, centerOffset) {
+	
+	_zoomToIfClose: function (center, zoom) {
 
-		if (this._animatingZoom) {
-			return true;
-		}
-		if (!this.options.zoomAnimation) {
-			return false;
-		}
+		if (this._animatingZoom) { return true; }
+		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = Math.pow(2, zoom - this._zoom),
-			offset = centerOffset.divideBy(1 - 1 / scale);
+			offset = this._getCenterOffset(center).divideBy(1 - 1 / scale);
 
 		// if offset does not exceed half of the view
-		if (!this._offsetIsWithinView(offset, 1)) {
-			return false;
-		}
+		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
 		this._mapPane.className += ' leaflet-zoom-anim';
 
@@ -26,25 +21,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		//Hack: Disable this for android due to it not supporting double translate (mentioned in _runAnimation below)
-		//if Foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer
-		if (!L.Browser.android && this._tileBg && this._getLoadedTilesPercentage(this._tileBg) > 0.5 && this._getLoadedTilesPercentage(this._tilePane) < 0.5) {
-			//Leave current bg and just zoom it some more
-
-			this._tilePane.style.visibility = 'hidden';
-			this._tilePane.empty = true;
-			this._stopLoadingImages(this._tilePane);
-		} else {
-			this._prepareTileBg();
-		}
-
-		var centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(2)),
-			origin = centerPoint.add(offset);
+		this._prepareTileBg();
 
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom
 		});
+
+		var origin = this._getCenterLayerPoint().add(offset);
 
 		this._runAnimation(center, zoom, scale, origin);
 
@@ -97,6 +81,18 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		var tilePane = this._tilePane,
 			tileBg = this._tileBg;
 
+		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
+		// (disable this for Android due to it not supporting double translate)
+		if (!L.Browser.android && tileBg &&
+				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
+				this._getLoadedTilesPercentage(tilePane) < 0.5) {
+
+			tilePane.style.visibility = 'hidden';
+			tilePane.empty = true;
+			this._stopLoadingImages(tilePane);
+			return;
+		}
+
 		if (!tileBg) {
 			tileBg = this._tileBg = this._createPane('leaflet-tile-pane', this._mapPane);
 			tileBg.style.zIndex = 1;
@@ -127,7 +123,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 
 	_getLoadedTilesPercentage: function (container) {
-		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
+		var tiles = container.getElementsByTagName('img'),
 			i, len, count = 0;
 
 		for (i = 0, len = tiles.length; i < len; i++) {

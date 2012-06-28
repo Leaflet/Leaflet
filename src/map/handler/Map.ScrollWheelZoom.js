@@ -48,12 +48,12 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_getCenterForScrollWheelZoom: function (mousePos, delta) {
 		var map = this._map,
-			centerPoint = map.getPixelBounds().getCenter(),
+			scale = Math.pow(2, delta),
 			viewHalf = map.getSize().divideBy(2),
-			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - Math.pow(2, -delta)),
-			newCenterPoint = centerPoint.add(centerOffset);
+			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - 1 / scale),
+			newCenterPoint = map.getPixelOrigin().add(viewHalf).add(centerOffset);
 
-		return map.unproject(newCenterPoint, map._zoom, true);
+		return map.unproject(newCenterPoint);
 	}
 });
 
