@@ -154,6 +154,13 @@
 .leaflet-control-fullscreen a {
 	background-image: url(images/fullscreen-enter.png);
 	}
+.leaflet-fullscreen {
+	position: fixed !important;
+	left: 0 !important;
+	top: 0 !important;
+	width: 100% !important;
+	height: 100% !important;
+}
 .leaflet-fullscreen .leaflet-control-fullscreen a {
 	background-image: url(images/fullscreen-exit.png);
 	}

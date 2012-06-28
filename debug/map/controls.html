@@ -13,7 +13,8 @@
 <body>
 
 	<div id="map"></div>
-
+  
+  <p><button id="toggle-fullscreen">External fullscreen button</button></p>
 	<script type="text/javascript">
 
 		function getCloudMadeUrl(styleId) {
@@ -42,8 +43,13 @@
 		});
 
 		map.addControl(layersControl);
-		map.addControl(new L.Control.Fullscreen());
+    // map.addControl(new L.Control.Fullscreen());
 		map.addControl(new L.Control.Scale());
+
+    // external fullscreen control
+    document.getElementById('toggle-fullscreen').addEventListener('click', function(){
+      map.fullscreen();
+    }, false);
 
 	</script>
 </body>

@@ -58,43 +58,23 @@ L.Map = L.Class.extend({
 	zoomOut: function () {
 		return this.setZoom(this._zoom - 1);
 	},
-	
-	fullscreen: function (event) {
-		if (!this._isFullscreen) {
 
-			this._container.style.position = 'fixed';
-			this._container.style.left = 0;
-			this._container.style.top = 0;
-			this._container.style.width = '100%';
-			this._container.style.height = '100%';
+	fullscreen: function (force) {
+		var fullScreenClass = 'leaflet-fullscreen',
+			isFullScreen = L.DomUtil.hasClass(this._container, fullScreenClass),
+			enterFullScreen = (typeof force !== 'undefined') ? force : !isFullScreen;
 
-			L.DomUtil.addClass(this._container, 'leaflet-fullscreen');
-			this._isFullscreen = true;
-
-			L.DomEvent.addListener(document, 'keyup', this.fullscreen, this);
-
+		if (enterFullScreen && !isFullScreen) {
+			L.DomUtil.addClass(this._container, fullScreenClass);
 			this.fire('enterFullscreen');
-
-		} else {
-
-			if (event.type === 'keyup' && event.keyCode !== 27) {
-				return;
-			}
-
-			this._container.removeAttribute('style');
-			this._container.style.position = 'relative';
-
-			L.DomUtil.removeClass(this._container, 'leaflet-fullscreen');
-			this._isFullscreen = false;
-
-			L.DomEvent.removeListener(document, 'keyup', this.fullscreen);
-
+			L.DomEvent.addListener(document, 'keyup', L.DomEvent.stop).addListener(document, 'keyup', this._escapeFullScreen, this);
+			this.invalidateSize();
+		} else if (!enterFullScreen && isFullScreen) {
+			L.DomUtil.removeClass(this._container, fullScreenClass);
 			this.fire('exitFullscreen');
-
+			L.DomEvent.removeListener(document, 'keyup', L.DomEvent.stop).removeListener(document, 'keyup', this._escapeFullScreen);
+			this.invalidateSize();
 		}
-
-		this.invalidateSize();
-
 		return this;
 	},
 
@@ -549,6 +529,11 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, newPos);
 	},
 
+	_escapeFullScreen: function (event) {
+		if (event && event.type === 'keyup' && event.keyCode === 27) {
+			this.fullscreen(false);
+		}
+	},
 
 	// map events
 

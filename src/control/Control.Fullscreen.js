@@ -4,14 +4,13 @@ L.Control.Fullscreen = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-		map._isFullscreen = false;
-	  
 		var className = 'leaflet-control-fullscreen',
-				container = L.DomUtil.create('div', className);
+			container = L.DomUtil.create('div', className);
 
-		this._createButton('Fullscreen', '', container, map.fullscreen, map);
+		this._createButton('Fullscreen', '', container, this._toggleFullScreen, this);
 
 		return container;
+
 	},
 
 	_createButton: function (title, className, container, fn, context) {
@@ -25,7 +24,12 @@ L.Control.Fullscreen = L.Control.extend({
 			.addListener(link, 'click', fn, context);
 
 		return link;
+	},
+
+	_toggleFullScreen: function (event) {
+		this._map.fullscreen();
 	}
+
 });
 
 L.Map.mergeOptions({
