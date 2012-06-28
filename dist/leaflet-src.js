@@ -1300,6 +1300,18 @@ L.Map = L.Class.extend({
 		return this._container;
 	},
 
+	
+	// TODO replace with universal implementation after refactoring projections
+
+	getZoomScale: function (toZoom) {
+		var crs = this.options.crs;
+		return crs.scale(toZoom) / crs.scale(this._zoom);
+	},
+
+	getScaleZoom: function (scale) {
+		return this._zoom + (Math.log(scale) / Math.LN2);
+	},
+
 
 	// conversion methods
 
@@ -2240,8 +2252,6 @@ L.ImageOverlay = L.Class.extend({
 	_initImage: function () {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-animated');
 
-		this._image.style.visibility = 'hidden';
-
 		this._updateOpacity();
 
 		//TODO createImage util method to remove duplication
@@ -2255,13 +2265,17 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_zoomAnimation: function (opt) {
-		var image = this._image,
-		    scale = Math.pow(2, opt.zoom - this._map._zoom),
-		    topLeft = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), opt.zoom, opt.center),
-		    size = this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), opt.zoom, opt.center).subtract(topLeft),
-		    currentSize = this._map.latLngToLayerPoint(this._bounds.getSouthEast()).subtract(this._map.latLngToLayerPoint(this._bounds.getNorthWest()));
+		var map = this._map,
+			image = this._image,
+		    scale = map.getZoomScale(opt.zoom),
+		    nw = this._bounds.getNorthWest(),
+		    se = this._bounds.getSouthEast(),
+		    topLeft = map._latLngToNewLayerPoint(nw, opt.zoom, opt.center),
+		    size = map._latLngToNewLayerPoint(se, opt.zoom, opt.center).subtract(topLeft),
+		    currentSize = map.latLngToLayerPoint(se).subtract(map.latLngToLayerPoint(nw)),
+		    origin = topLeft.add(size.subtract(currentSize).divideBy(2));
 
-		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(topLeft.add(size.subtract(currentSize).divideBy(2))) + ' scale(' + scale + ') ';
+		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {
@@ -2276,7 +2290,6 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_onImageLoad: function () {
-		this._image.style.visibility = '';
 		this.fire('load');
 	},
 
@@ -3299,15 +3312,12 @@ L.Map.include({
 	},
 
 	_animatePathZoom: function (opt) {
-		// TODO refactor into something more manageable
-		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
-			scale = Math.pow(2, opt.zoom - this._zoom),
-			offset = centerOffset.divideBy(1 - 1 / scale),
-			centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(-2)),
-			origin = centerPoint.add(offset).round(),
-			pathRootStyle = this._pathRoot.style;
+		var scale = this.getZoomScale(opt.zoom),
+			offset = this._getCenterOffset(opt.center).divideBy(1 - 1 / scale),
+			viewportPos = this.containerPointToLayerPoint(this.getSize().multiplyBy(-L.Path.CLIP_PADDING)),
+			origin = viewportPos.add(offset).round();
 
-		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString((origin.multiplyBy(-1).add(L.DomUtil.getPosition(this._pathRoot)).multiplyBy(scale).add(origin))) + ' scale(' + scale + ') ';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString((origin.multiplyBy(-1).add(L.DomUtil.getPosition(this._pathRoot)).multiplyBy(scale).add(origin))) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},
@@ -3318,9 +3328,9 @@ L.Map.include({
 
 	_updateSvgViewport: function () {
 		if (this._pathZooming) {
-			//Do not update SVGs while a zoom animation is going on otherwise the animation will break.
-			//When the zoom animation ends we will be updated again anyway
-			//This fixes the case where you do a momentum move and zoom while the move is still ongoing.
+			// Do not update SVGs while a zoom animation is going on otherwise the animation will break.
+			// When the zoom animation ends we will be updated again anyway
+			// This fixes the case where you do a momentum move and zoom while the move is still ongoing.
 			return;
 		}
 
@@ -3335,7 +3345,6 @@ L.Map.include({
 			pane = this._panes.overlayPane;
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
-		// Unfortunately I haven't found a good workaround for this yet
 		if (L.Browser.mobileWebkit) {
 			pane.removeChild(root);
 		}
@@ -5098,18 +5107,18 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 		if (!delta) { return; }
 
-		var newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
-			newZoom = zoom + delta;
+		var newZoom = zoom + delta,
+			newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, newZoom);
 
 		map.setView(newCenter, newZoom);
 	},
 
-	_getCenterForScrollWheelZoom: function (mousePos, delta) {
+	_getCenterForScrollWheelZoom: function (mousePos, newZoom) {
 		var map = this._map,
-			scale = Math.pow(2, delta),
+			scale = map.getZoomScale(newZoom),
 			viewHalf = map.getSize().divideBy(2),
 			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - 1 / scale),
-			newCenterPoint = map.getPixelOrigin().add(viewHalf).add(centerOffset);
+			newCenterPoint = map._getTopLeftPoint().add(viewHalf).add(centerOffset);
 
 		return map.unproject(newCenterPoint);
 	}
@@ -5186,7 +5195,7 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
-			viewCenter = map.containerPointToLayerPoint(map.getSize().divideBy(2));
+			viewCenter = map._getCenterLayerPoint();
 
 		this._startCenter = p1.add(p2).divideBy(2, true);
 		this._startDist = p1.distanceTo(p2);
@@ -5216,12 +5225,6 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (this._scale === 1) { return; }
 
-		var zoom = this._map._zoom + Math.log(this._scale) / Math.LN2;
-
-		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
-			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
-			center = this._map.unproject(centerPoint);
-
 		if (!this._moved) {
 			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
 
@@ -5233,9 +5236,12 @@ L.Map.TouchZoom = L.Handler.extend({
 			this._moved = true;
 		}
 
+		var origin = this._getScaleOrigin(),
+			center = map.layerPointToLatLng(origin);
+
 		map.fire('zoomanim', {
 			center: center,
-			zoom: zoom
+			zoom: map.getScaleZoom(this._scale)
 		});
 
 		// Used 2 translates instead of transform-origin because of a very strange bug -
@@ -5251,29 +5257,34 @@ L.Map.TouchZoom = L.Handler.extend({
 	_onTouchEnd: function (e) {
 		if (!this._moved || !this._zooming) { return; }
 
+		var map = this._map;
+
 		this._zooming = false;
-		this._map._mapPane.className = this._map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
+		map._mapPane.className = map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
 
 		L.DomEvent
 			.removeListener(document, 'touchmove', this._onTouchMove)
 			.removeListener(document, 'touchend', this._onTouchEnd);
 
-		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
-			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
-			center = this._map.unproject(centerPoint),
+		var origin = this._getScaleOrigin(),
+			center = map.layerPointToLatLng(origin),
 
-			oldZoom = this._map.getZoom(),
-			floatZoomDelta = Math.log(this._scale) / Math.LN2,
+			oldZoom = map.getZoom(),
+			floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
 			roundZoomDelta = (floatZoomDelta > 0 ? Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
-			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
-			finalScale = Math.pow(2, zoom - oldZoom);
+			zoom = map._limitZoom(oldZoom + roundZoomDelta);
 
-		this._map.fire('zoomanim', {
+		map.fire('zoomanim', {
 			center: center,
 			zoom: zoom
 		});
 
-		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset), true);
+		map._runAnimation(center, zoom, map.getZoomScale(zoom) / this._scale, origin, true);
+	},
+
+	_getScaleOrigin: function () {
+		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale);
+		return this._startCenter.add(centerOffset);
 	}
 });
 
@@ -6497,13 +6508,13 @@ L.Map.mergeOptions({
 });
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
-	
+
 	_zoomToIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
 		if (!this.options.zoomAnimation) { return false; }
 
-		var scale = Math.pow(2, zoom - this._zoom),
+		var scale = this.getZoomScale(zoom),
 			offset = this._getCenterOffset(center).divideBy(1 - 1 / scale);
 
 		// if offset does not exceed half of the view

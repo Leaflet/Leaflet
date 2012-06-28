@@ -3,13 +3,13 @@ L.Map.mergeOptions({
 });
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
-	
+
 	_zoomToIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
 		if (!this.options.zoomAnimation) { return false; }
 
-		var scale = Math.pow(2, zoom - this._zoom),
+		var scale = this.getZoomScale(zoom),
 			offset = this._getCenterOffset(center).divideBy(1 - 1 / scale);
 
 		// if offset does not exceed half of the view
