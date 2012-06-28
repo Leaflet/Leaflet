@@ -36,27 +36,50 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			size = options[name + 'Size'],
 			anchor = options.iconAnchor;
 
-		if (!anchor && size) {
-			anchor = size.divideBy(2, true);
-		}
+		/* If size is defined, use defined value. Otherwise, set size equal to
+		 * actual icon size upon icon load */
+		var size;
+		/* Size is defined */
+		if (options[name + 'Size']) {
+			size = options[name + 'Size'];
+			if (!anchor && size) {
+				anchor = size.divideBy(2, true);
+			}
 
-		if (name === 'shadow' && anchor && options.shadowOffset) {
-			anchor._add(options.shadowOffset);
-		}
+			if (name === 'shadow' && anchor && options.shadowOffset) {
+				anchor._add(options.shadowOffset);
+			}
 
-		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
-
-		if (anchor) {
-			img.style.marginLeft = (-anchor.x) + 'px';
-			img.style.marginTop  = (-anchor.y) + 'px';
-		}
-
-		if (size) {
-			img.style.width  = size.x + 'px';
+			img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+			img.style.width	 = size.x + 'px';
 			img.style.height = size.y + 'px';
+
+			if (anchor) {
+				img.style.marginLeft = (-anchor.x) + 'px';
+				img.style.marginTop	 = (-anchor.y) + 'px';
+			}
+		}
+		/* Otherwise, size is not defined. Load in size from image */
+		else {
+			img.onload = function () {
+				size = new L.Point(img.style.width, img.style.height);
+				if (!anchor && size) {
+					anchor = size.divideBy(2, true);
+				}
+
+				if (name === 'shadow' && anchor && options.shadowOffset) {
+					anchor._add(options.shadowOffset);
+				}
+
+				img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+
+				if (anchor) {
+					img.style.marginLeft = (-anchor.x) + 'px';
+					img.style.marginTop	 = (-anchor.y) + 'px';
+				}
+			};
 		}
 	},
 
@@ -83,10 +106,12 @@ L.Icon = L.Class.extend({
 
 L.Icon.Default = L.Icon.extend({
 	options: {
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
+		// // iconSize: new L.Point(25, 41),
+		// iconAnchor: new L.Point(13, 41),
+		// TODO: make this load in from code
+		popupAnchor: new L.Point(0, -33)
 
-		shadowSize: new L.Point(41, 41)
+		// shadowSize: new L.Point(41, 41)
 	},
 
 	_getIconUrl: function (name) {
@@ -101,7 +126,7 @@ L.Icon.Default = L.Icon.extend({
 
 L.Icon.Default.imagePath = (function () {
 	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+		leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 	var i, len, src, matches;
 
@@ -113,12 +138,4 @@ L.Icon.Default.imagePath = (function () {
 			return src.split(leafletRe)[0] + '/images';
 		}
 	}
-}());
-
-/* Default icon size determined by default icon URL image size */
-L.Icon.Default.iconSize = (function () {
-	var imagePath = L.Icon.Default.imagePath;
-	var img = new Image();
-	img.src = imagePath;
-	return new L.Point(img.width, img.height);
 }());
