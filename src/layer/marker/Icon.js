@@ -36,10 +36,11 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			anchor = options.iconAnchor;
+			anchor = options.iconAnchor,
+            popupAnchor = options.popupAnchor;
 
 		/* If size is defined, use defined value. Otherwise, set size equal to
-		 * actual icon size upon icon load */
+		 * the actual size of the imageUrl upon image load */
 		var size;
 		/* Size is defined */
 		if (options[name + 'Size']) {
@@ -47,6 +48,9 @@ L.Icon = L.Class.extend({
 			if (!anchor && size) {
 				anchor = size.divideBy(2, true);
 			}
+            if (name === 'icon' && !popupAnchor && size) {
+                popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+            }
 
 			if (name === 'shadow' && anchor && options.shadowOffset) {
 				anchor._add(options.shadowOffset);
@@ -105,14 +109,7 @@ L.Icon = L.Class.extend({
 // TODO move to a separate file
 
 L.Icon.Default = L.Icon.extend({
-	options: {
-		// // iconSize: new L.Point(25, 41),
-		// iconAnchor: new L.Point(13, 41),
-		// TODO: make this load in from code
-		popupAnchor: new L.Point(0, -33)
-
-		// shadowSize: new L.Point(41, 41)
-	},
+	options: {},
 
 	_getIconUrl: function (name) {
 		var path = L.Icon.Default.imagePath;
