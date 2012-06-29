@@ -37,7 +37,7 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 			anchor = options.iconAnchor,
-            popupAnchor = options.popupAnchor;
+			popupAnchor = options.popupAnchor;
 
 		/* If size is defined, use defined value. Otherwise, set size equal to
 		 * the actual size of the imageUrl upon image load */
@@ -46,12 +46,11 @@ L.Icon = L.Class.extend({
 		if (options[name + 'Size']) {
 			size = options[name + 'Size'];
 			if (!anchor && size) {
-				anchor = size.divideBy(2, true);
+				anchor = new L.Point(Math.round(size.x / 2), size.y);
 			}
-            if (name === 'icon' && !popupAnchor && size) {
-                popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
-            }
-
+			if (name === 'icon' && !popupAnchor && size) {
+				popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+			}
 			if (name === 'shadow' && anchor && options.shadowOffset) {
 				anchor._add(options.shadowOffset);
 			}
@@ -70,9 +69,11 @@ L.Icon = L.Class.extend({
 			img.onload = function () {
 				size = new L.Point(img.style.width, img.style.height);
 				if (!anchor && size) {
-					anchor = size.divideBy(2, true);
+					anchor = new L.Point(Math.round(size.x / 2), size.y);
 				}
-
+				if (name === 'icon' && !popupAnchor && size) {
+					popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+				}
 				if (name === 'shadow' && anchor && options.shadowOffset) {
 					anchor._add(options.shadowOffset);
 				}
