@@ -231,13 +231,37 @@ L.Class.mergeOptions = function (options) {
 L.Mixin = {};
 
 L.Mixin.Events = {
-	addEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+	addEventListener: function (/*String or Object*/ types, /*(optional) Function or Object*/ fn, /*(optional) Object*/ context) {
 		var events = this._leaflet_events = this._leaflet_events || {};
-		events[type] = events[type] || [];
-		events[type].push({
-			action: fn,
-			context: context || this
-		});
+		
+		// Types can be a map of types/handlers
+		if (typeof types === 'object') {
+			context = context || fn;
+			fn = undefined;
+			
+			for (var type in types) {
+				if (types.hasOwnProperty(type)) {
+					this.addEventListener(type, types[type], context);
+				}
+			}
+			
+			return this;
+		}
+		
+		if (!fn) {
+			return false;
+		}
+		
+		types = (types || '').replace(/^\s+/, '').replace(/\s+$/, '').split(' ');
+		
+		for (var i = 0, ilen = types.length; i < ilen; i++) {
+			events[types[i]] = events[types[i]] || [];
+			events[types[i]].push({
+				action: fn,
+				context: context || this
+			});
+		}
+		
 		return this;
 	},
 
@@ -246,20 +270,44 @@ L.Mixin.Events = {
 		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
 	},
 
-	removeEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		if (!this.hasEventListeners(type)) {
+	removeEventListener: function (/*String or Object*/ types, /*(optional) Function*/ fn, /*(optional) Object*/ context) {
+		var events = this._leaflet_events;
+		
+		if (typeof types === 'object') {
+			context = context || fn;
+			fn = undefined;
+			
+			for (var type in types) {
+				if (types.hasOwnProperty(type)) {
+					this.off(type, types[type], context);
+				}
+			}
+			
 			return this;
 		}
-
-		for (var i = 0, events = this._leaflet_events, len = events[type].length; i < len; i++) {
-			if (
-				(events[type][i].action === fn) &&
-				(!context || (events[type][i].context === context))
-			) {
-				events[type].splice(i, 1);
-				return this;
+		
+		types = (types || '').replace(/^\s+/, '').replace(/\s+$/, '').split(' ');
+		
+		for (var i = 0, ilen = types.length; i < ilen; i++) {
+			var eventType = events[types[i]] || [];
+			
+			if (!this.hasEventListeners(types[i])) {
+				continue;
+			}
+			
+			// Remove matching events
+			var j = eventType.length;
+			
+			while (j--) {
+				if (
+					(!fn || eventType[j].action === fn) &&
+					(!context || (eventType[j].context === context))
+				) {
+					eventType.splice(j, 1);
+				}
 			}
 		}
+		
 		return this;
 	},
 
