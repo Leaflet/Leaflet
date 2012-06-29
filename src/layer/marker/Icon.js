@@ -67,7 +67,7 @@ L.Icon = L.Class.extend({
 		/* Otherwise, size is not defined. Load in size from image */
 		else {
 			img.onload = function () {
-				size = new L.Point(img.style.width, img.style.height);
+				size = new L.Point(this.width, this.height);
 				if (!anchor && size) {
 					anchor = new L.Point(Math.round(size.x / 2), size.y);
 				}
@@ -78,11 +78,11 @@ L.Icon = L.Class.extend({
 					anchor._add(options.shadowOffset);
 				}
 
-				img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+				this.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
 
 				if (anchor) {
-					img.style.marginLeft = (-anchor.x) + 'px';
-					img.style.marginTop	 = (-anchor.y) + 'px';
+					this.style.marginLeft = (-anchor.x) + 'px';
+					this.style.marginTop  = (-anchor.y) + 'px';
 				}
 			};
 		}
