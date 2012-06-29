@@ -3,6 +3,7 @@
  */
 
 L.Bounds = L.Class.extend({
+	
 	initialize: function (min, max) {	//(Point, Point) or Point[]
 		if (!min) {
 			return;
@@ -26,10 +27,18 @@ L.Bounds = L.Class.extend({
 		}
 	},
 
-	getCenter: function (round)/*->Point*/ {
+	getCenter: function (round) { // (Boolean) -> Point
 		return new L.Point(
 				(this.min.x + this.max.x) / 2,
 				(this.min.y + this.max.y) / 2, round);
+	},
+
+	getBottomLeft: function () { // -> Point
+		return new L.Point(this.min.x, this.max.y);
+	},
+
+	getTopRight: function () { // -> Point
+		return new L.Point(this.max.x, this.min.y);
 	},
 
 	contains: function (/*Bounds or Point*/ obj)/*->Boolean*/ {

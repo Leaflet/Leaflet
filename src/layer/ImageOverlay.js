@@ -39,8 +39,6 @@ L.ImageOverlay = L.Class.extend({
 	_initImage: function () {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-animated');
 
-		this._image.style.visibility = 'hidden';
-
 		this._updateOpacity();
 
 		//TODO createImage util method to remove duplication
@@ -54,13 +52,17 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_zoomAnimation: function (opt) {
-		var image = this._image,
-		    scale = Math.pow(2, opt.zoom - this._map._zoom),
-		    topLeft = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), opt.zoom, opt.center),
-		    size = this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), opt.zoom, opt.center).subtract(topLeft),
-		    currentSize = this._map.latLngToLayerPoint(this._bounds.getSouthEast()).subtract(this._map.latLngToLayerPoint(this._bounds.getNorthWest()));
+		var map = this._map,
+			image = this._image,
+		    scale = map.getZoomScale(opt.zoom),
+		    nw = this._bounds.getNorthWest(),
+		    se = this._bounds.getSouthEast(),
+		    topLeft = map._latLngToNewLayerPoint(nw, opt.zoom, opt.center),
+		    size = map._latLngToNewLayerPoint(se, opt.zoom, opt.center).subtract(topLeft),
+		    currentSize = map.latLngToLayerPoint(se).subtract(map.latLngToLayerPoint(nw)),
+		    origin = topLeft.add(size.subtract(currentSize).divideBy(2));
 
-		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(topLeft.add(size.subtract(currentSize).divideBy(2))) + ' scale(' + scale + ') ';
+		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {
@@ -75,7 +77,6 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_onImageLoad: function () {
-		this._image.style.visibility = '';
 		this.fire('load');
 	},
 

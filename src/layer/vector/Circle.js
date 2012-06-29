@@ -39,9 +39,8 @@ L.Circle = L.Path.extend({
 			point = map.project(this._latlng),
 			swPoint = new L.Point(point.x - delta, point.y + delta),
 			nePoint = new L.Point(point.x + delta, point.y - delta),
-			zoom = map.getZoom(),
-			sw = map.unproject(swPoint, zoom, true),
-			ne = map.unproject(nePoint, zoom, true);
+			sw = map.unproject(swPoint),
+			ne = map.unproject(nePoint);
 
 		return new L.LatLngBounds(sw, ne);
 	},
