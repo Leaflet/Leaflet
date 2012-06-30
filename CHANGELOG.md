@@ -40,7 +40,7 @@ An in-progress version being developed on the master branch.
 
 #### Other API improvements
 
- * Improved `on` and `off` methods to also accept (eventHash[, context])` (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770)
+ * Improved `on` and `off` methods to also accept `(eventHash[, context])`, as well as multiple space-separated events (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770)
  * Improved `off` to remove all listeners of the event if no function was specified (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770) [#691](https://github.com/CloudMade/Leaflet/issues/691)
  * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.
  * Added `Icon` `className` option to assign a custom class to an icon.
