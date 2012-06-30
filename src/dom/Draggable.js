@@ -21,7 +21,7 @@ L.Draggable = L.Class.extend({
 		if (this._enabled) {
 			return;
 		}
-		L.DomEvent.addListener(this._dragStartTarget, L.Draggable.START, this._onDown, this);
+		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
 		this._enabled = true;
 	},
 
@@ -29,7 +29,7 @@ L.Draggable = L.Class.extend({
 		if (!this._enabled) {
 			return;
 		}
-		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
+		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
 		this._moved = false;
 	},
@@ -68,8 +68,8 @@ L.Draggable = L.Class.extend({
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 
-		L.DomEvent.addListener(document, L.Draggable.MOVE, this._onMove, this);
-		L.DomEvent.addListener(document, L.Draggable.END, this._onUp, this);
+		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
+		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -121,8 +121,8 @@ L.Draggable = L.Class.extend({
 			this._restoreCursor();
 		}
 
-		L.DomEvent.removeListener(document, L.Draggable.MOVE, this._onMove);
-		L.DomEvent.removeListener(document, L.Draggable.END, this._onUp);
+		L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
+		L.DomEvent.off(document, L.Draggable.END, this._onUp);
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend

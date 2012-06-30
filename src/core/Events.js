@@ -5,30 +5,26 @@
 L.Mixin = {};
 
 L.Mixin.Events = {
-	addEventListener: function (/*String or Object*/ types, /*(optional) Function or Object*/ fn, /*(optional) Object*/ context) {
-		var events = this._leaflet_events = this._leaflet_events || {};
+	
+	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+		var events = this._leaflet_events = this._leaflet_events || {},
+			type, i, len;
 		
 		// Types can be a map of types/handlers
 		if (typeof types === 'object') {
-			context = context || fn;
-			fn = undefined;
-			
-			for (var type in types) {
+			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.addEventListener(type, types[type], context);
+					this.addEventListener(type, types[type], fn || this);
 				}
 			}
 			
 			return this;
 		}
 		
-		if (!fn) {
-			return false;
-		}
+		// TODO extract trim into util method
+		types = types.replace(/^\s+|\s+$/g, '').split(/\s+/);
 		
-		types = (types || '').replace(/^\s+/, '').replace(/\s+$/, '').split(' ');
-		
-		for (var i = 0, ilen = types.length; i < ilen; i++) {
+		for (i = 0, len = types.length; i < len; i++) {
 			events[types[i]] = events[types[i]] || [];
 			events[types[i]].push({
 				action: fn,
@@ -39,45 +35,39 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	hasEventListeners: function (/*String*/ type) /*-> Boolean*/ {
+	hasEventListeners: function (type) { // (String) -> Boolean
 		var k = '_leaflet_events';
 		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
 	},
 
-	removeEventListener: function (/*String or Object*/ types, /*(optional) Function*/ fn, /*(optional) Object*/ context) {
-		var events = this._leaflet_events;
+	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
+		var events = this._leaflet_events,
+			type, i, len, listeners, j;
 		
 		if (typeof types === 'object') {
-			context = context || fn;
-			fn = undefined;
-			
-			for (var type in types) {
+			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.off(type, types[type], context);
+					this.removeEventListener(type, types[type], context || this);
 				}
 			}
 			
 			return this;
 		}
 		
-		types = (types || '').replace(/^\s+/, '').replace(/\s+$/, '').split(' ');
-		
-		for (var i = 0, ilen = types.length; i < ilen; i++) {
-			var eventType = events[types[i]] || [];
-			
-			if (!this.hasEventListeners(types[i])) {
-				continue;
-			}
-			
-			// Remove matching events
-			var j = eventType.length;
-			
-			while (j--) {
-				if (
-					(!fn || eventType[j].action === fn) &&
-					(!context || (eventType[j].context === context))
-				) {
-					eventType.splice(j, 1);
+		types = types.replace(/^\s+|\s+$/g, '').split(/\s+/);
+
+		for (i = 0, len = types.length; i < len; i++) {
+
+			if (this.hasEventListeners(types[i])) {
+				listeners = events[types[i]];
+				
+				for (j = listeners.length - 1; j >= 0; j--) {
+					if (
+						(!fn || listeners[j].action === fn) &&
+						(!context || (listeners[j].context === context))
+					) {
+						listeners.splice(j, 1);
+					}
 				}
 			}
 		}
@@ -85,7 +75,7 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
+	fireEvent: function (type, data) { // (String[, Object])
 		if (!this.hasEventListeners(type)) {
 			return this;
 		}

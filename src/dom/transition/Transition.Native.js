@@ -33,7 +33,7 @@ L.Transition = L.Transition.extend({
 		this._el = el;
 		L.Util.setOptions(this, options);
 
-		L.DomEvent.addListener(el, L.Transition.END, this._onTransitionEnd, this);
+		L.DomEvent.on(el, L.Transition.END, this._onTransitionEnd, this);
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
 
