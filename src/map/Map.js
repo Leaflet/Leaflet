@@ -32,7 +32,7 @@ L.Map = L.Class.extend({
 			this.setMaxBounds(options.maxBounds);
 		}
 
-		if (options.center && typeof options.zoom !== 'undefined') {
+		if (options.center && options.zoom !== undefined) {
 			this.setView(options.center, options.zoom, true);
 		}
 
@@ -259,8 +259,8 @@ L.Map = L.Class.extend({
 	},
 
 	getMaxZoom: function () {
-		var z1 = typeof this.options.maxZoom === 'undefined' ? Infinity : this.options.maxZoom,
-		    z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
+		var z1 = this.options.maxZoom === undefined ? Infinity : this.options.maxZoom,
+		    z2 = this._layersMaxZoom  === undefined ? Infinity : this._layersMaxZoom;
 
 		return Math.min(z1, z2);
 	},
@@ -344,12 +344,12 @@ L.Map = L.Class.extend({
 	// conversion methods
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.pointToLatLng(point, zoom);
 	},
 

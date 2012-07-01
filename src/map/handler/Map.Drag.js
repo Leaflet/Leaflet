@@ -108,7 +108,7 @@ L.Map.Drag = L.Handler.extend({
 
 			noInertia = !options.inertia ||
 					delay > options.inertiaThreshold ||
-					typeof this._positions[0] === 'undefined';
+					this._positions[0] === undefined;
 
 		if (noInertia) {
 			map.fire('moveend');

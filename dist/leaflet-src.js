@@ -3,11 +3,11 @@
  Leaflet is a modern open-source JavaScript library for interactive maps.
  http://leaflet.cloudmade.com
 */
-(function () {
+(function (window, undefined) {
 
 var L, originalL;
 
-if (typeof exports !== 'undefined') {
+if (typeof exports !== undefined + '') {
 	L = exports;
 } else {
 	originalL = window.L;
@@ -338,7 +338,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		gecko = ua.indexOf("gecko") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
-		mobile = typeof orientation !== 'undefined' ? true : false,
+		mobile = typeof orientation !== undefined + '' ? true : false,
 		doc = document.documentElement,
 		ie3d = ie && ('transition' in doc.style),
 		webkit3d = webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
@@ -1049,7 +1049,7 @@ L.Map = L.Class.extend({
 			this.setMaxBounds(options.maxBounds);
 		}
 
-		if (options.center && typeof options.zoom !== 'undefined') {
+		if (options.center && options.zoom !== undefined) {
 			this.setView(options.center, options.zoom, true);
 		}
 
@@ -1276,8 +1276,8 @@ L.Map = L.Class.extend({
 	},
 
 	getMaxZoom: function () {
-		var z1 = typeof this.options.maxZoom === 'undefined' ? Infinity : this.options.maxZoom,
-		    z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
+		var z1 = this.options.maxZoom === undefined ? Infinity : this.options.maxZoom,
+		    z2 = this._layersMaxZoom  === undefined ? Infinity : this._layersMaxZoom;
 
 		return Math.min(z1, z2);
 	},
@@ -1361,12 +1361,12 @@ L.Map = L.Class.extend({
 	// conversion methods
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
@@ -3756,7 +3756,7 @@ L.LineUtil = {
 	_simplifyDP: function (points, sqTolerance) {
 
 		var len = points.length,
-			ArrayConstructor = typeof Uint8Array !== 'undefined' ? Uint8Array : Array,
+			ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
 			markers = new ArrayConstructor(len);
 
 		markers[0] = markers[len - 1] = 1;
@@ -5080,7 +5080,7 @@ L.Map.Drag = L.Handler.extend({
 
 			noInertia = !options.inertia ||
 					delay > options.inertiaThreshold ||
-					typeof this._positions[0] === 'undefined';
+					this._positions[0] === undefined;
 
 		if (noInertia) {
 			map.fire('moveend');
@@ -6856,4 +6856,4 @@ L.Map.include({
 
 
 
-}());
+}(this));
