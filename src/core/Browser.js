@@ -13,7 +13,7 @@
 		gecko3d = gecko && ('MozPerspective' in doc.style),
 		opera3d = opera && ('OTransition' in doc.style);
 
-	var touch = (function () {
+	var touch = !window.L_NO_TOUCH && (function () {
 		var startName = 'ontouchstart';
 
 		// WebKit, etc

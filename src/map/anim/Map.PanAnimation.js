@@ -53,7 +53,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 
 	_onPanTransitionEnd: function () {
-		this._mapPane.className = this._mapPane.className.replace(/ leaflet-pan-anim/g, '');
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
 		this.fire('moveend');
 	},
 

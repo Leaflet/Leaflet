@@ -442,10 +442,12 @@ L.Map = L.Class.extend({
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
 
+		var zoomHide = ' leaflet-zoom-hide';
+
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += ' leaflet-zoom-hide';
-			panes.shadowPane.className += ' leaflet-zoom-hide';
-			panes.popupPane.className += ' leaflet-zoom-hide';
+			panes.markerPane.className += zoomHide;
+			panes.shadowPane.className += zoomHide;
+			panes.popupPane.className += zoomHide;
 		}
 	},
 

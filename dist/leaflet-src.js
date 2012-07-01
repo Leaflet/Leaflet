@@ -131,6 +131,10 @@ L.Util = {
 		return Math.round(num * pow) / pow;
 	},
 
+	splitWords: function (str) {
+		return str.replace(/^\s+|\s+$/g, '').split(/\s+/);
+	},
+
 	setOptions: function (obj, options) {
 		obj.options = L.Util.extend({}, obj.options, options);
 		return obj.options;
@@ -228,27 +232,28 @@ L.Class.mergeOptions = function (options) {
  * L.Mixin.Events adds custom events functionality to Leaflet classes
  */
 
+var key = '_leaflet_events';
+
 L.Mixin = {};
 
 L.Mixin.Events = {
 	
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		var events = this._leaflet_events = this._leaflet_events || {},
+		var events = this[key] = this[key] || {},
 			type, i, len;
 		
 		// Types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.addEventListener(type, types[type], fn || this);
+					this.addEventListener(type, types[type], fn);
 				}
 			}
 			
 			return this;
 		}
 		
-		// TODO extract trim into util method
-		types = types.replace(/^\s+|\s+$/g, '').split(/\s+/);
+		types = L.Util.splitWords(types);
 		
 		for (i = 0, len = types.length; i < len; i++) {
 			events[types[i]] = events[types[i]] || [];
@@ -262,25 +267,24 @@ L.Mixin.Events = {
 	},
 
 	hasEventListeners: function (type) { // (String) -> Boolean
-		var k = '_leaflet_events';
-		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
+		return (key in this) && (type in this[key]) && (this[key][type].length > 0);
 	},
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
-		var events = this._leaflet_events,
+		var events = this[key],
 			type, i, len, listeners, j;
 		
 		if (typeof types === 'object') {
 			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.removeEventListener(type, types[type], context || this);
+					this.removeEventListener(type, types[type], context);
 				}
 			}
 			
 			return this;
 		}
 		
-		types = types.replace(/^\s+|\s+$/g, '').split(/\s+/);
+		types = L.Util.splitWords(types);
 
 		for (i = 0, len = types.length; i < len; i++) {
 
@@ -311,7 +315,7 @@ L.Mixin.Events = {
 			target: this
 		}, data);
 
-		var listeners = this._leaflet_events[type].slice();
+		var listeners = this[key][type].slice();
 
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			listeners[i].action.call(listeners[i].context || this, event);
@@ -341,7 +345,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		gecko3d = gecko && ('MozPerspective' in doc.style),
 		opera3d = opera && ('OTransition' in doc.style);
 
-	var touch = (function () {
+	var touch = !window.L_NO_TOUCH && (function () {
 		var startName = 'ontouchstart';
 
 		// WebKit, etc
@@ -663,12 +667,15 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
+		function replaceFn(w, match) {
 			if (match === name) {
 				return '';
 			}
 			return w;
-		}).replace(/^\s+/, '');
+		}
+		el.className = el.className
+				.replace(/(\S+)\s*/g, replaceFn)
+				.replace(/^\s+/, '');
 	},
 
 	setOpacity: function (el, value) {
@@ -1452,10 +1459,12 @@ L.Map = L.Class.extend({
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
 
+		var zoomHide = ' leaflet-zoom-hide';
+
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += ' leaflet-zoom-hide';
-			panes.shadowPane.className += ' leaflet-zoom-hide';
-			panes.popupPane.className += ' leaflet-zoom-hide';
+			panes.markerPane.className += zoomHide;
+			panes.shadowPane.className += zoomHide;
+			panes.popupPane.className += zoomHide;
 		}
 	},
 
@@ -1981,7 +1990,7 @@ L.TileLayer = L.Class.extend({
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
 		if (this.options.reuseTiles) {
-			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
+			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
 			this._unusedTiles.push(tile);
 		} else if (tile.parentNode === this._container) {
 			this._container.removeChild(tile);
@@ -2747,7 +2756,7 @@ L.Popup = L.Class.extend({
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
-		L.Util.falseFn(this._container.offsetWidth);
+		L.Util.falseFn(this._container.offsetWidth); // force reflow
 
 		map.off({
 			viewreset: this._updatePosition,
@@ -2835,29 +2844,30 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		var container = this._contentNode;
+		var container = this._contentNode,
+			style = container.style;
 
-		container.style.width = '';
-		container.style.whiteSpace = 'nowrap';
+		style.width = '';
+		style.whiteSpace = 'nowrap';
 
 		var width = container.offsetWidth;
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		container.style.width = (width + 1) + 'px';
-		container.style.whiteSpace = '';
+		style.width = (width + 1) + 'px';
+		style.whiteSpace = '';
 
-		container.style.height = '';
+		style.height = '';
 
 		var height = container.offsetHeight,
 			maxHeight = this.options.maxHeight,
-			scrolledClass = ' leaflet-popup-scrolled';
+			scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
-			container.style.height = maxHeight + 'px';
-			container.className += scrolledClass;
+			style.height = maxHeight + 'px';
+			L.DomUtil.addClass(container, scrolledClass);
 		} else {
-			container.className = container.className.replace(scrolledClass, '');
+			L.DomUtil.removeClass(container, scrolledClass);
 		}
 
 		this._containerWidth = this._container.offsetWidth;
@@ -4884,7 +4894,7 @@ L.Draggable = L.Class.extend({
 				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 			if (el.tagName.toLowerCase() === 'a') {
-				el.className = el.className.replace(' leaflet-active', '');
+				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
 
 			if (dist < L.Draggable.TAP_TOLERANCE) {
@@ -4910,11 +4920,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_setMovingCursor: function () {
-		document.body.className += ' leaflet-dragging';
+		L.DomUtil.addClass(document.body, 'leaflet-dragging');
 	},
 
 	_restoreCursor: function () {
-		document.body.className = document.body.className.replace(/ leaflet-dragging/g, '');
+		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 	},
 
 	_simulateEvent: function (type, e) {
@@ -4941,17 +4951,15 @@ L.Handler = L.Class.extend({
 	},
 
 	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+		if (this._enabled) { return; }
+
 		this._enabled = true;
 		this.addHooks();
 	},
 
 	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+		if (!this._enabled) { return; }
+
 		this._enabled = false;
 		this.removeHooks();
 	},
@@ -5335,7 +5343,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map;
 
 		this._zooming = false;
-		map._mapPane.className = map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 
 		L.DomEvent
 			.off(document, 'touchmove', this._onTouchMove)
@@ -6555,7 +6563,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 
 	_onPanTransitionEnd: function () {
-		this._mapPane.className = this._mapPane.className.replace(/ leaflet-pan-anim/g, '');
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
 		this.fire('moveend');
 	},
 
@@ -6737,10 +6745,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
 
-		L.Util.falseFn(this._tileBg.offsetWidth);
+		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
-		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 		this._animatingZoom = false;
 	},
 

@@ -108,7 +108,7 @@ L.Draggable = L.Class.extend({
 				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 			if (el.tagName.toLowerCase() === 'a') {
-				el.className = el.className.replace(' leaflet-active', '');
+				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
 
 			if (dist < L.Draggable.TAP_TOLERANCE) {
@@ -134,11 +134,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_setMovingCursor: function () {
-		document.body.className += ' leaflet-dragging';
+		L.DomUtil.addClass(document.body, 'leaflet-dragging');
 	},
 
 	_restoreCursor: function () {
-		document.body.className = document.body.className.replace(/ leaflet-dragging/g, '');
+		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 	},
 
 	_simulateEvent: function (type, e) {

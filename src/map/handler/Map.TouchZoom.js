@@ -87,7 +87,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map;
 
 		this._zooming = false;
-		map._mapPane.className = map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 
 		L.DomEvent
 			.off(document, 'touchmove', this._onTouchMove)

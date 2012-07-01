@@ -155,10 +155,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
 
-		L.Util.falseFn(this._tileBg.offsetWidth);
+		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
-		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 		this._animatingZoom = false;
 	},
 
