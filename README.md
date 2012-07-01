@@ -9,7 +9,9 @@ Check out the website for more information: [leaflet.cloudmade.com](http://leafl
 ## Contributing to Leaflet
 Let's make the best open-source library for maps that can possibly exist!
 
-Contributing is simple: make the changes in your fork, make sure that Leaflet builds successfully (see below) and then create a pull request to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer). Updates to Leaflet [documentation](http://leaflet.cloudmade.com/reference.html) and [examples](http://leaflet.cloudmade.com/examples.html) (located in the `gh-pages` branch) are really appreciated too.
+Contributing is simple: make the changes in your fork (preferably in a separate branch), make sure that Leaflet builds successfully (see below) and then create a pull request (without the built files, just the source changes) to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer). Updates to Leaflet [documentation](http://leaflet.cloudmade.com/reference.html) and [examples](http://leaflet.cloudmade.com/examples.html) (located in the `gh-pages` branch for current stable release and `gh-pages-master` for the in-progress version) are really appreciated too.
+
+Note that bugfixes and small improvements are higher priority than new features or substantial API changes, and will be reviewed and merged much faster than pulls with lots of new code. If your new feature is not expected to be widely used, consider making a plugin instead. Lets keep Leaflet slim, fast and simple!
 
 Here's [a list of the awesome people](http://github.com/CloudMade/Leaflet/contributors) that joined us already. Looking forward to _your_ contributions!
 

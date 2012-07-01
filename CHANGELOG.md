@@ -69,6 +69,7 @@ An in-progress version being developed on the master branch.
  * Improved `Marker` `openPopup` not to raise an error if it doesn't have a popup. [#507](https://github.com/CloudMade/Leaflet/issues/507)
  * Added `geometry` property to `GeoJSON` `featureparse` event (by [@twinbit](https://github.com/twinbit)). [#716](https://github.com/CloudMade/Leaflet/pull/716)
  * Added `Map` `autopanstart` event.
+ * Added `L_NO_TOUCH` global variable switch (set it before Leaflet inclusion) which disables touch detection, helpful for desktop apps built using QT. [#572](https://github.com/CloudMade/Leaflet/issues/572)
 
 ### Bug fixes
 
