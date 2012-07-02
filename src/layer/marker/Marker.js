@@ -31,8 +31,14 @@ L.Marker = L.Class.extend({
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._animateZoom, this);
 			this._icon.className += ' leaflet-zoom-animated';
+			if (this._shadow) {
+				this._shadow.className += ' leaflet-zoom-animated';
+			}
 		} else {
 			this._icon.className += ' leaflet-zoom-hide';
+			if (this._shadow) {
+				this._shadow.className += ' leaflet-zoom-hide';
+			}
 		}
 	},
 
