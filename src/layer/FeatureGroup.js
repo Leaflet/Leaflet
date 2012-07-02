@@ -45,12 +45,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	_deinitEvents: function (layer) {
-		var events = ['click', 'dblclick', 'mouseover', 'mouseout'],
-			i, len;
-
-		for (i = 0, len = events.length; i < len; i++) {
-			layer.off(events[i], this._propagateEvent, this);
-		}
+		layer.off('click dblclick mouseover mouseout', this._propagateEvent, this);
 	},
 
 	_propagateEvent: function (e) {
