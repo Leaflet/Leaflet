@@ -47,7 +47,7 @@ L.Mixin.Events = {
 		if (typeof types === 'object') {
 			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.removeEventListener(type, types[type], context);
+					this.removeEventListener(type, types[type], fn);
 				}
 			}
 			
