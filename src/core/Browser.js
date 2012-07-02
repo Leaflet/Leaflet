@@ -52,7 +52,7 @@
 		webkit3d: webkit3d,
 		gecko3d: gecko3d,
 		opera3d: opera3d,
-		any3d: ie3d || webkit3d || gecko3d || opera3d,
+		any3d: !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d),
 
 		mobile: mobile,
 		mobileWebkit: mobile && webkit,

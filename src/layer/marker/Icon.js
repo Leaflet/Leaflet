@@ -47,7 +47,7 @@ L.Icon = L.Class.extend({
 			anchor._add(options.shadowOffset);
 		}
 
-		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+		img.className = 'leaflet-marker-' + name + ' ' + options.className;
 
 		if (anchor) {
 			img.style.marginLeft = (-anchor.x) + 'px';
