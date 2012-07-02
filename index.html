@@ -46,11 +46,11 @@
 
 		<p>
 			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="120px" height="20px"></iframe>
-			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="100px" height="20px"></iframe>
+			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="105px" height="20px"></iframe>
 
 			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leaflet.cloudmade.com" data-text="Leaflet — a modern, lightweight open-source JavaScript library for interactive maps by @cloudmade" data-count="horizontal" data-via="LeafletJS" data-related="CloudMade">Tweet</a>
 
-			<a href="http://twitter.com/LeafletJS" data-show-count="true" data-width="235px" class="twitter-follow-button">Follow @LeafletJS</a>
+			<a href="http://twitter.com/LeafletJS" data-show-count="true" data-show-screen-name="false" data-width="170px" class="twitter-follow-button">Follow @LeafletJS</a>
 			<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
 
 			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=button_count&amp;show_faces=false&amp;width=430&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:20px;" allowTransparency="true"></iframe>
@@ -81,12 +81,12 @@
 var map = new L.Map('map');
 
 // create a CloudMade tile layer with style #997 (or use other provider of your choice)
-var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">[your-API-key]</a>/997/256/{z}/{x}/{y}.png', {
+var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">[API-key]</a>/997/256/{z}/{x}/{y}.png', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>',
 	maxZoom: 18
 });
 
-// add the CloudMade layer to the map set the view to a given center and zoom
+// add the layer to the map, set the view to a given place and zoom
 map.addLayer(cloudmade).setView(new L.LatLng(51.505, -0.09), 13);
 
 // create a marker in the given location and add it to the map
