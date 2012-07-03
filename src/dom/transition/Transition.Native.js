@@ -37,7 +37,15 @@ L.Transition = L.Transition.extend({
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
 
-	run: function (/*Object*/ props) {
+	run: function (/*Object*/ props)
+	{
+		// Return if this already has a transition on it - unsure if this is still needed.
+		var styleProp = this._el.style[L.Transition.PROPERTY];
+		if (styleProp && styleProp !== "none")
+		{
+			return;
+		}
+
 		var prop,
 			propsList = [],
 			customProp = L.Transition.CUSTOM_PROPS_PROPERTIES;
@@ -63,6 +71,9 @@ L.Transition = L.Transition.extend({
 		this._inProgress = true;
 
 		this.fire('start');
+
+		// Set up a slightly delayed call to a backup event if webkitAnimationEnd doesn't fire properly
+		this.backupEventFire = setTimeout(L.Util.bind(this._onBackupFireEnd, this), this.options.duration * 1.2 * 1000);
 
 		if (L.Transition.NATIVE) {
 			clearInterval(this._timer);
@@ -95,11 +106,30 @@ L.Transition = L.Transition.extend({
 
 			this._el.style[L.Transition.TRANSITION] = '';
 
+			// Clear the delayed call to the backup event, obviously webkitAnimationEnd has fired correctly
+			clearTimeout(this.backupEventFire);
+			delete this.backupEventFire;
+
 			this.fire('step');
 
 			if (e && e.type) {
 				this.fire('end');
 			}
 		}
+	},
+
+	_onBackupFireEnd: function ()
+	{
+		// Re-fire the step and end events - not sure why but it needs it.
+
+		this.fire('step');
+		this.fire('end');
+
+		// Create and fire a forceRefresh event to be picked up by the map.
+
+		console.log("_onBackupFireEnd");
+		var event = document.createEvent("Event");
+		event.initEvent("forceRefresh", true, false);
+		this._el.dispatchEvent(event);
 	}
 });

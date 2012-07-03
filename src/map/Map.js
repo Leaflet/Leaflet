@@ -528,6 +528,9 @@ L.Map = L.Class.extend({
 	// map events
 
 	_initEvents: function () {
+
+		console.log("Init Events");
+
 		if (!L.DomEvent) { return; }
 
 		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
@@ -543,6 +546,22 @@ L.Map = L.Class.extend({
 		if (this.options.trackResize) {
 			L.DomEvent.on(window, 'resize', this._onResize, this);
 		}
+
+		// Add a listener to handle webkitAnimationEnd failures
+		L.DomEvent.on(this._container, "forceRefresh", this._onForceRefresh, this);
+	},
+
+	_onForceRefresh: function ()
+	{
+		// webkitAnimationEnd has failed - call a zoomIn() - magically fixes any issues we had.
+		// Although it would be nice if this could happen without the entire zoomIn happening
+
+		console.log("_onForceRefresh");
+
+		setTimeout(L.Util.bind(function ()
+		{
+			this.zoomIn();
+		}, this), 0);
 	},
 
 	_onResize: function () {
