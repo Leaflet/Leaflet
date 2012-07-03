@@ -169,3 +169,7 @@ L.Polyline = L.Path.extend({
 		L.Path.prototype._updatePath.call(this);
 	}
 });
+
+L.polyline = function (latlngs, options) {
+	return new L.Polyline(latlngs, options);
+};

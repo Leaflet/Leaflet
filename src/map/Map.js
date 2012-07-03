@@ -33,7 +33,7 @@ L.Map = L.Class.extend({
 		}
 
 		if (options.center && options.zoom !== undefined) {
-			this.setView(options.center, options.zoom, true);
+			this.setView(L.latLng(options.center), options.zoom, true);
 		}
 
 		this._initLayers(options.layers);
@@ -44,7 +44,7 @@ L.Map = L.Class.extend({
 
 	// replaced by animation-powered implementation in Map.PanAnimation.js
 	setView: function (center, zoom) {
-		this._resetView(center, this._limitZoom(zoom));
+		this._resetView(L.latLng(center), this._limitZoom(zoom));
 		return this;
 	},
 
@@ -246,7 +246,7 @@ L.Map = L.Class.extend({
 		var bounds = this.getPixelBounds(),
 		    sw = this.unproject(bounds.getBottomLeft()),
 		    ne = this.unproject(bounds.getTopRight());
-		
+
 		return new L.LatLngBounds(sw, ne);
 	},
 
@@ -323,12 +323,12 @@ L.Map = L.Class.extend({
 	getPanes: function () {
 		return this._panes;
 	},
-	
+
 	getContainer: function () {
 		return this._container;
 	},
 
-	
+
 	// TODO replace with universal implementation after refactoring projections
 
 	getZoomScale: function (toZoom) {
@@ -345,7 +345,7 @@ L.Map = L.Class.extend({
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
 		zoom = zoom === undefined ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(latlng, zoom);
+		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
@@ -358,7 +358,7 @@ L.Map = L.Class.extend({
 	},
 
 	latLngToLayerPoint: function (latlng) { // (LatLng)
-		return this.project(latlng)._round()._subtract(this._initialTopLeftPoint);
+		return this.project(L.latLng(latlng))._round()._subtract(this._initialTopLeftPoint);
 	},
 
 	containerPointToLayerPoint: function (point) { // (Point)
@@ -374,7 +374,7 @@ L.Map = L.Class.extend({
 	},
 
 	latLngToContainerPoint: function (latlng) {
-		return this.layerPointToContainerPoint(this.latLngToLayerPoint(latlng));
+		return this.layerPointToContainerPoint(this.latLngToLayerPoint(L.latLng(latlng)));
 	},
 
 	mouseEventToContainerPoint: function (e) { // (MouseEvent)
@@ -552,7 +552,7 @@ L.Map = L.Class.extend({
 
 	_onMouseClick: function (e) {
 		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
-		
+
 		this.fire('preclick');
 		this._fireMouseEvent(e);
 	},
@@ -642,4 +642,8 @@ L.Map.addInitHook = function (fn) {
 	};
 
 	this.prototype._initializers.push(init);
+};
+
+L.map = function (id, options) {
+	return new L.Map(id, options);
 };

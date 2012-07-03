@@ -17,7 +17,7 @@ L.Marker = L.Class.extend({
 
 	initialize: function (latlng, options) {
 		L.Util.setOptions(this, options);
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 	},
 
 	onAdd: function (map) {
@@ -31,6 +31,11 @@ L.Marker = L.Class.extend({
 
 		this._initIcon();
 		this.update();
+	},
+
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
 	},
 
 	onRemove: function (map) {
@@ -54,7 +59,7 @@ L.Marker = L.Class.extend({
 	},
 
 	setLatLng: function (latlng) {
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 
 		this.update();
 
@@ -195,3 +200,7 @@ L.Marker = L.Class.extend({
 		L.DomUtil.setOpacity(this._icon, this.options.opacity);
 	}
 });
+
+L.marker = function (latlng, options) {
+	return new L.Marker(latlng, options);
+};

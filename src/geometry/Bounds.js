@@ -3,12 +3,12 @@
  */
 
 L.Bounds = L.Class.extend({
-	
-	initialize: function (min, max) {	//(Point, Point) or Point[]
-		if (!min) {
-			return;
-		}
-		var points = (min instanceof Array ? min : [min, max]);
+
+	initialize: function (a, b) {	//(Point, Point) or Point[]
+		if (!a) { return; }
+
+		var points = b ? [a, b] : a;
+
 		for (var i = 0, len = points.length; i < len; i++) {
 			this.extend(points[i]);
 		}
@@ -16,9 +16,10 @@ L.Bounds = L.Class.extend({
 
 	// extend the bounds to contain the given point
 	extend: function (/*Point*/ point) {
+		point = L.point(point);
 		if (!this.min && !this.max) {
-			this.min = new L.Point(point.x, point.y);
-			this.max = new L.Point(point.x, point.y);
+			this.min = point.clone();
+			this.max = point.clone();
 		} else {
 			this.min.x = Math.min(point.x, this.min.x);
 			this.max.x = Math.max(point.x, this.max.x);
@@ -44,6 +45,12 @@ L.Bounds = L.Class.extend({
 	contains: function (/*Bounds or Point*/ obj)/*->Boolean*/ {
 		var min, max;
 
+		if (typeof obj[0] === 'number' || obj instanceof L.Point) {
+			obj = L.point(obj)
+		} else {
+			obj = L.bounds(obj);
+		}
+
 		if (obj instanceof L.Bounds) {
 			min = obj.min;
 			max = obj.max;
@@ -58,6 +65,8 @@ L.Bounds = L.Class.extend({
 	},
 
 	intersects: function (/*Bounds*/ bounds) {
+		bounds = L.bounds(bounds);
+
 		var min = this.min,
 			max = this.max,
 			min2 = bounds.min,
@@ -70,3 +79,10 @@ L.Bounds = L.Class.extend({
 	}
 
 });
+
+L.bounds = function (a, b) {
+	if (a instanceof L.Bounds) {
+		return a;
+	}
+	return new L.Bounds(a, b);
+};

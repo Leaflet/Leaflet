@@ -10,7 +10,7 @@ L.Rectangle = L.Polygon.extend({
 	setBounds: function (latLngBounds) {
 		this.setLatLngs(this._boundsToLatLngs(latLngBounds));
 	},
-	
+
 	_boundsToLatLngs: function (latLngBounds) {
 	    return [
 	        latLngBounds.getSouthWest(),
@@ -21,3 +21,7 @@ L.Rectangle = L.Polygon.extend({
 	    ];
 	}
 });
+
+L.rectangle = function (latLngBounds, options) {
+	return new L.Rectangle(latLngBounds, options);
+};

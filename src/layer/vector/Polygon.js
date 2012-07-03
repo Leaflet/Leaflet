@@ -10,10 +10,10 @@ L.Polygon = L.Polyline.extend({
 	initialize: function (latlngs, options) {
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
-		if (latlngs && (latlngs[0] instanceof Array)) {
+		/*if (latlngs && (latlngs[0] instanceof Array)) {
 			this._latlngs = latlngs[0];
 			this._holes = latlngs.slice(1);
-		}
+		}*/
 	},
 
 	projectLatlngs: function () {
@@ -62,3 +62,7 @@ L.Polygon = L.Polyline.extend({
 		return str + (L.Browser.svg ? 'z' : 'x');
 	}
 });
+
+L.polygon = function (latlngs, options) {
+	return new L.Polygon(latlngs, options);
+};

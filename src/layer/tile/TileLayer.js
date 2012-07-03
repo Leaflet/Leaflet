@@ -74,6 +74,11 @@ L.TileLayer = L.Class.extend({
 		this._update();
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	onRemove: function (map) {
 		map._panes.tilePane.removeChild(this._container);
 
@@ -410,3 +415,7 @@ L.TileLayer = L.Class.extend({
         layer._tileLoaded();
     }
 });
+
+L.tileLayer = function (url, options) {
+	return new L.TileLayer(url, options);
+};

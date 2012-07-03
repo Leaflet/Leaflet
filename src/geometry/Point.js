@@ -64,3 +64,13 @@ L.Point.prototype = {
 				L.Util.formatNum(this.y) + ')';
 	}
 };
+
+L.point = function (x, y, round) {
+	if (x instanceof L.Point) {
+		return x;
+	}
+	if (x instanceof Array) {
+		return new L.Point(x[0], x[1]);
+	}
+	return new L.Point(x, y, round);
+};

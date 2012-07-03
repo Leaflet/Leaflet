@@ -7,7 +7,7 @@ L.ImageOverlay = L.Class.extend({
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds)
 		this._url = url;
-		this._bounds = bounds;
+		this._bounds = L.latLngBounds(bounds);
 
 		L.Util.setOptions(this, options);
 	},
@@ -32,7 +32,7 @@ L.ImageOverlay = L.Class.extend({
 
 	onRemove: function (map) {
 		map.getPanes().overlayPane.removeChild(this._image);
-		
+
 		map.off('viewreset', this._reset, this);
 
 		if (map.options.zoomAnimation) {

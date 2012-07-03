@@ -4,10 +4,10 @@
 
 L.LatLngBounds = L.Class.extend({
 	initialize: function (southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
-		if (!southWest) {
-			return;
-		}
-		var latlngs = (southWest instanceof Array ? southWest : [southWest, northEast]);
+		if (!southWest) { return; }
+
+		var latlngs = northEast ? [southWest, northEast] : southWest;
+
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			this.extend(latlngs[i]);
 		}
@@ -15,6 +15,12 @@ L.LatLngBounds = L.Class.extend({
 
 	// extend the bounds to contain the given point or bounds
 	extend: function (/*LatLng or LatLngBounds*/ obj) {
+		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
+			obj = L.latLng(obj)
+		} else {
+			obj = L.latLngBounds(obj);
+		}
+
 		if (obj instanceof L.LatLng) {
 			if (!this._southWest && !this._northEast) {
 				this._southWest = new L.LatLng(obj.lat, obj.lng, true);
@@ -67,6 +73,12 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	contains: function (/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
+		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
+			obj = L.latLng(obj)
+		} else {
+			obj = L.latLngBounds(obj);
+		}
+
 		var sw = this._southWest,
 			ne = this._northEast,
 			sw2, ne2;
@@ -83,6 +95,8 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	intersects: function (/*LatLngBounds*/ bounds) {
+		bounds = L.latLngBounds(bounds);
+
 		var sw = this._southWest,
 			ne = this._northEast,
 			sw2 = bounds.getSouthWest(),
@@ -107,3 +121,10 @@ L.LatLngBounds = L.Class.extend({
 });
 
 //TODO International date line?
+
+L.latLngBounds = function (a, b) {
+	if (a instanceof L.Bounds) {
+		return a;
+	}
+	return new L.LatLngBounds(a, b);
+};

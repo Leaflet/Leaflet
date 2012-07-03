@@ -15,7 +15,6 @@ L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
 	}
 
-	//TODO change to lat() & lng()
 	this.lat = lat;
 	this.lng = lng;
 };
@@ -57,4 +56,14 @@ L.LatLng.prototype = {
 
 		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	}
+};
+
+L.latLng = function (a, b, c) {
+	if (a instanceof L.LatLng) {
+		return a;
+	}
+	if (a instanceof Array) {
+		return new L.LatLng(a[0], a[1]);
+	}
+	return new L.LatLng(a, b, c);
 };
