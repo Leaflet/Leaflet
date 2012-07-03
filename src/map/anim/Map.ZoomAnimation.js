@@ -1,5 +1,5 @@
 L.Map.mergeOptions({
-	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android && !L.Browser.mobileOpera
+	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
@@ -58,7 +58,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
 
 		// TODO work around this prettier
-		if (L.Browser.android) {
+		if (L.Browser.android23) {
 			tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
 			scaleStr = 'scale(' + scale + ')';
 		} else {
@@ -83,7 +83,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
 		// (disable this for Android due to it not supporting double translate)
-		if (!L.Browser.android && tileBg &&
+		if (!L.Browser.android23 && tileBg &&
 				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
 				this._getLoadedTilesPercentage(tilePane) < 0.5) {
 

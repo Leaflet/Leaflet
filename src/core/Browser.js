@@ -6,6 +6,7 @@
 		gecko = ua.indexOf("gecko") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
+		android23 = ua.search("android [23]") !== -1,
 		mobile = typeof orientation !== undefined + '' ? true : false,
 		doc = document.documentElement,
 		ie3d = ie && ('transition' in doc.style),
@@ -47,6 +48,7 @@
 		gecko: gecko,
 		opera: opera,
 		android: android,
+		android23: android23,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,

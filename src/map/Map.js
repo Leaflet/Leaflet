@@ -15,7 +15,7 @@ L.Map = L.Class.extend({
 		layers: Array,
 		*/
 
-		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
+		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android23,
 		trackResize: true,
 		markerZoomAnimation: true
 	},
