@@ -15,6 +15,14 @@ L.FeatureGroup = L.LayerGroup.extend({
 		}
 	},
 
+	removeLayer: function (layer) {
+		this._deinitEvents(layer);
+
+		L.LayerGroup.prototype.removeLayer.call(this, layer);
+
+		this.invoke('unbindPopup');
+	},
+
 	bindPopup: function (content) {
 		this._popupContent = content;
 		return this.invoke('bindPopup', content);
@@ -33,12 +41,11 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	_initEvents: function (layer) {
-		var events = ['click', 'dblclick', 'mouseover', 'mouseout'],
-			i, len;
+		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
+	},
 
-		for (i = 0, len = events.length; i < len; i++) {
-			layer.on(events[i], this._propagateEvent, this);
-		}
+	_deinitEvents: function (layer) {
+		layer.off('click dblclick mouseover mouseout', this._propagateEvent, this);
 	},
 
 	_propagateEvent: function (e) {

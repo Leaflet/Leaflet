@@ -6,14 +6,15 @@
 		gecko = ua.indexOf("gecko") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
-		mobile = typeof orientation !== 'undefined' ? true : false,
+		android23 = ua.search("android [23]") !== -1,
+		mobile = typeof orientation !== undefined + '' ? true : false,
 		doc = document.documentElement,
 		ie3d = ie && ('transition' in doc.style),
 		webkit3d = webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
 		gecko3d = gecko && ('MozPerspective' in doc.style),
 		opera3d = opera && ('OTransition' in doc.style);
 
-	var touch = (function () {
+	var touch = !window.L_NO_TOUCH && (function () {
 		var startName = 'ontouchstart';
 
 		// WebKit, etc
@@ -47,6 +48,7 @@
 		gecko: gecko,
 		opera: opera,
 		android: android,
+		android23: android23,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,

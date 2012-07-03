@@ -105,6 +105,10 @@ L.Util = {
 		return Math.round(num * pow) / pow;
 	},
 
+	splitWords: function (str) {
+		return str.replace(/^\s+|\s+$/g, '').split(/\s+/);
+	},
+
 	setOptions: function (obj, options) {
 		obj.options = L.Util.extend({}, obj.options, options);
 		return obj.options;

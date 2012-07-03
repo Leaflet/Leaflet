@@ -3,16 +3,16 @@
  */
 
 L.Map.mergeOptions({
-	touchZoom: L.Browser.touch && !L.Browser.android
+	touchZoom: L.Browser.touch && !L.Browser.android23
 });
 
 L.Map.TouchZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	_onTouchStart: function (e) {
@@ -33,8 +33,8 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
 		L.DomEvent
-			.addListener(document, 'touchmove', this._onTouchMove, this)
-			.addListener(document, 'touchend', this._onTouchEnd, this);
+			.on(document, 'touchmove', this._onTouchMove, this)
+			.on(document, 'touchend', this._onTouchEnd, this);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -87,11 +87,11 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map;
 
 		this._zooming = false;
-		map._mapPane.className = map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 
 		L.DomEvent
-			.removeListener(document, 'touchmove', this._onTouchMove)
-			.removeListener(document, 'touchend', this._onTouchEnd);
+			.off(document, 'touchmove', this._onTouchMove)
+			.off(document, 'touchend', this._onTouchEnd);
 
 		var origin = this._getScaleOrigin(),
 			center = map.layerPointToLatLng(origin),

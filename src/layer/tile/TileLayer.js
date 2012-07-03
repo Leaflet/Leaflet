@@ -60,8 +60,10 @@ L.TileLayer = L.Class.extend({
 		this._createTileProto();
 
 		// set up events
-		map.on('viewreset', this._resetCallback, this);
-		map.on('moveend', this._update, this);
+		map.on({
+			'viewreset': this._resetCallback,
+			'moveend': this._update
+		}, this);
 
 		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
@@ -75,8 +77,10 @@ L.TileLayer = L.Class.extend({
 	onRemove: function (map) {
 		map._panes.tilePane.removeChild(this._container);
 
-		map.off('viewreset', this._resetCallback, this);
-		map.off('moveend', this._update, this);
+		map.off({
+			'viewreset': this._resetCallback,
+			'moveend': this._update
+		}, this);
 
 		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
@@ -254,7 +258,7 @@ L.TileLayer = L.Class.extend({
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
 		if (this.options.reuseTiles) {
-			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
+			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
 			this._unusedTiles.push(tile);
 		} else if (tile.parentNode === this._container) {
 			this._container.removeChild(tile);

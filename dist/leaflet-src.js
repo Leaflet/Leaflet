@@ -3,11 +3,11 @@
  Leaflet is a modern open-source JavaScript library for interactive maps.
  http://leaflet.cloudmade.com
 */
-(function () {
+(function (window, undefined) {
 
 var L, originalL;
 
-if (typeof exports !== 'undefined') {
+if (typeof exports !== undefined + '') {
 	L = exports;
 } else {
 	originalL = window.L;
@@ -131,6 +131,10 @@ L.Util = {
 		return Math.round(num * pow) / pow;
 	},
 
+	splitWords: function (str) {
+		return str.replace(/^\s+|\s+$/g, '').split(/\s+/);
+	},
+
 	setOptions: function (obj, options) {
 		obj.options = L.Util.extend({}, obj.options, options);
 		return obj.options;
@@ -228,42 +232,80 @@ L.Class.mergeOptions = function (options) {
  * L.Mixin.Events adds custom events functionality to Leaflet classes
  */
 
+var key = '_leaflet_events';
+
 L.Mixin = {};
 
 L.Mixin.Events = {
-	addEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		var events = this._leaflet_events = this._leaflet_events || {};
-		events[type] = events[type] || [];
-		events[type].push({
-			action: fn,
-			context: context || this
-		});
-		return this;
-	},
-
-	hasEventListeners: function (/*String*/ type) /*-> Boolean*/ {
-		var k = '_leaflet_events';
-		return (k in this) && (type in this[k]) && (this[k][type].length > 0);
-	},
-
-	removeEventListener: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
-		if (!this.hasEventListeners(type)) {
+	
+	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+		var events = this[key] = this[key] || {},
+			type, i, len;
+		
+		// Types can be a map of types/handlers
+		if (typeof types === 'object') {
+			for (type in types) {
+				if (types.hasOwnProperty(type)) {
+					this.addEventListener(type, types[type], fn);
+				}
+			}
+			
 			return this;
 		}
-
-		for (var i = 0, events = this._leaflet_events, len = events[type].length; i < len; i++) {
-			if (
-				(events[type][i].action === fn) &&
-				(!context || (events[type][i].context === context))
-			) {
-				events[type].splice(i, 1);
-				return this;
-			}
+		
+		types = L.Util.splitWords(types);
+		
+		for (i = 0, len = types.length; i < len; i++) {
+			events[types[i]] = events[types[i]] || [];
+			events[types[i]].push({
+				action: fn,
+				context: context || this
+			});
 		}
+		
 		return this;
 	},
 
-	fireEvent: function (/*String*/ type, /*(optional) Object*/ data) {
+	hasEventListeners: function (type) { // (String) -> Boolean
+		return (key in this) && (type in this[key]) && (this[key][type].length > 0);
+	},
+
+	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
+		var events = this[key],
+			type, i, len, listeners, j;
+		
+		if (typeof types === 'object') {
+			for (type in types) {
+				if (types.hasOwnProperty(type)) {
+					this.removeEventListener(type, types[type], context);
+				}
+			}
+			
+			return this;
+		}
+		
+		types = L.Util.splitWords(types);
+
+		for (i = 0, len = types.length; i < len; i++) {
+
+			if (this.hasEventListeners(types[i])) {
+				listeners = events[types[i]];
+				
+				for (j = listeners.length - 1; j >= 0; j--) {
+					if (
+						(!fn || listeners[j].action === fn) &&
+						(!context || (listeners[j].context === context))
+					) {
+						listeners.splice(j, 1);
+					}
+				}
+			}
+		}
+		
+		return this;
+	},
+
+	fireEvent: function (type, data) { // (String[, Object])
 		if (!this.hasEventListeners(type)) {
 			return this;
 		}
@@ -273,7 +315,7 @@ L.Mixin.Events = {
 			target: this
 		}, data);
 
-		var listeners = this._leaflet_events[type].slice();
+		var listeners = this[key][type].slice();
 
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			listeners[i].action.call(listeners[i].context || this, event);
@@ -296,14 +338,14 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		gecko = ua.indexOf("gecko") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
-		mobile = typeof orientation !== 'undefined' ? true : false,
+		mobile = typeof orientation !== undefined + '' ? true : false,
 		doc = document.documentElement,
 		ie3d = ie && ('transition' in doc.style),
 		webkit3d = webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
 		gecko3d = gecko && ('MozPerspective' in doc.style),
 		opera3d = opera && ('OTransition' in doc.style);
 
-	var touch = (function () {
+	var touch = !window.L_NO_TOUCH && (function () {
 		var startName = 'ontouchstart';
 
 		// WebKit, etc
@@ -625,12 +667,15 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
+		function replaceFn(w, match) {
 			if (match === name) {
 				return '';
 			}
 			return w;
-		}).replace(/^\s+/, '');
+		}
+		el.className = el.className
+				.replace(/(\S+)\s*/g, replaceFn)
+				.replace(/^\s+/, '');
 	},
 
 	setOpacity: function (el, value) {
@@ -1004,7 +1049,7 @@ L.Map = L.Class.extend({
 			this.setMaxBounds(options.maxBounds);
 		}
 
-		if (options.center && typeof options.zoom !== 'undefined') {
+		if (options.center && options.zoom !== undefined) {
 			this.setView(options.center, options.zoom, true);
 		}
 
@@ -1231,8 +1276,8 @@ L.Map = L.Class.extend({
 	},
 
 	getMaxZoom: function () {
-		var z1 = typeof this.options.maxZoom === 'undefined' ? Infinity : this.options.maxZoom,
-		    z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
+		var z1 = this.options.maxZoom === undefined ? Infinity : this.options.maxZoom,
+		    z2 = this._layersMaxZoom  === undefined ? Infinity : this._layersMaxZoom;
 
 		return Math.min(z1, z2);
 	},
@@ -1316,12 +1361,12 @@ L.Map = L.Class.extend({
 	// conversion methods
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
@@ -1414,10 +1459,12 @@ L.Map = L.Class.extend({
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
 
+		var zoomHide = ' leaflet-zoom-hide';
+
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += ' leaflet-zoom-hide';
-			panes.shadowPane.className += ' leaflet-zoom-hide';
-			panes.popupPane.className += ' leaflet-zoom-hide';
+			panes.markerPane.className += zoomHide;
+			panes.shadowPane.className += zoomHide;
+			panes.popupPane.className += zoomHide;
 		}
 	},
 
@@ -1500,18 +1547,18 @@ L.Map = L.Class.extend({
 	_initEvents: function () {
 		if (!L.DomEvent) { return; }
 
-		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
 		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
 		var i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
-			L.DomEvent.addListener(this._container, events[i], this._fireMouseEvent, this);
+			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 		}
 
 		if (this.options.trackResize) {
-			L.DomEvent.addListener(window, 'resize', this._onResize, this);
+			L.DomEvent.on(window, 'resize', this._onResize, this);
 		}
 	},
 
@@ -1745,8 +1792,10 @@ L.TileLayer = L.Class.extend({
 		this._createTileProto();
 
 		// set up events
-		map.on('viewreset', this._resetCallback, this);
-		map.on('moveend', this._update, this);
+		map.on({
+			'viewreset': this._resetCallback,
+			'moveend': this._update
+		}, this);
 
 		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
@@ -1760,8 +1809,10 @@ L.TileLayer = L.Class.extend({
 	onRemove: function (map) {
 		map._panes.tilePane.removeChild(this._container);
 
-		map.off('viewreset', this._resetCallback, this);
-		map.off('moveend', this._update, this);
+		map.off({
+			'viewreset': this._resetCallback,
+			'moveend': this._update
+		}, this);
 
 		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
@@ -1939,7 +1990,7 @@ L.TileLayer = L.Class.extend({
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
 		if (this.options.reuseTiles) {
-			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
+			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
 			this._unusedTiles.push(tile);
 		} else if (tile.parentNode === this._container) {
 			this._container.removeChild(tile);
@@ -2234,14 +2285,23 @@ L.ImageOverlay = L.Class.extend({
 
 		map._panes.overlayPane.appendChild(this._image);
 
-		map.on('zoomanim', this._zoomAnimation, this);
 		map.on('viewreset', this._reset, this);
+
+		if (map.options.zoomAnimation) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._reset();
 	},
 
 	onRemove: function (map) {
 		map.getPanes().overlayPane.removeChild(this._image);
+		
 		map.off('viewreset', this._reset, this);
+
+		if (map.options.zoomAnimation) {
+			map.off('zoomanim', this._animateZoom, this);
+		}
 	},
 
 	setOpacity: function (opacity) {
@@ -2250,7 +2310,11 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_initImage: function () {
-		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-animated');
+		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
+
+		if (this._map.options.zoomAnimation) {
+			this._image.className += ' leaflet-zoom-animated';
+		}
 
 		this._updateOpacity();
 
@@ -2264,14 +2328,14 @@ L.ImageOverlay = L.Class.extend({
 		});
 	},
 
-	_zoomAnimation: function (opt) {
+	_animateZoom: function (e) {
 		var map = this._map,
 			image = this._image,
-		    scale = map.getZoomScale(opt.zoom),
+		    scale = map.getZoomScale(e.zoom),
 		    nw = this._bounds.getNorthWest(),
 		    se = this._bounds.getSouthEast(),
-		    topLeft = map._latLngToNewLayerPoint(nw, opt.zoom, opt.center),
-		    size = map._latLngToNewLayerPoint(se, opt.zoom, opt.center).subtract(topLeft),
+		    topLeft = map._latLngToNewLayerPoint(nw, e.zoom, e.center),
+		    size = map._latLngToNewLayerPoint(se, e.zoom, e.center).subtract(topLeft),
 		    currentSize = map.latLngToLayerPoint(se).subtract(map.latLngToLayerPoint(nw)),
 		    origin = topLeft.add(size.subtract(currentSize).divideBy(2));
 
@@ -2445,7 +2509,7 @@ L.Marker = L.Class.extend({
 		map.on('viewreset', this.update, this);
 
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
-			map.on('zoomanim', this._zoomAnimation, this);
+			map.on('zoomanim', this._animateZoom, this);
 		}
 
 		this._initIcon();
@@ -2460,8 +2524,10 @@ L.Marker = L.Class.extend({
 			this.closePopup();
 		}
 
-		map.off('viewreset', this.update, this)
-		   .off('zoomanim', this._zoomAnimation, this);
+		map.off({
+			'viewreset': this.update,
+			'zoomanim': this._animateZoom
+		}, this);
 
 		this._map = null;
 	},
@@ -2553,7 +2619,7 @@ L.Marker = L.Class.extend({
 		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
 	},
 
-	_zoomAnimation: function (opt) {
+	_animateZoom: function (opt) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center);
 
 		this._setPos(pos);
@@ -2568,10 +2634,10 @@ L.Marker = L.Class.extend({
 			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
 
 		icon.className += ' leaflet-clickable';
-		L.DomEvent.addListener(icon, 'click', this._onMouseClick, this);
+		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
 
 		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.addListener(icon, events[i], this._fireMouseEvent, this);
+			L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
 		}
 
 		if (L.Handler.MarkerDrag) {
@@ -2690,11 +2756,13 @@ L.Popup = L.Class.extend({
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
-		L.Util.falseFn(this._container.offsetWidth);
+		L.Util.falseFn(this._container.offsetWidth); // force reflow
 
-		map.off('viewreset', this._updatePosition, this)
-		   .off('preclick', this._close, this)
-		   .off('zoomanim', this._zoomAnimation, this);
+		map.off({
+			viewreset: this._updatePosition,
+			preclick: this._close,
+			zoomanim: this._zoomAnimation
+		}, this);
 
 		this._container.style.opacity = '0';
 
@@ -2734,14 +2802,14 @@ L.Popup = L.Class.extend({
 			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 
-			L.DomEvent.addListener(closeButton, 'click', this._onCloseButtonClick, this);
+			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.addListener(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -2776,29 +2844,30 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		var container = this._contentNode;
+		var container = this._contentNode,
+			style = container.style;
 
-		container.style.width = '';
-		container.style.whiteSpace = 'nowrap';
+		style.width = '';
+		style.whiteSpace = 'nowrap';
 
 		var width = container.offsetWidth;
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		container.style.width = (width + 1) + 'px';
-		container.style.whiteSpace = '';
+		style.width = (width + 1) + 'px';
+		style.whiteSpace = '';
 
-		container.style.height = '';
+		style.height = '';
 
 		var height = container.offsetHeight,
 			maxHeight = this.options.maxHeight,
-			scrolledClass = ' leaflet-popup-scrolled';
+			scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
-			container.style.height = maxHeight + 'px';
-			container.className += scrolledClass;
+			style.height = maxHeight + 'px';
+			L.DomUtil.addClass(container, scrolledClass);
 		} else {
-			container.className = container.className.replace(scrolledClass, '');
+			L.DomUtil.removeClass(container, scrolledClass);
 		}
 
 		this._containerWidth = this._container.offsetWidth;
@@ -3059,12 +3128,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	_initEvents: function (layer) {
-		var events = ['click', 'dblclick', 'mouseover', 'mouseout'],
-			i, len;
-
-		for (i = 0, len = events.length; i < len; i++) {
-			layer.on(events[i], this._propagateEvent, this);
-		}
+		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
 	},
 
 	_propagateEvent: function (e) {
@@ -3114,9 +3178,10 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		map
-			.on('viewreset', this.projectLatlngs, this)
-			.on('moveend', this._updatePath, this);
+		map.on({
+			'viewreset': this.projectLatlngs,
+			'moveend': this._updatePath
+		}, this);
 	},
 
 	onRemove: function (map) {
@@ -3124,9 +3189,10 @@ L.Path = L.Class.extend({
 
 		map._pathRoot.removeChild(this._container);
 
-		map
-			.off('viewreset', this.projectLatlngs, this)
-			.off('moveend', this._updatePath, this);
+		map.off({
+			'viewreset': this.projectLatlngs,
+			'moveend': this._updatePath
+		}, this);
 	},
 
 	projectLatlngs: function () {
@@ -3253,11 +3319,11 @@ L.Path = L.Path.extend({
 				this._path.setAttribute('class', 'leaflet-clickable');
 			}
 
-			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
 			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
 			for (var i = 0; i < events.length; i++) {
-				L.DomEvent.addListener(this._container, events[i], this._fireMouseEvent, this);
+				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 			}
 		}
 	},
@@ -3302,8 +3368,11 @@ L.Map.include({
 
 			if (this.options.zoomAnimation) {
 				this._pathRoot.setAttribute('class', ' leaflet-zoom-animated');
-				this.on('zoomanim', this._animatePathZoom);
-				this.on('zoomend', this._endPathZoom);
+				
+				this.on({
+					'zoomanim': this._animatePathZoom,
+					'zoomend': this._endPathZoom
+				});
 			}
 
 			this.on('moveend', this._updateSvgViewport);
@@ -3687,7 +3756,7 @@ L.LineUtil = {
 	_simplifyDP: function (points, sqTolerance) {
 
 		var len = points.length,
-			ArrayConstructor = typeof Uint8Array !== 'undefined' ? Uint8Array : Array,
+			ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
 			markers = new ArrayConstructor(len);
 
 		markers[0] = markers[len - 1] = 1;
@@ -4541,37 +4610,43 @@ L.Util.extend(L.GeoJSON, {
 
 L.DomEvent = {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
+	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
+
 		var id = L.Util.stamp(fn),
-			key = '_leaflet_' + type + id;
+			key = '_leaflet_' + type + id,
+			handler, originalHandler, newType;
 
-		if (obj[key]) {
-			return this;
-		}
+		if (obj[key]) { return this; }
 
-		var handler = function (e) {
+		handler = function (e) {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
 		};
 
 		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
-			this.addDoubleTapListener(obj, handler, id);
+			return this.addDoubleTapListener(obj, handler, id);
+
 		} else if ('addEventListener' in obj) {
+			
 			if (type === 'mousewheel') {
 				obj.addEventListener('DOMMouseScroll', handler, false);
 				obj.addEventListener(type, handler, false);
+
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-				var originalHandler = handler,
-					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
+
+				originalHandler = handler;
+				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
+
 				handler = function (e) {
-					if (!L.DomEvent._checkMouse(obj, e)) {
-						return;
-					}
+					if (!L.DomEvent._checkMouse(obj, e)) { return; }
 					return originalHandler(e);
 				};
+
 				obj.addEventListener(newType, handler, false);
+
 			} else {
 				obj.addEventListener(type, handler, false);
 			}
+
 		} else if ('attachEvent' in obj) {
 			obj.attachEvent("on" + type, handler);
 		}
@@ -4581,21 +4656,23 @@ L.DomEvent = {
 		return this;
 	},
 
-	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
+	removeListener: function (obj, type, fn) {  // (HTMLElement, String, Function)
+
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id,
 			handler = obj[key];
 
-		if (!handler) {
-			return;
-		}
+		if (!handler) { return; }
 
 		if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
+
 		} else if ('removeEventListener' in obj) {
+
 			if (type === 'mousewheel') {
 				obj.removeEventListener('DOMMouseScroll', handler, false);
 				obj.removeEventListener(type, handler, false);
+
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
@@ -4604,17 +4681,76 @@ L.DomEvent = {
 		} else if ('detachEvent' in obj) {
 			obj.detachEvent("on" + type, handler);
 		}
+
 		obj[key] = null;
 
 		return this;
 	},
 
+	stopPropagation: function (e) {
+
+		if (e.stopPropagation) {
+			e.stopPropagation();
+		} else {
+			e.cancelBubble = true;
+		}
+		return this;
+	},
+
+	disableClickPropagation: function (el) {
+
+		var stop = L.DomEvent.stopPropagation;
+		
+		return L.DomEvent
+			.addListener(el, L.Draggable.START, stop)
+			.addListener(el, 'click', stop)
+			.addListener(el, 'dblclick', stop);
+	},
+
+	preventDefault: function (e) {
+
+		if (e.preventDefault) {
+			e.preventDefault();
+		} else {
+			e.returnValue = false;
+		}
+		return this;
+	},
+
+	stop: function (e) {
+		return L.DomEvent.preventDefault(e).stopPropagation(e);
+	},
+
+	getMousePosition: function (e, container) {
+
+		var body = document.body,
+			docEl = document.documentElement,
+			x = e.pageX ? e.pageX : e.clientX + body.scrollLeft + docEl.scrollLeft,
+			y = e.pageY ? e.pageY : e.clientY + body.scrollTop + docEl.scrollTop,
+			pos = new L.Point(x, y);
+
+		return (container ? pos._subtract(L.DomUtil.getViewportOffset(container)) : pos);
+	},
+
+	getWheelDelta: function (e) {
+
+		var delta = 0;
+
+		if (e.wheelDelta) {
+			delta = e.wheelDelta / 120;
+		}
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
+		return delta;
+	},
+
+	// check if element really left/entered the event target (for mouseenter/mouseleave)
 	_checkMouse: function (el, e) {
+
 		var related = e.relatedTarget;
 
-		if (!related) {
-			return true;
-		}
+		if (!related) { return true; }
 
 		try {
 			while (related && (related !== el)) {
@@ -4623,12 +4759,12 @@ L.DomEvent = {
 		} catch (err) {
 			return false;
 		}
-
 		return (related !== el);
 	},
 
-	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function () {
+	/*jshint noarg:false */
+	_getEvent: function () { // evil magic for IE
+
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
@@ -4641,64 +4777,12 @@ L.DomEvent = {
 			}
 		}
 		return e;
-	},
-	/*jshint noarg:false */
-
-	stopPropagation: function (/*Event*/ e) {
-		if (e.stopPropagation) {
-			e.stopPropagation();
-		} else {
-			e.cancelBubble = true;
-		}
-		return this;
-	},
-
-	disableClickPropagation: function (/*HTMLElement*/ el) {
-		return L.DomEvent
-			.addListener(el, L.Draggable.START, L.DomEvent.stopPropagation)
-			.addListener(el, 'click', L.DomEvent.stopPropagation)
-			.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
-	},
-
-	preventDefault: function (/*Event*/ e) {
-		if (e.preventDefault) {
-			e.preventDefault();
-		} else {
-			e.returnValue = false;
-		}
-		return this;
-	},
-
-	stop: function (e) {
-		return L.DomEvent
-			.preventDefault(e)
-			.stopPropagation(e);
-	},
-
-	getMousePosition: function (e, container) {
-		var x = e.pageX ? e.pageX : e.clientX +
-				document.body.scrollLeft + document.documentElement.scrollLeft,
-			y = e.pageY ? e.pageY : e.clientY +
-					document.body.scrollTop + document.documentElement.scrollTop,
-			pos = new L.Point(x, y);
-
-		return (container ?
-					pos.subtract(L.DomUtil.getViewportOffset(container)) : pos);
-	},
-
-	getWheelDelta: function (e) {
-		var delta = 0;
-		if (e.wheelDelta) {
-			delta = e.wheelDelta / 120;
-		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
-		return delta;
 	}
+	/*jshint noarg:false */
 };
 
-
+L.DomEvent.on = L.DomEvent.addListener;
+L.DomEvent.off = L.DomEvent.removeListener;
 
 /*
  * L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
@@ -4723,7 +4807,7 @@ L.Draggable = L.Class.extend({
 		if (this._enabled) {
 			return;
 		}
-		L.DomEvent.addListener(this._dragStartTarget, L.Draggable.START, this._onDown, this);
+		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
 		this._enabled = true;
 	},
 
@@ -4731,7 +4815,7 @@ L.Draggable = L.Class.extend({
 		if (!this._enabled) {
 			return;
 		}
-		L.DomEvent.removeListener(this._dragStartTarget, L.Draggable.START, this._onDown);
+		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
 		this._moved = false;
 	},
@@ -4770,8 +4854,8 @@ L.Draggable = L.Class.extend({
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 
-		L.DomEvent.addListener(document, L.Draggable.MOVE, this._onMove, this);
-		L.DomEvent.addListener(document, L.Draggable.END, this._onUp, this);
+		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
+		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -4810,7 +4894,7 @@ L.Draggable = L.Class.extend({
 				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 			if (el.tagName.toLowerCase() === 'a') {
-				el.className = el.className.replace(' leaflet-active', '');
+				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
 
 			if (dist < L.Draggable.TAP_TOLERANCE) {
@@ -4823,8 +4907,8 @@ L.Draggable = L.Class.extend({
 			this._restoreCursor();
 		}
 
-		L.DomEvent.removeListener(document, L.Draggable.MOVE, this._onMove);
-		L.DomEvent.removeListener(document, L.Draggable.END, this._onUp);
+		L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
+		L.DomEvent.off(document, L.Draggable.END, this._onUp);
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -4836,11 +4920,11 @@ L.Draggable = L.Class.extend({
 	},
 
 	_setMovingCursor: function () {
-		document.body.className += ' leaflet-dragging';
+		L.DomUtil.addClass(document.body, 'leaflet-dragging');
 	},
 
 	_restoreCursor: function () {
-		document.body.className = document.body.className.replace(/ leaflet-dragging/g, '');
+		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 	},
 
 	_simulateEvent: function (type, e) {
@@ -4867,17 +4951,15 @@ L.Handler = L.Class.extend({
 	},
 
 	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+		if (this._enabled) { return; }
+
 		this._enabled = true;
 		this.addHooks();
 	},
 
 	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+		if (!this._enabled) { return; }
+
 		this._enabled = false;
 		this.removeHooks();
 	},
@@ -4910,10 +4992,11 @@ L.Map.Drag = L.Handler.extend({
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 
-			this._draggable
-				.on('dragstart', this._onDragStart, this)
-				.on('drag', this._onDrag, this)
-				.on('dragend', this._onDragEnd, this);
+			this._draggable.on({
+				'dragstart': this._onDragStart,
+				'drag': this._onDrag,
+				'dragend': this._onDragEnd
+			}, this);
 
 			var options = this._map.options;
 
@@ -4997,7 +5080,7 @@ L.Map.Drag = L.Handler.extend({
 
 			noInertia = !options.inertia ||
 					delay > options.inertiaThreshold ||
-					typeof this._positions[0] === 'undefined';
+					this._positions[0] === undefined;
 
 		if (noInertia) {
 			map.fire('moveend');
@@ -5075,12 +5158,12 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.addListener(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._map._container, 'mousewheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll);
 	},
 
 	_onWheelScroll: function (e) {
@@ -5181,11 +5264,11 @@ L.Map.mergeOptions({
 
 L.Map.TouchZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	_onTouchStart: function (e) {
@@ -5206,8 +5289,8 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
 		L.DomEvent
-			.addListener(document, 'touchmove', this._onTouchMove, this)
-			.addListener(document, 'touchend', this._onTouchEnd, this);
+			.on(document, 'touchmove', this._onTouchMove, this)
+			.on(document, 'touchend', this._onTouchEnd, this);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -5260,11 +5343,11 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map;
 
 		this._zooming = false;
-		map._mapPane.className = map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 
 		L.DomEvent
-			.removeListener(document, 'touchmove', this._onTouchMove)
-			.removeListener(document, 'touchend', this._onTouchEnd);
+			.off(document, 'touchmove', this._onTouchMove)
+			.off(document, 'touchend', this._onTouchEnd);
 
 		var origin = this._getScaleOrigin(),
 			center = map.layerPointToLatLng(origin),
@@ -5306,11 +5389,11 @@ L.Map.BoxZoom = L.Handler.extend({
 	},
 
 	addHooks: function () {
-		L.DomEvent.addListener(this._container, 'mousedown', this._onMouseDown, this);
+		L.DomEvent.on(this._container, 'mousedown', this._onMouseDown, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._container, 'mousedown', this._onMouseDown);
+		L.DomEvent.off(this._container, 'mousedown', this._onMouseDown);
 	},
 
 	_onMouseDown: function (e) {
@@ -5327,8 +5410,8 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._container.style.cursor = 'crosshair';
 
 		L.DomEvent
-			.addListener(document, 'mousemove', this._onMouseMove, this)
-			.addListener(document, 'mouseup', this._onMouseUp, this)
+			.on(document, 'mousemove', this._onMouseMove, this)
+			.on(document, 'mouseup', this._onMouseUp, this)
 			.preventDefault(e);
 			
 		this._map.fire("boxzoomstart");
@@ -5359,8 +5442,8 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.enableTextSelection();
 
 		L.DomEvent
-			.removeListener(document, 'mousemove', this._onMouseMove)
-			.removeListener(document, 'mouseup', this._onMouseUp);
+			.off(document, 'mousemove', this._onMouseMove)
+			.off(document, 'mouseup', this._onMouseUp);
 
 		var map = this._map,
 			layerPoint = map.mouseEventToLayerPoint(e);
@@ -5765,9 +5848,9 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 
 		L.DomEvent
-			.addListener(link, 'click', L.DomEvent.stopPropagation)
-			.addListener(link, 'click', L.DomEvent.preventDefault)
-			.addListener(link, 'click', fn, context);
+			.on(link, 'click', L.DomEvent.stopPropagation)
+			.on(link, 'click', L.DomEvent.preventDefault)
+			.on(link, 'click', fn, context);
 
 		return link;
 	}
@@ -6042,15 +6125,15 @@ L.Control.Layers = L.Control.extend({
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
 		} else {
-			L.DomEvent.addListener(container, 'click', L.DomEvent.stopPropagation);
+			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
 
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
 			L.DomEvent
-				.addListener(container, 'mouseover', this._expand, this)
-				.addListener(container, 'mouseout', this._collapse, this);
+				.on(container, 'mouseover', this._expand, this)
+				.on(container, 'mouseout', this._collapse, this);
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
@@ -6058,12 +6141,12 @@ L.Control.Layers = L.Control.extend({
 
 			if (L.Browser.touch) {
 				L.DomEvent
-					.addListener(link, 'click', L.DomEvent.stopPropagation)
-					.addListener(link, 'click', L.DomEvent.preventDefault)
-					.addListener(link, 'click', this._expand, this);
+					.on(link, 'click', L.DomEvent.stopPropagation)
+					.on(link, 'click', L.DomEvent.preventDefault)
+					.on(link, 'click', this._expand, this);
 			}
 			else {
-				L.DomEvent.addListener(link, 'focus', this._expand, this);
+				L.DomEvent.on(link, 'focus', this._expand, this);
 			}
 
 			this._map.on('movestart', this._collapse, this);
@@ -6122,7 +6205,7 @@ L.Control.Layers = L.Control.extend({
 		input.layerId = L.Util.stamp(obj.layer);
 		input.defaultChecked = this._map.hasLayer(obj.layer);
 
-		L.DomEvent.addListener(input, 'click', this._onInputClick, this);
+		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
 		var name = document.createTextNode(' ' + obj.name);
 
@@ -6225,7 +6308,7 @@ L.Transition = L.Transition.extend({
 		this._el = el;
 		L.Util.setOptions(this, options);
 
-		L.DomEvent.addListener(el, L.Transition.END, this._onTransitionEnd, this);
+		L.DomEvent.on(el, L.Transition.END, this._onTransitionEnd, this);
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
 
@@ -6456,8 +6539,10 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		if (!this._panTransition) {
 			this._panTransition = new L.Transition(this._mapPane);
 
-			this._panTransition.on('step', this._onPanTransitionStep, this);
-			this._panTransition.on('end', this._onPanTransitionEnd, this);
+			this._panTransition.on({
+				'step': this._onPanTransitionStep,
+				'end': this._onPanTransitionEnd
+			}, this);
 		}
 
 		L.Util.setOptions(this._panTransition, L.Util.extend({duration: 0.25}, options));
@@ -6478,7 +6563,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 
 	_onPanTransitionEnd: function () {
-		this._mapPane.className = this._mapPane.className.replace(/ leaflet-pan-anim/g, '');
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
 		this.fire('moveend');
 	},
 
@@ -6660,10 +6745,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
 
-		L.Util.falseFn(this._tileBg.offsetWidth);
+		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
-		this._mapPane.className = this._mapPane.className.replace(' leaflet-zoom-anim', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 		this._animatingZoom = false;
 	},
 
@@ -6771,4 +6856,4 @@ L.Map.include({
 
 
 
-}());
+}(this));

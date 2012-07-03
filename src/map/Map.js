@@ -15,7 +15,7 @@ L.Map = L.Class.extend({
 		layers: Array,
 		*/
 
-		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
+		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android23,
 		trackResize: true,
 		markerZoomAnimation: true
 	},
@@ -32,7 +32,7 @@ L.Map = L.Class.extend({
 			this.setMaxBounds(options.maxBounds);
 		}
 
-		if (options.center && typeof options.zoom !== 'undefined') {
+		if (options.center && options.zoom !== undefined) {
 			this.setView(options.center, options.zoom, true);
 		}
 
@@ -259,8 +259,8 @@ L.Map = L.Class.extend({
 	},
 
 	getMaxZoom: function () {
-		var z1 = typeof this.options.maxZoom === 'undefined' ? Infinity : this.options.maxZoom,
-		    z2 = typeof this._layersMaxZoom  === 'undefined' ? Infinity : this._layersMaxZoom;
+		var z1 = this.options.maxZoom === undefined ? Infinity : this.options.maxZoom,
+		    z2 = this._layersMaxZoom  === undefined ? Infinity : this._layersMaxZoom;
 
 		return Math.min(z1, z2);
 	},
@@ -344,12 +344,12 @@ L.Map = L.Class.extend({
 	// conversion methods
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(latlng, zoom);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
-		zoom = typeof zoom === 'undefined' ? this._zoom : zoom;
+		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.pointToLatLng(point, zoom);
 	},
 
@@ -442,10 +442,12 @@ L.Map = L.Class.extend({
 		panes.markerPane = this._createPane('leaflet-marker-pane');
 		panes.popupPane = this._createPane('leaflet-popup-pane');
 
+		var zoomHide = ' leaflet-zoom-hide';
+
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += ' leaflet-zoom-hide';
-			panes.shadowPane.className += ' leaflet-zoom-hide';
-			panes.popupPane.className += ' leaflet-zoom-hide';
+			panes.markerPane.className += zoomHide;
+			panes.shadowPane.className += zoomHide;
+			panes.popupPane.className += zoomHide;
 		}
 	},
 
@@ -528,18 +530,18 @@ L.Map = L.Class.extend({
 	_initEvents: function () {
 		if (!L.DomEvent) { return; }
 
-		L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
 		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
 		var i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
-			L.DomEvent.addListener(this._container, events[i], this._fireMouseEvent, this);
+			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 		}
 
 		if (this.options.trackResize) {
-			L.DomEvent.addListener(window, 'resize', this._onResize, this);
+			L.DomEvent.on(window, 'resize', this._onResize, this);
 		}
 	},
 

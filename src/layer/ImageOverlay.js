@@ -21,14 +21,23 @@ L.ImageOverlay = L.Class.extend({
 
 		map._panes.overlayPane.appendChild(this._image);
 
-		map.on('zoomanim', this._zoomAnimation, this);
 		map.on('viewreset', this._reset, this);
+
+		if (map.options.zoomAnimation) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._reset();
 	},
 
 	onRemove: function (map) {
 		map.getPanes().overlayPane.removeChild(this._image);
+		
 		map.off('viewreset', this._reset, this);
+
+		if (map.options.zoomAnimation) {
+			map.off('zoomanim', this._animateZoom, this);
+		}
 	},
 
 	setOpacity: function (opacity) {
@@ -37,7 +46,11 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_initImage: function () {
-		this._image = L.DomUtil.create('img', 'leaflet-image-layer leaflet-zoom-animated');
+		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
+
+		if (this._map.options.zoomAnimation) {
+			this._image.className += ' leaflet-zoom-animated';
+		}
 
 		this._updateOpacity();
 
@@ -51,14 +64,14 @@ L.ImageOverlay = L.Class.extend({
 		});
 	},
 
-	_zoomAnimation: function (opt) {
+	_animateZoom: function (e) {
 		var map = this._map,
 			image = this._image,
-		    scale = map.getZoomScale(opt.zoom),
+		    scale = map.getZoomScale(e.zoom),
 		    nw = this._bounds.getNorthWest(),
 		    se = this._bounds.getSouthEast(),
-		    topLeft = map._latLngToNewLayerPoint(nw, opt.zoom, opt.center),
-		    size = map._latLngToNewLayerPoint(se, opt.zoom, opt.center).subtract(topLeft),
+		    topLeft = map._latLngToNewLayerPoint(nw, e.zoom, e.center),
+		    size = map._latLngToNewLayerPoint(se, e.zoom, e.center).subtract(topLeft),
 		    currentSize = map.latLngToLayerPoint(se).subtract(map.latLngToLayerPoint(nw)),
 		    origin = topLeft.add(size.subtract(currentSize).divideBy(2));
 

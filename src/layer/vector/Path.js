@@ -36,9 +36,10 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		map
-			.on('viewreset', this.projectLatlngs, this)
-			.on('moveend', this._updatePath, this);
+		map.on({
+			'viewreset': this.projectLatlngs,
+			'moveend': this._updatePath
+		}, this);
 	},
 
 	onRemove: function (map) {
@@ -46,9 +47,10 @@ L.Path = L.Class.extend({
 
 		map._pathRoot.removeChild(this._container);
 
-		map
-			.off('viewreset', this.projectLatlngs, this)
-			.off('moveend', this._updatePath, this);
+		map.off({
+			'viewreset': this.projectLatlngs,
+			'moveend': this._updatePath
+		}, this);
 	},
 
 	projectLatlngs: function () {

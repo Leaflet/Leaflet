@@ -52,11 +52,13 @@ L.Popup = L.Class.extend({
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
-		L.Util.falseFn(this._container.offsetWidth);
+		L.Util.falseFn(this._container.offsetWidth); // force reflow
 
-		map.off('viewreset', this._updatePosition, this)
-		   .off('preclick', this._close, this)
-		   .off('zoomanim', this._zoomAnimation, this);
+		map.off({
+			viewreset: this._updatePosition,
+			preclick: this._close,
+			zoomanim: this._zoomAnimation
+		}, this);
 
 		this._container.style.opacity = '0';
 
@@ -96,14 +98,14 @@ L.Popup = L.Class.extend({
 			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 
-			L.DomEvent.addListener(closeButton, 'click', this._onCloseButtonClick, this);
+			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.addListener(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -138,29 +140,30 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		var container = this._contentNode;
+		var container = this._contentNode,
+			style = container.style;
 
-		container.style.width = '';
-		container.style.whiteSpace = 'nowrap';
+		style.width = '';
+		style.whiteSpace = 'nowrap';
 
 		var width = container.offsetWidth;
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		container.style.width = (width + 1) + 'px';
-		container.style.whiteSpace = '';
+		style.width = (width + 1) + 'px';
+		style.whiteSpace = '';
 
-		container.style.height = '';
+		style.height = '';
 
 		var height = container.offsetHeight,
 			maxHeight = this.options.maxHeight,
-			scrolledClass = ' leaflet-popup-scrolled';
+			scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
-			container.style.height = maxHeight + 'px';
-			container.className += scrolledClass;
+			style.height = maxHeight + 'px';
+			L.DomUtil.addClass(container, scrolledClass);
 		} else {
-			container.className = container.className.replace(scrolledClass, '');
+			L.DomUtil.removeClass(container, scrolledClass);
 		}
 
 		this._containerWidth = this._container.offsetWidth;
