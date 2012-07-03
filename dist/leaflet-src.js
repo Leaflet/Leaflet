@@ -1565,22 +1565,6 @@ L.Map = L.Class.extend({
 		if (this.options.trackResize) {
 			L.DomEvent.on(window, 'resize', this._onResize, this);
 		}
-
-		// Add a listener to handle webkitAnimationEnd failures
-		L.DomEvent.on(this._container, "forceRefresh", this._onForceRefresh, this);
-	},
-
-	_onForceRefresh: function ()
-	{
-		// webkitAnimationEnd has failed - call a zoomIn() - magically fixes any issues we had.
-		// Although it would be nice if this could happen without the entire zoomIn happening
-
-		console.log("_onForceRefresh");
-
-		setTimeout(L.Util.bind(function ()
-		{
-			this.zoomIn();
-		}, this), 0);
 	},
 
 	_onResize: function () {
@@ -6347,13 +6331,6 @@ L.Transition = L.Transition.extend({
 
 	run: function (/*Object*/ props)
 	{
-		// Return if this already has a transition on it - unsure if this is still needed.
-		var styleProp = this._el.style[L.Transition.PROPERTY];
-		if (styleProp && styleProp !== "none")
-		{
-			return;
-		}
-
 		var prop,
 			propsList = [],
 			customProp = L.Transition.CUSTOM_PROPS_PROPERTIES;
@@ -6380,7 +6357,7 @@ L.Transition = L.Transition.extend({
 
 		this.fire('start');
 
-		// Set up a slightly delayed call to a backup event if webkitAnimationEnd doesn't fire properly
+		// Set up a slightly delayed call to a backup event if webkitTransitionEnd doesn't fire properly
 		this.backupEventFire = setTimeout(L.Util.bind(this._onBackupFireEnd, this), this.options.duration * 1.2 * 1000);
 
 		if (L.Transition.NATIVE) {
@@ -6414,7 +6391,7 @@ L.Transition = L.Transition.extend({
 
 			this._el.style[L.Transition.TRANSITION] = '';
 
-			// Clear the delayed call to the backup event, obviously webkitAnimationEnd has fired correctly
+			// Clear the delayed call to the backup event, we have recieved some form of webkitTransitionEnd
 			clearTimeout(this.backupEventFire);
 			delete this.backupEventFire;
 
@@ -6428,16 +6405,10 @@ L.Transition = L.Transition.extend({
 
 	_onBackupFireEnd: function ()
 	{
-		// Re-fire the step and end events - not sure why but it needs it.
+		// Create and fire a transitionEnd event on the element.
 
-		this.fire('step');
-		this.fire('end');
-
-		// Create and fire a forceRefresh event to be picked up by the map.
-
-		console.log("_onBackupFireEnd");
 		var event = document.createEvent("Event");
-		event.initEvent("forceRefresh", true, false);
+		event.initEvent(L.Transition.END, true, false);
 		this._el.dispatchEvent(event);
 	}
 });
