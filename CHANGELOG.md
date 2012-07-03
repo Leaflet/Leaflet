@@ -14,6 +14,7 @@ An in-progress version being developed on the master branch.
  * Added an unobtrusive **scale control**.
  * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
  * Added `Rectangle` vector layer (by [@JasonSanford](https://github.com/JasonSanford)). [#504](https://github.com/CloudMade/Leaflet/pull/504)
+ * Added *Android 4+ pinch-zoom* support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
 
 ### Improvements
 
@@ -95,6 +96,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug with `Util.bind` sometimes losing arguments (by [@johtso](https://github.com/johtso)). [#588](https://github.com/CloudMade/Leaflet/pull/588)
  * Fixed a bug where `drag` event was sometimes fired after `dragend`. [#555](https://github.com/CloudMade/Leaflet/issues/555)
  * Fixed a bug where `TileLayer` `load` event was firing only once (by [@lapinos03](https://github.com/lapinos03) and [shintonik](https://github.com/shintonik)). [#742](https://github.com/CloudMade/Leaflet/pull/742) [#177](https://github.com/CloudMade/Leaflet/issues/177)
+ * Fixed a bug where `FeatureGroup` popup events where not cleaned up after removing a layer from it (by [@danzel](https://github.com/danzel)). [#775](https://github.com/CloudMade/Leaflet/pull/775)
 
 #### Browser bugfixes
 

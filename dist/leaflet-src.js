@@ -277,7 +277,7 @@ L.Mixin.Events = {
 		if (typeof types === 'object') {
 			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.removeEventListener(type, types[type], context);
+					this.removeEventListener(type, types[type], fn);
 				}
 			}
 			
@@ -338,6 +338,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		gecko = ua.indexOf("gecko") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
+		android23 = ua.search("android [23]") !== -1,
 		mobile = typeof orientation !== undefined + '' ? true : false,
 		doc = document.documentElement,
 		ie3d = ie && ('transition' in doc.style),
@@ -379,6 +380,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		gecko: gecko,
 		opera: opera,
 		android: android,
+		android23: android23,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,
@@ -1032,7 +1034,7 @@ L.Map = L.Class.extend({
 		layers: Array,
 		*/
 
-		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android,
+		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android23,
 		trackResize: true,
 		markerZoomAnimation: true
 	},
@@ -3110,6 +3112,14 @@ L.FeatureGroup = L.LayerGroup.extend({
 		}
 	},
 
+	removeLayer: function (layer) {
+		this._deinitEvents(layer);
+
+		L.LayerGroup.prototype.removeLayer.call(this, layer);
+
+		this.invoke('unbindPopup');
+	},
+
 	bindPopup: function (content) {
 		this._popupContent = content;
 		return this.invoke('bindPopup', content);
@@ -3129,6 +3139,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 	_initEvents: function (layer) {
 		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
+	},
+
+	_deinitEvents: function (layer) {
+		layer.off('click dblclick mouseover mouseout', this._propagateEvent, this);
 	},
 
 	_propagateEvent: function (e) {
@@ -4977,7 +4991,7 @@ L.Handler = L.Class.extend({
 L.Map.mergeOptions({
 	dragging: true,
 
-	inertia: !L.Browser.android,
+	inertia: !L.Browser.android23,
 	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
 	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
 	inertiaThreshold:    L.Browser.touch ? 32   : 16, // ms
@@ -5259,7 +5273,7 @@ L.Util.extend(L.DomEvent, {
  */
 
 L.Map.mergeOptions({
-	touchZoom: L.Browser.touch && !L.Browser.android
+	touchZoom: L.Browser.touch && !L.Browser.android23
 });
 
 L.Map.TouchZoom = L.Handler.extend({
@@ -6589,7 +6603,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 
 L.Map.mergeOptions({
-	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android && !L.Browser.mobileOpera
+	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
@@ -6648,7 +6662,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
 
 		// TODO work around this prettier
-		if (L.Browser.android) {
+		if (L.Browser.android23) {
 			tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
 			scaleStr = 'scale(' + scale + ')';
 		} else {
@@ -6673,7 +6687,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
 		// (disable this for Android due to it not supporting double translate)
-		if (!L.Browser.android && tileBg &&
+		if (!L.Browser.android23 && tileBg &&
 				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
 				this._getLoadedTilesPercentage(tilePane) < 0.5) {
 
