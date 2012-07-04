@@ -528,7 +528,6 @@ L.Map = L.Class.extend({
 	// map events
 
 	_initEvents: function () {
-
 		if (!L.DomEvent) { return; }
 
 		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
