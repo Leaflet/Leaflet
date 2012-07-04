@@ -65,8 +65,7 @@ L.Transition = L.Transition.extend({
 
 		this.fire('start');
 
-		if (L.Browser.mobileWebkit)
-		{
+		if (L.Browser.mobileWebkit) {
 			// Set up a slightly delayed call to a backup event if webkitTransitionEnd doesn't fire properly
 			this.backupEventFire = setTimeout(L.Util.bind(this._onBackupFireEnd, this), this.options.duration * 1.2 * 1000);
 		}
@@ -114,8 +113,7 @@ L.Transition = L.Transition.extend({
 		}
 	},
 
-	_onBackupFireEnd: function ()
-	{
+	_onBackupFireEnd: function () {
 		// Create and fire a transitionEnd event on the element.
 
 		var event = document.createEvent("Event");
