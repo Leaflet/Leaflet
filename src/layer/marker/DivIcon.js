@@ -11,8 +11,8 @@ L.DivIcon = L.Icon.extend({
 
 	createIcon: function () {
 		var div = document.createElement('div');
-		if (this.options.innerHTML) {
-			div.innerHTML = this.options.innerHTML;
+		if (this.options.html) {
+			div.innerHTML = this.options.html;
 		}
 		this._setIconStyles(div, 'icon');
 		return div;
