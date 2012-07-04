@@ -1,1 +1,6 @@
 node_modules
+.DS_Store
+tmp/**/*
+.idea
+.idea/**/*
+*.iml
