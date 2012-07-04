@@ -37,8 +37,7 @@ L.Transition = L.Transition.extend({
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
 
-	run: function (/*Object*/ props)
-	{
+	run: function (/*Object*/ props) {
 		var prop,
 			propsList = [],
 			customProp = L.Transition.CUSTOM_PROPS_PROPERTIES;
