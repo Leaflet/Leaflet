@@ -17,7 +17,7 @@ L.Map = L.Class.extend({
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android23,
 		trackResize: true,
-		markerZoomAnimation: true
+		markerZoomAnimation: L.DomUtil.TRANSITION && L.Browser.any3d
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)

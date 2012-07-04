@@ -133,13 +133,15 @@ L.Map.include({
 			this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
-			if (this.options.zoomAnimation) {
+			if (this.options.zoomAnimation && L.Browser.any3d) {
 				this._pathRoot.setAttribute('class', ' leaflet-zoom-animated');
-				
+
 				this.on({
 					'zoomanim': this._animatePathZoom,
 					'zoomend': this._endPathZoom
 				});
+			} else {
+				this._pathRoot.setAttribute('class', ' leaflet-zoom-hide');
 			}
 
 			this.on('moveend', this._updateSvgViewport);
