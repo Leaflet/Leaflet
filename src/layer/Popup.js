@@ -234,3 +234,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.stop(e);
 	}
 });
+
+L.popup = function (options, source) {
+	return new L.Popup(options, source);
+};

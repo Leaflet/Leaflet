@@ -12,6 +12,7 @@ L.Rectangle = L.Polygon.extend({
 	},
 
 	_boundsToLatLngs: function (latLngBounds) {
+		latLngBounds = L.latLngBounds(latLngBounds);
 	    return [
 	        latLngBounds.getSouthWest(),
 	        latLngBounds.getNorthWest(),

@@ -36,15 +36,16 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			size = options[name + 'Size'],
-			anchor = options.iconAnchor;
+			size = L.point(options[name + 'Size']),
+			anchor = L.point(options.iconAnchor),
+			offset = L.point(options.shadowOffset);
 
 		if (!anchor && size) {
 			anchor = size.divideBy(2, true);
 		}
 
-		if (name === 'shadow' && anchor && options.shadowOffset) {
-			anchor._add(options.shadowOffset);
+		if (name === 'shadow' && anchor && offset) {
+			anchor = anchor.add(offset);
 		}
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
@@ -77,6 +78,10 @@ L.Icon = L.Class.extend({
 		return this.options[name + 'Url'];
 	}
 });
+
+L.icon = function (options) {
+	return new L.Icon(options);
+};
 
 
 // TODO move to a separate file

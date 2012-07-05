@@ -62,7 +62,7 @@ L.Map = L.Class.extend({
 
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
-		return this.setView(bounds.getCenter(), zoom);
+		return this.setView(L.latLngBounds(bounds).getCenter(), zoom);
 	},
 
 	fitWorld: function () {
@@ -80,13 +80,15 @@ L.Map = L.Class.extend({
 		// replaced with animated panBy in Map.Animation.js
 		this.fire('movestart');
 
-		this._rawPanBy(offset);
+		this._rawPanBy(L.point(offset));
 
 		this.fire('move');
 		return this.fire('moveend');
 	},
 
 	setMaxBounds: function (bounds) {
+		bounds = L.latLngBounds(bounds);
+
 		this.options.maxBounds = bounds;
 
 		if (!bounds) {
@@ -110,6 +112,8 @@ L.Map = L.Class.extend({
 	},
 
 	panInsideBounds: function (bounds) {
+		bounds = L.latLngBounds(bounds);
+
 		var viewBounds = this.getBounds(),
 		    viewSw = this.project(viewBounds.getSouthWest()),
 		    viewNe = this.project(viewBounds.getNorthEast()),
@@ -266,6 +270,8 @@ L.Map = L.Class.extend({
 	},
 
 	getBoundsZoom: function (bounds, inside) { // (LatLngBounds, Boolean) -> Number
+		bounds = L.latLngBounds(bounds);
+
 		var size = this.getSize(),
 		    zoom = this.options.minZoom || 0,
 		    maxZoom = this.getMaxZoom(),
@@ -350,27 +356,30 @@ L.Map = L.Class.extend({
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
 		zoom = zoom === undefined ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(point, zoom);
+		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
 	layerPointToLatLng: function (point) { // (Point)
-		return this.unproject(point.add(this._initialTopLeftPoint));
+		var projectedPoint = L.point(point).add(this._initialTopLeftPoint);
+		return this.unproject(projectedPoint);
 	},
 
 	latLngToLayerPoint: function (latlng) { // (LatLng)
-		return this.project(L.latLng(latlng))._round()._subtract(this._initialTopLeftPoint);
+		var projectedPoint = this.project(L.latLng(latlng))._round();
+		return projectedPoint._subtract(this._initialTopLeftPoint);
 	},
 
 	containerPointToLayerPoint: function (point) { // (Point)
-		return point.subtract(this._getMapPanePos());
+		return L.point(point).subtract(this._getMapPanePos());
 	},
 
 	layerPointToContainerPoint: function (point) { // (Point)
-		return point.add(this._getMapPanePos());
+		return L.point(point).add(this._getMapPanePos());
 	},
 
 	containerPointToLatLng: function (point) {
-		return this.layerPointToLatLng(this.containerPointToLayerPoint(point));
+		var layerPoint = this.containerPointToLayerPoint(L.point(point));
+		return this.layerPointToLatLng(layerPoint);
 	},
 
 	latLngToContainerPoint: function (latlng) {

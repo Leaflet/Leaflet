@@ -5,7 +5,7 @@ L.ImageOverlay = L.Class.extend({
 		opacity: 1
 	},
 
-	initialize: function (url, bounds, options) { // (String, LatLngBounds)
+	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
 		this._bounds = L.latLngBounds(bounds);
 
@@ -97,3 +97,7 @@ L.ImageOverlay = L.Class.extend({
 		L.DomUtil.setOpacity(this._image, this.options.opacity);
 	}
 });
+
+L.imageOverlay = function (url, bounds, options) {
+	return new L.ImageOverlay(url, bounds, options);
+};

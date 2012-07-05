@@ -9,7 +9,7 @@ L.Point = function (/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
 
 L.Point.prototype = {
 	add: function (point) {
-		return this.clone()._add(point);
+		return this.clone()._add(L.point(point));
 	},
 
 	_add: function (point) {
@@ -19,7 +19,7 @@ L.Point.prototype = {
 	},
 
 	subtract: function (point) {
-		return this.clone()._subtract(point);
+		return this.clone()._subtract(L.point(point));
 	},
 
 	// destructive subtract (faster)
@@ -33,13 +33,16 @@ L.Point.prototype = {
 		return new L.Point(this.x / num, this.y / num, round);
 	},
 
-	multiplyBy: function (num) {
-		return new L.Point(this.x * num, this.y * num);
+	multiplyBy: function (num, round) {
+		return new L.Point(this.x * num, this.y * num, round);
 	},
 
 	distanceTo: function (point) {
+		point = L.point(point);
+
 		var x = point.x - this.x,
 			y = point.y - this.y;
+
 		return Math.sqrt(x * x + y * y);
 	},
 
@@ -71,6 +74,9 @@ L.point = function (x, y, round) {
 	}
 	if (x instanceof Array) {
 		return new L.Point(x[0], x[1]);
+	}
+	if (isNaN(x)) {
+		return x;
 	}
 	return new L.Point(x, y, round);
 };

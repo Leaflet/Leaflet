@@ -18,3 +18,7 @@ L.DivIcon = L.Icon.extend({
 		return null;
 	}
 });
+
+L.divIcon = function (options) {
+	return new L.DivIcon(options);
+};
