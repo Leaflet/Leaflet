@@ -53,7 +53,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (this._scale === 1) { return; }
 
 		if (!this._moved) {
-			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
+			L.DomUtil.addClass(map._mapPane, 'leaflet-zoom-anim leaflet-touching');
 
 			map
 				.fire('movestart')
