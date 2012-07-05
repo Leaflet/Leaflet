@@ -66,7 +66,7 @@ L.Popup = L.Class.extend({
 	},
 
 	setLatLng: function (latlng) {
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 		this._update();
 		return this;
 	},
@@ -185,7 +185,7 @@ L.Popup = L.Class.extend({
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
 	},
-	
+
 	_zoomAnimation: function (opt) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
 
@@ -234,3 +234,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.stop(e);
 	}
 });
+
+L.popup = function (options, source) {
+	return new L.Popup(options, source);
+};

@@ -79,3 +79,7 @@ L.LayerGroup = L.Class.extend({
 		}
 	}
 });
+
+L.layerGroup = function (layers) {
+	return new L.LayerGroup(layers);
+};
