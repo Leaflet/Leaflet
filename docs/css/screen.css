@@ -86,6 +86,12 @@ code {
 	-moz-box-shadow: 0 0 15px #ddd;
 	-webkit-box-shadow: 0 0 15px #ddd;
 	}
+pre code a {
+    text-decoration: none;
+    }
+pre code a:hover {
+    text-decoration: underline;
+    }
 
 table {
 	border-collapse: collapse;
