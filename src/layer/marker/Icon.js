@@ -70,7 +70,10 @@ L.Icon = L.Class.extend({
 			}
 		}
 
-		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+        /* Must append, because this is set upon Icon load, which could happen
+         * after appending to className elsewhere. We don't want to overwrite
+         * other class names. */
+		img.className += ' leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
 		img.style.width	 = size.x + 'px';
 		img.style.height = size.y + 'px';
 
@@ -105,8 +108,8 @@ L.Icon = L.Class.extend({
 			 * already loaded the image and cached it if src is set first. This
 			 * causes the "load" event to not be fired. */
 			el.onload = function () {
-                loadFunc.apply(el, []);
-            };
+				loadFunc.apply(el, []);
+			};
 			el.src = src;
 		} else {
 			el = document.createElement('div');
