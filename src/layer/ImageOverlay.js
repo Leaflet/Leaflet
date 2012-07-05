@@ -54,9 +54,9 @@ L.ImageOverlay = L.Class.extend({
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
 		if (this._map.options.zoomAnimation && L.Browser.any3d) {
-			this._image.className += ' leaflet-zoom-animated';
+			L.DomUtil.addClass(this._image, 'leaflet-zoom-animated');
 		} else {
-			this._image.className += ' leaflet-zoom-hide';
+			L.DomUtil.addClass(this._image, 'leaflet-zoom-hide');
 		}
 
 		this._updateOpacity();
