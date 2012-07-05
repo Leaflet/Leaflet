@@ -388,8 +388,8 @@ L.TileLayer = L.Class.extend({
 
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
-			this.className += ' leaflet-tile-loaded';
-
+			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
+		
 			layer.fire('tileload', {
 				tile: this,
 				url: this.src

@@ -415,14 +415,14 @@ L.Map = L.Class.extend({
 		var container = this._container;
 
 		container.innerHTML = '';
-		container.className += ' leaflet-container';
+		L.DomUtil.addClass(container, 'leaflet-container');
 
 		if (L.Browser.touch) {
-			container.className += ' leaflet-touch';
+			L.DomUtil.addClass(container, 'leaflet-touch');
 		}
 
 		if (this.options.fadeAnimation) {
-			container.className += ' leaflet-fade-anim';
+			L.DomUtil.addClass(container, 'leaflet-fade-anim');
 		}
 
 		var position = L.DomUtil.getStyle(container, 'position');
@@ -454,9 +454,9 @@ L.Map = L.Class.extend({
 		var zoomHide = ' leaflet-zoom-hide';
 
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += zoomHide;
-			panes.shadowPane.className += zoomHide;
-			panes.popupPane.className += zoomHide;
+			L.DomUtil.addClass(panes.markerPane, zoomHide);
+			L.DomUtil.addClass(panes.shadowPane, zoomHide);
+			L.DomUtil.addClass(panes.popupPane, zoomHide);
 		}
 	},
 
