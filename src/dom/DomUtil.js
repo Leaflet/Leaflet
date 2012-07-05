@@ -102,7 +102,7 @@ L.DomUtil = {
 		}
 		el.className = el.className
 				.replace(/(\S+)\s*/g, replaceFn)
-				.replace(/^\s+/, '');
+				.replace(/\s+/, '');
 	},
 
 	setOpacity: function (el, value) {
