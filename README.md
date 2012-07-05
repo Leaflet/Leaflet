@@ -1,15 +1,17 @@
 <img src="http://leaflet.cloudmade.com/docs/images/logo.png" alt="Leaflet" />
 
-Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps, developed by [CloudMade](http://cloudmade.com) to form the core of its next generation JavaScript API. Weighting just about 21kb of gzipped JS code, it still has all the [features](http://leaflet.cloudmade.com/features.html) you will ever need for your web mapping needs while providing a fast, smooth, pleasant user experience.
+Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps, developed by [Vladimir Agafonkin](http://agafonkin.com/en) of [CloudMade](http://cloudmade.com) with a team of dedicated [contributors](https://github.com/CloudMade/Leaflet/graphs/contributors). Weighting just about 25kb of gzipped JS code, it still has all the [features](http://leaflet.cloudmade.com/features.html) most developers ever need for online maps, while providing a fast, pleasant user experience.
 
-It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android, utilizing cutting-edge technologies included in HTML5 and CSS3, focusing on usability, performance, small size, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and [easy to use API](http://leaflet.cloudmade.com/reference.html). The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
+It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android,  taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and [easy to use API](http://leaflet.cloudmade.com/reference.html) with convention over configuration. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
 
 Check out the website for more information: [leaflet.cloudmade.com](http://leaflet.cloudmade.com)
 
 ## Contributing to Leaflet
 Let's make the best open-source library for maps that can possibly exist!
 
-Contributing is simple: make the changes in your fork, make sure that Leaflet builds successfully (see below) and then create a pull request to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer). Updates to Leaflet [documentation](http://leaflet.cloudmade.com/reference.html) and [examples](http://leaflet.cloudmade.com/examples.html) (located in the `gh-pages` branch) are really appreciated too.
+Contributing is simple: make the changes in your fork (preferably in a separate branch), make sure that Leaflet builds successfully (see below) and then create a pull request (without the built files, just the source changes) to [Vladimir Agafonkin](http://github.com/mourner) (Leaflet maintainer). Updates to Leaflet [documentation](http://leaflet.cloudmade.com/reference.html) and [examples](http://leaflet.cloudmade.com/examples.html) (located in the `gh-pages` branch for current stable release and `gh-pages-master` for the in-progress version) are really appreciated too.
+
+Note that bugfixes and small improvements are higher priority than new features or substantial API changes, and will be reviewed and merged much faster than pulls with lots of new code. If your new feature is not expected to be widely used, consider making a plugin instead. Lets keep Leaflet slim, fast and simple!
 
 Here's [a list of the awesome people](http://github.com/CloudMade/Leaflet/contributors) that joined us already. Looking forward to _your_ contributions!
 

@@ -5,7 +5,7 @@
 L.Map.mergeOptions({
 	dragging: true,
 
-	inertia: !L.Browser.android,
+	inertia: !L.Browser.android23,
 	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
 	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
 	inertiaThreshold:    L.Browser.touch ? 32   : 16, // ms
@@ -20,10 +20,11 @@ L.Map.Drag = L.Handler.extend({
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
 
-			this._draggable
-				.on('dragstart', this._onDragStart, this)
-				.on('drag', this._onDrag, this)
-				.on('dragend', this._onDragEnd, this);
+			this._draggable.on({
+				'dragstart': this._onDragStart,
+				'drag': this._onDrag,
+				'dragend': this._onDragEnd
+			}, this);
 
 			var options = this._map.options;
 
@@ -87,6 +88,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onPreDrag: function () {
+		// TODO refactor to be able to adjust map pane position after zoom
 		var map = this._map,
 			worldWidth = map.options.crs.scale(map.getZoom()),
 			halfWidth = Math.round(worldWidth / 2),
@@ -106,7 +108,7 @@ L.Map.Drag = L.Handler.extend({
 
 			noInertia = !options.inertia ||
 					delay > options.inertiaThreshold ||
-					typeof this._positions[0] === 'undefined';
+					this._positions[0] === undefined;
 
 		if (noInertia) {
 			map.fire('moveend');

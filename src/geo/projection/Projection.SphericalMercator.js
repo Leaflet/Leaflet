@@ -13,11 +13,12 @@ L.Projection.SphericalMercator = {
 		return new L.Point(x, y);
 	},
 
-	unproject: function (point, unbounded) { // (Point, Boolean) -> LatLng
+	unproject: function (point) { // (Point, Boolean) -> LatLng
 		var d = L.LatLng.RAD_TO_DEG,
 			lng = point.x * d,
 			lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
 
-		return new L.LatLng(lat, lng, unbounded);
+		// TODO refactor LatLng wrapping
+		return new L.LatLng(lat, lng, true);
 	}
 };

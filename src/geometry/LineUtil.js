@@ -37,7 +37,7 @@ L.LineUtil = {
 	_simplifyDP: function (points, sqTolerance) {
 
 		var len = points.length,
-			ArrayConstructor = typeof Uint8Array !== 'undefined' ? Uint8Array : Array,
+			ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
 			markers = new ArrayConstructor(len);
 
 		markers[0] = markers[len - 1] = 1;

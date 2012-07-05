@@ -7,6 +7,19 @@ L.Path = L.Path.extend({
 		SVG: L.Browser.svg
 	},
 
+	bringToFront: function () {
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
+	},
+
+	bringToBack: function () {
+		if (this._container) {
+			var root = this._map._pathRoot;
+			root.insertBefore(this._container, root.firstChild);
+		}
+	},
+
 	getPathString: function () {
 		// form path string here
 	},
@@ -73,11 +86,11 @@ L.Path = L.Path.extend({
 				this._path.setAttribute('class', 'leaflet-clickable');
 			}
 
-			L.DomEvent.addListener(this._container, 'click', this._onMouseClick, this);
+			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
 			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
 			for (var i = 0; i < events.length; i++) {
-				L.DomEvent.addListener(this._container, events[i], this._fireMouseEvent, this);
+				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 			}
 		}
 	},
@@ -120,10 +133,15 @@ L.Map.include({
 			this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
-			if (this.options.zoomAnimation) {
+			if (this.options.zoomAnimation && L.Browser.any3d) {
 				this._pathRoot.setAttribute('class', ' leaflet-zoom-animated');
-				this.on('zoomanim', this._animatePathZoom);
-				this.on('zoomend', this._endPathZoom);
+
+				this.on({
+					'zoomanim': this._animatePathZoom,
+					'zoomend': this._endPathZoom
+				});
+			} else {
+				this._pathRoot.setAttribute('class', ' leaflet-zoom-hide');
 			}
 
 			this.on('moveend', this._updateSvgViewport);
@@ -132,14 +150,12 @@ L.Map.include({
 	},
 
 	_animatePathZoom: function (opt) {
-		var centerOffset = this._getNewTopLeftPoint(opt.center).subtract(this._getTopLeftPoint()),
-			scale = Math.pow(2, opt.zoom - this._zoom),
-			offset = centerOffset.divideBy(1 - 1 / scale),
-			centerPoint = this.containerPointToLayerPoint(this.getSize().divideBy(-2)),
-			origin = centerPoint.add(offset).round(),
-			pathRootStyle = this._pathRoot.style;
+		var scale = this.getZoomScale(opt.zoom),
+			offset = this._getCenterOffset(opt.center).divideBy(1 - 1 / scale),
+			viewportPos = this.containerPointToLayerPoint(this.getSize().multiplyBy(-L.Path.CLIP_PADDING)),
+			origin = viewportPos.add(offset).round();
 
-		pathRootStyle[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString((origin.multiplyBy(-1).add(L.DomUtil.getPosition(this._pathRoot)).multiplyBy(scale).add(origin))) + ' scale(' + scale + ') ';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString((origin.multiplyBy(-1).add(L.DomUtil.getPosition(this._pathRoot)).multiplyBy(scale).add(origin))) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},
@@ -150,9 +166,9 @@ L.Map.include({
 
 	_updateSvgViewport: function () {
 		if (this._pathZooming) {
-			//Do not update SVGs while a zoom animation is going on otherwise the animation will break.
-			//When the zoom animation ends we will be updated again anyway
-			//This fixes the case where you do a momentum move and zoom while the move is still ongoing.
+			// Do not update SVGs while a zoom animation is going on otherwise the animation will break.
+			// When the zoom animation ends we will be updated again anyway
+			// This fixes the case where you do a momentum move and zoom while the move is still ongoing.
 			return;
 		}
 
@@ -167,7 +183,6 @@ L.Map.include({
 			pane = this._panes.overlayPane;
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
-		// Unfortunately I haven't found a good workaround for this yet
 		if (L.Browser.mobileWebkit) {
 			pane.removeChild(root);
 		}

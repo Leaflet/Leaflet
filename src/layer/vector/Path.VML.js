@@ -45,21 +45,6 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	},
 
 	_initStyle: function () {
-		var container = this._container,
-			stroke,
-			fill;
-
-		if (this.options.stroke) {
-			stroke = this._stroke = this._createElement('stroke');
-			stroke.endcap = 'round';
-			container.appendChild(stroke);
-		}
-
-		if (this.options.fill) {
-			fill = this._fill = this._createElement('fill');
-			container.appendChild(fill);
-		}
-
 		this._updateStyle();
 	},
 
@@ -73,14 +58,29 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 		container.filled = options.fill;
 
 		if (options.stroke) {
-			stroke.weight  = options.weight + 'px';
-			stroke.color   = options.color;
+			if (!stroke) {
+				stroke = this._stroke = this._createElement('stroke');
+				stroke.endcap = 'round';
+				container.appendChild(stroke);
+			}
+			stroke.weight = options.weight + 'px';
+			stroke.color = options.color;
 			stroke.opacity = options.opacity;
+		} else if (stroke) {
+			container.removeChild(stroke);
+			this._stroke = null;
 		}
 
 		if (options.fill) {
-			fill.color   = options.fillColor || options.color;
+			if (!fill) {
+				fill = this._fill = this._createElement('fill');
+				container.appendChild(fill);
+			}
+			fill.color = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
+		} else if (fill) {
+			container.removeChild(fill);
+			this._fill = null;
 		}
 	},
 

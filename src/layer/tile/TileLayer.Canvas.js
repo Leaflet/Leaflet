@@ -56,3 +56,8 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		this._tileOnLoad.call(tile);
 	}
 });
+
+
+L.tileLayer.canvas = function (options) {
+	return new L.TileLayer.Canvas(options);
+};

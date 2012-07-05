@@ -94,12 +94,15 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
+		function replaceFn(w, match) {
 			if (match === name) {
 				return '';
 			}
 			return w;
-		}).replace(/^\s+/, '');
+		}
+		el.className = el.className
+				.replace(/(\S+)\s*/g, replaceFn)
+				.replace(/^\s+/, '');
 	},
 
 	setOpacity: function (el, value) {
@@ -109,8 +112,6 @@ L.DomUtil = {
 			el.style.opacity = value;
 		}
 	},
-
-	//TODO refactor away this ugly translate/position mess
 
 	testProp: function (props) {
 		var style = document.documentElement.style;
@@ -124,9 +125,15 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		return L.DomUtil.TRANSLATE_OPEN +
-				point.x + 'px,' + point.y + 'px' +
-				L.DomUtil.TRANSLATE_CLOSE;
+		// On webkit browsers (Chrome/Safari/MobileSafari/Android) using translate3d instead of translate
+		// makes animation smoother as it ensures HW accel is used. Firefox 13 doesn't care
+		// (same speed either way), Opera 12 doesn't support translate3d
+
+		var is3d = L.Browser.webkit3d,
+			open = 'translate' + (is3d ? '3d' : '') + '(',
+			close = (is3d ? ',0' : '') + ')';
+
+		return open + point.x + 'px,' + point.y + 'px' + close;
 	},
 
 	getScaleString: function (scale, origin) {
@@ -137,11 +144,15 @@ L.DomUtil = {
 		return preTranslateStr + scaleStr + postTranslateStr;
 	},
 
-	setPosition: function (el, point) {
+	setPosition: function (el, point, disable3D) {
 		el._leaflet_pos = point;
-		if (L.Browser.any3d) {
+		if (!disable3D && L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
-			el.style[L.DomUtil.BACKFACEVISIBILITY] = 'hidden';
+
+			// workaround for Android 2/3 stability (https://github.com/CloudMade/Leaflet/issues/69)
+			if (L.Browser.mobileWebkit3d) {
+				el.style.WebkitBackfaceVisibility = 'hidden';
+			}
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -155,9 +166,5 @@ L.DomUtil = {
 
 L.Util.extend(L.DomUtil, {
 	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
-	BACKFACEVISIBILITY: L.DomUtil.testProp(['backfaceVisibility', 'WebkitBackfaceVisibility', 'OBackfaceVisibility', 'MozBackfaceVisibility', 'msBackfaceVisibility']),
-
-	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
-	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')'
+	TRANSFORM: L.DomUtil.testProp(['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform'])
 });

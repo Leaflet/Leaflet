@@ -107,3 +107,7 @@ L.Util.extend(L.GeoJSON, {
 		return latlngs;
 	}
 });
+
+L.geoJson = function (geojson, options) {
+	return new L.GeoJson(geojson, options);
+};

@@ -6,7 +6,7 @@ L.Circle = L.Path.extend({
 	initialize: function (latlng, radius, options) {
 		L.Path.prototype.initialize.call(this, options);
 
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
 	},
 
@@ -15,7 +15,7 @@ L.Circle = L.Path.extend({
 	},
 
 	setLatLng: function (latlng) {
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 		return this.redraw();
 	},
 
@@ -39,13 +39,12 @@ L.Circle = L.Path.extend({
 			point = map.project(this._latlng),
 			swPoint = new L.Point(point.x - delta, point.y + delta),
 			nePoint = new L.Point(point.x + delta, point.y - delta),
-			zoom = map.getZoom(),
-			sw = map.unproject(swPoint, zoom, true),
-			ne = map.unproject(nePoint, zoom, true);
+			sw = map.unproject(swPoint),
+			ne = map.unproject(nePoint);
 
 		return new L.LatLngBounds(sw, ne);
 	},
-	
+
 	getLatLng: function () {
 		return this._latlng;
 	},
@@ -68,7 +67,7 @@ L.Circle = L.Path.extend({
 			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
 		}
 	},
-	
+
 	getRadius: function () {
 		return this._mRadius;
 	},
@@ -92,3 +91,7 @@ L.Circle = L.Path.extend({
 			p.x + r < vp.min.x || p.y + r < vp.min.y;
 	}
 });
+
+L.circle = function (latlng, radius, options) {
+	return new L.Circle(latlng, radius, options);
+};

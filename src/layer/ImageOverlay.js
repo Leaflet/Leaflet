@@ -1,9 +1,15 @@
 L.ImageOverlay = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	initialize: function (/*String*/ url, /*LatLngBounds*/ bounds) {
+	options: {
+		opacity: 1
+	},
+
+	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
-		this._bounds = bounds;
+		this._bounds = L.latLngBounds(bounds);
+
+		L.Util.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
@@ -16,19 +22,44 @@ L.ImageOverlay = L.Class.extend({
 		map._panes.overlayPane.appendChild(this._image);
 
 		map.on('viewreset', this._reset, this);
+
+		if (map.options.zoomAnimation && L.Browser.any3d) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._reset();
 	},
 
 	onRemove: function (map) {
 		map.getPanes().overlayPane.removeChild(this._image);
+
 		map.off('viewreset', this._reset, this);
+
+		if (map.options.zoomAnimation) {
+			map.off('zoomanim', this._animateZoom, this);
+		}
+	},
+
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
+	setOpacity: function (opacity) {
+		this.options.opacity = opacity;
+		this._updateOpacity();
 	},
 
 	_initImage: function () {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
-		this._image.style.visibility = 'hidden';
-		//TODO opacity option
+		if (this._map.options.zoomAnimation && L.Browser.any3d) {
+			this._image.className += ' leaflet-zoom-animated';
+		} else {
+			this._image.className += ' leaflet-zoom-hide';
+		}
+
+		this._updateOpacity();
 
 		//TODO createImage util method to remove duplication
 		L.Util.extend(this._image, {
@@ -38,6 +69,20 @@ L.ImageOverlay = L.Class.extend({
 			onload: L.Util.bind(this._onImageLoad, this),
 			src: this._url
 		});
+	},
+
+	_animateZoom: function (e) {
+		var map = this._map,
+			image = this._image,
+		    scale = map.getZoomScale(e.zoom),
+		    nw = this._bounds.getNorthWest(),
+		    se = this._bounds.getSouthEast(),
+		    topLeft = map._latLngToNewLayerPoint(nw, e.zoom, e.center),
+		    size = map._latLngToNewLayerPoint(se, e.zoom, e.center).subtract(topLeft),
+		    currentSize = map.latLngToLayerPoint(se).subtract(map.latLngToLayerPoint(nw)),
+		    origin = topLeft.add(size.subtract(currentSize).divideBy(2));
+
+		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {
@@ -52,7 +97,14 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	_onImageLoad: function () {
-		this._image.style.visibility = '';
 		this.fire('load');
+	},
+
+	_updateOpacity: function () {
+		L.DomUtil.setOpacity(this._image, this.options.opacity);
 	}
 });
+
+L.imageOverlay = function (url, bounds, options) {
+	return new L.ImageOverlay(url, bounds, options);
+};
