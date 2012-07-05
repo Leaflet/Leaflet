@@ -28,65 +28,89 @@ L.Icon = L.Class.extend({
 
 		if (!src) { return null; }
 
-		var img = this._createImg(src);
-		this._setIconStyles(img, name);
+		var img;
+		/* If size is defined, use defined value. Otherwise, set size equal to
+		 * the actual size of the imageUrl upon image load */
+		if (this.options[name + 'Size']) {
+			img = this._createImg(src, function () { return; });
+		}
+		/* There is no default size set, so when the image is loaded, we will
+		 * set the size to be that of the image loaded. */
+		else {
+			/* Create local reference to thisto avoid 'this' name clashes */
+			var me = this;
+			img = this._createImg(src, function () {
+				var size = new L.Point(this.width, this.height);
+				me._styleHelper(this, name, size, me.options);
+			});
+		}
 
+		this._setIconStyles(img, name);
 		return img;
 	},
 
+	/* Automatically configures other image values based on the size supplied,
+	 * given that those properties are not already defined in options. */
+	_styleHelper: function (img, name, size, options) {
+		var anchor = options.iconAnchor;
+		var popupAnchor = options.popupAnchor;
 
-	_setIconStyles: function (img, name) {
-		var options = this.options,
-			anchor = options.iconAnchor,
-			popupAnchor = options.popupAnchor;
-
-		/* Automatically configures other values based on the size supplied */
-		var styleHelper = function (img, size) {
-			if (!anchor && size) {
-				anchor = new L.Point(Math.round(size.x / 2), size.y);
-			}
-			if (name === 'icon' && !popupAnchor && size) {
-				popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
-			}
-			if (name === 'shadow' && anchor && options.shadowOffset) {
+		if (!anchor && size) {
+			anchor = new L.Point(Math.round(size.x / 2), size.y);
+		}
+		if (name === 'icon' && !popupAnchor && size) {
+			popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+		}
+		if (name === 'shadow' && anchor) {
+			if (options.shadowOffset) {
 				anchor._add(options.shadowOffset);
 			}
-
-			img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
-			img.style.width	 = size.x + 'px';
-			img.style.height = size.y + 'px';
-
-			if (anchor) {
-				img.style.marginLeft = (-anchor.x) + 'px';
-				img.style.marginTop	 = (-anchor.y) + 'px';
+			else {
+				anchor._add(new L.Point(-8, 0));
 			}
-		};
-
-		/* If size is defined, use defined value. Otherwise, set size equal to
-		 * the actual size of the imageUrl upon image load */
-		var size;
-		/* Size is defined */
-		if (options[name + 'Size']) {
-			size = options[name + 'Size'];
-			styleHelper(img, size);
 		}
-		/* Otherwise, size is not defined. Load in size from image */
-		else {
-			img.onload = function () {
-				size = new L.Point(this.width, this.height);
-				styleHelper(this, size);
-			};
+
+		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+		img.style.width	 = size.x + 'px';
+		img.style.height = size.y + 'px';
+
+		if (anchor) {
+			img.style.marginLeft = (-anchor.x) + 'px';
+			img.style.marginTop	 = (-anchor.y) + 'px';
 		}
 	},
 
-	_createImg: function (src) {
+	_setIconStyles: function (img, name) {
+		var size;
+		/* Size is defined */
+		if (this.options[name + 'Size']) {
+			size = this.options[name + 'Size'];
+			this._styleHelper(img, name, size, this.options);
+		}
+		/* Otherwise, size is not defined. The img.onload function will be handle
+		 * image property configuration. */
+	},
+
+	/**
+	 * src: A string for the filepath to load as the image.
+	 * loadFunc: a function to be called when the image loads. loadFunc is bound
+	 *			 to the scope of the image.
+	 */
+	_createImg: function (src, loadFunc) {
 		var el;
 
 		if (!L.Browser.ie6) {
 			el = document.createElement('img');
+			/* Set the onload method before setting source, since IE will have
+			 * already loaded the image and cached it if src is set first. This
+			 * causes the "load" event to not be fired. */
+			el.onload = function () {
+                loadFunc.apply(el, []);
+            };
 			el.src = src;
 		} else {
 			el = document.createElement('div');
+			/* TODO: onload support for IE 6 */
 			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
