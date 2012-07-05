@@ -54,7 +54,7 @@
 
 		<h3>Leaflet features</h3>
 
-		<p>Leaflet doesn't try to do everything for everyone. Instead it focuses on making <em>the basic things work perfectly</em>. It should still satisfy the needs of the vast majority of map apps developers while being flexible enough to be easily extended by writing third-party plugins.</p>
+		<p>Leaflet doesn't try to do everything for everyone. Instead it focuses on making <em>the basic things work perfectly</em>. It should still satisfy the needs of the vast majority of map apps developers while being easily extended by third-party plugins.</p>
 
 		<div class="span-20" id="features">
 			<div class="span-6">
@@ -80,13 +80,13 @@
 				<h4>On mobile browsers (iOS, Android)</h4>
 				<ul>
 					<li>Touch-drag panning</li>
-					<li>Multi-touch zoom (iOS only)</li>
+					<li>Multi-touch zoom <nobr>(iOS and Android 4+)</nobr></li>
 					<li>Double tap zoom</li>
 				</ul>
 				<h4>Other features</h4>
 				<ul>
 					<li>Panning inertia</li>
-					<li class="noimpl">Vector layers editing</li>
+					<!--<li>Vector layers editing</li>-->
 				</ul>
 			</div>
 
@@ -130,8 +130,8 @@
 				<h3>Browser support</h3>
 				<h4>On desktop</h4>
 				<ul>
-					<li>Firefox 3.6+</li>
-					<li>Chrome</li>
+					<li>Chrome<!--<span class="quiet">(smoothest experience)</span>--></li>
+					<li>Firefox</li>
 					<li>Safari 5+</li>
 					<li>Opera 11.11+</li>
 		 			<li>IE 7&ndash;9</li>
@@ -140,17 +140,18 @@
 				<h4>On mobile</h4>
 		 		<ul>
 		 			<li>Safari for iOS 3/4/5+</li>
-					<li>WebKit for&nbsp;Android 2.2+,&nbsp;3.1+,&nbsp;4+</li>
-					<li class="noimpl">Other webkit-based browsers (webOS, Blackberry 6+, etc.)</li>
-					<li class="noimpl">Windows Phone 7</li>
-					<li class="noimpl">Firefox for Android</li>
+					<li>Android browser 2.2+,&nbsp;3.1+,&nbsp;4+</li>
+					<li>Chrome for Android 4+ and iOS</li>
+					<li>Firefox for Android</li>
+					<li>Other webkit-based browsers (webOS, Blackberry 6+, etc.)</li>
+					<li class="noimpl">IE for Windows Phone 7</li>
 				</ul>
 			</div>
 		</div>
 
 		<p>If you find some feature really missing in Leaflet, please vote for it on the <a href="https://leaflet.uservoice.com">Leaflet UserVoice page</a>.</p>
 
-		<p class="noimpl">* Grayed out features are in the roadmap and coming soon.</p>
+		<!--<p class="noimpl">* Grayed out features are in the roadmap and coming soon.</p>-->
 
 		<hr />
 

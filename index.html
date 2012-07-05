@@ -57,7 +57,7 @@
 		</p>
 
 		<!-- <h3>About the library</h3> -->
-		<p>Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps. It is developed by <a href="http://agafonkin.com/en">Vladimir Agafonkin</a> of <a href="http://cloudmade.com">CloudMade</a> with a team of dedicated <a href="https://github.com/CloudMade/Leaflet/graphs/contributors">contributors</a>. Weighing just about <abbr title="That's 81 KB minified and 136 KB in the source form, with 6 KB of CSS (1.4 KB gzipped) and 11 KB of images">22 KB of gzipped JS code</abbr>, it still has all the <a href="features.html">features</a> most developers ever need for online maps, while providing a fast, pleasant user experience.</p>
+		<p>Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps. It is developed by <a href="http://agafonkin.com/en">Vladimir Agafonkin</a> of <a href="http://cloudmade.com">CloudMade</a> with a team of dedicated <a href="https://github.com/CloudMade/Leaflet/graphs/contributors">contributors</a>. Weighing just about <abbr title="That's 97 KB minified and 166 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 11 KB of images">25 KB of gzipped JS code</abbr>, it still has all the <a href="features.html">features</a> most developers ever need for online maps, while providing a fast, pleasant user experience.</p>
 		<p>It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support  and <a href="reference.html" title="Leaflet API reference">an easy-to-use API</a> with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based <a href="https://github.com/CloudMade/Leaflet" title="Leaflet GitHub repository">code of the library</a> is designed to be modular, extensible and very easy to understand.</p>
 
 		<h3>Basic usage example</h3>
@@ -77,24 +77,29 @@
 		</script>
 
 		<p>Here we create a map with <abbr title="Here we use the beautiful CloudMade tiles which require an API key (get one for free!), but Leaflet doesn't force you to — use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:</p>
-		<pre><code class="javascript">// initialize the map on the "map" div
-var map = new L.Map('map');
+		<pre><code class="javascript">// initialize the map on the "map" div, set the view to a given place and zoom
+var map = L.map('map')
+	.setView([51.505, -0.09], 13);
 
-// create a CloudMade tile layer with style #997 (or use other provider of your choice)
-var cloudmade = new L.TileLayer('http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">[API-key]</a>/997/256/{z}/{x}/{y}.png', {
-	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>',
-	maxZoom: 18
-});
+// add a CloudMade tile layer with style #997 (or use other provider of your choice)
+L.tileLayer('http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">[API-key]</a>/997/256/{z}/{x}/{y}.png', {
+	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>'
+}).addTo(map);
 
-// add the layer to the map, set the view to a given place and zoom
-map.addLayer(cloudmade).setView(new L.LatLng(51.505, -0.09), 13);
+// add a marker in the given location, attach some popup content to it and open the popup
+L.marker([51.5, -0.09])
+	.addTo(map)
+	.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.")
+	.openPopup();</code></pre>
 
-// create a marker in the given location and add it to the map
-var marker = new L.Marker(new L.LatLng(51.5, -0.09));
-map.addLayer(marker);
+		<!--<p>Note that Leaflet uses a hybrid OOP/chaining approach to API, so the following lines are equivalent:</p>
 
-// attach a given HTML content to the marker and immediately open it
-marker.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.").openPopup();</code></pre>
+		<pre><code>// jQuery-like
+L.map('map').setView([50, 30], 13);
+
+// old-school OOP
+var map = new L.Map('map'); 
+map.setView(new L.LatLng(50, 30), 13);</code></pre>-->
 
 		<p>Check out the <a href="examples.html">examples</a> section for more examples, or head straight to the <a href="reference.html">documentation</a>.</p>
 
