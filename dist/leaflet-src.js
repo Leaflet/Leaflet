@@ -2410,6 +2410,11 @@ L.ImageOverlay = L.Class.extend({
 		}
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
@@ -2896,6 +2901,11 @@ L.Popup = L.Class.extend({
 		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
@@ -3227,6 +3237,11 @@ L.LayerGroup = L.Class.extend({
 	onRemove: function (map) {
 		this._iterateLayers(map.removeLayer, map);
 		this._map = null;
+	},
+
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
 	},
 
 	_iterateLayers: function (method, context) {

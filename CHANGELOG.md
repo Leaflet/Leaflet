@@ -7,6 +7,14 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+### API simplification
+
+Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like syntax while being backwards compatible with the previous approach (so you can use both styles):
+
+ * Improved most methods and options to accept `LatLng`, `LatLngBounds`, `Point` and `Bounds` values in an array form (e.g. `map.panTo([lat, lng])` will be the same as `map.panTo(new L.LatLng(lat, lng))`)
+ * Added `addTo` method to all layer classes, e.g. `marker.addTo(map)` is equivalent to `map.addLayer(marker)`
+ * Added factory methods to most classes to be able to write code without `new` keyword, named the same as classes but starting with a lowercase letter, e.g. `L.map('map')` is the same as `new L.Map('map')`
+
 ### Notable new features
 
  * Added configurable **panning inertia** - after a quick pan, the map slows down in the same direction.
@@ -14,7 +22,7 @@ An in-progress version being developed on the master branch.
  * Added an unobtrusive **scale control**.
  * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
  * Added `Rectangle` vector layer (by [@JasonSanford](https://github.com/JasonSanford)). [#504](https://github.com/CloudMade/Leaflet/pull/504)
- * Added *Android 4+ pinch-zoom* support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
+ * Added **Android 4+ pinch-zoom** support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
 
 ### Improvements
 

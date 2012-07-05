@@ -40,6 +40,11 @@ L.ImageOverlay = L.Class.extend({
 		}
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
