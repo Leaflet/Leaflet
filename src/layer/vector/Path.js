@@ -42,6 +42,11 @@ L.Path = L.Class.extend({
 		}, this);
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	onRemove: function (map) {
 		this._map = null;
 

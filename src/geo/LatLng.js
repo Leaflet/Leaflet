@@ -2,7 +2,7 @@
 	CM.LatLng represents a geographical point with latitude and longtitude coordinates.
 */
 
-L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
+L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
 	var lat = parseFloat(rawLat),
 		lng = parseFloat(rawLng);
 
@@ -15,7 +15,6 @@ L.LatLng = function (/*Number*/ rawLat, /*Number*/ rawLng, /*Boolean*/ noWrap) {
 		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
 	}
 
-	//TODO change to lat() & lng()
 	this.lat = lat;
 	this.lng = lng;
 };
@@ -27,23 +26,25 @@ L.Util.extend(L.LatLng, {
 });
 
 L.LatLng.prototype = {
-	equals: function (/*LatLng*/ obj) {
-		if (!(obj instanceof L.LatLng)) {
-			return false;
-		}
+	equals: function (obj) { // (LatLng) -> Boolean
+		if (!obj) { return false; }
+
+		obj = L.latLng(obj);
 
 		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
 		return margin <= L.LatLng.MAX_MARGIN;
 	},
 
-	toString: function () {
+	toString: function () { // -> String
 		return 'LatLng(' +
 				L.Util.formatNum(this.lat) + ', ' +
 				L.Util.formatNum(this.lng) + ')';
 	},
 
 	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
-	distanceTo: function (/*LatLng*/ other)/*->Double*/ {
+	distanceTo: function (other) { // (LatLng) -> Number
+		other = L.latLng(other);
+
 		var R = 6378137, // earth radius in meters
 			d2r = L.LatLng.DEG_TO_RAD,
 			dLat = (other.lat - this.lat) * d2r,
@@ -58,3 +59,17 @@ L.LatLng.prototype = {
 		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	}
 };
+
+L.latLng = function (a, b, c) { // (LatLng) or ([Number, Number]) or (Number, Number, Boolean)
+	if (a instanceof L.LatLng) {
+		return a;
+	}
+	if (a instanceof Array) {
+		return new L.LatLng(a[0], a[1]);
+	}
+	if (isNaN(a)) {
+		return a;
+	}
+	return new L.LatLng(a, b, c);
+};
+ 

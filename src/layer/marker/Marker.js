@@ -17,7 +17,7 @@ L.Marker = L.Class.extend({
 
 	initialize: function (latlng, options) {
 		L.Util.setOptions(this, options);
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 	},
 
 	onAdd: function (map) {
@@ -25,12 +25,26 @@ L.Marker = L.Class.extend({
 
 		map.on('viewreset', this.update, this);
 
-		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
-			map.on('zoomanim', this._animateZoom, this);
-		}
-
 		this._initIcon();
 		this.update();
+
+		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
+			map.on('zoomanim', this._animateZoom, this);
+			this._icon.className += ' leaflet-zoom-animated';
+			if (this._shadow) {
+				this._shadow.className += ' leaflet-zoom-animated';
+			}
+		} else {
+			this._icon.className += ' leaflet-zoom-hide';
+			if (this._shadow) {
+				this._shadow.className += ' leaflet-zoom-hide';
+			}
+		}
+	},
+
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
 	},
 
 	onRemove: function (map) {
@@ -54,7 +68,7 @@ L.Marker = L.Class.extend({
 	},
 
 	setLatLng: function (latlng) {
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 
 		this.update();
 
@@ -195,3 +209,7 @@ L.Marker = L.Class.extend({
 		L.DomUtil.setOpacity(this._icon, this.options.opacity);
 	}
 });
+
+L.marker = function (latlng, options) {
+	return new L.Marker(latlng, options);
+};

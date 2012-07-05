@@ -54,3 +54,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
 	}
 });
+
+L.tileLayer.wms = function (url, options) {
+	return new L.TileLayer(url, options);
+};

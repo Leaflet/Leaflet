@@ -5,9 +5,9 @@ L.ImageOverlay = L.Class.extend({
 		opacity: 1
 	},
 
-	initialize: function (url, bounds, options) { // (String, LatLngBounds)
+	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
-		this._bounds = bounds;
+		this._bounds = L.latLngBounds(bounds);
 
 		L.Util.setOptions(this, options);
 	},
@@ -23,7 +23,7 @@ L.ImageOverlay = L.Class.extend({
 
 		map.on('viewreset', this._reset, this);
 
-		if (map.options.zoomAnimation) {
+		if (map.options.zoomAnimation && L.Browser.any3d) {
 			map.on('zoomanim', this._animateZoom, this);
 		}
 
@@ -32,7 +32,7 @@ L.ImageOverlay = L.Class.extend({
 
 	onRemove: function (map) {
 		map.getPanes().overlayPane.removeChild(this._image);
-		
+
 		map.off('viewreset', this._reset, this);
 
 		if (map.options.zoomAnimation) {
@@ -48,8 +48,10 @@ L.ImageOverlay = L.Class.extend({
 	_initImage: function () {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
-		if (this._map.options.zoomAnimation) {
+		if (this._map.options.zoomAnimation && L.Browser.any3d) {
 			this._image.className += ' leaflet-zoom-animated';
+		} else {
+			this._image.className += ' leaflet-zoom-hide';
 		}
 
 		this._updateOpacity();
@@ -97,3 +99,7 @@ L.ImageOverlay = L.Class.extend({
 		L.DomUtil.setOpacity(this._image, this.options.opacity);
 	}
 });
+
+L.imageOverlay = function (url, bounds, options) {
+	return new L.ImageOverlay(url, bounds, options);
+};

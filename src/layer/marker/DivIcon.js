@@ -4,12 +4,16 @@ L.DivIcon = L.Icon.extend({
 		/*
 		iconAnchor: (Point)
 		popupAnchor: (Point)
+		innerHTML: (String)
 		*/
 		className: 'leaflet-div-icon'
 	},
 
 	createIcon: function () {
 		var div = document.createElement('div');
+		if (this.options.html) {
+			div.innerHTML = this.options.html;
+		}
 		this._setIconStyles(div, 'icon');
 		return div;
 	},
@@ -18,3 +22,7 @@ L.DivIcon = L.Icon.extend({
 		return null;
 	}
 });
+
+L.divIcon = function (options) {
+	return new L.DivIcon(options);
+};
