@@ -22,7 +22,7 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
  * Added an unobtrusive **scale control**.
  * Added `DivIcon` class that easily allows you to create lightweight div-based markers.
  * Added `Rectangle` vector layer (by [@JasonSanford](https://github.com/JasonSanford)). [#504](https://github.com/CloudMade/Leaflet/pull/504)
- * Added *Android 4+ pinch-zoom* support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
+ * Added **Android 4+ pinch-zoom** support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
 
 ### Improvements
 
