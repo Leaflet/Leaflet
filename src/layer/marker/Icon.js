@@ -15,15 +15,21 @@ L.Icon = L.Class.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	createIcon: function () {
-		return this._createIcon('icon');
+    /* The marker received is used for a callback that updates the marker when
+     * the Icon image loads and has its style set */
+	createIcon: function (marker) {
+		return this._createIcon('icon', marker);
 	},
 
-	createShadow: function () {
-		return this._createIcon('shadow');
+    /* The marker received is used for a callback that updates the marker when
+     * the Icon image loads and has its style set */
+	createShadow: function (marker) {
+		return this._createIcon('shadow', marker);
 	},
 
-	_createIcon: function (name) {
+    /* The marker received is used for a callback that updates the marker when
+     * the Icon image loads and has its style set */
+	_createIcon: function (name, marker) {
 		var src = this._getIconUrl(name);
 
 		if (!src) { return null; }
@@ -37,11 +43,17 @@ L.Icon = L.Class.extend({
 		/* There is no default size set, so when the image is loaded, we will
 		 * set the size to be that of the image loaded. */
 		else {
-			/* Create local reference to thisto avoid 'this' name clashes */
+			/* Create local reference to this to avoid 'this' name clashes */
 			var me = this;
+            /* Creates the image from the src provided. When the image loads, it
+             * calls a function that gets the native size, sets icon styles that
+             * are undefined, and then tells the marker to update itself. When
+             * the marker updates itself, this ensures that the map shows the
+             * marker icon in the correct position with the correct style. */
 			img = this._createImg(src, function () {
 				var size = new L.Point(this.width, this.height);
 				me._styleHelper(this, name, size, me.options);
+				marker.update();
 			});
 		}
 
@@ -70,9 +82,9 @@ L.Icon = L.Class.extend({
 			}
 		}
 
-        /* Must append, because this is set upon Icon load, which could happen
-         * after appending to className elsewhere. We don't want to overwrite
-         * other class names. */
+	    /* Must append, because this is set upon Icon load, which could happen
+		 * after appending to className elsewhere. We don't want to overwrite
+		 * other class names. */
 		img.className += ' leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
 		img.style.width	 = size.x + 'px';
 		img.style.height = size.y + 'px';
@@ -81,11 +93,13 @@ L.Icon = L.Class.extend({
 			img.style.marginLeft = (-anchor.x) + 'px';
 			img.style.marginTop	 = (-anchor.y) + 'px';
 		}
+
+		img.style.visibility = 'visible';
 	},
 
 	_setIconStyles: function (img, name) {
 		var size;
-		/* Size is defined */
+		/* Size is defined, so we can set styles without waiting for image to load. */
 		if (this.options[name + 'Size']) {
 			size = this.options[name + 'Size'];
 			this._styleHelper(img, name, size, this.options);
@@ -104,10 +118,12 @@ L.Icon = L.Class.extend({
 
 		if (!L.Browser.ie6) {
 			el = document.createElement('img');
+			el.style.visibility = 'hidden';
 			/* Set the onload method before setting source, since IE will have
 			 * already loaded the image and cached it if src is set first. This
 			 * causes the "load" event to not be fired. */
 			el.onload = function () {
+				// TODO: use L.Util.bind
 				loadFunc.apply(el, []);
 			};
 			el.src = src;
