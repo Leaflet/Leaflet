@@ -711,7 +711,7 @@ L.DomUtil = {
 		}
 		el.className = el.className
 				.replace(/(\S+)\s*/g, replaceFn)
-				.replace(/^\s+/, '');
+				.replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
@@ -1508,14 +1508,14 @@ L.Map = L.Class.extend({
 		var container = this._container;
 
 		container.innerHTML = '';
-		container.className += ' leaflet-container';
+		L.DomUtil.addClass(container, 'leaflet-container');
 
 		if (L.Browser.touch) {
-			container.className += ' leaflet-touch';
+			L.DomUtil.addClass(container, 'leaflet-touch');
 		}
 
 		if (this.options.fadeAnimation) {
-			container.className += ' leaflet-fade-anim';
+			L.DomUtil.addClass(container, 'leaflet-fade-anim');
 		}
 
 		var position = L.DomUtil.getStyle(container, 'position');
@@ -1547,9 +1547,9 @@ L.Map = L.Class.extend({
 		var zoomHide = ' leaflet-zoom-hide';
 
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += zoomHide;
-			panes.shadowPane.className += zoomHide;
-			panes.popupPane.className += zoomHide;
+			L.DomUtil.addClass(panes.markerPane, zoomHide);
+			L.DomUtil.addClass(panes.shadowPane, zoomHide);
+			L.DomUtil.addClass(panes.popupPane, zoomHide);
 		}
 	},
 
@@ -2210,8 +2210,8 @@ L.TileLayer = L.Class.extend({
 
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
-			this.className += ' leaflet-tile-loaded';
-
+			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
+		
 			layer.fire('tileload', {
 				tile: this,
 				url: this.src
@@ -2424,9 +2424,9 @@ L.ImageOverlay = L.Class.extend({
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
 		if (this._map.options.zoomAnimation && L.Browser.any3d) {
-			this._image.className += ' leaflet-zoom-animated';
+			L.DomUtil.addClass(this._image, 'leaflet-zoom-animated');
 		} else {
-			this._image.className += ' leaflet-zoom-hide';
+			L.DomUtil.addClass(this._image, 'leaflet-zoom-hide');
 		}
 
 		this._updateOpacity();
@@ -2635,14 +2635,14 @@ L.Marker = L.Class.extend({
 
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._animateZoom, this);
-			this._icon.className += ' leaflet-zoom-animated';
+			L.DomUtil.addClass(this._icon, 'leaflet-zoom-animated');
 			if (this._shadow) {
-				this._shadow.className += ' leaflet-zoom-animated';
+				L.DomUtil.addClass(this._shadow, 'leaflet-zoom-animated');
 			}
 		} else {
-			this._icon.className += ' leaflet-zoom-hide';
+			L.DomUtil.addClass(this._icon, 'leaflet-zoom-hide');
 			if (this._shadow) {
-				this._shadow.className += ' leaflet-zoom-hide';
+				L.DomUtil.addClass(this._shadow, 'leaflet-zoom-hide');
 			}
 		}
 	},
@@ -2769,7 +2769,7 @@ L.Marker = L.Class.extend({
 		var icon = this._icon,
 			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
 
-		icon.className += ' leaflet-clickable';
+		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
 
 		for (var i = 0; i < events.length; i++) {
@@ -3672,8 +3672,10 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 
 	_initPath: function () {
 		var container = this._container = this._createElement('shape');
-		container.className += ' leaflet-vml-shape' +
-				(this.options.clickable ? ' leaflet-clickable' : '');
+		L.DomUtil.addClass(container, 'leaflet-vml-shape');
+		if (this.options.clickable) {
+			L.DomUtil.addClass(container, 'leaflet-clickable');
+		}
 		container.coordsize = '1 1';
 
 		this._path = this._createElement('path');
@@ -5042,7 +5044,7 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.preventDefault(e);
 
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
-			el.className += ' leaflet-active';
+			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
 		this._moved = false;
@@ -5513,7 +5515,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (this._scale === 1) { return; }
 
 		if (!this._moved) {
-			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
+			L.DomUtil.addClass(map._mapPane, 'leaflet-zoom-anim leaflet-touching');
 
 			map
 				.fire('movestart')
@@ -6770,7 +6772,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 		this.fire('movestart');
 
-		this._mapPane.className += ' leaflet-pan-anim';
+		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
 		this._panTransition.run({
 			position: L.DomUtil.getPosition(this._mapPane).subtract(offset)
@@ -6826,7 +6828,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
-		this._mapPane.className += ' leaflet-zoom-anim';
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 
 		this
 			.fire('movestart')
