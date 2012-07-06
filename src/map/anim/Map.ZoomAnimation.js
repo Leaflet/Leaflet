@@ -15,7 +15,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
-		this._mapPane.className += ' leaflet-zoom-anim';
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 
 		this
 			.fire('movestart')
