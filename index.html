@@ -4,9 +4,13 @@
 	<title>Leaflet - a JavaScript library for mobile-friendly interactive maps by CloudMade</title>
 
 	<meta charset="utf-8" />
+	
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight BSD-licensed JavaScript library for making tile-based interactive maps for both desktop and mobile web browsers, developed by CloudMade to form the core of its next generation JavaScript API." />
 	<meta property="og:image" content="http://leaflet.cloudmade.com/docs/images/logo.png" />
+	<meta itemprop="name" content="Leaflet">
+	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps.">
+	<meta itemprop="image" content="http://leaflet.cloudmade.com/docs/images/logo.png">
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -39,26 +43,38 @@
 			<li><a href="examples.html">Tutorials</a></li>
 			<li><a href="reference.html">Documentation</a></li>
 			<li><a href="download.html">Download</a></li>
-			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">@LeafletJS</a></li>
-			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub Repo</a></li>
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">Twitter</a></li>
+			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub</a></li>
 		</ul>
 
 
-		<p>
-			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="120px" height="20px"></iframe>
-			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="105px" height="20px"></iframe>
+		<div class="social-buttons">
+			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="113px" height="20px"></iframe>
 
-			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leaflet.cloudmade.com" data-text="Leaflet — a modern, lightweight open-source JavaScript library for interactive maps by @cloudmade" data-count="horizontal" data-via="LeafletJS" data-related="CloudMade">Tweet</a>
+			<iframe src="http://markdotto.github.com/github-buttons/github-btn.html?user=CloudMade&amp;repo=Leaflet&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="96px" height="20px"></iframe>
 
-			<a href="http://twitter.com/LeafletJS" data-show-count="true" data-show-screen-name="false" data-width="170px" class="twitter-follow-button">Follow @LeafletJS</a>
-			<script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leaflet.cloudmade.com" data-text="Leaflet — an open-source JavaScript library for mobile-friendly interactive maps by @cloudmade" data-via="LeafletJS" data-related="CloudMade">Tweet</a>
 
-			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=button_count&amp;show_faces=false&amp;width=430&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:200px; height:20px;" allowTransparency="true"></iframe>
-		</p>
+			<a href="https://twitter.com/LeafletJS" class="twitter-follow-button" data-show-count="true" data-show-screen-name="false">Follow @LeafletJS</a>
+			
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleaflet.cloudmade.com&amp;layout=button_count&amp;show_faces=false&amp;width=430&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:87px; height:20px;" allowTransparency="true"></iframe>
+
+			<div class="g-plusone" data-size="medium" data-href="http://leaflet.cloudmade.com/"></div>
+
+			<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script>
+		</div>
 
 		<!-- <h3>About the library</h3> -->
-		<p>Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps. It is developed by <a href="http://agafonkin.com/en">Vladimir Agafonkin</a> of <a href="http://cloudmade.com">CloudMade</a> with a team of dedicated <a href="https://github.com/CloudMade/Leaflet/graphs/contributors">contributors</a>. Weighing just about <abbr title="That's 97 KB minified and 166 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 11 KB of images">25 KB of gzipped JS code</abbr>, it still has all the <a href="features.html">features</a> most developers ever need for online maps, while providing a fast, pleasant user experience.</p>
-		<p>It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support  and <a href="reference.html" title="Leaflet API reference">an easy-to-use API</a> with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based <a href="https://github.com/CloudMade/Leaflet" title="Leaflet GitHub repository">code of the library</a> is designed to be modular, extensible and very easy to understand.</p>
+		<p>Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by <a href="http://agafonkin.com/en">Vladimir Agafonkin</a> of <a href="http://cloudmade.com">CloudMade</a> with a&nbsp;team of dedicated <a href="https://github.com/CloudMade/Leaflet/graphs/contributors">contributors</a>. Weighing just about <abbr title="That's 97 KB minified and 166 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 11 KB of images">25 KB of gzipped JS code</abbr>, it still has all the <a href="features.html">features</a> most developers ever need for online maps, while providing a smooth, pleasant user experience.</p>
+		<p>It is built from the ground up to work efficiently on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, <a href="http://developer.yahoo.com/yui/articles/gbs/">A-grade</a> browser support  and <a href="reference.html" title="Leaflet API reference">a simple API</a> with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based <a href="https://github.com/CloudMade/Leaflet" title="Leaflet GitHub repository">code of the library</a> is designed to be modular, extensible and very easy to understand.</p>
 
 		<h3>Basic usage example</h3>
 		<div id="map"></div>
@@ -77,20 +93,20 @@
 		</script>
 
 		<p>Here we create a map with <abbr title="Here we use the beautiful CloudMade tiles which require an API key (get one for free!), but Leaflet doesn't force you to — use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:</p>
-		<pre><code class="javascript">// initialize the map on the "map" div, set the view to a given place and zoom
-var map = L.map('map')
-	.setView([51.505, -0.09], 13);
 
-// add a CloudMade tile layer with style #997 (or use other provider of your choice)
+		<!--<pre><code>&lt;div id="map"&gt;&lt;/div&gt;</code></pre>-->
+		
+		<pre><code class="javascript">// create a map in the "map" div, set the view to a given place and zoom
+var map = L.map('map').setView([51.505, -0.09], 13);
+
+// add a CloudMade tile layer with style #997
 L.tileLayer('http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">[API-key]</a>/997/256/{z}/{x}/{y}.png', {
-	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>'
+	attribution: 'Map data <span class="text-cut" data-cut="[&hellip;]">&amp;copy; &lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>'
 }).addTo(map);
 
 // add a marker in the given location, attach some popup content to it and open the popup
-L.marker([51.5, -0.09])
-	.addTo(map)
-	.bindPopup("A pretty CSS3 popup.&lt;br /&gt;Easily customizable.")
-	.openPopup();</code></pre>
+L.marker([51.5, -0.09]).addTo(map)
+	.bindPopup('A pretty CSS3 popup. &lt;br&gt; Easily customizable.').openPopup();</code></pre>
 
 		<!--<p>Note that Leaflet uses a hybrid OOP/chaining approach to API, so the following lines are equivalent:</p>
 

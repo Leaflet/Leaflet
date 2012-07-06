@@ -131,7 +131,7 @@ th, td {
 	}
 	.nav li a, .nav li span {
 		float: left;
-		padding: 10px 15px;
+		padding: 10px 17px;
 		border-right: 1px solid #ddd;
 		}
 	.nav a {
@@ -162,7 +162,6 @@ th, td {
 	}
 	.nav li a.github-link,
 	.nav li a.twitter-link {
-		padding-left: 35px;
 		font-weight: normal;
 		float: right;
 		border-right: none;
@@ -178,10 +177,14 @@ th, td {
 		display: block;
 		}*/
 	.nav li a.github-link {
-		background: url(https://github.com/favicon.png) 15px 12px no-repeat;
+		padding-left: 34px;
+		padding-right: 12px;
+		background: url(https://github.com/favicon.png) 12px 12px no-repeat;
 		}
 	.nav li a.twitter-link {
-		background: url(http://twitter.com/phoenix/favicon.ico) 15px 12px no-repeat;
+		padding-left: 32px;
+		padding-right: 14px;
+		background: url(http://twitter.com/phoenix/favicon.ico) 12px 13px no-repeat;
 		}
 
 #forkme {
@@ -224,7 +227,7 @@ a.nodocs {
 		}
 
 #map {
-	height: 300px;
+	height: 280px;
 	border: 1px solid #ccc;
 	margin-bottom: 20px;
 
@@ -236,6 +239,9 @@ a.nodocs {
 h3 span {
 	color: #888;
 	}
+h3 a {
+	color: #888;
+}
 
 .example-img {
 	float: left;
@@ -260,4 +266,12 @@ h3 span {
 
 .last ul {
 	margin-right: 0;
+}
+
+.social-buttons {
+	margin: 18px 0;
+}
+
+.twitter-follow-button {
+	margin-left: -9px;
 }
