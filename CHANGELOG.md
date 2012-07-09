@@ -15,15 +15,6 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
  * Added `addTo` method to all layer classes, e.g. `marker.addTo(map)` is equivalent to `map.addLayer(marker)`
  * Added factory methods to most classes to be able to write code without `new` keyword, named the same as classes but starting with a lowercase letter, e.g. `L.map('map')` is the same as `new L.Map('map')`
 
-### GeoJSON API improvements
-
-GeoJSON API was improved to be simpler and more flexible ([example](https://gist.github.com/3062900)). The changes are not backwards-compatible, so be sure to update your old code.
-
- * Added `style` option for styling vector layers, passed either as an object or as a function (to style vector layers according to GeoJSON properties).
- * Added `filter` option to leave out features that don't correspond to a certain criteria (e.g. based on properties).
- * Added `onEachFeature` option to execute certain code on each feature layer based on its properties (binding popups, etc).
- * Changed `pointToLayer` function signature to provide `geojson` in addition to `latlng` when creating point features for more flexibility.
-
 ### Notable new features
 
  * Added configurable **panning inertia** - after a quick pan, the map slows down in the same direction.
@@ -45,10 +36,27 @@ GeoJSON API was improved to be simpler and more flexible ([example](https://gist
  * Slightly improved default popup styling.
  * Added `TileLayer` `detectRetina` option (`false` by default) that makes tiles show in a higher resolution on iOS retina displays (by [@Mithgol](https://github.com/Mithgol)). [#586](https://github.com/CloudMade/Leaflet/pull/586)
 
-#### Breaking API changes
+#### GeoJSON API changes
 
- * Converted `Icon` properties (like `iconUrl`) to options, changed constructor signature to `Icon(options)`.
+GeoJSON API was improved to be simpler and more flexible ([example](https://gist.github.com/3062900)). The changes are not backwards-compatible, so be sure to update your old code.
+
+ * Added `style` option for styling vector layers, passed either as an object or as a function (to style vector layers according to GeoJSON properties).
+ * Added `filter` option to leave out features that don't correspond to a certain criteria (e.g. based on properties).
+ * Added `onEachFeature` option to execute certain code on each feature layer based on its properties (binding popups, etc).
+ * Changed `pointToLayer` function signature to provide `geojson` in addition to `latlng` when creating point features for more flexibility.
+
+#### Icon API changes
+
+Icon API was improved to be more flexible, but one of the changes is backwards-incompatible: you now need to pass different icon properties (like `iconUrl`) inside an options object ([example](https://gist.github.com/3076084)).
+
+ * Converted `Icon` properties to options, changed constructor signature to `Icon(options)`.
  * Moved default marker icon options to `L.Icon.Default` class (which extends from `L.Icon`).
+ * Added `Icon` `className` option to assign a custom class to an icon.
+ * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
+ * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
+
+#### Other breaking API changes
+
  * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
  * Replaced ugly control position constants (e.g. `L.Control.Position.TOP_LEFT`) with light strings (`'topleft'`, `'bottomright'`, etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
@@ -61,10 +69,6 @@ GeoJSON API was improved to be simpler and more flexible ([example](https://gist
  * Improved `on` and `off` methods to also accept `(eventHash[, context])`, as well as multiple space-separated events (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770)
  * Improved `off` to remove all listeners of the event if no function was specified (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770) [#691](https://github.com/CloudMade/Leaflet/issues/691)
  * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.
- * Added `Icon` `className` option to assign a custom class to an icon.
- * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
- * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
- * Moved all default marker icon options from `L.Icon` to `L.Icon.Default`.
  * Added `bringToFront` and `bringToBack` methods to `TileLayer` and vector layers. [#185](https://github.com/CloudMade/Leaflet/issues/185) [#505](https://github.com/CloudMade/Leaflet/issues/505)
  * Added `originalEvent` property to `MouseEvent` (by [@k4](https://github.com/k4)). [#521](https://github.com/CloudMade/Leaflet/pull/521)
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
@@ -193,7 +197,6 @@ GeoJSON API was improved to be simpler and more flexible ([example](https://gist
  * Added `Bounds` `intersects(otherBounds)` method. [#461](https://github.com/CloudMade/Leaflet/issues/461)
  * Added `L.Util.template` method for simple string template evaluation.
  * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).
- * Added ability to pass empty imageUrl to icons for creating transparent clickable regions (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#460](https://github.com/CloudMade/Leaflet/pull/460)
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
  * Added `Map` `boxzoomstart` and `boxzoomend` events (by [@zedd45](https://github.com/zedd45)). [#554](https://github.com/CloudMade/Leaflet/pull/554)
