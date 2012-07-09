@@ -9,11 +9,20 @@ An in-progress version being developed on the master branch.
 
 ### API simplification
 
-Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like syntax while being backwards compatible with the previous approach (so you can use both styles):
+Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like syntax ([example](https://gist.github.com/3038879)) while being backwards compatible with the previous approach (so you can use both styles):
 
  * Improved most methods and options to accept `LatLng`, `LatLngBounds`, `Point` and `Bounds` values in an array form (e.g. `map.panTo([lat, lng])` will be the same as `map.panTo(new L.LatLng(lat, lng))`)
  * Added `addTo` method to all layer classes, e.g. `marker.addTo(map)` is equivalent to `map.addLayer(marker)`
  * Added factory methods to most classes to be able to write code without `new` keyword, named the same as classes but starting with a lowercase letter, e.g. `L.map('map')` is the same as `new L.Map('map')`
+
+### GeoJSON API improvements
+
+GeoJSON API was improved to be simpler and more flexible ([example](https://gist.github.com/3062900)). The changes are not backwards-compatible, so be sure to update your old code.
+
+ * Added `style` option for styling vector layers, passed either as an object or as a function (to style vector layers according to GeoJSON properties).
+ * Added `filter` option to leave out features that don't correspond to a certain criteria (e.g. based on properties).
+ * Added `onEachFeature` option to execute certain code on each feature layer based on its properties (binding popups, etc).
+ * Changed `pointToLayer` function signature to provide `geojson` in addition to `latlng` when creating point features for more flexibility.
 
 ### Notable new features
 
