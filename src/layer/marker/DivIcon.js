@@ -12,14 +12,14 @@ L.DivIcon = L.Icon.extend({
 
 	createIcon: function () {
 		var div = document.createElement('div'),
-			options = this.options;
-		
+		    options = this.options;
+
 		if (options.html) {
 			div.innerHTML = options.html;
 		}
 
 		if (options.bgPos) {
-			div.style.backgroundPosition = 
+			div.style.backgroundPosition =
 					(-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
 		}
 
