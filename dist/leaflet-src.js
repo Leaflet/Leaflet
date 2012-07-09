@@ -2508,7 +2508,12 @@ L.Icon = L.Class.extend({
 	_createIcon: function (name) {
 		var src = this._getIconUrl(name);
 
-		if (!src) { return null; }
+		if (!src) {
+			if (name === 'icon') {
+				throw new Error("iconUrl not set in Icon options (see the docs).");
+			}
+			return null;
+		}
 		
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
@@ -2578,7 +2583,14 @@ L.Icon.Default = L.Icon.extend({
 	},
 
 	_getIconUrl: function (name) {
+		var key = name + 'Url';
+
+		if (this.options[key]) {
+			return this.options[key];
+		}
+
 		var path = L.Icon.Default.imagePath;
+		
 		if (!path) {
 			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
 		}
@@ -4700,57 +4712,64 @@ L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
 
-		this._geojson = geojson;
 		this._layers = {};
 
 		if (geojson) {
-			this.addGeoJSON(geojson);
+			this.addData(geojson);
 		}
 	},
 
-	addGeoJSON: function (geojson) {
+	addData: function (geojson) {
 		var features = geojson.features,
 		    i, len;
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
-				this.addGeoJSON(features[i]);
+				this.addData(features[i]);
 			}
-			return;
+			return this;
 		}
 
-		var isFeature = (geojson.type === 'Feature'),
-		    geometry = isFeature ? geojson.geometry : geojson,
-		    layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
+		var options = this.options,
+		    style = options.style;
 
-		this.fire('featureparse', {
-			layer: layer,
-			properties: geojson.properties,
-			geometryType: geometry.type,
-			bbox: geojson.bbox,
-			id: geojson.id,
-			geometry: geojson.geometry
-		});
+		if (options.filter && !options.filter(geojson)) { return; }
 
-		this.addLayer(layer);
+		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
+
+		if (style) {
+			if (typeof style === 'function') {
+				style = style(geojson);
+			}
+			if (layer.setStyle) {
+				layer.setStyle(style);
+			}
+		}
+
+		if (options.onEachFeature) {
+			options.onEachFeature(geojson, layer);
+		}
+
+		return this.addLayer(layer);
 	}
 });
 
 L.Util.extend(L.GeoJSON, {
-	geometryToLayer: function (geometry, pointToLayer) {
-		var coords = geometry.coordinates,
+	geometryToLayer: function (geojson, pointToLayer) {
+		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
+		    coords = geometry.coordinates,
 		    layers = [],
 		    latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
 			latlng = this.coordsToLatLng(coords);
-			return pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
+			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 
 		case 'MultiPoint':
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = this.coordsToLatLng(coords[i]);
-				layer = pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
+				layer = pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 				layers.push(layer);
 			}
 			return new L.FeatureGroup(layers);
@@ -4799,6 +4818,7 @@ L.Util.extend(L.GeoJSON, {
 			latlng = levelsDeep ?
 					this.coordsToLatLngs(coords[i], levelsDeep - 1, reverse) :
 					this.coordsToLatLng(coords[i], reverse);
+
 			latlngs.push(latlng);
 		}
 
@@ -4807,7 +4827,7 @@ L.Util.extend(L.GeoJSON, {
 });
 
 L.geoJson = function (geojson, options) {
-	return new L.GeoJson(geojson, options);
+	return new L.GeoJSON(geojson, options);
 };
 
 /*
