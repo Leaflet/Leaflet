@@ -146,14 +146,14 @@
 				<ul>
 					<li><a href="#class">Class</a></li>
 					<li><a href="#browser">Browser</a></li>
-					<li><a class="nodocs" href="#">Util</a></li>
+					<li><a href="#util">Util</a></li>
 					<!-- <li><a class="nodocs" href="#">LineUtil</a></li>
 					<li><a class="nodocs" href="#">PolyUtil</a></li> -->
 				</ul>
 				<h4>DOM utility</h4>
 				<ul>
 					<li><a class="nodocs" href="#">DomEvent</a></li>
-					<li><a class="nodocs" href="#">DomUtil</a></li>
+					<li><a href="#domutil">DomUtil</a></li>
 					<li><a class="nodocs" href="#">Transition</a></li>
 					<li><a class="nodocs" href="#">Draggable</a></li>
 				</ul>
@@ -3174,8 +3174,169 @@ MyClass.FOO; // 'bar'</code></pre>
 			</tr>
 		</table>
 
+		<h2 id="util">L.Util</h2>
+		<p>Utility functions.</p>
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>extend(<nobr>&lt;Object&gt; src</nobr>)</code></td>
+				<td>Object</td>
+				<td>Merge src properties into dest</td>
+			</tr>
+			<tr>
+				<td><code>bind(<nobr>&lt;Function&gt; fn</nobr>, <nobr>&lt;Object&gt; obj</nobr>)</code></td>
+				<td>Function</td>
+				<td>Return a function which calls function <code>fn</code> with scope <code>obj</code>.</td>
+			</tr>
+			<tr>
+				<td><code>stamp(<nobr>&lt;Object&gt; obj</nobr>)</code></td>
+				<td>String</td>
+				<td>Applies a unique key to the object and returns that key.</td>
+			</tr>
+			<tr>
+				<td><code>requestAnimFrame()</code></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>cancelAnimFrame()</code></td>
+				<td></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>limitExecByInterval(<nobr>&lt;Function&gt; fn</nobr>, <nobr>&lt;Number&gt; time</nobr>, <nobr>&lt;??&gt; context</nobr>)</code></td>
+				<td></td>
+				<td></td>
+			</tr>
+			
+			<tr>
+				<td><code>falseFn()</code></td>
+				<td>Function</td>
+				<td>Returns a function which always returns false.</td>
+			</tr>
+			<tr>
+				<td><code>formatNum(<nobr>&lt;Number&gt; num</nobr>, <nobr>&lt;Number&gt; digits</nobr>)</code></td>
+				<td>Number</td>
+				<td>Returns the number num rounded to digits decimals.</td>
+			</tr>
+			<tr>
+				<td><code>splitWords(<nobr>&lt;String&gt; str</nobr>)</code></td>
+				<td>String[]</td>
+				<td>Splits the string on spaces and returns the array of parts.</code></td>
+			</tr>
+			<tr>
+				<td><code>setOptions(&lt;Object&gt; obj</nobr>, &lt;Object&gt; options</nobr>)</code></td>
+				<td>Object</td>
+				<td>Set the options in options in obj, return the options of obj afterwards.</td>
+			</tr>
+			<tr>
+				<td><code>getParamString(&lt;Object&gt; obj</nobr>)</code></td>
+				<td>String</td>
+				<td>Convert a map in to a parameter string.</td>
+			</tr>
+			<tr>
+				<td><code>template(&lt;String&gt; str, &lt;Object&gt; data</nobr>)</code></td>
+				<td>String</td>
+				<td>Applies the values of the data map to a template like &quot;<code>{a}, {b}, {c}</code>&quot;.</td>
+			</tr>
+			
+			<tr>
+				<td><code>emptyImageUrl</code></td>
+				<td>String</td>
+				<td>String containing a base64 encoded empty gif image.</td>
+			</tr>
+		</table>
+		
+		<h2 id="domutil">L.DomUtil</h2>
+		<p>Utility functions to work with the DOM tree.</p>
 
-
+		<table>
+			<tr>
+				<th>Method</th>
+				<th>Returns</th>
+				<th>Description</th>
+			</tr>
+			<tr>
+				<td><code>get(<nobr>&lt;String&gt; id</nobr>)</code></td>
+				<td>HTMLElement</td>
+				<td>Returns an element reference by its id.</td>
+			</tr>
+			<tr>
+				<td><code>getStyle(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; style</nobr>)</code></td>
+				<td>String</td>
+				<td>Returns the value for a certain style attribute on an element.</td>
+			</tr>
+			<tr>
+				<td><code>getViewportOffset(<nobr>&lt;HTMLElement&gt; el</nobr>)</code></td>
+				<td><a href="#point">Point</a></td>
+				<td>Returns the offset to the viewport for the requested element.</td>
+			</tr>
+			<tr>
+				<td><code>create(<nobr>&lt;String&gt; tagName</nobr>, <nobr>&lt;String&gt; className</nobr>, <nobr>&lt;HTMLElement&gt; container</nobr>)</code></td>
+				<td>HTMLElement</td>
+				<td>Creates an element with tagName, sets the className and appends it to container.</td>
+			</tr>
+			<tr>
+				<td><code>disableTextSelection()</code></td>
+				<td>-</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>enableTextSelection()</code></td>
+				<td>-</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>hasClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
+				<td>Boolean</td>
+				<td>Returns true if the element has name in the class attribute.</td>
+			</tr>
+			<tr>
+				<td><code>addClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
+				<td>-</td>
+				<td>Adds name to the elements class attribute.</td>
+			</tr>
+			<tr>
+				<td><code>removeClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
+				<td>-</td>
+				<td>Removes name from the elements class attribute.</td>
+			</tr>
+			<tr>
+				<td><code>setOpacity(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;Number&gt; value</nobr>)</code></td>
+				<td>-</td>
+				<td>Set the opacity of element.</td>
+			</tr>
+			<tr>
+				<td><code>testProp(<nobr>&lt;String[]&gt; props</nobr>)</code></td>
+				<td>mixed</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>getTranslateString(<nobr>&lt;<a href="#point">Point</a>&gt; point</nobr>)</code></td>
+				<td>String</td>
+				<td>Returns a CSS translate string to move by the offset provided requested point.</td>
+			</tr>
+			<tr>
+				<td><code>getScaleString(<nobr>&lt;Number&gt; scale</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; origin</nobr>)</code></td>
+				<td>String</td>
+				<td>Returns a CSS scale string to scale </td>
+			</tr>
+			<tr>
+				<td><code>setPosition(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; origin</nobr>, <nobr>&lt;Boolean&gt; disable3D?</nobr>)</code></td>
+				<td>-</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><code>getPosition(<nobr>&lt;HTMLElement&gt; el</nobr>)</code></td>
+				<td><a href="#point">Point</a></td>
+				<td>Returns the point for an element positioned by setPosition().</td>
+			</tr>
+		</table>
+		
 		<h2 id="ihandler">IHandler</h2>
 		<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
 
