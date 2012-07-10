@@ -9,7 +9,7 @@ An in-progress version being developed on the master branch.
 
 ### API simplification
 
-Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like syntax while being backwards compatible with the previous approach (so you can use both styles):
+Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like syntax ([example](https://gist.github.com/3038879)) while being backwards compatible with the previous approach (so you can use both styles):
 
  * Improved most methods and options to accept `LatLng`, `LatLngBounds`, `Point` and `Bounds` values in an array form (e.g. `map.panTo([lat, lng])` will be the same as `map.panTo(new L.LatLng(lat, lng))`)
  * Added `addTo` method to all layer classes, e.g. `marker.addTo(map)` is equivalent to `map.addLayer(marker)`
@@ -36,10 +36,27 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
  * Slightly improved default popup styling.
  * Added `TileLayer` `detectRetina` option (`false` by default) that makes tiles show in a higher resolution on iOS retina displays (by [@Mithgol](https://github.com/Mithgol)). [#586](https://github.com/CloudMade/Leaflet/pull/586)
 
-#### Breaking API changes
+#### GeoJSON API changes
 
- * Converted `Icon` properties (like `iconUrl`) to options, changed constructor signature to `Icon(options)`.
+GeoJSON API was improved to be simpler and more flexible ([example](https://gist.github.com/3062900)). The changes are not backwards-compatible, so be sure to update your old code.
+
+ * Added `style` option for styling vector layers, passed either as an object or as a function (to style vector layers according to GeoJSON properties).
+ * Added `filter` option to leave out features that don't correspond to a certain criteria (e.g. based on properties).
+ * Added `onEachFeature` option to execute certain code on each feature layer based on its properties (binding popups, etc).
+ * Changed `pointToLayer` function signature to provide `geojson` in addition to `latlng` when creating point features for more flexibility.
+
+#### Icon API changes
+
+Icon API was improved to be more flexible, but one of the changes is backwards-incompatible: you now need to pass different icon properties (like `iconUrl`) inside an options object ([example](https://gist.github.com/3076084)).
+
+ * Converted `Icon` properties to options, changed constructor signature to `Icon(options)`.
  * Moved default marker icon options to `L.Icon.Default` class (which extends from `L.Icon`).
+ * Added `Icon` `className` option to assign a custom class to an icon.
+ * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
+ * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
+
+#### Other breaking API changes
+
  * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
  * Replaced ugly control position constants (e.g. `L.Control.Position.TOP_LEFT`) with light strings (`'topleft'`, `'bottomright'`, etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
@@ -51,35 +68,34 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
 
  * Improved `on` and `off` methods to also accept `(eventHash[, context])`, as well as multiple space-separated events (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770)
  * Improved `off` to remove all listeners of the event if no function was specified (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770) [#691](https://github.com/CloudMade/Leaflet/issues/691)
- * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.
- * Added `Icon` `className` option to assign a custom class to an icon.
- * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
- * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
- * Moved all default marker icon options from `L.Icon` to `L.Icon.Default`.
+ * Added `TileLayer` `redraw` method for re-requesting tiles (by [@greeninfo](https://github.com/greeninfo)). [#719](https://github.com/CloudMade/Leaflet/issues/719)
+ * Added `TileLayer` `setUrl` method for dynamically changing the tile URL template.
  * Added `bringToFront` and `bringToBack` methods to `TileLayer` and vector layers. [#185](https://github.com/CloudMade/Leaflet/issues/185) [#505](https://github.com/CloudMade/Leaflet/issues/505)
+ * Added `TileLayer.WMS` `setParams` method for setting WMS parameters at runtime (by [@greeninfo](https://github.com/greeninfo)). [#719](https://github.com/CloudMade/Leaflet/issues/719)
+ * Added `TileLayer.WMS` subdomain support (`{s}` in the url) (by [@greeninfo](https://github.com/greeninfo)). [#735](https://github.com/CloudMade/Leaflet/issues/735)
  * Added `originalEvent` property to `MouseEvent` (by [@k4](https://github.com/k4)). [#521](https://github.com/CloudMade/Leaflet/pull/521)
- * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
- * Added `Circle` `getLatLng` and `getRadius` methods (by [@Guiswa](https://github.com/Guiswa)). [#655](https://github.com/CloudMade/Leaflet/pull/655)
- * Added `Map` `getContainer` method (by [@Guiswa](https://github.com/Guiswa)). [#654](https://github.com/CloudMade/Leaflet/pull/654)
- * Added `Marker` `opacity` option and `setOpacity` method.
- * Added `ImageOverlay` `opacity` option and `setOpacity` method. [#438](https://github.com/CloudMade/Leaflet/issues/438)
- * Added `Marker` `update` method. [#392](https://github.com/CloudMade/Leaflet/issues/392)
- * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
- * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
- * Added `Popup` `maxHeight` option that makes content inside the popup scrolled if it doesn't fit the specified max height.
- * Made controls implementation easier (now more magic happens under the hood).
- * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
  * Added `containerPoint` property to `MouseEvent`. [#413](https://github.com/CloudMade/Leaflet/issues/413)
- * Added `LatLngBounds` `pad` method that returns bounds extended by a percentage (by [@jacobtoye](https://github.com/jacobtoye)). [#492](https://github.com/CloudMade/Leaflet/pull/492)
  * Added `contextmenu` event to vector layers (by [@ErrorProne](https://github.com/ErrorProne)). [#500](https://github.com/CloudMade/Leaflet/pull/500)
  * Added chaining to `DomEvent` methods.
- * Added `Map` `addHandler` method.
- * Moved dragging cursor styles from JS code to CSS.
- * Improved `Marker` `openPopup` not to raise an error if it doesn't have a popup. [#507](https://github.com/CloudMade/Leaflet/issues/507)
- * Added `geometry` property to `GeoJSON` `featureparse` event (by [@twinbit](https://github.com/twinbit)). [#716](https://github.com/CloudMade/Leaflet/pull/716)
- * Added `Map` `autopanstart` event.
+ * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.
  * Added `L_NO_TOUCH` global variable switch (set it before Leaflet inclusion) which disables touch detection, helpful for desktop apps built using QT. [#572](https://github.com/CloudMade/Leaflet/issues/572)
-
+ * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
+ * Added `Circle` `getLatLng` and `getRadius` methods (by [@Guiswa](https://github.com/Guiswa)). [#655](https://github.com/CloudMade/Leaflet/pull/655)
+ * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
+ * Added `Marker` `opacity` option and `setOpacity` method.
+ * Added `Marker` `update` method. [#392](https://github.com/CloudMade/Leaflet/issues/392)
+ * Improved `Marker` `openPopup` not to raise an error if it doesn't have a popup. [#507](https://github.com/CloudMade/Leaflet/issues/507)
+ * Added `ImageOverlay` `opacity` option and `setOpacity` method. [#438](https://github.com/CloudMade/Leaflet/issues/438)
+ * Added `Popup` `maxHeight` option that makes content inside the popup scrolled if it doesn't fit the specified max height.
+ * Added `Map` `getContainer` method (by [@Guiswa](https://github.com/Guiswa)). [#654](https://github.com/CloudMade/Leaflet/pull/654)
+ * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
+ * Added `Map` `addHandler` method.
+ * Added `Map` `autopanstart` event.
+ * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
+ * Made controls implementation easier (now more magic happens under the hood).
+ * Added `LatLngBounds` `pad` method that returns bounds extended by a percentage (by [@jacobtoye](https://github.com/jacobtoye)). [#492](https://github.com/CloudMade/Leaflet/pull/492)
+ * Moved dragging cursor styles from JS code to CSS.
+ 
 ### Bug fixes
 
 #### General bugfixes
@@ -105,6 +121,7 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
  * Fixed a bug where `drag` event was sometimes fired after `dragend`. [#555](https://github.com/CloudMade/Leaflet/issues/555)
  * Fixed a bug where `TileLayer` `load` event was firing only once (by [@lapinos03](https://github.com/lapinos03) and [shintonik](https://github.com/shintonik)). [#742](https://github.com/CloudMade/Leaflet/pull/742) [#177](https://github.com/CloudMade/Leaflet/issues/177)
  * Fixed a bug where `FeatureGroup` popup events where not cleaned up after removing a layer from it (by [@danzel](https://github.com/danzel)). [#775](https://github.com/CloudMade/Leaflet/pull/775)
+ * Fixed a bug where `DomUtil.removeClass` didn't remove trailing spaces (by [@jieter](https://github.com/jieter)). [#784](https://github.com/CloudMade/Leaflet/pull/784)
 
 #### Browser bugfixes
 
@@ -122,6 +139,7 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
 
 #### Mobile browser bugfixes
 
+ * Fixed a bug that sometimes caused map to disappear completely after zoom on iOS (by [@fr1n63](https://github.com/fr1n63)). [#580](https://github.com/CloudMade/Leaflet/issues/580) [#777](https://github.com/CloudMade/Leaflet/pull/777)
  * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
  * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
  * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
@@ -182,7 +200,6 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
  * Added `Bounds` `intersects(otherBounds)` method. [#461](https://github.com/CloudMade/Leaflet/issues/461)
  * Added `L.Util.template` method for simple string template evaluation.
  * Added `DomUtil.removeClass` method (by [@anru](https://github.com/anru)).
- * Added ability to pass empty imageUrl to icons for creating transparent clickable regions (by [@mortenbekditlevsen](https://github.com/mortenbekditlevsen)). [#460](https://github.com/CloudMade/Leaflet/pull/460)
  * Improved browser-specific code to rely more on feature detection rather than user agent string.
  * Improved superclass access mechanism to work with inheritance chains of 3 or more classes; now you should use `Klass.superclass` instead of `this.superclass` (by [@anru](https://github.com/anru)). [#179](https://github.com/CloudMade/Leaflet/pull/179)
  * Added `Map` `boxzoomstart` and `boxzoomend` events (by [@zedd45](https://github.com/zedd45)). [#554](https://github.com/CloudMade/Leaflet/pull/554)
