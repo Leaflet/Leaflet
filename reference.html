@@ -3183,9 +3183,9 @@ MyClass.FOO; // 'bar'</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>extend(<nobr>&lt;Object&gt; src</nobr>)</code></td>
+				<td><code>extend(<nobr>&lt;Object&gt; dest</nobr>, <nobr>&lt;Object&gt; src</nobr>...)</code></td>
 				<td>Object</td>
-				<td>Merge src properties into dest</td>
+				<td>Merge the properties of (multiple) <code>src</code> object properties into <code>dest</code> and returns <code>dest</code>.</td>
 			</tr>
 			<tr>
 				<td><code>bind(<nobr>&lt;Function&gt; fn</nobr>, <nobr>&lt;Object&gt; obj</nobr>)</code></td>
@@ -3197,6 +3197,9 @@ MyClass.FOO; // 'bar'</code></pre>
 				<td>String</td>
 				<td>Applies a unique key to the object and returns that key.</td>
 			</tr>
+			<!--
+			Commented out for the time being:
+			https://github.com/CloudMade/Leaflet/pull/793#discussion_r1134904
 			<tr>
 				<td><code>requestAnimFrame()</code></td>
 				<td></td>
@@ -3207,21 +3210,22 @@ MyClass.FOO; // 'bar'</code></pre>
 				<td></td>
 				<td></td>
 			</tr>
+			-->
 			<tr>
-				<td><code>limitExecByInterval(<nobr>&lt;Function&gt; fn</nobr>, <nobr>&lt;Number&gt; time</nobr>, <nobr>&lt;??&gt; context</nobr>)</code></td>
-				<td></td>
-				<td></td>
+				<td><code>limitExecByInterval(<nobr>&lt;Function&gt; fn</nobr>, <nobr>&lt;Number&gt; time</nobr>, <nobr>&lt;Object&gt; context</nobr>)</code></td>
+				<td>Function</td>
+				<td>Returns a wrapper around a function that makes sure it's called not more often than a certain interval, but as fast as possible otherwise.</td>
 			</tr>
 			
 			<tr>
 				<td><code>falseFn()</code></td>
 				<td>Function</td>
-				<td>Returns a function which always returns false.</td>
+				<td>Returns a function which always returns <code>false</code>.</td>
 			</tr>
 			<tr>
 				<td><code>formatNum(<nobr>&lt;Number&gt; num</nobr>, <nobr>&lt;Number&gt; digits</nobr>)</code></td>
 				<td>Number</td>
-				<td>Returns the number num rounded to digits decimals.</td>
+				<td>Returns the number <code>num</code> rounded to <code>digits</code> decimals.</td>
 			</tr>
 			<tr>
 				<td><code>splitWords(<nobr>&lt;String&gt; str</nobr>)</code></td>
@@ -3231,17 +3235,17 @@ MyClass.FOO; // 'bar'</code></pre>
 			<tr>
 				<td><code>setOptions(&lt;Object&gt; obj</nobr>, &lt;Object&gt; options</nobr>)</code></td>
 				<td>Object</td>
-				<td>Set the options in options in obj, return the options of obj afterwards.</td>
+				<td>Set the options in <code>options</code> in <code>obj</code>, return the options of <code>obj</code> afterwards.</td>
 			</tr>
 			<tr>
 				<td><code>getParamString(&lt;Object&gt; obj</nobr>)</code></td>
 				<td>String</td>
-				<td>Convert a map in to a parameter string.</td>
+				<td>Convert a map in to a parameter string, including a question mark symbol. Example: <code>{a: "foo", b: "bar"}</code> translates to <code>?a=foo&b=bar</code>.</td>
 			</tr>
 			<tr>
 				<td><code>template(&lt;String&gt; str, &lt;Object&gt; data</nobr>)</code></td>
 				<td>String</td>
-				<td>Applies the values of the data map to a template like &quot;<code>{a}, {b}, {c}</code>&quot;.</td>
+				<td>Applies the values of the <code>data</code> map to a template like &quot;<code>{a}, {b}, {c}</code>&quot;.</td>
 			</tr>
 			
 			<tr>
@@ -3278,42 +3282,42 @@ MyClass.FOO; // 'bar'</code></pre>
 			<tr>
 				<td><code>create(<nobr>&lt;String&gt; tagName</nobr>, <nobr>&lt;String&gt; className</nobr>, <nobr>&lt;HTMLElement&gt; container</nobr>)</code></td>
 				<td>HTMLElement</td>
-				<td>Creates an element with tagName, sets the className and appends it to container.</td>
+				<td>Creates an element with <code>tagName</code>, sets the <code>className</code> and appends it to <code>container</code>.</td>
 			</tr>
 			<tr>
 				<td><code>disableTextSelection()</code></td>
 				<td>-</td>
-				<td></td>
+				<td>Make sure text cannot be selected, for example during dragging.</td>
 			</tr>
 			<tr>
 				<td><code>enableTextSelection()</code></td>
 				<td>-</td>
-				<td></td>
+				<td>Makes text selection possible again.</td>
 			</tr>
 			<tr>
 				<td><code>hasClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
 				<td>Boolean</td>
-				<td>Returns true if the element has name in the class attribute.</td>
+				<td>Returns <code>true</code> if the element has <code>name</code> in the class attribute.</td>
 			</tr>
 			<tr>
 				<td><code>addClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
 				<td>-</td>
-				<td>Adds name to the elements class attribute.</td>
+				<td>Adds <code>name</code> to the elements class attribute.</td>
 			</tr>
 			<tr>
 				<td><code>removeClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
 				<td>-</td>
-				<td>Removes name from the elements class attribute.</td>
+				<td>Removes <code>name</code> from the elements class attribute.</td>
 			</tr>
 			<tr>
 				<td><code>setOpacity(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;Number&gt; value</nobr>)</code></td>
 				<td>-</td>
-				<td>Set the opacity of element.</td>
+				<td>Set the opacity of an element.</td>
 			</tr>
 			<tr>
 				<td><code>testProp(<nobr>&lt;String[]&gt; props</nobr>)</code></td>
 				<td>mixed</td>
-				<td></td>
+				<td>Goes through the array and returns the first name that is a valid style name for an element. If no such name is found, it returns <code>false</code>. Useful for vendor-prefixed styles like transform.</td>
 			</tr>
 			<tr>
 				<td><code>getTranslateString(<nobr>&lt;<a href="#point">Point</a>&gt; point</nobr>)</code></td>
@@ -3323,17 +3327,17 @@ MyClass.FOO; // 'bar'</code></pre>
 			<tr>
 				<td><code>getScaleString(<nobr>&lt;Number&gt; scale</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; origin</nobr>)</code></td>
 				<td>String</td>
-				<td>Returns a CSS scale string to scale </td>
+				<td>Returns a CSS scale string to scale an element.</td>
 			</tr>
 			<tr>
-				<td><code>setPosition(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; origin</nobr>, <nobr>&lt;Boolean&gt; disable3D?</nobr>)</code></td>
+				<td><code>setPosition(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; point</nobr>, <nobr>&lt;Boolean&gt; disable3D?</nobr>)</code></td>
 				<td>-</td>
-				<td></td>
+				<td>Sets the position of an element to position <code>point</code>. Uses CSS transformations if <code>disable3D</code> is true.</td>
 			</tr>
 			<tr>
 				<td><code>getPosition(<nobr>&lt;HTMLElement&gt; el</nobr>)</code></td>
 				<td><a href="#point">Point</a></td>
-				<td>Returns the point for an element positioned by setPosition().</td>
+				<td>Returns the point for an element positioned by <code>setPosition()</code>. Note that it does not work on elements not previously positioned with <code>setPosition()</code></td>
 			</tr>
 		</table>
 		
