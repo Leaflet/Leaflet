@@ -31,7 +31,7 @@ L.Popup = L.Class.extend({
 		}
 		this._updateContent();
 
-		this._container.style.opacity = '0';
+		L.DomUtil.setOpacity(this._container, 0);
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -46,7 +46,7 @@ L.Popup = L.Class.extend({
 
 		this._update();
 
-		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
+		L.DomUtil.setOpacity(this._container, 1);
 	},
 
 	addTo: function (map) {
@@ -65,7 +65,7 @@ L.Popup = L.Class.extend({
 			zoomanim: this._zoomAnimation
 		}, this);
 
-		this._container.style.opacity = '0';
+		L.DomUtil.setOpacity(this._container, 0);
 
 		this._map = null;
 	},
