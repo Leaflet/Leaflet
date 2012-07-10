@@ -1942,6 +1942,24 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
+	setUrl: function (url, noRedraw) {
+		this._url = url;
+
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
+	},
+
+	redraw: function () {
+		if (this._map) {
+			this._reset(true);
+			this._update();
+		}
+		return this;
+	},
+
 	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
@@ -2150,16 +2168,17 @@ L.TileLayer = L.Class.extend({
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
 	getTileUrl: function (tilePoint, zoom) {
-		var subdomains = this.options.subdomains,
-			index = (tilePoint.x + tilePoint.y) % subdomains.length,
-			s = this.options.subdomains[index];
-
 		return L.Util.template(this._url, L.Util.extend({
-			s: s,
+			s: this._getSubdomain(tilePoint),
 			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
+	},
+
+	_getSubdomain: function (tilePoint) {
+		var index = (tilePoint.x + tilePoint.y) % this.options.subdomains.length;
+		return this.options.subdomains[index];
 	},
 
 	_createTileProto: function () {
@@ -2244,6 +2263,7 @@ L.tileLayer = function (url, options) {
 
 
 L.TileLayer.WMS = L.TileLayer.extend({
+	
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -2255,6 +2275,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	initialize: function (url, options) { // (String, Object)
+
 		this._url = url;
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
@@ -2273,6 +2294,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	onAdd: function (map, insertAtTheBottom) {
+
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
@@ -2280,23 +2302,33 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
+		
 		var map = this._map,
 			crs = map.options.crs,
-
 			tileSize = this.options.tileSize,
-
+			
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nwMap = map.unproject(nwPoint, zoom),
-			seMap = map.unproject(sePoint, zoom),
+			nw = crs.project(map.unproject(nwPoint, zoom)),
+			se = crs.project(map.unproject(sePoint, zoom)),
 
-			nw = crs.project(nwMap),
-			se = crs.project(seMap),
+			bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
-			bbox = [nw.x, se.y, se.x, nw.y].join(',');
+			url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
 
-		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+	},
+
+	setParams: function (params, noRedraw) {
+
+		L.Util.extend(this.wmsParams, params);
+		
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
 	}
 });
 
@@ -2838,16 +2870,25 @@ L.DivIcon = L.Icon.extend({
 		/*
 		iconAnchor: (Point)
 		popupAnchor: (Point)
-		innerHTML: (String)
+		html: (String)
+		bgPos: (Point)
 		*/
 		className: 'leaflet-div-icon'
 	},
 
 	createIcon: function () {
-		var div = document.createElement('div');
-		if (this.options.html) {
-			div.innerHTML = this.options.html;
+		var div = document.createElement('div'),
+		    options = this.options;
+
+		if (options.html) {
+			div.innerHTML = options.html;
 		}
+
+		if (options.bgPos) {
+			div.style.backgroundPosition =
+					(-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
+		}
+
 		this._setIconStyles(div, 'icon');
 		return div;
 	},
@@ -2895,7 +2936,7 @@ L.Popup = L.Class.extend({
 		}
 		this._updateContent();
 
-		this._container.style.opacity = '0';
+		L.DomUtil.setOpacity(this._container, 0);
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -2910,7 +2951,7 @@ L.Popup = L.Class.extend({
 
 		this._update();
 
-		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
+		L.DomUtil.setOpacity(this._container, 1);
 	},
 
 	addTo: function (map) {
@@ -2929,7 +2970,7 @@ L.Popup = L.Class.extend({
 			zoomanim: this._zoomAnimation
 		}, this);
 
-		this._container.style.opacity = '0';
+		L.DomUtil.setOpacity(this._container, 0);
 
 		this._map = null;
 	},
@@ -3107,6 +3148,7 @@ L.Popup = L.Class.extend({
 L.popup = function (options, source) {
 	return new L.Popup(options, source);
 };
+
 
 /*
  * Popup extension to L.Marker, adding openPopup & bindPopup methods.
