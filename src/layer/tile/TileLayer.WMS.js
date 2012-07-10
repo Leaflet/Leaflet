@@ -52,6 +52,16 @@ L.TileLayer.WMS = L.TileLayer.extend({
 			bbox = [nw.x, se.y, se.x, nw.y].join(',');
 
 		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+	},
+
+	setParams: function (params, noRedraw) {
+		L.Util.extend(this.wmsParams, params);
+		
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
 	}
 });
 

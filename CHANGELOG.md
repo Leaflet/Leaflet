@@ -69,7 +69,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Improved `on` and `off` methods to also accept `(eventHash[, context])`, as well as multiple space-separated events (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770)
  * Improved `off` to remove all listeners of the event if no function was specified (by [@Guiswa](https://github.com/Guiswa)). [#770](https://github.com/CloudMade/Leaflet/pull/770) [#691](https://github.com/CloudMade/Leaflet/issues/691)
  * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.
- * Added `bringToFront` and `bringToBack` methods to `TileLayer` and vector layers. [#185](https://github.com/CloudMade/Leaflet/issues/185) [#505](https://github.com/CloudMade/Leaflet/issues/505)
+com/CloudMade/Leaflet/issues/185) [#505](https://github.com/CloudMade/Leaflet/issues/505)
  * Added `originalEvent` property to `MouseEvent` (by [@k4](https://github.com/k4)). [#521](https://github.com/CloudMade/Leaflet/pull/521)
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Circle` `getLatLng` and `getRadius` methods (by [@Guiswa](https://github.com/Guiswa)). [#655](https://github.com/CloudMade/Leaflet/pull/655)
@@ -89,8 +89,11 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added `Map` `addHandler` method.
  * Moved dragging cursor styles from JS code to CSS.
  * Improved `Marker` `openPopup` not to raise an error if it doesn't have a popup. [#507](https://github.com/CloudMade/Leaflet/issues/507)
- * Added `geometry` property to `GeoJSON` `featureparse` event (by [@twinbit](https://github.com/twinbit)). [#716](https://github.com/CloudMade/Leaflet/pull/716)
  * Added `Map` `autopanstart` event.
+ * Added `TileLayer` `redraw` method for re-requesting tiles (by [@greeninfo](https://github.com/greeninfo)). [#719](https://github.com/CloudMade/Leaflet/issues/719)
+ * Added `TileLayer.WMS` `setParams` method for setting WMS parameters at runtime (by [@greeninfo](https://github.com/greeninfo)). [#719](https://github.com/CloudMade/Leaflet/issues/719)
+ * Added `TileLayer` `setUrl` method for dynamically changing the tile URL template.
+ * Added `bringToFront` and `bringToBack` methods to `TileLayer` and vector layers. [#185](https://github.
  * Added `L_NO_TOUCH` global variable switch (set it before Leaflet inclusion) which disables touch detection, helpful for desktop apps built using QT. [#572](https://github.com/CloudMade/Leaflet/issues/572)
 
 ### Bug fixes

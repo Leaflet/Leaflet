@@ -120,6 +120,24 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
+	setUrl: function (url, noRedraw) {
+		this._url = url;
+
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
+	},
+
+	redraw: function () {
+		if (this._map) {
+			this._reset(true);
+			this._update();
+		}
+		return this;
+	},
+
 	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
