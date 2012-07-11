@@ -39,10 +39,18 @@
 		div = null;
 
 		return supported;
-	}());
+	}()),
+		ieversion = ie && (function () {
+			var re  = new RegExp("msie ([0-9]{1,}[\.0-9]{0,})");
+			if (re.exec(ua) != null)
+				return parseFloat(RegExp.$1);
+			return null;
+		}());
 
 	L.Browser = {
+		ua: ua,
 		ie: ie,
+		iefilter: ie && ieversion < 9,
 		ie6: ie6,
 		webkit: webkit,
 		gecko: gecko,
