@@ -262,7 +262,7 @@ map.addLayer(cloudmade);</code></pre>
 			<tr>
 				<td><code><b>crs</b></code></td>
 				<td><code><a href="#map-projections">CRS</a></code></td>
-				<td><code>L.CRS.EPSG3857</code></td>
+				<td><code>L.CRS.<br/>EPSG3857</code></td>
 				<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
 			</tr>
 			<tr>
@@ -488,7 +488,7 @@ map.addLayer(cloudmade);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code><b>setView</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom</i>,</nobr> <nobr>&lt;Boolean&gt;<i>forceReset?</i> )</nobr></code></td>
+				<td><code><b>setView</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom</i>,</nobr> <nobr>&lt;Boolean&gt; <i>forceReset?</i> )</nobr></code></td>
 				<td><code>this</code></td>
 				<td>Sets the view of the map (geographical center and zoom). If <code>forceReset</code> is set to <code>true</code>, the map is reloaded even if it's eligible for pan or zoom animation (<code>false</code> by default).</td>
 			</tr>
@@ -937,8 +937,8 @@ map.addLayer(marker);</code></pre>
 			<tr>
 				<td><code><b>icon</b></code></td>
 				<td><code><a href="#icon">L.Icon</a></code></td>
-				<td><code>L.Icon</code></td>
-				<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon.</td>
+				<td>*</td>
+				<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon. Set to <code>new L.Icon.Default()</code> by default.</td>
 			</tr>
 			<tr>
 				<td><code><b>clickable</b></code></td>
@@ -1726,7 +1726,7 @@ map.addLayer(polyline);</code></pre>
 				<td>Returns an array of the points in the path.</td>
 			</tr>
 			<tr>
-				<td><code><b>spliceLatLngs</b>( <nobr>&lt;Number&gt; <i>index</i></nobr>, <nobr>&lt;Number&gt; <i>pointsToRemove</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng1?</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng2?</i>, &hellip; )</nobr></code></td>
+				<td><code><b>spliceLatLngs</b>( <nobr>&lt;Number&gt; <i>index</i></nobr>, <nobr>&lt;Number&gt; <i>pointsToRemove</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i>, &hellip; )</nobr></code></td>
 				<td><code><a href="#latlng">LatLng</a>[]</code></td>
 				<td>Allows adding, removing or replacing points in the polyline. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
 			</tr>
@@ -3247,7 +3247,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<tr>
 				<td><code><b>template</b>( <nobr>&lt;String&gt; <i>str</i>, &lt;Object&gt; <i>data</i> )</nobr></code></td>
 				<td><code>String</code></td>
-				<td>Simple templating facility, creates a string by applying the values of the <code>data</code> object of a form <code>{a: 'foo', b: 'bar', ...}</code> to a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> &mdash; in this example you will get <code><span class="string">'Hello foo, bar'</span></code>.</td>
+				<td>Simple templating facility, creates a string by applying the values of the <code>data</code> object of a form <code>{a: 'foo', b: 'bar', &hellip;}</code> to a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> &mdash; in this example you will get <code><span class="string">'Hello foo, bar'</span></code>.</td>
 			</tr>
 		</table>
 

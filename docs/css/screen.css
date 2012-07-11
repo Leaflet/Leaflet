@@ -100,7 +100,9 @@ th {
 	background:/*#e5ecf9;*/ #f3f3f3;
 	}
 th, td {
-	padding: 4px 5px;
+	padding: 6px 8px;
+	vertical-align: top;
+	line-height: 1.4;
 	}
 
 
