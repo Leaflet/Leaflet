@@ -3255,8 +3255,10 @@ MyClass.FOO; // 'bar'</code></pre>
 			</tr>
 		</table>
 		
+		
 		<h2 id="domutil">L.DomUtil</h2>
-		<p>Utility functions to work with the DOM tree.</p>
+		
+		<p>Utility functions to work with the DOM tree, used by Leaflet internally.</p>
 
 		<table>
 			<tr>
@@ -3265,29 +3267,29 @@ MyClass.FOO; // 'bar'</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>get(<nobr>&lt;String&gt; id</nobr>)</code></td>
+				<td><code>get( <nobr>&lt;String or HTMLElement&gt; <i>id</i> )</nobr></code></td>
 				<td>HTMLElement</td>
-				<td>Returns an element reference by its id.</td>
+				<td>Returns an element with the given id if a string was passed, or just returns the element if it was passed directly.</td>
 			</tr>
 			<tr>
-				<td><code>getStyle(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; style</nobr>)</code></td>
-				<td>String</td>
-				<td>Returns the value for a certain style attribute on an element.</td>
+				<td><code>getStyle( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>style</i> )</nobr></code></td>
+				<td><code>String</code></td>
+				<td>Returns the value for a certain style attribute on an element, including computed values or values set through CSS.</td>
 			</tr>
 			<tr>
-				<td><code>getViewportOffset(<nobr>&lt;HTMLElement&gt; el</nobr>)</code></td>
+				<td><code>getViewportOffset( <nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr></code></td>
 				<td><a href="#point">Point</a></td>
 				<td>Returns the offset to the viewport for the requested element.</td>
 			</tr>
 			<tr>
-				<td><code>create(<nobr>&lt;String&gt; tagName</nobr>, <nobr>&lt;String&gt; className</nobr>, <nobr>&lt;HTMLElement&gt; container</nobr>)</code></td>
-				<td>HTMLElement</td>
-				<td>Creates an element with <code>tagName</code>, sets the <code>className</code> and appends it to <code>container</code>.</td>
+				<td><code>create( <nobr>&lt;String&gt; <i>tagName</i></nobr>, <nobr>&lt;String&gt; <i>className</i></nobr>, <nobr>&lt;HTMLElement&gt; <i>container?</i> )</nobr></code></td>
+				<td><code>HTMLElement</code></td>
+				<td>Creates an element with <code>tagName</code>, sets the <code>className</code>, and optionally appends it to <code>container</code> element.</td>
 			</tr>
 			<tr>
 				<td><code>disableTextSelection()</code></td>
 				<td>-</td>
-				<td>Make sure text cannot be selected, for example during dragging.</td>
+				<td>Makes sure text cannot be selected, for example during dragging.</td>
 			</tr>
 			<tr>
 				<td><code>enableTextSelection()</code></td>
@@ -3295,51 +3297,52 @@ MyClass.FOO; // 'bar'</code></pre>
 				<td>Makes text selection possible again.</td>
 			</tr>
 			<tr>
-				<td><code>hasClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
-				<td>Boolean</td>
-				<td>Returns <code>true</code> if the element has <code>name</code> in the class attribute.</td>
+				<td><code>hasClass( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
+				<td><code>Boolean</code></td>
+				<td>Returns <code>true</code> if the element class attribute contains <code>name</code>.</td>
 			</tr>
 			<tr>
-				<td><code>addClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
+				<td><code>addClass( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
 				<td>-</td>
-				<td>Adds <code>name</code> to the elements class attribute.</td>
+				<td>Adds <code>name</code> to the element's class attribute.</td>
 			</tr>
 			<tr>
-				<td><code>removeClass(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;String&gt; name</nobr>)</code></td>
+				<td><code>removeClass( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
 				<td>-</td>
-				<td>Removes <code>name</code> from the elements class attribute.</td>
+				<td>Removes <code>name</code> from the element's class attribute.</td>
 			</tr>
 			<tr>
-				<td><code>setOpacity(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;Number&gt; value</nobr>)</code></td>
+				<td><code>setOpacity( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;Number&gt; <i>value</i> )</nobr></code></td>
 				<td>-</td>
-				<td>Set the opacity of an element.</td>
+				<td>Set the opacity of an element (including old IE support). Value must be from <code>0</code> to <code>1</code>.</td>
 			</tr>
 			<tr>
-				<td><code>testProp(<nobr>&lt;String[]&gt; props</nobr>)</code></td>
-				<td>mixed</td>
-				<td>Goes through the array and returns the first name that is a valid style name for an element. If no such name is found, it returns <code>false</code>. Useful for vendor-prefixed styles like transform.</td>
+				<td><code>testProp( <nobr>&lt;String[]&gt; <i>props</i> )</nobr></code></td>
+				<td><code>String</code> or <code>false</code></td>
+				<td>Goes through the array of style names and returns the first name that is a valid style name for an element. If no such name is found, it returns <code>false</code>. Useful for vendor-prefixed styles like <code>transform</code>.</td>
 			</tr>
 			<tr>
-				<td><code>getTranslateString(<nobr>&lt;<a href="#point">Point</a>&gt; point</nobr>)</code></td>
-				<td>String</td>
-				<td>Returns a CSS translate string to move by the offset provided requested point.</td>
+				<td><code>getTranslateString( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+				<td><code>String</code></td>
+				<td>Returns a CSS transform string to move an element by the offset provided in the given point.</td>
 			</tr>
 			<tr>
-				<td><code>getScaleString(<nobr>&lt;Number&gt; scale</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; origin</nobr>)</code></td>
-				<td>String</td>
-				<td>Returns a CSS scale string to scale an element.</td>
+				<td><code>getScaleString( <nobr>&lt;Number&gt; <i>scale</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>origin</i> )</nobr></code></td>
+				<td><code>String</code></td>
+				<td>Returns a CSS transform string to scale an element (with the given scale origin).</td>
 			</tr>
 			<tr>
-				<td><code>setPosition(<nobr>&lt;HTMLElement&gt; el</nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; point</nobr>, <nobr>&lt;Boolean&gt; disable3D?</nobr>)</code></td>
+				<td><code>setPosition( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>, <nobr>&lt;Boolean&gt; <i>disable3D?</i> )</nobr></code></td>
 				<td>-</td>
-				<td>Sets the position of an element to position <code>point</code>. Uses CSS transformations if <code>disable3D</code> is true.</td>
+				<td>Sets the position of an element to coordinates specified by <code>point</code>, using CSS translate or top/left positioning depending on the browser (used by Leaflet internally to position its layers). Forces top/left positioning if <code>disable3D</code> is <code>true</code>.</td>
 			</tr>
 			<tr>
-				<td><code>getPosition(<nobr>&lt;HTMLElement&gt; el</nobr>)</code></td>
+				<td><code>getPosition( <nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr></code></td>
 				<td><a href="#point">Point</a></td>
-				<td>Returns the point for an element positioned by <code>setPosition()</code>. Note that it does not work on elements not previously positioned with <code>setPosition()</code></td>
+				<td>Returns the coordinates of an element previously positioned with <code>setPosition</code>.</td>
 			</tr>
 		</table>
+
 		
 		<h2 id="ihandler">IHandler</h2>
 		<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
