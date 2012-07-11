@@ -96,7 +96,8 @@ L.Marker = L.Class.extend({
 	_initIcon: function () {
 		var options = this.options,
 		    map = this._map,
-		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation);
+		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
+		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
 
 		if (!this._icon) {
 			this._icon = options.icon.createIcon();
@@ -108,18 +109,13 @@ L.Marker = L.Class.extend({
 			this._initInteraction();
 			this._updateOpacity();
 
-			if (animation) {
-				L.DomUtil.addClass(this._icon, 'leaflet-zoom-animated');
-			} else {
-				L.DomUtil.addClass(this._icon, 'leaflet-zoom-hide');
-			}
+			L.DomUtil.addClass(this._icon, classToAdd);
 		}
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
-			if (animation) {
-				L.DomUtil.addClass(this._shadow, 'leaflet-zoom-animated');
-			} else {
-				L.DomUtil.addClass(this._shadow, 'leaflet-zoom-hide');
+
+			if (this._shadow) {
+				L.DomUtil.addClass(this._shadow, classToAdd);
 			}
 		}
 
