@@ -95,15 +95,24 @@ pre code a:hover {
 
 table {
 	border-collapse: collapse;
+	box-shadow: 0 3px 15px #f0f0f0;
 	}
 th {
-	background:/*#e5ecf9;*/ #f3f3f3;
+	 background-color: #f3f3f3;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e7e7e7)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #f3f3f3, #e7e7e7); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #f3f3f3, #e7e7e7); /* FF3.6+ */
+  background-image:      -o-linear-gradient(top, #f3f3f3, #e7e7e7); /* Opera 11.10+ */
+  background-image:         linear-gradient(to bottom, #f3f3f3, #e7e7e7);
 	}
 th, td {
 	padding: 6px 8px;
 	vertical-align: top;
-	line-height: 1.4;
+	/*line-height: 1.4;*/
 	}
+td {
+	/*border-right: 1px solid #eee;*/
+}
 
 
 .nav {
