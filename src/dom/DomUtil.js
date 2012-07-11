@@ -106,8 +106,8 @@ L.DomUtil = {
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-		    el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
+		if (L.Browser.iefilter) {
+			el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		} else {
 			el.style.opacity = value;
 		}
