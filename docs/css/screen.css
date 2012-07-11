@@ -275,3 +275,22 @@ h3 a {
 .twitter-follow-button {
 	margin-left: -9px;
 }
+
+table td {
+	color: #666;
+}
+table td:first-child {
+	color: #777;
+}
+table td:last-child {
+	color: black;
+}
+
+table td code i {
+	color: black;
+}
+
+table td code b {
+	color: black;
+	font-weight: normal;
+}
