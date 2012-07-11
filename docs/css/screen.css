@@ -87,23 +87,23 @@ code {
 	-webkit-box-shadow: 0 0 15px #ddd;
 	}
 pre code a {
-    text-decoration: none;
-    }
+	text-decoration: none;
+	}
 pre code a:hover {
-    text-decoration: underline;
-    }
+	text-decoration: underline;
+	}
 
 table {
 	border-collapse: collapse;
 	box-shadow: 0 3px 15px #f0f0f0;
 	}
 th {
-	 background-color: #f3f3f3;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e7e7e7)); /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient(top, #f3f3f3, #e7e7e7); /* Chrome 10+, Saf5.1+, iOS 5+ */
-  background-image:    -moz-linear-gradient(top, #f3f3f3, #e7e7e7); /* FF3.6+ */
-  background-image:      -o-linear-gradient(top, #f3f3f3, #e7e7e7); /* Opera 11.10+ */
-  background-image:         linear-gradient(to bottom, #f3f3f3, #e7e7e7);
+	background-color: #f3f3f3;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e7e7e7)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #f3f3f3, #e7e7e7); /* Chrome 10+, Saf5.1+, iOS 5+ */
+	background-image:    -moz-linear-gradient(top, #f3f3f3, #e7e7e7); /* FF3.6+ */
+	background-image:      -o-linear-gradient(top, #f3f3f3, #e7e7e7); /* Opera 11.10+ */
+	background-image:         linear-gradient(to bottom, #f3f3f3, #e7e7e7);
 	}
 th, td {
 	padding: 6px 8px;
