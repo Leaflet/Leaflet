@@ -374,6 +374,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	}());
 
 	L.Browser = {
+		ua: ua,
 		ie: ie,
 		ie6: ie6,
 		webkit: webkit,
@@ -711,14 +712,14 @@ L.DomUtil = {
 		}
 		el.className = el.className
 				.replace(/(\S+)\s*/g, replaceFn)
-				.replace(/^\s+/, '');
+				.replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-		    el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
-		} else {
+		if ('opacity' in el.style) {
 			el.style.opacity = value;
+		} else if (L.Browser.ie) {
+			el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		}
 	},
 
@@ -1508,14 +1509,14 @@ L.Map = L.Class.extend({
 		var container = this._container;
 
 		container.innerHTML = '';
-		container.className += ' leaflet-container';
+		L.DomUtil.addClass(container, 'leaflet-container');
 
 		if (L.Browser.touch) {
-			container.className += ' leaflet-touch';
+			L.DomUtil.addClass(container, 'leaflet-touch');
 		}
 
 		if (this.options.fadeAnimation) {
-			container.className += ' leaflet-fade-anim';
+			L.DomUtil.addClass(container, 'leaflet-fade-anim');
 		}
 
 		var position = L.DomUtil.getStyle(container, 'position');
@@ -1547,9 +1548,9 @@ L.Map = L.Class.extend({
 		var zoomHide = ' leaflet-zoom-hide';
 
 		if (!this.options.markerZoomAnimation) {
-			panes.markerPane.className += zoomHide;
-			panes.shadowPane.className += zoomHide;
-			panes.popupPane.className += zoomHide;
+			L.DomUtil.addClass(panes.markerPane, zoomHide);
+			L.DomUtil.addClass(panes.shadowPane, zoomHide);
+			L.DomUtil.addClass(panes.popupPane, zoomHide);
 		}
 	},
 
@@ -1942,6 +1943,24 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
+	setUrl: function (url, noRedraw) {
+		this._url = url;
+
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
+	},
+
+	redraw: function () {
+		if (this._map) {
+			this._reset(true);
+			this._update();
+		}
+		return this;
+	},
+
 	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
@@ -2150,16 +2169,17 @@ L.TileLayer = L.Class.extend({
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
 	getTileUrl: function (tilePoint, zoom) {
-		var subdomains = this.options.subdomains,
-			index = (tilePoint.x + tilePoint.y) % subdomains.length,
-			s = this.options.subdomains[index];
-
 		return L.Util.template(this._url, L.Util.extend({
-			s: s,
+			s: this._getSubdomain(tilePoint),
 			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
+	},
+
+	_getSubdomain: function (tilePoint) {
+		var index = (tilePoint.x + tilePoint.y) % this.options.subdomains.length;
+		return this.options.subdomains[index];
 	},
 
 	_createTileProto: function () {
@@ -2210,8 +2230,8 @@ L.TileLayer = L.Class.extend({
 
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
-			this.className += ' leaflet-tile-loaded';
-
+			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
+		
 			layer.fire('tileload', {
 				tile: this,
 				url: this.src
@@ -2244,6 +2264,7 @@ L.tileLayer = function (url, options) {
 
 
 L.TileLayer.WMS = L.TileLayer.extend({
+	
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -2255,6 +2276,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	initialize: function (url, options) { // (String, Object)
+
 		this._url = url;
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
@@ -2273,6 +2295,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	onAdd: function (map, insertAtTheBottom) {
+
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
@@ -2280,23 +2303,33 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
+		
 		var map = this._map,
 			crs = map.options.crs,
-
 			tileSize = this.options.tileSize,
-
+			
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nwMap = map.unproject(nwPoint, zoom),
-			seMap = map.unproject(sePoint, zoom),
+			nw = crs.project(map.unproject(nwPoint, zoom)),
+			se = crs.project(map.unproject(sePoint, zoom)),
 
-			nw = crs.project(nwMap),
-			se = crs.project(seMap),
+			bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
-			bbox = [nw.x, se.y, se.x, nw.y].join(',');
+			url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
 
-		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+	},
+
+	setParams: function (params, noRedraw) {
+
+		L.Util.extend(this.wmsParams, params);
+		
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
 	}
 });
 
@@ -2424,9 +2457,9 @@ L.ImageOverlay = L.Class.extend({
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
 		if (this._map.options.zoomAnimation && L.Browser.any3d) {
-			this._image.className += ' leaflet-zoom-animated';
+			L.DomUtil.addClass(this._image, 'leaflet-zoom-animated');
 		} else {
-			this._image.className += ' leaflet-zoom-hide';
+			L.DomUtil.addClass(this._image, 'leaflet-zoom-hide');
 		}
 
 		this._updateOpacity();
@@ -2508,7 +2541,12 @@ L.Icon = L.Class.extend({
 	_createIcon: function (name) {
 		var src = this._getIconUrl(name);
 
-		if (!src) { return null; }
+		if (!src) {
+			if (name === 'icon') {
+				throw new Error("iconUrl not set in Icon options (see the docs).");
+			}
+			return null;
+		}
 		
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
@@ -2578,7 +2616,14 @@ L.Icon.Default = L.Icon.extend({
 	},
 
 	_getIconUrl: function (name) {
+		var key = name + 'Url';
+
+		if (this.options[key]) {
+			return this.options[key];
+		}
+
 		var path = L.Icon.Default.imagePath;
+		
 		if (!path) {
 			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
 		}
@@ -2635,15 +2680,6 @@ L.Marker = L.Class.extend({
 
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._animateZoom, this);
-			this._icon.className += ' leaflet-zoom-animated';
-			if (this._shadow) {
-				this._shadow.className += ' leaflet-zoom-animated';
-			}
-		} else {
-			this._icon.className += ' leaflet-zoom-hide';
-			if (this._shadow) {
-				this._shadow.className += ' leaflet-zoom-hide';
-			}
 		}
 	},
 
@@ -2708,7 +2744,10 @@ L.Marker = L.Class.extend({
 	},
 
 	_initIcon: function () {
-		var options = this.options;
+		var options = this.options,
+		    map = this._map,
+		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
+		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
 
 		if (!this._icon) {
 			this._icon = options.icon.createIcon();
@@ -2719,9 +2758,15 @@ L.Marker = L.Class.extend({
 
 			this._initInteraction();
 			this._updateOpacity();
+
+			L.DomUtil.addClass(this._icon, classToAdd);
 		}
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
+
+			if (this._shadow) {
+				L.DomUtil.addClass(this._shadow, classToAdd);
+			}
 		}
 
 		var panes = this._map._panes;
@@ -2769,7 +2814,7 @@ L.Marker = L.Class.extend({
 		var icon = this._icon,
 			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
 
-		icon.className += ' leaflet-clickable';
+		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
 
 		for (var i = 0; i < events.length; i++) {
@@ -2826,16 +2871,25 @@ L.DivIcon = L.Icon.extend({
 		/*
 		iconAnchor: (Point)
 		popupAnchor: (Point)
-		innerHTML: (String)
+		html: (String)
+		bgPos: (Point)
 		*/
 		className: 'leaflet-div-icon'
 	},
 
 	createIcon: function () {
-		var div = document.createElement('div');
-		if (this.options.html) {
-			div.innerHTML = this.options.html;
+		var div = document.createElement('div'),
+		    options = this.options;
+
+		if (options.html) {
+			div.innerHTML = options.html;
 		}
+
+		if (options.bgPos) {
+			div.style.backgroundPosition =
+					(-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
+		}
+
 		this._setIconStyles(div, 'icon');
 		return div;
 	},
@@ -2883,7 +2937,7 @@ L.Popup = L.Class.extend({
 		}
 		this._updateContent();
 
-		this._container.style.opacity = '0';
+		L.DomUtil.setOpacity(this._container, 0);
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -2898,7 +2952,7 @@ L.Popup = L.Class.extend({
 
 		this._update();
 
-		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
+		L.DomUtil.setOpacity(this._container, 1);
 	},
 
 	addTo: function (map) {
@@ -2917,7 +2971,7 @@ L.Popup = L.Class.extend({
 			zoomanim: this._zoomAnimation
 		}, this);
 
-		this._container.style.opacity = '0';
+		L.DomUtil.setOpacity(this._container, 0);
 
 		this._map = null;
 	},
@@ -3096,6 +3150,7 @@ L.popup = function (options, source) {
 	return new L.Popup(options, source);
 };
 
+
 /*
  * Popup extension to L.Marker, adding openPopup & bindPopup methods.
  */
@@ -3265,6 +3320,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	addLayer: function (layer) {
+		if (this._layers[L.Util.stamp(layer)]) {
+			return this;
+		}
+		
 		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
@@ -3672,8 +3731,10 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 
 	_initPath: function () {
 		var container = this._container = this._createElement('shape');
-		container.className += ' leaflet-vml-shape' +
-				(this.options.clickable ? ' leaflet-clickable' : '');
+		L.DomUtil.addClass(container, 'leaflet-vml-shape');
+		if (this.options.clickable) {
+			L.DomUtil.addClass(container, 'leaflet-clickable');
+		}
 		container.coordsize = '1 1';
 
 		this._path = this._createElement('path');
@@ -4698,57 +4759,64 @@ L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
 
-		this._geojson = geojson;
 		this._layers = {};
 
 		if (geojson) {
-			this.addGeoJSON(geojson);
+			this.addData(geojson);
 		}
 	},
 
-	addGeoJSON: function (geojson) {
+	addData: function (geojson) {
 		var features = geojson.features,
 		    i, len;
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
-				this.addGeoJSON(features[i]);
+				this.addData(features[i]);
 			}
-			return;
+			return this;
 		}
 
-		var isFeature = (geojson.type === 'Feature'),
-		    geometry = isFeature ? geojson.geometry : geojson,
-		    layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
+		var options = this.options,
+		    style = options.style;
 
-		this.fire('featureparse', {
-			layer: layer,
-			properties: geojson.properties,
-			geometryType: geometry.type,
-			bbox: geojson.bbox,
-			id: geojson.id,
-			geometry: geojson.geometry
-		});
+		if (options.filter && !options.filter(geojson)) { return; }
 
-		this.addLayer(layer);
+		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
+
+		if (style) {
+			if (typeof style === 'function') {
+				style = style(geojson);
+			}
+			if (layer.setStyle) {
+				layer.setStyle(style);
+			}
+		}
+
+		if (options.onEachFeature) {
+			options.onEachFeature(geojson, layer);
+		}
+
+		return this.addLayer(layer);
 	}
 });
 
 L.Util.extend(L.GeoJSON, {
-	geometryToLayer: function (geometry, pointToLayer) {
-		var coords = geometry.coordinates,
+	geometryToLayer: function (geojson, pointToLayer) {
+		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
+		    coords = geometry.coordinates,
 		    layers = [],
 		    latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
 			latlng = this.coordsToLatLng(coords);
-			return pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
+			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 
 		case 'MultiPoint':
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = this.coordsToLatLng(coords[i]);
-				layer = pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
+				layer = pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 				layers.push(layer);
 			}
 			return new L.FeatureGroup(layers);
@@ -4797,6 +4865,7 @@ L.Util.extend(L.GeoJSON, {
 			latlng = levelsDeep ?
 					this.coordsToLatLngs(coords[i], levelsDeep - 1, reverse) :
 					this.coordsToLatLng(coords[i], reverse);
+
 			latlngs.push(latlng);
 		}
 
@@ -4805,7 +4874,7 @@ L.Util.extend(L.GeoJSON, {
 });
 
 L.geoJson = function (geojson, options) {
-	return new L.GeoJson(geojson, options);
+	return new L.GeoJSON(geojson, options);
 };
 
 /*
@@ -5042,7 +5111,7 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.preventDefault(e);
 
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
-			el.className += ' leaflet-active';
+			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
 		this._moved = false;
@@ -5513,7 +5582,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (this._scale === 1) { return; }
 
 		if (!this._moved) {
-			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
+			L.DomUtil.addClass(map._mapPane, 'leaflet-zoom-anim leaflet-touching');
 
 			map
 				.fire('movestart')
@@ -6770,7 +6839,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 		this.fire('movestart');
 
-		this._mapPane.className += ' leaflet-pan-anim';
+		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
 		this._panTransition.run({
 			position: L.DomUtil.getPosition(this._mapPane).subtract(offset)
@@ -6826,7 +6895,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
 
-		this._mapPane.className += ' leaflet-zoom-anim';
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 
 		this
 			.fire('movestart')

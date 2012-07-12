@@ -102,14 +102,14 @@ L.DomUtil = {
 		}
 		el.className = el.className
 				.replace(/(\S+)\s*/g, replaceFn)
-				.replace(/^\s+/, '');
+				.replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-		    el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
-		} else {
+		if ('opacity' in el.style) {
 			el.style.opacity = value;
+		} else if (L.Browser.ie) {
+			el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		}
 	},
 

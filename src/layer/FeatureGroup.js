@@ -6,6 +6,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	addLayer: function (layer) {
+		if (this._layers[L.Util.stamp(layer)]) {
+			return this;
+		}
+		
 		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);

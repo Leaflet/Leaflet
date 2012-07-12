@@ -30,15 +30,6 @@ L.Marker = L.Class.extend({
 
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._animateZoom, this);
-			this._icon.className += ' leaflet-zoom-animated';
-			if (this._shadow) {
-				this._shadow.className += ' leaflet-zoom-animated';
-			}
-		} else {
-			this._icon.className += ' leaflet-zoom-hide';
-			if (this._shadow) {
-				this._shadow.className += ' leaflet-zoom-hide';
-			}
 		}
 	},
 
@@ -103,7 +94,10 @@ L.Marker = L.Class.extend({
 	},
 
 	_initIcon: function () {
-		var options = this.options;
+		var options = this.options,
+		    map = this._map,
+		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
+		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
 
 		if (!this._icon) {
 			this._icon = options.icon.createIcon();
@@ -114,9 +108,15 @@ L.Marker = L.Class.extend({
 
 			this._initInteraction();
 			this._updateOpacity();
+
+			L.DomUtil.addClass(this._icon, classToAdd);
 		}
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
+
+			if (this._shadow) {
+				L.DomUtil.addClass(this._shadow, classToAdd);
+			}
 		}
 
 		var panes = this._map._panes;
@@ -164,7 +164,7 @@ L.Marker = L.Class.extend({
 		var icon = this._icon,
 			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
 
-		icon.className += ' leaflet-clickable';
+		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
 
 		for (var i = 0; i < events.length; i++) {

@@ -42,6 +42,7 @@
 	}());
 
 	L.Browser = {
+		ua: ua,
 		ie: ie,
 		ie6: ie6,
 		webkit: webkit,

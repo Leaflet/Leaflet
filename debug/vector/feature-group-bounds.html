@@ -31,27 +31,23 @@
 			layers: [cloudmade]
 		});
 
-		var geojson = new L.GeoJSON();
+		var geojson = L.geoJson(geojsonSample, {
+			
+			style: function (feature) {
+				return {color: feature.properties.color};
+			},
 
-		/* points are rendered as markers by default, but you can change this:
+			onEachFeature: function (feature, layer) {
+				var popupText = 'geometry type: ' + feature.geometry.type;
 
-		var geojson = new L.GeoJSON(null, {
-			pointToLayer: function(latlng) { return new L.CircleMarker(latlng); }
-		});
-		*/
+				if (feature.properties.color) {
+					popupText += '<br/>color: ' + feature.properties.color
+				}
 
-		geojson.on('featureparse', function(e) {
-			// you can style features depending on their properties, etc.
-			var popupText = 'geometry type: ' + e.geometryType;
-
-			if (e.layer.setStyle && e.properties && e.properties.color) {
-				e.layer.setStyle({color: e.properties.color});
-				popupText += '<br/>color: ' + e.properties.color;
+				layer.bindPopup(popupText);
 			}
-			e.layer.bindPopup(popupText);
 		});
 
-		geojson.addGeoJSON(geojsonSample);
 		geojson.addLayer(new L.Marker(new L.LatLng(2.745530718801952, 105.194091796875)))
 
 		var eye1 = new L.Marker(new L.LatLng(-0.7250783020332547, 101.8212890625));
