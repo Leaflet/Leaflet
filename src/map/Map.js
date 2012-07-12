@@ -219,8 +219,6 @@ L.Map = L.Class.extend({
 		clearTimeout(this._sizeTimer);
 		this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
 
-		console.log('resize');
-
 		return this;
 	},
 
