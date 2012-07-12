@@ -54,6 +54,11 @@ L.Popup = L.Class.extend({
 		return this;
 	},
 
+	openOn: function (map) {
+		map.openPopup(this);
+		return this;
+	},
+
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
