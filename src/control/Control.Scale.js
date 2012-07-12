@@ -95,3 +95,7 @@ L.Control.Scale = L.Control.extend({
 		return pow10 * d;
 	}
 });
+
+L.control.scale = function (options) {
+	return new L.Control.Scale(options);
+};

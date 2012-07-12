@@ -10,7 +10,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	addData: function (geojson) {
-		var features = geojson.features,
+		var features = geojson instanceof Array ? geojson : geojson.features,
 		    i, len;
 
 		if (features) {

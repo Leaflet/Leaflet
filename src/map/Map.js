@@ -541,9 +541,8 @@ L.Map = L.Class.extend({
 
 		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
-
-		var i, len;
+		var events = ['dblclick', 'mousedown', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'],
+		    i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
 			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
@@ -555,8 +554,8 @@ L.Map = L.Class.extend({
 	},
 
 	_onResize: function () {
-		// TODO cancel previous frame
-		L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
+		L.Util.cancelAnimFrame(this._resizeRequest);
+		this._resizeRequest = L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {

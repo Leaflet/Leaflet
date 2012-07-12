@@ -59,3 +59,6 @@ L.Control = L.Class.extend({
 	}
 });
 
+L.control = function (options) {
+	return new L.Control(options);
+};

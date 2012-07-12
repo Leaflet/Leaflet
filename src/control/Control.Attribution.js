@@ -98,3 +98,7 @@ L.Map.addInitHook(function () {
 		this.attributionControl = (new L.Control.Attribution()).addTo(this);
 	}
 });
+
+L.control.attribution = function (options) {
+	return new L.Control.Attribution(options);
+};

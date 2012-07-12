@@ -1,6 +1,6 @@
 /*
  Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin
- Leaflet is a modern open-source JavaScript library for interactive maps.
+ Leaflet is an open-source JavaScript library for mobile-friendly interactive maps.
  http://leaflet.cloudmade.com
 */
 (function (window, undefined) {
@@ -1635,9 +1635,8 @@ L.Map = L.Class.extend({
 
 		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
-
-		var i, len;
+		var events = ['dblclick', 'mousedown', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'],
+		    i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
 			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
@@ -1649,8 +1648,8 @@ L.Map = L.Class.extend({
 	},
 
 	_onResize: function () {
-		// TODO cancel previous frame
-		L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
+		L.Util.cancelAnimFrame(this._resizeRequest);
+		this._resizeRequest = L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {
@@ -2960,6 +2959,11 @@ L.Popup = L.Class.extend({
 		return this;
 	},
 
+	openOn: function (map) {
+		map.openPopup(this);
+		return this;
+	},
+
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
@@ -3173,7 +3177,7 @@ L.Marker.include({
 	},
 
 	bindPopup: function (content, options) {
-		var anchor = this.options.icon.options.popupAnchor || new L.Point(0, 0);
+		var anchor = L.point(this.options.icon.options.popupAnchor) || new L.Point(0, 0);
 
 		if (options && options.offset) {
 			anchor = anchor.add(options.offset);
@@ -4508,6 +4512,14 @@ L.polygon = function (latlngs, options) {
 
 	L.MultiPolyline = createMulti(L.Polyline);
 	L.MultiPolygon = createMulti(L.Polygon);
+
+	L.multiPolyline = function (latlngs, options) {
+		return new L.MultiPolyline(latlngs, options);
+	};
+
+	L.multiPolygon = function (latlngs, options) {
+		return new L.MultiPolygon(latlngs, options);
+	};
 }());
 
 
@@ -4767,7 +4779,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	addData: function (geojson) {
-		var features = geojson.features,
+		var features = geojson instanceof Array ? geojson : geojson.features,
 		    i, len;
 
 		if (features) {
@@ -6066,7 +6078,9 @@ L.Control = L.Class.extend({
 	}
 });
 
-
+L.control = function (options) {
+	return new L.Control(options);
+};
 
 L.Map.include({
 	addControl: function (control) {
@@ -6139,6 +6153,10 @@ L.Map.addInitHook(function () {
 		this.addControl(this.zoomControl);
 	}
 });
+
+L.control.zoom = function (options) {
+	return new L.Control.Zoom(options);
+};
 
 L.Control.Attribution = L.Control.extend({
 	options: {
@@ -6241,6 +6259,10 @@ L.Map.addInitHook(function () {
 	}
 });
 
+L.control.attribution = function (options) {
+	return new L.Control.Attribution(options);
+};
+
 L.Control.Scale = L.Control.extend({
 	options: {
 		position: 'bottomleft',
@@ -6339,6 +6361,9 @@ L.Control.Scale = L.Control.extend({
 	}
 });
 
+L.control.scale = function (options) {
+	return new L.Control.Scale(options);
+};
 
 
 L.Control.Layers = L.Control.extend({
@@ -6515,6 +6540,9 @@ L.Control.Layers = L.Control.extend({
 	}
 });
 
+L.control.layers = function (options) {
+	return new L.Control.Layers(options);
+};
 
 L.Transition = L.Class.extend({
 	includes: L.Mixin.Events,
