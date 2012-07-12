@@ -10,7 +10,7 @@ pre code {
   background: #f8f8ff
 }
 
-pre .comment,
+code .comment,
 pre .template_comment,
 pre .diff .header,
 pre .javadoc {
@@ -18,7 +18,7 @@ pre .javadoc {
   font-style: italic
 }
 
-pre .keyword,
+code .keyword,
 pre .css .rule .keyword,
 pre .winutils,
 pre .javascript .title,

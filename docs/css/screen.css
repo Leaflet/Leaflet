@@ -321,3 +321,20 @@ th.width100 {
 th.minwidth {
 	width: 1px;
 }
+
+table.factory-table {
+	width: 1px;
+}
+
+table.factory-table td, table.factory-table th {
+	white-space: nowrap;
+	color: black;
+}
+
+.factory-usage {
+	white-space: nowrap;
+}
+
+.factory-usage code {
+	color: black;
+}

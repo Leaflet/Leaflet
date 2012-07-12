@@ -189,32 +189,31 @@
 		<h3 id="map-usage">Usage example</h3>
 
 		<pre><code class="javascript">// initialize the map on the "map" div with a given center and zoom
-var map = new L.Map('map', {
-	center: new L.LatLng(51.505, -0.09),
+var map = L.map('map', {
+	center: [51.505, -0.09],
 	zoom: 13
-});
+});</code></pre>
 
-// create a CloudMade tile layer
-var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
-	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
-
-// add the CloudMade layer to the map
-map.addLayer(cloudmade);</code></pre>
-
-		<h3 id="map-constructor">Constructor</h3>
-
-		<!-- TODO tweak column widths -->
+		<h3 id="map-constructor" class="left">Constructor</h3>
 
 		<table>
 			<tr>
-				<th class="width250">Constructor</th>
+				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Map</b>( <nobr>&lt;HTMLElement|String&gt; <i>id</i>,</nobr> <nobr>&lt;<a href="#map-options">Map options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Map(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.map(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a map object given a div element (or its id) and optionally an object literal with map options described below.</td>
 			</tr>
 		</table>
+
+		
+
 
 		<h3 id="map-options">Options</h3>
 
@@ -924,10 +923,15 @@ map.addLayer(marker);</code></pre>
 		<table>
 			<tr>
 				<th class="width200">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Marker</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr> <nobr>&lt;<a href="#marker-options">Marker options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Marker(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.marker(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a Marker object given a geographical point and optionally an options object.</td>
 			</tr>
 		</table>
@@ -1117,10 +1121,15 @@ map.openPopup(popup);</code></pre>
 		<table>
 			<tr>
 				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Popup</b>( <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i>,</nobr> <nobr>&lt;object&gt; <i>source?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Popup(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.popup(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional object that is used to tag the popup with a reference to the source object to which it refers.</td>
 			</tr>
 		</table>
@@ -1200,18 +1209,25 @@ map.openPopup(popup);</code></pre>
 
 		<h3>Usage example</h3>
 
-		<pre><code class="javascript">var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/YOUR-API-KEY/997/256/{z}/{x}/{y}.png',
-	cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});</code></pre>
+		<pre><code class="javascript">L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
+	key: 'API-key',
+	styleId: 997
+}).addTo(map);</code></pre>
 
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.TileLayer</b>( <nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i>,</nobr> <nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.TileLayer(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.tileLayer(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a tile layer object given a <a href="#url-template">URL template</a> and optionally an options object.</td>
 			</tr>
 		</table>
@@ -1226,7 +1242,7 @@ map.openPopup(popup);</code></pre>
 
 		<p>You can use custom keys in the template, which will be evaluated from TileLayer options, like this:</p>
 
-		<pre><code class="javascript">new L.TileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});</code></pre>
+		<pre><code class="javascript">L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});</code></pre>
 
 		<h3 id="tilelayer-options">Options</h3>
 
@@ -1369,10 +1385,15 @@ map.openPopup(popup);</code></pre>
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.TileLayer.WMS</b>( <nobr>&lt;String&gt; <i>baseUrl</i></nobr>, <nobr>&lt;<a href="#tilelayer-wms-options">TileLayer.WMS options</a>&gt; <i>options</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.TileLayer.WMS(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.tileLayer.wms(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.</td>
 			</tr>
 		</table>
@@ -1439,11 +1460,16 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 		<table>
 			<tr>
-				<th class="width250">Constructor</th>
+				<th class="width200">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.TileLayer.Canvas</b>( <nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.TileLayer.Canvas(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.tileLayer.canvas(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a Canvas tile layer object given an options object (optionally).</td>
 			</tr>
 		</table>
@@ -1452,7 +1478,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width200">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -1475,22 +1501,25 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 		<h3>Usage example</h3>
 
-		<pre><code class="javascript">var imageBounds = new L.LatLngBounds(
-		new L.LatLng(40.712216,-74.22655),
-		new L.LatLng(40.773941,-74.12544));
+		<pre><code class="javascript">var imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+	imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
 
-var image = new L.ImageOverlay(
-		"http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", imageBounds);</code></pre>
+L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.ImageOverlay</b>( <nobr>&lt;String&gt; <i>imageUrl</i></nobr>, <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i><!--</nobr>, <nobr>&lt;<a href="#imageoverlay-options">ImageOverlay options</a>&gt; <i>options?</i>--> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.ImageOverlay(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.imageOverlay(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates an image overlay object given the URL of the image and the geographical bounds it is tied to.</td>
 			</tr>
 		</table>
@@ -1661,23 +1690,25 @@ var image = new L.ImageOverlay(
 
 		<h3>Usage example</h3>
 		<pre><code class="javascript">// create a red polyline from an arrays of LatLng points
-var polyline = new L.Polyline(latlngs, {color: 'red'});
+var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 
 // zoom the map to the polyline
-map.fitBounds(new L.LatLngBounds(latlngs));
-
-// add the polyline to the map
-map.addLayer(polyline);</code></pre>
+map.fitBounds(polyline.getBounds());</code></pre>
 
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Polyline</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Polyline(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.polyline(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a polyline object given an array of geographical points and optionally an options object.</td>
 			</tr>
 		</table>
@@ -1755,10 +1786,15 @@ map.addLayer(polyline);</code></pre>
 		<table>
 			<tr>
 				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.MultiPolyline</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.MultiPolyline(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.multiPolyline(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a multi-polyline object given an array of arrays of geographical points (one for each individual polyline) and optionally an options object.</td>
 			</tr>
 		</table>
@@ -1774,10 +1810,15 @@ map.addLayer(polyline);</code></pre>
 		<table>
 			<tr>
 				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Polygon</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Polygon(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.polygon(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside.</td>
 			</tr>
 		</table>
@@ -1795,10 +1836,15 @@ map.addLayer(polyline);</code></pre>
 		<table>
 			<tr>
 				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.MultiPolygon</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.MultiPolygon(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.multiPolygon(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a multi-polyline object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
 			</tr>
 		</table>
@@ -1830,10 +1876,15 @@ map.addLayer(rectangle);</code></pre>
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Rectangle</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>, <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Rectangle(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.rectangle(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a rectangle object with the given geographical bounds and optionally an options object.</td>
 			</tr>
 		</table>
@@ -1865,10 +1916,15 @@ map.addLayer(rectangle);</code></pre>
 		<table>
 			<tr>
 				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Circle</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>, <nobr>&lt;Number&gt; <i>radius</i></nobr>, <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Circle(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.circle(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a circle object given a geographical point, a radius in meters and optionally an options object.</td>
 			</tr>
 		</table>
@@ -1914,10 +1970,15 @@ map.addLayer(rectangle);</code></pre>
 		<table>
 			<tr>
 				<th class="width200">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.CircleMarker</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>, <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.CircleMarker(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.circleMarker(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Instantiates a circle marker given a geographical point and optionally an options object. The default radius is 10 and can be altered by passing a "radius" member in the path options object.</td>
 			</tr>
 		</table>
@@ -1961,10 +2022,15 @@ map.addLayer(group);</code></pre>
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.LayerGroup</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>[]&gt; <i>layers?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.LayerGroup(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.layerGroup(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Create a layer group, optionally given an initial set of layers.</td>
 			</tr>
 		</table>
@@ -2015,10 +2081,15 @@ map.addLayer(group);</code></pre>
 		<table>
 			<tr>
 				<th class="width300">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.FeatureGroup</b>( <nobr>&lt;<a href="#ilayer">IFeature</a>[]&gt; <i>layers?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.FeatureGroup(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.featureGroup(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Create a layer group, optionally given an initial set of layers.</td>
 			</tr>
 		</table>
@@ -2096,10 +2167,15 @@ map.addLayer(geojson);</code></pre>
 		<table>
 			<tr>
 				<th>Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.GeoJSON</b>( <nobr>&lt;Object&gt; <i>geojson?</i></nobr>, <nobr>&lt;<a href="#geojson-options">GeoJSON options</a>&gt; <i>options?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.GeoJSON(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.geoJson(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Creates a GeoJSON layer. Optionally accepts an object in <a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map (you can alternatively add it with <code>addGeoJSON</code> method) and an options object.</td>
 			</tr>
 		</table>
@@ -2189,15 +2265,26 @@ map.addLayer(geojson);</code></pre>
 		<p>Represents a geographical point with a certain latitude and longitude.</p>
 		<pre><code class="javascript">var latlng = new L.LatLng(50.5, 30.5);</code></pre>
 
+		<p>All Leaflet methods that accept LatLng objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:</p>
+
+		<pre><code>map.panTo([50, 30]);
+map.panTo(new L.LatLng(50, 30));</code></pre>
+
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width200">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.LatLng</b>( <nobr>&lt;Number&gt; <i>latitude</i></nobr>, <nobr>&lt;Number&gt; <i>longitude</i></nobr>, <nobr>&lt;Boolean&gt; <i>noWrap?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.LatLng(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.latLng(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.latLng([<span class="comment">&hellip;</span>])</code>
+				</td>
 				<td>Creates an object representing a geographical point with the given latitude and longitude. Wraps longitude to lie between <code>-180</code> and <code>180</code> and clamps longitude between <code>-90</code> and <code>90</code> by default &mdash; you can disable this with the <code>noWrap</code> argument.</td>
 			</tr>
 		</table>
@@ -2282,23 +2369,40 @@ map.addLayer(geojson);</code></pre>
 		<h2 id="latlngbounds">L.LatLngBounds</h2>
 
 		<p>Represents a rectangular geographical area on a map.</p>
-		<pre><code class="javascript">var southWest = new L.LatLng(40.712,-74.227),
-	northEast = new L.LatLng(40.774,-74.125),
+		<pre><code class="javascript">var southWest = new L.LatLng(40.712, -74.227),
+	northEast = new L.LatLng(40.774, -74.125),
 	bounds = new L.LatLngBounds(southWest, northEast);</code></pre>
+
+		<p>All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
+
+		<pre><code class="javascript">map.fitBounds([
+	[40.712, -74.227], 
+	[40.774, -74.125]
+]);</code></pre>
 
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.LatLngBounds</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>southWest</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>northEast</i></nobr> )</code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.LatLngBounds(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.latLngBounds(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.latLngBounds([<span class="comment">&hellip;</span>])</code>
+				</td>
 				<td>Creates a LatLngBounds object by defining south-west and north-east corners of the rectangle.</td>
 			</tr>
 			<tr>
 				<td><code><b>L.LatLngBounds</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.LatLngBounds(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.latLngBounds(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Creates a LatLngBounds object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with <a href="#map-fitbounds">fitBounds</a>.</td>
 			</tr>
 		</table>
@@ -2373,17 +2477,30 @@ map.addLayer(geojson);</code></pre>
 
 		<h2 id="point">L.Point</h2>
 
-		<p>Represents a point with x and y coordinates in pixels.
+		<p>Represents a point with x and y coordinates in pixels.</p>
+
+		<pre><code>var point = new L.Point(200, 300);</code></pre>
+
+		<p>All Leaflet methods and options that accept Point objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:</p>
+
+		<pre><code>map.panBy([200, 300]);
+map.panBy(new L.Point(200, 300));</code></pre>
 
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Point</b>( <nobr>&lt;Number&gt; <i>x</i>, &lt;Number&gt; <i>y</i></nobr>, <nobr>&lt;Boolean&gt; <i>round?</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Point(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.point(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.point([<span class="comment">&hellip;</span>])</code>
+				</td>
 				<td>Creates a Point object with the given <code>x</code> and <code>y</code> coordinates. If optional <code>round</code> is set to <code>true</code>, rounds the <code>x</code> and <code>y</code> values.</td>
 			</tr>
 		</table>
@@ -2467,19 +2584,33 @@ map.addLayer(geojson);</code></pre>
 	p2 = new L.Point(40, 60),
 	bounds = new L.Bounds(p1, p2);</code></pre>
 
+		<p>All Leaflet methods that accept Bounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
+
+		<pre><code class="javascript">otherBounds.intersects([[10, 10], [40, 60]]);</code></pre>
+
 		<h3>Constructor</h3>
 
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Bounds</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>topLeft</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>bottomRight</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Bounds(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.bounds(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.bounds([<span class="comment">&hellip;</span>])</code>
+				</td>
 				<td>Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).</td>
 			</tr>
 			<tr>
 				<td><code><b>L.LatLngBounds</b>( <nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Bounds(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.bounds(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Creates a Bounds object defined by the points it contains.</td>
 			</tr>
 		</table>
@@ -2544,16 +2675,16 @@ map.addLayer(geojson);</code></pre>
 
 		<p>Represents an icon to provide when creating a marker.</p>
 
-		<pre><code class="javascript">var myIcon = new L.Icon({
+		<pre><code class="javascript">var myIcon = L.icon({
 	iconUrl: 'my-icon.png',
 	shadowUrl: 'my-icon-shadow.png',
-	iconSize: new L.Point(38, 95),
-	shadowSize: new L.Point(68, 95),
-	iconAnchor: new L.Point(22, 94),
-	popupAnchor: new L.Point(-3, -76)
+	iconSize: [38, 95],
+	shadowSize: [68, 95],
+	iconAnchor: [22, 94],
+	popupAnchor: [-3, -76]
 });
 
-var marker = new L.Marker(marker, {icon: myIcon});</code></pre>
+L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
 		<p><code>L.Icon.Default</code> extends <code>L.Icon</code> and is the blue icon Leaflet uses for markers by default.</p>
 
@@ -2562,10 +2693,15 @@ var marker = new L.Marker(marker, {icon: myIcon});</code></pre>
 		<table>
 			<tr>
 				<th class="width250">Constructor</th>
+				<th>Usage</th>
 				<th>Description</th>
 			</tr>
 			<tr>
 				<td><code><b>L.Icon</b>( <nobr>&lt;<a href="#icon-properties">Icon properties</a>&gt; <i>props</i> )</nobr></code></td>
+				<td class="factory-usage">
+					<code><span class='keyword'>new</span> L.Icon(<span class="comment">&hellip;</span>)</code><br />
+					<code>L.icon(<span class="comment">&hellip;</span>)</code>
+				</td>
 				<td>Creates an icon instance with the given properties.</td>
 			</tr>
 		</table>
@@ -3125,7 +3261,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<tr>
 				<td><code><b>ie</b></code></td>
 				<td><code>Boolean</code></td>
-				<td><code>true</code> for all old Internet Explorer versions (6-8).</td>
+				<td><code>true</code> for all Internet Explorer versions.</td>
 			</tr>
 			<tr>
 				<td><code><b>ie6</b></code></td>
