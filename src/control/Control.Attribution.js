@@ -73,7 +73,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
+		this._container.innerHTML = prefixAndAttribs.join(' &#8212; ');
 	},
 
 	_onLayerAdd: function (e) {
