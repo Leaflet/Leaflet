@@ -1108,9 +1108,8 @@ var map = L.map('map', {
 		<p>Path overlays like polylines also have a <code>bindPopup</code> method. Here's a more complicated way to open a popup on a map:</p>
 		<pre><code class="javascript">var popup = L.popup()
 	.setLatLng(latlng)
-	.setContent('&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;');
-
-map.openPopup(popup);</code></pre>
+	.setContent('&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;')
+	.openOn(map);</code></pre>
 
 		<h3>Constructor</h3>
 
