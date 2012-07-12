@@ -219,6 +219,8 @@ L.Map = L.Class.extend({
 		clearTimeout(this._sizeTimer);
 		this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
 
+		console.log('resize');
+
 		return this;
 	},
 
@@ -554,8 +556,8 @@ L.Map = L.Class.extend({
 	},
 
 	_onResize: function () {
-		// TODO cancel previous frame
-		L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
+		L.Util.cancelAnimFrame(this._resizeRequest);
+		this._resizeRequest = L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {
