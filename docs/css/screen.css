@@ -106,7 +106,7 @@ th {
 	background-image:         linear-gradient(to bottom, #f3f3f3, #e7e7e7);
 	}
 th, td {
-	padding: 6px 8px;
+	padding: 8px 10px;
 	vertical-align: top;
 	/*line-height: 1.4;*/
 	}
@@ -304,4 +304,20 @@ table td code i {
 table td code b {
 	color: black;
 	font-weight: normal;
+}
+
+th.width250 {
+	width: 250px;
+}
+th.width200 {
+	width: 200px;
+}
+th.width300 {
+	width: 300px;
+}
+th.width100 {
+	width: 100px;
+}
+th.minwidth {
+	width: 1px;
 }

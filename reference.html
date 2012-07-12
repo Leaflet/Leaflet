@@ -207,7 +207,7 @@ map.addLayer(cloudmade);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -667,7 +667,7 @@ map.addLayer(cloudmade);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width200">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -680,6 +680,26 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code><b>layerPointToLatLng</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the geographical coordinates of a given map layer point.</td>
+			</tr>
+			<tr>
+				<td><code><b>containerPointToLayerPoint</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Converts the point relative to the map container to a point relative to the map layer.</td>
+			</tr>
+			<tr>
+				<td><code><b>layerPointToContainerPoint</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Converts the point relative to the map layer to a point relative to the map container.</td>
+			</tr>
+			<tr>
+				<td><code><b>project</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom?</i> )</nobr></code></td>
+				<td><code><a href="#point">Point</a></code></td>
+				<td>Projects the given geographical coordinates to absolute pixel coordinates for the given zoom level (current zoom level by default).</td>
+			</tr>
+			<tr>
+				<td><code><b>unproject</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom?</i> )</nobr></code></td>
+				<td><code><a href="#latlng">LatLng</a></code></td>
+				<td>Projects the given absolute pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
 			</tr>
 			<tr>
 				<td><code><b>mouseEventToContainerPoint</b>( <nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr></code></td>
@@ -695,26 +715,6 @@ map.addLayer(cloudmade);</code></pre>
 				<td><code><b>mouseEventToLatLng</b>( <nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr></code></td>
 				<td><code><a href="#latlng">LatLng</a></code></td>
 				<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
-			</tr>
-			<tr>
-				<td><code><b>containerPointToLayerPoint</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
-				<td><code><a href="#point">Point</a></code></td>
-				<td>Converts the point relative to the map container to a point relative to the map layer.</td>
-			</tr>
-			<tr>
-				<td><code><b>layerPointToContainerPoint</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
-				<td><code><a href="#point">Point</a></code></td>
-				<td>Converts the point relative to the map layer to a point relative to the map container.</td>
-			</tr>
-			<tr>
-				<td><code><b>project</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom?</i> )</nobr></code></td>
-				<td><code><a href="#point">Point</a></code></td>
-				<td>Projects the given geographical coordinates to pixel coordinates for the given zoom level (current zoom level by default).</td>
-			</tr>
-			<tr>
-				<td><code><b>unproject</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom?</i> )</nobr></code></td>
-				<td><code><a href="#latlng">LatLng</a></code></td>
-				<td>Projects the given pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
 			</tr>
 		</table>
 
@@ -798,8 +798,8 @@ map.addLayer(cloudmade);</code></pre>
 
 		<table>
 			<tr>
-				<th>Property</th>
-				<th>Type</th>
+				<th class="minwidth">Property</th>
+				<th class="minwidth">Type</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -869,8 +869,8 @@ map.addLayer(cloudmade);</code></pre>
 
 		<table>
 			<tr>
-				<th>Property</th>
-				<th>Type</th>
+				<th class="width100">Property</th>
+				<th class="width100">Type</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -923,7 +923,7 @@ map.addLayer(marker);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width200">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -979,8 +979,8 @@ map.addLayer(marker);</code></pre>
 
 		<table>
 			<tr>
-				<th>Event</th>
-				<th>Data</th>
+				<th class="width100">Event</th>
+				<th class="width100">Data</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1083,8 +1083,8 @@ map.addLayer(marker);</code></pre>
 
 		<table>
 			<tr>
-				<th>Property</th>
-				<th>Type</th>
+				<th class="width100">Property</th>
+				<th class="width100">Type</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1176,8 +1176,8 @@ map.openPopup(popup);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
-				<th>Returns</th>
+				<th class="width250">Method</th>
+				<th class="minwidth">Returns</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1207,7 +1207,7 @@ map.openPopup(popup);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1368,7 +1368,7 @@ map.openPopup(popup);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1383,9 +1383,9 @@ map.openPopup(popup);</code></pre>
 
 		<table>
 			<tr>
-				<th>Option</th>
-				<th>Type</th>
-				<th>Default</th>
+				<th class="width100">Option</th>
+				<th class="width100">Type</th>
+				<th class="width100">Default</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1439,7 +1439,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1486,7 +1486,7 @@ var image = new L.ImageOverlay(
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1506,7 +1506,7 @@ var image = new L.ImageOverlay(
 			<tr>
 				<th>Option</th>
 				<th>Type</th>
-				<th>Default</th>
+				<th class="minwidth">Default</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1565,8 +1565,8 @@ var image = new L.ImageOverlay(
 
 		<table>
 			<tr>
-				<th>Event</th>
-				<th>Data</th>
+				<th class="width100">Event</th>
+				<th class="width100">Data</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1596,7 +1596,7 @@ var image = new L.ImageOverlay(
 			</tr>
 		</table>
 
-		<h3>Constants</h3>
+		<h3>Properties</h3>
 		<table>
 			<tr>
 				<th>Constant</th>
@@ -1633,7 +1633,7 @@ var image = new L.ImageOverlay(
 		<h3 id="path-methods">Methods</h3>
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width250">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -1673,7 +1673,7 @@ map.addLayer(polyline);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1713,7 +1713,7 @@ map.addLayer(polyline);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width250">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -1829,7 +1829,7 @@ map.addLayer(rectangle);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1844,7 +1844,7 @@ map.addLayer(rectangle);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width250">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -1877,8 +1877,8 @@ map.addLayer(rectangle);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
-				<th>Returns</th>
+				<th class="width200">Method</th>
+				<th class="minwidth">Returns</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1913,7 +1913,7 @@ map.addLayer(rectangle);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width200">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1926,8 +1926,8 @@ map.addLayer(rectangle);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
-				<th>Returns</th>
+				<th class="width200">Method</th>
+				<th class="minwidth">Returns</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1960,7 +1960,7 @@ map.addLayer(group);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -1973,8 +1973,8 @@ map.addLayer(group);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
-				<th>Returns</th>
+				<th class="width200">Method</th>
+				<th class="minwidth">Returns</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2014,7 +2014,7 @@ map.addLayer(group);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width300">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2029,7 +2029,7 @@ map.addLayer(group);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width250">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -2051,8 +2051,8 @@ map.addLayer(group);</code></pre>
 
 		<table>
 			<tr>
-				<th>Event</th>
-				<th>Data</th>
+				<th class="width100">Event</th>
+				<th class="width100">Data</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2145,8 +2145,8 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
-				<th>Returns</th>
+				<th class="width250">Method</th>
+				<th class="minwidth">Returns</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2193,7 +2193,7 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width200">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2206,8 +2206,8 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Property</th>
-				<th>Type</th>
+				<th class="width100">Property</th>
+				<th class="width100">Type</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2251,9 +2251,9 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constant</th>
-				<th>Type</th>
-				<th>Value</th>
+				<th class="width100">Constant</th>
+				<th class="width100">Type</th>
+				<th class="width100">Value</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2290,7 +2290,7 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2307,7 +2307,7 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width300">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -2364,7 +2364,7 @@ map.addLayer(geojson);</code></pre>
 			<tr>
 				<td><code><b>toBBoxString</b>()</code></td>
 				<td><code>String</code></td>
-				<td>Returns a string with bounding box coordinates in a <code>"southwest_lng,southwest_lat,northeast_lng,northeast_lat"</code> format. Useful for sending requests to web services that return geo data.</td>
+				<td>Returns a string with bounding box coordinates in a <code><span class="string">'southwest_lng,southwest_lat,northeast_lng,northeast_lat'</span></code> format. Useful for sending requests to web services that return geo data.</td>
 			</tr>
 		</table>
 
@@ -2379,7 +2379,7 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2392,8 +2392,8 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Property</th>
-				<th>Type</th>
+				<th class="width100">Property</th>
+				<th class="width100">Type</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2471,7 +2471,7 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2488,8 +2488,8 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Property</th>
-				<th>Type</th>
+				<th class="width100">Property</th>
+				<th class="width100">Type</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2508,7 +2508,7 @@ map.addLayer(geojson);</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
+				<th class="width250">Method</th>
 				<th>Returns</th>
 				<th>Description</th>
 			</tr>
@@ -2561,7 +2561,7 @@ var marker = new L.Marker(marker, {icon: myIcon});</code></pre>
 
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width250">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2624,7 +2624,7 @@ var marker = new L.Marker(marker, {icon: myIcon});</code></pre>
 		<h3>Constructor</h3>
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width200">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2642,7 +2642,7 @@ var marker = new L.Marker(marker, {icon: myIcon});</code></pre>
 		<h3>Constructor</h3>
 		<table>
 			<tr>
-				<th>Constructor</th>
+				<th class="width200">Constructor</th>
 				<th>Description</th>
 			</tr>
 			<tr>
@@ -2835,8 +2835,8 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
-				<th>type</th>
+				<th class="width100">property</th>
+				<th class="width100">type</th>
 				<th>description</th>
 			</tr>
 			<tr>
@@ -2855,7 +2855,7 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
+				<th class="width100">property</th>
 				<th>type</th>
 				<th>description</th>
 			</tr>
@@ -2875,7 +2875,7 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
+				<th class="width100">property</th>
 				<th>type</th>
 				<th>description</th>
 			</tr>
@@ -2900,8 +2900,8 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
-				<th>type</th>
+				<th class="width100">property</th>
+				<th class="width100">type</th>
 				<th>description</th>
 			</tr>
 			<tr>
@@ -2920,8 +2920,8 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
-				<th>type</th>
+				<th class="width100">property</th>
+				<th class="width100">type</th>
 				<th>description</th>
 			</tr>
 			<tr>
@@ -2935,8 +2935,8 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
-				<th>type</th>
+				<th class="width100">property</th>
+				<th class="width100">type</th>
 				<th>description</th>
 			</tr>
 			<tr>
@@ -2965,8 +2965,8 @@ map.off('click', onClick);</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
-				<th>type</th>
+				<th class="width100">property</th>
+				<th class="width100">type</th>
 				<th>description</th>
 			</tr>
 			<tr>
@@ -3118,8 +3118,8 @@ MyClass.FOO; // 'bar'</code></pre>
 
 		<table>
 			<tr>
-				<th>property</th>
-				<th>type</th>
+				<th class="width100">property</th>
+				<th class="width100">type</th>
 				<th>description</th>
 			</tr>
 			<tr>
@@ -3390,8 +3390,8 @@ MyClass.FOO; // 'bar'</code></pre>
 
 		<table>
 			<tr>
-				<th>Method</th>
-				<th>Returns</th>
+				<th class="width100">Method</th>
+				<th class="width100">Returns</th>
 				<th>Description</th>
 			</tr>
 			<tr>
