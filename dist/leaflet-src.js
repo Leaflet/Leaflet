@@ -374,6 +374,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	}());
 
 	L.Browser = {
+		ua: ua,
 		ie: ie,
 		ie6: ie6,
 		webkit: webkit,
@@ -715,10 +716,10 @@ L.DomUtil = {
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-		    el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
-		} else {
+		if ('opacity' in el.style) {
 			el.style.opacity = value;
+		} else if (L.Browser.ie) {
+			el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		}
 	},
 
@@ -3319,6 +3320,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	addLayer: function (layer) {
+		if (this._layers[L.Util.stamp(layer)]) {
+			return this;
+		}
+		
 		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
