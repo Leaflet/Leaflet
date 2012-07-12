@@ -172,3 +172,7 @@ L.Control.Layers = L.Control.extend({
 		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
 	}
 });
+
+L.control.layers = function (options) {
+	return new L.Control.Layers(options);
+};
