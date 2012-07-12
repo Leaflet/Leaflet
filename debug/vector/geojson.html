@@ -18,17 +18,14 @@
 	<script type="text/javascript" src="geojson-sample.js"></script>
 	<script type="text/javascript">
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+		var map = L.map('map').setView([0.78, 102.37], 7);
 
-		var map = new L.Map('map', {
-			center: new L.LatLng(0.78, 102.37),
-			zoom: 7,
-			layers: [cloudmade]
-		});
+		L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
+			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			key: 'BC9A493B41014CAABB98F0471D759707'
+		}).addTo(map);
 
-		var geojson = L.geoJson(geojsonSample, {
+		L.geoJson(geojsonSample, {
 			
 			style: function (feature) {
 				return {color: feature.properties.color};
@@ -43,9 +40,8 @@
 
 				layer.bindPopup(popupText);
 			}
-		});
-
-		map.addLayer(geojson);
+		}).addTo(map);
+		
 	</script>
 </body>
 </html>
