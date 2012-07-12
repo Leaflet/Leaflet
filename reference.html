@@ -914,9 +914,7 @@ var map = L.map('map', {
 
 		<p>Used to put markers on the map.</p>
 
-		<h3>Usage example</h3>
-		<pre><code class="javascript">var marker = new L.Marker(latlng);
-map.addLayer(marker);</code></pre>
+		<pre><code class="javascript">L.marker([50.5, 30.5]).addTo(map);</code></pre>
 
 		<h3>Constructor</h3>
 
@@ -1108,11 +1106,9 @@ map.addLayer(marker);</code></pre>
 		<p>If you want to just bind a popup to marker click and then open it, it's really easy:</p>
 		<pre><code class="javascript">marker.bindPopup(popupContent).openPopup();</code></pre>
 		<p>Path overlays like polylines also have a <code>bindPopup</code> method. Here's a more complicated way to open a popup on a map:</p>
-		<pre><code class="javascript">var popupContent = '&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;',
-	popup = new L.Popup();
-
-popup.setLatLng(latlng);
-popup.setContent(popupContent);
+		<pre><code class="javascript">var popup = L.popup()
+	.setLatLng(latlng)
+	.setContent('&lt;p&gt;Hello world!&lt;br /&gt;This is a nice popup.&lt;/p&gt;');
 
 map.openPopup(popup);</code></pre>
 
@@ -1373,7 +1369,7 @@ map.openPopup(popup);</code></pre>
 
 		<h3>Usage example</h3>
 
-		<pre><code class="javascript">var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+		<pre><code class="javascript">var nexrad = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 	layers: 'nexrad-n0r-900913',
 	format: 'image/png',
 	transparent: true,
@@ -1449,7 +1445,7 @@ map.openPopup(popup);</code></pre>
 
 		<h3>Usage example</h3>
 
-		<pre><code class="javascript">var canvasTiles = new L.TileLayer.Canvas();
+		<pre><code class="javascript">var canvasTiles = L.tileLayer.canvas();
 
 canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 	var ctx = canvas.getContext('2d');
@@ -1625,7 +1621,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			</tr>
 		</table>
 
-		<h3>Properties</h3>
+		<h3>Static properties</h3>
 		<table>
 			<tr>
 				<th>Constant</th>
@@ -1634,25 +1630,25 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code>L.Path.SVG</code></td>
+				<td><code>SVG</code></td>
 				<td><code>Boolean</code></td>
 				<td>depends</td>
 				<td>True if SVG is used for vector rendering (true for most modern browsers).</td>
 			</tr>
 			<tr>
-				<td><code>L.Path.VML</code></td>
+				<td><code>VML</code></td>
 				<td><code>Boolean</code></td>
 				<td>depends</td>
 				<td>True if VML is used for vector rendering (IE 6-8).</td>
 			</tr>
 			<tr>
-				<td><code>L.Path.CANVAS</code></td>
+				<td><code>CANVAS</code></td>
 				<td><code>Boolean</code></td>
 				<td>depends</td>
 				<td>True if Canvas is used for vector rendering (Android 2). You can also force this by setting global variable <code>L_PREFER_CANVAS</code> to <code>true</code> <em>before</em> the Leaflet include on your page — sometimes it can increase performance dramatically when rendering thousands of circle markers, but currently suffers from a bug that causes removing such layers to be extremely slow.</td>
 			</tr>
 			<tr>
-				<td><code>L.Path.CLIP_PADDING</code></td>
+				<td><code>CLIP_PADDING</code></td>
 				<td><code>Number</code></td>
 				<td><nobr><code><span class="number">0.5</span></code> for SVG</nobr><br /><nobr><code><span class="number">0.02</span></code> for VML</nobr></td>
 				<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance.</td>
@@ -1854,22 +1850,14 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<p>A class for drawing rectangle overlays on a map. Extends <a href="#polygon">Polygon</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
 		<h3>Usage example</h3>
-		<pre><code class="javascript">// create an orange rectangle from a LatLngBounds
-var bounds = new L.LatLngBounds(new L.LatLng(54.559322, -5.767822), new L.LatLng(56.1210604, -3.021240));
+		<pre><code class="javascript">// define rectangle geographical bounds
+var bounds = [[54.559322, -5.767822], [56.1210604, -3.021240]];
 
-// zoom the map to the rectangle
-map.fitBounds(bounds);
+// create an orange rectangle
+L.rectangle(bounds, {color: "#ff7800", weight: 1}).addTo(map);
 
-// create the rectangle
-var rectangle = new L.Rectangle(bounds, {
-	fillColor: "#ff7800",
-	color: "#000000",
-	opacity: 1,
-	weight: 2
-});
-
-// add the rectangle to the map
-map.addLayer(rectangle);</code></pre>
+// zoom the map to the rectangle bounds
+map.fitBounds(bounds);</code></pre>
 
 		<h3>Constructor</h3>
 
@@ -1910,6 +1898,8 @@ map.addLayer(rectangle);</code></pre>
 		<h2 id="circle">L.Circle</h2>
 
 		<p>A class for drawing circle overlays on a map. Extends <a href="#path">Path</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
+
+		<pre><code class="javascript">L.circle([50.5, 30.5], 200).addTo(map);</pre></code>
 
 		<h3>Constructor</h3>
 
@@ -2009,13 +1999,9 @@ map.addLayer(rectangle);</code></pre>
 
 		<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Implements <a href="#ilayer">ILayer</a> interface.</p>
 
-		<pre><code class="javascript">var group = new L.LayerGroup();
-
-group.addLayer(marker1);
-group.addLayer(marker2);
-group.addLayer(polyline);
-
-map.addLayer(group);</code></pre>
+		<pre><code class="javascript">L.layerGroup([marker1, marker2])
+	.addLayer(polyline)
+	.addTo(map);</code></pre>
 
 		<h3>Constructor</h3>
 
@@ -2066,15 +2052,10 @@ map.addLayer(group);</code></pre>
 
 		<p>Extended <a href="#layergroup">LayerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">IFeature</a> interface.</p>
 
-		<pre><code class="javascript">var group = new L.FeatureGroup([marker1, marker2, polyline]);
-
-group.bindPopup('Hello world!');
-
-group.on('click', function() {
-	alert('Clicked on a group!');
-});
-
-map.addLayer(group);</code></pre>
+		<pre><code class="javascript">L.featureGroup([marker1, marker2, polyline])
+	.bindPopup('Hello world!')
+	.on('click', function() { alert('Clicked on a group!'); })
+	.addTo(map);</code></pre>
 
 		<h3>Constructor</h3>
 
@@ -2151,16 +2132,16 @@ map.addLayer(group);</code></pre>
 
 		<h2 id="geojson">L.GeoJSON</h2>
 
-		<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display on the map. Extends <a href="#featuregroup">FeatureGroup</a>.</p>
+		<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display it on the map. Extends <a href="#featuregroup">FeatureGroup</a>.</p>
 
-		<pre><code class="javascript">var geojson = new L.GeoJSON();
-
-geojson.on('featureparse', function(e) {
-	// do something with e.layer depending on e.properties
-});
-geojson.addGeoJSON(geojsonObj);
-
-map.addLayer(geojson);</code></pre>
+		<pre><code class="javascript">L.geoJson(data, {
+	style: function (feature) {
+		return {color: feature.properties.color};
+	},
+	onEachFeature: function (feature, layer) {
+		layer.bindPopup(feature.properties.description);
+	}
+}).addTo(map);</code></pre>
 
 		<h3>Constructor</h3>
 
@@ -2176,7 +2157,7 @@ map.addLayer(geojson);</code></pre>
 					<code><span class='keyword'>new</span> L.GeoJSON(<span class="comment">&hellip;</span>)</code><br />
 					<code>L.geoJson(<span class="comment">&hellip;</span>)</code>
 				</td>
-				<td>Creates a GeoJSON layer. Optionally accepts an object in <a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map (you can alternatively add it with <code>addGeoJSON</code> method) and an options object.</td>
+				<td>Creates a GeoJSON layer. Optionally accepts an object in <a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map (you can alternatively add it later with <code>addData</code> method) and an options object.</td>
 			</tr>
 		</table>
 
@@ -2185,36 +2166,25 @@ map.addLayer(geojson);</code></pre>
 		<table>
 			<tr>
 				<th>Option</th>
-				<th>Type</th>
-				<th>Default</th>
 				<th>Description</th>
 			</tr>
 			<tr id="geojson-pointtolayer">
-				<td><code><b>pointToLayer</b></code></td>
-				<td><code>Function</code></td>
-				<td><code><span class="literal">null</span></code></td>
-				<td>Function of the form <code>(LatLng) -> ILayer</code> that will be used for creating layers for GeoJSON points (if not specified, markers will be created).</td>
+				<td><code><b>pointToLayer</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+				<td>Function that will be used for creating layers for GeoJSON points (if not specified, simple markers will be created).</td>
+			</tr>
+			<tr id="geojson-style">
+				<td><code><b>style</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i> )</nobr></code></td>
+				<td>Function that will be used to get style options for vector layers created for GeoJSON features.</td>
+			</tr>
+			<tr id="geojson-oneachfeature">
+				<td><code><b>onEachFeature</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+				<td>Function that will be called on each created feature layer. Useful for attaching events and popups to features.</td>
+			</tr>
+			<tr id="geojson-filter">
+				<td><code><b>filter</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+				<td>Function that will be used to decide whether to show a feature or not.</td>
 			</tr>
 		</table>
-
-
-		<h3 id="geojson-events">Events</h3>
-
-		<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
-
-		<table>
-			<tr>
-				<th>Event</th>
-				<th>Data</th>
-				<th>Description</th>
-			</tr>
-			<tr>
-				<td><code><b>featureparse</b></code></td>
-				<td><code><a href="#geojson-event">GeoJSONEvent</a></code>
-				<td>Fired before an object converted from a GeoJSON feature is added to the map. This event can be used to add interaction or change styling of objects depending on feature properties.</td>
-			</tr>
-		</table>
-
 
 
 		<h3>Methods</h3>
@@ -2226,7 +2196,7 @@ map.addLayer(geojson);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code><b>addGeoJSON</b>( <nobr>&lt;Object&gt; <i>geojson</i> )</nobr></code></td>
+				<td><code><b>addData</b>( <nobr>&lt;GeoJSON&gt; <i>data</i> )</nobr></code></td>
 				<td><code>Boolean</code></td>
 				<td>Adds a GeoJSON object to the layer.</td>
 			</tr>
@@ -2241,9 +2211,9 @@ map.addLayer(geojson);</code></pre>
 				<th>Description</th>
 			</tr>
 			<tr>
-				<td><code><b>geometryToLayer</b>( <nobr>&lt;Object&gt; <i>geojson</i></nobr>, <nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr></code></td>
+				<td><code><b>geometryToLayer</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr></code></td>
 				<td><code>ILayer</code></td>
-				<td>Creates a layer from a given GeoJSON geometry.</td>
+				<td>Creates a layer from a given GeoJSON feature.</td>
 			</tr>
 			<tr>
 				<td><code><b>coordsToLatlng</b>( <nobr>&lt;Array&gt; <i>coords</i></nobr>, <nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr></code></td>
