@@ -3012,7 +3012,7 @@ L.Popup = L.Class.extend({
 		if (this.options.closeButton) {
 			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
-			closeButton.innerHTML = '&times;';
+			closeButton.innerHTML = '&#215;';
 
 			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
@@ -3575,10 +3575,6 @@ L.Path = L.Path.extend({
 			return;
 		}
 
-		if (e.type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
-		}
-
 		this._fireMouseEvent(e);
 	},
 
@@ -3586,6 +3582,11 @@ L.Path = L.Path.extend({
 		if (!this.hasEventListeners(e.type)) {
 			return;
 		}
+		
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		var map = this._map,
 			containerPoint = map.mouseEventToContainerPoint(e),
 			layerPoint = map.containerPointToLayerPoint(containerPoint),
@@ -3706,13 +3707,17 @@ L.Path.include({
  */
 
 L.Browser.vml = (function () {
-	var div = document.createElement('div');
-	div.innerHTML = '<v:shape adj="1"/>';
+	try {
+		var div = document.createElement('div');
+		div.innerHTML = '<v:shape adj="1"/>';
 
-	var shape = div.firstChild;
-	shape.style.behavior = 'url(#default#VML)';
+		var shape = div.firstChild;
+		shape.style.behavior = 'url(#default#VML)';
 
-	return shape && (typeof shape.adj === 'object');
+		return shape && (typeof shape.adj === 'object');
+	} catch (e) {
+		return false;
+	}
 }());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
@@ -6236,7 +6241,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
+		this._container.innerHTML = prefixAndAttribs.join(' &#8212; ');
 	},
 
 	_onLayerAdd: function (e) {
