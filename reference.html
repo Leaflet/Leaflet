@@ -1800,6 +1800,8 @@ map.fitBounds(polyline.getBounds());</code></pre>
 
 		<p>A class for drawing polygon overlays on a map. Extends <a href="#polyline">Polyline</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
+		<p>Note that points you pass when creating a polygon shouldn't have an additional last point equal to the first one &mdash; it's better to filter out such points.</p>
+
 		<h3>Constructor</h3>
 
 		<table>
