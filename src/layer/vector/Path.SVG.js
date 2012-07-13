@@ -100,10 +100,6 @@ L.Path = L.Path.extend({
 			return;
 		}
 
-		if (e.type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
-		}
-
 		this._fireMouseEvent(e);
 	},
 
@@ -111,6 +107,11 @@ L.Path = L.Path.extend({
 		if (!this.hasEventListeners(e.type)) {
 			return;
 		}
+		
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		var map = this._map,
 			containerPoint = map.mouseEventToContainerPoint(e),
 			layerPoint = map.containerPointToLayerPoint(containerPoint),

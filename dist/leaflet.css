@@ -305,15 +305,20 @@
 	-o-transform: rotate(45deg);
 	transform: rotate(45deg);
 	}
-.leaflet-popup-close-button {
+.leaflet-container a.leaflet-popup-close-button {
 	position: absolute;
-	top: 8px;
-	right: 8px;
-
-	width: 10px;
-	height: 10px;
-
-	overflow: hidden;
+	top: 3px;
+	right: 3px;
+	text-align: center;
+	width: 24px;
+	height: 24px;
+	font: 16px/24px Tahoma, Verdana, sans-serif;
+	color: #ccc;
+	text-decoration: none;
+	font-weight: bold;
+	}
+.leaflet-container a.leaflet-popup-close-button:hover {
+	color: #999;
 	}
 .leaflet-popup-content p {
 	margin: 18px 0;
@@ -362,7 +367,4 @@
 	}
 .leaflet-popup-content {
 	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
-	}
-.leaflet-popup-close-button {
-	background: white url(images/popup-close.png);
 	}

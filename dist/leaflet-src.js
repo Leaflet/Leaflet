@@ -3012,6 +3012,7 @@ L.Popup = L.Class.extend({
 		if (this.options.closeButton) {
 			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
+			closeButton.innerHTML = '&#215;';
 
 			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
@@ -3574,10 +3575,6 @@ L.Path = L.Path.extend({
 			return;
 		}
 
-		if (e.type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
-		}
-
 		this._fireMouseEvent(e);
 	},
 
@@ -3585,6 +3582,11 @@ L.Path = L.Path.extend({
 		if (!this.hasEventListeners(e.type)) {
 			return;
 		}
+		
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		var map = this._map,
 			containerPoint = map.mouseEventToContainerPoint(e),
 			layerPoint = map.containerPointToLayerPoint(containerPoint),
@@ -3705,13 +3707,17 @@ L.Path.include({
  */
 
 L.Browser.vml = (function () {
-	var div = document.createElement('div');
-	div.innerHTML = '<v:shape adj="1"/>';
+	try {
+		var div = document.createElement('div');
+		div.innerHTML = '<v:shape adj="1"/>';
 
-	var shape = div.firstChild;
-	shape.style.behavior = 'url(#default#VML)';
+		var shape = div.firstChild;
+		shape.style.behavior = 'url(#default#VML)';
 
-	return shape && (typeof shape.adj === 'object');
+		return shape && (typeof shape.adj === 'object');
+	} catch (e) {
+		return false;
+	}
 }());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
@@ -4334,6 +4340,8 @@ L.Polyline = L.Path.extend({
 	},
 
 	_updatePath: function () {
+		if (!this._map) { return; }
+
 		this._clipPoints();
 		this._simplifyPoints();
 
@@ -5263,9 +5271,9 @@ L.Map.mergeOptions({
 	dragging: true,
 
 	inertia: !L.Browser.android23,
-	inertiaDeceleration: L.Browser.touch ? 3000 : 2000, // px/s^2
-	inertiaMaxSpeed:     L.Browser.touch ? 1500 : 1000, // px/s
-	inertiaThreshold:    L.Browser.touch ? 32   : 16, // ms
+	inertiaDeceleration: 3000, // px/s^2
+	inertiaMaxSpeed: 1500, // px/s
+	inertiaThreshold: L.Browser.touch ? 32 : 14, // ms
 
 	// TODO refactor, move to CRS
 	worldCopyJump: true,
@@ -6233,7 +6241,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
+		this._container.innerHTML = prefixAndAttribs.join(' &#8212; ');
 	},
 
 	_onLayerAdd: function (e) {
@@ -6299,16 +6307,15 @@ L.Control.Scale = L.Control.extend({
 	_update: function () {
 		var bounds = this._map.getBounds(),
 		    centerLat = bounds.getCenter().lat,
-
-		    left = new L.LatLng(centerLat, bounds.getSouthWest().lng),
-		    right = new L.LatLng(centerLat, bounds.getNorthEast().lng),
+		    halfWorldMeters = new L.LatLng(centerLat, 0).distanceTo(new L.LatLng(centerLat, 180)),
+		    dist = halfWorldMeters * (bounds.getNorthEast().lng - bounds.getSouthWest().lng) / 180,
 
 		    size = this._map.getSize(),
 		    options = this.options,
-                    maxMeters = 0;
+		    maxMeters = 0;
 
 		if (size.x > 0) {
-			maxMeters = left.distanceTo(right) * (options.maxWidth / size.x);
+			maxMeters = dist * (options.maxWidth / size.x);
 		}
 
 		if (options.metric && maxMeters) {
@@ -6355,7 +6362,7 @@ L.Control.Scale = L.Control.extend({
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
 		    d = num / pow10;
 
-		d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 2 ? 2 : 1;
+		d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1;
 
 		return pow10 * d;
 	}
@@ -6712,11 +6719,8 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		TIMER: true,
 
 		EASINGS: {
-			'ease': [0.25, 0.1, 0.25, 1.0],
-			'linear': [0.0, 0.0, 1.0, 1.0],
-			'ease-in': [0.42, 0, 1.0, 1.0],
-			'ease-out': [0, 0, 0.58, 1.0],
-			'ease-in-out': [0.42, 0, 0.58, 1.0]
+			'linear': function (t) { return t; },
+			'ease-out': function (t) { return t * (2 - t); }
 		},
 
 		CUSTOM_PROPS_GETTERS: {
@@ -6735,12 +6739,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this._el = el;
 		L.Util.extend(this.options, options);
 
-		var easings = L.Transition.EASINGS[this.options.easing] || L.Transition.EASINGS.ease;
-
-		this._p1 = new L.Point(0, 0);
-		this._p2 = new L.Point(easings[0], easings[1]);
-		this._p3 = new L.Point(easings[2], easings[3]);
-		this._p4 = new L.Point(1, 1);
+		this._easing = L.Transition.EASINGS[this.options.easing] || L.Transition.EASINGS['ease-out'];
 
 		this._step = L.Util.bind(this._step, this);
 		this._interval = Math.round(1000 / this.options.fps);
@@ -6780,7 +6779,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 			duration = this.options.duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._cubicBezier(elapsed / duration));
+			this._runFrame(this._easing(elapsed / duration));
 		} else {
 			this._runFrame(1);
 			this._complete();
@@ -6809,19 +6808,6 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 	_complete: function () {
 		clearInterval(this._timer);
 		this.fire('end');
-	},
-
-	_cubicBezier: function (t) {
-		var a = Math.pow(1 - t, 3),
-			b = 3 * Math.pow(1 - t, 2) * t,
-			c = 3 * (1 - t) * Math.pow(t, 2),
-			d = Math.pow(t, 3),
-			p1 = this._p1.multiplyBy(a),
-			p2 = this._p2.multiplyBy(b),
-			p3 = this._p3.multiplyBy(c),
-			p4 = this._p4.multiplyBy(d);
-
-		return p1.add(p2).add(p3).add(p4).y;
 	}
 });
 
