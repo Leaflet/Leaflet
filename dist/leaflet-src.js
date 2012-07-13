@@ -3012,7 +3012,7 @@ L.Popup = L.Class.extend({
 		if (this.options.closeButton) {
 			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
-			closeButton.innerHTML = '&#215;';
+			closeButton.innerHTML = '&times;';
 
 			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
@@ -3706,17 +3706,13 @@ L.Path.include({
  */
 
 L.Browser.vml = (function () {
-	try {
-		var div = document.createElement('div');
-		div.innerHTML = '<v:shape adj="1"/>';
+	var div = document.createElement('div');
+	div.innerHTML = '<v:shape adj="1"/>';
 
-		var shape = div.firstChild;
-		shape.style.behavior = 'url(#default#VML)';
+	var shape = div.firstChild;
+	shape.style.behavior = 'url(#default#VML)';
 
-		return shape && (typeof shape.adj === 'object');
-	} catch (e) {
-		return false;
-	}
+	return shape && (typeof shape.adj === 'object');
 }());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
@@ -6238,7 +6234,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' &#8212; ');
+		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
 	},
 
 	_onLayerAdd: function (e) {
