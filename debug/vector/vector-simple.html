@@ -26,16 +26,16 @@
 			styleId: 997
 		}).addTo(map);
 
-		L.marker([51.5, -0.09])
+		var marker = L.marker([51.5, -0.09])
 			.bindPopup("<b>Hello world!</b><br />I am a popup.")
 			.addTo(map)
 			.openPopup();
 
-		L.circle([51.508, -0.11], 500, {color: '#f03', opacity: 0.7})
+		var circle = L.circle([51.508, -0.11], 500, {color: '#f03', opacity: 0.7})
 			.bindPopup("I am a circle.")
 			.addTo(map);
 
-		L.polygon([
+		var polygon = L.polygon([
 			[51.509, -0.08],
 			[51.503, -0.06],
 			[51.51,  -0.047]])
