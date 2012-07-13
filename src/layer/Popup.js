@@ -31,7 +31,11 @@ L.Popup = L.Class.extend({
 		}
 		this._updateContent();
 
-		L.DomUtil.setOpacity(this._container, 0);
+		var animFade = map.options.fadeAnimation;
+
+		if (animFade) {
+			L.DomUtil.setOpacity(this._container, 0);
+		}
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -46,7 +50,9 @@ L.Popup = L.Class.extend({
 
 		this._update();
 
-		L.DomUtil.setOpacity(this._container, 1);
+		if (animFade) {
+			L.DomUtil.setOpacity(this._container, 1);
+		}
 	},
 
 	addTo: function (map) {
@@ -70,7 +76,9 @@ L.Popup = L.Class.extend({
 			zoomanim: this._zoomAnimation
 		}, this);
 
-		L.DomUtil.setOpacity(this._container, 0);
+		if (map.options.fadeAnimation) {
+			L.DomUtil.setOpacity(this._container, 0);
+		}
 
 		this._map = null;
 	},
