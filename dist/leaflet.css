@@ -182,7 +182,7 @@
 .leaflet-control-layers label {
 	display: block;
 	}
-.leaflet-control-layers-separator {
+.leaflet-control-layers-separator, .leaflet-control-layers-group-separator {
 	height: 0;
 	border-top: 1px solid #ddd;
 	margin: 5px -10px 5px -6px;
