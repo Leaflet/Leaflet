@@ -81,6 +81,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added `L_NO_TOUCH` global variable switch (set it before Leaflet inclusion) which disables touch detection, helpful for desktop apps built using QT. [#572](https://github.com/CloudMade/Leaflet/issues/572)
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Circle` `getLatLng` and `getRadius` methods (by [@Guiswa](https://github.com/Guiswa)). [#655](https://github.com/CloudMade/Leaflet/pull/655)
+ * Added `openPopup` method to all vector layers. [#246](https://github.com/CloudMade/Leaflet/issues/246)
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
  * Added `Marker` `opacity` option and `setOpacity` method.
  * Added `Marker` `update` method. [#392](https://github.com/CloudMade/Leaflet/issues/392)
