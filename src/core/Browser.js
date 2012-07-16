@@ -52,7 +52,7 @@
 		android: android,
 		android23: android23,
 
-		safari: safari && !mobile,
+		safari: safari,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,
