@@ -4,6 +4,7 @@ body {
 
 .container {
 	background: white;
+	position: relative;
 
 	padding: 15px 40px 20px;
 	width: 790px;
@@ -142,7 +143,7 @@ td {
 	}
 	.nav li a, .nav li span {
 		float: left;
-		padding: 10px 17px;
+		padding: 10px 14px;
 		border-right: 1px solid #ddd;
 		}
 	.nav a {
@@ -179,23 +180,15 @@ td {
 		border-left: 1px solid #ddd;
 		filter: none;
 		}
-	/*.nav li a.cloudmade-link {
-		padding: 4px 8px;
-		opacity: 0.7;
-		}
-	.nav li a.cloudmade-link img {
-		margin: 0;
-		display: block;
-		}*/
 	.nav li a.github-link {
-		padding-left: 34px;
-		padding-right: 12px;
-		background: url(https://github.com/favicon.png) 12px 12px no-repeat;
+		padding-left: 30px;
+		padding-right: 10px;
+		background: url(https://github.com/favicon.png) 10px 12px no-repeat;
 		}
 	.nav li a.twitter-link {
-		padding-left: 32px;
-		padding-right: 14px;
-		background: url(http://twitter.com/phoenix/favicon.ico) 12px 13px no-repeat;
+		padding-left: 28px;
+		padding-right: 12px;
+		background: url(http://twitter.com/phoenix/favicon.ico) 10px 13px no-repeat;
 		}
 
 #forkme {
@@ -250,9 +243,9 @@ a.nodocs {
 h3 span {
 	color: #888;
 	}
-h3.alt a {
+/*h3.alt a {
 	color: #888;
-}
+}*/
 
 .example-img {
 	float: left;
@@ -277,14 +270,6 @@ h3.alt a {
 
 .last ul {
 	margin-right: 0;
-}
-
-.social-buttons {
-	margin: 18px 0;
-}
-
-.twitter-follow-button {
-	margin-left: -9px;
 }
 
 table td {
@@ -337,4 +322,18 @@ table.factory-table td, table.factory-table th {
 
 .factory-usage code {
 	color: black;
+}
+
+.social-buttons {
+	margin: 18px 0;
+	padding: 6px 0 2px 8px;
+	background: #f7f7f7;
+	position: absolute;
+	top: 10px;
+	right: 40px;
+	border-radius: 5px;
+}
+
+.twitter-follow-button {
+	margin-left: -9px;
 }
