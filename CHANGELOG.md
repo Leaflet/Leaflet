@@ -145,6 +145,8 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
  * Fixed a bug where opening the layers control would propagate a click to the map (by [@jacobtoye](https://github.com/jacobtoye)). [#638](https://github.com/CloudMade/Leaflet/pull/638)
  * Fixed a bug where `ImageOverlay` wouldn't stretch properly on zoom on Android 2. [#651](https://github.com/CloudMade/Leaflet/issues/651)
+ * Fixed a bug where `clearLayers` for vector layers on a Canvas backend (e.g. on Android 2) would take unreasonable amount of time. [#785](https://github.com/CloudMade/Leaflet/issues/785)
+ * Fixed a bug where `setLatLngs` and similar methods on vector layers on a Canvas backend would not update the layers immediately. [#732](https://github.com/CloudMade/Leaflet/issues/732)
 
 ## 0.3.1 (February 14, 2012)
 
