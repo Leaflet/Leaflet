@@ -5,6 +5,7 @@ body {
 .container {
 	background: white;
 	position: relative;
+	z-index: 1;
 
 	padding: 15px 40px 20px;
 	width: 790px;
@@ -17,15 +18,16 @@ body {
 	-webkit-box-shadow: 0 0 40px #e0e0e0;
 	}
 
-h1 {
+h1 a {
 	display: block;
 	height: 0;
-	padding-top: 65px;
-	width: 187px;
+	padding-top: 73px;
+	width: 220px;
 	overflow: hidden;
 	background: url(../images/logo.png) 0 0 no-repeat;
 	margin-left: -10px;
-	margin-bottom: 15px;
+	margin-bottom: 8px;
+	text-decoration: none;
 	}
 h2 {
 	font-size: 1.8em;
@@ -118,7 +120,7 @@ td {
 
 .nav {
 	padding: 0;
-	margin: 2em 0;
+	margin: 22px 0 2em;
 
 	list-style: none;
 	font-size: 1.2em;
