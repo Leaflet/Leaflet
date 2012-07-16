@@ -141,6 +141,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
 #### Mobile browser bugfixes
 
  * Fixed a bug that sometimes caused map to disappear completely after zoom on iOS (by [@fr1n63](https://github.com/fr1n63)). [#580](https://github.com/CloudMade/Leaflet/issues/580) [#777](https://github.com/CloudMade/Leaflet/pull/777)
+ * Fixed a bug that often caused vector layers to flicker on drag end on iOS (by [@krawaller](https://github.com/krawaller)). [#18](https://github.com/CloudMade/Leaflet/issues/18)
  * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
  * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
  * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)

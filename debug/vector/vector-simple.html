@@ -16,7 +16,7 @@
 	<div id="map"></div>
 
 	<script>
-		var map = L.map('map')
+		var map = L.map('map', {closePopupOnClick: false})
 			.setView([51.505, -0.09], 13);
 
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
@@ -27,7 +27,7 @@
 		}).addTo(map);
 
 		var marker = L.marker([51.5, -0.09])
-			.bindPopup("<b>Hello world!</b><br />I am a popup.")
+			.bindPopup("<b>Hello world!</b><br /><a href='javascript:alert(15);'>I am a popup</a>.")
 			.addTo(map)
 			.openPopup();
 
