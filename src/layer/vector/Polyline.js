@@ -196,7 +196,13 @@ L.Polyline = L.Path.extend({
 		return false;
 	},
 
+	// Check for intersection if new latlng was added to this polyline.
+	newLatLngIntersects: function (latlng) {
+		return this.newPointIntersects(this._map.latLngToLayerPoint(latlng));
+	},
+
 	// Check for intersection if new point was added to this polyline.
+	// newPoint must be a layer point.
 	newPointIntersects: function (newPoint) {
 		var points = this._originalPoints,
 			len = points ? points.length : 0,
