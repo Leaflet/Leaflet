@@ -231,12 +231,14 @@ L.Polyline = L.Path.extend({
 
 	// Checks a line segment intersections with any line segements before its predecessor.
 	// Don't need to check the predecessor as will never intersect.
-	_lineSegmentsIntersectsRange: function (p, p1, maxIndex) {
+	_lineSegmentsIntersectsRange: function (p, p1, maxIndex, minIndex) {
 		var points = this._originalPoints,
 			p2, p3;
 
+		minIndex = minIndex || 0;
+
 		// Check all previous line segments (beside the immediately previous) for intersections
-		for (var j = maxIndex; j > 0; j--) {
+		for (var j = maxIndex; j > minIndex; j--) {
 			p2 = points[j - 1];
 			p3 = points[j];
 
