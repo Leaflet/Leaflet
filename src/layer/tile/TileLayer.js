@@ -315,7 +315,7 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		//Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7 has display issues with top/left and requires transform instead. (Other browsers don't currently care)
+		//Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7 and iOS 5.1.1 have display issues with top/left and requires transform instead. (Other browsers don't currently care)
 		L.DomUtil.setPosition(tile, tilePos, !L.Browser.safari);
 
 		this._tiles[key] = tile;
