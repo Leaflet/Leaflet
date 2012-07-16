@@ -178,8 +178,7 @@ L.Polyline = L.Path.extend({
 			len = points ? points.length : 0,
 			i, j, p, p1, p2, p3;
 
-		// Polylines with 2 sides can only intersect in cases where points are collinear.
-		if (!this._originalPoints || len <= 3) {
+		if (this._tooFewPointsForIntersection()) {
 			return false;
 		}
 
@@ -197,12 +196,14 @@ L.Polyline = L.Path.extend({
 	},
 
 	// Check for intersection if new latlng was added to this polyline.
+	// NOTE: does not support detecting intersection for degenerate cases.
 	newLatLngIntersects: function (latlng) {
 		return this.newPointIntersects(this._map.latLngToLayerPoint(latlng));
 	},
 
 	// Check for intersection if new point was added to this polyline.
 	// newPoint must be a layer point.
+	// NOTE: does not support detecting intersection for degenerate cases.
 	newPointIntersects: function (newPoint) {
 		var points = this._originalPoints,
 			len = points ? points.length : 0,
@@ -210,12 +211,22 @@ L.Polyline = L.Path.extend({
 			// The previous previous line segment. Previous line segement doesn't need testing.
 			maxIndex = len - 2;
 
-		// Polylines with 2 sides can only intersect in cases where points are collinear.
-		if (!this._originalPoints || len < 3) {
+		if (this._tooFewPointsForIntersection(1)) {
 			return false;
 		}
 
 		return this._lineSegmentsIntersectsRange(lastPoint, newPoint, maxIndex);
+	},
+
+	// Polylines with 2 sides can only intersect in cases where points are collinear (we don't support detecting these).
+	// Cannot have intersection when < 3 line segments (< 4 points)
+	_tooFewPointsForIntersection: function (extraPoints) {
+		var points = this._originalPoints,
+			len = points ? points.length : 0;
+		// Increment length by extraPoints if present
+		len += extraPoints || 0;
+
+		return !this._originalPoints || len <= 3;
 	},
 
 	// Checks a line segment intersections with any line segements before its predecessor.
