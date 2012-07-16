@@ -4,6 +4,7 @@
 		ie6 = ie && !window.XMLHttpRequest,
 		webkit = ua.indexOf("webkit") !== -1,
 		gecko = ua.indexOf("gecko") !== -1,
+		safari = ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
 		android23 = ua.search("android [23]") !== -1,
@@ -50,6 +51,8 @@
 		opera: opera,
 		android: android,
 		android23: android23,
+
+		safari: safari && !mobile,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,
