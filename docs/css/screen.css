@@ -17,7 +17,9 @@ body {
 	-moz-box-shadow: 0 0 40px #e0e0e0;
 	-webkit-box-shadow: 0 0 40px #e0e0e0;
 	}
-
+h1 {
+	margin-bottom: 10px;
+	}
 h1 a {
 	display: block;
 	height: 0;
