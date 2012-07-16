@@ -70,5 +70,31 @@ describe('PolylineGeometry', function() {
 				expect(polyline.newLatLngIntersects(intersectlatLng2)).toBe(true);
 			});
 		});
+
+		describe("#intersects", function () {
+			it("should not intersect when only two line segments", function () {
+				polyline.setLatLngs(latlngs.slice(0, 3));
+				expect(polyline.intersects()).toBe(false);
+			});
+
+			it("should intersect first line segment", function () {
+				var newLatlngs = latlngs.slice(0, 3);
+				newLatlngs.push(intersectlatLng1);
+				polyline.setLatLngs(newLatlngs);
+				expect(polyline.intersects()).toBe(true);
+			});
+
+			it("should not intersect when > 3 non-intersecting latlngs", function () {
+				polyline.setLatLngs(latlngs.slice(0, 4));
+				expect(polyline.intersects()).toBe(false);
+			});
+
+			it("should intersect second line segment", function () {
+				var newLatlngs = latlngs.slice(0, 4);
+				newLatlngs.push(intersectlatLng2);
+				polyline.setLatLngs(newLatlngs);
+				expect(polyline.intersects()).toBe(true);
+			});
+		});
 	});
 });
