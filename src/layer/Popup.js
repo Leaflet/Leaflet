@@ -12,7 +12,7 @@ L.Popup = L.Class.extend({
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
-		offset: new L.Point(0, 2),
+		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
 		className: ''
 	},
