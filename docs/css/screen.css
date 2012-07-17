@@ -1,5 +1,5 @@
 body {
-	background: #f7f7f7;
+	background: #f0f0f0;
 	}
 
 .container {
@@ -122,7 +122,7 @@ td {
 
 .nav {
 	padding: 0;
-	margin: 28px 0 2em;
+	margin: 28px -13px 2.5em;
 
 	list-style: none;
 	font-size: 1.2em;
@@ -130,11 +130,10 @@ td {
 	overflow: hidden;
 
 	background-color: #ffffff;
-	background-image: -moz-linear-gradient(top, #ffffff, #eff0f1); /* FF3.6 */
-	background-image: -o-linear-gradient(top, #ffffff, #eff0f1); /* Opera 11.10+ */
-	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #ffffff),color-stop(1, #eff0f1)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient(#ffffff, #eff0f1); /* Chrome 10+, Saf5.1+ */
-	background-image: linear-gradient(top, #ffffff, #eff0f1);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eaebec)); /* Saf4+, Chrome */
+  background-image: -webkit-linear-gradient(top, #ffffff, #eaebec); /* Chrome 10+, Saf5.1+, iOS 5+ */
+  background-image:    -moz-linear-gradient(top, #ffffff, #eaebec); /* FF3.6+ */
+  background-image:      -o-linear-gradient(top, #ffffff, #eaebec); /* Opera 11.10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eff0f1'); /* IE6�IE9 */
 
 	border-radius: 10px;
@@ -147,8 +146,10 @@ td {
 	}
 	.nav li a, .nav li span {
 		float: left;
-		padding: 10px 14px;
+		padding: 0 13px;
 		border-right: 1px solid #ddd;
+		text-shadow: 1px 1px 0 white;
+		line-height: 40px;
 		}
 	.nav a {
 		text-decoration: none;
@@ -176,27 +177,33 @@ td {
 		background-image: linear-gradient(top, #eff0f1, #f6f7f8);
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
+	.nav li a.github-link {
+		background: url(https://github.com/favicon.png) 8px 12px no-repeat;
+		}
+	.nav li a.twitter-link {
+		padding-left: 26px;
+		background: url(http://twitter.com/phoenix/favicon.ico) 7px 13px no-repeat;
+		}
+	.nav li a.forum-link {
+		padding-right: 10px;
+		background: url(https://groups.google.com/forum/favicon.ico) 8px 12px no-repeat;
+	}
 	.nav li a.github-link,
 	.nav li a.twitter-link,
 	.nav li a.forum-link {
-		font-weight: normal;
+		font-size: 12px;
+		color: #555;
 		float: right;
 		border-right: none;
 		border-left: 1px solid #ddd;
-		padding-left: 30px;
-		padding-right: 10px;
+		padding-left: 28px;
+		padding-right: 8px;
 		filter: none;
 		}
-	.nav li a.github-link {
-		background: url(https://github.com/favicon.png) 10px 12px no-repeat;
-		}
-	.nav li a.twitter-link {
-		padding-left: 28px;
-		background: url(http://twitter.com/phoenix/favicon.ico) 9px 13px no-repeat;
-		}
-	.nav li a.forum-link {
-		padding-right: 12px;
-		background: url(https://groups.google.com/forum/favicon.ico) 10px 12px no-repeat;
+	.nav li a.github-link:hover,
+	.nav li a.twitter-link:hover,
+	.nav li a.forum-link:hover {
+		color: black;
 	}
 
 #forkme {
@@ -251,9 +258,13 @@ a.nodocs {
 h3 span {
 	color: #888;
 	}
-/*h3.alt a {
-	color: #888;
-}*/
+h3.alt a {
+	color: #56b1ee;
+	text-decoration: none;
+}
+h3.alt a:hover {
+	text-decoration: underline;
+}
 
 .example-img {
 	float: left;
@@ -344,4 +355,8 @@ table.factory-table td, table.factory-table th {
 
 .twitter-follow-button {
 	margin-left: -9px;
+}
+
+.footer {
+	margin-top: 2.5em;
 }

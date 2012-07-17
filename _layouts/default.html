@@ -37,7 +37,7 @@
 <body>
 	<div class="container">
 		<h1><a href="http://leaflet.cloudmade.com">Leaflet</a></h1>
-		<h3 class="alt">An Open-Source JavaScript Library for Mobile-Friendly Interactive Maps<!-- by <a href="http://cloudmade.com">CloudMade</a>--></h3>
+		<h3 class="alt">An Open-Source JavaScript Library for Mobile-Friendly Interactive Maps by <a href="http://cloudmade.com">CloudMade</a></h3>
 
 		<ul class="nav clearfix">
 			<!-- <li><a class="cloudmade-link" href="http://cloudmade.com"></a></li> -->
@@ -64,9 +64,9 @@
 			</li>
 			<li>
 				{% if page.title == 'Documentation' %}
-					<span>Documentation</span>
+					<span>API</span>
 				{% else %}
-					<a href="{{ root }}reference.html">Documentation</a>
+					<a href="{{ root }}reference.html">API</a>
 				{% endif %}
 			</li>
 			<li>
@@ -76,8 +76,8 @@
 					<a href="{{ root }}download.html">Download</a>
 				{% endif %}
 			</li>
-			<!--<li><a href="#">Blog</a></li>
-			<li><a href="#">Plugins</a></li>-->
+			<li><a href="#">Plugins</a></li>
+			<li><a href="#">Blog</a></li>
 			<li><a class="forum-link" href="https://groups.google.com/forum/#!forum/leaflet-js">Forum</a></li>
 			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">Twitter</a></li>
 			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub</a></li>
@@ -110,9 +110,10 @@
 
 		{{ content }}
 
-		<hr />
-
-		<p class="quiet">&copy; 2012 <a href="http://cloudmade.com">CloudMade</a>, <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Map data &copy; 2012 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+		<div class="footer">
+			<hr />
+			<p class="quiet">&copy; 2012 <a href="http://cloudmade.com">CloudMade</a>, <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Map data &copy; 2012 <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>.</p>
+		</div>
 	</div>
 
 	<a href="http://github.com/CloudMade/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
