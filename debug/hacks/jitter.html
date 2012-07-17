@@ -20,7 +20,7 @@
 				<input id="textField" name="textField" type="text" value="">
 			</fieldset>
 		</form>
-		Bug tested to occur on: Safari on Mac (Tested in 5.1.7), iPad/iPhone 5.1.1. Hack is in L.Browser.safari and TileLayer._addTile
+		Bug tested to occur on: Safari on Mac (Tested in 5.1.7), iPad/iPhone 5.1.1., Android 4 Browser. Hack is in L.Browser.chrome and TileLayer._addTile
 
 </div>
 	<script type="text/javascript">
@@ -31,8 +31,8 @@
 			key: 'BC9A493B41014CAABB98F0471D759707'
 		});
 
-		//Undo the hack fix
-		L.Browser.safari = false;
+		//Disable the hack fix
+		L.Browser.chrome = true;
 
 		var map = L.map('map')
 				.setView([50.5, 30.51], 15)
