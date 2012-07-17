@@ -78,8 +78,20 @@
 					<a href="{{ root }}download.html">Download</a>
 				{% endif %}
 			</li>
-			<li><a href="#">Plugins</a></li>
-			<li><a href="#">Blog</a></li>
+			<li>
+				{% if page.title == 'Plugins' %}
+					<span>Plugins</span>
+				{% else %}
+					<a href="{{ root }}plugins.html">Plugins</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Blog' %}
+					<span>Blog</span>
+				{% else %}
+					<a href="{{ root }}blog.html">Blog</a>
+				{% endif %}
+			</li>
 			<li><a class="forum-link" href="https://groups.google.com/forum/#!forum/leaflet-js">Forum</a></li>
 			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">Twitter</a></li>
 			<li><a class="github-link" href="http://github.com/CloudMade/Leaflet">GitHub</a></li>
