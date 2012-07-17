@@ -13,9 +13,9 @@ body {
 	border: 1px solid #dfdfdf;
 	border-top: 0;
 
-	box-shadow: 0 0 40px #e0e0e0;
-	-moz-box-shadow: 0 0 40px #e0e0e0;
-	-webkit-box-shadow: 0 0 40px #e0e0e0;
+	box-shadow: 0 0 50px rgba(0,0,0,0.1);
+	-moz-box-shadow: 0 0 50px rgba(0,0,0,0.1);
+	-webkit-box-shadow: 0 0 50px rgba(0,0,0,0.1);
 	}
 h1 {
 	margin-bottom: 10px;
@@ -154,6 +154,9 @@ td {
 	.nav a {
 		text-decoration: none;
 		color: #000;
+		background-color: rgba(0,0,0,0);
+		background-repeat: no-repeat;
+		-webkit-transition: 0.08s all;
 	}
 	.nav li span {
 		color: #000;
@@ -169,24 +172,23 @@ td {
 	.nav li a:hover {
 		color: black;
 
-		background-color: #eff0f1;
-		background-image: -moz-linear-gradient(top, #eff0f1, #f6f7f8);
-		background-image: -o-linear-gradient(top, #eff0f1, #f6f7f8);
-		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #eff0f1),color-stop(1, #f6f7f8));
-		background-image: -webkit-linear-gradient(#eff0f1, #f6f7f8);
-		background-image: linear-gradient(top, #eff0f1, #f6f7f8);
+		background-color: rgba(0,0,0,0.03);
+		
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
 	.nav li a.github-link {
-		background: url(https://github.com/favicon.png) 8px 12px no-repeat;
+		background-image: url(https://github.com/favicon.png); 
+		background-position: 8px 12px;
 		}
 	.nav li a.twitter-link {
 		padding-left: 26px;
-		background: url(http://twitter.com/phoenix/favicon.ico) 7px 13px no-repeat;
+		background-image: url(http://twitter.com/phoenix/favicon.ico);
+		background-position: 7px 13px;
 		}
 	.nav li a.forum-link {
 		padding-right: 10px;
-		background: url(https://groups.google.com/forum/favicon.ico) 8px 12px no-repeat;
+		background-image: url(https://groups.google.com/forum/favicon.ico);
+		background-position: 8px 12px;
 	}
 	.nav li a.github-link,
 	.nav li a.twitter-link,
@@ -346,7 +348,7 @@ table.factory-table td, table.factory-table th {
 .social-buttons {
 	margin: 18px 0;
 	padding: 6px 0 2px 8px;
-	background: #f7f7f7;
+	background: #f3f3f3;
 	position: absolute;
 	top: 10px;
 	right: 40px;
