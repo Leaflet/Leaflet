@@ -122,7 +122,7 @@ td {
 
 .nav {
 	padding: 0;
-	margin: 22px 0 2em;
+	margin: 28px 0 2em;
 
 	list-style: none;
 	font-size: 1.2em;
@@ -177,23 +177,27 @@ td {
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
 	.nav li a.github-link,
-	.nav li a.twitter-link {
+	.nav li a.twitter-link,
+	.nav li a.forum-link {
 		font-weight: normal;
 		float: right;
 		border-right: none;
 		border-left: 1px solid #ddd;
+		padding-left: 30px;
+		padding-right: 10px;
 		filter: none;
 		}
 	.nav li a.github-link {
-		padding-left: 30px;
-		padding-right: 10px;
 		background: url(https://github.com/favicon.png) 10px 12px no-repeat;
 		}
 	.nav li a.twitter-link {
 		padding-left: 28px;
-		padding-right: 12px;
-		background: url(http://twitter.com/phoenix/favicon.ico) 10px 13px no-repeat;
+		background: url(http://twitter.com/phoenix/favicon.ico) 9px 13px no-repeat;
 		}
+	.nav li a.forum-link {
+		padding-right: 12px;
+		background: url(https://groups.google.com/forum/favicon.ico) 10px 12px no-repeat;
+	}
 
 #forkme {
 	position: absolute;
