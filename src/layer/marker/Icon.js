@@ -15,20 +15,20 @@ L.Icon = L.Class.extend({
 		L.Util.setOptions(this, options);
 	},
 
-    /* The marker received is used for a callback that updates the marker when
-     * the Icon image loads and has its style set */
+	/* The marker received is used for a callback that updates the marker when
+	 * the Icon image loads and has its style set */
 	createIcon: function (marker) {
 		return this._createIcon('icon', marker);
 	},
 
-    /* The marker received is used for a callback that updates the marker when
-     * the Icon image loads and has its style set */
+	/* The marker received is used for a callback that updates the marker when
+	 * the Icon image loads and has its style set */
 	createShadow: function (marker) {
 		return this._createIcon('shadow', marker);
 	},
 
-    /* The marker received is used for a callback that updates the marker when
-     * the Icon image loads and has its style set */
+	/* The marker received is used for a callback that updates the marker when
+	 * the Icon image loads and has its style set */
 	_createIcon: function (name, marker) {
 		var src = this._getIconUrl(name);
 
@@ -45,11 +45,11 @@ L.Icon = L.Class.extend({
 		else {
 			/* Create local reference to this to avoid 'this' name clashes */
 			var me = this;
-            /* Creates the image from the src provided. When the image loads, it
-             * calls a function that gets the native size, sets icon styles that
-             * are undefined, and then tells the marker to update itself. When
-             * the marker updates itself, this ensures that the map shows the
-             * marker icon in the correct position with the correct style. */
+			/* Creates the image from the src provided. When the image loads, it
+			 * calls a function that gets the native size, sets icon styles that
+			 * are undefined, and then tells the marker to update itself. When
+			 * the marker updates itself, this ensures that the map shows the
+			 * marker icon in the correct position with the correct style. */
 			img = this._createImg(src, function () {
 				var size = new L.Point(this.width, this.height);
 				me._styleHelper(this, name, size, me.options);
@@ -82,7 +82,7 @@ L.Icon = L.Class.extend({
 			}
 		}
 
-	    /* Must append, because this is set upon Icon load, which could happen
+		/* Must append, because this is set upon Icon load, which could happen
 		 * after appending to className elsewhere. We don't want to overwrite
 		 * other class names. */
 		img.className += ' leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
