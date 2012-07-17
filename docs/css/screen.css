@@ -177,18 +177,14 @@ td {
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
 	.nav li a.github-link {
-		background-image: url(https://github.com/favicon.png); 
-		background-position: 8px 12px;
+		background-image: url(../images/github.png); 
 		}
 	.nav li a.twitter-link {
-		padding-left: 26px;
-		background-image: url(http://twitter.com/phoenix/favicon.ico);
-		background-position: 7px 13px;
+		background-image: url(../images/twitter.png);
 		}
 	.nav li a.forum-link {
-		padding-right: 10px;
-		background-image: url(https://groups.google.com/forum/favicon.ico);
-		background-position: 8px 12px;
+		padding-right: 12px;
+		background-image: url(../images/forum.png);
 	}
 	.nav li a.github-link,
 	.nav li a.twitter-link,
@@ -198,9 +194,10 @@ td {
 		float: right;
 		border-right: none;
 		border-left: 1px solid #ddd;
-		padding-left: 28px;
-		padding-right: 8px;
+		padding-left: 30px;
+		padding-right: 10px;
 		filter: none;
+		background-position: 10px 12px;
 		}
 	.nav li a.github-link:hover,
 	.nav li a.twitter-link:hover,

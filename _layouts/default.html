@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet - a JavaScript library for mobile-friendly interactive maps by CloudMade</title>
+	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
+
+	<title>{{ title }}Leaflet - a JavaScript library for mobile-friendly maps</title>
 
 	<meta charset="utf-8" />
 	
