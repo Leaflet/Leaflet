@@ -211,7 +211,7 @@ L.Marker = L.Class.extend({
 		}
 	},
 
-	_updateOpacity: function (opacity) {
+	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._icon, this.options.opacity);
 		if (this._shadow) {
 			L.DomUtil.setOpacity(this._shadow, this.options.opacity);
