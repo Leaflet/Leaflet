@@ -57,6 +57,21 @@ L.LatLng.prototype = {
 		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
 
 		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	},
+
+	//http://www.movable-type.co.uk/scripts/latlong.html
+	bearingTo: function (/*LatLng*/ other)/*->Double*/ {
+		var R = 6378137, // earth radius in meters
+			d2r = L.LatLng.DEG_TO_RAD,
+			r2d = L.LatLng.RAD_TO_DEG,
+			dLat = (other.lat - this.lat) * d2r,
+			dLon = (other.lng - this.lng) * d2r,
+			lat1 = this.lat * d2r,
+			lat2 = other.lat * d2r,
+			y = Math.sin(dLon) * Math.cos(lat2),
+			x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+		
+		return Math.atan2(y, x) * r2d;
 	}
 };
 
