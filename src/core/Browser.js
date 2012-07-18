@@ -4,6 +4,8 @@
 		ie6 = ie && !window.XMLHttpRequest,
 		webkit = ua.indexOf("webkit") !== -1,
 		gecko = ua.indexOf("gecko") !== -1,
+		//Terrible browser detection to work around a safari / iOS / android browser bug. See TileLayer._addTile and debug/hacks/jitter.html
+		chrome = ua.indexOf("chrome") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
 		android23 = ua.search("android [23]") !== -1,
@@ -50,6 +52,8 @@
 		opera: opera,
 		android: android,
 		android23: android23,
+
+		chrome: chrome,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,

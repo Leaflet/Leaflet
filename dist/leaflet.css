@@ -288,7 +288,7 @@
 .leaflet-popup-tip-container {
 	margin: 0 auto;
 	width: 40px;
-	height: 16px;
+	height: 20px;
 	position: relative;
 	overflow: hidden;
 	}
@@ -307,13 +307,14 @@
 	}
 .leaflet-container a.leaflet-popup-close-button {
 	position: absolute;
-	top: 3px;
-	right: 3px;
+	top: 0;
+	right: 0;
+	padding: 4px 5px 0 0;
 	text-align: center;
-	width: 24px;
-	height: 24px;
-	font: 16px/24px Tahoma, Verdana, sans-serif;
-	color: #ccc;
+	width: 18px;
+	height: 14px;
+	font: 16px/14px Tahoma, Verdana, sans-serif;
+	color: #c3c3c3;
 	text-decoration: none;
 	font-weight: bold;
 	}

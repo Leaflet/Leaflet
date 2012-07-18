@@ -336,6 +336,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		ie6 = ie && !window.XMLHttpRequest,
 		webkit = ua.indexOf("webkit") !== -1,
 		gecko = ua.indexOf("gecko") !== -1,
+		safari = ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
 		android23 = ua.search("android [23]") !== -1,
@@ -382,6 +383,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		opera: opera,
 		android: android,
 		android23: android23,
+
+		safari: safari,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,
@@ -1635,8 +1638,8 @@ L.Map = L.Class.extend({
 
 		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mousedown', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'],
-		    i, len;
+		var events = ['dblclick', 'mousedown', 'mouseup', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'],
+			i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
 			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
@@ -2137,7 +2140,8 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, tilePos, true);
+		//Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7 has display issues with top/left and requires transform instead. (Other browsers don't currently care)
+		L.DomUtil.setPosition(tile, tilePos, !L.Browser.safari);
 
 		this._tiles[key] = tile;
 
@@ -2279,7 +2283,12 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		this._url = url;
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
-		wmsParams.width = wmsParams.height = this.options.tileSize;
+
+		if (options.detectRetina && window.devicePixelRatio > 1) {
+			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
+		} else {
+			wmsParams.width = wmsParams.height = this.options.tileSize;
+		}
 
 		for (var i in options) {
 			// all keys that are not TileLayer options go to WMS params
@@ -2917,7 +2926,7 @@ L.Popup = L.Class.extend({
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
-		offset: new L.Point(0, 2),
+		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
 		className: ''
 	},
@@ -2936,7 +2945,11 @@ L.Popup = L.Class.extend({
 		}
 		this._updateContent();
 
-		L.DomUtil.setOpacity(this._container, 0);
+		var animFade = map.options.fadeAnimation;
+
+		if (animFade) {
+			L.DomUtil.setOpacity(this._container, 0);
+		}
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -2951,7 +2964,9 @@ L.Popup = L.Class.extend({
 
 		this._update();
 
-		L.DomUtil.setOpacity(this._container, 1);
+		if (animFade) {
+			L.DomUtil.setOpacity(this._container, 1);
+		}
 	},
 
 	addTo: function (map) {
@@ -2975,7 +2990,9 @@ L.Popup = L.Class.extend({
 			zoomanim: this._zoomAnimation
 		}, this);
 
-		L.DomUtil.setOpacity(this._container, 0);
+		if (map.options.fadeAnimation) {
+			L.DomUtil.setOpacity(this._container, 0);
+		}
 
 		this._map = null;
 	},
@@ -3680,15 +3697,30 @@ L.Map.include({
  */
 
 L.Path.include({
+
 	bindPopup: function (content, options) {
+
 		if (!this._popup || this._popup.options !== options) {
 			this._popup = new L.Popup(options, this);
 		}
+
 		this._popup.setContent(content);
 
 		if (!this._openPopupAdded) {
 			this.on('click', this._openPopup, this);
 			this._openPopupAdded = true;
+		}
+
+		return this;
+	},
+
+	openPopup: function (latlng) {
+
+		if (this._popup) {
+			latlng = latlng || this._latlng ||
+					this._latlngs[Math.floor(this._latlngs.length / 2)];
+
+			this._openPopup({latlng: latlng});
 		}
 
 		return this;
@@ -3831,6 +3863,45 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		SVG: false
 	},
 
+	redraw: function () {
+		if (this._map) {
+			this.projectLatlngs();
+			this._requestUpdate();
+		}
+		return this;
+	},
+
+	setStyle: function (style) {
+		L.Util.setOptions(this, style);
+
+		if (this._map) {
+			this._updateStyle();
+			this._requestUpdate();
+		}
+		return this;
+	},
+
+	onRemove: function (map) {
+		map
+		    .off('viewreset', this.projectLatlngs, this)
+		    .off('moveend', this._updatePath, this);
+
+		this._requestUpdate();
+
+		this._map = null;
+	},
+
+	_requestUpdate: function () {
+		if (this._map) {
+			L.Util.cancelAnimFrame(this._fireMapMoveEnd);
+			this._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+		}
+	},
+
+	_fireMapMoveEnd: function () {
+		this.fire('moveend');
+	},
+
 	_initElements: function () {
 		this._map._initPathRoot();
 		this._ctx = this._map._canvasCtx;
@@ -3912,14 +3983,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		if (this._containsPoint(e.layerPoint)) {
 			this.fire('click', e);
 		}
-	},
-
-    onRemove: function (map) {
-        map
-	        .off('viewreset', this._projectLatlngs, this)
-            .off('moveend', this._updatePath, this)
-            .fire('moveend');
-    }
+	}
 });
 
 L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} : {
