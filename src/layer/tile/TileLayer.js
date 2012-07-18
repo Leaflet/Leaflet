@@ -287,7 +287,9 @@ L.TileLayer = L.Class.extend({
 			this._container.removeChild(tile);
 		}
 
-		tile.src = L.Util.emptyImageUrl;
+		if (!L.Browser.android) { //For https://github.com/CloudMade/Leaflet/issues/137
+			tile.src = L.Util.emptyImageUrl;
+		}
 
 		delete this._tiles[key];
 	},
