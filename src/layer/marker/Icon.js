@@ -32,7 +32,7 @@ L.Icon = L.Class.extend({
 			}
 			return null;
 		}
-		
+
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
 
@@ -87,48 +87,3 @@ L.Icon = L.Class.extend({
 L.icon = function (options) {
 	return new L.Icon(options);
 };
-
-
-// TODO move to a separate file
-
-L.Icon.Default = L.Icon.extend({
-	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
-
-		shadowSize: new L.Point(41, 41)
-	},
-
-	_getIconUrl: function (name) {
-		var key = name + 'Url';
-
-		if (this.options[key]) {
-			return this.options[key];
-		}
-
-		var path = L.Icon.Default.imagePath;
-		
-		if (!path) {
-			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
-		}
-
-		return path + '/marker-' + name + '.png';
-	}
-});
-
-L.Icon.Default.imagePath = (function () {
-	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
-
-	var i, len, src, matches;
-
-	for (i = 0, len = scripts.length; i < len; i++) {
-		src = scripts[i].src;
-		matches = src.match(leafletRe);
-
-		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
-		}
-	}
-}());

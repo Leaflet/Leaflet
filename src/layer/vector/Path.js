@@ -9,8 +9,8 @@ L.Path = L.Class.extend({
 		// how much to extend the clip area around the map view
 		// (relative to its size, e.g. 0.5 is half the screen in each direction)
 		// set in such way that SVG element doesn't exceed 1280px (vector layers flicker on dragend if it is)
-		CLIP_PADDING: L.Browser.mobile ? 
-			Math.max(0, Math.min(0.5, 
+		CLIP_PADDING: L.Browser.mobile ?
+			Math.max(0, Math.min(0.5,
 				(1280 / Math.max(window.innerWidth, window.innerHeight) - 1) / 2))
 			: 0.5
 	},
