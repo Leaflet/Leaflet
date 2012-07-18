@@ -336,7 +336,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		ie6 = ie && !window.XMLHttpRequest,
 		webkit = ua.indexOf("webkit") !== -1,
 		gecko = ua.indexOf("gecko") !== -1,
-		safari = ua.indexOf("safari") !== -1 && ua.indexOf("chrome") === -1,
+		//Terrible browser detection to work around a safari / iOS / android browser bug. See TileLayer._addTile and debug/hacks/jitter.html
+		chrome = ua.indexOf("chrome") !== -1,
 		opera = window.opera,
 		android = ua.indexOf("android") !== -1,
 		android23 = ua.search("android [23]") !== -1,
@@ -384,7 +385,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		android: android,
 		android23: android23,
 
-		safari: safari,
+		chrome: chrome,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,
@@ -2140,8 +2141,11 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		//Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7 has display issues with top/left and requires transform instead. (Other browsers don't currently care)
-		L.DomUtil.setPosition(tile, tilePos, !L.Browser.safari);
+
+		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7, iOS 5.1.1,
+		// android browser (4.0) have display issues with top/left and requires transform instead
+		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
+		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
 
 		this._tiles[key] = tile;
 
@@ -2555,7 +2559,7 @@ L.Icon = L.Class.extend({
 			}
 			return null;
 		}
-		
+
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
 
@@ -2612,13 +2616,13 @@ L.icon = function (options) {
 };
 
 
-// TODO move to a separate file
 
 L.Icon.Default = L.Icon.extend({
+
 	options: {
 		iconSize: new L.Point(25, 41),
 		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
+		popupAnchor: new L.Point(1, -34),
 
 		shadowSize: new L.Point(41, 41)
 	},
@@ -2631,7 +2635,7 @@ L.Icon.Default = L.Icon.extend({
 		}
 
 		var path = L.Icon.Default.imagePath;
-		
+
 		if (!path) {
 			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
 		}
@@ -2655,6 +2659,7 @@ L.Icon.Default.imagePath = (function () {
 		}
 	}
 }());
+
 
 /*
  * L.Marker is used to display clickable/draggable icons on the map.
@@ -2755,7 +2760,8 @@ L.Marker = L.Class.extend({
 		var options = this.options,
 		    map = this._map,
 		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
-		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
+		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide',
+		    needOpacityUpdate = false;
 
 		if (!this._icon) {
 			this._icon = options.icon.createIcon();
@@ -2765,7 +2771,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
-			this._updateOpacity();
+			needOpacityUpdate = true;
 
 			L.DomUtil.addClass(this._icon, classToAdd);
 		}
@@ -2774,7 +2780,12 @@ L.Marker = L.Class.extend({
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
+				needOpacityUpdate = true;
 			}
+		}
+
+		if (needOpacityUpdate) {
+			this._updateOpacity();
 		}
 
 		var panes = this._map._panes;
@@ -2863,8 +2874,11 @@ L.Marker = L.Class.extend({
 		}
 	},
 
-	_updateOpacity: function (opacity) {
+	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._icon, this.options.opacity);
+		if (this._shadow) {
+			L.DomUtil.setOpacity(this._shadow, this.options.opacity);
+		}
 	}
 });
 
@@ -3197,6 +3211,8 @@ L.Marker.include({
 	bindPopup: function (content, options) {
 		var anchor = L.point(this.options.icon.options.popupAnchor) || new L.Point(0, 0);
 
+		anchor = anchor.add(L.Popup.prototype.options.offset);
+
 		if (options && options.offset) {
 			anchor = anchor.add(options.offset);
 		}
@@ -3404,7 +3420,11 @@ L.Path = L.Class.extend({
 	statics: {
 		// how much to extend the clip area around the map view
 		// (relative to its size, e.g. 0.5 is half the screen in each direction)
-		CLIP_PADDING: 0.5
+		// set in such way that SVG element doesn't exceed 1280px (vector layers flicker on dragend if it is)
+		CLIP_PADDING: L.Browser.mobile ?
+			Math.max(0, Math.min(0.5,
+				(1280 / Math.max(window.innerWidth, window.innerHeight) - 1) / 2))
+			: 0.5
 	},
 
 	options: {
