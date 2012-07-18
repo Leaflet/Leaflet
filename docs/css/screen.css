@@ -34,7 +34,7 @@ h1 a {
 	-webkit-transition: 0.8s all;
 
 	-webkit-animation-duration: 2s;
-	-webkit-animation-delay: 10s;
+	-webkit-animation-delay: 15s;
 	-webkit-animation-name: autumn;
 	-webkit-animation-iteration-count: 2;
 	-webkit-animation-direction: alternate;
@@ -42,11 +42,11 @@ h1 a {
 
 @-webkit-keyframes autumn {
 	from { -webkit-filter: none; }
-	to { -webkit-filter: hue-rotate(-70deg) saturate(2); }
+	to { -webkit-filter: hue-rotate(-70deg) saturate(1.5); }
 }
 
 h1 a:hover, h1 a:focus {
-	-webkit-filter: hue-rotate(-70deg) saturate(2);
+	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
 }
 
 
