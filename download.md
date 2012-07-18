@@ -10,7 +10,7 @@ code, unit tests, files for debugging and a build system. The production
 files (included the same way as in the code above) are in the `dist`
 folder.
 
-[Download Leaflet 0.3.1 stable](https://github.com/CloudMade/Leaflet/zipball/v0.3.1) (February 14, 2012)
+[Download Leaflet 0.3.1 stable](https://github.com/CloudMade/Leaflet/zipball/v0.3.1) (February 14, 2012)<br />
 [Download Leaflet 0.4 master](http://github.com/CloudMade/Leaflet/zipball/master) (in-progress version)
 
 [View Changelog](https://github.com/CloudMade/Leaflet/blob/master/CHANGELOG.md)
