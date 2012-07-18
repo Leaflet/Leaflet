@@ -2,41 +2,41 @@
 layout: default
 title: Tutorials
 ---
-		
-### Leaflet tutorials
+
+### Leaflet Tutorials
 
 Every example here comes with step-by-step code explanation and is easy enough even for beginner JavaScript developers.
 
 ***
-[<img src="docs/images/quick-start.png" class="example-img bordered-img" />][1] 
+[<img src="docs/images/quick-start.png" class="example-img bordered-img" />][1]
 
 ### [Leaflet Quick Start Guide][1]
 
 A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with CloudMade tiles) on your page, working with markers, polylines and popups, and dealing with events.
 
 ***
-[<img src="docs/images/mobile.png" class="example-img" />][2] 
+[<img src="docs/images/mobile.png" class="example-img" />][2]
 
 ### [Leaflet on Mobile][2]
 
 In this example, you'll learn how to create a fullscreen map tuned for mobile devices like iPhone, iPad or Android phones, and how to easily detect and use the current user location.
 
 ***
-[<img src="docs/images/custom-icons.png" class="example-img bordered-img" />][3] 
+[<img src="docs/images/custom-icons.png" class="example-img bordered-img" />][3]
 
 ### [Markers With Custom Icons][3]
 
 In this pretty example, you'll learn how to easily define your own icons for use by the markers you put on the map.
 
 ***
-[<img src="docs/images/geojson.png" class="example-img bordered-img" />][4] 
+[<img src="docs/images/geojson.png" class="example-img bordered-img" />][4]
 
 ### [Using GeoJSON with Leaflet][4]
 
 In this example, you'll learn how to create and interact with map vectors created from [GeoJSON][5] objects.
 
 ***
-[<img src="docs/images/layers-control.png" class="example-img bordered-img" />][6] 
+[<img src="docs/images/layers-control.png" class="example-img bordered-img" />][6]
 
 ### [Layer Groups and Layers Control][6]
 

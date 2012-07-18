@@ -7,7 +7,7 @@ Leaflet is a modern open-source JavaScript library for mobile-friendly interacti
 It is built from the ground up to work efficiently on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade][] browser support and [a simple API][] with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based [code of the library][] is designed to be modular, extensible and very easy to understand.
 
 
-### Basic usage example
+### Basic Usage Example
 
 <div id="map"></div>
 
@@ -28,7 +28,7 @@ L.marker([<span class="number">51.5</span>, -<span class="number">0.09</span>]).
     .bindPopup(<span class="string">'A pretty CSS3 popup. &lt;br&gt; Easily customizable.'</span>).openPopup();</code></pre>
 
 
-Check out the [examples](examples.html) section for more examples, or head straight to the [documentation](reference.html).
+Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html).
 
 
 ### Contributing to Leaflet
