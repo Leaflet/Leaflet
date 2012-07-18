@@ -15,32 +15,36 @@ pre .template_comment,
 pre .diff .header,
 pre .javadoc {
   color: #998;
-  font-style: italic
 }
 
 code .keyword,
 pre .css .rule .keyword,
 pre .winutils,
-pre .javascript .title,
+/*pre .javascript .title,*/
 pre .lisp .title,
 pre .nginx .title,
 pre .subst,
 pre .request,
 pre .status {
-  color: #000;
-  font-weight: bold
+  color: #026D97;
+  font-weight: normal;
+}
+
+pre .javascript .title {
+  color: black;
+  font-weight: bold;
 }
 
 code .number,
 pre .hexcolor {
-  color: #40a070
+  color: #00A707
 }
 
 code .string,
 pre .tag .value,
 pre .phpdoc,
 pre .tex .formula {
-  color: #d14
+  color: #E43E59;
 }
 
 pre .title,
