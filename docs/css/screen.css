@@ -393,3 +393,29 @@ table.factory-table td, table.factory-table th {
 .footer {
 	margin-top: 2.5em;
 }
+
+dl {
+	overflow: hidden;
+}
+
+dl dt {
+	font-size: 14px;
+	font-weight: normal;
+	float: left;
+	clear: left;
+	width: 160px;
+}
+
+dl dd {
+	margin-bottom: 2em;
+	float: left;
+	width: 500px;
+}
+
+.plugins td:first-child, .plugins td:last-child {
+	white-space: nowrap;
+}
+
+.plugins td {
+	color: black;
+}
