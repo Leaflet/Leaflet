@@ -78,6 +78,9 @@ h2 {
 
 	text-shadow: -1px -1px 0 #999;
 	}
+h2.less-margin {
+	margin-top: 1em;
+}
 h3 {
 	margin-top: 1.5em;
 	}
