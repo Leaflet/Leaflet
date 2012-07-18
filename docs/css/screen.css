@@ -30,7 +30,27 @@ h1 a {
 	margin-left: -10px;
 	margin-bottom: 8px;
 	text-decoration: none;
+
+	-webkit-transition: 0.8s all;
+
+	-webkit-animation-duration: 2s;
+	-webkit-animation-delay: 10s;
+	-webkit-animation-name: autumn;
+	-webkit-animation-iteration-count: 2;
+	-webkit-animation-direction: alternate;
 	}
+
+@-webkit-keyframes autumn {
+	from { -webkit-filter: none; }
+	to { -webkit-filter: hue-rotate(-70deg) saturate(2); }
+}
+
+h1 a:hover, h1 a:focus {
+	-webkit-filter: hue-rotate(-70deg) saturate(2);
+}
+
+
+
 h2 {
 	font-size: 1.8em;
 	font-weight: bold;
@@ -122,7 +142,7 @@ td {
 
 .nav {
 	padding: 0;
-	margin: 28px -13px 2.5em;
+	margin: 28px 0 2.5em;
 
 	list-style: none;
 	font-size: 1.2em;
@@ -131,9 +151,9 @@ td {
 
 	background-color: #ffffff;
 	background-image: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#eaebec)); /* Saf4+, Chrome */
-  background-image: -webkit-linear-gradient(top, #ffffff, #eaebec); /* Chrome 10+, Saf5.1+, iOS 5+ */
-  background-image:    -moz-linear-gradient(top, #ffffff, #eaebec); /* FF3.6+ */
-  background-image:      -o-linear-gradient(top, #ffffff, #eaebec); /* Opera 11.10+ */
+	background-image: -webkit-linear-gradient(top, #ffffff, #eaebec); /* Chrome 10+, Saf5.1+, iOS 5+ */
+	background-image:    -moz-linear-gradient(top, #ffffff, #eaebec); /* FF3.6+ */
+	background-image:      -o-linear-gradient(top, #ffffff, #eaebec); /* Opera 11.10+ */
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#ffffff', EndColorStr='#eff0f1'); /* IE6�IE9 */
 
 	border-radius: 10px;
@@ -144,6 +164,7 @@ td {
 	-moz-box-shadow: 0 0 8px #eee;
 	-webkit-box-shadow: 0 0 8px #eee;
 	}
+
 	.nav li a, .nav li span {
 		float: left;
 		padding: 0 13px;
@@ -161,30 +182,20 @@ td {
 	.nav li span {
 		color: #000;
 
-		background-color: #f8f9fa;
-		background-image: -moz-linear-gradient(top, #f8f9fa, #d4d5d6);
-		background-image: -o-linear-gradient(top, #f8f9fa, #d4d5d6);
-		background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f8f9fa),color-stop(1, #d4d5d6));
-		background-image: -webkit-linear-gradient(#f8f9fa, #d4d5d6);
-		background-image: linear-gradient(top, #f8f9fa, #d4d5d6);
+		background-color: #e8e9ea;
+		background-color: #f3f4f5;
+		background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f4f5), to(#cacbcc)); /* Saf4+, Chrome */
+		background-image: -webkit-linear-gradient(top, #f3f4f5, #cacbcc); /* Chrome 10+, Saf5.1+, iOS 5+ */
+		background-image:    -moz-linear-gradient(top, #f3f4f5, #cacbcc); /* FF3.6+ */
+		background-image:      -o-linear-gradient(top, #f3f4f5, #cacbcc); /* Opera 11.10+ */
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#f8f9fa', EndColorStr='#d4d5d6');
 	}
-	.nav li a:hover {
+	.nav li a:hover, .nav li a:focus {
 		color: black;
 
 		background-color: rgba(0,0,0,0.03);
 		
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
-	}
-	.nav li a.github-link {
-		background-image: url(../images/github.png); 
-		}
-	.nav li a.twitter-link {
-		background-image: url(../images/twitter.png);
-		}
-	.nav li a.forum-link {
-		padding-right: 12px;
-		background-image: url(../images/forum.png);
 	}
 	.nav li a.github-link,
 	.nav li a.twitter-link,
@@ -197,8 +208,20 @@ td {
 		padding-left: 30px;
 		padding-right: 10px;
 		filter: none;
-		background-position: 10px 12px;
+		background-position: 9px 12px;
 		}
+	.nav li a.github-link {
+		background-image: url(../images/github.png);
+		background-position: 10px 12px;
+		padding-left: 32px;
+		}
+	.nav li a.twitter-link {
+		background-image: url(../images/twitter.png);
+		}
+	.nav li a.forum-link {
+		padding-right: 12px;
+		background-image: url(../images/forum.png);
+	}
 	.nav li a.github-link:hover,
 	.nav li a.twitter-link:hover,
 	.nav li a.forum-link:hover {
@@ -210,10 +233,21 @@ td {
 	top: 0;
 	right: 0;
 	border: 0;
-	opacity: 0.4;
+	opacity: 0.3;
+
+	-webkit-filter: blur(1px);
+	-webkit-transform: scale(0.8);
+	-webkit-transform-origin: 100% 0;
+
+	-webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
+     -moz-transition: all 0.3s ease-out;  /* FF4+ */
+       -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
+          transition: all 0.3s ease-out;
 	}
-a:hover #forkme {
+a:hover #forkme, a:focus #forkme {
 	opacity: 1;
+	-webkit-filter: none;
+	-webkit-transform: scale(1);
 	}
 
 #toc {
