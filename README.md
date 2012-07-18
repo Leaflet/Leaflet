@@ -6,6 +6,15 @@ It is built from the ground up to work efficiently and smoothly on both desktop 
 
 Check out the website for more information: [leaflet.cloudmade.com](http://leaflet.cloudmade.com)
 
+## Contributing to Leaflet Website (Docs)
+
+ 1. Install Ruby if don't have it yet
+ 2. Run `gem install jekyll`
+ 3. Run `jekyll --auto` inside the `Leaflet` folder
+ 4. Open the website from the `_site` folder
+
+Now any file changes will be reflected on the generated pages automatically.
+
 ## Contributing to Leaflet
 Let's make the best open-source library for maps that can possibly exist!
 
