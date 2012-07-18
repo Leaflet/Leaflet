@@ -33,11 +33,11 @@ h1 a {
 
 	-webkit-transition: 0.8s all;
 
-	-webkit-animation-duration: 2s;
+	/*-webkit-animation-duration: 2s;
 	-webkit-animation-delay: 15s;
 	-webkit-animation-name: autumn;
 	-webkit-animation-iteration-count: 2;
-	-webkit-animation-direction: alternate;
+	-webkit-animation-direction: alternate;*/
 	}
 
 @-webkit-keyframes autumn {
@@ -194,7 +194,7 @@ td {
 		color: black;
 
 		background-color: rgba(0,0,0,0.03);
-		
+
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
 	.nav li a.github-link,
