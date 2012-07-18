@@ -23,7 +23,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 50);
+		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 40);
 
 		L.DomEvent.preventDefault(e);
 	},
