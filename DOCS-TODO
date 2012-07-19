@@ -1,0 +1,180 @@
+
+Layers addTo(map)
+
+Map
+	panning inertia options
+
+	remove locateAndSetView
+	new locate options
+
+	getContainer
+	containerPointToLatLng
+	latLngToContainerPoint
+	addHandler
+
+	autopanstart event
+
+Icon
+Icon.Default
+DivIcon
+
+Control
+	position option
+
+	setPosition
+	getPosition
+
+Control.Attribution prefix in options
+
+Scale control
+
+LatLngBounds pad
+
+on/off(eventMap)
+on/off(space-separated types)
+off(type) to remove all listeners
+
+TileLayer
+	removed urlParams
+
+	detectRetina option 
+
+	redraw
+	setUrl
+	bringToFront
+	bringToBack
+
+TileLayer.WMS
+	setParams
+
+Marker
+	opacity option
+	
+	setOpacity
+	update
+
+ImageOverlay
+	opacity option
+	
+	setOpacity
+
+Popup
+	maxHeight
+
+Path
+	bringToFront
+	bringToBack
+
+	openPopup
+
+	redraw
+
+	events
+		contextmenu
+
+Circle
+	getBounds
+	getLatLng
+	getRadius
+
+MouseEvent
+	originalEvent
+	containerPoint
+
+Global switches
+	L_NO_TOUCH
+	L_PREFER_CANVAS
+	L_DISABLE_3D
+
+
+
+Transformation
+	Transformation(a, b, c, d)
+
+	transform(point, scale)
+	untransform(point, scale)
+
+LineUtil
+	simplify(points, tolerance)
+	pointToSegmentDistance(p, p1, p2)
+	closestPointOnSegment(p, p1, p2)
+	clipSegment(a, b, bounds)
+
+PolyUtil
+	clipPolygon(points, bounds)
+
+DomEvent
+	addListener(obj, type, fn, context)
+	on
+	removeListener(obj, type, fn)
+	off
+	stopPropagation(e)
+	disableClickPropagation(el)
+	preventDefault(e)
+	stop(e)
+	getMousePosition(e, container)
+	getWheelDelta(e)
+
+Transition
+	Transition(el, options)
+
+	run(props)
+
+	options
+		fps: 50
+		easing: 'ease',
+		duration: 0.5
+		fakeStepInterval: 100
+
+	events
+		start
+		step
+		end
+
+Draggable
+	Draggable(element, dragStartTarget)
+	
+	enable()
+	disable()
+
+	events
+		dragstart
+		predrag
+		drag
+		dragend
+
+ILayer
+	onAdd(map)
+	onRemove(map)
+
+	important events: viewreset, moveend
+
+	options.minZoom and options.maxZoom
+
+IFeature - ?
+	getBounds() or getLatLng()
+	setStyle
+	bindPopup
+	events
+
+Control
+	Control(options)
+
+	getPosition()
+	setPosition()
+	addTo(map)
+	removeFrom(map)
+
+IControl
+	onAdd(map)
+	onRemove(map)
+
+IProjection
+	project(latlng)
+	unproject(point)
+
+ICRS
+	latLngToPoint(latlng, zoom)
+	pointToLatLng(point, zoom)
+	project(latlng)
+	scale(zoom)
