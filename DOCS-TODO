@@ -1,65 +1,27 @@
-
-Layers addTo(map)
-
 Map
 	panning inertia options
 
 	remove locateAndSetView
 	new locate options
 
-	getContainer
-	containerPointToLatLng
-	latLngToContainerPoint
 	addHandler
-
-	autopanstart event
 
 Icon
 Icon.Default
-DivIcon
 
-Control
-	position option
-
-	setPosition
-	getPosition
-
-Control.Attribution prefix in options
-
-Scale control
-
-LatLngBounds pad
+NEW DivIcon
 
 on/off(eventMap)
 on/off(space-separated types)
 off(type) to remove all listeners
 
 TileLayer
-	removed urlParams
-
-	detectRetina option 
+	detectRetina option
 
 	redraw
 	setUrl
 	bringToFront
 	bringToBack
-
-TileLayer.WMS
-	setParams
-
-Marker
-	opacity option
-	
-	setOpacity
-	update
-
-ImageOverlay
-	opacity option
-	
-	setOpacity
-
-Popup
-	maxHeight
 
 Path
 	bringToFront
@@ -69,41 +31,30 @@ Path
 
 	redraw
 
-	events
-		contextmenu
+FeatureGroup - ?
+	setStyle
 
-Circle
-	getBounds
-	getLatLng
-	getRadius
-
-MouseEvent
-	originalEvent
-	containerPoint
-
-Global switches
+NEW Global switches
 	L_NO_TOUCH
 	L_PREFER_CANVAS
 	L_DISABLE_3D
 
-
-
-Transformation
+NEW Transformation
 	Transformation(a, b, c, d)
 
 	transform(point, scale)
 	untransform(point, scale)
 
-LineUtil
+NEW LineUtil
 	simplify(points, tolerance)
 	pointToSegmentDistance(p, p1, p2)
 	closestPointOnSegment(p, p1, p2)
 	clipSegment(a, b, bounds)
 
-PolyUtil
+NEW PolyUtil
 	clipPolygon(points, bounds)
 
-DomEvent
+NEW DomEvent
 	addListener(obj, type, fn, context)
 	on
 	removeListener(obj, type, fn)
@@ -115,7 +66,7 @@ DomEvent
 	getMousePosition(e, container)
 	getWheelDelta(e)
 
-Transition
+NEW Transition
 	Transition(el, options)
 
 	run(props)
@@ -131,9 +82,9 @@ Transition
 		step
 		end
 
-Draggable
+NEW Draggable
 	Draggable(element, dragStartTarget)
-	
+
 	enable()
 	disable()
 
@@ -143,7 +94,7 @@ Draggable
 		drag
 		dragend
 
-ILayer
+NEW ILayer
 	onAdd(map)
 	onRemove(map)
 
@@ -151,29 +102,15 @@ ILayer
 
 	options.minZoom and options.maxZoom
 
-IFeature - ?
-	getBounds() or getLatLng()
-	setStyle
-	bindPopup
-	events
-
-Control
-	Control(options)
-
-	getPosition()
-	setPosition()
-	addTo(map)
-	removeFrom(map)
-
-IControl
+NEW IControl
 	onAdd(map)
 	onRemove(map)
 
-IProjection
+NEW IProjection
 	project(latlng)
 	unproject(point)
 
-ICRS
+NEW ICRS
 	latLngToPoint(latlng, zoom)
 	pointToLatLng(point, zoom)
 	project(latlng)

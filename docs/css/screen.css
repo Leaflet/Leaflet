@@ -122,24 +122,32 @@ pre code a:hover {
 	text-decoration: underline;
 	}
 
+p code, td:last-child code {
+	color: #666;
+}
+
 table {
 	border-collapse: collapse;
 	box-shadow: 0 3px 15px #f0f0f0;
 	}
 th {
-	background-color: #f3f3f3;
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#f3f3f3), to(#e7e7e7)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient(top, #f3f3f3, #e7e7e7); /* Chrome 10+, Saf5.1+, iOS 5+ */
-	background-image:    -moz-linear-gradient(top, #f3f3f3, #e7e7e7); /* FF3.6+ */
-	background-image:      -o-linear-gradient(top, #f3f3f3, #e7e7e7); /* Opera 11.10+ */
-	background-image:         linear-gradient(to bottom, #f3f3f3, #e7e7e7);
+	background-color: #eeeeee;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#eeeeee), to(#d7d7d7)); /* Saf4+, Chrome */
+	background-image: -webkit-linear-gradient(top, #eeeeee, #d7d7d7); /* Chrome 10+, Saf5.1+, iOS 5+ */
+	background-image:    -moz-linear-gradient(top, #eeeeee, #d7d7d7); /* FF3.6+ */
+	background-image:      -o-linear-gradient(top, #eeeeee, #d7d7d7); /* Opera 11.10+ */
+	background-image:         linear-gradient(to bottom, #eeeeee, #d7d7d7);
+
+	text-shadow: 1px 1px 0 white;
+
+	padding: 5px 10px;
 	}
 th, td {
-	padding: 8px 10px;
 	vertical-align: top;
 	/*line-height: 1.4;*/
 	}
 td {
+	padding: 8px 10px;
 	/*border-right: 1px solid #eee;*/
 }
 

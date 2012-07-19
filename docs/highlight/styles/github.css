@@ -36,7 +36,8 @@ pre .javascript .title {
 }
 
 code .number,
-pre .hexcolor {
+pre .hexcolor,
+code .literal {
   color: #00A707
 }
 
@@ -65,9 +66,6 @@ pre .vhdl .literal,
 pre .tex .command {
   color: #458;
   font-weight: bold
-}
-code .literal {
-  color: #333;
 }
 
 pre .tag,
