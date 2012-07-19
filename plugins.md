@@ -8,7 +8,7 @@ title: Plugins
 While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are lots of nice plugins to choose from.
 
 
-<h2 class="less-margin">Layers and Overlays</h2>
+## Layers and Overlays
 
 <table class="plugins">
 	<tr>
@@ -64,7 +64,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-<h2 class="less-margin">Services, Providers and Formats</h2>
+## Services, Providers and Formats
 
 <table class="plugins">
 	<tr>
@@ -147,7 +147,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-<h2 class="less-margin">Controls</h2>
+## Controls
 
 <table class="plugins">
 	<tr>
@@ -212,7 +212,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-<h2 class="less-margin">Other Plugins</h2>
+## Other Plugins
 
 <table class="plugins">
 	<tr>

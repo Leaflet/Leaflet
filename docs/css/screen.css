@@ -53,8 +53,8 @@ h1 a:hover, h1 a:focus {
 
 h2 {
 	font-size: 1.8em;
+	margin-top: 1em;
 	font-weight: bold;
-	margin-top: 2.5em;
 	padding: 4px 12px 3px;
 	margin-left: 0;
 	margin-right: 0;
@@ -78,9 +78,9 @@ h2 {
 
 	text-shadow: -1px -1px 0 #999;
 	}
-h2.less-margin {
-	margin-top: 1em;
-}
+.api-page h2 {
+	margin-top: 2.5em;
+	}
 h3 {
 	margin-top: 1.5em;
 	}
@@ -94,6 +94,7 @@ h4 {
 	font-weight: bold;
 	color: #555;
 	}
+
 h3.alt {
 	color: #999;
 	font-family: Georgia, serif;
@@ -145,7 +146,7 @@ td {
 
 .nav {
 	padding: 0;
-	margin: 28px 0 2.5em;
+	margin: 28px 0 32px;
 
 	list-style: none;
 	font-size: 1.2em;
