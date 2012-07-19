@@ -1,4 +1,4 @@
-exclude: build, node_modules, spec, src, CNAME, Jakefile.js, reference-tpl.html, CHANGELOG.md, README.md, LICENSE
+exclude: build, debug, node_modules, spec, src, CNAME, Jakefile.js, reference-tpl.html, CHANGELOG.md, README.md, LICENSE, DOCS-TODO.md
 
 markdown: kramdown
 
