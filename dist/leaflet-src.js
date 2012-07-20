@@ -57,48 +57,9 @@ L.Util = {
 		};
 	}()),
 
-
-	// TODO refactor: remove repetition
-
-	requestAnimFrame: (function () {
-		function timeoutDefer(callback) {
-			window.setTimeout(callback, 1000 / 60);
-		}
-
-		var requestFn = window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			timeoutDefer;
-
-		return function (callback, context, immediate, contextEl) {
-			callback = context ? L.Util.bind(callback, context) : callback;
-			if (immediate && requestFn === timeoutDefer) {
-				callback();
-			} else {
-				return requestFn.call(window, callback, contextEl);
-			}
-		};
-	}()),
-
-	cancelAnimFrame: (function () {
-		var requestFn = window.cancelAnimationFrame ||
-			window.webkitCancelRequestAnimationFrame ||
-			window.mozCancelRequestAnimationFrame ||
-			window.oCancelRequestAnimationFrame ||
-			window.msCancelRequestAnimationFrame ||
-			clearTimeout;
-
-		return function (handle) {
-			if (!handle) { return; }
-			return requestFn.call(window, handle);
-		};
-	}()),
-
 	limitExecByInterval: function (fn, time, context) {
 		var lock, execOnUnlock;
-		
+
 		return function wrapperFn() {
 			var args = arguments;
 
@@ -108,10 +69,10 @@ L.Util = {
 			}
 
 			lock = true;
-			
+
 			setTimeout(function () {
 				lock = false;
-				
+
 				if (execOnUnlock) {
 					wrapperFn.apply(context, args);
 					execOnUnlock = false;
@@ -162,6 +123,41 @@ L.Util = {
 
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };
+
+(function () {
+
+	function getPrefixed(name) {
+		var i, fn,
+			prefixes = ['webkit', 'moz', 'o', 'ms'];
+
+		for (i = 0; i < prefixes.length && !fn; i++) {
+			fn = window[prefixes[i] + name];
+		}
+
+		return fn;
+	}
+
+	function callImmediately(fn) { fn(); }
+
+	var requestFn = window.requestAnimationFrame ||
+			getPrefixed('RequestAnimationFrame') || callImmediately;
+
+	var cancelFn = window.cancelAnimationFrame ||
+			getPrefixed('CancelAnimationFrame') ||
+			getPrefixed('CancelRequestAnimationFrame') || L.Util.falseFn;
+
+
+	L.Util.requestAnimFrame = function (fn, context) {
+		return requestFn.call(window, L.Util.bind(fn, context));
+	};
+
+	L.Util.cancelAnimFrame = function (id) {
+		if (id) {
+			cancelFn.call(window, id);
+		}
+	};
+
+}());
 
 
 /*
@@ -2113,7 +2109,9 @@ L.TileLayer = L.Class.extend({
 			this._container.removeChild(tile);
 		}
 
-		tile.src = L.Util.emptyImageUrl;
+		if (!L.Browser.android) { //For https://github.com/CloudMade/Leaflet/issues/137
+			tile.src = L.Util.emptyImageUrl;
+		}
 
 		delete this._tiles[key];
 	},
@@ -2534,6 +2532,7 @@ L.Icon = L.Class.extend({
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
 		shadowSize: (Point)
+		shadowAnchor: (Point)
 		*/
 		className: ''
 	},
@@ -2569,15 +2568,16 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 			size = L.point(options[name + 'Size']),
-			anchor = L.point(options.iconAnchor),
-			offset = L.point(options.shadowOffset);
+			anchor;
+
+		if (name === 'shadow') {
+			anchor = L.point(options.shadowAnchor || options.iconAnchor);
+		} else {
+			anchor = L.point(options.iconAnchor);
+		}
 
 		if (!anchor && size) {
 			anchor = size.divideBy(2, true);
-		}
-
-		if (name === 'shadow' && anchor && offset) {
-			anchor = anchor.add(offset);
 		}
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className;
@@ -3362,7 +3362,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 			return this;
 		}
 		
-		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
+		layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -3374,7 +3374,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
-		layer.off('click dblclick mouseover mouseout', this._propagateEvent, this);
+		layer.off('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
@@ -5255,7 +5255,7 @@ L.Draggable = L.Class.extend({
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
-		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
+		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this);
 	},
 
 	_updatePosition: function () {
@@ -5550,7 +5550,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 50);
+		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 40);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -5585,6 +5585,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 });
 
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
+
 
 L.Util.extend(L.DomEvent, {
 	// inspired by Zepto touch code by Thomas Fuchs
