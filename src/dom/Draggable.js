@@ -92,7 +92,7 @@ L.Draggable = L.Class.extend({
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
-		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
+		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this);
 	},
 
 	_updatePosition: function () {
