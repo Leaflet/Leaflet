@@ -88,11 +88,11 @@ h3.alt {
 	margin-top: 0;
 	}
 h4 {
-	margin-bottom: 0.2em;
+	margin-bottom: 0.5em;
 	line-height: inherit;
-	font-size: 1em;
+	font-size: 1.1em;
 	font-weight: bold;
-	color: #555;
+	color: #777;
 	}
 
 h3.alt {
@@ -366,6 +366,9 @@ th.width300 {
 }
 th.width100 {
 	width: 100px;
+}
+th.width140 {
+	width: 140px;
 }
 th.minwidth {
 	width: 1px;

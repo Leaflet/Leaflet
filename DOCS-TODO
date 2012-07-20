@@ -1,15 +1,3 @@
-Map
-	panning inertia options
-
-	remove locateAndSetView
-	new locate options
-
-	addHandler
-
-Icon
-Icon.Default
-
-NEW DivIcon
 
 on/off(eventMap)
 on/off(space-separated types)
@@ -20,19 +8,9 @@ TileLayer
 
 	redraw
 	setUrl
-	bringToFront
-	bringToBack
 
 Path
-	bringToFront
-	bringToBack
-
-	openPopup
-
 	redraw
-
-FeatureGroup - ?
-	setStyle
 
 NEW Global switches
 	L_NO_TOUCH
@@ -115,3 +93,6 @@ NEW ICRS
 	pointToLatLng(point, zoom)
 	project(latlng)
 	scale(zoom)
+
+
+Map addHandler?

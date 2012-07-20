@@ -159,6 +159,8 @@ var map = L.map('map', {
 
 <h3 id="map-options">Options</h3>
 
+<h4>Map State Options</h4>
+
 <table>
 	<tr>
 		<th>Option</th>
@@ -181,19 +183,19 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>layers</b></code></td>
 		<td><code>ILayer[]</code></td>
-		<td><code>[]</code></td>
+		<td><code><span class="literal">null</span></code></td>
 		<td>Layers that will be added to the map initially.</td>
 	</tr>
 	<tr>
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0</span></code></td>
+		<td><code><span class="literal">null</span></code></td>
 		<td>Minimum zoom level of the map. Overrides any <code>minZoom</code> set on map layers.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">18</span></code></td>
+		<td><code><span class="literal">null</span></code></td>
 		<td>Maximum zoom level of the map. This overrides any <code>maxZoom</code> set on map layers.</td>
 	</tr>
 	<tr id="map-maxbounds">
@@ -207,6 +209,17 @@ var map = L.map('map', {
 		<td><code><a href="#map-projections">CRS</a></code></td>
 		<td><code>L.CRS.<br/>EPSG3857</code></td>
 		<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
+	</tr>
+</table>
+
+<h4>Interaction Options</h4>
+
+<table>
+	<tr>
+		<th class="width140">Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
 	</tr>
 	<tr>
 		<td><code><b>dragging</b></code></td>
@@ -239,6 +252,70 @@ var map = L.map('map', {
 		<td>Whether the map can be zoomed to a rectangular area specified by dragging the mouse while pressing shift.</td>
 	</tr>
 	<tr>
+		<td><code><b>trackResize</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>Whether the map automatically handles browser window resize to update itself.</td>
+	</tr>
+	<tr>
+		<td><code><b>worldCopyJump</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>With this option enabled, the map tracks when you pan to another "copy" of the world and moves all overlays like markers and vector layers there.</td>
+	</tr>
+	<tr>
+		<td><code><b>closePopupOnClick</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>Set it to <code><span class="literal">false</span></code> if you don't want popups to close when user clicks the map.</td>
+	</tr>
+</table>
+
+<h4>Panning Inertia Options</h4>
+
+<table>
+	<tr>
+		<th class="width140">Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>inertia</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>If enabled, panning of the map will have an inertia effect where the map builds momentum while dragging and continues moving in the same direction for some time. Feels especially nice on touch devices.</td>
+	</tr>
+	<tr>
+		<td><code><b>inertiaDeceleration</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">3000</span></code></td>
+		<td>The rate with which the inertial movement slows down, in pixels/second<sup>2</sup>.</td>
+	</tr>
+	<tr>
+		<td><code><b>inertiaMaxSpeed</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">1500</span></code></td>
+		<td>Max speed of the inertial movement, in pixels/second.</td>
+	</tr>
+	<tr>
+		<td><code><b>inertiaThreshold</b></code></td>
+		<td><code>Number</code></td>
+		<td><code>depends</code></td>
+		<td>Amount of milliseconds that should pass between stopping the movement and releasing the mouse or touch to prevent inertial movement. <code><span class="number">32</span></code> for touch devices and <code><span class="number">14</span></code> for the rest by default.</td>
+	</tr>
+</table>
+
+<h4>Control options</h4>
+
+<table>
+	<tr>
+		<th class="width140">Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
 		<td><code><b>zoomControl</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
@@ -250,11 +327,16 @@ var map = L.map('map', {
 		<td><code><span class="literal">true</span></code></td>
 		<td>Whether the <a href="#control-attribution">attribution control</a> is added to the map by default.</td>
 	</tr>
+</table>
+
+<h4>Animation options</h4>
+
+<table>
 	<tr>
-		<td><code><b>trackResize</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Whether the map automatically handles browser window resize to update itself.</td>
+		<th class="width140">Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
 	</tr>
 	<tr>
 		<td><code><b>fadeAnimation</b></code></td>
@@ -273,18 +355,6 @@ var map = L.map('map', {
 		<td><code>Boolean</code></td>
 		<td>depends</td>
 		<td>Whether markers animate their zoom with the zoom animation, if disabled they will disappear for the length of the animation. By default it's enabled in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr>
-		<td><code><b>closePopupOnClick</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Set it to <code><span class="literal">false</span></code> if you don't want popups to close when user clicks the map.</td>
-	</tr>
-	<tr>
-		<td><code><b>worldCopyJump</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>With this option enabled, the map tracks when you pan to another "copy" of the world and moves all overlays like markers and vector layers there.</td>
 	</tr>
 </table>
 
@@ -407,12 +477,12 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>locationfound</b></code></td>
 		<td><code><a href="#location-event">LocationEvent</a></code>
-		<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) went successfully.</td>
+		<td>Fired when geolocation (using <code>locate</code> method) went successfully.</td>
 	</tr>
 	<tr>
 		<td><code><b>locationerror</b></code></td>
 		<td><code><a href="#error-event">ErrorEvent</a></code>
-		<td>Fired when geolocation (using <code>locate</code> or <code>locateAndSetView</code> method) failed.</td>
+		<td>Fired when geolocation (using <code>locate</code> method) failed.</td>
 	</tr>
 	<tr>
 		<td><code><b>popupopen</b></code></td>
@@ -493,12 +563,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>locate</b>( <nobr>&lt;<a href="#map-locate-options">Locate options</a>&gt; <i>options?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure. See <a href="#map-locate-options">Locate options</a> for more details.</td>
-	</tr>
-	<tr>
-		<td><code><b>locateAndSetView</b>( <nobr>&lt;Number&gt; <i>maxZoom?</i>,</nobr> <nobr>&lt;<a href="#map-locate-options">Locate options</a>&gt; <i>options?</i> )</nobr></code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Automatically sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). A shortcut for <code><b>map.locate</b>({setView: true, maxZoom: maxZoom});</code>.</td>
+		<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure, and optionally sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). See <a href="#map-locate-options">Locate options</a> for more details.</td>
 	</tr>
 	<tr>
 		<td><code><b>stopLocate</b>()</code></td>
@@ -713,7 +778,7 @@ var map = L.map('map', {
 		<td><code><b>setView</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, automatically sets the map view to the user location with respect to detection accuracy.</td>
+		<td>If <code><span class="literal">true</span></code>, automatically sets the map view to the user location with respect to detection accuracy, or to world view if geolocation failed.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxZoom</b></code></td>
@@ -1344,6 +1409,16 @@ var map = L.map('map', {
 		<td>Adds the layer to the map.</td>
 	</tr>
 	<tr>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the tile layer to the top of all tile layers.</td>
+	</tr>
+	<tr>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the tile layer to the bottom of all tile layers.</td>
+	</tr>
+	<tr>
 		<td><code><b>setOpacity</b>( <nobr>&lt;Number&gt; <i>opacity</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the opacity of the tile layer.</td>
@@ -1667,40 +1742,6 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 	</tr>
 </table>
 
-<h3>Static properties</h3>
-<table>
-	<tr>
-		<th>Constant</th>
-		<th>Type</th>
-		<th>Value</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code>SVG</code></td>
-		<td><code>Boolean</code></td>
-		<td>depends</td>
-		<td>True if SVG is used for vector rendering (true for most modern browsers).</td>
-	</tr>
-	<tr>
-		<td><code>VML</code></td>
-		<td><code>Boolean</code></td>
-		<td>depends</td>
-		<td>True if VML is used for vector rendering (IE 6-8).</td>
-	</tr>
-	<tr>
-		<td><code>CANVAS</code></td>
-		<td><code>Boolean</code></td>
-		<td>depends</td>
-		<td>True if Canvas is used for vector rendering (Android 2). You can also force this by setting global variable <code>L_PREFER_CANVAS</code> to <code><span class="literal">true</span></code> <em>before</em> the Leaflet include on your page — sometimes it can increase performance dramatically when rendering thousands of circle markers, but currently suffers from a bug that causes removing such layers to be extremely slow.</td>
-	</tr>
-	<tr>
-		<td><code>CLIP_PADDING</code></td>
-		<td><code>Number</code></td>
-		<td><nobr><code><span class="number">0.5</span></code> for SVG</nobr><br /><nobr><code><span class="number">0.02</span></code> for VML</nobr></td>
-		<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance.</td>
-	</tr>
-</table>
-
 <h3 id="path-methods">Methods</h3>
 <table>
 	<tr>
@@ -1732,6 +1773,50 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><b>getBounds</b>()</code></td>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td>Returns the LatLngBounds of the path.</td>
+	</tr>
+	<tr>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the layer to the top of all path layers.</td>
+	</tr>
+	<tr>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the layer to the bottom of all path layers.</td>
+	</tr>
+</table>
+
+<h3>Static properties</h3>
+<table>
+	<tr>
+		<th>Constant</th>
+		<th>Type</th>
+		<th>Value</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code>SVG</code></td>
+		<td><code>Boolean</code></td>
+		<td>depends</td>
+		<td>True if SVG is used for vector rendering (true for most modern browsers).</td>
+	</tr>
+	<tr>
+		<td><code>VML</code></td>
+		<td><code>Boolean</code></td>
+		<td>depends</td>
+		<td>True if VML is used for vector rendering (IE 6-8).</td>
+	</tr>
+	<tr>
+		<td><code>CANVAS</code></td>
+		<td><code>Boolean</code></td>
+		<td>depends</td>
+		<td>True if Canvas is used for vector rendering (Android 2). You can also force this by setting global variable <code>L_PREFER_CANVAS</code> to <code><span class="literal">true</span></code> <em>before</em> the Leaflet include on your page — sometimes it can increase performance dramatically when rendering thousands of circle markers, but currently suffers from a bug that causes removing such layers to be extremely slow.</td>
+	</tr>
+	<tr>
+		<td><code>CLIP_PADDING</code></td>
+		<td><code>Number</code></td>
+		<td><nobr><code><span class="number">0.5</span></code> for SVG</nobr><br /><nobr><code><span class="number">0.02</span></code> for VML</nobr></td>
+		<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance.</td>
 	</tr>
 </table>
 
@@ -2149,7 +2234,7 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>bindPopup</b>( <nobr>&lt;String&gt; <i>htmlContent</i></nobr>, <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i></nobr> )</code></td>
+		<td><code><b>bindPopup</b>( <nobr>&lt;String&gt; <i>htmlContent</i></nobr>, <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on any layer from the group that has a <code>bindPopup</code> method.</td>
 	</tr>
@@ -2157,6 +2242,11 @@ map.fitBounds(bounds);</code></pre>
 		<td><code><b>getBounds</b>()</code></td>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td>Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).</td>
+	</tr>
+	<tr>
+		<td><code><b>setStyle</b>( <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>style</i> )</nobr></code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Sets the given path options to each layer of the group that has a <code>setStyle</code> method.</td>
 	</tr>
 </table>
 
@@ -2189,6 +2279,16 @@ map.fitBounds(bounds);</code></pre>
 		<td><code><b>mouseout</b></code></td>
 		<td><code><a href="#mouse-event">MouseEvent</a></code>
 		<td>Fired when the mouse leaves the group.</td>
+	</tr>
+	<tr>
+		<td><code><b>mousemove</b></code></td>
+		<td><code><a href="#mouse-event">MouseEvent</a></code>
+		<td>Fired while the mouse moves over the layers of the group.</td>
+	</tr>
+	<tr>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href="#mouse-event">MouseEvent</a></code>
+		<td>Fired when the user right-clicks on one of the layers.</td>
 	</tr>
 </table>
 
@@ -2715,11 +2815,12 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <pre><code class="javascript">var myIcon = L.icon({
 	iconUrl: 'my-icon.png',
-	shadowUrl: 'my-icon-shadow.png',
 	iconSize: [38, 95],
-	shadowSize: [68, 95],
 	iconAnchor: [22, 94],
-	popupAnchor: [-3, -76]
+	popupAnchor: [-3, -76],
+	shadowUrl: 'my-icon-shadow.png',
+	shadowSize: [68, 95],
+	shadowAnchor: [22, 94]
 });
 
 L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
@@ -2735,20 +2836,20 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Icon</b>( <nobr>&lt;<a href="#icon-properties">Icon properties</a>&gt; <i>props</i> )</nobr></code></td>
+		<td><code><b>L.Icon</b>( <nobr>&lt;<a href="#icon-options">Icon options</a>&gt; <i>options</i> )</nobr></code></td>
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Icon(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.icon(<span class="comment">&hellip;</span>)</code>
 		</td>
-		<td>Creates an icon instance with the given properties.</td>
+		<td>Creates an icon instance with the given options.</td>
 	</tr>
 </table>
 
-<h3 id="icon-properties">Properties</h3>
+<h3 id="icon-options">Options</h3>
 
 <table>
 	<tr>
-		<th>Property</th>
+		<th>Option</th>
 		<th>Type</th>
 		<th>Description</th>
 	</tr>
@@ -2765,12 +2866,12 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>iconAnchor</b></code></td>
 		<td><code><a href="#point">Point</a></code>
-		<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location.</td>
+		<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.</td>
 	</tr>
 	<tr>
 		<td><code><b>shadowUrl</b></code></td>
 		<td><code>String</code>
-		<td>The URL to the icon shadow image. If <code>shadowUrl</code> is <code><span class="literal">null</span></code> then no shadow image will be created.</td>
+		<td>The URL to the icon shadow image. If not specified, no shadow image will be created.</td>
 	</tr>
 	<tr>
 		<td><code><b>shadowSize</b></code></td>
@@ -2778,16 +2879,72 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td>Size of the shadow image in pixels.</td>
 	</tr>
 	<tr>
-		<td><code><b>shadowOffset</b></code></td>
+		<td><code><b>shadowAnchor</b></code></td>
 		<td><code><a href="#point">Point</a></code>
-		<td>Position of the shadow relative to the icon (<code>(0, 0)</code> by default)</td>
+		<td>The coordinates of the "tip" of the shadow (relative to its top left corner) (the same as <code>iconAnchor</code> if not specified).</td>
 	</tr>
 	<tr>
-		<td><code><b>popupAnchor</b></code></td>
-		<td><code><a href="#point">Point</a></code>
-		<td>The point from which the marker popup opens, relative to the anchor point.</td>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code>
+		<td>A custom class name to assign to both icon and shadow images. Empty by default.</td>
 	</tr>
 </table>
+
+
+<h2 id="divicon">L.DivIcon</h2>
+
+<p>Represents a lightweight icon for markers that uses a simple <code>div</code> element instead of an image.</p>
+
+<pre><code class="javascript">var myIcon = L.divIcon({className: 'my-div-icon'});
+// you can set .my-div-icon styles in CSS
+
+L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
+
+<p>By default, it has a <code><span class="string">'leaflet-div-icon'</span></code> class and is styled as a little white square with a shadow.</p>
+
+<h3>Constructor</h3>
+
+<table>
+	<tr>
+		<th class="width250">Constructor</th>
+		<th>Usage</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.DivIcon</b>( <nobr>&lt;<a href="#divicon-options">DivIcon options</a>&gt; <i>options</i> )</nobr></code></td>
+		<td class="factory-usage">
+			<code><span class='keyword'>new</span> L.DivIcon(<span class="comment">&hellip;</span>)</code><br />
+			<code>L.divIcon(<span class="comment">&hellip;</span>)</code>
+		</td>
+		<td>Creates a div icon instance with the given options.</td>
+	</tr>
+</table>
+
+<h3 id="divicon-options">Options</h3>
+
+<table>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>iconSize</b></code></td>
+		<td><code><a href="#point">Point</a></code>
+		<td>Size of the icon in pixels. Can be also set through CSS.</td>
+	</tr>
+	<tr>
+		<td><code><b>iconAnchor</b></code></td>
+		<td><code><a href="#point">Point</a></code>
+		<td>The coordinates of the "tip" of the icon (relative to its top left corner). The icon will be aligned so that this point is at the marker's geographical location. Centered by default if size is specified, also can be set in CSS with negative margins.</td>
+	</tr>
+	<tr>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code>
+		<td>A custom class name to assign to the icon. <code><span class="string">'leaflet-div-icon'</span></code> by default.</td>
+	</tr>
+</table>
+
 
 
 
@@ -3816,13 +3973,6 @@ alert('Upgrade your browser, dude!');
 	</tr>
 </table>
 
-<h2 id="version">L.version</h2>
-
-<p>A constant that represents the Leaflet version in use.<p>
-
-<pre><code>L.version // returns "0.4" (or whatever version is currently in use)</code></pre>
-
-
 <h2 id="noconflict">L.noConflict()</h2>
 
 <p>This method restores the L global variale to the original value it had before Leaflet inclusion, and returns the real Leaflet namespace so you can put it elsewhere, like this:<p>
@@ -3833,3 +3983,10 @@ alert('Upgrade your browser, dude!');
 
 var Leaflet = L.noConflict();
 // now L points to that other library again, and you can use Leaflet.Map etc.</code></pre>
+
+
+<h2 id="version">L.version</h2>
+
+<p>A constant that represents the Leaflet version in use.<p>
+
+<pre><code>L.version // returns "0.4" (or whatever version is currently in use)</code></pre>
