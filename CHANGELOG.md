@@ -81,6 +81,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added `L_NO_TOUCH` global variable switch (set it before Leaflet inclusion) which disables touch detection, helpful for desktop apps built using QT. [#572](https://github.com/CloudMade/Leaflet/issues/572)
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Circle` `getLatLng` and `getRadius` methods (by [@Guiswa](https://github.com/Guiswa)). [#655](https://github.com/CloudMade/Leaflet/pull/655)
+ * Added `openPopup` method to all vector layers. [#246](https://github.com/CloudMade/Leaflet/issues/246)
  * Added public `redraw` method to vector layers (useful if you manipulate their `LatLng` points directly).
  * Added `Marker` `opacity` option and `setOpacity` method.
  * Added `Marker` `update` method. [#392](https://github.com/CloudMade/Leaflet/issues/392)
@@ -140,11 +141,14 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
 #### Mobile browser bugfixes
 
  * Fixed a bug that sometimes caused map to disappear completely after zoom on iOS (by [@fr1n63](https://github.com/fr1n63)). [#580](https://github.com/CloudMade/Leaflet/issues/580) [#777](https://github.com/CloudMade/Leaflet/pull/777)
+ * Fixed a bug that often caused vector layers to flicker on drag end on iOS (by [@krawaller](https://github.com/krawaller)). [#18](https://github.com/CloudMade/Leaflet/issues/18)
  * Fixed a bug with false map click events on pinch-zoom and zoom/layers controls click. [#485](https://github.com/CloudMade/Leaflet/issues/485)
  * Fixed a bug where touching the map with two or more fingers simultaneously would raise an error.
  * Fixed a bug where zoom control wasn't always visible on Android 3. [#335](https://github.com/CloudMade/Leaflet/issues/335)
  * Fixed a bug where opening the layers control would propagate a click to the map (by [@jacobtoye](https://github.com/jacobtoye)). [#638](https://github.com/CloudMade/Leaflet/pull/638)
  * Fixed a bug where `ImageOverlay` wouldn't stretch properly on zoom on Android 2. [#651](https://github.com/CloudMade/Leaflet/issues/651)
+ * Fixed a bug where `clearLayers` for vector layers on a Canvas backend (e.g. on Android 2) would take unreasonable amount of time. [#785](https://github.com/CloudMade/Leaflet/issues/785)
+ * Fixed a bug where `setLatLngs` and similar methods on vector layers on a Canvas backend would not update the layers immediately. [#732](https://github.com/CloudMade/Leaflet/issues/732)
 
 ## 0.3.1 (February 14, 2012)
 
