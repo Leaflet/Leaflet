@@ -111,18 +111,26 @@ L.Util = {
 		return fn;
 	}
 
-	function callImmediately(fn) { fn(); }
+	function timeoutDefer(fn) {
+		return window.setTimeout(fn, 1000 / 60);
+	}
 
 	var requestFn = window.requestAnimationFrame ||
-			getPrefixed('RequestAnimationFrame') || callImmediately;
+			getPrefixed('RequestAnimationFrame') || timeoutDefer;
 
 	var cancelFn = window.cancelAnimationFrame ||
 			getPrefixed('CancelAnimationFrame') ||
-			getPrefixed('CancelRequestAnimationFrame') || L.Util.falseFn;
+			getPrefixed('CancelRequestAnimationFrame') || window.clearTimeout;
 
 
-	L.Util.requestAnimFrame = function (fn, context) {
-		return requestFn.call(window, L.Util.bind(fn, context));
+	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
+		fn = L.Util.bind(fn, context);
+
+		if (immediate && requestFn === timeoutDefer) {
+			fn();
+		} else {
+			return requestFn.call(window, fn, element);
+		}
 	};
 
 	L.Util.cancelAnimFrame = function (id) {
