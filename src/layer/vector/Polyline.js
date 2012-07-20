@@ -75,6 +75,20 @@ L.Polyline = L.Path.extend({
 		}
 		return minPoint;
 	},
+	
+	getLength: function () {
+		var ll = this._latlngs;
+		var d = 0, p = null;
+			
+		for (var i = 0; i < ll.length; i++)
+		{
+			if (i) {
+				d += p.distanceTo(ll[i]);
+			}
+			p = ll[i];
+		}
+		return d.toFixed(0);
+	},
 
 	getBounds: function () {
 		var b = new L.LatLngBounds();

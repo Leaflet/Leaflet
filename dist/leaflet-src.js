@@ -2113,7 +2113,9 @@ L.TileLayer = L.Class.extend({
 			this._container.removeChild(tile);
 		}
 
-		tile.src = L.Util.emptyImageUrl;
+		if (!L.Browser.android) { //For https://github.com/CloudMade/Leaflet/issues/137
+			tile.src = L.Util.emptyImageUrl;
+		}
 
 		delete this._tiles[key];
 	},
@@ -4336,6 +4338,20 @@ L.Polyline = L.Path.extend({
 		}
 		return minPoint;
 	},
+	
+	getLength: function () {
+		var ll = this._latlngs;
+		var d = 0, p = null;
+			
+		for (var i = 0; i < ll.length; i++)
+		{
+			if (i) {
+				d += p.distanceTo(ll[i]);
+			}
+			p = ll[i];
+		}
+		return d.toFixed(0);
+	},
 
 	getBounds: function () {
 		var b = new L.LatLngBounds();
@@ -5550,7 +5566,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 50);
+		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 40);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -5585,6 +5601,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 });
 
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
+
 
 L.Util.extend(L.DomEvent, {
 	// inspired by Zepto touch code by Thomas Fuchs
