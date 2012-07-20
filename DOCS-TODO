@@ -1,22 +1,4 @@
 
-on/off(eventMap)
-on/off(space-separated types)
-off(type) to remove all listeners
-
-TileLayer
-	detectRetina option
-
-	redraw
-	setUrl
-
-Path
-	redraw
-
-NEW Global switches
-	L_NO_TOUCH
-	L_PREFER_CANVAS
-	L_DISABLE_3D
-
 NEW Transformation
 	Transformation(a, b, c, d)
 
@@ -93,6 +75,3 @@ NEW ICRS
 	pointToLatLng(point, zoom)
 	project(latlng)
 	scale(zoom)
-
-
-Map addHandler?

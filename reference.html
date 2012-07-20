@@ -114,7 +114,7 @@ bodyclass: api-page
 
 		<h4>Misc</h4>
 		<ul>
-			<li><a class="nodocs" href="#global">global switches</a></li>
+			<li><a href="#global">global switches</a></li>
 			<li><a href="#noconflict">noConflict</a></li>
 			<li><a href="#version">version</a></li>
 		</ul>
@@ -1388,6 +1388,12 @@ var map = L.map('map', {
 		<td>If <code><span class="literal">false</span></code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code><span class="literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="literal">false</span></code>.</td>
 	</tr>
 	<tr>
+		<td><code><b>detectRetina</b></code></td>
+		<td><code><code>Boolean</code></code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>If <code><span class="literal">true</span></code> and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.</td>
+	</tr>
+	<tr>
 		<td><code><b>reuseTiles</b></code></td>
 		<td><code><code>Boolean</code></code></td>
 		<td><code><span class="literal">false</span></code></td>
@@ -1426,7 +1432,12 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>redraw</b>()</code></td>
 		<td>-</td>
-		<td>Calling <code>redraw</code> will cause the <code>drawTile</code> method to be called for all tiles. May be used for updating dynamic content drawn on the Canvas</td>
+		<td>Causes the layer to clear all the tiles and request them again.</td>
+	</tr>
+	<tr>
+		<td><code><b>setUrl</b>( <nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i> )</nobr></code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Updates the layer's URL template and redraws it.</td>
 	</tr>
 </table>
 
@@ -1783,6 +1794,11 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><b>bringToBack</b>()</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Brings the layer to the bottom of all path layers.</td>
+	</tr>
+	<tr>
+		<td><code><b>redraw</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Redraws the layer. Sometimes useful after you changed the coordinates that the path uses.</td>
 	</tr>
 </table>
 
@@ -3338,22 +3354,22 @@ map.off('click', onClick);</code></pre>
 	<tr>
 		<td><code><b>addEventListener</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Function&gt; <i>fn</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code><span class="keyword">this</span></code> keyword will point to).</td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code><span class="keyword">this</span></code> keyword will point to). You can also pass several space-separated types (e.g. <code><span class="string">'click dblclick'</span></code>).</td>
 	</tr>
 	<tr>
-		<td><code><b>removeEventListener</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Function&gt; <i>fn</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code><b>addEventListener</b>( <nobr>&lt;Object&gt; <i>eventMap</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Removes a previously added listener function.</td>
+		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
 	</tr>
 	<tr>
-		<td><code><b>on</b>( &hellip; )</code></td>
+		<td><code><b>removeEventListener</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Function&gt; <i>fn?</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Alias to <code>addEventListener</code>.</td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object.</td>
 	</tr>
 	<tr>
-		<td><code><b>off</b>( &hellip; )</code></td>
+		<td><code><b>removeEventListener</b>( <nobr>&lt;Object&gt; <i>eventMap</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Alias to <code>removeEventListener</code>.</td>
+		<td>Removes a set of type/listener pairs.</code></td>
 	</tr>
 	<tr>
 		<td><code><b>hasEventListeners</b>( <nobr>&lt;String&gt; <i>type</i> )</nobr></code></td>
@@ -3364,6 +3380,16 @@ map.off('click', onClick);</code></pre>
 		<td><code><b>fireEvent</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Object&gt; <i>data?</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
+	</tr>
+	<tr>
+		<td><code><b>on</b>( &hellip; )</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Alias to <code>addEventListener</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>off</b>( &hellip; )</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Alias to <code>removeEventListener</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>fire</b>( &hellip; )</code></td>
@@ -3970,6 +3996,32 @@ alert('Upgrade your browser, dude!');
 		<td><code><b>enabled</b>()</code></td>
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the handler is enabled.</td>
+	</tr>
+</table>
+
+<h2 id="global">Global Switches</h2>
+
+<p>Global switches are created for rare cases and generally make Leaflet to not detect a particular browser feature even if it's there. You need to set the switch as a global variable to <code><span class="literal">true</span></code> <em>before</em> including Leaflet on the page, like this:</p>
+
+<pre><code>&lt;script&gt;L_PREFER_CANVAS = true;&lt;/script&gt;
+&lt;script src="leaflet.js"&gt;&lt;/script&gt;</code></pre>
+
+<table>
+	<tr>
+		<th>Switch</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L_PREFER_CANVAS</b></code></td>
+		<td>Forces Leaflet to use the Canvas back-end (if available) for vector layers instead of SVG. This can increase performance considerably in some cases (e.g. many thousands of circle markers on the map).</td>
+	</tr>
+	<tr>
+		<td><code><b>L_NO_TOUCH</b></code></td>
+		<td>Forces Leaflet to not use touch events even if it detects them. Particularly useful if you embed Leaflet inside a QT WebView (which exposes touch events even on desktop PCs).</td>
+	</tr>
+	<tr>
+		<td><code><b>L_DISABLE_3D</b></code></td>
+		<td>Forces Leaflet to not use hardware-accelerated CSS 3D transforms for positioning (which may cause glitches in some rare environments) even if they're supported.</td>
 	</tr>
 </table>
 
