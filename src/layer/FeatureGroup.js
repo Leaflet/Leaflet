@@ -10,7 +10,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 			return this;
 		}
 		
-		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
+		layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -22,7 +22,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
-		layer.off('click dblclick mouseover mouseout', this._propagateEvent, this);
+		layer.off('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
