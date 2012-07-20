@@ -52,7 +52,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Converted `Icon` properties to options, changed constructor signature to `Icon(options)`.
  * Moved default marker icon options to `L.Icon.Default` class (which extends from `L.Icon`).
  * Added `Icon` `className` option to assign a custom class to an icon.
- * Added `Icon` `shadowOffset` option to set the position of shadow relative to the icon.
+ * Added `Icon` `shadowAnchor` option to set the anchor of the shadow.
  * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
 
 #### Other breaking API changes
@@ -95,7 +95,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Made controls implementation easier (now more magic happens under the hood).
  * Added `LatLngBounds` `pad` method that returns bounds extended by a percentage (by [@jacobtoye](https://github.com/jacobtoye)). [#492](https://github.com/CloudMade/Leaflet/pull/492)
  * Moved dragging cursor styles from JS code to CSS.
- 
+
 ### Bug fixes
 
 #### General bugfixes
