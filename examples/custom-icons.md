@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Custom Icons
+title: Markers With Custom Icons
 root: ../
 ---
 

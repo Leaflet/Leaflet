@@ -385,6 +385,11 @@ var map = L.map('map', {
 		<td>Fired when the user pushes the mouse button on the map.</td>
 	</tr>
 	<tr>
+		<td><code><b>mouseup</b></code></td>
+		<td><code><a href="#mouse-event">MouseEvent</a></code>
+		<td>Fired when the user pushes the mouse button on the map.</td>
+	</tr>
+	<tr>
 		<td><code><b>mouseenter</b></code></td>
 		<td><code><a href="#mouse-event">MouseEvent</a></code>
 		<td>Fired when the mouse enters the map.</td>
@@ -1230,14 +1235,19 @@ var map = L.map('map', {
 
 <table>
 	<tr>
+		<th class="width250">Method</th>
+		<th class="minwidth">Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
 		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the popup to the map.</td>
 	</tr>
 	<tr>
-		<th class="width250">Method</th>
-		<th class="minwidth">Returns</th>
-		<th>Description</th>
+		<td><code><b>openOn</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Adds the popup to the map and closes the previous one. The same as <code>map.openPopup(popup)</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>setLatLng</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
