@@ -7,6 +7,7 @@ L.Icon = L.Class.extend({
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
 		shadowSize: (Point)
+		shadowAnchor: (Point)
 		*/
 		className: ''
 	},
@@ -42,15 +43,16 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 			size = L.point(options[name + 'Size']),
-			anchor = L.point(options.iconAnchor),
-			offset = L.point(options.shadowOffset);
+			anchor;
+
+		if (name === 'shadow') {
+			anchor = L.point(options.shadowAnchor || options.iconAnchor);
+		} else {
+			anchor = L.point(options.iconAnchor);
+		}
 
 		if (!anchor && size) {
 			anchor = size.divideBy(2, true);
-		}
-
-		if (name === 'shadow' && anchor && offset) {
-			anchor = anchor.add(offset);
 		}
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className;
