@@ -42,7 +42,7 @@ In this example, you'll learn how to create and interact with map vectors create
 
 A tutorial on how to manage groups of layers and use the layer switching control.
 
-***
+<!--***
 <h3><a class="noimpl" href="#">Custom Controls</a></h3>
 
 A brief tutorial on implementing custom map controls.
@@ -51,9 +51,10 @@ A brief tutorial on implementing custom map controls.
 <h3><a class="noimpl" href="#">Custom Overlays</a></h3>
 
 If markers, popups and vectors are not enough for you, here's a guide for creating your own map overlays (things to put on a map).
+-->
 
 ***
-More examples coming soon!
+If you find that an important tutorial is missing here, let us know!
 
  [1]: examples/quick-start.html
  [2]: examples/mobile.html

@@ -105,9 +105,9 @@ bodyclass: api-page
 		<h4>Interfaces</h4>
 		<ul>
 			<li><a href="#ihandler">IHandler</a></li>
-			<li><a class="nodocs" href="#">ILayer</a></li>
+			<li><a href="#ilayer">ILayer</a></li>
 			<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
-			<li><a class="nodocs" href="#">IControl</a></li>
+			<li><a href="#icontrol">IControl</a></li>
 			<li><a class="nodocs" href="#">IProjection</a></li>
 			<li><a class="nodocs" href="#">ICRS</a></li>
 		</ul>
@@ -189,7 +189,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>layers</b></code></td>
-		<td><code>ILayer[]</code></td>
+		<td><code><a href="#ilayer">ILayer</a>[]</code></td>
 		<td><code><span class="literal">null</span></code></td>
 		<td>Layers that will be added to the map initially.</td>
 	</tr>
@@ -426,7 +426,7 @@ var map = L.map('map', {
 		<td><code><a href="#event">Event</a></code>
 		<td>Fired when the map is initialized (when its center and zoom are set for the first time).</td>
 	</tr>
-	<tr>
+	<tr id="map-viewreset">
 		<td><code><b>viewreset</b></code></td>
 		<td><code><a href="#event">Event</a></code>
 		<td>Fired when the map needs to redraw its content (this usually happens on map zoom or load). Very useful for creating custom overlays.</td>
@@ -441,7 +441,7 @@ var map = L.map('map', {
 		<td><code><a href="#event">Event</a></code>
 		<td>Fired on any movement of the map view.</td>
 	</tr>
-	<tr>
+	<tr id="map-moveend">
 		<td><code><b>moveend</b></code></td>
 		<td><code><a href="#event">Event</a></code>
 		<td>Fired when the view of the map ends changed (e.g. user stopped dragging the map).</td>
@@ -672,7 +672,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-addlayer">
 		<td><code><b>addLayer</b>(
-			<nobr>&lt;ILayer&gt; <i>layer</i>,</nobr>
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i>,</nobr>
 			<nobr>&lt;Boolean&gt; <i>insertAtTheBottom?</i> )</nobr>
 		</code></td>
 
@@ -681,7 +681,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;ILayer&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -689,7 +689,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>hasLayer</b>(
-			<nobr>&lt;ILayer&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
@@ -2479,7 +2479,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h2 id="featuregroup">L.FeatureGroup</h2>
 
-<p>Extended <a href="#layergroup">LayerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">IFeature</a> interface.</p>
+<p>Extended <a href="#layergroup">LayerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">ILayer</a> interface.</p>
 
 <pre><code class="javascript">L.featureGroup([marker1, marker2, polyline])
 	.bindPopup('Hello world!')
@@ -2496,7 +2496,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>L.FeatureGroup</b>(
-			<nobr>&lt;<a href="#ilayer">IFeature</a>[]&gt; <i>layers?</i> )</nobr>
+			<nobr>&lt;<a href="#ilayer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
 		</code></td>
 
 		<td class="factory-usage">
@@ -2693,7 +2693,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr>
 		</code></td>
 
-		<td><code>ILayer</code></td>
+		<td><code><a href="#ilayer">ILayer</a></code></td>
 		<td>Creates a layer from a given GeoJSON feature.</td>
 	</tr>
 	<tr>
@@ -4634,6 +4634,153 @@ alert('Upgrade your browser, dude!');
 		<td>Returns <code><span class="literal">true</span></code> if the handler is enabled.</td>
 	</tr>
 </table>
+
+
+<h2 id="ilayer">ILayer</h2>
+
+<p>Represents an object attached to a particular location (or a set of locations) on a map. Implemented by <a href="#tilelayer">tile layers</a>, <a href="#marker">markers</a>, <a href="#popup">popups</a>, <a href="#imageoverlay">image overlays</a>, <a href="#path">vector layers</a> and <a href="#layergroup">layer groups</a>.</p>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>onAdd</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
+		<td>-</td>
+		<td>Should contain code that creates DOM elements for the overlay, adds them to <a href="#map-panes">map panes</a> where they should belong and puts listeners on relevant map events. Called on <code>map.addLayer(layer)</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>onRemove</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
+		<td>-</td>
+		<td>Should contain all clean up code that removes the overlay's elements from the DOM and removes listeners preciously added in <code>onAdd</code>. Called on <code>map.removeLayer(layer)</code>.</td>
+	</tr>
+</table>
+
+<h3>Implementing Custom Layers</h3>
+
+<p>The most important things know about when implementing custom layers are Map <a href="#map-viewreset">viewreset</a> event and <a href="#map-latlngtolayerpoint">latLngToLayerPoint</a> method. <code>viewreset</code> is fired when the map needs to reposition its layers (e.g. on zoom), and <code>latLngToLayerPoint</code> is used to get coordinates for the layer's new position.</p>
+
+<p>Another event often used in layer implementations is <a href="map-moveend">moveend</a> which fires after any movement of the map (panning, zooming, etc.).</p>
+
+<p>Another thing to note is that you'll usually need to add <code>leaflet-zoom-hide</code> class to the DOM elements you create for the layer so that it hides during zoom animation. Implementing zoom animation for custom layers is a complex topic and will be documented separately in future, but meanwhile you can take a look at how it's done for Leaflet layers (e.g. <code>ImageOverlay</code>) in the source.</p>
+
+<h3>Custom Layer Example</h3>
+
+<p>Here's how a custom layer implementation usually looks:</p>
+
+<pre><code>var MyCustomLayer = L.Class.extend({
+
+	initialize: function (latlng) {
+		// save position of the layer or any options from the constructor
+		this._latlng = latlng;
+	},
+
+	onAdd: function (map) {
+		this._map = map;
+
+		// create a DOM element and put it into one of the map panes
+		this._el = L.DomUtil.create('div', 'my-custom-layer leaflet-zoom-hide');
+		map.getPanes().overlayPane.appendChild(this._el);
+
+		// add a viewreset event listener for updating layer's position, do the latter
+		map.on('viewreset', this._reset, this);
+		this._reset();
+	},
+
+	onRemove: function (map) {
+		// remove layer's DOM elements and listeners
+		map.getPanes().overlayPane.removeChild(this._el);
+		map.off('viewreset', this._reset, this);
+	},
+
+	_reset: function () {
+		// update layer's position
+		var pos = this._map.latLngToLayerPoint(this._latlng);
+		L.DomUtil.setPosition(this._el, pos);
+	}
+});
+
+map.addLayer(new MyCustomLayer(latlng));
+</code></pre>
+
+
+
+<h2 id="icontrol">IControl</h2>
+
+<p>Represents a UI element in one of the corners of the map. Implemented by <a href="#control-zoom">zoom</a>, <a href="#control-attribution">attribution</a>, <a href="#control-scale">scale</a> and <a href="#control-layers">layers</a> controls.</p>
+
+<h3>Methods</h3>
+
+<p>Every control in Leaflet should extend from <a href="#control">Control</a> class and additionally have the following methods:</p>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>onAdd</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
+		<td><code>HTMLElement</code></td>
+		<td>Should contain code that creates all the neccessary DOM elements for the control, adds listeners on relevant map events, and returns the element containing the control. Called on <code>map.addControl(control)</code> or <code>control.addTo(map)</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>onRemove</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
+		<td>-</td>
+		<td>Optional, should contain all clean up code (e.g. removes control's event listeners). Called on <code>map.removeControl(control)</code> or <code>control.removeFrom(map)</code>. The control's DOM container is removed automatically.</td>
+	</tr>
+</table>
+
+<h3>Custom Control Example</h3>
+
+<pre><code>var MyControl = L.Control.extend({
+	options: {
+		position: 'topright'
+	},
+
+	onAdd: function (map) {
+		// create the control container with a particular class name
+		var container = L.DomUtil.create('div', 'my-custom-control');
+
+		// ... initialize other DOM elements, add listeners, etc.
+
+		return container;
+	}
+});
+
+map.addControl(new MyControl());
+</code></pre>
+
+<p>If specify your own contructor for the control, you'll also probably want to process options properly:</p>
+
+<pre><code>var MyControl = L.Control.extend({
+	initialize: function (foo, options) {
+		// ...
+		L.Util.setOptions(this, options);
+	},
+	// ...
+});</code></pre>
+
+<p>This will allow you to pass options like <code>position</code> when creating the control instances:</p>
+
+<pre><code>map.addControl(new MyControl('bar', {position: 'bottomleft'}));</code></pre>
+
 
 <h2 id="global">Global Switches</h2>
 

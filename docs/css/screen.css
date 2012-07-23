@@ -102,8 +102,8 @@ h3.alt {
 	font-weight: normal;
 	}
 
-code {
-	font-family: "Courier New", monospace;
+.container code, .container pre code {
+	font-family: "Consolas", "Lucida Console", "Courier New", monospace;
 	}
 .container pre code {
 	padding: 10px 15px;

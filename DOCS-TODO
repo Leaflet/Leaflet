@@ -5,15 +5,6 @@ NEW Transformation
 	transform(point, scale)
 	untransform(point, scale)
 
-NEW LineUtil
-	simplify(points, tolerance)
-	pointToSegmentDistance(p, p1, p2)
-	closestPointOnSegment(p, p1, p2)
-	clipSegment(a, b, bounds)
-
-NEW PolyUtil
-	clipPolygon(points, bounds)
-
 NEW DomEvent
 	addListener(obj, type, fn, context)
 	on
@@ -54,18 +45,6 @@ NEW Draggable
 		drag
 		dragend
 
-NEW ILayer
-	onAdd(map)
-	onRemove(map)
-
-	important events: viewreset, moveend
-
-	options.minZoom and options.maxZoom
-
-NEW IControl
-	onAdd(map)
-	onRemove(map)
-
 NEW IProjection
 	project(latlng)
 	unproject(point)
@@ -75,3 +54,7 @@ NEW ICRS
 	pointToLatLng(point, zoom)
 	project(latlng)
 	scale(zoom)
+
+ILayer options.minZoom and options.maxZoom?
+Map.addHandler?
+
