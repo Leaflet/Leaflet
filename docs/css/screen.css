@@ -354,7 +354,7 @@ table td:last-child {
 }
 
 table td code i {
-	color: black;
+	color: #00A707;
 }
 
 table td code b {
@@ -440,4 +440,18 @@ dl dd {
 
 .plugins td {
 	color: black;
+}
+
+
+#back-to-top {
+	text-decoration: none;
+	padding: 0px 10px 2px;
+	background: white;
+	color: black;
+	font-weight: bold;
+	font-size: 16px;
+	position: fixed;
+	top: -1px;
+	left: 0;
+	box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1);
 }
