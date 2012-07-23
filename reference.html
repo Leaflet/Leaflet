@@ -147,11 +147,16 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Map</b>( <nobr>&lt;HTMLElement|String&gt; <i>id</i>,</nobr> <nobr>&lt;<a href="#map-options">Map options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Map</b>(
+			<nobr>&lt;HTMLElement|String&gt; <i>id</i>,</nobr>
+			<nobr>&lt;<a href="#map-options">Map options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Map(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.map(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a map object given a div element (or its id) and optionally an object literal with map options described below.</td>
 	</tr>
 </table>
@@ -513,12 +518,18 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>setView</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom</i>,</nobr> <nobr>&lt;Boolean&gt; <i>forceReset?</i> )</nobr></code></td>
+		<td><code><b>setView</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>,</nobr>
+			<nobr>&lt;Number&gt; <i>zoom</i>,</nobr>
+			<nobr>&lt;Boolean&gt; <i>forceReset?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the view of the map (geographical center and zoom). If <code>forceReset</code> is set to <code><span class="literal">true</span></code>, the map is reloaded even if it's eligible for pan or zoom animation (<code><span class="literal">false</span></code> by default).</td>
 	</tr>
 	<tr>
-		<td><code><b>setZoom</b>( <nobr>&lt;Number&gt; <i>zoom</i> )</nobr></code></td>
+		<td><code><b>setZoom</b>(
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the zoom of the map.</td>
 	</tr>
@@ -533,7 +544,9 @@ var map = L.map('map', {
 		<td>Decreases the zoom of the map by 1.</td>
 	</tr>
 	<tr id="map-fitbounds">
-		<td><code><b>fitBounds</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr></code></td>
+		<td><code><b>fitBounds</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
 	</tr>
@@ -543,17 +556,23 @@ var map = L.map('map', {
 		<td>Sets a map view that mostly contains the whole world with the maximum zoom level possible.</td>
 	</tr>
 	<tr>
-		<td><code><b>panTo</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>panTo</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
 	</tr>
 	<tr id="map-paninsidebounds">
-		<td><code><b>panInsideBounds</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr></code></td>
+		<td><code><b>panInsideBounds</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Pans the map to the closest view that would lie inside the given bounds (if it's not already).</td>
 	</tr>
 	<tr>
-		<td><code><b>panBy</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>panBy</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Pans the map by a given number of pixels (animated).</td>
 	</tr>
@@ -563,12 +582,16 @@ var map = L.map('map', {
 		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
 	</tr>
 	<tr id="map-setmaxbounds">
-		<td><code><b>setMaxBounds</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr></code></td>
+		<td><code><b>setMaxBounds</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option).</td>
 	</tr>
 	<tr>
-		<td><code><b>locate</b>( <nobr>&lt;<a href="#map-locate-options">Locate options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>locate</b>(
+			<nobr>&lt;<a href="#map-locate-options">Locate options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure, and optionally sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). See <a href="#map-locate-options">Locate options</a> for more details.</td>
 	</tr>
@@ -613,8 +636,13 @@ var map = L.map('map', {
 		<td>Returns the LatLngBounds of the current map view.</td>
 	</tr>
 	<tr>
-		<td><code><b>getBoundsZoom</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i>,</nobr> <nobr>&lt;Boolean&gt; <i>inside?</i> )</nobr></code></td>
+		<td><code><b>getBoundsZoom</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i>,</nobr>
+			<nobr>&lt;Boolean&gt; <i>inside?</i> )</nobr>
+		</code></td>
+
 		<td><code>Number</code></td>
+
 		<td>Returns the maximum zoom level on which the given bounds fit to the map view in its entirety. If <code>inside</code> (optional) is set to <code><span class="literal">true</span></code>, the method instead returns the minimum zoom level on which the map view fits into the given bounds in its entirety.</td>
 	</tr>
 	<tr>
@@ -643,23 +671,36 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr id="map-addlayer">
-		<td><code><b>addLayer</b>( <nobr>&lt;ILayer&gt; <i>layer</i>,</nobr> <nobr>&lt;Boolean&gt; <i>insertAtTheBottom?</i> )</nobr></code></td>
+		<td><code><b>addLayer</b>(
+			<nobr>&lt;ILayer&gt; <i>layer</i>,</nobr>
+			<nobr>&lt;Boolean&gt; <i>insertAtTheBottom?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the given layer to the map. If optional <code>insertAtTheBottom</code> is set to <code><span class="literal">true</span></code>, the layer is inserted under all others (useful when switching base tile layers).</td>
 	</tr>
 	<tr>
-		<td><code><b>removeLayer</b>( <nobr>&lt;ILayer&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>removeLayer</b>(
+			<nobr>&lt;ILayer&gt; <i>layer</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes the given layer from the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>hasLayer</b>( <nobr>&lt;ILayer&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>hasLayer</b>(
+			<nobr>&lt;ILayer&gt; <i>layer</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the given layer is currently added to the map.</td>
 	</tr>
 
 	<tr id="map-openpopup">
-		<td><code><b>openPopup</b>( <nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i> )</nobr></code></td>
+		<td><code><b>openPopup</b>(
+			<nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
 	</tr>
@@ -669,12 +710,18 @@ var map = L.map('map', {
 		<td>Closes the popup opened with <a href="#map-openpopup">openPopup</a>.</td>
 	</tr>
 	<tr id="map-addcontrol">
-		<td><code><b>addControl</b>( <nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr></code></td>
+		<td><code><b>addControl</b>(
+			<nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the given control to the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeControl</b>( <nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr></code></td>
+		<td><code><b>removeControl</b>(
+			<nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes the given control from the map.</td>
 	</tr>
@@ -690,57 +737,92 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>latLngToLayerPoint</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>latLngToLayerPoint</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the map layer point that corresponds to the given geographical coordinates (useful for placing overlays on the map).</td>
 	</tr>
 	<tr>
-		<td><code><b>layerPointToLatLng</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>layerPointToLatLng</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Returns the geographical coordinates of a given map layer point.</td>
 	</tr>
 	<tr>
-		<td><code><b>containerPointToLayerPoint</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>containerPointToLayerPoint</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Converts the point relative to the map container to a point relative to the map layer.</td>
 	</tr>
 	<tr>
-		<td><code><b>layerPointToContainerPoint</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>layerPointToContainerPoint</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Converts the point relative to the map layer to a point relative to the map container.</td>
 	</tr>
 	<tr>
-		<td><code><b>latLngToContainerPoint</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>latLngToContainerPoint</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the map container point that corresponds to the given geographical coordinates.</td>
 	</tr>
 	<tr>
-		<td><code><b>containerPointToLatLng</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>containerPointToLatLng</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Returns the geographical coordinates of a given map container point.</td>
 	</tr>
 	<tr>
-		<td><code><b>project</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom?</i> )</nobr></code></td>
+		<td><code><b>project</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr>
+			<nobr>&lt;Number&gt; <i>zoom?</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Projects the given geographical coordinates to absolute pixel coordinates for the given zoom level (current zoom level by default).</td>
 	</tr>
 	<tr>
-		<td><code><b>unproject</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i>,</nobr> <nobr>&lt;Number&gt; <i>zoom?</i> )</nobr></code></td>
+		<td><code><b>unproject</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i>,</nobr>
+			<nobr>&lt;Number&gt; <i>zoom?</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Projects the given absolute pixel coordinates to geographical coordinates for the given zoom level (current zoom level by default).</td>
 	</tr>
 	<tr>
-		<td><code><b>mouseEventToContainerPoint</b>( <nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr></code></td>
+		<td><code><b>mouseEventToContainerPoint</b>(
+			<nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the pixel coordinates of a mouse click (relative to the top left corner of the map) given its event object.</td>
 	</tr>
 	<tr>
-		<td><code><b>mouseEventToLayerPoint</b>( <nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr></code></td>
+		<td><code><b>mouseEventToLayerPoint</b>(
+			<nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the pixel coordinates of a mouse click relative to the map layer given its event object.
 	</tr>
 	<tr>
-		<td><code><b>mouseEventToLatLng</b>( <nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr></code></td>
+		<td><code><b>mouseEventToLatLng</b>(
+			<nobr>&lt;MouseEvent&gt; <i>event</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
 	</tr>
@@ -954,11 +1036,16 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Marker</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr> <nobr>&lt;<a href="#marker-options">Marker options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Marker</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>,</nobr>
+			<nobr>&lt;<a href="#marker-options">Marker options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Marker(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.marker(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a Marker object given a geographical point and optionally an options object.</td>
 	</tr>
 </table>
@@ -1071,7 +1158,10 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the marker to the map.</td>
 	</tr>
@@ -1081,32 +1171,49 @@ var map = L.map('map', {
 		<td>Returns the current geographical position of the marker.</td>
 	</tr>
 	<tr>
-		<td><code><b>setLatLng</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>setLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the marker position to the given point.</td>
 	</tr>
 	<tr>
-		<td><code><b>setIcon</b>( <nobr>&lt;<a href="#icon">Icon</a>&gt; <i>icon</i> )</nobr></code></td>
+		<td><code><b>setIcon</b>(
+			<nobr>&lt;<a href="#icon">Icon</a>&gt; <i>icon</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the marker icon.</td>
 	</tr>
 	<tr>
-		<td><code><b>setZIndexOffset</b>( <nobr>&lt;Number&gt; <i>offset</i> )</nobr></code></td>
+		<td><code><b>setZIndexOffset</b>(
+			<nobr>&lt;Number&gt; <i>offset</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the <a href="#marker-zindexoffset">zIndex offset</a> of the marker.</td>
 	</tr>
 	<tr>
-		<td><code><b>setOpacity</b>( <nobr>&lt;Number&gt; <i>opacity</i> )</nobr></code></td>
+		<td><code><b>setOpacity</b>(
+			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the opacity of the marker.</td>
 	</tr>
 	<tr>
-		<td><code><b>update</b>()</nobr></code></td>
+		<td><code><b>update</b>()</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Updates the marker position, useful if coordinates of its <code>latLng</code> object were changed directly.</td>
 	</tr>
 	<tr id="marker-bindpopup">
-		<td><code><b>bindPopup</b>( <nobr>&lt;String&gt; <i>htmlContent</i>,</nobr> <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>bindPopup</b>(
+			<nobr>&lt;String&gt; <i>htmlContent</i>,</nobr>
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
 	</tr>
@@ -1171,11 +1278,16 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Popup</b>( <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i>,</nobr> <nobr>&lt;object&gt; <i>source?</i> )</nobr></code></td>
+		<td><code><b>L.Popup</b>(
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i>,</nobr>
+			<nobr>&lt;object&gt; <i>source?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Popup(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.popup(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional object that is used to tag the popup with a reference to the source object to which it refers.</td>
 	</tr>
 </table>
@@ -1222,13 +1334,15 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>offset</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>Point(<span class="number">0</span>, <span class="number">0</span>)</nobr></code></td>
+		<td><code><nobr>Point(<span class="number">0</span>, <span class="number">0</span>)</nobr>
+		</code></td>
 		<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoPanPadding</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>Point(<span class="number">5</span>, <span class="number">5</span>)</nobr></code></td>
+		<td><code><nobr>Point(<span class="number">5</span>, <span class="number">5</span>)</nobr>
+		</code></td>
 		<td>The margin between the popup and the edges of the map view after autopanning was performed.</td>
 	</tr>
 </table>
@@ -1242,22 +1356,34 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the popup to the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>openOn</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>openOn</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the popup to the map and closes the previous one. The same as <code>map.openPopup(popup)</code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>setLatLng</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>setLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the geographical point where the popup will open.</td>
 	</tr>
 	<tr>
-		<td><code><b>setContent</b>( <nobr>&lt;String&gt; <i>htmlContent</i> )</nobr></code></td>
+		<td><code><b>setContent</b>(
+			<nobr>&lt;String&gt; <i>htmlContent</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the HTML content of the popup.</td>
 	</tr>
@@ -1285,11 +1411,16 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.TileLayer</b>( <nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i>,</nobr> <nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.TileLayer</b>(
+			<nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i>,</nobr>
+			<nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.TileLayer(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.tileLayer(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a tile layer object given a <a href="#url-template">URL template</a> and optionally an options object.</td>
 	</tr>
 </table>
@@ -1422,7 +1553,10 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the layer to the map.</td>
 	</tr>
@@ -1437,7 +1571,10 @@ var map = L.map('map', {
 		<td>Brings the tile layer to the bottom of all tile layers.</td>
 	</tr>
 	<tr>
-		<td><code><b>setOpacity</b>( <nobr>&lt;Number&gt; <i>opacity</i> )</nobr></code></td>
+		<td><code><b>setOpacity</b>(
+			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the opacity of the tile layer.</td>
 	</tr>
@@ -1447,7 +1584,9 @@ var map = L.map('map', {
 		<td>Causes the layer to clear all the tiles and request them again.</td>
 	</tr>
 	<tr>
-		<td><code><b>setUrl</b>( <nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i> )</nobr></code></td>
+		<td><code><b>setUrl</b>(
+			<nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Updates the layer's URL template and redraws it.</td>
 	</tr>
@@ -1477,11 +1616,16 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.TileLayer.WMS</b>( <nobr>&lt;String&gt; <i>baseUrl</i></nobr>, <nobr>&lt;<a href="#tilelayer-wms-options">TileLayer.WMS options</a>&gt; <i>options</i> )</nobr></code></td>
+		<td><code><b>L.TileLayer.WMS</b>(
+			<nobr>&lt;String&gt; <i>baseUrl</i></nobr>,
+			<nobr>&lt;<a href="#tilelayer-wms-options">TileLayer.WMS options</a>&gt; <i>options</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.TileLayer.WMS(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.tileLayer.wms(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.</td>
 	</tr>
 </table>
@@ -1538,7 +1682,10 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>setParams</b>( <nobr>&lt;<a href="#tilelayer-wms-options">WMS parameters</a>&gt; <i>params</i></nobr>, <nobr>&lt;Boolean&gt; <i>noRedraw?</i> )</nobr></code></td>
+		<td><code><b>setParams</b>(
+			<nobr>&lt;<a href="#tilelayer-wms-options">WMS parameters</a>&gt; <i>params</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>noRedraw?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Merges an object with the new parameters and re-requests tiles on the current screen (unless <code>noRedraw</code> was set to <code><span class="literal">true</span></code>).</td>
 	</tr>
@@ -1567,7 +1714,9 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.TileLayer.Canvas</b>( <nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.TileLayer.Canvas</b>(
+			<nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.TileLayer.Canvas(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.tileLayer.canvas(<span class="comment">&hellip;</span>)</code>
@@ -1585,7 +1734,11 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>drawTile</b>( <nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>tilePoint</i></nobr>, <nobr>&lt;Number&gt; <i>zoom</i> )</nobr></code></td>
+		<td><code><b>drawTile</b>(
+			<nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>tilePoint</i></nobr>,
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
 	</tr>
@@ -1617,11 +1770,17 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.ImageOverlay</b>( <nobr>&lt;String&gt; <i>imageUrl</i></nobr>, <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>, <nobr>&lt;<a href="#imageoverlay-options">ImageOverlay options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.ImageOverlay</b>(
+			<nobr>&lt;String&gt; <i>imageUrl</i></nobr>,
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#imageoverlay-options">ImageOverlay options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.ImageOverlay(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.imageOverlay(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates an image overlay object given the URL of the image and the geographical bounds it is tied to.</td>
 	</tr>
 </table>
@@ -1650,12 +1809,18 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the overlay to the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>setOpacity</b>( <nobr>&lt;Number&gt; <i>opacity</i> )</nobr></code></td>
+		<td><code><b>setOpacity</b>(
+			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the opacity of the overlay.</td>
 	</tr>
@@ -1773,22 +1938,35 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the layer to the map.</td>
 	</tr>
 	<tr id="path-bindpopup">
-		<td><code><b>bindPopup</b>( <nobr>&lt;String&gt; <i>htmlContent</i></nobr>, <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>bindPopup</b>(
+			<nobr>&lt;String&gt; <i>htmlContent</i></nobr>,
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this path.</td>
 	</tr>
 	<tr id="path-openpopup">
-		<td><code><b>openPopup</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i> )</nobr></code></td>
+		<td><code><b>openPopup</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Opens the popup previously bound by the <a href="#path-bindpopup">bindPopup</a> method in the given point, or in one of the path's points if not specified.</td>
 	</tr>
 	<tr id="path-setstyle">
-		<td><code><b>setStyle</b>( <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>object</i> )</nobr></code></td>
+		<td><code><b>setStyle</b>(
+			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>object</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the appearance of a Path based on the options in the <a href="#path-options">Path options</a> object.</td>
 	</tr>
@@ -1869,11 +2047,16 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Polyline</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Polyline</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i></nobr>,
+			<nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Polyline(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.polyline(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a polyline object given an array of geographical points and optionally an options object.</td>
 	</tr>
 </table>
@@ -1914,12 +2097,18 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addLatLng</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>addLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds a given point to the polyline.</td>
 	</tr>
 	<tr>
-		<td><code><b>setLatLngs</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr></code></td>
+		<td><code><b>setLatLngs</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Replaces all the points in the polyline with the given array of geographical points.</td>
 	</tr>
@@ -1929,7 +2118,12 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<td>Returns an array of the points in the path.</td>
 	</tr>
 	<tr>
-		<td><code><b>spliceLatLngs</b>( <nobr>&lt;Number&gt; <i>index</i></nobr>, <nobr>&lt;Number&gt; <i>pointsToRemove</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i>, &hellip; )</nobr></code></td>
+		<td><code><b>spliceLatLngs</b>(
+			<nobr>&lt;Number&gt; <i>index</i></nobr>,
+			<nobr>&lt;Number&gt; <i>pointsToRemove</i></nobr>,
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i>, &hellip; )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlng">LatLng</a>[]</code></td>
 		<td>Allows adding, removing or replacing points in the polyline. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
 	</tr>
@@ -1955,11 +2149,16 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.MultiPolyline</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.MultiPolyline</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>,
+			<nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.MultiPolyline(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.multiPolyline(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a multi-polyline object given an array of arrays of geographical points (one for each individual polyline) and optionally an options object.</td>
 	</tr>
 </table>
@@ -1981,11 +2180,16 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Polygon</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Polygon</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i></nobr>,
+			<nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Polygon(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.polygon(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside.</td>
 	</tr>
 </table>
@@ -2007,11 +2211,16 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.MultiPolygon</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>, <nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.MultiPolygon</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>,
+			<nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.MultiPolygon(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.multiPolygon(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a multi-polyline object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
 	</tr>
 </table>
@@ -2039,11 +2248,16 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Rectangle</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>, <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Rectangle</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Rectangle(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.rectangle(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a rectangle object with the given geographical bounds and optionally an options object.</td>
 	</tr>
 </table>
@@ -2059,7 +2273,10 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>setBounds</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr></code></td>
+		<td><code><b>setBounds</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Redraws the rectangle with the passed bounds.</td>
 	</tr>
@@ -2081,11 +2298,17 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Circle</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>, <nobr>&lt;Number&gt; <i>radius</i></nobr>, <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Circle</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;Number&gt; <i>radius</i></nobr>,
+			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Circle(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.circle(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a circle object given a geographical point, a radius in meters and optionally an options object.</td>
 	</tr>
 </table>
@@ -2109,12 +2332,18 @@ map.fitBounds(bounds);</code></pre>
 		<td>Returns the current radius of a circle. Units are in meters.</td>
 	</tr>
 	<tr>
-		<td><code><b>setLatLng</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>setLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the position of a circle to a new location.</td>
 	</tr>
 	<tr>
-		<td><code><b>setRadius</b>( <nobr>&lt;Number&gt; <i>radius</i> )</nobr></code></td>
+		<td><code><b>setRadius</b>(
+			<nobr>&lt;Number&gt; <i>radius</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the radius of a circle. Units are in meters.</td>
 	</tr>
@@ -2135,11 +2364,16 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.CircleMarker</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>, <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.CircleMarker</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.CircleMarker(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.circleMarker(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Instantiates a circle marker given a geographical point and optionally an options object. The default radius is 10 and can be altered by passing a "radius" member in the path options object.</td>
 	</tr>
 </table>
@@ -2153,12 +2387,18 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>setLatLng</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>setLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the position of a circle marker to a new location.</td>
 	</tr>
 	<tr>
-		<td><code><b>setRadius</b>( <nobr>&lt;Number&gt; <i>radius</i> )</nobr></code></td>
+		<td><code><b>setRadius</b>(
+			<nobr>&lt;Number&gt; <i>radius</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the radius of a circle marker. Units are in pixels.</td>
 	</tr>
@@ -2183,11 +2423,15 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.LayerGroup</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>[]&gt; <i>layers?</i> )</nobr></code></td>
+		<td><code><b>L.LayerGroup</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.LayerGroup(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.layerGroup(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Create a layer group, optionally given an initial set of layers.</td>
 	</tr>
 </table>
@@ -2201,17 +2445,26 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the group of layers to the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>addLayer</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>addLayer</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds a given layer to the group.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeLayer</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>removeLayer</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes a given layer from the group.</td>
 	</tr>
@@ -2242,11 +2495,15 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.FeatureGroup</b>( <nobr>&lt;<a href="#ilayer">IFeature</a>[]&gt; <i>layers?</i> )</nobr></code></td>
+		<td><code><b>L.FeatureGroup</b>(
+			<nobr>&lt;<a href="#ilayer">IFeature</a>[]&gt; <i>layers?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.FeatureGroup(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.featureGroup(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Create a layer group, optionally given an initial set of layers.</td>
 	</tr>
 </table>
@@ -2262,7 +2519,11 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>bindPopup</b>( <nobr>&lt;String&gt; <i>htmlContent</i></nobr>, <nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>bindPopup</b>(
+			<nobr>&lt;String&gt; <i>htmlContent</i></nobr>,
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on any layer from the group that has a <code>bindPopup</code> method.</td>
 	</tr>
@@ -2272,7 +2533,9 @@ map.fitBounds(bounds);</code></pre>
 		<td>Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).</td>
 	</tr>
 	<tr>
-		<td><code><b>setStyle</b>( <nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>style</i> )</nobr></code></td>
+		<td><code><b>setStyle</b>(
+			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>style</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the given path options to each layer of the group that has a <code>setStyle</code> method.</td>
 	</tr>
@@ -2343,11 +2606,16 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.GeoJSON</b>( <nobr>&lt;Object&gt; <i>geojson?</i></nobr>, <nobr>&lt;<a href="#geojson-options">GeoJSON options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.GeoJSON</b>(
+			<nobr>&lt;Object&gt; <i>geojson?</i></nobr>,
+			<nobr>&lt;<a href="#geojson-options">GeoJSON options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.GeoJSON(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.geoJson(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates a GeoJSON layer. Optionally accepts an object in <a href="http://geojson.org/geojson-spec.html">GeoJSON format</a> to display on the map (you can alternatively add it later with <code>addData</code> method) and an options object.</td>
 	</tr>
 </table>
@@ -2360,19 +2628,34 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr id="geojson-pointtolayer">
-		<td><code><b>pointToLayer</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>pointToLayer</b>(
+			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td>Function that will be used for creating layers for GeoJSON points (if not specified, simple markers will be created).</td>
 	</tr>
 	<tr id="geojson-style">
-		<td><code><b>style</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i> )</nobr></code></td>
+		<td><code><b>style</b>(
+			<nobr>&lt;GeoJSON&gt; <i>featureData</i> )</nobr>
+		</code></td>
+
 		<td>Function that will be used to get style options for vector layers created for GeoJSON features.</td>
 	</tr>
 	<tr id="geojson-oneachfeature">
-		<td><code><b>onEachFeature</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>onEachFeature</b>(
+			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+		</code></td>
+
 		<td>Function that will be called on each created feature layer. Useful for attaching events and popups to features.</td>
 	</tr>
 	<tr id="geojson-filter">
-		<td><code><b>filter</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>filter</b>(
+			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+		</code></td>
+
 		<td>Function that will be used to decide whether to show a feature or not.</td>
 	</tr>
 </table>
@@ -2387,7 +2670,10 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addData</b>( <nobr>&lt;GeoJSON&gt; <i>data</i> )</nobr></code></td>
+		<td><code><b>addData</b>(
+			<nobr>&lt;GeoJSON&gt; <i>data</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Adds a GeoJSON object to the layer.</td>
 	</tr>
@@ -2402,17 +2688,30 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>geometryToLayer</b>( <nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>, <nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr></code></td>
+		<td><code><b>geometryToLayer</b>(
+			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
+			<nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr>
+		</code></td>
+
 		<td><code>ILayer</code></td>
 		<td>Creates a layer from a given GeoJSON feature.</td>
 	</tr>
 	<tr>
-		<td><code><b>coordsToLatlng</b>( <nobr>&lt;Array&gt; <i>coords</i></nobr>, <nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr></code></td>
+		<td><code><b>coordsToLatlng</b>(
+			<nobr>&lt;Array&gt; <i>coords</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Creates a LatLng object from an array of 2 numbers (latitude, longitude) used in GeoJSON for points. If <code>reverse</code> is set to <code><span class="literal">true</span></code>, the numbers will be interpreted as (longitude, latitude).</td>
 	</tr>
 	<tr>
-		<td><code><b>coordsToLatlngs</b>( <nobr>&lt;Array&gt; <i>coords</i></nobr>, <nobr>&lt;Number&gt; <i>levelsDeep?</i></nobr>, <nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr></code></td>
+		<td><code><b>coordsToLatlngs</b>(
+			<nobr>&lt;Array&gt; <i>coords</i></nobr>,
+			<nobr>&lt;Number&gt; <i>levelsDeep?</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>reverse?</i> )</nobr>
+		</code></td>
+
 		<td><code>Array</code></td>
 		<td>Creates a multidimensional array of LatLng objects from a GeoJSON coordinates array. <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default). If <code>reverse</code> is set to <code><span class="literal">true</span></code>, the numbers will be interpreted as (longitude, latitude).</td>
 	</tr>
@@ -2440,12 +2739,18 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.LatLng</b>( <nobr>&lt;Number&gt; <i>latitude</i></nobr>, <nobr>&lt;Number&gt; <i>longitude</i></nobr>, <nobr>&lt;Boolean&gt; <i>noWrap?</i> )</nobr></code></td>
+		<td><code><b>L.LatLng</b>(
+			<nobr>&lt;Number&gt; <i>latitude</i></nobr>,
+			<nobr>&lt;Number&gt; <i>longitude</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>noWrap?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.LatLng(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.latLng(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.latLng([<span class="comment">&hellip;</span>])</code>
 		</td>
+
 		<td>Creates an object representing a geographical point with the given latitude and longitude. Wraps longitude to lie between <code>-180</code> and <code>180</code> and clamps longitude between <code>-90</code> and <code>90</code> by default &mdash; you can disable this with the <code>noWrap</code> argument.</td>
 	</tr>
 </table>
@@ -2479,12 +2784,18 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>distanceTo</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>otherLatlng</i> )</nobr></code></td>
+		<td><code><b>distanceTo</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>otherLatlng</i> )</nobr>
+		</code></td>
+
 		<td><code>Number</code></td>
 		<td>Returns the distance (in meters) to the given LatLng calculated using the Haversine formula. See <a href="http://en.wikipedia.org/wiki/Haversine_formula">description on wikipedia</a></td>
 	</tr>
 	<tr>
-		<td><code><b>equals</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>otherLatlng</i> )</nobr></code></td>
+		<td><code><b>equals</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>otherLatlng</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the given LatLng point is at the same position (within a small margin of error).</td>
 	</tr>
@@ -2550,16 +2861,24 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.LatLngBounds</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>southWest</i></nobr>, <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>northEast</i></nobr> )</code></td>
+		<td>
+			<code><b>L.LatLngBounds</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>southWest</i></nobr>,
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>northEast</i></nobr> )</code>
+		</td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.LatLngBounds(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.latLngBounds(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.latLngBounds([<span class="comment">&hellip;</span>])</code>
 		</td>
+
 		<td>Creates a LatLngBounds object by defining south-west and north-east corners of the rectangle.</td>
 	</tr>
 	<tr>
-		<td><code><b>L.LatLngBounds</b>( <nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr></code></td>
+		<td><code><b>L.LatLngBounds</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr>
+		</code></td>
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.LatLngBounds(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.latLngBounds(<span class="comment">&hellip;</span>)</code>
@@ -2577,7 +2896,10 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>extend</b>( <nobr>&lt;<a href="#latlng">LatLng</a>|<a href="#latlngbounds">LatLngBounds</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>extend</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>|<a href="#latlngbounds">LatLngBounds</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Extends the bounds to contain the given point or bounds.</td>
 	</tr>
@@ -2607,22 +2929,34 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<td>Returns the center point of the bounds.</td>
 	</tr>
 	<tr>
-		<td><code><b>contains</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>otherBounds</i> )</nobr></code></td>
+		<td><code><b>contains</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>otherBounds</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given one.</td>
 	</tr>
 	<tr>
-		<td><code><b>contains</b>( <nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr></code></td>
+		<td><code><b>contains</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given point.</td>
 	</tr>
 	<tr>
-		<td><code><b>intersects</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>otherBounds</i> )</nobr></code></td>
+		<td><code><b>intersects</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>otherBounds</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle intersects the given bounds.</td>
 	</tr>
 	<tr>
-		<td><code><b>equals</b>( <nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>otherBounds</i> )</nobr></code></td>
+		<td><code><b>equals</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>otherBounds</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle is equivalent (within a small margin of error) to the given bounds.</td>
 	</tr>
@@ -2632,7 +2966,10 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<td>Returns a string with bounding box coordinates in a <code><span class="string">'southwest_lng,southwest_lat,northeast_lng,northeast_lat'</span></code> format. Useful for sending requests to web services that return geo data.</td>
 	</tr>
 	<tr>
-		<td><code><b>pad</b>( <nobr>&lt;Number&gt; <i>bufferRatio</i> )</nobr></code></td>
+		<td><code><b>pad</b>(
+			<nobr>&lt;Number&gt; <i>bufferRatio</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td>Returns bigger bounds created by extending the current bounds by a given percentage in each direction.</td>
 	</tr>
@@ -2661,12 +2998,17 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Point</b>( <nobr>&lt;Number&gt; <i>x</i>, &lt;Number&gt; <i>y</i></nobr>, <nobr>&lt;Boolean&gt; <i>round?</i> )</nobr></code></td>
+		<td><code><b>L.Point</b>(
+			<nobr>&lt;Number&gt; <i>x</i>, &lt;Number&gt; <i>y</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>round?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Point(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.point(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.point([<span class="comment">&hellip;</span>])</code>
 		</td>
+
 		<td>Creates a Point object with the given <code>x</code> and <code>y</code> coordinates. If optional <code>round</code> is set to <code><span class="literal">true</span></code>, rounds the <code>x</code> and <code>y</code> values.</td>
 	</tr>
 </table>
@@ -2700,27 +3042,43 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>add</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr></code></td>
+		<td><code><b>add</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the result of addition of the current and the given points.</td>
 	</tr>
 	<tr>
-		<td><code><b>subtract</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr></code></td>
+		<td><code><b>subtract</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the result of subtraction of the given point from the current.</td>
 	</tr>
 	<tr>
-		<td><code><b>multiplyBy</b>( <nobr>&lt;Number&gt; <i>number</i> )</nobr></code></td>
+		<td><code><b>multiplyBy</b>(
+			<nobr>&lt;Number&gt; <i>number</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the result of multiplication of the current point by the given number.</td>
 	</tr>
 	<tr>
-		<td><code><b>divideBy</b>( <nobr>&lt;Number&gt; <i>number</i></nobr>, <nobr>&lt;Boolean&gt; <i>round?</i> )</nobr></code></td>
+		<td><code><b>divideBy</b>(
+			<nobr>&lt;Number&gt; <i>number</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>round?</i> )</nobr>
+		</code></td>
+
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the result of division of the current point by the given number. If optional <code>round</code> is set to <code><span class="literal">true</span></code>, returns a rounded result.</td>
 	</tr>
 	<tr>
-		<td><code><b>distanceTo</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr></code></td>
+		<td><code><b>distanceTo</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
+		</code></td>
+
 		<td><code>Number</code></td>
 		<td>Returns the distance between the current and the given points.</td>
 	</tr>
@@ -2763,20 +3121,29 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Bounds</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>topLeft</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>bottomRight</i> )</nobr></code></td>
+		<td><code><b>L.Bounds</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>topLeft</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>bottomRight</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Bounds(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.bounds(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.bounds([<span class="comment">&hellip;</span>])</code>
 		</td>
+
 		<td>Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).</td>
 	</tr>
 	<tr>
-		<td><code><b>L.LatLngBounds</b>( <nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i> )</nobr></code></td>
+		<td><code><b>L.LatLngBounds</b>(
+			<nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Bounds(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.bounds(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates a Bounds object defined by the points it contains.</td>
 	</tr>
 </table>
@@ -2810,7 +3177,10 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>extend</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>extend</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td>-</td>
 		<td>Extends the bounds to contain the given point.</td>
 	</tr>
@@ -2820,17 +3190,26 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<td>Returns the center point of the bounds.</td>
 	</tr>
 	<tr>
-		<td><code><b>contains</b>( <nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>otherBounds</i> )</nobr></code></td>
+		<td><code><b>contains</b>(
+			<nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>otherBounds</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given one.</td>
 	</tr>
 	<tr>
-		<td><code><b>contains</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>contains</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given point.</td>
 	</tr>
 	<tr>
-		<td><code><b>intersects</b>( <nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>otherBounds</i> )</nobr></code></td>
+		<td><code><b>intersects</b>(
+			<nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>otherBounds</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle intersects the given bounds.</td>
 	</tr>
@@ -2864,11 +3243,15 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Icon</b>( <nobr>&lt;<a href="#icon-options">Icon options</a>&gt; <i>options</i> )</nobr></code></td>
+		<td><code><b>L.Icon</b>(
+			<nobr>&lt;<a href="#icon-options">Icon options</a>&gt; <i>options</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Icon(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.icon(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates an icon instance with the given options.</td>
 	</tr>
 </table>
@@ -2939,11 +3322,15 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.DivIcon</b>( <nobr>&lt;<a href="#divicon-options">DivIcon options</a>&gt; <i>options</i> )</nobr></code></td>
+		<td><code><b>L.DivIcon</b>(
+			<nobr>&lt;<a href="#divicon-options">DivIcon options</a>&gt; <i>options</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.DivIcon(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.divIcon(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates a div icon instance with the given options.</td>
 	</tr>
 </table>
@@ -2992,11 +3379,15 @@ map.addControl(control);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Control</b>( <nobr>&lt;<a href="#control-options">Control options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Control</b>(
+			<nobr>&lt;<a href="#control-options">Control options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Control(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.control(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates a control with the given options.</td>
 	</tr>
 </table>
@@ -3025,7 +3416,10 @@ map.addControl(control);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>setPosition</b>( <nobr>&lt;String&gt; <i>position</i> )</nobr></code></td>
+		<td><code><b>setPosition</b>(
+			<nobr>&lt;String&gt; <i>position</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the position of the control. See <a href="#control-positions">control positions</a>.</td>
 	</tr>
@@ -3035,12 +3429,18 @@ map.addControl(control);</code></pre>
 		<td>Returns the current position of the control.</td>
 	</tr>
 	<tr>
-		<td><code><b>addTo</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>addTo</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds the control to the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeFrom</b>( <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr></code></td>
+		<td><code><b>removeFrom</b>(
+			<nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes the control from the map.</td>
 	</tr>
@@ -3086,11 +3486,15 @@ map.addControl(control);</code></pre>
 		<th class="width200">Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Control.Zoom</b>( <nobr>&lt;<a href="#control-zoom-options">Control.Zoom options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Control.Zoom</b>(
+			<nobr>&lt;<a href="#control-zoom-options">Control.Zoom options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Control.Zoom(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.control.zoom(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates a zoom control.</td>
 	</tr>
 </table>
@@ -3125,11 +3529,15 @@ map.addControl(control);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Control.Attribution</b>( <nobr>&lt;<a href="#control-attribution-options">Control.Attribution options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Control.Attribution</b>(
+			<nobr>&lt;<a href="#control-attribution-options">Control.Attribution options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Control.Attribution(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.control.attribution(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates an attribution control.</td>
 	</tr>
 </table>
@@ -3164,17 +3572,23 @@ map.addControl(control);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>setPrefix</b>( <nobr>&lt;String&gt; <i>prefix</i> )</nobr></code></td>
+		<td><code><b>setPrefix</b>(
+			<nobr>&lt;String&gt; <i>prefix</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the text before the attributions.</td>
 	</tr>
 	<tr>
-		<td><code><b>addAttribution</b>( <nobr>&lt;String&gt; <i>text</i> )</nobr></code></td>
+		<td><code><b>addAttribution</b>(
+			<nobr>&lt;String&gt; <i>text</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds an attribution text (e.g. <code><span class="string">'Vector data &amp;copy; CloudMade'</span></code>).</td>
 	</tr>
 	<tr>
-		<td><code><b>removeAttribution</b>( <nobr>&lt;String&gt; <i>text</i> )</nobr></code></td>
+		<td><code><b>removeAttribution</b>(
+			<nobr>&lt;String&gt; <i>text</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes an attribution text.</td>
 	</tr>
@@ -3205,7 +3619,11 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Control.Layers</b>( <nobr>&lt;<a href="#control-layers-config">Layer Config</a>&gt; <i>baseLayers?</i></nobr>, <nobr>&lt;<a href="#control-layers-config">Layer Config</a>&gt; <i>overlays?</i></nobr>, <nobr>&lt;<a href="#control-layers-options">Control.Layers options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Control.Layers</b>(
+			<nobr>&lt;<a href="#control-layers-config">Layer Config</a>&gt; <i>baseLayers?</i></nobr>,
+			<nobr>&lt;<a href="#control-layers-config">Layer Config</a>&gt; <i>overlays?</i></nobr>,
+			<nobr>&lt;<a href="#control-layers-options">Control.Layers options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Control.Layers(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.control.layers(<span class="comment">&hellip;</span>)</code>
@@ -3222,17 +3640,25 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addBaseLayer</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
+		<td><code><b>addBaseLayer</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>,
+			<nobr>&lt;String&gt; <i>name</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds a base layer (radio button entry) with the given name to the control.</td>
 	</tr>
 	<tr>
-		<td><code><b>addOverlay</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
+		<td><code><b>addOverlay</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>,
+			<nobr>&lt;String&gt; <i>name</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds an overlay (checkbox entry) with the given name to the control.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeLayer</b>( <nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr></code></td>
+		<td><code><b>removeLayer</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Remove the given layer from the control.</td>
 	</tr>
@@ -3287,11 +3713,15 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Control.Scale</b>( <nobr>&lt;<a href="#control-scale-options">Control.Scale options</a>&gt; <i>options?</i> )</nobr></code></td>
+		<td><code><b>L.Control.Scale</b>(
+			<nobr>&lt;<a href="#control-scale-options">Control.Scale options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td class="factory-usage">
 			<code><span class='keyword'>new</span> L.Control.Attribution(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.control.attribution(<span class="comment">&hellip;</span>)</code>
 		</td>
+
 		<td>Creates an scale control with the given options.</td>
 	</tr>
 </table>
@@ -3364,32 +3794,57 @@ map.off('click', onClick);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addEventListener</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Function&gt; <i>fn</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code><b>addEventListener</b>(
+			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code><span class="keyword">this</span></code> keyword will point to). You can also pass several space-separated types (e.g. <code><span class="string">'click dblclick'</span></code>).</td>
 	</tr>
 	<tr>
-		<td><code><b>addEventListener</b>( <nobr>&lt;Object&gt; <i>eventMap</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code><b>addEventListener</b>(
+			<nobr>&lt;Object&gt; <i>eventMap</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
 	</tr>
 	<tr>
-		<td><code><b>removeEventListener</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Function&gt; <i>fn?</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code><b>removeEventListener</b>(
+			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;Function&gt; <i>fn?</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeEventListener</b>( <nobr>&lt;Object&gt; <i>eventMap</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code><b>removeEventListener</b>(
+			<nobr>&lt;Object&gt; <i>eventMap</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes a set of type/listener pairs.</code></td>
 	</tr>
 	<tr>
-		<td><code><b>hasEventListeners</b>( <nobr>&lt;String&gt; <i>type</i> )</nobr></code></td>
+		<td><code><b>hasEventListeners</b>(
+			<nobr>&lt;String&gt; <i>type</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if a particular event type has some listeners attached to it.</td>
 	</tr>
 	<tr>
-		<td><code><b>fireEvent</b>( <nobr>&lt;String&gt; <i>type</i></nobr>, <nobr>&lt;Object&gt; <i>data?</i> )</nobr></code></td>
+		<td><code><b>fireEvent</b>(
+			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;Object&gt; <i>data?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
 	</tr>
@@ -3793,17 +4248,25 @@ alert('Upgrade your browser, dude!');
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>extend</b>( <nobr>&lt;Object&gt; <i>dest</i></nobr>, <nobr>&lt;Object&gt; <i>src?..</i> )</nobr></code></td>
+		<td><code><b>extend</b>(
+			<nobr>&lt;Object&gt; <i>dest</i></nobr>,
+			<nobr>&lt;Object&gt; <i>src?..</i> )</nobr>
+		</code></td>
+
 		<td><code>Object</code></td>
 		<td>Merges the properties of the <code>src</code> object (or multiple objects) into <code>dest</code> object and returns the latter.</td>
 	</tr>
 	<tr>
-		<td><code><b>bind</b>( <nobr>&lt;Function&gt; <i>fn</i></nobr>, <nobr>&lt;Object&gt; <i>obj</i> )</nobr></code></td>
+		<td><code><b>bind</b>(
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>obj</i> )</nobr>
+		</code></td>
+
 		<td><code>Function</code></td>
 		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code).</td>
 	</tr>
 	<tr>
-		<td><code><b>stamp</b>( &lt;Object&gt; obj</nobr> )<nobr></code></td>
+		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
 		<td><code>String</code></td>
 		<td>Applies a unique key to the object and returns that key.</td>
 	</tr>
@@ -3821,7 +4284,12 @@ alert('Upgrade your browser, dude!');
 	</tr>
 	-->
 	<tr>
-		<td><code><b>limitExecByInterval</b>( <nobr>&lt;Function&gt; <i>fn</i></nobr>, <nobr>&lt;Number&gt; <i>time</i></nobr>, <nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code><b>limitExecByInterval</b>(
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Number&gt; <i>time</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
 		<td><code>Function</code></td>
 		<td>Returns a wrapper around the function <code>fn</code> that makes sure it's called not more often than a certain time interval <code>time</code>, but as fast as possible otherwise (for example, it is used for checking and requesting new tiles while dragging the map), optionally passing the scope (<code>context</code>) in which the function will be called.</td>
 	</tr>
@@ -3832,27 +4300,44 @@ alert('Upgrade your browser, dude!');
 		<td>Returns a function which always returns <code><span class="literal">false</span></code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>formatNum</b>( <nobr>&lt;Number&gt; <i>num</i></nobr>, <nobr>&lt;Number&gt; <i>digits</i> )</nobr></code></td>
+		<td><code><b>formatNum</b>(
+			<nobr>&lt;Number&gt; <i>num</i></nobr>,
+			<nobr>&lt;Number&gt; <i>digits</i> )</nobr>
+		</code></td>
+
 		<td><code>Number</code></td>
 		<td>Returns the number <code>num</code> rounded to <code>digits</code> decimals.</td>
 	</tr>
 	<tr>
-		<td><code><b>splitWords</b>( <nobr>&lt;String&gt; <i>str</i> )</nobr></code></td>
+		<td><code><b>splitWords</b>(
+			<nobr>&lt;String&gt; <i>str</i> )</nobr>
+		</code></td>
+
 		<td><code>String[]</code></td>
 		<td>Trims and splits the string on whitespace and returns the array of parts.</code></td>
 	</tr>
 	<tr>
-		<td><code><b>setOptions</b>( <nobr>&lt;Object&gt; <i>obj</i></nobr>, &lt;Object&gt; <i>options</i> )</nobr></code></td>
+		<td><code><b>setOptions</b>(
+			<nobr>&lt;Object&gt; <i>obj</i></nobr>,
+			<nobr>&lt;Object&gt; <i>options</i> )</nobr>
+		</code></td>
+
 		<td><code>Object</code></td>
 		<td>Merges the given properties to the <code>options</code> of the <code>obj</code> object, returning the resulting options. See <a href="#class-options">Class options</a>.</td>
 	</tr>
 	<tr>
-		<td><code><b>getParamString</b>( <nobr>&lt;Object&gt; <i>obj</i> )</nobr></code></td>
+		<td><code><b>getParamString</b>(
+			<nobr>&lt;Object&gt; <i>obj</i> )</nobr>
+		</code></td>
+
 		<td><code>String</code></td>
 		<td>Converts an object into a parameter URL string, e.g. <nobr><code>{a: "foo", b: "bar"}</code></nobr> translates to <code><span class="string">'?a=foo&amp;b=bar'</span></code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>template</b>( <nobr>&lt;String&gt; <i>str</i>, &lt;Object&gt; <i>data</i> )</nobr></code></td>
+		<td><code><b>template</b>(
+			<nobr>&lt;String&gt; <i>str</i>, &lt;Object&gt; <i>data</i> )</nobr>
+		</code></td>
+
 		<td><code>String</code></td>
 		<td>Simple templating facility, creates a string by applying the values of the <code>data</code> object of a form <code>{a: 'foo', b: 'bar', &hellip;}</code> to a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> &mdash; in this example you will get <code><span class="string">'Hello foo, bar'</span></code>.</td>
 	</tr>
@@ -3972,23 +4457,39 @@ alert('Upgrade your browser, dude!');
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>get</b>( <nobr>&lt;String or HTMLElement&gt; <i>id</i> )</nobr></code></td>
+		<td><code><b>get</b>(
+			<nobr>&lt;String or HTMLElement&gt; <i>id</i> )</nobr>
+		</code></td>
+
 		<td><code>HTMLElement</code></td>
 		<td>Returns an element with the given id if a string was passed, or just returns the element if it was passed directly.</td>
 	</tr>
 	<tr>
-		<td><code><b>getStyle</b>( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>style</i> )</nobr></code></td>
+		<td><code><b>getStyle</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>style</i> )</nobr>
+		</code></td>
+
 		<td><code>String</code></td>
 		<td>Returns the value for a certain style attribute on an element, including computed values or values set through CSS.</td>
 	</tr>
 	<tr>
-		<td><code><b>getViewportOffset</b>( <nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr></code></td>
+		<td><code><b>getViewportOffset</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
+		</code></td>
+
 		<td><a href="#point"><code>Point</code></a></td>
 		<td>Returns the offset to the viewport for the requested element.</td>
 	</tr>
 	<tr>
-		<td><code><b>create</b>( <nobr>&lt;String&gt; <i>tagName</i></nobr>, <nobr>&lt;String&gt; <i>className</i></nobr>, <nobr>&lt;HTMLElement&gt; <i>container?</i> )</nobr></code></td>
+		<td><code><b>create</b>(
+			<nobr>&lt;String&gt; <i>tagName</i></nobr>,
+			<nobr>&lt;String&gt; <i>className</i></nobr>,
+			<nobr>&lt;HTMLElement&gt; <i>container?</i> )</nobr>
+		</code></td>
+
 		<td><code>HTMLElement</code></td>
+
 		<td>Creates an element with <code>tagName</code>, sets the <code>className</code>, and optionally appends it to <code>container</code> element.</td>
 	</tr>
 	<tr>
@@ -4002,47 +4503,84 @@ alert('Upgrade your browser, dude!');
 		<td>Makes text selection possible again.</td>
 	</tr>
 	<tr>
-		<td><code><b>hasClass</b>( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
+		<td><code><b>hasClass</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>name</i> )</nobr>
+		</code></td>
+
 		<td><code>Boolean</code></td>
+
 		<td>Returns <code><span class="literal">true</span></code> if the element class attribute contains <code>name</code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>addClass</b>( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
+		<td><code><b>addClass</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>name</i> )</nobr>
+		</code></td>
+
 		<td>-</td>
+
 		<td>Adds <code>name</code> to the element's class attribute.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeClass</b>( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;String&gt; <i>name</i> )</nobr></code></td>
+		<td><code><b>removeClass</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>name</i> )</nobr>
+		</code></td>
+
 		<td>-</td>
+
 		<td>Removes <code>name</code> from the element's class attribute.</td>
 	</tr>
 	<tr>
-		<td><code><b>setOpacity</b>( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;Number&gt; <i>value</i> )</nobr></code></td>
+		<td><code><b>setOpacity</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;Number&gt; <i>value</i> )</nobr>
+		</code></td>
+
 		<td>-</td>
 		<td>Set the opacity of an element (including old IE support). Value must be from <code>0</code> to <code>1</code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>testProp</b>( <nobr>&lt;String[]&gt; <i>props</i> )</nobr></code></td>
+		<td><code><b>testProp</b>(
+			<nobr>&lt;String[]&gt; <i>props</i> )</nobr>
+		</code></td>
+
 		<td><code>String</code> or <code><span class="literal">false</span></code></td>
 		<td>Goes through the array of style names and returns the first name that is a valid style name for an element. If no such name is found, it returns <code><span class="literal">false</span></code>. Useful for vendor-prefixed styles like <code>transform</code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>getTranslateString</b>( <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr></code></td>
+		<td><code><b>getTranslateString</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
 		<td><code>String</code></td>
 		<td>Returns a CSS transform string to move an element by the offset provided in the given point. Uses 3D translate on WebKit for hardware-accelerated transforms and 2D on other browsers.</td>
 	</tr>
 	<tr>
-		<td><code><b>getScaleString</b>( <nobr>&lt;Number&gt; <i>scale</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>origin</i> )</nobr></code></td>
+		<td><code><b>getScaleString</b>(
+			<nobr>&lt;Number&gt; <i>scale</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>origin</i> )</nobr>
+		</code></td>
+
 		<td><code>String</code></td>
 		<td>Returns a CSS transform string to scale an element (with the given scale origin).</td>
 	</tr>
 	<tr>
-		<td><code><b>setPosition</b>( <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>, <nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>, <nobr>&lt;Boolean&gt; <i>disable3D?</i> )</nobr></code></td>
+		<td><code><b>setPosition</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>disable3D?</i> )</nobr>
+		</code></td>
+
 		<td>-</td>
 		<td>Sets the position of an element to coordinates specified by <code>point</code>, using CSS translate or top/left positioning depending on the browser (used by Leaflet internally to position its layers). Forces top/left positioning if <code>disable3D</code> is <code><span class="literal">true</span></code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>getPosition</b>( <nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr></code></td>
+		<td><code><b>getPosition</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
+		</code></td>
+
 		<td><a href="#point">Point</a></td>
 		<td>Returns the coordinates of an element previously positioned with <code>setPosition</code>.</td>
 	</tr>
@@ -4057,12 +4595,14 @@ alert('Upgrade your browser, dude!');
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>TRANSITION</b></nobr></code></td>
+		<td><code><b>TRANSITION</b></nobr>
+		</code></td>
 		<td><code>String</code></td>
 		<td>Vendor-prefixed transition style name (e.g. <code><span class="string">'webkitTransition'</span></code> for WebKit).</td>
 	</tr>
 	<tr>
-		<td><code><b>TRANSFORM</b></nobr></code></td>
+		<td><code><b>TRANSFORM</b></nobr>
+		</code></td>
 		<td><code>String</code></td>
 		<td>Vendor-prefixed transform style name.</td>
 	</tr>
