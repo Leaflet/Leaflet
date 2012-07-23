@@ -90,8 +90,8 @@ bodyclass: api-page
 			<li><a href="#browser">Browser</a></li>
 			<li><a href="#util">Util</a></li>
 			<li><a class="nodocs" href="#">Transformation</a></li>
-			<li><a class="nodocs" href="#">LineUtil</a></li>
-			<li><a class="nodocs" href="#">PolyUtil</a></li>
+			<li><a href="#lineutil">LineUtil</a></li>
+			<li><a href="#polyutil">PolyUtil</a></li>
 		</ul>
 		<h4>DOM Utility</h4>
 		<ul>
@@ -120,6 +120,8 @@ bodyclass: api-page
 		</ul>
 	</div>
 </div>
+
+<!--<a href="#toc" id="back-to-top">&uarr;</a>-->
 
 <hr />
 <p>This reference reflects <strong>Leaflet 0.4</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/CloudMade/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a></p>
@@ -3868,6 +3870,90 @@ alert('Upgrade your browser, dude!');
 		<td><code><b>emptyImageUrl</b></code></td>
 		<td><code>String</code></td>
 		<td>Data URI string containing a base64-encoded empty GIF image. Used as a hack to free memory from unused images on WebKit-powered mobile devices (by setting image <code>src</code> to this string).</td>
+	</tr>
+</table>
+
+
+<h2 id="lineutil">L.LineUtil</h2>
+
+<p>Various utility functions for polyine points processing, used by Leaflet internally to make polylines lightning-fast.</p>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>simplify</b>(
+			<nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i></nobr>,
+			<nobr>&lt;Number&gt; <i>tolerance</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a>[]</code></td>
+
+		<td>Dramatically reduces the number of points in a polyline while retaining its shape and returns a new array of simplified points. Used for a huge performance boost when processing/displaying Leaflet polylines for each zoom level and also reducing visual noise. <code>tolerance</code> affects the amount of simplification (lesser value means higher quality but slower and with more points). Also released as a separated micro-library <a href="http://mourner.github.com/simplify-js/">Simplify.js</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>pointToSegmentDistance</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p1</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p2</i> )</nobr>
+		</code></td>
+
+		<td><code>Number</code></td>
+
+		<td>Returns the distance between point <code>p</code> and segment <code>p1</code> to <code>p2</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>closestPointOnSegment</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p1</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p2</i> )</nobr>
+		</code></td>
+
+		<td><code>Number</code></td>
+
+		<td>Returns the closest point from a point <code>p</code> on a segment <code>p1</code> to <code>p2</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>clipSegment</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>a</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>b</i></nobr>,
+			<nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>bounds</i> )</nobr>
+		</code></td>
+
+		<td><code>-</code></td>
+
+		<td>Clips the segment <code>a</code> to <code>b</code> by rectangular bounds (modifying the segment points directly!). Used by Leaflet to only show polyline points that are on the screen or near, increasing performance.</td>
+	</tr>
+</table>
+
+
+
+<h2 id="polyutil">L.PolyUtil</h2>
+
+<p>Various utility functions for polygon geometries.</p>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>clipPolygon</b>(
+			<nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i></nobr>,
+			<nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>bounds</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a>[]</code></td>
+
+		<td>Clips the polygon geometry defined by the given points by rectangular bounds. Used by Leaflet to only show polygon points that are on the screen or near, increasing performance. Note that polygon points needs different algorithm for clipping than polyline, so there's a seperate method for it.</td>
 	</tr>
 </table>
 
