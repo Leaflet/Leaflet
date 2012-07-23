@@ -4,37 +4,43 @@
 
 L.DomEvent = {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn, /*Object*/ context) {
+	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
+
 		var id = L.Util.stamp(fn),
-			key = '_leaflet_' + type + id;
+			key = '_leaflet_' + type + id,
+			handler, originalHandler, newType;
 
-		if (obj[key]) {
-			return this;
-		}
+		if (obj[key]) { return this; }
 
-		var handler = function (e) {
+		handler = function (e) {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
 		};
 
 		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
-			this.addDoubleTapListener(obj, handler, id);
+			return this.addDoubleTapListener(obj, handler, id);
+
 		} else if ('addEventListener' in obj) {
+			
 			if (type === 'mousewheel') {
 				obj.addEventListener('DOMMouseScroll', handler, false);
 				obj.addEventListener(type, handler, false);
+
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-				var originalHandler = handler,
-					newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
+
+				originalHandler = handler;
+				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
+
 				handler = function (e) {
-					if (!L.DomEvent._checkMouse(obj, e)) {
-						return;
-					}
+					if (!L.DomEvent._checkMouse(obj, e)) { return; }
 					return originalHandler(e);
 				};
+
 				obj.addEventListener(newType, handler, false);
+
 			} else {
 				obj.addEventListener(type, handler, false);
 			}
+
 		} else if ('attachEvent' in obj) {
 			obj.attachEvent("on" + type, handler);
 		}
@@ -44,21 +50,23 @@ L.DomEvent = {
 		return this;
 	},
 
-	removeListener: function (/*HTMLElement*/ obj, /*String*/ type, /*Function*/ fn) {
+	removeListener: function (obj, type, fn) {  // (HTMLElement, String, Function)
+
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id,
 			handler = obj[key];
 
-		if (!handler) {
-			return;
-		}
+		if (!handler) { return; }
 
 		if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
+
 		} else if ('removeEventListener' in obj) {
+
 			if (type === 'mousewheel') {
 				obj.removeEventListener('DOMMouseScroll', handler, false);
 				obj.removeEventListener(type, handler, false);
+
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
@@ -67,17 +75,76 @@ L.DomEvent = {
 		} else if ('detachEvent' in obj) {
 			obj.detachEvent("on" + type, handler);
 		}
+
 		obj[key] = null;
 
 		return this;
 	},
 
+	stopPropagation: function (e) {
+
+		if (e.stopPropagation) {
+			e.stopPropagation();
+		} else {
+			e.cancelBubble = true;
+		}
+		return this;
+	},
+
+	disableClickPropagation: function (el) {
+
+		var stop = L.DomEvent.stopPropagation;
+		
+		return L.DomEvent
+			.addListener(el, L.Draggable.START, stop)
+			.addListener(el, 'click', stop)
+			.addListener(el, 'dblclick', stop);
+	},
+
+	preventDefault: function (e) {
+
+		if (e.preventDefault) {
+			e.preventDefault();
+		} else {
+			e.returnValue = false;
+		}
+		return this;
+	},
+
+	stop: function (e) {
+		return L.DomEvent.preventDefault(e).stopPropagation(e);
+	},
+
+	getMousePosition: function (e, container) {
+
+		var body = document.body,
+			docEl = document.documentElement,
+			x = e.pageX ? e.pageX : e.clientX + body.scrollLeft + docEl.scrollLeft,
+			y = e.pageY ? e.pageY : e.clientY + body.scrollTop + docEl.scrollTop,
+			pos = new L.Point(x, y);
+
+		return (container ? pos._subtract(L.DomUtil.getViewportOffset(container)) : pos);
+	},
+
+	getWheelDelta: function (e) {
+
+		var delta = 0;
+
+		if (e.wheelDelta) {
+			delta = e.wheelDelta / 120;
+		}
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
+		return delta;
+	},
+
+	// check if element really left/entered the event target (for mouseenter/mouseleave)
 	_checkMouse: function (el, e) {
+
 		var related = e.relatedTarget;
 
-		if (!related) {
-			return true;
-		}
+		if (!related) { return true; }
 
 		try {
 			while (related && (related !== el)) {
@@ -86,12 +153,12 @@ L.DomEvent = {
 		} catch (err) {
 			return false;
 		}
-
 		return (related !== el);
 	},
 
-	/*jshint noarg:false */ // evil magic for IE
-	_getEvent: function () {
+	/*jshint noarg:false */
+	_getEvent: function () { // evil magic for IE
+
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
@@ -104,60 +171,9 @@ L.DomEvent = {
 			}
 		}
 		return e;
-	},
-	/*jshint noarg:false */
-
-	stopPropagation: function (/*Event*/ e) {
-		if (e.stopPropagation) {
-			e.stopPropagation();
-		} else {
-			e.cancelBubble = true;
-		}
-		return this;
-	},
-
-	disableClickPropagation: function (/*HTMLElement*/ el) {
-		return L.DomEvent
-			.addListener(el, L.Draggable.START, L.DomEvent.stopPropagation)
-			.addListener(el, 'click', L.DomEvent.stopPropagation)
-			.addListener(el, 'dblclick', L.DomEvent.stopPropagation);
-	},
-
-	preventDefault: function (/*Event*/ e) {
-		if (e.preventDefault) {
-			e.preventDefault();
-		} else {
-			e.returnValue = false;
-		}
-		return this;
-	},
-
-	stop: function (e) {
-		return L.DomEvent
-			.preventDefault(e)
-			.stopPropagation(e);
-	},
-
-	getMousePosition: function (e, container) {
-		var x = e.pageX ? e.pageX : e.clientX +
-				document.body.scrollLeft + document.documentElement.scrollLeft,
-			y = e.pageY ? e.pageY : e.clientY +
-					document.body.scrollTop + document.documentElement.scrollTop,
-			pos = new L.Point(x, y);
-
-		return (container ?
-					pos.subtract(L.DomUtil.getViewportOffset(container)) : pos);
-	},
-
-	getWheelDelta: function (e) {
-		var delta = 0;
-		if (e.wheelDelta) {
-			delta = e.wheelDelta / 120;
-		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
-		return delta;
 	}
+	/*jshint noarg:false */
 };
 
+L.DomEvent.on = L.DomEvent.addListener;
+L.DomEvent.off = L.DomEvent.removeListener;

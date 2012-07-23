@@ -33,7 +33,7 @@ L.Transition = L.Transition.extend({
 		this._el = el;
 		L.Util.setOptions(this, options);
 
-		L.DomEvent.addListener(el, L.Transition.END, this._onTransitionEnd, this);
+		L.DomEvent.on(el, L.Transition.END, this._onTransitionEnd, this);
 		this._onFakeStep = L.Util.bind(this._onFakeStep, this);
 	},
 
@@ -63,6 +63,11 @@ L.Transition = L.Transition.extend({
 		this._inProgress = true;
 
 		this.fire('start');
+
+		if (L.Browser.mobileWebkit) {
+			// Set up a slightly delayed call to a backup event if webkitTransitionEnd doesn't fire properly
+			this.backupEventFire = setTimeout(L.Util.bind(this._onBackupFireEnd, this), this.options.duration * 1.2 * 1000);
+		}
 
 		if (L.Transition.NATIVE) {
 			clearInterval(this._timer);
@@ -95,11 +100,23 @@ L.Transition = L.Transition.extend({
 
 			this._el.style[L.Transition.TRANSITION] = '';
 
+			// Clear the delayed call to the backup event, we have recieved some form of webkitTransitionEnd
+			clearTimeout(this.backupEventFire);
+			delete this.backupEventFire;
+
 			this.fire('step');
 
 			if (e && e.type) {
 				this.fire('end');
 			}
 		}
+	},
+
+	_onBackupFireEnd: function () {
+		// Create and fire a transitionEnd event on the element.
+
+		var event = document.createEvent("Event");
+		event.initEvent(L.Transition.END, true, false);
+		this._el.dispatchEvent(event);
 	}
 });

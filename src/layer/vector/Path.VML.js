@@ -4,13 +4,17 @@
  */
 
 L.Browser.vml = (function () {
-	var div = document.createElement('div');
-	div.innerHTML = '<v:shape adj="1"/>';
+	try {
+		var div = document.createElement('div');
+		div.innerHTML = '<v:shape adj="1"/>';
 
-	var shape = div.firstChild;
-	shape.style.behavior = 'url(#default#VML)';
+		var shape = div.firstChild;
+		shape.style.behavior = 'url(#default#VML)';
 
-	return shape && (typeof shape.adj === 'object');
+		return shape && (typeof shape.adj === 'object');
+	} catch (e) {
+		return false;
+	}
 }());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
@@ -34,8 +38,10 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 
 	_initPath: function () {
 		var container = this._container = this._createElement('shape');
-		container.className += ' leaflet-vml-shape' +
-				(this.options.clickable ? ' leaflet-clickable' : '');
+		L.DomUtil.addClass(container, 'leaflet-vml-shape');
+		if (this.options.clickable) {
+			L.DomUtil.addClass(container, 'leaflet-clickable');
+		}
 		container.coordsize = '1 1';
 
 		this._path = this._createElement('path');

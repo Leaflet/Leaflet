@@ -7,6 +7,7 @@ L.Icon = L.Class.extend({
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
 		shadowSize: (Point)
+		shadowAnchor: (Point)
 		*/
 		className: ''
 	},
@@ -26,8 +27,13 @@ L.Icon = L.Class.extend({
 	_createIcon: function (name) {
 		var src = this._getIconUrl(name);
 
-		if (!src) { return null; }
-		
+		if (!src) {
+			if (name === 'icon') {
+				throw new Error("iconUrl not set in Icon options (see the docs).");
+			}
+			return null;
+		}
+
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
 
@@ -36,18 +42,20 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			size = options[name + 'Size'],
-			anchor = options.iconAnchor;
+			size = L.point(options[name + 'Size']),
+			anchor;
+
+		if (name === 'shadow') {
+			anchor = L.point(options.shadowAnchor || options.iconAnchor);
+		} else {
+			anchor = L.point(options.iconAnchor);
+		}
 
 		if (!anchor && size) {
 			anchor = size.divideBy(2, true);
 		}
 
-		if (name === 'shadow' && anchor && options.shadowOffset) {
-			anchor._add(options.shadowOffset);
-		}
-
-		img.className = 'leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+		img.className = 'leaflet-marker-' + name + ' ' + options.className;
 
 		if (anchor) {
 			img.style.marginLeft = (-anchor.x) + 'px';
@@ -78,40 +86,6 @@ L.Icon = L.Class.extend({
 	}
 });
 
-
-// TODO move to a separate file
-
-L.Icon.Default = L.Icon.extend({
-	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
-
-		shadowSize: new L.Point(41, 41)
-	},
-
-	_getIconUrl: function (name) {
-		var path = L.Icon.Default.imagePath;
-		if (!path) {
-			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
-		}
-
-		return path + '/marker-' + name + '.png';
-	}
-});
-
-L.Icon.Default.imagePath = (function () {
-	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
-
-	var i, len, src, matches;
-
-	for (i = 0, len = scripts.length; i < len; i++) {
-		src = scripts[i].src;
-		matches = src.match(leafletRe);
-
-		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
-		}
-	}
-}());
+L.icon = function (options) {
+	return new L.Icon(options);
+};

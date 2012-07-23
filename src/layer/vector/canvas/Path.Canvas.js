@@ -13,6 +13,45 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		SVG: false
 	},
 
+	redraw: function () {
+		if (this._map) {
+			this.projectLatlngs();
+			this._requestUpdate();
+		}
+		return this;
+	},
+
+	setStyle: function (style) {
+		L.Util.setOptions(this, style);
+
+		if (this._map) {
+			this._updateStyle();
+			this._requestUpdate();
+		}
+		return this;
+	},
+
+	onRemove: function (map) {
+		map
+		    .off('viewreset', this.projectLatlngs, this)
+		    .off('moveend', this._updatePath, this);
+
+		this._requestUpdate();
+
+		this._map = null;
+	},
+
+	_requestUpdate: function () {
+		if (this._map) {
+			L.Util.cancelAnimFrame(this._fireMapMoveEnd);
+			this._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+		}
+	},
+
+	_fireMapMoveEnd: function () {
+		this.fire('moveend');
+	},
+
 	_initElements: function () {
 		this._map._initPathRoot();
 		this._ctx = this._map._canvasCtx;
@@ -94,14 +133,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		if (this._containsPoint(e.layerPoint)) {
 			this.fire('click', e);
 		}
-	},
-
-    onRemove: function (map) {
-        map
-	        .off('viewreset', this._projectLatlngs, this)
-            .off('moveend', this._updatePath, this)
-            .fire('moveend');
-    }
+	}
 });
 
 L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} : {

@@ -1,4 +1,5 @@
 L.TileLayer.WMS = L.TileLayer.extend({
+	
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -10,10 +11,16 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	initialize: function (url, options) { // (String, Object)
+
 		this._url = url;
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
-		wmsParams.width = wmsParams.height = this.options.tileSize;
+
+		if (options.detectRetina && window.devicePixelRatio > 1) {
+			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
+		} else {
+			wmsParams.width = wmsParams.height = this.options.tileSize;
+		}
 
 		for (var i in options) {
 			// all keys that are not TileLayer options go to WMS params
@@ -28,6 +35,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	onAdd: function (map, insertAtTheBottom) {
+
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
@@ -35,22 +43,36 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
+		
 		var map = this._map,
 			crs = map.options.crs,
-
 			tileSize = this.options.tileSize,
-
+			
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nwMap = map.unproject(nwPoint, zoom, true),
-			seMap = map.unproject(sePoint, zoom, true),
+			nw = crs.project(map.unproject(nwPoint, zoom)),
+			se = crs.project(map.unproject(sePoint, zoom)),
 
-			nw = crs.project(nwMap),
-			se = crs.project(seMap),
+			bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
-			bbox = [nw.x, se.y, se.x, nw.y].join(',');
+			url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
 
-		return this._url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+	},
+
+	setParams: function (params, noRedraw) {
+
+		L.Util.extend(this.wmsParams, params);
+		
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
 	}
 });
+
+L.tileLayer.wms = function (url, options) {
+	return new L.TileLayer(url, options);
+};

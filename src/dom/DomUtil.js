@@ -94,19 +94,22 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
+		function replaceFn(w, match) {
 			if (match === name) {
 				return '';
 			}
 			return w;
-		}).replace(/^\s+/, '');
+		}
+		el.className = el.className
+				.replace(/(\S+)\s*/g, replaceFn)
+				.replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-		    el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
-		} else {
+		if ('opacity' in el.style) {
 			el.style.opacity = value;
+		} else if (L.Browser.ie) {
+			el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
 		}
 	},
 

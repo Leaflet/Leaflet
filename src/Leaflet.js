@@ -1,6 +1,6 @@
 var L, originalL;
 
-if (typeof exports !== 'undefined') {
+if (typeof exports !== undefined + '') {
 	L = exports;
 } else {
 	originalL = window.L;

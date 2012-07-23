@@ -12,7 +12,7 @@ L.Popup = L.Class.extend({
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
-		offset: new L.Point(0, 2),
+		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
 		className: ''
 	},
@@ -31,7 +31,11 @@ L.Popup = L.Class.extend({
 		}
 		this._updateContent();
 
-		this._container.style.opacity = '0';
+		var animFade = map.options.fadeAnimation;
+
+		if (animFade) {
+			L.DomUtil.setOpacity(this._container, 0);
+		}
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
@@ -46,25 +50,41 @@ L.Popup = L.Class.extend({
 
 		this._update();
 
-		this._container.style.opacity = '1'; //TODO fix ugly opacity hack
+		if (animFade) {
+			L.DomUtil.setOpacity(this._container, 1);
+		}
+	},
+
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
+	openOn: function (map) {
+		map.openPopup(this);
+		return this;
 	},
 
 	onRemove: function (map) {
 		map._panes.popupPane.removeChild(this._container);
 
-		L.Util.falseFn(this._container.offsetWidth);
+		L.Util.falseFn(this._container.offsetWidth); // force reflow
 
-		map.off('viewreset', this._updatePosition, this)
-		   .off('preclick', this._close, this)
-		   .off('zoomanim', this._zoomAnimation, this);
+		map.off({
+			viewreset: this._updatePosition,
+			preclick: this._close,
+			zoomanim: this._zoomAnimation
+		}, this);
 
-		this._container.style.opacity = '0';
+		if (map.options.fadeAnimation) {
+			L.DomUtil.setOpacity(this._container, 0);
+		}
 
 		this._map = null;
 	},
 
 	setLatLng: function (latlng) {
-		this._latlng = latlng;
+		this._latlng = L.latLng(latlng);
 		this._update();
 		return this;
 	},
@@ -95,15 +115,16 @@ L.Popup = L.Class.extend({
 		if (this.options.closeButton) {
 			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
+			closeButton.innerHTML = '&#215;';
 
-			L.DomEvent.addListener(closeButton, 'click', this._onCloseButtonClick, this);
+			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.addListener(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -138,29 +159,30 @@ L.Popup = L.Class.extend({
 	},
 
 	_updateLayout: function () {
-		var container = this._contentNode;
+		var container = this._contentNode,
+			style = container.style;
 
-		container.style.width = '';
-		container.style.whiteSpace = 'nowrap';
+		style.width = '';
+		style.whiteSpace = 'nowrap';
 
 		var width = container.offsetWidth;
 		width = Math.min(width, this.options.maxWidth);
 		width = Math.max(width, this.options.minWidth);
 
-		container.style.width = (width + 1) + 'px';
-		container.style.whiteSpace = '';
+		style.width = (width + 1) + 'px';
+		style.whiteSpace = '';
 
-		container.style.height = '';
+		style.height = '';
 
 		var height = container.offsetHeight,
 			maxHeight = this.options.maxHeight,
-			scrolledClass = ' leaflet-popup-scrolled';
+			scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
-			container.style.height = maxHeight + 'px';
-			container.className += scrolledClass;
+			style.height = maxHeight + 'px';
+			L.DomUtil.addClass(container, scrolledClass);
 		} else {
-			container.className = container.className.replace(scrolledClass, '');
+			L.DomUtil.removeClass(container, scrolledClass);
 		}
 
 		this._containerWidth = this._container.offsetWidth;
@@ -182,7 +204,7 @@ L.Popup = L.Class.extend({
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
 	},
-	
+
 	_zoomAnimation: function (opt) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center)._round();
 
@@ -231,3 +253,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.stop(e);
 	}
 });
+
+L.popup = function (options, source) {
+	return new L.Popup(options, source);
+};

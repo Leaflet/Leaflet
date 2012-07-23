@@ -163,9 +163,15 @@ L.Polyline = L.Path.extend({
 	},
 
 	_updatePath: function () {
+		if (!this._map) { return; }
+
 		this._clipPoints();
 		this._simplifyPoints();
 
 		L.Path.prototype._updatePath.call(this);
 	}
 });
+
+L.polyline = function (latlngs, options) {
+	return new L.Polyline(latlngs, options);
+};
