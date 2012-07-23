@@ -48,6 +48,7 @@ L.ImageOverlay = L.Class.extend({
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
+		return this;
 	},
 
 	_initImage: function () {

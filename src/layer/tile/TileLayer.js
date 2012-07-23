@@ -99,6 +99,7 @@ L.TileLayer = L.Class.extend({
 		if (this._container) {
 			this._map._panes.tilePane.appendChild(this._container);
 		}
+		return this;
 	},
 
 	bringToBack: function () {
@@ -106,6 +107,7 @@ L.TileLayer = L.Class.extend({
 		if (this._container) {
 			pane.insertBefore(this._container, pane.firstChild);
 		}
+		return this;
 	},
 
 	getAttribution: function () {
@@ -118,6 +120,8 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+
+		return this;
 	},
 
 	setUrl: function (url, noRedraw) {
@@ -414,7 +418,7 @@ L.TileLayer = L.Class.extend({
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
 			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
-		
+
 			layer.fire('tileload', {
 				tile: this,
 				url: this.src
