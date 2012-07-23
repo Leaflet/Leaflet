@@ -1,11 +1,7 @@
 ---
-layout: default
+layout: tutorial
 title: Markers With Custom Icons
-root: ../
 ---
-
-[&larr; Back to the list of examples](../examples.html)
-
 
 ### Markers With Custom Icons
 

@@ -1,11 +1,7 @@
 ---
-layout: default
+layout: tutorial
 title: Quick Start Guide
-root: ../
 ---
-
-[&larr; Back to the list of examples](../examples.html)
-
 
 ### Leaflet Quick Start Guide
 

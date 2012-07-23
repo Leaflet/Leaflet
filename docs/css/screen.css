@@ -209,6 +209,13 @@ td {
 
 		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
 	}
+	.nav li a.active {
+		color: black;
+
+		background-color: rgba(0,0,0,0.06);
+
+		filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#eff0f1', EndColorStr='#f6f7f8');
+	}
 	.nav li a.github-link,
 	.nav li a.twitter-link,
 	.nav li a.forum-link {
