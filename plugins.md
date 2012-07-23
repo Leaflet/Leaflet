@@ -3,12 +3,13 @@ layout: default
 title: Plugins
 ---
 
-### Notable Leaflet Plugins
+## Notable Leaflet Plugins
 
 While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are lots of nice plugins to choose from.
 
+---
 
-## Layers and Overlays
+### Layers and Overlays
 
 <table class="plugins">
 	<tr>
@@ -27,20 +28,20 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://dynmeth.github.com/RaphaelLayer/">RaphaelLayer</a>
-		</td><td>
-			Allows you to use <a href="http://raphaeljs.com/">Raphael</a> as a layer on a Leaflet map for advanced animations and visualizations.
-		</td><td>
-			<a href="https://github.com/dynmeth">Dynamic Methods</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
 			<a href="https://github.com/jacobtoye/Leaflet.iconlabel">Leaflet.iconlabel</a>
 		</td><td>
 			Adds text labels to map markers.
 		</td><td>
 			<a href="https://github.com/jacobtoye">Jacob Toye</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://dynmeth.github.com/RaphaelLayer/">RaphaelLayer</a>
+		</td><td>
+			Allows you to use <a href="http://raphaeljs.com/">Raphael</a> as a layer on a Leaflet map for advanced animations and visualizations.
+		</td><td>
+			<a href="https://github.com/dynmeth">Dynamic Methods</a>
 		</td>
 	</tr>
 	<tr>
@@ -52,19 +53,10 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://mackerron.com">George MacKerron</a>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/springmeyer/arc.js">arc.js</a>
-		</td><td>
-			Allows you to draw great circle routes between two points.
-		</td><td>
-			<a href="https://github.com/springmeyer">Dane Springmeyer</a>
-		</td>
-	</tr>
 </table>
 
 
-## Services, Providers and Formats
+### Services, Providers and Formats
 
 <table class="plugins">
 	<tr>
@@ -147,7 +139,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-## Controls
+### Controls and Interaction
 
 <table class="plugins">
 	<tr>
@@ -212,7 +204,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-## Other Plugins
+### Other Plugins and Libraries
 
 <table class="plugins">
 	<tr>
@@ -224,7 +216,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="http://flyjs.com/buildings/">OSM Buildings</a>
 		</td><td>
-			Amazing plugin for visualizing 3D OSM building data on top of Leaflet.
+			Amazing JS library for visualizing 3D OSM building data on top of Leaflet.
 		</td><td>
 			<a href="http://flyjs.com/buildings/about.php">Jan Marsch</a>
 		</td>
@@ -236,6 +228,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Plugin for persisting map state and browsing history through the URL hash.
 		</td><td>
 			<a href="https://github.com/mlevans">Michael Lawrence Evans</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/springmeyer/arc.js">arc.js</a>
+		</td><td>
+			A JS library for drawing great circle routes that can be used with Leaflet.
+		</td><td>
+			<a href="https://github.com/springmeyer">Dane Springmeyer</a>
 		</td>
 	</tr>
 </table>

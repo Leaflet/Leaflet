@@ -3,7 +3,7 @@ layout: default
 title: Download
 ---
 
-### Download Leaflet
+## Download Leaflet
 
 Besides the library itself, the download package contains full source
 code, unit tests, files for debugging and a build system. The production

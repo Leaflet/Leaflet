@@ -31,7 +31,7 @@ L.marker([<span class="number">51.5</span>, -<span class="number">0.09</span>]).
 Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html).
 
 
-### Contributing to Leaflet
+## Contributing to Leaflet
 
 The project is [hosted on GitHub][], waiting for your contributions --- just send your pull requests to [@mourner][] (Vladimir Agafonkin, Leaflet author and maintainer). Let’s make the best library for maps that can possibly exist!
 

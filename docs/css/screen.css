@@ -53,9 +53,9 @@ h1 a:hover, h1 a:focus {
 
 h2 {
 	font-size: 1.8em;
-	margin-top: 1em;
+	margin-top: 1.3em;
 	font-weight: bold;
-	padding: 4px 12px 3px;
+	padding: 3px 12px 2px;
 	margin-left: 0;
 	margin-right: 0;
 	background: #edeeef;
@@ -76,7 +76,7 @@ h2 {
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 
-	text-shadow: -1px -1px 0 #999;
+	text-shadow: -1px -1px 1px rgba(0,0,0,0.3);
 	}
 .api-page h2 {
 	margin-top: 2.5em;

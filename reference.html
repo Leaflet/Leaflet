@@ -4162,13 +4162,27 @@ a.foo();</code></pre>
 MyClass.FOO; // 'bar'</code></pre>
 
 
+<h3>Class Factories</h3>
+
+<p>You may have noticed that you can create Leaflet class instances in two ways — using the <code>new</code> keyword, or using lowercase factory method:</p>
+
+<pre><code>new L.Map('map');
+L.map('map');</code></pre>
+
+<p>The second way is implemented very easily, and you can do this for your own classes:</p>
+
+<pre><code>L.map = function (id, options) {
+	return new L.Map(id, options);
+};</code></pre>
+
+
 
 <h2 id="browser">L.Browser</h2>
 
 <p>A namespace with properties for browser/feature detection used by Leaflet internally.</p>
 
 <pre><code>if (L.Browser.ie6) {
-alert('Upgrade your browser, dude!');
+	alert('Upgrade your browser, dude!');
 }</code></pre>
 
 <table>

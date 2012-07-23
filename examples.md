@@ -3,7 +3,7 @@ layout: default
 title: Tutorials
 ---
 
-### Leaflet Tutorials
+## Leaflet Tutorials
 
 Every example here comes with step-by-step code explanation and is easy enough even for beginner JavaScript developers.
 
