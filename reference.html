@@ -89,13 +89,13 @@ bodyclass: api-page
 			<li><a href="#class">Class</a></li>
 			<li><a href="#browser">Browser</a></li>
 			<li><a href="#util">Util</a></li>
-			<li><a class="nodocs" href="#">Transformation</a></li>
+			<li><a href="#transformation">Transformation</a></li>
 			<li><a href="#lineutil">LineUtil</a></li>
 			<li><a href="#polyutil">PolyUtil</a></li>
 		</ul>
 		<h4>DOM Utility</h4>
 		<ul>
-			<li><a class="nodocs" href="#">DomEvent</a></li>
+			<li><a href="#domevent">DomEvent</a></li>
 			<li><a href="#domutil">DomUtil</a></li>
 			<li><a class="nodocs" href="#">Transition</a></li>
 			<li><a class="nodocs" href="#">Draggable</a></li>
@@ -4359,6 +4359,74 @@ alert('Upgrade your browser, dude!');
 </table>
 
 
+
+<h2 id="transformation">L.Transformation</h2>
+
+<p>Represents an affine transformation: a set of coefficients <code>a</code>, <code>b</code>, <code>c</code>, <code>d</code> for transforming a point of a form <code>(x, y)</code> into <code>(a*x + b, c*y + d)</code> and doing the reverse. Used by Leaflet in its projections code.</p>
+
+<pre><code>var transformation = new L.Transformation(2, 5, -1, 10),
+	p = new L.Point(1, 2),
+	p2 = transformation.transform(p), // new L.Point(7, 8)
+	p3 = transformation.untransform(p2); // new L.Point(1, 2)
+</code></pre>
+
+<h3>Constructor</h3>
+
+<table>
+	<tr>
+		<th class="width250">Constructor</th>
+		<th>Usage</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.Transformation</b>(
+			<nobr>&lt;Number&gt; <i>a</i></nobr>,
+			<nobr>&lt;Number&gt; <i>b</i></nobr>,
+			<nobr>&lt;Number&gt; <i>c</i></nobr>,
+			<nobr>&lt;Number&gt; <i>d</i> )</nobr>
+		</code></td>
+
+		<td class="factory-usage">
+			<code><span class='keyword'>new</span> L.Transformation(<span class="comment">&hellip;</span>)</code><br />
+			<!--<code>L.point(<span class="comment">&hellip;</span>)</code><br />
+			<code>L.point([<span class="comment">&hellip;</span>])</code>-->
+		</td>
+
+		<td>Creates a transformation object with the given coefficients.</td>
+	</tr>
+</table>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>transform</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
+			<nobr>&lt;Number&gt; <i>scale?</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Returns a transformed point, optionally multiplied by the given scale. Only accepts real <code>L.Point</code> instances, not arrays.</td>
+	</tr>
+	<tr>
+		<td><code><b>untransform</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
+			<nobr>&lt;Number&gt; <i>scale?</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Returns the reverse transformation of the given point, optionally divided by the given scale. Only accepts real <code>L.Point</code> instances, not arrays.</td>
+	</tr>
+</table>
+
+
+
+
 <h2 id="lineutil">L.LineUtil</h2>
 
 <p>Various utility functions for polyine points processing, used by Leaflet internally to make polylines lightning-fast.</p>
@@ -4441,6 +4509,99 @@ alert('Upgrade your browser, dude!');
 		<td>Clips the polygon geometry defined by the given points by rectangular bounds. Used by Leaflet to only show polygon points that are on the screen or near, increasing performance. Note that polygon points needs different algorithm for clipping than polyline, so there's a seperate method for it.</td>
 	</tr>
 </table>
+
+
+
+
+<h2 id="domevent">L.DomEvent</h2>
+
+<p>Utility functions to work with the DOM events, used by Leaflet internally.</p>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>addListener</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Adds a listener <code>fn</code> to the element's DOM event of the specified type. <code><span class="keyword">this</span></code> keyword inside the listener will point to <code>context</code>, or to the element if not specified.</td>
+	</tr>
+	<tr>
+		<td><code><b>removeListener</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;Function&gt; <i>fn</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Removes an event listener from the element.</td>
+	</tr>
+	<tr>
+		<td><code><b>stopPropagation</b>(
+			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Stop the given event from propagation to parent elements. Used inside the listener functions:
+<pre><code>L.DomEvent.addListener(div, 'click', function (e) {
+	L.DomEvent.stopPropagation(e);
+});</code></pre>
+		</td>
+	</tr>
+	<tr>
+		<td><code><b>preventDefault</b>(
+			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Prevents the default action of the event from happening (such as following a link in the <code>href</code> of the <code>a</code> element, or doing a <code>POST</code> request with page reload when <code>form</code> is submitted). Use it inside listener functions.</pre>
+		</td>
+	</tr>
+	<tr>
+		<td><code><b>stop</b>(
+			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Does <code>stopPropagation</code> and <code>preventDefault</code> at the same time.</td>
+	</tr>
+	<tr>
+		<td><code><b>disableClickPropagation</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Adds <code>stopPropagation</code> to the element's <code><span class="string">'click'</span></code>, <code><span class="string">'doubleclick'</span></code>, <code><span class="string">'mousedown'</span></code> and <code><span class="string">'touchstart'</span></code> events.</td>
+	</tr>
+	<tr>
+		<td><code><b>getMousePosition</b>(
+			<nobr>&lt;DOMEvent&gt; <i>e</i></nobr>,
+			<nobr>&lt;HTMLElement&gt; <i>container?</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Gets normalized mouse position from a DOM event relative to the container or to the whole page if not specified.</td>
+	</tr>
+	<tr>
+		<td><code><b>getWheelDelta</b>(
+			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
+		</code></td>
+
+		<td><code>Number</code></td>
+		<td>Gets normalized wheel delta from a <code>mousewheel</code> DOM event.</td>
+	</tr>
+</table>
+
 
 
 

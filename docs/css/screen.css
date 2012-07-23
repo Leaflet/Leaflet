@@ -114,6 +114,8 @@ h3.alt {
 	box-shadow: 0 0 15px #ddd;
 	-moz-box-shadow: 0 0 15px #ddd;
 	-webkit-box-shadow: 0 0 15px #ddd;
+
+	border-radius: 5px;
 	}
 pre code a {
 	text-decoration: none;
@@ -454,4 +456,15 @@ dl dd {
 	top: -1px;
 	left: 0;
 	box-shadow: 0 3px 20px rgba(0, 0, 0, 0.1);
+}
+
+.api-page td pre {
+	margin: 1em 0 0;
+
+}
+
+.api-page td pre code {
+	padding: 0 10px;
+	border: 0;
+	box-shadow: none;
 }

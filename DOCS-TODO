@@ -1,22 +1,4 @@
 
-NEW Transformation
-	Transformation(a, b, c, d)
-
-	transform(point, scale)
-	untransform(point, scale)
-
-NEW DomEvent
-	addListener(obj, type, fn, context)
-	on
-	removeListener(obj, type, fn)
-	off
-	stopPropagation(e)
-	disableClickPropagation(el)
-	preventDefault(e)
-	stop(e)
-	getMousePosition(e, container)
-	getWheelDelta(e)
-
 NEW Transition
 	Transition(el, options)
 
@@ -54,7 +36,3 @@ NEW ICRS
 	pointToLatLng(point, zoom)
 	project(latlng)
 	scale(zoom)
-
-ILayer options.minZoom and options.maxZoom?
-Map.addHandler?
-
