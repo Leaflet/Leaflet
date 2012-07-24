@@ -129,8 +129,8 @@ Lets improve our example by using a popup instead of an alert:
 
 	function onMapClick(e) {
 		popup
-			.setLatLng(e.latlng);
-			.setContent("You clicked the map at " + e.latlng.toString());
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
 			.openOn(map);
 	}
 
@@ -141,87 +141,84 @@ Try clicking on the map and you will see the coordinates in a popup. <a target="
 Now you've learned Leaflet basics and can start building map apps straight away! Don't forget to take a look at the detailed <a href="../reference.html">documentation</a> or <a href="../examples.html">other examples</a>.
 
 <script>
-	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-		cloudmadeAttribution = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery &copy; <a href="http://cloudmade.com">CloudMade</a>',
-		cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 
-	var map = new L.Map('map');
-	map.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade);
+	var tilesAttrib = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+		tilesUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
 
-	var markerLocation = new L.LatLng(51.5, -0.09),
-		marker = new L.Marker(markerLocation);
 
-	map.addLayer(marker);
-	marker.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+	var map = L.map('map').setView([51.505, -0.09], 13);
 
-	var circleLocation = new L.LatLng(51.508, -0.11),
-		circleOptions = {color: '#f03', opacity: 0.7},
-		circle = new L.Circle(circleLocation, 500, circleOptions);
+	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map);
 
-	circle.bindPopup("I am a circle.");
-	map.addLayer(circle);
+	L.marker([51.5, -0.09]).addTo(map)
+		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
-	var p1 = new L.LatLng(51.509, -0.08),
-		p2 = new L.LatLng(51.503, -0.06),
-		p3 = new L.LatLng(51.51, -0.047),
-		polygonPoints = [p1, p2, p3],
-		polygon = new L.Polygon(polygonPoints);
+	L.circle([51.508, -0.11], 500, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5
+	}).addTo(map).bindPopup("I am a circle.");
 
-	polygon.bindPopup("I am a polygon.");
-	map.addLayer(polygon);
+	L.polygon([
+		[51.509, -0.08],
+		[51.503, -0.06],
+		[51.51, -0.047]
+	]).addTo(map).bindPopup("I am a polygon.");
 
-	map.on('click', onMapClick);
 
-	var popup = new L.Popup();
+	/*var popup = L.popup();
 
 	function onMapClick(e) {
-		var latlngStr = '(' + e.latlng.lat.toFixed(3) + ', ' + e.latlng.lng.toFixed(3) + ')';
-
-		popup.setLatLng(e.latlng);
-		popup.setContent("You clicked the map at " + latlngStr);
-
-		map.openPopup(popup);
+		popup
+			.setLatLng(e.latlng)
+			.setContent("You clicked the map at " + e.latlng.toString())
+			.openOn(map);
 	}
-</script>
 
-<script>
-	var cloudmade1 = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+	map.on('click', onMapClick);*/
 
-	var map1 = new L.Map('map1');
-	map1.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade1);
-</script>
 
-<script>
-	var cloudmade2 = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
 
-	var map2 = new L.Map('map2');
-	map2.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade2);
+	var map1 = L.map('map1').setView([51.505, -0.09], 13);
+	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map1);
 
-	var marker2 = new L.Marker(markerLocation);
-	map2.addLayer(marker2);
 
-	var circle2 = new L.Circle(circleLocation, 500, circleOptions);
-	map2.addLayer(circle2);
 
-	var polygon2 = new L.Polygon(polygonPoints);
-	map2.addLayer(polygon2);
-</script>
+	var map2 = L.map('map2').setView([51.505, -0.09], 13);
+	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map2);
 
-<script>
-	var cloudmade3 = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+	L.marker([51.5, -0.09]).addTo(map2);
 
-	var map3 = new L.Map('map3');
-	map3.setView(new L.LatLng(51.505, -0.09), 13).addLayer(cloudmade3);
+	L.circle([51.508, -0.11], 500, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5
+	}).addTo(map2);
 
-	var marker3 = new L.Marker(markerLocation);
-	map3.addLayer(marker3);
-	marker3.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+	L.polygon([
+		[51.509, -0.08],
+		[51.503, -0.06],
+		[51.51, -0.047]
+	]).addTo(map2);
 
-	var circle3 = new L.Circle(circleLocation, 500, circleOptions);
-	circle3.bindPopup("I am a circle.");
-	map3.addLayer(circle3);
 
-	var polygon3 = new L.Polygon(polygonPoints);
-	polygon3.bindPopup("I am a polygon.");
-	map3.addLayer(polygon3);
+
+	var map3 = L.map('map3').setView([51.505, -0.09], 13);
+	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map3);
+
+	L.marker([51.5, -0.09]).addTo(map3)
+		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+
+	L.circle([51.508, -0.11], 500, {
+		color: 'red',
+		fillColor: '#f03',
+		fillOpacity: 0.5
+	}).addTo(map3).bindPopup("I am a circle.");
+
+	L.polygon([
+		[51.509, -0.08],
+		[51.503, -0.06],
+		[51.51, -0.047]
+	]).addTo(map3).bindPopup("I am a polygon.");
+
 </script>
