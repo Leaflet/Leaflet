@@ -157,7 +157,7 @@ td {
 
 .nav {
 	padding: 0;
-	margin: 28px 0 32px;
+	margin: 28px 0 28px;
 
 	list-style: none;
 	font-size: 1.2em;
@@ -469,4 +469,14 @@ dl dd {
 	padding: 0 10px;
 	border: 0;
 	box-shadow: none;
+}
+
+
+p.notice {
+	border: none;
+	border-radius: 10px;
+	color: #444;
+	background: #DBF8A7;
+	padding: 5px 10px;
+	margin-bottom: 1.5em;
 }
