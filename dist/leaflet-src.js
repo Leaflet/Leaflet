@@ -1929,6 +1929,7 @@ L.TileLayer = L.Class.extend({
 		if (this._container) {
 			this._map._panes.tilePane.appendChild(this._container);
 		}
+		return this;
 	},
 
 	bringToBack: function () {
@@ -1936,6 +1937,7 @@ L.TileLayer = L.Class.extend({
 		if (this._container) {
 			pane.insertBefore(this._container, pane.firstChild);
 		}
+		return this;
 	},
 
 	getAttribution: function () {
@@ -1948,6 +1950,8 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+
+		return this;
 	},
 
 	setUrl: function (url, noRedraw) {
@@ -2244,7 +2248,7 @@ L.TileLayer = L.Class.extend({
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
 			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
-		
+
 			layer.fire('tileload', {
 				tile: this,
 				url: this.src
@@ -2469,6 +2473,7 @@ L.ImageOverlay = L.Class.extend({
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
+		return this;
 	},
 
 	_initImage: function () {
@@ -3438,6 +3443,7 @@ L.Path = L.Class.extend({
 	options: {
 		stroke: true,
 		color: '#0033ff',
+		dashArray: null,
 		weight: 5,
 		opacity: 0.5,
 
@@ -3579,6 +3585,11 @@ L.Path = L.Path.extend({
 			this._path.setAttribute('stroke', this.options.color);
 			this._path.setAttribute('stroke-opacity', this.options.opacity);
 			this._path.setAttribute('stroke-width', this.options.weight);
+			if (this.options.dashArray) {
+				this._path.setAttribute('stroke-dasharray', this.options.dashArray);
+			} else {
+				this._path.removeAttribute('stroke-dasharray');
+			}
 		} else {
 			this._path.setAttribute('stroke', 'none');
 		}
@@ -3835,6 +3846,11 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			stroke.weight = options.weight + 'px';
 			stroke.color = options.color;
 			stroke.opacity = options.opacity;
+			if (options.dashArray) {
+				stroke.dashStyle = options.dashArray;
+			} else {
+				stroke.dashStyle = '';
+			}
 		} else if (stroke) {
 			container.removeChild(stroke);
 			this._stroke = null;
@@ -6145,6 +6161,8 @@ L.Control = L.Class.extend({
 		if (map) {
 			map.addControl(this);
 		}
+
+		return this;
 	},
 
 	addTo: function (map) {
@@ -6183,6 +6201,7 @@ L.Control = L.Class.extend({
 L.control = function (options) {
 	return new L.Control(options);
 };
+
 
 L.Map.include({
 	addControl: function (control) {
@@ -6295,6 +6314,7 @@ L.Control.Attribution = L.Control.extend({
 	setPrefix: function (prefix) {
 		this.options.prefix = prefix;
 		this._update();
+		return this;
 	},
 
 	addAttribution: function (text) {
@@ -6306,6 +6326,8 @@ L.Control.Attribution = L.Control.extend({
 		this._attributions[text]++;
 
 		this._update();
+
+		return this;
 	},
 
 	removeAttribution: function (text) {
@@ -6313,6 +6335,8 @@ L.Control.Attribution = L.Control.extend({
 
 		this._attributions[text]--;
 		this._update();
+
+		return this;
 	},
 
 	_update: function () {
@@ -6364,6 +6388,7 @@ L.Map.addInitHook(function () {
 L.control.attribution = function (options) {
 	return new L.Control.Attribution(options);
 };
+
 
 L.Control.Scale = L.Control.extend({
 	options: {
