@@ -21,7 +21,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/danzel/Leaflet.markercluster">Leaflet.markercluster</a>
 		</td><td>
-			Sophisticated marker clustering solution with smooth animations.
+			Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features. <em>Recommended!</em>
 		</td><td>
 			<a href="https://github.com/danzel">Dave Leaver</a>
 		</td>
@@ -151,7 +151,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/jacobtoye/Leaflet.draw">Leaflet.draw</a>
 		</td><td>
-			Enables drawing features like polylines, polygons, rectangles, circles and markers with a nice user-friendly interface.
+			Enables drawing features like polylines, polygons, rectangles, circles and markers through a very nice user-friendly interface with icons and hints. <em>Recommended!</em>
 		</td><td>
 			<a href="https://github.com/jacobtoye">Jacob Toye</a>
 		</td>
