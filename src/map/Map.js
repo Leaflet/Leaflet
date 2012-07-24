@@ -521,7 +521,7 @@ L.Map = L.Class.extend({
 			this.fire('zoomend');
 		}
 
-		this.fire('moveend');
+		this.fire('moveend', {hard: !preserveMapOffset});
 
 		if (!this._loaded) {
 			this._loaded = true;

@@ -1,6 +1,6 @@
 
 L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
-	
+
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 
@@ -12,7 +12,10 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 					this._panByIfClose(center));
 
 			// exit if animated pan or zoom started
-			if (done) { return this; }
+			if (done) {
+				clearTimeout(this._sizeTimer);
+				return this;
+			}
 		}
 
 		// reset the map view
