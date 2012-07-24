@@ -2,16 +2,14 @@
 layout: default
 ---
 
-Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 97 KB minified and 166 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 11 KB of images">25 KB of gzipped JS code</abbr>, it still has all the [features][] most developers ever need for online maps, while providing a smooth, pleasant user experience.
+Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 99 KB minified and 170 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">26 KB of gzipped JS code</abbr>, it still has all the [features][] most developers ever need for online maps, while providing a smooth, pleasant user experience.
 
 It is built from the ground up to work efficiently on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade][] browser support and [a simple API][] with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based [code of the library][] is designed to be modular, extensible and very easy to understand.
 
 
-### Basic Usage Example
-
 <div id="map"></div>
 
-Here we create a map with <abbr title="Here we use the beautiful CloudMade tiles which require an API key (get one for free!), but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:
+In this basic example, we create a map with <abbr title="Here we use the beautiful CloudMade tiles which require an API key (get one for free!), but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:
 
 
 <!--- manually colored to support raw HTML inside the code -->
