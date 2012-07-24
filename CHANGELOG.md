@@ -81,6 +81,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added chaining to `DomEvent` methods.
  * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.
  * Added `L_NO_TOUCH` global variable switch (set it before Leaflet inclusion) which disables touch detection, helpful for desktop apps built using QT. [#572](https://github.com/CloudMade/Leaflet/issues/572)
+ * Added `dashArray` option to vector layers for making dashed strokes (by [jacobtoye](https://github.com/jacobtoye)). [#821](https://github.com/CloudMade/Leaflet/pull/821) [#165](https://github.com/CloudMade/Leaflet/issues/165)
  * Added `Circle` `getBounds` method. [#440](https://github.com/CloudMade/Leaflet/issues/440)
  * Added `Circle` `getLatLng` and `getRadius` methods (by [@Guiswa](https://github.com/Guiswa)). [#655](https://github.com/CloudMade/Leaflet/pull/655)
  * Added `openPopup` method to all vector layers. [#246](https://github.com/CloudMade/Leaflet/issues/246)
