@@ -136,6 +136,7 @@ L.TileLayer = L.Class.extend({
 
 	redraw: function () {
 		if (this._map) {
+			this._map._panes.tilePane.empty = false;
 			this._reset(true);
 			this._update();
 		}
