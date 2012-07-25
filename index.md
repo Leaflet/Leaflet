@@ -9,7 +9,7 @@ Leaflet is a modern open-source JavaScript library for mobile-friendly interacti
 It is built from the ground up to work efficiently on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade][] browser support and [a simple API][] with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based [code of the library][] is designed to be modular, extensible and very easy to understand.
 
 {: .usedby}
-Used by: [Flickr](http://flickr.com/map) [Foursquare](https://foursquare.com/) [Wikipedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/) [City-Data.com](http://city-data.com) [Meetup](http://www.meetup.com/) [Geocaching](http://geocaching.com) [StreetEasy](http://streeteasy.com/) [Nestoria](http://www.nestoria.co.uk) [CityMaps](http://www.citymaps.com) [Chartbeat](http://chartbeat.com/) [GisCloud](http://www.giscloud.com/) [Skobbler](http://maps.skobbler.com/) ...
+Used by: [Flickr](http://flickr.com/map) [foursquare](https://foursquare.com/) [Wikimedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/) [Meetup](http://www.meetup.com/) [Geocaching](http://geocaching.com) [StreetEasy](http://streeteasy.com/) [Nestoria](http://www.nestoria.co.uk) [City-Data.com](http://city-data.com) [CityMaps](http://www.citymaps.com) [Chartbeat](http://chartbeat.com/) [GIS Cloud](http://www.giscloud.com/) [skobbler](http://maps.skobbler.com/) ...
 
 <div id="map"></div>
 
