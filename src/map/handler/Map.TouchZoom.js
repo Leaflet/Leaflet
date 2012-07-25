@@ -63,7 +63,15 @@ L.Map.TouchZoom = L.Handler.extend({
 			this._moved = true;
 		}
 
-		var origin = this._getScaleOrigin(),
+		L.Util.cancelAnimFrame(this._animRequest);
+		this._animRequest = L.Util.requestAnimFrame(this._updateOnMove, this, true, this._map._container);
+
+		L.DomEvent.preventDefault(e);
+	},
+
+	_updateOnMove: function () {
+		var map = this._map,
+			origin = this._getScaleOrigin(),
 			center = map.layerPointToLatLng(origin);
 
 		map.fire('zoomanim', {
@@ -76,9 +84,7 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		map._tileBg.style[L.DomUtil.TRANSFORM] =
 			L.DomUtil.getTranslateString(this._delta) + ' ' +
-            L.DomUtil.getScaleString(this._scale, this._startCenter);
-
-		L.DomEvent.preventDefault(e);
+			L.DomUtil.getScaleString(this._scale, this._startCenter);
 	},
 
 	_onTouchEnd: function (e) {
