@@ -1982,6 +1982,7 @@ L.TileLayer = L.Class.extend({
 
 	redraw: function () {
 		if (this._map) {
+			this._map._panes.tilePane.empty = false;
 			this._reset(true);
 			this._update();
 		}
@@ -2521,6 +2522,21 @@ L.ImageOverlay = L.Class.extend({
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
+		return this;
+	},
+
+	bringToFront: function () {
+		if (this._image) {
+			this._map._panes.overlayPane.appendChild(this._image);
+		}
+		return this;
+	},
+
+	bringToBack: function () {
+		var pane = this._map._panes.overlayPane;
+		if (this._image) {
+			pane.insertBefore(this._image, pane.firstChild);
+		}
 		return this;
 	},
 
