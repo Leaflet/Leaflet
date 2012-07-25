@@ -2,12 +2,14 @@
 layout: default
 ---
 
-<p class="notice">July 27, 2012 &mdash; Leaflet 0.4 released with <em>lots</em> of exciting improvements! &mdash; <a href="#">read more in the blog</a></p>
+<p class="notice">July 27, 2012 &mdash; Leaflet 0.4 Released with <em>Lots</em> of Exciting Improvements! &mdash; <a href="#">Read More in the Blog</a></p>
 
 Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 99 KB minified and 170 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">26 KB of gzipped JS code</abbr>, it still has all the [features][] most developers ever need for online maps, while providing a smooth, pleasant user experience.
 
 It is built from the ground up to work efficiently on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade][] browser support and [a simple API][] with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based [code of the library][] is designed to be modular, extensible and very easy to understand.
 
+{: .usedby}
+Used by: [Flickr](http://flickr.com/map) [Foursquare](https://foursquare.com/) [Wikipedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/) [City-Data.com](http://city-data.com) [Meetup](http://www.meetup.com/) [Geocaching](http://geocaching.com) [StreetEasy](http://streeteasy.com/) [Nestoria](http://www.nestoria.co.uk) [CityMaps](http://www.citymaps.com) [Chartbeat](http://chartbeat.com/) [GisCloud](http://www.giscloud.com/) [Skobbler](http://maps.skobbler.com/) ...
 
 <div id="map"></div>
 

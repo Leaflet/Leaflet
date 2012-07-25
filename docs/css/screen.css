@@ -304,7 +304,7 @@ a.nodocs {
 	height: 320px;
 	border: 1px solid #ccc;
 	margin-bottom: 20px;
-	margin-top: 30px;
+	margin-top: 34px;
 
 	/*box-shadow: 0px 0px 10px #ccc;
 	-moz-box-shadow: 0px 0px 10px #ccc;
@@ -479,4 +479,24 @@ p.notice {
 	background: #DBF8A7;
 	padding: 5px 10px;
 	margin-bottom: 1.5em;
+}
+
+.usedby a {
+	text-decoration: none;
+	margin: 0 2px;
+	color: #777;
+}
+
+.usedby a:hover {
+	text-decoration: underline;
+	color: black;
+}
+
+.usedby {
+	background: #f3f3f3;
+	border-radius: 5px;
+	padding: 5px 7px;
+	margin: 1.5em -7px;
+	white-space: nowrap;
+	overflow: hidden;
 }
