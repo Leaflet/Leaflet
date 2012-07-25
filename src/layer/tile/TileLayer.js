@@ -383,9 +383,11 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_adjustTilePoint: function (tilePoint) {
+
+		var limit = this._getWrapTileNum();
+
 		// wrap tile coordinates
 		if (!this.options.continuousWorld && !this.options.noWrap) {
-			var limit = this._getWrapTileNum();
 			tilePoint.x = ((tilePoint.x % limit) + limit) % limit;
 		}
 
