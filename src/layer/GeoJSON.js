@@ -2,57 +2,64 @@ L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
 
-		this._geojson = geojson;
 		this._layers = {};
 
 		if (geojson) {
-			this.addGeoJSON(geojson);
+			this.addData(geojson);
 		}
 	},
 
-	addGeoJSON: function (geojson) {
-		var features = geojson.features,
+	addData: function (geojson) {
+		var features = geojson instanceof Array ? geojson : geojson.features,
 		    i, len;
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
-				this.addGeoJSON(features[i]);
+				this.addData(features[i]);
 			}
-			return;
+			return this;
 		}
 
-		var isFeature = (geojson.type === 'Feature'),
-		    geometry = isFeature ? geojson.geometry : geojson,
-		    layer = L.GeoJSON.geometryToLayer(geometry, this.options.pointToLayer);
+		var options = this.options,
+		    style = options.style;
 
-		this.fire('featureparse', {
-			layer: layer,
-			properties: geojson.properties,
-			geometryType: geometry.type,
-			bbox: geojson.bbox,
-			id: geojson.id,
-			geometry: geojson.geometry
-		});
+		if (options.filter && !options.filter(geojson)) { return; }
 
-		this.addLayer(layer);
+		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
+
+		if (style) {
+			if (typeof style === 'function') {
+				style = style(geojson);
+			}
+			if (layer.setStyle) {
+				layer.setStyle(style);
+			}
+		}
+
+		if (options.onEachFeature) {
+			options.onEachFeature(geojson, layer);
+		}
+
+		return this.addLayer(layer);
 	}
 });
 
 L.Util.extend(L.GeoJSON, {
-	geometryToLayer: function (geometry, pointToLayer) {
-		var coords = geometry.coordinates,
+	geometryToLayer: function (geojson, pointToLayer) {
+		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
+		    coords = geometry.coordinates,
 		    layers = [],
 		    latlng, latlngs, i, len, layer;
 
 		switch (geometry.type) {
 		case 'Point':
 			latlng = this.coordsToLatLng(coords);
-			return pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
+			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 
 		case 'MultiPoint':
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = this.coordsToLatLng(coords[i]);
-				layer = pointToLayer ? pointToLayer(latlng) : new L.Marker(latlng);
+				layer = pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 				layers.push(layer);
 			}
 			return new L.FeatureGroup(layers);
@@ -101,9 +108,14 @@ L.Util.extend(L.GeoJSON, {
 			latlng = levelsDeep ?
 					this.coordsToLatLngs(coords[i], levelsDeep - 1, reverse) :
 					this.coordsToLatLng(coords[i], reverse);
+
 			latlngs.push(latlng);
 		}
 
 		return latlngs;
 	}
 });
+
+L.geoJson = function (geojson, options) {
+	return new L.GeoJSON(geojson, options);
+};

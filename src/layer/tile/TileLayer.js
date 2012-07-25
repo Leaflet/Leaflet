@@ -60,8 +60,10 @@ L.TileLayer = L.Class.extend({
 		this._createTileProto();
 
 		// set up events
-		map.on('viewreset', this._resetCallback, this);
-		map.on('moveend', this._update, this);
+		map.on({
+			'viewreset': this._resetCallback,
+			'moveend': this._update
+		}, this);
 
 		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
@@ -72,11 +74,18 @@ L.TileLayer = L.Class.extend({
 		this._update();
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	onRemove: function (map) {
 		map._panes.tilePane.removeChild(this._container);
 
-		map.off('viewreset', this._resetCallback, this);
-		map.off('moveend', this._update, this);
+		map.off({
+			'viewreset': this._resetCallback,
+			'moveend': this._update
+		}, this);
 
 		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
@@ -109,6 +118,24 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+	},
+
+	setUrl: function (url, noRedraw) {
+		this._url = url;
+
+		if (!noRedraw) {
+			this.redraw();
+		}
+
+		return this;
+	},
+
+	redraw: function () {
+		if (this._map) {
+			this._reset(true);
+			this._update();
+		}
+		return this;
 	},
 
 	_updateOpacity: function () {
@@ -254,13 +281,15 @@ L.TileLayer = L.Class.extend({
 		this.fire("tileunload", {tile: tile, url: tile.src});
 
 		if (this.options.reuseTiles) {
-			tile.className = tile.className.replace(' leaflet-tile-loaded', '');
+			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
 			this._unusedTiles.push(tile);
 		} else if (tile.parentNode === this._container) {
 			this._container.removeChild(tile);
 		}
 
-		tile.src = L.Util.emptyImageUrl;
+		if (!L.Browser.android) { //For https://github.com/CloudMade/Leaflet/issues/137
+			tile.src = L.Util.emptyImageUrl;
+		}
 
 		delete this._tiles[key];
 	},
@@ -288,7 +317,11 @@ L.TileLayer = L.Class.extend({
 
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
-		L.DomUtil.setPosition(tile, tilePos, true);
+
+		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7, iOS 5.1.1,
+		// android browser (4.0) have display issues with top/left and requires transform instead
+		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
+		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
 
 		this._tiles[key] = tile;
 
@@ -319,16 +352,17 @@ L.TileLayer = L.Class.extend({
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
 	getTileUrl: function (tilePoint, zoom) {
-		var subdomains = this.options.subdomains,
-			index = (tilePoint.x + tilePoint.y) % subdomains.length,
-			s = this.options.subdomains[index];
-
 		return L.Util.template(this._url, L.Util.extend({
-			s: s,
+			s: this._getSubdomain(tilePoint),
 			z: this._getOffsetZoom(zoom),
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
+	},
+
+	_getSubdomain: function (tilePoint) {
+		var index = (tilePoint.x + tilePoint.y) % this.options.subdomains.length;
+		return this.options.subdomains[index];
 	},
 
 	_createTileProto: function () {
@@ -379,8 +413,8 @@ L.TileLayer = L.Class.extend({
 
 		//Only if we are loading an actual image
 		if (this.src !== L.Util.emptyImageUrl) {
-			this.className += ' leaflet-tile-loaded';
-
+			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
+		
 			layer.fire('tileload', {
 				tile: this,
 				url: this.src
@@ -406,3 +440,7 @@ L.TileLayer = L.Class.extend({
         layer._tileLoaded();
     }
 });
+
+L.tileLayer = function (url, options) {
+	return new L.TileLayer(url, options);
+};

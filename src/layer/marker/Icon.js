@@ -7,6 +7,7 @@ L.Icon = L.Class.extend({
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
 		shadowSize: (Point)
+		shadowAnchor: (Point)
 		*/
 		className: ''
 	},
@@ -32,7 +33,12 @@ L.Icon = L.Class.extend({
 	_createIcon: function (name, marker) {
 		var src = this._getIconUrl(name);
 
-		if (!src) { return null; }
+		if (!src) {
+			if (name === 'icon') {
+				throw new Error("iconUrl not set in Icon options (see the docs).");
+			}
+			return null;
+		}
 
 		var img;
 		/* If size is defined, use defined value. Otherwise, set size equal to
@@ -67,19 +73,14 @@ L.Icon = L.Class.extend({
 		var anchor = options.iconAnchor;
 		var popupAnchor = options.popupAnchor;
 
-		if (!anchor && size) {
+		if (!anchor) {
 			anchor = new L.Point(Math.round(size.x / 2), size.y);
 		}
-		if (name === 'icon' && !popupAnchor && size) {
+		if (name === 'icon' && !popupAnchor) {
 			popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
 		}
-		if (name === 'shadow' && anchor) {
-			if (options.shadowOffset) {
-				anchor._add(options.shadowOffset);
-			}
-			else {
-				anchor._add(new L.Point(-8, 0));
-			}
+		if (name === 'shadow') {
+			anchor = L.point(options.shadowAnchor || anchor);
 		}
 
 		/* Must append, because this is set upon Icon load, which could happen
@@ -89,9 +90,9 @@ L.Icon = L.Class.extend({
 		img.style.width	 = size.x + 'px';
 		img.style.height = size.y + 'px';
 
-		if (anchor) {
-			img.style.marginLeft = (-anchor.x) + 'px';
-			img.style.marginTop	 = (-anchor.y) + 'px';
+		// By now, anchor has been defined
+		img.style.marginLeft = (-anchor.x) + 'px';
+		img.style.marginTop	 = (-anchor.y) + 'px';
 		}
 
 		img.style.visibility = 'visible';
@@ -140,34 +141,6 @@ L.Icon = L.Class.extend({
 	}
 });
 
-
-// TODO move to a separate file
-
-L.Icon.Default = L.Icon.extend({
-	options: {},
-
-	_getIconUrl: function (name) {
-		var path = L.Icon.Default.imagePath;
-		if (!path) {
-			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
-		}
-
-		return path + '/marker-' + name + '.png';
-	}
-});
-
-L.Icon.Default.imagePath = (function () {
-	var scripts = document.getElementsByTagName('script'),
-		leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
-
-	var i, len, src, matches;
-
-	for (i = 0, len = scripts.length; i < len; i++) {
-		src = scripts[i].src;
-		matches = src.match(leafletRe);
-
-		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
-		}
-	}
-}());
+L.icon = function (options) {
+	return new L.Icon(options);
+};

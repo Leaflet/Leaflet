@@ -71,6 +71,11 @@ L.LayerGroup = L.Class.extend({
 		this._map = null;
 	},
 
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
+	},
+
 	_iterateLayers: function (method, context) {
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {
@@ -79,3 +84,7 @@ L.LayerGroup = L.Class.extend({
 		}
 	}
 });
+
+L.layerGroup = function (layers) {
+	return new L.LayerGroup(layers);
+};

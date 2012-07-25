@@ -1,57 +1,66 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Jasmine Test Runner</title>
+	<title>Jasmine Spec Runner</title>
 	<link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
 	<script type="text/javascript" src="jasmine/jasmine.js"></script>
 	<script type="text/javascript" src="jasmine/jasmine-html.js"></script>
 
 	<!-- source files -->
 
-		<script type="text/javascript">
-			L = 'test'; //to test L#noConflict later
-		</script>
+	<script type="text/javascript">
+		L = 'test'; //to test L#noConflict later
+	</script>
 
-		<script type="text/javascript" src="../debug/leaflet-include.js"></script>
+	<script type="text/javascript" src="../debug/leaflet-include.js"></script>
 
 
 	<!-- spec files -->
 
-		<script type="text/javascript" src="suites/SpecHelper.js"></script>
-		<script type="text/javascript" src="suites/LeafletSpec.js"></script>
+	<script type="text/javascript" src="suites/SpecHelper.js"></script>
+	<script type="text/javascript" src="suites/LeafletSpec.js"></script>
 
-		<!-- /core -->
-		<script type="text/javascript" src="suites/core/UtilSpec.js"></script>
-		<script type="text/javascript" src="suites/core/ClassSpec.js"></script>
-		<script type="text/javascript" src="suites/core/EventsSpec.js"></script>
+	<!-- /core -->
+	<script type="text/javascript" src="suites/core/UtilSpec.js"></script>
+	<script type="text/javascript" src="suites/core/ClassSpec.js"></script>
+	<script type="text/javascript" src="suites/core/EventsSpec.js"></script>
 
-		<!-- /geometry -->
-		<script type="text/javascript" src="suites/geometry/PointSpec.js"></script>
-		<script type="text/javascript" src="suites/geometry/BoundsSpec.js"></script>
-		<script type="text/javascript" src="suites/geometry/TransformationSpec.js"></script>
+	<!-- /geometry -->
+	<script type="text/javascript" src="suites/geometry/PointSpec.js"></script>
+	<script type="text/javascript" src="suites/geometry/BoundsSpec.js"></script>
+	<script type="text/javascript" src="suites/geometry/TransformationSpec.js"></script>
 
-		<!-- /geo -->
-		<script type="text/javascript" src="suites/geo/LatLngSpec.js"></script>
-		<script type="text/javascript" src="suites/geo/LatLngBoundsSpec.js"></script>
-		<script type="text/javascript" src="suites/geo/ProjectionSpec.js"></script>
+	<!-- /geo -->
+	<script type="text/javascript" src="suites/geo/LatLngSpec.js"></script>
+	<script type="text/javascript" src="suites/geo/LatLngBoundsSpec.js"></script>
+	<script type="text/javascript" src="suites/geo/ProjectionSpec.js"></script>
 
-		<!-- /dom -->
-		<script type="text/javascript" src="suites/dom/DomEventSpec.js"></script>
-		<script type="text/javascript" src="suites/dom/DomUtilSpec.js"></script>
+	<!-- /dom -->
+	<script type="text/javascript" src="suites/dom/DomEventSpec.js"></script>
+	<script type="text/javascript" src="suites/dom/DomUtilSpec.js"></script>
 
-		<!-- /layer -->
-		<script type="text/javascript" src="suites/layer/TileLayerSpec.js"></script>
-		<script type="text/javascript" src="suites/layer/vector/PolylineGeometrySpec.js"></script>
+	<!-- /layer -->
+	<script type="text/javascript" src="suites/layer/TileLayerSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/vector/PolylineGeometrySpec.js"></script>
 
-		<!-- /map -->
-		<script type="text/javascript" src="suites/map/MapSpec.js"></script>
+	<!-- /map -->
+	<script type="text/javascript" src="suites/map/MapSpec.js"></script>
 </head>
 <body>
+	<script type="text/javascript">
+		(function() {
+			var jasmineEnv = jasmine.getEnv();
+			jasmineEnv.updateInterval = 1000;
 
-<script type="text/javascript">
-	jasmine.getEnv().addReporter(new jasmine.TrivialReporter());
-	jasmine.getEnv().execute();
-</script>
+			var htmlReporter = new jasmine.HtmlReporter();
+			jasmineEnv.addReporter(htmlReporter);
 
+			jasmineEnv.specFilter = function(spec) {
+				return htmlReporter.specFilter(spec);
+			};
+
+			jasmineEnv.execute();
+		})();
+	</script>
 </body>
 </html>

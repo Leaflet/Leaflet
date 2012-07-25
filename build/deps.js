@@ -53,7 +53,7 @@ var deps = {
 	},
 
 	Marker: {
-		src: ['layer/marker/Icon.js', 'layer/marker/Marker.js'],
+		src: ['layer/marker/Icon.js', 'layer/marker/Icon.Default.js', 'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
 

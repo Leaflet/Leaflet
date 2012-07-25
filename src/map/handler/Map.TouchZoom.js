@@ -3,16 +3,16 @@
  */
 
 L.Map.mergeOptions({
-	touchZoom: L.Browser.touch && !L.Browser.android
+	touchZoom: L.Browser.touch && !L.Browser.android23
 });
 
 L.Map.TouchZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.addListener(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._map._container, 'touchstart', this._onTouchStart, this);
+		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	_onTouchStart: function (e) {
@@ -22,7 +22,7 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
-			viewCenter = map.containerPointToLayerPoint(map.getSize().divideBy(2));
+			viewCenter = map._getCenterLayerPoint();
 
 		this._startCenter = p1.add(p2).divideBy(2, true);
 		this._startDist = p1.distanceTo(p2);
@@ -33,8 +33,8 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
 		L.DomEvent
-			.addListener(document, 'touchmove', this._onTouchMove, this)
-			.addListener(document, 'touchend', this._onTouchEnd, this);
+			.on(document, 'touchmove', this._onTouchMove, this)
+			.on(document, 'touchend', this._onTouchEnd, this);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -52,14 +52,8 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (this._scale === 1) { return; }
 
-		var zoom = this._map._zoom + Math.log(this._scale) / Math.LN2;
-
-		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
-			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
-			center = this._map.unproject(centerPoint);
-
 		if (!this._moved) {
-			map._mapPane.className += ' leaflet-zoom-anim leaflet-touching';
+			L.DomUtil.addClass(map._mapPane, 'leaflet-zoom-anim leaflet-touching');
 
 			map
 				.fire('movestart')
@@ -69,9 +63,12 @@ L.Map.TouchZoom = L.Handler.extend({
 			this._moved = true;
 		}
 
+		var origin = this._getScaleOrigin(),
+			center = map.layerPointToLatLng(origin);
+
 		map.fire('zoomanim', {
 			center: center,
-			zoom: zoom
+			zoom: map.getScaleZoom(this._scale)
 		});
 
 		// Used 2 translates instead of transform-origin because of a very strange bug -
@@ -87,29 +84,34 @@ L.Map.TouchZoom = L.Handler.extend({
 	_onTouchEnd: function (e) {
 		if (!this._moved || !this._zooming) { return; }
 
+		var map = this._map;
+
 		this._zooming = false;
-		this._map._mapPane.className = this._map._mapPane.className.replace(' leaflet-touching', ''); //TODO toggleClass util
+		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 
 		L.DomEvent
-			.removeListener(document, 'touchmove', this._onTouchMove)
-			.removeListener(document, 'touchend', this._onTouchEnd);
+			.off(document, 'touchmove', this._onTouchMove)
+			.off(document, 'touchend', this._onTouchEnd);
 
-		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale),
-			centerPoint = this._map.getPixelOrigin().add(this._startCenter).add(centerOffset),
-			center = this._map.unproject(centerPoint),
+		var origin = this._getScaleOrigin(),
+			center = map.layerPointToLatLng(origin),
 
-			oldZoom = this._map.getZoom(),
-			floatZoomDelta = Math.log(this._scale) / Math.LN2,
+			oldZoom = map.getZoom(),
+			floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
 			roundZoomDelta = (floatZoomDelta > 0 ? Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
-			zoom = this._map._limitZoom(oldZoom + roundZoomDelta),
-			finalScale = Math.pow(2, zoom - oldZoom);
+			zoom = map._limitZoom(oldZoom + roundZoomDelta);
 
-		this._map.fire('zoomanim', {
+		map.fire('zoomanim', {
 			center: center,
 			zoom: zoom
 		});
 
-		this._map._runAnimation(center, zoom, finalScale / this._scale, this._startCenter.add(centerOffset), true);
+		map._runAnimation(center, zoom, map.getZoomScale(zoom) / this._scale, origin, true);
+	},
+
+	_getScaleOrigin: function () {
+		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale);
+		return this._startCenter.add(centerOffset);
 	}
 });
 
