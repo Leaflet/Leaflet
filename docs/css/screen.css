@@ -178,7 +178,7 @@ th, td {
 		display: block;
 		}*/
 	.nav li a.github-link {
-		background: url(https://github.com/favicon.png) 15px 12px no-repeat;
+		background: url(https://github.com/CloudMade/Leaflet/raw/gh-pages-master/docs/images/github.png) 15px 12px no-repeat;
 		}
 	.nav li a.twitter-link {
 		background: url(http://twitter.com/phoenix/favicon.ico) 15px 12px no-repeat;
