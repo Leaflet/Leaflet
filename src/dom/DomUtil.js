@@ -106,29 +106,25 @@ L.DomUtil = {
 	},
 
 	setOpacity: function (el, value) {
+
 		if ('opacity' in el.style) {
 			el.style.opacity = value;
+
 		} else if (L.Browser.ie) {
+
 			var filter = false,
-				prefix = 'DXImageTransform.Microsoft.',
-				filterName = 'Alpha';
+				filterName = 'DXImageTransform.Microsoft.Alpha';
 
 			// filters collection throws an error if we try to retrieve a filter that doesn't exist
-			try { filter = el.filters.item(prefix + filterName); } catch (e) { }
-			if (!filter) try { filter = el.filters.item(filterName); } catch (e) { }
+			try { filter = el.filters.item(filterName); } catch (e) {}
 
 			value = Math.round(value * 100);
-			if (value === 100) {
-				if (filter) {
-					filter.Enabled = false;
-				}
+
+			if (filter) {
+				filter.Enabled = (value === 100);
+				filter.Opacity = value;
 			} else {
-				if (filter) {
-					filter.Enabled = true;
-					filter.Opacity = value;
-				} else {
-					el.style.filter += ' progid:' + prefix + filterName + '(opacity=' + value + ')';
-				}
+				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
 			}
 		}
 	},
