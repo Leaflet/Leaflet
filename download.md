@@ -27,8 +27,20 @@ it straight away, place this code in the `head` section of your HTML:
 
     <script src="http://cdn.leafletjs.com/leaflet-0.3.1/leaflet.js"></script>
 
+### Building Leaflet from the Source
+
+Leaflet build system is powered by the [Node.js](http://nodejs.org) platform and Jake, JSHint and UglifyJS libraries, which install easily and work well across all major platforms. Here are the steps to install it:
+
+ 1. [Download and install Node](http://nodejs.org)
+ 2. Run the following commands in the command line:
+
+	<pre><code class="no-highlight">npm install -g jake
+npm install jshint
+npm install uglify-js
+</code></pre>
+
+Now that you have everything installed, run `jake` inside the Leaflet directory. This will check Leaflet source files for JavaScript errors and inconsistencies, and then combine and compress it to the `dist` folder.
+
 ### Building a Custom Version of Leaflet
 
-Open `build/build.html` page from the download package, check the
-components you want to see in your build and then follow the
-instructions there.
+To make a custom build of the library with only the things you need, open `build/build.html` page of the package contents, choose the components (it figures out dependencies for you) and then run the command generated with it.
