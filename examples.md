@@ -5,7 +5,7 @@ title: Tutorials
 
 ## Leaflet Tutorials
 
-Every example here comes with step-by-step code explanation and is easy enough even for beginner JavaScript developers.
+Every tutorial here comes with step-by-step code explanation and is easy enough even for beginner JavaScript developers.
 
 ***
 [<img src="docs/images/quick-start.png" class="example-img bordered-img" />][1]
@@ -19,21 +19,21 @@ A simple step-by-step guide that will quickly get you started with Leaflet basic
 
 ### [Leaflet on Mobile][2]
 
-In this example, you'll learn how to create a fullscreen map tuned for mobile devices like iPhone, iPad or Android phones, and how to easily detect and use the current user location.
+In this tutorial, you'll learn how to create a fullscreen map tuned for mobile devices like iPhone, iPad or Android phones, and how to easily detect and use the current user location.
 
 ***
 [<img src="docs/images/custom-icons.png" class="example-img bordered-img" />][3]
 
 ### [Markers With Custom Icons][3]
 
-In this pretty example, you'll learn how to easily define your own icons for use by the markers you put on the map.
+In this pretty tutorial, you'll learn how to easily define your own icons for use by the markers you put on the map.
 
 ***
 [<img src="docs/images/geojson.png" class="example-img bordered-img" />][4]
 
 ### [Using GeoJSON with Leaflet][4]
 
-In this example, you'll learn how to create and interact with map vectors created from [GeoJSON][5] objects.
+In this tutorial, you'll learn how to create and interact with map vectors created from [GeoJSON][5] objects.
 
 ***
 [<img src="docs/images/layers-control.png" class="example-img bordered-img" />][6]

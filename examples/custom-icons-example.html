@@ -23,16 +23,16 @@
 
 		var LeafIcon = L.Icon.extend({
 			options: {
-				iconUrl: '../docs/images/leaf-green.png',
 				shadowUrl: '../docs/images/leaf-shadow.png',
-				iconSize: [38, 95],
-				shadowSize: [68, 95],
-				iconAnchor: [22, 94],
-				popupAnchor: [-3, -76]
+				iconSize:     [38, 95],
+				shadowSize:   [50, 64],
+				iconAnchor:   [22, 94],
+				shadowAnchor: [4, 62],
+				popupAnchor:  [-3, -76]
 			}
 		});
 
-		var greenIcon = new LeafIcon(),
+		var greenIcon = new LeafIcon({iconUrl: '../docs/images/leaf-green.png'}),
 			redIcon = new LeafIcon({iconUrl: '../docs/images/leaf-red.png'}),
 			orangeIcon = new LeafIcon({iconUrl: '../docs/images/leaf-orange.png'});
 

@@ -142,13 +142,9 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 <script>
 
-	var tilesAttrib = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-		tilesUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png';
-
-
 	var map = L.map('map').setView([51.505, -0.09], 13);
 
-	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map);
+	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map);
 
 	L.marker([51.5, -0.09]).addTo(map)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
@@ -180,12 +176,12 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 
 	var map1 = L.map('map1').setView([51.505, -0.09], 13);
-	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map1);
+	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map1);
 
 
 
 	var map2 = L.map('map2').setView([51.505, -0.09], 13);
-	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map2);
+	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map2);
 
 	L.marker([51.5, -0.09]).addTo(map2);
 
@@ -204,7 +200,7 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 
 	var map3 = L.map('map3').setView([51.505, -0.09], 13);
-	L.tileLayer(tilesUrl, {attribution: tilesAttrib}).addTo(map3);
+	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map3);
 
 	L.marker([51.5, -0.09]).addTo(map3)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
