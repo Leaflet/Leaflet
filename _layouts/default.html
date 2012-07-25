@@ -135,11 +135,15 @@
 		hljs.tabReplace = '    ';
 
 		(function () {
-			var codes = document.getElementsByTagName('code');
+			var codes = document.getElementsByTagName('code'),
+				parentClass;
 
 			for (var i = 0, len = codes.length; i < len; i++) {
 				if (!codes[i].className) {
-					if (codes[i].innerHTML.match(/^\s*&lt;/)) {
+					parentClass = codes[i].parentNode.className;
+					if (parentClass) {
+						codes[i].className = parentClass;
+					} else if (codes[i].innerHTML.match(/^\s*&lt;/)) {
 						codes[i].className = 'xml';
 					} else {
 						codes[i].className = 'javascript';
