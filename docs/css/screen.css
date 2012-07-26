@@ -129,6 +129,10 @@ p code, td:last-child code {
 	color: #666;
 }
 
+/*.api-page td:last-child pre {
+	margin-top: 0.5em;
+}*/
+
 table {
 	border-collapse: collapse;
 	box-shadow: 0 3px 15px #f0f0f0;

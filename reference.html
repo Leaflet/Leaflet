@@ -24,7 +24,6 @@ bodyclass: api-page
 		<h4>Map Misc</h4>
 		<ul>
 			<li><a href="#map-properties">Properties</a></li>
-			<li><a href="#map-projections">Projections</a></li>
 			<li><a href="#map-panes">Panes</a></li>
 		</ul>
 	</div>
@@ -108,8 +107,8 @@ bodyclass: api-page
 			<li><a href="#ilayer">ILayer</a></li>
 			<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
 			<li><a href="#icontrol">IControl</a></li>
-			<li><a class="nodocs" href="#">IProjection</a></li>
-			<li><a class="nodocs" href="#">ICRS</a></li>
+			<li><a href="#iprojection">IProjection</a></li>
+			<li><a href="#icrs">ICRS</a></li>
 		</ul>
 
 		<h4>Misc</h4>
@@ -213,7 +212,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>crs</b></code></td>
-		<td><code><a href="#map-projections">CRS</a></code></td>
+		<td><code><a href="#icrs">CRS</a></code></td>
 		<td><code>L.CRS.<br/>EPSG3857</code></td>
 		<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
 	</tr>
@@ -946,29 +945,6 @@ var map = L.map('map', {
 		<td><code><b>attributionControl</b></code></td>
 		<td><a href="#control-attribution"><code>Control.Attribution</code></a></td>
 		<td>Attribution control.</td>
-	</tr>
-</table>
-
-<h3 id="map-projections">Projections</h3>
-
-<p>You can specify different CRS for map to use through its <code>crs</code> option. Here's the list of available CRS:</p>
-
-<table>
-	<tr>
-		<th>CRS</th>
-		<th>Data</th>
-	</tr>
-	<tr>
-		<td><code>L.CRS.EPSG3857</code></td>
-		<td>EPSG:3857 (Spherical Mercator), used by most of commercial map providers (CloudMade, Google, Yahoo, Bing, etc.).</td>
-	</tr>
-	<tr>
-		<td><code>L.CRS.EPSG4326</code></td>
-		<td>EPSG:4326 (Plate Carree), very popular among GIS enthusiasts.</td>
-	</tr>
-	<tr>
-		<td><code>L.CRS.EPSG3395</code></td>
-		<td>EPSG:3395 (True Mercator), used by some map providers.</td>
 	</tr>
 </table>
 
@@ -2520,6 +2496,18 @@ map.fitBounds(bounds);</code></pre>
 		<td><code><b>clearLayers</b>()</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes all the layers from the group.</td>
+	</tr>
+	<tr>
+		<td><code><b>eachLayers</b>(
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Iterates over the layers of the group, optionally specifying context of the iterator function.
+<pre><code>group.eachLayer(function (layer) {
+	layer.bindPopup('Hello');
+});</code></pre>
+		</td>
 	</tr>
 </table>
 
@@ -5258,6 +5246,178 @@ map.addControl(new MyControl());
 <p>This will allow you to pass options like <code>position</code> when creating the control instances:</p>
 
 <pre><code>map.addControl(new MyControl('bar', {position: 'bottomleft'}));</code></pre>
+
+
+
+
+<h2 id="iprojection">IProjection</h2>
+
+<p>An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_projection">Map projection</a>.</p>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>project</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Projects geographical coordinates into a 2D point.</td>
+	</tr>
+	<tr>
+		<td><code><b>unproject</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>The inverse of <code>project</code>. Projects a 2D point into geographical location.</td>
+	</tr>
+</table>
+
+<h3>Defined Projections</h3>
+
+<p>Leaflet comes with a set of already defined projections out of the box:</p>
+
+<table>
+	<tr>
+		<th>Projection</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.Projection.SphericalMercator</b></code></td>
+
+		<td>Spherical Mercator projection &mdash; the most common projection for online maps, used by almost all free and commercial tile providers. Assumes that Earth is a sphere. Used by the <code>EPSG:3857</code> CRS.</td>
+	</tr>
+	<tr>
+		<td><code><b>L.Projection.Mercator</b></code></td>
+
+		<td>Elliptical Mercator projection &mdash; more complex than Spherical Mercator. Takes into account that Earth is a geoid, not a perfect sphere. Used by the <code>EPSG:3395</code> CRS.</td>
+	</tr>
+	<tr>
+		<td><code><b>L.Projection.LonLat</b></code></td>
+
+		<td>Equirectangular, or Plate Carree projection &mdash; the most simple projection, mostly used by GIS enthusiasts. Directly maps <code>x</code> as longitude, and <code>y</code> as latitude. Also suitable for flat worlds, e.g. game maps. Used by the <code>EPSG:3395</code> and <code>Simple</code> CRS.</td>
+	</tr>
+</table>
+
+
+
+
+<h2 id="icrs">ICRS</h2>
+
+<p>Defines coordinate reference systems for projecting geographical points into pixel (screen) coordinates and back (and to coordinates in other units for WMS services). See <a href="http://en.wikipedia.org/wiki/Coordinate_reference_system">Spatial reference system</a>.</p>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>latLngToPoint</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Projects geographical coordinates on a given zoom into pixel coordinates.</td>
+	</tr>
+	<tr>
+		<td><code><b>pointToLatLng</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>The inverse of <code>latLngToPoint</code>. Projects pixel coordinates on a given zoom into geographical coordinates.</td>
+	</tr>
+	<tr>
+		<td><code><b>project</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Projects geographical coordinates into coordinates in units accepted for this CRS (e.g. meters for <code>EPSG:3857</code>, for passing it to WMS services).</td>
+	</tr>
+	<tr>
+		<td><code><b>scale</b>(
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
+
+		<td><code>Number</code></td>
+		<td>Returns the scale used when transforming projected coordinates into pixel coordinates for a particular zoom. For example, it returns <code>256 * 2^zoom</code> for Mercator-based CRS.</td>
+	</tr>
+</table>
+
+<h3>Properties</h3>
+
+<table>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>projection</b></code></td>
+
+		<td><code><a href="#iprojection">IProjection</a></code></td>
+		<td>Projection that this CRS uses.</td>
+	</tr>
+	<tr>
+		<td><code><b>transformation</b></code></td>
+
+		<td><code><a href="#transformation">Transformation</a></code></td>
+		<td>Transformation that this CRS uses to turn projected coordinates into screen coordinates for a particular tile service.</td>
+	</tr>
+
+	<tr>
+		<td><code><b>code</b></code></td>
+
+		<td><code>String</code></td>
+		<td>Standard code name of the CRS passed into WMS services (e.g. <code><span class="string">'EPSG:3857'</span></code>).</td>
+	</tr>
+</table>
+
+<h3>Defined CRS</h3>
+
+<p>Leaflet comes with a set of already defined CRS to use out of the box:</p>
+
+<table>
+	<tr>
+		<th>Projection</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.CRS.EPSG3857</b></code></td>
+
+		<td>The most common CRS for online maps, used by almost all free and commercial tile providers. Uses Spherical Mercator projection. Set in by default in Map's <code>crs</code> option.</td>
+	</tr>
+	<tr>
+		<td><code><b>L.CRS.EPSG4326</b></code></td>
+
+		<td>A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.</td>
+	</tr>
+	<tr>
+		<td><code><b>L.CRS.EPSG3395</b></code></td>
+
+		<td>Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.</td>
+	</tr>
+	<tr>
+		<td><code><b>L.CRS.Simple</b></code></td>
+
+		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly. May be used for maps of flat surfaces (e.g. game maps).</td>
+	</tr>
+</table>
+
+<p>If you want to use some obscure CRS not listed here, take a look at the <a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.</p>
 
 
 <h2 id="global">Global Switches</h2>
