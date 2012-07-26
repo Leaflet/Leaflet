@@ -62,7 +62,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 	_panByIfClose: function (center) {
 		// difference between the new and current centers in pixels
-		var offset = this._getCenterOffset(center);
+		var offset = this._getCenterOffset(center)._floor();
 
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);
