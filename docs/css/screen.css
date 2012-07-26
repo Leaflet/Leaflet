@@ -10,12 +10,10 @@ body {
 	padding: 15px 40px 20px;
 	width: 790px;
 
-	border: 1px solid #dfdfdf;
+	/*border: 1px solid #dfdfdf;*/
 	border-top: 0;
 
-	box-shadow: 0 0 50px rgba(0,0,0,0.1);
-	-moz-box-shadow: 0 0 50px rgba(0,0,0,0.1);
-	-webkit-box-shadow: 0 0 50px rgba(0,0,0,0.1);
+	box-shadow: 0 0 60px rgba(0,0,0,0.15);
 	}
 h1 {
 	margin-bottom: 10px;
