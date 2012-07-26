@@ -7,7 +7,7 @@ title: Layer Groups and Layers Control
 
 This tutorial will show you how to group several layers into one, and how to use the layers control to allow users to easily switch different layers on your map.
 
-<div id="map" style="height: 250px; margin: 0 0 18px"></div>
+<div id="map" class="map" style="height: 250px"></div>
 
 [View example on a separate page &rarr;](ayers-control-example.html)
 

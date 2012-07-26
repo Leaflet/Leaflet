@@ -8,7 +8,7 @@ title: Quick Start Guide
 This step-by-step guide will quickly get you started on Leaflet basics, including setting up a Leaflet map, working with markers, polylines and popups, and dealing with events.
 
 
-<div id="map" style="height: 180px; margin-bottom: 18px"></div>
+<div id="map" class="map" style="height: 180px"></div>
 
 [View example on a separate page &rarr;](quick-start-example.html)
 
@@ -41,7 +41,7 @@ Now you're ready to initialize the map and do some stuff with it.
 
 ### Setting up the map
 
-<div id="map1" style="height: 180px; margin-bottom: 18px"></div>
+<div id="map1" class="map" style="height: 180px"></div>
 
 
 Let's create a map of the center of London with pretty CloudMade tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
@@ -66,7 +66,7 @@ It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enf
 
 ### Markers, circles and polygons
 
-<div id="map2" style="height: 180px; margin-bottom: 18px"></div>
+<div id="map2" class="map" style="height: 180px"></div>
 
 Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let's add a marker:
 
@@ -91,7 +91,7 @@ Adding a polygon is as easy:
 
 ### Working with popups
 
-<div id="map3" style="height: 180px; margin-bottom: 18px"></div>
+<div id="map3" class="map" style="height: 180px"></div>
 
 Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:
 

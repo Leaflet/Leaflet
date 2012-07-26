@@ -3,11 +3,11 @@ layout: tutorial
 title: Markers With Custom Icons
 ---
 
-### Markers With Custom Icons
+## Markers With Custom Icons
 
 In this tutorial, you'll learn how to easily define your own icons for use by the markers you put on the map.
 
-<div id="map" style="height: 220px; margin-bottom: 18px"></div>
+<div id="map" class="map" style="height: 220px"></div>
 
 [View example on a separate page &rarr;](custom-icons-example.html)
 
@@ -44,7 +44,7 @@ Now putting a marker with this icon on a map is easy:
 
 	L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
-<div id="map2" style="height: 220px; margin-bottom: 18px"></div>
+<div id="map2" class="map" style="height: 220px"></div>
 
 ### Defining an icon class
 
