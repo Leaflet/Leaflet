@@ -131,7 +131,43 @@ myLayer.addData(geojsonFeature);
 
 <h4>filter</h4>
 
-<p>The <code>filter</code> option is used to ...</p>
+<p>The <code>filter</code> option can be used to control the visibility of GeoJSON features. To accomplish this we pass a function as the <code>filter</code> option. This function gets called for each feature in your GeoJSON layer, and gets passed the <code>feature</code> and the <code>layer</code>. You can then utilise the values in the feature's properties to control the visibility by returning <code>true</code> or <code>false</code>.</p>
+
+<p>In the example below "Busch Field" will not be shown on the map.</p>
+
+<pre><code>var someFeatures = {
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Coors Field",
+				"show_on_map": true
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-104.99404, 39.75621]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"name": "Busch Field",
+				"show_on_map": false
+			},
+			"geometry": {
+				"type": "Point",
+				"coordinates": [-104.98404, 39.74621]
+			}
+		}
+	]
+};
+
+L.geoJson(someFeatures, {
+	filter: function(feature, layer) {
+		return feature.properties.show_on_map;
+	}
+}).addTo(map);</code></pre>
 
 <h3>Popups</h3>
 
