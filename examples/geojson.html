@@ -123,7 +123,111 @@ myLayer.addData(geojsonFeature);
 
 <h4>style</h4>
 
-<p>The <code>style</code> option is used to ...</p>
+<p>The <code>style</code> option can be used to style features two different ways. We can pass a simple object that styles all paths (polylines and polygons) the same way.</p>
+
+<pre><code>var myStyle = {
+	"color": "#ff7800",
+	"weight": 5,
+	"opacity": 0.65
+};
+
+var myLines = {
+	"type": "GeometryCollection",
+	"features": [
+		{
+			"type": "LineString",
+			"coordinates": [
+				[-100, 40],
+				[-105, 45],
+				[-110, 55]
+			]
+		},
+		{
+			"type": "LineString",
+			"coordinates": [
+				[-105, 40],
+				[-110, 45],
+				[-115, 55]
+			]
+		}
+	]
+};
+
+L.geoJson(myLines, {
+	style: myStyle
+}).addTo(map);</code></pre>
+
+<p>Alternatively, we can pass an function that styles individual features based on their properties. In the example below we check the "party" property and style our polygons accordingly. </p>
+
+<pre><code>var republicanStyle = {
+	"color": "#ff0000",
+	"opacity": 1,
+	"weight": 2,
+	"fillOpacity": 0.4,
+	"fillColor": "#ff0000"
+
+};
+
+var democratStyle = {
+	"color": "#0000ff",
+	"opacity": 1,
+	"weight": 2,
+	"fillOpacity": 0.4,
+	"fillColor": "#0000ff"
+
+};
+
+var states = {
+	"type": "FeatureCollection",
+	"features": [
+		{
+			"type": "Feature",
+			"properties": {
+				"party": "Republican"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-104.05, 48.99],
+						[-97.22, 48.98],
+						[-96.58, 45.94],
+						[-104.03, 45.94],
+						[-104.05, 48.99]
+					]
+				]
+			}
+		},
+		{
+			"type": "Feature",
+			"properties": {
+				"party": "Democrat"
+			},
+			"geometry": {
+				"type": "Polygon",
+				"coordinates": [
+					[
+						[-109.05, 41.00],
+						[-102.06, 40.99],
+						[-102.03, 36.99],
+						[-109.04, 36.99],
+						[-109.05, 41.00]
+					]
+				]
+			}
+		}
+	]
+};
+
+L.geoJson(states, {
+	style: function(feature) {
+		if (feature.properties.party === "Republican") {
+			return republicanStyle;
+		} else if (feature.properties.party === "Democrat") {
+			return democratStyle;
+		}
+	}
+}).addTo(map);</code></pre>
 
 <h4>onEachFeature</h4>
 
