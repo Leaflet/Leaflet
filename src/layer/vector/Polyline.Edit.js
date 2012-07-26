@@ -107,10 +107,10 @@ L.Handler.PolyEdit = L.Handler.extend({
 		if (this._poly._latlngs.length < 3) {
 			return;
 		}
-		
+
 		var marker = e.target,
 		    i = marker._index;
-		
+
 		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
 		if (marker._prev && marker._next) {
 			this._createMiddleMarker(marker._prev, marker._next);
@@ -133,7 +133,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_updateIndexes: function (index, delta) {
-		this._markerGroup._iterateLayers(function (marker) {
+		this._markerGroup.eachLayer(function (marker) {
 			if (marker._index > index) {
 				marker._index += delta;
 			}

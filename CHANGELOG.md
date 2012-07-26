@@ -80,6 +80,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added `originalEvent` property to `MouseEvent` (by [@k4](https://github.com/k4)). [#521](https://github.com/CloudMade/Leaflet/pull/521)
  * Added `containerPoint` property to `MouseEvent`. [#413](https://github.com/CloudMade/Leaflet/issues/413)
  * Added `contextmenu` event to vector layers (by [@ErrorProne](https://github.com/ErrorProne)). [#500](https://github.com/CloudMade/Leaflet/pull/500)
+ * Added `LayerGroup` `eachLayer` method for iterating over its members.
  * Added `FeatureGroup` `mousemove` and `contextmenu` events (by [@jacobtoye](https://github.com/jacobtoye)). [#816](https://github.com/CloudMade/Leaflet/pull/816)
  * Added chaining to `DomEvent` methods.
  * Added `on` and `off` aliases for `DomEvent` `addListener` and `removeListener` methods.

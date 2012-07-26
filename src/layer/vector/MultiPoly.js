@@ -14,7 +14,7 @@
 			setLatLngs: function (latlngs) {
 				var i = 0, len = latlngs.length;
 
-				this._iterateLayers(function (layer) {
+				this.eachLayer(function (layer) {
 					if (i < len) {
 						layer.setLatLngs(latlngs[i++]);
 					} else {
