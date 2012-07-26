@@ -58,16 +58,19 @@ title: Using GeoJSON with Leaflet
 	}).addTo(map);
 
 	L.geoJson(freeBus, {
+
 		filter: function (feature, layer) {
 			if (feature.properties) {
 				// If the property "underConstruction" exists and is true, return false (don't render features under construction)
 				return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true;
 			}
 			return false;
-		}
+		},
+
+		onEachFeature: onEachFeature
 	}).addTo(map);
 
-	L.geoJson(coorsField, {
+	var coorsLayer = L.geoJson(null, {
 
 		pointToLayer: function (feature, latlng) {
 			return L.marker(latlng, {icon: baseballIcon});
@@ -75,6 +78,8 @@ title: Using GeoJSON with Leaflet
 
 		onEachFeature: onEachFeature
 	}).addTo(map);
+
+	coorsLayer.addData(coorsField);
 
 </script>
 
@@ -92,12 +97,6 @@ title: Using GeoJSON with Leaflet
 
 <p>GeoJSON objects are added to the map through a <a href="http://leaflet.cloudmade.com/reference.html#geojson">GeoJSON layer</a>. To create a GeoJSON layer and add it to a map we can use the following code.</p>
 
-<pre><code class="css">var geojsonLayer = new L.GeoJSON();
-
-map.addLayer(geojsonLayer);</code></pre>
-
-<p>This creates an empty GeoJSON layer that we can easily add vectors to with the <code>addGeoJSON</code> method.</p>
-
 <pre><code>var geojsonFeature = {
 	"type": "Feature",
 	"properties": {
@@ -111,25 +110,56 @@ map.addLayer(geojsonLayer);</code></pre>
 	}
 };
 
-geojsonLayer.addGeoJSON(geojsonFeature);</code></pre>
+L.geoJson(geojsonFeature).addTo(map);</code></pre>
 
-<p>We can also instantiate the GeoJSON layer with a GeoJSON object to show it immediately, without having to call <code>addGeoJSON</code>.</p>
+<p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to it later.</p>
 
-<pre><code>var geojsonLayer = new L.GeoJSON(geojsonFeature);
+<pre><code>var myLayer = L.geoJson().addTo(map);
 
-map.addLayer(geojsonLayer);</code></pre>
+myLayer.addData(geojsonFeature);
+</code></pre>
+
+<h3>Options</h3>
+
+<h4>style</h4>
+
+<p>The <code>style</code> option is used to ...</p>
+
+<h4>onEachFeature</h4>
+
+<p>The <code>onEachFeature</code> option is used to ...</p>
+
+<h4>filter</h4>
+
+<p>The <code>filter</code> option is used to ...</p>
 
 <h3>Popups</h3>
 
-<p>We can use popups to show information about these features when they are clicked. To accomplish this we'll listen to the <code>featureparse</code> event of the GeoJSON layer. Here we're checking to see if a feature has a property named "popupContent" and if so binding a popup to the feature so this text (or HTML) appears when clicked.</p>
+<p>We can use popups to show information about features when they are clicked. To accomplish this we'll utilise the <code>onEachFeature</code> option of the GeoJSON layer.</p>
 
-<pre><code>geojsonLayer.on("featureparse", function (e) {
-	if (e.properties &amp;&amp; e.properties.popupContent){
-		e.layer.bindPopup(e.properties.popupContent);
+<pre><code>function onEachFeature (feature, layer) {
+	// Does this feature have a property named popupContent
+	if (feature.properties && feature.properties.popupContent) {
+		layer.bindPopup(feature.properties.popupContent);
 	}
-});</code></pre>
+}
 
-<p>Make sure to do this <em>before</em> adding GeoJSON objects through the <code>addGeoJSON</code> method.</p>
+var geojsonFeature = {
+	"type": "Feature",
+	"properties": {
+		"name": "Coors Field",
+		"amenity": "Baseball Stadium",
+		"popupContent": "This is where the Rockies play!"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-104.99404, 39.75621]
+	}
+};
+
+L.geoJson(geojsonFeature, {
+	onEachFeature: onEachFeature
+}).addTo(map);</code></pre>
 
 <h3>Styling Features</h3>
 

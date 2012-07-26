@@ -11,7 +11,7 @@ var freeBus = {
                 ]
             },
             "properties": {
-                "name": "16th Street Free Bus",
+                "popupContent": "This is free bus that will take you across downtown.",
                 "underConstruction": false
             },
             "id": 1
@@ -26,7 +26,7 @@ var freeBus = {
                 ]
             },
             "properties": {
-                "name": "16th Street Free Bus",
+                "popupContent": "This is free bus that will take you across downtown.",
                 "underConstruction": true
             },
             "id": 2
@@ -41,7 +41,7 @@ var freeBus = {
                 ]
             },
             "properties": {
-                "name": "16th Street Free Bus",
+                "popupContent": "This is free bus that will take you across downtown.",
                 "underConstruction": false
             },
             "id": 3
