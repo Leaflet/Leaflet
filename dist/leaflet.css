@@ -68,11 +68,13 @@
 .leaflet-control {
 	position: relative;
 	z-index: 7;
+	pointer-events: auto;
 	}
 .leaflet-top,
 .leaflet-bottom {
 	position: absolute;
 	z-index: 1000;
+	pointer-events: none;
 	}
 .leaflet-top {
 	top: 0;
