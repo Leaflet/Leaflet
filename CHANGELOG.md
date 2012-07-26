@@ -111,6 +111,7 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
 
  * Fixed a bug where the map was zooming incorrectly inside a `position: fixed` container (by [@chx007](https://github.com/chx007)). [#602](https://github.com/CloudMade/Leaflet/pull/602)
  * Fixed a bug where scaled tiles weren't cleared up after zoom in some cases (by [@cfis](https://github.com/cfis)) [#683](https://github.com/CloudMade/Leaflet/pull/683)
+ * Fixed a bug where map wouldn't drag over a polygon with a `mousedown` listener. [#834](https://github.com/CloudMade/Leaflet/issues/834)
 
 #### API bugfixes
 
