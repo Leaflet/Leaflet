@@ -173,6 +173,6 @@ L.Control.Layers = L.Control.extend({
 	}
 });
 
-L.control.layers = function (options) {
-	return new L.Control.Layers(options);
+L.control.layers = function (baseLayers, overlays, options) {
+	return new L.Control.Layers(baseLayers, overlays, options);
 };

@@ -2525,6 +2525,7 @@ L.ImageOverlay = L.Class.extend({
 		return this;
 	},
 
+	// TODO remove bringToFront/bringToBack duplication from TileLayer/Path
 	bringToFront: function () {
 		if (this._image) {
 			this._map._panes.overlayPane.appendChild(this._image);
@@ -6737,9 +6738,10 @@ L.Control.Layers = L.Control.extend({
 	}
 });
 
-L.control.layers = function (options) {
-	return new L.Control.Layers(options);
+L.control.layers = function (baseLayers, overlays, options) {
+	return new L.Control.Layers(baseLayers, overlays, options);
 };
+
 
 L.Transition = L.Class.extend({
 	includes: L.Mixin.Events,
@@ -7283,10 +7285,11 @@ L.Map.include({
 		options = this._locationOptions = L.Util.extend(this._defaultLocateOptions, options);
 
 		if (!navigator.geolocation) {
-			return this.fire('locationerror', {
+			this._handleGeolocationError({
 				code: 0,
 				message: "Geolocation not supported."
 			});
+			return this;
 		}
 
 		var onResponse = L.Util.bind(this._handleGeolocationResponse, this),
@@ -7309,7 +7312,7 @@ L.Map.include({
 
 	_handleGeolocationError: function (error) {
 		var c = error.code,
-			message =
+			message = error.message ||
 				(c === 1 ? "permission denied" :
 				(c === 2 ? "position unavailable" : "timeout"));
 
