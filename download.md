@@ -45,7 +45,7 @@ Leaflet build system is powered by the [Node.js](http://nodejs.org) platform and
  1. [Download and install Node](http://nodejs.org)
  2. Run the following commands in the command line:
 
-	<pre><code class="no-highlight">npm install -g jake
+ <pre><code class="no-highlight">npm install -g jake
 npm install jshint
 npm install uglify-js
 </code></pre>
