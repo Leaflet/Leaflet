@@ -1,32 +1,4 @@
 
-NEW Transition
-	Transition(el, options)
-
-	run(props)
-
-	options
-		fps: 50
-		easing: 'ease',
-		duration: 0.5
-		fakeStepInterval: 100
-
-	events
-		start
-		step
-		end
-
-NEW Draggable
-	Draggable(element, dragStartTarget)
-
-	enable()
-	disable()
-
-	events
-		dragstart
-		predrag
-		drag
-		dragend
-
 NEW IProjection
 	project(latlng)
 	unproject(point)

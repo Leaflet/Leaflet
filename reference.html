@@ -97,8 +97,8 @@ bodyclass: api-page
 		<ul>
 			<li><a href="#domevent">DomEvent</a></li>
 			<li><a href="#domutil">DomUtil</a></li>
-			<li><a class="nodocs" href="#">Transition</a></li>
-			<li><a class="nodocs" href="#">Draggable</a></li>
+			<li><a href="#transition">Transition</a></li>
+			<li><a href="#draggable">Draggable</a></li>
 		</ul>
 	</div>
 	<div class="span-3 last">
@@ -1544,6 +1544,38 @@ var map = L.map('map', {
 	</tr>
 </table>
 
+<h3>Events</h3>
+
+<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+
+<table>
+	<tr>
+		<th class="width100">Event</th>
+		<th class="width100">Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>loading</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the tile layer starts loading tiles.</td>
+	</tr>
+	<tr>
+		<td><code><b>load</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the tile layer loaded all visible tiles.</td>
+	</tr>
+	<tr>
+		<td><code><b>tileload</b></code></td>
+		<td><code><a href="#tile-event">Event</a></code>
+		<td>Fired when a tile loads.</td>
+	</tr>
+	<tr>
+		<td><code><b>tileunload</b></code></td>
+		<td><code><a href="#tile-event">Event</a></code>
+		<td>Fired when a tile is removed (e.g. when you have <code>unloadInvisibleTiles</code> on).</td>
+	</tr>
+</table>
+
 <h3>Methods</h3>
 
 <table>
@@ -1824,6 +1856,16 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the opacity of the overlay.</td>
 	</tr>
+	<tr>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the layer to the top of all overlays.</td>
+	</tr>
+	<tr>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the layer to the bottom of all overlays.</td>
+	</tr>
 </table>
 
 
@@ -1879,6 +1921,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code>Number</code></td>
 		<td><code><span class="number">0.2</span></code></td>
 		<td>Fill opacity.</td>
+	</tr>
+	<tr>
+		<td><code><b>dashArray</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>A string that defines the stroke <a href="https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on canvas-powered layers (e.g. Android 2).</td>
 	</tr>
 	<tr>
 		<td><code><b>clickable</b></code></td>
@@ -3986,6 +4034,26 @@ map.off('click', onClick);</code></pre>
 	</tr>
 </table>
 
+<h3 id="tile-event">TileEvent</h3>
+
+<table>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>tile</b></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>The tile element (image).</td>
+	</tr>
+	<tr>
+		<td><code><b>url</b></code></td>
+		<td><code>String</code></td>
+		<td>The source URL of the tile.</td>
+	</tr>
+</table>
+
 <h3 id="geojson-event">GeoJSON event</h3>
 
 <table>
@@ -4782,6 +4850,241 @@ L.map('map');</code></pre>
 		<td>Vendor-prefixed transform style name.</td>
 	</tr>
 </table>
+
+
+
+<h2 id="transition">L.Transition</h2>
+
+<p>Used internally for most animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.</p>
+
+<pre><code class="javascript">var fx = new L.Transition(el, {duration: 0.5});
+
+fx.run({left: '300px', top: '500px'});</code></pre>
+
+<h3>Constructor</h3>
+
+<table>
+	<tr>
+		<th class="width200">Constructor</th>
+		<th>Usage</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.Transition</b>(
+			<nobr>&lt;HTMLElement&gt; <i>element</i>,</nobr>
+			<nobr>&lt;<a href="#transition-options">Transition options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
+		<td class="factory-usage">
+			<code><span class='keyword'>new</span> L.Transition(<span class="comment">&hellip;</span>)</code><!--<br />
+			<code>L.transition(<span class="comment">&hellip;</span>)</code>-->
+		</td>
+
+		<td>Creates a Transition object tied to a particular element with the given options.</td>
+	</tr>
+</table>
+
+<h3 id="transition-options">Options</h3>
+
+<table>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>duration</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">0.5</span></code></td>
+		<td>Duration of the animation in seconds.</td>
+	</tr>
+	<tr>
+		<td><code><b>easing</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'ease'</span></code></td>
+		<td>One of the <a href="https://developer.mozilla.org/en/CSS/timing-function">timing functions</a> for the animation.</td>
+	</tr>
+	<tr>
+		<td><code><b>fps</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">50</span></code></td>
+		<td>Frames per second for the timer fallback (IE6-9).</td>
+	</tr>
+	<tr>
+		<td><code><b>fakeStepInterval</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">100</span></code></td>
+		<td>How often to fire the <code>step</code> event during transition with a timer (as native transitions don't support such events).</td>
+	</tr>
+</table>
+
+<h3>Events</h3>
+
+<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+
+<table>
+	<tr>
+		<th class="width100">Event</th>
+		<th class="width100">Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>start</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the animation starts.</td>
+	</tr>
+	<tr>
+		<td><code><b>step</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired continuously during the animation.</td>
+	</tr>
+	<tr>
+		<td><code><b>end</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the animation ends.</td>
+	</tr>
+</table>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>run</b>(
+			<nobr>&lt;Object&gt; <i><a href="#transition-properties">properties</a></i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Run the animation with the given set of properties and their end values.</td>
+	</tr>
+</table>
+
+<h3 id="transition-properties">Transition Properties</h3>
+
+<p>An object literal of the following form:</p>
+
+<pre><code>{
+	'&lt;style-property-1&gt;': '&lt;value-1&gt;',
+	'&lt;style-property-2&gt;': '&lt;value-2&gt;'
+	// ...
+}</code></pre>
+
+
+
+
+<h2 id="draggable">L.Draggable</h2>
+
+<p>A class for making DOM elements draggable (including touch support). Used internally for map and marker dragging.</p>
+
+<pre><code class="javascript">var draggable = new L.Draggable(elementToDrag);
+draggable.enable();
+</code></pre>
+
+<h3>Constructor</h3>
+
+<table>
+	<tr>
+		<th class="width200">Constructor</th>
+		<th>Usage</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.Draggable</b>(
+			<nobr>&lt;HTMLElement&gt; <i>element</i>,</nobr>
+			<nobr>&lt;HTMLElement&gt; <i>dragHandle?</i> )</nobr>
+		</code></td>
+
+		<td class="factory-usage">
+			<code><span class='keyword'>new</span> L.Draggable(<span class="comment">&hellip;</span>)</code><!--<br />
+			<code>L.draggable(<span class="comment">&hellip;</span>)</code>-->
+		</td>
+
+		<td>Creates a Draggable object for moving the given element when you start dragging the <code>dragHandle</code> element (equals the element itself by default).</td>
+	</tr>
+</table>
+
+<h3>Events</h3>
+
+<p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
+
+<table>
+	<tr>
+		<th class="width100">Event</th>
+		<th class="width100">Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>dragstart</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the dragging starts.</td>
+	</tr>
+	<tr>
+		<td><code><b>predrag</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired continuously during dragging <em>before</em> each corresponding update of the element position.</td>
+	</tr>
+	<tr>
+		<td><code><b>drag</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired continuously during dragging.</td>
+	</tr>
+	<tr>
+		<td><code><b>dragend</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the dragging ends.</td>
+	</tr>
+</table>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<th class="width100">Method</th>
+		<th class="width100">Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>enable</b>()</code></td>
+		<td><code>-</code></td>
+		<td>Enables the dragging ability.</td>
+	</tr>
+	<tr>
+		<td><code><b>disable</b>()</code></td>
+		<td><code>-</code></td>
+		<td>Disables the dragging ability.</td>
+	</tr>
+</table>
+
+<h3>Static Properties</h3>
+
+<table>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>START</b></code></td>
+		<td><code>String</code></td>
+		<td>Name of the DOM event that initiates dragging. <code><span class="string">'mousedown'</span></code> for desktop browsers, <code><span class="string">'touchstart'</span></code> for mobile devices.</td>
+	</tr>
+	<tr>
+		<td><code><b>MOVE</b></code></td>
+		<td><code>String</code></td>
+		<td>Name of the DOM event for drag moving. <code><span class="string">'mousemove'</span></code> for desktop browsers, <code><span class="string">'touchmove'</span></code> for mobile devices.</td>
+	</tr>
+	<tr>
+		<td><code><b>END</b></code></td>
+		<td><code>String</code></td>
+		<td>Name of the DOM event that ends dragging. <code><span class="string">'mouseup'</span></code> for desktop browsers, <code><span class="string">'touchend'</span></code> for mobile devices.</td>
+	</tr>
+</table>
+
 
 
 <h2 id="ihandler">IHandler</h2>
