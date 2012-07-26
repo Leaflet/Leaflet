@@ -45,6 +45,15 @@ title: Using GeoJSON with Leaflet
 
 		onEachFeature: onEachFeature,
 
+		filter: function (feature, layer) {
+			if (feature.properties) {
+				// If the property "underConstruction" exists and is true, return false (don't render features under construction)
+				return feature.properties.underConstruction !== undefined ? !feature.properties.underConstruction : true;
+			} else {
+				return true;
+			}
+		},
+
 		pointToLayer: function (feature, latlng) {
 			return L.circleMarker(latlng, {
 				radius: 8,
