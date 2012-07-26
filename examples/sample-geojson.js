@@ -12,12 +12,6 @@ var freeBus = {
             },
             "properties": {
                 "name": "16th Street Free Bus",
-                "style": {
-                    color: "#004070",
-                    weight: 4,
-                    opacity: 0.9
-                },
-                "popupContent": "This is the 16th street free bus in Denver, a good way to cross town.",
                 "underConstruction": false
             },
             "id": 1
@@ -33,15 +27,9 @@ var freeBus = {
             },
             "properties": {
                 "name": "16th Street Free Bus",
-                "style": {
-                    color: "#ff7800",
-                    weight: 4,
-                    opacity: 0.9
-                },
-                "popupContent": "This is the 16th street free bus in Denver, a good way to cross town.",
                 "underConstruction": true
             },
-            "id": 1
+            "id": 2
         },
         {
             "type": "Feature",
@@ -54,15 +42,9 @@ var freeBus = {
             },
             "properties": {
                 "name": "16th Street Free Bus",
-                "style": {
-                    color: "#004070",
-                    weight: 4,
-                    opacity: 0.9
-                },
-                "popupContent": "This is the 16th street free bus in Denver, a good way to cross town.",
                 "underConstruction": false
             },
-            "id": 1
+            "id": 3
         }
     ]
 };
