@@ -3528,10 +3528,15 @@ L.Path = L.Class.extend({
 	onAdd: function (map) {
 		this._map = map;
 
-		this._initElements();
-		this._initEvents();
+		if (!this._container) {
+			this._initElements();
+			this._initEvents();
+		}
+
 		this.projectLatlngs();
 		this._updatePath();
+
+		this._map._pathRoot.appendChild(this._container);
 
 		map.on({
 			'viewreset': this.projectLatlngs,
@@ -3545,9 +3550,15 @@ L.Path = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		map._pathRoot.removeChild(this._container);
+
 		this._map = null;
 
-		map._pathRoot.removeChild(this._container);
+		if (L.Browser.vml) {
+			this._container = null;
+			this._stroke = null;
+			this._fill = null;
+		}
 
 		map.off({
 			'viewreset': this.projectLatlngs,
@@ -3632,8 +3643,6 @@ L.Path = L.Path.extend({
 
 		this._path = this._createElement('path');
 		this._container.appendChild(this._path);
-
-		this._map._pathRoot.appendChild(this._container);
 	},
 
 	_initStyle: function () {
@@ -3705,7 +3714,7 @@ L.Path = L.Path.extend({
 		if (!this.hasEventListeners(e.type)) {
 			return;
 		}
-		
+
 		if (e.type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}

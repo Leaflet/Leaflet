@@ -39,8 +39,6 @@ L.Path = L.Path.extend({
 
 		this._path = this._createElement('path');
 		this._container.appendChild(this._path);
-
-		this._map._pathRoot.appendChild(this._container);
 	},
 
 	_initStyle: function () {
@@ -112,7 +110,7 @@ L.Path = L.Path.extend({
 		if (!this.hasEventListeners(e.type)) {
 			return;
 		}
-		
+
 		if (e.type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
