@@ -3379,7 +3379,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	clearLayers: function () {
-		this._iterateLayers(this.removeLayer, this);
+		this.eachLayer(this.removeLayer, this);
 		return this;
 	},
 
@@ -3402,11 +3402,11 @@ L.LayerGroup = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._iterateLayers(map.addLayer, map);
+		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
-		this._iterateLayers(map.removeLayer, map);
+		this.eachLayer(map.removeLayer, map);
 		this._map = null;
 	},
 
@@ -3415,7 +3415,7 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
-	_iterateLayers: function (method, context) {
+	eachLayer: function (method, context) {
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {
 				method.call(context, this._layers[i]);
@@ -3428,6 +3428,7 @@ L.layerGroup = function (layers) {
 	return new L.LayerGroup(layers);
 };
 
+
 /*
  * L.FeatureGroup extends L.LayerGroup by introducing mouse events and bindPopup method shared between a group of layers.
  */
@@ -3439,7 +3440,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		if (this._layers[L.Util.stamp(layer)]) {
 			return this;
 		}
-		
+
 		layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
@@ -3470,7 +3471,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
-		this._iterateLayers(function (layer) {
+		this.eachLayer(function (layer) {
 			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
 		}, this);
 		return bounds;
@@ -3487,6 +3488,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 L.featureGroup = function (layers) {
 	return new L.FeatureGroup(layers);
 };
+
 
 /*
  * L.Path is a base class for rendering vector paths on a map. It's inherited by Polyline, Circle, etc.
@@ -4674,7 +4676,7 @@ L.polygon = function (latlngs, options) {
 			setLatLngs: function (latlngs) {
 				var i = 0, len = latlngs.length;
 
-				this._iterateLayers(function (layer) {
+				this.eachLayer(function (layer) {
 					if (i < len) {
 						layer.setLatLngs(latlngs[i++]);
 					} else {
@@ -6104,10 +6106,10 @@ L.Handler.PolyEdit = L.Handler.extend({
 		if (this._poly._latlngs.length < 3) {
 			return;
 		}
-		
+
 		var marker = e.target,
 		    i = marker._index;
-		
+
 		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
 		if (marker._prev && marker._next) {
 			this._createMiddleMarker(marker._prev, marker._next);
@@ -6130,7 +6132,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_updateIndexes: function (index, delta) {
-		this._markerGroup._iterateLayers(function (marker) {
+		this._markerGroup.eachLayer(function (marker) {
 			if (marker._index > index) {
 				marker._index += delta;
 			}
