@@ -306,6 +306,9 @@ a.nodocs {
 	border: 1px solid #ccc;
 	margin: 1.5em 0;
 }
+.container .map:focus {
+	border-color: #999;
+}
 
 #map {
 	height: 320px;
