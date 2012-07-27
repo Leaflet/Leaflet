@@ -4,6 +4,7 @@ L.Control.Scale = L.Control.extend({
 		maxWidth: 100,
 		metric: true,
 		imperial: true,
+		nautical: false,
 		updateWhenIdle: false
 	},
 
@@ -19,6 +20,9 @@ L.Control.Scale = L.Control.extend({
 		}
 		if (options.imperial) {
 			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
+		if (options.nautical) {
+			this._nScale = L.DomUtil.create('div', className + '-line', container);
 		}
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
@@ -52,6 +56,10 @@ L.Control.Scale = L.Control.extend({
 		if (options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
+
+		if (options.nautical && maxMeters) {
+			this._updateNautical(maxMeters);
+		}
 	},
 
 	_updateMetric: function (maxMeters) {
@@ -81,6 +89,21 @@ L.Control.Scale = L.Control.extend({
 		}
 	},
 
+	_updateNautical: function (maxMeters) {
+		var maxNauticalMiles = maxMeters / 1852,
+			scale = this._nScale,
+			nauticalMiles;
+
+		if (maxNauticalMiles >= 1) {
+			nauticalMiles = this._getRoundNum(maxNauticalMiles);
+		} else {
+			nauticalMiles = this._getRoundNumDecimal(maxNauticalMiles);
+		}
+
+		scale.style.width = this._getScaleWidth(nauticalMiles / maxNauticalMiles) + 'px';
+		scale.innerHTML = nauticalMiles + ' nm';
+	},
+
 	_getScaleWidth: function (ratio) {
 		return Math.round(this.options.maxWidth * ratio) - 10;
 	},
@@ -92,6 +115,14 @@ L.Control.Scale = L.Control.extend({
 		d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1;
 
 		return pow10 * d;
+	},
+
+	_getRoundNumDecimal: function (num) {
+		if(num > 0.1) {
+			return Math.round(num * 10) / 10;
+		} else {
+			return Math.round(num * 100) / 100;
+		}
 	}
 });
 
