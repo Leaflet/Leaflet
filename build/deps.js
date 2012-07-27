@@ -180,6 +180,11 @@ var deps = {
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
 
+	Keyboard: {
+		src: ['map/handler/Map.Keyboard.js'],
+		desc: 'Enables keyboard pan/zoom when the map is focused.'
+	},
+
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
 		deps: ['Marker'],

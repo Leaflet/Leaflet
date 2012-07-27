@@ -18,6 +18,7 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
 ### Notable new features
 
  * Added configurable **panning inertia** - after a quick pan, the map slows down in the same direction.
+ * Added **keyboard navigation** for panning/zooming with keyboard arrows and +/- keys (by [@ericmmartinez](https://github.com/ericmmartinez)). [#663](https://github.com/CloudMade/Leaflet/pull/663) [#646](https://github.com/CloudMade/Leaflet/issues/646)
  * Added **polyline and polygon editing**. [#174](https://github.com/CloudMade/Leaflet/issues/174)
  * Added an unobtrusive **scale control**.
  * Added **DivIcon** class that easily allows you to create lightweight div-based markers.
