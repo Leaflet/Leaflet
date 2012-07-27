@@ -6731,7 +6731,7 @@ L.Control.Layers = L.Control.extend({
 			overlay: overlay
 		};
 
-		if (this.options.autoZIndex) {
+		if (this.options.autoZIndex && layer.setZIndex) {
 			this._lastZIndex++;
 			layer.setZIndex(this._lastZIndex);
 		}
