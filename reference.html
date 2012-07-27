@@ -277,6 +277,35 @@ var map = L.map('map', {
 	</tr>
 </table>
 
+<h4>Keyboard Navigation Options</h4>
+
+<table>
+	<tr>
+		<th class="width140">Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>keyboard</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>Makes the map focusable and allows users to navigate the map with keyboard arrows and <code>+</code>/<code>-</code> keys.</td>
+	</tr>
+	<tr>
+		<td><code><b>keyboardPanOffset</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">80</span></code></td>
+		<td>Amount of pixels to pan when pressing an arrow key.</td>
+	</tr>
+	<tr>
+		<td><code><b>keyboardZoomOffset</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">1</span></code></td>
+		<td>Number of zoom levels to change when pressing <code>+</code> or <code>-</code> key.</td>
+	</tr>
+</table>
+
 <h4>Panning Inertia Options</h4>
 
 <table>
@@ -935,6 +964,11 @@ var map = L.map('map', {
 		<td><code><b>boxZoom</b></code></td>
 		<td><a href="#ihandler"><code>IHandler</code></a></td>
 		<td>Box (shift-drag with mouse) zoom handler.</td>
+	</tr>
+	<tr>
+		<td><code><b>keyboard</b></code></td>
+		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td>Keyboard navigation handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomControl</b></code></td>
