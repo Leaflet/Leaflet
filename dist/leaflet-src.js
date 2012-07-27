@@ -466,6 +466,16 @@ L.Point.prototype = {
 		return this;
 	},
 
+	floor: function () {
+		return this.clone()._floor();
+	},
+
+	_floor: function () {
+		this.x = Math.floor(this.x);
+		this.y = Math.floor(this.y);
+		return this;
+	},
+
 	clone: function () {
 		return new L.Point(this.x, this.y);
 	},
@@ -1256,7 +1266,7 @@ L.Map = L.Class.extend({
 		return this.panBy(new L.Point(dx, dy, true));
 	},
 
-	addLayer: function (layer, insertAtTheBottom) {
+	addLayer: function (layer) {
 		// TODO method is too big, refactor
 
 		var id = L.Util.stamp(layer);
@@ -1281,7 +1291,7 @@ L.Map = L.Class.extend({
 		}
 
 		var onMapLoad = function () {
-			layer.onAdd(this, insertAtTheBottom);
+			layer.onAdd(this);
 			this.fire('layeradd', {layer: layer});
 		};
 
@@ -1858,17 +1868,19 @@ L.TileLayer = L.Class.extend({
 		subdomains: 'abc',
 		errorTileUrl: '',
 		attribution: '',
+		zoomOffset: 0,
 		opacity: 1,
+		/* (undefined works too)
+		zIndex: null,
 		tms: false,
 		continuousWorld: false,
 		noWrap: false,
-		zoomOffset: 0,
 		zoomReverse: false,
 		detectRetina: false,
-
+		reuseTiles: false,
+		*/
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: false
+		updateWhenIdle: L.Browser.mobile
 	},
 
 	initialize: function (url, options) {
@@ -1895,9 +1907,8 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	onAdd: function (map, insertAtTheBottom) {
+	onAdd: function (map) {
 		this._map = map;
-		this._insertAtTheBottom = insertAtTheBottom;
 
 		// create a container div for tiles
 		this._initContainer();
@@ -1942,17 +1953,24 @@ L.TileLayer = L.Class.extend({
 	},
 
 	bringToFront: function () {
+		var pane = this._map._panes.tilePane;
+
 		if (this._container) {
-			this._map._panes.tilePane.appendChild(this._container);
+			pane.appendChild(this._container);
+			this._setAutoZIndex(pane, Math.max);
 		}
+
 		return this;
 	},
 
 	bringToBack: function () {
 		var pane = this._map._panes.tilePane;
+
 		if (this._container) {
 			pane.insertBefore(this._container, pane.firstChild);
+			this._setAutoZIndex(pane, Math.min);
 		}
+
 		return this;
 	},
 
@@ -1966,6 +1984,13 @@ L.TileLayer = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+
+		return this;
+	},
+
+	setZIndex: function (zIndex) {
+		this.options.zIndex = zIndex;
+		this._updateZIndex();
 
 		return this;
 	},
@@ -1989,6 +2014,32 @@ L.TileLayer = L.Class.extend({
 		return this;
 	},
 
+	_updateZIndex: function () {
+		if (this._container && this.options.zIndex !== undefined) {
+			this._container.style.zIndex = this.options.zIndex;
+		}
+	},
+
+	_setAutoZIndex: function (pane, compare) {
+
+		var layers = pane.getElementsByClassName('leaflet-layer'),
+			edgeZIndex = -compare(Infinity, -Infinity), // -Ifinity for max, Infinity for min
+			zIndex;
+
+		for (var i = 0, len = layers.length; i < len; i++) {
+
+			if (layers[i] !== this._container) {
+				zIndex = parseInt(layers[i].style.zIndex, 10);
+
+				if (!isNaN(zIndex)) {
+					edgeZIndex = compare(edgeZIndex, zIndex);
+				}
+			}
+		}
+
+		this._container.style.zIndex = isFinite(edgeZIndex) ? edgeZIndex + compare(1, -1) : '';
+	},
+
 	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
@@ -2006,17 +2057,14 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_initContainer: function () {
-		var tilePane = this._map._panes.tilePane,
-			first = tilePane.firstChild;
+		var tilePane = this._map._panes.tilePane;
 
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
 
-			if (this._insertAtTheBottom && first) {
-				tilePane.insertBefore(this._container, first);
-			} else {
-				tilePane.appendChild(this._container);
-			}
+			this._updateZIndex();
+
+			tilePane.appendChild(this._container);
 
 			if (this.options.opacity < 1) {
 				this._updateOpacity();
@@ -2330,7 +2378,7 @@ L.tileLayer = function (url, options) {
 
 
 L.TileLayer.WMS = L.TileLayer.extend({
-	
+
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
@@ -2365,20 +2413,20 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	onAdd: function (map, insertAtTheBottom) {
+	onAdd: function (map) {
 
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		this.wmsParams[projectionKey] = map.options.crs.code;
 
-		L.TileLayer.prototype.onAdd.call(this, map, insertAtTheBottom);
+		L.TileLayer.prototype.onAdd.call(this, map);
 	},
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
-		
+
 		var map = this._map,
 			crs = map.options.crs,
 			tileSize = this.options.tileSize,
-			
+
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
@@ -2395,7 +2443,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	setParams: function (params, noRedraw) {
 
 		L.Util.extend(this.wmsParams, params);
-		
+
 		if (!noRedraw) {
 			this.redraw();
 		}
@@ -2407,6 +2455,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 L.tileLayer.wms = function (url, options) {
 	return new L.TileLayer(url, options);
 };
+
 
 L.TileLayer.Canvas = L.TileLayer.extend({
 	options: {
@@ -6341,7 +6390,9 @@ L.Control.Zoom = L.Control.extend({
 		L.DomEvent
 			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
-			.on(link, 'click', fn, context);
+			.on(link, 'click', fn, context)
+			.on(link, 'dblclick', L.DomEvent.stopPropagation)
+			.on(link, 'dblclick', L.DomEvent.preventDefault);
 
 		return link;
 	}
@@ -6578,13 +6629,15 @@ L.control.scale = function (options) {
 L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
-		position: 'topright'
+		position: 'topright',
+		autoZIndex: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 
 		this._layers = {};
+		this._lastZIndex = 0;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -6671,11 +6724,17 @@ L.Control.Layers = L.Control.extend({
 
 	_addLayer: function (layer, name, overlay) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = {
 			layer: layer,
 			name: name,
 			overlay: overlay
 		};
+
+		if (this.options.autoZIndex) {
+			this._lastZIndex++;
+			layer.setZIndex(this._lastZIndex);
+		}
 	},
 
 	_update: function () {
@@ -7079,7 +7138,7 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 	_panByIfClose: function (center) {
 		// difference between the new and current centers in pixels
-		var offset = this._getCenterOffset(center);
+		var offset = this._getCenterOffset(center)._floor();
 
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);

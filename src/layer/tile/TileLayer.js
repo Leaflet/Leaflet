@@ -12,18 +12,19 @@ L.TileLayer = L.Class.extend({
 		subdomains: 'abc',
 		errorTileUrl: '',
 		attribution: '',
-		zIndex: 0,
+		zoomOffset: 0,
 		opacity: 1,
+		/* (undefined works too)
+		zIndex: null,
 		tms: false,
 		continuousWorld: false,
 		noWrap: false,
-		zoomOffset: 0,
 		zoomReverse: false,
 		detectRetina: false,
-
+		reuseTiles: false,
+		*/
 		unloadInvisibleTiles: L.Browser.mobile,
-		updateWhenIdle: L.Browser.mobile,
-		reuseTiles: false
+		updateWhenIdle: L.Browser.mobile
 	},
 
 	initialize: function (url, options) {
@@ -50,9 +51,8 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	onAdd: function (map, insertAtTheBottom) {
+	onAdd: function (map) {
 		this._map = map;
-		this._insertAtTheBottom = insertAtTheBottom;
 
 		// create a container div for tiles
 		this._initContainer();
@@ -97,17 +97,24 @@ L.TileLayer = L.Class.extend({
 	},
 
 	bringToFront: function () {
+		var pane = this._map._panes.tilePane;
+
 		if (this._container) {
-			this._map._panes.tilePane.appendChild(this._container);
+			pane.appendChild(this._container);
+			this._setAutoZIndex(pane, Math.max);
 		}
+
 		return this;
 	},
 
 	bringToBack: function () {
 		var pane = this._map._panes.tilePane;
+
 		if (this._container) {
 			pane.insertBefore(this._container, pane.firstChild);
+			this._setAutoZIndex(pane, Math.min);
 		}
+
 		return this;
 	},
 
@@ -152,9 +159,29 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_updateZIndex: function () {
-		if (this._container) {
+		if (this._container && this.options.zIndex !== undefined) {
 			this._container.style.zIndex = this.options.zIndex;
 		}
+	},
+
+	_setAutoZIndex: function (pane, compare) {
+
+		var layers = pane.getElementsByClassName('leaflet-layer'),
+			edgeZIndex = -compare(Infinity, -Infinity), // -Ifinity for max, Infinity for min
+			zIndex;
+
+		for (var i = 0, len = layers.length; i < len; i++) {
+
+			if (layers[i] !== this._container) {
+				zIndex = parseInt(layers[i].style.zIndex, 10);
+
+				if (!isNaN(zIndex)) {
+					edgeZIndex = compare(edgeZIndex, zIndex);
+				}
+			}
+		}
+
+		this._container.style.zIndex = isFinite(edgeZIndex) ? edgeZIndex + compare(1, -1) : '';
 	},
 
 	_updateOpacity: function () {
@@ -174,19 +201,14 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_initContainer: function () {
-		var tilePane = this._map._panes.tilePane,
-			first = tilePane.firstChild;
+		var tilePane = this._map._panes.tilePane;
 
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
 
 			this._updateZIndex();
 
-			if (this._insertAtTheBottom && first) {
-				tilePane.insertBefore(this._container, first);
-			} else {
-				tilePane.appendChild(this._container);
-			}
+			tilePane.appendChild(this._container);
 
 			if (this.options.opacity < 1) {
 				this._updateOpacity();

@@ -2,13 +2,15 @@
 L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
-		position: 'topright'
+		position: 'topright',
+		autoZIndex: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 
 		this._layers = {};
+		this._lastZIndex = 0;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -95,11 +97,17 @@ L.Control.Layers = L.Control.extend({
 
 	_addLayer: function (layer, name, overlay) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = {
 			layer: layer,
 			name: name,
 			overlay: overlay
 		};
+
+		if (this.options.autoZIndex && layer.setZIndex) {
+			this._lastZIndex++;
+			layer.setZIndex(this._lastZIndex);
+		}
 	},
 
 	_update: function () {
