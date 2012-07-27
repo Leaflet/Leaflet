@@ -5772,12 +5772,14 @@ L.Util.extend(L.DomEvent, {
 
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
+		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
 		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);
 		obj.removeEventListener(obj, obj[pre + 'touchend' + id], false);
+		return this;
 	}
 });
 
@@ -6391,8 +6393,7 @@ L.Control.Zoom = L.Control.extend({
 			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
 			.on(link, 'click', fn, context)
-			.on(link, 'dblclick', L.DomEvent.stopPropagation)
-			.on(link, 'dblclick', L.DomEvent.preventDefault);
+			.on(link, 'dblclick', L.DomEvent.stopPropagation);
 
 		return link;
 	}
