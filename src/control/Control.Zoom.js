@@ -22,8 +22,7 @@ L.Control.Zoom = L.Control.extend({
 			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
 			.on(link, 'click', fn, context)
-			.on(link, 'dblclick', L.DomEvent.stopPropagation)
-			.on(link, 'dblclick', L.DomEvent.preventDefault);
+			.on(link, 'dblclick', L.DomEvent.stopPropagation);
 
 		return link;
 	}
