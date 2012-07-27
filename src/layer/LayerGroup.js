@@ -40,7 +40,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	clearLayers: function () {
-		this._iterateLayers(this.removeLayer, this);
+		this.eachLayer(this.removeLayer, this);
 		return this;
 	},
 
@@ -63,11 +63,11 @@ L.LayerGroup = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._iterateLayers(map.addLayer, map);
+		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
-		this._iterateLayers(map.removeLayer, map);
+		this.eachLayer(map.removeLayer, map);
 		this._map = null;
 	},
 
@@ -76,7 +76,7 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
-	_iterateLayers: function (method, context) {
+	eachLayer: function (method, context) {
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {
 				method.call(context, this._layers[i]);

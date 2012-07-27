@@ -57,6 +57,16 @@ L.Point.prototype = {
 		return this;
 	},
 
+	floor: function () {
+		return this.clone()._floor();
+	},
+
+	_floor: function () {
+		this.x = Math.floor(this.x);
+		this.y = Math.floor(this.y);
+		return this;
+	},
+
 	clone: function () {
 		return new L.Point(this.x, this.y);
 	},

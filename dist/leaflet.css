@@ -11,7 +11,8 @@
 .leaflet-popup-pane,
 .leaflet-overlay-pane svg,
 .leaflet-zoom-box,
-.leaflet-image-layer { /* TODO optimize classes */
+.leaflet-image-layer,
+.leaflet-layer { /* TODO optimize classes */
 	position: absolute;
 	}
 .leaflet-container {
@@ -68,10 +69,13 @@
 .leaflet-control {
 	position: relative;
 	z-index: 7;
+	pointer-events: auto;
 	}
 .leaflet-top,
 .leaflet-bottom {
 	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
 	}
 .leaflet-top {
 	top: 0;

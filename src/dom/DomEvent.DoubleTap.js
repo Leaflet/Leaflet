@@ -33,11 +33,13 @@ L.Util.extend(L.DomEvent, {
 
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
+		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
 		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);
 		obj.removeEventListener(obj, obj[pre + 'touchend' + id], false);
+		return this;
 	}
 });

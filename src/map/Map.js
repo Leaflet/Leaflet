@@ -138,7 +138,7 @@ L.Map = L.Class.extend({
 		return this.panBy(new L.Point(dx, dy, true));
 	},
 
-	addLayer: function (layer, insertAtTheBottom) {
+	addLayer: function (layer) {
 		// TODO method is too big, refactor
 
 		var id = L.Util.stamp(layer);
@@ -163,7 +163,7 @@ L.Map = L.Class.extend({
 		}
 
 		var onMapLoad = function () {
-			layer.onAdd(this, insertAtTheBottom);
+			layer.onAdd(this);
 			this.fire('layeradd', {layer: layer});
 		};
 
