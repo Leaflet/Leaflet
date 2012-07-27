@@ -12,6 +12,7 @@ L.TileLayer = L.Class.extend({
 		subdomains: 'abc',
 		errorTileUrl: '',
 		attribution: '',
+		zIndex: 0,
 		opacity: 1,
 		tms: false,
 		continuousWorld: false,
@@ -124,6 +125,13 @@ L.TileLayer = L.Class.extend({
 		return this;
 	},
 
+	setZIndex: function (zIndex) {
+		this.options.zIndex = zIndex;
+		this._updateZIndex();
+
+		return this;
+	},
+
 	setUrl: function (url, noRedraw) {
 		this._url = url;
 
@@ -141,6 +149,12 @@ L.TileLayer = L.Class.extend({
 			this._update();
 		}
 		return this;
+	},
+
+	_updateZIndex: function () {
+		if (this._container) {
+			this._container.style.zIndex = this.options.zIndex;
+		}
 	},
 
 	_updateOpacity: function () {
@@ -165,6 +179,8 @@ L.TileLayer = L.Class.extend({
 
 		if (!this._container || tilePane.empty) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
+
+			this._updateZIndex();
 
 			if (this._insertAtTheBottom && first) {
 				tilePane.insertBefore(this._container, first);
