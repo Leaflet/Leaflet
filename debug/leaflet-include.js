@@ -51,6 +51,7 @@
 		'map/handler/Map.DoubleClickZoom.js',
 		'map/handler/Map.ScrollWheelZoom.js',
 		'map/handler/Map.BoxZoom.js',
+		'map/handler/Map.Keyboard.js',
 
 		'layer/LayerGroup.js',
 		'layer/FeatureGroup.js',
