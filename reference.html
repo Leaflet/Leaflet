@@ -1495,6 +1495,12 @@ var map = L.map('map', {
 		<td>The opacity of the tile layer.</td>
 	</tr>
 	<tr>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>The explicit zIndex of the tile layer. Not set by default.</td>
+	</tr>
+	<tr>
 		<td><code><b>unloadInvisibleTiles</b></code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
@@ -1585,6 +1591,14 @@ var map = L.map('map', {
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Changes the opacity of the tile layer.</td>
+	</tr>
+	<tr>
+		<td><code><b>setZIndex</b>(
+			<nobr>&lt;Number&gt; <i>zIndex</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Sets the zIndex of the tile layer.</td>
 	</tr>
 	<tr>
 		<td><code><b>redraw</b>()</code></td>
@@ -3720,6 +3734,12 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
 		<td>If <code><span class="literal">true</span></code>, the control will be collapsed into an icon and expanded on mouse hover or touch.</td>
+	</tr>
+	<tr>
+		<td><code><b>autoZIndex</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>If <code><span class="literal">true</span></code>, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.</td>
 	</tr>
 </table>
 
