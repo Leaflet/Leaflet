@@ -19,17 +19,17 @@ Leaflet 0.4 contains several API improvements that allow simpler, jQuery-like sy
 
  * Added configurable **panning inertia** - after a quick pan, the map slows down in the same direction.
  * Added **keyboard navigation** for panning/zooming with keyboard arrows and +/- keys (by [@ericmmartinez](https://github.com/ericmmartinez)). [#663](https://github.com/CloudMade/Leaflet/pull/663) [#646](https://github.com/CloudMade/Leaflet/issues/646)
+ * Added smooth **zoom animation of markers, vector layers, image overlays and popups** (by [@danzel](https://github.com/danzel)). [#740](https://github.com/CloudMade/Leaflet/pull/740) [#758](https://github.com/CloudMade/Leaflet/issues/758)
+ * Added **Android 4+ pinch-zoom** support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
  * Added **polyline and polygon editing**. [#174](https://github.com/CloudMade/Leaflet/issues/174)
  * Added an unobtrusive **scale control**.
  * Added **DivIcon** class that easily allows you to create lightweight div-based markers.
  * Added **Rectangle** vector layer (by [@JasonSanford](https://github.com/JasonSanford)). [#504](https://github.com/CloudMade/Leaflet/pull/504)
- * Added **Android 4+ pinch-zoom** support (by [@danzel](https://github.com/danzel)). [#774](https://github.com/CloudMade/Leaflet/pull/774)
 
 ### Improvements
 
 #### Usability improvements
 
- * Added smooth **zoom animation of markers, vector layers, image overlays and popups** (by [@danzel](https://github.com/danzel)). [#740](https://github.com/CloudMade/Leaflet/pull/740) [#758](https://github.com/CloudMade/Leaflet/issues/758)
  * Improved zooming so that you don't get a blank map when you zoom in or out twice quickly (by [@danzel](https://github.com/danzel)). [#7](https://github.com/CloudMade/Leaflet/issues/7) [#729](https://github.com/CloudMade/Leaflet/pull/729)
  * Drag-panning now works even when there are markers in the starting point (helps on maps with lots of markers). [#506](https://github.com/CloudMade/Leaflet/issues/506)
  * Improved panning performance even more (there are no wasted frames now).
@@ -58,11 +58,16 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added `Icon` `shadowAnchor` option to set the anchor of the shadow.
  * Made all `Icon` options except `iconUrl` optional (if not specified, they'll be chosen automatically or implemented using CSS). Anchor is centered by default (if size is specified), and otherwise can be set through CSS using negative margins.
 
+#### Control API changes
+
+ * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
+ * Made controls implementation easier (now more magic happens under the hood).
+ * Replaced ugly control position constants (e.g. `L.Control.Position.TOP_LEFT`) with light strings (`'topleft'`, `'bottomright'`, etc.)
+
 #### Other breaking API changes
 
  * Improved `TileLayer` constructor to interpolate URL template values from options (removed third `urlParams` argument).
  * Changed `TileLayer` `scheme: 'tms'` option to `tms: true`.
- * Replaced ugly control position constants (e.g. `L.Control.Position.TOP_LEFT`) with light strings (`'topleft'`, `'bottomright'`, etc.)
  * Removed `Map` `locateAndSetView` method (use `locate` with `setView: true` option)
  * Changed popup `minWidth` and `maxWidth` options to be applied to content element, not the whole popup.
  * Moved `prefix` argument to `options` in `Control.Attribution` constructor.
@@ -103,8 +108,6 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Added `Map` `containerPointToLatLng` and `latLngToContainerPoint` methods. [#474](https://github.com/CloudMade/Leaflet/issues/474)
  * Added `Map` `addHandler` method.
  * Added `Map` `mouseup` and `autopanstart` events.
- * Added `setPosition` and `getPosition` to all controls, as well as ability to pass certain position as an option when creating a control.
- * Made controls implementation easier (now more magic happens under the hood).
  * Added `LatLngBounds` `pad` method that returns bounds extended by a percentage (by [@jacobtoye](https://github.com/jacobtoye)). [#492](https://github.com/CloudMade/Leaflet/pull/492)
  * Moved dragging cursor styles from JS code to CSS.
 
@@ -120,7 +123,6 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
 
  * Fixed a regression where removeLayer would not remove corresponding attribution. [#488](https://github.com/CloudMade/Leaflet/issues/488)
  * Fixed a bug where popup close button wouldn't work on manually added popups. [#423](https://github.com/CloudMade/Leaflet/issues/423)
- * Fixed a bug where `TileLayer.WMS` wouldn't take `insertAtTheBottom` option into account (by [@bmcbride](https://github.com/bmcbride)). [#478](https://github.com/CloudMade/Leaflet/pull/478)
  * Fixed a bug where marker click event would stop working if you dragged it and then disabled dragging. [#434](https://github.com/CloudMade/Leaflet/issues/434)
  * Fixed a bug where `TileLayer` `setOpacity` wouldn't work when setting it back to 1.
  * Fixed a bug where vector layer `setStyle({stroke: false})` wouldn't remove stroke and the same for fill. [#441](https://github.com/CloudMade/Leaflet/issues/441)
@@ -128,7 +130,6 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Fixed a bug where `TileLayer` `load` event wasn't fired if some tile didn't load (by [@lapinos03](https://github.com/lapinos03) and [@cfis](https://github.com/cfis)) [#682](https://github.com/CloudMade/Leaflet/pull/682)
  * Fixed error when removing `GeoJSON` layer. [#685](https://github.com/CloudMade/Leaflet/issues/685)
  * Fixed error when calling `GeoJSON` `clearLayer` (by [@runderwood](https://github.com/runderwood)). [#617](https://github.com/CloudMade/Leaflet/pull/617)
- * Fixed a bug where polygons/polylines sometimes throwed an error when making them editable manually (by [@cfis](https://github.com/cfis)). [#669](https://github.com/CloudMade/Leaflet/pull/669)
  * Fixed a bug where `Control` `setPosition` wasn't always working correctly (by [@ericmmartinez](https://github.com/ericmmartinez)). [#657](https://github.com/CloudMade/Leaflet/pull/657)
  * Fixed a bug with `Util.bind` sometimes losing arguments (by [@johtso](https://github.com/johtso)). [#588](https://github.com/CloudMade/Leaflet/pull/588)
  * Fixed a bug where `drag` event was sometimes fired after `dragend`. [#555](https://github.com/CloudMade/Leaflet/issues/555)
@@ -142,6 +143,8 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
 #### Browser bugfixes
 
  * Fixed broken zooming on IE10 beta (by [@danzel](https://github.com/danzel)). [#650](https://github.com/CloudMade/Leaflet/issues/650) [#751](https://github.com/CloudMade/Leaflet/pull/751)
+ * Fixed a bug that broke Leaflet for websites that had XHTML content-type header set (by [lars-sh](https://github.com/lars-sh)). [#801](https://github.com/CloudMade/Leaflet/pull/801)
+ * Fixed a bug that caused popups to be empty in IE when passing a DOM node as the content (by [@nrenner](https://github.com/nrenner)). [#472](https://github.com/CloudMade/Leaflet/pull/472)
  * Fixed inability to use scrolled content inside popup due to mouse wheel propagation.
  * Fixed a bug that caused jumping/stuttering of panning animation in some cases.
  * Fixed a bug where popup size was calculated incorrectly in IE.
@@ -150,10 +153,8 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Fixed a bug in IE with disappearing icons when changing opacity (by [@tagliala](https://github.com/tagliala) and [DamonOehlman](https://github.com/DamonOehlman)). [#667](https://github.com/CloudMade/Leaflet/pull/667) [#600](https://github.com/CloudMade/Leaflet/pull/600)
  * Fixed a bug with setting opacity on IE10 (by [@danzel](https://github.com/danzel)). [796](https://github.com/CloudMade/Leaflet/pull/796)
  * Fixed a bug where `Control.Layers` didn't work on IE7. [#652](https://github.com/CloudMade/Leaflet/issues/652)
- * Fixed a bug that caused popups to be empty in IE when passing a DOM node as the content (by [@nrenner](https://github.com/nrenner)). [#472](https://github.com/CloudMade/Leaflet/pull/472)
  * Fixed a bug that could cause false `mousemove` events on click in Chrome (by [@stsydow](https://github.com/stsydow)). [#757](https://github.com/CloudMade/Leaflet/pull/757)
  * Fixed a bug in IE6-8 where adding fill or stroke on vector layers after initialization with `setStyle` would break the map. [#641](https://github.com/CloudMade/Leaflet/issues/641)
- * Fixed a bug that broke Leaflet for websites that had XHTML content-type header set (by [lars-sh](https://github.com/lars-sh)). [#801](https://github.com/CloudMade/Leaflet/pull/801)
  * Fixed a bug with setOpacity in IE where it would not work correctly if used more than once on the same element (by [@ajbeaven](https://github.com/ajbeaven)). [#827](https://github.com/CloudMade/Leaflet/pull/827)
  * Fixed a bug in Chrome where transparent control corners sometimes couldn't be clicked through (by [@danzel](https://github.com/danzel)). [#836](https://github.com/CloudMade/Leaflet/pull/836) [#575](https://github.com/CloudMade/Leaflet/issues/575)
 
