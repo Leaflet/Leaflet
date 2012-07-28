@@ -120,7 +120,10 @@ L.Util = {
 
 	var cancelFn = window.cancelAnimationFrame ||
 			getPrefixed('CancelAnimationFrame') ||
-			getPrefixed('CancelRequestAnimationFrame') || window.clearTimeout;
+			getPrefixed('CancelRequestAnimationFrame') ||
+			function (id) {
+				window.clearTimeout(id);
+			};
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
