@@ -229,9 +229,54 @@ L.geoJson(states, {
 	}
 }).addTo(map);</code></pre>
 
+<h4>pointToLayer</h4>
+
+<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="http://leaflet.cloudmade.com/reference.html#geojson-options">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="http://leaflet.cloudmade.com/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="http://leaflet.cloudmade.com/reference.html#marker">Marker</a> or <a href="http://leaflet.cloudmade.com/reference.html#circlemarker">CircleMarker</a>.</p>
+
+<p>Here we're using the <code>pointToLayer</code> option to create a CircleMarker:</p>
+
+<pre><code>var geojsonMarkerOptions = {
+	radius: 8,
+	fillColor: "#ff7800",
+	color: "#000",
+	weight: 1,
+	opacity: 1,
+	fillOpacity: 0.8
+};
+
+L.geoJson(someGeojsonFeature, {
+	pointToLayer: function (feature, latlng) {
+		return L.circleMarker(latlng, geojsonMarkerOptions);
+	}
+}).addTo(map);</code></pre>
+
 <h4>onEachFeature</h4>
 
-<p>The <code>onEachFeature</code> option is used to ...</p>
+<p>The <code>onEachFeature</code> option is a function that gets triggered when each feature added to a GeoJSON layer. A common reason to use this option is to attach a popup to features when they are clicked.</p>
+
+<pre><code>function onEachFeature (feature, layer) {
+	// Does this feature have a property named popupContent?
+	if (feature.properties && feature.properties.popupContent) {
+		layer.bindPopup(feature.properties.popupContent);
+	}
+}
+
+var geojsonFeature = {
+	"type": "Feature",
+	"properties": {
+		"name": "Coors Field",
+		"amenity": "Baseball Stadium",
+		"popupContent": "This is where the Rockies play!"
+	},
+	"geometry": {
+		"type": "Point",
+		"coordinates": [-104.99404, 39.75621]
+	}
+};
+
+L.geoJson(geojsonFeature, {
+	onEachFeature: onEachFeature
+}).addTo(map);</code></pre>
 
 <h4>filter</h4>
 
@@ -272,100 +317,5 @@ L.geoJson(someFeatures, {
 		return feature.properties.show_on_map;
 	}
 }).addTo(map);</code></pre>
-
-<h3>Popups</h3>
-
-<p>We can use popups to show information about features when they are clicked. To accomplish this we'll utilise the <code>onEachFeature</code> option of the GeoJSON layer.</p>
-
-<pre><code>function onEachFeature (feature, layer) {
-	// Does this feature have a property named popupContent
-	if (feature.properties && feature.properties.popupContent) {
-		layer.bindPopup(feature.properties.popupContent);
-	}
-}
-
-var geojsonFeature = {
-	"type": "Feature",
-	"properties": {
-		"name": "Coors Field",
-		"amenity": "Baseball Stadium",
-		"popupContent": "This is where the Rockies play!"
-	},
-	"geometry": {
-		"type": "Point",
-		"coordinates": [-104.99404, 39.75621]
-	}
-};
-
-L.geoJson(geojsonFeature, {
-	onEachFeature: onEachFeature
-}).addTo(map);</code></pre>
-
-<h3>Styling Features</h3>
-
-<p>We can also listen to the <code>featureparse</code> event to style our Polyline and Polygon features. As with our popup content, we can store our styling information in the properties of the GeoJSON object as well. These style properties should match those found in <a href="http://leaflet.cloudmade.com/reference.html#path-options">path options</a>. Our feature with styling information might look something like:</p>
-
-<pre><code>var freeBus = {
-	"type": "Feature",
-	"geometry": {
-		"type": "LineString",
-		"coordinates": [
-			[-104.98726, 39.74136],
-			[-104.98720, 39.74132],
-			[-104.98715, 39.74127],
-			[-104.98713, 39.74117],
-			[-104.98712, 39.74106], ...
-		]
-	},
-	"properties": {
-		"name": "16th Street Free Bus",
-		"style": {
-			"color": "#004070",
-			"weight": 4,
-			"opacity": 0.9
-		},
-		"popupContent": "This is the 16th street free bus ..."
-	}
-};</code></pre>
-
-<p>To change the feature's style from the Leaflet default, we simply call the <code>setStyle</code> method on our layer (<code>e.layer</code>) in our <code>featureparse</code> event listener.</p>
-
-<pre><code>geojsonLayer.on("featureparse", function (e){
-	if (e.properties &amp;&amp; e.properties.style &amp;&amp; e.layer.setStyle){
-		// The setStyle method isn't available for Points. More on that below ...
-		e.layer.setStyle(e.properties.style);
-	}
-});</code></pre>
-
-<h3>Styling Points</h3>
-
-<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="http://leaflet.cloudmade.com/reference.html#geojson-options">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="http://leaflet.cloudmade.com/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="http://leaflet.cloudmade.com/reference.html#marker">Marker</a> or <a href="http://leaflet.cloudmade.com/reference.html#circlemarker">CircleMarker</a>.</p>
-
-<p>Here we're using a CircleMarker:</p>
-
-<pre><code>var geojsonMarkerOptions = {
-	radius: 8,
-	fillColor: "#ff7800",
-	color: "#000",
-	weight: 1,
-	opacity: 1,
-	fillOpacity: 0.8
-};
-
-var geojsonLayer = new L.GeoJSON(someGeojsonFeature, {
-	pointToLayer: function (latlng) {
-		return new L.CircleMarker(latlng, geojsonMarkerOptions);
-	}
-});</code></pre>
-
-<p>And here's an example of using a custom Marker:</p>
-
-<pre><code>var geojsonLayer = new L.GeoJSON(someGeojsonFeature, {
-	pointToLayer: function (latlng) {
-		return new L.Marker(latlng, {
-			icon: new MyCustomIcon()
-		});
-	}
-});</code></pre>
 
 <p>View the <a href="geojson-example.html">example page</a> to see in detail what is possible with the GeoJSON layer.</p>
