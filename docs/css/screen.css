@@ -310,14 +310,6 @@ a.nodocs {
 	border-color: #999;
 }
 
-#map {
-	height: 320px;
-
-	/*box-shadow: 0px 0px 10px #ccc;
-	-moz-box-shadow: 0px 0px 10px #ccc;
-	-webkit-box-shadow: 0px 0px 10px #ccc;*/
-	}
-
 h3 span {
 	color: #888;
 	}
@@ -506,4 +498,19 @@ p.notice {
 	margin: 1.5em -7px;
 	white-space: nowrap;
 	overflow: hidden;
+}
+
+.post-title {
+	margin-top: 0;
+}
+
+.post-date {
+	color: #777;
+	font-size: 18px;
+	line-height: 1;
+}
+
+.post-meta {
+	color: #888;
+	margin-top: -1em;
 }

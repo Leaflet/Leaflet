@@ -24,7 +24,7 @@ In this tutorial, you'll learn how to create a fullscreen map tuned for mobile d
 ***
 [<img src="docs/images/custom-icons.png" class="example-img bordered-img" />][3]
 
-### [Markers With Custom Icons][3]
+### [Markers with Custom Icons][3]
 
 In this pretty tutorial, you'll learn how to easily define your own icons for use by the markers you put on the map.
 

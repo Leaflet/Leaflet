@@ -21,6 +21,8 @@
 
 	<link rel="icon" type="image/png" href="{{ root }}docs/images/favicon.png" />
 
+	<link href="http://leaflet.cloudmade.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
+
 	<!-- Blueprint -->
 	<link rel="stylesheet" href="{{ root }}docs/css/blueprint/screen.css" media="screen, projection">
 	<link rel="stylesheet" href="{{ root }}docs/css/blueprint/print.css" media="print">
@@ -121,7 +123,7 @@
 				{% if page.title == 'Blog' %}
 					<span>Blog</span>
 				{% else %}
-					<a href="{{ root }}blog.html">Blog</a>
+					<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
 				{% endif %}
 			</li>
 			<li><a class="forum-link" href="https://groups.google.com/forum/#!forum/leaflet-js">Forum</a></li>

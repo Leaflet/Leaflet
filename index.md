@@ -11,7 +11,7 @@ It is built from the ground up to work efficiently on both desktop and mobile pl
 {: .usedby}
 Used by: [Flickr](http://flickr.com/map) [foursquare](https://foursquare.com/) [Wikimedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/) [Meetup](http://www.meetup.com/) [Geocaching](http://geocaching.com) [StreetEasy](http://streeteasy.com/) [Nestoria](http://www.nestoria.co.uk) [City-Data.com](http://city-data.com) [Topix](http://topix.com/) [Chartbeat](http://chartbeat.com/) [GIS Cloud](http://www.giscloud.com/) [CityMaps](http://www.citymaps.com) ...
 
-<div id="map" class="map"></div>
+<div id="map" class="map" style="height: 300px"></div>
 
 In this basic example, we create a map with <abbr title="Here we use the beautiful CloudMade tiles which require an API key (get one for free!), but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:
 
