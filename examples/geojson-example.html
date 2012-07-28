@@ -41,7 +41,7 @@
 			layer.bindPopup(popupContent);
 		}
 
-		L.geoJson({features: [bicycleRental, campus]}, {
+		L.geoJson([bicycleRental, campus], {
 
 			style: function (feature) {
 				return feature.properties && feature.properties.style;
@@ -74,7 +74,7 @@
 			onEachFeature: onEachFeature
 		}).addTo(map);
 
-		var coorsLayer = L.geoJson(null, {
+		var coorsLayer = L.geoJson(coorsField, {
 
 			pointToLayer: function (feature, latlng) {
 				return L.marker(latlng, {icon: baseballIcon});
@@ -82,8 +82,6 @@
 
 			onEachFeature: onEachFeature
 		}).addTo(map);
-
-		coorsLayer.addData(coorsField);
 
 	</script>
 </body>
