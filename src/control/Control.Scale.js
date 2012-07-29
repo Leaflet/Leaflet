@@ -14,12 +14,7 @@ L.Control.Scale = L.Control.extend({
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;
 
-		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className + '-line', container);
-		}
-		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className + '-line', container);
-		}
+		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		this._update();
@@ -29,6 +24,16 @@ L.Control.Scale = L.Control.extend({
 
 	onRemove: function (map) {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
+	},
+
+	_addScales: function(options, className, container) {
+		if (options.metric) {
+			this._mScale = L.DomUtil.create('div', className + '-line', container);
+		}
+
+		if (options.imperial) {
+			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
 	},
 
 	_update: function () {
@@ -45,6 +50,10 @@ L.Control.Scale = L.Control.extend({
 			maxMeters = dist * (options.maxWidth / size.x);
 		}
 
+		this._updateScales(options, maxMeters);
+	},
+
+	_updateScales: function (options, maxMeters) {
 		if (options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
