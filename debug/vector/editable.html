@@ -21,9 +21,9 @@
 
 
 		var polygon = new L.Polygon([
-			new L.LatLng(51.51, -0.1),
-			new L.LatLng(51.5, -0.06),
-			new L.LatLng(51.52, -0.03)
+			[51.51, -0.1],
+			[51.5, -0.06],
+			[51.52, -0.03]
 		]);
 
 		polygon.editing.enable();
@@ -31,21 +31,21 @@
 		map.addLayer(polygon);
 
 		var polyline = new L.Polyline([
-			new L.LatLng(51.49, -0.02),
-			new L.LatLng(51.51, 0),
-			new L.LatLng(51.52, -0.02)
+			[51.49, -0.02],
+			[51.51, 0],
+			[51.52, -0.02]
 		]);
 
 		polyline.editing.enable();
 
 		map.addLayer(polyline);
 
-                polygon.on('edit', function() {
-                    console.log('Polygon was edited!');
-                });
-                polyline.on('edit', function() {
-                    console.log('Polyline was edited!');
-                });
+		polygon.on('edit', function() {
+			console.log('Polygon was edited!');
+		});
+		polyline.on('edit', function() {
+			console.log('Polyline was edited!');
+		});
 	</script>
 </body>
 </html>

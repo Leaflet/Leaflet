@@ -1,7 +1,8 @@
 L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
-		this._latlngs = latlngs;
+
+		this._latlngs = this._convertLatLngs(latlngs);
 
 		// TODO refactor: move to Polyline.Edit.js
 		if (L.Handler.PolyEdit) {
@@ -40,17 +41,18 @@ L.Polyline = L.Path.extend({
 	},
 
 	setLatLngs: function (latlngs) {
-		this._latlngs = latlngs;
+		this._latlngs = this._convertLatLngs(latlngs);
 		return this.redraw();
 	},
 
 	addLatLng: function (latlng) {
-		this._latlngs.push(latlng);
+		this._latlngs.push(L.latLng(latlng));
 		return this.redraw();
 	},
 
 	spliceLatLngs: function (index, howMany) {
 		var removed = [].splice.apply(this._latlngs, arguments);
+		this._convertLatLngs(this._latlngs);
 		this.redraw();
 		return removed;
 	},
@@ -100,6 +102,14 @@ L.Polyline = L.Path.extend({
 		}
 
 		L.Path.prototype.onRemove.call(this, map);
+	},
+
+	_convertLatLngs: function (latlngs) {
+		var i, len;
+		for (i = 0, len = latlngs.length; i < len; i++) {
+			latlngs[i] = L.latLng(latlngs[i]);
+		}
+		return latlngs;
 	},
 
 	_initEvents: function () {
