@@ -4,6 +4,7 @@ L.Control.Scale = L.Control.extend({
 		maxWidth: 100,
 		metric: true,
 		imperial: true,
+		custom: undefined,
 		updateWhenIdle: false
 	},
 
@@ -19,6 +20,9 @@ L.Control.Scale = L.Control.extend({
 		}
 		if (options.imperial) {
 			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
+		if (options.custom) {
+			this._cScale = L.DomUtil.create('div', className + '-line', container);
 		}
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
@@ -52,6 +56,10 @@ L.Control.Scale = L.Control.extend({
 		if (options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
+
+		if (options.custom && maxMeters) {
+			this._updateCustom(maxMeters);
+		}
 	},
 
 	_updateMetric: function (maxMeters) {
@@ -79,6 +87,13 @@ L.Control.Scale = L.Control.extend({
 			scale.style.width = this._getScaleWidth(feet / maxFeet) + 'px';
 			scale.innerHTML = feet + ' ft';
 		}
+	},
+
+	_updateCustom: function (maxMeters) {
+		var scale = this._cScale
+			result = this.options.custom(maxMeters, this._getRoundNum);
+		scale.style.width = this._getScaleWidth(result.ratio) + 'px';
+		scale.innerHTML = result.caption;
 	},
 
 	_getScaleWidth: function (ratio) {

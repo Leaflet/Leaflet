@@ -42,7 +42,26 @@
 		});
 
 		map.addControl(layersControl);
-		map.addControl(new L.Control.Scale());
+		map.addControl(new L.Control.Scale({
+			metric: true,
+			imperial: true,
+			// Custom scale in nautical miles
+			custom: function(maxMeters, leafletDefaultRoundingFunction) {
+				var maxNauticalMiles = maxMeters / 1852, 
+					nauticalMiles;
+					
+				if(maxMeters >= 1852) {
+					nauticalMiles = leafletDefaultRoundingFunction(maxNauticalMiles);
+				} else {
+					nauticalMiles = maxNauticalMiles > 0.1 ? Math.round(maxNauticalMiles * 10) / 10 : Math.round(maxNauticalMiles * 100) / 100;
+				}
+
+				return {
+					caption: nauticalMiles + ' nm',
+					ratio: nauticalMiles / maxNauticalMiles
+				}
+			}
+		}));
 
 	</script>
 </body>
