@@ -514,3 +514,7 @@ p.notice {
 	color: #888;
 	margin-top: -1em;
 }
+
+#disqus_thread {
+	margin-top: 3em;
+}
