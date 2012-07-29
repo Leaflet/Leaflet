@@ -26,11 +26,10 @@ L.Control.Scale = L.Control.extend({
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 	},
 
-	_addScales: function(options, className, container) {
+	_addScales: function (options, className, container) {
 		if (options.metric) {
 			this._mScale = L.DomUtil.create('div', className + '-line', container);
 		}
-
 		if (options.imperial) {
 			this._iScale = L.DomUtil.create('div', className + '-line', container);
 		}
