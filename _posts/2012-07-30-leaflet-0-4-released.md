@@ -53,7 +53,7 @@ Another nice improvement comes to the panning experience --- now it has an inert
 
 #### Pinch-Zoom on Android 4
 
-In the previous Leaflet version, pinch-zoom only worked on iOS devices, but now comes finally to Android! Works from Android 4+ not only in the stock browser, but also on Chrome and Firefox for Android.
+In the previous Leaflet version, pinch-zoom only worked on iOS devices, but now it finally comes to Android! Works for Android 4+ not only in the stock browser, but also on Chrome and Firefox for Android.
 
 #### Scale Control
 
@@ -108,7 +108,7 @@ Also, they can accept an object with types and listener functions as key/value p
 		dragend: onMarkerDragEnd
 	});
 
-Moreover, now if only specify an event type to the `off` method, it will remove all listeners tied to this event.
+Moreover, now if you only specify an event type to the `off` method, it will remove all listeners tied to this event.
 
 	map.off('click');
 
@@ -118,7 +118,7 @@ Leaflet 0.4 features more than 30 new methods, options and events across differe
 
 ### Performance and Usability Improvements
 
-You may think that Leaflet is unbelievably fast already, but this version brings several performance improvements that makes it even faster.
+You may think that Leaflet is unbelievably fast already, but this version brings several performance improvements that make it even faster.
 
  * Panning, map resizing and pinch-zoom performance was improved (some tricks behind this will be explained in a future blog post).
  * Updating and removing vector layers on the canvas backend (e.g. on Android 2) works many times faster.
@@ -142,6 +142,14 @@ Here's [a full list of bugfixes](https://github.com/CloudMade/Leaflet/blob/maste
 Besides the GeoJSON and Icon changes mentioned above, here's a [list of potentially breaking changes](https://github.com/CloudMade/Leaflet/blob/master/CHANGELOG.md#other-breaking-api-changes) --- read it carefully when updating your code (shouldn't take much time though).
 
 Download options for Leaflet 0.4 (including the actual download, the CDN-hosted version, and intructions for building manually) are listed on the [download page](../../../download.html).
+
+### Code Stats
+
+I'm still commited to keeping Leaflet as small and lightweight as possible. Here's a breakdown of the current size of the library:
+
+ * JavaScript: **27 KB** minified and gzipped (102 KB minified, 176 KB in source, 7578 lines of code)
+ * CSS: **1.8 KB** gzipped (8 KB, 377 lines of code)
+ * Images: **10 KB** (5 PNG images)
 
 ### Documentation Update
 
@@ -177,7 +185,7 @@ Special thanks go to [Dave Leaver][] for his inspiring contributions including i
 
 And, of course, thanks to my amazing company, [CloudMade](http://cloudmade.com), for embracing open source and supporting this development.
 
-Sinerely, <br />
+Sincerely, <br />
 Vladimir Agafonkin, Leaflet maintainer.
 
 
