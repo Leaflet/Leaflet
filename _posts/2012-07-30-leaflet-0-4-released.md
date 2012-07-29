@@ -1,10 +1,10 @@
 ---
 layout: post
 title: Leaflet 0.4 Released
-description: After 5.5 months of development with 32 contributors involved, I'm proud to announce the release of Leaflet 0.4! It comes with a simpler API and <em>lots</em> of great improvements, along with a major update to documentation, a plugins page and the launch of the developer blog.
+description: After 5.5 months of development with 33 contributors involved, I'm proud to announce the release of Leaflet 0.4! It comes with a simpler API and <em>lots</em> of great improvements, along with a major update to documentation, a plugins page and the launch of the developer blog.
 ---
 
-After 5.5 months of development with [32 contributors](https://github.com/CloudMade/Leaflet/graphs/contributors?from=2012-02-15&to=2012-07-30&type=c) involved since the previous stable release, I'm proud to announce the release of Leaflet 0.4! It comes with a simpler API and *lots* of great improvements and important bugfixes, along with a major update to documentation, an official plugins page and the launch of this developer blog. Lets take a look at the improvements one by one.
+After 5.5 months of development with [33 contributors](https://github.com/CloudMade/Leaflet/graphs/contributors?from=2012-02-15&to=2012-07-30&type=c) involved since the previous stable release, I'm proud to announce the release of Leaflet 0.4! It comes with a simpler API and *lots* of great improvements and important bugfixes, along with a major update to documentation, an official plugins page and the launch of this developer blog. Lets take a look at the improvements one by one.
 
 ### Simpler API
 
