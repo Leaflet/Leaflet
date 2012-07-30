@@ -95,11 +95,6 @@ L.Util = {
 		});
 	},
 
-	isRetina: function () {
-		return (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-			('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
-	},
-
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };
 

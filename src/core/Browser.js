@@ -43,6 +43,8 @@
 		return supported;
 	}());
 
+	var retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) || ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
+
 	L.Browser = {
 		ua: ua,
 		ie: ie,
@@ -66,6 +68,8 @@
 		mobileWebkit3d: mobile && webkit3d,
 		mobileOpera: mobile && opera,
 
-		touch: touch
+		touch: touch,
+
+		retina: retina
 	};
 }());

@@ -31,7 +31,7 @@ L.TileLayer = L.Class.extend({
 		options = L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && L.Util.isRetina() && options.maxZoom > 0) {
+		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 			options.zoomOffset++;
