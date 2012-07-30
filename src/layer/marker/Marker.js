@@ -108,7 +108,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
-			needOpacityUpdate = true;
+			needOpacityUpdate = (this.options.opacity < 1);
 
 			L.DomUtil.addClass(this._icon, classToAdd);
 		}
@@ -117,7 +117,7 @@ L.Marker = L.Class.extend({
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = true;
+				needOpacityUpdate = (this.options.opacity < 1);
 			}
 		}
 
