@@ -107,6 +107,9 @@ L.Polyline = L.Path.extend({
 	_convertLatLngs: function (latlngs) {
 		var i, len;
 		for (i = 0, len = latlngs.length; i < len; i++) {
+			if (latlngs[i] instanceof Array && typeof latlngs[i][0] !== 'number') {
+				return;
+			}
 			latlngs[i] = L.latLng(latlngs[i]);
 		}
 		return latlngs;
