@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+		function getCloudMadeUrl(styleId) {
+			return 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + styleId + '/256/{z}/{x}/{y}.png';
+		}
+
+		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cloudmade = new L.TileLayer(getCloudMadeUrl(997), {attribution: cloudmadeAttribution}),
+			cloudmade2 = new L.TileLayer(getCloudMadeUrl(998), {attribution: 'Hello world'});
+
+		var map = new L.Map('map').addLayer(cloudmade).setView(new L.LatLng(50.5, 30.51), 15);
+
+		var marker = new L.CircleMarker(new L.LatLng(50.5, 30.505), {color: 'red'});
+		map.addLayer(marker);
+		marker.bindPopup("Hello World").openPopup();
+
+		var marker2 = new L.Marker(new L.LatLng(50.502, 30.515));
+		map.addLayer(marker2);
+
+		var layersControl = new L.Control.Layers({
+			'CloudMade Fresh': cloudmade,
+			'CloudMade Pale Dawn': cloudmade2
+		}, {
+			'Some marker': marker,
+			'Another marker': marker2
+		});
+
+		map.addControl(layersControl);
+		map.addControl(new L.Control.Scale());
+
+	</script>
+</body>
+</html>

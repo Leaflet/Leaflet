@@ -5,7 +5,7 @@ L.Projection.Mercator = {
 	R_MINOR: 6356752.3142,
 	R_MAJOR: 6378137,
 
-	project: function (/*LatLng*/ latlng) /*-> Point*/ {
+	project: function (latlng) { // (LatLng) -> Point
 		var d = L.LatLng.DEG_TO_RAD,
 			max = this.MAX_LATITUDE,
 			lat = Math.max(Math.min(max, latlng.lat), -max),
@@ -25,7 +25,7 @@ L.Projection.Mercator = {
 		return new L.Point(x, y);
 	},
 
-	unproject: function (/*Point*/ point, /*Boolean*/ unbounded) /*-> LatLng*/ {
+	unproject: function (point) { // (Point, Boolean) -> LatLng
 		var d = L.LatLng.RAD_TO_DEG,
 			r = this.R_MAJOR,
 			r2 = this.R_MINOR,
@@ -46,6 +46,6 @@ L.Projection.Mercator = {
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, lng, unbounded);
+		return new L.LatLng(phi * d, lng, true);
 	}
 };

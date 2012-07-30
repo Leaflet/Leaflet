@@ -33,6 +33,12 @@ L.DomUtil = {
 					L.DomUtil.getStyle(el, 'position') === 'absolute') {
 				break;
 			}
+			if (L.DomUtil.getStyle(el, 'position') === 'fixed') {
+				top += docBody.scrollTop || 0;
+				left += docBody.scrollLeft || 0;
+				break;
+			}
+
 			el = el.offsetParent;
 		} while (el);
 
@@ -88,23 +94,40 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
+		function replaceFn(w, match) {
 			if (match === name) {
 				return '';
 			}
 			return w;
-		}).replace(/^\s+/, '');
+		}
+		el.className = el.className
+				.replace(/(\S+)\s*/g, replaceFn)
+				.replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-			el.style.filter = 'alpha(opacity=' + Math.round(value * 100) + ')';
-		} else {
+
+		if ('opacity' in el.style) {
 			el.style.opacity = value;
+
+		} else if (L.Browser.ie) {
+
+			var filter = false,
+				filterName = 'DXImageTransform.Microsoft.Alpha';
+
+			// filters collection throws an error if we try to retrieve a filter that doesn't exist
+			try { filter = el.filters.item(filterName); } catch (e) {}
+
+			value = Math.round(value * 100);
+
+			if (filter) {
+				filter.Enabled = (value === 100);
+				filter.Opacity = value;
+			} else {
+				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
+			}
 		}
 	},
-
-	//TODO refactor away this ugly translate/position mess
 
 	testProp: function (props) {
 		var style = document.documentElement.style;
@@ -118,9 +141,15 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		return L.DomUtil.TRANSLATE_OPEN +
-				point.x + 'px,' + point.y + 'px' +
-				L.DomUtil.TRANSLATE_CLOSE;
+		// On webkit browsers (Chrome/Safari/MobileSafari/Android) using translate3d instead of translate
+		// makes animation smoother as it ensures HW accel is used. Firefox 13 doesn't care
+		// (same speed either way), Opera 12 doesn't support translate3d
+
+		var is3d = L.Browser.webkit3d,
+			open = 'translate' + (is3d ? '3d' : '') + '(',
+			close = (is3d ? ',0' : '') + ')';
+
+		return open + point.x + 'px,' + point.y + 'px' + close;
 	},
 
 	getScaleString: function (scale, origin) {
@@ -131,14 +160,14 @@ L.DomUtil = {
 		return preTranslateStr + scaleStr + postTranslateStr;
 	},
 
-	setPosition: function (el, point) {
+	setPosition: function (el, point, disable3D) {
 		el._leaflet_pos = point;
-		if (L.Browser.webkit3d) {
+		if (!disable3D && L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
 
-			if (L.Browser.android) {
-				el.style['-webkit-perspective'] = '1000';
-				el.style['-webkit-backface-visibility'] = 'hidden';
+			// workaround for Android 2/3 stability (https://github.com/CloudMade/Leaflet/issues/69)
+			if (L.Browser.mobileWebkit3d) {
+				el.style.WebkitBackfaceVisibility = 'hidden';
 			}
 		} else {
 			el.style.left = point.x + 'px';
@@ -153,8 +182,5 @@ L.DomUtil = {
 
 L.Util.extend(L.DomUtil, {
 	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
-
-	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
-	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')'
+	TRANSFORM: L.DomUtil.testProp(['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform'])
 });

@@ -24,33 +24,30 @@
 	<div id="map"></div>
 
 	<script>
-		var map = new L.Map('map');
+		var map = L.map('map');
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
-
-		map.addLayer(cloudmade);
-
-		map.on('locationfound', onLocationFound);
-		map.on('locationerror', onLocationError);
-
-		map.locateAndSetView();
+		L.tileLayer('http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>'
+		}).addTo(map);
 
 		function onLocationFound(e) {
 			var radius = e.accuracy / 2;
 
-			var marker = new L.Marker(e.latlng);
-			map.addLayer(marker);
-			marker.bindPopup("You are within " + radius + " meters from this point").openPopup();
+			L.marker(e.latlng).addTo(map)
+				.bindPopup("You are within " + radius + " meters from this point").openPopup();
 
-			var circle = new L.Circle(e.latlng, radius);
-			map.addLayer(circle);
+			L.circle(e.latlng, radius).addTo(map);
 		}
 
 		function onLocationError(e) {
 			alert(e.message);
 		}
+
+		map.on('locationfound', onLocationFound);
+		map.on('locationerror', onLocationError);
+
+		map.locate({setView: true, maxZoom: 16});
 	</script>
 </body>
 </html>

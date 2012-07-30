@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+	<button id="populate">Populate with 10 markers</button>
+
+	<script type="text/javascript" src="geojson-sample.js"></script>
+	<script type="text/javascript">
+
+		var map = L.map('map').setView([0.78, 102.37], 7);
+
+		L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
+			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			key: 'BC9A493B41014CAABB98F0471D759707'
+		}).addTo(map);
+
+		L.geoJson(geojsonSample, {
+			
+			style: function (feature) {
+				return {color: feature.properties.color};
+			},
+
+			onEachFeature: function (feature, layer) {
+				var popupText = 'geometry type: ' + feature.geometry.type;
+
+				if (feature.properties.color) {
+					popupText += '<br/>color: ' + feature.properties.color
+				}
+
+				layer.bindPopup(popupText);
+			}
+		}).addTo(map);
+		
+	</script>
+</body>
+</html>

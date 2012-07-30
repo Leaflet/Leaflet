@@ -4,29 +4,54 @@
 
 L.LatLngBounds = L.Class.extend({
 	initialize: function (southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
-		if (!southWest) {
-			return;
-		}
-		var latlngs = (southWest instanceof Array ? southWest : [southWest, northEast]);
+		if (!southWest) { return; }
+
+		var latlngs = northEast ? [southWest, northEast] : southWest;
+
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			this.extend(latlngs[i]);
 		}
 	},
 
-	// extend the bounds to contain the given point
-	extend: function (/*LatLng*/ latlng) {
-		if (!this._southWest && !this._northEast) {
-			this._southWest = new L.LatLng(latlng.lat, latlng.lng, true);
-			this._northEast = new L.LatLng(latlng.lat, latlng.lng, true);
+	// extend the bounds to contain the given point or bounds
+	extend: function (obj) { // (LatLng) or (LatLngBounds)
+		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
+			obj = L.latLng(obj);
 		} else {
-			this._southWest.lat = Math.min(latlng.lat, this._southWest.lat);
-			this._southWest.lng = Math.min(latlng.lng, this._southWest.lng);
-			this._northEast.lat = Math.max(latlng.lat, this._northEast.lat);
-			this._northEast.lng = Math.max(latlng.lng, this._northEast.lng);
+			obj = L.latLngBounds(obj);
 		}
+
+		if (obj instanceof L.LatLng) {
+			if (!this._southWest && !this._northEast) {
+				this._southWest = new L.LatLng(obj.lat, obj.lng, true);
+				this._northEast = new L.LatLng(obj.lat, obj.lng, true);
+			} else {
+				this._southWest.lat = Math.min(obj.lat, this._southWest.lat);
+				this._southWest.lng = Math.min(obj.lng, this._southWest.lng);
+
+				this._northEast.lat = Math.max(obj.lat, this._northEast.lat);
+				this._northEast.lng = Math.max(obj.lng, this._northEast.lng);
+			}
+		} else if (obj instanceof L.LatLngBounds) {
+			this.extend(obj._southWest);
+            this.extend(obj._northEast);
+		}
+		return this;
 	},
 
-	getCenter: function () /*-> LatLng*/ {
+	// extend the bounds by a percentage
+	pad: function (bufferRatio) { // (Number) -> LatLngBounds
+		var sw = this._southWest,
+			ne = this._northEast,
+			heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
+			widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
+
+		return new L.LatLngBounds(
+			new L.LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
+			new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
+	},
+
+	getCenter: function () { // -> LatLng
 		return new L.LatLng(
 				(this._southWest.lat + this._northEast.lat) / 2,
 				(this._southWest.lng + this._northEast.lng) / 2);
@@ -48,7 +73,13 @@ L.LatLngBounds = L.Class.extend({
 		return new L.LatLng(this._southWest.lat, this._northEast.lng, true);
 	},
 
-	contains: function (/*LatLngBounds or LatLng*/ obj) /*-> Boolean*/ {
+	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
+		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
+			obj = L.latLng(obj);
+		} else {
+			obj = L.latLngBounds(obj);
+		}
+
 		var sw = this._southWest,
 			ne = this._northEast,
 			sw2, ne2;
@@ -64,7 +95,9 @@ L.LatLngBounds = L.Class.extend({
 				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
-	intersects: function (/*LatLngBounds*/ bounds) {
+	intersects: function (bounds) { // (LatLngBounds)
+		bounds = L.latLngBounds(bounds);
+
 		var sw = this._southWest,
 			ne = this._northEast,
 			sw2 = bounds.getSouthWest(),
@@ -82,10 +115,21 @@ L.LatLngBounds = L.Class.extend({
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
 	},
 
-	equals: function (/*LatLngBounds*/ bounds) {
-		return bounds ? this._southWest.equals(bounds.getSouthWest()) &&
-		                this._northEast.equals(bounds.getNorthEast()) : false;
+	equals: function (bounds) { // (LatLngBounds)
+		if (!bounds) { return false; }
+
+		bounds = L.latLngBounds(bounds);
+
+		return this._southWest.equals(bounds.getSouthWest()) &&
+		       this._northEast.equals(bounds.getNorthEast());
 	}
 });
 
 //TODO International date line?
+
+L.latLngBounds = function (a, b) { // (LatLngBounds) or (LatLng, LatLng)
+	if (!a || a instanceof L.LatLngBounds) {
+		return a;
+	}
+	return new L.LatLngBounds(a, b);
+};

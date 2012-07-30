@@ -2,13 +2,15 @@
 L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
-		position: 'topright'
+		position: 'topright',
+		autoZIndex: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 
 		this._layers = {};
+		this._lastZIndex = 0;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -24,8 +26,6 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		this._initLayout();
 		this._update();
 
@@ -52,49 +52,62 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_initLayout: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-control-layers');
+		var className = 'leaflet-control-layers',
+		    container = this._container = L.DomUtil.create('div', className);
+
 		if (!L.Browser.touch) {
-			L.DomEvent.disableClickPropagation(this._container);
+			L.DomEvent.disableClickPropagation(container);
+		} else {
+			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
 
-		this._form = L.DomUtil.create('form', 'leaflet-control-layers-list');
+		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			L.DomEvent.addListener(this._container, 'mouseover', this._expand, this);
-			L.DomEvent.addListener(this._container, 'mouseout', this._collapse, this);
+			L.DomEvent
+				.on(container, 'mouseover', this._expand, this)
+				.on(container, 'mouseout', this._collapse, this);
 
-			var link = this._layersLink = L.DomUtil.create('a', 'leaflet-control-layers-toggle');
+			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
 			link.title = 'Layers';
 
 			if (L.Browser.touch) {
-				L.DomEvent.addListener(link, 'click', this._expand, this);
-				//L.DomEvent.disableClickPropagation(link);
-			} else {
-				L.DomEvent.addListener(link, 'focus', this._expand, this);
+				L.DomEvent
+					.on(link, 'click', L.DomEvent.stopPropagation)
+					.on(link, 'click', L.DomEvent.preventDefault)
+					.on(link, 'click', this._expand, this);
 			}
+			else {
+				L.DomEvent.on(link, 'focus', this._expand, this);
+			}
+
 			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
-
-			this._container.appendChild(link);
 		} else {
 			this._expand();
 		}
 
-		this._baseLayersList = L.DomUtil.create('div', 'leaflet-control-layers-base', this._form);
-		this._separator = L.DomUtil.create('div', 'leaflet-control-layers-separator', this._form);
-		this._overlaysList = L.DomUtil.create('div', 'leaflet-control-layers-overlays', this._form);
+		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
+		this._separator = L.DomUtil.create('div', className + '-separator', form);
+		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
-		this._container.appendChild(this._form);
+		container.appendChild(form);
 	},
 
 	_addLayer: function (layer, name, overlay) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = {
 			layer: layer,
 			name: name,
 			overlay: overlay
 		};
+
+		if (this.options.autoZIndex && layer.setZIndex) {
+			this._lastZIndex++;
+			layer.setZIndex(this._lastZIndex);
+		}
 	},
 
 	_update: function () {
@@ -128,10 +141,10 @@ L.Control.Layers = L.Control.extend({
 			input.name = 'leaflet-base-layers';
 		}
 		input.type = obj.overlay ? 'checkbox' : 'radio';
-		input.checked = this._map.hasLayer(obj.layer);
 		input.layerId = L.Util.stamp(obj.layer);
+		input.defaultChecked = this._map.hasLayer(obj.layer);
 
-		L.DomEvent.addListener(input, 'click', this._onInputClick, this);
+		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
 		var name = document.createTextNode(' ' + obj.name);
 
@@ -167,3 +180,7 @@ L.Control.Layers = L.Control.extend({
 		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
 	}
 });
+
+L.control.layers = function (baseLayers, overlays, options) {
+	return new L.Control.Layers(baseLayers, overlays, options);
+};

@@ -51,6 +51,7 @@
 		'map/handler/Map.DoubleClickZoom.js',
 		'map/handler/Map.ScrollWheelZoom.js',
 		'map/handler/Map.BoxZoom.js',
+		'map/handler/Map.Keyboard.js',
 
 		'layer/LayerGroup.js',
 		'layer/FeatureGroup.js',
@@ -62,6 +63,8 @@
 		'layer/Popup.js',
 
 		'layer/marker/Icon.js',
+		'layer/marker/Icon.Default.js',
+		'layer/marker/DivIcon.js',
 		'layer/marker/Marker.js',
 		'layer/marker/Marker.Popup.js',
 		'layer/marker/Marker.Drag.js',
@@ -72,8 +75,10 @@
 		'layer/vector/Path.VML.js',
 		'layer/vector/canvas/Path.Canvas.js',
 		'layer/vector/Polyline.js',
+		'layer/vector/Polyline.Edit.js',
 		'layer/vector/canvas/Polyline.Canvas.js',
 		'layer/vector/Polygon.js',
+		'layer/vector/Rectangle.js',
 		'layer/vector/canvas/Polygon.Canvas.js',
 		'layer/vector/MultiPoly.js',
 		'layer/vector/Circle.js',
@@ -86,6 +91,7 @@
 		'control/Control.Zoom.js',
 		'control/Control.Attribution.js',
 		'control/Control.Layers.js',
+		'control/Control.Scale.js'
 	];
 
 	function getSrcUrl() {
@@ -102,9 +108,10 @@
 	}
 
 	var path = getSrcUrl();
-	for (var i = 0; i < scripts.length; i++) {
-		document.writeln("<script type='text/javascript' src='" + path + "../src/" + scripts[i] + "'></script>");
+    for (var i = 0; i < scripts.length; i++) {
+		document.writeln("<script src='" + path + scripts[i] + "'></script>");
 	}
+    document.writeln('<script>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();
 
 function getRandomLatLng(map) {

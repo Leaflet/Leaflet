@@ -14,41 +14,38 @@
 
 	<script src="../dist/leaflet.js"></script>
 	<script>
-	    var littletonMarker = new L.Marker(new L.LatLng(39.61, -105.02)).bindPopup("This is Littleton, CO."),
-			denverMarker = new L.Marker(new L.LatLng(39.74, -104.99)).bindPopup("This is Denver, CO."),
-			auroraMarker = new L.Marker(new L.LatLng(39.73, -104.8)).bindPopup("This is Aurora, CO."),
-			goldenMarker = new L.Marker(new L.LatLng(39.77, -105.23)).bindPopup("This is Golden, CO.");
+		var cities = new L.LayerGroup();
 
-		var citiesLayer = new L.LayerGroup();
+	    L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
+		L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),
+		L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
+		L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
-		citiesLayer.addLayer(littletonMarker);
-		citiesLayer.addLayer(denverMarker);
-		citiesLayer.addLayer(auroraMarker);
-		citiesLayer.addLayer(goldenMarker);
 
-		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-				cloudmadeOptions = {maxZoom: 18, attribution: cloudmadeAttribution},
-				cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+	    var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			cmUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
 
-		var minimal = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 22677}),
-			midnightCommander = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 999}),
-			motorways = new L.TileLayer(cloudmadeUrl, cloudmadeOptions, {styleId: 46561});
+	    var minimal   = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr}),
+		    midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
+		    motorways = L.tileLayer(cmUrl, {styleId: 46561, attribution: cmAttr});
 
-		var map = new L.Map('map', {center: new L.LatLng(39.73, -104.99), zoom: 10, layers: [minimal, motorways, citiesLayer]});
+		var map = L.map('map', {
+			center: [39.73, -104.99],
+			zoom: 10,
+			layers: [minimal, motorways, cities]
+		});
 
-		var baseMaps = {
+		var baseLayers = {
 			"Minimal": minimal,
-			"Night View": midnightCommander
+			"Night View": midnight
 		};
 
-		var overlayMaps = {
+		var overlays = {
 			"Motorways": motorways,
-			"Cities": citiesLayer
+			"Cities": cities
 		};
 
-		layersControl = new L.Control.Layers(baseMaps, overlayMaps);
-
-		map.addControl(layersControl);
+		L.control.layers(baseLayers, overlays).addTo(map);
 	</script>
 </body>
 </html>

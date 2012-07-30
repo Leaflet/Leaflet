@@ -1,17 +1,24 @@
-
 L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
-		this._latlngs = latlngs;
+
+		this._latlngs = this._convertLatLngs(latlngs);
+
+		// TODO refactor: move to Polyline.Edit.js
+		if (L.Handler.PolyEdit) {
+			this.editing = new L.Handler.PolyEdit(this);
+
+			if (this.options.editable) {
+				this.editing.enable();
+			}
+		}
 	},
 
 	options: {
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
 		smoothFactor: 1.0,
-		noClip: false,
-
-		updateOnMoveEnd: true
+		noClip: false
 	},
 
 	projectLatlngs: function () {
@@ -34,20 +41,19 @@ L.Polyline = L.Path.extend({
 	},
 
 	setLatLngs: function (latlngs) {
-		this._latlngs = latlngs;
-		this._redraw();
-		return this;
+		this._latlngs = this._convertLatLngs(latlngs);
+		return this.redraw();
 	},
 
 	addLatLng: function (latlng) {
-		this._latlngs.push(latlng);
-		this._redraw();
-		return this;
+		this._latlngs.push(L.latLng(latlng));
+		return this.redraw();
 	},
 
 	spliceLatLngs: function (index, howMany) {
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._redraw();
+		this._convertLatLngs(this._latlngs);
+		this.redraw();
 		return removed;
 	},
 
@@ -59,10 +65,10 @@ L.Polyline = L.Path.extend({
 			for (var i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
-				var point = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
-				if (point._sqDist < minDistance) {
-					minDistance = point._sqDist;
-					minPoint = point;
+				var sqDist = L.LineUtil._sqClosestPointOnSegment(p, p1, p2, true);
+				if (sqDist < minDistance) {
+					minDistance = sqDist;
+					minPoint = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
 				}
 			}
 		}
@@ -79,6 +85,35 @@ L.Polyline = L.Path.extend({
 			b.extend(latLngs[i]);
 		}
 		return b;
+	},
+
+	// TODO refactor: move to Polyline.Edit.js
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.editing && this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	},
+
+	onRemove: function (map) {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+
+		L.Path.prototype.onRemove.call(this, map);
+	},
+
+	_convertLatLngs: function (latlngs) {
+		var i, len;
+		for (i = 0, len = latlngs.length; i < len; i++) {
+			latlngs[i] = L.latLng(latlngs[i]);
+		}
+		return latlngs;
+	},
+
+	_initEvents: function () {
+		L.Path.prototype._initEvents.call(this);
 	},
 
 	_getPathPartStr: function (points) {
@@ -138,9 +173,15 @@ L.Polyline = L.Path.extend({
 	},
 
 	_updatePath: function () {
+		if (!this._map) { return; }
+
 		this._clipPoints();
 		this._simplifyPoints();
 
 		L.Path.prototype._updatePath.call(this);
 	}
 });
+
+L.polyline = function (latlngs, options) {
+	return new L.Polyline(latlngs, options);
+};

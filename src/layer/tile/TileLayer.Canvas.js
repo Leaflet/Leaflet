@@ -8,9 +8,13 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	redraw: function () {
-		for (var i in this._tiles) {
-			var tile = this._tiles[i];
-			this._redrawTile(tile);
+		var i,
+			tiles = this._tiles;
+
+		for (i in tiles) {
+			if (tiles.hasOwnProperty(i)) {
+				this._redrawTile(tiles[i]);
+			}
 		}
 	},
 
@@ -19,11 +23,11 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	_createTileProto: function () {
-		this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
+		var proto = this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
 
 		var tileSize = this.options.tileSize;
-		this._canvasProto.width = tileSize;
-		this._canvasProto.height = tileSize;
+		proto.width = tileSize;
+		proto.height = tileSize;
 	},
 
 	_createTile: function () {
@@ -52,3 +56,8 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		this._tileOnLoad.call(tile);
 	}
 });
+
+
+L.tileLayer.canvas = function (options) {
+	return new L.TileLayer.Canvas(options);
+};

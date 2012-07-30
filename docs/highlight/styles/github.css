@@ -10,34 +10,42 @@ pre code {
   background: #f8f8ff
 }
 
-pre .comment,
+code .comment,
 pre .template_comment,
 pre .diff .header,
 pre .javadoc {
   color: #998;
-  font-style: italic
 }
 
-pre .keyword,
+code .keyword,
 pre .css .rule .keyword,
 pre .winutils,
-pre .javascript .title,
+/*pre .javascript .title,*/
 pre .lisp .title,
-pre .subst {
-  color: #000;
-  font-weight: bold
+pre .nginx .title,
+pre .subst,
+pre .request,
+pre .status {
+  color: #026D97;
+  font-weight: normal;
 }
 
-pre .number,
-pre .hexcolor {
-  color: #40a070
+pre .javascript .title {
+  color: black;
+  font-weight: bold;
 }
 
-pre .string,
+code .number,
+pre .hexcolor,
+code .literal {
+  color: #00A707
+}
+
+code .string,
 pre .tag .value,
 pre .phpdoc,
 pre .tex .formula {
-  color: #d14
+  color: #E43E59;
 }
 
 pre .title,
@@ -53,15 +61,16 @@ pre .subst {
 }
 
 pre .class .title,
+pre .haskell .type,
+pre .vhdl .literal,
 pre .tex .command {
   color: #458;
   font-weight: bold
 }
 
 pre .tag,
-pre .css .keyword,
-pre .html .keyword,
 pre .tag .title,
+pre .rules .property,
 pre .django .tag .keyword {
   color: #000080;
   font-weight: normal
@@ -88,7 +97,8 @@ pre .ruby .symbol .string,
 pre .ruby .symbol .keyword,
 pre .ruby .symbol .keymethods,
 pre .lisp .keyword,
-pre .tex .special {
+pre .tex .special,
+pre .input_number {
   color: #990073
 }
 

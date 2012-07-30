@@ -22,7 +22,7 @@ table, th, td {vertical-align:middle;}
 blockquote:before, blockquote:after, q:before, q:after {content:'';}
 blockquote, q {quotes:"" "";}
 a img {border:none;}
-:focus {outline:0;}
+/*:focus {outline:0;}*/
 
 /* typography.css */
 html {font-size:100.01%;}
