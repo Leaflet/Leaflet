@@ -212,7 +212,6 @@ Vladimir Agafonkin, Leaflet maintainer.
  [Jacob Toye]: https://github.com/jacobtoye
 
 <script>
-
 	var map = L.map('map').setView([51.503, -0.09], 13);
 
 	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map);
@@ -237,5 +236,4 @@ Vladimir Agafonkin, Leaflet maintainer.
 		[51.505, -0.03],
 		[51.5, -0.045]
 	], {weight: 1, opacity: 0.8}).addTo(map).bindPopup('I am a rectangle.');
-
 </script>

@@ -11,12 +11,11 @@ title: Leaflet Developer Blog Atom Feed
 	<link href="http://leaflet.cloudmade.com"/>
 
 	<updated>{{ site.time | date_to_xmlschema }}</updated>
-	<id>http://leaflet.cloudmade.com</id>
+	<id>http://leaflet.cloudmade.com/</id>
 
-	<!--<author>
+	<author>
 		<name>Vladimir Agafonkin</name>
-		<email>agafonkin@gmail.com</email>
-	</author>-->
+	</author>
 
 	{% for post in site.posts %}
 	<entry>
