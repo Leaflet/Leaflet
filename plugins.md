@@ -57,7 +57,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/aparshin/leaflet-boundary-canvas">TileLayer.BoundaryCanvas</a>
 		</td><td>
-			Plugin allows to draw tiled raster layers with arbitrary polygonal boundary. HTML5 Canvas is used for rendering.
+			Allows you to draw tile layers with arbitrary polygonal boundary. HTML5 Canvas is used for rendering.
 		</td><td>
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
