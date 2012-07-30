@@ -16,7 +16,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
 
-		if (options.detectRetina && window.devicePixelRatio > 1) {
+		if (options.detectRetina && L.Util.isRetina()) {
 			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
 		} else {
 			wmsParams.width = wmsParams.height = this.options.tileSize;
