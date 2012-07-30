@@ -3,9 +3,13 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.4 (master)
+## master
 
 An in-progress version being developed on the master branch.
+
+ * Fixed marker shadows appearing as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
+
+## 0.4 (July 30, 2012)
 
 ### API simplification
 
