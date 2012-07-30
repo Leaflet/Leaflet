@@ -232,6 +232,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="http://www.mapsmarker.com/">Leaflet Maps Marker</a>
+		</td><td>
+			A Wordpress plugin that uses Leaflet and a set of its plugins for adding maps to your posts through a nice admin interface.
+		</td><td>
+			<a href="http://www.harm.co.at/">Robert Harm</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/mlevans/leaflet-hash">leaflet-hash</a>
 		</td><td>
 			Plugin for persisting map state and browsing history through the URL hash.
