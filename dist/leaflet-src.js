@@ -3588,7 +3588,9 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		this._map._pathRoot.appendChild(this._container);
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
 
 		map.on({
 			'viewreset': this.projectLatlngs,
@@ -4520,6 +4522,9 @@ L.Polyline = L.Path.extend({
 	_convertLatLngs: function (latlngs) {
 		var i, len;
 		for (i = 0, len = latlngs.length; i < len; i++) {
+			if (latlngs[i] instanceof Array && typeof latlngs[i][0] !== 'number') {
+				return;
+			}
 			latlngs[i] = L.latLng(latlngs[i]);
 		}
 		return latlngs;
@@ -4674,7 +4679,7 @@ L.Polygon = L.Polyline.extend({
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs && (latlngs[0] instanceof Array) && (typeof latlngs[0][0] !== 'number')) {
-			this._latlngs = latlngs[0];
+			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
 		}
 	},
@@ -6687,12 +6692,7 @@ L.Control.Scale = L.Control.extend({
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;
 
-		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className + '-line', container);
-		}
-		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className + '-line', container);
-		}
+		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		this._update();
@@ -6702,6 +6702,15 @@ L.Control.Scale = L.Control.extend({
 
 	onRemove: function (map) {
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
+	},
+
+	_addScales: function (options, className, container) {
+		if (options.metric) {
+			this._mScale = L.DomUtil.create('div', className + '-line', container);
+		}
+		if (options.imperial) {
+			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
 	},
 
 	_update: function () {
@@ -6718,6 +6727,10 @@ L.Control.Scale = L.Control.extend({
 			maxMeters = dist * (options.maxWidth / size.x);
 		}
 
+		this._updateScales(options, maxMeters);
+	},
+
+	_updateScales: function (options, maxMeters) {
 		if (options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
@@ -6771,6 +6784,7 @@ L.Control.Scale = L.Control.extend({
 L.control.scale = function (options) {
 	return new L.Control.Scale(options);
 };
+
 
 
 L.Control.Layers = L.Control.extend({
