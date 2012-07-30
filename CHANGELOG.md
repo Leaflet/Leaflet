@@ -7,7 +7,8 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
- * Fixed marker shadows appearing as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
+ * Fixed a bug that caused marker shadows appear as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
+ * Fixed a bug with incorrect calculation of scale by the scale control. [#852](https://github.com/CloudMade/Leaflet/issues/852)
 
 ## 0.4 (July 30, 2012)
 
