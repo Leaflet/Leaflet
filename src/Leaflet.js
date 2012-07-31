@@ -14,4 +14,4 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4';
+L.version = '0.4.1';

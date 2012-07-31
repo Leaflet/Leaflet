@@ -188,6 +188,15 @@ And, of course, thanks to my amazing company, [CloudMade](http://cloudmade.com),
 Sincerely, <br />
 Vladimir Agafonkin, Leaflet maintainer.
 
+<hr />
+
+**Update (July 31)**: 0.4.1 hotfix was released with the following bugs fixed:
+
+ * Fixed a bug that caused marker shadows to appear as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
+ * Fixed a bug with incorrect calculation of scale by the scale control. [#852](https://github.com/CloudMade/Leaflet/issues/852)
+ * Fixed broken L.tileLayer.wms class factory. [#856](https://github.com/CloudMade/Leaflet/issues/856)
+ * Improved retina detection for `TileLayer` `detectRetina` option. [#854](https://github.com/CloudMade/Leaflet/issues/854)
+
 
  [LatLng]: ../../../reference.html#latlng
  [LatLngBounds]: ../../../reference.html#latlngbounds
