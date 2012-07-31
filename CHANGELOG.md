@@ -7,6 +7,8 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+ * Added optional `animate` argument to `Map` `invalidateSize` (by [@ajbeaven](https://github.com/ajbeaven)). [#857](https://github.com/CloudMade/Leaflet/pull/857)
+
 ## 0.4.1 (July 31, 2012)
 
  * Fixed a bug that caused marker shadows appear as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
