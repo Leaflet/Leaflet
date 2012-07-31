@@ -9,7 +9,7 @@ This tutorial will show you how to group several layers into one, and how to use
 
 <div id="map" class="map" style="height: 250px"></div>
 
-[View example on a separate page &rarr;](ayers-control-example.html)
+[View example on a separate page &rarr;](layers-control-example.html)
 
 
 ### Layer Groups
