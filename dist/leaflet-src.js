@@ -21,7 +21,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4';
+L.version = '0.4.1';
 
 
 /*
@@ -382,6 +382,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		return supported;
 	}());
 
+	var retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) || ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
+
 	L.Browser = {
 		ua: ua,
 		ie: ie,
@@ -405,7 +407,9 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		mobileWebkit3d: mobile && webkit3d,
 		mobileOpera: mobile && opera,
 
-		touch: touch
+		touch: touch,
+
+		retina: retina
 	};
 }());
 
@@ -1890,7 +1894,7 @@ L.TileLayer = L.Class.extend({
 		options = L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && window.devicePixelRatio > 1 && options.maxZoom > 0) {
+		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 			options.zoomOffset++;
@@ -2398,7 +2402,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
 
-		if (options.detectRetina && window.devicePixelRatio > 1) {
+		if (options.detectRetina && L.Browser.retina) {
 			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
 		} else {
 			wmsParams.width = wmsParams.height = this.options.tileSize;
@@ -2456,7 +2460,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 });
 
 L.tileLayer.wms = function (url, options) {
-	return new L.TileLayer(url, options);
+	return new L.TileLayer.WMS(url, options);
 };
 
 
