@@ -14,12 +14,7 @@ L.Control.Scale = L.Control.extend({
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;
 
-		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className + '-line', container);
-		}
-		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className + '-line', container);
-		}
+		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		this._update();
@@ -31,10 +26,19 @@ L.Control.Scale = L.Control.extend({
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 	},
 
+	_addScales: function (options, className, container) {
+		if (options.metric) {
+			this._mScale = L.DomUtil.create('div', className + '-line', container);
+		}
+		if (options.imperial) {
+			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
+	},
+
 	_update: function () {
 		var bounds = this._map.getBounds(),
 		    centerLat = bounds.getCenter().lat,
-		    halfWorldMeters = new L.LatLng(centerLat, 0).distanceTo(new L.LatLng(centerLat, 180)),
+		    halfWorldMeters = 6378137 * Math.PI * Math.cos(centerLat * Math.PI / 180),
 		    dist = halfWorldMeters * (bounds.getNorthEast().lng - bounds.getSouthWest().lng) / 180,
 
 		    size = this._map.getSize(),
@@ -45,6 +49,10 @@ L.Control.Scale = L.Control.extend({
 			maxMeters = dist * (options.maxWidth / size.x);
 		}
 
+		this._updateScales(options, maxMeters);
+	},
+
+	_updateScales: function (options, maxMeters) {
 		if (options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}

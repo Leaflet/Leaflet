@@ -21,7 +21,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4';
+L.version = '0.4.1';
 
 
 /*
@@ -382,6 +382,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		return supported;
 	}());
 
+	var retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) || ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
+
 	L.Browser = {
 		ua: ua,
 		ie: ie,
@@ -405,7 +407,9 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		mobileWebkit3d: mobile && webkit3d,
 		mobileOpera: mobile && opera,
 
-		touch: touch
+		touch: touch,
+
+		retina: retina
 	};
 }());
 
@@ -1890,7 +1894,7 @@ L.TileLayer = L.Class.extend({
 		options = L.Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && window.devicePixelRatio > 1 && options.maxZoom > 0) {
+		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 			options.zoomOffset++;
@@ -2398,7 +2402,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
 
-		if (options.detectRetina && window.devicePixelRatio > 1) {
+		if (options.detectRetina && L.Browser.retina) {
 			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
 		} else {
 			wmsParams.width = wmsParams.height = this.options.tileSize;
@@ -2456,7 +2460,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 });
 
 L.tileLayer.wms = function (url, options) {
-	return new L.TileLayer(url, options);
+	return new L.TileLayer.WMS(url, options);
 };
 
 
@@ -2901,7 +2905,7 @@ L.Marker = L.Class.extend({
 			}
 
 			this._initInteraction();
-			needOpacityUpdate = true;
+			needOpacityUpdate = (this.options.opacity < 1);
 
 			L.DomUtil.addClass(this._icon, classToAdd);
 		}
@@ -2910,7 +2914,7 @@ L.Marker = L.Class.extend({
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = true;
+				needOpacityUpdate = (this.options.opacity < 1);
 			}
 		}
 
@@ -3588,7 +3592,9 @@ L.Path = L.Class.extend({
 		this.projectLatlngs();
 		this._updatePath();
 
-		this._map._pathRoot.appendChild(this._container);
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
 
 		map.on({
 			'viewreset': this.projectLatlngs,
@@ -4520,6 +4526,9 @@ L.Polyline = L.Path.extend({
 	_convertLatLngs: function (latlngs) {
 		var i, len;
 		for (i = 0, len = latlngs.length; i < len; i++) {
+			if (latlngs[i] instanceof Array && typeof latlngs[i][0] !== 'number') {
+				return;
+			}
 			latlngs[i] = L.latLng(latlngs[i]);
 		}
 		return latlngs;
@@ -4674,7 +4683,7 @@ L.Polygon = L.Polyline.extend({
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs && (latlngs[0] instanceof Array) && (typeof latlngs[0][0] !== 'number')) {
-			this._latlngs = latlngs[0];
+			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
 		}
 	},
@@ -6687,12 +6696,7 @@ L.Control.Scale = L.Control.extend({
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;
 
-		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className + '-line', container);
-		}
-		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className + '-line', container);
-		}
+		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		this._update();
@@ -6704,10 +6708,19 @@ L.Control.Scale = L.Control.extend({
 		map.off(this.options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 	},
 
+	_addScales: function (options, className, container) {
+		if (options.metric) {
+			this._mScale = L.DomUtil.create('div', className + '-line', container);
+		}
+		if (options.imperial) {
+			this._iScale = L.DomUtil.create('div', className + '-line', container);
+		}
+	},
+
 	_update: function () {
 		var bounds = this._map.getBounds(),
 		    centerLat = bounds.getCenter().lat,
-		    halfWorldMeters = new L.LatLng(centerLat, 0).distanceTo(new L.LatLng(centerLat, 180)),
+		    halfWorldMeters = 6378137 * Math.PI * Math.cos(centerLat * Math.PI / 180),
 		    dist = halfWorldMeters * (bounds.getNorthEast().lng - bounds.getSouthWest().lng) / 180,
 
 		    size = this._map.getSize(),
@@ -6718,6 +6731,10 @@ L.Control.Scale = L.Control.extend({
 			maxMeters = dist * (options.maxWidth / size.x);
 		}
 
+		this._updateScales(options, maxMeters);
+	},
+
+	_updateScales: function (options, maxMeters) {
 		if (options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
@@ -6771,6 +6788,7 @@ L.Control.Scale = L.Control.extend({
 L.control.scale = function (options) {
 	return new L.Control.Scale(options);
 };
+
 
 
 L.Control.Layers = L.Control.extend({

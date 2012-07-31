@@ -11,7 +11,7 @@ L.Polygon = L.Polyline.extend({
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs && (latlngs[0] instanceof Array) && (typeof latlngs[0][0] !== 'number')) {
-			this._latlngs = latlngs[0];
+			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
 		}
 	},

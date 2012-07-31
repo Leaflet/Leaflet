@@ -3,9 +3,18 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.4 (master)
+## master
 
 An in-progress version being developed on the master branch.
+
+## 0.4.1 (July 31, 2012)
+
+ * Fixed a bug that caused marker shadows appear as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
+ * Fixed a bug with incorrect calculation of scale by the scale control. [#852](https://github.com/CloudMade/Leaflet/issues/852)
+ * Fixed broken L.tileLayer.wms class factory (by [@mattcurrie](https://github.com/mattcurrie)). [#856](https://github.com/CloudMade/Leaflet/issues/856)
+ * Improved retina detection for `TileLayer` `detectRetina` option (by [@sxua](https://github.com/sxua)). [#854](https://github.com/CloudMade/Leaflet/issues/854)
+
+## 0.4 (July 30, 2012)
 
 ### API simplification
 
