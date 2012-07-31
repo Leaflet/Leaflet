@@ -74,5 +74,5 @@ L.TileLayer.WMS = L.TileLayer.extend({
 });
 
 L.tileLayer.wms = function (url, options) {
-	return new L.TileLayer(url, options);
+	return new L.TileLayer.WMS(url, options);
 };
