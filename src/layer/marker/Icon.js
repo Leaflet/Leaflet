@@ -93,7 +93,6 @@ L.Icon = L.Class.extend({
 		// By now, anchor has been defined
 		img.style.marginLeft = (-anchor.x) + 'px';
 		img.style.marginTop	 = (-anchor.y) + 'px';
-		}
 
 		img.style.visibility = 'visible';
 	},
