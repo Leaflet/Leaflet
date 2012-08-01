@@ -2,11 +2,12 @@
 L.Icon.Default = L.Icon.extend({
 
 	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(1, -34),
+		// Default options are dynamically loaded based on the image
+		// iconSize: new L.Point(25, 41),
+		// iconAnchor: new L.Point(13, 41),
+		// popupAnchor: new L.Point(1, -34),
 
-		shadowSize: new L.Point(41, 41)
+		// shadowSize: new L.Point(41, 41)
 	},
 
 	_getIconUrl: function (name) {
@@ -28,7 +29,7 @@ L.Icon.Default = L.Icon.extend({
 
 L.Icon.Default.imagePath = (function () {
 	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+		leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 	var i, len, src, matches;
 

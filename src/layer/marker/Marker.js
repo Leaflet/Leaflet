@@ -101,7 +101,10 @@ L.Marker = L.Class.extend({
 		    needOpacityUpdate = false;
 
 		if (!this._icon) {
-			this._icon = options.icon.createIcon();
+			/* We pass this marker when we create the icon. This allows us to
+			 * have a callback that updates the marker upon icon load, thereby
+			 *	positioning it correctly with the correct styling. */
+			this._icon = options.icon.createIcon(this);
 
 			if (options.title) {
 				this._icon.title = options.title;
@@ -113,7 +116,10 @@ L.Marker = L.Class.extend({
 			L.DomUtil.addClass(this._icon, classToAdd);
 		}
 		if (!this._shadow) {
-			this._shadow = options.icon.createShadow();
+			/* We also pass this marker when we create the shadow. Again, we
+			 * have a callback that correctly positions the shadow upon image
+			 * load. */
+			this._shadow = options.icon.createShadow(this);
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);

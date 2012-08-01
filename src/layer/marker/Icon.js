@@ -16,15 +16,21 @@ L.Icon = L.Class.extend({
 		L.Util.setOptions(this, options);
 	},
 
-	createIcon: function () {
-		return this._createIcon('icon');
+	/* The marker received is used for a callback that updates the marker when
+	 * the Icon image loads and has its style set */
+	createIcon: function (marker) {
+		return this._createIcon('icon', marker);
 	},
 
-	createShadow: function () {
-		return this._createIcon('shadow');
+	/* The marker received is used for a callback that updates the marker when
+	 * the Icon image loads and has its style set */
+	createShadow: function (marker) {
+		return this._createIcon('shadow', marker);
 	},
 
-	_createIcon: function (name) {
+	/* The marker received is used for a callback that updates the marker when
+	 * the Icon image loads and has its style set */
+	_createIcon: function (name, marker) {
 		var src = this._getIconUrl(name);
 
 		if (!src) {
@@ -34,48 +40,96 @@ L.Icon = L.Class.extend({
 			return null;
 		}
 
-		var img = this._createImg(src);
-		this._setIconStyles(img, name);
+		var img;
+		/* If size is defined, use defined value. Otherwise, set size equal to
+		 * the actual size of the imageUrl upon image load */
+		if (this.options[name + 'Size']) {
+			img = this._createImg(src, function () { return; });
+		}
+		/* There is no default size set, so when the image is loaded, we will
+		 * set the size to be that of the image loaded. */
+		else {
+			/* Create local reference to this to avoid 'this' name clashes */
+			var me = this;
+			/* Creates the image from the src provided. When the image loads, it
+			 * calls a function that gets the native size, sets icon styles that
+			 * are undefined, and then tells the marker to update itself. When
+			 * the marker updates itself, this ensures that the map shows the
+			 * marker icon in the correct position with the correct style. */
+			img = this._createImg(src, function () {
+				var size = new L.Point(this.width, this.height);
+				me._styleHelper(this, name, size, me.options);
+				marker.update();
+			});
+		}
 
+		this._setIconStyles(img, name);
 		return img;
 	},
 
-	_setIconStyles: function (img, name) {
-		var options = this.options,
-			size = L.point(options[name + 'Size']),
-			anchor;
+	/* Automatically configures other image values based on the size supplied,
+	 * given that those properties are not already defined in options. */
+	_styleHelper: function (img, name, size, options) {
+		var anchor = options.iconAnchor;
+		var popupAnchor = options.popupAnchor;
 
+		if (!anchor) {
+			anchor = new L.Point(Math.round(size.x / 2), size.y);
+		}
+		if (name === 'icon' && !popupAnchor) {
+			popupAnchor = new L.Point(0, -Math.round((size.y * 8) / 10));
+		}
 		if (name === 'shadow') {
-			anchor = L.point(options.shadowAnchor || options.iconAnchor);
-		} else {
-			anchor = L.point(options.iconAnchor);
+			anchor = L.point(options.shadowAnchor || anchor);
 		}
 
-		if (!anchor && size) {
-			anchor = size.divideBy(2, true);
-		}
+		/* Must append, because this is set upon Icon load, which could happen
+		 * after appending to className elsewhere. We don't want to overwrite
+		 * other class names. */
+		img.className += ' leaflet-marker-' + name + ' ' + options.className + ' leaflet-zoom-animated';
+		img.style.width	 = size.x + 'px';
+		img.style.height = size.y + 'px';
 
-		img.className = 'leaflet-marker-' + name + ' ' + options.className;
+		// By now, anchor has been defined
+		img.style.marginLeft = (-anchor.x) + 'px';
+		img.style.marginTop	 = (-anchor.y) + 'px';
 
-		if (anchor) {
-			img.style.marginLeft = (-anchor.x) + 'px';
-			img.style.marginTop  = (-anchor.y) + 'px';
-		}
-
-		if (size) {
-			img.style.width  = size.x + 'px';
-			img.style.height = size.y + 'px';
-		}
+		img.style.visibility = 'visible';
 	},
 
-	_createImg: function (src) {
+	_setIconStyles: function (img, name) {
+		var size;
+		/* Size is defined, so we can set styles without waiting for image to load. */
+		if (this.options[name + 'Size']) {
+			size = this.options[name + 'Size'];
+			this._styleHelper(img, name, size, this.options);
+		}
+		/* Otherwise, size is not defined. The img.onload function will be handle
+		 * image property configuration. */
+	},
+
+	/**
+	 * src: A string for the filepath to load as the image.
+	 * loadFunc: a function to be called when the image loads. loadFunc is bound
+	 *			 to the scope of the image.
+	 */
+	_createImg: function (src, loadFunc) {
 		var el;
 
 		if (!L.Browser.ie6) {
 			el = document.createElement('img');
+			el.style.visibility = 'hidden';
+			/* Set the onload method before setting source, since IE will have
+			 * already loaded the image and cached it if src is set first. This
+			 * causes the "load" event to not be fired. */
+			el.onload = function () {
+				// TODO: use L.Util.bind
+				loadFunc.apply(el, []);
+			};
 			el.src = src;
 		} else {
 			el = document.createElement('div');
+			/* TODO: onload support for IE 6 */
 			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
