@@ -197,6 +197,11 @@ Vladimir Agafonkin, Leaflet maintainer.
  * Fixed broken L.tileLayer.wms class factory. [#856](https://github.com/CloudMade/Leaflet/issues/856)
  * Improved retina detection for `TileLayer` `detectRetina` option. [#854](https://github.com/CloudMade/Leaflet/issues/854)
 
+**Update (August 1)**: 0.4.2 hotfix was released with the following bugs fixed:
+
+ * Fixed a bug where layers control radio buttons would not work correctly in IE7. [#862](https://github.com/CloudMade/Leaflet/pull/862)
+ * Fixed a bug where `FeatureGroup` `removeLayer` would unbind popups of removed layers even if the popups were not put by the group (affected [Leaflet.markercluster](https://github.com/danzel/Leaflet.markercluster) plugin). [#861](https://github.com/CloudMade/Leaflet/pull/861)
+
 
  [LatLng]: ../../../reference.html#latlng
  [LatLngBounds]: ../../../reference.html#latlngbounds
