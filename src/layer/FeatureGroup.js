@@ -26,7 +26,11 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
-		return this.invoke('unbindPopup');
+		if (this._popupContent) {
+			return this.invoke('unbindPopup');
+		} else {
+			return this;
+		}
 	},
 
 	bindPopup: function (content) {
