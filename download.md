@@ -13,8 +13,8 @@ Besides the library itself, the download package contains full source code, unit
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.4.1">Leaflet 0.4.1</a></td>
-		<td>Stable version, released on July 31, 2012</td>
+		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.4.2">Leaflet 0.4.2</a></td>
+		<td>Stable version, released on August 1, 2012</td>
 	</tr>
 	<tr>
 		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.3.1">Leaflet 0.3.1</a></td>
