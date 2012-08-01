@@ -35,12 +35,12 @@ Note that the master version can contain incompatible changes, so please read th
 The latest stable release of Leaflet is hosted on a CDN — to start using
 it straight away, place this code in the `head` section of your HTML:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.1/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.2/leaflet.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.1/leaflet.ie.css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.2/leaflet.ie.css" />
     <![endif]-->
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.4.1/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.4.2/leaflet.js"></script>
 
 ### Building Leaflet from the Source
 
