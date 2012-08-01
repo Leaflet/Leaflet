@@ -9,6 +9,11 @@ An in-progress version being developed on the master branch.
 
  * Added optional `animate` argument to `Map` `invalidateSize` (by [@ajbeaven](https://github.com/ajbeaven)). [#857](https://github.com/CloudMade/Leaflet/pull/857)
 
+## 0.4.2 (August 1, 2012)
+
+ * Fixed a bug where layers control radio buttons would not work correctly in IE7 (by [@danzel](https://github.com/danzel)). [#862](https://github.com/CloudMade/Leaflet/pull/862)
+ * Fixed a bug where `FeatureGroup` `removeLayer` would unbind popups of removed layers even if the popups were not put by the group (affected [Leaflet.markercluster](https://github.com/danzel/Leaflet.markercluster) plugin) (by [@danzel](https://github.com/danzel)). [#861](https://github.com/CloudMade/Leaflet/pull/861)
+
 ## 0.4.1 (July 31, 2012)
 
  * Fixed a bug that caused marker shadows appear as opaque black in IE6-8. [#850](https://github.com/CloudMade/Leaflet/issues/850)
