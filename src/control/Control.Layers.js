@@ -133,16 +133,34 @@ L.Control.Layers = L.Control.extend({
 		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
 	},
 
-	_addItem: function (obj, onclick) {
+	//IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way
+	//Ref: http://stackoverflow.com/questions/118693/how-do-you-dynamically-create-a-radio-button-in-javascript-that-works-in-all-bro/119079#119079
+	_createRadioElement: function (name, checked) {
+
+		var radioHtml = '<input type="radio" name="' + name + '"';
+		if (checked) {
+			radioHtml += ' checked="checked"';
+		}
+		radioHtml += '/>';
+
+		var radioFragment = document.createElement('div');
+		radioFragment.innerHTML = radioHtml;
+
+		return radioFragment.firstChild;
+	},
+
+	_addItem: function (obj) {
 		var label = document.createElement('label');
 
-		var input = document.createElement('input');
-		if (!obj.overlay) {
-			input.name = 'leaflet-base-layers';
+		var input;
+		if (obj.overlay) {
+			input = document.createElement('input');
+			input.type = obj.overlay ? 'checkbox' : 'radio';
+			input.defaultChecked = this._map.hasLayer(obj.layer);
+		} else {
+			input = this._createRadioElement('leaflet-bas-layers', this._map.hasLayer(obj.layer));
 		}
-		input.type = obj.overlay ? 'checkbox' : 'radio';
 		input.layerId = L.Util.stamp(obj.layer);
-		input.defaultChecked = this._map.hasLayer(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
