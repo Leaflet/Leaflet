@@ -371,9 +371,11 @@ L.TileLayer = L.Class.extend({
 		var tile = this._getTile();
 
 		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7, iOS 5.1.1,
-		// android browser (4.0) have display issues with top/left and requires transform instead
+		// android 4 browser has display issues with top/left and requires transform instead
+		// android 3 browser not tested
+		// android 2 browser requires top/left or tiles disappear on load or first drag (reappear after zoom) https://github.com/CloudMade/Leaflet/issues/866
 		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
+		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome || L.Browser.android23);
 
 		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 
