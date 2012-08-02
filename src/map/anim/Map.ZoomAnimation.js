@@ -7,6 +7,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_zoomToIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
+
 		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = this.getZoomScale(zoom),
@@ -52,18 +53,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg.style[transform] += ' translate(0,0)';
 		}
 
-		var scaleStr;
-
-		// Android 2.* doesn't like translate/scale chains, transformOrigin + scale works better but
-		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
-
-		// TODO work around this prettier
-		if (L.Browser.android23) {
-			tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
-			scaleStr = 'scale(' + scale + ')';
-		} else {
-			scaleStr = L.DomUtil.getScaleString(scale, origin);
-		}
+		var scaleStr = L.DomUtil.getScaleString(scale, origin);
 
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
@@ -82,8 +72,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg = this._tileBg;
 
 		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
-		// (disable this for Android due to it not supporting double translate)
-		if (!L.Browser.android23 && tileBg &&
+		if (tileBg &&
 				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
 				this._getLoadedTilesPercentage(tilePane) < 0.5) {
 
