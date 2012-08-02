@@ -370,7 +370,7 @@ L.TileLayer = L.Class.extend({
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
 
-		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7, iOS 5.1.1,
+		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames)
 		// android 4 browser has display issues with top/left and requires transform instead
 		// android 3 browser not tested
 		// android 2 browser requires top/left or tiles disappear on load or first drag (reappear after zoom) https://github.com/CloudMade/Leaflet/issues/866
