@@ -2,6 +2,10 @@ L.Map.mergeOptions({
 	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
 
+L.Map.addInitHook(function () {
+	L.DomEvent.on(this._mapPane, L.Transition.END, this._catchTransitionEnd, this);
+});
+
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_zoomToIfClose: function (center, zoom) {
@@ -36,6 +40,11 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		return true;
 	},
 
+	_catchTransitionEnd: function (e) {
+		if (this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
+	},
 
 	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
 		this._animatingZoom = true;
@@ -57,14 +66,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
-		var options = {};
-		if (backwardsTransform) {
-			options[transform] = tileBg.style[transform] + ' ' + scaleStr;
-		} else {
-			options[transform] = scaleStr + ' ' + tileBg.style[transform];
-		}
-
-		tileBg.transition.run(options);
+		tileBg.style[transform] = backwardsTransform ?
+			tileBg.style[transform] + ' ' + scaleStr :
+			scaleStr + ' ' + tileBg.style[transform];
 	},
 
 	_prepareTileBg: function () {
@@ -99,14 +103,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._tilePane = this._panes.tilePane = tileBg;
 		var newTileBg = this._tileBg = tilePane;
 
-		if (!newTileBg.transition) {
-			// TODO move to Map options
-			newTileBg.transition = new L.Transition(newTileBg, {
-				duration: 0.25,
-				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
-			});
-			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
-		}
+		L.DomUtil.addClass(newTileBg, 'leaflet-zoom-animated');
 
 		this._stopLoadingImages(newTileBg);
 	},
@@ -143,7 +140,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
-
 		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
