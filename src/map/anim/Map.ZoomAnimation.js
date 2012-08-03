@@ -26,7 +26,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		this._prepareTileBg();
+		this._animatingZoom = true;
 
 		this.fire('zoomanim', {
 			center: center,
@@ -35,6 +35,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var origin = this._getCenterLayerPoint().add(offset);
 
+		this._prepareTileBg();
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;
@@ -47,8 +48,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 
 	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
-		this._animatingZoom = true;
-
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
 
@@ -62,13 +61,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg.style[transform] += ' translate(0,0)';
 		}
 
-		var scaleStr = L.DomUtil.getScaleString(scale, origin);
-
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
+		var scaleStr = L.DomUtil.getScaleString(scale, origin),
+			oldTransform = tileBg.style[transform];
+
 		tileBg.style[transform] = backwardsTransform ?
-			tileBg.style[transform] + ' ' + scaleStr :
-			scaleStr + ' ' + tileBg.style[transform];
+			oldTransform + ' ' + scaleStr :
+			scaleStr + ' ' + oldTransform;
 	},
 
 	_prepareTileBg: function () {
