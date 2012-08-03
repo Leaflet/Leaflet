@@ -42,12 +42,10 @@
 		}
 
 		info.setFeature = function (feature) {
-			if (feature) {
-				this._div.innerHTML = '<b>' + feature.properties.name + '</b>' +
-						'<br>'  + feature.properties.density + ' /mi<sup>2</sup>';
-			} else {
-				this._div.innerHTML = 'Hover over a state';
-			}
+			this._div.innerHTML = feature ?
+				'<b>' + feature.properties.name + '</b>' +
+				'<br>'  + feature.properties.density + ' /mi<sup>2</sup>'
+				: 'Hover over a state';
 		}
 
 		info.addTo(map);
@@ -63,7 +61,7 @@
 			opacity: 1,
 			color: 'white',
 			dashArray: '3 4',
-			fillOpacity: 1
+			fillOpacity: 0.8
 		};
 
 		function style(feature) {
@@ -73,7 +71,7 @@
 				hue = Math.round(fromHue + value * (toHue - fromHue));
 
 			return L.Util.extend({}, defaultStyle, {
-				fillColor: 'hsl(' + hue + ',90%,44%)'
+				fillColor: 'hsl(' + hue + ',90%,42%)'
 			});
 		}
 
