@@ -10,12 +10,11 @@
 
 	<style>
 		.state-info {
-			background: white;
-			padding: 5px 10px;
+			background: rgba(255,255,255,0.8);
+			padding: 2px 10px 3px;
 			box-shadow: 0 0 15px rgba(0,0,0,0.2);
 			border-radius: 5px;
-			font: 14px/1.5 Verdana, Tahoma, sans-serif;
-			text-align: right;
+			font: 16px/1.4 Arial, Helvetica, sans-serif;
 		}
 	</style>
 
@@ -38,9 +37,6 @@
 		}).addTo(map);
 
 
-		L.control.scale().addTo(map);
-
-
 		var info = L.Util.extend(L.control(), {
 
 			onAdd: function (map) {
@@ -50,10 +46,10 @@
 			},
 
 			setFeature: function (feature) {
-				this._div.innerHTML = feature ?
+				this._div.innerHTML = (feature ?
 					'<b>' + feature.properties.name + '</b>' +
-					'<br>'  + feature.properties.density + ' /mi<sup>2</sup>'
-					: 'Hover over a state';
+					': '  + feature.properties.density + ' /mi<sup>2</sup>'
+					: 'Hover over a state');
 			}
 		});
 
@@ -77,24 +73,32 @@
 		}
 
 		function highlightFeature(e) {
-			var style = L.Util.extend({}, defaultStyle, {
-				weight: 3,
-				color: '#555',
+			var layer = e.target;
+
+			layer.bringToFront().setStyle({
+				weight: 5,
+				color: '#666',
 				dashArray: ''
 			});
-			e.target.setStyle(style).bringToFront();
+
 			info.setFeature(e.target.feature);
 		}
 
 		function resetHighlight(e) {
 			e.target.setStyle(defaultStyle);
+
 			info.setFeature(null);
+		}
+
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
 		}
 
 		function onEachFeature(feature, layer) {
 			layer.feature = feature;
 			layer.on('mouseover', highlightFeature);
 			layer.on('mouseout', resetHighlight);
+			layer.on('click', zoomToFeature);
 		}
 
 		var geojson = L.geoJson(statesData, {
