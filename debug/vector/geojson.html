@@ -38,9 +38,6 @@
 		}).addTo(map);
 
 
-		L.control.scale().addTo(map);
-
-
 		var info = L.Util.extend(L.control(), {
 
 			onAdd: function (map) {
@@ -77,17 +74,20 @@
 		}
 
 		function highlightFeature(e) {
-			var style = L.Util.extend({}, defaultStyle, {
-				weight: 3,
-				color: '#555',
+			var layer = e.target;
+
+			layer.bringToFront().setStyle({
+				weight: 5,
+				color: '#666',
 				dashArray: ''
 			});
-			e.target.setStyle(style).bringToFront();
+
 			info.setFeature(e.target.feature);
 		}
 
 		function resetHighlight(e) {
 			e.target.setStyle(defaultStyle);
+
 			info.setFeature(null);
 		}
 
