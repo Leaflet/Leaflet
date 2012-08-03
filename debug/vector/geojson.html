@@ -8,6 +8,17 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
+	<style>
+		.state-info {
+			background: white;
+			padding: 5px 10px;
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+			font: 14px/1.5 Verdana, Tahoma, sans-serif;
+			text-align: right;
+		}
+	</style>
+
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -22,7 +33,7 @@
 
 		L.control.scale().addTo(map);
 
-		/*var info = L.control();
+		var info = L.control();
 
 		info.onAdd = function (map) {
 			var div = this._div = L.DomUtil.create('div', 'state-info');
@@ -32,13 +43,14 @@
 
 		info.setFeature = function (feature) {
 			if (feature) {
-				this._div.innerHTML = feature.properties.name;
+				this._div.innerHTML = '<b>' + feature.properties.name + '</b>' +
+						'<br>'  + feature.properties.density + ' /mi<sup>2</sup>';
 			} else {
-				this._div.innerHTML = 'Hover over a state to see stats.';
+				this._div.innerHTML = 'Hover over a state';
 			}
 		}
 
-		info.addTo(map);*/
+		info.addTo(map);
 
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
@@ -72,7 +84,7 @@
 				dashArray: ''
 			});
 			e.target.setStyle(style).bringToFront();
-			//info.setFeature(e.target.feature);
+			info.setFeature(e.target.feature);
 		}
 
 		function resetHighlight(e) {
@@ -82,6 +94,8 @@
 
 		function onEachFeature(feature, layer) {
 			//layer.bindPopup('<b>' + feature.properties.name + '</b>');
+
+			layer.feature = feature;
 
 			layer.on('mouseover click', highlightFeature);
 			layer.on('mouseout', resetHighlight);
