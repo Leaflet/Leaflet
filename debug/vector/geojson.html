@@ -31,30 +31,34 @@
 
 		var map = L.map('map').setView([37.8, -96.9], 4);
 
-		L.control.scale().addTo(map);
-
-		var info = L.control();
-
-		info.onAdd = function (map) {
-			var div = this._div = L.DomUtil.create('div', 'state-info');
-			info.setFeature(null);
-			return div;
-		}
-
-		info.setFeature = function (feature) {
-			this._div.innerHTML = feature ?
-				'<b>' + feature.properties.name + '</b>' +
-				'<br>'  + feature.properties.density + ' /mi<sup>2</sup>'
-				: 'Hover over a state';
-		}
-
-		info.addTo(map);
-
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			key: 'BC9A493B41014CAABB98F0471D759707',
 			styleId: 22677
 		}).addTo(map);
+
+
+		L.control.scale().addTo(map);
+
+
+		var info = L.Util.extend(L.control(), {
+
+			onAdd: function (map) {
+				var div = this._div = L.DomUtil.create('div', 'state-info');
+				info.setFeature(null);
+				return div;
+			},
+
+			setFeature: function (feature) {
+				this._div.innerHTML = feature ?
+					'<b>' + feature.properties.name + '</b>' +
+					'<br>'  + feature.properties.density + ' /mi<sup>2</sup>'
+					: 'Hover over a state';
+			}
+		});
+
+		info.addTo(map);
+
 
 		var defaultStyle = {
 			weight: 2,
@@ -65,14 +69,11 @@
 		};
 
 		function style(feature) {
-			var value = (Math.log(Math.min(feature.properties.density, 1000)) / Math.LN10) / 3,
-				fromHue = 180,
-				toHue = 0,
-				hue = Math.round(fromHue + value * (toHue - fromHue));
+			var value = Math.min((Math.log(feature.properties.density) / Math.LN10) / 3, 1),
+				hue = Math.round(160 * (1 - value)),
+				style = {fillColor: 'hsl(' + hue + ',90%,42%)'};
 
-			return L.Util.extend({}, defaultStyle, {
-				fillColor: 'hsl(' + hue + ',90%,42%)'
-			});
+			return L.Util.extend({}, defaultStyle, style);
 		}
 
 		function highlightFeature(e) {
@@ -91,11 +92,8 @@
 		}
 
 		function onEachFeature(feature, layer) {
-			//layer.bindPopup('<b>' + feature.properties.name + '</b>');
-
 			layer.feature = feature;
-
-			layer.on('mouseover click', highlightFeature);
+			layer.on('mouseover', highlightFeature);
 			layer.on('mouseout', resetHighlight);
 		}
 
