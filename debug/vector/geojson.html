@@ -12,40 +12,86 @@
 </head>
 <body>
 
-	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
-	<button id="populate">Populate with 10 markers</button>
+	<div id="map" style="height: 500px"></div>
+	<!--<input type="range" min="120" max="280" value="180" style="width: 800px" />-->
 
-	<script type="text/javascript" src="geojson-sample.js"></script>
+	<script type="text/javascript" src="us-states.js"></script>
 	<script type="text/javascript">
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
+		var map = L.map('map').setView([37.8, -96.9], 4);
 
-		var map = new L.Map('map', {
-			center: new L.LatLng(0.78, 102.37),
-			zoom: 7,
-			layers: [cloudmade]
-		});
+		L.control.scale().addTo(map);
 
-		var geojson = L.geoJson(geojsonSample, {
-			
-			style: function (feature) {
-				return {color: feature.properties.color};
-			},
+		/*var info = L.control();
 
-			onEachFeature: function (feature, layer) {
-				var popupText = 'geometry type: ' + feature.geometry.type;
+		info.onAdd = function (map) {
+			var div = this._div = L.DomUtil.create('div', 'state-info');
+			info.setFeature(null);
+			return div;
+		}
 
-				if (feature.properties.color) {
-					popupText += '<br/>color: ' + feature.properties.color
-				}
-
-				layer.bindPopup(popupText);
+		info.setFeature = function (feature) {
+			if (feature) {
+				this._div.innerHTML = feature.properties.name;
+			} else {
+				this._div.innerHTML = 'Hover over a state to see stats.';
 			}
-		});
+		}
 
-		map.addLayer(geojson);
+		info.addTo(map);*/
+
+		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
+			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			key: 'BC9A493B41014CAABB98F0471D759707',
+			styleId: 22677
+		}).addTo(map);
+
+		var defaultStyle = {
+			weight: 2,
+			opacity: 1,
+			color: 'white',
+			dashArray: '3 4',
+			fillOpacity: 1
+		};
+
+		function style(feature) {
+			var value = (Math.log(Math.min(feature.properties.density, 1000)) / Math.LN10) / 3,
+				fromHue = 180,
+				toHue = 0,
+				hue = Math.round(fromHue + value * (toHue - fromHue));
+
+			return L.Util.extend({}, defaultStyle, {
+				fillColor: 'hsl(' + hue + ',90%,44%)'
+			});
+		}
+
+		function highlightFeature(e) {
+			var style = L.Util.extend({}, defaultStyle, {
+				weight: 3,
+				color: '#555',
+				dashArray: ''
+			});
+			e.target.setStyle(style).bringToFront();
+			//info.setFeature(e.target.feature);
+		}
+
+		function resetHighlight(e) {
+			e.target.setStyle(defaultStyle);
+			info.setFeature(null);
+		}
+
+		function onEachFeature(feature, layer) {
+			//layer.bindPopup('<b>' + feature.properties.name + '</b>');
+
+			layer.on('mouseover click', highlightFeature);
+			layer.on('mouseout', resetHighlight);
+		}
+
+		var geojson = L.geoJson(statesData, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+
 	</script>
 </body>
 </html>
