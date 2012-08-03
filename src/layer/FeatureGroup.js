@@ -42,6 +42,14 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('setStyle', style);
 	},
 
+	bringToFront: function () {
+		return this.invoke('bringToFront');
+	},
+
+	bringToBack: function () {
+		return this.invoke('bringToBack');
+	},
+
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
 		this.eachLayer(function (layer) {
