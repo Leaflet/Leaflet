@@ -11,6 +11,7 @@ L.Path = L.Path.extend({
 		if (this._container) {
 			this._map._pathRoot.appendChild(this._container);
 		}
+		return this;
 	},
 
 	bringToBack: function () {
@@ -18,6 +19,7 @@ L.Path = L.Path.extend({
 			var root = this._map._pathRoot;
 			root.insertBefore(this._container, root.firstChild);
 		}
+		return this;
 	},
 
 	getPathString: function () {
