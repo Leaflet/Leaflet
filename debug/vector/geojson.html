@@ -15,13 +15,13 @@
 		}
 
 		.info {
-			background: rgba(255,255,255,0.8);
 			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
 			box-shadow: 0 0 15px rgba(0,0,0,0.2);
 			border-radius: 5px;
-			font: 14px/16px Arial, Helvetica, sans-serif;
 		}
-
 		.info h4 {
 			margin: 0 0 5px;
 			color: #777;
@@ -32,8 +32,7 @@
 			line-height: 18px;
 			color: #555;
 		}
-
-		.legend-color {
+		.legend i {
 			width: 18px;
 			height: 18px;
 			float: left;
@@ -56,33 +55,27 @@
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			key: 'BC9A493B41014CAABB98F0471D759707',
-			styleId: 22677
+			styleId: 998
 		}).addTo(map);
 
 
 		// control that shows state info on hover
 		var info = L.Util.extend(L.control(), {
+
 			onAdd: function (map) {
-				var div = this._div = L.DomUtil.create('div', 'info');
+				this._div = L.DomUtil.create('div', 'info');
 				this.update();
-				return div;
+				return this._div;
 			},
+
 			update: function (props) {
-				this._div.innerHTML = '<h4>US Population Density</h4>' + (props ?
-					'<b>' + props.name + '</b><br />' +
-					props.density + ' people / mi<sup>2</sup>'
+				this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
+					'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
 					: 'Hover over a state');
 			}
+
 		}).addTo(map);
 
-
-		var defaultStyle = {
-			weight: 2,
-			opacity: 1,
-			color: 'white',
-			dashArray: '3',
-			fillOpacity: 0.7
-		};
 
 		// get color depending on population density value
 		function getColor(d) {
@@ -97,9 +90,14 @@
 		}
 
 		function style(feature) {
-			return L.Util.extend({}, defaultStyle, {
+			return {
+				weight: 2,
+				opacity: 1,
+				color: 'white',
+				dashArray: '3',
+				fillOpacity: 0.7,
 				fillColor: getColor(feature.properties.density)
-			});
+			};
 		}
 
 		function highlightFeature(e) {
@@ -112,12 +110,13 @@
 				fillOpacity: 0.7
 			});
 
-			info.update(e.target.feature.properties);
+			info.update(layer.feature.properties);
 		}
 
-		function resetHighlight(e) {
-			e.target.setStyle(defaultStyle);
+		var geojson;
 
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
 			info.update();
 		}
 
@@ -126,13 +125,14 @@
 		}
 
 		function onEachFeature(feature, layer) {
-			layer.feature = feature;
-			layer.on('mouseover', highlightFeature);
-			layer.on('mouseout', resetHighlight);
-			layer.on('click', zoomToFeature);
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});
 		}
 
-		var geojson = L.geoJson(statesData, {
+		geojson = L.geoJson(statesData, {
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
@@ -140,20 +140,21 @@
 
 		// legend control
 		L.Util.extend(L.control({position: 'bottomright'}), {
+
 			onAdd: function (map) {
 				var div = L.DomUtil.create('div', 'info legend'),
 					grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-					html = '';
+					labels = [];
 
 				for (var i = 0; i < grades.length; i++) {
-					html +=
-						'<span class="legend-color" style="background:' + getColor(grades[i] + 1) + '"></span>' +
-						grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+') + '<br />';
+					labels.push('<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+						grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+'));
 				}
 
-				div.innerHTML = html;
+				div.innerHTML = labels.join('<br>');
 				return div;
 			}
+
 		}).addTo(map);
 
 	</script>
