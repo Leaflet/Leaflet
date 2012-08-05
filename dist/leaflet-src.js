@@ -244,92 +244,92 @@ var key = '_leaflet_events';
 L.Mixin = {};
 
 L.Mixin.Events = {
-	
-	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		var events = this[key] = this[key] || {},
-			type, i, len;
-		
-		// Types can be a map of types/handlers
-		if (typeof types === 'object') {
-			for (type in types) {
-				if (types.hasOwnProperty(type)) {
-					this.addEventListener(type, types[type], fn);
-				}
-			}
-			
-			return this;
-		}
-		
-		types = L.Util.splitWords(types);
-		
-		for (i = 0, len = types.length; i < len; i++) {
-			events[types[i]] = events[types[i]] || [];
-			events[types[i]].push({
-				action: fn,
-				context: context || this
-			});
-		}
-		
-		return this;
-	},
 
-	hasEventListeners: function (type) { // (String) -> Boolean
-		return (key in this) && (type in this[key]) && (this[key][type].length > 0);
-	},
+    addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+        var events = this[key] = this[key] || {},
+            type, i, len;
 
-	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
-		var events = this[key],
-			type, i, len, listeners, j;
-		
-		if (typeof types === 'object') {
-			for (type in types) {
-				if (types.hasOwnProperty(type)) {
-					this.removeEventListener(type, types[type], fn);
-				}
-			}
-			
-			return this;
-		}
-		
-		types = L.Util.splitWords(types);
+        // Types can be a map of types/handlers
+        if (typeof types === 'object') {
+            for (type in types) {
+                if (types.hasOwnProperty(type)) {
+                    this.addEventListener(type, types[type], fn);
+                }
+            }
 
-		for (i = 0, len = types.length; i < len; i++) {
+            return this;
+        }
 
-			if (this.hasEventListeners(types[i])) {
-				listeners = events[types[i]];
-				
-				for (j = listeners.length - 1; j >= 0; j--) {
-					if (
-						(!fn || listeners[j].action === fn) &&
-						(!context || (listeners[j].context === context))
-					) {
-						listeners.splice(j, 1);
-					}
-				}
-			}
-		}
-		
-		return this;
-	},
+        types = L.Util.splitWords(types);
 
-	fireEvent: function (type, data) { // (String[, Object])
-		if (!this.hasEventListeners(type)) {
-			return this;
-		}
+        for (i = 0, len = types.length; i < len; i++) {
+            events[types[i]] = events[types[i]] || [];
+            events[types[i]].push({
+                action: fn,
+                context: context || this
+            });
+        }
 
-		var event = L.Util.extend({
-			type: type,
-			target: this
-		}, data);
+        return this;
+    },
 
-		var listeners = this[key][type].slice();
+    hasEventListeners: function (type) { // (String) -> Boolean
+        return (key in this) && (type in this[key]) && (this[key][type].length > 0);
+    },
 
-		for (var i = 0, len = listeners.length; i < len; i++) {
-			listeners[i].action.call(listeners[i].context || this, event);
-		}
+    removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
+        var events = this[key],
+            type, i, len, listeners, j;
 
-		return this;
-	}
+        if (typeof types === 'object') {
+            for (type in types) {
+                if (types.hasOwnProperty(type)) {
+                    this.removeEventListener(type, types[type], fn);
+                }
+            }
+
+            return this;
+        }
+
+        types = L.Util.splitWords(types);
+
+        for (i = 0, len = types.length; i < len; i++) {
+
+            if (this.hasEventListeners(types[i])) {
+                listeners = events[types[i]];
+
+                for (j = listeners.length - 1; j >= 0; j--) {
+                    if (
+                        (!fn || listeners[j].action === fn) &&
+                            (!context || (listeners[j].context === context))
+                        ) {
+                        listeners.splice(j, 1);
+                    }
+                }
+            }
+        }
+
+        return this;
+    },
+
+    fireEvent: function (type, data) { // (String[, Object])
+        if (!this.hasEventListeners(type)) {
+            return this;
+        }
+
+        var event = L.Util.extend({
+            type: type,
+            target: this
+        }, data);
+
+        var listeners = this[key][type].slice();
+
+        for (var i = 0, len = listeners.length; i < len; i++) {
+            listeners[i].action.call(listeners[i].context || this, event);
+        }
+
+        return this;
+    }
 };
 
 L.Mixin.Events.on = L.Mixin.Events.addEventListener;
@@ -822,78 +822,78 @@ L.Util.extend(L.DomUtil, {
 
 
 /*
-	CM.LatLng represents a geographical point with latitude and longtitude coordinates.
-*/
+ CM.LatLng represents a geographical point with latitude and longtitude coordinates.
+ */
 
 L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
-	var lat = parseFloat(rawLat),
-		lng = parseFloat(rawLng);
+    var lat = parseFloat(rawLat),
+        lng = parseFloat(rawLng);
 
-	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
-	}
+    if (isNaN(lat) || isNaN(lng)) {
+        throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
+    }
 
-	if (noWrap !== true) {
-		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
-	}
+    if (noWrap !== true) {
+        lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
+        lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
+    }
 
-	this.lat = lat;
-	this.lng = lng;
+    this.lat = lat;
+    this.lng = lng;
 };
 
 L.Util.extend(L.LatLng, {
-	DEG_TO_RAD: Math.PI / 180,
-	RAD_TO_DEG: 180 / Math.PI,
-	MAX_MARGIN: 1.0E-9 // max margin of error for the "equals" check
+    DEG_TO_RAD: Math.PI / 180,
+    RAD_TO_DEG: 180 / Math.PI,
+    MAX_MARGIN: 1.0E-9 // max margin of error for the "equals" check
 });
 
 L.LatLng.prototype = {
-	equals: function (obj) { // (LatLng) -> Boolean
-		if (!obj) { return false; }
+    equals: function (obj) { // (LatLng) -> Boolean
+        if (!obj) { return false; }
 
-		obj = L.latLng(obj);
+        obj = L.latLng(obj);
 
-		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
-		return margin <= L.LatLng.MAX_MARGIN;
-	},
+        var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
+        return margin <= L.LatLng.MAX_MARGIN;
+    },
 
-	toString: function () { // -> String
-		return 'LatLng(' +
-				L.Util.formatNum(this.lat) + ', ' +
-				L.Util.formatNum(this.lng) + ')';
-	},
+    toString: function () { // -> String
+        return 'LatLng(' +
+            L.Util.formatNum(this.lat) + ', ' +
+            L.Util.formatNum(this.lng) + ')';
+    },
 
-	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
-	distanceTo: function (other) { // (LatLng) -> Number
-		other = L.latLng(other);
+    // Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
+    distanceTo: function (other) { // (LatLng) -> Number
+        other = L.latLng(other);
 
-		var R = 6378137, // earth radius in meters
-			d2r = L.LatLng.DEG_TO_RAD,
-			dLat = (other.lat - this.lat) * d2r,
-			dLon = (other.lng - this.lng) * d2r,
-			lat1 = this.lat * d2r,
-			lat2 = other.lat * d2r,
-			sin1 = Math.sin(dLat / 2),
-			sin2 = Math.sin(dLon / 2);
+        var R = 6378137, // earth radius in meters
+            d2r = L.LatLng.DEG_TO_RAD,
+            dLat = (other.lat - this.lat) * d2r,
+            dLon = (other.lng - this.lng) * d2r,
+            lat1 = this.lat * d2r,
+            lat2 = other.lat * d2r,
+            sin1 = Math.sin(dLat / 2),
+            sin2 = Math.sin(dLon / 2);
 
-		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
+        var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
 
-		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	}
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    }
 };
 
 L.latLng = function (a, b, c) { // (LatLng) or ([Number, Number]) or (Number, Number, Boolean)
-	if (a instanceof L.LatLng) {
-		return a;
-	}
-	if (a instanceof Array) {
-		return new L.LatLng(a[0], a[1]);
-	}
-	if (isNaN(a)) {
-		return a;
-	}
-	return new L.LatLng(a, b, c);
+    if (a instanceof L.LatLng) {
+        return a;
+    }
+    if (a instanceof Array) {
+        return new L.LatLng(a[0], a[1]);
+    }
+    if (isNaN(a)) {
+        return a;
+    }
+    return new L.LatLng(a, b, c);
 };
  
 
