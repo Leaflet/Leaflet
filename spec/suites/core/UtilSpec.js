@@ -59,6 +59,26 @@ describe('Util', function() {
 			
 			expect(id2).not.toEqual(id);
 		});
+		it('should force an id on the given object (when second arg provided) and return it', function() {
+			var a = {},
+				fid = "f2",
+				fid2 = "f3",
+				fid3 = 0,
+				id = L.Util.stamp(a,fid);
+			
+			expect(L.Util.stamp(a)).toEqual(id);
+			expect(L.Util.stamp(a)).toEqual(fid);
+			
+			L.Util.stamp(a, fid2); // restamp
+			
+			expect(L.Util.stamp(a)).toEqual(fid2);
+
+			L.Util.stamp(a, fid3); // allow zero as id
+		
+			expect(L.Util.stamp(a)).toEqual(fid3);
+
+
+		});
 	});
 
 	// TODO cancel/requestAnimFrame?

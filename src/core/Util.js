@@ -25,8 +25,10 @@ L.Util = {
 
 	stamp: (function () {
 		var lastId = 0, key = '_leaflet_id';
-		return function (/*Object*/ obj) {
-			obj[key] = obj[key] || ++lastId;
+		return function (/*Object*/ obj, forceId) {
+			/*jshint eqeqeq: false, eqnull: true */
+			obj[key] = forceId != null ? forceId : // assign an id when forceId not null or undefined
+				obj[key] != null ? obj[key] : ++lastId; // allow 0 as a key as well (but not null or undefined)
 			return obj[key];
 		};
 	}()),
