@@ -17,6 +17,8 @@ An in-progress version being developed on the master branch.
 
 ### Bugfixes
 
+ * Fixed a bug where tiles sometimes disappeared on initial map load on Android 2/3 (by [@danzel](https://github.com/danzel)). [#868](https://github.com/CloudMade/Leaflet/pull/868)
+ * Fixed a bug where map would occasionally flicker near the border on zoom or pan on Chrome.
  * Fixed a bug where `Path` `bringToFront` and `bringToBack` didn't return `this`.
 
 ## 0.4.2 (August 1, 2012)

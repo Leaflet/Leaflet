@@ -1347,7 +1347,8 @@ L.Map = L.Class.extend({
 		if (!this._loaded) { return this; }
 
 		var offset = oldSize.subtract(this.getSize()).divideBy(2, true);
-		if (animate) {
+
+		if (animate === true) {
 			this.panBy(offset);
 		} else {
 			this._rawPanBy(offset);
@@ -2236,10 +2237,12 @@ L.TileLayer = L.Class.extend({
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
 
-		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames), Safari 5.1.7, iOS 5.1.1,
-		// android browser (4.0) have display issues with top/left and requires transform instead
+		// Chrome 20 layouts much faster with top/left (Verify with timeline, frames)
+		// android 4 browser has display issues with top/left and requires transform instead
+		// android 3 browser not tested
+		// android 2 browser requires top/left or tiles disappear on load or first drag (reappear after zoom) https://github.com/CloudMade/Leaflet/issues/866
 		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
+		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome || L.Browser.android23);
 
 		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 
@@ -3532,6 +3535,14 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('setStyle', style);
 	},
 
+	bringToFront: function () {
+		return this.invoke('bringToFront');
+	},
+
+	bringToBack: function () {
+		return this.invoke('bringToBack');
+	},
+
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
 		this.eachLayer(function (layer) {
@@ -3680,6 +3691,7 @@ L.Path = L.Path.extend({
 		if (this._container) {
 			this._map._pathRoot.appendChild(this._container);
 		}
+		return this;
 	},
 
 	bringToBack: function () {
@@ -3687,6 +3699,7 @@ L.Path = L.Path.extend({
 			var root = this._map._pathRoot;
 			root.insertBefore(this._container, root.firstChild);
 		}
+		return this;
 	},
 
 	getPathString: function () {
@@ -5059,27 +5072,42 @@ L.GeoJSON = L.FeatureGroup.extend({
 			return this;
 		}
 
-		var options = this.options,
-		    style = options.style;
+		var options = this.options;
 
 		if (options.filter && !options.filter(geojson)) { return; }
 
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
+		layer.feature = geojson;
 
-		if (style) {
-			if (typeof style === 'function') {
-				style = style(geojson);
-			}
-			if (layer.setStyle) {
-				layer.setStyle(style);
-			}
-		}
+		this.resetStyle(layer);
 
 		if (options.onEachFeature) {
 			options.onEachFeature(geojson, layer);
 		}
 
 		return this.addLayer(layer);
+	},
+
+	resetStyle: function (layer) {
+		var style = this.options.style;
+		if (style) {
+			this._setLayerStyle(layer, style);
+		}
+	},
+
+	setStyle: function (style) {
+		this.eachLayer(function (layer) {
+			this._setLayerStyle(layer, style);
+		}, this);
+	},
+
+	_setLayerStyle: function (layer, style) {
+		if (typeof style === 'function') {
+			style = style(layer.feature);
+		}
+		if (layer.setStyle) {
+			layer.setStyle(style);
+		}
 	}
 });
 
@@ -5158,6 +5186,7 @@ L.Util.extend(L.GeoJSON, {
 L.geoJson = function (geojson, options) {
 	return new L.GeoJSON(geojson, options);
 };
+
 
 /*
  * L.DomEvent contains functions for working with DOM events.
@@ -7088,7 +7117,7 @@ L.Transition = L.Transition.extend({
 
 		this._el.style[L.Transition.DURATION] = this.options.duration + 's';
 		this._el.style[L.Transition.EASING] = this.options.easing;
-		this._el.style[L.Transition.PROPERTY] = propsList.join(', ');
+		this._el.style[L.Transition.PROPERTY] = 'all';
 
 		for (prop in props) {
 			if (props.hasOwnProperty(prop)) {
@@ -7096,9 +7125,10 @@ L.Transition = L.Transition.extend({
 			}
 		}
 
-		this._inProgress = true;
+		// Chrome flickers for some reason if you don't do this
+		L.Util.falseFn(this._el.offsetWidth);
 
-		this.fire('start');
+		this._inProgress = true;
 
 		if (L.Browser.mobileWebkit) {
 			// Set up a slightly delayed call to a backup event if webkitTransitionEnd doesn't fire properly
@@ -7354,11 +7384,16 @@ L.Map.mergeOptions({
 	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
 
+L.Map.addInitHook(function () {
+	L.DomEvent.on(this._mapPane, L.Transition.END, this._catchTransitionEnd, this);
+});
+
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_zoomToIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
+
 		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = this.getZoomScale(zoom),
@@ -7373,7 +7408,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		this._prepareTileBg();
+		this._animatingZoom = true;
 
 		this.fire('zoomanim', {
 			center: center,
@@ -7382,15 +7417,19 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var origin = this._getCenterLayerPoint().add(offset);
 
+		this._prepareTileBg();
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;
 	},
 
+	_catchTransitionEnd: function (e) {
+		if (this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
+	},
 
 	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
-		this._animatingZoom = true;
-
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
 
@@ -7404,29 +7443,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg.style[transform] += ' translate(0,0)';
 		}
 
-		var scaleStr;
-
-		// Android 2.* doesn't like translate/scale chains, transformOrigin + scale works better but
-		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
-
-		// TODO work around this prettier
-		if (L.Browser.android23) {
-			tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
-			scaleStr = 'scale(' + scale + ')';
-		} else {
-			scaleStr = L.DomUtil.getScaleString(scale, origin);
-		}
-
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
-		var options = {};
-		if (backwardsTransform) {
-			options[transform] = tileBg.style[transform] + ' ' + scaleStr;
-		} else {
-			options[transform] = scaleStr + ' ' + tileBg.style[transform];
-		}
+		var scaleStr = L.DomUtil.getScaleString(scale, origin),
+			oldTransform = tileBg.style[transform];
 
-		tileBg.transition.run(options);
+		tileBg.style[transform] = backwardsTransform ?
+			oldTransform + ' ' + scaleStr :
+			scaleStr + ' ' + oldTransform;
 	},
 
 	_prepareTileBg: function () {
@@ -7434,8 +7458,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg = this._tileBg;
 
 		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
-		// (disable this for Android due to it not supporting double translate)
-		if (!L.Browser.android23 && tileBg &&
+		if (tileBg &&
 				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
 				this._getLoadedTilesPercentage(tilePane) < 0.5) {
 
@@ -7462,14 +7485,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._tilePane = this._panes.tilePane = tileBg;
 		var newTileBg = this._tileBg = tilePane;
 
-		if (!newTileBg.transition) {
-			// TODO move to Map options
-			newTileBg.transition = new L.Transition(newTileBg, {
-				duration: 0.25,
-				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
-			});
-			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
-		}
+		L.DomUtil.addClass(newTileBg, 'leaflet-zoom-animated');
 
 		this._stopLoadingImages(newTileBg);
 	},
@@ -7506,7 +7522,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
-
 		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
