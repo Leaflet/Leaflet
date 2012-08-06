@@ -12,8 +12,8 @@ L.Map.Keyboard = L.Handler.extend({
 		right:   [39],
 		down:    [40],
 		up:      [38],
-		zoomIn:  [187, 61, 107],
-		zoomOut: [189, 109, 0]
+		zoomIn:  ['+'],
+		zoomOut: ['-']
 	},
 
 	initialize: function (map) {
@@ -71,6 +71,10 @@ L.Map.Keyboard = L.Handler.extend({
 		this._map.fire('blur');
 	},
 
+	/**
+	 * Sets up mapping from the arrow keys to an integer indicating how far the
+	 * map should pan on keyboard input.
+	 */
 	_setPanOffset: function (pan) {
 		var keys = this._panKeys = {},
 		    codes = this.keyCodes,
@@ -90,6 +94,10 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 	},
 
+	/**
+	 * Sets up mapping from the zoom keys to an integer indicating how far the
+	 * map should zoom in/out on keyboard input.
+	 */
 	_setZoomOffset: function (zoom) {
 		var keys = this._zoomKeys = {},
 			codes = this.keyCodes,
@@ -105,25 +113,58 @@ L.Map.Keyboard = L.Handler.extend({
 
 	_addHooks: function () {
 		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.addListener(document, 'keypress', this._onKeyPress, this);
 	},
 
 	_removeHooks: function () {
 		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.removeListener(document, 'keypress', this._onKeyPress, this);
 	},
 
+	/**
+	 * This method handles panning (arrow) key down events.
+	 *
+	 * Captures "keyDown" events from the browser. Note: This method fires for
+	 * both printable and non-printable characters. However we only handle
+	 * panning in this method. For zoom handling, see the _onKeyPress method.
+	 */
 	_onKeyDown: function (e) {
 		var key = e.keyCode;
 
 		if (this._panKeys.hasOwnProperty(key)) {
 			this._map.panBy(this._panKeys[key]);
-
-		} else if (this._zoomKeys.hasOwnProperty(key)) {
-			this._map.setZoom(this._map.getZoom() + this._zoomKeys[key]);
-
 		} else {
 			return;
 		}
 
+		// This kills any other input looking for keyboard input. Should we
+		// really stop propagation here? Maybe if we defer this binding until
+		// other map controls have rendered or stop propagation at some higher
+		// level?
+		L.DomEvent.stop(e);
+	},
+
+	/**
+	 * This method handles zooming (+/-) key press events.
+	 *
+	 * Captures "keyPress" events from the browser. Note: This method only fires
+	 * for printable characters. Specifically, this will _NOT_ fire when the
+	 * arrow keys are pressed.
+	 */
+	_onKeyPress: function (e) {
+		var key = e.charCode || e.keyCode,
+		character = String.fromCharCode(key);
+
+		if (this._zoomKeys.hasOwnProperty(character)) {
+			this._map.setZoom(this._map.getZoom() + this._zoomKeys[character]);
+		} else {
+			return;
+		}
+
+		// This kills any other input looking for keyboard input. Should we
+		// really stop propagation here? Maybe if we defer this binding until
+		// other map controls have rendered or stop propagation at some higher
+		// level?
 		L.DomEvent.stop(e);
 	}
 });
