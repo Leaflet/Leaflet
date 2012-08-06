@@ -7,7 +7,17 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+### Improvements
+
+ * Improved `GeoJSON` `setStyle` to also accept function (like the corresponding option).
+ * Added `GeoJSON` `resetStyle(layer)`, useful for resetting hover state.
+ * Added `feature` property to layers created with `GeoJSON` (containing the GeoJSON feature data).
+ * Added `FeatureGroup` `bringToFront` and `bringToBack` methods (so that they would work for multipolys).
  * Added optional `animate` argument to `Map` `invalidateSize` (by [@ajbeaven](https://github.com/ajbeaven)). [#857](https://github.com/CloudMade/Leaflet/pull/857)
+
+### Bugfixes
+
+ * Fixed a bug where `Path` `bringToFront` and `bringToBack` didn't return `this`.
 
 ## 0.4.2 (August 1, 2012)
 
