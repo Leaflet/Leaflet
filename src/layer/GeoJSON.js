@@ -1,79 +1,79 @@
-L.GeoJSON = L.FeatureGroup.extend({
-	statics: {
-		FeatureLayer: {
-			_properties: null,
-			getProperties: function () {
-				return this._properties ? this._properties : null;
-			},
-			getId: function () {
-				return L.Util.stamp(this);
-			},
-			_injectProps: function (properties) {
-				this._properties = properties instanceof Object ? L.Util.clone(properties) : null;
-			}
+(function () {
+	var FeatureLayer = {
+		_properties: null,
+		getProperties: function () {
+			return this._properties ? this._properties : null;
+		},
+		getId: function () {
+			return L.Util.stamp(this);
+		},
+		_injectProps: function (properties) {
+			this._properties = properties instanceof Object ? L.Util.clone(properties) : null;
 		}
-	},
-	initialize: function (geojson, options) {
-		L.Util.setOptions(this, options);
+	};
+	L.GeoJSON = L.FeatureGroup.extend({
+		initialize: function (geojson, options) {
+			L.Util.setOptions(this, options);
 
-		this._layers = {};
+			this._layers = {};
 
-		if (geojson) {
-			this.addData(geojson);
-		}
-	},
-
-	getLayerById: function (id) {
-		var ret = this._layers[id];
-		return ret !== undefined ? ret : null;
-	},
-
-	addData: function (geojson) {
-		var features = geojson instanceof Array ? geojson : geojson.type === "FeatureCollection" && geojson.features,
-		    i, len;
-
-		if (features) {
-			for (i = 0, len = features.length; i < len; i++) {
-				this.addData(features[i]);
+			if (geojson) {
+				this.addData(geojson);
 			}
-			return this;
-		}
+		},
 
-		var options = this.options,
-		    style = options.style;
+		getLayerById: function (id) {
+			var ret = this._layers[id];
+			return ret !== undefined ? ret : null;
+		},
 
-		if (options.filter && !options.filter(geojson)) { return; }
+		addData: function (geojson) {
+			var features = geojson instanceof Array ? geojson : geojson.type === "FeatureCollection" && geojson.features,
+				  i, len;
 
-		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
-
-		L.Util.extend(layer, this.constructor.FeatureLayer);
-
-		if (style) {
-			if (typeof style === 'function') {
-				style = style(geojson);
+			if (features) {
+				for (i = 0, len = features.length; i < len; i++) {
+					this.addData(features[i]);
+				}
+				return this;
 			}
-			if (layer.setStyle) {
-				layer.setStyle(style);
+
+			var options = this.options,
+				  style = options.style;
+
+			if (options.filter && !options.filter(geojson)) { return; }
+
+			var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
+
+			L.Util.extend(layer, FeatureLayer);
+
+			if (style) {
+				if (typeof style === 'function') {
+					style = style(geojson);
+				}
+				if (layer.setStyle) {
+					layer.setStyle(style);
+				}
 			}
-		}
 		
-		if (geojson.type === 'Feature') {
-			i = options.preserveId && undefined !== geojson.id ? geojson.id : undefined;
-			// if id is contained in feature and we should keep it, stamp it forced or else stamp as usual
-			L.Util.stamp(layer, i);
+			if (geojson.type === 'Feature') {
+				i = options.preserveId && undefined !== geojson.id ? geojson.id : undefined;
+				// if id is contained in feature and we should keep it, stamp it forced or else stamp as usual
+				L.Util.stamp(layer, i);
 
-			if (options.storeProps) {
-				layer._injectProps(geojson.properties);
+				if (options.storeProps) {
+					layer._injectProps(geojson.properties);
+				}
+
+				if (options.onEachFeature) {
+					options.onEachFeature(geojson, layer);
+				}
 			}
 
-			if (options.onEachFeature) {
-				options.onEachFeature(geojson, layer);
-			}
+			return this.addLayer(layer);
 		}
-
-		return this.addLayer(layer);
-	}
-});
+	});
+}());
 
 L.Util.extend(L.GeoJSON, {
 	geometryToLayer: function (geojson, pointToLayer) {
