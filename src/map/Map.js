@@ -212,7 +212,8 @@ L.Map = L.Class.extend({
 		if (!this._loaded) { return this; }
 
 		var offset = oldSize.subtract(this.getSize()).divideBy(2, true);
-		if (animate) {
+
+		if (animate === true) {
 			this.panBy(offset);
 		} else {
 			this._rawPanBy(offset);
