@@ -13,6 +13,11 @@
 <body>
 
 	<div id="map" style="width: 600px; height: 600px; border: 1px solid #ccc"></div>
+	
+	<div id="info">
+	Debug: <span id="debug1"></span>
+	</div>
+
 	<button id="populate">Populate with 10 markers</button>
 
 	<script type="text/javascript" src="geojson-sample.js"></script>
@@ -28,11 +33,15 @@
 			layers: [cloudmade]
 		});
 
+		var dbg1 = document.getElementById('debug1');
+
 		var geojson = L.geoJson(geojsonSample, {
 			
 			style: function (feature) {
 				return {color: feature.properties.color};
 			},
+
+			storeProps: true,
 
 			onEachFeature: function (feature, layer) {
 				var popupText = 'geometry type: ' + feature.geometry.type;
@@ -42,8 +51,37 @@
 				}
 
 				layer.bindPopup(popupText);
+
+				layer.on('click', onClick);
 			}
 		});
+
+		function dumpObj(obj) {
+			var i, str = new Array(), t = null;
+			if ( ! obj instanceof Object || obj === null)
+				return obj.toString();
+			for (i in obj) {
+				//if (obj.hasOwnProperty(i)) {
+					t = i + ": " + obj[i].toString();
+					str.push(t);
+				//}
+			}
+			return 'Obj: '+str.join(", ");
+		}
+		function onClick(e) {
+			var layer = e.target, val = null;
+		
+			if (layer.getProperties()) {
+				val = dumpObj(layer.getProperties());
+			}
+
+
+			if (dbg1) {
+				dbg1.innerHTML = val;
+			}
+
+			console.log(val);
+		}
 
 		map.addLayer(geojson);
 	</script>
