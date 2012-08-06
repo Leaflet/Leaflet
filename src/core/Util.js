@@ -16,6 +16,14 @@ L.Util = {
 		return dest;
 	},
 
+	// Create an object based on an existing object (effectively make methods and props accessible. Properties can not be modified on the original object) copied from Spine.js
+	clone: Object.create || function (o) { // (object) -> object
+		var Func;
+		Func = function () {};
+		Func.prototype = o;
+		return new Func();
+	},
+
 	bind: function (fn, obj) { // (Function, Object) -> Function
 		var args = arguments.length > 2 ? Array.prototype.slice.call(arguments, 2) : null;
 		return function () {
