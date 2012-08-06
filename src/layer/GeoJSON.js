@@ -1,4 +1,18 @@
 L.GeoJSON = L.FeatureGroup.extend({
+	statics: {
+		FeatureLayer: {
+			_properties: null,
+			getProperties: function () {
+				return this._properties ? this._properties : null;
+			},
+			getId: function () {
+				return L.Util.stamp(this);
+			},
+			_injectProps: function (properties) {
+				this._properties = properties instanceof Object ? L.Util.clone(properties) : null;
+			}
+		}
+	},
 	initialize: function (geojson, options) {
 		L.Util.setOptions(this, options);
 
@@ -7,6 +21,11 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (geojson) {
 			this.addData(geojson);
 		}
+	},
+
+	getLayerById: function (id) {
+		var ret = this._layers[id];
+		return ret !== undefined ? ret : null;
 	},
 
 	addData: function (geojson) {
@@ -27,6 +46,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
 
+		L.Util.extend(layer, this.constructor.FeatureLayer);
+
 		if (style) {
 			if (typeof style === 'function') {
 				style = style(geojson);
@@ -37,9 +58,12 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 		
 		if (geojson.type === 'Feature') {
-			if (options.preserveId && undefined !== (i = geojson.id)) {
-				// if id is contained in feature and we should keep it, stamp it now!
-				L.Util.stamp(layer, i);
+			i = options.preserveId && undefined !== geojson.id ? geojson.id : undefined;
+			// if id is contained in feature and we should keep it, stamp it forced or else stamp as usual
+			L.Util.stamp(layer, i);
+
+			if (options.storeProps) {
+				layer._injectProps(geojson.properties);
 			}
 
 			if (options.onEachFeature) {
