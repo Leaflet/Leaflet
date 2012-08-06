@@ -35,9 +35,16 @@ L.GeoJSON = L.FeatureGroup.extend({
 				layer.setStyle(style);
 			}
 		}
+		
+		if (geojson.type === 'Feature') {
+			if (options.preserveId && undefined !== (i = geojson.id)) {
+				// if id is contained in feature and we should keep it, stamp it now!
+				L.Util.stamp(layer, i);
+			}
 
-		if (options.onEachFeature) {
-			options.onEachFeature(geojson, layer);
+			if (options.onEachFeature) {
+				options.onEachFeature(geojson, layer);
+			}
 		}
 
 		return this.addLayer(layer);
