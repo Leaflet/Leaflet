@@ -60,21 +60,21 @@
 
 
 		// control that shows state info on hover
-		var info = L.Util.extend(L.control(), {
+		var info = L.control();
 
-			onAdd: function (map) {
-				this._div = L.DomUtil.create('div', 'info');
-				this.update();
-				return this._div;
-			},
+		info.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info');
+			this.update();
+			return this._div;
+		};
 
-			update: function (props) {
-				this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
-					'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
-					: 'Hover over a state');
-			}
+		info.update = function (props) {
+			this._div.innerHTML = '<h4>US Population Density</h4>' +  (props ?
+				'<b>' + props.name + '</b><br />' + props.density + ' people / mi<sup>2</sup>'
+				: 'Hover over a state');
+		};
 
-		}).addTo(map);
+		info.addTo(map);
 
 
 		// get color depending on population density value
@@ -137,25 +137,32 @@
 			onEachFeature: onEachFeature
 		}).addTo(map);
 
+		map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
-		// legend control
-		L.Util.extend(L.control({position: 'bottomright'}), {
 
-			onAdd: function (map) {
-				var div = L.DomUtil.create('div', 'info legend'),
-					grades = [0, 10, 20, 50, 100, 200, 500, 1000],
-					labels = [];
+		var legend = L.control({position: 'bottomright'});
 
-				for (var i = 0; i < grades.length; i++) {
-					labels.push('<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-						grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] : '+'));
-				}
+		legend.onAdd = function (map) {
 
-				div.innerHTML = labels.join('<br>');
-				return div;
+			var div = L.DomUtil.create('div', 'info legend'),
+				grades = [0, 10, 20, 50, 100, 200, 500, 1000],
+				labels = [],
+				from, to;
+
+			for (var i = 0; i < grades.length; i++) {
+				from = grades[i];
+				to = grades[i + 1];
+
+				labels.push(
+					'<i style="background:' + getColor(from + 1) + '"></i> ' +
+					from + (to ? '&ndash;' + to : '+'));
 			}
 
-		}).addTo(map);
+			div.innerHTML = labels.join('<br>');
+			return div;
+		};
+
+		legend.addTo(map);
 
 	</script>
 </body>
