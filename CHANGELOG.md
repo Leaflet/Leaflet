@@ -7,6 +7,10 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+ * No changes since the stable version yet.
+
+## 0.4.3 (August 7, 2012)
+
 ### Improvements
 
  * Improved `GeoJSON` `setStyle` to also accept function (like the corresponding option).
