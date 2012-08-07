@@ -21,7 +21,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4.3';
+L.version = '0.4.4';
 
 
 /*
@@ -7384,9 +7384,11 @@ L.Map.mergeOptions({
 	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
 
-L.Map.addInitHook(function () {
-	L.DomEvent.on(this._mapPane, L.Transition.END, this._catchTransitionEnd, this);
-});
+if (L.DomUtil.TRANSITION) {
+	L.Map.addInitHook(function () {
+		L.DomEvent.on(this._mapPane, L.Transition.END, this._catchTransitionEnd, this);
+	});
+}
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
