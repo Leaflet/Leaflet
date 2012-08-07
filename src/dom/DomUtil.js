@@ -121,7 +121,7 @@ L.DomUtil = {
 			value = Math.round(value * 100);
 
 			if (filter) {
-				filter.Enabled = (value === 100);
+				filter.Enabled = (value !== 100);
 				filter.Opacity = value;
 			} else {
 				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';

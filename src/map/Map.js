@@ -200,7 +200,7 @@ L.Map = L.Class.extend({
 		return this._layers.hasOwnProperty(id);
 	},
 
-	invalidateSize: function () {
+	invalidateSize: function (animate) {
 		var oldSize = this.getSize();
 
 		this._sizeChanged = true;
@@ -212,13 +212,17 @@ L.Map = L.Class.extend({
 		if (!this._loaded) { return this; }
 
 		var offset = oldSize.subtract(this.getSize()).divideBy(2, true);
-		this._rawPanBy(offset);
 
-		this.fire('move');
+		if (animate === true) {
+			this.panBy(offset);
+		} else {
+			this._rawPanBy(offset);
 
-		clearTimeout(this._sizeTimer);
-		this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
+			this.fire('move');
 
+			clearTimeout(this._sizeTimer);
+			this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
+		}
 		return this;
 	},
 

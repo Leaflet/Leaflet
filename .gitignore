@@ -6,3 +6,4 @@ tmp/**/*
 *.iml
 _site
 *.sublime-*
+_site
