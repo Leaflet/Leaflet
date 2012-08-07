@@ -26,8 +26,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		this._animatingZoom = true;
-
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom
@@ -50,6 +48,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
+		this._animatingZoom = true;
 
 		var transform = L.DomUtil.TRANSFORM,
 			tileBg = this._tileBg;
