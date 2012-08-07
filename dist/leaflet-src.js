@@ -21,7 +21,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4.2';
+L.version = '0.4.3';
 
 
 /*
@@ -6072,8 +6072,8 @@ L.Map.Keyboard = L.Handler.extend({
 		right:   [39],
 		down:    [40],
 		up:      [38],
-		zoomIn:  [187, 61, 107],
-		zoomOut: [189, 109, 0]
+		zoomIn:  [187, 107, 61],
+		zoomOut: [189, 109]
 	},
 
 	initialize: function (map) {
