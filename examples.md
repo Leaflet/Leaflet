@@ -40,7 +40,7 @@ In this tutorial, you'll learn how to create and interact with map vectors creat
 
 ### [Interactive Choropleth Map][7]
 
-A case study of creating a colorful interactive choropleth map of US States Population Density with GeoJSON and some custom controls. News websites will love this.
+A case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with GeoJSON and some custom controls. News websites will love this.
 
 ***
 [<img src="docs/images/layers-control.png" class="example-img bordered-img" />][6]

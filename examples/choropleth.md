@@ -34,7 +34,7 @@ css: "#map {
 
 ## Interactive Choropleth Map
 
-This is a case study of creating a colorful interactive choropleth map of US States Population Density with the help of [GeoJSON](geojson.html) and some [custom controls](../reference.html#icontrol) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
+This is a case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](geojson.html) and some [custom controls](../reference.html#icontrol) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
 
 The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/about/staff/ryan-murphy/) (also powered by Leaflet), created by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/).
 
