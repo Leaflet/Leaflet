@@ -615,9 +615,11 @@ var map = L.map('map', {
 		<td>Pans the map by a given number of pixels (animated).</td>
 	</tr>
 	<tr>
-		<td><code><b>invalidateSize</b>()</code></td>
+		<td><code><b>invalidateSize</b>(
+			<nobr>&lt;Boolean&gt; <i>animate?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically.</td>
+		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically. If <code>animate</code> is <code><span class="literal">true</span></code>, map animates the update.</td>
 	</tr>
 	<tr id="map-setmaxbounds">
 		<td><code><b>setMaxBounds</b>(
