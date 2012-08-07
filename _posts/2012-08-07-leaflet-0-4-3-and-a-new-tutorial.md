@@ -10,6 +10,8 @@ I've also written [a new tutorial](../../../examples/choropleth.html), inspired 
 
 Grab the new Leaflet 0.4.3 at the [download page](../../../download.html). Enjoy!
 
+**update**: IE9 regression was discovered in 0.4.3, so I had to release 0.4.4 with a fix. Sorry!
+
 ### 0.4.3 (August 7, 2012)
 
 #### Improvements
