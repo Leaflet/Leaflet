@@ -6,7 +6,7 @@ description: Leaflet 0.4.3 released with several bugfixes and improvements, and 
 
 Following the [Leaflet 0.4 release](leaflet-0-4-released.html), there were several minor bugfix releases over the past week, with Leaflet 0.4.3 released today. They contain fixes for some bugs that were discovered and also bring some improvements to the new GeoJSON API to make it even more flexible --- see the changelog below.
 
-I've also written [a new tutorial](../../../examples/choropleth.html), inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/about/staff/ryan-murphy/) by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/) (also powered by Leaflet). It will show you step-by-step how to create a beautiful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of GeoJSON and custom controls, and hopefully convince more major news and government websites to switch to Leaflet. :)
+I've also written [a new tutorial](../../../examples/choropleth.html), inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/library/data/us-senate-runoff-results-map/) by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/) (also powered by Leaflet). It will show you step-by-step how to create a beautiful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of GeoJSON and custom controls, and hopefully convince more major news and government websites to switch to Leaflet. :)
 
 Grab the new Leaflet 0.4.3 at the [download page](../../../download.html). Enjoy!
 
