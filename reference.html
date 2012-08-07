@@ -2635,6 +2635,16 @@ map.fitBounds(bounds);</code></pre>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the given path options to each layer of the group that has a <code>setStyle</code> method.</td>
 	</tr>
+	<tr>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the layer group to the top of all other layers.</td>
+	</tr>
+	<tr>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the layer group to the bottom of all other layers.</td>
+	</tr>
 </table>
 
 <h3>Events</h3>
@@ -2692,6 +2702,8 @@ map.fitBounds(bounds);</code></pre>
 		layer.bindPopup(feature.properties.description);
 	}
 }).addTo(map);</code></pre>
+
+<p>Each feature layer created by it gets a <code>feature</code> property that links to the GeoJSON feature data the layer was created from (so that you can access its properties later).</p>
 
 <h3>Constructor</h3>
 
@@ -2772,6 +2784,22 @@ map.fitBounds(bounds);</code></pre>
 
 		<td><code>Boolean</code></td>
 		<td>Adds a GeoJSON object to the layer.</td>
+	</tr>
+	<tr id="geojson-setstyle">
+		<td><code><b>setStyle</b>(
+			<nobr>&lt;Function&gt; <i><a href="#geojson-style">style</a></i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Changes styles of GeoJSON vector layers with the given style function.</td>
+	</tr>
+	<tr id="geojson-resetstyle">
+		<td><code><b>resetStyle</b>(
+			<nobr>&lt;<a href="#path">Path</a>&gt; <i>layer</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Resets the the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.</td>
 	</tr>
 </table>
 
