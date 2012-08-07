@@ -36,6 +36,13 @@ In this pretty tutorial, you'll learn how to easily define your own icons for us
 In this tutorial, you'll learn how to create and interact with map vectors created from [GeoJSON][5] objects.
 
 ***
+[<img src="docs/images/choropleth.png" class="example-img bordered-img" />][7]
+
+### [Interactive Choropleth Map][7]
+
+A case study of creating a colorful interactive choropleth map of US States Population Density with GeoJSON and some custom controls. News websites will love this.
+
+***
 [<img src="docs/images/layers-control.png" class="example-img bordered-img" />][6]
 
 ### [Layer Groups and Layers Control][6]
@@ -62,3 +69,4 @@ If you find that an important tutorial is missing here, let us know!
  [4]: examples/geojson.html
  [5]: http://geojson.org/
  [6]: examples/layers-control.html
+ [7]: examples/choropleth.html

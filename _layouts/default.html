@@ -38,6 +38,8 @@
 	<!--[if lte IE 8]><link rel="stylesheet" href="dist/leaflet.ie.css" /><![endif]-->
 	<script src="{{ root }}dist/leaflet.js"></script>
 
+	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
+
 	<script>
 		CM_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
