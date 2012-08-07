@@ -13,8 +13,8 @@ Besides the library itself, the download package contains full source code, unit
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.4.2">Leaflet 0.4.2</a></td>
-		<td>Stable version, released on August 1, 2012</td>
+		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.4.3">Leaflet 0.4.3</a></td>
+		<td>Stable version, released on August 7, 2012</td>
 	</tr>
 	<tr>
 		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.3.1">Leaflet 0.3.1</a></td>
@@ -35,12 +35,12 @@ Note that the master version can contain incompatible changes, so please read th
 The latest stable release of Leaflet is hosted on a CDN — to start using
 it straight away, place this code in the `head` section of your HTML:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.2/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.3/leaflet.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.2/leaflet.ie.css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.4.3/leaflet.ie.css" />
     <![endif]-->
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.4.2/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.4.3/leaflet.js"></script>
 
 ### Building Leaflet from the Source
 
