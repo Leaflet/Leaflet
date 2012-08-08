@@ -126,12 +126,12 @@ Now lets make the states highlighted visually in some way when they are hovered 
 			fillOpacity: 0.7
 		});
 
-		if (!L.Browser.ie) {
+		if (!L.Browser.ie && !L.Browser.opera) {
 			layer.bringToFront();
 		}
 	}
 
-Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states (but not for IE, since it has problems doing `bringToFront` on `mouseover`).
+Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states (but not for IE or Opera, since they have problems doing `bringToFront` on `mouseover`).
 
 Next we'll define what happens on `mouseout`:
 
