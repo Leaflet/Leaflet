@@ -8,16 +8,22 @@ L.Path = L.Path.extend({
 	},
 
 	bringToFront: function () {
-		if (this._container) {
-			this._map._pathRoot.appendChild(this._container);
+		var root = this._map._pathRoot,
+			path = this._container;
+
+		if (path && root.lastChild !== path) {
+			root.appendChild(path);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
-		if (this._container) {
-			var root = this._map._pathRoot;
-			root.insertBefore(this._container, root.firstChild);
+		var root = this._map._pathRoot,
+			path = this._container,
+			first = root.firstChild;
+
+		if (path && first !== path) {
+			root.insertBefore(path, first);
 		}
 		return this;
 	},
