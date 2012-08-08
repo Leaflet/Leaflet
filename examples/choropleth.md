@@ -330,7 +330,7 @@ Enjoy the result on [the top of this page](#map) or on a [separate page](choropl
 			fillOpacity: 0.7
 		});
 
-		if (!L.Browser.ie) {
+		if (!L.Browser.ie && !L.Browser.opera) {
 			layer.bringToFront();
 		}
 
