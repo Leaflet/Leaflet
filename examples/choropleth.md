@@ -119,15 +119,19 @@ Now lets make the states highlighted visually in some way when they are hovered 
 	function highlightFeature(e) {
 		var layer = e.target;
 
-		layer.bringToFront().setStyle({
+		layer.setStyle({
 			weight: 5,
 			color: '#666',
 			dashArray: '',
 			fillOpacity: 0.7
 		});
+
+		if (!L.Browser.ie) {
+			layer.bringToFront();
+		}
 	}
 
-Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states.
+Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states (but not for IE, since it has problems doing `bringToFront` on `mouseover`).
 
 Next we'll define what happens on `mouseout`:
 
@@ -319,12 +323,16 @@ Enjoy the result on [the top of this page](#map) or on a [separate page](choropl
 	function highlightFeature(e) {
 		var layer = e.target;
 
-		layer.bringToFront().setStyle({
+		layer.setStyle({
 			weight: 5,
 			color: '#666',
 			dashArray: '',
 			fillOpacity: 0.7
 		});
+
+		if (!L.Browser.ie) {
+			layer.bringToFront();
+		}
 
 		info.update(layer.feature.properties);
 	}
