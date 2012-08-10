@@ -19,9 +19,11 @@
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
 
-		'dom/transition/Transition.js',
-		'dom/transition/Transition.Native.js',
-		'dom/transition/Transition.Timer.js',
+		'dom/PosAnimation.js',
+		'dom/PosAnimation.Timer.js',
+		// 'dom/transition/Transition.js',
+		// 'dom/transition/Transition.Native.js',
+		// 'dom/transition/Transition.Timer.js',
 
 		'geo/LatLng.js',
 		'geo/LatLngBounds.js',

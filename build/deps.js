@@ -228,32 +228,27 @@ var deps = {
 	},
 
 
-	AnimationNative: {
-		src: ['dom/DomEvent.js',
-		      'dom/transition/Transition.js',
-		      'dom/transition/Transition.Native.js'],
-		desc: 'Animation core that uses CSS3 Transitions (for powering pan & zoom animations). Works on mobile webkit-powered browsers and some modern desktop browsers.',
-		heading: 'Visual effects'
+	AnimationPan: {
+		src: [
+			'dom/DomEvent.js',
+			'dom/PosAnimation.js',
+			'map/anim/Map.PanAnimation.js'
+			],
+		deps: ['AnimationPan'],
+		desc: 'Core panning animation support.'
 	},
 
 	AnimationTimer: {
-		src: ['dom/transition/Transition.Timer.js'],
-		deps: ['AnimationNative'],
-		desc: 'Timer-based animation fallback for browsers that don\'t support CSS3 transitions.'
-	},
-
-	AnimationPan: {
-		src: ['map/anim/Map.PanAnimation.js'],
+		src: ['dom/PosAnimation.Timer.js'],
 		deps: ['AnimationPan'],
-		desc: 'Panning animation. Can use both native and timer-based animation.'
+		desc: 'Timer-based pan animation fallback for browsers that don\'t support CSS3 transitions.'
 	},
 
 	AnimationZoom: {
 		src: ['map/anim/Map.ZoomAnimation.js'],
-		deps: ['AnimationPan', 'AnimationNative'],
-		desc: 'Smooth zooming animation. So far it works only on browsers that support CSS3 Transitions.'
+		deps: ['AnimationPan'],
+		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
 	},
-
 
 	Geolocation: {
 		src: ['map/ext/Map.Geolocation.js'],

@@ -60,7 +60,6 @@ L.Draggable = L.Class.extend({
 			return;
 		}
 
-		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
@@ -81,6 +80,8 @@ L.Draggable = L.Class.extend({
 		if (!this._moved) {
 			this.fire('dragstart');
 			this._moved = true;
+
+			this._startPos = L.DomUtil.getPosition(this._element).subtract(diffVec);
 
 			if (!L.Browser.touch) {
 				L.DomUtil.disableTextSelection();
