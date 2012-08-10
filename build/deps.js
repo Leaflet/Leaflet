@@ -53,7 +53,7 @@ var deps = {
 	},
 
 	Marker: {
-		src: ['layer/marker/Icon.js', 'layer/marker/Marker.js'],
+		src: ['layer/marker/Icon.js', 'layer/marker/Icon.Default.js', 'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
 
@@ -178,6 +178,11 @@ var deps = {
 	BoxZoom: {
 		src: ['map/handler/Map.BoxZoom.js'],
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
+	},
+
+	Keyboard: {
+		src: ['map/handler/Map.Keyboard.js'],
+		desc: 'Enables keyboard pan/zoom when the map is focused.'
 	},
 
 	MarkerDrag: {

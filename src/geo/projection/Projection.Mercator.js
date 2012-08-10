@@ -25,7 +25,7 @@ L.Projection.Mercator = {
 		return new L.Point(x, y);
 	},
 
-	unproject: function (point, unbounded) { // (Point, Boolean) -> LatLng
+	unproject: function (point) { // (Point, Boolean) -> LatLng
 		var d = L.LatLng.RAD_TO_DEG,
 			r = this.R_MAJOR,
 			r2 = this.R_MINOR,
@@ -46,6 +46,6 @@ L.Projection.Mercator = {
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, lng, unbounded);
+		return new L.LatLng(phi * d, lng, true);
 	}
 };

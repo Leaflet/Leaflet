@@ -34,7 +34,9 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_initMarkers: function () {
-		this._markerGroup = new L.LayerGroup();
+		if (!this._markerGroup) {
+			this._markerGroup = new L.LayerGroup();
+		}
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
@@ -105,10 +107,10 @@ L.Handler.PolyEdit = L.Handler.extend({
 		if (this._poly._latlngs.length < 3) {
 			return;
 		}
-		
+
 		var marker = e.target,
 		    i = marker._index;
-		
+
 		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
 		if (marker._prev && marker._next) {
 			this._createMiddleMarker(marker._prev, marker._next);
@@ -124,13 +126,14 @@ L.Handler.PolyEdit = L.Handler.extend({
 		if (marker._middleRight) {
 			this._markerGroup.removeLayer(marker._middleRight);
 		}
+		this._markers.splice(i, 1);
 		this._poly.spliceLatLngs(i, 1);
 		this._updateIndexes(i, -1);
 		this._poly.fire('edit');
 	},
 
 	_updateIndexes: function (index, delta) {
-		this._markerGroup._iterateLayers(function (marker) {
+		this._markerGroup.eachLayer(function (marker) {
 			if (marker._index > index) {
 				marker._index += delta;
 			}
@@ -157,6 +160,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 				.off('click', onClick)
 				.on('click', this._onMarkerClick, this);
 
+			latlng.lat = marker.getLatLng().lat;
+			latlng.lng = marker.getLatLng().lng;
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
 

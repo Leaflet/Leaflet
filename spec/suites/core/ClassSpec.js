@@ -46,23 +46,6 @@ describe("Class", function() {
 			expect(method).toHaveBeenCalled();
 		});
 		
-		/* superclass deprecated
-		it("should grant the ability to call parent methods, including constructor", function() {
-			var Klass2 = Klass.extend({
-				initialize: function() {},
-				bar: function() {}
-			});
-			
-			var b = new Klass2();
-			
-			expect(constructor).not.toHaveBeenCalled();
-			b.constructor.superclass.initialize.call(this);
-			expect(constructor).toHaveBeenCalled();
-
-			b.constructor.superclass.bar.call(this);
-			expect(method).toHaveBeenCalled();
-		}); */
-		
 		it("should support static properties", function() {
 			expect(Klass.bla).toEqual(1);
 		});
@@ -123,34 +106,9 @@ describe("Class", function() {
 				foo3: 4
 			});
 		});
-		
-		/* superclass deprecated
-		it("should have working superclass access with inheritance level > 2", function() {
-			var constructor2 = jasmine.createSpy("Klass2 constructor"),
-				constructor3 = jasmine.createSpy("Klass3 constructor");
-			
-			var Klass2 = Klass.extend({
-				initialize: function() {
-					constructor2();
-					expect(Klass2.superclass).toBe(Klass.prototype);
-					Klass2.superclass.initialize.apply(this, arguments);
-				}
-			});
-			
-			var Klass3 = Klass2.extend({
-				initialize: function() {
-					constructor3();
-					expect(Klass3.superclass).toBe(Klass2.prototype);
-					Klass3.superclass.initialize.apply(this, arguments);
-				}
-			});
-			
-			var a = new Klass3();
-			
-			expect(constructor3).toHaveBeenCalled();
-			expect(constructor2).toHaveBeenCalled();
-			expect(constructor).toHaveBeenCalled();
-		});
-		*/
 	});
+
+	// TODO Class.include
+
+	// TODO Class.mergeOptions
 });

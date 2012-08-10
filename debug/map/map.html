@@ -19,14 +19,15 @@
 
 	<script type="text/javascript">
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
-			latlng = new L.LatLng(50.5, 30.51);
+		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			key: 'BC9A493B41014CAABB98F0471D759707'
+		});
 
-		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
-
-		//map.on('click', function () { alert('hi'); });
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(cloudmade);
 
 		var markers = new L.FeatureGroup();
 

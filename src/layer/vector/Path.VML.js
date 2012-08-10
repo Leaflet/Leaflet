@@ -4,13 +4,17 @@
  */
 
 L.Browser.vml = (function () {
-	var div = document.createElement('div');
-	div.innerHTML = '<v:shape adj="1"/>';
+	try {
+		var div = document.createElement('div');
+		div.innerHTML = '<v:shape adj="1"/>';
 
-	var shape = div.firstChild;
-	shape.style.behavior = 'url(#default#VML)';
+		var shape = div.firstChild;
+		shape.style.behavior = 'url(#default#VML)';
 
-	return shape && (typeof shape.adj === 'object');
+		return shape && (typeof shape.adj === 'object');
+	} catch (e) {
+		return false;
+	}
 }());
 
 L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
@@ -34,8 +38,10 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 
 	_initPath: function () {
 		var container = this._container = this._createElement('shape');
-		container.className += ' leaflet-vml-shape' +
-				(this.options.clickable ? ' leaflet-clickable' : '');
+		L.DomUtil.addClass(container, 'leaflet-vml-shape');
+		if (this.options.clickable) {
+			L.DomUtil.addClass(container, 'leaflet-clickable');
+		}
 		container.coordsize = '1 1';
 
 		this._path = this._createElement('path');
@@ -45,21 +51,6 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 	},
 
 	_initStyle: function () {
-		var container = this._container,
-			stroke,
-			fill;
-
-		if (this.options.stroke) {
-			stroke = this._stroke = this._createElement('stroke');
-			stroke.endcap = 'round';
-			container.appendChild(stroke);
-		}
-
-		if (this.options.fill) {
-			fill = this._fill = this._createElement('fill');
-			container.appendChild(fill);
-		}
-
 		this._updateStyle();
 	},
 
@@ -73,14 +64,34 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 		container.filled = options.fill;
 
 		if (options.stroke) {
-			stroke.weight  = options.weight + 'px';
-			stroke.color   = options.color;
+			if (!stroke) {
+				stroke = this._stroke = this._createElement('stroke');
+				stroke.endcap = 'round';
+				container.appendChild(stroke);
+			}
+			stroke.weight = options.weight + 'px';
+			stroke.color = options.color;
 			stroke.opacity = options.opacity;
+			if (options.dashArray) {
+				stroke.dashStyle = options.dashArray.replace(/ *, */g, ' ');
+			} else {
+				stroke.dashStyle = '';
+			}
+		} else if (stroke) {
+			container.removeChild(stroke);
+			this._stroke = null;
 		}
 
 		if (options.fill) {
-			fill.color   = options.fillColor || options.color;
+			if (!fill) {
+				fill = this._fill = this._createElement('fill');
+				container.appendChild(fill);
+			}
+			fill.color = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
+		} else if (fill) {
+			container.removeChild(fill);
+			this._fill = null;
 		}
 	},
 

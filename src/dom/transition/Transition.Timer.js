@@ -12,11 +12,8 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		TIMER: true,
 
 		EASINGS: {
-			'ease': [0.25, 0.1, 0.25, 1.0],
-			'linear': [0.0, 0.0, 1.0, 1.0],
-			'ease-in': [0.42, 0, 1.0, 1.0],
-			'ease-out': [0, 0, 0.58, 1.0],
-			'ease-in-out': [0.42, 0, 0.58, 1.0]
+			'linear': function (t) { return t; },
+			'ease-out': function (t) { return t * (2 - t); }
 		},
 
 		CUSTOM_PROPS_GETTERS: {
@@ -35,12 +32,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 		this._el = el;
 		L.Util.extend(this.options, options);
 
-		var easings = L.Transition.EASINGS[this.options.easing] || L.Transition.EASINGS.ease;
-
-		this._p1 = new L.Point(0, 0);
-		this._p2 = new L.Point(easings[0], easings[1]);
-		this._p3 = new L.Point(easings[2], easings[3]);
-		this._p4 = new L.Point(1, 1);
+		this._easing = L.Transition.EASINGS[this.options.easing] || L.Transition.EASINGS['ease-out'];
 
 		this._step = L.Util.bind(this._step, this);
 		this._interval = Math.round(1000 / this.options.fps);
@@ -80,7 +72,7 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 			duration = this.options.duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._cubicBezier(elapsed / duration));
+			this._runFrame(this._easing(elapsed / duration));
 		} else {
 			this._runFrame(1);
 			this._complete();
@@ -109,18 +101,5 @@ L.Transition = L.Transition.NATIVE ? L.Transition : L.Transition.extend({
 	_complete: function () {
 		clearInterval(this._timer);
 		this.fire('end');
-	},
-
-	_cubicBezier: function (t) {
-		var a = Math.pow(1 - t, 3),
-			b = 3 * Math.pow(1 - t, 2) * t,
-			c = 3 * (1 - t) * Math.pow(t, 2),
-			d = Math.pow(t, 3),
-			p1 = this._p1.multiplyBy(a),
-			p2 = this._p2.multiplyBy(b),
-			p3 = this._p3.multiplyBy(c),
-			p4 = this._p4.multiplyBy(d);
-
-		return p1.add(p2).add(p3).add(p4).y;
 	}
 });

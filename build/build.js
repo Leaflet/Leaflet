@@ -43,19 +43,19 @@ exports.uglify = function (code) {
 	var pro = uglifyjs.uglify;
 
 	var ast = uglifyjs.parser.parse(code);
-	ast = pro.ast_mangle(ast);
-	ast = pro.ast_squeeze(ast, {keep_comps: false});
+	ast = pro.ast_mangle(ast, {mangle: true});
+	ast = pro.ast_squeeze(ast);
 	ast = pro.ast_squeeze_more(ast);
 
 	return pro.gen_code(ast) + ';';
 };
 
 exports.combineFiles = function (files) {
-	var content = '';
+	var content = '(function (window, undefined) {\n\n';
 	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i], 'utf8') + '\r\n\r\n';
+		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
 	}
-	return content;
+	return content + '\n\n}(this));';
 };
 
 exports.save = function (savePath, compressed) {

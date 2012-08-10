@@ -26,7 +26,7 @@
 
 		var map = new L.Map('map').addLayer(cloudmade).setView(new L.LatLng(50.5, 30.51), 15);
 
-		var marker = new L.Marker(new L.LatLng(50.5, 30.505));
+		var marker = new L.CircleMarker(new L.LatLng(50.5, 30.505), {color: 'red'});
 		map.addLayer(marker);
 		marker.bindPopup("Hello World").openPopup();
 

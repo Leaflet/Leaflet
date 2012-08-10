@@ -22,3 +22,7 @@ L.CircleMarker = L.Circle.extend({
 		return this.redraw();
 	}
 });
+
+L.circleMarker = function (latlng, options) {
+	return new L.CircleMarker(latlng, options);
+};

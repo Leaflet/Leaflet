@@ -31,63 +31,29 @@ L.Util = {
 		};
 	}()),
 
-
-	// TODO refactor: remove repetition
-
-	requestAnimFrame: (function () {
-		function timeoutDefer(callback) {
-			window.setTimeout(callback, 1000 / 60);
-		}
-
-		var requestFn = window.requestAnimationFrame ||
-			window.webkitRequestAnimationFrame ||
-			window.mozRequestAnimationFrame ||
-			window.oRequestAnimationFrame ||
-			window.msRequestAnimationFrame ||
-			timeoutDefer;
-
-		return function (callback, context, immediate, contextEl) {
-			callback = context ? L.Util.bind(callback, context) : callback;
-			if (immediate && requestFn === timeoutDefer) {
-				callback();
-			} else {
-				return requestFn.call(window, callback, contextEl);
-			}
-		};
-	}()),
-
-	cancelAnimFrame: (function () {
-		var requestFn = window.cancelAnimationFrame ||
-			window.webkitCancelRequestAnimationFrame ||
-			window.mozCancelRequestAnimationFrame ||
-			window.oCancelRequestAnimationFrame ||
-			window.msCancelRequestAnimationFrame ||
-			clearTimeout;
-
-		return function (handle) {
-			if (!handle) { return; }
-			return requestFn.call(window, handle);
-		};
-	}()),
-
 	limitExecByInterval: function (fn, time, context) {
-		var lock, execOnUnlock, args;
-		function exec() {
-			lock = false;
-			if (execOnUnlock) {
-				args.callee.apply(context, args);
-				execOnUnlock = false;
-			}
-		}
-		return function () {
-			args = arguments;
-			if (!lock) {
-				lock = true;
-				setTimeout(exec, time);
-				fn.apply(context, args);
-			} else {
+		var lock, execOnUnlock;
+
+		return function wrapperFn() {
+			var args = arguments;
+
+			if (lock) {
 				execOnUnlock = true;
+				return;
 			}
+
+			lock = true;
+
+			setTimeout(function () {
+				lock = false;
+
+				if (execOnUnlock) {
+					wrapperFn.apply(context, args);
+					execOnUnlock = false;
+				}
+			}, time);
+
+			fn.apply(context, args);
 		};
 	},
 
@@ -98,6 +64,10 @@ L.Util = {
 	formatNum: function (num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
+	},
+
+	splitWords: function (str) {
+		return str.replace(/^\s+|\s+$/g, '').split(/\s+/);
 	},
 
 	setOptions: function (obj, options) {
@@ -127,3 +97,49 @@ L.Util = {
 
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };
+
+(function () {
+
+	function getPrefixed(name) {
+		var i, fn,
+			prefixes = ['webkit', 'moz', 'o', 'ms'];
+
+		for (i = 0; i < prefixes.length && !fn; i++) {
+			fn = window[prefixes[i] + name];
+		}
+
+		return fn;
+	}
+
+	function timeoutDefer(fn) {
+		return window.setTimeout(fn, 1000 / 60);
+	}
+
+	var requestFn = window.requestAnimationFrame ||
+			getPrefixed('RequestAnimationFrame') || timeoutDefer;
+
+	var cancelFn = window.cancelAnimationFrame ||
+			getPrefixed('CancelAnimationFrame') ||
+			getPrefixed('CancelRequestAnimationFrame') ||
+			function (id) {
+				window.clearTimeout(id);
+			};
+
+
+	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
+		fn = L.Util.bind(fn, context);
+
+		if (immediate && requestFn === timeoutDefer) {
+			fn();
+		} else {
+			return requestFn.call(window, fn, element);
+		}
+	};
+
+	L.Util.cancelAnimFrame = function (id) {
+		if (id) {
+			cancelFn.call(window, id);
+		}
+	};
+
+}());

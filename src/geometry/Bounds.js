@@ -3,37 +3,55 @@
  */
 
 L.Bounds = L.Class.extend({
-	initialize: function (min, max) {	//(Point, Point) or Point[]
-		if (!min) {
-			return;
-		}
-		var points = (min instanceof Array ? min : [min, max]);
+
+	initialize: function (a, b) {	//(Point, Point) or Point[]
+		if (!a) { return; }
+
+		var points = b ? [a, b] : a;
+
 		for (var i = 0, len = points.length; i < len; i++) {
 			this.extend(points[i]);
 		}
 	},
 
 	// extend the bounds to contain the given point
-	extend: function (/*Point*/ point) {
+	extend: function (point) { // (Point)
+		point = L.point(point);
+
 		if (!this.min && !this.max) {
-			this.min = new L.Point(point.x, point.y);
-			this.max = new L.Point(point.x, point.y);
+			this.min = point.clone();
+			this.max = point.clone();
 		} else {
 			this.min.x = Math.min(point.x, this.min.x);
 			this.max.x = Math.max(point.x, this.max.x);
 			this.min.y = Math.min(point.y, this.min.y);
 			this.max.y = Math.max(point.y, this.max.y);
 		}
+		return this;
 	},
 
-	getCenter: function (round)/*->Point*/ {
+	getCenter: function (round) { // (Boolean) -> Point
 		return new L.Point(
 				(this.min.x + this.max.x) / 2,
 				(this.min.y + this.max.y) / 2, round);
 	},
 
-	contains: function (/*Bounds or Point*/ obj)/*->Boolean*/ {
+	getBottomLeft: function () { // -> Point
+		return new L.Point(this.min.x, this.max.y);
+	},
+
+	getTopRight: function () { // -> Point
+		return new L.Point(this.max.x, this.min.y);
+	},
+
+	contains: function (obj) { // (Bounds) or (Point) -> Boolean
 		var min, max;
+
+		if (typeof obj[0] === 'number' || obj instanceof L.Point) {
+			obj = L.point(obj);
+		} else {
+			obj = L.bounds(obj);
+		}
 
 		if (obj instanceof L.Bounds) {
 			min = obj.min;
@@ -48,7 +66,9 @@ L.Bounds = L.Class.extend({
 				(max.y <= this.max.y);
 	},
 
-	intersects: function (/*Bounds*/ bounds) {
+	intersects: function (bounds) { // (Bounds) -> Boolean
+		bounds = L.bounds(bounds);
+
 		var min = this.min,
 			max = this.max,
 			min2 = bounds.min,
@@ -61,3 +81,10 @@ L.Bounds = L.Class.extend({
 	}
 
 });
+
+L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
+	if (!a || a instanceof L.Bounds) {
+		return a;
+	}
+	return new L.Bounds(a, b);
+};

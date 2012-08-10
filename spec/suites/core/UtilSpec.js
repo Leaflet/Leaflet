@@ -60,4 +60,18 @@ describe('Util', function() {
 			expect(id2).not.toEqual(id);
 		});
 	});
+
+	// TODO cancel/requestAnimFrame?
+
+	// TODO limitExecByInterval
+
+	// TODO formatNum
+
+	// TODO splitWords
+
+	// TODO setOptions
+
+	// TODO getParamString
+
+	// TODO template
 });

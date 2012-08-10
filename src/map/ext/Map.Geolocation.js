@@ -17,10 +17,11 @@ L.Map.include({
 		options = this._locationOptions = L.Util.extend(this._defaultLocateOptions, options);
 
 		if (!navigator.geolocation) {
-			return this.fire('locationerror', {
+			this._handleGeolocationError({
 				code: 0,
 				message: "Geolocation not supported."
 			});
+			return this;
 		}
 
 		var onResponse = L.Util.bind(this._handleGeolocationResponse, this),
@@ -43,7 +44,7 @@ L.Map.include({
 
 	_handleGeolocationError: function (error) {
 		var c = error.code,
-			message =
+			message = error.message ||
 				(c === 1 ? "permission denied" :
 				(c === 2 ? "position unavailable" : "timeout"));
 
