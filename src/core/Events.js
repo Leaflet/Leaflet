@@ -8,7 +8,7 @@ L.Mixin = {};
 
 L.Mixin.Events = {
 	
-	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+	addEventListener: function (types, fn, context, once) { // (String, Function[, Object]) or (Object[, Object])
 		var events = this[key] = this[key] || {},
 			type, i, len;
 		
@@ -16,7 +16,7 @@ L.Mixin.Events = {
 		if (typeof types === 'object') {
 			for (type in types) {
 				if (types.hasOwnProperty(type)) {
-					this.addEventListener(type, types[type], fn);
+					this.addEventListener(type, types[type], fn, once);
 				}
 			}
 			
@@ -29,16 +29,21 @@ L.Mixin.Events = {
 			events[types[i]] = events[types[i]] || [];
 			events[types[i]].push({
 				action: fn,
-				context: context || this
+				context: context || this,
+                once: !!once
 			});
 		}
 		
 		return this;
 	},
 
+    addEventListenerOnce: function (/*String*/ type, /*Function*/ fn, /*(optional) Object*/ context) {
+        return this.addEventListener(type, fn, context, true);
+    },
+
 	hasEventListeners: function (type) { // (String) -> Boolean
 		return (key in this) && (type in this[key]) && (this[key][type].length > 0);
-	},
+	},    
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
 		var events = this[key],
@@ -91,10 +96,18 @@ L.Mixin.Events = {
 			listeners[i].action.call(listeners[i].context || this, event);
 		}
 
+        listeners = this[key][type];
+        for (i = listeners.length - 1; i >= 0; i--) {
+            if (listeners[i].once) {
+                listeners.splice(i, 1);
+            }
+        }
+
 		return this;
 	}
 };
 
 L.Mixin.Events.on = L.Mixin.Events.addEventListener;
+L.Mixin.Events.onOnce = L.Mixin.Events.addEventListenerOnce;
 L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
 L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
