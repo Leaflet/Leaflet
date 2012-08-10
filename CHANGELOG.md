@@ -7,10 +7,18 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+### Improvements
+
  * Replaced `L.Transition` with a much better and simpler `L.PosAnimation`.
  * Adjusted panning inertia to be more natural.
  * Improved panning animation performance in IE6-8.
+ * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
+ * Added optional `delta` argument to `Map` `zoomIn` and `zoomOut` (1 by default).
+
+### Bugfixes
+
  * Fixed a bug with pan animation where it jumped to its end position if you tried to drag the map.
+ * Fixed a bug with shift-clicking on a zoom button leading to unexpected result.
 
 ## 0.4.4 (August 7, 2012)
 

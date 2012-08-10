@@ -7,10 +7,20 @@ L.Control.Zoom = L.Control.extend({
 		var className = 'leaflet-control-zoom',
 		    container = L.DomUtil.create('div', className);
 
-		this._createButton('Zoom in', className + '-in', container, map.zoomIn, map);
-		this._createButton('Zoom out', className + '-out', container, map.zoomOut, map);
+		this._map = map;
+
+		this._createButton('Zoom in', className + '-in', container, this._zoomIn, this);
+		this._createButton('Zoom out', className + '-out', container, this._zoomOut, this);
 
 		return container;
+	},
+
+	_zoomIn: function (e) {
+		this._map.zoomIn(e.shiftKey ? 3 : 1);
+	},
+
+	_zoomOut: function (e) {
+		this._map.zoomOut(e.shiftKey ? 3 : 1);
 	},
 
 	_createButton: function (title, className, container, fn, context) {
@@ -19,10 +29,10 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 
 		L.DomEvent
-			.on(link, 'click', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
-			.on(link, 'click', fn, context)
-			.on(link, 'dblclick', L.DomEvent.stopPropagation);
+			.on(link, 'click', fn, context);
+
+		L.DomEvent.disableClickPropagation(link);
 
 		return link;
 	}
@@ -42,3 +52,4 @@ L.Map.addInitHook(function () {
 L.control.zoom = function (options) {
 	return new L.Control.Zoom(options);
 };
+
