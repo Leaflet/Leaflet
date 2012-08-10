@@ -62,6 +62,11 @@ var deps = {
 		deps: ['Marker'],
 		desc: 'Lightweight div-based icon for markers.'
 	},
+	
+	Text: {
+		src: ['layer/Text.js'],
+		desc: 'Used to display text in a particular place on map.'
+	},
 
 	Popup: {
 		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],

@@ -377,3 +377,8 @@
 .leaflet-popup-content {
 	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
 	}
+.leaflet-span {
+	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	display: block;
+	position: absolute;
+}
