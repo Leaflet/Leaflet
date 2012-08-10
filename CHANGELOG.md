@@ -19,6 +19,7 @@ An in-progress version being developed on the master branch.
 
  * Fixed a bug with pan animation where it jumped to its end position if you tried to drag the map.
  * Fixed a bug with shift-clicking on a zoom button leading to unexpected result.
+ * Fixed a bug where "Not implemented" error sometimes appeared in IE6-8 (by [@bryguy](https://github.com/bryguy) and [@lookfirst](https://github.com/lookfirst)). [#892](https://github.com/CloudMade/Leaflet/issues/892) [#893](https://github.com/CloudMade/Leaflet/pull/893)
 
 ## 0.4.4 (August 7, 2012)
 
