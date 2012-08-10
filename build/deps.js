@@ -48,7 +48,7 @@ var deps = {
 	},
 
 	ImageOverlay: {
-		src: ['layer/ImageOverlay.js'],
+		src: ['layer/ImageOverlayMixin.js', 'layer/ImageOverlay.js', 'layer/ImageOverlayCentered.js'],
 		desc: 'Used to display an image over a particular rectangular area of the map.'
 	},
 
@@ -61,6 +61,11 @@ var deps = {
 		src: ['layer/marker/DivIcon.js'],
 		deps: ['Marker'],
 		desc: 'Lightweight div-based icon for markers.'
+	},
+	
+	Text: {
+		src: ['layer/Text.js'],
+		desc: 'Used to display text in a particular place on map.'
 	},
 
 	Popup: {
