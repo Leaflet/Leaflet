@@ -48,7 +48,7 @@ var deps = {
 	},
 
 	ImageOverlay: {
-		src: ['layer/ImageOverlay.js'],
+		src: ['layer/ImageOverlayMixin.js', 'layer/ImageOverlay.js', 'layer/ImageOverlayCentered.js'],
 		desc: 'Used to display an image over a particular rectangular area of the map.'
 	},
 
