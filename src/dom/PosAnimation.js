@@ -1,11 +1,11 @@
 /*
- * L.PosAnimation is used by Leaflet internally for pan animations
+ * L.PosAnimation is used by Leaflet internally for pan animations.
  */
 
 L.PosAnimation = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	run: function (el, newPos, duration) {
+	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
 		this.stop();
 
 		this._el = el;
@@ -13,23 +13,30 @@ L.PosAnimation = L.Class.extend({
 
 		this.fire('start');
 
-		el.style[L.DomUtil.TRANSITION] = 'all ' + duration + 's ease-out';
+		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) + 's ' + (easing || 'ease-out');
 
 		L.DomEvent.on(el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
 		L.DomUtil.setPosition(el, newPos);
 
-		// Chrome flickers for some reason if you don't do this
+		// toggle reflow, Chrome flickers for some reason if you don't do this
 		L.Util.falseFn(el.offsetWidth);
+
+		// there's no native way to track value updates of tranisitioned properties, so we imitate this
+		this._stepTimer = setInterval(L.Util.bind(this.fire, this, 'step'), 50);
 	},
 
 	stop: function () {
 		if (!this._inProgress) { return; }
 
-		var pos = this._getPos();
+		// if we just removed the transition property, the element would jump to its final position,
+		// so we need to make it stay at the current position
 
-		L.DomUtil.setPosition(this._el, pos);
+		L.DomUtil.setPosition(this._el, this._getPos());
 		this._onTransitionEnd();
 	},
+
+	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
+	// we need to parse computed style (in case of transform it returns matrix string)
 
 	_transformRe: /(-?[\d\.]+), (-?[\d\.]+)\)/,
 
@@ -58,7 +65,9 @@ L.PosAnimation = L.Class.extend({
 
 		this._el.style[L.DomUtil.TRANSITION] = '';
 
-		this.fire('end');
+		clearInterval(this._stepTimer);
+
+		this.fire('step').fire('end');
 	}
 
 });

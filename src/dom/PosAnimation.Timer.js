@@ -1,17 +1,17 @@
 /*
  * L.PosAnimation fallback implementation that powers Leaflet pan animations
- * in browsers that don't support CSS3 Transitions
+ * in browsers that don't support CSS3 Transitions.
  */
 
-L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.Class.extend({
-	includes: L.Mixin.Events,
+L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 
-	run: function (el, newPos, duration) {
+	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
 		this.stop();
 
 		this._el = el;
 		this._inProgress = true;
-		this._duration = duration;
+		this._duration = duration || 0.25;
+		this._ease = this._easings[easing || 'ease-out'];
 
 		this._startPos = L.DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
@@ -30,7 +30,8 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.Class.extend({
 	},
 
 	_animate: function () {
-		this._animId = L.Util.requestAnimFrame(this._animate, this, false, this._el);
+		// animation loop
+		this._animId = L.Util.requestAnimFrame(this._animate, this);
 		this._step();
 	},
 
@@ -39,7 +40,7 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.Class.extend({
 			duration = this._duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._easeOut(elapsed / duration));
+			this._runFrame(this._ease(elapsed / duration));
 		} else {
 			this._runFrame(1);
 			this._complete();
@@ -49,16 +50,21 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.Class.extend({
 	_runFrame: function (progress) {
 		var pos = this._startPos.add(this._offset.multiplyBy(progress));
 		L.DomUtil.setPosition(this._el, pos);
+
 		this.fire('step');
 	},
 
 	_complete: function () {
 		L.Util.cancelAnimFrame(this._animId);
-		this.fire('end');
+
 		this._inProgress = false;
+		this.fire('end');
 	},
 
-	_easeOut: function (t) {
-		return t * (2 - t);
+	// easing functions, they map time progress to movement progress
+	_easings: {
+		'ease-out': function (t) { return t * (2 - t); },
+		'linear':   function (t) { return t; }
 	}
+
 });
