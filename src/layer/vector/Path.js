@@ -104,8 +104,8 @@ L.Map.include({
 		var p = L.Path.CLIP_PADDING,
 			size = this.getSize(),
 			panePos = L.DomUtil.getPosition(this._mapPane),
-			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)),
-			max = min.add(size.multiplyBy(1 + p * 2));
+			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)._round()),
+			max = min.add(size.multiplyBy(1 + p * 2)._round());
 
 		this._pathViewport = new L.Bounds(min, max);
 	}

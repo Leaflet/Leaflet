@@ -211,7 +211,7 @@ L.Map = L.Class.extend({
 
 		if (!this._loaded) { return this; }
 
-		var offset = oldSize.subtract(this.getSize()).divideBy(2, true);
+		var offset = oldSize._subtract(this.getSize())._divideBy(2)._round();
 
 		if (animate === true) {
 			this.panBy(offset);
@@ -318,7 +318,7 @@ L.Map = L.Class.extend({
 
 			this._sizeChanged = false;
 		}
-		return this._size;
+		return this._size.clone();
 	},
 
 	getPixelBounds: function () {
@@ -620,7 +620,7 @@ L.Map = L.Class.extend({
 	},
 
 	_getNewTopLeftPoint: function (center, zoom) {
-		var viewHalf = this.getSize().divideBy(2);
+		var viewHalf = this.getSize()._divideBy(2);
 		// TODO round on display, not calculation to increase precision?
 		return this.project(center, zoom)._subtract(viewHalf)._round();
 	},
@@ -631,7 +631,7 @@ L.Map = L.Class.extend({
 	},
 
 	_getCenterLayerPoint: function () {
-		return this.containerPointToLayerPoint(this.getSize().divideBy(2));
+		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
 	},
 
 	_getCenterOffset: function (center) {

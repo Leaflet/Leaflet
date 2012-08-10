@@ -8,10 +8,17 @@ L.Point = function (/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
 };
 
 L.Point.prototype = {
+
+	clone: function () {
+		return new L.Point(this.x, this.y);
+	},
+
+	// non-destructive, returns a new point
 	add: function (point) {
 		return this.clone()._add(L.point(point));
 	},
 
+	// destructive, used directly for performance in situations where it's safe to modify existing point
 	_add: function (point) {
 		this.x += point.x;
 		this.y += point.y;
@@ -22,35 +29,36 @@ L.Point.prototype = {
 		return this.clone()._subtract(L.point(point));
 	},
 
-	// destructive subtract (faster)
 	_subtract: function (point) {
 		this.x -= point.x;
 		this.y -= point.y;
 		return this;
 	},
 
-	divideBy: function (num, round) {
-		return new L.Point(this.x / num, this.y / num, round);
+	divideBy: function (num) {
+		return this.clone()._divideBy(num);
 	},
 
-	multiplyBy: function (num, round) {
-		return new L.Point(this.x * num, this.y * num, round);
+	_divideBy: function (num) {
+		this.x /= num;
+		this.y /= num;
+		return this;
 	},
 
-	distanceTo: function (point) {
-		point = L.point(point);
+	multiplyBy: function (num) {
+		return this.clone()._multiplyBy(num);
+	},
 
-		var x = point.x - this.x,
-			y = point.y - this.y;
-
-		return Math.sqrt(x * x + y * y);
+	_multiplyBy: function (num) {
+		this.x *= num;
+		this.y *= num;
+		return this;
 	},
 
 	round: function () {
 		return this.clone()._round();
 	},
 
-	// destructive round
 	_round: function () {
 		this.x = Math.round(this.x);
 		this.y = Math.round(this.y);
@@ -67,8 +75,13 @@ L.Point.prototype = {
 		return this;
 	},
 
-	clone: function () {
-		return new L.Point(this.x, this.y);
+	distanceTo: function (point) {
+		point = L.point(point);
+
+		var x = point.x - this.x,
+			y = point.y - this.y;
+
+		return Math.sqrt(x * x + y * y);
 	},
 
 	toString: function () {

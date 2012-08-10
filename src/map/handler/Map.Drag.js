@@ -80,7 +80,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onViewReset: function () {
-		var pxCenter = this._map.getSize().divideBy(2),
+		var pxCenter = this._map.getSize()._divideBy(2),
 			pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0, 0));
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;

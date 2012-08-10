@@ -205,6 +205,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
 		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
 
-		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
+		return map.layerPointToLatLng(p1._add(p2)._divideBy(2));
 	}
 });
