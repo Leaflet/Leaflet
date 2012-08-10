@@ -103,12 +103,16 @@
 		function highlightFeature(e) {
 			var layer = e.target;
 
-			layer.bringToFront().setStyle({
+			layer.setStyle({
 				weight: 5,
 				color: '#666',
 				dashArray: '',
 				fillOpacity: 0.7
 			});
+
+			if (!L.Browser.ie) {
+				layer.bringToFront();
+			}
 
 			info.update(layer.feature.properties);
 		}

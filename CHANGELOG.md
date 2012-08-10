@@ -7,7 +7,10 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
- * No changes since the stable version yet.
+ * Replaced `L.Transition` with a much better and simpler `L.PosAnimation`.
+ * Adjusted panning inertia to be more natural.
+ * Improved panning animation performance in IE6-8.
+ * Fixed a bug with pan animation where it jumped to its end position if you tried to drag the map.
 
 ## 0.4.4 (August 7, 2012)
 

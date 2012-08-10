@@ -4,7 +4,7 @@ L.Map.mergeOptions({
 
 if (L.DomUtil.TRANSITION) {
 	L.Map.addInitHook(function () {
-		L.DomEvent.on(this._mapPane, L.Transition.END, this._catchTransitionEnd, this);
+		L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 	});
 }
 

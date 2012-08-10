@@ -100,6 +100,8 @@ L.Util = {
 
 (function () {
 
+	// inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+
 	function getPrefixed(name) {
 		var i, fn,
 			prefixes = ['webkit', 'moz', 'o', 'ms'];
@@ -111,8 +113,14 @@ L.Util = {
 		return fn;
 	}
 
+	var lastTime = 0;
+
 	function timeoutDefer(fn) {
-		return window.setTimeout(fn, 1000 / 60);
+		var time = +new Date(),
+			timeToCall = Math.max(0, 16 - (time - lastTime));
+
+		lastTime = time + timeToCall;
+		return window.setTimeout(fn, timeToCall);
 	}
 
 	var requestFn = window.requestAnimationFrame ||
