@@ -365,9 +365,8 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;
 
-	box-shadow: 0 3px 10px #888;
-	-moz-box-shadow: 0 3px 10px #888;
-	-webkit-box-shadow: 0 3px 14px #999;
+	box-shadow: 0 3px 14px rgba(0,0,0,0.35);
+	-webkit-box-shadow: 0 3px 18px rgba(0,0,0,0.33);
 	}
 .leaflet-popup-content-wrapper {
 	-moz-border-radius: 20px;
