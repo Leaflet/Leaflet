@@ -20,6 +20,15 @@ L.Path.include({
 		return this;
 	},
 
+	unbindPopup: function () {
+		if (this._popup) {
+			this._popup = null;
+			this.off('click', this._openPopup);
+			this._openPopupAdded = false;
+		}
+		return this;
+	},
+
 	openPopup: function (latlng) {
 
 		if (this._popup) {
@@ -32,8 +41,18 @@ L.Path.include({
 		return this;
 	},
 
+	closePopup: function () {
+		if (this._popup) {
+			this._popup._close();
+		}
+
+		return this;
+	},
+
 	_openPopup: function (e) {
-		this._popup.setLatLng(e.latlng);
-		this._map.openPopup(this._popup);
+		if (this._popup) {
+			this._popup.setLatLng(e.latlng);
+			this._map.openPopup(this._popup);
+		}
 	}
 });
