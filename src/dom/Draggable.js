@@ -35,9 +35,12 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onDown: function (e) {
-		if ((!L.Browser.touch && e.shiftKey) || ((e.which !== 1) && (e.button !== 1) && !e.touches)) {
-			return;
-		}
+		if ((!L.Browser.touch && e.shiftKey) ||
+			((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+
+		L.DomEvent.preventDefault(e);
+
+		if (L.Draggable._disabled) { return; }
 
 		this._simulateClick = true;
 
@@ -48,8 +51,6 @@ L.Draggable = L.Class.extend({
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 			el = first.target;
-
-		L.DomEvent.preventDefault(e);
 
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');

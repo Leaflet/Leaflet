@@ -52,6 +52,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._animateToZoom = zoom;
 		this._animatingZoom = true;
 
+		if (L.Draggable) {
+			L.Draggable._disabled = true;
+		}
+
 		var transform = L.DomUtil.TRANSFORM,
 			tileBg = this._tileBg;
 
@@ -146,6 +150,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 		this._animatingZoom = false;
+
+		if (L.Draggable) {
+			L.Draggable._disabled = false;
+		}
 	},
 
 	_restoreTileFront: function () {

@@ -7,6 +7,11 @@ L.Map.include({
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (this._loaded && !forceReset && this._layers) {
+
+			if (this._panAnim) {
+				this._panAnim.stop();
+			}
+
 			var done = (zoomChanged ?
 					this._zoomToIfClose && this._zoomToIfClose(center, zoom) :
 					this._panByIfClose(center));
