@@ -22,8 +22,14 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
+		if (!this._startTime) {
+			this._startTime = +new Date();
+		}
+
+		var left = Math.max(40 - (+new Date() - this._startTime), 0);
+
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 40);
+		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -37,6 +43,8 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		delta = map._limitZoom(zoom + delta) - zoom;
 
 		this._delta = 0;
+
+		this._startTime = null;
 
 		if (!delta) { return; }
 

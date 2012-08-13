@@ -14,6 +14,7 @@ An in-progress version being developed on the master branch.
  * Improved panning animation performance in IE6-8.
  * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
  * Added optional `delta` argument to `Map` `zoomIn` and `zoomOut` (1 by default).
+ * Improved scroll wheel zoom to be more responsive.
 
 ### Bugfixes
 
