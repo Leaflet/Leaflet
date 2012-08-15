@@ -2,6 +2,8 @@
 layout: post
 title: Leaflet 0.4.3 and a New Tutorial
 description: Leaflet 0.4.3 released with several bugfixes and improvements, and comes with a new tutorial on creating a colorful interactive choropleth map.
+author: Vladimir Agafonkin
+authorsite: http://agafonkin.com/en
 ---
 
 Following the [Leaflet 0.4 release](leaflet-0-4-released.html), there were several minor bugfix releases over the past week, with Leaflet 0.4.3 released today. They contain fixes for some bugs that were discovered and also bring some improvements to the new GeoJSON API to make it even more flexible --- see the changelog below.

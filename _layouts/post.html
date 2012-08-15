@@ -8,7 +8,7 @@ post: true
 
 <h2>{{ page.title }}</h2>
 
-<p class="post-meta">Posted on {{ page.date | date_to_long_string }} by <a href="http://agafonkin.com/en">Vladimir Agafonkin</a></p>
+<p class="post-meta">Posted on {{ page.date | date_to_long_string }} by <a href="{{ page.authorsite }}">{{ page.author }}</a></p>
 
 {{ content }}
 
