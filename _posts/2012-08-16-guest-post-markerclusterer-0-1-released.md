@@ -11,11 +11,11 @@ When you zoom your map out, these markers all overlap and make the map look mess
 
 To improve this, many sites use marker clustering, one good example is at <a href="http://www.redfin.com/homes-for-sale">redfin</a>.
 
-We needed something like this, but in leaflet. So in the spirit of open source we developed it and released it so that everyone can take advantage of it.
+We needed something like this, but in Leaflet. In the spirit of open source we developed it and released it so that everyone can take advantage of it.
 
 So we proudly present <a href="https://github.com/danzel/Leaflet.markercluster">Leaflet.MarkerCluster</a>.
 
-<iframe src="http://danzel.github.com/Leaflet.markercluster/example/marker-clustering-realworld-mobile.388.html" style="height: 250px; width: 100%"></iframe>
+<iframe src="http://danzel.github.com/Leaflet.markercluster/example/marker-clustering-realworld-mobile.388.html" style="height: 350px; width: 100%"></iframe>
 
 
 The clusterer has all sorts of great built in behaviour:
@@ -34,12 +34,19 @@ Using the Marker Clusterer is easy, just replace your existing L.FeatureGroup us
 
     var markers = new L.MarkerClusterGroup();
 	markers.addLayer(new Marker([175.3107, -37.7784]));
-	//Add more markers
+	//Add more markers here...
 	map.addLayer(markers);
 
-You can also use all of the L.FeatureGroup event features for both individual markers and clusters:
+You can also use all of the L.FeatureGroup event features for both individual markers and clusters.
+
 	markers.on('clusterclick', function (a) { alert('Cluster Clicked'); });
 	markers.on('click', function (a) { alert('Marker Clicked'); });
+
+### Best Practices
+
+ *   To get the best performance from the clusterer you should add all of your markers to it before adding it to the map (like we did above).
+ *   If you are going to move a marker that is in a L.MarkerClusterGroup you must remove it first, then move it, then re-add it. If you move it while it is in the MarkerClusterGroup we can't track it and that marker will become lost.
+ *   Although the clusterer supports having markers added and removed from it while it is on the map it does not perform as well as when they are added while it is not on the map. If you need to do a large update to the markers in a MarkerClusterGroup you may want to remove it from the map, change the markers then re-add it.
 
 ### The Technical bits
 
@@ -49,8 +56,23 @@ The underlying clustering algorithm (MarkerClusterGroup._cluster) is plain greed
         if there is a cluster within the clustering distance, join it.
         else if there is an unclustered marker within the clustering distance, form a cluster with it.
 
-L.DistanceGrid provides some nice optimization in here (Contributed by mourner of course!).
-When clustering we need to compare every marker with every other marker to try form a cluster.
-To make this quicker we need to reduce the set of markers we need to compare with, L.DistanceGrid does this by putting all markers on to a grid with grid size the same as the distance we need to search.
+The first clustering step we do for the maximum (bottom most) zoom level, we then cluster all of the resulting markers and clusters to generate the next zoom level up and so on until we have reached the top.
+These clusters are stored in a tree (A cluster contains its child clusters) with good geospatial qualities. We use this tree to optimise identifying what markers and clusters are on screen at any particular zoom level.
+
+#### L.DistanceGrid
+
+L.DistanceGrid provides some nice optimization when clustering (Contributed by mourner of course!).
+
+To cluster the markers we need to compare every marker with every other marker to try form a cluster.
+To make this quicker we reduce the set of markers we need to compare with, L.DistanceGrid does this by putting all markers on a grid sized the same as the distance we need to search.
 Then when looking for a marker to cluster with we only need to look at markers in the grid square we are in and its immediate neighbours.
-This can be quite a big performance win as you will only look at markers that you are likely to form a cluster with. (<a href="https://github.com/danzel/Leaflet.markercluster/pull/29">check out the initial PR for numbers</a>)
+This can be quite a big performance win as we only look at markers that we are likely to form a cluster with. (<a href="https://github.com/danzel/Leaflet.markercluster/pull/29">check out the initial PR for numbers</a>)
+
+### Closing Words
+
+I hope you enjoy using the clusterer and get everything you want out of it. If you do use it in a public site please <a href="mailto:danzel@localhost.geek.nz">throw me an email</a> so I can check it out and potentially link it on the github site.
+
+If you have any issues also please log a bug on <a href="https://github.com/danzel/Leaflet.markercluster">the github page</a>.
+
+Enjoy!
+Dave Leaver.
