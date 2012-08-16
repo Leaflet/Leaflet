@@ -62,6 +62,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
 	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/sunng87/heatcanvas">HeatCanvas</a>
+		</td><td>
+			Simple heatmap api based on HTML5 canvas.
+		</td><td>
+			<a href="https://github.com/sunng87">Sun Ning</a>
+		</td>
+	</tr>
 </table>
 
 
