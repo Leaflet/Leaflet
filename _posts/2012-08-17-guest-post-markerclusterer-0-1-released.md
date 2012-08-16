@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Guest Post - Leaflet.MarkerClusterer 0.1 Released
+title: Guest Post - Leaflet.MarkerCluster 0.1 Released
 description: Leaflet now has its own MarkerClustering Plugin to reduce the visual clutter on your maps.
 author: Dave Leaver
 authorsite: https://github.com/danzel/
@@ -15,18 +15,20 @@ We needed something like this, but in Leaflet. In the spirit of open source we d
 
 So we proudly present <a href="https://github.com/danzel/Leaflet.markercluster">Leaflet.MarkerCluster</a>.
 
-<iframe src="http://danzel.github.com/Leaflet.markercluster/example/marker-clustering-realworld-mobile.388.html" style="height: 350px; width: 100%"></iframe>
+<div id="map" class="map" style="height: 350px"></div>
 
 
 The clusterer has all sorts of great built in behaviour:
 
  *   Markers that don't need clustering aren't and will be visible at the relevant levels.
- *   Cluster and markers that are further than a screen width from the view port are removed from the map to increase performance.
- *   Everything is brilliantly animated. As you zoom in and out you can logically see which clusters have become which markers.
+ *   When you mouse over a cluster the bounds of the marker within that cluster are shown.
+ *   Clicking a cluster will zoom you in to the bounds of its children.
  *   At the bottom zoom level if there are still clusters you can click on them to 'spiderfy' them, which shows the individual markers within the cluster. (Based on <a href="https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet">jawj's Overlapping MarkerSpidifer</a>)
- *   As with core Leaflet, everything works on Mobile and on the desktop is tested all the way back to IE7.
+ *   Everything is brilliantly animated. As you zoom in and out you can logically see which clusters have become which markers.
+ *   Cluster and markers that are further than a screen width from the view port are removed from the map to increase performance.
+ *   As with core Leaflet, everything works on Mobile and on the desktop is tested all the way back to IE6.
  *   It is based on L.FeatureGroup to provide the interaction for the markers contained with in it.
- *   Supports Adding and Removing Markers after being added to the map.
+ *   Supports Adding and Removing Markers after being added to the map (See Best Practices below!).
 
 ### Usage
 
@@ -44,7 +46,7 @@ You can also use all of the L.FeatureGroup event features for both individual ma
 
 ### Best Practices
 
- *   To get the best performance from the clusterer you should add all of your markers to it before adding it to the map (like we did above).
+ *   To get the best performance from the clusterer you should add all of your markers to it before adding it to the map (like we did in the example).
  *   If you are going to move a marker that is in a L.MarkerClusterGroup you must remove it first, then move it, then re-add it. If you move it while it is in the MarkerClusterGroup we can't track it and that marker will become lost.
  *   Although the clusterer supports having markers added and removed from it while it is on the map it does not perform as well as when they are added while it is not on the map. If you need to do a large update to the markers in a MarkerClusterGroup you may want to remove it from the map, change the markers then re-add it.
 
@@ -74,5 +76,34 @@ I hope you enjoy using the clusterer and get everything you want out of it. If y
 
 If you have any issues also please log a bug on <a href="https://github.com/danzel/Leaflet.markercluster">the github page</a>.
 
-Enjoy!
+Enjoy!<br />
 Dave Leaver.
+
+<link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/example/mobile.css" />
+
+<link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+<!--[if lte IE 8]><link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css" /><![endif]-->
+<script src="http://danzel.github.com/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src="http://danzel.github.com/Leaflet.markercluster/example/realworld.388.js"></script>
+
+<script>
+	var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+		cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade, Points &copy 2012 LINZ',
+		cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
+		latlng = new L.LatLng(-37.821, 175.22);
+
+	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
+
+	var markers = new L.MarkerClusterGroup();
+
+	for (var i = 0; i < addressPoints.length; i++) {
+		var a = addressPoints[i];
+		var title = a[2];
+		var marker = new L.Marker(new L.LatLng(a[0], a[1]), { title: title });
+		marker.bindPopup(title);
+		markers.addLayer(marker);
+	}
+
+	map.addLayer(markers);
+</script>
