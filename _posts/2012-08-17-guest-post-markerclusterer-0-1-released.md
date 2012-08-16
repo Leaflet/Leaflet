@@ -50,6 +50,10 @@ You can also use all of the L.FeatureGroup event features for both individual ma
  *   If you are going to move a marker that is in a L.MarkerClusterGroup you must remove it first, then move it, then re-add it. If you move it while it is in the MarkerClusterGroup we can't track it and that marker will become lost.
  *   Although the clusterer supports having markers added and removed from it while it is on the map it does not perform as well as when they are added while it is not on the map. If you need to do a large update to the markers in a MarkerClusterGroup you may want to remove it from the map, change the markers then re-add it.
 
+### Get it
+
+You can download the latest release on the <a href="https://github.com/danzel/Leaflet.markercluster/downloads">github download page</a>.
+
 ### The Technical bits
 
 The underlying clustering algorithm (MarkerClusterGroup._cluster) is plain greedy clustering.
