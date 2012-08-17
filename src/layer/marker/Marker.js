@@ -120,6 +120,7 @@ L.Marker = L.Class.extend({
 					.on(this._icon, 'mouseout', this._sendToBack, this);
 			}
 		}
+
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
 
@@ -167,7 +168,15 @@ L.Marker = L.Class.extend({
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
+		this._zIndex = pos.y + this.options.zIndexOffset;
+
+		// Update the icons z-index. If icon has been brought to the front then make sure to bring forward again
+		this._updateZIndex();
+	},
+
+	_updateZIndex: function() {
+		var offset = this._broughtToFrontOffset || 0;
+		this._icon.style.zIndex = this._zIndex + offset;
 	},
 
 	_animateZoom: function (opt) {
@@ -233,17 +242,15 @@ L.Marker = L.Class.extend({
 	},
 
 	_bringToFront: function () {
-		this._offsetIconZIndex(this.options.bringToFrontZOffset);
+		this._broughtToFrontOffset = this.options.bringToFrontZOffset;
+
+		this._updateZIndex();
 	},
 
 	_sendToBack: function () {
-		this._offsetIconZIndex(this.options.bringToFrontZOffset * -1);
-	},
+		this._broughtToFrontOffset = 0;
 
-	_offsetIconZIndex: function (offset) {
-		var icon = this._icon,
-			zIndex = parseInt(icon.style.zIndex, 10);
-		icon.style.zIndex = zIndex + offset;
+		this._updateZIndex();
 	}
 });
 
