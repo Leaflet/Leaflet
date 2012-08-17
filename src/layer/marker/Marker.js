@@ -170,7 +170,6 @@ L.Marker = L.Class.extend({
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
 
-		// Update the icons z-index. If icon has been brought to the front then make sure to bring forward again
 		this._updateZIndex();
 	},
 
