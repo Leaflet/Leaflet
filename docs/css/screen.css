@@ -258,6 +258,7 @@ td {
 	right: 0;
 	border: 0;
 	opacity: 0.3;
+	z-index: 2;
 
 	-webkit-filter: blur(1px);
 	-webkit-transform: scale(0.8);
