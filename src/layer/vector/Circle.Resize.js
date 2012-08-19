@@ -2,7 +2,7 @@
  * L.Handler.CircleDrag is used internally by L.Circle to make the circles draggable.
  */
 
-L.Handler.CircleDrag = L.Handler.extend({
+L.Handler.CircleResize = L.Handler.extend({
 	options: {
 		icon: new L.DivIcon({
 			iconSize: new L.Point(8, 8),
@@ -18,44 +18,53 @@ L.Handler.CircleDrag = L.Handler.extend({
 	addHooks: function () {
 		var icon = this.options.icon;
 		if (this._circle._map) {
-			this._dragHandler = new L.Marker(this._circle.getLatLng(), {
+			
+			// define handler (icon and position)
+			var bounds = this._circle.getBounds();
+			this._dragHandler = new L.Marker(bounds.getNorthEast(), {
 					icon: this.options.icon,
 					draggable: true
 				});
+			
+			// define handler events
 			this._dragHandler
 				.on('dragstart', this._onDragStart, this)
 				.on('drag', this._onDrag, this)
 				.on('dragend', this._onDragEnd, this);
 			
+			// display handler
 			this._markerGroup = new L.LayerGroup();
 			this._markerGroup.addLayer(this._dragHandler);
 			this._circle._map.addLayer(this._markerGroup);
+			
+			this._circle.on('drag', this._updateHandler, this);
 		}
 	},
 	
 	removeHooks: function () {
 		if (this._circle._map) {
+			this._circle.off('drag', this._updateHandler, this);
 			this._markerGroup.removeLayer(this._dragHandler);
 			delete this._markerGroup;
 		}
 	},
 	
-	_onDragStart: function (e) {
-		this._circle
-			.fire('movestart')
-			.fire('dragstart');
+	_moveHandler: function (e) {
+		this._dragHandler.setLatLng(e.latlng);
 	},
+	_updateHandler: function (e) {
+		var bounds = this._circle.getBounds();
+		this._dragHandler.setLatLng(bounds.getNorthEast());
+	},
+	
+	_onDragStart: function (e) { },
 
 	_onDrag: function (e) {
-		this._circle.setLatLng(e.target.getLatLng());
-		this._circle
-			.fire('move')
-			.fire('drag');
+		var circleCenter = this._circle.getLatLng(),
+			handlerPos = e.target.getLatLng();
+		this._circle.setRadius(circleCenter.distanceTo(handlerPos));
+		this._circle.fire('resize');
 	},
-
-	_onDragEnd: function () {
-		this._circle
-			.fire('moveend')
-			.fire('dragend');
-	}
+	
+	_onDragEnd: function () { }
 });

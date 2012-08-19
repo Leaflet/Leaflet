@@ -16,6 +16,14 @@ L.Circle = L.Path.extend({
 				this.dragging.enable();
 			}
 		}
+		
+		if (L.Handler.CircleResize) {
+			this.resizing = new L.Handler.CircleResize(this);
+
+			if (this.options.resizable) {
+				this.resizing.enable();
+			}
+		}
 	},
 
 	onAdd: function (map) {
@@ -23,6 +31,9 @@ L.Circle = L.Path.extend({
 
 		if (this.dragging && this.dragging.enabled()) {
 			this.dragging.addHooks();
+		}
+		if (this.resizing && this.resizing.enabled()) {
+			this.resizing.addHooks();
 		}
 	},
 	
