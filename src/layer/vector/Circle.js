@@ -8,8 +8,24 @@ L.Circle = L.Path.extend({
 
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
+		
+		if (L.Handler.CircleDrag) {
+			this.dragging = new L.Handler.CircleDrag(this);
+
+			if (this.options.draggable) {
+				this.dragging.enable();
+			}
+		}
 	},
 
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.dragging && this.dragging.enabled()) {
+			this.dragging.addHooks();
+		}
+	},
+	
 	options: {
 		fill: true
 	},
