@@ -14,6 +14,8 @@ To improve this, many sites use marker clustering, a technique of grouping marke
 
 <div id="map" class="map" style="height: 320px"></div>
 
+{:#plugin-features}
+### Features
 
 The clusterer has all sorts of great built in behaviour:
 
