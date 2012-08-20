@@ -123,7 +123,7 @@ bodyclass: api-page
 <!--<a href="#toc" id="back-to-top">&uarr;</a>-->
 
 <hr />
-<p>This reference reflects <strong>Leaflet 0.4.3</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/CloudMade/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a></p>
+<p>This reference reflects <strong>Leaflet 0.4.3</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/CloudMade/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.<br />Older docs for version 0.3 can be <a href="https://github.com/CloudMade/Leaflet/zipball/7fde9938fa36070191f939c9948285d7ddc07368">downloaded here</a></p>
 
 <h2 id="map-class">L.Map</h2>
 
@@ -3419,6 +3419,11 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td>The coordinates of the "tip" of the shadow (relative to its top left corner) (the same as <code>iconAnchor</code> if not specified).</td>
 	</tr>
 	<tr>
+		<td><code><b>popupAnchor</b></code></td>
+		<td><code><a href="#point">Point</a></code>
+		<td>The coordinates of the point from which popups will "open", relative to the icon anchor.</td>
+	</tr>
+	<tr>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code>
 		<td>A custom class name to assign to both icon and shadow images. Empty by default.</td>
@@ -3481,6 +3486,11 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code>
 		<td>A custom class name to assign to the icon. <code><span class="string">'leaflet-div-icon'</span></code> by default.</td>
+	</tr>
+	<tr>
+		<td><code><b>html</b></code></td>
+		<td><code>String</code>
+		<td>A custom HTML code to put inside the div element, empty by default.</td>
 	</tr>
 </table>
 
@@ -3600,7 +3610,7 @@ map.addControl(control);</code></pre>
 
 <h2 id="control-zoom">L.Control.Zoom</h2>
 
-<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code><span class="literal">false</span></code>. Extends <a href="control">Control</a>.</p>
+<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code><span class="literal">false</span></code>. Extends <a href="#control">Control</a>.</p>
 
 <h3>Constructor</h3>
 <table>
@@ -3643,7 +3653,7 @@ map.addControl(control);</code></pre>
 
 <h2 id="control-attribution">L.Control.Attribution</h2>
 
-<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code><span class="literal">false</span></code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Extends <a href="control">Control</a>.</p>
+<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code><span class="literal">false</span></code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Extends <a href="#control">Control</a>.</p>
 
 <h3>Constructor</h3>
 <table>
@@ -3721,7 +3731,7 @@ map.addControl(control);</code></pre>
 
 <h2 id="control-layers">L.Control.Layers</h2>
 
-<p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="examples/layers-control.html">detailed example</a>). Extends <a href="control">Control</a>.</p>
+<p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="examples/layers-control.html">detailed example</a>). Extends <a href="#control">Control</a>.</p>
 
 <pre><code>var baseLayers = {
 	"CloudMade": cloudmade,
@@ -5235,7 +5245,7 @@ draggable.enable();
 
 <p>The most important things know about when implementing custom layers are Map <a href="#map-viewreset">viewreset</a> event and <a href="#map-latlngtolayerpoint">latLngToLayerPoint</a> method. <code>viewreset</code> is fired when the map needs to reposition its layers (e.g. on zoom), and <code>latLngToLayerPoint</code> is used to get coordinates for the layer's new position.</p>
 
-<p>Another event often used in layer implementations is <a href="map-moveend">moveend</a> which fires after any movement of the map (panning, zooming, etc.).</p>
+<p>Another event often used in layer implementations is <a href="#map-moveend">moveend</a> which fires after any movement of the map (panning, zooming, etc.).</p>
 
 <p>Another thing to note is that you'll usually need to add <code>leaflet-zoom-hide</code> class to the DOM elements you create for the layer so that it hides during zoom animation. Implementing zoom animation for custom layers is a complex topic and will be documented separately in future, but meanwhile you can take a look at how it's done for Leaflet layers (e.g. <code>ImageOverlay</code>) in the source.</p>
 
