@@ -57,7 +57,7 @@ In the previous Leaflet version, pinch-zoom only worked on iOS devices, but now 
 
 #### Scale Control
 
-A simple, lightweight control that indicates the scale of the current map view in metric and/or imerial systems. As usual, you can customize its appearance with CSS. Take a look at the bottom left corner of the map above!
+A simple, lightweight control that indicates the scale of the current map view in metric and/or imperial systems. As usual, you can customize its appearance with CSS. Take a look at the bottom left corner of the map above!
 
 	L.control.scale().addTo(map);
 
