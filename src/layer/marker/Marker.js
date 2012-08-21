@@ -173,7 +173,7 @@ L.Marker = L.Class.extend({
 		this._updateZIndex();
 	},
 
-	_updateZIndex: function() {
+	_updateZIndex: function () {
 		var offset = this._broughtToFrontOffset || 0;
 		this._icon.style.zIndex = this._zIndex + offset;
 	},
