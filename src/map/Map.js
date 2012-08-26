@@ -363,6 +363,11 @@ L.Map = L.Class.extend({
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
+	reproject: function (crs, point, zoom, unbounded) { // (CRS, Point[, Number, Boolean]) -> Point
+		crs = (typeof crs === 'undefined' ? this.options.crs : crs);
+		return crs.project(this.unproject(point, zoom, unbounded));
+    },
+	
 	layerPointToLatLng: function (point) { // (Point)
 		var projectedPoint = L.point(point).add(this._initialTopLeftPoint);
 		return this.unproject(projectedPoint);

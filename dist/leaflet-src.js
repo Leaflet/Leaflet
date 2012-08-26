@@ -1542,6 +1542,11 @@ L.Map = L.Class.extend({
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
+	reproject: function (crs, point, zoom, unbounded) { // (CRS, Point[, Number, Boolean]) -> Point
+		crs = (typeof crs === 'undefined' ? this.options.crs : crs);
+		return crs.project(this.unproject(point, zoom, unbounded));
+    },
+	
 	layerPointToLatLng: function (point) { // (Point)
 		var projectedPoint = L.point(point).add(this._initialTopLeftPoint);
 		return this.unproject(projectedPoint);
@@ -1838,7 +1843,6 @@ L.Map.addInitHook = function (fn) {
 L.map = function (id, options) {
 	return new L.Map(id, options);
 };
-
 
 
 L.Projection.Mercator = {
@@ -2471,9 +2475,14 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	onAdd: function (map) {
-
+		
+		var crs = (typeof this.options.crs === 'undefined' ? map.options.crs : this.options.crs);
+		
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
-		this.wmsParams[projectionKey] = map.options.crs.code;
+		
+		delete this.wmsParams.crs;
+		
+		this.wmsParams[projectionKey] = crs.code;
 
 		L.TileLayer.prototype.onAdd.call(this, map);
 	},
@@ -2481,14 +2490,14 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
 
 		var map = this._map,
-			crs = map.options.crs,
+			crs = this.options.crs,
 			tileSize = this.options.tileSize,
 
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nw = crs.project(map.unproject(nwPoint, zoom)),
-			se = crs.project(map.unproject(sePoint, zoom)),
+			nw = map.reproject(crs, nwPoint, zoom, true),
+			se = map.reproject(crs, sePoint, zoom, true),
 
 			bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
@@ -2496,7 +2505,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
 	},
-
+	
 	setParams: function (params, noRedraw) {
 
 		L.Util.extend(this.wmsParams, params);
@@ -5924,7 +5933,7 @@ L.Map.TouchZoom = L.Handler.extend({
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
 			viewCenter = map._getCenterLayerPoint();
 
-		this._startCenter = p1._add(p2)._divideBy(2);
+		this._startCenter = p1.add(p2)._divideBy(2);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
