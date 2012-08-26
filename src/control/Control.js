@@ -24,6 +24,8 @@ L.Control = L.Class.extend({
 		if (map) {
 			map.addControl(this);
 		}
+
+		return this;
 	},
 
 	addTo: function (map) {
@@ -59,3 +61,6 @@ L.Control = L.Class.extend({
 	}
 });
 
+L.control = function (options) {
+	return new L.Control(options);
+};

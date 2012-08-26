@@ -8,12 +8,17 @@ L.Path = L.Class.extend({
 	statics: {
 		// how much to extend the clip area around the map view
 		// (relative to its size, e.g. 0.5 is half the screen in each direction)
-		CLIP_PADDING: 0.5
+		// set in such way that SVG element doesn't exceed 1280px (vector layers flicker on dragend if it is)
+		CLIP_PADDING: L.Browser.mobile ?
+			Math.max(0, Math.min(0.5,
+				(1280 / Math.max(window.innerWidth, window.innerHeight) - 1) / 2))
+			: 0.5
 	},
 
 	options: {
 		stroke: true,
 		color: '#0033ff',
+		dashArray: null,
 		weight: 5,
 		opacity: 0.5,
 
@@ -31,24 +36,44 @@ L.Path = L.Class.extend({
 	onAdd: function (map) {
 		this._map = map;
 
-		this._initElements();
-		this._initEvents();
+		if (!this._container) {
+			this._initElements();
+			this._initEvents();
+		}
+
 		this.projectLatlngs();
 		this._updatePath();
 
-		map
-			.on('viewreset', this.projectLatlngs, this)
-			.on('moveend', this._updatePath, this);
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
+
+		map.on({
+			'viewreset': this.projectLatlngs,
+			'moveend': this._updatePath
+		}, this);
+	},
+
+	addTo: function (map) {
+		map.addLayer(this);
+		return this;
 	},
 
 	onRemove: function (map) {
-		this._map = null;
-
 		map._pathRoot.removeChild(this._container);
 
-		map
-			.off('viewreset', this.projectLatlngs, this)
-			.off('moveend', this._updatePath, this);
+		this._map = null;
+
+		if (L.Browser.vml) {
+			this._container = null;
+			this._stroke = null;
+			this._fill = null;
+		}
+
+		map.off({
+			'viewreset': this.projectLatlngs,
+			'moveend': this._updatePath
+		}, this);
 	},
 
 	projectLatlngs: function () {
@@ -79,8 +104,8 @@ L.Map.include({
 		var p = L.Path.CLIP_PADDING,
 			size = this.getSize(),
 			panePos = L.DomUtil.getPosition(this._mapPane),
-			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)),
-			max = min.add(size.multiplyBy(1 + p * 2));
+			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)._round()),
+			max = min.add(size.multiplyBy(1 + p * 2)._round());
 
 		this._pathViewport = new L.Bounds(min, max);
 	}

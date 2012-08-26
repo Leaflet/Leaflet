@@ -33,6 +33,7 @@ L.Control.Attribution = L.Control.extend({
 	setPrefix: function (prefix) {
 		this.options.prefix = prefix;
 		this._update();
+		return this;
 	},
 
 	addAttribution: function (text) {
@@ -44,6 +45,8 @@ L.Control.Attribution = L.Control.extend({
 		this._attributions[text]++;
 
 		this._update();
+
+		return this;
 	},
 
 	removeAttribution: function (text) {
@@ -51,6 +54,8 @@ L.Control.Attribution = L.Control.extend({
 
 		this._attributions[text]--;
 		this._update();
+
+		return this;
 	},
 
 	_update: function () {
@@ -73,7 +78,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
+		this._container.innerHTML = prefixAndAttribs.join(' &#8212; ');
 	},
 
 	_onLayerAdd: function (e) {
@@ -98,3 +103,7 @@ L.Map.addInitHook(function () {
 		this.attributionControl = (new L.Control.Attribution()).addTo(this);
 	}
 });
+
+L.control.attribution = function (options) {
+	return new L.Control.Attribution(options);
+};

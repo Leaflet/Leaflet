@@ -1,5 +1,5 @@
 /*
- * L.DomUtil contains various utility functions for working with DOM
+ * L.DomUtil contains various utility functions for working with DOM.
  */
 
 L.DomUtil = {
@@ -8,48 +8,51 @@ L.DomUtil = {
 	},
 
 	getStyle: function (el, style) {
+
 		var value = el.style[style];
+
 		if (!value && el.currentStyle) {
 			value = el.currentStyle[style];
 		}
+
 		if (!value || value === 'auto') {
 			var css = document.defaultView.getComputedStyle(el, null);
 			value = css ? css[style] : null;
 		}
-		return (value === 'auto' ? null : value);
+
+		return value === 'auto' ? null : value;
 	},
 
 	getViewportOffset: function (element) {
+
 		var top = 0,
 			left = 0,
 			el = element,
-			docBody = document.body;
+			docBody = document.body,
+			pos;
 
 		do {
 			top += el.offsetTop || 0;
 			left += el.offsetLeft || 0;
+			pos = L.DomUtil.getStyle(el, 'position');
 
-			if (el.offsetParent === docBody &&
-					L.DomUtil.getStyle(el, 'position') === 'absolute') {
-				break;
-			}
-			if (L.DomUtil.getStyle(el, 'position') === 'fixed') {
-				top += docBody.scrollTop || 0;
+			if (el.offsetParent === docBody && pos === 'absolute') { break; }
+
+			if (pos === 'fixed') {
+				top  += docBody.scrollTop  || 0;
 				left += docBody.scrollLeft || 0;
 				break;
 			}
-
 			el = el.offsetParent;
+
 		} while (el);
 
 		el = element;
 
 		do {
-			if (el === docBody) {
-				break;
-			}
+			if (el === docBody) { break; }
 
-			top -= el.scrollTop || 0;
+			top  -= el.scrollTop  || 0;
 			left -= el.scrollLeft || 0;
 
 			el = el.parentNode;
@@ -59,15 +62,19 @@ L.DomUtil = {
 	},
 
 	create: function (tagName, className, container) {
+
 		var el = document.createElement(tagName);
 		el.className = className;
+
 		if (container) {
 			container.appendChild(el);
 		}
+
 		return el;
 	},
 
 	disableTextSelection: function () {
+
 		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
@@ -78,8 +85,10 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		document.onselectstart = this._onselectstart;
-		this._onselectstart = null;
+		if (this._onselectstart) {
+			document.onselectstart = this._onselectstart;
+			this._onselectstart = null;
+		}
 	},
 
 	hasClass: function (el, name) {
@@ -94,25 +103,43 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		el.className = el.className.replace(/(\S+)\s*/g, function (w, match) {
-			if (match === name) {
-				return '';
-			}
+
+		function replaceFn(w, match) {
+			if (match === name) { return ''; }
 			return w;
-		}).replace(/^\s+/, '');
+		}
+
+		el.className = el.className
+				.replace(/(\S+)\s*/g, replaceFn)
+				.replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
-		if (L.Browser.ie) {
-		    el.style.filter += value !== 1 ? 'alpha(opacity=' + Math.round(value * 100) + ')' : '';
-		} else {
+
+		if ('opacity' in el.style) {
 			el.style.opacity = value;
+
+		} else if (L.Browser.ie) {
+
+			var filter = false,
+				filterName = 'DXImageTransform.Microsoft.Alpha';
+
+			// filters collection throws an error if we try to retrieve a filter that doesn't exist
+			try { filter = el.filters.item(filterName); } catch (e) {}
+
+			value = Math.round(value * 100);
+
+			if (filter) {
+				filter.Enabled = (value !== 100);
+				filter.Opacity = value;
+			} else {
+				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
+			}
 		}
 	},
 
-	//TODO refactor away this ugly translate/position mess
-
 	testProp: function (props) {
+
 		var style = document.documentElement.style;
 
 		for (var i = 0; i < props.length; i++) {
@@ -124,12 +151,19 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		return L.DomUtil.TRANSLATE_OPEN +
-				point.x + 'px,' + point.y + 'px' +
-				L.DomUtil.TRANSLATE_CLOSE;
+		// on WebKit browsers (Chrome/Safari/iOS Safari/Android) using translate3d instead of translate
+		// makes animation smoother as it ensures HW accel is used. Firefox 13 doesn't care
+		// (same speed either way), Opera 12 doesn't support translate3d
+
+		var is3d = L.Browser.webkit3d,
+			open = 'translate' + (is3d ? '3d' : '') + '(',
+			close = (is3d ? ',0' : '') + ')';
+
+		return open + point.x + 'px,' + point.y + 'px' + close;
 	},
 
 	getScaleString: function (scale, origin) {
+
 		var preTranslateStr = L.DomUtil.getTranslateString(origin),
 			scaleStr = ' scale(' + scale + ') ',
 			postTranslateStr = L.DomUtil.getTranslateString(origin.multiplyBy(-1));
@@ -137,11 +171,17 @@ L.DomUtil = {
 		return preTranslateStr + scaleStr + postTranslateStr;
 	},
 
-	setPosition: function (el, point) {
+	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
+
 		el._leaflet_pos = point;
-		if (L.Browser.webkit3d) {
+
+		if (!disable3D && L.Browser.any3d) {
 			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
-			el.style['-webkit-backface-visibility'] = 'hidden';
+
+			// workaround for Android 2/3 stability (https://github.com/CloudMade/Leaflet/issues/69)
+			if (L.Browser.mobileWebkit3d) {
+				el.style.WebkitBackfaceVisibility = 'hidden';
+			}
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -149,14 +189,21 @@ L.DomUtil = {
 	},
 
 	getPosition: function (el) {
+		// this method is only used for elements previously positioned using setPosition,
+		// so it's safe to cache the position for performance
 		return el._leaflet_pos;
 	}
 };
 
-L.Util.extend(L.DomUtil, {
-	TRANSITION: L.DomUtil.testProp(['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']),
-	TRANSFORM: L.DomUtil.testProp(['transformProperty', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']),
 
-	TRANSLATE_OPEN: 'translate' + (L.Browser.webkit3d ? '3d(' : '('),
-	TRANSLATE_CLOSE: L.Browser.webkit3d ? ',0)' : ')'
-});
+// prefix style property names
+
+L.DomUtil.TRANSFORM = L.DomUtil.testProp(
+		['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
+
+L.DomUtil.TRANSITION = L.DomUtil.testProp(
+		['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
+
+L.DomUtil.TRANSITION_END =
+		L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
+		L.DomUtil.TRANSITION + 'End' : 'transitionend';

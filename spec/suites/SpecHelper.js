@@ -1,7 +1,5 @@
 function noSpecs() {
-	xit('should have specs', function() {
-		expect('specs').toBe();
-	});
+	xit('should have specs');
 }
 
 if (!Array.prototype.map) {

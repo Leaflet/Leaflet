@@ -6,12 +6,30 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	addLayer: function (layer) {
-		this._initEvents(layer);
+		if (this._layers[L.Util.stamp(layer)]) {
+			return this;
+		}
+
+		layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
 		if (this._popupContent && layer.bindPopup) {
 			layer.bindPopup(this._popupContent);
+		}
+
+		return this;
+	},
+
+	removeLayer: function (layer) {
+		layer.off('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+
+		L.LayerGroup.prototype.removeLayer.call(this, layer);
+
+		if (this._popupContent) {
+			return this.invoke('unbindPopup');
+		} else {
+			return this;
 		}
 	},
 
@@ -24,21 +42,20 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('setStyle', style);
 	},
 
+	bringToFront: function () {
+		return this.invoke('bringToFront');
+	},
+
+	bringToBack: function () {
+		return this.invoke('bringToBack');
+	},
+
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
-		this._iterateLayers(function (layer) {
+		this.eachLayer(function (layer) {
 			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
 		}, this);
 		return bounds;
-	},
-
-	_initEvents: function (layer) {
-		var events = ['click', 'dblclick', 'mouseover', 'mouseout'],
-			i, len;
-
-		for (i = 0, len = events.length; i < len; i++) {
-			layer.on(events[i], this._propagateEvent, this);
-		}
 	},
 
 	_propagateEvent: function (e) {
@@ -48,3 +65,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		this.fire(e.type, e);
 	}
 });
+
+L.featureGroup = function (layers) {
+	return new L.FeatureGroup(layers);
+};

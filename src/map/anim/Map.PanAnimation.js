@@ -1,22 +1,24 @@
 
-L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
+L.Map.include({
+
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
 
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (this._loaded && !forceReset && this._layers) {
-			// difference between the new and current centers in pixels
-			var offset = this._getNewTopLeftPoint(center).subtract(this._getTopLeftPoint());
 
-			center = new L.LatLng(center.lat, center.lng);
+			if (this._panAnim) {
+				this._panAnim.stop();
+			}
 
 			var done = (zoomChanged ?
-					this._zoomToIfCenterInView && this._zoomToIfCenterInView(center, zoom, offset) :
-					this._panByIfClose(offset));
+					this._zoomToIfClose && this._zoomToIfClose(center, zoom) :
+					this._panByIfClose(center));
 
 			// exit if animated pan or zoom started
 			if (done) {
+				clearTimeout(this._sizeTimer);
 				return this;
 			}
 		}
@@ -27,27 +29,28 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return this;
 	},
 
-	panBy: function (offset, options) {
+	panBy: function (offset, duration) {
+		offset = L.point(offset);
+
 		if (!(offset.x || offset.y)) {
 			return this;
 		}
 
-		if (!this._panTransition) {
-			this._panTransition = new L.Transition(this._mapPane);
+		if (!this._panAnim) {
+			this._panAnim = new L.PosAnimation();
 
-			this._panTransition.on('step', this._onPanTransitionStep, this);
-			this._panTransition.on('end', this._onPanTransitionEnd, this);
+			this._panAnim.on({
+				'step': this._onPanTransitionStep,
+				'end': this._onPanTransitionEnd
+			}, this);
 		}
-
-		L.Util.setOptions(this._panTransition, L.Util.extend({duration: 0.25}, options));
 
 		this.fire('movestart');
 
-		this._mapPane.className += ' leaflet-pan-anim';
+		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		this._panTransition.run({
-			position: L.DomUtil.getPosition(this._mapPane).subtract(offset)
-		});
+		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
+		this._panAnim.run(this._mapPane, newPos, duration || 0.25);
 
 		return this;
 	},
@@ -57,11 +60,14 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 	},
 
 	_onPanTransitionEnd: function () {
-		this._mapPane.className = this._mapPane.className.replace(/ leaflet-pan-anim/g, '');
+		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
 		this.fire('moveend');
 	},
 
-	_panByIfClose: function (offset) {
+	_panByIfClose: function (center) {
+		// difference between the new and current centers in pixels
+		var offset = this._getCenterOffset(center)._floor();
+
 		if (this._offsetIsWithinView(offset)) {
 			this.panBy(offset);
 			return true;

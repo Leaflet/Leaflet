@@ -2,13 +2,15 @@
 L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
-		position: 'topright'
+		position: 'topright',
+		autoZIndex: true
 	},
 
 	initialize: function (baseLayers, overlays, options) {
 		L.Util.setOptions(this, options);
 
 		this._layers = {};
+		this._lastZIndex = 0;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -56,21 +58,29 @@ L.Control.Layers = L.Control.extend({
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
 		} else {
-			L.DomEvent.addListener(container, 'click', L.DomEvent.stopPropagation);
+			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
 
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
 			L.DomEvent
-				.addListener(container, 'mouseover', this._expand, this)
-				.addListener(container, 'mouseout', this._collapse, this);
+				.on(container, 'mouseover', this._expand, this)
+				.on(container, 'mouseout', this._collapse, this);
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
 			link.title = 'Layers';
 
-			L.DomEvent.addListener(link, L.Browser.touch ? 'click' : 'focus', this._expand, this);
+			if (L.Browser.touch) {
+				L.DomEvent
+					.on(link, 'click', L.DomEvent.stopPropagation)
+					.on(link, 'click', L.DomEvent.preventDefault)
+					.on(link, 'click', this._expand, this);
+			}
+			else {
+				L.DomEvent.on(link, 'focus', this._expand, this);
+			}
 
 			this._map.on('movestart', this._collapse, this);
 			// TODO keyboard accessibility
@@ -87,11 +97,17 @@ L.Control.Layers = L.Control.extend({
 
 	_addLayer: function (layer, name, overlay) {
 		var id = L.Util.stamp(layer);
+
 		this._layers[id] = {
 			layer: layer,
 			name: name,
 			overlay: overlay
 		};
+
+		if (this.options.autoZIndex && layer.setZIndex) {
+			this._lastZIndex++;
+			layer.setZIndex(this._lastZIndex);
+		}
 	},
 
 	_update: function () {
@@ -117,18 +133,37 @@ L.Control.Layers = L.Control.extend({
 		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
 	},
 
-	_addItem: function (obj, onclick) {
-		var label = document.createElement('label');
+	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
+	_createRadioElement: function (name, checked) {
 
-		var input = document.createElement('input');
-		if (!obj.overlay) {
-			input.name = 'leaflet-base-layers';
+		var radioHtml = '<input type="radio" name="' + name + '"';
+		if (checked) {
+			radioHtml += ' checked="checked"';
 		}
-		input.type = obj.overlay ? 'checkbox' : 'radio';
-		input.layerId = L.Util.stamp(obj.layer);
-		input.defaultChecked = this._map.hasLayer(obj.layer);
+		radioHtml += '/>';
 
-		L.DomEvent.addListener(input, 'click', this._onInputClick, this);
+		var radioFragment = document.createElement('div');
+		radioFragment.innerHTML = radioHtml;
+
+		return radioFragment.firstChild;
+	},
+
+	_addItem: function (obj) {
+		var label = document.createElement('label'),
+		    input,
+		    checked = this._map.hasLayer(obj.layer);
+
+		if (obj.overlay) {
+			input = document.createElement('input');
+			input.type = 'checkbox';
+			input.defaultChecked = checked;
+		} else {
+			input = this._createRadioElement('leaflet-base-layers', checked);
+		}
+
+		input.layerId = L.Util.stamp(obj.layer);
+
+		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
 		var name = document.createTextNode(' ' + obj.name);
 
@@ -164,3 +199,7 @@ L.Control.Layers = L.Control.extend({
 		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
 	}
 });
+
+L.control.layers = function (baseLayers, overlays, options) {
+	return new L.Control.Layers(baseLayers, overlays, options);
+};

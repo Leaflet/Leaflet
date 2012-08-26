@@ -19,9 +19,11 @@
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
 
-		'dom/transition/Transition.js',
-		'dom/transition/Transition.Native.js',
-		'dom/transition/Transition.Timer.js',
+		'dom/PosAnimation.js',
+		'dom/PosAnimation.Timer.js',
+		// 'dom/transition/Transition.js',
+		// 'dom/transition/Transition.Native.js',
+		// 'dom/transition/Transition.Timer.js',
 
 		'geo/LatLng.js',
 		'geo/LatLngBounds.js',
@@ -51,6 +53,7 @@
 		'map/handler/Map.DoubleClickZoom.js',
 		'map/handler/Map.ScrollWheelZoom.js',
 		'map/handler/Map.BoxZoom.js',
+		'map/handler/Map.Keyboard.js',
 
 		'layer/LayerGroup.js',
 		'layer/FeatureGroup.js',
@@ -62,6 +65,7 @@
 		'layer/Popup.js',
 
 		'layer/marker/Icon.js',
+		'layer/marker/Icon.Default.js',
 		'layer/marker/DivIcon.js',
 		'layer/marker/Marker.js',
 		'layer/marker/Marker.Popup.js',
@@ -109,7 +113,7 @@
     for (var i = 0; i < scripts.length; i++) {
 		document.writeln("<script src='" + path + scripts[i] + "'></script>");
 	}
-    document.writeln('<script>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
+    document.writeln('<script defer>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();
 
 function getRandomLatLng(map) {

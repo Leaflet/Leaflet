@@ -8,12 +8,12 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.addListener(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.removeListener(this._map._container, 'mousewheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll);
 	},
 
 	_onWheelScroll: function (e) {
@@ -22,8 +22,14 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
+		if (!this._startTime) {
+			this._startTime = +new Date();
+		}
+
+		var left = Math.max(40 - (+new Date() - this._startTime), 0);
+
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), 50);
+		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -38,22 +44,24 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 		this._delta = 0;
 
+		this._startTime = null;
+
 		if (!delta) { return; }
 
-		var newCenter = this._getCenterForScrollWheelZoom(this._lastMousePos, delta),
-			newZoom = zoom + delta;
+		var newZoom = zoom + delta,
+			newCenter = this._getCenterForScrollWheelZoom(newZoom);
 
 		map.setView(newCenter, newZoom);
 	},
 
-	_getCenterForScrollWheelZoom: function (mousePos, delta) {
+	_getCenterForScrollWheelZoom: function (newZoom) {
 		var map = this._map,
-			centerPoint = map.getPixelBounds().getCenter(),
-			viewHalf = map.getSize().divideBy(2),
-			centerOffset = mousePos.subtract(viewHalf).multiplyBy(1 - Math.pow(2, -delta)),
-			newCenterPoint = centerPoint.add(centerOffset);
+			scale = map.getZoomScale(newZoom),
+			viewHalf = map.getSize()._divideBy(2),
+			centerOffset = this._lastMousePos._subtract(viewHalf)._multiplyBy(1 - 1 / scale),
+			newCenterPoint = map._getTopLeftPoint()._add(viewHalf)._add(centerOffset);
 
-		return map.unproject(newCenterPoint, map._zoom, true);
+		return map.unproject(newCenterPoint);
 	}
 });
 
