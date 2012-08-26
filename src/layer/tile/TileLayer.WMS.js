@@ -45,14 +45,14 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
 
 		var map = this._map,
-			crs = map.options.crs,
+			crs = this.options.crs,
 			tileSize = this.options.tileSize,
 
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nw = crs.project(map.unproject(nwPoint, zoom)),
-			se = crs.project(map.unproject(sePoint, zoom)),
+			nw = this._reproject(crs, nwPoint, zoom, true),
+			se = this._reproject(crs, sePoint, zoom, true),
 
 			bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
@@ -60,6 +60,16 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
 	},
+	
+	_reproject: function (crs, point, zoom, unbounded) { // (CRS, Point[, Number, Boolean]) -> Point
+		var map = this._map,
+
+			toCrs = (typeof crs === 'undefined' ? map.options.crs : crs),
+
+			latLng = map.unproject(point, zoom, unbounded);
+
+		return toCrs.project(latLng);
+    },
 
 	setParams: function (params, noRedraw) {
 
