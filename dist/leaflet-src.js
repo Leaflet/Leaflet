@@ -2476,7 +2476,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	onAdd: function (map) {
 		
-		var crs = (typeof this.options.crs === 'undefined' ? map.options.crs.code : this.options.crs);
+		var crs = (typeof this.options.crs === 'undefined' ? map.options.crs : this.options.crs);
 		
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
 		
@@ -2521,6 +2521,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 L.tileLayer.wms = function (url, options) {
 	return new L.TileLayer.WMS(url, options);
 };
+
 
 L.TileLayer.Canvas = L.TileLayer.extend({
 	options: {
