@@ -35,9 +35,14 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	onAdd: function (map) {
-
+		
+		var crs = (typeof this.options.crs === 'undefined' ? map.options.crs.code : this.options.crs);
+		
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
-		this.wmsParams[projectionKey] = map.options.crs.code;
+		
+		delete this.wmsParams.crs;
+		
+		this.wmsParams[projectionKey] = crs.code;
 
 		L.TileLayer.prototype.onAdd.call(this, map);
 	},
