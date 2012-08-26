@@ -1542,6 +1542,11 @@ L.Map = L.Class.extend({
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
+	reproject: function (crs, point, zoom, unbounded) { // (CRS, Point[, Number, Boolean]) -> Point
+		crs = (typeof crs === 'undefined' ? this.options.crs : crs);
+		return crs.project(this.unproject(point, zoom, unbounded));
+    },
+	
 	layerPointToLatLng: function (point) { // (Point)
 		var projectedPoint = L.point(point).add(this._initialTopLeftPoint);
 		return this.unproject(projectedPoint);
@@ -1838,7 +1843,6 @@ L.Map.addInitHook = function (fn) {
 L.map = function (id, options) {
 	return new L.Map(id, options);
 };
-
 
 
 L.Projection.Mercator = {
@@ -2492,8 +2496,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 			nwPoint = tilePoint.multiplyBy(tileSize),
 			sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
 
-			nw = this._reproject(crs, nwPoint, zoom, true),
-			se = this._reproject(crs, sePoint, zoom, true),
+			nw = map.reproject(crs, nwPoint, zoom, true),
+			se = map.reproject(crs, sePoint, zoom, true),
 
 			bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
@@ -2502,16 +2506,6 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
 	},
 	
-	_reproject: function (crs, point, zoom, unbounded) { // (CRS, Point[, Number, Boolean]) -> Point
-		var map = this._map,
-
-			toCrs = (typeof crs === 'undefined' ? map.options.crs : crs),
-
-			latLng = map.unproject(point, zoom, unbounded);
-
-		return toCrs.project(latLng);
-    },
-
 	setParams: function (params, noRedraw) {
 
 		L.Util.extend(this.wmsParams, params);
