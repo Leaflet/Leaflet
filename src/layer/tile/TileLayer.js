@@ -379,7 +379,7 @@ L.TileLayer = L.Class.extend({
 
 		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 
-		this._loadTile(tile, tilePoint);
+		this._loadTile(tile, tilePoint, this._map.getZoom());
 
 		if (tile.parentNode !== this._container) {
 			container.appendChild(tile);
