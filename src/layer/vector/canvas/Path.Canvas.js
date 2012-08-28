@@ -10,7 +10,9 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	statics: {
 		//CLIP_PADDING: 0.02, // not sure if there's a need to set it to a small value
 		CANVAS: true,
-		SVG: false
+		SVG: false,
+
+		_updateRequest: null
 	},
 
 	redraw: function () {
@@ -42,13 +44,14 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	_requestUpdate: function () {
-		if (this._map) {
-			L.Util.cancelAnimFrame(this._fireMapMoveEnd);
-			this._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+		if (this._map && L.Path._updateRequest === null) {
+			L.Path._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+			console.log('requested ' + L.Path._updateRequest);
 		}
 	},
 
 	_fireMapMoveEnd: function () {
+		L.Path._updateRequest = null;
 		this.fire('moveend');
 	},
 
