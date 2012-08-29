@@ -170,6 +170,7 @@ var deps = {
 		src: ['dom/DomEvent.js',
 		      'dom/DomEvent.DoubleTap.js',
 		      'dom/DomEvent.MsTouch.js',
+		      'dom/DomEvent.LongPress.js',
 		      'core/Handler.js',
 		      'map/handler/Map.TouchZoom.js'],
 		deps: ['MapAnimationZoom'],
