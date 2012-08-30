@@ -8,6 +8,15 @@ L.Circle = L.Path.extend({
 
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
+
+		// TODO refactor: move to Circle.Edit.js
+		if (L.Handler.CircleEdit) {
+			this.editing = new L.Handler.CircleEdit(this);
+
+			if (this.options.editable) {
+				this.editing.enable();
+			}
+		}
 	},
 
 	options: {
@@ -89,6 +98,23 @@ L.Circle = L.Path.extend({
 
 		return p.x - r > vp.max.x || p.y - r > vp.max.y ||
 			p.x + r < vp.min.x || p.y + r < vp.min.y;
+	},
+
+	// TODO refactor: move to Circle.Edit.js
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.editing && this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	},
+
+	onRemove: function (map) {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+
+		L.Path.prototype.onRemove.call(this, map);
 	}
 });
 
