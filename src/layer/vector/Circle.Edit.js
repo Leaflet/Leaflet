@@ -17,6 +17,8 @@ L.Handler.CircleEdit = L.Handler.extend({
 				this._initMarkers();
 			}
 			this._circle._map.addLayer(this._markerGroup);
+			this._center._icon.style.cursor = "move";
+			this._radius._icon.style.cursor = "se-resize";
 		}
 	},
 
@@ -32,17 +34,24 @@ L.Handler.CircleEdit = L.Handler.extend({
 		this._initMarkers();
 	},
 
+	_radiusMarkerPoint: function(ll) {
+		// From L.Circle.getBounds()
+		var delta = this._circle._radius * Math.cos(Math.PI / 4);
+			point = map.project(ll);
+		return map.unproject([point.x + delta, point.y + delta]);
+	},
+
 	_initMarkers: function () {
 		if (!this._markerGroup) {
 			this._markerGroup = new L.LayerGroup();
 		}
 
-		var c = this._circle.getLatLng(), r = this._circle._getLngRadius();
-		this._center = this._createMarker(c, 0);
-		this._radius = this._createMarker([c.lat, c.lng + r], 1);
+		var c = this._circle.getLatLng();
+		this._center = this._createMarker(c);
+		this._radius = this._createMarker(this._radiusMarkerPoint(c));
 	},
 
-	_createMarker: function (latlng, index) {
+	_createMarker: function (latlng) {
 		var marker = new L.Marker(latlng, {
 			draggable: true,
 			icon: this.options.icon
@@ -64,8 +73,8 @@ L.Handler.CircleEdit = L.Handler.extend({
 		var marker = e.target;
 
 		if (marker === this._center) {
-			var c = marker.getLatLng(), r = this._circle._getLngRadius();
-			this._radius.setLatLng([c.lat, c.lng + r]);
+			var c = marker.getLatLng();
+			this._radius.setLatLng(this._radiusMarkerPoint(c));
 			this._circle.setLatLng(this._center.getLatLng());
 		} else {
 			var r = this._center.getLatLng().distanceTo(marker.getLatLng());
