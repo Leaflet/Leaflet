@@ -17,6 +17,7 @@ L.Handler.CircleEdit = L.Handler.extend({
 				this._initMarkers();
 			}
 			this._circle._map.addLayer(this._markerGroup);
+			this._center.setZIndexOffset(10);
 			this._center._icon.style.cursor = "move";
 			this._radius._icon.style.cursor = "se-resize";
 		}
