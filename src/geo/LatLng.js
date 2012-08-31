@@ -65,7 +65,7 @@ L.latLng = function (a, b, c) { // (LatLng) or ([Number, Number]) or (Number, Nu
 		return a;
 	}
 	if (a instanceof Array) {
-		return new L.LatLng(a[0], a[1]);
+		return new L.LatLng(a[0], a[1], a[2]);
 	}
 	if (isNaN(a)) {
 		return a;
