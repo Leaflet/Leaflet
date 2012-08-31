@@ -62,7 +62,7 @@ L.Map = L.Class.extend({
 
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
-		return this.setView(L.latLngBounds(bounds).getCenter(), zoom);
+		return this.setView(L.latLngBounds(bounds).getCenter(true), zoom);
 	},
 
 	fitWorld: function () {
