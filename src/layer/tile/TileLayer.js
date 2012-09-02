@@ -245,7 +245,8 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_update: function (e) {
-		if (this._map._panTransition && this._map._panTransition._inProgress) { return; }
+
+		if (!this._map || (this._map._panTransition && this._map._panTransition._inProgress)) { return; }
 
 		var bounds   = this._map.getPixelBounds(),
 		    zoom     = this._map.getZoom(),
