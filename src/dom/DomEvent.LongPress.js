@@ -1,7 +1,7 @@
 L.Util.extend(L.DomEvent, {
 	// inspired by Zepto touch code by Thomas Fuchs
 	addLongPressListener: function (obj, handler, id) {
-		var touch,
+		var touch, touchStartX, touchStartY,
 			start,
 			timeoutId = null,
 			delay = 1000,
@@ -20,17 +20,21 @@ L.Util.extend(L.DomEvent, {
 			}
 
 			touch = e.touches[0];
+			touchStartX = touch.pageX;
+			touchStartY = touch.pageY;
 			start = Date.now();
 
 			timeoutId = setTimeout(function () {
+				touch.pageX = touchStartX;
+				touch.pageY = touchStartY;
 				touch.type = 'contextmenu';
 				handler(touch);
 			}, delay);
 		}
 
 		function onTouchMove(e) {
-			diffX = e.touches[0].pageX - touch.pageX;
-			diffY = e.touches[0].pageY - touch.pageY;
+			diffX = e.touches[0].pageX - touchStartX;
+			diffY = e.touches[0].pageY - touchStartY;
 
 			if (diffX * diffX + diffY * diffY > maxMovement * maxMovement) {
 				clearTimeout(timeoutId);
