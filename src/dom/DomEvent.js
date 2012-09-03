@@ -21,9 +21,6 @@ L.DomEvent = {
 		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			return this.addDoubleTapListener(obj, handler, id);
 
-		} else if (L.Browser.touch && (type === 'contextmenu') && this.addLongPressListener) {
-			return this.addLongPressListener(obj, handler, id);
-
 		} else if ('addEventListener' in obj) {
 			
 			if (type === 'mousewheel') {

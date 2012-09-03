@@ -12,9 +12,10 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 
-	initialize: function (element, dragStartTarget) {
+	initialize: function (element, dragStartTarget, contextMenuEmulation) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
+		this._contextMenuEmulation = contextMenuEmulation;
 	},
 
 	enable: function () {
@@ -64,6 +65,20 @@ L.Draggable = L.Class.extend({
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
+		//Touch contextmenu event emulation
+		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._contextMenuEmulation) {
+			var self = this;
+			this._contextMenuTimeout = setTimeout(function () {
+				var dist = (self._newPos && self._newPos.distanceTo(self._startPos)) || 0;
+
+				if (dist < L.Draggable.TAP_TOLERANCE) {
+					self._simulateClick = false;
+					self._onUp();
+					self._simulateEvent('contextmenu', first);
+				}
+			}, 1000);
+		}
+
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
 	},
@@ -106,6 +121,7 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function (e) {
 		var simulateClickTouch;
+		clearTimeout(this._contextMenuTimeout);
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
