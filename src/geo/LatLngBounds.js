@@ -122,6 +122,10 @@ L.LatLngBounds = L.Class.extend({
 
 		return this._southWest.equals(bounds.getSouthWest()) &&
 		       this._northEast.equals(bounds.getNorthEast());
+	},
+
+	isValid: function () {
+		return !!(this._southWest && this._northEast);
 	}
 });
 
