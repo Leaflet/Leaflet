@@ -75,6 +75,14 @@ L.LayerGroup = L.Class.extend({
 		map.addLayer(this);
 		return this;
 	},
+	
+	getBounds: function () {
+		var bounds = new L.LatLngBounds();
+		this.eachLayer(function (layer) {
+			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
+		}, this);
+		return bounds;
+	},
 
 	eachLayer: function (method, context) {
 		for (var i in this._layers) {
