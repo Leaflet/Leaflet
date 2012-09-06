@@ -80,7 +80,12 @@ L.Map.include({
 		this.fire('locationfound', {
 			latlng: latlng,
 			bounds: bounds,
-			accuracy: pos.coords.accuracy
+			accuracy: pos.coords.accuracy,
+			altitude: pos.coords.altitude,
+			altAccuracy: pos.coords.altitudeAccuracy,
+			heading: pos.coords.heading,
+			speed: pos.coords.speed,
+			acquisitionTime: new Date(pos.timestamp)
 		});
 	}
 });
