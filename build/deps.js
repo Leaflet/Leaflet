@@ -29,6 +29,11 @@ var deps = {
 		heading: 'Additional projections'
 	},
 
+	CRSSimple: {
+		src: ['geo/crs/CRS.Simple.js'],
+		desc: 'Simple projection that might be useful for maps of flat surfaces (e.g. game maps).'
+	},
+
 	TileLayer: {
 		src: ['layer/tile/TileLayer.js'],
 		desc: 'The base class for displaying tile layers on the map.',
