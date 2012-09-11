@@ -219,6 +219,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/brunob/">Bruno B</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-search">leaflet-search</a>
+		</td><td>
+			Simple Leaflet Control for searching markers by attribute.
+		</td><td>
+			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
+		</td>
+	</tr>
 </table>
 
 
