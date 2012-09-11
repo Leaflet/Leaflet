@@ -22,6 +22,7 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 		detectRetina: false,
 		reuseTiles: false,
+		tileBounds: false,
 		*/
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -322,6 +323,19 @@ L.TileLayer = L.Class.extend({
 			if (this.options.noWrap && (tilePoint.x < 0 || tilePoint.x >= limit) ||
 				                        tilePoint.y < 0 || tilePoint.y >= limit) {
 				return false; // exceeds world bounds
+			}
+		}
+
+		if(this.options.tileBounds) {
+			var tileSize = this.options.tileSize,
+				nwPoint = tilePoint.multiplyBy(tileSize),
+				sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+				nw = this._map.unproject(nwPoint),
+				se = this._map.unproject(sePoint),
+				bounds = new L.LatLngBounds([nw, se]);
+
+			if(!this.options.tileBounds.intersects(bounds)) {
+				return false;
 			}
 		}
 
