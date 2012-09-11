@@ -2091,7 +2091,7 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		this._container.style.zIndex = isFinite(edgeZIndex) ? edgeZIndex + compare(1, -1) : '';
+		this.options.zIndex = this._container.style.zIndex = (isFinite(edgeZIndex) ? edgeZIndex : 0) + compare(1, -1);
 	},
 
 	_updateOpacity: function () {
@@ -2155,7 +2155,8 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_update: function (e) {
-		if (this._map._panTransition && this._map._panTransition._inProgress) { return; }
+
+		if (!this._map) { return; }
 
 		var bounds   = this._map.getPixelBounds(),
 		    zoom     = this._map.getZoom(),
@@ -4140,13 +4141,13 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	_requestUpdate: function () {
-		if (this._map) {
-			L.Util.cancelAnimFrame(this._fireMapMoveEnd);
-			this._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+		if (this._map && !L.Path._updateRequest) {
+			L.Path._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
 		}
 	},
 
 	_fireMapMoveEnd: function () {
+		L.Path._updateRequest = null;
 		this.fire('moveend');
 	},
 
