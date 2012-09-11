@@ -16,6 +16,7 @@ An in-progress version being developed on the master branch.
  * Added optional `delta` argument to `Map` `zoomIn` and `zoomOut` (1 by default).
  * Improved scroll wheel zoom to be more responsive.
  * Improved vectors updating/removing on Canvas backend even more (by [@danzel](https://github.com/danzel)). [#961](https://github.com/CloudMade/Leaflet/pull/961)
+ * Added `isValid` method to `LatLngBounds` and `Bounds` (by [@domoritz](https://github.com/domoritz)). [#972](https://github.com/CloudMade/Leaflet/pull/972)
 
 ### Bugfixes
 

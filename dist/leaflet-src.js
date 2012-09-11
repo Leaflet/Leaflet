@@ -609,8 +609,11 @@ L.Bounds = L.Class.extend({
 			yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
 
 		return xIntersects && yIntersects;
-	}
+	},
 
+	isValid: function () {
+		return !!(this.min && this.max);
+	}
 });
 
 L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
@@ -1064,6 +1067,10 @@ L.LatLngBounds = L.Class.extend({
 
 		return this._southWest.equals(bounds.getSouthWest()) &&
 		       this._northEast.equals(bounds.getNorthEast());
+	},
+
+	isValid: function () {
+		return !!(this._southWest && this._northEast);
 	}
 });
 
