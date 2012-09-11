@@ -36,7 +36,9 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		return tile;
 	},
 
-	_loadTile: function (tile, tilePoint, zoom) {
+	_loadTile: function (tile, tilePoint) {
+		var zoom = this._getZoomForUrl();
+		
 		tile._layer = this;
 		tile._tilePoint = tilePoint;
 		tile._zoom = zoom;
