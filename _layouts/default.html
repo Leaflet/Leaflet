@@ -26,7 +26,7 @@
 	<!-- Blueprint -->
 	<link rel="stylesheet" href="{{ root }}docs/css/blueprint/screen.css" media="screen, projection">
 	<link rel="stylesheet" href="{{ root }}docs/css/blueprint/print.css" media="print">
-	<!--[if lt IE 8]><link rel="stylesheet" href="docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+	<!--[if lt IE 8]><link rel="stylesheet" href="{{ root }}docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
 
 	<link rel="stylesheet" href="{{ root }}docs/css/screen.css" media="screen, projection" />
 
@@ -35,7 +35,7 @@
 
 	<!-- Leaflet -->
 	<link rel="stylesheet" href="{{ root }}dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="dist/leaflet.ie.css" /><![endif]-->
+	<!--[if lte IE 8]><link rel="stylesheet" href="{{ root }}dist/leaflet.ie.css" /><![endif]-->
 	<script src="{{ root }}dist/leaflet.js"></script>
 
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
