@@ -74,7 +74,6 @@ L.DomUtil = {
 	},
 
 	disableTextSelection: function () {
-
 		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
@@ -85,7 +84,7 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		if (this._onselectstart) {
+		if (document.onselectstart === L.Util.falseFn) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}

@@ -730,7 +730,6 @@ L.DomUtil = {
 	},
 
 	disableTextSelection: function () {
-
 		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
@@ -741,7 +740,7 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		if (this._onselectstart) {
+		if (document.onselectstart === L.Util.falseFn) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
@@ -2806,7 +2805,7 @@ L.Icon.Default = L.Icon.extend({
 
 	options: {
 		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
+		iconAnchor: new L.Point(12, 41),
 		popupAnchor: new L.Point(1, -34),
 
 		shadowSize: new L.Point(41, 41)
@@ -5483,6 +5482,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
+		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
@@ -5924,7 +5924,7 @@ L.Map.TouchZoom = L.Handler.extend({
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
 			viewCenter = map._getCenterLayerPoint();
 
-		this._startCenter = p1._add(p2)._divideBy(2);
+		this._startCenter = p1.add(p2)._divideBy(2);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
@@ -6651,10 +6651,11 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 
 		L.DomEvent
+			.on(link, 'click', L.DomEvent.stopPropagation)
+			.on(link, 'mousedown', L.DomEvent.stopPropagation)
+			.on(link, 'dblclick', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
 			.on(link, 'click', fn, context);
-
-		L.DomEvent.disableClickPropagation(link);
 
 		return link;
 	}
