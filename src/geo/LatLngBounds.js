@@ -51,10 +51,11 @@ L.LatLngBounds = L.Class.extend({
 			new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	},
 
-	getCenter: function () { // -> LatLng
+	getCenter: function (unbounded) { // -> LatLng
 		return new L.LatLng(
 				(this._southWest.lat + this._northEast.lat) / 2,
-				(this._southWest.lng + this._northEast.lng) / 2);
+				(this._southWest.lng + this._northEast.lng) / 2,
+                unbounded);
 	},
 
 	getSouthWest: function () {
