@@ -24,13 +24,17 @@ L.Map.TouchZoom = L.Handler.extend({
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
 			viewCenter = map._getCenterLayerPoint();
 
-		this._startCenter = p1.add(p2).divideBy(2, true);
+		this._startCenter = p1.add(p2)._divideBy(2);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
 		this._zooming = true;
 
 		this._centerOffset = viewCenter.subtract(this._startCenter);
+
+		if (map._panAnim) {
+			map._panAnim.stop();
+		}
 
 		L.DomEvent
 			.on(document, 'touchmove', this._onTouchMove, this)
@@ -48,7 +52,7 @@ L.Map.TouchZoom = L.Handler.extend({
 			p2 = map.mouseEventToLayerPoint(e.touches[1]);
 
 		this._scale = p1.distanceTo(p2) / this._startDist;
-		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
+		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
 
 		if (this._scale === 1) { return; }
 

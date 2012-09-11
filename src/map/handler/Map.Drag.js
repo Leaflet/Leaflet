@@ -6,8 +6,8 @@ L.Map.mergeOptions({
 	dragging: true,
 
 	inertia: !L.Browser.android23,
-	inertiaDeceleration: 5000, // px/s^2
-	inertiaMaxSpeed: 4000, // px/s
+	inertiaDeceleration: 3400, // px/s^2
+	inertiaMaxSpeed: 6000, // px/s
 	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
 
 	// TODO refactor, move to CRS
@@ -80,7 +80,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onViewReset: function () {
-		var pxCenter = this._map.getSize().divideBy(2),
+		var pxCenter = this._map.getSize()._divideBy(2),
 			pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0, 0));
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;

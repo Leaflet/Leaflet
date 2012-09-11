@@ -17,7 +17,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = this.getZoomScale(zoom),
-			offset = this._getCenterOffset(center).divideBy(1 - 1 / scale);
+			offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
 
 		// if offset does not exceed half of the view
 		if (!this._offsetIsWithinView(offset, 1)) { return false; }
@@ -51,6 +51,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
 		this._animatingZoom = true;
+
+		if (L.Draggable) {
+			L.Draggable._disabled = true;
+		}
 
 		var transform = L.DomUtil.TRANSFORM,
 			tileBg = this._tileBg;
@@ -146,6 +150,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 		this._animatingZoom = false;
+
+		if (L.Draggable) {
+			L.Draggable._disabled = false;
+		}
 	},
 
 	_restoreTileFront: function () {
