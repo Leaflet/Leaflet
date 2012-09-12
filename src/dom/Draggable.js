@@ -62,6 +62,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
+		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);

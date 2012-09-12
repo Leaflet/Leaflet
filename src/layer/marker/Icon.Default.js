@@ -3,7 +3,7 @@ L.Icon.Default = L.Icon.extend({
 
 	options: {
 		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
+		iconAnchor: new L.Point(12, 41),
 		popupAnchor: new L.Point(1, -34),
 
 		shadowSize: new L.Point(41, 41)

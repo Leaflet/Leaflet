@@ -15,6 +15,8 @@ An in-progress version being developed on the master branch.
  * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
  * Added optional `delta` argument to `Map` `zoomIn` and `zoomOut` (1 by default).
  * Improved scroll wheel zoom to be more responsive.
+ * Improved vectors updating/removing on Canvas backend even more (by [@danzel](https://github.com/danzel)). [#961](https://github.com/CloudMade/Leaflet/pull/961)
+ * Added `isValid` method to `LatLngBounds` and `Bounds` (by [@domoritz](https://github.com/domoritz)). [#972](https://github.com/CloudMade/Leaflet/pull/972)
 
 ### Bugfixes
 
@@ -23,6 +25,8 @@ An in-progress version being developed on the master branch.
  * Fixed a glitch with zooming in while panning animation is running.
  * Fixed a glitch with dragging the map while zoom animation is running.
  * Fixed a bug where "Not implemented" error sometimes appeared in IE6-8 (by [@bryguy](https://github.com/bryguy) and [@lookfirst](https://github.com/lookfirst)). [#892](https://github.com/CloudMade/Leaflet/issues/892) [#893](https://github.com/CloudMade/Leaflet/pull/893)
+ * Fixed a bug where `TileLayer` `bringToBack` didn't work properly in some cases (by [@danzel](https://github.com/danzel)). [#963](https://github.com/CloudMade/Leaflet/pull/963) [#959](https://github.com/CloudMade/Leaflet/issues/959)
+ * Fixed a bug where removing a tile layer while dragging would throw an error (by [@danzel](https://github.com/danzel)). [#965](https://github.com/CloudMade/Leaflet/issues/965) [#968](https://github.com/CloudMade/Leaflet/pull/968)
 
 ## 0.4.4 (August 7, 2012)
 

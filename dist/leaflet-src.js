@@ -609,8 +609,11 @@ L.Bounds = L.Class.extend({
 			yIntersects = (max2.y >= min.y) && (min2.y <= max.y);
 
 		return xIntersects && yIntersects;
-	}
+	},
 
+	isValid: function () {
+		return !!(this.min && this.max);
+	}
 });
 
 L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
@@ -730,7 +733,6 @@ L.DomUtil = {
 	},
 
 	disableTextSelection: function () {
-
 		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
@@ -741,7 +743,7 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		if (this._onselectstart) {
+		if (document.onselectstart === L.Util.falseFn) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
@@ -1065,6 +1067,10 @@ L.LatLngBounds = L.Class.extend({
 
 		return this._southWest.equals(bounds.getSouthWest()) &&
 		       this._northEast.equals(bounds.getNorthEast());
+	},
+
+	isValid: function () {
+		return !!(this._southWest && this._northEast);
 	}
 });
 
@@ -2092,7 +2098,7 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		this._container.style.zIndex = isFinite(edgeZIndex) ? edgeZIndex + compare(1, -1) : '';
+		this.options.zIndex = this._container.style.zIndex = (isFinite(edgeZIndex) ? edgeZIndex : 0) + compare(1, -1);
 	},
 
 	_updateOpacity: function () {
@@ -2156,7 +2162,8 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_update: function (e) {
-		if (this._map._panTransition && this._map._panTransition._inProgress) { return; }
+
+		if (!this._map) { return; }
 
 		var bounds   = this._map.getPixelBounds(),
 		    zoom     = this._map.getZoom(),
@@ -2806,7 +2813,7 @@ L.Icon.Default = L.Icon.extend({
 
 	options: {
 		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
+		iconAnchor: new L.Point(12, 41),
 		popupAnchor: new L.Point(1, -34),
 
 		shadowSize: new L.Point(41, 41)
@@ -4141,13 +4148,13 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	_requestUpdate: function () {
-		if (this._map) {
-			L.Util.cancelAnimFrame(this._fireMapMoveEnd);
-			this._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+		if (this._map && !L.Path._updateRequest) {
+			L.Path._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
 		}
 	},
 
 	_fireMapMoveEnd: function () {
+		L.Path._updateRequest = null;
 		this.fire('moveend');
 	},
 
@@ -5483,6 +5490,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
+		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
@@ -5924,7 +5932,7 @@ L.Map.TouchZoom = L.Handler.extend({
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
 			viewCenter = map._getCenterLayerPoint();
 
-		this._startCenter = p1._add(p2)._divideBy(2);
+		this._startCenter = p1.add(p2)._divideBy(2);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
@@ -6651,10 +6659,11 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 
 		L.DomEvent
+			.on(link, 'click', L.DomEvent.stopPropagation)
+			.on(link, 'mousedown', L.DomEvent.stopPropagation)
+			.on(link, 'dblclick', L.DomEvent.stopPropagation)
 			.on(link, 'click', L.DomEvent.preventDefault)
 			.on(link, 'click', fn, context);
-
-		L.DomEvent.disableClickPropagation(link);
 
 		return link;
 	}
