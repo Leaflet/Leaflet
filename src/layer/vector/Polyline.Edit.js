@@ -3,7 +3,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 		icon: new L.DivIcon({
 			iconSize: new L.Point(8, 8),
 			className: 'leaflet-div-icon leaflet-editing-icon'
-		})
+		}),
+		addMiddleMarkers: true
 	},
 
 	initialize: function (poly, options) {
@@ -50,7 +51,11 @@ L.Handler.PolyEdit = L.Handler.extend({
 			marker.on('click', this._onMarkerClick, this);
 			this._markers.push(marker);
 		}
-
+		
+		if (!this.options.addMiddleMarkers) {
+			return;
+		}
+		
 		var markerLeft, markerRight;
 
 		for (i = 0, j = len - 1; i < len; j = i++) {
