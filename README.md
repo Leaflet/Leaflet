@@ -19,11 +19,11 @@ Here's [a list of the awesome people](http://github.com/CloudMade/Leaflet/contri
 Leaflet build system is powered by the Node.js platform and Jake, JSHint and UglifyJS libraries, which install easily and work well across all major platforms. Here are the steps to install it:
 
  1. [Download and install Node](http://nodejs.org)
- 2. Run the following commands in the command line:
+ 2. Run the following commands in the command line (with root permissions):
 
  ```
  npm install -g jake
- npm install jshint
+ npm install -g jshint
  npm install uglify-js
  ```
 
