@@ -8,6 +8,7 @@ L.Marker = L.Class.extend({
 
 	options: {
 		icon: new L.Icon.Default(),
+		id: '',
 		title: '',
 		clickable: true,
 		draggable: false,
@@ -105,6 +106,10 @@ L.Marker = L.Class.extend({
 
 			if (options.title) {
 				this._icon.title = options.title;
+			}
+			
+			if (options.id) {
+				this._icon.id = options.id;
 			}
 
 			this._initInteraction();
