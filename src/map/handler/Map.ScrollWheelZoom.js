@@ -32,6 +32,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
 	},
 
 	_performZoom: function () {
