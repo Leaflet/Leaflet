@@ -390,6 +390,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		return supported;
 	}());
 
+	var msTouch = (window.navigator && window.navigator.msPointerEnabled);
+
 	var retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) || ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
 
 	L.Browser = {
@@ -416,6 +418,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		mobileOpera: mobile && opera,
 
 		touch: touch,
+		msTouch: msTouch,
 
 		retina: retina
 	};
@@ -5257,7 +5260,6 @@ L.DomEvent = {
 		var id = L.Util.stamp(fn),
 			key = '_leaflet_' + type + id,
 			handler, originalHandler, newType;
-
 		if (obj[key]) { return this; }
 
 		handler = function (e) {
@@ -5437,8 +5439,14 @@ L.Draggable = L.Class.extend({
 		START: L.Browser.touch ? 'touchstart' : 'mousedown',
 		END: L.Browser.touch ? 'touchend' : 'mouseup',
 		MOVE: L.Browser.touch ? 'touchmove' : 'mousemove',
+		MSPOINTERSTART: 'MSPointerDown',
+		MSPOINTERUP: 'MSPointerUp',
+		MSPOINTERMOVE: 'MSPointerMove',
 		TAP_TOLERANCE: 15
 	},
+
+	_msTouchActive : false,
+	_msTouches : [],
 
 	initialize: function (element, dragStartTarget) {
 		this._element = element;
@@ -5449,7 +5457,14 @@ L.Draggable = L.Class.extend({
 		if (this._enabled) {
 			return;
 		}
-		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
+		
+		if (!L.Browser.msTouch) {
+			L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
+		} else {
+			L.DomEvent.on(this._dragStartTarget, L.Draggable.MSPOINTERSTART, this._translateMsDown, this);
+			this._dragStartTarget.style.msTouchAction = 'none';
+			this._msTouchActive = true;
+		}
 		this._enabled = true;
 	},
 
@@ -5491,9 +5506,22 @@ L.Draggable = L.Class.extend({
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
+		if (!this._msTouchActive) {
+			L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
+			L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
+		}
+	},
 
-		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
-		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
+	_translateMsDown: function (e) {
+		this._msTouches.push(e);
+		e.preventDefault();
+		e.stopPropagation();
+		e.touches = this._msTouches;
+		this._onDown(e);
+		if (this._msTouches.length === 1) {
+			L.DomEvent.on(document, L.Draggable.MSPOINTERMOVE, this._translateMsMove, this);
+			L.DomEvent.on(document, L.Draggable.MSPOINTERUP, this._translateMsEnd, this);
+		}
 	},
 
 	_onMove: function (e) {
@@ -5526,6 +5554,20 @@ L.Draggable = L.Class.extend({
 		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
+	_translateMsMove: function (e) {
+		var i,
+			max = this._msTouches.length;
+		for (i = 0; i < max; i += 1) {
+			if (this._msTouches[i].pointerId === e.pointerId) {
+				this._msTouches[i] = e;
+				break;
+			}
+		}
+		e.touches = this._msTouches;
+		this._onMove(e);
+	},
+
+
 	_updatePosition: function () {
 		this.fire('predrag');
 		L.DomUtil.setPosition(this._element, this._newPos);
@@ -5551,9 +5593,10 @@ L.Draggable = L.Class.extend({
 			L.DomUtil.enableTextSelection();
 			this._restoreCursor();
 		}
-
-		L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
-		L.DomEvent.off(document, L.Draggable.END, this._onUp);
+		if (!this._msTouchActive) {
+			L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
+			L.DomEvent.off(document, L.Draggable.END, this._onUp);
+		}
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -5562,6 +5605,24 @@ L.Draggable = L.Class.extend({
 			this.fire('dragend');
 		}
 		this._moving = false;
+	},
+
+	_translateMsEnd: function (e) {
+		var i,
+			max = this._msTouches.length;
+		
+		for (i = 0; i < max; i += 1) {
+			if (this._msTouches[i].pointerId === e.pointerId) {
+				this._msTouches.splice(i, 1);
+				break;
+			}
+		}
+		e.changedTouches = [e];
+		this._onUp(e);
+		if (this._msTouches.length === 0) {
+			L.DomEvent.off(document, L.Draggable.MSPOINTERMOVE, this._translateMsMove);
+			L.DomEvent.off(document, L.Draggable.MSPOINTERUP, this._translateMsEnd);
+		}
 	},
 
 	_setMovingCursor: function () {
@@ -5823,6 +5884,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
 	},
 
 	_performZoom: function () {
@@ -5911,12 +5973,21 @@ L.Util.extend(L.DomEvent, {
  */
 
 L.Map.mergeOptions({
-	touchZoom: L.Browser.touch && !L.Browser.android23
+	touchZoom: ((L.Browser.touch && !L.Browser.android23) || L.Browser.msTouch)
 });
-
 L.Map.TouchZoom = L.Handler.extend({
+
+	_msTouchActive : false,
+	_msTouches : [],
+
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
+		if (!L.Browser.msTouch) {
+			L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
+		} else {
+			L.DomEvent.on(this._map._container, "MSPointerDown", this._translateMsDown, this);
+			this._map._container.style.msTouchAction = 'none';
+			this._msTouchActive = true;
+		}
 	},
 
 	removeHooks: function () {
@@ -5930,13 +6001,17 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
 			p2 = map.mouseEventToLayerPoint(e.touches[1]),
-			viewCenter = map._getCenterLayerPoint();
+			viewCenter = map._getCenterLayerPoint(),
+			currentZoom = map.getZoom();
 
 		this._startCenter = p1.add(p2)._divideBy(2);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
 		this._zooming = true;
+		
+		this._upperScaleLimit = Math.pow(2, map.getMaxZoom() - currentZoom);
+		this._lowerScaleLimit = 1 / Math.pow(2, currentZoom - map.getMinZoom());
 
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
@@ -5944,14 +6019,29 @@ L.Map.TouchZoom = L.Handler.extend({
 			map._panAnim.stop();
 		}
 
-		L.DomEvent
-			.on(document, 'touchmove', this._onTouchMove, this)
-			.on(document, 'touchend', this._onTouchEnd, this);
+		if (!L.Browser.msTouch) {
+			L.DomEvent
+				.on(document, 'touchmove', this._onTouchMove, this)
+				.on(document, 'touchend', this._onTouchEnd, this);
+		}
 
 		L.DomEvent.preventDefault(e);
 	},
 
+	_translateMsDown: function (e) {
+		this._msTouches.push(e);
+		e.preventDefault();
+		e.stopPropagation();
+		e.touches = this._msTouches;
+		this._onTouchStart(e);
+		if (this._msTouches.length === 1) {
+			L.DomEvent.on(document, L.Draggable.MSPOINTERMOVE, this._translateMsMove, this);
+			L.DomEvent.on(document, L.Draggable.MSPOINTERUP, this._translateMsEnd, this);
+		}
+	},
+
 	_onTouchMove: function (e) {
+
 		if (!e.touches || e.touches.length !== 2) { return; }
 
 		var map = this._map;
@@ -5961,8 +6051,14 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		this._scale = p1.distanceTo(p2) / this._startDist;
 		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
-
 		if (this._scale === 1) { return; }
+
+		if (this._scale > this._upperScaleLimit) {
+			this._scale = this._upperScaleLimit;
+		}
+		if (this._scale < this._lowerScaleLimit) {
+			this._scale = this._lowerScaleLimit;
+		}
 
 		if (!this._moved) {
 			L.DomUtil.addClass(map._mapPane, 'leaflet-zoom-anim leaflet-touching');
@@ -5979,6 +6075,19 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._animRequest = L.Util.requestAnimFrame(this._updateOnMove, this, true, this._map._container);
 
 		L.DomEvent.preventDefault(e);
+	},
+
+	_translateMsMove: function (e) {
+		var i,
+			max = this._msTouches.length;
+		for (i = 0; i < max; i += 1) {
+			if (this._msTouches[i].pointerId === e.pointerId) {
+				this._msTouches[i] = e;
+				break;
+			}
+		}
+		e.touches = this._msTouches;
+		this._onTouchMove(e);
 	},
 
 	_updateOnMove: function () {
@@ -6006,10 +6115,11 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		this._zooming = false;
 		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
-
-		L.DomEvent
-			.off(document, 'touchmove', this._onTouchMove)
-			.off(document, 'touchend', this._onTouchEnd);
+		if (!L.Browser.msTouch) {
+			L.DomEvent
+				.off(document, 'touchmove', this._onTouchMove)
+				.off(document, 'touchend', this._onTouchEnd);
+		}
 
 		var origin = this._getScaleOrigin(),
 			center = map.layerPointToLatLng(origin),
@@ -6027,12 +6137,30 @@ L.Map.TouchZoom = L.Handler.extend({
 		map._runAnimation(center, zoom, map.getZoomScale(zoom) / this._scale, origin, true);
 	},
 
+
+	_translateMsEnd: function (e) {
+		var i,
+			max = this._msTouches.length;
+		
+		for (i = 0; i < max; i += 1) {
+			if (this._msTouches[i].pointerId === e.pointerId) {
+				this._msTouches.splice(i, 1);
+				break;
+			}
+		}
+		e.changedTouches = [e];
+		this._onTouchEnd(e);
+		if (this._msTouches.length === 0) {
+			L.DomEvent.off(document, L.Draggable.MSPOINTERMOVE, this._translateMsMove);
+			L.DomEvent.off(document, L.Draggable.MSPOINTERUP, this._translateMsEnd);
+		}
+	},
+
 	_getScaleOrigin: function () {
 		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale);
 		return this._startCenter.add(centerOffset);
 	}
 });
-
 L.Map.addInitHook('addHandler', 'touchZoom', L.Map.TouchZoom);
 
 
@@ -7412,7 +7540,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		clearTimeout(this._clearTileBgTimer);
 
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
-		if (L.Browser.gecko || window.opera) {
+		if (L.Browser.gecko || window.opera || L.Browser.ie3d) {
 			tileBg.style[transform] += ' translate(0,0)';
 		}
 
