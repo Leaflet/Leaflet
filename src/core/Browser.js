@@ -43,6 +43,8 @@
 		return supported;
 	}());
 
+	var msTouch = (window.navigator && window.navigator.msPointerEnabled);
+
 	var retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) || ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches));
 
 	L.Browser = {
@@ -69,6 +71,7 @@
 		mobileOpera: mobile && opera,
 
 		touch: touch,
+		msTouch: msTouch,
 
 		retina: retina
 	};
