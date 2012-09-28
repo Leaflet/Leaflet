@@ -18,6 +18,7 @@
 .leaflet-container {
 	overflow: hidden;
 	outline: 0;
+	-ms-touch-action: none;
 	}
 .leaflet-tile,
 .leaflet-marker-icon,
