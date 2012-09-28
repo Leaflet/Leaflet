@@ -14,10 +14,17 @@
 		ie3d = ie && ('transition' in doc.style),
 		webkit3d = webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
 		gecko3d = gecko && ('MozPerspective' in doc.style),
-		opera3d = opera && ('OTransition' in doc.style);
+		opera3d = opera && ('OTransition' in doc.style),
+
+		msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints);
 
 	var touch = !window.L_NO_TOUCH && (function () {
 		var startName = 'ontouchstart';
+
+		// IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.MsTouch)
+		if (msTouch) {
+			return true;
+		}
 
 		// WebKit, etc
 		if (startName in doc) {
@@ -69,6 +76,7 @@
 		mobileOpera: mobile && opera,
 
 		touch: touch,
+		msTouch: msTouch,
 
 		retina: retina
 	};
