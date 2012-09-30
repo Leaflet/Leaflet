@@ -114,8 +114,12 @@ L.Handler.PolyEdit = L.Handler.extend({
 		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
 		if (marker._prev && marker._next) {
 			this._createMiddleMarker(marker._prev, marker._next);
-			this._updatePrevNext(marker._prev, marker._next);
+		} else if (!marker._prev) {
+			marker._next._middleLeft = null;
+		} else if (!marker._next) {
+			marker._prev._middleRight = null;
 		}
+		this._updatePrevNext(marker._prev, marker._next);
 
 		// The marker itself is guaranteed to exist and present in the layer, since we managed to click on it
 		this._markerGroup.removeLayer(marker);
@@ -196,8 +200,12 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_updatePrevNext: function (marker1, marker2) {
-		marker1._next = marker2;
-		marker2._prev = marker1;
+		if (marker1) {
+			marker1._next = marker2;
+		}
+		if (marker2) {
+			marker2._prev = marker1;
+		}
 	},
 
 	_getMiddleLatLng: function (marker1, marker2) {
