@@ -1,4 +1,8 @@
 L.Util.extend(L.DomEvent, {
+
+	_touchstart: L.Browser.msTouch ? 'MSPointerDown' : 'touchstart',
+	_touchend: L.Browser.msTouch ? 'MSPointerUp' : 'touchend',
+
 	// inspired by Zepto touch code by Thomas Fuchs
 	addDoubleTapListener: function (obj, handler, id) {
 		var last,
@@ -6,11 +10,13 @@ L.Util.extend(L.DomEvent, {
 			delay = 250,
 			touch,
 			pre = '_leaflet_',
-			touchstart = 'touchstart',
-			touchend = 'touchend';
+			touchstart = this._touchstart,
+			touchend = this._touchend,
+			touchCount = 0;
 
 		function onTouchStart(e) {
-			if (e.touches.length !== 1) {
+			touchCount++;
+			if (touchCount > 1) {
 				return;
 			}
 
@@ -22,7 +28,17 @@ L.Util.extend(L.DomEvent, {
 			last = now;
 		}
 		function onTouchEnd(e) {
+			touchCount--;
 			if (doubleTap) {
+				if (L.Browser.msTouch) {
+					//Work around .type being readonly with MSPointer* events
+					var newTouch = { };
+					for (var i in touch) {
+						newTouch[i] = touch[i];
+					}
+					delete newTouch.preventDefault;
+					touch = newTouch;
+				}
 				touch.type = 'dblclick';
 				handler(touch);
 				last = null;
@@ -38,8 +54,8 @@ L.Util.extend(L.DomEvent, {
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
-		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);
-		obj.removeEventListener(obj, obj[pre + 'touchend' + id], false);
+		obj.removeEventListener(obj, obj[pre + this._touchstart + id], false);
+		obj.removeEventListener(obj, obj[pre + this._touchend + id], false);
 		return this;
 	}
 });
