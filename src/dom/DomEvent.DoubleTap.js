@@ -34,7 +34,9 @@ L.Util.extend(L.DomEvent, {
 					//Work around .type being readonly with MSPointer* events
 					var newTouch = { };
 					for (var i in touch) {
-						newTouch[i] = touch[i];
+						if (true) { //Make JSHint happy, we want to copy all properties
+							newTouch[i] = touch[i];
+						}
 					}
 					delete newTouch.preventDefault;
 					touch = newTouch;

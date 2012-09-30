@@ -1,4 +1,4 @@
-﻿L.Util.extend(L.DomEvent, {
+L.Util.extend(L.DomEvent, {
 
 	_msTouches: [],
 
@@ -8,18 +8,18 @@
 	addMsTouchListener: function (obj, type, handler, id) {
 
 		switch (type) {
-			case 'touchstart':
-				return this.addMsTouchListenerStart(obj, type, handler, id);
-			case 'touchend':
-				return this.addMsTouchListenerEnd(obj, type, handler, id);
-			case 'touchmove':
-				return this.addMsTouchListenerMove(obj, type, handler, id);
-			default:
-				throw 'Unknown touch event type';
+		case 'touchstart':
+			return this.addMsTouchListenerStart(obj, type, handler, id);
+		case 'touchend':
+			return this.addMsTouchListenerEnd(obj, type, handler, id);
+		case 'touchmove':
+			return this.addMsTouchListenerMove(obj, type, handler, id);
+		default:
+			throw 'Unknown touch event type';
 		}
 	},
 
-	addMsTouchListenerStart: function(obj, type, handler, id) {
+	addMsTouchListenerStart: function (obj, type, handler, id) {
 		var pre = '_leaflet_',
 			touches = this._msTouches;
 
@@ -27,7 +27,7 @@
 
 			var alreadyInArray = false;
 			for (var i = 0; i < touches.length; i++) {
-				if (touches[i].pointerId == e.pointerId) {
+				if (touches[i].pointerId === e.pointerId) {
 					alreadyInArray = true;
 					break;
 				}
@@ -47,9 +47,9 @@
 
 
 		//Need to also listen for end events to keep the _msTouches list accurate
-		var internalCb = function(e) {
+		var internalCb = function (e) {
 			for (var i = 0; i < touches.length; i++) {
-				if (touches[i].pointerId == e.pointerId) {
+				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
 					break;
 				}
@@ -68,12 +68,12 @@
 		var cb = function (e) {
 
 			//Don't fire touch moves when mouse isn't down
-			if (e.pointerType == e.MSPOINTER_TYPE_MOUSE && e.buttons == 0) {
+			if (e.pointerType === e.MSPOINTER_TYPE_MOUSE && e.buttons === 0) {
 				return;
 			}
 
 			for (var i = 0; i < touches.length; i++) {
-				if (touches[i].pointerId == e.pointerId) {
+				if (touches[i].pointerId === e.pointerId) {
 					touches[i] = e;
 					break;
 				}
@@ -98,7 +98,7 @@
 		var cb = function (e) {
 
 			for (var i = 0; i < touches.length; i++) {
-				if (touches[i].pointerId == e.pointerId) {
+				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
 					break;
 				}
@@ -121,16 +121,16 @@
 		    cb = obj[pre + type + id];
 
 		switch (type) {
-			case 'touchstart':
-				obj.removeEventListener('MSPointerDown', cb, this);
-				obj.removeEventListener('MSPointerUp', obj[pre + 'touchstartend' + id], this);
-				break;
-			case 'touchmove':
-				obj.removeEventListener('MSPointerMove', cb, this);
-				break;
-			case 'touchend':
-				obj.removeEventListener('MSPointerUp', cb, this);
-				break;
+		case 'touchstart':
+			obj.removeEventListener('MSPointerDown', cb, this);
+			obj.removeEventListener('MSPointerUp', obj[pre + 'touchstartend' + id], this);
+			break;
+		case 'touchmove':
+			obj.removeEventListener('MSPointerMove', cb, this);
+			break;
+		case 'touchend':
+			obj.removeEventListener('MSPointerUp', cb, this);
+			break;
 		}
 
 		return this;
