@@ -36,6 +36,20 @@ L.Polygon = L.Polyline.extend({
 		}
 	},
 
+	getBounds: function () {
+		var bounds = L.Polyline.prototype.getBounds.call(this);
+
+		if (this._holes) {
+			for (var i = 0, len = this._holes.length; i < len; i++) {
+				for (var j = 0, len2 = this._holes[i].length; j < len2; j++) {
+					bounds.extend(this._holes[i][j]);
+				}
+			}
+		}
+
+		return bounds;
+	},
+
 	_clipPoints: function () {
 		var points = this._originalPoints,
 			newParts = [];
