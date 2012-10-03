@@ -56,6 +56,7 @@ L.Util.extend(L.DomEvent, {
 			}
 		};
 		obj.addEventListener('MSPointerUp', internalCb, this);
+		obj.addEventListener('MSPointerCancel', internalCb, this);
 		obj[pre + 'touchstartend' + id] = cb;
 
 		return this;
@@ -112,6 +113,7 @@ L.Util.extend(L.DomEvent, {
 
 		obj[pre + 'touchend' + id] = cb;
 		obj.addEventListener('MSPointerUp', cb, this);
+		obj.addEventListener('MSPointerCancel', cb, this);
 
 		return this;
 	},
@@ -124,12 +126,14 @@ L.Util.extend(L.DomEvent, {
 		case 'touchstart':
 			obj.removeEventListener('MSPointerDown', cb, this);
 			obj.removeEventListener('MSPointerUp', obj[pre + 'touchstartend' + id], this);
+			obj.removeEventListener('MSPointerCancel', obj[pre + 'touchstartend' + id], this);
 			break;
 		case 'touchmove':
 			obj.removeEventListener('MSPointerMove', cb, this);
 			break;
 		case 'touchend':
 			obj.removeEventListener('MSPointerUp', cb, this);
+			obj.removeEventListener('MSPointerCancel', cb, this);
 			break;
 		}
 

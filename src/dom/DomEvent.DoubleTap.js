@@ -51,13 +51,19 @@ L.Util.extend(L.DomEvent, {
 
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
+		if (L.Browser.msTouch) {
+			obj.addEventListener('MSPointerCancel', onTouchEnd, false);
+		}
 		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
-		obj.removeEventListener(obj, obj[pre + this._touchstart + id], false);
-		obj.removeEventListener(obj, obj[pre + this._touchend + id], false);
+		obj.removeEventListener(this._touchstart, obj[pre + this._touchstart + id], false);
+		obj.removeEventListener(this._touchend, obj[pre + this._touchend + id], false);
+		if (L.Browser.msTouch) {
+			obj.addEventListener('MSPointerCancel', obj[pre + this._touchend + id], false);
+		}
 		return this;
 	}
 });
