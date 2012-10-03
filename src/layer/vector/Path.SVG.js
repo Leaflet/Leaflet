@@ -112,8 +112,6 @@ L.Path = L.Path.extend({
 		}
 
 		this._fireMouseEvent(e);
-
-		L.DomEvent.stopPropagation(e);
 	},
 
 	_fireMouseEvent: function (e) {
