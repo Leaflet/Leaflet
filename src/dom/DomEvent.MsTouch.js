@@ -33,6 +33,7 @@ L.Util.extend(L.DomEvent, {
 				}
 			}
 			if (!alreadyInArray) {
+				//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
 				touches.push(e);
 			}
 
@@ -97,12 +98,18 @@ L.Util.extend(L.DomEvent, {
 			touches = this._msTouches;
 
 		var cb = function (e) {
-
+			//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
+			var found = false;
 			for (var i = 0; i < touches.length; i++) {
 				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
+					found = true;
 					break;
 				}
+			}
+
+			if (!found) { //Crappy work around for pointerIDs breaking when leaving screen edge https://github.com/CloudMade/Leaflet/issues/871#issuecomment-9125445
+				touches.splice(0, touches.length);
 			}
 
 			e.touches = touches.slice();
