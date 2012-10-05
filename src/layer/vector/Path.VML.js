@@ -3,7 +3,7 @@
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
 
-L.Browser.vml = (function () {
+L.Browser.vml = !L.Browser.svg && (function () {
 	try {
 		var div = document.createElement('div');
 		div.innerHTML = '<v:shape adj="1"/>';
