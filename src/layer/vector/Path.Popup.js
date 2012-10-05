@@ -12,9 +12,11 @@ L.Path.include({
 
 		this._popup.setContent(content);
 
-		if (!this._openPopupAdded) {
-			this.on('click', this._openPopup, this);
-			this._openPopupAdded = true;
+		if (!this._popupHandlersAdded) {
+			this
+				.on('click', this._openPopup, this)
+				.on('remove', this._closePopup, this);
+			this._popupHandlersAdded = true;
 		}
 
 		return this;
@@ -35,5 +37,9 @@ L.Path.include({
 	_openPopup: function (e) {
 		this._popup.setLatLng(e.latlng);
 		this._map.openPopup(this._popup);
+	},
+
+	_closePopup: function () {
+		this._popup._close();
 	}
 });
