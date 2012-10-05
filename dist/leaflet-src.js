@@ -3042,7 +3042,9 @@ L.Marker = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		L.DomEvent.stopPropagation(e);
+		if (this.hasEventListeners(e.type)) {
+			L.DomEvent.stopPropagation(e);
+		}
 		if (this.dragging && this.dragging.moved()) { return; }
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this.fire(e.type, {
@@ -3845,7 +3847,9 @@ L.Path = L.Path.extend({
 
 		this._fireMouseEvent(e);
 
-		L.DomEvent.stopPropagation(e);
+		if (this.hasEventListeners(e.type)) {
+			L.DomEvent.stopPropagation(e);
+		}
 	},
 
 	_fireMouseEvent: function (e) {
@@ -3989,7 +3993,7 @@ L.Path.include({
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
 
-L.Browser.vml = (function () {
+L.Browser.vml = !L.Browser.svg && (function () {
 	try {
 		var div = document.createElement('div');
 		div.innerHTML = '<v:shape adj="1"/>';
@@ -5823,6 +5827,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
 	},
 
 	_performZoom: function () {
@@ -6432,8 +6437,12 @@ L.Handler.PolyEdit = L.Handler.extend({
 		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
 		if (marker._prev && marker._next) {
 			this._createMiddleMarker(marker._prev, marker._next);
-			this._updatePrevNext(marker._prev, marker._next);
+		} else if (!marker._prev) {
+			marker._next._middleLeft = null;
+		} else if (!marker._next) {
+			marker._prev._middleRight = null;
 		}
+		this._updatePrevNext(marker._prev, marker._next);
 
 		// The marker itself is guaranteed to exist and present in the layer, since we managed to click on it
 		this._markerGroup.removeLayer(marker);
@@ -6514,8 +6523,12 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_updatePrevNext: function (marker1, marker2) {
-		marker1._next = marker2;
-		marker2._prev = marker1;
+		if (marker1) {
+			marker1._next = marker2;
+		}
+		if (marker2) {
+			marker2._prev = marker1;
+		}
 	},
 
 	_getMiddleLatLng: function (marker1, marker2) {
@@ -7412,7 +7425,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		clearTimeout(this._clearTileBgTimer);
 
 		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
-		if (L.Browser.gecko || window.opera) {
+		if (L.Browser.gecko || window.opera || L.Browser.ie3d) {
 			tileBg.style[transform] += ' translate(0,0)';
 		}
 
