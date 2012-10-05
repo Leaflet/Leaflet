@@ -50,7 +50,10 @@ L.Marker.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
-			this.off('click', this.openPopup);
+			this
+				.off('click', this.openPopup)
+				.off('remove', this.closePopup)
+				.off('move', this.movePopup);
 		}
 		return this;
 	}
