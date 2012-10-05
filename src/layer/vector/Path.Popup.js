@@ -22,6 +22,16 @@ L.Path.include({
 		return this;
 	},
 
+	unbindPopup: function () {
+		if (this._popup) {
+			this._popup = null;
+			this
+				.off('click', this.openPopup)
+				.off('remove', this.closePopup);
+		}
+		return this;
+	},
+
 	openPopup: function (latlng) {
 
 		if (this._popup) {
