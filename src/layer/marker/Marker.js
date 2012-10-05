@@ -187,7 +187,9 @@ L.Marker = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		L.DomEvent.stopPropagation(e);
+		if (this.hasEventListeners(e.type)) {
+			L.DomEvent.stopPropagation(e);
+		}
 		if (this.dragging && this.dragging.moved()) { return; }
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this.fire(e.type, {
