@@ -73,6 +73,22 @@ L.LatLngBounds = L.Class.extend({
 		return new L.LatLng(this._southWest.lat, this._northEast.lng, true);
 	},
 
+	getSouthLat: function () {
+		return this._southWest.lat;
+	},
+
+	getWestLng: function () {
+		return this._southWest.lng;
+	},
+
+	getNorthLat: function () {
+		return this._northEast.lat;
+	},
+
+	getEastLng: function () {
+		return this._northEast.lng;
+	},
+
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
 		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
 			obj = L.latLng(obj);

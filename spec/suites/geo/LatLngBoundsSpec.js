@@ -20,4 +20,28 @@ describe('LatLngBounds', function() {
 			expect(c.isValid()).toBeTruthy();
 		});
 	});
+
+	describe('#getSouthLat', function() {
+		it('returns the latitude of the southern bound', function() {
+			expect(a.getSouthLat()).toBe(14);
+		});
+	});
+
+	describe('#getWestLng', function() {
+		it('returns the longitude of the western bound', function() {
+			expect(a.getWestLng()).toBe(12);
+		});
+	});
+
+	describe('#getNorthLat', function() {
+		it('returns the latitude of the northern bound', function() {
+			expect(a.getNorthLat()).toBe(30);
+		});
+	});
+
+	describe('#getEastLng', function() {
+		it('returns the longitude of the eastern bound', function() {
+			expect(a.getEastLng()).toBe(40);
+		});
+	});
 });
