@@ -41,10 +41,7 @@ L.Marker = L.Class.extend({
 	onRemove: function (map) {
 		this._removeIcon();
 
-		// TODO move to Marker.Popup.js
-		if (this.closePopup) {
-			this.closePopup();
-		}
+		this.fire('remove');
 
 		map.off({
 			'viewreset': this.update,
@@ -63,9 +60,7 @@ L.Marker = L.Class.extend({
 
 		this.update();
 
-		if (this._popup) {
-			this._popup.setLatLng(latlng);
-		}
+		this.fire('move', { latlng: this._latlng });
 	},
 
 	setZIndexOffset: function (offset) {
