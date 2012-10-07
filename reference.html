@@ -1169,6 +1169,16 @@ var map = L.map('map', {
 		<td><code><a href="#event">Event</a></code>
 		<td>Fired when the user stops dragging the marker.</td>
 	</tr>
+	<tr>
+		<td><code><b>move</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the marker is moved via setLatLng. New coordinate include in event arguments.</td>
+	</tr>
+	<tr>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the marker is removed from the map.</td>
+	</tr>
 </table>
 
 <h3>Methods</h3>
@@ -2012,6 +2022,11 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><a href="#mouse-event">MouseEvent</a></code>
 		<td>Fired when the user pushes the right mouse button on the object, prevents default browser context menu from showing if there are listeners on this event.</td>
 	</tr>
+	<tr>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the path is removed from the map.</td>
+	</tr>
 </table>
 
 <h3 id="path-methods">Methods</h3>
@@ -2037,6 +2052,11 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this path.</td>
+	</tr>
+	<tr id="path-unbindpopup">
+		<td><code><b>unbindPopup</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Unbinds the popup previously bound to the path with <code>bindPopup</code>.</td>
 	</tr>
 	<tr id="path-openpopup">
 		<td><code><b>openPopup</b>(
