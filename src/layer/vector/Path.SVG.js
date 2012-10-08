@@ -138,6 +138,7 @@ L.Path = L.Path.extend({
 			containerPoint: containerPoint,
 			originalEvent: e
 		});
+		L.DomEvent.stopPropagation(e);
 	}
 });
 
