@@ -48,6 +48,7 @@ L.Draggable = L.Class.extend({
 
 		if (e.touches && e.touches.length > 1) {
 			this._simulateClick = false;
+			clearTimeout(this._contextMenuTimeout);
 			return;
 		}
 
