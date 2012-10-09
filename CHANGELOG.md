@@ -18,6 +18,9 @@ An in-progress version being developed on the master branch.
  * Improved vectors updating/removing on Canvas backend even more (by [@danzel](https://github.com/danzel)). [#961](https://github.com/CloudMade/Leaflet/pull/961)
  * Added `isValid` method to `LatLngBounds` and `Bounds` (by [@domoritz](https://github.com/domoritz)). [#972](https://github.com/CloudMade/Leaflet/pull/972)
  * Improved markers and vectors click event so that it propagates to map if no one is listening to it (by [@danzel](https://github.com/danzel)). [#834](https://github.com/CloudMade/Leaflet/issues/834) [#1033](https://github.com/CloudMade/Leaflet/pull/1033)
+ * Added `Path` `unbindPopup` method.
+ * Added `Path` `remove` event.
+ * Added `Marker` `move` and `remove` events.
 
 ### Bugfixes
 
@@ -31,6 +34,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where removing a tile layer while dragging would throw an error (by [@danzel](https://github.com/danzel)). [#965](https://github.com/CloudMade/Leaflet/issues/965) [#968](https://github.com/CloudMade/Leaflet/pull/968)
  * Fixed compatibility with SmoothWheel extension for Firefox (by [@waldir](https://github.com/waldir)). [#1011](https://github.com/CloudMade/Leaflet/pull/1011)
  * Fixed a bug where middle marker wasn't removed after deleting 2 end nodes from a polyline (by [@Svad](https://github.com/Svad)). [#1022](https://github.com/CloudMade/Leaflet/issues/1022) [#1023](https://github.com/CloudMade/Leaflet/pull/1023)
+ * Fixed a bug where `Map` `load` event happened too late (after `moveend`, etc.) (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1027](https://github.com/CloudMade/Leaflet/pull/1027)
 
 ## 0.4.4 (August 7, 2012)
 

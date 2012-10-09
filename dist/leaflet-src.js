@@ -1702,6 +1702,9 @@ L.Map = L.Class.extend({
 
 		this._tileLayersToLoad = this._tileLayersNum;
 
+		var loading = !this._loaded;
+		this._loaded = true;
+
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
@@ -1712,8 +1715,7 @@ L.Map = L.Class.extend({
 
 		this.fire('moveend', {hard: !preserveMapOffset});
 
-		if (!this._loaded) {
-			this._loaded = true;
+		if (loading) {
 			this.fire('load');
 		}
 	},
@@ -2896,10 +2898,7 @@ L.Marker = L.Class.extend({
 	onRemove: function (map) {
 		this._removeIcon();
 
-		// TODO move to Marker.Popup.js
-		if (this.closePopup) {
-			this.closePopup();
-		}
+		this.fire('remove');
 
 		map.off({
 			'viewreset': this.update,
@@ -2918,9 +2917,7 @@ L.Marker = L.Class.extend({
 
 		this.update();
 
-		if (this._popup) {
-			this._popup.setLatLng(latlng);
-		}
+		this.fire('move', { latlng: this._latlng });
 	},
 
 	setZIndexOffset: function (offset) {
@@ -3414,7 +3411,10 @@ L.Marker.include({
 		options = L.Util.extend({offset: anchor}, options);
 
 		if (!this._popup) {
-			this.on('click', this.openPopup, this);
+			this
+				.on('click', this.openPopup, this)
+				.on('remove', this.closePopup, this)
+				.on('move', this._movePopup, this);
 		}
 
 		this._popup = new L.Popup(options, this)
@@ -3426,9 +3426,16 @@ L.Marker.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
-			this.off('click', this.openPopup);
+			this
+				.off('click', this.openPopup)
+				.off('remove', this.closePopup)
+				.off('move', this._movePopup);
 		}
 		return this;
+	},
+
+	_movePopup: function (e) {
+		this._popup.setLatLng(e.latlng);
 	}
 });
 
@@ -3690,6 +3697,8 @@ L.Path = L.Class.extend({
 			this._fill = null;
 		}
 
+		this.fire('remove');
+
 		map.off({
 			'viewreset': this.projectLatlngs,
 			'moveend': this._updatePath
@@ -3846,19 +3855,11 @@ L.Path = L.Path.extend({
 		}
 
 		this._fireMouseEvent(e);
-
-		if (this.hasEventListeners(e.type)) {
-			L.DomEvent.stopPropagation(e);
-		}
 	},
 
 	_fireMouseEvent: function (e) {
 		if (!this.hasEventListeners(e.type)) {
 			return;
-		}
-
-		if (e.type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
 		}
 
 		var map = this._map,
@@ -3872,6 +3873,11 @@ L.Path = L.Path.extend({
 			containerPoint: containerPoint,
 			originalEvent: e
 		});
+
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+		L.DomEvent.stopPropagation(e);
 	}
 });
 
@@ -3961,11 +3967,23 @@ L.Path.include({
 
 		this._popup.setContent(content);
 
-		if (!this._openPopupAdded) {
-			this.on('click', this._openPopup, this);
-			this._openPopupAdded = true;
+		if (!this._popupHandlersAdded) {
+			this
+				.on('click', this._openPopup, this)
+				.on('remove', this._closePopup, this);
+			this._popupHandlersAdded = true;
 		}
 
+		return this;
+	},
+
+	unbindPopup: function () {
+		if (this._popup) {
+			this._popup = null;
+			this
+				.off('click', this.openPopup)
+				.off('remove', this.closePopup);
+		}
 		return this;
 	},
 
@@ -3984,6 +4002,10 @@ L.Path.include({
 	_openPopup: function (e) {
 		this._popup.setLatLng(e.latlng);
 		this._map.openPopup(this._popup);
+	},
+
+	_closePopup: function () {
+		this._popup._close();
 	}
 });
 
@@ -6300,16 +6322,20 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	_onDrag: function (e) {
+		var marker = this._marker,
+			shadow = marker._shadow,
+			iconPos = L.DomUtil.getPosition(marker._icon),
+			latlng = marker._map.layerPointToLatLng(iconPos);
+
 		// update shadow position
-		var iconPos = L.DomUtil.getPosition(this._marker._icon);
-		if (this._marker._shadow) {
-			L.DomUtil.setPosition(this._marker._shadow, iconPos);
+		if (shadow) {
+			L.DomUtil.setPosition(shadow, iconPos);
 		}
 
-		this._marker._latlng = this._marker._map.layerPointToLatLng(iconPos);
+		marker._latlng = latlng;
 
-		this._marker
-			.fire('move')
+		marker
+			.fire('move', { latlng: latlng })
 			.fire('drag');
 	},
 
