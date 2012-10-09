@@ -44,6 +44,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+		map.on('moveend', this._updatePosition, this);
 
 		if (this._animated) {
 			map.on('zoomanim', this._zoomAnimation, this);
@@ -77,6 +78,7 @@ L.Popup = L.Class.extend({
 
 		map.off({
 			viewreset: this._updatePosition,
+			moveend: this._updatePosition,
 			preclick: this._close,
 			zoomanim: this._zoomAnimation
 		}, this);
@@ -149,8 +151,6 @@ L.Popup = L.Class.extend({
 		this._updatePosition();
 
 		this._container.style.visibility = '';
-
-		this._adjustPan();
 	},
 
 	_updateContent: function () {
@@ -214,6 +214,8 @@ L.Popup = L.Class.extend({
 		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
+
+		this._adjustPan();
 	},
 
 	_zoomAnimation: function (opt) {
