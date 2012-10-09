@@ -136,7 +136,7 @@ L.Control.Layers = L.Control.extend({
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
 	_createRadioElement: function (name, checked) {
 
-		var radioHtml = '<input type="radio" name="' + name + '"';
+		var radioHtml = '<input type="radio" class="leaflet-control-layers-selector" name="' + name + '"';
 		if (checked) {
 			radioHtml += ' checked="checked"';
 		}
@@ -156,6 +156,7 @@ L.Control.Layers = L.Control.extend({
 		if (obj.overlay) {
 			input = document.createElement('input');
 			input.type = 'checkbox';
+            input.className = 'leaflet-control-layers-selector';
 			input.defaultChecked = checked;
 		} else {
 			input = this._createRadioElement('leaflet-base-layers', checked);
@@ -165,7 +166,8 @@ L.Control.Layers = L.Control.extend({
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
-		var name = document.createTextNode(' ' + obj.name);
+        var name = document.createElement('span');
+        name.innerHTML = ' ' + obj.name;
 
 		label.appendChild(input);
 		label.appendChild(name);
