@@ -47,7 +47,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		marker._latlng = latlng;
 
 		marker
-			.fire('move')
+			.fire('move', { latlng: latlng })
 			.fire('drag');
 	},
 
