@@ -38,7 +38,7 @@ If your feature or API improvement dit get merged into master, please consider s
 
 ### Making Changes to Leaflet Source
 
-If you're not yet familiar with the way GitHub works (forking, pull requests, etc.), be sure to check out the awesome [article about forking](https://help.github.com/articles/fork-a-repo) on the GitHub Help website -- it will get you started quickly.
+If you're not yet familiar with the way GitHub works (forking, pull requests, etc.), be sure to check out the awesome [article about forking](https://help.github.com/articles/fork-a-repo) on the GitHub Help website &mdash; it will get you started quickly.
 
 You should always write each batch of changes (feature, bugfix, etc.) in **its own topic branch**. Please do not commit to the `master` branch, or your unrelated changes will go into the same pull request.
 
@@ -67,4 +67,4 @@ If you need to update documentation according to a new feature that only appeare
 
 ## Thank You
 
-Not only we're grateful for any contributions, -- helping Leaflet and its community actually makes you AWESOME. Join [this approved list of awesome people](https://github.com/CloudMade/Leaflet/graphs/contributors) and help us push limits of what's possible with online maps!
+Not only we're grateful for any contributions, &mdash; helping Leaflet and its community actually makes you AWESOME. Join [this approved list of awesome people](https://github.com/CloudMade/Leaflet/graphs/contributors) and help us push limits of what's possible with online maps!
