@@ -43,11 +43,11 @@ function getBase(s){
     var len = s.length;
     var url;
         if(len===1){
-             url=s[0]
+             url=s[0].src
         }//if it's the only script
         else{
             for(var i = 0;i<len;i++){
-                var tu=s[i];
+                var tu=s[i].src;
                 var ta=tu.split("/")
                 if(ta[ta.length-1]==="leaflet.js"){
                     url=tu;
