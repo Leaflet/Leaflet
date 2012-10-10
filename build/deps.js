@@ -1,31 +1,35 @@
 var deps = {
 	Core: {
-		src: ['Leaflet.js',
-    	      'core/CSS.js',
-		      'core/Util.js',
-		      'core/Class.js',
-		      'core/Events.js',
-		      'core/Browser.js',
-		      'geometry/Point.js',
-		      'geometry/Bounds.js',
-		      'geometry/Transformation.js',
-		      'dom/DomUtil.js',
-		      'geo/LatLng.js',
-		      'geo/LatLngBounds.js',
-		      'geo/projection/Projection.js',
-		      'geo/projection/Projection.SphericalMercator.js',
-		      'geo/projection/Projection.LonLat.js',
-		      'geo/crs/CRS.js',
-		      'geo/crs/CRS.EPSG3857.js',
-		      'geo/crs/CRS.EPSG4326.js',
-		      'map/Map.js'],
+		src: [
+            'Leaflet.js',
+            'core/CSS.js',
+            'core/Util.js',
+            'core/Class.js',
+            'core/Events.js',
+            'core/Browser.js',
+            'geometry/Point.js',
+            'geometry/Bounds.js',
+            'geometry/Transformation.js',
+            'dom/DomUtil.js',
+            'geo/LatLng.js',
+            'geo/LatLngBounds.js',
+            'geo/projection/Projection.js',
+            'geo/projection/Projection.SphericalMercator.js',
+            'geo/projection/Projection.LonLat.js',
+            'geo/crs/CRS.js',
+            'geo/crs/CRS.EPSG3857.js',
+            'geo/crs/CRS.EPSG4326.js',
+            'map/Map.js'
+        ],
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
 
 
 	EPSG3395: {
-		src: ['geo/projection/Projection.Mercator.js',
-		      'geo/crs/CRS.EPSG3395.js'],
+		src: [
+            'geo/projection/Projection.Mercator.js',
+            'geo/crs/CRS.EPSG3395.js'
+        ],
 		desc: 'EPSG:3395 projection (used by some map providers).',
 		heading: 'Additional projections'
 	},
@@ -136,9 +140,11 @@ var deps = {
 	},
 
 	VectorsCanvas: {
-		src: ['layer/vector/canvas/Polyline.Canvas.js',
-		      'layer/vector/canvas/Polygon.Canvas.js',
-		      'layer/vector/canvas/Circle.Canvas.js'],
+		src: [
+            'layer/vector/canvas/Polyline.Canvas.js',
+            'layer/vector/canvas/Polygon.Canvas.js',
+            'layer/vector/canvas/Circle.Canvas.js'
+        ],
 		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle'],
 		desc: 'Canvas fallback for vector layers (polygons, polylines, circles)'
 	},
@@ -151,27 +157,33 @@ var deps = {
 
 
 	MapDrag: {
-		src: ['dom/DomEvent.js',
-		      'dom/Draggable.js',
-		      'core/Handler.js',
-		      'map/handler/Map.Drag.js'],
+		src: [
+            'dom/DomEvent.js',
+            'dom/Draggable.js',
+            'core/Handler.js',
+            'map/handler/Map.Drag.js'
+        ],
 		desc: 'Makes the map draggable (by mouse or touch).',
 		heading: 'Interaction'
 	},
 
 	MouseZoom: {
-		src: ['dom/DomEvent.js',
-		      'core/Handler.js',
-		      'map/handler/Map.DoubleClickZoom.js',
-		      'map/handler/Map.ScrollWheelZoom.js'],
+		src: [
+            'dom/DomEvent.js',
+            'core/Handler.js',
+            'map/handler/Map.DoubleClickZoom.js',
+            'map/handler/Map.ScrollWheelZoom.js'
+        ],
 		desc: 'Scroll wheel zoom and double click zoom on the map.'
 	},
 
 	TouchZoom: {
-		src: ['dom/DomEvent.js',
-		      'dom/DomEvent.DoubleTap.js',
-		      'core/Handler.js',
-		      'map/handler/Map.TouchZoom.js'],
+		src: [
+            'dom/DomEvent.js',
+            'dom/DomEvent.DoubleTap.js',
+            'core/Handler.js',
+            'map/handler/Map.TouchZoom.js'
+        ],
 		deps: ['MapAnimationZoom'],
 		desc: 'Enables smooth touch zooming on iOS and double tap on iOS/Android.'
 	},
@@ -200,31 +212,38 @@ var deps = {
 
 
 	ControlZoom: {
-		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
-		      'control/Control.Zoom.js'],
+		src: [
+            'control/Control.js',
+            'map/ext/Map.Control.js',
+            'control/Control.Zoom.js'],
 		heading: 'Controls',
 		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
 	},
 
 	ControlAttrib: {
-		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
-		      'control/Control.Attribution.js'],
+		src: [
+        'control/Control.js',
+        'map/ext/Map.Control.js',
+        'control/Control.Attribution.js'
+    ],
 		desc: 'Attribution control.'
 	},
 
 	ControlScale: {
-		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
-		      'control/Control.Scale.js'],
+		src: [
+            'control/Control.js',
+            'map/ext/Map.Control.js',
+            'control/Control.Scale.js'
+        ],
 		desc: 'Scale control.'
 	},
 
 	ControlLayers: {
-		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
-		      'control/Control.Layers.js'],
+		src: [
+            'control/Control.js',
+            'map/ext/Map.Control.js',
+            'control/Control.Layers.js'
+        ],
 		desc: 'Layer Switcher control.'
 	},
 
