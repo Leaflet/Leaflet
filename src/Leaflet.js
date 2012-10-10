@@ -15,6 +15,7 @@ if (typeof exports !== undefined + '') {
 }
 
 L.version = '0.4.4';
+
 function loadCSS(){
 var browser =(function(){
 //lovingly taken from the rhinosourus book of javascript which took it from jquery
