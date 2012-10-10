@@ -61,11 +61,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		clearTimeout(this._clearTileBgTimer);
 
-		//dumb FireFox hack, I have no idea why this magic zero translate fixes the scale transition problem
-		if (L.Browser.gecko || window.opera || L.Browser.ie3d) {
-			tileBg.style[transform] += ' translate(0,0)';
-		}
-
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
 		var scaleStr = L.DomUtil.getScaleString(scale, origin),
