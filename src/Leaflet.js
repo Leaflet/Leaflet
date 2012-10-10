@@ -16,20 +16,22 @@ if (typeof exports !== undefined + '') {
 
 L.version = '0.4.4';
 
-function loadCSS(){
-var browser =(function(){
-//lovingly taken from the rhinosourus book of javascript which took it from jquery
+(function(){
+var isIE =(function(){
+//lovingly adapted from the rhinosourus book of javascript which took it from jquery
 var match=  /(msie)[ \/]([\w.]+)/.exec(navigator.userAgent.toLowerCase())||[];
 return (match[1]==="msie"&& parseInt(match[2])<=8);
 }());
-
+//isIE is true if the browswer is IE lte 8
 
      var head = document.getElementsByTagName("head")[0];
-     head.appendChild(makeLink("http://leaflet.cloudmade.com/dist/leaflet.css"));
-     if(browser.name==="msie"&&parseInt(browser.version)<=7){
-         head.appendChild(makeLink("http://leaflet.cloudmade.com/dist/leaflet.ie.css"));
-     }
-
+     var scripts=document.getElementsByTagName("script");
+     var base =getBase(scripts);//in which we figure out the directory leaflet is loaded from
+     head.appendChild(makeLink(base+"leaflet.css"));//load the main css
+     if(isIE){
+         head.appendChild(makeLink(base+"leaflet.ie.css"));
+     }//going forward, probobly want to do feature testing to add these in one by oen
+    
 
 function makeLink(url){
     var linkel = document.createElement("link");
@@ -37,5 +39,25 @@ function makeLink(url){
     linkel.href=url;
     return linkel;
 }
-}
-loadCSS();
+function getBase(s){
+    var len = s.length;
+    var url;
+        if(len===1){
+             url=s[0]
+        }//if it's the only script
+        else{
+            for(var i = 0;i<len;i++){
+                var tu=s[i];
+                var ta=tu.split("/")
+                if(ta[ta.length-1]==="leaflet.js"){
+                    url=tu;
+                    break;
+                }
+            }
+        }//finds the only script that ends in /leaflet.js
+    var urla=url.split("/");
+    urla.pop();
+    var base = urla.join("/");
+    return base+"/";
+    }
+}());
