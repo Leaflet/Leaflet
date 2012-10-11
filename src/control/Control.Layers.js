@@ -156,7 +156,7 @@ L.Control.Layers = L.Control.extend({
 		if (obj.overlay) {
 			input = document.createElement('input');
 			input.type = 'checkbox';
-            input.className = 'leaflet-control-layers-selector';
+			input.className = 'leaflet-control-layers-selector';
 			input.defaultChecked = checked;
 		} else {
 			input = this._createRadioElement('leaflet-base-layers', checked);
@@ -166,8 +166,8 @@ L.Control.Layers = L.Control.extend({
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
-        var name = document.createElement('span');
-        name.innerHTML = ' ' + obj.name;
+		var name = document.createElement('span');
+		name.innerHTML = ' ' + obj.name;
 
 		label.appendChild(input);
 		label.appendChild(name);
