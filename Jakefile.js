@@ -1,5 +1,5 @@
 var build = require('./build/build.js'),
-    buildCSS = require("./build/build.css.js"),
+    buildCSS = require("./build/buildCSS.js"),
     lint = require('./build/hint.js');
 
 var COPYRIGHT = '/*\n Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin\n' +
@@ -24,6 +24,7 @@ task('lint', function () {
 });
 desc('Build the CSS');
 task('css', function () {
+    console.log('about to build the css');
     buildCSS.json();
     console.log('\tbuilt the css');
 });
