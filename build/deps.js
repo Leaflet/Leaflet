@@ -2,7 +2,7 @@ var deps = {
 	Core: {
 		src: [
             'Leaflet.js',
-            'CSS/CSS.json',
+            'CSS/CSSfiles.js',
             'CSS/CSS.js',
             'core/Util.js',
             'core/Class.js',
