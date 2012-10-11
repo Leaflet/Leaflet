@@ -12,17 +12,25 @@
         }
     }
     function parseLoc(css) {
-        var scripts = document.getElementsByTagName('script');
-        var scriptURL = scripts[scripts.length - 1].src;
-        var dirNum = scriptURL.lastIndexOf("/");
-        if (dirNum === -1) {
-            return css;
-        } else if (dirNum >= 0) {
-            var base = scriptURL.slice(0, dirNum) + "/";
-            return css.replace(/url\(images\/(\S+)\)/g, function (all, part) {
-                return "url(" + base + "images/" + part + ")";
+        var base = (function () {
+            var scripts = document.getElementsByTagName('script'),
+                leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+
+            var i, len, src, matches;
+
+            for (i = 0, len = scripts.length; i < len; i++) {
+                src = scripts[i].src;
+                matches = src.match(leafletRe);
+                
+                if (matches) {
+                    return src.split(leafletRe)[0] + '/images';
+                }
+            }
+        }());
+        return css.replace(/url\(images\/(\S+)\)/g, function (all, part) {
+                return "url(" + base + "/" + part + ")";
             });
-        }
+       
     }
     var css = L._css;
     addCSS(parseLoc(css.main), css.ie);
