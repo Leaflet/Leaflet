@@ -17,7 +17,7 @@ L.Control.Scale = L.Control.extend({
 		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-		this._update();
+		map.whenReady(this._update, this);
 
 		return container;
 	},
