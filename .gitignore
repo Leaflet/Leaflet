@@ -6,3 +6,4 @@ tmp/**/*
 *.iml
 *.sublime-*
 _site
+dist/*.js
