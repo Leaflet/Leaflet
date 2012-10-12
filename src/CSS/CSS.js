@@ -32,7 +32,6 @@
             });
        
     }
-    var css = L._css;
+    var css = L.CSS;
     addCSS(parseLoc(css.main), css.ie);
-    delete L._css;
 }());

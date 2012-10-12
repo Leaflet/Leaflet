@@ -9,7 +9,7 @@ var css = {main : clean(main), ie : clean(ie)};
 
 var out = JSON.stringify(css, '' ,"    ");
 
-fs.writeFileSync("./src/CSS/CSSfiles.js", "L._css = " + out+";");
+fs.writeFileSync("./src/CSS/CSSfiles.js", "L.CSS = " + out+";");
 }
 
 exports.json = makeJSON;
