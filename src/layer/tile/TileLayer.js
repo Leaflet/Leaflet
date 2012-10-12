@@ -358,7 +358,7 @@ L.TileLayer = L.Class.extend({
 			this._container.removeChild(tile);
 		}
 
-		if (!L.Browser.android) { //For https://github.com/CloudMade/Leaflet/issues/137
+		if (!L.Browser.android && tile.tagName === "IMG") { //For https://github.com/CloudMade/Leaflet/issues/137
 			tile.src = L.Util.emptyImageUrl;
 		}
 
@@ -490,7 +490,7 @@ L.TileLayer = L.Class.extend({
 		var layer = this._layer;
 
 		//Only if we are loading an actual image
-		if (this.src !== L.Util.emptyImageUrl) {
+		if (this.src !== L.Util.emptyImageUrl || this.tagName !== "IMG") {
 			L.DomUtil.addClass(this, 'leaflet-tile-loaded');
 
 			layer.fire('tileload', {
