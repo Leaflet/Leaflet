@@ -110,6 +110,12 @@ var deps = {
 		desc: 'Polygon overlays.'
 	},
 
+    RegularPolygon: {
+        src: ['layer/vector/RegularPolygon.js'],
+        deps: ['Polygon'],
+        desc: 'Regular polygon overlays.'
+    },
+
 	MultiPoly: {
 		src: ['layer/vector/MultiPoly.js'],
 		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
