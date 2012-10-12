@@ -50,14 +50,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('bringToBack');
 	},
 
-	getBounds: function () {
-		var bounds = new L.LatLngBounds();
-		this.eachLayer(function (layer) {
-			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
-		}, this);
-		return bounds;
-	},
-
 	_propagateEvent: function (e) {
 		e.layer  = e.target;
 		e.target = this;
