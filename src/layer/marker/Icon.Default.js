@@ -25,5 +25,5 @@ L.Icon.Default = L.Icon.extend({
 		return path + '/marker-' + name + '.png';
 	}
 });
-
+// turns out we need the same thing over at CSS so only do it once
 L.Icon.Default.imagePath = L.CSS.imagePath;
