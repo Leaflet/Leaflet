@@ -11,8 +11,7 @@
             styleElt.innerHTML = cssText;
         }
     }
-    function parseLoc(css) {
-        var base = (function () {
+    L.CSS.imageDir = (function () {
             var scripts = document.getElementsByTagName('script'),
                 leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
@@ -27,8 +26,10 @@
                 }
             }
         }());
+    function parseLoc(css) {
+        
         return css.replace(/url\(images\/(\S+)\)/g, function (all, part) {
-                return "url(" + base + "/" + part + ")";
+                return "url(" + L.CSS.imageDir + "/" + part + ")";
             });
        
     }
