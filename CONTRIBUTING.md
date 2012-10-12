@@ -34,7 +34,7 @@ Before sending a pull request with a new feature, first check if it's been discu
  1. Are you sure that this new feature is important enough to justify its presense in the Leaflet core? Or will it look better as a plugin in a separate repository?
  2. Is it written in a simple, concise way that doesn't add bulk to the codebase?
 
-If your feature or API improvement dit get merged into master, please consider submitting another pull request with the corresponding [documentation update](#improving-documentation).
+If your feature or API improvement did get merged into master, please consider submitting another pull request with the corresponding [documentation update](#improving-documentation).
 
 ### Making Changes to Leaflet Source
 
@@ -67,4 +67,4 @@ If you need to update documentation according to a new feature that only appeare
 
 ## Thank You
 
-Not only we're grateful for any contributions, &mdash; helping Leaflet and its community actually makes you AWESOME. Join [this approved list of awesome people](https://github.com/CloudMade/Leaflet/graphs/contributors) and help us push limits of what's possible with online maps!
+Not only are we grateful for any contributions, &mdash; helping Leaflet and its community actually makes you AWESOME. Join [this approved list of awesome people](https://github.com/CloudMade/Leaflet/graphs/contributors) and help us push the limits of what's possible with online maps!
