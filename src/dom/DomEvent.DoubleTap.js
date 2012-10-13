@@ -32,13 +32,18 @@ L.Util.extend(L.DomEvent, {
 			if (doubleTap) {
 				if (L.Browser.msTouch) {
 					//Work around .type being readonly with MSPointer* events
-					var newTouch = { };
+					var newTouch = { },
+						prop;
 					for (var i in touch) {
 						if (true) { //Make JSHint happy, we want to copy all properties
-							newTouch[i] = touch[i];
+							prop = touch[i];
+							if (typeof prop === 'function') { //Make JSHint happy, we want to copy all properties
+								newTouch[i] = prop.bind(touch);
+							} else {
+								newTouch[i] = prop;
+							}
 						}
 					}
-					delete newTouch.preventDefault;
 					touch = newTouch;
 				}
 				touch.type = 'dblclick';
