@@ -37,7 +37,7 @@ L.Util.extend(L.DomEvent, {
 					for (var i in touch) {
 						if (true) { //Make JSHint happy, we want to copy all properties
 							prop = touch[i];
-							if (typeof prop === 'function') { //Make JSHint happy, we want to copy all properties
+							if (typeof prop === 'function') {
 								newTouch[i] = prop.bind(touch);
 							} else {
 								newTouch[i] = prop;
