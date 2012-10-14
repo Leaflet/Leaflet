@@ -1,4 +1,5 @@
 var build = require('./build/build.js'),
+    buildCSS = require("./build/buildCSS.js"),
     lint = require('./build/hint.js');
 
 var COPYRIGHT = '/*\n Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin\n' +
@@ -21,9 +22,14 @@ task('lint', function () {
 		console.log('\tCheck passed');
 	}
 });
-
+desc('Build the CSS');
+task('css', function () {
+    console.log('about to build the css');
+    buildCSS.json();
+    console.log('\tbuilt the css');
+});
 desc('Combine and compress Leaflet source files');
-task('build', ['lint'], function (compsBase32, buildName) {
+task('build', ['lint','css'], function (compsBase32, buildName) {
 
 	var files = build.getFiles(compsBase32);
 
