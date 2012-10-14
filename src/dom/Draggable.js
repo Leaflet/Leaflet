@@ -105,7 +105,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
-		var moved = this._moved;
+		var simulateClickTouch;
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
@@ -116,8 +116,7 @@ L.Draggable = L.Class.extend({
 			}
 
 			if (dist < L.Draggable.TAP_TOLERANCE) {
-				this._moved = false;
-				this._simulateEvent('click', first);
+				simulateClickTouch = first;
 			}
 		}
 
@@ -129,13 +128,18 @@ L.Draggable = L.Class.extend({
 		L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
 		L.DomEvent.off(document, L.Draggable.END, this._onUp);
 
-		if (moved) {
+		if (this._moved) {
 			// ensure drag is not fired after dragend
 			L.Util.cancelAnimFrame(this._animRequest);
 
 			this.fire('dragend');
 		}
 		this._moving = false;
+
+		if (simulateClickTouch) {
+			this._moved = false;
+			this._simulateEvent('click', simulateClickTouch);
+		}
 	},
 
 	_setMovingCursor: function () {
