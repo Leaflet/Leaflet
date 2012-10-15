@@ -12,11 +12,17 @@ L.Util.extend(L.DomEvent, {
 			pre = '_leaflet_',
 			touchstart = this._touchstart,
 			touchend = this._touchend,
-			touchCount = 0;
+			trackedTouches = [];
 
 		function onTouchStart(e) {
-			touchCount++;
-			if (touchCount > 1) {
+			var count;
+			if (L.Browser.msTouch) {
+				trackedTouches.push(e.pointerId);
+				count = trackedTouches.length;
+			} else {
+				count = e.touches.length;
+			}
+			if (count > 1) {
 				return;
 			}
 
@@ -28,7 +34,14 @@ L.Util.extend(L.DomEvent, {
 			last = now;
 		}
 		function onTouchEnd(e) {
-			touchCount--;
+			if (L.Browser.msTouch) {
+				var idx = trackedTouches.indexOf(e.pointerId);
+				if (idx === -1) {
+					return;
+				}
+				trackedTouches.splice(idx, 1);
+			}
+
 			if (doubleTap) {
 				if (L.Browser.msTouch) {
 					//Work around .type being readonly with MSPointer* events
@@ -54,10 +67,14 @@ L.Util.extend(L.DomEvent, {
 		obj[pre + touchstart + id] = onTouchStart;
 		obj[pre + touchend + id] = onTouchEnd;
 
+		//On msTouch we need to listen on the document otherwise a drag starting on the map and moving off screen will not come through to us
+		// so we will lose track of how many touches are ongoing
+		var endElement = L.Browser.msTouch ? document.documentElement : obj;
+
 		obj.addEventListener(touchstart, onTouchStart, false);
-		obj.addEventListener(touchend, onTouchEnd, false);
+		endElement.addEventListener(touchend, onTouchEnd, false);
 		if (L.Browser.msTouch) {
-			obj.addEventListener('MSPointerCancel', onTouchEnd, false);
+			endElement.addEventListener('MSPointerCancel', onTouchEnd, false);
 		}
 		return this;
 	},
@@ -65,9 +82,9 @@ L.Util.extend(L.DomEvent, {
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
 		obj.removeEventListener(this._touchstart, obj[pre + this._touchstart + id], false);
-		obj.removeEventListener(this._touchend, obj[pre + this._touchend + id], false);
+		(L.Browser.msTouch ? document.documentElement : obj).removeEventListener(this._touchend, obj[pre + this._touchend + id], false);
 		if (L.Browser.msTouch) {
-			obj.addEventListener('MSPointerCancel', obj[pre + this._touchend + id], false);
+			document.documentElement.removeEventListener('MSPointerCancel', obj[pre + this._touchend + id], false);
 		}
 		return this;
 	}
