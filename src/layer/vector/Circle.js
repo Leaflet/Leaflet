@@ -34,13 +34,11 @@ L.Circle = L.Path.extend({
 	},
 
 	getBounds: function () {
-		var map = this._map,
-			delta = this._radius * Math.cos(Math.PI / 4),
-			point = map.project(this._latlng),
-			swPoint = new L.Point(point.x - delta, point.y + delta),
-			nePoint = new L.Point(point.x + delta, point.y - delta),
-			sw = map.unproject(swPoint),
-			ne = map.unproject(nePoint);
+		var lngRadius = this._getLngRadius(),
+			latRadius = (this._mRadius / 40075017) * 360,
+			latlng = this._latlng,
+			sw = new L.LatLng(latlng.lat - latRadius, latlng.lng - lngRadius),
+			ne = new L.LatLng(latlng.lat + latRadius, latlng.lng + lngRadius);
 
 		return new L.LatLngBounds(sw, ne);
 	},
@@ -72,11 +70,14 @@ L.Circle = L.Path.extend({
 		return this._mRadius;
 	},
 
-	_getLngRadius: function () {
-		var equatorLength = 40075017,
-			hLength = equatorLength * Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
+	// TODO Earth hardcoded, move into projection code!
 
-		return (this._mRadius / hLength) * 360;
+	_getLatRadius: function () {
+		return (this._mRadius / 40075017) * 360;
+	},
+
+	_getLngRadius: function () {
+		return this._getLatRadius() / Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
 	},
 
 	_checkIfEmpty: function () {
