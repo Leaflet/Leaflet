@@ -122,7 +122,7 @@
 .leaflet-control-zoom a {
 	background-color: rgba(255, 255, 255, 0.75);
 	}
-.leaflet-control-zoom a, .leaflet-control-layers a {
+.leaflet-control-zoom a, .leaflet-control-layers-toggle {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
 	display: block;
@@ -156,12 +156,12 @@
 	-webkit-border-radius: 8px;
 	border-radius: 8px;
 	}
-.leaflet-control-layers a {
+.leaflet-control-layers-toggle {
 	background-image: url(images/layers.png);
 	width: 36px;
 	height: 36px;
 	}
-.leaflet-touch .leaflet-control-layers a {
+.leaflet-touch .leaflet-control-layers-toggle {
 	width: 44px;
 	height: 44px;
 	}
@@ -179,7 +179,7 @@
 	color: #333;
 	background: #fff;
 	}
-.leaflet-control-layers input {
+.leaflet-control-layers-selector {
 	margin-top: 2px;
 	position: relative;
 	top: 1px;
