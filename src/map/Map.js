@@ -37,6 +37,7 @@ L.Map = L.Class.extend({
 		}
 
 		this._initLayers(options.layers);
+		this.setRotation(0);
 	},
 
 
@@ -50,6 +51,18 @@ L.Map = L.Class.extend({
 
 	setZoom: function (zoom) { // (Number)
 		return this.setView(this.getCenter(), zoom);
+	},
+
+	setRotation: function (degrees) {
+		var rads = degrees / 180 * Math.PI;
+		this.rotation = {
+			degrees: degrees,
+			rads: rads,
+			sin: Math.sin(rads),
+			cos: Math.cos(rads)
+		}
+		this._container.style[L.DomUtil.TRANSFORM] = 'rotate('+degrees+'deg)';
+		return this;
 	},
 
 	zoomIn: function (delta) {
@@ -248,6 +261,10 @@ L.Map = L.Class.extend({
 
 	getZoom: function () {
 		return this._zoom;
+	},
+
+	getRotation: function () {
+		return this.rotation.deg;
 	},
 
 	getBounds: function () {
