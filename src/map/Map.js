@@ -60,8 +60,8 @@ L.Map = L.Class.extend({
 			rads: rads,
 			sin: Math.sin(rads),
 			cos: Math.cos(rads)
-		}
-		this._container.style[L.DomUtil.TRANSFORM] = 'rotate('+degrees+'deg)';
+		};
+		this._container.style[L.DomUtil.TRANSFORM] = 'rotate(' + degrees + 'deg)';
 		return this;
 	},
 

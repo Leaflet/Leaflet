@@ -74,7 +74,7 @@ L.Draggable = L.Class.extend({
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 			newPoint = new L.Point(first.clientX, first.clientY),
-			diffVecUnrotated = newPoint.subtract(this._startPoint);
+			diffVecUnrotated = newPoint.subtract(this._startPoint),
 			diffVec = this._computeVectorRotated(diffVecUnrotated);
 
 		if (!diffVec.x && !diffVec.y) { return; }
@@ -153,7 +153,7 @@ L.Draggable = L.Class.extend({
 			this._simulateEvent('click', simulateClickTouch);
 		}
 	},
-	
+
 	_setMovingCursor: function () {
 		L.DomUtil.addClass(document.body, 'leaflet-dragging');
 	},
