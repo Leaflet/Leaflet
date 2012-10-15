@@ -24,6 +24,7 @@ L.Util.extend(L.DomEvent, {
 			touches = this._msTouches;
 
 		var cb = function (e) {
+			//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
 
 			var alreadyInArray = false;
 			for (var i = 0; i < touches.length; i++) {
@@ -44,11 +45,12 @@ L.Util.extend(L.DomEvent, {
 		};
 
 		obj[pre + 'touchstart' + id] = cb;
-		obj.addEventListener('MSPointerDown', cb, this);
-
+		obj.addEventListener('MSPointerDown', cb, false);
 
 		//Need to also listen for end events to keep the _msTouches list accurate
 		var internalCb = function (e) {
+			//console.log('internal up ' + e.pointerId);
+
 			for (var i = 0; i < touches.length; i++) {
 				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
@@ -56,9 +58,10 @@ L.Util.extend(L.DomEvent, {
 				}
 			}
 		};
-		obj.addEventListener('MSPointerUp', internalCb, this);
-		obj.addEventListener('MSPointerCancel', internalCb, this);
-		obj[pre + 'touchstartend' + id] = cb;
+		//We listen on the documentElement as any drags that end by moving the touch off the screen get fired there
+		obj.addEventListener('MSPointerUp', internalCb, false);
+		obj.addEventListener('MSPointerCancel', internalCb, false);
+		obj[pre + 'touchstartend' + id] = internalCb;
 
 		return this;
 	},
@@ -88,7 +91,7 @@ L.Util.extend(L.DomEvent, {
 		};
 
 		obj[pre + 'touchmove' + id] = cb;
-		obj.addEventListener('MSPointerMove', cb, this);
+		obj.addEventListener('MSPointerMove', cb, false);
 
 		return this;
 	},
@@ -99,17 +102,11 @@ L.Util.extend(L.DomEvent, {
 
 		var cb = function (e) {
 			//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
-			var found = false;
 			for (var i = 0; i < touches.length; i++) {
 				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
-					found = true;
 					break;
 				}
-			}
-
-			if (!found) { //Crappy work around for pointerIDs breaking when leaving screen edge https://github.com/CloudMade/Leaflet/issues/871#issuecomment-9125445
-				touches.splice(0, touches.length);
 			}
 
 			e.touches = touches.slice();
@@ -119,8 +116,8 @@ L.Util.extend(L.DomEvent, {
 		};
 
 		obj[pre + 'touchend' + id] = cb;
-		obj.addEventListener('MSPointerUp', cb, this);
-		obj.addEventListener('MSPointerCancel', cb, this);
+		obj.addEventListener('MSPointerUp', cb, false);
+		obj.addEventListener('MSPointerCancel', cb, false);
 
 		return this;
 	},
@@ -131,16 +128,17 @@ L.Util.extend(L.DomEvent, {
 
 		switch (type) {
 		case 'touchstart':
-			obj.removeEventListener('MSPointerDown', cb, this);
-			obj.removeEventListener('MSPointerUp', obj[pre + 'touchstartend' + id], this);
-			obj.removeEventListener('MSPointerCancel', obj[pre + 'touchstartend' + id], this);
+			obj.removeEventListener('MSPointerDown', cb, false);
+
+			obj.removeEventListener('MSPointerUp', obj[pre + 'touchstartend' + id], false);
+			obj.removeEventListener('MSPointerCancel', obj[pre + 'touchstartend' + id], false);
 			break;
 		case 'touchmove':
-			obj.removeEventListener('MSPointerMove', cb, this);
+			obj.removeEventListener('MSPointerMove', cb, false);
 			break;
 		case 'touchend':
-			obj.removeEventListener('MSPointerUp', cb, this);
-			obj.removeEventListener('MSPointerCancel', cb, this);
+			obj.removeEventListener('MSPointerUp', cb, false);
+			obj.removeEventListener('MSPointerCancel', cb, false);
 			break;
 		}
 
