@@ -12,7 +12,8 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 
-	initialize: function (element, dragStartTarget) {
+	initialize: function (element, dragStartTarget, map) {
+		this._map = map;
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 	},
@@ -73,7 +74,8 @@ L.Draggable = L.Class.extend({
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 			newPoint = new L.Point(first.clientX, first.clientY),
-			diffVec = newPoint.subtract(this._startPoint);
+			diffVecUnrotated = newPoint.subtract(this._startPoint);
+			diffVec = this._computeVectorRotated(diffVecUnrotated);
 
 		if (!diffVec.x && !diffVec.y) { return; }
 
@@ -98,6 +100,16 @@ L.Draggable = L.Class.extend({
 		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
+	_computeVectorRotated: function (vectorUnrotated) {
+		var rotation = this._map.rotation,
+			x = vectorUnrotated.x,
+			y = vectorUnrotated.y,
+			vectorRotated = vectorUnrotated;
+		vectorRotated.x = (x * rotation.cos) + (y * rotation.sin);
+		vectorRotated.y = (x * -1 * rotation.sin) + (y * rotation.cos);
+		return vectorRotated;
+	},
+
 	_updatePosition: function () {
 		this.fire('predrag');
 		L.DomUtil.setPosition(this._element, this._newPos);
@@ -105,6 +117,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
+		var simulateClickTouch;
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
@@ -115,7 +128,7 @@ L.Draggable = L.Class.extend({
 			}
 
 			if (dist < L.Draggable.TAP_TOLERANCE) {
-				this._simulateEvent('click', first);
+				simulateClickTouch = first;
 			}
 		}
 
@@ -134,8 +147,13 @@ L.Draggable = L.Class.extend({
 			this.fire('dragend');
 		}
 		this._moving = false;
-	},
 
+		if (simulateClickTouch) {
+			this._moved = false;
+			this._simulateEvent('click', simulateClickTouch);
+		}
+	},
+	
 	_setMovingCursor: function () {
 		L.DomUtil.addClass(document.body, 'leaflet-dragging');
 	},

@@ -17,7 +17,7 @@ L.Map.mergeOptions({
 L.Map.Drag = L.Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
+			this._draggable = new L.Draggable(this._map._mapPane, this._map._container, this._map);
 
 			this._draggable.on({
 				'dragstart': this._onDragStart,
