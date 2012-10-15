@@ -24,7 +24,6 @@ L.Util.extend(L.DomEvent, {
 			touches = this._msTouches;
 
 		var cb = function (e) {
-			//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
 
 			var alreadyInArray = false;
 			for (var i = 0; i < touches.length; i++) {
@@ -34,7 +33,6 @@ L.Util.extend(L.DomEvent, {
 				}
 			}
 			if (!alreadyInArray) {
-				//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
 				touches.push(e);
 			}
 
@@ -49,8 +47,6 @@ L.Util.extend(L.DomEvent, {
 
 		//Need to also listen for end events to keep the _msTouches list accurate
 		var internalCb = function (e) {
-			//console.log('internal up ' + e.pointerId);
-
 			for (var i = 0; i < touches.length; i++) {
 				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
@@ -101,7 +97,6 @@ L.Util.extend(L.DomEvent, {
 			touches = this._msTouches;
 
 		var cb = function (e) {
-			//console.log(e.type + ' ' + touches.length + ' id: ' + e.pointerId);
 			for (var i = 0; i < touches.length; i++) {
 				if (touches[i].pointerId === e.pointerId) {
 					touches.splice(i, 1);
