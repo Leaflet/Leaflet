@@ -56,8 +56,8 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.setPosition(box, newPos);
 
 		// TODO refactor: remove hardcoded 4 pixels
-		box.style.width  = (Math.abs(offset.x) - 4) + 'px';
-		box.style.height = (Math.abs(offset.y) - 4) + 'px';
+		box.style.width  = (Math.max(0, Math.abs(offset.x) - 4)) + 'px';
+		box.style.height = (Math.max(0, Math.abs(offset.y) - 4)) + 'px';
 	},
 
 	_onMouseUp: function (e) {
