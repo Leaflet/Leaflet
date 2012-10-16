@@ -49,7 +49,7 @@ L.Util.extend(L.DomEvent, {
 		//Need to also listen for end events to keep the _msTouches list accurate
 		//this needs to be on the body and never go away
 		if (!this._msDocumentListener) {
-			var internalCb = function(e) {
+			var internalCb = function (e) {
 				for (var i = 0; i < touches.length; i++) {
 					if (touches[i].pointerId === e.pointerId) {
 						touches.splice(i, 1);
