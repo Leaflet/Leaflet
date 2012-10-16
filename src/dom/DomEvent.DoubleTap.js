@@ -29,7 +29,7 @@ L.Util.extend(L.DomEvent, {
 			var now = Date.now(),
 				delta = now - (last || now);
 
-			touch = e.touches[0];
+			touch = e.touches ? e.touches[0] : e;
 			doubleTap = (delta > 0 && delta <= delay);
 			last = now;
 		}
