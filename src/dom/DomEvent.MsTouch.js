@@ -1,6 +1,7 @@
 L.Util.extend(L.DomEvent, {
 
 	_msTouches: [],
+	_msDocumentListener: false,
 
 	// Provides a touch events wrapper for msPointer events.
 	// Based on changes by veproza https://github.com/CloudMade/Leaflet/pull/1019
@@ -46,18 +47,22 @@ L.Util.extend(L.DomEvent, {
 		obj.addEventListener('MSPointerDown', cb, false);
 
 		//Need to also listen for end events to keep the _msTouches list accurate
-		var internalCb = function (e) {
-			for (var i = 0; i < touches.length; i++) {
-				if (touches[i].pointerId === e.pointerId) {
-					touches.splice(i, 1);
-					break;
+		//this needs to be on the body and never go away
+		if (!this._msDocumentListener) {
+			var internalCb = function(e) {
+				for (var i = 0; i < touches.length; i++) {
+					if (touches[i].pointerId === e.pointerId) {
+						touches.splice(i, 1);
+						break;
+					}
 				}
-			}
-		};
-		//We listen on the documentElement as any drags that end by moving the touch off the screen get fired there
-		obj.addEventListener('MSPointerUp', internalCb, false);
-		obj.addEventListener('MSPointerCancel', internalCb, false);
-		obj[pre + 'touchstartend' + id] = internalCb;
+			};
+			//We listen on the documentElement as any drags that end by moving the touch off the screen get fired there
+			document.documentElement.addEventListener('MSPointerUp', internalCb, false);
+			document.documentElement.addEventListener('MSPointerCancel', internalCb, false);
+
+			this._msDocumentListener = true;
+		}
 
 		return this;
 	},
@@ -124,9 +129,6 @@ L.Util.extend(L.DomEvent, {
 		switch (type) {
 		case 'touchstart':
 			obj.removeEventListener('MSPointerDown', cb, false);
-
-			obj.removeEventListener('MSPointerUp', obj[pre + 'touchstartend' + id], false);
-			obj.removeEventListener('MSPointerCancel', obj[pre + 'touchstartend' + id], false);
 			break;
 		case 'touchmove':
 			obj.removeEventListener('MSPointerMove', cb, false);
