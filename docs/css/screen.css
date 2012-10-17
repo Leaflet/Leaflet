@@ -484,6 +484,7 @@ p.notice {
 	text-decoration: none;
 	margin: 0 2px;
 	color: #777;
+	font-size: 13px;
 }
 
 .usedby a:hover {
