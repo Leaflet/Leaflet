@@ -42,3 +42,6 @@
 .leaflet-control-attribution, .leaflet-control-layers {
 	background: white;
 	}
+.leaflet-zoom-box {
+	filter: alpha(opacity=50);
+	}
