@@ -361,10 +361,17 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		ie3d = ie && ('transition' in doc.style),
 		webkit3d = webkit && ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
 		gecko3d = gecko && ('MozPerspective' in doc.style),
-		opera3d = opera && ('OTransition' in doc.style);
+		opera3d = opera && ('OTransition' in doc.style),
+
+		msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints);
 
 	var touch = !window.L_NO_TOUCH && (function () {
 		var startName = 'ontouchstart';
+
+		// IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.MsTouch)
+		if (msTouch) {
+			return true;
+		}
 
 		// WebKit, etc
 		if (startName in doc) {
@@ -416,6 +423,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		mobileOpera: mobile && opera,
 
 		touch: touch,
+		msTouch: msTouch,
 
 		retina: retina
 	};
@@ -5294,7 +5302,9 @@ L.DomEvent = {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
 		};
 
-		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
+			return this.addMsTouchListener(obj, type, handler, id);
+		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			return this.addDoubleTapListener(obj, handler, id);
 
 		} else if ('addEventListener' in obj) {
@@ -5336,7 +5346,9 @@ L.DomEvent = {
 
 		if (!handler) { return; }
 
-		if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
+		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
+			this.removeMsTouchListener(obj, type, id);
+		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 
 		} else if ('removeEventListener' in obj) {
@@ -5563,6 +5575,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
+		var simulateClickTouch;
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
@@ -5573,7 +5586,7 @@ L.Draggable = L.Class.extend({
 			}
 
 			if (dist < L.Draggable.TAP_TOLERANCE) {
-				this._simulateEvent('click', first);
+				simulateClickTouch = first;
 			}
 		}
 
@@ -5592,6 +5605,11 @@ L.Draggable = L.Class.extend({
 			this.fire('dragend');
 		}
 		this._moving = false;
+
+		if (simulateClickTouch) {
+			this._moved = false;
+			this._simulateEvent('click', simulateClickTouch);
+		}
 	},
 
 	_setMovingCursor: function () {
@@ -5824,7 +5842,7 @@ L.Map.addInitHook('addHandler', 'doubleClickZoom', L.Map.DoubleClickZoom);
  */
 
 L.Map.mergeOptions({
-	scrollWheelZoom: !L.Browser.touch
+	scrollWheelZoom: !L.Browser.touch || L.Browser.msTouch
 });
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
@@ -5891,6 +5909,10 @@ L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
 
 
 L.Util.extend(L.DomEvent, {
+
+	_touchstart: L.Browser.msTouch ? 'MSPointerDown' : 'touchstart',
+	_touchend: L.Browser.msTouch ? 'MSPointerUp' : 'touchend',
+
 	// inspired by Zepto touch code by Thomas Fuchs
 	addDoubleTapListener: function (obj, handler, id) {
 		var last,
@@ -5898,23 +5920,55 @@ L.Util.extend(L.DomEvent, {
 			delay = 250,
 			touch,
 			pre = '_leaflet_',
-			touchstart = 'touchstart',
-			touchend = 'touchend';
+			touchstart = this._touchstart,
+			touchend = this._touchend,
+			trackedTouches = [];
 
 		function onTouchStart(e) {
-			if (e.touches.length !== 1) {
+			var count;
+			if (L.Browser.msTouch) {
+				trackedTouches.push(e.pointerId);
+				count = trackedTouches.length;
+			} else {
+				count = e.touches.length;
+			}
+			if (count > 1) {
 				return;
 			}
 
 			var now = Date.now(),
 				delta = now - (last || now);
 
-			touch = e.touches[0];
+			touch = e.touches ? e.touches[0] : e;
 			doubleTap = (delta > 0 && delta <= delay);
 			last = now;
 		}
 		function onTouchEnd(e) {
+			if (L.Browser.msTouch) {
+				var idx = trackedTouches.indexOf(e.pointerId);
+				if (idx === -1) {
+					return;
+				}
+				trackedTouches.splice(idx, 1);
+			}
+
 			if (doubleTap) {
+				if (L.Browser.msTouch) {
+					//Work around .type being readonly with MSPointer* events
+					var newTouch = { },
+						prop;
+					for (var i in touch) {
+						if (true) { //Make JSHint happy, we want to copy all properties
+							prop = touch[i];
+							if (typeof prop === 'function') {
+								newTouch[i] = prop.bind(touch);
+							} else {
+								newTouch[i] = prop;
+							}
+						}
+					}
+					touch = newTouch;
+				}
 				touch.type = 'dblclick';
 				handler(touch);
 				last = null;
@@ -5923,15 +5977,171 @@ L.Util.extend(L.DomEvent, {
 		obj[pre + touchstart + id] = onTouchStart;
 		obj[pre + touchend + id] = onTouchEnd;
 
+		//On msTouch we need to listen on the document otherwise a drag starting on the map and moving off screen will not come through to us
+		// so we will lose track of how many touches are ongoing
+		var endElement = L.Browser.msTouch ? document.documentElement : obj;
+
 		obj.addEventListener(touchstart, onTouchStart, false);
-		obj.addEventListener(touchend, onTouchEnd, false);
+		endElement.addEventListener(touchend, onTouchEnd, false);
+		if (L.Browser.msTouch) {
+			endElement.addEventListener('MSPointerCancel', onTouchEnd, false);
+		}
 		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_';
-		obj.removeEventListener(obj, obj[pre + 'touchstart' + id], false);
-		obj.removeEventListener(obj, obj[pre + 'touchend' + id], false);
+		obj.removeEventListener(this._touchstart, obj[pre + this._touchstart + id], false);
+		(L.Browser.msTouch ? document.documentElement : obj).removeEventListener(this._touchend, obj[pre + this._touchend + id], false);
+		if (L.Browser.msTouch) {
+			document.documentElement.removeEventListener('MSPointerCancel', obj[pre + this._touchend + id], false);
+		}
+		return this;
+	}
+});
+
+
+L.Util.extend(L.DomEvent, {
+
+	_msTouches: [],
+	_msDocumentListener: false,
+
+	// Provides a touch events wrapper for msPointer events.
+	// Based on changes by veproza https://github.com/CloudMade/Leaflet/pull/1019
+
+	addMsTouchListener: function (obj, type, handler, id) {
+
+		switch (type) {
+		case 'touchstart':
+			return this.addMsTouchListenerStart(obj, type, handler, id);
+		case 'touchend':
+			return this.addMsTouchListenerEnd(obj, type, handler, id);
+		case 'touchmove':
+			return this.addMsTouchListenerMove(obj, type, handler, id);
+		default:
+			throw 'Unknown touch event type';
+		}
+	},
+
+	addMsTouchListenerStart: function (obj, type, handler, id) {
+		var pre = '_leaflet_',
+			touches = this._msTouches;
+
+		var cb = function (e) {
+
+			var alreadyInArray = false;
+			for (var i = 0; i < touches.length; i++) {
+				if (touches[i].pointerId === e.pointerId) {
+					alreadyInArray = true;
+					break;
+				}
+			}
+			if (!alreadyInArray) {
+				touches.push(e);
+			}
+
+			e.touches = touches.slice();
+			e.changedTouches = [e];
+
+			handler(e);
+		};
+
+		obj[pre + 'touchstart' + id] = cb;
+		obj.addEventListener('MSPointerDown', cb, false);
+
+		//Need to also listen for end events to keep the _msTouches list accurate
+		//this needs to be on the body and never go away
+		if (!this._msDocumentListener) {
+			var internalCb = function (e) {
+				for (var i = 0; i < touches.length; i++) {
+					if (touches[i].pointerId === e.pointerId) {
+						touches.splice(i, 1);
+						break;
+					}
+				}
+			};
+			//We listen on the documentElement as any drags that end by moving the touch off the screen get fired there
+			document.documentElement.addEventListener('MSPointerUp', internalCb, false);
+			document.documentElement.addEventListener('MSPointerCancel', internalCb, false);
+
+			this._msDocumentListener = true;
+		}
+
+		return this;
+	},
+
+	addMsTouchListenerMove: function (obj, type, handler, id) {
+		var pre = '_leaflet_';
+
+		var touches = this._msTouches;
+		var cb = function (e) {
+
+			//Don't fire touch moves when mouse isn't down
+			if (e.pointerType === e.MSPOINTER_TYPE_MOUSE && e.buttons === 0) {
+				return;
+			}
+
+			for (var i = 0; i < touches.length; i++) {
+				if (touches[i].pointerId === e.pointerId) {
+					touches[i] = e;
+					break;
+				}
+			}
+
+			e.touches = touches.slice();
+			e.changedTouches = [e];
+
+			handler(e);
+		};
+
+		obj[pre + 'touchmove' + id] = cb;
+		obj.addEventListener('MSPointerMove', cb, false);
+
+		return this;
+	},
+
+	addMsTouchListenerEnd: function (obj, type, handler, id) {
+		var pre = '_leaflet_',
+			touches = this._msTouches;
+
+		var cb = function (e) {
+			for (var i = 0; i < touches.length; i++) {
+				if (touches[i].pointerId === e.pointerId) {
+					touches.splice(i, 1);
+					break;
+				}
+			}
+
+			e.touches = touches.slice();
+			e.changedTouches = [e];
+
+			handler(e);
+		};
+
+		obj[pre + 'touchend' + id] = cb;
+		obj.addEventListener('MSPointerUp', cb, false);
+		obj.addEventListener('MSPointerCancel', cb, false);
+
+		return this;
+	},
+
+	removeMsTouchListener: function (obj, type, id) {
+		var pre = '_leaflet_',
+		    cb = obj[pre + type + id];
+
+		switch (type) {
+		case 'touchstart':
+			obj.removeEventListener('MSPointerDown', cb, false);
+			break;
+		case 'touchmove':
+			obj.removeEventListener('MSPointerMove', cb, false);
+			break;
+		case 'touchend':
+			obj.removeEventListener('MSPointerUp', cb, false);
+			obj.removeEventListener('MSPointerCancel', cb, false);
+			break;
+		}
+
 		return this;
 	}
 });
