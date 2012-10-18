@@ -11,12 +11,12 @@ An in-progress version being developed on the master branch.
 
 #### Usability improvements
 
+ * Added touch zoom, pan and double tap support for **IE10 touch devices and Metro apps** (by [@danzel](https://github.com/danzel) and [@veproza](https://github.com/veproza) with help from [@oliverheilig](https://github.com/oliverheilig)). [#1076](https://github.com/CloudMade/Leaflet/pull/1076) [#871](https://github.com/CloudMade/Leaflet/issues/871)
  * Adjusted panning inertia to be more natural.
  * Improved panning animation performance in IE6-8.
  * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
  * Improved scroll wheel zoom to be more responsive.
  * Improved vectors updating/removing performance on Canvas backend even more (by [@danzel](https://github.com/danzel)). [#961](https://github.com/CloudMade/Leaflet/pull/961)
- * Implement touch zoom, pan and double tap support for IE10 touch devices (by [@danzel](https://github.com/danzel) and [@veproza](https://github.com/veproza)). [#1076](https://github.com/CloudMade/Leaflet/pull/1076)
 
 #### API improvements
 
