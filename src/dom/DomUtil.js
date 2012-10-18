@@ -118,7 +118,7 @@ L.DomUtil = {
 		if ('opacity' in el.style) {
 			el.style.opacity = value;
 
-		} else if (L.Browser.ie) {
+		} else if ('filter' in el.style) {
 
 			var filter = false,
 				filterName = 'DXImageTransform.Microsoft.Alpha';
