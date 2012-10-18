@@ -16,7 +16,9 @@ L.DomEvent = {
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
 		};
 
-		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
+			return this.addMsTouchListener(obj, type, handler, id);
+		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			return this.addDoubleTapListener(obj, handler, id);
 
 		} else if ('addEventListener' in obj) {
@@ -58,7 +60,9 @@ L.DomEvent = {
 
 		if (!handler) { return; }
 
-		if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
+		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
+			this.removeMsTouchListener(obj, type, id);
+		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 
 		} else if ('removeEventListener' in obj) {
