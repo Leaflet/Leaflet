@@ -162,11 +162,11 @@ L.Map.include({
 
 	_animatePathZoom: function (opt) {
 		var scale = this.getZoomScale(opt.zoom),
-			offset = this._getCenterOffset(opt.center).divideBy(1 - 1 / scale),
-			viewportPos = this.containerPointToLayerPoint(this.getSize().multiplyBy(-L.Path.CLIP_PADDING)),
-			origin = viewportPos.add(offset).round();
+			offset = this._getCenterOffset(opt.center),
+			translate = offset.multiplyBy(-scale)._add(this._pathViewport.min);
 
-		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString((origin.multiplyBy(-1).add(L.DomUtil.getPosition(this._pathRoot)).multiplyBy(scale).add(origin))) + ' scale(' + scale + ') ';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] =
+				L.DomUtil.getTranslateString(translate) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},
