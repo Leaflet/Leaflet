@@ -16,6 +16,7 @@
 
 		'dom/DomEvent.js',
 		'dom/DomEvent.DoubleTap.js',
+		'dom/DomEvent.MsTouch.js',
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
 

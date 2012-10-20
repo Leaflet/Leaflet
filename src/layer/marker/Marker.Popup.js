@@ -31,7 +31,10 @@ L.Marker.include({
 		options = L.Util.extend({offset: anchor}, options);
 
 		if (!this._popup) {
-			this.on('click', this.openPopup, this);
+			this
+				.on('click', this.openPopup, this)
+				.on('remove', this.closePopup, this)
+				.on('move', this._movePopup, this);
 		}
 
 		this._popup = new L.Popup(options, this)
@@ -43,8 +46,15 @@ L.Marker.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
-			this.off('click', this.openPopup);
+			this
+				.off('click', this.openPopup)
+				.off('remove', this.closePopup)
+				.off('move', this._movePopup);
 		}
 		return this;
+	},
+
+	_movePopup: function (e) {
+		this._popup.setLatLng(e.latlng);
 	}
 });

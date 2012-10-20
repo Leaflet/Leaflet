@@ -35,10 +35,10 @@ L.LatLng.prototype = {
 		return margin <= L.LatLng.MAX_MARGIN;
 	},
 
-	toString: function () { // -> String
+	toString: function (precision) { // -> String
 		return 'LatLng(' +
-				L.Util.formatNum(this.lat) + ', ' +
-				L.Util.formatNum(this.lng) + ')';
+				L.Util.formatNum(this.lat, precision) + ', ' +
+				L.Util.formatNum(this.lng, precision) + ')';
 	},
 
 	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
@@ -72,4 +72,4 @@ L.latLng = function (a, b, c) { // (LatLng) or ([Number, Number]) or (Number, Nu
 	}
 	return new L.LatLng(a, b, c);
 };
- 
+

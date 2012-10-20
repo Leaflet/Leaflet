@@ -162,16 +162,10 @@ L.Map = L.Class.extend({
             layer.on('load', this._onTileLayerLoad, this);
 		}
 
-		var onMapLoad = function () {
+		this.whenReady(function () {
 			layer.onAdd(this);
 			this.fire('layeradd', {layer: layer});
-		};
-
-		if (this._loaded) {
-			onMapLoad.call(this);
-		} else {
-			this.on('load', onMapLoad, this);
-		}
+		}, this);
 
 		return this;
 	},
@@ -517,6 +511,9 @@ L.Map = L.Class.extend({
 
 		this._tileLayersToLoad = this._tileLayersNum;
 
+		var loading = !this._loaded;
+		this._loaded = true;
+
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
@@ -527,8 +524,7 @@ L.Map = L.Class.extend({
 
 		this.fire('moveend', {hard: !preserveMapOffset});
 
-		if (!this._loaded) {
-			this._loaded = true;
+		if (loading) {
 			this.fire('load');
 		}
 	},
@@ -602,6 +598,15 @@ L.Map = L.Class.extend({
 			clearTimeout(this._clearTileBgTimer);
 			this._clearTileBgTimer = setTimeout(L.Util.bind(this._clearTileBg, this), 500);
 		}
+	},
+
+	whenReady: function (callback, context) {
+		if (this._loaded) {
+			callback.call(context || this, this);
+		} else {
+			this.on('load', callback, context);
+		}
+		return this;
 	},
 
 

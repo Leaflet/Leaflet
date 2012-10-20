@@ -74,7 +74,6 @@ L.DomUtil = {
 	},
 
 	disableTextSelection: function () {
-
 		if (document.selection && document.selection.empty) {
 			document.selection.empty();
 		}
@@ -85,7 +84,7 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		if (this._onselectstart) {
+		if (document.onselectstart === L.Util.falseFn) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
@@ -119,7 +118,7 @@ L.DomUtil = {
 		if ('opacity' in el.style) {
 			el.style.opacity = value;
 
-		} else if (L.Browser.ie) {
+		} else if ('filter' in el.style) {
 
 			var filter = false,
 				filterName = 'DXImageTransform.Microsoft.Alpha';
@@ -164,11 +163,10 @@ L.DomUtil = {
 
 	getScaleString: function (scale, origin) {
 
-		var preTranslateStr = L.DomUtil.getTranslateString(origin),
-			scaleStr = ' scale(' + scale + ') ',
-			postTranslateStr = L.DomUtil.getTranslateString(origin.multiplyBy(-1));
+		var preTranslateStr = L.DomUtil.getTranslateString(origin.add(origin.multiplyBy(-1 * scale))),
+		    scaleStr = ' scale(' + scale + ') ';
 
-		return preTranslateStr + scaleStr + postTranslateStr;
+		return preTranslateStr + scaleStr;
 	},
 
 	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
