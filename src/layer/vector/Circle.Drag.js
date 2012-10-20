@@ -35,7 +35,7 @@ L.Handler.CircleDrag = L.Handler.extend({
 	
 	removeHooks: function () {
 		if (this._circle._map) {
-			this._markerGroup.removeLayer(this._dragHandler);
+			this._circle._map.removeLayer(this._markerGroup);
 			delete this._markerGroup;
 		}
 	},

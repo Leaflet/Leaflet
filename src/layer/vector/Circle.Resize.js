@@ -44,14 +44,11 @@ L.Handler.CircleResize = L.Handler.extend({
 	removeHooks: function () {
 		if (this._circle._map) {
 			this._circle.off('drag', this._updateHandler, this);
-			this._markerGroup.removeLayer(this._dragHandler);
+			this._circle._map.removeLayer(this._markerGroup);
 			delete this._markerGroup;
 		}
 	},
 	
-	_moveHandler: function (e) {
-		this._dragHandler.setLatLng(e.latlng);
-	},
 	_updateHandler: function (e) {
 		var bounds = this._circle.getBounds();
 		this._dragHandler.setLatLng(bounds.getNorthEast());

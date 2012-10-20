@@ -37,6 +37,18 @@ L.Circle = L.Path.extend({
 		}
 	},
 	
+	onRemove: function (map) {
+		if (this.dragging && this.dragging.enabled()) {
+			this.dragging.removeHooks();
+		}
+
+		if (this.resizing && this.resizing.enabled()) {
+			this.resizing.removeHooks();
+		}
+        
+		L.Path.prototype.onRemove.call(this, map);
+	},
+    
 	options: {
 		fill: true
 	},
