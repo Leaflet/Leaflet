@@ -22,7 +22,7 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 		detectRetina: false,
 		reuseTiles: false,
-		tileBounds: false,
+		bounds: false,
 		*/
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -326,7 +326,7 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		if(this.options.tileBounds) {
+		if (this.options.bounds) {
 			var tileSize = this.options.tileSize,
 				nwPoint = tilePoint.multiplyBy(tileSize),
 				sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
@@ -334,7 +334,7 @@ L.TileLayer = L.Class.extend({
 				se = this._map.unproject(sePoint),
 				bounds = new L.LatLngBounds([nw, se]);
 
-			if(!this.options.tileBounds.intersects(bounds)) {
+			if (!this.options.bounds.intersects(bounds)) {
 				return false;
 			}
 		}
