@@ -16,7 +16,7 @@ Everyone is encouraged to upgrade (before Chrome 23 turns stable). As always, yo
 
 As Leaflet approaches feature-complete state and API stabilization, we naturally shift our focus from new features towards performance and usability improvements, better browser and device support, bugfixes and internal refactoring to make certain parts of Leaflet (like projections and vector rendering) easier to extend and customize for plugin developers and advanced users.
 
-Highlights of things already implemented in the `master` branch include touch interaction support for **IE10 touch devices and Metro apps** and a more smooth and responsive panning inertia.
+Highlights of things already implemented in the `master` branch include touch interaction support for **IE10 touch devices and Metro apps** and a more smooth and responsive panning inertia. Follow the [full changelog](https://github.com/CloudMade/Leaflet/blob/master/CHANGELOG.md) for more details.
 
 We're also in the process of a major refactoring of vector rendering code to allow much simpler extension of base functionality with custom shapes, additional rendering systems, easy switching between renderers (SVG/VML or Canvas), also making the code simpler and easier to understand.
 
