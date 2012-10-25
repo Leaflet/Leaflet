@@ -18,7 +18,7 @@ As Leaflet approaches feature-complete state and API stabilization, we naturally
 
 Highlights of things already implemented in the `master` branch include touch interaction support for **IE10 touch devices and Metro apps** and a more smooth and responsive panning inertia. Follow the [full changelog](https://github.com/CloudMade/Leaflet/blob/master/CHANGELOG.md) for more details.
 
-We're also in the process of a major refactoring of vector rendering code to allow much simpler extension of base functionality with custom shapes, additional rendering systems, easy switching between renderers (SVG/VML or Canvas), also making the code simpler and easier to understand.
+We're also in the process of a major refactoring of vector rendering code to allow much simpler extension of base functionality with custom shapes, additional rendering systems (like WebGL in addition to existing SVG/VML and Canvas renderers), easy switching between renderers, also making the code simpler and easier to understand.
 
 The same goes for projection-related code to make using Leaflet with non-standard projections easier, inluding plain projections for game and indoor maps. Thanks to these changes, in addition to making advanced GIS folks happier, we'll see much more awesome Leaflet projects like [interactive Skyrim map on IGN](http://www.ign.com/wikis/the-elder-scrolls-5-skyrim/interactive-maps/Skyrim) or [World of Warcraft map on Wowhead](http://www.wowhead.com/map).
 
