@@ -7,6 +7,25 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+ * No changes since the stable version yet.
+
+## 0.4.4 (August 7, 2012)
+
+### Improvements
+
+ * Improved `GeoJSON` `setStyle` to also accept function (like the corresponding option).
+ * Added `GeoJSON` `resetStyle(layer)`, useful for resetting hover state.
+ * Added `feature` property to layers created with `GeoJSON` (containing the GeoJSON feature data).
+ * Added `FeatureGroup` `bringToFront` and `bringToBack` methods (so that they would work for multipolys).
+ * Added optional `animate` argument to `Map` `invalidateSize` (by [@ajbeaven](https://github.com/ajbeaven)). [#857](https://github.com/CloudMade/Leaflet/pull/857)
+
+### Bugfixes
+
+ * Fixed a bug where tiles sometimes disappeared on initial map load on Android 2/3 (by [@danzel](https://github.com/danzel)). [#868](https://github.com/CloudMade/Leaflet/pull/868)
+ * Fixed a bug where map would occasionally flicker near the border on zoom or pan on Chrome.
+ * Fixed a bug where `Path` `bringToFront` and `bringToBack` didn't return `this`.
+ * Removed zoom out on Win/Meta key binding (since it interferes with global keyboard shortcuts). [#869](https://github.com/CloudMade/Leaflet/issues/869)
+
 ## 0.4.2 (August 1, 2012)
 
  * Fixed a bug where layers control radio buttons would not work correctly in IE7 (by [@danzel](https://github.com/danzel)). [#862](https://github.com/CloudMade/Leaflet/pull/862)

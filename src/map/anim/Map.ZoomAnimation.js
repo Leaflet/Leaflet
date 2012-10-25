@@ -2,11 +2,18 @@ L.Map.mergeOptions({
 	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
 });
 
+if (L.DomUtil.TRANSITION) {
+	L.Map.addInitHook(function () {
+		L.DomEvent.on(this._mapPane, L.Transition.END, this._catchTransitionEnd, this);
+	});
+}
+
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_zoomToIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
+
 		if (!this.options.zoomAnimation) { return false; }
 
 		var scale = this.getZoomScale(zoom),
@@ -21,8 +28,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			.fire('movestart')
 			.fire('zoomstart');
 
-		this._prepareTileBg();
-
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom
@@ -30,17 +35,22 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		var origin = this._getCenterLayerPoint().add(offset);
 
+		this._prepareTileBg();
 		this._runAnimation(center, zoom, scale, origin);
 
 		return true;
 	},
 
+	_catchTransitionEnd: function (e) {
+		if (this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
+	},
 
 	_runAnimation: function (center, zoom, scale, origin, backwardsTransform) {
-		this._animatingZoom = true;
-
 		this._animateToCenter = center;
 		this._animateToZoom = zoom;
+		this._animatingZoom = true;
 
 		var transform = L.DomUtil.TRANSFORM,
 			tileBg = this._tileBg;
@@ -52,29 +62,14 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg.style[transform] += ' translate(0,0)';
 		}
 
-		var scaleStr;
-
-		// Android 2.* doesn't like translate/scale chains, transformOrigin + scale works better but
-		// it breaks touch zoom which Anroid doesn't support anyway, so that's a really ugly hack
-
-		// TODO work around this prettier
-		if (L.Browser.android23) {
-			tileBg.style[transform + 'Origin'] = origin.x + 'px ' + origin.y + 'px';
-			scaleStr = 'scale(' + scale + ')';
-		} else {
-			scaleStr = L.DomUtil.getScaleString(scale, origin);
-		}
-
 		L.Util.falseFn(tileBg.offsetWidth); //hack to make sure transform is updated before running animation
 
-		var options = {};
-		if (backwardsTransform) {
-			options[transform] = tileBg.style[transform] + ' ' + scaleStr;
-		} else {
-			options[transform] = scaleStr + ' ' + tileBg.style[transform];
-		}
+		var scaleStr = L.DomUtil.getScaleString(scale, origin),
+			oldTransform = tileBg.style[transform];
 
-		tileBg.transition.run(options);
+		tileBg.style[transform] = backwardsTransform ?
+			oldTransform + ' ' + scaleStr :
+			scaleStr + ' ' + oldTransform;
 	},
 
 	_prepareTileBg: function () {
@@ -82,8 +77,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			tileBg = this._tileBg;
 
 		// If foreground layer doesn't have many tiles but bg layer does, keep the existing bg layer and just zoom it some more
-		// (disable this for Android due to it not supporting double translate)
-		if (!L.Browser.android23 && tileBg &&
+		if (tileBg &&
 				this._getLoadedTilesPercentage(tileBg) > 0.5 &&
 				this._getLoadedTilesPercentage(tilePane) < 0.5) {
 
@@ -110,14 +104,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		this._tilePane = this._panes.tilePane = tileBg;
 		var newTileBg = this._tileBg = tilePane;
 
-		if (!newTileBg.transition) {
-			// TODO move to Map options
-			newTileBg.transition = new L.Transition(newTileBg, {
-				duration: 0.25,
-				easing: 'cubic-bezier(0.25,0.1,0.25,0.75)'
-			});
-			newTileBg.transition.on('end', this._onZoomTransitionEnd, this);
-		}
+		L.DomUtil.addClass(newTileBg, 'leaflet-zoom-animated');
 
 		this._stopLoadingImages(newTileBg);
 	},
@@ -154,7 +141,6 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
-
 		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 

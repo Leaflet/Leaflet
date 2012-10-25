@@ -52,7 +52,7 @@ L.Transition = L.Transition.extend({
 
 		this._el.style[L.Transition.DURATION] = this.options.duration + 's';
 		this._el.style[L.Transition.EASING] = this.options.easing;
-		this._el.style[L.Transition.PROPERTY] = propsList.join(', ');
+		this._el.style[L.Transition.PROPERTY] = 'all';
 
 		for (prop in props) {
 			if (props.hasOwnProperty(prop)) {
@@ -60,9 +60,10 @@ L.Transition = L.Transition.extend({
 			}
 		}
 
-		this._inProgress = true;
+		// Chrome flickers for some reason if you don't do this
+		L.Util.falseFn(this._el.offsetWidth);
 
-		this.fire('start');
+		this._inProgress = true;
 
 		if (L.Browser.mobileWebkit) {
 			// Set up a slightly delayed call to a backup event if webkitTransitionEnd doesn't fire properly
