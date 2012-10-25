@@ -50,12 +50,15 @@ An in-progress version being developed on the master branch.
 
 #### Browser bugfixes
 
- * Fixed a bug with **wonky zoom animation in IE10** (by [@danzel](https://github.com/danzel)). [#1007](https://github.com/CloudMade/Leaflet/pull/1007)
- * Fixed a bug with **wonky zoom animation in Chrome 23+** (by [@danzel](https://github.com/danzel)). [#1060](https://github.com/CloudMade/Leaflet/pull/1060) [#1056](https://github.com/CloudMade/Leaflet/issues/1056)
  * Fixed a bug where "Not implemented" error sometimes appeared in IE6-8 (by [@bryguy](https://github.com/bryguy) and [@lookfirst](https://github.com/lookfirst)). [#892](https://github.com/CloudMade/Leaflet/issues/892) [#893](https://github.com/CloudMade/Leaflet/pull/893)
  * Fixed compatibility with SmoothWheel extension for Firefox (by [@waldir](https://github.com/waldir)). [#1011](https://github.com/CloudMade/Leaflet/pull/1011)
  * Fixed a bug with incorrect box zoom opacity in IE6-7 (by [@jacobtoye](https://github.com/jacobtoye)). [#1072](https://githubcom/CloudMade/Leaflet/pull/1072)
  * Fixed a bug with box zoom throwing a JS error in IE6-7 (by [@danzel](https://github.com/danzel)). [#1071](https://github.com/CloudMade/Leaflet/pull/1071)
+
+## 0.4.5 (October 25, 2012)
+
+ * Fixed a bug with **wonky zoom animation in IE10** (by [@danzel](https://github.com/danzel)). [#1007](https://github.com/CloudMade/Leaflet/pull/1007)
+ * Fixed a bug with **wonky zoom animation in Chrome 23+** (by [@danzel](https://github.com/danzel)). [#1060](https://github.com/CloudMade/Leaflet/pull/1060) [#1056](https://github.com/CloudMade/Leaflet/issues/1056)
 
 ## 0.4.4 (August 7, 2012)
 
