@@ -8,7 +8,7 @@ authorsite: http://agafonkin.com/en
 
 ### 0.4.5 release
 
-While we contrinue working on the next major release (0.5), today we decided to release Leaflet 0.4.5 that contains only one small but important bugfix for **wonky zoom animation** on upcoming **Chrome 23** (currently in beta and to be released in a couple of weeks) and **Internet Explorer 10** (that will eventually hit Windows 7 in addition to Windows 8).
+While we contrinue working on the next major release (0.5), today we decided to release **Leaflet 0.4.5**. It contains only one small but important bugfix for **wonky zoom animation** on upcoming **Chrome 23** (currently in beta and to be released in a couple of weeks) and **Internet Explorer 10** (that will eventually hit Windows 7 in addition to Windows 8).
 
 Everyone is encouraged to upgrade (before Chrome 23 turns stable). As always, you can find CDN links and downloads for the new release on the [download page](../../../download.html).
 
@@ -32,5 +32,5 @@ Leaflet is a true open source project, so we're always happy to meet new contrib
 
 Thanks to everyone! Leaflet has got quite an amazing community which makes me really proud. Keep it up!
 
-Cheers,
+Cheers,<br />
 Vladimir, Leaflet author and maintainer.
