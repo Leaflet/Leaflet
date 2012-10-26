@@ -1,4 +1,4 @@
-<img src="http://leaflet.cloudmade.com/docs/images/logo.png" alt="Leaflet" />
+<img src="http://leafletjs.com/docs/images/logo.png" alt="Leaflet" />
 
 Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps, developed by [Vladimir Agafonkin](http://agafonkin.com/en) of [CloudMade](http://cloudmade.com) with a team of dedicated [contributors](https://github.com/CloudMade/Leaflet/graphs/contributors). Weighting just about 25kb of gzipped JS code, it still has all the [features](http://leaflet.cloudmade.com/features.html) most developers ever need for online maps, while providing a fast, pleasant user experience.
 
