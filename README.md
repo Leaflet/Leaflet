@@ -4,7 +4,7 @@ Leaflet is a modern, lightweight open-source JavaScript library for mobile-frien
 
 It is built from the ground up to work efficiently and smoothly on both desktop and mobile platforms like iOS and Android,  taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade](http://developer.yahoo.com/yui/articles/gbs/) browser support, flexibility and [easy to use API](http://leaflet.cloudmade.com/reference.html) with convention over configuration. The OOP-based code of the library is designed to be modular, extensible and very easy to understand.
 
-Check out the website for more information: [leaflet.cloudmade.com](http://leaflet.cloudmade.com)
+Check out the website for more information: [leafletjs.com](http://leafletjs.com)
 
 ## Contributing to Leaflet
 Let's make the best open-source library for maps that can possibly exist!
