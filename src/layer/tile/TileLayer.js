@@ -43,6 +43,10 @@ L.TileLayer = L.Class.extend({
 			this.options.maxZoom--;
 		}
 
+		if (options.bounds) {
+			options.bounds = L.LatLngBounds(options.bounds);
+		}
+
 		this._url = url;
 
 		var subdomains = this.options.subdomains;
