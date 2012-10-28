@@ -63,7 +63,7 @@ L.DomUtil = {
 
 				//ie7 shows the scrollbar by default and provides clientWidth counting it, so we need to add it back in if it is visible
 				// Scrollbar is on the left as we are RTL
-				if (ie7 && L.DomUtil.getStyle(el, 'overflow-y') != 'hidden' && L.DomUtil.getStyle(el, 'overflow') != 'hidden') {
+				if (ie7 && L.DomUtil.getStyle(el, 'overflow-y') !== 'hidden' && L.DomUtil.getStyle(el, 'overflow') !== 'hidden') {
 					left += 17;
 				}
 			}
@@ -77,7 +77,7 @@ L.DomUtil = {
 	documentIsLtr: function () {
 		if (!L.DomUtil._docIsLtrCached) {
 			L.DomUtil._docIsLtrCached = true;
-			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') == "ltr";
+			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') === "ltr";
 		}
 		return L.DomUtil._docIsLtr;
 	},
