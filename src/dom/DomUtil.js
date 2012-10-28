@@ -52,7 +52,7 @@ L.DomUtil = {
 		do {
 			if (el === docBody) { break; }
 
-			top -=  el.scrollTop  || 0;
+			top  -= el.scrollTop  || 0;
 			left -= el.scrollLeft || 0;
 
 			//Webkit handles RTL scrollLeft different to everyone else
