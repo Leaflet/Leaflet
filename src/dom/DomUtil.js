@@ -52,14 +52,13 @@ L.DomUtil = {
 		do {
 			if (el === docBody) { break; }
 
-			top -= el.scrollTop || 0;
+			top -=  el.scrollTop  || 0;
+			left -= el.scrollLeft || 0;
 
-			//See https://developer.mozilla.org/en-US/docs/DOM/element.scrollLeft
-			// http://www.nczonline.net/blog/2010/08/03/working-with-bidirectional-bidi-text-and-rtl-languages-on-the-web/
-			if (L.DomUtil.documentIsLtr()) {
-				left -= el.scrollLeft || 0;
-			} else {
-				left -= (el.scrollLeft || 0) - el.scrollWidth + el.clientWidth;
+			//Webkit handles RTL scrollLeft different to everyone else
+			// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
+			if (!L.DomUtil.documentIsLtr() && L.Browser.webkit) {
+				left += el.scrollWidth - el.clientWidth;
 			}
 
 			el = el.parentNode;
