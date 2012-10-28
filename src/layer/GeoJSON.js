@@ -96,10 +96,14 @@ L.Util.extend(L.GeoJSON, {
 			return new L.MultiPolygon(latlngs);
 
 		case "GeometryCollection":
-			for (i = 0, len = geometry.geometries.length; i < len; i++) {
-				layer = this.geometryToLayer(geometry.geometries[i], pointToLayer);
-				layers.push(layer);
-			}
+            for (i = 0, len = geometry.geometries.length; i < len; i++) {
+                layer = this.geometryToLayer({
+                    "geometry": geometry.geometries[i],
+                    "type": "Feature",
+                    "properties": geojson.properties
+                }, pointToLayer);
+                layers.push(layer);
+            }
 			return new L.FeatureGroup(layers);
 
 		default:
