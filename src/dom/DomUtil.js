@@ -32,7 +32,7 @@ L.DomUtil = {
 			pos;
 
 		do {
-			top += el.offsetTop || 0;
+			top  += el.offsetTop  || 0;
 			left += el.offsetLeft || 0;
 			pos = L.DomUtil.getStyle(el, 'position');
 
@@ -52,8 +52,15 @@ L.DomUtil = {
 		do {
 			if (el === docBody) { break; }
 
-			top  -= el.scrollTop  || 0;
-			left -= el.scrollLeft || 0;
+			top -= el.scrollTop || 0;
+
+			//See https://developer.mozilla.org/en-US/docs/DOM/element.scrollLeft
+			// http://www.nczonline.net/blog/2010/08/03/working-with-bidirectional-bidi-text-and-rtl-languages-on-the-web/
+			if (L.DomUtil.getStyle(el, 'direction') == "ltr") {
+				left -= el.scrollLeft || 0;
+			} else {
+				left -= (el.scrollLeft || 0) - el.scrollWidth + el.clientWidth;
+			}
 
 			el = el.parentNode;
 		} while (el);
