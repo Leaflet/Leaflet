@@ -15,7 +15,7 @@ L.DomUtil = {
 			value = el.currentStyle[style];
 		}
 
-		if (!value || value === 'auto') {
+		if ((!value || value === 'auto') && document.defaultView) {
 			var css = document.defaultView.getComputedStyle(el, null);
 			value = css ? css[style] : null;
 		}
@@ -29,7 +29,8 @@ L.DomUtil = {
 			left = 0,
 			el = element,
 			docBody = document.body,
-			pos;
+			pos,
+			ie7 = L.Browser.ie7;
 
 		do {
 			top  += el.offsetTop  || 0;
@@ -55,10 +56,16 @@ L.DomUtil = {
 			top  -= el.scrollTop  || 0;
 			left -= el.scrollLeft || 0;
 
-			//Webkit handles RTL scrollLeft different to everyone else
+			//Webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
 			// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
-			if (!L.DomUtil.documentIsLtr() && L.Browser.webkit) {
+			if (!L.DomUtil.documentIsLtr() && (L.Browser.webkit || ie7)) {
 				left += el.scrollWidth - el.clientWidth;
+
+				//ie7 shows the scrollbar by default and provides clientWidth counting it, so we need to add it back in if it is visible
+				// Scrollbar is on the left as we are RTL
+				if (ie7 && L.DomUtil.getStyle(el, 'overflow-y') != 'hidden' && L.DomUtil.getStyle(el, 'overflow') != 'hidden') {
+					left += 17;
+				}
 			}
 
 			el = el.parentNode;
