@@ -56,7 +56,7 @@ L.DomUtil = {
 
 			//See https://developer.mozilla.org/en-US/docs/DOM/element.scrollLeft
 			// http://www.nczonline.net/blog/2010/08/03/working-with-bidirectional-bidi-text-and-rtl-languages-on-the-web/
-			if (L.DomUtil.getStyle(el, 'direction') == "ltr") {
+			if (L.DomUtil.documentIsLtr()) {
 				left -= el.scrollLeft || 0;
 			} else {
 				left -= (el.scrollLeft || 0) - el.scrollWidth + el.clientWidth;
@@ -66,6 +66,14 @@ L.DomUtil = {
 		} while (el);
 
 		return new L.Point(left, top);
+	},
+
+	documentIsLtr: function () {
+		if (!L.DomUtil._docIsLtrCached) {
+			L.DomUtil._docIsLtrCached = true;
+			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') == "ltr";
+		}
+		return L.DomUtil._docIsLtr;
 	},
 
 	create: function (tagName, className, container) {
