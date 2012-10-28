@@ -189,6 +189,8 @@ L.Popup = L.Class.extend({
 	},
 
 	_updatePosition: function () {
+		if (!this._map) { return; }
+
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 			is3d = L.Browser.any3d,
 			offset = this.options.offset;
