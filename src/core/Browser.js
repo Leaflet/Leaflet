@@ -1,7 +1,9 @@
 (function () {
 
 	var ie = !!window.ActiveXObject,
+		// http://tanalin.com/en/articles/ie-version-js/
 		ie6 = ie && !window.XMLHttpRequest,
+		ie7 = ie && !document.querySelector,
 
 		// terrible browser detection to work around Safari / iOS / Android browser bugs
 		// see TileLayer._addTile and debug/hacks/jitter.html
@@ -56,6 +58,7 @@
 
 	L.Browser = {
 		ie6: ie6,
+		ie7: ie7,
 		webkit: webkit,
 
 		android: android,
