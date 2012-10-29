@@ -8,8 +8,47 @@ L.Circle = L.Path.extend({
 
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
+		
+		if (L.Handler.CircleDrag) {
+			this.dragging = new L.Handler.CircleDrag(this);
+
+			if (this.options.draggable) {
+				this.dragging.enable();
+			}
+		}
+		
+		if (L.Handler.CircleResize) {
+			this.resizing = new L.Handler.CircleResize(this);
+
+			if (this.options.resizable) {
+				this.resizing.enable();
+			}
+		}
 	},
 
+	onAdd: function (map) {
+		L.Path.prototype.onAdd.call(this, map);
+
+		if (this.dragging && this.dragging.enabled()) {
+			this.dragging.addHooks();
+		}
+		if (this.resizing && this.resizing.enabled()) {
+			this.resizing.addHooks();
+		}
+	},
+	
+	onRemove: function (map) {
+		if (this.dragging && this.dragging.enabled()) {
+			this.dragging.removeHooks();
+		}
+
+		if (this.resizing && this.resizing.enabled()) {
+			this.resizing.removeHooks();
+		}
+        
+		L.Path.prototype.onRemove.call(this, map);
+	},
+    
 	options: {
 		fill: true
 	},

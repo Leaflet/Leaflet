@@ -192,6 +192,18 @@ var deps = {
 		desc: 'Makes markers draggable (by mouse or touch).'
 	},
 
+	CircleDrag: {
+		src: ['layer/vector/Circle.Drag.js'],
+		deps: ['Circle'],
+		desc: 'Makes circles draggable.'
+	},
+	
+	CircleResize: {
+		src: ['layer/vector/Circle.Resize.js'],
+		deps: ['Circle'],
+		desc: 'Makes circles resizables.'
+	},
+	
 	PolyEdit: {
 		src: ['layer/vector/Polyline.Edit.js'],
 		deps: ['Polyline', 'DivIcon'],
