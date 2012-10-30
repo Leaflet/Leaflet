@@ -26,6 +26,7 @@ An in-progress version being developed on the master branch.
  * Improved markers and vectors click event so that it propagates to map if no one is listening to it (by [@danzel](https://github.com/danzel)). [#834](https://github.com/CloudMade/Leaflet/issues/834) [#1033](https://github.com/CloudMade/Leaflet/pull/1033)
  * Added `Path` `unbindPopup` method.
  * Added `Path` `remove` event.
+ * Added `Marker` `riseOnHover` and `riseOffset` options (for bringing markers to front on hover, disabled by default) (by [jacobtoye](https://github.com/jacobtoye)). [#914](https://github.com/CloudMade/Leaflet/pull/914) [#920](https://github.com/CloudMade/Leaflet/issues/920)
  * Added `Marker` `move` and `remove` events.
  * Added `Map` `whenReady` method (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1063](https://github.com/CloudMade/Leaflet/pull/1063)
  * Added `Control.Layers` `baselayerchange` event (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1064](https://github.com/CloudMade/Leaflet/pull/1064)

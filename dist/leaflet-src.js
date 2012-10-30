@@ -2904,7 +2904,9 @@ L.Marker = L.Class.extend({
 		clickable: true,
 		draggable: false,
 		zIndexOffset: 0,
-		opacity: 1
+		opacity: 1,
+		riseOnHover: false,
+		riseOffset: 250
 	},
 
 	initialize: function (latlng, options) {
@@ -2998,7 +3000,14 @@ L.Marker = L.Class.extend({
 			needOpacityUpdate = (this.options.opacity < 1);
 
 			L.DomUtil.addClass(this._icon, classToAdd);
+
+			if (options.riseOnHover) {
+				L.DomEvent
+					.on(this._icon, 'mouseover', this._bringToFront, this)
+					.on(this._icon, 'mouseout', this._resetZIndex, this);
+			}
 		}
+
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
 
@@ -3024,6 +3033,12 @@ L.Marker = L.Class.extend({
 	_removeIcon: function () {
 		var panes = this._map._panes;
 
+		if (this.options.riseOnHover) {
+			L.DomEvent
+				.off(this._icon, 'mouseover', this._bringToFront)
+				.off(this._icon, 'mouseout', this._resetZIndex);
+		}
+
 		panes.markerPane.removeChild(this._icon);
 
 		if (this._shadow) {
@@ -3040,7 +3055,13 @@ L.Marker = L.Class.extend({
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
+		this._zIndex = pos.y + this.options.zIndexOffset;
+
+		this._resetZIndex();
+	},
+
+	_updateZIndex: function (offset) {
+		this._icon.style.zIndex = this._zIndex + offset;
 	},
 
 	_animateZoom: function (opt) {
@@ -3105,6 +3126,14 @@ L.Marker = L.Class.extend({
 		if (this._shadow) {
 			L.DomUtil.setOpacity(this._shadow, this.options.opacity);
 		}
+	},
+
+	_bringToFront: function () {
+		this._updateZIndex(this.options.riseOffset);
+	},
+
+	_resetZIndex: function () {
+		this._updateZIndex(0);
 	}
 });
 
