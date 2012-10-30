@@ -25,6 +25,9 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (options.filter && !options.filter(geojson)) { return; }
 
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
+		if (!layer) { // non geometry layer
+			return this;
+		}
 		layer.feature = geojson;
 
 		this.resetStyle(layer);
@@ -62,9 +65,14 @@ L.GeoJSON = L.FeatureGroup.extend({
 L.Util.extend(L.GeoJSON, {
 	geometryToLayer: function (geojson, pointToLayer) {
 		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
-		    coords = geometry.coordinates,
 		    layers = [],
-		    latlng, latlngs, i, len, layer;
+		    coords, latlng, latlngs, i, len, layer;
+
+		// As per geojson spec, Features can be of null geometry  http://www.geojson.org/geojson-spec.html#feature-objects
+		if (!geometry) {
+			return false;
+		}
+		coords = geometry.coordinates;
 
 		switch (geometry.type) {
 		case 'Point':
