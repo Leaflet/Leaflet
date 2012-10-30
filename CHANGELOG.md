@@ -30,11 +30,13 @@ An in-progress version being developed on the master branch.
  * Added `Map` `whenReady` method (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1063](https://github.com/CloudMade/Leaflet/pull/1063)
  * Added `Control.Layers` `baselayerchange` event (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1064](https://github.com/CloudMade/Leaflet/pull/1064)
  * Improved `Control.Layers` to support HTML in layer names (by [@aparshin](https://github.com/aparshin)). [#1055](https://github.com/CloudMade/Leaflet/pull/1055) [#1099](https://github.com/CloudMade/Leaflet/issues/1099)
+ * Removed `Browser` `ua`, `ie`, `gecko`, `opera` properties (no longer needed).
 
 ### Bugfixes
 
 #### General bugfixes
 
+ * Fixed broken tiles and zooming in RTL layouts (by [@danzel](https://github.com/danzel)). [#1099](https://github.com/CloudMade/Leaflet/pull/1099) [#1095](https://github.com/CloudMade/Leaflet/issues/1095)
  * Fixed a bug with pan animation where it jumped to its end position if you tried to drag the map.
  * Fixed a bug with shift-clicking on a zoom button leading to unexpected result.
  * Fixed a glitch with zooming in while panning animation is running.
@@ -47,6 +49,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where middle marker wasn't removed after deleting 2 end nodes from a polyline (by [@Svad](https://github.com/Svad)). [#1022](https://github.com/CloudMade/Leaflet/issues/1022) [#1023](https://github.com/CloudMade/Leaflet/pull/1023)
  * Fixed a bug where `Map` `load` event happened too late (after `moveend`, etc.) (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1027](https://github.com/CloudMade/Leaflet/pull/1027)
  * Fixed `Circle` `getBounds` to return correct bounds and work without adding the circle to a map. [#1068](https://github.com/CloudMade/Leaflet/issues/1068)
+ * Fixed a bug where removing `Popup` on `viewreset` throwed an error (by [fnicollet](https://github.com/fnicollet) and [@danzel](https://github.com/danzel)). [#1098](https://github.com/CloudMade/Leaflet/pull/1098) [#1094](https://github.com/CloudMade/Leaflet/issues/1094)
 
 #### Browser bugfixes
 
