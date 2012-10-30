@@ -74,6 +74,6 @@ exports.getSizeDelta = function (newContent, oldContent) {
 	if (!oldContent) {
 		return 'new';
 	}
-	var delta = newContent.length - oldContent.length;
+	var delta = newContent.replace(/\r\n?/g, '\n').length - oldContent.replace(/\r\n?/g, '\n').length;
 	return (delta >= 0 ? '+' : '') + delta;
 };
