@@ -5,12 +5,26 @@
 L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
+	options: {
+		clickable: true
+	},
+
+	initialize: function (layers, options) {
+		L.LayerGroup.prototype.initialize.call(this, layers, options);
+	},
+
 	addLayer: function (layer) {
 		if (this._layers[L.Util.stamp(layer)]) {
 			return this;
 		}
 
-		layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+		if (this.options.clickable) {
+			layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+		}
+
+		// NOTE: Mutates initial object, could be problem if it is reattached standalone, but avoids uneccasary overhead
+		if (!layer.options) { layer.options = {}; }
+		layer.options.clickable = this.options.clickable;
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -22,7 +36,9 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
-		layer.off('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+		if (this.options.clickable) {
+			layer.off('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+		}
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 

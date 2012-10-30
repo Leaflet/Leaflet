@@ -85,7 +85,7 @@ L.Util.extend(L.GeoJSON, {
 				layer = pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 				layers.push(layer);
 			}
-			return new L.FeatureGroup(layers);
+			return new L.FeatureGroup(layers, {clickable: this.options.clickable});
 
 		case 'LineString':
 			latlngs = this.coordsToLatLngs(coords);
@@ -108,7 +108,7 @@ L.Util.extend(L.GeoJSON, {
 				layer = this.geometryToLayer(geometry.geometries[i], pointToLayer);
 				layers.push(layer);
 			}
-			return new L.FeatureGroup(layers);
+			return new L.FeatureGroup(layers, {clickable: this.options.clickable});
 
 		default:
 			throw new Error('Invalid GeoJSON object.');
