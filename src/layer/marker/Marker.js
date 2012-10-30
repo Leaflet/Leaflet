@@ -13,8 +13,8 @@ L.Marker = L.Class.extend({
 		draggable: false,
 		zIndexOffset: 0,
 		opacity: 1,
-		bringToFront: true,
-		bringToFrontZOffset: 250
+		riseOnHover: false,
+		riseOffset: 250
 	},
 
 	initialize: function (latlng, options) {
@@ -109,10 +109,10 @@ L.Marker = L.Class.extend({
 
 			L.DomUtil.addClass(this._icon, classToAdd);
 
-			if (options.bringToFront) {
+			if (options.riseOnHover) {
 				L.DomEvent
 					.on(this._icon, 'mouseover', this._bringToFront, this)
-					.on(this._icon, 'mouseout', this._sendToBack, this);
+					.on(this._icon, 'mouseout', this._resetZIndex, this);
 			}
 		}
 
@@ -141,10 +141,10 @@ L.Marker = L.Class.extend({
 	_removeIcon: function () {
 		var panes = this._map._panes;
 
-		if (this.options.bringToFront) {
+		if (this.options.riseOnHover) {
 			L.DomEvent
 				.off(this._icon, 'mouseover', this._bringToFront)
-				.off(this._icon, 'mouseout', this._sendToBack);
+				.off(this._icon, 'mouseout', this._resetZIndex);
 		}
 
 		panes.markerPane.removeChild(this._icon);
@@ -165,11 +165,10 @@ L.Marker = L.Class.extend({
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
 
-		this._updateZIndex();
+		this._resetZIndex();
 	},
 
-	_updateZIndex: function () {
-		var offset = this._broughtToFrontOffset || 0;
+	_updateZIndex: function (offset) {
 		this._icon.style.zIndex = this._zIndex + offset;
 	},
 
@@ -238,15 +237,11 @@ L.Marker = L.Class.extend({
 	},
 
 	_bringToFront: function () {
-		this._broughtToFrontOffset = this.options.bringToFrontZOffset;
-
-		this._updateZIndex();
+		this._updateZIndex(this.options.riseOffset);
 	},
 
-	_sendToBack: function () {
-		this._broughtToFrontOffset = 0;
-
-		this._updateZIndex();
+	_resetZIndex: function () {
+		this._updateZIndex(0);
 	}
 });
 
