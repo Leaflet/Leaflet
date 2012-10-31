@@ -69,16 +69,15 @@ L.Draggable = L.Class.extend({
 
 		//Touch contextmenu event emulation
 		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
-			var self = this;
-			this._contextMenuTimeout = setTimeout(function () {
-				var dist = (self._newPos && self._newPos.distanceTo(self._startPos)) || 0;
+			this._contextMenuTimeout = setTimeout(L.Util.bind(function () {
+				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 				if (dist < L.Draggable.TAP_TOLERANCE) {
-					self._simulateClick = false;
-					self._onUp();
-					self._simulateEvent('contextmenu', first);
+					this._simulateClick = false;
+					this._onUp();
+					this._simulateEvent('contextmenu', first);
 				}
-			}, 1000);
+			}, this), 1000);
 		}
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
