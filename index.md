@@ -33,11 +33,11 @@ L.marker([<span class="number">51.5</span>, -<span class="number">0.09</span>]).
 Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html).
 
 
-## Contributing to Leaflet
+## Getting Involved
 
-The project is [hosted on GitHub][], waiting for your contributions --- just send your pull requests to [@mourner][] (Vladimir Agafonkin, Leaflet author and maintainer). Let’s make the best library for maps that can possibly exist!
+Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist. However, they're not the only way to get involved with the development of Leaflet. You can help the project tremendously by discovering and [reporting bugs][], [improving documentation][], helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) and [GitHub issues](https://github.com/CloudMade/Leaflet/issues), showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com), tweeting to [@LeafletJS](http://twitter.com/LeafletJS) and spreading the word about Leaflet among your colleagues and friends.
 
-You can also help the project a lot by reporting bugs on the [GitHub issues page][], showing your support for  your favorite feature suggestions on [Leaflet UserVoice page][], tweeting to [@LeafletJS][] or joining the [Leaflet mailing list][].
+Check out the [contribution guide][contribute] for more information on getting involved with Leaflet development.
 
   [Vladimir Agafonkin]: http://agafonkin.com/en
   [CloudMade]: http://cloudmade.com
@@ -48,6 +48,8 @@ You can also help the project a lot by reporting bugs on the [GitHub issues page
   [source code]: https://github.com/CloudMade/Leaflet "Leaflet GitHub repository"
   [hosted on GitHub]: http://github.com/CloudMade/Leaflet
   [contribute]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
+  [reporting bugs]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md#reporting-bugs
+  [improving documentation]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md#improving-documentation
   [@mourner]: http://github.com/mourner
   [GitHub issues page]: http://github.com/CloudMade/Leaflet/issues
   [Leaflet UserVoice page]: http://leaflet.uservoice.com
