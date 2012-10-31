@@ -4,9 +4,9 @@ layout: default
 
 <p class="notice">October 25, 2012 &mdash; Leaflet 0.4.5 bugfix release and plans for 0.5 &mdash; <a href="2012/10/25/leaflet-0-4-5-bugfix-release-and-plans-for-0.5.html">Read More in the Blog</a></p>
 
-Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">27 KB of gzipped JS code</abbr>, it still has all the [features][] most developers ever need for online maps, while providing a smooth, pleasant user experience.
+Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">27 KB of gzipped JS code</abbr>, it has all the [features][] most devepers ever need for online maps.
 
-It is built from the ground up to work efficiently on both desktop and mobile platforms like iOS and Android, taking advantage of HTML5 and CSS3 on modern browsers. The focus is on usability, performance, small size, [A-grade][] browser support and [a simple API][] with <abbr title="Simplicity and reasonable defaults so that the API doesn't get in your way, while not losing flexibility">convention over configuration</abbr>. The OOP-based [code of the library][] is designed to be modular, extensible and very easy to understand.
+Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind. It works efficiently across all major desktop and mobile platforms out of the box, taking advantage of HTML5 and CSS3 on modern browsers while being accessible on older ones too. It can also be extended with many [plugins][], has a beautiful, easy to use and [well-documented][] API and a simple, readable [source code][] that is a joy to [contribute][] to.
 
 {: .usedby}
 Used by: [Flickr](http://flickr.com/map) [foursquare](https://foursquare.com/) [craigslist](http://t.co/V4EiURIA) [IGN](http://www.ign.com/wikis/the-elder-scrolls-5-skyrim/interactive-maps/Skyrim) [Wikimedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/) [Meetup](http://www.meetup.com/) [WSJ](http://projects.wsj.com/campaign2012/maps/) [Geocaching](http://geocaching.com) [StreetEasy](http://streeteasy.com/) [Nestoria](http://www.nestoria.co.uk) [Topix](http://topix.com/) [Chartbeat](http://chartbeat.com/) [GIS Cloud](http://www.giscloud.com/) ...
@@ -43,11 +43,11 @@ You can also help the project a lot by reporting bugs on the [GitHub issues page
   [CloudMade]: http://cloudmade.com
   [contributors]: https://github.com/CloudMade/Leaflet/graphs/contributors
   [features]: features.html
-  [A-grade]: http://developer.yahoo.com/yui/articles/gbs/
-  [a simple API]: reference.html "Leaflet API reference"
-  [code of the library]: https://github.com/CloudMade/Leaflet
-    "Leaflet GitHub repository"
+  [plugins]: plugins.html
+  [well-documented]: reference.html "Leaflet API reference"
+  [source code]: https://github.com/CloudMade/Leaflet "Leaflet GitHub repository"
   [hosted on GitHub]: http://github.com/CloudMade/Leaflet
+  [contribute]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
   [@mourner]: http://github.com/mourner
   [GitHub issues page]: http://github.com/CloudMade/Leaflet/issues
   [Leaflet UserVoice page]: http://leaflet.uservoice.com
