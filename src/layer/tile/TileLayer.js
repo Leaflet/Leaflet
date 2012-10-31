@@ -44,7 +44,7 @@ L.TileLayer = L.Class.extend({
 		}
 
 		if (options.bounds) {
-			options.bounds = L.LatLngBounds(options.bounds);
+			options.bounds = L.latLngBounds(options.bounds);
 		}
 
 		this._url = url;
