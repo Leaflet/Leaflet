@@ -32,6 +32,7 @@ An in-progress version being developed on the master branch.
  * Added `Control.Layers` `baselayerchange` event (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1064](https://github.com/CloudMade/Leaflet/pull/1064)
  * Improved `Control.Layers` to support HTML in layer names (by [@aparshin](https://github.com/aparshin)). [#1055](https://github.com/CloudMade/Leaflet/pull/1055) [#1099](https://github.com/CloudMade/Leaflet/issues/1099)
  * Removed `Browser` `ua`, `ie`, `gecko`, `opera` properties (no longer needed).
+ * Added `CRS.Simple` to the list of built-in CRS. It was added earlier but not included in the build.
 
 ### Bugfixes
 
