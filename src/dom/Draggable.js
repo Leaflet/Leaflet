@@ -48,7 +48,7 @@ L.Draggable = L.Class.extend({
 
 		if (e.touches && e.touches.length > 1) {
 			this._simulateClick = false;
-			clearTimeout(this._contextMenuTimeout);
+			clearTimeout(this._longPressTimeout);
 			return;
 		}
 
@@ -69,7 +69,7 @@ L.Draggable = L.Class.extend({
 
 		//Touch contextmenu event emulation
 		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
-			this._contextMenuTimeout = setTimeout(L.Util.bind(function () {
+			this._longPressTimeout = setTimeout(L.Util.bind(function () {
 				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 				if (dist < L.Draggable.TAP_TOLERANCE) {
@@ -122,7 +122,7 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function (e) {
 		var simulateClickTouch;
-		clearTimeout(this._contextMenuTimeout);
+		clearTimeout(this._longPressTimeout);
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
