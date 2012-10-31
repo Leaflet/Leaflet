@@ -12,10 +12,10 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 
-	initialize: function (element, dragStartTarget, contextMenuEmulation) {
+	initialize: function (element, dragStartTarget, longPress) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
-		this._contextMenuEmulation = contextMenuEmulation;
+		this._longPress = longPress;
 	},
 
 	enable: function () {
@@ -68,7 +68,7 @@ L.Draggable = L.Class.extend({
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
 		//Touch contextmenu event emulation
-		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._contextMenuEmulation) {
+		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
 			var self = this;
 			this._contextMenuTimeout = setTimeout(function () {
 				var dist = (self._newPos && self._newPos.distanceTo(self._startPos)) || 0;
