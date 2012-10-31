@@ -6,7 +6,7 @@ L.Path.include({
 
 	bindPopup: function (content, options) {
 
-		if (!this._popup || this._popup.options !== options) {
+		if (!this._popup || options) {
 			this._popup = new L.Popup(options, this);
 		}
 
@@ -15,7 +15,8 @@ L.Path.include({
 		if (!this._popupHandlersAdded) {
 			this
 				.on('click', this._openPopup, this)
-				.on('remove', this._closePopup, this);
+				.on('remove', this.closePopup, this);
+
 			this._popupHandlersAdded = true;
 		}
 
@@ -28,6 +29,8 @@ L.Path.include({
 			this
 				.off('click', this.openPopup)
 				.off('remove', this.closePopup);
+
+			this._popupHandlersAdded = false;
 		}
 		return this;
 	},
@@ -35,6 +38,7 @@ L.Path.include({
 	openPopup: function (latlng) {
 
 		if (this._popup) {
+			// open the popup from one of the path's points if not specified
 			latlng = latlng || this._latlng ||
 					this._latlngs[Math.floor(this._latlngs.length / 2)];
 
@@ -44,12 +48,15 @@ L.Path.include({
 		return this;
 	},
 
+	closePopup: function () {
+		if (this._popup) {
+			this._popup._close();
+		}
+		return this;
+	},
+
 	_openPopup: function (e) {
 		this._popup.setLatLng(e.latlng);
 		this._map.openPopup(this._popup);
-	},
-
-	_closePopup: function () {
-		this._popup._close();
 	}
 });

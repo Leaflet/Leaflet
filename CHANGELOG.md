@@ -24,7 +24,7 @@ An in-progress version being developed on the master branch.
  * Added optional `delta` argument to `Map` `zoomIn` and `zoomOut` (1 by default).
  * Added `isValid` method to `LatLngBounds` and `Bounds` (by [@domoritz](https://github.com/domoritz)). [#972](https://github.com/CloudMade/Leaflet/pull/972)
  * Improved markers and vectors click event so that it propagates to map if no one is listening to it (by [@danzel](https://github.com/danzel)). [#834](https://github.com/CloudMade/Leaflet/issues/834) [#1033](https://github.com/CloudMade/Leaflet/pull/1033)
- * Added `Path` `unbindPopup` method.
+ * Added `Path` `unbindPopup` and `closePopup` methods.
  * Added `Path` `remove` event.
  * Added `Marker` `riseOnHover` and `riseOffset` options (for bringing markers to front on hover, disabled by default) (by [jacobtoye](https://github.com/jacobtoye)). [#914](https://github.com/CloudMade/Leaflet/pull/914) [#920](https://github.com/CloudMade/Leaflet/issues/920)
  * Added `Marker` `move` and `remove` events.
