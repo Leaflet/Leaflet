@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Leaflet debug page : Heavy Vector rendering</title>
+
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+  <div>
+    <button id="btn-attach">Attach</button>
+    <button id="btn-detach">Detach</button> | 
+    <button id="btn-attachnc">Attach No Evts</button>
+    <button id="btn-detachnc">Detach No Evts</button> | 
+    <button id="btn-attachncy">Attach No Evts Yielded</button>
+    <button id="btn-detachncy">Detach No Evts Yielded</button> | 
+    <button id="btn-eachla">EachLayer</button>
+    <button id="btn-eachlay">EachLayer yielded</button>
+    <button id="btn-settyley">setStyle yielded</button> | 
+		<button id="btn-resetz">Zoom reset</button>
+		<button id="btn-resetsty">Style reset (yielded)</button>
+
+    <div class="status">
+      <div id="db-slot1"></div>
+      <div id="db-slot2"></div>
+    </div>
+  </div>
+	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
+
+	<script src="spain-municipality.min.js"></script>
+	<script>
+  
+		function startProf(){
+			return new Date().getTime();
+		}
+		function endProf(ts){
+			return (new Date().getTime()-ts)/1000;
+		}
+		function jlog(msg){
+			typeof console != "undefined" && console.log && console.log(msg);
+		}
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+		var map = new L.Map('map', {
+			layers: [cloudmade]
+		});
+
+		map.on({
+		  'layeradd': onMapLayerAdd,
+		  'layerremove': onMapLayerRmv,
+		  'load': onMapLoad
+		});
+
+		zoomReset();
+
+		var style = {
+       stroke:       true,
+       color:       '#fff',
+       weight:      0.80,
+       opacity:     1.0,
+       fill:        true,
+       fillColor:   '#bbb',
+       fillOpacity: 1.0
+    }
+
+		var isAttached = {},
+			tsz = {};
+		var ts=startProf();
+		var spain = new L.GeoJSON(spainjs, {
+      style: style
+  	});
+		spain._id = 's';
+
+		ts = endProf(ts);
+		jlog("Parsed profiled, "+ts+"s");
+
+		var spainnc = new L.GeoJSON(spainjs, {
+      clickable: false,
+      style: style
+  	});
+		spainnc._id = 's.nc';
+
+		var spainncy = new L.GeoJSON(spainjs, {
+      clickable: false,
+      addYieldSpec: L.LayerGroup.YIELDSPEC_DEFAULT,
+      rmvYieldSpec: L.LayerGroup.YIELDSPEC_DEFAULT,
+      style: style
+      // primaryKey: GJPROPKEY_PK, // Assign named prop key as layer PK, for getLayerByPK R, P, M
+      // polyLayerOptions: polyLayerOptions // Set options to PolyLine layers and children
+  	});
+		spainncy._id = 's.nc.y';
+
+		function zoomReset() {
+			// Initial map position
+  		//var zoom = map.getBoundsZoom(b, true);
+  		//map.setView(b.getCenter(), zoom);
+			var bC = L.latLngBounds(L.latLng(35.29036, -8.55922), L.latLng(44.31272, 4.61264) ); //SW NE ~ coords switched from ARC
+  		map.fitBounds( bC );
+		}
+
+		var lastL = null;
+
+		function attach(lay) {
+			var id = lay._id;
+			if (isAttached[id])
+				return;
+			var ts = startProf();
+			tsz[id] = ts;
+			map.addLayer(lay);
+			ts = endProf(ts);
+			jlog("Attach "+id+", profiled: "+ts+"s");
+			document.getElementById('db-slot1').innerHTML = "Attach, "+id+", profiled: "+ts+"s";
+			isAttached[id] = true;
+		}
+
+		function detach(lay) {
+			var id = lay._id;
+			if (!isAttached[id])
+				return;
+			var ts = startProf();
+			tsz[id] = ts;
+			map.removeLayer(lay);
+			ts = endProf(ts);
+			jlog("Detach "+id+" profiled, "+ts+"s");
+			document.getElementById('db-slot1').innerHTML = "Detach, "+id+", profiled: "+ts+"s";
+			isAttached[id] = false;
+		}
+
+		function dynStyle1() {
+				return {
+					fillColor: '#' + getRandomInt([0,255]).toString(16) + getRandomInt([0,255]).toString(16) + getRandomInt([0,255]).toString(16)
+				};
+		}
+
+		function paintR(lay){
+			var ts = startProf();
+			var id = lay._id;
+			lay.eachLayer(function (layer) {
+				layer.setStyle({
+					fillColor: '#' + getRandomInt([0,255]).toString(16) + getRandomInt([0,255]).toString(16) + getRandomInt([0,255]).toString(16)
+				});
+			});
+			ts = endProf(ts);
+			jlog("eachLayer, end, "+id+", profiled: "+ts+"s");
+			document.getElementById('db-slot2').innerHTML = "eachLayer, end, "+id+", profiled: "+ts+"s";
+		}
+
+		function paintRy(lay){
+			var ts = startProf();
+			var id = lay._id;
+			lay.eachLayer(
+				function (layer) {
+					layer.setStyle({
+						fillColor: '#' + getRandomInt([0,255]).toString(16) + getRandomInt([0,255]).toString(16) + getRandomInt([0,255]).toString(16)
+					});
+				},
+				null, [ 500, 130], 
+				function onDonex(layer) {
+					ts = endProf(ts);
+					jlog("eachLayer, yielded end, "+id+", profiled: "+ts+"s");
+					document.getElementById('db-slot2').innerHTML = "eachLayer, yielded end, "+id+", profiled: "+ts+"s";
+				});
+		}
+
+		function paintSRy(lay){
+			var ts = startProf();
+			var id = lay._id;
+			lay.setStyle(dynStyle1,
+				[ 500, 130], function onDone(layer) {
+					ts = endProf(ts);
+					jlog("setStyle, yielded end, "+id+", profiled: "+ts+"s");
+					document.getElementById('db-slot2').innerHTML = "setStyle, yielded end, "+id+", profiled: "+ts+"s";
+				});
+		}
+
+		function paintCLY(lay) {
+			lay.setStyle(style,
+				[ 500, 130]
+			);
+		}
+
+		function getRandomInt (mmax) {
+			 var min = mmax[0], max = mmax[1];
+		    return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+
+		function onAt(){
+			attach(spain);
+		}
+		function onDt(){
+			detach(spain);
+		}
+		function onAtNc(){
+			attach(spainnc);
+		}
+		function onDtNc(){
+			detach(spainnc);
+		}
+		function onAtNcY(){
+			attach(spainncy);
+		}
+		function onDtNcY(){
+			detach(spainncy);
+		}
+		function onEL(){
+			if (!lastL)
+				return;
+			paintR(lastL);
+		}
+		function onELY(){
+			if (!lastL)
+				return;
+			paintRy(lastL);
+		}
+		function onSSY(){
+			if (!lastL)
+				return;
+			paintSRy(lastL);
+		}
+		function onRSTSY(){
+			if (!lastL)
+				return;
+			paintCLY(lastL);
+		}
+
+  	function onMapLayerAdd(e){
+			var gjlayer = e.layer,
+				id = gjlayer._id;
+			if (undefined === id)
+				return;
+			var	ts = endProf(tsz[id]);
+			lastL = gjlayer;
+			jlog("OnLayerAdd, id: "+id+", profiled: "+ts+"s");
+			document.getElementById('db-slot2').innerHTML = "OnLayerAdd, id: "+id+", profiled: "+ts+"s";
+		}
+		function onMapLayerRmv(e) {
+			var gjlayer = e.layer,
+				id = gjlayer._id;
+			if (undefined === id)
+				return;
+			var	ts = endProf(tsz[id]);
+			jlog("OnLayerRmv, id: "+id+", profiled: "+ts+"s");
+			document.getElementById('db-slot2').innerHTML = "OnLayerRmv, id: "+id+", profiled: "+ts+"s";
+		}
+		function onMapLoad(e){
+			jlog("Map loaded");
+		}
+
+		document.getElementById('btn-attach').onclick = onAt;
+		document.getElementById('btn-detach').onclick = onDt;
+		document.getElementById('btn-attachnc').onclick = onAtNc;
+		document.getElementById('btn-detachnc').onclick = onDtNc;
+		document.getElementById('btn-attachncy').onclick = onAtNcY;
+		document.getElementById('btn-detachncy').onclick = onDtNcY;
+		document.getElementById('btn-resetz').onclick = zoomReset;
+		document.getElementById('btn-eachla').onclick = onEL;
+		document.getElementById('btn-eachlay').onclick = onELY;
+		document.getElementById('btn-settyley').onclick = onSSY;
+		document.getElementById('btn-resetsty').onclick = onRSTSY;
+
+	</script>
+</body>
+</html>
