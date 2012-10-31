@@ -8,7 +8,7 @@ Contributing to Leaflet
 
 ## Getting Involved
 
-Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist. However, they're not the only way to get involved with the development of Leaflet. You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs), [improving documentation](#improving-documentation), helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) and [GitHub issues](https://github.com/CloudMade/Leaflet/issues), and spreading the word about Leaflet among your colleagues and friends.
+Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist. However, they're not the only way to get involved with the development of Leaflet. You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs), [improving documentation](#improving-documentation), helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) and [GitHub issues](https://github.com/CloudMade/Leaflet/issues), showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com), tweeting to [@LeafletJS](http://twitter.com/LeafletJS) and spreading the word about Leaflet among your colleagues and friends.
 
 ## Reporting Bugs
 
@@ -36,6 +36,18 @@ Before sending a pull request with a new feature, first check if it's been discu
 
 If your feature or API improvement did get merged into master, please consider submitting another pull request with the corresponding [documentation update](#improving-documentation).
 
+### Setting up the Build System
+
+To set up the Leaflet build system, install [Node](http://nodejs.org/), then run the following commands in the project root:
+
+```
+npm install -g jake
+npm install jshint
+npm install uglify-js
+```
+
+You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder).
+
 ### Making Changes to Leaflet Source
 
 If you're not yet familiar with the way GitHub works (forking, pull requests, etc.), be sure to check out the awesome [article about forking](https://help.github.com/articles/fork-a-repo) on the GitHub Help website &mdash; it will get you started quickly.
@@ -44,9 +56,11 @@ You should always write each batch of changes (feature, bugfix, etc.) in **its o
 
 You should also follow the code style and whitespace conventions of the original codebase.
 
-Before commiting your changes, run `jake lint` to catch any JS errors in the code and fix them.
+Before commiting your changes, run `jake lint` to catch any JS errors in the code and fix them. If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js` so that the build system knows about them.
 
-You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder). But please **do not commit the built files** (`leaflet.js` and `leaflet-src.js`) along with your changes, otherwise there may problems merging the pull request. These files are only commited in the `master` branch of the main Leaflet repository.
+But please **do not commit the built files** (`leaflet.js` and `leaflet-src.js`) along with your changes, otherwise there may problems merging the pull request. These files are only commited in the `master` branch of the main Leaflet repository.
+
+Happy coding!
 
 ## Improving Documentation
 
