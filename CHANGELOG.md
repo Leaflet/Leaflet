@@ -51,6 +51,7 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where `Map` `load` event happened too late (after `moveend`, etc.) (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1027](https://github.com/CloudMade/Leaflet/pull/1027)
  * Fixed `Circle` `getBounds` to return correct bounds and work without adding the circle to a map. [#1068](https://github.com/CloudMade/Leaflet/issues/1068)
  * Fixed a bug where removing `Popup` on `viewreset` throwed an error (by [fnicollet](https://github.com/fnicollet) and [@danzel](https://github.com/danzel)). [#1098](https://github.com/CloudMade/Leaflet/pull/1098) [#1094](https://github.com/CloudMade/Leaflet/issues/1094)
+ * Fixed a bug where `TileLayer.Canvas` `drawTile` didn't receive tile zoom level in arguments.
 
 #### Browser bugfixes
 
