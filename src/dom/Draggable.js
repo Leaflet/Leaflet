@@ -15,7 +15,7 @@ L.Draggable = L.Class.extend({
 	initialize: function (element, dragStartTarget, longPress) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
-		this._longPress = longPress;
+		this._longPress = longPress && !L.Browser.msTouch;
 	},
 
 	enable: function () {
