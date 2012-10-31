@@ -12,9 +12,10 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 
-	initialize: function (element, dragStartTarget) {
+	initialize: function (element, dragStartTarget, longPress) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
+		this._longPress = longPress && !L.Browser.msTouch;
 	},
 
 	enable: function () {
@@ -39,6 +40,7 @@ L.Draggable = L.Class.extend({
 			((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
 
@@ -46,6 +48,7 @@ L.Draggable = L.Class.extend({
 
 		if (e.touches && e.touches.length > 1) {
 			this._simulateClick = false;
+			clearTimeout(this._longPressTimeout);
 			return;
 		}
 
@@ -63,6 +66,19 @@ L.Draggable = L.Class.extend({
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
+
+		//Touch contextmenu event emulation
+		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
+			this._longPressTimeout = setTimeout(L.Util.bind(function () {
+				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
+
+				if (dist < L.Draggable.TAP_TOLERANCE) {
+					this._simulateClick = false;
+					this._onUp();
+					this._simulateEvent('contextmenu', first);
+				}
+			}, this), 1000);
+		}
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
@@ -106,6 +122,7 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function (e) {
 		var simulateClickTouch;
+		clearTimeout(this._longPressTimeout);
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
