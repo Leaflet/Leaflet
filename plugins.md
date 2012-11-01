@@ -145,6 +145,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/sa3m">Samuel Piquet</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/Leaflet.encoded">Leaflet.encoded</a>
+		</td><td>
+			Use encoded polylines in Leaflet.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
 </table>
 
 
