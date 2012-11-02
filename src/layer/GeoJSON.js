@@ -43,10 +43,19 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 	},
 
-	setStyle: function (style) {
+	/**
+	 * setStyle with yielding (optional)
+	 * @param style Object or function
+	 * @param yieldSpec opt Array [nChunk, yieldTime] or false, no yielding when not specified or false,
+	 *  nChunk: number of layers to batch proccess,
+	 *  yieldTime: time to yield in ms
+	 * @param onProced opt callback to call when done (with context)
+	 * @param cancel opt Array [cancel], cancel: boolean, after setStyle invoked, you can set cancel to true and the next chunks, will be aborted (and call onProced)
+	 */
+	setStyle: function (style, yieldSpec, onProced, cancel) {
 		this.eachLayer(function (layer) {
 			this._setLayerStyle(layer, style);
-		}, this);
+		}, this, yieldSpec, onProced, cancel);
 	},
 
 	_setLayerStyle: function (layer, style) {

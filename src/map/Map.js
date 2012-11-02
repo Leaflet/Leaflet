@@ -162,9 +162,18 @@ L.Map = L.Class.extend({
             layer.on('load', this._onTileLayerLoad, this);
 		}
 
-		this.whenReady(function () {
-			layer.onAdd(this);
+		var onLayerAdd = function (layer) {
 			this.fire('layeradd', {layer: layer});
+		};
+		this.whenReady(function () {
+			if (layer._asyncAdd) {
+				// if layer supports asyncAdd, pass the onLayerAdd(layer) callback
+				layer.onAdd(this, onLayerAdd);
+			} else {
+				// for sync layers, fire the callback after add is finished
+				layer.onAdd(this);
+				onLayerAdd.call(this, layer);
+			}
 		}, this);
 
 		return this;
@@ -175,7 +184,11 @@ L.Map = L.Class.extend({
 
 		if (!this._layers[id]) { return; }
 
-		layer.onRemove(this);
+		var onLayerRmv = function (layer) {
+			this.fire('layerremove', {layer: layer});
+		};
+
+		layer.onRemove(this, layer._asyncAdd ? onLayerRmv: void 0);
 
 		delete this._layers[id];
 
@@ -186,7 +199,13 @@ L.Map = L.Class.extend({
             layer.off('load', this._onTileLayerLoad, this);
 		}
 
-		return this.fire('layerremove', {layer: layer});
+		if (!layer._asyncAdd) {
+			// fire now, for sync layers
+			onLayerRmv.call(this, layer);
+		}
+		// else this would be fired from layer.onRemove
+
+		return this;
 	},
 
 	hasLayer: function (layer) {
