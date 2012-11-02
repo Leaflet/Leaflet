@@ -1,7 +1,7 @@
 /*
  Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin
  Leaflet is an open-source JavaScript library for mobile-friendly interactive maps.
- http://leaflet.cloudmade.com
+ http://leafletjs.com
 */
 (function (window, undefined) {
 
@@ -4033,7 +4033,7 @@ L.Path.include({
 
 	bindPopup: function (content, options) {
 
-		if (!this._popup || this._popup.options !== options) {
+		if (!this._popup || options) {
 			this._popup = new L.Popup(options, this);
 		}
 
@@ -4042,7 +4042,8 @@ L.Path.include({
 		if (!this._popupHandlersAdded) {
 			this
 				.on('click', this._openPopup, this)
-				.on('remove', this._closePopup, this);
+				.on('remove', this.closePopup, this);
+
 			this._popupHandlersAdded = true;
 		}
 
@@ -4055,6 +4056,8 @@ L.Path.include({
 			this
 				.off('click', this.openPopup)
 				.off('remove', this.closePopup);
+
+			this._popupHandlersAdded = false;
 		}
 		return this;
 	},
@@ -4062,6 +4065,7 @@ L.Path.include({
 	openPopup: function (latlng) {
 
 		if (this._popup) {
+			// open the popup from one of the path's points if not specified
 			latlng = latlng || this._latlng ||
 					this._latlngs[Math.floor(this._latlngs.length / 2)];
 
@@ -4071,13 +4075,16 @@ L.Path.include({
 		return this;
 	},
 
+	closePopup: function () {
+		if (this._popup) {
+			this._popup._close();
+		}
+		return this;
+	},
+
 	_openPopup: function (e) {
 		this._popup.setLatLng(e.latlng);
 		this._map.openPopup(this._popup);
-	},
-
-	_closePopup: function () {
-		this._popup._close();
 	}
 });
 
@@ -5543,9 +5550,10 @@ L.Draggable = L.Class.extend({
 		TAP_TOLERANCE: 15
 	},
 
-	initialize: function (element, dragStartTarget) {
+	initialize: function (element, dragStartTarget, longPress) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
+		this._longPress = longPress && !L.Browser.msTouch;
 	},
 
 	enable: function () {
@@ -5570,6 +5578,7 @@ L.Draggable = L.Class.extend({
 			((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent.preventDefault(e);
+		L.DomEvent.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
 
@@ -5577,6 +5586,7 @@ L.Draggable = L.Class.extend({
 
 		if (e.touches && e.touches.length > 1) {
 			this._simulateClick = false;
+			clearTimeout(this._longPressTimeout);
 			return;
 		}
 
@@ -5594,6 +5604,19 @@ L.Draggable = L.Class.extend({
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
+
+		//Touch contextmenu event emulation
+		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
+			this._longPressTimeout = setTimeout(L.Util.bind(function () {
+				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
+
+				if (dist < L.Draggable.TAP_TOLERANCE) {
+					this._simulateClick = false;
+					this._onUp();
+					this._simulateEvent('contextmenu', first);
+				}
+			}, this), 1000);
+		}
 
 		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
 		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
@@ -5637,6 +5660,7 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function (e) {
 		var simulateClickTouch;
+		clearTimeout(this._longPressTimeout);
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
 				el = first.target,
@@ -5736,6 +5760,8 @@ L.Map.mergeOptions({
 	inertiaMaxSpeed: 6000, // px/s
 	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
 
+	longPress: true,
+
 	// TODO refactor, move to CRS
 	worldCopyJump: true
 });
@@ -5743,15 +5769,15 @@ L.Map.mergeOptions({
 L.Map.Drag = L.Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(this._map._mapPane, this._map._container);
+			var options = this._map.options;
+
+			this._draggable = new L.Draggable(this._map._mapPane, this._map._container, options.longPress);
 
 			this._draggable.on({
 				'dragstart': this._onDragStart,
 				'drag': this._onDrag,
 				'dragend': this._onDragEnd
 			}, this);
-
-			var options = this._map.options;
 
 			if (options.worldCopyJump) {
 				this._draggable.on('predrag', this._onPreDrag, this);
@@ -7003,7 +7029,7 @@ L.control.zoom = function (options) {
 L.Control.Attribution = L.Control.extend({
 	options: {
 		position: 'bottomright',
-		prefix: 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>'
+		prefix: 'Powered by <a href="http://leafletjs.com">Leaflet</a>'
 	},
 
 	initialize: function (options) {
