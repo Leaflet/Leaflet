@@ -15,16 +15,16 @@ L.SquareMarker = L.Polyline.extend({
 
 	projectLatlngs: function () {
 		var
-            center = this._map.latLngToLayerPoint(this._latlngs),
-            halfSize = Math.round(this._size / 2)
-        ;
-        this._originalPoints = [
-            { x: center.x - halfSize, y: center.y - halfSize },
-            { x: center.x + halfSize, y: center.y - halfSize },
-            { x: center.x + halfSize, y: center.y + halfSize },
-            { x: center.x - halfSize, y: center.y + halfSize },
-            { x: center.x - halfSize, y: center.y - halfSize }
-        ];
+			center = this._map.latLngToLayerPoint(this._latlngs),
+			halfSize = Math.round(this._size / 2)
+		;
+		this._originalPoints = [
+			{ x: center.x - halfSize, y: center.y - halfSize },
+			{ x: center.x + halfSize, y: center.y - halfSize },
+			{ x: center.x + halfSize, y: center.y + halfSize },
+			{ x: center.x - halfSize, y: center.y + halfSize },
+			{ x: center.x - halfSize, y: center.y - halfSize }
+		];
 	},
 
 	setSize: function (size) {
