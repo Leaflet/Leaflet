@@ -3,7 +3,8 @@
  */
 
 L.LayerGroup = L.Class.extend({
-	initialize: function (layers) {
+	initialize: function (layers, options) {
+		L.Util.setOptions(this, options);
 		this._layers = {};
 
 		var i, len;
