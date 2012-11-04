@@ -4,7 +4,7 @@ layout: default
 
 <p class="notice">October 25, 2012 &mdash; Leaflet 0.4.5 bugfix release and plans for 0.5 &mdash; <a href="2012/10/25/leaflet-0-4-5-bugfix-release-and-plans-for-0.5.html">Read More in the Blog</a></p>
 
-Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">27 KB of gzipped JS code</abbr>, it has all the [features][] most devepers ever need for online maps.
+Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">27 KB of gzipped JS code</abbr>, it has all the [features][] most developers ever need for online maps.
 
 Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind. It works efficiently across all major desktop and mobile platforms out of the box, taking advantage of HTML5 and CSS3 on modern browsers while being accessible on older ones too. It can also be extended with many [plugins][], has a beautiful, easy to use and [well-documented][] API and a simple, readable [source code][] that is a joy to [contribute][] to.
 
