@@ -203,6 +203,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/domoritz/leaflet-locatecontrol">Leaflet.Locate</a>
+		</td><td>
+			A customizable locate control.
+		</td><td>
+			<a href="https://github.com/domoritz">Dominik</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://elidupuis.github.com/leaflet.zoomfs">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
