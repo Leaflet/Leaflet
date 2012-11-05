@@ -102,7 +102,7 @@ h3.alt {
 	}
 
 .container code, .container pre code {
-	font-family: "Consolas", "Lucida Console", "Courier New", monospace;
+	font-family: "Consolas", "Menlo", "Lucida Console", "Courier New", monospace;
 	}
 .container pre code {
 	padding: 10px 15px;
