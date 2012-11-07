@@ -71,8 +71,8 @@ L.Control.Scale = L.Control.extend({
 
 	_updateImperial: function (maxMeters) {
 		var maxFeet = maxMeters * 3.2808399,
-			scale = this._iScale,
-			maxMiles, miles, feet;
+		    scale = this._iScale,
+		    maxMiles, miles, feet;
 
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;

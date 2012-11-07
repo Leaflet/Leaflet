@@ -29,11 +29,11 @@ L.Control.Zoom = L.Control.extend({
 		link.title = title;
 
 		L.DomEvent
-			.on(link, 'click', L.DomEvent.stopPropagation)
-			.on(link, 'mousedown', L.DomEvent.stopPropagation)
-			.on(link, 'dblclick', L.DomEvent.stopPropagation)
-			.on(link, 'click', L.DomEvent.preventDefault)
-			.on(link, 'click', fn, context);
+		    .on(link, 'click', L.DomEvent.stopPropagation)
+		    .on(link, 'mousedown', L.DomEvent.stopPropagation)
+		    .on(link, 'dblclick', L.DomEvent.stopPropagation)
+		    .on(link, 'click', L.DomEvent.preventDefault)
+		    .on(link, 'click', fn, context);
 
 		return link;
 	}

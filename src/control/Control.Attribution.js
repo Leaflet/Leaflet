@@ -15,8 +15,8 @@ L.Control.Attribution = L.Control.extend({
 		L.DomEvent.disableClickPropagation(this._container);
 
 		map
-			.on('layeradd', this._onLayerAdd, this)
-			.on('layerremove', this._onLayerRemove, this);
+		    .on('layeradd', this._onLayerAdd, this)
+		    .on('layerremove', this._onLayerRemove, this);
 
 		this._update();
 
@@ -25,8 +25,8 @@ L.Control.Attribution = L.Control.extend({
 
 	onRemove: function (map) {
 		map
-			.off('layeradd', this._onLayerAdd)
-			.off('layerremove', this._onLayerRemove);
+		    .off('layeradd', this._onLayerAdd)
+		    .off('layerremove', this._onLayerRemove);
 
 	},
 

@@ -64,8 +64,8 @@ L.Control.Layers = L.Control.extend({
 
 		if (this.options.collapsed) {
 			L.DomEvent
-				.on(container, 'mouseover', this._expand, this)
-				.on(container, 'mouseout', this._collapse, this);
+			    .on(container, 'mouseover', this._expand, this)
+			    .on(container, 'mouseout', this._collapse, this);
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
@@ -73,9 +73,9 @@ L.Control.Layers = L.Control.extend({
 
 			if (L.Browser.touch) {
 				L.DomEvent
-					.on(link, 'click', L.DomEvent.stopPropagation)
-					.on(link, 'click', L.DomEvent.preventDefault)
-					.on(link, 'click', this._expand, this);
+				    .on(link, 'click', L.DomEvent.stopPropagation)
+				    .on(link, 'click', L.DomEvent.preventDefault)
+				    .on(link, 'click', this._expand, this);
 			}
 			else {
 				L.DomEvent.on(link, 'focus', this._expand, this);
@@ -118,7 +118,7 @@ L.Control.Layers = L.Control.extend({
 		this._overlaysList.innerHTML = '';
 
 		var baseLayersPresent = false,
-			overlaysPresent = false;
+		    overlaysPresent = false;
 
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {
@@ -177,9 +177,9 @@ L.Control.Layers = L.Control.extend({
 
 	_onInputClick: function () {
 		var i, input, obj,
-			inputs = this._form.getElementsByTagName('input'),
-			inputsLen = inputs.length,
-			baseLayer;
+		    inputs = this._form.getElementsByTagName('input'),
+		    inputsLen = inputs.length,
+		    baseLayer;
 
 		for (i = 0; i < inputsLen; i++) {
 			input = inputs[i];
