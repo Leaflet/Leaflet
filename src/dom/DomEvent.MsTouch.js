@@ -87,7 +87,7 @@ L.Util.extend(L.DomEvent, {
 			e.changedTouches = [e];
 
 			handler(e);
-		};
+		}
 
 		obj[pre + 'touchmove' + id] = cb;
 		obj.addEventListener('MSPointerMove', cb, false);
