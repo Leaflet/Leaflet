@@ -35,23 +35,23 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._container.style.cursor = 'crosshair';
 
 		L.DomEvent
-			.on(document, 'mousemove', this._onMouseMove, this)
-			.on(document, 'mouseup', this._onMouseUp, this)
-			.preventDefault(e);
-			
+		    .on(document, 'mousemove', this._onMouseMove, this)
+		    .on(document, 'mouseup', this._onMouseUp, this)
+		    .preventDefault(e);
+
 		this._map.fire("boxzoomstart");
 	},
 
 	_onMouseMove: function (e) {
 		var startPoint = this._startLayerPoint,
-			box = this._box,
+		    box = this._box,
 
-			layerPoint = this._map.mouseEventToLayerPoint(e),
-			offset = layerPoint.subtract(startPoint),
+		    layerPoint = this._map.mouseEventToLayerPoint(e),
+		    offset = layerPoint.subtract(startPoint),
 
-			newPos = new L.Point(
-				Math.min(layerPoint.x, startPoint.x),
-				Math.min(layerPoint.y, startPoint.y));
+		    newPos = new L.Point(
+		        Math.min(layerPoint.x, startPoint.x),
+		        Math.min(layerPoint.y, startPoint.y));
 
 		L.DomUtil.setPosition(box, newPos);
 
@@ -67,18 +67,18 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.enableTextSelection();
 
 		L.DomEvent
-			.off(document, 'mousemove', this._onMouseMove)
-			.off(document, 'mouseup', this._onMouseUp);
+		    .off(document, 'mousemove', this._onMouseMove)
+		    .off(document, 'mouseup', this._onMouseUp);
 
 		var map = this._map,
-			layerPoint = map.mouseEventToLayerPoint(e);
+		    layerPoint = map.mouseEventToLayerPoint(e),
 
-		var bounds = new L.LatLngBounds(
-				map.layerPointToLatLng(this._startLayerPoint),
-				map.layerPointToLatLng(layerPoint));
+		    bounds = new L.LatLngBounds(
+		        map.layerPointToLatLng(this._startLayerPoint),
+		        map.layerPointToLatLng(layerPoint));
 
 		map.fitBounds(bounds);
-		
+
 		map.fire("boxzoomend", {
 			boxZoomBounds: bounds
 		});

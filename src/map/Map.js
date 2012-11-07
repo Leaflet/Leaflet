@@ -288,7 +288,10 @@ L.Map = L.Class.extend({
 			zoom++;
 			nePoint = this.project(ne, zoom);
 			swPoint = this.project(sw, zoom);
-			boundsSize = new L.Point(Math.abs(nePoint.x - swPoint.x), Math.abs(swPoint.y - nePoint.y));
+
+			boundsSize = new L.Point(
+			        Math.abs(nePoint.x - swPoint.x),
+			        Math.abs(swPoint.y - nePoint.y));
 
 			if (!inside) {
 				zoomNotFound = boundsSize.x <= size.x && boundsSize.y <= size.y;
@@ -442,8 +445,7 @@ L.Map = L.Class.extend({
 		this._mapPane = panes.mapPane = this._createPane('leaflet-map-pane', this._container);
 
 		this._tilePane = panes.tilePane = this._createPane('leaflet-tile-pane', this._mapPane);
-		this._objectsPane = panes.objectsPane = this._createPane('leaflet-objects-pane', this._mapPane);
-
+		panes.objectsPane = this._createPane('leaflet-objects-pane', this._mapPane);
 		panes.shadowPane = this._createPane('leaflet-shadow-pane');
 		panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		panes.markerPane = this._createPane('leaflet-marker-pane');
@@ -459,7 +461,7 @@ L.Map = L.Class.extend({
 	},
 
 	_createPane: function (className, container) {
-		return L.DomUtil.create('div', className, container || this._objectsPane);
+		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
 	},
 
 	_initializers: [],
@@ -541,8 +543,9 @@ L.Map = L.Class.extend({
 
 		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-		var events = ['dblclick', 'mousedown', 'mouseup', 'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'],
-			i, len;
+		var events = ['dblclick', 'mousedown', 'mouseup', 'mouseenter',
+		              'mouseleave', 'mousemove', 'contextmenu'],
+		    i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
 			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
@@ -555,7 +558,8 @@ L.Map = L.Class.extend({
 
 	_onResize: function () {
 		L.Util.cancelAnimFrame(this._resizeRequest);
-		this._resizeRequest = L.Util.requestAnimFrame(this.invalidateSize, this, false, this._container);
+		this._resizeRequest = L.Util.requestAnimFrame(
+		        this.invalidateSize, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {
@@ -579,8 +583,8 @@ L.Map = L.Class.extend({
 		}
 
 		var containerPoint = this.mouseEventToContainerPoint(e),
-			layerPoint = this.containerPointToLayerPoint(containerPoint),
-			latlng = this.layerPointToLatLng(layerPoint);
+		    layerPoint = this.containerPointToLayerPoint(containerPoint),
+		    latlng = this.layerPointToLatLng(layerPoint);
 
 		this.fire(type, {
 			latlng: latlng,
@@ -645,7 +649,7 @@ L.Map = L.Class.extend({
 
 	_limitZoom: function (zoom) {
 		var min = this.getMinZoom(),
-			max = this.getMaxZoom();
+		    max = this.getMaxZoom();
 
 		return Math.max(min, Math.min(max, zoom));
 	}
