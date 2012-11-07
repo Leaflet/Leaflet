@@ -27,6 +27,9 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	border: 1px solid #bbb;
 	}
+.leaflet-popup-content-wrapper {
+	zoom: 1;
+	}
 
 .leaflet-control-zoom {
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#3F000000',EndColorStr='#3F000000');
