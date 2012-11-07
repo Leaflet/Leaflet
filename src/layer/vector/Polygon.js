@@ -23,14 +23,14 @@ L.Polygon = L.Polyline.extend({
 		// TODO move this logic to Polyline to get rid of duplication
 		this._holePoints = [];
 
-		if (!this._holes) {
-			return;
-		}
+		if (!this._holes) { return; }
 
-		for (var i = 0, len = this._holes.length, hole; i < len; i++) {
+		var i, j, len, len2;
+
+		for (i = 0, len = this._holes.length, hole; i < len; i++) {
 			this._holePoints[i] = [];
 
-			for (var j = 0, len2 = this._holes[i].length; j < len2; j++) {
+			for (j = 0, len2 = this._holes[i].length; j < len2; j++) {
 				this._holePoints[i][j] = this._map.latLngToLayerPoint(this._holes[i][j]);
 			}
 		}
@@ -38,20 +38,17 @@ L.Polygon = L.Polyline.extend({
 
 	_clipPoints: function () {
 		var points = this._originalPoints,
-			newParts = [];
+		    newParts = [];
 
 		this._parts = [points].concat(this._holePoints);
 
-		if (this.options.noClip) {
-			return;
-		}
+		if (this.options.noClip) { return; }
 
 		for (var i = 0, len = this._parts.length; i < len; i++) {
 			var clipped = L.PolyUtil.clipPolygon(this._parts[i], this._map._pathViewport);
-			if (!clipped.length) {
-				continue;
+			if (clipped.length) {
+				newParts.push(clipped);
 			}
-			newParts.push(clipped);
 		}
 
 		this._parts = newParts;

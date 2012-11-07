@@ -50,7 +50,7 @@ L.LayerGroup = L.Class.extend({
 
 	invoke: function (methodName) {
 		var args = Array.prototype.slice.call(arguments, 1),
-			i, layer;
+		    i, layer;
 
 		for (i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {

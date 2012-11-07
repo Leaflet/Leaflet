@@ -9,7 +9,7 @@ L.Path = L.Path.extend({
 
 	bringToFront: function () {
 		var root = this._map._pathRoot,
-			path = this._container;
+		    path = this._container;
 
 		if (path && root.lastChild !== path) {
 			root.appendChild(path);
@@ -19,8 +19,8 @@ L.Path = L.Path.extend({
 
 	bringToBack: function () {
 		var root = this._map._pathRoot,
-			path = this._container,
-			first = root.firstChild;
+		    path = this._container,
+		    first = root.firstChild;
 
 		if (path && first !== path) {
 			root.insertBefore(path, first);
@@ -99,7 +99,8 @@ L.Path = L.Path.extend({
 
 			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
+			var events = ['dblclick', 'mousedown', 'mouseover',
+			              'mouseout', 'mousemove', 'contextmenu'];
 			for (var i = 0; i < events.length; i++) {
 				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 			}
@@ -107,22 +108,18 @@ L.Path = L.Path.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) {
-			return;
-		}
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		if (!this.hasEventListeners(e.type)) {
-			return;
-		}
+		if (!this.hasEventListeners(e.type)) { return; }
 
 		var map = this._map,
-			containerPoint = map.mouseEventToContainerPoint(e),
-			layerPoint = map.containerPointToLayerPoint(containerPoint),
-			latlng = map.layerPointToLatLng(layerPoint);
+		    containerPoint = map.mouseEventToContainerPoint(e),
+		    layerPoint = map.containerPointToLayerPoint(containerPoint),
+		    latlng = map.layerPointToLatLng(layerPoint);
 
 		this.fire(e.type, {
 			latlng: latlng,
@@ -164,11 +161,11 @@ L.Map.include({
 
 	_animatePathZoom: function (opt) {
 		var scale = this.getZoomScale(opt.zoom),
-			offset = this._getCenterOffset(opt.center),
-			translate = offset.multiplyBy(-scale)._add(this._pathViewport.min);
+		    offset = this._getCenterOffset(opt.center),
+		    translate = offset.multiplyBy(-scale)._add(this._pathViewport.min);
 
 		this._pathRoot.style[L.DomUtil.TRANSFORM] =
-				L.DomUtil.getTranslateString(translate) + ' scale(' + scale + ') ';
+		        L.DomUtil.getTranslateString(translate) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},
@@ -178,6 +175,7 @@ L.Map.include({
 	},
 
 	_updateSvgViewport: function () {
+
 		if (this._pathZooming) {
 			// Do not update SVGs while a zoom animation is going on otherwise the animation will break.
 			// When the zoom animation ends we will be updated again anyway
@@ -188,12 +186,12 @@ L.Map.include({
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
-			min = vp.min,
-			max = vp.max,
-			width = max.x - min.x,
-			height = max.y - min.y,
-			root = this._pathRoot,
-			pane = this._panes.overlayPane;
+		    min = vp.min,
+		    max = vp.max,
+		    width = max.x - min.x,
+		    height = max.y - min.y,
+		    root = this._pathRoot,
+		    pane = this._panes.overlayPane;
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		if (L.Browser.mobileWebkit) {

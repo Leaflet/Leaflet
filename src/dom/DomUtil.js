@@ -26,11 +26,11 @@ L.DomUtil = {
 	getViewportOffset: function (element) {
 
 		var top = 0,
-			left = 0,
-			el = element,
-			docBody = document.body,
-			pos,
-			ie7 = L.Browser.ie7;
+		    left = 0,
+		    el = element,
+		    docBody = document.body,
+		    pos,
+		    ie7 = L.Browser.ie7;
 
 		do {
 			top  += el.offsetTop  || 0;
@@ -56,14 +56,15 @@ L.DomUtil = {
 			top  -= el.scrollTop  || 0;
 			left -= el.scrollLeft || 0;
 
-			//Webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
+			// webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
 			// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
 			if (!L.DomUtil.documentIsLtr() && (L.Browser.webkit || ie7)) {
 				left += el.scrollWidth - el.clientWidth;
 
-				//ie7 shows the scrollbar by default and provides clientWidth counting it, so we need to add it back in if it is visible
-				// Scrollbar is on the left as we are RTL
-				if (ie7 && L.DomUtil.getStyle(el, 'overflow-y') !== 'hidden' && L.DomUtil.getStyle(el, 'overflow') !== 'hidden') {
+				// ie7 shows the scrollbar by default and provides clientWidth counting it, so we
+				// need to add it back in if it is visible; scrollbar is on the left as we are RTL
+				if (ie7 && L.DomUtil.getStyle(el, 'overflow-y') !== 'hidden' &&
+				           L.DomUtil.getStyle(el, 'overflow') !== 'hidden') {
 					left += 17;
 				}
 			}
@@ -113,7 +114,7 @@ L.DomUtil = {
 
 	hasClass: function (el, name) {
 		return (el.className.length > 0) &&
-				new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
+		        new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
 	},
 
 	addClass: function (el, name) {
@@ -130,8 +131,8 @@ L.DomUtil = {
 		}
 
 		el.className = el.className
-				.replace(/(\S+)\s*/g, replaceFn)
-				.replace(/(^\s+|\s+$)/, '');
+		        .replace(/(\S+)\s*/g, replaceFn)
+		        .replace(/(^\s+|\s+$)/, '');
 	},
 
 	setOpacity: function (el, value) {
@@ -142,7 +143,7 @@ L.DomUtil = {
 		} else if ('filter' in el.style) {
 
 			var filter = false,
-				filterName = 'DXImageTransform.Microsoft.Alpha';
+			    filterName = 'DXImageTransform.Microsoft.Alpha';
 
 			// filters collection throws an error if we try to retrieve a filter that doesn't exist
 			try { filter = el.filters.item(filterName); } catch (e) {}
@@ -176,8 +177,8 @@ L.DomUtil = {
 		// (same speed either way), Opera 12 doesn't support translate3d
 
 		var is3d = L.Browser.webkit3d,
-			open = 'translate' + (is3d ? '3d' : '') + '(',
-			close = (is3d ? ',0' : '') + ')';
+		    open = 'translate' + (is3d ? '3d' : '') + '(',
+		    close = (is3d ? ',0' : '') + ')';
 
 		return open + point.x + 'px,' + point.y + 'px' + close;
 	},
@@ -218,11 +219,11 @@ L.DomUtil = {
 // prefix style property names
 
 L.DomUtil.TRANSFORM = L.DomUtil.testProp(
-		['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
+        ['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
 L.DomUtil.TRANSITION = L.DomUtil.testProp(
-		['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
+        ['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
 
 L.DomUtil.TRANSITION_END =
-		L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
-		L.DomUtil.TRANSITION + 'End' : 'transitionend';
+        L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
+        L.DomUtil.TRANSITION + 'End' : 'transitionend';

@@ -20,7 +20,7 @@ L.DivIcon = L.Icon.extend({
 
 		if (options.bgPos) {
 			div.style.backgroundPosition =
-					(-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
+			        (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
 		}
 
 		this._setIconStyles(div, 'icon');

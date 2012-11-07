@@ -79,15 +79,15 @@ L.Point.prototype = {
 		point = L.point(point);
 
 		var x = point.x - this.x,
-			y = point.y - this.y;
+		    y = point.y - this.y;
 
 		return Math.sqrt(x * x + y * y);
 	},
 
 	toString: function () {
 		return 'Point(' +
-				L.Util.formatNum(this.x) + ', ' +
-				L.Util.formatNum(this.y) + ')';
+		        L.Util.formatNum(this.x) + ', ' +
+		        L.Util.formatNum(this.y) + ')';
 	}
 };
 

@@ -103,36 +103,40 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_onMarkerClick: function (e) {
-		// Default action on marker click is to remove that marker, but if we remove the marker when latlng count < 3, we don't have a valid polyline anymore
-		if (this._poly._latlngs.length < 3) {
-			return;
-		}
+		// we want to remove the marker on click, but if latlng count < 3, polyline would be invalid
+		if (this._poly._latlngs.length < 3) { return; }
 
 		var marker = e.target,
 		    i = marker._index;
 
-		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
-		if (marker._prev && marker._next) {
-			this._createMiddleMarker(marker._prev, marker._next);
-		} else if (!marker._prev) {
-			marker._next._middleLeft = null;
-		} else if (!marker._next) {
-			marker._prev._middleRight = null;
-		}
+		// remove the marker
+		this._markerGroup.removeLayer(marker);
+		this._markers.splice(i, 1);
+		this._poly.spliceLatLngs(i, 1);
+		this._updateIndexes(i, -1);
+
+		// update prev/next links of adjacent markers
 		this._updatePrevNext(marker._prev, marker._next);
 
-		// The marker itself is guaranteed to exist and present in the layer, since we managed to click on it
-		this._markerGroup.removeLayer(marker);
-		// Check for the existence of middle left or middle right
+		// remove ghost markers near the removed marker
 		if (marker._middleLeft) {
 			this._markerGroup.removeLayer(marker._middleLeft);
 		}
 		if (marker._middleRight) {
 			this._markerGroup.removeLayer(marker._middleRight);
 		}
-		this._markers.splice(i, 1);
-		this._poly.spliceLatLngs(i, 1);
-		this._updateIndexes(i, -1);
+
+		// create a ghost marker in place of the removed one
+		if (marker._prev && marker._next) {
+			this._createMiddleMarker(marker._prev, marker._next);
+
+		} else if (!marker._prev) {
+			marker._next._middleLeft = null;
+
+		} else if (!marker._next) {
+			marker._prev._middleRight = null;
+		}
+
 		this._poly.fire('edit');
 	},
 
@@ -146,10 +150,10 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_createMiddleMarker: function (marker1, marker2) {
 		var latlng = this._getMiddleLatLng(marker1, marker2),
-			marker = this._createMarker(latlng),
-			onClick,
-			onDragStart,
-			onDragEnd;
+		    marker = this._createMarker(latlng),
+		    onClick,
+		    onDragStart,
+		    onDragEnd;
 
 		marker.setOpacity(0.6);
 
@@ -161,8 +165,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 			marker._index = i;
 
 			marker
-				.off('click', onClick)
-				.on('click', this._onMarkerClick, this);
+			    .off('click', onClick)
+			    .on('click', this._onMarkerClick, this);
 
 			latlng.lat = marker.getLatLng().lat;
 			latlng.lng = marker.getLatLng().lng;
@@ -192,9 +196,9 @@ L.Handler.PolyEdit = L.Handler.extend({
 		};
 
 		marker
-			.on('click', onClick, this)
-			.on('dragstart', onDragStart, this)
-			.on('dragend', onDragEnd, this);
+		    .on('click', onClick, this)
+		    .on('dragstart', onDragStart, this)
+		    .on('dragend', onDragEnd, this);
 
 		this._markerGroup.addLayer(marker);
 	},

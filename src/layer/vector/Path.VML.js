@@ -12,6 +12,7 @@ L.Browser.vml = !L.Browser.svg && (function () {
 		shape.style.behavior = 'url(#default#VML)';
 
 		return shape && (typeof shape.adj === 'object');
+
 	} catch (e) {
 		return false;
 	}
@@ -31,7 +32,8 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			};
 		} catch (e) {
 			return function (name) {
-				return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+				return document.createElement(
+				        '<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
 			};
 		}
 	}()),
@@ -56,9 +58,9 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 
 	_updateStyle: function () {
 		var stroke = this._stroke,
-			fill = this._fill,
-			options = this.options,
-			container = this._container;
+		    fill = this._fill,
+		    options = this.options,
+		    container = this._container;
 
 		container.stroked = options.stroke;
 		container.filled = options.fill;

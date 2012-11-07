@@ -7,7 +7,7 @@ L.CRS.EPSG3857 = L.Util.extend({}, L.CRS, {
 
 	project: function (latlng) { // (LatLng) -> Point
 		var projectedPoint = this.projection.project(latlng),
-			earthRadius = 6378137;
+		    earthRadius = 6378137;
 		return projectedPoint.multiplyBy(earthRadius);
 	}
 });

@@ -19,17 +19,15 @@ L.Draggable = L.Class.extend({
 	},
 
 	enable: function () {
-		if (this._enabled) {
-			return;
-		}
+		if (this._enabled) { return; }
+
 		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
 		this._enabled = true;
 	},
 
 	disable: function () {
-		if (!this._enabled) {
-			return;
-		}
+		if (!this._enabled) { return; }
+
 		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown);
 		this._enabled = false;
 		this._moved = false;
@@ -37,7 +35,7 @@ L.Draggable = L.Class.extend({
 
 	_onDown: function (e) {
 		if ((!L.Browser.touch && e.shiftKey) ||
-			((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		    ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent.preventDefault(e);
 		L.DomEvent.stopPropagation(e);
@@ -53,16 +51,14 @@ L.Draggable = L.Class.extend({
 		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-			el = first.target;
+		    el = first.target;
 
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
 		this._moved = false;
-		if (this._moving) {
-			return;
-		}
+		if (this._moving) { return; }
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
@@ -88,8 +84,8 @@ L.Draggable = L.Class.extend({
 		if (e.touches && e.touches.length > 1) { return; }
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
-			newPoint = new L.Point(first.clientX, first.clientY),
-			diffVec = newPoint.subtract(this._startPoint);
+		    newPoint = new L.Point(first.clientX, first.clientY),
+		    diffVec = newPoint.subtract(this._startPoint);
 
 		if (!diffVec.x && !diffVec.y) { return; }
 
@@ -125,8 +121,8 @@ L.Draggable = L.Class.extend({
 		clearTimeout(this._longPressTimeout);
 		if (this._simulateClick && e.changedTouches) {
 			var first = e.changedTouches[0],
-				el = first.target,
-				dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
+			    el = first.target,
+			    dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 			if (el.tagName.toLowerCase() === 'a') {
 				L.DomUtil.removeClass(el, 'leaflet-active');
@@ -171,10 +167,10 @@ L.Draggable = L.Class.extend({
 		var simulatedEvent = document.createEvent('MouseEvents');
 
 		simulatedEvent.initMouseEvent(
-				type, true, true, window, 1,
-				e.screenX, e.screenY,
-				e.clientX, e.clientY,
-				false, false, false, false, 0, null);
+		        type, true, true, window, 1,
+		        e.screenX, e.screenY,
+		        e.clientX, e.clientY,
+		        false, false, false, false, 0, null);
 
 		e.target.dispatchEvent(simulatedEvent);
 	}
