@@ -3,11 +3,13 @@
  */
 
 L.Util = {
-	extend: function (/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
-		var sources = Array.prototype.slice.call(arguments, 1);
-		for (var j = 0, len = sources.length, src; j < len; j++) {
+	extend: function (dest) { // (Object[, Object, ...]) ->
+		var sources = Array.prototype.slice.call(arguments, 1),
+		    i, j, len, src;
+
+		for (j = 0, len = sources.length; j < len; j++) {
 			src = sources[j] || {};
-			for (var i in src) {
+			for (i in src) {
 				if (src.hasOwnProperty(i)) {
 					dest[i] = src[i];
 				}
@@ -104,7 +106,7 @@ L.Util = {
 
 	function getPrefixed(name) {
 		var i, fn,
-			prefixes = ['webkit', 'moz', 'o', 'ms'];
+		    prefixes = ['webkit', 'moz', 'o', 'ms'];
 
 		for (i = 0; i < prefixes.length && !fn; i++) {
 			fn = window[prefixes[i] + name];
@@ -117,21 +119,19 @@ L.Util = {
 
 	function timeoutDefer(fn) {
 		var time = +new Date(),
-			timeToCall = Math.max(0, 16 - (time - lastTime));
+		    timeToCall = Math.max(0, 16 - (time - lastTime));
 
 		lastTime = time + timeToCall;
 		return window.setTimeout(fn, timeToCall);
 	}
 
 	var requestFn = window.requestAnimationFrame ||
-			getPrefixed('RequestAnimationFrame') || timeoutDefer;
+	        getPrefixed('RequestAnimationFrame') || timeoutDefer;
 
 	var cancelFn = window.cancelAnimationFrame ||
-			getPrefixed('CancelAnimationFrame') ||
-			getPrefixed('CancelRequestAnimationFrame') ||
-			function (id) {
-				window.clearTimeout(id);
-			};
+	        getPrefixed('CancelAnimationFrame') ||
+	        getPrefixed('CancelRequestAnimationFrame') ||
+	        function (id) { window.clearTimeout(id); };
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {

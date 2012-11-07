@@ -13,13 +13,13 @@ L.Rectangle = L.Polygon.extend({
 
 	_boundsToLatLngs: function (latLngBounds) {
 		latLngBounds = L.latLngBounds(latLngBounds);
-	    return [
-	        latLngBounds.getSouthWest(),
-	        latLngBounds.getNorthWest(),
-	        latLngBounds.getNorthEast(),
-	        latLngBounds.getSouthEast(),
-	        latLngBounds.getSouthWest()
-	    ];
+		return [
+			latLngBounds.getSouthWest(),
+			latLngBounds.getNorthWest(),
+			latLngBounds.getNorthEast(),
+			latLngBounds.getSouthEast(),
+			latLngBounds.getSouthWest()
+		];
 	}
 });
 

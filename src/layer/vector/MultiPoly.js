@@ -4,7 +4,9 @@
 
 (function () {
 	function createMulti(Klass) {
+
 		return L.FeatureGroup.extend({
+
 			initialize: function (latlngs, options) {
 				this._layers = {};
 				this._options = options;
@@ -12,7 +14,8 @@
 			},
 
 			setLatLngs: function (latlngs) {
-				var i = 0, len = latlngs.length;
+				var i = 0,
+				    len = latlngs.length;
 
 				this.eachLayer(function (layer) {
 					if (i < len) {

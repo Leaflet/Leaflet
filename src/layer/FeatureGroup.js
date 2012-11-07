@@ -5,12 +5,16 @@
 L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
+	statics: {
+		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu'
+	},
+
 	addLayer: function (layer) {
 		if (this._layers[L.Util.stamp(layer)]) {
 			return this;
 		}
 
-		layer.on('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+		layer.on(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -22,7 +26,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
-		layer.off('click dblclick mouseover mouseout mousemove contextmenu', this._propagateEvent, this);
+		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
@@ -52,9 +56,11 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
+
 		this.eachLayer(function (layer) {
 			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
-		}, this);
+		});
+
 		return bounds;
 	},
 

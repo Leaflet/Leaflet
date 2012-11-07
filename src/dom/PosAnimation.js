@@ -42,8 +42,8 @@ L.PosAnimation = L.Class.extend({
 
 	_getPos: function () {
 		var left, top, matches,
-			el = this._el,
-			style = window.getComputedStyle(el);
+		    el = this._el,
+		    style = window.getComputedStyle(el);
 
 		if (L.Browser.any3d) {
 			matches = style[L.DomUtil.TRANSFORM].match(this._transformRe);

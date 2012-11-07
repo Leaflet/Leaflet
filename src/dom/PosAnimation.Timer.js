@@ -37,7 +37,7 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 
 	_step: function () {
 		var elapsed = (+new Date()) - this._startTime,
-			duration = this._duration * 1000;
+		    duration = this._duration * 1000;
 
 		if (elapsed < duration) {
 			this._runFrame(this._ease(elapsed / duration));

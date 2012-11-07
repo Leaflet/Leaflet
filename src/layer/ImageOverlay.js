@@ -90,7 +90,7 @@ L.ImageOverlay = L.Class.extend({
 
 	_animateZoom: function (e) {
 		var map = this._map,
-			image = this._image,
+		    image = this._image,
 		    scale = map.getZoomScale(e.zoom),
 		    nw = this._bounds.getNorthWest(),
 		    se = this._bounds.getSouthEast(),
@@ -100,7 +100,8 @@ L.ImageOverlay = L.Class.extend({
 		    currentSize = map.latLngToLayerPoint(se)._subtract(map.latLngToLayerPoint(nw)),
 		    origin = topLeft._add(size._subtract(currentSize)._divideBy(2));
 
-		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
+		image.style[L.DomUtil.TRANSFORM] =
+		        L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {

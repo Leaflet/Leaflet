@@ -79,12 +79,15 @@ L.Polyline = L.Path.extend({
 	},
 
 	getBounds: function () {
-		var b = new L.LatLngBounds();
-		var latLngs = this.getLatLngs();
-		for (var i = 0, len = latLngs.length; i < len; i++) {
-			b.extend(latLngs[i]);
+		var bounds = new L.LatLngBounds(),
+		    latLngs = this.getLatLngs(),
+		    i, len;
+
+		for (i = 0, len = latLngs.length; i < len; i++) {
+			bounds.extend(latLngs[i]);
 		}
-		return b;
+
+		return bounds;
 	},
 
 	// TODO refactor: move to Polyline.Edit.js
@@ -134,8 +137,8 @@ L.Polyline = L.Path.extend({
 
 	_clipPoints: function () {
 		var points = this._originalPoints,
-			len = points.length,
-			i, k, segment;
+		    len = points.length,
+		    i, k, segment;
 
 		if (this.options.noClip) {
 			this._parts = [points];
@@ -145,8 +148,8 @@ L.Polyline = L.Path.extend({
 		this._parts = [];
 
 		var parts = this._parts,
-			vp = this._map._pathViewport,
-			lu = L.LineUtil;
+		    vp = this._map._pathViewport,
+		    lu = L.LineUtil;
 
 		for (i = 0, k = 0; i < len - 1; i++) {
 			segment = lu.clipSegment(points[i], points[i + 1], vp, i);
@@ -168,7 +171,7 @@ L.Polyline = L.Path.extend({
 	// simplify each clipped part of the polyline
 	_simplifyPoints: function () {
 		var parts = this._parts,
-			lu = L.LineUtil;
+		    lu = L.LineUtil;
 
 		for (var i = 0, len = parts.length; i < len; i++) {
 			parts[i] = lu.simplify(parts[i], this.options.smoothFactor);

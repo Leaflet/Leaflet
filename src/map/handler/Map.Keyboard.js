@@ -32,27 +32,28 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 
 		L.DomEvent
-			.addListener(container, 'focus', this._onFocus, this)
-			.addListener(container, 'blur', this._onBlur, this)
-			.addListener(container, 'mousedown', this._onMouseDown, this);
+		    .addListener(container, 'focus', this._onFocus, this)
+		    .addListener(container, 'blur', this._onBlur, this)
+		    .addListener(container, 'mousedown', this._onMouseDown, this);
 
 		this._map
-			.on('focus', this._addHooks, this)
-			.on('blur', this._removeHooks, this);
+		    .on('focus', this._addHooks, this)
+		    .on('blur', this._removeHooks, this);
 	},
 
 	removeHooks: function () {
 		this._removeHooks();
 
 		var container = this._map._container;
+
 		L.DomEvent
-			.removeListener(container, 'focus', this._onFocus, this)
-			.removeListener(container, 'blur', this._onBlur, this)
-			.removeListener(container, 'mousedown', this._onMouseDown, this);
+		    .removeListener(container, 'focus', this._onFocus, this)
+		    .removeListener(container, 'blur', this._onBlur, this)
+		    .removeListener(container, 'mousedown', this._onMouseDown, this);
 
 		this._map
-			.off('focus', this._addHooks, this)
-			.off('blur', this._removeHooks, this);
+		    .off('focus', this._addHooks, this)
+		    .off('blur', this._removeHooks, this);
 	},
 
 	_onMouseDown: function () {
@@ -92,7 +93,7 @@ L.Map.Keyboard = L.Handler.extend({
 
 	_setZoomOffset: function (zoom) {
 		var keys = this._zoomKeys = {},
-			codes = this.keyCodes,
+		    codes = this.keyCodes,
 		    i, len;
 
 		for (i = 0, len = codes.zoomIn.length; i < len; i++) {

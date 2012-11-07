@@ -1,7 +1,7 @@
 L.Control.Attribution = L.Control.extend({
 	options: {
 		position: 'bottomright',
-		prefix: 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>'
+		prefix: 'Powered by <a href="http://leafletjs.com">Leaflet</a>'
 	},
 
 	initialize: function (options) {

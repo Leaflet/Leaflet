@@ -34,7 +34,7 @@ L.LatLngBounds = L.Class.extend({
 			}
 		} else if (obj instanceof L.LatLngBounds) {
 			this.extend(obj._southWest);
-            this.extend(obj._northEast);
+			this.extend(obj._northEast);
 		}
 		return this;
 	},
@@ -42,19 +42,19 @@ L.LatLngBounds = L.Class.extend({
 	// extend the bounds by a percentage
 	pad: function (bufferRatio) { // (Number) -> LatLngBounds
 		var sw = this._southWest,
-			ne = this._northEast,
-			heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
-			widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
+		    ne = this._northEast,
+		    heightBuffer = Math.abs(sw.lat - ne.lat) * bufferRatio,
+		    widthBuffer = Math.abs(sw.lng - ne.lng) * bufferRatio;
 
 		return new L.LatLngBounds(
-			new L.LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
-			new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
+		        new L.LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
+		        new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	},
 
 	getCenter: function () { // -> LatLng
 		return new L.LatLng(
-				(this._southWest.lat + this._northEast.lat) / 2,
-				(this._southWest.lng + this._northEast.lng) / 2);
+		        (this._southWest.lat + this._northEast.lat) / 2,
+		        (this._southWest.lng + this._northEast.lng) / 2);
 	},
 
 	getSouthWest: function () {
@@ -81,8 +81,8 @@ L.LatLngBounds = L.Class.extend({
 		}
 
 		var sw = this._southWest,
-			ne = this._northEast,
-			sw2, ne2;
+		    ne = this._northEast,
+		    sw2, ne2;
 
 		if (obj instanceof L.LatLngBounds) {
 			sw2 = obj.getSouthWest();
@@ -92,26 +92,27 @@ L.LatLngBounds = L.Class.extend({
 		}
 
 		return (sw2.lat >= sw.lat) && (ne2.lat <= ne.lat) &&
-				(sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
+		       (sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
 	intersects: function (bounds) { // (LatLngBounds)
 		bounds = L.latLngBounds(bounds);
 
 		var sw = this._southWest,
-			ne = this._northEast,
-			sw2 = bounds.getSouthWest(),
-			ne2 = bounds.getNorthEast();
+		    ne = this._northEast,
+		    sw2 = bounds.getSouthWest(),
+		    ne2 = bounds.getNorthEast(),
 
-		var latIntersects = (ne2.lat >= sw.lat) && (sw2.lat <= ne.lat),
-			lngIntersects = (ne2.lng >= sw.lng) && (sw2.lng <= ne.lng);
+		    latIntersects = (ne2.lat >= sw.lat) && (sw2.lat <= ne.lat),
+		    lngIntersects = (ne2.lng >= sw.lng) && (sw2.lng <= ne.lng);
 
 		return latIntersects && lngIntersects;
 	},
 
 	toBBoxString: function () {
 		var sw = this._southWest,
-			ne = this._northEast;
+		    ne = this._northEast;
+
 		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
 	},
 

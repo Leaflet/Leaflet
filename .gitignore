@@ -7,3 +7,4 @@ tmp/**/*
 _site
 *.sublime-*
 _site
+dist/*.js
