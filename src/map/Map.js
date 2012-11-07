@@ -21,7 +21,7 @@ L.Map = L.Class.extend({
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
-		options = L.Util.setOptions(this, options);
+		options = L.setOptions(this, options);
 
 		this._initContainer(id);
 		this._initLayout();
@@ -141,7 +141,7 @@ L.Map = L.Class.extend({
 	addLayer: function (layer) {
 		// TODO method is too big, refactor
 
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		if (this._layers[id]) { return this; }
 
@@ -171,7 +171,7 @@ L.Map = L.Class.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		if (!this._layers[id]) { return; }
 
@@ -190,7 +190,7 @@ L.Map = L.Class.extend({
 	},
 
 	hasLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 		return this._layers.hasOwnProperty(id);
 	},
 
@@ -215,7 +215,7 @@ L.Map = L.Class.extend({
 			this.fire('move');
 
 			clearTimeout(this._sizeTimer);
-			this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
+			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 		}
 		return this;
 	},
@@ -600,7 +600,7 @@ L.Map = L.Class.extend({
 		this._tileLayersToLoad--;
 		if (this._tileLayersNum && !this._tileLayersToLoad && this._tileBg) {
 			clearTimeout(this._clearTileBgTimer);
-			this._clearTileBgTimer = setTimeout(L.Util.bind(this._clearTileBg, this), 500);
+			this._clearTileBgTimer = setTimeout(L.bind(this._clearTileBg, this), 500);
 		}
 	},
 

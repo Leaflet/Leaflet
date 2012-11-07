@@ -1,4 +1,4 @@
-L.Util.extend(L.DomEvent, {
+L.extend(L.DomEvent, {
 
 	_touchstart: L.Browser.msTouch ? 'MSPointerDown' : 'touchstart',
 	_touchend: L.Browser.msTouch ? 'MSPointerUp' : 'touchend',

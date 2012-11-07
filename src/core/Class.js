@@ -31,7 +31,7 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	// mix static properties into the class
 	if (props.statics) {
-		L.Util.extend(NewClass, props.statics);
+		L.extend(NewClass, props.statics);
 		delete props.statics;
 	}
 
@@ -43,11 +43,11 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	// merge options
 	if (props.options && proto.options) {
-		props.options = L.Util.extend({}, proto.options, props.options);
+		props.options = L.extend({}, proto.options, props.options);
 	}
 
 	// mix given properties into the prototype
-	L.Util.extend(proto, props);
+	L.extend(proto, props);
 
 	return NewClass;
 };
@@ -55,9 +55,9 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 // method for adding properties to prototype
 L.Class.include = function (props) {
-	L.Util.extend(this.prototype, props);
+	L.extend(this.prototype, props);
 };
 
 L.Class.mergeOptions = function (options) {
-	L.Util.extend(this.prototype.options, options);
+	L.extend(this.prototype.options, options);
 };

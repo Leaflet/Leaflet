@@ -99,7 +99,7 @@ L.Util = {
 	},
 
 	setOptions: function (obj, options) {
-		obj.options = L.Util.extend({}, obj.options, options);
+		obj.options = L.extend({}, obj.options, options);
 		return obj.options;
 	},
 
@@ -161,7 +161,7 @@ L.Util = {
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
-		fn = L.Util.bind(fn, context);
+		fn = L.bind(fn, context);
 
 		if (immediate && requestFn === timeoutDefer) {
 			fn();
@@ -177,6 +177,12 @@ L.Util = {
 	};
 
 }());
+
+// shortcuts for most used utility functions
+L.extend = L.Util.extend;
+L.bind = L.Util.bind;
+L.stamp = L.Util.stamp;
+L.setOptions = L.Util.setOptions;
 
 
 /*
@@ -212,7 +218,7 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	// mix static properties into the class
 	if (props.statics) {
-		L.Util.extend(NewClass, props.statics);
+		L.extend(NewClass, props.statics);
 		delete props.statics;
 	}
 
@@ -224,11 +230,11 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	// merge options
 	if (props.options && proto.options) {
-		props.options = L.Util.extend({}, proto.options, props.options);
+		props.options = L.extend({}, proto.options, props.options);
 	}
 
 	// mix given properties into the prototype
-	L.Util.extend(proto, props);
+	L.extend(proto, props);
 
 	return NewClass;
 };
@@ -236,12 +242,13 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 // method for adding properties to prototype
 L.Class.include = function (props) {
-	L.Util.extend(this.prototype, props);
+	L.extend(this.prototype, props);
 };
 
 L.Class.mergeOptions = function (options) {
-	L.Util.extend(this.prototype.options, options);
+	L.extend(this.prototype.options, options);
 };
+
 
 /*
  * L.Mixin.Events adds custom events functionality to Leaflet classes
@@ -325,7 +332,7 @@ L.Mixin.Events = {
 			return this;
 		}
 
-		var event = L.Util.extend({
+		var event = L.extend({
 			type: type,
 			target: this
 		}, data);
@@ -919,7 +926,7 @@ L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
 	this.lng = lng;
 };
 
-L.Util.extend(L.LatLng, {
+L.extend(L.LatLng, {
 	DEG_TO_RAD: Math.PI / 180,
 	RAD_TO_DEG: 180 / Math.PI,
 	MAX_MARGIN: 1.0E-9 // max margin of error for the "equals" check
@@ -1190,14 +1197,14 @@ L.CRS = {
 
 
 
-L.CRS.Simple = L.Util.extend({}, L.CRS, {
+L.CRS.Simple = L.extend({}, L.CRS, {
 	projection: L.Projection.LonLat,
 	transformation: new L.Transformation(1, 0, 1, 0)
 });
 
 
 
-L.CRS.EPSG3857 = L.Util.extend({}, L.CRS, {
+L.CRS.EPSG3857 = L.extend({}, L.CRS, {
 	code: 'EPSG:3857',
 
 	projection: L.Projection.SphericalMercator,
@@ -1210,13 +1217,13 @@ L.CRS.EPSG3857 = L.Util.extend({}, L.CRS, {
 	}
 });
 
-L.CRS.EPSG900913 = L.Util.extend({}, L.CRS.EPSG3857, {
+L.CRS.EPSG900913 = L.extend({}, L.CRS.EPSG3857, {
 	code: 'EPSG:900913'
 });
 
 
 
-L.CRS.EPSG4326 = L.Util.extend({}, L.CRS, {
+L.CRS.EPSG4326 = L.extend({}, L.CRS, {
 	code: 'EPSG:4326',
 
 	projection: L.Projection.LonLat,
@@ -1247,7 +1254,7 @@ L.Map = L.Class.extend({
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
-		options = L.Util.setOptions(this, options);
+		options = L.setOptions(this, options);
 
 		this._initContainer(id);
 		this._initLayout();
@@ -1367,7 +1374,7 @@ L.Map = L.Class.extend({
 	addLayer: function (layer) {
 		// TODO method is too big, refactor
 
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		if (this._layers[id]) { return this; }
 
@@ -1397,7 +1404,7 @@ L.Map = L.Class.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		if (!this._layers[id]) { return; }
 
@@ -1416,7 +1423,7 @@ L.Map = L.Class.extend({
 	},
 
 	hasLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 		return this._layers.hasOwnProperty(id);
 	},
 
@@ -1441,7 +1448,7 @@ L.Map = L.Class.extend({
 			this.fire('move');
 
 			clearTimeout(this._sizeTimer);
-			this._sizeTimer = setTimeout(L.Util.bind(this.fire, this, 'moveend'), 200);
+			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 		}
 		return this;
 	},
@@ -1826,7 +1833,7 @@ L.Map = L.Class.extend({
 		this._tileLayersToLoad--;
 		if (this._tileLayersNum && !this._tileLayersToLoad && this._tileBg) {
 			clearTimeout(this._clearTileBgTimer);
-			this._clearTileBgTimer = setTimeout(L.Util.bind(this._clearTileBg, this), 500);
+			this._clearTileBgTimer = setTimeout(L.bind(this._clearTileBg, this), 500);
 		}
 	},
 
@@ -1951,7 +1958,7 @@ L.Projection.Mercator = {
 
 
 
-L.CRS.EPSG3395 = L.Util.extend({}, L.CRS, {
+L.CRS.EPSG3395 = L.extend({}, L.CRS, {
 	code: 'EPSG:3395',
 
 	projection: L.Projection.Mercator,
@@ -1996,7 +2003,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	initialize: function (url, options) {
-		options = L.Util.setOptions(this, options);
+		options = L.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
@@ -2386,7 +2393,7 @@ L.TileLayer = L.Class.extend({
 	getTileUrl: function (tilePoint) {
 		this._adjustTilePoint(tilePoint);
 
-		return L.Util.template(this._url, L.Util.extend({
+		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
 			z: this._getZoomForUrl(),
 			x: tilePoint.x,
@@ -2512,7 +2519,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		this._url = url;
 
-		var wmsParams = L.Util.extend({}, this.defaultWmsParams);
+		var wmsParams = L.extend({}, this.defaultWmsParams);
 
 		if (options.detectRetina && L.Browser.retina) {
 			wmsParams.width = wmsParams.height = this.options.tileSize * 2;
@@ -2529,7 +2536,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		this.wmsParams = wmsParams;
 
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
@@ -2561,7 +2568,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	setParams: function (params, noRedraw) {
 
-		L.Util.extend(this.wmsParams, params);
+		L.extend(this.wmsParams, params);
 
 		if (!noRedraw) {
 			this.redraw();
@@ -2582,7 +2589,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	redraw: function () {
@@ -2647,7 +2654,7 @@ L.ImageOverlay = L.Class.extend({
 		this._url = url;
 		this._bounds = L.latLngBounds(bounds);
 
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
@@ -2717,11 +2724,11 @@ L.ImageOverlay = L.Class.extend({
 		this._updateOpacity();
 
 		//TODO createImage util method to remove duplication
-		L.Util.extend(this._image, {
+		L.extend(this._image, {
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,
 			onmousemove: L.Util.falseFn,
-			onload: L.Util.bind(this._onImageLoad, this),
+			onload: L.bind(this._onImageLoad, this),
 			src: this._url
 		});
 	},
@@ -2782,7 +2789,7 @@ L.Icon = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	createIcon: function () {
@@ -2926,7 +2933,7 @@ L.Marker = L.Class.extend({
 	},
 
 	initialize: function (latlng, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
 	},
 
@@ -3218,7 +3225,7 @@ L.Popup = L.Class.extend({
 	},
 
 	initialize: function (options, source) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._source = source;
 	},
@@ -3494,7 +3501,7 @@ L.Marker.include({
 			anchor = anchor.add(options.offset);
 		}
 
-		options = L.Util.extend({offset: anchor}, options);
+		options = L.extend({offset: anchor}, options);
 
 		if (!this._popup) {
 			this
@@ -3565,7 +3572,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	addLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		this._layers[id] = layer;
 
@@ -3577,7 +3584,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		delete this._layers[id];
 
@@ -3651,7 +3658,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	addLayer: function (layer) {
-		if (this._layers[L.Util.stamp(layer)]) {
+		if (this._layers[L.stamp(layer)]) {
 			return this;
 		}
 
@@ -3750,7 +3757,7 @@ L.Path = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
@@ -3803,7 +3810,7 @@ L.Path = L.Class.extend({
 	},
 
 	setStyle: function (style) {
-		L.Util.setOptions(this, style);
+		L.setOptions(this, style);
 
 		if (this._container) {
 			this._updateStyle();
@@ -4256,7 +4263,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	setStyle: function (style) {
-		L.Util.setOptions(this, style);
+		L.setOptions(this, style);
 
 		if (this._map) {
 			this._updateStyle();
@@ -5242,7 +5249,7 @@ L.Circle.include(!L.Path.CANVAS ? {} : {
 
 L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._layers = {};
 
@@ -5301,7 +5308,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	}
 });
 
-L.Util.extend(L.GeoJSON, {
+L.extend(L.GeoJSON, {
 	geometryToLayer: function (geojson, pointToLayer) {
 		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
 		    coords = geometry.coordinates,
@@ -5386,7 +5393,7 @@ L.DomEvent = {
 	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
-		var id = L.Util.stamp(fn),
+		var id = L.stamp(fn),
 		    key = '_leaflet_' + type + id,
 		    handler, originalHandler, newType;
 
@@ -5434,7 +5441,7 @@ L.DomEvent = {
 
 	removeListener: function (obj, type, fn) {  // (HTMLElement, String, Function)
 
-		var id = L.Util.stamp(fn),
+		var id = L.stamp(fn),
 		    key = '_leaflet_' + type + id,
 		    handler = obj[key];
 
@@ -5630,7 +5637,7 @@ L.Draggable = L.Class.extend({
 
 		//Touch contextmenu event emulation
 		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
-			this._longPressTimeout = setTimeout(L.Util.bind(function () {
+			this._longPressTimeout = setTimeout(L.bind(function () {
 				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 				if (dist < L.Draggable.TAP_TOLERANCE) {
@@ -5978,7 +5985,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		var left = Math.max(40 - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
+		this._timer = setTimeout(L.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
 		L.DomEvent.stopPropagation(e);
@@ -6018,7 +6025,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
 
 
-L.Util.extend(L.DomEvent, {
+L.extend(L.DomEvent, {
 
 	_touchstart: L.Browser.msTouch ? 'MSPointerDown' : 'touchstart',
 	_touchend: L.Browser.msTouch ? 'MSPointerUp' : 'touchend',
@@ -6111,7 +6118,7 @@ L.Util.extend(L.DomEvent, {
 });
 
 
-L.Util.extend(L.DomEvent, {
+L.extend(L.DomEvent, {
 
 	_msTouches: [],
 	_msDocumentListener: false,
@@ -6683,7 +6690,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	initialize: function (poly, options) {
 		this._poly = poly;
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	addHooks: function () {
@@ -6765,7 +6772,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 	_onMarkerDrag: function (e) {
 		var marker = e.target;
 
-		L.Util.extend(marker._origLatLng, marker._latlng);
+		L.extend(marker._origLatLng, marker._latlng);
 
 		if (marker._middleLeft) {
 			marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
@@ -6904,7 +6911,7 @@ L.Control = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	getPosition: function () {
@@ -7061,7 +7068,7 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._attributions = {};
 	},
@@ -7283,7 +7290,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	initialize: function (baseLayers, overlays, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._layers = {};
 		this._lastZIndex = 0;
@@ -7321,7 +7328,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 		delete this._layers[id];
 		this._update();
 		return this;
@@ -7372,7 +7379,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_addLayer: function (layer, name, overlay) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		this._layers[id] = {
 			layer: layer,
@@ -7438,7 +7445,7 @@ L.Control.Layers = L.Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = L.Util.stamp(obj.layer);
+		input.layerId = L.stamp(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -7515,7 +7522,7 @@ L.PosAnimation = L.Class.extend({
 		L.Util.falseFn(el.offsetWidth);
 
 		// there's no native way to track value updates of tranisitioned properties, so we imitate this
-		this._stepTimer = setInterval(L.Util.bind(this.fire, this, 'step'), 50);
+		this._stepTimer = setInterval(L.bind(this.fire, this, 'step'), 50);
 	},
 
 	stop: function () {
@@ -7908,7 +7915,7 @@ L.Map.include({
 
 	locate: function (/*Object*/ options) {
 
-		options = this._locationOptions = L.Util.extend(this._defaultLocateOptions, options);
+		options = this._locationOptions = L.extend(this._defaultLocateOptions, options);
 
 		if (!navigator.geolocation) {
 			this._handleGeolocationError({
@@ -7918,8 +7925,8 @@ L.Map.include({
 			return this;
 		}
 
-		var onResponse = L.Util.bind(this._handleGeolocationResponse, this),
-			onError = L.Util.bind(this._handleGeolocationError, this);
+		var onResponse = L.bind(this._handleGeolocationResponse, this),
+			onError = L.bind(this._handleGeolocationError, this);
 
 		if (options.watch) {
 			this._locationWatchId =

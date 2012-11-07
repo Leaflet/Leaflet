@@ -5,7 +5,7 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._attributions = {};
 	},

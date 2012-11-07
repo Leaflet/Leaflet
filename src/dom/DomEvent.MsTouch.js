@@ -1,4 +1,4 @@
-L.Util.extend(L.DomEvent, {
+L.extend(L.DomEvent, {
 
 	_msTouches: [],
 	_msDocumentListener: false,

@@ -8,7 +8,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	initialize: function (poly, options) {
 		this._poly = poly;
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	addHooks: function () {
@@ -90,7 +90,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 	_onMarkerDrag: function (e) {
 		var marker = e.target;
 
-		L.Util.extend(marker._origLatLng, marker._latlng);
+		L.extend(marker._origLatLng, marker._latlng);
 
 		if (marker._middleLeft) {
 			marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));

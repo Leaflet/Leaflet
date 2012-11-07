@@ -80,7 +80,7 @@ L.Mixin.Events = {
 			return this;
 		}
 
-		var event = L.Util.extend({
+		var event = L.extend({
 			type: type,
 			target: this
 		}, data);

@@ -19,7 +19,7 @@ L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
 	this.lng = lng;
 };
 
-L.Util.extend(L.LatLng, {
+L.extend(L.LatLng, {
 	DEG_TO_RAD: Math.PI / 180,
 	RAD_TO_DEG: 180 / Math.PI,
 	MAX_MARGIN: 1.0E-9 // max margin of error for the "equals" check

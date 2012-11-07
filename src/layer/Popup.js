@@ -18,7 +18,7 @@ L.Popup = L.Class.extend({
 	},
 
 	initialize: function (options, source) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._source = source;
 	},

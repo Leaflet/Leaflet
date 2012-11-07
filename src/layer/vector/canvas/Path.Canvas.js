@@ -22,7 +22,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	setStyle: function (style) {
-		L.Util.setOptions(this, style);
+		L.setOptions(this, style);
 
 		if (this._map) {
 			this._updateStyle();

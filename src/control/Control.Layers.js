@@ -6,7 +6,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	initialize: function (baseLayers, overlays, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._layers = {};
 		this._lastZIndex = 0;
@@ -44,7 +44,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 		delete this._layers[id];
 		this._update();
 		return this;
@@ -95,7 +95,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_addLayer: function (layer, name, overlay) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		this._layers[id] = {
 			layer: layer,
@@ -161,7 +161,7 @@ L.Control.Layers = L.Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = L.Util.stamp(obj.layer);
+		input.layerId = L.stamp(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 

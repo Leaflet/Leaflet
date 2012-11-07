@@ -28,7 +28,7 @@ L.Marker.include({
 			anchor = anchor.add(options.offset);
 		}
 
-		options = L.Util.extend({offset: anchor}, options);
+		options = L.extend({offset: anchor}, options);
 
 		if (!this._popup) {
 			this

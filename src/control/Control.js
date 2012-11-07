@@ -5,7 +5,7 @@ L.Control = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	getPosition: function () {

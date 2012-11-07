@@ -29,7 +29,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		var left = Math.max(40 - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.Util.bind(this._performZoom, this), left);
+		this._timer = setTimeout(L.bind(this._performZoom, this), left);
 
 		L.DomEvent.preventDefault(e);
 		L.DomEvent.stopPropagation(e);

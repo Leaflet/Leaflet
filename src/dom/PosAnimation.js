@@ -22,7 +22,7 @@ L.PosAnimation = L.Class.extend({
 		L.Util.falseFn(el.offsetWidth);
 
 		// there's no native way to track value updates of tranisitioned properties, so we imitate this
-		this._stepTimer = setInterval(L.Util.bind(this.fire, this, 'step'), 50);
+		this._stepTimer = setInterval(L.bind(this.fire, this, 'step'), 50);
 	},
 
 	stop: function () {
