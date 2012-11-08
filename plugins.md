@@ -154,6 +154,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/sa3m">Samuel Piquet</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet-ajax">Leaflet Ajax</a>
+		</td><td>
+			Add GeoJSON data via ajax or jsonp.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
+		</td>
+	</tr>
 </table>
 
 
