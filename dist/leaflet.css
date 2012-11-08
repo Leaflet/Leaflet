@@ -262,10 +262,10 @@
 	}
 
 .leaflet-zoom-anim .leaflet-zoom-animated {
-	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	-moz-transition: -moz-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	-o-transition: -o-transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
-	transition: transform 0.25s cubic-bezier(0.25,0.1,0.25,0.75);
+	-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);
+	-moz-transition: -moz-transform 0.25s cubic-bezier(0,0,0.25,1);
+	-o-transition: -o-transform 0.25s cubic-bezier(0,0,0.25,1);
+	transition: transform 0.25s cubic-bezier(0,0,0.25,1);
 	}
 
 .leaflet-zoom-anim .leaflet-tile,
