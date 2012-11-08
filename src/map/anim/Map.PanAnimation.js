@@ -10,6 +10,7 @@ L.Map.include({
 
 			if (this._panAnim) {
 				this._panAnim.stop();
+				L.Util.falseFn(this._container.offsetWidth); // force reflow
 			}
 
 			var done = (zoomChanged ?
