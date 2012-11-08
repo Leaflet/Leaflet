@@ -5,7 +5,7 @@
 L.PosAnimation = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
+	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();
 
 		this._el = el;
@@ -13,7 +13,8 @@ L.PosAnimation = L.Class.extend({
 
 		this.fire('start');
 
-		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) + 's ' + (easing || 'ease-out');
+		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) +
+		        's cubic-bezier(0,0,' + (easeLinearity || 0.5) + ',1)';
 
 		L.DomEvent.on(el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
 		L.DomUtil.setPosition(el, newPos);

@@ -5,13 +5,13 @@
 
 L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 
-	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
+	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();
 
 		this._el = el;
 		this._inProgress = true;
 		this._duration = duration || 0.25;
-		this._ease = this._easings[easing || 'ease-out'];
+		this._easeOutPower = 1 / Math.max(easeLinearity || 0.5, 0.2);
 
 		this._startPos = L.DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
@@ -40,7 +40,7 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 		    duration = this._duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._ease(elapsed / duration));
+			this._runFrame(this._easeOut(elapsed / duration));
 		} else {
 			this._runFrame(1);
 			this._complete();
@@ -61,10 +61,7 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 		this.fire('end');
 	},
 
-	// easing functions, they map time progress to movement progress
-	_easings: {
-		'ease-out': function (t) { return t * (2 - t); },
-		'linear':   function (t) { return t; }
+	_easeOut: function (t) {
+		return 1 - Math.pow(1 - t, this._easeOutPower);
 	}
-
 });
