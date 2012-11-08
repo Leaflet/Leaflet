@@ -5787,8 +5787,9 @@ L.Map.mergeOptions({
 
 	inertia: !L.Browser.android23,
 	inertiaDeceleration: 3400, // px/s^2
-	inertiaMaxSpeed: 6000, // px/s
+	inertiaMaxSpeed: Infinity, // px/s
 	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
+	easeLinearity: 0.25,
 
 	longPress: true,
 
@@ -5900,17 +5901,17 @@ L.Map.Drag = L.Handler.extend({
 			var direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime + delay - this._times[0]) / 1000,
 
-			    speedVector = direction.multiplyBy(0.58 / duration),
+			    speedVector = direction.multiplyBy(options.easeLinearity / duration),
 			    speed = speedVector.distanceTo(new L.Point(0, 0)),
 
 			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			    decelerationDuration = limitedSpeed / options.inertiaDeceleration,
+			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * options.easeLinearity),
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration);
+				map.panBy(offset, decelerationDuration, options.easeLinearity);
 			});
 		}
 
@@ -7505,7 +7506,7 @@ L.control.layers = function (baseLayers, overlays, options) {
 L.PosAnimation = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
+	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();
 
 		this._el = el;
@@ -7513,7 +7514,8 @@ L.PosAnimation = L.Class.extend({
 
 		this.fire('start');
 
-		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) + 's ' + (easing || 'ease-out');
+		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) +
+		        's cubic-bezier(0,0,' + (easeLinearity || 0.5) + ',1)';
 
 		L.DomEvent.on(el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
 		L.DomUtil.setPosition(el, newPos);
@@ -7585,6 +7587,7 @@ L.Map.include({
 
 			if (this._panAnim) {
 				this._panAnim.stop();
+				L.Util.falseFn(this._container.offsetWidth); // force reflow
 			}
 
 			var done = (zoomChanged ?
@@ -7604,7 +7607,7 @@ L.Map.include({
 		return this;
 	},
 
-	panBy: function (offset, duration) {
+	panBy: function (offset, duration, easeLinearity) {
 		offset = L.point(offset);
 
 		if (!(offset.x || offset.y)) {
@@ -7625,7 +7628,7 @@ L.Map.include({
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
 		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
-		this._panAnim.run(this._mapPane, newPos, duration || 0.25);
+		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
 
 		return this;
 	},
@@ -7667,13 +7670,13 @@ L.Map.include({
 
 L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 
-	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
+	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();
 
 		this._el = el;
 		this._inProgress = true;
 		this._duration = duration || 0.25;
-		this._ease = this._easings[easing || 'ease-out'];
+		this._easeOutPower = 1 / Math.max(easeLinearity || 0.5, 0.2);
 
 		this._startPos = L.DomUtil.getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
@@ -7702,7 +7705,7 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 		    duration = this._duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._ease(elapsed / duration));
+			this._runFrame(this._easeOut(elapsed / duration));
 		} else {
 			this._runFrame(1);
 			this._complete();
@@ -7723,12 +7726,9 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
 		this.fire('end');
 	},
 
-	// easing functions, they map time progress to movement progress
-	_easings: {
-		'ease-out': function (t) { return t * (2 - t); },
-		'linear':   function (t) { return t; }
+	_easeOut: function (t) {
+		return 1 - Math.pow(1 - t, this._easeOutPower);
 	}
-
 });
 
 
