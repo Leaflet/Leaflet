@@ -34,7 +34,7 @@ L.PosAnimation = L.Class.extend({
 
 		L.DomUtil.setPosition(this._el, this._getPos());
 		this._onTransitionEnd();
-		L.Util.falseFn(this._container.offsetWidth); // force reflow in case we are about to start a new animation
+		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a new animation
 	},
 
 	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
