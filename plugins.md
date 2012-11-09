@@ -53,7 +53,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://mackerron.com">George MacKerron</a>
 		</td>
 	</tr>
-    <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/aparshin/leaflet-boundary-canvas">TileLayer.BoundaryCanvas</a>
 		</td><td>
@@ -62,13 +62,22 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
 	</tr>
-    <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/sunng87/heatcanvas">HeatCanvas</a>
 		</td><td>
 			Simple heatmap api based on HTML5 canvas.
 		</td><td>
 			<a href="https://github.com/sunng87">Sun Ning</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/openplans/Leaflet.AnimatedMarker">Leaflet.AnimatedMarker</a>
+		</td><td>
+			Animate a marker along a polyline.
+		</td><td>
+			<a href="https://github.com/atogle">Aaron Ogle</a>
 		</td>
 	</tr>
 </table>
