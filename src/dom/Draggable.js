@@ -7,8 +7,8 @@ L.Draggable = L.Class.extend({
 
 	statics: {
 		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
-		END: L.Browser.touch ? ['touchend', 'mouseup'] : ['mouseup'],
-		MOVE: L.Browser.touch ? ['touchmove', 'mousemove'] : ['mousemove'],
+		END: { 'mousedown': 'mouseup', 'touchstart' : 'touchend', 'MSPointerDown': 'touchend' },
+		MOVE: { 'mousedown': 'mousemove', 'touchstart': 'touchmove', 'MSPointerDown': 'touchmove' },
 		TAP_TOLERANCE: 15
 	},
 
@@ -78,10 +78,8 @@ L.Draggable = L.Class.extend({
 			}, this), 1000);
 		}
 
-		for (var i = L.Draggable.MOVE.length - 1; i >= 0; i--) {
-			L.DomEvent.on(document, L.Draggable.MOVE[i], this._onMove, this);
-			L.DomEvent.on(document, L.Draggable.END[i], this._onUp, this);
-		}
+		L.DomEvent.on(document, L.Draggable.MOVE[e.type], this._onMove, this);
+		L.DomEvent.on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -142,9 +140,12 @@ L.Draggable = L.Class.extend({
 			this._restoreCursor();
 		}
 
-		for (var i = L.Draggable.MOVE.length - 1; i >= 0; i--) {
-			L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
-			L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
+		for (var i in L.Draggable.MOVE) {
+			if (L.Draggable.MOVE.hasOwnProperty(i))
+			{
+				L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
+				L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
+			}
 		}
 
 		if (this._moved) {
