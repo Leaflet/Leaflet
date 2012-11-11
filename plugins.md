@@ -64,6 +64,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/domoritz/leaflet-maskcanvas">MaskCanvas</a>
+		</td><td>
+			Canvas layer that can be used to visualize coverage.
+		</td><td>
+			<a href="https://github.com/domoritz">Dominik Moritz</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/sunng87/heatcanvas">HeatCanvas</a>
 		</td><td>
 			Simple heatmap api based on HTML5 canvas.
@@ -225,7 +234,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			A customizable locate control.
 		</td><td>
-			<a href="https://github.com/domoritz">Dominik</a>
+			<a href="https://github.com/domoritz">Dominik Moritz</a>
 		</td>
 	</tr>
 	<tr>
