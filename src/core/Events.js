@@ -53,7 +53,7 @@ L.Mixin.Events = {
 			if ((type in this[key]) && this[key][type].length > 0) {
 				return true;
 			} else {
-				if(this[key][type + '_idx_len'] > 0){
+				if (this[key][type + '_idx_len'] > 0) {
 					return true;
 				}
 			}
