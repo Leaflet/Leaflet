@@ -30,7 +30,9 @@ L.Draggable = L.Class.extend({
 	disable: function () {
 		if (!this._enabled) { return; }
 
-		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown);
+		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
+			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
+		}
 		this._enabled = false;
 		this._moved = false;
 	},
