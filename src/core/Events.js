@@ -37,6 +37,7 @@ L.Mixin.Events = {
 					events[tIndex][leafletId].push(evt);
 				} else {
 					events[tIndex][leafletId] = [evt];
+					events[types[i] + '_idx_len'] = (events[types[i] + '_idx_len'] || 0) + 1;
 				}
 			} else {
 				events[types[i]] = events[types[i]] || [];
@@ -52,14 +53,8 @@ L.Mixin.Events = {
 			if ((type in this[key]) && this[key][type].length > 0) {
 				return true;
 			} else {
-				var typeIdx = type + '_idx';
-				if (typeIdx in this[key]) {
-					for (var leafletId in this[key][typeIdx]) {
-						if (this[key][typeIdx].hasOwnProperty(leafletId)) {
-							//atleast one id
-							return true;
-						}
-					}
+				if(this[key][type + '_idx_len'] > 0){
+					return true;
 				}
 			}
 		}
@@ -96,6 +91,7 @@ L.Mixin.Events = {
 				}
 				if (context && context._leaflet_id && listeners.length === 0) {
 					delete events[types[i] + '_idx'][context._leaflet_id];
+					events[types[i] + '_idx_len'] = (events[types[i] + '_idx_len'] || 1) - 1;
 				}
 			}
 		}
