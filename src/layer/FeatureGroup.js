@@ -10,7 +10,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	addLayer: function (layer) {
-		if (this._layers[L.Util.stamp(layer)]) {
+		if (this._layers[L.stamp(layer)]) {
 			return this;
 		}
 
@@ -22,7 +22,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 			layer.bindPopup(this._popupContent);
 		}
 
-		return this;
+		return this.fire('layeradd', {layer: layer});
 	},
 
 	removeLayer: function (layer) {
@@ -30,11 +30,12 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
+
 		if (this._popupContent) {
-			return this.invoke('unbindPopup');
-		} else {
-			return this;
+			this.invoke('unbindPopup');
 		}
+
+		return this.fire('layerremove', {layer: layer});
 	},
 
 	bindPopup: function (content) {

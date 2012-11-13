@@ -73,7 +73,7 @@ L.Util = {
 	},
 
 	setOptions: function (obj, options) {
-		obj.options = L.Util.extend({}, obj.options, options);
+		obj.options = L.extend({}, obj.options, options);
 		return obj.options;
 	},
 
@@ -135,7 +135,7 @@ L.Util = {
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
-		fn = L.Util.bind(fn, context);
+		fn = L.bind(fn, context);
 
 		if (immediate && requestFn === timeoutDefer) {
 			fn();
@@ -151,3 +151,9 @@ L.Util = {
 	};
 
 }());
+
+// shortcuts for most used utility functions
+L.extend = L.Util.extend;
+L.bind = L.Util.bind;
+L.stamp = L.Util.stamp;
+L.setOptions = L.Util.setOptions;

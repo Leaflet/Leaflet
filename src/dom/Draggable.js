@@ -65,7 +65,7 @@ L.Draggable = L.Class.extend({
 
 		//Touch contextmenu event emulation
 		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
-			this._longPressTimeout = setTimeout(L.Util.bind(function () {
+			this._longPressTimeout = setTimeout(L.bind(function () {
 				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
 				if (dist < L.Draggable.TAP_TOLERANCE) {

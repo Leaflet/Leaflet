@@ -4,7 +4,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	redraw: function () {

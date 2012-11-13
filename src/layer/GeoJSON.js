@@ -1,6 +1,6 @@
 L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._layers = {};
 
@@ -59,7 +59,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	}
 });
 
-L.Util.extend(L.GeoJSON, {
+L.extend(L.GeoJSON, {
 	geometryToLayer: function (geojson, pointToLayer) {
 		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
 		    coords = geometry.coordinates,

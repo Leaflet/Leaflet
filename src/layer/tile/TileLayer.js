@@ -28,7 +28,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	initialize: function (url, options) {
-		options = L.Util.setOptions(this, options);
+		options = L.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
@@ -167,7 +167,7 @@ L.TileLayer = L.Class.extend({
 	_setAutoZIndex: function (pane, compare) {
 
 		var layers = pane.getElementsByClassName('leaflet-layer'),
-		    edgeZIndex = -compare(Infinity, -Infinity), // -Ifinity for max, Infinity for min
+		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
 		    zIndex, i, len;
 
 		for (i = 0, len = layers.length; i < len; i++) {
@@ -418,7 +418,7 @@ L.TileLayer = L.Class.extend({
 	getTileUrl: function (tilePoint) {
 		this._adjustTilePoint(tilePoint);
 
-		return L.Util.template(this._url, L.Util.extend({
+		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
 			z: this._getZoomForUrl(),
 			x: tilePoint.x,

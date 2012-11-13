@@ -16,7 +16,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	addLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		this._layers[id] = layer;
 
@@ -24,21 +24,17 @@ L.LayerGroup = L.Class.extend({
 			this._map.addLayer(layer);
 		}
 
-		this.fire('layeradd', { layer: layer });
-
 		return this;
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		delete this._layers[id];
 
 		if (this._map) {
 			this._map.removeLayer(layer);
 		}
-
-		this.fire('layerremove', { layer: layer });
 
 		return this;
 	},

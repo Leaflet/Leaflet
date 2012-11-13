@@ -12,11 +12,16 @@ An in-progress version being developed on the master branch.
 #### Usability improvements
 
  * Added touch zoom, pan and double tap support for **IE10 touch devices and Metro apps** (by [@danzel](https://github.com/danzel) and [@veproza](https://github.com/veproza) with help from [@oliverheilig](https://github.com/oliverheilig)). [#1076](https://github.com/CloudMade/Leaflet/pull/1076) [#871](https://github.com/CloudMade/Leaflet/issues/871)
- * Adjusted panning inertia to be more natural.
- * Improved panning animation performance in IE6-8.
+ * **Improved panning inertia** to be much more natural and smooth.
+ * Improved **zoom control design** to look better, be more design-neutral and in line with other controls, making it easier to fit different website designs. Replaced +/- images with text.
+ * Improved **dragging cursors** in Chrome, Safari and Firefox (now grabbing hand cursors are used).
  * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
  * Improved scroll wheel zoom to be more responsive.
+ * Improved zoom animation curve for a better feel overall.
+ * Improved fallback control styles for IE6-8.
+ * Improved panning animation performance in IE6-8.
  * Improved vectors updating/removing performance on Canvas backend even more (by [@danzel](https://github.com/danzel)). [#961](https://github.com/CloudMade/Leaflet/pull/961)
+ * Cut total images size from 10KB to 3.2KB with [Yahoo Smush.it](http://www.smushit.com/ysmush.it/). Thanks to Peter Rounce for suggestion.
 
 #### API improvements
 
@@ -29,10 +34,12 @@ An in-progress version being developed on the master branch.
  * Added `Marker` `riseOnHover` and `riseOffset` options (for bringing markers to front on hover, disabled by default) (by [jacobtoye](https://github.com/jacobtoye)). [#914](https://github.com/CloudMade/Leaflet/pull/914) [#920](https://github.com/CloudMade/Leaflet/issues/920)
  * Added `Marker` `move` and `remove` events.
  * Added `Map` `whenReady` method (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1063](https://github.com/CloudMade/Leaflet/pull/1063)
+ * Added `FeatureGroup` `layeradd` and `layerremove` events (by [@jacobtoye](https://github.com/jacobtoye)). [#1122](https://github.com/CloudMade/Leaflet/issues/1122)
  * Added `Control.Layers` `baselayerchange` event (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1064](https://github.com/CloudMade/Leaflet/pull/1064)
  * Improved `Control.Layers` to support HTML in layer names (by [@aparshin](https://github.com/aparshin)). [#1055](https://github.com/CloudMade/Leaflet/pull/1055) [#1099](https://github.com/CloudMade/Leaflet/issues/1099)
  * Removed `Browser` `ua`, `ie`, `gecko`, `opera` properties (no longer needed).
  * Added `CRS.Simple` to the list of built-in CRS. It was added earlier but not included in the build.
+ * Added `L.extend`, `L.bind`, `L.stamp`, `L.setOptions` shortcuts for corresponding `L.Util` methods.
 
 ### Bugfixes
 
@@ -58,6 +65,7 @@ An in-progress version being developed on the master branch.
 
  * Fixed a bug where "Not implemented" error sometimes appeared in IE6-8 (by [@bryguy](https://github.com/bryguy) and [@lookfirst](https://github.com/lookfirst)). [#892](https://github.com/CloudMade/Leaflet/issues/892) [#893](https://github.com/CloudMade/Leaflet/pull/893)
  * Fixed compatibility with SmoothWheel extension for Firefox (by [@waldir](https://github.com/waldir)). [#1011](https://github.com/CloudMade/Leaflet/pull/1011)
+ * Fixed a bug with popup layout in IE6-7 (by [@danzel](https://github.com/danzel)). [#1117](https://github.com/CloudMade/Leaflet/issues/1117)
  * Fixed a bug with incorrect box zoom opacity in IE6-7 (by [@jacobtoye](https://github.com/jacobtoye)). [#1072](https://githubcom/CloudMade/Leaflet/pull/1072)
  * Fixed a bug with box zoom throwing a JS error in IE6-7 (by [@danzel](https://github.com/danzel)). [#1071](https://github.com/CloudMade/Leaflet/pull/1071)
 

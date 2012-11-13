@@ -1,5 +1,5 @@
 /*
-	CM.LatLng represents a geographical point with latitude and longtitude coordinates.
+	L.LatLng represents a geographical point with latitude and longitude coordinates.
 */
 
 L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
@@ -12,14 +12,14 @@ L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
 
 	if (noWrap !== true) {
 		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longtitude into -180..180
+		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longitude into -180..180
 	}
 
 	this.lat = lat;
 	this.lng = lng;
 };
 
-L.Util.extend(L.LatLng, {
+L.extend(L.LatLng, {
 	DEG_TO_RAD: Math.PI / 180,
 	RAD_TO_DEG: 180 / Math.PI,
 	MAX_MARGIN: 1.0E-9 // max margin of error for the "equals" check

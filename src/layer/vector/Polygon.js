@@ -25,9 +25,9 @@ L.Polygon = L.Polyline.extend({
 
 		if (!this._holes) { return; }
 
-		var i, j, len, len2;
+		var i, j, len, len2, hole;
 
-		for (i = 0, len = this._holes.length, hole; i < len; i++) {
+		for (i = 0, len = this._holes.length; i < len; i++) {
 			this._holePoints[i] = [];
 
 			for (j = 0, len2 = this._holes[i].length; j < len2; j++) {

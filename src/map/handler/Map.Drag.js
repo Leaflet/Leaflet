@@ -7,8 +7,9 @@ L.Map.mergeOptions({
 
 	inertia: !L.Browser.android23,
 	inertiaDeceleration: 3400, // px/s^2
-	inertiaMaxSpeed: 6000, // px/s
+	inertiaMaxSpeed: Infinity, // px/s
 	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
+	easeLinearity: 0.25,
 
 	longPress: true,
 
@@ -120,17 +121,17 @@ L.Map.Drag = L.Handler.extend({
 			var direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime + delay - this._times[0]) / 1000,
 
-			    speedVector = direction.multiplyBy(0.58 / duration),
+			    speedVector = direction.multiplyBy(options.easeLinearity / duration),
 			    speed = speedVector.distanceTo(new L.Point(0, 0)),
 
 			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			    decelerationDuration = limitedSpeed / options.inertiaDeceleration,
+			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * options.easeLinearity),
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration);
+				map.panBy(offset, decelerationDuration, options.easeLinearity);
 			});
 		}
 

@@ -9,7 +9,7 @@ L.ImageOverlay = L.Class.extend({
 		this._url = url;
 		this._bounds = L.latLngBounds(bounds);
 
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
@@ -79,11 +79,11 @@ L.ImageOverlay = L.Class.extend({
 		this._updateOpacity();
 
 		//TODO createImage util method to remove duplication
-		L.Util.extend(this._image, {
+		L.extend(this._image, {
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,
 			onmousemove: L.Util.falseFn,
-			onload: L.Util.bind(this._onImageLoad, this),
+			onload: L.bind(this._onImageLoad, this),
 			src: this._url
 		});
 	},
