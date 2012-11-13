@@ -35,8 +35,21 @@ L.DomUtil = {
 		do {
 			top  += el.offsetTop  || 0;
 			left += el.offsetLeft || 0;
+			
+			// on webkit browser also check for translation transforms
+			if (L.Browser.webkit3d) {
+				var transformStyle = window.getComputedStyle(el).webkitTransform;
+				if (transformStyle && transformStyle !== 'none') {
+					var curTransform = new window.WebKitCSSMatrix(transformStyle);
+					var translateX = curTransform.m41;
+					var translateY = curTransform.m42;
+					top  += translateY || 0;
+					left += translateX || 0;
+				}
+			}
+			
 			pos = L.DomUtil.getStyle(el, 'position');
-
+			
 			if (el.offsetParent === docBody && pos === 'absolute') { break; }
 
 			if (pos === 'fixed') {
