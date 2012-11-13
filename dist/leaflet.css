@@ -203,7 +203,7 @@
 	background-color: rgba(255, 255, 255, 0.8);
 	text-align: center;
 	text-decoration: none;
-	color: #333;
+	color: black;
 	}
 .leaflet-control-zoom a,
 .leaflet-control-layers-toggle {
@@ -217,7 +217,7 @@
 	}
 .leaflet-control-zoom-in {
 	border-bottom: 1px solid #aaa;
-	font: bold 19px/24px Arial, Helvetica, sans-serif;
+	font: bold 18px/24px Arial, Helvetica, sans-serif;
 	-webkit-border-radius: 5px 5px 0 0;
 	        border-radius: 5px 5px 0 0;
 	}
@@ -294,7 +294,7 @@
 
 .leaflet-container .leaflet-control-attribution {
 	background-color: rgba(255, 255, 255, 0.7);
-	box-shadow: -1px -1px 5px #aaa;
+	box-shadow: 0 0 5px #bbb;
 	margin: 0;
 	}
 .leaflet-control-attribution,
