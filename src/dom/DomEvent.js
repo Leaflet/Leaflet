@@ -3,7 +3,7 @@
  */
 
 L.DomEvent = {
-	/* inpired by John Resig, Dean Edwards and YUI addEvent implementations */
+	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
 		var id = L.stamp(fn),
