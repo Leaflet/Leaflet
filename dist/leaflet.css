@@ -192,7 +192,7 @@
 .leaflet-control-zoom {
 	margin-left: 13px;
 	margin-top: 12px;
-	box-shadow: 0 0 8px #777;
+	box-shadow: 0 0 8px rgba(0,0,0,0.4);
 	border: 1px solid #888;
 	-webkit-border-radius: 5px;
 	        border-radius: 5px;
@@ -248,7 +248,7 @@
 /* layers control */
 
 .leaflet-control-layers {
-	box-shadow: 0 1px 7px #777;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
 	background: #f8f8f9;
 	-webkit-border-radius: 8px;
 	        border-radius: 8px;
