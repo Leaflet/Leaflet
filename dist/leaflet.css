@@ -190,19 +190,20 @@
 /* zoom control */
 
 .leaflet-control-zoom {
-	-webkit-border-radius: 7px;
-	        border-radius: 7px;
-	}
-.leaflet-control-zoom {
-	padding: 5px;
-	background: rgba(0, 0, 0, 0.25);
+	margin-left: 13px;
+	margin-top: 12px;
+	box-shadow: 0 0 8px #666;
+	border: 1px solid #777;
+	-webkit-border-radius: 5px;
+	        border-radius: 5px;
 	}
 .leaflet-control-zoom a {
-	width: 19px;
-	height: 19px;
-	background-color: rgba(255, 255, 255, 0.75);
-	-webkit-border-radius: 4px;
-	        border-radius: 4px;
+	width: 23px;
+	height: 23px;
+	background-color: rgba(255, 255, 255, 0.8);
+	text-align: center;
+	text-decoration: none;
+	color: black;
 	}
 .leaflet-control-zoom a,
 .leaflet-control-layers-toggle {
@@ -212,19 +213,32 @@
 	}
 .leaflet-control-zoom a:hover {
 	background-color: #fff;
-	}
-.leaflet-touch .leaflet-control-zoom a {
-	width: 27px;
-	height: 27px;
+	color: #777;
 	}
 .leaflet-control-zoom-in {
-	background-image: url(images/zoom-in.png);
-	margin-bottom: 5px;
+	border-bottom: 1px solid #aaa;
+	font: bold 18px/23px Arial, Helvetica, sans-serif;
+	-webkit-border-radius: 5px 5px 0 0;
+	        border-radius: 5px 5px 0 0;
 	}
 .leaflet-control-zoom-out {
-	background-image: url(images/zoom-out.png);
+	font: bold 25px/20px Tahoma, Verdana, sans-serif;
+	-webkit-border-radius: 0 0 5px 5px;
+	        border-radius: 0 0 5px 5px;
 	}
 
+.leaflet-touch .leaflet-control-zoom a {
+	width: 30px;
+	height: 30px;
+	}
+.leaflet-touch .leaflet-control-zoom-in {
+	font-size: 24px;
+	line-height: 29px;
+	}
+.leaflet-touch .leaflet-control-zoom-out {
+	font-size: 28px;
+	line-height: 24px;
+	}
 
 /* layers control */
 
@@ -298,14 +312,13 @@
 	border-top: none;
 	color: black;
 	line-height: 1;
+	padding: 2px 5px 1px;
 	font-size: 10px;
-	padding-bottom: 2px;
 	text-shadow: 1px 1px 1px #fff;
 	background-color: rgba(255, 255, 255, 0.5);
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
-	padding-top: 1px;
 	border-bottom: none;
 	margin-top: -2px;
 	}
@@ -313,11 +326,14 @@
 	border-bottom: 2px solid #777;
 	}
 
-.leaflet-touch .leaflet-control-attribution, .leaflet-touch .leaflet-control-layers {
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-control-zoom {
 	box-shadow: none;
 	}
-.leaflet-touch .leaflet-control-layers {
-	border: 5px solid #bbb;
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-control-zoom {
+	border: 3px solid #999;
 	}
 
 
@@ -363,8 +379,7 @@
 .leaflet-popup-content-wrapper, .leaflet-popup-tip {
 	background: white;
 
-	box-shadow: 0 3px 14px rgba(0,0,0,0.35);
-	-webkit-box-shadow: 0 3px 18px rgba(0,0,0,0.33);
+	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
 	}
 .leaflet-container a.leaflet-popup-close-button {
 	position: absolute;
