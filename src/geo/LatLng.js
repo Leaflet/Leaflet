@@ -1,5 +1,5 @@
 /*
-	CM.LatLng represents a geographical point with latitude and longitude coordinates.
+	L.LatLng represents a geographical point with latitude and longitude coordinates.
 */
 
 L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
