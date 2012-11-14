@@ -53,7 +53,8 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where shift-clicking on a map would zoom it to the max zoom level.
  * Fixed a glitch with zooming in while panning animation is running.
  * Fixed a glitch with dragging the map while zoom animation is running.
- * Fixed a bug where `panBy` wouldn't round the offset values (so it was possible to make the map blurry with it). [#1085](https://github.com/CloudMade/Leaflet/issues/1085)
+ * Fixed a bug where slight touchpad scrolling or one-wheel scrolling wouln't always perform zooming. [#1039](https://github.com/CloudMade/Leaflet/issues/1039)
+* Fixed a bug where `panBy` wouldn't round the offset values (so it was possible to make the map blurry with it). [#1085](https://github.com/CloudMade/Leaflet/issues/1085)
 
 #### API bugfixes
 
