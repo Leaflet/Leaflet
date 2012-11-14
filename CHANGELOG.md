@@ -13,8 +13,9 @@ An in-progress version being developed on the master branch.
 
  * Added touch zoom, pan and double tap support for **IE10 touch devices and Metro apps** (by [@danzel](https://github.com/danzel) and [@veproza](https://github.com/veproza) with help from [@oliverheilig](https://github.com/oliverheilig)). [#1076](https://github.com/CloudMade/Leaflet/pull/1076) [#871](https://github.com/CloudMade/Leaflet/issues/871)
  * **Improved panning inertia** to be much more natural and smooth.
- * Improved **zoom control design** to look better, be more design-neutral and in line with other controls, making it easier to fit different website designs. Replaced +/- images with text.
- * Improved **dragging cursors** in Chrome, Safari and Firefox (now grabbing hand cursors are used).
+ * **Improved zoom control design** to look better, be more design-neutral and in line with other controls, making it easier to fit different website designs. Replaced +/- images with text.
+ * **Improved dragging cursors** in Chrome, Safari and Firefox (now grabbing hand cursors are used).
+ * Improved scale control styles.
  * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
  * Improved scroll wheel zoom to be more responsive.
  * Improved zoom animation curve for a better feel overall.
