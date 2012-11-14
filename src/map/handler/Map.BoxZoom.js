@@ -71,9 +71,11 @@ L.Map.BoxZoom = L.Handler.extend({
 		    .off(document, 'mouseup', this._onMouseUp);
 
 		var map = this._map,
-		    layerPoint = map.mouseEventToLayerPoint(e),
+		    layerPoint = map.mouseEventToLayerPoint(e);
 
-		    bounds = new L.LatLngBounds(
+		if (this._startLayerPoint.equals(layerPoint)) { return; }
+
+		var bounds = new L.LatLngBounds(
 		        map.layerPointToLatLng(this._startLayerPoint),
 		        map.layerPointToLatLng(layerPoint));
 
