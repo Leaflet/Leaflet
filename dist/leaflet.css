@@ -189,7 +189,7 @@
 
 /* zoom control */
 
-.leaflet-control-zoom {
+.leaflet-container .leaflet-control-zoom {
 	margin-left: 13px;
 	margin-top: 12px;
 	box-shadow: 0 0 8px rgba(0,0,0,0.4);
@@ -198,8 +198,8 @@
 	        border-radius: 5px;
 	}
 .leaflet-control-zoom a {
-	width: 23px;
-	height: 23px;
+	width: 22px;
+	height: 22px;
 	background-color: rgba(255, 255, 255, 0.8);
 	text-align: center;
 	text-decoration: none;
@@ -316,16 +316,20 @@
 	border: 2px solid #777;
 	border-top: none;
 	color: black;
-	line-height: 1;
+	line-height: 1.1;
 	padding: 2px 5px 1px;
-	font-size: 10px;
+	font-size: 11px;
 	text-shadow: 1px 1px 1px #fff;
 	background-color: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+	white-space: nowrap;
+	overflow: hidden;
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
 	border-bottom: none;
 	margin-top: -2px;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	}
 .leaflet-control-scale-line:not(:first-child):not(:last-child) {
 	border-bottom: 2px solid #777;
