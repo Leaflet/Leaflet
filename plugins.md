@@ -273,6 +273,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/kajic">Robert Kajic</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet.MiniMap</a>
+		</td><td>
+			A small minimap showing the map at a different scale to aid navigation.
+		</td><td>
+			<a href="https://github.com/robpvn">Robert Nordan</a>
+		</td>
+	</tr>
 </table>
 
 
