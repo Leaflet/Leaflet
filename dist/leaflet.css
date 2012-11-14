@@ -226,6 +226,11 @@
 	-webkit-border-radius: 0 0 5px 5px;
 	        border-radius: 0 0 5px 5px;
 	}
+.leaflet-control-zoom a.leaflet-control-zoom-disabled {
+	cursor: default;
+	background-color: rgba(255, 255, 255, 0.8);
+	color: #bbb;
+	}
 
 .leaflet-touch .leaflet-control-zoom {
 	border-radius: 10px;

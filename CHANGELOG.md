@@ -17,6 +17,7 @@ An in-progress version being developed on the master branch.
  * **Improved dragging cursors** in Chrome, Safari and Firefox (now grabbing hand cursors are used).
  * Improved scale control styles.
  * Improved zoom control to zoom by 3 levels if you hold shift while clicking on a button.
+ * Improved zoom control buttons to become visually disabled when min/max zoom is reached. [#917](https://github.com/CloudMade/Leaflet/issues/917)
  * Improved scroll wheel zoom to be more responsive.
  * Improved zoom animation curve for a better feel overall.
  * Improved fallback control styles for IE6-8.
@@ -54,7 +55,7 @@ An in-progress version being developed on the master branch.
  * Fixed a glitch with zooming in while panning animation is running.
  * Fixed a glitch with dragging the map while zoom animation is running.
  * Fixed a bug where slight touchpad scrolling or one-wheel scrolling wouln't always perform zooming. [#1039](https://github.com/CloudMade/Leaflet/issues/1039)
-* Fixed a bug where `panBy` wouldn't round the offset values (so it was possible to make the map blurry with it). [#1085](https://github.com/CloudMade/Leaflet/issues/1085)
+ * Fixed a bug where `panBy` wouldn't round the offset values (so it was possible to make the map blurry with it). [#1085](https://github.com/CloudMade/Leaflet/issues/1085)
 
 #### API bugfixes
 
