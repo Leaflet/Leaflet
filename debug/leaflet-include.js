@@ -128,3 +128,7 @@ function getRandomLatLng(map) {
 			southWest.lat + latSpan * Math.random(),
 	        southWest.lng + lngSpan * Math.random());
 }
+
+function logEvent(e) {
+	console.log(e.type);
+}
