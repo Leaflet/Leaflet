@@ -51,7 +51,7 @@ L.Control.Zoom = L.Control.extend({
 		var map = this._map,
 			className = 'leaflet-control-zoom-disabled';
 
-		L.DomUtil.removeClass(this._zoomInButton, className)
+		L.DomUtil.removeClass(this._zoomInButton, className);
 		L.DomUtil.removeClass(this._zoomOutButton, className);
 
 		if (map._zoom === map.getMinZoom()) {

@@ -6011,9 +6011,10 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_performZoom: function () {
 		var map = this._map,
-		    delta = Math.round(this._delta),
+		    delta = this._delta,
 		    zoom = map.getZoom();
 
+		delta = delta > 0 ? Math.ceil(delta) : Math.round(delta);
 		delta = Math.max(Math.min(delta, 4), -4);
 		delta = map._limitZoom(zoom + delta) - zoom;
 
@@ -7034,10 +7035,18 @@ L.Control.Zoom = L.Control.extend({
 
 		this._map = map;
 
-		this._createButton('+', 'Zoom in', className + '-in', container, this._zoomIn, this);
-		this._createButton('-', 'Zoom out', className + '-out', container, this._zoomOut, this);
+		this._zoomInButton = this._createButton(
+		        '+', 'Zoom in',  className + '-in',  container, this._zoomIn,  this);
+		this._zoomOutButton = this._createButton(
+		        '-', 'Zoom out', className + '-out', container, this._zoomOut, this);
+
+		map.on('zoomend', this._updateDisabled, this);
 
 		return container;
+	},
+
+	onRemove: function (map) {
+		map.off('zoomend', this._updateDisabled, this);
 	},
 
 	_zoomIn: function (e) {
@@ -7062,6 +7071,21 @@ L.Control.Zoom = L.Control.extend({
 		    .on(link, 'click', fn, context);
 
 		return link;
+	},
+
+	_updateDisabled: function () {
+		var map = this._map,
+			className = 'leaflet-control-zoom-disabled';
+
+		L.DomUtil.removeClass(this._zoomInButton, className);
+		L.DomUtil.removeClass(this._zoomOutButton, className);
+
+		if (map._zoom === map.getMinZoom()) {
+			L.DomUtil.addClass(this._zoomOutButton, className);
+		}
+		if (map._zoom === map.getMaxZoom()) {
+			L.DomUtil.addClass(this._zoomInButton, className);
+		}
 	}
 });
 
@@ -7647,7 +7671,7 @@ L.Map.include({
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
+		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset)._round();
 		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
 
 		return this;
