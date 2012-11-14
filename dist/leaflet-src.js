@@ -526,6 +526,11 @@ L.Point.prototype = {
 		return Math.sqrt(x * x + y * y);
 	},
 
+	equals: function (point) {
+		return point.x === this.x &&
+		       point.y === this.y;
+	},
+
 	toString: function () {
 		return 'Point(' +
 		        L.Util.formatNum(this.x) + ', ' +
@@ -3094,12 +3099,13 @@ L.Marker = L.Class.extend({
 	},
 
 	_initInteraction: function () {
-		if (!this.options.clickable) {
-			return;
-		}
+
+		if (!this.options.clickable) { return; }
+
+		// TODO refactor into something shared with Map/Path/etc. to DRY it up
 
 		var icon = this._icon,
-		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
@@ -3119,20 +3125,31 @@ L.Marker = L.Class.extend({
 
 	_onMouseClick: function (e) {
 		var wasDragged = this.dragging && this.dragging.moved();
+
 		if (this.hasEventListeners(e.type) || wasDragged) {
 			L.DomEvent.stopPropagation(e);
 		}
+
 		if (wasDragged) { return; }
+
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
+
 		this.fire(e.type, {
 			originalEvent: e
 		});
 	},
 
 	_fireMouseEvent: function (e) {
+
 		this.fire(e.type, {
 			originalEvent: e
 		});
+
+		// TODO proper custom event propagation
+		// this line will always be called if marker is in a FeatureGroup
+		if (e.type === 'contextmenu' && this.hasEventListeners(e.type)) {
+			L.DomEvent.preventDefault(e);
+		}
 		if (e.type !== 'mousedown') {
 			L.DomEvent.stopPropagation(e);
 		}
@@ -6469,9 +6486,11 @@ L.Map.BoxZoom = L.Handler.extend({
 		    .off(document, 'mouseup', this._onMouseUp);
 
 		var map = this._map,
-		    layerPoint = map.mouseEventToLayerPoint(e),
+		    layerPoint = map.mouseEventToLayerPoint(e);
 
-		    bounds = new L.LatLngBounds(
+		if (this._startLayerPoint.equals(layerPoint)) { return; }
+
+		var bounds = new L.LatLngBounds(
 		        map.layerPointToLatLng(this._startLayerPoint),
 		        map.layerPointToLatLng(layerPoint));
 
