@@ -7,8 +7,16 @@ L.Draggable = L.Class.extend({
 
 	statics: {
 		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
-		END: { 'mousedown': 'mouseup', 'touchstart' : 'touchend', 'MSPointerDown': 'touchend' },
-		MOVE: { 'mousedown': 'mousemove', 'touchstart': 'touchmove', 'MSPointerDown': 'touchmove' },
+		END: {
+			mousedown: 'mouseup',
+			touchstart: 'touchend',
+			MSPointerDown: 'touchend'
+		},
+		MOVE: {
+			mousedown: 'mousemove',
+			touchstart: 'touchmove',
+			MSPointerDown: 'touchmove'
+		},
 		TAP_TOLERANCE: 15
 	},
 
@@ -143,8 +151,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		for (var i in L.Draggable.MOVE) {
-			if (L.Draggable.MOVE.hasOwnProperty(i))
-			{
+			if (L.Draggable.MOVE.hasOwnProperty(i)) {
 				L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
 				L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
 			}
