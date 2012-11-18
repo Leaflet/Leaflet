@@ -148,11 +148,12 @@ L.Map = L.Class.extend({
 		this._layers[id] = layer;
 
 		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		if (layer.options && !isNaN(layer.options.maxZoom)) {
-			this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
-		}
-		if (layer.options && !isNaN(layer.options.minZoom)) {
-			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		if(layer.options && (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom))){
+			this._zoomBoundLayers[id] = layer;
+			this._updateZoomLevels();
+			if(this._loaded){
+				this.setZoom(this.getZoom());
+			}
 		}
 
 		// TODO looks ugly, refactor!!!
@@ -178,6 +179,10 @@ L.Map = L.Class.extend({
 		layer.onRemove(this);
 
 		delete this._layers[id];
+		if(this._zoomBoundLayers[id]){
+			delete this._zoomBoundLayers[id];
+			this._updateZoomLevels();
+		}
 
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
@@ -477,6 +482,7 @@ L.Map = L.Class.extend({
 		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
 
 		this._layers = {};
+		this._zoomBoundLayers = {};
 		this._tileLayersNum = 0;
 
 		var i, len;
@@ -535,6 +541,16 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
+	_updateZoomLevels: function () {
+		var i;
+		this._layersMinZoom = 0;
+		this._layersMaxZoom = Infinity;
+		for (i in this._zoomBoundLayers) {
+			var l = this._zoomBoundLayers[i];
+			this._layersMinZoom = Math.max(this._layersMinZoom, l.options.minZoom || 0);
+			this._layersMaxZoom = Math.min(this._layersMaxZoom, l.options.maxZoom || Infinity);
+		}
+	},
 
 	// map events
 

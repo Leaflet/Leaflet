@@ -20,17 +20,23 @@
 			return 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + styleId + '/256/{z}/{x}/{y}.png';
 		}
 
-		var map = L.map('map').setView(L.latLng(50.5, 30.51), 15);
+		var map = L.map('map').setView(L.latLng(50.5, 30.51), 0);
 
 		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = L.tileLayer(getCloudMadeUrl(997), {attribution: cloudmadeAttribution, minZoom: 0, maxZoom: 10}).addTo(map),
 			cloudmade2 = L.tileLayer(getCloudMadeUrl(998), {attribution: 'Hello world', minZoom: 5, maxZoom: 18});
 		
 		L.control.layers({
-			'CloudMade Fresh': cloudmade,
-			'CloudMade Pale Dawn': cloudmade2
+			'CloudMade Pale Dawn (5-18)': cloudmade2,
+			'CloudMade Fresh (0-10)': cloudmade
 		}).addTo(map);
+
 		L.control.scale().addTo(map);
+
+		for (var i = 0; i < 1000; i++) {
+			L.marker(getRandomLatLng(map)).addTo(map);
+		}
+
 
 	</script>
 </body>
