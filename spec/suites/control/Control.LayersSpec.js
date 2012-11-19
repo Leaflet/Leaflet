@@ -11,11 +11,13 @@ describe("Control.Layers", function () {
 				layers = L.control.layers(baseLayers).addTo(map),
 				spy = jasmine.createSpy();
 
-			map.on('baselayerchange', spy);
-			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
+			map.on('baselayerchange', spy)
+				.whenReady(function(){
+					happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
 
-			expect(spy).toHaveBeenCalled();
-			expect(spy.mostRecentCall.args[0].layer).toBe(baseLayers["Layer 1"]);
+					expect(spy).toHaveBeenCalled();
+					expect(spy.mostRecentCall.args[0].layer).toBe(baseLayers["Layer 1"]);
+				});
 		});
 
 		it("is not fired on input that doesn't change the base layer", function () {

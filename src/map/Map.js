@@ -151,9 +151,6 @@ L.Map = L.Class.extend({
 		if(layer.options && (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom))){
 			this._zoomBoundLayers[id] = layer;
 			this._updateZoomLevels();
-			if(this._loaded){
-				this.setZoom(this.getZoom());
-			}
 		}
 
 		// TODO looks ugly, refactor!!!
@@ -542,13 +539,25 @@ L.Map = L.Class.extend({
 	},
 
 	_updateZoomLevels: function () {
-		var i;
-		this._layersMinZoom = 0;
-		this._layersMaxZoom = Infinity;
+		var i,
+			minZoom = Infinity,
+			maxZoom = -Infinity;
+
 		for (i in this._zoomBoundLayers) {
-			var l = this._zoomBoundLayers[i];
-			this._layersMinZoom = Math.max(this._layersMinZoom, l.options.minZoom || 0);
-			this._layersMaxZoom = Math.min(this._layersMaxZoom, l.options.maxZoom || Infinity);
+			var layer = this._zoomBoundLayers[i];
+			if(!isNaN(layer.options.minZoom)){
+				minZoom = Math.min(minZoom, layer.options.minZoom);
+			}
+			if(!isNaN(layer.options.maxZoom)){
+				maxZoom = Math.max(maxZoom, layer.options.maxZoom);
+			}
+		}
+
+		if(i === undefined){ // we have no tilelayers
+			this._layersMaxZoom = this._layersMinZoom = undefined;
+		} else {
+			this._layersMaxZoom = maxZoom;
+			this._layersMinZoom = minZoom;
 		}
 	},
 
