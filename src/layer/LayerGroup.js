@@ -84,7 +84,7 @@ L.LayerGroup = L.Class.extend({
 		}
 	},
 
-	setZIndex: function(zIndex) {
+	setZIndex: function (zIndex) {
 		return this.invoke('setZIndex', zIndex);
 	}
 });
