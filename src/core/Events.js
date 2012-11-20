@@ -77,11 +77,10 @@ L.Mixin.Events = {
 		for (i = 0, len = types.length; i < len; i++) {
 			if (this.hasEventListeners(types[i])) {
 				//if the context has a leaflet id, use it to find the listeners
-				if (context && context._leaflet_id) {
+				if (context && context._leaflet_id && events[types[i] + '_idx']) {
 					listeners =  events[types[i] + '_idx'][context._leaflet_id] || [];
-
 				} else {
-					listeners = events[types[i]];
+					listeners = events[types[i]] || [];
 				}
 				for (j = listeners.length - 1; j >= 0; j--) {
 					if (
