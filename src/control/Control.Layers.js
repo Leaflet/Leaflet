@@ -174,6 +174,8 @@ L.Control.Layers = L.Control.extend({
 
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
 		container.appendChild(label);
+
+		return label;
 	},
 
 	_onInputClick: function () {
