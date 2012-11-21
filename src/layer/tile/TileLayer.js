@@ -81,7 +81,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		map._panes.tilePane.removeChild(this._container);
+		this._container.parentNode.removeChild(this._container);
 
 		map.off({
 			'viewreset': this._resetCallback,
