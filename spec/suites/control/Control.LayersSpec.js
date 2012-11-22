@@ -29,4 +29,37 @@ describe("Control.Layers", function () {
 			expect(spy).not.toHaveBeenCalled();
 		});
 	});
+
+	describe("updates", function () {
+		beforeEach(function () {
+			map.setView([0, 0], 14);
+		});
+
+		it("when an included layer is addded or removed", function () {
+			var baseLayer = L.tileLayer(),
+				overlay = L.marker([0, 0]),
+				layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
+
+			spyOn(layers, '_update').andCallThrough();
+
+			map.addLayer(overlay);
+			map.removeLayer(overlay);
+
+			expect(layers._update).toHaveBeenCalled();
+			expect(layers._update.callCount).toEqual(2);
+		});
+
+		it("not when a non-included layer is added or removed", function () {
+			var baseLayer = L.tileLayer(),
+				overlay = L.marker([0, 0]),
+				layers = L.control.layers({"Base": baseLayer}).addTo(map);
+
+			spyOn(layers, '_update').andCallThrough();
+
+			map.addLayer(overlay);
+			map.removeLayer(overlay);
+
+			expect(layers._update).not.toHaveBeenCalled();
+		});
+	});
 });
