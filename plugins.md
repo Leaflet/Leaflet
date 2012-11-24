@@ -181,6 +181,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.pouch">Leaflet.Pouch</a>
+		</td><td>
+			Use PouchDB to sync CouchDB data to local storage (indexedDB), to just add couchDB data or as just a less confusing implementation of indexedDB.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
+		</td>
+	</tr>
 </table>
 
 
