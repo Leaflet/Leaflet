@@ -3357,10 +3357,12 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <pre><code class="javascript">var myIcon = L.icon({
 	iconUrl: 'my-icon.png',
+	iconRetinaUrl: 'my-icon@2x.png',
 	iconSize: [38, 95],
 	iconAnchor: [22, 94],
 	popupAnchor: [-3, -76],
 	shadowUrl: 'my-icon-shadow.png',
+	shadowRetinaUrl: 'my-icon-shadow@2x.png',
 	shadowSize: [68, 95],
 	shadowAnchor: [22, 94]
 });
@@ -3405,6 +3407,11 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td>(required) The URL to the icon image (absolute or relative to your script path).</td>
 	</tr>
 	<tr>
+		<td><code><b>iconRetinaUrl</b></code></td>
+		<td><code>String</code>
+		<td>The URL to a retina sized version of the icon image (absolute or relative to your script path). Used for Retina screen devices.</td>
+	</tr>
+	<tr>
 		<td><code><b>iconSize</b></code></td>
 		<td><code><a href="#point">Point</a></code>
 		<td>Size of the icon image in pixels.</td>
@@ -3418,6 +3425,11 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td><code><b>shadowUrl</b></code></td>
 		<td><code>String</code>
 		<td>The URL to the icon shadow image. If not specified, no shadow image will be created.</td>
+	</tr>
+	<tr>
+		<td><code><b>shadowRetinaUrl</b></code></td>
+		<td><code>String</code>
+		<td>The URL to the retina sized version of the icon shadow image. If not specified, no shadow image will be created. Used for Retina screen devices.</td>
 	</tr>
 	<tr>
 		<td><code><b>shadowSize</b></code></td>
