@@ -203,6 +203,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/danzel/Leaflet.utfgrid">Leaflet.utfgrid</a>
+		</td><td>
+			Provides a utfgrid interaction handler for leaflet a very small footprint.
+		</td><td>
+			<a href="https://github.com/danzel">Dave Leaver</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/kartena/Leaflet.EditableHandlers">Leaflet.EditableHandlers</a>
 		</td><td>
 			A set of plugins that includes circle editing, measuring tool, and label for polygon sides.
