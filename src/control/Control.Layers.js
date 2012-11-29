@@ -220,6 +220,7 @@ L.Control.Layers = L.Control.extend({
 		}
 
 		if (baseLayer) {
+			this._map.setZoom(this._map.getZoom());
 			this._map.fire('baselayerchange', {layer: baseLayer});
 		}
 
