@@ -43,7 +43,7 @@ describe('TileLayer', function () {
 			});
 		});
 		describe("when a tilelayer is removed from a map", function () {
-			It("it should have its zoomlevels updated to only fit the layers it currently has", function () {
+			it("it should have its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [  L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 15 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 10 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 20 }).addTo(map),
