@@ -40,36 +40,35 @@ describe('TileLayer', function () {
 				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 25 }).addTo(map);
 				expect(map.getMinZoom()).toBe(0); // changed
 				expect(map.getMaxZoom()).toBe(25); // changed
-
-
 			});
 		});
 		describe("when a tilelayer is removed from a map", function () {
-			it("it should have its zoomlevels updated to only fit the layers it currently has", function () {
+			It("it should have its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [  L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 15 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 10 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 20 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 25 }).addTo(map)
 							];
-				expect(map.getMinZoom()).toBe(0);
-				expect(map.getMaxZoom()).toBe(25);
+				map.whenReady(function() {
+					expect(map.getMinZoom()).toBe(0);
+					expect(map.getMaxZoom()).toBe(25);
 
-				map.removeLayer(tiles[0]);
-				expect(map.getMinZoom()).toBe(0);
-				expect(map.getMaxZoom()).toBe(25);
+					map.removeLayer(tiles[0]);
+					expect(map.getMinZoom()).toBe(0);
+					expect(map.getMaxZoom()).toBe(25);
 
-				map.removeLayer(tiles[3]);
-				expect(map.getMinZoom()).toBe(5);
-				expect(map.getMaxZoom()).toBe(20);
+					map.removeLayer(tiles[3]);
+					expect(map.getMinZoom()).toBe(5);
+					expect(map.getMaxZoom()).toBe(20);
 
-				map.removeLayer(tiles[2]);
-				expect(map.getMinZoom()).toBe(5);
-				expect(map.getMaxZoom()).toBe(10);
+					map.removeLayer(tiles[2]);
+					expect(map.getMinZoom()).toBe(5);
+					expect(map.getMaxZoom()).toBe(10);
 
-				map.removeLayer(tiles[1]);
-				expect(map.getMinZoom()).toBe(0);
-				expect(map.getMaxZoom()).toBe(Infinity);
-
+					map.removeLayer(tiles[1]);
+					expect(map.getMinZoom()).toBe(0);
+					expect(map.getMaxZoom()).toBe(Infinity);
+				});
 			});
 		});
 	});
