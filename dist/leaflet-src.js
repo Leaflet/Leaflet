@@ -371,7 +371,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	    mobile = typeof orientation !== undefined + '',
 	    msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
 	    retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-	              ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches)),
+	              ('matchMedia' in window && window.matchMedia("") && window.matchMedia("(min-resolution:144dpi)").matches)),
 
 	    doc = document.documentElement,
 	    ie3d = ie && ('transition' in doc.style),
@@ -1386,11 +1386,9 @@ L.Map = L.Class.extend({
 		this._layers[id] = layer;
 
 		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		if (layer.options && !isNaN(layer.options.maxZoom)) {
-			this._layersMaxZoom = Math.max(this._layersMaxZoom || 0, layer.options.maxZoom);
-		}
-		if (layer.options && !isNaN(layer.options.minZoom)) {
-			this._layersMinZoom = Math.min(this._layersMinZoom || Infinity, layer.options.minZoom);
+		if (layer.options && (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom))) {
+			this._zoomBoundLayers[id] = layer;
+			this._updateZoomLevels();
 		}
 
 		// TODO looks ugly, refactor!!!
@@ -1416,6 +1414,10 @@ L.Map = L.Class.extend({
 		layer.onRemove(this);
 
 		delete this._layers[id];
+		if (this._zoomBoundLayers[id]) {
+			delete this._zoomBoundLayers[id];
+			this._updateZoomLevels();
+		}
 
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
@@ -1715,6 +1717,7 @@ L.Map = L.Class.extend({
 		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
 
 		this._layers = {};
+		this._zoomBoundLayers = {};
 		this._tileLayersNum = 0;
 
 		var i, len;
@@ -1773,6 +1776,30 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
+	_updateZoomLevels: function () {
+		var i,
+			minZoom = Infinity,
+			maxZoom = -Infinity;
+
+		for (i in this._zoomBoundLayers) {
+			if (this._zoomBoundLayers.hasOwnProperty(i)) {
+				var layer = this._zoomBoundLayers[i];
+				if (!isNaN(layer.options.minZoom)) {
+					minZoom = Math.min(minZoom, layer.options.minZoom);
+				}
+				if (!isNaN(layer.options.maxZoom)) {
+					maxZoom = Math.max(maxZoom, layer.options.maxZoom);
+				}
+			}
+		}
+
+		if (i === undefined) { // we have no tilelayers
+			this._layersMaxZoom = this._layersMinZoom = undefined;
+		} else {
+			this._layersMaxZoom = maxZoom;
+			this._layersMinZoom = minZoom;
+		}
+	},
 
 	// map events
 
@@ -2061,7 +2088,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		map._panes.tilePane.removeChild(this._container);
+		this._container.parentNode.removeChild(this._container);
 
 		map.off({
 			'viewreset': this._resetCallback,
@@ -3655,6 +3682,10 @@ L.LayerGroup = L.Class.extend({
 				method.call(context, this._layers[i]);
 			}
 		}
+	},
+
+	setZIndex: function (zIndex) {
+		return this.invoke('setZIndex', zIndex);
 	}
 });
 
@@ -4210,11 +4241,15 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			stroke.weight = options.weight + 'px';
 			stroke.color = options.color;
 			stroke.opacity = options.opacity;
+
 			if (options.dashArray) {
-				stroke.dashStyle = options.dashArray.replace(/ *, */g, ' ');
+				stroke.dashStyle = options.dashArray instanceof Array ?
+				    options.dashArray.join(' ') :
+				    options.dashArray.replace(/ *, */g, ' ');
 			} else {
 				stroke.dashStyle = '';
 			}
+
 		} else if (stroke) {
 			container.removeChild(stroke);
 			this._stroke = null;
@@ -4227,6 +4262,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			}
 			fill.color = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
+
 		} else if (fill) {
 			container.removeChild(fill);
 			this._fill = null;
@@ -5422,10 +5458,12 @@ L.DomEvent = {
 
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			return this.addMsTouchListener(obj, type, handler, id);
-		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
-			return this.addDoubleTapListener(obj, handler, id);
+		}
+		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+			this.addDoubleTapListener(obj, handler, id);
+		}
 
-		} else if ('addEventListener' in obj) {
+		if ('addEventListener' in obj) {
 
 			if (type === 'mousewheel') {
 				obj.addEventListener('DOMMouseScroll', handler, false);
@@ -5503,8 +5541,11 @@ L.DomEvent = {
 
 		var stop = L.DomEvent.stopPropagation;
 
+		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
+			L.DomEvent.addListener(el, L.Draggable.START[i], stop);
+		}
+
 		return L.DomEvent
-			.addListener(el, L.Draggable.START, stop)
 			.addListener(el, 'click', stop)
 			.addListener(el, 'dblclick', stop);
 	},
@@ -5595,9 +5636,17 @@ L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	statics: {
-		START: L.Browser.touch ? 'touchstart' : 'mousedown',
-		END: L.Browser.touch ? 'touchend' : 'mouseup',
-		MOVE: L.Browser.touch ? 'touchmove' : 'mousemove',
+		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
+		END: {
+			mousedown: 'mouseup',
+			touchstart: 'touchend',
+			MSPointerDown: 'touchend'
+		},
+		MOVE: {
+			mousedown: 'mousemove',
+			touchstart: 'touchmove',
+			MSPointerDown: 'touchmove'
+		},
 		TAP_TOLERANCE: 15
 	},
 
@@ -5610,14 +5659,18 @@ L.Draggable = L.Class.extend({
 	enable: function () {
 		if (this._enabled) { return; }
 
-		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
+		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
+			L.DomEvent.on(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
+		}
 		this._enabled = true;
 	},
 
 	disable: function () {
 		if (!this._enabled) { return; }
 
-		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown);
+		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
+			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
+		}
 		this._enabled = false;
 		this._moved = false;
 	},
@@ -5665,8 +5718,8 @@ L.Draggable = L.Class.extend({
 			}, this), 1000);
 		}
 
-		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
-		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
+		L.DomEvent.on(document, L.Draggable.MOVE[e.type], this._onMove, this);
+		L.DomEvent.on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -5727,8 +5780,12 @@ L.Draggable = L.Class.extend({
 			this._restoreCursor();
 		}
 
-		L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
-		L.DomEvent.off(document, L.Draggable.END, this._onUp);
+		for (var i in L.Draggable.MOVE) {
+			if (L.Draggable.MOVE.hasOwnProperty(i)) {
+				L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
+				L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
+			}
+		}
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -5977,7 +6034,7 @@ L.Map.addInitHook('addHandler', 'doubleClickZoom', L.Map.DoubleClickZoom);
  */
 
 L.Map.mergeOptions({
-	scrollWheelZoom: !L.Browser.touch || L.Browser.msTouch
+	scrollWheelZoom: true
 });
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
@@ -7339,6 +7396,7 @@ L.Control.Layers = L.Control.extend({
 
 		this._layers = {};
 		this._lastZIndex = 0;
+		this._handlingClick = false;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -7357,7 +7415,17 @@ L.Control.Layers = L.Control.extend({
 		this._initLayout();
 		this._update();
 
+		map
+		    .on('layeradd', this._onLayerChange, this)
+		    .on('layerremove', this._onLayerChange, this);
+
 		return this._container;
+	},
+
+	onRemove: function (map) {
+		map
+		    .off('layeradd', this._onLayerChange)
+		    .off('layerremove', this._onLayerChange);
 	},
 
 	addBaseLayer: function (layer, name) {
@@ -7385,6 +7453,7 @@ L.Control.Layers = L.Control.extend({
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
+			L.DomEvent.on(container, 'mousewheel', L.DomEvent.stopPropagation);
 		} else {
 			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
@@ -7461,6 +7530,14 @@ L.Control.Layers = L.Control.extend({
 		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
 	},
 
+	_onLayerChange: function (e) {
+		var id = L.stamp(e.layer);
+
+		if (this._layers[id] && !this._handlingClick) {
+			this._update();
+		}
+	},
+
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
 	_createRadioElement: function (name, checked) {
 
@@ -7502,6 +7579,8 @@ L.Control.Layers = L.Control.extend({
 
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
 		container.appendChild(label);
+
+		return label;
 	},
 
 	_onInputClick: function () {
@@ -7509,6 +7588,8 @@ L.Control.Layers = L.Control.extend({
 		    inputs = this._form.getElementsByTagName('input'),
 		    inputsLen = inputs.length,
 		    baseLayer;
+
+		this._handlingClick = true;
 
 		for (i = 0; i < inputsLen; i++) {
 			input = inputs[i];
@@ -7525,8 +7606,11 @@ L.Control.Layers = L.Control.extend({
 		}
 
 		if (baseLayer) {
+			this._map.setZoom(this._map.getZoom());
 			this._map.fire('baselayerchange', {layer: baseLayer});
 		}
+
+		this._handlingClick = false;
 	},
 
 	_expand: function () {

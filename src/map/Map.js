@@ -148,7 +148,7 @@ L.Map = L.Class.extend({
 		this._layers[id] = layer;
 
 		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		if(layer.options && (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom))){
+		if (layer.options && (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom))) {
 			this._zoomBoundLayers[id] = layer;
 			this._updateZoomLevels();
 		}
@@ -176,7 +176,7 @@ L.Map = L.Class.extend({
 		layer.onRemove(this);
 
 		delete this._layers[id];
-		if(this._zoomBoundLayers[id]){
+		if (this._zoomBoundLayers[id]) {
 			delete this._zoomBoundLayers[id];
 			this._updateZoomLevels();
 		}
@@ -544,16 +544,18 @@ L.Map = L.Class.extend({
 			maxZoom = -Infinity;
 
 		for (i in this._zoomBoundLayers) {
-			var layer = this._zoomBoundLayers[i];
-			if(!isNaN(layer.options.minZoom)){
-				minZoom = Math.min(minZoom, layer.options.minZoom);
-			}
-			if(!isNaN(layer.options.maxZoom)){
-				maxZoom = Math.max(maxZoom, layer.options.maxZoom);
+			if (this._zoomBoundLayers.hasOwnProperty(i)) {
+				var layer = this._zoomBoundLayers[i];
+				if (!isNaN(layer.options.minZoom)) {
+					minZoom = Math.min(minZoom, layer.options.minZoom);
+				}
+				if (!isNaN(layer.options.maxZoom)) {
+					maxZoom = Math.max(maxZoom, layer.options.maxZoom);
+				}
 			}
 		}
 
-		if(i === undefined){ // we have no tilelayers
+		if (i === undefined) { // we have no tilelayers
 			this._layersMaxZoom = this._layersMinZoom = undefined;
 		} else {
 			this._layersMaxZoom = maxZoom;
