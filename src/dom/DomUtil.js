@@ -106,7 +106,7 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		if (document.onselectstart === L.Util.falseFn) {
+		if (document.onselectstart === L.Util.falseFn && this._onselectstart) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
