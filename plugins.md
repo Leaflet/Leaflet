@@ -62,6 +62,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
+		</td><td>
+			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
+		</td><td>
+			<a href="https://github.com/moonlite">Mattias Bengtsson</a>
+		</td>
+	</tr>
 </table>
 
 
