@@ -89,6 +89,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/atogle">Aaron Ogle</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/Leaflet-semicircle">Leaflet-semicircle</a>
+		</td><td>
+			Adds functionality to <pre>L.Circle</pre> to draw semicircles.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
 </table>
 
 
