@@ -408,6 +408,7 @@
 	text-decoration: none;
 	font-weight: bold;
 	background: transparent;
+	cursor: pointer;
 	}
 .leaflet-container a.leaflet-popup-close-button:hover {
 	color: #999;
