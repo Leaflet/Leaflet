@@ -239,7 +239,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartena/Leaflet.Pancontrol">Leaflet.Pancontrol</a>
+			<a href="http://kartena.github.com/Leaflet.Pancontrol/">Leaflet.Pancontrol</a>
 		</td><td>
 			A simple panning control.
 		</td><td>
@@ -248,7 +248,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartena/Leaflet.zoomslider">Leaflet.zoomslider</a>
+			<a href="http://kartena.github.com/Leaflet.zoomslider/">Leaflet.zoomslider</a>
 		</td><td>
 			A zoom slider control.
 		</td><td>
