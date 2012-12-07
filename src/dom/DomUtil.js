@@ -38,7 +38,7 @@ L.DomUtil = {
 			
 			//add borders
 			top += parseInt(L.DomUtil.getStyle(el, "borderTopWidth"), 10) || 0;
-            left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
+			left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
 
 			pos = L.DomUtil.getStyle(el, 'position');
 
