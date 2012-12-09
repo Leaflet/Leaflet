@@ -14,7 +14,7 @@
 	    android = ua.indexOf("android") !== -1,
 	    android23 = ua.search("android [23]") !== -1,
 
-	    mobile = typeof orientation !== undefined + '',
+	    mobile = typeof orientation !== undefined,
 	    msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
 	    retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
 	              ('matchMedia' in window && window.matchMedia("") && window.matchMedia("(min-resolution:144dpi)").matches)),
