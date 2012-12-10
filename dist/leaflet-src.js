@@ -716,6 +716,11 @@ L.DomUtil = {
 		do {
 			top  += el.offsetTop  || 0;
 			left += el.offsetLeft || 0;
+			
+			//add borders
+			top += parseInt(L.DomUtil.getStyle(el, "borderTopWidth"), 10) || 0;
+			left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
+
 			pos = L.DomUtil.getStyle(el, 'position');
 
 			if (el.offsetParent === docBody && pos === 'absolute') { break; }
@@ -787,7 +792,7 @@ L.DomUtil = {
 	},
 
 	enableTextSelection: function () {
-		if (document.onselectstart === L.Util.falseFn) {
+		if (document.onselectstart === L.Util.falseFn && this._onselectstart) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
@@ -1655,7 +1660,6 @@ L.Map = L.Class.extend({
 	_initLayout: function () {
 		var container = this._container;
 
-		container.innerHTML = '';
 		L.DomUtil.addClass(container, 'leaflet-container');
 
 		if (L.Browser.touch) {
@@ -4397,16 +4401,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		this._updateStyle();
 
 		if (options.fill) {
-			if (options.fillOpacity < 1) {
-				ctx.globalAlpha = options.fillOpacity;
-			}
+			ctx.globalAlpha = options.fillOpacity;
 			ctx.fill();
 		}
 
 		if (options.stroke) {
-			if (options.opacity < 1) {
-				ctx.globalAlpha = options.opacity;
-			}
+			ctx.globalAlpha = options.opacity;
 			ctx.stroke();
 		}
 
@@ -5074,8 +5074,7 @@ L.Rectangle = L.Polygon.extend({
 			latLngBounds.getSouthWest(),
 			latLngBounds.getNorthWest(),
 			latLngBounds.getNorthEast(),
-			latLngBounds.getSouthEast(),
-			latLngBounds.getSouthWest()
+			latLngBounds.getSouthEast()
 		];
 	}
 });
@@ -8001,11 +8000,11 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_onZoomTransitionEnd: function () {
 		this._restoreTileFront();
-		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
-		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		L.Util.falseFn(this._tileBg.offsetWidth); // force reflow
 		this._animatingZoom = false;
+		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
 		if (L.Draggable) {
 			L.Draggable._disabled = false;
