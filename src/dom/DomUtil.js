@@ -35,6 +35,11 @@ L.DomUtil = {
 		do {
 			top  += el.offsetTop  || 0;
 			left += el.offsetLeft || 0;
+			
+			//add borders
+			top += parseInt(L.DomUtil.getStyle(el, "borderTopWidth"), 10) || 0;
+			left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
+
 			pos = L.DomUtil.getStyle(el, 'position');
 
 			if (el.offsetParent === docBody && pos === 'absolute') { break; }
