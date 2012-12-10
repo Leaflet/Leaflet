@@ -17,8 +17,7 @@ L.Rectangle = L.Polygon.extend({
 			latLngBounds.getSouthWest(),
 			latLngBounds.getNorthWest(),
 			latLngBounds.getNorthEast(),
-			latLngBounds.getSouthEast(),
-			latLngBounds.getSouthWest()
+			latLngBounds.getSouthEast()
 		];
 	}
 });
