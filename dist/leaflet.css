@@ -15,6 +15,7 @@
 .leaflet-layer {
 	position: absolute;
 	left: 0;
+	top: 0;
 	}
 .leaflet-container {
 	overflow: hidden;
