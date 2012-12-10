@@ -62,12 +62,14 @@ L.Marker = L.Class.extend({
 
 		this.update();
 
-		this.fire('move', { latlng: this._latlng });
+		return this.fire('move', { latlng: this._latlng });
 	},
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		this.update();
+
+		return this;
 	},
 
 	setIcon: function (icon) {
@@ -81,13 +83,17 @@ L.Marker = L.Class.extend({
 			this._initIcon();
 			this.update();
 		}
+
+		return this;
 	},
 
 	update: function () {
-		if (!this._icon) { return; }
+		if (this._icon) {
+			var pos = this._map.latLngToLayerPoint(this._latlng).round();
+			this._setPos(pos);
+		}
 
-		var pos = this._map.latLngToLayerPoint(this._latlng).round();
-		this._setPos(pos);
+		return this;
 	},
 
 	_initIcon: function () {
