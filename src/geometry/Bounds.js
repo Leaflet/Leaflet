@@ -44,6 +44,10 @@ L.Bounds = L.Class.extend({
 		return new L.Point(this.max.x, this.min.y);
 	},
 
+	getSize: function () {
+		return this.max.subtract(this.min);
+	},
+
 	contains: function (obj) { // (Bounds) or (Point) -> Boolean
 		var min, max;
 
