@@ -19,7 +19,6 @@ L.Projection.SphericalMercator = {
 		    lng = point.x * d,
 		    lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
 
-		// TODO refactor LatLng wrapping
-		return new L.LatLng(lat, lng, true);
+		return new L.LatLng(lat, lng);
 	}
 };

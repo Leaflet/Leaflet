@@ -5,6 +5,6 @@ L.Projection.LonLat = {
 	},
 
 	unproject: function (point) {
-		return new L.LatLng(point.y, point.x, true);
+		return new L.LatLng(point.y, point.x);
 	}
 };

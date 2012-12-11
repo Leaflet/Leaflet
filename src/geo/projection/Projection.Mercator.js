@@ -47,6 +47,6 @@ L.Projection.Mercator = {
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, lng, true);
+		return new L.LatLng(phi * d, lng);
 	}
 };

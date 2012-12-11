@@ -23,8 +23,8 @@ L.LatLngBounds = L.Class.extend({
 
 		if (obj instanceof L.LatLng) {
 			if (!this._southWest && !this._northEast) {
-				this._southWest = new L.LatLng(obj.lat, obj.lng, true);
-				this._northEast = new L.LatLng(obj.lat, obj.lng, true);
+				this._southWest = new L.LatLng(obj.lat, obj.lng);
+				this._northEast = new L.LatLng(obj.lat, obj.lng);
 			} else {
 				this._southWest.lat = Math.min(obj.lat, this._southWest.lat);
 				this._southWest.lng = Math.min(obj.lng, this._southWest.lng);
@@ -66,11 +66,11 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	getNorthWest: function () {
-		return new L.LatLng(this._northEast.lat, this._southWest.lng, true);
+		return new L.LatLng(this._northEast.lat, this._southWest.lng);
 	},
 
 	getSouthEast: function () {
-		return new L.LatLng(this._southWest.lat, this._northEast.lng, true);
+		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
