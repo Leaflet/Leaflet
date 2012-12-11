@@ -35,7 +35,7 @@ L.DomUtil = {
 		do {
 			top  += el.offsetTop  || 0;
 			left += el.offsetLeft || 0;
-			
+
 			//add borders
 			top += parseInt(L.DomUtil.getStyle(el, "borderTopWidth"), 10) || 0;
 			left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
@@ -105,13 +105,13 @@ L.DomUtil = {
 			document.selection.empty();
 		}
 		if (!this._onselectstart) {
-			this._onselectstart = document.onselectstart;
+			this._onselectstart = document.onselectstart || null;
 			document.onselectstart = L.Util.falseFn;
 		}
 	},
 
 	enableTextSelection: function () {
-		if (document.onselectstart === L.Util.falseFn && this._onselectstart) {
+		if (document.onselectstart === L.Util.falseFn) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
