@@ -39,4 +39,16 @@ describe("Map", function () {
 			map.setView([51.505, -0.09], 13);
 		});
 	});
+
+	describe("#getMinZoom and #getMaxZoom", function () {
+		it("The minZoom and maxZoom options overrides any"
+		   + " minZoom and maxZoom set on layers", function () {
+			   var c = document.createElement('div'),
+				   map = L.map(c, { minZoom: 5, maxZoom: 10 });
+			   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
+			   L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 15 }).addTo(map);
+			   expect(map.getMinZoom()).toBe(5);
+			   expect(map.getMaxZoom()).toBe(10);
+		   });
+	});
 });
