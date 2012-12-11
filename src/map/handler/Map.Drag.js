@@ -14,7 +14,7 @@ L.Map.mergeOptions({
 	longPress: true,
 
 	// TODO refactor, move to CRS
-	worldCopyJump: true
+	worldCopyJump: false
 });
 
 L.Map.Drag = L.Handler.extend({
@@ -83,6 +83,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onViewReset: function () {
+		// TODO fix hardcoded Earth values
 		var pxCenter = this._map.getSize()._divideBy(2),
 		    pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0, 0));
 
@@ -109,9 +110,7 @@ L.Map.Drag = L.Handler.extend({
 		    options = map.options,
 		    delay = +new Date() - this._lastTime,
 
-		    noInertia = !options.inertia ||
-		            delay > options.inertiaThreshold ||
-		            !this._positions[0];
+		    noInertia = !options.inertia || delay > options.inertiaThreshold || !this._positions[0];
 
 		if (noInertia) {
 			map.fire('moveend');
@@ -120,18 +119,19 @@ L.Map.Drag = L.Handler.extend({
 
 			var direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime + delay - this._times[0]) / 1000,
+			    ease = options.easeLinearity,
 
-			    speedVector = direction.multiplyBy(options.easeLinearity / duration),
+			    speedVector = direction.multiplyBy(ease / duration),
 			    speed = speedVector.distanceTo(new L.Point(0, 0)),
 
 			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * options.easeLinearity),
+			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration, options.easeLinearity);
+				map.panBy(offset, decelerationDuration, ease);
 			});
 		}
 
