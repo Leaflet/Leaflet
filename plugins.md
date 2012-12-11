@@ -309,6 +309,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/robpvn">Robert Nordan</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
+		</td><td>
+			A Leaflet Plugin for Edge Cases.  For use when you want popups on _mouseover_, not _click_, and
+			you need popup tips to reorient as you get close to the edges of your map.  
+		</td><td>
+			<a href="http://www.linkedin.com/in/erictheise">Eric Theise</a>
+		</td>
+	</tr>
 </table>
 
 
