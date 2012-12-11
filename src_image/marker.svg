@@ -15,7 +15,7 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.2 r9819"
-   sodipodi:docname="icon.svg">
+   sodipodi:docname="marker.svg">
   <defs
      id="defs4">
     <linearGradient
@@ -83,29 +83,9 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3788"
-       id="linearGradient3870"
+       id="linearGradient3809"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(201.35714,-7.4464286)"
-       x1="318.57059"
-       y1="550.05206"
-       x2="318.57059"
-       y2="512.42175" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3788"
-       id="linearGradient3908"
-       gradientUnits="userSpaceOnUse"
-       x1="445.30099"
-       y1="541.28564"
-       x2="445.30099"
-       y2="503.72021"
-       gradientTransform="translate(41.625,0)" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient3788"
-       id="linearGradient3879"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(-28.580028,1.86e-4)"
+       gradientTransform="translate(-28.580028,-0.437314)"
        x1="445.30099"
        y1="541.28564"
        x2="445.30099"
@@ -113,13 +93,13 @@
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient3889"
-       id="linearGradient3895"
+       id="linearGradient3811"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(63,-0.4375)"
        x1="351.74811"
        y1="522.77393"
        x2="351.74811"
-       y2="503.72079"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(63,0)" />
+       y2="503.72079" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -129,15 +109,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4"
-     inkscape:cx="447.0263"
-     inkscape:cy="532.73434"
+     inkscape:cx="449.54419"
+     inkscape:cy="514.01181"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1529"
      inkscape:window-height="1374"
-     inkscape:window-x="2632"
-     inkscape:window-y="12"
+     inkscape:window-x="819"
+     inkscape:window-y="46"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -162,52 +142,6 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1">
-    <rect
-       style="opacity:0;fill:#ffffff;fill-opacity:0.49468085;stroke:none"
-       id="rect3001"
-       width="25"
-       height="41"
-       x="474.47101"
-       y="502.21219"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       inkscape:export-ydpi="644.65582"
-       inkscape:export-xdpi="644.65582"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       d="m 421,514.67468 a 7.53125,6.875 0 1 1 -15.0625,0 7.53125,6.875 0 1 1 15.0625,0 z"
-       sodipodi:ry="6.875"
-       sodipodi:rx="7.53125"
-       sodipodi:cy="514.67468"
-       sodipodi:cx="413.46875"
-       id="path3882"
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       sodipodi:type="arc"
-       transform="translate(106.5568,1.3043786)" />
-    <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       id="rect3910"
-       width="12.625"
-       height="14.5"
-       x="480.75"
-       y="507.86218"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <path
-       sodipodi:type="arc"
-       style="fill:#ffffff;fill-opacity:1;stroke:none"
-       id="path3880"
-       sodipodi:cx="413.46875"
-       sodipodi:cy="514.67468"
-       sodipodi:rx="7.53125"
-       sodipodi:ry="6.875"
-       d="m 421,514.67468 a 7.53125,6.875 0 1 1 -15.0625,0 7.53125,6.875 0 1 1 15.0625,0 z"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       inkscape:export-xdpi="644.65582"
-       inkscape:export-ydpi="644.65582"
-       transform="translate(106.25,2)" />
     <image
        y="502.23718"
        x="369.375"
@@ -218,62 +152,10 @@
        inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
        inkscape:export-xdpi="644.65582"
        inkscape:export-ydpi="644.65582" />
-    <path
-       style="fill:url(#linearGradient3870);fill-opacity:1;stroke:#357daf;stroke-opacity:1"
-       d="m 519.875,505.03125 c -6.08643,0 -11.09988,4.91357 -11.09988,11 0,3.30826 0.71351,5.74981 1.84375,8.1875 l 9.25613,18.9375 9.25612,-18.9375 c 1.35336,-2.9189 1.84375,-6.28549 1.84375,-8.1875 0,-6.08643 -5.01344,-11 -11.09987,-11 z m 0,6.40625 c 2.62365,0.017 4.75,2.15364 4.75,4.78125 0,2.62761 -2.12635,4.7332 -4.75,4.75 -2.62365,-0.0168 -4.75,-2.12239 -4.75,-4.75 0,-2.62761 2.12635,-4.76422 4.75,-4.78125 z"
-       id="path3830"
-       inkscape:connector-curvature="0"
-       sodipodi:nodetypes="sscccsscscsc"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       inkscape:export-xdpi="644.65582"
-       inkscape:export-ydpi="644.65582" />
-    <path
-       sodipodi:type="inkscape:offset"
-       inkscape:radius="-0.99097681"
-       inkscape:original="M 519.875 505.03125 C 513.78857 505.03125 508.78125 509.94482 508.78125 516.03125 C 508.78125 519.33951 509.49476 521.78106 510.625 524.21875 L 519.875 543.15625 L 529.125 524.21875 C 530.47836 521.29985 530.96875 517.93326 530.96875 516.03125 C 530.96875 509.94482 525.96143 505.03125 519.875 505.03125 z M 519.875 511.4375 C 522.49865 511.4545 524.625 513.59114 524.625 516.21875 C 524.625 518.84636 522.49865 520.95195 519.875 520.96875 C 517.25135 520.95195 515.125 518.84636 515.125 516.21875 C 515.125 513.59114 517.25135 511.45453 519.875 511.4375 z "
-       xlink:href="#path3830"
-       style="fill:none;stroke:#ffffff;stroke-opacity:0.12169309"
-       id="path3868"
-       inkscape:href="#path3830"
-       d="m 507.375,506.03125 c -5.55309,0 -10.09375,4.45709 -10.09375,10 0,3.14921 0.63797,5.41034 1.71875,7.75 0.006,0.0123 0.0255,0.0189 0.0312,0.0312 l 8.34375,17.125 8.34375,-17.125 c 1.26947,-2.73797 1.75,-6.04957 1.75,-7.78125 0,-5.54291 -4.54066,-10 -10.09375,-10 z m 0,4.40625 c 3.15817,0.0205 5.75,2.61902 5.75,5.78125 0,3.16223 -2.59961,5.72983 -5.75,5.75 -3.15039,-0.0202 -5.75,-2.58777 -5.75,-5.75 0,-3.16223 2.59185,-5.76075 5.75,-5.78125 z"
-       inkscape:export-xdpi="644.65582"
-       inkscape:export-ydpi="644.65582" />
-    <path
-       style="fill:url(#linearGradient3908);fill-opacity:1;stroke:#3275a4;stroke-opacity:1"
-       d="m 486.97119,503.75 c -6.08643,0 -11.09375,4.91357 -11.09375,11 0,3.30826 0.71351,5.74981 1.84375,8.1875 l 9.25,18.9375 9.25,-18.9375 c 1.13024,-2.43769 1.84375,-4.87924 1.84375,-8.1875 0,-6.08643 -5.00732,-11 -11.09375,-11 z m 0,6.40625 c 2.62365,0.017 4.75,2.15364 4.75,4.78125 0,2.62761 -2.12635,4.7332 -4.75,4.75 -2.62365,-0.0168 -4.75,-2.12239 -4.75,-4.75 0,-2.62761 2.12635,-4.76422 4.75,-4.78125 z"
-       id="path3884"
-       inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90"
-       sodipodi:nodetypes="sscccsscscsc" />
-    <path
-       sodipodi:type="inkscape:offset"
-       inkscape:radius="-1.003333"
-       inkscape:original="M 486.96875 503.75 C 480.88232 503.75 475.875 508.66357 475.875 514.75 C 475.875 518.05826 476.58851 520.49981 477.71875 522.9375 L 486.96875 541.875 L 496.21875 522.9375 C 497.34899 520.49981 498.0625 518.05826 498.0625 514.75 C 498.0625 508.66357 493.05518 503.75 486.96875 503.75 z M 486.96875 510.15625 C 489.5924 510.17325 491.71875 512.30989 491.71875 514.9375 C 491.71875 517.56511 489.5924 519.6707 486.96875 519.6875 C 484.3451 519.6707 482.21875 517.56511 482.21875 514.9375 C 482.21875 512.30989 484.3451 510.17328 486.96875 510.15625 z "
-       xlink:href="#path3884"
-       style="fill:none;stroke:#ffffff;stroke-opacity:0.12156863"
-       id="path3906"
-       inkscape:href="#path3884"
-       d="m 474.46875,504.75 c -5.54644,0 -10.09375,4.46387 -10.09375,10 0,3.164 0.65952,5.39806 1.75,7.75 l 8.34375,17.09375 L 482.8125,522.5 c 1.09048,-2.35194 1.75,-4.586 1.75,-7.75 0,-5.53613 -4.54731,-10 -10.09375,-10 z m 0,4.40625 c 3.16483,0.0205 5.75,2.61235 5.75,5.78125 0,3.1689 -2.59304,5.72979 -5.75,5.75 -3.15696,-0.0202 -5.75,-2.5811 -5.75,-5.75 0,-3.1689 2.58518,-5.76071 5.75,-5.78125 z"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90" />
-    <text
-       xml:space="preserve"
-       style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="484"
-       y="500.48718"
-       id="text3912"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         id="tspan3914"
-         x="484"
-         y="500.48718">old one, wrong shape</tspan></text>
     <rect
-       inkscape:export-ydpi="179.99986"
-       inkscape:export-xdpi="179.99986"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868@2x.png"
+       inkscape:export-ydpi="179.83401"
+       inkscape:export-xdpi="179.83401"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
        y="502.21219"
        x="404.26599"
        height="41"
@@ -281,10 +163,10 @@
        id="rect3771"
        style="opacity:0;fill:#ffffff;fill-opacity:0.49468085;stroke:none" />
     <rect
-       inkscape:export-ydpi="179.99986"
-       inkscape:export-xdpi="179.99986"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868@2x.png"
-       y="507.86218"
+       inkscape:export-ydpi="179.83401"
+       inkscape:export-xdpi="179.83401"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       y="507.42468"
        x="410.54498"
        height="14.5"
        width="12.625"
@@ -292,25 +174,13 @@
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
     <path
        sodipodi:nodetypes="zscccszcscsc"
-       style="fill:url(#linearGradient3879);fill-opacity:1;stroke:url(#linearGradient3895);stroke-width:1;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
-       d="m 416.81035,503.75018 c -6.57257,0 -11.31472,4.15233 -11.31472,10.85748 0,2.77793 0.93449,5.30787 2.06473,7.74556 l 9.2058,20.03019 9.16161,-20.03019 c 1.13024,-2.43769 2.1973,-4.79085 2.1973,-7.74556 0,-6.70515 -4.74215,-10.85748 -11.31472,-10.85748 z m 0,6.2972 c 2.62365,0.017 4.75,2.15364 4.75,4.78125 0,2.62761 -2.12635,4.7332 -4.75,4.75 -2.62365,-0.0168 -4.75,-2.12239 -4.75,-4.75 0,-2.62761 2.12635,-4.76422 4.75,-4.78125 z"
+       style="fill:url(#linearGradient3809);fill-opacity:1;stroke:url(#linearGradient3811);stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 416.81035,503.46218 c -6.57257,0 -11.46435,4.53318 -11.46435,10.708 0,2.77793 0.98376,5.30785 2.114,7.74554 l 9.30616,20.03019 9.26184,-20.03019 c 1.13024,-2.43769 2.247,-4.79085 2.247,-7.74556 0,-6.17482 -4.89208,-10.70798 -11.46465,-10.70798 z m 0,6.79661 c 2.50727,0.0162 4.53929,2.05811 4.53929,4.56915 0,2.51106 -2.03202,4.52324 -4.53929,4.5393 -2.50727,-0.016 -4.53929,-2.02824 -4.53929,-4.5393 0,-2.51104 2.03202,-4.55288 4.53929,-4.56915 z"
        id="path3873"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868@2x.png"
-       inkscape:export-xdpi="179.99986"
-       inkscape:export-ydpi="179.99986" />
-    <path
-       sodipodi:type="inkscape:offset"
-       inkscape:radius="-1.0011443"
-       inkscape:original="M 416.8125 503.75 C 410.23993 503.75 405.5 507.8886 405.5 514.59375 C 405.5 517.37168 406.43226 519.90606 407.5625 522.34375 L 416.78125 542.375 L 425.9375 522.34375 C 427.06774 519.90606 428.125 517.54846 428.125 514.59375 C 428.125 507.8886 423.38507 503.75 416.8125 503.75 z M 416.8125 510.0625 C 419.43615 510.0795 421.5625 512.21614 421.5625 514.84375 C 421.5625 517.47136 419.43615 519.57695 416.8125 519.59375 C 414.18885 519.57695 412.0625 517.47136 412.0625 514.84375 C 412.0625 512.21614 414.18885 510.07953 416.8125 510.0625 z "
-       xlink:href="#path3873"
-       style="fill:none;stroke:#ffffff;stroke-opacity:0.12156863"
-       id="path3877"
-       inkscape:href="#path3873"
-       d="m 411.8125,504.75 c -3.07615,0 -5.63952,0.94688 -7.4375,2.625 -1.79798,1.67812 -2.875,4.10208 -2.875,7.21875 0,2.55394 0.86153,4.9557 1.96875,7.34375 l 8.3125,18.0625 8.25,-18.0625 c 1.12684,-2.43036 2.09375,-4.62786 2.09375,-7.34375 0,-3.11667 -1.07702,-5.54063 -2.875,-7.21875 -1.79798,-1.67812 -4.36135,-2.625 -7.4375,-2.625 z m 0,4.3125 c 3.16365,0.0205 5.75,2.61353 5.75,5.78125 0,3.16772 -2.59421,5.72979 -5.75,5.75 -3.15579,-0.0202 -5.75,-2.58228 -5.75,-5.75 0,-3.16772 2.58636,-5.76071 5.75,-5.78125 z"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\path3868@2x.png"
-       inkscape:export-xdpi="179.99986"
-       inkscape:export-ydpi="179.99986" />
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       inkscape:export-xdpi="179.83401"
+       inkscape:export-ydpi="179.83401" />
     <text
        xml:space="preserve"
        style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -325,10 +195,67 @@
          sodipodi:role="line"
          x="403.75"
          y="494.36218"
-         id="tspan3903">Select it and the area around.</tspan><tspan
+         id="tspan3903">Select it and the area around with box select.</tspan><tspan
          sodipodi:role="line"
          x="403.75"
          y="499.36218"
          id="tspan3905">should be exactly 25x41 at 90dpi</tspan></text>
+    <path
+       sodipodi:type="inkscape:offset"
+       inkscape:radius="-1.0801803"
+       inkscape:original="M 416.8125 503.46875 C 410.23993 503.46875 405.34375 507.98143 405.34375 514.15625 C 405.34375 516.93418 406.33851 519.46856 407.46875 521.90625 L 416.78125 541.9375 L 426.03125 521.90625 C 427.16149 519.46856 428.28125 517.11096 428.28125 514.15625 C 428.28125 507.98143 423.38507 503.46875 416.8125 503.46875 z M 416.8125 510.25 C 419.31977 510.2662 421.34375 512.30146 421.34375 514.8125 C 421.34375 517.32356 419.31977 519.35894 416.8125 519.375 C 414.30523 519.359 412.28125 517.32356 412.28125 514.8125 C 412.28125 512.30146 414.30523 510.26627 416.8125 510.25 z "
+       style="fill:none;stroke:#ffffff;stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.12156863;stroke-dasharray:none"
+       id="path3895"
+       d="m 416.8125,504.5625 c -6.07814,0 -10.375,3.98993 -10.375,9.59375 0,2.52006 0.8882,4.88333 2,7.28125 l 8.34375,17.96875 8.28125,-17.9375 a 1.0802883,1.0802883 0 0 1 0,-0.0312 c 1.13297,-2.44357 2.125,-4.59945 2.125,-7.28125 0,-5.60382 -4.29686,-9.59375 -10.375,-9.59375 z m 0,4.59375 c 3.08803,0.0199 5.625,2.56477 5.625,5.65625 0,3.0915 -2.5369,5.63647 -5.625,5.65625 -3.08813,-0.0197 -5.625,-2.56475 -5.625,-5.65625 0,-3.09148 2.53701,-5.63621 5.625,-5.65625 z"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       inkscape:export-xdpi="179.83401"
+       inkscape:export-ydpi="179.83401" />
+    <text
+       xml:space="preserve"
+       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
+       x="408.70773"
+       y="563.7514"
+       id="text3901"
+       sodipodi:linespacing="125%"><tspan
+         sodipodi:role="line"
+         id="tspan3904"
+         x="408.70773"
+         y="563.7514"
+         style="font-size:4px">How to do the inset border:</tspan><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="568.7514"
+         style="font-size:4px"
+         id="tspan3908">Delete the existing inset border. Select the background, duplicate.</tspan><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="573.7514"
+         style="font-size:4px"
+         id="tspan3910">Path, Dynamic offset.</tspan><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="578.7514"
+         style="font-size:4px"
+         id="tspan3912">Fill: None, Stroke Paint: RGBA #ffffff1f </tspan><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="583.7514"
+         style="font-size:4px"
+         id="tspan3916">Zoom down to the top and grab the diamond, drag it down and fiddle it untill it looks in line</tspan><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="588.7514"
+         style="font-size:4px"
+         id="tspan3918">with the main color layers border.</tspan><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="593.7514"
+         style="font-size:4px"
+         id="tspan3914" /><tspan
+         sodipodi:role="line"
+         x="408.70773"
+         y="598.7514"
+         id="tspan3906"
+         style="font-size:4px" /></text>
   </g>
 </svg>
