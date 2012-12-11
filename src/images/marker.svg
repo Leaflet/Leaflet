@@ -100,6 +100,66 @@
        y1="522.77393"
        x2="351.74811"
        y2="503.72079" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3788"
+       id="linearGradient3807"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-28.580028,-0.437314)"
+       x1="445.30099"
+       y1="541.28564"
+       x2="445.30099"
+       y2="503.72021" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3889"
+       id="linearGradient3810"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(63,-0.4375)"
+       x1="351.74811"
+       y1="522.77393"
+       x2="351.74811"
+       y2="503.72079" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3788"
+       id="linearGradient3832"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-28.580028,-0.437314)"
+       x1="445.30099"
+       y1="541.28564"
+       x2="445.30099"
+       y2="503.72021" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3889"
+       id="linearGradient3834"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(63,-0.4375)"
+       x1="351.74811"
+       y1="522.77393"
+       x2="351.74811"
+       y2="503.72079" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3788"
+       id="linearGradient3844"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(-28.846019,-0.2873201)"
+       x1="445.30099"
+       y1="541.28564"
+       x2="445.30099"
+       y2="503.72021" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient3889"
+       id="linearGradient3846"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="translate(62.734009,-0.2875061)"
+       x1="351.74811"
+       y1="522.77393"
+       x2="351.74811"
+       y2="503.72079" />
   </defs>
   <sodipodi:namedview
      id="base"
@@ -108,16 +168,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="4"
-     inkscape:cx="449.54419"
-     inkscape:cy="514.01181"
+     inkscape:zoom="16"
+     inkscape:cx="419.6702"
+     inkscape:cy="531.67988"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
-     showgrid="false"
+     showgrid="true"
      inkscape:window-width="1529"
      inkscape:window-height="1374"
-     inkscape:window-x="819"
-     inkscape:window-y="46"
+     inkscape:window-x="814"
+     inkscape:window-y="52"
      inkscape:window-maximized="0"
      showguides="true"
      inkscape:guide-bbox="true">
@@ -125,6 +185,9 @@
        orientation="0,1"
        position="367.51875,543.94189"
        id="guide3897" />
+    <inkscape:grid
+       type="xygrid"
+       id="grid3842" />
   </sodipodi:namedview>
   <metadata
      id="metadata7">
@@ -153,34 +216,34 @@
        inkscape:export-xdpi="644.65582"
        inkscape:export-ydpi="644.65582" />
     <rect
-       inkscape:export-ydpi="179.83401"
-       inkscape:export-xdpi="179.83401"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
-       y="502.21219"
-       x="404.26599"
+       inkscape:export-ydpi="89.985535"
+       inkscape:export-xdpi="89.985535"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon.png"
+       y="502.36218"
+       x="404"
        height="41"
        width="25"
        id="rect3771"
        style="opacity:0;fill:#ffffff;fill-opacity:0.49468085;stroke:none" />
     <rect
-       inkscape:export-ydpi="179.83401"
-       inkscape:export-xdpi="179.83401"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
-       y="507.42468"
-       x="410.54498"
+       inkscape:export-ydpi="89.985535"
+       inkscape:export-xdpi="89.985535"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon.png"
+       y="507.57468"
+       x="410.27899"
        height="14.5"
        width="12.625"
        id="rect3773"
        style="fill:#ffffff;fill-opacity:1;stroke:none" />
     <path
        sodipodi:nodetypes="zscccszcscsc"
-       style="fill:url(#linearGradient3809);fill-opacity:1;stroke:url(#linearGradient3811);stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
-       d="m 416.81035,503.46218 c -6.57257,0 -11.46435,4.53318 -11.46435,10.708 0,2.77793 0.98376,5.30785 2.114,7.74554 l 9.30616,20.03019 9.26184,-20.03019 c 1.13024,-2.43769 2.247,-4.79085 2.247,-7.74556 0,-6.17482 -4.89208,-10.70798 -11.46465,-10.70798 z m 0,6.79661 c 2.50727,0.0162 4.53929,2.05811 4.53929,4.56915 0,2.51106 -2.03202,4.52324 -4.53929,4.5393 -2.50727,-0.016 -4.53929,-2.02824 -4.53929,-4.5393 0,-2.51104 2.03202,-4.55288 4.53929,-4.56915 z"
+       style="fill:url(#linearGradient3844);fill-opacity:1;stroke:url(#linearGradient3846);stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 416.54436,503.61217 c -6.57257,0 -11.46435,5.19118 -11.46435,11.366 0,2.77793 0.98376,5.30831 2.114,7.746 l 9.30616,19.37173 9.26184,-19.37173 c 1.13024,-2.43769 2.247,-4.79129 2.247,-7.746 0,-6.17482 -4.89208,-11.366 -11.46465,-11.366 z m 0,6.85521 c 2.58449,0.0167 4.67909,2.1215 4.67909,4.70988 0,2.5884 -2.0946,4.66255 -4.67909,4.67911 -2.58449,-0.0165 -4.67909,-2.09047 -4.67909,-4.67887 0,-2.58837 2.0946,-4.69335 4.67909,-4.71012 z"
        id="path3873"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
-       inkscape:export-xdpi="179.83401"
-       inkscape:export-ydpi="179.83401" />
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon.png"
+       inkscape:export-xdpi="89.985535"
+       inkscape:export-ydpi="89.985535" />
     <text
        xml:space="preserve"
        style="font-size:4px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -200,16 +263,6 @@
          x="403.75"
          y="499.36218"
          id="tspan3905">should be exactly 25x41 at 90dpi</tspan></text>
-    <path
-       sodipodi:type="inkscape:offset"
-       inkscape:radius="-1.0801803"
-       inkscape:original="M 416.8125 503.46875 C 410.23993 503.46875 405.34375 507.98143 405.34375 514.15625 C 405.34375 516.93418 406.33851 519.46856 407.46875 521.90625 L 416.78125 541.9375 L 426.03125 521.90625 C 427.16149 519.46856 428.28125 517.11096 428.28125 514.15625 C 428.28125 507.98143 423.38507 503.46875 416.8125 503.46875 z M 416.8125 510.25 C 419.31977 510.2662 421.34375 512.30146 421.34375 514.8125 C 421.34375 517.32356 419.31977 519.35894 416.8125 519.375 C 414.30523 519.359 412.28125 517.32356 412.28125 514.8125 C 412.28125 512.30146 414.30523 510.26627 416.8125 510.25 z "
-       style="fill:none;stroke:#ffffff;stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.12156863;stroke-dasharray:none"
-       id="path3895"
-       d="m 416.8125,504.5625 c -6.07814,0 -10.375,3.98993 -10.375,9.59375 0,2.52006 0.8882,4.88333 2,7.28125 l 8.34375,17.96875 8.28125,-17.9375 a 1.0802883,1.0802883 0 0 1 0,-0.0312 c 1.13297,-2.44357 2.125,-4.59945 2.125,-7.28125 0,-5.60382 -4.29686,-9.59375 -10.375,-9.59375 z m 0,4.59375 c 3.08803,0.0199 5.625,2.56477 5.625,5.65625 0,3.0915 -2.5369,5.63647 -5.625,5.65625 -3.08813,-0.0197 -5.625,-2.56475 -5.625,-5.65625 0,-3.09148 2.53701,-5.63621 5.625,-5.65625 z"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
-       inkscape:export-xdpi="179.83401"
-       inkscape:export-ydpi="179.83401" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -257,5 +310,16 @@
          y="598.7514"
          id="tspan3906"
          style="font-size:4px" /></text>
+    <path
+       sodipodi:type="inkscape:offset"
+       inkscape:radius="-1.0820817"
+       inkscape:original="M 416.8125 503.46875 C 410.23993 503.46875 405.34375 508.66893 405.34375 514.84375 C 405.34375 517.62168 406.33851 520.12481 407.46875 522.5625 L 416.78125 541.9375 L 426.03125 522.5625 C 427.16149 520.12481 428.28125 517.79846 428.28125 514.84375 C 428.28125 508.66893 423.38507 503.46875 416.8125 503.46875 z M 416.8125 510.3125 C 419.39699 510.3292 421.5 512.44287 421.5 515.03125 C 421.5 517.61965 419.39699 519.70219 416.8125 519.71875 C 414.22801 519.70225 412.125 517.61965 412.125 515.03125 C 412.125 512.44288 414.22801 510.32927 416.8125 510.3125 z "
+       style="fill:none;stroke:#ffffff;stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.12156863;stroke-dasharray:none"
+       id="path3836"
+       d="m 416.8125,504.5625 c -6.00181,0 -10.375,4.67844 -10.375,10.28125 0,2.51961 0.88675,4.84895 2,7.25 l 8.34375,17.34375 8.28125,-17.34375 c 1.13446,-2.44678 2.125,-4.56868 2.125,-7.25 0,-5.60281 -4.37319,-10.28125 -10.375,-10.28125 z m 0,4.65625 c 3.17063,0.0205 5.78125,2.63801 5.78125,5.8125 0,3.17451 -2.61927,5.76099 -5.78125,5.78125 -3.16201,-0.0202 -5.78125,-2.60674 -5.78125,-5.78125 0,-3.17449 2.61065,-5.79193 5.78125,-5.8125 z"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon.png"
+       inkscape:export-xdpi="89.985535"
+       inkscape:export-ydpi="89.985535"
+       transform="translate(-0.26599121,0.1499939)" />
   </g>
 </svg>
