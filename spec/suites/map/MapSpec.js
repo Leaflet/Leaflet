@@ -10,7 +10,7 @@ describe("Map", function () {
 
 				map.setView([0, 0], 1);
 				expect(spy).toHaveBeenCalled();
-			})
+			});
 		});
 
 		describe("when the map has already been loaded", function () {
@@ -27,7 +27,8 @@ describe("Map", function () {
 	});
 
 	describe("#getBounds", function () {
-		it("is safe to call from within a moveend callback during initial load (#1027)", function () {
+		it("is safe to call from within a moveend callback during initial "
+		   + "load (#1027)", function () {
 			var c = document.createElement('div'),
 				map = L.map(c);
 
