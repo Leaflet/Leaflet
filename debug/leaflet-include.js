@@ -38,6 +38,7 @@
 		'geo/crs/CRS.EPSG3857.js',
 		'geo/crs/CRS.EPSG4326.js',
 		'geo/crs/CRS.EPSG3395.js',
+		'geo/crs/CRS.Simple.js',
 
 		'map/Map.js',
 
