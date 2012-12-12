@@ -7,6 +7,14 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+### Breaking changes
+
+Be sure to read through these changes to avoid any issues when upgrading from older versions:
+
+ * Removed default `LatLng` wrapping between -180 and 180 and clamping between -90 and 90, wrapping moved to an explicit method `LatLng` method `wrap`.
+ * Disabled `Map` `worldCopyJump` option by default (moving objects to other copies of the world when panning). Enable it explicitly if you need it.
+ * Improved `CRS.Simple` to be more usable out of the box (it has different default scaling and transformation now), see `debug/map/simple-proj.html` for an example.
+
 ### Improvements
 
 #### Usability improvements
@@ -36,10 +44,12 @@ An in-progress version being developed on the master branch.
 #### API improvements
 
  * Replaced `L.Transition` with a much better and simpler `L.PosAnimation`.
+ * Added `Class` `addInitHook` method for adding constructor hooks to any classes (great extension point for plugin authors). [#1123](https://github.com/CloudMade/Leaflet/issues/1123)
  * Added `Map` `whenReady` method (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1063](https://github.com/CloudMade/Leaflet/pull/1063)
  * Added optional `delta` argument to `Map` `zoomIn` and `zoomOut` (1 by default).
  * Added `isValid` method to `LatLngBounds` and `Bounds` (by [@domoritz](https://github.com/domoritz)). [#972](https://github.com/CloudMade/Leaflet/pull/972)
  * Added `Point` `equals` method.
+ * Added `Bounds` `getSize` method.
  * Improved markers and vectors click event so that it propagates to map if no one is listening to it (by [@danzel](https://github.com/danzel)). [#834](https://github.com/CloudMade/Leaflet/issues/834) [#1033](https://github.com/CloudMade/Leaflet/pull/1033)
  * Added `Path` `unbindPopup` and `closePopup` methods.
  * Added `Path` `remove` event.
@@ -52,6 +62,7 @@ An in-progress version being developed on the master branch.
  * Removed `Browser` `ua`, `ie`, `gecko`, `opera` properties (no longer needed).
  * Added `CRS.Simple` to the list of built-in CRS. It was added earlier but not included in the build.
  * Added `L.extend`, `L.bind`, `L.stamp`, `L.setOptions` shortcuts for corresponding `L.Util` methods.
+ * Disabled clearing of map container contents on map initialization (as a result of fixing [#278](https://github.com/CloudMade/Leaflet/issues/278)).
 
 ### Bugfixes
 
@@ -65,6 +76,9 @@ An in-progress version being developed on the master branch.
  * Fixed a bug where slight touchpad scrolling or one-wheel scrolling wouln't always perform zooming. [#1039](https://github.com/CloudMade/Leaflet/issues/1039)
  * Fixed a bug where `panBy` wouldn't round the offset values (so it was possible to make the map blurry with it). [#1085](https://github.com/CloudMade/Leaflet/issues/1085)
  * Fixed a bug where you couldn't scroll the layers control with a mouse wheel.
+ * Fixed a regression where WMS tiles wouldn't wrap on date lines. [#970](https://github.com/CloudMade/Leaflet/issues/970)
+ * Fixed a bug where mouse interaction was affected by map container border width (by [@mohlendo](https://github.com/mohlendo)). [#1204](https://github.com/CloudMade/Leaflet/issues/1205) [#1205](https://github.com/CloudMade/Leaflet/pull/1205)
+ * Fixed a bug with weird vector zoom animation when using Canvas for rendering (by [@danzel](https://github.com/danzel)). [#1187](https://github.com/CloudMade/Leaflet/issues/1187) [#1188](https://github.com/CloudMade/Leaflet/pull/1188)
 
 #### API bugfixes
 
@@ -75,6 +89,11 @@ An in-progress version being developed on the master branch.
  * Fixed `Circle` `getBounds` to return correct bounds and work without adding the circle to a map. [#1068](https://github.com/CloudMade/Leaflet/issues/1068)
  * Fixed a bug where removing `Popup` on `viewreset` throwed an error (by [fnicollet](https://github.com/fnicollet) and [@danzel](https://github.com/danzel)). [#1098](https://github.com/CloudMade/Leaflet/pull/1098) [#1094](https://github.com/CloudMade/Leaflet/issues/1094)
  * Fixed a bug where `TileLayer.Canvas` `drawTile` didn't receive tile zoom level in arguments.
+ * Fixed a bug where `GeoJSON` `resetStyle` would not fully reset a layer to its default style. [#1112](https://github.com/CloudMade/Leaflet/issues/1112)
+ * Fixed a bug that caused infinite recursion when using `latLngBounds` factory with coordinates as string values. [#933](https://github.com/CloudMade/Leaflet/issues/933)
+ * Fixed chaining on `Marker` `setIcon`, `setZIndexOffset`, `update` methods. [#1176](https://github.com/CloudMade/Leaflet/issues/1176)
+ * Fixed a bug with mouse interaction when the map container contained children with position other than absolute. [#278](https://github.com/CloudMade/Leaflet/issues/278)
+ * Fixed a bug with fill/stroke opacity conflicts when using Canvas for rendering (by [@danzel](https://github.com/danzel)). [#1186](https://github.com/CloudMade/Leaflet/issues/1186) [#1889](https://github.com/CloudMade/Leaflet/pull/1189)
 
 #### Browser bugfixes
 
