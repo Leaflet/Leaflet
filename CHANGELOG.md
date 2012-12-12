@@ -11,7 +11,7 @@ An in-progress version being developed on the master branch.
 
 Be sure to read through these changes to avoid any issues when upgrading from older versions:
 
- * Removed default `LatLng` wrapping between -180 and 180 and clamping between -90 and 90, wrapping moved to an explicit method `LatLng` method `wrap`.
+ * Removed default `LatLng` wrapping/clamping of coordinates (`-180, -90` to `180, 90`), wrapping moved to an explicit method (`LatLng` `wrap`).
  * Disabled `Map` `worldCopyJump` option by default (moving objects to other copies of the world when panning). Enable it explicitly if you need it.
  * Improved `CRS.Simple` to be more usable out of the box (it has different default scaling and transformation now), see `debug/map/simple-proj.html` for an example.
 
