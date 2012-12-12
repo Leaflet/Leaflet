@@ -3,15 +3,6 @@ L.Polyline = L.Path.extend({
 		L.Path.prototype.initialize.call(this, options);
 
 		this._latlngs = this._convertLatLngs(latlngs);
-
-		// TODO refactor: move to Polyline.Edit.js
-		if (L.Handler.PolyEdit) {
-			this.editing = new L.Handler.PolyEdit(this);
-
-			if (this.options.editable) {
-				this.editing.enable();
-			}
-		}
 	},
 
 	options: {
@@ -88,23 +79,6 @@ L.Polyline = L.Path.extend({
 		}
 
 		return bounds;
-	},
-
-	// TODO refactor: move to Polyline.Edit.js
-	onAdd: function (map) {
-		L.Path.prototype.onAdd.call(this, map);
-
-		if (this.editing && this.editing.enabled()) {
-			this.editing.addHooks();
-		}
-	},
-
-	onRemove: function (map) {
-		if (this.editing && this.editing.enabled()) {
-			this.editing.removeHooks();
-		}
-
-		L.Path.prototype.onRemove.call(this, map);
 	},
 
 	_convertLatLngs: function (latlngs) {
