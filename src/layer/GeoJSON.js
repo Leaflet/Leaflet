@@ -32,6 +32,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
 		layer.feature = geojson;
 
+		layer.defaultOptions = layer.options;
 		this.resetStyle(layer);
 
 		if (options.onEachFeature) {
@@ -45,7 +46,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		var style = this.options.style;
 		if (style) {
 			// reset any custom styles
-			delete layer.options;
+			L.Util.extend(layer.options, layer.defaultOptions);
 
 			this._setLayerStyle(layer, style);
 		}
