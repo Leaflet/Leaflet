@@ -1,5 +1,6 @@
 var build = require('./build/build.js'),
-    lint = require('./build/hint.js');
+    lint = require('./build/hint.js'),
+    UglifyJS = require('uglify-js');
 
 var COPYRIGHT = '/*\n Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin\n' +
                 ' Leaflet is an open-source JavaScript library for mobile-friendly interactive maps.\n' +
@@ -51,7 +52,7 @@ task('build', ['lint'], function (compsBase32, buildName) {
 
 	var path = pathPart + '.js',
 	    oldCompressed = build.load(path),
-	    newCompressed = COPYRIGHT + build.uglify(content),
+	    newCompressed = COPYRIGHT + UglifyJS.minify(files, {warnings: true}).code,
 	    delta = build.getSizeDelta(newCompressed, oldCompressed);
 
 	console.log('\tCompressed size: ' + newCompressed.length + ' bytes (' + delta + ')');

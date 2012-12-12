@@ -40,14 +40,17 @@ exports.getFiles = function (compsBase32) {
 };
 
 exports.uglify = function (code) {
-	var pro = uglifyjs.uglify;
+	var toplevel = uglifyjs.parse(code);
+	toplevel.figure_out_scope();
 
-	var ast = uglifyjs.parser.parse(code);
-	ast = pro.ast_mangle(ast, {mangle: true});
-	ast = pro.ast_squeeze(ast);
-	ast = pro.ast_squeeze_more(ast);
+	var compressor = uglifyjs.Compressor();
+	var compressed_ast = toplevel.transform(compressor);
 
-	return pro.gen_code(ast) + ';';
+	compressed_ast.figure_out_scope();
+	compressed_ast.compute_char_frequency();
+	compressed_ast.mangle_names();
+
+	return compressed_ast.print_to_string() + ';';
 };
 
 exports.combineFiles = function (files) {
