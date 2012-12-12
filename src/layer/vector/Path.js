@@ -47,6 +47,8 @@ L.Path = L.Class.extend({
 			this._map._pathRoot.appendChild(this._container);
 		}
 
+		this.fire('add');
+
 		map.on({
 			'viewreset': this.projectLatlngs,
 			'moveend': this._updatePath
