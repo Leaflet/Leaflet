@@ -70,7 +70,7 @@ L.Class.extend = function (props) {
 		for (var i = 0, len = this._initHooks.length; i < len; i++) {
 			this._initHooks[i].call(this);
 		}
-	}
+	};
 
 	return NewClass;
 };
