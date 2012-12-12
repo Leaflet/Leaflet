@@ -25,6 +25,7 @@ L.Map = L.Class.extend({
 
 		this._initContainer(id);
 		this._initLayout();
+		this.callInitHooks();
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -462,15 +463,6 @@ L.Map = L.Class.extend({
 
 	_createPane: function (className, container) {
 		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
-	},
-
-	_initializers: [],
-
-	_initHooks: function () {
-		var i, len;
-		for (i = 0, len = this._initializers.length; i < len; i++) {
-			this._initializers[i].call(this);
-		}
 	},
 
 	_initLayers: function (layers) {
