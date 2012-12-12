@@ -191,7 +191,7 @@ L.setOptions = L.Util.setOptions;
 
 L.Class = function () {};
 
-L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
+L.Class.extend = function (props) {
 
 	// extended class with the new prototype
 	var NewClass = function () {
@@ -202,8 +202,8 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 		}
 
 		// call all constructor hooks
-		for (var i = 0, len = this._initHooks.length; i < len; i++) {
-			this._initHooks[i].call(this);
+		if (this._initHooks) {
+			this.callInitHooks();
 		}
 	};
 
@@ -244,7 +244,20 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 	L.extend(proto, props);
 
 	// inherit constructor hooks
-	proto._initHooks = this.prototype._initHooks ? this.prototype._initHooks.slice() : [];
+	if (this.prototype._initHooks) {
+		proto._initHooks = this.prototype._initHooks.slice();
+	}
+
+	// add method for calling all hooks
+	proto.callInitHooks = function () {
+
+		if (this._initHooksCalled) { return; }
+		this._initHooksCalled = true;
+
+		for (var i = 0, len = this._initHooks.length; i < len; i++) {
+			this._initHooks[i].call(this);
+		}
+	};
 
 	return NewClass;
 };
@@ -268,6 +281,7 @@ L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
 		this[fn].apply(this, args);
 	};
 
+	this.prototype._initHooks = this.prototype._initHooks || [];
 	this.prototype._initHooks.push(init);
 };
 
@@ -676,33 +690,33 @@ L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
  * L.Transformation is an utility class to perform simple point transformations through a 2d-matrix.
  */
 
-L.Transformation = L.Class.extend({
-	initialize: function (/*Number*/ a, /*Number*/ b, /*Number*/ c, /*Number*/ d) {
-		this._a = a;
-		this._b = b;
-		this._c = c;
-		this._d = d;
-	},
+L.Transformation = function (a, b, c, d) {
+	this._a = a;
+	this._b = b;
+	this._c = c;
+	this._d = d;
+};
 
-	transform: function (point, scale) {
+L.Transformation.prototype = {
+	transform: function (point, scale) { // (Point, Number) -> Point
 		return this._transform(point.clone(), scale);
 	},
 
 	// destructive transform (faster)
-	_transform: function (/*Point*/ point, /*Number*/ scale) /*-> Point*/ {
+	_transform: function (point, scale) {
 		scale = scale || 1;
 		point.x = scale * (this._a * point.x + this._b);
 		point.y = scale * (this._c * point.y + this._d);
 		return point;
 	},
 
-	untransform: function (/*Point*/ point, /*Number*/ scale) /*-> Point*/ {
+	untransform: function (point, scale) {
 		scale = scale || 1;
 		return new L.Point(
 		        (point.x / scale - this._b) / this._a,
 		        (point.y / scale - this._d) / this._c);
 	}
-});
+};
 
 
 /*
@@ -1307,6 +1321,7 @@ L.Map = L.Class.extend({
 
 		this._initContainer(id);
 		this._initLayout();
+		this.callInitHooks();
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -1744,15 +1759,6 @@ L.Map = L.Class.extend({
 
 	_createPane: function (className, container) {
 		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
-	},
-
-	_initializers: [],
-
-	_initHooks: function () {
-		var i, len;
-		for (i = 0, len = this._initializers.length; i < len; i++) {
-			this._initializers[i].call(this);
-		}
 	},
 
 	_initLayers: function (layers) {
@@ -2283,7 +2289,7 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function (e) {
+	_update: function () {
 
 		if (!this._map) { return; }
 
@@ -2504,9 +2510,8 @@ L.TileLayer = L.Class.extend({
 		return this._createTile();
 	},
 
-	_resetTile: function (tile) {
-		// Override if data stored on a tile needs to be cleaned up before reuse
-	},
+	// Override if data stored on a tile needs to be cleaned up before reuse
+	_resetTile: function (/*tile*/) {},
 
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
@@ -2529,7 +2534,7 @@ L.TileLayer = L.Class.extend({
         }
     },
 
-	_tileOnLoad: function (e) {
+	_tileOnLoad: function () {
 		var layer = this._layer;
 
 		//Only if we are loading an actual image
@@ -2545,7 +2550,7 @@ L.TileLayer = L.Class.extend({
 		layer._tileLoaded();
 	},
 
-	_tileOnError: function (e) {
+	_tileOnError: function () {
 		var layer = this._layer;
 
 		layer.fire('tileerror', {
@@ -3862,6 +3867,8 @@ L.Path = L.Class.extend({
 			this._map._pathRoot.appendChild(this._container);
 		}
 
+		this.fire('add');
+
 		map.on({
 			'viewreset': this.projectLatlngs,
 			'moveend': this._updatePath
@@ -4513,6 +4520,8 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
  * and polylines (clipping, simplification, distances, etc.)
  */
 
+/*jshint bitwise:false */ // allow bitwise oprations for this file
+
 L.LineUtil = {
 
 	// Simplify polyline with vertex reduction and Douglas-Peucker simplification.
@@ -4604,16 +4613,11 @@ L.LineUtil = {
 		return reducedPoints;
 	},
 
-	/*jshint bitwise:false */ // temporarily allow bitwise oprations
-
 	// Cohen-Sutherland line clipping algorithm.
 	// Used to avoid rendering parts of a polyline that are not currently visible.
 
 	clipSegment: function (a, b, bounds, useLastCode) {
-		var min = bounds.min,
-		    max = bounds.max,
-
-		    codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
+		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
 		    codeB = this._getBitCode(b, bounds),
 
 		    codeOut, p, newCode;
@@ -4679,8 +4683,6 @@ L.LineUtil = {
 		return code;
 	},
 
-	/*jshint bitwise:true */
-
 	// square distance (to avoid unnecessary Math.sqrt calls)
 	_sqDist: function (p1, p2) {
 		var dx = p2.x - p1.x,
@@ -4722,15 +4724,6 @@ L.Polyline = L.Path.extend({
 		L.Path.prototype.initialize.call(this, options);
 
 		this._latlngs = this._convertLatLngs(latlngs);
-
-		// TODO refactor: move to Polyline.Edit.js
-		if (L.Handler.PolyEdit) {
-			this.editing = new L.Handler.PolyEdit(this);
-
-			if (this.options.editable) {
-				this.editing.enable();
-			}
-		}
 	},
 
 	options: {
@@ -4769,7 +4762,7 @@ L.Polyline = L.Path.extend({
 		return this.redraw();
 	},
 
-	spliceLatLngs: function (index, howMany) {
+	spliceLatLngs: function () { // (Number index, Number howMany)
 		var removed = [].splice.apply(this._latlngs, arguments);
 		this._convertLatLngs(this._latlngs);
 		this.redraw();
@@ -4807,23 +4800,6 @@ L.Polyline = L.Path.extend({
 		}
 
 		return bounds;
-	},
-
-	// TODO refactor: move to Polyline.Edit.js
-	onAdd: function (map) {
-		L.Path.prototype.onAdd.call(this, map);
-
-		if (this.editing && this.editing.enabled()) {
-			this.editing.addHooks();
-		}
-	},
-
-	onRemove: function (map) {
-		if (this.editing && this.editing.enabled()) {
-			this.editing.removeHooks();
-		}
-
-		L.Path.prototype.onRemove.call(this, map);
 	},
 
 	_convertLatLngs: function (latlngs) {
@@ -4925,9 +4901,7 @@ L.PolyUtil = {};
  * Used to avoid rendering parts of a polygon that are not currently visible.
  */
 L.PolyUtil.clipPolygon = function (points, bounds) {
-	var min = bounds.min,
-	    max = bounds.max,
-	    clippedPoints,
+	var clippedPoints,
 	    edges = [1, 4, 2, 8],
 	    i, j, k,
 	    a, b,
@@ -4970,8 +4944,6 @@ L.PolyUtil.clipPolygon = function (points, bounds) {
 	return points;
 };
 
-/*jshint bitwise:true */
-
 
 /*
  * L.Polygon is used to display polygons on a map.
@@ -5000,7 +4972,7 @@ L.Polygon = L.Polyline.extend({
 
 		if (!this._holes) { return; }
 
-		var i, j, len, len2, hole;
+		var i, j, len, len2;
 
 		for (i = 0, len = this._holes.length; i < len; i++) {
 			this._holePoints[i] = [];
@@ -5367,6 +5339,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
 		layer.feature = geojson;
 
+		layer.defaultOptions = layer.options;
 		this.resetStyle(layer);
 
 		if (options.onEachFeature) {
@@ -5380,7 +5353,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		var style = this.options.style;
 		if (style) {
 			// reset any custom styles
-			delete layer.options;
+			L.Util.extend(layer.options, layer.defaultOptions);
 
 			this._setLayerStyle(layer, style);
 		}
@@ -5646,9 +5619,8 @@ L.DomEvent = {
 		return (related !== el);
 	},
 
-	/*jshint noarg:false */
 	_getEvent: function () { // evil magic for IE
-
+		/*jshint noarg:false */
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
@@ -5662,7 +5634,6 @@ L.DomEvent = {
 		}
 		return e;
 	}
-	/*jshint noarg:false */
 };
 
 L.DomEvent.on = L.DomEvent.addListener;
@@ -5988,8 +5959,7 @@ L.Map.Drag = L.Handler.extend({
 
 	_onPreDrag: function () {
 		// TODO refactor to be able to adjust map pane position after zoom
-		var map = this._map,
-		    worldWidth = this._worldWidth,
+		var worldWidth = this._worldWidth,
 		    halfWidth = Math.round(worldWidth / 2),
 		    dx = this._initialWorldOffset,
 		    x = this._draggable._newPos.x,
@@ -6142,6 +6112,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
 
 
+
 L.extend(L.DomEvent, {
 
 	_touchstart: L.Browser.msTouch ? 'MSPointerDown' : 'touchstart',
@@ -6177,7 +6148,9 @@ L.extend(L.DomEvent, {
 			doubleTap = (delta > 0 && delta <= delay);
 			last = now;
 		}
+
 		function onTouchEnd(e) {
+			/*jshint forin:false */
 			if (L.Browser.msTouch) {
 				var idx = trackedTouches.indexOf(e.pointerId);
 				if (idx === -1) {
@@ -6191,14 +6164,13 @@ L.extend(L.DomEvent, {
 					//Work around .type being readonly with MSPointer* events
 					var newTouch = { },
 						prop;
+
 					for (var i in touch) {
-						if (true) { //Make JSHint happy, we want to copy all properties
-							prop = touch[i];
-							if (typeof prop === 'function') {
-								newTouch[i] = prop.bind(touch);
-							} else {
-								newTouch[i] = prop;
-							}
+						prop = touch[i];
+						if (typeof prop === 'function') {
+							newTouch[i] = prop.bind(touch);
+						} else {
+							newTouch[i] = prop;
 						}
 					}
 					touch = newTouch;
@@ -7020,6 +6992,29 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 		return map.layerPointToLatLng(p1._add(p2)._divideBy(2));
 	}
+});
+
+L.Polyline.addInitHook(function () {
+
+	if (L.Handler.PolyEdit) {
+		this.editing = new L.Handler.PolyEdit(this);
+
+		if (this.options.editable) {
+			this.editing.enable();
+		}
+	}
+
+	this.on('add', function () {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	});
+
+	this.on('remove', function () {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+	});
 });
 
 
