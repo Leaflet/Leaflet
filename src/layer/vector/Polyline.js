@@ -41,7 +41,7 @@ L.Polyline = L.Path.extend({
 		return this.redraw();
 	},
 
-	spliceLatLngs: function (index, howMany) {
+	spliceLatLngs: function () { // (Number index, Number howMany)
 		var removed = [].splice.apply(this._latlngs, arguments);
 		this._convertLatLngs(this._latlngs);
 		this.redraw();

@@ -165,9 +165,8 @@ L.DomEvent = {
 		return (related !== el);
 	},
 
-	/*jshint noarg:false */
 	_getEvent: function () { // evil magic for IE
-
+		/*jshint noarg:false */
 		var e = window.event;
 		if (!e) {
 			var caller = arguments.callee.caller;
@@ -181,7 +180,6 @@ L.DomEvent = {
 		}
 		return e;
 	}
-	/*jshint noarg:false */
 };
 
 L.DomEvent.on = L.DomEvent.addListener;

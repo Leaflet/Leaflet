@@ -244,7 +244,7 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function (e) {
+	_update: function () {
 
 		if (!this._map) { return; }
 
@@ -465,9 +465,8 @@ L.TileLayer = L.Class.extend({
 		return this._createTile();
 	},
 
-	_resetTile: function (tile) {
-		// Override if data stored on a tile needs to be cleaned up before reuse
-	},
+	// Override if data stored on a tile needs to be cleaned up before reuse
+	_resetTile: function (/*tile*/) {},
 
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
@@ -490,7 +489,7 @@ L.TileLayer = L.Class.extend({
         }
     },
 
-	_tileOnLoad: function (e) {
+	_tileOnLoad: function () {
 		var layer = this._layer;
 
 		//Only if we are loading an actual image
@@ -506,7 +505,7 @@ L.TileLayer = L.Class.extend({
 		layer._tileLoaded();
 	},
 
-	_tileOnError: function (e) {
+	_tileOnError: function () {
 		var layer = this._layer;
 
 		layer.fire('tileerror', {
