@@ -97,7 +97,7 @@ L.ImageOverlay = L.Class.extend({
 
 		    topLeft = map._latLngToNewLayerPoint(nw, e.zoom, e.center),
 		    size = map._latLngToNewLayerPoint(se, e.zoom, e.center)._subtract(topLeft),
-		    origin = topLeft._add(size._multiplyBy(1/2 * (1 - 1/scale)));
+		    origin = topLeft._add(size._multiplyBy((1 / 2) * (1 - 1 / scale)));
 
 		image.style[L.DomUtil.TRANSFORM] =
 		        L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';

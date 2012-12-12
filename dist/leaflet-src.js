@@ -195,8 +195,15 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 
 	// extended class with the new prototype
 	var NewClass = function () {
+
+		// call the constructor
 		if (this.initialize) {
 			this.initialize.apply(this, arguments);
+		}
+
+		// call all constructor hooks
+		for (var i = 0, len = this._initHooks.length; i < len; i++) {
+			this._initHooks[i].call(this);
 		}
 	};
 
@@ -236,6 +243,9 @@ L.Class.extend = function (/*Object*/ props) /*-> Class*/ {
 	// mix given properties into the prototype
 	L.extend(proto, props);
 
+	// inherit constructor hooks
+	proto._initHooks = this.prototype._initHooks ? this.prototype._initHooks.slice() : [];
+
 	return NewClass;
 };
 
@@ -245,8 +255,20 @@ L.Class.include = function (props) {
 	L.extend(this.prototype, props);
 };
 
+// merge new default options to the Class
 L.Class.mergeOptions = function (options) {
 	L.extend(this.prototype.options, options);
+};
+
+// add a constructor hook
+L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
+	var args = Array.prototype.slice.call(arguments, 1);
+
+	var init = typeof fn === 'function' ? fn : function () {
+		this[fn].apply(this, args);
+	};
+
+	this.prototype._initHooks.push(init);
 };
 
 
@@ -598,6 +620,10 @@ L.Bounds = L.Class.extend({
 		return new L.Point(this.max.x, this.min.y);
 	},
 
+	getSize: function () {
+		return this.max.subtract(this.min);
+	},
+
 	contains: function (obj) { // (Bounds) or (Point) -> Boolean
 		var min, max;
 
@@ -716,7 +742,7 @@ L.DomUtil = {
 		do {
 			top  += el.offsetTop  || 0;
 			left += el.offsetLeft || 0;
-			
+
 			//add borders
 			top += parseInt(L.DomUtil.getStyle(el, "borderTopWidth"), 10) || 0;
 			left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
@@ -786,13 +812,13 @@ L.DomUtil = {
 			document.selection.empty();
 		}
 		if (!this._onselectstart) {
-			this._onselectstart = document.onselectstart;
+			this._onselectstart = document.onselectstart || null;
 			document.onselectstart = L.Util.falseFn;
 		}
 	},
 
 	enableTextSelection: function () {
-		if (document.onselectstart === L.Util.falseFn && this._onselectstart) {
+		if (document.onselectstart === L.Util.falseFn) {
 			document.onselectstart = this._onselectstart;
 			this._onselectstart = null;
 		}
@@ -919,17 +945,12 @@ L.DomUtil.TRANSITION_END =
 	L.LatLng represents a geographical point with latitude and longitude coordinates.
 */
 
-L.LatLng = function (rawLat, rawLng, noWrap) { // (Number, Number[, Boolean])
+L.LatLng = function (rawLat, rawLng) { // (Number, Number)
 	var lat = parseFloat(rawLat),
 	    lng = parseFloat(rawLng);
 
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
-	}
-
-	if (noWrap !== true) {
-		lat = Math.max(Math.min(lat, 90), -90);					// clamp latitude into -90..90
-		lng = (lng + 180) % 360 + ((lng < -180 || lng === 180) ? 180 : -180);	// wrap longitude into -180..180
 	}
 
 	this.lat = lat;
@@ -948,17 +969,21 @@ L.LatLng.prototype = {
 
 		obj = L.latLng(obj);
 
-		var margin = Math.max(Math.abs(this.lat - obj.lat), Math.abs(this.lng - obj.lng));
+		var margin = Math.max(
+		        Math.abs(this.lat - obj.lat),
+		        Math.abs(this.lng - obj.lng));
+
 		return margin <= L.LatLng.MAX_MARGIN;
 	},
 
-	toString: function (precision) { // -> String
+	toString: function (precision) { // (Number) -> String
 		return 'LatLng(' +
 		        L.Util.formatNum(this.lat, precision) + ', ' +
 		        L.Util.formatNum(this.lng, precision) + ')';
 	},
 
 	// Haversine distance formula, see http://en.wikipedia.org/wiki/Haversine_formula
+	// TODO move to projection code, LatLng shouldn't know about Earth
 	distanceTo: function (other) { // (LatLng) -> Number
 		other = L.latLng(other);
 
@@ -974,10 +999,21 @@ L.LatLng.prototype = {
 		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
 
 		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	},
+
+	wrap: function (a, b) { // (Number, Number) -> LatLng
+		var lng = this.lng;
+
+		a = a || -180;
+		b = b ||  180;
+
+		lng = (lng + b) % (b - a) + (lng < a || lng === b ? b : a);
+
+		return new L.LatLng(this.lat, lng);
 	}
 };
 
-L.latLng = function (a, b, c) { // (LatLng) or ([Number, Number]) or (Number, Number, Boolean)
+L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Number)
 	if (a instanceof L.LatLng) {
 		return a;
 	}
@@ -987,7 +1023,7 @@ L.latLng = function (a, b, c) { // (LatLng) or ([Number, Number]) or (Number, Nu
 	if (isNaN(a)) {
 		return a;
 	}
-	return new L.LatLng(a, b, c);
+	return new L.LatLng(a, b);
 };
 
 
@@ -1009,7 +1045,7 @@ L.LatLngBounds = L.Class.extend({
 
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
-		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
+		if (typeof obj[0] === 'number' || typeof obj[0] === 'string' || obj instanceof L.LatLng) {
 			obj = L.latLng(obj);
 		} else {
 			obj = L.latLngBounds(obj);
@@ -1017,8 +1053,8 @@ L.LatLngBounds = L.Class.extend({
 
 		if (obj instanceof L.LatLng) {
 			if (!this._southWest && !this._northEast) {
-				this._southWest = new L.LatLng(obj.lat, obj.lng, true);
-				this._northEast = new L.LatLng(obj.lat, obj.lng, true);
+				this._southWest = new L.LatLng(obj.lat, obj.lng);
+				this._northEast = new L.LatLng(obj.lat, obj.lng);
 			} else {
 				this._southWest.lat = Math.min(obj.lat, this._southWest.lat);
 				this._southWest.lng = Math.min(obj.lng, this._southWest.lng);
@@ -1060,11 +1096,11 @@ L.LatLngBounds = L.Class.extend({
 	},
 
 	getNorthWest: function () {
-		return new L.LatLng(this._northEast.lat, this._southWest.lng, true);
+		return new L.LatLng(this._northEast.lat, this._southWest.lng);
 	},
 
 	getSouthEast: function () {
-		return new L.LatLng(this._southWest.lat, this._northEast.lng, true);
+		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
@@ -1162,8 +1198,7 @@ L.Projection.SphericalMercator = {
 		    lng = point.x * d,
 		    lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
 
-		// TODO refactor LatLng wrapping
-		return new L.LatLng(lat, lng, true);
+		return new L.LatLng(lat, lng);
 	}
 };
 
@@ -1175,7 +1210,7 @@ L.Projection.LonLat = {
 	},
 
 	unproject: function (point) {
-		return new L.LatLng(point.y, point.x, true);
+		return new L.LatLng(point.y, point.x);
 	}
 };
 
@@ -1209,7 +1244,11 @@ L.CRS = {
 
 L.CRS.Simple = L.extend({}, L.CRS, {
 	projection: L.Projection.LonLat,
-	transformation: new L.Transformation(1, 0, 1, 0)
+	transformation: new L.Transformation(1, 0, -1, 0),
+
+	scale: function (zoom) {
+		return Math.pow(2, zoom);
+	}
 });
 
 
@@ -1268,7 +1307,6 @@ L.Map = L.Class.extend({
 
 		this._initContainer(id);
 		this._initLayout();
-		this._initHooks();
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -1924,16 +1962,6 @@ L.Map = L.Class.extend({
 	}
 });
 
-L.Map.addInitHook = function (fn) {
-	var args = Array.prototype.slice.call(arguments, 1);
-
-	var init = typeof fn === 'function' ? fn : function () {
-		this[fn].apply(this, args);
-	};
-
-	this.prototype._initializers.push(init);
-};
-
 L.map = function (id, options) {
 	return new L.Map(id, options);
 };
@@ -1988,7 +2016,7 @@ L.Projection.Mercator = {
 			phi += dphi;
 		}
 
-		return new L.LatLng(phi * d, lng, true);
+		return new L.LatLng(phi * d, lng);
 	}
 };
 
@@ -2585,6 +2613,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
 
+		this._adjustTilePoint(tilePoint);
+
 		var map = this._map,
 		    crs = map.options.crs,
 		    tileSize = this.options.tileSize,
@@ -2778,8 +2808,7 @@ L.ImageOverlay = L.Class.extend({
 
 		    topLeft = map._latLngToNewLayerPoint(nw, e.zoom, e.center),
 		    size = map._latLngToNewLayerPoint(se, e.zoom, e.center)._subtract(topLeft),
-		    currentSize = map.latLngToLayerPoint(se)._subtract(map.latLngToLayerPoint(nw)),
-		    origin = topLeft._add(size._subtract(currentSize)._divideBy(2));
+		    origin = topLeft._add(size._multiplyBy((1 / 2) * (1 - 1 / scale)));
 
 		image.style[L.DomUtil.TRANSFORM] =
 		        L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
@@ -2788,7 +2817,7 @@ L.ImageOverlay = L.Class.extend({
 	_reset: function () {
 		var image   = this._image,
 		    topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-		    size    = this._map.latLngToLayerPoint(this._bounds.getSouthEast())._subtract(topLeft);
+		    size = this._map.latLngToLayerPoint(this._bounds.getSouthEast())._subtract(topLeft);
 
 		L.DomUtil.setPosition(image, topLeft);
 
@@ -3013,12 +3042,14 @@ L.Marker = L.Class.extend({
 
 		this.update();
 
-		this.fire('move', { latlng: this._latlng });
+		return this.fire('move', { latlng: this._latlng });
 	},
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		this.update();
+
+		return this;
 	},
 
 	setIcon: function (icon) {
@@ -3032,13 +3063,17 @@ L.Marker = L.Class.extend({
 			this._initIcon();
 			this.update();
 		}
+
+		return this;
 	},
 
 	update: function () {
-		if (!this._icon) { return; }
+		if (this._icon) {
+			var pos = this._map.latLngToLayerPoint(this._latlng).round();
+			this._setPos(pos);
+		}
 
-		var pos = this._map.latLngToLayerPoint(this._latlng).round();
-		this._setPos(pos);
+		return this;
 	},
 
 	_initIcon: function () {
@@ -4054,13 +4089,12 @@ L.Map.include({
 		}
 	},
 
-	_animatePathZoom: function (opt) {
-		var scale = this.getZoomScale(opt.zoom),
-		    offset = this._getCenterOffset(opt.center),
-		    translate = offset.multiplyBy(-scale)._add(this._pathViewport.min);
+	_animatePathZoom: function (e) {
+		var scale = this.getZoomScale(e.zoom),
+		    offset = this._getCenterOffset(e.center)._multiplyBy(-scale);
 
-		this._pathRoot.style[L.DomUtil.TRANSFORM] =
-		        L.DomUtil.getTranslateString(translate) + ' scale(' + scale + ') ';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] +=
+		        L.DomUtil.getTranslateString(offset) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},
@@ -5112,7 +5146,7 @@ L.Circle = L.Path.extend({
 
 	projectLatlngs: function () {
 		var lngRadius = this._getLngRadius(),
-		    latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius, true),
+		    latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius),
 		    point2 = this._map.latLngToLayerPoint(latlng2);
 
 		this._point = this._map.latLngToLayerPoint(this._latlng);
@@ -5299,7 +5333,12 @@ L.Circle.include(!L.Path.CANVAS ? {} : {
 });
 
 
+/*
+ * L.GeoJSON turns any GeoJSON data into a Leaflet layer.
+ */
+
 L.GeoJSON = L.FeatureGroup.extend({
+
 	initialize: function (geojson, options) {
 		L.setOptions(this, options);
 
@@ -5340,6 +5379,9 @@ L.GeoJSON = L.FeatureGroup.extend({
 	resetStyle: function (layer) {
 		var style = this.options.style;
 		if (style) {
+			// reset any custom styles
+			delete layer.options;
+
 			this._setLayerStyle(layer, style);
 		}
 	},
@@ -5412,7 +5454,7 @@ L.extend(L.GeoJSON, {
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
 		    lng = parseFloat(coords[reverse ? 1 : 0]);
 
-		return new L.LatLng(lat, lng, true);
+		return new L.LatLng(lat, lng);
 	},
 
 	coordsToLatLngs: function (coords, levelsDeep, reverse) { // (Array, Number, Boolean) -> Array
@@ -5867,7 +5909,7 @@ L.Map.mergeOptions({
 	longPress: true,
 
 	// TODO refactor, move to CRS
-	worldCopyJump: true
+	worldCopyJump: false
 });
 
 L.Map.Drag = L.Handler.extend({
@@ -5936,6 +5978,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onViewReset: function () {
+		// TODO fix hardcoded Earth values
 		var pxCenter = this._map.getSize()._divideBy(2),
 		    pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0, 0));
 
@@ -5962,9 +6005,7 @@ L.Map.Drag = L.Handler.extend({
 		    options = map.options,
 		    delay = +new Date() - this._lastTime,
 
-		    noInertia = !options.inertia ||
-		            delay > options.inertiaThreshold ||
-		            !this._positions[0];
+		    noInertia = !options.inertia || delay > options.inertiaThreshold || !this._positions[0];
 
 		if (noInertia) {
 			map.fire('moveend');
@@ -5973,18 +6014,19 @@ L.Map.Drag = L.Handler.extend({
 
 			var direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime + delay - this._times[0]) / 1000,
+			    ease = options.easeLinearity,
 
-			    speedVector = direction.multiplyBy(options.easeLinearity / duration),
+			    speedVector = direction.multiplyBy(ease / duration),
 			    speed = speedVector.distanceTo(new L.Point(0, 0)),
 
 			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
-			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * options.easeLinearity),
+			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration, options.easeLinearity);
+				map.panBy(offset, decelerationDuration, ease);
 			});
 		}
 
