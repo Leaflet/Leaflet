@@ -1,11 +1,8 @@
 /*
- Copyright (c) 2010-2012, CloudMade, Vladimir Agafonkin
- Leaflet is an open-source JavaScript library for mobile-friendly interactive maps.
- http://leafletjs.com
+ Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
+ (c) 2010-2012, CloudMade, Vladimir Agafonkin
 */
-(function (window, undefined) {
-
-var L, originalL;
+(function (window, document, undefined) {var L, originalL;
 
 if (typeof exports !== undefined + '') {
 	L = exports;
@@ -2699,7 +2696,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		}
 	},
 
-	drawTile: function (tile, tilePoint) {
+	drawTile: function (/*tile, tilePoint*/) {
 		// override with rendering code
 	},
 
@@ -6445,7 +6442,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		        L.DomUtil.getScaleString(this._scale, this._startCenter);
 	},
 
-	_onTouchEnd: function (e) {
+	_onTouchEnd: function () {
 		if (!this._moved || !this._zooming) { return; }
 
 		var map = this._map;
@@ -6738,14 +6735,14 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		return this._draggable && this._draggable._moved;
 	},
 
-	_onDragStart: function (e) {
+	_onDragStart: function () {
 		this._marker
 		    .closePopup()
 		    .fire('movestart')
 		    .fire('dragstart');
 	},
 
-	_onDrag: function (e) {
+	_onDrag: function () {
 		var marker = this._marker,
 		    shadow = marker._shadow,
 		    iconPos = L.DomUtil.getPosition(marker._icon),
@@ -7939,7 +7936,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		return true;
 	},
 
-	_catchTransitionEnd: function (e) {
+	_catchTransitionEnd: function () {
 		if (this._animatingZoom) {
 			this._onZoomTransitionEnd();
 		}
@@ -8152,6 +8149,4 @@ L.Map.include({
 });
 
 
-
-
-}(this));
+}(this, document));
