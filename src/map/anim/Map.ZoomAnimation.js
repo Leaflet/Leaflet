@@ -41,7 +41,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		return true;
 	},
 
-	_catchTransitionEnd: function (e) {
+	_catchTransitionEnd: function () {
 		if (this._animatingZoom) {
 			this._onZoomTransitionEnd();
 		}

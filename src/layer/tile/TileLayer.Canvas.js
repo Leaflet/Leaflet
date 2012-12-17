@@ -43,7 +43,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		}
 	},
 
-	drawTile: function (tile, tilePoint) {
+	drawTile: function (/*tile, tilePoint*/) {
 		// override with rendering code
 	},
 

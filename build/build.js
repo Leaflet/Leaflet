@@ -1,8 +1,34 @@
 var fs = require('fs'),
-	uglifyjs = require('uglify-js'),
-	deps = require('./deps.js').deps;
 
-exports.getFiles = function (compsBase32) {
+	jshint = require('jshint'),
+    UglifyJS = require('uglify-js'),
+
+	deps = require('./deps.js').deps,
+	hintrc = require('./hintrc.js').config;
+
+
+function lintFiles(files) {
+
+	var errorsFound = 0,
+		i, j, len, len2, src, errors, e;
+
+	for (i = 0, len = files.length; i < len; i++) {
+
+		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc);
+		errors = jshint.JSHINT.errors;
+
+		for (j = 0, len2 = errors.length; j < len2; j++) {
+			e = errors[i];
+			console.log(path + '\tline ' + e.line + '\tcol ' + e.character + '\t ' + e.reason);
+		}
+
+		errorsFound += len2;
+	}
+
+	return errorsFound;
+}
+
+function getFiles(compsBase32) {
 	var memo = {},
 		comps;
 
@@ -37,46 +63,94 @@ exports.getFiles = function (compsBase32) {
 	}
 
 	return files;
-};
+}
 
-exports.uglify = function (code) {
-	var toplevel = uglifyjs.parse(code);
-	toplevel.figure_out_scope();
+exports.lint = function () {
 
-	var compressor = uglifyjs.Compressor();
-	var compressed_ast = toplevel.transform(compressor);
+	var files = getFiles();
 
-	compressed_ast.figure_out_scope();
-	compressed_ast.compute_char_frequency();
-	compressed_ast.mangle_names();
+	console.log('Checking for JS errors...');
 
-	return compressed_ast.print_to_string() + ';';
-};
+	var errorsFound = lintFiles(files);
 
-exports.combineFiles = function (files) {
-	var content = '(function (window, undefined) {\n\n';
-	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
-	}
-	return content + '\n\n}(this));';
-};
-
-exports.save = function (savePath, compressed) {
-	return fs.writeFileSync(savePath, compressed, 'utf8');
-};
-
-exports.load = function (loadPath) {
-	try {
-		return fs.readFileSync(loadPath, 'utf8');
-	} catch (e) {
-		return null;
+	if (errorsFound > 0) {
+		console.log(errorsFound + ' error(s) found.\n');
+		fail();
+	} else {
+		console.log('\tCheck passed');
 	}
 };
 
-exports.getSizeDelta = function (newContent, oldContent) {
+
+function getSizeDelta(newContent, oldContent) {
 	if (!oldContent) {
 		return 'new';
 	}
-	var delta = newContent.replace(/\r\n?/g, '\n').length - oldContent.replace(/\r\n?/g, '\n').length;
+	var newLen = newContent.replace(/\r\n?/g, '\n').length,
+		oldLen = oldContent.replace(/\r\n?/g, '\n').length,
+		delta = newLen - oldLen;
+
 	return (delta >= 0 ? '+' : '') + delta;
+}
+
+function loadSilently(path) {
+	try {
+		return fs.readFileSync(path, 'utf8');
+	} catch (e) {
+		return null;
+	}
+}
+
+function combineFiles(files) {
+	var content = '';
+	for (var i = 0, len = files.length; i < len; i++) {
+		content += fs.readFileSync(files[i]) + '\n\n';
+	}
+	return content;
+}
+
+exports.build = function (compsBase32, buildName) {
+
+	var files = getFiles(compsBase32);
+
+	console.log('Concatenating ' + files.length + ' files...');
+
+	var copy = fs.readFileSync('src/copyright.js'),
+		intro = '(function (window, document, undefined) {',
+		outro = '}(this, document));',
+	    newSrc = copy + intro + combineFiles(files) + outro,
+
+	    pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
+	    srcPath = pathPart + '-src.js',
+
+	    oldSrc = loadSilently(srcPath),
+	    srcDelta = getSizeDelta(newSrc, oldSrc);
+
+	console.log('\tUncompressed size: ' + newSrc.length + ' bytes (' + srcDelta + ')');
+
+	if (newSrc === oldSrc) {
+		console.log('\tNo changes');
+	} else {
+		fs.writeFileSync(srcPath, newSrc);
+		console.log('\tSaved to ' + srcPath);
+	}
+
+	console.log('Compressing...');
+
+	var path = pathPart + '.js',
+	    oldCompressed = loadSilently(path),
+	    newCompressed = copy + UglifyJS.minify(newSrc, {
+	    	warnings: true,
+	    	fromString: true
+	    }).code,
+	    delta = getSizeDelta(newCompressed, oldCompressed);
+
+	console.log('\tCompressed size: ' + newCompressed.length + ' bytes (' + delta + ')');
+
+	if (newCompressed === oldCompressed) {
+		console.log('\tNo changes');
+	} else {
+		fs.writeFileSync(path, newCompressed);
+		console.log('\tSaved to ' + path);
+	}
 };
