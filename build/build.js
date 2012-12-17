@@ -1,16 +1,15 @@
 var fs = require('fs'),
-
-	jshint = require('jshint'),
+    jshint = require('jshint'),
     UglifyJS = require('uglify-js'),
 
-	deps = require('./deps.js').deps,
-	hintrc = require('./hintrc.js').config;
+    deps = require('./deps.js').deps,
+    hintrc = require('./hintrc.js').config;
 
 
 function lintFiles(files) {
 
 	var errorsFound = 0,
-		i, j, len, len2, src, errors, e;
+	    i, j, len, len2, src, errors, e;
 
 	for (i = 0, len = files.length; i < len; i++) {
 
@@ -19,7 +18,7 @@ function lintFiles(files) {
 
 		for (j = 0, len2 = errors.length; j < len2; j++) {
 			e = errors[i];
-			console.log(path + '\tline ' + e.line + '\tcol ' + e.character + '\t ' + e.reason);
+			console.log(files[i] + '\tline ' + e.line + '\tcol ' + e.character + '\t ' + e.reason);
 		}
 
 		errorsFound += len2;
@@ -30,7 +29,7 @@ function lintFiles(files) {
 
 function getFiles(compsBase32) {
 	var memo = {},
-		comps;
+	    comps;
 
 	if (compsBase32) {
 		comps = parseInt(compsBase32, 32).toString(2).split('');
@@ -104,7 +103,7 @@ function loadSilently(path) {
 function combineFiles(files) {
 	var content = '';
 	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i]) + '\n\n';
+		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
 	}
 	return content;
 }
@@ -115,9 +114,9 @@ exports.build = function (compsBase32, buildName) {
 
 	console.log('Concatenating ' + files.length + ' files...');
 
-	var copy = fs.readFileSync('src/copyright.js'),
-		intro = '(function (window, document, undefined) {',
-		outro = '}(this, document));',
+	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
+	    intro = '(function (window, document, undefined) {',
+	    outro = '}(this, document));',
 	    newSrc = copy + intro + combineFiles(files) + outro,
 
 	    pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
@@ -140,8 +139,8 @@ exports.build = function (compsBase32, buildName) {
 	var path = pathPart + '.js',
 	    oldCompressed = loadSilently(path),
 	    newCompressed = copy + UglifyJS.minify(newSrc, {
-	    	warnings: true,
-	    	fromString: true
+	        warnings: true,
+	        fromString: true
 	    }).code,
 	    delta = getSizeDelta(newCompressed, oldCompressed);
 
