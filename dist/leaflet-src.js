@@ -22,8 +22,8 @@ L.version = '0.5';
 
 
 /*
- * L.Util is a namespace for various utility functions.
- */
+	L.Util contains various utility functions used throughout Leaflet code.
+*/
 
 L.Util = {
 	extend: function (dest) { // (Object[, Object, ...]) ->
@@ -183,7 +183,8 @@ L.setOptions = L.Util.setOptions;
 
 
 /*
- * Class powers the OOP facilities of the library. Thanks to John Resig and Dean Edwards for inspiration!
+	L.Class powers the OOP facilities of the library.
+	Thanks to John Resig and Dean Edwards for inspiration!
  */
 
 L.Class = function () {};
@@ -240,19 +241,22 @@ L.Class.extend = function (props) {
 	// mix given properties into the prototype
 	L.extend(proto, props);
 
-	// inherit constructor hooks
-	if (this.prototype._initHooks) {
-		proto._initHooks = this.prototype._initHooks.slice();
-	}
+	proto._initHooks = [];
 
+	var parent = this;
 	// add method for calling all hooks
 	proto.callInitHooks = function () {
 
 		if (this._initHooksCalled) { return; }
+
+		if (parent.prototype.callInitHooks) {
+			parent.prototype.callInitHooks.call(this);
+		}
+
 		this._initHooksCalled = true;
 
-		for (var i = 0, len = this._initHooks.length; i < len; i++) {
-			this._initHooks[i].call(this);
+		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+			proto._initHooks[i].call(this);
 		}
 	};
 
@@ -284,8 +288,8 @@ L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
 
 
 /*
- * L.Mixin.Events adds custom events functionality to Leaflet classes
- */
+	L.Mixin.Events is used to add custom events functionality to Leaflet classes.
+*/
 
 var key = '_leaflet_events';
 
@@ -385,6 +389,10 @@ L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
 L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 
 
+/*
+	L.Browser handles different browser and feature detections for internal Leaflet use.
+*/
+
 (function () {
 
 	var ie = !!window.ActiveXObject,
@@ -474,8 +482,8 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 
 
 /*
- * L.Point represents a point with x and y coordinates.
- */
+	L.Point represents a point with x and y coordinates.
+*/
 
 L.Point = function (/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
 	this.x = (round ? Math.round(x) : x);
@@ -586,21 +594,20 @@ L.point = function (x, y, round) {
 
 
 /*
- * L.Bounds represents a rectangular area on the screen in pixel coordinates.
- */
+	L.Bounds represents a rectangular area on the screen in pixel coordinates.
+*/
 
-L.Bounds = L.Class.extend({
+L.Bounds = function (a, b) { //(Point, Point) or Point[]
+	if (!a) { return; }
 
-	initialize: function (a, b) {	//(Point, Point) or Point[]
-		if (!a) { return; }
+	var points = b ? [a, b] : a;
 
-		var points = b ? [a, b] : a;
+	for (var i = 0, len = points.length; i < len; i++) {
+		this.extend(points[i]);
+	}
+};
 
-		for (var i = 0, len = points.length; i < len; i++) {
-			this.extend(points[i]);
-		}
-	},
-
+L.Bounds.prototype = {
 	// extend the bounds to contain the given point
 	extend: function (point) { // (Point)
 		point = L.point(point);
@@ -673,7 +680,7 @@ L.Bounds = L.Class.extend({
 	isValid: function () {
 		return !!(this.min && this.max);
 	}
-});
+};
 
 L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
 	if (!a || a instanceof L.Bounds) {
@@ -684,8 +691,8 @@ L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
 
 
 /*
- * L.Transformation is an utility class to perform simple point transformations through a 2d-matrix.
- */
+	L.Transformation is an utility class to perform simple point transformations through a 2d-matrix.
+*/
 
 L.Transformation = function (a, b, c, d) {
 	this._a = a;
@@ -717,8 +724,8 @@ L.Transformation.prototype = {
 
 
 /*
- * L.DomUtil contains various utility functions for working with DOM.
- */
+	L.DomUtil contains various utility functions for working with DOM.
+*/
 
 L.DomUtil = {
 	get: function (id) {
@@ -1040,20 +1047,20 @@ L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Numbe
 
 
 /*
- * L.LatLngBounds represents a rectangular area on the map in geographical coordinates.
- */
+	L.LatLngBounds represents a rectangular area on the map in geographical coordinates.
+*/
 
-L.LatLngBounds = L.Class.extend({
-	initialize: function (southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
-		if (!southWest) { return; }
+L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLng[])
+	if (!southWest) { return; }
 
-		var latlngs = northEast ? [southWest, northEast] : southWest;
+	var latlngs = northEast ? [southWest, northEast] : southWest;
 
-		for (var i = 0, len = latlngs.length; i < len; i++) {
-			this.extend(latlngs[i]);
-		}
-	},
+	for (var i = 0, len = latlngs.length; i < len; i++) {
+		this.extend(latlngs[i]);
+	}
+};
 
+L.LatLngBounds.prototype = {
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
 		if (typeof obj[0] === 'number' || typeof obj[0] === 'string' || obj instanceof L.LatLng) {
@@ -1169,7 +1176,7 @@ L.LatLngBounds = L.Class.extend({
 	isValid: function () {
 		return !!(this._southWest && this._northEast);
 	}
-});
+};
 
 //TODO International date line?
 
@@ -1182,12 +1189,15 @@ L.latLngBounds = function (a, b) { // (LatLngBounds) or (LatLng, LatLng)
 
 
 /*
- * L.Projection contains various geographical projections used by CRS classes.
- */
+	L.Projection contains various geographical projections used by CRS classes.
+*/
 
 L.Projection = {};
 
 
+/*
+	Spherical Mercator is the most popular map projection, used by EPSG:3857 CRS used by default.
+*/
 
 L.Projection.SphericalMercator = {
 	MAX_LATITUDE: 85.0511287798,
@@ -1214,6 +1224,9 @@ L.Projection.SphericalMercator = {
 };
 
 
+/*
+	Simple equirectangular (Plate Carree) projection, used by CRS like EPSG:4326 and Simple.
+*/
 
 L.Projection.LonLat = {
 	project: function (latlng) {
@@ -1226,6 +1239,9 @@ L.Projection.LonLat = {
 };
 
 
+/*
+	L.CRS is a base object for all defined CRS (Coordinate Reference Systems) in Leaflet.
+*/
 
 L.CRS = {
 	latLngToPoint: function (latlng, zoom) { // (LatLng, Number) -> Point
@@ -1252,6 +1268,9 @@ L.CRS = {
 };
 
 
+/*
+	A simple CRS that can be used for flat non-Earth maps like panoramas or game maps.
+*/
 
 L.CRS.Simple = L.extend({}, L.CRS, {
 	projection: L.Projection.LonLat,
@@ -1263,6 +1282,10 @@ L.CRS.Simple = L.extend({}, L.CRS, {
 });
 
 
+/*
+	L.CRS.EPSG3857 (Spherical Mercator) is the most common CRS for web mapping
+	and is used by Leaflet by default.
+*/
 
 L.CRS.EPSG3857 = L.extend({}, L.CRS, {
 	code: 'EPSG:3857',
@@ -1282,6 +1305,9 @@ L.CRS.EPSG900913 = L.extend({}, L.CRS.EPSG3857, {
 });
 
 
+/*
+	L.CRS.EPSG4326 is a CRS popular among advanced GIS specialists.
+*/
 
 L.CRS.EPSG4326 = L.extend({}, L.CRS, {
 	code: 'EPSG:4326',
@@ -1970,6 +1996,10 @@ L.map = function (id, options) {
 };
 
 
+/*
+	Mercator projection that takes into account that the Earth is not a perfect sphere.
+	Less popular than spherical mercator; used by projections like EPSG:3395.
+*/
 
 L.Projection.Mercator = {
 	MAX_LATITUDE: 85.0840591556,
@@ -4513,9 +4543,9 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 
 
 /*
- * L.LineUtil contains different utility functions for line segments
- * and polylines (clipping, simplification, distances, etc.)
- */
+	L.LineUtil contains different utility functions for line segments
+	and polylines (clipping, simplification, distances, etc.)
+*/
 
 /*jshint bitwise:false */ // allow bitwise oprations for this file
 
@@ -4886,8 +4916,8 @@ L.polyline = function (latlngs, options) {
 
 
 /*
- * L.PolyUtil contains utility functions for polygons (clipping, etc.).
- */
+	L.PolyUtil contains utility functions for polygons (clipping, etc.).
+*/
 
 /*jshint bitwise:false */ // allow bitwise operations here
 
@@ -5450,8 +5480,8 @@ L.geoJson = function (geojson, options) {
 
 
 /*
- * L.DomEvent contains functions for working with DOM events.
- */
+	L.DomEvent contains functions for working with DOM events.
+*/
 
 L.DomEvent = {
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
@@ -5638,8 +5668,8 @@ L.DomEvent.off = L.DomEvent.removeListener;
 
 
 /*
- * L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
- */
+	L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
+*/
 
 L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,
@@ -5833,8 +5863,9 @@ L.Draggable = L.Class.extend({
 
 
 /*
- * L.Handler classes are used internally to inject interaction features to classes like Map and Marker.
- */
+	L.Handler is a base class for handler classes that are used internally to inject
+	interaction features like dragging to classes like Map and Marker.
+*/
 
 L.Handler = L.Class.extend({
 	initialize: function (map) {
@@ -6109,6 +6140,9 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
 
 
+/*
+	Extends the event handling code with double tap support for mobile browsers.
+*/
 
 L.extend(L.DomEvent, {
 
@@ -6203,6 +6237,10 @@ L.extend(L.DomEvent, {
 	}
 });
 
+
+/*
+	Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
+*/
 
 L.extend(L.DomEvent, {
 
@@ -6581,7 +6619,6 @@ L.Map.mergeOptions({
 
 L.Map.Keyboard = L.Handler.extend({
 
-	// list of e.keyCode values for particular actions
 	keyCodes: {
 		left:    [37],
 		right:   [39],
@@ -6607,9 +6644,9 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 
 		L.DomEvent
-		    .addListener(container, 'focus', this._onFocus, this)
-		    .addListener(container, 'blur', this._onBlur, this)
-		    .addListener(container, 'mousedown', this._onMouseDown, this);
+		    .on(container, 'focus', this._onFocus, this)
+		    .on(container, 'blur', this._onBlur, this)
+		    .on(container, 'mousedown', this._onMouseDown, this);
 
 		this._map
 		    .on('focus', this._addHooks, this)
@@ -6622,9 +6659,9 @@ L.Map.Keyboard = L.Handler.extend({
 		var container = this._map._container;
 
 		L.DomEvent
-		    .removeListener(container, 'focus', this._onFocus, this)
-		    .removeListener(container, 'blur', this._onBlur, this)
-		    .removeListener(container, 'mousedown', this._onMouseDown, this);
+		    .off(container, 'focus', this._onFocus, this)
+		    .off(container, 'blur', this._onBlur, this)
+		    .off(container, 'mousedown', this._onMouseDown, this);
 
 		this._map
 		    .off('focus', this._addHooks, this)
@@ -6680,21 +6717,26 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_addHooks: function () {
-		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.on(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_removeHooks: function () {
-		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.off(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_onKeyDown: function (e) {
-		var key = e.keyCode;
+		var key = e.keyCode,
+		    map = this._map;
 
 		if (this._panKeys.hasOwnProperty(key)) {
-			this._map.panBy(this._panKeys[key]);
+			map.panBy(this._panKeys[key]);
+
+			if (map.options.maxBounds) {
+				map.panInsideBounds(map.options.maxBounds);
+			}
 
 		} else if (this._zoomKeys.hasOwnProperty(key)) {
-			this._map.setZoom(this._map.getZoom() + this._zoomKeys[key]);
+			map.setZoom(map.getZoom() + this._zoomKeys[key]);
 
 		} else {
 			return;
@@ -7015,6 +7057,10 @@ L.Polyline.addInitHook(function () {
 });
 
 
+/*
+	L.Control is a base class for implementing map controls. Handles positioning.
+	All other controls extend from this class.
+*/
 
 L.Control = L.Class.extend({
 	options: {
@@ -7114,6 +7160,10 @@ L.Map.include({
 });
 
 
+/*
+	L.Control.Zoom is used for the default zoom buttons on the map.
+*/
+
 L.Control.Zoom = L.Control.extend({
 	options: {
 		position: 'topleft'
@@ -7153,10 +7203,12 @@ L.Control.Zoom = L.Control.extend({
 		link.href = '#';
 		link.title = title;
 
+		var stop = L.DomEvent.stopPropagation;
+
 		L.DomEvent
-		    .on(link, 'click', L.DomEvent.stopPropagation)
-		    .on(link, 'mousedown', L.DomEvent.stopPropagation)
-		    .on(link, 'dblclick', L.DomEvent.stopPropagation)
+		    .on(link, 'click', stop)
+		    .on(link, 'mousedown', stop)
+		    .on(link, 'dblclick', stop)
 		    .on(link, 'click', L.DomEvent.preventDefault)
 		    .on(link, 'click', fn, context);
 
@@ -7195,6 +7247,10 @@ L.control.zoom = function (options) {
 };
 
 
+
+/*
+	L.Control.Attribution is used for displaying attribution on the map (added by default).
+*/
 
 L.Control.Attribution = L.Control.extend({
 	options: {
@@ -7307,6 +7363,10 @@ L.control.attribution = function (options) {
 };
 
 
+/*
+	L.Control.Scale is used for displaying metric/imperial scale on the map.
+*/
+
 L.Control.Scale = L.Control.extend({
 	options: {
 		position: 'bottomleft',
@@ -7416,6 +7476,10 @@ L.control.scale = function (options) {
 	return new L.Control.Scale(options);
 };
 
+
+/*
+	L.Control.Layers is a control to allow users to switch between different layers on the map.
+*/
 
 L.Control.Layers = L.Control.extend({
 	options: {
@@ -7661,8 +7725,8 @@ L.control.layers = function (baseLayers, overlays, options) {
 
 
 /*
- * L.PosAnimation is used by Leaflet internally for pan animations.
- */
+	L.PosAnimation is used by Leaflet internally for pan animations.
+*/
 
 L.PosAnimation = L.Class.extend({
 	includes: L.Mixin.Events,
@@ -7825,8 +7889,8 @@ L.Map.include({
 
 
 /*
- * L.PosAnimation fallback implementation that powers Leaflet pan animations
- * in browsers that don't support CSS3 Transitions.
+	L.PosAnimation fallback implementation that powers Leaflet pan animations
+	in browsers that don't support CSS3 Transitions.
  */
 
 L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
