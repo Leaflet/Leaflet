@@ -1,3 +1,7 @@
+/*
+	L.Control.Zoom is used for the default zoom buttons on the map.
+*/
+
 L.Control.Zoom = L.Control.extend({
 	options: {
 		position: 'topleft'
@@ -37,10 +41,12 @@ L.Control.Zoom = L.Control.extend({
 		link.href = '#';
 		link.title = title;
 
+		var stop = L.DomEvent.stopPropagation;
+
 		L.DomEvent
-		    .on(link, 'click', L.DomEvent.stopPropagation)
-		    .on(link, 'mousedown', L.DomEvent.stopPropagation)
-		    .on(link, 'dblclick', L.DomEvent.stopPropagation)
+		    .on(link, 'click', stop)
+		    .on(link, 'mousedown', stop)
+		    .on(link, 'dblclick', stop)
 		    .on(link, 'click', L.DomEvent.preventDefault)
 		    .on(link, 'click', fn, context);
 

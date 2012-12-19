@@ -1,3 +1,7 @@
+/*
+	L.Browser handles different browser and feature detections for internal Leaflet use.
+*/
+
 (function () {
 
 	var ie = !!window.ActiveXObject,

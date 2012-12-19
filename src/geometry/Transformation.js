@@ -1,6 +1,6 @@
 /*
- * L.Transformation is an utility class to perform simple point transformations through a 2d-matrix.
- */
+	L.Transformation is an utility class to perform simple point transformations through a 2d-matrix.
+*/
 
 L.Transformation = function (a, b, c, d) {
 	this._a = a;

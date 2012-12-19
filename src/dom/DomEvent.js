@@ -1,6 +1,6 @@
 /*
- * L.DomEvent contains functions for working with DOM events.
- */
+	L.DomEvent contains functions for working with DOM events.
+*/
 
 L.DomEvent = {
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
