@@ -1,18 +1,18 @@
 /*
- * L.LatLngBounds represents a rectangular area on the map in geographical coordinates.
- */
+	L.LatLngBounds represents a rectangular area on the map in geographical coordinates.
+*/
 
-L.LatLngBounds = L.Class.extend({
-	initialize: function (southWest, northEast) {	// (LatLng, LatLng) or (LatLng[])
-		if (!southWest) { return; }
+L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLng[])
+	if (!southWest) { return; }
 
-		var latlngs = northEast ? [southWest, northEast] : southWest;
+	var latlngs = northEast ? [southWest, northEast] : southWest;
 
-		for (var i = 0, len = latlngs.length; i < len; i++) {
-			this.extend(latlngs[i]);
-		}
-	},
+	for (var i = 0, len = latlngs.length; i < len; i++) {
+		this.extend(latlngs[i]);
+	}
+};
 
+L.LatLngBounds.prototype = {
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
 		if (typeof obj[0] === 'number' || typeof obj[0] === 'string' || obj instanceof L.LatLng) {
@@ -128,7 +128,7 @@ L.LatLngBounds = L.Class.extend({
 	isValid: function () {
 		return !!(this._southWest && this._northEast);
 	}
-});
+};
 
 //TODO International date line?
 
