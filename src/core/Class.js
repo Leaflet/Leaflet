@@ -56,19 +56,22 @@ L.Class.extend = function (props) {
 	// mix given properties into the prototype
 	L.extend(proto, props);
 
-	// inherit constructor hooks
-	if (this.prototype._initHooks) {
-		proto._initHooks = this.prototype._initHooks.slice();
-	}
+	proto._initHooks = [];
 
+	var parent = this;
 	// add method for calling all hooks
 	proto.callInitHooks = function () {
 
 		if (this._initHooksCalled) { return; }
+
+		if (parent.prototype.callInitHooks) {
+			parent.prototype.callInitHooks.call(this);
+		}
+
 		this._initHooksCalled = true;
 
-		for (var i = 0, len = this._initHooks.length; i < len; i++) {
-			this._initHooks[i].call(this);
+		for (var i = 0, len = proto._initHooks.length; i < len; i++) {
+			proto._initHooks[i].call(this);
 		}
 	};
 
