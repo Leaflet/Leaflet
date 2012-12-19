@@ -123,20 +123,30 @@ describe("Class", function() {
 			var spy1 = jasmine.createSpy("init hook 1"),
 				spy2 = jasmine.createSpy("init hook 2");
 
+			var Klass2 = Klass.extend({});
+
 			Klass.addInitHook(spy1);
+			Klass2.addInitHook(spy2);
+
+			var a = new Klass2();
+
+			expect(spy1).toHaveBeenCalled();
+			expect(spy2).toHaveBeenCalled();
+		});
+
+		it("should not call child constructor hooks", function () {
+			var spy1 = jasmine.createSpy("init hook 1"),
+				spy2 = jasmine.createSpy("init hook 2");
 
 			var Klass2 = Klass.extend({});
+
+			Klass.addInitHook(spy1);
 			Klass2.addInitHook(spy2);
 
 			var a = new Klass();
 
 			expect(spy1).toHaveBeenCalled();
 			expect(spy2).not.toHaveBeenCalled();
-
-			var b = new Klass2();
-
-			expect(spy2).toHaveBeenCalled();
-			expect(spy1.argsForCall.length).toBe(2);
 		});
 	});
 
