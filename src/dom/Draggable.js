@@ -1,6 +1,6 @@
 /*
-	L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
-*/
+ * L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
+ */
 
 L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,

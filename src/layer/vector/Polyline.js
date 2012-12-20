@@ -1,3 +1,7 @@
+/*
+ * L.Polygon is used to display polylines on a map.
+ */
+
 L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);

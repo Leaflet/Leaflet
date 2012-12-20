@@ -1,6 +1,6 @@
 /*
-	L.DomUtil contains various utility functions for working with DOM.
-*/
+ * L.DomUtil contains various utility functions for working with DOM.
+ */
 
 L.DomUtil = {
 	get: function (id) {

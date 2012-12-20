@@ -1,6 +1,6 @@
 /*
-	L.Util contains various utility functions used throughout Leaflet code.
-*/
+ * L.Util contains various utility functions used throughout Leaflet code.
+ */
 
 L.Util = {
 	extend: function (dest) { // (Object[, Object, ...]) ->

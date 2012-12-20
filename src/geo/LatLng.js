@@ -1,6 +1,6 @@
 /*
-	L.LatLng represents a geographical point with latitude and longitude coordinates.
-*/
+ * L.LatLng represents a geographical point with latitude and longitude coordinates.
+ */
 
 L.LatLng = function (rawLat, rawLng) { // (Number, Number)
 	var lat = parseFloat(rawLat),

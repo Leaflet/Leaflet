@@ -1,3 +1,7 @@
+/*
+ * Extends L.Path with SVG-specific rendering code.
+ */
+
 L.Path.SVG_NS = 'http://www.w3.org/2000/svg';
 
 L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.SVG_NS, 'svg').createSVGRect);

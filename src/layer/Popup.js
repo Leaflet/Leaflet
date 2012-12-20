@@ -1,3 +1,6 @@
+/*
+ * L.Popup is used for displaying popups on the map.
+ */
 
 L.Map.mergeOptions({
 	closePopupOnClick: true

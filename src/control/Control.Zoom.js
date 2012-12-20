@@ -1,6 +1,6 @@
 /*
-	L.Control.Zoom is used for the default zoom buttons on the map.
-*/
+ * L.Control.Zoom is used for the default zoom buttons on the map.
+ */
 
 L.Control.Zoom = L.Control.extend({
 	options: {

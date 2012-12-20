@@ -1,6 +1,6 @@
 /*
-	L.Class powers the OOP facilities of the library.
-	Thanks to John Resig and Dean Edwards for inspiration!
+ * L.Class powers the OOP facilities of the library.
+ * Thanks to John Resig and Dean Edwards for inspiration!
  */
 
 L.Class = function () {};

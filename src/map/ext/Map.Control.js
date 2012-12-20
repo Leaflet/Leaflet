@@ -1,3 +1,7 @@
+/*
+ * Adds control-related methods to L.Map.
+ */
+
 L.Map.include({
 	addControl: function (control) {
 		control.addTo(this);

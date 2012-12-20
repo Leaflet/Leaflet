@@ -1,7 +1,7 @@
 /*
-	L.LineUtil contains different utility functions for line segments
-	and polylines (clipping, simplification, distances, etc.)
-*/
+ * L.LineUtil contains different utility functions for line segments
+ * and polylines (clipping, simplification, distances, etc.)
+ */
 
 /*jshint bitwise:false */ // allow bitwise oprations for this file
 

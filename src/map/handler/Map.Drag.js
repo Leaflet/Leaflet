@@ -1,5 +1,5 @@
 /*
- * L.Handler.MapDrag is used internally by L.Map to make the map draggable.
+ * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
 L.Map.mergeOptions({

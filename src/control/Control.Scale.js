@@ -1,6 +1,6 @@
 /*
-	L.Control.Scale is used for displaying metric/imperial scale on the map.
-*/
+ * L.Control.Scale is used for displaying metric/imperial scale on the map.
+ */
 
 L.Control.Scale = L.Control.extend({
 	options: {

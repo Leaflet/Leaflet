@@ -1,6 +1,6 @@
 /*
-	L.PosAnimation is used by Leaflet internally for pan animations.
-*/
+ * L.PosAnimation is used by Leaflet internally for pan animations.
+ */
 
 L.PosAnimation = L.Class.extend({
 	includes: L.Mixin.Events,

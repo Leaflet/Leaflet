@@ -1,5 +1,5 @@
 /*
- * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds
+ * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
  */
 
 L.Rectangle = L.Polygon.extend({

@@ -1,6 +1,6 @@
 /*
-	L.PosAnimation fallback implementation that powers Leaflet pan animations
-	in browsers that don't support CSS3 Transitions.
+ * L.PosAnimation fallback implementation that powers Leaflet pan animations
+ * in browsers that don't support CSS3 Transitions.
  */
 
 L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({

@@ -1,5 +1,5 @@
 /*
- * Popup extension to L.Path (polylines, polygons, circles), adding bindPopup method.
+ * Popup extension to L.Path (polylines, polygons, circles), adding popup-related methods.
  */
 
 L.Path.include({

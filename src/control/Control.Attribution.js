@@ -1,6 +1,6 @@
 /*
-	L.Control.Attribution is used for displaying attribution on the map (added by default).
-*/
+ * L.Control.Attribution is used for displaying attribution on the map (added by default).
+ */
 
 L.Control.Attribution = L.Control.extend({
 	options: {

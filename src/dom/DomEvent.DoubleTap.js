@@ -1,6 +1,6 @@
 /*
-	Extends the event handling code with double tap support for mobile browsers.
-*/
+ * Extends the event handling code with double tap support for mobile browsers.
+ */
 
 L.extend(L.DomEvent, {
 

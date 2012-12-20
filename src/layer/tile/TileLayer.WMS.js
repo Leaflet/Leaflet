@@ -1,3 +1,7 @@
+/*
+ * L.TileLayer.WMS is used for putting WMS tile layers on the map.
+ */
+
 L.TileLayer.WMS = L.TileLayer.extend({
 
 	defaultWmsParams: {

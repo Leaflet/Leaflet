@@ -1,6 +1,6 @@
 /*
-	L.Browser handles different browser and feature detections for internal Leaflet use.
-*/
+ * L.Browser handles different browser and feature detections for internal Leaflet use.
+ */
 
 (function () {
 

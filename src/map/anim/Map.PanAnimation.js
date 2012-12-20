@@ -1,3 +1,6 @@
+/*
+ * Extends L.Map to handle panning animations.
+ */
 
 L.Map.include({
 

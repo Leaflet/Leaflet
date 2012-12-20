@@ -1,6 +1,6 @@
 /*
-	L.PolyUtil contains utility functions for polygons (clipping, etc.).
-*/
+ * L.PolyUtil contains utility functions for polygons (clipping, etc.).
+ */
 
 /*jshint bitwise:false */ // allow bitwise operations here
 

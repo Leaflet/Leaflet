@@ -1,3 +1,7 @@
+/*
+ * L.Handler.PolyEdit is an editing handler for polylines and polygons.
+ */
+
 L.Handler.PolyEdit = L.Handler.extend({
 	options: {
 		icon: new L.DivIcon({

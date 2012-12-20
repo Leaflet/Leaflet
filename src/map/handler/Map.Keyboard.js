@@ -1,3 +1,7 @@
+/*
+ * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
+ */
+
 L.Map.mergeOptions({
 	keyboard: true,
 	keyboardPanOffset: 80,
