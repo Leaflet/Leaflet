@@ -1,5 +1,5 @@
 body {
-	background: #f0f0f0;
+	background: #f0f0f0 url(../images/paper.png);
 	}
 
 .container {
@@ -16,7 +16,7 @@ body {
 	box-shadow: 0 0 60px rgba(0,0,0,0.15);
 	}
 h1 {
-	margin-bottom: 10px;
+	margin-bottom: 0;
 	}
 h1 a {
 	display: block;
@@ -99,6 +99,7 @@ h3.alt {
 	font-family: Georgia, serif;
 	font-style: italic;
 	font-weight: normal;
+	font-size: 1.7em;
 	}
 
 .container code, .container pre code {
@@ -402,7 +403,7 @@ table.factory-table td, table.factory-table th {
 }
 
 .social-buttons {
-	margin: 18px 0;
+	margin: 18px 0 0;
 	padding: 6px 0 2px 8px;
 	background: #f3f3f3;
 	position: absolute;

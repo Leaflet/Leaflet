@@ -2,19 +2,39 @@
 layout: default
 ---
 
-<p class="notice">October 25, 2012 &mdash; Leaflet 0.4.5 bugfix release and plans for 0.5 &mdash; <a href="2012/10/25/leaflet-0-4-5-bugfix-release-and-plans-for-0.5.html">Read More in the Blog</a></p>
+<!--<p class="notice">October 25, 2012 &mdash; Leaflet 0.4.5 bugfix release and plans for 0.5 &mdash; <a href="2012/10/25/leaflet-0-4-5-bugfix-release-and-plans-for-0.5.html">Read More in the Blog</a></p>-->
 
-Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps. It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][]. Weighing just about <abbr title="That's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images">27 KB of gzipped JS code</abbr>, it has all the [features][] most developers ever need for online maps.
+Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.
+It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a&nbsp;team of dedicated [contributors][].
+Weighing just about <abbr title="27KB gzipped &mdash; that's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images.">27 KB of JS code</abbr>,
+it has all the [features][] most developers ever need for online maps.
 
-Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind. It works efficiently across all major desktop and mobile platforms out of the box, taking advantage of HTML5 and CSS3 on modern browsers while being accessible on older ones too. It can also be extended with many [plugins][], has a beautiful, easy to use and [well-documented][] API and a simple, readable [source code][] that is a joy to [contribute][] to.
+Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind.
+It works efficiently across all major desktop and mobile platforms out of the box,
+taking advantage of HTML5 and CSS3 on modern browsers while still being accessible on older ones.
+It can be extended with many [plugins][], has a beautiful, easy to use and [well-documented API][]
+and a simple, readable [source code][] that is a joy to [contribute][] to.
 
 {: .usedby}
-Used by: [Flickr](http://flickr.com/map) [foursquare](https://foursquare.com/) [craigslist](http://t.co/V4EiURIA) [IGN](http://www.ign.com/wikis/the-elder-scrolls-5-skyrim/interactive-maps/Skyrim) [Wikimedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/) [Meetup](http://www.meetup.com/) [WSJ](http://projects.wsj.com/campaign2012/maps/) [Geocaching](http://geocaching.com) [StreetEasy](http://streeteasy.com/) [Nestoria](http://www.nestoria.co.uk) [Topix](http://topix.com/) [Chartbeat](http://chartbeat.com/) [GIS Cloud](http://www.giscloud.com/) ...
+Used by:
+[Flickr](http://flickr.com/map)
+[foursquare](https://foursquare.com/)
+[craigslist](http://t.co/V4EiURIA)
+[IGN](http://www.ign.com/wikis/the-elder-scrolls-5-skyrim/interactive-maps/Skyrim)
+[Wikimedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/)
+[OSM](http://openstreetmap.org)
+[Meetup](http://www.meetup.com/)
+[WSJ](http://projects.wsj.com/campaign2012/maps/)
+[Geocaching](http://geocaching.com)
+[StreetEasy](http://streeteasy.com/)
+[Nestoria](http://www.nestoria.co.uk)
+[Chartbeat](http://chartbeat.com/)
+[GIS Cloud](http://www.giscloud.com/)
+...
 
 <div id="map" class="map" style="height: 300px"></div>
 
 In this basic example, we create a map with <abbr title="Here we use the beautiful CloudMade tiles which require an API key (get one for free!), but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:
-
 
 <!--- manually colored to support raw HTML inside the code -->
 <pre><code class="javascript"><span class="comment">// create a map in the "map" div, set the view to a given place and zoom</span>
@@ -29,13 +49,19 @@ L.tileLayer(<span class="string">'http://{s}.tile.cloudmade.com/<a href="http://
 L.marker([<span class="number">51.5</span>, -<span class="number">0.09</span>]).addTo(map)
     .bindPopup(<span class="string">'A pretty CSS3 popup. &lt;br&gt; Easily customizable.'</span>).openPopup();</code></pre>
 
-
 Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html).
 
 
 ## Getting Involved
 
-Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist. However, they're not the only way to get involved with the development of Leaflet. You can help the project tremendously by discovering and [reporting bugs][], [improving documentation][], helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) and [GitHub issues](https://github.com/CloudMade/Leaflet/issues), showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com), tweeting to [@LeafletJS](http://twitter.com/LeafletJS) and spreading the word about Leaflet among your colleagues and friends.
+Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist.
+However, they're not the only way to get involved with the development of Leaflet.
+You can help the project tremendously by discovering and [reporting bugs][], [improving documentation][],
+helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js)
+and [GitHub issues](https://github.com/CloudMade/Leaflet/issues),
+showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com),
+tweeting to [@LeafletJS](http://twitter.com/LeafletJS)
+and spreading the word about Leaflet among your colleagues and friends.
 
 Check out the [contribution guide][contribute] for more information on getting involved with Leaflet development.
 
@@ -44,7 +70,7 @@ Check out the [contribution guide][contribute] for more information on getting i
   [contributors]: https://github.com/CloudMade/Leaflet/graphs/contributors
   [features]: features.html
   [plugins]: plugins.html
-  [well-documented]: reference.html "Leaflet API reference"
+  [well-documented API]: reference.html "Leaflet API reference"
   [source code]: https://github.com/CloudMade/Leaflet "Leaflet GitHub repository"
   [hosted on GitHub]: http://github.com/CloudMade/Leaflet
   [contribute]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
