@@ -1,3 +1,7 @@
+/*
+ * Extends L.Path with SVG-specific rendering code.
+ */
+
 L.Path.SVG_NS = 'http://www.w3.org/2000/svg';
 
 L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.SVG_NS, 'svg').createSVGRect);
@@ -8,16 +12,24 @@ L.Path = L.Path.extend({
 	},
 
 	bringToFront: function () {
-		if (this._container) {
-			this._map._pathRoot.appendChild(this._container);
+		var root = this._map._pathRoot,
+		    path = this._container;
+
+		if (path && root.lastChild !== path) {
+			root.appendChild(path);
 		}
+		return this;
 	},
 
 	bringToBack: function () {
-		if (this._container) {
-			var root = this._map._pathRoot;
-			root.insertBefore(this._container, root.firstChild);
+		var root = this._map._pathRoot,
+		    path = this._container,
+		    first = root.firstChild;
+
+		if (path && first !== path) {
+			root.insertBefore(path, first);
 		}
+		return this;
 	},
 
 	getPathString: function () {
@@ -39,8 +51,6 @@ L.Path = L.Path.extend({
 
 		this._path = this._createElement('path');
 		this._container.appendChild(this._path);
-
-		this._map._pathRoot.appendChild(this._container);
 	},
 
 	_initStyle: function () {
@@ -59,6 +69,11 @@ L.Path = L.Path.extend({
 			this._path.setAttribute('stroke', this.options.color);
 			this._path.setAttribute('stroke-opacity', this.options.opacity);
 			this._path.setAttribute('stroke-width', this.options.weight);
+			if (this.options.dashArray) {
+				this._path.setAttribute('stroke-dasharray', this.options.dashArray);
+			} else {
+				this._path.removeAttribute('stroke-dasharray');
+			}
 		} else {
 			this._path.setAttribute('stroke', 'none');
 		}
@@ -88,7 +103,8 @@ L.Path = L.Path.extend({
 
 			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-			var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
+			var events = ['dblclick', 'mousedown', 'mouseover',
+			              'mouseout', 'mousemove', 'contextmenu'];
 			for (var i = 0; i < events.length; i++) {
 				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 			}
@@ -96,25 +112,18 @@ L.Path = L.Path.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) {
-			return;
-		}
-
-		if (e.type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
-		}
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		if (!this.hasEventListeners(e.type)) {
-			return;
-		}
+		if (!this.hasEventListeners(e.type)) { return; }
+
 		var map = this._map,
-			containerPoint = map.mouseEventToContainerPoint(e),
-			layerPoint = map.containerPointToLayerPoint(containerPoint),
-			latlng = map.layerPointToLatLng(layerPoint);
+		    containerPoint = map.mouseEventToContainerPoint(e),
+		    layerPoint = map.containerPointToLayerPoint(containerPoint),
+		    latlng = map.layerPointToLatLng(layerPoint);
 
 		this.fire(e.type, {
 			latlng: latlng,
@@ -123,7 +132,12 @@ L.Path = L.Path.extend({
 			originalEvent: e
 		});
 
-		L.DomEvent.stopPropagation(e);
+		if (e.type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+		if (e.type !== 'mousemove') {
+			L.DomEvent.stopPropagation(e);
+		}
 	}
 });
 
@@ -149,13 +163,12 @@ L.Map.include({
 		}
 	},
 
-	_animatePathZoom: function (opt) {
-		var scale = this.getZoomScale(opt.zoom),
-			offset = this._getCenterOffset(opt.center).divideBy(1 - 1 / scale),
-			viewportPos = this.containerPointToLayerPoint(this.getSize().multiplyBy(-L.Path.CLIP_PADDING)),
-			origin = viewportPos.add(offset).round();
+	_animatePathZoom: function (e) {
+		var scale = this.getZoomScale(e.zoom),
+		    offset = this._getCenterOffset(e.center)._multiplyBy(-scale);
 
-		this._pathRoot.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString((origin.multiplyBy(-1).add(L.DomUtil.getPosition(this._pathRoot)).multiplyBy(scale).add(origin))) + ' scale(' + scale + ') ';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] +=
+		        L.DomUtil.getTranslateString(offset) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},
@@ -165,6 +178,7 @@ L.Map.include({
 	},
 
 	_updateSvgViewport: function () {
+
 		if (this._pathZooming) {
 			// Do not update SVGs while a zoom animation is going on otherwise the animation will break.
 			// When the zoom animation ends we will be updated again anyway
@@ -175,12 +189,12 @@ L.Map.include({
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
-			min = vp.min,
-			max = vp.max,
-			width = max.x - min.x,
-			height = max.y - min.y,
-			root = this._pathRoot,
-			pane = this._panes.overlayPane;
+		    min = vp.min,
+		    max = vp.max,
+		    width = max.x - min.x,
+		    height = max.y - min.y,
+		    root = this._pathRoot,
+		    pane = this._panes.overlayPane;
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		if (L.Browser.mobileWebkit) {

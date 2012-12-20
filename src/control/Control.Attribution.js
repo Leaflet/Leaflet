@@ -1,11 +1,15 @@
+/*
+ * L.Control.Attribution is used for displaying attribution on the map (added by default).
+ */
+
 L.Control.Attribution = L.Control.extend({
 	options: {
 		position: 'bottomright',
-		prefix: 'Powered by <a href="http://leaflet.cloudmade.com">Leaflet</a>'
+		prefix: 'Powered by <a href="http://leafletjs.com">Leaflet</a>'
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._attributions = {};
 	},
@@ -15,8 +19,8 @@ L.Control.Attribution = L.Control.extend({
 		L.DomEvent.disableClickPropagation(this._container);
 
 		map
-			.on('layeradd', this._onLayerAdd, this)
-			.on('layerremove', this._onLayerRemove, this);
+		    .on('layeradd', this._onLayerAdd, this)
+		    .on('layerremove', this._onLayerRemove, this);
 
 		this._update();
 
@@ -25,14 +29,15 @@ L.Control.Attribution = L.Control.extend({
 
 	onRemove: function (map) {
 		map
-			.off('layeradd', this._onLayerAdd)
-			.off('layerremove', this._onLayerRemove);
+		    .off('layeradd', this._onLayerAdd)
+		    .off('layerremove', this._onLayerRemove);
 
 	},
 
 	setPrefix: function (prefix) {
 		this.options.prefix = prefix;
 		this._update();
+		return this;
 	},
 
 	addAttribution: function (text) {
@@ -44,6 +49,8 @@ L.Control.Attribution = L.Control.extend({
 		this._attributions[text]++;
 
 		this._update();
+
+		return this;
 	},
 
 	removeAttribution: function (text) {
@@ -51,6 +58,8 @@ L.Control.Attribution = L.Control.extend({
 
 		this._attributions[text]--;
 		this._update();
+
+		return this;
 	},
 
 	_update: function () {
@@ -73,7 +82,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' &mdash; ');
+		this._container.innerHTML = prefixAndAttribs.join(' &#8212; ');
 	},
 
 	_onLayerAdd: function (e) {
@@ -98,3 +107,7 @@ L.Map.addInitHook(function () {
 		this.attributionControl = (new L.Control.Attribution()).addTo(this);
 	}
 });
+
+L.control.attribution = function (options) {
+	return new L.Control.Attribution(options);
+};

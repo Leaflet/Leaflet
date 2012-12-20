@@ -3,6 +3,8 @@
  * and polylines (clipping, simplification, distances, etc.)
  */
 
+/*jshint bitwise:false */ // allow bitwise oprations for this file
+
 L.LineUtil = {
 
 	// Simplify polyline with vertex reduction and Douglas-Peucker simplification.
@@ -37,15 +39,15 @@ L.LineUtil = {
 	_simplifyDP: function (points, sqTolerance) {
 
 		var len = points.length,
-			ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
-			markers = new ArrayConstructor(len);
+		    ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
+		    markers = new ArrayConstructor(len);
 
 		markers[0] = markers[len - 1] = 1;
 
 		this._simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
 
 		var i,
-			newPoints = [];
+		    newPoints = [];
 
 		for (i = 0; i < len; i++) {
 			if (markers[i]) {
@@ -59,7 +61,7 @@ L.LineUtil = {
 	_simplifyDPStep: function (points, markers, sqTolerance, first, last) {
 
 		var maxSqDist = 0,
-			index, i, sqDist;
+		    index, i, sqDist;
 
 		for (i = first + 1; i <= last - 1; i++) {
 			sqDist = this._sqClosestPointOnSegment(points[i], points[first], points[last], true);
@@ -94,17 +96,14 @@ L.LineUtil = {
 		return reducedPoints;
 	},
 
-	/*jshint bitwise:false */ // temporarily allow bitwise oprations
-
 	// Cohen-Sutherland line clipping algorithm.
 	// Used to avoid rendering parts of a polyline that are not currently visible.
 
 	clipSegment: function (a, b, bounds, useLastCode) {
-		var min = bounds.min,
-			max = bounds.max;
-
 		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
-			codeB = this._getBitCode(b, bounds);
+		    codeB = this._getBitCode(b, bounds),
+
+		    codeOut, p, newCode;
 
 		// save 2nd code to avoid calculating it on the next segment
 		this._lastCode = codeB;
@@ -118,9 +117,9 @@ L.LineUtil = {
 				return false;
 			// other cases
 			} else {
-				var codeOut = codeA || codeB,
-					p = this._getEdgeIntersection(a, b, codeOut, bounds),
-					newCode = this._getBitCode(p, bounds);
+				codeOut = codeA || codeB,
+				p = this._getEdgeIntersection(a, b, codeOut, bounds),
+				newCode = this._getBitCode(p, bounds);
 
 				if (codeOut === codeA) {
 					a = p;
@@ -135,9 +134,9 @@ L.LineUtil = {
 
 	_getEdgeIntersection: function (a, b, code, bounds) {
 		var dx = b.x - a.x,
-			dy = b.y - a.y,
-			min = bounds.min,
-			max = bounds.max;
+		    dy = b.y - a.y,
+		    min = bounds.min,
+		    max = bounds.max;
 
 		if (code & 8) { // top
 			return new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
@@ -167,23 +166,21 @@ L.LineUtil = {
 		return code;
 	},
 
-	/*jshint bitwise:true */
-
 	// square distance (to avoid unnecessary Math.sqrt calls)
 	_sqDist: function (p1, p2) {
 		var dx = p2.x - p1.x,
-			dy = p2.y - p1.y;
+		    dy = p2.y - p1.y;
 		return dx * dx + dy * dy;
 	},
 
 	// return closest point on segment or distance to that point
 	_sqClosestPointOnSegment: function (p, p1, p2, sqDist) {
 		var x = p1.x,
-			y = p1.y,
-			dx = p2.x - x,
-			dy = p2.y - y,
-			dot = dx * dx + dy * dy,
-			t;
+		    y = p1.y,
+		    dx = p2.x - x,
+		    dy = p2.y - y,
+		    dot = dx * dx + dy * dy,
+		    t;
 
 		if (dot > 0) {
 			t = ((p.x - x) * dx + (p.y - y) * dy) / dot;

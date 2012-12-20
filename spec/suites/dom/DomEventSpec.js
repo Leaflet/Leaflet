@@ -63,7 +63,7 @@ describe('DomEvent', function() {
 	});
 	
 	describe('#removeListener', function() {
-		it('should remove prevously added listener', function() {
+		it('should remove previously added listener', function() {
 			var listener = jasmine.createSpy('listener');
 			
 			L.DomEvent.addListener(el, 'click', listener);

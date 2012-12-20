@@ -1,3 +1,6 @@
+/*
+ * L.CRS is a base object for all defined CRS (Coordinate Reference Systems) in Leaflet.
+ */
 
 L.CRS = {
 	latLngToPoint: function (latlng, zoom) { // (LatLng, Number) -> Point

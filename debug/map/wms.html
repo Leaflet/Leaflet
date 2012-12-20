@@ -5,9 +5,9 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
 	<link rel="stylesheet" href="../css/screen.css" />
-	
+
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -16,11 +16,12 @@
 
 	<script type="text/javascript">
 		var map = new L.Map('map');
-	
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png',
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});
-	
+			cloudmade = new L.TileLayer(cloudmadeUrl, {styleId: 997, attribution: cloudmadeAttribution}),
+			cloudmade2 = new L.TileLayer(cloudmadeUrl, {styleId: 998, attribution: cloudmadeAttribution});
+
 		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 			layers: 'nexrad-n0r-900913',
 			format: 'image/png',
@@ -30,8 +31,10 @@
 		});
 
 		var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
-		
+
 		map.addLayer(cloudmade).addLayer(nexrad).fitBounds(bounds);
+
+		L.control.layers({"CM": cloudmade, "CM2": cloudmade2}, {"NexRad": nexrad}).addTo(map);
 	</script>
 </body>
 </html>

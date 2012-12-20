@@ -16,8 +16,25 @@
 	<div id="map"></div>
 
 	<script>
-		var map = L.map('map')
-			.setView([51.505, -0.09], 13);
+		var map = L.map('map');
+
+		var marker = L.marker([51.5, -0.09])
+			.bindPopup("<b>Hello world!</b><br />I am a popup.")
+			.addTo(map);
+			//.openPopup();
+
+		var circle = L.circle([51.508, -0.11], 500, {color: '#f03', opacity: 0.7})
+			.bindPopup("I am a circle.")
+			.addTo(map);
+
+		var polygon = L.polygon([
+			[51.509, -0.08],
+			[51.503, -0.06],
+			[51.51,  -0.047]])
+			.bindPopup("I am a polygon.")
+			.addTo(map);
+
+		map.setView([51.505, -0.09], 13);
 
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
 			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
@@ -26,21 +43,6 @@
 			styleId: 997
 		}).addTo(map);
 
-		L.marker([51.5, -0.09])
-			.bindPopup("<b>Hello world!</b><br />I am a popup.")
-			.addTo(map)
-			.openPopup();
-
-		L.circle([51.508, -0.11], 500, {color: '#f03', opacity: 0.7})
-			.bindPopup("I am a circle.")
-			.addTo(map);
-
-		L.polygon([
-			[51.509, -0.08],
-			[51.503, -0.06],
-			[51.51,  -0.047]])
-			.bindPopup("I am a polygon.")
-			.addTo(map);
 	</script>
 </body>
 </html>

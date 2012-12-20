@@ -1,5 +1,5 @@
 /*
- * L.Path is a base class for rendering vector paths on a map. It's inherited by Polyline, Circle, etc.
+ * L.Path is a base class for rendering vector paths on a map. Inherited by Polyline, Circle, etc.
  */
 
 L.Path = L.Class.extend({
@@ -8,12 +8,16 @@ L.Path = L.Class.extend({
 	statics: {
 		// how much to extend the clip area around the map view
 		// (relative to its size, e.g. 0.5 is half the screen in each direction)
-		CLIP_PADDING: 0.5
+		// set it so that SVG element doesn't exceed 1280px (vectors flicker on dragend if it is)
+		CLIP_PADDING: L.Browser.mobile ?
+			Math.max(0, Math.min(0.5,
+			        (1280 / Math.max(window.innerWidth, window.innerHeight) - 1) / 2)) : 0.5
 	},
 
 	options: {
 		stroke: true,
 		color: '#0033ff',
+		dashArray: null,
 		weight: 5,
 		opacity: 0.5,
 
@@ -25,16 +29,25 @@ L.Path = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
 		this._map = map;
 
-		this._initElements();
-		this._initEvents();
+		if (!this._container) {
+			this._initElements();
+			this._initEvents();
+		}
+
 		this.projectLatlngs();
 		this._updatePath();
+
+		if (this._container) {
+			this._map._pathRoot.appendChild(this._container);
+		}
+
+		this.fire('add');
 
 		map.on({
 			'viewreset': this.projectLatlngs,
@@ -48,9 +61,17 @@ L.Path = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		map._pathRoot.removeChild(this._container);
+
 		this._map = null;
 
-		map._pathRoot.removeChild(this._container);
+		if (L.Browser.vml) {
+			this._container = null;
+			this._stroke = null;
+			this._fill = null;
+		}
+
+		this.fire('remove');
 
 		map.off({
 			'viewreset': this.projectLatlngs,
@@ -63,7 +84,7 @@ L.Path = L.Class.extend({
 	},
 
 	setStyle: function (style) {
-		L.Util.setOptions(this, style);
+		L.setOptions(this, style);
 
 		if (this._container) {
 			this._updateStyle();
@@ -84,10 +105,10 @@ L.Path = L.Class.extend({
 L.Map.include({
 	_updatePathViewport: function () {
 		var p = L.Path.CLIP_PADDING,
-			size = this.getSize(),
-			panePos = L.DomUtil.getPosition(this._mapPane),
-			min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)),
-			max = min.add(size.multiplyBy(1 + p * 2));
+		    size = this.getSize(),
+		    panePos = L.DomUtil.getPosition(this._mapPane),
+		    min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)._round()),
+		    max = min.add(size.multiplyBy(1 + p * 2)._round());
 
 		this._pathViewport = new L.Bounds(min, max);
 	}

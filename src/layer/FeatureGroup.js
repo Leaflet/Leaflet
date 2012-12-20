@@ -1,12 +1,21 @@
 /*
- * L.FeatureGroup extends L.LayerGroup by introducing mouse events and bindPopup method shared between a group of layers.
+ * L.FeatureGroup extends L.LayerGroup by introducing mouse events and additional methods
+ * shared between a group of interactive layers (like vectors or markers).
  */
 
 L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
+	statics: {
+		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu'
+	},
+
 	addLayer: function (layer) {
-		layer.on('click dblclick mouseover mouseout', this._propagateEvent, this);
+		if (this._layers[L.stamp(layer)]) {
+			return this;
+		}
+
+		layer.on(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -14,15 +23,20 @@ L.FeatureGroup = L.LayerGroup.extend({
 			layer.bindPopup(this._popupContent);
 		}
 
-		return this;
+		return this.fire('layeradd', {layer: layer});
 	},
 
 	removeLayer: function (layer) {
-		layer.off('click dblclick mouseover mouseout', this._propagateEvent, this);
+		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
-		return this.invoke('unbindPopup');
+
+		if (this._popupContent) {
+			this.invoke('unbindPopup');
+		}
+
+		return this.fire('layerremove', {layer: layer});
 	},
 
 	bindPopup: function (content) {
@@ -34,11 +48,21 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.invoke('setStyle', style);
 	},
 
+	bringToFront: function () {
+		return this.invoke('bringToFront');
+	},
+
+	bringToBack: function () {
+		return this.invoke('bringToBack');
+	},
+
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
-		this._iterateLayers(function (layer) {
+
+		this.eachLayer(function (layer) {
 			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
-		}, this);
+		});
+
 		return bounds;
 	},
 

@@ -1,18 +1,23 @@
+/*
+ * L.Icon is an image-based icon class that you can use with L.Marker for custom markers.
+ */
+
 L.Icon = L.Class.extend({
 	options: {
 		/*
 		iconUrl: (String) (required)
 		iconSize: (Point) (can be set through CSS)
-		iconAnchor: (Point) (centered by default if size is specified, can be set in CSS with negative margins)
+		iconAnchor: (Point) (centered by default, can be set in CSS with negative margins)
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
 		shadowSize: (Point)
+		shadowAnchor: (Point)
 		*/
 		className: ''
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	createIcon: function () {
@@ -32,7 +37,7 @@ L.Icon = L.Class.extend({
 			}
 			return null;
 		}
-		
+
 		var img = this._createImg(src);
 		this._setIconStyles(img, name);
 
@@ -41,16 +46,17 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			size = L.point(options[name + 'Size']),
-			anchor = L.point(options.iconAnchor),
-			offset = L.point(options.shadowOffset);
+		    size = L.point(options[name + 'Size']),
+		    anchor;
+
+		if (name === 'shadow') {
+			anchor = L.point(options.shadowAnchor || options.iconAnchor);
+		} else {
+			anchor = L.point(options.iconAnchor);
+		}
 
 		if (!anchor && size) {
 			anchor = size.divideBy(2, true);
-		}
-
-		if (name === 'shadow' && anchor && offset) {
-			anchor = anchor.add(offset);
 		}
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className;
@@ -74,7 +80,8 @@ L.Icon = L.Class.extend({
 			el.src = src;
 		} else {
 			el = document.createElement('div');
-			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
+			el.style.filter =
+			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
 	},
@@ -87,48 +94,3 @@ L.Icon = L.Class.extend({
 L.icon = function (options) {
 	return new L.Icon(options);
 };
-
-
-// TODO move to a separate file
-
-L.Icon.Default = L.Icon.extend({
-	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
-		popupAnchor: new L.Point(0, -33),
-
-		shadowSize: new L.Point(41, 41)
-	},
-
-	_getIconUrl: function (name) {
-		var key = name + 'Url';
-
-		if (this.options[key]) {
-			return this.options[key];
-		}
-
-		var path = L.Icon.Default.imagePath;
-		
-		if (!path) {
-			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
-		}
-
-		return path + '/marker-' + name + '.png';
-	}
-});
-
-L.Icon.Default.imagePath = (function () {
-	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
-
-	var i, len, src, matches;
-
-	for (i = 0, len = scripts.length; i < len; i++) {
-		src = scripts[i].src;
-		matches = src.match(leafletRe);
-
-		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
-		}
-	}
-}());
