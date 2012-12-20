@@ -22,9 +22,9 @@
   "dependencies": {
   },
   "devDependencies": {
-    "jake":      "0.2.x",
-    "jshint":    "0.5.x",
-    "uglify-js": "1.2.x"
+    "jake":      ">=0.5.x",
+    "jshint":    ">=0.9.x",
+    "uglify-js": ">=2.2.2"
   },
   "contributors": [
   ]
