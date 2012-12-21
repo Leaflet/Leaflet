@@ -41,6 +41,13 @@ L.DomEvent = {
 
 				obj.addEventListener(newType, handler, false);
 
+			} else if (type === 'click') {
+				originalHandler = handler;
+				handler = function(e) {
+					return L.DomEvent._filterClick(e, originalHandler);
+				};
+
+				obj.addEventListener(type, handler, false);
 			} else {
 				obj.addEventListener(type, handler, false);
 			}
@@ -179,6 +186,21 @@ L.DomEvent = {
 			}
 		}
 		return e;
+	},
+	/*jshint noarg:false */
+
+	// this solves a bug in Android WebView where 
+	// a single touch triggers two click events.
+	_filterClick: function(e, handler) {
+		// are they closer together than 400ms?
+		// Android typically triggers them ~300ms apart
+		if ((e.timeStamp - L.DomEvent._lastClick) < 400) {
+			L.DomEvent.stop(e);
+			return;
+		}
+		L.DomEvent._lastClick = e.timeStamp;
+
+		return handler(e);
 	}
 };
 
