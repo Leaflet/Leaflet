@@ -41,7 +41,7 @@ L.DomEvent = {
 
 				obj.addEventListener(newType, handler, false);
 
-			} else if (type === 'click') {
+			} else if (type === 'click' && L.Browser.android) {
 				originalHandler = handler;
 				handler = function(e) {
 					return L.DomEvent._filterClick(e, originalHandler);
