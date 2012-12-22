@@ -77,14 +77,20 @@ L.Util = {
 		return obj.options;
 	},
 
-	getParamString: function (obj) {
+	getParamString: function (obj, existing_url) {
 		var params = [];
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
 				params.push(i + '=' + obj[i]);
 			}
 		}
-		return '?' + params.join('&');
+		if (existing_url.indexOf('?')===-1) {
+			return '?' + params.join('&');
+		}
+		else {
+			return '&' + params.join('&');
+		}
+		
 	},
 
 	template: function (str, data) {

@@ -61,6 +61,28 @@ describe('Util', function() {
 		});
 	});
 
+
+	describe('#getParamString', function() {
+		it('should create a valid query string for appending depending on url input', function() {
+			var a = {
+				url:"http://example.com/get",
+				obj:{bar: 7, baz: 3},
+				result:"?bar=7&baz=3"
+			}
+
+			expect(L.Util.getParamString(a.obj,a.url)).toEqual(a.result);
+			
+			var b = {	
+				url:"http://example.com/get?justone=qs",
+				obj:{bar: 7, baz: 3},
+				result:"&bar=7&baz=3"
+			}
+			
+			expect(L.Util.getParamString(b.obj,b.url)).toEqual(b.result);
+
+		});
+	});
+
 	// TODO cancel/requestAnimFrame?
 
 	// TODO limitExecByInterval
@@ -70,8 +92,6 @@ describe('Util', function() {
 	// TODO splitWords
 
 	// TODO setOptions
-
-	// TODO getParamString
 
 	// TODO template
 });
