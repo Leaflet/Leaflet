@@ -27,7 +27,7 @@ L.Path.include({
 		if (this._popup) {
 			this._popup = null;
 			this
-			    .off('click', this.openPopup)
+			    .off('click', this._openPopup)
 			    .off('remove', this.closePopup);
 
 			this._popupHandlersAdded = false;
