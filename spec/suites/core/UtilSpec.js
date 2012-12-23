@@ -68,7 +68,7 @@ describe('Util', function() {
 				url:"http://example.com/get",
 				obj:{bar: 7, baz: 3},
 				result:"?bar=7&baz=3"
-			}
+			};
 
 			expect(L.Util.getParamString(a.obj,a.url)).toEqual(a.result);
 			
@@ -76,7 +76,7 @@ describe('Util', function() {
 				url:"http://example.com/get?justone=qs",
 				obj:{bar: 7, baz: 3},
 				result:"&bar=7&baz=3"
-			}
+			};
 			
 			expect(L.Util.getParamString(b.obj,b.url)).toEqual(b.result);
 
