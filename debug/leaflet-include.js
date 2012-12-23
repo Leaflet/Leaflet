@@ -7,6 +7,7 @@
 		'core/Class.js',
 		'core/Events.js',
 		'core/Browser.js',
+		'core/I18n.js',
 
 		'geometry/Point.js',
 		'geometry/Bounds.js',

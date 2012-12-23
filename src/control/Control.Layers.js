@@ -85,7 +85,7 @@ L.Control.Layers = L.Control.extend({
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
-			link.title = 'Layers';
+			link.title = L._('Layers');
 
 			if (L.Browser.touch) {
 				L.DomEvent
