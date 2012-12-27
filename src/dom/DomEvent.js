@@ -192,9 +192,11 @@ L.DomEvent = {
 	// this solves a bug in Android WebView where 
 	// a single touch triggers two click events.
 	_filterClick: function(e, handler) {
-		// are they closer together than 400ms?
-		// Android typically triggers them ~300ms apart
-		if ((e.timeStamp - L.DomEvent._lastClick) < 400) {
+		var elapsed = (typeof(L.DomEvent._lastClick) === 'undefined') ? null : (e.timeStamp - L.DomEvent._lastClick);
+		// are they closer together than 400ms yet more than 100ms?
+		// Android typically triggers them ~300ms apart while multiple listeners
+		// on the same event should be triggered far faster.
+		if (elapsed > 100 && elapsed < 400) {
 			L.DomEvent.stop(e);
 			return;
 		}
