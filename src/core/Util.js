@@ -84,7 +84,7 @@ L.Util = {
 				params.push(i + '=' + obj[i]);
 			}
 		}
-		return (existingUrl.indexOf('?') === -1 ? '?' : '&') + params.join('&');
+		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
 	template: function (str, data) {

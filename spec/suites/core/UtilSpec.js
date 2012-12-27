@@ -80,6 +80,13 @@ describe('Util', function() {
 			
 			expect(L.Util.getParamString(b.obj,b.url)).toEqual(b.result);
 
+			var c = {	
+				url: undefined,
+				obj: {bar: 7, baz: 3},
+				result: "?bar=7&baz=3"
+			};
+			
+			expect(L.Util.getParamString(c.obj,c.url)).toEqual(c.result);
 		});
 	});
 
