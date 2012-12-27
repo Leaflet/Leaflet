@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+    <link rel="stylesheet" href="../css/screen.css" />
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.0.js'></script>
+
+    <script>
+        L_PREFER_CANVAS = true;
+        $(document).ready(function() {
+            var map = L.map('map', {
+                minZoom: 1,
+                maxZoom: 19,
+                center: [51.505, -0.09],
+                zoom: 9
+            });
+
+            var polygons = new L.FeatureGroup();
+            var points = [[51.505, -0.01], [51.505, -0.09], [51.55, -0.09]];
+
+            polygons.addLayer(
+            new L.Polyline(
+            points, {
+                weight: 2,
+                opacity: 1,
+                smoothFactor: 1,
+                color: 'red'
+            }));
+
+            polygons.on('click', function(m) {
+                // m.layer is the clicked polygon here
+                //m.layer.bindPopup('hello!').openPopup();
+                console.log(m.layer)
+            });
+
+            polygons.addTo(map);
+        });
+    </script>
+
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>
