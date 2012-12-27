@@ -17,7 +17,7 @@ function lintFiles(files) {
 		errors = jshint.JSHINT.errors;
 
 		for (j = 0, len2 = errors.length; j < len2; j++) {
-			e = errors[i];
+			e = errors[j];
 			console.log(files[i] + '\tline ' + e.line + '\tcol ' + e.character + '\t ' + e.reason);
 		}
 
