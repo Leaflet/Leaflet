@@ -127,7 +127,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', e);
+			this.fire('click', {
+				latlng: e.latlng,
+				layerPoint: e.layerPoint,
+				containerPoint: e.containerPoint,
+				originalEvent: e
+			});
 		}
 	}
 });
