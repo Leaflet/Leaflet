@@ -20,7 +20,13 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
-				this.addData(features[i]);
+				// Only add this if geometry or geometries are set and not null
+				if ((typeof features[i].geometries !== undefined && features[i].geometries !== null) &&
+					(typeof features[i].geometry !== undefined && features[i].geometry !== null)) {
+
+					this.addData(features[i]);
+
+				}
 			}
 			return this;
 		}
