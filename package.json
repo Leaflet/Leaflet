@@ -1,0 +1,31 @@
+{
+  "name": "leaflet",
+  "tags": [
+    "mapping"
+  ],
+  "description": "Modern javascript map component written by CloudMade",
+  "homepage": "http://leaflet.cloudmade.com/",
+  "version": "0.1.0",
+  "scripts": {
+    "build": "./node_modules/jake/bin/cli.js build",
+    "test": "echo Use the browser"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CloudMade/Leaflet"
+  },
+  "keywords": [
+  ],
+  "bugs": {
+    "url": "https: //github.com/CloudMade/Leaflet/issues"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "jake":      ">=0.5.x",
+    "jshint":    ">=0.9.x",
+    "uglify-js": ">=2.2.2"
+  },
+  "contributors": [
+  ]
+}
