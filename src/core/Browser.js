@@ -61,6 +61,7 @@
 
 
 	L.Browser = {
+		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
 		webkit: webkit,
