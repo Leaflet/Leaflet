@@ -105,14 +105,14 @@ L.Util = {
 		return obj.options;
 	},
 
-	getParamString: function (obj) {
+	getParamString: function (obj, existingUrl) {
 		var params = [];
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
 				params.push(i + '=' + obj[i]);
 			}
 		}
-		return '?' + params.join('&');
+		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
 	template: function (str, data) {
@@ -457,6 +457,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 
 
 	L.Browser = {
+		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
 		webkit: webkit,
@@ -2670,7 +2671,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		    url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
 
-		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+		return url + L.Util.getParamString(this.wmsParams, url) + "&bbox=" + bbox;
 	},
 
 	setParams: function (params, noRedraw) {
@@ -3255,7 +3256,7 @@ L.Marker = L.Class.extend({
 
 		if (wasDragged) { return; }
 
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this.fire(e.type, {
 			originalEvent: e
@@ -3948,6 +3949,8 @@ L.Path = L.Class.extend({
 	onRemove: function (map) {
 		map._pathRoot.removeChild(this._container);
 
+		// Need to fire remove event before we set _map to null as the event hooks might need the object
+		this.fire('remove');
 		this._map = null;
 
 		if (L.Browser.vml) {
@@ -3955,8 +3958,6 @@ L.Path = L.Class.extend({
 			this._stroke = null;
 			this._fill = null;
 		}
-
-		this.fire('remove');
 
 		map.off({
 			'viewreset': this.projectLatlngs,
@@ -4244,7 +4245,7 @@ L.Path.include({
 		if (this._popup) {
 			this._popup = null;
 			this
-			    .off('click', this.openPopup)
+			    .off('click', this._openPopup)
 			    .off('remove', this.closePopup);
 
 			this._popupHandlersAdded = false;
@@ -4535,7 +4536,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', e);
+			this.fire('click', {
+				latlng: e.latlng,
+				layerPoint: e.layerPoint,
+				containerPoint: e.containerPoint,
+				originalEvent: e
+			});
 		}
 	}
 });
@@ -5406,7 +5412,10 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
-				this.addData(features[i]);
+				// Only add this if geometry or geometries are set and not null
+				if (features[i].geometries || features[i].geometry) {
+					this.addData(features[i]);
+				}
 			}
 			return this;
 		}
