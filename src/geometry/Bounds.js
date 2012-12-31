@@ -2,18 +2,17 @@
  * L.Bounds represents a rectangular area on the screen in pixel coordinates.
  */
 
-L.Bounds = L.Class.extend({
+L.Bounds = function (a, b) { //(Point, Point) or Point[]
+	if (!a) { return; }
 
-	initialize: function (a, b) {	//(Point, Point) or Point[]
-		if (!a) { return; }
+	var points = b ? [a, b] : a;
 
-		var points = b ? [a, b] : a;
+	for (var i = 0, len = points.length; i < len; i++) {
+		this.extend(points[i]);
+	}
+};
 
-		for (var i = 0, len = points.length; i < len; i++) {
-			this.extend(points[i]);
-		}
-	},
-
+L.Bounds.prototype = {
 	// extend the bounds to contain the given point
 	extend: function (point) { // (Point)
 		point = L.point(point);
@@ -42,6 +41,10 @@ L.Bounds = L.Class.extend({
 
 	getTopRight: function () { // -> Point
 		return new L.Point(this.max.x, this.min.y);
+	},
+
+	getSize: function () {
+		return this.max.subtract(this.min);
 	},
 
 	contains: function (obj) { // (Bounds) or (Point) -> Boolean
@@ -82,7 +85,7 @@ L.Bounds = L.Class.extend({
 	isValid: function () {
 		return !!(this.min && this.max);
 	}
-});
+};
 
 L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
 	if (!a || a instanceof L.Bounds) {

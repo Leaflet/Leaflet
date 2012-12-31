@@ -1,3 +1,7 @@
+/*
+ * Extends L.Path with SVG-specific rendering code.
+ */
+
 L.Path.SVG_NS = 'http://www.w3.org/2000/svg';
 
 L.Browser.svg = !!(document.createElementNS && document.createElementNS(L.Path.SVG_NS, 'svg').createSVGRect);
@@ -159,13 +163,12 @@ L.Map.include({
 		}
 	},
 
-	_animatePathZoom: function (opt) {
-		var scale = this.getZoomScale(opt.zoom),
-		    offset = this._getCenterOffset(opt.center),
-		    translate = offset.multiplyBy(-scale)._add(this._pathViewport.min);
+	_animatePathZoom: function (e) {
+		var scale = this.getZoomScale(e.zoom),
+		    offset = this._getCenterOffset(e.center)._multiplyBy(-scale);
 
-		this._pathRoot.style[L.DomUtil.TRANSFORM] =
-		        L.DomUtil.getTranslateString(translate) + ' scale(' + scale + ') ';
+		this._pathRoot.style[L.DomUtil.TRANSFORM] +=
+		        L.DomUtil.getTranslateString(offset) + ' scale(' + scale + ') ';
 
 		this._pathZooming = true;
 	},

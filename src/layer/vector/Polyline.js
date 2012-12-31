@@ -1,17 +1,12 @@
+/*
+ * L.Polygon is used to display polylines on a map.
+ */
+
 L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
 
 		this._latlngs = this._convertLatLngs(latlngs);
-
-		// TODO refactor: move to Polyline.Edit.js
-		if (L.Handler.PolyEdit) {
-			this.editing = new L.Handler.PolyEdit(this);
-
-			if (this.options.editable) {
-				this.editing.enable();
-			}
-		}
 	},
 
 	options: {
@@ -50,7 +45,7 @@ L.Polyline = L.Path.extend({
 		return this.redraw();
 	},
 
-	spliceLatLngs: function (index, howMany) {
+	spliceLatLngs: function () { // (Number index, Number howMany)
 		var removed = [].splice.apply(this._latlngs, arguments);
 		this._convertLatLngs(this._latlngs);
 		this.redraw();
@@ -88,23 +83,6 @@ L.Polyline = L.Path.extend({
 		}
 
 		return bounds;
-	},
-
-	// TODO refactor: move to Polyline.Edit.js
-	onAdd: function (map) {
-		L.Path.prototype.onAdd.call(this, map);
-
-		if (this.editing && this.editing.enabled()) {
-			this.editing.addHooks();
-		}
-	},
-
-	onRemove: function (map) {
-		if (this.editing && this.editing.enabled()) {
-			this.editing.removeHooks();
-		}
-
-		L.Path.prototype.onRemove.call(this, map);
 	},
 
 	_convertLatLngs: function (latlngs) {

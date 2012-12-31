@@ -1,6 +1,11 @@
+/*
+ * L.GeoJSON turns any GeoJSON data into a Leaflet layer.
+ */
+
 L.GeoJSON = L.FeatureGroup.extend({
+
 	initialize: function (geojson, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._layers = {};
 
@@ -15,7 +20,10 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
-				this.addData(features[i]);
+				// Only add this if geometry or geometries are set and not null
+				if (features[i].geometries || features[i].geometry) {
+					this.addData(features[i]);
+				}
 			}
 			return this;
 		}
@@ -27,6 +35,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer);
 		layer.feature = geojson;
 
+		layer.defaultOptions = layer.options;
 		this.resetStyle(layer);
 
 		if (options.onEachFeature) {
@@ -39,6 +48,9 @@ L.GeoJSON = L.FeatureGroup.extend({
 	resetStyle: function (layer) {
 		var style = this.options.style;
 		if (style) {
+			// reset any custom styles
+			L.Util.extend(layer.options, layer.defaultOptions);
+
 			this._setLayerStyle(layer, style);
 		}
 	},
@@ -59,7 +71,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	}
 });
 
-L.Util.extend(L.GeoJSON, {
+L.extend(L.GeoJSON, {
 	geometryToLayer: function (geojson, pointToLayer) {
 		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
 		    coords = geometry.coordinates,
@@ -111,7 +123,7 @@ L.Util.extend(L.GeoJSON, {
 		var lat = parseFloat(coords[reverse ? 0 : 1]),
 		    lng = parseFloat(coords[reverse ? 1 : 0]);
 
-		return new L.LatLng(lat, lng, true);
+		return new L.LatLng(lat, lng);
 	},
 
 	coordsToLatLngs: function (coords, levelsDeep, reverse) { // (Array, Number, Boolean) -> Array

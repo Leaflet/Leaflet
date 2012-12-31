@@ -1,3 +1,6 @@
+/*
+ * Adds popup-related methods to L.Map.
+ */
 
 L.Map.include({
 	openPopup: function (popup) {

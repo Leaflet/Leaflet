@@ -22,7 +22,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	setStyle: function (style) {
-		L.Util.setOptions(this, style);
+		L.setOptions(this, style);
 
 		if (this._map) {
 			this._updateStyle();
@@ -103,16 +103,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		this._updateStyle();
 
 		if (options.fill) {
-			if (options.fillOpacity < 1) {
-				ctx.globalAlpha = options.fillOpacity;
-			}
+			ctx.globalAlpha = options.fillOpacity;
 			ctx.fill();
 		}
 
 		if (options.stroke) {
-			if (options.opacity < 1) {
-				ctx.globalAlpha = options.opacity;
-			}
+			ctx.globalAlpha = options.opacity;
 			ctx.stroke();
 		}
 
@@ -131,7 +127,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', e);
+			this.fire('click', {
+				latlng: e.latlng,
+				layerPoint: e.layerPoint,
+				containerPoint: e.containerPoint,
+				originalEvent: e
+			});
 		}
 	}
 });

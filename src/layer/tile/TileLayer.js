@@ -28,7 +28,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	initialize: function (url, options) {
-		options = L.Util.setOptions(this, options);
+		options = L.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
 		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
@@ -81,7 +81,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		map._panes.tilePane.removeChild(this._container);
+		this._container.parentNode.removeChild(this._container);
 
 		map.off({
 			'viewreset': this._resetCallback,
@@ -167,7 +167,7 @@ L.TileLayer = L.Class.extend({
 	_setAutoZIndex: function (pane, compare) {
 
 		var layers = pane.getElementsByClassName('leaflet-layer'),
-		    edgeZIndex = -compare(Infinity, -Infinity), // -Ifinity for max, Infinity for min
+		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
 		    zIndex, i, len;
 
 		for (i = 0, len = layers.length; i < len; i++) {
@@ -244,7 +244,7 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_update: function (e) {
+	_update: function () {
 
 		if (!this._map) { return; }
 
@@ -418,7 +418,7 @@ L.TileLayer = L.Class.extend({
 	getTileUrl: function (tilePoint) {
 		this._adjustTilePoint(tilePoint);
 
-		return L.Util.template(this._url, L.Util.extend({
+		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
 			z: this._getZoomForUrl(),
 			x: tilePoint.x,
@@ -465,9 +465,8 @@ L.TileLayer = L.Class.extend({
 		return this._createTile();
 	},
 
-	_resetTile: function (tile) {
-		// Override if data stored on a tile needs to be cleaned up before reuse
-	},
+	// Override if data stored on a tile needs to be cleaned up before reuse
+	_resetTile: function (/*tile*/) {},
 
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
@@ -490,7 +489,7 @@ L.TileLayer = L.Class.extend({
         }
     },
 
-	_tileOnLoad: function (e) {
+	_tileOnLoad: function () {
 		var layer = this._layer;
 
 		//Only if we are loading an actual image
@@ -506,7 +505,7 @@ L.TileLayer = L.Class.extend({
 		layer._tileLoaded();
 	},
 
-	_tileOnError: function (e) {
+	_tileOnError: function () {
 		var layer = this._layer;
 
 		layer.fire('tileerror', {

@@ -1,30 +1,34 @@
+/*
+ * L.Browser handles different browser and feature detections for internal Leaflet use.
+ */
+
 (function () {
 
 	var ie = !!window.ActiveXObject,
-		// http://tanalin.com/en/articles/ie-version-js/
-		ie6 = ie && !window.XMLHttpRequest,
-		ie7 = ie && !document.querySelector,
+	    // http://tanalin.com/en/articles/ie-version-js/
+	    ie6 = ie && !window.XMLHttpRequest,
+	    ie7 = ie && !document.querySelector,
 
-		// terrible browser detection to work around Safari / iOS / Android browser bugs
-		// see TileLayer._addTile and debug/hacks/jitter.html
+	    // terrible browser detection to work around Safari / iOS / Android browser bugs
+	    // see TileLayer._addTile and debug/hacks/jitter.html
 
-		ua = navigator.userAgent.toLowerCase(),
-		webkit = ua.indexOf("webkit") !== -1,
-		chrome = ua.indexOf("chrome") !== -1,
-		android = ua.indexOf("android") !== -1,
-		android23 = ua.search("android [23]") !== -1,
+	    ua = navigator.userAgent.toLowerCase(),
+	    webkit = ua.indexOf("webkit") !== -1,
+	    chrome = ua.indexOf("chrome") !== -1,
+	    android = ua.indexOf("android") !== -1,
+	    android23 = ua.search("android [23]") !== -1,
 
-		mobile = typeof orientation !== undefined + '',
-		msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
-		retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-				('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches)),
+	    mobile = typeof orientation !== undefined + '',
+	    msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
+	    retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
+	              ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)") && window.matchMedia("(min-resolution:144dpi)").matches)),
 
-		doc = document.documentElement,
-		ie3d = ie && ('transition' in doc.style),
-		webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
-		gecko3d = 'MozPerspective' in doc.style,
-		opera3d = 'OTransition' in doc.style,
-		any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d);
+	    doc = document.documentElement,
+	    ie3d = ie && ('transition' in doc.style),
+	    webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
+	    gecko3d = 'MozPerspective' in doc.style,
+	    opera3d = 'OTransition' in doc.style,
+	    any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d);
 
 
 	var touch = !window.L_NO_TOUCH && (function () {
@@ -38,7 +42,7 @@
 
 		// Firefox/Gecko
 		var div = document.createElement('div'),
-			supported = false;
+		    supported = false;
 
 		if (!div.setAttribute) {
 			return false;
@@ -57,6 +61,7 @@
 
 
 	L.Browser = {
+		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
 		webkit: webkit,

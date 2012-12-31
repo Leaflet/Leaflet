@@ -1,3 +1,6 @@
+/*
+ * L.Icon.Default is the blue marker icon used by default in Leaflet.
+ */
 
 L.Icon.Default = L.Icon.extend({
 

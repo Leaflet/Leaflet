@@ -1,3 +1,7 @@
+/*
+ * L.Control.Layers is a control to allow users to switch between different layers on the map.
+ */
+
 L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
@@ -6,10 +10,11 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	initialize: function (baseLayers, overlays, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._layers = {};
 		this._lastZIndex = 0;
+		this._handlingClick = false;
 
 		for (var i in baseLayers) {
 			if (baseLayers.hasOwnProperty(i)) {
@@ -28,7 +33,17 @@ L.Control.Layers = L.Control.extend({
 		this._initLayout();
 		this._update();
 
+		map
+		    .on('layeradd', this._onLayerChange, this)
+		    .on('layerremove', this._onLayerChange, this);
+
 		return this._container;
+	},
+
+	onRemove: function (map) {
+		map
+		    .off('layeradd', this._onLayerChange)
+		    .off('layerremove', this._onLayerChange);
 	},
 
 	addBaseLayer: function (layer, name) {
@@ -44,7 +59,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 		delete this._layers[id];
 		this._update();
 		return this;
@@ -56,6 +71,7 @@ L.Control.Layers = L.Control.extend({
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
+			L.DomEvent.on(container, 'mousewheel', L.DomEvent.stopPropagation);
 		} else {
 			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
@@ -64,8 +80,8 @@ L.Control.Layers = L.Control.extend({
 
 		if (this.options.collapsed) {
 			L.DomEvent
-				.on(container, 'mouseover', this._expand, this)
-				.on(container, 'mouseout', this._collapse, this);
+			    .on(container, 'mouseover', this._expand, this)
+			    .on(container, 'mouseout', this._collapse, this);
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
@@ -73,9 +89,9 @@ L.Control.Layers = L.Control.extend({
 
 			if (L.Browser.touch) {
 				L.DomEvent
-					.on(link, 'click', L.DomEvent.stopPropagation)
-					.on(link, 'click', L.DomEvent.preventDefault)
-					.on(link, 'click', this._expand, this);
+				    .on(link, 'click', L.DomEvent.stopPropagation)
+				    .on(link, 'click', L.DomEvent.preventDefault)
+				    .on(link, 'click', this._expand, this);
 			}
 			else {
 				L.DomEvent.on(link, 'focus', this._expand, this);
@@ -95,7 +111,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_addLayer: function (layer, name, overlay) {
-		var id = L.Util.stamp(layer);
+		var id = L.stamp(layer);
 
 		this._layers[id] = {
 			layer: layer,
@@ -118,7 +134,7 @@ L.Control.Layers = L.Control.extend({
 		this._overlaysList.innerHTML = '';
 
 		var baseLayersPresent = false,
-			overlaysPresent = false;
+		    overlaysPresent = false;
 
 		for (var i in this._layers) {
 			if (this._layers.hasOwnProperty(i)) {
@@ -130,6 +146,14 @@ L.Control.Layers = L.Control.extend({
 		}
 
 		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
+	},
+
+	_onLayerChange: function (e) {
+		var id = L.stamp(e.layer);
+
+		if (this._layers[id] && !this._handlingClick) {
+			this._update();
+		}
 	},
 
 	// IE7 bugs out if you create a radio dynamically, so you have to do it this hacky way (see http://bit.ly/PqYLBe)
@@ -161,7 +185,7 @@ L.Control.Layers = L.Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = L.Util.stamp(obj.layer);
+		input.layerId = L.stamp(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -173,13 +197,17 @@ L.Control.Layers = L.Control.extend({
 
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
 		container.appendChild(label);
+
+		return label;
 	},
 
 	_onInputClick: function () {
 		var i, input, obj,
-			inputs = this._form.getElementsByTagName('input'),
-			inputsLen = inputs.length,
-			baseLayer;
+		    inputs = this._form.getElementsByTagName('input'),
+		    inputsLen = inputs.length,
+		    baseLayer;
+
+		this._handlingClick = true;
 
 		for (i = 0; i < inputsLen; i++) {
 			input = inputs[i];
@@ -196,8 +224,11 @@ L.Control.Layers = L.Control.extend({
 		}
 
 		if (baseLayer) {
+			this._map.setZoom(this._map.getZoom());
 			this._map.fire('baselayerchange', {layer: baseLayer});
 		}
+
+		this._handlingClick = false;
 	},
 
 	_expand: function () {

@@ -74,11 +74,15 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			stroke.weight = options.weight + 'px';
 			stroke.color = options.color;
 			stroke.opacity = options.opacity;
+
 			if (options.dashArray) {
-				stroke.dashStyle = options.dashArray.replace(/ *, */g, ' ');
+				stroke.dashStyle = options.dashArray instanceof Array ?
+				    options.dashArray.join(' ') :
+				    options.dashArray.replace(/ *, */g, ' ');
 			} else {
 				stroke.dashStyle = '';
 			}
+
 		} else if (stroke) {
 			container.removeChild(stroke);
 			this._stroke = null;
@@ -91,6 +95,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			}
 			fill.color = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
+
 		} else if (fill) {
 			container.removeChild(fill);
 			this._fill = null;

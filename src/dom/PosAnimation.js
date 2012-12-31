@@ -5,7 +5,7 @@
 L.PosAnimation = L.Class.extend({
 	includes: L.Mixin.Events,
 
-	run: function (el, newPos, duration, easing) { // (HTMLElement, Point[, Number, String])
+	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();
 
 		this._el = el;
@@ -13,7 +13,8 @@ L.PosAnimation = L.Class.extend({
 
 		this.fire('start');
 
-		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) + 's ' + (easing || 'ease-out');
+		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) +
+		        's cubic-bezier(0,0,' + (easeLinearity || 0.5) + ',1)';
 
 		L.DomEvent.on(el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
 		L.DomUtil.setPosition(el, newPos);
@@ -21,8 +22,8 @@ L.PosAnimation = L.Class.extend({
 		// toggle reflow, Chrome flickers for some reason if you don't do this
 		L.Util.falseFn(el.offsetWidth);
 
-		// there's no native way to track value updates of tranisitioned properties, so we imitate this
-		this._stepTimer = setInterval(L.Util.bind(this.fire, this, 'step'), 50);
+		// there's no native way to track value updates of transitioned properties, so we imitate this
+		this._stepTimer = setInterval(L.bind(this.fire, this, 'step'), 50);
 	},
 
 	stop: function () {
@@ -33,6 +34,7 @@ L.PosAnimation = L.Class.extend({
 
 		L.DomUtil.setPosition(this._el, this._getPos());
 		this._onTransitionEnd();
+		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a new animation
 	},
 
 	// you can't easily get intermediate values of properties animated with CSS3 Transitions,

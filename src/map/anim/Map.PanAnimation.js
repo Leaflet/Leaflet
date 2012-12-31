@@ -1,3 +1,6 @@
+/*
+ * Extends L.Map to handle panning animations.
+ */
 
 L.Map.include({
 
@@ -29,7 +32,7 @@ L.Map.include({
 		return this;
 	},
 
-	panBy: function (offset, duration) {
+	panBy: function (offset, duration, easeLinearity) {
 		offset = L.point(offset);
 
 		if (!(offset.x || offset.y)) {
@@ -49,8 +52,8 @@ L.Map.include({
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset);
-		this._panAnim.run(this._mapPane, newPos, duration || 0.25);
+		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset)._round();
+		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
 
 		return this;
 	},

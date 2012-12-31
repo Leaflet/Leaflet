@@ -1,3 +1,8 @@
+/*
+ * The L namespace contains all Leaflet classes and functions.
+ * This code allows you to handle any possible namespace conflicts.
+ */
+
 var L, originalL;
 
 if (typeof exports !== undefined + '') {
@@ -14,4 +19,4 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.4.4';
+L.version = '0.5';

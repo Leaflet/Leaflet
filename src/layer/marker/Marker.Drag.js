@@ -26,14 +26,14 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		return this._draggable && this._draggable._moved;
 	},
 
-	_onDragStart: function (e) {
+	_onDragStart: function () {
 		this._marker
 		    .closePopup()
 		    .fire('movestart')
 		    .fire('dragstart');
 	},
 
-	_onDrag: function (e) {
+	_onDrag: function () {
 		var marker = this._marker,
 		    shadow = marker._shadow,
 		    iconPos = L.DomUtil.getPosition(marker._icon),

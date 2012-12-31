@@ -1,3 +1,7 @@
+/*
+ * L.Control.Attribution is used for displaying attribution on the map (added by default).
+ */
+
 L.Control.Attribution = L.Control.extend({
 	options: {
 		position: 'bottomright',
@@ -5,7 +9,7 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._attributions = {};
 	},
@@ -15,8 +19,8 @@ L.Control.Attribution = L.Control.extend({
 		L.DomEvent.disableClickPropagation(this._container);
 
 		map
-			.on('layeradd', this._onLayerAdd, this)
-			.on('layerremove', this._onLayerRemove, this);
+		    .on('layeradd', this._onLayerAdd, this)
+		    .on('layerremove', this._onLayerRemove, this);
 
 		this._update();
 
@@ -25,8 +29,8 @@ L.Control.Attribution = L.Control.extend({
 
 	onRemove: function (map) {
 		map
-			.off('layeradd', this._onLayerAdd)
-			.off('layerremove', this._onLayerRemove);
+		    .off('layeradd', this._onLayerAdd)
+		    .off('layerremove', this._onLayerRemove);
 
 	},
 

@@ -1,3 +1,7 @@
+/*
+ * L.Control is a base class for implementing map controls. Handles positioning.
+ * All other controls extend from this class.
+ */
 
 L.Control = L.Class.extend({
 	options: {
@@ -5,7 +9,7 @@ L.Control = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	getPosition: function () {
@@ -33,7 +37,7 @@ L.Control = L.Class.extend({
 
 		var container = this._container = this.onAdd(map),
 		    pos = this.getPosition(),
-			corner = map._controlCorners[pos];
+		    corner = map._controlCorners[pos];
 
 		L.DomUtil.addClass(container, 'leaflet-control');
 
@@ -48,7 +52,7 @@ L.Control = L.Class.extend({
 
 	removeFrom: function (map) {
 		var pos = this.getPosition(),
-			corner = map._controlCorners[pos];
+		    corner = map._controlCorners[pos];
 
 		corner.removeChild(this._container);
 		this._map = null;

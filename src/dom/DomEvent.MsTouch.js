@@ -1,4 +1,8 @@
-L.Util.extend(L.DomEvent, {
+/*
+ * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
+ */
+
+L.extend(L.DomEvent, {
 
 	_msTouches: [],
 	_msDocumentListener: false,
@@ -87,7 +91,7 @@ L.Util.extend(L.DomEvent, {
 			e.changedTouches = [e];
 
 			handler(e);
-		};
+		}
 
 		obj[pre + 'touchmove' + id] = cb;
 		obj.addEventListener('MSPointerMove', cb, false);

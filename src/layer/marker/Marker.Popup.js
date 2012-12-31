@@ -1,5 +1,5 @@
 /*
- * Popup extension to L.Marker, adding openPopup & bindPopup methods.
+ * Popup extension to L.Marker, adding popup-related methods.
  */
 
 L.Marker.include({
@@ -28,7 +28,7 @@ L.Marker.include({
 			anchor = anchor.add(options.offset);
 		}
 
-		options = L.Util.extend({offset: anchor}, options);
+		options = L.extend({offset: anchor}, options);
 
 		if (!this._popup) {
 			this

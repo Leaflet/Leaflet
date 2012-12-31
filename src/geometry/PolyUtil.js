@@ -1,8 +1,8 @@
 /*
- * L.PolyUtil contains utilify functions for polygons (clipping, etc.).
+ * L.PolyUtil contains utility functions for polygons (clipping, etc.).
  */
 
-/*jshint bitwise:false */ // allow bitwise oprations here
+/*jshint bitwise:false */ // allow bitwise operations here
 
 L.PolyUtil = {};
 
@@ -11,9 +11,7 @@ L.PolyUtil = {};
  * Used to avoid rendering parts of a polygon that are not currently visible.
  */
 L.PolyUtil.clipPolygon = function (points, bounds) {
-	var min = bounds.min,
-	    max = bounds.max,
-	    clippedPoints,
+	var clippedPoints,
 	    edges = [1, 4, 2, 8],
 	    i, j, k,
 	    a, b,
@@ -55,5 +53,3 @@ L.PolyUtil.clipPolygon = function (points, bounds) {
 
 	return points;
 };
-
-/*jshint bitwise:true */

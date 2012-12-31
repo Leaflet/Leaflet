@@ -92,7 +92,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		        L.DomUtil.getScaleString(this._scale, this._startCenter);
 	},
 
-	_onTouchEnd: function (e) {
+	_onTouchEnd: function () {
 		if (!this._moved || !this._zooming) { return; }
 
 		var map = this._map;

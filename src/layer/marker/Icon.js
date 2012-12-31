@@ -1,3 +1,7 @@
+/*
+ * L.Icon is an image-based icon class that you can use with L.Marker for custom markers.
+ */
+
 L.Icon = L.Class.extend({
 	options: {
 		/*
@@ -13,7 +17,7 @@ L.Icon = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	createIcon: function () {
