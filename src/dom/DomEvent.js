@@ -13,6 +13,10 @@ L.DomEvent = {
 		if (obj[key]) { return this; }
 
 		handler = function (e) {
+			if (L.DomEvent.shouldIgnoreEvents(e.target)) {
+				console.log('Ignoring event: ' + e.type, e);
+				return;
+			}
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
 		};
 
@@ -122,6 +126,22 @@ L.DomEvent = {
 
 	stop: function (e) {
 		return L.DomEvent.preventDefault(e).stopPropagation(e);
+	},
+
+	disableEventProcessing: function (el) {
+		L.DomUtil.addClass(el, '_leaflet_ev_ignore');
+	},
+
+	shouldIgnoreEvents: function (el) {
+		var class_name;
+		while (el.parentNode) {
+			class_name = el.parentNode.className;
+			if (class_name && class_name.indexOf('_leaflet_ev_ignore') >= 0) {
+				return true;
+			}
+			el = el.parentNode;
+		}
+		return false;
 	},
 
 	getMousePosition: function (e, container) {
