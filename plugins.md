@@ -98,6 +98,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/jieter">Jieter</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ismyrnow/Leaflet.functionaltilelayer">Leaflet.FunctionalTileLayer</a>
+		</td><td>
+			Allows you to define tile layer URLs using a function, with support for jQuery deferreds.
+		</td><td>
+			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
+		</td>
+	</tr>
 </table>
 
 
