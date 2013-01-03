@@ -107,6 +107,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/joker-x/Leaflet.geoCSV">Leaflet.geoCSV</a>
+		</td><td>
+			Leaflet plugin for loading a CSV file as geoJSON layer.
+		</td><td>
+			<a href="https://github.com/joker-x">Iván Eixarch</a>
+		</td>
+	</tr>
 </table>
 
 
