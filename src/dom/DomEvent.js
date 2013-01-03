@@ -14,7 +14,7 @@ L.DomEvent = {
 
 		handler = function (e) {
 			if (L.DomEvent.shouldIgnoreEvents(e.target)) {
-				console.log('Ignoring event: ' + e.type, e);
+				//console.log('Ignoring event: ' + e.type, e);
 				return;
 			}
 			return fn.call(context || obj, e || L.DomEvent._getEvent());
