@@ -5678,7 +5678,7 @@ L.DomEvent = {
 		var class_name;
 		while (el.parentNode) {
 			class_name = el.parentNode.className;
-			if (class_name && class_name.indexOf('_leaflet_ev_ignore') >= 0) {
+			if (class_name && class_name.indexOf && class_name.indexOf('_leaflet_ev_ignore') >= 0) {
 				return true;
 			}
 			el = el.parentNode;
