@@ -86,7 +86,7 @@ If you add any new files to the Leaflet source, make sure to also add them to `b
 so that the build system knows about them.
 
 But please **do not commit the built files** (`leaflet.js` and `leaflet-src.js`) along with your changes,
-otherwise there may problems merging the pull request.
+otherwise there may be problems merging the pull request.
 These files are only commited in the `master` branch of the main Leaflet repository.
 
 Happy coding!
