@@ -1,7 +1,7 @@
 <img src="http://leafletjs.com/docs/images/logo.png" alt="Leaflet" />
 
 Leaflet is a modern open-source JavaScript library for **mobile-friendly interactive maps**.
-It is developed by [Vladimir Agafonkin][] of [CloudMade][] with a team of dedicated [contributors][].
+It is developed by [Vladimir Agafonkin][] with a team of dedicated [contributors][].
 Weighing just about 27 KB of gzipped JS code, it has all the [features][] most developers ever need for online maps.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
@@ -18,12 +18,11 @@ If you want to **get involved** with Leaflet development, check out the [contrib
 Let's make the best open-source library for maps that can possibly exist!
 
  [Vladimir Agafonkin]: http://agafonkin.com/en
- [CloudMade]: http://cloudmade.com
- [contributors]: https://github.com/CloudMade/Leaflet/graphs/contributors
+ [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
  [features]: http://leafletjs.com/features.html
  [plugins]: http://leafletjs.com/plugins.html
- [well-documented]: reference.html "Leaflet API reference"
- [source code]: https://github.com/CloudMade/Leaflet "Leaflet GitHub repository"
- [hosted on GitHub]: http://github.com/CloudMade/Leaflet
- [contribute]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
+ [well-documented]: http://leafletjs.com/reference.html "Leaflet API reference"
+ [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
+ [hosted on GitHub]: http://github.com/Leaflet/Leaflet
+ [contribute]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com

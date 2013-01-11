@@ -13,14 +13,14 @@ However, they're not the only way to get involved with the development of Leafle
 You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs),
 [improving documentation](#improving-documentation),
 helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js)
-and [GitHub issues](https://github.com/CloudMade/Leaflet/issues),
+and [GitHub issues](https://github.com/Leaflet/Leaflet/issues),
 showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com),
 tweeting to [@LeafletJS](http://twitter.com/LeafletJS)
 and spreading the word about Leaflet among your colleagues and friends.
 
 ## Reporting Bugs
 
-Before reporting a bug on the project's [issues page](https://github.com/CloudMade/Leaflet/issues),
+Before reporting a bug on the project's [issues page](https://github.com/Leaflet/Leaflet/issues),
 first make sure that your issue is caused by Leaflet, not your application code
 (e.g. passing incorrect arguments to methods, etc.).
 Second, search the already reported issues for similar cases,
@@ -46,7 +46,7 @@ So bugfixes, performance optimizations and small improvements that don't add a l
 are much more likely to get accepted quickly.
 
 Before sending a pull request with a new feature, first check if it's been discussed before already
-(either on [GitHub issues](https://github.com/CloudMade/Leaflet/issues)
+(either on [GitHub issues](https://github.com/Leaflet/Leaflet/issues)
 or [Leaflet UserVoice](http://leaflet.uservoice.com/)),
 and then ask yourself two questions:
 
@@ -98,7 +98,7 @@ and is automatically generated from a set of HTML and Markdown files by [Jekyll]
 
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
-browse the [gh-pages branch](https://github.com/CloudMade/Leaflet/tree/gh-pages),
+browse the [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages),
 choose a certain file for editing (e.g. `reference.html` for API reference),
 click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
@@ -120,5 +120,5 @@ It will get merged into the latter when released as stable.
 ## Thank You
 
 Not only are we grateful for any contributions, &mdash; helping Leaflet and its community actually makes you AWESOME.
-Join [this approved list of awesome people](https://github.com/CloudMade/Leaflet/graphs/contributors)
+Join [this approved list of awesome people](https://github.com/Leaflet/Leaflet/graphs/contributors)
 and help us push the limits of what's possible with online maps!
