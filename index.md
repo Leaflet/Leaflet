@@ -58,7 +58,7 @@ Third-party patches are absolutely essential on our quest to create the best map
 However, they're not the only way to get involved with the development of Leaflet.
 You can help the project tremendously by discovering and [reporting bugs][], [improving documentation][],
 helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js)
-and [GitHub issues](https://github.com/CloudMade/Leaflet/issues),
+and [GitHub issues](https://github.com/Leaflet/Leaflet/issues),
 showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com),
 tweeting to [@LeafletJS](http://twitter.com/LeafletJS)
 and spreading the word about Leaflet among your colleagues and friends.
@@ -67,17 +67,17 @@ Check out the [contribution guide][contribute] for more information on getting i
 
   [Vladimir Agafonkin]: http://agafonkin.com/en
   [CloudMade]: http://cloudmade.com
-  [contributors]: https://github.com/CloudMade/Leaflet/graphs/contributors
+  [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
   [features]: features.html
   [plugins]: plugins.html
   [well-documented API]: reference.html "Leaflet API reference"
-  [source code]: https://github.com/CloudMade/Leaflet "Leaflet GitHub repository"
-  [hosted on GitHub]: http://github.com/CloudMade/Leaflet
-  [contribute]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
-  [reporting bugs]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md#reporting-bugs
-  [improving documentation]: https://github.com/CloudMade/Leaflet/blob/master/CONTRIBUTING.md#improving-documentation
+  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
+  [hosted on GitHub]: http://github.com/Leaflet/Leaflet
+  [contribute]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
+  [reporting bugs]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md#reporting-bugs
+  [improving documentation]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md#improving-documentation
   [@mourner]: http://github.com/mourner
-  [GitHub issues page]: http://github.com/CloudMade/Leaflet/issues
+  [GitHub issues page]: http://github.com/Leaflet/Leaflet/issues
   [Leaflet UserVoice page]: http://leaflet.uservoice.com
   [@LeafletJS]: http://twitter.com/LeafletJS
   [Leaflet mailing list]: https://groups.google.com/group/leaflet-js

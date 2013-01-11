@@ -13,20 +13,20 @@ Besides the library itself, the download package contains full source code, unit
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.4.5">Leaflet 0.4.5</a></td>
+		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/zipball/v0.4.5">Leaflet 0.4.5</a></td>
 		<td>Stable version, released on October 25, 2012</td>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/CloudMade/Leaflet/zipball/v0.3.1">Leaflet 0.3.1</a></td>
+		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/zipball/v0.3.1">Leaflet 0.3.1</a></td>
 		<td>Previous stable version, released on February 14, 2012</td>
 	</tr>
 	<tr>
-		<td><a href="http://github.com/CloudMade/Leaflet/zipball/master">Leaflet master</a></td>
+		<td><a href="http://github.com/Leaflet/Leaflet/zipball/master">Leaflet master</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch</td>
 	</tr>
 </table>
 
-[View Changelog](https://github.com/CloudMade/Leaflet/blob/master/CHANGELOG.md)
+[View Changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md)
 
 Note that the master version can contain incompatible changes, so please read the changelog carefully when upgrading to it.
 
