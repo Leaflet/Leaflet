@@ -226,8 +226,11 @@ L.DomUtil = {
 L.DomUtil.TRANSFORM = L.DomUtil.testProp(
         ['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
+// webkitTransition comes first because some browser versions that drop vendor prefix don't do
+// the same for the transitionend event, in particular the Android 4.1 stock browser
+
 L.DomUtil.TRANSITION = L.DomUtil.testProp(
-        ['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
+        ['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
 L.DomUtil.TRANSITION_END =
         L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
