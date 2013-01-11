@@ -166,7 +166,7 @@ L.TileLayer = L.Class.extend({
 
 	_setAutoZIndex: function (pane, compare) {
 
-		var layers = pane.getElementsByClassName('leaflet-layer'),
+		var layers = pane.children,
 		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
 		    zIndex, i, len;
 
