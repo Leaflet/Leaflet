@@ -219,13 +219,13 @@
 .leaflet-control-zoom-in {
 	border-bottom: 1px solid #aaa;
 	font: bold 18px/24px Arial, Helvetica, sans-serif;
-	-webkit-border-radius: 5px 5px 0 0;
-	        border-radius: 5px 5px 0 0;
+	-webkit-border-radius: 4px 4px 0 0;
+	        border-radius: 4px 4px 0 0;
 	}
 .leaflet-control-zoom-out {
 	font: bold 23px/20px Tahoma, Verdana, sans-serif;
-	-webkit-border-radius: 0 0 5px 5px;
-	        border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 4px 4px;
+	        border-radius: 0 0 4px 4px;
 	}
 .leaflet-control-zoom a.leaflet-control-zoom-disabled {
 	cursor: default;
