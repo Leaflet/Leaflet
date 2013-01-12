@@ -205,7 +205,7 @@ L.Map.include({
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
 		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
-
+                     root.setAttribute('style', ['width:', width, "; height:", height, ';'].join(''));
 		if (L.Browser.mobileWebkit) {
 			pane.appendChild(root);
 		}
