@@ -574,9 +574,11 @@ L.Map = L.Class.extend({
 	},
 
 	_onResize: function () {
-		L.Util.cancelAnimFrame(this._resizeRequest);
-		this._resizeRequest = L.Util.requestAnimFrame(
+		if (L.DomUtil.get(this._container.id)) {
+			L.Util.cancelAnimFrame(this._resizeRequest);
+			this._resizeRequest = L.Util.requestAnimFrame(
 		        this.invalidateSize, this, false, this._container);
+		}
 	},
 
 	_onMouseClick: function (e) {
