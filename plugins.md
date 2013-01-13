@@ -311,7 +311,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/tripbirds/leaflet-locationfilter/">leaflet-locationfilter</a>
+			<a href="https://github.com/kajic/leaflet-locationfilter/">leaflet-locationfilter</a>
 		</td><td>
 			A draggable/resizable rectangle for selecting an area on the map.
 		</td><td>
