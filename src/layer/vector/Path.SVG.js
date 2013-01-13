@@ -165,7 +165,9 @@ L.Map.include({
 
 	_animatePathZoom: function (e) {
 		var scale = this.getZoomScale(e.zoom),
-		    offset = this._getCenterOffset(e.center)._multiplyBy(-scale)._add(this._pathViewport.min);
+		    offset = this.options.absolutePosition 
+		                  ? this._getCenterOffset(e.center)._multiplyBy(-scale)
+		                  : this._getCenterOffset(e.center)._multiplyBy(-scale)._add(this._pathViewport.min);
 
 		this._pathRoot.style[L.DomUtil.TRANSFORM] =
 		        L.DomUtil.getTranslateString(offset) + ' scale(' + scale + ') ';
@@ -205,7 +207,9 @@ L.Map.include({
 		root.setAttribute('width', width);
 		root.setAttribute('height', height);
 		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
-
+		if(this.options.absolutePosition) {
+                        root.setAttribute('style', ['width:', width, "px; height:", height, 'px; top:', min.y, 'px; left:', min.x,'px;'].join(''));
+                        }
 		if (L.Browser.mobileWebkit) {
 			pane.appendChild(root);
 		}

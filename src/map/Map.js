@@ -17,7 +17,8 @@ L.Map = L.Class.extend({
 
 		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android23,
 		trackResize: true,
-		markerZoomAnimation: L.DomUtil.TRANSITION && L.Browser.any3d
+		markerZoomAnimation: L.DomUtil.TRANSITION && L.Browser.any3d,
+		absolutePosition: false // Path.SVG is not properly handled when the map is within containers that already use absolute positionnint.   
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
