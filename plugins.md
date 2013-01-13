@@ -19,7 +19,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/danzel/Leaflet.markercluster">Leaflet.markercluster</a>
+			<a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>
 		</td><td>
 			Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features. <em>Recommended!</em>
 		</td><td>
