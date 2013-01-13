@@ -20,7 +20,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
 		if (this._popupContent && layer.bindPopup) {
-			layer.bindPopup(this._popupContent);
+			layer.bindPopup(this._popupContent, this._popupOptions);
 		}
 
 		return this.fire('layeradd', {layer: layer});
@@ -39,9 +39,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	bindPopup: function (content) {
+	bindPopup: function (content, options) {
 		this._popupContent = content;
-		return this.invoke('bindPopup', content);
+		this._popupOptions = options;
+		return this.invoke('bindPopup', content, options);
 	},
 
 	setStyle: function (style) {
