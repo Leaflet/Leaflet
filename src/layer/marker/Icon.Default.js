@@ -19,7 +19,7 @@ L.Icon.Default = L.Icon.extend({
 			return this.options[key];
 		}
 
-		if (L.Browser.retina && name == 'icon') {
+		if (L.Browser.retina && name === 'icon') {
 			name += '@2x';
 		}
 
