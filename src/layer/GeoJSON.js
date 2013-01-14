@@ -103,13 +103,17 @@ L.extend(L.GeoJSON, {
 			latlngs = this.coordsToLatLngs(coords, 1);
 			return new L.MultiPolyline(latlngs);
 
-		case "MultiPolygon":
+		case 'MultiPolygon':
 			latlngs = this.coordsToLatLngs(coords, 2);
 			return new L.MultiPolygon(latlngs);
 
-		case "GeometryCollection":
+		case 'GeometryCollection':
 			for (i = 0, len = geometry.geometries.length; i < len; i++) {
-				layer = this.geometryToLayer(geometry.geometries[i], pointToLayer);
+				layer = this.geometryToLayer({
+					geometry: geometry.geometries[i],
+					type: 'Feature',
+					properties: geojson.properties
+				}, pointToLayer);
 				layers.push(layer);
 			}
 			return new L.FeatureGroup(layers);
