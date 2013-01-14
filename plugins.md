@@ -120,7 +120,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/bbecquet/Leaflet.PolylineDecorator">Leaflet.PolylineDecorator</a>
 		</td><td>
-			Allows you to draw patterns (like dashes, arrows or evenly spaced Markers) on Polylines or along coordinate paths
+			Allows you to draw patterns (like dashes, arrows or evenly spaced Markers) along Polylines or coordinate paths.
 		</td><td>
 			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
 		</td>
