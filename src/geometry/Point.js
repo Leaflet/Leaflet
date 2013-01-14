@@ -100,7 +100,7 @@ L.point = function (x, y, round) {
 	if (x instanceof L.Point) {
 		return x;
 	}
-	if (x instanceof Array) {
+	if (L.Util.isArray(x)) {
 		return new L.Point(x[0], x[1]);
 	}
 	if (isNaN(x)) {

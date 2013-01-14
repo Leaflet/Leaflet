@@ -15,7 +15,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	addData: function (geojson) {
-		var features = geojson instanceof Array ? geojson : geojson.features,
+		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
 		    i, len;
 
 		if (features) {
