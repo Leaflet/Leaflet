@@ -1,6 +1,6 @@
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
- (c) 2010-2012, CloudMade, Vladimir Agafonkin
+ (c) 2010-2013, Vladimir Agafonkin, CloudMade
 */
 (function (window, document, undefined) {/*
  * The L namespace contains all Leaflet classes and functions.
@@ -123,6 +123,10 @@ L.Util = {
 			}
 			return value;
 		});
+	},
+
+	isArray: function (obj) {
+		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
@@ -401,23 +405,20 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 (function () {
 
 	var ie = !!window.ActiveXObject,
-	    // http://tanalin.com/en/articles/ie-version-js/
 	    ie6 = ie && !window.XMLHttpRequest,
 	    ie7 = ie && !document.querySelector,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
-	    // see TileLayer._addTile and debug/hacks/jitter.html
-
 	    ua = navigator.userAgent.toLowerCase(),
-	    webkit = ua.indexOf("webkit") !== -1,
-	    chrome = ua.indexOf("chrome") !== -1,
-	    android = ua.indexOf("android") !== -1,
-	    android23 = ua.search("android [23]") !== -1,
+	    webkit = ua.indexOf('webkit') !== -1,
+	    chrome = ua.indexOf('chrome') !== -1,
+	    android = ua.indexOf('android') !== -1,
+	    android23 = ua.search('android [23]') !== -1,
 
 	    mobile = typeof orientation !== undefined + '',
 	    msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
 	    retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-	              ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)") && window.matchMedia("(min-resolution:144dpi)").matches)),
+	              ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') && window.matchMedia('(min-resolution:144dpi)').matches)),
 
 	    doc = document.documentElement,
 	    ie3d = ie && ('transition' in doc.style),
@@ -589,7 +590,7 @@ L.point = function (x, y, round) {
 	if (x instanceof L.Point) {
 		return x;
 	}
-	if (x instanceof Array) {
+	if (L.Util.isArray(x)) {
 		return new L.Point(x[0], x[1]);
 	}
 	if (isNaN(x)) {
@@ -957,8 +958,11 @@ L.DomUtil = {
 L.DomUtil.TRANSFORM = L.DomUtil.testProp(
         ['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
+// webkitTransition comes first because some browser versions that drop vendor prefix don't do
+// the same for the transitionend event, in particular the Android 4.1 stock browser
+
 L.DomUtil.TRANSITION = L.DomUtil.testProp(
-        ['transition', 'webkitTransition', 'OTransition', 'MozTransition', 'msTransition']);
+        ['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
 L.DomUtil.TRANSITION_END =
         L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
@@ -1041,7 +1045,7 @@ L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Numbe
 	if (a instanceof L.LatLng) {
 		return a;
 	}
-	if (a instanceof Array) {
+	if (L.Util.isArray(a)) {
 		return new L.LatLng(a[0], a[1]);
 	}
 	if (isNaN(a)) {
@@ -1791,7 +1795,7 @@ L.Map = L.Class.extend({
 	},
 
 	_initLayers: function (layers) {
-		layers = layers ? (layers instanceof Array ? layers : [layers]) : [];
+		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
 
 		this._layers = {};
 		this._zoomBoundLayers = {};
@@ -2244,7 +2248,7 @@ L.TileLayer = L.Class.extend({
 
 	_setAutoZIndex: function (pane, compare) {
 
-		var layers = pane.getElementsByClassName('leaflet-layer'),
+		var layers = pane.children,
 		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
 		    zIndex, i, len;
 
@@ -2898,10 +2902,12 @@ L.Icon = L.Class.extend({
 	options: {
 		/*
 		iconUrl: (String) (required)
+		iconRetinaUrl: (String) (optional, used for retina devices if detected)
 		iconSize: (Point) (can be set through CSS)
 		iconAnchor: (Point) (centered by default, can be set in CSS with negative margins)
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
+		shadowRetinaUrl: (String) (optional, used for retina devices if detected)
 		shadowSize: (Point)
 		shadowAnchor: (Point)
 		*/
@@ -2979,6 +2985,9 @@ L.Icon = L.Class.extend({
 	},
 
 	_getIconUrl: function (name) {
+		if (L.Browser.retina && this.options[name + 'RetinaUrl']) {
+			return this.options[name + 'RetinaUrl'];
+		}
 		return this.options[name + 'Url'];
 	}
 });
@@ -3007,6 +3016,10 @@ L.Icon.Default = L.Icon.extend({
 
 		if (this.options[key]) {
 			return this.options[key];
+		}
+
+		if (L.Browser.retina && name === 'icon') {
+			name += '@2x';
 		}
 
 		var path = L.Icon.Default.imagePath;
@@ -3370,13 +3383,15 @@ L.Popup = L.Class.extend({
 		closeButton: true,
 		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
-		className: ''
+		className: '',
+		zoomAnimation: true
 	},
 
 	initialize: function (options, source) {
 		L.setOptions(this, options);
 
 		this._source = source;
+		this._animated = L.Browser.any3d && this.options.zoomAnimation;
 	},
 
 	onAdd: function (map) {
@@ -3396,7 +3411,7 @@ L.Popup = L.Class.extend({
 
 		map.on('viewreset', this._updatePosition, this);
 
-		if (L.Browser.any3d) {
+		if (this._animated) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 
@@ -3465,7 +3480,8 @@ L.Popup = L.Class.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			containerClass = prefix + ' ' + this.options.className + ' leaflet-zoom-animated',
+			containerClass = prefix + ' ' + this.options.className + ' leaflet-zoom-' +
+			        (this._animated ? 'animated' : 'hide'),
 			container = this._container = L.DomUtil.create('div', containerClass),
 			closeButton;
 
@@ -3551,15 +3567,15 @@ L.Popup = L.Class.extend({
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    is3d = L.Browser.any3d,
+		    animated = this._animated,
 		    offset = this.options.offset;
 
-		if (is3d) {
+		if (animated) {
 			L.DomUtil.setPosition(this._container, pos);
 		}
 
-		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
-		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
+		this._containerBottom = -offset.y - (animated ? 0 : pos.y);
+		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (animated ? 0 : pos.x);
 
 		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
@@ -3581,7 +3597,7 @@ L.Popup = L.Class.extend({
 
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		if (L.Browser.any3d) {
+		if (this._animated) {
 			layerPos._add(L.DomUtil.getPosition(this._container));
 		}
 
@@ -3825,7 +3841,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
 		if (this._popupContent && layer.bindPopup) {
-			layer.bindPopup(this._popupContent);
+			layer.bindPopup(this._popupContent, this._popupOptions);
 		}
 
 		return this.fire('layeradd', {layer: layer});
@@ -3844,9 +3860,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	bindPopup: function (content) {
+	bindPopup: function (content, options) {
 		this._popupContent = content;
-		return this.invoke('bindPopup', content);
+		this._popupOptions = options;
+		return this.invoke('bindPopup', content, options);
 	},
 
 	setStyle: function (style) {
@@ -4445,6 +4462,10 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		    .off('viewreset', this.projectLatlngs, this)
 		    .off('moveend', this._updatePath, this);
 
+		if (this.options.clickable) {
+			this._map.off('click', this._onClick, this);
+		}
+
 		this._requestUpdate();
 
 		this._map = null;
@@ -4884,7 +4905,7 @@ L.Polyline = L.Path.extend({
 	_convertLatLngs: function (latlngs) {
 		var i, len;
 		for (i = 0, len = latlngs.length; i < len; i++) {
-			if (latlngs[i] instanceof Array && typeof latlngs[i][0] !== 'number') {
+			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') {
 				return;
 			}
 			latlngs[i] = L.latLng(latlngs[i]);
@@ -5036,7 +5057,7 @@ L.Polygon = L.Polyline.extend({
 	initialize: function (latlngs, options) {
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
-		if (latlngs && (latlngs[0] instanceof Array) && (typeof latlngs[0][0] !== 'number')) {
+		if (latlngs && L.Util.isArray(latlngs[0]) && (typeof latlngs[0][0] !== 'number')) {
 			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
 		}
@@ -5287,6 +5308,11 @@ L.CircleMarker = L.Circle.extend({
 	projectLatlngs: function () {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 	},
+	
+	_updateStyle : function () {
+		L.Circle.prototype._updateStyle.call(this);
+		this.setRadius(this.options.radius);
+	},
 
 	setRadius: function (radius) {
 		this._radius = radius;
@@ -5407,7 +5433,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	addData: function (geojson) {
-		var features = geojson instanceof Array ? geojson : geojson.features,
+		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
 		    i, len;
 
 		if (features) {
@@ -5495,13 +5521,17 @@ L.extend(L.GeoJSON, {
 			latlngs = this.coordsToLatLngs(coords, 1);
 			return new L.MultiPolyline(latlngs);
 
-		case "MultiPolygon":
+		case 'MultiPolygon':
 			latlngs = this.coordsToLatLngs(coords, 2);
 			return new L.MultiPolygon(latlngs);
 
-		case "GeometryCollection":
+		case 'GeometryCollection':
 			for (i = 0, len = geometry.geometries.length; i < len; i++) {
-				layer = this.geometryToLayer(geometry.geometries[i], pointToLayer);
+				layer = this.geometryToLayer({
+					geometry: geometry.geometries[i],
+					type: 'Feature',
+					properties: geojson.properties
+				}, pointToLayer);
 				layers.push(layer);
 			}
 			return new L.FeatureGroup(layers);
