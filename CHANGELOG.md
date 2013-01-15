@@ -13,7 +13,6 @@ Be sure to read through these changes to avoid any issues when upgrading from ol
 
  * Removed default `LatLng` wrapping/clamping of coordinates (`-180, -90` to `180, 90`), wrapping moved to an explicit method (`LatLng` `wrap`).
  * Disabled `Map` `worldCopyJump` option by default (jumping back to the original world copy when panning out of it). Enable it explicitly if you need it.
- * Improved `CRS.Simple` to be more usable out of the box (it has different default scaling and transformation now), see `debug/map/simple-proj.html` for an example.
 
 ### Improvements
 
@@ -39,7 +38,7 @@ Be sure to read through these changes to avoid any issues when upgrading from ol
 ##### Other
 
  * Added **retina support for markers** (through `Icon` `iconRetinaUrl` and `shadowRetinaUrl` options) (by [@danzel](https://github.com/danzel)). [#1048](https://github.com/Leaflet/Leaflet/issues/1048) [#1174](https://github.com/Leaflet/Leaflet/pull/1174)
- * Added retina-sized default marker icon (along with its SVG source) (by [@danzel](https://github.com/danzel)). [#1048](https://github.com/Leaflet/Leaflet/issues/1048) [#1174](https://github.com/Leaflet/Leaflet/pull/1174)
+ * Added retina-sized default marker icon in addition to standard one (along with its SVG source and with some subtle design improvements) (by [@danzel](https://github.com/danzel)). [#1048](https://github.com/Leaflet/Leaflet/issues/1048) [#1174](https://github.com/Leaflet/Leaflet/pull/1174)
  * Improved vectors updating/removing performance on Canvas backend (by [@danzel](https://github.com/danzel)). [#961](https://github.com/Leaflet/Leaflet/pull/961)
  * Cut total images size from 10KB to 3.2KB with [Yahoo Smush.it](http://www.smushit.com/ysmush.it/). Thanks to Peter Rounce for suggestion.
 
@@ -62,8 +61,8 @@ Be sure to read through these changes to avoid any issues when upgrading from ol
  * Added `FeatureGroup` `layeradd` and `layerremove` events (by [@jacobtoye](https://github.com/jacobtoye)). [#1122](https://github.com/Leaflet/Leaflet/issues/1122)
  * Added `Control.Layers` `baselayerchange` event (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1064](https://github.com/Leaflet/Leaflet/pull/1064)
  * Improved `Control.Layers` to support HTML in layer names (by [@aparshin](https://github.com/aparshin)). [#1055](https://github.com/Leaflet/Leaflet/pull/1055) [#1099](https://github.com/Leaflet/Leaflet/issues/1099)
- * Removed `Browser` `ua`, `ie`, `gecko`, `opera` properties (no longer needed).
- * Added `CRS.Simple` to the list of built-in CRS. It was added earlier but not included in the build.
+ * Added `CRS.Simple` to the list of built-in CRS and improved it to be more usable out of the box (it has different default scaling and transformation now), see `debug/map/simple-proj.html` for an example.
+ * Removed `Browser` `ua`, `gecko`, `opera` properties (no longer needed).
  * Added `L.extend`, `L.bind`, `L.stamp`, `L.setOptions` shortcuts for corresponding `L.Util` methods.
  * Disabled clearing of map container contents on map initialization (as a result of fixing [#278](https://github.com/Leaflet/Leaflet/issues/278)).
  * Added `L.Util.isArray` function (by [@oslek](https://github.com/oslek)). [#1279](https://github.com/Leaflet/Leaflet/pull/1279)
