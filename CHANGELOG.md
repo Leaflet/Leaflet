@@ -13,6 +13,7 @@ Be sure to read through these changes to avoid any issues when upgrading from ol
 
  * Removed default `LatLng` wrapping/clamping of coordinates (`-180, -90` to `180, 90`), wrapping moved to an explicit method (`LatLng` `wrap`).
  * Disabled `Map` `worldCopyJump` option by default (jumping back to the original world copy when panning out of it). Enable it explicitly if you need it.
+ * Changed styles for the zoom control (you may need to update your custom styles for it).
 
 ### Improvements
 

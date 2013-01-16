@@ -185,7 +185,47 @@
 /* general typography */
 .leaflet-container {
 	font: 12px/1.5 "Helvetica Neue", Arial, Helvetica, sans-serif;
-}
+	}
+
+
+/* general toolbar styles */
+
+.leaflet-bar {
+	box-shadow: 0 0 8px rgba(0,0,0,0.4);
+	border: 1px solid #888;
+	-webkit-border-radius: 5px;
+	        border-radius: 5px;
+	}
+.leaflet-bar-part {
+	background-color: rgba(255, 255, 255, 0.8);
+	border-bottom: 1px solid #aaa;
+	}
+.leaflet-bar-part-top {
+	-webkit-border-radius: 4px 4px 0 0;
+	        border-radius: 4px 4px 0 0;
+	}
+.leaflet-bar-part-bottom {
+	-webkit-border-radius: 0 0 4px 4px;
+	        border-radius: 0 0 4px 4px;
+	border-bottom: none;
+	}
+
+.leaflet-touch .leaflet-bar {
+	-webkit-border-radius: 10px;
+	        border-radius: 10px;
+	}
+.leaflet-touch .leaflet-bar-part {
+	border-bottom: 4px solid rgba(0,0,0,0.3);
+	}
+.leaflet-touch .leaflet-bar-part-top {
+	-webkit-border-radius: 7px 7px 0 0;
+	        border-radius: 7px 7px 0 0;
+	}
+.leaflet-touch .leaflet-bar-part-bottom {
+	-webkit-border-radius: 0 0 7px 7px;
+	        border-radius: 0 0 7px 7px;
+	border-bottom: none;
+	}
 
 
 /* zoom control */
@@ -193,15 +233,10 @@
 .leaflet-container .leaflet-control-zoom {
 	margin-left: 13px;
 	margin-top: 12px;
-	box-shadow: 0 0 8px rgba(0,0,0,0.4);
-	border: 1px solid #888;
-	-webkit-border-radius: 5px;
-	        border-radius: 5px;
 	}
 .leaflet-control-zoom a {
 	width: 22px;
 	height: 22px;
-	background-color: rgba(255, 255, 255, 0.8);
 	text-align: center;
 	text-decoration: none;
 	color: black;
@@ -217,15 +252,10 @@
 	color: #777;
 	}
 .leaflet-control-zoom-in {
-	border-bottom: 1px solid #aaa;
 	font: bold 18px/24px Arial, Helvetica, sans-serif;
-	-webkit-border-radius: 4px 4px 0 0;
-	        border-radius: 4px 4px 0 0;
 	}
 .leaflet-control-zoom-out {
 	font: bold 23px/20px Tahoma, Verdana, sans-serif;
-	-webkit-border-radius: 0 0 4px 4px;
-	        border-radius: 0 0 4px 4px;
 	}
 .leaflet-control-zoom a.leaflet-control-zoom-disabled {
 	cursor: default;
@@ -233,9 +263,6 @@
 	color: #bbb;
 	}
 
-.leaflet-touch .leaflet-control-zoom {
-	border-radius: 10px;
-	}
 .leaflet-touch .leaflet-control-zoom a {
 	width: 30px;
 	height: 30px;
@@ -243,8 +270,6 @@
 .leaflet-touch .leaflet-control-zoom-in {
 	font-size: 24px;
 	line-height: 29px;
-	border-bottom: 4px solid rgba(0,0,0,0.3);
-	border-radius: 7px 7px 0 0;
 	}
 .leaflet-touch .leaflet-control-zoom-out {
 	font-size: 28px;
