@@ -416,9 +416,11 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	    android23 = ua.search('android [23]') !== -1,
 
 	    mobile = typeof orientation !== undefined + '',
-	    msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
-	    retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-	              ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') && window.matchMedia('(min-resolution:144dpi)').matches)),
+	    msTouch = window.navigator && window.navigator.msPointerEnabled &&
+	              window.navigator.msMaxTouchPoints,
+	    retina = ('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
+	             ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') &&
+	              window.matchMedia('(min-resolution:144dpi)').matches),
 
 	    doc = document.documentElement,
 	    ie3d = ie && ('transition' in doc.style),
@@ -7275,15 +7277,24 @@ L.Control.Zoom = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-		var className = 'leaflet-control-zoom',
-		    container = L.DomUtil.create('div', className);
+		var zoomName = 'leaflet-control-zoom',
+		    barName = 'leaflet-bar',
+		    partName = barName + '-part',
+		    container = L.DomUtil.create('div', zoomName + ' ' + barName);
 
 		this._map = map;
 
-		this._zoomInButton = this._createButton(
-		        '+', 'Zoom in',  className + '-in',  container, this._zoomIn,  this);
-		this._zoomOutButton = this._createButton(
-		        '-', 'Zoom out', className + '-out', container, this._zoomOut, this);
+		this._zoomInButton = this._createButton('+', 'Zoom in',
+		        zoomName + '-in ' +
+		        partName + ' ' +
+		        partName + '-top',
+		        container, this._zoomIn,  this);
+
+		this._zoomOutButton = this._createButton('-', 'Zoom out',
+		        zoomName + '-out ' +
+		        partName + ' ' +
+		        partName + '-bottom',
+		        container, this._zoomOut, this);
 
 		map.on('zoomend', this._updateDisabled, this);
 
