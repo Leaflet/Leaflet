@@ -50,16 +50,16 @@ Now putting a marker with this icon on a map is easy:
 
 What if we need to create several icons that have lots in common? Lets define our own icon class containing the shared options, inheriting from `L.Icon`! It's really easy in Leaflet:
 
-		var LeafIcon = L.Icon.extend({
-			options: {
-				shadowUrl: 'leaf-shadow.png',
-				iconSize:     [38, 95],
-				shadowSize:   [50, 64],
-				iconAnchor:   [22, 94],
-				shadowAnchor: [4, 62],
-				popupAnchor:  [-3, -76]
-			}
-		});
+	var LeafIcon = L.Icon.extend({
+		options: {
+			shadowUrl: 'leaf-shadow.png',
+			iconSize:     [38, 95],
+			shadowSize:   [50, 64],
+			iconAnchor:   [22, 94],
+			shadowAnchor: [4, 62],
+			popupAnchor:  [-3, -76]
+		}
+	});
 
 Now we can create all three of our leaf icons from this class and use them:
 

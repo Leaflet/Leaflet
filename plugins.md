@@ -19,7 +19,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/danzel/Leaflet.markercluster">Leaflet.markercluster</a>
+			<a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>
 		</td><td>
 			Beautiful, sophisticated, high performance marker clustering solution with smooth animations and lots of great features. <em>Recommended!</em>
 		</td><td>
@@ -53,7 +53,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://mackerron.com">George MacKerron</a>
 		</td>
 	</tr>
-    <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/aparshin/leaflet-boundary-canvas">TileLayer.BoundaryCanvas</a>
 		</td><td>
@@ -62,13 +62,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
 	</tr>
-    <tr>
+	<tr>
+		<td>
+			<a href="https://github.com/domoritz/leaflet-maskcanvas">MaskCanvas</a>
+		</td><td>
+			Canvas layer that can be used to visualize coverage.
+		</td><td>
+			<a href="https://github.com/domoritz">Dominik Moritz</a>
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<a href="https://github.com/sunng87/heatcanvas">HeatCanvas</a>
 		</td><td>
 			Simple heatmap api based on HTML5 canvas.
 		</td><td>
 			<a href="https://github.com/sunng87">Sun Ning</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
@@ -76,6 +87,51 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
 		</td><td>
 			<a href="https://github.com/moonlite">Mattias Bengtsson</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/openplans/Leaflet.AnimatedMarker">Leaflet.AnimatedMarker</a>
+		</td><td>
+			Animate a marker along a polyline.
+		</td><td>
+			<a href="https://github.com/atogle">Aaron Ogle</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/Leaflet-semicircle">Leaflet-semicircle</a>
+		</td><td>
+			Adds functionality to <code>L.Circle</code> to draw semicircles.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ismyrnow/Leaflet.functionaltilelayer">Leaflet.FunctionalTileLayer</a>
+		</td><td>
+			Allows you to define tile layer URLs using a function, with support for jQuery deferreds.
+		</td><td>
+			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/joker-x/Leaflet.geoCSV">Leaflet.geoCSV</a>
+		</td><td>
+			Leaflet plugin for loading a CSV file as geoJSON layer.
+		</td><td>
+			<a href="https://github.com/joker-x">Iván Eixarch</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bbecquet/Leaflet.PolylineDecorator">Leaflet.PolylineDecorator</a>
+		</td><td>
+			Allows you to draw patterns (like dashes, arrows or evenly spaced Markers) along Polylines or coordinate paths.
+		</td><td>
+			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
 		</td>
 	</tr>
 </table>
@@ -170,6 +226,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/jieter">Jieter</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.pouch">Leaflet.Pouch</a>
+		</td><td>
+			Use PouchDB to sync CouchDB data to local storage (indexedDB), to just add couchDB data or as just a less confusing implementation of indexedDB.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet-ajax">Leaflet Ajax</a>
+		</td><td>
+			Add GeoJSON data via ajax or jsonp.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -183,11 +257,20 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/jacobtoye/Leaflet.draw">Leaflet.draw</a>
+			<a href="https://github.com/Leaflet/Leaflet.draw">Leaflet.draw</a>
 		</td><td>
 			Enables drawing features like polylines, polygons, rectangles, circles and markers through a very nice user-friendly interface with icons and hints. <em>Recommended!</em>
 		</td><td>
 			<a href="https://github.com/jacobtoye">Jacob Toye</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/danzel/Leaflet.utfgrid">Leaflet.utfgrid</a>
+		</td><td>
+			Provides a utfgrid interaction handler for leaflet a very small footprint.
+		</td><td>
+			<a href="https://github.com/danzel">Dave Leaver</a>
 		</td>
 	</tr>
 	<tr>
@@ -201,7 +284,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartena/Leaflet.Pancontrol">Leaflet.Pancontrol</a>
+			<a href="http://kartena.github.com/Leaflet.Pancontrol/">Leaflet.Pancontrol</a>
 		</td><td>
 			A simple panning control.
 		</td><td>
@@ -210,11 +293,20 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartena/Leaflet.zoomslider">Leaflet.zoomslider</a>
+			<a href="http://kartena.github.com/Leaflet.zoomslider/">Leaflet.zoomslider</a>
 		</td><td>
 			A zoom slider control.
 		</td><td>
 			<a href="http://www.kartena.se/">Kartena</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/domoritz/leaflet-locatecontrol">Leaflet.Locate</a>
+		</td><td>
+			A customizable locate control.
+		</td><td>
+			<a href="https://github.com/domoritz">Dominik Moritz</a>
 		</td>
 	</tr>
 	<tr>
@@ -246,11 +338,30 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/tripbirds/leaflet-locationfilter/">leaflet-locationfilter</a>
+			<a href="https://github.com/kajic/leaflet-locationfilter/">leaflet-locationfilter</a>
 		</td><td>
 			A draggable/resizable rectangle for selecting an area on the map.
 		</td><td>
 			<a href="https://github.com/kajic">Robert Kajic</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet.MiniMap</a>
+		</td><td>
+			A small minimap showing the map at a different scale to aid navigation.
+		</td><td>
+			<a href="https://github.com/robpvn">Robert Nordan</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
+		</td><td>
+			A Leaflet Plugin for Edge Cases.  For use when you want popups on <em>mouseover</em>, not <em>click</em>, and
+			you need popup tips to reorient as you get close to the edges of your map.
+		</td><td>
+			<a href="http://www.linkedin.com/in/erictheise">Eric Theise</a>
 		</td>
 	</tr>
 </table>

@@ -123,7 +123,7 @@ bodyclass: api-page
 <!--<a href="#toc" id="back-to-top">&uarr;</a>-->
 
 <hr />
-<p>This reference reflects <strong>Leaflet 0.4.3</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/CloudMade/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.<br />Older docs for version 0.3 can be <a href="https://github.com/CloudMade/Leaflet/zipball/7fde9938fa36070191f939c9948285d7ddc07368">downloaded here</a></p>
+<p>This reference reflects <strong>Leaflet 0.4.5</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/Leaflet/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.<!--<br />Older docs for version 0.3 can be <a href="https://github.com/Leaflet/Leaflet/zipball/7fde9938fa36070191f939c9948285d7ddc07368">downloaded here</a>--></p>
 
 <h2 id="map-class">L.Map</h2>
 
@@ -425,12 +425,12 @@ var map = L.map('map', {
 		<td>Fired when the user pushes the mouse button on the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>mouseenter</b></code></td>
+		<td><code><b>mouseover</b></code></td>
 		<td><code><a href="#mouse-event">MouseEvent</a></code>
 		<td>Fired when the mouse enters the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>mouseleave</b></code></td>
+		<td><code><b>mouseout</b></code></td>
 		<td><code><a href="#mouse-event">MouseEvent</a></code>
 		<td>Fired when the mouse leaves the map.</td>
 	</tr>
@@ -3291,7 +3291,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<td>Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).</td>
 	</tr>
 	<tr>
-		<td><code><b>L.LatLngBounds</b>(
+		<td><code><b>L.Bounds</b>(
 			<nobr>&lt;<a href="#point">Point</a>[]&gt; <i>points</i> )</nobr>
 		</code></td>
 
@@ -4501,7 +4501,7 @@ L.map('map');</code></pre>
 		<td>Applies a unique key to the object and returns that key.</td>
 	</tr>
 	<!-- TODO Commented out for the time being:
-	https://github.com/CloudMade/Leaflet/pull/793#discussion_r1134904
+	https://github.com/Leaflet/Leaflet/pull/793#discussion_r1134904
 	<tr>
 		<td><code><b>requestAnimFrame</b>()</code></td>
 		<td></td>
