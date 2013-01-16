@@ -84,6 +84,11 @@ L.Point.prototype = {
 		return Math.sqrt(x * x + y * y);
 	},
 
+	equals: function (point) {
+		return point.x === this.x &&
+		       point.y === this.y;
+	},
+
 	toString: function () {
 		return 'Point(' +
 		        L.Util.formatNum(this.x) + ', ' +
@@ -95,7 +100,7 @@ L.point = function (x, y, round) {
 	if (x instanceof L.Point) {
 		return x;
 	}
-	if (x instanceof Array) {
+	if (L.Util.isArray(x)) {
 		return new L.Point(x[0], x[1]);
 	}
 	if (isNaN(x)) {

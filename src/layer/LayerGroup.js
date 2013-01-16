@@ -1,5 +1,6 @@
 /*
- * L.LayerGroup is a class to combine several layers so you can manipulate the group (e.g. add/remove it) as one layer.
+ * L.LayerGroup is a class to combine several layers into one so that
+ * you can manipulate the group (e.g. add/remove it) as one layer.
  */
 
 L.LayerGroup = L.Class.extend({
@@ -82,6 +83,10 @@ L.LayerGroup = L.Class.extend({
 				method.call(context, this._layers[i]);
 			}
 		}
+	},
+
+	setZIndex: function (zIndex) {
+		return this.invoke('setZIndex', zIndex);
 	}
 });
 

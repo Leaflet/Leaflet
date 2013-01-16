@@ -1,3 +1,7 @@
+/*
+ * L.Handler.PolyEdit is an editing handler for polylines and polygons.
+ */
+
 L.Handler.PolyEdit = L.Handler.extend({
 	options: {
 		icon: new L.DivIcon({
@@ -219,4 +223,27 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 		return map.layerPointToLatLng(p1._add(p2)._divideBy(2));
 	}
+});
+
+L.Polyline.addInitHook(function () {
+
+	if (L.Handler.PolyEdit) {
+		this.editing = new L.Handler.PolyEdit(this);
+
+		if (this.options.editable) {
+			this.editing.enable();
+		}
+	}
+
+	this.on('add', function () {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	});
+
+	this.on('remove', function () {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+	});
 });

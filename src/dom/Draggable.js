@@ -6,9 +6,17 @@ L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	statics: {
-		START: L.Browser.touch ? 'touchstart' : 'mousedown',
-		END: L.Browser.touch ? 'touchend' : 'mouseup',
-		MOVE: L.Browser.touch ? 'touchmove' : 'mousemove',
+		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
+		END: {
+			mousedown: 'mouseup',
+			touchstart: 'touchend',
+			MSPointerDown: 'touchend'
+		},
+		MOVE: {
+			mousedown: 'mousemove',
+			touchstart: 'touchmove',
+			MSPointerDown: 'touchmove'
+		},
 		TAP_TOLERANCE: 15
 	},
 
@@ -21,14 +29,18 @@ L.Draggable = L.Class.extend({
 	enable: function () {
 		if (this._enabled) { return; }
 
-		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
+		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
+			L.DomEvent.on(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
+		}
 		this._enabled = true;
 	},
 
 	disable: function () {
 		if (!this._enabled) { return; }
 
-		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown);
+		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
+			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
+		}
 		this._enabled = false;
 		this._moved = false;
 	},
@@ -76,8 +88,8 @@ L.Draggable = L.Class.extend({
 			}, this), 1000);
 		}
 
-		L.DomEvent.on(document, L.Draggable.MOVE, this._onMove, this);
-		L.DomEvent.on(document, L.Draggable.END, this._onUp, this);
+		L.DomEvent.on(document, L.Draggable.MOVE[e.type], this._onMove, this);
+		L.DomEvent.on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -138,8 +150,12 @@ L.Draggable = L.Class.extend({
 			this._restoreCursor();
 		}
 
-		L.DomEvent.off(document, L.Draggable.MOVE, this._onMove);
-		L.DomEvent.off(document, L.Draggable.END, this._onUp);
+		for (var i in L.Draggable.MOVE) {
+			if (L.Draggable.MOVE.hasOwnProperty(i)) {
+				L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
+				L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
+			}
+		}
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend

@@ -1,3 +1,7 @@
+/*
+ * L.TileLayer.WMS is used for putting WMS tile layers on the map.
+ */
+
 L.TileLayer.WMS = L.TileLayer.extend({
 
 	defaultWmsParams: {
@@ -44,6 +48,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
 
+		this._adjustTilePoint(tilePoint);
+
 		var map = this._map,
 		    crs = map.options.crs,
 		    tileSize = this.options.tileSize,
@@ -58,7 +64,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		    url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
 
-		return url + L.Util.getParamString(this.wmsParams) + "&bbox=" + bbox;
+		return url + L.Util.getParamString(this.wmsParams, url) + "&bbox=" + bbox;
 	},
 
 	setParams: function (params, noRedraw) {

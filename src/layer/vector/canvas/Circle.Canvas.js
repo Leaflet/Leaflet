@@ -1,5 +1,5 @@
 /*
- * Circle canvas specific drawing parts.
+ * Extends L.Circle with Canvas-specific code.
  */
 
 L.Circle.include(!L.Path.CANVAS ? {} : {

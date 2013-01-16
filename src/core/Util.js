@@ -1,5 +1,5 @@
 /*
- * L.Util is a namespace for various utility functions.
+ * L.Util contains various utility functions used throughout Leaflet code.
  */
 
 L.Util = {
@@ -77,14 +77,14 @@ L.Util = {
 		return obj.options;
 	},
 
-	getParamString: function (obj) {
+	getParamString: function (obj, existingUrl) {
 		var params = [];
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
 				params.push(i + '=' + obj[i]);
 			}
 		}
-		return '?' + params.join('&');
+		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
 	template: function (str, data) {
@@ -95,6 +95,10 @@ L.Util = {
 			}
 			return value;
 		});
+	},
+
+	isArray: function (obj) {
+		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='

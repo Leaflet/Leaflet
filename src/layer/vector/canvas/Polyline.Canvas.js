@@ -1,3 +1,6 @@
+/*
+ * Extends L.Polyline to be able to manually detect clicks on Canvas-rendered polylines.
+ */
 
 L.Polyline.include(!L.Path.CANVAS ? {} : {
 	_containsPoint: function (p, closed) {

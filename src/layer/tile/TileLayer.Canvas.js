@@ -1,3 +1,8 @@
+/*
+ * L.TileLayer.Canvas is a class that you can use as a base for creating
+ * dynamically drawn Canvas-based tile layers.
+ */
+
 L.TileLayer.Canvas = L.TileLayer.extend({
 	options: {
 		async: false
@@ -43,7 +48,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		}
 	},
 
-	drawTile: function (tile, tilePoint) {
+	drawTile: function (/*tile, tilePoint*/) {
 		// override with rendering code
 	},
 

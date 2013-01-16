@@ -1,5 +1,5 @@
 /*
- * Popup extension to L.Marker, adding openPopup & bindPopup methods.
+ * Popup extension to L.Marker, adding popup-related methods.
  */
 
 L.Marker.include({

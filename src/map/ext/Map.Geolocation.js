@@ -1,5 +1,5 @@
 /*
- * Provides L.Map with convenient shortcuts for W3C geolocation.
+ * Provides L.Map with convenient shortcuts for using browser geolocation features.
  */
 
 L.Map.include({

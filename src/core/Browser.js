@@ -1,23 +1,26 @@
+/*
+ * L.Browser handles different browser and feature detections for internal Leaflet use.
+ */
+
 (function () {
 
 	var ie = !!window.ActiveXObject,
-	    // http://tanalin.com/en/articles/ie-version-js/
 	    ie6 = ie && !window.XMLHttpRequest,
 	    ie7 = ie && !document.querySelector,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
-	    // see TileLayer._addTile and debug/hacks/jitter.html
-
 	    ua = navigator.userAgent.toLowerCase(),
-	    webkit = ua.indexOf("webkit") !== -1,
-	    chrome = ua.indexOf("chrome") !== -1,
-	    android = ua.indexOf("android") !== -1,
-	    android23 = ua.search("android [23]") !== -1,
+	    webkit = ua.indexOf('webkit') !== -1,
+	    chrome = ua.indexOf('chrome') !== -1,
+	    android = ua.indexOf('android') !== -1,
+	    android23 = ua.search('android [23]') !== -1,
 
 	    mobile = typeof orientation !== undefined + '',
-	    msTouch = (window.navigator && window.navigator.msPointerEnabled && window.navigator.msMaxTouchPoints),
-	    retina = (('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-	              ('matchMedia' in window && window.matchMedia("(min-resolution:144dpi)").matches)),
+	    msTouch = window.navigator && window.navigator.msPointerEnabled &&
+	              window.navigator.msMaxTouchPoints,
+	    retina = ('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
+	             ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') &&
+	              window.matchMedia('(min-resolution:144dpi)').matches),
 
 	    doc = document.documentElement,
 	    ie3d = ie && ('transition' in doc.style),
@@ -57,6 +60,7 @@
 
 
 	L.Browser = {
+		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
 		webkit: webkit,

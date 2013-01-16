@@ -1,3 +1,7 @@
+/*
+ * Extends the event handling code with double tap support for mobile browsers.
+ */
+
 L.extend(L.DomEvent, {
 
 	_touchstart: L.Browser.msTouch ? 'MSPointerDown' : 'touchstart',
@@ -33,7 +37,9 @@ L.extend(L.DomEvent, {
 			doubleTap = (delta > 0 && delta <= delay);
 			last = now;
 		}
+
 		function onTouchEnd(e) {
+			/*jshint forin:false */
 			if (L.Browser.msTouch) {
 				var idx = trackedTouches.indexOf(e.pointerId);
 				if (idx === -1) {
@@ -47,14 +53,13 @@ L.extend(L.DomEvent, {
 					//Work around .type being readonly with MSPointer* events
 					var newTouch = { },
 						prop;
+
 					for (var i in touch) {
-						if (true) { //Make JSHint happy, we want to copy all properties
-							prop = touch[i];
-							if (typeof prop === 'function') {
-								newTouch[i] = prop.bind(touch);
-							} else {
-								newTouch[i] = prop;
-							}
+						prop = touch[i];
+						if (typeof prop === 'function') {
+							newTouch[i] = prop.bind(touch);
+						} else {
+							newTouch[i] = prop;
 						}
 					}
 					touch = newTouch;

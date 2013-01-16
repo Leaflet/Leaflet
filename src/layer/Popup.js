@@ -1,3 +1,6 @@
+/*
+ * L.Popup is used for displaying popups on the map.
+ */
 
 L.Map.mergeOptions({
 	closePopupOnClick: true
@@ -14,13 +17,15 @@ L.Popup = L.Class.extend({
 		closeButton: true,
 		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
-		className: ''
+		className: '',
+		zoomAnimation: true
 	},
 
 	initialize: function (options, source) {
 		L.setOptions(this, options);
 
 		this._source = source;
+		this._animated = L.Browser.any3d && this.options.zoomAnimation;
 	},
 
 	onAdd: function (map) {
@@ -40,7 +45,7 @@ L.Popup = L.Class.extend({
 
 		map.on('viewreset', this._updatePosition, this);
 
-		if (L.Browser.any3d) {
+		if (this._animated) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 
@@ -109,7 +114,8 @@ L.Popup = L.Class.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			containerClass = prefix + ' ' + this.options.className + ' leaflet-zoom-animated',
+			containerClass = prefix + ' ' + this.options.className + ' leaflet-zoom-' +
+			        (this._animated ? 'animated' : 'hide'),
 			container = this._container = L.DomUtil.create('div', containerClass),
 			closeButton;
 
@@ -195,15 +201,15 @@ L.Popup = L.Class.extend({
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    is3d = L.Browser.any3d,
+		    animated = this._animated,
 		    offset = this.options.offset;
 
-		if (is3d) {
+		if (animated) {
 			L.DomUtil.setPosition(this._container, pos);
 		}
 
-		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
-		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
+		this._containerBottom = -offset.y - (animated ? 0 : pos.y);
+		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (animated ? 0 : pos.x);
 
 		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
@@ -225,7 +231,7 @@ L.Popup = L.Class.extend({
 
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		if (L.Browser.any3d) {
+		if (this._animated) {
 			layerPos._add(L.DomUtil.getPosition(this._container));
 		}
 

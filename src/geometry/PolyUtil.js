@@ -11,9 +11,7 @@ L.PolyUtil = {};
  * Used to avoid rendering parts of a polygon that are not currently visible.
  */
 L.PolyUtil.clipPolygon = function (points, bounds) {
-	var min = bounds.min,
-	    max = bounds.max,
-	    clippedPoints,
+	var clippedPoints,
 	    edges = [1, 4, 2, 8],
 	    i, j, k,
 	    a, b,
@@ -55,5 +53,3 @@ L.PolyUtil.clipPolygon = function (points, bounds) {
 
 	return points;
 };
-
-/*jshint bitwise:true */

@@ -1,3 +1,6 @@
+/*
+ * Spherical Mercator is the most popular map projection, used by EPSG:3857 CRS used by default.
+ */
 
 L.Projection.SphericalMercator = {
 	MAX_LATITUDE: 85.0511287798,
@@ -19,7 +22,6 @@ L.Projection.SphericalMercator = {
 		    lng = point.x * d,
 		    lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
 
-		// TODO refactor LatLng wrapping
-		return new L.LatLng(lat, lng, true);
+		return new L.LatLng(lat, lng);
 	}
 };

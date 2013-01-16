@@ -1,5 +1,6 @@
 /*
- * L.FeatureGroup extends L.LayerGroup by introducing mouse events and bindPopup method shared between a group of layers.
+ * L.FeatureGroup extends L.LayerGroup by introducing mouse events and additional methods
+ * shared between a group of interactive layers (like vectors or markers).
  */
 
 L.FeatureGroup = L.LayerGroup.extend({
@@ -19,7 +20,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
 		if (this._popupContent && layer.bindPopup) {
-			layer.bindPopup(this._popupContent);
+			layer.bindPopup(this._popupContent, this._popupOptions);
 		}
 
 		return this.fire('layeradd', {layer: layer});
@@ -38,9 +39,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	bindPopup: function (content) {
+	bindPopup: function (content, options) {
 		this._popupContent = content;
-		return this.invoke('bindPopup', content);
+		this._popupOptions = options;
+		return this.invoke('bindPopup', content, options);
 	},
 
 	setStyle: function (style) {
