@@ -69,6 +69,13 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Simple heatmap api based on HTML5 canvas.
 		</td><td>
 			<a href="https://github.com/sunng87">Sun Ning</a>
+	<tr>
+		<td>
+			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
+		</td><td>
+			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
+		</td><td>
+			<a href="https://github.com/moonlite">Mattias Bengtsson</a>
 		</td>
 	</tr>
 </table>
@@ -152,6 +159,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A simple geocoder control that uses Bing to locate places.
 		</td><td>
 			<a href="https://github.com/sa3m">Samuel Piquet</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/Leaflet.encoded">Leaflet.encoded</a>
+		</td><td>
+			Use encoded polylines in Leaflet.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
 		</td>
 	</tr>
 </table>

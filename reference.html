@@ -525,6 +525,11 @@ var map = L.map('map', {
 		<td>Fired when some layer is removed from the map.</td>
 	</tr>
 	<tr>
+		<td><code><b>baselayerchange</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when the base layer is changed through the layer control.</td>
+	</tr>
+	<tr>
 		<td><code><b>locationfound</b></code></td>
 		<td><code><a href="#location-event">LocationEvent</a></code>
 		<td>Fired when geolocation (using <code>locate</code> method) went successfully.</td>
@@ -1168,6 +1173,16 @@ var map = L.map('map', {
 		<td><code><b>dragend</b></code></td>
 		<td><code><a href="#event">Event</a></code>
 		<td>Fired when the user stops dragging the marker.</td>
+	</tr>
+	<tr>
+		<td><code><b>move</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the marker is moved via setLatLng. New coordinate include in event arguments.</td>
+	</tr>
+	<tr>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the marker is removed from the map.</td>
 	</tr>
 </table>
 
@@ -2012,6 +2027,11 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><a href="#mouse-event">MouseEvent</a></code>
 		<td>Fired when the user pushes the right mouse button on the object, prevents default browser context menu from showing if there are listeners on this event.</td>
 	</tr>
+	<tr>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the path is removed from the map.</td>
+	</tr>
 </table>
 
 <h3 id="path-methods">Methods</h3>
@@ -2037,6 +2057,11 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this path.</td>
+	</tr>
+	<tr id="path-unbindpopup">
+		<td><code><b>unbindPopup</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Unbinds the popup previously bound to the path with <code>bindPopup</code>.</td>
 	</tr>
 	<tr id="path-openpopup">
 		<td><code><b>openPopup</b>(
@@ -3097,6 +3122,13 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td>Returns bigger bounds created by extending the current bounds by a given percentage in each direction.</td>
 	</tr>
+	<tr>
+		<td><code><b>isValid</b>()</nobr>
+		</code></td>
+
+		<td><code>Boolean</code></td>
+		<td>Returns <code><span class="literal">true</span></code> if the bounds are properly initialized.</td>
+	</tr>
 </table>
 
 
@@ -3337,6 +3369,13 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle intersects the given bounds.</td>
 	</tr>
+	<tr>
+		<td><code><b>isValid</b>()</nobr>
+		</code></td>
+
+		<td><code>Boolean</code></td>
+		<td>Returns <code><span class="literal">true</span></code> if the bounds are properly initialized.</td>
+	</tr>
 </table>
 
 
@@ -3346,10 +3385,12 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <pre><code class="javascript">var myIcon = L.icon({
 	iconUrl: 'my-icon.png',
+	iconRetinaUrl: 'my-icon@2x.png',
 	iconSize: [38, 95],
 	iconAnchor: [22, 94],
 	popupAnchor: [-3, -76],
 	shadowUrl: 'my-icon-shadow.png',
+	shadowRetinaUrl: 'my-icon-shadow@2x.png',
 	shadowSize: [68, 95],
 	shadowAnchor: [22, 94]
 });
@@ -3394,6 +3435,11 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td>(required) The URL to the icon image (absolute or relative to your script path).</td>
 	</tr>
 	<tr>
+		<td><code><b>iconRetinaUrl</b></code></td>
+		<td><code>String</code>
+		<td>The URL to a retina sized version of the icon image (absolute or relative to your script path). Used for Retina screen devices.</td>
+	</tr>
+	<tr>
 		<td><code><b>iconSize</b></code></td>
 		<td><code><a href="#point">Point</a></code>
 		<td>Size of the icon image in pixels.</td>
@@ -3407,6 +3453,11 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 		<td><code><b>shadowUrl</b></code></td>
 		<td><code>String</code>
 		<td>The URL to the icon shadow image. If not specified, no shadow image will be created.</td>
+	</tr>
+	<tr>
+		<td><code><b>shadowRetinaUrl</b></code></td>
+		<td><code>String</code>
+		<td>The URL to the retina sized version of the icon shadow image. If not specified, no shadow image will be created. Used for Retina screen devices.</td>
 	</tr>
 	<tr>
 		<td><code><b>shadowSize</b></code></td>
@@ -3841,7 +3892,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h2 id="control-scale">L.Control.Scale</h2>
 
-<p>A simple scale control that shows the scale of the current center of screen in metric (m/km) and imerial (mi/ft) systems. Implements <a href="#icontrol">IControl</a> interface.</p>
+<p>A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Implements <a href="#icontrol">IControl</a> interface.</p>
 
 <pre><code>L.control.scale().addTo(map);</code></pre>
 
@@ -3897,7 +3948,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 		<td><code><b>imperial</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
-		<td>Whether to show the imerial scale line (mi/ft).</td>
+		<td>Whether to show the imperial scale line (mi/ft).</td>
 	</tr>
 	<tr>
 		<td><code><b>updateWhenIdle</b></code></td>
