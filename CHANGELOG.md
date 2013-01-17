@@ -5,7 +5,9 @@ Leaflet Changelog
 
 ## master
 
-An in-progress version being developed on the master branch.
+An in-progress version being developed on the master branch. No changes since 0.5 release yet.
+
+## 0.5 (January 17, 2013)
 
 ### Breaking changes
 
