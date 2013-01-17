@@ -218,11 +218,11 @@ L.Control.Layers = L.Control.extend({
 				if (!obj.overlay) {
 					baseLayer = obj.layer;
 				} else {
-					this._map.fire('overlaylayeradd', {layer: obj});
+					this._map.fire('overlayadd', {layer: obj});
 				}
 			} else if (!input.checked && this._map.hasLayer(obj.layer)) {
 				this._map.removeLayer(obj.layer);
-				this._map.fire('overlaylayerremoved', {layer: obj});
+				this._map.fire('overlayremove', {layer: obj});
 			}
 		}
 
