@@ -7,6 +7,7 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+ * Fixed `Polygon` to filter out last point if it's equal to the first one (to GeoJSON polygon issues) (by [@snkashis](https://github.com/snkashis)). [#1153](https://github.com/Leaflet/Leaflet/pull/1153) [#1135](https://github.com/Leaflet/Leaflet/issues/1135)
  * Added `Control.Layers` `overlayadd` and `overlayremove` events (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1286](https://github.com/Leaflet/Leaflet/issues/1286)
  * Updated `TileLayer.Canvas` `redraw` method to return `this` (by [@jieter](https://github.com/jieter)). [#1287](https://github.com/Leaflet/Leaflet/pull/1287)
 
