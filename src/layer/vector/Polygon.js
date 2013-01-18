@@ -32,13 +32,15 @@ L.Polygon = L.Polyline.extend({
 
 		if (!this._holes) { return; }
 
-		var i, j, len, len2;
+		var i, j, len, len2,
+			magnetPoint = this._originalPoints.length ? this._originalPoints[0]: undefined;
 
 		for (i = 0, len = this._holes.length; i < len; i++) {
 			this._holePoints[i] = [];
 
 			for (j = 0, len2 = this._holes[i].length; j < len2; j++) {
-				this._holePoints[i][j] = this._map.latLngToLayerPoint(this._holes[i][j]);
+				this._holePoints[i][j] = this._map.latLngToLayerPoint(this._holes[i][j], magnetPoint);
+				magnetPoint = this._map.options.crs.projection.project(this._holes[i][j], magnetPoint);
 			}
 		}
 	},

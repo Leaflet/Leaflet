@@ -3,8 +3,8 @@
  */
 
 L.CRS = {
-	latLngToPoint: function (latlng, zoom) { // (LatLng, Number) -> Point
-		var projectedPoint = this.projection.project(latlng),
+	latLngToPoint: function (latlng, zoom, magnetPoint) { // (LatLng, Number) -> Point
+		var projectedPoint = this.projection.project(latlng, magnetPoint),
 		    scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);
