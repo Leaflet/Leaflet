@@ -23,7 +23,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.5';
+L.version = '0.6-dev';
 
 
 /*
@@ -2719,6 +2719,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 				this._redrawTile(tiles[i]);
 			}
 		}
+		return this;
 	},
 
 	_redrawTile: function (tile) {
@@ -4818,7 +4819,7 @@ L.LineUtil = {
 
 
 /*
- * L.Polygon is used to display polylines on a map.
+ * L.Polyline is used to display polylines on a map.
  */
 
 L.Polyline = L.Path.extend({
@@ -5062,6 +5063,13 @@ L.Polygon = L.Polyline.extend({
 		if (latlngs && L.Util.isArray(latlngs[0]) && (typeof latlngs[0][0] !== 'number')) {
 			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
+		}
+
+		// filter out last point if its equal to the first one
+		latlngs = this._latlngs;
+
+		if (latlngs[0].equals(latlngs[latlngs.length - 1])) {
+			latlngs.pop();
 		}
 	},
 
@@ -7812,9 +7820,12 @@ L.Control.Layers = L.Control.extend({
 				this._map.addLayer(obj.layer);
 				if (!obj.overlay) {
 					baseLayer = obj.layer;
+				} else {
+					this._map.fire('overlayadd', {layer: obj});
 				}
 			} else if (!input.checked && this._map.hasLayer(obj.layer)) {
 				this._map.removeLayer(obj.layer);
+				this._map.fire('overlayremove', {layer: obj});
 			}
 		}
 
