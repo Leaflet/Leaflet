@@ -14,6 +14,13 @@ L.Polygon = L.Polyline.extend({
 			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
 		}
+
+		// filter out last point if its equal to the first one
+		latlngs = this._latlngs;
+
+		if (latlngs[0].equals(latlngs[latlngs.length - 1])) {
+			latlngs.pop();
+		}
 	},
 
 	projectLatlngs: function () {
