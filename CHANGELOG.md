@@ -5,7 +5,10 @@ Leaflet Changelog
 
 ## master
 
-An in-progress version being developed on the master branch. No changes since 0.5 release yet.
+An in-progress version being developed on the master branch.
+
+ * Added `Control.Layers` `overlayadd` and `overlayremove` events (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1286](https://github.com/Leaflet/Leaflet/issues/1286)
+ * Updated `TileLayer.Canvas` `redraw` method to return `this` (by [@jieter](https://github.com/jieter)). [#1287](https://github.com/Leaflet/Leaflet/pull/1287)
 
 ## 0.5 (January 17, 2013)
 
