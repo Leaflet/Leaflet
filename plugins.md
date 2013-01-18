@@ -413,6 +413,8 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 </table>
 
+To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
+
 <!--
 - Saving a Leaflet Map to a PNG Example using Javascript and PHP https://github.com/tegansnyder/Leaflet-Save-Map-to-PNG
 - Get a PNG from a Leaflet map and export it in PDF https://github.com/chrissom/leaflet-pdf
