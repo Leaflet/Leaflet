@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script src="../leaflet-include.js"></script>
+    <style type="text/css">
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+	<div id="map"></div>
+	<script>
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+
+    	var map = new L.Map('map', {
+		    layers: [cloudmade],
+		    center: [-40, 170],
+		    zoom: 4
+		});
+
+        L.polyline([
+            [80, 180],
+            [-80, 180],
+        ], {weight: 2, color: 'red'}).addTo(map).bindPopup("I'm the date line");
+
+        L.polyline([
+            [-32, 179],
+            [-33, 170],
+            [-34, -171],
+            [-35, -174],
+        ]).addTo(map).bindPopup("I'm a polyline crossing date line");
+
+        L.polygon([
+            [-40, 176],
+            [-45, 178],
+            [-46, -178],
+            [-40, -175],
+        ]).addTo(map).bindPopup("I'm a polygon crossing date line");
+
+        L.polygon([
+            [-45, -176],
+            [-49, -178],
+            [-51, -174],
+            [-48, -173],
+        ]).addTo(map).bindPopup("I'm a polygon after date line");
+
+        L.polygon([
+            [-43, 176],
+            [-48, 178],
+            [-52, 174],
+            [-47, 173],
+        ]).addTo(map).bindPopup("I'm a polygon before date line");
+
+        L.marker([-39, 178]).addTo(map).bindPopup("I'm a marker before date line");
+        L.marker([-39, -178]).addTo(map).bindPopup("I'm a marker after date line");
+        L.marker([-38, 180]).addTo(map).bindPopup("I'm a marker over date line with longitude = 180");
+        L.marker([-58, -180]).addTo(map).bindPopup("I'm a marker over date line with longitude = -180");
+	</script>
+</body>
+</html>
