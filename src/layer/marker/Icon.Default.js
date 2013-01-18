@@ -44,7 +44,11 @@ L.Icon.Default.imagePath = (function () {
 		matches = src.match(leafletRe);
 
 		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
+			if (src.split(leafletRe)[0]) {
+				return src.split(leafletRe)[0] + '/images';
+			} else {
+				return '/images';
+			}
 		}
 	}
 }());
