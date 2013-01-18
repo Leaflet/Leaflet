@@ -47,7 +47,7 @@ L.Icon.Default.imagePath = (function () {
 			if (src.split(leafletRe)[0]) {
 				return src.split(leafletRe)[0] + '/images';
 			} else {
-				return '/images';
+				return 'images';
 			}
 		}
 	}
