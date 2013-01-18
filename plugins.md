@@ -244,6 +244,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mpetazzoni/leaflet-gpx">Leaflet GPX</a>
+		</td><td>
+			GPX layer, targeted at sporting activities by providing access to information such as distance, moving time, pace, elevation, heart rate, etc.
+		</td><td>
+			<a href="https://github.com/mpetazzoni/">Maxime Petazzoni</a>
+		</td>
+	</tr>
 </table>
 
 
