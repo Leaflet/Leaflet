@@ -33,7 +33,7 @@ L.Polygon = L.Polyline.extend({
 		if (!this._holes) { return; }
 
 		var i, j, len, len2,
-			magnetPoint = this._originalPoints.length ? this._originalPoints[0]: undefined;
+			magnetPoint = this._originalPoints.length ? this._originalPoints[0]: this._map._defaultMagnetPoint();
 
 		for (i = 0, len = this._holes.length; i < len; i++) {
 			this._holePoints[i] = [];

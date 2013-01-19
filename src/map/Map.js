@@ -362,14 +362,18 @@ L.Map = L.Class.extend({
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
+	_defaultMagnetPoint: function () {
+		return this.options.crs.projection.project(this.getCenter());
+	},
+
 	layerPointToLatLng: function (point) { // (Point)
 		var projectedPoint = L.point(point).add(this._initialTopLeftPoint);
 		return this.unproject(projectedPoint);
 	},
 
 	latLngToLayerPoint: function (latlng, magnetPoint) { // (LatLng)
-		if (typeof magnet === "undefined") {
-			magnetPoint = this.options.crs.projection.project(this.getCenter());
+		if (typeof magnetPoint === "undefined") {
+			magnetPoint = this._defaultMagnetPoint();
 		}
 		var projectedPoint = this.project(L.latLng(latlng), this._zoom, magnetPoint)._round();
 		return projectedPoint._subtract(this._initialTopLeftPoint);
