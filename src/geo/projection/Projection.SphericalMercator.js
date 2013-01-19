@@ -24,7 +24,7 @@ L.Projection.SphericalMercator = {
 			candidates[xToMagnet] = x;
 			candidates[xPlusToMagnet] = xPlus;
 			candidates[xMinusToMagnet] = xMinus;
-			var closer = [xToMagnet, xPlusToMagnet, xMinusToMagnet].sort().shift();
+			var closer = [xToMagnet, xPlusToMagnet, xMinusToMagnet].sort(function(a,b){return a-b;}).shift();
 			x = candidates[closer];
 		}
 
