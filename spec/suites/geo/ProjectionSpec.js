@@ -40,3 +40,52 @@ xdescribe("Projection.Mercator", function() {
 		});
 	});
 });
+
+describe("Projection.SphericalMercator", function() {
+	var p = L.Projection.SphericalMercator;
+
+	beforeEach(function() {
+		function almostEqual(a, b, p) {
+			return Math.abs(a - b) <= (p || L.LatLng.MAX_MARGIN);
+		}
+		this.addMatchers({
+			toAlmostEqual: function(expected, margin) {
+				var p1 = this.actual,
+					p2 = expected;
+				return almostEqual(p1.x, p2.x, margin) && almostEqual(p1.y, p2.y, margin);
+			}
+		});
+	});
+
+
+	describe("#project", function() {
+		it("should do default projection properly", function() {
+			expect(p.project(new L.LatLng(0, 0))).toAlmostEqual(new L.Point(0, 0));
+			expect(p.project(new L.LatLng(90, 180))).toAlmostEqual(new L.Point(Math.PI, Math.PI));
+			expect(p.project(new L.LatLng(-90, -180))).toAlmostEqual(new L.Point(-Math.PI, -Math.PI));
+
+			expect(p.project(new L.LatLng(50, 30))).toAlmostEqual(new L.Point(0.523598775598, 1.010683188683));
+		});
+
+		it("should magnetize negative Lng with a positive magnet close to date line", function() {
+			var magnetPoint = new L.Point(3, 1);
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).toAlmostEqual(new L.Point(Math.PI * 5/4, 0));
+		});
+
+		it("should magnetize negative Lng with a positive magnet onto date line", function() {
+			var magnetPoint = new L.Point(Math.PI, 1);
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).toAlmostEqual(new L.Point(Math.PI * 5/4, 0));
+		});
+
+		it("should not magnetize negative Lng with a negative magnet close to date line", function() {
+			var magnetPoint = new L.Point(-3, 1);
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).toAlmostEqual(p.project(new L.LatLng(0, -135)));
+		});
+
+		it("should magnetize positive Lng with a negative magnet close to date line", function() {
+			var magnetPoint = new L.Point(-3, 1);
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).toAlmostEqual(new L.Point(-Math.PI * 5/4, 0));
+		});
+
+	});
+});

@@ -15,10 +15,17 @@ L.Projection.SphericalMercator = {
 		y = Math.log(Math.tan((Math.PI / 4) + (y / 2)));
 
 		if (magnetPoint instanceof L.Point) {
-			var x2 = (latlng.lng + 360) * d;
-			var xToMagnet = Math.abs(magnetPoint.x - x);
-			var x2ToMagnet = Math.abs(magnetPoint.x - x2);
-			x = xToMagnet > x2ToMagnet ? x2: x;
+			var xPlus = (latlng.lng + 360) * d,
+				xMinus = (latlng.lng - 360) * d,
+				candidates = {},
+				xToMagnet = Math.abs(magnetPoint.x - x),
+				xPlusToMagnet = Math.abs(magnetPoint.x - xPlus),
+				xMinusToMagnet = Math.abs(magnetPoint.x - xMinus);
+			candidates[xToMagnet] = x;
+			candidates[xPlusToMagnet] = xPlus;
+			candidates[xMinusToMagnet] = xMinus;
+			var closer = [xToMagnet, xPlusToMagnet, xMinusToMagnet].sort().shift();
+			x = candidates[closer];
 		}
 
 		return new L.Point(x, y);
