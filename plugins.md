@@ -138,7 +138,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/calvinmetcalf/leaflet.sprite">Leaflet.Sprite</a>
 		</td><td>
-			Use sprite based icons in.
+			Use sprite based icons in your markers.
 		</td><td>
 			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
 		</td>
