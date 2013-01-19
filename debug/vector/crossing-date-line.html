@@ -46,12 +46,26 @@
             [-35, -174],
         ]).addTo(map).bindPopup("I'm a polyline crossing date line");
 
+        L.polyline([
+            [-21, 176],
+            [-23, 170],
+            [-24, -171],
+            [-30, -170],
+        ]).addTo(map).bindPopup("I'm an editable polyline").editing.enable();
+
         L.polygon([
             [-40, 176],
             [-45, 178],
             [-46, -178],
             [-40, -175],
         ]).addTo(map).bindPopup("I'm a polygon crossing date line");
+
+        L.polygon([
+            [-25, 176],
+            [-30, 178],
+            [-31, -178],
+            [-25, -175],
+        ]).addTo(map).bindPopup("I'm a polygon editable").editing.enable();
 
         L.polygon([
             [-45, -176],
@@ -71,6 +85,7 @@
         L.marker([-39, -178]).addTo(map).bindPopup("I'm a marker after date line");
         L.marker([-38, 180]).addTo(map).bindPopup("I'm a marker over date line with longitude = 180");
         L.marker([-58, -180]).addTo(map).bindPopup("I'm a marker over date line with longitude = -180");
+        L.marker([-50, 160]).addTo(map).bindPopup("I'm a dragable marker").dragging.enable();
 	</script>
 </body>
 </html>
