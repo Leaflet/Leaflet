@@ -78,13 +78,26 @@
             [-43, 176],
             [-48, 178],
             [-52, 174],
-            [-47, 173],
+            [-47, 173]
         ]).addTo(map).bindPopup("I'm a polygon before date line");
+
+        L.polygon([
+            [-43, -147],
+            [-47, 160],
+            [-48, 160],
+            [-52, -130]
+        ], {magnetize: false}).addTo(map).bindPopup("I'm a polygon not magnetized, so I can cross the world");
+
+        L.polygon([
+            [[-10, 176], [-15, 178], [-16, -178], [-10, -175]],
+            [[-11, 177], [-14, 179], [-15, -179], [-11, -177]]
+        ]).addTo(map).bindPopup("I'm a polygon with a hole");
 
         L.marker([-39, 178]).addTo(map).bindPopup("I'm a marker before date line");
         L.marker([-39, -178]).addTo(map).bindPopup("I'm a marker after date line");
         L.marker([-38, 180]).addTo(map).bindPopup("I'm a marker over date line with longitude = 180");
         L.marker([-58, -180]).addTo(map).bindPopup("I'm a marker over date line with longitude = -180");
+        L.marker([-58, -180], {magnetize: false}).addTo(map).bindPopup("I'm a marker not magnetized");
         L.marker([-50, 160]).addTo(map).bindPopup("I'm a dragable marker").dragging.enable();
 	</script>
 </body>
