@@ -199,11 +199,11 @@
 	background-color: #fff;
 	border-bottom: 1px solid rgba(0,0,0,0.2);
 	}
-.leaflet-bar-part-top {
+.leaflet-bar-part-first {
 	-webkit-border-radius: 4px 4px 0 0;
 	        border-radius: 4px 4px 0 0;
 	}
-.leaflet-bar-part-bottom {
+.leaflet-bar-part-last {
 	-webkit-border-radius: 0 0 4px 4px;
 	        border-radius: 0 0 4px 4px;
 	border-bottom: none;
@@ -213,11 +213,11 @@
 	-webkit-border-radius: 10px;
 	        border-radius: 10px;
 	}
-.leaflet-touch .leaflet-bar-part-top {
+.leaflet-touch .leaflet-bar-part-first {
 	-webkit-border-radius: 7px 7px 0 0;
 	        border-radius: 7px 7px 0 0;
 	}
-.leaflet-touch .leaflet-bar-part-bottom {
+.leaflet-touch .leaflet-bar-part-last {
 	-webkit-border-radius: 0 0 7px 7px;
 	        border-radius: 0 0 7px 7px;
 	border-bottom: none;
