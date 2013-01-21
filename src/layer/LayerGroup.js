@@ -45,7 +45,7 @@ L.LayerGroup = L.Class.extend({
 
 		var id = L.stamp(layer);
 		return this._layers.hasOwnProperty(id);
-	}
+	},
 
 	clearLayers: function () {
 		this.eachLayer(this.removeLayer, this);
