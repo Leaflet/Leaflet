@@ -191,14 +191,13 @@
 /* general toolbar styles */
 
 .leaflet-bar {
-	box-shadow: 0 0 8px rgba(0,0,0,0.4);
-	border: 1px solid #888;
-	-webkit-border-radius: 5px;
-	        border-radius: 5px;
+	box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+	-webkit-border-radius: 4px;
+	        border-radius: 4px;
 	}
 .leaflet-bar-part {
-	background-color: rgba(255, 255, 255, 0.8);
-	border-bottom: 1px solid #aaa;
+	background-color: #fff;
+	border-bottom: 1px solid rgba(0,0,0,0.2);
 	}
 .leaflet-bar-part-top {
 	-webkit-border-radius: 4px 4px 0 0;
@@ -213,9 +212,6 @@
 .leaflet-touch .leaflet-bar {
 	-webkit-border-radius: 10px;
 	        border-radius: 10px;
-	}
-.leaflet-touch .leaflet-bar-part {
-	border-bottom: 4px solid rgba(0,0,0,0.3);
 	}
 .leaflet-touch .leaflet-bar-part-top {
 	-webkit-border-radius: 7px 7px 0 0;
@@ -235,8 +231,8 @@
 	margin-top: 12px;
 	}
 .leaflet-control-zoom a {
-	width: 22px;
-	height: 22px;
+	width: 26px;
+	height: 26px;
 	text-align: center;
 	text-decoration: none;
 	color: black;
@@ -248,18 +244,17 @@
 	display: block;
 	}
 .leaflet-control-zoom a:hover {
-	background-color: #fff;
-	color: #777;
+	background-color: #f4f4f4;
 	}
 .leaflet-control-zoom-in {
-	font: bold 18px/24px Arial, Helvetica, sans-serif;
+	font: bold 18px/26px 'Lucida Console', Monaco, monospace;
 	}
 .leaflet-control-zoom-out {
-	font: bold 23px/20px Tahoma, Verdana, sans-serif;
+	font: bold 22px/28px 'Lucida Console', Monaco, monospace;
 	}
 .leaflet-control-zoom a.leaflet-control-zoom-disabled {
 	cursor: default;
-	background-color: rgba(255, 255, 255, 0.8);
+	background-color: #f4f4f4;
 	color: #bbb;
 	}
 
@@ -268,13 +263,14 @@
 	height: 30px;
 	}
 .leaflet-touch .leaflet-control-zoom-in {
-	font-size: 24px;
-	line-height: 29px;
+	font-size: 22px;
+	line-height: 30px;
 	}
 .leaflet-touch .leaflet-control-zoom-out {
 	font-size: 28px;
-	line-height: 24px;
+	line-height: 30px;
 	}
+
 
 /* layers control */
 
