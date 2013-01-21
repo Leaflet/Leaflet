@@ -17,7 +17,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	addData: function (geojson) {
 		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
 		    i, len;
-		
+
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
 				// Only add this if geometry or geometries are set and not null
