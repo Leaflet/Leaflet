@@ -24,8 +24,7 @@ L.Projection.SphericalMercator = {
 			candidates[xPlusToMagnet] = xPlus;
 			candidates[xMinusToMagnet] = xMinus;
 			candidates[xToMagnet] = x;  // Last to make it prioritary in case two are at equal distance
-			var closer = [xToMagnet, xPlusToMagnet, xMinusToMagnet].sort(function(a,b){return a-b;}).shift();
-			x = candidates[closer];
+			x = candidates[Math.min(xToMagnet, xPlusToMagnet, xMinusToMagnet)];
 		}
 
 		return new L.Point(x, y);
