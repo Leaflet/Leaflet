@@ -338,6 +338,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/smeijer/L.GeoSearch">Leaflet GeoSearch</a>
+		</td><td>
+			Small plugin that brings address searching/lookup (aka geosearching) to Leaflet.<br />
+			Comes with support for Google, Bing, Esri and Openlayers. (easy extendible)
+		</td><td>
+			<a href="https://github.com/smeijer">Stephan Meijer</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/stefanocudini/leaflet-search">leaflet-search</a>
 		</td><td>
 			Simple Leaflet Control for searching markers by attribute.
