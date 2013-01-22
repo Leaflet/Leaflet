@@ -28,7 +28,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/jacobtoye/Leaflet.label">Leaflet.label</a>
+			<a href="https://github.com/Leaflet/Leaflet.label">Leaflet.label</a>
 		</td><td>
 			Adds text labels to map markers and vector layers.
 		</td><td>
