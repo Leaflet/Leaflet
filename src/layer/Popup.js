@@ -248,12 +248,20 @@ L.Popup = L.Class.extend({
 		}
 		if (containerPos.x + containerWidth > size.x) {
 			dx = containerPos.x + containerWidth - size.x + padding.x;
+			if (dx > containerPos.x) {
+			    // we do not want to scroll the left border out
+			    dx = containerPos.x;
+			}
 		}
 		if (containerPos.y < 0) {
 			dy = containerPos.y - padding.y;
 		}
 		if (containerPos.y + containerHeight > size.y) {
 			dy = containerPos.y + containerHeight - size.y + padding.y;
+			if (dy > containerPos.y) {
+			    // we do not want to scroll the top border out
+			    dy = containerPos.y;
+			}
 		}
 
 		if (dx || dy) {
