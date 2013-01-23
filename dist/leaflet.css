@@ -195,15 +195,18 @@
 	-webkit-border-radius: 4px;
 	        border-radius: 4px;
 	}
-.leaflet-bar-part {
+.leaflet-bar a {
 	background-color: #fff;
 	border-bottom: 1px solid rgba(0,0,0,0.2);
+	width: 26px;
+	height: 26px;
+	line-height: 26px;
 	}
-.leaflet-bar-part-first {
+.leaflet-bar a:first-child {
 	-webkit-border-radius: 4px 4px 0 0;
 	        border-radius: 4px 4px 0 0;
 	}
-.leaflet-bar-part-last {
+.leaflet-bar a:last-child {
 	-webkit-border-radius: 0 0 4px 4px;
 	        border-radius: 0 0 4px 4px;
 	border-bottom: none;
@@ -213,11 +216,11 @@
 	-webkit-border-radius: 10px;
 	        border-radius: 10px;
 	}
-.leaflet-touch .leaflet-bar-part-first {
+.leaflet-touch .leaflet-bar a:first-child {
 	-webkit-border-radius: 7px 7px 0 0;
 	        border-radius: 7px 7px 0 0;
 	}
-.leaflet-touch .leaflet-bar-part-last {
+.leaflet-touch .leaflet-bar a:last-child {
 	-webkit-border-radius: 0 0 7px 7px;
 	        border-radius: 0 0 7px 7px;
 	border-bottom: none;
@@ -231,8 +234,6 @@
 	margin-top: 12px;
 	}
 .leaflet-control-zoom a {
-	width: 26px;
-	height: 26px;
 	text-align: center;
 	text-decoration: none;
 	color: black;
@@ -247,10 +248,10 @@
 	background-color: #f4f4f4;
 	}
 .leaflet-control-zoom-in {
-	font: bold 18px/26px 'Lucida Console', Monaco, monospace;
+	font: bold 18px 'Lucida Console', Monaco, monospace;
 	}
 .leaflet-control-zoom-out {
-	font: bold 22px/28px 'Lucida Console', Monaco, monospace;
+	font: bold 22px 'Lucida Console', Monaco, monospace;
 	}
 .leaflet-control-zoom a.leaflet-control-zoom-disabled {
 	cursor: default;
