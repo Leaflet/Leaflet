@@ -201,6 +201,19 @@
 	width: 26px;
 	height: 26px;
 	line-height: 26px;
+	display: block;
+	text-align: center;
+	text-decoration: none;
+	color: black;
+	}
+.leaflet-bar a,
+.leaflet-control-layers-toggle {
+	background-position: 50% 50%;
+	background-repeat: no-repeat;
+	display: block;
+	}
+.leaflet-bar a:hover {
+	background-color: #f4f4f4;
 	}
 .leaflet-bar a:first-child {
 	-webkit-border-radius: 4px 4px 0 0;
@@ -211,10 +224,19 @@
 	        border-radius: 0 0 4px 4px;
 	border-bottom: none;
 	}
+.leaflet-bar a.leaflet-disabled {
+	cursor: default;
+	background-color: #f4f4f4;
+	color: #bbb;
+	}
 
 .leaflet-touch .leaflet-bar {
 	-webkit-border-radius: 10px;
 	        border-radius: 10px;
+	}
+.leaflet-touch .leaflet-bar a {
+	width: 30px;
+	height: 30px;
 	}
 .leaflet-touch .leaflet-bar a:first-child {
 	-webkit-border-radius: 7px 7px 0 0;
@@ -233,36 +255,13 @@
 	margin-left: 13px;
 	margin-top: 12px;
 	}
-.leaflet-control-zoom a {
-	text-align: center;
-	text-decoration: none;
-	color: black;
-	}
-.leaflet-control-zoom a,
-.leaflet-control-layers-toggle {
-	background-position: 50% 50%;
-	background-repeat: no-repeat;
-	display: block;
-	}
-.leaflet-control-zoom a:hover {
-	background-color: #f4f4f4;
-	}
 .leaflet-control-zoom-in {
 	font: bold 18px 'Lucida Console', Monaco, monospace;
 	}
 .leaflet-control-zoom-out {
 	font: bold 22px 'Lucida Console', Monaco, monospace;
 	}
-.leaflet-control-zoom a.leaflet-control-zoom-disabled {
-	cursor: default;
-	background-color: #f4f4f4;
-	color: #bbb;
-	}
 
-.leaflet-touch .leaflet-control-zoom a {
-	width: 30px;
-	height: 30px;
-	}
 .leaflet-touch .leaflet-control-zoom-in {
 	font-size: 22px;
 	line-height: 30px;
