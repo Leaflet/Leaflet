@@ -1523,6 +1523,8 @@ L.Map = L.Class.extend({
 	},
 
 	hasLayer: function (layer) {
+		if (!layer) { return false; }
+
 		var id = L.stamp(layer);
 		return this._layers.hasOwnProperty(id);
 	},
@@ -3039,14 +3041,15 @@ L.Icon.Default.imagePath = (function () {
 	var scripts = document.getElementsByTagName('script'),
 	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
-	var i, len, src, matches;
+	var i, len, src, matches, path;
 
 	for (i = 0, len = scripts.length; i < len; i++) {
 		src = scripts[i].src;
 		matches = src.match(leafletRe);
 
 		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
+			path = src.split(leafletRe)[0];
+			return (path ? path + '/' : '') + 'images';
 		}
 	}
 }());
@@ -3765,6 +3768,13 @@ L.LayerGroup = L.Class.extend({
 		}
 
 		return this;
+	},
+
+	hasLayer: function (layer) {
+		if (!layer) { return false; }
+
+		var id = L.stamp(layer);
+		return this._layers.hasOwnProperty(id);
 	},
 
 	clearLayers: function () {
@@ -5449,7 +5459,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
 				// Only add this if geometry or geometries are set and not null
-				if (features[i].geometries || features[i].geometry) {
+				if (features[i].geometries || features[i].geometry || features[i].features) {
 					this.addData(features[i]);
 				}
 			}
