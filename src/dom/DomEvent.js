@@ -124,6 +124,12 @@ L.DomEvent = {
 		return L.DomEvent.preventDefault(e).stopPropagation(e);
 	},
 
+	only: function (obj, type, fn, context) {
+		return L.DomEvent
+			.on(obj, type, L.DomEvent.stop)
+			.on(obj, type, fn, context);
+	},
+
 	getMousePosition: function (e, container) {
 
 		var body = document.body,
