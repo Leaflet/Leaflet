@@ -108,9 +108,10 @@ L.Map.TouchZoom = L.Handler.extend({
 		    center = map.layerPointToLatLng(origin),
 
 		    oldZoom = map.getZoom(),
+		    zoomStep = map.options.zoomStep || 1,
 		    floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
 		    roundZoomDelta = (floatZoomDelta > 0 ?
-		            Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
+		            Math.ceil(floatZoomDelta / zoomStep) : Math.floor(floatZoomDelta / zoomStep)) * zoomStep,
 
 		    zoom = map._limitZoom(oldZoom + roundZoomDelta);
 

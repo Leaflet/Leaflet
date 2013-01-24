@@ -274,6 +274,7 @@ L.Map = L.Class.extend({
 
 		var size = this.getSize(),
 		    zoom = this.options.minZoom || 0,
+		    zoomStep = this.options.zoomStep || 1,
 		    maxZoom = this.getMaxZoom(),
 		    ne = bounds.getNorthEast(),
 		    sw = bounds.getSouthWest(),
@@ -283,11 +284,11 @@ L.Map = L.Class.extend({
 		    zoomNotFound = true;
 
 		if (inside) {
-			zoom--;
+			zoom -= zoomStep;
 		}
 
 		do {
-			zoom++;
+			zoom += zoomStep;
 			nePoint = this.project(ne, zoom);
 			swPoint = this.project(sw, zoom);
 
@@ -306,7 +307,7 @@ L.Map = L.Class.extend({
 			return null;
 		}
 
-		return inside ? zoom : zoom - 1;
+		return inside ? zoom : zoom - zoomStep;
 	},
 
 	getSize: function () {
