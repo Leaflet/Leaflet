@@ -81,7 +81,7 @@ L.Util = {
 		var params = [];
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
-				params.push(i + '=' + obj[i]);
+				params.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
 			}
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
