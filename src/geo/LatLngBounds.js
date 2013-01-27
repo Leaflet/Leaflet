@@ -73,6 +73,22 @@ L.LatLngBounds.prototype = {
 		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 
+	getLeft: function () {
+		return this._southWest.lng;
+	},
+
+	getBottom: function () {
+		return this._southWest.lat;
+	},
+
+	getRight: function () {
+		return this._northEast.lng;
+	},
+
+	getTop: function () {
+		return this._northEast.lat;
+	},
+
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
 		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
 			obj = L.latLng(obj);
@@ -110,10 +126,7 @@ L.LatLngBounds.prototype = {
 	},
 
 	toBBoxString: function () {
-		var sw = this._southWest,
-		    ne = this._northEast;
-
-		return [sw.lng, sw.lat, ne.lng, ne.lat].join(',');
+		return [this.getLeft(), this.getBottom(), this.getRight(), this.getTop()].join(',');
 	},
 
 	equals: function (bounds) { // (LatLngBounds)
