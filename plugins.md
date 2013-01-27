@@ -383,6 +383,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://www.linkedin.com/in/erictheise">Eric Theise</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.EditInOSM">Leaflet.EditInOSM</a>
+		</td><td>
+			Add a control with links to open the current map view on main OSM editors.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
 </table>
 
 
