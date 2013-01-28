@@ -73,19 +73,19 @@ L.LatLngBounds.prototype = {
 		return new L.LatLng(this._southWest.lat, this._northEast.lng);
 	},
 
-	getLeft: function () {
+	getWest: function () {
 		return this._southWest.lng;
 	},
 
-	getBottom: function () {
+	getSouth: function () {
 		return this._southWest.lat;
 	},
 
-	getRight: function () {
+	getEast: function () {
 		return this._northEast.lng;
 	},
 
-	getTop: function () {
+	getNorth: function () {
 		return this._northEast.lat;
 	},
 
@@ -126,7 +126,7 @@ L.LatLngBounds.prototype = {
 	},
 
 	toBBoxString: function () {
-		return [this.getLeft(), this.getBottom(), this.getRight(), this.getTop()].join(',');
+		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
 	},
 
 	equals: function (bounds) { // (LatLngBounds)

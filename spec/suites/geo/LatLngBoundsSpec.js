@@ -21,30 +21,30 @@ describe('LatLngBounds', function() {
 		});
 	});
 
-	describe('#getLeft', function () {
-		it('should return a proper bbox left value', function() {
-			expect(a.getLeft()).toEqual(12);
+	describe('#getWest', function () {
+		it('should return a proper bbox west value', function() {
+			expect(a.getWest()).toEqual(12);
 		});
 
 	});
 
-	describe('#getBottom', function () {
-		it('should return a proper bbox bottom value', function() {
-			expect(a.getBottom()).toEqual(14);
+	describe('#getSouth', function () {
+		it('should return a proper bbox south value', function() {
+			expect(a.getSouth()).toEqual(14);
 		});
 
 	});
 
-	describe('#getRight', function () {
-		it('should return a proper bbox right value', function() {
-			expect(a.getRight()).toEqual(40);
+	describe('#getEast', function () {
+		it('should return a proper bbox east value', function() {
+			expect(a.getEast()).toEqual(40);
 		});
 
 	});
 
-	describe('#getTop', function () {
-		it('should return a proper bbox top value', function() {
-			expect(a.getTop()).toEqual(30);
+	describe('#getNorth', function () {
+		it('should return a proper bbox north value', function() {
+			expect(a.getNorth()).toEqual(30);
 		});
 
 	});
