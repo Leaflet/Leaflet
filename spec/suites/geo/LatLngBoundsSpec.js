@@ -55,4 +55,19 @@ describe('LatLngBounds', function() {
 		});
 
 	});
+
+	describe('#getNorthWest', function () {
+		it('should return a proper north-west LatLng', function() {
+			expect(a.getNorthWest()).toEqual(new L.LatLng(a.getNorth(), a.getWest()));
+		});
+
+	});
+
+	describe('#getSouthEast', function () {
+		it('should return a proper south-east LatLng', function() {
+			expect(a.getSouthEast()).toEqual(new L.LatLng(a.getSouth(), a.getEast()));
+		});
+
+	});
+
 });
