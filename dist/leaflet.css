@@ -197,7 +197,7 @@
 	}
 .leaflet-bar a {
 	background-color: #fff;
-	border-bottom: 1px solid rgba(0,0,0,0.2);
+	border-bottom: 1px solid #ccc;
 	width: 26px;
 	height: 26px;
 	line-height: 26px;
