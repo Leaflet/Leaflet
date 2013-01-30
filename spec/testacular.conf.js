@@ -4,10 +4,12 @@ var deps = require(__dirname+'/../build/deps.js').deps;
 
 // base path, that will be used to resolve files and exclude
 basePath = '';
+
 var libSources = [];
 for(var dep in deps){
 	libSources = libSources.concat(deps[dep].src);	
 }
+
 for(var i=0;i<libSources.length;i++){
 	libSources[i]="../src/" + libSources[i];
 }
@@ -16,38 +18,30 @@ for(var i=0;i<libSources.length;i++){
 files = [].concat([
   JASMINE,
   JASMINE_ADAPTER,
-"happen.js"],
-libSources,
-["suites/SpecHelper.js",
-"suites/LeafletSpec.js",
-//"suites/control/Control.LayersSpec.js",
-"suites/control/Control.ScaleSpec.js",
-"suites/core/UtilSpec.js",
-"suites/core/ClassSpec.js",
-"suites/core/EventsSpec.js",
-"suites/geometry/PointSpec.js",
-"suites/geometry/BoundsSpec.js",
-"suites/geometry/TransformationSpec.js",
-"suites/geo/LatLngSpec.js",
-"suites/geo/LatLngBoundsSpec.js",
-"suites/geo/ProjectionSpec.js",
-"suites/dom/DomEventSpec.js",
-"suites/dom/DomUtilSpec.js",
-"suites/layer/TileLayerSpec.js",
-"suites/layer/vector/PolylineGeometrySpec.js",
-"suites/layer/vector/CircleSpec.js",
-"suites/map/MapSpec.js"
+	"happen.js",
+	"context.js"],
+	libSources,
+	["beforeTestsContext.js",
+	"suites/SpecHelper.js",
+	"suites/LeafletSpec.js",
+	"suites/control/Control.LayersSpec.js",
+	"suites/control/Control.ScaleSpec.js",
+	"suites/core/UtilSpec.js",
+	"suites/core/ClassSpec.js",
+	"suites/core/EventsSpec.js",
+	"suites/geometry/PointSpec.js",
+	"suites/geometry/BoundsSpec.js",
+	"suites/geometry/TransformationSpec.js",
+	"suites/geo/LatLngSpec.js",
+	"suites/geo/LatLngBoundsSpec.js",
+	"suites/geo/ProjectionSpec.js",
+	"suites/dom/DomEventSpec.js",
+	"suites/dom/DomUtilSpec.js",
+	"suites/layer/TileLayerSpec.js",
+	"suites/layer/vector/PolylineGeometrySpec.js",
+	"suites/layer/vector/CircleSpec.js",
+	"suites/map/MapSpec.js"
 ]);
-
-preprocessors = {
-  '**/src/*.js': 'coverage',
-  '**/src/**/*.js': 'coverage'
-};
-
-coverageReporter = {
-  type : 'html',
-  dir : 'coverage/'
-}
 
 // list of files to exclude
 exclude = [
@@ -57,7 +51,7 @@ exclude = [
 
 // test results reporter to use
 // possible values: 'dots', 'progress', 'junit'
-reporters = ['coverage'];
+reporters = ['dots'];
 
 
 // web server port
@@ -74,7 +68,7 @@ colors = true;
 
 // level of logging
 // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
-logLevel = LOG_DEBUG;
+logLevel = LOG_INFO;
 
 
 // enable / disable watching file and executing tests whenever any file changes

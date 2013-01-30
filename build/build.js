@@ -3,8 +3,8 @@ var fs = require('fs'),
     UglifyJS = require('uglify-js'),
 
     deps = require('./deps.js').deps,
-    hintrc = require('./hintrc.js').config;
-
+    hintrc = require('./hintrc.js').config,
+		testacular = require('testacular');
 
 function lintFiles(files) {
 
@@ -153,3 +153,18 @@ exports.build = function (compsBase32, buildName) {
 		console.log('\tSaved to ' + path);
 	}
 };
+
+exports.test = function(){
+	var testConfig ={
+		configFile : __dirname + '/../spec/testacular.conf.js'
+	}
+	testConfig.browsers = ['PhantomJS'];
+	isArgv('--chrome') &&  testConfig.browsers.push('Chrome');
+	isArgv('--ff') && testConfig.browsers.push('Firefox');
+	
+	testacular.server.start(testConfig);
+
+	function isArgv(optName){
+		return process.argv.indexOf(optName) !== -1;
+	}
+}
