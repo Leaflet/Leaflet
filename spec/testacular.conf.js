@@ -6,12 +6,13 @@ var deps = require(__dirname+'/../build/deps.js').deps;
 basePath = '';
 
 var libSources = [];
-for(var dep in deps){
+
+for (var dep in deps) {
 	libSources = libSources.concat(deps[dep].src);	
 }
 
-for(var i=0;i<libSources.length;i++){
-	libSources[i]="../src/" + libSources[i];
+for (var i=0; i < libSources.length; i++) {
+	libSources[i] = "../src/" + libSources[i];
 }
 
 // list of files / patterns to load in the browser

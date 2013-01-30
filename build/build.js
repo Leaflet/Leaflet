@@ -154,8 +154,8 @@ exports.build = function (compsBase32, buildName) {
 	}
 };
 
-exports.test = function(){
-	var testConfig ={
+exports.test = function() {
+	var testConfig = {
 		configFile : __dirname + '/../spec/testacular.conf.js'
 	}
 	testConfig.browsers = ['PhantomJS'];
