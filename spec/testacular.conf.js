@@ -1,18 +1,12 @@
 // Testacular configuration
 // Generated on Sat Jan 19 2013 16:24:31 GMT-0200 (BRST)
-var deps = require(__dirname+'/../build/deps.js').deps;
+var libSources = require(__dirname+'/../build/build.js').getFiles();
 
 // base path, that will be used to resolve files and exclude
 basePath = '';
 
-var libSources = [];
-
-for (var dep in deps) {
-	libSources = libSources.concat(deps[dep].src);	
-}
-
 for (var i=0; i < libSources.length; i++) {
-	libSources[i] = "../src/" + libSources[i];
+	libSources[i] = "../" + libSources[i];
 }
 
 // list of files / patterns to load in the browser

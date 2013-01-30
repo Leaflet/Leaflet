@@ -64,6 +64,8 @@ function getFiles(compsBase32) {
 	return files;
 }
 
+exports.getFiles = getFiles;
+
 exports.lint = function () {
 
 	var files = getFiles();
