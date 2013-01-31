@@ -27,8 +27,8 @@ Used by:
 [WSJ](http://projects.wsj.com/campaign2012/maps/)
 [Geocaching](http://geocaching.com)
 [StreetEasy](http://streeteasy.com/)
-[Nestoria](http://www.nestoria.co.uk)
-[Chartbeat](http://chartbeat.com/)
+[CloudMade](http://cloudmade.com)
+[CartoDB](http://cartodb.com)
 [GIS Cloud](http://www.giscloud.com/)
 ...
 
