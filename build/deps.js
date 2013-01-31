@@ -143,6 +143,12 @@ var deps = {
 		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
+	SquareMarker: {
+		src: ['layer/vector/SquareMarker.js'],
+		deps: ['Polyline'],
+		desc: 'Square overlays with a constant pixel size.'
+	},
+	
 	VectorsCanvas: {
 		src: ['layer/vector/canvas/Polyline.Canvas.js',
 		      'layer/vector/canvas/Polygon.Canvas.js',
