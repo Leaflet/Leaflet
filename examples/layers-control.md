@@ -33,7 +33,7 @@ Leaflet has a nice little control that allows your users control what layers the
 
 There are two types of layers --- base layers that are mutually exclusive (only one can be visible on your map), e.g. tile layers, and overlays --- all the other stuff you put over the base layers. In this example, we want to have two base layers (minimal and night-style base map) to switch between, and two overlays to switch on and off --- a pink motorways overlay and city markers (those we created earlier). Lets create those layers and add the default ones to the map:
 
-<pre><code>var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">API-key</a>/997/256/{z}/{x}/{y}.png',
+<pre><code>var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">API-key</a>/{styleId}/256/{z}/{x}/{y}.png',
 	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade';
 
 var minimal   = L.tileLayer(cloudmadeUrl, {styleId: 22677, attribution: cloudmadeAttribution}),
