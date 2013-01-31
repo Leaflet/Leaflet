@@ -19,6 +19,7 @@ body { background-color: #eeeeee; padding: 0; margin: 5px; overflow-y: scroll; }
 #HTMLReporter .symbolSummary li.skipped:before { color: #bababa; content: "\02022"; }
 #HTMLReporter .symbolSummary li.pending { line-height: 11px; }
 #HTMLReporter .symbolSummary li.pending:before { color: #aaaaaa; content: "-"; }
+#HTMLReporter .exceptions { color: #fff; float: right; margin-top: 5px; margin-right: 5px; }
 #HTMLReporter .bar { line-height: 28px; font-size: 14px; display: block; color: #eee; }
 #HTMLReporter .runningAlert { background-color: #666666; }
 #HTMLReporter .skippedAlert { background-color: #aaaaaa; }
