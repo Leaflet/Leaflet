@@ -79,15 +79,12 @@ on the GitHub Help website &mdash; it will get you started quickly.
 You should always write each batch of changes (feature, bugfix, etc.) in **its own topic branch**.
 Please do not commit to the `master` branch, or your unrelated changes will go into the same pull request.
 
-You should also follow the code style and whitespace conventions of the original codebase.
+You should also follow the code style and whitespace conventions of the original codebase. 
+In particular, use tabs for indentation and spaces for alignment.
 
 Before commiting your changes, run `jake lint` to catch any JS errors in the code and fix them.
 If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js`
 so that the build system knows about them.
-
-But please **do not commit the built files** (`leaflet.js` and `leaflet-src.js`) along with your changes,
-otherwise there may be problems merging the pull request.
-These files are only commited in the `master` branch of the main Leaflet repository.
 
 Happy coding!
 
