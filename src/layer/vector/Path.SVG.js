@@ -61,6 +61,9 @@ L.Path = L.Path.extend({
 		if (this.options.fill) {
 			this._path.setAttribute('fill-rule', 'evenodd');
 		}
+		if (this.options.pointerEvents) {
+			this._path.setAttribute('pointer-events', this.options.pointerEvents);
+		}
 		this._updateStyle();
 	},
 
