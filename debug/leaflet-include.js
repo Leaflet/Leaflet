@@ -1,8 +1,8 @@
 (function() {
-	//TODO replace script list with the one from ../buid/deps.js
 	function getFiles() {
-	var memo = {},
-	    comps;
+		var memo = {},
+		    files = [],
+		    i, src;
 
 		function addFiles(srcs) {
 			for (var j = 0, len = srcs.length; j < len; j++) {
@@ -10,13 +10,12 @@
 			}
 		}
 
-		for (var i in deps) {
+		for (i in deps) {
 			addFiles(deps[i].src);
 		}
-		var files = [];
 
-		for (var src in memo) {
-			files.push('src/' + src);
+		for (src in memo) {
+			files.push(src);
 		}
 
 		return files;
@@ -30,7 +29,7 @@
 			if (src) {
 				var res = src.match(/^(.*)leaflet-include\.js$/);
 				if (res) {
-					return res[1] + '../';
+					return res[1] + '../src/';
 				}
 			}
 		}
