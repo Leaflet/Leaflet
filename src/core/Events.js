@@ -9,9 +9,10 @@ L.Mixin = {};
 L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+		
 		var events = this[key] = this[key] || {},
-			type, i, len, evt,
-			contextId, objKey, objLenKey, eventsObj;
+		    type, i, len, evt,
+		    contextId, objKey, objLenKey, eventsObj;
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -60,7 +61,7 @@ L.Mixin.Events = {
 
 	hasEventListeners: function (type) { // (String) -> Boolean
 		return (key in this) &&
-		        (((type in this[key]) && this[key][type].length > 0) ||
+		       (((type in this[key]) && this[key][type].length > 0) ||
 		        (this[key][type + '_idx_len'] > 0));
 	},
 
