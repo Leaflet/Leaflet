@@ -50,6 +50,11 @@ L.Path = L.Path.extend({
 		this._container = this._createElement('g');
 
 		this._path = this._createElement('path');
+
+		if (this.options.title) {
+			this._path.setAttribute('title', this.options.title);
+		}
+
 		this._container.appendChild(this._path);
 	},
 

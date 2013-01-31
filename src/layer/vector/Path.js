@@ -20,6 +20,7 @@ L.Path = L.Class.extend({
 		dashArray: null,
 		weight: 5,
 		opacity: 0.5,
+		title: '',
 
 		fill: false,
 		fillColor: null, //same as color by default
