@@ -14,7 +14,7 @@ L.CircleMarker = L.Circle.extend({
 	},
 
 	projectLatlngs: function () {
-		this._point = this._map.latLngToLayerPoint(this._latlng);
+		this._point = this._map.latLngToLayerPoint(this._latlng, this.getDefaultMagnetPoint());
 	},
 	
 	_updateStyle : function () {
