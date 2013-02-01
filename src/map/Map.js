@@ -352,7 +352,7 @@ L.Map = L.Class.extend({
 
 	// conversion methods
 
-	project: function (latlng, zoom, magnetPoint) { // (LatLng[, Number]) -> Point
+	project: function (latlng, zoom, magnetPoint) { // (LatLng[, Number[, Point]]) -> Point
 		zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom, magnetPoint);
 	},
@@ -374,7 +374,7 @@ L.Map = L.Class.extend({
 		return this.unproject(projectedPoint);
 	},
 
-	latLngToLayerPoint: function (latlng, magnetPoint) { // (LatLng)
+	latLngToLayerPoint: function (latlng, magnetPoint) { // (LatLng[, Point]) -> Point
 		if (typeof magnetPoint === "undefined") {
 			magnetPoint = this.getDefaultMagnetPoint();
 		}

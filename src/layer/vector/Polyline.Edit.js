@@ -44,7 +44,6 @@ L.Handler.PolyEdit = L.Handler.extend({
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-			map = this._poly._map,
 			magnetPoint = this._poly.getDefaultMagnetPoint(),
 			i, j, len, marker, latlng;
 
