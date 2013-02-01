@@ -45,7 +45,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 		var latlngs = this._poly._latlngs,
 			map = this._poly._map,
-			magnetPoint = this._poly.options.magnetize ? map.getDefaultMagnetPoint() : null,
+			magnetPoint = this._poly.getDefaultMagnetPoint(),
 			i, j, len, marker, latlng;
 
 		// TODO refactor holes implementation in Polygon to support it here
