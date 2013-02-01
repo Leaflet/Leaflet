@@ -106,6 +106,10 @@
         L.marker([-58, -180]).addTo(map).bindPopup("I'm a marker over date line with longitude = -180");
         L.marker([-58, -180], {magnetize: false}).addTo(map).bindPopup("I'm a marker not magnetized");
         L.marker([-50, 160]).addTo(map).bindPopup("I'm a dragable marker").dragging.enable();
+
+        L.circle([-40, 165], 150000).addTo(map).bindPopup("I'm a circle");
+        L.circle([-40, -165], 150000).addTo(map).bindPopup("I'm a circle over date line");
+
 	</script>
 </body>
 </html>
