@@ -1,0 +1,151 @@
+---
+layout: default
+title: Features
+---
+
+<h2>Leaflet Features</h2>
+
+<p>Leaflet doesn't try to do everything for everyone. Instead it focuses on making <em>the basic things work perfectly</em>. It should still satisfy the needs of the vast majority of map apps developers while being easily extended by <a href="plugins.html">third-party plugins</a>.</p>
+
+<hr />
+
+<div class="span-20" id="features">
+	<div class="span-6">
+
+		<h3>Available Map Layers</h3>
+
+		<ul>
+			<li>Tile layers</li>
+			<li>Markers</li>
+			<li>Popups</li>
+			<li>Vector layers<span class="quiet">: polylines, polygons, circles, rectangles, circle markers</li>
+			<li>Image overlays</li>
+			<li>WMS layers</li>
+			<li>Layer groups</li>
+			<li>GeoJSON layers</li>
+		</ul>
+
+
+		<h3>Interaction Features</h3>
+
+		<h4>General</h4>
+
+		<ul>
+			<li>Drag panning with inertia</li>
+		</ul>
+
+		<h4>On Desktop Browsers</h4>
+
+		<ul>
+			<li>Scroll wheel zoom</li>
+			<li>Double click zoom</li>
+			<li>Zoom to area <span class="quiet">(shift-drag)</span></li>
+			<li>Keyboard navigation <span class="quiet"><nobr>(with arrows and <code>+/-</code> keys)</nobr></span></li>
+		</ul>
+
+
+		<h4>On Mobile Browsers</h4>
+
+		<ul>
+			<li>Multi-touch zoom <nobr><span class="quiet">(iOS, Android 4+, Win8)</span></nobr></li>
+			<li>Double tap zoom</li>
+		</ul>
+
+		<h4>For Layers</h4>
+
+		<ul>
+			<li>Various events<span class="quiet">: click (tap), mouseover, contextmenu, etc.</span></li>
+			<li>Marker dragging</li>
+		</ul>
+
+		<!--<li>Vector layers editing</li>-->
+	</div>
+
+	<div class="span-9">
+
+		<h3>Visual Features</h3>
+
+		<ul>
+			<li>Zoom animation <span class="quiet">(<nobr>for all layers</nobr>, including tile layers, markers and vector layers)</span></li>
+			<li>Panning animation</li>
+			<li>Smooth continuous zoom on modern mobile devices</li>
+			<li>Tile and popup fade animation</li>
+			<li>Very nice default design for markers, popups and other map controls</li>
+			<li>Retina resolution support for tile layers and markers</li>
+		</ul>
+
+
+		<h3>Customization Features</h3>
+
+		<ul>
+			<li>Pure CSS3 popups and controls <span class="quiet">for easy restyling</span></li>
+			<li>Image- and HTML-based markers</li>
+			<!-- <li>Customizable marker icons</li> -->
+			<li><span class="quiet">A simple interface for implementing</span> custom map layers</li>
+			<li><span class="quiet">The same for</span> custom map controls</li>
+			<li>Custom map projections <span class="quiet">(with <code>EPSG:4326</code>, <code>EPSG:3857</code> and <code>EPSG:3395</code> out of the box)</span></li>
+			<li>Powerful OOP facilities <span class="quiet">for extending existing classes</span></p>
+		</ul>
+
+		<h3>Performance Features</h3>
+
+		<ul>
+			<li>Hardware acceleration on iOS <span class="quiet">(and other modern browsers) makes it feel as smooth as native apps</span></li>
+			<li>Utilizing CSS3 features <span class="quiet">like Transitions, Transforms, requestAnimationFrame where possible</span> to make panning and zooming really smooth</li>
+			<li>Smart polyline/polygon rendering <span class="quiet">with dynamic clipping and simplification makes it responsive even when displaying objects with thousands of points</span></li>
+			<li>Modular design and a build system<span class="quiet"> allow you to reduce the library size by leaving out features you don't need</span></li>
+			<li>Tap delay elimination on mobile devices<span class="quiet"> makes controls and layers respond to taps immediately</span></li>
+		</ul>
+
+	</div>
+
+	<div class="span-5 last">
+
+		<h3>Map Controls</h3>
+
+		<ul>
+			<li>Zoom buttons</li>
+			<li>Attribution</li>
+			<li>Layer switcher</li>
+			<li>Scale</li>
+		</ul>
+
+
+		<h3>Browser Support</h3>
+
+		<h4>On Desktop</h4>
+
+		<ul>
+			<li>Chrome</li>
+			<li>Firefox</li>
+			<li>Safari 5+</li>
+			<li>Opera 11.11+</li>
+ 			<li>IE 7&ndash;10</li>
+			<li>IE 6 <span class="quiet">(not perfect but accessible)</span></li>
+ 		</ul>
+
+		<h4>On Mobile</h4>
+
+ 		<ul>
+ 			<li>Safari for iOS 3/4/5/6+</li>
+			<li>Android browser 2.2+,&nbsp;3.1+,&nbsp;4+</li>
+			<li>Chrome for Android 4+ and iOS</li>
+			<li>Firefox for Android</li>
+			<li>Other webkit-based browsers (webOS, Blackberry 7+, etc.)</li>
+			<li>IE10 for Win8-based devices</li>
+		</ul>
+
+
+		<h3>Misc</h3>
+
+		<ul>
+			<li>Extremely lightweight <span class="quiet">&mdash; around 28 KB of gzipped JS code</span></li>
+			<li>No external dependencies</li>
+			<li>Keeps your JS environment clean<span class="quiet"> &mdash; no global or native prototypes pollution</span></li>
+		</ul>
+	</div>
+</div>
+
+<hr />
+
+<p>If you find some feature really missing in Leaflet, please vote for it on the <a href="https://leaflet.uservoice.com">Leaflet UserVoice page</a>.</p>

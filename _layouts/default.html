@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
+
+	<title>{{ title }}Leaflet - a JavaScript library for mobile-friendly maps</title>
+
+	<meta charset="utf-8" />
+
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
+	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps." />
+	<meta property="og:image" content="http://leafletjs.com/docs/images/logo.png" />
+
+	<meta itemprop="name" content="Leaflet">
+	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps.">
+	<meta itemprop="image" content="http://leafletjs.com/docs/images/logo.png">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ post.root }}{% endif %}{% endcapture %}
+
+	<link rel="icon" type="image/png" href="{{ root }}docs/images/favicon.png" />
+
+	<link href="http://leafletjs.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
+
+	<!-- Blueprint -->
+	<link rel="stylesheet" href="{{ root }}docs/css/blueprint/screen.css" media="screen, projection">
+	<link rel="stylesheet" href="{{ root }}docs/css/blueprint/print.css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="{{ root }}docs/css/blueprint/ie.css" media="screen, projection"><![endif]-->
+
+	<link rel="stylesheet" href="{{ root }}docs/css/screen.css" media="screen, projection" />
+
+	<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github.css" />
+
+	<!-- Leaflet -->
+	<link rel="stylesheet" href="{{ root }}dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="{{ root }}dist/leaflet.ie.css" /><![endif]-->
+	<script src="{{ root }}dist/leaflet.js"></script>
+
+	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
+
+	<script>
+		CM_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://cloudmade.com">CloudMade</a>';
+
+		CM_URL = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+
+		OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+	</script>
+</head>
+<body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
+	<div class="container">
+		<h1><a href="http://leafletjs.com">Leaflet</a></h1>
+		<h3 class="alt">An Open-Source JavaScript Library for Mobile-Friendly Interactive Maps<!-- by <a href="http://cloudmade.com">CloudMade</a>--></h3>
+
+		<div class="social-buttons">
+			<iframe src="http://ghbtns.com/github-btn.html?user=Leaflet&amp;repo=Leaflet&amp;type=watch&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="104px" height="20px"></iframe>
+
+			<!--<iframe src="http://ghbtns.com/github-btn.html?user=Leaflet&amp;repo=Leaflet&amp;type=fork&amp;count=true" allowtransparency="true" frameborder="0" scrolling="0" width="98px" height="20px"></iframe>-->
+
+			<a href="http://twitter.com/share" class="twitter-share-button" data-url="http://leafletjs.com" data-text="Leaflet — an open-source JavaScript library for mobile-friendly interactive maps" data-via="LeafletJS" data-related="CloudMade" data-count="none">Tweet</a>
+
+			<a href="https://twitter.com/LeafletJS" class="twitter-follow-button" data-show-count="true" data-show-screen-name="false">Follow @LeafletJS</a>
+
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="http://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+			<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fleafletjs.com&amp;layout=button_count&amp;show_faces=false&amp;width=83&amp;action=like&amp;font=arial&amp;colorscheme=light&amp;height=35" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:83px; height:20px;" allowTransparency="true"></iframe>
+
+			<!--<div class="g-plusone" data-size="medium" data-href="http://leafletjs.com/"></div>
+
+			<script type="text/javascript">
+			  (function() {
+			    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+			    po.src = 'https://apis.google.com/js/plusone.js';
+			    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+			  })();
+			</script>-->
+		</div>
+
+		<ul class="nav clearfix">
+			<!-- <li><a class="cloudmade-link" href="http://cloudmade.com"></a></li> -->
+			<li>
+				{% if page.title == nil %}
+					<span>Overview</span>
+				{% else %}
+					<a href="{{ root }}index.html">Overview</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Features' %}
+					<span>Features</span>
+				{% else %}
+					<a href="{{ root }}features.html">Features</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Tutorials' %}
+					<span>Tutorials</span>
+				{% else %}
+					<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Documentation' %}
+					<span>API</span>
+				{% else %}
+					<a href="{{ root }}reference.html">API</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Download' %}
+					<span>Download</span>
+				{% else %}
+					<a href="{{ root }}download.html">Download</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Plugins' %}
+					<span>Plugins</span>
+				{% else %}
+					<a href="{{ root }}plugins.html">Plugins</a>
+				{% endif %}
+			</li>
+			<li>
+				{% if page.title == 'Blog' %}
+					<span>Blog</span>
+				{% else %}
+					<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
+				{% endif %}
+			</li>
+			<li><a class="forum-link" href="https://groups.google.com/forum/#!forum/leaflet-js">Forum</a></li>
+			<li><a class="twitter-link" href="http://twitter.com/LeafletJS">Twitter</a></li>
+			<li><a class="github-link" href="http://github.com/Leaflet/Leaflet">GitHub</a></li>
+		</ul>
+
+		{{ content }}
+
+		<div class="footer">
+			<hr />
+			<p class="quiet">&copy; 2010&ndash;2013 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010&ndash;2011 <a href="http://cloudmade.com">CloudMade</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+		</div>
+	</div>
+
+	<a href="http://github.com/Leaflet/Leaflet"><img id="forkme" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+	<script>
+		hljs.tabReplace = '    ';
+
+		(function () {
+			var codes = document.getElementsByTagName('code'),
+				parentClass;
+
+			for (var i = 0, len = codes.length; i < len; i++) {
+				if (!codes[i].className) {
+					parentClass = codes[i].parentNode.className;
+					if (parentClass) {
+						codes[i].className = parentClass;
+					} else if (codes[i].innerHTML.match(/^\s*&lt;/)) {
+						codes[i].className = 'xml';
+					} else {
+						codes[i].className = 'javascript';
+					}
+				}
+			}
+		})();
+
+		hljs.initHighlighting();
+	</script>
+
+	<script>
+		var _gaq = _gaq || [];
+		_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+		_gaq.push([ '_trackPageview' ]);
+
+		(function() {
+			var ga = document.createElement('script');
+			ga.type = 'text/javascript';
+			ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+					: 'http://www')
+					+ '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0];
+			s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+
+	<script>
+		var uvOptions = {};
+		(function() {
+			var uv = document.createElement('script'); uv.type = 'text/javascript'; uv.async = true;
+			uv.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'widget.uservoice.com/ygv5CFpu3yBQFTFPOAdFg.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
+		})();
+	</script>
+</body>
+</html>
