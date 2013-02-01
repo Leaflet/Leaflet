@@ -90,7 +90,7 @@ L.Marker = L.Class.extend({
 
 	update: function () {
 		if (this._icon) {
-			var magnetPoint = this.options.magnetize ? this._map._defaultMagnetPoint(): null;
+			var magnetPoint = this.options.magnetize ? this._map.getDefaultMagnetPoint(): null;
 			var pos = this._map.latLngToLayerPoint(this._latlng, magnetPoint).round();
 			this._setPos(pos);
 		}

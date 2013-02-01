@@ -35,7 +35,7 @@ L.Polygon = L.Polyline.extend({
 		var i, j, len, len2, latlng,
 			magnetPoint = null;
 		if (this.options.magnetize) {
-			magnetPoint = this._latlngs.length ? this._map.options.crs.projection.project(this._latlngs[0]): this._map._defaultMagnetPoint();
+			magnetPoint = this._latlngs.length ? this._map.options.crs.projection.project(this._latlngs[0]): this._map.getDefaultMagnetPoint();
 		}
 
 		for (i = 0, len = this._holes.length; i < len; i++) {

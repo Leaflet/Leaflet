@@ -18,7 +18,7 @@ L.Polyline = L.Path.extend({
 
 	projectLatlngs: function () {
 		this._originalPoints = [];
-		var magnetPoint = this.options.magnetize ? this._map._defaultMagnetPoint() : null;
+		var magnetPoint = this.options.magnetize ? this._map.getDefaultMagnetPoint() : null;
 
 		for (var i = 0, len = this._latlngs.length; i < len; i++) {
 			this._originalPoints[i] = this._map.latLngToLayerPoint(this._latlngs[i], magnetPoint);
