@@ -27,7 +27,7 @@ L.Path = L.Class.extend({
 
 		clickable: true,
 		magnetize: true,
-		magnet: null
+		magnetPoint: null
 	},
 
 	initialize: function (options) {
@@ -83,6 +83,10 @@ L.Path = L.Class.extend({
 
 	projectLatlngs: function () {
 		// do all projection stuff here
+	},
+
+	getDefaultMagnetPoint: function () {
+		return this.options.magnetize ? this.options.magnetPoint || this._map.getDefaultMagnetPoint(): null;
 	},
 
 	setStyle: function (style) {

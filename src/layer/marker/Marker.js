@@ -91,12 +91,15 @@ L.Marker = L.Class.extend({
 
 	update: function () {
 		if (this._icon) {
-			var magnetPoint = this.options.magnetize ? this.options.magnetPoint || this._map.getDefaultMagnetPoint(): null;
-			var pos = this._map.latLngToLayerPoint(this._latlng, magnetPoint).round();
+			var pos = this._map.latLngToLayerPoint(this._latlng, this.getDefaultMagnetPoint()).round();
 			this._setPos(pos);
 		}
 
 		return this;
+	},
+
+	getDefaultMagnetPoint: function () {
+		return this.options.magnetize ? this.options.magnetPoint || this._map.getDefaultMagnetPoint(): null;
 	},
 
 	_initIcon: function () {
