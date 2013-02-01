@@ -1,11 +1,12 @@
 /*
-Leaflet building and linting scripts.
+Leaflet building, testing and linting scripts.
 
 To use, install Node, then run the following commands in the project root:
 
     npm install -g jake
     npm install uglify-js
     npm install jshint
+    npm install testacular
 
 To check the code and build Leaflet from source, run "jake"
 
@@ -20,7 +21,7 @@ task('lint', build.lint);
 desc('Combine and compress Leaflet source files');
 task('build', ['lint'], build.build);
 
-desc('run phantomjs tests');
+desc('Run PhantomJS tests');
 task('test', ['lint'], build.test);
 
 task('default', ['build']);
