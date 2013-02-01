@@ -21,6 +21,9 @@ L.extend(L.LatLng, {
 });
 
 L.LatLng.prototype = {
+
+	_projectedPoint: null,
+
 	equals: function (obj) { // (LatLng) -> Boolean
 		if (!obj) { return false; }
 

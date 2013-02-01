@@ -26,7 +26,8 @@ L.Path = L.Class.extend({
 		fillOpacity: 0.2,
 
 		clickable: true,
-		magnetize: true
+		magnetize: true,
+		magnet: null
 	},
 
 	initialize: function (options) {

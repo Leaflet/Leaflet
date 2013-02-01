@@ -41,6 +41,7 @@ xdescribe("Projection.Mercator", function() {
 	});
 });
 
+
 describe("Projection.SphericalMercator", function() {
 	var p = L.Projection.SphericalMercator;
 
@@ -65,6 +66,14 @@ describe("Projection.SphericalMercator", function() {
 			expect(p.project(new L.LatLng(-90, -180))).toAlmostEqual(new L.Point(-Math.PI, -Math.PI));
 
 			expect(p.project(new L.LatLng(50, 30))).toAlmostEqual(new L.Point(0.523598775598, 1.010683188683));
+		});
+
+		it("should store projected point in processed LatLng", function () {
+			var magnetPoint = new L.Point(3, 1);
+			var latlng = new L.LatLng(0, -45);
+			var projectedPoint = p.project(latlng, magnetPoint);
+			expect(latlng._projectedPoint).toBeDefined();
+			expect(latlng._projectedPoint).toEqual(projectedPoint);
 		});
 	});
 

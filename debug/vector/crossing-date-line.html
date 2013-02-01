@@ -53,7 +53,7 @@
             [-30, -170],
         ]).addTo(map).bindPopup("I'm an editable polyline").editing.enable();
 
-        L.geoJson({"crs": null, "type": "FeatureCollection", "features": [{"geometry": {"type": "LineString", "coordinates": [[-0.3515625, 45.82879925192134], [-32.6953125, 43.068887774169625], [-2.109375, -49.610709938074216], [155.390625, -50.736455137010644], [-163.828125, -51.618016548773696], [-43.2421875, -59.7120971733229], [-27.421875, -4.915832801313164], [-31.640625, 35.460669951495305], [-11.25, 40.44694705960048]]}, "type": "Feature", "id": 41, "properties": {"category_id": 68, "name": "test line", "icon": {}, "options": {"opacity": null, "fillOpacity": null, "weight": null, "color": "", "dashArray": "", "smoothFactor": null, "stroke": true, "fillColor": "", "fill": false}}}]},
+        L.geoJson({"crs": null, "type": "FeatureCollection", "features": [{"geometry": {"type": "LineString", "coordinates": [[-0.3515625, 45.82879925192134], [-32.6953125, 43.068887774169625], [-2.109375, -49.610709938074216], [155.390625, -50.736455137010644], [-163.828125, -51.618016548773696], [-43.2421875, -59.7120971733229], [-27.421875, -4.915832801313164], [-31.640625, 35.460669951495305], [-11.25, 40.44694705960048]]}, "type": "Feature", "id": 41, "properties": {}}]},
             {
                 onEachFeature: function (feature, layer) {
                     layer.bindPopup("I'm an editable polyline around the world, created from a GeoJSON").editing.enable();

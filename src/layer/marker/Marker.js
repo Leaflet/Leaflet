@@ -15,7 +15,8 @@ L.Marker = L.Class.extend({
 		opacity: 1,
 		riseOnHover: false,
 		riseOffset: 250,
-		magnetize: true
+		magnetize: true,
+		magnetPoint: null
 	},
 
 	initialize: function (latlng, options) {
@@ -90,7 +91,7 @@ L.Marker = L.Class.extend({
 
 	update: function () {
 		if (this._icon) {
-			var magnetPoint = this.options.magnetize ? this._map.getDefaultMagnetPoint(): null;
+			var magnetPoint = this.options.magnetize ? this.options.magnetPoint || this._map.getDefaultMagnetPoint(): null;
 			var pos = this._map.latLngToLayerPoint(this._latlng, magnetPoint).round();
 			this._setPos(pos);
 		}

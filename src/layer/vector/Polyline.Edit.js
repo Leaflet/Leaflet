@@ -44,14 +44,19 @@ L.Handler.PolyEdit = L.Handler.extend({
 		this._markers = [];
 
 		var latlngs = this._poly._latlngs,
-		    i, j, len, marker;
+			map = this._poly._map,
+			magnetPoint = this._poly.options.magnetize ? map.getDefaultMagnetPoint() : null,
+			i, j, len, marker, latlng;
 
 		// TODO refactor holes implementation in Polygon to support it here
 
 		for (i = 0, len = latlngs.length; i < len; i++) {
-
-			marker = this._createMarker(latlngs[i], i);
+			latlng = latlngs[i];
+			marker = this._createMarker(latlng, magnetPoint, i);
 			marker.on('click', this._onMarkerClick, this);
+			if (this._poly.options.magnetize) {
+				magnetPoint = latlng._projectedPoint;
+			}
 			this._markers.push(marker);
 		}
 
@@ -70,10 +75,11 @@ L.Handler.PolyEdit = L.Handler.extend({
 		}
 	},
 
-	_createMarker: function (latlng, index) {
+	_createMarker: function (latlng, magnetPoint, index) {
 		var marker = new L.Marker(latlng, {
 			draggable: true,
-			icon: this.options.icon
+			icon: this.options.icon,
+			magnetPoint: magnetPoint
 		});
 
 		marker._origLatLng = latlng;
@@ -95,11 +101,15 @@ L.Handler.PolyEdit = L.Handler.extend({
 		var marker = e.target;
 
 		L.extend(marker._origLatLng, marker._latlng);
+		// marker._origLatLng is shared between marker and corresponding poly edge
+		marker._origLatLng._projectedPoint = this._poly._map.options.crs.projection.project(marker._latlng, marker._origLatLng._projectedPoint);
 
 		if (marker._middleLeft) {
+			marker._middleLeft.options.magnetPoint = marker._prev.getLatLng()._projectedPoint;
 			marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
 		}
 		if (marker._middleRight) {
+			marker._middleRight.options.magnetPoint = marker.getLatLng()._projectedPoint;
 			marker._middleRight.setLatLng(this._getMiddleLatLng(marker, marker._next));
 		}
 
@@ -154,10 +164,11 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_createMiddleMarker: function (marker1, marker2) {
 		var latlng = this._getMiddleLatLng(marker1, marker2),
-		    marker = this._createMarker(latlng),
-		    onClick,
-		    onDragStart,
-		    onDragEnd;
+			magnetPoint = marker1.getLatLng()._projectedPoint,
+			marker = this._createMarker(latlng, magnetPoint),
+			onClick,
+			onDragStart,
+			onDragEnd;
 
 		marker.setOpacity(0.6);
 
@@ -174,6 +185,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 			latlng.lat = marker.getLatLng().lat;
 			latlng.lng = marker.getLatLng().lng;
+			latlng._projectedPoint = null;
 			this._poly.spliceLatLngs(i, 0, latlng);
 			this._markers.splice(i, 0, marker);
 
@@ -218,9 +230,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_getMiddleLatLng: function (marker1, marker2) {
 		var map = this._poly._map,
-		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
-		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
-
+			p1 = map.latLngToLayerPoint(marker1.getLatLng(), marker1.options.magnetPoint),
+			p2 = map.latLngToLayerPoint(marker2.getLatLng(), marker2.options.magnetPoint);
 		return map.layerPointToLatLng(p1._add(p2)._divideBy(2));
 	}
 });

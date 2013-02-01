@@ -6,11 +6,15 @@ L.Projection.SphericalMercator = {
 	MAX_LATITUDE: 85.0511287798,
 
 	project: function (latlng, magnetPoint) { // (LatLng) -> Point
+		if (latlng._projectedPoint) {
+			return latlng._projectedPoint.clone();
+		}
 		var d = L.LatLng.DEG_TO_RAD,
 		    max = this.MAX_LATITUDE,
 		    lat = Math.max(Math.min(max, latlng.lat), -max),
 		    x = latlng.lng * d,
-		    y = lat * d;
+		    y = lat * d,
+		    point;
 
 		y = Math.log(Math.tan((Math.PI / 4) + (y / 2)));
 
@@ -27,7 +31,9 @@ L.Projection.SphericalMercator = {
 			x = candidates[Math.min(xToMagnet, xPlusToMagnet, xMinusToMagnet)];
 		}
 
-		return new L.Point(x, y);
+		point = new L.Point(x, y);
+		latlng._projectedPoint = point.clone();
+		return point;
 	},
 
 	unproject: function (point) { // (Point, Boolean) -> LatLng
