@@ -16,6 +16,7 @@ files = [].concat([
   ], libSources, [
     "after.js",
     "happen.js",
+    "suites/SpecHelper.js",
     "suites/**/*.js"
    ]);
 
