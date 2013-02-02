@@ -156,12 +156,26 @@ exports.build = function (compsBase32, buildName) {
 };
 
 exports.test = function() {
-	var testacular = require('testacular'),
+	var testacular = require('../node_modules/testacular/lib/index.js'),
 	    testConfig = {configFile : __dirname + '/../spec/testacular.conf.js'};
 	
 	testConfig.browsers = ['PhantomJS'];
 	isArgv('--chrome') &&  testConfig.browsers.push('Chrome');
 	isArgv('--ff') && testConfig.browsers.push('Firefox');
+
+  //will work only with new testacular that supports codecoverage
+  //today its in master
+  if(isArgv('--cov')){
+    testConfig.preprocessors = {
+        '**/src/**/*.js': 'coverage',
+    };
+    testConfig.coverageReporter = {
+        type : 'html',
+        dir : 'coverage/'
+    };
+    testConfig.reporters = ['coverage'];
+  }
+
 	
 	testacular.server.start(testConfig);
 
