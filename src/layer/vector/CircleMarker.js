@@ -23,7 +23,7 @@ L.CircleMarker = L.Circle.extend({
 	},
 
 	setRadius: function (radius) {
-		this._radius = radius;
+		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 });
