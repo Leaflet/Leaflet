@@ -19,10 +19,11 @@ L.CircleMarker = L.Circle.extend({
 	
 	_updateStyle : function () {
 		L.Circle.prototype._updateStyle.call(this);
+		this.setRadius(this.options.radius);
 	},
 
 	setRadius: function (radius) {
-		this._radius = radius;
+		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 });
