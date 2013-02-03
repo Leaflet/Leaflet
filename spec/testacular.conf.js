@@ -33,6 +33,7 @@ files = [].concat([
 		"suites/dom/DomEventSpec.js",
 		"suites/dom/DomUtilSpec.js",
 		"suites/layer/TileLayerSpec.js",
+		"suites/layer/marker/CircleMarkerSpec.js",
 		"suites/layer/vector/PolylineGeometrySpec.js",
 		"suites/layer/vector/CircleSpec.js",
 		"suites/map/MapSpec.js"
