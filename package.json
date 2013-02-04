@@ -4,7 +4,7 @@
 	"description": "JavaScript library for mobile-friendly interactive maps",
 	"dependencies": {
 		"jshint": "~0.9.1",
-		"testacular": "~0.4.0",
+		"testacular": "latest",
 		"uglify-js": "~2.2.3",
 		"jake": "latest"
 	},
