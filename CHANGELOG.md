@@ -16,13 +16,14 @@ An in-progress version being developed on the master branch.
 
 #### API improvements
 
- * Added generic toolbar classes for reuse by plugin developers (used by zoom control).
+ * Added **generic toolbar classes** for reuse by plugin developers (used by zoom control).
+ * Made Leaflet classes compatible with **CoffeeScript class inheritance** syntax (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1345](https://github.com/Leaflet/Leaflet/pull/1345) [#1314](https://github.com/Leaflet/Leaflet/issues/1314)
  * Added `Control.Layers` `overlayadd` and `overlayremove` events (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1286](https://github.com/Leaflet/Leaflet/issues/1286)
  * Added `LayerGroup` `hasLayer` method (by [@rvlasveld](https://github.com/rvlasveld)). [#1282](https://github.com/Leaflet/Leaflet/issues/1282) [#1300](https://github.com/Leaflet/Leaflet/pull/1300)
  * Improved `Polygon` to filter out last point if it's equal to the first one (to fix GeoJSON polygon issues) (by [@snkashis](https://github.com/snkashis)). [#1153](https://github.com/Leaflet/Leaflet/pull/1153) [#1135](https://github.com/Leaflet/Leaflet/issues/1135)
  * Added `Path` `pointerEvents` option for setting pointer-events on SVG-powered vector layers (by [@inpursuit](https://github.com/inpursuit)). [#1053](https://github.com/Leaflet/Leaflet/pull/1053)
- * Updated `TileLayer.Canvas` `redraw` method to return `this` (by [@jieter](https://github.com/jieter)). [#1287](https://github.com/Leaflet/Leaflet/pull/1287)
  * Added `LatLngBounds` `getNorth`, `getEast`, `getSouth`, `getWest` methods (by [@yohanboniface](https://github.com/yohanboniface)). [#1318](https://github.com/Leaflet/Leaflet/issues/1318)
+ * Updated `TileLayer.Canvas` `redraw` method to return `this` (by [@jieter](https://github.com/jieter)). [#1287](https://github.com/Leaflet/Leaflet/pull/1287)
 
 #### Development workflow improvements
 
