@@ -77,7 +77,7 @@ L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Numbe
 	if (L.Util.isArray(a)) {
 		return new L.LatLng(a[0], a[1]);
 	}
-	if (isNaN(a)) {
+	if (a === undefined || a === null) {
 		return a;
 	}
 	return new L.LatLng(a, b);
