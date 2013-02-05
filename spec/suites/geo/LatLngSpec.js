@@ -9,6 +9,12 @@ describe('LatLng', function() {
 			expect(a.lat).toEqual(-25);
 			expect(a.lng).toEqual(-74);
 		});
+
+		it('should throw error if invalid lat or lng', function () {
+			expect(function () {
+				var a = new L.LatLng(NaN, NaN);
+			}).toThrow();
+		});
 	});
 
 	describe('#equals', function() {
@@ -22,6 +28,11 @@ describe('LatLng', function() {
 			var a = new L.LatLng(10, 20);
 			var b = new L.LatLng(10, 23.3);
 			expect(a.equals(b)).toBe(false);
+		});
+
+		it('should return false if passed non-valid object', function () {
+			var a = new L.LatLng(10, 20);
+			expect(a.equals(null)).toBe(false);
 		});
 	});
 
@@ -57,6 +68,43 @@ describe('LatLng', function() {
 			expect(a).toEqual(-10);
 		});
 
-	})
+	});
+
+	describe('#toString', function () {
+		it('should format to string', function () {
+			var a = new L.LatLng(10.333333333, 20.2222222);
+			expect(a.toString(3)).toEqual('LatLng(10.333, 20.222)');
+		});
+	});
+
+	describe('#distanceTo', function () {
+		it('should calculate distance in meters', function () {
+			var a = new L.LatLng(50.5, 30.5);
+			var b = new L.LatLng(50, 1);
+
+			expect(Math.abs(Math.round(a.distanceTo(b) / 1000) - 2084) < 5).toBe(true);
+		});
+	});
+
+	describe('L.latLng factory', function () {
+		it('should return LatLng instance as is', function () {
+			var a = new L.LatLng(50, 30);
+
+			expect(L.latLng(a)).toBe(a);
+		});
+
+		it('should accept an array of coordinates', function () {
+			expect(L.latLng([50, 30])).toEqual(new L.LatLng(50, 30));
+		});
+
+		it('should pass null or undefined as is', function () {
+			expect(L.latLng(undefined)).toBe(undefined);
+			expect(L.latLng(null)).toBe(null);
+		});
+
+		it('should create a LatLng object from two coordinates', function () {
+			expect(L.latLng(50, 30)).toEqual(new L.LatLng(50, 30));
+		});
+	});
 });
 
