@@ -23,7 +23,7 @@ if (typeof exports !== undefined + '') {
 	window.L = L;
 }
 
-L.version = '0.5';
+L.version = '0.5.1';
 
 
 /*
@@ -5317,7 +5317,7 @@ L.CircleMarker = L.Circle.extend({
 	},
 
 	setRadius: function (radius) {
-		this._radius = radius;
+		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 });
@@ -5441,7 +5441,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
 				// Only add this if geometry or geometries are set and not null
-				if (features[i].geometries || features[i].geometry) {
+				if (features[i].geometries || features[i].geometry || features[i].features) {
 					this.addData(features[i]);
 				}
 			}
