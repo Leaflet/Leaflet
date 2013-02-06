@@ -12,11 +12,13 @@ L.Marker = L.Class.extend({
 		clickable: true,
 		draggable: false,
 		zIndexOffset: 0,
-		opacity: 1
+		opacity: 1,
+		riseOnHover: false,
+		riseOffset: 250
 	},
 
 	initialize: function (latlng, options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
 	},
 
@@ -41,10 +43,7 @@ L.Marker = L.Class.extend({
 	onRemove: function (map) {
 		this._removeIcon();
 
-		// TODO move to Marker.Popup.js
-		if (this.closePopup) {
-			this.closePopup();
-		}
+		this.fire('remove');
 
 		map.off({
 			'viewreset': this.update,
@@ -63,14 +62,14 @@ L.Marker = L.Class.extend({
 
 		this.update();
 
-		if (this._popup) {
-			this._popup.setLatLng(latlng);
-		}
+		return this.fire('move', { latlng: this._latlng });
 	},
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		this.update();
+
+		return this;
 	},
 
 	setIcon: function (icon) {
@@ -84,13 +83,17 @@ L.Marker = L.Class.extend({
 			this._initIcon();
 			this.update();
 		}
+
+		return this;
 	},
 
 	update: function () {
-		if (!this._icon) { return; }
+		if (this._icon) {
+			var pos = this._map.latLngToLayerPoint(this._latlng).round();
+			this._setPos(pos);
+		}
 
-		var pos = this._map.latLngToLayerPoint(this._latlng).round();
-		this._setPos(pos);
+		return this;
 	},
 
 	_initIcon: function () {
@@ -111,7 +114,14 @@ L.Marker = L.Class.extend({
 			needOpacityUpdate = (this.options.opacity < 1);
 
 			L.DomUtil.addClass(this._icon, classToAdd);
+
+			if (options.riseOnHover) {
+				L.DomEvent
+					.on(this._icon, 'mouseover', this._bringToFront, this)
+					.on(this._icon, 'mouseout', this._resetZIndex, this);
+			}
 		}
+
 		if (!this._shadow) {
 			this._shadow = options.icon.createShadow();
 
@@ -137,6 +147,12 @@ L.Marker = L.Class.extend({
 	_removeIcon: function () {
 		var panes = this._map._panes;
 
+		if (this.options.riseOnHover) {
+			L.DomEvent
+			    .off(this._icon, 'mouseover', this._bringToFront)
+			    .off(this._icon, 'mouseout', this._resetZIndex);
+		}
+
 		panes.markerPane.removeChild(this._icon);
 
 		if (this._shadow) {
@@ -153,7 +169,13 @@ L.Marker = L.Class.extend({
 			L.DomUtil.setPosition(this._shadow, pos);
 		}
 
-		this._icon.style.zIndex = pos.y + this.options.zIndexOffset;
+		this._zIndex = pos.y + this.options.zIndexOffset;
+
+		this._resetZIndex();
+	},
+
+	_updateZIndex: function (offset) {
+		this._icon.style.zIndex = this._zIndex + offset;
 	},
 
 	_animateZoom: function (opt) {
@@ -163,12 +185,13 @@ L.Marker = L.Class.extend({
 	},
 
 	_initInteraction: function () {
-		if (!this.options.clickable) {
-			return;
-		}
+
+		if (!this.options.clickable) { return; }
+
+		// TODO refactor into something shared with Map/Path/etc. to DRY it up
 
 		var icon = this._icon,
-			events = ['dblclick', 'mousedown', 'mouseover', 'mouseout'];
+		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
@@ -187,18 +210,32 @@ L.Marker = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		L.DomEvent.stopPropagation(e);
-		if (this.dragging && this.dragging.moved()) { return; }
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		var wasDragged = this.dragging && this.dragging.moved();
+
+		if (this.hasEventListeners(e.type) || wasDragged) {
+			L.DomEvent.stopPropagation(e);
+		}
+
+		if (wasDragged) { return; }
+
+		if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
+
 		this.fire(e.type, {
 			originalEvent: e
 		});
 	},
 
 	_fireMouseEvent: function (e) {
+
 		this.fire(e.type, {
 			originalEvent: e
 		});
+
+		// TODO proper custom event propagation
+		// this line will always be called if marker is in a FeatureGroup
+		if (e.type === 'contextmenu' && this.hasEventListeners(e.type)) {
+			L.DomEvent.preventDefault(e);
+		}
 		if (e.type !== 'mousedown') {
 			L.DomEvent.stopPropagation(e);
 		}
@@ -216,6 +253,14 @@ L.Marker = L.Class.extend({
 		if (this._shadow) {
 			L.DomUtil.setOpacity(this._shadow, this.options.opacity);
 		}
+	},
+
+	_bringToFront: function () {
+		this._updateZIndex(this.options.riseOffset);
+	},
+
+	_resetZIndex: function () {
+		this._updateZIndex(0);
 	}
 });
 

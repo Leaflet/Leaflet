@@ -1,3 +1,6 @@
+/*
+ * L.Popup is used for displaying popups on the map.
+ */
 
 L.Map.mergeOptions({
 	closePopupOnClick: true
@@ -14,13 +17,15 @@ L.Popup = L.Class.extend({
 		closeButton: true,
 		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
-		className: ''
+		className: '',
+		zoomAnimation: true
 	},
 
 	initialize: function (options, source) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 
 		this._source = source;
+		this._animated = L.Browser.any3d && this.options.zoomAnimation;
 	},
 
 	onAdd: function (map) {
@@ -40,7 +45,7 @@ L.Popup = L.Class.extend({
 
 		map.on('viewreset', this._updatePosition, this);
 
-		if (L.Browser.any3d) {
+		if (this._animated) {
 			map.on('zoomanim', this._zoomAnimation, this);
 		}
 
@@ -102,25 +107,29 @@ L.Popup = L.Class.extend({
 			map._popup = null;
 
 			map
-				.removeLayer(this)
-				.fire('popupclose', {popup: this});
+			    .removeLayer(this)
+			    .fire('popupclose', {popup: this});
 		}
 	},
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			container = this._container = L.DomUtil.create('div', prefix + ' ' + this.options.className + ' leaflet-zoom-animated'),
+			containerClass = prefix + ' ' + this.options.className + ' leaflet-zoom-' +
+			        (this._animated ? 'animated' : 'hide'),
+			container = this._container = L.DomUtil.create('div', containerClass),
 			closeButton;
 
 		if (this.options.closeButton) {
-			closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
+			closeButton = this._closeButton =
+			        L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
 			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
+		var wrapper = this._wrapper =
+		        L.DomUtil.create('div', prefix + '-content-wrapper', container);
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
@@ -160,7 +169,7 @@ L.Popup = L.Class.extend({
 
 	_updateLayout: function () {
 		var container = this._contentNode,
-			style = container.style;
+		    style = container.style;
 
 		style.width = '';
 		style.whiteSpace = 'nowrap';
@@ -175,8 +184,8 @@ L.Popup = L.Class.extend({
 		style.height = '';
 
 		var height = container.offsetHeight,
-			maxHeight = this.options.maxHeight,
-			scrolledClass = 'leaflet-popup-scrolled';
+		    maxHeight = this.options.maxHeight,
+		    scrolledClass = 'leaflet-popup-scrolled';
 
 		if (maxHeight && height > maxHeight) {
 			style.height = maxHeight + 'px';
@@ -189,16 +198,18 @@ L.Popup = L.Class.extend({
 	},
 
 	_updatePosition: function () {
-		var pos = this._map.latLngToLayerPoint(this._latlng),
-			is3d = L.Browser.any3d,
-			offset = this.options.offset;
+		if (!this._map) { return; }
 
-		if (is3d) {
+		var pos = this._map.latLngToLayerPoint(this._latlng),
+		    animated = this._animated,
+		    offset = this.options.offset;
+
+		if (animated) {
 			L.DomUtil.setPosition(this._container, pos);
 		}
 
-		this._containerBottom = -offset.y - (is3d ? 0 : pos.y);
-		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (is3d ? 0 : pos.x);
+		this._containerBottom = -offset.y - (animated ? 0 : pos.y);
+		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (animated ? 0 : pos.x);
 
 		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
@@ -215,20 +226,20 @@ L.Popup = L.Class.extend({
 		if (!this.options.autoPan) { return; }
 
 		var map = this._map,
-			containerHeight = this._container.offsetHeight,
-			containerWidth = this._containerWidth,
+		    containerHeight = this._container.offsetHeight,
+		    containerWidth = this._containerWidth,
 
-			layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
+		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		if (L.Browser.any3d) {
+		if (this._animated) {
 			layerPos._add(L.DomUtil.getPosition(this._container));
 		}
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
-			padding = this.options.autoPanPadding,
-			size = map.getSize(),
-			dx = 0,
-			dy = 0;
+		    padding = this.options.autoPanPadding,
+		    size = map.getSize(),
+		    dx = 0,
+		    dy = 0;
 
 		if (containerPos.x < 0) {
 			dx = containerPos.x - padding.x;

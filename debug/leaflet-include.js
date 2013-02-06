@@ -16,12 +16,15 @@
 
 		'dom/DomEvent.js',
 		'dom/DomEvent.DoubleTap.js',
+		'dom/DomEvent.MsTouch.js',
 		'dom/DomUtil.js',
 		'dom/Draggable.js',
 
-		'dom/transition/Transition.js',
-		'dom/transition/Transition.Native.js',
-		'dom/transition/Transition.Timer.js',
+		'dom/PosAnimation.js',
+		'dom/PosAnimation.Timer.js',
+		// 'dom/transition/Transition.js',
+		// 'dom/transition/Transition.Native.js',
+		// 'dom/transition/Transition.Timer.js',
 
 		'geo/LatLng.js',
 		'geo/LatLngBounds.js',
@@ -35,6 +38,7 @@
 		'geo/crs/CRS.EPSG3857.js',
 		'geo/crs/CRS.EPSG4326.js',
 		'geo/crs/CRS.EPSG3395.js',
+		'geo/crs/CRS.Simple.js',
 
 		'map/Map.js',
 
@@ -111,7 +115,7 @@
     for (var i = 0; i < scripts.length; i++) {
 		document.writeln("<script src='" + path + scripts[i] + "'></script>");
 	}
-    document.writeln('<script>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
+    document.writeln('<script defer>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();
 
 function getRandomLatLng(map) {
@@ -124,4 +128,8 @@ function getRandomLatLng(map) {
 	return new L.LatLng(
 			southWest.lat + latSpan * Math.random(),
 	        southWest.lng + lngSpan * Math.random());
+}
+
+function logEvent(e) {
+	console.log(e.type);
 }

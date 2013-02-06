@@ -1,5 +1,5 @@
 /*
- * L.Mixin.Events adds custom events functionality to Leaflet classes
+ * L.Mixin.Events is used to add custom events functionality to Leaflet classes.
  */
 
 var key = '_leaflet_events';
@@ -7,11 +7,11 @@ var key = '_leaflet_events';
 L.Mixin = {};
 
 L.Mixin.Events = {
-	
+
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
 		var events = this[key] = this[key] || {},
 			type, i, len;
-		
+
 		// Types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (type in types) {
@@ -19,12 +19,12 @@ L.Mixin.Events = {
 					this.addEventListener(type, types[type], fn);
 				}
 			}
-			
+
 			return this;
 		}
-		
+
 		types = L.Util.splitWords(types);
-		
+
 		for (i = 0, len = types.length; i < len; i++) {
 			events[types[i]] = events[types[i]] || [];
 			events[types[i]].push({
@@ -32,7 +32,7 @@ L.Mixin.Events = {
 				context: context || this
 			});
 		}
-		
+
 		return this;
 	},
 
@@ -43,24 +43,24 @@ L.Mixin.Events = {
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
 		var events = this[key],
 			type, i, len, listeners, j;
-		
+
 		if (typeof types === 'object') {
 			for (type in types) {
 				if (types.hasOwnProperty(type)) {
 					this.removeEventListener(type, types[type], fn);
 				}
 			}
-			
+
 			return this;
 		}
-		
+
 		types = L.Util.splitWords(types);
 
 		for (i = 0, len = types.length; i < len; i++) {
 
 			if (this.hasEventListeners(types[i])) {
 				listeners = events[types[i]];
-				
+
 				for (j = listeners.length - 1; j >= 0; j--) {
 					if (
 						(!fn || listeners[j].action === fn) &&
@@ -71,7 +71,7 @@ L.Mixin.Events = {
 				}
 			}
 		}
-		
+
 		return this;
 	},
 
@@ -80,7 +80,7 @@ L.Mixin.Events = {
 			return this;
 		}
 
-		var event = L.Util.extend({
+		var event = L.extend({
 			type: type,
 			target: this
 		}, data);

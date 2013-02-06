@@ -1,10 +1,35 @@
 var fs = require('fs'),
-	uglifyjs = require('uglify-js'),
-	deps = require('./deps.js').deps;
+    jshint = require('jshint'),
+    UglifyJS = require('uglify-js'),
 
-exports.getFiles = function (compsBase32) {
+    deps = require('./deps.js').deps,
+    hintrc = require('./hintrc.js').config;
+
+
+function lintFiles(files) {
+
+	var errorsFound = 0,
+	    i, j, len, len2, src, errors, e;
+
+	for (i = 0, len = files.length; i < len; i++) {
+
+		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc);
+		errors = jshint.JSHINT.errors;
+
+		for (j = 0, len2 = errors.length; j < len2; j++) {
+			e = errors[j];
+			console.log(files[i] + '\tline ' + e.line + '\tcol ' + e.character + '\t ' + e.reason);
+		}
+
+		errorsFound += len2;
+	}
+
+	return errorsFound;
+}
+
+function getFiles(compsBase32) {
 	var memo = {},
-		comps;
+	    comps;
 
 	if (compsBase32) {
 		comps = parseInt(compsBase32, 32).toString(2).split('');
@@ -37,43 +62,94 @@ exports.getFiles = function (compsBase32) {
 	}
 
 	return files;
-};
+}
 
-exports.uglify = function (code) {
-	var pro = uglifyjs.uglify;
+exports.lint = function () {
 
-	var ast = uglifyjs.parser.parse(code);
-	ast = pro.ast_mangle(ast, {mangle: true});
-	ast = pro.ast_squeeze(ast);
-	ast = pro.ast_squeeze_more(ast);
+	var files = getFiles();
 
-	return pro.gen_code(ast) + ';';
-};
+	console.log('Checking for JS errors...');
 
-exports.combineFiles = function (files) {
-	var content = '(function (window, undefined) {\n\n';
-	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
-	}
-	return content + '\n\n}(this));';
-};
+	var errorsFound = lintFiles(files);
 
-exports.save = function (savePath, compressed) {
-	return fs.writeFileSync(savePath, compressed, 'utf8');
-};
-
-exports.load = function (loadPath) {
-	try {
-		return fs.readFileSync(loadPath, 'utf8');
-	} catch (e) {
-		return null;
+	if (errorsFound > 0) {
+		console.log(errorsFound + ' error(s) found.\n');
+		fail();
+	} else {
+		console.log('\tCheck passed');
 	}
 };
 
-exports.getSizeDelta = function (newContent, oldContent) {
+
+function getSizeDelta(newContent, oldContent) {
 	if (!oldContent) {
 		return 'new';
 	}
-	var delta = newContent.length - oldContent.length;
+	var newLen = newContent.replace(/\r\n?/g, '\n').length,
+		oldLen = oldContent.replace(/\r\n?/g, '\n').length,
+		delta = newLen - oldLen;
+
 	return (delta >= 0 ? '+' : '') + delta;
+}
+
+function loadSilently(path) {
+	try {
+		return fs.readFileSync(path, 'utf8');
+	} catch (e) {
+		return null;
+	}
+}
+
+function combineFiles(files) {
+	var content = '';
+	for (var i = 0, len = files.length; i < len; i++) {
+		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
+	}
+	return content;
+}
+
+exports.build = function (compsBase32, buildName) {
+
+	var files = getFiles(compsBase32);
+
+	console.log('Concatenating ' + files.length + ' files...');
+
+	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
+	    intro = '(function (window, document, undefined) {',
+	    outro = '}(this, document));',
+	    newSrc = copy + intro + combineFiles(files) + outro,
+
+	    pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
+	    srcPath = pathPart + '-src.js',
+
+	    oldSrc = loadSilently(srcPath),
+	    srcDelta = getSizeDelta(newSrc, oldSrc);
+
+	console.log('\tUncompressed size: ' + newSrc.length + ' bytes (' + srcDelta + ')');
+
+	if (newSrc === oldSrc) {
+		console.log('\tNo changes');
+	} else {
+		fs.writeFileSync(srcPath, newSrc);
+		console.log('\tSaved to ' + srcPath);
+	}
+
+	console.log('Compressing...');
+
+	var path = pathPart + '.js',
+	    oldCompressed = loadSilently(path),
+	    newCompressed = copy + UglifyJS.minify(newSrc, {
+	        warnings: true,
+	        fromString: true
+	    }).code,
+	    delta = getSizeDelta(newCompressed, oldCompressed);
+
+	console.log('\tCompressed size: ' + newCompressed.length + ' bytes (' + delta + ')');
+
+	if (newCompressed === oldCompressed) {
+		console.log('\tNo changes');
+	} else {
+		fs.writeFileSync(path, newCompressed);
+		console.log('\tSaved to ' + path);
+	}
 };

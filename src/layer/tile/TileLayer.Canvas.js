@@ -1,17 +1,21 @@
+/*
+ * L.TileLayer.Canvas is a class that you can use as a base for creating
+ * dynamically drawn Canvas-based tile layers.
+ */
+
 L.TileLayer.Canvas = L.TileLayer.extend({
 	options: {
 		async: false
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	redraw: function () {
-		var i,
-			tiles = this._tiles;
+		var tiles = this._tiles;
 
-		for (i in tiles) {
+		for (var i in tiles) {
 			if (tiles.hasOwnProperty(i)) {
 				this._redrawTile(tiles[i]);
 			}
@@ -19,15 +23,12 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	_redrawTile: function (tile) {
-		this.drawTile(tile, tile._tilePoint, tile._zoom);
+		this.drawTile(tile, tile._tilePoint, this._map._zoom);
 	},
 
 	_createTileProto: function () {
 		var proto = this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
-
-		var tileSize = this.options.tileSize;
-		proto.width = tileSize;
-		proto.height = tileSize;
+		proto.width = proto.height = this.options.tileSize;
 	},
 
 	_createTile: function () {
@@ -36,19 +37,18 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		return tile;
 	},
 
-	_loadTile: function (tile, tilePoint, zoom) {
+	_loadTile: function (tile, tilePoint) {
 		tile._layer = this;
 		tile._tilePoint = tilePoint;
-		tile._zoom = zoom;
 
-		this.drawTile(tile, tilePoint, zoom);
+		this._redrawTile(tile);
 
 		if (!this.options.async) {
 			this.tileDrawn(tile);
 		}
 	},
 
-	drawTile: function (tile, tilePoint, zoom) {
+	drawTile: function (/*tile, tilePoint*/) {
 		// override with rendering code
 	},
 

@@ -1,3 +1,7 @@
+/*
+ * L.Map.Keyboard is handling keyboard interaction with the map, enabled by default.
+ */
+
 L.Map.mergeOptions({
 	keyboard: true,
 	keyboardPanOffset: 80,
@@ -6,14 +10,13 @@ L.Map.mergeOptions({
 
 L.Map.Keyboard = L.Handler.extend({
 
-	// list of e.keyCode values for particular actions
 	keyCodes: {
 		left:    [37],
 		right:   [39],
 		down:    [40],
 		up:      [38],
-		zoomIn:  [187, 61, 107],
-		zoomOut: [189, 109, 0]
+		zoomIn:  [187, 107, 61],
+		zoomOut: [189, 109, 173]
 	},
 
 	initialize: function (map) {
@@ -32,27 +35,28 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 
 		L.DomEvent
-			.addListener(container, 'focus', this._onFocus, this)
-			.addListener(container, 'blur', this._onBlur, this)
-			.addListener(container, 'mousedown', this._onMouseDown, this);
+		    .on(container, 'focus', this._onFocus, this)
+		    .on(container, 'blur', this._onBlur, this)
+		    .on(container, 'mousedown', this._onMouseDown, this);
 
 		this._map
-			.on('focus', this._addHooks, this)
-			.on('blur', this._removeHooks, this);
+		    .on('focus', this._addHooks, this)
+		    .on('blur', this._removeHooks, this);
 	},
 
 	removeHooks: function () {
 		this._removeHooks();
 
 		var container = this._map._container;
+
 		L.DomEvent
-			.removeListener(container, 'focus', this._onFocus, this)
-			.removeListener(container, 'blur', this._onBlur, this)
-			.removeListener(container, 'mousedown', this._onMouseDown, this);
+		    .off(container, 'focus', this._onFocus, this)
+		    .off(container, 'blur', this._onBlur, this)
+		    .off(container, 'mousedown', this._onMouseDown, this);
 
 		this._map
-			.off('focus', this._addHooks, this)
-			.off('blur', this._removeHooks, this);
+		    .off('focus', this._addHooks, this)
+		    .off('blur', this._removeHooks, this);
 	},
 
 	_onMouseDown: function () {
@@ -92,7 +96,7 @@ L.Map.Keyboard = L.Handler.extend({
 
 	_setZoomOffset: function (zoom) {
 		var keys = this._zoomKeys = {},
-			codes = this.keyCodes,
+		    codes = this.keyCodes,
 		    i, len;
 
 		for (i = 0, len = codes.zoomIn.length; i < len; i++) {
@@ -104,21 +108,26 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_addHooks: function () {
-		L.DomEvent.addListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.on(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_removeHooks: function () {
-		L.DomEvent.removeListener(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.off(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_onKeyDown: function (e) {
-		var key = e.keyCode;
+		var key = e.keyCode,
+		    map = this._map;
 
 		if (this._panKeys.hasOwnProperty(key)) {
-			this._map.panBy(this._panKeys[key]);
+			map.panBy(this._panKeys[key]);
+
+			if (map.options.maxBounds) {
+				map.panInsideBounds(map.options.maxBounds);
+			}
 
 		} else if (this._zoomKeys.hasOwnProperty(key)) {
-			this._map.setZoom(this._map.getZoom() + this._zoomKeys[key]);
+			map.setZoom(map.getZoom() + this._zoomKeys[key]);
 
 		} else {
 			return;

@@ -1,5 +1,5 @@
 /*
- * L.Handler.TouchZoom is used internally by L.Map to add touch-zooming on Webkit-powered mobile browsers.
+ * L.Handler.TouchZoom is used by L.Map to add pinch zoom on supported mobile browsers.
  */
 
 L.Map.mergeOptions({
@@ -21,10 +21,10 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
 		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
-			p2 = map.mouseEventToLayerPoint(e.touches[1]),
-			viewCenter = map._getCenterLayerPoint();
+		    p2 = map.mouseEventToLayerPoint(e.touches[1]),
+		    viewCenter = map._getCenterLayerPoint();
 
-		this._startCenter = p1.add(p2).divideBy(2, true);
+		this._startCenter = p1.add(p2)._divideBy(2);
 		this._startDist = p1.distanceTo(p2);
 
 		this._moved = false;
@@ -32,9 +32,13 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
+		if (map._panAnim) {
+			map._panAnim.stop();
+		}
+
 		L.DomEvent
-			.on(document, 'touchmove', this._onTouchMove, this)
-			.on(document, 'touchend', this._onTouchEnd, this);
+		    .on(document, 'touchmove', this._onTouchMove, this)
+		    .on(document, 'touchend', this._onTouchEnd, this);
 
 		L.DomEvent.preventDefault(e);
 	},
@@ -45,10 +49,10 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map;
 
 		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
-			p2 = map.mouseEventToLayerPoint(e.touches[1]);
+		    p2 = map.mouseEventToLayerPoint(e.touches[1]);
 
 		this._scale = p1.distanceTo(p2) / this._startDist;
-		this._delta = p1.add(p2).divideBy(2, true).subtract(this._startCenter);
+		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
 
 		if (this._scale === 1) { return; }
 
@@ -56,23 +60,24 @@ L.Map.TouchZoom = L.Handler.extend({
 			L.DomUtil.addClass(map._mapPane, 'leaflet-zoom-anim leaflet-touching');
 
 			map
-				.fire('movestart')
-				.fire('zoomstart')
-				._prepareTileBg();
+			    .fire('movestart')
+			    .fire('zoomstart')
+			    ._prepareTileBg();
 
 			this._moved = true;
 		}
 
 		L.Util.cancelAnimFrame(this._animRequest);
-		this._animRequest = L.Util.requestAnimFrame(this._updateOnMove, this, true, this._map._container);
+		this._animRequest = L.Util.requestAnimFrame(
+		        this._updateOnMove, this, true, this._map._container);
 
 		L.DomEvent.preventDefault(e);
 	},
 
 	_updateOnMove: function () {
 		var map = this._map,
-			origin = this._getScaleOrigin(),
-			center = map.layerPointToLatLng(origin);
+		    origin = this._getScaleOrigin(),
+		    center = map.layerPointToLatLng(origin);
 
 		map.fire('zoomanim', {
 			center: center,
@@ -83,11 +88,11 @@ L.Map.TouchZoom = L.Handler.extend({
 		// it didn't count the origin on the first touch-zoom but worked correctly afterwards
 
 		map._tileBg.style[L.DomUtil.TRANSFORM] =
-			L.DomUtil.getTranslateString(this._delta) + ' ' +
-			L.DomUtil.getScaleString(this._scale, this._startCenter);
+		        L.DomUtil.getTranslateString(this._delta) + ' ' +
+		        L.DomUtil.getScaleString(this._scale, this._startCenter);
 	},
 
-	_onTouchEnd: function (e) {
+	_onTouchEnd: function () {
 		if (!this._moved || !this._zooming) { return; }
 
 		var map = this._map;
@@ -96,16 +101,18 @@ L.Map.TouchZoom = L.Handler.extend({
 		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 
 		L.DomEvent
-			.off(document, 'touchmove', this._onTouchMove)
-			.off(document, 'touchend', this._onTouchEnd);
+		    .off(document, 'touchmove', this._onTouchMove)
+		    .off(document, 'touchend', this._onTouchEnd);
 
 		var origin = this._getScaleOrigin(),
-			center = map.layerPointToLatLng(origin),
+		    center = map.layerPointToLatLng(origin),
 
-			oldZoom = map.getZoom(),
-			floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
-			roundZoomDelta = (floatZoomDelta > 0 ? Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
-			zoom = map._limitZoom(oldZoom + roundZoomDelta);
+		    oldZoom = map.getZoom(),
+		    floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
+		    roundZoomDelta = (floatZoomDelta > 0 ?
+		            Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
+
+		    zoom = map._limitZoom(oldZoom + roundZoomDelta);
 
 		map.fire('zoomanim', {
 			center: center,

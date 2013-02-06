@@ -5,3 +5,5 @@ tmp/**/*
 .idea/**/*
 *.iml
 *.sublime-*
+_site
+dist/*.js

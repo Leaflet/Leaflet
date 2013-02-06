@@ -22,7 +22,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	setStyle: function (style) {
-		L.Util.setOptions(this, style);
+		L.setOptions(this, style);
 
 		if (this._map) {
 			this._updateStyle();
@@ -36,19 +36,23 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		    .off('viewreset', this.projectLatlngs, this)
 		    .off('moveend', this._updatePath, this);
 
+		if (this.options.clickable) {
+			this._map.off('click', this._onClick, this);
+		}
+
 		this._requestUpdate();
 
 		this._map = null;
 	},
 
 	_requestUpdate: function () {
-		if (this._map) {
-			L.Util.cancelAnimFrame(this._fireMapMoveEnd);
-			this._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
+		if (this._map && !L.Path._updateRequest) {
+			L.Path._updateRequest = L.Util.requestAnimFrame(this._fireMapMoveEnd, this._map);
 		}
 	},
 
 	_fireMapMoveEnd: function () {
+		L.Path._updateRequest = null;
 		this.fire('moveend');
 	},
 
@@ -96,23 +100,19 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		if (this._checkIfEmpty()) { return; }
 
 		var ctx = this._ctx,
-			options = this.options;
+		    options = this.options;
 
 		this._drawPath();
 		ctx.save();
 		this._updateStyle();
 
 		if (options.fill) {
-			if (options.fillOpacity < 1) {
-				ctx.globalAlpha = options.fillOpacity;
-			}
+			ctx.globalAlpha = options.fillOpacity;
 			ctx.fill();
 		}
 
 		if (options.stroke) {
-			if (options.opacity < 1) {
-				ctx.globalAlpha = options.opacity;
-			}
+			ctx.globalAlpha = options.opacity;
 			ctx.stroke();
 		}
 
@@ -131,7 +131,12 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', e);
+			this.fire('click', {
+				latlng: e.latlng,
+				layerPoint: e.layerPoint,
+				containerPoint: e.containerPoint,
+				originalEvent: e
+			});
 		}
 	}
 });
@@ -139,7 +144,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} : {
 	_initPathRoot: function () {
 		var root = this._pathRoot,
-			ctx;
+		    ctx;
 
 		if (!root) {
 			root = this._pathRoot = document.createElement("canvas");
@@ -162,16 +167,14 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 	},
 
 	_updateCanvasViewport: function () {
-		if (this._pathZooming) {
-			//Don't redraw while zooming. See _updateSvgViewport for more details
-			return;
-		}
+		// don't redraw while zooming. See _updateSvgViewport for more details
+		if (this._pathZooming) { return; }
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
-			min = vp.min,
-			size = vp.max.subtract(min),
-			root = this._pathRoot;
+		    min = vp.min,
+		    size = vp.max.subtract(min),
+		    root = this._pathRoot;
 
 		//TODO check if this works properly on mobile webkit
 		L.DomUtil.setPosition(root, min);

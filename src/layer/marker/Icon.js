@@ -1,11 +1,17 @@
+/*
+ * L.Icon is an image-based icon class that you can use with L.Marker for custom markers.
+ */
+
 L.Icon = L.Class.extend({
 	options: {
 		/*
 		iconUrl: (String) (required)
+		iconRetinaUrl: (String) (optional, used for retina devices if detected)
 		iconSize: (Point) (can be set through CSS)
-		iconAnchor: (Point) (centered by default if size is specified, can be set in CSS with negative margins)
+		iconAnchor: (Point) (centered by default, can be set in CSS with negative margins)
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
 		shadowUrl: (Point) (no shadow by default)
+		shadowRetinaUrl: (String) (optional, used for retina devices if detected)
 		shadowSize: (Point)
 		shadowAnchor: (Point)
 		*/
@@ -13,7 +19,7 @@ L.Icon = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	createIcon: function () {
@@ -42,8 +48,8 @@ L.Icon = L.Class.extend({
 
 	_setIconStyles: function (img, name) {
 		var options = this.options,
-			size = L.point(options[name + 'Size']),
-			anchor;
+		    size = L.point(options[name + 'Size']),
+		    anchor;
 
 		if (name === 'shadow') {
 			anchor = L.point(options.shadowAnchor || options.iconAnchor);
@@ -76,12 +82,16 @@ L.Icon = L.Class.extend({
 			el.src = src;
 		} else {
 			el = document.createElement('div');
-			el.style.filter = 'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
+			el.style.filter =
+			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
 		return el;
 	},
 
 	_getIconUrl: function (name) {
+		if (L.Browser.retina && this.options[name + 'RetinaUrl']) {
+			return this.options[name + 'RetinaUrl'];
+		}
 		return this.options[name + 'Url'];
 	}
 });

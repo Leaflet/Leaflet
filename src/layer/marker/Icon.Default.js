@@ -1,9 +1,12 @@
+/*
+ * L.Icon.Default is the blue marker icon used by default in Leaflet.
+ */
 
 L.Icon.Default = L.Icon.extend({
 
 	options: {
 		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(13, 41),
+		iconAnchor: new L.Point(12, 41),
 		popupAnchor: new L.Point(1, -34),
 
 		shadowSize: new L.Point(41, 41)
@@ -14,6 +17,10 @@ L.Icon.Default = L.Icon.extend({
 
 		if (this.options[key]) {
 			return this.options[key];
+		}
+
+		if (L.Browser.retina && name === 'icon') {
+			name += '@2x';
 		}
 
 		var path = L.Icon.Default.imagePath;

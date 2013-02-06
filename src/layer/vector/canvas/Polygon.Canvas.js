@@ -1,10 +1,13 @@
+/*
+ * Extends L.Polygon to be able to manually detect clicks on Canvas-rendered polygons.
+ */
 
 L.Polygon.include(!L.Path.CANVAS ? {} : {
 	_containsPoint: function (p) {
 		var inside = false,
-			part, p1, p2,
-			i, j, k,
-			len, len2;
+		    part, p1, p2,
+		    i, j, k,
+		    len, len2;
 
 		// TODO optimization: check if within bounds first
 

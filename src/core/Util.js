@@ -1,13 +1,15 @@
 /*
- * L.Util is a namespace for various utility functions.
+ * L.Util contains various utility functions used throughout Leaflet code.
  */
 
 L.Util = {
-	extend: function (/*Object*/ dest) /*-> Object*/ {	// merge src properties into dest
-		var sources = Array.prototype.slice.call(arguments, 1);
-		for (var j = 0, len = sources.length, src; j < len; j++) {
+	extend: function (dest) { // (Object[, Object, ...]) ->
+		var sources = Array.prototype.slice.call(arguments, 1),
+		    i, j, len, src;
+
+		for (j = 0, len = sources.length; j < len; j++) {
 			src = sources[j] || {};
-			for (var i in src) {
+			for (i in src) {
 				if (src.hasOwnProperty(i)) {
 					dest[i] = src[i];
 				}
@@ -71,18 +73,18 @@ L.Util = {
 	},
 
 	setOptions: function (obj, options) {
-		obj.options = L.Util.extend({}, obj.options, options);
+		obj.options = L.extend({}, obj.options, options);
 		return obj.options;
 	},
 
-	getParamString: function (obj) {
+	getParamString: function (obj, existingUrl) {
 		var params = [];
 		for (var i in obj) {
 			if (obj.hasOwnProperty(i)) {
 				params.push(i + '=' + obj[i]);
 			}
 		}
-		return '?' + params.join('&');
+		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
 	template: function (str, data) {
@@ -95,14 +97,20 @@ L.Util = {
 		});
 	},
 
+	isArray: function (obj) {
+		return (Object.prototype.toString.call(obj) === '[object Array]');
+	},
+
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };
 
 (function () {
 
+	// inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+
 	function getPrefixed(name) {
 		var i, fn,
-			prefixes = ['webkit', 'moz', 'o', 'ms'];
+		    prefixes = ['webkit', 'moz', 'o', 'ms'];
 
 		for (i = 0; i < prefixes.length && !fn; i++) {
 			fn = window[prefixes[i] + name];
@@ -111,23 +119,27 @@ L.Util = {
 		return fn;
 	}
 
+	var lastTime = 0;
+
 	function timeoutDefer(fn) {
-		return window.setTimeout(fn, 1000 / 60);
+		var time = +new Date(),
+		    timeToCall = Math.max(0, 16 - (time - lastTime));
+
+		lastTime = time + timeToCall;
+		return window.setTimeout(fn, timeToCall);
 	}
 
 	var requestFn = window.requestAnimationFrame ||
-			getPrefixed('RequestAnimationFrame') || timeoutDefer;
+	        getPrefixed('RequestAnimationFrame') || timeoutDefer;
 
 	var cancelFn = window.cancelAnimationFrame ||
-			getPrefixed('CancelAnimationFrame') ||
-			getPrefixed('CancelRequestAnimationFrame') ||
-			function (id) {
-				window.clearTimeout(id);
-			};
+	        getPrefixed('CancelAnimationFrame') ||
+	        getPrefixed('CancelRequestAnimationFrame') ||
+	        function (id) { window.clearTimeout(id); };
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
-		fn = L.Util.bind(fn, context);
+		fn = L.bind(fn, context);
 
 		if (immediate && requestFn === timeoutDefer) {
 			fn();
@@ -143,3 +155,9 @@ L.Util = {
 	};
 
 }());
+
+// shortcuts for most used utility functions
+L.extend = L.Util.extend;
+L.bind = L.Util.bind;
+L.stamp = L.Util.stamp;
+L.setOptions = L.Util.setOptions;

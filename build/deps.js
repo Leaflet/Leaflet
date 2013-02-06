@@ -15,6 +15,7 @@ var deps = {
 		      'geo/projection/Projection.SphericalMercator.js',
 		      'geo/projection/Projection.LonLat.js',
 		      'geo/crs/CRS.js',
+		      'geo/crs/CRS.Simple.js',
 		      'geo/crs/CRS.EPSG3857.js',
 		      'geo/crs/CRS.EPSG4326.js',
 		      'map/Map.js'],
@@ -53,7 +54,9 @@ var deps = {
 	},
 
 	Marker: {
-		src: ['layer/marker/Icon.js', 'layer/marker/Icon.Default.js', 'layer/marker/Marker.js'],
+		src: ['layer/marker/Icon.js',
+		      'layer/marker/Icon.Default.js',
+		      'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
 
@@ -64,7 +67,9 @@ var deps = {
 	},
 
 	Popup: {
-		src: ['layer/Popup.js', 'layer/marker/Marker.Popup.js', 'map/ext/Map.Popup.js'],
+		src: ['layer/Popup.js',
+		      'layer/marker/Marker.Popup.js',
+		      'map/ext/Map.Popup.js'],
 		deps: ['Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
 	},
@@ -82,7 +87,9 @@ var deps = {
 
 
 	Path: {
-		src: ['layer/vector/Path.js', 'layer/vector/Path.SVG.js', 'layer/vector/Path.Popup.js'],
+		src: ['layer/vector/Path.js',
+		      'layer/vector/Path.SVG.js',
+		      'layer/vector/Path.Popup.js'],
 		desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
 		heading: 'Vector layers'
 	},
@@ -99,13 +106,15 @@ var deps = {
 	},
 
 	Polyline: {
-		src: ['geometry/LineUtil.js', 'layer/vector/Polyline.js'],
+		src: ['geometry/LineUtil.js',
+		      'layer/vector/Polyline.js'],
 		deps: ['Path'],
 		desc: 'Polyline overlays.'
 	},
 
 	Polygon: {
-		src: ['geometry/PolyUtil.js', 'layer/vector/Polygon.js'],
+		src: ['geometry/PolyUtil.js',
+		      'layer/vector/Polygon.js'],
 		deps: ['Polyline'],
 		desc: 'Polygon overlays.'
 	},
@@ -169,10 +178,11 @@ var deps = {
 	TouchZoom: {
 		src: ['dom/DomEvent.js',
 		      'dom/DomEvent.DoubleTap.js',
+		      'dom/DomEvent.MsTouch.js',
 		      'core/Handler.js',
 		      'map/handler/Map.TouchZoom.js'],
 		deps: ['MapAnimationZoom'],
-		desc: 'Enables smooth touch zooming on iOS and double tap on iOS/Android.'
+		desc: 'Enables smooth touch zooming on iOS and IE10 and double tap on iOS/IE10/Android.'
 	},
 
 	BoxZoom: {
@@ -228,32 +238,27 @@ var deps = {
 	},
 
 
-	AnimationNative: {
-		src: ['dom/DomEvent.js',
-		      'dom/transition/Transition.js',
-		      'dom/transition/Transition.Native.js'],
-		desc: 'Animation core that uses CSS3 Transitions (for powering pan & zoom animations). Works on mobile webkit-powered browsers and some modern desktop browsers.',
-		heading: 'Visual effects'
+	AnimationPan: {
+		src: [
+			'dom/DomEvent.js',
+			'dom/PosAnimation.js',
+			'map/anim/Map.PanAnimation.js'
+			],
+		deps: ['AnimationPan'],
+		desc: 'Core panning animation support.'
 	},
 
 	AnimationTimer: {
-		src: ['dom/transition/Transition.Timer.js'],
-		deps: ['AnimationNative'],
-		desc: 'Timer-based animation fallback for browsers that don\'t support CSS3 transitions.'
-	},
-
-	AnimationPan: {
-		src: ['map/anim/Map.PanAnimation.js'],
+		src: ['dom/PosAnimation.Timer.js'],
 		deps: ['AnimationPan'],
-		desc: 'Panning animation. Can use both native and timer-based animation.'
+		desc: 'Timer-based pan animation fallback for browsers that don\'t support CSS3 transitions.'
 	},
 
 	AnimationZoom: {
 		src: ['map/anim/Map.ZoomAnimation.js'],
-		deps: ['AnimationPan', 'AnimationNative'],
-		desc: 'Smooth zooming animation. So far it works only on browsers that support CSS3 Transitions.'
+		deps: ['AnimationPan'],
+		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
 	},
-
 
 	Geolocation: {
 		src: ['map/ext/Map.Geolocation.js'],

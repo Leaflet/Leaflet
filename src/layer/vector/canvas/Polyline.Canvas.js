@@ -1,8 +1,11 @@
+/*
+ * Extends L.Polyline to be able to manually detect clicks on Canvas-rendered polylines.
+ */
 
 L.Polyline.include(!L.Path.CANVAS ? {} : {
 	_containsPoint: function (p, closed) {
 		var i, j, k, len, len2, dist, part,
-			w = this.options.weight / 2;
+		    w = this.options.weight / 2;
 
 		if (L.Browser.touch) {
 			w += 10; // polyline click tolerance on touch devices

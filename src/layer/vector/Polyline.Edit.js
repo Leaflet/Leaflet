@@ -1,3 +1,7 @@
+/*
+ * L.Handler.PolyEdit is an editing handler for polylines and polygons.
+ */
+
 L.Handler.PolyEdit = L.Handler.extend({
 	options: {
 		icon: new L.DivIcon({
@@ -8,7 +12,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	initialize: function (poly, options) {
 		this._poly = poly;
-		L.Util.setOptions(this, options);
+		L.setOptions(this, options);
 	},
 
 	addHooks: function () {
@@ -90,7 +94,7 @@ L.Handler.PolyEdit = L.Handler.extend({
 	_onMarkerDrag: function (e) {
 		var marker = e.target;
 
-		L.Util.extend(marker._origLatLng, marker._latlng);
+		L.extend(marker._origLatLng, marker._latlng);
 
 		if (marker._middleLeft) {
 			marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
@@ -103,32 +107,40 @@ L.Handler.PolyEdit = L.Handler.extend({
 	},
 
 	_onMarkerClick: function (e) {
-		// Default action on marker click is to remove that marker, but if we remove the marker when latlng count < 3, we don't have a valid polyline anymore
-		if (this._poly._latlngs.length < 3) {
-			return;
-		}
+		// we want to remove the marker on click, but if latlng count < 3, polyline would be invalid
+		if (this._poly._latlngs.length < 3) { return; }
 
 		var marker = e.target,
 		    i = marker._index;
 
-		// Check existence of previous and next markers since they wouldn't exist for edge points on the polyline
-		if (marker._prev && marker._next) {
-			this._createMiddleMarker(marker._prev, marker._next);
-			this._updatePrevNext(marker._prev, marker._next);
-		}
-
-		// The marker itself is guaranteed to exist and present in the layer, since we managed to click on it
+		// remove the marker
 		this._markerGroup.removeLayer(marker);
-		// Check for the existence of middle left or middle right
+		this._markers.splice(i, 1);
+		this._poly.spliceLatLngs(i, 1);
+		this._updateIndexes(i, -1);
+
+		// update prev/next links of adjacent markers
+		this._updatePrevNext(marker._prev, marker._next);
+
+		// remove ghost markers near the removed marker
 		if (marker._middleLeft) {
 			this._markerGroup.removeLayer(marker._middleLeft);
 		}
 		if (marker._middleRight) {
 			this._markerGroup.removeLayer(marker._middleRight);
 		}
-		this._markers.splice(i, 1);
-		this._poly.spliceLatLngs(i, 1);
-		this._updateIndexes(i, -1);
+
+		// create a ghost marker in place of the removed one
+		if (marker._prev && marker._next) {
+			this._createMiddleMarker(marker._prev, marker._next);
+
+		} else if (!marker._prev) {
+			marker._next._middleLeft = null;
+
+		} else if (!marker._next) {
+			marker._prev._middleRight = null;
+		}
+
 		this._poly.fire('edit');
 	},
 
@@ -142,10 +154,10 @@ L.Handler.PolyEdit = L.Handler.extend({
 
 	_createMiddleMarker: function (marker1, marker2) {
 		var latlng = this._getMiddleLatLng(marker1, marker2),
-			marker = this._createMarker(latlng),
-			onClick,
-			onDragStart,
-			onDragEnd;
+		    marker = this._createMarker(latlng),
+		    onClick,
+		    onDragStart,
+		    onDragEnd;
 
 		marker.setOpacity(0.6);
 
@@ -157,8 +169,8 @@ L.Handler.PolyEdit = L.Handler.extend({
 			marker._index = i;
 
 			marker
-				.off('click', onClick)
-				.on('click', this._onMarkerClick, this);
+			    .off('click', onClick)
+			    .on('click', this._onMarkerClick, this);
 
 			latlng.lat = marker.getLatLng().lat;
 			latlng.lng = marker.getLatLng().lng;
@@ -188,16 +200,20 @@ L.Handler.PolyEdit = L.Handler.extend({
 		};
 
 		marker
-			.on('click', onClick, this)
-			.on('dragstart', onDragStart, this)
-			.on('dragend', onDragEnd, this);
+		    .on('click', onClick, this)
+		    .on('dragstart', onDragStart, this)
+		    .on('dragend', onDragEnd, this);
 
 		this._markerGroup.addLayer(marker);
 	},
 
 	_updatePrevNext: function (marker1, marker2) {
-		marker1._next = marker2;
-		marker2._prev = marker1;
+		if (marker1) {
+			marker1._next = marker2;
+		}
+		if (marker2) {
+			marker2._prev = marker1;
+		}
 	},
 
 	_getMiddleLatLng: function (marker1, marker2) {
@@ -205,6 +221,29 @@ L.Handler.PolyEdit = L.Handler.extend({
 		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
 		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
 
-		return map.layerPointToLatLng(p1._add(p2).divideBy(2));
+		return map.layerPointToLatLng(p1._add(p2)._divideBy(2));
 	}
+});
+
+L.Polyline.addInitHook(function () {
+
+	if (L.Handler.PolyEdit) {
+		this.editing = new L.Handler.PolyEdit(this);
+
+		if (this.options.editable) {
+			this.editing.enable();
+		}
+	}
+
+	this.on('add', function () {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.addHooks();
+		}
+	});
+
+	this.on('remove', function () {
+		if (this.editing && this.editing.enabled()) {
+			this.editing.removeHooks();
+		}
+	});
 });

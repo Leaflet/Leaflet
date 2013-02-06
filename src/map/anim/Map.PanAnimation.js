@@ -1,5 +1,8 @@
+/*
+ * Extends L.Map to handle panning animations.
+ */
 
-L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
+L.Map.include({
 
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
@@ -7,9 +10,14 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (this._loaded && !forceReset && this._layers) {
+
+			if (this._panAnim) {
+				this._panAnim.stop();
+			}
+
 			var done = (zoomChanged ?
-					this._zoomToIfClose && this._zoomToIfClose(center, zoom) :
-					this._panByIfClose(center));
+			        this._zoomToIfClose && this._zoomToIfClose(center, zoom) :
+			        this._panByIfClose(center));
 
 			// exit if animated pan or zoom started
 			if (done) {
@@ -24,31 +32,28 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 		return this;
 	},
 
-	panBy: function (offset, options) {
+	panBy: function (offset, duration, easeLinearity) {
 		offset = L.point(offset);
 
 		if (!(offset.x || offset.y)) {
 			return this;
 		}
 
-		if (!this._panTransition) {
-			this._panTransition = new L.Transition(this._mapPane);
+		if (!this._panAnim) {
+			this._panAnim = new L.PosAnimation();
 
-			this._panTransition.on({
+			this._panAnim.on({
 				'step': this._onPanTransitionStep,
 				'end': this._onPanTransitionEnd
 			}, this);
 		}
 
-		L.Util.setOptions(this._panTransition, L.Util.extend({duration: 0.25}, options));
-
 		this.fire('movestart');
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		this._panTransition.run({
-			position: L.DomUtil.getPosition(this._mapPane).subtract(offset)
-		});
+		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset)._round();
+		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
 
 		return this;
 	},
@@ -75,9 +80,9 @@ L.Map.include(!(L.Transition && L.Transition.implemented()) ? {} : {
 
 	_offsetIsWithinView: function (offset, multiplyFactor) {
 		var m = multiplyFactor || 1,
-			size = this.getSize();
+		    size = this.getSize();
 
 		return (Math.abs(offset.x) <= size.x * m) &&
-				(Math.abs(offset.y) <= size.y * m);
+		       (Math.abs(offset.y) <= size.y * m);
 	}
 });

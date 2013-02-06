@@ -1,3 +1,7 @@
+/*
+ * L.Control.Scale is used for displaying metric/imperial scale on the map.
+ */
+
 L.Control.Scale = L.Control.extend({
 	options: {
 		position: 'bottomleft',
@@ -17,7 +21,7 @@ L.Control.Scale = L.Control.extend({
 		this._addScales(options, className, container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
-		this._update();
+		map.whenReady(this._update, this);
 
 		return container;
 	},
@@ -71,8 +75,8 @@ L.Control.Scale = L.Control.extend({
 
 	_updateImperial: function (maxMeters) {
 		var maxFeet = maxMeters * 3.2808399,
-			scale = this._iScale,
-			maxMiles, miles, feet;
+		    scale = this._iScale,
+		    maxMiles, miles, feet;
 
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
