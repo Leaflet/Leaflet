@@ -68,7 +68,9 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	_propagateEvent: function (e) {
-		e.layer  = e.target;
+		if (!e.layer) {
+			e.layer = e.target;
+		}
 		e.target = this;
 
 		this.fire(e.type, e);
