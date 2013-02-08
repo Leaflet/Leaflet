@@ -405,11 +405,11 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://flyjs.com/buildings/">OSM Buildings</a>
+			<a href="http://osmbuildings.org/">OSM Buildings</a>
 		</td><td>
-			Amazing JS library for visualizing 3D OSM building data on top of Leaflet.
+			Amazing JS library for visualizing 3D OSM building geometry on top of Leaflet.
 		</td><td>
-			<a href="http://flyjs.com/buildings/about.php">Jan Marsch</a>
+			<a href="http://osmbuildings.org/about.php">Jan Marsch</a>
 		</td>
 	</tr>
 	<tr>
