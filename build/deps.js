@@ -22,7 +22,6 @@ var deps = {
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
 
-
 	EPSG3395: {
 		src: ['geo/projection/Projection.Mercator.js',
 		      'geo/crs/CRS.EPSG3395.js'],
@@ -84,7 +83,6 @@ var deps = {
 		deps: ['LayerGroup', 'Popup'],
 		desc: 'Extends LayerGroup with mouse events and bindPopup method shared between layers.'
 	},
-
 
 	Path: {
 		src: ['layer/vector/Path.js',
@@ -201,13 +199,6 @@ var deps = {
 		desc: 'Makes markers draggable (by mouse or touch).'
 	},
 
-	PolyEdit: {
-		src: ['layer/vector/Polyline.Edit.js'],
-		deps: ['Polyline', 'DivIcon'],
-		desc: 'Polyline and polygon editing.'
-	},
-
-
 	ControlZoom: {
 		src: ['control/Control.js',
 		      'map/ext/Map.Control.js',
@@ -236,7 +227,6 @@ var deps = {
 		      'control/Control.Layers.js'],
 		desc: 'Layer Switcher control.'
 	},
-
 
 	AnimationPan: {
 		src: [
