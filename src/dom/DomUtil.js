@@ -151,17 +151,9 @@ L.DomUtil = {
 			var filter = false,
 			    filterName = 'DXImageTransform.Microsoft.Alpha';
 
-			// filters collection throws an error if we try to retrieve a filter that doesn't exist
-			try { filter = el.filters.item(filterName); } catch (e) {}
-
 			value = Math.round(value * 100);
 
-			if (filter) {
-				filter.Enabled = (value !== 100);
-				filter.Opacity = value;
-			} else {
-				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
-			}
+			el.style.filter = ' progid:' + filterName + '(opacity=' + value + ')';
 		}
 	},
 

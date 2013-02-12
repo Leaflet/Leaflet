@@ -186,7 +186,9 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
+		if (!L.Browser.ie7) {
+			L.DomUtil.setOpacity(this._container, this.options.opacity);
+		}
 
 		// stupid webkit hack to force redrawing of tiles
 		var i,
@@ -199,6 +201,15 @@ L.TileLayer = L.Class.extend({
 				}
 			}
 		}
+
+		if (L.Browser.ie7) {
+			for (i in tiles) {
+				if (tiles.hasOwnProperty(i)) {
+					tiles[i].style.filter = 'alpha(opacity=' + (this.options.opacity * 100) + ')';
+				}
+			}
+		}
+
 	},
 
 	_initContainer: function () {
@@ -471,6 +482,10 @@ L.TileLayer = L.Class.extend({
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
+		if (L.Browser.ie7 && this.options.opacity !== undefined) {
+			tile.style.filter = 'alpha(opacity=' + (this.options.opacity * 100) + ')';
+		}
+
 		return tile;
 	},
 

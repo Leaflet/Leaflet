@@ -6,7 +6,6 @@
 
 	var ie = !!window.ActiveXObject,
 	    ie6 = ie && !window.XMLHttpRequest,
-	    ie7 = ie && !document.querySelector,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
 	    ua = navigator.userAgent.toLowerCase(),
@@ -14,6 +13,7 @@
 	    chrome = ua.indexOf('chrome') !== -1,
 	    android = ua.indexOf('android') !== -1,
 	    android23 = ua.search('android [23]') !== -1,
+	    ie7 = ie && !document.querySelector && ua.search('msie 7') !== -1,
 
 	    mobile = typeof orientation !== undefined + '',
 	    msTouch = window.navigator && window.navigator.msPointerEnabled &&
