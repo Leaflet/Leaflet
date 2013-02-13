@@ -43,6 +43,13 @@ L.Marker.include({
 		return this;
 	},
 
+	setPopupContent: function (content) {
+		if (this._popup) {
+			this._popup.setContent(content);
+		}
+		return this;
+	},
+
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
