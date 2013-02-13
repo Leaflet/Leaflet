@@ -142,18 +142,12 @@ L.DomUtil = {
 	},
 
 	setOpacity: function (el, value) {
-
 		if ('opacity' in el.style) {
 			el.style.opacity = value;
-
 		} else if ('filter' in el.style) {
-
-			var filter = false,
-			    filterName = 'DXImageTransform.Microsoft.Alpha';
-
+			var filterName = 'alpha';
 			value = Math.round(value * 100);
-
-			el.style.filter = ' progid:' + filterName + '(opacity=' + value + ')';
+			el.style.filter = filterName + '(opacity=' + value + ')';
 		}
 	},
 

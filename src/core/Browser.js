@@ -14,6 +14,7 @@
 	    android = ua.indexOf('android') !== -1,
 	    android23 = ua.search('android [23]') !== -1,
 	    ie7 = ie && !document.querySelector && ua.search('msie 7') !== -1,
+	    ie8 = ie && ua.search('msie 8') !== -1,
 
 	    mobile = typeof orientation !== undefined + '',
 	    msTouch = window.navigator && window.navigator.msPointerEnabled &&
@@ -63,6 +64,7 @@
 		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
+        ie8: ie8,
 		webkit: webkit,
 
 		android: android,

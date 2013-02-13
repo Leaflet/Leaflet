@@ -186,14 +186,20 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_updateOpacity: function () {
-		if (!L.Browser.ie7) {
-			L.DomUtil.setOpacity(this._container, this.options.opacity);
-		}
-
-		// stupid webkit hack to force redrawing of tiles
 		var i,
 		    tiles = this._tiles;
 
+		if (!L.Browser.ie7 && !L.Browser.ie8) {
+			L.DomUtil.setOpacity(this._container, this.options.opacity);
+		} else {
+			for (i in tiles) {
+				if (tiles.hasOwnProperty(i)) {
+					L.DomUtil.setOpacity(tiles[i], this.options.opacity);
+				}
+			}
+        }
+
+		// stupid webkit hack to force redrawing of tiles
 		if (L.Browser.webkit) {
 			for (i in tiles) {
 				if (tiles.hasOwnProperty(i)) {
@@ -202,13 +208,6 @@ L.TileLayer = L.Class.extend({
 			}
 		}
 
-		if (L.Browser.ie7) {
-			for (i in tiles) {
-				if (tiles.hasOwnProperty(i)) {
-					tiles[i].style.filter = 'alpha(opacity=' + (this.options.opacity * 100) + ')';
-				}
-			}
-		}
 
 	},
 
@@ -482,8 +481,9 @@ L.TileLayer = L.Class.extend({
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
-		if (L.Browser.ie7 && this.options.opacity !== undefined) {
-			tile.style.filter = 'alpha(opacity=' + (this.options.opacity * 100) + ')';
+		// in IE7 and IE8 should be set per tile
+		if ((L.Browser.ie7 || L.Browser.ie8) && this.options.opacity !== undefined) {
+			L.DomUtil.setOpacity(tile, this.options.opacity);
 		}
 
 		return tile;
