@@ -132,7 +132,7 @@ L.Map.Drag = L.Handler.extend({
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration, ease);
+				map.panBy(offset, decelerationDuration, ease, true);
 			});
 		}
 
