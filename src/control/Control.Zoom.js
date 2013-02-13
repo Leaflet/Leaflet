@@ -24,7 +24,7 @@ L.Control.Zoom = L.Control.extend({
 	},
 
 	onRemove: function (map) {
-		map.off('zoomend', this._updateDisabled, this);
+		map.off('zoomend baselayerchange', this._updateDisabled, this);
 	},
 
 	_zoomIn: function (e) {
