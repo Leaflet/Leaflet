@@ -38,9 +38,10 @@ L.Projection.SphericalMercator = {
 
 	unproject: function (point) { // (Point) -> LatLng
 		var d = L.LatLng.RAD_TO_DEG,
-		    lng = point.x * d,
-		    lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
-
-		return new L.LatLng(lat, lng);
+			lng = point.x * d,
+			lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d,
+			latlng = new L.LatLng(lat, lng);
+		latlng._projectedPoint = point;
+		return latlng;
 	}
 };
