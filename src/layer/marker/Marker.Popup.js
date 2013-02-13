@@ -44,7 +44,9 @@ L.Marker.include({
 	},
 
 	setPopupContent: function (content) {
-		this._popup.setContent(content);
+		if (this._popup) {
+			this._popup.setContent(content);
+		}
 		return this;
 	},
 
