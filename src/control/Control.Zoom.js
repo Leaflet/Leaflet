@@ -18,7 +18,7 @@ L.Control.Zoom = L.Control.extend({
 		this._zoomOutButton = this._createButton(
 		        '-', 'Zoom out', zoomName + '-out', container, this._zoomOut, this);
 
-		map.on('zoomend', this._updateDisabled, this);
+		map.on('zoomend baselayerchange', this._updateDisabled, this);
 
 		return container;
 	},
