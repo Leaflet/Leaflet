@@ -32,7 +32,7 @@ L.Map.include({
 		return this;
 	},
 
-	panBy: function (offset, duration, easeLinearity) {
+	panBy: function (offset, duration, easeLinearity, moving) {
 		offset = L.point(offset);
 
 		if (!(offset.x || offset.y)) {
@@ -48,7 +48,9 @@ L.Map.include({
 			}, this);
 		}
 
-		this.fire('movestart');
+		if (moving !== true) {
+			this.fire('movestart');
+		}
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
