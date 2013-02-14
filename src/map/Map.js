@@ -271,10 +271,6 @@ L.Map = L.Class.extend({
 		return Math.min(z1, z2);
 	},
 
-	getZoomLevels: function () {
-		return this.getMaxZoom() - this.getMinZoom() + 1;
-	},
-
 	getBoundsZoom: function (bounds, inside) { // (LatLngBounds, Boolean) -> Number
 		bounds = L.latLngBounds(bounds);
 
@@ -534,11 +530,15 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
+	_getZoomSpan: function () {
+		return this.getMaxZoom() - this.getMinZoom();
+	},
+
 	_updateZoomLevels: function () {
 		var i,
 			minZoom = Infinity,
 			maxZoom = -Infinity,
-			oldZoomLevels = this.getZoomLevels();
+			oldZoomSpan = this._getZoomSpan();
 
 		for (i in this._zoomBoundLayers) {
 			if (this._zoomBoundLayers.hasOwnProperty(i)) {
@@ -559,7 +559,7 @@ L.Map = L.Class.extend({
 			this._layersMinZoom = minZoom;
 		}
 
-		if (oldZoomLevels !== this.getZoomLevels()) {
+		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire("zoomlevelschange");
 		}
 	},
