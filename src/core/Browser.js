@@ -7,6 +7,7 @@
 	var ie = !!window.ActiveXObject,
 	    ie6 = ie && !window.XMLHttpRequest,
 	    ie7 = ie && !document.querySelector,
+		ielt9 = ie && !document.addEventListener,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
 	    ua = navigator.userAgent.toLowerCase(),
@@ -63,6 +64,7 @@
 		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
+		ielt9: ielt9,
 		webkit: webkit,
 
 		android: android,
