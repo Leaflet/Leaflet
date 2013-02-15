@@ -86,6 +86,8 @@ Before commiting your changes, run `jake lint` to catch any JS errors in the cod
 If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js`
 so that the build system knows about them.
 
+Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
+
 Happy coding!
 
 ## Improving Documentation
