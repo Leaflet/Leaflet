@@ -178,8 +178,8 @@ describe('Util', function() {
 	describe('#splitWords', function () {
 		it('should split words into an array', function () {
 			expect(L.Util.splitWords('foo bar baz')).toEqual(['foo', 'bar', 'baz']);
-		})
-	})
+		});
+	});
 
 	// TODO setOptions
 
@@ -193,7 +193,13 @@ describe('Util', function() {
 			});
 
 			expect(str).toEqual('Hello Vlad and Dave!');
+		});
 
+		it('does not modify text without a token variable', function () {
+			expect(L.Util.template('foo', {})).toEqual('foo');
+		});
+
+		it('throws when a template token is not given', function () {
 			expect(function () {
 				L.Util.template(tpl, {foo: 'bar'});
 			}).toThrow();
