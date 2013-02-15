@@ -37,8 +37,13 @@ L.Marker.include({
 			    .on('move', this._movePopup, this);
 		}
 
-		this._popup = new L.Popup(options, this)
-			.setContent(content);
+		if (content instanceof L.Popup) {
+			L.setOptions(content, options);
+			this._popup = content;
+		} else {
+			this._popup = new L.Popup(options, this)
+				.setContent(content);
+		}
 
 		return this;
 	},
