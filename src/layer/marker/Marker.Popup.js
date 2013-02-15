@@ -4,7 +4,7 @@
 
 L.Marker.include({
 	openPopup: function () {
-		if (this._popup && this._map) {
+		if (this._popup && this._map && !this._map.hasLayer(this._popup)) {
 			this._popup.setLatLng(this._latlng);
 			this._map.openPopup(this._popup);
 		}
