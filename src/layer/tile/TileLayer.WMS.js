@@ -48,8 +48,6 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
 
-		this._adjustTilePoint(tilePoint);
-
 		var map = this._map,
 		    crs = map.options.crs,
 		    tileSize = this.options.tileSize,
