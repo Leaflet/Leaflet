@@ -482,12 +482,12 @@ L.TileLayer = L.Class.extend({
 		tile.src     = this.getTileUrl(tilePoint);
 	},
 
-    _tileLoaded: function () {
-        this._tilesToLoad--;
-        if (!this._tilesToLoad) {
-            this.fire('load');
-        }
-    },
+	_tileLoaded: function () {
+		this._tilesToLoad--;
+		if (!this._tilesToLoad) {
+			this.fire('load');
+		}
+	},
 
 	_tileOnLoad: function () {
 		var layer = this._layer;
@@ -518,8 +518,8 @@ L.TileLayer = L.Class.extend({
 			this.src = newUrl;
 		}
 
-        layer._tileLoaded();
-    }
+		layer._tileLoaded();
+	}
 });
 
 L.tileLayer = function (url, options) {
