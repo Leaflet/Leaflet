@@ -424,11 +424,9 @@ L.TileLayer = L.Class.extend({
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
 	getTileUrl: function (tilePoint) {
-		this._adjustTilePoint(tilePoint);
-
 		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
-			z: this._getZoomForUrl(),
+			z: tilePoint.z,
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
@@ -451,6 +449,8 @@ L.TileLayer = L.Class.extend({
 		if (this.options.tms) {
 			tilePoint.y = limit - tilePoint.y - 1;
 		}
+
+		tilePoint.z = this._getZoomForUrl();
 	},
 
 	_getSubdomain: function (tilePoint) {
@@ -491,6 +491,7 @@ L.TileLayer = L.Class.extend({
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 
+		this._adjustTilePoint(tilePoint);
 		tile.src     = this.getTileUrl(tilePoint);
 	},
 
