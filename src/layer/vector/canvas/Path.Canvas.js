@@ -141,6 +141,8 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	_onMouseMove: function (e) {
+		if (this._map._animatingZoom) { return; }
+
 		if (this._containsPoint(e.layerPoint)) {
 			this._ctx.canvas.style.cursor = 'pointer';
 			this.fire('mouseover', {
