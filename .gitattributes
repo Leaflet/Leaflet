@@ -1,0 +1,4 @@
+# Set default behaviour, in case users don't have core.autocrlf set.
+* text=auto
+
+* text eol=crlf
