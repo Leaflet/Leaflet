@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+    <!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+    <link rel="stylesheet" href="../css/screen.css" />
+    <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.0.js'></script>
+    <script src="../vector/route.js"></script>
+    <script>
+        L_PREFER_CANVAS = true;
+        $(document).ready(function() {
+        var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+            cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+    
+        for (var i = 0, latlngs = [], len = route.length; i < len; i++) {
+            latlngs.push(new L.LatLng(route[i][0], route[i][1]));
+        }
+        var path = new L.Polyline(latlngs);
+
+        var map = new L.Map('map', {layers: [cloudmade]});
+
+        map.fitBounds(new L.LatLngBounds(latlngs));
+        
+        map.addLayer(new L.Marker(latlngs[0]));
+        map.addLayer(new L.Marker(latlngs[len - 1]));
+        
+        map.addLayer(path);
+        
+        path.bindPopup("Hello world");
+        });
+    </script>
+
+
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>
