@@ -253,6 +253,7 @@ L.Class.extend = function (props) {
 	proto._initHooks = [];
 
 	var parent = this;
+	NewClass.__super__ = parent.prototype;
 	// add method for calling all hooks
 	proto.callInitHooks = function () {
 
@@ -464,6 +465,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	var ie = !!window.ActiveXObject,
 	    ie6 = ie && !window.XMLHttpRequest,
 	    ie7 = ie && !document.querySelector,
+		ielt9 = ie && !document.addEventListener,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
 	    ua = navigator.userAgent.toLowerCase(),
@@ -520,6 +522,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 		ie: ie,
 		ie6: ie6,
 		ie7: ie7,
+		ielt9: ielt9,
 		webkit: webkit,
 
 		android: android,
@@ -652,7 +655,7 @@ L.point = function (x, y, round) {
 	if (L.Util.isArray(x)) {
 		return new L.Point(x[0], x[1]);
 	}
-	if (isNaN(x)) {
+	if (x === undefined || x === null) {
 		return x;
 	}
 	return new L.Point(x, y, round);
@@ -820,6 +823,7 @@ L.DomUtil = {
 		    left = 0,
 		    el = element,
 		    docBody = document.body,
+		    docEl = document.documentElement,
 		    pos,
 		    ie7 = L.Browser.ie7;
 
@@ -836,8 +840,8 @@ L.DomUtil = {
 			if (el.offsetParent === docBody && pos === 'absolute') { break; }
 
 			if (pos === 'fixed') {
-				top  += docBody.scrollTop  || 0;
-				left += docBody.scrollLeft || 0;
+				top  += docBody.scrollTop  || docEl.scrollTop  || 0;
+				left += docBody.scrollLeft || docEl.scrollLeft || 0;
 				break;
 			}
 			el = el.offsetParent;
@@ -1107,7 +1111,7 @@ L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Numbe
 	if (L.Util.isArray(a)) {
 		return new L.LatLng(a[0], a[1]);
 	}
-	if (isNaN(a)) {
+	if (a === undefined || a === null) {
 		return a;
 	}
 	return new L.LatLng(a, b);
@@ -1612,15 +1616,17 @@ L.Map = L.Class.extend({
 
 		var offset = oldSize._subtract(this.getSize())._divideBy(2)._round();
 
-		if (animate === true) {
-			this.panBy(offset);
-		} else {
-			this._rawPanBy(offset);
+		if ((offset.x !== 0) || (offset.y !== 0)) {
+			if (animate === true) {
+				this.panBy(offset);
+			} else {
+				this._rawPanBy(offset);
 
-			this.fire('move');
+				this.fire('move');
 
-			clearTimeout(this._sizeTimer);
-			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+				clearTimeout(this._sizeTimer);
+				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+			}
 		}
 		return this;
 	},
@@ -1931,10 +1937,15 @@ L.Map = L.Class.extend({
 		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
+	_getZoomSpan: function () {
+		return this.getMaxZoom() - this.getMinZoom();
+	},
+
 	_updateZoomLevels: function () {
 		var i,
 			minZoom = Infinity,
-			maxZoom = -Infinity;
+			maxZoom = -Infinity,
+			oldZoomSpan = this._getZoomSpan();
 
 		for (i in this._zoomBoundLayers) {
 			if (this._zoomBoundLayers.hasOwnProperty(i)) {
@@ -1953,6 +1964,10 @@ L.Map = L.Class.extend({
 		} else {
 			this._layersMaxZoom = maxZoom;
 			this._layersMinZoom = minZoom;
+		}
+
+		if (oldZoomSpan !== this._getZoomSpan()) {
+			this.fire("zoomlevelschange");
 		}
 	},
 
@@ -2342,12 +2357,20 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
-
-		// stupid webkit hack to force redrawing of tiles
 		var i,
 		    tiles = this._tiles;
 
+		if (L.Browser.ielt9) {
+			for (i in tiles) {
+				if (tiles.hasOwnProperty(i)) {
+					L.DomUtil.setOpacity(tiles[i], this.options.opacity);
+				}
+			}
+		} else {
+			L.DomUtil.setOpacity(this._container, this.options.opacity);
+		}
+
+		// stupid webkit hack to force redrawing of tiles
 		if (L.Browser.webkit) {
 			for (i in tiles) {
 				if (tiles.hasOwnProperty(i)) {
@@ -2572,11 +2595,9 @@ L.TileLayer = L.Class.extend({
 	// image-specific code (override to implement e.g. Canvas or SVG tile layer)
 
 	getTileUrl: function (tilePoint) {
-		this._adjustTilePoint(tilePoint);
-
 		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
-			z: this._getZoomForUrl(),
+			z: tilePoint.z,
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
@@ -2599,6 +2620,8 @@ L.TileLayer = L.Class.extend({
 		if (this.options.tms) {
 			tilePoint.y = limit - tilePoint.y - 1;
 		}
+
+		tilePoint.z = this._getZoomForUrl();
 	},
 
 	_getSubdomain: function (tilePoint) {
@@ -2627,6 +2650,10 @@ L.TileLayer = L.Class.extend({
 	_createTile: function () {
 		var tile = this._tileImg.cloneNode(false);
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
+
+		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
+			L.DomUtil.setOpacity(tile, this.options.opacity);
+		}
 		return tile;
 	},
 
@@ -2635,15 +2662,16 @@ L.TileLayer = L.Class.extend({
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 
+		this._adjustTilePoint(tilePoint);
 		tile.src     = this.getTileUrl(tilePoint);
 	},
 
-    _tileLoaded: function () {
-        this._tilesToLoad--;
-        if (!this._tilesToLoad) {
-            this.fire('load');
-        }
-    },
+	_tileLoaded: function () {
+		this._tilesToLoad--;
+		if (!this._tilesToLoad) {
+			this.fire('load');
+		}
+	},
 
 	_tileOnLoad: function () {
 		var layer = this._layer;
@@ -2674,8 +2702,8 @@ L.TileLayer = L.Class.extend({
 			this.src = newUrl;
 		}
 
-        layer._tileLoaded();
-    }
+		layer._tileLoaded();
+	}
 });
 
 L.tileLayer = function (url, options) {
@@ -2732,8 +2760,6 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	},
 
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
-
-		this._adjustTilePoint(tilePoint);
 
 		var map = this._map,
 		    crs = map.options.crs,
@@ -3718,7 +3744,7 @@ L.popup = function (options, source) {
 
 L.Marker.include({
 	openPopup: function () {
-		if (this._popup && this._map) {
+		if (this._popup && this._map && !this._map.hasLayer(this._popup)) {
 			this._popup.setLatLng(this._latlng);
 			this._map.openPopup(this._popup);
 		}
@@ -3751,9 +3777,21 @@ L.Marker.include({
 			    .on('move', this._movePopup, this);
 		}
 
-		this._popup = new L.Popup(options, this)
-			.setContent(content);
+		if (content instanceof L.Popup) {
+			L.setOptions(content, options);
+			this._popup = content;
+		} else {
+			this._popup = new L.Popup(options, this)
+				.setContent(content);
+		}
 
+		return this;
+	},
+
+	setPopupContent: function (content) {
+		if (this._popup) {
+			this._popup.setContent(content);
+		}
 		return this;
 	},
 
@@ -3972,7 +4010,9 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	_propagateEvent: function (e) {
-		e.layer  = e.target;
+		if (!e.layer) {
+			e.layer = e.target;
+		}
 		e.target = this;
 
 		this.fire(e.type, e);
@@ -4167,6 +4207,9 @@ L.Path = L.Path.extend({
 		if (this.options.pointerEvents) {
 			this._path.setAttribute('pointer-events', this.options.pointerEvents);
 		}
+		if (!this.options.clickable && !this.options.pointerEvents) {
+			this._path.setAttribute('pointer-events', 'none');
+		}
 		this._updateStyle();
 	},
 
@@ -4327,11 +4370,14 @@ L.Path.include({
 
 	bindPopup: function (content, options) {
 
-		if (!this._popup || options) {
-			this._popup = new L.Popup(options, this);
+		if (content instanceof L.Popup) {
+			this._popup = content;
+		} else {
+			if (!this._popup || options) {
+				this._popup = new L.Popup(options, this);
+			}
+			this._popup.setContent(content);
 		}
-
-		this._popup.setContent(content);
 
 		if (!this._popupHandlersAdded) {
 			this
@@ -6213,6 +6259,8 @@ L.Map.Drag = L.Handler.extend({
 
 		    noInertia = !options.inertia || delay > options.inertiaThreshold || !this._positions[0];
 
+		map.fire('dragend');
+
 		if (noInertia) {
 			map.fire('moveend');
 
@@ -6232,11 +6280,9 @@ L.Map.Drag = L.Handler.extend({
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration, ease);
+				map.panBy(offset, decelerationDuration, ease, true);
 			});
 		}
-
-		map.fire('dragend');
 
 		if (options.maxBounds) {
 			// TODO predrag validation instead of animation
@@ -7025,257 +7071,6 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 
 /*
- * L.Handler.PolyEdit is an editing handler for polylines and polygons.
- */
-
-L.Handler.PolyEdit = L.Handler.extend({
-	options: {
-		icon: new L.DivIcon({
-			iconSize: new L.Point(8, 8),
-			className: 'leaflet-div-icon leaflet-editing-icon'
-		})
-	},
-
-	initialize: function (poly, options) {
-		this._poly = poly;
-		L.setOptions(this, options);
-	},
-
-	addHooks: function () {
-		if (this._poly._map) {
-			if (!this._markerGroup) {
-				this._initMarkers();
-			}
-			this._poly._map.addLayer(this._markerGroup);
-		}
-	},
-
-	removeHooks: function () {
-		if (this._poly._map) {
-			this._poly._map.removeLayer(this._markerGroup);
-			delete this._markerGroup;
-			delete this._markers;
-		}
-	},
-
-	updateMarkers: function () {
-		this._markerGroup.clearLayers();
-		this._initMarkers();
-	},
-
-	_initMarkers: function () {
-		if (!this._markerGroup) {
-			this._markerGroup = new L.LayerGroup();
-		}
-		this._markers = [];
-
-		var latlngs = this._poly._latlngs,
-		    i, j, len, marker;
-
-		// TODO refactor holes implementation in Polygon to support it here
-
-		for (i = 0, len = latlngs.length; i < len; i++) {
-
-			marker = this._createMarker(latlngs[i], i);
-			marker.on('click', this._onMarkerClick, this);
-			this._markers.push(marker);
-		}
-
-		var markerLeft, markerRight;
-
-		for (i = 0, j = len - 1; i < len; j = i++) {
-			if (i === 0 && !(L.Polygon && (this._poly instanceof L.Polygon))) {
-				continue;
-			}
-
-			markerLeft = this._markers[j];
-			markerRight = this._markers[i];
-
-			this._createMiddleMarker(markerLeft, markerRight);
-			this._updatePrevNext(markerLeft, markerRight);
-		}
-	},
-
-	_createMarker: function (latlng, index) {
-		var marker = new L.Marker(latlng, {
-			draggable: true,
-			icon: this.options.icon
-		});
-
-		marker._origLatLng = latlng;
-		marker._index = index;
-
-		marker.on('drag', this._onMarkerDrag, this);
-		marker.on('dragend', this._fireEdit, this);
-
-		this._markerGroup.addLayer(marker);
-
-		return marker;
-	},
-
-	_fireEdit: function () {
-		this._poly.fire('edit');
-	},
-
-	_onMarkerDrag: function (e) {
-		var marker = e.target;
-
-		L.extend(marker._origLatLng, marker._latlng);
-
-		if (marker._middleLeft) {
-			marker._middleLeft.setLatLng(this._getMiddleLatLng(marker._prev, marker));
-		}
-		if (marker._middleRight) {
-			marker._middleRight.setLatLng(this._getMiddleLatLng(marker, marker._next));
-		}
-
-		this._poly.redraw();
-	},
-
-	_onMarkerClick: function (e) {
-		// we want to remove the marker on click, but if latlng count < 3, polyline would be invalid
-		if (this._poly._latlngs.length < 3) { return; }
-
-		var marker = e.target,
-		    i = marker._index;
-
-		// remove the marker
-		this._markerGroup.removeLayer(marker);
-		this._markers.splice(i, 1);
-		this._poly.spliceLatLngs(i, 1);
-		this._updateIndexes(i, -1);
-
-		// update prev/next links of adjacent markers
-		this._updatePrevNext(marker._prev, marker._next);
-
-		// remove ghost markers near the removed marker
-		if (marker._middleLeft) {
-			this._markerGroup.removeLayer(marker._middleLeft);
-		}
-		if (marker._middleRight) {
-			this._markerGroup.removeLayer(marker._middleRight);
-		}
-
-		// create a ghost marker in place of the removed one
-		if (marker._prev && marker._next) {
-			this._createMiddleMarker(marker._prev, marker._next);
-
-		} else if (!marker._prev) {
-			marker._next._middleLeft = null;
-
-		} else if (!marker._next) {
-			marker._prev._middleRight = null;
-		}
-
-		this._poly.fire('edit');
-	},
-
-	_updateIndexes: function (index, delta) {
-		this._markerGroup.eachLayer(function (marker) {
-			if (marker._index > index) {
-				marker._index += delta;
-			}
-		});
-	},
-
-	_createMiddleMarker: function (marker1, marker2) {
-		var latlng = this._getMiddleLatLng(marker1, marker2),
-		    marker = this._createMarker(latlng),
-		    onClick,
-		    onDragStart,
-		    onDragEnd;
-
-		marker.setOpacity(0.6);
-
-		marker1._middleRight = marker2._middleLeft = marker;
-
-		onDragStart = function () {
-			var i = marker2._index;
-
-			marker._index = i;
-
-			marker
-			    .off('click', onClick)
-			    .on('click', this._onMarkerClick, this);
-
-			latlng.lat = marker.getLatLng().lat;
-			latlng.lng = marker.getLatLng().lng;
-			this._poly.spliceLatLngs(i, 0, latlng);
-			this._markers.splice(i, 0, marker);
-
-			marker.setOpacity(1);
-
-			this._updateIndexes(i, 1);
-			marker2._index++;
-			this._updatePrevNext(marker1, marker);
-			this._updatePrevNext(marker, marker2);
-		};
-
-		onDragEnd = function () {
-			marker.off('dragstart', onDragStart, this);
-			marker.off('dragend', onDragEnd, this);
-
-			this._createMiddleMarker(marker1, marker);
-			this._createMiddleMarker(marker, marker2);
-		};
-
-		onClick = function () {
-			onDragStart.call(this);
-			onDragEnd.call(this);
-			this._poly.fire('edit');
-		};
-
-		marker
-		    .on('click', onClick, this)
-		    .on('dragstart', onDragStart, this)
-		    .on('dragend', onDragEnd, this);
-
-		this._markerGroup.addLayer(marker);
-	},
-
-	_updatePrevNext: function (marker1, marker2) {
-		if (marker1) {
-			marker1._next = marker2;
-		}
-		if (marker2) {
-			marker2._prev = marker1;
-		}
-	},
-
-	_getMiddleLatLng: function (marker1, marker2) {
-		var map = this._poly._map,
-		    p1 = map.latLngToLayerPoint(marker1.getLatLng()),
-		    p2 = map.latLngToLayerPoint(marker2.getLatLng());
-
-		return map.layerPointToLatLng(p1._add(p2)._divideBy(2));
-	}
-});
-
-L.Polyline.addInitHook(function () {
-
-	if (L.Handler.PolyEdit) {
-		this.editing = new L.Handler.PolyEdit(this);
-
-		if (this.options.editable) {
-			this.editing.enable();
-		}
-	}
-
-	this.on('add', function () {
-		if (this.editing && this.editing.enabled()) {
-			this.editing.addHooks();
-		}
-	});
-
-	this.on('remove', function () {
-		if (this.editing && this.editing.enabled()) {
-			this.editing.removeHooks();
-		}
-	});
-});
-
-
-/*
  * L.Control is a base class for implementing map controls. Handles positioning.
  * All other controls extend from this class.
  */
@@ -7402,13 +7197,13 @@ L.Control.Zoom = L.Control.extend({
 		this._zoomOutButton = this._createButton(
 		        '-', 'Zoom out', zoomName + '-out', container, this._zoomOut, this);
 
-		map.on('zoomend', this._updateDisabled, this);
+		map.on('zoomend baselayerchange', this._updateDisabled, this);
 
 		return container;
 	},
 
 	onRemove: function (map) {
-		map.off('zoomend', this._updateDisabled, this);
+		map.off('zoomend baselayerchange', this._updateDisabled, this);
 	},
 
 	_zoomIn: function (e) {
@@ -8060,7 +7855,7 @@ L.Map.include({
 		return this;
 	},
 
-	panBy: function (offset, duration, easeLinearity) {
+	panBy: function (offset, duration, easeLinearity, moving) {
 		offset = L.point(offset);
 
 		if (!(offset.x || offset.y)) {
@@ -8076,7 +7871,9 @@ L.Map.include({
 			}, this);
 		}
 
-		this.fire('movestart');
+		if (moving !== true) {
+			this.fire('movestart');
+		}
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
