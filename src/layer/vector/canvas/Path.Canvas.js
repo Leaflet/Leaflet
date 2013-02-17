@@ -123,8 +123,8 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_initEvents: function () {
 		if (this.options.clickable) {
-			// TODO hand cursor
-			// TODO mouseover, mouseout, dblclick
+			// TODO mouseout, dblclick
+			this._map.on('mousemove', this._onMouseMove, this);
 			this._map.on('click', this._onClick, this);
 		}
 	},
@@ -137,6 +137,20 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 				containerPoint: e.containerPoint,
 				originalEvent: e
 			});
+		}
+	},
+
+	_onMouseMove: function (e) {
+		if (this._containsPoint(e.layerPoint)) {
+			this._ctx.canvas.style.cursor = 'pointer';
+			this.fire('mouseover', {
+				latlng: e.latlng,
+				layerPoint: e.layerPoint,
+				containerPoint: e.containerPoint,
+				originalEvent: e
+			});
+		} else {
+			this._ctx.canvas.style.cursor = '';
 		}
 	}
 });
