@@ -18,17 +18,17 @@ L.Projection.SphericalMercator = {
 
 		y = Math.log(Math.tan((Math.PI / 4) + (y / 2)));
 
-		if (magnetPoint instanceof L.Point) {
-			var xPlus = (latlng.lng + 360) * d,
-				xMinus = (latlng.lng - 360) * d,
-				candidates = {},
-				xToMagnet = Math.abs(magnetPoint.x - x),
-				xPlusToMagnet = Math.abs(magnetPoint.x - xPlus),
-				xMinusToMagnet = Math.abs(magnetPoint.x - xMinus);
-			candidates[xPlusToMagnet] = xPlus;
-			candidates[xMinusToMagnet] = xMinus;
-			candidates[xToMagnet] = x;  // Last to make it prioritary in case two are at equal distance
-			x = candidates[Math.min(xToMagnet, xPlusToMagnet, xMinusToMagnet)];
+		if (magnetPoint) {
+			var w = 2 * Math.PI,
+				xPlus = x + w,
+				xMinus = x - w,
+				xToMagnet = Math.abs(magnetPoint.x - x);
+			if (Math.abs(magnetPoint.x - xPlus) < xToMagnet) {
+				x = xPlus;
+			}
+			else if (Math.abs(magnetPoint.x - xMinus) < xToMagnet) {
+				x = xMinus;
+			}
 		}
 
 		point = new L.Point(x, y);
