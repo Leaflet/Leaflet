@@ -1,0 +1,44 @@
+/* Conditional stylesheet for IE. */
+
+.leaflet-draw-toolbar {
+	border: 3px solid #999;
+}
+
+.leaflet-draw-toolbar a {
+	background-color: #eee;
+}
+
+.leaflet-draw-toolbar a:hover {
+	background-color: #fff;
+}
+
+.leaflet-draw-actions {
+	left: 32px;
+	margin-top: 3px;
+}
+
+.leaflet-edit-marker-selected {
+	border: 4px dashed #fe93c2;
+}
+
+.leaflet-draw-actions a {
+	background-color: #999;
+}
+
+.leaflet-draw-actions a:hover {
+	background-color: #a5a5a5;
+}
+
+.leaflet-draw-actions-top a {
+	margin-top: 1px;
+}
+
+.leaflet-draw-actions-bottom a {
+	height: 28px;
+	line-height: 28px;
+}
+
+.leaflet-draw-actions-top.leaflet-draw-actions-bottom a {
+	height: 27px;
+	line-height: 27px;
+}
