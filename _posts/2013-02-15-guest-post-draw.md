@@ -81,9 +81,9 @@ See the <a href="https://github.com/Leaflet/Leaflet.draw" target="_blank">Leafle
 
 ### Thanks
 
-First and foremost I would like to thank my employer <a href="www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, without their positive attitude to open source software I would not have had the time to complete this plugin.
+First and foremost I would like to thank my employer <a href="www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>. Without their attitude to open source software I would not have had the time to complete this plugin.
 
-The Leaflet developer community have been great in support this plugin through inspiration, pull requests and issue reports. Special thanks to: <a href="https://github.com/mourner" title="@mourner" target="_blank">@mourner</a>, <a href="https://github.com/danzel" title="@danzel" target="_blank">@danzel</a>, <a href="https://github.com/brunob" title="@brunob" target="_blank">@brunob</a>, <a href="https://github.com/tnightingale" title="@tnightingale" target="_blank">@tnightingale</a>, and <a href="https://github.com/shramov" title="@shramov" target="_blank">@shramov</a>.
+The Leaflet developer community have been great in supporting this plugin through inspiration, pull requests and issue reports. Special thanks to: <a href="https://github.com/mourner" title="@mourner" target="_blank">@mourner</a>, <a href="https://github.com/danzel" title="@danzel" target="_blank">@danzel</a>, <a href="https://github.com/brunob" title="@brunob" target="_blank">@brunob</a>, <a href="https://github.com/tnightingale" title="@tnightingale" target="_blank">@tnightingale</a>, <a href="https://github.com/Starefossen" title="@Starefossen" target="_blank">@Starefossen</a>, and <a href="https://github.com/shramov" title="@shramov" target="_blank">@shramov</a>.
 
 ### Closing
 
