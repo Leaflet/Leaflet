@@ -50,7 +50,7 @@ describe('DomUtil', function() {
 			el.className = 'foo bar barz';
 			L.DomUtil.removeClass(el, 'bar');
 			expect(el.className).toEqual('foo barz');
-		})
+		});
 	});
 
 	describe('#documentIsLtr', function () {

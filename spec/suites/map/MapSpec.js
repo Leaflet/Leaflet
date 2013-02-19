@@ -36,8 +36,8 @@ describe("Map", function () {
 	});
 
 	describe("#getBounds", function () {
-		it("is safe to call from within a moveend callback during initial "
-		   + "load (#1027)", function () {
+		it("is safe to call from within a moveend callback during initial " +
+		   "load (#1027)", function () {
 			map.on("moveend", function () {
 			  map.getBounds();
 			});
@@ -47,8 +47,8 @@ describe("Map", function () {
 	});
 
 	describe("#getMinZoom and #getMaxZoom", function () {
-		it("The minZoom and maxZoom options overrides any"
-		   + " minZoom and maxZoom set on layers", function () {
+		it("The minZoom and maxZoom options overrides any" +
+		   " minZoom and maxZoom set on layers", function () {
 			   var c = document.createElement('div'),
 				   map = L.map(c, { minZoom: 5, maxZoom: 10 });
 			   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
@@ -85,7 +85,7 @@ describe("Map", function () {
 				   expect(spy).not.toHaveBeenCalled();
 				   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
 				   expect(spy).not.toHaveBeenCalled();
-			   	   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 5 }).addTo(map);
+				   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 5 }).addTo(map);
 				   expect(spy).not.toHaveBeenCalled();
 
 			   });
