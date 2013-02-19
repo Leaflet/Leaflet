@@ -22,7 +22,7 @@ describe('Events', function() {
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
 			obj.addEventListener({ test: spy4, other: spy5 });
-			obj.addEventListener({'test other': spy6 })
+			obj.addEventListener({'test other': spy6 });
 
 			expect(spy).not.toHaveBeenCalled();
 			expect(spy2).not.toHaveBeenCalled();
