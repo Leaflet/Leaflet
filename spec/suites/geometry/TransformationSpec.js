@@ -7,23 +7,23 @@ describe("Transformation", function() {
 	});
 
 	describe('#transform', function () {
-		it("should perform a transformation", function() {
+		it("performs a transformation", function() {
 			var p2 = t.transform(p, 2);
 			expect(p2).toEqual(new L.Point(24, 128));
 		});
-		it('should assume scale of 1 if not specified', function () {
+		it('assumes a scale of 1 if not specified', function () {
 			var p2 = t.transform(p);
 			expect(p2).toEqual(new L.Point(12, 64));
 		});
 	});
 
 	describe('#untransform', function () {
-		it("should perform a reverse transformation", function() {
+		it("performs a reverse transformation", function() {
 			var p2 = t.transform(p, 2);
 			var p3 = t.untransform(p2, 2);
 			expect(p3).toEqual(p);
 		});
-		it('should assume scale of 1 if not specified', function () {
+		it('assumes a scale of 1 if not specified', function () {
 			var p2 = t.transform(p);
 			expect(t.untransform(new L.Point(12, 64))).toEqual(new L.Point(10, 20));
 		});

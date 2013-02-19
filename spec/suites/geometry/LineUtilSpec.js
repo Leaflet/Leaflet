@@ -8,7 +8,7 @@ describe('LineUtil', function () {
 			bounds = L.bounds([5, 0], [15, 10]);
 		});
 
-		it('should clip segment by bounds correctly', function () {
+		it('clips a segment by bounds', function () {
 			var a = new L.Point(0, 0);
 			var b = new L.Point(15, 15);
 
@@ -26,7 +26,7 @@ describe('LineUtil', function () {
 			expect(segment2[1]).toEqual(new L.Point(15, 5));
 		});
 
-		it('should use last bit code and reject segments out of bounds', function () {
+		it('uses last bit code and reject segments out of bounds', function () {
 			var a = new L.Point(15, 15);
 			var b = new L.Point(25, 20);
 			var segment = L.LineUtil.clipSegment(a, b, bounds, true);
@@ -41,17 +41,17 @@ describe('LineUtil', function () {
 		var p2 = new L.Point(10, 0);
 		var p = new L.Point(0, 0);
 
-		it('should calculate distance from point to segment', function () {
+		it('calculates distance from point to segment', function () {
 			expect(L.LineUtil.pointToSegmentDistance(p, p1, p2)).toEqual(Math.sqrt(200) / 2);
 		});
 
-		it('should get point closest to segment', function () {
+		it('calculates point closest to segment', function () {
 			expect(L.LineUtil.closestPointOnSegment(p, p1, p2)).toEqual(new L.Point(5, 5));
 		});
 	});
 
 	describe('#simplify', function () {
-		it('should simplify polylines according to tolerance', function () {
+		it('simplifies polylines according to tolerance', function () {
 			var points = [
 				new L.Point(0, 0),
 				new L.Point(0.01, 0),

@@ -1,5 +1,5 @@
 function noSpecs() {
-	xit('should have specs');
+	xit('has no specs');
 }
 
 if (!Array.prototype.map) {

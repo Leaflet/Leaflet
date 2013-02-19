@@ -10,23 +10,23 @@ describe("Control.Attribution", function () {
 		container = control.getContainer();
 	});
 
-	it("should contain just prefix if no attributions added", function () {
+	it("contains just prefix if no attributions added", function () {
 		expect(container.innerHTML).toEqual('prefix');
 	});
 
 	describe('#addAttribution', function () {
-		it('should add one attribution correctly', function () {
+		it('adds one attribution correctly', function () {
 			control.addAttribution('foo');
 			expect(container.innerHTML).toEqual('prefix | foo');
 		});
 
-		it('should not add duplicate attributions', function () {
+		it('adds no duplicate attributions', function () {
 			control.addAttribution('foo');
 			control.addAttribution('foo');
 			expect(container.innerHTML).toEqual('prefix | foo');
 		});
 
-		it('should add several attributions listed with comma', function () {
+		it('adds several attributions listed with comma', function () {
 			control.addAttribution('foo');
 			control.addAttribution('bar');
 			expect(container.innerHTML).toEqual('prefix | foo, bar');
@@ -34,13 +34,13 @@ describe("Control.Attribution", function () {
 	});
 
 	describe('#removeAttribution', function () {
-		it('should remove attribution correctly', function () {
+		it('removes attribution correctly', function () {
 			control.addAttribution('foo');
 			control.addAttribution('bar');
 			control.removeAttribution('foo');
 			expect(container.innerHTML).toEqual('prefix | bar');
 		});
-		it('should do nothing if removing attribution that was not present', function () {
+		it('does nothing if removing attribution that was not present', function () {
 			control.addAttribution('foo');
 			control.addAttribution('baz');
 			control.removeAttribution('bar');
@@ -52,14 +52,14 @@ describe("Control.Attribution", function () {
 	});
 
 	describe('#setPrefix', function () {
-		it('should change prefix', function () {
+		it('changes prefix', function () {
 			control.setPrefix('bla');
 			expect(container.innerHTML).toEqual('bla');
 		});
 	});
 
 	describe('control.attribution factory', function () {
-		it('should create Control.Attribution instance', function () {
+		it('creates Control.Attribution instance', function () {
 			var options = {prefix: 'prefix'};
 			expect(L.control.attribution(options)).toEqual(new L.Control.Attribution(options));
 		});

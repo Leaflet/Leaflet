@@ -10,7 +10,7 @@ describe('Util', function() {
 			};
 		});
 
-		it('should extend the first argument with the properties of the second', function() {
+		it('extends the first argument with the properties of the second', function() {
 			L.Util.extend(a, {
 				bar: 7,
 				baz: 3
@@ -23,7 +23,7 @@ describe('Util', function() {
 			});
 		});
 
-		it('should work with more than 2 arguments', function() {
+		it('accepts more than 2 arguments', function() {
 			L.Util.extend(a, {bar: 7}, {baz: 3});
 
 			expect(a).toEqual({
@@ -35,7 +35,7 @@ describe('Util', function() {
 	});
 
 	describe('#bind', function() {
-		it('should return the given function with the given context', function() {
+		it('returns the given function with the given context', function() {
 			var fn = function() {
 				return this;
 			};
@@ -45,7 +45,7 @@ describe('Util', function() {
 			expect(fn2()).toEqual(5);
 		});
 
-		it('should pass additional arguments to the bound function', function () {
+		it('passes additional arguments to the bound function', function () {
 			var fn = jasmine.createSpy(),
 				foo = {},
 				a = {},
@@ -60,7 +60,7 @@ describe('Util', function() {
 	});
 
 	describe('#stamp', function() {
-		it('should set a unique id on the given object and return it', function() {
+		it('sets a unique id on the given object and returns it', function() {
 			var a = {},
 				id = L.Util.stamp(a);
 
@@ -75,13 +75,13 @@ describe('Util', function() {
 	});
 
 	describe('#falseFn', function () {
-		it('should just return false', function () {
+		it('returns false', function () {
 			expect(L.Util.falseFn()).toBe(false);
 		});
 	});
 
 	describe('#formatNum', function () {
-		it('should format numbers with a given precision', function () {
+		it('formats numbers with a given precision', function () {
 			expect(L.Util.formatNum(13.12325555, 3)).toEqual(13.123);
 			expect(L.Util.formatNum(13.12325555)).toEqual(13.12326);
 		});
@@ -89,7 +89,7 @@ describe('Util', function() {
 
 
 	describe('#getParamString', function() {
-		it('should create a valid query string for appending depending on url input', function() {
+		it('creates a valid query string for appending depending on url input', function() {
 			var a = {
 				url: "http://example.com/get",
 				obj: {bar: 7, baz: 3},
@@ -117,7 +117,7 @@ describe('Util', function() {
 	});
 
 	describe('#requestAnimFrame', function () {
-		it('should call a function on next frame, unless canceled', function () {
+		it('calles a function on next frame, unless canceled', function () {
 			var spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
 				called = false,
@@ -147,7 +147,7 @@ describe('Util', function() {
 	});
 
 	describe('#limitExecByInterval', function() {
-		it('should limit execution to not more often than specified time interval', function () {
+		it('limits execution to not more often than specified time interval', function () {
 			var spy = jasmine.createSpy(),
 				check = false;
 
@@ -176,7 +176,7 @@ describe('Util', function() {
 	});
 
 	describe('#splitWords', function () {
-		it('should split words into an array', function () {
+		it('splits words into an array', function () {
 			expect(L.Util.splitWords('foo bar baz')).toEqual(['foo', 'bar', 'baz']);
 		});
 	});
@@ -184,7 +184,7 @@ describe('Util', function() {
 	// TODO setOptions
 
 	describe('#template', function () {
-		it('should evaluate templates with a given data object', function () {
+		it('evaluates templates with a given data object', function () {
 			var tpl = 'Hello {foo} and {bar}!';
 
 			var str = L.Util.template(tpl, {
