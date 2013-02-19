@@ -16,14 +16,14 @@
 
 				var wasClicked = 0;
 				fg2.on('click', function(e) {
-					expect(e.layer == marker).toBe(true);
-					expect(e.target === fg2).toBe(true);
+					expect(e.layer).toBe(marker);
+					expect(e.target).toBe(fg2);
 					wasClicked |= 1;
 				});
 
 				fg1.on('click', function (e) {
-					expect(e.layer == marker).toBe(true);
-					expect(e.target === fg1).toBe(true);
+					expect(e.layer).toBe(marker);
+					expect(e.target).toBe(fg1);
 					wasClicked |= 2;
 				});
 
