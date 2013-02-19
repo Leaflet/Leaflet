@@ -7,7 +7,7 @@ describe("Map", function () {
 	});
 
 	describe('#getCenter', function () {
-		it ('should throw if not set before', function () {
+		it ('throws if not set before', function () {
 			expect(function () {
 				map.getCenter();
 			}).toThrow();
@@ -69,7 +69,7 @@ describe("Map", function () {
 
 	describe("#addLayer", function () {
 		describe("When the first layer is added to a map", function () {
-			it("should fire a zoomlevelschange event", function () {
+			it("fires a zoomlevelschange event", function () {
 				map.on("zoomlevelschange", spy);
 				expect(spy).not.toHaveBeenCalled();
 				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
@@ -77,7 +77,7 @@ describe("Map", function () {
 			});
 		});
 		describe("when a new layer with greater zoomlevel coverage than the current layer is added to a map", function () {
-			it("Should fire a zoomlevelschange event ",
+			it("fires a zoomlevelschange event ",
 			   function () {
 				   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
 				   map.on("zoomlevelschange", spy);
@@ -87,7 +87,7 @@ describe("Map", function () {
 			   });
 		});
 		describe("when a new layer with the same or lower zoomlevel coverage as the current layer is added to a map", function () {
-			it("Shouldn't fire a zoomlevelschange event ",
+			it("fires no a zoomlevelschange event ",
 			   function () {
 				   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
 				   map.on("zoomlevelschange", spy);
@@ -103,7 +103,7 @@ describe("Map", function () {
 	});
 	describe("#removeLayer", function () {
 		describe("when the last tile layer on a map is removed", function () {
-			it("should fire a zoomlevelschange event ", function () {
+			it("fires a zoomlevelschange event ", function () {
 				   map.whenReady(function(){
 					   var tl = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 })
 							   .addTo(map);
@@ -116,7 +116,7 @@ describe("Map", function () {
 			   });
 		});
 		describe("when a tile layer is removed from a map and it had greater zoom level coverage than the remainding layer", function () {
-			it("should fire a zoomlevelschange event ", function () {
+			it("fires a zoomlevelschange event ", function () {
 				   map.whenReady(function(){
 					   var tl = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 })
 							   .addTo(map),

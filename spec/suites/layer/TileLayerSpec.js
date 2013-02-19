@@ -6,7 +6,7 @@ describe('TileLayer', function () {
 			map = L.map(document.createElement('div'));
 		});
 		describe("when a tilelayer is added to a map with no other layers", function () {
-			it("should have the same zoomlevels as the tilelayer", function () {
+			it("has the same zoomlevels as the tilelayer", function () {
 				var maxZoom = 10,
 					minZoom = 5;
 					map.setView([0, 0], 1);
@@ -20,7 +20,7 @@ describe('TileLayer', function () {
 			});
 		});
 		describe("when a tilelayer is added to a map that already has a tilelayer", function () {
-			it("should have its zoomlevels updated to fit the new layer", function () {
+			it("has its zoomlevels updated to fit the new layer", function () {
 				map.setView([0, 0], 1);
 
 				L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 15 }).addTo(map);
@@ -43,7 +43,7 @@ describe('TileLayer', function () {
 			});
 		});
 		describe("when a tilelayer is removed from a map", function () {
-			it("it should have its zoomlevels updated to only fit the layers it currently has", function () {
+			it("has its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [  L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 15 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 10 }).addTo(map),
 							   L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 20 }).addTo(map),

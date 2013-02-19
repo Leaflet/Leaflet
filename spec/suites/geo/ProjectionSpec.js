@@ -16,7 +16,7 @@ xdescribe("Projection.Mercator", function() {
 
 
 	describe("#project", function() {
-		it("should do projection properly", function() {
+		it("projects", function() {
 			//edge cases
 			expect(p.project(new L.LatLng(0, 0))).toAlmostEqual(new L.Point(0, 0));
 			expect(p.project(new L.LatLng(90, 180))).toAlmostEqual(new L.Point(-Math.PI, Math.PI));
@@ -27,7 +27,7 @@ xdescribe("Projection.Mercator", function() {
 	});
 
 	describe("#unproject", function() {
-		it("should do unprojection properly", function() {
+		it("unprojects", function() {
 			function pr(point) {
 				return p.project(p.unproject(point));
 			}

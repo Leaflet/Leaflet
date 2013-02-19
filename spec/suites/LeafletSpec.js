@@ -1,5 +1,5 @@
 describe('L#noConflict', function() {
-	it('should restore the previous L value and return Leaflet namespace', function(){
+	it('restores the previous L value and returns Leaflet namespace', function(){
 
 		expect(L.version).toBeDefined();
 
