@@ -6,6 +6,14 @@ describe("Map", function () {
 		spy = jasmine.createSpy();
 	});
 
+	describe('#getCenter', function () {
+		it ('should throw if not set before', function () {
+			expect(function () {
+				map.getCenter();
+			}).toThrow();
+		});
+	});
+
 	describe("#whenReady", function () {
 		describe("when the map has not yet been loaded", function () {
 			it("calls the callback when the map is loaded", function () {

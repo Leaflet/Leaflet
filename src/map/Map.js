@@ -330,6 +330,9 @@ L.Map = L.Class.extend({
 	},
 
 	getPixelOrigin: function () {
+		if (!this._loaded) {
+			throw new Error('Set map center and zoom first.');
+		}
 		return this._initialTopLeftPoint;
 	},
 
@@ -367,13 +370,13 @@ L.Map = L.Class.extend({
 	},
 
 	layerPointToLatLng: function (point) { // (Point)
-		var projectedPoint = L.point(point).add(this._initialTopLeftPoint);
+		var projectedPoint = L.point(point).add(this.getPixelOrigin());
 		return this.unproject(projectedPoint);
 	},
 
 	latLngToLayerPoint: function (latlng) { // (LatLng)
 		var projectedPoint = this.project(L.latLng(latlng))._round();
-		return projectedPoint._subtract(this._initialTopLeftPoint);
+		return projectedPoint._subtract(this.getPixelOrigin());
 	},
 
 	containerPointToLayerPoint: function (point) { // (Point)
@@ -651,11 +654,7 @@ L.Map = L.Class.extend({
 	},
 
 	_getTopLeftPoint: function () {
-		if (!this._loaded) {
-			throw new Error('Set map center and zoom first.');
-		}
-
-		return this._initialTopLeftPoint.subtract(this._getMapPanePos());
+		return this.getPixelOrigin().subtract(this._getMapPanePos());
 	},
 
 	_getNewTopLeftPoint: function (center, zoom) {
