@@ -32,6 +32,10 @@ L.Control = L.Class.extend({
 		return this;
 	},
 
+	getContainer: function () {
+		return this._container;
+	},
+
 	addTo: function (map) {
 		this._map = map;
 
