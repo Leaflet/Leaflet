@@ -47,7 +47,7 @@ L.Polyline = L.Path.extend({
 
 	spliceLatLngs: function () { // (Number index, Number howMany)
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._convertLatLngs(this._latlngs);
+		this._convertLatLngs(this._latlngs, true);
 		this.redraw();
 		return removed;
 	},
@@ -85,8 +85,8 @@ L.Polyline = L.Path.extend({
 		return bounds;
 	},
 
-	_convertLatLngs: function (latlngs) {
-		var i, len, target = [];
+	_convertLatLngs: function (latlngs, overwrite) {
+		var i, len, target = overwrite ? latlngs : [];
 
 		for (i = 0, len = latlngs.length; i < len; i++) {
 			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') {
