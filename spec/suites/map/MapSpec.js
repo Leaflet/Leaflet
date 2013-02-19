@@ -36,14 +36,11 @@ describe("Map", function () {
 	});
 
 	describe("#setView", function () {
-		it("sets the view of the map", function (done) {
+		it("sets the view of the map", function () {
 			expect(map.setView([51.505, -0.09], 13)).toBe(map);
             expect(map.getZoom()).toBe(13);
 
-            window.setTimeout(function() {
-                expect(map.getCenter().distanceTo([51.505, -0.09])).toBeLessThan(1);
-                done();
-            }, 500);
+            expect(map.getCenter().distanceTo([51.505, -0.09])).toBeLessThan(5);
 		});
 	});
 
