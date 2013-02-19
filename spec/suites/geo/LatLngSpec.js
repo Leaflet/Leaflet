@@ -5,9 +5,9 @@ describe('LatLng', function() {
 			expect(a.lat).toEqual(25);
 			expect(a.lng).toEqual(74);
 
-			var a = new L.LatLng(-25, -74);
-			expect(a.lat).toEqual(-25);
-			expect(a.lng).toEqual(-74);
+			var b = new L.LatLng(-25, -74);
+			expect(b.lat).toEqual(-25);
+			expect(b.lng).toEqual(-74);
 		});
 
 		it('should throw error if invalid lat or lng', function () {
