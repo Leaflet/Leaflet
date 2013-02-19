@@ -35,6 +35,18 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#setView", function () {
+		it("sets the view of the map", function (done) {
+			expect(map.setView([51.505, -0.09], 13)).toBe(map);
+            expect(map.getZoom()).toBe(13);
+
+            window.setTimeout(function() {
+                expect(map.getCenter().distanceTo([51.505, -0.09])).toBeLessThan(1);
+                done();
+            }, 500);
+		});
+	});
+
 	describe("#getBounds", function () {
 		it("is safe to call from within a moveend callback during initial " +
 		   "load (#1027)", function () {
