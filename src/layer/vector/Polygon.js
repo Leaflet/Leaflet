@@ -2,7 +2,7 @@
  * L.Polygon is used to display polygons on a map.
  */
 
-L.Polygon = L.Polyline.extend({
+L.Polygon = L.polygon = L.Polyline.extend({
 	options: {
 		fill: true
 	},
@@ -66,7 +66,3 @@ L.Polygon = L.Polyline.extend({
 		return str + (L.Browser.svg ? 'z' : 'x');
 	}
 });
-
-L.polygon = function (latlngs, options) {
-	return new L.Polygon(latlngs, options);
-};

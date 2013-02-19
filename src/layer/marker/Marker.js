@@ -2,7 +2,7 @@
  * L.Marker is used to display clickable/draggable icons on the map.
  */
 
-L.Marker = L.Class.extend({
+L.Marker = L.marker = L.Class.extend({
 
 	includes: L.Mixin.Events,
 
@@ -263,7 +263,3 @@ L.Marker = L.Class.extend({
 		this._updateZIndex(0);
 	}
 });
-
-L.marker = function (latlng, options) {
-	return new L.Marker(latlng, options);
-};

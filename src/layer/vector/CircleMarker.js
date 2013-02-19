@@ -2,7 +2,7 @@
  * L.CircleMarker is a circle overlay with a permanent pixel radius.
  */
 
-L.CircleMarker = L.Circle.extend({
+L.CircleMarker = L.circleMarker = L.Circle.extend({
 	options: {
 		radius: 10,
 		weight: 2
@@ -27,7 +27,3 @@ L.CircleMarker = L.Circle.extend({
 		return this.redraw();
 	}
 });
-
-L.circleMarker = function (latlng, options) {
-	return new L.CircleMarker(latlng, options);
-};

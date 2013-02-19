@@ -2,7 +2,7 @@
  * L.Control.Layers is a control to allow users to switch between different layers on the map.
  */
 
-L.Control.Layers = L.Control.extend({
+L.Control.Layers = L.control.layers = L.Control.extend({
 	options: {
 		collapsed: true,
 		position: 'topright',
@@ -242,7 +242,3 @@ L.Control.Layers = L.Control.extend({
 		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
 	}
 });
-
-L.control.layers = function (baseLayers, overlays, options) {
-	return new L.Control.Layers(baseLayers, overlays, options);
-};

@@ -3,7 +3,7 @@
  * dynamically drawn Canvas-based tile layers.
  */
 
-L.TileLayer.Canvas = L.TileLayer.extend({
+L.TileLayer.Canvas = L.tileLayer.canvas = L.TileLayer.extend({
 	options: {
 		async: false
 	},
@@ -57,8 +57,3 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		this._tileOnLoad.call(tile);
 	}
 });
-
-
-L.tileLayer.canvas = function (options) {
-	return new L.TileLayer.Canvas(options);
-};

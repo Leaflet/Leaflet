@@ -2,7 +2,7 @@
  * L.ImageOverlay is used to overlay images over the map (to specific geographical bounds).
  */
 
-L.ImageOverlay = L.Class.extend({
+L.ImageOverlay = L.imageOverlay = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
@@ -126,7 +126,3 @@ L.ImageOverlay = L.Class.extend({
 		L.DomUtil.setOpacity(this._image, this.options.opacity);
 	}
 });
-
-L.imageOverlay = function (url, bounds, options) {
-	return new L.ImageOverlay(url, bounds, options);
-};

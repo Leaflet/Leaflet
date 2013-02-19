@@ -3,7 +3,7 @@
  * shared between a group of interactive layers (like vectors or markers).
  */
 
-L.FeatureGroup = L.LayerGroup.extend({
+L.FeatureGroup = L.featureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	statics: {
@@ -76,7 +76,3 @@ L.FeatureGroup = L.LayerGroup.extend({
 		this.fire(e.type, e);
 	}
 });
-
-L.featureGroup = function (layers) {
-	return new L.FeatureGroup(layers);
-};

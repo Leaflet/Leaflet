@@ -2,7 +2,7 @@
  * L.Circle is a circle overlay (with a certain radius in meters).
  */
 
-L.Circle = L.Path.extend({
+L.Circle = L.circle = L.Path.extend({
 	initialize: function (latlng, radius, options) {
 		L.Path.prototype.initialize.call(this, options);
 
@@ -92,7 +92,3 @@ L.Circle = L.Path.extend({
 		       p.x + r < vp.min.x || p.y + r < vp.min.y;
 	}
 });
-
-L.circle = function (latlng, radius, options) {
-	return new L.Circle(latlng, radius, options);
-};

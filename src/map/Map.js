@@ -2,7 +2,7 @@
  * L.Map is the central class of the API - it is used to create a map.
  */
 
-L.Map = L.Class.extend({
+L.Map = L.map = L.Class.extend({
 
 	includes: L.Mixin.Events,
 
@@ -708,7 +708,3 @@ L.Map = L.Class.extend({
 		return Math.max(min, Math.min(max, zoom));
 	}
 });
-
-L.map = function (id, options) {
-	return new L.Map(id, options);
-};

@@ -2,7 +2,7 @@
  * L.TileLayer.WMS is used for putting WMS tile layers on the map.
  */
 
-L.TileLayer.WMS = L.TileLayer.extend({
+L.TileLayer.WMS = L.tileLayer.wms = L.TileLayer.extend({
 
 	defaultWmsParams: {
 		service: 'WMS',
@@ -77,7 +77,3 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		return this;
 	}
 });
-
-L.tileLayer.wms = function (url, options) {
-	return new L.TileLayer.WMS(url, options);
-};

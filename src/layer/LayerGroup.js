@@ -3,7 +3,7 @@
  * you can manipulate the group (e.g. add/remove it) as one layer.
  */
 
-L.LayerGroup = L.Class.extend({
+L.LayerGroup = L.layerGroup = L.Class.extend({
 	initialize: function (layers) {
 		this._layers = {};
 
@@ -97,7 +97,3 @@ L.LayerGroup = L.Class.extend({
 		return this.invoke('setZIndex', zIndex);
 	}
 });
-
-L.layerGroup = function (layers) {
-	return new L.LayerGroup(layers);
-};
