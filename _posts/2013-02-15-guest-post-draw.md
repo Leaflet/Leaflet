@@ -89,12 +89,12 @@ The Leaflet developer community have been great in supporting this plugin throug
 
 I've had a great time implementing this plugin. I hope you enjoy using it. If you have a question or just want to say hi, send me an email at <a href="mailto:jacob.toye@gmail.com">jacob.toye@gmail.com</a>.
 
-Cheers,
+Cheers, 
 Jacob Toye
 
-<link rel="stylesheet" href="../../../dist/leaflet.draw.css" />
-<!--[if lte IE 8]><link rel="stylesheet" href="../../../dist/leaflet.draw.ie.css" /><![endif]-->
-<script src="../../../dist/leaflet.draw.js"></script>
+<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.css" />
+<!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.ie.css" /><![endif]-->
+<script src="http://leaflet.github.com/Leaflet.draw/leaflet.draw.js"></script>
 
 <script>
 	// create a map in the "map" div, set the view to a given place and zoom
@@ -118,14 +118,14 @@ Jacob Toye
 	map.addControl(drawControl);
 
 	map.on('draw:created', function (e) {
-	var type = e.layerType,
-		layer = e.layer;
+		var type = e.layerType,
+			layer = e.layer;
 
-	if (type === 'marker') {
-		layer.bindPopup('A popup!');
-	}
+		if (type === 'marker') {
+			layer.bindPopup('A popup!');
+		}
 
-	// Do whatever else you need to. (save to db, add to map etc)
-	drawnItems.addLayer(layer);
+		// Do whatever else you need to. (save to db, add to map etc)
+		drawnItems.addLayer(layer);
 	});
 </script>
