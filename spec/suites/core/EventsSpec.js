@@ -9,7 +9,7 @@ describe('Events', function() {
 
 	describe('#fireEvent', function() {
 
-		it('should fire all listeners added through #addEventListener', function() {
+		it('fires all listeners added through #addEventListener', function() {
 			var obj = new Klass(),
 				spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
@@ -42,7 +42,7 @@ describe('Events', function() {
 			expect(spy6.calls.length).toEqual(1);
 		});
 
-		it('should provide event object to listeners and execute them in the right context', function() {
+		it('provides event object to listeners and executes them in the right context', function() {
 			var obj = new Klass(),
 				obj2 = new Klass(),
 				obj3 = new Klass(),
@@ -88,7 +88,7 @@ describe('Events', function() {
 			obj4.fireEvent('test', {baz: 4});
 		});
 
-		it('should not call listeners removed through #removeEventListener', function() {
+		it('calls no listeners removed through #removeEventListener', function() {
 			var obj = new Klass(),
 				spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
@@ -127,7 +127,7 @@ describe('Events', function() {
 		});
 
 		// added due to context-sensitive removeListener optimization
-		it('should fire multiple listeners with the same context with id properly', function () {
+		it('fires multiple listeners with the same context with id', function () {
 			var obj = new Klass(),
 				spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
@@ -144,7 +144,7 @@ describe('Events', function() {
 			expect(spy2).toHaveBeenCalled();
 		});
 
-		it('should remove listeners with stamped contexts properly', function () {
+		it('removes listeners with stamped contexts', function () {
 			var obj = new Klass(),
 				spy = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
@@ -166,7 +166,7 @@ describe('Events', function() {
 
 	describe('#on, #off & #fire', function() {
 
-		it('should work like #addEventListener && #removeEventListener', function() {
+		it('works like #addEventListener && #removeEventListener', function() {
 			var obj = new Klass(),
 				spy = jasmine.createSpy();
 
@@ -181,7 +181,7 @@ describe('Events', function() {
 			expect(spy.callCount).toBeLessThan(2);
 		});
 
-		it('should not override existing methods with the same name', function() {
+		it('does not override existing methods with the same name', function() {
 			var spy1 = jasmine.createSpy(),
 				spy2 = jasmine.createSpy(),
 				spy3 = jasmine.createSpy();
