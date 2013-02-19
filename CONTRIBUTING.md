@@ -90,6 +90,47 @@ Also, please make sure that you have [line endings configured properly](https://
 
 Happy coding!
 
+## Running the tests
+
+$ jake test
+
+This requires you have PhantomJS installed
+
+### Install PhantomJS
+
+On windows:
+Grab the zip from http://phantomjs.org/download.html
+Extract to: C:\Windows\Program Files\PhantomJS
+So you have: C:\Windows\Program Files\PhantomJS\phantomjs.exe
+
+On linux/mac:
+???
+(Maybe npm install -g phantomjs)
+
+## Code Coverage
+
+It is important that our tests cover the leaflet code base so we know everything works.
+To run the coverage tests you need a git version of testacular installed, see below for details.
+Then, just run:
+
+$ jake test --cov
+
+This will run all of the tests using PhantomJS and generate html pages with details on the code coverage.
+
+Open: spec/coverage/PhantomJS 1.8/index.html
+From here you can click through to folders/files on the left to get details on their individual coverage.
+
+### Install testacular from git
+
+$ cd node_modules
+$ git clone git://github.com/testacular/testacular.git
+$ cd testacular
+$ sudo npm install
+$ sudo npm install -g grunt
+$ sudo npm install -g grunt-cli
+$ grunt
+$ cd ../..
+
 ## Improving Documentation
 
 The code of the live Leaflet website that contains all documentation and examples is located in the `gh-pages` branch
