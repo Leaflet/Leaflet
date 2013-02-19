@@ -15,8 +15,8 @@ describe('TileLayer', function () {
 						maxZoom: maxZoom,
 						minZoom: minZoom
 					}).addTo(map);
-				expect(map.getMaxZoom() === maxZoom).toBeTruthy();
-				expect(map.getMinZoom() === minZoom).toBeTruthy();
+				expect(map.getMaxZoom()).toBe(maxZoom);
+				expect(map.getMinZoom()).toBe(minZoom);
 			});
 		});
 		describe("when a tilelayer is added to a map that already has a tilelayer", function () {
