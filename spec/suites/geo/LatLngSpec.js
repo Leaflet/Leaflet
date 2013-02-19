@@ -1,21 +1,53 @@
 describe('LatLng', function() {
-	describe('constructor', function() {
-		it("sets lat and lng", function() {
-			var a = new L.LatLng(25, 74);
-			expect(a.lat).toEqual(25);
-			expect(a.lng).toEqual(74);
+	function testConstructor(fn) {
+		return function () {
+			it("constructs the origin", function () {
+				var a = fn(0, 0);
+				expect(a.lat).toEqual(0);
+				expect(a.lng).toEqual(0);
+			});
 
-			var b = new L.LatLng(-25, -74);
-			expect(b.lat).toEqual(-25);
-			expect(b.lng).toEqual(-74);
-		});
+			it("constructs a LatLng with the given lat and lng", function () {
+				var a = fn(25, 74);
+				expect(a.lat).toEqual(25);
+				expect(a.lng).toEqual(74);
+			});
 
-		it('throws an error if invalid lat or lng', function () {
-			expect(function () {
-				var a = new L.LatLng(NaN, NaN);
-			}).toThrow();
-		});
-	});
+			it('constructs a LatLng from array of coordinates', function () {
+				var a = fn([50, 30]);
+				expect(a.lat).toEqual(50);
+				expect(a.lng).toEqual(30);
+			});
+
+			it('throws an error if invalid lat or lng', function () {
+				expect(function () {
+					fn(NaN, NaN);
+				}).toThrow();
+			});
+
+			it('returns LatLng instances as is', function () {
+				var a = fn(50, 30);
+				expect(fn(a)).toBe(a);
+			});
+
+			it('returns null or undefined as is', function () {
+				expect(fn(undefined)).toBe(undefined);
+				expect(fn(null)).toBe(null);
+			});
+
+			it('accepts an object with lat/lng', function () {
+				expect(fn({lat: 50, lng: 30})).toEqual(fn(50, 30));
+			});
+
+			it('accepts an object with lat/lon', function () {
+				expect(fn({lat: 50, lon: 30})).toEqual(fn(50, 30));
+			});
+		}
+	}
+
+	describe('constructed via new L.LatLng', testConstructor(function(a, b) { return new L.LatLng(a, b); }));
+	describe('constructed via L.LatLng', testConstructor(function(a, b) { return L.LatLng(a, b); }));
+	describe('constructed via L.latLng', testConstructor(function(a, b) { return L.latLng(a, b); }));
 
 	describe('#equals', function() {
 		it("returns true if compared objects are equal within a certain margin", function() {
@@ -85,34 +117,4 @@ describe('LatLng', function() {
 			expect(Math.abs(Math.round(a.distanceTo(b) / 1000) - 2084) < 5).toBe(true);
 		});
 	});
-
-	describe('L.latLng factory', function () {
-		it('returns LatLng instance as is', function () {
-			var a = new L.LatLng(50, 30);
-
-			expect(L.latLng(a)).toBe(a);
-		});
-
-		it('accepts an array of coordinates', function () {
-			expect(L.latLng([50, 30])).toEqual(new L.LatLng(50, 30));
-		});
-
-		it('passes null or undefined as is', function () {
-			expect(L.latLng(undefined)).toBe(undefined);
-			expect(L.latLng(null)).toBe(null);
-		});
-
-		it('creates a LatLng object from two coordinates', function () {
-			expect(L.latLng(50, 30)).toEqual(new L.LatLng(50, 30));
-		});
-
-		it('accepts an object with lat/lng', function () {
-			expect(L.latLng({lat: 50, lng: 30})).toEqual(new L.LatLng(50, 30));
-		});
-
-		it('accepts an object with lat/lon', function () {
-			expect(L.latLng({lat: 50, lon: 30})).toEqual(new L.LatLng(50, 30));
-		});
-	});
 });
-

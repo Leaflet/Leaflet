@@ -2,7 +2,20 @@
  * L.Point represents a point with x and y coordinates.
  */
 
-L.Point = function (/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
+L.Point = L.point = function (/*Number*/ x, /*Number*/ y, /*Boolean*/ round) {
+	if (x instanceof L.Point) {
+		return x;
+	}
+	if (L.Util.isArray(x)) {
+		return new L.Point(x[0], x[1]);
+	}
+	if (x === undefined || x === null) {
+		return x;
+	}
+	if (!(this instanceof L.Point)) {
+		return new L.Point(x, y, round);
+	}
+
 	this.x = (round ? Math.round(x) : x);
 	this.y = (round ? Math.round(y) : y);
 };
@@ -99,17 +112,4 @@ L.Point.prototype = {
 		        L.Util.formatNum(this.x) + ', ' +
 		        L.Util.formatNum(this.y) + ')';
 	}
-};
-
-L.point = function (x, y, round) {
-	if (x instanceof L.Point) {
-		return x;
-	}
-	if (L.Util.isArray(x)) {
-		return new L.Point(x[0], x[1]);
-	}
-	if (x === undefined || x === null) {
-		return x;
-	}
-	return new L.Point(x, y, round);
 };

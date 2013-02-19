@@ -2,10 +2,15 @@
  * L.LatLngBounds represents a rectangular area on the map in geographical coordinates.
  */
 
-L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLng[])
-	if (!southWest) { return; }
+L.LatLngBounds = L.latLngBounds = function (a, b) { // (LatLngBounds) or (LatLng, LatLng) or (LatLng[])
+	if (!a || a instanceof L.LatLngBounds) {
+		return a;
+	}
+	if (!(this instanceof L.LatLngBounds)) {
+		return new L.LatLngBounds(a, b);
+	}
 
-	var latlngs = northEast ? [southWest, northEast] : southWest;
+	var latlngs = b ? [a, b] : a;
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		this.extend(latlngs[i]);
@@ -144,10 +149,3 @@ L.LatLngBounds.prototype = {
 };
 
 //TODO International date line?
-
-L.latLngBounds = function (a, b) { // (LatLngBounds) or (LatLng, LatLng)
-	if (!a || a instanceof L.LatLngBounds) {
-		return a;
-	}
-	return new L.LatLngBounds(a, b);
-};
