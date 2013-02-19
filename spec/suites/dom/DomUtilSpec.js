@@ -61,24 +61,26 @@ describe('DomUtil', function() {
 	});
 
 	describe('#getViewportOffset', function () {
-		var div = document.createElement('div');
-		div.style.position = 'absolute';
-		div.style.top = '100px';
-		div.style.left = '200px';
-		div.style.border = '10px solid black';
-		div.style.padding = '50px';
-		div.style.visibility = 'hidden';
+		it('should calculate and return viewport offset of an element', function () {
+			var div = document.createElement('div');
+			div.style.position = 'absolute';
+			div.style.top = '100px';
+			div.style.left = '200px';
+			div.style.border = '10px solid black';
+			div.style.padding = '50px';
+			div.style.visibility = 'hidden';
 
-		var div2 = document.createElement('div');
-		div.style.marginTop = '100px';
+			var div2 = document.createElement('div');
+			div.style.marginTop = '100px';
 
-		div.appendChild(div2);
+			div.appendChild(div2);
 
-		document.body.appendChild(div);
+			document.body.appendChild(div);
 
-		expect(L.DomUtil.getViewportOffset(div2)).toEqual(new L.Point(260, 260));
+			expect(L.DomUtil.getViewportOffset(div2)).toEqual(new L.Point(260, 260));
 
-		document.body.removeChild(div);
+			document.body.removeChild(div);
+		});
 	});
 
 	describe('#setPosition', noSpecs);
