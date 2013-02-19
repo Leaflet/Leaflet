@@ -56,8 +56,10 @@ L.Control.Attribution = L.Control.extend({
 	removeAttribution: function (text) {
 		if (!text) { return; }
 
-		this._attributions[text]--;
-		this._update();
+		if (this._attributions[text]) {
+			this._attributions[text]--;
+			this._update();
+		}
 
 		return this;
 	},
