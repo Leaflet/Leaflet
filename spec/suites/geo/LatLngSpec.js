@@ -105,6 +105,14 @@ describe('LatLng', function() {
 		it('should create a LatLng object from two coordinates', function () {
 			expect(L.latLng(50, 30)).toEqual(new L.LatLng(50, 30));
 		});
+
+		it('should accept an object with lat/lng', function () {
+			expect(L.latLng({lat: 50, lng: 30})).toEqual(new L.LatLng(50, 30));
+		});
+
+		it('should accept an object with lat/lon', function () {
+			expect(L.latLng({lat: 50, lon: 30})).toEqual(new L.LatLng(50, 30));
+		});
 	});
 });
 
