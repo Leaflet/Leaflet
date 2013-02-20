@@ -8,7 +8,7 @@ authorsite: https://github.com/jacobtoye/
 
 _This is a guest post from Jacob Toye, an active Leaflet contributor and also the author of the most sophisticated vector drawing and editing plugin out there, which is presented in this post._
 
-Leaflet.draw was born from the need to provide users with the ability draw polygons on the map. Leaflet already provided a very nice way of editing existing polylines and polygons. The logical next step was to expand on this functionality to allow the creation of these layers, and ultimately the other vector layers.
+[Leaflet.draw](https://github.com/Leaflet/Leaflet.draw/) was born from the need to provide users with the ability draw polygons on the map. Leaflet already provided a very nice way of editing existing polylines and polygons. The logical next step was to expand on this functionality to allow the creation of these layers, and ultimately the other vector layers.
 
 Upon release the immediate response from the Leaflet community was very positive. It became clear that the next step would be progressing this tool to a state where users could edit and delete shapes in addition to creating them. This is ultimately what Leaflet.draw 0.2 set out to do.
 
