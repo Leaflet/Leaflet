@@ -101,6 +101,12 @@ Jacob Toye
 <script src="http://leaflet.github.com/Leaflet.draw/libs/leaflet/leaflet.js"></script>
 <script src="http://leaflet.github.com/Leaflet.draw/leaflet.draw.js"></script>
 
+<style>
+	.leaflet-bar {
+		border: none;
+	}
+</style>
+
 <script>
 	// create a map in the "map" div, set the view to a given place and zoom
 	var map = L.map('map').setView([-37.77914, 175.30867], 16);
