@@ -10,7 +10,7 @@ Leaflet.draw was born from the need to provide users with the ability draw polyg
 
 Upon release the immediate response from the Leaflet community was very positive. It became clear that progressing this tool to a state where users could edit and delete, as well as create. This is ultimately what Leaflet.draw 0.2 set out to do.
 
-After a few months of off and on development, with most of this spare time kindy sponsored by my employer <a href="www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, we proudly present Leaflet.draw 0.2 your one stop plugin for drawing, editing and deleting vectors and markers on Leaflet maps :)
+After a few months of off and on development, with most of this spare time kindy sponsored by my employer <a href="http://www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, we proudly present Leaflet.draw 0.2 your one stop plugin for drawing, editing and deleting vectors and markers on Leaflet maps :)
 
 You can download the latest version from the <a href="https://github.com/Leaflet/Leaflet.draw/" target="_blank">github repo</a>. Any bugs you come across please report them on the <a href="https://github.com/Leaflet/Leaflet.draw/issues" target="_blank">issues page</a>.
 
@@ -81,7 +81,7 @@ See the <a href="https://github.com/Leaflet/Leaflet.draw" target="_blank">Leafle
 
 ### Thanks
 
-First and foremost I would like to thank my employer <a href="www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>. Without their attitude to open source software I would not have had the time to complete this plugin.
+First and foremost I would like to thank my employer <a href="http://www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>. Without their attitude to open source software I would not have had the time to complete this plugin.
 
 The Leaflet developer community have been great in supporting this plugin through inspiration, pull requests and issue reports. Special thanks to: <a href="https://github.com/mourner" title="@mourner" target="_blank">@mourner</a>, <a href="https://github.com/danzel" title="@danzel" target="_blank">@danzel</a>, <a href="https://github.com/brunob" title="@brunob" target="_blank">@brunob</a>, <a href="https://github.com/tnightingale" title="@tnightingale" target="_blank">@tnightingale</a>, <a href="https://github.com/Starefossen" title="@Starefossen" target="_blank">@Starefossen</a>, and <a href="https://github.com/shramov" title="@shramov" target="_blank">@shramov</a>.
 
