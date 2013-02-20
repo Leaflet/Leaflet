@@ -249,6 +249,11 @@ L.Map = L.Class.extend({
 	// public methods for getting map state
 
 	getCenter: function () { // (Boolean) -> LatLng
+		this._checkIfLoaded();
+
+		if (!this._moved()) {
+			return this._initialCenter;s
+		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
 
@@ -336,9 +341,7 @@ L.Map = L.Class.extend({
 	},
 
 	getPixelOrigin: function () {
-		if (!this._loaded) {
-			throw new Error('Set map center and zoom first.');
-		}
+		this._checkIfLoaded();
 		return this._initialTopLeftPoint;
 	},
 
@@ -508,6 +511,7 @@ L.Map = L.Class.extend({
 		}
 
 		this._zoom = zoom;
+		this._initialCenter = center;
 
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 
@@ -572,6 +576,12 @@ L.Map = L.Class.extend({
 
 		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire("zoomlevelschange");
+		}
+	},
+
+	_checkIfLoaded: function () {
+		if (!this._loaded) {
+			throw new Error('Set map center and zoom first.');
 		}
 	},
 
@@ -656,6 +666,11 @@ L.Map = L.Class.extend({
 
 	_getMapPanePos: function () {
 		return L.DomUtil.getPosition(this._mapPane);
+	},
+
+	_moved: function () {
+		var pos = this._getMapPanePos();
+		return pos && !pos.equals(new L.Point(0, 0));
 	},
 
 	_getTopLeftPoint: function () {
