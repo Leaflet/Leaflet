@@ -53,6 +53,7 @@ L.TileLayer = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
+		this._animated = map.options.zoomAnimation && L.Browser.any3d;
 
 		// create a container div for tiles
 		this._initContainer();
@@ -62,9 +63,16 @@ L.TileLayer = L.Class.extend({
 
 		// set up events
 		map.on({
-			'viewreset': this._resetCallback,
+			'viewreset': this._reset,
 			'moveend': this._update
 		}, this);
+
+		if (this._animated) {
+			map.on({
+				'zoomanim': this._animateZoom,
+				'zoomend': this._endZoomAnim
+			}, this);
+		}
 
 		if (!this.options.updateWhenIdle) {
 			this._limitedUpdate = L.Util.limitExecByInterval(this._update, 150, this);
@@ -84,9 +92,16 @@ L.TileLayer = L.Class.extend({
 		this._container.parentNode.removeChild(this._container);
 
 		map.off({
-			'viewreset': this._resetCallback,
+			'viewreset': this._reset,
 			'moveend': this._update
 		}, this);
+
+		if (this._animated) {
+			map.off({
+				'zoomanim': this._animateZoom,
+				'zoomend': this._endZoomAnim
+			}, this);
+		}
 
 		if (!this.options.updateWhenIdle) {
 			map.off('move', this._limitedUpdate, this);
@@ -151,8 +166,7 @@ L.TileLayer = L.Class.extend({
 
 	redraw: function () {
 		if (this._map) {
-			this._map._panes.tilePane.empty = false;
-			this._reset(true);
+			this._reset({hard: true});
 			this._update();
 		}
 		return this;
@@ -212,10 +226,19 @@ L.TileLayer = L.Class.extend({
 	_initContainer: function () {
 		var tilePane = this._map._panes.tilePane;
 
-		if (!this._container || tilePane.empty) {
+		if (!this._container) {
 			this._container = L.DomUtil.create('div', 'leaflet-layer');
 
 			this._updateZIndex();
+
+			if (this._animated) {
+				var className = 'leaflet-tile-container leaflet-zoom-animated';
+
+				this._bgBuffer = L.DomUtil.create('div', className, this._container);
+				this._tileContainer = L.DomUtil.create('div', className, this._container);
+			} else {
+				this._tileContainer = this._container;
+			}
 
 			tilePane.appendChild(this._container);
 
@@ -225,11 +248,7 @@ L.TileLayer = L.Class.extend({
 		}
 	},
 
-	_resetCallback: function (e) {
-		this._reset(e.hard);
-	},
-
-	_reset: function (clearOldContainer) {
+	_reset: function (e) {
 		var tiles = this._tiles;
 
 		for (var key in tiles) {
@@ -245,8 +264,10 @@ L.TileLayer = L.Class.extend({
 			this._unusedTiles = [];
 		}
 
-		if (clearOldContainer && this._container) {
-			this._container.innerHTML = "";
+		this._tileContainer.innerHTML = "";
+
+		if (this._animated && e && e.hard) {
+			this._clearBgBuffer();
 		}
 
 		this._initContainer();
@@ -319,7 +340,7 @@ L.TileLayer = L.Class.extend({
 			this._addTile(queue[i], fragment);
 		}
 
-		this._container.appendChild(fragment);
+		this._tileContainer.appendChild(fragment);
 	},
 
 	_tileShouldBeLoaded: function (tilePoint) {
@@ -365,8 +386,8 @@ L.TileLayer = L.Class.extend({
 			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
 			this._unusedTiles.push(tile);
 
-		} else if (tile.parentNode === this._container) {
-			this._container.removeChild(tile);
+		} else if (tile.parentNode === this._tileContainer) {
+			this._tileContainer.removeChild(tile);
 		}
 
 		// for https://github.com/CloudMade/Leaflet/issues/137
@@ -386,7 +407,6 @@ L.TileLayer = L.Class.extend({
 		/*
 		Chrome 20 layouts much faster with top/left (verify with timeline, frames)
 		Android 4 browser has display issues with top/left and requires transform instead
-		Android 3 browser not tested
 		Android 2 browser requires top/left or tiles disappear on load or first drag
 		(reappear after zoom) https://github.com/CloudMade/Leaflet/issues/866
 		(other browsers don't currently care) - see debug/hacks/jitter.html for an example
@@ -397,7 +417,7 @@ L.TileLayer = L.Class.extend({
 
 		this._loadTile(tile, tilePoint);
 
-		if (tile.parentNode !== this._container) {
+		if (tile.parentNode !== this._tileContainer) {
 			container.appendChild(tile);
 		}
 	},
@@ -499,6 +519,10 @@ L.TileLayer = L.Class.extend({
 		this._tilesToLoad--;
 		if (!this._tilesToLoad) {
 			this.fire('load');
+
+			// clear scaled tiles after all new tiles are loaded (for performance)
+			clearTimeout(this._clearBgBufferTimer);
+			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
 		}
 	},
 
