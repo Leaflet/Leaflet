@@ -6,13 +6,17 @@ author: Jacob Toye
 authorsite: https://github.com/jacobtoye/
 ---
 
+_This is a guest post from Jacob Toye, an active Leaflet contributor and also the author of the most sophisticated vector drawing and editing plugin out there, which is presented in this post._
+
 Leaflet.draw was born from the need to provide users with the ability draw polygons on the map. Leaflet already provided a very nice way of editing existing polylines and polygons. The logical next step was to expand on this functionality to allow the creation of these layers, and ultimately the other vector layers.
 
-Upon release the immediate response from the Leaflet community was very positive. It became clear that progressing this tool to a state where users could edit and delete, as well as create. This is ultimately what Leaflet.draw 0.2 set out to do.
+Upon release the immediate response from the Leaflet community was very positive. It became clear that the next step would be progressing this tool to a state where users could edit and delete shapes in addition to creating them. This is ultimately what Leaflet.draw 0.2 set out to do.
 
-After a few months of off and on development, with most of this spare time kindy sponsored by my employer <a href="http://www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, we proudly present Leaflet.draw 0.2 your one stop plugin for drawing, editing and deleting vectors and markers on Leaflet maps :)
+After a few months of off and on development, with most of this spare time kindy sponsored by my employer <a href="http://www.smartrak.co.nz" title="GPS Fleet Management solutions" target="_blank">Smartrak</a>, we proudly present Leaflet.draw 0.2 -- your one stop plugin for drawing, editing and deleting vectors and markers on Leaflet maps. :)
 
-You can download the latest version from the <a href="https://github.com/Leaflet/Leaflet.draw/" target="_blank">github repo</a>. Any bugs you come across please report them on the <a href="https://github.com/Leaflet/Leaflet.draw/issues" target="_blank">issues page</a>.
+_Note from Vladimir: the polyline/polygon editing functionality from Leaflet core has been moved into this plugin where it fits much better. The plugin in turn has moved into [Leaflet organization on GitHub](https://github.com/Leaflet) and is now officially supported by the Leaflet development team. Note that version 0.2 currently depends on Leaflet master (in-progress development version) to work._
+
+You can download the latest version from the <a href="https://github.com/Leaflet/Leaflet.draw/" target="_blank">github repo</a>. Please report any bugs you come across on the <a href="https://github.com/Leaflet/Leaflet.draw/issues" target="_blank">issues page</a>.
 
 <div id="map" class="map" style="height: 288px"></div>
 
@@ -89,7 +93,7 @@ The Leaflet developer community have been great in supporting this plugin throug
 
 I've had a great time implementing this plugin. I hope you enjoy using it. If you have a question or just want to say hi, send me an email at <a href="mailto:jacob.toye@gmail.com">jacob.toye@gmail.com</a>.
 
-Cheers,  
+Cheers,
 Jacob Toye
 
 <link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/lib/leaflet/leaflet.css" />
