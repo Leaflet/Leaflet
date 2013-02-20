@@ -1,5 +1,7 @@
 
 describe('TileLayer', function () {
+	var tileUrl = '';
+
 	describe("#getMaxZoom, #getMinZoom", function () {
 		var map;
 		beforeEach(function () {
@@ -11,7 +13,7 @@ describe('TileLayer', function () {
 					minZoom = 5;
 					map.setView([0, 0], 1);
 
-					L.tileLayer("{z}{x}{y}", {
+					L.tileLayer(tileUrl, {
 						maxZoom: maxZoom,
 						minZoom: minZoom
 					}).addTo(map);
@@ -24,7 +26,7 @@ describe('TileLayer', function () {
 			it('provides a container', function () {
 				map.setView([0, 0], 1);
 
-				var layer = L.tileLayer("{z}{x}{y}").addTo(map);
+				var layer = L.tileLayer(tileUrl).addTo(map);
 				expect(layer.getContainer()).toBeTruthy();
 			});
 		});
@@ -33,31 +35,31 @@ describe('TileLayer', function () {
 			it("has its zoomlevels updated to fit the new layer", function () {
 				map.setView([0, 0], 1);
 
-				L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 15 }).addTo(map);
+				L.tileLayer(tileUrl, { minZoom:10, maxZoom: 15 }).addTo(map);
 				expect(map.getMinZoom()).toBe(10);
 				expect(map.getMaxZoom()).toBe(15);
 
-				L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 10 }).addTo(map);
+				L.tileLayer(tileUrl, { minZoom:5, maxZoom: 10 }).addTo(map);
 				expect(map.getMinZoom()).toBe(5);  // changed
 				expect(map.getMaxZoom()).toBe(15); // unchanged
 
 
-				L.tileLayer("{z}{x}{y}",{ minZoom:10, maxZoom: 20 }).addTo(map);
+				L.tileLayer(tileUrl,{ minZoom:10, maxZoom: 20 }).addTo(map);
 				expect(map.getMinZoom()).toBe(5);  // unchanged
 				expect(map.getMaxZoom()).toBe(20); // changed
 
 
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 25 }).addTo(map);
+				L.tileLayer(tileUrl, { minZoom:0, maxZoom: 25 }).addTo(map);
 				expect(map.getMinZoom()).toBe(0); // changed
 				expect(map.getMaxZoom()).toBe(25); // changed
 			});
 		});
 		describe("when a tilelayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
-				var tiles = [  L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 15 }).addTo(map),
-							   L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 10 }).addTo(map),
-							   L.tileLayer("{z}{x}{y}", { minZoom:10, maxZoom: 20 }).addTo(map),
-							   L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 25 }).addTo(map)
+				var tiles = [  L.tileLayer(tileUrl, { minZoom:10, maxZoom: 15 }).addTo(map),
+							   L.tileLayer(tileUrl, { minZoom:5, maxZoom: 10 }).addTo(map),
+							   L.tileLayer(tileUrl, { minZoom:10, maxZoom: 20 }).addTo(map),
+							   L.tileLayer(tileUrl, { minZoom:0, maxZoom: 25 }).addTo(map)
 							];
 				map.whenReady(function() {
 					expect(map.getMinZoom()).toBe(0);
