@@ -16,6 +16,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	initialize: function (url, options) { // (String, Object)
 
+		options = L.setOptions(this, options);
+
 		this._url = url;
 
 		var wmsParams = L.extend({}, this.defaultWmsParams);
@@ -35,7 +37,6 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		this.wmsParams = wmsParams;
 
-		L.setOptions(this, options);
 	},
 
 	onAdd: function (map) {
