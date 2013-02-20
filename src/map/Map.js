@@ -252,7 +252,7 @@ L.Map = L.Class.extend({
 		this._checkIfLoaded();
 
 		if (!this._moved()) {
-			return this._initialCenter;s
+			return this._initialCenter;
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},

@@ -6,6 +6,7 @@ L.Map.include({
 
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
+		center = L.latLng(center);
 
 		var zoomChanged = (this._zoom !== zoom);
 
