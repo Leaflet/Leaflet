@@ -20,14 +20,14 @@ describe('TileLayer', function () {
 			});
 		});
 
-        describe("accessing a tilelayer's properties", function () {
-            it('provides a container', function () {
+		describe("accessing a tilelayer's properties", function () {
+			it('provides a container', function () {
 				map.setView([0, 0], 1);
 
-                var layer = L.tileLayer("{z}{x}{y}").addTo(map);
-                expect(layer.getContainer()).toBeTruthy();
-            });
-        });
+				var layer = L.tileLayer("{z}{x}{y}").addTo(map);
+				expect(layer.getContainer()).toBeTruthy();
+			});
+		});
 
 		describe("when a tilelayer is added to a map that already has a tilelayer", function () {
 			it("has its zoomlevels updated to fit the new layer", function () {
