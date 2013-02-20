@@ -39,6 +39,11 @@ L.Map = L.Class.extend({
 		this._initLayers(options.layers);
 	},
 
+	destroy: function () {
+		if (this.options.trackResize) {
+			L.DomEvent.off(window, 'resize', this._onResize);
+		}
+	},
 
 	// public methods that modify map state
 

@@ -14,6 +14,22 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#destroy', function () {
+		it ('destroys the map and keeps resize from being called', function () {
+			runs(function () {
+				map.destroy();
+				spyOn(L.Util, 'cancelAnimFrame');
+				happen.once(window, { type: 'resize' });
+			});
+
+			waits(500);
+
+			runs(function () {
+				expect(L.Util.cancelAnimFrame).not.toHaveBeenCalled();
+			});
+		});
+	});
+
 	describe("#whenReady", function () {
 		describe("when the map has not yet been loaded", function () {
 			it("calls the callback when the map is loaded", function () {
