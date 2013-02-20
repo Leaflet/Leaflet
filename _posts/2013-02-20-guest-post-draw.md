@@ -23,7 +23,7 @@ Leaflet.draw is designed to not only be easy for end users to use, but also for 
 
  * Draw shapes on your map with easy to use drawing tools.
  * Edit and delete vectors and markers.
- * Super ccustomizable:
+ * Super customizable:
    * Customize the styles of each shape to fit in with your maps theme.
    * Pick and choose the which tools you want to use.
    * Roll your own by simply using the drawing and editing handlers.
@@ -89,11 +89,16 @@ The Leaflet developer community have been great in supporting this plugin throug
 
 I've had a great time implementing this plugin. I hope you enjoy using it. If you have a question or just want to say hi, send me an email at <a href="mailto:jacob.toye@gmail.com">jacob.toye@gmail.com</a>.
 
-Cheers, 
+Cheers,  
 Jacob Toye
 
+<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/lib/leaflet/leaflet.css" />
 <link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.css" />
-<!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.ie.css" /><![endif]-->
+<!--[if lte IE 8]>
+	<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/lib/leaflet/leaflet.ie.css" />
+	<link rel="stylesheet" href="http://leaflet.github.com/Leaflet.draw/leaflet.draw.ie.css" />
+<![endif]-->
+<script src="http://leaflet.github.com/Leaflet.draw/libs/leaflet/leaflet.js"></script>
 <script src="http://leaflet.github.com/Leaflet.draw/leaflet.draw.js"></script>
 
 <script>
