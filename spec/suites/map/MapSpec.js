@@ -6,6 +6,28 @@ describe("Map", function () {
 		spy = jasmine.createSpy();
 	});
 
+	describe("#remove", function () {
+		it("undefines container._leaflet", function () {
+			var container = document.createElement('div'),
+			    map = new L.Map(container);
+			map.remove();
+			expect(container._leaflet).toBeUndefined();
+		});
+
+		it("unbinds events", function () {
+			var container = document.createElement('div'),
+			    map = new L.Map(container).setView([0, 0], 1);
+			map.on('click dblclick mousedown mouseup mousemove', spy);
+			map.remove();
+			happen.click(container);
+			happen.dblclick(container);
+			happen.mousedown(container);
+			happen.mouseup(container);
+			happen.mousemove(container);
+			expect(spy).not.toHaveBeenCalled();
+		});
+	});
+
 	describe('#getCenter', function () {
 		it ('throws if not set before', function () {
 			expect(function () {
