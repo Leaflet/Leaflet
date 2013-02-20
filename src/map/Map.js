@@ -239,6 +239,12 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
+	remove: function () {
+		this._initEvents('off');
+		delete this._container._leaflet;
+		return this;
+	},
+
 
 	// public methods for getting map state
 
@@ -571,21 +577,23 @@ L.Map = L.Class.extend({
 
 	// map events
 
-	_initEvents: function () {
+	_initEvents: function (onOff) {
 		if (!L.DomEvent) { return; }
 
-		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
+		onOff = onOff || 'on';
+
+		L.DomEvent[onOff](this._container, 'click', this._onMouseClick, this);
 
 		var events = ['dblclick', 'mousedown', 'mouseup', 'mouseenter',
 		              'mouseleave', 'mousemove', 'contextmenu'],
 		    i, len;
 
 		for (i = 0, len = events.length; i < len; i++) {
-			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
+			L.DomEvent[onOff](this._container, events[i], this._fireMouseEvent, this);
 		}
 
 		if (this.options.trackResize) {
-			L.DomEvent.on(window, 'resize', this._onResize, this);
+			L.DomEvent[onOff](window, 'resize', this._onResize, this);
 		}
 	},
 

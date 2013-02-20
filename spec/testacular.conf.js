@@ -12,7 +12,8 @@ for (var i=0; i < libSources.length; i++) {
 files = [].concat([
 	JASMINE,
 	JASMINE_ADAPTER,
-	"before.js"
+	"before.js",
+	"testacular.js"
 ], libSources, [
 	"after.js",
 	"happen.js",
