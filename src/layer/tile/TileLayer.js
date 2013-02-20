@@ -122,6 +122,10 @@ L.TileLayer = L.Class.extend({
 		return this.options.attribution;
 	},
 
+	getContainer: function () {
+        return this._container;
+    },
+
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
