@@ -138,8 +138,8 @@ L.TileLayer = L.Class.extend({
 	},
 
 	getContainer: function () {
-        return this._container;
-    },
+		return this._container;
+	},
 
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
