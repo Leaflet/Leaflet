@@ -134,6 +134,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.sprite">Leaflet.Sprite</a>
+		</td><td>
+			Use sprite based icons in your markers.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -446,6 +455,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Create/update/delete Map, Marker, Polygon, Polyline... and expose them for backend storage with an API.
 		</td><td>
 			<a href="http://yohanboniface.me/">Yohan Boniface</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.css">Leaflet.CSS</a>
+		</td><td>
+			Add the main Leaflet CSS files (or any css) from within JavaScript, be gone conditional comments.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
 		</td>
 	</tr>
 </table>
