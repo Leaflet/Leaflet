@@ -86,14 +86,15 @@ L.Polyline = L.Path.extend({
 	},
 
 	_convertLatLngs: function (latlngs) {
-		var i, len;
+		var i, len, target = [];
+
 		for (i = 0, len = latlngs.length; i < len; i++) {
 			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') {
 				return;
 			}
-			latlngs[i] = L.latLng(latlngs[i]);
+			target[i] = L.latLng(latlngs[i]);
 		}
-		return latlngs;
+		return target;
 	},
 
 	_initEvents: function () {
