@@ -260,10 +260,6 @@
 
 /* zoom control */
 
-.leaflet-container .leaflet-control-zoom {
-	margin-left: 13px;
-	margin-top: 12px;
-	}
 .leaflet-control-zoom-in {
 	font: bold 18px 'Lucida Console', Monaco, monospace;
 	}
