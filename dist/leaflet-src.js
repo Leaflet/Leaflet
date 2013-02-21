@@ -1657,6 +1657,11 @@ L.Map = L.Class.extend({
 	// public methods for getting map state
 
 	getCenter: function () { // (Boolean) -> LatLng
+		this._checkIfLoaded();
+
+		if (!this._moved()) {
+			return this._initialCenter;
+		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
 
@@ -1744,9 +1749,7 @@ L.Map = L.Class.extend({
 	},
 
 	getPixelOrigin: function () {
-		if (!this._loaded) {
-			throw new Error('Set map center and zoom first.');
-		}
+		this._checkIfLoaded();
 		return this._initialTopLeftPoint;
 	},
 
@@ -1916,6 +1919,7 @@ L.Map = L.Class.extend({
 		}
 
 		this._zoom = zoom;
+		this._initialCenter = center;
 
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 
@@ -1980,6 +1984,12 @@ L.Map = L.Class.extend({
 
 		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire("zoomlevelschange");
+		}
+	},
+
+	_checkIfLoaded: function () {
+		if (!this._loaded) {
+			throw new Error('Set map center and zoom first.');
 		}
 	},
 
@@ -2064,6 +2074,11 @@ L.Map = L.Class.extend({
 
 	_getMapPanePos: function () {
 		return L.DomUtil.getPosition(this._mapPane);
+	},
+
+	_moved: function () {
+		var pos = this._getMapPanePos();
+		return pos && !pos.equals(new L.Point(0, 0));
 	},
 
 	_getTopLeftPoint: function () {
@@ -2702,9 +2717,11 @@ L.TileLayer = L.Class.extend({
 		if (!this._tilesToLoad) {
 			this.fire('load');
 
-			// clear scaled tiles after all new tiles are loaded (for performance)
-			clearTimeout(this._clearBgBufferTimer);
-			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
+			if (this._animated) {
+				// clear scaled tiles after all new tiles are loaded (for performance)
+				clearTimeout(this._clearBgBufferTimer);
+				this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
+			}
 		}
 	},
 
@@ -5032,7 +5049,7 @@ L.Polyline = L.Path.extend({
 
 	spliceLatLngs: function () { // (Number index, Number howMany)
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._convertLatLngs(this._latlngs);
+		this._convertLatLngs(this._latlngs, true);
 		this.redraw();
 		return removed;
 	},
@@ -5070,15 +5087,16 @@ L.Polyline = L.Path.extend({
 		return bounds;
 	},
 
-	_convertLatLngs: function (latlngs) {
-		var i, len;
+	_convertLatLngs: function (latlngs, overwrite) {
+		var i, len, target = overwrite ? latlngs : [];
+
 		for (i = 0, len = latlngs.length; i < len; i++) {
 			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') {
 				return;
 			}
-			latlngs[i] = L.latLng(latlngs[i]);
+			target[i] = L.latLng(latlngs[i]);
 		}
-		return latlngs;
+		return target;
 	},
 
 	_initEvents: function () {
@@ -6836,6 +6854,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomEvent
 		    .on(document, 'mousemove', this._onMouseMove, this)
 		    .on(document, 'mouseup', this._onMouseUp, this)
+		    .on(document, 'keydown', this._onKeyDown, this)
 		    .preventDefault(e);
 
 		this._map.fire("boxzoomstart");
@@ -6859,7 +6878,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		box.style.height = (Math.max(0, Math.abs(offset.y) - 4)) + 'px';
 	},
 
-	_onMouseUp: function (e) {
+	_finish: function () {
 		this._pane.removeChild(this._box);
 		this._container.style.cursor = '';
 
@@ -6867,7 +6886,13 @@ L.Map.BoxZoom = L.Handler.extend({
 
 		L.DomEvent
 		    .off(document, 'mousemove', this._onMouseMove)
-		    .off(document, 'mouseup', this._onMouseUp);
+		    .off(document, 'mouseup', this._onMouseUp)
+		    .off(document, 'keydown', this._onKeyDown);
+	},
+
+	_onMouseUp: function (e) {
+
+		this._finish();
 
 		var map = this._map,
 		    layerPoint = map.mouseEventToLayerPoint(e);
@@ -6883,6 +6908,12 @@ L.Map.BoxZoom = L.Handler.extend({
 		map.fire("boxzoomend", {
 			boxZoomBounds: bounds
 		});
+	},
+
+	_onKeyDown: function (e) {
+		if (e.keyCode === 27) {
+			this._finish();
+		}
 	}
 });
 
@@ -7857,6 +7888,7 @@ L.Map.include({
 
 	setView: function (center, zoom, forceReset) {
 		zoom = this._limitZoom(zoom);
+		center = L.latLng(center);
 
 		var zoomChanged = (this._zoom !== zoom);
 
