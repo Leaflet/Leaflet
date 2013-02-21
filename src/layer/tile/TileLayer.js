@@ -524,9 +524,11 @@ L.TileLayer = L.Class.extend({
 		if (!this._tilesToLoad) {
 			this.fire('load');
 
-			// clear scaled tiles after all new tiles are loaded (for performance)
-			clearTimeout(this._clearBgBufferTimer);
-			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
+			if (this._animated) {
+				// clear scaled tiles after all new tiles are loaded (for performance)
+				clearTimeout(this._clearBgBufferTimer);
+				this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
+			}
 		}
 	},
 
