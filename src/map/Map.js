@@ -240,6 +240,9 @@ L.Map = L.Class.extend({
 	},
 
 	remove: function () {
+		if (this._loaded) {
+			this.fire('unload');
+		}
 		this._initEvents('off');
 		delete this._container._leaflet;
 		return this;
