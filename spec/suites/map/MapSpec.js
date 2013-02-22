@@ -7,6 +7,22 @@ describe("Map", function () {
 	});
 
 	describe("#remove", function () {
+		it("fires an unload event if loaded", function () {
+			var container = document.createElement('div'),
+			    map = new L.Map(container).setView([0, 0], 0);
+			map.on('unload', spy);
+			map.remove();
+			expect(spy).toHaveBeenCalled();
+		});
+
+		it("fires no unload event if not loaded", function () {
+			var container = document.createElement('div'),
+			    map = new L.Map(container);
+			map.on('unload', spy);
+			map.remove();
+			expect(spy).not.toHaveBeenCalled();
+		});
+
 		it("undefines container._leaflet", function () {
 			var container = document.createElement('div'),
 			    map = new L.Map(container);
