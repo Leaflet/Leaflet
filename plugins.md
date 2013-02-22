@@ -82,6 +82,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="http://www.patrick-wied.at/static/heatmapjs/">heatmap.js</a>
+		</td><td>
+			JavaScript Library for HTML5 canvas based heatmaps
+		</td><td>
+			<a href="https://github.com/pa7">Patrick Wied</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
 		</td><td>
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
