@@ -66,6 +66,19 @@ describe("Point", function() {
 		});
 	});
 
+	describe('#contains', function () {
+		it('returns true if the point is bigger in absolute dimensions than the passed one', function () {
+			var p1 = new L.Point(50, 30),
+				p2 = new L.Point(-40, 20),
+				p3 = new L.Point(60, -20),
+				p4 = new L.Point(-40, -40);
+
+			expect(p1.contains(p2)).toBe(true);
+			expect(p1.contains(p3)).toBe(false);
+			expect(p1.contains(p4)).toBe(false);
+		});
+	});
+
 	describe('#toString', function () {
 		it('formats a string out of point coordinates', function () {
 			expect(new L.Point(50, 30) + '').toEqual('Point(50, 30)');
