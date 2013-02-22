@@ -7,30 +7,38 @@ L.Map.mergeOptions({
 });
 
 if (L.DomUtil.TRANSITION) {
+
 	L.Map.addInitHook(function () {
+		// zoom transitions run with the same duration for all layers, so if one of transitionend events
+		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
+
 		L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 	});
 }
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
-	_zoomToIfClose: function (center, zoom) {
+	_catchTransitionEnd: function () {
+		if (this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
+	},
+
+	_animateZoomIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
 
-		if (!this.options.zoomAnimation) { return false; }
-
+		// offset is the pixel coords of the zoom origin relative to the current center
 		var scale = this.getZoomScale(zoom),
-		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
+		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale),
+			origin = this._getCenterLayerPoint()._add(offset);
 
-		// if offset does not exceed half of the view
-		if (!this._offsetIsWithinView(offset, 1)) { return false; }
+		// only animate if the zoom origin is within one screen from the current center
+		if (!this.getSize().contains(offset)) { return false; }
 
 		this
 		    .fire('movestart')
 		    .fire('zoomstart');
-
-		var origin = this._getCenterLayerPoint().add(offset);
 
 		this._animateZoom(center, zoom, origin, scale);
 
@@ -39,12 +47,16 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
 
-		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
-
-		this._animateToCenter = center;
-		this._animateToZoom = zoom;
 		this._animatingZoom = true;
 
+		// put transform transition on all layers with leaflet-zoom-animated class
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+
+		// remember what center/zoom to set after animation
+		this._animateToCenter = center;
+		this._animateToZoom = zoom;
+
+		// disable any dragging during animation
 		if (L.Draggable) {
 			L.Draggable._disabled = true;
 		}
@@ -59,17 +71,12 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		});
 	},
 
-	_catchTransitionEnd: function () {
-		if (this._animatingZoom) {
-			this._onZoomTransitionEnd();
-		}
-	},
-
 	_onZoomTransitionEnd: function () {
+
+		this._animatingZoom = false;
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
-		this._animatingZoom = false;
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
 		if (L.Draggable) {
