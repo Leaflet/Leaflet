@@ -210,7 +210,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/seelmann/leaflet-providers">leaflet-providers</a>
+			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
 		</td><td>
 			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Mapbox Streets, Stamen, Esri, etc.
 		</td><td>
