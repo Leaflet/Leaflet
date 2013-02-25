@@ -152,6 +152,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/maximeh/leaflet.bouncemarker">Leaflet.BounceMarker</a>
+		</td><td>
+			Make a marker bounce when you add it to a map.
+		</td><td>
+			<a href="https://github.com/maximeh">Maxime Hadjinlian</a>
+		</td>
+	</tr>
 </table>
 
 
