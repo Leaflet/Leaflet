@@ -368,11 +368,11 @@ L.TileLayer = L.Class.extend({
 
 		if (this.options.bounds) {
 			var tileSize = this.options.tileSize,
-				nwPoint = tilePoint.multiplyBy(tileSize),
-				sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
-				nw = this._map.unproject(nwPoint),
-				se = this._map.unproject(sePoint),
-				bounds = new L.LatLngBounds([nw, se]);
+			    nwPoint = tilePoint.multiplyBy(tileSize),
+			    sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+			    nw = this._map.unproject(nwPoint),
+			    se = this._map.unproject(sePoint),
+			    bounds = new L.LatLngBounds([nw, se]);
 
 			if (!this.options.bounds.intersects(bounds)) {
 				return false;
