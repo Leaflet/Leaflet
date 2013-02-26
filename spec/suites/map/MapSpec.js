@@ -180,4 +180,29 @@ describe("Map", function () {
 			});
 		});
 	});
+
+	describe("#eachLayer", function () {
+		it("returns self", function () {
+			expect(map.eachLayer(function () {})).toBe(map);
+		});
+
+		it("calls the provided function for each layer", function () {
+			var t1 = L.tileLayer("{z}{x}{y}").addTo(map),
+			    t2 = L.tileLayer("{z}{x}{y}").addTo(map);
+
+			map.eachLayer(spy);
+
+			expect(spy.calls.length).toEqual(2);
+			expect(spy.calls[0].args).toEqual([t1]);
+			expect(spy.calls[1].args).toEqual([t2]);
+		});
+
+		it("calls the provided function with the provided context", function () {
+			var t1 = L.tileLayer("{z}{x}{y}").addTo(map);
+
+			map.eachLayer(spy, map);
+
+			expect(spy.calls[0].object).toEqual(map);
+		});
+	});
 });
