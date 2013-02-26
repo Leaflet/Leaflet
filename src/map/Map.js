@@ -198,6 +198,15 @@ L.Map = L.Class.extend({
 		return this._layers.hasOwnProperty(id);
 	},
 
+	eachLayer: function (method, context) {
+		for (var i in this._layers) {
+			if (this._layers.hasOwnProperty(i)) {
+				method.call(context, this._layers[i]);
+			}
+		}
+		return this;
+	},
+
 	invalidateSize: function (animate) {
 		var oldSize = this.getSize();
 
