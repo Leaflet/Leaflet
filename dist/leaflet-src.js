@@ -308,7 +308,7 @@ L.Mixin = {};
 L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		
+
 		var events = this[key] = this[key] || {},
 		    type, i, len, evt,
 		    contextId, objKey, objLenKey, eventsObj;
@@ -415,10 +415,10 @@ L.Mixin.Events = {
 			return this;
 		}
 
-		var event = L.Util.extend({
+		var event = L.Util.extend({}, data, {
 			type: type,
 			target: this
-		}, data);
+		});
 
 		var listeners, i, len, eventsObj, contextId;
 
@@ -431,7 +431,7 @@ L.Mixin.Events = {
 		}
 
 		// fire event for the context-indexed listeners as well
-		
+
 		eventsObj = this[key][type + '_idx'];
 
 		if (eventsObj) {
@@ -639,6 +639,11 @@ L.Point.prototype = {
 	equals: function (point) {
 		return point.x === this.x &&
 		       point.y === this.y;
+	},
+
+	contains: function (point) {
+		return Math.abs(point.x) <= Math.abs(this.x) &&
+		       Math.abs(point.y) <= Math.abs(this.y);
 	},
 
 	toString: function () {
@@ -1606,6 +1611,15 @@ L.Map = L.Class.extend({
 		return this._layers.hasOwnProperty(id);
 	},
 
+	eachLayer: function (method, context) {
+		for (var i in this._layers) {
+			if (this._layers.hasOwnProperty(i)) {
+				method.call(context, this._layers[i]);
+			}
+		}
+		return this;
+	},
+
 	invalidateSize: function (animate) {
 		var oldSize = this.getSize();
 
@@ -1648,6 +1662,9 @@ L.Map = L.Class.extend({
 	},
 
 	remove: function () {
+		if (this._loaded) {
+			this.fire('unload');
+		}
 		this._initEvents('off');
 		delete this._container._leaflet;
 		return this;
@@ -2096,12 +2113,14 @@ L.Map = L.Class.extend({
 		return this.project(latlng, newZoom)._subtract(topLeft);
 	},
 
+	// layer point of the current center
 	_getCenterLayerPoint: function () {
 		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
 	},
 
-	_getCenterOffset: function (center) {
-		return this.latLngToLayerPoint(center).subtract(this._getCenterLayerPoint());
+	// offset of the specified place to the current center in pixels
+	_getCenterOffset: function (latlng) {
+		return this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint());
 	},
 
 	_limitZoom: function (zoom) {
@@ -2215,6 +2234,7 @@ L.TileLayer = L.Class.extend({
 		zoomReverse: false,
 		detectRetina: false,
 		reuseTiles: false,
+		bounds: false,
 		*/
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -2233,6 +2253,10 @@ L.TileLayer = L.Class.extend({
 				options.minZoom--;
 			}
 			this.options.maxZoom--;
+		}
+
+		if (options.bounds) {
+			options.bounds = L.latLngBounds(options.bounds);
 		}
 
 		this._url = url;
@@ -2551,6 +2575,19 @@ L.TileLayer = L.Class.extend({
 			if (this.options.noWrap && (tilePoint.x < 0 || tilePoint.x >= limit) ||
 				                        tilePoint.y < 0 || tilePoint.y >= limit) {
 				return false; // exceeds world bounds
+			}
+		}
+
+		if (this.options.bounds) {
+			var tileSize = this.options.tileSize,
+			    nwPoint = tilePoint.multiplyBy(tileSize),
+			    sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+			    nw = this._map.unproject(nwPoint),
+			    se = this._map.unproject(sePoint),
+			    bounds = new L.LatLngBounds([nw, se]);
+
+			if (!this.options.bounds.intersects(bounds)) {
+				return false;
 			}
 		}
 
@@ -3981,6 +4018,7 @@ L.LayerGroup = L.Class.extend({
 				method.call(context, this._layers[i]);
 			}
 		}
+		return this;
 	},
 
 	setZIndex: function (zIndex) {
@@ -4734,20 +4772,31 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_initEvents: function () {
 		if (this.options.clickable) {
-			// TODO hand cursor
-			// TODO mouseover, mouseout, dblclick
+			// TODO dblclick
+			this._map.on('mousemove', this._onMouseMove, this);
 			this._map.on('click', this._onClick, this);
 		}
 	},
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', {
-				latlng: e.latlng,
-				layerPoint: e.layerPoint,
-				containerPoint: e.containerPoint,
-				originalEvent: e
-			});
+			this.fire('click', e);
+		}
+	},
+
+	_onMouseMove: function (e) {
+		if (this._map._animatingZoom) { return; }
+
+		// TODO don't do on each move
+		if (this._containsPoint(e.layerPoint)) {
+			this._ctx.canvas.style.cursor = 'pointer';
+			this._mouseInside = true;
+			this.fire('mouseover', e);
+
+		} else if (this._mouseInside) {
+			this._ctx.canvas.style.cursor = '';
+			this._mouseInside = false;
+			this.fire('mouseout', e);
 		}
 	}
 });
@@ -7887,38 +7936,43 @@ L.PosAnimation = L.Class.extend({
 L.Map.include({
 
 	setView: function (center, zoom, forceReset) {
+
 		zoom = this._limitZoom(zoom);
 		center = L.latLng(center);
 
-		var zoomChanged = (this._zoom !== zoom);
+		if (this._panAnim) {
+			this._panAnim.stop();
+		}
 
-		if (this._loaded && !forceReset && this._layers) {
+		var zoomChanged = (this._zoom !== zoom),
+			canBeAnimated = this._loaded && !forceReset && !!this._layers;
 
-			if (this._panAnim) {
-				this._panAnim.stop();
-			}
+		if (canBeAnimated) {
 
-			var done = (zoomChanged ?
-			        this._zoomToIfClose && this._zoomToIfClose(center, zoom) :
-			        this._panByIfClose(center));
+			// try animating pan or zoom
+			var animated = zoomChanged && this.options.zoomAnimation ?
+		            this._animateZoomIfClose && this._animateZoomIfClose(center, zoom) :
+		            this._animatePanIfClose(center);
 
-			// exit if animated pan or zoom started
-			if (done) {
+			if (animated) {
+				// prevent resize handler call, the view will refresh after animation anyway
 				clearTimeout(this._sizeTimer);
 				return this;
 			}
 		}
 
-		// reset the map view
+		// animation didn't start, just reset the map view
 		this._resetView(center, zoom);
 
 		return this;
 	},
 
-	panBy: function (offset, duration, easeLinearity, moving) {
-		offset = L.point(offset);
+	panBy: function (offset, duration, easeLinearity, noMoveStart) {
+		offset = L.point(offset).round();
 
-		if (!(offset.x || offset.y)) {
+		// TODO add options instead of arguments to setView/panTo/panBy/etc.
+
+		if (!offset.x && !offset.y) {
 			return this;
 		}
 
@@ -7931,13 +7985,14 @@ L.Map.include({
 			}, this);
 		}
 
-		if (moving !== true) {
+		// don't fire movestart if animating inertia
+		if (!noMoveStart) {
 			this.fire('movestart');
 		}
 
 		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		var newPos = L.DomUtil.getPosition(this._mapPane).subtract(offset)._round();
+		var newPos = this._getMapPanePos().subtract(offset);
 		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
 
 		return this;
@@ -7952,23 +8007,14 @@ L.Map.include({
 		this.fire('moveend');
 	},
 
-	_panByIfClose: function (center) {
+	_animatePanIfClose: function (center) {
 		// difference between the new and current centers in pixels
 		var offset = this._getCenterOffset(center)._floor();
 
-		if (this._offsetIsWithinView(offset)) {
-			this.panBy(offset);
-			return true;
-		}
-		return false;
-	},
+		if (!this.getSize().contains(offset)) { return false; }
 
-	_offsetIsWithinView: function (offset, multiplyFactor) {
-		var m = multiplyFactor || 1,
-		    size = this.getSize();
-
-		return (Math.abs(offset.x) <= size.x * m) &&
-		       (Math.abs(offset.y) <= size.y * m);
+		this.panBy(offset);
+		return true;
 	}
 });
 
@@ -8051,30 +8097,38 @@ L.Map.mergeOptions({
 });
 
 if (L.DomUtil.TRANSITION) {
+
 	L.Map.addInitHook(function () {
+		// zoom transitions run with the same duration for all layers, so if one of transitionend events
+		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
+
 		L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 	});
 }
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
-	_zoomToIfClose: function (center, zoom) {
+	_catchTransitionEnd: function () {
+		if (this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
+	},
+
+	_animateZoomIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
 
-		if (!this.options.zoomAnimation) { return false; }
-
+		// offset is the pixel coords of the zoom origin relative to the current center
 		var scale = this.getZoomScale(zoom),
-		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
+		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale),
+			origin = this._getCenterLayerPoint()._add(offset);
 
-		// if offset does not exceed half of the view
-		if (!this._offsetIsWithinView(offset, 1)) { return false; }
+		// only animate if the zoom origin is within one screen from the current center
+		if (!this.getSize().contains(offset)) { return false; }
 
 		this
 		    .fire('movestart')
 		    .fire('zoomstart');
-
-		var origin = this._getCenterLayerPoint().add(offset);
 
 		this._animateZoom(center, zoom, origin, scale);
 
@@ -8083,12 +8137,16 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
 
-		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
-
-		this._animateToCenter = center;
-		this._animateToZoom = zoom;
 		this._animatingZoom = true;
 
+		// put transform transition on all layers with leaflet-zoom-animated class
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+
+		// remember what center/zoom to set after animation
+		this._animateToCenter = center;
+		this._animateToZoom = zoom;
+
+		// disable any dragging during animation
 		if (L.Draggable) {
 			L.Draggable._disabled = true;
 		}
@@ -8103,17 +8161,12 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		});
 	},
 
-	_catchTransitionEnd: function () {
-		if (this._animatingZoom) {
-			this._onZoomTransitionEnd();
-		}
-	},
-
 	_onZoomTransitionEnd: function () {
+
+		this._animatingZoom = false;
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
-		this._animatingZoom = false;
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
 		if (L.Draggable) {
@@ -8304,12 +8357,12 @@ L.Map.include({
 	},
 
 	_handleGeolocationResponse: function (pos) {
-		var latAccuracy = 180 * pos.coords.accuracy / 4e7,
-		    lngAccuracy = latAccuracy * 2,
-
-		    lat = pos.coords.latitude,
+		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new L.LatLng(lat, lng),
+
+		    latAccuracy = 180 * pos.coords.accuracy / 40075017,
+		    lngAccuracy = latAccuracy / Math.cos(L.LatLng.DEG_TO_RAD * lat),
 
 		    sw = new L.LatLng(lat - latAccuracy, lng - lngAccuracy),
 		    ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
@@ -8322,11 +8375,12 @@ L.Map.include({
 			this.setView(latlng, zoom);
 		}
 
-		this.fire('locationfound', {
+		var event = L.extend({
 			latlng: latlng,
-			bounds: bounds,
-			accuracy: pos.coords.accuracy
-		});
+			bounds: bounds
+		}, pos.coords);
+
+		this.fire('locationfound', event);
 	}
 });
 
