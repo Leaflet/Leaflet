@@ -123,8 +123,8 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_initEvents: function () {
 		if (this.options.clickable) {
-			// TODO hand cursor
-			// TODO mouseover, mouseout, dblclick
+			// TODO dblclick
+			this._map.on('mousemove', this._onMouseMove, this);
 			this._map.on('click', this._onClick, this);
 		}
 	},
@@ -137,6 +137,32 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 				containerPoint: e.containerPoint,
 				originalEvent: e
 			});
+		}
+	},
+
+	_onMouseMove: function (e) {
+		if (this._map._animatingZoom) { return; }
+
+		if (this._containsPoint(e.layerPoint)) {
+			this._ctx.canvas.style.cursor = 'pointer';
+			this.currentlyOver = true;
+			this.fire('mouseover', {
+				latlng: e.latlng,
+				layerPoint: e.layerPoint,
+				containerPoint: e.containerPoint,
+				originalEvent: e
+			});
+		} else {
+			if (this.currentlyOver) {
+				this._ctx.canvas.style.cursor = '';
+				this.currentlyOver = false;
+				this.fire('mouseout', {
+					latlng: e.latlng,
+					layerPoint: e.layerPoint,
+					containerPoint: e.containerPoint,
+					originalEvent: e
+				});
+			}
 		}
 	}
 });
