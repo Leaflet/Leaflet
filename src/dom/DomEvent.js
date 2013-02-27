@@ -67,7 +67,7 @@ L.DomEvent = {
 		    key = '_leaflet_' + type + id,
 		    handler = obj[key];
 
-		if (!handler) { return; }
+		if (!handler) { return this; }
 
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
