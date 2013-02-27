@@ -13,7 +13,7 @@ describe('Bounds', function() {
 		c = new L.Bounds();
 	});
 
-	function testConstructor(fn) {
+	function testConstructor(fn, factory) {
 		return function () {
 			it('constructs a Bounds instance from the given Points', function () {
 				var min = new L.Point(14, 12),
@@ -43,16 +43,18 @@ describe('Bounds', function() {
 				expect(fn(a)).toBe(a);
 			});
 
-			it('returns null or undefined as is', function () {
-				expect(fn(undefined)).toBe(undefined);
-				expect(fn(null)).toBe(null);
-			});
+			if (factory) {
+				it('returns null or undefined as is', function () {
+					expect(fn(undefined)).toBe(undefined);
+					expect(fn(null)).toBe(null);
+				});
+			}
 		}
 	}
 
 	describe('constructed via new L.Bounds', testConstructor(function(a, b) { return new L.Bounds(a, b); }));
-	describe('constructed via L.Bounds', testConstructor(function(a, b) { return L.Bounds(a, b); }));
-	describe('constructed via L.bounds', testConstructor(function(a, b) { return L.bounds(a, b); }));
+	describe('constructed via L.Bounds', testConstructor(function(a, b) { return L.Bounds(a, b); }, true));
+	describe('constructed via L.bounds', testConstructor(function(a, b) { return L.bounds(a, b); }, true));
 
 	describe('#extend', function() {
 		it('extends the bounds to contain the given point', function() {

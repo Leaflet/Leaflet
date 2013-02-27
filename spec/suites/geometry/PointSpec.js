@@ -1,5 +1,5 @@
 describe("Point", function() {
-	function testConstructor(fn) {
+	function testConstructor(fn, factory) {
 		return function () {
 			it("constructs the origin", function () {
 				var a = fn(0, 0);
@@ -30,16 +30,18 @@ describe("Point", function() {
 				expect(fn(p)).toBe(p);
 			});
 
-			it('returns null or undefined as is', function () {
-				expect(fn(undefined)).toBe(undefined);
-				expect(fn(null)).toBe(null);
-			});
+			if (factory) {
+				it('returns null or undefined as is', function () {
+					expect(fn(undefined)).toBe(undefined);
+					expect(fn(null)).toBe(null);
+				});
+			}
 		}
 	}
 
 	describe('constructed via new L.Point', testConstructor(function(a, b, c) { return new L.Point(a, b, c); }));
-	describe('constructed via L.Point', testConstructor(function(a, b, c) { return L.Point(a, b, c); }));
-	describe('constructed via L.point', testConstructor(function(a, b, c) { return L.point(a, b, c); }));
+	describe('constructed via L.Point', testConstructor(function(a, b, c) { return L.Point(a, b, c); }, true));
+	describe('constructed via L.point', testConstructor(function(a, b, c) { return L.point(a, b, c); }, true));
 
 	describe('#subtract', function() {
 		it('subtracts the given point from this one', function() {

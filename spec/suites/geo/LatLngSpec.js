@@ -1,5 +1,5 @@
 describe('LatLng', function() {
-	function testConstructor(fn) {
+	function testConstructor(fn, factory) {
 		return function () {
 			it("constructs the origin", function () {
 				var a = fn(0, 0);
@@ -30,10 +30,12 @@ describe('LatLng', function() {
 				expect(fn(a)).toBe(a);
 			});
 
-			it('returns null or undefined as is', function () {
-				expect(fn(undefined)).toBe(undefined);
-				expect(fn(null)).toBe(null);
-			});
+			if (factory) {
+				it('returns null or undefined as is', function () {
+					expect(fn(undefined)).toBe(undefined);
+					expect(fn(null)).toBe(null);
+				});
+			}
 
 			it('accepts an object with lat/lng', function () {
 				expect(fn({lat: 50, lng: 30})).toEqual(fn(50, 30));
@@ -46,8 +48,8 @@ describe('LatLng', function() {
 	}
 
 	describe('constructed via new L.LatLng', testConstructor(function(a, b) { return new L.LatLng(a, b); }));
-	describe('constructed via L.LatLng', testConstructor(function(a, b) { return L.LatLng(a, b); }));
-	describe('constructed via L.latLng', testConstructor(function(a, b) { return L.latLng(a, b); }));
+	describe('constructed via L.LatLng', testConstructor(function(a, b) { return L.LatLng(a, b); }, true));
+	describe('constructed via L.latLng', testConstructor(function(a, b) { return L.latLng(a, b); }, true));
 
 	describe('#equals', function() {
 		it("returns true if compared objects are equal within a certain margin", function() {

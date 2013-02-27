@@ -8,7 +8,7 @@ describe('LatLngBounds', function() {
 		c = new L.LatLngBounds();
 	});
 
-	function testConstructor(fn) {
+	function testConstructor(fn, factory) {
 		return function () {
 			it('constructs a LatLngBounds instance from the given LatLngs', function () {
 				var sw = new L.LatLng(14, 12),
@@ -38,16 +38,18 @@ describe('LatLngBounds', function() {
 				expect(fn(a)).toBe(a);
 			});
 
-			it('returns null or undefined as is', function () {
-				expect(fn(undefined)).toBe(undefined);
-				expect(fn(null)).toBe(null);
-			});
+			if (factory) {
+				it('returns null or undefined as is', function () {
+					expect(fn(undefined)).toBe(undefined);
+					expect(fn(null)).toBe(null);
+				});
+			}
 		}
 	}
 
 	describe('constructed via new L.LatLngBounds', testConstructor(function(a, b) { return new L.LatLngBounds(a, b); }));
-	describe('constructed via L.LatLngBounds', testConstructor(function(a, b) { return L.LatLngBounds(a, b); }));
-	describe('constructed via L.latLngBounds', testConstructor(function(a, b) { return L.latLngBounds(a, b); }));
+	describe('constructed via L.LatLngBounds', testConstructor(function(a, b) { return L.LatLngBounds(a, b); }, true));
+	describe('constructed via L.latLngBounds', testConstructor(function(a, b) { return L.latLngBounds(a, b); }, true));
 
 	describe('#extend', function () {
 		it('extends the bounds by a given point', function () {
