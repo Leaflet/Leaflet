@@ -131,38 +131,23 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', {
-				latlng: e.latlng,
-				layerPoint: e.layerPoint,
-				containerPoint: e.containerPoint,
-				originalEvent: e
-			});
+			this.fire('click', e);
 		}
 	},
 
 	_onMouseMove: function (e) {
 		if (this._map._animatingZoom) { return; }
 
+		// TODO don't do on each move
 		if (this._containsPoint(e.layerPoint)) {
 			this._ctx.canvas.style.cursor = 'pointer';
-			this.currentlyOver = true;
-			this.fire('mouseover', {
-				latlng: e.latlng,
-				layerPoint: e.layerPoint,
-				containerPoint: e.containerPoint,
-				originalEvent: e
-			});
-		} else {
-			if (this.currentlyOver) {
-				this._ctx.canvas.style.cursor = '';
-				this.currentlyOver = false;
-				this.fire('mouseout', {
-					latlng: e.latlng,
-					layerPoint: e.layerPoint,
-					containerPoint: e.containerPoint,
-					originalEvent: e
-				});
-			}
+			this._mouseInside = true;
+			this.fire('mouseover', e);
+
+		} else if (this._mouseInside) {
+			this._ctx.canvas.style.cursor = '';
+			this._mouseInside = false;
+			this.fire('mouseout', e);
 		}
 	}
 });
