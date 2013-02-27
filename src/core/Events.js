@@ -9,7 +9,7 @@ L.Mixin = {};
 L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		
+
 		var events = this[key] = this[key] || {},
 		    type, i, len, evt,
 		    contextId, objKey, objLenKey, eventsObj;
@@ -116,10 +116,10 @@ L.Mixin.Events = {
 			return this;
 		}
 
-		var event = L.Util.extend({
+		var event = L.Util.extend({}, data, {
 			type: type,
 			target: this
-		}, data);
+		});
 
 		var listeners, i, len, eventsObj, contextId;
 
@@ -132,7 +132,7 @@ L.Mixin.Events = {
 		}
 
 		// fire event for the context-indexed listeners as well
-		
+
 		eventsObj = this[key][type + '_idx'];
 
 		if (eventsObj) {
