@@ -37,10 +37,6 @@ L.Draggable = L.Class.extend({
 
 	disable: function () {
 		if (!this._enabled) { return; }
-		
-		this.off('dragstart', this._onDragStart)
-		    .off('drag', this._onDrag)
-		    .off('dragend', this._onDragEnd);
 
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
 			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
