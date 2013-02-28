@@ -1,17 +1,20 @@
 describe('Circle', function () {
 	describe('#getBounds', function () {
 
-		var circle;
+		var circle, map;
 
 		beforeEach(function () {
-			circle = L.circle([50, 30], 200);
+			map = L.map(document.createElement('div'));
+			map.setView([80, 30], 3);
+
+			circle = L.circle([80, 30], 500000).addTo(map);
 		});
 
 		it('returns bounds', function () {
 			var bounds = circle.getBounds();
 
-			expect(bounds.getSouthWest().equals([49.998203369, 29.997204939])).toBeTruthy();
-			expect(bounds.getNorthEast().equals([50.001796631, 30.002795061])).toBeTruthy();
+			expect(bounds.getSouthWest().equals([74.35482803013984, 4.21875])).toBeTruthy();
+			expect(bounds.getNorthEast().equals([83.61859796759485, 55.8984375])).toBeTruthy();
 		});
 	});
 });
