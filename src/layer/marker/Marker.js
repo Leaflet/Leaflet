@@ -41,6 +41,10 @@ L.Marker = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		if (this.dragging) {
+			this.dragging.removeHooks();
+		}
+
 		this._removeIcon();
 
 		this.fire('remove');
