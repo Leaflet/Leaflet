@@ -2,7 +2,7 @@ describe("Projection.Mercator", function() {
 	var p = L.Projection.Mercator;
 
 	expect.Assertion.prototype.near = function(expected, delta) {
-		delta = 0 || 1;
+		delta = delta || 1;
 		expect(this.obj.x).to
 			.be.within(expected.x - delta, expected.x + delta);
 		expect(this.obj.y).to
