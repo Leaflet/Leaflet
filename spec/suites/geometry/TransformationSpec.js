@@ -9,11 +9,11 @@ describe("Transformation", function() {
 	describe('#transform', function () {
 		it("performs a transformation", function() {
 			var p2 = t.transform(p, 2);
-			expect(p2).toEqual(new L.Point(24, 128));
+			expect(p2).to.eql(new L.Point(24, 128));
 		});
 		it('assumes a scale of 1 if not specified', function () {
 			var p2 = t.transform(p);
-			expect(p2).toEqual(new L.Point(12, 64));
+			expect(p2).to.eql(new L.Point(12, 64));
 		});
 	});
 
@@ -21,11 +21,11 @@ describe("Transformation", function() {
 		it("performs a reverse transformation", function() {
 			var p2 = t.transform(p, 2);
 			var p3 = t.untransform(p2, 2);
-			expect(p3).toEqual(p);
+			expect(p3).to.eql(p);
 		});
 		it('assumes a scale of 1 if not specified', function () {
 			var p2 = t.transform(p);
-			expect(t.untransform(new L.Point(12, 64))).toEqual(new L.Point(10, 20));
+			expect(t.untransform(new L.Point(12, 64))).to.eql(new L.Point(10, 20));
 		});
 	});
 });

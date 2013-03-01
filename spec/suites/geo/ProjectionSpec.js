@@ -1,28 +1,22 @@
-xdescribe("Projection.Mercator", function() {
+describe("Projection.Mercator", function() {
 	var p = L.Projection.Mercator;
 
-	beforeEach(function() {
-		function almostEqual(a, b, p) {
-			return Math.abs(a - b) <= (p || 1.0E-12);
-		}
-		this.addMatchers({
-			toAlmostEqual: function(expected, margin) {
-				var p1 = this.actual,
-					p2 = expected;
-				return almostEqual(p1.x, p2.x, margin) && almostEqual(p1.y, p2.y, margin);
-			}
-		});
-	});
-
+	expect.Assertion.prototype.near = function(expected, delta) {
+		delta = 0 || 1.0;
+		expect(this.obj.x).to
+			.be.within(expected.x - delta, expected.y + delta);
+		expect(this.obj.y).to
+			.be.within(expected.y - delta, expected.x + delta);
+	};
 
 	describe("#project", function() {
 		it("projects", function() {
 			//edge cases
-			expect(p.project(new L.LatLng(0, 0))).toAlmostEqual(new L.Point(0, 0));
-			expect(p.project(new L.LatLng(90, 180))).toAlmostEqual(new L.Point(-Math.PI, Math.PI));
-			expect(p.project(new L.LatLng(-90, -180))).toAlmostEqual(new L.Point(-Math.PI, -Math.PI));
+			expect(p.project(new L.LatLng(0, 0))).near(new L.Point(0, 0));
+			expect(p.project(new L.LatLng(90, 180))).near(new L.Point(-Math.PI, Math.PI));
+			expect(p.project(new L.LatLng(-90, -180))).near(new L.Point(-Math.PI, -Math.PI));
 
-			expect(p.project(new L.LatLng(50, 30))).toAlmostEqual(new L.Point(0.523598775598, 1.010683188683));
+			expect(p.project(new L.LatLng(50, 30))).near(new L.Point(0.523598775598, 1.010683188683));
 		});
 	});
 
@@ -32,11 +26,11 @@ xdescribe("Projection.Mercator", function() {
 				return p.project(p.unproject(point));
 			}
 
-			expect(pr(new L.Point(0, 0))).toAlmostEqual(new L.Point(0, 0));
-			expect(pr(new L.Point(-Math.PI, Math.PI))).toAlmostEqual(new L.Point(-Math.PI, Math.PI));
-			expect(pr(new L.Point(-Math.PI, -Math.PI))).toAlmostEqual(new L.Point(-Math.PI, -Math.PI));
+			expect(pr(new L.Point(0, 0))).near(new L.Point(0, 0));
+			expect(pr(new L.Point(-Math.PI, Math.PI))).near(new L.Point(-Math.PI, Math.PI));
+			expect(pr(new L.Point(-Math.PI, -Math.PI))).near(new L.Point(-Math.PI, -Math.PI));
 
-			expect(pr(new L.Point(0.523598775598, 1.010683188683))).toAlmostEqual(new L.Point(0.523598775598, 1.010683188683));
+			expect(pr(new L.Point(0.523598775598, 1.010683188683))).near(new L.Point(0.523598775598, 1.010683188683));
 		});
 	});
 });

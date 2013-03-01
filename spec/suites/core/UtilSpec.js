@@ -16,7 +16,7 @@ describe('Util', function() {
 				baz: 3
 			});
 
-			expect(a).toEqual({
+			expect(a).to.eql({
 				foo: 5,
 				bar: 7,
 				baz: 3
@@ -26,7 +26,7 @@ describe('Util', function() {
 		it('accepts more than 2 arguments', function() {
 			L.Util.extend(a, {bar: 7}, {baz: 3});
 
-			expect(a).toEqual({
+			expect(a).to.eql({
 				foo: 5,
 				bar: 7,
 				baz: 3
@@ -40,13 +40,13 @@ describe('Util', function() {
 				return this;
 			};
 
-			var fn2 = L.Util.bind(fn, 5);
+			var fn2 = L.Util.bind(fn, { foo: 'bar' });
 
-			expect(fn2()).toEqual(5);
+			expect(fn2()).to.eql({ foo: 'bar' });
 		});
 
 		it('passes additional arguments to the bound function', function () {
-			var fn = jasmine.createSpy(),
+			var fn = sinon.spy(),
 				foo = {},
 				a = {},
 				b = {};
@@ -55,7 +55,7 @@ describe('Util', function() {
 
 			fn2();
 
-			expect(fn).toHaveBeenCalledWith(a, b);
+			expect(fn.calledWith(a, b)).to.be.ok();
 		});
 	});
 
@@ -64,26 +64,26 @@ describe('Util', function() {
 			var a = {},
 				id = L.Util.stamp(a);
 
-			expect(typeof id).toEqual('number');
-			expect(L.Util.stamp(a)).toEqual(id);
+			expect(typeof id).to.eql('number');
+			expect(L.Util.stamp(a)).to.eql(id);
 
 			var b = {},
 				id2 = L.Util.stamp(b);
 
-			expect(id2).not.toEqual(id);
+			expect(id2).not.to.eql(id);
 		});
 	});
 
 	describe('#falseFn', function () {
 		it('returns false', function () {
-			expect(L.Util.falseFn()).toBe(false);
+			expect(L.Util.falseFn()).to.be(false);
 		});
 	});
 
 	describe('#formatNum', function () {
 		it('formats numbers with a given precision', function () {
-			expect(L.Util.formatNum(13.12325555, 3)).toEqual(13.123);
-			expect(L.Util.formatNum(13.12325555)).toEqual(13.12326);
+			expect(L.Util.formatNum(13.12325555, 3)).to.eql(13.123);
+			expect(L.Util.formatNum(13.12325555)).to.eql(13.12326);
 		});
 	});
 
@@ -96,7 +96,7 @@ describe('Util', function() {
 				result: "?bar=7&baz=3"
 			};
 
-			expect(L.Util.getParamString(a.obj,a.url)).toEqual(a.result);
+			expect(L.Util.getParamString(a.obj,a.url)).to.eql(a.result);
 
 			var b = {
 				url: "http://example.com/get?justone=qs",
@@ -104,7 +104,7 @@ describe('Util', function() {
 				result: "&bar=7&baz=3"
 			};
 
-			expect(L.Util.getParamString(b.obj,b.url)).toEqual(b.result);
+			expect(L.Util.getParamString(b.obj,b.url)).to.eql(b.result);
 
 			var c = {
 				url: undefined,
@@ -112,72 +112,49 @@ describe('Util', function() {
 				result: "?bar=7&baz=3"
 			};
 
-			expect(L.Util.getParamString(c.obj,c.url)).toEqual(c.result);
+			expect(L.Util.getParamString(c.obj,c.url)).to.eql(c.result);
 		});
 	});
 
 	describe('#requestAnimFrame', function () {
-		it('calles a function on next frame, unless canceled', function () {
-			var spy = jasmine.createSpy(),
-				spy2 = jasmine.createSpy(),
-				called = false,
+		it('calles a function on next frame, unless canceled', function (done) {
+			var spy = sinon.spy(),
+				spy2 = sinon.spy(),
 				foo = {};
 
-			runs(function () {
-				L.Util.requestAnimFrame(spy);
+			L.Util.requestAnimFrame(spy);
 
-				L.Util.requestAnimFrame(function () {
-					called = true;
-					expect(this).toEqual(foo);
-					spy();
-				}, foo);
+			L.Util.requestAnimFrame(function () {
+				expect(this).to.eql(foo);
+				done();
+			}, foo);
 
-				L.Util.cancelAnimFrame(spy);
-			});
-
-			waitsFor(function () {
-				return called;
-			}, 'function should be called', 500);
-
-			runs(function () {
-				expect(spy).toHaveBeenCalled();
-				expect(spy2).not.toHaveBeenCalled();
-			});
+			L.Util.cancelAnimFrame(spy);
 		});
 	});
 
 	describe('#limitExecByInterval', function() {
-		it('limits execution to not more often than specified time interval', function () {
-			var spy = jasmine.createSpy(),
-				check = false;
+		it('limits execution to not more often than specified time interval', function (done) {
+			var spy = sinon.spy();
 
 			var fn = L.Util.limitExecByInterval(spy, 20);
 
-			runs(function () {
-				fn();
-				fn();
-				fn();
+			fn();
+			fn();
+			fn();
 
-				expect(spy.calls.length).toEqual(1);
+			expect(spy.callCount).to.eql(1);
 
-				setTimeout(function () {
-					check = true;
-				}, 30);
-			});
-
-			waitsFor(function () {
-				return check;
-			});
-
-			runs(function () {
-				expect(spy.calls.length).toEqual(2);
-			});
+			setTimeout(function () {
+				expect(spy.callCount).to.eql(2);
+				done();
+			}, 30);
 		});
 	});
 
 	describe('#splitWords', function () {
 		it('splits words into an array', function () {
-			expect(L.Util.splitWords('foo bar baz')).toEqual(['foo', 'bar', 'baz']);
+			expect(L.Util.splitWords('foo bar baz')).to.eql(['foo', 'bar', 'baz']);
 		});
 	});
 
@@ -192,17 +169,17 @@ describe('Util', function() {
 				bar: 'Dave'
 			});
 
-			expect(str).toEqual('Hello Vlad and Dave!');
+			expect(str).to.eql('Hello Vlad and Dave!');
 		});
 
 		it('does not modify text without a token variable', function () {
-			expect(L.Util.template('foo', {})).toEqual('foo');
+			expect(L.Util.template('foo', {})).to.eql('foo');
 		});
 
 		it('throws when a template token is not given', function () {
 			expect(function () {
 				L.Util.template(tpl, {foo: 'bar'});
-			}).toThrow();
+			}).to.throwError();
 		});
 	});
 });

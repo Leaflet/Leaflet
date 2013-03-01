@@ -16,20 +16,20 @@
 
 				var wasClicked = 0;
 				fg2.on('click', function(e) {
-					expect(e.layer).toBe(marker);
-					expect(e.target).toBe(fg2);
+					expect(e.layer).to.be(marker);
+					expect(e.target).to.be(fg2);
 					wasClicked |= 1;
 				});
 
 				fg1.on('click', function (e) {
-					expect(e.layer).toBe(marker);
-					expect(e.target).toBe(fg1);
+					expect(e.layer).to.be(marker);
+					expect(e.target).to.be(fg1);
 					wasClicked |= 2;
 				});
 
 				marker.fire('click', { type: 'click' });
 
-				expect(wasClicked).toBe(3);
+				expect(wasClicked).to.be(3);
 			});
 		});
 	});
