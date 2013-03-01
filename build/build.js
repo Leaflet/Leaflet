@@ -160,8 +160,6 @@ exports.test = function() {
 	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
 
 	testConfig.browsers = ['PhantomJS'];
-	if (isArgv('--chrome'))  testConfig.browsers.push('Chrome');
-	if (isArgv('--ff')) testConfig.browsers.push('Firefox');
 
 	if (isArgv('--chrome')) {
 		testConfig.browsers.push('Chrome');
