@@ -167,6 +167,18 @@
 			}
 		})();
 
+		(function () {
+			var headers = document.getElementsByTagName('h2');
+
+			for (var i = 0, len = headers.length; i < len; i++) {
+				if (headers[i].id) {
+					headers[i].onclick = function() {
+						window.location.hash = '#' + this.id;
+					};
+				}
+			}
+		})();
+
 		hljs.initHighlighting();
 	</script>
 
