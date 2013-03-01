@@ -34,11 +34,10 @@ L.Circle = L.Path.extend({
 	},
 
 	getBounds: function () {
-		var lngRadius = this._getLngRadius(),
-		    latRadius = (this._mRadius / 40075017) * 360,
-		    latlng = this._latlng,
-		    sw = new L.LatLng(latlng.lat - latRadius, latlng.lng - lngRadius),
-		    ne = new L.LatLng(latlng.lat + latRadius, latlng.lng + lngRadius);
+		var p = this._point,
+		    r = this._radius,
+		    sw = this._map.layerPointToLatLng([p.x - r, p.y - r]),
+		    ne = this._map.layerPointToLatLng([p.x + r, p.y + r]);
 
 		return new L.LatLngBounds(sw, ne);
 	},
