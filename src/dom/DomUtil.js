@@ -152,7 +152,12 @@ L.DomUtil = {
 			    filterName = 'DXImageTransform.Microsoft.Alpha';
 
 			// filters collection throws an error if we try to retrieve a filter that doesn't exist
-			try { filter = el.filters.item(filterName); } catch (e) {}
+			try {
+				filter = el.filters.item(filterName);
+			} catch (e) {
+				//Don't set opacity to 1 if we haven't already set an opacity, it isn't needed and breaks transparent pngs.
+				if (value === 1) { return; }
+			}
 
 			value = Math.round(value * 100);
 
