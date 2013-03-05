@@ -12,7 +12,7 @@ var geojsonSample = {
 				"color": "blue"
 			}
 		},
-
+		 
 		{
 			"type": "Feature",
 			"geometry": {
@@ -24,7 +24,7 @@ var geojsonSample = {
 				"prop1": 0.0
 			}
 		},
-
+		 
 		{
 			"type": "Feature",
 			"geometry": {
@@ -46,7 +46,7 @@ var geojsonSample = {
 				"coordinates": [[[[100.0, 1.5], [100.5, 1.5], [100.5, 2.0], [100.0, 2.0], [100.0, 1.5]]], [[[100.5, 2.0], [100.5, 2.5], [101.0, 2.5], [101.0, 2.0], [100.5, 2.0]]]]
 			},
 			"properties": {
-				"color": "purple"
+			    "color": "#ff7800"
 			}
 		}
 	]
