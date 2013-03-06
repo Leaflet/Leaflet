@@ -161,6 +161,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/maximeh">Maxime Hadjinlian</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.TextPath">Leaflet.TextPath</a>
+		</td><td>
+			Allows you to draw text along Polylines.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
 </table>
 
 
