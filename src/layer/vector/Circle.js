@@ -24,6 +24,10 @@ L.Circle = L.Path.extend({
 		return this.redraw();
 	},
 
+	fillable: function () {
+		return true;
+	},
+
 	projectLatlngs: function () {
 		var lngRadius = this._getLngRadius(),
 		    latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius),

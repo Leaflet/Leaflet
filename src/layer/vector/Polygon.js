@@ -32,6 +32,10 @@ L.Polygon = L.Polyline.extend({
 		}
 	},
 
+	fillable: function () {
+		return true;
+	},
+
 	projectLatlngs: function () {
 		L.Polyline.prototype.projectLatlngs.call(this);
 

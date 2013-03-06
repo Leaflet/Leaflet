@@ -85,8 +85,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 				this._ctx[drawMethod](point.x, point.y);
 			}
-			// TODO refactor ugly hack
-			if (this instanceof L.Polygon) {
+			if (this.fillable()) {
 				this._ctx.closePath();
 			}
 		}
