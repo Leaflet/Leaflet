@@ -289,6 +289,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mpetazzoni/">Maxime Petazzoni</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://arthur-e.github.com/Wicket/">Wicket</a>
+		</td><td>
+			A modest library for translating between Well-Known Text (WKT) and Leaflet geometry objects (e.g. between L.marker() instances and "POINT()" strings).
+		</td><td>
+			<a href="https://github.com/arthur-e/">K. Arthur Endsley</a>
+		</td>
+	</tr>
 </table>
 
 
