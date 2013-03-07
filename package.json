@@ -3,10 +3,10 @@
 	"version": "0.6.0",
 	"description": "JavaScript library for mobile-friendly interactive maps",
 	"devDependencies": {
-		"jshint": "~0.9.1",
-		"testacular": "latest",
-		"uglify-js": "~2.2.3",
-		"jake": "latest"
+		"jshint": "~1.1.0",
+		"testacular": "~0.6.0",
+		"uglify-js": "~2.2.5",
+		"jake": "~0.5.8"
 	},
 	"main": "dist/leaflet.js",
 	"scripts": {

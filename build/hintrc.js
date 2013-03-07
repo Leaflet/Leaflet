@@ -1,7 +1,7 @@
 exports.config = {
 	"browser": true,
 	"node": true,
-	"predef": ["L"],
+	"predef": [],
 
 	"debug": false,
 	"devel": false,

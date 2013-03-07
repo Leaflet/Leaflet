@@ -12,7 +12,7 @@ function lintFiles(files) {
 
 	for (i = 0, len = files.length; i < len; i++) {
 
-		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc);
+		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc, i ? {L: true} : null);
 		errors = jshint.JSHINT.errors;
 
 		for (j = 0, len2 = errors.length; j < len2; j++) {

@@ -471,6 +471,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	    ua = navigator.userAgent.toLowerCase(),
 	    webkit = ua.indexOf('webkit') !== -1,
 	    chrome = ua.indexOf('chrome') !== -1,
+	    phantomjs = ua.indexOf('phantom') !== -1,
 	    android = ua.indexOf('android') !== -1,
 	    android23 = ua.search('android [23]') !== -1,
 
@@ -486,7 +487,7 @@ L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 	    webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
 	    gecko3d = 'MozPerspective' in doc.style,
 	    opera3d = 'OTransition' in doc.style,
-	    any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d);
+	    any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs;
 
 
 	var touch = !window.L_NO_TOUCH && (function () {
@@ -951,7 +952,12 @@ L.DomUtil = {
 			    filterName = 'DXImageTransform.Microsoft.Alpha';
 
 			// filters collection throws an error if we try to retrieve a filter that doesn't exist
-			try { filter = el.filters.item(filterName); } catch (e) {}
+			try {
+				filter = el.filters.item(filterName);
+			} catch (e) {
+				//Don't set opacity to 1 if we haven't already set an opacity, it isn't needed and breaks transparent pngs.
+				if (value === 1) { return; }
+			}
 
 			value = Math.round(value * 100);
 
@@ -3284,6 +3290,10 @@ L.Marker = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		if (this.dragging) {
+			this.dragging.disable();
+		}
+
 		this._removeIcon();
 
 		this.fire('remove');
@@ -4019,6 +4029,16 @@ L.LayerGroup = L.Class.extend({
 			}
 		}
 		return this;
+	},
+
+	getLayers: function () {
+		var layers = [];
+		for (var i in this._layers) {
+			if (this._layers.hasOwnProperty(i)) {
+				layers.push(this._layers[i]);
+			}
+		}
+		return layers;
 	},
 
 	setZIndex: function (zIndex) {
@@ -5290,11 +5310,20 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	initialize: function (latlngs, options) {
+		var i, len, hole;
+
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs && L.Util.isArray(latlngs[0]) && (typeof latlngs[0][0] !== 'number')) {
 			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
+
+			for (i = 0, len = this._holes.length; i < len; i++) {
+				hole = this._holes[i] = this._convertLatLngs(this._holes[i]);
+				if (hole[0].equals(hole[hole.length - 1])) {
+					hole.pop();
+				}
+			}
 		}
 
 		// filter out last point if its equal to the first one
@@ -5550,7 +5579,7 @@ L.CircleMarker = L.Circle.extend({
 	projectLatlngs: function () {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 	},
-	
+
 	_updateStyle : function () {
 		L.Circle.prototype._updateStyle.call(this);
 		this.setRadius(this.options.radius);
@@ -5881,7 +5910,7 @@ L.DomEvent = {
 		    key = '_leaflet_' + type + id,
 		    handler = obj[key];
 
-		if (!handler) { return; }
+		if (!handler) { return this; }
 
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
@@ -7132,6 +7161,11 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	removeHooks: function () {
+		this._draggable
+		    .off('dragstart', this._onDragStart)
+		    .off('drag', this._onDrag)
+		    .off('dragend', this._onDragEnd);
+
 		this._draggable.disable();
 	},
 
@@ -7950,9 +7984,9 @@ L.Map.include({
 		if (canBeAnimated) {
 
 			// try animating pan or zoom
-			var animated = zoomChanged && this.options.zoomAnimation ?
-		            this._animateZoomIfClose && this._animateZoomIfClose(center, zoom) :
-		            this._animatePanIfClose(center);
+			var animated = zoomChanged ?
+				this.options.zoomAnimation && this._animateZoomIfClose && this._animateZoomIfClose(center, zoom) :
+				this._animatePanIfClose(center);
 
 			if (animated) {
 				// prevent resize handler call, the view will refresh after animation anyway

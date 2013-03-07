@@ -23,7 +23,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    .off('dragstart', this._onDragStart)
 		    .off('drag', this._onDrag)
 		    .off('dragend', this._onDragEnd);
-		    
+
 		this._draggable.disable();
 	},
 
