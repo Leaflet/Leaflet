@@ -437,6 +437,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://yohanboniface.me">Yohan Boniface</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.Spin">Leaflet.Spin</a>
+		</td><td>
+			Shows a nice spinner on the map using <a href="http://fgnass.github.com/spin.js/">Spin.js</a>,
+			for asynchronous data load, like with <a href="https://github.com/calvinmetcalf/leaflet-ajax">Leaflet Ajax</a>.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
 </table>
 
 
