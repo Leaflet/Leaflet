@@ -512,6 +512,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.LayerIndex">Leaflet.LayerIndex</a>
+		</td><td>
+			An efficient spatial index for features and layers, using <a href="https://github.com/imbcmdth/RTree">RTree.js</a>.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
 </table>
 
 To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
