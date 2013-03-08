@@ -52,7 +52,11 @@ L.Control.Layers = L.Control.extend({
 		return this;
 	},
 
-	addOverlay: function (layer, name) {
+	addOverlay: function (layer, name, checkToggle) {
+		var checkToggle = checkToggle || false;
+		if (toggle) {
+			this._map.addLayer(layer);
+		}
 		this._addLayer(layer, name, true);
 		this._update();
 		return this;
