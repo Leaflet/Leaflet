@@ -33,4 +33,24 @@
 			});
 		});
 	});
+	describe("removeLayer", function () {
+		var map, marker;
+		beforeEach(function () {
+			map = L.map(document.createElement('div'));
+			map.setView([0, 0], 1);
+			marker = L.marker([0, 0]);
+		});
+		describe("when a marker is removed from a featuregroup that is on a map ", function () {
+			it("shouldn't make an error", function () {
+				var group = new L.FeatureGroup();
+
+				group.addLayer(marker);
+				map.addLayer(group);
+
+				expect(function () {
+					group.removeLayer(marker);
+				}).not.toThrow();
+			});
+		});
+	});
 });
