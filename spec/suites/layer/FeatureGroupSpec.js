@@ -1,4 +1,4 @@
-﻿describe('CircleMarker', function () {
+﻿describe('FeatureGroup', function () {
 	describe("#_propagateEvent", function () {
 		var map, marker;
 		beforeEach(function () {
