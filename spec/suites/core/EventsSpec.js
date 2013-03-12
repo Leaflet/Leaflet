@@ -162,6 +162,25 @@ describe('Events', function() {
 			expect(spy).not.toHaveBeenCalled();
 			expect(spy2).toHaveBeenCalled();
 		});
+
+		it('removes listeners with a stamp originally added without one', function() {
+			var obj = new Klass(),
+				spy1 = jasmine.createSpy('unstamped'),
+				spy2 = jasmine.createSpy('stamped'),
+				foo = {};
+
+			obj.addEventListener('test', spy1, foo);
+			L.Util.stamp(foo);
+			obj.addEventListener('test', spy2, foo);
+
+			obj.removeEventListener('test', spy1, foo);
+			obj.removeEventListener('test', spy2, foo);
+
+			obj.fireEvent('test');
+
+			expect(spy1).not.toHaveBeenCalled();
+			expect(spy2).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('#on, #off & #fire', function() {
