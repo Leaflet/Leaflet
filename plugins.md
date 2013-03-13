@@ -145,7 +145,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/calvinmetcalf/leaflet.sprite">Leaflet.Sprite</a>
+			<a href="https://github.com/leaflet-extras/leaflet.sprite">Leaflet.Sprite</a>
 		</td><td>
 			Use sprite based icons in your markers.
 		</td><td>
@@ -505,7 +505,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/calvinmetcalf/leaflet.css">Leaflet.CSS</a>
+			<a href="https://github.com/leaflet-extras/leaflet.css">Leaflet.CSS</a>
 		</td><td>
 			Add the main Leaflet CSS files (or any css) from within JavaScript, be gone conditional comments.
 		</td><td>
