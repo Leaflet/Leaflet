@@ -29,8 +29,6 @@ L.Mixin.Events = {
 		// types can be a string of space-separated words
 		types = L.Util.splitWords(types);
 
-		
-
 		for (i = 0, len = types.length; i < len; i++) {
 			evt = {
 				action: fn,
