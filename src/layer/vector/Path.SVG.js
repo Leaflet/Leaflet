@@ -40,6 +40,28 @@ L.Path = L.Path.extend({
 		return document.createElementNS(L.Path.SVG_NS, name);
 	},
 
+	hasClass: function (name) {
+		return (this._path.className.baseVal.length > 0) &&
+		        new RegExp("(^|\\s)" + name + "(\\s|$)").test(this._path.className.baseVal.className);
+	},
+
+	show: function () {
+		function replaceFn(w, match) {
+			if (match === 'leaflet-hidden') { return ''; }
+			return w;
+		}
+
+		if (!this.hasClass(name)) {
+			this._path.className.baseVal = this._path.className.baseVal
+			        .replace(/(\S+)\s*/g, replaceFn)
+			        .replace(/(^\s+|\s+$)/, '');
+		}
+	},
+
+	hide: function () {
+		this._path.className.baseVal += (this._path.className.baseVal ? ' ' : '') + 'leaflet-hidden';
+	},
+
 	_initElements: function () {
 		this._map._initPathRoot();
 		this._initPath();

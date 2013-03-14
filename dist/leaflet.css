@@ -457,3 +457,9 @@
 	-webkit-border-radius: 2px;
 	        border-radius: 2px;
 	}
+
+/* showing/hiding */
+
+.leaflet-hidden {
+	display:none;
+}

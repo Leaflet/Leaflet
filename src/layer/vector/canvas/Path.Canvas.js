@@ -149,6 +149,22 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 			this._mouseInside = false;
 			this.fire('mouseout', e);
 		}
+	},
+
+	show: function () {
+		if (!this._lastOptions) { return; }
+
+		L.setOptions(this, this._lastOptions);
+
+		if (this._map) {
+			this._updateStyle();
+			this._requestUpdate();
+		}
+	},
+
+	hide: function () {
+		this._lastOptions = this.options;
+		this.setStyle({opacity: 0, fillOpacity: 0});
 	}
 });
 
