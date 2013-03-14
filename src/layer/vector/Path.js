@@ -99,14 +99,6 @@ L.Path = L.Class.extend({
 			this._updatePath();
 		}
 		return this;
-	},
-
-	show: function () {
-		this._container.classList.remove('leaflet-hidden');
-	},
-
-	hide: function () {
-		this._container.classList.add('leaflet-hidden');
 	}
 });
 
