@@ -97,6 +97,7 @@ L.extend(L.GeoJSON, {
 
 		case 'Polygon':
 			latlngs = this.coordsToLatLngs(coords, 1);
+			latlngs = this.removeLastPoint(latlngs, 0);
 			return new L.Polygon(latlngs);
 
 		case 'MultiLineString':
@@ -105,6 +106,9 @@ L.extend(L.GeoJSON, {
 
 		case 'MultiPolygon':
 			latlngs = this.coordsToLatLngs(coords, 2);
+			// geojson closes the polygons added the frist
+			// coordinate at the end
+			latlngs = this.removeLastPoint(latlngs, 1);
 			return new L.MultiPolygon(latlngs);
 
 		case 'GeometryCollection':
@@ -121,6 +125,21 @@ L.extend(L.GeoJSON, {
 		default:
 			throw new Error('Invalid GeoJSON object.');
 		}
+	},
+
+	// removes the last point from each array. It allows to remove the
+	// duplicated point GeoJSON uses to close Polygons
+	removeLastPoint: function (coords, levelsDeep) {
+		var latlng,
+			latlngs = [],
+			i, len;
+		for (i = 0, len = coords.length; i < len; i++) {
+			latlng = levelsDeep ?
+				this.removeLastPoint(coords[i], levelsDeep - 1) :
+				coords[i].slice(0, coords[i].length - 1);
+			latlngs.push(latlng);
+		}
+		return latlngs;
 	},
 
 	coordsToLatLng: function (coords, reverse) { // (Array, Boolean) -> LatLng
