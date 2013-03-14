@@ -105,6 +105,18 @@ L.LayerGroup = L.Class.extend({
 
 	setZIndex: function (zIndex) {
 		return this.invoke('setZIndex', zIndex);
+	},
+
+	show: function () {
+		this.eachLayer(function (layer) {
+			layer.show();
+		});
+	},
+
+	hide: function () {
+		this.eachLayer(function (layer) {
+			layer.hide();
+		});
 	}
 });
 

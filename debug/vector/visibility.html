@@ -16,7 +16,7 @@
 <body>
 
 	<div id="map"></div>
-	
+
 	<script type="text/javascript">
 
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
@@ -39,9 +39,24 @@
 			getRandomLatLng(map)])
 			.addTo(map);
 
-		setTimeout(function() {newmarker.show();polygon.hide()},2000)
+		
 
-		setTimeout(function() {newmarker.hide();polygon.show()},4000)
+		var markers = new L.FeatureGroup();
+
+		function populate() {
+			for (var i = 0; i < 10; i++) {
+				markers.addLayer(new L.Marker(getRandomLatLng(map)));
+			}
+			return false;
+		}
+
+		map.addLayer(markers);
+
+		populate();
+
+		setTimeout(function() {newmarker.show();polygon.hide();markers.hide();},2000)
+
+		setTimeout(function() {newmarker.hide();polygon.show();markers.show();},4000)
 
 	</script>
 </body>
