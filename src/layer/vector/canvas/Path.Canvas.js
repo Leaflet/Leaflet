@@ -164,7 +164,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	hide: function () {
 		this._lastOptions = this.options;
-		this.setStyle({opacity:0,fillOpacity:0});
+		this.setStyle({opacity: 0, fillOpacity: 0});
 	}
 });
 
