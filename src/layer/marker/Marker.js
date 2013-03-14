@@ -100,6 +100,16 @@ L.Marker = L.Class.extend({
 		return this;
 	},
 
+	show: function () {
+		L.DomUtil.removeClass(this._icon, 'leaflet-hidden');
+		L.DomUtil.removeClass(this._shadow, 'leaflet-hidden');
+	},
+
+	hide: function () {
+		L.DomUtil.addClass(this._icon, 'leaflet-hidden');
+		L.DomUtil.addClass(this._shadow, 'leaflet-hidden');
+	},
+
 	_initIcon: function () {
 		var options = this.options,
 		    map = this._map,

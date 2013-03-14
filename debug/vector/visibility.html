@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	
+	<script type="text/javascript">
+
+		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			key: 'BC9A493B41014CAABB98F0471D759707'
+		});
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(cloudmade);
+
+		var newmarker = L.marker(map.getCenter()).addTo(map);
+		newmarker.hide();
+
+
+		var polygon = L.polygon([
+			getRandomLatLng(map),
+			getRandomLatLng(map),
+			getRandomLatLng(map)])
+			.addTo(map);
+
+		setTimeout(function() {newmarker.show();polygon.hide()},2000)
+
+		setTimeout(function() {newmarker.hide();polygon.show()},4000)
+
+	</script>
+</body>
+</html>
