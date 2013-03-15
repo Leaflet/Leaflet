@@ -99,7 +99,7 @@ L.Mixin.Events = {
 					}
 				}
 
-				if (contextId && listeners.length === 0 && events[objKey]) {
+				if (contextId && listeners.length === 0 && events[objKey] && events[objKey][contextId]) {
 					objLenKey = objKey + '_len';
 					delete events[objKey][contextId];
 					events[objLenKey] = (events[objLenKey] || 1) - 1;
