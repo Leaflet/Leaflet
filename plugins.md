@@ -170,6 +170,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.Awesome-Markers</a>
+		</td><td>
+			Colorful & iconic markers based on the Font Awesome icons.
+		</td><td>
+			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>
+		</td>
+	</tr>
 </table>
 
 
