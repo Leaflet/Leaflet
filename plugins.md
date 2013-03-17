@@ -402,6 +402,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/k4r573n/leaflet-control-osm-geocoder">Leaflet Control OSM Geocoder</a>
+		</td><td>
+			A simple geocoder that uses the OpenstreetMap gecoder Nominatim to locate places.
+		</td><td>
+			<a href="https://github.com/k4r573n">Karsten Hinz</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/stefanocudini/leaflet-search">leaflet-search</a>
 		</td><td>
 			Simple Leaflet Control for searching markers by attribute.
