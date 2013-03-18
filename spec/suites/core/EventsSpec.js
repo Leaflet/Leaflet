@@ -162,6 +162,46 @@ describe('Events', function() {
 			expect(spy).not.toHaveBeenCalled();
 			expect(spy2).toHaveBeenCalled();
 		});
+
+		it('removes listeners with a stamp originally added without one', function() {
+			var obj = new Klass(),
+				spy1 = jasmine.createSpy('unstamped'),
+				spy2 = jasmine.createSpy('stamped'),
+				foo = {};
+
+			obj.addEventListener('test', spy1, foo);
+			L.Util.stamp(foo);
+			obj.addEventListener('test', spy2, foo);
+
+			obj.removeEventListener('test', spy1, foo);
+			obj.removeEventListener('test', spy2, foo);
+
+			obj.fireEvent('test');
+
+			expect(spy1).not.toHaveBeenCalled();
+			expect(spy2).not.toHaveBeenCalled();
+		});
+		it('doesnt lose track of listeners when removing non existent ones', function () {
+			var obj = new Klass(),
+			    spy = jasmine.createSpy(),
+			    spy2 = jasmine.createSpy(),
+			    foo = {},
+			    foo2 = {};
+
+			L.Util.stamp(foo);
+			L.Util.stamp(foo2);
+
+			obj.addEventListener('test', spy, foo2);
+
+			obj.removeEventListener('test', spy, foo); // Decrements test_idx to 0, even though event listener isn't registered with foo's _leaflet_id
+			obj.removeEventListener('test', spy, foo2);  // Doesn't get removed
+
+			obj.addEventListener('test', spy2, foo);
+
+			obj.fireEvent('test');
+
+			expect(spy).not.toHaveBeenCalled();
+		});
 	});
 
 	describe('#on, #off & #fire', function() {
