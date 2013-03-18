@@ -179,6 +179,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://humangeo.github.com/leaflet-dvf/">Leaflet Data Visualization Framework</a>
+		</td><td>
+			New markers, layers, and utility classes for easy thematic mapping and data visualization.
+		</td><td>
+			<a href="https://github.com/sfairgrieve">Scott Fairgrieve</a>
+		</td>
+	</tr>
 </table>
 
 
