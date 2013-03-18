@@ -496,7 +496,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_getSubdomain: function (tilePoint) {
-		var index = (tilePoint.x + tilePoint.y) % this.options.subdomains.length;
+		var index = Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length;
 		return this.options.subdomains[index];
 	},
 
