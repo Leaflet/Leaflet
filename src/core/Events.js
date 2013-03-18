@@ -67,7 +67,7 @@ L.Mixin.Events = {
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
 		var events = this[key],
-		    contextId = context && context._leaflet_id, // if the context has an id, use it to find the listeners
+		    contextId = context && L.stamp(context),
 		    type, i, len, listeners, j,
 		    objKey, objLenKey;
 
