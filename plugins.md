@@ -174,7 +174,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.Awesome-Markers</a>
 		</td><td>
-			Colorful & iconic markers based on the Font Awesome icons.
+			Colorful, iconic & retina-proof markers for Leaflet, based on the Font Awesome/Twitter Bootstrap icons.
 		</td><td>
 			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>
 		</td>
