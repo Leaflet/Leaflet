@@ -124,6 +124,7 @@ L.Popup = L.Class.extend({
 			        L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
+			L.DomEvent.disableClickPropagation(closeButton);
 
 			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
