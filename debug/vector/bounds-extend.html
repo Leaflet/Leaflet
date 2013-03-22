@@ -5,9 +5,9 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
 	<link rel="stylesheet" href="../css/screen.css" />
-	
+
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
@@ -17,7 +17,7 @@
     <button onclick="boundsExtendLatLng()">Extend the bounds of the center rectangle with the lower left marker</button>
 	<script src="route.js"></script>
 	<script>
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
 
         var latLng = new L.LatLng(54.18815548107151, -7.657470703124999);
@@ -39,10 +39,10 @@
         var marker = new L.Marker(latLng);
 
     	map.addLayer(rectangle1).addLayer(rectangle2).addLayer(marker);
-        
-        
-        
-        
+
+
+
+
 
         function boundsExtendBounds() {
         	if  (rectangle3) {
@@ -60,7 +60,7 @@
 	            opacity: 1,
 	            fillOpacity: 0
 	        });
-	        
+
 	        map.addLayer(rectangle3);
         }
 
@@ -80,10 +80,10 @@
 	            opacity: 1,
 	            fillOpacity: 0
 	        });
-	        
+
 	        map.addLayer(rectangle3);
         }
-        
+
 	</script>
 </body>
 </html>
