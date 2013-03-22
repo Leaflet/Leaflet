@@ -52,9 +52,9 @@ By default (as we didn't pass any options when creating the map instance), all m
 
 Note that `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next we'll add a tile layer to add to our map, in this case it's a CloudMade tile layer with Fresh style. Creating a tile layer usually involves setting the URL template for the tile images (get yours at [CloudMade](http://cloudmade.com/register)), the attribution text and the maximum zoom level of the layer:
+Next we'll add a tile layer to add to our map, in this case it's a CloudMade tile layer with Fresh style. Creating a tile layer usually involves setting the URL template for the tile images (get yours at [CloudMade](http://account.cloudmade.com/register)), the attribution text and the maximum zoom level of the layer:
 
-<pre><code class="javascript">L.tileLayer('http://{s}.tile.cloudmade.com/<a href="http://cloudmade.com/register">API-key</a>/997/256/{z}/{x}/{y}.png', {
+<pre><code class="javascript">L.tileLayer('http://{s}.tile.cloudmade.com/<a href="http://account.cloudmade.com/register">API-key</a>/997/256/{z}/{x}/{y}.png', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>',
 	maxZoom: 18
 }).addTo(map);</code></pre>
