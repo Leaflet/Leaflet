@@ -310,8 +310,9 @@ L.Mixin.Events = {
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
 
 		var events = this[key] = this[key] || {},
+		    contextId = context && L.stamp(context),
 		    type, i, len, evt,
-		    contextId, objKey, objLenKey, eventsObj;
+		    objKey, objLenKey, eventsObj;
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -332,7 +333,6 @@ L.Mixin.Events = {
 				action: fn,
 				context: context || this
 			};
-			contextId = context && context._leaflet_id;
 
 			if (contextId) {
 				// store listeners of a particular context in a separate hash (if it has an id)
@@ -366,8 +366,9 @@ L.Mixin.Events = {
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
 		var events = this[key],
-			type, i, len, listeners, j,
-			contextId, objKey, objLenKey;
+		    contextId = context && L.stamp(context),
+		    type, i, len, listeners, j,
+		    objKey, objLenKey;
 
 		if (typeof types === 'object') {
 			for (type in types) {
@@ -383,8 +384,6 @@ L.Mixin.Events = {
 		for (i = 0, len = types.length; i < len; i++) {
 			if (this.hasEventListeners(types[i])) {
 
-				// if the context has an id, use it to find the listeners
-				contextId = context && context._leaflet_id;
 				objKey = types[i] + '_idx';
 
 				if (contextId && events[objKey]) {
@@ -399,7 +398,7 @@ L.Mixin.Events = {
 					}
 				}
 
-				if (contextId && listeners.length === 0) {
+				if (contextId && listeners.length === 0 && events[objKey] && events[objKey][contextId]) {
 					objLenKey = objKey + '_len';
 					delete events[objKey][contextId];
 					events[objLenKey] = (events[objLenKey] || 1) - 1;
@@ -2714,7 +2713,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_getSubdomain: function (tilePoint) {
-		var index = (tilePoint.x + tilePoint.y) % this.options.subdomains.length;
+		var index = Math.abs(tilePoint.x + tilePoint.y) % this.options.subdomains.length;
 		return this.options.subdomains[index];
 	},
 
@@ -3216,7 +3215,7 @@ L.Icon.Default = L.Icon.extend({
 		}
 
 		if (L.Browser.retina && name === 'icon') {
-			name += '@2x';
+			name += '-at-2x';
 		}
 
 		var path = L.Icon.Default.imagePath;
