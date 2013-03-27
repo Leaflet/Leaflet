@@ -238,7 +238,7 @@
     <rect
        inkscape:export-ydpi="180"
        inkscape:export-xdpi="180"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon-at-2x.png"
        y="502.36218"
        x="404"
        height="41"
@@ -248,7 +248,7 @@
     <rect
        inkscape:export-ydpi="180"
        inkscape:export-xdpi="180"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon-at-2x.png"
        y="507.57468"
        x="410.27899"
        height="14.5"
@@ -261,7 +261,7 @@
        d="m 416.54436,503.61217 c -6.57257,0 -12.04436,5.69119 -12.04436,11.86601 0,2.77793 1.56377,6.30831 2.69401,8.746 l 9.30616,17.87172 9.26184,-17.87172 c 1.13024,-2.43769 2.73799,-5.79129 2.73799,-8.746 0,-6.17482 -5.38307,-11.86601 -11.95564,-11.86601 z m 0,7.15501 c 2.58449,0.0167 4.67909,2.1215 4.67909,4.70988 0,2.5884 -2.0946,4.66256 -4.67909,4.67912 -2.58449,-0.0165 -4.67909,-2.09048 -4.67909,-4.67888 0,-2.58837 2.0946,-4.69335 4.67909,-4.71012 z"
        id="path3873"
        inkscape:connector-curvature="0"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon-at-2x.png"
        inkscape:export-xdpi="180"
        inkscape:export-ydpi="180" />
     <text
@@ -337,7 +337,7 @@
        style="fill:none;stroke:#ffffff;stroke-width:1.10000002;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:0.12156863;stroke-dasharray:none"
        id="path3792"
        d="m 416.53125,504.71875 c -5.94412,0 -10.9375,5.2193 -10.9375,10.75 0,2.35872 1.44272,5.83174 2.5625,8.25 0.005,0.011 0.0262,0.0203 0.0312,0.0312 L 416.5,539.71875 424.75,523.75 c 0.005,-0.0113 0.026,-0.0199 0.0312,-0.0312 1.13492,-2.44805 2.625,-5.70649 2.625,-8.25 0,-5.53807 -4.93088,-10.75 -10.875,-10.75 z m 0,4.96875 c 3.1677,0.0205 5.78125,2.60087 5.78125,5.78125 0,3.18039 -2.61348,5.76095 -5.78125,5.78125 -3.16786,-0.0202 -5.75,-2.60966 -5.75,-5.78125 0,-3.17157 2.58227,-5.7607 5.75,-5.78125 z"
-       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon@2x.png"
+       inkscape:export-filename="C:\Users\dave.STK\Desktop\git\Leaflet\Leaflet\dist\images\marker-icon-at-2x.png"
        inkscape:export-xdpi="180"
        inkscape:export-ydpi="180" />
   </g>
