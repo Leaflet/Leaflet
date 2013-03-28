@@ -92,6 +92,8 @@ L.Util = {
 			var value = data[key];
 			if (!data.hasOwnProperty(key)) {
 				throw new Error('No value provided for variable ' + str);
+			} else if (typeof value === 'function') {
+				value = value(data);
 			}
 			return value;
 		});
