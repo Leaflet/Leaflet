@@ -94,8 +94,7 @@ L.Util = {
 				throw new Error('No value provided for variable ' + str);
 			} else if (typeof value === 'function') {
 				value = value(data);
-			}
-			
+			}			
 			return value;
 		});
 	},
