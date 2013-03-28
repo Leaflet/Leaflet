@@ -131,9 +131,14 @@ L.Map.Drag = L.Handler.extend({
 			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
-			L.Util.requestAnimFrame(function () {
-				map.panBy(offset, decelerationDuration, ease, true);
-			});
+			if (!offset.x || !offset.y) {
+				map.fire('moveend');
+
+			} else {
+				L.Util.requestAnimFrame(function () {
+					map.panBy(offset, decelerationDuration, ease, true);
+				});
+			}
 		}
 
 		if (options.maxBounds) {
