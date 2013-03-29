@@ -188,6 +188,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/sfairgrieve">Scott Fairgrieve</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Zverik/leaflet-grayscale/">TileLayer.Grayscale</a>
+		</td><td>
+			A regular TileLayer with grayscale makeover.
+		</td><td>
+			<a href="https://github.com/Zverik">Ilya Zverev</a>
+		</td>
+	</tr>
 </table>
 
 
