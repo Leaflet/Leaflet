@@ -2,7 +2,7 @@
  * L.Control.Attribution is used for displaying attribution on the map (added by default).
  */
 
-L.Control.Attribution = L.Control.extend({
+L.Control.Attribution = L.control.attribution = L.Control.extend({
 	options: {
 		position: 'bottomright',
 		prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
@@ -109,7 +109,3 @@ L.Map.addInitHook(function () {
 		this.attributionControl = (new L.Control.Attribution()).addTo(this);
 	}
 });
-
-L.control.attribution = function (options) {
-	return new L.Control.Attribution(options);
-};

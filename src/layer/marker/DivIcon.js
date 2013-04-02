@@ -3,7 +3,7 @@
  * to use with L.Marker.
  */
 
-L.DivIcon = L.Icon.extend({
+L.DivIcon = L.divIcon = L.Icon.extend({
 	options: {
 		iconSize: new L.Point(12, 12), // also can be set through CSS
 		/*
@@ -36,7 +36,3 @@ L.DivIcon = L.Icon.extend({
 		return null;
 	}
 });
-
-L.divIcon = function (options) {
-	return new L.DivIcon(options);
-};

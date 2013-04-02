@@ -6,7 +6,7 @@ L.Map.mergeOptions({
 	closePopupOnClick: true
 });
 
-L.Popup = L.Class.extend({
+L.Popup = L.popup = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
@@ -265,7 +265,3 @@ L.Popup = L.Class.extend({
 		L.DomEvent.stop(e);
 	}
 });
-
-L.popup = function (options, source) {
-	return new L.Popup(options, source);
-};

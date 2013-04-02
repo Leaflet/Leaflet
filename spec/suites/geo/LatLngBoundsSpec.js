@@ -8,16 +8,48 @@ describe('LatLngBounds', function() {
 		c = new L.LatLngBounds();
 	});
 
-	describe('constructor', function () {
-		it('instantiates either passing two latlngs or an array of latlngs', function () {
-			var b = new L.LatLngBounds([
-				new L.LatLng(14, 12),
-				new L.LatLng(30, 40)
-			]);
-			expect(b).toEqual(a);
-			expect(b.getNorthWest()).toEqual(new L.LatLng(30, 12));
-		});
-	});
+	function testConstructor(fn, factory) {
+		return function () {
+			it('constructs a LatLngBounds instance from the given LatLngs', function () {
+				var sw = new L.LatLng(14, 12),
+				    ne = new L.LatLng(30, 40),
+				    b = fn(sw, ne);
+				expect(b.getSouthWest()).toEqual(sw);
+				expect(b.getNorthEast()).toEqual(ne);
+			});
+
+			it('constructs a LatLngBounds instance from the given array of LatLngs', function () {
+				var sw = new L.LatLng(14, 12),
+				    ne = new L.LatLng(30, 40),
+				    b = fn([sw, ne]);
+				expect(b.getSouthWest()).toEqual(sw);
+				expect(b.getNorthEast()).toEqual(ne);
+			});
+
+			it('constructs a LatLngBounds instance from the given array of coordinates', function () {
+				var sw = [14, 12],
+				    ne = [30, 40],
+				    b = fn([sw, ne]);
+				expect(b.getSouthWest()).toEqual(new L.LatLng(sw));
+				expect(b.getNorthEast()).toEqual(new L.LatLng(ne));
+			});
+
+			it('returns LatLngBounds instance as is', function () {
+				expect(fn(a)).toBe(a);
+			});
+
+			if (factory) {
+				it('returns null or undefined as is', function () {
+					expect(fn(undefined)).toBe(undefined);
+					expect(fn(null)).toBe(null);
+				});
+			}
+		}
+	}
+
+	describe('constructed via new L.LatLngBounds', testConstructor(function(a, b) { return new L.LatLngBounds(a, b); }));
+	describe('constructed via L.LatLngBounds', testConstructor(function(a, b) { return L.LatLngBounds(a, b); }, true));
+	describe('constructed via L.latLngBounds', testConstructor(function(a, b) { return L.latLngBounds(a, b); }, true));
 
 	describe('#extend', function () {
 		it('extends the bounds by a given point', function () {

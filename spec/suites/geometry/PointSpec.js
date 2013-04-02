@@ -1,19 +1,47 @@
 describe("Point", function() {
+	function testConstructor(fn, factory) {
+		return function () {
+			it("constructs the origin", function () {
+				var a = fn(0, 0);
+				expect(a.x).toEqual(0);
+				expect(a.x).toEqual(0);
+			});
 
-	describe('constructor', function() {
+			it("constructs a Point with the given x and y", function () {
+				var p = fn(1.5, 2.5);
+				expect(p.x).toEqual(1.5);
+				expect(p.y).toEqual(2.5);
+			});
 
-		it("creates a point with the given x and y", function() {
-			var p = new L.Point(1.5, 2.5);
-			expect(p.x).toEqual(1.5);
-			expect(p.y).toEqual(2.5);
-		});
+			it("rounds the given x and y if the third argument is true", function () {
+				var p = fn(1.3, 2.7, true);
+				expect(p.x).toEqual(1);
+				expect(p.y).toEqual(3);
+			});
 
-		it("rounds the given x and y if the third argument is true", function() {
-			var p = new L.Point(1.3, 2.7, true);
-			expect(p.x).toEqual(1);
-			expect(p.y).toEqual(3);
-		});
-	});
+			it('constructs a Point from an array of coordinates', function () {
+				var p = fn([50, 30]);
+				expect(p.x).toEqual(50);
+				expect(p.y).toEqual(30);
+			});
+
+			it('returns Point instances as is', function () {
+				var p = fn(50, 30);
+				expect(fn(p)).toBe(p);
+			});
+
+			if (factory) {
+				it('returns null or undefined as is', function () {
+					expect(fn(undefined)).toBe(undefined);
+					expect(fn(null)).toBe(null);
+				});
+			}
+		}
+	}
+
+	describe('constructed via new L.Point', testConstructor(function(a, b, c) { return new L.Point(a, b, c); }));
+	describe('constructed via L.Point', testConstructor(function(a, b, c) { return L.Point(a, b, c); }, true));
+	describe('constructed via L.point', testConstructor(function(a, b, c) { return L.point(a, b, c); }, true));
 
 	describe('#subtract', function() {
 		it('subtracts the given point from this one', function() {
@@ -82,23 +110,6 @@ describe("Point", function() {
 	describe('#toString', function () {
 		it('formats a string out of point coordinates', function () {
 			expect(new L.Point(50, 30) + '').toEqual('Point(50, 30)');
-		});
-	});
-
-	describe('L.point factory', function () {
-		it('leaves L.Point instances as is', function () {
-			var p = new L.Point(50, 30);
-			expect(L.point(p)).toBe(p);
-		});
-		it('creates a point out of three arguments', function () {
-			expect(L.point(50.1, 30.1, true)).toEqual(new L.Point(50, 30));
-		});
-		it('creates a point from an array of coordinates', function () {
-			expect(L.point([50, 30])).toEqual(new L.Point(50, 30));
-		});
-		it('does not fail on invalid arguments', function () {
-			expect(L.point(undefined)).toBe(undefined);
-			expect(L.point(null)).toBe(null);
 		});
 	});
 });

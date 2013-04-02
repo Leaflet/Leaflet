@@ -2,8 +2,13 @@
  * L.Bounds represents a rectangular area on the screen in pixel coordinates.
  */
 
-L.Bounds = function (a, b) { //(Point, Point) or Point[]
-	if (!a) { return; }
+L.Bounds = L.bounds = function (a, b) { // (Bounds) or (Point, Point) or Point[]
+	if (!a || a instanceof L.Bounds) {
+		return a;
+	}
+	if (!(this instanceof L.Bounds)) {
+		return new L.Bounds(a, b);
+	}
 
 	var points = b ? [a, b] : a;
 
@@ -85,11 +90,4 @@ L.Bounds.prototype = {
 	isValid: function () {
 		return !!(this.min && this.max);
 	}
-};
-
-L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
-	if (!a || a instanceof L.Bounds) {
-		return a;
-	}
-	return new L.Bounds(a, b);
 };

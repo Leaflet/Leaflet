@@ -2,7 +2,7 @@
  * L.TileLayer is used for standard xyz-numbered tile layers.
  */
 
-L.TileLayer = L.Class.extend({
+L.TileLayer = L.tileLayer = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	options: {
@@ -582,7 +582,3 @@ L.TileLayer = L.Class.extend({
 		layer._tileLoaded();
 	}
 });
-
-L.tileLayer = function (url, options) {
-	return new L.TileLayer(url, options);
-};

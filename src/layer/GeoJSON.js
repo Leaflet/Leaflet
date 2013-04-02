@@ -2,7 +2,7 @@
  * L.GeoJSON turns any GeoJSON data into a Leaflet layer.
  */
 
-L.GeoJSON = L.FeatureGroup.extend({
+L.GeoJSON = L.geoJson = L.FeatureGroup.extend({
 
 	initialize: function (geojson, options) {
 		L.setOptions(this, options);
@@ -146,7 +146,3 @@ L.extend(L.GeoJSON, {
 		return latlngs;
 	}
 });
-
-L.geoJson = function (geojson, options) {
-	return new L.GeoJSON(geojson, options);
-};

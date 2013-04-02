@@ -2,31 +2,40 @@ describe("Class", function() {
 
 	describe("#extend", function() {
 		var Klass,
-			constructor,
+			initializer,
 			method;
 
 		beforeEach(function() {
-			constructor = jasmine.createSpy("Klass constructor");
+			initializer = jasmine.createSpy("Klass initializer");
 			method = jasmine.createSpy("Klass#bar method");
 
 			Klass = L.Class.extend({
 				statics: {bla: 1},
 				includes: {mixin: true},
 
-				initialize: constructor,
+				initialize: initializer,
 				foo: 5,
 				bar: method
 			});
 		});
 
-		it("creates a class with the given constructor & properties", function() {
-			var a = new Klass();
+		it("returns a constructor that calls initialize", function() {
+			var a = new Klass(1, 2, 3);
+			expect(initializer).toHaveBeenCalledWith(1, 2, 3);
+			expect(a instanceof Klass).toBe(true);
+		});
 
-			expect(constructor).toHaveBeenCalled();
+		it("returns a constructor that can be called without new", function() {
+			var a = Klass(1, 2, 3);
+			expect(initializer).toHaveBeenCalledWith(1, 2, 3);
+			expect(a instanceof Klass).toBe(true);
+		});
+
+		it("sets property values", function() {
+			var a = new Klass();
 			expect(a.foo).toEqual(5);
 
 			a.bar();
-
 			expect(method).toHaveBeenCalled();
 		});
 
@@ -38,7 +47,7 @@ describe("Class", function() {
 			expect(b instanceof Klass).toBeTruthy();
 			expect(b instanceof Klass2).toBeTruthy();
 
-			expect(constructor).toHaveBeenCalled();
+			expect(initializer).toHaveBeenCalled();
 			expect(b.baz).toEqual(2);
 
 			b.bar();

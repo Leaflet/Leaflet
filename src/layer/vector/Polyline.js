@@ -2,7 +2,7 @@
  * L.Polyline is used to display polylines on a map.
  */
 
-L.Polyline = L.Path.extend({
+L.Polyline = L.polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.Path.prototype.initialize.call(this, options);
 
@@ -166,7 +166,3 @@ L.Polyline = L.Path.extend({
 		L.Path.prototype._updatePath.call(this);
 	}
 });
-
-L.polyline = function (latlngs, options) {
-	return new L.Polyline(latlngs, options);
-};

@@ -3,7 +3,7 @@
  * All other controls extend from this class.
  */
 
-L.Control = L.Class.extend({
+L.Control = L.control = L.Class.extend({
 	options: {
 		position: 'topright'
 	},
@@ -68,7 +68,3 @@ L.Control = L.Class.extend({
 		return this;
 	}
 });
-
-L.control = function (options) {
-	return new L.Control(options);
-};

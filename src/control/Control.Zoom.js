@@ -2,7 +2,7 @@
  * L.Control.Zoom is used for the default zoom buttons on the map.
  */
 
-L.Control.Zoom = L.Control.extend({
+L.Control.Zoom = L.control.zoom = L.Control.extend({
 	options: {
 		position: 'topleft'
 	},
@@ -79,8 +79,3 @@ L.Map.addInitHook(function () {
 		this.addControl(this.zoomControl);
 	}
 });
-
-L.control.zoom = function (options) {
-	return new L.Control.Zoom(options);
-};
-

@@ -6,18 +6,34 @@
 L.Class = function () {};
 
 L.Class.extend = function (props) {
+	var noInitialize = {};
 
 	// extended class with the new prototype
-	var NewClass = function () {
+	var NewClass = function (_) {
+		if (!(this instanceof NewClass)) {
+			var instance = new NewClass(noInitialize);
 
-		// call the constructor
-		if (this.initialize) {
-			this.initialize.apply(this, arguments);
-		}
+			// call the constructor
+			if (instance.initialize) {
+				instance.initialize.apply(instance, arguments);
+			}
 
-		// call all constructor hooks
-		if (this._initHooks) {
-			this.callInitHooks();
+			// call all constructor hooks
+			if (instance._initHooks) {
+				instance.callInitHooks();
+			}
+
+			return instance;
+		} else if (_ !== noInitialize) {
+			// call the constructor
+			if (this.initialize) {
+				this.initialize.apply(this, arguments);
+			}
+
+			// call all constructor hooks
+			if (this._initHooks) {
+				this.callInitHooks();
+			}
 		}
 	};
 

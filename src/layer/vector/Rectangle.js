@@ -2,7 +2,7 @@
  * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
  */
 
-L.Rectangle = L.Polygon.extend({
+L.Rectangle = L.rectangle = L.Polygon.extend({
 	initialize: function (latLngBounds, options) {
 		L.Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},
@@ -21,7 +21,3 @@ L.Rectangle = L.Polygon.extend({
 		];
 	}
 });
-
-L.rectangle = function (latLngBounds, options) {
-	return new L.Rectangle(latLngBounds, options);
-};

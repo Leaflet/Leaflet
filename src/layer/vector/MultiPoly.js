@@ -34,14 +34,6 @@
 		});
 	}
 
-	L.MultiPolyline = createMulti(L.Polyline);
-	L.MultiPolygon = createMulti(L.Polygon);
-
-	L.multiPolyline = function (latlngs, options) {
-		return new L.MultiPolyline(latlngs, options);
-	};
-
-	L.multiPolygon = function (latlngs, options) {
-		return new L.MultiPolygon(latlngs, options);
-	};
+	L.MultiPolyline = L.multiPolyline = createMulti(L.Polyline);
+	L.MultiPolygon = L.multiPolygon = createMulti(L.Polygon);
 }());

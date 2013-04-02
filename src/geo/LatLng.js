@@ -2,12 +2,28 @@
  * L.LatLng represents a geographical point with latitude and longitude coordinates.
  */
 
-L.LatLng = function (rawLat, rawLng) { // (Number, Number)
-	var lat = parseFloat(rawLat),
-	    lng = parseFloat(rawLng);
+L.LatLng = L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Number)
+	if (a instanceof L.LatLng) {
+		return a;
+	}
+	if (L.Util.isArray(a)) {
+		return new L.LatLng(a[0], a[1]);
+	}
+	if (a === undefined || a === null) {
+		return a;
+	}
+	if (typeof a === 'object' && 'lat' in a) {
+		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon);
+	}
+	if (!(this instanceof L.LatLng)) {
+		return new L.LatLng(a, b);
+	}
+
+	var lat = parseFloat(a),
+	    lng = parseFloat(b);
 
 	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
+		throw new Error('Invalid LatLng object: (' + a + ', ' + b + ')');
 	}
 
 	this.lat = lat;
@@ -69,20 +85,3 @@ L.LatLng.prototype = {
 		return new L.LatLng(this.lat, lng);
 	}
 };
-
-L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Number)
-	if (a instanceof L.LatLng) {
-		return a;
-	}
-	if (L.Util.isArray(a)) {
-		return new L.LatLng(a[0], a[1]);
-	}
-	if (a === undefined || a === null) {
-		return a;
-	}
-	if (typeof a === 'object' && 'lat' in a) {
-		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon);
-	}
-	return new L.LatLng(a, b);
-};
-
