@@ -10,7 +10,7 @@ for (var i=0; i < libSources.length; i++) {
 
 // list of files / patterns to load in the browser
 files = [].concat([
-	MOCHA,
+	"../node_modules/mocha/mocha.js",
 	MOCHA_ADAPTER,
 	"before.js",
 	"karma.js",
