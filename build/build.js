@@ -156,8 +156,8 @@ exports.build = function (compsBase32, buildName) {
 };
 
 exports.test = function() {
-	var testacular = require('testacular'),
-	    testConfig = {configFile : __dirname + '/../spec/testacular.conf.js'};
+	var karma = require('karma'),
+	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
 
 	testConfig.browsers = ['PhantomJS'];
 
@@ -179,7 +179,7 @@ exports.test = function() {
 		testConfig.reporters = ['coverage'];
 	}
 
-	testacular.server.start(testConfig);
+	karma.server.start(testConfig);
 
 	function isArgv(optName) {
 		return process.argv.indexOf(optName) !== -1;
