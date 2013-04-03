@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Jasmine Spec Runner</title>
-	<link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
-	<script type="text/javascript" src="jasmine/jasmine.js"></script>
-	<script type="text/javascript" src="jasmine/jasmine-html.js"></script>
+    <meta charset="utf-8">
+	<title>Spec Runner</title>
+	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="expect.js"></script>
+   	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
 	<script type="text/javascript" src="happen.js"></script>
+	<script type="text/javascript" src="sinon.js"></script>
 
 	<!-- source files -->
 	<script type="text/javascript" src="before.js"></script>
@@ -13,6 +18,10 @@
 
 	<script type="text/javascript" src="../debug/leaflet-include.js"></script>
 
+    <script>
+        mocha.setup('bdd');
+        mocha.ignoreLeaks();
+    </script>
 
 	<!-- spec files -->
 
@@ -59,22 +68,9 @@
 
 	<!-- /map -->
 	<script type="text/javascript" src="suites/map/MapSpec.js"></script>
-</head>
-<body>
-	<script type="text/javascript">
-		(function() {
-			var jasmineEnv = jasmine.getEnv();
-			jasmineEnv.updateInterval = 1000;
 
-			var htmlReporter = new jasmine.HtmlReporter();
-			jasmineEnv.addReporter(htmlReporter);
-
-			jasmineEnv.specFilter = function(spec) {
-				return htmlReporter.specFilter(spec);
-			};
-
-			jasmineEnv.execute();
-		})();
-	</script>
+    <script>
+        (window.mochaPhantomJS || window.mocha).run();
+    </script>
 </body>
 </html>

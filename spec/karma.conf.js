@@ -10,10 +10,12 @@ for (var i=0; i < libSources.length; i++) {
 
 // list of files / patterns to load in the browser
 files = [].concat([
-	JASMINE,
-	JASMINE_ADAPTER,
+	"../node_modules/mocha/mocha.js",
+	MOCHA_ADAPTER,
 	"before.js",
-	"karma.js"
+	"karma.js",
+	"sinon.js",
+	"expect.js"
 ], libSources, [
 	"after.js",
 	"happen.js",
