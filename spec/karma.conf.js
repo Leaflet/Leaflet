@@ -1,4 +1,4 @@
-// Testacular configuration
+// Karma configuration
 var libSources = require(__dirname+'/../build/build.js').getFiles();
 
 // base path, that will be used to resolve files and exclude
@@ -13,7 +13,7 @@ files = [].concat([
 	JASMINE,
 	JASMINE_ADAPTER,
 	"before.js",
-	"testacular.js"
+	"karma.js"
 ], libSources, [
 	"after.js",
 	"happen.js",
