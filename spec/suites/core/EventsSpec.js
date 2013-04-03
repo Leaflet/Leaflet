@@ -165,8 +165,8 @@ describe('Events', function() {
 
 		it('removes listeners with a stamp originally added without one', function() {
 			var obj = new Klass(),
-				spy1 = jasmine.createSpy('unstamped'),
-				spy2 = jasmine.createSpy('stamped'),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
 				foo = {};
 
 			obj.addEventListener('test', spy1, foo);
@@ -178,13 +178,13 @@ describe('Events', function() {
 
 			obj.fireEvent('test');
 
-			expect(spy1).not.toHaveBeenCalled();
-			expect(spy2).not.toHaveBeenCalled();
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(false);
 		});
 		it('doesnt lose track of listeners when removing non existent ones', function () {
 			var obj = new Klass(),
-			    spy = jasmine.createSpy(),
-			    spy2 = jasmine.createSpy(),
+			    spy = sinon.spy(),
+			    spy2 = sinon.spy(),
 			    foo = {},
 			    foo2 = {};
 
@@ -200,7 +200,7 @@ describe('Events', function() {
 
 			obj.fireEvent('test');
 
-			expect(spy).not.toHaveBeenCalled();
+			expect(spy.called).to.be(false);
 		});
 	});
 
