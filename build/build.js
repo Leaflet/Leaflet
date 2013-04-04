@@ -170,7 +170,7 @@ exports.test = function() {
 
 	if (isArgv('--cov')) {
 		testConfig.preprocessors = {
-			'**/src/**/*.js': 'coverage'
+			'../src/**/*.js': 'coverage'
 		};
 		testConfig.coverageReporter = {
 			type : 'html',
