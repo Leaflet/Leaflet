@@ -1,11 +1,11 @@
 describe('Polygon', function() {
-	
+
 	var c = document.createElement('div');
 	c.style.width = '400px';
 	c.style.height = '400px';
 	var map = new L.Map(c);
 	map.setView(new L.LatLng(55.8, 37.6), 6);
-	
+
 	describe("#initialize", function() {
 		it("doesn't overwrite the given latlng array", function () {
 			var originalLatLngs = [
@@ -16,8 +16,8 @@ describe('Polygon', function() {
 
 			var polygon = new L.Polygon(sourceLatLngs);
 
-			expect(sourceLatLngs).toEqual(originalLatLngs);
-			expect(polygon._latlngs).toNotEqual(sourceLatLngs);
+			expect(sourceLatLngs).to.eql(originalLatLngs);
+			expect(polygon._latlngs).to.not.eql(sourceLatLngs);
 		});
 	});
 
@@ -33,7 +33,7 @@ describe('Polygon', function() {
 
 			polygon.setLatLngs(sourceLatLngs);
 
-			expect(sourceLatLngs).toEqual(originalLatLngs);
+			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
 	});
 
@@ -49,7 +49,7 @@ describe('Polygon', function() {
 
 			polygon.spliceLatLngs(1, 1, [7, 8]);
 
-			expect(polygon._latlngs).toEqual([L.latLng([1, 2]), L.latLng([7, 8]), L.latLng([5, 6])]);
+			expect(polygon._latlngs).to.eql([L.latLng([1, 2]), L.latLng([7, 8]), L.latLng([5, 6])]);
 		});
 	});
 });

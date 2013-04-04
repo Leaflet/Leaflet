@@ -10,7 +10,7 @@
 				it("takes that radius", function() {
 					var marker = L.circleMarker([0, 0], { radius: 20 }).addTo(map);
 
-					expect(marker._radius).toBe(20);
+					expect(marker._radius).to.be(20);
 				});
 			});
 
@@ -19,7 +19,7 @@
 					var marker = L.circleMarker([0, 0], { radius: 20 });
 					marker.setRadius(15);
 					marker.addTo(map);
-					expect(marker._radius).toBe(15);
+					expect(marker._radius).to.be(15);
 				});
 			});
 
@@ -28,7 +28,7 @@
 					var marker = L.circleMarker([0, 0], { radius: 20 });
 					marker.addTo(map);
 					marker.setRadius(15);
-					expect(marker._radius).toBe(15);
+					expect(marker._radius).to.be(15);
 				});
 			});
 
@@ -37,7 +37,7 @@
 					var marker = L.circleMarker([0, 0], { radius: 20 });
 					marker.addTo(map);
 					marker.setStyle({ radius: 15 });
-					expect(marker._radius).toBe(15);
+					expect(marker._radius).to.be(15);
 				});
 			});
 			describe("and setStyle is used to change the radius before adding", function () {
@@ -45,7 +45,7 @@
 					var marker = L.circleMarker([0, 0], { radius: 20 });
 					marker.setStyle({ radius: 15 });
 					marker.addTo(map);
-					expect(marker._radius).toBe(15);
+					expect(marker._radius).to.be(15);
 				});
 			});
 		});

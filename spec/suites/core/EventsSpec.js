@@ -11,35 +11,35 @@ describe('Events', function() {
 
 		it('fires all listeners added through #addEventListener', function() {
 			var obj = new Klass(),
-				spy = jasmine.createSpy(),
-				spy2 = jasmine.createSpy(),
-				spy3 = jasmine.createSpy(),
-				spy4 = jasmine.createSpy(),
-				spy5 = jasmine.createSpy();
-				spy6 = jasmine.createSpy();
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
+				spy3 = sinon.spy(),
+				spy4 = sinon.spy(),
+				spy5 = sinon.spy();
+				spy6 = sinon.spy();
 
-			obj.addEventListener('test', spy);
+			obj.addEventListener('test', spy1);
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
 			obj.addEventListener({ test: spy4, other: spy5 });
 			obj.addEventListener({'test other': spy6 });
 
-			expect(spy).not.toHaveBeenCalled();
-			expect(spy2).not.toHaveBeenCalled();
-			expect(spy3).not.toHaveBeenCalled();
-			expect(spy4).not.toHaveBeenCalled();
-			expect(spy5).not.toHaveBeenCalled();
-			expect(spy6).not.toHaveBeenCalled();
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(false);
+			expect(spy3.called).to.be(false);
+			expect(spy4.called).to.be(false);
+			expect(spy5.called).to.be(false);
+			expect(spy6.called).to.be(false);
 
 			obj.fireEvent('test');
 
-			expect(spy).toHaveBeenCalled();
-			expect(spy2).toHaveBeenCalled();
-			expect(spy3).not.toHaveBeenCalled();
-			expect(spy4).toHaveBeenCalled();
-			expect(spy5).not.toHaveBeenCalled();
-			expect(spy6).toHaveBeenCalled();
-			expect(spy6.calls.length).toEqual(1);
+			expect(spy1.called).to.be(true);
+			expect(spy2.called).to.be(true);
+			expect(spy3.called).to.be(false);
+			expect(spy4.called).to.be(true);
+			expect(spy5.called).to.be(false);
+			expect(spy6.called).to.be(true);
+			expect(spy6.callCount).to.be(1);
 		});
 
 		it('provides event object to listeners and executes them in the right context', function() {
@@ -50,31 +50,31 @@ describe('Events', function() {
 				foo = {};
 
 			function listener1(e) {
-				expect(e.type).toEqual('test');
-				expect(e.target).toEqual(obj);
-				expect(this).toEqual(obj);
-				expect(e.baz).toEqual(1);
+				expect(e.type).to.eql('test');
+				expect(e.target).to.eql(obj);
+				expect(this).to.eql(obj);
+				expect(e.baz).to.eql(1);
 			}
 
 			function listener2(e) {
-				expect(e.type).toEqual('test');
-				expect(e.target).toEqual(obj2);
-				expect(this).toEqual(foo);
-				expect(e.baz).toEqual(2);
+				expect(e.type).to.eql('test');
+				expect(e.target).to.eql(obj2);
+				expect(this).to.eql(foo);
+				expect(e.baz).to.eql(2);
 			}
 
 			function listener3(e) {
-				expect(e.type).toEqual('test');
-				expect(e.target).toEqual(obj3);
-				expect(this).toEqual(obj3);
-				expect(e.baz).toEqual(3);
+				expect(e.type).to.eql('test');
+				expect(e.target).to.eql(obj3);
+				expect(this).to.eql(obj3);
+				expect(e.baz).to.eql(3);
 			}
 
 			function listener4(e) {
-				expect(e.type).toEqual('test');
-				expect(e.target).toEqual(obj4);
-				expect(this).toEqual(foo);
-				expect(e.baz).toEqual(4);
+				expect(e.type).to.eql('test');
+				expect(e.target).to.eql(obj4);
+				expect(this).to.eql(foo);
+				expect(e.baz).to.eql(4);
 			}
 
 			obj.addEventListener('test', listener1);
@@ -90,18 +90,18 @@ describe('Events', function() {
 
 		it('calls no listeners removed through #removeEventListener', function() {
 			var obj = new Klass(),
-				spy = jasmine.createSpy(),
-				spy2 = jasmine.createSpy(),
-				spy3 = jasmine.createSpy(),
-				spy4 = jasmine.createSpy(),
-				spy5 = jasmine.createSpy();
+				spy = sinon.spy(),
+				spy2 = sinon.spy(),
+				spy3 = sinon.spy(),
+				spy4 = sinon.spy(),
+				spy5 = sinon.spy();
 
 			obj.addEventListener('test', spy);
 			obj.removeEventListener('test', spy);
 
 			obj.fireEvent('test');
 
-			expect(spy).not.toHaveBeenCalled();
+			expect(spy.called).to.be(false);
 
 			obj.addEventListener('test2', spy2);
 			obj.addEventListener('test2', spy3);
@@ -109,8 +109,8 @@ describe('Events', function() {
 
 			obj.fireEvent('test2');
 
-			expect(spy2).not.toHaveBeenCalled();
-			expect(spy3).not.toHaveBeenCalled();
+			expect(spy2.called).to.be(false);
+			expect(spy3.called).to.be(false);
 
 			obj.addEventListener('test3', spy4);
 			obj.addEventListener('test4', spy5);
@@ -122,51 +122,51 @@ describe('Events', function() {
 			obj.fireEvent('test3');
 			obj.fireEvent('test4');
 
-			expect(spy4).not.toHaveBeenCalled();
-			expect(spy5).not.toHaveBeenCalled();
+			expect(spy4.called).to.be(false);
+			expect(spy5.called).to.be(false);
 		});
 
 		// added due to context-sensitive removeListener optimization
 		it('fires multiple listeners with the same context with id', function () {
 			var obj = new Klass(),
-				spy = jasmine.createSpy(),
-				spy2 = jasmine.createSpy(),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
 				foo = {};
 
 			L.Util.stamp(foo);
 
-			obj.addEventListener('test', spy, foo);
+			obj.addEventListener('test', spy1, foo);
 			obj.addEventListener('test', spy2, foo);
 
 			obj.fireEvent('test');
 
-			expect(spy).toHaveBeenCalled();
-			expect(spy2).toHaveBeenCalled();
+			expect(spy1.called).to.be(true);
+			expect(spy2.called).to.be(true);
 		});
 
 		it('removes listeners with stamped contexts', function () {
 			var obj = new Klass(),
-				spy = jasmine.createSpy(),
-				spy2 = jasmine.createSpy(),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
 				foo = {};
 
 			L.Util.stamp(foo);
 
-			obj.addEventListener('test', spy, foo);
+			obj.addEventListener('test', spy1, foo);
 			obj.addEventListener('test', spy2, foo);
 
-			obj.removeEventListener('test', spy, foo);
+			obj.removeEventListener('test', spy1, foo);
 
 			obj.fireEvent('test');
 
-			expect(spy).not.toHaveBeenCalled();
-			expect(spy2).toHaveBeenCalled();
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(true);
 		});
 
 		it('removes listeners with a stamp originally added without one', function() {
 			var obj = new Klass(),
-				spy1 = jasmine.createSpy('unstamped'),
-				spy2 = jasmine.createSpy('stamped'),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
 				foo = {};
 
 			obj.addEventListener('test', spy1, foo);
@@ -178,13 +178,13 @@ describe('Events', function() {
 
 			obj.fireEvent('test');
 
-			expect(spy1).not.toHaveBeenCalled();
-			expect(spy2).not.toHaveBeenCalled();
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(false);
 		});
 		it('doesnt lose track of listeners when removing non existent ones', function () {
 			var obj = new Klass(),
-			    spy = jasmine.createSpy(),
-			    spy2 = jasmine.createSpy(),
+			    spy = sinon.spy(),
+			    spy2 = sinon.spy(),
 			    foo = {},
 			    foo2 = {};
 
@@ -200,7 +200,7 @@ describe('Events', function() {
 
 			obj.fireEvent('test');
 
-			expect(spy).not.toHaveBeenCalled();
+			expect(spy.called).to.be(false);
 		});
 	});
 
@@ -208,23 +208,23 @@ describe('Events', function() {
 
 		it('works like #addEventListener && #removeEventListener', function() {
 			var obj = new Klass(),
-				spy = jasmine.createSpy();
+				spy = sinon.spy();
 
 			obj.on('test', spy);
 			obj.fire('test');
 
-			expect(spy).toHaveBeenCalled();
+			expect(spy.called).to.be(true);
 
 			obj.off('test', spy);
 			obj.fireEvent('test');
 
-			expect(spy.callCount).toBeLessThan(2);
+			expect(spy.callCount).to.be.lessThan(2);
 		});
 
 		it('does not override existing methods with the same name', function() {
-			var spy1 = jasmine.createSpy(),
-				spy2 = jasmine.createSpy(),
-				spy3 = jasmine.createSpy();
+			var spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
+				spy3 = sinon.spy();
 
 			var Klass2 = L.Class.extend({
 				includes: L.Mixin.Events,
@@ -236,13 +236,13 @@ describe('Events', function() {
 			var obj = new Klass2();
 
 			obj.on();
-			expect(spy1).toHaveBeenCalled();
+			expect(spy1.called).to.be(true);
 
 			obj.off();
-			expect(spy2).toHaveBeenCalled();
+			expect(spy2.called).to.be(true);
 
 			obj.fire();
-			expect(spy3).toHaveBeenCalled();
+			expect(spy3.called).to.be(true);
 		});
 	});
 });

@@ -4,9 +4,9 @@
 			var lg = L.layerGroup(),
 				marker = L.marker([0, 0]);
 
-			expect(lg.addLayer(marker)).toEqual(lg);
+			expect(lg.addLayer(marker)).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).toBe(true);
+			expect(lg.hasLayer(marker)).to.be(true);
 		});
 	});
 	describe("#removeLayer", function () {
@@ -15,9 +15,9 @@
 				marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
-			expect(lg.removeLayer(marker)).toEqual(lg);
+			expect(lg.removeLayer(marker)).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).toBe(false);
+			expect(lg.hasLayer(marker)).to.be(false);
 		});
 	});
 	describe("#clearLayers", function () {
@@ -26,9 +26,9 @@
 				marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
-			expect(lg.clearLayers()).toEqual(lg);
+			expect(lg.clearLayers()).to.eql(lg);
 
-			expect(lg.hasLayer(marker)).toBe(false);
+			expect(lg.hasLayer(marker)).to.be(false);
 		});
 	});
 	describe("#getLayers", function () {
@@ -38,7 +38,7 @@
 
 			lg.addLayer(marker);
 
-			expect(lg.getLayers()).toEqual([marker]);
+			expect(lg.getLayers()).to.eql([marker]);
 		});
 	});
 	describe("#eachLayer", function () {
@@ -50,8 +50,8 @@
 			lg.addLayer(marker);
 
 			lg.eachLayer(function(layer) {
-				expect(layer).toEqual(marker);
-				expect(this).toEqual(ctx);
+				expect(layer).to.eql(marker);
+				expect(this).to.eql(ctx);
 			}, ctx);
 		});
 	});

@@ -6,8 +6,8 @@ describe("Class", function() {
 			method;
 
 		beforeEach(function() {
-			constructor = jasmine.createSpy("Klass constructor");
-			method = jasmine.createSpy("Klass#bar method");
+			constructor = sinon.spy();
+			method = sinon.spy();
 
 			Klass = L.Class.extend({
 				statics: {bla: 1},
@@ -22,12 +22,12 @@ describe("Class", function() {
 		it("creates a class with the given constructor & properties", function() {
 			var a = new Klass();
 
-			expect(constructor).toHaveBeenCalled();
-			expect(a.foo).toEqual(5);
+			expect(constructor.called).to.be.ok();
+			expect(a.foo).to.eql(5);
 
 			a.bar();
 
-			expect(method).toHaveBeenCalled();
+			expect(method.called).to.be.ok();
 		});
 
 		it("inherits parent classes' constructor & properties", function() {
@@ -35,36 +35,36 @@ describe("Class", function() {
 
 			var b = new Klass2();
 
-			expect(b instanceof Klass).toBeTruthy();
-			expect(b instanceof Klass2).toBeTruthy();
+			expect(b instanceof Klass).to.be.ok();
+			expect(b instanceof Klass2).to.be.ok();
 
-			expect(constructor).toHaveBeenCalled();
-			expect(b.baz).toEqual(2);
+			expect(constructor.called).to.be.ok();
+			expect(b.baz).to.eql(2);
 
 			b.bar();
 
-			expect(method).toHaveBeenCalled();
+			expect(method.called).to.be.ok();
 		});
 
 		it("supports static properties", function() {
-			expect(Klass.bla).toEqual(1);
+			expect(Klass.bla).to.eql(1);
 		});
 
 		it("inherits parent static properties", function() {
 			var Klass2 = Klass.extend({});
 
-			expect(Klass2.bla).toEqual(1);
+			expect(Klass2.bla).to.eql(1);
 		});
 
 		it("overrides parent static properties", function() {
 			var Klass2 = Klass.extend({statics: {bla: 2}});
 
-			expect(Klass2.bla).toEqual(2);
+			expect(Klass2.bla).to.eql(2);
 		});
 
 		it("includes the given mixin", function() {
 			var a = new Klass();
-			expect(a.mixin).toBeTruthy();
+			expect(a.mixin).to.be.ok();
 		});
 
 		it("includes multiple mixins", function() {
@@ -73,15 +73,15 @@ describe("Class", function() {
 			});
 			var a = new Klass2();
 
-			expect(a.mixin).toBeTruthy();
-			expect(a.mixin2).toBeTruthy();
+			expect(a.mixin).to.be.ok();
+			expect(a.mixin2).to.be.ok();
 		});
 
 		it("grants the ability to include the given mixin", function() {
 			Klass.include({mixin2: true});
 
 			var a = new Klass();
-			expect(a.mixin2).toBeTruthy();
+			expect(a.mixin2).to.be.ok();
 		});
 
 		it("merges options instead of replacing them", function() {
@@ -100,7 +100,7 @@ describe("Class", function() {
 
 			var a = new KlassWithOptions2();
 
-			expect(a.options).toEqual({
+			expect(a.options).to.eql({
 				foo1: 1,
 				foo2: 3,
 				foo3: 4
@@ -108,20 +108,20 @@ describe("Class", function() {
 		});
 
 		it("adds constructor hooks correctly", function () {
-			var spy1 = jasmine.createSpy("init hook 1");
+			var spy1 = sinon.spy();
 
 			Klass.addInitHook(spy1);
 			Klass.addInitHook('bar', 1, 2, 3);
 
 			var a = new Klass();
 
-			expect(spy1).toHaveBeenCalled();
-			expect(method).toHaveBeenCalledWith(1, 2, 3);
+			expect(spy1.called).to.be.ok();
+			expect(method.calledWith(1, 2, 3));
 		});
 
 		it("inherits constructor hooks", function () {
-			var spy1 = jasmine.createSpy("init hook 1"),
-				spy2 = jasmine.createSpy("init hook 2");
+			var spy1 = sinon.spy(),
+				spy2 = sinon.spy();
 
 			var Klass2 = Klass.extend({});
 
@@ -130,13 +130,13 @@ describe("Class", function() {
 
 			var a = new Klass2();
 
-			expect(spy1).toHaveBeenCalled();
-			expect(spy2).toHaveBeenCalled();
+			expect(spy1.called).to.be.ok();
+			expect(spy2.called).to.be.ok();
 		});
 
 		it("does not call child constructor hooks", function () {
-			var spy1 = jasmine.createSpy("init hook 1"),
-				spy2 = jasmine.createSpy("init hook 2");
+			var spy1 = sinon.spy(),
+				spy2 = sinon.spy();
 
 			var Klass2 = Klass.extend({});
 
@@ -145,8 +145,8 @@ describe("Class", function() {
 
 			var a = new Klass();
 
-			expect(spy1).toHaveBeenCalled();
-			expect(spy2).not.toHaveBeenCalled();
+			expect(spy1.called).to.be.ok();
+			expect(spy2.called).to.eql(false);
 		});
 	});
 

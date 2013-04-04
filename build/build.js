@@ -32,7 +32,7 @@ function getFiles(compsBase32) {
 
 	if (compsBase32) {
 		comps = parseInt(compsBase32, 32).toString(2).split('');
-		console.log('Managing dependencies...')
+		console.log('Managing dependencies...');
 	}
 
 	function addFiles(srcs) {
@@ -170,7 +170,7 @@ exports.test = function() {
 
 	if (isArgv('--cov')) {
 		testConfig.preprocessors = {
-			'**/src/**/*.js': 'coverage',
+			'**/src/**/*.js': 'coverage'
 		};
 		testConfig.coverageReporter = {
 			type : 'html',
@@ -184,4 +184,4 @@ exports.test = function() {
 	function isArgv(optName) {
 		return process.argv.indexOf(optName) !== -1;
 	}
-}
+};
