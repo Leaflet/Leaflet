@@ -13,7 +13,6 @@ files = [].concat([
 	"../node_modules/mocha/mocha.js",
 	MOCHA_ADAPTER,
 	"before.js",
-	"karma.js",
 	"sinon.js",
 	"expect.js"
 ], libSources, [

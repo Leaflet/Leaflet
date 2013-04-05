@@ -35,13 +35,16 @@ describe("Map", function () {
 			var container = document.createElement('div'),
 			    map = new L.Map(container).setView([0, 0], 1),
 				spy = sinon.spy();
+
 			map.on('click dblclick mousedown mouseup mousemove', spy);
 			map.remove();
+
 			happen.click(container);
 			happen.dblclick(container);
 			happen.mousedown(container);
 			happen.mouseup(container);
 			happen.mousemove(container);
+
 			expect(spy.called).to.not.be.ok();
 		});
 	});
