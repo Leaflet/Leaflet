@@ -17,7 +17,7 @@ We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
 Let's make the best open-source library for maps that can possibly exist!
 
-[![Build Status](https://travis-ci.org/Leaflet/Leaflet.png)](https://travis-ci.org/Leaflet/Leaflet)
+[![Build Status](https://travis-ci.org/Leaflet/Leaflet.png?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
 
  [Vladimir Agafonkin]: http://agafonkin.com/en
  [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
