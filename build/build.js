@@ -117,7 +117,7 @@ exports.build = function (compsBase32, buildName) {
 
 	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
 	    intro = '(function (window, document, undefined) {',
-	    outro = '}(this, document));',
+	    outro = '}(window, document));',
 	    newSrc = copy + intro + combineFiles(files) + outro,
 
 	    pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
