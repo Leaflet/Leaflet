@@ -24,6 +24,28 @@ describe("Map", function () {
 			expect(spy.called).not.to.be.ok();
 		});
 
+		describe("corner case checking", function () {
+			it("throws an exception upon reinitialization", function () {
+				var container = document.createElement('div'),
+					map = new L.Map(container);
+				expect(function () {
+					new L.Map(container);
+				}).to.throwException(function(e) {
+					expect(e.message).to.eql("Map container is already initialized.");
+				});
+				map.remove();
+			});
+
+			it("throws an exception if a container is not found", function () {
+				expect(function () {
+					new L.Map('nonexistentdivelement');
+				}).to.throwException(function(e) {
+					expect(e.message).to.eql("Map container not found.");
+				});
+				map.remove();
+			});
+		});
+
 		it("undefines container._leaflet", function () {
 			var container = document.createElement('div'),
 			    map = new L.Map(container);
