@@ -435,7 +435,9 @@ L.Map = L.Class.extend({
 	_initContainer: function (id) {
 		var container = this._container = L.DomUtil.get(id);
 
-		if (container._leaflet) {
+		if (!container) {
+			throw new Error("Map container not found.");
+		} else if (container._leaflet) {
 			throw new Error("Map container is already initialized.");
 		}
 
