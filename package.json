@@ -11,7 +11,8 @@
 	},
 	"main": "dist/leaflet.js",
 	"scripts": {
-		"test": "node ./node_modules/jake/bin/cli test"
+		"test": "jake test",
+		"prepublish": "jake"
 	},
 	"repository": {
 		"type": "git",
