@@ -11,7 +11,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	addLayer: function (layer) {
-		if (this._layers[L.stamp(layer)]) {
+		if (this.hasLayer(layer)) {
 			return this;
 		}
 
@@ -30,7 +30,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
-
 
 		if (this._popupContent) {
 			this.invoke('unbindPopup');
