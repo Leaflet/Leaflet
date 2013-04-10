@@ -16,7 +16,12 @@ L.Map.DoubleClickZoom = L.Handler.extend({
 	},
 
 	_onDoubleClick: function (e) {
-		this.setView(e.latlng, this._zoom + 1);
+		var map = this,
+		scale = map.getZoomScale(map._zoom + 1),
+		viewHalf = map.getSize()._divideBy(2),
+		centerOffset = e.containerPoint._subtract(viewHalf)._multiplyBy(1 - 1 / scale),
+		newCenterPoint = map._getTopLeftPoint()._add(viewHalf)._add(centerOffset);
+		map.setView(map.unproject(newCenterPoint), map._zoom + 1);
 	}
 });
 
