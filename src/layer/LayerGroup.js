@@ -17,7 +17,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	addLayer: function (layer) {
-		var id = L.stamp(layer);
+		var id = this.getLayerId(layer);
 
 		this._layers[id] = layer;
 
@@ -29,7 +29,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = L.stamp(layer);
+		var id = this.getLayerId(layer);
 
 		delete this._layers[id];
 
@@ -43,7 +43,7 @@ L.LayerGroup = L.Class.extend({
 	hasLayer: function (layer) {
 		if (!layer) { return false; }
 
-		var id = L.stamp(layer);
+		var id = this.getLayerId(layer);
 		return this._layers.hasOwnProperty(id);
 	},
 
@@ -105,6 +105,10 @@ L.LayerGroup = L.Class.extend({
 
 	setZIndex: function (zIndex) {
 		return this.invoke('setZIndex', zIndex);
+	},
+
+	getLayerId: function (layer) {
+		return L.stamp(layer);
 	}
 });
 
