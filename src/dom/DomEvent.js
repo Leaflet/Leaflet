@@ -53,7 +53,7 @@ L.DomEvent = {
 			}
 
 		} else if ('attachEvent' in obj) {
-			obj.attachEvent("on" + type, handler);
+			obj.attachEvent('on' + type, handler);
 		}
 
 		obj[key] = handler;
@@ -86,7 +86,7 @@ L.DomEvent = {
 				obj.removeEventListener(type, handler, false);
 			}
 		} else if ('detachEvent' in obj) {
-			obj.detachEvent("on" + type, handler);
+			obj.detachEvent('on' + type, handler);
 		}
 
 		obj[key] = null;

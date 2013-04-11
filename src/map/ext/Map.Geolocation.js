@@ -19,7 +19,7 @@ L.Map.include({
 		if (!navigator.geolocation) {
 			this._handleGeolocationError({
 				code: 0,
-				message: "Geolocation not supported."
+				message: 'Geolocation not supported.'
 			});
 			return this;
 		}
@@ -46,8 +46,8 @@ L.Map.include({
 	_handleGeolocationError: function (error) {
 		var c = error.code,
 		    message = error.message ||
-		            (c === 1 ? "permission denied" :
-		            (c === 2 ? "position unavailable" : "timeout"));
+		            (c === 1 ? 'permission denied' :
+		            (c === 2 ? 'position unavailable' : 'timeout'));
 
 		if (this._locationOptions.setView && !this._loaded) {
 			this.fitWorld();
@@ -55,7 +55,7 @@ L.Map.include({
 
 		this.fire('locationerror', {
 			code: c,
-			message: "Geolocation error: " + message + "."
+			message: 'Geolocation error: ' + message + '.'
 		});
 	},
 

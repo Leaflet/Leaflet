@@ -1,47 +1,36 @@
 exports.config = {
+	// environment
 	"browser": true,
 	"node": true,
 	"predef": [],
-
-	"debug": false,
-	"devel": false,
-
-	"es5": false,
 	"strict": false,
-	"globalstrict": false,
 
-	"asi": false,
-	"laxbreak": false,
+	// code style
 	"bitwise": true,
-	"boss": false,
+	"camelcase": true,
 	"curly": true,
-	"eqnull": false,
-	"evil": false,
-	"expr": false,
+	"eqeqeq": true,
 	"forin": true,
 	"immed": true,
 	"latedef": true,
-	"loopfunc": false,
-	"noarg": true,
-	"regexp": true,
-	"regexdash": false,
-	"scripturl": false,
-	"shadow": false,
-	"supernew": false,
-	"undef": true,
-	"funcscope": false,
-
 	"newcap": true,
+	"noarg": true,
 	"noempty": true,
 	"nonew": true,
-	"nomen": false,
-	"onevar": false,
-	"plusplus": false,
-	"sub": false,
-	"indent": 4,
+	"undef": true,
+	"unused": true,
+	"quotmark": "single",
 
-	"eqeqeq": true,
+	// whitespace
+	"indent": 4,
 	"trailing": true,
 	"white": true,
-	"smarttabs": true
+	"smarttabs": true,
+	"maxlen": 120,
+
+	// force code simplicity
+	//"maxstatements": 10,
+	//"maxcomplexity": 5,
+	//"maxparams": 3,
+	//"maxdepth": 3
 };

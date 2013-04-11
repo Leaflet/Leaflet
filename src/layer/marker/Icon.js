@@ -35,7 +35,7 @@ L.Icon = L.Class.extend({
 
 		if (!src) {
 			if (name === 'icon') {
-				throw new Error("iconUrl not set in Icon options (see the docs).");
+				throw new Error('iconUrl not set in Icon options (see the docs).');
 			}
 			return null;
 		}

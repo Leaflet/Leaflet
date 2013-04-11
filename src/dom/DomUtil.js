@@ -38,8 +38,8 @@ L.DomUtil = {
 			left += el.offsetLeft || 0;
 
 			//add borders
-			top += parseInt(L.DomUtil.getStyle(el, "borderTopWidth"), 10) || 0;
-			left += parseInt(L.DomUtil.getStyle(el, "borderLeftWidth"), 10) || 0;
+			top += parseInt(L.DomUtil.getStyle(el, 'borderTopWidth'), 10) || 0;
+			left += parseInt(L.DomUtil.getStyle(el, 'borderLeftWidth'), 10) || 0;
 
 			pos = L.DomUtil.getStyle(el, 'position');
 
@@ -84,7 +84,7 @@ L.DomUtil = {
 	documentIsLtr: function () {
 		if (!L.DomUtil._docIsLtrCached) {
 			L.DomUtil._docIsLtrCached = true;
-			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') === "ltr";
+			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
 		}
 		return L.DomUtil._docIsLtr;
 	},
@@ -120,7 +120,7 @@ L.DomUtil = {
 
 	hasClass: function (el, name) {
 		return (el.className.length > 0) &&
-		        new RegExp("(^|\\s)" + name + "(\\s|$)").test(el.className);
+		        new RegExp('(^|\\s)' + name + '(\\s|$)').test(el.className);
 	},
 
 	addClass: function (el, name) {
@@ -155,7 +155,8 @@ L.DomUtil = {
 			try {
 				filter = el.filters.item(filterName);
 			} catch (e) {
-				//Don't set opacity to 1 if we haven't already set an opacity, it isn't needed and breaks transparent pngs.
+				// don't set opacity to 1 if we haven't already set an opacity,
+				// it isn't needed and breaks transparent pngs.
 				if (value === 1) { return; }
 			}
 
@@ -204,6 +205,7 @@ L.DomUtil = {
 
 	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
 
+		// jshint camelcase: false
 		el._leaflet_pos = point;
 
 		if (!disable3D && L.Browser.any3d) {
@@ -222,6 +224,8 @@ L.DomUtil = {
 	getPosition: function (el) {
 		// this method is only used for elements previously positioned using setPosition,
 		// so it's safe to cache the position for performance
+
+		// jshint camelcase: false
 		return el._leaflet_pos;
 	}
 };

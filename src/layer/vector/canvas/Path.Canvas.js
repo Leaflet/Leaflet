@@ -158,12 +158,12 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 		    ctx;
 
 		if (!root) {
-			root = this._pathRoot = document.createElement("canvas");
+			root = this._pathRoot = document.createElement('canvas');
 			root.style.position = 'absolute';
 			ctx = this._canvasCtx = root.getContext('2d');
 
-			ctx.lineCap = "round";
-			ctx.lineJoin = "round";
+			ctx.lineCap = 'round';
+			ctx.lineJoin = 'round';
 
 			this._panes.overlayPane.appendChild(root);
 

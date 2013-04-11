@@ -447,9 +447,9 @@ L.Map = L.Class.extend({
 		var container = this._container = L.DomUtil.get(id);
 
 		if (!container) {
-			throw new Error("Map container not found.");
+			throw new Error('Map container not found.');
 		} else if (container._leaflet) {
-			throw new Error("Map container is already initialized.");
+			throw new Error('Map container is already initialized.');
 		}
 
 		container._leaflet = true;
@@ -600,7 +600,7 @@ L.Map = L.Class.extend({
 		}
 
 		if (oldZoomSpan !== this._getZoomSpan()) {
-			this.fire("zoomlevelschange");
+			this.fire('zoomlevelschange');
 		}
 	},
 

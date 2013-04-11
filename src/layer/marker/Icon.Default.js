@@ -26,7 +26,7 @@ L.Icon.Default = L.Icon.extend({
 		var path = L.Icon.Default.imagePath;
 
 		if (!path) {
-			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
+			throw new Error('Couldn\'t autodetect L.Icon.Default.imagePath, set it manually.');
 		}
 
 		return path + '/marker-' + name + '.png';

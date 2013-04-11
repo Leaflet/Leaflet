@@ -41,7 +41,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		    .on(document, 'keydown', this._onKeyDown, this)
 		    .preventDefault(e);
 
-		this._map.fire("boxzoomstart");
+		this._map.fire('boxzoomstart');
 	},
 
 	_onMouseMove: function (e) {
@@ -89,7 +89,7 @@ L.Map.BoxZoom = L.Handler.extend({
 
 		map.fitBounds(bounds);
 
-		map.fire("boxzoomend", {
+		map.fire('boxzoomend', {
 			boxZoomBounds: bounds
 		});
 	},

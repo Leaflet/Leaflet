@@ -56,13 +56,13 @@ L.Circle = L.Path.extend({
 		}
 
 		if (L.Browser.svg) {
-			return "M" + p.x + "," + (p.y - r) +
-			       "A" + r + "," + r + ",0,1,1," +
-			       (p.x - 0.1) + "," + (p.y - r) + " z";
+			return 'M' + p.x + ',' + (p.y - r) +
+			       'A' + r + ',' + r + ',0,1,1,' +
+			       (p.x - 0.1) + ',' + (p.y - r) + ' z';
 		} else {
 			p._round();
 			r = Math.round(r);
-			return "AL " + p.x + "," + p.y + " " + r + "," + r + " 0," + (65535 * 360);
+			return 'AL ' + p.x + ',' + p.y + ' ' + r + ',' + r + ' 0,' + (65535 * 360);
 		}
 	},
 

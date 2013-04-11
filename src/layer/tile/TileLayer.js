@@ -273,7 +273,7 @@ L.TileLayer = L.Class.extend({
 			this._unusedTiles = [];
 		}
 
-		this._tileContainer.innerHTML = "";
+		this._tileContainer.innerHTML = '';
 
 		if (this._animated && e && e.hard) {
 			this._clearBgBuffer();
@@ -402,7 +402,7 @@ L.TileLayer = L.Class.extend({
 	_removeTile: function (key) {
 		var tile = this._tiles[key];
 
-		this.fire("tileunload", {tile: tile, url: tile.src});
+		this.fire('tileunload', {tile: tile, url: tile.src});
 
 		if (this.options.reuseTiles) {
 			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
