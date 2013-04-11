@@ -1,4 +1,5 @@
 exports.config = {
+
 	// environment
 	"browser": true,
 	"node": true,
@@ -26,11 +27,11 @@ exports.config = {
 	"trailing": true,
 	"white": true,
 	"smarttabs": true,
-	"maxlen": 120,
+	"maxlen": 120
 
-	// force code simplicity
-	//"maxstatements": 10,
-	//"maxcomplexity": 5,
-	//"maxparams": 3,
-	//"maxdepth": 3
+	// code simplicity - not enforced but nice to check from time to time
+	// "maxstatements": 20,
+	// "maxcomplexity": 5
+	// "maxparams": 4,
+	// "maxdepth": 4
 };
