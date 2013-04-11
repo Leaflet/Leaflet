@@ -60,6 +60,17 @@ L.Map = L.Class.extend({
 		return this.setZoom(this._zoom - (delta || 1));
 	},
 
+	setZoomAround: function (latlng, zoom) {
+		var scale = this.getZoomScale(zoom),
+		    viewHalf = this.getSize().divideBy(2),
+		    containerPoint = latlng instanceof L.Point ? latlng : this.latLngToContainerPoint(latlng),
+
+		    centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
+		    newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
+
+		return this.setView(newCenter, zoom);
+	},
+
 	fitBounds: function (bounds) { // (LatLngBounds)
 		var zoom = this.getBoundsZoom(bounds);
 		return this.setView(L.latLngBounds(bounds).getCenter(), zoom);

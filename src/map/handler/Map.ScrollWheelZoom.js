@@ -45,25 +45,11 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		delta = map._limitZoom(zoom + delta) - zoom;
 
 		this._delta = 0;
-
 		this._startTime = null;
 
 		if (!delta) { return; }
 
-		var newZoom = zoom + delta,
-		    newCenter = this._getCenterForScrollWheelZoom(newZoom);
-
-		map.setView(newCenter, newZoom);
-	},
-
-	_getCenterForScrollWheelZoom: function (newZoom) {
-		var map = this._map,
-		    scale = map.getZoomScale(newZoom),
-		    viewHalf = map.getSize()._divideBy(2),
-		    centerOffset = this._lastMousePos._subtract(viewHalf)._multiplyBy(1 - 1 / scale),
-		    newCenterPoint = map._getTopLeftPoint()._add(viewHalf)._add(centerOffset);
-
-		return map.unproject(newCenterPoint);
+		map.setZoomAround(this._lastMousePos, zoom + delta);
 	}
 });
 
