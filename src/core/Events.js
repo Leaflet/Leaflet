@@ -148,6 +148,29 @@ L.Mixin.Events = {
 		}
 
 		return this;
+	},
+
+	once: function(types, fn, context) {
+		handlerFor = function(fn, type, context) {
+			var handler = function() {
+				this.removeEventListener(type, fn, context);
+				this.removeEventListener(type, handler, context);
+			}
+			return handler;
+		}
+
+		if (typeof types === 'object') {
+			for (type in types) {
+				if (types.hasOwnProperty(type)) {
+					this.addEventListener(type, types[type], fn);
+					this.addEventListener(type, handlerFor(types[type], type, fn), fn);
+				}
+			}
+			return this;
+		}
+
+		this.addEventListener(types, fn, context);
+		return this.addEventListener(types, handlerFor(fn, types, context), context);
 	}
 };
 

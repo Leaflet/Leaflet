@@ -245,4 +245,66 @@ describe('Events', function() {
 			expect(spy3.called).to.be(true);
 		});
 	});
+
+	describe('#once', function(){
+		it('removes event listeners after first fire', function() {
+			var obj = new Klass(),
+				spy = new sinon.spy();
+
+			obj.once('test', spy);
+			obj.fire('test');
+
+			expect(spy.called).to.be(true);
+
+			obj.fire('test');
+
+			expect(spy.callCount).to.be.lessThan(2);
+		});
+
+		it('works with object hash', function() {
+			var obj = new Klass(),
+				spy = new sinon.spy(),
+				otherSpy = new sinon.spy();
+
+			obj.once({
+				test: spy,
+				otherTest: otherSpy
+			});
+
+			obj.fire('test');
+			obj.fire('otherTest');
+
+			expect(spy.called).to.be(true);
+			expect(otherSpy.called).to.be(true);
+
+			obj.fire('test');
+			obj.fire('otherTest');
+
+			expect(spy.callCount).to.be.lessThan(2);
+			expect(otherSpy.callCount).to.be.lessThan(2);
+		});
+
+		it('only removes the fired event handler', function(){
+			var obj = new Klass(),
+				spy = new sinon.spy(),
+				otherSpy = new sinon.spy();
+
+			obj.once({
+				test: spy,
+				otherTest: otherSpy
+			});
+
+			obj.fire('test');
+
+			expect(spy.called).to.be(true);
+			expect(otherSpy.called).to.be(false);
+
+			obj.fire('otherTest');
+
+			expect(otherSpy.called).to.be(true);
+
+			expect(spy.callCount).to.be.lessThan(2);
+			expect(otherSpy.callCount).to.be.lessThan(2);
+		});
+	});
 });
