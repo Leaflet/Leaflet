@@ -247,7 +247,7 @@ describe('Events', function() {
 	});
 
 	describe('#once', function() {
-		it('removes event listeners after first fire', function() {
+		it('removes event listeners after first trigger', function() {
 			var obj = new Klass(),
 				spy = new sinon.spy();
 
@@ -261,7 +261,7 @@ describe('Events', function() {
 			expect(spy.callCount).to.be.lessThan(2);
 		});
 
-		it('works with object hash', function() {
+		it('works with an object hash', function() {
 			var obj = new Klass(),
 				spy = new sinon.spy(),
 				otherSpy = new sinon.spy();
@@ -284,88 +284,16 @@ describe('Events', function() {
 			expect(otherSpy.callCount).to.be.lessThan(2);
 		});
 
-		it('only removes the fired event handler', function() {
-			var obj = new Klass(),
-				spy = new sinon.spy(),
-				otherSpy = new sinon.spy();
+		it("doesn't call listeners to events that have been removed", function () {
+		    var obj = new Klass(),
+                spy = new sinon.spy();
 
-			obj.once({
-				test: spy,
-				otherTest: otherSpy
-			});
+		    obj.once('test', spy, obj);
+		    obj.off('test', spy, obj);
 
-			obj.fire('test');
+		    obj.fire('test');
 
-			expect(spy.called).to.be(true);
-			expect(otherSpy.called).to.be(false);
-
-			obj.fire('otherTest');
-
-			expect(otherSpy.called).to.be(true);
-
-			expect(spy.callCount).to.be.lessThan(2);
-			expect(otherSpy.callCount).to.be.lessThan(2);
-		});
-
-		it('can be passed multiple types', function() {
-			var obj = new Klass(),
-				spy = new sinon.spy(),
-				otherSpy = new sinon.spy();
-
-			obj.once('test otherTest', spy, obj);
-			obj.fire('otherTest');
-
-			expect(spy.called).to.be(true);
-
-			obj.fire('test');
-
-			expect(spy.callCount).to.be.lessThan(2);
-		});
-
-		it('provides event object to listeners and executes with the correct context', function() {
-			var obj = new Klass(),
-				obj2 = new Klass(),
-				obj3 = new Klass(),
-				obj4 = new Klass(),
-				foo = new Klass();
-
-			function listener1(e) {
-				expect(e.type).to.eql('test');
-				expect(e.target).to.eql(obj);
-				expect(this).to.eql(obj);
-				expect(e.baz).to.eql(1);
-			}
-
-			function listener2(e) {
-				expect(e.type).to.eql('test');
-				expect(e.target).to.eql(obj2);
-				expect(this).to.eql(foo);
-				expect(e.baz).to.eql(2);
-			}
-
-			function listener3(e) {
-				expect(e.type).to.eql('test');
-				expect(e.target).to.eql(obj3);
-				expect(this).to.eql(obj3);
-				expect(e.baz).to.eql(3);
-			}
-
-			function listener4(e) {
-				expect(e.type).to.eql('test');
-				expect(e.target).to.eql(obj4);
-				expect(this).to.eql(foo);
-				expect(e.baz).to.eql(4);
-			}
-
-			obj.once('test', listener1);
-			obj2.once('test', listener2, foo);
-			obj3.once({ test: listener3 });
-			obj4.once({ test: listener4 }, foo);
-
-			obj.fireEvent('test', {baz: 1});
-			obj2.fireEvent('test', {baz: 2});
-			obj3.fireEvent('test', {baz: 3});
-			obj4.fireEvent('test', {baz: 4});
+		    expect(spy.called).to.be(false);
 		});
 	});
 });
