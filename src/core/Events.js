@@ -148,7 +148,7 @@ L.Mixin.Events = {
 	},
 
 	once: function(types, fn, context) {
-	    handlerFor = function (fn, type, context) {
+	    var handlerFor = function (fn, type, context) {
 	        var handler = function () {
 	            this.removeEventListener(type, fn, context);
 	            this.removeEventListener(type, handler, context);
