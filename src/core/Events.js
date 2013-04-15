@@ -65,7 +65,7 @@ L.Mixin.Events = {
 	},
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
-		if (!arguments.length) return this.clearAllListeners();
+		if (!arguments.length) { return this.clearAllListeners(); }
 		var events = this[key],
 		    contextId = context && L.stamp(context),
 		    type, i, len, listeners, j,
@@ -150,25 +150,25 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	clearAllListeners: function() {
+	clearAllListeners: function () {
 		var events = this[key];
 
-		var clearArray = L.bind(function(collection, type) {
+		var clearArray = L.bind(function (collection, type) {
 			for (var i = 0, len = collection.length; i < len; i++) {
 				this.removeEventListener(type, collection[i].action, collection[i].context);
 			}
 		}, this);
 
-		var clearObject = L.bind(function(obj, type) {
+		var clearObject = L.bind(function (obj, type) {
 			for (var collection in obj) {
-				if (obj.hasOwnProperty(collection)) clearArray(obj[collection], type.slice(0, -4))
+				if (obj.hasOwnProperty(collection)) { clearArray(obj[collection], type.slice(0, -4)); }
 			}
 		}, this);
 
 		for (var type in events) {
 			if (events.hasOwnProperty(type)) {
-				if (L.Util.isArray(events[type])) clearArray(events[type], type);
-				else if (type.substr(-4) === '_idx') clearObject(events[type], type);
+				if (L.Util.isArray(events[type])) { clearArray(events[type], type); }
+				else if (type.substr(-4) === '_idx') { clearObject(events[type], type); }
 			}
 		}
 		return this;
