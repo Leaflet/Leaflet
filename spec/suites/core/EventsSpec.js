@@ -246,13 +246,15 @@ describe('Events', function() {
 		});
 	});
 	describe("#clearEventListeners", function() {
-		it("clears out all events on an object", function() {
+		it("clears all registered listeners on an object", function() {
 			var spy = sinon.spy(),
-				obj = new Klass();
+				obj = new Klass()
+				otherObj = new Klass();
 
 			obj.on('test', spy, obj);
 			obj.on('testTwo', spy);
-			obj.clearEventListeners();
+			obj.on('test', spy, otherObj);
+			obj.off();
 
 			obj.fire('test');
 

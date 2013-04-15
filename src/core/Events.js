@@ -9,7 +9,6 @@ L.Mixin = {};
 L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		if (!arguments) return this.clearEventListeners();
 		var events = this[key] = this[key] || {},
 		    contextId = context && L.stamp(context),
 		    type, i, len, evt,
@@ -66,6 +65,7 @@ L.Mixin.Events = {
 	},
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
+		if (!arguments.length) return this.clearAllListeners();
 		var events = this[key],
 		    contextId = context && L.stamp(context),
 		    type, i, len, listeners, j,
@@ -150,9 +150,8 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	clearEventListeners: function() {
-		var events = this[key],
-			listeners;
+	clearAllListeners: function() {
+		var events = this[key];
 
 		var clearArray = L.bind(function(collection, type) {
 			for (var i = 0, len = collection.length; i < len; i++) {
@@ -169,7 +168,7 @@ L.Mixin.Events = {
 		for (var type in events) {
 			if (events.hasOwnProperty(type)) {
 				if (L.Util.isArray(events[type])) clearArray(events[type], type);
-				else if (type.substr(-4) === '_idx') (clearObject(events[type], type));
+				else if (type.substr(-4) === '_idx') clearObject(events[type], type);
 			}
 		}
 		return this;
