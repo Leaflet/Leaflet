@@ -83,8 +83,7 @@ L.Map.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchEnd: function () {
-		if (!this._moved || !this._zooming)
-		{
+		if (!this._moved || !this._zooming) {
 			this._zooming = false;
 			return;
 		}
