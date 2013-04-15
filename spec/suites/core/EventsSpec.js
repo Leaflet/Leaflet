@@ -245,4 +245,67 @@ describe('Events', function() {
 			expect(spy3.called).to.be(true);
 		});
 	});
+
+	describe('#once', function() {
+		it('removes event listeners after first trigger', function() {
+			var obj = new Klass(),
+				spy = new sinon.spy();
+
+			obj.once('test', spy, obj);
+			obj.fire('test');
+
+			expect(spy.called).to.be(true);
+
+			obj.fire('test');
+
+			expect(spy.callCount).to.be.lessThan(2);
+		});
+
+		it('works with an object hash', function() {
+			var obj = new Klass(),
+				spy = new sinon.spy(),
+				otherSpy = new sinon.spy();
+
+			obj.once({
+				test: spy,
+				otherTest: otherSpy
+			}, obj);
+
+			obj.fire('test');
+			obj.fire('otherTest');
+
+			expect(spy.called).to.be(true);
+			expect(otherSpy.called).to.be(true);
+
+			obj.fire('test');
+			obj.fire('otherTest');
+
+			expect(spy.callCount).to.be.lessThan(2);
+			expect(otherSpy.callCount).to.be.lessThan(2);
+		});
+
+		it("doesn't call listeners to events that have been removed", function () {
+		    var obj = new Klass(),
+                spy = new sinon.spy();
+
+		    obj.once('test', spy, obj);
+		    obj.off('test', spy, obj);
+
+		    obj.fire('test');
+
+		    expect(spy.called).to.be(false);
+		});
+
+		it('works if called from a context that doesnt implement #Events', function() {
+			var obj = new Klass(),
+				spy = new sinon.spy(),
+				foo = {};
+
+			obj.once('test', spy, foo);
+
+			obj.fire('test');
+
+			expect(spy.called).to.be(true);
+		});
+	});
 });
