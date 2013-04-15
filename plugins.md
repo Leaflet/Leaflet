@@ -197,6 +197,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/Zverik">Ilya Zverev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/glenrobertson/leaflet-tilelayer-geojson/">TileLayer.GeoJSON</a>
+		</td><td>
+			A TileLayer for GeoJSON tiles (requires JQuery).
+		</td><td>
+			<a href="https://github.com/glenrobertson">Glen Robertson</a>
+		</td>
+	</tr>
 </table>
 
 
