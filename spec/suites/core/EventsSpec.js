@@ -245,4 +245,18 @@ describe('Events', function() {
 			expect(spy3.called).to.be(true);
 		});
 	});
+	describe("#clearEventListeners", function() {
+		it("clears out all events on an object", function() {
+			var spy = sinon.spy(),
+				obj = new Klass();
+
+			obj.on('test', spy, obj);
+			obj.on('testTwo', spy);
+			obj.clearEventListeners();
+
+			obj.fire('test');
+
+			expect(spy.called).to.be(false);
+		});
+	});
 });
