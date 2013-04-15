@@ -295,5 +295,17 @@ describe('Events', function() {
 
 		    expect(spy.called).to.be(false);
 		});
+
+		it('works if called from a context that doesnt implement #Events', function() {
+			var obj = new Klass(),
+				spy = new sinon.spy(),
+				foo = {};
+
+			obj.once('test', spy, foo);
+
+			obj.fire('test');
+
+			expect(spy.called).to.be(true);
+		});
 	});
 });

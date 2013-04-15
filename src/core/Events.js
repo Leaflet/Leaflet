@@ -148,13 +148,13 @@ L.Mixin.Events = {
 	},
 
 	once: function (types, fn, context) {
-	    var handlerFor = function (fn, type, context) {
-	        var handler = function () {
+	    var handlerFor = L.bind(function (fn, type, context) {
+	        var handler = L.bind(function () {
 	            this.removeEventListener(type, fn, context);
 	            this.removeEventListener(type, handler, context);
-	        };
+	        }, this);
 	        return handler;
-	    };
+	    }, this);
 
 	    if (typeof types === 'object') {
 	        for (var type in types) {
