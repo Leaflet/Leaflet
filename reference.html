@@ -1838,6 +1838,22 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 	</tr>
 </table>
 
+<h3>Options</h3>
+<table>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>async</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>Indicates that tiles will be drawn asynchronously. <a href="#tilelayer-canvas-tiledrawn">tileDrawn</a> method should be called for each tile after drawing completion.</td>
+	</tr>
+</table>
+
 <h3>Methods</h3>
 
 <table>
@@ -1846,7 +1862,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 		<th>Returns</th>
 		<th>Description</th>
 	</tr>
-	<tr>
+	<tr id = "tilelayer-canvas-drawtile">
 		<td><code><b>drawTile</b>(
 			<nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr>,
 			<nobr>&lt;<a href="#point">Point</a>&gt; <i>tilePoint</i></nobr>,
@@ -1855,10 +1871,10 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
 	</tr>
-	<tr>
-		<td><code><b>redraw</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Calling <code>redraw</code> will cause the <code>drawTile</code> method to be called for all tiles. May be used for updating dynamic content drawn on the Canvas</td>
+	<tr id="tilelayer-canvas-tiledrawn">
+		<td><code><b>tileDrawn</b>( <nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr> )</code></td>
+		<td>-</td>
+		<td>If <code>async</code> option is defined, this function should be called for each tile after drawing completion. <code>canvas</code> is the same canvas element, that was passed to <a href="#tilelayer-canvas-drawtile">drawTile</a>.</td>
 	</tr>
 </table>
 
