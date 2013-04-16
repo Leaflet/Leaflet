@@ -38,7 +38,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		this
 		    .fire('movestart')
-		    .fire('zoomstart');
+		    .fire('zoomstart', { from: { center: this.getCenter(), zoom: this._zoom},
+		                         to:   { center: center, zoom: zoom }
+		                       });
 
 		this._animateZoom(center, zoom, origin, scale);
 
