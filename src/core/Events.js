@@ -9,10 +9,8 @@ L.Mixin = {};
 L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		var events = this[key] = this[key] || {},
-		    contextId = context && L.stamp(context),
-		    type, i, len, evt,
-		    objKey, objLenKey, eventsObj;
+
+		var type;
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -21,9 +19,12 @@ L.Mixin.Events = {
 					this.addEventListener(type, types[type], fn);
 				}
 			}
-
 			return this;
 		}
+
+		var events = this[key] = this[key] || {},
+		    contextId = context && L.stamp(context),
+		    i, len, evt, indexKey, indexLenKey, typeIndex;
 
 		// types can be a string of space-separated words
 		types = L.Util.splitWords(types);
@@ -33,25 +34,24 @@ L.Mixin.Events = {
 				action: fn,
 				context: context || this
 			};
+			type = types[i];
 
-			if (contextId) {
+			if (context) {
 				// store listeners of a particular context in a separate hash (if it has an id)
 				// gives a major performance boost when removing thousands of map layers
 
-				objKey = types[i] + '_idx',
-				objLenKey = objKey + '_len',
-				eventsObj = events[objKey] = events[objKey] || {};
+				indexKey = type + '_idx',
+				indexLenKey = indexKey + '_len',
 
-				if (eventsObj[contextId]) {
-					eventsObj[contextId].push(evt);
-				} else {
-					eventsObj[contextId] = [evt];
-					events[objLenKey] = (events[objLenKey] || 0) + 1;
-				}
+				typeIndex = events[indexKey] = events[indexKey] || {};
+				typeIndex[contextId] = typeIndex[contextId] || [];
+
+				typeIndex[contextId].push(evt);
+				events[indexLenKey] = (events[indexLenKey] || 0) + 1;
 
 			} else {
-				events[types[i]] = events[types[i]] || [];
-				events[types[i]].push(evt);
+				events[type] = events[type] || [];
+				events[type].push(evt);
 			}
 		}
 
@@ -59,17 +59,19 @@ L.Mixin.Events = {
 	},
 
 	hasEventListeners: function (type) { // (String) -> Boolean
-		return (key in this) &&
-		       (((type in this[key]) && this[key][type].length > 0) ||
-		        (this[key][type + '_idx_len'] > 0));
+		var events = this[key];
+		return !!events && (
+		        (type in events && events[type].length > 0) ||
+		        (type + '_idx' in events && events[type + '_idx_len'] > 0));
 	},
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
-		if (!arguments.length) { return this.clearAllListeners(); }
-		var events = this[key],
-		    contextId = context && L.stamp(context),
-		    type, i, len, listeners, j,
-		    objKey, objLenKey;
+
+		if (!types) {
+			return this.clearAllEventListeners();
+		}
+
+		var type;
 
 		if (typeof types === 'object') {
 			for (type in types) {
@@ -80,33 +82,45 @@ L.Mixin.Events = {
 			return this;
 		}
 
+		var events = this[key],
+		    contextId = context && L.stamp(context),
+		    i, len, listeners, j, typeIndexKey, typeIndex;
+
 		types = L.Util.splitWords(types);
 
 		for (i = 0, len = types.length; i < len; i++) {
-			if (this.hasEventListeners(types[i])) {
+			type = types[i];
+			typeIndexKey = type + '_idx';
+			typeIndex = events[typeIndexKey];
 
-				objKey = types[i] + '_idx';
+			if (!fn) {
+				delete events[type];
+				delete events[typeIndexKey];
 
-				if (contextId && events[objKey]) {
-					listeners =  events[objKey][contextId] || [];
-				} else {
-					listeners = events[types[i]] || [];
-				}
+			} else {
+				listeners = context && typeIndex ? typeIndex[contextId] : events[types[i]];
 
-				for (j = listeners.length - 1; j >= 0; j--) {
-					if ((!fn || listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
-						listeners.splice(j, 1);
+				if (listeners) {
+
+					for (j = listeners.length - 1; j >= 0; j--) {
+						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
+							listeners.splice(j, 1);
+						}
 					}
-				}
 
-				if (contextId && listeners.length === 0 && events[objKey] && events[objKey][contextId]) {
-					objLenKey = objKey + '_len';
-					delete events[objKey][contextId];
-					events[objLenKey] = (events[objLenKey] || 1) - 1;
+					if (context && typeIndex && (listeners.length === 0)) {
+						delete typeIndex[contextId];
+						events[type + '_idx_len']--;
+					}
 				}
 			}
 		}
 
+		return this;
+	},
+
+	clearAllEventListeners: function () {
+		delete this[key];
 		return this;
 	},
 
@@ -147,11 +161,6 @@ L.Mixin.Events = {
 			}
 		}
 
-		return this;
-	},
-
-	clearAllListeners: function () {
-		delete this[key];
 		return this;
 	}
 };
