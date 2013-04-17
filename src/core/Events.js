@@ -9,7 +9,6 @@ L.Mixin = {};
 L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-
 		var events = this[key] = this[key] || {},
 		    contextId = context && L.stamp(context),
 		    type, i, len, evt,
@@ -66,6 +65,7 @@ L.Mixin.Events = {
 	},
 
 	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
+		if (!arguments.length) { return this.clearAllListeners(); }
 		var events = this[key],
 		    contextId = context && L.stamp(context),
 		    type, i, len, listeners, j,
@@ -147,6 +147,11 @@ L.Mixin.Events = {
 			}
 		}
 
+		return this;
+	},
+
+	clearAllListeners: function () {
+		delete this[key];
 		return this;
 	}
 };
