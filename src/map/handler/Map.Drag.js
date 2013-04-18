@@ -140,15 +140,6 @@ L.Map.Drag = L.Handler.extend({
 				});
 			}
 		}
-
-		if (options.maxBounds) {
-			// TODO predrag validation instead of animation
-			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
-		}
-	},
-
-	_panInsideMaxBounds: function () {
-		this.panInsideBounds(this.options.maxBounds);
 	}
 });
 

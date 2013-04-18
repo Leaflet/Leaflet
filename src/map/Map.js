@@ -119,34 +119,40 @@ L.Map = L.Class.extend({
 			}
 		}
 
+		this.on('moveend', this._panInsideMaxBounds, this);
+
 		return this;
 	},
 
 	panInsideBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
-		var viewBounds = this.getBounds(),
-		    viewSw = this.project(viewBounds.getSouthWest()),
-		    viewNe = this.project(viewBounds.getNorthEast()),
+		var viewBounds = this.getPixelBounds(),
+		    viewSw = viewBounds.getBottomLeft(),
+		    viewNe = viewBounds.getTopRight(),
 		    sw = this.project(bounds.getSouthWest()),
 		    ne = this.project(bounds.getNorthEast()),
 		    dx = 0,
 		    dy = 0;
 
 		if (viewNe.y < ne.y) { // north
-			dy = ne.y - viewNe.y;
+			dy = Math.ceil(ne.y - viewNe.y);
 		}
 		if (viewNe.x > ne.x) { // east
-			dx = ne.x - viewNe.x;
+			dx = Math.floor(ne.x - viewNe.x);
 		}
 		if (viewSw.y > sw.y) { // south
-			dy = sw.y - viewSw.y;
+			dy = Math.floor(sw.y - viewSw.y);
 		}
 		if (viewSw.x < sw.x) { // west
-			dx = sw.x - viewSw.x;
+			dx = Math.ceil(sw.x - viewSw.x);
 		}
 
-		return this.panBy(new L.Point(dx, dy, true));
+		if (dx || dy) {
+			return this.panBy(new L.Point(dx, dy));
+		}
+
+		return this;
 	},
 
 	addLayer: function (layer) {
@@ -607,6 +613,10 @@ L.Map = L.Class.extend({
 		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire('zoomlevelschange');
 		}
+	},
+
+	_panInsideMaxBounds: function () {
+		this.panInsideBounds(this.options.maxBounds);
 	},
 
 	_checkIfLoaded: function () {
