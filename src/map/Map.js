@@ -229,7 +229,8 @@ L.Map = L.Class.extend({
 
 		if (!this._loaded) { return this; }
 
-		var offset = oldSize._subtract(this.getSize())._divideBy(2)._round();
+		var newSize = this.getSize(),
+		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
 		if ((offset.x !== 0) || (offset.y !== 0)) {
 			if (animate === true) {
@@ -242,6 +243,10 @@ L.Map = L.Class.extend({
 				clearTimeout(this._sizeTimer);
 				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 			}
+			this.fire('resize', {
+				oldSize: oldSize,
+				newSize: newSize
+			});
 		}
 		return this;
 	},
