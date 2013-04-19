@@ -72,8 +72,14 @@ L.Map = L.Class.extend({
 	},
 
 	fitBounds: function (bounds) { // (LatLngBounds)
-		var zoom = this.getBoundsZoom(bounds);
-		return this.setView(L.latLngBounds(bounds).getCenter(), zoom);
+		bounds = L.latLngBounds(bounds);
+
+		var zoom = this.getBoundsZoom(bounds),
+		    swPoint = this.project(bounds.getSouthWest()),
+		    nePoint = this.project(bounds.getNorthEast()),
+		    center = this.unproject(swPoint.add(nePoint).divideBy(2));
+
+		return this.setView(center, zoom);
 	},
 
 	fitWorld: function () {
