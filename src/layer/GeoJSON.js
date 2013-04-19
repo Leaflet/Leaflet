@@ -158,24 +158,28 @@ L.extend(L.GeoJSON, {
 		}
 
 		return coords;
+	},
+
+	getFeature: function (layer, newGeometry) {
+		return layer.feature ? L.extend(layer.feature, {geometry: newGeometry}) : newGeometry;
 	}
 });
 
 L.Marker.include({
 	toGeoJSON: function () {
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'Point',
 			coordinates: L.GeoJSON.latLngToCoords(this.getLatLng())
-		};
+		});
 	}
 });
 
 L.Polyline.include({
 	toGeoJSON: function () {
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'LineString',
 			coordinates: L.GeoJSON.latLngsToCoords(this.getLatLngs())
-		};
+		});
 	}
 });
 
@@ -194,10 +198,10 @@ L.Polygon.include({
 			}
 		}
 
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'Polygon',
 			coordinates: coords
-		};
+		});
 	}
 });
 
@@ -211,10 +215,10 @@ L.Polygon.include({
 					coords.push(layer.toGeoJSON().coordinates);
 				});
 
-				return {
+				return L.GeoJSON.getFeature(this, {
 					type: type,
 					coordinates: coords
-				};
+				});
 			}
 		});
 	}
@@ -233,10 +237,10 @@ L.LayerGroup.include({
 			}
 		});
 
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'GeometryCollection',
 			geometries: geoms
-		};
+		});
 	}
 });
 
