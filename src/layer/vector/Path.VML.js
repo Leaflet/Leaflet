@@ -78,7 +78,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			if (options.dashArray) {
 				stroke.dashStyle = options.dashArray instanceof Array ?
 				    options.dashArray.join(' ') :
-				    options.dashArray.replace(/ *, */g, ' ');
+				    options.dashArray.replace(/( *, *)/g, ' ');
 			} else {
 				stroke.dashStyle = '';
 			}
