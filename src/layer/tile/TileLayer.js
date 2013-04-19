@@ -414,6 +414,7 @@ L.TileLayer = L.Class.extend({
 
 		// for https://github.com/CloudMade/Leaflet/issues/137
 		if (!L.Browser.android) {
+			tile.onload = null;
 			tile.src = L.Util.emptyImageUrl;
 		}
 
