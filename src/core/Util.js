@@ -39,7 +39,7 @@ L.Util = {
 		if (typeof obj === 'object') {
 			args = Array.prototype.slice.call(arguments, 3);
 
-			for (var i in obj) {
+			for (i in obj) {
 				if (obj.hasOwnProperty(i)) {
 					method.apply(context, [i, obj[i]].concat(args));
 				}
