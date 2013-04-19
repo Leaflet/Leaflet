@@ -74,6 +74,33 @@ describe('Util', function() {
 		});
 	});
 
+	describe('#invokeEach', function () {
+		it('calls the given method/context with each key/value and additional arguments', function () {
+			var spy = sinon.spy(),
+			    ctx = {};
+
+			var result = L.Util.invokeEach({
+				foo: 'bar',
+				yo: 'hey'
+			}, spy, ctx, 1, 2, 3);
+
+			expect(spy.firstCall.calledWith('foo', 'bar', 1, 2, 3)).to.be.ok();
+			expect(spy.secondCall.calledWith('yo', 'hey', 1, 2, 3)).to.be.ok();
+
+			expect(spy.firstCall.calledOn(ctx)).to.be.ok();
+			expect(spy.secondCall.calledOn(ctx)).to.be.ok();
+
+			expect(result).to.be(true);
+		});
+
+		it('returns false if the given agument is not object', function () {
+			var spy = sinon.spy();
+
+			expect(L.Util.invokeEach('foo', spy)).to.be(false);
+			expect(spy.called).to.be(false);
+		});
+	});
+
 	describe('#falseFn', function () {
 		it('returns false', function () {
 			expect(L.Util.falseFn()).to.be(false);
