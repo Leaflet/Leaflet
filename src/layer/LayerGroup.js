@@ -31,11 +31,11 @@ L.LayerGroup = L.Class.extend({
 	removeLayer: function (layer) {
 		var id = this.getLayerId(layer);
 
-		delete this._layers[id];
-
-		if (this._map) {
+		if (this._map && this._layers[id]) {
 			this._map.removeLayer(layer);
 		}
+
+		delete this._layers[id];
 
 		return this;
 	},
