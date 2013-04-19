@@ -32,6 +32,7 @@ L.Draggable = L.Class.extend({
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
 			L.DomEvent.on(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
 		}
+
 		this._enabled = true;
 	},
 
@@ -41,6 +42,7 @@ L.Draggable = L.Class.extend({
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
 			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
 		}
+
 		this._enabled = false;
 		this._moved = false;
 	},
@@ -104,17 +106,17 @@ L.Draggable = L.Class.extend({
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    newPoint = new L.Point(first.clientX, first.clientY),
-		    diffVec = newPoint.subtract(this._startPoint);
+		    offset = newPoint.subtract(this._startPoint);
 
-		if (!diffVec.x && !diffVec.y) { return; }
+		if (!offset.x && !offset.y) { return; }
 
 		L.DomEvent.preventDefault(e);
 
 		if (!this._moved) {
 			this.fire('dragstart');
-			this._moved = true;
 
-			this._startPos = L.DomUtil.getPosition(this._element).subtract(diffVec);
+			this._moved = true;
+			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
 			if (!L.Browser.touch) {
 				L.DomUtil.disableTextSelection();
@@ -122,7 +124,7 @@ L.Draggable = L.Class.extend({
 			}
 		}
 
-		this._newPos = this._startPos.add(diffVec);
+		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
@@ -141,6 +143,7 @@ L.Draggable = L.Class.extend({
 		clearTimeout(this._longPressTimeout);
 
 		if (this._simulateClick && e.changedTouches) {
+
 			dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 			first = e.changedTouches[0];
 			el = first.target;
@@ -162,8 +165,9 @@ L.Draggable = L.Class.extend({
 
 		for (i in L.Draggable.MOVE) {
 			if (L.Draggable.MOVE.hasOwnProperty(i)) {
-				L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
-				L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
+				L.DomEvent
+				    .off(document, L.Draggable.MOVE[i], this._onMove)
+				    .off(document, L.Draggable.END[i], this._onUp);
 			}
 		}
 
