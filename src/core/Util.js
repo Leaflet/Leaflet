@@ -85,8 +85,12 @@ L.Util = {
 		return Math.round(num * pow) / pow;
 	},
 
+	trim: function (str) {
+		return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+	},
+
 	splitWords: function (str) {
-		return str.replace(/^\s+|\s+$/g, '').split(/\s+/);
+		return L.Util.trim(str).split(/\s+/);
 	},
 
 	setOptions: function (obj, options) {
