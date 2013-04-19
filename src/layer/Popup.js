@@ -256,7 +256,9 @@ L.Popup = L.Class.extend({
 		}
 
 		if (dx || dy) {
-			map.panBy(new L.Point(dx, dy));
+			map
+			    .fire('autopanstart')
+			    .panBy(new L.Point(dx, dy));
 		}
 	},
 
