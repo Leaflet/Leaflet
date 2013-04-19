@@ -130,15 +130,7 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-
-		function replaceFn(w, match) {
-			if (match === name) { return ''; }
-			return w;
-		}
-
-		el.className = el.className
-		        .replace(/(\S+)\s*/g, replaceFn)
-		        .replace(/(^\s+|\s+$)/, '');
+		el.className = L.Util.trim((' ' + el.className + ' ').replace(' ' + name + ' ', ' '));
 	},
 
 	setOpacity: function (el, value) {
