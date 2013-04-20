@@ -37,6 +37,9 @@ here are some tips for creating a helpful report that will make fixing it much e
  * *Bonus tip:* if the bug only appears in the master version but the stable version is fine,
    use `git bisect` to find the exact commit that introduced the bug.
 
+If you just want some help with your project,
+try asking [on the Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) instead.
+
 ## Contributing Code
 
 ### Considerations for Accepting Patches
@@ -60,15 +63,15 @@ please consider submitting another pull request with the corresponding [document
 ### Setting up the Build System
 
 To set up the Leaflet build system, install [Node](http://nodejs.org/),
-then run the following commands in the project root (with superuser permissions):
+then run the following commands in the project root:
 
 ```
 npm install -g jake
-npm install jshint
-npm install uglify-js
+npm install
 ```
 
 You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder).
+For a custom build with selected components, open `build/build.html` in the browser and follow the instructions from there.
 
 ### Making Changes to Leaflet Source
 
@@ -79,7 +82,7 @@ on the GitHub Help website &mdash; it will get you started quickly.
 You should always write each batch of changes (feature, bugfix, etc.) in **its own topic branch**.
 Please do not commit to the `master` branch, or your unrelated changes will go into the same pull request.
 
-You should also follow the code style and whitespace conventions of the original codebase. 
+You should also follow the code style and whitespace conventions of the original codebase.
 In particular, use tabs for indentation and spaces for alignment.
 
 Before commiting your changes, run `jake lint` to catch any JS errors in the code and fix them.
@@ -90,46 +93,34 @@ Also, please make sure that you have [line endings configured properly](https://
 
 Happy coding!
 
-## Running the tests
+## Running the Tests
 
-$ jake test
+To run the tests from the command line,
+install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
+then run:
 
-This requires you have PhantomJS installed
+```
+jake test
+```
 
-### Install PhantomJS
+To run all the tests in actual browsers at the same time, you can do:
 
-On windows:
-Grab the zip from http://phantomjs.org/download.html
-Extract to: C:\Windows\Program Files\PhantomJS
-So you have: C:\Windows\Program Files\PhantomJS\phantomjs.exe
+```
+jake test --ff --chrome
+```
 
-On linux/mac:
-???
-(Maybe npm install -g phantomjs)
+To run the tests in a browser manually, open `spec/index.html`.
 
 ## Code Coverage
 
-It is important that our tests cover the leaflet code base so we know everything works.
-To run the coverage tests you need a git version of testacular installed, see below for details.
-Then, just run:
+To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
 
-$ jake test --cov
+```
+jake test --cov
+```
 
-This will run all of the tests using PhantomJS and generate html pages with details on the code coverage.
-
-Open: spec/coverage/PhantomJS 1.8/index.html
-From here you can click through to folders/files on the left to get details on their individual coverage.
-
-### Install testacular from git
-
-$ cd node_modules
-$ git clone git://github.com/testacular/testacular.git
-$ cd testacular
-$ sudo npm install
-$ sudo npm install -g grunt
-$ sudo npm install -g grunt-cli
-$ grunt
-$ cd ../..
+After that, open `spec/coverage/<environment>/index.html` in a browser to see the report.
+From there you can click through folders/files to get details on their individual coverage.
 
 ## Improving Documentation
 
