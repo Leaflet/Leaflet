@@ -70,7 +70,7 @@ L.Control.Attribution = L.Control.extend({
 		var attribs = [];
 
 		for (var i in this._attributions) {
-			if (this._attributions.hasOwnProperty(i) && this._attributions[i]) {
+			if (this._attributions[i]) {
 				attribs.push(i);
 			}
 		}

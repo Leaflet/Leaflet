@@ -119,14 +119,14 @@ L.Map.Keyboard = L.Handler.extend({
 		var key = e.keyCode,
 		    map = this._map;
 
-		if (this._panKeys.hasOwnProperty(key)) {
+		if (key in this._panKeys) {
 			map.panBy(this._panKeys[key]);
 
 			if (map.options.maxBounds) {
 				map.panInsideBounds(map.options.maxBounds);
 			}
 
-		} else if (this._zoomKeys.hasOwnProperty(key)) {
+		} else if (key in this._zoomKeys) {
 			map.setZoom(map.getZoom() + this._zoomKeys[key]);
 
 		} else {

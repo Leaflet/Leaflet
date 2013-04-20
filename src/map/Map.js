@@ -217,15 +217,12 @@ L.Map = L.Class.extend({
 	hasLayer: function (layer) {
 		if (!layer) { return false; }
 
-		var id = L.stamp(layer);
-		return this._layers.hasOwnProperty(id);
+		return (L.stamp(layer) in this);
 	},
 
 	eachLayer: function (method, context) {
 		for (var i in this._layers) {
-			if (this._layers.hasOwnProperty(i)) {
-				method.call(context, this._layers[i]);
-			}
+			method.call(context, this._layers[i]);
 		}
 		return this;
 	},
@@ -598,14 +595,12 @@ L.Map = L.Class.extend({
 			oldZoomSpan = this._getZoomSpan();
 
 		for (i in this._zoomBoundLayers) {
-			if (this._zoomBoundLayers.hasOwnProperty(i)) {
-				var layer = this._zoomBoundLayers[i];
-				if (!isNaN(layer.options.minZoom)) {
-					minZoom = Math.min(minZoom, layer.options.minZoom);
-				}
-				if (!isNaN(layer.options.maxZoom)) {
-					maxZoom = Math.max(maxZoom, layer.options.maxZoom);
-				}
+			var layer = this._zoomBoundLayers[i];
+			if (!isNaN(layer.options.minZoom)) {
+				minZoom = Math.min(minZoom, layer.options.minZoom);
+			}
+			if (!isNaN(layer.options.maxZoom)) {
+				maxZoom = Math.max(maxZoom, layer.options.maxZoom);
 			}
 		}
 

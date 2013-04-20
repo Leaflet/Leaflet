@@ -40,9 +40,7 @@ L.Util = {
 			args = Array.prototype.slice.call(arguments, 3);
 
 			for (i in obj) {
-				if (obj.hasOwnProperty(i)) {
-					method.apply(context, [i, obj[i]].concat(args));
-				}
+				method.apply(context, [i, obj[i]].concat(args));
 			}
 			return true;
 		}
@@ -101,9 +99,7 @@ L.Util = {
 	getParamString: function (obj, existingUrl) {
 		var params = [];
 		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
-				params.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
-			}
+			params.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
@@ -111,7 +107,7 @@ L.Util = {
 	template: function (str, data) {
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
-			if (!data.hasOwnProperty(key)) {
+			if (value === undefined) {
 				throw new Error('No value provided for variable ' + str);
 			} else if (typeof value === 'function') {
 				value = value(data);

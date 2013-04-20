@@ -214,9 +214,7 @@ L.TileLayer = L.Class.extend({
 
 		if (L.Browser.ielt9) {
 			for (i in tiles) {
-				if (tiles.hasOwnProperty(i)) {
-					L.DomUtil.setOpacity(tiles[i], this.options.opacity);
-				}
+				L.DomUtil.setOpacity(tiles[i], this.options.opacity);
 			}
 		} else {
 			L.DomUtil.setOpacity(this._container, this.options.opacity);
@@ -225,9 +223,7 @@ L.TileLayer = L.Class.extend({
 		// stupid webkit hack to force redrawing of tiles
 		if (L.Browser.webkit) {
 			for (i in tiles) {
-				if (tiles.hasOwnProperty(i)) {
-					tiles[i].style.webkitTransform += ' translate(0,0)';
-				}
+				tiles[i].style.webkitTransform += ' translate(0,0)';
 			}
 		}
 	},
@@ -258,12 +254,8 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_reset: function (e) {
-		var tiles = this._tiles;
-
-		for (var key in tiles) {
-			if (tiles.hasOwnProperty(key)) {
-				this.fire('tileunload', {tile: tiles[key]});
-			}
+		for (var key in this._tiles) {
+			this.fire('tileunload', {tile: this._tiles[key]});
 		}
 
 		this._tiles = {};
@@ -386,15 +378,13 @@ L.TileLayer = L.Class.extend({
 		var kArr, x, y, key;
 
 		for (key in this._tiles) {
-			if (this._tiles.hasOwnProperty(key)) {
-				kArr = key.split(':');
-				x = parseInt(kArr[0], 10);
-				y = parseInt(kArr[1], 10);
+			kArr = key.split(':');
+			x = parseInt(kArr[0], 10);
+			y = parseInt(kArr[1], 10);
 
-				// remove tile if it's out of bounds
-				if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
-					this._removeTile(key);
-				}
+			// remove tile if it's out of bounds
+			if (x < bounds.min.x || x > bounds.max.x || y < bounds.min.y || y > bounds.max.y) {
+				this._removeTile(key);
 			}
 		}
 	},

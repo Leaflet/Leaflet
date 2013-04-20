@@ -136,13 +136,11 @@ L.Mixin.Events = {
 		typeIndex = events[type + '_idx'];
 
 		for (contextId in typeIndex) {
-			if (typeIndex.hasOwnProperty(contextId)) {
-				listeners = typeIndex[contextId];
+			listeners = typeIndex[contextId];
 
-				if (listeners) {
-					for (i = 0, len = listeners.length; i < len; i++) {
-						listeners[i].action.call(listeners[i].context || this, event);
-					}
+			if (listeners) {
+				for (i = 0, len = listeners.length; i < len; i++) {
+					listeners[i].action.call(listeners[i].context || this, event);
 				}
 			}
 		}

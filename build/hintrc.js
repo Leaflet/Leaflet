@@ -11,7 +11,7 @@ exports.config = {
 	"camelcase": true,
 	"curly": true,
 	"eqeqeq": true,
-	"forin": true,
+	"forin": false,
 	"immed": true,
 	"latedef": true,
 	"newcap": true,

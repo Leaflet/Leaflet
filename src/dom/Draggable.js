@@ -164,11 +164,9 @@ L.Draggable = L.Class.extend({
 		}
 
 		for (i in L.Draggable.MOVE) {
-			if (L.Draggable.MOVE.hasOwnProperty(i)) {
-				L.DomEvent
-				    .off(document, L.Draggable.MOVE[i], this._onMove)
-				    .off(document, L.Draggable.END[i], this._onUp);
-			}
+			L.DomEvent
+			    .off(document, L.Draggable.MOVE[i], this._onMove)
+			    .off(document, L.Draggable.END[i], this._onUp);
 		}
 
 		if (this._moved) {
