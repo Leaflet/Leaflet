@@ -200,7 +200,6 @@ var deps = {
 
 	ControlZoom: {
 		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
 		      'control/Control.Zoom.js'],
 		heading: 'Controls',
 		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
@@ -208,21 +207,18 @@ var deps = {
 
 	ControlAttrib: {
 		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
 	},
 
 	ControlScale: {
 		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
 		      'control/Control.Scale.js'],
 		desc: 'Scale control.'
 	},
 
 	ControlLayers: {
 		src: ['control/Control.js',
-		      'map/ext/Map.Control.js',
 		      'control/Control.Layers.js'],
 		desc: 'Layer Switcher control.'
 	},
