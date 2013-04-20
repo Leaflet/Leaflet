@@ -52,6 +52,8 @@ L.Popup = L.Class.extend({
 			L.DomUtil.setOpacity(this._container, 1);
 		}
 
+		this.fire('open');
+
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
@@ -81,6 +83,8 @@ L.Popup = L.Class.extend({
 		}
 
 		this._map = null;
+
+		this.fire('close');
 
 		map.fire('popupclose', {popup: this});
 
