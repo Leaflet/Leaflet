@@ -17,6 +17,7 @@ L.Popup = L.Class.extend({
 		closeButton: true,
 		offset: new L.Point(0, 6),
 		autoPanPadding: new L.Point(5, 5),
+		keepInView: false,
 		className: '',
 		zoomAnimation: true
 	},
@@ -43,15 +44,7 @@ L.Popup = L.Class.extend({
 		}
 		map._panes.popupPane.appendChild(this._container);
 
-		map.on('viewreset', this._updatePosition, this);
-
-		if (this._animated) {
-			map.on('zoomanim', this._zoomAnimation, this);
-		}
-
-		if (map.options.closePopupOnClick) {
-			map.on('preclick', this._close, this);
-		}
+		map.on(this._getEvents(), this);
 
 		this._update();
 
@@ -75,11 +68,7 @@ L.Popup = L.Class.extend({
 
 		L.Util.falseFn(this._container.offsetWidth); // force reflow
 
-		map.off({
-			viewreset: this._updatePosition,
-			preclick: this._close,
-			zoomanim: this._zoomAnimation
-		}, this);
+		map.off(this._getEvents(), this);
 
 		if (map.options.fadeAnimation) {
 			L.DomUtil.setOpacity(this._container, 0);
@@ -98,6 +87,24 @@ L.Popup = L.Class.extend({
 		this._content = content;
 		this._update();
 		return this;
+	},
+
+	_getEvents: function () {
+		var events = {
+			viewreset: this._updatePosition
+		};
+
+		if (this._animated) {
+			events.zoomanim = this._zoomAnimation;
+		}
+		if (this._map.options.closePopupOnClick) {
+			events.preclick = this._close;
+		}
+		if (this.options.keepInView) {
+			events.moveend = this._adjustPan;
+		}
+
+		return events;
 	},
 
 	_close: function () {
@@ -212,7 +219,7 @@ L.Popup = L.Class.extend({
 		this._containerBottom = -offset.y - (animated ? 0 : pos.y);
 		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (animated ? 0 : pos.x);
 
-		//Bottom position the popup in case the height of the popup changes (images loading etc)
+		// bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
 	},
@@ -242,17 +249,17 @@ L.Popup = L.Class.extend({
 		    dx = 0,
 		    dy = 0;
 
-		if (containerPos.x < 0) {
-			dx = containerPos.x - padding.x;
-		}
-		if (containerPos.x + containerWidth > size.x) {
+		if (containerPos.x + containerWidth > size.x) { // right
 			dx = containerPos.x + containerWidth - size.x + padding.x;
 		}
-		if (containerPos.y < 0) {
-			dy = containerPos.y - padding.y;
+		if (containerPos.x - dx < 0) { // left
+			dx = containerPos.x - padding.x;
 		}
-		if (containerPos.y + containerHeight > size.y) {
+		if (containerPos.y + containerHeight > size.y) { // bottom
 			dy = containerPos.y + containerHeight - size.y + padding.y;
+		}
+		if (containerPos.y - dy < 0) { // top
+			dy = containerPos.y - padding.y;
 		}
 
 		if (dx || dy) {
