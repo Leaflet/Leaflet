@@ -106,7 +106,7 @@ jake test
 To run all the tests in actual browsers at the same time, you can do:
 
 ```
-jake test --ff --chrome
+jake test --ff --chrome --safari --ie
 ```
 
 To run the tests in a browser manually, open `spec/index.html`.

@@ -164,8 +164,14 @@ exports.test = function() {
 	if (isArgv('--chrome')) {
 		testConfig.browsers.push('Chrome');
 	}
+	if (isArgv('--safari')) {
+		testConfig.browsers.push('Safari');
+	}
 	if (isArgv('--ff')) {
 		testConfig.browsers.push('Firefox');
+	}
+	if (isArgv('--ie')) {
+		testConfig.browsers.push('IE');
 	}
 
 	if (isArgv('--cov')) {
