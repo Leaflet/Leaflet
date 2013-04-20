@@ -140,6 +140,10 @@ L.LatLngBounds.prototype = {
 
 	isValid: function () {
 		return !!(this._southWest && this._northEast);
+	},
+
+	toJSON: function () {
+		return [this._southWest.toJSON(), this._northEast.toJSON()];
 	}
 };
 

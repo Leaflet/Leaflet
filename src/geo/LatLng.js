@@ -33,6 +33,10 @@ L.LatLng.prototype = {
 		return margin <= L.LatLng.MAX_MARGIN;
 	},
 
+	toJSON: function () {
+		return [this.lat, this.lng];
+	},
+
 	toString: function (precision) { // (Number) -> String
 		return 'LatLng(' +
 		        L.Util.formatNum(this.lat, precision) + ', ' +
