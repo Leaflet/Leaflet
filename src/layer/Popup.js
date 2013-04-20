@@ -51,6 +51,12 @@ L.Popup = L.Class.extend({
 		if (animFade) {
 			L.DomUtil.setOpacity(this._container, 1);
 		}
+
+		map.fire('popupopen', {popup: this});
+
+		if (this._source) {
+			this._source.fire('popupopen', {popup: this});
+		}
 	},
 
 	addTo: function (map) {
@@ -75,6 +81,12 @@ L.Popup = L.Class.extend({
 		}
 
 		this._map = null;
+
+		map.fire('popupclose', {popup: this});
+
+		if (this._source) {
+			this._source.fire('popupclose', {popup: this});
+		}
 	},
 
 	setLatLng: function (latlng) {
@@ -108,14 +120,8 @@ L.Popup = L.Class.extend({
 	},
 
 	_close: function () {
-		var map = this._map;
-
-		if (map) {
-			map._popup = null;
-
-			map
-			    .removeLayer(this)
-			    .fire('popupclose', {popup: this});
+		if (this._map) {
+			this._map.removeLayer(this);
 		}
 	},
 
@@ -278,3 +284,20 @@ L.Popup = L.Class.extend({
 L.popup = function (options, source) {
 	return new L.Popup(options, source);
 };
+
+
+L.Map.include({
+	openPopup: function (popup) {
+		this.closePopup();
+		this._popup = popup;
+		return this.addLayer(popup);
+	},
+
+	closePopup: function () {
+		if (this._popup) {
+			this.removeLayer(this._popup);
+			this._popup = null;
+		}
+		return this;
+	}
+});
