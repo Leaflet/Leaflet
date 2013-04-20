@@ -138,7 +138,7 @@ L.extend(L.GeoJSON, {
 		for (i = 0, len = coords.length; i < len; i++) {
 			latlng = levelsDeep ?
 			        this.coordsToLatLngs(coords[i], levelsDeep - 1, coordsToLatLng) :
-			        (this.coordsToLatLng || coordsToLatLng)(coords[i]);
+			        (coordsToLatLng || this.coordsToLatLng)(coords[i]);
 
 			latlngs.push(latlng);
 		}
