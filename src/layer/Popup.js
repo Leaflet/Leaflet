@@ -44,6 +44,7 @@ L.Popup = L.Class.extend({
 		map._panes.popupPane.appendChild(this._container);
 
 		map.on('viewreset', this._updatePosition, this);
+		map.on('moveend', this._updatePosition, this);
 
 		if (this._animated) {
 			map.on('zoomanim', this._zoomAnimation, this);
@@ -77,6 +78,7 @@ L.Popup = L.Class.extend({
 
 		map.off({
 			viewreset: this._updatePosition,
+			moveend: this._updatePosition,
 			preclick: this._close,
 			zoomanim: this._zoomAnimation
 		}, this);
@@ -150,8 +152,6 @@ L.Popup = L.Class.extend({
 		this._updatePosition();
 
 		this._container.style.visibility = '';
-
-		this._adjustPan();
 	},
 
 	_updateContent: function () {
@@ -215,6 +215,8 @@ L.Popup = L.Class.extend({
 		//Bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = this._containerBottom + 'px';
 		this._container.style.left = this._containerLeft + 'px';
+
+		this._adjustPan();
 	},
 
 	_zoomAnimation: function (opt) {
@@ -242,17 +244,17 @@ L.Popup = L.Class.extend({
 		    dx = 0,
 		    dy = 0;
 
-		if (containerPos.x < 0) {
-			dx = containerPos.x - padding.x;
-		}
 		if (containerPos.x + containerWidth > size.x) {
 			dx = containerPos.x + containerWidth - size.x + padding.x;
 		}
-		if (containerPos.y < 0) {
-			dy = containerPos.y - padding.y;
+		if (containerPos.x - dx < 0) {
+			dx = containerPos.x - padding.x;
 		}
 		if (containerPos.y + containerHeight > size.y) {
 			dy = containerPos.y + containerHeight - size.y + padding.y;
+		}
+		if (containerPos.y - dy < 0) {
+			dy = containerPos.y - padding.y;
 		}
 
 		if (dx || dy) {
