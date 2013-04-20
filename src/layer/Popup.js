@@ -287,8 +287,17 @@ L.popup = function (options, source) {
 
 
 L.Map.include({
-	openPopup: function (popup) {
+	openPopup: function (popup, latlng, options) { // (Popup) or (String || HTMLElement, LatLng[, Object])
 		this.closePopup();
+
+		if (!(popup instanceof L.Popup)) {
+			var content = popup;
+
+			popup = new L.Popup(options)
+			    .setLatLng(latlng)
+			    .setContent(content);
+		}
+
 		this._popup = popup;
 		return this.addLayer(popup);
 	},
