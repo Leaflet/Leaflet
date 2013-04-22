@@ -40,6 +40,9 @@ L.Map.include({
 		if (navigator.geolocation) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
 		}
+		if (this._locationOptions) {
+			this._locationOptions.setView = false;
+		}
 		return this;
 	},
 
