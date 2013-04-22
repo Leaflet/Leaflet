@@ -286,15 +286,9 @@ L.TileLayer = L.Class.extend({
 			return;
 		}
 
-		var nwTilePoint = new L.Point(
-		        Math.floor(bounds.min.x / tileSize),
-		        Math.floor(bounds.min.y / tileSize)),
-
-		    seTilePoint = new L.Point(
-		        Math.floor(bounds.max.x / tileSize),
-		        Math.floor(bounds.max.y / tileSize)),
-
-		    tileBounds = new L.Bounds(nwTilePoint, seTilePoint);
+		var tileBounds = L.bounds(
+		        bounds.min.divideBy(tileSize)._floor(),
+		        bounds.max.divideBy(tileSize)._floor());
 
 		this._addTilesFromCenterOut(tileBounds);
 
@@ -361,12 +355,11 @@ L.TileLayer = L.Class.extend({
 		if (this.options.bounds) {
 			var tileSize = this.options.tileSize,
 			    nwPoint = tilePoint.multiplyBy(tileSize),
-			    sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+			    sePoint = nwPoint.add([tileSize, tileSize]),
 			    nw = this._map.unproject(nwPoint),
-			    se = this._map.unproject(sePoint),
-			    bounds = new L.LatLngBounds([nw, se]);
+			    se = this._map.unproject(sePoint);
 
-			if (!this.options.bounds.intersects(bounds)) {
+			if (!this.options.bounds.intersects([nw, se])) {
 				return false;
 			}
 		}

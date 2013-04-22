@@ -85,10 +85,10 @@ L.Map.Drag = L.Handler.extend({
 	_onViewReset: function () {
 		// TODO fix hardcoded Earth values
 		var pxCenter = this._map.getSize()._divideBy(2),
-		    pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0, 0));
+		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
-		this._worldWidth = this._map.project(new L.LatLng(0, 180)).x;
+		this._worldWidth = this._map.project([0, 180]).x;
 	},
 
 	_onPreDrag: function () {
@@ -123,7 +123,7 @@ L.Map.Drag = L.Handler.extend({
 			    ease = options.easeLinearity,
 
 			    speedVector = direction.multiplyBy(ease / duration),
-			    speed = speedVector.distanceTo(new L.Point(0, 0)),
+			    speed = speedVector.distanceTo([0, 0]),
 
 			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),

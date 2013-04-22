@@ -54,7 +54,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		    tileSize = this.options.tileSize,
 
 		    nwPoint = tilePoint.multiplyBy(tileSize),
-		    sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+		    sePoint = nwPoint.add([tileSize, tileSize]),
 
 		    nw = crs.project(map.unproject(nwPoint, zoom)),
 		    se = crs.project(map.unproject(sePoint, zoom)),

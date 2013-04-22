@@ -67,9 +67,9 @@ L.Map.include({
 		    latAccuracy = 180 * pos.coords.accuracy / 40075017,
 		    lngAccuracy = latAccuracy / Math.cos(L.LatLng.DEG_TO_RAD * lat),
 
-		    sw = new L.LatLng(lat - latAccuracy, lng - lngAccuracy),
-		    ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
-		    bounds = new L.LatLngBounds(sw, ne),
+		    bounds = L.latLngBounds(
+		            [lat - latAccuracy, lng - lngAccuracy],
+		            [lat + latAccuracy, lng + lngAccuracy]),
 
 		    options = this._locationOptions;
 

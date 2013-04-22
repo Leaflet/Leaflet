@@ -20,7 +20,7 @@ L.Marker.include({
 	},
 
 	bindPopup: function (content, options) {
-		var anchor = L.point(this.options.icon.options.popupAnchor) || new L.Point(0, 0);
+		var anchor = L.point(this.options.icon.options.popupAnchor || [0, 0]);
 
 		anchor = anchor.add(L.Popup.prototype.options.offset);
 

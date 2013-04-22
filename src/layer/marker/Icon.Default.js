@@ -5,11 +5,11 @@
 L.Icon.Default = L.Icon.extend({
 
 	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(12, 41),
-		popupAnchor: new L.Point(1, -34),
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
 
-		shadowSize: new L.Point(41, 41)
+		shadowSize: [41, 41]
 	},
 
 	_getIconUrl: function (name) {

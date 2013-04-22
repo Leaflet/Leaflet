@@ -15,8 +15,8 @@ L.Popup = L.Class.extend({
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
-		offset: new L.Point(0, 6),
-		autoPanPadding: new L.Point(5, 5),
+		offset: [0, 6],
+		autoPanPadding: [5, 5],
 		keepInView: false,
 		className: '',
 		zoomAnimation: true
@@ -220,7 +220,7 @@ L.Popup = L.Class.extend({
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 		    animated = this._animated,
-		    offset = this.options.offset;
+		    offset = L.point(this.options.offset);
 
 		if (animated) {
 			L.DomUtil.setPosition(this._container, pos);
@@ -250,11 +250,11 @@ L.Popup = L.Class.extend({
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		if (this._animated) {
-			layerPos._add(L.DomUtil.getPosition(this._container));
+			layerPos.add(L.DomUtil.getPosition(this._container));
 		}
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
-		    padding = this.options.autoPanPadding,
+		    padding = L.point(this.options.autoPanPadding),
 		    size = map.getSize(),
 		    dx = 0,
 		    dy = 0;
@@ -275,7 +275,7 @@ L.Popup = L.Class.extend({
 		if (dx || dy) {
 			map
 			    .fire('autopanstart')
-			    .panBy(new L.Point(dx, dy));
+			    .panBy([dx, dy]);
 		}
 	},
 
