@@ -79,11 +79,7 @@ L.Map = L.Class.extend({
 		paddingBottomRight = L.point(paddingBottomRight || paddingTopLeft);
 
 		var zoom = this.getBoundsZoom(bounds, false, paddingTopLeft.add(paddingBottomRight)),
-
-		    paddingOffset = new L.Point(
-		            paddingBottomRight.x - paddingTopLeft.x,
-		            paddingBottomRight.y - paddingTopLeft.y).divideBy(2),
-
+		    paddingOffset = paddingBottomRight.subtract(paddingTopLeft).divideBy(2),
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
 		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
@@ -161,7 +157,7 @@ L.Map = L.Class.extend({
 		}
 
 		if (dx || dy) {
-			return this.panBy(new L.Point(dx, dy));
+			return this.panBy([dx, dy]);
 		}
 
 		return this;
@@ -706,7 +702,7 @@ L.Map = L.Class.extend({
 
 	_moved: function () {
 		var pos = this._getMapPanePos();
-		return pos && !pos.equals(new L.Point(0, 0));
+		return pos && !pos.equals([0, 0]);
 	},
 
 	_getTopLeftPoint: function () {
