@@ -14,7 +14,7 @@ L.Map.include({
 
 	locate: function (/*Object*/ options) {
 
-		options = this._locationOptions = L.extend(this._defaultLocateOptions, options);
+		options = this._locateOptions = L.extend(this._defaultLocateOptions, options);
 
 		if (!navigator.geolocation) {
 			this._handleGeolocationError({
@@ -40,8 +40,8 @@ L.Map.include({
 		if (navigator.geolocation) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
 		}
-		if (this._locationOptions) {
-			this._locationOptions.setView = false;
+		if (this._locateOptions) {
+			this._locateOptions.setView = false;
 		}
 		return this;
 	},
@@ -52,7 +52,7 @@ L.Map.include({
 		            (c === 1 ? 'permission denied' :
 		            (c === 2 ? 'position unavailable' : 'timeout'));
 
-		if (this._locationOptions.setView && !this._loaded) {
+		if (this._locateOptions.setView && !this._loaded) {
 			this.fitWorld();
 		}
 
@@ -74,7 +74,7 @@ L.Map.include({
 		            [lat - latAccuracy, lng - lngAccuracy],
 		            [lat + latAccuracy, lng + lngAccuracy]),
 
-		    options = this._locationOptions;
+		    options = this._locateOptions;
 
 		if (options.setView) {
 			var zoom = Math.min(this.getBoundsZoom(bounds), options.maxZoom);
