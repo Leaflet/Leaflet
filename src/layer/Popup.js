@@ -250,7 +250,7 @@ L.Popup = L.Class.extend({
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		if (this._animated) {
-			layerPos.add(L.DomUtil.getPosition(this._container));
+			layerPos._add(L.DomUtil.getPosition(this._container));
 		}
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
