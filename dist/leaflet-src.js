@@ -675,11 +675,15 @@ L.Point.prototype = {
 	},
 
 	equals: function (point) {
+		point = L.point(point);
+
 		return point.x === this.x &&
 		       point.y === this.y;
 	},
 
 	contains: function (point) {
+		point = L.point(point);
+
 		return Math.abs(point.x) <= Math.abs(this.x) &&
 		       Math.abs(point.y) <= Math.abs(this.y);
 	},
@@ -1531,11 +1535,7 @@ L.Map = L.Class.extend({
 		paddingBottomRight = L.point(paddingBottomRight || paddingTopLeft);
 
 		var zoom = this.getBoundsZoom(bounds, false, paddingTopLeft.add(paddingBottomRight)),
-
-		    paddingOffset = new L.Point(
-		            paddingBottomRight.x - paddingTopLeft.x,
-		            paddingBottomRight.y - paddingTopLeft.y).divideBy(2),
-
+		    paddingOffset = paddingBottomRight.subtract(paddingTopLeft).divideBy(2),
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
 		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
@@ -1613,7 +1613,7 @@ L.Map = L.Class.extend({
 		}
 
 		if (dx || dy) {
-			return this.panBy(new L.Point(dx, dy));
+			return this.panBy([dx, dy]);
 		}
 
 		return this;
@@ -2158,7 +2158,7 @@ L.Map = L.Class.extend({
 
 	_moved: function () {
 		var pos = this._getMapPanePos();
-		return pos && !pos.equals(new L.Point(0, 0));
+		return pos && !pos.equals([0, 0]);
 	},
 
 	_getTopLeftPoint: function () {
@@ -2561,15 +2561,9 @@ L.TileLayer = L.Class.extend({
 			return;
 		}
 
-		var nwTilePoint = new L.Point(
-		        Math.floor(bounds.min.x / tileSize),
-		        Math.floor(bounds.min.y / tileSize)),
-
-		    seTilePoint = new L.Point(
-		        Math.floor(bounds.max.x / tileSize),
-		        Math.floor(bounds.max.y / tileSize)),
-
-		    tileBounds = new L.Bounds(nwTilePoint, seTilePoint);
+		var tileBounds = L.bounds(
+		        bounds.min.divideBy(tileSize)._floor(),
+		        bounds.max.divideBy(tileSize)._floor());
 
 		this._addTilesFromCenterOut(tileBounds);
 
@@ -2636,12 +2630,11 @@ L.TileLayer = L.Class.extend({
 		if (this.options.bounds) {
 			var tileSize = this.options.tileSize,
 			    nwPoint = tilePoint.multiplyBy(tileSize),
-			    sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+			    sePoint = nwPoint.add([tileSize, tileSize]),
 			    nw = this._map.unproject(nwPoint),
-			    se = this._map.unproject(sePoint),
-			    bounds = new L.LatLngBounds([nw, se]);
+			    se = this._map.unproject(sePoint);
 
-			if (!this.options.bounds.intersects(bounds)) {
+			if (!this.options.bounds.intersects([nw, se])) {
 				return false;
 			}
 		}
@@ -2910,7 +2903,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		    tileSize = this.options.tileSize,
 
 		    nwPoint = tilePoint.multiplyBy(tileSize),
-		    sePoint = nwPoint.add(new L.Point(tileSize, tileSize)),
+		    sePoint = nwPoint.add([tileSize, tileSize]),
 
 		    nw = crs.project(map.unproject(nwPoint, zoom)),
 		    se = crs.project(map.unproject(sePoint, zoom)),
@@ -3245,11 +3238,11 @@ L.icon = function (options) {
 L.Icon.Default = L.Icon.extend({
 
 	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(12, 41),
-		popupAnchor: new L.Point(1, -34),
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
 
-		shadowSize: new L.Point(41, 41)
+		shadowSize: [41, 41]
 	},
 
 	_getIconUrl: function (name) {
@@ -3573,7 +3566,7 @@ L.marker = function (latlng, options) {
 
 L.DivIcon = L.Icon.extend({
 	options: {
-		iconSize: new L.Point(12, 12), // also can be set through CSS
+		iconSize: [12, 12], // also can be set through CSS
 		/*
 		iconAnchor: (Point)
 		popupAnchor: (Point)
@@ -3627,8 +3620,8 @@ L.Popup = L.Class.extend({
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
-		offset: new L.Point(0, 6),
-		autoPanPadding: new L.Point(5, 5),
+		offset: [0, 6],
+		autoPanPadding: [5, 5],
 		keepInView: false,
 		className: '',
 		zoomAnimation: true
@@ -3832,7 +3825,7 @@ L.Popup = L.Class.extend({
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 		    animated = this._animated,
-		    offset = this.options.offset;
+		    offset = L.point(this.options.offset);
 
 		if (animated) {
 			L.DomUtil.setPosition(this._container, pos);
@@ -3862,11 +3855,11 @@ L.Popup = L.Class.extend({
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		if (this._animated) {
-			layerPos._add(L.DomUtil.getPosition(this._container));
+			layerPos.add(L.DomUtil.getPosition(this._container));
 		}
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
-		    padding = this.options.autoPanPadding,
+		    padding = L.point(this.options.autoPanPadding),
 		    size = map.getSize(),
 		    dx = 0,
 		    dy = 0;
@@ -3887,7 +3880,7 @@ L.Popup = L.Class.extend({
 		if (dx || dy) {
 			map
 			    .fire('autopanstart')
-			    .panBy(new L.Point(dx, dy));
+			    .panBy([dx, dy]);
 		}
 	},
 
@@ -3950,7 +3943,7 @@ L.Marker.include({
 	},
 
 	bindPopup: function (content, options) {
-		var anchor = L.point(this.options.icon.options.popupAnchor) || new L.Point(0, 0);
+		var anchor = L.point(this.options.icon.options.popupAnchor || [0, 0]);
 
 		anchor = anchor.add(L.Popup.prototype.options.offset);
 
@@ -5207,15 +5200,7 @@ L.Polyline = L.Path.extend({
 	},
 
 	getBounds: function () {
-		var bounds = new L.LatLngBounds(),
-		    latLngs = this.getLatLngs(),
-		    i, len;
-
-		for (i = 0, len = latLngs.length; i < len; i++) {
-			bounds.extend(latLngs[i]);
-		}
-
-		return bounds;
+		return new L.LatLngBounds(this.getLatLngs());
 	},
 
 	_convertLatLngs: function (latlngs, overwrite) {
@@ -5551,21 +5536,21 @@ L.Circle = L.Path.extend({
 
 	projectLatlngs: function () {
 		var lngRadius = this._getLngRadius(),
-		    latlng2 = new L.LatLng(this._latlng.lat, this._latlng.lng - lngRadius),
-		    point2 = this._map.latLngToLayerPoint(latlng2);
+		    latlng = this._latlng,
+		    pointLeft = this._map.latLngToLayerPoint([latlng.lat, latlng.lng - lngRadius]);
 
-		this._point = this._map.latLngToLayerPoint(this._latlng);
-		this._radius = Math.max(Math.round(this._point.x - point2.x), 1);
+		this._point = this._map.latLngToLayerPoint(latlng);
+		this._radius = Math.max(this._point.x - pointLeft.x, 1);
 	},
 
 	getBounds: function () {
 		var lngRadius = this._getLngRadius(),
 		    latRadius = (this._mRadius / 40075017) * 360,
-		    latlng = this._latlng,
-		    sw = new L.LatLng(latlng.lat - latRadius, latlng.lng - lngRadius),
-		    ne = new L.LatLng(latlng.lat + latRadius, latlng.lng + lngRadius);
+		    latlng = this._latlng;
 
-		return new L.LatLngBounds(sw, ne);
+		return new L.LatLngBounds(
+		        [latlng.lat - latRadius, latlng.lng - lngRadius],
+		        [latlng.lat + latRadius, latlng.lng + lngRadius]);
 	},
 
 	getLatLng: function () {
@@ -6526,10 +6511,10 @@ L.Map.Drag = L.Handler.extend({
 	_onViewReset: function () {
 		// TODO fix hardcoded Earth values
 		var pxCenter = this._map.getSize()._divideBy(2),
-		    pxWorldCenter = this._map.latLngToLayerPoint(new L.LatLng(0, 0));
+		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
-		this._worldWidth = this._map.project(new L.LatLng(0, 180)).x;
+		this._worldWidth = this._map.project([0, 180]).x;
 	},
 
 	_onPreDrag: function () {
@@ -6564,7 +6549,7 @@ L.Map.Drag = L.Handler.extend({
 			    ease = options.easeLinearity,
 
 			    speedVector = direction.multiplyBy(ease / duration),
-			    speed = speedVector.distanceTo(new L.Point(0, 0)),
+			    speed = speedVector.distanceTo([0, 0]),
 
 			    limitedSpeed = Math.min(options.inertiaMaxSpeed, speed),
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
@@ -8551,9 +8536,9 @@ L.Map.include({
 		    latAccuracy = 180 * pos.coords.accuracy / 40075017,
 		    lngAccuracy = latAccuracy / Math.cos(L.LatLng.DEG_TO_RAD * lat),
 
-		    sw = new L.LatLng(lat - latAccuracy, lng - lngAccuracy),
-		    ne = new L.LatLng(lat + latAccuracy, lng + lngAccuracy),
-		    bounds = new L.LatLngBounds(sw, ne),
+		    bounds = L.latLngBounds(
+		            [lat - latAccuracy, lng - lngAccuracy],
+		            [lat + latAccuracy, lng + lngAccuracy]),
 
 		    options = this._locationOptions;
 
