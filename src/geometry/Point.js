@@ -85,11 +85,15 @@ L.Point.prototype = {
 	},
 
 	equals: function (point) {
+		point = L.point(point);
+
 		return point.x === this.x &&
 		       point.y === this.y;
 	},
 
 	contains: function (point) {
+		point = L.point(point);
+
 		return Math.abs(point.x) <= Math.abs(this.x) &&
 		       Math.abs(point.y) <= Math.abs(this.y);
 	},
