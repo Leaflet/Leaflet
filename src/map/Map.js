@@ -71,20 +71,29 @@ L.Map = L.Class.extend({
 		return this.setView(newCenter, zoom);
 	},
 
-	fitBounds: function (bounds) { // (LatLngBounds)
-		bounds = L.latLngBounds(bounds);
+	fitBounds: function (bounds, paddingTopLeft, paddingBottomRight) { // (LatLngBounds || ILayer[, Point, Point])
 
-		var zoom = this.getBoundsZoom(bounds),
-		    swPoint = this.project(bounds.getSouthWest()),
-		    nePoint = this.project(bounds.getNorthEast()),
-		    center = this.unproject(swPoint.add(nePoint).divideBy(2));
+		bounds = bounds.getBounds ? bounds.getBounds() : L.latLngBounds(bounds);
+
+		paddingTopLeft = L.point(paddingTopLeft || [0, 0]);
+		paddingBottomRight = L.point(paddingBottomRight || paddingTopLeft);
+
+		var zoom = this.getBoundsZoom(bounds, false, paddingTopLeft.add(paddingBottomRight)),
+
+		    paddingOffset = new L.Point(
+		            paddingBottomRight.x - paddingTopLeft.x,
+		            paddingBottomRight.y - paddingTopLeft.y).divideBy(2);
+
+		    swPoint = this.project(bounds.getSouthWest(), zoom),
+		    nePoint = this.project(bounds.getNorthEast(), zoom),
+		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
 
 		return this.setView(center, zoom);
 	},
 
 	fitWorld: function () {
-		var sw = new L.LatLng(-60, -170),
-		    ne = new L.LatLng(85, 179);
+		var sw = new L.LatLng(-90, -180),
+		    ne = new L.LatLng(90, 180);
 
 		return this.fitBounds(new L.LatLngBounds(sw, ne));
 	},
@@ -321,7 +330,7 @@ L.Map = L.Class.extend({
 		return Math.min(z1, z2);
 	},
 
-	getBoundsZoom: function (bounds, inside) { // (LatLngBounds, Boolean) -> Number
+	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
 		bounds = L.latLngBounds(bounds);
 
 		var size = this.getSize(),
@@ -329,10 +338,10 @@ L.Map = L.Class.extend({
 		    maxZoom = this.getMaxZoom(),
 		    ne = bounds.getNorthEast(),
 		    sw = bounds.getSouthWest(),
-		    boundsSize,
-		    nePoint,
-		    swPoint,
-		    zoomNotFound = true;
+		    zoomNotFound = true,
+		    boundsSize, nePoint, swPoint;
+
+		padding = L.point(padding || [0, 0]);
 
 		if (inside) {
 			zoom--;
@@ -344,8 +353,8 @@ L.Map = L.Class.extend({
 			swPoint = this.project(sw, zoom);
 
 			boundsSize = new L.Point(
-			        Math.abs(nePoint.x - swPoint.x),
-			        Math.abs(swPoint.y - nePoint.y));
+			        Math.abs(nePoint.x - swPoint.x) + padding.x,
+			        Math.abs(swPoint.y - nePoint.y) + padding.y);
 
 			if (!inside) {
 				zoomNotFound = boundsSize.x <= size.x && boundsSize.y <= size.y;
