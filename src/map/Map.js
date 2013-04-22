@@ -82,7 +82,7 @@ L.Map = L.Class.extend({
 
 		    paddingOffset = new L.Point(
 		            paddingBottomRight.x - paddingTopLeft.x,
-		            paddingBottomRight.y - paddingTopLeft.y).divideBy(2);
+		            paddingBottomRight.y - paddingTopLeft.y).divideBy(2),
 
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
@@ -92,10 +92,7 @@ L.Map = L.Class.extend({
 	},
 
 	fitWorld: function () {
-		var sw = new L.LatLng(-90, -180),
-		    ne = new L.LatLng(90, 180);
-
-		return this.fitBounds(new L.LatLngBounds(sw, ne));
+		return this.fitBounds([[-90, -180], [90, 180]]);
 	},
 
 	panTo: function (center) { // (LatLng)
@@ -333,34 +330,23 @@ L.Map = L.Class.extend({
 	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
 		bounds = L.latLngBounds(bounds);
 
-		var size = this.getSize(),
-		    zoom = this.options.minZoom || 0,
+		var zoom = this.getMinZoom() - (inside ? 1 : 0),
 		    maxZoom = this.getMaxZoom(),
-		    ne = bounds.getNorthEast(),
-		    sw = bounds.getSouthWest(),
+		    size = this.getSize(),
+
+		    nw = bounds.getNorthWest(),
+		    se = bounds.getSouthEast(),
+
 		    zoomNotFound = true,
-		    boundsSize, nePoint, swPoint;
+		    boundsSize;
 
 		padding = L.point(padding || [0, 0]);
 
-		if (inside) {
-			zoom--;
-		}
-
 		do {
 			zoom++;
-			nePoint = this.project(ne, zoom);
-			swPoint = this.project(sw, zoom);
+			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding);
+			zoomNotFound = !inside ? size.contains(boundsSize) : boundsSize.x < size.x || boundsSize.y < size.y;
 
-			boundsSize = new L.Point(
-			        Math.abs(nePoint.x - swPoint.x) + padding.x,
-			        Math.abs(swPoint.y - nePoint.y) + padding.y);
-
-			if (!inside) {
-				zoomNotFound = boundsSize.x <= size.x && boundsSize.y <= size.y;
-			} else {
-				zoomNotFound = boundsSize.x < size.x || boundsSize.y < size.y;
-			}
 		} while (zoomNotFound && zoom <= maxZoom);
 
 		if (zoomNotFound && inside) {
