@@ -60,9 +60,16 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_onMouseDown: function () {
-		if (!this._focused) {
-			this._map._container.focus();
-		}
+		if (this._focused) { return; }
+
+		var body = document.body,
+		    docEl = document.documentElement,
+		    top = body.scrollTop || docEl.scrollTop,
+		    left = body.scrollTop || docEl.scrollLeft;
+
+		this._map._container.focus();
+
+		window.scrollTo(left, top);
 	},
 
 	_onFocus: function () {
