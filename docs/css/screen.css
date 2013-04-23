@@ -80,7 +80,7 @@ h2 {
 	cursor: pointer;
 	}
 
-h2[id]:before {
+.api-page h2[id]:before {
 	content:'Permalink';
 	display:inline-block;
 	margin:0px 5px 0px -35px;
@@ -96,7 +96,7 @@ h2[id]:before {
 	overflow:hidden;
 	}
 
-h2[id]:hover:before { opacity:1; }
+.api-page h2[id]:hover:before { opacity:1; }
 
 .api-page h2 {
 	margin-top: 2.5em;
