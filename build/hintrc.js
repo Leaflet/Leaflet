@@ -3,7 +3,7 @@ exports.config = {
 	// environment
 	"browser": true,
 	"node": true,
-	"predef": [],
+	"predef": ['define'],
 	"strict": false,
 
 	// code style
