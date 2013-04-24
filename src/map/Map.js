@@ -49,7 +49,7 @@ L.Map = L.Class.extend({
 	},
 
 	setZoom: function (zoom, options) {
-		return this.setView(this.getCenter(), zoom, {zoomOptions: options});
+		return this.setView(this.getCenter(), zoom, {zoom: options});
 	},
 
 	zoomIn: function (delta, options) {
@@ -68,7 +68,7 @@ L.Map = L.Class.extend({
 		    centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
 		    newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
 
-		return this.setView(newCenter, zoom, {zoomOptions: options});
+		return this.setView(newCenter, zoom, {zoom: options});
 	},
 
 	fitBounds: function (bounds, options) {
@@ -94,7 +94,7 @@ L.Map = L.Class.extend({
 	},
 
 	panTo: function (center, options) { // (LatLng)
-		return this.setView(center, this._zoom, {panOptions: options});
+		return this.setView(center, this._zoom, {pan: options});
 	},
 
 	panBy: function (offset) { // (Point)

@@ -18,8 +18,8 @@ L.Map.include({
 
 			// try animating pan or zoom
 			var animated = (this._zoom !== zoom) ?
-				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoomOptions) :
-				this._tryAnimatedPan(center, options.panOptions);
+				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
+				this._tryAnimatedPan(center, options.pan);
 
 			if (animated) {
 				// prevent resize handler call, the view will refresh after animation anyway
