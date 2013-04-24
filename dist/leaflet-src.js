@@ -2,28 +2,29 @@
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
  (c) 2010-2013, Vladimir Agafonkin, CloudMade
 */
-(function (window, document, undefined) {/*
- * The L namespace contains all Leaflet classes and functions.
- * This code allows you to handle any possible namespace conflicts.
- */
-
-var L, originalL;
-
-if (typeof exports !== undefined + '') {
-	L = exports;
-} else {
-	originalL = window.L;
-	L = {};
-
-	L.noConflict = function () {
-		window.L = originalL;
-		return this;
-	};
-
-	window.L = L;
-}
+(function (window, document, undefined) {
+var oldL = window.L,
+    L = {};
 
 L.version = '0.6-dev';
+
+// define Leaflet for Node module pattern loaders, including Browserify
+if (typeof module === 'object' && typeof module.exports === 'object') {
+	module.exports = L;
+
+// define Leaflet as an AMD module
+} else if (typeof define === 'function' && define.amd) {
+	define('leaflet', [], function () { return L; });
+}
+
+// define Leaflet as a global L variable, saving the original L to restore later if needed
+
+L.noConflict = function () {
+	window.L = oldL;
+	return this;
+};
+
+window.L = L;
 
 
 /*
@@ -1675,7 +1676,7 @@ L.Map = L.Class.extend({
 	hasLayer: function (layer) {
 		if (!layer) { return false; }
 
-		return (L.stamp(layer) in this);
+		return (L.stamp(layer) in this._layers);
 	},
 
 	eachLayer: function (method, context) {
@@ -3855,7 +3856,7 @@ L.Popup = L.Class.extend({
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		if (this._animated) {
-			layerPos.add(L.DomUtil.getPosition(this._container));
+			layerPos._add(L.DomUtil.getPosition(this._container));
 		}
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
@@ -7199,9 +7200,16 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_onMouseDown: function () {
-		if (!this._focused) {
-			this._map._container.focus();
-		}
+		if (this._focused) { return; }
+
+		var body = document.body,
+		    docEl = document.documentElement,
+		    top = body.scrollTop || docEl.scrollTop,
+		    left = body.scrollTop || docEl.scrollLeft;
+
+		this._map._container.focus();
+
+		window.scrollTo(left, top);
 	},
 
 	_onFocus: function () {
@@ -8045,7 +8053,7 @@ L.PosAnimation = L.Class.extend({
 		L.Util.falseFn(el.offsetWidth);
 
 		// there's no native way to track value updates of transitioned properties, so we imitate this
-		this._stepTimer = setInterval(L.bind(this.fire, this, 'step'), 50);
+		this._stepTimer = setInterval(L.bind(this._onStep, this), 50);
 	},
 
 	stop: function () {
@@ -8057,6 +8065,14 @@ L.PosAnimation = L.Class.extend({
 		L.DomUtil.setPosition(this._el, this._getPos());
 		this._onTransitionEnd();
 		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a new animation
+	},
+
+	_onStep: function () {
+		// jshint camelcase: false
+		// make L.DomUtil.getPosition return intermediate position value during animation
+		this._el._leaflet_pos = this._getPos();
+
+		this.fire('step');
 	},
 
 	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
@@ -8483,7 +8499,7 @@ L.Map.include({
 
 	locate: function (/*Object*/ options) {
 
-		options = this._locationOptions = L.extend(this._defaultLocateOptions, options);
+		options = this._locateOptions = L.extend(this._defaultLocateOptions, options);
 
 		if (!navigator.geolocation) {
 			this._handleGeolocationError({
@@ -8509,6 +8525,9 @@ L.Map.include({
 		if (navigator.geolocation) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
 		}
+		if (this._locateOptions) {
+			this._locateOptions.setView = false;
+		}
 		return this;
 	},
 
@@ -8518,7 +8537,7 @@ L.Map.include({
 		            (c === 1 ? 'permission denied' :
 		            (c === 2 ? 'position unavailable' : 'timeout'));
 
-		if (this._locationOptions.setView && !this._loaded) {
+		if (this._locateOptions.setView && !this._loaded) {
 			this.fitWorld();
 		}
 
@@ -8540,7 +8559,7 @@ L.Map.include({
 		            [lat - latAccuracy, lng - lngAccuracy],
 		            [lat + latAccuracy, lng + lngAccuracy]),
 
-		    options = this._locationOptions;
+		    options = this._locateOptions;
 
 		if (options.setView) {
 			var zoom = Math.min(this.getBoundsZoom(bounds), options.maxZoom);
