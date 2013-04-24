@@ -343,25 +343,31 @@ L.TileLayer = L.Class.extend({
 			return false; // already loaded
 		}
 
-		if (!this.options.continuousWorld) {
+		var options = this.options;
+
+		if (!options.continuousWorld && options.noWrap) {
 			var limit = this._getWrapTileNum();
 
-			if (this.options.noWrap && (tilePoint.x < 0 || tilePoint.x >= limit) ||
-				                        tilePoint.y < 0 || tilePoint.y >= limit) {
-				return false; // exceeds world bounds
-			}
+			// don't load if exceeds world bounds
+			if (tilePoint.x < 0 || tilePoint.x >= limit ||
+				tilePoint.y < 0 || tilePoint.y >= limit) { return false; }
 		}
 
-		if (this.options.bounds) {
-			var tileSize = this.options.tileSize,
+		if (options.bounds) {
+			var tileSize = options.tileSize,
 			    nwPoint = tilePoint.multiplyBy(tileSize),
 			    sePoint = nwPoint.add([tileSize, tileSize]),
 			    nw = this._map.unproject(nwPoint),
 			    se = this._map.unproject(sePoint);
 
-			if (!this.options.bounds.intersects([nw, se])) {
-				return false;
+			// TODO temporary hack, will be removed after refactoring projections
+			// https://github.com/Leaflet/Leaflet/issues/1618
+			if (!options.continuousWorld && !options.noWrap) {
+				nw = nw.wrap();
+				se = se.wrap();
 			}
+
+			if (!options.bounds.intersects([nw, se])) { return false; }
 		}
 
 		return true;
