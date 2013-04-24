@@ -225,14 +225,16 @@ L.Marker = L.Class.extend({
 		if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this.fire(e.type, {
-			originalEvent: e
+			originalEvent: e,
+			latlng: this._latlng
 		});
 	},
 
 	_fireMouseEvent: function (e) {
 
 		this.fire(e.type, {
-			originalEvent: e
+			originalEvent: e,
+			latlng: this._latlng
 		});
 
 		// TODO proper custom event propagation
