@@ -14,6 +14,7 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		zoomOffset: 0,
 		opacity: 1,
+		visible: true,
 		/* (undefined works too)
 		zIndex: null,
 		tms: false,
@@ -171,6 +172,19 @@ L.TileLayer = L.Class.extend({
 		}
 
 		return this;
+	},
+
+	setVisible: function (onoff) {
+		if (this._container) {
+			L.DomUtil.setVisible(this._container, onoff);
+		}
+		this.options.visible = onoff;
+		this._update();
+		return this;
+	},
+
+	getVisible: function () {
+		return this.options.visible;
 	},
 
 	redraw: function () {

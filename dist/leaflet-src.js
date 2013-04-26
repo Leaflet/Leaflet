@@ -61,6 +61,23 @@ L.Util = {
 		};
 	}()),
 
+	invokeEach: function (obj, method, context) {
+		var i, args;
+
+		if (typeof obj === 'object') {
+			args = Array.prototype.slice.call(arguments, 3);
+
+			for (i in obj) {
+				if (obj.hasOwnProperty(i)) {
+					method.apply(context, [i, obj[i]].concat(args));
+				}
+			}
+			return true;
+		}
+
+		return false;
+	},
+
 	limitExecByInterval: function (fn, time, context) {
 		var lock, execOnUnlock;
 
@@ -305,7 +322,7 @@ L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
  * L.Mixin.Events is used to add custom events functionality to Leaflet classes.
  */
 
-var key = '_leaflet_events';
+var eventsKey = '_leaflet_events';
 
 L.Mixin = {};
 
@@ -313,49 +330,45 @@ L.Mixin.Events = {
 
 	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
 
-		var events = this[key] = this[key] || {},
-		    contextId = context && L.stamp(context),
-		    type, i, len, evt,
-		    objKey, objLenKey, eventsObj;
-
 		// types can be a map of types/handlers
-		if (typeof types === 'object') {
-			for (type in types) {
-				if (types.hasOwnProperty(type)) {
-					this.addEventListener(type, types[type], fn);
-				}
-			}
+		if (L.Util.invokeEach(types, this.addEventListener, this, fn, context)) { return this; }
 
-			return this;
-		}
+		var events = this[eventsKey] = this[eventsKey] || {},
+		    contextId = context && L.stamp(context),
+		    i, len, event, type, indexKey, indexLenKey, typeIndex;
 
 		// types can be a string of space-separated words
 		types = L.Util.splitWords(types);
 
 		for (i = 0, len = types.length; i < len; i++) {
-			evt = {
+			event = {
 				action: fn,
 				context: context || this
 			};
+			type = types[i];
 
-			if (contextId) {
+			if (context) {
 				// store listeners of a particular context in a separate hash (if it has an id)
 				// gives a major performance boost when removing thousands of map layers
 
-				objKey = types[i] + '_idx',
-				objLenKey = objKey + '_len',
-				eventsObj = events[objKey] = events[objKey] || {};
+				indexKey = type + '_idx',
+				indexLenKey = indexKey + '_len',
 
-				if (eventsObj[contextId]) {
-					eventsObj[contextId].push(evt);
-				} else {
-					eventsObj[contextId] = [evt];
-					events[objLenKey] = (events[objLenKey] || 0) + 1;
+				typeIndex = events[indexKey] = events[indexKey] || {};
+
+				if (!typeIndex[contextId]) {
+					typeIndex[contextId] = [];
+
+					// keep track of the number of keys in the index to quickly check if it's empty
+					events[indexLenKey] = (events[indexLenKey] || 0) + 1;
 				}
 
+				typeIndex[contextId].push(event);
+
+
 			} else {
-				events[types[i]] = events[types[i]] || [];
-				events[types[i]].push(evt);
+				events[type] = events[type] || [];
+				events[type].push(event);
 			}
 		}
 
@@ -363,53 +376,60 @@ L.Mixin.Events = {
 	},
 
 	hasEventListeners: function (type) { // (String) -> Boolean
-		return (key in this) &&
-		       (((type in this[key]) && this[key][type].length > 0) ||
-		        (this[key][type + '_idx_len'] > 0));
+		var events = this[eventsKey];
+		return !!events && ((type in events && events[type].length > 0) ||
+		                    (type + '_idx' in events && events[type + '_idx_len'] > 0));
 	},
 
-	removeEventListener: function (types, fn, context) { // (String[, Function, Object]) or (Object[, Object])
-		var events = this[key],
-		    contextId = context && L.stamp(context),
-		    type, i, len, listeners, j,
-		    objKey, objLenKey;
+	removeEventListener: function (types, fn, context) { // ([String, Function, Object]) or (Object[, Object])
 
-		if (typeof types === 'object') {
-			for (type in types) {
-				if (types.hasOwnProperty(type)) {
-					this.removeEventListener(type, types[type], fn);
-				}
-			}
-			return this;
+		if (!types) {
+			return this.clearAllEventListeners();
 		}
+
+		if (L.Util.invokeEach(types, this.removeEventListener, this, fn, context)) { return this; }
+
+		var events = this[eventsKey],
+		    contextId = context && L.stamp(context),
+		    i, len, type, listeners, j, indexKey, indexLenKey, typeIndex;
 
 		types = L.Util.splitWords(types);
 
 		for (i = 0, len = types.length; i < len; i++) {
-			if (this.hasEventListeners(types[i])) {
+			type = types[i];
+			indexKey = type + '_idx';
+			indexLenKey = indexKey + '_len';
 
-				objKey = types[i] + '_idx';
+			typeIndex = events[indexKey];
 
-				if (contextId && events[objKey]) {
-					listeners =  events[objKey][contextId] || [];
-				} else {
-					listeners = events[types[i]] || [];
-				}
+			if (!fn) {
+				// clear all listeners for a type if function isn't specified
+				delete events[type];
+				delete events[indexKey];
 
-				for (j = listeners.length - 1; j >= 0; j--) {
-					if ((!fn || listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
-						listeners.splice(j, 1);
+			} else {
+				listeners = context && typeIndex ? typeIndex[contextId] : events[type];
+
+				if (listeners) {
+					for (j = listeners.length - 1; j >= 0; j--) {
+						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
+							listeners.splice(j, 1);
+						}
 					}
-				}
 
-				if (contextId && listeners.length === 0 && events[objKey] && events[objKey][contextId]) {
-					objLenKey = objKey + '_len';
-					delete events[objKey][contextId];
-					events[objLenKey] = (events[objLenKey] || 1) - 1;
+					if (context && typeIndex && (listeners.length === 0)) {
+						delete typeIndex[contextId];
+						events[indexLenKey]--;
+					}
 				}
 			}
 		}
 
+		return this;
+	},
+
+	clearAllEventListeners: function () {
+		delete this[eventsKey];
 		return this;
 	},
 
@@ -418,15 +438,14 @@ L.Mixin.Events = {
 			return this;
 		}
 
-		var event = L.Util.extend({}, data, {
-			type: type,
-			target: this
-		});
+		var event = L.Util.extend({}, data, { type: type, target: this });
 
-		var listeners, i, len, eventsObj, contextId;
+		var events = this[eventsKey],
+		    listeners, i, len, typeIndex, contextId;
 
-		if (this[key][type]) {
-			listeners = this[key][type].slice();
+		if (events[type]) {
+			// make sure adding/removing listeners inside other listeners won't cause infinite loop
+			listeners = events[type].slice();
 
 			for (i = 0, len = listeners.length; i < len; i++) {
 				listeners[i].action.call(listeners[i].context || this, event);
@@ -434,28 +453,42 @@ L.Mixin.Events = {
 		}
 
 		// fire event for the context-indexed listeners as well
+		typeIndex = events[type + '_idx'];
 
-		eventsObj = this[key][type + '_idx'];
+		for (contextId in typeIndex) {
+			if (typeIndex.hasOwnProperty(contextId)) {
+				listeners = typeIndex[contextId];
 
-		if (eventsObj) {
-			for (contextId in eventsObj) {
-				if (eventsObj.hasOwnProperty(contextId)) {
-					listeners = eventsObj[contextId];
-					if (listeners) {
-						for (i = 0, len = listeners.length; i < len; i++) {
-							listeners[i].action.call(listeners[i].context || this, event);
-						}
+				if (listeners) {
+					for (i = 0, len = listeners.length; i < len; i++) {
+						listeners[i].action.call(listeners[i].context || this, event);
 					}
 				}
 			}
 		}
 
 		return this;
+	},
+
+	addOneTimeEventListener: function (types, fn, context) {
+
+		if (L.Util.invokeEach(types, this.addOneTimeEventListener, this, fn, context)) { return this; }
+
+		var handler = L.bind(function () {
+			this
+			    .removeEventListener(types, fn, context)
+			    .removeEventListener(types, handler, context);
+		}, this);
+
+		return this
+		    .addEventListener(types, fn, context)
+		    .addEventListener(types, handler, context);
 	}
 };
 
 L.Mixin.Events.on = L.Mixin.Events.addEventListener;
 L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
+L.Mixin.Events.once = L.Mixin.Events.addOneTimeEventListener;
 L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
 
 
@@ -975,6 +1008,18 @@ L.DomUtil = {
 				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
 			}
 		}
+	},
+
+	setVisible: function (element, onoff) {
+		if (onoff) {
+			L.DomUtil.removeClass(element, 'leaflet-hidden');
+		} else {
+			L.DomUtil.addClass(element, 'leaflet-hidden');
+		}
+	},
+
+	getVisible: function (element) {
+		return !L.DomUtil.hasClass(element, 'leaflet-hidden');
 	},
 
 	testProp: function (props) {
@@ -1501,8 +1546,14 @@ L.Map = L.Class.extend({
 	},
 
 	fitBounds: function (bounds) { // (LatLngBounds)
-		var zoom = this.getBoundsZoom(bounds);
-		return this.setView(L.latLngBounds(bounds).getCenter(), zoom);
+		bounds = L.latLngBounds(bounds);
+
+		var zoom = this.getBoundsZoom(bounds),
+		    swPoint = this.project(bounds.getSouthWest()),
+		    nePoint = this.project(bounds.getNorthEast()),
+		    center = this.unproject(swPoint.add(nePoint).divideBy(2));
+
+		return this.setView(center, zoom);
 	},
 
 	fitWorld: function () {
@@ -1548,34 +1599,40 @@ L.Map = L.Class.extend({
 			}
 		}
 
+		this.on('moveend', this._panInsideMaxBounds, this);
+
 		return this;
 	},
 
 	panInsideBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
-		var viewBounds = this.getBounds(),
-		    viewSw = this.project(viewBounds.getSouthWest()),
-		    viewNe = this.project(viewBounds.getNorthEast()),
+		var viewBounds = this.getPixelBounds(),
+		    viewSw = viewBounds.getBottomLeft(),
+		    viewNe = viewBounds.getTopRight(),
 		    sw = this.project(bounds.getSouthWest()),
 		    ne = this.project(bounds.getNorthEast()),
 		    dx = 0,
 		    dy = 0;
 
 		if (viewNe.y < ne.y) { // north
-			dy = ne.y - viewNe.y;
+			dy = Math.ceil(ne.y - viewNe.y);
 		}
 		if (viewNe.x > ne.x) { // east
-			dx = ne.x - viewNe.x;
+			dx = Math.floor(ne.x - viewNe.x);
 		}
 		if (viewSw.y > sw.y) { // south
-			dy = sw.y - viewSw.y;
+			dy = Math.floor(sw.y - viewSw.y);
 		}
 		if (viewSw.x < sw.x) { // west
-			dx = sw.x - viewSw.x;
+			dx = Math.ceil(sw.x - viewSw.x);
 		}
 
-		return this.panBy(new L.Point(dx, dy, true));
+		if (dx || dy) {
+			return this.panBy(new L.Point(dx, dy));
+		}
+
+		return this;
 	},
 
 	addLayer: function (layer) {
@@ -1658,7 +1715,8 @@ L.Map = L.Class.extend({
 
 		if (!this._loaded) { return this; }
 
-		var offset = oldSize._subtract(this.getSize())._divideBy(2)._round();
+		var newSize = this.getSize(),
+		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
 		if ((offset.x !== 0) || (offset.y !== 0)) {
 			if (animate === true) {
@@ -1671,6 +1729,10 @@ L.Map = L.Class.extend({
 				clearTimeout(this._sizeTimer);
 				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 			}
+			this.fire('resize', {
+				oldSize: oldSize,
+				newSize: newSize
+			});
 		}
 		return this;
 	},
@@ -2033,6 +2095,10 @@ L.Map = L.Class.extend({
 		}
 	},
 
+	_panInsideMaxBounds: function () {
+		this.panInsideBounds(this.options.maxBounds);
+	},
+
 	_checkIfLoaded: function () {
 		if (!this._loaded) {
 			throw new Error('Set map center and zoom first.');
@@ -2255,6 +2321,7 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		zoomOffset: 0,
 		opacity: 1,
+		visible: true,
 		/* (undefined works too)
 		zIndex: null,
 		tms: false,
@@ -2412,6 +2479,19 @@ L.TileLayer = L.Class.extend({
 		}
 
 		return this;
+	},
+
+	setVisible: function (onoff) {
+		if (this._container) {
+			L.DomUtil.setVisible(this._container, onoff);
+		}
+		this.options.visible = onoff;
+		this._update();
+		return this;
+	},
+
+	getVisible: function () {
+		return this.options.visible;
 	},
 
 	redraw: function () {
@@ -3847,7 +3927,9 @@ L.Popup = L.Class.extend({
 		}
 
 		if (dx || dy) {
-			map.panBy(new L.Point(dx, dy));
+			map
+			    .fire('autopanstart')
+			    .panBy(new L.Point(dx, dy));
 		}
 	},
 
@@ -3993,11 +4075,11 @@ L.LayerGroup = L.Class.extend({
 	removeLayer: function (layer) {
 		var id = this.getLayerId(layer);
 
-		delete this._layers[id];
-
-		if (this._map) {
+		if (this._map && this._layers[id]) {
 			this._map.removeLayer(layer);
 		}
+
+		delete this._layers[id];
 
 		return this;
 	},
@@ -6060,7 +6142,8 @@ L.DomEvent = {
 
 	// this solves a bug in Android WebView where a single touch triggers two click events.
 	_filterClick: function (e, handler) {
-		var elapsed = L.DomEvent._lastClick && (e.timeStamp - L.DomEvent._lastClick);
+		var timeStamp = (e.timeStamp || e.originalEvent.timeStamp);
+		var elapsed = L.DomEvent._lastClick && (timeStamp - L.DomEvent._lastClick);
 
 		// are they closer together than 400ms yet more than 100ms?
 		// Android typically triggers them ~300ms apart while multiple listeners
@@ -6070,7 +6153,7 @@ L.DomEvent = {
 			L.DomEvent.stop(e);
 			return;
 		}
-		L.DomEvent._lastClick = e.timeStamp;
+		L.DomEvent._lastClick = timeStamp;
 
 		return handler(e);
 	}
@@ -6114,6 +6197,7 @@ L.Draggable = L.Class.extend({
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
 			L.DomEvent.on(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
 		}
+
 		this._enabled = true;
 	},
 
@@ -6123,42 +6207,49 @@ L.Draggable = L.Class.extend({
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
 			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
 		}
+
 		this._enabled = false;
 		this._moved = false;
 	},
 
 	_onDown: function (e) {
-		if (e.shiftKey ||
-		    ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
-		L.DomEvent.preventDefault(e);
-		L.DomEvent.stopPropagation(e);
+		L.DomEvent
+		    .preventDefault(e)
+		    .stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
 
 		this._simulateClick = true;
 
-		if (e.touches && e.touches.length > 1) {
+		var touchesNum = (e.touches && e.touches.length) || 0;
+
+		// don't simulate click or track longpress if more than 1 touch
+		if (touchesNum > 1) {
 			this._simulateClick = false;
 			clearTimeout(this._longPressTimeout);
 			return;
 		}
 
-		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
+		var first = touchesNum === 1 ? e.touches[0] : e,
 		    el = first.target;
 
+		// if touching a link, highlight it
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
 		this._moved = false;
+
 		if (this._moving) { return; }
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
-		//Touch contextmenu event emulation
-		if (e.touches && e.touches.length === 1 && L.Browser.touch && this._longPress) {
+		// touch contextmenu event emulation
+		if (touchesNum === 1 && L.Browser.touch && this._longPress) {
+
 			this._longPressTimeout = setTimeout(L.bind(function () {
 				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
 
@@ -6170,8 +6261,9 @@ L.Draggable = L.Class.extend({
 			}, this), 1000);
 		}
 
-		L.DomEvent.on(document, L.Draggable.MOVE[e.type], this._onMove, this);
-		L.DomEvent.on(document, L.Draggable.END[e.type], this._onUp, this);
+		L.DomEvent
+		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
+		    .on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -6179,25 +6271,25 @@ L.Draggable = L.Class.extend({
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    newPoint = new L.Point(first.clientX, first.clientY),
-		    diffVec = newPoint.subtract(this._startPoint);
+		    offset = newPoint.subtract(this._startPoint);
 
-		if (!diffVec.x && !diffVec.y) { return; }
+		if (!offset.x && !offset.y) { return; }
 
 		L.DomEvent.preventDefault(e);
 
 		if (!this._moved) {
 			this.fire('dragstart');
-			this._moved = true;
 
-			this._startPos = L.DomUtil.getPosition(this._element).subtract(diffVec);
+			this._moved = true;
+			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
 			if (!L.Browser.touch) {
 				L.DomUtil.disableTextSelection();
-				this._setMovingCursor();
+				L.DomUtil.addClass(document.body, 'leaflet-dragging');
 			}
 		}
 
-		this._newPos = this._startPos.add(diffVec);
+		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
@@ -6211,31 +6303,36 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
-		var simulateClickTouch;
+		var first, el, dist, simulateClickTouch, i;
+
 		clearTimeout(this._longPressTimeout);
+
 		if (this._simulateClick && e.changedTouches) {
-			var first = e.changedTouches[0],
-			    el = first.target,
-			    dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
+
+			dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
+			first = e.changedTouches[0];
+			el = first.target;
 
 			if (el.tagName.toLowerCase() === 'a') {
 				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
 
+			// simulate click if the touch didn't move too much
 			if (dist < L.Draggable.TAP_TOLERANCE) {
-				simulateClickTouch = first;
+				simulateClickTouch = true;
 			}
 		}
 
 		if (!L.Browser.touch) {
 			L.DomUtil.enableTextSelection();
-			this._restoreCursor();
+			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
 
-		for (var i in L.Draggable.MOVE) {
+		for (i in L.Draggable.MOVE) {
 			if (L.Draggable.MOVE.hasOwnProperty(i)) {
-				L.DomEvent.off(document, L.Draggable.MOVE[i], this._onMove);
-				L.DomEvent.off(document, L.Draggable.END[i], this._onUp);
+				L.DomEvent
+				    .off(document, L.Draggable.MOVE[i], this._onMove)
+				    .off(document, L.Draggable.END[i], this._onUp);
 			}
 		}
 
@@ -6245,20 +6342,13 @@ L.Draggable = L.Class.extend({
 
 			this.fire('dragend');
 		}
+
 		this._moving = false;
 
 		if (simulateClickTouch) {
 			this._moved = false;
-			this._simulateEvent('click', simulateClickTouch);
+			this._simulateEvent('click', first);
 		}
-	},
-
-	_setMovingCursor: function () {
-		L.DomUtil.addClass(document.body, 'leaflet-dragging');
-	},
-
-	_restoreCursor: function () {
-		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 	},
 
 	_simulateEvent: function (type, e) {
@@ -6447,15 +6537,6 @@ L.Map.Drag = L.Handler.extend({
 				});
 			}
 		}
-
-		if (options.maxBounds) {
-			// TODO predrag validation instead of animation
-			L.Util.requestAnimFrame(this._panInsideMaxBounds, map, true, map._container);
-		}
-	},
-
-	_panInsideMaxBounds: function () {
-		this.panInsideBounds(this.options.maxBounds);
 	}
 });
 
@@ -6844,9 +6925,9 @@ L.Map.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchMove: function (e) {
-		if (!e.touches || e.touches.length !== 2) { return; }
-
 		var map = this._map;
+
+		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
 		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
 		    p2 = map.mouseEventToLayerPoint(e.touches[1]);
@@ -6883,12 +6964,16 @@ L.Map.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchEnd: function () {
-		if (!this._moved || !this._zooming) { return; }
+		if (!this._moved || !this._zooming) {
+			this._zooming = false;
+			return;
+		}
 
 		var map = this._map;
 
 		this._zooming = false;
 		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
+		L.Util.cancelAnimFrame(this._animRequest);
 
 		L.DomEvent
 		    .off(document, 'touchmove', this._onTouchMove)
@@ -8154,7 +8239,8 @@ L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
  */
 
 L.Map.mergeOptions({
-	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera
+	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera,
+	zoomAnimationThreshold: 4
 });
 
 if (L.DomUtil.TRANSITION) {
@@ -8178,6 +8264,9 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	_animateZoomIfClose: function (center, zoom) {
 
 		if (this._animatingZoom) { return true; }
+
+		// don't animate if zoom difference is too large
+		if (Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
 
 		// offset is the pixel coords of the zoom origin relative to the current center
 		var scale = this.getZoomScale(zoom),
@@ -8291,7 +8380,7 @@ L.TileLayer.include({
 	_clearBgBuffer: function () {
 		var map = this._map;
 
-		if (!map._animatingZoom && !map.touchZoom._zooming) {
+		if (map && !map._animatingZoom && !map.touchZoom._zooming) {
 			this._bgBuffer.innerHTML = '';
 			this._bgBuffer.style[L.DomUtil.TRANSFORM] = '';
 		}

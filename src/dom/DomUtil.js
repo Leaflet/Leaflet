@@ -171,6 +171,18 @@ L.DomUtil = {
 		}
 	},
 
+	setVisible: function (element, onoff) {
+		if (onoff) {
+			L.DomUtil.removeClass(element, 'leaflet-hidden');
+		} else {
+			L.DomUtil.addClass(element, 'leaflet-hidden');
+		}
+	},
+
+	getVisible: function (element) {
+		return !L.DomUtil.hasClass(element, 'leaflet-hidden');
+	},
+
 	testProp: function (props) {
 
 		var style = document.documentElement.style;
