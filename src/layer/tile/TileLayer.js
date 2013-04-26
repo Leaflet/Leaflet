@@ -300,6 +300,8 @@ L.TileLayer = L.Class.extend({
 
 		if (!this._map) { return; }
 
+		if (!this.options.visible) { return; }
+
 		var bounds = this._map.getPixelBounds(),
 		    zoom = this._map.getZoom(),
 		    tileSize = this.options.tileSize;
