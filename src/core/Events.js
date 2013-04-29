@@ -63,6 +63,10 @@ L.Mixin.Events = {
 
 	removeEventListener: function (types, fn, context) { // ([String, Function, Object]) or (Object[, Object])
 
+		if (!this[eventsKey]) {
+			return this;
+		}
+
 		if (!types) {
 			return this.clearAllEventListeners();
 		}
