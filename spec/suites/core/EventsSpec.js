@@ -126,6 +126,14 @@ describe('Events', function() {
 			expect(spy5.called).to.be(false);
 		});
 
+		it('can handle calls to #removeEventListener on objects with no registered event listeners', function () {
+			var obj = new Klass();
+			var removeNonExistentListener = function () {
+				obj.removeEventListener('test');
+			};
+			expect(removeNonExistentListener).to.not.throwException();
+		});
+
 		// added due to context-sensitive removeListener optimization
 		it('fires multiple listeners with the same context with id', function () {
 			var obj = new Klass(),
