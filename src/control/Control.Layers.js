@@ -148,6 +148,8 @@ L.Control.Layers = L.Control.extend({
 
 		if (this._layers[id] && !this._handlingClick) {
 			this._update();
+			var overlayEvent = (e.type === 'layeradd' ? 'overlayadd' : 'overlayremove');
+			this._map.fire(overlayEvent, {layer: this._layers[id]});
 		}
 	},
 
