@@ -12,14 +12,15 @@ L.DivIcon = L.Icon.extend({
 		html: (String)
 		bgPos: (Point)
 		*/
-		className: 'leaflet-div-icon'
+		className: 'leaflet-div-icon',
+		html: false
 	},
 
 	createIcon: function () {
 		var div = document.createElement('div'),
 		    options = this.options;
 
-		if (options.html) {
+		if (options.html !== false) {
 			div.innerHTML = options.html;
 		}
 
