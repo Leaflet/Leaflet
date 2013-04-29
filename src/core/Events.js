@@ -66,7 +66,7 @@ L.Mixin.Events = {
 		if (!this[eventsKey]) {
 			return this;
 		}
-		
+
 		if (!types) {
 			return this.clearAllEventListeners();
 		}

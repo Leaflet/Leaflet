@@ -128,7 +128,10 @@ describe('Events', function() {
 
 		it('can handle calls to #removeEventListener on objects with no registered event listeners', function () {
 			var obj = new Klass();
-			obj.removeEventListener('test');
+			var removeNonExistentListener = function () {
+				obj.removeEventListener('test');
+			};
+			expect(removeNonExistentListener).to.not.throwException();
 		});
 
 		// added due to context-sensitive removeListener optimization
