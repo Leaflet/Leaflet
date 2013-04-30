@@ -16,6 +16,11 @@ L.Map.include({
 
 		if (this._loaded && !options.reset) {
 
+			if (options.animate !== undefined) {
+				options.zoom = L.extend({}, {animate: options.animate}, options.zoom);
+				options.pan = L.extend({}, {animate: options.animate}, options.pan);
+			}
+
 			// try animating pan or zoom
 			var animated = (this._zoom !== zoom) ?
 				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
