@@ -65,7 +65,7 @@ L.Control.Layers = L.Control.extend({
 		var className = 'leaflet-control-layers',
 		    container = this._container = L.DomUtil.create('div', className);
 
-		container.setAttribute("aria-haspopup", true);
+		container.setAttribute('aria-haspopup', true);
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
