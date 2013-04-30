@@ -14,7 +14,7 @@ L.Map.include({
 			this._panAnim.stop();
 		}
 
-		if (this._loaded && !options.reset) {
+		if (this._loaded && !options.reset && options !== true) {
 
 			if (options.animate !== undefined) {
 				options.zoom = L.extend({animate: options.animate}, options.zoom);
