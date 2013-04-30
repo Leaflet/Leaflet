@@ -65,6 +65,7 @@ L.Control.Layers = L.Control.extend({
 		var className = 'leaflet-control-layers',
 		    container = this._container = L.DomUtil.create('div', className);
 
+		//Makes this work on IE10 Touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
 
 		if (!L.Browser.touch) {
