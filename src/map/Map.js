@@ -25,7 +25,6 @@ L.Map = L.Class.extend({
 
 		this._initContainer(id);
 		this._initLayout();
-		this.callInitHooks();
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -37,6 +36,10 @@ L.Map = L.Class.extend({
 		}
 
 		this._initLayers(options.layers);
+
+		this._handlers = [];
+
+		this.callInitHooks();
 	},
 
 
@@ -266,10 +269,12 @@ L.Map = L.Class.extend({
 	addHandler: function (name, HandlerClass) {
 		if (!HandlerClass) { return; }
 
-		this[name] = new HandlerClass(this);
+		var handler = this[name] = new HandlerClass(this);
+
+		this._handlers.push(handler);
 
 		if (this.options[name]) {
-			this[name].enable();
+			handler.enable();
 		}
 
 		return this;
@@ -279,8 +284,18 @@ L.Map = L.Class.extend({
 		if (this._loaded) {
 			this.fire('unload');
 		}
+
 		this._initEvents('off');
+
 		delete this._container._leaflet;
+
+		this._clearPanes();
+		if (this._clearControlPos) {
+			this._clearControlPos();
+		}
+
+		this._clearHandlers();
+
 		return this;
 	},
 
@@ -511,6 +526,10 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
 	},
 
+	_clearPanes: function () {
+		this._container.removeChild(this._mapPane);
+	},
+
 	_initLayers: function (layers) {
 		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
 
@@ -681,6 +700,12 @@ L.Map = L.Class.extend({
 		this._tileLayersToLoad--;
 		if (this._tileLayersNum && !this._tileLayersToLoad) {
 			this.fire('tilelayersload');
+		}
+	},
+
+	_clearHandlers: function () {
+		for (var i = 0, len = this._handlers.length; i < len; i++) {
+			this._handlers[i].disable();
 		}
 	},
 
