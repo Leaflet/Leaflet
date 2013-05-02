@@ -19,6 +19,11 @@ describe('Polygon', function() {
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 			expect(polygon._latlngs).to.not.eql(sourceLatLngs);
 		});
+
+		it("can be called with an empty array", function () {
+			var polygon = new L.Polygon([]);
+			expect(polygon.getLatLngs()).to.eql([]);
+		});
 	});
 
 	describe("#setLatLngs", function () {
