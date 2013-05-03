@@ -136,7 +136,11 @@ L.Map.Drag = L.Handler.extend({
 
 			} else {
 				L.Util.requestAnimFrame(function () {
-					map.panBy(offset, decelerationDuration, ease, true);
+					map.panBy(offset, {
+						duration: decelerationDuration,
+						easeLinearity: ease,
+						noMoveStart: true
+					});
 				});
 			}
 		}

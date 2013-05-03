@@ -4,24 +4,27 @@
 
 L.Map.include({
 
-	setView: function (center, zoom, forceReset) {
+	setView: function (center, zoom, options) {
 
 		zoom = this._limitZoom(zoom);
 		center = L.latLng(center);
+		options = options || {};
 
 		if (this._panAnim) {
 			this._panAnim.stop();
 		}
 
-		var zoomChanged = (this._zoom !== zoom),
-			canBeAnimated = this._loaded && !forceReset && !!this._layers;
+		if (this._loaded && !options.reset && options !== true) {
 
-		if (canBeAnimated) {
+			if (options.animate !== undefined) {
+				options.zoom = L.extend({animate: options.animate}, options.zoom);
+				options.pan = L.extend({animate: options.animate}, options.pan);
+			}
 
 			// try animating pan or zoom
-			var animated = zoomChanged ?
-				this.options.zoomAnimation && this._animateZoomIfClose && this._animateZoomIfClose(center, zoom) :
-				this._animatePanIfClose(center);
+			var animated = (this._zoom !== zoom) ?
+				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
+				this._tryAnimatedPan(center, options.pan);
 
 			if (animated) {
 				// prevent resize handler call, the view will refresh after animation anyway
@@ -36,10 +39,9 @@ L.Map.include({
 		return this;
 	},
 
-	panBy: function (offset, duration, easeLinearity, noMoveStart) {
+	panBy: function (offset, options) {
 		offset = L.point(offset).round();
-
-		// TODO add options instead of arguments to setView/panTo/panBy/etc.
+		options = options || {};
 
 		if (!offset.x && !offset.y) {
 			return this;
@@ -55,14 +57,20 @@ L.Map.include({
 		}
 
 		// don't fire movestart if animating inertia
-		if (!noMoveStart) {
+		if (!options.noMoveStart) {
 			this.fire('movestart');
 		}
 
-		L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
+		// animate pan unless animate: false specified
+		if (options.animate !== false) {
+			L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
-		var newPos = this._getMapPanePos().subtract(offset);
-		this._panAnim.run(this._mapPane, newPos, duration || 0.25, easeLinearity);
+			var newPos = this._getMapPanePos().subtract(offset);
+			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
+		} else {
+			this._rawPanBy(offset);
+			this.fire('move').fire('moveend');
+		}
 
 		return this;
 	},
@@ -76,13 +84,15 @@ L.Map.include({
 		this.fire('moveend');
 	},
 
-	_animatePanIfClose: function (center) {
+	_tryAnimatedPan: function (center, options) {
 		// difference between the new and current centers in pixels
 		var offset = this._getCenterOffset(center)._floor();
 
-		if (!this.getSize().contains(offset)) { return false; }
+		// don't animate too far unless animate: true specified in options
+		if ((options && options.animate) !== true && !this.getSize().contains(offset)) { return false; }
 
-		this.panBy(offset);
+		this.panBy(offset, options);
+
 		return true;
 	}
 });
