@@ -125,7 +125,7 @@ L.Popup = L.Class.extend({
 
 	_close: function () {
 		if (this._map) {
-			this._map.removeLayer(this);
+			this._map.closePopup(this);
 		}
 	},
 
@@ -306,10 +306,13 @@ L.Map.include({
 		return this.addLayer(popup);
 	},
 
-	closePopup: function () {
-		if (this._popup) {
-			this.removeLayer(this._popup);
+	closePopup: function (popup) {
+		if (!popup || popup === this._popup) {
+			popup = this._popup;
 			this._popup = null;
+		}
+		if (popup) {
+			this.removeLayer(popup);
 		}
 		return this;
 	}
