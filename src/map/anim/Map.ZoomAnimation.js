@@ -3,7 +3,7 @@
  */
 
 L.Map.mergeOptions({
-	zoomAnimation: L.DomUtil.TRANSITION && !L.Browser.android23 && !L.Browser.mobileOpera,
+	zoomAnimation: true,
 	zoomAnimationThreshold: 4
 });
 
@@ -25,20 +25,24 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		}
 	},
 
-	_animateZoomIfClose: function (center, zoom) {
+	_tryAnimatedZoom: function (center, zoom, options) {
 
 		if (this._animatingZoom) { return true; }
 
-		// don't animate if zoom difference is too large
-		if (Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
+		options = options || {};
+
+		// don't animate if disabled, not supported or zoom difference is too large
+		if (!this.options.zoomAnimation || options.animate === false ||
+		        !L.DomUtil.TRANSITION || L.Browser.android23 || L.Browser.mobileOpera ||
+		        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
 
 		// offset is the pixel coords of the zoom origin relative to the current center
 		var scale = this.getZoomScale(zoom),
 		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale),
 			origin = this._getCenterLayerPoint()._add(offset);
 
-		// only animate if the zoom origin is within one screen from the current center
-		if (!this.getSize().contains(offset)) { return false; }
+		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
+		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
 		this
 		    .fire('movestart')
