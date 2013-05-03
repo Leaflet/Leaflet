@@ -512,6 +512,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.Snap">Leaflet.Snap</a>
+		</td><td>
+			Enables snapping of draggable markers to polylines and other layers.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
 </table>
 
 
