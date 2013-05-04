@@ -88,8 +88,13 @@ L.LayerGroup = L.Class.extend({
 		return this;
 	},
 
+	getLayer: function (id) {
+		return this._layers[id];
+	},
+
 	getLayers: function () {
 		var layers = [];
+
 		for (var i in this._layers) {
 			layers.push(this._layers[i]);
 		}
