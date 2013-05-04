@@ -423,8 +423,8 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/smeijer/L.GeoSearch">Leaflet GeoSearch</a>
 		</td><td>
-			Small plugin that brings address searching/lookup (aka geosearching) to Leaflet.<br />
-			Comes with support for Google, Bing, Esri and Openlayers. (easy extendible)
+			Small geocoding plugin that brings address searching/lookup (aka geosearching) to Leaflet.<br />
+			Comes with support for Google, OpenStreetMap Nominatim, Bing, Esri and Nokia. Eeasily extensible.
 		</td><td>
 			<a href="https://github.com/smeijer">Stephan Meijer</a>
 		</td>
@@ -433,7 +433,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/k4r573n/leaflet-control-osm-geocoder">Leaflet Control OSM Geocoder</a>
 		</td><td>
-			A simple geocoder that uses the OpenstreetMap gecoder Nominatim to locate places.
+			A simple geocoder that uses OpenstreetMap Nominatim to locate places by address.
 		</td><td>
 			<a href="https://github.com/k4r573n">Karsten Hinz</a>
 		</td>
