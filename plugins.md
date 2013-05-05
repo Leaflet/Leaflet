@@ -521,6 +521,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/vogdb/Leaflet.ActiveLayers">Leaflet.ActiveLayers</a>
+		</td><td>
+			Adds new L.Control.ActiveLayers with functionality to get currently active layers on the map.
+		</td><td>
+			<a href="https://github.com/vogdb">vogdb</a>
+		</td>
+	</tr>
 </table>
 
 
