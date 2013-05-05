@@ -101,8 +101,12 @@ L.Map.include({
 
 		createCorner('top', 'left');
 		createCorner('top', 'right');
+		createCorner('top', 'center');
+		createCorner('middle', 'left');
+		createCorner('middle', 'right');
 		createCorner('bottom', 'left');
 		createCorner('bottom', 'right');
+		createCorner('bottom', 'center');
 	},
 
 	_clearControlPos: function () {

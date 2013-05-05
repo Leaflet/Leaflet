@@ -78,6 +78,13 @@
 .leaflet-top {
 	top: 0;
 	}
+.leaflet-middle {
+	position:absolute;
+	top: 46%;
+	}
+.leaflet-center {
+	left: 46%;
+	}
 .leaflet-right {
 	right: 0;
 	}
