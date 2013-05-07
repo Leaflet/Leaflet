@@ -75,7 +75,9 @@ L.Mixin.Events = {
 
 		var events = this[eventsKey],
 		    contextId = context && L.stamp(context),
-		    i, len, type, listeners, j, indexKey, indexLenKey, typeIndex;
+		    i, len, type, listeners, j, indexKey, indexLenKey, typeIndex, noop;
+
+		noop = function () {};
 
 		types = L.Util.splitWords(types);
 
@@ -97,7 +99,7 @@ L.Mixin.Events = {
 				if (listeners) {
 					for (j = listeners.length - 1; j >= 0; j--) {
 						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
-							listeners.splice(j, 1);
+							listeners.splice(j, 1)[0].action = noop;
 						}
 					}
 
