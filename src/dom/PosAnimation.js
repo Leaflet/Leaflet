@@ -49,7 +49,7 @@ L.PosAnimation = L.Class.extend({
 	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
 	// we need to parse computed style (in case of transform it returns matrix string)
 
-	_transformRe: /(-?[\d\.]+), (-?[\d\.]+)\)/,
+	_transformRe: /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,
 
 	_getPos: function () {
 		var left, top, matches,
