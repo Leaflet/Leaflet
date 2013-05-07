@@ -10,6 +10,7 @@ L.PosAnimation = L.Class.extend({
 
 		this._el = el;
 		this._inProgress = true;
+		this._newPos = newPos;
 
 		this.fire('start');
 
@@ -74,6 +75,10 @@ L.PosAnimation = L.Class.extend({
 		this._inProgress = false;
 
 		this._el.style[L.DomUtil.TRANSITION] = '';
+
+		// jshint camelcase: false
+		// make sure L.DomUtil.getPosition returns the final position value after animation
+		this._el._leaflet_pos = this._newPos;
 
 		clearInterval(this._stepTimer);
 
