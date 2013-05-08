@@ -85,7 +85,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html">heatmap.js</a>
 		</td><td>
 			JavaScript Library for HTML5 canvas based heatmaps.
-			
+
 			Its Leaflet layer implementation supports large datasets because it is tile based and uses a quadtree index to store the data.
 		</td><td>
 			<a href="https://github.com/pa7">Patrick Wied</a>
@@ -330,7 +330,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-### Geocoding (address lookup, a.k.a. geosearching)
+### Geocoding (Address Lookup)
 
 <table class="plugins">
 	<tr>
