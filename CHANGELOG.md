@@ -110,6 +110,7 @@ An in-progress version being developed on the master branch.
 
 #### API bugfixes
 
+ * Fixed a bug where event listener still fired even if it was removed on the same event in other listener (by [@spamdaemon](https://github.com/spamdaemon)). [#1661](https://github.com/Leaflet/Leaflet/issues/1661)
  * Fixed a bug where `Map` `fitBounds` wouldn't work correctly with large bounds (thanks to [@MaZderMind](https://github.com/MaZderMind)). [#1069](https://github.com/Leaflet/Leaflet/issues/1069)
  * Fixed a bug where default marker icon path wasn't properly detected in some cases in IE6-7 (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1294](https://github.com/Leaflet/Leaflet/pull/1294)
  * Fixed a bug where `Map` `hasLayer` wasn't handling `null` objects (by [@rvlasveld](https://github.com/rvlasveld)). [#1282](https://github.com/Leaflet/Leaflet/issues/1282) [#1302](https://github.com/Leaflet/Leaflet/pull/1302)
