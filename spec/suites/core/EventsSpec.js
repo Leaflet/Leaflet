@@ -9,16 +9,6 @@ describe('Events', function() {
 
 	describe('#fireEvent', function() {
 
-	        it('makes sure an event is not triggered if a listener is removed during dispatch',function() {
-
-			var obj = new Klass(),
-			spy = sinon.spy();
-			obj.addEventListener('test', function() { obj.removeEventListener('test',spy); });
-			obj.addEventListener('test', spy);
-			obj.fireEvent('test');
-			expect(spy.called).to.be(false);
-                });
-
 		it('fires all listeners added through #addEventListener', function() {
 			var obj = new Klass(),
 				spy1 = sinon.spy(),
@@ -199,6 +189,7 @@ describe('Events', function() {
 			expect(spy1.called).to.be(false);
 			expect(spy2.called).to.be(false);
 		});
+
 		it('doesnt lose track of listeners when removing non existent ones', function () {
 			var obj = new Klass(),
 			    spy = sinon.spy(),
@@ -217,6 +208,16 @@ describe('Events', function() {
 			obj.addEventListener('test', spy2, foo);
 
 			obj.fireEvent('test');
+
+			expect(spy.called).to.be(false);
+		});
+
+		it('makes sure an event is not triggered if a listener is removed during dispatch',function() {
+			var obj = new Klass(),
+			    spy = sinon.spy();
+			    obj.addEventListener('test', function() { obj.removeEventListener('test',spy); });
+			    obj.addEventListener('test', spy);
+			    obj.fireEvent('test');
 
 			expect(spy.called).to.be(false);
 		});
