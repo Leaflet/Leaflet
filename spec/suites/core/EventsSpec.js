@@ -9,6 +9,16 @@ describe('Events', function() {
 
 	describe('#fireEvent', function() {
 
+	        it('makes sure an event is not triggered if a listener is removed during dispatch',function() {
+
+			var obj = new Klass(),
+			spy = sinon.spy();
+			obj.addEventListener('test', function() { obj.removeEventListener('test',spy); });
+			obj.addEventListener('test', spy);
+			obj.fireEvent('test');
+			expect(spy.called).to.be(false);
+                });
+
 		it('fires all listeners added through #addEventListener', function() {
 			var obj = new Klass(),
 				spy1 = sinon.spy(),
