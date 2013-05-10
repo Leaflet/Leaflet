@@ -15,8 +15,7 @@ L.TileLayer.include({
 			this._prepareBgBuffer();
 		}
 
-		var transform = L.DomUtil.TRANSFORM,
-		    bg = this._bgBuffer;
+		var bg = this._bgBuffer;
 
 		if (firstFrame) {
 			//prevent bg buffer from clearing right after zoom
@@ -26,12 +25,10 @@ L.TileLayer.include({
 			L.Util.falseFn(bg.offsetWidth);
 		}
 
-		var scaleStr = L.DomUtil.getScaleString(e.scale, e.origin),
-		    oldTransform = bg.style[transform];
+		var transform = L.DomUtil.TRANSFORM,
+		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform];
 
-		bg.style[transform] = e.backwards ?
-		        (e.delta ? L.DomUtil.getTranslateString(e.delta) : oldTransform) + ' ' + scaleStr :
-		        scaleStr + ' ' + oldTransform;
+		bg.style[transform] = initialTransform + ' ' + L.DomUtil.getScaleString(e.scale, e.origin);
 	},
 
 	_endZoomAnim: function () {
@@ -66,8 +63,10 @@ L.TileLayer.include({
 		// if foreground layer doesn't have many tiles but bg layer does,
 		// keep the existing bg layer and just zoom it some more
 
-		if (bg && this._getLoadedTilesPercentage(bg) > 0.5 &&
-		          this._getLoadedTilesPercentage(front) < 0.5) {
+		var bgLoaded = this._getLoadedTilesPercentage(bg),
+		    frontLoaded = this._getLoadedTilesPercentage(front);
+
+		if (bg && bgLoaded > 0.5 && frontLoaded < 0.5) {
 
 			front.style.visibility = 'hidden';
 			this._stopLoadingImages(front);

@@ -53,7 +53,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
+	_animateZoom: function (center, zoom, origin, scale, delta) {
 
 		this._animatingZoom = true;
 
@@ -74,8 +74,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			zoom: zoom,
 			origin: origin,
 			scale: scale,
-			delta: delta,
-			backwards: backwards
+			delta: delta
 		});
 	},
 
