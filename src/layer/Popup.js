@@ -113,7 +113,7 @@ L.Popup = L.Class.extend({
 		if (this._animated) {
 			events.zoomanim = this._zoomAnimation;
 		}
-		if (this._map.options.closePopupOnClick) {
+		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
 		}
 		if (this.options.keepInView) {
