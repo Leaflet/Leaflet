@@ -1,13 +1,49 @@
 describe('Popup', function() {
 
-	var map;
+	var c, map;
 
 	beforeEach(function () {
-		var c = document.createElement('div');
+		c = document.createElement('div');
 		c.style.width = '400px';
 		c.style.height = '400px';
 		map = new L.Map(c);
 		map.setView(new L.LatLng(55.8, 37.6), 6);
+	});
+
+	it("closes on map click when map has closePopupOnClick option", function() {
+		map.options.closePopupOnClick = true;
+
+		var popup = new L.Popup()
+			.setLatLng(new L.LatLng(55.8, 37.6))
+			.openOn(map);
+
+		happen.click(c);
+
+		expect(map.hasLayer(popup)).to.be(false);
+	});
+
+	it("closes on map click when popup has closeOnClick option", function() {
+		map.options.closePopupOnClick = false;
+
+		var popup = new L.Popup({closeOnClick: true})
+			.setLatLng(new L.LatLng(55.8, 37.6))
+			.openOn(map);
+
+		happen.click(c);
+
+		expect(map.hasLayer(popup)).to.be(false);
+	});
+
+	it("does not close on map click when popup has closeOnClick: false option", function() {
+		map.options.closePopupOnClick = true;
+
+		var popup = new L.Popup({closeOnClick: false})
+			.setLatLng(new L.LatLng(55.8, 37.6))
+			.openOn(map);
+
+		happen.click(c);
+
+		expect(map.hasLayer(popup)).to.be(true);
 	});
 
 	it("should trigger popupopen on marker when popup opens", function() {
