@@ -98,7 +98,7 @@ L.Mixin.Events = {
 					for (j = listeners.length - 1; j >= 0; j--) {
 						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
 							removed = listeners.splice(j, 1);
-							// set the old action to a no-op, because it is possible 
+							// set the old action to a no-op, because it is possible
 							// that the listener is being iterated over as part of a dispatch
 							removed[0].action = L.Util.falseFn;
 						}
@@ -143,7 +143,7 @@ L.Mixin.Events = {
 		typeIndex = events[type + '_idx'];
 
 		for (contextId in typeIndex) {
-			listeners = typeIndex[contextId];
+			listeners = typeIndex[contextId].slice();
 
 			if (listeners) {
 				for (i = 0, len = listeners.length; i < len; i++) {
