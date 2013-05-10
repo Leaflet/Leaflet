@@ -25,7 +25,7 @@ L.Popup = L.Class.extend({
 	initialize: function (options, source) {
 		L.setOptions(this, options);
 
-		this._source = source;
+		this._content = source;
 		this._animated = L.Browser.any3d && this.options.zoomAnimation;
 	},
 
