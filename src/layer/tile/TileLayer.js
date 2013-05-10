@@ -345,11 +345,11 @@ L.TileLayer = L.Class.extend({
 
 		var options = this.options;
 
-		if (!options.continuousWorld && options.noWrap) {
+		if (!options.continuousWorld) {
 			var limit = this._getWrapTileNum();
 
 			// don't load if exceeds world bounds
-			if (tilePoint.x < 0 || tilePoint.x >= limit ||
+			if ((options.noWrap && (tilePoint.x < 0 || tilePoint.x >= limit)) ||
 				tilePoint.y < 0 || tilePoint.y >= limit) { return false; }
 		}
 
