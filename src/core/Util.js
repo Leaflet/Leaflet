@@ -26,8 +26,9 @@ L.Util = {
 	},
 
 	stamp: (function () {
-		var lastId = 0, key = '_leaflet_id';
-		return function (/*Object*/ obj) {
+		var lastId = 0,
+		    key = '_leaflet_id';
+		return function (obj) {
 			obj[key] = obj[key] || ++lastId;
 			return obj[key];
 		};
