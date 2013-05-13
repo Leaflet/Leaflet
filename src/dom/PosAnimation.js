@@ -39,7 +39,7 @@ L.PosAnimation = L.Class.extend({
 	},
 
 	_onStep: function () {
-		// jshint camelcase: false
+		/*jshint camelcase: false*/
 		// make L.DomUtil.getPosition return intermediate position value during animation
 		this._el._leaflet_pos = this._getPos();
 
@@ -49,7 +49,7 @@ L.PosAnimation = L.Class.extend({
 	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
 	// we need to parse computed style (in case of transform it returns matrix string)
 
-	_transformRe: /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,
+	_transformRe: /([\-+]?(?:\d*\.)?\d+)\D*, ([\-+]?(?:\d*\.)?\d+)\D*\)/,
 
 	_getPos: function () {
 		var left, top, matches,
@@ -76,7 +76,7 @@ L.PosAnimation = L.Class.extend({
 
 		this._el.style[L.DomUtil.TRANSITION] = '';
 
-		// jshint camelcase: false
+		/*jshint camelcase: false*/
 		// make sure L.DomUtil.getPosition returns the final position value after animation
 		this._el._leaflet_pos = this._newPos;
 
