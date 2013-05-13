@@ -197,7 +197,7 @@ L.DomUtil = {
 
 	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
 
-		// jshint camelcase: false
+		/*jshint camelcase: false*/
 		el._leaflet_pos = point;
 
 		if (!disable3D && L.Browser.any3d) {
@@ -217,7 +217,7 @@ L.DomUtil = {
 		// this method is only used for elements previously positioned using setPosition,
 		// so it's safe to cache the position for performance
 
-		// jshint camelcase: false
+		/*jshint camelcase: false*/
 		return el._leaflet_pos;
 	}
 };
