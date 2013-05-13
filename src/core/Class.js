@@ -60,7 +60,7 @@ L.Class.extend = function (props) {
 	proto._initHooks = [];
 
 	var parent = this;
-	// jshint camelcase: false
+	/*jshint camelcase: false*/
 	NewClass.__super__ = parent.prototype;
 
 	// add method for calling all hooks
