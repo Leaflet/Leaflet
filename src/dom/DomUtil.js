@@ -50,6 +50,19 @@ L.DomUtil = {
 				left += docBody.scrollLeft || docEl.scrollLeft || 0;
 				break;
 			}
+
+			if (pos === 'relative' && !el.offsetLeft) {
+				var width = L.DomUtil.getStyle(el, 'width'),
+				    maxWidth = L.DomUtil.getStyle(el, 'max-width');
+
+				if (width !== 'none' || maxWidth !== 'none') {
+					var r = el.getBoundingClientRect();
+					left += r.left + el.clientLeft;
+				}
+
+				break;
+			}
+
 			el = el.offsetParent;
 
 		} while (el);
