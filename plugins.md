@@ -532,6 +532,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/dwilhelm89/LeafletSlider">Leaflet Time-Slider</a>
+		</td><td>
+			The Leaflet Time-Slider enables you to dynamically add and remove Markers on a map by using a JQuery UI slider
+		</td><td>
+			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
+		</td>
+	</tr>
 </table>
 
 
