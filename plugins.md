@@ -329,11 +329,11 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/stefanocudini/leaflet-search">leaflet-search</a>
+			<a href="https://github.com/stefanocudini/leaflet-search">Leaflet.Control.Search</a>
 		</td><td>
-			Simple Leaflet Control for searching markers by attribute.
+			Search Markers/Features location by custom property.Support LayerGroup/GeoJSON layers and AJAX or JSONP 3rd service. filter data, tooltip menu, autotyping
 		</td><td>
-			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
+			<a href="http://labs.easyblog.it">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
