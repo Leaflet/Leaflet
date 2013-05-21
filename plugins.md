@@ -543,7 +543,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/ardhi/Leaflet.MousePosition">Leaflet MousePosition Control</a>
+			<a href="https://github.com/ardhi/Leaflet.MousePosition">Leaflet.MousePosition</a>
 		</td><td>
 			A decent MousePosition control for Leaflet
 		</td><td>
