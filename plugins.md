@@ -541,6 +541,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ardhi/Leaflet.MousePosition">Leaflet.MousePosition</a>
+		</td><td>
+			A simple MousePosition control that displays geographic coordinates of the mouse pointer, as it is moved about the map
+		</td><td>
+			<a href="https://github.com/ardhi">Ardhi Lukianto</a>
+		</td>
+	</tr>
 </table>
 
 
