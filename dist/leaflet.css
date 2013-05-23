@@ -142,6 +142,10 @@
 	visibility: hidden;
 	}
 
+/* This invisible border fixes zoom animation and tile mispositioning (minor gaps between tiles) in FF. */
+.leaflet-tile {
+	border-bottom: 0.01px solid transparent;
+	}
 
 /* cursors */
 
