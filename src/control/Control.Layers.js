@@ -16,12 +16,29 @@ L.Control.Layers = L.Control.extend({
 		this._lastZIndex = 0;
 		this._handlingClick = false;
 
-		for (var i in baseLayers) {
-			this._addLayer(baseLayers[i], i);
+		var i, j, len;
+		if (L.Util.isArray(baseLayers)) {
+			for (i = 0, len = baseLayers.length; i < len; i++) {
+				for (j in baseLayers[i]) {
+					this._addLayer(baseLayers[i][j], j);
+				}
+			}
+		} else {
+			for (i in baseLayers) {
+				this._addLayer(baseLayers[i], i);
+			}
 		}
 
-		for (i in overlays) {
-			this._addLayer(overlays[i], i, true);
+		if (L.Util.isArray(overlays)) {
+			for (i = 0, len = overlays.length; i < len; i++) {
+				for (j in overlays[i]) {
+					this._addLayer(overlays[i][j], j, true);
+				}
+			}
+		} else {
+			for (i in overlays) {
+				this._addLayer(overlays[i], i, true);
+			}
 		}
 	},
 
