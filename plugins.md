@@ -359,6 +359,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/jakubsynowiec/leaflet-control-osm-geocoder">Leaflet Control OSM Geocoder</a>
+		</td><td>
+			A fork of Karstens geocoder with refactored and cleaned code.<br/>
+			Email and bounds options were added, JSNOP was replaced with XmlHttpRequest and there is also some styling done to the controls.
+		</td><td>
+			<a href="https://github.com/jakubsynowiec">Jakub Synowiec</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/sa3m/leaflet-control-bing-geocoder">Leaflet Control Bing Geocoder</a>
 		</td><td>
 			A simple geocoder control that uses Bing to locate places.
