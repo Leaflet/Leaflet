@@ -362,7 +362,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/jakubsynowiec/leaflet-control-osm-geocoder">Leaflet Control OSM Geocoder</a>
 		</td><td>
 			A fork of Karstens geocoder with refactored and cleaned code.<br/>
-			Email and bounds options were added, JSNOP was replaced with XmlHttpRequest and there is also some styling done to the controls.
+			Email and bounds options were added, JSONP was replaced with XmlHttpRequest and there is also some styling done to the controls.
 		</td><td>
 			<a href="https://github.com/jakubsynowiec">Jakub Synowiec</a>
 		</td>
