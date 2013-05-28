@@ -143,9 +143,10 @@ var deps = {
 	VectorsCanvas: {
 		src: ['layer/vector/canvas/Polyline.Canvas.js',
 		      'layer/vector/canvas/Polygon.Canvas.js',
-		      'layer/vector/canvas/Circle.Canvas.js'],
-		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle'],
-		desc: 'Canvas fallback for vector layers (polygons, polylines, circles)'
+		      'layer/vector/canvas/Circle.Canvas.js',
+		      'layer/vector/canvas/CircleMarker.Canvas.js'],
+		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle', 'CircleMarker'],
+		desc: 'Canvas fallback for vector layers (polygons, polylines, circles, circlemarkers)'
 	},
 
 	GeoJSON: {
