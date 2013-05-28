@@ -527,7 +527,17 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>baselayerchange</b></code></td>
 		<td><code><a href="#layer-event">LayerEvent</a></code>
-		<td>Fired when the base layer is changed through the layer control.</td>
+		<td>Fired when the base layer is changed through the <a href="#control-layers">layer control</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayadd</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is selected through the <a href="#control-layers">layer control</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayremove</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is deselected through the <a href="#control-layers">layer control</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>locationfound</b></code></td>
@@ -4015,6 +4025,16 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 		<td><code><b>baselayerchange</b></code></td>
 		<td><code><a href="#layer-event">LayerEvent</a></code>
 		<td>Fired when the base layer is changed through the control.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayadd</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is selected through the control.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayremove</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is deselected through the control.</td>
 	</tr>
 </table>
 
