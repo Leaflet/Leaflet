@@ -541,6 +541,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.RevealOSM">Leaflet.RevealOSM</a>
+		</td><td>
+			Very simple but extendable Leaflet plugin to display OSM POIs data on map click.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
 </table>
 
 
