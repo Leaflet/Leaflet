@@ -31,8 +31,8 @@ L.Mixin.Events = {
 				// store listeners of a particular context in a separate hash (if it has an id)
 				// gives a major performance boost when removing thousands of map layers
 
-				indexKey = type + '_idx',
-				indexLenKey = indexKey + '_len',
+				indexKey = type + '_idx';
+				indexLenKey = indexKey + '_len';
 
 				typeIndex = events[indexKey] = events[indexKey] || {};
 

@@ -25,7 +25,8 @@ exports.config = {
 	// whitespace
 	"indent": 4,
 	"trailing": true,
-	"white": true,
+	// temporarily disabled until https://github.com/jshint/jshint/issues/1108 is fixed
+	//"white": true,
 	"smarttabs": true,
 	"maxlen": 120
 
