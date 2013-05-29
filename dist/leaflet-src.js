@@ -55,8 +55,9 @@ L.Util = {
 	},
 
 	stamp: (function () {
-		var lastId = 0, key = '_leaflet_id';
-		return function (/*Object*/ obj) {
+		var lastId = 0,
+		    key = '_leaflet_id';
+		return function (obj) {
 			obj[key] = obj[key] || ++lastId;
 			return obj[key];
 		};
@@ -352,8 +353,8 @@ L.Mixin.Events = {
 				// store listeners of a particular context in a separate hash (if it has an id)
 				// gives a major performance boost when removing thousands of map layers
 
-				indexKey = type + '_idx',
-				indexLenKey = indexKey + '_len',
+				indexKey = type + '_idx';
+				indexLenKey = indexKey + '_len';
 
 				typeIndex = events[indexKey] = events[indexKey] || {};
 
@@ -419,7 +420,7 @@ L.Mixin.Events = {
 					for (j = listeners.length - 1; j >= 0; j--) {
 						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
 							removed = listeners.splice(j, 1);
-							// set the old action to a no-op, because it is possible 
+							// set the old action to a no-op, because it is possible
 							// that the listener is being iterated over as part of a dispatch
 							removed[0].action = L.Util.falseFn;
 						}
@@ -464,7 +465,7 @@ L.Mixin.Events = {
 		typeIndex = events[type + '_idx'];
 
 		for (contextId in typeIndex) {
-			listeners = typeIndex[contextId];
+			listeners = typeIndex[contextId].slice();
 
 			if (listeners) {
 				for (i = 0, len = listeners.length; i < len; i++) {
@@ -899,6 +900,19 @@ L.DomUtil = {
 				left += docBody.scrollLeft || docEl.scrollLeft || 0;
 				break;
 			}
+
+			if (pos === 'relative' && !el.offsetLeft) {
+				var width = L.DomUtil.getStyle(el, 'width'),
+				    maxWidth = L.DomUtil.getStyle(el, 'max-width');
+
+				if (width !== 'none' || maxWidth !== 'none') {
+					var r = el.getBoundingClientRect();
+					left += r.left + el.clientLeft;
+				}
+
+				break;
+			}
+
 			el = el.offsetParent;
 
 		} while (el);
@@ -1195,6 +1209,8 @@ L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLn
 L.LatLngBounds.prototype = {
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
+		if (!obj) { return this; }
+		
 		if (typeof obj[0] === 'number' || typeof obj[0] === 'string' || obj instanceof L.LatLng) {
 			obj = L.latLng(obj);
 		} else {
@@ -2550,7 +2566,11 @@ L.TileLayer = L.Class.extend({
 				var className = 'leaflet-tile-container leaflet-zoom-animated';
 
 				this._bgBuffer = L.DomUtil.create('div', className, this._container);
+				this._bgBuffer.style.zIndex = 1;
+
 				this._tileContainer = L.DomUtil.create('div', className, this._container);
+				this._tileContainer.style.zIndex = 2;
+
 			} else {
 				this._tileContainer = this._container;
 			}
@@ -2655,11 +2675,11 @@ L.TileLayer = L.Class.extend({
 
 		var options = this.options;
 
-		if (!options.continuousWorld && options.noWrap) {
+		if (!options.continuousWorld) {
 			var limit = this._getWrapTileNum();
 
 			// don't load if exceeds world bounds
-			if (tilePoint.x < 0 || tilePoint.x >= limit ||
+			if ((options.noWrap && (tilePoint.x < 0 || tilePoint.x >= limit)) ||
 				tilePoint.y < 0 || tilePoint.y >= limit) { return false; }
 		}
 
@@ -3762,7 +3782,7 @@ L.Popup = L.Class.extend({
 		if (this._animated) {
 			events.zoomanim = this._zoomAnimation;
 		}
-		if (this._map.options.closePopupOnClick) {
+		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
 		}
 		if (this.options.keepInView) {
@@ -5095,8 +5115,8 @@ L.LineUtil = {
 				return false;
 			// other cases
 			} else {
-				codeOut = codeA || codeB,
-				p = this._getEdgeIntersection(a, b, codeOut, bounds),
+				codeOut = codeA || codeB;
+				p = this._getEdgeIntersection(a, b, codeOut, bounds);
 				newCode = this._getBitCode(p, bounds);
 
 				if (codeOut === codeA) {
@@ -7049,7 +7069,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		    center = map.layerPointToLatLng(origin),
 		    zoom = map.getScaleZoom(this._scale);
 
-		map._animateZoom(center, zoom, this._startCenter, this._scale, this._delta, true);
+		map._animateZoom(center, zoom, this._startCenter, this._scale, this._delta);
 	},
 
 	_onTouchEnd: function () {
@@ -7079,7 +7099,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		    zoom = map._limitZoom(oldZoom + roundZoomDelta),
 		    scale = map.getZoomScale(zoom) / this._scale;
 
-		map._animateZoom(center, zoom, origin, scale, null, true);
+		map._animateZoom(center, zoom, origin, scale);
 	},
 
 	_getScaleOrigin: function () {
@@ -8408,7 +8428,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
+	_animateZoom: function (center, zoom, origin, scale, delta) {
 
 		this._animatingZoom = true;
 
@@ -8429,8 +8449,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			zoom: zoom,
 			origin: origin,
 			scale: scale,
-			delta: delta,
-			backwards: backwards
+			delta: delta
 		});
 	},
 
@@ -8466,8 +8485,7 @@ L.TileLayer.include({
 			this._prepareBgBuffer();
 		}
 
-		var transform = L.DomUtil.TRANSFORM,
-		    bg = this._bgBuffer;
+		var bg = this._bgBuffer;
 
 		if (firstFrame) {
 			//prevent bg buffer from clearing right after zoom
@@ -8477,12 +8495,10 @@ L.TileLayer.include({
 			L.Util.falseFn(bg.offsetWidth);
 		}
 
-		var scaleStr = L.DomUtil.getScaleString(e.scale, e.origin),
-		    oldTransform = bg.style[transform];
+		var transform = L.DomUtil.TRANSFORM,
+		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform];
 
-		bg.style[transform] = e.backwards ?
-		        (e.delta ? L.DomUtil.getTranslateString(e.delta) : oldTransform) + ' ' + scaleStr :
-		        scaleStr + ' ' + oldTransform;
+		bg.style[transform] = initialTransform + ' ' + L.DomUtil.getScaleString(e.scale, e.origin);
 	},
 
 	_endZoomAnim: function () {
@@ -8517,8 +8533,10 @@ L.TileLayer.include({
 		// if foreground layer doesn't have many tiles but bg layer does,
 		// keep the existing bg layer and just zoom it some more
 
-		if (bg && this._getLoadedTilesPercentage(bg) > 0.5 &&
-		          this._getLoadedTilesPercentage(front) < 0.5) {
+		var bgLoaded = this._getLoadedTilesPercentage(bg),
+		    frontLoaded = this._getLoadedTilesPercentage(front);
+
+		if (bg && bgLoaded > 0.5 && frontLoaded < 0.5) {
 
 			front.style.visibility = 'hidden';
 			this._stopLoadingImages(front);
