@@ -19,18 +19,18 @@
 
 	var map = L.map('map').setView( [50, 50], 10);
 
-	var marker = L.marker([50, 50], {icon: blueIcon});
+	var marker = L.marker([50, 50], {icon: blueIcon, draggable: true});
 
-	marker.on('mouseover', function () {
-		console.log('mouseover');
+	marker.on('dragstart', function () {
+		console.log('dragstart');
 		marker.setIcon(redIcon);
 		//This is the previous workaround:
 		//var iconElem = L.DomUtil.get(marker._icon);
 		//iconElem.src = 'http://www.webatlas.no/webatlasapi/v/071009/media/interface/default/markers/flag_red.gif';
 	});
 
-	marker.on('mouseout', function () {
-		console.log('mouseout');
+	marker.on('dragend', function () {
+		console.log('dragend');
 		marker.setIcon(blueIcon);
 		//This is the previous workaround:
 		//var iconElem = L.DomUtil.get(marker._icon);
