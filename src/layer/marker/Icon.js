@@ -22,15 +22,15 @@ L.Icon = L.Class.extend({
 		L.setOptions(this, options);
 	},
 
-	createIcon: function () {
-		return this._createIcon('icon');
+	createIcon: function (oldIcon) {
+		return this._createIcon('icon', oldIcon);
 	},
 
-	createShadow: function () {
-		return this._createIcon('shadow');
+	createShadow: function (oldIcon) {
+		return this._createIcon('shadow', oldIcon);
 	},
 
-	_createIcon: function (name) {
+	_createIcon: function (name, oldIcon) {
 		var src = this._getIconUrl(name);
 
 		if (!src) {
@@ -40,8 +40,13 @@ L.Icon = L.Class.extend({
 			return null;
 		}
 
-		var img = this._createImg(src);
-		this._setIconStyles(img, name);
+		var img;
+		if (!oldIcon) {
+			img = this._createImg(src);
+			this._setIconStyles(img, name);
+		} else {
+			img = this._createImg(src, oldIcon);
+		}
 
 		return img;
 	},
@@ -74,14 +79,17 @@ L.Icon = L.Class.extend({
 		}
 	},
 
-	_createImg: function (src) {
-		var el;
+	_createImg: function (src, el) {
 
 		if (!L.Browser.ie6) {
-			el = document.createElement('img');
+			if (!el) {
+				el = document.createElement('img');
+			}
 			el.src = src;
 		} else {
-			el = document.createElement('div');
+			if (!el) {
+				el = document.createElement('div');
+			}
 			el.style.filter =
 			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
