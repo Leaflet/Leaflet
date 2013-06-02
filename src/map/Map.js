@@ -186,8 +186,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor!!!
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum++;
-            this._tileLayersToLoad++;
-            layer.on('load', this._onTileLayerLoad, this);
+			this._tileLayersToLoad++;
+			layer.on('load', this._onTileLayerLoad, this);
 		}
 
 		this.whenReady(function () {
@@ -214,8 +214,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum--;
-            this._tileLayersToLoad--;
-            layer.off('load', this._onTileLayerLoad, this);
+			this._tileLayersToLoad--;
+			layer.off('load', this._onTileLayerLoad, this);
 		}
 
 		return this.fire('layerremove', {layer: layer});
