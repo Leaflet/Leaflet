@@ -203,7 +203,9 @@ L.Map = L.Class.extend({
 
 		if (!this._layers[id]) { return; }
 
-		layer.onRemove(this);
+		if (this._loaded) {
+			layer.onRemove(this);
+		}
 
 		delete this._layers[id];
 		if (this._zoomBoundLayers[id]) {
