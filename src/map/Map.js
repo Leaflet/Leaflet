@@ -204,6 +204,7 @@ L.Map = L.Class.extend({
 
 		if (this._loaded) {
 			layer.onRemove(this);
+			this.fire('layerremove', {layer: layer});
 		}
 
 		delete this._layers[id];
@@ -219,7 +220,7 @@ L.Map = L.Class.extend({
 			layer.off('load', this._onTileLayerLoad, this);
 		}
 
-		return this.fire('layerremove', {layer: layer});
+		return this;
 	},
 
 	hasLayer: function (layer) {
