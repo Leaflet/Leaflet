@@ -1210,7 +1210,7 @@ L.LatLngBounds.prototype = {
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
 		if (!obj) { return this; }
-		
+
 		if (typeof obj[0] === 'number' || typeof obj[0] === 'string' || obj instanceof L.LatLng) {
 			obj = L.latLng(obj);
 		} else {
@@ -1666,8 +1666,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor!!!
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum++;
-            this._tileLayersToLoad++;
-            layer.on('load', this._onTileLayerLoad, this);
+			this._tileLayersToLoad++;
+			layer.on('load', this._onTileLayerLoad, this);
 		}
 
 		this.whenReady(function () {
@@ -1694,8 +1694,8 @@ L.Map = L.Class.extend({
 		// TODO looks ugly, refactor
 		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
 			this._tileLayersNum--;
-            this._tileLayersToLoad--;
-            layer.off('load', this._onTileLayerLoad, this);
+			this._tileLayersToLoad--;
+			layer.off('load', this._onTileLayerLoad, this);
 		}
 
 		return this.fire('layerremove', {layer: layer});
@@ -4838,6 +4838,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 		if (this.options.clickable) {
 			this._map.off('click', this._onClick, this);
+			this._map.off('mousemove', this._onMouseMove, this);
 		}
 
 		this._requestUpdate();
@@ -5806,6 +5807,17 @@ L.Circle.include(!L.Path.CANVAS ? {} : {
 		    w2 = this.options.stroke ? this.options.weight / 2 : 0;
 
 		return (p.distanceTo(center) <= this._radius + w2);
+	}
+});
+
+
+/*
+ * CircleMarker canvas specific drawing parts.
+ */
+
+L.CircleMarker.include(!L.Path.CANVAS ? {} : {
+	_updateStyle: function () {
+		L.Path.prototype._updateStyle.call(this);
 	}
 });
 
