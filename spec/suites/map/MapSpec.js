@@ -147,6 +147,14 @@ describe("Map", function () {
 			expect(layer.onAdd.called).to.be.ok();
 		});
 
+		it("does not call layer.onAdd if the layer is removed before the map becomes ready", function () {
+			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
+			map.addLayer(layer);
+			map.removeLayer(layer);
+			map.setView([0, 0], 0);
+			expect(layer.onAdd.called).not.to.be.ok();
+		});
+
 		describe("When the first layer is added to a map", function () {
 			it("fires a zoomlevelschange event", function () {
 				var spy = sinon.spy();
