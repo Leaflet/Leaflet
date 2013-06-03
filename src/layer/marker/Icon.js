@@ -43,10 +43,10 @@ L.Icon = L.Class.extend({
 		var img;
 		if (!oldIcon) {
 			img = this._createImg(src);
-			this._setIconStyles(img, name);
 		} else {
 			img = this._createImg(src, oldIcon);
 		}
+		this._setIconStyles(img, name);
 
 		return img;
 	},
