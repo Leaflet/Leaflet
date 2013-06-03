@@ -190,10 +190,9 @@ L.Map = L.Class.extend({
 			layer.on('load', this._onTileLayerLoad, this);
 		}
 
-		this.whenReady(function () {
-			layer.onAdd(this);
-			this.fire('layeradd', {layer: layer});
-		}, this);
+		if (this._loaded) {
+			this._layerAdd(layer);
+		}
 
 		return this;
 	},
@@ -203,7 +202,10 @@ L.Map = L.Class.extend({
 
 		if (!this._layers[id]) { return; }
 
-		layer.onRemove(this);
+		if (this._loaded) {
+			layer.onRemove(this);
+			this.fire('layerremove', {layer: layer});
+		}
 
 		delete this._layers[id];
 		if (this._zoomBoundLayers[id]) {
@@ -218,7 +220,7 @@ L.Map = L.Class.extend({
 			layer.off('load', this._onTileLayerLoad, this);
 		}
 
-		return this.fire('layerremove', {layer: layer});
+		return this;
 	},
 
 	hasLayer: function (layer) {
@@ -579,6 +581,7 @@ L.Map = L.Class.extend({
 
 		if (loading) {
 			this.fire('load');
+			this.eachLayer(this._layerAdd, this);
 		}
 
 		this.fire('viewreset', {hard: !preserveMapOffset});
@@ -718,6 +721,11 @@ L.Map = L.Class.extend({
 			this.on('load', callback, context);
 		}
 		return this;
+	},
+
+	_layerAdd: function(layer) {
+		layer.onAdd(this);
+		this.fire('layeradd', {layer: layer});
 	},
 
 
