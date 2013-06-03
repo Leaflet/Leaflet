@@ -723,7 +723,7 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	_layerAdd: function(layer) {
+	_layerAdd: function (layer) {
 		layer.onAdd(this);
 		this.fire('layeradd', {layer: layer});
 	},

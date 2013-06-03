@@ -1670,10 +1670,9 @@ L.Map = L.Class.extend({
 			layer.on('load', this._onTileLayerLoad, this);
 		}
 
-		this.whenReady(function () {
-			layer.onAdd(this);
-			this.fire('layeradd', {layer: layer});
-		}, this);
+		if (this._loaded) {
+			this._layerAdd(layer);
+		}
 
 		return this;
 	},
@@ -1683,7 +1682,10 @@ L.Map = L.Class.extend({
 
 		if (!this._layers[id]) { return; }
 
-		layer.onRemove(this);
+		if (this._loaded) {
+			layer.onRemove(this);
+			this.fire('layerremove', {layer: layer});
+		}
 
 		delete this._layers[id];
 		if (this._zoomBoundLayers[id]) {
@@ -1698,7 +1700,7 @@ L.Map = L.Class.extend({
 			layer.off('load', this._onTileLayerLoad, this);
 		}
 
-		return this.fire('layerremove', {layer: layer});
+		return this;
 	},
 
 	hasLayer: function (layer) {
@@ -2059,6 +2061,7 @@ L.Map = L.Class.extend({
 
 		if (loading) {
 			this.fire('load');
+			this.eachLayer(this._layerAdd, this);
 		}
 
 		this.fire('viewreset', {hard: !preserveMapOffset});
@@ -2198,6 +2201,11 @@ L.Map = L.Class.extend({
 			this.on('load', callback, context);
 		}
 		return this;
+	},
+
+	_layerAdd: function (layer) {
+		layer.onAdd(this);
+		this.fire('layeradd', {layer: layer});
 	},
 
 
@@ -3213,15 +3221,15 @@ L.Icon = L.Class.extend({
 		L.setOptions(this, options);
 	},
 
-	createIcon: function () {
-		return this._createIcon('icon');
+	createIcon: function (oldIcon) {
+		return this._createIcon('icon', oldIcon);
 	},
 
-	createShadow: function () {
-		return this._createIcon('shadow');
+	createShadow: function (oldIcon) {
+		return this._createIcon('shadow', oldIcon);
 	},
 
-	_createIcon: function (name) {
+	_createIcon: function (name, oldIcon) {
 		var src = this._getIconUrl(name);
 
 		if (!src) {
@@ -3231,7 +3239,12 @@ L.Icon = L.Class.extend({
 			return null;
 		}
 
-		var img = this._createImg(src);
+		var img;
+		if (!oldIcon) {
+			img = this._createImg(src);
+		} else {
+			img = this._createImg(src, oldIcon);
+		}
 		this._setIconStyles(img, name);
 
 		return img;
@@ -3265,14 +3278,17 @@ L.Icon = L.Class.extend({
 		}
 	},
 
-	_createImg: function (src) {
-		var el;
+	_createImg: function (src, el) {
 
 		if (!L.Browser.ie6) {
-			el = document.createElement('img');
+			if (!el) {
+				el = document.createElement('img');
+			}
 			el.src = src;
 		} else {
-			el = document.createElement('div');
+			if (!el) {
+				el = document.createElement('div');
+			}
 			el.style.filter =
 			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}
@@ -3424,9 +3440,6 @@ L.Marker = L.Class.extend({
 	},
 
 	setIcon: function (icon) {
-		if (this._map) {
-			this._removeIcon();
-		}
 
 		this.options.icon = icon;
 
@@ -3454,32 +3467,38 @@ L.Marker = L.Class.extend({
 		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide',
 		    needOpacityUpdate = false;
 
-		if (!this._icon) {
+		var reuseIcon = this._icon;
+		if (!reuseIcon) {
 			this._icon = options.icon.createIcon();
-
-			if (options.title) {
-				this._icon.title = options.title;
-			}
-
-			this._initInteraction();
-			needOpacityUpdate = (this.options.opacity < 1);
-
-			L.DomUtil.addClass(this._icon, classToAdd);
-
-			if (options.riseOnHover) {
-				L.DomEvent
-					.on(this._icon, 'mouseover', this._bringToFront, this)
-					.on(this._icon, 'mouseout', this._resetZIndex, this);
-			}
+		} else {
+			this._icon = this.options.icon.createIcon(this._icon);
 		}
 
-		if (!this._shadow) {
+		if (options.title) {
+			this._icon.title = options.title;
+		}
+
+		this._initInteraction();
+		needOpacityUpdate = (this.options.opacity < 1);
+
+		L.DomUtil.addClass(this._icon, classToAdd);
+
+		if (options.riseOnHover) {
+			L.DomEvent
+				.on(this._icon, 'mouseover', this._bringToFront, this)
+				.on(this._icon, 'mouseout', this._resetZIndex, this);
+		}
+
+		var reuseShadow = this._shadow;
+		if (!reuseShadow) {
 			this._shadow = options.icon.createShadow();
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
 				needOpacityUpdate = (this.options.opacity < 1);
 			}
+		} else {
+			this._shadow = this.options.icon.createShadow(this._shadow);
 		}
 
 		if (needOpacityUpdate) {
@@ -3488,9 +3507,11 @@ L.Marker = L.Class.extend({
 
 		var panes = this._map._panes;
 
-		panes.markerPane.appendChild(this._icon);
+		if (!reuseIcon) {
+			panes.markerPane.appendChild(this._icon);
+		}
 
-		if (this._shadow) {
+		if (this._shadow && !reuseShadow) {
 			panes.shadowPane.appendChild(this._shadow);
 		}
 	},
