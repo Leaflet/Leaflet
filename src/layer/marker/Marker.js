@@ -77,9 +77,6 @@ L.Marker = L.Class.extend({
 	},
 
 	setIcon: function (icon) {
-		if (this._map) {
-			this._removeIcon();
-		}
 
 		this.options.icon = icon;
 
@@ -107,32 +104,38 @@ L.Marker = L.Class.extend({
 		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide',
 		    needOpacityUpdate = false;
 
-		if (!this._icon) {
+		var reuseIcon = this._icon;
+		if (!reuseIcon) {
 			this._icon = options.icon.createIcon();
-
-			if (options.title) {
-				this._icon.title = options.title;
-			}
-
-			this._initInteraction();
-			needOpacityUpdate = (this.options.opacity < 1);
-
-			L.DomUtil.addClass(this._icon, classToAdd);
-
-			if (options.riseOnHover) {
-				L.DomEvent
-					.on(this._icon, 'mouseover', this._bringToFront, this)
-					.on(this._icon, 'mouseout', this._resetZIndex, this);
-			}
+		} else {
+			this._icon = this.options.icon.createIcon(this._icon);
 		}
 
-		if (!this._shadow) {
+		if (options.title) {
+			this._icon.title = options.title;
+		}
+
+		this._initInteraction();
+		needOpacityUpdate = (this.options.opacity < 1);
+
+		L.DomUtil.addClass(this._icon, classToAdd);
+
+		if (options.riseOnHover) {
+			L.DomEvent
+				.on(this._icon, 'mouseover', this._bringToFront, this)
+				.on(this._icon, 'mouseout', this._resetZIndex, this);
+		}
+
+		var reuseShadow = this._shadow;
+		if (!reuseShadow) {
 			this._shadow = options.icon.createShadow();
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
 				needOpacityUpdate = (this.options.opacity < 1);
 			}
+		} else {
+			this._shadow = this.options.icon.createShadow(this._shadow);
 		}
 
 		if (needOpacityUpdate) {
@@ -141,9 +144,11 @@ L.Marker = L.Class.extend({
 
 		var panes = this._map._panes;
 
-		panes.markerPane.appendChild(this._icon);
+		if (!reuseIcon) {
+			panes.markerPane.appendChild(this._icon);
+		}
 
-		if (this._shadow) {
+		if (this._shadow && !reuseShadow) {
 			panes.shadowPane.appendChild(this._shadow);
 		}
 	},
