@@ -559,6 +559,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ardhi">Ardhi Lukianto</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/vogdb/SelectLayersControl">Leaflet.SelectLayers</a>
+		</td><td>
+			a Leaflet plugin which adds new control to switch between different layers on the map. New control replaces L.Control.Layers radio button panel with select tag.
+		</td><td>
+			<a href="https://github.com/vogdb">vogdb</a>
+		</td>
+	</tr>
 </table>
 
 
