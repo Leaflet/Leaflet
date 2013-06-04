@@ -152,7 +152,7 @@ L.Popup = L.Class.extend({
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
 		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
-
+		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
 	},
