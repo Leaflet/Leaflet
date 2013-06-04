@@ -550,6 +550,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://yohanboniface.me">Yohan Boniface</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MrMufflon/Leaflet.Coordinates">Leaflet.Coordinates</a>
+		</td><td>
+			A simple Leaflet plugin viewing the mouse LatLng-coordinates. Also views a marker with coordinate popup on userinput.
+		</td><td>
+			<a href="https://github.com/MrMufflon">Felix Bache</a>
+		</td>
+	</tr>
 </table>
 
 
