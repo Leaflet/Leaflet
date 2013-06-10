@@ -117,6 +117,7 @@ L.Map = L.Class.extend({
 
 		if (!bounds) {
 			this._boundsMinZoom = null;
+			this.off('moveend', this._panInsideMaxBounds, this);
 			return this;
 		}
 
