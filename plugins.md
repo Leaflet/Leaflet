@@ -28,7 +28,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/jacobtoye/Leaflet.label">Leaflet.label</a>
+			<a href="https://github.com/Leaflet/Leaflet.label">Leaflet.label</a>
 		</td><td>
 			Adds text labels to map markers and vector layers.
 		</td><td>
@@ -78,6 +78,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Simple heatmap api based on HTML5 canvas.
 		</td><td>
 			<a href="https://github.com/sunng87">Sun Ning</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html">heatmap.js</a>
+		</td><td>
+			JavaScript Library for HTML5 canvas based heatmaps.
+
+			Its Leaflet layer implementation supports large datasets because it is tile based and uses a quadtree index to store the data.
+		</td><td>
+			<a href="https://github.com/pa7">Patrick Wied</a>
 		</td>
 	</tr>
 	<tr>
@@ -132,6 +143,69 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Allows you to draw patterns (like dashes, arrows or evenly spaced Markers) along Polylines or coordinate paths.
 		</td><td>
 			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/leaflet-extras/leaflet.sprite">Leaflet.Sprite</a>
+		</td><td>
+			Use sprite based icons in your markers.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/maximeh/leaflet.bouncemarker">Leaflet.BounceMarker</a>
+		</td><td>
+			Make a marker bounce when you add it to a map.
+		</td><td>
+			<a href="https://github.com/maximeh">Maxime Hadjinlian</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.TextPath">Leaflet.TextPath</a>
+		</td><td>
+			Allows you to draw text along Polylines.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.Awesome-Markers</a>
+		</td><td>
+			Colorful, iconic & retina-proof markers based on the Font Awesome icons/Twitter Bootstrap icons
+		</td><td>
+			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://humangeo.github.com/leaflet-dvf/">Leaflet Data Visualization Framework</a>
+		</td><td>
+			New markers, layers, and utility classes for easy thematic mapping and data visualization.
+		</td><td>
+			<a href="https://github.com/sfairgrieve">Scott Fairgrieve</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Zverik/leaflet-grayscale/">TileLayer.Grayscale</a>
+		</td><td>
+			A regular TileLayer with grayscale makeover.
+		</td><td>
+			<a href="https://github.com/Zverik">Ilya Zverev</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/glenrobertson/leaflet-tilelayer-geojson/">TileLayer.GeoJSON</a>
+		</td><td>
+			A TileLayer for GeoJSON tiles (requires JQuery).
+		</td><td>
+			<a href="https://github.com/glenrobertson">Glen Robertson</a>
 		</td>
 	</tr>
 </table>
@@ -192,7 +266,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/seelmann/leaflet-providers">leaflet-providers</a>
+			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
 		</td><td>
 			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Mapbox Streets, Stamen, Esri, etc.
 		</td><td>
@@ -206,15 +280,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A set of small plugins for Leaflet, including WFS-GeoJSON layer with filtering, a hover control for GeoJSON, and an Esri tile layer.
 		</td><td>
 			<a href="https://github.com/azgs">AZGS</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/sa3m/leaflet-control-bing-geocoder">Leaflet Control Bing Geocoder</a>
-		</td><td>
-			A simple geocoder control that uses Bing to locate places.
-		</td><td>
-			<a href="https://github.com/sa3m">Samuel Piquet</a>
 		</td>
 	</tr>
 	<tr>
@@ -242,6 +307,63 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Add GeoJSON data via ajax or jsonp.
 		</td><td>
 			<a href="https://github.com/calvinmetcalf/">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mpetazzoni/leaflet-gpx">Leaflet GPX</a>
+		</td><td>
+			GPX layer, targeted at sporting activities by providing access to information such as distance, moving time, pace, elevation, heart rate, etc.
+		</td><td>
+			<a href="https://github.com/mpetazzoni/">Maxime Petazzoni</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://arthur-e.github.com/Wicket/">Wicket</a>
+		</td><td>
+			A modest library for translating between Well-Known Text (WKT) and Leaflet geometry objects (e.g. between L.marker() instances and "POINT()" strings).
+		</td><td>
+			<a href="https://github.com/arthur-e/">K. Arthur Endsley</a>
+		</td>
+	</tr>
+</table>
+
+
+### Geocoding (Address Lookup)
+
+<table class="plugins">
+	<tr>
+		<th>Plugin</th>
+		<th>Description</th>
+		<th>Maintainer</th>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/smeijer/L.GeoSearch">Leaflet GeoSearch</a>
+		</td><td>
+			Small geocoding plugin that brings address searching/lookup (aka geosearching) to Leaflet.<br />
+			Comes with support for Google, OpenStreetMap Nominatim, Bing, Esri and Nokia. Eeasily extensible.
+		</td><td>
+			<a href="https://github.com/smeijer">Stephan Meijer</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/k4r573n/leaflet-control-osm-geocoder">Leaflet Control OSM Geocoder</a>
+		</td><td>
+			A simple geocoder that uses OpenstreetMap Nominatim to locate places by address.
+		</td><td>
+			<a href="https://github.com/k4r573n">Karsten Hinz</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sa3m/leaflet-control-bing-geocoder">Leaflet Control Bing Geocoder</a>
+		</td><td>
+			A simple geocoder control that uses Bing to locate places.
+		</td><td>
+			<a href="https://github.com/sa3m">Samuel Piquet</a>
 		</td>
 	</tr>
 </table>
@@ -331,9 +453,9 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/stefanocudini/leaflet-search">leaflet-search</a>
 		</td><td>
-			Simple Leaflet Control for searching markers by attribute.
+			A control for search Markers/Features location by custom property in LayerGroup/GeoJSON. Support AJAX/JSONP, Autocompletion and 3rd party service
 		</td><td>
-			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
+			<a href="http://labs.easyblog.it">Stefano Cudini</a>
 		</td>
 	</tr>
 	<tr>
@@ -362,6 +484,97 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			you need popup tips to reorient as you get close to the edges of your map.
 		</td><td>
 			<a href="http://www.linkedin.com/in/erictheise">Eric Theise</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.EditInOSM">Leaflet.EditInOSM</a>
+		</td><td>
+			Add a control with links to open the current map view on main OSM editors.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.Spin">Leaflet.Spin</a>
+		</td><td>
+			Shows a nice spinner on the map using <a href="http://fgnass.github.com/spin.js/">Spin.js</a>,
+			for asynchronous data load, like with <a href="https://github.com/calvinmetcalf/leaflet-ajax">Leaflet Ajax</a>.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.RestoreView">Leaflet.RestoreView</a>
+		</td><td>
+			Stores and restores map view using localStorage.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.FileLayer">Leaflet.FileLayer</a>
+		</td><td>
+			Loads files (GeoJSON, GPX, KML) into the map using the HTML5 FileReader API (i.e. locally without server).
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.Snap">Leaflet.Snap</a>
+		</td><td>
+			Enables snapping of draggable markers to polylines and other layers.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/dwilhelm89/LeafletSlider">Leaflet Time-Slider</a>
+		</td><td>
+			The Leaflet Time-Slider enables you to dynamically add and remove Markers on a map by using a JQuery UI slider
+		</td><td>
+			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.RevealOSM">Leaflet.RevealOSM</a>
+		</td><td>
+			Very simple but extendable Leaflet plugin to display OSM POIs data on map click.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ardhi/Leaflet.MousePosition">Leaflet.MousePosition</a>
+		</td><td>
+			A simple MousePosition control that displays geographic coordinates of the mouse pointer, as it is moved about the map
+		</td><td>
+			<a href="https://github.com/ardhi">Ardhi Lukianto</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/vogdb/SelectLayersControl">Leaflet.SelectLayers</a>
+		</td><td>
+			a Leaflet plugin which adds new control to switch between different layers on the map. New control replaces L.Control.Layers radio button panel with select tag.
+		</td><td>
+			<a href="https://github.com/vogdb">vogdb</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MrMufflon/Leaflet.Coordinates">Leaflet.Coordinates</a>
+		</td><td>
+			A simple Leaflet plugin viewing the mouse LatLng-coordinates. Also views a marker with coordinate popup on userinput.
+		</td><td>
+			<a href="https://github.com/MrMufflon">Felix Bache</a>
 		</td>
 	</tr>
 </table>
@@ -411,7 +624,63 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/springmeyer">Dane Springmeyer</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.Storage">Leaflet.Storage</a>
+		</td><td>
+			Create/update/delete Map, Marker, Polygon, Polyline... and expose them for backend storage with an API.
+		</td><td>
+			<a href="http://yohanboniface.me/">Yohan Boniface</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/leaflet-extras/leaflet.css">Leaflet.CSS</a>
+		</td><td>
+			Add the main Leaflet CSS files (or any css) from within JavaScript, be gone conditional comments.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.LayerIndex">Leaflet.LayerIndex</a>
+		</td><td>
+			An efficient spatial index for features and layers, using <a href="https://github.com/imbcmdth/RTree">RTree.js</a>.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tmcw/leaflet-pip">Leaflet-pip</a>
+		</td><td>
+			Simple point in polygon calculation using <a href="https://github.com/substack/point-in-polygon">point-in-polygon</a>.
+		</td><td>
+			<a href="https://github.com/tmcw">Tom MacWright</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.GeometryUtil">Leaflet.GeometryUtil</a>
+		</td><td>
+			A collection of utilities for Leaflet geometries (linear referencing, etc.)
+		</td><td>
+			<a href="https://github.com/bbecquet">Benjamin Becquet</a>, <a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.i18n">Leaflet.i18n</a>
+		</td><td>
+			Internationalization for Leaflet plugins.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
 </table>
+
+To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
 
 <!--
 - Saving a Leaflet Map to a PNG Example using Javascript and PHP https://github.com/tegansnyder/Leaflet-Save-Map-to-PNG

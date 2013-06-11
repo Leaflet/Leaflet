@@ -96,7 +96,7 @@ bodyclass: api-page
 		<ul>
 			<li><a href="#domevent">DomEvent</a></li>
 			<li><a href="#domutil">DomUtil</a></li>
-			<li><a href="#transition">Transition</a></li>
+			<li><a href="#posanimation">PosAnimation</a></li>
 			<li><a href="#draggable">Draggable</a></li>
 		</ul>
 	</div>
@@ -123,7 +123,7 @@ bodyclass: api-page
 <!--<a href="#toc" id="back-to-top">&uarr;</a>-->
 
 <hr />
-<p>This reference reflects <strong>Leaflet 0.4.5</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/Leaflet/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.<!--<br />Older docs for version 0.3 can be <a href="https://github.com/Leaflet/Leaflet/zipball/7fde9938fa36070191f939c9948285d7ddc07368">downloaded here</a>--></p>
+<p>This reference reflects <strong>Leaflet 0.5</strong>. You can find docs for the in-progress master version in <code>reference.html</code> of <a href="https://github.com/Leaflet/Leaflet/zipball/gh-pages-master">gh-pages-master branch</a>.<!--<br />Older docs for version 0.3 can be <a href="https://github.com/Leaflet/Leaflet/zipball/7fde9938fa36070191f939c9948285d7ddc07368">downloaded here</a>--></p>
 
 <h2 id="map-class">L.Map</h2>
 
@@ -266,8 +266,8 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>worldCopyJump</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>With this option enabled, the map tracks when you pan to another "copy" of the world and moves all overlays like markers and vector layers there.</td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.</td>
 	</tr>
 	<tr>
 		<td><code><b>closePopupOnClick</b></code></td>
@@ -531,18 +531,28 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>baselayerchange</b></code></td>
-		<td><code><a href="#layer-event">LayerEvent</a></code></td>
-		<td>Fired when the base layer is changed through the layer control.</td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when the base layer is changed through the <a href="#control-layers">layer control</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayadd</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is selected through the <a href="#control-layers">layer control</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayremove</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is deselected through the <a href="#control-layers">layer control</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>locationfound</b></code></td>
-		<td><code><a href="#location-event">LocationEvent</a></code></td>
-		<td>Fired when geolocation (using <code>locate</code> method) went successfully.</td>
+		<td><code><a href="#location-event">LocationEvent</a></code>
+		<td>Fired when geolocation (using the <a href="#map-locate">locate</a> method) went successfully.</td>
 	</tr>
 	<tr>
 		<td><code><b>locationerror</b></code></td>
-		<td><code><a href="#error-event">ErrorEvent</a></code></td>
-		<td>Fired when geolocation (using <code>locate</code> method) failed.</td>
+		<td><code><a href="#error-event">ErrorEvent</a></code>
+		<td>Fired when geolocation (using the <a href="map-locate">locate</a> method) failed.</td>
 	</tr>
 	<tr>
 		<td><code><b>popupopen</b></code></td>
@@ -582,14 +592,14 @@ var map = L.map('map', {
 		<td>Sets the zoom of the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>zoomIn</b>()</code></td>
+		<td><code><b>zoomIn</b>( <nobr>&lt;Number&gt; delta? )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Increases the zoom of the map by 1.</td>
+		<td>Increases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
 	</tr>
 	<tr>
-		<td><code><b>zoomOut</b>()</code></td>
+		<td><code><b>zoomOut</b>( <nobr>&lt;Number&gt; delta? )</nobr></code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Decreases the zoom of the map by 1.</td>
+		<td>Decreases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
 	</tr>
 	<tr id="map-fitbounds">
 		<td><code><b>fitBounds</b>(
@@ -638,12 +648,12 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option).</td>
 	</tr>
-	<tr>
+	<tr id="map-locate">
 		<td><code><b>locate</b>(
 			<nobr>&lt;<a href="#map-locate-options">Locate options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Tries to locate the user using Geolocation API, firing <code>locationfound</code> event with location data on success or <code>locationerror</code> event on failure, and optionally sets the map view to the user location with respect to detection accuracy (or to the world view if geolocation failed). See <a href="#map-locate-options">Locate options</a> for more details.</td>
+		<td>Tries to locate the user using the <a href="https://en.wikipedia.org/wiki/W3C_Geolocation_API">Geolocation API</a>, firing a <code>locationfound</code> event with location data on success or a <code>locationerror</code> event on failure, and optionally sets the map view to the user's location with respect to detection accuracy (or to the world view if geolocation failed). See <a href="#map-locate-options">Locate options</a> for more details.</td>
 	</tr>
 	<tr>
 		<td><code><b>stopLocate</b>()</code></td>
@@ -896,6 +906,13 @@ var map = L.map('map', {
 		<td><code><a href="#map-panes">MapPanes</a></code></td>
 		<td>Returns an object with different map panes (to render overlays in).</td>
 	</tr>
+	<tr id="map-whenready">
+		<td><code><b>whenReady</b>(
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Runs the given callback when the map gets initialized with a place and zoom, or immediately if it happened already, optionally passing a function context.</td>
+	</tr>
 </table>
 
 <h3 id="map-locate-options">Locate options</h3>
@@ -1119,13 +1136,25 @@ var map = L.map('map', {
 		<td><code><b>zIndexOffset</b></code></td>
 		<td><code>Number</code></td>
 		<td><code><span class="number">0</span></code></td>
-		<td>By default, marker images zIndex is set automatically based on its latitude. You this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
+		<td>By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
 		<td><code>Number</code></td>
 		<td><code><span class="number">1.0</span></code></td>
 		<td>The opacity of the marker.</td>
+	</tr>
+	<tr>
+		<td><code><b>riseOnHover</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>If <code><span class="literal">true</span></code>, the marker will get on top of others when you hover the mouse over it.</td>
+	</tr>
+	<tr>
+		<td><code><b>riseOffset</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">250</span></code></td>
+		<td>The z-index offset used for the <code>riseOnHover</code> feature.</td>
 	</tr>
 </table>
 
@@ -1163,6 +1192,11 @@ var map = L.map('map', {
 		<td><code><b>mouseout</b></code></td>
 		<td><code><a href="#mouse-event">MouseEvent</a></code></td>
 		<td>Fired when the mouse leaves the marker.</td>
+	</tr>
+	<tr>
+		<td><code><b>contextmenu</b></code></td>
+		<td><code><a href="#mouse-event">MouseEvent</a></code>
+		<td>Fired when the user right-clicks on the marker.</td>
 	</tr>
 	<tr>
 		<td><code><b>dragstart</b></code></td>
@@ -1387,6 +1421,12 @@ var map = L.map('map', {
 		</code></td>
 		<td>The margin between the popup and the edges of the map view after autopanning was performed.</td>
 	</tr>
+	<tr>
+		<td><code><b>zoomAnimation</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>Whether to animate the popup on zoom. Disable it if you have problems with Flash content inside popups.</td>
+	</tr>
 </table>
 
 <h3>Methods</h3>
@@ -1473,7 +1513,7 @@ var map = L.map('map', {
 
 <pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'</code></pre>
 
-<p><code>{s}</code> means one of the randomly chosen subdomains (their range is specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
+<p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
 
 <p>You can use custom keys in the template, which will be evaluated from TileLayer options, like this:</p>
 
@@ -1668,7 +1708,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>redraw</b>()</code></td>
-		<td>-</td>
+		<td><code><span class="keyword">this</span></code></td>
 		<td>Causes the layer to clear all the tiles and request them again.</td>
 	</tr>
 	<tr>
@@ -1813,6 +1853,22 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 	</tr>
 </table>
 
+<h3>Options</h3>
+<table>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>async</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>Indicates that tiles will be drawn asynchronously. <a href="#tilelayer-canvas-tiledrawn">tileDrawn</a> method should be called for each tile after drawing completion.</td>
+	</tr>
+</table>
+
 <h3>Methods</h3>
 
 <table>
@@ -1821,7 +1877,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 		<th>Returns</th>
 		<th>Description</th>
 	</tr>
-	<tr>
+	<tr id = "tilelayer-canvas-drawtile">
 		<td><code><b>drawTile</b>(
 			<nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr>,
 			<nobr>&lt;<a href="#point">Point</a>&gt; <i>tilePoint</i></nobr>,
@@ -1830,10 +1886,10 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
 	</tr>
-	<tr>
-		<td><code><b>redraw</b>()</code></td>
+	<tr id="tilelayer-canvas-tiledrawn">
+		<td><code><b>tileDrawn</b>( <nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr> )</code></td>
 		<td>-</td>
-		<td>Calling <code>redraw</code> will cause the <code>drawTile</code> method to be called for all tiles. May be used for updating dynamic content drawn on the Canvas</td>
+		<td>If <code>async</code> option is defined, this function should be called for each tile after drawing completion. <code>canvas</code> is the same canvas element, that was passed to <a href="#tilelayer-canvas-drawtile">drawTile</a>.</td>
 	</tr>
 </table>
 
@@ -2033,6 +2089,11 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td>Fired when the user pushes the right mouse button on the object, prevents default browser context menu from showing if there are listeners on this event.</td>
 	</tr>
 	<tr>
+		<td><code><b>add</b></code></td>
+		<td><code><a href="#event">Event</a></code>
+		<td>Fired when the path is added to the map.</td>
+	</tr>
+	<tr>
 		<td><code><b>remove</b></code></td>
 		<td><code><a href="#event">Event</a></code></td>
 		<td>Fired when the path is removed from the map.</td>
@@ -2075,6 +2136,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Opens the popup previously bound by the <a href="#path-bindpopup">bindPopup</a> method in the given point, or in one of the path's points if not specified.</td>
+	</tr>
+	<tr id="path-closepopup">
+		<td><code><b>closePopup</b>()</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Closes the path's bound popup if it is opened.</td>
 	</tr>
 	<tr id="path-setstyle">
 		<td><code><b>setStyle</b>(
@@ -2335,7 +2402,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 			<code>L.multiPolygon(<span class="comment">&hellip;</span>)</code>
 		</td>
 
-		<td>Instantiates a multi-polyline object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
+		<td>Instantiates a multi-polygon object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
 	</tr>
 </table>
 
@@ -2725,6 +2792,16 @@ map.fitBounds(bounds);</code></pre>
 		<td><code><a href="#mouse-event">MouseEvent</a></code></td>
 		<td>Fired when the user right-clicks on one of the layers.</td>
 	</tr>
+	<tr>
+		<td><code><b>layeradd</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when a layer is added to the group.</td>
+	</tr>
+	<tr>
+		<td><code><b>layerremove</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when a layer is removed from the map.</td>
+	</tr>
 </table>
 
 
@@ -2903,8 +2980,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 	<tr>
 		<td><code><b>L.LatLng</b>(
 			<nobr>&lt;Number&gt; <i>latitude</i></nobr>,
-			<nobr>&lt;Number&gt; <i>longitude</i></nobr>,
-			<nobr>&lt;Boolean&gt; <i>noWrap?</i> )</nobr>
+			<nobr>&lt;Number&gt; <i>longitude</i> )</nobr>
 		</code></td>
 
 		<td class="factory-usage">
@@ -2913,7 +2989,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 			<code>L.latLng([<span class="comment">&hellip;</span>])</code>
 		</td>
 
-		<td>Creates an object representing a geographical point with the given latitude and longitude. Wraps longitude to lie between <code>-180</code> and <code>180</code> and clamps longitude between <code>-90</code> and <code>90</code> by default &mdash; you can disable this with the <code>noWrap</code> argument.</td>
+		<td>Creates an object representing a geographical point with the given latitude and longitude.</td>
 	</tr>
 </table>
 
@@ -2965,6 +3041,15 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<td><code><b>toString</b>()</code></td>
 		<td><code>String</code></td>
 		<td>Returns a string representation of the point (for debugging purposes).</td>
+	</tr>
+	<tr>
+		<td><code><b>wrap</b>(
+			<nobr>&lt;Number&gt; <i>left</i></nobr>,
+			<nobr>&lt;Number&gt; <i>right</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Returns a new <code>LatLng</code> object with the longitude wrapped around <code>left</code> and <code>right</code> boundaries (<code><span class="number">-180</span></code> to <code><span class="number">180</span></code> by default).</td>
 	</tr>
 </table>
 
@@ -3084,6 +3169,26 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 		<td><code><b>getSouthEast</b>()</code></td>
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Returns the south-east point of the bounds.</td>
+	</tr>
+	<tr>
+		<td><code><b>getWest</b>()</code></td>
+		<td><code>Number</code></td>
+		<td>Returns the west longitude of the bounds.</td>
+	</tr>
+	<tr>
+		<td><code><b>getSouth</b>()</code></td>
+		<td><code>Number</code></td>
+		<td>Returns the south latitude of the bounds.</td>
+	</tr>
+	<tr>
+		<td><code><b>getEast</b>()</code></td>
+		<td><code>Number</code></td>
+		<td>Returns the east longitude of the bounds.</td>
+	</tr>
+	<tr>
+		<td><code><b>getNorth</b>()</code></td>
+		<td><code>Number</code></td>
+		<td>Returns the north latitude of the bounds.</td>
 	</tr>
 	<tr>
 		<td><code><b>getCenter</b>()</code></td>
@@ -3262,6 +3367,14 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<td>Returns a copy of the current point with rounded coordinates.</td>
 	</tr>
 	<tr>
+		<td><code><b>equals</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
+		</code></td>
+
+		<td><code>Boolean</code></td>
+		<td>Returns <code><span class="literal">true</span></code> if the given point has the same coordinates.</td>
+	</tr>
+	<tr>
 		<td><code><b>toString</b>()</code></td>
 		<td><code>String</code></td>
 		<td>Returns a string representation of the point for debugging purposes.</td>
@@ -3383,11 +3496,16 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<td>Returns <code><span class="literal">true</span></code> if the rectangle intersects the given bounds.</td>
 	</tr>
 	<tr>
-		<td><code><b>isValid</b>()</nobr>
-		</code></td>
+		<td><code><b>isValid</b>()</code></td>
 
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the bounds are properly initialized.</td>
+	</tr>
+	<tr>
+		<td><code><b>getSize</b>()</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Returns the size of the given bounds.</td>
 	</tr>
 </table>
 
@@ -3901,6 +4019,37 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	"&lt;someName2&gt;": layer2
 }</code></pre>
 
+<p>The layer names can contain HTML, which allows you to add additional styling to the items:</p>
+
+<pre><code>{"&lt;img src='my-layer-icon' /&gt; &lt;span class='my-layer-item'&gt;My Layer&lt;/span&gt;": myLayer}</code></pre>
+
+
+<h3>Events</h3>
+
+<p>You can subscribe to the following events on the map object using <a href="#events">these methods</a>.</p>
+
+<table>
+	<tr>
+		<th class="width100">Event</th>
+		<th class="width100">Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>baselayerchange</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when the base layer is changed through the control.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayadd</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is selected through the control.</td>
+	</tr>
+	<tr>
+		<td><code><b>overlayremove</b></code></td>
+		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td>Fired when an overlay is deselected through the control.</td>
+	</tr>
+</table>
 
 
 <h2 id="control-scale">L.Control.Scale</h2>
@@ -4430,6 +4579,19 @@ L.map('map');</code></pre>
 };</code></pre>
 
 
+<h3>Constructor Hooks</h3>
+
+<p>If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for <code>L.Polyline</code>). Leaflet comes with a way to do it easily using the <code>addInitHook</code> method:</p>
+
+<pre><code>MyClass.addInitHook(function () {
+	// ... do something in constructor additionally
+	// e.g. add event listeners, set custom properties etc.
+});</code></pre>
+
+<p>You can also use the following shortcut when you just need to make one additional method call:</p>
+
+<pre><code>MyClass.addInitHook('methodName', arg1, arg2, &hellip;);</code></pre>
+
 
 <h2 id="browser">L.Browser</h2>
 
@@ -4456,6 +4618,11 @@ L.map('map');</code></pre>
 		<td><code><span class="literal">true</span></code> for Internet Explorer 6.</td>
 	</tr>
 	<tr>
+		<td><code><b>ie7</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code> for Internet Explorer 7.</td>
+	</tr>
+	<tr>
 		<td><code><b>webkit</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
@@ -4465,7 +4632,7 @@ L.map('map');</code></pre>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code> for webkit-based browsers that support CSS 3D transformations.</td>
 	</tr>
-	<tr>
+	<!--<tr>
 		<td><code><b>gecko</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code> for Gecko-based browsers like Firefox and Mozilla.</td>
@@ -4474,11 +4641,16 @@ L.map('map');</code></pre>
 		<td><code><b>opera</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code> for Opera.</td>
-	</tr>
+	</tr>-->
 	<tr>
 		<td><code><b>android</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code> for Android mobile browser.</td>
+	</tr>
+	<tr>
+		<td><code><b>android23</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code> for old Android stock browsers (2 and 3).</td>
 	</tr>
 	<tr>
 		<td><code><b>mobile</b></code></td>
@@ -4499,6 +4671,11 @@ L.map('map');</code></pre>
 		<td><code><b>touch</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code> for all browsers on touch devices.</td>
+	</tr>
+	<tr>
+		<td><code><b>msTouch</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code> for browsers with Microsoft touch model (e.g. IE10).</td>
 	</tr>
 	<tr>
 		<td><code><b>retina</b></code></td>
@@ -4527,7 +4704,7 @@ L.map('map');</code></pre>
 		</code></td>
 
 		<td><code>Object</code></td>
-		<td>Merges the properties of the <code>src</code> object (or multiple objects) into <code>dest</code> object and returns the latter.</td>
+		<td>Merges the properties of the <code>src</code> object (or multiple objects) into <code>dest</code> object and returns the latter. Has an <code>L.extend</code> shortcut.</td>
 	</tr>
 	<tr>
 		<td><code><b>bind</b>(
@@ -4536,12 +4713,12 @@ L.map('map');</code></pre>
 		</code></td>
 
 		<td><code>Function</code></td>
-		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code).</td>
+		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.</td>
 	</tr>
 	<tr>
 		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
 		<td><code>String</code></td>
-		<td>Applies a unique key to the object and returns that key.</td>
+		<td>Applies a unique key to the object and returns that key. Has an <code>L.stamp</code> shortcut.</td>
 	</tr>
 	<!-- TODO Commented out for the time being:
 	https://github.com/Leaflet/Leaflet/pull/793#discussion_r1134904
@@ -4596,7 +4773,7 @@ L.map('map');</code></pre>
 		</code></td>
 
 		<td><code>Object</code></td>
-		<td>Merges the given properties to the <code>options</code> of the <code>obj</code> object, returning the resulting options. See <a href="#class-options">Class options</a>.</td>
+		<td>Merges the given properties to the <code>options</code> of the <code>obj</code> object, returning the resulting options. See <a href="#class-options">Class options</a>. Has an <code>L.setOptions</code> shortcut.</td>
 	</tr>
 	<tr>
 		<td><code><b>getParamString</b>(
@@ -4613,6 +4790,14 @@ L.map('map');</code></pre>
 
 		<td><code>String</code></td>
 		<td>Simple templating facility, creates a string by applying the values of the <code>data</code> object of a form <code>{a: 'foo', b: 'bar', &hellip;}</code> to a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> &mdash; in this example you will get <code><span class="string">'Hello foo, bar'</span></code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>isArray</b>(
+			<nobr>&lt;Object&gt; <i>obj</i> )</nobr>
+		</code></td>
+
+		<td><code>Boolean</code></td>
+		<td>Returns <code><span class="literal">true</span></code> if the given object is an array.</td>
 	</tr>
 </table>
 
@@ -4740,7 +4925,7 @@ L.map('map');</code></pre>
 			<nobr>&lt;<a href="#point">Point</a>&gt; <i>p2</i> )</nobr>
 		</code></td>
 
-		<td><code>Number</code></td>
+		<td><code><a href="#point">Point</a></code></td>
 
 		<td>Returns the closest point from a point <code>p</code> on a segment <code>p1</code> to <code>p2</code>.</td>
 	</tr>
@@ -5044,13 +5229,12 @@ L.map('map');</code></pre>
 
 
 
-<h2 id="transition">L.Transition</h2>
+<h2 id="posanimation">L.PosAnimation</h2>
 
-<p>Used internally for most animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.</p>
+<p>Used internally for panning animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.</p>
 
-<pre><code class="javascript">var fx = new L.Transition(el, {duration: 0.5});
-
-fx.run({left: '300px', top: '500px'});</code></pre>
+<pre><code class="javascript">var fx = new L.PosAnimation();
+fx.run(el, [300, 500], 0.5);</code></pre>
 
 <h3>Constructor</h3>
 
@@ -5061,52 +5245,34 @@ fx.run({left: '300px', top: '500px'});</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Transition</b>(
-			<nobr>&lt;HTMLElement&gt; <i>element</i>,</nobr>
-			<nobr>&lt;<a href="#transition-options">Transition options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
+		<td><code><b>L.PosAnimation</b>()</code></td>
 
 		<td class="factory-usage">
-			<code><span class='keyword'>new</span> L.Transition(<span class="comment">&hellip;</span>)</code><!--<br />
-			<code>L.transition(<span class="comment">&hellip;</span>)</code>-->
+			<code><span class='keyword'>new</span> L.PosAnimation()</code>
 		</td>
 
-		<td>Creates a Transition object tied to a particular element with the given options.</td>
+		<td>Creates a PosAnimation object.</td>
 	</tr>
 </table>
 
-<h3 id="transition-options">Options</h3>
+<h3>Methods</h3>
 
 <table>
 	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
+		<th>Method</th>
+		<th>Returns</th>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>duration</b></code></td>
-		<td><code>Number</code></td>
-		<td><code><span class="number">0.5</span></code></td>
-		<td>Duration of the animation in seconds.</td>
-	</tr>
-	<tr>
-		<td><code><b>easing</b></code></td>
-		<td><code>String</code></td>
-		<td><code><span class="string">'ease'</span></code></td>
-		<td>One of the <a href="https://developer.mozilla.org/en/CSS/timing-function">timing functions</a> for the animation.</td>
-	</tr>
-	<tr>
-		<td><code><b>fps</b></code></td>
-		<td><code>Number</code></td>
-		<td><code><span class="number">50</span></code></td>
-		<td>Frames per second for the timer fallback (IE6-9).</td>
-	</tr>
-	<tr>
-		<td><code><b>fakeStepInterval</b></code></td>
-		<td><code>Number</code></td>
-		<td><code><span class="number">100</span></code></td>
-		<td>How often to fire the <code>step</code> event during transition with a timer (as native transitions don't support such events).</td>
+		<td><code><b>run</b>(
+			<nobr>&lt;HTMLElement&gt; <i>element</i>,</nobr>
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>newPos</i></nobr>,
+			<nobr>&lt;Number&gt; <i>duration?</i></nobr>,
+			<nobr>&lt;Number&gt; <i>easeLinearity?</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Run an animation of a given element to a new position, optionally setting duration in seconds (<code><span class="number">0.25</span></code> by default) and easing linearity factor (3rd argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>, <code><span class="number">0.5</span></code> by default)</td>
 	</tr>
 </table>
 
@@ -5136,35 +5302,6 @@ fx.run({left: '300px', top: '500px'});</code></pre>
 		<td>Fired when the animation ends.</td>
 	</tr>
 </table>
-
-<h3>Methods</h3>
-
-<table>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>run</b>(
-			<nobr>&lt;Object&gt; <i><a href="#transition-properties">properties</a></i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Run the animation with the given set of properties and their end values.</td>
-	</tr>
-</table>
-
-<h3 id="transition-properties">Transition Properties</h3>
-
-<p>An object literal of the following form:</p>
-
-<pre><code>{
-	'&lt;style-property-1&gt;': '&lt;value-1&gt;',
-	'&lt;style-property-2&gt;': '&lt;value-2&gt;'
-	// ...
-}</code></pre>
-
 
 
 
@@ -5251,7 +5388,7 @@ draggable.enable();
 	</tr>
 </table>
 
-<h3>Static Properties</h3>
+<!--<h3>Static Properties</h3>
 
 <table>
 	<tr>
@@ -5274,7 +5411,7 @@ draggable.enable();
 		<td><code>String</code></td>
 		<td>Name of the DOM event that ends dragging. <code><span class="string">'mouseup'</span></code> for desktop browsers, <code><span class="string">'touchend'</span></code> for mobile devices.</td>
 	</tr>
-</table>
+</table>-->
 
 
 
@@ -5436,7 +5573,7 @@ map.addLayer(new MyCustomLayer(latlng));
 map.addControl(new MyControl());
 </code></pre>
 
-<p>If specify your own contructor for the control, you'll also probably want to process options properly:</p>
+<p>If specify your own constructor for the control, you'll also probably want to process options properly:</p>
 
 <pre><code>var MyControl = L.Control.extend({
 	initialize: function (foo, options) {
@@ -5616,7 +5753,7 @@ map.addControl(new MyControl());
 	<tr>
 		<td><code><b>L.CRS.Simple</b></code></td>
 
-		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly. May be used for maps of flat surfaces (e.g. game maps).</td>
+		<td>A simple CRS that maps longitude and latitude into <code>x</code> and <code>y</code> directly. May be used for maps of flat surfaces (e.g. game maps). Note that the <code>y</code> axis should still be inverted (going from bottom to top).</td>
 	</tr>
 </table>
 
@@ -5641,7 +5778,7 @@ map.addControl(new MyControl());
 	</tr>
 	<tr>
 		<td><code><b>L_NO_TOUCH</b></code></td>
-		<td>Forces Leaflet to not use touch events even if it detects them. Particularly useful if you embed Leaflet inside a QT WebView (which exposes touch events even on desktop PCs).</td>
+		<td>Forces Leaflet to not use touch events even if it detects them.</td>
 	</tr>
 	<tr>
 		<td><code><b>L_DISABLE_3D</b></code></td>
@@ -5651,7 +5788,7 @@ map.addControl(new MyControl());
 
 <h2 id="noconflict">L.noConflict()</h2>
 
-<p>This method restores the L global variale to the original value it had before Leaflet inclusion, and returns the real Leaflet namespace so you can put it elsewhere, like this:<p>
+<p>This method restores the L global variable to the original value it had before Leaflet inclusion, and returns the real Leaflet namespace so you can put it elsewhere, like this:<p>
 
 <pre><code>// L points to some other library
 ...
@@ -5665,4 +5802,4 @@ var Leaflet = L.noConflict();
 
 <p>A constant that represents the Leaflet version in use.<p>
 
-<pre><code>L.version // returns "0.4" (or whatever version is currently in use)</code></pre>
+<pre><code>L.version // returns "0.5" (or whatever version is currently in use)</code></pre>

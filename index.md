@@ -2,11 +2,11 @@
 layout: default
 ---
 
-<!--<p class="notice">October 25, 2012 &mdash; Leaflet 0.4.5 bugfix release and plans for 0.5 &mdash; <a href="2012/10/25/leaflet-0-4-5-bugfix-release-and-plans-for-0.5.html">Read More in the Blog</a></p>-->
+<!--<p class="notice">January 17, 2013 &mdash; Leaflet 0.5 Released &mdash; <a href="2013/01/17/leaflet-0-5-released.html">Read More in the Blog</a></p>-->
 
 Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.
 It is developed by [Vladimir Agafonkin][] with a&nbsp;team of dedicated [contributors][].
-Weighing just about <abbr title="27KB gzipped &mdash; that's 102 KB minified and 176 KB in the source form, with 8 KB of CSS (1.8 KB gzipped) and 10 KB of images.">27 KB of JS code</abbr>,
+Weighing just about <abbr title="28KB gzipped &mdash; that's 110 KB minified and 196 KB in the source form, with 10 KB of CSS (2 KB gzipped) and 7 KB of images.">28 KB of JS code</abbr>,
 it has all the [features][] most developers ever need for online maps.
 
 Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind.
@@ -27,8 +27,8 @@ Used by:
 [WSJ](http://projects.wsj.com/campaign2012/maps/)
 [Geocaching](http://geocaching.com)
 [StreetEasy](http://streeteasy.com/)
-[Nestoria](http://www.nestoria.co.uk)
-[Chartbeat](http://chartbeat.com/)
+[CloudMade](http://cloudmade.com)
+[CartoDB](http://cartodb.com)
 [GIS Cloud](http://www.giscloud.com/)
 ...
 

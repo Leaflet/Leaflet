@@ -45,7 +45,7 @@
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 				'Imagery © <a href="http://cloudmade.com">CloudMade</a>';
 
-		CM_URL = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png';
+		CM_URL = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/{styleId}/256/{z}/{x}/{y}.png';
 
 		OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
@@ -163,6 +163,18 @@
 					} else {
 						codes[i].className = 'javascript';
 					}
+				}
+			}
+		})();
+
+		(function () {
+			var headers = document.getElementsByTagName('h2');
+
+			for (var i = 0, len = headers.length; i < len; i++) {
+				if (headers[i].id) {
+					headers[i].onclick = function() {
+						window.location.hash = '#' + this.id;
+					};
 				}
 			}
 		})();
