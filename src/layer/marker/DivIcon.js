@@ -5,21 +5,22 @@
 
 L.DivIcon = L.Icon.extend({
 	options: {
-		iconSize: new L.Point(12, 12), // also can be set through CSS
+		iconSize: [12, 12], // also can be set through CSS
 		/*
 		iconAnchor: (Point)
 		popupAnchor: (Point)
 		html: (String)
 		bgPos: (Point)
 		*/
-		className: 'leaflet-div-icon'
+		className: 'leaflet-div-icon',
+		html: false
 	},
 
 	createIcon: function () {
 		var div = document.createElement('div'),
 		    options = this.options;
 
-		if (options.html) {
+		if (options.html !== false) {
 			div.innerHTML = options.html;
 		}
 

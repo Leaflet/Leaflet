@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Jasmine Spec Runner</title>
-	<link rel="stylesheet" type="text/css" href="jasmine/jasmine.css">
-	<script type="text/javascript" src="jasmine/jasmine.js"></script>
-	<script type="text/javascript" src="jasmine/jasmine-html.js"></script>
+    <meta charset="utf-8">
+	<title>Spec Runner</title>
+	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
+</head>
+<body>
+    <div id="mocha"></div>
+    <script src="expect.js"></script>
+   	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
 	<script type="text/javascript" src="happen.js"></script>
+	<script type="text/javascript" src="sinon.js"></script>
 
 	<!-- source files -->
-
-	<script type="text/javascript">
-		L = 'test'; //to test L#noConflict later
-	</script>
+	<script type="text/javascript" src="before.js"></script>
+	<script type="text/javascript" src="../build/deps.js"></script>
 
 	<script type="text/javascript" src="../debug/leaflet-include.js"></script>
 
+    <script>
+        mocha.setup('bdd');
+        mocha.ignoreLeaks();
+    </script>
 
 	<!-- spec files -->
 
@@ -24,6 +31,7 @@
 	<!-- /control -->
 	<script type="text/javascript" src="suites/control/Control.LayersSpec.js"></script>
 	<script type="text/javascript" src="suites/control/Control.ScaleSpec.js"></script>
+	<script type="text/javascript" src="suites/control/Control.AttributionSpec.js"></script>
 
 	<!-- /core -->
 	<script type="text/javascript" src="suites/core/UtilSpec.js"></script>
@@ -34,6 +42,8 @@
 	<script type="text/javascript" src="suites/geometry/PointSpec.js"></script>
 	<script type="text/javascript" src="suites/geometry/BoundsSpec.js"></script>
 	<script type="text/javascript" src="suites/geometry/TransformationSpec.js"></script>
+	<script type="text/javascript" src="suites/geometry/LineUtilSpec.js"></script>
+	<script type="text/javascript" src="suites/geometry/PolyUtilSpec.js"></script>
 
 	<!-- /geo -->
 	<script type="text/javascript" src="suites/geo/LatLngSpec.js"></script>
@@ -45,28 +55,24 @@
 	<script type="text/javascript" src="suites/dom/DomUtilSpec.js"></script>
 
 	<!-- /layer -->
+	<script type="text/javascript" src="suites/layer/FeatureGroupSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/GeoJSONSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/LayerGroupSpec.js"></script>
 	<script type="text/javascript" src="suites/layer/TileLayerSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/vector/PolylineGeometrySpec.js"></script>
+	<script type="text/javascript" src="suites/layer/PopupSpec.js"></script>
+
+	<!-- /layer/vector/ -->
 	<script type="text/javascript" src="suites/layer/vector/CircleSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/vector/CircleMarkerSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/vector/PolygonSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/vector/PolylineSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/vector/PolylineGeometrySpec.js"></script>
 
 	<!-- /map -->
 	<script type="text/javascript" src="suites/map/MapSpec.js"></script>
-</head>
-<body>
-	<script type="text/javascript">
-		(function() {
-			var jasmineEnv = jasmine.getEnv();
-			jasmineEnv.updateInterval = 1000;
 
-			var htmlReporter = new jasmine.HtmlReporter();
-			jasmineEnv.addReporter(htmlReporter);
-
-			jasmineEnv.specFilter = function(spec) {
-				return htmlReporter.specFilter(spec);
-			};
-
-			jasmineEnv.execute();
-		})();
-	</script>
+    <script>
+        (window.mochaPhantomJS || window.mocha).run();
+    </script>
 </body>
 </html>

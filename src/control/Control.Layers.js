@@ -17,15 +17,11 @@ L.Control.Layers = L.Control.extend({
 		this._handlingClick = false;
 
 		for (var i in baseLayers) {
-			if (baseLayers.hasOwnProperty(i)) {
-				this._addLayer(baseLayers[i], i);
-			}
+			this._addLayer(baseLayers[i], i);
 		}
 
 		for (i in overlays) {
-			if (overlays.hasOwnProperty(i)) {
-				this._addLayer(overlays[i], i, true);
-			}
+			this._addLayer(overlays[i], i, true);
 		}
 	},
 
@@ -68,6 +64,9 @@ L.Control.Layers = L.Control.extend({
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
 		    container = this._container = L.DomUtil.create('div', className);
+
+		//Makes this work on IE10 Touch devices by stopping it from firing a mouseout event when the touch is released
+		container.setAttribute('aria-haspopup', true);
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
@@ -134,18 +133,17 @@ L.Control.Layers = L.Control.extend({
 		this._overlaysList.innerHTML = '';
 
 		var baseLayersPresent = false,
-		    overlaysPresent = false;
+		    overlaysPresent = false,
+		    i, obj;
 
-		for (var i in this._layers) {
-			if (this._layers.hasOwnProperty(i)) {
-				var obj = this._layers[i];
-				this._addItem(obj);
-				overlaysPresent = overlaysPresent || obj.overlay;
-				baseLayersPresent = baseLayersPresent || !obj.overlay;
-			}
+		for (i in this._layers) {
+			obj = this._layers[i];
+			this._addItem(obj);
+			overlaysPresent = overlaysPresent || obj.overlay;
+			baseLayersPresent = baseLayersPresent || !obj.overlay;
 		}
 
-		this._separator.style.display = (overlaysPresent && baseLayersPresent ? '' : 'none');
+		this._separator.style.display = overlaysPresent && baseLayersPresent ? '' : 'none';
 	},
 
 	_onLayerChange: function (e) {
@@ -217,9 +215,12 @@ L.Control.Layers = L.Control.extend({
 				this._map.addLayer(obj.layer);
 				if (!obj.overlay) {
 					baseLayer = obj.layer;
+				} else {
+					this._map.fire('overlayadd', {layer: obj});
 				}
 			} else if (!input.checked && this._map.hasLayer(obj.layer)) {
 				this._map.removeLayer(obj.layer);
+				this._map.fire('overlayremove', {layer: obj});
 			}
 		}
 

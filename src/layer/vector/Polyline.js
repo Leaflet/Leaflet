@@ -1,5 +1,5 @@
 /*
- * L.Polygon is used to display polylines on a map.
+ * L.Polyline is used to display polylines on a map.
  */
 
 L.Polyline = L.Path.extend({
@@ -47,7 +47,7 @@ L.Polyline = L.Path.extend({
 
 	spliceLatLngs: function () { // (Number index, Number howMany)
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._convertLatLngs(this._latlngs);
+		this._convertLatLngs(this._latlngs, true);
 		this.redraw();
 		return removed;
 	},
@@ -74,26 +74,19 @@ L.Polyline = L.Path.extend({
 	},
 
 	getBounds: function () {
-		var bounds = new L.LatLngBounds(),
-		    latLngs = this.getLatLngs(),
-		    i, len;
-
-		for (i = 0, len = latLngs.length; i < len; i++) {
-			bounds.extend(latLngs[i]);
-		}
-
-		return bounds;
+		return new L.LatLngBounds(this.getLatLngs());
 	},
 
-	_convertLatLngs: function (latlngs) {
-		var i, len;
+	_convertLatLngs: function (latlngs, overwrite) {
+		var i, len, target = overwrite ? latlngs : [];
+
 		for (i = 0, len = latlngs.length; i < len; i++) {
 			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') {
 				return;
 			}
-			latlngs[i] = L.latLng(latlngs[i]);
+			target[i] = L.latLng(latlngs[i]);
 		}
-		return latlngs;
+		return target;
 	},
 
 	_initEvents: function () {

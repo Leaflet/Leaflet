@@ -16,7 +16,7 @@ L.CircleMarker = L.Circle.extend({
 	projectLatlngs: function () {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
 	},
-	
+
 	_updateStyle : function () {
 		L.Circle.prototype._updateStyle.call(this);
 		this.setRadius(this.options.radius);
