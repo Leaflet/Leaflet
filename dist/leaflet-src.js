@@ -126,10 +126,10 @@ L.Util = {
 		return obj.options;
 	},
 
-	getParamString: function (obj, existingUrl) {
+	getParamString: function (obj, existingUrl, uppercase) {
 		var params = [];
 		for (var i in obj) {
-			params.push(encodeURIComponent(i) + '=' + encodeURIComponent(obj[i]));
+			params.push(encodeURIComponent(uppercase ? i.toUpperCase() : i) + '=' + encodeURIComponent(obj[i]));
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
@@ -903,12 +903,15 @@ L.DomUtil = {
 
 			if (pos === 'relative' && !el.offsetLeft) {
 				var width = L.DomUtil.getStyle(el, 'width'),
-				    maxWidth = L.DomUtil.getStyle(el, 'max-width');
+				    maxWidth = L.DomUtil.getStyle(el, 'max-width'),
+				    r = el.getBoundingClientRect();
 
 				if (width !== 'none' || maxWidth !== 'none') {
-					var r = el.getBoundingClientRect();
 					left += r.left + el.clientLeft;
 				}
+
+				//calculate full y offset since we're breaking out of the loop
+				top += r.top + (docBody.scrollTop  || docEl.scrollTop  || 0);
 
 				break;
 			}
@@ -1597,6 +1600,7 @@ L.Map = L.Class.extend({
 
 		if (!bounds) {
 			this._boundsMinZoom = null;
+			this.off('moveend', this._panInsideMaxBounds, this);
 			return this;
 		}
 
@@ -1962,15 +1966,10 @@ L.Map = L.Class.extend({
 	_initLayout: function () {
 		var container = this._container;
 
-		L.DomUtil.addClass(container, 'leaflet-container');
-
-		if (L.Browser.touch) {
-			L.DomUtil.addClass(container, 'leaflet-touch');
-		}
-
-		if (this.options.fadeAnimation) {
-			L.DomUtil.addClass(container, 'leaflet-fade-anim');
-		}
+		L.DomUtil.addClass(container, 'leaflet-container' +
+			(L.Browser.touch ? ' leaflet-touch' : '') +
+			(L.Browser.retina ? ' leaflet-retina' : '') +
+			(this.options.fadeAnimation ? ' leaflet-fade-anim' : ''));
 
 		var position = L.DomUtil.getStyle(container, 'position');
 
@@ -2981,7 +2980,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		    url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
 
-		return url + L.Util.getParamString(this.wmsParams, url) + '&bbox=' + bbox;
+		return url + L.Util.getParamString(this.wmsParams, url, true) + '&BBOX=' + bbox;
 	},
 
 	setParams: function (params, noRedraw) {
@@ -3345,7 +3344,7 @@ L.Icon.Default = L.Icon.extend({
 
 L.Icon.Default.imagePath = (function () {
 	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+	    leafletRe = /[\/^]leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
 	var i, len, src, matches, path;
 
@@ -3842,7 +3841,7 @@ L.Popup = L.Class.extend({
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
 		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
-
+		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
 	},
