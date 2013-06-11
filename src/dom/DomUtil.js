@@ -53,12 +53,15 @@ L.DomUtil = {
 
 			if (pos === 'relative' && !el.offsetLeft) {
 				var width = L.DomUtil.getStyle(el, 'width'),
-				    maxWidth = L.DomUtil.getStyle(el, 'max-width');
+				    maxWidth = L.DomUtil.getStyle(el, 'max-width'),
+				    r = el.getBoundingClientRect();
 
 				if (width !== 'none' || maxWidth !== 'none') {
-					var r = el.getBoundingClientRect();
 					left += r.left + el.clientLeft;
 				}
+
+				//calculate full y offset since we're breaking out of the loop
+				top += r.top + (docBody.scrollTop  || docEl.scrollTop  || 0);
 
 				break;
 			}
