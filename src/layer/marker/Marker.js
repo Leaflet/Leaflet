@@ -109,11 +109,11 @@ L.Marker = L.Class.extend({
 			this._icon = options.icon.createIcon();
 		} else {
 			var newIcon = options.icon.createIcon(this._icon);
-			
+
 			//If the icon isn't being reused, remove the old one
 			if (newIcon !== this._icon) {
 				this._removeIcon();
-				
+
 				this._icon = newIcon;
 				reuseIcon = false;
 			}
