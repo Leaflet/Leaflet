@@ -108,7 +108,15 @@ L.Marker = L.Class.extend({
 		if (!reuseIcon) {
 			this._icon = options.icon.createIcon();
 		} else {
-			this._icon = this.options.icon.createIcon(this._icon);
+			var newIcon = options.icon.createIcon(this._icon);
+
+			//If the icon isn't being reused, remove the old one
+			if (newIcon !== this._icon) {
+				this._removeIcon();
+
+				this._icon = newIcon;
+				reuseIcon = false;
+			}
 		}
 
 		if (options.title) {
@@ -116,7 +124,7 @@ L.Marker = L.Class.extend({
 		}
 
 		this._initInteraction();
-		needOpacityUpdate = (this.options.opacity < 1);
+		needOpacityUpdate = (options.opacity < 1);
 
 		L.DomUtil.addClass(this._icon, classToAdd);
 
@@ -132,10 +140,10 @@ L.Marker = L.Class.extend({
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = (this.options.opacity < 1);
+				needOpacityUpdate = (options.opacity < 1);
 			}
 		} else {
-			this._shadow = this.options.icon.createShadow(this._shadow);
+			this._shadow = options.icon.createShadow(this._shadow);
 		}
 
 		if (needOpacityUpdate) {

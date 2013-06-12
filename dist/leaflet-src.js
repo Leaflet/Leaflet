@@ -903,12 +903,15 @@ L.DomUtil = {
 
 			if (pos === 'relative' && !el.offsetLeft) {
 				var width = L.DomUtil.getStyle(el, 'width'),
-				    maxWidth = L.DomUtil.getStyle(el, 'max-width');
+				    maxWidth = L.DomUtil.getStyle(el, 'max-width'),
+				    r = el.getBoundingClientRect();
 
 				if (width !== 'none' || maxWidth !== 'none') {
-					var r = el.getBoundingClientRect();
 					left += r.left + el.clientLeft;
 				}
+
+				//calculate full y offset since we're breaking out of the loop
+				top += r.top + (docBody.scrollTop  || docEl.scrollTop  || 0);
 
 				break;
 			}
@@ -3236,7 +3239,7 @@ L.Icon = L.Class.extend({
 		}
 
 		var img;
-		if (!oldIcon) {
+		if (!oldIcon || oldIcon.tagName !== 'IMG') {
 			img = this._createImg(src);
 		} else {
 			img = this._createImg(src, oldIcon);
@@ -3467,7 +3470,15 @@ L.Marker = L.Class.extend({
 		if (!reuseIcon) {
 			this._icon = options.icon.createIcon();
 		} else {
-			this._icon = this.options.icon.createIcon(this._icon);
+			var newIcon = options.icon.createIcon(this._icon);
+
+			//If the icon isn't being reused, remove the old one
+			if (newIcon !== this._icon) {
+				this._removeIcon();
+
+				this._icon = newIcon;
+				reuseIcon = false;
+			}
 		}
 
 		if (options.title) {
@@ -3475,7 +3486,7 @@ L.Marker = L.Class.extend({
 		}
 
 		this._initInteraction();
-		needOpacityUpdate = (this.options.opacity < 1);
+		needOpacityUpdate = (options.opacity < 1);
 
 		L.DomUtil.addClass(this._icon, classToAdd);
 
@@ -3491,10 +3502,10 @@ L.Marker = L.Class.extend({
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = (this.options.opacity < 1);
+				needOpacityUpdate = (options.opacity < 1);
 			}
 		} else {
-			this._shadow = this.options.icon.createShadow(this._shadow);
+			this._shadow = options.icon.createShadow(this._shadow);
 		}
 
 		if (needOpacityUpdate) {
@@ -3657,12 +3668,14 @@ L.DivIcon = L.Icon.extend({
 		html: false
 	},
 
-	createIcon: function () {
-		var div = document.createElement('div'),
+	createIcon: function (oldIcon) {
+		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
 		if (options.html !== false) {
 			div.innerHTML = options.html;
+		} else {
+			div.innerHTML = '';
 		}
 
 		if (options.bgPos) {
@@ -3701,7 +3714,7 @@ L.Popup = L.Class.extend({
 		maxHeight: null,
 		autoPan: true,
 		closeButton: true,
-		offset: [0, 6],
+		offset: [0, 7],
 		autoPanPadding: [5, 5],
 		keepInView: false,
 		className: '',
