@@ -8,7 +8,6 @@ describe("Marker", function () {
 	describe("#setIcon", function () {
 		it("changes the icon to another image", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.Icon({iconUrl: 'icon1.png' }) });
-			debugger;
 			map.addLayer(marker);
 			
 			var beforeIcon = marker._icon;
@@ -44,19 +43,29 @@ describe("Marker", function () {
 		it("changes a DivIcon to an image", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text' }) });
 			map.addLayer(marker);
+			var oldIcon = marker._icon;
 			
 			marker.setIcon(new L.Icon({iconUrl: 'icon1.png' }));
 			
+			expect(oldIcon).to.not.be(marker._icon);
+			expect(oldIcon.parentNode).to.be(null);
+			
 			expect(marker._icon.src).to.contain('icon1.png');
+			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
 
 		it("changes an image to a DivIcon", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.Icon({iconUrl: 'icon1.png' }) });
 			map.addLayer(marker);
-			
+			var oldIcon = marker._icon;
+
 			marker.setIcon(new L.DivIcon({html: 'Inner1Text' }));
 			
+			expect(oldIcon).to.not.be(marker._icon);
+			expect(oldIcon.parentNode).to.be(null);
+			
 			expect(marker._icon.innerHTML).to.contain('Inner1Text');
+			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
 
 	});
