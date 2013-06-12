@@ -108,18 +108,14 @@ L.Marker = L.Class.extend({
 		if (!reuseIcon) {
 			this._icon = options.icon.createIcon();
 		} else {
-			this._icon = options.icon.createIcon(this._icon);
+			var newIcon = options.icon.createIcon(this._icon);
 			
-			//If the icon isn't being reused
-			if (reuseIcon !== this._icon) {
-				//Temporarily reset this._icon to be the one we want to remove so _removeIcon will remove it
-				var newIcon = this._icon;
-				this._icon = reuseIcon;
-				
+			//If the icon isn't being reused, remove the old one
+			if (newIcon !== this._icon) {
 				this._removeIcon();
 				
-				reuseIcon = false;
 				this._icon = newIcon;
+				reuseIcon = false;
 			}
 		}
 
