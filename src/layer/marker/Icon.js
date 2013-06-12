@@ -41,7 +41,7 @@ L.Icon = L.Class.extend({
 		}
 
 		var img;
-		if (!oldIcon) {
+		if (!oldIcon || oldIcon.tagName != 'IMG') {
 			img = this._createImg(src);
 		} else {
 			img = this._createImg(src, oldIcon);

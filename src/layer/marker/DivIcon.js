@@ -17,7 +17,7 @@ L.DivIcon = L.Icon.extend({
 	},
 
 	createIcon: function (oldIcon) {
-		var div = oldIcon || document.createElement('div'),
+		var div = (oldIcon && oldIcon.tagName == 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
 		if (options.html !== false) {

@@ -47,7 +47,7 @@ describe("Marker", function () {
 			
 			marker.setIcon(new L.Icon({iconUrl: 'icon1.png' }));
 			
-			expect(marker._icon.afterIcon.src).to.contain('icon2.png');
+			expect(marker._icon.src).to.contain('icon1.png');
 		});
 
 		it("changes an image to a DivIcon", function () {
@@ -56,7 +56,7 @@ describe("Marker", function () {
 			
 			marker.setIcon(new L.DivIcon({html: 'Inner1Text' }));
 			
-			expect(marker._icon.afterIcon.innerHTML).to.contain('Inner1Text');
+			expect(marker._icon.innerHTML).to.contain('Inner1Text');
 		});
 
 	});
