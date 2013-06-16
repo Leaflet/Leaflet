@@ -27,6 +27,7 @@ L.Popup = L.Class.extend({
 
 		this._source = source;
 		this._animated = L.Browser.any3d && this.options.zoomAnimation;
+		this._isOpen = false;
 	},
 
 	onAdd: function (map) {
@@ -301,6 +302,7 @@ L.Map.include({
 			    .setLatLng(latlng)
 			    .setContent(content);
 		}
+		popup._isOpen = true;
 
 		this._popup = popup;
 		return this.addLayer(popup);
@@ -313,6 +315,7 @@ L.Map.include({
 		}
 		if (popup) {
 			this.removeLayer(popup);
+			popup._isOpen = false;
 		}
 		return this;
 	}
