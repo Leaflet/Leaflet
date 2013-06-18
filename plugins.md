@@ -581,7 +581,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/MrMufflon/Leaflet.Elevation">Leaflet.Elevation</a>
 		</td><td>
-			A Leaflet plugin to a interactive height profiles of GeoJSON lines using <a href="http://d3js.org/">d3</a>.
+			A Leaflet plugin to view interactive height profiles of GeoJSON lines using <a href="http://d3js.org/">d3</a>.
 		</td><td>
 			<a href="https://github.com/MrMufflon">Felix Bache</a>
 		</td>
