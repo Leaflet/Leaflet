@@ -19,6 +19,17 @@ L.Marker.include({
 		return this;
 	},
 
+	togglePopup: function () {
+		if (this._popup) {
+			if (this._popup._isOpen) {
+				this.closePopup();
+			} else {
+				this.openPopup();
+			}
+		}
+		return this;
+	},
+
 	bindPopup: function (content, options) {
 		var anchor = L.point(this.options.icon.options.popupAnchor || [0, 0]);
 
@@ -32,7 +43,7 @@ L.Marker.include({
 
 		if (!this._popup) {
 			this
-			    .on('click', this.openPopup, this)
+			    .on('click', this.togglePopup, this)
 			    .on('remove', this.closePopup, this)
 			    .on('move', this._movePopup, this);
 		}
@@ -59,7 +70,7 @@ L.Marker.include({
 		if (this._popup) {
 			this._popup = null;
 			this
-			    .off('click', this.openPopup)
+			    .off('click', this.togglePopup)
 			    .off('remove', this.closePopup)
 			    .off('move', this._movePopup);
 		}
