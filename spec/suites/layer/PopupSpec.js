@@ -46,6 +46,30 @@ describe('Popup', function() {
 		expect(map.hasLayer(popup)).to.be(true);
 	});
 
+	it("toggles its visibility when marker is clicked", function() {
+		var marker = new L.Marker(new L.LatLng(55.8, 37.6));
+		map.addLayer(marker);
+
+		marker.bindPopup('Popup1').openPopup();
+
+		map.options.closePopupOnClick = true;
+		happen.click(c);
+
+		// toggle open popup
+		sinon.spy(marker, "openPopup");
+		marker.fire('click');
+		expect(marker.openPopup.calledOnce).to.be(true);
+		expect(map.hasLayer(marker._popup)).to.be(true);
+		marker.openPopup.restore();
+
+		// toggle close popup
+		sinon.spy(marker, "closePopup");
+		marker.fire('click');
+		expect(marker.closePopup.calledOnce).to.be(true);
+		expect(map.hasLayer(marker._popup)).to.be(false);
+		marker.closePopup.restore();
+	});
+
 	it("should trigger popupopen on marker when popup opens", function() {
 		var marker1 = new L.Marker(new L.LatLng(55.8, 37.6));
 		var marker2 = new L.Marker(new L.LatLng(57.123076977278, 44.861962891635));
