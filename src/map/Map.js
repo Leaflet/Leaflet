@@ -237,7 +237,7 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	invalidateSize: function (animate) {
+	invalidateSize: function (animate, changeCenter) {
 		var oldSize = this.getSize();
 
 		this._sizeChanged = true;
@@ -252,12 +252,14 @@ L.Map = L.Class.extend({
 		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
 		if ((offset.x !== 0) || (offset.y !== 0)) {
-			if (animate === true) {
+			if (animate === true && !changeCenter) {
 				this.panBy(offset);
 			} else {
-				this._rawPanBy(offset);
+				if (!changeCenter) {
+					this._rawPanBy(offset);
 
 				this.fire('move');
+				}
 
 				clearTimeout(this._sizeTimer);
 				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
