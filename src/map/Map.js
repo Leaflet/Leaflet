@@ -257,13 +257,14 @@ L.Map = L.Class.extend({
 			} else {
 				if (!changeCenter) {
 					this._rawPanBy(offset);
+				}
 
 				this.fire('move');
-				}
 
 				clearTimeout(this._sizeTimer);
 				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 			}
+
 			this.fire('resize', {
 				oldSize: oldSize,
 				newSize: newSize
