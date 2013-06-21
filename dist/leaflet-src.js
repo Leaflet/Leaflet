@@ -1720,7 +1720,7 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	invalidateSize: function (animate) {
+	invalidateSize: function (animate, changeCenter) {
 		var oldSize = this.getSize();
 
 		this._sizeChanged = true;
@@ -1735,16 +1735,19 @@ L.Map = L.Class.extend({
 		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
 		if ((offset.x !== 0) || (offset.y !== 0)) {
-			if (animate === true) {
+			if (animate === true && !changeCenter) {
 				this.panBy(offset);
 			} else {
-				this._rawPanBy(offset);
+				if (!changeCenter) {
+					this._rawPanBy(offset);
+				}
 
 				this.fire('move');
 
 				clearTimeout(this._sizeTimer);
 				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 			}
+
 			this.fire('resize', {
 				oldSize: oldSize,
 				newSize: newSize
@@ -3726,6 +3729,7 @@ L.Popup = L.Class.extend({
 
 		this._source = source;
 		this._animated = L.Browser.any3d && this.options.zoomAnimation;
+		this._isOpen = false;
 	},
 
 	onAdd: function (map) {
@@ -4000,6 +4004,7 @@ L.Map.include({
 			    .setLatLng(latlng)
 			    .setContent(content);
 		}
+		popup._isOpen = true;
 
 		this._popup = popup;
 		return this.addLayer(popup);
@@ -4012,6 +4017,7 @@ L.Map.include({
 		}
 		if (popup) {
 			this.removeLayer(popup);
+			popup._isOpen = false;
 		}
 		return this;
 	}
@@ -4039,6 +4045,17 @@ L.Marker.include({
 		return this;
 	},
 
+	togglePopup: function () {
+		if (this._popup) {
+			if (this._popup._isOpen) {
+				this.closePopup();
+			} else {
+				this.openPopup();
+			}
+		}
+		return this;
+	},
+
 	bindPopup: function (content, options) {
 		var anchor = L.point(this.options.icon.options.popupAnchor || [0, 0]);
 
@@ -4052,7 +4069,7 @@ L.Marker.include({
 
 		if (!this._popup) {
 			this
-			    .on('click', this.openPopup, this)
+			    .on('click', this.togglePopup, this)
 			    .on('remove', this.closePopup, this)
 			    .on('move', this._movePopup, this);
 		}
@@ -4079,7 +4096,7 @@ L.Marker.include({
 		if (this._popup) {
 			this._popup = null;
 			this
-			    .off('click', this.openPopup)
+			    .off('click', this.togglePopup)
 			    .off('remove', this.closePopup)
 			    .off('move', this._movePopup);
 		}
@@ -5970,7 +5987,7 @@ L.extend(L.GeoJSON, {
 					geometry: geometry.geometries[i],
 					type: 'Feature',
 					properties: geojson.properties
-				}, pointToLayer);
+				}, pointToLayer, coordsToLatLng);
 
 				layers.push(layer);
 			}
@@ -7432,9 +7449,9 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 	removeHooks: function () {
 		this._draggable
-			.off('dragstart', this._onDragStart)
-			.off('drag', this._onDrag)
-			.off('dragend', this._onDragEnd);
+			.off('dragstart', this._onDragStart, this)
+			.off('drag', this._onDrag, this)
+			.off('dragend', this._onDragEnd, this);
 
 		this._draggable.disable();
 	},
