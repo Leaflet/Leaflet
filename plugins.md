@@ -595,6 +595,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/MrMufflon">Felix Bache</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/turban/Leaflet.Sync">Leaflet.Sync</a>
+		</td><td>
+			Synchronized view of two maps.
+		</td><td>
+			<a href="https://github.com/turban">Bjørn Sandvik</a>
+		</td>
+	</tr>		
 </table>
 
 
