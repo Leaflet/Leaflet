@@ -3211,7 +3211,7 @@ L.Icon = L.Class.extend({
 		iconSize: (Point) (can be set through CSS)
 		iconAnchor: (Point) (centered by default, can be set in CSS with negative margins)
 		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
-		shadowUrl: (Point) (no shadow by default)
+		shadowUrl: (String) (no shadow by default)
 		shadowRetinaUrl: (String) (optional, used for retina devices if detected)
 		shadowSize: (Point)
 		shadowAnchor: (Point)
@@ -3411,6 +3411,7 @@ L.Marker = L.Class.extend({
 		}
 
 		this._removeIcon();
+		this._removeShadow();
 
 		this.fire('remove');
 
@@ -3466,82 +3467,81 @@ L.Marker = L.Class.extend({
 		var options = this.options,
 		    map = this._map,
 		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
-		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide',
-		    needOpacityUpdate = false;
+		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
 
-		var reuseIcon = this._icon;
-		if (!reuseIcon) {
-			this._icon = options.icon.createIcon();
-		} else {
-			var newIcon = options.icon.createIcon(this._icon);
+		var icon = options.icon.createIcon(this._icon),
+			addIcon = false;
 
-			//If the icon isn't being reused, remove the old one
-			if (newIcon !== this._icon) {
+		// if we're not reusing the icon, remove the old one and init new one
+		if (icon !== this._icon) {
+			if (this._icon) {
 				this._removeIcon();
-
-				this._icon = newIcon;
-				reuseIcon = false;
 			}
+			addIcon = true;
+
+			if (options.title) {
+				icon.title = options.title;
+			}
+			L.DomUtil.addClass(icon, classToAdd);
 		}
 
-		if (options.title) {
-			this._icon.title = options.title;
-		}
+		this._icon = icon;
 
 		this._initInteraction();
-		needOpacityUpdate = (options.opacity < 1);
-
-		L.DomUtil.addClass(this._icon, classToAdd);
 
 		if (options.riseOnHover) {
 			L.DomEvent
-				.on(this._icon, 'mouseover', this._bringToFront, this)
-				.on(this._icon, 'mouseout', this._resetZIndex, this);
+				.on(icon, 'mouseover', this._bringToFront, this)
+				.on(icon, 'mouseout', this._resetZIndex, this);
 		}
 
-		var reuseShadow = this._shadow;
-		if (!reuseShadow) {
-			this._shadow = options.icon.createShadow();
+		var newShadow = options.icon.createShadow(this._shadow),
+			addShadow = false;
 
-			if (this._shadow) {
-				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = (options.opacity < 1);
+		if (newShadow !== this._shadow) {
+			this._removeShadow();
+			addShadow = true;
+
+			if (newShadow) {
+				L.DomUtil.addClass(newShadow, classToAdd);
 			}
-		} else {
-			this._shadow = options.icon.createShadow(this._shadow);
 		}
+		this._shadow = newShadow;
 
-		if (needOpacityUpdate) {
+
+		if (options.opacity < 1) {
 			this._updateOpacity();
 		}
 
+
 		var panes = this._map._panes;
 
-		if (!reuseIcon) {
+		if (addIcon) {
 			panes.markerPane.appendChild(this._icon);
 		}
 
-		if (this._shadow && !reuseShadow) {
+		if (newShadow && addShadow) {
 			panes.shadowPane.appendChild(this._shadow);
 		}
 	},
 
 	_removeIcon: function () {
-		var panes = this._map._panes;
-
 		if (this.options.riseOnHover) {
 			L.DomEvent
 			    .off(this._icon, 'mouseover', this._bringToFront)
 			    .off(this._icon, 'mouseout', this._resetZIndex);
 		}
 
-		panes.markerPane.removeChild(this._icon);
+		this._map._panes.markerPane.removeChild(this._icon);
 
+		this._icon = null;
+	},
+
+	_removeShadow: function () {
 		if (this._shadow) {
-			panes.shadowPane.removeChild(this._shadow);
+			this._map._panes.shadowPane.removeChild(this._shadow);
 		}
-
-		this._icon = this._shadow = null;
+		this._shadow = null;
 	},
 
 	_setPos: function (pos) {
