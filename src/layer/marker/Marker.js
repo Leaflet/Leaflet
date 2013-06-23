@@ -117,8 +117,9 @@ L.Marker = L.Class.extend({
 			if (options.title) {
 				icon.title = options.title;
 			}
-			L.DomUtil.addClass(icon, classToAdd);
 		}
+
+		L.DomUtil.addClass(icon, classToAdd);
 
 		this._icon = icon;
 
