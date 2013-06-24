@@ -2340,6 +2340,39 @@ map.fitBounds(polyline.getBounds());</code></pre>
 </table>
 
 
+<h3>Methods</h3>
+
+<p>MultiPolylines accept all <a href="#path-methods">Path methods</a> but
+have different behavior around their coordinate contents since they can contain
+multiple line features:</p>
+
+<table>
+	<tr>
+		<th class="width250">Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>setLatLngs</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Replace all lines and their paths with the given array of arrays of
+        geographical points.</td>
+    </tr>
+	<tr>
+		<td><code><b>getLatLngs</b>()</td>
+
+		<td><code><nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>
+		</code></td>
+		<td>Returns an array of arrays of geographical points in each line.</td>
+    </tr>
+</table>
+
+
+
+
 
 <h2 id="polygon">L.Polygon</h2>
 
@@ -2399,6 +2432,36 @@ map.fitBounds(polyline.getBounds());</code></pre>
 
 		<td>Instantiates a multi-polygon object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
 	</tr>
+</table>
+
+<h3>Methods</h3>
+
+<p>MultiPolygons accept all <a href="#path-methods">Path methods</a> but
+have different behavior around their coordinate contents since they can contain
+multiple polygon features:</p>
+
+<table>
+	<tr>
+		<th class="width250">Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>setLatLngs</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Replace all polygons and their paths with the given array of arrays of
+        geographical points.</td>
+    </tr>
+	<tr>
+		<td><code><b>getLatLngs</b>()</td>
+
+		<td><code><nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>
+		</code></td>
+		<td>Returns an array of arrays of geographical points in each polygon.</td>
+    </tr>
 </table>
 
 <h2 id="rectangle">L.Rectangle</h2>
