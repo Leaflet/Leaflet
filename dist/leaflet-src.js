@@ -1,6 +1,7 @@
 /*
  Leaflet, a JavaScript library for mobile-friendly interactive maps. http://leafletjs.com
- (c) 2010-2013, Vladimir Agafonkin, CloudMade
+ (c) 2010-2013, Vladimir Agafonkin
+ (c) 2010-2011, CloudMade
 */
 (function (window, document, undefined) {
 var oldL = window.L,
@@ -1720,9 +1721,13 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	invalidateSize: function (animate, changeCenter) {
-		var oldSize = this.getSize();
+	invalidateSize: function (options) {
+		options = L.extend({
+			animate: false,
+			pan: true
+		}, options === true ? {animate: true} : options);
 
+		var oldSize = this.getSize();
 		this._sizeChanged = true;
 
 		if (this.options.maxBounds) {
@@ -1734,26 +1739,27 @@ L.Map = L.Class.extend({
 		var newSize = this.getSize(),
 		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
-		if ((offset.x !== 0) || (offset.y !== 0)) {
-			if (animate === true && !changeCenter) {
-				this.panBy(offset);
-			} else {
-				if (!changeCenter) {
-					this._rawPanBy(offset);
-				}
+		if (!offset.x && !offset.y) { return this; }
 
-				this.fire('move');
+		if (options.animate && options.pan) {
+			this.panBy(offset);
 
-				clearTimeout(this._sizeTimer);
-				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+		} else {
+			if (options.pan) {
+				this._rawPanBy(offset);
 			}
 
-			this.fire('resize', {
-				oldSize: oldSize,
-				newSize: newSize
-			});
+			this.fire('move');
+
+			// make sure moveend is not fired too often on resize
+			clearTimeout(this._sizeTimer);
+			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 		}
-		return this;
+
+		return this.fire('resize', {
+			oldSize: oldSize,
+			newSize: newSize
+		});
 	},
 
 	// TODO handler.addTo
@@ -2268,7 +2274,7 @@ L.map = function (id, options) {
 L.Projection.Mercator = {
 	MAX_LATITUDE: 85.0840591556,
 
-	R_MINOR: 6356752.3142,
+	R_MINOR: 6356752.314245179,
 	R_MAJOR: 6378137,
 
 	project: function (latlng) { // (LatLng) -> Point
@@ -2286,7 +2292,7 @@ L.Projection.Mercator = {
 		con = Math.pow((1 - con) / (1 + con), eccent * 0.5);
 
 		var ts = Math.tan(0.5 * ((Math.PI * 0.5) - y)) / con;
-		y = -r2 * Math.log(ts);
+		y = -r * Math.log(ts);
 
 		return new L.Point(x, y);
 	},
@@ -2394,7 +2400,7 @@ L.TileLayer = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._animated = map.options.zoomAnimation && L.Browser.any3d;
+		this._animated = map._zoomAnimated;
 
 		// create a container div for tiles
 		this._initContainer();
@@ -8075,10 +8081,20 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_onLayerChange: function (e) {
-		var id = L.stamp(e.layer);
+		var obj = this._layers[L.stamp(e.layer)];
 
-		if (this._layers[id] && !this._handlingClick) {
+		if (!obj) { return; }
+
+		if (!this._handlingClick) {
 			this._update();
+		}
+
+		var type = obj.overlay ?
+			(e.type === 'layeradd' ? 'overlayadd' : 'overlayremove') :
+			(e.type === 'layeradd' ? 'baselayerchange' : null);
+
+		if (type) {
+			this._map.fire(type, obj);
 		}
 	},
 
@@ -8130,8 +8146,7 @@ L.Control.Layers = L.Control.extend({
 	_onInputClick: function () {
 		var i, input, obj,
 		    inputs = this._form.getElementsByTagName('input'),
-		    inputsLen = inputs.length,
-		    baseLayer;
+		    inputsLen = inputs.length;
 
 		this._handlingClick = true;
 
@@ -8141,20 +8156,10 @@ L.Control.Layers = L.Control.extend({
 
 			if (input.checked && !this._map.hasLayer(obj.layer)) {
 				this._map.addLayer(obj.layer);
-				if (!obj.overlay) {
-					baseLayer = obj.layer;
-				} else {
-					this._map.fire('overlayadd', {layer: obj});
-				}
+
 			} else if (!input.checked && this._map.hasLayer(obj.layer)) {
 				this._map.removeLayer(obj.layer);
-				this._map.fire('overlayremove', {layer: obj});
 			}
-		}
-
-		if (baseLayer) {
-			this._map.setZoom(this._map.getZoom());
-			this._map.fire('baselayerchange', {layer: baseLayer});
 		}
 
 		this._handlingClick = false;
@@ -8445,10 +8450,15 @@ L.Map.mergeOptions({
 if (L.DomUtil.TRANSITION) {
 
 	L.Map.addInitHook(function () {
+		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
+		this._zoomAnimated = this.options.zoomAnimation && L.DomUtil.TRANSITION &&
+				L.Browser.any3d && !L.Browser.android23 && !L.Browser.mobileOpera;
+
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
-
-		L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+		if (this._zoomAnimated) {
+			L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+		}
 	});
 }
 
@@ -8467,8 +8477,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		options = options || {};
 
 		// don't animate if disabled, not supported or zoom difference is too large
-		if (!this.options.zoomAnimation || options.animate === false ||
-		        !L.DomUtil.TRANSITION || L.Browser.android23 || L.Browser.mobileOpera ||
+		if (!this._zoomAnimated || options.animate === false ||
 		        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
 
 		// offset is the pixel coords of the zoom origin relative to the current center
@@ -8483,12 +8492,12 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		    .fire('movestart')
 		    .fire('zoomstart');
 
-		this._animateZoom(center, zoom, origin, scale);
+		this._animateZoom(center, zoom, origin, scale, null, true);
 
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, origin, scale, delta) {
+	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
 
 		this._animatingZoom = true;
 
@@ -8509,7 +8518,8 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 			zoom: zoom,
 			origin: origin,
 			scale: scale,
-			delta: delta
+			delta: delta,
+			backwards: backwards
 		});
 	},
 
@@ -8556,9 +8566,12 @@ L.TileLayer.include({
 		}
 
 		var transform = L.DomUtil.TRANSFORM,
-		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform];
+		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform],
+		    scaleStr = L.DomUtil.getScaleString(e.scale, e.origin);
 
-		bg.style[transform] = initialTransform + ' ' + L.DomUtil.getScaleString(e.scale, e.origin);
+		bg.style[transform] = e.backwards ?
+				scaleStr + ' ' + initialTransform :
+				initialTransform + ' ' + scaleStr;
 	},
 
 	_endZoomAnim: function () {
@@ -8729,12 +8742,18 @@ L.Map.include({
 			this.setView(latlng, zoom);
 		}
 
-		var event = L.extend({
+		var data = {
 			latlng: latlng,
-			bounds: bounds
-		}, pos.coords);
+			bounds: bounds,
+		};
 
-		this.fire('locationfound', event);
+		for (var i in pos.coords) {
+			if (typeof pos.coords[i] === 'number') {
+				data[i] = pos.coords[i];
+			}
+		}
+
+		this.fire('locationfound', data);
 	}
 });
 
