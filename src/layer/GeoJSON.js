@@ -161,7 +161,7 @@ L.extend(L.GeoJSON, {
 	},
 
 	getFeature: function (layer, newGeometry) {
-		return layer.feature ? L.extend(layer.feature, {geometry: newGeometry}) : newGeometry;
+		return layer.feature ? L.extend({}, layer.feature, {geometry: newGeometry}) : newGeometry;
 	}
 });
 
