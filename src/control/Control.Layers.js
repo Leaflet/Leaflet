@@ -147,18 +147,20 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_onLayerChange: function (e) {
-		var id = L.stamp(e.layer);
-		if (this._layers[id] && !this._handlingClick) {
+		var obj = this._layers[L.stamp(e.layer)];
+
+		if (!obj) { return; }
+
+		if (!this._handlingClick) {
 			this._update();
-			var overlayEvent;
-			if (this._layers[id].overlay) {
-				overlayEvent = (e.type === 'layeradd' ? 'overlayadd' : 'overlayremove');
-			} else {
-				overlayEvent = (e.type === 'layeradd' ? 'baselayerchange' : null);
-			}
-			if (overlayEvent) {
-				this._map.fire(overlayEvent, {layer: this._layers[id]});
-			}
+		}
+
+		var type = obj.overlay ?
+			(e.type === 'layeradd' ? 'overlayadd' : 'overlayremove') :
+			(e.type === 'layeradd' ? 'baselayerchange' : null);
+
+		if (type) {
+			this._map.fire(type, obj);
 		}
 	},
 
@@ -210,8 +212,7 @@ L.Control.Layers = L.Control.extend({
 	_onInputClick: function () {
 		var i, input, obj,
 		    inputs = this._form.getElementsByTagName('input'),
-		    inputsLen = inputs.length,
-		    baseLayer;
+		    inputsLen = inputs.length;
 
 		this._handlingClick = true;
 
@@ -221,22 +222,10 @@ L.Control.Layers = L.Control.extend({
 
 			if (input.checked && !this._map.hasLayer(obj.layer)) {
 				this._map.addLayer(obj.layer);
-				if (!obj.overlay) {
-					baseLayer = obj;
-				} else {
-					this._map.fire('overlayadd', {layer: obj});
-				}
+
 			} else if (!input.checked && this._map.hasLayer(obj.layer)) {
 				this._map.removeLayer(obj.layer);
-				if (obj.overlay) {
-					this._map.fire('overlayremove', {layer: obj});
-				}
 			}
-		}
-
-		if (baseLayer) {
-			this._map.setZoom(this._map.getZoom());
-			this._map.fire('baselayerchange', {layer: baseLayer});
 		}
 
 		this._handlingClick = false;
