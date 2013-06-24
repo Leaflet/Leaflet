@@ -53,6 +53,10 @@ L.Draggable = L.Class.extend({
 		L.DomEvent
 		    .stopPropagation(e);
 
+		if (e.type === 'touchstart') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		if (L.Draggable._disabled) { return; }
 
 		this._simulateClick = true;
