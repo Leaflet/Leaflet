@@ -2,6 +2,7 @@ describe("L.GeoJSON", function () {
 	describe("addData", function () {
 		var geoJSON = {
 			type: 'Feature',
+			properties: {},
 			geometry: {
 				type: 'Point',
 				coordinates: [20, 10]
