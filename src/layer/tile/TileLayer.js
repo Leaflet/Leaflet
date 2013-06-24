@@ -58,7 +58,7 @@ L.TileLayer = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._animated = map.options.zoomAnimation && L.Browser.any3d;
+		this._animated = map._zoomAnimated;
 
 		// create a container div for tiles
 		this._initContainer();
