@@ -209,28 +209,6 @@ L.DomEvent = {
 		L.DomEvent._lastClick = timeStamp;
 
 		return handler(e);
-	},
-
-	_userSelectProperty: L.DomUtil.testProp(
-		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']),
-
-	_suppressUserSelect: function() {
-		if (L.DomEvent._userSelectProperty) {
-			var style = document.documentElement.style,
-			    select = style[L.DomEvent._userSelectProperty];
-			style[L.DomEvent._userSelectProperty] = "none";
-			return select;
-		} else {
-			L.DomEvent.on(window, "selectstart", L.DomEvent.stop);
-		}
-	},
-
-	_unsuppressUserSelect: function(old) {
-		if (L.DomEvent._userSelectProperty) {
-			document.documentElement.style[L.DomEvent._userSelectProperty] = old;
-		} else {
-			L.DomEvent.off(window, "selectstart", L.DomEvent.stop);
-		}
 	}
 };
 
