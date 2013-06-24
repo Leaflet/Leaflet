@@ -7,7 +7,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	statics: {
-		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu'
+		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu popupclose'
 	},
 
 	addLayer: function (layer) {

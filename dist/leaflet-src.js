@@ -2561,13 +2561,6 @@ L.TileLayer = L.Class.extend({
 		} else {
 			L.DomUtil.setOpacity(this._container, this.options.opacity);
 		}
-
-		// stupid webkit hack to force redrawing of tiles
-		if (L.Browser.webkit) {
-			for (i in tiles) {
-				tiles[i].style.webkitTransform += ' translate(0,0)';
-			}
-		}
 	},
 
 	_initContainer: function () {
@@ -4242,7 +4235,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
 	statics: {
-		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu'
+		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu popupclose'
 	},
 
 	addLayer: function (layer) {
