@@ -148,9 +148,17 @@ L.Control.Layers = L.Control.extend({
 
 	_onLayerChange: function (e) {
 		var id = L.stamp(e.layer);
-
 		if (this._layers[id] && !this._handlingClick) {
 			this._update();
+			var overlayEvent;
+			if (this._layers[id].overlay) {
+				overlayEvent = (e.type === 'layeradd' ? 'overlayadd' : 'overlayremove');
+			} else {
+				overlayEvent = (e.type === 'layeradd' ? 'baselayerchange' : null);
+			}
+			if (overlayEvent) {
+				this._map.fire(overlayEvent, {layer: this._layers[id]});
+			}
 		}
 	},
 
@@ -214,13 +222,15 @@ L.Control.Layers = L.Control.extend({
 			if (input.checked && !this._map.hasLayer(obj.layer)) {
 				this._map.addLayer(obj.layer);
 				if (!obj.overlay) {
-					baseLayer = obj.layer;
+					baseLayer = obj;
 				} else {
 					this._map.fire('overlayadd', {layer: obj});
 				}
 			} else if (!input.checked && this._map.hasLayer(obj.layer)) {
 				this._map.removeLayer(obj.layer);
-				this._map.fire('overlayremove', {layer: obj});
+				if (obj.overlay) {
+					this._map.fire('overlayremove', {layer: obj});
+				}
 			}
 		}
 
