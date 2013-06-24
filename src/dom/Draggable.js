@@ -102,6 +102,8 @@ L.Draggable = L.Class.extend({
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
+
+		this._userSelect = L.DomEvent._suppressUserSelect();
 	},
 
 	_onMove: function (e) {
@@ -165,6 +167,8 @@ L.Draggable = L.Class.extend({
 			L.DomUtil.enableTextSelection();
 			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
+
+		L.DomEvent._unsuppressUserSelect(this._userSelect);
 
 		for (i in L.Draggable.MOVE) {
 			L.DomEvent
