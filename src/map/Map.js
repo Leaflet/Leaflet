@@ -35,11 +35,10 @@ L.Map = L.Class.extend({
 			this.setView(L.latLng(options.center), options.zoom, {reset: true});
 		}
 
-		this._initLayers(options.layers);
-
 		this._handlers = [];
-
 		this.callInitHooks();
+
+		this._initLayers(options.layers);
 	},
 
 
