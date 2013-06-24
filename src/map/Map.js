@@ -237,9 +237,13 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	invalidateSize: function (animate, changeCenter) {
-		var oldSize = this.getSize();
+	invalidateSize: function (options) {
+		options = L.extend({
+			animate: false,
+			pan: true
+		}, options === true ? {animate: true} : options);
 
+		var oldSize = this.getSize();
 		this._sizeChanged = true;
 
 		if (this.options.maxBounds) {
@@ -251,26 +255,27 @@ L.Map = L.Class.extend({
 		var newSize = this.getSize(),
 		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
-		if ((offset.x !== 0) || (offset.y !== 0)) {
-			if (animate === true && !changeCenter) {
-				this.panBy(offset);
-			} else {
-				if (!changeCenter) {
-					this._rawPanBy(offset);
-				}
+		if (!offset.x && !offset.y) { return this; }
 
-				this.fire('move');
+		if (options.animate && options.pan) {
+			this.panBy(offset);
 
-				clearTimeout(this._sizeTimer);
-				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+		} else {
+			if (options.pan) {
+				this._rawPanBy(offset);
 			}
 
-			this.fire('resize', {
-				oldSize: oldSize,
-				newSize: newSize
-			});
+			this.fire('move');
+
+			// make sure moveend is not fired too often on resize
+			clearTimeout(this._sizeTimer);
+			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 		}
-		return this;
+
+		return this.fire('resize', {
+			oldSize: oldSize,
+			newSize: newSize
+		});
 	},
 
 	// TODO handler.addTo
