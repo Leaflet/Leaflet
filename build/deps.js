@@ -178,9 +178,10 @@ var deps = {
 		      'dom/DomEvent.DoubleTap.js',
 		      'dom/DomEvent.MsTouch.js',
 		      'core/Handler.js',
-		      'map/handler/Map.TouchZoom.js'],
+		      'map/handler/Map.TouchZoom.js',
+		      'map/handler/Map.Tap.js'],
 		deps: ['AnimationZoom'],
-		desc: 'Enables smooth touch zooming on iOS and IE10 and double tap on iOS/IE10/Android.'
+		desc: 'Enables smooth touch zoom / tap / longhold / doubletap on iOS, IE10, Android.'
 	},
 
 	BoxZoom: {
