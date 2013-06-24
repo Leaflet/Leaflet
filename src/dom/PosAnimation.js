@@ -58,8 +58,8 @@ L.PosAnimation = L.Class.extend({
 
 		if (L.Browser.any3d) {
 			matches = style[L.DomUtil.TRANSFORM].match(this._transformRe);
-			left = parseFloat(matches[1]);
-			top  = parseFloat(matches[2]);
+			left = matches ? parseFloat(matches[1]) : 0;
+			top  = matches ? parseFloat(matches[2]) : 0;
 		} else {
 			left = parseFloat(style.left);
 			top  = parseFloat(style.top);
