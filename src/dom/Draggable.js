@@ -173,6 +173,8 @@ L.Draggable = L.Class.extend({
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
 
+		L.DomEvent.off(document, 'mouseout', this._onUp);
+
 		if (this._moved) {
 			// ensure drag is not fired after dragend
 			L.Util.cancelAnimFrame(this._animRequest);
