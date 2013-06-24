@@ -219,13 +219,6 @@ L.TileLayer = L.Class.extend({
 		} else {
 			L.DomUtil.setOpacity(this._container, this.options.opacity);
 		}
-
-		// stupid webkit hack to force redrawing of tiles
-		if (L.Browser.webkit) {
-			for (i in tiles) {
-				tiles[i].style.webkitTransform += ' translate(0,0)';
-			}
-		}
 	},
 
 	_initContainer: function () {
