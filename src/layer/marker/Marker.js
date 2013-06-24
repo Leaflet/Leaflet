@@ -11,6 +11,7 @@ L.Marker = L.Class.extend({
 		title: '',
 		clickable: true,
 		draggable: false,
+		keyboard: true,
 		zIndexOffset: 0,
 		opacity: 1,
 		riseOnHover: false,
@@ -121,6 +122,10 @@ L.Marker = L.Class.extend({
 
 		L.DomUtil.addClass(icon, classToAdd);
 
+		if (options.keyboard) {
+			icon.tabIndex = '0';
+		}
+
 		this._icon = icon;
 
 		this._initInteraction();
@@ -213,6 +218,7 @@ L.Marker = L.Class.extend({
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
+		L.DomEvent.on(icon, 'keypress', this._onKeyPress, this);
 
 		for (var i = 0; i < events.length; i++) {
 			L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
@@ -242,6 +248,15 @@ L.Marker = L.Class.extend({
 			originalEvent: e,
 			latlng: this._latlng
 		});
+	},
+
+	_onKeyPress: function (e) {
+		if (e.keyCode === 13) {
+			this.fire('click', {
+				originalEvent: e,
+				latlng: this._latlng
+			});
+		}
 	},
 
 	_fireMouseEvent: function (e) {
