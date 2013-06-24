@@ -142,7 +142,6 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
-		console.log('here');
 		var first, el, dist, simulateClickTouch, i;
 
 		clearTimeout(this._longPressTimeout);
