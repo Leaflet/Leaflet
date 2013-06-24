@@ -1,0 +1,22 @@
+{
+	"name": "Leaflet",
+	"version": "0.6.0",
+	"description": "JavaScript library for mobile-friendly interactive maps",
+	"devDependencies": {
+		"jshint": "~2.1.3",
+		"mocha": "~1.10.0",
+		"karma": "~0.8.5",
+		"uglify-js": "~2.3.6",
+		"jake": "~0.5.16"
+	},
+	"main": "dist/leaflet.js",
+	"scripts": {
+		"test": "jake test",
+		"prepublish": "jake"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/Leaflet/Leaflet.git"
+	},
+	"keywords": ["gis", "map"]
+}

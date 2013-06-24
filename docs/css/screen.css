@@ -76,7 +76,28 @@ h2 {
 	-webkit-border-radius: 5px;
 
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+
+	cursor: pointer;
 	}
+
+.api-page h2[id]:before {
+	content:'Permalink';
+	display:inline-block;
+	margin:0px 5px 0px -35px;
+	width:30px;
+	height:20px;
+	line-height:20px;
+	vertical-align:baseline;
+	background:url(../images/sprite.png) -0px -0px no-repeat;
+	opacity:0.2;
+	border-radius:50%;
+	text-indent:-9999px;
+	border-radius:50%;
+	overflow:hidden;
+	}
+
+.api-page h2[id]:hover:before { opacity:1; }
+
 .api-page h2 {
 	margin-top: 2.5em;
 	}

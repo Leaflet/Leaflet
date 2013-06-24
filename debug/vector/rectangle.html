@@ -7,7 +7,8 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -17,10 +18,10 @@
 
 	<script type="text/javascript">
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution});;
-		
+
 		var bounds = new L.LatLngBounds(new L.LatLng(54.559322, -5.767822), new L.LatLng(56.1210604, -3.021240));
 		var bounds2 = new L.LatLngBounds(new L.LatLng(56.2124322195806, -3.427734375), new L.LatLng(56.307776937156945, -3.2560729980468746));
 
@@ -35,7 +36,7 @@
 		rectangle.on("click", function () {
 			alert("you clicked a rectangle.")
 		});
-	
+
 		var map = new L.Map('map', {
 			center: bounds.getCenter(),
 			zoom: 7,

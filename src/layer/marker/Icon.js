@@ -22,25 +22,30 @@ L.Icon = L.Class.extend({
 		L.setOptions(this, options);
 	},
 
-	createIcon: function () {
-		return this._createIcon('icon');
+	createIcon: function (oldIcon) {
+		return this._createIcon('icon', oldIcon);
 	},
 
-	createShadow: function () {
-		return this._createIcon('shadow');
+	createShadow: function (oldIcon) {
+		return this._createIcon('shadow', oldIcon);
 	},
 
-	_createIcon: function (name) {
+	_createIcon: function (name, oldIcon) {
 		var src = this._getIconUrl(name);
 
 		if (!src) {
 			if (name === 'icon') {
-				throw new Error("iconUrl not set in Icon options (see the docs).");
+				throw new Error('iconUrl not set in Icon options (see the docs).');
 			}
 			return null;
 		}
 
-		var img = this._createImg(src);
+		var img;
+		if (!oldIcon || oldIcon.tagName !== 'IMG') {
+			img = this._createImg(src);
+		} else {
+			img = this._createImg(src, oldIcon);
+		}
 		this._setIconStyles(img, name);
 
 		return img;
@@ -74,14 +79,17 @@ L.Icon = L.Class.extend({
 		}
 	},
 
-	_createImg: function (src) {
-		var el;
+	_createImg: function (src, el) {
 
 		if (!L.Browser.ie6) {
-			el = document.createElement('img');
+			if (!el) {
+				el = document.createElement('img');
+			}
 			el.src = src;
 		} else {
-			el = document.createElement('div');
+			if (!el) {
+				el = document.createElement('div');
+			}
 			el.style.filter =
 			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
 		}

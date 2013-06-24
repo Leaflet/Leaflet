@@ -38,6 +38,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 		if (this.options.clickable) {
 			this._map.off('click', this._onClick, this);
+			this._map.off('mousemove', this._onMouseMove, this);
 		}
 
 		this._requestUpdate();
@@ -123,20 +124,31 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 	_initEvents: function () {
 		if (this.options.clickable) {
-			// TODO hand cursor
-			// TODO mouseover, mouseout, dblclick
+			// TODO dblclick
+			this._map.on('mousemove', this._onMouseMove, this);
 			this._map.on('click', this._onClick, this);
 		}
 	},
 
 	_onClick: function (e) {
 		if (this._containsPoint(e.layerPoint)) {
-			this.fire('click', {
-				latlng: e.latlng,
-				layerPoint: e.layerPoint,
-				containerPoint: e.containerPoint,
-				originalEvent: e
-			});
+			this.fire('click', e);
+		}
+	},
+
+	_onMouseMove: function (e) {
+		if (!this._map || this._map._animatingZoom) { return; }
+
+		// TODO don't do on each move
+		if (this._containsPoint(e.layerPoint)) {
+			this._ctx.canvas.style.cursor = 'pointer';
+			this._mouseInside = true;
+			this.fire('mouseover', e);
+
+		} else if (this._mouseInside) {
+			this._ctx.canvas.style.cursor = '';
+			this._mouseInside = false;
+			this.fire('mouseout', e);
 		}
 	}
 });
@@ -147,12 +159,12 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 		    ctx;
 
 		if (!root) {
-			root = this._pathRoot = document.createElement("canvas");
+			root = this._pathRoot = document.createElement('canvas');
 			root.style.position = 'absolute';
 			ctx = this._canvasCtx = root.getContext('2d');
 
-			ctx.lineCap = "round";
-			ctx.lineJoin = "round";
+			ctx.lineCap = 'round';
+			ctx.lineJoin = 'round';
 
 			this._panes.overlayPane.appendChild(root);
 

@@ -41,6 +41,10 @@ L.Marker = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		if (this.dragging) {
+			this.dragging.disable();
+		}
+
 		this._removeIcon();
 
 		this.fire('remove');
@@ -73,9 +77,6 @@ L.Marker = L.Class.extend({
 	},
 
 	setIcon: function (icon) {
-		if (this._map) {
-			this._removeIcon();
-		}
 
 		this.options.icon = icon;
 
@@ -103,32 +104,46 @@ L.Marker = L.Class.extend({
 		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide',
 		    needOpacityUpdate = false;
 
-		if (!this._icon) {
+		var reuseIcon = this._icon;
+		if (!reuseIcon) {
 			this._icon = options.icon.createIcon();
+		} else {
+			var newIcon = options.icon.createIcon(this._icon);
 
-			if (options.title) {
-				this._icon.title = options.title;
-			}
+			//If the icon isn't being reused, remove the old one
+			if (newIcon !== this._icon) {
+				this._removeIcon();
 
-			this._initInteraction();
-			needOpacityUpdate = (this.options.opacity < 1);
-
-			L.DomUtil.addClass(this._icon, classToAdd);
-
-			if (options.riseOnHover) {
-				L.DomEvent
-					.on(this._icon, 'mouseover', this._bringToFront, this)
-					.on(this._icon, 'mouseout', this._resetZIndex, this);
+				this._icon = newIcon;
+				reuseIcon = false;
 			}
 		}
 
-		if (!this._shadow) {
+		if (options.title) {
+			this._icon.title = options.title;
+		}
+
+		this._initInteraction();
+		needOpacityUpdate = (options.opacity < 1);
+
+		L.DomUtil.addClass(this._icon, classToAdd);
+
+		if (options.riseOnHover) {
+			L.DomEvent
+				.on(this._icon, 'mouseover', this._bringToFront, this)
+				.on(this._icon, 'mouseout', this._resetZIndex, this);
+		}
+
+		var reuseShadow = this._shadow;
+		if (!reuseShadow) {
 			this._shadow = options.icon.createShadow();
 
 			if (this._shadow) {
 				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = (this.options.opacity < 1);
+				needOpacityUpdate = (options.opacity < 1);
 			}
+		} else {
+			this._shadow = options.icon.createShadow(this._shadow);
 		}
 
 		if (needOpacityUpdate) {
@@ -137,9 +152,11 @@ L.Marker = L.Class.extend({
 
 		var panes = this._map._panes;
 
-		panes.markerPane.appendChild(this._icon);
+		if (!reuseIcon) {
+			panes.markerPane.appendChild(this._icon);
+		}
 
-		if (this._shadow) {
+		if (this._shadow && !reuseShadow) {
 			panes.shadowPane.appendChild(this._shadow);
 		}
 	},
@@ -221,14 +238,16 @@ L.Marker = L.Class.extend({
 		if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this.fire(e.type, {
-			originalEvent: e
+			originalEvent: e,
+			latlng: this._latlng
 		});
 	},
 
 	_fireMouseEvent: function (e) {
 
 		this.fire(e.type, {
-			originalEvent: e
+			originalEvent: e,
+			latlng: this._latlng
 		});
 
 		// TODO proper custom event propagation
