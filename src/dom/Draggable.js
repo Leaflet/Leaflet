@@ -99,6 +99,10 @@ L.Draggable = L.Class.extend({
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
+
+		if (e.type === 'mousedown') {
+			L.DomEvent.on(document, 'mouseout', this._onUp, this);
+		}
 	},
 
 	_onMove: function (e) {
@@ -138,6 +142,7 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onUp: function (e) {
+		console.log('here');
 		var first, el, dist, simulateClickTouch, i;
 
 		clearTimeout(this._longPressTimeout);
