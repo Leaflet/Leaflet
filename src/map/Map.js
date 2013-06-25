@@ -27,10 +27,6 @@ L.Map = L.Class.extend({
 		this._initLayout();
 		this._initEvents();
 
-		if (L.DomEvent.enableTapHacks) {
-			L.DomEvent.enableTapHacks(this._container);
-		}
-
 		if (options.maxBounds) {
 			this.setMaxBounds(options.maxBounds);
 		}
