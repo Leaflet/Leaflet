@@ -51,6 +51,10 @@ L.Draggable = L.Class.extend({
 		L.DomEvent
 		    .stopPropagation(e);
 
+		if (e.type === 'touchstart') {
+			L.DomEvent.preventDefault(e);
+		}
+
 		if (L.Draggable._disabled) { return; }
 
 		var first = e.touches ? e.touches[0] : e,
@@ -71,10 +75,6 @@ L.Draggable = L.Class.extend({
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
-
-		if (e.type === 'mousedown') {
-			L.DomEvent.on(document, 'mouseout', this._onUp, this);
-		}
 	},
 
 	_onMove: function (e) {
@@ -124,8 +124,6 @@ L.Draggable = L.Class.extend({
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
-
-		L.DomEvent.off(document, 'mouseout', this._onUp);
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
