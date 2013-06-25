@@ -1092,24 +1092,48 @@ L.DomUtil.TRANSITION_END =
 	var userSelectProperty = L.DomUtil.testProp(
 		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
-	L.DomUtil.disableTextSelection = function () {
-		if (userSelectProperty) {
-			var style = document.documentElement.style;
-			this._userSelect = style[userSelectProperty];
-			style[userSelectProperty] = 'none';
-		} else {
-			L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
-		}
-	};
+	var userDragProperty = L.DomUtil.testProp(
+		['userDrag', 'WebkitUserDrag', 'OUserDrag', 'MozUserDrag', 'msUserDrag']);
 
-	L.DomUtil.enableTextSelection = function () {
-		if (userSelectProperty) {
-			document.documentElement.style[userSelectProperty] = this._userSelect;
-			delete this._userSelect;
-		} else {
-			L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
+	L.extend(L.DomUtil, {
+		disableTextSelection: function () {
+			if (userSelectProperty) {
+				var style = document.documentElement.style;
+				this._userSelect = style[userSelectProperty];
+				style[userSelectProperty] = 'none';
+			} else {
+				L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
+			}
+		},
+
+		enableTextSelection: function () {
+			if (userSelectProperty) {
+				document.documentElement.style[userSelectProperty] = this._userSelect;
+				delete this._userSelect;
+			} else {
+				L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
+			}
+		},
+
+		disableImageDrag: function () {
+			if (userDragProperty) {
+				var style = document.documentElement.style;
+				this._userDrag = style[userDragProperty];
+				style[userDragProperty] = 'none';
+			} else {
+				L.DomEvent.on(window, 'dragstart', L.DomEvent.stop);
+			}
+		},
+
+		enableImageDrag: function () {
+			if (userDragProperty) {
+				document.documentElement.style[userDragProperty] = this._userDrag;
+				delete this._userDrag;
+			} else {
+				L.DomEvent.off(window, 'dragstart', L.DomEvent.stop);
+			}
 		}
-	};
+	});
 })();
 
 
@@ -6416,10 +6440,11 @@ L.Draggable = L.Class.extend({
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent
-			.preventDefault(e)
 			.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
+
+		L.DomUtil.disableImageDrag();
 
 		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
@@ -6488,6 +6513,8 @@ L.Draggable = L.Class.extend({
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
+
+		L.DomUtil.enableImageDrag();
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -7277,6 +7304,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		L.DomUtil.disableTextSelection();
+		L.DomUtil.disableImageDrag();
 
 		this._startLayerPoint = this._map.mouseEventToLayerPoint(e);
 
@@ -7289,8 +7317,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomEvent
 		    .on(document, 'mousemove', this._onMouseMove, this)
 		    .on(document, 'mouseup', this._onMouseUp, this)
-		    .on(document, 'keydown', this._onKeyDown, this)
-		    .preventDefault(e);
+		    .on(document, 'keydown', this._onKeyDown, this);
 
 		this._map.fire('boxzoomstart');
 	},
@@ -7318,6 +7345,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._container.style.cursor = '';
 
 		L.DomUtil.enableTextSelection();
+		L.DomUtil.enableImageDrag();
 
 		L.DomEvent
 		    .off(document, 'mousemove', this._onMouseMove)
