@@ -88,7 +88,7 @@ No changes since the latest stable yet.
 ##### Controls API improvements
 
  * Added **generic toolbar classes** for reuse by plugin developers (used by zoom control).
- * Added `Control.Layers` `baselayerchange`, `overlayadd` and `overlayremove` events (by [@calvinmetcalf](https://github.com/calvinmetcalf) and [@Xelio](https://github.com/Xelio)). [#1286](https://github.com/Leaflet/Leaflet/issues/1286) [#1634](https://github.com/Leaflet/Leaflet/issues/1634)
+ * Added `Map` `baselayerchange`, `overlayadd` and `overlayremove` events fired by `Control.Layers` (by [@calvinmetcalf](https://github.com/calvinmetcalf) and [@Xelio](https://github.com/Xelio)). [#1286](https://github.com/Leaflet/Leaflet/issues/1286) [#1634](https://github.com/Leaflet/Leaflet/issues/1634)
  * Added `Control` `getContainer` method. [#1409](https://github.com/Leaflet/Leaflet/issues/1409)
 
 #### Development workflow improvements
