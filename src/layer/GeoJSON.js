@@ -177,14 +177,18 @@ L.extend(L.GeoJSON, {
 	}
 });
 
-L.Marker.include({
+var PointToGeoJSON = {
 	toGeoJSON: function () {
 		return L.GeoJSON.getFeature(this, {
 			type: 'Point',
 			coordinates: L.GeoJSON.latLngToCoords(this.getLatLng())
 		});
 	}
-});
+};
+
+L.Marker.include(PointToGeoJSON);
+L.Circle.include(PointToGeoJSON);
+L.CircleMarker.include(PointToGeoJSON);
 
 L.Polyline.include({
 	toGeoJSON: function () {
