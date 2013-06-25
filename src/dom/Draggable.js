@@ -16,14 +16,12 @@ L.Draggable = L.Class.extend({
 			mousedown: 'mousemove',
 			touchstart: 'touchmove',
 			MSPointerDown: 'touchmove'
-		},
-		TAP_TOLERANCE: 15
+		}
 	},
 
-	initialize: function (element, dragStartTarget, longPress) {
+	initialize: function (element, dragStartTarget) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
-		this._longPress = longPress && !L.Browser.msTouch;
 	},
 
 	enable: function () {
@@ -51,23 +49,11 @@ L.Draggable = L.Class.extend({
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent
-		    .preventDefault(e)
 		    .stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
 
-		this._simulateClick = true;
-
-		var touchesNum = (e.touches && e.touches.length) || 0;
-
-		// don't simulate click or track longpress if more than 1 touch
-		if (touchesNum > 1) {
-			this._simulateClick = false;
-			clearTimeout(this._longPressTimeout);
-			return;
-		}
-
-		var first = touchesNum === 1 ? e.touches[0] : e,
+		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
 
 		// if touching a link, highlight it
@@ -81,20 +67,6 @@ L.Draggable = L.Class.extend({
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
-
-		// touch contextmenu event emulation
-		if (touchesNum === 1 && L.Browser.touch && this._longPress) {
-
-			this._longPressTimeout = setTimeout(L.bind(function () {
-				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
-
-				if (dist < L.Draggable.TAP_TOLERANCE) {
-					this._simulateClick = false;
-					this._onUp();
-					this._simulateEvent('contextmenu', first);
-				}
-			}, this), 1000);
-		}
 
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
@@ -141,33 +113,13 @@ L.Draggable = L.Class.extend({
 		this.fire('drag');
 	},
 
-	_onUp: function (e) {
-		var first, el, dist, simulateClickTouch, i;
-
-		clearTimeout(this._longPressTimeout);
-
-		if (this._simulateClick && e.changedTouches) {
-
-			dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
-			first = e.changedTouches[0];
-			el = first.target;
-
-			if (el.tagName.toLowerCase() === 'a') {
-				L.DomUtil.removeClass(el, 'leaflet-active');
-			}
-
-			// simulate click if the touch didn't move too much
-			if (dist < L.Draggable.TAP_TOLERANCE) {
-				simulateClickTouch = true;
-			}
-		}
-
+	_onUp: function () {
 		if (!L.Browser.touch) {
 			L.DomUtil.enableTextSelection();
 			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
 
-		for (i in L.Draggable.MOVE) {
+		for (var i in L.Draggable.MOVE) {
 			L.DomEvent
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
@@ -183,22 +135,5 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._moving = false;
-
-		if (simulateClickTouch) {
-			this._moved = false;
-			this._simulateEvent('click', first);
-		}
-	},
-
-	_simulateEvent: function (type, e) {
-		var simulatedEvent = document.createEvent('MouseEvents');
-
-		simulatedEvent.initMouseEvent(
-		        type, true, true, window, 1,
-		        e.screenX, e.screenY,
-		        e.clientX, e.clientY,
-		        false, false, false, false, 0, null);
-
-		e.target.dispatchEvent(simulatedEvent);
 	}
 });
