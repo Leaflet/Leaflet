@@ -1551,9 +1551,14 @@ L.Map = L.Class.extend({
 		}
 
 		this._handlers = [];
+
+		this._layers = {};
+		this._zoomBoundLayers = {};
+		this._tileLayersNum = 0;
+
 		this.callInitHooks();
 
-		this._initLayers(options.layers);
+		this._addLayers(options.layers);
 	},
 
 
@@ -2052,16 +2057,10 @@ L.Map = L.Class.extend({
 		this._container.removeChild(this._mapPane);
 	},
 
-	_initLayers: function (layers) {
+	_addLayers: function (layers) {
 		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
 
-		this._layers = {};
-		this._zoomBoundLayers = {};
-		this._tileLayersNum = 0;
-
-		var i, len;
-
-		for (i = 0, len = layers.length; i < len; i++) {
+		for (var i = 0, len = layers.length; i < len; i++) {
 			this.addLayer(layers[i]);
 		}
 	},
