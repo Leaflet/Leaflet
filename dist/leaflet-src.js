@@ -968,23 +968,6 @@ L.DomUtil = {
 		return el;
 	},
 
-	disableTextSelection: function () {
-		if (document.selection && document.selection.empty) {
-			document.selection.empty();
-		}
-		if (!this._onselectstart) {
-			this._onselectstart = document.onselectstart || null;
-			document.onselectstart = L.Util.falseFn;
-		}
-	},
-
-	enableTextSelection: function () {
-		if (document.onselectstart === L.Util.falseFn) {
-			document.onselectstart = this._onselectstart;
-			this._onselectstart = null;
-		}
-	},
-
 	hasClass: function (el, name) {
 		return (el.className.length > 0) &&
 		        new RegExp('(^|\\s)' + name + '(\\s|$)').test(el.className);
@@ -1104,6 +1087,30 @@ L.DomUtil.TRANSITION = L.DomUtil.testProp(
 L.DomUtil.TRANSITION_END =
         L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
         L.DomUtil.TRANSITION + 'End' : 'transitionend';
+
+(function () {
+	var userSelectProperty = L.DomUtil.testProp(
+		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
+
+	L.DomUtil.disableTextSelection = function () {
+		if (userSelectProperty) {
+			var style = document.documentElement.style;
+			this._userSelect = style[userSelectProperty];
+			style[userSelectProperty] = 'none';
+		} else {
+			L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
+		}
+	};
+
+	L.DomUtil.enableTextSelection = function () {
+		if (userSelectProperty) {
+			document.documentElement.style[userSelectProperty] = this._userSelect;
+			delete this._userSelect;
+		} else {
+			L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
+		}
+	};
+})();
 
 
 /*
@@ -2158,7 +2165,7 @@ L.Map = L.Class.extend({
 
 	_onMouseClick: function (e) {
 		// jshint camelcase: false
-		if (!this._loaded || (this.dragging && this.dragging.moved()) || e._leaflet_stop) { return; }
+		if (!this._loaded || (!e._simulated && this.dragging && this.dragging.moved()) || e._leaflet_stop) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
@@ -6348,19 +6355,8 @@ L.DomEvent = {
 
 	// this solves a bug in Android WebView where a single touch triggers two click events.
 	_filterClick: function (e, handler) {
-		var timeStamp = (e.timeStamp || e.originalEvent.timeStamp);
-		var elapsed = L.DomEvent._lastClick && (timeStamp - L.DomEvent._lastClick);
-
-		// are they closer together than 400ms yet more than 100ms?
-		// Android typically triggers them ~300ms apart while multiple listeners
-		// on the same event should be triggered far faster.
-
-		if (elapsed && elapsed > 100 && elapsed < 400) {
-			L.DomEvent.stop(e);
-			return;
-		}
-		L.DomEvent._lastClick = timeStamp;
-
+		// check if click is simulated on the element, and if it is, reject any non-simulated events
+		if (e.target._simulatedClick && !e._simulated) { return; }
 		return handler(e);
 	}
 };
@@ -6387,14 +6383,12 @@ L.Draggable = L.Class.extend({
 			mousedown: 'mousemove',
 			touchstart: 'touchmove',
 			MSPointerDown: 'touchmove'
-		},
-		TAP_TOLERANCE: 15
+		}
 	},
 
-	initialize: function (element, dragStartTarget, longPress) {
+	initialize: function (element, dragStartTarget) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
-		this._longPress = longPress && !L.Browser.msTouch;
 	},
 
 	enable: function () {
@@ -6422,23 +6416,12 @@ L.Draggable = L.Class.extend({
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent
-		    .preventDefault(e)
-		    .stopPropagation(e);
+			.preventDefault(e)
+			.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
 
-		this._simulateClick = true;
-
-		var touchesNum = (e.touches && e.touches.length) || 0;
-
-		// don't simulate click or track longpress if more than 1 touch
-		if (touchesNum > 1) {
-			this._simulateClick = false;
-			clearTimeout(this._longPressTimeout);
-			return;
-		}
-
-		var first = touchesNum === 1 ? e.touches[0] : e,
+		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
 
 		// if touching a link, highlight it
@@ -6453,27 +6436,9 @@ L.Draggable = L.Class.extend({
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
-		// touch contextmenu event emulation
-		if (touchesNum === 1 && L.Browser.touch && this._longPress) {
-
-			this._longPressTimeout = setTimeout(L.bind(function () {
-				var dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
-
-				if (dist < L.Draggable.TAP_TOLERANCE) {
-					this._simulateClick = false;
-					this._onUp();
-					this._simulateEvent('contextmenu', first);
-				}
-			}, this), 1000);
-		}
-
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
-
-		if (e.type === 'mousedown') {
-			L.DomEvent.on(document, 'mouseout', this._onUp, this);
-		}
 	},
 
 	_onMove: function (e) {
@@ -6512,39 +6477,17 @@ L.Draggable = L.Class.extend({
 		this.fire('drag');
 	},
 
-	_onUp: function (e) {
-		var first, el, dist, simulateClickTouch, i;
-
-		clearTimeout(this._longPressTimeout);
-
-		if (this._simulateClick && e.changedTouches) {
-
-			dist = (this._newPos && this._newPos.distanceTo(this._startPos)) || 0;
-			first = e.changedTouches[0];
-			el = first.target;
-
-			if (el.tagName.toLowerCase() === 'a') {
-				L.DomUtil.removeClass(el, 'leaflet-active');
-			}
-
-			// simulate click if the touch didn't move too much
-			if (dist < L.Draggable.TAP_TOLERANCE) {
-				simulateClickTouch = true;
-			}
-		}
-
+	_onUp: function () {
 		if (!L.Browser.touch) {
 			L.DomUtil.enableTextSelection();
 			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
 
-		for (i in L.Draggable.MOVE) {
+		for (var i in L.Draggable.MOVE) {
 			L.DomEvent
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
-
-		L.DomEvent.off(document, 'mouseout', this._onUp);
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -6554,23 +6497,6 @@ L.Draggable = L.Class.extend({
 		}
 
 		this._moving = false;
-
-		if (simulateClickTouch) {
-			this._moved = false;
-			this._simulateEvent('click', first);
-		}
-	},
-
-	_simulateEvent: function (type, e) {
-		var simulatedEvent = document.createEvent('MouseEvents');
-
-		simulatedEvent.initMouseEvent(
-		        type, true, true, window, 1,
-		        e.screenX, e.screenY,
-		        e.clientX, e.clientY,
-		        false, false, false, false, 0, null);
-
-		e.target.dispatchEvent(simulatedEvent);
 	}
 });
 
@@ -6618,8 +6544,6 @@ L.Map.mergeOptions({
 	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
 	easeLinearity: 0.25,
 
-	longPress: true,
-
 	// TODO refactor, move to CRS
 	worldCopyJump: false
 });
@@ -6629,7 +6553,7 @@ L.Map.Drag = L.Handler.extend({
 		if (!this._draggable) {
 			var map = this._map;
 
-			this._draggable = new L.Draggable(map._mapPane, map._container, map.options.longPress);
+			this._draggable = new L.Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
 				'dragstart': this._onDragStart,
@@ -7214,6 +7138,115 @@ L.Map.TouchZoom = L.Handler.extend({
 });
 
 L.Map.addInitHook('addHandler', 'touchZoom', L.Map.TouchZoom);
+
+
+/*
+ * L.Map.Tap is used to enable mobile hacks like quick taps and long hold.
+ */
+
+L.Map.mergeOptions({
+	tap: true,
+	tapTolerance: 15
+});
+
+L.Map.Tap = L.Handler.extend({
+	addHooks: function () {
+		L.DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
+	},
+
+	removeHooks: function () {
+		L.DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
+	},
+
+	_onDown: function (e) {
+		if (!e.touches) { return; }
+
+		L.DomEvent.preventDefault(e);
+
+		this._fireClick = true;
+
+		// don't simulate click or track longpress if more than 1 touch
+		if (e.touches.length > 1) {
+			this._fireClick = false;
+			clearTimeout(this._holdTimeout);
+			return;
+		}
+
+		var first = e.touches[0],
+		    el = first.target;
+
+		this._startPos = this._newPos = new L.Point(first.clientX, first.clientY);
+
+		// if touching a link, highlight it
+		if (el.tagName.toLowerCase() === 'a') {
+			L.DomUtil.addClass(el, 'leaflet-active');
+		}
+
+		// simulate long hold but setting a timeout
+		this._holdTimeout = setTimeout(L.bind(function () {
+			if (this._isTapValid()) {
+				this._fireClick = false;
+				this._onUp();
+				this._simulateEvent('contextmenu', first);
+			}
+		}, this), 1000);
+
+		L.DomEvent
+			.on(document, 'touchmove', this._onMove, this)
+			.on(document, 'touchend', this._onUp, this);
+	},
+
+	_onUp: function (e) {
+		clearTimeout(this._holdTimeout);
+
+		L.DomEvent
+			.off(document, 'touchmove', this._onMove, this)
+			.off(document, 'touchend', this._onUp, this);
+
+		if (this._fireClick && e && e.changedTouches) {
+
+			var first = e.changedTouches[0],
+			    el = first.target;
+
+			if (el.tagName.toLowerCase() === 'a') {
+				L.DomUtil.removeClass(el, 'leaflet-active');
+			}
+
+			// simulate click if the touch didn't move too much
+			if (this._isTapValid()) {
+				this._simulateEvent('click', first);
+			}
+		}
+	},
+
+	_isTapValid: function () {
+		return this._newPos.distanceTo(this._startPos) <= this._map.options.tapTolerance;
+	},
+
+	_onMove: function (e) {
+		var first = e.touches[0];
+		this._newPos = new L.Point(first.clientX, first.clientY);
+	},
+
+	_simulateEvent: function (type, e) {
+		var simulatedEvent = document.createEvent('MouseEvents');
+
+		simulatedEvent._simulated = true;
+		e.target._simulatedClick = true;
+
+		simulatedEvent.initMouseEvent(
+		        type, true, true, window, 1,
+		        e.screenX, e.screenY,
+		        e.clientX, e.clientY,
+		        false, false, false, false, 0, null);
+
+		e.target.dispatchEvent(simulatedEvent);
+	}
+});
+
+if (L.Browser.touch && !L.Browser.msTouch) {
+	L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);
+}
 
 
 /*
@@ -8054,25 +8087,25 @@ L.Control.Layers = L.Control.extend({
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			L.DomEvent
-			    .on(container, 'mouseover', this._expand, this)
-			    .on(container, 'mouseout', this._collapse, this);
-
+			if (!L.Browser.android) {
+				L.DomEvent
+				    .on(container, 'mouseover', this._expand, this)
+				    .on(container, 'mouseout', this._collapse, this);
+			}
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
 			link.title = 'Layers';
 
 			if (L.Browser.touch) {
 				L.DomEvent
-				    .on(link, 'click', L.DomEvent.stopPropagation)
-				    .on(link, 'click', L.DomEvent.preventDefault)
+				    .on(link, 'click', L.DomEvent.stop)
 				    .on(link, 'click', this._expand, this);
 			}
 			else {
 				L.DomEvent.on(link, 'focus', this._expand, this);
 			}
 
-			this._map.on('movestart', this._collapse, this);
+			this._map.on('click', this._collapse, this);
 			// TODO keyboard accessibility
 		} else {
 			this._expand();
