@@ -258,6 +258,18 @@ var map = L.map('map', {
 		<td>Whether the map can be zoomed to a rectangular area specified by dragging the mouse while pressing shift.</td>
 	</tr>
 	<tr>
+		<td><code><b>tap</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>Enables mobile hacks for supporting instant taps (fixing 200ms click delay on iOS/Android) and touch holds (fired as <code>contextmenu</code> events).</td>
+	</tr>
+	<tr>
+		<td><code><b>tapTolerance</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">15</span></code></td>
+		<td>The max number of pixels a user can shift his finger during touch for it to be considered a valid tap.</td>
+	</tr>
+	<tr>
 		<td><code><b>trackResize</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
@@ -442,7 +454,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>contextmenu</b></code></td>
 		<td><code><a href="#mouse-event">MouseEvent</a></code></td>
-		<td>Fired when the user pushes the right mouse button on the map, prevents default browser context menu from showing if there are listeners on this event.</td>
+		<td>Fired when the user pushes the right mouse button on the map, prevents default browser context menu from showing if there are listeners on this event. Also fired on mobile when the user holds a single touch for a second (also called long press).</td>
 	</tr>
 	<tr>
 		<td><code><b>focus</b></code></td>
@@ -463,6 +475,11 @@ var map = L.map('map', {
 		<td><code><b>load</b></code></td>
 		<td><code><a href="#event">Event</a></code></td>
 		<td>Fired when the map is initialized (when its center and zoom are set for the first time).</td>
+	</tr>
+	<tr>
+		<td><code><b>unload</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired when the map is destroyed with <a href="#map-remove">remove</a> method.</td>
 	</tr>
 	<tr id="map-viewreset">
 		<td><code><b>viewreset</b></code></td>
@@ -513,6 +530,11 @@ var map = L.map('map', {
 		<td><code><b>zoomlevelschange</b></code></td>
 		<td><code><a href="#event">Event</a></code></td>
 		<td>Fired when the number of zoomlevels on the map is changed due to adding or removing a layer.</td>
+	</tr>
+	<tr>
+		<td><code><b>resize</b></code></td>
+		<td><code><a href="#resize-event">ResizeEvent</a></code></td>
+		<td>Fired when the map is resized.</td>
 	</tr>
 	<tr>
 		<td><code><b>autopanstart</b></code></td>
@@ -601,6 +623,14 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Decreases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
 	</tr>
+	<tr>
+		<td><code><b>setZoomAround</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>, </nobr>
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Zooms the map while keeping a specified point on the map stationary (e.g. used internally for scroll zoom and double-click zoom).</td>
+	</tr>
 	<tr id="map-fitbounds">
 		<td><code><b>fitBounds</b>(
 			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
@@ -658,7 +688,12 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>stopLocate</b>()</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Stops watching location previously initiated by <code><b>map.locate</b>({watch: true})</code>.</td>
+		<td>Stops watching location previously initiated by <code><b>map.locate</b>({watch: true})</code> and aborts resetting the map view if <code>map.locate</code> was called with <code>{setView: true}</code>.</td>
+	</tr>
+	<tr id="map-remove">
+		<td><code><b>remove</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Destroys the map and clears all related event listeners.</td>
 	</tr>
 </table>
 
@@ -726,7 +761,7 @@ var map = L.map('map', {
 
 <table>
 	<tr>
-		<th>Method</th>
+		<th class="width250">Method</th>
 		<th>Returns</th>
 		<th>Description</th>
 	</tr>
@@ -764,10 +799,22 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
 	</tr>
-	<tr id="map-closepopup">
-		<td><code><b>closePopup</b>()</code></td>
+	<tr id="map-openpopup2">
+		<td><code><b>openPopup</b>(
+			<nobr>&lt;String&gt; <i>html</i> </nobr> | <nobr>&lt;HTMLElement&gt; <i>el</i>,
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Closes the popup opened with <a href="#map-openpopup">openPopup</a>.</td>
+		<td>Creates a popup with the specified options and opens it in the given point on a map.</td>
+	</tr>
+	<tr id="map-closepopup">
+		<td><code><b>closePopup</b>(
+			<nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup?</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</td>
 	</tr>
 	<tr id="map-addcontrol">
 		<td><code><b>addControl</b>(
@@ -1008,6 +1055,11 @@ var map = L.map('map', {
 		<td><code><b>keyboard</b></code></td>
 		<td><a href="#ihandler"><code>IHandler</code></a></td>
 		<td>Keyboard navigation handler.</td>
+	</tr>
+	<tr>
+		<td><code><b>tap</b></code></td>
+		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td>Mobile touch hacks (quick tap and touch hold) handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomControl</b></code></td>
@@ -4634,8 +4686,8 @@ map.off('click', onClick);</code></pre>
 		<td>The layer that was added or removed.</td>
 	</tr>
 	<tr>
-		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><b>name</b></code></td>
+		<td><code>String</code></td>
 		<td>The name of the layer that was added or removed.</td>
 	</tr>
 </table>
@@ -4657,6 +4709,26 @@ map.off('click', onClick);</code></pre>
 		<td><code><b>url</b></code></td>
 		<td><code>String</code></td>
 		<td>The source URL of the tile.</td>
+	</tr>
+</table>
+
+<h3 id="resize-event">ResizeEvent</h3>
+
+<table>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>oldSize</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>The old size before resize event.</td>
+	</tr>
+	<tr>
+		<td><code><b>newSize</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>The new size after the resize event.</td>
 	</tr>
 </table>
 
