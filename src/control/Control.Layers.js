@@ -78,10 +78,11 @@ L.Control.Layers = L.Control.extend({
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			L.DomEvent
-			    .on(container, 'mouseover', this._expand, this)
-			    .on(container, 'mouseout', this._collapse, this);
-
+			if (!L.Browser.android) {
+				L.DomEvent
+				    .on(container, 'mouseover', this._expand, this)
+				    .on(container, 'mouseout', this._collapse, this);
+			}
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
 			link.href = '#';
 			link.title = 'Layers';
