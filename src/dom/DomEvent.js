@@ -105,7 +105,6 @@ L.DomEvent = {
 	},
 
 	disableClickPropagation: function (el) {
-
 		var stop = L.DomEvent.stopPropagation;
 
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
@@ -113,7 +112,7 @@ L.DomEvent = {
 		}
 
 		return L.DomEvent
-			.addListener(el, 'click', stop)
+			.addListener(el, 'click', L.DomEvent._fakeStop)
 			.addListener(el, 'dblclick', stop);
 	},
 
@@ -155,6 +154,12 @@ L.DomEvent = {
 		return delta;
 	},
 
+	_fakeStop: function stop(e) {
+		// fakes stopPropagation by setting a special event flag checked in Map mouse events handler
+		// jshint camelcase: false
+		e._leaflet_stop = true;
+	},
+
 	// check if element really left/entered the event target (for mouseenter/mouseleave)
 	_checkMouse: function (el, e) {
 
@@ -190,19 +195,8 @@ L.DomEvent = {
 
 	// this solves a bug in Android WebView where a single touch triggers two click events.
 	_filterClick: function (e, handler) {
-		var timeStamp = (e.timeStamp || e.originalEvent.timeStamp);
-		var elapsed = L.DomEvent._lastClick && (timeStamp - L.DomEvent._lastClick);
-
-		// are they closer together than 400ms yet more than 100ms?
-		// Android typically triggers them ~300ms apart while multiple listeners
-		// on the same event should be triggered far faster.
-
-		if (elapsed && elapsed > 100 && elapsed < 400) {
-			L.DomEvent.stop(e);
-			return;
-		}
-		L.DomEvent._lastClick = timeStamp;
-
+		// check if click is simulated on the element, and if it is, reject any non-simulated events
+		if (e.target._simulatedClick && !e._simulated) { return; }
 		return handler(e);
 	}
 };

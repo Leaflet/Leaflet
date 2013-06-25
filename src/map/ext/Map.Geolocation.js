@@ -81,11 +81,17 @@ L.Map.include({
 			this.setView(latlng, zoom);
 		}
 
-		var event = L.extend({
+		var data = {
 			latlng: latlng,
-			bounds: bounds
-		}, pos.coords);
+			bounds: bounds,
+		};
 
-		this.fire('locationfound', event);
+		for (var i in pos.coords) {
+			if (typeof pos.coords[i] === 'number') {
+				data[i] = pos.coords[i];
+			}
+		}
+
+		this.fire('locationfound', data);
 	}
 });

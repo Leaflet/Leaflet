@@ -58,7 +58,7 @@ L.TileLayer = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this._animated = map.options.zoomAnimation && L.Browser.any3d;
+		this._animated = map._zoomAnimated;
 
 		// create a container div for tiles
 		this._initContainer();
@@ -218,13 +218,6 @@ L.TileLayer = L.Class.extend({
 			}
 		} else {
 			L.DomUtil.setOpacity(this._container, this.options.opacity);
-		}
-
-		// stupid webkit hack to force redrawing of tiles
-		if (L.Browser.webkit) {
-			for (i in tiles) {
-				tiles[i].style.webkitTransform += ' translate(0,0)';
-			}
 		}
 	},
 

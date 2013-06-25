@@ -35,11 +35,10 @@ L.Map = L.Class.extend({
 			this.setView(L.latLng(options.center), options.zoom, {reset: true});
 		}
 
-		this._initLayers(options.layers);
-
 		this._handlers = [];
-
 		this.callInitHooks();
+
+		this._initLayers(options.layers);
 	},
 
 
@@ -237,9 +236,13 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	invalidateSize: function (animate) {
-		var oldSize = this.getSize();
+	invalidateSize: function (options) {
+		options = L.extend({
+			animate: false,
+			pan: true
+		}, options === true ? {animate: true} : options);
 
+		var oldSize = this.getSize();
 		this._sizeChanged = true;
 
 		if (this.options.maxBounds) {
@@ -251,23 +254,27 @@ L.Map = L.Class.extend({
 		var newSize = this.getSize(),
 		    offset = oldSize.subtract(newSize).divideBy(2).round();
 
-		if ((offset.x !== 0) || (offset.y !== 0)) {
-			if (animate === true) {
-				this.panBy(offset);
-			} else {
+		if (!offset.x && !offset.y) { return this; }
+
+		if (options.animate && options.pan) {
+			this.panBy(offset);
+
+		} else {
+			if (options.pan) {
 				this._rawPanBy(offset);
-
-				this.fire('move');
-
-				clearTimeout(this._sizeTimer);
-				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 			}
-			this.fire('resize', {
-				oldSize: oldSize,
-				newSize: newSize
-			});
+
+			this.fire('move');
+
+			// make sure moveend is not fired too often on resize
+			clearTimeout(this._sizeTimer);
+			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
 		}
-		return this;
+
+		return this.fire('resize', {
+			oldSize: oldSize,
+			newSize: newSize
+		});
 	},
 
 	// TODO handler.addTo
@@ -666,14 +673,16 @@ L.Map = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
+		// jshint camelcase: false
+		if (!this._loaded || (!e._simulated && this.dragging && this.dragging.moved()) || e._leaflet_stop) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		if (!this._loaded) { return; }
+		// jshint camelcase: false
+		if (!this._loaded || e._leaflet_stop) { return; }
 
 		var type = e.type;
 

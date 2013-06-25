@@ -68,5 +68,19 @@ describe("Marker", function () {
 			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
 
+		it("reuses the icon/shadow when changing icon", function () {
+			var marker = new L.Marker([0, 0], { icon: new L.Icon({ iconUrl: 'icon1.png', shadowUrl: 'shadow1.png', }) });
+			map.addLayer(marker);
+			var oldIcon = marker._icon;
+			var oldShadow = marker._shadow;
+
+			marker.setIcon(new L.Icon({ iconUrl: 'icon2.png', shadowUrl: 'shadow2.png', }));
+
+			expect(oldIcon).to.be(marker._icon);
+			expect(oldShadow).to.be(marker._shadow);
+
+			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
+		});
 	});
 });

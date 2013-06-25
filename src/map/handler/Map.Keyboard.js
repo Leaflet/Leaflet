@@ -127,6 +127,9 @@ L.Map.Keyboard = L.Handler.extend({
 		    map = this._map;
 
 		if (key in this._panKeys) {
+
+			if (map._panAnim && map._panAnim._inProgress) { return; }
+
 			map.panBy(this._panKeys[key]);
 
 			if (map.options.maxBounds) {
