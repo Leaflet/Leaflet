@@ -15,7 +15,7 @@ if (typeof module === 'object' && typeof module.exports === 'object') {
 
 // define Leaflet as an AMD module
 } else if (typeof define === 'function' && define.amd) {
-	define('leaflet', [], function () { return L; });
+	define(L);
 }
 
 // define Leaflet as a global L variable, saving the original L to restore later if needed
@@ -1519,11 +1519,10 @@ L.Map = L.Class.extend({
 			this.setView(L.latLng(options.center), options.zoom, {reset: true});
 		}
 
-		this._initLayers(options.layers);
-
 		this._handlers = [];
-
 		this.callInitHooks();
+
+		this._initLayers(options.layers);
 	},
 
 
@@ -2158,14 +2157,16 @@ L.Map = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (!this._loaded || (this.dragging && this.dragging.moved())) { return; }
+		// jshint camelcase: false
+		if (!this._loaded || (this.dragging && this.dragging.moved()) || e._leaflet_stop) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		if (!this._loaded) { return; }
+		// jshint camelcase: false
+		if (!this._loaded || e._leaflet_stop) { return; }
 
 		var type = e.type;
 
@@ -2948,7 +2949,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		for (var i in options) {
 			// all keys that are not TileLayer options go to WMS params
-			if (!this.options.hasOwnProperty(i)) {
+			if (!this.options.hasOwnProperty(i) && i !== 'crs') {
 				wmsParams[i] = options[i];
 			}
 		}
@@ -2960,8 +2961,10 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	onAdd: function (map) {
 
+		this._crs = this.options.crs || map.options.crs;
+
 		var projectionKey = parseFloat(this.wmsParams.version) >= 1.3 ? 'crs' : 'srs';
-		this.wmsParams[projectionKey] = map.options.crs.code;
+		this.wmsParams[projectionKey] = this._crs.code;
 
 		L.TileLayer.prototype.onAdd.call(this, map);
 	},
@@ -2969,14 +2972,13 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
 
 		var map = this._map,
-		    crs = map.options.crs,
 		    tileSize = this.options.tileSize,
 
 		    nwPoint = tilePoint.multiplyBy(tileSize),
 		    sePoint = nwPoint.add([tileSize, tileSize]),
 
-		    nw = crs.project(map.unproject(nwPoint, zoom)),
-		    se = crs.project(map.unproject(sePoint, zoom)),
+		    nw = this._crs.project(map.unproject(nwPoint, zoom)),
+		    se = this._crs.project(map.unproject(sePoint, zoom)),
 
 		    bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
@@ -3375,6 +3377,7 @@ L.Marker = L.Class.extend({
 		title: '',
 		clickable: true,
 		draggable: false,
+		keyboard: true,
 		zIndexOffset: 0,
 		opacity: 1,
 		riseOnHover: false,
@@ -3485,6 +3488,10 @@ L.Marker = L.Class.extend({
 
 		L.DomUtil.addClass(icon, classToAdd);
 
+		if (options.keyboard) {
+			icon.tabIndex = '0';
+		}
+
 		this._icon = icon;
 
 		this._initInteraction();
@@ -3577,6 +3584,7 @@ L.Marker = L.Class.extend({
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
+		L.DomEvent.on(icon, 'keypress', this._onKeyPress, this);
 
 		for (var i = 0; i < events.length; i++) {
 			L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
@@ -3608,6 +3616,15 @@ L.Marker = L.Class.extend({
 		});
 	},
 
+	_onKeyPress: function (e) {
+		if (e.keyCode === 13) {
+			this.fire('click', {
+				originalEvent: e,
+				latlng: this._latlng
+			});
+		}
+	},
+
 	_fireMouseEvent: function (e) {
 
 		this.fire(e.type, {
@@ -3622,6 +3639,8 @@ L.Marker = L.Class.extend({
 		}
 		if (e.type !== 'mousedown') {
 			L.DomEvent.stopPropagation(e);
+		} else {
+			L.DomEvent.preventDefault(e);
 		}
 	},
 
@@ -5904,7 +5923,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		if (options.filter && !options.filter(geojson)) { return; }
 
 		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer, options.coordsToLatLng);
-		layer.feature = geojson;
+		layer.feature = L.GeoJSON.asFeature(geojson);
 
 		layer.defaultOptions = layer.options;
 		this.resetStyle(layer);
@@ -6029,24 +6048,40 @@ L.extend(L.GeoJSON, {
 		}
 
 		return coords;
+	},
+
+	getFeature: function (layer, newGeometry) {
+		return layer.feature ? L.extend({}, layer.feature, {geometry: newGeometry}) : L.GeoJSON.asFeature(newGeometry);
+	},
+
+	asFeature: function (geoJSON) {
+		if (geoJSON.type === 'Feature') {
+			return geoJSON;
+		}
+
+		return {
+			type: 'Feature',
+			properties: {},
+			geometry: geoJSON
+		};
 	}
 });
 
 L.Marker.include({
 	toGeoJSON: function () {
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'Point',
 			coordinates: L.GeoJSON.latLngToCoords(this.getLatLng())
-		};
+		});
 	}
 });
 
 L.Polyline.include({
 	toGeoJSON: function () {
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'LineString',
 			coordinates: L.GeoJSON.latLngsToCoords(this.getLatLngs())
-		};
+		});
 	}
 });
 
@@ -6065,10 +6100,10 @@ L.Polygon.include({
 			}
 		}
 
-		return {
+		return L.GeoJSON.getFeature(this, {
 			type: 'Polygon',
 			coordinates: coords
-		};
+		});
 	}
 });
 
@@ -6079,13 +6114,13 @@ L.Polygon.include({
 				var coords = [];
 
 				this.eachLayer(function (layer) {
-					coords.push(layer.toGeoJSON().coordinates);
+					coords.push(layer.toGeoJSON().geometry.coordinates);
 				});
 
-				return {
+				return L.GeoJSON.getFeature(this, {
 					type: type,
 					coordinates: coords
-				};
+				});
 			}
 		});
 	}
@@ -6096,17 +6131,17 @@ L.Polygon.include({
 
 L.LayerGroup.include({
 	toGeoJSON: function () {
-		var geoms = [];
+		var features = [];
 
 		this.eachLayer(function (layer) {
 			if (layer.toGeoJSON) {
-				geoms.push(layer.toGeoJSON());
+				features.push(L.GeoJSON.asFeature(layer.toGeoJSON()));
 			}
 		});
 
 		return {
-			type: 'GeometryCollection',
-			geometries: geoms
+			type: 'FeatureCollection',
+			features: features
 		};
 	}
 });
@@ -6223,7 +6258,6 @@ L.DomEvent = {
 	},
 
 	disableClickPropagation: function (el) {
-
 		var stop = L.DomEvent.stopPropagation;
 
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
@@ -6231,7 +6265,7 @@ L.DomEvent = {
 		}
 
 		return L.DomEvent
-			.addListener(el, 'click', stop)
+			.addListener(el, 'click', L.DomEvent._fakeStop)
 			.addListener(el, 'dblclick', stop);
 	},
 
@@ -6271,6 +6305,12 @@ L.DomEvent = {
 			delta = -e.detail / 3;
 		}
 		return delta;
+	},
+
+	_fakeStop: function stop(e) {
+		// fakes stopPropagation by setting a special event flag checked in Map mouse events handler
+		// jshint camelcase: false
+		e._leaflet_stop = true;
 	},
 
 	// check if element really left/entered the event target (for mouseenter/mouseleave)
@@ -6430,6 +6470,10 @@ L.Draggable = L.Class.extend({
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
+
+		if (e.type === 'mousedown') {
+			L.DomEvent.on(document, 'mouseout', this._onUp, this);
+		}
 	},
 
 	_onMove: function (e) {
@@ -6499,6 +6543,8 @@ L.Draggable = L.Class.extend({
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
+
+		L.DomEvent.off(document, 'mouseout', this._onUp);
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -7405,6 +7451,9 @@ L.Map.Keyboard = L.Handler.extend({
 		    map = this._map;
 
 		if (key in this._panKeys) {
+
+			if (map._panAnim && map._panAnim._inProgress) { return; }
+
 			map.panBy(this._panKeys[key]);
 
 			if (map.options.maxBounds) {
@@ -8232,8 +8281,8 @@ L.PosAnimation = L.Class.extend({
 
 		if (L.Browser.any3d) {
 			matches = style[L.DomUtil.TRANSFORM].match(this._transformRe);
-			left = parseFloat(matches[1]);
-			top  = parseFloat(matches[2]);
+			left = matches ? parseFloat(matches[1]) : 0;
+			top  = matches ? parseFloat(matches[2]) : 0;
 		} else {
 			left = parseFloat(style.left);
 			top  = parseFloat(style.top);
