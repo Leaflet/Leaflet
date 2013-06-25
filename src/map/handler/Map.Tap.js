@@ -9,12 +9,10 @@ L.Map.mergeOptions({
 
 L.Map.Tap = L.Handler.extend({
 	addHooks: function () {
-		if (!L.Browser.touch) { return; }
 		L.DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
 
 	removeHooks: function () {
-		if (!L.Browser.touch) { return; }
 		L.DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
 	},
 
@@ -43,15 +41,13 @@ L.Map.Tap = L.Handler.extend({
 		}
 
 		// simulate long hold but setting a timeout
-		if (!L.Browser.msTouch) {
-			this._holdTimeout = setTimeout(L.bind(function () {
-				if (this._isTapValid()) {
-					this._fireClick = false;
-					this._onUp();
-					this._simulateEvent('contextmenu', first);
-				}
-			}, this), 1000);
-		}
+		this._holdTimeout = setTimeout(L.bind(function () {
+			if (this._isTapValid()) {
+				this._fireClick = false;
+				this._onUp();
+				this._simulateEvent('contextmenu', first);
+			}
+		}, this), 1000);
 
 		L.DomEvent
 			.on(document, 'touchmove', this._onMove, this)
@@ -105,4 +101,6 @@ L.Map.Tap = L.Handler.extend({
 	}
 });
 
-L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);
+if (L.Browser.touch && !L.Browser.msTouch) {
+	L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);
+}
