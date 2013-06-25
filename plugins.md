@@ -208,6 +208,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/glenrobertson">Glen Robertson</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/turban/Leaflet.Zoomify">TileLayer.Zoomify</a>
+		</td><td>
+			A TileLayer for Zoomify images.
+		</td><td>
+			<a href="https://github.com/turban">Bjørn Sandvik</a>
+		</td>
+	</tr>		
 </table>
 
 
@@ -577,6 +586,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/MrMufflon">Felix Bache</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MrMufflon/Leaflet.Elevation">Leaflet.Elevation</a>
+		</td><td>
+			A Leaflet plugin to view interactive height profiles of GeoJSON lines using <a href="http://d3js.org/">d3</a>.
+		</td><td>
+			<a href="https://github.com/MrMufflon">Felix Bache</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/turban/Leaflet.Sync">Leaflet.Sync</a>
+		</td><td>
+			Synchronized view of two maps.
+		</td><td>
+			<a href="https://github.com/turban">Bjørn Sandvik</a>
+		</td>
+	</tr>		
 </table>
 
 
