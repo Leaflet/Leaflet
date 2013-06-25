@@ -1292,7 +1292,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="marker-bindpopup">
 		<td><code><b>bindPopup</b>(
-			<nobr>&lt;String&gt; <i>htmlContent</i>,</nobr>
+			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i> |</nobr> <nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i>,</nobr>
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
@@ -1313,6 +1313,15 @@ var map = L.map('map', {
 		<td><code><b>closePopup</b>()</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Closes the bound popup of the marker if it's opened.</td>
+	</tr>
+	<tr id="marker-bindpopup">
+		<td><code><b>setPopupContent</b>(
+			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i>,</nobr>
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
 	</tr>
 	<tr id="marker-togeojson">
 		<td><code><b>toGeoJSON</b>()</code></td>
@@ -1526,7 +1535,7 @@ var map = L.map('map', {
 
 <p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
 
-<p>You can use custom keys in the template, which will be evaluated from TileLayer options, like this:</p>
+<p>You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
 
 <pre><code class="javascript">L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});</code></pre>
 
@@ -1728,6 +1737,12 @@ var map = L.map('map', {
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Updates the layer's URL template and redraws it.</td>
+	</tr>
+	<tr>
+		<td><code><b>getContainer</b>()</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Returns the HTML element that contains the tiles for this layer.</td>
 	</tr>
 </table>
 
@@ -2057,6 +2072,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><span class="literal">true</span></code></td>
 		<td>If <code><span class="literal">false</span></code>, the vector will not emit mouse events and will act as a part of the underlying map.</td>
 	</tr>
+	<tr>
+		<td><code><b>pointerEvents</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>Sets the <code>pointer-events</code> attribute on the path if SVG backend is used.</td>
+	</tr>
 </table>
 
 <h3>Events</h3>
@@ -2128,12 +2149,21 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 	</tr>
 	<tr id="path-bindpopup">
 		<td><code><b>bindPopup</b>(
-			<nobr>&lt;String&gt; <i>htmlContent</i></nobr>,
+			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i> |</nobr> <nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i>,</nobr>
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this path.</td>
+	</tr>
+	<tr>
+		<td><code><b>bindPopup</b>(
+			<nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i></nobr>,
+			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Binds a given popup object to the path.</td>
 	</tr>
 	<tr id="path-unbindpopup">
 		<td><code><b>unbindPopup</b>()</code></td>
@@ -4949,13 +4979,13 @@ L.map('map');</code></pre>
 		<td><code>String</code></td>
 		<td>Converts an object into a parameter URL string, e.g. <nobr><code>{a: "foo", b: "bar"}</code></nobr> translates to <code><span class="string">'?a=foo&amp;b=bar'</span></code>.</td>
 	</tr>
-	<tr>
+	<tr id="util-template">
 		<td><code><b>template</b>(
 			<nobr>&lt;String&gt; <i>str</i>, &lt;Object&gt; <i>data</i> )</nobr>
 		</code></td>
 
 		<td><code>String</code></td>
-		<td>Simple templating facility, creates a string by applying the values of the <code>data</code> object of a form <code>{a: 'foo', b: 'bar', &hellip;}</code> to a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> &mdash; in this example you will get <code><span class="string">'Hello foo, bar'</span></code>.</td>
+		<td>Simple templating facility, accepts a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> and a data object like <code>{a: 'foo', b: 'bar'}</code>, returns evaluated string (<code><span class="string">'Hello foo, bar'</span></code>). You can also specify functions instead of strings for data values &mdash; they will be evaluated passing <code>data</code> as an argument.</td>
 	</tr>
 	<tr>
 		<td><code><b>isArray</b>(
