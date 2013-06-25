@@ -83,7 +83,6 @@ No changes since the latest stable yet.
  * Improved `Map` `stopLocate` method to abort resetting map view if calling `locate` with `setView` option. [#747](https://github.com/Leaflet/Leaflet/issues/747)
  * Improved `Map` `openPopup` method to also accept `(content, latlng)` signature as a shortcut.
  * Added `Map` `resize` event. [#1564](https://github.com/Leaflet/Leaflet/issues/1564)
- * Added `changeCenter` argument to `Map` `invalidateSize` to be able to turn off automatic panning on manual size change
 
 ##### Controls API improvements
 
