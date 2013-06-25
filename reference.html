@@ -1229,6 +1229,16 @@ var map = L.map('map', {
 		<td><code><a href="#event">Event</a></code></td>
 		<td>Fired when the marker is removed from the map.</td>
 	</tr>
+	<tr>
+		<td><code><b>popupopen</b></code></td>
+		<td><code><a href="#popup-event">PopupEvent</a></code></td>
+		<td>Fired when a popup bound to the marker is open.</td>
+	</tr>
+	<tr>
+		<td><code><b>popupclose</b></code></td>
+		<td><code><a href="#popup-event">PopupEvent</a></code></td>
+		<td>Fired when a popup bound to the marker is closed.</td>
+	</tr>
 </table>
 
 <h3>Methods</h3>
@@ -1313,6 +1323,11 @@ var map = L.map('map', {
 		<td><code><b>closePopup</b>()</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Closes the bound popup of the marker if it's opened.</td>
+	</tr>
+	<tr id="marker-togglepopup">
+		<td><code><b>togglePopup</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Toggles the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
 	</tr>
 	<tr id="marker-bindpopup">
 		<td><code><b>setPopupContent</b>(
@@ -1422,6 +1437,12 @@ var map = L.map('map', {
 		<td>Set it to <code><span class="literal">false</span></code> if you don't want the map to do panning animation to fit the opened popup.</td>
 	</tr>
 	<tr>
+		<td><code><b>keepInView</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>Set it to <code><span class="literal">true</span></code> if you want to prevent users from panning the popup off of the screen while it is open.</td>
+	</tr>
+	<tr>
 		<td><code><b>closeButton</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
@@ -1446,6 +1467,12 @@ var map = L.map('map', {
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
 		<td>Whether to animate the popup on zoom. Disable it if you have problems with Flash content inside popups.</td>
+	</tr>
+	<tr>
+		<td><code><b>closeOnClick</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>Set it to <code><span class="literal">false</span></code> if you want to override the default behavior of the popup closing when user clicks the map (set globally by the <code>Map</code> <code>closePopupOnClick</code> option).</td>
 	</tr>
 </table>
 
@@ -1741,7 +1768,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>getContainer</b>()</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code>HTMLElement</code></td>
 		<td>Returns the HTML element that contains the tiles for this layer.</td>
 	</tr>
 </table>
@@ -1824,6 +1851,12 @@ var map = L.map('map', {
 		<td><code>String</code></td>
 		<td><code><span class="string">'1.1.1'</span></code></td>
 		<td>Version of the WMS service to use.</td>
+	</tr>
+	<tr>
+		<td><code><b>crs</b></code></td>
+		<td><code><a href="#icrs">CRS</a></code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>Coordinate Reference System to use for the WMS requests, defaults to map CRS. Don't change this if you're not sure what it means.</td>
 	</tr>
 </table>
 
@@ -2129,6 +2162,16 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><b>remove</b></code></td>
 		<td><code><a href="#event">Event</a></code></td>
 		<td>Fired when the path is removed from the map.</td>
+	</tr>
+	<tr>
+		<td><code><b>popupopen</b></code></td>
+		<td><code><a href="#popup-event">PopupEvent</a></code></td>
+		<td>Fired when a popup bound to the path is open.</td>
+	</tr>
+	<tr>
+		<td><code><b>popupclose</b></code></td>
+		<td><code><a href="#popup-event">PopupEvent</a></code></td>
+		<td>Fired when a popup bound to the path is closed.</td>
 	</tr>
 </table>
 
@@ -3048,6 +3091,13 @@ map.fitBounds(bounds);</code></pre>
 
 		<td>Function that will be used to decide whether to show a feature or not.</td>
 	</tr>
+	<tr id="geojson-coordstolatlng">
+		<td><code><b>coordsToLatLng</b>(
+			<nobr>&lt;Array&gt; <i>coords</i></nobr> )</nobr>
+		</code></td>
+
+		<td>Function that will be used for converting GeoJSON coordinates to <a href="#latlng">LatLng</a> points (if not specified, coords will be assumed to be WGS84 &mdash; standard <code>[longitude, latitude]</code> values in degrees).</td>
+	</tr>
 </table>
 
 
@@ -3929,6 +3979,11 @@ map.addControl(control);</code></pre>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes the control from the map.</td>
 	</tr>
+	<tr>
+		<td><code><b>getContainer</b>()</code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the HTML container of the control.</td>
+	</tr>
 </table>
 
 <h3 id="control-positions">Control Positions</h3>
@@ -4195,7 +4250,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h3>Events</h3>
 
-<p>You can subscribe to the following events on the map object using <a href="#events">these methods</a>.</p>
+<p>You can subscribe to the following events on the <a href="#map">Map</a> object using <a href="#events">these methods</a>.</p>
 
 <table>
 	<tr>
@@ -4205,17 +4260,17 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>baselayerchange</b></code></td>
-		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td><code><a href="#layers-control-event">LayersControlEvent</a></code>
 		<td>Fired when the base layer is changed through the control.</td>
 	</tr>
 	<tr>
 		<td><code><b>overlayadd</b></code></td>
-		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td><code><a href="#layers-control-event">LayersControlEvent</a></code>
 		<td>Fired when an overlay is selected through the control.</td>
 	</tr>
 	<tr>
 		<td><code><b>overlayremove</b></code></td>
-		<td><code><a href="#layer-event">LayerEvent</a></code>
+		<td><code><a href="#layers-control-event">LayersControlEvent</a></code>
 		<td>Fired when an overlay is deselected through the control.</td>
 	</tr>
 </table>
@@ -4562,6 +4617,26 @@ map.off('click', onClick);</code></pre>
 		<td><code><b>layer</b></code></td>
 		<td><code><a href="#ilayer">ILayer</a></code></td>
 		<td>The layer that was added or removed.</td>
+	</tr>
+</table>
+
+<h3 id="layers-control-event">LayersControlEvent</h3>
+
+<table>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>layer</b></code></td>
+		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td>The layer that was added or removed.</td>
+	</tr>
+	<tr>
+		<td><code><b>layer</b></code></td>
+		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td>The name of the layer that was added or removed.</td>
 	</tr>
 </table>
 
