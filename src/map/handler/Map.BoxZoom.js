@@ -26,6 +26,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		L.DomUtil.disableTextSelection();
+		L.DomUtil.disableImageDrag();
 
 		this._startLayerPoint = this._map.mouseEventToLayerPoint(e);
 
@@ -38,8 +39,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomEvent
 		    .on(document, 'mousemove', this._onMouseMove, this)
 		    .on(document, 'mouseup', this._onMouseUp, this)
-		    .on(document, 'keydown', this._onKeyDown, this)
-		    .preventDefault(e);
+		    .on(document, 'keydown', this._onKeyDown, this);
 
 		this._map.fire('boxzoomstart');
 	},
@@ -67,6 +67,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._container.style.cursor = '';
 
 		L.DomUtil.enableTextSelection();
+		L.DomUtil.enableImageDrag();
 
 		L.DomEvent
 		    .off(document, 'mousemove', this._onMouseMove)
