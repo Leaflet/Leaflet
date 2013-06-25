@@ -3,9 +3,12 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.6-dev (master)
+## 0.7 (master)
 
 An in-progress version being developed on the master branch.
+No changes since the latest stable yet.
+
+## 0.6 (June 25, 2013)
 
 ### Breaking changes
 
@@ -114,9 +117,10 @@ An in-progress version being developed on the master branch.
 
 #### Browser bugfixes
 
+ * Fixed a bug with undesirable page scrolling when you zoom the map by scrolling in Firefox 17+ (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1789](https://github.com/Leaflet/Leaflet/issues/1789) [#1788](https://github.com/Leaflet/Leaflet/issues/1788)
  * Fixed a bug where `TileLayer` opacity didn't work in IE 7-8 (by [@javisantana](https://github.com/javisantana) & [@danzel](https://gi
 .com/danzel)). [#1084](https://github.com/Leaflet/Leaflet/issues/1084) [#1396](https://github.com/Leaflet/Leaflet/pull/1396) [#1371](https://github.com/Leaflet/Leaflet/issues/1371)
- * Fixed a bug in Android WebView where click was triggered twice on one tap (by [@jerel](https://github.com/jerel) & [@mourner](https://github.com/mourner)). [#1227](https://github.com/Leaflet/Leaflet/pull/1227) [#1263](https://github.com/Leaflet/Leaflet/issues/1263) [#1785](https://github.com/Leaflet/Leaflet/issues/1785) [#1694](https://github.com/Leaflet/Leaflet/issues/1694)
+ * Fixed a bug in Android where click was triggered twice on one tap (by [@jerel](https://github.com/jerel) & [@mourner](https://github.com/mourner)). [#1227](https://github.com/Leaflet/Leaflet/pull/1227) [#1263](https://github.com/Leaflet/Leaflet/issues/1263) [#1785](https://github.com/Leaflet/Leaflet/issues/1785) [#1694](https://github.com/Leaflet/Leaflet/issues/1694)
  * Fixed a bug in Android where click on a collapsed layers control would immediately select one of the layers (by [@danzel](https://github.com/danzel)). [#1784](https://github.com/Leaflet/Leaflet/issues/1784) [#1694](https://github.com/Leaflet/Leaflet/issues/1694)
  * Fixed a bug where mouse coordinates where shifted in Firefox if the map was inside a positioned block on a scrolled page (by [@joschka](https://github.com/joschka)). [#1365](https://github.com/Leaflet/Leaflet/pull/1365) [#1322](https://github.com/Leaflet/Leaflet/issues/1322)
  * Fixed a bug where box zoom didn't work in some cases in Firefox 18+ (by [@fabriceds](https://github.com/fabriceds)). [#1405](https://github.com/Leaflet/Leaflet/pull/1405)
