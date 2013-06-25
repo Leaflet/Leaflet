@@ -259,4 +259,26 @@ L.DomUtil.TRANSITION_END =
 			L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
 		}
 	};
+
+	var userDragProperty = L.DomUtil.testProp(
+		['userDrag', 'WebkitUserDrag', 'OUserDrag', 'MozUserDrag', 'msUserDrag']);
+
+	L.DomUtil.disableImageDrag = function () {
+		if (userDragProperty) {
+			var style = document.documentElement.style;
+			this._userDrag = style[userDragProperty];
+			style[userDragProperty] = 'none';
+		} else {
+			L.DomEvent.on(window, 'dragstart', L.DomEvent.stop);
+		}
+	};
+
+	L.DomUtil.enableImageDrag = function () {
+		if (userDragProperty) {
+			document.documentElement.style[userDragProperty] = this._userDrag;
+			delete this._userDrag;
+		} else {
+			L.DomEvent.off(window, 'dragstart', L.DomEvent.stop);
+		}
+	};
 })();

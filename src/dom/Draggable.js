@@ -49,10 +49,11 @@ L.Draggable = L.Class.extend({
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent
-			.preventDefault(e)
 			.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
+
+		L.DomUtil.disableImageDrag();
 
 		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
@@ -121,6 +122,8 @@ L.Draggable = L.Class.extend({
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
+
+		L.DomUtil.enableImageDrag();
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
