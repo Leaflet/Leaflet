@@ -1,14 +1,13 @@
 describe('L#noConflict', function() {
-	it('should restore the previous L value and return Leaflet namespace', function(){
-		
-		expect(L.version).toBeDefined();
-		
-		var L2 = L.noConflict();
-		this.after(function () {
-			window.L = L2;
-		});
+	it('restores the previous L value and returns Leaflet namespace', function(){
 
-		expect(L).toEqual('test');
-		expect(L2.version).toBeDefined();
+		expect(L.version).to.be.ok();
+
+		var L2 = L.noConflict();
+
+		expect(L).to.eql('test');
+		expect(L2.version).to.be.ok();
+
+		window.L = L2;
 	});
 });

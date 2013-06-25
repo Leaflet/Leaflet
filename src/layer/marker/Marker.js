@@ -11,6 +11,7 @@ L.Marker = L.Class.extend({
 		title: '',
 		clickable: true,
 		draggable: false,
+		keyboard: true,
 		zIndexOffset: 0,
 		opacity: 1,
 		riseOnHover: false,
@@ -41,7 +42,12 @@ L.Marker = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		if (this.dragging) {
+			this.dragging.disable();
+		}
+
 		this._removeIcon();
+		this._removeShadow();
 
 		this.fire('remove');
 
@@ -73,9 +79,6 @@ L.Marker = L.Class.extend({
 	},
 
 	setIcon: function (icon) {
-		if (this._map) {
-			this._removeIcon();
-		}
 
 		this.options.icon = icon;
 
@@ -100,66 +103,86 @@ L.Marker = L.Class.extend({
 		var options = this.options,
 		    map = this._map,
 		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
-		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide',
-		    needOpacityUpdate = false;
+		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
 
-		if (!this._icon) {
-			this._icon = options.icon.createIcon();
+		var icon = options.icon.createIcon(this._icon),
+			addIcon = false;
+
+		// if we're not reusing the icon, remove the old one and init new one
+		if (icon !== this._icon) {
+			if (this._icon) {
+				this._removeIcon();
+			}
+			addIcon = true;
 
 			if (options.title) {
-				this._icon.title = options.title;
-			}
-
-			this._initInteraction();
-			needOpacityUpdate = (this.options.opacity < 1);
-
-			L.DomUtil.addClass(this._icon, classToAdd);
-
-			if (options.riseOnHover) {
-				L.DomEvent
-					.on(this._icon, 'mouseover', this._bringToFront, this)
-					.on(this._icon, 'mouseout', this._resetZIndex, this);
+				icon.title = options.title;
 			}
 		}
 
-		if (!this._shadow) {
-			this._shadow = options.icon.createShadow();
+		L.DomUtil.addClass(icon, classToAdd);
 
-			if (this._shadow) {
-				L.DomUtil.addClass(this._shadow, classToAdd);
-				needOpacityUpdate = (this.options.opacity < 1);
-			}
+		if (options.keyboard) {
+			icon.tabIndex = '0';
 		}
 
-		if (needOpacityUpdate) {
+		this._icon = icon;
+
+		this._initInteraction();
+
+		if (options.riseOnHover) {
+			L.DomEvent
+				.on(icon, 'mouseover', this._bringToFront, this)
+				.on(icon, 'mouseout', this._resetZIndex, this);
+		}
+
+		var newShadow = options.icon.createShadow(this._shadow),
+			addShadow = false;
+
+		if (newShadow !== this._shadow) {
+			this._removeShadow();
+			addShadow = true;
+
+			if (newShadow) {
+				L.DomUtil.addClass(newShadow, classToAdd);
+			}
+		}
+		this._shadow = newShadow;
+
+
+		if (options.opacity < 1) {
 			this._updateOpacity();
 		}
 
+
 		var panes = this._map._panes;
 
-		panes.markerPane.appendChild(this._icon);
+		if (addIcon) {
+			panes.markerPane.appendChild(this._icon);
+		}
 
-		if (this._shadow) {
+		if (newShadow && addShadow) {
 			panes.shadowPane.appendChild(this._shadow);
 		}
 	},
 
 	_removeIcon: function () {
-		var panes = this._map._panes;
-
 		if (this.options.riseOnHover) {
 			L.DomEvent
 			    .off(this._icon, 'mouseover', this._bringToFront)
 			    .off(this._icon, 'mouseout', this._resetZIndex);
 		}
 
-		panes.markerPane.removeChild(this._icon);
+		this._map._panes.markerPane.removeChild(this._icon);
 
+		this._icon = null;
+	},
+
+	_removeShadow: function () {
 		if (this._shadow) {
-			panes.shadowPane.removeChild(this._shadow);
+			this._map._panes.shadowPane.removeChild(this._shadow);
 		}
-
-		this._icon = this._shadow = null;
+		this._shadow = null;
 	},
 
 	_setPos: function (pos) {
@@ -195,6 +218,7 @@ L.Marker = L.Class.extend({
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
+		L.DomEvent.on(icon, 'keypress', this._onKeyPress, this);
 
 		for (var i = 0; i < events.length; i++) {
 			L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
@@ -221,14 +245,25 @@ L.Marker = L.Class.extend({
 		if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this.fire(e.type, {
-			originalEvent: e
+			originalEvent: e,
+			latlng: this._latlng
 		});
+	},
+
+	_onKeyPress: function (e) {
+		if (e.keyCode === 13) {
+			this.fire('click', {
+				originalEvent: e,
+				latlng: this._latlng
+			});
+		}
 	},
 
 	_fireMouseEvent: function (e) {
 
 		this.fire(e.type, {
-			originalEvent: e
+			originalEvent: e,
+			latlng: this._latlng
 		});
 
 		// TODO proper custom event propagation
@@ -238,6 +273,8 @@ L.Marker = L.Class.extend({
 		}
 		if (e.type !== 'mousedown') {
 			L.DomEvent.stopPropagation(e);
+		} else {
+			L.DomEvent.preventDefault(e);
 		}
 	},
 

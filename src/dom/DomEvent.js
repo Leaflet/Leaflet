@@ -3,6 +3,11 @@
  */
 
 L.DomEvent = {
+	WHEEL:
+		'onwheel' in document ? 'wheel' :
+		'onmousewheel' in document ? 'mousewheel' :
+			'MozMousePixelScroll',
+
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -23,13 +28,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
+		if (type === 'wheel' || type === 'mousewheel') {
+			type = L.DomEvent.WHEEL;
+		}
+
 		if ('addEventListener' in obj) {
 
-			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
-
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -41,12 +46,19 @@ L.DomEvent = {
 
 				obj.addEventListener(newType, handler, false);
 
+			} else if (type === 'click' && L.Browser.android) {
+				originalHandler = handler;
+				handler = function (e) {
+					return L.DomEvent._filterClick(e, originalHandler);
+				};
+
+				obj.addEventListener(type, handler, false);
 			} else {
 				obj.addEventListener(type, handler, false);
 			}
 
 		} else if ('attachEvent' in obj) {
-			obj.attachEvent("on" + type, handler);
+			obj.attachEvent('on' + type, handler);
 		}
 
 		obj[key] = handler;
@@ -60,7 +72,11 @@ L.DomEvent = {
 		    key = '_leaflet_' + type + id,
 		    handler = obj[key];
 
-		if (!handler) { return; }
+		if (!handler) { return this; }
+
+		if (type === 'wheel' || type === 'mousewheel') {
+			type = L.DomEvent.WHEEL;
+		}
 
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
@@ -69,17 +85,13 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if (type === 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false);
-				obj.removeEventListener(type, handler, false);
-
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
 			}
 		} else if ('detachEvent' in obj) {
-			obj.detachEvent("on" + type, handler);
+			obj.detachEvent('on' + type, handler);
 		}
 
 		obj[key] = null;
@@ -98,7 +110,6 @@ L.DomEvent = {
 	},
 
 	disableClickPropagation: function (el) {
-
 		var stop = L.DomEvent.stopPropagation;
 
 		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
@@ -106,7 +117,7 @@ L.DomEvent = {
 		}
 
 		return L.DomEvent
-			.addListener(el, 'click', stop)
+			.addListener(el, 'click', L.DomEvent._fakeStop)
 			.addListener(el, 'dblclick', stop);
 	},
 
@@ -136,16 +147,23 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
-
 		var delta = 0;
 
-		if (e.wheelDelta) {
+		if (e.type === 'wheel') {
+			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
+		} else if (e.type === 'mousewheel') {
 			delta = e.wheelDelta / 120;
+		} else if (e.type === 'MozMousePixelScroll') {
+			delta = -e.detail;
 		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
+
 		return delta;
+	},
+
+	_fakeStop: function stop(e) {
+		// fakes stopPropagation by setting a special event flag checked in Map mouse events handler
+		// jshint camelcase: false
+		e._leaflet_stop = true;
 	},
 
 	// check if element really left/entered the event target (for mouseenter/mouseleave)
@@ -179,6 +197,13 @@ L.DomEvent = {
 			}
 		}
 		return e;
+	},
+
+	// this solves a bug in Android WebView where a single touch triggers two click events.
+	_filterClick: function (e, handler) {
+		// check if click is simulated on the element, and if it is, reject any non-simulated events
+		if (e.target._simulatedClick && !e._simulated) { return; }
+		return handler(e);
 	}
 };
 

@@ -1,22 +1,23 @@
-/*
- * The L namespace contains all Leaflet classes and functions.
- * This code allows you to handle any possible namespace conflicts.
- */
 
-var L, originalL;
+var oldL = window.L,
+    L = {};
 
-if (typeof exports !== undefined + '') {
-	L = exports;
-} else {
-	originalL = window.L;
-	L = {};
+L.version = '0.6';
 
-	L.noConflict = function () {
-		window.L = originalL;
-		return this;
-	};
+// define Leaflet for Node module pattern loaders, including Browserify
+if (typeof module === 'object' && typeof module.exports === 'object') {
+	module.exports = L;
 
-	window.L = L;
+// define Leaflet as an AMD module
+} else if (typeof define === 'function' && define.amd) {
+	define(L);
 }
 
-L.version = '0.5.1';
+// define Leaflet as a global L variable, saving the original L to restore later if needed
+
+L.noConflict = function () {
+	window.L = oldL;
+	return this;
+};
+
+window.L = L;

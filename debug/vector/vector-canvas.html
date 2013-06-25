@@ -11,6 +11,7 @@
 	<script>
 		L_PREFER_CANVAS = true; // experimental
 	</script>
+	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -22,7 +23,7 @@
 
 	<script src="route.js"></script>
 	<script>
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
 
 		for (var i = 0, latlngs = [], len = route.length; i < len; i++) {

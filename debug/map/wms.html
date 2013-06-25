@@ -8,6 +8,7 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
+	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -17,7 +18,7 @@
 	<script type="text/javascript">
 		var map = new L.Map('map');
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/{styleId}/256/{z}/{x}/{y}.png',
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/{styleId}/256/{z}/{x}/{y}.png',
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {styleId: 997, attribution: cloudmadeAttribution}),
 			cloudmade2 = new L.TileLayer(cloudmadeUrl, {styleId: 998, attribution: cloudmadeAttribution});

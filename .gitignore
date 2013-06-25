@@ -7,4 +7,7 @@ tmp/**/*
 *.sublime-*
 _site
 dist/*.js
-spec/coverage
+coverage/
+*.js.html
+index.html
+.mailmap
