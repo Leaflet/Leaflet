@@ -33,6 +33,26 @@ describe("L.Marker#toGeoJSON", function () {
 	});
 });
 
+describe("L.Circle#toGeoJSON", function () {
+	it("returns a Point object", function () {
+		var circle = new L.Circle([10, 20], 100);
+		expect(circle.toGeoJSON().geometry).to.eql({
+			type: 'Point',
+			coordinates: [20, 10]
+		});
+	});
+});
+
+describe("L.CircleMarker#toGeoJSON", function () {
+	it("returns a Point object", function () {
+		var marker = new L.CircleMarker([10, 20]);
+		expect(marker.toGeoJSON().geometry).to.eql({
+			type: 'Point',
+			coordinates: [20, 10]
+		});
+	});
+});
+
 describe("L.Polyline#toGeoJSON", function () {
 	it("returns a LineString object", function () {
 		var polyline = new L.Polyline([[10, 20], [2, 5]]);

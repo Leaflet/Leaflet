@@ -7,7 +7,7 @@
 var oldL = window.L,
     L = {};
 
-L.version = '0.6-dev';
+L.version = '0.6';
 
 // define Leaflet for Node module pattern loaders, including Browserify
 if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -1092,24 +1092,48 @@ L.DomUtil.TRANSITION_END =
 	var userSelectProperty = L.DomUtil.testProp(
 		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
-	L.DomUtil.disableTextSelection = function () {
-		if (userSelectProperty) {
-			var style = document.documentElement.style;
-			this._userSelect = style[userSelectProperty];
-			style[userSelectProperty] = 'none';
-		} else {
-			L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
-		}
-	};
+	var userDragProperty = L.DomUtil.testProp(
+		['userDrag', 'WebkitUserDrag', 'OUserDrag', 'MozUserDrag', 'msUserDrag']);
 
-	L.DomUtil.enableTextSelection = function () {
-		if (userSelectProperty) {
-			document.documentElement.style[userSelectProperty] = this._userSelect;
-			delete this._userSelect;
-		} else {
-			L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
+	L.extend(L.DomUtil, {
+		disableTextSelection: function () {
+			if (userSelectProperty) {
+				var style = document.documentElement.style;
+				this._userSelect = style[userSelectProperty];
+				style[userSelectProperty] = 'none';
+			} else {
+				L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
+			}
+		},
+
+		enableTextSelection: function () {
+			if (userSelectProperty) {
+				document.documentElement.style[userSelectProperty] = this._userSelect;
+				delete this._userSelect;
+			} else {
+				L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
+			}
+		},
+
+		disableImageDrag: function () {
+			if (userDragProperty) {
+				var style = document.documentElement.style;
+				this._userDrag = style[userDragProperty];
+				style[userDragProperty] = 'none';
+			} else {
+				L.DomEvent.on(window, 'dragstart', L.DomEvent.stop);
+			}
+		},
+
+		enableImageDrag: function () {
+			if (userDragProperty) {
+				document.documentElement.style[userDragProperty] = this._userDrag;
+				delete this._userDrag;
+			} else {
+				L.DomEvent.off(window, 'dragstart', L.DomEvent.stop);
+			}
 		}
-	};
+	});
 })();
 
 
@@ -1527,9 +1551,14 @@ L.Map = L.Class.extend({
 		}
 
 		this._handlers = [];
+
+		this._layers = {};
+		this._zoomBoundLayers = {};
+		this._tileLayersNum = 0;
+
 		this.callInitHooks();
 
-		this._initLayers(options.layers);
+		this._addLayers(options.layers);
 	},
 
 
@@ -2028,16 +2057,10 @@ L.Map = L.Class.extend({
 		this._container.removeChild(this._mapPane);
 	},
 
-	_initLayers: function (layers) {
+	_addLayers: function (layers) {
 		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
 
-		this._layers = {};
-		this._zoomBoundLayers = {};
-		this._tileLayersNum = 0;
-
-		var i, len;
-
-		for (i = 0, len = layers.length; i < len; i++) {
+		for (var i = 0, len = layers.length; i < len; i++) {
 			this.addLayer(layers[i]);
 		}
 	},
@@ -3880,7 +3903,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'wheel', L.DomEvent.stopPropagation);
 		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -6074,14 +6097,18 @@ L.extend(L.GeoJSON, {
 	}
 });
 
-L.Marker.include({
+var PointToGeoJSON = {
 	toGeoJSON: function () {
 		return L.GeoJSON.getFeature(this, {
 			type: 'Point',
 			coordinates: L.GeoJSON.latLngToCoords(this.getLatLng())
 		});
 	}
-});
+};
+
+L.Marker.include(PointToGeoJSON);
+L.Circle.include(PointToGeoJSON);
+L.CircleMarker.include(PointToGeoJSON);
 
 L.Polyline.include({
 	toGeoJSON: function () {
@@ -6163,6 +6190,11 @@ L.geoJson = function (geojson, options) {
  */
 
 L.DomEvent = {
+	WHEEL:
+		'onwheel' in document ? 'wheel' :
+		'onmousewheel' in document ? 'mousewheel' :
+			'MozMousePixelScroll',
+
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -6183,13 +6215,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
+		if (type === 'wheel' || type === 'mousewheel') {
+			type = L.DomEvent.WHEEL;
+		}
+
 		if ('addEventListener' in obj) {
 
-			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
-
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -6229,6 +6261,10 @@ L.DomEvent = {
 
 		if (!handler) { return this; }
 
+		if (type === 'wheel' || type === 'mousewheel') {
+			type = L.DomEvent.WHEEL;
+		}
+
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
@@ -6236,11 +6272,7 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if (type === 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false);
-				obj.removeEventListener(type, handler, false);
-
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
@@ -6302,15 +6334,16 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
-
 		var delta = 0;
 
-		if (e.wheelDelta) {
+		if (e.type === 'wheel') {
+			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
+		} else if (e.type === 'mousewheel') {
 			delta = e.wheelDelta / 120;
+		} else if (e.type === 'MozMousePixelScroll') {
+			delta = -e.detail;
 		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
+
 		return delta;
 	},
 
@@ -6353,10 +6386,22 @@ L.DomEvent = {
 		return e;
 	},
 
-	// this solves a bug in Android WebView where a single touch triggers two click events.
+	// this is a horrible workaround for a bug in Android where a single touch triggers two click events
 	_filterClick: function (e, handler) {
-		// check if click is simulated on the element, and if it is, reject any non-simulated events
-		if (e.target._simulatedClick && !e._simulated) { return; }
+		var timeStamp = (e.timeStamp || e.originalEvent.timeStamp),
+			elapsed = L.DomEvent._lastClick && (timeStamp - L.DomEvent._lastClick);
+
+		// are they closer together than 1000ms yet more than 100ms?
+		// Android typically triggers them ~300ms apart while multiple listeners
+		// on the same event should be triggered far faster;
+		// or check if click is simulated on the element, and if it is, reject any non-simulated events
+
+		if ((elapsed && elapsed > 100 && elapsed < 1000) || (e.target._simulatedClick && !e._simulated)) {
+			L.DomEvent.stop(e);
+			return;
+		}
+		L.DomEvent._lastClick = timeStamp;
+
 		return handler(e);
 	}
 };
@@ -6416,10 +6461,11 @@ L.Draggable = L.Class.extend({
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent
-			.preventDefault(e)
 			.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
+
+		L.DomUtil.disableImageDrag();
 
 		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
@@ -6488,6 +6534,8 @@ L.Draggable = L.Class.extend({
 			    .off(document, L.Draggable.MOVE[i], this._onMove)
 			    .off(document, L.Draggable.END[i], this._onUp);
 		}
+
+		L.DomUtil.enableImageDrag();
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -6716,12 +6764,12 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'wheel', this._onWheelScroll);
 	},
 
 	_onWheelScroll: function (e) {
@@ -7277,6 +7325,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		L.DomUtil.disableTextSelection();
+		L.DomUtil.disableImageDrag();
 
 		this._startLayerPoint = this._map.mouseEventToLayerPoint(e);
 
@@ -7289,8 +7338,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomEvent
 		    .on(document, 'mousemove', this._onMouseMove, this)
 		    .on(document, 'mouseup', this._onMouseUp, this)
-		    .on(document, 'keydown', this._onKeyDown, this)
-		    .preventDefault(e);
+		    .on(document, 'keydown', this._onKeyDown, this);
 
 		this._map.fire('boxzoomstart');
 	},
@@ -7318,6 +7366,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._container.style.cursor = '';
 
 		L.DomUtil.enableTextSelection();
+		L.DomUtil.enableImageDrag();
 
 		L.DomEvent
 		    .off(document, 'mousemove', this._onMouseMove)
@@ -8079,7 +8128,7 @@ L.Control.Layers = L.Control.extend({
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
-			L.DomEvent.on(container, 'mousewheel', L.DomEvent.stopPropagation);
+			L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
 		} else {
 			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}

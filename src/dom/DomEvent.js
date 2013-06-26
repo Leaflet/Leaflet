@@ -3,6 +3,11 @@
  */
 
 L.DomEvent = {
+	WHEEL:
+		'onwheel' in document ? 'wheel' :
+		'onmousewheel' in document ? 'mousewheel' :
+			'MozMousePixelScroll',
+
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -23,13 +28,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
+		if (type === 'wheel' || type === 'mousewheel') {
+			type = L.DomEvent.WHEEL;
+		}
+
 		if ('addEventListener' in obj) {
 
-			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
-
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -69,6 +74,10 @@ L.DomEvent = {
 
 		if (!handler) { return this; }
 
+		if (type === 'wheel' || type === 'mousewheel') {
+			type = L.DomEvent.WHEEL;
+		}
+
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
@@ -76,11 +85,7 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if (type === 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false);
-				obj.removeEventListener(type, handler, false);
-
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
@@ -142,15 +147,16 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
-
 		var delta = 0;
 
-		if (e.wheelDelta) {
+		if (e.type === 'wheel') {
+			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
+		} else if (e.type === 'mousewheel') {
 			delta = e.wheelDelta / 120;
+		} else if (e.type === 'MozMousePixelScroll') {
+			delta = -e.detail;
 		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
+
 		return delta;
 	},
 
@@ -193,10 +199,22 @@ L.DomEvent = {
 		return e;
 	},
 
-	// this solves a bug in Android WebView where a single touch triggers two click events.
+	// this is a horrible workaround for a bug in Android where a single touch triggers two click events
 	_filterClick: function (e, handler) {
-		// check if click is simulated on the element, and if it is, reject any non-simulated events
-		if (e.target._simulatedClick && !e._simulated) { return; }
+		var timeStamp = (e.timeStamp || e.originalEvent.timeStamp),
+			elapsed = L.DomEvent._lastClick && (timeStamp - L.DomEvent._lastClick);
+
+		// are they closer together than 1000ms yet more than 100ms?
+		// Android typically triggers them ~300ms apart while multiple listeners
+		// on the same event should be triggered far faster;
+		// or check if click is simulated on the element, and if it is, reject any non-simulated events
+
+		if ((elapsed && elapsed > 100 && elapsed < 1000) || (e.target._simulatedClick && !e._simulated)) {
+			L.DomEvent.stop(e);
+			return;
+		}
+		L.DomEvent._lastClick = timeStamp;
+
 		return handler(e);
 	}
 };

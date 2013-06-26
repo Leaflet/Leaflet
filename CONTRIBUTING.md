@@ -138,10 +138,10 @@ If you need to make edits in a local repository to see how it looks in the proce
 
  1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
  2. Run `gem install jekyll`.
- 3. Run `jekyll --auto` inside the `Leaflet` folder.
- 4. Open the website from the `_site` folder.
+ 3. Run `jekyll serve --watch` in the root `Leaflet` folder.
+ 4. Open `localhost:4000` in your browser.
 
-Now any file changes will be reflected on the generated pages automatically.
+Now any file changes will be updated when you reload pages automatically.
 After commiting the changes, just send a pull request.
 
 If you need to update documentation according to a new feature that only appeared in the master version (not stable one),
