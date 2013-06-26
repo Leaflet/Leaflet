@@ -13,15 +13,15 @@ Besides the library itself, the download package contains full source code, unit
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/zipball/v0.5.1">Leaflet 0.5.1</a></td>
-		<td>Stable version, released on January 17, 2013 and last updated on February 6, 2013</td>
+		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.6.zip">Leaflet 0.6</a></td>
+		<td>Stable version, released on June 26, 2013</td>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/zipball/v0.4.5">Leaflet 0.4.5</a></td>
-		<td>Previous stable version, released on July 30, 2012 and last updated on October 25, 2012</td>
+		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.5.1.zip">Leaflet 0.5.1</a></td>
+		<td>Previous stable version, released on January 17, 2013 and last updated on February 6, 2013</td>
 	</tr>
 	<tr>
-		<td><a href="http://github.com/Leaflet/Leaflet/zipball/master">Leaflet master</a></td>
+		<td><a href="http://github.com/Leaflet/Leaflet/archive/master.zip">Leaflet master</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch</td>
 	</tr>
 </table>
@@ -35,12 +35,12 @@ Note that the master version can contain incompatible changes, so please read th
 The latest stable release of Leaflet is hosted on a CDN — to start using
 it straight away, place this code in the `head` section of your HTML:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.ie.css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.ie.css" />
     <![endif]-->
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.5.1/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js"></script>
 
 ### Building Leaflet from the Source
 
@@ -50,9 +50,7 @@ Leaflet build system is powered by the [Node.js](http://nodejs.org) platform and
  2. Run the following commands in the command line:
 
  <pre><code class="no-highlight">npm install -g jake
-npm install jshint
-npm install uglify-js
-</code></pre>
+npm install</code></pre>
 
 Now that you have everything installed, run `jake` inside the Leaflet directory. This will check Leaflet source files for JavaScript errors and inconsistencies, and then combine and compress it to the `dist` folder.
 
