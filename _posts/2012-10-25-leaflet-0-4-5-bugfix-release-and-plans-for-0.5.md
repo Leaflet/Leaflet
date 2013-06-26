@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Leaflet 0.4.5 bugfix release and plans for 0.5
+title: Leaflet 0.4.5 Bugfix Release and Plans for 0.5
 description: Leaflet 0.4.5 released, containing a small but important zoom animation bugfix for upcoming Chrome 23+ (currently beta) and IE10. Work on future 0.5 release goes on!
 author: Vladimir Agafonkin
 authorsite: http://agafonkin.com/en

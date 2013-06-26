@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Leaflet.draw 0.2 released
+title: Leaflet.draw 0.2 Released
 description: Leaflet.draw 0.2 released &mdash; brings vector drawing and editing tools to your Leaflet map.
 author: Jacob Toye
 authorsite: https://github.com/jacobtoye/
