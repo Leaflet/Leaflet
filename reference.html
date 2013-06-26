@@ -399,6 +399,12 @@ var map = L.map('map', {
 		<td>Whether the tile zoom animation is enabled. By default it's enabled in all browsers that support CSS3 Transitions except Android.</td>
 	</tr>
 	<tr>
+		<td><code><b>zoomAnimationThreshold</b></code></td>
+		<td><code>Number</code></td>
+		<td><span class="number">4</span></td>
+		<td>Won't animate zoom if the zoom difference exceeds this value.</td>
+	</tr>
+	<tr>
 		<td><code><b>markerZoomAnimation</b></code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
@@ -602,51 +608,63 @@ var map = L.map('map', {
 		<td><code><b>setView</b>(
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>,</nobr>
 			<nobr>&lt;Number&gt; <i>zoom</i>,</nobr>
-			<nobr>&lt;Boolean&gt; <i>forceReset?</i> )</nobr>
+			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Sets the view of the map (geographical center and zoom). If <code>forceReset</code> is set to <code><span class="literal">true</span></code>, the map is reloaded even if it's eligible for pan or zoom animation (<code><span class="literal">false</span></code> by default).</td>
+		<td>Sets the view of the map (geographical center and zoom) with the given animation options.</td>
 	</tr>
 	<tr>
 		<td><code><b>setZoom</b>(
-			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+			<nobr>&lt;Number&gt; <i>zoom</i></nobr>,
+			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the zoom of the map.</td>
 	</tr>
 	<tr>
-		<td><code><b>zoomIn</b>( <nobr>&lt;Number&gt; delta? )</nobr></code></td>
+		<td><code><b>zoomIn</b>(
+			<nobr>&lt;Number&gt; <em>delta?</em></nobr>,
+			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Increases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
 	</tr>
 	<tr>
-		<td><code><b>zoomOut</b>( <nobr>&lt;Number&gt; delta? )</nobr></code></td>
+		<td><code><b>zoomOut</b>(
+			<nobr>&lt;Number&gt; <em>delta?</em></nobr>,
+			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Decreases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
 	</tr>
 	<tr>
 		<td><code><b>setZoomAround</b>(
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i>, </nobr>
-			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+			<nobr>&lt;Number&gt; <i>zoom</i></nobr>,
+			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Zooms the map while keeping a specified point on the map stationary (e.g. used internally for scroll zoom and double-click zoom).</td>
 	</tr>
 	<tr id="map-fitbounds">
 		<td><code><b>fitBounds</b>(
-			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#map-fitboundsoptions">fitBounds options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
 	</tr>
 	<tr id="map-fitworld">
-		<td><code><b>fitWorld</b>()</code></td>
+		<td><code><b>fitWorld</b>(
+			<nobr>&lt;<a href="#map-fitboundsoptions">fitBounds options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets a map view that mostly contains the whole world with the maximum zoom level possible.</td>
 	</tr>
 	<tr>
 		<td><code><b>panTo</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;<a href="#map-panoptions">pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
@@ -660,17 +678,19 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>panBy</b>(
-			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
+			<nobr>&lt;<a href="#map-panoptions">pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Pans the map by a given number of pixels (animated).</td>
 	</tr>
 	<tr>
 		<td><code><b>invalidateSize</b>(
-			<nobr>&lt;Boolean&gt; <i>animate?</i> )</nobr>
+			<nobr>&lt;Boolean&gt; <i>options?</i></nobr>,
+			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically. If <code>animate</code> is <code><span class="literal">true</span></code>, map animates the update.</td>
+		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default. If <code>options.pan</code> is <code><span class="literal">false</span></code>, panning will not occur.</td>
 	</tr>
 	<tr id="map-setmaxbounds">
 		<td><code><b>setMaxBounds</b>(
@@ -1011,7 +1031,7 @@ var map = L.map('map', {
 </table>
 
 
-<h3 id="map-zoompanoptions">zoom/pan options</h3>
+<h3 id="map-zoompanoptions">Zoom/pan options</h3>
 
 <table>
 	<tr>
@@ -1027,20 +1047,26 @@ var map = L.map('map', {
 		<td>If <code><span class="literal">true</span></code>, the map view will be completely reset (without any animations).</td>
 	</tr>
 	<tr>
+		<td><code><b>pan</b></code></td>
+		<td><code><a href="#map-panoptions">pan options</a></code></td>
+		<td><code>-</code></td>
+		<td>Sets the options for the panning (without the zoom change) if it occurs.</td>
+	</tr>
+	<tr>
 		<td><code><b>zoom</b></code></td>
 		<td><code><a href="#map-zoomoptions">zoom options</a></code></td>
 		<td><code>-</code></td>
 		<td>Sets the options for the zoom change if it occurs.</td>
 	</tr>
 	<tr>
-		<td><code><b>zoom</b></code></td>
-		<td><code><a href="#map-panoptions">zoom options</a></code></td>
-		<td><code>-</code></td>
-		<td>Sets the options for the panning (without the zoom change) if it occurs.</td>
+		<td><code><b>animate</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">-</span></code></td>
+		<td>An equivalent of passing <code>animate</code> to both zoom and pan options (see below).</td>
 	</tr>
 </table>
 
-<h3 id="map-zoomoptions">zoom/pan options</h3>
+<h3 id="map-panoptions">Pan options</h3>
 
 <table>
 	<tr>
@@ -1050,26 +1076,32 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>reset</b></code></td>
+		<td><code><b>animate</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>-</code></td>
+		<td>If <code><span class="literal">true</span></code>, panning will always be animated if possible. If <code><span class="literal">false</span></code>, it will not animate panning, either resetting the map view if panning more than a screen away, or just setting a new offset for the map pane (except for `panBy` which always does the latter).</td>
+	</tr>
+	<tr>
+		<td><code><b>duration</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">0.25</span></code></td>
+		<td>Duration of animated panning.</td>
+	</tr>
+	<tr>
+		<td><code><b>easeLinearity</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">0.25</span></code></td>
+		<td>The curvature factor of panning animation easing (third parameter of the <a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). <span class="number">1.0</span> means linear animation, the less the more bowed the curve.</td>
+	</tr>
+	<tr>
+		<td><code><b>noMoveStart</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the map view will be completely reset (without any animations).</td>
-	</tr>
-	<tr>
-		<td><code><b>zoom</b></code></td>
-		<td><code><a href="#map-zoomoptions">zoom options</a></code></td>
-		<td><code>-</code></td>
-		<td>Sets the options for the zoom change if it occurs.</td>
-	</tr>
-	<tr>
-		<td><code><b>zoom</b></code></td>
-		<td><code><a href="#map-panoptions">zoom options</a></code></td>
-		<td><code>-</code></td>
-		<td>Sets the options for the panning (without the zoom change) if it occurs.</td>
+		<td>If <code><span class="literal">true</span></code>, panning won't fire <code>movestart</code> event on start (used internally for panning inertia).</td>
 	</tr>
 </table>
 
-<h3 id="map-panoptions">zoom/pan options</h3>
+<h3 id="map-zoomoptions">Zoom options</h3>
 
 <table>
 	<tr>
@@ -1079,24 +1111,44 @@ var map = L.map('map', {
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>reset</b></code></td>
+		<td><code><b>animate</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the map view will be completely reset (without any animations).</td>
-	</tr>
-	<tr>
-		<td><code><b>zoom</b></code></td>
-		<td><code><a href="#map-zoomoptions">zoom options</a></code></td>
 		<td><code>-</code></td>
-		<td>Sets the options for the zoom change if it occurs.</td>
-	</tr>
-	<tr>
-		<td><code><b>zoom</b></code></td>
-		<td><code><a href="#map-panoptions">zoom options</a></code></td>
-		<td><code>-</code></td>
-		<td>Sets the options for the panning (without the zoom change) if it occurs.</td>
+		<td>If not specified, zoom animation will happen if the zoom origin is inside the current view. If <code><span class="literal">true</span></code>, the map will attempt animating zoom disregarding where zoom origin is. Setting <code><span class="literal">false</span></code> will make it always reset the view completely without animation.</td>
 	</tr>
 </table>
+
+<h3 id="map-fitboundsoptions">fitBounds options</h3>
+
+<p>The same as <a href="#map-zoompanoptions">zoom/pan options</a> and additionally:</p>
+
+<table>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>paddingTopLeft</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td>Sets the amount of padding in the top left corner of a map container that shouldn't be accounted for when setting the view to fit bounds. Useful if you have some control overlays on the map like a sidebar and you don't want them to obscure objects you're zooming to.</td>
+	</tr>
+	<tr>
+		<td><code><b>paddingBottomRight</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td>The same for bottom right corner of the map.</td>
+	</tr>
+	<tr>
+		<td><code><b>padding</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
+	</tr>
+</table>
+
 
 <h3 id="map-properties">Properties</h3>
 
