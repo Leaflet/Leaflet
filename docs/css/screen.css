@@ -149,6 +149,13 @@ p code, td:last-child code {
 	color: #666;
 }
 
+p, ul, ol, table {
+	font-size: 13px;
+}
+code {
+	font-size: 12px;
+}
+
 /*.api-page td:last-child pre {
 	margin-top: 0.5em;
 }*/
