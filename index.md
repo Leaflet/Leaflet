@@ -2,11 +2,11 @@
 layout: default
 ---
 
-<!--<p class="notice">January 17, 2013 &mdash; Leaflet 0.5 Released &mdash; <a href="2013/01/17/leaflet-0-5-released.html">Read More in the Blog</a></p>-->
+<p class="notice">June 26, 2013 &mdash; Leaflet 0.6 Released, Code Sprint in DC with MapBox &mdash; <a href="2013/06/26/leaflet-0-6-released-dc-code-sprint-mapbox.html">Read More in the Blog</a></p>
 
 Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.
 It is developed by [Vladimir Agafonkin][] with a&nbsp;team of dedicated [contributors][].
-Weighing just about <abbr title="28KB gzipped &mdash; that's 110 KB minified and 196 KB in the source form, with 10 KB of CSS (2 KB gzipped) and 7 KB of images.">28 KB of JS code</abbr>,
+Weighing just about <abbr title="31KB gzipped &mdash; that's 117 KB minified and 202 KB in the source form, with 10 KB of CSS (2 KB gzipped) and 17 KB of images.">31 KB of JS code</abbr>,
 it has all the [features][] most developers ever need for online maps.
 
 Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind.
@@ -20,13 +20,13 @@ Used by:
 [Flickr](http://flickr.com/map)
 [foursquare](https://foursquare.com/)
 [craigslist](http://t.co/V4EiURIA)
+[Data.gov](http://data.gov)
 [IGN](http://www.ign.com/wikis/the-elder-scrolls-5-skyrim/interactive-maps/Skyrim)
 [Wikimedia](http://blog.wikimedia.org/2012/04/05/new-wikipedia-app-for-ios-and-an-update-for-our-android-app/)
 [OSM](http://openstreetmap.org)
 [Meetup](http://www.meetup.com/)
 [WSJ](http://projects.wsj.com/campaign2012/maps/)
-[Geocaching](http://geocaching.com)
-[StreetEasy](http://streeteasy.com/)
+[MapBox](http://mapbox.com)
 [CloudMade](http://cloudmade.com)
 [CartoDB](http://cartodb.com)
 [GIS Cloud](http://www.giscloud.com/)
