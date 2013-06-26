@@ -6,7 +6,8 @@ Leaflet Changelog
 ## 0.7 (master)
 
 An in-progress version being developed on the master branch.
-No changes since the latest stable yet.
+
+ * Fixed a bug where zoom buttons inherited Bootstrap link hover styles. [#1791](https://github.com/Leaflet/Leaflet/issues/1791)
 
 ## 0.6 (June 26, 2013)
 
