@@ -603,7 +603,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
-	</tr>		
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ismyrnow/Leaflet.groupedlayercontrol">Leaflet.GroupedLayerControl</a>
+		</td><td>
+			Leaflet layer control with support for grouping overlays together.
+		</td><td>
+			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
+		</td>
+	</tr>
 </table>
 
 
