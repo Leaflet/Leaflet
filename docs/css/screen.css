@@ -548,3 +548,24 @@ p.notice {
 #disqus_thread {
 	margin-top: 3em;
 }
+
+tr:target {
+	background: yellow;
+	-webkit-animation: highlight 2s ease 0.5s 1 normal forwards;
+	   -moz-animation: highlight 2s ease 0.5s 1 normal forwards;
+	     -o-animation: highlight 2s ease 0.5s 1 normal forwards;
+	        animation: highlight 2s ease 0.5s 1 normal forwards;
+}
+
+@-webkit-keyframes highlight {
+	0%   { background: yellow; }
+	100% { background: white; }
+}
+@-moz-keyframes highlight {
+	0%   { background: yellow; }
+	100% { background: white; }
+}
+@keyframes highlight {
+	0%   { background: yellow; }
+	100% { background: white; }
+}

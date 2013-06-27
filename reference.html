@@ -6296,13 +6296,13 @@ var Leaflet = L.noConflict();
 <pre><code>L.version // returns "0.5" (or whatever version is currently in use)</code></pre>
 
 <script>
-var tables = document.getElementsByTagName('table'), tl = tables.length;
-for (var i = 0; i < tl; i++) {
+var tables = document.getElementsByTagName('table');
+for (var i = 0, len = tables.length; i < len; i++) {
     var id = tables[i].getAttribute('data-id'),
-        tds = tables[i].getElementsByTagName('td'), tdl = tds.length;
-    for (var j = 0; j < tdl; j++) {
+        tds = tables[i].getElementsByTagName('td');
+    for (var j = 0, tdLen = tds.length; j < tdLen; j++) {
         if (tds[j].cellIndex === 0) {
-            tds[j].id = id + '-' + tds[j].innerText.split('(')[0].toLowerCase();
+            tds[j].parentNode.id = id + '-' + tds[j].innerText.split('(')[0].toLowerCase();
         }
     }
 }
