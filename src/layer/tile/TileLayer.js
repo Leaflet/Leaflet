@@ -270,9 +270,10 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_getTileSize: function () {
-		var zoom = this._map.getZoom(),
-			zoomN = this.options.maxNativeZoom,
-			tileSize = this.options.tileSize;
+		var map = this._map,
+		    zoom = map.getZoom(),
+		    zoomN = this.options.maxNativeZoom,
+		    tileSize = this.options.tileSize;
 
 		if (zoomN && zoom > zoomN) {
 			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
