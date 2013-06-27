@@ -287,7 +287,7 @@ L.TileLayer = L.Class.extend({
 		if (!this._map) { return; }
 
 		var map = this._map,
-			bounds = map.getPixelBounds(),
+		    bounds = map.getPixelBounds(),
 		    zoom = map.getZoom(),
 		    tileSize = this._getTileSize();
 
@@ -454,7 +454,7 @@ L.TileLayer = L.Class.extend({
 
 		zoom += options.zoomOffset;
 
-		return this.options.maxNativeZoom ? Math.min(zoom, options.maxNativeZoom) : zoom;
+		return options.maxNativeZoom ? Math.min(zoom, options.maxNativeZoom) : zoom;
 	},
 
 	_getTilePos: function (tilePoint) {
