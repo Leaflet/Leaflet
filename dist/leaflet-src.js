@@ -6460,6 +6460,7 @@ L.Draggable = L.Class.extend({
 		if (L.Draggable._disabled) { return; }
 
 		L.DomUtil.disableImageDrag();
+		L.DomUtil.disableTextSelection();
 
 		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
@@ -6499,7 +6500,6 @@ L.Draggable = L.Class.extend({
 			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
 			if (!L.Browser.touch) {
-				L.DomUtil.disableTextSelection();
 				L.DomUtil.addClass(document.body, 'leaflet-dragging');
 			}
 		}
@@ -6519,7 +6519,6 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function () {
 		if (!L.Browser.touch) {
-			L.DomUtil.enableTextSelection();
 			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
 
@@ -6530,6 +6529,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		L.DomUtil.enableImageDrag();
+		L.DomUtil.enableTextSelection();
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -8664,28 +8664,13 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 L.TileLayer.include({
 	_animateZoom: function (e) {
-		var firstFrame = false;
-
 		if (!this._animating) {
 			this._animating = true;
-			firstFrame = true;
-		}
-
-		if (firstFrame) {
 			this._prepareBgBuffer();
 		}
 
-		var bg = this._bgBuffer;
-
-		if (firstFrame) {
-			//prevent bg buffer from clearing right after zoom
-			clearTimeout(this._clearBgBufferTimer);
-
-			// hack to make sure transform is updated before running animation
-			L.Util.falseFn(bg.offsetWidth);
-		}
-
-		var transform = L.DomUtil.TRANSFORM,
+		var bg = this._bgBuffer,
+		    transform = L.DomUtil.TRANSFORM,
 		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform],
 		    scaleStr = L.DomUtil.getScaleString(e.scale, e.origin);
 
@@ -8745,6 +8730,9 @@ L.TileLayer.include({
 		bg = this._bgBuffer = front;
 
 		this._stopLoadingImages(bg);
+
+		//prevent bg buffer from clearing right after zoom
+		clearTimeout(this._clearBgBufferTimer);
 	},
 
 	_getLoadedTilesPercentage: function (container) {

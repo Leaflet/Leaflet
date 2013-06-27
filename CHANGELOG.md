@@ -7,6 +7,9 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch. No changes since latest stable release.
 
+ * Fixed a regression with a wrong cursor when dragging a map with vector layers, and tiles becoming selected on double click (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1800](https://github.com/Leaflet/Leaflet/issues/1800)
+ * Fixed a regression that caused flickering of tiles near map border on zoom animation in Chrome.
+
 ## 0.6.1 (June 27, 2013)
 
  * Fixed a regression with mouse wheel zooming too fast on Firefox (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1788](https://github.com/Leaflet/Leaflet/issues/1788)
