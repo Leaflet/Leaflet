@@ -3,11 +3,6 @@
  */
 
 L.DomEvent = {
-	WHEEL:
-		'onwheel' in document ? 'wheel' :
-		'onmousewheel' in document ? 'mousewheel' :
-			'MozMousePixelScroll',
-
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -28,13 +23,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if ('addEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.addEventListener('DOMMouseScroll', handler, false);
+				obj.addEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -74,10 +69,6 @@ L.DomEvent = {
 
 		if (!handler) { return this; }
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
@@ -85,7 +76,11 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.removeEventListener('DOMMouseScroll', handler, false);
+				obj.removeEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
@@ -147,16 +142,15 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
+
 		var delta = 0;
 
-		if (e.type === 'wheel') {
-			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
-		} else if (e.type === 'mousewheel') {
+		if (e.wheelDelta) {
 			delta = e.wheelDelta / 120;
-		} else if (e.type === 'MozMousePixelScroll') {
-			delta = -e.detail;
 		}
-
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
 		return delta;
 	},
 

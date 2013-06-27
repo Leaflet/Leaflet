@@ -197,7 +197,7 @@
 	-webkit-border-radius: 4px;
 	        border-radius: 4px;
 	}
-.leaflet-bar a {
+.leaflet-bar a, .leaflet-bar a:hover {
 	background-color: #fff;
 	border-bottom: 1px solid #ccc;
 	width: 26px;

@@ -7,7 +7,7 @@
 var oldL = window.L,
     L = {};
 
-L.version = '0.6';
+L.version = '0.6.1';
 
 // define Leaflet for Node module pattern loaders, including Browserify
 if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -2335,7 +2335,7 @@ L.Projection.Mercator = {
 		    lng = point.x * d / r,
 		    tmp = r2 / r,
 		    eccent = Math.sqrt(1 - (tmp * tmp)),
-		    ts = Math.exp(- point.y / r2),
+		    ts = Math.exp(- point.y / r),
 		    phi = (Math.PI / 2) - 2 * Math.atan(ts),
 		    numIter = 15,
 		    tol = 1e-7,
@@ -3903,7 +3903,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.on(this._contentNode, 'wheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -6190,11 +6190,6 @@ L.geoJson = function (geojson, options) {
  */
 
 L.DomEvent = {
-	WHEEL:
-		'onwheel' in document ? 'wheel' :
-		'onmousewheel' in document ? 'mousewheel' :
-			'MozMousePixelScroll',
-
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -6215,13 +6210,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if ('addEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.addEventListener('DOMMouseScroll', handler, false);
+				obj.addEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -6261,10 +6256,6 @@ L.DomEvent = {
 
 		if (!handler) { return this; }
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
@@ -6272,7 +6263,11 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.removeEventListener('DOMMouseScroll', handler, false);
+				obj.removeEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
@@ -6334,16 +6329,15 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
+
 		var delta = 0;
 
-		if (e.type === 'wheel') {
-			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
-		} else if (e.type === 'mousewheel') {
+		if (e.wheelDelta) {
 			delta = e.wheelDelta / 120;
-		} else if (e.type === 'MozMousePixelScroll') {
-			delta = -e.detail;
 		}
-
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
 		return delta;
 	},
 
@@ -6764,12 +6758,14 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'MozMousePixelScroll', L.DomEvent.preventDefault);
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'wheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'MozMousePixelScroll', L.DomEvent.preventDefault);
 	},
 
 	_onWheelScroll: function (e) {
@@ -8128,7 +8124,7 @@ L.Control.Layers = L.Control.extend({
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
-			L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
+			L.DomEvent.on(container, 'mousewheel', L.DomEvent.stopPropagation);
 		} else {
 			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
