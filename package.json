@@ -1,6 +1,6 @@
 {
 	"name": "leaflet",
-	"version": "0.6.0",
+	"version": "0.6.1",
 	"description": "JavaScript library for mobile-friendly interactive maps",
 	"devDependencies": {
 		"jshint": "~2.1.4",
