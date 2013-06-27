@@ -13,8 +13,8 @@ Besides the library itself, the download package contains full source code, unit
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.6.zip">Leaflet 0.6</a></td>
-		<td>Stable version, released on June 26, 2013</td>
+		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.6.1.zip">Leaflet 0.6.1</a></td>
+		<td>Stable version, released on June 26, 2013 and last updated on June 27, 2013</td>
 	</tr>
 	<tr>
 		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.5.1.zip">Leaflet 0.5.1</a></td>
@@ -35,12 +35,12 @@ Note that the master version can contain incompatible changes, so please read th
 The latest stable release of Leaflet is hosted on a CDN — to start using
 it straight away, place this code in the `head` section of your HTML:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.1/leaflet.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.ie.css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.1/leaflet.ie.css" />
     <![endif]-->
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.1/leaflet.js"></script>
 
 ### Building Leaflet from the Source
 
