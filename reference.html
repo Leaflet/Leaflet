@@ -168,7 +168,7 @@ var map = L.map('map', {
 
 <h4>Map State Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -221,7 +221,7 @@ var map = L.map('map', {
 
 <h4>Interaction Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -292,7 +292,7 @@ var map = L.map('map', {
 
 <h4>Keyboard Navigation Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -321,7 +321,7 @@ var map = L.map('map', {
 
 <h4>Panning Inertia Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -356,7 +356,7 @@ var map = L.map('map', {
 
 <h4>Control options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -379,7 +379,7 @@ var map = L.map('map', {
 
 <h4>Animation options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -417,7 +417,7 @@ var map = L.map('map', {
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Event</th>
 		<th>Data</th>
@@ -598,7 +598,7 @@ var map = L.map('map', {
 
 <h3 id="map-set-methods">Methods for Modifying Map State</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -720,7 +720,7 @@ var map = L.map('map', {
 
 <h3 id="map-get-methods">Methods for Getting Map State</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -780,7 +780,7 @@ var map = L.map('map', {
 
 <h3 id="map-stuff-methods">Methods for Layers and Controls</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -858,7 +858,7 @@ var map = L.map('map', {
 
 <h3 id="map-conversion-methods">Conversion Methods</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width200">Method</th>
 		<th>Returns</th>
@@ -6294,3 +6294,16 @@ var Leaflet = L.noConflict();
 <p>A constant that represents the Leaflet version in use.<p>
 
 <pre><code>L.version // returns "0.5" (or whatever version is currently in use)</code></pre>
+
+<script>
+var tables = document.getElementsByTagName('table'), tl = tables.length;
+for (var i = 0; i < tl; i++) {
+    var id = tables[i].getAttribute('data-id'),
+        tds = tables[i].getElementsByTagName('td'), tdl = tds.length;
+    for (var j = 0; j < tdl; j++) {
+        if (tds[j].cellIndex === 0) {
+            tds[j].id = id + '.' + tds[j].innerText.split('(')[0];
+        }
+    }
+}
+</script>
