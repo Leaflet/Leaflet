@@ -60,7 +60,7 @@ Keep the file structure clean and simple,
 don't pile up lots of files in one place  &mdash;
 make it easy for a new person to find their way in your repo.
 
-A barebones repo for a simple plugin would like this:
+A barebones repo for a simple plugin would look like this:
 
 	my-plugin.js
 	README.md
