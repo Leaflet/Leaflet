@@ -13,6 +13,7 @@ An in-progress version being developed on the master branch. No changes since la
  * Fixed a regression that caused tiles selection when double-clicking absolutely positioned maps with vector layers in it in Firefox (WTF!) (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1807](https://github.com/Leaflet/Leaflet/issues/1807)
  * Fixed a regression with a wrong cursor when dragging a map with vector layers, and tiles becoming selected on double click (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1800](https://github.com/Leaflet/Leaflet/issues/1800)
  * Fixed a regression that caused flickering of tiles near map border on zoom animation in Chrome.
+ * Added `mouseup` event to `Marker` and `Path` and `mousemove` event to `Marker` for consistency.
 
 ## 0.6.1 (June 27, 2013)
 
