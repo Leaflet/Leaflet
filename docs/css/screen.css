@@ -80,7 +80,8 @@ h2 {
 	cursor: pointer;
 	}
 
-.api-page h2[id]:before {
+.api-page h2[id]:before,
+.api-page tr[id] td:first-child:before {
 	content:'Permalink';
 	display:inline-block;
 	margin:0px 5px 0px -35px;
@@ -95,6 +96,14 @@ h2 {
 	border-radius:50%;
 	overflow:hidden;
 	}
+
+.api-page tr[id] td:first-child:before {
+    opacity:0;
+    }
+
+.api-page tr[id]:hover td:first-child:before {
+    opacity:1;
+    }
 
 .api-page h2[id]:hover:before { opacity:1; }
 
