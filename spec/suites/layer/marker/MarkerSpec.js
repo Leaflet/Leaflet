@@ -1,20 +1,8 @@
 describe("Marker", function () {
-	var map;
-
+	var map,
+		spy;
 	beforeEach(function () {
 		map = L.map(document.createElement('div')).setView([0, 0], 0);
-	});
-
-	it("propagates events from the icon", function() {
-		var events = ['mousedown', 'mouseup', 'mouseover', 'mouseout',
-		              'mousemove', 'dblclick'];
-		for (var i = 0; i < events.length; i++) {
-			var marker = new L.Marker([0, 0]).addTo(map),
-			    spy = sinon.spy();
-			marker.on(events[i], spy);
-			happen[events[i]](marker._icon);
-			expect(spy.called).to.be.ok();
-		}
 	});
 
 	describe("#setIcon", function () {

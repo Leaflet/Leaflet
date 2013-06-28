@@ -214,8 +214,7 @@ L.Marker = L.Class.extend({
 		// TODO refactor into something shared with Map/Path/etc. to DRY it up
 
 		var icon = this._icon,
-		    events = ['mousedown', 'mouseup', 'mouseover', 'mouseout',
-		              'mousemove', 'dblclick', 'contextmenu'];
+		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
