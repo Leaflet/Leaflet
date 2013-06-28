@@ -109,8 +109,8 @@ L.Path = L.Path.extend({
 
 			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-			var events = ['mousedown', 'mouseup', 'mouseover', 'mouseout',
-			              'mousemove', 'dblclick', 'contextmenu'];
+			var events = ['dblclick', 'mousedown', 'mouseover',
+			              'mouseout', 'mousemove', 'contextmenu'];
 			for (var i = 0; i < events.length; i++) {
 				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 			}
