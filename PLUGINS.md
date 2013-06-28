@@ -1,6 +1,6 @@
 # Leaflet Plugin Authoring Guide
 
-One of the greatest things about Leaflet is its powerful plugin ecosystem. 
+One of the greatest things about Leaflet is its powerful plugin ecosystem.
 The [Leaflet plugins page](http://leafletjs.com/plugins.html) lists dozens of awesome plugins, and more are being added every week.
 
 This guide lists a number of best practices for publishing a perfect Leaflet plugin that meets the quality standards of Leaflet itself.
@@ -13,24 +13,24 @@ This guide lists a number of best practices for publishing a perfect Leaflet plu
 2. [Code](#code)
 	- [File Structure](#file-structure)
 	- [Code Conventions](#code-conventions)
-	- [API](#api)
+	- [Plugin API](#plugin-api)
 
 ## Presentation
 
 ### Repository
 
-The best place to put your Leaflet plugin to is a separate [GitHub](http://github.com) repository. 
-If you create a collection of plugins for different uses, 
-don't put them in one repo &mdash; 
+The best place to put your Leaflet plugin to is a separate [GitHub](http://github.com) repository.
+If you create a collection of plugins for different uses,
+don't put them in one repo &mdash;
 it's usually easier to work with small, self-contained plugins.
 
 ### Demo
 
-The most essential thing to do when publishing a plugin is putting up a demo that showcases what the plugin does &mdash; 
+The most essential thing to do when publishing a plugin is putting up a demo that showcases what the plugin does &mdash;
 it's usually the first thing people will look for.
 
-The easiest way to put up a demo is using [GitHub Pages](http://pages.github.com/). 
-A good [starting point](https://help.github.com/articles/creating-project-pages-manually) is creating a `gh-pages` branch in your repo and adding an `index.html` page to it  &mdash; 
+The easiest way to put up a demo is using [GitHub Pages](http://pages.github.com/).
+A good [starting point](https://help.github.com/articles/creating-project-pages-manually) is creating a `gh-pages` branch in your repo and adding an `index.html` page to it  &mdash;
 after pushing, it'll be published as `http://<user>.github.io/<repo>`.
 
 ### Readme
@@ -51,17 +51,17 @@ At the least, it should contain the following items:
 
 ### License
 
-Every good open source repository should have a license specified. 
-If you don't know what open source license to choose for your code, 
-[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices. 
+Every good open source repository should have a license specified.
+If you don't know what open source license to choose for your code,
+[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices.
 You can either put it in the repo as a `LICENSE` file or just link to the license from the Readme.
 
 ## Code
 
 ### File Structure
 
-Keep the file structure clean and simple, 
-don't pile up lots of files in one place  &mdash; 
+Keep the file structure clean and simple,
+don't pile up lots of files in one place  &mdash;
 make it easy for a new person to find their way in your repo.
 
 A barebones repo for a simple plugin would like this:
@@ -87,25 +87,32 @@ package.json
 
 Everyone's tastes are different, but it's important to be consistent with whatever conventions you choose for your plugin.
 
-For a good starting point, check out [Airbnb JavaScript Guide](https://github.com/airbnb/javascript). 
-Leaflet follows pretty much the same conventions 
-except for using smart tabs (hard tabs for indentation, spaces for alignment) 
+For a good starting point, check out [Airbnb JavaScript Guide](https://github.com/airbnb/javascript).
+Leaflet follows pretty much the same conventions
+except for using smart tabs (hard tabs for indentation, spaces for alignment)
 and putting space after `function` keyword.
 
 ### Plugin API
 
-Never expose global variables with your plugin.  
-If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).  
+Never expose global variables with your plugin.
+If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
 If you inherit one of the existing classes, put it as its property (`L.TileLayer.Banana`).
 If you want to add new methods to existing Leaflet classes, you can do it like this: `L.Marker.include({myPlugin: …})`.
 
-Function, method and property names should be in `camelCase`.  
+Function, method and property names should be in `camelCase`.
 Class names should be in `CapitalizedCamelCase`.
 
-If you have a lot of arguments in your function, consider accepting an options object instead:
+If you have a lot of arguments in your function, consider accepting an options object instead (putting default values where possible so that users don't need specify all of them):
 
-```
-marker.myPlugin(arg1, {firstOption: 'foo', secondOption: 2}); // good
-marker.myPlugin(arg1, option1, option2, option3, option4);    // bad
+```js
+// bad
+marker.myPlugin('bla', 'foo', null, {}, 5, 0);
 
+ // good
+marker.myPlugin('bla', {
+	optionOne: 'foo', 
+	optionThree: 5
+});
 ```
+
+And most importantly, keep it simple. Leaflet is all about *simplicity*.
