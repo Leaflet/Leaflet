@@ -3,7 +3,7 @@
 One of the greatest things about Leaflet is its powerful plugin ecosystem.
 The [Leaflet plugins page](http://leafletjs.com/plugins.html) lists dozens of awesome plugins, and more are being added every week.
 
-This guide lists a number of best practices for publishing a perfect Leaflet plugin that meets the quality standards of Leaflet itself.
+This guide lists a number of best practices for publishing a Leaflet plugin that meets the quality standards of Leaflet itself.
 
 1. [Presentation](#presentation)
 	- [Repository](#repository)
@@ -22,11 +22,11 @@ This guide lists a number of best practices for publishing a perfect Leaflet plu
 The best place to put your Leaflet plugin to is a separate [GitHub](http://github.com) repository.
 If you create a collection of plugins for different uses,
 don't put them in one repo &mdash;
-it's usually easier to work with small, self-contained plugins.
+it's usually easier to work with small, self-contained plugins in individual repositories.
 
 ### Demo
 
-The most essential thing to do when publishing a plugin is putting up a demo that showcases what the plugin does &mdash;
+The most essential thing to do when publishing a plugin is to include a demo that showcases what the plugin does &mdash;
 it's usually the first thing people will look for.
 
 The easiest way to put up a demo is using [GitHub Pages](http://pages.github.com/).
@@ -35,14 +35,14 @@ after pushing, it'll be published as `http://<user>.github.io/<repo>`.
 
 ### Readme
 
-The next thing you need to have is a good descriptive `README.md` in the root of the repo (or a link to a website with a similar content).
-At the least, it should contain the following items:
+The next thing you need to have is a descriptive `README.md` in the root of the repo (or a link to a website with a similar content).
+At a minimum it should contain the following items:
 
-- plugin title
-- simple, concise description
+- name of the plugin
+- a simple, concise description of what it does
 - requirements
 	- Leaflet version
-	- other external dependencies (if present)
+	- other external dependencies (if any)
 	- browser / device compatibility
 - links to demos
 - instructions for including the plugin
@@ -51,9 +51,9 @@ At the least, it should contain the following items:
 
 ### License
 
-Every good open source repository should have a license specified.
+Every open source repository should include a license.
 If you don't know what open source license to choose for your code,
-[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices.
+[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices. 
 You can either put it in the repo as a `LICENSE` file or just link to the license from the Readme.
 
 ## Code
@@ -90,13 +90,13 @@ Everyone's tastes are different, but it's important to be consistent with whatev
 For a good starting point, check out [Airbnb JavaScript Guide](https://github.com/airbnb/javascript).
 Leaflet follows pretty much the same conventions
 except for using smart tabs (hard tabs for indentation, spaces for alignment)
-and putting space after `function` keyword.
+and putting a space after the `function` keyword.
 
 ### Plugin API
 
-Never expose global variables with your plugin.
+Never expose global variables in your plugin.
 If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
-If you inherit one of the existing classes, put it as its property (`L.TileLayer.Banana`).
+If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
 If you want to add new methods to existing Leaflet classes, you can do it like this: `L.Marker.include({myPlugin: …})`.
 
 Function, method and property names should be in `camelCase`.
