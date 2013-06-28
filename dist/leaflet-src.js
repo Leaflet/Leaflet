@@ -3607,8 +3607,7 @@ L.Marker = L.Class.extend({
 		// TODO refactor into something shared with Map/Path/etc. to DRY it up
 
 		var icon = this._icon,
-		    events = ['mousedown', 'mouseup', 'mouseover', 'mouseout',
-		              'mousemove', 'dblclick', 'contextmenu'];
+		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
 		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
@@ -4588,8 +4587,8 @@ L.Path = L.Path.extend({
 
 			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-			var events = ['mousedown', 'mouseup', 'mouseover', 'mouseout',
-			              'mousemove', 'dblclick', 'contextmenu'];
+			var events = ['dblclick', 'mousedown', 'mouseover',
+			              'mouseout', 'mousemove', 'contextmenu'];
 			for (var i = 0; i < events.length; i++) {
 				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 			}
