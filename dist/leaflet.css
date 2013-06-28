@@ -53,6 +53,10 @@
 	width: 0;
 	height: 0;
 	}
+/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
+.leaflet-overlay-pane svg {
+	-moz-user-select: none;
+	}
 
 .leaflet-tile-pane    { z-index: 2; }
 .leaflet-objects-pane { z-index: 3; }
