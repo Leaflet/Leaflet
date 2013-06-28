@@ -7,7 +7,7 @@
 var oldL = window.L,
     L = {};
 
-L.version = '0.6.1';
+L.version = '0.6.2';
 
 // define Leaflet for Node module pattern loaders, including Browserify
 if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -2606,10 +2606,7 @@ L.TileLayer = L.Class.extend({
 				var className = 'leaflet-tile-container leaflet-zoom-animated';
 
 				this._bgBuffer = L.DomUtil.create('div', className, this._container);
-				this._bgBuffer.style.zIndex = 1;
-
 				this._tileContainer = L.DomUtil.create('div', className, this._container);
-				this._tileContainer.style.zIndex = 2;
 
 			} else {
 				this._tileContainer = this._container;
@@ -8684,9 +8681,7 @@ L.TileLayer.include({
 		    bg = this._bgBuffer;
 
 		front.style.visibility = '';
-		front.style.zIndex = 2;
-
-		bg.style.zIndex = 1;
+		front.parentNode.appendChild(front); // Bring to fore
 
 		// force reflow
 		L.Util.falseFn(bg.offsetWidth);
