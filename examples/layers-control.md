@@ -64,6 +64,8 @@ Now, all that's left to do is to create a [Layers Control](../reference.html#con
 
 Note that we added `minimal`, `motorways` and `cities` layers to the map but didn't add `midnight`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
 
+Also note that when using multiple base layers, only one of them should be added to the map at instantiation, but all of them should be present in the base layers object when creating the layers control.
+
 Now lets [view the result on a separate page &rarr;](layers-control-example.html)
 
 <script>
