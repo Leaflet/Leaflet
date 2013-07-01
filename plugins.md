@@ -613,6 +613,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/slara/Leaflet.BorderPan">Leaflet.BorderPan</a>
+		</td><td>
+                        A Leaflet plugin to pan by clicking on map borders.
+		</td><td>
+			<a href="https://github.com/slara">Sebastián Lara</a>
+		</td>
+	</tr>
 </table>
 
 
