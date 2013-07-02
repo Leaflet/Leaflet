@@ -5,7 +5,9 @@ Leaflet Changelog
 
 ## 0.7-dev (master)
 
-An in-progress version being developed on the master branch. No changes since latest stable release.
+An in-progress version being developed on the master branch.
+
+* Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by upscaling tiles. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
 
 ## 0.6.2 (June 28, 2013)
 
@@ -26,6 +28,7 @@ An in-progress version being developed on the master branch. No changes since la
 
  * Moved polyline editing code into [Leaflet.draw](https://github.com/Leaflet/Leaflet.draw) plugin (where it fits much better along with all other editing and drawing handlers). The API remains the same.
  * Dropped support for environments that augment `Object.prototype` (luckily it's a thing of the past nowadays).
+ * `Map` `invalidateSize` no longer fires `move` and `moveend` events if the map size didn't change. [#1819](https://github.com/Leaflet/Leaflet/issues/1819)
 
 ### Improvements
 
