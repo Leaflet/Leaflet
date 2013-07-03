@@ -147,10 +147,10 @@ L.extend(L.GeoJSON, {
 	},
 
 	latLngToCoords: function (latLng) {
-		if (typeof latLng.altitude === 'undefined') {
+		if (typeof latLng.alt === 'undefined') {
 			return [latLng.lng, latLng.lat];
 		} else {
-			return [latLng.lng, latLng.lat, latLng.altitude];
+			return [latLng.lng, latLng.lat, latLng.alt];
 		}
 	},
 

@@ -18,15 +18,15 @@ describe('LatLng', function() {
 		
 		it ('does not set altitude if undefined', function () {
 			var a = new L.LatLng(25, 74);
-			expect(typeof a.altitude).to.eql('undefined');
+			expect(typeof a.alt).to.eql('undefined');
 		});
 
 		it ('sets altitude', function () {
 			var a = new L.LatLng(25, 74, 50);
-			expect(a.altitude).to.eql(50);
+			expect(a.alt).to.eql(50);
 			
 			var b = new L.LatLng(-25, -74, -50);
-			expect(b.altitude).to.eql(-50);
+			expect(b.alt).to.eql(-50);
 		});
 		
 	});

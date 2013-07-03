@@ -2,7 +2,7 @@
  * L.LatLng represents a geographical point with latitude and longitude coordinates.
  */
 
-L.LatLng = function (rawLat, rawLng, rawAltitude) { // (Number, Number, Number)
+L.LatLng = function (rawLat, rawLng, rawAlt) { // (Number, Number, Number)
 	var lat = parseFloat(rawLat),
 	    lng = parseFloat(rawLng);
 
@@ -13,8 +13,8 @@ L.LatLng = function (rawLat, rawLng, rawAltitude) { // (Number, Number, Number)
 	this.lat = lat;
 	this.lng = lng;
 	
-	if (typeof rawAltitude !== 'undefined') {
-		this.altitude = parseFloat(rawAltitude);
+	if (typeof rawAlt !== 'undefined') {
+		this.alt = parseFloat(rawAlt);
 	}
 };
 
