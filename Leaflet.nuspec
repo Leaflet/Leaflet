@@ -9,7 +9,7 @@
     <description>Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.</description>
     <language>en-US</language>
     <projectUrl>http://leafletjs.com/</projectUrl>
-    <licenseUrl>http://leafletjs.com/LICENSE.txt</licenseUrl>
+    <licenseUrl>https://raw.github.com/Leaflet/Leaflet/master/LICENSE</licenseUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>leaflet geo maps</tags>
   </metadata>
