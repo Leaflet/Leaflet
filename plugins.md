@@ -216,7 +216,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
-	</tr>		
+	</tr>	
+	<tr>
+		<td>
+			<a href="https://github.com/turban/Leaflet.Graticule">TileLayer.Graticule</a>
+		</td><td>
+			Draws a grid of latitude and longitude lines.
+		</td><td>
+			<a href="https://github.com/turban">Bjørn Sandvik</a>
+		</td>
+	</tr>			
 </table>
 
 
