@@ -7,6 +7,8 @@ Leaflet Changelog
 
 An in-progress version being developed on the master branch.
 
+* Added ability to pass animation `options` to `setMaxBounds` to allow configuration of view changes when max bounds have changed (by [@davidjb](http://git.io/djb)). [#1834](https://github.com/Leaflet/Leaflet/pull/1834)
+
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by upscaling tiles. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
 
 ## 0.6.2 (June 28, 2013)
