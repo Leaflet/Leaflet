@@ -694,10 +694,11 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-setmaxbounds">
 		<td><code><b>setMaxBounds</b>(
-			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option).</td>
+		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option), passing the given animation options through to `setView`, if required.</td>
 	</tr>
 	<tr id="map-locate">
 		<td><code><b>locate</b>(
