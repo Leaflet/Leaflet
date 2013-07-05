@@ -6297,7 +6297,7 @@ for (var i = 0, len = tables.length; i < len; i++) {
         tds = tables[i].getElementsByTagName('td');
     for (var j = 0, tdLen = tds.length; j < tdLen; j++) {
         if (tds[j].cellIndex === 0) {
-            tds[j].parentNode.id = id + '-' + tds[j].innerText.split('(')[0].toLowerCase();
+            tds[j].parentNode.id = id + '-' + (tds[j].textContent || tds[j].innerText).split('(')[0].toLowerCase();
             tds[j].parentNode.onclick = function() {
                 window.location.hash = '#' + this.id;
             };
