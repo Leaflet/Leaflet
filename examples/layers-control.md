@@ -21,7 +21,7 @@ Lets suppose you have a bunch of layers you want to combine into a group to hand
 		aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
 	    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
 
-Instead of adding them directly to the map, you can do the following, using the <a href="http://leaflet.cloudmade.com/reference.html#layergroup">LayerGroup</a> class:
+Instead of adding them directly to the map, you can do the following, using the <a href="http://leafletjs.com/reference.html#layergroup">LayerGroup</a> class:
 
 	var cities = L.layerGroup([littleton, denver, aurora, golden]);
 
