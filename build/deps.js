@@ -250,6 +250,11 @@ var deps = {
 		src: ['map/ext/Map.Geolocation.js'],
 		desc: 'Adds Map#locate method and related events to make geolocation easier.',
 		heading: 'Misc'
+	},
+
+	AspNetCompatibility: {
+	  src: ['patches/AspNetApp.js'],
+	  desc: 'Ensuring compatibility with ASP.NET application default structure.'
 	}
 };
 

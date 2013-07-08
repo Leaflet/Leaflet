@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>leaflet</id>
+    <version>0.6.2</version>
+    <authors>Vladimir Agafonkin</authors>
+    <copyright>Vladimir Agafonkin, CloudMade</copyright>
+    <title>JavaScript library for interactive maps.</title>
+    <description>Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.</description>
+    <language>en-US</language>
+    <projectUrl>http://leafletjs.com/</projectUrl>
+    <licenseUrl>https://raw.github.com/Leaflet/Leaflet/master/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>leaflet geo maps</tags>
+  </metadata>
+  <files>
+    <file src="dist\leaflet-src.js" target="content\Scripts\leaflet-0.6.2.js"/>
+    <file src="dist\leaflet.js" target="content\Scripts\leaflet-0.6.2.min.js"/>
+    <file src="dist\*.css" target="content\Content" />
+    <file src="dist\images\*.*" target="content\Content\images" />
+  </files>
+</package>
