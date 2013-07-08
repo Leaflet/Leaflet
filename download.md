@@ -42,6 +42,20 @@ it straight away, place this code in the `head` section of your HTML:
 
     <script src="http://cdn.leafletjs.com/leaflet-0.6.2/leaflet.js"></script>
 
+### Using Nuget-package
+
+Also available nuget-package - http://nuget.org/packages/leaflet. It is harmonized with ASP.NET MVC application [folders structure][mvcstructure], used by default:
+
+    Content
+    |-images
+    | |-*.png
+    |-leaflet.css
+    Scripts
+    |-leaflet-{version}.js
+    |-leaflet-{version}.min.js
+    
+[mvcstructure]: http://msdn.microsoft.com/en-us/library/dd410120(v=vs.98).aspx
+
 ### Building Leaflet from the Source
 
 Leaflet build system is powered by the [Node.js](http://nodejs.org) platform and Jake, JSHint and UglifyJS libraries, which install easily and work well across all major platforms. Here are the steps to install it:
