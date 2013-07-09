@@ -1092,46 +1092,30 @@ L.DomUtil.TRANSITION_END =
 	var userSelectProperty = L.DomUtil.testProp(
 		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
-	var userDragProperty = L.DomUtil.testProp(
-		['userDrag', 'WebkitUserDrag', 'OUserDrag', 'MozUserDrag', 'msUserDrag']);
-
 	L.extend(L.DomUtil, {
 		disableTextSelection: function () {
+			L.DomEvent.on(window, 'selectstart', L.DomEvent.preventDefault);
 			if (userSelectProperty) {
 				var style = document.documentElement.style;
 				this._userSelect = style[userSelectProperty];
 				style[userSelectProperty] = 'none';
-			} else {
-				L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
 			}
 		},
 
 		enableTextSelection: function () {
+			L.DomEvent.off(window, 'selectstart', L.DomEvent.preventDefault);
 			if (userSelectProperty) {
 				document.documentElement.style[userSelectProperty] = this._userSelect;
 				delete this._userSelect;
-			} else {
-				L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
 			}
 		},
 
 		disableImageDrag: function () {
-			if (userDragProperty) {
-				var style = document.documentElement.style;
-				this._userDrag = style[userDragProperty];
-				style[userDragProperty] = 'none';
-			} else {
-				L.DomEvent.on(window, 'dragstart', L.DomEvent.stop);
-			}
+			L.DomEvent.on(window, 'dragstart', L.DomEvent.preventDefault);
 		},
 
 		enableImageDrag: function () {
-			if (userDragProperty) {
-				document.documentElement.style[userDragProperty] = this._userDrag;
-				delete this._userDrag;
-			} else {
-				L.DomEvent.off(window, 'dragstart', L.DomEvent.stop);
-			}
+			L.DomEvent.off(window, 'dragstart', L.DomEvent.preventDefault);
 		}
 	});
 })();
@@ -1724,10 +1708,14 @@ L.Map = L.Class.extend({
 
 		if (this._loaded) {
 			layer.onRemove(this);
-			this.fire('layerremove', {layer: layer});
 		}
 
 		delete this._layers[id];
+
+		if (this._loaded) {
+			this.fire('layerremove', {layer: layer});
+		}
+
 		if (this._zoomBoundLayers[id]) {
 			delete this._zoomBoundLayers[id];
 			this._updateZoomLevels();
@@ -2387,7 +2375,8 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		zoomOffset: 0,
 		opacity: 1,
-		/* (undefined works too)
+		/*
+		maxNativeZoom: null,
 		zIndex: null,
 		tms: false,
 		continuousWorld: false,
@@ -2435,9 +2424,6 @@ L.TileLayer = L.Class.extend({
 
 		// create a container div for tiles
 		this._initContainer();
-
-		// create an image to clone for tiles
-		this._createTileProto();
 
 		// set up events
 		map.on({
@@ -2641,13 +2627,27 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
+	_getTileSize: function () {
+		var map = this._map,
+		    zoom = map.getZoom(),
+		    zoomN = this.options.maxNativeZoom,
+		    tileSize = this.options.tileSize;
+
+		if (zoomN && zoom > zoomN) {
+			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
+		}
+
+		return tileSize;
+	},
+
 	_update: function () {
 
 		if (!this._map) { return; }
 
-		var bounds = this._map.getPixelBounds(),
-		    zoom = this._map.getZoom(),
-		    tileSize = this.options.tileSize;
+		var map = this._map,
+		    bounds = map.getPixelBounds(),
+		    zoom = map.getZoom(),
+		    tileSize = this._getTileSize();
 
 		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
 			return;
@@ -2810,12 +2810,14 @@ L.TileLayer = L.Class.extend({
 			zoom = options.maxZoom - zoom;
 		}
 
-		return zoom + options.zoomOffset;
+		zoom += options.zoomOffset;
+
+		return options.maxNativeZoom ? Math.min(zoom, options.maxNativeZoom) : zoom;
 	},
 
 	_getTilePos: function (tilePoint) {
 		var origin = this._map.getPixelOrigin(),
-		    tileSize = this.options.tileSize;
+		    tileSize = this._getTileSize();
 
 		return tilePoint.multiplyBy(tileSize).subtract(origin);
 	},
@@ -2857,12 +2859,6 @@ L.TileLayer = L.Class.extend({
 		return this.options.subdomains[index];
 	},
 
-	_createTileProto: function () {
-		var img = this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
-		img.style.width = img.style.height = this.options.tileSize + 'px';
-		img.galleryimg = 'no';
-	},
-
 	_getTile: function () {
 		if (this.options.reuseTiles && this._unusedTiles.length > 0) {
 			var tile = this._unusedTiles.pop();
@@ -2876,7 +2872,10 @@ L.TileLayer = L.Class.extend({
 	_resetTile: function (/*tile*/) {},
 
 	_createTile: function () {
-		var tile = this._tileImg.cloneNode(false);
+		var tile = L.DomUtil.create('img', 'leaflet-tile');
+		tile.style.width = tile.style.height = this._getTileSize() + 'px';
+		tile.galleryimg = 'no';
+
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 
 		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
@@ -2996,7 +2995,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		L.TileLayer.prototype.onAdd.call(this, map);
 	},
 
-	getTileUrl: function (tilePoint, zoom) { // (Point, Number) -> String
+	getTileUrl: function (tilePoint) { // (Point, Number) -> String
 
 		var map = this._map,
 		    tileSize = this.options.tileSize,
@@ -3004,9 +3003,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		    nwPoint = tilePoint.multiplyBy(tileSize),
 		    sePoint = nwPoint.add([tileSize, tileSize]),
 
-		    nw = this._crs.project(map.unproject(nwPoint, zoom)),
-		    se = this._crs.project(map.unproject(sePoint, zoom)),
-
+		    nw = this._crs.project(map.unproject(nwPoint, tilePoint.z)),
+		    se = this._crs.project(map.unproject(sePoint, tilePoint.z)),
 		    bbox = [nw.x, se.y, se.x, nw.y].join(','),
 
 		    url = L.Util.template(this._url, {s: this._getSubdomain(tilePoint)});
@@ -3056,13 +3054,9 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 		this.drawTile(tile, tile._tilePoint, this._map._zoom);
 	},
 
-	_createTileProto: function () {
-		var proto = this._canvasProto = L.DomUtil.create('canvas', 'leaflet-tile');
-		proto.width = proto.height = this.options.tileSize;
-	},
-
 	_createTile: function () {
-		var tile = this._canvasProto.cloneNode(false);
+		var tile = L.DomUtil.create('canvas', 'leaflet-tile');
+		tile.width = tile.height = this.options.tileSize;
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 		return tile;
 	},
@@ -6316,13 +6310,30 @@ L.DomEvent = {
 
 	getMousePosition: function (e, container) {
 
-		var body = document.body,
+		var ie7 = L.Browser.ie7,
+		    body = document.body,
 		    docEl = document.documentElement,
-		    x = e.pageX ? e.pageX : e.clientX + body.scrollLeft + docEl.scrollLeft,
-		    y = e.pageY ? e.pageY : e.clientY + body.scrollTop + docEl.scrollTop,
-		    pos = new L.Point(x, y);
+		    x = e.pageX ? e.pageX - body.scrollLeft - docEl.scrollLeft: e.clientX,
+		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop: e.clientY,
+		    pos = new L.Point(x, y),
+		    rect = container.getBoundingClientRect(),
+		    left = rect.left - container.clientLeft,
+		    top = rect.top - container.clientTop;
 
-		return (container ? pos._subtract(L.DomUtil.getViewportOffset(container)) : pos);
+		// webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
+		// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
+		if (!L.DomUtil.documentIsLtr() && (L.Browser.webkit || ie7)) {
+			left += container.scrollWidth - container.clientWidth;
+
+			// ie7 shows the scrollbar by default and provides clientWidth counting it, so we
+			// need to add it back in if it is visible; scrollbar is on the left as we are RTL
+			if (ie7 && L.DomUtil.getStyle(container, 'overflow-y') !== 'hidden' &&
+			           L.DomUtil.getStyle(container, 'overflow') !== 'hidden') {
+				left += 17;
+			}
+		}
+
+		return pos._subtract(new L.Point(left, top));
 	},
 
 	getWheelDelta: function (e) {
@@ -6603,6 +6614,8 @@ L.Map.Drag = L.Handler.extend({
 			if (map.options.worldCopyJump) {
 				this._draggable.on('predrag', this._onPreDrag, this);
 				map.on('viewreset', this._onViewReset, this);
+
+				this._onViewReset();
 			}
 		}
 		this._draggable.enable();
@@ -8847,7 +8860,7 @@ L.Map.include({
 
 		var data = {
 			latlng: latlng,
-			bounds: bounds,
+			bounds: bounds
 		};
 
 		for (var i in pos.coords) {
