@@ -14,8 +14,7 @@ L.TileLayer = L.Class.extend({
 		attribution: '',
 		zoomOffset: 0,
 		opacity: 1,
-		/*
-		maxNativeZoom: null,
+		/* (undefined works too)
 		zIndex: null,
 		tms: false,
 		continuousWorld: false,
@@ -63,6 +62,9 @@ L.TileLayer = L.Class.extend({
 
 		// create a container div for tiles
 		this._initContainer();
+
+		// create an image to clone for tiles
+		this._createTileProto();
 
 		// set up events
 		map.on({
@@ -266,27 +268,13 @@ L.TileLayer = L.Class.extend({
 		this._initContainer();
 	},
 
-	_getTileSize: function () {
-		var map = this._map,
-		    zoom = map.getZoom(),
-		    zoomN = this.options.maxNativeZoom,
-		    tileSize = this.options.tileSize;
-
-		if (zoomN && zoom > zoomN) {
-			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
-		}
-
-		return tileSize;
-	},
-
 	_update: function () {
 
 		if (!this._map) { return; }
 
-		var map = this._map,
-		    bounds = map.getPixelBounds(),
-		    zoom = map.getZoom(),
-		    tileSize = this._getTileSize();
+		var bounds = this._map.getPixelBounds(),
+		    zoom = this._map.getZoom(),
+		    tileSize = this.options.tileSize;
 
 		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
 			return;
@@ -449,14 +437,12 @@ L.TileLayer = L.Class.extend({
 			zoom = options.maxZoom - zoom;
 		}
 
-		zoom += options.zoomOffset;
-
-		return options.maxNativeZoom ? Math.min(zoom, options.maxNativeZoom) : zoom;
+		return zoom + options.zoomOffset;
 	},
 
 	_getTilePos: function (tilePoint) {
 		var origin = this._map.getPixelOrigin(),
-		    tileSize = this._getTileSize();
+		    tileSize = this.options.tileSize;
 
 		return tilePoint.multiplyBy(tileSize).subtract(origin);
 	},
@@ -498,6 +484,12 @@ L.TileLayer = L.Class.extend({
 		return this.options.subdomains[index];
 	},
 
+	_createTileProto: function () {
+		var img = this._tileImg = L.DomUtil.create('img', 'leaflet-tile');
+		img.style.width = img.style.height = this.options.tileSize + 'px';
+		img.galleryimg = 'no';
+	},
+
 	_getTile: function () {
 		if (this.options.reuseTiles && this._unusedTiles.length > 0) {
 			var tile = this._unusedTiles.pop();
@@ -511,10 +503,7 @@ L.TileLayer = L.Class.extend({
 	_resetTile: function (/*tile*/) {},
 
 	_createTile: function () {
-		var tile = L.DomUtil.create('img', 'leaflet-tile');
-		tile.style.width = tile.style.height = this._getTileSize() + 'px';
-		tile.galleryimg = 'no';
-
+		var tile = this._tileImg.cloneNode(false);
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
 
 		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
