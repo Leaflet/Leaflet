@@ -9,7 +9,7 @@ An in-progress version being developed on the `master` branch.
 
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by **upscaling tiles**. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
 
-## 0.6-dev (stable)
+## 0.6.3-dev (stable)
 
 An in-progress version being developed on the `stable` branch.
 
