@@ -16,12 +16,13 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 	addData: function (geojson) {
 		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
-		    i, len;
+		    i, len, feature;
 
 		if (features) {
 			for (i = 0, len = features.length; i < len; i++) {
 				// Only add this if geometry or geometries are set and not null
-				if (features[i].geometries || features[i].geometry || features[i].features) {
+				feature = features[i];
+				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
 					this.addData(features[i]);
 				}
 			}
