@@ -5,9 +5,14 @@ Leaflet Changelog
 
 ## 0.7-dev (master)
 
-An in-progress version being developed on the master branch.
+An in-progress version being developed on the `master` branch.
 
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by **upscaling tiles**. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
+
+## 0.6-dev (stable)
+
+An in-progress version being developed on the `stable` branch.
+
 * Fixed a regression where mouse interaction had incorrect coordinates in some map positioning cases (by [@scooterw](https://github.com/scooterw)). [#1826](https://github.com/Leaflet/Leaflet/issues/1826) [#1684](https://github.com/Leaflet/Leaflet/issues/1684) [#1745](https://github.com/Leaflet/Leaflet/issues/1745) [#1](https://github.com/Leaflet/Leaflet/issues/1)
 * Fixed a regression where `layerremove` and `layeradd` were fired before the corresponding action finishes (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1846](https://github.com/Leaflet/Leaflet/issues/1846)
 * Fixed a regression that prevented the map from responding to drag on areas covered with `ImageOverlay` (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1821](https://github.com/Leaflet/Leaflet/issues/1821)
