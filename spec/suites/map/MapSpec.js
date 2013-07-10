@@ -184,6 +184,16 @@ describe("Map", function () {
 			expect(spy.called).not.to.be.ok();
 		});
 
+		it("adds the layer before firing layeradd", function (done) {
+			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
+			map.on('layeradd', function() {
+				expect(map.hasLayer(layer)).to.be.ok();
+				done();
+			});
+			map.setView([0, 0], 0);
+			map.addLayer(layer);
+		});
+
 		describe("When the first layer is added to a map", function () {
 			it("fires a zoomlevelschange event", function () {
 				var spy = sinon.spy();
@@ -268,6 +278,17 @@ describe("Map", function () {
 			map.addLayer(layer);
 			map.removeLayer(layer);
 			expect(spy.called).not.to.be.ok();
+		});
+
+		it("removes the layer before firing layerremove", function (done) {
+			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
+			map.on('layerremove', function() {
+				expect(map.hasLayer(layer)).not.to.be.ok();
+				done();
+			});
+			map.setView([0, 0], 0);
+			map.addLayer(layer);
+			map.removeLayer(layer);
 		});
 
 		describe("when the last tile layer on a map is removed", function () {

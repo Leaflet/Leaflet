@@ -7,7 +7,7 @@
 var oldL = window.L,
     L = {};
 
-L.version = '0.6';
+L.version = '0.6.2';
 
 // define Leaflet for Node module pattern loaders, including Browserify
 if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -1092,46 +1092,30 @@ L.DomUtil.TRANSITION_END =
 	var userSelectProperty = L.DomUtil.testProp(
 		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
-	var userDragProperty = L.DomUtil.testProp(
-		['userDrag', 'WebkitUserDrag', 'OUserDrag', 'MozUserDrag', 'msUserDrag']);
-
 	L.extend(L.DomUtil, {
 		disableTextSelection: function () {
+			L.DomEvent.on(window, 'selectstart', L.DomEvent.preventDefault);
 			if (userSelectProperty) {
 				var style = document.documentElement.style;
 				this._userSelect = style[userSelectProperty];
 				style[userSelectProperty] = 'none';
-			} else {
-				L.DomEvent.on(window, 'selectstart', L.DomEvent.stop);
 			}
 		},
 
 		enableTextSelection: function () {
+			L.DomEvent.off(window, 'selectstart', L.DomEvent.preventDefault);
 			if (userSelectProperty) {
 				document.documentElement.style[userSelectProperty] = this._userSelect;
 				delete this._userSelect;
-			} else {
-				L.DomEvent.off(window, 'selectstart', L.DomEvent.stop);
 			}
 		},
 
 		disableImageDrag: function () {
-			if (userDragProperty) {
-				var style = document.documentElement.style;
-				this._userDrag = style[userDragProperty];
-				style[userDragProperty] = 'none';
-			} else {
-				L.DomEvent.on(window, 'dragstart', L.DomEvent.stop);
-			}
+			L.DomEvent.on(window, 'dragstart', L.DomEvent.preventDefault);
 		},
 
 		enableImageDrag: function () {
-			if (userDragProperty) {
-				document.documentElement.style[userDragProperty] = this._userDrag;
-				delete this._userDrag;
-			} else {
-				L.DomEvent.off(window, 'dragstart', L.DomEvent.stop);
-			}
+			L.DomEvent.off(window, 'dragstart', L.DomEvent.preventDefault);
 		}
 	});
 })();
@@ -1724,10 +1708,14 @@ L.Map = L.Class.extend({
 
 		if (this._loaded) {
 			layer.onRemove(this);
-			this.fire('layerremove', {layer: layer});
 		}
 
 		delete this._layers[id];
+
+		if (this._loaded) {
+			this.fire('layerremove', {layer: layer});
+		}
+
 		if (this._zoomBoundLayers[id]) {
 			delete this._zoomBoundLayers[id];
 			this._updateZoomLevels();
@@ -2335,7 +2323,7 @@ L.Projection.Mercator = {
 		    lng = point.x * d / r,
 		    tmp = r2 / r,
 		    eccent = Math.sqrt(1 - (tmp * tmp)),
-		    ts = Math.exp(- point.y / r2),
+		    ts = Math.exp(- point.y / r),
 		    phi = (Math.PI / 2) - 2 * Math.atan(ts),
 		    numIter = 15,
 		    tol = 1e-7,
@@ -2606,10 +2594,7 @@ L.TileLayer = L.Class.extend({
 				var className = 'leaflet-tile-container leaflet-zoom-animated';
 
 				this._bgBuffer = L.DomUtil.create('div', className, this._container);
-				this._bgBuffer.style.zIndex = 1;
-
 				this._tileContainer = L.DomUtil.create('div', className, this._container);
-				this._tileContainer.style.zIndex = 2;
 
 			} else {
 				this._tileContainer = this._container;
@@ -3049,6 +3034,11 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	redraw: function () {
+		if (this._map) {
+			this._reset({hard: true});
+			this._update();
+		}
+		
 		for (var i in this._tiles) {
 			this._redrawTile(this._tiles[i]);
 		}
@@ -3903,7 +3893,7 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.on(this._contentNode, 'wheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
 		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -6190,11 +6180,6 @@ L.geoJson = function (geojson, options) {
  */
 
 L.DomEvent = {
-	WHEEL:
-		'onwheel' in document ? 'wheel' :
-		'onmousewheel' in document ? 'mousewheel' :
-			'MozMousePixelScroll',
-
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -6215,13 +6200,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if ('addEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.addEventListener('DOMMouseScroll', handler, false);
+				obj.addEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -6261,10 +6246,6 @@ L.DomEvent = {
 
 		if (!handler) { return this; }
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
@@ -6272,7 +6253,11 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.removeEventListener('DOMMouseScroll', handler, false);
+				obj.removeEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
@@ -6324,26 +6309,42 @@ L.DomEvent = {
 
 	getMousePosition: function (e, container) {
 
-		var body = document.body,
+		var ie7 = L.Browser.ie7,
+		    body = document.body,
 		    docEl = document.documentElement,
-		    x = e.pageX ? e.pageX : e.clientX + body.scrollLeft + docEl.scrollLeft,
-		    y = e.pageY ? e.pageY : e.clientY + body.scrollTop + docEl.scrollTop,
-		    pos = new L.Point(x, y);
+		    x = e.pageX ? e.pageX - body.scrollLeft - docEl.scrollLeft: e.clientX,
+		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop: e.clientY,
+		    pos = new L.Point(x, y),
+		    rect = container.getBoundingClientRect(),
+		    left = rect.left - container.clientLeft,
+		    top = rect.top - container.clientTop;
 
-		return (container ? pos._subtract(L.DomUtil.getViewportOffset(container)) : pos);
+		// webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
+		// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
+		if (!L.DomUtil.documentIsLtr() && (L.Browser.webkit || ie7)) {
+			left += container.scrollWidth - container.clientWidth;
+
+			// ie7 shows the scrollbar by default and provides clientWidth counting it, so we
+			// need to add it back in if it is visible; scrollbar is on the left as we are RTL
+			if (ie7 && L.DomUtil.getStyle(container, 'overflow-y') !== 'hidden' &&
+			           L.DomUtil.getStyle(container, 'overflow') !== 'hidden') {
+				left += 17;
+			}
+		}
+
+		return pos._subtract(new L.Point(left, top));
 	},
 
 	getWheelDelta: function (e) {
+
 		var delta = 0;
 
-		if (e.type === 'wheel') {
-			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
-		} else if (e.type === 'mousewheel') {
+		if (e.wheelDelta) {
 			delta = e.wheelDelta / 120;
-		} else if (e.type === 'MozMousePixelScroll') {
-			delta = -e.detail;
 		}
-
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
 		return delta;
 	},
 
@@ -6466,6 +6467,7 @@ L.Draggable = L.Class.extend({
 		if (L.Draggable._disabled) { return; }
 
 		L.DomUtil.disableImageDrag();
+		L.DomUtil.disableTextSelection();
 
 		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
@@ -6505,7 +6507,6 @@ L.Draggable = L.Class.extend({
 			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
 			if (!L.Browser.touch) {
-				L.DomUtil.disableTextSelection();
 				L.DomUtil.addClass(document.body, 'leaflet-dragging');
 			}
 		}
@@ -6525,7 +6526,6 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function () {
 		if (!L.Browser.touch) {
-			L.DomUtil.enableTextSelection();
 			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
 
@@ -6536,6 +6536,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		L.DomUtil.enableImageDrag();
+		L.DomUtil.enableTextSelection();
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend
@@ -6612,6 +6613,8 @@ L.Map.Drag = L.Handler.extend({
 			if (map.options.worldCopyJump) {
 				this._draggable.on('predrag', this._onPreDrag, this);
 				map.on('viewreset', this._onViewReset, this);
+
+				this._onViewReset();
 			}
 		}
 		this._draggable.enable();
@@ -6764,12 +6767,14 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'wheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		L.DomEvent.on(this._map._container, 'MozMousePixelScroll', L.DomEvent.preventDefault);
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'wheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll);
+		L.DomEvent.off(this._map._container, 'MozMousePixelScroll', L.DomEvent.preventDefault);
 	},
 
 	_onWheelScroll: function (e) {
@@ -8128,7 +8133,7 @@ L.Control.Layers = L.Control.extend({
 
 		if (!L.Browser.touch) {
 			L.DomEvent.disableClickPropagation(container);
-			L.DomEvent.on(container, 'wheel', L.DomEvent.stopPropagation);
+			L.DomEvent.on(container, 'mousewheel', L.DomEvent.stopPropagation);
 		} else {
 			L.DomEvent.on(container, 'click', L.DomEvent.stopPropagation);
 		}
@@ -8668,28 +8673,13 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 L.TileLayer.include({
 	_animateZoom: function (e) {
-		var firstFrame = false;
-
 		if (!this._animating) {
 			this._animating = true;
-			firstFrame = true;
-		}
-
-		if (firstFrame) {
 			this._prepareBgBuffer();
 		}
 
-		var bg = this._bgBuffer;
-
-		if (firstFrame) {
-			//prevent bg buffer from clearing right after zoom
-			clearTimeout(this._clearBgBufferTimer);
-
-			// hack to make sure transform is updated before running animation
-			L.Util.falseFn(bg.offsetWidth);
-		}
-
-		var transform = L.DomUtil.TRANSFORM,
+		var bg = this._bgBuffer,
+		    transform = L.DomUtil.TRANSFORM,
 		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform],
 		    scaleStr = L.DomUtil.getScaleString(e.scale, e.origin);
 
@@ -8703,9 +8693,7 @@ L.TileLayer.include({
 		    bg = this._bgBuffer;
 
 		front.style.visibility = '';
-		front.style.zIndex = 2;
-
-		bg.style.zIndex = 1;
+		front.parentNode.appendChild(front); // Bring to fore
 
 		// force reflow
 		L.Util.falseFn(bg.offsetWidth);
@@ -8749,6 +8737,9 @@ L.TileLayer.include({
 		bg = this._bgBuffer = front;
 
 		this._stopLoadingImages(bg);
+
+		//prevent bg buffer from clearing right after zoom
+		clearTimeout(this._clearBgBufferTimer);
 	},
 
 	_getLoadedTilesPercentage: function (container) {
@@ -8868,7 +8859,7 @@ L.Map.include({
 
 		var data = {
 			latlng: latlng,
-			bounds: bounds,
+			bounds: bounds
 		};
 
 		for (var i in pos.coords) {
