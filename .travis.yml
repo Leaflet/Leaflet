@@ -17,5 +17,5 @@ before_script:
 - "gem install travis-artifacts"
 after_success:
 - "test ${TRAVIS_BRANCH} = master || test ${TRAVIS_BRANCH} = stable &&"
-- "zip -r ${TRAVIS_BRANCH}.zip dist &&"
+- "cd dist && zip -X -r ${TRAVIS_BRANCH}.zip . &&"
 - "travis-artifacts upload --path ${TRAVIS_BRANCH}.zip --target-path build"
