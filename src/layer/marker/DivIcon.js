@@ -21,7 +21,11 @@ L.DivIcon = L.Icon.extend({
 		    options = this.options;
 
 		if (options.html !== false) {
-			div.innerHTML = options.html;
+			if (options.html instanceof Element) {
+				div.appendChild(options.html);
+			} else {
+				div.innerHTML = options.html;
+			}
 		} else {
 			div.innerHTML = '';
 		}
