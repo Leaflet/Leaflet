@@ -39,6 +39,10 @@ L.PosAnimation = L.Class.extend({
 	},
 
 	_onStep: function () {
+		if (!document.documentElement.contains(this._el)) {
+			this._onTransitionEnd();
+			return;
+		}
 		// jshint camelcase: false
 		// make L.DomUtil.getPosition return intermediate position value during animation
 		this._el._leaflet_pos = this._getPos();
