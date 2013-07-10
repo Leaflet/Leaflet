@@ -14,6 +14,7 @@ env:
       p+q8QzCG1Np9D1Kq9K0miYqHgZxgu4D/4Mwy04bh1UfyoUcDfB1tJmEtsKY/
       8Bl46ZfhxbTG39b6Y315GuU+49QdFMEXhSqx/G7on1xC4aYLXLc=
 before_script:
+- "test ${TRAVIS_BRANCH} = master || test ${TRAVIS_BRANCH} = stable &&"
 - "gem install travis-artifacts"
 after_success:
 - "test ${TRAVIS_BRANCH} = master || test ${TRAVIS_BRANCH} = stable &&"
