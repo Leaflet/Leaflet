@@ -20,6 +20,7 @@ An in-progress version being developed on the `stable` branch.
 * Fixed a regression that prevented the map from responding to drag on areas covered with `ImageOverlay` (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1821](https://github.com/Leaflet/Leaflet/issues/1821)
 * Fixed a regression with `worldCopyJump: true` breaking the map on small zoom levels (by [@danzel](https://github.com/danzel)). [#1831](https://github.com/Leaflet/Leaflet/issues/1831)
 * Fixed a regression where `Marker` shadow didn't animate on zoom after using `setIcon`. [#1768](https://github.com/Leaflet/Leaflet/issues/1768)
+* Fixed a regression where the map would stuck when trying to animate zoom before any tile layers are added to the map. [#1484](https://github.com/Leaflet/Leaflet/issues/1484) [#1845](https://github.com/Leaflet/Leaflet/issues/1845)
 
 ### Bug fixes
 
