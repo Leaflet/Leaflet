@@ -30,6 +30,10 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		}
 	},
 
+	_nothingToAnimate: function () {
+		return !this._container.getElementsByClassName('leaflet-zoom-animated').length;
+	},
+
 	_tryAnimatedZoom: function (center, zoom, options) {
 
 		if (this._animatingZoom) { return true; }
@@ -37,7 +41,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 		options = options || {};
 
 		// don't animate if disabled, not supported or zoom difference is too large
-		if (!this._zoomAnimated || options.animate === false ||
+		if (!this._zoomAnimated || options.animate === false || this._nothingToAnimate() ||
 		        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
 
 		// offset is the pixel coords of the zoom origin relative to the current center

@@ -27,9 +27,9 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
-		if (layer in this._layers) {
-			layer = this._layers[layer];
-		}
+		var id = layer in this._layers ? layer : this.getLayerId(layer);
+
+		if (!this._layers[id]) { return this; }
 
 		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 

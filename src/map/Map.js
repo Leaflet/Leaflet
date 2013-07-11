@@ -114,7 +114,7 @@ L.Map = L.Class.extend({
 		return this.fire('moveend');
 	},
 
-	setMaxBounds: function (bounds) {
+	setMaxBounds: function (bounds, options) {
 		bounds = L.latLngBounds(bounds);
 
 		this.options.maxBounds = bounds;
@@ -131,7 +131,7 @@ L.Map = L.Class.extend({
 
 		if (this._loaded) {
 			if (this._zoom < minZoom) {
-				this.setView(bounds.getCenter(), minZoom);
+				this.setView(bounds.getCenter(), minZoom, options);
 			} else {
 				this.panInsideBounds(bounds);
 			}
@@ -209,10 +209,14 @@ L.Map = L.Class.extend({
 
 		if (this._loaded) {
 			layer.onRemove(this);
-			this.fire('layerremove', {layer: layer});
 		}
 
 		delete this._layers[id];
+
+		if (this._loaded) {
+			this.fire('layerremove', {layer: layer});
+		}
+
 		if (this._zoomBoundLayers[id]) {
 			delete this._zoomBoundLayers[id];
 			this._updateZoomLevels();
