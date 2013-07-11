@@ -283,6 +283,8 @@ L.Marker = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+		
+		return this;
 	},
 
 	_updateOpacity: function () {
