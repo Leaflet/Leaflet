@@ -39,9 +39,14 @@ L.PosAnimation = L.Class.extend({
 	},
 
 	_onStep: function () {
+		var stepPos = this._getPos();
+		if (!stepPos) {
+			this._onTransitionEnd();
+			return;
+		}
 		// jshint camelcase: false
 		// make L.DomUtil.getPosition return intermediate position value during animation
-		this._el._leaflet_pos = this._getPos();
+		this._el._leaflet_pos = stepPos;
 
 		this.fire('step');
 	},
@@ -58,8 +63,9 @@ L.PosAnimation = L.Class.extend({
 
 		if (L.Browser.any3d) {
 			matches = style[L.DomUtil.TRANSFORM].match(this._transformRe);
-			left = matches ? parseFloat(matches[1]) : 0;
-			top  = matches ? parseFloat(matches[2]) : 0;
+			if (!matches) { return; }
+			left = parseFloat(matches[1]);
+			top  = parseFloat(matches[2]);
 		} else {
 			left = parseFloat(style.left);
 			top  = parseFloat(style.top);
