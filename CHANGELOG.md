@@ -21,13 +21,16 @@ An in-progress version being developed on the `stable` branch.
 * Fixed a regression with `worldCopyJump: true` breaking the map on small zoom levels (by [@danzel](https://github.com/danzel)). [#1831](https://github.com/Leaflet/Leaflet/issues/1831)
 * Fixed a regression where `Marker` shadow didn't animate on zoom after using `setIcon`. [#1768](https://github.com/Leaflet/Leaflet/issues/1768)
 * Fixed a regression where the map would stuck when trying to animate zoom before any tile layers are added to the map. [#1484](https://github.com/Leaflet/Leaflet/issues/1484) [#1845](https://github.com/Leaflet/Leaflet/issues/1845)
+* Fixed a regression with the layers control and popups closing on inside click in IE < 9. [#1850](https://github.com/Leaflet/Leaflet/issues/1850)
 
 ### Bug fixes
 
 * Fixed a bug where `TileLayer.Canvas` wasn't immediately redrawn when `redraw` is called (by [@tofferrosen](https://github.com/tofferrosen)). [#1797](https://github.com/Leaflet/Leaflet/issues/1797) [#1817](https://github.com/Leaflet/Leaflet/issues/1817)
 * Fixed a bug where `GeoJSON` ignored non-feature geometries passed in an array. [#1840](https://github.com/Leaflet/Leaflet/issues/1840)
-* Fixed a bug where `FeatureGroup` still fired `layerremove` event on `removeLayer` even if the given layer wan't present in the group. [#1847](https://github.com/Leaflet/Leaflet/issues/1847)
+* Fixed a bug where `FeatureGroup` still fired `layerremove` event on `removeLayer` even if the given layer wan't present in the group (by (by [@danzel](https://github.com/danzel))). [#1847](https://github.com/Leaflet/Leaflet/issues/1847) [#1858](https://github.com/Leaflet/Leaflet/issues/1858)
 * Fixed a bug where `Marker` `setOpacity` wasn't returning the marker (by [@freepius44](https://github.com/freepius44)). [#1851](https://github.com/Leaflet/Leaflet/issues/1851)
+* Fixed a bug where `Map` `minZoom` and `maxZoom` didn't always override values derived from the added tile layers. [1848](https://github.com/Leaflet/Leaflet/issues/1848)
+* Fixed a bug where removing the map element from the DOM before panning transition has finished could keep a setInterval loop running forever (by [@rutkovsky](https://github.com/rutkovsky)). [#1825](https://github.com/Leaflet/Leaflet/issues/1825) [#1856](https://github.com/Leaflet/Leaflet/issues/1856)
 
 ### Improvements
 
