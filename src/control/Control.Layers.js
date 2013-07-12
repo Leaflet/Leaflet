@@ -96,7 +96,9 @@ L.Control.Layers = L.Control.extend({
 				L.DomEvent.on(link, 'focus', this._expand, this);
 			}
 
-			this._map.on('click', this._collapse, this);
+			if (!L.Browser.ielt9) {
+				this._map.on('click', this._collapse, this);
+			}
 			// TODO keyboard accessibility
 		} else {
 			this._expand();
