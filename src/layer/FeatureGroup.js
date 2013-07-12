@@ -27,9 +27,12 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
-		var id = layer in this._layers ? layer : this.getLayerId(layer);
-
-		if (!this._layers[id]) { return this; }
+		if (!this.hasLayer(layer)) {
+			return this;
+		}
+		if (layer in this._layers) {
+			layer = this._layers[layer];
+		}
 
 		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
 

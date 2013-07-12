@@ -1,9 +1,12 @@
-﻿describe('CircleMarker', function () {
+﻿describe('FeatureGroup', function () {
+	var map;
+	beforeEach(function () {
+		map = L.map(document.createElement('div'));
+		map.setView([0, 0], 1);
+	});
 	describe("#_propagateEvent", function () {
-		var map, marker;
+		var marker;
 		beforeEach(function () {
-			map = L.map(document.createElement('div'));
-			map.setView([0, 0], 1);
 			marker = L.marker([0, 0]);
 		});
 		describe("when a Marker is added to multiple FeatureGroups ", function () {
@@ -31,6 +34,40 @@
 
 				expect(wasClicked).to.be(3);
 			});
+		});
+	});
+	describe('addLayer', function () {
+		it('adds the layer', function () {
+			var fg = L.featureGroup(),
+			    marker = L.marker([0, 0]);
+
+			expect(fg.hasLayer(marker)).to.be(false);
+
+			fg.addLayer(marker);
+
+			expect(fg.hasLayer(marker)).to.be(true);
+		});
+	});
+	describe('removeLayer', function () {
+		it('removes the layer passed to it', function () {
+			var fg = L.featureGroup(),
+			    marker = L.marker([0, 0]);
+
+			fg.addLayer(marker);
+			expect(fg.hasLayer(marker)).to.be(true);
+
+			fg.removeLayer(marker);
+			expect(fg.hasLayer(marker)).to.be(false);
+		});
+		it('removes the layer passed to it by id', function () {
+			var fg = L.featureGroup(),
+			    marker = L.marker([0, 0]);
+
+			fg.addLayer(marker);
+			expect(fg.hasLayer(marker)).to.be(true);
+
+			fg.removeLayer(marker._leaflet_id);
+			expect(fg.hasLayer(marker)).to.be(false);
 		});
 	});
 });
