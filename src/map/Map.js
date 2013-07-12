@@ -676,16 +676,15 @@ L.Map = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		// jshint camelcase: false
-		if (!this._loaded || (!e._simulated && this.dragging && this.dragging.moved()) || e._leaflet_stop) { return; }
+		if (!this._loaded || (!e._simulated && this.dragging && this.dragging.moved()) ||
+		        L.DomEvent._skipped(e)) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
 	},
 
 	_fireMouseEvent: function (e) {
-		// jshint camelcase: false
-		if (!this._loaded || e._leaflet_stop) { return; }
+		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
 
 		var type = e.type;
 

@@ -171,10 +171,18 @@ L.DomEvent = {
 		return delta;
 	},
 
-	_fakeStop: function stop(e) {
-		// fakes stopPropagation by setting a special event flag checked in Map mouse events handler
-		// jshint camelcase: false
-		e._leaflet_stop = true;
+	_skipEvents: {},
+
+	_fakeStop: function (e) {
+		// fakes stopPropagation by setting a special event flag, checked/reset with L.DomEvent._skipped(e)
+		L.DomEvent._skipEvents[e.type] = true;
+	},
+
+	_skipped: function (e) {
+		var skipped = this._skipEvents[e.type];
+		// reset when checking, as it's only used in map container and propagates outside of the map
+		this._skipEvents[e.type] = false;
+		return skipped;
 	},
 
 	// check if element really left/entered the event target (for mouseenter/mouseleave)
