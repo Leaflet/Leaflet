@@ -122,12 +122,15 @@ describe("Map", function () {
 
 	describe("#getMinZoom and #getMaxZoom", function () {
 		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
-			var c = document.createElement('div'),
-			    map = L.map(c, { minZoom: 5, maxZoom: 10 });
-			L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
-			L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 15 }).addTo(map);
-			expect(map.getMinZoom()).to.be(5);
-			expect(map.getMaxZoom()).to.be(10);
+
+			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
+
+			L.tileLayer("{z}{x}{y}", {minZoom: 4, maxZoom: 10}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 6, maxZoom: 17}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 22}).addTo(map);
+
+			expect(map.getMinZoom()).to.be(2);
+			expect(map.getMaxZoom()).to.be(20);
 		});
 	});
 

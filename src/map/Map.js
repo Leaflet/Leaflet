@@ -345,18 +345,15 @@ L.Map = L.Class.extend({
 	},
 
 	getMinZoom: function () {
-		var z1 = this.options.minZoom || 0,
-		    z2 = this._layersMinZoom || 0,
-		    z3 = this._boundsMinZoom || 0;
-
-		return Math.max(z1, z2, z3);
+		var z1 = this._layersMinZoom === undefined ? -Infinity : this._layersMinZoom,
+		    z2 = this._boundsMinZoom === undefined ? -Infinity : this._boundsMinZoom;
+		return this.options.minZoom === undefined ? Math.max(z1, z2) : this.options.minZoom;
 	},
 
 	getMaxZoom: function () {
-		var z1 = this.options.maxZoom === undefined ? Infinity : this.options.maxZoom,
-		    z2 = this._layersMaxZoom  === undefined ? Infinity : this._layersMaxZoom;
-
-		return Math.min(z1, z2);
+		return this.options.maxZoom === undefined ?
+			(this._layersMaxZoom === undefined ? Infinity : this._layersMaxZoom) :
+			this.options.maxZoom;
 	},
 
 	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
