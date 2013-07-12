@@ -17,7 +17,7 @@ before_script: >
   test ${TRAVIS_BRANCH} = master ||
   test ${TRAVIS_BRANCH} = stable &&
   test ${TRAVIS_PULL_REQUEST} = false &&
-  gem install travis-artifacts
+  gem install travis-artifacts || true
 after_success: >
   test ${TRAVIS_BRANCH} = master ||
   test ${TRAVIS_BRANCH} = stable &&
