@@ -83,6 +83,9 @@ L.Path = L.Path.extend({
 			if (this.options.linecap) {
 				this._path.setAttribute('stroke-linecap', this.options.linecap);
 			}
+			if (this.options.linejoin) {
+				this._path.setAttribute('stroke-linejoin', this.options.linejoin);
+			}
 		} else {
 			this._path.setAttribute('stroke', 'none');
 		}

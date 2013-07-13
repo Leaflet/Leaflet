@@ -85,6 +85,9 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			if (options.linecap) {
 				stroke.endcap = options.linecap.replace('butt', 'flat');
 			}
+			if (options.linejoin) {
+				stroke.joinstyle = options.linejoin;
+			}
 
 		} else if (stroke) {
 			container.removeChild(stroke);
