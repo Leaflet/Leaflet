@@ -631,6 +631,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/slara">Sebastián Lara</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.TileLegend">Leaflet.TileLegend</a>
+		</td><td>
+			Create illustrated and interactive legends for your background layers.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
 </table>
 
 
