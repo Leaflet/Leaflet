@@ -7,6 +7,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 
 1. [Presentation](#presentation)
 	- [Repository](#repository)
+	- [Name](#name)
 	- [Demo](#demo)
 	- [Readme](#readme)
 	- [License](#license)
@@ -23,6 +24,12 @@ The best place to put your Leaflet plugin to is a separate [GitHub](http://githu
 If you create a collection of plugins for different uses,
 don't put them in one repo &mdash;
 it's usually easier to work with small, self-contained plugins in individual repositories.
+
+### Name
+
+Most existing plugins follow the convention of naming plugins (and repos) like this: `Leaflet.MyPluginName`.
+You can use other forms (e.g. "leaflet-my-plugin-name"),
+just make sure to include the word "Leaflet" in the name so that it's obvious that it's a Leaflet plugin.
 
 ### Demo
 
@@ -53,7 +60,7 @@ At a minimum it should contain the following items:
 
 Every open source repository should include a license.
 If you don't know what open source license to choose for your code,
-[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices. 
+[MIT License](http://opensource.org/licenses/MIT) and [BSD 2-Clause License](http://opensource.org/licenses/BSD-2-Clause) are both good choices.
 You can either put it in the repo as a `LICENSE` file or just link to the license from the Readme.
 
 ## Code
@@ -64,20 +71,21 @@ Keep the file structure clean and simple,
 don't pile up lots of files in one place  &mdash;
 make it easy for a new person to find their way in your repo.
 
-A barebones repo for a simple plugin would like this:
+A barebones repo for a simple plugin would look like this:
 
 ```
 my-plugin.js
 README.md
 ```
 
-An example of a file structure for a more sophisticated plugin:
+An example of a more sophisticated plugin file structure:
 
 ```
-/src        JS source files
-/dist       minified plugin JS, CSS, images
-/spec       test files
-/examples   HTML examples of plugin usage
+/src        - JS source files
+/dist       - minified plugin JS, CSS, images
+/spec       - test files
+/lib        - any external libraries/plugins if necessary
+/examples   - HTML examples of plugin usage
 README.md
 LICENSE
 package.json
@@ -94,15 +102,16 @@ and putting a space after the `function` keyword.
 
 ### Plugin API
 
-Never expose global variables in your plugin.
-If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).
-If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).
+Never expose global variables in your plugin.<br>
+If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).<br>
+If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).<br>
 If you want to add new methods to existing Leaflet classes, you can do it like this: `L.Marker.include({myPlugin: …})`.
 
-Function, method and property names should be in `camelCase`.
+Function, method and property names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.
 
-If you have a lot of arguments in your function, consider accepting an options object instead (putting default values where possible so that users don't need specify all of them):
+If you have a lot of arguments in your function, consider accepting an options object instead
+(putting default values where possible so that users don't need specify all of them):
 
 ```js
 // bad
@@ -110,7 +119,7 @@ marker.myPlugin('bla', 'foo', null, {}, 5, 0);
 
  // good
 marker.myPlugin('bla', {
-	optionOne: 'foo', 
+	optionOne: 'foo',
 	optionThree: 5
 });
 ```

@@ -83,7 +83,7 @@ L.Map.include({
 
 		var data = {
 			latlng: latlng,
-			bounds: bounds,
+			bounds: bounds
 		};
 
 		for (var i in pos.coords) {

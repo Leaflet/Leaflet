@@ -27,6 +27,9 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	removeLayer: function (layer) {
+		if (!this.hasLayer(layer)) {
+			return this;
+		}
 		if (layer in this._layers) {
 			layer = this._layers[layer];
 		}

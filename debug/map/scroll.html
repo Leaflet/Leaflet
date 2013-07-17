@@ -30,7 +30,13 @@
 
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
 
+		var s = '';
+		for (var i = 0; i < 100; i++) s += 'Test<br>';
 
+		var popup = L.popup({maxHeight: 100})
+			.setContent(s)
+			.setLatLng(latlng)
+			.openOn(map);
 	</script>
 </body>
 </html>
