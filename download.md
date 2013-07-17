@@ -22,10 +22,10 @@ title: Download
 		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-master.zip">Leaflet 0.7-dev</a></td>
 		<td>In-progress major version, developed on the <code>master</code> branch.</td>
 	</tr>
-	<tr>
+	<!--<tr>
 		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-stable.zip">Leaflet 0.6.3-dev</a></td>
 		<td>In-progress minor version, developed on the <code>stable</code> branch.</td>
-	</tr>
+	</tr>-->
 </table>
 
 [View Changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md)
