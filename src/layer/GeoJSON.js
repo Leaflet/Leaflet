@@ -123,6 +123,10 @@ L.extend(L.GeoJSON, {
 			}
 			return new L.FeatureGroup(layers);
 
+		case 'Circle':
+	        	latlngs = this.coordsToLatLngs(coords, 0, coordsToLatLng);
+			return new L.Circle([latlngs[0].lat, latlngs[0].lng], geometry.radius);
+
 		default:
 			throw new Error('Invalid GeoJSON object.');
 		}
@@ -264,3 +268,14 @@ L.LayerGroup.include({
 L.geoJson = function (geojson, options) {
 	return new L.GeoJSON(geojson, options);
 };
+
+
+L.Circle.include({
+	toGeoJSON: function () {
+        	return {
+			type: 'Circle',
+			coordinates: [[this.getLatLng().lng, this.getLatLng().lat]],
+			radius: this.getRadius()
+        	}
+        };
+});
