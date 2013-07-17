@@ -226,6 +226,16 @@ L.Polygon.include({
 	}
 });
 
+L.Circle.include({
+	toGeoJSON: function () {
+        	return {
+			type: 'Circle',
+			coordinates: [[this.getLatLng().lng, this.getLatLng().lat]],
+			radius: this.getRadius()
+        	}
+        };
+});
+
 (function () {
 	function includeMulti(Klass, type) {
 		Klass.include({
@@ -268,14 +278,3 @@ L.LayerGroup.include({
 L.geoJson = function (geojson, options) {
 	return new L.GeoJSON(geojson, options);
 };
-
-
-L.Circle.include({
-	toGeoJSON: function () {
-        	return {
-			type: 'Circle',
-			coordinates: [[this.getLatLng().lng, this.getLatLng().lat]],
-			radius: this.getRadius()
-        	}
-        };
-});
