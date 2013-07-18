@@ -82,11 +82,11 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			} else {
 				stroke.dashStyle = '';
 			}
-			if (options.linecap) {
-				stroke.endcap = options.linecap.replace('butt', 'flat');
+			if (options.lineCap) {
+				stroke.endcap = options.lineCap.replace('butt', 'flat');
 			}
-			if (options.linejoin) {
-				stroke.joinstyle = options.linejoin;
+			if (options.lineJoin) {
+				stroke.joinstyle = options.lineJoin;
 			}
 
 		} else if (stroke) {
