@@ -671,10 +671,11 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-paninsidebounds">
 		<td><code><b>panInsideBounds</b>(
-			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#map-panoptions">pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Pans the map to the closest view that would lie inside the given bounds (if it's not already).</td>
+		<td>Pans the map to the closest view that would lie inside the given bounds (if it's not already), controlling the animation using the options specific, if any.</td>
 	</tr>
 	<tr>
 		<td><code><b>panBy</b>(
@@ -698,7 +699,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option), passing the given animation options through to `setView`, if required.</td>
+		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option), animating the map view if bounds are changed.  The given animation options are passed through to `setView` or `panInsideBounds`, depending on map zoom level, and can be used to control how the map animates during this change.</td>
 	</tr>
 	<tr id="map-locate">
 		<td><code><b>locate</b>(
