@@ -133,7 +133,7 @@ L.Map = L.Class.extend({
 			if (this._zoom < minZoom) {
 				this.setView(bounds.getCenter(), minZoom, options);
 			} else {
-				this.panInsideBounds(bounds);
+				this.panInsideBounds(bounds, options);
 			}
 		}
 
@@ -142,7 +142,7 @@ L.Map = L.Class.extend({
 		return this;
 	},
 
-	panInsideBounds: function (bounds) {
+	panInsideBounds: function (bounds, options) {
 		bounds = L.latLngBounds(bounds);
 
 		var viewBounds = this.getPixelBounds(),
@@ -167,7 +167,7 @@ L.Map = L.Class.extend({
 		}
 
 		if (dx || dy) {
-			return this.panBy([dx, dy]);
+			return this.panBy([dx, dy], options);
 		}
 
 		return this;

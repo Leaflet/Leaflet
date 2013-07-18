@@ -8,6 +8,7 @@ Leaflet Changelog
 An in-progress version being developed on the `master` branch. Includes all fixes from the `stable` branch.
 
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by **upscaling tiles**. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
+* Added ability to pass zoom/pan animation options to `panInsideBounds`, ensuring `setMaxBounds` passes options through. (by [@davidjb](http://git.io/djb)). [#1879](https://github.com/Leaflet/Leaflet/pull/1879)
 
 ## 0.6.3 (July 17, 2013)
 
