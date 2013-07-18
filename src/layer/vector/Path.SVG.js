@@ -80,10 +80,10 @@ L.Path = L.Path.extend({
 			} else {
 				this._path.removeAttribute('stroke-dasharray');
 			}
-			if (this.options.linecap) {
+			if (this.options.lineCap) {
 				this._path.setAttribute('stroke-linecap', this.options.linecap);
 			}
-			if (this.options.linejoin) {
+			if (this.options.lineJoin) {
 				this._path.setAttribute('stroke-linejoin', this.options.linejoin);
 			}
 		} else {
