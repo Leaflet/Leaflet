@@ -226,6 +226,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
 	</tr>			
+	<tr>
+		<td>
+			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
+		</td><td>
+			Plugin for plotting a marker representing a user - or multiple users - on a map, 
+			with support for drawing an accuraccy circle. Can be seen in action on 
+			<a href="http://longitude.me">Longitude.me</a>.
+		</td><td>
+			<a href="http://heyman.info">Jonatan Heyman</a>
+		</td>
+	</tr>
 </table>
 
 
