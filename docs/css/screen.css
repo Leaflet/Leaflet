@@ -95,6 +95,7 @@ h2 {
 	text-indent:-9999px;
 	border-radius:50%;
 	overflow:hidden;
+	cursor: pointer;
 	}
 
 .api-page tr[id] td:first-child:before {
