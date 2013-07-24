@@ -5,7 +5,8 @@
 
 L.TileLayer.Canvas = L.TileLayer.extend({
 	options: {
-		async: false
+		async: false,
+		resetOnRedraw: true
 	},
 
 	initialize: function (options) {
@@ -13,7 +14,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 	},
 
 	redraw: function () {
-		if (this._map) {
+		if (this._map && this.options.resetOnRedraw) {
 			this._reset({hard: true});
 			this._update();
 		}
