@@ -22,6 +22,8 @@ Grab the CDN links or downloads for the new release on the [download page](../..
 
 **update** (June 27): 0.6.1 hotfix released with a couple of regressions fixed (particularly the one with FF scroll-zooming too fast).
 **update** (June 28): 0.6.2 hotfix released with a couple more minor issues fixed.
+**update** (July 17): 0.6.3 released with lots of regressions and bugs fixed.
+**update** (July 25): 0.6.4 released with a fix to 0.6.3 regression.
 
 P.S. Everyone who tweets/posts about the new Leaflet release or why he loves Leaflet over the next few days will get a karma boost of over 9000 points. I heard that from a passing monk in Georgetown yesterday, true story!
 
