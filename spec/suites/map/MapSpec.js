@@ -121,6 +121,13 @@ describe("Map", function () {
 	});
 
 	describe("#getMinZoom and #getMaxZoom", function () {
+		describe('#getMinZoom', function () {
+			it('returns 0 if not set by Map options or TileLayer options', function () {
+				var map = L.map(document.createElement('div'));
+				expect(map.getMinZoom()).to.be(0);
+			});
+		});
+
 		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
 
 			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
