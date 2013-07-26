@@ -651,6 +651,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://yohanboniface.me">Yohan Boniface</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/hallahan/LeafletPlayback">LeafletPlayback</a>
+		</td><td>
+			Play back time-stamped GPS Tracks synchronized to a clock.
+		</td><td>
+			<a href="http://theoutpost.io">Nicholas Hallahan</a>
+		</td>
+	</tr>
 </table>
 
 
