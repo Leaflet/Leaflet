@@ -10,6 +10,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 
 	initialize: function (options) {
 		L.setOptions(this, options);
+		this._animRequest = null;
 	},
 
 	redraw: function () {
@@ -17,11 +18,21 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 			this._reset({hard: true});
 			this._update();
 		}
-		
+
+		this.redrawTiles();
+
+		return this;
+	},
+
+	redrawTiles: function () {
+		L.Util.cancelAnimFrame(this._animRequest);
+		this._animRequest = L.Util.requestAnimFrame(this._redrawTiles, this);
+	},
+
+	_redrawTiles: function () {
 		for (var i in this._tiles) {
 			this._redrawTile(this._tiles[i]);
 		}
-		return this;
 	},
 
 	_redrawTile: function (tile) {
