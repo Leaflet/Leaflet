@@ -137,8 +137,13 @@ L.DomEvent = {
 		    docEl = document.documentElement,
 		    x = e.pageX ? e.pageX - body.scrollLeft - docEl.scrollLeft: e.clientX,
 		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop: e.clientY,
-		    pos = new L.Point(x, y),
-		    rect = container.getBoundingClientRect(),
+		    pos = new L.Point(x, y);
+
+		if (!container) {
+			return pos;
+		}
+
+		var rect = container.getBoundingClientRect(),
 		    left = rect.left - container.clientLeft,
 		    top = rect.top - container.clientTop;
 
