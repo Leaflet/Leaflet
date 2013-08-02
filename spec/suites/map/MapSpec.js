@@ -374,4 +374,59 @@ describe("Map", function () {
 			expect(spy.thisValues[0]).to.eql(map);
 		});
 	});
+
+	describe("#invalidateSize", function () {
+		var container,
+		    orig_width = 100;
+
+		beforeEach(function () {
+			container = map.getContainer();
+			container.style.width = orig_width + "px";
+			document.body.appendChild(container);
+			map.setView([0, 0], 0);
+			map.invalidateSize({pan: false});
+		});
+
+		afterEach(function () {
+			document.body.removeChild(container);
+		});
+
+		it("pans by the right amount when growing in 1px increments", function () {
+			container.style.width = (orig_width + 1) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(1);
+
+			container.style.width = (orig_width + 2) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(1);
+
+			container.style.width = (orig_width + 3) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(2);
+		});
+
+		it("pans by the right amount when shrinking in 1px increments", function () {
+			container.style.width = (orig_width - 1) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(0);
+
+			container.style.width = (orig_width - 2) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(-1);
+
+			container.style.width = (orig_width - 3) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(-1);
+		});
+
+		it("pans back to the original position after growing by an odd size then returning to the original size", function () {
+			container.style.width = (orig_width + 5) + "px";
+			map.invalidateSize();
+
+			container.style.width = orig_width + "px";
+			map.invalidateSize();
+
+			expect(map._getMapPanePos().x).to.be(0);
+		});
+	});
 });
