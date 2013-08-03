@@ -237,6 +237,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://heyman.info">Jonatan Heyman</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ubergesundheit/Leaflet.EdgeMarker">Leaflet.EdgeMarker</a>
+		</td><td>
+			Plugin to indicate the existence of Features outside of the current view.
+		</td><td>
+			<a href="https://github.com/ubergesundheit">Gerald Pape</a>
+		</td>
+	</tr>	
 </table>
 
 
