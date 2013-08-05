@@ -660,6 +660,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://theoutpost.io">Nicholas Hallahan</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ebrelsford/Leaflet.loading">Leaflet.loading</a>
+		</td><td>
+			A simple control that adds a loading indicator as tiles and other data are loaded.
+		</td><td>
+			<a href="https://github.com/ebrelsford/">Eric Brelsford</a>
+		</td>
+	</tr>
 </table>
 
 
