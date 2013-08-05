@@ -72,10 +72,23 @@ describe("Map", function () {
 	});
 
 	describe('#getCenter', function () {
-		it ('throws if not set before', function () {
+		it('throws if not set before', function () {
 			expect(function () {
 				map.getCenter();
 			}).to.throwError();
+		});
+
+		it('returns a precise center when zoomed in after being set (#426)', function () {
+			var center = L.latLng(10, 10);
+			map.setView(center, 1);
+			map.setZoom(19);
+			expect(map.getCenter()).to.eql(center);
+		});
+
+		it('returns correct center after invalidateSize (#1919)', function () {
+			map.setView(L.latLng(10, 10), 1);
+			map.invalidateSize();
+			expect(map.getCenter()).not.to.eql(L.latLng(10, 10));
 		});
 	});
 
