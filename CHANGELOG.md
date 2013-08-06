@@ -5,7 +5,7 @@ Leaflet Changelog
 
 ## 0.7-dev (master)
 
-An in-progress version being developed on the `master` branch. Includes all fixes from the `stable` branch.
+An in-progress version being developed on the `master` branch.
 
 ### Improvements
 
@@ -20,6 +20,7 @@ An in-progress version being developed on the `master` branch. Includes all fixe
 * Fixed `GeoJSON` dependencies in build configuration that could lead to a broken custom build in some situations (by [@alubchuk](https://github.com/alubchuk)). [#1909](https://github.com/Leaflet/Leaflet/issues/1909)
 * Fixed a bug where `CircleMarker` popup placement wasn't updated after calling `setLatLng` (by [@snkashis](https://github.com/snkashis)). [#1921](https://github.com/Leaflet/Leaflet/issues/1921) [#1927](https://github.com/Leaflet/Leaflet/issues/1927)
 * Fixed a bug where popup anchor wasn't updated on `Marker` `setIcon` (by [@snkashis](https://github.com/snkashis)). [#1874](https://github.com/Leaflet/Leaflet/issues/1874) [#1891](https://github.com/Leaflet/Leaflet/issues/1891)
+* Fixed `Map` `invalidateSize` rounding issues when changing map size by an odd pixel amount (by [@russelldavis](https://github.com/russelldavis)). [#1931](https://github.com/Leaflet/Leaflet/issues/1931)
 * Fixed a bug with GeoJSON not throwing a descriptive error if a polygon has zero length inner ring (by [@snkashis](https://github.com/snkashis)). [#1917](https://github.com/Leaflet/Leaflet/issues/1917) [#1918](https://github.com/Leaflet/Leaflet/issues/1918)
 * Fixed a regression where `L.DomUtil.getMousePosition` would throw an error if container argument not provided (by [@scooterw](https://github.com/scooterw)). [#1826](https://github.com/Leaflet/Leaflet/issues/1826) [#1928](https://github.com/Leaflet/Leaflet/issues/1928) [#1926](https://github.com/Leaflet/Leaflet/issues/1926)
 
