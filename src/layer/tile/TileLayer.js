@@ -285,10 +285,10 @@ L.TileLayer = L.Class.extend({
 	_getTileZoom: function () {
 		var map = this._map,
 		    zoom = map.getZoom();
-		
+
 		zoom = Math.min(Math.max(zoom, this.options.minZoom), this.options.maxZoom);
-		
-		if ("zoomTune" in this.options) {
+
+		if ('zoomTune' in this.options) {
 			zoom = Math.min(zoom - this.options.minZoom, this.options.zoomTune.length - 1);
 			zoom = this.options.zoomTune[Math.round(zoom)];
 

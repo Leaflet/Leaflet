@@ -371,7 +371,7 @@ L.Map = L.Class.extend({
 
 		    ratiox = (boundsSize.x + padding.x) / size.x,
 		    ratioy = (boundsSize.y + padding.y) / size.y,
-		    ratio = inside? Math.max(ratiox, ratioy) : Math.min(ratiox, ratioy),
+		    ratio = inside ? Math.max(ratiox, ratioy) : Math.min(ratiox, ratioy),
 
 		    zoom = (this.getZoom() -  Math.log(ratio) / Math.LN2).toFixed(2);
 

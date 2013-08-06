@@ -49,7 +49,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		    box = this._box,
 		    layerPoint = this._map.mouseEventToLayerPoint(e),
 
-		    opposite = (startPoint.x < layerPoint.x) != (startPoint.y < layerPoint.y)? -1 : 1,
+		    opposite = (startPoint.x < layerPoint.x) !== (startPoint.y < layerPoint.y) ? -1 : 1,
 		    size = this._map.getSize();
 
 		layerPoint.y = startPoint.y + opposite * (layerPoint.x - startPoint.x) * size.y / size.x;
