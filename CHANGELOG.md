@@ -7,8 +7,21 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch. Includes all fixes from the `stable` branch.
 
+### Improvements
+
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by **upscaling tiles**. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
 * Added `Path` `lineCap` and `lineJoin` options (by [@palewire](https://github.com/palewire)). [#1843](https://github.com/Leaflet/Leaflet/issues/1843) [#1863](https://github.com/Leaflet/Leaflet/issues/1863) [#1881](https://github.com/Leaflet/Leaflet/issues/1881)
+* Added CSS classes to draggable markers for easier customization (by [@snkashis](https://github.com/snkashis)). [#1902](https://github.com/Leaflet/Leaflet/issues/1902) [#1916](https://github.com/Leaflet/Leaflet/issues/1916)
+* Added optional support for center-oriented scroll and double-click zoom (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1939](https://github.com/Leaflet/Leaflet/issues/1939)
+
+### Bugfixes
+
+* Fixed a bug where `Map` `getCenter` returned old result after map container size changed (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1940](https://github.com/Leaflet/Leaflet/issues/1940) [#1919](https://github.com/Leaflet/Leaflet/issues/1919)
+* Fixed `GeoJSON` dependencies in build configuration that could lead to a broken custom build in some situations (by [@alubchuk](https://github.com/alubchuk)). [#1909](https://github.com/Leaflet/Leaflet/issues/1909)
+* Fixed a bug where `CircleMarker` popup placement wasn't updated after calling `setLatLng` (by [@snkashis](https://github.com/snkashis)). [#1921](https://github.com/Leaflet/Leaflet/issues/1921) [#1927](https://github.com/Leaflet/Leaflet/issues/1927)
+* Fixed a bug where popup anchor wasn't updated on `Marker` `setIcon` (by [@snkashis](https://github.com/snkashis)). [#1874](https://github.com/Leaflet/Leaflet/issues/1874) [#1891](https://github.com/Leaflet/Leaflet/issues/1891)
+* Fixed a bug with GeoJSON not throwing a descriptive error if a polygon has zero length inner ring (by [@snkashis](https://github.com/snkashis)). [#1917](https://github.com/Leaflet/Leaflet/issues/1917) [#1918](https://github.com/Leaflet/Leaflet/issues/1918)
+* Fixed a regression where `L.DomUtil.getMousePosition` would throw an error if container argument not provided (by [@scooterw](https://github.com/scooterw)). [#1826](https://github.com/Leaflet/Leaflet/issues/1826) [#1928](https://github.com/Leaflet/Leaflet/issues/1928) [#1926](https://github.com/Leaflet/Leaflet/issues/1926)
 
 ## 0.6.4 (July 25, 2013)
 
