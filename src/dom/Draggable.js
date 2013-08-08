@@ -46,6 +46,8 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onDown: function (e) {
+		this._moved = false;
+		
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
 		L.DomEvent
@@ -63,8 +65,6 @@ L.Draggable = L.Class.extend({
 		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');
 		}
-
-		this._moved = false;
 
 		if (this._moving) { return; }
 
