@@ -130,6 +130,7 @@ L.Draggable = L.Class.extend({
 			L.Util.cancelAnimFrame(this._animRequest);
 
 			this.fire('dragend');
+			this._moved = false;
 		}
 
 		this._moving = false;
