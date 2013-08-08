@@ -245,7 +245,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/ubergesundheit">Gerald Pape</a>
 		</td>
-	</tr>	
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.shapefile">Leaflet.Shapefile</a>
+		</td><td>
+			Put a shapefile onto your map as a layer.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
 </table>
 
 
