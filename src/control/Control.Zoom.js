@@ -9,7 +9,7 @@ L.Control.Zoom = L.Control.extend({
 		zoomInTooltip: 'Zoom in',
 		zoomOutText: '-',
 		zoomOutTooltip: 'Zoom out'
-	}, 
+	},
 
 	onAdd: function (map) {
 		var zoomName = 'leaflet-control-zoom',
@@ -18,9 +18,11 @@ L.Control.Zoom = L.Control.extend({
 		this._map = map;
 
 		this._zoomInButton  = this._createButton(
-		        this.options.zoomInText, this.options.zoomInTooltip,  zoomName + '-in',  container, this._zoomIn,  this);
+		        this.options.zoomInText, this.options.zoomInTooltip,  
+		        zoomName + '-in',  container, this._zoomIn,  this);
 		this._zoomOutButton = this._createButton(
-		        this.options.zoomOutText, this.options.zoomOutTooltip, zoomName + '-out', container, this._zoomOut, this);
+		        this.options.zoomOutText, this.options.zoomOutTooltip, 
+		        zoomName + '-out', container, this._zoomOut, this);
 
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
