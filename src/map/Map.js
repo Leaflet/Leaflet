@@ -678,7 +678,7 @@ L.Map = L.Class.extend({
 	_onMouseClick: function (e) {
 		if (!this._loaded || (!e._simulated &&
 					this._checkHandlerMoved() ||
-		            L.DomEvent._skipped(e))) { return; }
+					L.DomEvent._skipped(e))) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
