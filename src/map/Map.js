@@ -677,9 +677,8 @@ L.Map = L.Class.extend({
 
 	_onMouseClick: function (e) {
 		if (!this._loaded || (!e._simulated &&
-		        ((this.dragging && this.dragging.moved()) ||
-		         (this.boxZoom  && this.boxZoom.moved()))) ||
-		            L.DomEvent._skipped(e)) { return; }
+					this._checkHandlerMoved() ||
+		            L.DomEvent._skipped(e))) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
@@ -779,6 +778,18 @@ L.Map = L.Class.extend({
 		    max = this.getMaxZoom();
 
 		return Math.max(min, Math.min(max, zoom));
+	},
+	
+	_checkHandlerMoved: function () {
+		for (var i in this._handlers) {
+			var handler = this._handlers[i];
+			if (typeof handler.moved === 'function') {
+				if (handler.moved()) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 });
 
