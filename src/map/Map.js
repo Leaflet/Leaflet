@@ -781,7 +781,8 @@ L.Map = L.Class.extend({
 	},
 	
 	_checkHandlerMoved: function () {
-		for (var i in this._handlers) {
+		var i = this._handlers.length;
+		while (i--) {
 			var handler = this._handlers[i];
 			if (typeof handler.moved === 'function') {
 				if (handler.moved()) {
