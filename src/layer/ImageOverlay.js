@@ -71,6 +71,15 @@ L.ImageOverlay = L.Class.extend({
 		return this;
 	},
 
+	setUrl: function (url) {
+		this._url = url;
+		this._image.src = this._url;
+	},
+
+	getAttribution: function () {
+		return this.options.attribution;
+	},
+
 	_initImage: function () {
 		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
 
