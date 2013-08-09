@@ -676,7 +676,9 @@ L.Map = L.Class.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (!this._loaded || (!e._simulated && this.dragging && this.dragging.moved()) ||
+		if (!this._loaded ||
+			(!e._simulated && this.dragging && this.dragging.moved()) ||
+			(!e._simulated && this.boxZoom  && this.boxZoom.zoomed()) ||
 		        L.DomEvent._skipped(e)) { return; }
 
 		this.fire('preclick');
