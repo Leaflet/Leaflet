@@ -71,7 +71,7 @@ L.ImageOverlay = L.Class.extend({
 		return this;
 	},
 
-	updateImage: function (url) {
+	setUrl: function (url) {
 		this._url = url;
 		this._image.src = this._url;
 	},
