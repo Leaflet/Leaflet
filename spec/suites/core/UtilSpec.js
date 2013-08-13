@@ -189,16 +189,45 @@ describe('Util', function() {
 
 	describe('#template', function () {
 		it('evaluates templates with a given data object', function () {
-			var tpl = 'Hello {foo} and {bar}!';
+			var tpl = 'Hello {foo} and {baz }!';
 
 			var str = L.Util.template(tpl, {
 				foo: 'Vlad',
-				bar: 'Dave'
+				bar: 'Dave',
+				baz:function(o){
+					return o.bar;
+				}
 			});
 
 			expect(str).to.eql('Hello Vlad and Dave!');
 		});
+		it('check the cache', function () {
+			var tpl = 'Hello {foo} and {baz }!';
 
+			var str = L.Util.templateCache[tpl]({
+				foo: 'ladies',
+				baz: function(){
+					return 'gentlemen';
+				}
+			});
+
+			expect(str).to.eql('Hello ladies and gentlemen!');
+		});
+		it('evaluates templates with a function', function () {
+			var tpl = L.Util.compileTemplate('Hello { foo } and { bar}!',{});
+
+			var str1 = tpl({
+				foo: 'Vlad',
+				bar: 'Dave'
+			});
+			var str2 = tpl({
+				foo: '{Calvin}',
+				bar: '{Simon}'
+			});
+
+			expect(str1).to.eql('Hello Vlad and Dave!');
+			expect(str2).to.eql('Hello {Calvin} and {Simon}!');
+		});
 		it('does not modify text without a token variable', function () {
 			expect(L.Util.template('foo', {})).to.eql('foo');
 		});

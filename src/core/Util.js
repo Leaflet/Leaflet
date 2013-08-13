@@ -104,17 +104,33 @@ L.Util = {
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
-
+	
+	compileTemplate: function (str, data) {
+		/*jslint evil: true */
+		//from https://gist.github.com/padolsey/6008842
+		return new Function(
+			'o',
+			'return "' + (
+				str.replace(/\"/g, '\\"').replace(/\{ *([\w_]+) *\}/g, function (_, $1) {
+					if (typeof data[$1] === 'function') {
+						return '" + o["' + $1 + '"](o) + "';
+					} else {
+						return '" + o["' + $1 + '"] + "';
+					}
+				})
+			) + '";'
+		);
+	},
+	
+	templateCache: {},
+	
 	template: function (str, data) {
-		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
-			var value = data[key];
-			if (value === undefined) {
-				throw new Error('No value provided for variable ' + str);
-			} else if (typeof value === 'function') {
-				value = value(data);
-			}
-			return value;
-		});
+		if (str in this.templateCache) {
+			return this.templateCache[str](data);
+		} else {
+			this.templateCache[str] = this.compileTemplate(str, data);
+			return this.templateCache[str](data);
+		}
 	},
 
 	isArray: function (obj) {
