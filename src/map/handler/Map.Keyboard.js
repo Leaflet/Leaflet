@@ -15,7 +15,7 @@ L.Map.Keyboard = L.Handler.extend({
 		right:   [39],
 		down:    [40],
 		up:      [38],
-		zoomIn:  [187, 107, 61],
+		zoomIn:  [187, 107, 61, 171],
 		zoomOut: [189, 109, 173]
 	},
 
