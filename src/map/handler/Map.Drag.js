@@ -32,7 +32,7 @@ L.Map.Drag = L.Handler.extend({
 				this._draggable.on('predrag', this._onPreDrag, this);
 				map.on('viewreset', this._onViewReset, this);
 
-				this._onViewReset();
+				map.whenReady(this._onViewReset, this);
 			}
 		}
 		this._draggable.enable();
