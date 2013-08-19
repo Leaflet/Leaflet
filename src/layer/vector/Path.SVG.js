@@ -97,13 +97,13 @@ L.Path = L.Path.extend({
 		}
 
 		if (this.options.class) {
-			var existingClass = this._path.getAttribute('class');
-			if (typeof(existingClass) !== "undefined" && existingClass !== null){
-				this._path.setAttribute('class', existingClass+' '+this.options.class);
-			} else {
-				this._path.setAttribute('class', this.options.class);
-		  }    
-		}
+      var existingClass = this._path.getAttribute('class');
+			if ( typeof(existingClass) !== 'undefined' && existingClass !== null) {
+        this._path.setAttribute('class', existingClass + ' ' + this.options.class);
+      } else {
+        this._path.setAttribute('class', this.options.class);
+		  }
+    }
 	},
 
 	_updatePath: function () {
@@ -119,8 +119,9 @@ L.Path = L.Path.extend({
 	_initEvents: function () {
 		if (this.options.clickable) {
 			if (L.Browser.svg || !L.Browser.vml) {
-        if (typeof(existingClass) !== "undefined" && existingClass !== null){
-          this._path.setAttribute('class', existingClass+' leaflet-clickable');
+        var existingClass = this._path.getAttribute('class');
+        if (typeof(existingClass) !== 'undefined' && existingClass !== null) {
+          this._path.setAttribute('class', existingClass + ' leaflet-clickable');
         } else {
           this._path.setAttribute('class', 'leaflet-clickable');
         }
