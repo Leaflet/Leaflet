@@ -98,7 +98,7 @@ L.Path = L.Path.extend({
 
 		if (this.options.class) {
 			var existingClass = this._path.getAttribute('class');
-			if ( typeof(existingClass) !== 'undefined' && existingClass !== null) {
+			if (typeof(existingClass) !== 'undefined' && existingClass !== null) {
 				this._path.setAttribute('class', existingClass + ' ' + this.options.class);
 			} else {
 				this._path.setAttribute('class', this.options.class);
