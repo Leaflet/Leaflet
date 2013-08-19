@@ -66,7 +66,7 @@ L.Map.Tap = L.Handler.extend({
 			var first = e.changedTouches[0],
 			    el = first.target;
 
-			if (el.tagName.toLowerCase() === 'a') {
+			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
 
