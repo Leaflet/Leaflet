@@ -62,7 +62,7 @@ L.Draggable = L.Class.extend({
 		    el = first.target;
 
 		// if touching a link, highlight it
-		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
+		if (L.Browser.touch && el.tagName && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
