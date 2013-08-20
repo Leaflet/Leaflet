@@ -101,6 +101,8 @@ L.DomEvent = {
 		} else {
 			e.cancelBubble = true;
 		}
+		L.DomEvent._skipped(e);
+
 		return this;
 	},
 
@@ -127,7 +129,9 @@ L.DomEvent = {
 	},
 
 	stop: function (e) {
-		return L.DomEvent.preventDefault(e).stopPropagation(e);
+		return L.DomEvent
+			.preventDefault(e)
+			.stopPropagation(e);
 	},
 
 	getMousePosition: function (e, container) {
