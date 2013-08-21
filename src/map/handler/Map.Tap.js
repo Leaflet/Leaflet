@@ -36,7 +36,7 @@ L.Map.Tap = L.Handler.extend({
 		this._startPos = this._newPos = new L.Point(first.clientX, first.clientY);
 
 		// if touching a link, highlight it
-		if (el.tagName.toLowerCase() === 'a') {
+		if (el.tagName && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
