@@ -687,6 +687,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ebrelsford/">Eric Brelsford</a>
 		</td>
 	</tr>
+	<tr>
+	<td>
+		<a href="https://github.com/pwldp/leaflet.viewcenter">Leaflet.viewcenter</a>
+		</td><td>
+			A simple control that adds a button to change view and zoom to predefinied values in options.
+		</td><td>
+			<a href="https://github.com/pwldp/">Dariusz Pawlak</a>
+		</td>
+	</tr>
 </table>
 
 
