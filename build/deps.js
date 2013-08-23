@@ -128,9 +128,15 @@ var deps = {
 		desc: ['Rectangle overlays.']
 	},
 
+	Ellipse: {
+		src: ['layer/vector/Ellipse.js'],
+		deps: ['Path'],
+		desc: 'Ellipse overlays (with x and y radius in meters).'
+	},
+
 	Circle: {
 		src: ['layer/vector/Circle.js'],
-		deps: ['Path'],
+		deps: ['Ellipse'],
 		desc: 'Circle overlays (with radius in meters).'
 	},
 

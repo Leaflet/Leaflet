@@ -10,7 +10,8 @@ L.CircleMarker = L.Circle.extend({
 
 	initialize: function (latlng, options) {
 		L.Circle.prototype.initialize.call(this, latlng, null, options);
-		this._radius = this.options.radius;
+		this._radiusX = this.options.radius;
+		this._radiusY = this.options.radius;
 	},
 
 	projectLatlngs: function () {
@@ -30,9 +31,15 @@ L.CircleMarker = L.Circle.extend({
 	},
 
 	setRadius: function (radius) {
-		this.options.radius = this._radius = radius;
+		this._radius = this.options.radius = radius;
+		this._radiusX = this._radius;
+		this._radiusY = this._radius;
 		return this.redraw();
-	}
+	},
+
+	getRadius: function () {
+			return this.options.radius;
+		}
 });
 
 L.circleMarker = function (latlng, options) {
