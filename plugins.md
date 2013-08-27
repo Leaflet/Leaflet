@@ -695,6 +695,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/pwldp/">Dariusz Pawlak</a>
 		</td>
+    </tr>
+    <tr>
+	<td>
+		<a href="https://github.com/aratcliffe/Leaflet.contextmenu">Leaflet.contextmenu</a>
+		</td><td>
+			A context menu for Leaflet.
+		</td><td>
+			<a href="https://github.com/aratcliffe/">Adam Ratcliffe</a>
+		</td>        
 	</tr>
 </table>
 
