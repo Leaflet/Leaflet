@@ -12,13 +12,13 @@ L.Popup = L.Class.extend({
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
-		maxHeight: null,
+		// maxHeight: null,
 		autoPan: true,
 		closeButton: true,
 		offset: [0, 7],
 		autoPanPadding: [5, 5],
-		autoPanPaddingTopLeft: null,
-		autoPanPaddingBottomRight: null,
+		// autoPanPaddingTopLeft: null,
+		// autoPanPaddingBottomRight: null,
 		keepInView: false,
 		className: '',
 		zoomAnimation: true

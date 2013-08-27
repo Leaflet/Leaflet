@@ -76,7 +76,7 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			stroke.opacity = options.opacity;
 
 			if (options.dashArray) {
-				stroke.dashStyle = options.dashArray instanceof Array ?
+				stroke.dashStyle = L.Util.isArray(options.dashArray) ?
 				    options.dashArray.join(' ') :
 				    options.dashArray.replace(/( *, *)/g, ' ');
 			} else {
