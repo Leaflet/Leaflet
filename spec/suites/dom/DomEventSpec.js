@@ -11,92 +11,92 @@ describe('DomEvent', function() {
 			return el.fireEvent('onclick');
 		}
 	}
-	
+
 	beforeEach(function() {
 		el = document.createElement('div');
 		el.style.position = 'absolute';
 		el.style.top = el.style.left = '-10000px';
 		document.body.appendChild(el);
 	});
-	
+
 	afterEach(function() {
 		document.body.removeChild(el);
 	});
-	
+
 	describe('#addListener', function() {
-		it('should add a listener and call it on event', function() {
-			var listener1 = jasmine.createSpy('listener1'), 
-				listener2 = jasmine.createSpy('listener2');
-		
+		it('adds a listener and calls it on event', function() {
+			var listener1 = sinon.spy(),
+				listener2 = sinon.spy();
+
 			L.DomEvent.addListener(el, 'click', listener1);
 			L.DomEvent.addListener(el, 'click', listener2);
-			
+
 			simulateClick(el);
-			
-			expect(listener1).toHaveBeenCalled();
-			expect(listener2).toHaveBeenCalled();
+
+			expect(listener1.called).to.be.ok();
+			expect(listener2.called).to.be.ok();
 		});
-		
-		it('should have "this" keyword point to the given context', function() {
+
+		it('binds "this" to the given context', function() {
 			var obj = {foo: 'bar'},
 				result;
-			
+
 			L.DomEvent.addListener(el, 'click', function() {
 				result = this;
 			}, obj);
-			
+
 			simulateClick(el);
-			
-			expect(result).toEqual(obj);
+
+			expect(result).to.eql(obj);
 		});
-		
-		it('should pass an event object to the listener', function() {
+
+		it('passes an event object to the listener', function() {
 			var type;
-			
+
 			L.DomEvent.addListener(el, 'click', function(e) {
 				type = e && e.type;
 			});
 			simulateClick(el);
-			
-			expect(type).toEqual('click');
+
+			expect(type).to.eql('click');
 		});
 	});
-	
+
 	describe('#removeListener', function() {
-		it('should remove previously added listener', function() {
-			var listener = jasmine.createSpy('listener');
-			
+		it('removes a previously added listener', function() {
+			var listener = sinon.spy();
+
 			L.DomEvent.addListener(el, 'click', listener);
 			L.DomEvent.removeListener(el, 'click', listener);
-			
+
 			simulateClick(el);
-			
-			expect(listener).not.toHaveBeenCalled();
+
+			expect(listener.called).to.not.be.ok();
 		});
 	});
-	
+
 	describe('#stopPropagation', function() {
-		it('should stop propagation of the given event', function() {
+		it('stops propagation of the given event', function() {
 			var child = document.createElement('div'),
-				listener = jasmine.createSpy('listener');
-			
+				listener = sinon.spy();
+
 			el.appendChild(child);
-			
+
 			L.DomEvent.addListener(child, 'click', L.DomEvent.stopPropagation);
 			L.DomEvent.addListener(el, 'click', listener);
-			
+
 			simulateClick(child);
-			
-			expect(listener).not.toHaveBeenCalled();
-			
+
+			expect(listener.called).to.not.be.ok();
+
 			el.removeChild(child);
 		});
 	});
 	describe('#preventDefault', function() {
-		it('should prevent the default action of event', function() {
+		it('prevents the default action of event', function() {
 			L.DomEvent.addListener(el, 'click', L.DomEvent.preventDefault);
 
-			expect(simulateClick(el)).toBe(false);
+			expect(simulateClick(el)).to.be(false);
 		});
 	});
 });

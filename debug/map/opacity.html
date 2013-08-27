@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style>
+		.mapcontainer {
+		    float:left;
+		    position: relative;
+		    width: 32%;
+		    font-size: 12px;
+		    font-family: sans-serif;
+		    height: 340px;
+		    margin-bottom: 15px;
+		    background-color: #eee;
+		    margin-right: 1%;
+		}
+
+		.map {
+		    position: absolute;
+		    width: 100%;
+		    height: 280px;
+		    bottom: 0px;
+		}
+	</style>
+</head>
+<body>
+	<p>These should all render identically.</p>
+	<div class="mapcontainer">
+		CASE 1: no opacity set on any layers
+		<br />
+		<div id="map1" class="map"></div>
+	</div>
+	<div class="mapcontainer">
+		CASE 2: opacity set to .99 on overlays but not on basemap
+		<br />
+		<div id="map2" class="map"></div>
+	</div>
+	<div class="mapcontainer">
+		CASE 3: opacity set on overlays but not on basemap, zIndex option set to 0 on basemap
+		<br />
+		<div id="map3" class="map"></div>
+	</div>
+	<div class="mapcontainer">
+		CASE 4: opacity set to .99 on overlays but set to 1 on basemap
+		<br />
+		<div id="map4" class="map"></div>
+	</div>
+	<div class="mapcontainer">
+		CASE 5: opacity set to .99 on all layers
+		<br />
+		<div id="map5" class="map"></div>
+	</div>
+	<div class="mapcontainer">
+		CASE 6: opacity set to .99 on 1st and 3rd layers and 1 on middle layer
+		<br />
+		<div id="map6" class="map"></div>
+	</div>
+
+	<script type="text/javascript">
+		var mapopts =  {
+		    center: [35, -122],
+		    zoom : 5
+		};
+
+		var map1 = L.map('map1', mapopts);
+		var map2 = L.map('map2', mapopts);
+		var map3 = L.map('map3', mapopts);
+		var map4 = L.map('map4', mapopts);
+		var map5 = L.map('map5', mapopts);
+		var map6 = L.map('map6', mapopts);
+
+		/**********
+		CASE 1: no opacity set on any layers
+		**********/
+		// OSM Basemap
+		var osm1 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
+		    attribution: '',
+		    key: 'BC9A493B41014CAABB98F0471D759707',
+		    styleId: 97941
+		}).addTo(map1);
+
+		// EEZs / Nations
+		var eez1 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		    tms: true
+		}).addTo(map1);
+
+		// Marine Protected Areas overlay
+		var mpa1 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		    tms: false
+		}).addTo(map1);
+
+
+		/**********
+		CASE 2: opacity set on overlays but not on basemap
+		**********/
+		// OSM Basemap
+		var osm2 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
+		    attribution: '',
+		    key: 'BC9A493B41014CAABB98F0471D759707',
+		    styleId: 97941
+		}).addTo(map2);
+
+		// EEZs / Nations
+		var eez2 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		    tms: true,
+		    opacity: 0.99
+		}).addTo(map2);
+
+		// Marine Protected Areas overlay
+		var mpa2 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		    tms: false,
+		    opacity: 0.99
+		}).addTo(map2);
+
+
+		/**********
+		CASE 3: opacity set on overlays but not on basemap, zIndex option set to 0 on basemap
+		**********/
+		// OSM Basemap
+		var osm3 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
+		    attribution: '',
+		    key: 'BC9A493B41014CAABB98F0471D759707',
+		    styleId: 97941,
+		    zIndex: 0
+		}).addTo(map3);
+
+		// EEZs / Nations
+		var eez3 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		    tms: true,
+		    opacity: 0.99
+		}).addTo(map3);
+
+		// Marine Protected Areas overlay
+		var mpa3 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		    tms: false,
+		    opacity: 0.99
+		}).addTo(map3);
+
+
+		/**********
+		CASE 4: opacity set on overlays but set to 1 on basemap
+		**********/
+		// OSM Basemap
+		var osm4 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
+		    attribution: '',
+		    key: 'BC9A493B41014CAABB98F0471D759707',
+		    styleId: 97941,
+		    opacity: 1
+		}).addTo(map4);
+
+		// EEZs / Nations
+		var eez4 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		    tms: true,
+		    opacity: 0.99
+		}).addTo(map4);
+
+		// Marine Protected Areas overlay
+		var mpa4 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		    tms: false,
+		    opacity: 0.99
+		}).addTo(map4);
+
+
+		/**********
+		CASE 5: opacity set to .5 on all layers
+		**********/
+		// OSM Basemap
+		var osm5 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
+		    attribution: '',
+		    key: 'BC9A493B41014CAABB98F0471D759707',
+		    styleId: 97941,
+		    opacity: 0.99
+		}).addTo(map5);
+
+		// EEZs / Nations
+		var eez5 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		    tms: true,
+		    opacity: 0.99
+		}).addTo(map5);
+
+		// Marine Protected Areas overlay
+		var mpa5 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		    tms: false,
+		    opacity: 0.99
+		}).addTo(map5);
+
+
+		/**********
+		CASE 6: opacity set to .5 on 1st and 3rd layers and 1 on middle layer
+		**********/
+		// OSM Basemap
+		var osm6 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
+		    attribution: '',
+		    key: 'BC9A493B41014CAABB98F0471D759707',
+		    styleId: 97941,
+		    opacity: 0.99
+		}).addTo(map6);
+
+		// EEZs / Nations
+		var eez6 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		    tms: true,
+		    opacity: 1
+		}).addTo(map6);
+
+		// Marine Protected Areas overlay
+		var mpa6 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		    tms: false,
+		    opacity: 0.99
+		}).addTo(map6);
+
+
+	</script>
+</body>
+</html>

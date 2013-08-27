@@ -6,11 +6,14 @@ L.Path.include({
 
 	bindPopup: function (content, options) {
 
-		if (!this._popup || options) {
-			this._popup = new L.Popup(options, this);
+		if (content instanceof L.Popup) {
+			this._popup = content;
+		} else {
+			if (!this._popup || options) {
+				this._popup = new L.Popup(options, this);
+			}
+			this._popup.setContent(content);
 		}
-
-		this._popup.setContent(content);
 
 		if (!this._popupHandlersAdded) {
 			this

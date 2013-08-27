@@ -9,31 +9,22 @@ L.Control.Zoom = L.Control.extend({
 
 	onAdd: function (map) {
 		var zoomName = 'leaflet-control-zoom',
-		    barName = 'leaflet-bar',
-		    partName = barName + '-part',
-		    container = L.DomUtil.create('div', zoomName + ' ' + barName);
+		    container = L.DomUtil.create('div', zoomName + ' leaflet-bar');
 
 		this._map = map;
 
-		this._zoomInButton = this._createButton('+', 'Zoom in',
-		        zoomName + '-in ' +
-		        partName + ' ' +
-		        partName + '-top',
-		        container, this._zoomIn,  this);
+		this._zoomInButton  = this._createButton(
+		        '+', 'Zoom in',  zoomName + '-in',  container, this._zoomIn,  this);
+		this._zoomOutButton = this._createButton(
+		        '-', 'Zoom out', zoomName + '-out', container, this._zoomOut, this);
 
-		this._zoomOutButton = this._createButton('-', 'Zoom out',
-		        zoomName + '-out ' +
-		        partName + ' ' +
-		        partName + '-bottom',
-		        container, this._zoomOut, this);
-
-		map.on('zoomend', this._updateDisabled, this);
+		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
 		return container;
 	},
 
 	onRemove: function (map) {
-		map.off('zoomend', this._updateDisabled, this);
+		map.off('zoomend zoomlevelschange', this._updateDisabled, this);
 	},
 
 	_zoomIn: function (e) {
@@ -64,7 +55,7 @@ L.Control.Zoom = L.Control.extend({
 
 	_updateDisabled: function () {
 		var map = this._map,
-			className = 'leaflet-control-zoom-disabled';
+			className = 'leaflet-disabled';
 
 		L.DomUtil.removeClass(this._zoomInButton, className);
 		L.DomUtil.removeClass(this._zoomOutButton, className);

@@ -8,6 +8,7 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
+	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -16,10 +17,10 @@
 
 	<script type="text/javascript">
 	    // Test that changing between layers with differing zoomlevels also updates
-        // the zoomlevels in the map + also 
+        // the zoomlevels in the map + also
 
 		function getCloudMadeUrl(styleId) {
-			return 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/' + styleId + '/256/{z}/{x}/{y}.png';
+			return 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/' + styleId + '/256/{z}/{x}/{y}.png';
 		}
 
 		var map = L.map('map').setView(L.latLng(50.5, 30.51), 0);
@@ -27,7 +28,7 @@
 		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = L.tileLayer(getCloudMadeUrl(997), {attribution: cloudmadeAttribution, minZoom: 0, maxZoom: 10}).addTo(map),
 			cloudmade2 = L.tileLayer(getCloudMadeUrl(998), {attribution: 'Hello world', minZoom: 5, maxZoom: 18});
-		
+
 		L.control.layers({
 			'CloudMade Pale Dawn (5-18)': cloudmade2,
 			'CloudMade Fresh (0-10)': cloudmade

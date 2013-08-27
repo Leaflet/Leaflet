@@ -8,17 +8,26 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	initialize: function (latlngs, options) {
+		var i, len, hole;
+
 		L.Polyline.prototype.initialize.call(this, latlngs, options);
 
 		if (latlngs && L.Util.isArray(latlngs[0]) && (typeof latlngs[0][0] !== 'number')) {
 			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
+
+			for (i = 0, len = this._holes.length; i < len; i++) {
+				hole = this._holes[i] = this._convertLatLngs(this._holes[i]);
+				if (hole[0].equals(hole[hole.length - 1])) {
+					hole.pop();
+				}
+			}
 		}
 
 		// filter out last point if its equal to the first one
 		latlngs = this._latlngs;
 
-		if (latlngs[0].equals(latlngs[latlngs.length - 1])) {
+		if (latlngs.length >= 2 && latlngs[0].equals(latlngs[latlngs.length - 1])) {
 			latlngs.pop();
 		}
 	},
@@ -35,7 +44,11 @@ L.Polygon = L.Polyline.extend({
 		var i, j, len, len2, latlng,
 			magnetPoint = null;
 		if (this.options.magnetize) {
-			magnetPoint = this._latlngs.length ? this._map.options.crs.projection.project(this._latlngs[0]): this.getDefaultMagnetPoint();
+			if (this._latlngs.length) {
+				magnetPoint = this._map.options.crs.projection.project(this._latlngs[0]);
+			} else {
+				magnetPoint = this.getDefaultMagnetPoint();
+			}
 		}
 
 		for (i = 0, len = this._holes.length; i < len; i++) {

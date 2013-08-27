@@ -26,12 +26,28 @@ L.Util = {
 	},
 
 	stamp: (function () {
-		var lastId = 0, key = '_leaflet_id';
-		return function (/*Object*/ obj) {
+		var lastId = 0,
+		    key = '_leaflet_id';
+		return function (obj) {
 			obj[key] = obj[key] || ++lastId;
 			return obj[key];
 		};
 	}()),
+
+	invokeEach: function (obj, method, context) {
+		var i, args;
+
+		if (typeof obj === 'object') {
+			args = Array.prototype.slice.call(arguments, 3);
+
+			for (i in obj) {
+				method.apply(context, [i, obj[i]].concat(args));
+			}
+			return true;
+		}
+
+		return false;
+	},
 
 	limitExecByInterval: function (fn, time, context) {
 		var lock, execOnUnlock;
@@ -68,8 +84,12 @@ L.Util = {
 		return Math.round(num * pow) / pow;
 	},
 
+	trim: function (str) {
+		return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
+	},
+
 	splitWords: function (str) {
-		return str.replace(/^\s+|\s+$/g, '').split(/\s+/);
+		return L.Util.trim(str).split(/\s+/);
 	},
 
 	setOptions: function (obj, options) {
@@ -77,24 +97,27 @@ L.Util = {
 		return obj.options;
 	},
 
-	getParamString: function (obj, existingUrl) {
+	getParamString: function (obj, existingUrl, uppercase) {
 		var params = [];
 		for (var i in obj) {
-			if (obj.hasOwnProperty(i)) {
-				params.push(i + '=' + obj[i]);
-			}
+			params.push(encodeURIComponent(uppercase ? i.toUpperCase() : i) + '=' + encodeURIComponent(obj[i]));
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
-	template: function (str, data) {
-		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
-			var value = data[key];
-			if (!data.hasOwnProperty(key)) {
-				throw new Error('No value provided for variable ' + str);
-			}
-			return value;
+	compileTemplate: function (str, data) {
+		// based on https://gist.github.com/padolsey/6008842
+		str = str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
+			return '" + o["' + key + '"]' + (typeof data[key] === 'function' ? '(o)' : '') + ' + "';
 		});
+		// jshint evil: true
+		return new Function('o', 'return "' + str + '";');
+	},
+
+	template: function (str, data) {
+		var cache = L.Util._templateCache = L.Util._templateCache || {};
+		cache[str] = cache[str] || L.Util.compileTemplate(str, data);
+		return cache[str](data);
 	},
 
 	isArray: function (obj) {

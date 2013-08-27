@@ -80,8 +80,11 @@ L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Numbe
 	if (L.Util.isArray(a)) {
 		return new L.LatLng(a[0], a[1]);
 	}
-	if (isNaN(a)) {
+	if (a === undefined || a === null) {
 		return a;
+	}
+	if (typeof a === 'object' && 'lat' in a) {
+		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon);
 	}
 	return new L.LatLng(a, b);
 };

@@ -16,14 +16,21 @@ L.CircleMarker = L.Circle.extend({
 	projectLatlngs: function () {
 		this._point = this._map.latLngToLayerPoint(this._latlng, this.getDefaultMagnetPoint());
 	},
-	
+
 	_updateStyle : function () {
 		L.Circle.prototype._updateStyle.call(this);
 		this.setRadius(this.options.radius);
 	},
 
+	setLatLng: function (latlng) {
+		L.Circle.prototype.setLatLng.call(this, latlng);
+		if (this._popup && this._popup._isOpen) {
+			this._popup.setLatLng(latlng);
+		}
+	},
+
 	setRadius: function (radius) {
-		this._radius = radius;
+		this.options.radius = this._radius = radius;
 		return this.redraw();
 	}
 });

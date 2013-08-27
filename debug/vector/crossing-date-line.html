@@ -8,6 +8,7 @@
 	
 	<link rel="stylesheet" href="../css/screen.css" />
 	
+    <script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
     <style type="text/css">
         #map {
@@ -46,17 +47,10 @@
             [-35, -174],
         ]).addTo(map).bindPopup("I'm a polyline crossing date line");
 
-        L.polyline([
-            [-21, 176],
-            [-23, 170],
-            [-24, -171],
-            [-30, -170],
-        ]).addTo(map).bindPopup("I'm an editable polyline").editing.enable();
-
         L.geoJson({"crs": null, "type": "FeatureCollection", "features": [{"geometry": {"type": "LineString", "coordinates": [[-0.3515625, 45.82879925192134], [-32.6953125, 43.068887774169625], [-2.109375, -49.610709938074216], [155.390625, -50.736455137010644], [-163.828125, -51.618016548773696], [-43.2421875, -59.7120971733229], [-27.421875, -4.915832801313164], [-31.640625, 35.460669951495305], [-11.25, 40.44694705960048]]}, "type": "Feature", "id": 41, "properties": {}}]},
             {
                 onEachFeature: function (feature, layer) {
-                    layer.bindPopup("I'm an editable polyline around the world, created from a GeoJSON").editing.enable();
+                    layer.bindPopup("I'm a polyline around the world, created from a GeoJSON");
                 }
             }).addTo(map);
 
@@ -66,13 +60,6 @@
             [-46, -178],
             [-40, -175],
         ]).addTo(map).bindPopup("I'm a polygon crossing date line");
-
-        L.polygon([
-            [-25, 176],
-            [-30, 178],
-            [-31, -178],
-            [-25, -175],
-        ]).addTo(map).bindPopup("I'm a polygon editable").editing.enable();
 
         L.polygon([
             [-45, -176],

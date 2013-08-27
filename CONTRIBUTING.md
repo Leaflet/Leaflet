@@ -37,6 +37,9 @@ here are some tips for creating a helpful report that will make fixing it much e
  * *Bonus tip:* if the bug only appears in the master version but the stable version is fine,
    use `git bisect` to find the exact commit that introduced the bug.
 
+If you just want some help with your project,
+try asking [on the Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) instead.
+
 ## Contributing Code
 
 ### Considerations for Accepting Patches
@@ -60,15 +63,15 @@ please consider submitting another pull request with the corresponding [document
 ### Setting up the Build System
 
 To set up the Leaflet build system, install [Node](http://nodejs.org/),
-then run the following commands in the project root (with superuser permissions):
+then run the following commands in the project root:
 
 ```
 npm install -g jake
-npm install jshint
-npm install uglify-js
+npm install
 ```
 
 You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder).
+For a custom build with selected components, open `build/build.html` in the browser and follow the instructions from there.
 
 ### Making Changes to Leaflet Source
 
@@ -80,16 +83,44 @@ You should always write each batch of changes (feature, bugfix, etc.) in **its o
 Please do not commit to the `master` branch, or your unrelated changes will go into the same pull request.
 
 You should also follow the code style and whitespace conventions of the original codebase.
+In particular, use tabs for indentation and spaces for alignment.
 
 Before commiting your changes, run `jake lint` to catch any JS errors in the code and fix them.
 If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js`
 so that the build system knows about them.
 
-But please **do not commit the built files** (`leaflet.js` and `leaflet-src.js`) along with your changes,
-otherwise there may be problems merging the pull request.
-These files are only commited in the `master` branch of the main Leaflet repository.
+Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
 
 Happy coding!
+
+## Running the Tests
+
+To run the tests from the command line,
+install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
+then run:
+
+```
+jake test
+```
+
+To run all the tests in actual browsers at the same time, you can do:
+
+```
+jake test --ff --chrome --safari --ie
+```
+
+To run the tests in a browser manually, open `spec/index.html`.
+
+## Code Coverage
+
+To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
+
+```
+jake test --cov
+```
+
+After that, open `spec/coverage/<environment>/index.html` in a browser to see the report.
+From there you can click through folders/files to get details on their individual coverage.
 
 ## Improving Documentation
 
@@ -107,10 +138,10 @@ If you need to make edits in a local repository to see how it looks in the proce
 
  1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
  2. Run `gem install jekyll`.
- 3. Run `jekyll --auto` inside the `Leaflet` folder.
- 4. Open the website from the `_site` folder.
+ 3. Run `jekyll serve --watch` in the root `Leaflet` folder.
+ 4. Open `localhost:4000` in your browser.
 
-Now any file changes will be reflected on the generated pages automatically.
+Now any file changes will be updated when you reload pages automatically.
 After commiting the changes, just send a pull request.
 
 If you need to update documentation according to a new feature that only appeared in the master version (not stable one),

@@ -61,6 +61,12 @@ L.Path = L.Path.extend({
 		if (this.options.fill) {
 			this._path.setAttribute('fill-rule', 'evenodd');
 		}
+		if (this.options.pointerEvents) {
+			this._path.setAttribute('pointer-events', this.options.pointerEvents);
+		}
+		if (!this.options.clickable && !this.options.pointerEvents) {
+			this._path.setAttribute('pointer-events', 'none');
+		}
 		this._updateStyle();
 	},
 
@@ -73,6 +79,12 @@ L.Path = L.Path.extend({
 				this._path.setAttribute('stroke-dasharray', this.options.dashArray);
 			} else {
 				this._path.removeAttribute('stroke-dasharray');
+			}
+			if (this.options.lineCap) {
+				this._path.setAttribute('stroke-linecap', this.options.lineCap);
+			}
+			if (this.options.lineJoin) {
+				this._path.setAttribute('stroke-linejoin', this.options.lineJoin);
 			}
 		} else {
 			this._path.setAttribute('stroke', 'none');

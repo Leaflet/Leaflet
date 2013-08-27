@@ -5,7 +5,6 @@ var fs = require('fs'),
     deps = require('./deps.js').deps,
     hintrc = require('./hintrc.js').config;
 
-
 function lintFiles(files) {
 
 	var errorsFound = 0,
@@ -13,7 +12,7 @@ function lintFiles(files) {
 
 	for (i = 0, len = files.length; i < len; i++) {
 
-		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc);
+		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc, i ? {L: true} : null);
 		errors = jshint.JSHINT.errors;
 
 		for (j = 0, len2 = errors.length; j < len2; j++) {
@@ -33,7 +32,7 @@ function getFiles(compsBase32) {
 
 	if (compsBase32) {
 		comps = parseInt(compsBase32, 32).toString(2).split('');
-		console.log('Managing dependencies...')
+		console.log('Managing dependencies...');
 	}
 
 	function addFiles(srcs) {
@@ -63,6 +62,8 @@ function getFiles(compsBase32) {
 
 	return files;
 }
+
+exports.getFiles = getFiles;
 
 exports.lint = function () {
 
@@ -116,7 +117,7 @@ exports.build = function (compsBase32, buildName) {
 
 	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
 	    intro = '(function (window, document, undefined) {',
-	    outro = '}(this, document));',
+	    outro = '}(window, document));',
 	    newSrc = copy + intro + combineFiles(files) + outro,
 
 	    pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
@@ -151,5 +152,42 @@ exports.build = function (compsBase32, buildName) {
 	} else {
 		fs.writeFileSync(path, newCompressed);
 		console.log('\tSaved to ' + path);
+	}
+};
+
+exports.test = function() {
+	var karma = require('karma'),
+	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
+
+	testConfig.browsers = ['PhantomJS'];
+
+	if (isArgv('--chrome')) {
+		testConfig.browsers.push('Chrome');
+	}
+	if (isArgv('--safari')) {
+		testConfig.browsers.push('Safari');
+	}
+	if (isArgv('--ff')) {
+		testConfig.browsers.push('Firefox');
+	}
+	if (isArgv('--ie')) {
+		testConfig.browsers.push('IE');
+	}
+
+	if (isArgv('--cov')) {
+		testConfig.preprocessors = {
+			'../src/**/*.js': 'coverage'
+		};
+		testConfig.coverageReporter = {
+			type : 'html',
+			dir : 'coverage/'
+		};
+		testConfig.reporters = ['coverage'];
+	}
+
+	karma.server.start(testConfig);
+
+	function isArgv(optName) {
+		return process.argv.indexOf(optName) !== -1;
 	}
 };

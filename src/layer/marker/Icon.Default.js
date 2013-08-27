@@ -5,11 +5,11 @@
 L.Icon.Default = L.Icon.extend({
 
 	options: {
-		iconSize: new L.Point(25, 41),
-		iconAnchor: new L.Point(12, 41),
-		popupAnchor: new L.Point(1, -34),
+		iconSize: [25, 41],
+		iconAnchor: [12, 41],
+		popupAnchor: [1, -34],
 
-		shadowSize: new L.Point(41, 41)
+		shadowSize: [41, 41]
 	},
 
 	_getIconUrl: function (name) {
@@ -20,13 +20,13 @@ L.Icon.Default = L.Icon.extend({
 		}
 
 		if (L.Browser.retina && name === 'icon') {
-			name += '@2x';
+			name += '-2x';
 		}
 
 		var path = L.Icon.Default.imagePath;
 
 		if (!path) {
-			throw new Error("Couldn't autodetect L.Icon.Default.imagePath, set it manually.");
+			throw new Error('Couldn\'t autodetect L.Icon.Default.imagePath, set it manually.');
 		}
 
 		return path + '/marker-' + name + '.png';
@@ -35,16 +35,17 @@ L.Icon.Default = L.Icon.extend({
 
 L.Icon.Default.imagePath = (function () {
 	var scripts = document.getElementsByTagName('script'),
-	    leafletRe = /\/?leaflet[\-\._]?([\w\-\._]*)\.js\??/;
+	    leafletRe = /[\/^]leaflet[\-\._]?([\w\-\._]*)\.js\??/;
 
-	var i, len, src, matches;
+	var i, len, src, matches, path;
 
 	for (i = 0, len = scripts.length; i < len; i++) {
 		src = scripts[i].src;
 		matches = src.match(leafletRe);
 
 		if (matches) {
-			return src.split(leafletRe)[0] + '/images';
+			path = src.split(leafletRe)[0];
+			return (path ? path + '/' : '') + 'images';
 		}
 	}
 }());

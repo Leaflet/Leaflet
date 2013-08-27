@@ -85,8 +85,17 @@ L.Point.prototype = {
 	},
 
 	equals: function (point) {
+		point = L.point(point);
+
 		return point.x === this.x &&
 		       point.y === this.y;
+	},
+
+	contains: function (point) {
+		point = L.point(point);
+
+		return Math.abs(point.x) <= Math.abs(this.x) &&
+		       Math.abs(point.y) <= Math.abs(this.y);
 	},
 
 	toString: function () {
@@ -103,7 +112,7 @@ L.point = function (x, y, round) {
 	if (L.Util.isArray(x)) {
 		return new L.Point(x[0], x[1]);
 	}
-	if (isNaN(x)) {
+	if (x === undefined || x === null) {
 		return x;
 	}
 	return new L.Point(x, y, round);

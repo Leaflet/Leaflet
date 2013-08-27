@@ -5,9 +5,10 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
 	<link rel="stylesheet" href="../css/screen.css" />
-	
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -22,14 +23,20 @@
 
 	<script type="text/javascript">
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
 			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18, attribution: cloudmadeAttribution}),
 			latlng = new L.LatLng(50.5, 30.51);
-	
+
 		var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
-	
-		
+
+		var s = '';
+		for (var i = 0; i < 100; i++) s += 'Test<br>';
+
+		var popup = L.popup({maxHeight: 100})
+			.setContent(s)
+			.setLatLng(latlng)
+			.openOn(map);
 	</script>
 </body>
 </html>

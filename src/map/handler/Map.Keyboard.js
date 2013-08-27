@@ -15,7 +15,7 @@ L.Map.Keyboard = L.Handler.extend({
 		right:   [39],
 		down:    [40],
 		up:      [38],
-		zoomIn:  [187, 107, 61],
+		zoomIn:  [187, 107, 61, 171],
 		zoomOut: [189, 109, 173]
 	},
 
@@ -31,7 +31,7 @@ L.Map.Keyboard = L.Handler.extend({
 
 		// make the container focusable by tabbing
 		if (container.tabIndex === -1) {
-			container.tabIndex = "0";
+			container.tabIndex = '0';
 		}
 
 		L.DomEvent
@@ -60,9 +60,16 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_onMouseDown: function () {
-		if (!this._focused) {
-			this._map._container.focus();
-		}
+		if (this._focused) { return; }
+
+		var body = document.body,
+		    docEl = document.documentElement,
+		    top = body.scrollTop || docEl.scrollTop,
+		    left = body.scrollLeft || docEl.scrollLeft;
+
+		this._map._container.focus();
+
+		window.scrollTo(left, top);
 	},
 
 	_onFocus: function () {
@@ -119,14 +126,17 @@ L.Map.Keyboard = L.Handler.extend({
 		var key = e.keyCode,
 		    map = this._map;
 
-		if (this._panKeys.hasOwnProperty(key)) {
+		if (key in this._panKeys) {
+
+			if (map._panAnim && map._panAnim._inProgress) { return; }
+
 			map.panBy(this._panKeys[key]);
 
 			if (map.options.maxBounds) {
 				map.panInsideBounds(map.options.maxBounds);
 			}
 
-		} else if (this._zoomKeys.hasOwnProperty(key)) {
+		} else if (key in this._zoomKeys) {
 			map.setZoom(map.getZoom() + this._zoomKeys[key]);
 
 		} else {
