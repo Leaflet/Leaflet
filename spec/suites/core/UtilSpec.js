@@ -204,9 +204,9 @@ describe('Util', function() {
 		it('check the cache', function () {
 			var tpl = 'Hello {foo} and {baz }!';
 
-			var str = L.Util.templateCache[tpl]({
+			var str = L.Util._templateCache[tpl]({
 				foo: 'ladies',
-				baz: function(){
+				baz: function() {
 					return 'gentlemen';
 				}
 			});
