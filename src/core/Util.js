@@ -104,33 +104,20 @@ L.Util = {
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
-	
+
 	compileTemplate: function (str, data) {
-		/*jslint evil: true */
-		//from https://gist.github.com/padolsey/6008842
-		return new Function(
-			'o',
-			'return "' + (
-				str.replace(/\"/g, '\\"').replace(/\{ *([\w_]+) *\}/g, function (_, $1) {
-					if (typeof data[$1] === 'function') {
-						return '" + o["' + $1 + '"](o) + "';
-					} else {
-						return '" + o["' + $1 + '"] + "';
-					}
-				})
-			) + '";'
-		);
+		// based on https://gist.github.com/padolsey/6008842
+		str = str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
+			return '" + o["' + key + '"]' + (typeof data[key] === 'function' ? '(o)' : '') + ' + "';
+		});
+		// jshint evil: true
+		return new Function('o', 'return "' + str + '";');
 	},
-	
-	templateCache: {},
-	
+
 	template: function (str, data) {
-		if (str in this.templateCache) {
-			return this.templateCache[str](data);
-		} else {
-			this.templateCache[str] = this.compileTemplate(str, data);
-			return this.templateCache[str](data);
-		}
+		var cache = L.Util._templateCache = L.Util._templateCache || {};
+		cache[str] = cache[str] || L.Util.compileTemplate(str, data);
+		return cache[str](data);
 	},
 
 	isArray: function (obj) {
