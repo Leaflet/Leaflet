@@ -30,6 +30,8 @@ L.extend(L.DomEvent, {
 
 		var cb = function (e) {
 
+			L.DomEvent.preventDefault(e);
+
 			var alreadyInArray = false;
 			for (var i = 0; i < touches.length; i++) {
 				if (touches[i].pointerId === e.pointerId) {
