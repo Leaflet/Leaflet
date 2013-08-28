@@ -28,7 +28,7 @@ L.Map = L.Class.extend({
 		this._initLayout();
 
 		// hack for https://github.com/Leaflet/Leaflet/issues/1980
-		// this._onResize = L.bind(this._onResize, this);
+		this._onResize = L.bind(this._onResize, this);
 
 		this._initEvents();
 
