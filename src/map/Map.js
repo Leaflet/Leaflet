@@ -23,8 +23,13 @@ L.Map = L.Class.extend({
 	initialize: function (id, options) { // (HTMLElement or String, Object)
 		options = L.setOptions(this, options);
 
+
 		this._initContainer(id);
 		this._initLayout();
+
+		// hack for https://github.com/Leaflet/Leaflet/issues/1980
+		// this._onResize = L.bind(this._onResize, this);
+
 		this._initEvents();
 
 		if (options.maxBounds) {

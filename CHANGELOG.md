@@ -22,6 +22,7 @@ An in-progress version being developed on the `master` branch.
 ### Bugfixes
 
 * Fixed a bug where `toGeoJSON` of layers originated from GeoJSON GeometryCollection and MultiPoint didn't work properly (wasn't round-tripped). [#1956](https://github.com/Leaflet/Leaflet/issues/1956)
+* Fixed a bug where all maps except the first one on a page didn't track window resize. [#1980](https://github.com/Leaflet/Leaflet/issues/1980)
 * Fixed a bug where `Map` `getCenter` returned old result after map container size changed (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1940](https://github.com/Leaflet/Leaflet/issues/1940) [#1919](https://github.com/Leaflet/Leaflet/issues/1919)
 * Fixed `GeoJSON` dependencies in build configuration that could lead to a broken custom build in some situations (by [@alubchuk](https://github.com/alubchuk)). [#1909](https://github.com/Leaflet/Leaflet/issues/1909)
 * Fixed a bug where `CircleMarker` popup placement wasn't updated after calling `setLatLng` (by [@snkashis](https://github.com/snkashis)). [#1921](https://github.com/Leaflet/Leaflet/issues/1921) [#1927](https://github.com/Leaflet/Leaflet/issues/1927)
