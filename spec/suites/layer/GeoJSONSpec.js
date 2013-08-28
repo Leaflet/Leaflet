@@ -144,6 +144,51 @@ describe("L.LayerGroup#toGeoJSON", function () {
 		});
 	});
 
+	it('roundtrips GeometryCollection features', function () {
+		var json = {
+			"type": "FeatureCollection",
+			"features": [{
+				"type": "Feature",
+				"geometry": {
+					"type": "GeometryCollection",
+					"geometries": [{
+						"type": "LineString",
+						"coordinates": [[-122.4425587930444, 37.80666418607323], [-122.4428379594768, 37.80663578323093]]
+					}, {
+						"type": "LineString",
+						"coordinates": [
+							[-122.4425509770566, 37.80662588061205],
+							[-122.4428340530617, 37.8065999493009]
+						]
+					}]
+				},
+				"properties": {
+					"name": "SF Marina Harbor Master"
+				}
+			}]
+		};
+
+		expect(L.geoJson(json).toGeoJSON()).to.eql(json);
+	});
+
+	it('roundtrips MiltiPoint features', function () {
+		var json = {
+			"type": "FeatureCollection",
+			"features": [{
+				"type": "Feature",
+				"geometry": {
+					"type": "MultiPoint",
+					"coordinates": [[-122.4425587930444, 37.80666418607323], [-122.4428379594768, 37.80663578323093]]
+				},
+				"properties": {
+					"name": "Test MultiPoints"
+				}
+			}]
+		};
+
+		expect(L.geoJson(json).toGeoJSON()).to.eql(json);
+	});
+
 	it("omits layers which do not implement toGeoJSON", function () {
 		var tileLayer = new L.TileLayer(),
 		    layerGroup = new L.LayerGroup([tileLayer]);
