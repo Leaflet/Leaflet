@@ -688,21 +688,30 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td>
 	</tr>
 	<tr>
-	<td>
-		<a href="https://github.com/pwldp/leaflet.viewcenter">Leaflet.viewcenter</a>
+		<td>
+			<a href="https://github.com/pwldp/leaflet.viewcenter">Leaflet.viewcenter</a>
 		</td><td>
 			A simple control that adds a button to change view and zoom to predefinied values in options.
 		</td><td>
 			<a href="https://github.com/pwldp/">Dariusz Pawlak</a>
 		</td>
-    </tr>
-    <tr>
-	<td>
-		<a href="https://github.com/aratcliffe/Leaflet.contextmenu">Leaflet.contextmenu</a>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aratcliffe/Leaflet.contextmenu">Leaflet.contextmenu</a>
 		</td><td>
 			A context menu for Leaflet.
 		</td><td>
 			<a href="https://github.com/aratcliffe/">Adam Ratcliffe</a>
+		</td>        
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.MeasureControl">Leaflet.MeasureControl</a>
+		</td><td>
+			A simple tool to measure distances on maps (*relies on Leaflet.Draw*).
+		</td><td>
+			<a href="https://github.com/makinacorpus/">Makina Corpus</a>
 		</td>        
 	</tr>
 </table>
