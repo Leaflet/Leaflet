@@ -129,7 +129,7 @@ L.extend(L.GeoJSON, {
 	},
 
 	coordsToLatLng: function (coords) { // (Array[, Boolean]) -> LatLng
-		return new L.LatLng(coords[1], coords[0]);
+		return new L.LatLng(coords[1], coords[0], coords[2]);
 	},
 
 	coordsToLatLngs: function (coords, levelsDeep, coordsToLatLng) { // (Array[, Number, Function]) -> Array
@@ -148,7 +148,11 @@ L.extend(L.GeoJSON, {
 	},
 
 	latLngToCoords: function (latLng) {
-		return [latLng.lng, latLng.lat];
+		if (typeof latLng.alt === 'undefined') {
+			return [latLng.lng, latLng.lat];
+		} else {
+			return [latLng.lng, latLng.lat, latLng.alt];
+		}
 	},
 
 	latLngsToCoords: function (latLngs) {
