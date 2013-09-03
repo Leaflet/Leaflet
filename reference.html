@@ -1649,11 +1649,25 @@ var map = L.map('map', {
 		<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
 	</tr>
 	<tr>
+		<td><code><b>autoPanPaddingTopLeft</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td><code><span class="literal">null</span></code></td>
+		</code></td>
+		<td>The margin between the popup and the top left corner of the map view after autopanning was performed.</td>
+	</tr>
+	<tr>
+		<td><code><b>autoPanPaddingBottomRight</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td><code><span class="literal">null</span></code></td>
+		</code></td>
+		<td>The margin between the popup and the bottom right corner of the map view after autopanning was performed.</td>
+	</tr>
+	<tr>
 		<td><code><b>autoPanPadding</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>Point(<span class="number">5</span>, <span class="number">5</span>)</nobr>
+		<td><code><nobr>(<span class="number">5</span>, <span class="number">5</span>)</nobr>
 		</code></td>
-		<td>The margin between the popup and the edges of the map view after autopanning was performed.</td>
+		<td>Equivalent of setting both top left and bottom right autopan padding to the same value.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomAnimation</b></code></td>
