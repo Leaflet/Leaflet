@@ -714,6 +714,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/makinacorpus/">Makina Corpus</a>
 		</td>        
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.OverIntent">Leaflet.OverIntent</a>
+		</td><td>
+			Adds a new event ``mouseintent``, that differs from ``mouseover`` since it reflects user
+			intentions to aim a particular layer.
+		</td><td>
+			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
+		</td>        
+	</tr>
 </table>
 
 
