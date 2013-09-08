@@ -422,6 +422,9 @@ L.Map = L.Class.extend({
 		return this._container;
 	},
 
+    isMoving: function () {
+        return this.dragging && this.dragging.moving();
+    },
 
 	// TODO replace with universal implementation after refactoring projections
 

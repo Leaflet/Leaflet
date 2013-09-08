@@ -46,7 +46,11 @@ L.Map.Drag = L.Handler.extend({
 		return this._draggable && this._draggable._moved;
 	},
 
-	_onDragStart: function () {
+    moving: function () {
+        return this._draggable && this._draggable.moving();
+    },
+
+    _onDragStart: function () {
 		var map = this._map;
 
 		if (map._panAnim) {

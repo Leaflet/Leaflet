@@ -45,7 +45,11 @@ L.Draggable = L.Class.extend({
 		this._moved = false;
 	},
 
-	_onDown: function (e) {
+    moving: function () {
+        return this._moving;
+    },
+
+    _onDown: function (e) {
 		this._moved = false;
 
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
