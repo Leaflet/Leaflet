@@ -17,7 +17,7 @@ files = [].concat([
 	"expect.js"
 ], libSources, [
 	"after.js",
-	"../node_modules/happen/src/happen.js",
+	"../node_modules/happen/happen.js",
 	"suites/SpecHelper.js",
 	"suites/**/*.js"
 ]);
