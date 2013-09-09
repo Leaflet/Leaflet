@@ -180,6 +180,7 @@ L.Popup = L.Class.extend({
 
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
+			this._content = this._contentNode.firstChild;
 		} else {
 			while (this._contentNode.hasChildNodes()) {
 				this._contentNode.removeChild(this._contentNode.firstChild);
