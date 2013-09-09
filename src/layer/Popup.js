@@ -180,12 +180,37 @@ L.Popup = L.Class.extend({
 
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
-			this._content = this._contentNode.firstChild;
+			this._content = this._contentNode.childNodes;
 		} else {
-			while (this._contentNode.hasChildNodes()) {
-				this._contentNode.removeChild(this._contentNode.firstChild);
-			}
-			this._contentNode.appendChild(this._content);
+			if (this._contentNode.hasChildNodes()) {
+                if (this._content.length && this._content.length === this._contentNode.childNodes.length) {
+                    var isEqual = true;
+                    for (var i = 0; i < this._content.length; ++i) {
+                        if (this._content[i] !== this._contentNode.childNodes[i]) {
+                            isEqual = false;
+                            break;
+                        }
+                    }
+                    if (!isEqual) {
+                        while (this._contentNode.hasChildNodes()) {
+                            this._contentNode.removeChild(this._contentNode.firstChild);
+                        }
+                    }
+                }
+            }
+
+            if (this._content.length) {
+                if (!this._contentNode.hasChildNodes()) {
+                    while (this._content.length) {
+                        this._contentNode.appendChild(this._content[0]);
+                    }
+                }
+            } else {
+                while (this._contentNode.hasChildNodes()) {
+                    this._contentNode.removeChild(this._contentNode.firstChild);
+                }
+                this._contentNode.appendChild(this._content);
+            }
 		}
 		this.fire('contentupdate');
 	},
