@@ -1,14 +1,6 @@
 describe("Projection.Mercator", function() {
 	var p = L.Projection.Mercator;
 
-	expect.Assertion.prototype.near = function(expected, delta) {
-		delta = delta || 1;
-		expect(this.obj.x).to
-			.be.within(expected.x - delta, expected.x + delta);
-		expect(this.obj.y).to
-			.be.within(expected.y - delta, expected.y + delta);
-	};
-
 	describe("#project", function() {
 		it("projects a center point", function() {
 			//edge cases
