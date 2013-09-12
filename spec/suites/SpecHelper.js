@@ -24,3 +24,19 @@ if (!Array.prototype.map) {
     return res;
   };
 }
+
+expect.Assertion.prototype.near = function(expected, delta) {
+    delta = delta || 1;
+    expect(this.obj.x).to
+        .be.within(expected.x - delta, expected.x + delta);
+    expect(this.obj.y).to
+        .be.within(expected.y - delta, expected.y + delta);
+};
+
+expect.Assertion.prototype.nearLatLng = function(expected, delta) {
+    delta = delta || 1e-4;
+    expect(this.obj.lat).to
+        .be.within(expected.lat - delta, expected.lat + delta);
+    expect(this.obj.lng).to
+        .be.within(expected.lng - delta, expected.lng + delta);
+};
