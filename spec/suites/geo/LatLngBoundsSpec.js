@@ -27,12 +27,16 @@ describe('LatLngBounds', function() {
 
 		it('extends the bounds by given bounds', function () {
 			a.extend([[20, 50], [8, 40]]);
-
 			expect(a.getSouthEast()).to.eql(new L.LatLng(8, 50));
 		});
 
 		it('extends the bounds by undefined', function () {
 			expect(a.extend()).to.eql(a);
+		});
+
+		it('extends the bounds by raw object', function () {
+			a.extend({lat: 20, lng: 50});
+			expect(a.getNorthEast()).to.eql(new L.LatLng(30, 50));
 		});
 	});
 
