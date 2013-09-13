@@ -365,6 +365,8 @@
 	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
 	white-space: nowrap;
 	overflow: hidden;
+	-moz-box-sizing: content-box;
+	     box-sizing: content-box;
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
