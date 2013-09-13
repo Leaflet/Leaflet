@@ -316,7 +316,12 @@ L.Map = L.Class.extend({
 
 		this._initEvents('off');
 
-		delete this._container._leaflet;
+		try {
+			// throws error in IE6-8
+			delete this._container._leaflet;
+		} catch (e) {
+			this._container._leaflet = undefined;
+		}
 
 		this._clearPanes();
 		if (this._clearControlPos) {
