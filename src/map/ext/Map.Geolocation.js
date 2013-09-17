@@ -63,11 +63,12 @@ L.Map.include({
 	},
 
 	_handleGeolocationResponse: function (pos) {
-		var lat = pos.coords.latitude,
+		var accuracy = parseFloat(pos.coords.accuracy),
+		    lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new L.LatLng(lat, lng),
 
-		    latAccuracy = 180 * pos.coords.accuracy / 40075017,
+		    latAccuracy = 180 * accuracy / 40075017,
 		    lngAccuracy = latAccuracy / Math.cos(L.LatLng.DEG_TO_RAD * lat),
 
 		    bounds = L.latLngBounds(
@@ -83,7 +84,8 @@ L.Map.include({
 
 		var data = {
 			latlng: latlng,
-			bounds: bounds
+			bounds: bounds,
+			accuracy: accuracy
 		};
 
 		for (var i in pos.coords) {
