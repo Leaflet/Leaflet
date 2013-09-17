@@ -47,6 +47,16 @@
 
 			expect(fg.hasLayer(marker)).to.be(true);
 		});
+		it('supports non-evented layers', function () {
+			var fg = L.featureGroup(),
+			    g = L.layerGroup();
+
+			expect(fg.hasLayer(g)).to.be(false);
+
+			fg.addLayer(g);
+
+			expect(fg.hasLayer(g)).to.be(true);
+		});
 	});
 	describe('removeLayer', function () {
 		it('removes the layer passed to it', function () {
