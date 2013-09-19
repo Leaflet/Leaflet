@@ -374,6 +374,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/arthur-e/">K. Arthur Endsley</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/kr1/Leaflet.dbpediaLayer/">Leaflet.dbpediaLayer</a>
+		</td><td>
+			A layer with Points of interest from Wikipedia - loaded via ajax from DBpedia's SPARQL endpoint.
+		</td><td>
+			<a href="https://github.com/kr1/">Kr1</a>
+		</td>
+	</tr>
 </table>
 
 
