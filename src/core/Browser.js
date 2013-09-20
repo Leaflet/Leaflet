@@ -4,93 +4,99 @@
 
 (function () {
 
-	var ie = !!window.ActiveXObject,
-	    ie6 = ie && !window.XMLHttpRequest,
-	    ie7 = ie && !document.querySelector,
-		ielt9 = ie && !document.addEventListener,
+    var ie = "ActiveXObject" in window,
+       ie6 = ie && !window.XMLHttpRequest,
+       ie7 = ie && !document.querySelector,
+       ielt9 = ie && !document.addEventListener,
 
-	    // terrible browser detection to work around Safari / iOS / Android browser bugs
-	    ua = navigator.userAgent.toLowerCase(),
-	    webkit = ua.indexOf('webkit') !== -1,
-	    chrome = ua.indexOf('chrome') !== -1,
-	    phantomjs = ua.indexOf('phantom') !== -1,
-	    android = ua.indexOf('android') !== -1,
-	    android23 = ua.search('android [23]') !== -1,
+       // terrible browser detection to work around Safari / iOS / Android browser bugs
+       ua = navigator.userAgent.toLowerCase(),
+       webkit = ua.indexOf('webkit') !== -1,
+       chrome = ua.indexOf('chrome') !== -1,
+       phantomjs = ua.indexOf('phantom') !== -1,
+       android = ua.indexOf('android') !== -1,
+       android23 = ua.search('android [23]') !== -1,
 
-	    mobile = typeof orientation !== undefined + '',
-	    msTouch = window.navigator && window.navigator.msPointerEnabled &&
-	              window.navigator.msMaxTouchPoints,
-	    retina = ('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
-	             ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') &&
-	              window.matchMedia('(min-resolution:144dpi)').matches),
+       mobile = typeof orientation !== undefined + '',
+       msTouch = window.navigator && window.navigator.msPointerEnabled &&
+                 window.navigator.msMaxTouchPoints && window.navigator.pointerEnabled == undefined,
+       retina = ('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
+                ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') &&
+                 window.matchMedia('(min-resolution:144dpi)').matches),
+       pointer = window.navigator && window.navigator.pointerEnabled,
 
-	    doc = document.documentElement,
-	    ie3d = ie && ('transition' in doc.style),
-	    webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
-	    gecko3d = 'MozPerspective' in doc.style,
-	    opera3d = 'OTransition' in doc.style,
-	    any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs;
+       doc = document.documentElement,
+       ie3d = ie && ('transition' in doc.style),
+       webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()),
+       gecko3d = 'MozPerspective' in doc.style,
+       opera3d = 'OTransition' in doc.style,
+       any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs;
 
 
-	// PhantomJS has 'ontouchstart' in document.documentElement, but doesn't actually support touch.
-	// https://github.com/Leaflet/Leaflet/pull/1434#issuecomment-13843151
+    // PhantomJS has 'ontouchstart' in document.documentElement, but doesn't actually support touch.
+    // https://github.com/Leaflet/Leaflet/pull/1434#issuecomment-13843151
 
-	var touch = !window.L_NO_TOUCH && !phantomjs && (function () {
+    var touch = !window.L_NO_TOUCH && !phantomjs && (function () {
 
-		var startName = 'ontouchstart';
+        var startName = 'ontouchstart';
 
-		// IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.MsTouch) or WebKit, etc.
-		if (msTouch || (startName in doc)) {
-			return true;
-		}
+        // IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.MsTouch) or WebKit, etc.
+        if (msTouch || (startName in doc)) {
+            return true;
+        }
 
-		// Firefox/Gecko
-		var div = document.createElement('div'),
+        if (pointer) {
+            return true;
+        }
+
+        // Firefox/Gecko
+        var div = document.createElement('div'),
 		    supported = false;
 
-		if (!div.setAttribute) {
-			return false;
-		}
-		div.setAttribute(startName, 'return;');
+        if (!div.setAttribute) {
+            return false;
+        }
+        div.setAttribute(startName, 'return;');
 
-		if (typeof div[startName] === 'function') {
-			supported = true;
-		}
+        if (typeof div[startName] === 'function') {
+            supported = true;
+        }
 
-		div.removeAttribute(startName);
-		div = null;
+        div.removeAttribute(startName);
+        div = null;
 
-		return supported;
-	}());
+        return supported;
+    }());
 
 
-	L.Browser = {
-		ie: ie,
-		ie6: ie6,
-		ie7: ie7,
-		ielt9: ielt9,
-		webkit: webkit,
+    L.Browser = {
+        ie: ie,
+        ie6: ie6,
+        ie7: ie7,
+        ielt9: ielt9,
+        webkit: webkit,
 
-		android: android,
-		android23: android23,
+        android: android,
+        android23: android23,
 
-		chrome: chrome,
+        chrome: chrome,
 
-		ie3d: ie3d,
-		webkit3d: webkit3d,
-		gecko3d: gecko3d,
-		opera3d: opera3d,
-		any3d: any3d,
+        ie3d: ie3d,
+        webkit3d: webkit3d,
+        gecko3d: gecko3d,
+        opera3d: opera3d,
+        any3d: any3d,
 
-		mobile: mobile,
-		mobileWebkit: mobile && webkit,
-		mobileWebkit3d: mobile && webkit3d,
-		mobileOpera: mobile && window.opera,
+        mobile: mobile,
+        mobileWebkit: mobile && webkit,
+        mobileWebkit3d: mobile && webkit3d,
+        mobileOpera: mobile && window.opera,
 
-		touch: touch,
-		msTouch: msTouch,
+        touch: touch,
+        msTouch: msTouch,
+        pointer: pointer,
 
-		retina: retina
-	};
+        retina: retina
+    };
 
 }());
