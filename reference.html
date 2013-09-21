@@ -686,8 +686,14 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>invalidateSize</b>(
-			<nobr>&lt;Boolean&gt; <i>options?</i></nobr>,
-			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
+			<nobr>&lt;Boolean&gt; <i>animate</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default.</td>
+	</tr>
+	<tr>
+		<td><code><b>invalidateSize</b>(
+			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default. If <code>options.pan</code> is <code><span class="literal">false</span></code>, panning will not occur.</td>
@@ -4470,7 +4476,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h2 id="control-scale">L.Control.Scale</h2>
 
-<p>A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Implements <a href="#icontrol">IControl</a> interface.</p>
+<p>A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends <a href="#control">Control</a>.</p>
 
 <pre><code>L.control.scale().addTo(map);</code></pre>
 
