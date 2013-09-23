@@ -472,9 +472,10 @@ L.TileLayer = L.Class.extend({
 		}, this.options));
 	},
 
-	_getWrapTileNum: function () {
-		// TODO refactor, limit is not valid for non-standard projections
-		return Math.pow(2, this._getZoomForUrl());
+    _getWrapTileNum: function () {
+		var crs = this._map.options.crs,
+			bounds = crs.getBounds(this._getZoomForUrl());
+		return bounds[3] / this.options.tileSize;
 	},
 
 	_adjustTilePoint: function (tilePoint) {
