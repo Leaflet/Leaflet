@@ -383,6 +383,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/kr1/">Kr1</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/emikhalev/leaflet-2gis">Leaflet-2gis</a>
+		</td><td>
+			Adds support for 2GIS tile layer
+		</td><td>
+			<a href="https://github.com/emikhalev/">Eugene Mikhalev</a>
+		</td>
+	</tr>
 </table>
 
 
