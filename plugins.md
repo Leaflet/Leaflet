@@ -387,7 +387,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/emikhalev/leaflet-2gis">Leaflet-2gis</a>
 		</td><td>
-			This plugin add 2GIS support to the leaflet
+			Adds support for 2GIS tile layer
 		</td><td>
 			<a href="https://github.com/emikhalev/">Eugene Mikhalev</a>
 		</td>
