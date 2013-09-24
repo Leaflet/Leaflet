@@ -742,6 +742,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
 		</td>        
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.AlmostOver">Leaflet.AlmostOver</a>
+		</td><td>
+			Trigger mouse events when cursor is "almost" over a layer.
+		</td><td>
+			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
+		</td>        
+	</tr>
 </table>
 
 
