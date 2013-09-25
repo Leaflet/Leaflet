@@ -22,7 +22,7 @@ L.LayerGroup = L.Class.extend({
 		this._layers[id] = layer;
 
 		if (this._map) {
-			this._map.addLayer(layer);
+			this._addForBounds([layer], this._map);
 		}
 
 		return this;
@@ -68,7 +68,10 @@ L.LayerGroup = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
-		this.eachLayer(map.addLayer, map);
+		this._addForBounds(this._layers, map);
+		map.on('moveend', function () {
+			this._addForBounds(this._layers, map);
+		}, this);
 	},
 
 	onRemove: function (map) {
@@ -107,6 +110,31 @@ L.LayerGroup = L.Class.extend({
 
 	getLayerId: function (layer) {
 		return L.stamp(layer);
+	},
+
+	_addForBounds: function (layerArray, map) {
+		var mapBounds = map.getBounds(), intersectsMapBounds, layer, i;
+
+		for (i in layerArray) {
+			layer = layerArray[i];
+			intersectsMapBounds = true; // assume should be rendered by default
+
+			if (typeof layer.getLatLng === 'function') {
+				if (!mapBounds.contains(layer.getLatLng())) {
+					intersectsMapBounds = false;
+				}
+			} else if (typeof layer.getBounds === 'function') {
+				if (!mapBounds.intersectsMapBounds(layer.getBounds())) {
+					intersectsMapBounds = false;
+				}
+			}
+
+			if (intersectsMapBounds) {
+				map.addLayer(layer);
+			} else {
+				map.removeLayer(layer);
+			}
+		}
 	}
 });
 
