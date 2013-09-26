@@ -755,7 +755,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="http://elesdoar.github.io/leaflet-control-orderlayers/">Leaflet Control Order Layers</a>
 		</td><td>
-			Control for order overlay layers.
+			Adds the ability to change overlay order in the layers control.
 		</td><td>
 			<a href="https://github.com/elesdoar/">Michael Salgado</a>
 		</td>        
