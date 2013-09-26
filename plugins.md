@@ -751,6 +751,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
 		</td>        
 	</tr>
+	<tr>
+		<td>
+			<a href="http://elesdoar.github.io/leaflet-control-orderlayers/">Leaflet Control Order Layers</a>
+		</td><td>
+			Control for order overlay layers.
+		</td><td>
+			<a href="https://github.com/elesdoar/">Michael Salgado</a>
+		</td>        
+	</tr>
 </table>
 
 
