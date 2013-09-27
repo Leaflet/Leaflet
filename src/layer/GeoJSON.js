@@ -25,6 +25,9 @@ L.GeoJSON = L.FeatureGroup.extend({
 				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
 					this.addData(features[i]);
 				}
+				
+				if (i === len - 1 && typeof this.options.onComplete === 'function') this.options.onComplete(this._layers);
+				
 			}
 			return this;
 		}
