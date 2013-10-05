@@ -255,6 +255,14 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/joergdietrich/Leaflet.Terminator">Leaflet.Terminator</a>
+		</td><td>Overlay day and night regions on a map.
+		</td><td>
+			<a href="https://github.com/joergdietrich">J&ouml;rg Dietrich</a>
+		</td>
+	</td>
 </table>
 
 
