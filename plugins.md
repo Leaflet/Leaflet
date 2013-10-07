@@ -262,7 +262,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/joergdietrich">J&ouml;rg Dietrich</a>
 		</td>
-	</td>
+	</tr>
 </table>
 
 
