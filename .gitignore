@@ -6,7 +6,6 @@ tmp/**/*
 *.iml
 *.sublime-*
 _site
-dist/*.js
 coverage/
 *.js.html
 index.html
