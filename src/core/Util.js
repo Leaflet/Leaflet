@@ -120,7 +120,7 @@ L.Util = {
 		return cache[str](data);
 	},
 
-	isArray: function (obj) {
+	isArray: Array.isArray || function (obj) {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
