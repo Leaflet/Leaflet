@@ -18,6 +18,9 @@ An in-progress version being developed on the `master` branch.
 * Added `Popup` `autoPanPaddingTopLeft` and `autoPanPaddingBottomRight` options (by [@albburtsev](https://github.com/albburtsev)). [#1972](https://github.com/Leaflet/Leaflet/issues/1972) [#1588](https://github.com/Leaflet/Leaflet/issues/1588)
 * Added `ImageOverlay` `setUrl` and `getAttribution` methods and `attribution` option (by [@stsydow](https://github.com/stsydow)). [#1957](https://github.com/Leaflet/Leaflet/issues/1957) [#1958](https://github.com/Leaflet/Leaflet/issues/1958)
 * Added `Marker` `add` event (by [@tohaocean](https://github.com/tohaocean)). [#1942](https://github.com/Leaflet/Leaflet/issues/1942)
+* Added `Popup` `update` method. [#1959](https://github.com/Leaflet/Leaflet/issues/1959)
+* Made `Map` `setView` `zoom` argument optional. [#2056](https://github.com/Leaflet/Leaflet/issues/2056)
+* Added ability to pass vector options to `GeoJSON` (by [@kapouer](https://github.com/kapouer)). [#2075](https://github.com/Leaflet/Leaflet/pull/2075)
 
 ### Bugfixes
 
@@ -31,12 +34,15 @@ An in-progress version being developed on the `master` branch.
 
 * Fixed a bug where all maps except the first one on a page didn't track window resize. [#1980](https://github.com/Leaflet/Leaflet/issues/1980)
 * Fixed a bug where tiles in `EPSG:3395` projection were shifted (by [@aparshin](https://github.com/aparshin)). [#2020](https://github.com/Leaflet/Leaflet/issues/2020)
+* Fixed a bug where scale control displayed wrong scale when on pages with `box-sizing: border-box`.
 
 #### Browser bugfixes
 
 * Fixed a bug with vector layers positioning when zooming on a WinPhone device (by [@danzel](https://github.com/danzel)). [#2002](https://github.com/Leaflet/Leaflet/issues/2002) [#2000](https://github.com/Leaflet/Leaflet/issues/2000)
 * Fixed a bug where clicking on layers control labels on iOS throwed an error (by [@olemarkus](https://github.com/olemarkus) and [@dagjomar](https://github.com/dagjomar)). [#1984](https://github.com/Leaflet/Leaflet/issues/1984) [#1989](https://github.com/Leaflet/Leaflet/issues/1989)
 * Fixed a bug where keyboard '+' no longer zoomed the map on FF 22+ (by [@fastrde](https://github.com/fastrde)). [#1943](https://github.com/Leaflet/Leaflet/issues/1943) [#1981](https://github.com/Leaflet/Leaflet/issues/1981)
+* Fixed a bug where calling `Map` `remove` throwed an error in IE6-8. [#2015](https://github.com/Leaflet/Leaflet/issues/2015)
+* Fixed a bug where `isArray` didn't work in rare cases in IE9. [#2077](https://github.com/Leaflet/Leaflet/issues/2077)
 
 #### API bugfixes
 
@@ -50,6 +56,9 @@ An in-progress version being developed on the `master` branch.
 * Fixed a bug where box zoom also triggered a map click event (by [@fastrde](https://github.com/fastrde)). [#1951](https://github.com/Leaflet/Leaflet/issues/1951) [#1884](https://github.com/Leaflet/Leaflet/issues/1884)
 * Fixed a bug where shift-clicking on a map immediately after a drag didn't trigger a click event (by [@fastrde](https://github.com/fastrde)). [#1952](https://github.com/Leaflet/Leaflet/issues/1952) [#1950](https://github.com/Leaflet/Leaflet/issues/1950)
 * Fixed a bug where `Map` `removeLayer` didn't return `this` in a corner case (by [@jfirebaugh](https://github.com/jfirebaugh)).
+* Fixed a bug where `L.latLngBounds` didn't accept simple object `LatLng` form (by [@Gnurfos](https://github.com/Gnurfos)). [#2025](https://github.com/Leaflet/Leaflet/issues/2025) [#1915](https://github.com/Leaflet/Leaflet/issues/1915)
+* Fixed a bug where `FeatureGroup` would break when using non-evented children layers (by [@tmcw](https://github.com/tmcw)). [#2032](https://github.com/Leaflet/Leaflet/pull/2032) [#1962](https://github.com/Leaflet/Leaflet/issues/1962)
+* Fixed a bug where calling `setZoom` before `setView` would throw an error. [#1449](https://github.com/Leaflet/Leaflet/issues/1449)
 
 ## 0.6.4 (July 25, 2013)
 
