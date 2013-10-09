@@ -24,6 +24,7 @@ L.Control.Zoom = L.Control.extend({
 		        this.options.zoomOutText, this.options.zoomOutTitle,
 		        zoomName + '-out', container, this._zoomOut, this);
 
+		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
 		return container;
