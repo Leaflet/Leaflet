@@ -12,9 +12,10 @@ This is a collection of answers to the most frequently asked questions about Lea
 
 #### What map tiles can I use with Leaflet? Is it limited to OpenStreetMap?
 
-Leaflet is provider-agnostic, meaning you can use any map provider as long as it doesn't contradict its terms of use,
-or even roll your own tiles.
-[OpenStreetMap](http://openstreetmap.org) is the most popular data source among different tile providers though.
+Leaflet is provider-agnostic, meaning you can use any map provider as long as you conform to its terms of use.
+You can roll your own tiles as well.
+[OpenStreetMap](http://openstreetmap.org) is the most popular data source among different tile providers,
+but there are providers that use other sources.
 
 Check out [this example](http://leaflet-extras.github.io/leaflet-providers/preview/)
 with half a hundred different layers to choose from.
@@ -26,14 +27,14 @@ Popular commercial options, free up to a particular number of requests, include
 and [Nokia Here](http://developer.here.com/web-experiences).
 Notable exception is [MapQuest Open](http://developer.mapquest.com/web/products/open/map), free for any number of requests.
 
-Always be sure to read terms of use of a chosen tile provider, know its limitations, and attribute it properly in your app.
+Always be sure to **read terms of use** of a chosen tile provider, **know its limitations**, and **attribute it properly** in your app.
 
 #### I'm looking for satellite imagery to use with my Leaflet map, any options?
 
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx),
 [ArcGIS](http://www.arcgis.com/features/maps/imagery.html)
-and [MapQuest Open](http://developer.mapquest.com/web/products/open/map) provide satellite imagery.
+and [MapQuest Open](http://developer.mapquest.com/web/products/open/map) provide satellite imagery among others.
 
 #### I want to use Google Maps API tiles with Leaflet, can I do that?
 
@@ -55,11 +56,13 @@ If you want to make tiles on your own, probably the easiest way is using [TileMi
 
 #### I have an app that gets lots of hits a day, and I want to switch from Google/Bing/whatever to Leaflet. Is there a fee for using it?
 
-Leaflet, unlike all-in-one solutions like Google Maps, is just a JavaScript library.
-It's free to use, but doesn't provide map imagery on its own &mdash; you have to choose a tile service to combine with it.
+Leaflet, unlike Google Maps and other all-in-one solutions, is just a JavaScript library.
+It's free to use, but doesn't provide map imagery on its own &mdash;
+you have to choose a tile service to combine with it.
 
-There are plenty of options for a tile service, each with their own terms of use, prices (some of them free), features, limitations, etc.
-See the answer to first question of the FAQ for more info.
+There are [plenty of options](#what-map-tiles-can-i-use-with-leaflet-is-it-limited-to-openstreetmap) for a tile service,
+each with their own terms of use, prices (some of them free), features, limitations, etc.
+Choice is yours.
 
 #### I'm building a commercial app that I plan to sell. Can I use Leaflet in it?
 
@@ -75,10 +78,12 @@ Make sure you conform to the terms of use of a tile images provider that you cho
 
 #### Why is there still no feature X in Leaflet?
 
-First of all, did you check out the [plugins page](http://leafletjs.com/plugins.html)?
-It has about hundred plugins doing all kinds of crazy stuff, and there's a high possibility that is has what you're looking for.
+First of all, did you check out the [Leaflet plugins page](http://leafletjs.com/plugins.html)?
+It lists about hundred plugins doing all kinds of crazy stuff,
+and there's a high possibility that is has what you're looking for.
 
-Generally, we do our best to keep the Leaflet core small, lightweight and simple, focusing on _quality_ instead of _quantity_, and leaving all the rest to plugin authors.
+Generally, we do our best to keep the Leaflet core small, lightweight and simple,
+focusing on _quality_ instead of _quantity_, and leaving all the rest to plugin authors.
 
 Check out [this video](http://www.youtube.com/watch?v=_P2SaCPbJ4w) of a talk by the Leaflet creator for more background on the story and philosophy behind Leaflet.
 Another essential read is [Advocating Simplicity in Open Source](http://blog.universalmind.com/advocating-simplicity-in-open-source/) by the same guy.
@@ -92,12 +97,21 @@ Check out [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markerclust
 
 #### I have vector data with many thousands of points on my map. Any performance tips?
 
-Leaflet generally does a pretty good job of handling heavy vector data with its real-time clipping and simplification algorithms, but browser technology still has its limits.
-Try [switching from SVG to Canvas as default rendering back-end](http://leafletjs.com/reference.html#global), it may help considerably (depends on the app and the data).
+Leaflet generally does a pretty good job of handling heavy vector data
+with its real-time clipping and simplification algorithms,
+but browser technology still has its limits.
+Try [switching from SVG to Canvas as default rendering back-end](http://leafletjs.com/reference.html#global),
+it may help considerably (depends on the app and the data).
 
-If you still have too much data to render, you'll have to use some help of a server-side service like [MapBox](https://www.mapbox.com/), [CartoDB](http://cartodb.com/) and [GIS Cloud](http://www.giscloud.com/) (they all work great with Leaflet).
-What they do under the hood is serving rendered data as image tiles, along with additional data to enable interactivity like hovering shapes
-(e.g. done using [UTFGrid](https://www.mapbox.com/developers/utfgrid/) &mdash; Leaflet [has a nice plugin](https://github.com/danzel/Leaflet.utfgrid) for it).
+If you still have too much data to render, you'll have to use some help of a server-side service
+like [MapBox](https://www.mapbox.com/),
+[CartoDB](http://cartodb.com/)
+and [GIS Cloud](http://www.giscloud.com/)
+(they all work great with Leaflet).
+What they do under the hood is serving rendered data as image tiles,
+along with additional data to enable interactivity like hovering shapes
+(e.g. done using [UTFGrid](https://www.mapbox.com/developers/utfgrid/) &mdash;
+Leaflet [has a nice plugin](https://github.com/danzel/Leaflet.utfgrid) for it).
 
 
 ## Misc
@@ -105,7 +119,8 @@ What they do under the hood is serving rendered data as image tiles, along with 
 #### I downloaded the Leaflet source but didn't find `leaflet.js` there. Why is that?
 
 You can download the built versions using links from the [download page](http://leafletjs.com/download.html).
-It even includes the latest build of the development version (`master` branch), updated automatically on each commit to the repo.
+It even includes the latest build of the development version (`master` branch),
+updated automatically on each commit to the repo.
 
 We removed the built versions from the repository because it's a chore to build and commit them manually on each change,
 and it often complicates merging branches and managing contributions.
