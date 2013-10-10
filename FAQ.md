@@ -66,12 +66,12 @@ Choice is yours.
 
 #### I'm building a commercial app that I plan to sell. Can I use Leaflet in it?
 
-You're welcome, as the code is published under the very permissive [2-caluse BSD License](https://github.com/Leaflet/Leaflet/blob/master/LICENSE).
+You're welcome, as the code is published under the very permissive [2-clause BSD License](https://github.com/Leaflet/Leaflet/blob/master/LICENSE).
 Just make sure to attribute the use of the library somewhere in the app UI or the distribution
 (e.g. keep the Leaflet link on the map, or mention the use on the About page or a Readme file, etc.) and you'll be fine.
 
 That only applies to the code though.
-Make sure you conform to the terms of use of a tile images provider that you chose as well.
+Make sure you conform to the terms of use of the tile images provider(s) that you choose as well.
 
 
 ## Features
@@ -79,8 +79,8 @@ Make sure you conform to the terms of use of a tile images provider that you cho
 #### Why is there still no feature X in Leaflet?
 
 First of all, did you check out the [Leaflet plugins page](http://leafletjs.com/plugins.html)?
-It lists about hundred plugins doing all kinds of crazy stuff,
-and there's a high possibility that is has what you're looking for.
+It lists about a hundred plugins doing all kinds of crazy stuff,
+and there's a high possibility that it has what you're looking for.
 
 Generally, we do our best to keep the Leaflet core small, lightweight and simple,
 focusing on _quality_ instead of _quantity_, and leaving all the rest to plugin authors.
@@ -93,14 +93,14 @@ Another essential read is [Advocating Simplicity in Open Source](http://blog.uni
 
 #### I have thousands of markers on my map. How do I make it faster and more usable?
 
-Check out [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plugin. It's amazing.
+Check out the [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster) plugin. It's amazing.
 
 #### I have vector data with many thousands of points on my map. Any performance tips?
 
 Leaflet generally does a pretty good job of handling heavy vector data
 with its real-time clipping and simplification algorithms,
 but browser technology still has its limits.
-Try [switching from SVG to Canvas as default rendering back-end](http://leafletjs.com/reference.html#global),
+Try [switching from SVG to Canvas as the default rendering back-end](http://leafletjs.com/reference.html#global),
 it may help considerably (depends on the app and the data).
 
 If you still have too much data to render, you'll have to use some help of a server-side service
