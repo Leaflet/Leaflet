@@ -95,7 +95,8 @@ L.extend(L.DomEvent, {
 		        this._touchend, obj[pre + this._touchend + id], false);
 
 		if (L.Browser.pointer) {
-			document.documentElement.removeEventListener(L.DomEvent.POINTER_CANCEL, obj[pre + this._touchend + id], false);
+			document.documentElement.removeEventListener(L.DomEvent.POINTER_CANCEL, obj[pre + this._touchend + id],
+				false);
 		}
 
 		return this;
