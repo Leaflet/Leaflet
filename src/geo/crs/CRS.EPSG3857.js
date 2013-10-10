@@ -7,13 +7,13 @@ L.CRS.EPSG3857 = L.extend({}, L.CRS, {
 	code: 'EPSG:3857',
 
 	projection: L.Projection.SphericalMercator,
-	transformation: new L.Transformation(0.5 / Math.PI, 0.5, -0.5 / Math.PI, 0.5),
+	transformation: (function () {
+		var m = L.Projection.SphericalMercator,
+		    r = m.R_MAJOR,
+		    scale = 0.5 / (Math.PI * r);
 
-	project: function (latlng) { // (LatLng) -> Point
-		var projectedPoint = this.projection.project(latlng),
-		    earthRadius = 6378137;
-		return projectedPoint.multiplyBy(earthRadius);
-	}
+		return new L.Transformation(scale, 0.5, -scale, 0.5);
+	}())
 });
 
 L.CRS.EPSG900913 = L.extend({}, L.CRS.EPSG3857, {
