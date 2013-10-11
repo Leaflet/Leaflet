@@ -768,6 +768,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/elesdoar/">Michael Salgado</a>
 		</td>        
 	</tr>
+	<tr>
+		<td>
+			<a href="http://jieter.github.io/Leaflet.layerscontrol-minimap/">Leaflet.layerscontrol-minimap</a>
+		</td><td>
+			Extends the default Leaflet layers control with synced minimaps.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
 </table>
 
 
