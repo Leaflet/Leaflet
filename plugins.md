@@ -93,6 +93,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/dpiccone/leaflet-div-heatmap">Leaflet divHeatmap</a>
+		</td><td>
+			Lightweight and versatile heatmap layer based on CSS3 and divIcons
+
+		</td><td>
+			<a href="https://github.com/dpiccone">Daniele Piccone</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
 		</td><td>
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
