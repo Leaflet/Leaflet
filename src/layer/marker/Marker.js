@@ -241,9 +241,7 @@ L.Marker = L.Class.extend({
 	_onMouseClick: function (e) {
 		var wasDragged = this.dragging && this.dragging.moved();
 
-		if (this.hasEventListeners(e.type) || wasDragged) {
-			L.DomEvent.stopPropagation(e);
-		}
+		L.DomEvent.stopPropagation(e);
 
 		if (wasDragged) { return; }
 
