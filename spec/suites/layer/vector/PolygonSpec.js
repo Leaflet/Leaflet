@@ -24,6 +24,21 @@ describe('Polygon', function() {
 			var polygon = new L.Polygon([]);
 			expect(polygon.getLatLngs()).to.eql([]);
 		});
+        
+		it("can be initialized with holes", function () {
+			var originalLatLngs = [
+				[ //external rink
+					[0, 10], [10, 10], [10, 0]
+				], [ //hole
+					[2, 3], [2, 4], [3, 4]
+				]
+			];
+
+			var polygon = new L.Polygon(originalLatLngs);
+
+			//getLatLngs() returns only external ring
+			expect(polygon.getLatLngs()).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
+		})
 	});
 
 	describe("#setLatLngs", function () {
@@ -40,6 +55,22 @@ describe('Polygon', function() {
 
 			expect(sourceLatLngs).to.eql(originalLatLngs);
 		});
+		
+		it("can be set external ring and holes", function() {
+			var latLngs = [
+				[ //external rink
+					[0, 10], [10, 10], [10, 0]
+				], [ //hole
+					[2, 3], [2, 4], [3, 4]
+				]
+			];
+
+			var polygon = new L.Polygon([]);
+			polygon.setLatLngs(latLngs);
+
+			//getLatLngs() returns only external ring
+			expect(polygon.getLatLngs()).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
+		})
 	});
 
 	describe("#spliceLatLngs", function () {
