@@ -93,7 +93,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/dpiccone/leaflet-heatmap">Leaflet Heatmap</a>
+			<a href="https://github.com/dpiccone/leaflet-div-heatmap">Leaflet divHeatmap</a>
 		</td><td>
 			Lightweight and versatile heatmap layer based on CSS3 and divIcons
 
