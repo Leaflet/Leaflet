@@ -106,6 +106,10 @@ L.Popup = L.Class.extend({
 		return this;
 	},
 
+	getContent: function () {
+		return this._content;
+	},
+
 	setContent: function (content) {
 		this._content = content;
 		this.update();
