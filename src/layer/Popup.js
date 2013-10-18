@@ -111,6 +111,10 @@ L.Popup = L.Class.extend({
 		this.update();
 		return this;
 	},
+        
+        getContent: function (){
+                return this._content;
+        },
 
 	update: function () {
 		if (!this._map) { return; }
