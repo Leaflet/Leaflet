@@ -4,7 +4,7 @@
 
 (function () {
 
-	var ie = !!window.ActiveXObject,
+	var ie = 'ActiveXObject' in window,
 	    ie6 = ie && !window.XMLHttpRequest,
 	    ie7 = ie && !document.querySelector,
 		ielt9 = ie && !document.addEventListener,
