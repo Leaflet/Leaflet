@@ -11,7 +11,7 @@
     "jake": "~0.7.2",
     "karma-mocha": "~0.1.0"
   },
-  "main": "dist/leaflet.js",
+  "main": "dist/leaflet-src.js",
   "scripts": {
     "test": "jake test",
     "prepublish": "jake"
