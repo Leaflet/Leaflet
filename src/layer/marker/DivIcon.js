@@ -11,6 +11,7 @@ L.DivIcon = L.Icon.extend({
 		popupAnchor: (Point)
 		html: (String)
 		bgPos: (Point)
+		idName: (String)
 		*/
 		className: 'leaflet-div-icon',
 		html: false
@@ -32,6 +33,11 @@ L.DivIcon = L.Icon.extend({
 		}
 
 		this._setIconStyles(div, 'icon');
+
+		if (options.idName) {
+			div.id = options.idName;
+		}
+
 		return div;
 	},
 
