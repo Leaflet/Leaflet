@@ -37,7 +37,8 @@ L.extend(L.DomEvent, {
 
 		var cb = function (e) {
 
-			L.DomEvent.preventDefault(e);
+			//-> After PinchToZoom InfoBubble will be shown, therefor is line is command out
+			//L.DomEvent.preventDefault(e);
 
 			var alreadyInArray = false;
 			for (var i = 0; i < pointers.length; i++) {
