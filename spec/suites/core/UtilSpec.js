@@ -194,25 +194,27 @@ describe('Util', function() {
 			var str = L.Util.template(tpl, {
 				foo: 'Vlad',
 				bar: 'Dave',
-				baz:function(o){
+				baz: function (o) {
 					return o.bar;
 				}
 			});
 
 			expect(str).to.eql('Hello Vlad and Dave!');
 		});
+
 		it('check the cache', function () {
 			var tpl = 'Hello {foo} and {baz }!';
 
 			var str = L.Util._templateCache[tpl]({
 				foo: 'ladies',
-				baz: function() {
+				baz: function () {
 					return 'gentlemen';
 				}
 			});
 
 			expect(str).to.eql('Hello ladies and gentlemen!');
 		});
+
 		it('evaluates templates with a function', function () {
 			var tpl = L.Util.compileTemplate('Hello { foo } and { bar}!',{});
 
@@ -228,8 +230,15 @@ describe('Util', function() {
 			expect(str1).to.eql('Hello Vlad and Dave!');
 			expect(str2).to.eql('Hello {Calvin} and {Simon}!');
 		});
+
 		it('does not modify text without a token variable', function () {
 			expect(L.Util.template('foo', {})).to.eql('foo');
+		});
+
+		it('supports templates with double quotes', function () {
+			expect(L.Util.template('He said: "{foo}"!', {
+				foo: 'Hello'
+			})).to.eql('He said: "Hello"!');
 		});
 
 		it('throws when a template token is not given', function () {
