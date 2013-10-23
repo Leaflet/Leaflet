@@ -72,7 +72,10 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onMove: function (e) {
-		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length > 1) {
+			this._moved = true;
+			return;
+		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    newPoint = new L.Point(first.clientX, first.clientY),
