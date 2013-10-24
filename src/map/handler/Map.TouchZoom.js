@@ -58,7 +58,8 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (this._scale === 1) { return; }
 
 		if (!map.options.bounceAtZoomLimits) {
-			if ((map.getZoom() === map.getMinZoom() && this._scale < 1) || (map.getZoom() === map.getMaxZoom() && this._scale > 1)) { return; }
+			if ((map.getZoom() === map.getMinZoom() && this._scale < 1) ||
+			    (map.getZoom() === map.getMaxZoom() && this._scale > 1)) { return; }
 		}
 
 		if (!this._moved) {
