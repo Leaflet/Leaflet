@@ -3,7 +3,8 @@
  */
 
 L.Map.mergeOptions({
-	touchZoom: L.Browser.touch && !L.Browser.android23
+	touchZoom: L.Browser.touch && !L.Browser.android23,
+	bounceAtZoomLimits: true
 });
 
 L.Map.TouchZoom = L.Handler.extend({
@@ -54,9 +55,11 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._scale = p1.distanceTo(p2) / this._startDist;
 		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
 
-		if (this._scale === 1 ||
-		    (map.getZoom() === map.getMinZoom() && this._scale < 1) ||
-		    (map.getZoom() === map.getMaxZoom() && this._scale > 1)) { return; }
+		if (this._scale === 1) { return; }
+
+		if (!map.options.bounceAtZoomLimits) {
+			if ((map.getZoom() === map.getMinZoom() && this._scale < 1) || (map.getZoom() === map.getMaxZoom() && this._scale > 1)) { return; }
+		}
 
 		if (!this._moved) {
 			L.DomUtil.addClass(map._mapPane, 'leaflet-touching');
