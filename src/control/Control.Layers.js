@@ -96,6 +96,14 @@ L.Control.Layers = L.Control.extend({
 			else {
 				L.DomEvent.on(link, 'focus', this._expand, this);
 			}
+			L.DomEvent.on(form, 'click', function () {
+				var that = this;
+				setTimeout(function () {
+					//alert('l');
+					
+					that._onInputClick();
+				}, 0);
+			}, this);
 
 			this._map.on('click', this._collapse, this);
 			// TODO keyboard accessibility
