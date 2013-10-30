@@ -83,6 +83,14 @@ L.DomUtil = {
 		return new L.Point(left, top);
 	},
 
+	documentIsLtr: function () {
+		if (!L.DomUtil._docIsLtrCached) {
+			L.DomUtil._docIsLtrCached = true;
+			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
+		}
+		return L.DomUtil._docIsLtr;
+	},
+
 	create: function (tagName, className, container) {
 
 		var el = document.createElement(tagName);
