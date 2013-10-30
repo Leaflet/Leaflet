@@ -787,6 +787,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/jieter">Jieter</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/turbo87/leaflet-sidebar/">leaflet-sidebar</a>
+		</td><td>
+			A responsive sidebar plugin.
+		</td><td>
+			<a href="https://github.com/turbo87/">Tobias Bieniek</a>
+		</td>
+	</tr>
 </table>
 
 
