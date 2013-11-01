@@ -267,6 +267,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.filegdb">Leaflet.FileGDB</a>
+		</td><td>
+			Put an ESRI File GeoDatabase onto your map as a layer.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/joergdietrich/Leaflet.Terminator">Leaflet.Terminator</a>
 		</td><td>Overlay day and night regions on a map.
 		</td><td>
