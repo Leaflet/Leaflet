@@ -230,6 +230,8 @@ L.Control.Layers = L.Control.extend({
 		}
 
 		this._handlingClick = false;
+
+		this._refocusOnMap();
 	},
 
 	_expand: function () {
