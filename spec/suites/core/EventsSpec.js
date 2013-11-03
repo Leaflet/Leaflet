@@ -190,6 +190,24 @@ describe('Events', function() {
 			expect(spy2.called).to.be(false);
 		});
 
+		it('removes listeners with context == this and a stamp originally added without one', function () {
+			var obj = new Klass(),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy();
+
+			obj.addEventListener('test', spy1, obj);
+			L.Util.stamp(obj);
+			obj.addEventListener('test', spy2, obj);
+
+			obj.removeEventListener('test', spy1, obj);
+			obj.removeEventListener('test', spy2, obj);
+
+			obj.fireEvent('test');
+
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(false);
+		});
+
 		it('doesnt lose track of listeners when removing non existent ones', function () {
 			var obj = new Klass(),
 			    spy = sinon.spy(),
