@@ -192,20 +192,25 @@ describe('Events', function() {
 
 		it('removes listeners with context == this and a stamp originally added without one', function () {
 			var obj = new Klass(),
+				obj2 = new Klass(),
 				spy1 = sinon.spy(),
-				spy2 = sinon.spy();
+				spy2 = sinon.spy(),
+				spy3 = sinon.spy();
 
 			obj.addEventListener('test', spy1, obj);
 			L.Util.stamp(obj);
 			obj.addEventListener('test', spy2, obj);
+			obj.addEventListener('test', spy3, obj2); // So that there is a contextId based listener, otherwise removeEventListener will do correct behaviour anyway
 
 			obj.removeEventListener('test', spy1, obj);
 			obj.removeEventListener('test', spy2, obj);
+			obj.removeEventListener('test', spy3, obj2);
 
 			obj.fireEvent('test');
 
 			expect(spy1.called).to.be(false);
 			expect(spy2.called).to.be(false);
+			expect(spy3.called).to.be(false);
 		});
 
 		it('doesnt lose track of listeners when removing non existent ones', function () {
