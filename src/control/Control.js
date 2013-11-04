@@ -69,10 +69,8 @@ L.Control = L.Class.extend({
 	},
 
 	_refocusOnMap: function () {
-		var map = this._map;
-
-		if (map) {
-			map.getContainer().focus();
+		if (this._map) {
+			this._map.getContainer().focus();
 		}
 	}
 });
