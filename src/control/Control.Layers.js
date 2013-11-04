@@ -96,13 +96,9 @@ L.Control.Layers = L.Control.extend({
 			else {
 				L.DomEvent.on(link, 'focus', this._expand, this);
 			}
+			//Work around for Firefox android issue https://github.com/Leaflet/Leaflet/issues/2033
 			L.DomEvent.on(form, 'click', function () {
-				var that = this;
-				setTimeout(function () {
-					//alert('l');
-					
-					that._onInputClick();
-				}, 0);
+				setTimeout(L.bind(this._onInputClick, this), 0);
 			}, this);
 
 			this._map.on('click', this._collapse, this);
