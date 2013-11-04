@@ -83,6 +83,10 @@ L.Path = L.Class.extend({
 		}, this);
 	},
 
+	fillable: function () {
+		return false;
+	},
+
 	projectLatlngs: function () {
 		// do all projection stuff here
 	},
