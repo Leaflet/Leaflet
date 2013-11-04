@@ -1,16 +1,16 @@
-describe('Util', function() {
+describe('Util', function () {
 
-	describe('#extend', function() {
+	describe('#extend', function () {
 		var a;
 
-		beforeEach(function() {
+		beforeEach(function () {
 			a = {
 				foo: 5,
 				bar: 'asd'
 			};
 		});
 
-		it('extends the first argument with the properties of the second', function() {
+		it('extends the first argument with the properties of the second', function () {
 			L.Util.extend(a, {
 				bar: 7,
 				baz: 3
@@ -23,7 +23,7 @@ describe('Util', function() {
 			});
 		});
 
-		it('accepts more than 2 arguments', function() {
+		it('accepts more than 2 arguments', function () {
 			L.Util.extend(a, {bar: 7}, {baz: 3});
 
 			expect(a).to.eql({
@@ -34,9 +34,9 @@ describe('Util', function() {
 		});
 	});
 
-	describe('#bind', function() {
-		it('returns the given function with the given context', function() {
-			var fn = function() {
+	describe('#bind', function () {
+		it('returns the given function with the given context', function () {
+			var fn = function () {
 				return this;
 			};
 
@@ -59,8 +59,8 @@ describe('Util', function() {
 		});
 	});
 
-	describe('#stamp', function() {
-		it('sets a unique id on the given object and returns it', function() {
+	describe('#stamp', function () {
+		it('sets a unique id on the given object and returns it', function () {
 			var a = {},
 				id = L.Util.stamp(a);
 
@@ -115,38 +115,37 @@ describe('Util', function() {
 	});
 
 
-	describe('#getParamString', function() {
-		it('creates a valid query string for appending depending on url input', function() {
+	describe('#getParamString', function () {
+		it('creates a valid query string for appending depending on url input', function () {
 			var a = {
-				url: "http://example.com/get",
+				url: 'http://example.com/get',
 				obj: {bar: 7, baz: 3},
-				result: "?bar=7&baz=3"
+				result: '?bar=7&baz=3'
 			};
 
-			expect(L.Util.getParamString(a.obj,a.url)).to.eql(a.result);
+			expect(L.Util.getParamString(a.obj, a.url)).to.eql(a.result);
 
 			var b = {
-				url: "http://example.com/get?justone=qs",
+				url: 'http://example.com/get?justone=qs',
 				obj: {bar: 7, baz: 3},
-				result: "&bar=7&baz=3"
+				result: '&bar=7&baz=3'
 			};
 
-			expect(L.Util.getParamString(b.obj,b.url)).to.eql(b.result);
+			expect(L.Util.getParamString(b.obj, b.url)).to.eql(b.result);
 
 			var c = {
 				url: undefined,
 				obj: {bar: 7, baz: 3},
-				result: "?bar=7&baz=3"
+				result: '?bar=7&baz=3'
 			};
 
-			expect(L.Util.getParamString(c.obj,c.url)).to.eql(c.result);
+			expect(L.Util.getParamString(c.obj, c.url)).to.eql(c.result);
 		});
 	});
 
 	describe('#requestAnimFrame', function () {
 		it('calles a function on next frame, unless canceled', function (done) {
 			var spy = sinon.spy(),
-				spy2 = sinon.spy(),
 				foo = {};
 
 			L.Util.requestAnimFrame(spy);
@@ -160,7 +159,7 @@ describe('Util', function() {
 		});
 	});
 
-	describe('#limitExecByInterval', function() {
+	describe('#limitExecByInterval', function () {
 		it('limits execution to not more often than specified time interval', function (done) {
 			var spy = sinon.spy();
 
@@ -216,7 +215,7 @@ describe('Util', function() {
 		});
 
 		it('evaluates templates with a function', function () {
-			var tpl = L.Util.compileTemplate('Hello { foo } and { bar}!',{});
+			var tpl = L.Util.compileTemplate('Hello { foo } and { bar}!', {});
 
 			var str1 = tpl({
 				foo: 'Vlad',
