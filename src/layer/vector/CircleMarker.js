@@ -32,7 +32,11 @@ L.CircleMarker = L.Circle.extend({
 	setRadius: function (radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
-	}
+	},
+
+    getRadius: function () {
+        return this._radius;
+    }
 });
 
 L.circleMarker = function (latlng, options) {
