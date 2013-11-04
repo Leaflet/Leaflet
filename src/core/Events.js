@@ -90,6 +90,7 @@ L.Mixin.Events = {
 				// clear all listeners for a type if function isn't specified
 				delete events[type];
 				delete events[indexKey];
+				delete events[indexLenKey];
 
 			} else {
 				listeners = context && typeIndex ? typeIndex[contextId] : events[type];

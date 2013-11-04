@@ -230,6 +230,27 @@ describe('Events', function() {
 			expect(spy.called).to.be(false);
 		});
 
+		it('correctly removes all listeners if given no fn', function () {
+			var obj = new Klass(),
+			    spy = sinon.spy(),
+			    foo = {},
+			    foo2 = {},
+			    foo3 = {};
+
+			obj.addEventListener('test', spy, foo2);
+			obj.addEventListener('test', spy, foo3);
+
+			obj.removeEventListener('test'); // Removes both of the above listeners
+
+			expect(obj.hasEventListeners('test')).to.be(false);
+
+			//Add and remove a listener
+			obj.addEventListener('test', spy, foo2);
+			obj.removeEventListener('test', spy, foo2);
+			
+			expect(obj.hasEventListeners('test')).to.be(false);
+		});
+
 		it('makes sure an event is not triggered if a listener is removed during dispatch',function() {
 			var obj = new Klass(),
 			    spy = sinon.spy();
