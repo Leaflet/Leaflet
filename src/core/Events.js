@@ -14,7 +14,7 @@ L.Mixin.Events = {
 		if (L.Util.invokeEach(types, this.addEventListener, this, fn, context)) { return this; }
 
 		var events = this[eventsKey] = this[eventsKey] || {},
-		    contextId = context && L.stamp(context),
+		    contextId = context && context !== this && L.stamp(context),
 		    i, len, event, type, indexKey, indexLenKey, typeIndex;
 
 		// types can be a string of space-separated words
@@ -27,7 +27,7 @@ L.Mixin.Events = {
 			};
 			type = types[i];
 
-			if (context) {
+			if (contextId) {
 				// store listeners of a particular context in a separate hash (if it has an id)
 				// gives a major performance boost when removing thousands of map layers
 
@@ -74,7 +74,7 @@ L.Mixin.Events = {
 		if (L.Util.invokeEach(types, this.removeEventListener, this, fn, context)) { return this; }
 
 		var events = this[eventsKey],
-		    contextId = context && L.stamp(context),
+		    contextId = context && context !== this && L.stamp(context),
 		    i, len, type, listeners, j, indexKey, indexLenKey, typeIndex, removed;
 
 		types = L.Util.splitWords(types);
@@ -90,9 +90,10 @@ L.Mixin.Events = {
 				// clear all listeners for a type if function isn't specified
 				delete events[type];
 				delete events[indexKey];
+				delete events[indexLenKey];
 
 			} else {
-				listeners = context && typeIndex ? typeIndex[contextId] : events[type];
+				listeners = contextId && typeIndex ? typeIndex[contextId] : events[type];
 
 				if (listeners) {
 					for (j = listeners.length - 1; j >= 0; j--) {
@@ -135,7 +136,7 @@ L.Mixin.Events = {
 			listeners = events[type].slice();
 
 			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].action.call(listeners[i].context || this, event);
+				listeners[i].action.call(listeners[i].context, event);
 			}
 		}
 
@@ -147,7 +148,7 @@ L.Mixin.Events = {
 
 			if (listeners) {
 				for (i = 0, len = listeners.length; i < len; i++) {
-					listeners[i].action.call(listeners[i].context || this, event);
+					listeners[i].action.call(listeners[i].context, event);
 				}
 			}
 		}
