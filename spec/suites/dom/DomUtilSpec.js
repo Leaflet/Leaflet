@@ -53,13 +53,6 @@ describe('DomUtil', function() {
 		});
 	});
 
-	describe('#documentIsLtr', function () {
-		it('returns true if doc direction is ltr', function () {
-			expect(L.DomUtil.documentIsLtr()).to.eql(true);
-			expect(L.DomUtil.documentIsLtr()).to.eql(true); // cached
-		});
-	});
-
 	describe('#getViewportOffset', function () {
 		it('calculates the viewport offset of an element', function () {
 			var div = document.createElement('div');

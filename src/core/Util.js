@@ -107,6 +107,7 @@ L.Util = {
 
 	compileTemplate: function (str, data) {
 		// based on https://gist.github.com/padolsey/6008842
+		str = str.replace(/"/g, '\\\"');
 		str = str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			return '" + o["' + key + '"]' + (typeof data[key] === 'function' ? '(o)' : '') + ' + "';
 		});
@@ -120,7 +121,7 @@ L.Util = {
 		return cache[str](data);
 	},
 
-	isArray: function (obj) {
+	isArray: Array.isArray || function (obj) {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 

@@ -24,7 +24,8 @@
 .leaflet-popup-tip-container {
 	margin-top: -1px;
 	}
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
 	border: 1px solid #999;
 	}
 .leaflet-popup-content-wrapper {
@@ -34,8 +35,6 @@
 .leaflet-control-zoom,
 .leaflet-control-layers {
 	border: 3px solid #999;
-	}
-.leaflet-control-layers-toggle {
 	}
 .leaflet-control-attribution,
 .leaflet-control-layers,

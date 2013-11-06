@@ -61,10 +61,10 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    .fire('drag');
 	},
 
-	_onDragEnd: function () {
+	_onDragEnd: function (e) {
 		this._marker
 		    .fire('moveend')
-		    .fire('dragend');
+		    .fire('dragend', e);
 		L.DomUtil.removeClass(this._marker._icon, 'leaflet-marker-dragging');
 	}
 });

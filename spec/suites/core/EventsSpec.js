@@ -190,6 +190,29 @@ describe('Events', function() {
 			expect(spy2.called).to.be(false);
 		});
 
+		it('removes listeners with context == this and a stamp originally added without one', function () {
+			var obj = new Klass(),
+				obj2 = new Klass(),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
+				spy3 = sinon.spy();
+
+			obj.addEventListener('test', spy1, obj);
+			L.Util.stamp(obj);
+			obj.addEventListener('test', spy2, obj);
+			obj.addEventListener('test', spy3, obj2); // So that there is a contextId based listener, otherwise removeEventListener will do correct behaviour anyway
+
+			obj.removeEventListener('test', spy1, obj);
+			obj.removeEventListener('test', spy2, obj);
+			obj.removeEventListener('test', spy3, obj2);
+
+			obj.fireEvent('test');
+
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(false);
+			expect(spy3.called).to.be(false);
+		});
+
 		it('doesnt lose track of listeners when removing non existent ones', function () {
 			var obj = new Klass(),
 			    spy = sinon.spy(),
@@ -210,6 +233,27 @@ describe('Events', function() {
 			obj.fireEvent('test');
 
 			expect(spy.called).to.be(false);
+		});
+
+		it('correctly removes all listeners if given no fn', function () {
+			var obj = new Klass(),
+			    spy = sinon.spy(),
+			    foo = {},
+			    foo2 = {},
+			    foo3 = {};
+
+			obj.addEventListener('test', spy, foo2);
+			obj.addEventListener('test', spy, foo3);
+
+			obj.removeEventListener('test'); // Removes both of the above listeners
+
+			expect(obj.hasEventListeners('test')).to.be(false);
+
+			//Add and remove a listener
+			obj.addEventListener('test', spy, foo2);
+			obj.removeEventListener('test', spy, foo2);
+			
+			expect(obj.hasEventListeners('test')).to.be(false);
 		});
 
 		it('makes sure an event is not triggered if a listener is removed during dispatch',function() {
