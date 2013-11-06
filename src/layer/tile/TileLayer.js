@@ -473,8 +473,9 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_getWrapTileNum: function () {
-		// TODO refactor, limit is not valid for non-standard projections
-		return Math.pow(2, this._getZoomForUrl());
+		var crs = this._map.options.crs,
+		    size = crs.getSize(this._getZoomForUrl());
+		return size.divideBy(this.options.tileSize);
 	},
 
 	_adjustTilePoint: function (tilePoint) {
@@ -483,11 +484,11 @@ L.TileLayer = L.Class.extend({
 
 		// wrap tile coordinates
 		if (!this.options.continuousWorld && !this.options.noWrap) {
-			tilePoint.x = ((tilePoint.x % limit) + limit) % limit;
+			tilePoint.x = ((tilePoint.x % limit.x) + limit.x) % limit.x;
 		}
 
 		if (this.options.tms) {
-			tilePoint.y = limit - tilePoint.y - 1;
+			tilePoint.y = limit.y - tilePoint.y - 1;
 		}
 
 		tilePoint.z = this._getZoomForUrl();

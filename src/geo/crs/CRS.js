@@ -23,5 +23,10 @@ L.CRS = {
 
 	scale: function (zoom) {
 		return 256 * Math.pow(2, zoom);
+	},
+
+	getSize: function (zoom) {
+		var s = this.scale(zoom);
+		return L.point(s, s);
 	}
 };
