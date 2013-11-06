@@ -150,7 +150,7 @@ L.extend(L.GeoJSON, {
 	latLngToCoords: function (latlng) {
 		var coords = [latlng.lng, latlng.lat];
 
-		if (latlng.alt === undefined) {
+		if (latlng.alt !== undefined) {
 			coords.push(latlng.alt);
 		}
 		return coords;

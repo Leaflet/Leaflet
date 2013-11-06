@@ -3,8 +3,8 @@
  */
 
 L.LatLng = function (lat, lng, alt) { // (Number, Number, Number)
-	var lat = parseFloat(lat),
-	    lng = parseFloat(lng);
+	lat = parseFloat(lat);
+	lng = parseFloat(lng);
 
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
