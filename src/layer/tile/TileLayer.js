@@ -472,7 +472,7 @@ L.TileLayer = L.Class.extend({
 		}, this.options));
 	},
 
-    _getWrapTileNum: function () {
+	_getWrapTileNum: function () {
 		var crs = this._map.options.crs,
 		    size = crs.getSize(this._getZoomForUrl());
 		return size.divideBy(this.options.tileSize);
