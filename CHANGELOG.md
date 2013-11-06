@@ -12,6 +12,7 @@ An in-progress version being developed on the `master` branch.
 * Added **support for IE11 touch devices** (by [@danzel](https://github.com/danzel), [@DanielX2](https://github.com/DanielX2) and [@fnicollet](https://github.com/fnicollet)). [#2039](https://github.com/Leaflet/Leaflet/pull/2039) [#2066](https://github.com/Leaflet/Leaflet/pull/2066) [#2037](https://github.com/Leaflet/Leaflet/issues/2037) [#2102](https://github.com/Leaflet/Leaflet/issues/2102)
 * Added an [official FAQ](https://github.com/Leaflet/Leaflet/blob/master/FAQ.md).
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by **upscaling tiles**. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
+* Added `TileLayer` `tileloadstart` event (by [@tmcw](https://github.com/tmcw)). [#2142](https://github.com/Leaflet/Leaflet/pull/2142) [#2140](https://github.com/Leaflet/Leaflet/issues/2140)
 * Added localization support for the zoom control (by [@Danielku15](https://github.com/Danielku15)). [#1953](https://github.com/Leaflet/Leaflet/issues/1953) [#1643](https://github.com/Leaflet/Leaflet/issues/1643) [#1953](https://github.com/Leaflet/Leaflet/pull/1953)
 * Made `Map` `setView` `zoom` argument optional. [#2056](https://github.com/Leaflet/Leaflet/issues/2056)
 * Added `maxZoom` option to `Map` `fitBounds`. [#2101](https://github.com/Leaflet/Leaflet/issues/2101)
@@ -37,6 +38,7 @@ An in-progress version being developed on the `master` branch.
 
 #### 0.6 regression fixes
 
+* Fixed a memory leak in iOS7 that could crash Safari when handling lots of objects (e.g. 1000 markers) (by [@danzel](https://github.com/danzel)). [#2149](https://github.com/Leaflet/Leaflet/pull/2149) [#2122](https://github.com/Leaflet/Leaflet/issues/2122)
 * Fixed a regression that broke `worldCopyJump: true` option (by [@fastrde](https://github.com/fastrde)). [#1904](https://github.com/Leaflet/Leaflet/issues/1904) [#1831](https://github.com/Leaflet/Leaflet/issues/1831) [#1982](https://github.com/Leaflet/Leaflet/issues/1982)
 * Fixed a regression where a first map click after popup close button click was ignored (by [@fastrde](https://github.com/fastrde)). [#1537](https://github.com/Leaflet/Leaflet/issues/1537) [#1963](https://github.com/Leaflet/Leaflet/issues/1963) [#1925](https://github.com/Leaflet/Leaflet/issues/1925)
 * Fixed a regression where `L.DomUtil.getMousePosition` would throw an error if container argument not provided (by [@scooterw](https://github.com/scooterw)). [#1826](https://github.com/Leaflet/Leaflet/issues/1826) [#1928](https://github.com/Leaflet/Leaflet/issues/1928) [#1926](https://github.com/Leaflet/Leaflet/issues/1926)
@@ -50,9 +52,11 @@ An in-progress version being developed on the `master` branch.
 * Fixed a bug where scale control displayed wrong scale when on pages with `box-sizing: border-box`.
 * Fixed a bug where zoom control button didn't appear as disabled if map was initialized at the zoom limit. [#2083](https://github.com/Leaflet/Leaflet/issues/2083)
 * Fixed a bug where the map could freeze if centered and immediately recentered on initialization. [#2071](https://github.com/Leaflet/Leaflet/issues/2071)
+* Fixed a bug where the map would loose focus (for keyboard nav) when you clicked on a control (by [@jacobtoye](https://github.com/jacobtoye)). [#2150](https://github.com/Leaflet/Leaflet/issues/2150) [#2148](https://github.com/Leaflet/Leaflet/issues/2148)
 
 #### Browser bugfixes
 
+* Fixed a bug where tiles could disappear after zooming on Chrome 30+ for Android (by [@danzel](https://github.com/danzel)). [#2152](https://github.com/Leaflet/Leaflet/pull/2152) [#2078](https://github.com/Leaflet/Leaflet/issues/2078)
 * Fixed a bug on IE10+ touch where pinch-zoom also caused click (by [@danzel](https://github.com/danzel)). [#2117](https://github.com/Leaflet/Leaflet/pull/2117) [#2094](https://github.com/Leaflet/Leaflet/issues/2094)
 * Fixed a bug on IE10+ touch where controls didn't loose the pressed state after tapping (by [@danzel](https://github.com/danzel)). [#2111](https://github.com/Leaflet/Leaflet/pull/2111) [#2103](https://github.com/Leaflet/Leaflet/issues/2103)
 * Fixed a bug where clicking on layers control labels on iOS throwed an error (by [@olemarkus](https://github.com/olemarkus) and [@dagjomar](https://github.com/dagjomar)). [#1984](https://github.com/Leaflet/Leaflet/issues/1984) [#1989](https://github.com/Leaflet/Leaflet/issues/1989)
@@ -60,6 +64,7 @@ An in-progress version being developed on the `master` branch.
 * Fixed a bug where calling `Map` `remove` throwed an error in IE6-8. [#2015](https://github.com/Leaflet/Leaflet/issues/2015)
 * Fixed a bug where `isArray` didn't work in rare cases in IE9. [#2077](https://github.com/Leaflet/Leaflet/issues/2077)
 * Fixed a bug where FF sometimes produced console warnings when animating markers. [#2090](https://github.com/Leaflet/Leaflet/issues/2090)
+* Fixed a bug where mouse wasn't handled correctly on RTL pages in some cases (by [@danzel](https://github.com/danzel)). [#1986](https://github.com/Leaflet/Leaflet/issues/1986) [#2136](https://github.com/Leaflet/Leaflet/pull/2136)
 
 #### API bugfixes
 
@@ -76,6 +81,10 @@ An in-progress version being developed on the `master` branch.
 * Fixed a bug where `L.latLngBounds` didn't accept simple object `LatLng` form (by [@Gnurfos](https://github.com/Gnurfos)). [#2025](https://github.com/Leaflet/Leaflet/issues/2025) [#1915](https://github.com/Leaflet/Leaflet/issues/1915)
 * Fixed a bug where `FeatureGroup` would break when using non-evented children layers (by [@tmcw](https://github.com/tmcw)). [#2032](https://github.com/Leaflet/Leaflet/pull/2032) [#1962](https://github.com/Leaflet/Leaflet/issues/1962)
 * Fixed a bug where calling `setZoom` before `setView` would throw an error. [#1449](https://github.com/Leaflet/Leaflet/issues/1449)
+* Fixed a bug where `CircleMarker` `getRadius` would always return `null`. [#2016](https://github.com/Leaflet/Leaflet/issues/2016) [#2017](https://github.com/Leaflet/Leaflet/pull/2017)
+* Fixed a bug where `TileLayer.WMS` didn't work with WMS 1.3 & EPSG4326 projection (by [@Bobboya](https://github.com/Bobboya)). [#1897](https://github.com/Leaflet/Leaflet/pull/1897)
+* Fixed a bug where content was updated twice when opening a popup. [#2137](https://github.com/Leaflet/Leaflet/issues/2137)
+* Fixed a bug where `L.Util.tempalate` wouldn't work with double quotes in the string (by [@jieter](https://github.com/jieter)). [#1968](https://github.com/Leaflet/Leaflet/issues/1968) [#2121](https://github.com/Leaflet/Leaflet/pull/2121) [#2120](https://github.com/Leaflet/Leaflet/issues/2120)
 
 ## 0.6.4 (July 25, 2013)
 
