@@ -17,6 +17,7 @@ An in-progress version being developed on the `master` branch.
 * Made `Map` `setView` `zoom` argument optional. [#2056](https://github.com/Leaflet/Leaflet/issues/2056)
 * Added `maxZoom` option to `Map` `fitBounds`. [#2101](https://github.com/Leaflet/Leaflet/issues/2101)
 * Added `Map` `bounceAtZoomLimits` option that makes the map bounce when you pinch-zoom past limits (it worked like this before, but now you can disable this) (by [@trevorpowell](https://github.com/trevorpowell)). [#1864](https://github.com/Leaflet/Leaflet/issues/1864) [#2072](https://github.com/Leaflet/Leaflet/pull/2072)
+* Added `distance` property to `Map` and `Marker` `dragend` events. [#2158](https://github.com/Leaflet/Leaflet/issues/2158) [#872](https://github.com/Leaflet/Leaflet/issues/872)
 * Added optional support for center-oriented scroll and double-click zoom (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1939](https://github.com/Leaflet/Leaflet/issues/1939)
 * Added `timestamp` to `Map` `locationfound` event. [#584](https://github.com/Leaflet/Leaflet/pull/584)
 * Added CSS classes to draggable markers for easier customization (by [@snkashis](https://github.com/snkashis)). [#1902](https://github.com/Leaflet/Leaflet/issues/1902) [#1916](https://github.com/Leaflet/Leaflet/issues/1916)
