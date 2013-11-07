@@ -189,11 +189,36 @@ L.Popup = L.Class.extend({
 		if (typeof this._content === 'string') {
 			this._contentNode.innerHTML = this._content;
 		} else {
-			while (this._contentNode.hasChildNodes()) {
-				this._contentNode.removeChild(this._contentNode.firstChild);
+			var mustSaveContent = true;
+			if (this._contentNode.hasChildNodes()) {
+				if ('length' in this._content && this._content.length === this._contentNode.childNodes.length) {
+					for (var i = 0; i < this._content.length; ++i) {
+						if (this._content[i] !== this._contentNode.childNodes[i]) {
+							mustSaveContent = false;
+							break;
+						}
+					}
+				} else {
+					mustSaveContent = false;
+				}
 			}
-			this._contentNode.appendChild(this._content);
+			
+			if (!mustSaveContent) {
+				while (this._contentNode.hasChildNodes()) {
+					this._contentNode.removeChild(this._contentNode.firstChild);
+				}
+				
+				if ('length' in this._content) {
+					while (this._content.length) {
+						this._contentNode.appendChild(this._content[0]);
+					}
+				} else {
+					this._contentNode.appendChild(this._content);
+				}
+			}
 		}
+
+		this._content = this._contentNode.childNodes;
 		this.fire('contentupdate');
 	},
 
