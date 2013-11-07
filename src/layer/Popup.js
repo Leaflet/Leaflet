@@ -101,8 +101,10 @@ L.Popup = L.Class.extend({
 
 	setLatLng: function (latlng) {
 		this._latlng = L.latLng(latlng);
-		this._updatePosition();
-		this._adjustPan();
+		if (this._map) {
+			this._updatePosition();
+			this._adjustPan();
+		}
 		return this;
 	},
 
