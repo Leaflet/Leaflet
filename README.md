@@ -11,7 +11,7 @@ It can be extended with a huge amount of [plugins][],
 has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
 
-For more information, check out the [official website][].<br>
+For more info, docs and tutorials, check out the [official website][].<br>
 For **Leaflet downloads** (including the built master version), check out the [download page][].
 
 We're happy to meet new contributors.
@@ -30,5 +30,5 @@ and push the limits of what's possible with online maps!
  [hosted on GitHub]: http://github.com/Leaflet/Leaflet
  [contribute]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com
- [Leaflet Download Page]: http://leafletjs.com/download.html
+ [download page]: http://leafletjs.com/download.html
  [MapBox]: https://mapbox.com
