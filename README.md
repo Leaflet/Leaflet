@@ -1,24 +1,23 @@
 <img src="http://leafletjs.com/docs/images/logo.png" alt="Leaflet" />
 
-Leaflet is a modern open-source JavaScript library for **mobile-friendly interactive maps**.
-It is developed by [Vladimir Agafonkin][] with a team of dedicated [contributors][].
+Leaflet is an open source JavaScript library for **mobile-friendly interactive maps**.
+It is developed by [Vladimir Agafonkin][] of [MapBox][] with a team of dedicated [contributors][].
 Weighing just about 30 KB of gzipped JS code, it has all the [features][] most developers ever need for online maps.
 
 Leaflet is designed with *simplicity*, *performance* and *usability* in mind.
 It works efficiently across all major desktop and mobile platforms out of the box,
 taking advantage of HTML5 and CSS3 on modern browsers while being accessible on older ones too.
-It can also be extended with many [plugins][],
+It can be extended with a huge amount of [plugins][],
 has a beautiful, easy to use and [well-documented][] API
 and a simple, readable [source code][] that is a joy to [contribute][] to.
 
-For more information, check out the [official website][].
+For more information, check out the [official website][].<br>
+For **Leaflet downloads** (including the built master version), check out the [download page][].
 
 We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
-Let's make the best open-source library for maps that can possibly exist!
-
-P.S. If you're looking for **Leaflet downloads** (including the built master version),
-check out the [Leaflet Download Page][].
+Let's make the best mapping library that will ever exist,
+and push the limits of what's possible with online maps!
 
 [![Build Status](https://travis-ci.org/Leaflet/Leaflet.png?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
 
@@ -32,3 +31,4 @@ check out the [Leaflet Download Page][].
  [contribute]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md "A guide to contributing to Leaflet"
  [official website]: http://leafletjs.com
  [Leaflet Download Page]: http://leafletjs.com/download.html
+ [MapBox]: https://mapbox.com
