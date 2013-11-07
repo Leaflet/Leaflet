@@ -210,7 +210,7 @@ describe("L.LayerGroup#toGeoJSON", function () {
 			return {
 				type: 'Point',
 				coordinates: [20, 10]
-			}
+			};
 		};
 
 		expect(layerGroup.toGeoJSON()).to.eql({

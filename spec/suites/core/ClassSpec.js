@@ -1,11 +1,11 @@
-describe("Class", function() {
+describe("Class", function () {
 
-	describe("#extend", function() {
+	describe("#extend", function () {
 		var Klass,
 			constructor,
 			method;
 
-		beforeEach(function() {
+		beforeEach(function () {
 			constructor = sinon.spy();
 			method = sinon.spy();
 
@@ -19,7 +19,7 @@ describe("Class", function() {
 			});
 		});
 
-		it("creates a class with the given constructor & properties", function() {
+		it("creates a class with the given constructor & properties", function () {
 			var a = new Klass();
 
 			expect(constructor.called).to.be.ok();
@@ -30,7 +30,7 @@ describe("Class", function() {
 			expect(method.called).to.be.ok();
 		});
 
-		it("inherits parent classes' constructor & properties", function() {
+		it("inherits parent classes' constructor & properties", function () {
 			var Klass2 = Klass.extend({baz: 2});
 
 			var b = new Klass2();
@@ -46,28 +46,28 @@ describe("Class", function() {
 			expect(method.called).to.be.ok();
 		});
 
-		it("supports static properties", function() {
+		it("supports static properties", function () {
 			expect(Klass.bla).to.eql(1);
 		});
 
-		it("inherits parent static properties", function() {
+		it("inherits parent static properties", function () {
 			var Klass2 = Klass.extend({});
 
 			expect(Klass2.bla).to.eql(1);
 		});
 
-		it("overrides parent static properties", function() {
+		it("overrides parent static properties", function () {
 			var Klass2 = Klass.extend({statics: {bla: 2}});
 
 			expect(Klass2.bla).to.eql(2);
 		});
 
-		it("includes the given mixin", function() {
+		it("includes the given mixin", function () {
 			var a = new Klass();
 			expect(a.mixin).to.be.ok();
 		});
 
-		it("includes multiple mixins", function() {
+		it("includes multiple mixins", function () {
 			var Klass2 = L.Class.extend({
 				includes: [{mixin: true}, {mixin2: true}]
 			});
@@ -77,14 +77,14 @@ describe("Class", function() {
 			expect(a.mixin2).to.be.ok();
 		});
 
-		it("grants the ability to include the given mixin", function() {
+		it("grants the ability to include the given mixin", function () {
 			Klass.include({mixin2: true});
 
 			var a = new Klass();
 			expect(a.mixin2).to.be.ok();
 		});
 
-		it("merges options instead of replacing them", function() {
+		it("merges options instead of replacing them", function () {
 			var KlassWithOptions1 = L.Class.extend({
 				options: {
 					foo1: 1,

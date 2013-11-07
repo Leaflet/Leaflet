@@ -242,15 +242,15 @@ describe('Util', function () {
 
 		it('throws when a template token is not given', function () {
 			expect(function () {
-				L.Util.template(tpl, {foo: 'bar'});
+				L.Util.template(undefined, {foo: 'bar'});
 			}).to.throwError();
 		});
 	});
 
 	describe('#isArray', function () {
-		expect(L.Util.isArray([1, 2, 3])).to.be.true;
-		expect(L.Util.isArray(new Array(1, 2, 3))).to.be.true;
-		expect(L.Util.isArray('blabla')).to.be.false;
-		expect(L.Util.isArray({0: 1, 1: 2})).to.be.false;
+		expect(L.Util.isArray([1, 2, 3])).to.be(true);
+		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);
+		expect(L.Util.isArray('blabla')).to.be(false);
+		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);
 	});
 });

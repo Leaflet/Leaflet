@@ -1,4 +1,4 @@
-describe('Polyline', function() {
+describe('Polyline', function () {
 
 	var c = document.createElement('div');
 	c.style.width = '400px';
@@ -6,7 +6,7 @@ describe('Polyline', function() {
 	var map = new L.Map(c);
 	map.setView(new L.LatLng(55.8, 37.6), 6);
 
-	describe("#initialize", function() {
+	describe("#initialize", function () {
 		it("doesn't overwrite the given latlng array", function () {
 			var originalLatLngs = [
 				[1, 2],

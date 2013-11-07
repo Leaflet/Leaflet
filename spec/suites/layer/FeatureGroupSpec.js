@@ -17,22 +17,25 @@
 				fg1.addLayer(marker);
 				fg2.addLayer(marker);
 
-				var wasClicked = 0;
-				fg2.on('click', function(e) {
+				var wasClicked1,
+					wasClicked2;
+
+				fg2.on('click', function (e) {
 					expect(e.layer).to.be(marker);
 					expect(e.target).to.be(fg2);
-					wasClicked |= 1;
+					wasClicked2 = true;
 				});
 
 				fg1.on('click', function (e) {
 					expect(e.layer).to.be(marker);
 					expect(e.target).to.be(fg1);
-					wasClicked |= 2;
+					wasClicked1 = true;
 				});
 
 				marker.fire('click', { type: 'click' });
 
-				expect(wasClicked).to.be(3);
+				expect(wasClicked1).to.be(true);
+				expect(wasClicked2).to.be(true);
 			});
 		});
 	});
@@ -76,7 +79,7 @@
 			fg.addLayer(marker);
 			expect(fg.hasLayer(marker)).to.be(true);
 
-			fg.removeLayer(marker._leaflet_id);
+			fg.removeLayer(L.stamp(marker));
 			expect(fg.hasLayer(marker)).to.be(false);
 		});
 	});

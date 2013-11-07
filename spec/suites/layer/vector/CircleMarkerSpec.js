@@ -1,13 +1,13 @@
-﻿describe('CircleMarker', function() {
-	describe("#_radius", function() {
+﻿describe('CircleMarker', function () {
+	describe("#_radius", function () {
 		var map;
-		beforeEach(function() {
+		beforeEach(function () {
 			map = L.map(document.createElement('div'));
 			map.setView([0, 0], 1);
 		});
-		describe("when a CircleMarker is added to the map ", function() {
-			describe("with a radius set as an option", function() {
-				it("takes that radius", function() {
+		describe("when a CircleMarker is added to the map ", function () {
+			describe("with a radius set as an option", function () {
+				it("takes that radius", function () {
 					var marker = L.circleMarker([0, 0], { radius: 20 }).addTo(map);
 
 					expect(marker._radius).to.be(20);
@@ -33,7 +33,7 @@
 			});
 
 			describe("and setStyle is used to change the radius after adding", function () {
-				it("takes the given radius", function() {
+				it("takes the given radius", function () {
 					var marker = L.circleMarker([0, 0], { radius: 20 });
 					marker.addTo(map);
 					marker.setStyle({ radius: 15 });
