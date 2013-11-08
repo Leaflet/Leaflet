@@ -12,8 +12,11 @@ This is a collection of answers to the most frequently asked questions about Lea
 
 #### The map is wrong in my neighborhood, could you fix it?
 
-Nope, but you can. The map you see on Leaflet examples is based on [OpenStreetMap], a free editable map of the world.
-Signing up and editing the map there is easy, and the changes will be reflected on the map in a few minutes.
+Nope, but you can.
+The map you see on Leaflet examples is based on [OpenStreetMap](http://openstreetmap.org),
+a free editable map of the world.
+Signing up and editing the map there is easy,
+and the changes will be reflected on the map in a few minutes.
 
 #### What map tiles can I use with Leaflet? Is it limited to OpenStreetMap?
 
