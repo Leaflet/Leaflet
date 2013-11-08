@@ -14,7 +14,7 @@
   "main": "dist/leaflet-src.js",
   "scripts": {
     "test": "jake test",
-    "prepublish": "jake"
+    "prepublish": "jake build"
   },
   "repository": {
     "type": "git",

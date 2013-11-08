@@ -2,29 +2,7 @@ var fs = require('fs'),
     jshint = require('jshint'),
     UglifyJS = require('uglify-js'),
 
-    deps = require('./deps.js').deps,
-    hintrc = require('./hintrc.js').config;
-
-function lintFiles(files) {
-
-	var errorsFound = 0,
-	    i, j, len, len2, src, errors, e;
-
-	for (i = 0, len = files.length; i < len; i++) {
-
-		jshint.JSHINT(fs.readFileSync(files[i], 'utf8'), hintrc, i ? {L: true} : null);
-		errors = jshint.JSHINT.errors;
-
-		for (j = 0, len2 = errors.length; j < len2; j++) {
-			e = errors[j];
-			console.log(files[i] + '\tline ' + e.line + '\tcol ' + e.character + '\t ' + e.reason);
-		}
-
-		errorsFound += len2;
-	}
-
-	return errorsFound;
-}
+    deps = require('./deps.js').deps;
 
 function getFiles(compsBase32) {
 	var memo = {},
@@ -64,23 +42,6 @@ function getFiles(compsBase32) {
 }
 
 exports.getFiles = getFiles;
-
-exports.lint = function () {
-
-	var files = getFiles();
-
-	console.log('Checking for JS errors...');
-
-	var errorsFound = lintFiles(files);
-
-	if (errorsFound > 0) {
-		console.log(errorsFound + ' error(s) found.\n');
-		fail();
-	} else {
-		console.log('\tCheck passed');
-	}
-};
-
 
 function getSizeDelta(newContent, oldContent) {
 	if (!oldContent) {
@@ -129,10 +90,10 @@ exports.build = function (compsBase32, buildName) {
 	console.log('\tUncompressed size: ' + newSrc.length + ' bytes (' + srcDelta + ')');
 
 	if (newSrc === oldSrc) {
-		console.log('\tNo changes');
+		console.log('\tNo changes\n');
 	} else {
 		fs.writeFileSync(srcPath, newSrc);
-		console.log('\tSaved to ' + srcPath);
+		console.log('\tSaved to ' + srcPath + '\n');
 	}
 
 	console.log('Compressing...');
@@ -148,18 +109,22 @@ exports.build = function (compsBase32, buildName) {
 	console.log('\tCompressed size: ' + newCompressed.length + ' bytes (' + delta + ')');
 
 	if (newCompressed === oldCompressed) {
-		console.log('\tNo changes');
+		console.log('\tNo changes\n');
 	} else {
 		fs.writeFileSync(path, newCompressed);
-		console.log('\tSaved to ' + path);
+		console.log('\tSaved to ' + path + '\n');
 	}
 };
 
-exports.test = function() {
+exports.test = function(callback) {
 	var karma = require('karma'),
 	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
 
 	testConfig.browsers = ['PhantomJS'];
+
+	function isArgv(optName) {
+		return process.argv.indexOf(optName) !== -1;
+	}
 
 	if (isArgv('--chrome')) {
 		testConfig.browsers.push('Chrome');
@@ -185,9 +150,12 @@ exports.test = function() {
 		testConfig.reporters = ['coverage'];
 	}
 
-	karma.server.start(testConfig);
+	console.log('Running tests...');
 
-	function isArgv(optName) {
-		return process.argv.indexOf(optName) !== -1;
-	}
+	karma.server.start(testConfig, function(exitCode) {
+		if (!exitCode) {
+			console.log('\tTests ran successfully.\n');
+		}
+		callback();
+	});
 };
