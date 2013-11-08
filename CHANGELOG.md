@@ -27,6 +27,7 @@ An in-progress version being developed on the `master` branch.
 
 * Added `TileLayer` `maxNativeZoom` option that allows displaying tile layers on zoom levels above their maximum by **upscaling tiles**. [#1802](https://github.com/Leaflet/Leaflet/issues/1802) [#1798](https://github.com/Leaflet/Leaflet/issues/1798)
 * Added `TileLayer` `tileloadstart` event (by [@tmcw](https://github.com/tmcw)). [#2142](https://github.com/Leaflet/Leaflet/pull/2142) [#2140](https://github.com/Leaflet/Leaflet/issues/2140)
+* Improved `TileLayer` world size (used for wrapping and limiting tiles) to be derived from CRS instead of hardcoded, making it easier to use with custom projections (by [@perliedman](https://github.com/perliedman)). [#2160](https://github.com/Leaflet/Leaflet/pull/2160)
 
 #### Marker API improvements
 
@@ -54,6 +55,7 @@ An in-progress version being developed on the `master` branch.
 * Added `ImageOverlay` `setUrl` and `getAttribution` methods and `attribution` option (by [@stsydow](https://github.com/stsydow)). [#1957](https://github.com/Leaflet/Leaflet/issues/1957) [#1958](https://github.com/Leaflet/Leaflet/issues/1958)
 * Added localization support for the zoom control (by [@Danielku15](https://github.com/Danielku15)). [#1953](https://github.com/Leaflet/Leaflet/issues/1953) [#1643](https://github.com/Leaflet/Leaflet/issues/1643) [#1953](https://github.com/Leaflet/Leaflet/pull/1953)
 * Significantly improved `L.Util.template` performance (affects `L.TileLayer`) by introducing cached template compilation (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1969](https://github.com/Leaflet/Leaflet/issues/1969) [#1968](https://github.com/Leaflet/Leaflet/issues/1968) [#1554](https://github.com/Leaflet/Leaflet/issues/1554)
+* Added `CRS` `getSize` for getting the world size in pixels (by [@perliedman](https://github.com/perliedman)). [#2160](https://github.com/Leaflet/Leaflet/pull/2160)
 
 #### Dev workflow improvements
 
@@ -65,6 +67,7 @@ An in-progress version being developed on the `master` branch.
 #### 0.6 regression fixes
 
 * Fixed a **memory leak in iOS7** that could crash Safari when handling lots of objects (e.g. 1000 markers) (by [@danzel](https://github.com/danzel)). [#2149](https://github.com/Leaflet/Leaflet/pull/2149) [#2122](https://github.com/Leaflet/Leaflet/issues/2122)
+* Fixed a bug that caused lag at the beginning of panning in Chrome (by [@jfirebaugh](https://github.com/jfirebaugh)). [#2163](https://github.com/Leaflet/Leaflet/issues/2163)
 * Fixed a regression that made the layers control unscrollable in Firefox. [#2029](https://github.com/Leaflet/Leaflet/issues/2029)
 * Fixed a regression that broke `worldCopyJump: true` option (by [@fastrde](https://github.com/fastrde)). [#1904](https://github.com/Leaflet/Leaflet/issues/1904) [#1831](https://github.com/Leaflet/Leaflet/issues/1831) [#1982](https://github.com/Leaflet/Leaflet/issues/1982)
 * Fixed a regression where a first map click after popup close button click was ignored (by [@fastrde](https://github.com/fastrde)). [#1537](https://github.com/Leaflet/Leaflet/issues/1537) [#1963](https://github.com/Leaflet/Leaflet/issues/1963) [#1925](https://github.com/Leaflet/Leaflet/issues/1925)
@@ -96,6 +99,7 @@ An in-progress version being developed on the `master` branch.
 
 #### API bugfixes
 
+* Fixed a bug where `Popup` `setLatLng` unnecessarily reset content and updated layout; works much faster now. [#2167](https://github.com/Leaflet/Leaflet/issues/2167)
 * Fixed a bug where `toGeoJSON` of layers originated from GeoJSON GeometryCollection and MultiPoint didn't work properly (wasn't round-tripped). [#1956](https://github.com/Leaflet/Leaflet/issues/1956)
 * Fixed a bug where `Map` `getCenter` returned old result after map container size changed (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1940](https://github.com/Leaflet/Leaflet/issues/1940) [#1919](https://github.com/Leaflet/Leaflet/issues/1919)
 * Fixed `GeoJSON` dependencies in build configuration that could lead to a broken custom build in some situations (by [@alubchuk](https://github.com/alubchuk)). [#1909](https://github.com/Leaflet/Leaflet/issues/1909)
@@ -113,6 +117,7 @@ An in-progress version being developed on the `master` branch.
 * Fixed a bug where `TileLayer.WMS` didn't work with WMS 1.3 & EPSG4326 projection (by [@Bobboya](https://github.com/Bobboya)). [#1897](https://github.com/Leaflet/Leaflet/pull/1897)
 * Fixed a bug where content was updated twice when opening a popup. [#2137](https://github.com/Leaflet/Leaflet/issues/2137)
 * Fixed a bug where `L.Util.tempalate` wouldn't work with double quotes in the string (by [@jieter](https://github.com/jieter)). [#1968](https://github.com/Leaflet/Leaflet/issues/1968) [#2121](https://github.com/Leaflet/Leaflet/pull/2121) [#2120](https://github.com/Leaflet/Leaflet/issues/2120)
+* Fixed a bug where `FeatureGroup` events `e.layer` was sometimes empty in old IE. [#1938](https://github.com/Leaflet/Leaflet/issues/1938)
 
 ## 0.6.4 (July 25, 2013)
 
