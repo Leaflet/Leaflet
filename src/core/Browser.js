@@ -5,8 +5,6 @@
 (function () {
 
 	var ie = 'ActiveXObject' in window,
-	    ie6 = ie && !window.XMLHttpRequest,
-	    ie7 = ie && !document.querySelector,
 		ielt9 = ie && !document.addEventListener,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
@@ -69,8 +67,6 @@
 
 	L.Browser = {
 		ie: ie,
-		ie6: ie6,
-		ie7: ie7,
 		ielt9: ielt9,
 		webkit: webkit,
 		gecko: gecko && !webkit && !window.opera && !ie,
