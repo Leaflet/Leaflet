@@ -58,12 +58,14 @@ An in-progress version being developed on the `master` branch.
 * Significantly improved `L.Util.template` performance (affects `L.TileLayer`) by introducing cached template compilation (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1969](https://github.com/Leaflet/Leaflet/issues/1969) [#1968](https://github.com/Leaflet/Leaflet/issues/1968) [#1554](https://github.com/Leaflet/Leaflet/issues/1554)
 * Added `CRS` `getSize` for getting the world size in pixels (by [@perliedman](https://github.com/perliedman)). [#2160](https://github.com/Leaflet/Leaflet/pull/2160)
 
-#### Dev workflow improvements
+#### Dev workflow & other improvements
 
 * Added an [official FAQ](https://github.com/Leaflet/Leaflet/blob/master/FAQ.md).
 * Cleaned up and moved old IE styles to `leaflet.css` and removed `leaflet.ie.css`, so **no need for IE conditional comment** when including Leaflet now. [#2159](https://github.com/Leaflet/Leaflet/issues/2159)
 * Added `leaflet-oldie` CSS class to map container in IE7-8 for easier styling. [#2159](https://github.com/Leaflet/Leaflet/issues/2159)
 * Officially **dropped support for IE6**. Nobody cares anyway, and Leaflet should still be accessible on it. [#2159](https://github.com/Leaflet/Leaflet/issues/2159)
+* Improved the build system to check JS errors in spec files. [#2151](https://github.com/Leaflet/Leaflet/issues/2151)
+* Fixed `jake` command to run tests before building the source. [#2151](https://github.com/Leaflet/Leaflet/issues/2151)
 * Switched the main file in `package.json` to unminified version for NPM/Browserify (by [@icetan](https://github.com/icetan)). [#2109](https://github.com/Leaflet/Leaflet/pull/2109)
 
 ### Bugfixes
