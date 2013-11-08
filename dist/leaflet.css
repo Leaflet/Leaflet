@@ -186,9 +186,8 @@
 	outline: 2px solid orange;
 	}
 .leaflet-zoom-box {
-	border: 2px dotted #05f;
-	background: white;
-	opacity: 0.5;
+	border: 2px dotted #38f;
+	background: rgba(255,255,255,0.5);
 	}
 
 
