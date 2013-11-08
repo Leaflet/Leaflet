@@ -205,7 +205,8 @@
 	-webkit-border-radius: 4px;
 	        border-radius: 4px;
 	}
-.leaflet-bar a, .leaflet-bar a:hover {
+.leaflet-bar a,
+.leaflet-bar a:hover {
 	background-color: #fff;
 	border-bottom: 1px solid #ccc;
 	width: 26px;
@@ -290,7 +291,7 @@
 
 .leaflet-control-layers {
 	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
-	background: #f8f8f9;
+	background: #fff;
 	-webkit-border-radius: 5px;
 	        border-radius: 5px;
 	}
@@ -338,7 +339,8 @@
 /* attribution and scale controls */
 
 .leaflet-container .leaflet-control-attribution {
-	background-color: rgba(255, 255, 255, 0.7);
+	background: #fff;
+	background: rgba(255, 255, 255, 0.7);
 	box-shadow: 0 0 5px #bbb;
 	margin: 0;
 	}
@@ -360,17 +362,19 @@
 .leaflet-control-scale-line {
 	border: 2px solid #777;
 	border-top: none;
-	color: black;
 	line-height: 1.1;
 	padding: 2px 5px 1px;
 	font-size: 11px;
-	text-shadow: 1px 1px 1px #fff;
-	background-color: rgba(255, 255, 255, 0.5);
-	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
 	white-space: nowrap;
 	overflow: hidden;
 	-moz-box-sizing: content-box;
 	     box-sizing: content-box;
+
+	color: black;
+	background: #fff;
+	background: rgba(255, 255, 255, 0.5);
+	box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2);
+	text-shadow: 1px 1px 1px #fff;
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
@@ -432,7 +436,8 @@
 	     -o-transform: rotate(45deg);
 	        transform: rotate(45deg);
 	}
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
 	background: white;
 
 	box-shadow: 0 3px 14px rgba(0,0,0,0.4);
