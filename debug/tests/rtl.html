@@ -4,7 +4,6 @@
 	<title>Leaflet debug page</title>
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -34,7 +33,7 @@
 		var map = L.map('map')
 				.setView([50.5, 30.51], 15)
 				.addLayer(cloudmade);
-				
+
 		map.on('click', function(e) {
 			L.popup().setLatLng(e.latlng).setContent('Hello').openOn(map);
 		});

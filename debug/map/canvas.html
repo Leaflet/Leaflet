@@ -4,10 +4,9 @@
 	<title>Leaflet debug page</title>
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
-	
+
 	<link rel="stylesheet" href="../css/screen.css" />
-	
+
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
@@ -18,18 +17,18 @@
 	<script type="text/javascript">
 
 		var tiles = new L.TileLayer.Canvas();
-		
+
 		tiles.drawTile = function(canvas, tile, zoom) {
 			var ctx = canvas.getContext('2d');
-			
+
 			ctx.fillStyle = 'white';
 			ctx.fillRect(0, 0, 255, 255);
-			
-			
+
+
 			ctx.fillStyle = 'black';
 			ctx.fillText('x: ' + tile.x + ', y: ' + tile.y + ', zoom:' + zoom, 20, 20);
-			
-			
+
+
 			ctx.strokeStyle = 'red';
 			ctx.beginPath();
 			ctx.moveTo(0, 0);
@@ -39,9 +38,9 @@
 			ctx.closePath();
 			ctx.stroke();
 		}
-	
+
 		var map = new L.Map('map', {center: new L.LatLng(50.5, 30.51), zoom: 15, layers: [tiles]});
-		
+
 	</script>
 </body>
 </html>
