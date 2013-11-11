@@ -356,6 +356,7 @@
 .leaflet-control-scale-line {
 	padding: 0 5px;
 	color: #333;
+	text-shadow: 1px 1px 1px #fff;
 	}
 .leaflet-container .leaflet-control-attribution,
 .leaflet-container .leaflet-control-scale {
@@ -378,10 +379,8 @@
 	-moz-box-sizing: content-box;
 	     box-sizing: content-box;
 
-	color: black;
 	background: #fff;
 	background: rgba(255, 255, 255, 0.5);
-	text-shadow: 1px 1px 1px #fff;
 	}
 .leaflet-control-scale-line:not(:first-child) {
 	border-top: 2px solid #777;
