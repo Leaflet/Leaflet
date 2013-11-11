@@ -288,11 +288,7 @@ L.Map = L.Class.extend({
 				this._rawPanBy(offset);
 			}
 
-			this.fire('move');
-
-			// make sure moveend is not fired too often on resize
-			clearTimeout(this._sizeTimer);
-			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+			this.fire('move').fire('moveend');
 		}
 
 		return this.fire('resize', {
