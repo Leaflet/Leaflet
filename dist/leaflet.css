@@ -42,10 +42,6 @@
 .leaflet-container img.leaflet-image-layer {
 	max-width: 15000px !important;
 	}
-/* Android chrome makes tiles disappear without this */
-.leaflet-tile-container img {
-	-webkit-backface-visibility: hidden;
-}
 .leaflet-tile {
 	filter: inherit;
 	visibility: hidden;

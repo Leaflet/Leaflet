@@ -521,6 +521,9 @@ L.TileLayer = L.Class.extend({
 		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
 			L.DomUtil.setOpacity(tile, this.options.opacity);
 		}
+		if (L.Browser.mobileWebkit3d) {
+			tile.style.webkitBackfaceVisibility = 'hidden';
+		}
 		return tile;
 	},
 
