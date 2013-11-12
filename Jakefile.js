@@ -17,7 +17,7 @@ var build = require('./build/build.js');
 function hint(msg, paths) {
 	return function () {
 		console.log(msg);
-		jake.exec('./node_modules/jshint/bin/jshint -c ' + paths,
+		jake.exec('node node_modules/jshint/bin/jshint -c ' + paths,
 				{printStdout: true}, function () {
 			console.log('\tCheck passed.\n');
 			complete();
