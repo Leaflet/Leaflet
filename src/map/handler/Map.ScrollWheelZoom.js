@@ -19,7 +19,6 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
-		console.log("SCROLL");
 		var delta = L.DomEvent.getWheelDelta(e);
 
 		this._delta += delta;
