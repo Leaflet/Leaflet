@@ -104,18 +104,30 @@ L.DomUtil = {
 	},
 
 	hasClass: function (el, name) {
+		if ('classList' in el) {
+			return el.classList.contains(name);
+		}
 		return (el.className.length > 0) &&
 		        new RegExp('(^|\\s)' + name + '(\\s|$)').test(el.className);
 	},
 
 	addClass: function (el, name) {
-		if (!L.DomUtil.hasClass(el, name)) {
+		if ('classList' in el) {
+			var classes = L.Util.splitWords(name);
+			for (var i = 0, len = classes.length; i < len; i++) {
+				el.classList.add(classes[i]);
+			}
+		} else if (!L.DomUtil.hasClass(el, name)) {
 			el.className += (el.className ? ' ' : '') + name;
 		}
 	},
 
 	removeClass: function (el, name) {
-		el.className = L.Util.trim((' ' + el.className + ' ').replace(' ' + name + ' ', ' '));
+		if ('classList' in el) {
+			el.classList.remove(name);
+		} else {
+			el.className = L.Util.trim((' ' + el.className + ' ').replace(' ' + name + ' ', ' '));
+		}
 	},
 
 	setOpacity: function (el, value) {
