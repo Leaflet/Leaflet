@@ -104,30 +104,44 @@ L.DomUtil = {
 	},
 
 	hasClass: function (el, name) {
-		if ('classList' in el) {
+		if (el.classList !== undefined) {
 			return el.classList.contains(name);
 		}
-		return (el.className.length > 0) &&
-		        new RegExp('(^|\\s)' + name + '(\\s|$)').test(el.className);
+		var className = L.DomUtil._getClass(el);
+		return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
 	},
 
 	addClass: function (el, name) {
-		if ('classList' in el) {
+		if (el.classList !== undefined) {
 			var classes = L.Util.splitWords(name);
 			for (var i = 0, len = classes.length; i < len; i++) {
 				el.classList.add(classes[i]);
 			}
 		} else if (!L.DomUtil.hasClass(el, name)) {
-			el.className += (el.className ? ' ' : '') + name;
+			var className = L.DomUtil._getClass(el);
+			L.DomUtil._setClass(el, (className ? className + ' ' : '') + name);
 		}
 	},
 
 	removeClass: function (el, name) {
-		if ('classList' in el) {
+		if (el.classList !== undefined) {
 			el.classList.remove(name);
 		} else {
-			el.className = L.Util.trim((' ' + el.className + ' ').replace(' ' + name + ' ', ' '));
+			L.DomUtil._setClass(el, L.Util.trim((' ' + L.DomUti._getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 		}
+	},
+
+	_setClass: function (el, name) {
+		if (el.className.baseVal === undefined) {
+			el.className = name;
+		} else {
+			// in case of SVG element
+			el.className.baseVal = name;
+		}
+	},
+
+	_getClass: function (el) {
+		return el.className.baseVal === undefined ? el.className : el.className.baseVal;
 	},
 
 	setOpacity: function (el, value) {
