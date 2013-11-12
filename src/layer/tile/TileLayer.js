@@ -521,8 +521,10 @@ L.TileLayer = L.Class.extend({
 		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
 			L.DomUtil.setOpacity(tile, this.options.opacity);
 		}
+		// without this hack, tiles disappear after zoom on Chrome for Android
+		// https://github.com/Leaflet/Leaflet/issues/2078
 		if (L.Browser.mobileWebkit3d) {
-			tile.style.webkitBackfaceVisibility = 'hidden';
+			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 		return tile;
 	},
