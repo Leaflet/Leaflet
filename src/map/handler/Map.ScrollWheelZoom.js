@@ -25,10 +25,14 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
 		if (!this._startTime) {
-			this._startTime = +new Date();
+		    this._startTime = +new Date();
+		    if (!this._windowSize) {
+		        //If the first delta is really small, it is a trackpad
+		        this._windowSize = (Math.abs(delta) < 0.1) ? 250 : 40;
+		    }
 		}
 
-		var left = Math.max(40 - (+new Date() - this._startTime), 0);
+		var left = Math.max(this._windowSize - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
 		this._timer = setTimeout(L.bind(this._performZoom, this), left);
