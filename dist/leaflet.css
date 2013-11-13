@@ -205,7 +205,7 @@
 /* general toolbar styles */
 
 .leaflet-bar {
-	box-shadow: 0 1px 7px rgba(0,0,0,0.65);
+	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
 	-webkit-border-radius: 4px;
 	        border-radius: 4px;
 	}
@@ -257,11 +257,13 @@
 
 /* zoom control */
 
-.leaflet-control-zoom-in {
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out {
 	font: bold 18px 'Lucida Console', Monaco, monospace;
+	text-indent: 1px;
 	}
 .leaflet-control-zoom-out {
-	font: bold 22px 'Lucida Console', Monaco, monospace;
+	font-size: 20px;
 	}
 
 .leaflet-touch .leaflet-control-zoom-in {
@@ -269,7 +271,7 @@
 	line-height: 34px;
 	}
 .leaflet-touch .leaflet-control-zoom-out {
-	font-size: 28px;
+	font-size: 24px;
 	line-height: 34px;
 	}
 
@@ -277,7 +279,7 @@
 /* layers control */
 
 .leaflet-control-layers {
-	box-shadow: 0 1px 7px rgba(0,0,0,0.4);
+	box-shadow: 0 1px 5px rgba(0,0,0,0.4);
 	background: #fff;
 	-webkit-border-radius: 5px;
 	        border-radius: 5px;
@@ -481,8 +483,4 @@
 .leaflet-div-icon {
 	background: #fff;
 	border: 1px solid #666;
-	}
-.leaflet-editing-icon {
-	-webkit-border-radius: 2px;
-	        border-radius: 2px;
 	}
