@@ -170,9 +170,8 @@
 .leaflet-control {
 	cursor: auto;
 	}
-.leaflet-dragging,
-.leaflet-dragging .leaflet-clickable,
-.leaflet-dragging .leaflet-container {
+.leaflet-dragging .leaflet-container,
+.leaflet-dragging .leaflet-clickable {
 	cursor: move;
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
