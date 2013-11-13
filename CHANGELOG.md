@@ -12,8 +12,9 @@ An in-progress version being developed on the `master` branch.
 #### Usability improvements
 
 * Added **support for IE11 touch devices** (by [@danzel](https://github.com/danzel), [@DanielX2](https://github.com/DanielX2) and [@fnicollet](https://github.com/fnicollet)). [#2039](https://github.com/Leaflet/Leaflet/pull/2039) [#2066](https://github.com/Leaflet/Leaflet/pull/2066) [#2037](https://github.com/Leaflet/Leaflet/issues/2037) [#2102](https://github.com/Leaflet/Leaflet/issues/2102)
-* Improved keyboard nav support so that map doesn't loose focus when you click on a control (by [@jacobtoye](https://github.com/jacobtoye)). [#2150](https://github.com/Leaflet/Leaflet/issues/2150) [#2148](https://github.com/Leaflet/Leaflet/issues/2148)
+* Improved default control styles for mobile devices. [#1868](https://github.com/Leaflet/Leaflet/issues/1868) [#2012](https://github.com/Leaflet/Leaflet/issues/2012)
 * Fixed and improved IE7-8 control and popup styles.
+* Improved keyboard nav support so that map doesn't loose focus when you click on a control (by [@jacobtoye](https://github.com/jacobtoye)). [#2150](https://github.com/Leaflet/Leaflet/issues/2150) [#2148](https://github.com/Leaflet/Leaflet/issues/2148)
 
 #### Map API improvements
 
@@ -39,10 +40,12 @@ An in-progress version being developed on the `master` branch.
 
 #### Vector layers API improvements
 
+* Added `Path` `className` option for adding custom class names to vector layers.
 * Added `Path` `lineCap` and `lineJoin` options (by [@palewire](https://github.com/palewire)). [#1843](https://github.com/Leaflet/Leaflet/issues/1843) [#1863](https://github.com/Leaflet/Leaflet/issues/1863) [#1881](https://github.com/Leaflet/Leaflet/issues/1881)
 * Added ability to pass vector options to `GeoJSON` (by [@kapouer](https://github.com/kapouer)). [#2075](https://github.com/Leaflet/Leaflet/pull/2075)
 * Improved `Polygon` `setLatLngs` to also accept holes (by [@aparshin](https://github.com/aparshin)). [#2095](https://github.com/Leaflet/Leaflet/pull/2095) [#1518](https://github.com/Leaflet/Leaflet/issues/1518)
 * Added `GeoJSON` 3D format support and optional `altitude` argument to `LatLng` constructor (by [@Starefossen](https://github.com/Starefossen)). [#1822](https://github.com/Leaflet/Leaflet/pull/1822)
+* Added `MultiPolygon` and `MultiPolyline` `openPopup` method. [#2046](https://github.com/Leaflet/Leaflet/issues/2046)
 
 #### Popup API improvements
 
@@ -57,6 +60,8 @@ An in-progress version being developed on the `master` branch.
 * Added localization support for the zoom control (by [@Danielku15](https://github.com/Danielku15)). [#1953](https://github.com/Leaflet/Leaflet/issues/1953) [#1643](https://github.com/Leaflet/Leaflet/issues/1643) [#1953](https://github.com/Leaflet/Leaflet/pull/1953)
 * Significantly improved `L.Util.template` performance (affects `L.TileLayer`) by introducing cached template compilation (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#1969](https://github.com/Leaflet/Leaflet/issues/1969) [#1968](https://github.com/Leaflet/Leaflet/issues/1968) [#1554](https://github.com/Leaflet/Leaflet/issues/1554)
 * Added `CRS` `getSize` for getting the world size in pixels (by [@perliedman](https://github.com/perliedman)). [#2160](https://github.com/Leaflet/Leaflet/pull/2160)
+* Added `leaflet-drag-target` CSS class to an element under cursor when dragging for more flexible customization. [#2164](https://github.com/Leaflet/Leaflet/issues/2164) [#1902](https://github.com/Leaflet/Leaflet/issues/1902)
+* Improved `L.DomUtil` `addClass`, `removeClass`, `hasClass` methods performance and fixed it to work with SVG elements. [#2164](https://github.com/Leaflet/Leaflet/issues/2164)
 
 #### Dev workflow improvements
 
@@ -130,6 +135,7 @@ An in-progress version being developed on the `master` branch.
 
 * Fixed a bug where `L.latLngBounds` didn't accept simple object `LatLng` form (by [@Gnurfos](https://github.com/Gnurfos)). [#2025](https://github.com/Leaflet/Leaflet/issues/2025) [#1915](https://github.com/Leaflet/Leaflet/issues/1915)
 * Fixed a bug where `L.Util.tempalate` wouldn't work with double quotes in the string (by [@jieter](https://github.com/jieter)). [#1968](https://github.com/Leaflet/Leaflet/issues/1968) [#2121](https://github.com/Leaflet/Leaflet/pull/2121) [#2120](https://github.com/Leaflet/Leaflet/issues/2120)
+* Fixed a bug where attribution control that was added to a map after attributed layers didn't have the corresponding attributions (by [@snkashis](https://github.com/snkashis)). [#2177](https://github.com/Leaflet/Leaflet/issues/2177) [#2178](https://github.com/Leaflet/Leaflet/pull/2178)
 
 
 ## 0.6.4 (July 25, 2013)
