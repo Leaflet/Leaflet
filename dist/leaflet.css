@@ -334,11 +334,6 @@
 .leaflet-control-scale-line {
 	padding: 0 5px;
 	color: #333;
-	text-shadow: 1px 1px 1px #fff;
-	}
-.leaflet-touch .leaflet-control-attribution,
-.leaflet-touch .leaflet-control-scale-line {
-	text-shadow: none;
 	}
 .leaflet-container .leaflet-control-attribution,
 .leaflet-container .leaflet-control-scale {
