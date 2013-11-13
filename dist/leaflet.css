@@ -249,26 +249,9 @@
 	color: #bbb;
 	}
 
-.leaflet-touch .leaflet-bar {
-	-webkit-border-radius: 10px;
-	        border-radius: 10px;
-	}
 .leaflet-touch .leaflet-bar a {
-	width: 30px;
-	height: 30px;
-	}
-.leaflet-touch .leaflet-bar a:first-child {
-	-webkit-border-top-left-radius: 7px;
-	        border-top-left-radius: 7px;
-	-webkit-border-top-right-radius: 7px;
-	        border-top-right-radius: 7px;
-	}
-.leaflet-touch .leaflet-bar a:last-child {
-	-webkit-border-bottom-left-radius: 7px;
-	        border-bottom-left-radius: 7px;
-	-webkit-border-bottom-right-radius: 7px;
-	        border-bottom-right-radius: 7px;
-	border-bottom: none;
+	width: 34px;
+	height: 34px;
 	}
 
 
@@ -283,11 +266,11 @@
 
 .leaflet-touch .leaflet-control-zoom-in {
 	font-size: 22px;
-	line-height: 30px;
+	line-height: 34px;
 	}
 .leaflet-touch .leaflet-control-zoom-out {
 	font-size: 28px;
-	line-height: 30px;
+	line-height: 34px;
 	}
 
 
@@ -393,7 +376,8 @@
 	}
 .leaflet-touch .leaflet-control-layers,
 .leaflet-touch .leaflet-bar {
-	border: 4px solid rgba(0,0,0,0.3);
+	border: 2px solid rgba(0,0,0,0.3);
+	background-clip: padding-box;
 	}
 
 
