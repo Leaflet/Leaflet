@@ -245,8 +245,9 @@
 	}
 
 .leaflet-touch .leaflet-bar a {
-	width: 34px;
-	height: 34px;
+	width: 30px;
+	height: 30px;
+	line-height: 30px;
 	}
 
 
@@ -263,11 +264,9 @@
 
 .leaflet-touch .leaflet-control-zoom-in {
 	font-size: 22px;
-	line-height: 34px;
 	}
 .leaflet-touch .leaflet-control-zoom-out {
 	font-size: 24px;
-	line-height: 34px;
 	}
 
 
