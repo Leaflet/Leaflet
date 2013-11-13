@@ -396,7 +396,8 @@ describe("Map", function () {
 
 	describe("#invalidateSize", function () {
 		var container,
-		    orig_width = 100;
+			orig_width = 100,
+			clock;
 
 		beforeEach(function () {
 			container = map.getContainer();
@@ -404,10 +405,12 @@ describe("Map", function () {
 			document.body.appendChild(container);
 			map.setView([0, 0], 0);
 			map.invalidateSize({pan: false});
+			clock = sinon.useFakeTimers();
 		});
 
 		afterEach(function () {
 			document.body.removeChild(container);
+			clock.restore();
 		});
 
 		it("pans by the right amount when growing in 1px increments", function () {
@@ -446,6 +449,49 @@ describe("Map", function () {
 			map.invalidateSize();
 
 			expect(map._getMapPanePos().x).to.be(0);
+		});
+
+		it("emits no move event if the size has not changed", function () {
+			var spy = sinon.spy();
+			map.on("move", spy);
+
+			map.invalidateSize();
+
+			expect(spy.called).not.to.be.ok();
+		});
+
+		it("emits a move event if the size has changed", function () {
+			var spy = sinon.spy();
+			map.on("move", spy);
+
+			container.style.width = (orig_width + 5) + "px";
+			map.invalidateSize();
+
+			expect(spy.called).to.be.ok();
+		});
+
+		it("emits a moveend event if the size has changed", function () {
+			var spy = sinon.spy();
+			map.on("moveend", spy);
+
+			container.style.width = (orig_width + 5) + "px";
+			map.invalidateSize();
+
+			expect(spy.called).to.be.ok();
+		});
+
+		it("debounces the moveend event if the debounceMoveend option is given", function () {
+			var spy = sinon.spy();
+			map.on("moveend", spy);
+
+			container.style.width = (orig_width + 5) + "px";
+			map.invalidateSize({debounceMoveend: true});
+
+			expect(spy.called).not.to.be.ok();
+
+			clock.tick(200);
+
+			expect(spy.called).to.be.ok();
 		});
 	});
 });
