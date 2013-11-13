@@ -464,7 +464,7 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			map.on("move", spy);
 
-			container.style.width = (orig_width + 5) + "px";
+			container.style.width = (origWidth + 5) + "px";
 			map.invalidateSize();
 
 			expect(spy.called).to.be.ok();
@@ -474,7 +474,7 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			map.on("moveend", spy);
 
-			container.style.width = (orig_width + 5) + "px";
+			container.style.width = (origWidth + 5) + "px";
 			map.invalidateSize();
 
 			expect(spy.called).to.be.ok();
@@ -484,7 +484,7 @@ describe("Map", function () {
 			var spy = sinon.spy();
 			map.on("moveend", spy);
 
-			container.style.width = (orig_width + 5) + "px";
+			container.style.width = (origWidth + 5) + "px";
 			map.invalidateSize({debounceMoveend: true});
 
 			expect(spy.called).not.to.be.ok();
