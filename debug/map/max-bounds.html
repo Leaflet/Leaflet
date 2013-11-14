@@ -30,6 +30,8 @@
 			maxBounds: bounds
 		});
 
+		var latlngs = L.rectangle(bounds).getLatLngs();
+		L.polyline(latlngs.concat([latlngs[0]])).addTo(map);
 
 	</script>
 </body>
