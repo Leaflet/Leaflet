@@ -132,29 +132,19 @@ L.Map = L.Class.extend({
 		this.options.maxBounds = bounds;
 
 		if (!bounds) {
-			this._boundsMinZoom = null;
-			this.off('moveend', this._panInsideMaxBounds, this);
+			this.off('moveend', L.bind(this._panInsideMaxBounds, this, options), this);
 			return this;
 		}
-
-		var minZoom = this.getBoundsZoom(bounds, true);
-
-		this._boundsMinZoom = minZoom;
-
 		if (this._loaded) {
-			if (this._zoom < minZoom) {
-				this.setView(bounds.getCenter(), minZoom, options);
-			} else {
-				this.panInsideBounds(bounds);
-			}
+			this.panInsideBounds(bounds, options);
 		}
 
-		this.on('moveend', this._panInsideMaxBounds, this);
-
+		this.on('moveend', L.bind(this._panInsideMaxBounds, this, options), this);
+	
 		return this;
 	},
 
-	panInsideBounds: function (bounds) {
+	panInsideBounds: function (bounds, options) {
 		bounds = L.latLngBounds(bounds);
 
 		var viewBounds = this.getPixelBounds(),
@@ -162,24 +152,34 @@ L.Map = L.Class.extend({
 		    viewNe = viewBounds.getTopRight(),
 		    sw = this.project(bounds.getSouthWest()),
 		    ne = this.project(bounds.getNorthEast()),
-		    dx = 0,
-		    dy = 0;
+		    dx = 0, dy = 0;
 
-		if (viewNe.y < ne.y) { // north
-			dy = Math.ceil(ne.y - viewNe.y);
+		function rebound(l, r) {
+			var s = l + r;
+			var h = s / 2;
+			var d = 0;
+			if (s >= 0) {
+				if (l < 0) {
+					d = l;
+				} else if (r < 0) {
+					d = -r;
+				}
+			} else {
+				if (l < h) {
+					d = l - h;
+				} else if (r < h) {
+					d = -r + h;
+				}
+			}
+			return Math.round(d);
 		}
-		if (viewNe.x > ne.x) { // east
-			dx = Math.floor(ne.x - viewNe.x);
-		}
-		if (viewSw.y > sw.y) { // south
-			dy = Math.floor(sw.y - viewSw.y);
-		}
-		if (viewSw.x < sw.x) { // west
-			dx = Math.ceil(sw.x - viewSw.x);
-		}
-
+		// set signs so positive l, r means "in bound"
+		// and positive s + r means the view can fit inside the bounds
+		dx = rebound(ne.x - viewNe.x, -sw.x + viewSw.x);
+		dy = rebound(sw.y - viewSw.y, -ne.y + viewNe.y);
+		
 		if (dx || dy) {
-			return this.panBy([dx, dy]);
+			return this.panBy([dx, dy], options);
 		}
 
 		return this;
@@ -368,9 +368,9 @@ L.Map = L.Class.extend({
 	},
 
 	getMinZoom: function () {
-		var z1 = this._layersMinZoom === undefined ? 0 : this._layersMinZoom,
-		    z2 = this._boundsMinZoom === undefined ? 0 : this._boundsMinZoom;
-		return this.options.minZoom === undefined ? Math.max(z1, z2) : this.options.minZoom;
+		return this.options.minZoom === undefined ?
+			(this._layersMinZoom === undefined ? 0 : this._layersMinZoom) :
+			this.options.minZoom;
 	},
 
 	getMaxZoom: function () {
@@ -658,8 +658,8 @@ L.Map = L.Class.extend({
 		}
 	},
 
-	_panInsideMaxBounds: function () {
-		this.panInsideBounds(this.options.maxBounds);
+	_panInsideMaxBounds: function (options) {
+		this.panInsideBounds(this.options.maxBounds, options);
 	},
 
 	_checkIfLoaded: function () {
