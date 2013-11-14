@@ -757,6 +757,7 @@ L.Map = L.Class.extend({
 		return this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint());
 	},
 
+	// adjust center for view to get inside bounds
 	_limitCenter: function (center, zoom, bounds) {
 
 		if (!bounds) { return center; }
@@ -769,15 +770,17 @@ L.Map = L.Class.extend({
 		return this.unproject(centerPoint.add(offset), zoom);
 	},
 
+	// adjust offset for view to get inside bounds
 	_limitOffset: function (offset, bounds) {
 		if (!bounds) { return offset; }
 
 		var viewBounds = this.getPixelBounds(),
-			newBounds = new L.Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
+		    newBounds = new L.Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
 
 		return offset.add(this._getBoundsOffset(newBounds, bounds));
 	},
 
+	// returns offset needed for pxBounds to get inside maxBounds at a specified zoom
 	_getBoundsOffset: function (pxBounds, maxBounds, zoom) {
 		var nwOffset = this.project(maxBounds.getNorthWest(), zoom).subtract(pxBounds.min),
 		    seOffset = this.project(maxBounds.getSouthEast(), zoom).subtract(pxBounds.max),
