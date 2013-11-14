@@ -789,7 +789,9 @@ L.Map = L.Class.extend({
 	},
 
 	_rebound: function (left, right) {
-		return Math.round(left + right > 0 ? (left - right) / 2 : Math.max(0, left) - Math.max(0, right));
+		return left + right > 0 ?
+			Math.round(left - right) / 2 :
+			Math.max(0, Math.ceil(left)) - Math.max(0, Math.floor(right));
 	},
 
 	_limitZoom: function (zoom) {
