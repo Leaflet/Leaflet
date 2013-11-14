@@ -117,7 +117,7 @@ L.Map = L.Class.extend({
 	},
 
 	panBy: function (offset) { // (Point)
-		// replaced with animated panBy in Map.Animation.js
+		// replaced with animated panBy in Map.PanAnimation.js
 		this.fire('movestart');
 
 		this._rawPanBy(L.point(offset));
@@ -126,63 +126,29 @@ L.Map = L.Class.extend({
 		return this.fire('moveend');
 	},
 
-	setMaxBounds: function (bounds, options) {
+	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
 		this.options.maxBounds = bounds;
 
 		if (!bounds) {
-			this.off('moveend', L.bind(this._panInsideMaxBounds, this, options), this);
-			return this;
-		}
-		if (this._loaded) {
-			this.panInsideBounds(bounds, options);
+			return this.off('moveend', this._panInsideMaxBounds, this);
 		}
 
-		this.on('moveend', L.bind(this._panInsideMaxBounds, this, options), this);
-	
-		return this;
+		if (this._loaded) {
+			this._panInsideMaxBounds();
+		}
+
+		return this.on('moveend', this._panInsideMaxBounds, this);
 	},
 
 	panInsideBounds: function (bounds, options) {
-		bounds = L.latLngBounds(bounds);
+		var center = this.getCenter(),
+			newCenter = this._limitCenter(center, this._zoom, bounds);
 
-		var viewBounds = this.getPixelBounds(),
-		    viewSw = viewBounds.getBottomLeft(),
-		    viewNe = viewBounds.getTopRight(),
-		    sw = this.project(bounds.getSouthWest()),
-		    ne = this.project(bounds.getNorthEast()),
-		    dx = 0, dy = 0;
+		if (center.equals(newCenter)) { return this; }
 
-		function rebound(l, r) {
-			var s = l + r;
-			var h = s / 2;
-			var d = 0;
-			if (s >= 0) {
-				if (l < 0) {
-					d = l;
-				} else if (r < 0) {
-					d = -r;
-				}
-			} else {
-				if (l < h) {
-					d = l - h;
-				} else if (r < h) {
-					d = -r + h;
-				}
-			}
-			return Math.round(d);
-		}
-		// set signs so positive l, r means "in bound"
-		// and positive s + r means the view can fit inside the bounds
-		dx = rebound(ne.x - viewNe.x, -sw.x + viewSw.x);
-		dy = rebound(sw.y - viewSw.y, -ne.y + viewNe.y);
-		
-		if (dx || dy) {
-			return this.panBy([dx, dy], options);
-		}
-
-		return this;
+		return this.panTo(newCenter, options);
 	},
 
 	addLayer: function (layer) {
@@ -266,10 +232,6 @@ L.Map = L.Class.extend({
 		var oldSize = this.getSize();
 		this._sizeChanged = true;
 		this._initialCenter = null;
-
-		if (this.options.maxBounds) {
-			this.setMaxBounds(this.options.maxBounds);
-		}
 
 		if (!this._loaded) { return this; }
 
@@ -658,8 +620,8 @@ L.Map = L.Class.extend({
 		}
 	},
 
-	_panInsideMaxBounds: function (options) {
-		this.panInsideBounds(this.options.maxBounds, options);
+	_panInsideMaxBounds: function () {
+		this.panInsideBounds(this.options.maxBounds);
 	},
 
 	_checkIfLoaded: function () {
@@ -793,6 +755,41 @@ L.Map = L.Class.extend({
 	// offset of the specified place to the current center in pixels
 	_getCenterOffset: function (latlng) {
 		return this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint());
+	},
+
+	_limitCenter: function (center, zoom, bounds) {
+
+		if (!bounds) { return center; }
+
+		var centerPoint = this.project(center, zoom),
+		    viewHalf = this.getSize().divideBy(2),
+		    viewBounds = new L.Bounds(centerPoint.subtract(viewHalf), centerPoint.add(viewHalf)),
+		    offset = this._getBoundsOffset(viewBounds, bounds, zoom);
+
+		return this.unproject(centerPoint.add(offset), zoom);
+	},
+
+	_limitOffset: function (offset, bounds) {
+		if (!bounds) { return offset; }
+
+		var viewBounds = this.getPixelBounds(),
+			newBounds = new L.Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
+
+		return offset.add(this._getBoundsOffset(newBounds, bounds));
+	},
+
+	_getBoundsOffset: function (pxBounds, maxBounds, zoom) {
+		var nwOffset = this.project(maxBounds.getNorthWest(), zoom).subtract(pxBounds.min),
+		    seOffset = this.project(maxBounds.getSouthEast(), zoom).subtract(pxBounds.max),
+
+		    dx = this._rebound(nwOffset.x, -seOffset.x),
+		    dy = this._rebound(nwOffset.y, -seOffset.y);
+
+		return new L.Point(dx, dy);
+	},
+
+	_rebound: function (left, right) {
+		return Math.round(left + right > 0 ? (left - right) / 2 : Math.max(0, left) - Math.max(0, right));
 	},
 
 	_limitZoom: function (zoom) {

@@ -139,8 +139,8 @@ describe("Map", function () {
 		});
 	});
 
-	describe('#setMaxBounds', function() {
-		it("aligns pixel-wise map view center with maxBounds center if it cannot move view bounds inside maxBounds (#1908)", function() {
+	describe('#setMaxBounds', function () {
+		it("aligns pixel-wise map view center with maxBounds center if it cannot move view bounds inside maxBounds (#1908)", function () {
 			var container = map.getContainer();
 			// large view, cannot fit within maxBounds
 			container.style.width = container.style.height = "1000px";
@@ -151,12 +151,11 @@ describe("Map", function () {
 			// set view outside
 			map.setView(L.latLng([53.0, 0.15]), 12, {animate: false});
 			// get center of bounds in pixels
-			var boundsCenter = map.project(bounds.getCenter());
-			boundsCenter = {x: Math.round(boundsCenter.x), y: Math.round(boundsCenter.y)};
-			expect(map.project(map.getCenter())).to.eql(boundsCenter);
+			var boundsCenter = map.project(bounds.getCenter()).round();
+			expect(map.project(map.getCenter()).round()).to.eql(boundsCenter);
 			document.body.removeChild(container);
 		});
-		it("moves map view within maxBounds by changing one coordinate", function() {
+		it("moves map view within maxBounds by changing one coordinate", function () {
 			var container = map.getContainer();
 			// small view, can fit within maxBounds
 			container.style.width = container.style.height = "200px";
@@ -169,10 +168,10 @@ describe("Map", function () {
 			var initCenter = [53.0, 0.1];
 			map.setView(L.latLng(initCenter), 16, {animate: false});
 			// one pixel coordinate hasn't changed, the other has
-			var pixelCenter = map.project(map.getCenter());
-			var pixelInit = map.project(initCenter);
-			expect(pixelCenter.x).to.eql(Math.round(pixelInit.x));
-			expect(pixelCenter.y).not.to.eql(Math.round(pixelInit.y));
+			var pixelCenter = map.project(map.getCenter()).round();
+			var pixelInit = map.project(initCenter).round();
+			expect(pixelCenter.x).to.eql(pixelInit.x);
+			expect(pixelCenter.y).not.to.eql(pixelInit.y);
 			// the view is inside the bounds
 			expect(bounds.contains(map.getBounds())).to.be(true);
 			document.body.removeChild(container);
