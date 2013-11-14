@@ -127,7 +127,7 @@ L.DomUtil = {
 		if (el.classList !== undefined) {
 			el.classList.remove(name);
 		} else {
-			L.DomUtil._setClass(el, L.Util.trim((' ' + L.DomUti._getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+			L.DomUtil._setClass(el, L.Util.trim((' ' + L.DomUtil._getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 		}
 	},
 
