@@ -1,9 +1,9 @@
 {
   "name": "leaflet",
-  "version": "0.6.3",
+  "version": "0.7",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
-    "jake": "~0.7.3",
+    "jake": "~0.7.4",
     "jshint": "~2.3.0",
     "uglify-js": "~2.4.3",
     "mocha": "~1.14.0",
