@@ -84,11 +84,11 @@ If you have any issues also please log a bug on <a href="https://github.com/danz
 Enjoy!<br />
 Dave Leaver.
 
-<link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/dist/MarkerCluster.css" />
-<link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
-<!--[if lte IE 8]><link rel="stylesheet" href="http://danzel.github.com/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css" /><![endif]-->
-<script src="http://danzel.github.com/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
-<script src="http://danzel.github.com/Leaflet.markercluster/example/realworld.388.js"></script>
+<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.css" />
+<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.css" />
+<!--[if lte IE 8]><link rel="stylesheet" href="http://leaflet.github.io/Leaflet.markercluster/dist/MarkerCluster.Default.ie.css" /><![endif]-->
+<script src="http://leaflet.github.io/Leaflet.markercluster/dist/leaflet.markercluster-src.js"></script>
+<script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.388.js"></script>
 
 <script>
 	var cloudmade = new L.TileLayer(CM_URL, {maxZoom: 18, attribution: CM_ATTR, styleId: 997}),

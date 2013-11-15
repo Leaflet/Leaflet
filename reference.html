@@ -168,7 +168,7 @@ var map = L.map('map', {
 
 <h4>Map State Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -221,7 +221,7 @@ var map = L.map('map', {
 
 <h4>Interaction Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -292,7 +292,7 @@ var map = L.map('map', {
 
 <h4>Keyboard Navigation Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -321,7 +321,7 @@ var map = L.map('map', {
 
 <h4>Panning Inertia Options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -350,13 +350,13 @@ var map = L.map('map', {
 		<td><code><b>inertiaThreshold</b></code></td>
 		<td><code>Number</code></td>
 		<td><code>depends</code></td>
-		<td>Amount of milliseconds that should pass between stopping the movement and releasing the mouse or touch to prevent inertial movement. <code><span class="number">32</span></code> for touch devices and <code><span class="number">14</span></code> for the rest by default.</td>
+		<td>Number of milliseconds that should pass between stopping the movement and releasing the mouse or touch to prevent inertial movement. <code><span class="number">32</span></code> for touch devices and <code><span class="number">14</span></code> for the rest by default.</td>
 	</tr>
 </table>
 
 <h4>Control options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -379,7 +379,7 @@ var map = L.map('map', {
 
 <h4>Animation options</h4>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width140">Option</th>
 		<th>Type</th>
@@ -417,7 +417,7 @@ var map = L.map('map', {
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Event</th>
 		<th>Data</th>
@@ -598,7 +598,7 @@ var map = L.map('map', {
 
 <h3 id="map-set-methods">Methods for Modifying Map State</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -700,10 +700,11 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-setmaxbounds">
 		<td><code><b>setMaxBounds</b>(
-			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option).</td>
+		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option), passing the given animation options through to `setView`, if required.</td>
 	</tr>
 	<tr id="map-locate">
 		<td><code><b>locate</b>(
@@ -726,7 +727,7 @@ var map = L.map('map', {
 
 <h3 id="map-get-methods">Methods for Getting Map State</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -786,7 +787,7 @@ var map = L.map('map', {
 
 <h3 id="map-stuff-methods">Methods for Layers and Controls</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -864,7 +865,7 @@ var map = L.map('map', {
 
 <h3 id="map-conversion-methods">Conversion Methods</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width200">Method</th>
 		<th>Returns</th>
@@ -964,7 +965,7 @@ var map = L.map('map', {
 
 <h3 id="map-misc-methods">Other Methods</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -975,12 +976,12 @@ var map = L.map('map', {
 		<td><code>HTMLElement</code></td>
 		<td>Returns the container element of the map.</td>
 	</tr>
-	<tr id="map-getpanes">
+	<tr>
 		<td><code><b>getPanes</b>()</code></td>
 		<td><code><a href="#map-panes">MapPanes</a></code></td>
 		<td>Returns an object with different map panes (to render overlays in).</td>
 	</tr>
-	<tr id="map-whenready">
+	<tr>
 		<td><code><b>whenReady</b>(
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr></code></td>
@@ -991,7 +992,7 @@ var map = L.map('map', {
 
 <h3 id="map-locate-options">Locate options</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1020,7 +1021,7 @@ var map = L.map('map', {
 		<td><code><b>timeout</b></code></td>
 		<td><code>Number</code></td>
 		<td><code><span class="number">10000</span></code></td>
-		<td>Number of millisecond to wait for a response from geolocation before firing a <code>locationerror</code> event.</td>
+		<td>Number of milliseconds to wait for a response from geolocation before firing a <code>locationerror</code> event.</td>
 	</tr>
 	<tr>
 		<td><code><b>maximumAge</b></code></td>
@@ -1039,7 +1040,7 @@ var map = L.map('map', {
 
 <h3 id="map-zoompanoptions">Zoom/pan options</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1074,7 +1075,7 @@ var map = L.map('map', {
 
 <h3 id="map-panoptions">Pan options</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1109,7 +1110,7 @@ var map = L.map('map', {
 
 <h3 id="map-zoomoptions">Zoom options</h3>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1128,7 +1129,7 @@ var map = L.map('map', {
 
 <p>The same as <a href="#map-zoompanoptions">zoom/pan options</a> and additionally:</p>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1166,7 +1167,7 @@ var map = L.map('map', {
 
 <pre><code class="javascript">map.attributionControl.addAttribution("Earthquake data &amp;copy; GeoNames");</code></pre>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="minwidth">Property</th>
 		<th class="minwidth">Type</th>
@@ -1224,7 +1225,7 @@ var map = L.map('map', {
 
 <p>An object literal (returned by <a href="#map-getpanes">map.getPanes</a></code>) that contains different map panes that you can use to put your custom overlays in. The difference is mostly in zIndex order that such overlays get.</p>
 
-<table>
+<table data-id='map'>
 	<tr>
 		<th class="width100">Property</th>
 		<th class="width100">Type</th>
@@ -1276,7 +1277,7 @@ var map = L.map('map', {
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='marker'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -1299,7 +1300,7 @@ var map = L.map('map', {
 
 <h3 id="marker-options">Options</h3>
 
-<table>
+<table data-id='marker'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1366,7 +1367,7 @@ var map = L.map('map', {
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='marker'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -1441,7 +1442,7 @@ var map = L.map('map', {
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='marker'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -1549,7 +1550,7 @@ var map = L.map('map', {
 
 <pre><code class="javascript">marker.dragging.disable();</code></pre>
 
-<table>
+<table data-id='marker'>
 	<tr>
 		<th class="width100">Property</th>
 		<th class="width100">Type</th>
@@ -1580,7 +1581,7 @@ var map = L.map('map', {
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='popup'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -1589,7 +1590,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>L.Popup</b>(
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i>,</nobr>
-			<nobr>&lt;object&gt; <i>source?</i> )</nobr>
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>source?</i> )</nobr>
 		</code></td>
 
 		<td class="factory-usage">
@@ -1597,13 +1598,13 @@ var map = L.map('map', {
 			<code>L.popup(<span class="comment">&hellip;</span>)</code>
 		</td>
 
-		<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional object that is used to tag the popup with a reference to the source object to which it refers.</td>
+		<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional source object that is used to tag the popup with a reference to the ILayer to which it refers.</td>
 	</tr>
 </table>
 
 <h3 id="popup-options">Options</h3>
 
-<table>
+<table data-id='popup'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1676,7 +1677,7 @@ var map = L.map('map', {
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='popup'>
 	<tr>
 		<th class="width250">Method</th>
 		<th class="minwidth">Returns</th>
@@ -1736,7 +1737,7 @@ var map = L.map('map', {
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='tilelayer'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -1771,7 +1772,7 @@ var map = L.map('map', {
 
 <h3 id="tilelayer-options">Options</h3>
 
-<table>
+<table data-id='tilelayer'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -1886,7 +1887,7 @@ var map = L.map('map', {
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='tilelayer'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -1921,7 +1922,7 @@ var map = L.map('map', {
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='tilelayer'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -1998,7 +1999,7 @@ var map = L.map('map', {
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='tilelayer-wms'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -2023,7 +2024,7 @@ var map = L.map('map', {
 
 <p>Includes all <a href="#tilelayer-options">TileLayer options</a> and additionally:</p>
 
-<table>
+<table data-id='tilelayer-wms'>
 	<tr>
 		<th class="width100">Option</th>
 		<th class="width100">Type</th>
@@ -2070,7 +2071,7 @@ var map = L.map('map', {
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='tilelayer-wms'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -2102,7 +2103,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='tilelayer-canvas'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -2121,7 +2122,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 </table>
 
 <h3>Options</h3>
-<table>
+<table data-id='tilelayer-canvas'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -2138,7 +2139,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='tilelayer-canvas'>
 	<tr>
 		<th class="width200">Method</th>
 		<th>Returns</th>
@@ -2174,7 +2175,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='imageoverlay'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -2197,7 +2198,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 </table>
 
 <h3 id="imageoverlay-options">Options</h3>
-<table>
+<table data-id='imageoverlay'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -2213,7 +2214,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 </table>
 
 <h3 id="imageoverlay-methods">Methods</h3>
-<table>
+<table data-id='imageoverlay'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2252,7 +2253,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 <p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
 
 <h3 id="path-options">Options</h3>
-<table>
+<table data-id='path'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -2325,7 +2326,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='path'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -2384,7 +2385,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 </table>
 
 <h3 id="path-methods">Methods</h3>
-<table>
+<table data-id='path'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2466,7 +2467,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 </table>
 
 <h3>Static properties</h3>
-<table>
+<table data-id='path'>
 	<tr>
 		<th>Constant</th>
 		<th>Type</th>
@@ -2513,7 +2514,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='polyline'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -2538,7 +2539,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 
 <p>You can use <a href="#path-options">Path options</a> and additionally the following options:</p>
 
-<table>
+<table data-id='polyline'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -2563,7 +2564,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 
 <p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
 
-<table>
+<table data-id='polyline'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2620,7 +2621,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='multipolyline'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -2648,7 +2649,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 have different behavior around their coordinate contents since they can contain
 multiple line features:</p>
 
-<table>
+<table data-id='multipolyline'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2687,7 +2688,7 @@ multiple line features:</p>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='polygon'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -2712,7 +2713,7 @@ multiple line features:</p>
 
 <p>Polygon has the same options and methods as Polyline, with the following differences:</p>
 
-<table>
+<table data-id='polygon'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2732,7 +2733,7 @@ multiple line features:</p>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='multipolygon'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -2759,7 +2760,7 @@ multiple line features:</p>
 have different behavior around their coordinate contents since they can contain
 multiple polygon features:</p>
 
-<table>
+<table data-id='multipolygon'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2804,7 +2805,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='rectangle'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -2829,7 +2830,7 @@ map.fitBounds(bounds);</code></pre>
 
 <p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
 
-<table>
+<table data-id='rectangle'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -2854,7 +2855,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='circle'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -2878,7 +2879,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='circle'>
 	<tr>
 		<th class="width200">Method</th>
 		<th class="minwidth">Returns</th>
@@ -2925,7 +2926,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='circlemarker'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -2948,7 +2949,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='circlemarker'>
 	<tr>
 		<th class="width200">Method</th>
 		<th class="minwidth">Returns</th>
@@ -2989,7 +2990,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='layergroup'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -3011,7 +3012,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='layergroup'>
 	<tr>
 		<th class="width200">Method</th>
 		<th class="minwidth">Returns</th>
@@ -3067,7 +3068,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>getLayers</b>()</code></td>
-		<td><code>Boolean</code></td>
+		<td><code>Array</code></td>
 		<td>Returns an array of all the layers added to the group.</td>
 	</tr>
 	<tr>
@@ -3107,7 +3108,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='featuregroup'>
 	<tr>
 		<th class="width300">Constructor</th>
 		<th>Usage</th>
@@ -3131,7 +3132,7 @@ map.fitBounds(bounds);</code></pre>
 
 <p>Has all <a href="#layergroup">LayerGroup</a> methods and additionally:</p>
 
-<table>
+<table data-id='featuregroup'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -3174,7 +3175,7 @@ map.fitBounds(bounds);</code></pre>
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='featuregroup'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -3240,7 +3241,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='geojson'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -3263,7 +3264,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3 id="geojson-options">Options</h3>
 
-<table>
+<table data-id='geojson'>
 	<tr>
 		<th>Option</th>
 		<th>Description</th>
@@ -3311,7 +3312,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='geojson'>
 	<tr>
 		<th class="width250">Method</th>
 		<th class="minwidth">Returns</th>
@@ -3345,7 +3346,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Static methods</h3>
 
-<table>
+<table data-id='geojson'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -3398,7 +3399,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='latlng'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -3422,7 +3423,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='latlng'>
 	<tr>
 		<th class="width100">Property</th>
 		<th class="width100">Type</th>
@@ -3442,7 +3443,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='latlng'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -3482,7 +3483,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 
 <h3>Constants</h3>
 
-<table>
+<table data-id='latlng'>
 	<tr>
 		<th class="width100">Constant</th>
 		<th class="width100">Type</th>
@@ -3528,7 +3529,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='latlngbounds'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -3563,7 +3564,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='latlngbounds'>
 	<tr>
 		<th class="width300">Method</th>
 		<th>Returns</th>
@@ -3692,7 +3693,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='point'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -3716,7 +3717,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='point'>
 	<tr>
 		<th class="width100">Property</th>
 		<th class="width100">Type</th>
@@ -3736,7 +3737,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='point'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -3823,7 +3824,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='bounds'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -3859,7 +3860,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='bounds'>
 	<tr>
 		<th class="width100">Property</th>
 		<th class="width100">Type</th>
@@ -3879,7 +3880,7 @@ map.panBy(new L.Point(200, 300));</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='bounds'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
@@ -3959,7 +3960,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='icon'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -3981,7 +3982,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
 <h3 id="icon-options">Options</h3>
 
-<table>
+<table data-id='icon'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4053,7 +4054,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='divicon'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -4075,7 +4076,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
 <h3 id="divicon-options">Options</h3>
 
-<table>
+<table data-id='divicon'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4115,7 +4116,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 map.addControl(control);</code></pre>
 
 <h3>Constructor</h3>
-<table>
+<table data-id='control'>
 	<tr>
 		<th class="width300">Constructor</th>
 		<th class="minwidth">Usage</th>
@@ -4136,7 +4137,7 @@ map.addControl(control);</code></pre>
 </table>
 
 <h3>Options</h3>
-<table>
+<table data-id='control'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4152,7 +4153,7 @@ map.addControl(control);</code></pre>
 </table>
 
 <h3>Methods</h3>
-<table>
+<table data-id='control'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -4198,7 +4199,7 @@ map.addControl(control);</code></pre>
 
 <p>Control positions (map corner to put a control to) are set using strings. Margins between controls and the map border are set with CSS, so that you can easily override them.</p>
 
-<table>
+<table data-id='control'>
 	<tr>
 		<th class="minwidth">Position</th>
 		<th>Description</th>
@@ -4227,7 +4228,7 @@ map.addControl(control);</code></pre>
 <p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code><span class="literal">false</span></code>. Extends <a href="#control">Control</a>.</p>
 
 <h3>Constructor</h3>
-<table>
+<table data-id='control-zoom'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -4248,7 +4249,7 @@ map.addControl(control);</code></pre>
 </table>
 
 <h3 id="control-zoom-options">Options</h3>
-<table>
+<table data-id='control-zoom'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4270,7 +4271,7 @@ map.addControl(control);</code></pre>
 <p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code><span class="literal">false</span></code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Extends <a href="#control">Control</a>.</p>
 
 <h3>Constructor</h3>
-<table>
+<table data-id='control-attribution'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -4291,7 +4292,7 @@ map.addControl(control);</code></pre>
 </table>
 
 <h3 id="control-attribution-options">Options</h3>
-<table>
+<table data-id='control-attribution'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4313,7 +4314,7 @@ map.addControl(control);</code></pre>
 </table>
 
 <h3>Methods</h3>
-<table>
+<table data-id='control-attribution'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -4360,7 +4361,7 @@ var overlays = {
 L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h3>Constructor</h3>
-<table>
+<table data-id='control-layers'>
 	<tr>
 		<th>Constructor</th>
 		<th>Usage</th>
@@ -4376,12 +4377,12 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 			<code><span class='keyword'>new</span> L.Control.Layers(<span class="comment">&hellip;</span>)</code><br />
 			<code>L.control.layers(<span class="comment">&hellip;</span>)</code>
 		</td>
-		<td>Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes.</td>
+		<td>Creates a layers control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.</td>
 	</tr>
 </table>
 
 <h3>Methods</h3>
-<table>
+<table data-id='control-layers'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -4414,7 +4415,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h3 id="control-layers-options">Options</h3>
 
-<table>
+<table data-id='control-layers'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4460,7 +4461,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <p>You can subscribe to the following events on the <a href="#map">Map</a> object using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='control-layers'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -4491,7 +4492,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 <pre><code>L.control.scale().addTo(map);</code></pre>
 
 <h3>Constructor</h3>
-<table>
+<table data-id='control-scale'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -4513,7 +4514,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h3 id="control-scale-options">Options</h3>
 
-<table>
+<table data-id='control-scale'>
 	<tr>
 		<th>Option</th>
 		<th>Type</th>
@@ -4572,7 +4573,7 @@ map.on('click', onClick);
 map.off('click', onClick);</code></pre>
 
 <h3>Methods</h3>
-<table>
+<table data-id='events'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -4650,7 +4651,7 @@ map.off('click', onClick);</code></pre>
 		<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
 	</tr>
 	<tr>
-		<td><code><b>cleanAllEventListeners</b>()</code></td>
+		<td><code><b>clearAllEventListeners</b>()</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes all listeners to all events on the object.</code></td>
@@ -4690,7 +4691,7 @@ map.off('click', onClick);</code></pre>
 
 <p>The base event object. All other event objects contain these properties too.</p>
 
-<table>
+<table data-id='events'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4740,7 +4741,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="location-event">LocationEvent</h3>
 
-<table>
+<table data-id='events'>
 	<tr>
 		<th class="width100">property</th>
 		<th>type</th>
@@ -4777,11 +4778,6 @@ map.off('click', onClick);</code></pre>
 		<td>The direction of travel in degrees counting clockwise from true North.</td>
 	</tr>
 	<tr>
-		<td><code><b>altitude</b></code></td>
-		<td><code>Number</code></td>
-		<td>Height in meters of the position above the WGS84 ellipsoid.</td>
-	</tr>
-	<tr>
 		<td><code><b>speed</b></code></td>
 		<td><code>Number</code></td>
 		<td>Current velocity in meters per second.</td>
@@ -4795,7 +4791,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="error-event">ErrorEvent</h3>
 
-<table>
+<table data-id='error-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4815,7 +4811,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="layer-event">LayerEvent</h3>
 
-<table>
+<table data-id='layer-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4830,7 +4826,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="layers-control-event">LayersControlEvent</h3>
 
-<table>
+<table data-id='layer-control-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4850,7 +4846,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="tile-event">TileEvent</h3>
 
-<table>
+<table data-id='tile-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4870,7 +4866,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="resize-event">ResizeEvent</h3>
 
-<table>
+<table data-id='resize-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4890,7 +4886,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="geojson-event">GeoJSON event</h3>
 
-<table>
+<table data-id='geojson-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -4920,7 +4916,7 @@ map.off('click', onClick);</code></pre>
 
 <h3 id="popup-event">Popup event</h3>
 
-<table>
+<table data-id='popup-event'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -5100,7 +5096,7 @@ L.map('map');</code></pre>
 	alert('Upgrade your browser, dude!');
 }</code></pre>
 
-<table>
+<table data-id='browser'>
 	<tr>
 		<th class="width100">property</th>
 		<th class="width100">type</th>
@@ -5190,7 +5186,7 @@ L.map('map');</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='util'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5310,7 +5306,7 @@ L.map('map');</code></pre>
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='util'>
 	<tr>
 		<th>Property</th>
 		<th>Type</th>
@@ -5337,7 +5333,7 @@ L.map('map');</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='transformation'>
 	<tr>
 		<th class="width250">Constructor</th>
 		<th>Usage</th>
@@ -5363,7 +5359,7 @@ L.map('map');</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='transformation'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5398,7 +5394,7 @@ L.map('map');</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='lineutil'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5457,7 +5453,7 @@ L.map('map');</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='polylineutil'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5484,7 +5480,7 @@ L.map('map');</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='domevent'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5576,7 +5572,7 @@ L.map('map');</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='domutil'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5714,7 +5710,7 @@ L.map('map');</code></pre>
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='domutil'>
 	<tr>
 		<th>Property</th>
 		<th>Type</th>
@@ -5745,7 +5741,7 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='posanimation'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -5764,7 +5760,7 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='posanimation'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -5787,7 +5783,7 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='posanimation'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -5822,7 +5818,7 @@ draggable.enable();
 
 <h3>Constructor</h3>
 
-<table>
+<table data-id='draggable'>
 	<tr>
 		<th class="width200">Constructor</th>
 		<th>Usage</th>
@@ -5847,7 +5843,7 @@ draggable.enable();
 
 <p>You can subscribe to the following events using <a href="#events">these methods</a>.</p>
 
-<table>
+<table data-id='draggable'>
 	<tr>
 		<th class="width100">Event</th>
 		<th class="width100">Data</th>
@@ -5877,7 +5873,7 @@ draggable.enable();
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='draggable'>
 	<tr>
 		<th class="width100">Method</th>
 		<th class="width100">Returns</th>
@@ -5925,7 +5921,7 @@ draggable.enable();
 <h2 id="ihandler">IHandler</h2>
 <p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
 
-<table>
+<table data-id='ihandler'>
 	<tr>
 		<th class="width100">Method</th>
 		<th class="width100">Returns</th>
@@ -5955,7 +5951,7 @@ draggable.enable();
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='ilayer'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -6036,7 +6032,7 @@ map.addLayer(new MyCustomLayer(latlng));
 
 <p>Every control in Leaflet should extend from <a href="#control">Control</a> class and additionally have the following methods:</p>
 
-<table>
+<table data-id='icontrol'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -6103,7 +6099,7 @@ map.addControl(new MyControl());
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='iprojection'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -6131,7 +6127,7 @@ map.addControl(new MyControl());
 
 <p>Leaflet comes with a set of already defined projections out of the box:</p>
 
-<table>
+<table data-id='projections'>
 	<tr>
 		<th>Projection</th>
 		<th>Description</th>
@@ -6162,7 +6158,7 @@ map.addControl(new MyControl());
 
 <h3>Methods</h3>
 
-<table>
+<table data-id='icrs'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -6206,7 +6202,7 @@ map.addControl(new MyControl());
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='icrs'>
 	<tr>
 		<th>Property</th>
 		<th>Type</th>
@@ -6237,7 +6233,7 @@ map.addControl(new MyControl());
 
 <p>Leaflet comes with a set of already defined CRS to use out of the box:</p>
 
-<table>
+<table data-id='defined-crs'>
 	<tr>
 		<th>Projection</th>
 		<th>Description</th>
@@ -6274,7 +6270,7 @@ map.addControl(new MyControl());
 <pre><code>&lt;script&gt;L_PREFER_CANVAS = true;&lt;/script&gt;
 &lt;script src="leaflet.js"&gt;&lt;/script&gt;</code></pre>
 
-<table>
+<table data-id='global'>
 	<tr>
 		<th>Switch</th>
 		<th>Description</th>
@@ -6310,3 +6306,19 @@ var Leaflet = L.noConflict();
 <p>A constant that represents the Leaflet version in use.<p>
 
 <pre><code>L.version // returns "0.5" (or whatever version is currently in use)</code></pre>
+
+<script>
+var tables = document.getElementsByTagName('table');
+for (var i = 0, len = tables.length; i < len; i++) {
+    var id = tables[i].getAttribute('data-id'),
+        tds = tables[i].getElementsByTagName('td');
+    for (var j = 0, tdLen = tds.length; j < tdLen; j++) {
+        if (tds[j].cellIndex === 0) {
+            tds[j].parentNode.id = id + '-' + (tds[j].textContent || tds[j].innerText).split('(')[0].toLowerCase();
+            tds[j].parentNode.onclick = function(e) {
+                if ((window.innerWidth / 2) - e.clientX > 394) window.location.hash = '#' + this.id;
+            };
+        }
+    }
+}
+</script>

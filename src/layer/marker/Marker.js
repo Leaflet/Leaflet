@@ -142,10 +142,10 @@ L.Marker = L.Class.extend({
 		if (newShadow !== this._shadow) {
 			this._removeShadow();
 			addShadow = true;
+		}
 
-			if (newShadow) {
-				L.DomUtil.addClass(newShadow, classToAdd);
-			}
+		if (newShadow) {
+			L.DomUtil.addClass(newShadow, classToAdd);
 		}
 		this._shadow = newShadow;
 
@@ -283,6 +283,8 @@ L.Marker = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
+		
+		return this;
 	},
 
 	_updateOpacity: function () {

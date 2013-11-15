@@ -152,7 +152,8 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.on(this._contentNode, 'wheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
+		L.DomEvent.on(this._contentNode, 'MozMousePixelScroll', L.DomEvent.stopPropagation);
 		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);

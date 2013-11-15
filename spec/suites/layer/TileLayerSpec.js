@@ -13,10 +13,11 @@ describe('TileLayer', function () {
 					minZoom = 5;
 					map.setView([0, 0], 1);
 
-					L.tileLayer(tileUrl, {
-						maxZoom: maxZoom,
-						minZoom: minZoom
-					}).addTo(map);
+				L.tileLayer(tileUrl, {
+					maxZoom: maxZoom,
+					minZoom: minZoom
+				}).addTo(map);
+
 				expect(map.getMaxZoom()).to.be(maxZoom);
 				expect(map.getMinZoom()).to.be(minZoom);
 			});

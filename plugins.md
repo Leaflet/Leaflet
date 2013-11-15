@@ -93,6 +93,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/dpiccone/leaflet-div-heatmap">Leaflet divHeatmap</a>
+		</td><td>
+			Lightweight and versatile heatmap layer based on CSS3 and divIcons
+
+		</td><td>
+			<a href="https://github.com/dpiccone">Daniele Piccone</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
 		</td><td>
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
@@ -203,7 +213,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/glenrobertson/leaflet-tilelayer-geojson/">TileLayer.GeoJSON</a>
 		</td><td>
-			A TileLayer for GeoJSON tiles (requires JQuery).
+			A TileLayer for GeoJSON tiles.
 		</td><td>
 			<a href="https://github.com/glenrobertson">Glen Robertson</a>
 		</td>
@@ -216,7 +226,62 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
-	</tr>		
+	</tr>	
+	<tr>
+		<td>
+			<a href="https://github.com/turban/Leaflet.Graticule">Leaflet.Graticule</a>
+		</td><td>
+			Draws a grid of latitude and longitude lines.
+		</td><td>
+			<a href="https://github.com/turban">Bjørn Sandvik</a>
+		</td>
+	</tr>			
+	<tr>
+		<td>
+			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
+		</td><td>
+			Plugin for plotting a marker representing a user - or multiple users - on a map, 
+			with support for drawing an accuraccy circle. Can be seen in action on 
+			<a href="http://longitude.me">Longitude.me</a>.
+		</td><td>
+			<a href="http://heyman.info">Jonatan Heyman</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ubergesundheit/Leaflet.EdgeMarker">Leaflet.EdgeMarker</a>
+		</td><td>
+			Plugin to indicate the existence of Features outside of the current view.
+		</td><td>
+			<a href="https://github.com/ubergesundheit">Gerald Pape</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.shapefile">Leaflet.Shapefile</a>
+		</td><td>
+			Put a shapefile onto your map as a layer.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/calvinmetcalf/leaflet.filegdb">Leaflet.FileGDB</a>
+		</td><td>
+			Put an ESRI File GeoDatabase onto your map as a layer.
+		</td><td>
+			<a href="https://github.com/calvinmetcalf">Calvin Metcalf</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/joergdietrich/Leaflet.Terminator">Leaflet.Terminator</a>
+		</td><td>Overlay day and night regions on a map.
+		</td><td>
+			<a href="https://github.com/joergdietrich">J&ouml;rg Dietrich</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -277,7 +342,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
 		</td><td>
-			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Mapbox Streets, Stamen, Esri, etc.
+			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Stamen, Esri, etc.
 		</td><td>
 			<a href="https://github.com/seelmann">Stefan Seelmann</a>
 		</td>
@@ -334,6 +399,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A modest library for translating between Well-Known Text (WKT) and Leaflet geometry objects (e.g. between L.marker() instances and "POINT()" strings).
 		</td><td>
 			<a href="https://github.com/arthur-e/">K. Arthur Endsley</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/kr1/Leaflet.dbpediaLayer/">Leaflet.dbpediaLayer</a>
+		</td><td>
+			A layer with Points of interest from Wikipedia - loaded via ajax from DBpedia's SPARQL endpoint.
+		</td><td>
+			<a href="https://github.com/kr1/">Kr1</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/emikhalev/leaflet-2gis">Leaflet-2gis</a>
+		</td><td>
+			Adds support for 2GIS tile layer
+		</td><td>
+			<a href="https://github.com/emikhalev/">Eugene Mikhalev</a>
 		</td>
 	</tr>
 </table>
@@ -603,7 +686,125 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
-	</tr>		
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ismyrnow/Leaflet.groupedlayercontrol">Leaflet.GroupedLayerControl</a>
+		</td><td>
+			Leaflet layer control with support for grouping overlays together.
+		</td><td>
+			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/slara/Leaflet.BorderPan">Leaflet.BorderPan</a>
+		</td><td>
+                        A Leaflet plugin to pan by clicking on map borders.
+		</td><td>
+			<a href="https://github.com/slara">Sebastián Lara</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.TileLegend">Leaflet.TileLegend</a>
+		</td><td>
+			Create illustrated and interactive legends for your background layers.
+		</td><td>
+			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/hallahan/LeafletPlayback">LeafletPlayback</a>
+		</td><td>
+			Play back time-stamped GPS Tracks synchronized to a clock.
+		</td><td>
+			<a href="http://theoutpost.io">Nicholas Hallahan</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ebrelsford/Leaflet.loading">Leaflet.loading</a>
+		</td><td>
+			A simple control that adds a loading indicator as tiles and other data are loaded.
+		</td><td>
+			<a href="https://github.com/ebrelsford/">Eric Brelsford</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/pwldp/leaflet.viewcenter">Leaflet.viewcenter</a>
+		</td><td>
+			A simple control that adds a button to change view and zoom to predefinied values in options.
+		</td><td>
+			<a href="https://github.com/pwldp/">Dariusz Pawlak</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aratcliffe/Leaflet.contextmenu">Leaflet.contextmenu</a>
+		</td><td>
+			A context menu for Leaflet.
+		</td><td>
+			<a href="https://github.com/aratcliffe/">Adam Ratcliffe</a>
+		</td>        
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.MeasureControl">Leaflet.MeasureControl</a>
+		</td><td>
+			A simple tool to measure distances on maps (*relies on Leaflet.Draw*).
+		</td><td>
+			<a href="https://github.com/makinacorpus/">Makina Corpus</a>
+		</td>        
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.OverIntent">Leaflet.OverIntent</a>
+		</td><td>
+			Adds a new event ``mouseintent``, that differs from ``mouseover`` since it reflects user
+			intentions to aim a particular layer.
+		</td><td>
+			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
+		</td>        
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.AlmostOver">Leaflet.AlmostOver</a>
+		</td><td>
+			Trigger mouse events when cursor is "almost" over a layer.
+		</td><td>
+			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
+		</td>        
+	</tr>
+	<tr>
+		<td>
+			<a href="http://elesdoar.github.io/leaflet-control-orderlayers/">Leaflet Control Order Layers</a>
+		</td><td>
+			Adds the ability to change overlay order in the layers control.
+		</td><td>
+			<a href="https://github.com/elesdoar/">Michael Salgado</a>
+		</td>        
+	</tr>
+	<tr>
+		<td>
+			<a href="http://jieter.github.io/Leaflet.layerscontrol-minimap/">Leaflet.layerscontrol-minimap</a>
+		</td><td>
+			Extends the default Leaflet layers control with synced minimaps.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/turbo87/leaflet-sidebar/">leaflet-sidebar</a>
+		</td><td>
+			A responsive sidebar plugin.
+		</td><td>
+			<a href="https://github.com/turbo87/">Tobias Bieniek</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -617,11 +818,11 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://flyjs.com/buildings/">OSM Buildings</a>
+			<a href="http://osmbuildings.org/">OSM Buildings</a>
 		</td><td>
-			Amazing JS library for visualizing 3D OSM building data on top of Leaflet.
+			Amazing JS library for visualizing 3D OSM building geometry on top of Leaflet.
 		</td><td>
-			<a href="http://flyjs.com/buildings/about.php">Jan Marsch</a>
+			<a href="https://github.com/kekscom/">Jan Marsch</a>
 		</td>
 	</tr>
 	<tr>
@@ -703,6 +904,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Internationalization for Leaflet plugins.
 		</td><td>
 			<a href="http://yohanboniface.me">Yohan Boniface</a>
+		</td>
+	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/aratcliffe/Leaflet.print">Leaflet.print</a>
+		</td><td>
+			Implements the Mapfish print protocol allowing a Leaflet map to be printed using either the Mapfish or GeoServer print module.
+		</td><td>
+			<a href="https://github.com/aratcliffe">Adam Ratcliffe</a>
 		</td>
 	</tr>
 </table>

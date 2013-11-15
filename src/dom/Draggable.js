@@ -54,6 +54,7 @@ L.Draggable = L.Class.extend({
 		if (L.Draggable._disabled) { return; }
 
 		L.DomUtil.disableImageDrag();
+		L.DomUtil.disableTextSelection();
 
 		var first = e.touches ? e.touches[0] : e,
 		    el = first.target;
@@ -93,7 +94,6 @@ L.Draggable = L.Class.extend({
 			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
 			if (!L.Browser.touch) {
-				L.DomUtil.disableTextSelection();
 				L.DomUtil.addClass(document.body, 'leaflet-dragging');
 			}
 		}
@@ -113,7 +113,6 @@ L.Draggable = L.Class.extend({
 
 	_onUp: function () {
 		if (!L.Browser.touch) {
-			L.DomUtil.enableTextSelection();
 			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 		}
 
@@ -124,6 +123,7 @@ L.Draggable = L.Class.extend({
 		}
 
 		L.DomUtil.enableImageDrag();
+		L.DomUtil.enableTextSelection();
 
 		if (this._moved) {
 			// ensure drag is not fired after dragend

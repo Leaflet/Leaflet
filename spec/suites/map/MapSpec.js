@@ -122,12 +122,15 @@ describe("Map", function () {
 
 	describe("#getMinZoom and #getMaxZoom", function () {
 		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
-			var c = document.createElement('div'),
-			    map = L.map(c, { minZoom: 5, maxZoom: 10 });
-			L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
-			L.tileLayer("{z}{x}{y}", { minZoom:5, maxZoom: 15 }).addTo(map);
-			expect(map.getMinZoom()).to.be(5);
-			expect(map.getMaxZoom()).to.be(10);
+
+			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
+
+			L.tileLayer("{z}{x}{y}", {minZoom: 4, maxZoom: 10}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 6, maxZoom: 17}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 22}).addTo(map);
+
+			expect(map.getMinZoom()).to.be(2);
+			expect(map.getMaxZoom()).to.be(20);
 		});
 	});
 
@@ -182,6 +185,16 @@ describe("Map", function () {
 			map.removeLayer(layer);
 			map.setView([0, 0], 0);
 			expect(spy.called).not.to.be.ok();
+		});
+
+		it("adds the layer before firing layeradd", function (done) {
+			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
+			map.on('layeradd', function() {
+				expect(map.hasLayer(layer)).to.be.ok();
+				done();
+			});
+			map.setView([0, 0], 0);
+			map.addLayer(layer);
 		});
 
 		describe("When the first layer is added to a map", function () {
@@ -268,6 +281,17 @@ describe("Map", function () {
 			map.addLayer(layer);
 			map.removeLayer(layer);
 			expect(spy.called).not.to.be.ok();
+		});
+
+		it("removes the layer before firing layerremove", function (done) {
+			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
+			map.on('layerremove', function() {
+				expect(map.hasLayer(layer)).not.to.be.ok();
+				done();
+			});
+			map.setView([0, 0], 0);
+			map.addLayer(layer);
+			map.removeLayer(layer);
 		});
 
 		describe("when the last tile layer on a map is removed", function () {

@@ -21,7 +21,7 @@ Lets suppose you have a bunch of layers you want to combine into a group to hand
 		aurora    = L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.'),
 	    golden    = L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.');
 
-Instead of adding them directly to the map, you can do the following, using the <a href="http://leaflet.cloudmade.com/reference.html#layergroup">LayerGroup</a> class:
+Instead of adding them directly to the map, you can do the following, using the <a href="http://leafletjs.com/reference.html#layergroup">LayerGroup</a> class:
 
 	var cities = L.layerGroup([littleton, denver, aurora, golden]);
 
@@ -63,6 +63,8 @@ Now, all that's left to do is to create a [Layers Control](../reference.html#con
 <pre><code>L.control.layers(baseMaps, overlayMaps).addTo(map);</code></pre>
 
 Note that we added `minimal`, `motorways` and `cities` layers to the map but didn't add `midnight`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
+
+Also note that when using multiple base layers, only one of them should be added to the map at instantiation, but all of them should be present in the base layers object when creating the layers control.
 
 Now lets [view the result on a separate page &rarr;](layers-control-example.html)
 

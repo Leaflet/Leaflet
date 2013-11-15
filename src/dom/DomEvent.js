@@ -3,11 +3,6 @@
  */
 
 L.DomEvent = {
-	WHEEL:
-		'onwheel' in document ? 'wheel' :
-		'onmousewheel' in document ? 'mousewheel' :
-			'MozMousePixelScroll',
-
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
@@ -28,13 +23,13 @@ L.DomEvent = {
 			this.addDoubleTapListener(obj, handler, id);
 		}
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if ('addEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.addEventListener('DOMMouseScroll', handler, false);
+				obj.addEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 
 				originalHandler = handler;
 				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
@@ -74,10 +69,6 @@ L.DomEvent = {
 
 		if (!handler) { return this; }
 
-		if (type === 'wheel' || type === 'mousewheel') {
-			type = L.DomEvent.WHEEL;
-		}
-
 		if (L.Browser.msTouch && type.indexOf('touch') === 0) {
 			this.removeMsTouchListener(obj, type, id);
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
@@ -85,7 +76,11 @@ L.DomEvent = {
 
 		} else if ('removeEventListener' in obj) {
 
-			if ((type === 'mouseenter') || (type === 'mouseleave')) {
+			if (type === 'mousewheel') {
+				obj.removeEventListener('DOMMouseScroll', handler, false);
+				obj.removeEventListener(type, handler, false);
+
+			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
 				obj.removeEventListener(type, handler, false);
@@ -137,33 +132,57 @@ L.DomEvent = {
 
 	getMousePosition: function (e, container) {
 
-		var body = document.body,
+		var ie7 = L.Browser.ie7,
+		    body = document.body,
 		    docEl = document.documentElement,
-		    x = e.pageX ? e.pageX : e.clientX + body.scrollLeft + docEl.scrollLeft,
-		    y = e.pageY ? e.pageY : e.clientY + body.scrollTop + docEl.scrollTop,
-		    pos = new L.Point(x, y);
+		    x = e.pageX ? e.pageX - body.scrollLeft - docEl.scrollLeft: e.clientX,
+		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop: e.clientY,
+		    pos = new L.Point(x, y),
+		    rect = container.getBoundingClientRect(),
+		    left = rect.left - container.clientLeft,
+		    top = rect.top - container.clientTop;
 
-		return (container ? pos._subtract(L.DomUtil.getViewportOffset(container)) : pos);
+		// webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
+		// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
+		if (!L.DomUtil.documentIsLtr() && (L.Browser.webkit || ie7)) {
+			left += container.scrollWidth - container.clientWidth;
+
+			// ie7 shows the scrollbar by default and provides clientWidth counting it, so we
+			// need to add it back in if it is visible; scrollbar is on the left as we are RTL
+			if (ie7 && L.DomUtil.getStyle(container, 'overflow-y') !== 'hidden' &&
+			           L.DomUtil.getStyle(container, 'overflow') !== 'hidden') {
+				left += 17;
+			}
+		}
+
+		return pos._subtract(new L.Point(left, top));
 	},
 
 	getWheelDelta: function (e) {
+
 		var delta = 0;
 
-		if (e.type === 'wheel') {
-			delta = -e.deltaY / (e.deltaMode ? 1 : 120);
-		} else if (e.type === 'mousewheel') {
+		if (e.wheelDelta) {
 			delta = e.wheelDelta / 120;
-		} else if (e.type === 'MozMousePixelScroll') {
-			delta = -e.detail;
 		}
-
+		if (e.detail) {
+			delta = -e.detail / 3;
+		}
 		return delta;
 	},
 
-	_fakeStop: function stop(e) {
-		// fakes stopPropagation by setting a special event flag checked in Map mouse events handler
-		// jshint camelcase: false
-		e._leaflet_stop = true;
+	_skipEvents: {},
+
+	_fakeStop: function (e) {
+		// fakes stopPropagation by setting a special event flag, checked/reset with L.DomEvent._skipped(e)
+		L.DomEvent._skipEvents[e.type] = true;
+	},
+
+	_skipped: function (e) {
+		var skipped = this._skipEvents[e.type];
+		// reset when checking, as it's only used in map container and propagates outside of the map
+		this._skipEvents[e.type] = false;
+		return skipped;
 	},
 
 	// check if element really left/entered the event target (for mouseenter/mouseleave)

@@ -5,25 +5,27 @@ title: Download
 
 ## Download Leaflet
 
-Besides the library itself, the download package contains full source code, unit tests, files for debugging and a build system. The production files are in the `dist` folder.
-
 <table>
 	<tr>
 		<th>Version</th>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.6.zip">Leaflet 0.6</a></td>
-		<td>Stable version, released on June 26, 2013</td>
+		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip">Leaflet 0.6.4</a></td>
+		<td>Stable version, released on June 26, 2013 and last updated on July 25, 2013.</td>
 	</tr>
 	<tr>
-		<td class="width100"><a href="https://github.com/Leaflet/Leaflet/archive/v0.5.1.zip">Leaflet 0.5.1</a></td>
-		<td>Previous stable version, released on January 17, 2013 and last updated on February 6, 2013</td>
+		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.5.1.zip">Leaflet 0.5.1</a></td>
+		<td>Previous stable version, released on January 17, 2013 and last updated on February 6, 2013.</td>
 	</tr>
 	<tr>
-		<td><a href="http://github.com/Leaflet/Leaflet/archive/master.zip">Leaflet master</a></td>
-		<td>In-progress version, developed on the <code>master</code> branch</td>
+		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-master.zip">Leaflet 0.7-dev</a></td>
+		<td>In-progress major version, developed on the <code>master</code> branch.</td>
 	</tr>
+	<!--<tr>
+		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-stable.zip">Leaflet 0.6.4-dev</a></td>
+		<td>In-progress minor version, developed on the <code>stable</code> branch.</td>
+	</tr>-->
 </table>
 
 [View Changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md)
@@ -33,14 +35,18 @@ Note that the master version can contain incompatible changes, so please read th
 ### Using a Hosted Version of Leaflet
 
 The latest stable release of Leaflet is hosted on a CDN — to start using
-it straight away, place this code in the `head` section of your HTML:
+it straight away, place this in the `head` section of your HTML code:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.css" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
     <!--[if lte IE 8]>
-        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6/leaflet.ie.css" />
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
     <![endif]-->
 
-    <script src="http://cdn.leafletjs.com/leaflet-0.6/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+
+### Leaflet Source Code
+
+These download packages above only contain the library itself. If you want to download the full source code, including unit tests, files for debugging, build scripts, etc., you can <a href="https://github.com/Leaflet/Leaflet/archive/master.zip">download it</a> from the <a href="https://github.com/Leaflet/Leaflet">GitHub repository</a>.
 
 ### Building Leaflet from the Source
 
@@ -56,4 +62,4 @@ Now that you have everything installed, run `jake` inside the Leaflet directory.
 
 ### Building a Custom Version of Leaflet
 
-To make a custom build of the library with only the things you need, open `build/build.html` page of the package contents, choose the components (it figures out dependencies for you) and then run the command generated with it.
+To make a custom build of the library with only the things you need, open `build/build.html` page of the Leaflet source code contents, choose the components (it figures out dependencies for you) and then run the command generated with it.
