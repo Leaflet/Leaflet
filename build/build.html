@@ -86,21 +86,14 @@
 			<li><a href="http://nodejs.org/#download">Download and install Node</a></li>
 			<li>Run this in the command line:<br />
 			<pre><code>npm install -g jake
-npm install jshint
-npm install uglify-js</code></pre></li>
+npm install</code></pre></li>
 			<li>Run this command inside the Leaflet directory: <br /><input type="text" id="command2" />
-		</ol>
-		<h2>Building using Closure Compiler</h2>
-		<ol>
-			<li><a href="http://closure-compiler.googlecode.com/files/compiler-latest.zip">Download Closure Compiler</a>, extract it into <code>closure-compiler</code> directory</li>
-			<li>Run this command in the root Leaflet directory: <br /><input type="text" id="command" /></li>
 		</ol>
 	</div>
 
 	<script type="text/javascript">
 		var deplist = document.getElementById('deplist'),
-			commandInput = document.getElementById('command'),
-			commandInput2 = document.getElementById('command2');
+			commandInput = document.getElementById('command2');
 
 		document.getElementById('select-all').onclick = function() {
 			var checks = deplist.getElementsByTagName('input');
@@ -139,15 +132,7 @@ npm install uglify-js</code></pre></li>
 				}
 			}
 
-			var command = 'java -jar closure-compiler/compiler.jar ';
-			for (var src in files) {
-				command += '--js src/' + src + ' ';
-			}
-			command += '--js_output_file dist/leaflet-custom.js';
-
-			commandInput.value = command;
-
-			commandInput2.value = 'jake build[' + parseInt(compsStr, 2).toString(32) + ',custom]';
+			commandInput.value = 'jake build[' + parseInt(compsStr, 2).toString(32) + ',custom]';
 		}
 
 		function inputSelect() {
@@ -156,7 +141,6 @@ npm install uglify-js</code></pre></li>
 		};
 
 		commandInput.onclick = inputSelect;
-		commandInput2.onclick = inputSelect;
 
 		function onCheckboxChange() {
 			if (this.checked) {

@@ -22,15 +22,17 @@ function getFiles(compsBase32) {
 	for (var i in deps) {
 		if (comps) {
 			if (parseInt(comps.pop(), 2) === 1) {
-				console.log('\t* ' + i);
+				console.log(' * ' + i);
 				addFiles(deps[i].src);
 			} else {
-				console.log('\t  ' + i);
+				console.log('   ' + i);
 			}
 		} else {
 			addFiles(deps[i].src);
 		}
 	}
+
+	console.log('');
 
 	var files = [];
 
