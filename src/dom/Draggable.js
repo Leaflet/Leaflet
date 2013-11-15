@@ -10,11 +10,13 @@ L.Draggable = L.Class.extend({
 		END: {
 			mousedown: 'mouseup',
 			touchstart: 'touchend',
+			pointerdown: 'touchend',
 			MSPointerDown: 'touchend'
 		},
 		MOVE: {
 			mousedown: 'mousemove',
 			touchstart: 'touchmove',
+			pointerdown: 'touchmove',
 			MSPointerDown: 'touchmove'
 		}
 	},
@@ -46,27 +48,20 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onDown: function (e) {
+		this._moved = false;
+
 		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
 
-		L.DomEvent
-			.stopPropagation(e);
+		L.DomEvent.stopPropagation(e);
 
 		if (L.Draggable._disabled) { return; }
 
 		L.DomUtil.disableImageDrag();
 		L.DomUtil.disableTextSelection();
 
-		var first = e.touches ? e.touches[0] : e,
-		    el = first.target;
-
-		// if touching a link, highlight it
-		if (L.Browser.touch && el.tagName.toLowerCase() === 'a') {
-			L.DomUtil.addClass(el, 'leaflet-active');
-		}
-
-		this._moved = false;
-
 		if (this._moving) { return; }
+
+		var first = e.touches ? e.touches[0] : e;
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
@@ -77,7 +72,10 @@ L.Draggable = L.Class.extend({
 	},
 
 	_onMove: function (e) {
-		if (e.touches && e.touches.length > 1) { return; }
+		if (e.touches && e.touches.length > 1) {
+			this._moved = true;
+			return;
+		}
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    newPoint = new L.Point(first.clientX, first.clientY),
@@ -93,9 +91,8 @@ L.Draggable = L.Class.extend({
 			this._moved = true;
 			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
-			if (!L.Browser.touch) {
-				L.DomUtil.addClass(document.body, 'leaflet-dragging');
-			}
+			L.DomUtil.addClass(document.body, 'leaflet-dragging');
+			L.DomUtil.addClass((e.target || e.srcElement), 'leaflet-drag-target');
 		}
 
 		this._newPos = this._startPos.add(offset);
@@ -111,10 +108,9 @@ L.Draggable = L.Class.extend({
 		this.fire('drag');
 	},
 
-	_onUp: function () {
-		if (!L.Browser.touch) {
-			L.DomUtil.removeClass(document.body, 'leaflet-dragging');
-		}
+	_onUp: function (e) {
+		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
+		L.DomUtil.removeClass((e.target || e.srcElement), 'leaflet-drag-target');
 
 		for (var i in L.Draggable.MOVE) {
 			L.DomEvent
@@ -129,7 +125,9 @@ L.Draggable = L.Class.extend({
 			// ensure drag is not fired after dragend
 			L.Util.cancelAnimFrame(this._animRequest);
 
-			this.fire('dragend');
+			this.fire('dragend', {
+				distance: this._newPos.distanceTo(this._startPos)
+			});
 		}
 
 		this._moving = false;

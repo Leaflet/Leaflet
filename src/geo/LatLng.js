@@ -2,16 +2,20 @@
  * L.LatLng represents a geographical point with latitude and longitude coordinates.
  */
 
-L.LatLng = function (rawLat, rawLng) { // (Number, Number)
-	var lat = parseFloat(rawLat),
-	    lng = parseFloat(rawLng);
+L.LatLng = function (lat, lng, alt) { // (Number, Number, Number)
+	lat = parseFloat(lat);
+	lng = parseFloat(lng);
 
 	if (isNaN(lat) || isNaN(lng)) {
-		throw new Error('Invalid LatLng object: (' + rawLat + ', ' + rawLng + ')');
+		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
 
 	this.lat = lat;
 	this.lng = lng;
+
+	if (alt !== undefined) {
+		this.alt = parseFloat(alt);
+	}
 };
 
 L.extend(L.LatLng, {
@@ -75,13 +79,20 @@ L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Numbe
 		return a;
 	}
 	if (L.Util.isArray(a)) {
-		return new L.LatLng(a[0], a[1]);
+		if (typeof a[0] === 'number' || typeof a[0] === 'string') {
+			return new L.LatLng(a[0], a[1], a[2]);
+		} else {
+			return null;
+		}
 	}
 	if (a === undefined || a === null) {
 		return a;
 	}
 	if (typeof a === 'object' && 'lat' in a) {
 		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon);
+	}
+	if (b === undefined) {
+		return null;
 	}
 	return new L.LatLng(a, b);
 };

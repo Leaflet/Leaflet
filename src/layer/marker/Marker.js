@@ -9,6 +9,7 @@ L.Marker = L.Class.extend({
 	options: {
 		icon: new L.Icon.Default(),
 		title: '',
+		alt: '',
 		clickable: true,
 		draggable: false,
 		keyboard: true,
@@ -30,6 +31,7 @@ L.Marker = L.Class.extend({
 
 		this._initIcon();
 		this.update();
+		this.fire('add');
 
 		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
 			map.on('zoomanim', this._animateZoom, this);
@@ -87,6 +89,10 @@ L.Marker = L.Class.extend({
 			this.update();
 		}
 
+		if (this._popup) {
+			this.bindPopup(this._popup);
+		}
+
 		return this;
 	},
 
@@ -117,6 +123,10 @@ L.Marker = L.Class.extend({
 
 			if (options.title) {
 				icon.title = options.title;
+			}
+			
+			if (options.alt) {
+				icon.alt = options.alt;
 			}
 		}
 
@@ -202,7 +212,7 @@ L.Marker = L.Class.extend({
 	},
 
 	_animateZoom: function (opt) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center);
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center).round();
 
 		this._setPos(pos);
 	},
@@ -283,7 +293,7 @@ L.Marker = L.Class.extend({
 		if (this._map) {
 			this._updateOpacity();
 		}
-		
+
 		return this;
 	},
 

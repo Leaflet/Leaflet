@@ -80,19 +80,8 @@ L.Icon = L.Class.extend({
 	},
 
 	_createImg: function (src, el) {
-
-		if (!L.Browser.ie6) {
-			if (!el) {
-				el = document.createElement('img');
-			}
-			el.src = src;
-		} else {
-			if (!el) {
-				el = document.createElement('div');
-			}
-			el.style.filter =
-			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
-		}
+		el = el || document.createElement('img');
+		el.src = src;
 		return el;
 	},
 

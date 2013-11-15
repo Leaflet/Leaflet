@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-	<title>Spec Runner</title>
+	<meta charset="utf-8">
+	<title>Leaflet Spec Runner</title>
 	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
 </head>
 <body>
-    <div id="mocha"></div>
-    <script src="expect.js"></script>
-   	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
-	<script type="text/javascript" src="../node_modules/happen/src/happen.js"></script>
+	<div id="mocha"></div>
+	<script src="expect.js"></script>
+	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
+	<script type="text/javascript" src="../node_modules/happen/happen.js"></script>
 	<script type="text/javascript" src="sinon.js"></script>
 
 	<!-- source files -->
@@ -18,10 +18,12 @@
 
 	<script type="text/javascript" src="../debug/leaflet-include.js"></script>
 
-    <script>
-        mocha.setup('bdd');
-        mocha.ignoreLeaks();
-    </script>
+	<script>
+		mocha.setup({
+			ui: 'bdd',
+			ignoreLeaks: true
+		});
+	</script>
 
 	<!-- spec files -->
 
@@ -74,8 +76,11 @@
 	<!-- /map -->
 	<script type="text/javascript" src="suites/map/MapSpec.js"></script>
 
-    <script>
-        (window.mochaPhantomJS || window.mocha).run();
-    </script>
+	<!-- /map/handler -->
+	<script type="text/javascript" src="suites/map/handler/Map.DragSpec.js"></script>
+
+	<script>
+		(window.mochaPhantomJS || window.mocha).run();
+	</script>
 </body>
 </html>

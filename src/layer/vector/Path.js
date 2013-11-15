@@ -20,6 +20,8 @@ L.Path = L.Class.extend({
 		stroke: true,
 		color: '#0033ff',
 		dashArray: null,
+		lineCap: null,
+		lineJoin: null,
 		weight: 5,
 		opacity: 0.5,
 

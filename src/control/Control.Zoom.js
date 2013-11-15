@@ -4,7 +4,11 @@
 
 L.Control.Zoom = L.Control.extend({
 	options: {
-		position: 'topleft'
+		position: 'topleft',
+		zoomInText: '+',
+		zoomInTitle: 'Zoom in',
+		zoomOutText: '-',
+		zoomOutTitle: 'Zoom out'
 	},
 
 	onAdd: function (map) {
@@ -14,10 +18,13 @@ L.Control.Zoom = L.Control.extend({
 		this._map = map;
 
 		this._zoomInButton  = this._createButton(
-		        '+', 'Zoom in',  zoomName + '-in',  container, this._zoomIn,  this);
+		        this.options.zoomInText, this.options.zoomInTitle,
+		        zoomName + '-in',  container, this._zoomIn,  this);
 		this._zoomOutButton = this._createButton(
-		        '-', 'Zoom out', zoomName + '-out', container, this._zoomOut, this);
+		        this.options.zoomOutText, this.options.zoomOutTitle,
+		        zoomName + '-out', container, this._zoomOut, this);
 
+		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
 
 		return container;
@@ -48,7 +55,8 @@ L.Control.Zoom = L.Control.extend({
 		    .on(link, 'mousedown', stop)
 		    .on(link, 'dblclick', stop)
 		    .on(link, 'click', L.DomEvent.preventDefault)
-		    .on(link, 'click', fn, context);
+		    .on(link, 'click', fn, context)
+		    .on(link, 'click', this._refocusOnMap, context);
 
 		return link;
 	},

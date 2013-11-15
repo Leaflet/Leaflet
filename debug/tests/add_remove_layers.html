@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
     <link rel="stylesheet" href="../../dist/leaflet.css" />
-    <!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
     <link rel="stylesheet" href="../css/screen.css" />
     <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.0.js'></script>
@@ -32,7 +31,7 @@
                 map.addLayer(osm);
                 map.fitBounds(new L.LatLngBounds([51,7],[51,7]));
                 drawTestLine();
-                
+
 
             };
 
@@ -46,19 +45,19 @@
                         function (e) {
                             popup = new L.Popup();
                             popup.setLatLng(this.getLatLng());
-                
+
                             var popuptxt = "Hello!";
                             alert("I am the click function");
                                     popup.setContent(popuptxt);
 
                                     map.openPopup(popup);
-                                
-                            
+
+
                         });
                     myLayerGroup.addLayer(myCircle);
                         lat = lat + 0.0001;
                         long = long + 0.0001;
-                    
+
                 }
 
             map.addLayer(myLayerGroup);

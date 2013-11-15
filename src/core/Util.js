@@ -105,19 +105,23 @@ L.Util = {
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
-	template: function (str, data) {
-		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
-			var value = data[key];
-			if (value === undefined) {
-				throw new Error('No value provided for variable ' + str);
-			} else if (typeof value === 'function') {
-				value = value(data);
-			}
-			return value;
+	compileTemplate: function (str, data) {
+		// based on https://gist.github.com/padolsey/6008842
+		str = str.replace(/"/g, '\\\"');
+		str = str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
+			return '" + o["' + key + '"]' + (typeof data[key] === 'function' ? '(o)' : '') + ' + "';
 		});
+		// jshint evil: true
+		return new Function('o', 'return "' + str + '";');
 	},
 
-	isArray: function (obj) {
+	template: function (str, data) {
+		var cache = L.Util._templateCache = L.Util._templateCache || {};
+		cache[str] = cache[str] || L.Util.compileTemplate(str, data);
+		return cache[str](data);
+	},
+
+	isArray: Array.isArray || function (obj) {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 

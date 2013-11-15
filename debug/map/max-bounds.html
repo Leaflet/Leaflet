@@ -6,7 +6,6 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
 	<link rel="stylesheet" href="../css/mobile.css" />
 
@@ -31,6 +30,8 @@
 			maxBounds: bounds
 		});
 
+		var latlngs = L.rectangle(bounds).getLatLngs();
+		L.polyline(latlngs.concat([latlngs[0]])).addTo(map);
 
 	</script>
 </body>

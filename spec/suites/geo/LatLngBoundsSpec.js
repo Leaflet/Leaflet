@@ -1,7 +1,7 @@
-describe('LatLngBounds', function() {
+describe('LatLngBounds', function () {
 	var a, c;
 
-	beforeEach(function() {
+	beforeEach(function () {
 		a = new L.LatLngBounds(
 			new L.LatLng(14, 12),
 			new L.LatLng(30, 40));
@@ -27,12 +27,16 @@ describe('LatLngBounds', function() {
 
 		it('extends the bounds by given bounds', function () {
 			a.extend([[20, 50], [8, 40]]);
-
 			expect(a.getSouthEast()).to.eql(new L.LatLng(8, 50));
 		});
 
 		it('extends the bounds by undefined', function () {
 			expect(a.extend()).to.eql(a);
+		});
+
+		it('extends the bounds by raw object', function () {
+			a.extend({lat: 20, lng: 50});
+			expect(a.getNorthEast()).to.eql(new L.LatLng(30, 50));
 		});
 	});
 
@@ -58,62 +62,62 @@ describe('LatLngBounds', function() {
 		});
 	});
 
-	describe('#isValid', function() {
-		it('returns true if properly set up', function() {
+	describe('#isValid', function () {
+		it('returns true if properly set up', function () {
 			expect(a.isValid()).to.be.ok();
 		});
-		it('returns false if is invalid', function() {
+		it('returns false if is invalid', function () {
 			expect(c.isValid()).to.not.be.ok();
 		});
-		it('returns true if extended', function() {
+		it('returns true if extended', function () {
 			c.extend([0, 0]);
 			expect(c.isValid()).to.be.ok();
 		});
 	});
 
 	describe('#getWest', function () {
-		it('returns a proper bbox west value', function() {
+		it('returns a proper bbox west value', function () {
 			expect(a.getWest()).to.eql(12);
 		});
 	});
 
 	describe('#getSouth', function () {
-		it('returns a proper bbox south value', function() {
+		it('returns a proper bbox south value', function () {
 			expect(a.getSouth()).to.eql(14);
 		});
 
 	});
 
 	describe('#getEast', function () {
-		it('returns a proper bbox east value', function() {
+		it('returns a proper bbox east value', function () {
 			expect(a.getEast()).to.eql(40);
 		});
 
 	});
 
 	describe('#getNorth', function () {
-		it('returns a proper bbox north value', function() {
+		it('returns a proper bbox north value', function () {
 			expect(a.getNorth()).to.eql(30);
 		});
 
 	});
 
 	describe('#toBBoxString', function () {
-		it('returns a proper left,bottom,right,top bbox', function() {
+		it('returns a proper left,bottom,right,top bbox', function () {
 			expect(a.toBBoxString()).to.eql("12,14,40,30");
 		});
 
 	});
 
 	describe('#getNorthWest', function () {
-		it('returns a proper north-west LatLng', function() {
+		it('returns a proper north-west LatLng', function () {
 			expect(a.getNorthWest()).to.eql(new L.LatLng(a.getNorth(), a.getWest()));
 		});
 
 	});
 
 	describe('#getSouthEast', function () {
-		it('returns a proper south-east LatLng', function() {
+		it('returns a proper south-east LatLng', function () {
 			expect(a.getSouthEast()).to.eql(new L.LatLng(a.getSouth(), a.getEast()));
 		});
 	});

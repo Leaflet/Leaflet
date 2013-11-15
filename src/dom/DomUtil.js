@@ -30,8 +30,7 @@ L.DomUtil = {
 		    el = element,
 		    docBody = document.body,
 		    docEl = document.documentElement,
-		    pos,
-		    ie7 = L.Browser.ie7;
+		    pos;
 
 		do {
 			top  += el.offsetTop  || 0;
@@ -78,19 +77,6 @@ L.DomUtil = {
 			top  -= el.scrollTop  || 0;
 			left -= el.scrollLeft || 0;
 
-			// webkit (and ie <= 7) handles RTL scrollLeft different to everyone else
-			// https://code.google.com/p/closure-library/source/browse/trunk/closure/goog/style/bidi.js
-			if (!L.DomUtil.documentIsLtr() && (L.Browser.webkit || ie7)) {
-				left += el.scrollWidth - el.clientWidth;
-
-				// ie7 shows the scrollbar by default and provides clientWidth counting it, so we
-				// need to add it back in if it is visible; scrollbar is on the left as we are RTL
-				if (ie7 && L.DomUtil.getStyle(el, 'overflow-y') !== 'hidden' &&
-				           L.DomUtil.getStyle(el, 'overflow') !== 'hidden') {
-					left += 17;
-				}
-			}
-
 			el = el.parentNode;
 		} while (el);
 
@@ -118,18 +104,44 @@ L.DomUtil = {
 	},
 
 	hasClass: function (el, name) {
-		return (el.className.length > 0) &&
-		        new RegExp('(^|\\s)' + name + '(\\s|$)').test(el.className);
+		if (el.classList !== undefined) {
+			return el.classList.contains(name);
+		}
+		var className = L.DomUtil._getClass(el);
+		return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
 	},
 
 	addClass: function (el, name) {
-		if (!L.DomUtil.hasClass(el, name)) {
-			el.className += (el.className ? ' ' : '') + name;
+		if (el.classList !== undefined) {
+			var classes = L.Util.splitWords(name);
+			for (var i = 0, len = classes.length; i < len; i++) {
+				el.classList.add(classes[i]);
+			}
+		} else if (!L.DomUtil.hasClass(el, name)) {
+			var className = L.DomUtil._getClass(el);
+			L.DomUtil._setClass(el, (className ? className + ' ' : '') + name);
 		}
 	},
 
 	removeClass: function (el, name) {
-		el.className = L.Util.trim((' ' + el.className + ' ').replace(' ' + name + ' ', ' '));
+		if (el.classList !== undefined) {
+			el.classList.remove(name);
+		} else {
+			L.DomUtil._setClass(el, L.Util.trim((' ' + L.DomUtil._getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+		}
+	},
+
+	_setClass: function (el, name) {
+		if (el.className.baseVal === undefined) {
+			el.className = name;
+		} else {
+			// in case of SVG element
+			el.className.baseVal = name;
+		}
+	},
+
+	_getClass: function (el) {
+		return el.className.baseVal === undefined ? el.className : el.className.baseVal;
 	},
 
 	setOpacity: function (el, value) {
@@ -238,27 +250,39 @@ L.DomUtil.TRANSITION_END =
         L.DomUtil.TRANSITION + 'End' : 'transitionend';
 
 (function () {
-	var userSelectProperty = L.DomUtil.testProp(
-		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
+    if ('onselectstart' in document) {
+        L.extend(L.DomUtil, {
+            disableTextSelection: function () {
+                L.DomEvent.on(window, 'selectstart', L.DomEvent.preventDefault);
+            },
+
+            enableTextSelection: function () {
+                L.DomEvent.off(window, 'selectstart', L.DomEvent.preventDefault);
+            }
+        });
+    } else {
+        var userSelectProperty = L.DomUtil.testProp(
+            ['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
+
+        L.extend(L.DomUtil, {
+            disableTextSelection: function () {
+                if (userSelectProperty) {
+                    var style = document.documentElement.style;
+                    this._userSelect = style[userSelectProperty];
+                    style[userSelectProperty] = 'none';
+                }
+            },
+
+            enableTextSelection: function () {
+                if (userSelectProperty) {
+                    document.documentElement.style[userSelectProperty] = this._userSelect;
+                    delete this._userSelect;
+                }
+            }
+        });
+    }
 
 	L.extend(L.DomUtil, {
-		disableTextSelection: function () {
-			L.DomEvent.on(window, 'selectstart', L.DomEvent.preventDefault);
-			if (userSelectProperty) {
-				var style = document.documentElement.style;
-				this._userSelect = style[userSelectProperty];
-				style[userSelectProperty] = 'none';
-			}
-		},
-
-		enableTextSelection: function () {
-			L.DomEvent.off(window, 'selectstart', L.DomEvent.preventDefault);
-			if (userSelectProperty) {
-				document.documentElement.style[userSelectProperty] = this._userSelect;
-				delete this._userSelect;
-			}
-		},
-
 		disableImageDrag: function () {
 			L.DomEvent.on(window, 'dragstart', L.DomEvent.preventDefault);
 		},

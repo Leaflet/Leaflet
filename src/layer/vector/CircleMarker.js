@@ -22,9 +22,20 @@ L.CircleMarker = L.Circle.extend({
 		this.setRadius(this.options.radius);
 	},
 
+	setLatLng: function (latlng) {
+		L.Circle.prototype.setLatLng.call(this, latlng);
+		if (this._popup && this._popup._isOpen) {
+			this._popup.setLatLng(latlng);
+		}
+	},
+
 	setRadius: function (radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
+	},
+
+	getRadius: function () {
+		return this._radius;
 	}
 });
 

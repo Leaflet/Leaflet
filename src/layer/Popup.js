@@ -12,11 +12,13 @@ L.Popup = L.Class.extend({
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
-		maxHeight: null,
+		// maxHeight: null,
 		autoPan: true,
 		closeButton: true,
 		offset: [0, 7],
 		autoPanPadding: [5, 5],
+		// autoPanPaddingTopLeft: null,
+		// autoPanPaddingBottomRight: null,
 		keepInView: false,
 		className: '',
 		zoomAnimation: true
@@ -36,7 +38,6 @@ L.Popup = L.Class.extend({
 		if (!this._container) {
 			this._initLayout();
 		}
-		this._updateContent();
 
 		var animFade = map.options.fadeAnimation;
 
@@ -47,7 +48,7 @@ L.Popup = L.Class.extend({
 
 		map.on(this._getEvents(), this);
 
-		this._update();
+		this.update();
 
 		if (animFade) {
 			L.DomUtil.setOpacity(this._container, 1);
@@ -94,16 +95,41 @@ L.Popup = L.Class.extend({
 		}
 	},
 
+	getLatLng: function () {
+		return this._latlng;
+	},
+
 	setLatLng: function (latlng) {
 		this._latlng = L.latLng(latlng);
-		this._update();
+		if (this._map) {
+			this._updatePosition();
+			this._adjustPan();
+		}
 		return this;
+	},
+
+	getContent: function () {
+		return this._content;
 	},
 
 	setContent: function (content) {
 		this._content = content;
-		this._update();
+		this.update();
 		return this;
+	},
+
+	update: function () {
+		if (!this._map) { return; }
+
+		this._container.style.visibility = 'hidden';
+
+		this._updateContent();
+		this._updateLayout();
+		this._updatePosition();
+
+		this._container.style.visibility = '';
+
+		this._adjustPan();
 	},
 
 	_getEvents: function () {
@@ -152,25 +178,12 @@ L.Popup = L.Class.extend({
 		L.DomEvent.disableClickPropagation(wrapper);
 
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
-		L.DomEvent.on(this._contentNode, 'mousewheel', L.DomEvent.stopPropagation);
-		L.DomEvent.on(this._contentNode, 'MozMousePixelScroll', L.DomEvent.stopPropagation);
+
+		L.DomEvent.disableScrollPropagation(this._contentNode);
 		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
+
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
-	},
-
-	_update: function () {
-		if (!this._map) { return; }
-
-		this._container.style.visibility = 'hidden';
-
-		this._updateContent();
-		this._updateLayout();
-		this._updatePosition();
-
-		this._container.style.visibility = '';
-
-		this._adjustPan();
 	},
 
 	_updateContent: function () {
@@ -257,21 +270,23 @@ L.Popup = L.Class.extend({
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
 		    padding = L.point(this.options.autoPanPadding),
+		    paddingTL = L.point(this.options.autoPanPaddingTopLeft || padding),
+		    paddingBR = L.point(this.options.autoPanPaddingBottomRight || padding),
 		    size = map.getSize(),
 		    dx = 0,
 		    dy = 0;
 
-		if (containerPos.x + containerWidth > size.x) { // right
-			dx = containerPos.x + containerWidth - size.x + padding.x;
+		if (containerPos.x + containerWidth + paddingBR.x > size.x) { // right
+			dx = containerPos.x + containerWidth - size.x + paddingBR.x;
 		}
-		if (containerPos.x - dx < 0) { // left
-			dx = containerPos.x - padding.x;
+		if (containerPos.x - dx - paddingTL.x < 0) { // left
+			dx = containerPos.x - paddingTL.x;
 		}
-		if (containerPos.y + containerHeight > size.y) { // bottom
-			dy = containerPos.y + containerHeight - size.y + padding.y;
+		if (containerPos.y + containerHeight + paddingBR.y > size.y) { // bottom
+			dy = containerPos.y + containerHeight - size.y + paddingBR.y;
 		}
-		if (containerPos.y - dy < 0) { // top
-			dy = containerPos.y - padding.y;
+		if (containerPos.y - dy - paddingTL.y < 0) { // top
+			dy = containerPos.y - paddingTL.y;
 		}
 
 		if (dx || dy) {

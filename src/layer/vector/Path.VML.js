@@ -40,10 +40,14 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 
 	_initPath: function () {
 		var container = this._container = this._createElement('shape');
-		L.DomUtil.addClass(container, 'leaflet-vml-shape');
+
+		L.DomUtil.addClass(container, 'leaflet-vml-shape' +
+			(this.options.className ? ' ' + this.options.className : ''));
+
 		if (this.options.clickable) {
 			L.DomUtil.addClass(container, 'leaflet-clickable');
 		}
+
 		container.coordsize = '1 1';
 
 		this._path = this._createElement('path');
@@ -76,11 +80,17 @@ L.Path = L.Browser.svg || !L.Browser.vml ? L.Path : L.Path.extend({
 			stroke.opacity = options.opacity;
 
 			if (options.dashArray) {
-				stroke.dashStyle = options.dashArray instanceof Array ?
+				stroke.dashStyle = L.Util.isArray(options.dashArray) ?
 				    options.dashArray.join(' ') :
 				    options.dashArray.replace(/( *, *)/g, ' ');
 			} else {
 				stroke.dashStyle = '';
+			}
+			if (options.lineCap) {
+				stroke.endcap = options.lineCap.replace('butt', 'flat');
+			}
+			if (options.lineJoin) {
+				stroke.joinstyle = options.lineJoin;
 			}
 
 		} else if (stroke) {

@@ -1,6 +1,6 @@
-describe('LatLng', function() {
-	describe('constructor', function() {
-		it("sets lat and lng", function() {
+describe('LatLng', function () {
+	describe('constructor', function () {
+		it("sets lat and lng", function () {
 			var a = new L.LatLng(25, 74);
 			expect(a.lat).to.eql(25);
 			expect(a.lng).to.eql(74);
@@ -15,16 +15,30 @@ describe('LatLng', function() {
 				var a = new L.LatLng(NaN, NaN);
 			}).to.throwError();
 		});
+
+		it('does not set altitude if undefined', function () {
+			var a = new L.LatLng(25, 74);
+			expect(typeof a.alt).to.eql('undefined');
+		});
+
+		it('sets altitude', function () {
+			var a = new L.LatLng(25, 74, 50);
+			expect(a.alt).to.eql(50);
+
+			var b = new L.LatLng(-25, -74, -50);
+			expect(b.alt).to.eql(-50);
+		});
+
 	});
 
-	describe('#equals', function() {
-		it("returns true if compared objects are equal within a certain margin", function() {
+	describe('#equals', function () {
+		it("returns true if compared objects are equal within a certain margin", function () {
 			var a = new L.LatLng(10, 20);
 			var b = new L.LatLng(10 + 1.0E-10, 20 - 1.0E-10);
 			expect(a.equals(b)).to.eql(true);
 		});
 
-		it("returns false if compared objects are not equal within a certain margin", function() {
+		it("returns false if compared objects are not equal within a certain margin", function () {
 			var a = new L.LatLng(10, 20);
 			var b = new L.LatLng(10, 23.3);
 			expect(a.equals(b)).to.eql(false);
@@ -37,7 +51,7 @@ describe('LatLng', function() {
 	});
 
 	describe('#wrap', function () {
-		it("wraps longitude to lie between -180 and 180 by default", function() {
+		it("wraps longitude to lie between -180 and 180 by default", function () {
 			var a = new L.LatLng(0, 190).wrap().lng;
 			expect(a).to.eql(-170);
 
@@ -63,7 +77,7 @@ describe('LatLng', function() {
 			expect(h).to.eql(180);
 		});
 
-		it("wraps longitude within the given range", function() {
+		it("wraps longitude within the given range", function () {
 			var a = new L.LatLng(0, 190).wrap(-100, 100).lng;
 			expect(a).to.eql(-10);
 		});

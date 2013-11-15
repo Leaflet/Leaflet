@@ -41,11 +41,12 @@ L.Marker.include({
 
 		options = L.extend({offset: anchor}, options);
 
-		if (!this._popup) {
+		if (!this._popupHandlersAdded) {
 			this
 			    .on('click', this.togglePopup, this)
 			    .on('remove', this.closePopup, this)
 			    .on('move', this._movePopup, this);
+			this._popupHandlersAdded = true;
 		}
 
 		if (content instanceof L.Popup) {
@@ -70,11 +71,16 @@ L.Marker.include({
 		if (this._popup) {
 			this._popup = null;
 			this
-			    .off('click', this.togglePopup)
-			    .off('remove', this.closePopup)
-			    .off('move', this._movePopup);
+			    .off('click', this.togglePopup, this)
+			    .off('remove', this.closePopup, this)
+			    .off('move', this._movePopup, this);
+			this._popupHandlersAdded = false;
 		}
 		return this;
+	},
+
+	getPopup: function () {
+		return this._popup;
 	},
 
 	_movePopup: function (e) {

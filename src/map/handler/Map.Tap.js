@@ -36,7 +36,7 @@ L.Map.Tap = L.Handler.extend({
 		this._startPos = this._newPos = new L.Point(first.clientX, first.clientY);
 
 		// if touching a link, highlight it
-		if (el.tagName.toLowerCase() === 'a') {
+		if (el.tagName && el.tagName.toLowerCase() === 'a') {
 			L.DomUtil.addClass(el, 'leaflet-active');
 		}
 
@@ -66,7 +66,7 @@ L.Map.Tap = L.Handler.extend({
 			var first = e.changedTouches[0],
 			    el = first.target;
 
-			if (el.tagName.toLowerCase() === 'a') {
+			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
 
@@ -102,6 +102,6 @@ L.Map.Tap = L.Handler.extend({
 	}
 });
 
-if (L.Browser.touch && !L.Browser.msTouch) {
+if (L.Browser.touch && !L.Browser.pointer) {
 	L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);
 }

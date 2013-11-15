@@ -29,8 +29,8 @@ describe("Map", function () {
 				var container = document.createElement('div'),
 					map = new L.Map(container);
 				expect(function () {
-					new L.Map(container);
-				}).to.throwException(function(e) {
+					L.map(container);
+				}).to.throwException(function (e) {
 					expect(e.message).to.eql("Map container is already initialized.");
 				});
 				map.remove();
@@ -38,8 +38,8 @@ describe("Map", function () {
 
 			it("throws an exception if a container is not found", function () {
 				expect(function () {
-					new L.Map('nonexistentdivelement');
-				}).to.throwException(function(e) {
+					L.map('nonexistentdivelement');
+				}).to.throwException(function (e) {
 					expect(e.message).to.eql("Map container not found.");
 				});
 				map.remove();
@@ -72,10 +72,23 @@ describe("Map", function () {
 	});
 
 	describe('#getCenter', function () {
-		it ('throws if not set before', function () {
+		it('throws if not set before', function () {
 			expect(function () {
 				map.getCenter();
 			}).to.throwError();
+		});
+
+		it('returns a precise center when zoomed in after being set (#426)', function () {
+			var center = L.latLng(10, 10);
+			map.setView(center, 1);
+			map.setZoom(19);
+			expect(map.getCenter()).to.eql(center);
+		});
+
+		it('returns correct center after invalidateSize (#1919)', function () {
+			map.setView(L.latLng(10, 10), 1);
+			map.invalidateSize();
+			expect(map.getCenter()).not.to.eql(L.latLng(10, 10));
 		});
 	});
 
@@ -108,6 +121,12 @@ describe("Map", function () {
 			expect(map.getZoom()).to.be(13);
 			expect(map.getCenter().distanceTo([51.505, -0.09])).to.be.lessThan(5);
 		});
+		it("can be passed without a zoom specified", function () {
+			map.setZoom(13);
+			expect(map.setView([51.605, -0.11])).to.be(map);
+			expect(map.getZoom()).to.be(13);
+			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
+		});
 	});
 
 	describe("#getBounds", function () {
@@ -120,7 +139,53 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#setMaxBounds', function () {
+		it("aligns pixel-wise map view center with maxBounds center if it cannot move view bounds inside maxBounds (#1908)", function () {
+			var container = map.getContainer();
+			// large view, cannot fit within maxBounds
+			container.style.width = container.style.height = "1000px";
+			document.body.appendChild(container);
+			// maxBounds
+			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
+			map.setMaxBounds(bounds, {animate: false});
+			// set view outside
+			map.setView(L.latLng([53.0, 0.15]), 12, {animate: false});
+			// get center of bounds in pixels
+			var boundsCenter = map.project(bounds.getCenter()).round();
+			expect(map.project(map.getCenter()).round()).to.eql(boundsCenter);
+			document.body.removeChild(container);
+		});
+		it("moves map view within maxBounds by changing one coordinate", function () {
+			var container = map.getContainer();
+			// small view, can fit within maxBounds
+			container.style.width = container.style.height = "200px";
+			document.body.appendChild(container);
+			// maxBounds
+			var bounds = L.latLngBounds([51, -0.2], [52, 0.2]);
+			map.setMaxBounds(bounds, {animate: false});
+			// set view outside maxBounds on one direction only
+			// leaves untouched the other coordinate (that is not already centered)
+			var initCenter = [53.0, 0.1];
+			map.setView(L.latLng(initCenter), 16, {animate: false});
+			// one pixel coordinate hasn't changed, the other has
+			var pixelCenter = map.project(map.getCenter()).round();
+			var pixelInit = map.project(initCenter).round();
+			expect(pixelCenter.x).to.eql(pixelInit.x);
+			expect(pixelCenter.y).not.to.eql(pixelInit.y);
+			// the view is inside the bounds
+			expect(bounds.contains(map.getBounds())).to.be(true);
+			document.body.removeChild(container);
+		});
+	});
+
 	describe("#getMinZoom and #getMaxZoom", function () {
+		describe('#getMinZoom', function () {
+			it('returns 0 if not set by Map options or TileLayer options', function () {
+				var map = L.map(document.createElement('div'));
+				expect(map.getMinZoom()).to.be(0);
+			});
+		});
+
 		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
 
 			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
@@ -189,7 +254,7 @@ describe("Map", function () {
 
 		it("adds the layer before firing layeradd", function (done) {
 			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
-			map.on('layeradd', function() {
+			map.on('layeradd', function () {
 				expect(map.hasLayer(layer)).to.be.ok();
 				done();
 			});
@@ -202,7 +267,7 @@ describe("Map", function () {
 				var spy = sinon.spy();
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
 				expect(spy.called).to.be.ok();
 			});
 		});
@@ -210,10 +275,10 @@ describe("Map", function () {
 		describe("when a new layer with greater zoomlevel coverage than the current layer is added to a map", function () {
 			it("fires a zoomlevelschange event", function () {
 				var spy = sinon.spy();
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 15 }).addTo(map);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 15}).addTo(map);
 				expect(spy.called).to.be.ok();
 			});
 		});
@@ -221,12 +286,12 @@ describe("Map", function () {
 		describe("when a new layer with the same or lower zoomlevel coverage as the current layer is added to a map", function () {
 			it("fires no zoomlevelschange event", function () {
 				var spy = sinon.spy();
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
 				map.on("zoomlevelschange", spy);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
 				expect(spy.called).not.to.be.ok();
-				L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 5 }).addTo(map);
+				L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 5}).addTo(map);
 				expect(spy.called).not.to.be.ok();
 			});
 		});
@@ -285,7 +350,7 @@ describe("Map", function () {
 
 		it("removes the layer before firing layerremove", function (done) {
 			var layer = { onAdd: sinon.spy(), onRemove: sinon.spy() };
-			map.on('layerremove', function() {
+			map.on('layerremove', function () {
 				expect(map.hasLayer(layer)).not.to.be.ok();
 				done();
 			});
@@ -296,9 +361,9 @@ describe("Map", function () {
 
 		describe("when the last tile layer on a map is removed", function () {
 			it("fires a zoomlevelschange event", function () {
-				map.whenReady(function(){
+				map.whenReady(function () {
 					var spy = sinon.spy();
-					var tl = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map);
+					var tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map);
 
 					map.on("zoomlevelschange", spy);
 					expect(spy.called).not.to.be.ok();
@@ -310,10 +375,10 @@ describe("Map", function () {
 
 		describe("when a tile layer is removed from a map and it had greater zoom level coverage than the remainding layer", function () {
 			it("fires a zoomlevelschange event", function () {
-				map.whenReady(function(){
+				map.whenReady(function () {
 					var spy = sinon.spy(),
-						tl = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map),
-					    t2 = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 15 }).addTo(map);
+						tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
+					    t2 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 15}).addTo(map);
 
 					map.on("zoomlevelschange", spy);
 					expect(spy.called).to.not.be.ok();
@@ -325,10 +390,10 @@ describe("Map", function () {
 
 		describe("when a tile layer is removed from a map it and it had lesser or the sa,e zoom level coverage as the remainding layer(s)", function () {
 			it("fires no zoomlevelschange event", function () {
-				map.whenReady(function(){
-					var tl = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map),
-					    t2 = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 10 }).addTo(map),
-					    t3 = L.tileLayer("{z}{x}{y}", { minZoom:0, maxZoom: 5 }).addTo(map);
+				map.whenReady(function () {
+					var tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
+					    t2 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
+					    t3 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 5}).addTo(map);
 
 					map.on("zoomlevelschange", spy);
 					expect(spy).not.toHaveBeenCalled();
@@ -365,6 +430,107 @@ describe("Map", function () {
 			map.eachLayer(spy, map);
 
 			expect(spy.thisValues[0]).to.eql(map);
+		});
+	});
+
+	describe("#invalidateSize", function () {
+		var container,
+		    origWidth = 100,
+			clock;
+
+		beforeEach(function () {
+			container = map.getContainer();
+			container.style.width = origWidth + "px";
+			document.body.appendChild(container);
+			map.setView([0, 0], 0);
+			map.invalidateSize({pan: false});
+			clock = sinon.useFakeTimers();
+		});
+
+		afterEach(function () {
+			document.body.removeChild(container);
+			clock.restore();
+		});
+
+		it("pans by the right amount when growing in 1px increments", function () {
+			container.style.width = (origWidth + 1) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(1);
+
+			container.style.width = (origWidth + 2) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(1);
+
+			container.style.width = (origWidth + 3) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(2);
+		});
+
+		it("pans by the right amount when shrinking in 1px increments", function () {
+			container.style.width = (origWidth - 1) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(0);
+
+			container.style.width = (origWidth - 2) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(-1);
+
+			container.style.width = (origWidth - 3) + "px";
+			map.invalidateSize();
+			expect(map._getMapPanePos().x).to.be(-1);
+		});
+
+		it("pans back to the original position after growing by an odd size and back", function () {
+			container.style.width = (origWidth + 5) + "px";
+			map.invalidateSize();
+
+			container.style.width = origWidth + "px";
+			map.invalidateSize();
+
+			expect(map._getMapPanePos().x).to.be(0);
+		});
+
+		it("emits no move event if the size has not changed", function () {
+			var spy = sinon.spy();
+			map.on("move", spy);
+
+			map.invalidateSize();
+
+			expect(spy.called).not.to.be.ok();
+		});
+
+		it("emits a move event if the size has changed", function () {
+			var spy = sinon.spy();
+			map.on("move", spy);
+
+			container.style.width = (origWidth + 5) + "px";
+			map.invalidateSize();
+
+			expect(spy.called).to.be.ok();
+		});
+
+		it("emits a moveend event if the size has changed", function () {
+			var spy = sinon.spy();
+			map.on("moveend", spy);
+
+			container.style.width = (origWidth + 5) + "px";
+			map.invalidateSize();
+
+			expect(spy.called).to.be.ok();
+		});
+
+		it("debounces the moveend event if the debounceMoveend option is given", function () {
+			var spy = sinon.spy();
+			map.on("moveend", spy);
+
+			container.style.width = (origWidth + 5) + "px";
+			map.invalidateSize({debounceMoveend: true});
+
+			expect(spy.called).not.to.be.ok();
+
+			clock.tick(200);
+
+			expect(spy.called).to.be.ok();
 		});
 	});
 });

@@ -4,7 +4,6 @@
 	<title>Leaflet debug page</title>
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
@@ -24,7 +23,7 @@
 	//console.log = function (text) {
 	//	buffer += text + "\r\n";
 	//}
-	
+
 		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
 			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18}),
 			map = new L.Map('map', {layers: [cloudmade], center: new L.LatLng(51.505, -0.04), zoom: 13});
@@ -157,7 +156,7 @@
 			}
 			_timerAt++;
 		}
-		
+
 		function Hack4() {
 			_timerAt = 0;
 			clearInterval(_timer);

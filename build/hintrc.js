@@ -1,9 +1,11 @@
-exports.config = {
-
+{
 	// environment
 	"browser": true,
 	"node": true,
-	"predef": ['define'],
+	"globals": {
+		"L": true,
+		"define": true
+	},
 	"strict": false,
 
 	// code style
@@ -34,4 +36,4 @@ exports.config = {
 	// "maxcomplexity": 5
 	// "maxparams": 4,
 	// "maxdepth": 4
-};
+}

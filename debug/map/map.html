@@ -4,7 +4,6 @@
 	<title>Leaflet debug page</title>
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -22,7 +21,7 @@
 
 		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/997/256/{z}/{x}/{y}.png', {
 			maxZoom: 18,
-			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
+			attribution: 'Map data &copy; 2011 <a href="#">OpenStreetMap</a> contributors, Imagery &copy; 2011 <a href="#">CloudMade</a>',
 			key: 'd4fc77ea4a63471cab2423e66626cbb6'
 		});
 

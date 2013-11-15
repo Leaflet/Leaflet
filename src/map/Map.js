@@ -23,8 +23,13 @@ L.Map = L.Class.extend({
 	initialize: function (id, options) { // (HTMLElement or String, Object)
 		options = L.setOptions(this, options);
 
+
 		this._initContainer(id);
 		this._initLayout();
+
+		// hack for https://github.com/Leaflet/Leaflet/issues/1980
+		this._onResize = L.bind(this._onResize, this);
+
 		this._initEvents();
 
 		if (options.maxBounds) {
@@ -51,11 +56,16 @@ L.Map = L.Class.extend({
 
 	// replaced by animation-powered implementation in Map.PanAnimation.js
 	setView: function (center, zoom) {
+		zoom = zoom === undefined ? this.getZoom() : zoom;
 		this._resetView(L.latLng(center), this._limitZoom(zoom));
 		return this;
 	},
 
 	setZoom: function (zoom, options) {
+		if (!this._loaded) {
+			this._zoom = this._limitZoom(zoom);
+			return this;
+		}
 		return this.setView(this.getCenter(), zoom, {zoom: options});
 	},
 
@@ -93,6 +103,8 @@ L.Map = L.Class.extend({
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
 		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
 
+		zoom = options && options.maxZoom ? Math.min(options.maxZoom, zoom) : zoom;
+
 		return this.setView(center, zoom, options);
 	},
 
@@ -105,7 +117,7 @@ L.Map = L.Class.extend({
 	},
 
 	panBy: function (offset) { // (Point)
-		// replaced with animated panBy in Map.Animation.js
+		// replaced with animated panBy in Map.PanAnimation.js
 		this.fire('movestart');
 
 		this._rawPanBy(L.point(offset));
@@ -114,63 +126,29 @@ L.Map = L.Class.extend({
 		return this.fire('moveend');
 	},
 
-	setMaxBounds: function (bounds, options) {
+	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
 		this.options.maxBounds = bounds;
 
 		if (!bounds) {
-			this._boundsMinZoom = null;
-			this.off('moveend', this._panInsideMaxBounds, this);
-			return this;
+			return this.off('moveend', this._panInsideMaxBounds, this);
 		}
-
-		var minZoom = this.getBoundsZoom(bounds, true);
-
-		this._boundsMinZoom = minZoom;
 
 		if (this._loaded) {
-			if (this._zoom < minZoom) {
-				this.setView(bounds.getCenter(), minZoom, options);
-			} else {
-				this.panInsideBounds(bounds);
-			}
+			this._panInsideMaxBounds();
 		}
 
-		this.on('moveend', this._panInsideMaxBounds, this);
-
-		return this;
+		return this.on('moveend', this._panInsideMaxBounds, this);
 	},
 
-	panInsideBounds: function (bounds) {
-		bounds = L.latLngBounds(bounds);
+	panInsideBounds: function (bounds, options) {
+		var center = this.getCenter(),
+			newCenter = this._limitCenter(center, this._zoom, bounds);
 
-		var viewBounds = this.getPixelBounds(),
-		    viewSw = viewBounds.getBottomLeft(),
-		    viewNe = viewBounds.getTopRight(),
-		    sw = this.project(bounds.getSouthWest()),
-		    ne = this.project(bounds.getNorthEast()),
-		    dx = 0,
-		    dy = 0;
+		if (center.equals(newCenter)) { return this; }
 
-		if (viewNe.y < ne.y) { // north
-			dy = Math.ceil(ne.y - viewNe.y);
-		}
-		if (viewNe.x > ne.x) { // east
-			dx = Math.floor(ne.x - viewNe.x);
-		}
-		if (viewSw.y > sw.y) { // south
-			dy = Math.floor(sw.y - viewSw.y);
-		}
-		if (viewSw.x < sw.x) { // west
-			dx = Math.ceil(sw.x - viewSw.x);
-		}
-
-		if (dx || dy) {
-			return this.panBy([dx, dy]);
-		}
-
-		return this;
+		return this.panTo(newCenter, options);
 	},
 
 	addLayer: function (layer) {
@@ -205,7 +183,7 @@ L.Map = L.Class.extend({
 	removeLayer: function (layer) {
 		var id = L.stamp(layer);
 
-		if (!this._layers[id]) { return; }
+		if (!this._layers[id]) { return this; }
 
 		if (this._loaded) {
 			layer.onRemove(this);
@@ -253,15 +231,14 @@ L.Map = L.Class.extend({
 
 		var oldSize = this.getSize();
 		this._sizeChanged = true;
-
-		if (this.options.maxBounds) {
-			this.setMaxBounds(this.options.maxBounds);
-		}
+		this._initialCenter = null;
 
 		if (!this._loaded) { return this; }
 
 		var newSize = this.getSize(),
-		    offset = oldSize.subtract(newSize).divideBy(2).round();
+		    oldCenter = oldSize.divideBy(2).round(),
+		    newCenter = newSize.divideBy(2).round(),
+		    offset = oldCenter.subtract(newCenter);
 
 		if (!offset.x && !offset.y) { return this; }
 
@@ -275,9 +252,12 @@ L.Map = L.Class.extend({
 
 			this.fire('move');
 
-			// make sure moveend is not fired too often on resize
-			clearTimeout(this._sizeTimer);
-			this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+			if (options.debounceMoveend) {
+				clearTimeout(this._sizeTimer);
+				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+			} else {
+				this.fire('moveend');
+			}
 		}
 
 		return this.fire('resize', {
@@ -288,7 +268,7 @@ L.Map = L.Class.extend({
 
 	// TODO handler.addTo
 	addHandler: function (name, HandlerClass) {
-		if (!HandlerClass) { return; }
+		if (!HandlerClass) { return this; }
 
 		var handler = this[name] = new HandlerClass(this);
 
@@ -308,7 +288,12 @@ L.Map = L.Class.extend({
 
 		this._initEvents('off');
 
-		delete this._container._leaflet;
+		try {
+			// throws error in IE6-8
+			delete this._container._leaflet;
+		} catch (e) {
+			this._container._leaflet = undefined;
+		}
 
 		this._clearPanes();
 		if (this._clearControlPos) {
@@ -326,7 +311,7 @@ L.Map = L.Class.extend({
 	getCenter: function () { // (Boolean) -> LatLng
 		this._checkIfLoaded();
 
-		if (!this._moved()) {
+		if (this._initialCenter && !this._moved()) {
 			return this._initialCenter;
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
@@ -345,9 +330,9 @@ L.Map = L.Class.extend({
 	},
 
 	getMinZoom: function () {
-		var z1 = this._layersMinZoom === undefined ? 0 : this._layersMinZoom,
-		    z2 = this._boundsMinZoom === undefined ? 0 : this._boundsMinZoom;
-		return this.options.minZoom === undefined ? Math.max(z1, z2) : this.options.minZoom;
+		return this.options.minZoom === undefined ?
+			(this._layersMinZoom === undefined ? 0 : this._layersMinZoom) :
+			this.options.minZoom;
 	},
 
 	getMaxZoom: function () {
@@ -499,6 +484,7 @@ L.Map = L.Class.extend({
 		L.DomUtil.addClass(container, 'leaflet-container' +
 			(L.Browser.touch ? ' leaflet-touch' : '') +
 			(L.Browser.retina ? ' leaflet-retina' : '') +
+			(L.Browser.ielt9 ? ' leaflet-oldie' : '') +
 			(this.options.fadeAnimation ? ' leaflet-fade-anim' : ''));
 
 		var position = L.DomUtil.getStyle(container, 'position');
@@ -669,12 +655,14 @@ L.Map = L.Class.extend({
 	_onResize: function () {
 		L.Util.cancelAnimFrame(this._resizeRequest);
 		this._resizeRequest = L.Util.requestAnimFrame(
-		        this.invalidateSize, this, false, this._container);
+		        function () { this.invalidateSize({debounceMoveend: true}); }, this, false, this._container);
 	},
 
 	_onMouseClick: function (e) {
-		if (!this._loaded || (!e._simulated && this.dragging && this.dragging.moved()) ||
-		        L.DomEvent._skipped(e)) { return; }
+		if (!this._loaded || (!e._simulated &&
+		        ((this.dragging && this.dragging.moved()) ||
+		         (this.boxZoom  && this.boxZoom.moved()))) ||
+		            L.DomEvent._skipped(e)) { return; }
 
 		this.fire('preclick');
 		this._fireMouseEvent(e);
@@ -767,6 +755,46 @@ L.Map = L.Class.extend({
 	// offset of the specified place to the current center in pixels
 	_getCenterOffset: function (latlng) {
 		return this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint());
+	},
+
+	// adjust center for view to get inside bounds
+	_limitCenter: function (center, zoom, bounds) {
+
+		if (!bounds) { return center; }
+
+		var centerPoint = this.project(center, zoom),
+		    viewHalf = this.getSize().divideBy(2),
+		    viewBounds = new L.Bounds(centerPoint.subtract(viewHalf), centerPoint.add(viewHalf)),
+		    offset = this._getBoundsOffset(viewBounds, bounds, zoom);
+
+		return this.unproject(centerPoint.add(offset), zoom);
+	},
+
+	// adjust offset for view to get inside bounds
+	_limitOffset: function (offset, bounds) {
+		if (!bounds) { return offset; }
+
+		var viewBounds = this.getPixelBounds(),
+		    newBounds = new L.Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
+
+		return offset.add(this._getBoundsOffset(newBounds, bounds));
+	},
+
+	// returns offset needed for pxBounds to get inside maxBounds at a specified zoom
+	_getBoundsOffset: function (pxBounds, maxBounds, zoom) {
+		var nwOffset = this.project(maxBounds.getNorthWest(), zoom).subtract(pxBounds.min),
+		    seOffset = this.project(maxBounds.getSouthEast(), zoom).subtract(pxBounds.max),
+
+		    dx = this._rebound(nwOffset.x, -seOffset.x),
+		    dy = this._rebound(nwOffset.y, -seOffset.y);
+
+		return new L.Point(dx, dy);
+	},
+
+	_rebound: function (left, right) {
+		return left + right > 0 ?
+			Math.round(left - right) / 2 :
+			Math.max(0, Math.ceil(left)) - Math.max(0, Math.floor(right));
 	},
 
 	_limitZoom: function (zoom) {

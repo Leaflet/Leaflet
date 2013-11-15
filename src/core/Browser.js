@@ -4,9 +4,7 @@
 
 (function () {
 
-	var ie = !!window.ActiveXObject,
-	    ie6 = ie && !window.XMLHttpRequest,
-	    ie7 = ie && !document.querySelector,
+	var ie = 'ActiveXObject' in window,
 		ielt9 = ie && !document.addEventListener,
 
 	    // terrible browser detection to work around Safari / iOS / Android browser bugs
@@ -16,10 +14,13 @@
 	    phantomjs = ua.indexOf('phantom') !== -1,
 	    android = ua.indexOf('android') !== -1,
 	    android23 = ua.search('android [23]') !== -1,
+		gecko = ua.indexOf('gecko') !== -1,
 
 	    mobile = typeof orientation !== undefined + '',
-	    msTouch = window.navigator && window.navigator.msPointerEnabled &&
-	              window.navigator.msMaxTouchPoints,
+	    msPointer = window.navigator && window.navigator.msPointerEnabled &&
+	              window.navigator.msMaxTouchPoints && !window.PointerEvent,
+		pointer = (window.PointerEvent && window.navigator.pointerEnabled && window.navigator.maxTouchPoints) ||
+				  msPointer,
 	    retina = ('devicePixelRatio' in window && window.devicePixelRatio > 1) ||
 	             ('matchMedia' in window && window.matchMedia('(min-resolution:144dpi)') &&
 	              window.matchMedia('(min-resolution:144dpi)').matches),
@@ -39,8 +40,8 @@
 
 		var startName = 'ontouchstart';
 
-		// IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.MsTouch) or WebKit, etc.
-		if (msTouch || (startName in doc)) {
+		// IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.Pointer) or WebKit, etc.
+		if (pointer || (startName in doc)) {
 			return true;
 		}
 
@@ -66,10 +67,9 @@
 
 	L.Browser = {
 		ie: ie,
-		ie6: ie6,
-		ie7: ie7,
 		ielt9: ielt9,
 		webkit: webkit,
+		gecko: gecko && !webkit && !window.opera && !ie,
 
 		android: android,
 		android23: android23,
@@ -88,7 +88,8 @@
 		mobileOpera: mobile && window.opera,
 
 		touch: touch,
-		msTouch: msTouch,
+		msPointer: msPointer,
+		pointer: pointer,
 
 		retina: retina
 	};

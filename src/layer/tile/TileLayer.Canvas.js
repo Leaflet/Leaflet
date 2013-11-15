@@ -17,7 +17,7 @@ L.TileLayer.Canvas = L.TileLayer.extend({
 			this._reset({hard: true});
 			this._update();
 		}
-		
+
 		for (var i in this._tiles) {
 			this._redrawTile(this._tiles[i]);
 		}

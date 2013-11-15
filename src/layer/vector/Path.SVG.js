@@ -50,6 +50,11 @@ L.Path = L.Path.extend({
 		this._container = this._createElement('g');
 
 		this._path = this._createElement('path');
+
+		if (this.options.className) {
+			L.DomUtil.addClass(this._path, this.options.className);
+		}
+
 		this._container.appendChild(this._path);
 	},
 
@@ -80,6 +85,12 @@ L.Path = L.Path.extend({
 			} else {
 				this._path.removeAttribute('stroke-dasharray');
 			}
+			if (this.options.lineCap) {
+				this._path.setAttribute('stroke-linecap', this.options.lineCap);
+			}
+			if (this.options.lineJoin) {
+				this._path.setAttribute('stroke-linejoin', this.options.lineJoin);
+			}
 		} else {
 			this._path.setAttribute('stroke', 'none');
 		}
@@ -104,7 +115,7 @@ L.Path = L.Path.extend({
 	_initEvents: function () {
 		if (this.options.clickable) {
 			if (L.Browser.svg || !L.Browser.vml) {
-				this._path.setAttribute('class', 'leaflet-clickable');
+				L.DomUtil.addClass(this._path, 'leaflet-clickable');
 			}
 
 			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
@@ -154,14 +165,14 @@ L.Map.include({
 			this._panes.overlayPane.appendChild(this._pathRoot);
 
 			if (this.options.zoomAnimation && L.Browser.any3d) {
-				this._pathRoot.setAttribute('class', ' leaflet-zoom-animated');
+				L.DomUtil.addClass(this._pathRoot, 'leaflet-zoom-animated');
 
 				this.on({
 					'zoomanim': this._animatePathZoom,
 					'zoomend': this._endPathZoom
 				});
 			} else {
-				this._pathRoot.setAttribute('class', ' leaflet-zoom-hide');
+				L.DomUtil.addClass(this._pathRoot, 'leaflet-zoom-hide');
 			}
 
 			this.on('moveend', this._updateSvgViewport);
