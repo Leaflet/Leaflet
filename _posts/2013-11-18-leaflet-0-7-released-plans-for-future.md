@@ -38,7 +38,7 @@ There are several big undertakings in refactoring Leaflet that I'd want to switc
 
 * Refactoring the **layers** architecture. Currently there's a lot of duplication of logic across implementation of different layers (map, markers, vector layers, etc.), specifically event handling, zoom animation logic, zIndex and pane handling (what appears on top of what etc.). Making the code consistent, more universal and shared across different layers will make it much easier to customize layers and make your own (e.g. integrate d3, etc.)
 * Splitting the huge TileLayer implementation into **GridLayer and TileLayer**, separating image tiles-related logic and grid-logic that will make other grid-like layer implementations (e.g. UTFGrid interaction or tiled GeoJSON) much simpler.
-* Refactoring **zoom animation logic** to make the long-awaited Easey-style animations (mapbox.js 0.6-style) possible.
+* Refactoring **zoom animation logic** to make the long-awaited Easey-style animations (zoom-panning between points) possible.
 * Refactoring **projections** code to make it easier to set up flat maps and weird projections and customize how Leaflet handles them.
 * Refactoring the **vector layers** code to make it possible to use different rendering backends (Canvas, SVG, etc.) for different layers on the same map and switch between them easily. This will also open it up for interesting extensions, like indexing layers with [RBush](https://github.com/mourner/rbush) for fast interaction features.
 
