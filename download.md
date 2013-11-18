@@ -11,7 +11,7 @@ title: Download
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.5.1.zip">Leaflet 0.7</a></td>
+		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.zip">Leaflet 0.7</a></td>
 		<td>Stable version, released on November 18, 2013.</td>
 	</tr>
 	<tr>
