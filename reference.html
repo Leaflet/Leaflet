@@ -3711,14 +3711,13 @@ map.panTo(L.latLng(50, 30));</code></pre>
 <p>All Leaflet methods and options that accept Point objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:</p>
 
 <pre><code>map.panBy([200, 300]);
-map.panBy( L.point(200, 300));</code></pre>
+map.panBy(L.point(200, 300));</code></pre>
 
 <h3>Creation</h3>
 
 <table data-id='point'>
 	<tr>
 		<th class="width250">Factory</th>
-		<th>Usage</th>
 		<th>Description</th>
 	</tr>
 	<tr>
@@ -3726,7 +3725,6 @@ map.panBy( L.point(200, 300));</code></pre>
 			<nobr>&lt;Number&gt; <i>x</i>, &lt;Number&gt; <i>y</i></nobr>,
 			<nobr>&lt;Boolean&gt; <i>round?</i> )</nobr>
 		</code></td>
-
 
 		<td>Creates a Point object with the given <code>x</code> and <code>y</code> coordinates. If optional <code>round</code> is set to <code><span class="literal">true</span></code>, rounds the <code>x</code> and <code>y</code> values.</td>
 	</tr>
@@ -4994,6 +4992,21 @@ var a = new MyClass("Hello");
 a.greet("World");
 </code></pre>
 
+
+<h3>Class Factories</h3>
+
+<p>You may have noticed that Leaflet objects are created without using the <code>new</code> keyword. This is achieved by complementing each class with a lowercase factory method:</p>
+
+<pre><code>new L.Map('map'); // becomes:
+L.map('map');</code></pre>
+
+<p>The factories are implemented very easily, and you can do this for your own classes:</p>
+
+<pre><code>L.map = function (id, options) {
+	return new L.Map(id, options);
+};</code></pre>
+
+
 <h3>Inheritance</h3>
 
 <p>You use <code>L.Class.extend</code> to define new classes, but you can use the same method on any class to inherit from it:</p>
@@ -5096,20 +5109,6 @@ a.foo();</code></pre>
 });
 
 MyClass.FOO; // 'bar'</code></pre>
-
-
-<h3>Class Factories</h3>
-
-<p>You may have noticed that you can create Leaflet class instances in two ways — using the <code>new</code> keyword, or using lowercase factory method:</p>
-
-<pre><code>new L.Map('map');
-L.map('map');</code></pre>
-
-<p>The second way is implemented very easily, and you can do this for your own classes:</p>
-
-<pre><code>L.map = function (id, options) {
-	return new L.Map(id, options);
-};</code></pre>
 
 
 <h3>Constructor Hooks</h3>
@@ -5373,23 +5372,16 @@ L.map('map');</code></pre>
 
 <table data-id='transformation'>
 	<tr>
-		<th class="width250">Factory</th>
-		<th>Usage</th>
+		<th class="width250">Creation</th>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Transformation</b>(
+		<td><code><nobr><span class='keyword'>new</span> <b>L.Transformation</b>(</nobr>
 			<nobr>&lt;Number&gt; <i>a</i></nobr>,
 			<nobr>&lt;Number&gt; <i>b</i></nobr>,
 			<nobr>&lt;Number&gt; <i>c</i></nobr>,
 			<nobr>&lt;Number&gt; <i>d</i> )</nobr>
 		</code></td>
-
-		<td class="factory-usage">
-			<code><span class='keyword'>new</span> L.Transformation(<span class="comment">&hellip;</span>)</code><br />
-			<!--<code>L.point(<span class="comment">&hellip;</span>)</code><br />
-			<code>L.point([<span class="comment">&hellip;</span>])</code>-->
-		</td>
 
 		<td>Creates a transformation object with the given coefficients.</td>
 	</tr>
@@ -5781,16 +5773,11 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 
 <table data-id='posanimation'>
 	<tr>
-		<th class="width200">Factory</th>
-		<th>Usage</th>
+		<th class="width200">Creation</th>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.PosAnimation</b>()</code></td>
-
-		<td class="factory-usage">
-			<code><span class='keyword'>new</span> L.PosAnimation()</code>
-		</td>
+		<td><code><span class='keyword'>new</span> <b>L.PosAnimation</b>()</code></td>
 
 		<td>Creates a PosAnimation object.</td>
 	</tr>
@@ -5858,20 +5845,14 @@ draggable.enable();
 
 <table data-id='draggable'>
 	<tr>
-		<th class="width200">Factory</th>
-		<th>Usage</th>
+		<th class="width200">Creation</th>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.Draggable</b>(
+		<td><code><b><span class='keyword'>new</span> L.Draggable</b>(
 			<nobr>&lt;HTMLElement&gt; <i>element</i>,</nobr>
 			<nobr>&lt;HTMLElement&gt; <i>dragHandle?</i> )</nobr>
 		</code></td>
-
-		<td class="factory-usage">
-			<code><span class='keyword'>new</span> L.Draggable(<span class="comment">&hellip;</span>)</code><!--<br />
-			<code>L.draggable(<span class="comment">&hellip;</span>)</code>-->
-		</td>
 
 		<td>Creates a Draggable object for moving the given element when you start dragging the <code>dragHandle</code> element (equals the element itself by default).</td>
 	</tr>
