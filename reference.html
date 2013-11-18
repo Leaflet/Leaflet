@@ -244,13 +244,13 @@ var map = L.map('map', {
 		<td><code><b>scrollWheelZoom</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
-		<td>Whether the map can be zoomed by using the mouse wheel.</td>
+		<td>Whether the map can be zoomed by using the mouse wheel. If passed <code><span class="string">'center'</span></code>, it will zoom to the center of the view regardless of where the mouse was.</td>
 	</tr>
 	<tr>
 		<td><code><b>doubleClickZoom</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
-		<td>Whether the map can be zoomed in by double clicking on it.</td>
+		<td>Whether the map can be zoomed in by double clicking on it and zoomed out by double clicking while holding shift. If passed <code><span class="string">'center'</span></code>, double-click zoom will zoom to the center of the view regardless of where the mouse was.</td>
 	</tr>
 	<tr>
 		<td><code><b>boxZoom</b></code></td>
@@ -287,6 +287,12 @@ var map = L.map('map', {
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
 		<td>Set it to <code><span class="literal">false</span></code> if you don't want popups to close when user clicks the map.</td>
+	</tr>
+	<tr>
+		<td><code><b>bounceZoomAtLimits</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code><span class="literal">true</span></code></td>
+		<td>Set it to <code><span class="literal">false</span></code> if you don't want the map to zoom beyound min/max zoom and then bounce back when pinch-zooming.</td>
 	</tr>
 </table>
 
@@ -520,7 +526,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>dragend</b></code></td>
-		<td><code><a href="#event">Event</a></code></td>
+		<td><code><a href="#dragend-event">DragEndEvent</a></code></td>
 		<td>Fired when the user stops dragging the map.</td>
 	</tr>
 	<tr>
@@ -607,7 +613,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>setView</b>(
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>center</i>,</nobr>
-			<nobr>&lt;Number&gt; <i>zoom</i>,</nobr>
+			<nobr>&lt;Number&gt; <i>zoom?</i>,</nobr>
 			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
@@ -697,7 +703,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default. If <code>options.pan</code> is <code><span class="literal">false</span></code>, panning will not occur.</td>
+		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default. If <code>options.pan</code> is <code><span class="literal">false</span></code>, panning will not occur. If <code>options.debounceMoveend</code> is <code><span class="literal">true</span></code>, it will delay <code>moveend</code> event so that it doesn't happen often even if the method is called many times in a row.</td>
 	</tr>
 	<tr id="map-setmaxbounds">
 		<td><code><b>setMaxBounds</b>(
@@ -1155,6 +1161,12 @@ var map = L.map('map', {
 		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
 		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
 	</tr>
+	<tr>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><nobr><span class="literal">null</span></nobr></code></td>
+		<td>The maximum possible zoom to use.</td>
+	</tr>
 </table>
 
 
@@ -1338,6 +1350,12 @@ var map = L.map('map', {
 		<td><code><span class="string">''</span></code></td>
 		<td>Text for the browser tooltip that appear on marker hover (no tooltip by default).</td>
 	</tr>
+	<tr>
+		<td><code><b>alt</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">''</span></code></td>
+		<td>Text for the <code>alt</code> attribute of the icon image (useful for accessibility).</td>
+	</tr>
 	<tr id="marker-zindexoffset">
 		<td><code><b>zIndexOffset</b></code></td>
 		<td><code>Number</code></td>
@@ -1416,13 +1434,18 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>dragend</b></code></td>
-		<td><code><a href="#event">Event</a></code></td>
+		<td><code><a href="#dragend-event">DragEndEvent</a></code></td>
 		<td>Fired when the user stops dragging the marker.</td>
 	</tr>
 	<tr>
 		<td><code><b>move</b></code></td>
 		<td><code><a href="#event">Event</a></code></td>
 		<td>Fired when the marker is moved via setLatLng. New coordinate include in event arguments.</td>
+	</tr>
+	<tr>
+		<td><code><b>add</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired when the marker is added to the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>remove</b></code></td>
@@ -1518,6 +1541,11 @@ var map = L.map('map', {
 		<td><code><b>openPopup</b>()</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Opens the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
+	</tr>
+	<tr>
+		<td><code><b>getPopup</b>()</code></td>
+		<td><code><a href="#popup">Popup</a>&gt; <i>popup</i></code></td>
+		<td>Returns the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
 	</tr>
 	<tr id="marker-closepopup">
 		<td><code><b>closePopup</b>()</code></td>
@@ -1805,6 +1833,12 @@ var map = L.map('map', {
 		<td><code>Number</code></td>
 		<td><code><span class="number">18</span></code></td>
 		<td>Maximum zoom number.</td>
+	</tr>
+	<tr>
+		<td><code><b>maxNativeZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded from <code>maxZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr>
 		<td><code><b>tileSize</b></code></td>
@@ -2347,6 +2381,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><span class="literal">null</span></code></td>
 		<td>Sets the <code>pointer-events</code> attribute on the path if SVG backend is used.</td>
 	</tr>
+	<tr>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">''</span></code></td>
+		<td>Custom class name set on an element.</td>
+	</tr>
 </table>
 
 <h3>Events</h3>
@@ -2698,6 +2738,12 @@ multiple line features:</p>
 		</code></td>
 		<td>Returns an array of arrays of geographical points in each line.</td>
     </tr>
+	<tr>
+		<td><code><b>openPopup</b>()</td>
+
+		<td><code>this</code></td>
+		<td>Opens the popup previously bound by <a href="#path-bindpopup">bindPopup</a>.</td>
+    </tr>
 	<tr id="multipolyline-togeojson">
 		<td><code><b>toGeoJSON</b>()</code></td>
 		<td><code>Object</code></td>
@@ -2808,6 +2854,12 @@ multiple polygon features:</p>
 		<td><code><nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>
 		</code></td>
 		<td>Returns an array of arrays of geographical points in each polygon.</td>
+    </tr>
+	<tr>
+		<td><code><b>openPopup</b>()</td>
+
+		<td><code>this</code></td>
+		<td>Opens the popup previously bound by <a href="#path-bindpopup">bindPopup</a>.</td>
     </tr>
 	<tr id="multipolygon-togeojson">
 		<td><code><b>toGeoJSON</b>()</code></td>
@@ -3336,6 +3388,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 </table>
 
+<p>Additionally accepts all <a href="#path-options">Path options</a> for polylines and polygons.</p>
 
 <h3>Methods</h3>
 
@@ -3435,7 +3488,8 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 	<tr>
 		<td><code><b>L.LatLng</b>(
 			<nobr>&lt;Number&gt; <i>latitude</i></nobr>,
-			<nobr>&lt;Number&gt; <i>longitude</i> )</nobr>
+			<nobr>&lt;Number&gt; <i>longitude</i></nobr>,
+			<nobr>&lt;Number&gt; <i>altitude?</i> )</nobr>
 		</code></td>
 
 		<td class="factory-usage">
@@ -3444,7 +3498,7 @@ map.panTo(new L.LatLng(50, 30));</code></pre>
 			<code>L.latLng([<span class="comment">&hellip;</span>])</code>
 		</td>
 
-		<td>Creates an object representing a geographical point with the given latitude and longitude.</td>
+		<td>Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).</td>
 	</tr>
 </table>
 
@@ -4969,6 +5023,22 @@ map.off('click', onClick);</code></pre>
 	</tr>
 </table>
 
+<h3 id="dragend-event">DragEndEvent</h3>
+
+<table data-id='layer-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>distance</b></code></td>
+		<td><code>Number</code></td>
+		<td>The distance in pixels the draggable element was moved by.</td>
+	</tr>
+</table>
+
+
 <!-- <h3>TileEvent</h3> -->
 
 
@@ -6237,6 +6307,14 @@ map.addControl(new MyControl());
 
 		<td><code>Number</code></td>
 		<td>Returns the scale used when transforming projected coordinates into pixel coordinates for a particular zoom. For example, it returns <code>256 * 2^zoom</code> for Mercator-based CRS.</td>
+	</tr>
+	<tr>
+		<td><code><b>getSize</b>(
+			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Returns the size of the world in pixels for a particular zoom.</td>
 	</tr>
 </table>
 
