@@ -7,7 +7,7 @@
 
 	<meta charset="utf-8" />
 
-	{% unless page.title %}
+	{% if title == '' %}
 	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
 	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps." />
 	<meta property="og:image" content="http://leafletjs.com/docs/images/logo.png" />
