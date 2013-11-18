@@ -50,7 +50,8 @@ In this basic example, we create a map with <abbr title="Here we use OpenStreetM
 		.bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
 		.openPopup();
 
-Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html).
+Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html). <br>
+If you have any questions, take a look at the [FAQ](https://github.com/Leaflet/Leaflet/blob/master/FAQ.md) first.
 
 
 ## Getting Involved
