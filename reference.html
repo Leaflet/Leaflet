@@ -3822,12 +3822,25 @@ map.panBy(new L.Point(200, 300));</code></pre>
 		<td>Returns a copy of the current point with rounded coordinates.</td>
 	</tr>
 	<tr>
+		<td><code><b>floor</b>()</code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Returns a copy of the current point with floored coordinates (rounded down).</td>
+	</tr>
+	<tr>
 		<td><code><b>equals</b>(
 			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the given point has the same coordinates.</td>
+	</tr>
+	<tr>
+		<td><code><b>contains</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
+		</code></td>
+
+		<td><code>Boolean</code></td>
+		<td>Returns <code><span class="literal">true</span></code> if the both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).</td>
 	</tr>
 	<tr>
 		<td><code><b>toString</b>()</code></td>
