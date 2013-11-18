@@ -74,7 +74,9 @@ h2 {
 	border-radius: 5px;
 
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+	}
 
+.api-page h2 {
 	cursor: pointer;
 	}
 
