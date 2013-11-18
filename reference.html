@@ -5850,7 +5850,7 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 
 <h2 id="draggable">L.Draggable</h2>
 
-<p>A class for making DOM elements draggable (including touch support). Used internally for map and marker dragging.</p>
+<p>A class for making DOM elements draggable (including touch support). Used internally for map and marker dragging. Only works for elements that were positioned with <a href="#domutil-setposition">DomUtil#setPosition</a></p>
 
 <pre><code class="javascript">var draggable = new L.Draggable(elementToDrag);
 draggable.enable();
