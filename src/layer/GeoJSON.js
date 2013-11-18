@@ -7,7 +7,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	initialize: function (geojson, options) {
 		L.setOptions(this, options);
 
-		this._layers = {};
+		L.FeatureGroup.prototype.initialize.call(this, null);
 
 		if (geojson) {
 			this.addData(geojson);

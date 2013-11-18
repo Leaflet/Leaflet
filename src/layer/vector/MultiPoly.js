@@ -8,7 +8,7 @@
 		return L.FeatureGroup.extend({
 
 			initialize: function (latlngs, options) {
-				this._layers = {};
+				L.FeatureGroup.prototype.initialize.call(this, null);
 				this._options = options;
 				this.setLatLngs(latlngs);
 			},
