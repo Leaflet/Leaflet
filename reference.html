@@ -1763,6 +1763,17 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the HTML content of the popup.</td>
 	</tr>
+	<tr>
+		<td><code><b>getContent</b>()</code></td>
+		<td><code>&lt;String|HTMLElement&gt;</code></td>
+		<td>Returns the content of the popup.</td>
+	</tr>
+	<tr>
+		<td><code><b>update</b>()</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.</td>
+	</tr>
 </table>
 
 
@@ -2260,6 +2271,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code><span class="number">1.0</span></code></td>
 		<td>The opacity of the image overlay.</td>
 	</tr>
+	<tr>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">''</span></code></td>
+		<td>The attribution text of the image overlay.</td>
+	</tr>
 </table>
 
 <h3 id="imageoverlay-methods">Methods</h3>
@@ -2284,6 +2301,14 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Sets the opacity of the overlay.</td>
+	</tr>
+	<tr>
+		<td><code><b>setUrl</b>(
+			<nobr>&lt;String&gt; <i>imageUrl</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Changes the URL of the image.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToFront</b>()</code></td>
@@ -4355,6 +4380,30 @@ map.addControl(control);</code></pre>
 		<td><code>String</code></td>
 		<td><code><span class="string">'topleft'</span></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>zoomInText</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'+'</span></td>
+		<td>The text set on the zoom in button.</td>
+	</tr>
+	<tr>
+		<td><code><b>zoomOutText</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'-'</span></td>
+		<td>The text set on the zoom out button.</td>
+	</tr>
+	<tr>
+		<td><code><b>zoomInTitle</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'Zoom in'</span></td>
+		<td>The title set on the zoom in button.</td>
+	</tr>
+	<tr>
+		<td><code><b>zoomInTitle</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'Zoom out'</span></td>
+		<td>The title set on the zoom out button.</td>
 	</tr>
 </table>
 
