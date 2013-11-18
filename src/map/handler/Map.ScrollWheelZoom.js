@@ -21,7 +21,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	_onWheelScroll: function (e) {
 		var delta = L.DomEvent.getWheelDelta(e);
 
-		this._delta += delta;
+		this._delta += delta / 2;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
 		if (!this._startTime) {
@@ -42,7 +42,6 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		    delta = this._delta,
 		    zoom = map.getZoom();
 
-		delta = delta > 0 ? Math.ceil(delta) : Math.floor(delta);
 		delta = Math.max(Math.min(delta, 4), -4);
 		delta = map._limitZoom(zoom + delta) - zoom;
 

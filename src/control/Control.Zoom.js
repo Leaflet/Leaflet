@@ -35,11 +35,11 @@ L.Control.Zoom = L.Control.extend({
 	},
 
 	_zoomIn: function (e) {
-		this._map.zoomIn(e.shiftKey ? 3 : 1);
+		this._map.zoomIn(e.shiftKey ? 0.1 : 1);
 	},
 
 	_zoomOut: function (e) {
-		this._map.zoomOut(e.shiftKey ? 3 : 1);
+		this._map.zoomOut(e.shiftKey ? 0.1 : 1);
 	},
 
 	_createButton: function (html, title, className, container, fn, context) {

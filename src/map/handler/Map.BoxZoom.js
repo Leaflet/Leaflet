@@ -56,10 +56,14 @@ L.Map.BoxZoom = L.Handler.extend({
 
 		var startPoint = this._startLayerPoint,
 		    box = this._box,
-
 		    layerPoint = this._map.mouseEventToLayerPoint(e),
-		    offset = layerPoint.subtract(startPoint),
 
+		    opposite = (startPoint.x < layerPoint.x) !== (startPoint.y < layerPoint.y) ? -1 : 1,
+		    size = this._map.getSize();
+
+		layerPoint.y = startPoint.y + opposite * (layerPoint.x - startPoint.x) * size.y / size.x;
+
+		var offset = layerPoint.subtract(startPoint),
 		    newPos = new L.Point(
 		        Math.min(layerPoint.x, startPoint.x),
 		        Math.min(layerPoint.y, startPoint.y));

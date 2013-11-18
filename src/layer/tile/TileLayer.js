@@ -24,6 +24,9 @@ L.TileLayer = L.Class.extend({
 		detectRetina: false,
 		reuseTiles: false,
 		bounds: false,
+		// Index must start at minZoom and end at maxZoom (included)
+		zoomTune: [ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,
+			   10, 11, 12, 13, 14, 15, 16, 17, 18],
 		*/
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile
@@ -276,7 +279,24 @@ L.TileLayer = L.Class.extend({
 			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
 		}
 
-		return tileSize;
+		return tileSize * Math.pow(2, map.getZoom() - this.tileZoom);
+	},
+
+	_getTileZoom: function () {
+		var map = this._map,
+		    zoom = map.getZoom();
+
+		zoom = Math.min(Math.max(zoom, this.options.minZoom), this.options.maxZoom);
+
+		if ('zoomTune' in this.options) {
+			zoom = Math.min(zoom - this.options.minZoom, this.options.zoomTune.length - 1);
+			zoom = this.options.zoomTune[Math.round(zoom)];
+
+			// prevent custom zoom to use too many tiles
+			zoom = Math.min(zoom, map.getZoom() + 4);
+		}
+
+		return zoom;
 	},
 
 	_update: function () {
@@ -284,17 +304,14 @@ L.TileLayer = L.Class.extend({
 		if (!this._map) { return; }
 
 		var map = this._map,
-		    bounds = map.getPixelBounds(),
-		    zoom = map.getZoom(),
-		    tileSize = this._getTileSize();
+		    bounds = map.getPixelBounds();
 
-		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
-			return;
-		}
+		this.tileZoom = this._getTileZoom();
+		this.tileVirtSize = this._getTileSize();
 
 		var tileBounds = L.bounds(
-		        bounds.min.divideBy(tileSize)._floor(),
-		        bounds.max.divideBy(tileSize)._floor());
+		        bounds.min.divideBy(this.tileVirtSize)._floor(),
+		        bounds.max.divideBy(this.tileVirtSize)._floor());
 
 		this._addTilesFromCenterOut(tileBounds);
 
@@ -360,7 +377,7 @@ L.TileLayer = L.Class.extend({
 		}
 
 		if (options.bounds) {
-			var tileSize = options.tileSize,
+			var tileSize = this.tileVirtSize,
 			    nwPoint = tilePoint.multiplyBy(tileSize),
 			    sePoint = nwPoint.add([tileSize, tileSize]),
 			    nw = this._map.unproject(nwPoint),
@@ -443,7 +460,7 @@ L.TileLayer = L.Class.extend({
 	_getZoomForUrl: function () {
 
 		var options = this.options,
-		    zoom = this._map.getZoom();
+		    zoom = this.tileZoom;
 
 		if (options.zoomReverse) {
 			zoom = options.maxZoom - zoom;
@@ -456,7 +473,7 @@ L.TileLayer = L.Class.extend({
 
 	_getTilePos: function (tilePoint) {
 		var origin = this._map.getPixelOrigin(),
-		    tileSize = this._getTileSize();
+		    tileSize = this.tileVirtSize;
 
 		return tilePoint.multiplyBy(tileSize).subtract(origin);
 	},
@@ -466,7 +483,7 @@ L.TileLayer = L.Class.extend({
 	getTileUrl: function (tilePoint) {
 		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(tilePoint),
-			z: tilePoint.z,
+			z: this.tileZoom,
 			x: tilePoint.x,
 			y: tilePoint.y
 		}, this.options));
@@ -490,8 +507,6 @@ L.TileLayer = L.Class.extend({
 		if (this.options.tms) {
 			tilePoint.y = limit.y - tilePoint.y - 1;
 		}
-
-		tilePoint.z = this._getZoomForUrl();
 	},
 
 	_getSubdomain: function (tilePoint) {
@@ -513,7 +528,7 @@ L.TileLayer = L.Class.extend({
 
 	_createTile: function () {
 		var tile = L.DomUtil.create('img', 'leaflet-tile');
-		tile.style.width = tile.style.height = this._getTileSize() + 'px';
+		tile.style.width = tile.style.height = Math.round(this.tileVirtSize) + 'px';
 		tile.galleryimg = 'no';
 
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;

@@ -195,7 +195,7 @@ L.DomUtil = {
 		    open = 'translate' + (is3d ? '3d' : '') + '(',
 		    close = (is3d ? ',0' : '') + ')';
 
-		return open + point.x + 'px,' + point.y + 'px' + close;
+		return open + Math.round(point.x) + 'px,' + Math.round(point.y) + 'px' + close;
 	},
 
 	getScaleString: function (scale, origin) {

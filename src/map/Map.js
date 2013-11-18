@@ -343,31 +343,21 @@ L.Map = L.Class.extend({
 
 	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
 		bounds = L.latLngBounds(bounds);
+		padding = L.point(padding || [0, 0]);
 
-		var zoom = this.getMinZoom() - (inside ? 1 : 0),
-		    maxZoom = this.getMaxZoom(),
-		    size = this.getSize(),
+		var size = this.getSize(),
 
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
+		    boundsSize = this.project(se, this.getZoom()).subtract(this.project(nw, this.getZoom())).add(padding),
 
-		    zoomNotFound = true,
-		    boundsSize;
+		    ratiox = (boundsSize.x + padding.x) / size.x,
+		    ratioy = (boundsSize.y + padding.y) / size.y,
+		    ratio = inside ? Math.max(ratiox, ratioy) : Math.min(ratiox, ratioy),
 
-		padding = L.point(padding || [0, 0]);
+		    zoom = (this.getZoom() -  Math.log(ratio) / Math.LN2).toFixed(2);
 
-		do {
-			zoom++;
-			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding);
-			zoomNotFound = !inside ? size.contains(boundsSize) : boundsSize.x < size.x || boundsSize.y < size.y;
-
-		} while (zoomNotFound && zoom <= maxZoom);
-
-		if (zoomNotFound && inside) {
-			return null;
-		}
-
-		return inside ? zoom : zoom - 1;
+		return Math.min(Math.max(zoom, this.getMinZoom()), this.getMaxZoom());
 	},
 
 	getSize: function () {
