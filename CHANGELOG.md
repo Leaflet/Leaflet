@@ -3,9 +3,11 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.7-dev (master)
+## 0.8-dev (master)
 
-An in-progress version being developed on the `master` branch.
+An in-progress version being developed on the `master` branch. No changes since 0.7 release yet.
+
+## 0.7 (November 18, 2013)
 
 ### Improvements
 
