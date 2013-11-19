@@ -43,7 +43,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	on: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
-		this.addEventListener(types, fn, context);
+		return this.addEventListener(types, fn, context);
 	},
 
 	addLayer: function (layer) {
