@@ -24,12 +24,12 @@ L.Map.Drag = L.Handler.extend({
 
 			this._draggable.on({
 				'dragstart': this._onDragStart,
+				'predrag': this._onPreDrag,
 				'drag': this._onDrag,
 				'dragend': this._onDragEnd
 			}, this);
 
 			if (map.options.worldCopyJump) {
-				this._draggable.on('predrag', this._onPreDrag, this);
 				map.on('viewreset', this._onViewReset, this);
 
 				map.whenReady(this._onViewReset, this);
@@ -92,16 +92,31 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onPreDrag: function () {
-		// TODO refactor to be able to adjust map pane position after zoom
-		var worldWidth = this._worldWidth,
-		    halfWidth = Math.round(worldWidth / 2),
-		    dx = this._initialWorldOffset,
-		    x = this._draggable._newPos.x,
-		    newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
-		    newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
-		    newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+		var map = this._map,
+		    options = map.options;
 
-		this._draggable._newPos.x = newX;
+		if (options.worldCopyJump) {
+			// TODO refactor to be able to adjust map pane position after zoom
+			var worldWidth = this._worldWidth,
+			    halfWidth = Math.round(worldWidth / 2),
+			    dx = this._initialWorldOffset,
+			    x = this._draggable._newPos.x,
+			    newX1 = (x - halfWidth + dx) % worldWidth + halfWidth - dx,
+			    newX2 = (x + halfWidth + dx) % worldWidth - halfWidth - dx,
+			    newX = Math.abs(newX1 + dx) < Math.abs(newX2 + dx) ? newX1 : newX2;
+
+			this._draggable._newPos.x = newX;
+		}
+
+		if (options.maxBounds && options.maxBoundsResistance) {
+			var viewHalf = map.getSize().divideBy(2),
+			    centerPoint = map.getPixelOrigin().add(viewHalf).subtract(this._draggable._newPos),
+			    viewBounds = new L.Bounds(centerPoint.subtract(viewHalf), centerPoint.add(viewHalf)),
+			    offset = map._getBoundsOffset(viewBounds, options.maxBounds, map.getZoom()),
+			    newPos = this._draggable._newPos.subtract(offset.multiplyBy(options.maxBoundsResistance));
+
+			this._draggable._newPos = newPos;
+		}
 	},
 
 	_onDragEnd: function (e) {
