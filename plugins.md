@@ -23,7 +23,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			leaflet-plotter allows you to create routes using a leaflet powered map. You can click on the mid-points to create a new, draggable point.
 		</td><td>
-			<a href="https://github.com/scripter-co">Dave Leaver</a>
+			<a href="https://github.com/scripter-co">Nathan Mahdavi</a>
 		</td>
 	</tr>
 	<tr>
