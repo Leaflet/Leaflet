@@ -7,6 +7,9 @@ L.Marker.include({
 		if (this._popup && this._map && !this._map.hasLayer(this._popup)) {
 			this._popup.setLatLng(this._latlng);
 			this._map.openPopup(this._popup);
+			if (this._popup.options.closeButton) {
+				this._popup._closeButton.focus();
+			}
 		}
 
 		return this;
