@@ -298,6 +298,7 @@ L.Popup = L.Class.extend({
 
 	_onCloseButtonClick: function (e) {
 		this._close();
+		this._source._icon.focus();
 		L.DomEvent.stop(e);
 	}
 });
