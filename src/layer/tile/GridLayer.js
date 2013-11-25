@@ -13,7 +13,6 @@ L.GridLayer = L.Class.extend({
 		// minZoom: <Number>,
 		// maxZoom: <Number>,
 
-		async: false,
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
 		updateInterval: 150
@@ -21,6 +20,9 @@ L.GridLayer = L.Class.extend({
 
 	initialize: function (options) {
 		options = L.setOptions(this, options);
+
+		// make sure it can be passed safely without losing context
+		this._tileReady = L.bind(this._tileReady, this);
 	},
 
 	onAdd: function (map) {
@@ -384,8 +386,8 @@ L.GridLayer = L.Class.extend({
 		this._initTile(tile);
 
 		if (this.createTile.length < 2) {
-			this._tileReady(tile);
-			// TODO pass tileReady to createTile for async
+			// if tiles are sync, delay one frame for opacity anim to happen
+			setTimeout(L.bind(this._tileReady, this, tile), 0);
 		}
 
 		var tilePos = this._getTilePos(coords);
@@ -421,11 +423,8 @@ L.GridLayer = L.Class.extend({
 
 		if (this._animated) {
 			// clear scaled tiles after all new tiles are loaded (for performance)
-			this._clearBgBuffer();
-
-			// TODO find out why timeout was needed
-			// clearTimeout(this._clearBgBufferTimer);
-			// this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
+			clearTimeout(this._clearBgBufferTimer);
+			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 300);
 		}
 	},
 
