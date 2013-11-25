@@ -29,10 +29,16 @@ var deps = {
 		heading: 'Additional projections'
 	},
 
+	GridLayer: {
+		src: ['layer/tile/GridLayer.js'],
+		desc: 'Grid Layer.',
+		heading: 'Layers'
+	},
+
 	TileLayer: {
 		src: ['layer/tile/TileLayer.js'],
 		desc: 'The base class for displaying tile layers on the map.',
-		heading: 'Layers'
+		deps: ['GridLayer']
 	},
 
 	TileLayerWMS: {
