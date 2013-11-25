@@ -19,6 +19,7 @@
 	<script type="text/javascript">
 
 		var grid = L.gridLayer({
+			// bounds: [[-86,-180],[86,180]],
 			attribution: 'Grid Layer'
 		});
 
@@ -37,7 +38,7 @@
 		};
 
 		var map = L.map('map')
-				.setView([50.5, 30.51], 15)
+				.setView([50.5, 30.51], 10)
 				.addLayer(grid);
 
 	</script>

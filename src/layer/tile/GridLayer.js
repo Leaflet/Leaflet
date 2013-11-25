@@ -18,7 +18,7 @@ L.GridLayer = L.Class.extend({
 		updateInterval: 150
 	},
 
-	initialize: function (url, options) {
+	initialize: function (options) {
 		options = L.setOptions(this, options);
 
 		// make sure it can be passed safely without losing context
@@ -111,7 +111,10 @@ L.GridLayer = L.Class.extend({
 	isValidTile: function (coords) {
 		if (!this.options.bounds) { return true; }
 
-		return this.options.bounds.contains(this._tileCoordsToBounds(coords));
+		var tileBounds = this._tileCoordsToBounds(coords),
+			bounds = L.latLngBounds(this.options.bounds);
+
+		return bounds.contains(tileBounds);
 	},
 
 	_getPane: function () {
@@ -135,11 +138,6 @@ L.GridLayer = L.Class.extend({
 		}
 
 		return events;
-	},
-
-	_getPane: function () {
-		// TODO pane in options?
-		return this._map._panes.tilePane;
 	},
 
 	_updateZIndex: function () {
@@ -381,8 +379,7 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_addTile: function (coords, container) {
-		var tilePos = this._getTilePos(coords),
-		    tile = this.createTile(coords, this._tileReady);
+		var tile = this.createTile(coords, this._tileReady);
 
 		// TODO wrapping happens here?
 
@@ -392,6 +389,8 @@ L.GridLayer = L.Class.extend({
 			// if tiles are sync, delay one frame for opacity anim to happen
 			setTimeout(L.bind(this._tileReady, this, tile), 0);
 		}
+
+		var tilePos = this._getTilePos(coords);
 
 		/*
 		Chrome 20 layouts much faster with top/left (verify with timeline, frames)
@@ -510,21 +509,7 @@ L.GridLayer = L.Class.extend({
 	// 	if (!this.options.continuousWorld && !this.options.noWrap) {
 	// 		tilePoint.x = ((tilePoint.x % limit.x) + limit.x) % limit.x;
 	// 	}
-	// },
-
-	// _loadTile: function (tile, tilePoint) {
-	// 	tile._layer  = this;
-	// 	tile.onload  = this._tileOnLoad;
-	// 	tile.onerror = this._tileOnError;
-
-	// 	this._adjustTilePoint(tilePoint);
-	// 	tile.src     = this.getTileUrl(tilePoint);
-
-	// 	this.fire('tileloadstart', {
-	// 		tile: tile,
-	// 		url: tile.src
-	// 	});
-	// },
+	// }
 });
 
 L.gridLayer = function (options) {
