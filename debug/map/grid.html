@@ -23,10 +23,17 @@
 			attribution: 'Grid Layer'
 		});
 
-		grid.createTile = function (coords) {
+		grid.createTile = function (coords, done) {
 			var tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(',');
 			tile.style.outline = '1px solid red';
+			tile.style.background = 'white';
+
+			// test async
+			setTimeout(function () {
+				done(tile);
+			}, Math.random() * 500);
+
 			return tile;
 		};
 
