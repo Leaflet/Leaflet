@@ -428,6 +428,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/emikhalev/">Eugene Mikhalev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tontita/Leaflet.KoreanTmsProviders">Leaflet.KoreanTmsProviders</a>
+		</td><td>
+			Contains configurations for various (South) Korean tile providers — Daum, Naver, VWorld, etc.
+		</td><td>
+			<a href="https://github.com/tontita/">Seong Choi</a>
+		</td>
+	</tr>
 </table>
 
 
