@@ -31,7 +31,7 @@
 
 			// test async
 			setTimeout(function () {
-				done(tile);
+				done(null, tile);
 			}, Math.random() * 500);
 
 			return tile;
