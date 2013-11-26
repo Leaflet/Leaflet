@@ -38,6 +38,19 @@
 
 		L.imageOverlay('http://leafletjs.com/docs/images/logo.png', [[0, 0], [73, 220]]).addTo(map);
 
+		var grid = L.gridLayer({
+			attribution: 'Grid Layer'
+		});
+
+		grid.createTile = function (coords) {
+			var tile = document.createElement('div');
+			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+			tile.style.outline = '1px solid red';
+			tile.style.background = 'white';
+			return tile;
+		};
+
+		map.addLayer(grid);
 
 	</script>
 </body>
