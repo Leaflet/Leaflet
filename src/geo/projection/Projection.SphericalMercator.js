@@ -23,5 +23,7 @@ L.Projection.SphericalMercator = {
 		    lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d;
 
 		return new L.LatLng(lat, lng);
-	}
+	},
+
+	bounds: L.bounds([-Math.PI, -Math.PI], [Math.PI, Math.PI])
 };
