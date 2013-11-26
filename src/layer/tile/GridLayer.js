@@ -300,8 +300,10 @@ L.GridLayer = L.Class.extend({
 		var crs = this._map.options.crs,
 			limit = this._getWrapTileNum();
 
-		if (!crs.wrapLng && (coords.x < 0 || coords.x >= limit.x)) { return; }
-		if (!crs.wrapLat && (coords.y < 0 || coords.y >= limit.y)) { return; }
+		if (!crs.infinite && ((!crs.wrapLng && (coords.x < 0 || coords.x >= limit.x)) ||
+		                      (!crs.wrapLat && (coords.y < 0 || coords.y >= limit.y)))) {
+			return false;
+		}
 
 		if (!this.options.bounds) { return true; }
 
@@ -444,8 +446,11 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_wrapCoords: function (coords) {
-		var crs = this._map.options.crs,
-		    limit = this._getWrapTileNum();
+		var crs = this._map.options.crs;
+
+		if (crs.infinite) { return; }
+
+		var limit = this._getWrapTileNum();
 
 		if (crs.wrapLng) {
 			coords.x = ((coords.x % limit.x) + limit.x) % limit.x;

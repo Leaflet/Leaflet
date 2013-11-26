@@ -8,5 +8,7 @@ L.CRS.Simple = L.extend({}, L.CRS, {
 
 	scale: function (zoom) {
 		return Math.pow(2, zoom);
-	}
+	},
+
+	infinite: true
 });
