@@ -19,13 +19,12 @@
 	<script type="text/javascript">
 
 		var grid = L.gridLayer({
-			// bounds: [[-86,-180],[86,180]],
 			attribution: 'Grid Layer'
 		});
 
 		grid.createTile = function (coords, done) {
 			var tile = document.createElement('div');
-			tile.innerHTML = [coords.x, coords.y, coords.z].join(',');
+			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 			tile.style.background = 'white';
 
