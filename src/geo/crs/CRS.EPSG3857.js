@@ -14,6 +14,8 @@ L.CRS.EPSG3857 = L.extend({}, L.CRS, {
 
 		return new L.Transformation(scale, 0.5, -scale, 0.5);
 	}())
+
+	wrapLng: true
 });
 
 L.CRS.EPSG900913 = L.extend({}, L.CRS.EPSG3857, {

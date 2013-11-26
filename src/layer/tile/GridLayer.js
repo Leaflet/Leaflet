@@ -108,15 +108,6 @@ L.GridLayer = L.Class.extend({
 		return this;
 	},
 
-	isValidTile: function (coords) {
-		if (!this.options.bounds) { return true; }
-
-		var tileBounds = this._tileCoordsToBounds(coords),
-			bounds = L.latLngBounds(this.options.bounds);
-
-		return bounds.contains(tileBounds);
-	},
-
 	_getPane: function () {
 		// TODO pane in options?
 		return this._map._panes.tilePane;
@@ -274,7 +265,7 @@ L.GridLayer = L.Class.extend({
 				coords = new L.Point(i, j);
 				coords.z = zoom;
 
-				if (!this._tileIsAdded(coords) && this.isValidTile(coords)) {
+				if (!this._tileIsAdded(coords) && this._isValidTile(coords)) {
 					queue.push(coords);
 				}
 			}
@@ -305,6 +296,21 @@ L.GridLayer = L.Class.extend({
 		this._tileContainer.appendChild(fragment);
 	},
 
+	_isValidTile: function (coords) {
+		var crs = this._map.options.crs,
+			limit = this._getWrapTileNum();
+
+		if (!crs.wrapLng && (coords.x < 0 || coords.x >= limit.x)) { return; }
+		if (!crs.wrapLat && (coords.y < 0 || coords.y >= limit.y)) { return; }
+
+		if (!this.options.bounds) { return true; }
+
+		var tileBounds = this._tileCoordsToBounds(coords),
+			bounds = L.latLngBounds(this.options.bounds);
+
+		return bounds.contains(tileBounds);
+	},
+
 	_tileIsAdded: function (coords) {
 		return this._tileCoordsToKey(coords) in this._tiles;
 	},
@@ -318,8 +324,6 @@ L.GridLayer = L.Class.extend({
 
 		    nw = this._map.unproject(nwPoint),
 		    se = this._map.unproject(sePoint);
-
-		// TODO rectangular
 
 		return new L.LatLngBounds(nw, se);
 	},
@@ -379,18 +383,22 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_addTile: function (coords, container) {
+		var tilePos = this._getTilePos(coords);
+
+		this._wrapCoords(coords);
+
 		var tile = this.createTile(coords, this._tileReady);
 
-		// TODO wrapping happens here?
+		this.fire('tileloadstart', {tile: tile});
 
 		this._initTile(tile);
 
+		// if createTile is defined with a second argument ("done" callback),
+		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
-			// if tiles are sync, delay one frame for opacity anim to happen
-			setTimeout(L.bind(this._tileReady, this, tile), 0);
+			// mark tile as ready, but delay one frame for opacity anim to happen
+			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
 		}
-
-		var tilePos = this._getTilePos(coords);
 
 		/*
 		Chrome 20 layouts much faster with top/left (verify with timeline, frames)
@@ -406,7 +414,11 @@ L.GridLayer = L.Class.extend({
 		container.appendChild(tile);
 	},
 
-	_tileReady: function (tile) {
+	_tileReady: function (err, tile) {
+		if (err) {
+			this.fire('tileerror', {error: err});
+		}
+
 		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 
 		this.fire('tileload', {tile: tile});
@@ -433,6 +445,23 @@ L.GridLayer = L.Class.extend({
 		    tileSize = this._getTileSize();
 
 		return tilePoint.multiplyBy(tileSize).subtract(origin);
+	},
+
+	_wrapCoords: function (coords) {
+		var crs = this._map.options.crs,
+		    limit = this._getWrapTileNum();
+
+		if (crs.wrapLng) {
+			coords.x = ((coords.x % limit.x) + limit.x) % limit.x;
+		}
+		if (crs.wrapLat) {
+			coords.y = ((coords.y % limit.y) + limit.y) % limit.y;
+		}
+	},
+
+	_getWrapTileNum: function () {
+		var size = this._map.options.crs.getSize(this._map.getZoom());
+		return size.divideBy(this.options.tileSize);
 	},
 
 	_animateZoom: function (e) {
