@@ -25,7 +25,5 @@ L.Projection.SphericalMercator = {
 		return new L.LatLng(lat, lng);
 	},
 
-	bounds: function() {
-		return L.bounds([0, 0], [1, 1]);
-	}
+	bounds: L.bounds([0, 0], [1, 1])
 };
