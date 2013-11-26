@@ -1,5 +1,5 @@
 /*
- * L.TileLayer is used for standard xyz-numbered tile layers.
+ * L.GridLayer is used as base class for grid-like layers like TileLayer.
  */
 
 L.GridLayer = L.Class.extend({
@@ -518,17 +518,7 @@ L.GridLayer = L.Class.extend({
 
 		// prevent bg buffer from clearing right after zoom
 		clearTimeout(this._clearBgBufferTimer);
-	},
-
-	// _adjustTilePoint: function (tilePoint) {
-
-	// 	var limit = this._getWrapTileNum();
-
-	// 	// wrap tile coordinates
-	// 	if (!this.options.continuousWorld && !this.options.noWrap) {
-	// 		tilePoint.x = ((tilePoint.x % limit.x) + limit.x) % limit.x;
-	// 	}
-	// }
+	}
 });
 
 L.gridLayer = function (options) {
