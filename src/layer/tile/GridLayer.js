@@ -314,8 +314,8 @@ L.GridLayer = L.Class.extend({
 		    nwPoint = coords.multiplyBy(tileSize),
 		    sePoint = nwPoint.add([tileSize, tileSize]),
 
-		    nw = this._map.unproject(nwPoint),
-		    se = this._map.unproject(sePoint);
+		    nw = this._map.unproject(nwPoint, coords.z),
+		    se = this._map.unproject(sePoint, coords.z);
 
 		return new L.LatLngBounds(nw, se);
 	},
