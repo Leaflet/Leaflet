@@ -70,9 +70,9 @@ describe("CRS.EPSG4326", function () {
 			    crsSize;
 			for (i = 0; i <= 22; i++) {
 				crsSize = crs.getSize(i);
-				expect(crsSize.x).equal(worldSize);
+				expect(crsSize.x).equal(worldSize * 2);
 				// Lat bounds are half as high (-90/+90 compared to -180/+180)
-				expect(crsSize.y).equal(worldSize / 2);
+				expect(crsSize.y).equal(worldSize);
 				worldSize *= 2;
 			}
 		});
