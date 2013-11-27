@@ -11,5 +11,5 @@ L.Projection.LonLat = {
 		return new L.LatLng(point.y, point.x);
 	},
 
-    bounds: L.bounds([-180, -90], [180, 90])
+	bounds: L.bounds([-180, -90], [180, 90])
 };
