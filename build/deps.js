@@ -47,12 +47,6 @@ var deps = {
 		deps: ['TileLayer']
 	},
 
-	TileLayerCanvas: {
-		src: ['layer/tile/TileLayer.Canvas.js'],
-		desc: 'Tile layer made from canvases (for custom drawing purposes).',
-		deps: ['TileLayer']
-	},
-
 	ImageOverlay: {
 		src: ['layer/ImageOverlay.js'],
 		desc: 'Used to display an image over a particular rectangular area of the map.'
