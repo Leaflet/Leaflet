@@ -27,9 +27,10 @@ L.CRS = {
 
 	getSize: function (zoom) {
 		var b = this.projection.bounds,
-			s = this.scale(zoom),
-			min = this.transformation.transform(b.min, s),
-			max = this.transformation.transform(b.max, s);
+		    s = this.scale(zoom),
+		    min = this.transformation.transform(b.min, s),
+		    max = this.transformation.transform(b.max, s);
+
 		return L.point(Math.abs(max.x - min.x), Math.abs(max.y - min.y));
 	}
 };
