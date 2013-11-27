@@ -300,7 +300,7 @@ L.GridLayer = L.Class.extend({
 		var tileBounds = this._tileCoordsToBounds(coords),
 			bounds = L.latLngBounds(this.options.bounds);
 
-		return bounds.contains(tileBounds);
+		return bounds.intersects(tileBounds);
 	},
 
 	_tileIsAdded: function (coords) {
