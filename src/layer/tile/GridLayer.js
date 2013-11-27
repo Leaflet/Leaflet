@@ -10,19 +10,21 @@ L.GridLayer = L.Class.extend({
 		tileSize: 256,
 		opacity: 1,
 
-		// minZoom: <Number>,
-		// maxZoom: <Number>,
-
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
 		updateInterval: 150
+
+		/*
+		minZoom: <Number>,
+		maxZoom: <Number>,
+		attribution: <String>,
+		zIndex: <Number>,
+		bounds: <LatLngBounds>
+		*/
 	},
 
 	initialize: function (options) {
 		options = L.setOptions(this, options);
-
-		// make sure it can be passed safely without losing context
-		this._tileReady = L.bind(this._tileReady, this);
 	},
 
 	onAdd: function (map) {
@@ -45,7 +47,7 @@ L.GridLayer = L.Class.extend({
 	onRemove: function (map) {
 		this._getPane().removeChild(this._container);
 
-		map.on(this._getEvents(), this);
+		map.off(this._getEvents(), this);
 
 		this._container = null;
 		this._map = null;
@@ -102,7 +104,7 @@ L.GridLayer = L.Class.extend({
 
 	redraw: function () {
 		if (this._map) {
-			this._reset({hard: true}); //TODO wtf hard?
+			this._reset({hard: true});
 			this._update();
 		}
 		return this;
@@ -210,22 +212,10 @@ L.GridLayer = L.Class.extend({
 		if (this._animated && e && e.hard) {
 			this._clearBgBuffer();
 		}
-
-		// this._initContainer();
-		// TODO OK?
 	},
 
 	_getTileSize: function () {
-		var map = this._map,
-		    zoom = map.getZoom() + this.options.zoomOffset,
-		    zoomN = this.options.maxNativeZoom,
-		    tileSize = this.options.tileSize;
-
-		if (zoomN && zoom > zoomN) {
-			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
-		}
-
-		return tileSize;
+		return this.options.tileSize;
 	},
 
 	_update: function () {
@@ -389,7 +379,7 @@ L.GridLayer = L.Class.extend({
 
 		this._wrapCoords(coords);
 
-		var tile = this.createTile(coords, this._tileReady);
+		var tile = this.createTile(coords, L.bind(this._tileReady, this));
 
 		this.fire('tileloadstart', {tile: tile});
 
@@ -405,11 +395,9 @@ L.GridLayer = L.Class.extend({
 		/*
 		Chrome 20 layouts much faster with top/left (verify with timeline, frames)
 		Android 4 browser has display issues with top/left and requires transform instead
-		Android 2 browser requires top/left or tiles disappear on load or first drag
-		(reappear after zoom) https://github.com/CloudMade/Leaflet/issues/866
 		(other browsers don't currently care) - see debug/hacks/jitter.html for an example
 		*/
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome || L.Browser.android23);
+		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
 
 		this._tiles[this._tileCoordsToKey(coords)] = tile;
 
@@ -418,7 +406,10 @@ L.GridLayer = L.Class.extend({
 
 	_tileReady: function (err, tile) {
 		if (err) {
-			this.fire('tileerror', {error: err});
+			this.fire('tileerror', {
+				error: err,
+				tile: tile
+			});
 		}
 
 		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');

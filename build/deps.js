@@ -31,7 +31,7 @@ var deps = {
 
 	GridLayer: {
 		src: ['layer/tile/GridLayer.js'],
-		desc: 'Grid Layer.',
+		desc: 'Used as base class for grid-like layers like TileLayer.',
 		heading: 'Layers'
 	},
 
@@ -248,7 +248,7 @@ var deps = {
 	},
 
 	AnimationZoom: {
-		src: ['map/anim/Map.ZoomAnimation.js', 'layer/tile/TileLayer.Anim.js'],
+		src: ['map/anim/Map.ZoomAnimation.js'],
 		deps: ['AnimationPan'],
 		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
 	},
