@@ -83,12 +83,11 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onViewReset: function () {
-		// TODO fix hardcoded Earth values
-		var pxCenter = this._map.getSize()._divideBy(2),
+		var pxCenter = this._map.getSize().divideBy(2),
 		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 
 		this._initialWorldOffset = pxWorldCenter.subtract(pxCenter).x;
-		this._worldWidth = this._map.project([0, 180]).x;
+		this._worldWidth = this._map.getWorldPixelSize().x;
 	},
 
 	_onPreDrag: function () {
