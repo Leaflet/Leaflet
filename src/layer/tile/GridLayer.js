@@ -456,8 +456,7 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_getWrapTileNum: function () {
-		var size = this._map.options.crs.getSize(this._map.getZoom());
-		return size.divideBy(this.options.tileSize);
+		return this._map.getWorldPixelSize().divideBy(this.options.tileSize);
 	},
 
 	_animateZoom: function (e) {
