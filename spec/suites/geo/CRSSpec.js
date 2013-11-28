@@ -58,6 +58,21 @@ describe("CRS.EPSG3857", function () {
 			}
 		});
 	});
+
+	describe('#wrapLatLng', function () {
+		it("wraps longitude to lie between -180 and 180 by default", function () {
+			expect(crs.wrapLatLng(new L.LatLng(0, 190)).lng).to.eql(-170);
+			expect(crs.wrapLatLng(new L.LatLng(0, 360)).lng).to.eql(0);
+			expect(crs.wrapLatLng(new L.LatLng(0, 380)).lng).to.eql(20);
+			expect(crs.wrapLatLng(new L.LatLng(0, -190)).lng).to.eql(170);
+			expect(crs.wrapLatLng(new L.LatLng(0, -360)).lng).to.eql(0);
+			expect(crs.wrapLatLng(new L.LatLng(0, -380)).lng).to.eql(-20);
+			expect(crs.wrapLatLng(new L.LatLng(0, 90)).lng).to.eql(90);
+			expect(crs.wrapLatLng(new L.LatLng(0, 180)).lng).to.eql(180);
+		});
+
+	});
+
 });
 
 describe("CRS.EPSG4326", function () {

@@ -60,17 +60,6 @@ L.LatLng.prototype = {
 		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
 
 		return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-	},
-
-	wrap: function (a, b) { // (Number, Number) -> LatLng
-		var lng = this.lng;
-
-		a = a || -180;
-		b = b ||  180;
-
-		lng = (lng + b) % (b - a) + (lng < a || lng === b ? b : a);
-
-		return new L.LatLng(this.lat, lng);
 	}
 };
 
