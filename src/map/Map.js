@@ -391,8 +391,8 @@ L.Map = L.Class.extend({
 		return this._initialTopLeftPoint;
 	},
 
-	getWorldPixelSize: function () {
-		return this.options.crs.getProjectedBounds(this.getZoom()).getSize();
+	getPixelWorldBounds: function () {
+		return this.options.crs.getProjectedBounds(this.getZoom());
 	},
 
 	getPanes: function () {

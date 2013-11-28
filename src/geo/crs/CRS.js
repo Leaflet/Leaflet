@@ -44,13 +44,9 @@ L.CRS = {
 
 	wrapLatLng: function (latlng) {
 		var bounds = this.getBounds(),
-		    lng = this.wrapLng ? this._wrap(latlng.lng, bounds.getWest(),  bounds.getEast())  : latlng.lng,
-		    lat = this.wrapLat ? this._wrap(latlng.lat, bounds.getSouth(), bounds.getNorth()) : latlng.lat;
+		    lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, bounds.getWest(),  bounds.getEast(),  true) : latlng.lng,
+		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, bounds.getSouth(), bounds.getNorth(), true) : latlng.lat;
 
 		return L.latLng(lat, lng);
-	},
-
-	_wrap: function (value, min, max) {
-		return (value + max) % (max - min) + (value < min || value === max ? max : min);
 	}
 };
