@@ -288,19 +288,18 @@ L.GridLayer = L.Class.extend({
 
 	_isValidTile: function (coords) {
 		var crs = this._map.options.crs,
-			limit = this._getWrapTileNum();
+			bounds = this._getTileNumBounds();
 
-		if (!crs.infinite && ((!crs.wrapLng && (coords.x < 0 || coords.x >= limit.x)) ||
-				      (!crs.wrapLat && (coords.y < 0 || coords.y >= limit.y)))) {
+		if (!crs.infinite && ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
+				      (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y)))) {
 			return false;
 		}
 
 		if (!this.options.bounds) { return true; }
 
-		var tileBounds = this._tileCoordsToBounds(coords),
-			bounds = L.latLngBounds(this.options.bounds);
+		var tileBounds = this._tileCoordsToBounds(coords);
 
-		return bounds.intersects(tileBounds);
+		return L.latLngBounds(this.options.bounds).intersects(tileBounds);
 	},
 
 	_tileIsAdded: function (coords) {
@@ -446,18 +445,19 @@ L.GridLayer = L.Class.extend({
 
 		if (crs.infinite) { return; }
 
-		var limit = this._getWrapTileNum();
+		var bounds = this._getTileNumBounds();
 
-		if (crs.wrapLng) {
-			coords.x = ((coords.x % limit.x) + limit.x) % limit.x;
-		}
-		if (crs.wrapLat) {
-			coords.y = ((coords.y % limit.y) + limit.y) % limit.y;
-		}
+		coords.x = crs.wrapLng ? L.Util.wrapNum(coords.x, bounds.min.x, bounds.max.x + 1) : coords.x;
+		coords.y = crs.wrapLat ? L.Util.wrapNum(coords.y, bounds.min.y, bounds.max.y + 1) : coords.y;
 	},
 
-	_getWrapTileNum: function () {
-		return this._map.getWorldPixelSize().divideBy(this.options.tileSize);
+	_getTileNumBounds: function () {
+		var bounds = this._map.getPixelWorldBounds(),
+			size = this.options.tileSize;
+
+		return L.bounds(
+				bounds.min.divideBy(size),
+				bounds.max.divideBy(size).subtract([1, 1]));
 	},
 
 	_animateZoom: function (e) {

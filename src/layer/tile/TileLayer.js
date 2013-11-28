@@ -69,12 +69,10 @@ L.TileLayer = L.GridLayer.extend({
 	},
 
 	getTileUrl: function (coords) {
-		var limit = this._getWrapTileNum();
-
 		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(coords),
 			x: coords.x,
-			y: this.options.tms ? limit.y - coords.y - 1 : coords.y,
+			y: this.options.tms ? this._getTileNumBounds().getSize().y - coords.y : coords.y,
 			z: this._getZoomForUrl()
 		}, this.options));
 	},
