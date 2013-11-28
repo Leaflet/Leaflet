@@ -287,12 +287,12 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_isValidTile: function (coords) {
-		var crs = this._map.options.crs,
-			bounds = this._getTileNumBounds();
+		var crs = this._map.options.crs;
 
-		if (!crs.infinite && ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
-				      (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y)))) {
-			return false;
+		if (!crs.infinite) {
+			var bounds = this._getTileNumBounds();
+			if ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
+			    (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
 		}
 
 		if (!this.options.bounds) { return true; }
