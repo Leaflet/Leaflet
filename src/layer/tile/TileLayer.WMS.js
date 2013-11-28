@@ -54,8 +54,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		    se = this._crs.project(tileBounds.getSouthEast()),
 
 		    bbox = (this._wmsVersion >= 1.3 && this._crs === L.CRS.EPSG4326 ?
-			[se.y, nw.x, nw.y, se.x] :
-			[nw.x, se.y, se.x, nw.y]).join(','),
+		            [se.y, nw.x, nw.y, se.x] :
+		            [nw.x, se.y, se.x, nw.y]).join(','),
 
 		    url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
 
