@@ -1,6 +1,7 @@
 var fs = require('fs'),
     jshint = require('jshint'),
     UglifyJS = require('uglify-js'),
+    zlib = require('zlib'),
 
     deps = require('./deps.js').deps;
 
@@ -53,7 +54,7 @@ function getSizeDelta(newContent, oldContent) {
 		oldLen = oldContent.replace(/\r\n?/g, '\n').length,
 		delta = newLen - oldLen;
 
-	return (delta >= 0 ? '+' : '') + delta;
+	return delta === 0 ? '' : '(' + (delta > 0 ? '+' : '') + delta + ' bytes)';
 }
 
 function loadSilently(path) {
@@ -72,11 +73,15 @@ function combineFiles(files) {
 	return content;
 }
 
-exports.build = function (compsBase32, buildName) {
+function bytesToKB(bytes) {
+    return (bytes / 1024).toFixed(2) + ' KB';
+};
+
+exports.build = function (callback, compsBase32, buildName) {
 
 	var files = getFiles(compsBase32);
 
-	console.log('Concatenating ' + files.length + ' files...');
+	console.log('Concatenating and compressing ' + files.length + ' files...');
 
 	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
 	    intro = '(function (window, document, undefined) {',
@@ -89,16 +94,14 @@ exports.build = function (compsBase32, buildName) {
 	    oldSrc = loadSilently(srcPath),
 	    srcDelta = getSizeDelta(newSrc, oldSrc);
 
-	console.log('\tUncompressed size: ' + newSrc.length + ' bytes (' + srcDelta + ')');
+	console.log('\tUncompressed: ' + bytesToKB(newSrc.length) + srcDelta);
 
 	if (newSrc === oldSrc) {
-		console.log('\tNo changes\n');
+		// console.log('\tNo changes');
 	} else {
 		fs.writeFileSync(srcPath, newSrc);
-		console.log('\tSaved to ' + srcPath + '\n');
+		console.log('\tSaved to ' + srcPath);
 	}
-
-	console.log('Compressing...');
 
 	var path = pathPart + '.js',
 	    oldCompressed = loadSilently(path),
@@ -108,14 +111,37 @@ exports.build = function (compsBase32, buildName) {
 	    }).code,
 	    delta = getSizeDelta(newCompressed, oldCompressed);
 
-	console.log('\tCompressed size: ' + newCompressed.length + ' bytes (' + delta + ')');
+	console.log('\tCompressed: ' + bytesToKB(newCompressed.length) + delta);
 
-	if (newCompressed === oldCompressed) {
-		console.log('\tNo changes\n');
-	} else {
-		fs.writeFileSync(path, newCompressed);
-		console.log('\tSaved to ' + path + '\n');
+	var newGzipped,
+	    gzippedDelta = '';
+
+	function done() {
+		var noChanges = newCompressed === oldCompressed;
+		if (!noChanges) {
+			fs.writeFileSync(path, newCompressed);
+			console.log('\tSaved to ' + path);
+		}
+		console.log('\tGzipped: ' + bytesToKB(newGzipped.length) + gzippedDelta);
+		if (noChanges) {
+			console.log('\tNo changes\n');
+		}
+		callback();
 	}
+
+	zlib.gzip(newCompressed, function (err, gzipped) {
+		if (err) { return; }
+		newGzipped = gzipped;
+		if (oldCompressed !== newCompressed) {
+			zlib.gzip(oldCompressed, function (err, oldGzipped) {
+				if (err) { return; }
+				gzippedDelta = getSizeDelta(gzipped.toString(), oldGzipped.toString());
+				done();
+			});
+		} else {
+			done();
+		}
+	});
 };
 
 exports.test = function(callback) {

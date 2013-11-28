@@ -32,7 +32,9 @@ desc('Check Leaflet specs source for errors with JSHint');
 task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/spec.hintrc.js spec/suites'));
 
 desc('Combine and compress Leaflet source files');
-task('build', build.build);
+task('build', {async: true}, function () {
+	build.build(complete);
+});
 
 desc('Run PhantomJS tests');
 task('test', ['lint', 'lintspec'], {async: true}, function () {
