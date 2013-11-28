@@ -46,15 +46,20 @@ function getFiles(compsBase32) {
 
 exports.getFiles = getFiles;
 
-function getSizeDelta(newContent, oldContent) {
+function getSizeDelta(newContent, oldContent, fixCRLF) {
 	if (!oldContent) {
-		return 'new';
+		return ' (new)';
 	}
-	var newLen = newContent.replace(/\r\n?/g, '\n').length,
-		oldLen = oldContent.replace(/\r\n?/g, '\n').length,
-		delta = newLen - oldLen;
+	if (newContent === oldContent) {
+		return ' (unchanged)';
+	}
+	if (fixCRLF) {
+		newContent = newContent.replace(/\r\n?/g, '\n');
+		oldContent = oldContent.replace(/\r\n?/g, '\n');
+	}
+	var delta = newContent.length - oldContent.length;
 
-	return delta === 0 ? '' : '(' + (delta > 0 ? '+' : '') + delta + ' bytes)';
+	return delta === 0 ? '' : ' (' + (delta > 0 ? '+' : '') + delta + ' bytes)';
 }
 
 function loadSilently(path) {
@@ -92,13 +97,11 @@ exports.build = function (callback, compsBase32, buildName) {
 	    srcPath = pathPart + '-src.js',
 
 	    oldSrc = loadSilently(srcPath),
-	    srcDelta = getSizeDelta(newSrc, oldSrc);
+	    srcDelta = getSizeDelta(newSrc, oldSrc, true);
 
 	console.log('\tUncompressed: ' + bytesToKB(newSrc.length) + srcDelta);
 
-	if (newSrc === oldSrc) {
-		// console.log('\tNo changes');
-	} else {
+	if (newSrc !== oldSrc) {
 		fs.writeFileSync(srcPath, newSrc);
 		console.log('\tSaved to ' + srcPath);
 	}
@@ -117,25 +120,21 @@ exports.build = function (callback, compsBase32, buildName) {
 	    gzippedDelta = '';
 
 	function done() {
-		var noChanges = newCompressed === oldCompressed;
-		if (!noChanges) {
+		if (newCompressed !== oldCompressed) {
 			fs.writeFileSync(path, newCompressed);
 			console.log('\tSaved to ' + path);
 		}
 		console.log('\tGzipped: ' + bytesToKB(newGzipped.length) + gzippedDelta);
-		if (noChanges) {
-			console.log('\tNo changes\n');
-		}
 		callback();
 	}
 
 	zlib.gzip(newCompressed, function (err, gzipped) {
 		if (err) { return; }
 		newGzipped = gzipped;
-		if (oldCompressed !== newCompressed) {
+		if (oldCompressed && (oldCompressed !== newCompressed)) {
 			zlib.gzip(oldCompressed, function (err, oldGzipped) {
 				if (err) { return; }
-				gzippedDelta = getSizeDelta(gzipped.toString(), oldGzipped.toString());
+				gzippedDelta = getSizeDelta(gzipped, oldGzipped);
 				done();
 			});
 		} else {
