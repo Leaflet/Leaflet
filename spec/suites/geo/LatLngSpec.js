@@ -50,40 +50,6 @@ describe('LatLng', function () {
 		});
 	});
 
-	describe('#wrap', function () {
-		it("wraps longitude to lie between -180 and 180 by default", function () {
-			var a = new L.LatLng(0, 190).wrap().lng;
-			expect(a).to.eql(-170);
-
-			var b = new L.LatLng(0, 360).wrap().lng;
-			expect(b).to.eql(0);
-
-			var c = new L.LatLng(0, 380).wrap().lng;
-			expect(c).to.eql(20);
-
-			var d = new L.LatLng(0, -190).wrap().lng;
-			expect(d).to.eql(170);
-
-			var e = new L.LatLng(0, -360).wrap().lng;
-			expect(e).to.eql(0);
-
-			var f = new L.LatLng(0, -380).wrap().lng;
-			expect(f).to.eql(-20);
-
-			var g = new L.LatLng(0, 90).wrap().lng;
-			expect(g).to.eql(90);
-
-			var h = new L.LatLng(0, 180).wrap().lng;
-			expect(h).to.eql(180);
-		});
-
-		it("wraps longitude within the given range", function () {
-			var a = new L.LatLng(0, 190).wrap(-100, 100).lng;
-			expect(a).to.eql(-10);
-		});
-
-	});
-
 	describe('#toString', function () {
 		it('formats a string', function () {
 			var a = new L.LatLng(10.333333333, 20.2222222);
