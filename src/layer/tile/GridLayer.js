@@ -309,13 +309,14 @@ L.GridLayer = L.Class.extend({
 
 	_tileCoordsToBounds: function (coords) {
 
-		var tileSize = this.options.tileSize,
+		var map = this._map,
+		    tileSize = this.options.tileSize,
 
 		    nwPoint = coords.multiplyBy(tileSize),
 		    sePoint = nwPoint.add([tileSize, tileSize]),
 
-		    nw = this._map.unproject(nwPoint, coords.z),
-		    se = this._map.unproject(sePoint, coords.z);
+		    nw = map.wrapLatLng(map.unproject(nwPoint, coords.z)),
+		    se = map.wrapLatLng(map.unproject(sePoint, coords.z));
 
 		return new L.LatLngBounds(nw, se);
 	},

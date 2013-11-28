@@ -392,7 +392,7 @@ L.Map = L.Class.extend({
 	},
 
 	getWorldPixelSize: function () {
-		return this.options.crs.getSize(this.getZoom());
+		return this.options.crs.getProjectedBounds(this.getZoom()).getSize();
 	},
 
 	getPanes: function () {
@@ -436,6 +436,10 @@ L.Map = L.Class.extend({
 	latLngToLayerPoint: function (latlng) { // (LatLng)
 		var projectedPoint = this.project(L.latLng(latlng))._round();
 		return projectedPoint._subtract(this.getPixelOrigin());
+	},
+
+	wrapLatLng: function (latlng) {
+		return this.options.crs.wrapLatLng(latlng);
 	},
 
 	containerPointToLayerPoint: function (point) { // (Point)

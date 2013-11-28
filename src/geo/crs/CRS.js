@@ -25,12 +25,32 @@ L.CRS = {
 		return 256 * Math.pow(2, zoom);
 	},
 
-	getSize: function (zoom) {
+	getProjectedBounds: function (zoom) {
 		var b = this.projection.bounds,
 		    s = this.scale(zoom),
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
 
-		return L.point(Math.abs(max.x - min.x), Math.abs(max.y - min.y));
+		return L.bounds(min, max);
+	},
+
+	getBounds: function () {
+		var proj = this.projection,
+		    min = proj.unproject(proj.bounds.min),
+		    max = proj.unproject(proj.bounds.max);
+
+		return L.latLngBounds(min, max);
+	},
+
+	wrapLatLng: function (latlng) {
+		var bounds = this.getBounds(),
+		    lng = this.wrapLng ? this._wrap(latlng.lng, bounds.getWest(),  bounds.getEast())  : latlng.lng,
+		    lat = this.wrapLat ? this._wrap(latlng.lat, bounds.getSouth(), bounds.getNorth()) : latlng.lat;
+
+		return L.latLng(lat, lng);
+	},
+
+	_wrap: function (value, min, max) {
+		return (value + max) % (max - min) + (value < min || value === max ? max : min);
 	}
 };
