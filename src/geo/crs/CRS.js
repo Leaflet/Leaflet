@@ -21,6 +21,10 @@ L.CRS = {
 		return this.projection.project(latlng);
 	},
 
+	unproject: function (point) {
+		return this.projection.unproject(point);
+	},
+
 	scale: function (zoom) {
 		return 256 * Math.pow(2, zoom);
 	},
