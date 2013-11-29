@@ -45,12 +45,12 @@ L.GridLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		this._clearBgBuffer();
 		this._getPane().removeChild(this._container);
 
 		map.off(this._getEvents(), this);
 
-		this._container = null;
-		this._map = null;
+		this._container = this._map = null;
 	},
 
 	addTo: function (map) {
@@ -161,15 +161,15 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_updateOpacity: function () {
-		var i,
-		    tiles = this._tiles;
+		var opacity = this.options.opacity;
 
 		if (L.Browser.ielt9) {
-			for (i in tiles) {
-				L.DomUtil.setOpacity(tiles[i], this.options.opacity);
+			// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
+			for (var i in this._tiles) {
+				L.DomUtil.setOpacity(this._tiles[i], opacity);
 			}
 		} else {
-			L.DomUtil.setOpacity(this._container, this.options.opacity);
+			L.DomUtil.setOpacity(this._container, opacity);
 		}
 	},
 
@@ -189,7 +189,6 @@ L.GridLayer = L.Class.extend({
 			this._tileContainer = this._container;
 		}
 
-		// TODO check if opacity works when setting before appendChild
 		if (this.options.opacity < 1) {
 			this._updateOpacity();
 		}
@@ -229,33 +228,34 @@ L.GridLayer = L.Class.extend({
 		if (zoom > this.options.maxZoom ||
 		    zoom < this.options.minZoom) { return; }
 
-		// TODO clear bg buffer?
-
+		// tile coordinates range for the current view
 		var tileBounds = L.bounds(
 			bounds.min.divideBy(tileSize).floor(),
 			bounds.max.divideBy(tileSize).floor());
 
-		this._addTilesFromCenterOut(tileBounds);
+		this._addTiles(tileBounds);
 
 		if (this.options.unloadInvisibleTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
 	},
 
-	_addTilesFromCenterOut: function (bounds) {
+	_addTiles: function (bounds) {
 		var queue = [],
 		    center = bounds.getCenter(),
 		    zoom = this._map.getZoom();
 
 		var j, i, coords;
 
+		// create a queue of coordinates to load tiles from
 		for (j = bounds.min.y; j <= bounds.max.y; j++) {
 			for (i = bounds.min.x; i <= bounds.max.x; i++) {
 
 				coords = new L.Point(i, j);
 				coords.z = zoom;
 
-				if (!this._tileIsAdded(coords) && this._isValidTile(coords)) {
+				// add tile to queue if it's not in cache or out of bounds
+				if (!(this._tileCoordsToKey(coords) in this._tiles) && this._isValidTile(coords)) {
 					queue.push(coords);
 				}
 			}
@@ -272,17 +272,17 @@ L.GridLayer = L.Class.extend({
 
 		this._tilesToLoad += tilesToLoad;
 
-		// load tiles to load tiles in order of their distance to center
+		// sort tile queue to load tiles in order of their distance to center
 		queue.sort(function (a, b) {
 			return a.distanceTo(center) - b.distanceTo(center);
 		});
 
+		// create DOM fragment to append tiles in one batch
 		var fragment = document.createDocumentFragment();
 
 		for (i = 0; i < tilesToLoad; i++) {
 			this._addTile(queue[i], fragment);
 		}
-
 		this._tileContainer.appendChild(fragment);
 	},
 
@@ -290,6 +290,7 @@ L.GridLayer = L.Class.extend({
 		var crs = this._map.options.crs;
 
 		if (!crs.infinite) {
+			// don't load tile if it's out of bounds and not wrapped
 			var bounds = this._getTileNumBounds();
 			if ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
 			    (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
@@ -297,15 +298,12 @@ L.GridLayer = L.Class.extend({
 
 		if (!this.options.bounds) { return true; }
 
+		// don't load tile if it doesn't intersect the bounds in options
 		var tileBounds = this._tileCoordsToBounds(coords);
-
 		return L.latLngBounds(this.options.bounds).intersects(tileBounds);
 	},
 
-	_tileIsAdded: function (coords) {
-		return this._tileCoordsToKey(coords) in this._tiles;
-	},
-
+	// converts tile coordinates to its geographical bounds
 	_tileCoordsToBounds: function (coords) {
 
 		var map = this._map,
@@ -320,10 +318,12 @@ L.GridLayer = L.Class.extend({
 		return new L.LatLngBounds(nw, se);
 	},
 
+	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
 		return coords.x + ':' + coords.y;
 	},
 
+	// converts tile cache key to coordiantes
 	_keyToTileCoords: function (key) {
 		var kArr = key.split(':'),
 		    x = parseInt(kArr[0], 10),
@@ -332,6 +332,7 @@ L.GridLayer = L.Class.extend({
 		return new L.Point(x, y);
 	},
 
+	// remove any present tiles that are off the specified bounds
 	_removeOtherTiles: function (bounds) {
 		for (var key in this._tiles) {
 			if (!bounds.contains(this._keyToTileCoords(key))) {
@@ -363,7 +364,8 @@ L.GridLayer = L.Class.extend({
 		tile.onselectstart = L.Util.falseFn;
 		tile.onmousemove = L.Util.falseFn;
 
-		if (L.Browser.ielt9 && this.options.opacity !== undefined) {
+		// update opacity on tiles in IE7-8 because of filter inheritance problems
+		if (L.Browser.ielt9 && this.options.opacity < 1) {
 			L.DomUtil.setOpacity(tile, this.options.opacity);
 		}
 
@@ -377,31 +379,30 @@ L.GridLayer = L.Class.extend({
 	_addTile: function (coords, container) {
 		var tilePos = this._getTilePos(coords);
 
+		// wrap tile coords if necessary (depending on CRS)
 		this._wrapCoords(coords);
 
 		var tile = this.createTile(coords, L.bind(this._tileReady, this));
-
-		this.fire('tileloadstart', {tile: tile});
 
 		this._initTile(tile);
 
 		// if createTile is defined with a second argument ("done" callback),
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
-			// mark tile as ready, but delay one frame for opacity anim to happen
+			// mark tile as ready, but delay one frame for opacity animation to happen
 			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
 		}
 
-		/*
-		Chrome 20 layouts much faster with top/left (verify with timeline, frames)
-		Android 4 browser has display issues with top/left and requires transform instead
-		(other browsers don't currently care) - see debug/hacks/jitter.html for an example
-		*/
+		// Chrome 20 layouts much faster with top/left (verify with timeline, frames)
+		// Android 4 browser has display issues with top/left and requires transform instead
+		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
 		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
 
+		// save tile in cache
 		this._tiles[this._tileCoordsToKey(coords)] = tile;
 
 		container.appendChild(tile);
+		this.fire('tileloadstart', {tile: tile});
 	},
 
 	_tileReady: function (err, tile) {
@@ -433,11 +434,10 @@ L.GridLayer = L.Class.extend({
 		}
 	},
 
-	_getTilePos: function (tilePoint) {
-		var origin = this._map.getPixelOrigin(),
-		    tileSize = this._getTileSize();
-
-		return tilePoint.multiplyBy(tileSize).subtract(origin);
+	_getTilePos: function (coords) {
+		return coords
+				.multiplyBy(this._getTileSize())
+				.subtract(this._map.getPixelOrigin());
 	},
 
 	_wrapCoords: function (coords) {
@@ -451,6 +451,7 @@ L.GridLayer = L.Class.extend({
 		coords.y = crs.wrapLat ? L.Util.wrapNum(coords.y, bounds.min.y, bounds.max.y + 1) : coords.y;
 	},
 
+	// get the global tile coordinates range for the current zoom
 	_getTileNumBounds: function () {
 		var bounds = this._map.getPixelWorldBounds(),
 			size = this.options.tileSize;
@@ -481,7 +482,7 @@ L.GridLayer = L.Class.extend({
 		    bg = this._bgBuffer;
 
 		front.style.visibility = '';
-		front.parentNode.appendChild(front); // Bring to fore
+		front.parentNode.appendChild(front); // bring to front
 
 		// force reflow
 		L.Util.falseFn(bg.offsetWidth);
@@ -499,8 +500,8 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_prepareBgBuffer: function () {
+		// overriden in TileLayer
 		this._swapBgBuffer();
-		// TODO override in TileLayer
 	},
 
 	_swapBgBuffer: function () {

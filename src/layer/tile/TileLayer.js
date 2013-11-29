@@ -21,6 +21,9 @@ L.TileLayer = L.GridLayer.extend({
 	},
 
 	initialize: function (url, options) {
+
+		this._url = url;
+
 		options = L.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
@@ -28,11 +31,10 @@ L.TileLayer = L.GridLayer.extend({
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 			options.zoomOffset++;
+
 			options.minZoom = Math.max(0, options.minZoom);
 			options.maxZoom--;
 		}
-
-		this._url = url;
 
 		if (typeof options.subdomains === 'string') {
 			options.subdomains = options.subdomains.split('');
@@ -45,27 +47,18 @@ L.TileLayer = L.GridLayer.extend({
 		if (!noRedraw) {
 			this.redraw();
 		}
-
-		return this;
-	},
-
-	redraw: function () {
-		if (this._map) {
-			this._reset({hard: true});
-			this._update();
-		}
 		return this;
 	},
 
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		tile.onload = L.bind(this._tileOnLoad, this);
-		tile.onerror = L.bind(this._tileOnError, this);
+		tile.onload = L.bind(this._tileOnLoad, this, done);
+		tile.onerror = L.bind(this._tileOnError, this, done);
 
 		tile.src = this.getTileUrl(coords);
 
-		return done && tile;
+		return tile;
 	},
 
 	getTileUrl: function (coords) {
@@ -77,33 +70,34 @@ L.TileLayer = L.GridLayer.extend({
 		}, this.options));
 	},
 
-	_tileOnLoad: function (e) {
-		this._tileReady(null, e.target);
+	_tileOnLoad: function (done, e) {
+		done(null, e.target);
 	},
 
-	_tileOnError: function (e) {
+	_tileOnError: function (done, e) {
 		var errorUrl = this.options.errorTileUrl;
 		if (errorUrl) {
 			e.target.src = errorUrl;
 		}
-		this._tileReady(e, e.target);
+		done(e, e.target);
 	},
 
 	_getTileSize: function () {
 		var map = this._map,
-			options = this.options,
+		    options = this.options,
 		    zoom = map.getZoom() + options.zoomOffset,
 		    zoomN = options.maxNativeZoom;
 
+		// increase tile size when overscaling
 		return zoomN && zoom > zoomN ?
 				Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * options.tileSize) :
 				options.tileSize;
 	},
 
 	_removeTile: function (key) {
-		L.GridLayer.prototype._removeTile.call(this, key);
-
 		var tile = this._tiles[key];
+
+		L.GridLayer.prototype._removeTile.call(this, key);
 
 		// for https://github.com/Leaflet/Leaflet/issues/137
 		if (!L.Browser.android) {
