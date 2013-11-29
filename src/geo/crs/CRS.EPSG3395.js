@@ -1,3 +1,6 @@
+/*
+ * L.CRS.EPSG3857 (World Mercator) CRS implementation.
+ */
 
 L.CRS.EPSG3395 = L.extend({}, L.CRS, {
 	code: 'EPSG:3395',
