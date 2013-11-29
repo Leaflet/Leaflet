@@ -34,16 +34,10 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
-	getBounds: function () {
-		var proj = this.projection,
-		    min = proj.unproject(proj.bounds.min),
-		    max = proj.unproject(proj.bounds.max);
-
-		return L.latLngBounds(min, max);
-	},
+	bounds: L.latLngBounds([-90, -180], [90, 180]),
 
 	wrapLatLng: function (latlng) {
-		var bounds = this.getBounds(),
+		var bounds = this.bounds,
 		    lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, bounds.getWest(),  bounds.getEast(),  true) : latlng.lng,
 		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, bounds.getSouth(), bounds.getNorth(), true) : latlng.lat;
 
