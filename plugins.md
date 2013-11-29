@@ -235,7 +235,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
-	</tr>	
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/turban/Leaflet.Graticule">Leaflet.Graticule</a>
@@ -244,13 +244,13 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
-	</tr>			
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
-			Plugin for plotting a marker representing a user - or multiple users - on a map, 
-			with support for drawing an accuraccy circle. Can be seen in action on 
+			Plugin for plotting a marker representing a user - or multiple users - on a map,
+			with support for drawing an accuraccy circle. Can be seen in action on
 			<a href="http://longitude.me">Longitude.me</a>.
 		</td><td>
 			<a href="http://heyman.info">Jonatan Heyman</a>
@@ -289,6 +289,14 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>Overlay day and night regions on a map.
 		</td><td>
 			<a href="https://github.com/joergdietrich">J&ouml;rg Dietrich</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/openplans/Leaflet.FeatureSelect">Leaflet.FeatureSelect</a>
+		</td><td>Use a configurable centerpoint marker to select any geometry type from a GeoJSON layer.
+		</td><td>
+			<a href="https://github.com/atogle">Aaron Ogle</a>
 		</td>
 	</tr>
 </table>
@@ -766,7 +774,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A context menu for Leaflet.
 		</td><td>
 			<a href="https://github.com/aratcliffe/">Adam Ratcliffe</a>
-		</td>        
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -775,7 +783,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A simple tool to measure distances on maps (*relies on Leaflet.Draw*).
 		</td><td>
 			<a href="https://github.com/makinacorpus/">Makina Corpus</a>
-		</td>        
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -785,7 +793,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			intentions to aim a particular layer.
 		</td><td>
 			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
-		</td>        
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -794,7 +802,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Trigger mouse events when cursor is "almost" over a layer.
 		</td><td>
 			<a href="https://github.com/makinacorpus/">Mathieu Leplatre</a>
-		</td>        
+		</td>
 	</tr>
 	<tr>
 		<td>
@@ -803,7 +811,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Adds the ability to change overlay order in the layers control.
 		</td><td>
 			<a href="https://github.com/elesdoar/">Michael Salgado</a>
-		</td>        
+		</td>
 	</tr>
 	<tr>
 		<td>
