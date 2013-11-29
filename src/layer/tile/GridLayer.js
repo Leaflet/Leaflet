@@ -457,8 +457,8 @@ L.GridLayer = L.Class.extend({
 			size = this.options.tileSize;
 
 		return L.bounds(
-				bounds.min.divideBy(size),
-				bounds.max.divideBy(size).subtract([1, 1]));
+				bounds.min.divideBy(size).floor(),
+				bounds.max.divideBy(size).ceil().subtract([1, 1]));
 	},
 
 	_animateZoom: function (e) {
