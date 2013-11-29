@@ -227,13 +227,15 @@ L.GridLayer = L.Class.extend({
 		if (crs.wrapLng) {
 			this._wrapLng = [
 				Math.floor(map.project([0, crs.wrapLng[0]]).x / tileSize),
-				Math.ceil( map.project([0, crs.wrapLng[1]]).x / tileSize)];
+				Math.ceil(map.project([0, crs.wrapLng[1]]).x / tileSize)
+			];
 		}
 
 		if (crs.wrapLat) {
 			this._wrapLat = [
 				Math.floor(map.project([crs.wrapLat[0], 0]).y / tileSize),
-				Math.ceil( map.project([crs.wrapLat[1], 0]).y / tileSize)];
+				Math.ceil(map.project([crs.wrapLat[1], 0]).y / tileSize)
+			];
 		}
 	},
 
