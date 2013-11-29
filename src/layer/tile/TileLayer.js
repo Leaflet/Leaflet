@@ -65,7 +65,7 @@ L.TileLayer = L.GridLayer.extend({
 		return L.Util.template(this._url, L.extend({
 			s: this._getSubdomain(coords),
 			x: coords.x,
-			y: this.options.tms ? this._getTileNumBounds().getSize().y - coords.y : coords.y,
+			y: this.options.tms ? this._getTileNumBounds().max.y - coords.y : coords.y,
 			z: this._getZoomForUrl()
 		}, this.options));
 	},
