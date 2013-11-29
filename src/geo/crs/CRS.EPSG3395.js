@@ -12,5 +12,5 @@ L.CRS.EPSG3395 = L.extend({}, L.CRS, {
 		return new L.Transformation(scale, 0.5, -scale, 0.5);
 	}()),
 
-	wrapLng: true
+	wrapLng: [-180, 180]
 });

@@ -26,6 +26,8 @@ L.CRS = {
 	},
 
 	getProjectedBounds: function (zoom) {
+		if (this.infinite) { return null; }
+
 		var b = this.projection.bounds,
 		    s = this.scale(zoom),
 		    min = this.transformation.transform(b.min, s),
@@ -34,12 +36,9 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
-	bounds: L.latLngBounds([-90, -180], [90, 180]),
-
 	wrapLatLng: function (latlng) {
-		var bounds = this.bounds,
-		    lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, bounds.getWest(),  bounds.getEast(),  true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, bounds.getSouth(), bounds.getNorth(), true) : latlng.lat;
+		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng[0], this.wrapLng[1], true) : latlng.lng,
+		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat[0], this.wrapLat[1], true) : latlng.lat;
 
 		return L.latLng(lat, lng);
 	}

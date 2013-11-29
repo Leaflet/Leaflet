@@ -211,6 +211,30 @@ L.GridLayer = L.Class.extend({
 		if (this._animated && e && e.hard) {
 			this._clearBgBuffer();
 		}
+
+		this._tileNumBounds = this._getTileNumBounds();
+		this._resetWrap();
+	},
+
+	_resetWrap: function () {
+		var map = this._map,
+		    crs = map.options.crs;
+
+		if (crs.infinite) { return; }
+
+		var tileSize = this._getTileSize();
+
+		if (crs.wrapLng) {
+			this._wrapLng = [
+				Math.floor(map.project([0, crs.wrapLng[0]]).x / tileSize),
+				Math.ceil( map.project([0, crs.wrapLng[1]]).x / tileSize)];
+		}
+
+		if (crs.wrapLat) {
+			this._wrapLat = [
+				Math.floor(map.project([crs.wrapLat[0], 0]).y / tileSize),
+				Math.ceil( map.project([crs.wrapLat[1], 0]).y / tileSize)];
+		}
 	},
 
 	_getTileSize: function () {
@@ -291,7 +315,7 @@ L.GridLayer = L.Class.extend({
 
 		if (!crs.infinite) {
 			// don't load tile if it's out of bounds and not wrapped
-			var bounds = this._getTileNumBounds();
+			var bounds = this._tileNumBounds;
 			if ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
 			    (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
 		}
@@ -441,14 +465,8 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_wrapCoords: function (coords) {
-		var crs = this._map.options.crs;
-
-		if (crs.infinite) { return; }
-
-		var bounds = this._getTileNumBounds();
-
-		coords.x = crs.wrapLng ? L.Util.wrapNum(coords.x, bounds.min.x, bounds.max.x + 1) : coords.x;
-		coords.y = crs.wrapLat ? L.Util.wrapNum(coords.y, bounds.min.y, bounds.max.y + 1) : coords.y;
+		coords.x = this._wrapLng ? L.Util.wrapNum(coords.x, this._wrapLng[0], this._wrapLng[1]) : coords.x;
+		coords.y = this._wrapLat ? L.Util.wrapNum(coords.y, this._wrapLat[0], this._wrapLat[1]) : coords.y;
 	},
 
 	// get the global tile coordinates range for the current zoom
@@ -456,9 +474,9 @@ L.GridLayer = L.Class.extend({
 		var bounds = this._map.getPixelWorldBounds(),
 			size = this.options.tileSize;
 
-		return L.bounds(
+		return bounds ? L.bounds(
 				bounds.min.divideBy(size).floor(),
-				bounds.max.divideBy(size).ceil().subtract([1, 1]));
+				bounds.max.divideBy(size).ceil().subtract([1, 1])) : null;
 	},
 
 	_animateZoom: function (e) {

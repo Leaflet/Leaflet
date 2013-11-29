@@ -8,5 +8,5 @@ L.CRS.EPSG4326 = L.extend({}, L.CRS, {
 	projection: L.Projection.LonLat,
 	transformation: new L.Transformation(1 / 180, 1, -1 / 180, 0.5),
 
-	wrapLng: true
+	wrapLng: [-180, 180]
 });
