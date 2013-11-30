@@ -46,17 +46,17 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
-	// (optional) define how the axis wraps when calling wrapLatLng
+	// whether a coordinate axis wraps in a given range (e.g. longitude from -180 to 180); depends on CRS
 	// wrapLng: [min, max],
 	// wrapLat: [min, max],
 
-	// (optional) if true, the coordinate space will be unbounded (infinite in all directions)
+	// if true, the coordinate space will be unbounded (infinite in all directions)
 	// infinite: false,
 
-	// wraps geo coords to lie in a range (e.g. longitude from -180 to 180) if applicable, depends on CRS
+	// wraps geo coords in certain ranges if applicable
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng[0], this.wrapLng[1], true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat[0], this.wrapLat[1], true) : latlng.lat;
+		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat;
 
 		return L.latLng(lat, lng);
 	}

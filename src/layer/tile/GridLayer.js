@@ -59,9 +59,8 @@ L.GridLayer = L.Class.extend({
 	},
 
 	bringToFront: function () {
-		var pane = this._getPane();
-
-		if (this._container) {
+		if (this._map) {
+			var pane = this._getPane();
 			pane.appendChild(this._container);
 			this._setAutoZIndex(pane, Math.max);
 		}
@@ -69,9 +68,8 @@ L.GridLayer = L.Class.extend({
 	},
 
 	bringToBack: function () {
-		var pane = this._map._panes.tilePane;
-
-		if (this._container) {
+		if (this._map) {
+			var pane = this._getPane();
 			pane.insertBefore(this._container, pane.firstChild);
 			this._setAutoZIndex(pane, Math.min);
 		}
@@ -467,8 +465,8 @@ L.GridLayer = L.Class.extend({
 	},
 
 	_wrapCoords: function (coords) {
-		coords.x = this._wrapLng ? L.Util.wrapNum(coords.x, this._wrapLng[0], this._wrapLng[1]) : coords.x;
-		coords.y = this._wrapLat ? L.Util.wrapNum(coords.y, this._wrapLat[0], this._wrapLat[1]) : coords.y;
+		coords.x = this._wrapLng ? L.Util.wrapNum(coords.x, this._wrapLng) : coords.x;
+		coords.y = this._wrapLat ? L.Util.wrapNum(coords.y, this._wrapLat) : coords.y;
 	},
 
 	// get the global tile coordinates range for the current zoom

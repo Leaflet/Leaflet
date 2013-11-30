@@ -82,8 +82,10 @@ L.Util = {
 		};
 	},
 
-	wrapNum: function (x, min, max, includeMax) {
-		var d = max - min;
+	wrapNum: function (x, range, includeMax) {
+		var max = range[1],
+		    min = range[0],
+		    d = max - min;
 		return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 	},
 
