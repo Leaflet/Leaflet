@@ -18,39 +18,27 @@
 
 	<script type="text/javascript">
 
-		var map = L.map('map', {
-			crs: L.CRS.Simple
-		}).setView([0, 0], 0);
-
-		L.polygon([
-			[-200, -50],
-			[-40, 250],
-			[200, 100]
-		]).addTo(map);
-
-
-		L.marker([-200, -200]).addTo(map);
-		L.marker([200, -200]).addTo(map);
-		L.marker([200, 200]).addTo(map);
-		L.marker([-200, 200]).addTo(map);
-
-		L.marker([0, 0]).addTo(map);
-
-		L.imageOverlay('http://leafletjs.com/docs/images/logo.png', [[0, 0], [73, 220]]).addTo(map);
-
 		var grid = L.gridLayer({
 			attribution: 'Grid Layer'
 		});
 
-		grid.createTile = function (coords) {
+		grid.createTile = function (coords, done) {
 			var tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.outline = '1px solid red';
 			tile.style.background = 'white';
+
+			// test async
+			setTimeout(function () {
+				done(null, tile);
+			}, Math.random() * 500);
+
 			return tile;
 		};
 
-		map.addLayer(grid);
+		var map = L.map('map')
+				.setView([50.5, 30.51], 10)
+				.addLayer(grid);
 
 	</script>
 </body>

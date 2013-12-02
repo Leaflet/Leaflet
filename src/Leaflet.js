@@ -2,7 +2,7 @@
 var oldL = window.L,
     L = {};
 
-L.version = '0.7';
+L.version = '0.8-dev';
 
 // define Leaflet for Node module pattern loaders, including Browserify
 if (typeof module === 'object' && typeof module.exports === 'object') {

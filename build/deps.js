@@ -11,9 +11,8 @@ var deps = {
 		      'dom/DomUtil.js',
 		      'geo/LatLng.js',
 		      'geo/LatLngBounds.js',
-		      'geo/projection/Projection.js',
-		      'geo/projection/Projection.SphericalMercator.js',
 		      'geo/projection/Projection.LonLat.js',
+		      'geo/projection/Projection.SphericalMercator.js',
 		      'geo/crs/CRS.js',
 		      'geo/crs/CRS.Simple.js',
 		      'geo/crs/CRS.EPSG3857.js',
@@ -29,21 +28,21 @@ var deps = {
 		heading: 'Additional projections'
 	},
 
+	GridLayer: {
+		src: ['layer/tile/GridLayer.js'],
+		desc: 'Used as base class for grid-like layers like TileLayer.',
+		heading: 'Layers'
+	},
+
 	TileLayer: {
 		src: ['layer/tile/TileLayer.js'],
 		desc: 'The base class for displaying tile layers on the map.',
-		heading: 'Layers'
+		deps: ['GridLayer']
 	},
 
 	TileLayerWMS: {
 		src: ['layer/tile/TileLayer.WMS.js'],
 		desc: 'WMS tile layer.',
-		deps: ['TileLayer']
-	},
-
-	TileLayerCanvas: {
-		src: ['layer/tile/TileLayer.Canvas.js'],
-		desc: 'Tile layer made from canvases (for custom drawing purposes).',
 		deps: ['TileLayer']
 	},
 
@@ -242,7 +241,7 @@ var deps = {
 	},
 
 	AnimationZoom: {
-		src: ['map/anim/Map.ZoomAnimation.js', 'layer/tile/TileLayer.Anim.js'],
+		src: ['map/anim/Map.ZoomAnimation.js'],
 		deps: ['AnimationPan'],
 		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
 	},

@@ -19,7 +19,11 @@ module.exports = function (config) {
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
 
-		plugins: ['karma-mocha', 'karma-phantomjs-launcher', 'karma-chrome-launcher'],
+		plugins: [
+			'karma-mocha',
+			'karma-coverage',
+			'karma-phantomjs-launcher',
+			'karma-chrome-launcher'],
 
 		// frameworks to use
 		frameworks: ['mocha'],

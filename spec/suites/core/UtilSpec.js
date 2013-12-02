@@ -49,13 +49,14 @@ describe('Util', function () {
 			var fn = sinon.spy(),
 				foo = {},
 				a = {},
-				b = {};
+				b = {},
+				c = {};
 
 			var fn2 = L.Util.bind(fn, foo, a, b);
 
-			fn2();
+			fn2(c);
 
-			expect(fn.calledWith(a, b)).to.be.ok();
+			expect(fn.calledWith(a, b, c)).to.be.ok();
 		});
 	});
 
