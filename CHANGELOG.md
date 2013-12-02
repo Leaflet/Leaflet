@@ -7,6 +7,35 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch. Includes `stable` branch fixes.
 
+### TileLayer & Projections refactoring
+
+TileLayer code and everything projections-related has undergone a major refactoring, documented in [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
+
+#### TileLayer-related changes
+
+These changes make implementing custom grid-like layers for Leaflet much easier.
+
+* Moved most of the `TileLayer` logic into the new `GridLayer` class (which `TileLayer` now inherits, extending it with logic specific to tile servers).
+* Removed `TileLayer.Canvas` in favor of the much more flexible and powerful `GridLayer`.
+* Improved tile wrapping and bounding logic in `TileLayer` to work transparently and completely depent on the CRS used; removed the need for `TileLayer` hacks when using custom projections.
+
+#### Projections-related changes
+
+These changes were targeted at removing any hardcoded projection-specific logic accross Leaflet classes, making it transparent and driven by the chosen CRS. They make using Leaflet with custom projections (including flat maps) much easier, and remove the need for ugly hacks in the [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
+
+* Added `Projection` `bounds` property that defines bounds for different projections (`Mercator`, etc.) in projected coordinates.
+* Added `CRS` `wrapLat` and `wrapLng` properties which define whether the world wraps on a given axis and in what range. Set as `[-180, 180]` for `EPSG:3857`, `EPSG:4326`, `EPSG:3395` by default.
+* Removed `LatLng` `wrap` method; added `CRS` and `Map` `wrapLatLng` instead (so that wrapping depends on the chosen CRS).
+* Added `CRS` `infinite` property that disables boundaries (the world can go on infinitely in any direction), default for `CRS.Simple`.
+* Added `CRS` `getProjectedBounds` and `Map` `getPixelWorldBounds` methods that returns world bounds in projected coordinates depending on zoom (derived from `Projection` `bounds`).
+* Added `CRS` `unproject` method that converts coordinates in CRS-dependent units into `LatLng` coordinates.
+* Fixed `EPSG:4326` to have correct tile pyramid (2x1 tiles at root).
+* Fixed `Projection.SphericalMercator` to project to meter units.
+* Fixed `Map` `worldCopyJump` option to work for other projections.
+
+### Misc improvements
+
+* Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
 * Improved the build system (`jake build`) to report gzipped library size.
 
 ## 0.7.1-dev (stable)
