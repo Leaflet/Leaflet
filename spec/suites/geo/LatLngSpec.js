@@ -93,6 +93,10 @@ describe('LatLng', function () {
 		it('accepts an object with lat/lon', function () {
 			expect(L.latLng({lat: 50, lon: 30})).to.eql(new L.LatLng(50, 30));
 		});
+
+		it('returns null if lng not specified', function () {
+			expect(L.latLng(50)).to.be(null);
+		});
 	});
 });
 
