@@ -112,6 +112,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="http://ursudio.com/webgl-heatmap-leaflet/">WebGL Heatmap</a>
+		</td><td>
+			High performance Javascript heatmap plugin using WebGL.
+
+		</td><td>
+			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
 		</td><td>
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
