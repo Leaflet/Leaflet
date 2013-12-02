@@ -9,7 +9,7 @@ An in-progress version being developed on the `master` branch. Includes `stable`
 
 ### TileLayer & Projections refactoring
 
-TileLayer code and everything projections-related has undergone a major refactoring, documented in [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
+TileLayer code and everything projections-related has undergone a major refactoring by [@mourner](https://github.com/mourner) with help from [@perliedman](https://github.com/perliedman), documented in [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
 
 #### TileLayer-related changes
 
@@ -18,6 +18,7 @@ These changes make implementing custom grid-like layers for Leaflet much easier.
 * Moved most of the `TileLayer` logic into the new `GridLayer` class (which `TileLayer` now inherits, extending it with logic specific to tile servers).
 * Removed `TileLayer.Canvas` in favor of the much more flexible and powerful `GridLayer`.
 * Improved tile wrapping and bounding logic in `TileLayer` to work transparently and completely depent on the CRS used; removed the need for `TileLayer` hacks when using custom projections.
+* Removed `url` property in `tileload` and tileloadstart` events (get it through `tile.src`).
 
 #### Projections-related changes
 
@@ -33,10 +34,13 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed `Projection.SphericalMercator` to project to meter units.
 * Fixed `Map` `worldCopyJump` option to work for other projections.
 
-### Misc improvements
+#### Misc. changes
 
+* Added `Point` `ceil` method.
+* Added `Util.wrapNum` method for wrapping a number to lie in a certain range.
 * Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
 * Improved the build system (`jake build`) to report gzipped library size.
+
 
 ## 0.7.1-dev (stable)
 
