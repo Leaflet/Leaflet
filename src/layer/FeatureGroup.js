@@ -6,8 +6,44 @@
 L.FeatureGroup = L.LayerGroup.extend({
 	includes: L.Mixin.Events,
 
-	statics: {
-		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu popupopen popupclose'
+	initialize: function (layers) {
+		this._eventTypes = '';
+
+		L.LayerGroup.prototype.initialize.call(this, layers);
+	},
+
+	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+
+		// types can be a map of types/handlers
+		if (L.Util.invokeEach(types, this.addEventListener, this, fn, context)) { return this; }
+
+		//keep track of event types we're listening for 
+		var i, type,
+		    newTypes = '',
+		    typesArray = L.Util.splitWords(types);
+		for (i in typesArray) {
+			type = typesArray[i];
+			if (!this.hasEventListeners(type)) {
+				//listener for a new event type. 
+				this._eventTypes = (this._eventTypes || '') + type + ' ';
+				newTypes = type + ' ';
+			}
+		}
+		//make sure layers propagate back events for the new types we're registering
+		if (newTypes !== '') {
+			this.eachLayer(function (layer) {
+				if ('on' in layer) {
+					layer.on(newTypes, this._propagateEvent, this);
+				}
+			}, this);
+		}
+
+		//call mixin method
+		return L.Mixin.Events.addEventListener.call(this, types, fn, context);
+	},
+
+	on: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+		return this.addEventListener(types, fn, context);
 	},
 
 	addLayer: function (layer) {
@@ -16,7 +52,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		}
 
 		if ('on' in layer) {
-			layer.on(L.FeatureGroup.EVENTS, this._propagateEvent, this);
+			layer.on(this._eventTypes, this._propagateEvent, this);
 		}
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
@@ -36,7 +72,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 			layer = this._layers[layer];
 		}
 
-		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
+		layer.off(this._eventTypes, this._propagateEvent, this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
