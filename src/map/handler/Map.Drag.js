@@ -108,7 +108,7 @@ L.Map.Drag = L.Handler.extend({
 		    options = map.options,
 		    delay = +new Date() - this._lastTime,
 
-		    noInertia = !options.inertia || delay > options.inertiaThreshold || !this._positions[0];
+		    noInertia = !options.inertia || delay > options.inertiaThreshold || !this._positions || !this._positions[0];
 
 		map.fire('dragend', e);
 
