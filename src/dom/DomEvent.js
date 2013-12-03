@@ -7,14 +7,15 @@ L.DomEvent = {
 	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
 		var id = L.stamp(fn),
-		    key = '_leaflet_' + type + id,
-		    handler, originalHandler, newType;
+		    key = '_leaflet_' + type + id;
 
 		if (obj[key]) { return this; }
 
-		handler = function (e) {
-			return fn.call(context || obj, e || L.DomEvent._getEvent());
+		var handler = function (e) {
+			return fn.call(context || obj, e || window.event);
 		};
+
+		var originalHandler = handler;
 
 		if (L.Browser.pointer && type.indexOf('touch') === 0) {
 			return this.addPointerListener(obj, type, handler, id);
@@ -30,25 +31,19 @@ L.DomEvent = {
 				obj.addEventListener(type, handler, false);
 
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-
-				originalHandler = handler;
-				newType = (type === 'mouseenter' ? 'mouseover' : 'mouseout');
-
 				handler = function (e) {
+					e = e || window.event;
 					if (!L.DomEvent._checkMouse(obj, e)) { return; }
 					return originalHandler(e);
 				};
+				obj.addEventListener(type === 'mouseenter' ? 'mouseover' : 'mouseout', handler, false);
 
-				obj.addEventListener(newType, handler, false);
-
-			} else if (type === 'click' && L.Browser.android) {
-				originalHandler = handler;
-				handler = function (e) {
-					return L.DomEvent._filterClick(e, originalHandler);
-				};
-
-				obj.addEventListener(type, handler, false);
 			} else {
+				if (type === 'click' && L.Browser.android) {
+					handler = function (e) {
+						return L.DomEvent._filterClick(e, originalHandler);
+					};
+				}
 				obj.addEventListener(type, handler, false);
 			}
 
@@ -71,6 +66,7 @@ L.DomEvent = {
 
 		if (L.Browser.pointer && type.indexOf('touch') === 0) {
 			this.removePointerListener(obj, type, id);
+
 		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
 			this.removeDoubleTapListener(obj, id);
 
@@ -80,11 +76,12 @@ L.DomEvent = {
 				obj.removeEventListener('DOMMouseScroll', handler, false);
 				obj.removeEventListener(type, handler, false);
 
-			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
-				obj.removeEventListener((type === 'mouseenter' ? 'mouseover' : 'mouseout'), handler, false);
 			} else {
-				obj.removeEventListener(type, handler, false);
+				obj.removeEventListener(
+					type === 'mouseenter' ? 'mouseover' :
+					type === 'mouseleave' ? 'mouseout' : type, handler, false);
 			}
+
 		} else if ('detachEvent' in obj) {
 			obj.detachEvent('on' + type, handler);
 		}
@@ -145,13 +142,14 @@ L.DomEvent = {
 	getMousePosition: function (e, container) {
 		var body = document.body,
 		    docEl = document.documentElement,
-		    //gecko makes scrollLeft more negative as you scroll in rtl, other browsers don't
-			//ref: https://code.google.com/p/closure-library/source/browse/closure/goog/style/bidi.js
-			x = L.DomUtil.documentIsLtr() ?
-					(e.pageX ? e.pageX - body.scrollLeft - docEl.scrollLeft : e.clientX) :
-						(L.Browser.gecko ? e.pageX - body.scrollLeft - docEl.scrollLeft :
-						 e.pageX ? e.pageX - body.scrollLeft + docEl.scrollLeft : e.clientX),
-		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop: e.clientY,
+
+		    // gecko makes scrollLeft more negative as you scroll in rtl, other browsers don't
+			// ref: https://code.google.com/p/closure-library/source/browse/closure/goog/style/bidi.js
+
+			x = e.pageX ? e.pageX - body.scrollLeft -
+					docEl.scrollLeft * (L.DomUtil.documentIsLtr() || L.Browser.gecko ? 1 : -1) : e.clientX,
+		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop : e.clientY,
+
 		    pos = new L.Point(x, y);
 
 		if (!container) {
@@ -207,22 +205,6 @@ L.DomEvent = {
 			return false;
 		}
 		return (related !== el);
-	},
-
-	_getEvent: function () { // evil magic for IE
-		/*jshint noarg:false */
-		var e = window.event;
-		if (!e) {
-			var caller = arguments.callee.caller;
-			while (caller) {
-				e = caller['arguments'][0];
-				if (e && window.Event === e.constructor) {
-					break;
-				}
-				caller = caller.caller;
-			}
-		}
-		return e;
 	},
 
 	// this is a horrible workaround for a bug in Android where a single touch triggers two click events
