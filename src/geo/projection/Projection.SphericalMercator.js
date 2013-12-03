@@ -9,7 +9,7 @@ L.Projection.SphericalMercator = {
 	R: 6378137,
 
 	project: function (latlng) {
-		var d = L.LatLng.DEG_TO_RAD,
+		var d = Math.PI / 180,
 		    max = this.MAX_LATITUDE,
 		    x = this.R * latlng.lng * d,
 		    y = Math.max(Math.min(max, latlng.lat), -max) * d;
@@ -20,7 +20,7 @@ L.Projection.SphericalMercator = {
 	},
 
 	unproject: function (point) {
-		var d = L.LatLng.RAD_TO_DEG,
+		var d = 180 / Math.PI,
 		    lng = point.x * d / this.R,
 		    lat = (2 * Math.atan(Math.exp(point.y / this.R)) - (Math.PI / 2)) * d;
 

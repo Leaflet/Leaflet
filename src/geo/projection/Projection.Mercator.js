@@ -12,7 +12,7 @@ L.Projection.Mercator = {
 	bounds: L.bounds([-20037508.34279, -15496570.73972], [20037508.34279, 18764656.23138]),
 
 	project: function (latlng) {
-		var d = L.LatLng.DEG_TO_RAD,
+		var d = Math.PI / 180,
 		    max = this.MAX_LATITUDE,
 		    lat = Math.max(Math.min(max, latlng.lat), -max),
 		    r = this.R_MAJOR,
@@ -32,7 +32,7 @@ L.Projection.Mercator = {
 	},
 
 	unproject: function (point) {
-		var d = L.LatLng.RAD_TO_DEG,
+		var d = 180 / Math.PI,
 		    r = this.R_MAJOR,
 		    r2 = this.R_MINOR,
 		    lng = point.x * d / r,

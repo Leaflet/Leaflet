@@ -77,7 +77,7 @@ L.Circle = L.Path.extend({
 	},
 
 	_getLngRadius: function () {
-		return this._getLatRadius() / Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
+		return this._getLatRadius() / Math.cos((Math.PI / 180) * this._latlng.lat);
 	},
 
 	_checkIfEmpty: function () {
