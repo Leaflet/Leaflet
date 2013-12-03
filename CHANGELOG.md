@@ -5,7 +5,53 @@ Leaflet Changelog
 
 ## 0.8-dev (master)
 
-An in-progress version being developed on the `master` branch. No changes since 0.7 release yet.
+An in-progress version being developed on the `master` branch. Includes `stable` branch fixes.
+
+### TileLayer & Projections refactoring
+
+TileLayer code and everything projections-related has undergone a major refactoring, documented in [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
+
+#### TileLayer-related changes
+
+These changes make implementing custom grid-like layers for Leaflet much easier.
+
+* Moved most of the `TileLayer` logic into the new `GridLayer` class (which `TileLayer` now inherits, extending it with logic specific to tile servers).
+* Removed `TileLayer.Canvas` in favor of the much more flexible and powerful `GridLayer`.
+* Improved tile wrapping and bounding logic in `TileLayer` to work transparently and completely depent on the CRS used; removed the need for `TileLayer` hacks when using custom projections.
+* Removed `url` property in `tileload` and `tileloadstart` events (get it through `tile.src`).
+
+#### Projections-related changes
+
+These changes were targeted at removing any hardcoded projection-specific logic accross Leaflet classes, making it transparent and driven by the chosen CRS. They make using Leaflet with custom projections (including flat maps) much easier, and remove the need for ugly hacks in the [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
+
+* Added `Projection` `bounds` property that defines bounds for different projections (`Mercator`, etc.) in projected coordinates (by [@perliedman](https://github.com/perliedman)).
+* Added `CRS` `wrapLat` and `wrapLng` properties which define whether the world wraps on a given axis and in what range. Set as `[-180, 180]` for `EPSG:3857`, `EPSG:4326`, `EPSG:3395` by default.
+* Removed `LatLng` `wrap` method; added `CRS` and `Map` `wrapLatLng` instead (so that wrapping depends on the chosen CRS).
+* Added `CRS` `infinite` property that disables boundaries (the world can go on infinitely in any direction), default for `CRS.Simple`.
+* Added `CRS` `getProjectedBounds` and `Map` `getPixelWorldBounds` methods that returns world bounds in projected coordinates depending on zoom (derived from `Projection` `bounds`) (by [@perliedman](https://github.com/perliedman)).
+* Added `CRS` `unproject` method that converts coordinates in CRS-dependent units into `LatLng` coordinates (by [@sowelie](https://github.com/sowelie)).
+* Fixed `EPSG:4326` to have correct tile pyramid (2x1 tiles at root).
+* Fixed `Projection.SphericalMercator` to project to meter units (by [@calvinmetcalf](https://github.com/calvinmetcalf)).
+* Fixed `Map` `worldCopyJump` option to work for other projections.
+
+#### Misc. changes
+
+* Added `Point` `ceil` method (by [@perliedman](https://github.com/perliedman)).
+* Added `Util.wrapNum` method for wrapping a number to lie in a certain range.
+* Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
+* Improved the build system (`jake build`) to report gzipped library size.
+
+
+## 0.7.1-dev (stable)
+
+An in-progress version being developed on the `stable` branch.
+
+* Fixed tile flickering issues on some old Android 2/3 devices by disabling buggy hardware accelerated CSS there (by [@danzel](https://github.com/danzel)). [#2216](https://github.com/Leaflet/Leaflet/pull/2216) [#2198](https://github.com/Leaflet/Leaflet/issues/2198)
+* Fixed a regression that sometimes led to an error when you started pinch-zoom as the first action on the map (by [@danzel](https://github.com/danzel)). [#2259](https://github.com/Leaflet/Leaflet/pull/2259) [#2256](https://github.com/Leaflet/Leaflet/issues/2256)
+* Reverted `L.Util.template` optimizations to allow Leaflet to be used in eval-banning environments like browser extensions (performance gain was insignificant anyway) (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#2217](https://github.com/Leaflet/Leaflet/issues/2217) [#2209](https://github.com/Leaflet/Leaflet/issues/2209) [#1968](https://github.com/Leaflet/Leaflet/issues/1968)
+* Fixed a regression where `Map` `invalidateSize` could lead to unexpected results when called before map initialization (by [@Zverik](https://github.com/Zverik)). [#2250](https://github.com/Leaflet/Leaflet/issues/2250) [#2249](https://github.com/Leaflet/Leaflet/issues/2249)
+* Fixed a regression where `FeatureGroup` containing other group overwrote original `e.layer` value in mouse events (by [@gumballhead](https://github.com/gumballhead)). [#2253](https://github.com/Leaflet/Leaflet/pull/2253) [#2252](https://github.com/Leaflet/Leaflet/issues/2252)
+* Fixed a regression where `CircleMarker` `setLatLngs` didn't return `this` (by [@radicalbiscuit](https://github.com/radicalbiscuit)). [#2206](https://github.com/Leaflet/Leaflet/pull/2206)
 
 ## 0.7 (November 18, 2013)
 
