@@ -4,16 +4,12 @@
 
 L.DomUtil = {
 	get: function (id) {
-		return (typeof id === 'string' ? document.getElementById(id) : id);
+		return typeof id === 'string' ? document.getElementById(id) : id;
 	},
 
 	getStyle: function (el, style) {
 
-		var value = el.style[style];
-
-		if (!value && el.currentStyle) {
-			value = el.currentStyle[style];
-		}
+		var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
 
 		if ((!value || value === 'auto') && document.defaultView) {
 			var css = document.defaultView.getComputedStyle(el, null);
@@ -84,10 +80,7 @@ L.DomUtil = {
 	},
 
 	documentIsLtr: function () {
-		if (!L.DomUtil._docIsLtrCached) {
-			L.DomUtil._docIsLtrCached = true;
-			L.DomUtil._docIsLtr = L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
-		}
+		L.DomUtil._docIsLtr = L.DomUtil._docIsLtr || L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
 		return L.DomUtil._docIsLtr;
 	},
 
@@ -107,7 +100,7 @@ L.DomUtil = {
 		if (el.classList !== undefined) {
 			return el.classList.contains(name);
 		}
-		var className = L.DomUtil._getClass(el);
+		var className = L.DomUtil.getClass(el);
 		return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
 	},
 
@@ -118,8 +111,8 @@ L.DomUtil = {
 				el.classList.add(classes[i]);
 			}
 		} else if (!L.DomUtil.hasClass(el, name)) {
-			var className = L.DomUtil._getClass(el);
-			L.DomUtil._setClass(el, (className ? className + ' ' : '') + name);
+			var className = L.DomUtil.getClass(el);
+			L.DomUtil.setClass(el, (className ? className + ' ' : '') + name);
 		}
 	},
 
@@ -127,11 +120,11 @@ L.DomUtil = {
 		if (el.classList !== undefined) {
 			el.classList.remove(name);
 		} else {
-			L.DomUtil._setClass(el, L.Util.trim((' ' + L.DomUtil._getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+			L.DomUtil.setClass(el, L.Util.trim((' ' + L.DomUtil.getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 		}
 	},
 
-	_setClass: function (el, name) {
+	setClass: function (el, name) {
 		if (el.className.baseVal === undefined) {
 			el.className = name;
 		} else {
@@ -140,7 +133,7 @@ L.DomUtil = {
 		}
 	},
 
-	_getClass: function (el) {
+	getClass: function (el) {
 		return el.className.baseVal === undefined ? el.className : el.className.baseVal;
 	},
 
@@ -187,23 +180,17 @@ L.DomUtil = {
 	},
 
 	getTranslateString: function (point) {
-		// on WebKit browsers (Chrome/Safari/iOS Safari/Android) using translate3d instead of translate
-		// makes animation smoother as it ensures HW accel is used. Firefox 13 doesn't care
-		// (same speed either way), Opera 12 doesn't support translate3d
+		// on WebKit browsers, using translate3d instead of translate makes animation smoother
+		// as it ensures HW accel is used. Firefox doesn't care (same speed either way).
+		var is3d = L.Browser.webkit3d;
 
-		var is3d = L.Browser.webkit3d,
-		    open = 'translate' + (is3d ? '3d' : '') + '(',
-		    close = (is3d ? ',0' : '') + ')';
-
-		return open + point.x + 'px,' + point.y + 'px' + close;
+		return 'translate' + (is3d ? '3d(' : '(') +
+				point.x + 'px,' +
+				point.y + 'px' + (is3d ? ',0)' : ')');
 	},
 
 	getScaleString: function (scale, origin) {
-
-		var preTranslateStr = L.DomUtil.getTranslateString(origin.add(origin.multiplyBy(-1 * scale))),
-		    scaleStr = ' scale(' + scale + ') ';
-
-		return preTranslateStr + scaleStr;
+		return L.DomUtil.getTranslateString(origin.multiplyBy(1 - scale)) + ' scale(' + scale + ') ';
 	},
 
 	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
@@ -229,61 +216,54 @@ L.DomUtil = {
 };
 
 
-// prefix style property names
-
-L.DomUtil.TRANSFORM = L.DomUtil.testProp(
-        ['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
-
-// webkitTransition comes first because some browser versions that drop vendor prefix don't do
-// the same for the transitionend event, in particular the Android 4.1 stock browser
-
-L.DomUtil.TRANSITION = L.DomUtil.testProp(
-        ['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
-
-L.DomUtil.TRANSITION_END =
-        L.DomUtil.TRANSITION === 'webkitTransition' || L.DomUtil.TRANSITION === 'OTransition' ?
-        L.DomUtil.TRANSITION + 'End' : 'transitionend';
-
 (function () {
-    if ('onselectstart' in document) {
-        L.extend(L.DomUtil, {
-            disableTextSelection: function () {
-                L.DomEvent.on(window, 'selectstart', L.DomEvent.preventDefault);
-            },
+	// prefix style property names
 
-            enableTextSelection: function () {
-                L.DomEvent.off(window, 'selectstart', L.DomEvent.preventDefault);
-            }
-        });
-    } else {
-        var userSelectProperty = L.DomUtil.testProp(
-            ['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
+	L.DomUtil.TRANSFORM = L.DomUtil.testProp(
+			['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
 
-        L.extend(L.DomUtil, {
-            disableTextSelection: function () {
-                if (userSelectProperty) {
-                    var style = document.documentElement.style;
-                    this._userSelect = style[userSelectProperty];
-                    style[userSelectProperty] = 'none';
-                }
-            },
 
-            enableTextSelection: function () {
-                if (userSelectProperty) {
-                    document.documentElement.style[userSelectProperty] = this._userSelect;
-                    delete this._userSelect;
-                }
-            }
-        });
-    }
+	// webkitTransition comes first because some browser versions that drop vendor prefix don't do
+	// the same for the transitionend event, in particular the Android 4.1 stock browser
 
-	L.extend(L.DomUtil, {
-		disableImageDrag: function () {
-			L.DomEvent.on(window, 'dragstart', L.DomEvent.preventDefault);
-		},
+	var transition = L.DomUtil.TRANSITION = L.DomUtil.testProp(
+			['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
-		enableImageDrag: function () {
-			L.DomEvent.off(window, 'dragstart', L.DomEvent.preventDefault);
-		}
-	});
+	L.DomUtil.TRANSITION_END =
+			transition === 'webkitTransition' || transition === 'OTransition' ? transition + 'End' : 'transitionend';
+
+
+	if ('onselectstart' in document) {
+		L.DomUtil.disableTextSelection = function () {
+			L.DomEvent.on(window, 'selectstart', L.DomEvent.preventDefault);
+		};
+		L.DomUtil.enableTextSelection = function () {
+			L.DomEvent.off(window, 'selectstart', L.DomEvent.preventDefault);
+		};
+
+	} else {
+		var userSelectProperty = L.DomUtil.testProp(
+			['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
+
+		L.DomUtil.disableTextSelection = function () {
+			if (userSelectProperty) {
+				var style = document.documentElement.style;
+				this._userSelect = style[userSelectProperty];
+				style[userSelectProperty] = 'none';
+			}
+		};
+		L.DomUtil.enableTextSelection = function () {
+			if (userSelectProperty) {
+				document.documentElement.style[userSelectProperty] = this._userSelect;
+				delete this._userSelect;
+			}
+		};
+	}
+
+	L.DomUtil.disableImageDrag = function () {
+		L.DomEvent.on(window, 'dragstart', L.DomEvent.preventDefault);
+	};
+	L.DomUtil.enableImageDrag = function () {
+		L.DomEvent.off(window, 'dragstart', L.DomEvent.preventDefault);
+	};
 })();
