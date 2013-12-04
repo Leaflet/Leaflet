@@ -107,9 +107,7 @@ L.Util = {
 	},
 
 	setOptions: function (obj, options) {
-		if (options) {
-			obj.options = L.extend({}, obj.options, options);
-		}
+		obj.options = options ? L.extend({}, obj.options, options) : obj.options || {};
 		return obj.options;
 	},
 
@@ -120,6 +118,7 @@ L.Util = {
 		}
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
+
 	template: function (str, data) {
 		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
 			var value = data[key];
