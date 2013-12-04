@@ -13,15 +13,14 @@ L.Control.Zoom = L.Control.extend({
 
 	onAdd: function (map) {
 		var zoomName = 'leaflet-control-zoom',
-		    container = L.DomUtil.create('div', zoomName + ' leaflet-bar');
+		    container = L.DomUtil.create('div', zoomName + ' leaflet-bar'),
+		    options = this.options;
 
 		this._map = map;
 
-		this._zoomInButton  = this._createButton(
-		        this.options.zoomInText, this.options.zoomInTitle,
+		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
 		        zoomName + '-in',  container, this._zoomIn,  this);
-		this._zoomOutButton = this._createButton(
-		        this.options.zoomOutText, this.options.zoomOutTitle,
+		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
 		        zoomName + '-out', container, this._zoomOut, this);
 
 		this._updateDisabled();
@@ -42,7 +41,7 @@ L.Control.Zoom = L.Control.extend({
 		this._map.zoomOut(e.shiftKey ? 3 : 1);
 	},
 
-	_createButton: function (html, title, className, container, fn, context) {
+	_createButton: function (html, title, className, container, fn) {
 		var link = L.DomUtil.create('a', className, container);
 		link.innerHTML = html;
 		link.href = '#';
@@ -51,12 +50,11 @@ L.Control.Zoom = L.Control.extend({
 		var stop = L.DomEvent.stopPropagation;
 
 		L.DomEvent
-		    .on(link, 'click', stop)
+		    .on(link, 'click', L.DomEvent.stop)
 		    .on(link, 'mousedown', stop)
 		    .on(link, 'dblclick', stop)
-		    .on(link, 'click', L.DomEvent.preventDefault)
-		    .on(link, 'click', fn, context)
-		    .on(link, 'click', this._refocusOnMap, context);
+		    .on(link, 'click', fn, this)
+		    .on(link, 'click', this._refocusOnMap, this);
 
 		return link;
 	},
