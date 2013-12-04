@@ -107,7 +107,9 @@ L.Util = {
 	},
 
 	setOptions: function (obj, options) {
-		obj.options = L.extend({}, obj.options, options);
+		if (options) {
+			obj.options = L.extend({}, obj.options, options);
+		}
 		return obj.options;
 	},
 
