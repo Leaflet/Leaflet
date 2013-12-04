@@ -34,11 +34,14 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed `Projection.SphericalMercator` to project to meter units (by [@calvinmetcalf](https://github.com/calvinmetcalf)).
 * Fixed `Map` `worldCopyJump` option to work for other projections.
 
-#### Misc. changes
+### Other improvements
 
 * Added `Point` `ceil` method (by [@perliedman](https://github.com/perliedman)).
 * Added `Util.wrapNum` method for wrapping a number to lie in a certain range.
 * Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
+* Added `DomUtil` `setClass` and `getClass` methods.
+* Removed `LatLng` `RAD_TO_DEG`, `DEG_TO_RAD` and `MAX_MARGIN` constants.
+* Added `LatLng` `equals` second argument `maxMargin`.
 * Improved the build system (`jake build`) to report gzipped library size.
 
 
