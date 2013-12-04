@@ -40,12 +40,7 @@ L.Icon = L.Class.extend({
 			return null;
 		}
 
-		var img;
-		if (!oldIcon || oldIcon.tagName !== 'IMG') {
-			img = this._createImg(src);
-		} else {
-			img = this._createImg(src, oldIcon);
-		}
+		var img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
 		this._setIconStyles(img, name);
 
 		return img;
@@ -54,17 +49,8 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 		    size = L.point(options[name + 'Size']),
-		    anchor;
-
-		if (name === 'shadow') {
-			anchor = L.point(options.shadowAnchor || options.iconAnchor);
-		} else {
-			anchor = L.point(options.iconAnchor);
-		}
-
-		if (!anchor && size) {
-			anchor = size.divideBy(2, true);
-		}
+		    anchor = L.point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
+		            size && size.divideBy(2, true));
 
 		img.className = 'leaflet-marker-' + name + ' ' + options.className;
 
@@ -86,10 +72,7 @@ L.Icon = L.Class.extend({
 	},
 
 	_getIconUrl: function (name) {
-		if (L.Browser.retina && this.options[name + 'RetinaUrl']) {
-			return this.options[name + 'RetinaUrl'];
-		}
-		return this.options[name + 'Url'];
+		return L.Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	}
 });
 
