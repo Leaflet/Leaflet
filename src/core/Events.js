@@ -143,6 +143,8 @@ L.Mixin.Events = {
 		// fire event for the context-indexed listeners as well
 		typeIndex = events[type + '_idx'];
 
+		if (!typeIndex) { return this; }
+
 		for (contextId in typeIndex) {
 			listeners = typeIndex[contextId].slice();
 
