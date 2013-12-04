@@ -12,13 +12,15 @@ L.Popup = L.Class.extend({
 	options: {
 		minWidth: 50,
 		maxWidth: 300,
-		// maxHeight: null,
-		autoPan: true,
-		closeButton: true,
+		// maxHeight: <Number>,
 		offset: [0, 7],
+
+		autoPan: true,
 		autoPanPadding: [5, 5],
-		// autoPanPaddingTopLeft: null,
-		// autoPanPaddingBottomRight: null,
+		// autoPanPaddingTopLeft: <Point>,
+		// autoPanPaddingBottomRight: <Point>,
+
+		closeButton: true,
 		keepInView: false,
 		className: '',
 		zoomAnimation: true
@@ -29,7 +31,6 @@ L.Popup = L.Class.extend({
 
 		this._source = source;
 		this._animated = L.Browser.any3d && this.options.zoomAnimation;
-		this._isOpen = false;
 	},
 
 	onAdd: function (map) {
@@ -44,8 +45,8 @@ L.Popup = L.Class.extend({
 		if (animFade) {
 			L.DomUtil.setOpacity(this._container, 0);
 		}
-		map._panes.popupPane.appendChild(this._container);
 
+		this._getPane().appendChild(this._container);
 		map.on(this._getEvents(), this);
 
 		this.update();
@@ -55,7 +56,6 @@ L.Popup = L.Class.extend({
 		}
 
 		this.fire('open');
-
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
@@ -74,20 +74,24 @@ L.Popup = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		map._panes.popupPane.removeChild(this._container);
+		var pane = this._getPane();
 
-		L.Util.falseFn(this._container.offsetWidth); // force reflow
-
-		map.off(this._getEvents(), this);
+		var removeFromPane = function () {
+			pane.removeChild(this._container);
+		};
 
 		if (map.options.fadeAnimation) {
 			L.DomUtil.setOpacity(this._container, 0);
+			setTimeout(L.bind(removeFromPane, this), 200);
+		} else {
+			removeFromPane();
 		}
+
+		map.off(this._getEvents(), this);
 
 		this._map = null;
 
 		this.fire('close');
-
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
@@ -132,21 +136,23 @@ L.Popup = L.Class.extend({
 		this._adjustPan();
 	},
 
+	_getPane: function () {
+		return this._map._panes.popupPane;
+	},
+
 	_getEvents: function () {
-		var events = {
-			viewreset: this._updatePosition
-		};
+		var events = {viewreset: this._updatePosition},
+		    options = this.options;
 
 		if (this._animated) {
 			events.zoomanim = this._zoomAnimation;
 		}
-		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
+		if ('closeOnClick' in options ? options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
 		}
-		if (this.options.keepInView) {
+		if (options.keepInView) {
 			events.moveend = this._adjustPan;
 		}
-
 		return events;
 	},
 
@@ -158,29 +164,26 @@ L.Popup = L.Class.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-			containerClass = prefix + ' ' + this.options.className + ' leaflet-zoom-' +
-			        (this._animated ? 'animated' : 'hide'),
-			container = this._container = L.DomUtil.create('div', containerClass),
-			closeButton;
+		    container = this._container = L.DomUtil.create('div',
+		        prefix + ' ' + this.options.className + ' leaflet-zoom-' + (this._animated ? 'animated' : 'hide'));
 
 		if (this.options.closeButton) {
-			closeButton = this._closeButton =
-			        L.DomUtil.create('a', prefix + '-close-button', container);
+			var closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
-			L.DomEvent.disableClickPropagation(closeButton);
 
-			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
+			L.DomEvent
+				.disableClickPropagation(closeButton)
+				.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		var wrapper = this._wrapper =
-		        L.DomUtil.create('div', prefix + '-content-wrapper', container);
-		L.DomEvent.disableClickPropagation(wrapper);
-
+		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
 		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
 
-		L.DomEvent.disableScrollPropagation(this._contentNode);
-		L.DomEvent.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
+		L.DomEvent
+			.disableClickPropagation(wrapper)
+			.disableScrollPropagation(this._contentNode)
+			.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -189,13 +192,15 @@ L.Popup = L.Class.extend({
 	_updateContent: function () {
 		if (!this._content) { return; }
 
+		var node = this._contentNode;
+
 		if (typeof this._content === 'string') {
-			this._contentNode.innerHTML = this._content;
+			node.innerHTML = this._content;
 		} else {
-			while (this._contentNode.hasChildNodes()) {
-				this._contentNode.removeChild(this._contentNode.firstChild);
+			while (node.hasChildNodes()) {
+				node.removeChild(node.firstChild);
 			}
-			this._contentNode.appendChild(this._content);
+			node.appendChild(this._content);
 		}
 		this.fire('contentupdate');
 	},
@@ -239,19 +244,20 @@ L.Popup = L.Class.extend({
 
 		if (animated) {
 			L.DomUtil.setPosition(this._container, pos);
+		} else {
+			offset = offset.add(pos);
 		}
 
-		this._containerBottom = -offset.y - (animated ? 0 : pos.y);
-		this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x + (animated ? 0 : pos.x);
+		var bottom = this._containerBottom = -offset.y,
+		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
 		// bottom position the popup in case the height of the popup changes (images loading etc)
-		this._container.style.bottom = this._containerBottom + 'px';
-		this._container.style.left = this._containerLeft + 'px';
+		this._container.style.bottom = bottom + 'px';
+		this._container.style.left = left + 'px';
 	},
 
-	_zoomAnimation: function (opt) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, opt.zoom, opt.center);
-
+	_zoomAnimation: function (e) {
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
 		L.DomUtil.setPosition(this._container, pos);
 	},
 
@@ -261,7 +267,6 @@ L.Popup = L.Class.extend({
 		var map = this._map,
 		    containerHeight = this._container.offsetHeight,
 		    containerWidth = this._containerWidth,
-
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		if (this._animated) {
@@ -318,7 +323,6 @@ L.Map.include({
 			    .setLatLng(latlng)
 			    .setContent(content);
 		}
-		popup._isOpen = true;
 
 		this._popup = popup;
 		return this.addLayer(popup);
@@ -331,7 +335,6 @@ L.Map.include({
 		}
 		if (popup) {
 			this.removeLayer(popup);
-			popup._isOpen = false;
 		}
 		return this;
 	}

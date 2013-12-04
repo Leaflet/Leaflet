@@ -21,7 +21,7 @@ L.Marker.include({
 
 	togglePopup: function () {
 		if (this._popup) {
-			if (this._popup._isOpen) {
+			if (this._popup._map) {
 				this.closePopup();
 			} else {
 				this.openPopup();
