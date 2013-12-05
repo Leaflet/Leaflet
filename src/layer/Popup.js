@@ -54,7 +54,6 @@ L.Popup = L.Layer.extend({
 			L.DomUtil.setOpacity(this._container, 1);
 		}
 
-		this.fire('open');
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
@@ -77,7 +76,6 @@ L.Popup = L.Layer.extend({
 
 		map.off(this._getEvents(), this);
 
-		this.fire('close');
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
