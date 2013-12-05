@@ -8,14 +8,14 @@ L.Marker = L.Class.extend({
 
 	options: {
 		icon: new L.Icon.Default(),
-		title: '',
-		alt: '',
+		// title: '',
+		// alt: '',
 		clickable: true,
-		draggable: false,
+		// draggable: false,
 		keyboard: true,
 		zIndexOffset: 0,
 		opacity: 1,
-		riseOnHover: false,
+		// riseOnHover: false,
 		riseOffset: 250
 	},
 
@@ -26,14 +26,16 @@ L.Marker = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
+		this._animated = map.options.zoomAnimation && map.options.markerZoomAnimation;
 
 		map.on('viewreset', this.update, this);
 
 		this._initIcon();
 		this.update();
+
 		this.fire('add');
 
-		if (map.options.zoomAnimation && map.options.markerZoomAnimation) {
+		if (this._animated) {
 			map.on('zoomanim', this._animateZoom, this);
 		}
 	},
@@ -70,14 +72,12 @@ L.Marker = L.Class.extend({
 
 		this.update();
 
-		return this.fire('move', { latlng: this._latlng });
+		return this.fire('move', {latlng: this._latlng});
 	},
 
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
-		this.update();
-
-		return this;
+		return this.update();
 	},
 
 	setIcon: function (icon) {
@@ -107,9 +107,7 @@ L.Marker = L.Class.extend({
 
 	_initIcon: function () {
 		var options = this.options,
-		    map = this._map,
-		    animation = (map.options.zoomAnimation && map.options.markerZoomAnimation),
-		    classToAdd = animation ? 'leaflet-zoom-animated' : 'leaflet-zoom-hide';
+		    classToAdd = 'leaflet-zoom-' + (this._animated ? 'animated' : 'hide');
 
 		var icon = options.icon.createIcon(this._icon),
 			addIcon = false;
@@ -124,7 +122,6 @@ L.Marker = L.Class.extend({
 			if (options.title) {
 				icon.title = options.title;
 			}
-			
 			if (options.alt) {
 				icon.alt = options.alt;
 			}
@@ -137,7 +134,6 @@ L.Marker = L.Class.extend({
 		}
 
 		this._icon = icon;
-
 		this._initInteraction();
 
 		if (options.riseOnHover) {
@@ -170,7 +166,6 @@ L.Marker = L.Class.extend({
 		if (addIcon) {
 			panes.markerPane.appendChild(this._icon);
 		}
-
 		if (newShadow && addShadow) {
 			panes.shadowPane.appendChild(this._shadow);
 		}
@@ -183,14 +178,14 @@ L.Marker = L.Class.extend({
 			    .off(this._icon, 'mouseout', this._resetZIndex);
 		}
 
-		this._map._panes.markerPane.removeChild(this._icon);
+		L.DomUtil.remove(this._icon);
 
 		this._icon = null;
 	},
 
 	_removeShadow: function () {
 		if (this._shadow) {
-			this._map._panes.shadowPane.removeChild(this._shadow);
+			L.DomUtil.remove(this._shadow);
 		}
 		this._shadow = null;
 	},
@@ -227,8 +222,10 @@ L.Marker = L.Class.extend({
 		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
 
 		L.DomUtil.addClass(icon, 'leaflet-clickable');
-		L.DomEvent.on(icon, 'click', this._onMouseClick, this);
-		L.DomEvent.on(icon, 'keypress', this._onKeyPress, this);
+
+		L.DomEvent
+			.on(icon, 'click', this._onMouseClick, this)
+			.on(icon, 'keypress', this._onKeyPress, this);
 
 		for (var i = 0; i < events.length; i++) {
 			L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
@@ -298,9 +295,12 @@ L.Marker = L.Class.extend({
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._icon, this.options.opacity);
+		var opacity = this.options.opacity;
+
+		L.DomUtil.setOpacity(this._icon, opacity);
+
 		if (this._shadow) {
-			L.DomUtil.setOpacity(this._shadow, this.options.opacity);
+			L.DomUtil.setOpacity(this._shadow, opacity);
 		}
 	},
 
