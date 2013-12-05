@@ -13,6 +13,8 @@ L.Layer = L.Class.extend({
 		if (map._layers[id]) { return this; }
 		map._layers[id] = this;
 
+		this._zoomAnimated = map._zoomAnimated;
+
 		if (this.beforeAdd) {
 			this.beforeAdd(map);
 		}

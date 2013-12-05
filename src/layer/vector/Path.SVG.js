@@ -169,11 +169,8 @@ L.Map.include({
 			var root = this._pathRoot = L.Path.prototype._createElement('svg');
 			this._panes.overlayPane.appendChild(root);
 
-			var animated = this.options.zoomAnimation && L.Browser.any3d;
-
-			L.DomUtil.addClass(root, 'leaflet-zoom-' + (animated ? 'animated' : 'hide'));
-
-			if (animated) {
+			if (this._zoomAnimated) {
+				L.DomUtil.addClass(root, 'leaflet-zoom-animated');
 				this.on({
 					'zoomanim': this._animatePathZoom,
 					'zoomend': this._endPathZoom

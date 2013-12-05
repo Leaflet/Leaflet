@@ -27,9 +27,7 @@ L.GridLayer = L.Layer.extend({
 		options = L.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
-		this._animated = map._zoomAnimated;
-
+	onAdd: function () {
 		this._initContainer();
 
 		if (!this.options.updateWhenIdle) {
@@ -114,7 +112,7 @@ L.GridLayer = L.Layer.extend({
 			events.move = this._update;
 		}
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
 			events.zoomend = this._endZoomAnim;
 		}
@@ -168,7 +166,7 @@ L.GridLayer = L.Layer.extend({
 		this._container = L.DomUtil.create('div', 'leaflet-layer');
 		this._updateZIndex();
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			var className = 'leaflet-tile-container leaflet-zoom-animated';
 
 			this._bgBuffer = L.DomUtil.create('div', className, this._container);
@@ -197,7 +195,7 @@ L.GridLayer = L.Layer.extend({
 
 		this._tileContainer.innerHTML = '';
 
-		if (this._animated && e && e.hard) {
+		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
 		}
 
@@ -440,7 +438,7 @@ L.GridLayer = L.Layer.extend({
 	_visibleTilesReady: function () {
 		this.fire('load');
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			// clear scaled tiles after all new tiles are loaded (for performance)
 			clearTimeout(this._clearBgBufferTimer);
 			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 300);

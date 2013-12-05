@@ -15,9 +15,9 @@ L.Map = L.Class.extend({
 		layers: Array,
 		*/
 
-		fadeAnimation: L.DomUtil.TRANSITION && !L.Browser.android23,
+		fadeAnimation: true,
 		trackResize: true,
-		markerZoomAnimation: L.DomUtil.TRANSITION && L.Browser.any3d
+		markerZoomAnimation: true
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -436,11 +436,13 @@ L.Map = L.Class.extend({
 	_initLayout: function () {
 		var container = this._container;
 
+		this._fadeAnimated = this.options.fadeAnimation && L.Browser.any3d;
+
 		L.DomUtil.addClass(container, 'leaflet-container' +
 			(L.Browser.touch ? ' leaflet-touch' : '') +
 			(L.Browser.retina ? ' leaflet-retina' : '') +
 			(L.Browser.ielt9 ? ' leaflet-oldie' : '') +
-			(this.options.fadeAnimation ? ' leaflet-fade-anim' : ''));
+			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
 		var position = L.DomUtil.getStyle(container, 'position');
 

@@ -23,7 +23,7 @@ L.Marker = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._animated = map.options.zoomAnimation && map.options.markerZoomAnimation;
+		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
 		this._initIcon();
 		this.update();
@@ -41,7 +41,7 @@ L.Marker = L.Layer.extend({
 	getEvents: function () {
 		var events = {viewreset: this.update};
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
 		}
 
@@ -93,7 +93,7 @@ L.Marker = L.Layer.extend({
 
 	_initIcon: function () {
 		var options = this.options,
-		    classToAdd = 'leaflet-zoom-' + (this._animated ? 'animated' : 'hide');
+		    classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
 		var icon = options.icon.createIcon(this._icon),
 			addIcon = false;

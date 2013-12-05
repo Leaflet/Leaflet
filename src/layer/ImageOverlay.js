@@ -15,9 +15,7 @@ L.ImageOverlay = L.Layer.extend({
 		L.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
-		this._animated = map.options.zoomAnimation && L.Browser.any3d;
-
+	onAdd: function () {
 		if (!this._image) {
 			this._initImage();
 		}
@@ -65,7 +63,7 @@ L.ImageOverlay = L.Layer.extend({
 	getEvents: function () {
 		var events = {viewreset: this._reset};
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
 		}
 
@@ -74,8 +72,7 @@ L.ImageOverlay = L.Layer.extend({
 
 	_initImage: function () {
 		this._image = L.DomUtil.create('img',
-			'leaflet-image-layer ' +
-			'leaflet-zoom-' + (this._animated ? 'animated' : 'hide'));
+				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
 		this._updateOpacity();
 

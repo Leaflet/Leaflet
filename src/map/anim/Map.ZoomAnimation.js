@@ -7,12 +7,13 @@ L.Map.mergeOptions({
 	zoomAnimationThreshold: 4
 });
 
-if (L.DomUtil.TRANSITION) {
+var zoomAnimated = L.DomUtil.TRANSITION && L.Browser.any3d && !L.Browser.mobileOpera;
+
+if (zoomAnimated) {
 
 	L.Map.addInitHook(function () {
 		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
-		this._zoomAnimated = this.options.zoomAnimation && L.DomUtil.TRANSITION &&
-				L.Browser.any3d && !L.Browser.android23 && !L.Browser.mobileOpera;
+		this._zoomAnimated = this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
@@ -22,7 +23,7 @@ if (L.DomUtil.TRANSITION) {
 	});
 }
 
-L.Map.include(!L.DomUtil.TRANSITION ? {} : {
+L.Map.include(!zoomAnimated ? {} : {
 
 	_catchTransitionEnd: function (e) {
 		if (this._animatingZoom && e.propertyName.indexOf('transform') >= 0) {
