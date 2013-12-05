@@ -75,7 +75,7 @@ L.Map.BoxZoom = L.Handler.extend({
 
 	_finish: function () {
 		if (this._moved) {
-			this._pane.removeChild(this._box);
+			L.DomUtil.remove(this._box);
 			this._container.style.cursor = '';
 		}
 

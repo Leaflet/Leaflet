@@ -295,7 +295,8 @@ L.Map = L.Class.extend({
 			this._container._leaflet = undefined;
 		}
 
-		this._clearPanes();
+		L.DomUtil.remove(this._mapPane);
+
 		if (this._clearControlPos) {
 			this._clearControlPos();
 		}
@@ -531,10 +532,6 @@ L.Map = L.Class.extend({
 
 	_createPane: function (className, container) {
 		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
-	},
-
-	_clearPanes: function () {
-		this._container.removeChild(this._mapPane);
 	},
 
 	_addLayers: function (layers) {

@@ -172,7 +172,7 @@ L.TileLayer = L.GridLayer.extend({
 				tile.onerror = L.Util.falseFn;
 				tile.src = L.Util.emptyImageUrl;
 
-				tile.parentNode.removeChild(tile);
+				L.DomUtil.remove(tile);
 			}
 		}
 	}

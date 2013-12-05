@@ -55,10 +55,8 @@ L.Control = L.Class.extend({
 	},
 
 	removeFrom: function (map) {
-		var pos = this.getPosition(),
-		    corner = map._controlCorners[pos];
+		L.DomUtil.remove(this._container);
 
-		corner.removeChild(this._container);
 		this._map = null;
 
 		if (this.onRemove) {
@@ -112,6 +110,6 @@ L.Map.include({
 	},
 
 	_clearControlPos: function () {
-		this._container.removeChild(this._controlContainer);
+		L.DomUtil.remove(this._controlContainer);
 	}
 });

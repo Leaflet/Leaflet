@@ -96,6 +96,13 @@ L.DomUtil = {
 		return el;
 	},
 
+	remove: function (el) {
+		var parent = el.parentNode;
+		if (parent) {
+			parent.removeChild(el);
+		}
+	},
+
 	hasClass: function (el, name) {
 		if (el.classList !== undefined) {
 			return el.classList.contains(name);

@@ -46,7 +46,7 @@ L.GridLayer = L.Class.extend({
 
 	onRemove: function (map) {
 		this._clearBgBuffer();
-		this._getPane().removeChild(this._container);
+		L.DomUtil.remove(this._container);
 
 		map.off(this._getEvents(), this);
 
@@ -368,9 +368,7 @@ L.GridLayer = L.Class.extend({
 	_removeTile: function (key) {
 		var tile = this._tiles[key];
 
-		if (tile.parentNode) {
-			tile.parentNode.removeChild(tile);
-		}
+		L.DomUtil.remove(tile);
 
 		delete this._tiles[key];
 

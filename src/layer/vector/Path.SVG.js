@@ -215,7 +215,7 @@ L.Map.include({
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		if (L.Browser.mobileWebkit) {
-			pane.removeChild(root);
+			L.DomUtil.remove(root);
 		}
 
 		L.DomUtil.setPosition(root, min);

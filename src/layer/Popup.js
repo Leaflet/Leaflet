@@ -74,17 +74,11 @@ L.Popup = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		var pane = this._getPane();
-
-		var removeFromPane = function () {
-			pane.removeChild(this._container);
-		};
-
 		if (map.options.fadeAnimation) {
 			L.DomUtil.setOpacity(this._container, 0);
-			setTimeout(L.bind(removeFromPane, this), 200);
+			setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
 		} else {
-			removeFromPane();
+			L.DomUtil.remove(this._container);
 		}
 
 		map.off(this._getEvents(), this);

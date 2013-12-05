@@ -35,7 +35,7 @@ L.ImageOverlay = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		map.getPanes().overlayPane.removeChild(this._image);
+		L.DomUtil.remove(this._image);
 
 		map.off('viewreset', this._reset, this);
 
