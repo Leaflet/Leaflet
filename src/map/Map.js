@@ -281,9 +281,7 @@ L.Map = L.Class.extend({
 	},
 
 	getMinZoom: function () {
-		return this.options.minZoom === undefined ?
-			(this._layersMinZoom === undefined ? 0 : this._layersMinZoom) :
-			this.options.minZoom;
+		return this.options.minZoom === undefined ? this._layersMinZoom || 0 : this.options.minZoom;
 	},
 
 	getMaxZoom: function () {
