@@ -35,8 +35,6 @@ L.Popup = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		if (!this._container) {
 			this._initLayout();
 		}
@@ -78,8 +76,6 @@ L.Popup = L.Layer.extend({
 		}
 
 		map.off(this._getEvents(), this);
-
-		this._map = null;
 
 		this.fire('close');
 		map.fire('popupclose', {popup: this});

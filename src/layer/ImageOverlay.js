@@ -16,7 +16,6 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
 		this._animated = this._map.options.zoomAnimation && L.Browser.any3d;
 
 		if (!this._image) {

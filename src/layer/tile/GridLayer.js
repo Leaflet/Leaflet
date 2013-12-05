@@ -28,7 +28,6 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
 		this._animated = map._zoomAnimated;
 
 		this._initContainer();
@@ -55,7 +54,7 @@ L.GridLayer = L.Layer.extend({
 		map.off(this._getEvents(), this);
 		map._removeZoomLimit(this);
 
-		this._container = this._map = null;
+		this._container = null;
 	},
 
 	bringToFront: function () {

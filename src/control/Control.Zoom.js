@@ -16,8 +16,6 @@ L.Control.Zoom = L.Control.extend({
 		    container = L.DomUtil.create('div', zoomName + ' leaflet-bar'),
 		    options = this.options;
 
-		this._map = map;
-
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
 		        zoomName + '-in',  container, this._zoomIn,  this);
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,

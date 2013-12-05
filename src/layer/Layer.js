@@ -24,9 +24,10 @@ L.Layer = L.Class.extend({
 
 	_layerAdd: function () {
 		// check in case layer gets added and then removed before the map is ready
-		if (!this._map.hasLayer(this)) { return; }
+		if (!this._map) { return; }
 
 		this.onAdd(this._map);
+		this.fire('add');
 		this._map.fire('layeradd', {layer: this});
 	},
 
@@ -42,7 +43,10 @@ L.Layer = L.Class.extend({
 
 		if (map._loaded) {
 			map.fire('layerremove', {layer: this});
+			this.fire('remove');
 		}
+
+		this._map = null;
 	},
 
 	getPane: function () {

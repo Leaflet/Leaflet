@@ -12,8 +12,6 @@ L.Control.Scale = L.Control.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		var className = 'leaflet-control-scale',
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;

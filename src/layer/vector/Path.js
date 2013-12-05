@@ -38,8 +38,6 @@ L.Path = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		if (!this._container) {
 			this._initElements();
 
@@ -55,8 +53,6 @@ L.Path = L.Layer.extend({
 			this._map._pathRoot.appendChild(this._container);
 		}
 
-		this.fire('add');
-
 		map.on({
 			viewreset: this.projectLatlngs,
 			moveend: this._updatePath
@@ -65,11 +61,6 @@ L.Path = L.Layer.extend({
 
 	onRemove: function (map) {
 		L.DomUtil.remove(this._container);
-
-		// Need to fire remove event before we set _map to null as the event hooks might need the object
-		this.fire('remove');
-
-		this._map = null;
 
 		// TODO move to Path.VML
 		if (L.Browser.vml) {

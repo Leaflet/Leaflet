@@ -68,13 +68,11 @@ L.LayerGroup = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
 		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
 		this.eachLayer(map.removeLayer, map);
-		this._map = null;
 	},
 
 	eachLayer: function (method, context) {

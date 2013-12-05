@@ -23,15 +23,12 @@ L.Marker = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
 		this._animated = map.options.zoomAnimation && map.options.markerZoomAnimation;
 
 		map.on('viewreset', this.update, this);
 
 		this._initIcon();
 		this.update();
-
-		this.fire('add');
 
 		if (this._animated) {
 			map.on('zoomanim', this._animateZoom, this);
@@ -46,14 +43,10 @@ L.Marker = L.Layer.extend({
 		this._removeIcon();
 		this._removeShadow();
 
-		this.fire('remove');
-
 		map.off({
 			'viewreset': this.update,
 			'zoomanim': this._animateZoom
 		}, this);
-
-		this._map = null;
 	},
 
 	getLatLng: function () {
