@@ -3,8 +3,8 @@
  */
 
 L.Icon = L.Class.extend({
+	/*
 	options: {
-		/*
 		iconUrl: (String) (required)
 		iconRetinaUrl: (String) (optional, used for retina devices if detected)
 		iconSize: (Point) (can be set through CSS)
@@ -14,9 +14,9 @@ L.Icon = L.Class.extend({
 		shadowRetinaUrl: (String) (optional, used for retina devices if detected)
 		shadowSize: (Point)
 		shadowAnchor: (Point)
-		*/
-		className: ''
+		className: (String)
 	},
+	*/
 
 	initialize: function (options) {
 		L.setOptions(this, options);
@@ -52,7 +52,7 @@ L.Icon = L.Class.extend({
 		    anchor = L.point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 
-		img.className = 'leaflet-marker-' + name + ' ' + options.className;
+		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
 
 		if (anchor) {
 			img.style.marginLeft = (-anchor.x) + 'px';

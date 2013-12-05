@@ -7,8 +7,8 @@ L.Control.Scale = L.Control.extend({
 		position: 'bottomleft',
 		maxWidth: 100,
 		metric: true,
-		imperial: true,
-		updateWhenIdle: false
+		imperial: true
+		// updateWhenIdle: false
 	},
 
 	onAdd: function (map) {
