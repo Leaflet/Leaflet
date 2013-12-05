@@ -161,9 +161,7 @@ L.Map = L.Class.extend({
 	},
 
 	hasLayer: function (layer) {
-		if (!layer) { return false; }
-
-		return (L.stamp(layer) in this._layers);
+		return !layer || L.stamp(layer) in this._layers;
 	},
 
 	eachLayer: function (method, context) {
