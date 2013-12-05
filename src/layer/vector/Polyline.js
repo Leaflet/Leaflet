@@ -12,8 +12,8 @@ L.Polyline = L.Path.extend({
 	options: {
 		// how much to simplify the polyline on each zoom level
 		// more = better performance and smoother look, less = more accurate
-		smoothFactor: 1.0,
-		noClip: false
+		smoothFactor: 1.0
+		// noClip: false
 	},
 
 	projectLatlngs: function () {
@@ -53,17 +53,23 @@ L.Polyline = L.Path.extend({
 	},
 
 	closestLayerPoint: function (p) {
-		var minDistance = Infinity, parts = this._parts, p1, p2, minPoint = null;
+		var minDistance = Infinity,
+		    minPoint = null,
+		    closest = L.LineUtil._sqClosestPointOnSegment,
+		    p1, p2;
 
-		for (var j = 0, jLen = parts.length; j < jLen; j++) {
-			var points = parts[j];
+		for (var j = 0, jLen = this._parts.length; j < jLen; j++) {
+			var points = this._parts[j];
+
 			for (var i = 1, len = points.length; i < len; i++) {
 				p1 = points[i - 1];
 				p2 = points[i];
-				var sqDist = L.LineUtil._sqClosestPointOnSegment(p, p1, p2, true);
+
+				var sqDist = closest(p, p1, p2, true);
+
 				if (sqDist < minDistance) {
 					minDistance = sqDist;
-					minPoint = L.LineUtil._sqClosestPointOnSegment(p, p1, p2);
+					minPoint = closest(p, p1, p2);
 				}
 			}
 		}
@@ -78,12 +84,10 @@ L.Polyline = L.Path.extend({
 	},
 
 	_convertLatLngs: function (latlngs, overwrite) {
-		var i, len, target = overwrite ? latlngs : [];
+		var target = overwrite ? latlngs : [];
 
-		for (i = 0, len = latlngs.length; i < len; i++) {
-			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') {
-				return;
-			}
+		for (var i = 0, len = latlngs.length; i < len; i++) {
+			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') { return; }
 			target[i] = L.latLng(latlngs[i]);
 		}
 		return target;
@@ -94,11 +98,9 @@ L.Polyline = L.Path.extend({
 	},
 
 	_getPathPartStr: function (points) {
-		var round = L.Path.VML;
-
 		for (var j = 0, len2 = points.length, str = '', p; j < len2; j++) {
 			p = points[j];
-			if (round) {
+			if (L.Path.VML) {
 				p._round();
 			}
 			str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
@@ -119,14 +121,12 @@ L.Polyline = L.Path.extend({
 		this._parts = [];
 
 		var parts = this._parts,
-		    vp = this._map._pathViewport,
-		    lu = L.LineUtil;
+		    vp = this._map._pathViewport;
 
 		for (i = 0, k = 0; i < len - 1; i++) {
-			segment = lu.clipSegment(points[i], points[i + 1], vp, i);
-			if (!segment) {
-				continue;
-			}
+			segment = L.LineUtil.clipSegment(points[i], points[i + 1], vp, i);
+
+			if (!segment) { continue; }
 
 			parts[k] = parts[k] || [];
 			parts[k].push(segment[0]);
@@ -142,10 +142,10 @@ L.Polyline = L.Path.extend({
 	// simplify each clipped part of the polyline
 	_simplifyPoints: function () {
 		var parts = this._parts,
-		    lu = L.LineUtil;
+			tolerance = this.options.smoothFactor;
 
 		for (var i = 0, len = parts.length; i < len; i++) {
-			parts[i] = lu.simplify(parts[i], this.options.smoothFactor);
+			parts[i] = L.LineUtil.simplify(parts[i], tolerance);
 		}
 	},
 

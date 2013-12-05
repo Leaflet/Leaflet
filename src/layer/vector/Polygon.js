@@ -14,6 +14,7 @@ L.Polygon = L.Polyline.extend({
 
 	_initWithHoles: function (latlngs) {
 		var i, len, hole;
+
 		if (latlngs && L.Util.isArray(latlngs[0]) && (typeof latlngs[0][0] !== 'number')) {
 			this._latlngs = this._convertLatLngs(latlngs[0]);
 			this._holes = latlngs.slice(1);
@@ -65,14 +66,15 @@ L.Polygon = L.Polyline.extend({
 
 	_clipPoints: function () {
 		var points = this._originalPoints,
-		    newParts = [];
+		    newParts = [],
+		    vp = this._map._pathViewport;
 
 		this._parts = [points].concat(this._holePoints);
 
 		if (this.options.noClip) { return; }
 
 		for (var i = 0, len = this._parts.length; i < len; i++) {
-			var clipped = L.PolyUtil.clipPolygon(this._parts[i], this._map._pathViewport);
+			var clipped = L.PolyUtil.clipPolygon(this._parts[i], vp);
 			if (clipped.length) {
 				newParts.push(clipped);
 			}
