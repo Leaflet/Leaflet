@@ -18,18 +18,15 @@ L.ImageOverlay = L.Class.extend({
 
 	onAdd: function (map) {
 		this._map = map;
+		this._animated = this._map.options.zoomAnimation && L.Browser.any3d;
 
 		if (!this._image) {
 			this._initImage();
 		}
 
-		map._panes.overlayPane.appendChild(this._image);
+		this._getPane().appendChild(this._image);
 
-		map.on('viewreset', this._reset, this);
-
-		if (map.options.zoomAnimation && L.Browser.any3d) {
-			map.on('zoomanim', this._animateZoom, this);
-		}
+		map.on(this._getEvents(), this);
 
 		this._reset();
 	},
@@ -37,11 +34,7 @@ L.ImageOverlay = L.Class.extend({
 	onRemove: function (map) {
 		L.DomUtil.remove(this._image);
 
-		map.off('viewreset', this._reset, this);
-
-		if (map.options.zoomAnimation) {
-			map.off('zoomanim', this._animateZoom, this);
-		}
+		map.off(this._getEvents(), this);
 	},
 
 	addTo: function (map) {
@@ -58,13 +51,13 @@ L.ImageOverlay = L.Class.extend({
 	// TODO remove bringToFront/bringToBack duplication from TileLayer/Path
 	bringToFront: function () {
 		if (this._image) {
-			this._map._panes.overlayPane.appendChild(this._image);
+			this._getPane().appendChild(this._image);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
-		var pane = this._map._panes.overlayPane;
+		var pane = this._getPane();
 		if (this._image) {
 			pane.insertBefore(this._image, pane.firstChild);
 		}
@@ -80,14 +73,24 @@ L.ImageOverlay = L.Class.extend({
 		return this.options.attribution;
 	},
 
-	_initImage: function () {
-		this._image = L.DomUtil.create('img', 'leaflet-image-layer');
+	_getPane: function () {
+		return this._map._panes.overlayPane;
+	},
 
-		if (this._map.options.zoomAnimation && L.Browser.any3d) {
-			L.DomUtil.addClass(this._image, 'leaflet-zoom-animated');
-		} else {
-			L.DomUtil.addClass(this._image, 'leaflet-zoom-hide');
+	_getEvents: function () {
+		var events = {viewreset: this._reset};
+
+		if (this._animated) {
+			events.zoomanim = this._animateZoom;
 		}
+
+		return events;
+	},
+
+	_initImage: function () {
+		this._image = L.DomUtil.create('img',
+			'leaflet-image-layer ' +
+			'leaflet-zoom-' + (this._animated ? 'animated' : 'hide'));
 
 		this._updateOpacity();
 
@@ -96,7 +99,7 @@ L.ImageOverlay = L.Class.extend({
 			galleryimg: 'no',
 			onselectstart: L.Util.falseFn,
 			onmousemove: L.Util.falseFn,
-			onload: L.bind(this._onImageLoad, this),
+			onload: L.bind(this.fire, this, 'load'),
 			src: this._url
 		});
 	},
@@ -105,15 +108,11 @@ L.ImageOverlay = L.Class.extend({
 		var map = this._map,
 		    image = this._image,
 		    scale = map.getZoomScale(e.zoom),
-		    nw = this._bounds.getNorthWest(),
-		    se = this._bounds.getSouthEast(),
+		    topLeft = map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
+		    size = map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center)._subtract(topLeft),
+		    origin = topLeft._add(size._multiplyBy((1 - 1 / scale) / 2));
 
-		    topLeft = map._latLngToNewLayerPoint(nw, e.zoom, e.center),
-		    size = map._latLngToNewLayerPoint(se, e.zoom, e.center)._subtract(topLeft),
-		    origin = topLeft._add(size._multiplyBy((1 / 2) * (1 - 1 / scale)));
-
-		image.style[L.DomUtil.TRANSFORM] =
-		        L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
+		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
 	},
 
 	_reset: function () {
@@ -125,10 +124,6 @@ L.ImageOverlay = L.Class.extend({
 
 		image.style.width  = size.x + 'px';
 		image.style.height = size.y + 'px';
-	},
-
-	_onImageLoad: function () {
-		this.fire('load');
 	},
 
 	_updateOpacity: function () {
