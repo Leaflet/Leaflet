@@ -9,6 +9,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 	addHooks: function () {
 		var icon = this._marker._icon;
+
 		if (!this._draggable) {
 			this._draggable = new L.Draggable(icon, icon);
 		}
@@ -16,18 +17,19 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		this._draggable
 			.on('dragstart', this._onDragStart, this)
 			.on('drag', this._onDrag, this)
-			.on('dragend', this._onDragEnd, this);
-		this._draggable.enable();
-		L.DomUtil.addClass(this._marker._icon, 'leaflet-marker-draggable');
+			.on('dragend', this._onDragEnd, this)
+			.enable();
+
+		L.DomUtil.addClass(icon, 'leaflet-marker-draggable');
 	},
 
 	removeHooks: function () {
 		this._draggable
 			.off('dragstart', this._onDragStart, this)
 			.off('drag', this._onDrag, this)
-			.off('dragend', this._onDragEnd, this);
+			.off('dragend', this._onDragEnd, this)
+			.disable();
 
-		this._draggable.disable();
 		L.DomUtil.removeClass(this._marker._icon, 'leaflet-marker-draggable');
 	},
 
