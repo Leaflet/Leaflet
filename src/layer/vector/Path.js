@@ -2,8 +2,7 @@
  * L.Path is a base class for rendering vector paths on a map. Inherited by Polyline, Circle, etc.
  */
 
-L.Path = L.Class.extend({
-	includes: [L.Mixin.Events],
+L.Path = L.Layer.extend({
 
 	statics: {
 		// how much to extend the clip area around the map view
@@ -62,11 +61,6 @@ L.Path = L.Class.extend({
 			viewreset: this.projectLatlngs,
 			moveend: this._updatePath
 		}, this);
-	},
-
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
 	},
 
 	onRemove: function (map) {

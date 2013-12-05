@@ -6,10 +6,11 @@ L.Map.mergeOptions({
 	closePopupOnClick: true
 });
 
-L.Popup = L.Class.extend({
-	includes: L.Mixin.Events,
+L.Popup = L.Layer.extend({
 
 	options: {
+		pane: 'popupPane',
+
 		minWidth: 50,
 		maxWidth: 300,
 		// maxHeight: <Number>,
@@ -46,7 +47,7 @@ L.Popup = L.Class.extend({
 			L.DomUtil.setOpacity(this._container, 0);
 		}
 
-		this._getPane().appendChild(this._container);
+		this.getPane().appendChild(this._container);
 		map.on(this._getEvents(), this);
 
 		this.update();
@@ -61,11 +62,6 @@ L.Popup = L.Class.extend({
 		if (this._source) {
 			this._source.fire('popupopen', {popup: this});
 		}
-	},
-
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
 	},
 
 	openOn: function (map) {
@@ -128,10 +124,6 @@ L.Popup = L.Class.extend({
 		this._container.style.visibility = '';
 
 		this._adjustPan();
-	},
-
-	_getPane: function () {
-		return this._map._panes.popupPane;
 	},
 
 	_getEvents: function () {

@@ -2,8 +2,7 @@
  * L.ImageOverlay is used to overlay images over the map (to specific geographical bounds).
  */
 
-L.ImageOverlay = L.Class.extend({
-	includes: L.Mixin.Events,
+L.ImageOverlay = L.Layer.extend({
 
 	options: {
 		opacity: 1
@@ -24,7 +23,7 @@ L.ImageOverlay = L.Class.extend({
 			this._initImage();
 		}
 
-		this._getPane().appendChild(this._image);
+		this.getPane().appendChild(this._image);
 
 		map.on(this._getEvents(), this);
 
@@ -37,11 +36,6 @@ L.ImageOverlay = L.Class.extend({
 		map.off(this._getEvents(), this);
 	},
 
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
-	},
-
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		this._updateOpacity();
@@ -51,13 +45,13 @@ L.ImageOverlay = L.Class.extend({
 	// TODO remove bringToFront/bringToBack duplication from TileLayer/Path
 	bringToFront: function () {
 		if (this._image) {
-			this._getPane().appendChild(this._image);
+			this.getPane().appendChild(this._image);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
-		var pane = this._getPane();
+		var pane = this.getPane();
 		if (this._image) {
 			pane.insertBefore(this._image, pane.firstChild);
 		}
@@ -71,10 +65,6 @@ L.ImageOverlay = L.Class.extend({
 
 	getAttribution: function () {
 		return this.options.attribution;
-	},
-
-	_getPane: function () {
-		return this._map._panes.overlayPane;
 	},
 
 	_getEvents: function () {

@@ -2,9 +2,7 @@
  * L.Marker is used to display clickable/draggable icons on the map.
  */
 
-L.Marker = L.Class.extend({
-
-	includes: L.Mixin.Events,
+L.Marker = L.Layer.extend({
 
 	options: {
 		icon: new L.Icon.Default(),
@@ -38,11 +36,6 @@ L.Marker = L.Class.extend({
 		if (this._animated) {
 			map.on('zoomanim', this._animateZoom, this);
 		}
-	},
-
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
 	},
 
 	onRemove: function (map) {

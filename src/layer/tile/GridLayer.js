@@ -2,11 +2,11 @@
  * L.GridLayer is used as base class for grid-like layers like TileLayer.
  */
 
-L.GridLayer = L.Class.extend({
-
-	includes: L.Mixin.Events,
+L.GridLayer = L.Layer.extend({
 
 	options: {
+		pane: 'tilePane',
+
 		tileSize: 256,
 		opacity: 1,
 
@@ -53,14 +53,9 @@ L.GridLayer = L.Class.extend({
 		this._container = this._map = null;
 	},
 
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
-	},
-
 	bringToFront: function () {
 		if (this._map) {
-			var pane = this._getPane();
+			var pane = this.getPane();
 			pane.appendChild(this._container);
 			this._setAutoZIndex(pane, Math.max);
 		}
@@ -69,7 +64,7 @@ L.GridLayer = L.Class.extend({
 
 	bringToBack: function () {
 		if (this._map) {
-			var pane = this._getPane();
+			var pane = this.getPane();
 			pane.insertBefore(this._container, pane.firstChild);
 			this._setAutoZIndex(pane, Math.min);
 		}
@@ -106,11 +101,6 @@ L.GridLayer = L.Class.extend({
 			this._update();
 		}
 		return this;
-	},
-
-	_getPane: function () {
-		// TODO pane in options?
-		return this._map._panes.tilePane;
 	},
 
 	_getEvents: function () {
@@ -191,7 +181,7 @@ L.GridLayer = L.Class.extend({
 			this._updateOpacity();
 		}
 
-		this._getPane().appendChild(this._container);
+		this.getPane().appendChild(this._container);
 	},
 
 	_reset: function (e) {
