@@ -44,7 +44,6 @@ L.Map = L.Class.extend({
 
 		this._layers = {};
 		this._zoomBoundLayers = {};
-		this._tileLayersNum = 0;
 
 		this.callInitHooks();
 
@@ -152,61 +151,12 @@ L.Map = L.Class.extend({
 	},
 
 	addLayer: function (layer) {
-		// TODO method is too big, refactor
-
-		var id = L.stamp(layer);
-
-		if (this._layers[id]) { return this; }
-
-		this._layers[id] = layer;
-
-		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		if (layer.options && (!isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom))) {
-			this._zoomBoundLayers[id] = layer;
-			this._updateZoomLevels();
-		}
-
-		// TODO looks ugly, refactor!!!
-		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
-			this._tileLayersNum++;
-			this._tileLayersToLoad++;
-			layer.on('load', this._onTileLayerLoad, this);
-		}
-
-		if (this._loaded) {
-			this._layerAdd(layer);
-		}
-
+		layer.addTo(this);
 		return this;
 	},
 
 	removeLayer: function (layer) {
-		var id = L.stamp(layer);
-
-		if (!this._layers[id]) { return this; }
-
-		if (this._loaded) {
-			layer.onRemove(this);
-		}
-
-		delete this._layers[id];
-
-		if (this._loaded) {
-			this.fire('layerremove', {layer: layer});
-		}
-
-		if (this._zoomBoundLayers[id]) {
-			delete this._zoomBoundLayers[id];
-			this._updateZoomLevels();
-		}
-
-		// TODO looks ugly, refactor
-		if (this.options.zoomAnimation && L.TileLayer && (layer instanceof L.TileLayer)) {
-			this._tileLayersNum--;
-			this._tileLayersToLoad--;
-			layer.off('load', this._onTileLayerLoad, this);
-		}
-
+		layer.removeFrom(this);
 		return this;
 	},
 
@@ -568,14 +518,11 @@ L.Map = L.Class.extend({
 			this._initialTopLeftPoint._add(this._getMapPanePos());
 		}
 
-		this._tileLayersToLoad = this._tileLayersNum;
-
 		var loading = !this._loaded;
 		this._loaded = true;
 
 		if (loading) {
 			this.fire('load');
-			this.eachLayer(this._layerAdd, this);
 		}
 
 		this.fire('viewreset', {hard: !preserveMapOffset});
@@ -698,13 +645,6 @@ L.Map = L.Class.extend({
 		});
 	},
 
-	_onTileLayerLoad: function () {
-		this._tileLayersToLoad--;
-		if (this._tileLayersNum && !this._tileLayersToLoad) {
-			this.fire('tilelayersload');
-		}
-	},
-
 	_clearHandlers: function () {
 		for (var i = 0, len = this._handlers.length; i < len; i++) {
 			this._handlers[i].disable();
@@ -718,11 +658,6 @@ L.Map = L.Class.extend({
 			this.on('load', callback, context);
 		}
 		return this;
-	},
-
-	_layerAdd: function (layer) {
-		layer.onAdd(this);
-		this.fire('layeradd', {layer: layer});
 	},
 
 

@@ -7,8 +7,49 @@ L.Layer = L.Class.extend({
 	},
 
 	addTo: function (map) {
-		map.addLayer(this);
+		this._map = map;
+
+		var id = L.stamp(this);
+		if (map._layers[id]) { return this; }
+		map._layers[id] = this;
+
+		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
+		if (this.options && (!isNaN(this.options.maxZoom) || !isNaN(this.options.minZoom))) {
+			map._zoomBoundLayers[id] = this;
+			map._updateZoomLevels();
+		}
+
+		map.whenReady(this._layerAdd, this);
+
 		return this;
+	},
+
+	_layerAdd: function () {
+		// check in case layer gets added and then removed before the map is ready
+		if (!this._map.hasLayer(this)) { return; }
+
+		this.onAdd(this._map);
+		this._map.fire('layeradd', {layer: this});
+	},
+
+	removeFrom: function (map) {
+		var id = L.stamp(this);
+		if (!map._layers[id]) { return this; }
+
+		if (map._loaded) {
+			this.onRemove(map);
+		}
+
+		delete map._layers[id];
+
+		if (map._loaded) {
+			map.fire('layerremove', {layer: this});
+		}
+
+		if (map._zoomBoundLayers[id]) {
+			delete map._zoomBoundLayers[id];
+			map._updateZoomLevels();
+		}
 	},
 
 	getPane: function () {
