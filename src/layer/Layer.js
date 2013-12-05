@@ -23,20 +23,32 @@ L.Layer = L.Class.extend({
 	},
 
 	_layerAdd: function () {
-		// check in case layer gets added and then removed before the map is ready
-		if (!this._map) { return; }
+		var map = this._map;
 
-		this.onAdd(this._map);
+		// check in case layer gets added and then removed before the map is ready
+		if (!map) { return; }
+
+		this.onAdd(map);
+
+		if (this.getEvents) {
+			map.on(this.getEvents(), this);
+		}
+
 		this.fire('add');
-		this._map.fire('layeradd', {layer: this});
+		map.fire('layeradd', {layer: this});
 	},
 
 	removeFrom: function (map) {
+
 		var id = L.stamp(this);
 		if (!map._layers[id]) { return this; }
 
 		if (map._loaded) {
 			this.onRemove(map);
+		}
+
+		if (this.getEvents) {
+			map.off(this.getEvents(), this);
 		}
 
 		delete map._layers[id];

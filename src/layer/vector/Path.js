@@ -37,7 +37,7 @@ L.Path = L.Layer.extend({
 		L.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
+	onAdd: function () {
 		if (!this._container) {
 			this._initElements();
 
@@ -52,14 +52,9 @@ L.Path = L.Layer.extend({
 		if (this._container) {
 			this._map._pathRoot.appendChild(this._container);
 		}
-
-		map.on({
-			viewreset: this.projectLatlngs,
-			moveend: this._updatePath
-		}, this);
 	},
 
-	onRemove: function (map) {
+	onRemove: function () {
 		L.DomUtil.remove(this._container);
 
 		// TODO move to Path.VML
@@ -68,11 +63,13 @@ L.Path = L.Layer.extend({
 			this._stroke = null;
 			this._fill = null;
 		}
+	},
 
-		map.off({
+	getEvents: function () {
+		return {
 			viewreset: this.projectLatlngs,
 			moveend: this._updatePath
-		}, this);
+		};
 	},
 
 	/*

@@ -37,8 +37,6 @@ L.GridLayer = L.Layer.extend({
 			this._update = L.Util.limitExecByInterval(this._update, this.options.updateInterval, this);
 		}
 
-		map.on(this._getEvents(), this);
-
 		this._reset();
 		this._update();
 	},
@@ -51,7 +49,6 @@ L.GridLayer = L.Layer.extend({
 		this._clearBgBuffer();
 		L.DomUtil.remove(this._container);
 
-		map.off(this._getEvents(), this);
 		map._removeZoomLimit(this);
 
 		this._container = null;
@@ -107,7 +104,7 @@ L.GridLayer = L.Layer.extend({
 		return this;
 	},
 
-	_getEvents: function () {
+	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
 			moveend: this._update

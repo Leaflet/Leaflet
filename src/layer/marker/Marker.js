@@ -25,28 +25,27 @@ L.Marker = L.Layer.extend({
 	onAdd: function (map) {
 		this._animated = map.options.zoomAnimation && map.options.markerZoomAnimation;
 
-		map.on('viewreset', this.update, this);
-
 		this._initIcon();
 		this.update();
-
-		if (this._animated) {
-			map.on('zoomanim', this._animateZoom, this);
-		}
 	},
 
-	onRemove: function (map) {
+	onRemove: function () {
 		if (this.dragging) {
 			this.dragging.disable();
 		}
 
 		this._removeIcon();
 		this._removeShadow();
+	},
 
-		map.off({
-			'viewreset': this.update,
-			'zoomanim': this._animateZoom
-		}, this);
+	getEvents: function () {
+		var events = {viewreset: this.update};
+
+		if (this._animated) {
+			events.zoomanim = this._animateZoom;
+		}
+
+		return events;
 	},
 
 	getLatLng: function () {
@@ -83,6 +82,7 @@ L.Marker = L.Layer.extend({
 	},
 
 	update: function () {
+
 		if (this._icon) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);

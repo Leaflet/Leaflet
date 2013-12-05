@@ -46,7 +46,6 @@ L.Popup = L.Layer.extend({
 		}
 
 		this.getPane().appendChild(this._container);
-		map.on(this._getEvents(), this);
 
 		this.update();
 
@@ -73,8 +72,6 @@ L.Popup = L.Layer.extend({
 		} else {
 			L.DomUtil.remove(this._container);
 		}
-
-		map.off(this._getEvents(), this);
 
 		map.fire('popupclose', {popup: this});
 
@@ -120,7 +117,7 @@ L.Popup = L.Layer.extend({
 		this._adjustPan();
 	},
 
-	_getEvents: function () {
+	getEvents: function () {
 		var events = {viewreset: this._updatePosition},
 		    options = this.options;
 

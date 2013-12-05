@@ -16,7 +16,7 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._animated = this._map.options.zoomAnimation && L.Browser.any3d;
+		this._animated = map.options.zoomAnimation && L.Browser.any3d;
 
 		if (!this._image) {
 			this._initImage();
@@ -24,15 +24,11 @@ L.ImageOverlay = L.Layer.extend({
 
 		this.getPane().appendChild(this._image);
 
-		map.on(this._getEvents(), this);
-
 		this._reset();
 	},
 
-	onRemove: function (map) {
+	onRemove: function () {
 		L.DomUtil.remove(this._image);
-
-		map.off(this._getEvents(), this);
 	},
 
 	setOpacity: function (opacity) {
@@ -66,7 +62,7 @@ L.ImageOverlay = L.Layer.extend({
 		return this.options.attribution;
 	},
 
-	_getEvents: function () {
+	getEvents: function () {
 		var events = {viewreset: this._reset};
 
 		if (this._animated) {
