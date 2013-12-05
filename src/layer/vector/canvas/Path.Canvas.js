@@ -123,11 +123,9 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 	},
 
 	_initEvents: function () {
-		if (this.options.clickable) {
-			// TODO dblclick
-			this._map.on('mousemove', this._onMouseMove, this);
-			this._map.on('click', this._onClick, this);
-		}
+		// TODO dblclick
+		this._map.on('mousemove', this._onMouseMove, this);
+		this._map.on('click', this._onClick, this);
 	},
 
 	_onClick: function (e) {
@@ -184,14 +182,13 @@ L.Map.include((L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? {} 
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
-		    min = vp.min,
-		    size = vp.max.subtract(min),
+		    size = vp.getSize(),
 		    root = this._pathRoot;
 
 		//TODO check if this works properly on mobile webkit
-		L.DomUtil.setPosition(root, min);
+		L.DomUtil.setPosition(root, vp.min);
 		root.width = size.x;
 		root.height = size.y;
-		root.getContext('2d').translate(-min.x, -min.y);
+		root.getContext('2d').translate(-vp.min.x, -vp.min.y);
 	}
 });

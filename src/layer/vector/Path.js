@@ -19,15 +19,17 @@ L.Path = L.Class.extend({
 	options: {
 		stroke: true,
 		color: '#0033ff',
-		dashArray: null,
-		lineCap: null,
-		lineJoin: null,
+		// dashArray: null,
+		// lineCap: null,
+		// lineJoin: null,
 		weight: 5,
 		opacity: 0.5,
 
-		fill: false,
-		fillColor: null, //same as color by default
+		// fill: false,
+		// fillColor: null, same as color by default
 		fillOpacity: 0.2,
+
+		// className: ''
 
 		clickable: true
 	},
@@ -41,7 +43,10 @@ L.Path = L.Class.extend({
 
 		if (!this._container) {
 			this._initElements();
-			this._initEvents();
+
+			if (this.options.clickable) {
+				this._initEvents();
+			}
 		}
 
 		this.projectLatlngs();
@@ -54,8 +59,8 @@ L.Path = L.Class.extend({
 		this.fire('add');
 
 		map.on({
-			'viewreset': this.projectLatlngs,
-			'moveend': this._updatePath
+			viewreset: this.projectLatlngs,
+			moveend: this._updatePath
 		}, this);
 	},
 
@@ -69,8 +74,10 @@ L.Path = L.Class.extend({
 
 		// Need to fire remove event before we set _map to null as the event hooks might need the object
 		this.fire('remove');
+
 		this._map = null;
 
+		// TODO move to Path.VML
 		if (L.Browser.vml) {
 			this._container = null;
 			this._stroke = null;
@@ -78,14 +85,16 @@ L.Path = L.Class.extend({
 		}
 
 		map.off({
-			'viewreset': this.projectLatlngs,
-			'moveend': this._updatePath
+			viewreset: this.projectLatlngs,
+			moveend: this._updatePath
 		}, this);
 	},
 
+	/*
 	projectLatlngs: function () {
 		// do all projection stuff here
 	},
+	*/
 
 	setStyle: function (style) {
 		L.setOptions(this, style);

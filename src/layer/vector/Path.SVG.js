@@ -32,9 +32,11 @@ L.Path = L.Path.extend({
 		return this;
 	},
 
+	/*
 	getPathString: function () {
 		// form path string here
 	},
+	*/
 
 	_createElement: function (name) {
 		return document.createElementNS(L.Path.SVG_NS, name);
@@ -48,7 +50,6 @@ L.Path = L.Path.extend({
 
 	_initPath: function () {
 		this._container = this._createElement('g');
-
 		this._path = this._createElement('path');
 
 		if (this.options.className) {
@@ -59,72 +60,76 @@ L.Path = L.Path.extend({
 	},
 
 	_initStyle: function () {
-		if (this.options.stroke) {
-			this._path.setAttribute('stroke-linejoin', 'round');
-			this._path.setAttribute('stroke-linecap', 'round');
+		var path = this._path,
+			options = this.options;
+
+		if (options.stroke) {
+			path.setAttribute('stroke-linejoin', 'round');
+			path.setAttribute('stroke-linecap', 'round');
 		}
-		if (this.options.fill) {
-			this._path.setAttribute('fill-rule', 'evenodd');
+		if (options.fill) {
+			path.setAttribute('fill-rule', 'evenodd');
 		}
-		if (this.options.pointerEvents) {
-			this._path.setAttribute('pointer-events', this.options.pointerEvents);
+		if (options.pointerEvents) {
+			path.setAttribute('pointer-events', options.pointerEvents);
 		}
-		if (!this.options.clickable && !this.options.pointerEvents) {
-			this._path.setAttribute('pointer-events', 'none');
+		if (!options.clickable && !options.pointerEvents) {
+			path.setAttribute('pointer-events', 'none');
 		}
 		this._updateStyle();
 	},
 
 	_updateStyle: function () {
-		if (this.options.stroke) {
-			this._path.setAttribute('stroke', this.options.color);
-			this._path.setAttribute('stroke-opacity', this.options.opacity);
-			this._path.setAttribute('stroke-width', this.options.weight);
-			if (this.options.dashArray) {
-				this._path.setAttribute('stroke-dasharray', this.options.dashArray);
+		var path = this._path,
+			options = this.options;
+
+		if (options.stroke) {
+			path.setAttribute('stroke', options.color);
+			path.setAttribute('stroke-opacity', options.opacity);
+			path.setAttribute('stroke-width', options.weight);
+
+			if (options.dashArray) {
+				path.setAttribute('stroke-dasharray', options.dashArray);
 			} else {
-				this._path.removeAttribute('stroke-dasharray');
+				path.removeAttribute('stroke-dasharray');
 			}
-			if (this.options.lineCap) {
-				this._path.setAttribute('stroke-linecap', this.options.lineCap);
+
+			if (options.lineCap) {
+				path.setAttribute('stroke-linecap', options.lineCap);
 			}
-			if (this.options.lineJoin) {
-				this._path.setAttribute('stroke-linejoin', this.options.lineJoin);
+			if (options.lineJoin) {
+				path.setAttribute('stroke-linejoin', options.lineJoin);
 			}
+
 		} else {
-			this._path.setAttribute('stroke', 'none');
+			path.setAttribute('stroke', 'none');
 		}
-		if (this.options.fill) {
-			this._path.setAttribute('fill', this.options.fillColor || this.options.color);
-			this._path.setAttribute('fill-opacity', this.options.fillOpacity);
+
+		if (options.fill) {
+			path.setAttribute('fill', options.fillColor || options.color);
+			path.setAttribute('fill-opacity', options.fillOpacity);
 		} else {
-			this._path.setAttribute('fill', 'none');
+			path.setAttribute('fill', 'none');
 		}
 	},
 
 	_updatePath: function () {
-		var str = this.getPathString();
-		if (!str) {
-			// fix webkit empty string parsing bug
-			str = 'M0 0';
-		}
-		this._path.setAttribute('d', str);
+		this._path.setAttribute('d', this.getPathString() || 'M0 0');
 	},
 
 	// TODO remove duplication with L.Map
 	_initEvents: function () {
-		if (this.options.clickable) {
-			if (L.Browser.svg || !L.Browser.vml) {
-				L.DomUtil.addClass(this._path, 'leaflet-clickable');
-			}
+		if (L.Browser.svg || !L.Browser.vml) {
+			L.DomUtil.addClass(this._path, 'leaflet-clickable');
+		}
 
-			L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
+		L.DomEvent.on(this._container, 'click', this._onMouseClick, this);
 
-			var events = ['dblclick', 'mousedown', 'mouseover',
-			              'mouseout', 'mousemove', 'contextmenu'];
-			for (var i = 0; i < events.length; i++) {
-				L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
-			}
+		var events = ['dblclick', 'mousedown', 'mouseover',
+		              'mouseout', 'mousemove', 'contextmenu'];
+
+		for (var i = 0; i < events.length; i++) {
+			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
 		}
 	},
 
@@ -161,18 +166,18 @@ L.Path = L.Path.extend({
 L.Map.include({
 	_initPathRoot: function () {
 		if (!this._pathRoot) {
-			this._pathRoot = L.Path.prototype._createElement('svg');
-			this._panes.overlayPane.appendChild(this._pathRoot);
+			var root = this._pathRoot = L.Path.prototype._createElement('svg');
+			this._panes.overlayPane.appendChild(root);
 
-			if (this.options.zoomAnimation && L.Browser.any3d) {
-				L.DomUtil.addClass(this._pathRoot, 'leaflet-zoom-animated');
+			var animated = this.options.zoomAnimation && L.Browser.any3d;
 
+			L.DomUtil.addClass(root, 'leaflet-zoom-' + (animated ? 'animated' : 'hide'));
+
+			if (animated) {
 				this.on({
 					'zoomanim': this._animatePathZoom,
 					'zoomend': this._endPathZoom
 				});
-			} else {
-				L.DomUtil.addClass(this._pathRoot, 'leaflet-zoom-hide');
 			}
 
 			this.on('moveend', this._updateSvgViewport);
@@ -206,22 +211,19 @@ L.Map.include({
 		this._updatePathViewport();
 
 		var vp = this._pathViewport,
-		    min = vp.min,
-		    max = vp.max,
-		    width = max.x - min.x,
-		    height = max.y - min.y,
+		    size = vp.getSize(),
 		    root = this._pathRoot,
 		    pane = this._panes.overlayPane;
 
 		// Hack to make flicker on drag end on mobile webkit less irritating
 		if (L.Browser.mobileWebkit) {
-			L.DomUtil.remove(root);
+			pane.removeChild(root);
 		}
 
-		L.DomUtil.setPosition(root, min);
-		root.setAttribute('width', width);
-		root.setAttribute('height', height);
-		root.setAttribute('viewBox', [min.x, min.y, width, height].join(' '));
+		L.DomUtil.setPosition(root, vp.min);
+		root.setAttribute('width', size.x);
+		root.setAttribute('height', size.y);
+		root.setAttribute('viewBox', [vp.min.x, vp.min.y, size.x, size.y].join(' '));
 
 		if (L.Browser.mobileWebkit) {
 			pane.appendChild(root);
