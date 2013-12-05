@@ -13,10 +13,8 @@ L.Layer = L.Class.extend({
 		if (map._layers[id]) { return this; }
 		map._layers[id] = this;
 
-		// TODO getMaxZoom, getMinZoom in ILayer (instead of options)
-		if (this.options && (!isNaN(this.options.maxZoom) || !isNaN(this.options.minZoom))) {
-			map._zoomBoundLayers[id] = this;
-			map._updateZoomLevels();
+		if (this.beforeAdd) {
+			this.beforeAdd(map);
 		}
 
 		map.whenReady(this._layerAdd, this);
@@ -44,11 +42,6 @@ L.Layer = L.Class.extend({
 
 		if (map._loaded) {
 			map.fire('layerremove', {layer: this});
-		}
-
-		if (map._zoomBoundLayers[id]) {
-			delete map._zoomBoundLayers[id];
-			map._updateZoomLevels();
 		}
 	},
 

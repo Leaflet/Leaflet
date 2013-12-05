@@ -544,23 +544,37 @@ L.Map = L.Class.extend({
 		return this.getMaxZoom() - this.getMinZoom();
 	},
 
+	_addZoomLimit: function (layer) {
+		if (isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+			this._zoomBoundLayers[L.stamp(layer)] = layer;
+			this._updateZoomLevels();
+		}
+	},
+
+	_removeZoomLimit: function (layer) {
+		var id = L.stamp(layer);
+
+		if (this._zoomBoundLayers[id]) {
+			delete this._zoomBoundLayers[id];
+			this._updateZoomLevels();
+		}
+	},
+
 	_updateZoomLevels: function () {
-		var i,
-			minZoom = Infinity,
+		var minZoom = Infinity,
 			maxZoom = -Infinity,
-			oldZoomSpan = this._getZoomSpan();
+			oldZoomSpan = this._getZoomSpan(),
+			i;
 
 		for (i in this._zoomBoundLayers) {
-			var layer = this._zoomBoundLayers[i];
-			if (!isNaN(layer.options.minZoom)) {
-				minZoom = Math.min(minZoom, layer.options.minZoom);
-			}
-			if (!isNaN(layer.options.maxZoom)) {
-				maxZoom = Math.max(maxZoom, layer.options.maxZoom);
-			}
+			var options = this._zoomBoundLayers[i].options;
+
+			minZoom = isNaN(options.minZoom) ? minZoom : Math.min(minZoom, options.minZoom);
+			maxZoom = isNaN(options.maxZoom) ? maxZoom : Math.max(maxZoom, options.maxZoom);
 		}
 
-		if (i === undefined) { // we have no tilelayers
+		if (i === undefined) {
+			// we have no zoom restricting layers
 			this._layersMaxZoom = this._layersMinZoom = undefined;
 		} else {
 			this._layersMaxZoom = maxZoom;

@@ -44,11 +44,16 @@ L.GridLayer = L.Layer.extend({
 		this._update();
 	},
 
+	beforeAdd: function (map) {
+		map._addZoomLimit(this);
+	},
+
 	onRemove: function (map) {
 		this._clearBgBuffer();
 		L.DomUtil.remove(this._container);
 
 		map.off(this._getEvents(), this);
+		map._removeZoomLimit(this);
 
 		this._container = this._map = null;
 	},
