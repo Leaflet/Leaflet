@@ -25,17 +25,11 @@ L.Control.Layers = L.Control.extend({
 		}
 	},
 
-	onAdd: function (map) {
+	onAdd: function () {
 		this._initLayout();
 		this._update();
 
-		map.on('layeradd layerremove', this._onLayerChange, this);
-
 		return this._container;
-	},
-
-	onRemove: function (map) {
-		map.off('layeradd layerremove', this._onLayerChange, this);
 	},
 
 	addBaseLayer: function (layer, name) {
@@ -49,6 +43,8 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	removeLayer: function (layer) {
+		layer.off('add remove', this._onLayerChange, this);
+
 		delete this._layers[L.stamp(layer)];
 		return this._update();
 	},
@@ -108,6 +104,8 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_addLayer: function (layer, name, overlay) {
+		layer.on('add remove', this._onLayerChange, this);
+
 		var id = L.stamp(layer);
 
 		this._layers[id] = {
@@ -143,20 +141,16 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_onLayerChange: function (e) {
-		var obj = this._layers[L.stamp(e.layer)];
-
-		if (!obj) { return; }
-
 		if (!this._handlingClick) {
 			this._update();
 		}
 
-		var type = obj.overlay ?
-			(e.type === 'layeradd' ? 'overlayadd' : 'overlayremove') :
-			(e.type === 'layeradd' ? 'baselayerchange' : null);
+		var type = e.target.overlay ?
+			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
+			(e.type === 'add' ? 'baselayerchange' : null);
 
 		if (type) {
-			this._map.fire(type, obj);
+			this._map.fire(type, e.target);
 		}
 	},
 
