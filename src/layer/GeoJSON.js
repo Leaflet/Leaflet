@@ -23,7 +23,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 				// Only add this if geometry or geometries are set and not null
 				feature = features[i];
 				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
-					this.addData(features[i]);
+					this.addData(feature);
 				}
 			}
 			return this;
@@ -33,7 +33,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		if (options.filter && !options.filter(geojson)) { return; }
 
-		var layer = L.GeoJSON.geometryToLayer(geojson, options.pointToLayer, options.coordsToLatLng, options);
+		var layer = L.GeoJSON.geometryToLayer(geojson, options);
 		layer.feature = L.GeoJSON.asFeature(geojson);
 
 		layer.defaultOptions = layer.options;
@@ -73,44 +73,49 @@ L.GeoJSON = L.FeatureGroup.extend({
 });
 
 L.extend(L.GeoJSON, {
-	geometryToLayer: function (geojson, pointToLayer, coordsToLatLng, vectorOptions) {
+	geometryToLayer: function (geojson, options) {
 		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
 		    coords = geometry.coordinates,
 		    layers = [],
+		    coordsToLatLng = options.coordsToLatLng || this.coordsToLatLng,
 		    latlng, latlngs, i, len;
-
-		coordsToLatLng = coordsToLatLng || this.coordsToLatLng;
 
 		switch (geometry.type) {
 		case 'Point':
 			latlng = coordsToLatLng(coords);
-			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
+
+			return options.pointToLayer ?
+					options.pointToLayer(geojson, latlng) :
+					new L.Marker(latlng);
 
 		case 'MultiPoint':
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = coordsToLatLng(coords[i]);
-				layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng));
+
+				layers.push(options.pointToLayer ?
+						options.pointToLayer(geojson, latlng) :
+						new L.Marker(latlng));
 			}
 			return new L.FeatureGroup(layers);
 
 		case 'LineString':
 			latlngs = this.coordsToLatLngs(coords, 0, coordsToLatLng);
-			return new L.Polyline(latlngs, vectorOptions);
+			return new L.Polyline(latlngs, options);
 
 		case 'Polygon':
 			if (coords.length === 2 && !coords[1].length) {
 				throw new Error('Invalid GeoJSON object.');
 			}
 			latlngs = this.coordsToLatLngs(coords, 1, coordsToLatLng);
-			return new L.Polygon(latlngs, vectorOptions);
+			return new L.Polygon(latlngs, options);
 
 		case 'MultiLineString':
 			latlngs = this.coordsToLatLngs(coords, 1, coordsToLatLng);
-			return new L.MultiPolyline(latlngs, vectorOptions);
+			return new L.MultiPolyline(latlngs, options);
 
 		case 'MultiPolygon':
 			latlngs = this.coordsToLatLngs(coords, 2, coordsToLatLng);
-			return new L.MultiPolygon(latlngs, vectorOptions);
+			return new L.MultiPolygon(latlngs, options);
 
 		case 'GeometryCollection':
 			for (i = 0, len = geometry.geometries.length; i < len; i++) {
@@ -119,7 +124,7 @@ L.extend(L.GeoJSON, {
 					geometry: geometry.geometries[i],
 					type: 'Feature',
 					properties: geojson.properties
-				}, pointToLayer, coordsToLatLng, vectorOptions));
+				}, options));
 			}
 			return new L.FeatureGroup(layers);
 
@@ -128,18 +133,17 @@ L.extend(L.GeoJSON, {
 		}
 	},
 
-	coordsToLatLng: function (coords) { // (Array[, Boolean]) -> LatLng
+	coordsToLatLng: function (coords) {
 		return new L.LatLng(coords[1], coords[0], coords[2]);
 	},
 
-	coordsToLatLngs: function (coords, levelsDeep, coordsToLatLng) { // (Array[, Number, Function]) -> Array
-		var latlng, i, len,
-		    latlngs = [];
+	coordsToLatLngs: function (coords, levelsDeep, coordsToLatLng) {
+		var latlngs = [];
 
-		for (i = 0, len = coords.length; i < len; i++) {
+		for (var i = 0, len = coords.length, latlng; i < len; i++) {
 			latlng = levelsDeep ?
 			        this.coordsToLatLngs(coords[i], levelsDeep - 1, coordsToLatLng) :
-			        (coordsToLatLng || this.coordsToLatLng)(coords[i]);
+			        coordsToLatLng(coords[i]);
 
 			latlngs.push(latlng);
 		}
@@ -148,12 +152,9 @@ L.extend(L.GeoJSON, {
 	},
 
 	latLngToCoords: function (latlng) {
-		var coords = [latlng.lng, latlng.lat];
-
-		if (latlng.alt !== undefined) {
-			coords.push(latlng.alt);
-		}
-		return coords;
+		return latlng.alt !== undefined ?
+				[latlng.lng, latlng.lat, latlng.alt] :
+				[latlng.lng, latlng.lat];
 	},
 
 	latLngsToCoords: function (latLngs) {
@@ -167,7 +168,9 @@ L.extend(L.GeoJSON, {
 	},
 
 	getFeature: function (layer, newGeometry) {
-		return layer.feature ? L.extend({}, layer.feature, {geometry: newGeometry}) : L.GeoJSON.asFeature(newGeometry);
+		return layer.feature ?
+				L.extend({}, layer.feature, {geometry: newGeometry}) :
+				L.GeoJSON.asFeature(newGeometry);
 	},
 
 	asFeature: function (geoJSON) {
