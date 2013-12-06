@@ -6,10 +6,11 @@ L.Map.mergeOptions({
 	closePopupOnClick: true
 });
 
-L.Popup = L.Class.extend({
-	includes: L.Mixin.Events,
+L.Popup = L.Layer.extend({
 
 	options: {
+		pane: 'popupPane',
+
 		minWidth: 50,
 		maxWidth: 300,
 		// maxHeight: <Number>,
@@ -21,8 +22,8 @@ L.Popup = L.Class.extend({
 		// autoPanPaddingBottomRight: <Point>,
 
 		closeButton: true,
-		keepInView: false,
-		className: '',
+		// keepInView: false,
+		// className: '',
 		zoomAnimation: true
 	},
 
@@ -30,42 +31,31 @@ L.Popup = L.Class.extend({
 		L.setOptions(this, options);
 
 		this._source = source;
-		this._animated = L.Browser.any3d && this.options.zoomAnimation;
 	},
 
 	onAdd: function (map) {
-		this._map = map;
+		this._zoomAnimated = this._zoomAnimated && this.options.zoomAnimation;
 
 		if (!this._container) {
 			this._initLayout();
 		}
 
-		var animFade = map.options.fadeAnimation;
-
-		if (animFade) {
+		if (map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, 0);
 		}
 
-		this._getPane().appendChild(this._container);
-		map.on(this._getEvents(), this);
-
+		this.getPane().appendChild(this._container);
 		this.update();
 
-		if (animFade) {
+		if (map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, 1);
 		}
 
-		this.fire('open');
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
 			this._source.fire('popupopen', {popup: this});
 		}
-	},
-
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
 	},
 
 	openOn: function (map) {
@@ -74,18 +64,13 @@ L.Popup = L.Class.extend({
 	},
 
 	onRemove: function (map) {
-		if (map.options.fadeAnimation) {
+		if (map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, 0);
 			setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
 		} else {
 			L.DomUtil.remove(this._container);
 		}
 
-		map.off(this._getEvents(), this);
-
-		this._map = null;
-
-		this.fire('close');
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
@@ -130,16 +115,12 @@ L.Popup = L.Class.extend({
 		this._adjustPan();
 	},
 
-	_getPane: function () {
-		return this._map._panes.popupPane;
-	},
-
-	_getEvents: function () {
+	getEvents: function () {
 		var events = {viewreset: this._updatePosition},
 		    options = this.options;
 
-		if (this._animated) {
-			events.zoomanim = this._zoomAnimation;
+		if (this._zoomAnimated) {
+			events.zoomanim = this._animateZoom;
 		}
 		if ('closeOnClick' in options ? options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
@@ -159,7 +140,8 @@ L.Popup = L.Class.extend({
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
 		    container = this._container = L.DomUtil.create('div',
-		        prefix + ' ' + this.options.className + ' leaflet-zoom-' + (this._animated ? 'animated' : 'hide'));
+			prefix + ' ' + (this.options.className || '') +
+			' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide'));
 
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
@@ -233,10 +215,9 @@ L.Popup = L.Class.extend({
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    animated = this._animated,
 		    offset = L.point(this.options.offset);
 
-		if (animated) {
+		if (this._zoomAnimated) {
 			L.DomUtil.setPosition(this._container, pos);
 		} else {
 			offset = offset.add(pos);
@@ -250,7 +231,7 @@ L.Popup = L.Class.extend({
 		this._container.style.left = left + 'px';
 	},
 
-	_zoomAnimation: function (e) {
+	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
 		L.DomUtil.setPosition(this._container, pos);
 	},
@@ -263,7 +244,7 @@ L.Popup = L.Class.extend({
 		    containerWidth = this._containerWidth,
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			layerPos._add(L.DomUtil.getPosition(this._container));
 		}
 

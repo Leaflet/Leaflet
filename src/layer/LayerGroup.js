@@ -3,7 +3,8 @@
  * you can manipulate the group (e.g. add/remove it) as one layer.
  */
 
-L.LayerGroup = L.Class.extend({
+L.LayerGroup = L.Layer.extend({
+
 	initialize: function (layers) {
 		this._layers = {};
 
@@ -41,9 +42,7 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	hasLayer: function (layer) {
-		if (!layer) { return false; }
-
-		return (layer in this._layers || this.getLayerId(layer) in this._layers);
+		return !layer || layer in this._layers || this.getLayerId(layer) in this._layers;
 	},
 
 	clearLayers: function () {
@@ -67,18 +66,11 @@ L.LayerGroup = L.Class.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
 		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
 		this.eachLayer(map.removeLayer, map);
-		this._map = null;
-	},
-
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
 	},
 
 	eachLayer: function (method, context) {

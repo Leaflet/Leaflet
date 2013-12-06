@@ -7,13 +7,11 @@ L.Control.Scale = L.Control.extend({
 		position: 'bottomleft',
 		maxWidth: 100,
 		metric: true,
-		imperial: true,
-		updateWhenIdle: false
+		imperial: true
+		// updateWhenIdle: false
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		var className = 'leaflet-control-scale',
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;

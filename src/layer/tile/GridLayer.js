@@ -2,11 +2,11 @@
  * L.GridLayer is used as base class for grid-like layers like TileLayer.
  */
 
-L.GridLayer = L.Class.extend({
-
-	includes: L.Mixin.Events,
+L.GridLayer = L.Layer.extend({
 
 	options: {
+		pane: 'tilePane',
+
 		tileSize: 256,
 		opacity: 1,
 
@@ -27,10 +27,7 @@ L.GridLayer = L.Class.extend({
 		options = L.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
-		this._map = map;
-		this._animated = map._zoomAnimated;
-
+	onAdd: function () {
 		this._initContainer();
 
 		if (!this.options.updateWhenIdle) {
@@ -38,29 +35,26 @@ L.GridLayer = L.Class.extend({
 			this._update = L.Util.limitExecByInterval(this._update, this.options.updateInterval, this);
 		}
 
-		map.on(this._getEvents(), this);
-
 		this._reset();
 		this._update();
+	},
+
+	beforeAdd: function (map) {
+		map._addZoomLimit(this);
 	},
 
 	onRemove: function (map) {
 		this._clearBgBuffer();
 		L.DomUtil.remove(this._container);
 
-		map.off(this._getEvents(), this);
+		map._removeZoomLimit(this);
 
-		this._container = this._map = null;
-	},
-
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
+		this._container = null;
 	},
 
 	bringToFront: function () {
 		if (this._map) {
-			var pane = this._getPane();
+			var pane = this.getPane();
 			pane.appendChild(this._container);
 			this._setAutoZIndex(pane, Math.max);
 		}
@@ -69,7 +63,7 @@ L.GridLayer = L.Class.extend({
 
 	bringToBack: function () {
 		if (this._map) {
-			var pane = this._getPane();
+			var pane = this.getPane();
 			pane.insertBefore(this._container, pane.firstChild);
 			this._setAutoZIndex(pane, Math.min);
 		}
@@ -108,12 +102,7 @@ L.GridLayer = L.Class.extend({
 		return this;
 	},
 
-	_getPane: function () {
-		// TODO pane in options?
-		return this._map._panes.tilePane;
-	},
-
-	_getEvents: function () {
+	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
 			moveend: this._update
@@ -123,7 +112,7 @@ L.GridLayer = L.Class.extend({
 			events.move = this._update;
 		}
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
 			events.zoomend = this._endZoomAnim;
 		}
@@ -177,7 +166,7 @@ L.GridLayer = L.Class.extend({
 		this._container = L.DomUtil.create('div', 'leaflet-layer');
 		this._updateZIndex();
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			var className = 'leaflet-tile-container leaflet-zoom-animated';
 
 			this._bgBuffer = L.DomUtil.create('div', className, this._container);
@@ -191,7 +180,7 @@ L.GridLayer = L.Class.extend({
 			this._updateOpacity();
 		}
 
-		this._getPane().appendChild(this._container);
+		this.getPane().appendChild(this._container);
 	},
 
 	_reset: function (e) {
@@ -206,7 +195,7 @@ L.GridLayer = L.Class.extend({
 
 		this._tileContainer.innerHTML = '';
 
-		if (this._animated && e && e.hard) {
+		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
 		}
 
@@ -449,7 +438,7 @@ L.GridLayer = L.Class.extend({
 	_visibleTilesReady: function () {
 		this.fire('load');
 
-		if (this._animated) {
+		if (this._zoomAnimated) {
 			// clear scaled tiles after all new tiles are loaded (for performance)
 			clearTimeout(this._clearBgBufferTimer);
 			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 300);

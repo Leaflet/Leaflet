@@ -9,7 +9,7 @@ L.TileLayer = L.GridLayer.extend({
 		maxZoom: 18,
 
 		subdomains: 'abc',
-		errorTileUrl: '',
+		// errorTileUrl: '',
 		zoomOffset: 0,
 
 		/*

@@ -2,11 +2,11 @@
  * L.Marker is used to display clickable/draggable icons on the map.
  */
 
-L.Marker = L.Class.extend({
-
-	includes: L.Mixin.Events,
+L.Marker = L.Layer.extend({
 
 	options: {
+		pane: 'markerPane',
+
 		icon: new L.Icon.Default(),
 		// title: '',
 		// alt: '',
@@ -25,42 +25,29 @@ L.Marker = L.Class.extend({
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-		this._animated = map.options.zoomAnimation && map.options.markerZoomAnimation;
-
-		map.on('viewreset', this.update, this);
+		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
 		this._initIcon();
 		this.update();
-
-		this.fire('add');
-
-		if (this._animated) {
-			map.on('zoomanim', this._animateZoom, this);
-		}
 	},
 
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
-	},
-
-	onRemove: function (map) {
+	onRemove: function () {
 		if (this.dragging) {
 			this.dragging.disable();
 		}
 
 		this._removeIcon();
 		this._removeShadow();
+	},
 
-		this.fire('remove');
+	getEvents: function () {
+		var events = {viewreset: this.update};
 
-		map.off({
-			'viewreset': this.update,
-			'zoomanim': this._animateZoom
-		}, this);
+		if (this._zoomAnimated) {
+			events.zoomanim = this._animateZoom;
+		}
 
-		this._map = null;
+		return events;
 	},
 
 	getLatLng: function () {
@@ -97,6 +84,7 @@ L.Marker = L.Class.extend({
 	},
 
 	update: function () {
+
 		if (this._icon) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
@@ -107,7 +95,7 @@ L.Marker = L.Class.extend({
 
 	_initIcon: function () {
 		var options = this.options,
-		    classToAdd = 'leaflet-zoom-' + (this._animated ? 'animated' : 'hide');
+		    classToAdd = 'leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
 		var icon = options.icon.createIcon(this._icon),
 			addIcon = false;
@@ -161,13 +149,11 @@ L.Marker = L.Class.extend({
 		}
 
 
-		var panes = this._map._panes;
-
 		if (addIcon) {
-			panes.markerPane.appendChild(this._icon);
+			this.getPane().appendChild(this._icon);
 		}
 		if (newShadow && addShadow) {
-			panes.shadowPane.appendChild(this._shadow);
+			this.getPane('shadowPane').appendChild(this._shadow);
 		}
 	},
 

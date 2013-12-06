@@ -2,8 +2,7 @@
  * L.Path is a base class for rendering vector paths on a map. Inherited by Polyline, Circle, etc.
  */
 
-L.Path = L.Class.extend({
-	includes: [L.Mixin.Events],
+L.Path = L.Layer.extend({
 
 	statics: {
 		// how much to extend the clip area around the map view
@@ -38,9 +37,7 @@ L.Path = L.Class.extend({
 		L.setOptions(this, options);
 	},
 
-	onAdd: function (map) {
-		this._map = map;
-
+	onAdd: function () {
 		if (!this._container) {
 			this._initElements();
 
@@ -55,27 +52,10 @@ L.Path = L.Class.extend({
 		if (this._container) {
 			this._map._pathRoot.appendChild(this._container);
 		}
-
-		this.fire('add');
-
-		map.on({
-			viewreset: this.projectLatlngs,
-			moveend: this._updatePath
-		}, this);
 	},
 
-	addTo: function (map) {
-		map.addLayer(this);
-		return this;
-	},
-
-	onRemove: function (map) {
+	onRemove: function () {
 		L.DomUtil.remove(this._container);
-
-		// Need to fire remove event before we set _map to null as the event hooks might need the object
-		this.fire('remove');
-
-		this._map = null;
 
 		// TODO move to Path.VML
 		if (L.Browser.vml) {
@@ -83,11 +63,13 @@ L.Path = L.Class.extend({
 			this._stroke = null;
 			this._fill = null;
 		}
+	},
 
-		map.off({
+	getEvents: function () {
+		return {
 			viewreset: this.projectLatlngs,
 			moveend: this._updatePath
-		}, this);
+		};
 	},
 
 	/*

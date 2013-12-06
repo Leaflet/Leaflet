@@ -4,12 +4,12 @@
 
 L.Map.include({
 	_defaultLocateOptions: {
-		watch: false,
-		setView: false,
-		maxZoom: Infinity,
-		timeout: 10000,
-		maximumAge: 0,
-		enableHighAccuracy: false
+		timeout: 10000
+		// watch: false
+		// setView: false
+		// maxZoom: <Number>
+		// maximumAge: 0
+		// enableHighAccuracy: false
 	},
 
 	locate: function (/*Object*/ options) {
@@ -77,8 +77,8 @@ L.Map.include({
 		    options = this._locateOptions;
 
 		if (options.setView) {
-			var zoom = Math.min(this.getBoundsZoom(bounds), options.maxZoom);
-			this.setView(latlng, zoom);
+			var zoom = this.getBoundsZoom(bounds);
+			this.setView(latlng, options.maxZoom ? Math.min(zoom, options.maxZoom) : zoom);
 		}
 
 		var data = {
