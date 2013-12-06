@@ -5,6 +5,8 @@
 L.Marker = L.Layer.extend({
 
 	options: {
+		pane: 'markerPane',
+
 		icon: new L.Icon.Default(),
 		// title: '',
 		// alt: '',
@@ -147,13 +149,11 @@ L.Marker = L.Layer.extend({
 		}
 
 
-		var panes = this._map._panes;
-
 		if (addIcon) {
-			panes.markerPane.appendChild(this._icon);
+			this.getPane().appendChild(this._icon);
 		}
 		if (newShadow && addShadow) {
-			panes.shadowPane.appendChild(this._shadow);
+			this.getPane('shadowPane').appendChild(this._shadow);
 		}
 	},
 

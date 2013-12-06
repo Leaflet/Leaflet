@@ -63,9 +63,10 @@ L.Layer = L.Class.extend({
 		this._map = null;
 	},
 
-	getPane: function () {
+	getPane: function (name) {
 		// TODO make pane if not present
-		return this._map._panes[this.options.pane];
+		var paneName = name ? this.options[name] || name : this.options.pane;
+		return this._map._panes[paneName];
 	}
 });
 
