@@ -24,8 +24,8 @@ if (L.DomUtil.TRANSITION) {
 
 L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
-	_catchTransitionEnd: function () {
-		if (this._animatingZoom) {
+	_catchTransitionEnd: function (e) {
+		if (this._animatingZoom && L.DomUtil.hasClass(e.target, 'leaflet-tile-container')) {
 			this._onZoomTransitionEnd();
 		}
 	},
