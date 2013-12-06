@@ -5,11 +5,28 @@ Leaflet Changelog
 
 ## 0.8-dev (master)
 
-An in-progress version being developed on the `master` branch. Includes `stable` branch fixes.
+An in-progress version being developed on the `master` branch.
+
+This version contains a lot of beneficial but potentially breaking changes (especially if you're a plugin author), so please read through the changes carefully before upgrading.
+
+### Layers refactoring
+
+All Leaflet layers (including markers, popups, tile and vector layers) have been refactored to have a common parent, `Layer` class, that shares the basic logic of adding and removing. The leads to the following changes (documented in PR [#2266](https://github.com/Leaflet/Leaflet/pull/2266)):
+
+* Added `Layer` class which all layers added to a map should inherit from.
+* Added `add` and `remove` events to all layers.
+* Added `pane` option to all layers that can be changed (e.g. you can set `pane: 'overlayPane'` to a tile layer).
+* Added `shadowPane` option to markers as well.
+* Added `getEvents` method to all layers that returns an `{event: listener, ...}` hash; layers now manage its listeners automatically without having to do this in `onAdd`/`onRemove`.
+* Improved performance of adding/removing layers with layers control present (instead of listening to any layer add/remove, the control only listens to layers added in configuration).
+* Fixed `FeatureGroup` `getBounds` to work correctly when containing circle markers.
+* Removed `Map` `tilelayersload` event.
+* Removed `Popup` `open` and `close` events in favor of `add` and `remove` for consistency.
+* Moved all layer-related logic in `Map.js` to `Layer.js`.
 
 ### TileLayer & Projections refactoring
 
-TileLayer code and everything projections-related has undergone a major refactoring, documented in [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
+TileLayer code and everything projections-related has undergone a major refactoring, documented in PR [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
 
 #### TileLayer-related changes
 
@@ -34,18 +51,24 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed `Projection.SphericalMercator` to project to meter units (by [@calvinmetcalf](https://github.com/calvinmetcalf)).
 * Fixed `Map` `worldCopyJump` option to work for other projections.
 
-#### Misc. changes
+### Other improvements
 
 * Added `Point` `ceil` method (by [@perliedman](https://github.com/perliedman)).
 * Added `Util.wrapNum` method for wrapping a number to lie in a certain range.
 * Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
+* Added `DomUtil` `setClass` and `getClass` methods.
+* Removed `LatLng` `RAD_TO_DEG`, `DEG_TO_RAD` and `MAX_MARGIN` constants.
+* Added `LatLng` `equals` second argument `maxMargin`.
+* Improved performance of layer objects construction.
+* Added popup fade out animation.
 * Improved the build system (`jake build`) to report gzipped library size.
 
 
-## 0.7.1-dev (stable)
+## 0.7.1 (December 6, 2013)
 
-An in-progress version being developed on the `stable` branch.
+A follow-up bugfix release for the recent stable version.
 
+* Fixed a bug where pinch-zooming quickly could occasionally leave the map at a fractional zoom thus breaking tile loading (by [@danzel](https://github.com/danzel)). [#2269](https://github.com/Leaflet/Leaflet/pull/2269) [#2255](https://github.com/Leaflet/Leaflet/issues/2255) [#1934](https://github.com/Leaflet/Leaflet/issues/1934)
 * Fixed tile flickering issues on some old Android 2/3 devices by disabling buggy hardware accelerated CSS there (by [@danzel](https://github.com/danzel)). [#2216](https://github.com/Leaflet/Leaflet/pull/2216) [#2198](https://github.com/Leaflet/Leaflet/issues/2198)
 * Fixed a regression that sometimes led to an error when you started pinch-zoom as the first action on the map (by [@danzel](https://github.com/danzel)). [#2259](https://github.com/Leaflet/Leaflet/pull/2259) [#2256](https://github.com/Leaflet/Leaflet/issues/2256)
 * Reverted `L.Util.template` optimizations to allow Leaflet to be used in eval-banning environments like browser extensions (performance gain was insignificant anyway) (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#2217](https://github.com/Leaflet/Leaflet/issues/2217) [#2209](https://github.com/Leaflet/Leaflet/issues/2209) [#1968](https://github.com/Leaflet/Leaflet/issues/1968)
