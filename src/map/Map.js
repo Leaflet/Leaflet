@@ -224,6 +224,8 @@ L.Map = L.Class.extend({
 	},
 
 	invalidateSize: function (options) {
+		if (!this._loaded) { return this; }
+
 		options = L.extend({
 			animate: false,
 			pan: true
@@ -232,8 +234,6 @@ L.Map = L.Class.extend({
 		var oldSize = this.getSize();
 		this._sizeChanged = true;
 		this._initialCenter = null;
-
-		if (!this._loaded) { return this; }
 
 		var newSize = this.getSize(),
 		    oldCenter = oldSize.divideBy(2).round(),

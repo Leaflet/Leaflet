@@ -27,6 +27,7 @@ L.CircleMarker = L.Circle.extend({
 		if (this._popup && this._popup._isOpen) {
 			this._popup.setLatLng(latlng);
 		}
+		return this;
 	},
 
 	setRadius: function (radius) {
