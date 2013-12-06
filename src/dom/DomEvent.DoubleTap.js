@@ -49,7 +49,7 @@ L.extend(L.DomEvent, {
 
 					for (i in touch) {
 						prop = touch[i];
-						newTouch[i] = prop.bind ? prop.bind(touch) : prop;
+						newTouch[i] = prop && prop.bind ? prop.bind(touch) : prop;
 					}
 					touch = newTouch;
 				}
