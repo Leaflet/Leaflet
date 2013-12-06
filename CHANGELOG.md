@@ -7,9 +7,26 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch. Includes `stable` branch fixes.
 
+This version contains a lot of beneficial but potentially breaking changes (especially if you're a plugin author), so please read through the changes carefully before upgrading.
+
+### Layers refactoring
+
+All Leaflet layers (including markers, popups, tile and vector layers) have been refactored to have a common parent, `Layer` class, that shares the basic logic of adding and removing. The leads to the following changes (documented in PR [#2266](https://github.com/Leaflet/Leaflet/pull/2266)):
+
+* Added `Layer` class which all layers added to a map should inherit from.
+* Added `add` and `remove` events to all layers.
+* Added `pane` option to all layers that can be changed (e.g. you can set `pane: 'overlayPane'` to a tile layer).
+* Added `shadowPane` option to markers as well.
+* Added `getEvents` method to all layers that returns an `{event: listener, ...}` hash; layers now manage its listeners automatically without having to do this in `onAdd`/`onRemove`.
+* Improved performance of adding/removing layers with layers control present (instead of listening to any layer add/remove, the control only listens to layers added in configuration).
+* Fixed `FeatureGroup` `getBounds` to work correctly when containing circle markers.
+* Removed `Map` `tilelayersload` event.
+* Removed `Popup` `open` and `close` events in favor of `add` and `remove` for consistency.
+* Moved all layer-related logic in `Map.js` to `Layer.js`.
+
 ### TileLayer & Projections refactoring
 
-TileLayer code and everything projections-related has undergone a major refactoring, documented in [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
+TileLayer code and everything projections-related has undergone a major refactoring, documented in PR [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
 
 #### TileLayer-related changes
 
