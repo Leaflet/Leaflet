@@ -68,3 +68,77 @@ L.Layer = L.Class.extend({
 		return this._map._panes[this.options.pane];
 	}
 });
+
+
+L.Map.addInitHook(function () {
+	this._layers = {};
+	this._zoomBoundLayers = {};
+	this._addLayers(this.options.layers);
+});
+
+L.Map.include({
+	addLayer: function (layer) {
+		layer.addTo(this);
+		return this;
+	},
+
+	removeLayer: function (layer) {
+		layer.removeFrom(this);
+		return this;
+	},
+
+	hasLayer: function (layer) {
+		return !layer || L.stamp(layer) in this._layers;
+	},
+
+	eachLayer: function (method, context) {
+		for (var i in this._layers) {
+			method.call(context, this._layers[i]);
+		}
+		return this;
+	},
+
+	_addLayers: function (layers) {
+		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
+
+		for (var i = 0, len = layers.length; i < len; i++) {
+			this.addLayer(layers[i]);
+		}
+	},
+
+	_addZoomLimit: function (layer) {
+		if (isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
+			this._zoomBoundLayers[L.stamp(layer)] = layer;
+			this._updateZoomLevels();
+		}
+	},
+
+	_removeZoomLimit: function (layer) {
+		var id = L.stamp(layer);
+
+		if (this._zoomBoundLayers[id]) {
+			delete this._zoomBoundLayers[id];
+			this._updateZoomLevels();
+		}
+	},
+
+	_updateZoomLevels: function () {
+		var minZoom = Infinity,
+			maxZoom = -Infinity,
+			oldZoomSpan = this._getZoomSpan();
+
+		for (var i in this._zoomBoundLayers) {
+			var options = this._zoomBoundLayers[i].options;
+
+			minZoom = options.minZoom === undefined ? minZoom : Math.min(minZoom, options.minZoom);
+			maxZoom = options.maxZoom === undefined ? maxZoom : Math.max(maxZoom, options.maxZoom);
+		}
+
+		this._layersMaxZoom = maxZoom === -Infinity ? undefined : maxZoom;
+		this._layersMinZoom = minZoom === Infinity ? undefined : minZoom;
+
+		if (oldZoomSpan !== this._getZoomSpan()) {
+			this.fire('zoomlevelschange');
+		}
+	}
+});

@@ -42,12 +42,7 @@ L.Map = L.Class.extend({
 
 		this._handlers = [];
 
-		this._layers = {};
-		this._zoomBoundLayers = {};
-
 		this.callInitHooks();
-
-		this._addLayers(options.layers);
 	},
 
 
@@ -148,27 +143,6 @@ L.Map = L.Class.extend({
 		if (center.equals(newCenter)) { return this; }
 
 		return this.panTo(newCenter, options);
-	},
-
-	addLayer: function (layer) {
-		layer.addTo(this);
-		return this;
-	},
-
-	removeLayer: function (layer) {
-		layer.removeFrom(this);
-		return this;
-	},
-
-	hasLayer: function (layer) {
-		return !layer || L.stamp(layer) in this._layers;
-	},
-
-	eachLayer: function (method, context) {
-		for (var i in this._layers) {
-			method.call(context, this._layers[i]);
-		}
-		return this;
 	},
 
 	invalidateSize: function (options) {
@@ -482,14 +456,6 @@ L.Map = L.Class.extend({
 		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
 	},
 
-	_addLayers: function (layers) {
-		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
-
-		for (var i = 0, len = layers.length; i < len; i++) {
-			this.addLayer(layers[i]);
-		}
-	},
-
 
 	// private methods that modify map state
 
@@ -540,48 +506,6 @@ L.Map = L.Class.extend({
 
 	_getZoomSpan: function () {
 		return this.getMaxZoom() - this.getMinZoom();
-	},
-
-	_addZoomLimit: function (layer) {
-		if (isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
-			this._zoomBoundLayers[L.stamp(layer)] = layer;
-			this._updateZoomLevels();
-		}
-	},
-
-	_removeZoomLimit: function (layer) {
-		var id = L.stamp(layer);
-
-		if (this._zoomBoundLayers[id]) {
-			delete this._zoomBoundLayers[id];
-			this._updateZoomLevels();
-		}
-	},
-
-	_updateZoomLevels: function () {
-		var minZoom = Infinity,
-			maxZoom = -Infinity,
-			oldZoomSpan = this._getZoomSpan(),
-			i;
-
-		for (i in this._zoomBoundLayers) {
-			var options = this._zoomBoundLayers[i].options;
-
-			minZoom = isNaN(options.minZoom) ? minZoom : Math.min(minZoom, options.minZoom);
-			maxZoom = isNaN(options.maxZoom) ? maxZoom : Math.max(maxZoom, options.maxZoom);
-		}
-
-		if (i === undefined) {
-			// we have no zoom restricting layers
-			this._layersMaxZoom = this._layersMinZoom = undefined;
-		} else {
-			this._layersMaxZoom = maxZoom;
-			this._layersMinZoom = minZoom;
-		}
-
-		if (oldZoomSpan !== this._getZoomSpan()) {
-			this.fire('zoomlevelschange');
-		}
 	},
 
 	_panInsideMaxBounds: function () {
