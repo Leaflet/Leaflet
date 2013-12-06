@@ -16,6 +16,7 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 * Added `Layer` class which all layers added to a map should inherit from.
 * Added `add` and `remove` events to all layers.
 * Added `pane` option to all layers that can be changed (e.g. you can set `pane: 'overlayPane'` to a tile layer).
+* Added `remove` method to layers and controls (`marker.remove()` is now equivalent to `map.removeLayer(marker)`).
 * Added `shadowPane` option to markers as well.
 * Added `getEvents` method to all layers that returns an `{event: listener, ...}` hash; layers now manage its listeners automatically without having to do this in `onAdd`/`onRemove`.
 * Improved performance of adding/removing layers with layers control present (instead of listening to any layer add/remove, the control only listens to layers added in configuration).

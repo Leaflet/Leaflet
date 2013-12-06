@@ -54,14 +54,14 @@ L.Control = L.Class.extend({
 		return this;
 	},
 
-	removeFrom: function (map) {
+	remove: function () {
 		L.DomUtil.remove(this._container);
 
-		this._map = null;
-
 		if (this.onRemove) {
-			this.onRemove(map);
+			this.onRemove(this._map);
 		}
+
+		this._map = null;
 
 		return this;
 	},
@@ -87,7 +87,7 @@ L.Map.include({
 	},
 
 	removeControl: function (control) {
-		control.removeFrom(this);
+		control.remove();
 		return this;
 	},
 

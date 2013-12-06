@@ -40,10 +40,12 @@ L.Layer = L.Class.extend({
 		map.fire('layeradd', {layer: this});
 	},
 
-	removeFrom: function (map) {
+	remove: function () {
 
-		var id = L.stamp(this);
-		if (!map._layers[id]) { return this; }
+		var id = L.stamp(this),
+		    map = this._map;
+
+		if (!map || !map._layers[id]) { return this; }
 
 		if (map._loaded) {
 			this.onRemove(map);
@@ -61,6 +63,8 @@ L.Layer = L.Class.extend({
 		}
 
 		this._map = null;
+
+		return this;
 	},
 
 	getPane: function (name) {
@@ -84,7 +88,7 @@ L.Map.include({
 	},
 
 	removeLayer: function (layer) {
-		layer.removeFrom(this);
+		layer.remove();
 		return this;
 	},
 
