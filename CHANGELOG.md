@@ -65,9 +65,9 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Improved the build system (`jake build`) to report gzipped library size.
 
 
-## 0.7.1-dev (stable)
+## 0.7.1 (December 6, 2013)
 
-An in-progress version being developed on the `stable` branch.
+A follow-up bugfix release to the recent stable version.
 
 * Fixed a bug where pinch-zooming quickly could occasionally leave the map at a fractional zoom thus breaking tile loading (by [@danzel](https://github.com/danzel)). [#2269](https://github.com/Leaflet/Leaflet/pull/2269) [#2255](https://github.com/Leaflet/Leaflet/issues/2255) [#1934](https://github.com/Leaflet/Leaflet/issues/1934)
 * Fixed tile flickering issues on some old Android 2/3 devices by disabling buggy hardware accelerated CSS there (by [@danzel](https://github.com/danzel)). [#2216](https://github.com/Leaflet/Leaflet/pull/2216) [#2198](https://github.com/Leaflet/Leaflet/issues/2198)
