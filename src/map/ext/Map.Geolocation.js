@@ -4,8 +4,8 @@
 
 L.Map.include({
 	_defaultLocateOptions: {
-		timeout: 10000
-		// watch: false
+		timeout: 10000,
+		watch: false
 		// setView: false
 		// maxZoom: <Number>
 		// maximumAge: 0
@@ -27,7 +27,7 @@ L.Map.include({
 		var onResponse = L.bind(this._handleGeolocationResponse, this),
 			onError = L.bind(this._handleGeolocationError, this);
 
-		if (options.hasOwnProperty('watch') && options.watch) {
+		if (options.watch) {
 			this._locationWatchId =
 			        navigator.geolocation.watchPosition(onResponse, onError, options);
 		} else {
