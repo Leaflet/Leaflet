@@ -75,12 +75,6 @@ L.Layer = L.Class.extend({
 });
 
 
-L.Map.addInitHook(function () {
-	this._layers = {};
-	this._zoomBoundLayers = {};
-	this._addLayers(this.options.layers);
-});
-
 L.Map.include({
 	addLayer: function (layer) {
 		layer.addTo(this);

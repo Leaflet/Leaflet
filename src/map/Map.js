@@ -23,7 +23,6 @@ L.Map = L.Class.extend({
 	initialize: function (id, options) { // (HTMLElement or String, Object)
 		options = L.setOptions(this, options);
 
-
 		this._initContainer(id);
 		this._initLayout();
 
@@ -41,8 +40,12 @@ L.Map = L.Class.extend({
 		}
 
 		this._handlers = [];
+		this._layers = {};
+		this._zoomBoundLayers = {};
 
 		this.callInitHooks();
+
+		this._addLayers(this.options.layers);
 	},
 
 
