@@ -35,7 +35,7 @@ The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.js?2"></script>
 
 ### Leaflet Source Code
 
