@@ -84,84 +84,87 @@ var deps = {
 		desc: 'Extends LayerGroup with mouse events and bindPopup method shared between layers.'
 	},
 
-	Path: {
-		src: ['layer/vector/Path.js',
-		      'layer/vector/Path.SVG.js',
-		      'layer/vector/Path.Popup.js'],
-		desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
-		heading: 'Vector layers'
-	},
+	// Path: {
+	// 	src: ['layer/vector/Path.js',
+	// 	      'layer/vector/Path.SVG.js',
+	// 	      'layer/vector/Path.Popup.js'],
+	// 	desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
+	// 	heading: 'Vector layers'
+	// },
 
-	PathVML: {
-		src: ['layer/vector/Path.VML.js'],
-		desc: 'VML fallback for vector rendering core (IE 6-8).'
-	},
+	// PathVML: {
+	// 	src: ['layer/vector/Path.VML.js'],
+	// 	desc: 'VML fallback for vector rendering core (IE 6-8).'
+	// },
 
-	PathCanvas: {
-		src: ['layer/vector/canvas/Path.Canvas.js'],
-		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
-		desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
-	},
+	// PathCanvas: {
+	// 	src: ['layer/vector/canvas/Path.Canvas.js'],
+	// 	deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
+	// 	desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
+	// },
 
-	Polyline: {
-		src: ['geometry/LineUtil.js',
-		      'layer/vector/Polyline.js'],
-		deps: ['Path'],
-		desc: 'Polyline overlays.'
-	},
+	// Polyline: {
+	// 	src: ['geometry/LineUtil.js',
+	// 	      'layer/vector/Polyline.js'],
+	// 	deps: ['Path'],
+	// 	desc: 'Polyline overlays.'
+	// },
 
-	Polygon: {
-		src: ['geometry/PolyUtil.js',
-		      'layer/vector/Polygon.js'],
-		deps: ['Polyline'],
-		desc: 'Polygon overlays.'
-	},
+	// Polygon: {
+	// 	src: ['geometry/PolyUtil.js',
+	// 	      'layer/vector/Polygon.js'],
+	// 	deps: ['Polyline'],
+	// 	desc: 'Polygon overlays.'
+	// },
 
-	MultiPoly: {
-		src: ['layer/vector/MultiPoly.js'],
-		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
-		desc: 'MultiPolygon and MultyPolyline layers.'
-	},
+	// MultiPoly: {
+	// 	src: ['layer/vector/MultiPoly.js'],
+	// 	deps: ['FeatureGroup', 'Polyline', 'Polygon'],
+	// 	desc: 'MultiPolygon and MultyPolyline layers.'
+	// },
 
-	Rectangle: {
-		src: ['layer/vector/Rectangle.js'],
-		deps: ['Polygon'],
-		desc: ['Rectangle overlays.']
-	},
+	// Rectangle: {
+	// 	src: ['layer/vector/Rectangle.js'],
+	// 	deps: ['Polygon'],
+	// 	desc: ['Rectangle overlays.']
+	// },
 
-	Circle: {
-		src: ['layer/vector/Circle.js'],
-		deps: ['Path'],
-		desc: 'Circle overlays (with radius in meters).'
-	},
+	// Circle: {
+	// 	src: ['layer/vector/Circle.js'],
+	// 	deps: ['Path'],
+	// 	desc: 'Circle overlays (with radius in meters).'
+	// },
 
-	CircleMarker: {
-		src: ['layer/vector/CircleMarker.js'],
-		deps: ['Circle'],
-		desc: 'Circle overlays with a constant pixel radius.'
-	},
+	// CircleMarker: {
+	// 	src: ['layer/vector/CircleMarker.js'],
+	// 	deps: ['Circle'],
+	// 	desc: 'Circle overlays with a constant pixel radius.'
+	// },
 
-	VectorsCanvas: {
-		src: ['layer/vector/canvas/Polyline.Canvas.js',
-		      'layer/vector/canvas/Polygon.Canvas.js',
-		      'layer/vector/canvas/Circle.Canvas.js',
-		      'layer/vector/canvas/CircleMarker.Canvas.js'],
-		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle', 'CircleMarker'],
-		desc: 'Canvas fallback for vector layers (polygons, polylines, circles, circlemarkers)'
-	},
+	// VectorsCanvas: {
+	// 	src: ['layer/vector/canvas/Polyline.Canvas.js',
+	// 	      'layer/vector/canvas/Polygon.Canvas.js',
+	// 	      'layer/vector/canvas/Circle.Canvas.js',
+	// 	      'layer/vector/canvas/CircleMarker.Canvas.js'],
+	// 	deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle', 'CircleMarker'],
+	// 	desc: 'Canvas fallback for vector layers (polygons, polylines, circles, circlemarkers)'
+	// },
 
 	Vector2: {
 		src: [
 			'layer/vector2/Renderer.js',
-			'layer/vector2/SVG.js'],
+			'layer/vector2/SVG.js',
+			'layer/vector2/Path.js',
+			'geometry/LineUtil.js',
+			'layer/vector2/Polyline.js'],
 		desc: 'New vector layers implementation.'
 	},
 
-	GeoJSON: {
-		src: ['layer/GeoJSON.js'],
-		deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
-		desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
-	},
+	// GeoJSON: {
+	// 	src: ['layer/GeoJSON.js'],
+	// 	deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
+	// 	desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
+	// },
 
 
 	MapDrag: {

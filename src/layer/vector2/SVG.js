@@ -1,7 +1,7 @@
 
 L.SVG = L.Renderer.extend({
 
-	onAdd: function (map) {
+	onAdd: function () {
 		var container = this._container = L.SVG.create('svg');
 
 		if (this._zoomAnimated) {
@@ -15,6 +15,9 @@ L.SVG = L.Renderer.extend({
 	onRemove: function () {
 		L.DomUtil.remove(this._container);
 	},
+
+	// TODO bringToFront, bringToBack
+	// TODO events
 
 	_update: function () {
 		if (this._map._animatingZoom) { return; }
@@ -42,13 +45,21 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
-		var path = layer._path = L.SVG.create('path');
+		layer._path = L.SVG.create('path');
 
 		if (layer.options.className) {
-			L.DomUtil.addClass(path, layer.options.className);
+			L.DomUtil.addClass(layer._path, layer.options.className);
 		}
 
-		this._container.appendChild(path);
+		this._updateStyle(layer);
+	},
+
+	_addPath: function (layer) {
+		this._container.appendChild(layer._path);
+	},
+
+	_removePath: function (layer) {
+		L.DomUtil.remove(layer._path);
 	},
 
 	_updateStyle: function (layer) {
@@ -88,7 +99,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_updatePoly: function (layer, closed) {
-		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._points, closed) || 'M0 0');
+		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._parts, closed) || 'M0 0');
 	}
 });
 
@@ -116,3 +127,8 @@ L.extend(L.SVG, {
 });
 
 L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
+
+
+L.svg = function () {
+	return new L.SVG();
+};
