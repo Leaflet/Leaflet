@@ -50,6 +50,10 @@ L.SVG = L.Renderer.extend({
 			L.DomUtil.addClass(layer._path, layer.options.className);
 		}
 
+		if (layer.options.clickable) {
+			this._initEvents(layer);
+		}
+
 		this._updateStyle(layer);
 	},
 
@@ -107,6 +111,18 @@ L.SVG = L.Renderer.extend({
 
 	_bringToBack: function (layer) {
 		this._container.insertBefore(layer._path, this._container.firstChild);
+	},
+
+	// TODO remove duplication with L.Map
+	_initEvents: function (layer) {
+		L.DomUtil.addClass(layer._path, 'leaflet-clickable');
+
+		L.DomEvent.on(layer._path, 'click', layer._onMouseClick, layer);
+
+		var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
+		for (var i = 0; i < events.length; i++) {
+			L.DomEvent.on(layer._path, events[i], layer._fireMouseEvent, layer);
+		}
 	}
 });
 
