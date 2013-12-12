@@ -35,3 +35,13 @@ L.Renderer = L.Layer.extend({
 		this._bounds = new L.Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
 	}
 });
+
+
+L.Map.include({
+	getRenderer: function (renderer) {
+		if (!this.hasLayer(renderer)) {
+			this.addLayer(renderer);
+		}
+		return renderer;
+	}
+});

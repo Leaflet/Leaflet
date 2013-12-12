@@ -21,17 +21,15 @@
 			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
 		}
 
-		var svg = new L.SVG();
-		var path = new L.Polyline(latlngs, {renderer: svg});
+		var path = new L.Polyline(latlngs);
 
 		var map = new L.Map('map', {layers: [cloudmade]});
 
 		map.fitBounds(new L.LatLngBounds(latlngs));
 
-		// map.addLayer(new L.Marker(latlngs[0]));
-		// map.addLayer(new L.Marker(latlngs[len - 1]));
+		map.addLayer(new L.Marker(latlngs[0]));
+		map.addLayer(new L.Marker(latlngs[len - 1]));
 
-		map.addLayer(svg);
 		map.addLayer(path);
 
 		// path.bindPopup("Hello world");

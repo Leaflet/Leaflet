@@ -2,6 +2,8 @@
 L.Path = L.Layer.extend({
 
 	options: {
+		renderer: L.svg(),
+
 		stroke: true,
 		color: '#0033ff',
 		// dashArray: null,
@@ -19,6 +21,7 @@ L.Path = L.Layer.extend({
 	},
 
 	onAdd: function () {
+		this._renderer = this._map.getRenderer(this.options.renderer);
 		this._renderer._initPath(this);
 
 		this._projectLatlngs();

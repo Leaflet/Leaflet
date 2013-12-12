@@ -12,7 +12,6 @@ L.Polyline = L.Path.extend({
 		L.setOptions(this, options);
 
 		this._latlngs = this._convertLatLngs(latlngs);
-		this._renderer = options.renderer;
 	},
 
 	getLatLngs: function () {
