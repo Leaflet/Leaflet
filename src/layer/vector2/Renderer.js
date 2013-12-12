@@ -8,6 +8,7 @@ L.Renderer = L.Layer.extend({
 
 	initialize: function (options) {
 		L.setOptions(this, options);
+		L.stamp(this);
 	},
 
 	getEvents: function () {
