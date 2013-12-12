@@ -16,7 +16,6 @@ L.SVG = L.Renderer.extend({
 		L.DomUtil.remove(this._container);
 	},
 
-	// TODO bringToFront, bringToBack
 	// TODO events
 
 	_update: function () {
@@ -100,6 +99,14 @@ L.SVG = L.Renderer.extend({
 
 	_updatePoly: function (layer, closed) {
 		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._parts, closed) || 'M0 0');
+	},
+
+	_bringToFront: function (layer) {
+		this._addPath(layer);
+	},
+
+	_bringToBack: function (layer) {
+		this._container.insertBefore(layer._path, this._container.firstChild);
 	}
 });
 

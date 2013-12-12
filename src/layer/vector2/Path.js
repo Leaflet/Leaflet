@@ -49,6 +49,16 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
+	bringToFront: function () {
+		this._renderer._bringToFront(this);
+		return this;
+	},
+
+	bringToBack: function () {
+		this._renderer._bringToBack(this);
+		return this;
+	},
+
 	_update: function () {
 		if (!this._map) { return; }
 
