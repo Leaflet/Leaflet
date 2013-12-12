@@ -158,7 +158,8 @@ var deps = {
 			'geometry/LineUtil.js',
 			'layer/vector2/Polyline.js',
 			'geometry/PolyUtil.js',
-			'layer/vector2/Polygon.js'
+			'layer/vector2/Polygon.js',
+			'layer/vector2/Rectangle.js'
 		],
 		desc: 'New vector layers implementation.'
 	},
