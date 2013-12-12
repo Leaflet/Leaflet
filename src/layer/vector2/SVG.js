@@ -16,8 +16,6 @@ L.SVG = L.Renderer.extend({
 		L.DomUtil.remove(this._container);
 	},
 
-	// TODO events
-
 	_update: function () {
 		if (this._map._animatingZoom) { return; }
 
@@ -72,7 +70,7 @@ L.SVG = L.Renderer.extend({
 		if (options.stroke) {
 			path.setAttribute('stroke', options.color);
 			path.setAttribute('stroke-opacity', options.opacity);
-			path.setAttribute('stroke-width', options.width || options.weight);
+			path.setAttribute('stroke-width', options.weight);
 			path.setAttribute('stroke-linecap', options.lineCap || 'round');
 			path.setAttribute('stroke-linejoin', options.lineJoin || 'round');
 
