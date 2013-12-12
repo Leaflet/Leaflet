@@ -49,6 +49,15 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
+	setStyle: function (style) {
+		L.setOptions(this, style);
+
+		if (this._path) {
+			this._renderer._updateStyle(this);
+		}
+		return this;
+	},
+
 	bringToFront: function () {
 		this._renderer._bringToFront(this);
 		return this;
