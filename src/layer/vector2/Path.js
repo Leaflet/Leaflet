@@ -51,10 +51,7 @@ L.Path = L.Layer.extend({
 
 	setStyle: function (style) {
 		L.setOptions(this, style);
-
-		if (this._path) {
-			this._renderer._updateStyle(this);
-		}
+		this._renderer._updateStyle(this);
 		return this;
 	},
 

@@ -40,34 +40,39 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
+		this.on('redraw', layer._updatePath, layer);
+
 		if (layer.options.clickable) {
 			this._initEvents(layer);
 		}
-		this._updateStyle(layer);
 	},
 
-	_addPath: function () {},
+	_addPath: L.Util.falseFn,
 
 	_removePath: function (layer) {
-		L.DomUtil.remove(layer._path);
+		this.off('redraw', layer._updatePath, layer);
+		this._requestRedraw();
 	},
 
-	_updateStyle: function (layer) {
-		var options = layer.options,
-			ctx = this._ctx;
+	_updateStyle: function () {
+		this._requestRedraw();
+	},
 
-		if (options.stroke) {
-			ctx.lineWidth = options.weight;
-			ctx.strokeStyle = options.color;
+	_requestRedraw: function () {
+		if (this._map) {
+			this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._fireRedraw, this);
 		}
-		if (options.fill) {
-			ctx.fillStyle = options.fillColor || options.color;
-		}
+	},
+
+	_fireRedraw: function () {
+		this._redrawRequest = null;
+		this._container.width = this._container.width; // clear canvas
+		this.fire('redraw');
 	},
 
 	_updatePoly: function (layer, closed) {
 
-		var i, j, len, len2, p, drawMethod,
+		var i, j, len2, p,
 		    parts = layer._parts,
 		    len = parts.length,
 		    ctx = this._ctx,
@@ -87,21 +92,21 @@ L.Canvas = L.Renderer.extend({
 			}
 		}
 
-		// TODO why save/restore?
-		ctx.save();
-		this._updateStyle(layer);
+		ctx.globalAlpha = 1;
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
+			ctx.fillStyle = options.fillColor || options.color;
 			ctx.fill('evenodd');
 		}
 
 		if (options.stroke) {
 			ctx.globalAlpha = options.opacity;
+			ctx.lineWidth = options.weight;
+			ctx.strokeStyle = options.color;
 			ctx.stroke();
 		}
 
-		ctx.restore();
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
 
