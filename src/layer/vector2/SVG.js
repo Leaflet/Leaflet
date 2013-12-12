@@ -102,7 +102,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_updatePoly: function (layer, closed) {
-		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._parts, closed) || 'M0 0');
+		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._parts, closed));
 	},
 
 	_bringToFront: function (layer) {
@@ -140,6 +140,8 @@ L.extend(L.SVG, {
 			p = points[i];
 			str += flat ? (i ? 'L' : 'M') + p.x + ' ' + p.y : L.SVG.pointsToPath(p, closed);
 		}
+
+		str = str || 'M0 0';
 
 		if (closed) {
 			str += L.Browser.svg ? 'z' : 'x';
