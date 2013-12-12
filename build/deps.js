@@ -150,6 +150,13 @@ var deps = {
 		desc: 'Canvas fallback for vector layers (polygons, polylines, circles, circlemarkers)'
 	},
 
+	Vector2: {
+		src: [
+			'layer/vector2/Renderer.js',
+			'layer/vector2/SVG.js'],
+		desc: 'New vector layers implementation.'
+	},
+
 	GeoJSON: {
 		src: ['layer/GeoJSON.js'],
 		deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
