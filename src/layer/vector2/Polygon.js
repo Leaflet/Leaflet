@@ -39,7 +39,12 @@ L.Polygon = L.Polyline.extend({
 	_clipPoints: function () {
 		var points = this._originalPoints,
 		    bounds = this._renderer._bounds,
-		    parts = points[0] instanceof L.Point ? [points] : points;
+		    parts = points[0] instanceof L.Point ? [points] : points,
+		    w = this.options.weight,
+		    p = new L.Point(w, w);
+
+		// increase clip padding by stroke width to avoid stroke on clip edges
+		bounds = new L.Bounds(bounds.min.subtract(p), bounds.max.add(p));
 
 		this._parts = [];
 
