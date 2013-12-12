@@ -14,6 +14,7 @@ L.Polyline = L.Path.extend({
 	},
 
 	getLatLngs: function () {
+		// TODO rings
 		return this._latlngs;
 	},
 
@@ -23,11 +24,13 @@ L.Polyline = L.Path.extend({
 	},
 
 	addLatLng: function (latlng) {
+		// TODO rings
 		this._latlngs.push(L.latLng(latlng));
 		return this.redraw();
 	},
 
 	spliceLatLngs: function () {
+		// TODO rings
 		var removed = [].splice.apply(this._latlngs, arguments);
 		this._latlngs = this._convertLatLngs(this._latlngs);
 		this.redraw();
@@ -37,15 +40,18 @@ L.Polyline = L.Path.extend({
 	// TODO closestLayerPoint?
 
 	getBounds: function () {
+		// TODO rings
 		return new L.LatLngBounds(this.getLatLngs());
 	},
 
 	_convertLatLngs: function (latlngs) {
-		var result = [];
+		var result = [],
+		    flat = !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] === 'number';
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
-			result[i] = L.latLng(latlngs[i]);
+			result[i] = flat ? L.latLng(latlngs[i]) : this._convertLatLngs(latlngs[i]);
 		}
+
 		return result;
 	},
 
@@ -56,6 +62,8 @@ L.Polyline = L.Path.extend({
 	_projectLatlngs: function (latlngs) {
 		var result = [],
 		    flat = latlngs[0] instanceof L.LatLng;
+
+		// TODO flatten to 2-dimensional
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			result[i] = flat ?

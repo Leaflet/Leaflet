@@ -5,35 +5,14 @@ L.Polygon = L.Polyline.extend({
 		fill: true
 	},
 
-	addLatLng: function (latlng) {
-		// TODO with rings
-	},
-
-	spliceLatLngs: function () {
-		// TODO with rings
-	},
-
-	getBounds: function () {
-		var flat = this._latlngs[0] instanceof L.LatLng;
-		return new L.LatLngBounds(flat ? this._latlngs : this._latlngs[0]);
-	},
-
 	_convertLatLngs: function (latlngs) {
-		var target = [],
-		    flat = !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] === 'number',
-		    len = latlngs.length;
+		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs);
 
-		for (var i = 0; i < len; i++) {
-			target[i] = flat ?
-					L.latLng(latlngs[i]) :
-					this._convertLatLngs(latlngs[i]);
+		// remove last point if it equals first one
+		if (result.length >= 2 && result[0] instanceof L.LatLng && result[0].equals(result[len - 1])) {
+			result.pop();
 		}
-
-		if (flat && len >= 2 && target[0].equals(target[len - 1])) {
-			target.pop();
-		}
-
-		return target;
+		return result;
 	},
 
 	_clipPoints: function () {
