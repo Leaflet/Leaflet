@@ -10,7 +10,8 @@
 .leaflet-shadow-pane,
 .leaflet-marker-pane,
 .leaflet-popup-pane,
-.leaflet-overlay-pane svg,
+.leaflet-map-pane svg,
+.leaflet-map-pane canvas,
 .leaflet-zoom-box,
 .leaflet-image-layer,
 .leaflet-layer {
