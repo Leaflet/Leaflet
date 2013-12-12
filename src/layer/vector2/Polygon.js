@@ -15,7 +15,7 @@ L.Polygon = L.Polyline.extend({
 
 	getBounds: function () {
 		var flat = this._latlngs[0] instanceof L.LatLng;
-		return flat ? new L.LatLngsBounds(this._latlngs) : this._latlngs[0];
+		return new L.LatLngBounds(flat ? this._latlngs : this._latlngs[0]);
 	},
 
 	_convertLatLngs: function (latlngs) {
@@ -59,5 +59,5 @@ L.Polygon = L.Polyline.extend({
 });
 
 L.polygon = function (latlngs, options) {
-	return new L.Polyline(latlngs, options);
+	return new L.Polygon(latlngs, options);
 };

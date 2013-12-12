@@ -21,18 +21,15 @@
 			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
 		}
 
-		var path = new L.Polygon([
-			latlngs,
-			[[50.5, 30.5], [50.5, 40], [40, 40]]]);
-
 		var map = new L.Map('map', {layers: [cloudmade]});
 
-		map.fitBounds(new L.LatLngBounds(latlngs));
+		map.addLayer(L.marker(latlngs[0]));
+		map.addLayer(L.marker(latlngs[len - 1]));
 
-		map.addLayer(new L.Marker(latlngs[0]));
-		map.addLayer(new L.Marker(latlngs[len - 1]));
+		var path = L.polygon([latlngs, [[50.5, 30.5], [50.5, 40], [40, 40]]]).addTo(map);
+		var poly = L.polyline([[60, 30], [60, 50], [40, 50]], {color: 'red'}).addTo(map);
 
-		map.addLayer(path);
+		map.fitBounds(path);
 
 		// path.bindPopup("Hello world");
 	</script>
