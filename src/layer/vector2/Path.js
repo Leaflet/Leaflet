@@ -24,8 +24,8 @@ L.Path = L.Layer.extend({
 		this._renderer = this._map.getRenderer(this.options.renderer);
 		this._renderer._initPath(this);
 
-		this._projectLatlngs();
-		this._updatePath();
+		this._project();
+		this._update();
 
 		this._renderer._addPath(this);
 	},
@@ -36,29 +36,28 @@ L.Path = L.Layer.extend({
 
 	getEvents: function () {
 		return {
-			viewreset: this._projectLatlngs,
-			moveend: this._updatePath
+			viewreset: this._project,
+			moveend: this._update
 		};
 	},
 
 	redraw: function () {
 		if (this._map) {
-			this._projectLatlngs();
-			this._updatePath();
+			this._project();
+			this._update();
 		}
 		return this;
 	},
 
-	_updatePath: function () {
+	_update: function () {
 		if (!this._map) { return; }
 
 		this._clipPoints();
 		this._simplifyPoints();
+		this._updatePath();
+	},
 
+	_updatePath: function () {
 		this._renderer._updatePoly(this);
 	}
 });
-
-L.polyline2 = function (latlngs, options) {
-	return new L.Polyline2(latlngs, options);
-};

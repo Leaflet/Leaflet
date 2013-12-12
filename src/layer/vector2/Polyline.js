@@ -10,7 +10,6 @@ L.Polyline = L.Path.extend({
 
 	initialize: function (latlngs, options) {
 		L.setOptions(this, options);
-
 		this._latlngs = this._convertLatLngs(latlngs);
 	},
 
@@ -30,7 +29,7 @@ L.Polyline = L.Path.extend({
 
 	spliceLatLngs: function () {
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._convertLatLngs(this._latlngs, true);
+		this._latlngs = this._convertLatLngs(this._latlngs);
 		this.redraw();
 		return removed;
 	},
@@ -41,22 +40,29 @@ L.Polyline = L.Path.extend({
 		return new L.LatLngBounds(this.getLatLngs());
 	},
 
-	_convertLatLngs: function (latlngs, overwrite) {
-		var target = overwrite ? latlngs : [];
+	_convertLatLngs: function (latlngs) {
+		var result = [];
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
-			if (L.Util.isArray(latlngs[i]) && typeof latlngs[i][0] !== 'number') { return; }
-			target[i] = L.latLng(latlngs[i]);
+			result[i] = L.latLng(latlngs[i]);
 		}
-		return target;
+		return result;
 	},
 
-	_projectLatlngs: function () {
-		this._originalPoints = [];
+	_project: function () {
+		this._originalPoints = this._projectLatlngs(this._latlngs);
+	},
 
-		for (var i = 0, len = this._latlngs.length; i < len; i++) {
-			this._originalPoints[i] = this._map.latLngToLayerPoint(this._latlngs[i]);
+	_projectLatlngs: function (latlngs) {
+		var result = [],
+		    flat = latlngs[0] instanceof L.LatLng;
+
+		for (var i = 0, len = latlngs.length; i < len; i++) {
+			result[i] = flat ?
+					this._map.latLngToLayerPoint(latlngs[i]) :
+					this._projectLatlngs(latlngs[i]);
 		}
+		return result;
 	},
 
 	_clipPoints: function () {

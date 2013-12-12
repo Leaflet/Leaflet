@@ -156,7 +156,10 @@ var deps = {
 			'layer/vector2/SVG.js',
 			'layer/vector2/Path.js',
 			'geometry/LineUtil.js',
-			'layer/vector2/Polyline.js'],
+			'layer/vector2/Polyline.js',
+			'geometry/PolyUtil.js',
+			'layer/vector2/Polygon.js'
+		],
 		desc: 'New vector layers implementation.'
 	},
 

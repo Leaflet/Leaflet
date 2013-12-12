@@ -21,7 +21,9 @@
 			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
 		}
 
-		var path = new L.Polyline(latlngs);
+		var path = new L.Polygon([
+			latlngs,
+			[[50.5, 30.5], [50.5, 40], [40, 40]]]);
 
 		var map = new L.Map('map', {layers: [cloudmade]});
 
