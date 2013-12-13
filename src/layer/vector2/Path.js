@@ -82,25 +82,27 @@ L.Path = L.Layer.extend({
 		this._fireMouseEvent(e);
 	},
 
-	_fireMouseEvent: function (e) {
-		if (!this.hasEventListeners(e.type)) { return; }
+	_fireMouseEvent: function (e, type) {
+		type = type || e.type;
+
+		if (!this.hasEventListeners(type)) { return; }
 
 		var map = this._map,
 		    containerPoint = map.mouseEventToContainerPoint(e),
 		    layerPoint = map.containerPointToLayerPoint(containerPoint),
 		    latlng = map.layerPointToLatLng(layerPoint);
 
-		this.fire(e.type, {
+		this.fire(type, {
 			latlng: latlng,
 			layerPoint: layerPoint,
 			containerPoint: containerPoint,
 			originalEvent: e
 		});
 
-		if (e.type === 'contextmenu') {
+		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		if (e.type !== 'mousemove') {
+		if (type !== 'mousemove') {
 			L.DomEvent.stopPropagation(e);
 		}
 	}

@@ -3,6 +3,7 @@ L.SVG = L.Renderer.extend({
 
 	onAdd: function () {
 		var container = this._container = L.SVG.create('svg');
+		container.setAttribute('pointer-events', 'none');
 
 		if (this._zoomAnimated) {
 			L.DomUtil.addClass(container, 'leaflet-zoom-animated');
@@ -94,11 +95,7 @@ L.SVG = L.Renderer.extend({
 			path.setAttribute('fill', 'none');
 		}
 
-		if (options.pointerEvents) {
-			path.setAttribute('pointer-events', options.pointerEvents);
-		} else if (!options.clickable) {
-			path.setAttribute('pointer-events', 'none');
-		}
+		path.setAttribute('pointer-events', options.pointerEvents || (options.clickable ? 'auto' : 'none'));
 	},
 
 	_updatePoly: function (layer, closed) {

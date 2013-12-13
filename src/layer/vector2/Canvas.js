@@ -40,13 +40,21 @@ L.Canvas = L.Renderer.extend({
 		this.on('redraw', layer._updatePath, layer);
 
 		if (layer.options.clickable) {
-			this._initEvents(layer);
+			L.DomEvent
+				.on(this._container, 'mousemove', this._onMouseMove, layer)
+				.on(this._container, 'click', this._onClick, layer);
 		}
 	},
 
 	_addPath: L.Util.falseFn,
 
 	_removePath: function (layer) {
+		if (layer.options.clickable) {
+			L.DomEvent
+				.off(this._container, 'mousemove', this._onMouseMove, layer)
+				.off(this._container, 'click', this._onClick, layer);
+		}
+
 		this.off('redraw', layer._updatePath, layer);
 		this._requestRedraw();
 	},
@@ -109,17 +117,33 @@ L.Canvas = L.Renderer.extend({
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
 
-	// _bringToFront: function (layer) {
-	// 	// TODO
-	// },
+	_onClick: function (e) {
+		console.log(e);
+		var point = this._map.mouseEventToLayerPoint(e);
+		if (this._containsPoint(point)) {
+			this._onMouseClick(e);
+		}
+	},
 
-	// _bringToBack: function (layer) {
-	// 	// TODO
-	// },
+	_onMouseMove: function (e) {
+		if (!this._map || this._map._animatingZoom) { return; }
 
-	// _initEvents: function (layer) {
-	// 	// TODO
-	// }
+		var point = this._map.mouseEventToLayerPoint(e);
+
+		// TODO don't do on each move
+		if (this._containsPoint(point)) {
+			this._renderer._container.style.cursor = 'pointer';
+			this._mouseInside = true;
+			this._fireMouseEvent(e, 'mouseover');
+
+		} else if (this._mouseInside) {
+			this._renderer._container.style.cursor = '';
+			this._mouseInside = false;
+			this._fireMouseEvent(e, 'mouseout');
+		}
+	}
+
+	// TODO _bringToFront & _bringToBack
 });
 
 L.Browser.canvas = (function () {
@@ -129,3 +153,57 @@ L.Browser.canvas = (function () {
 L.canvas = function () {
 	return new L.Canvas();
 };
+
+
+L.Polyline.prototype._containsPoint = function (p, closed) {
+	var i, j, k, len, len2, part,
+	    w = (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
+
+	for (i = 0, len = this._parts.length; i < len; i++) {
+		part = this._parts[i];
+
+		for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
+			if (!closed && (j === 0)) { continue; }
+
+			if (L.LineUtil.pointToSegmentDistance(p, part[k], part[j]) <= w) {
+				return true;
+			}
+		}
+	}
+	return false;
+};
+
+L.Polygon.prototype._containsPoint = function (p) {
+	var inside = false,
+	    part, p1, p2, i, j, k, len, len2;
+
+	// TODO optimization: check if within bounds first
+
+	// click on polygon border
+	if (L.Polyline.prototype._containsPoint.call(this, p, true)) { return true; }
+
+	// ray casting algorithm for detecting if point is in polygon
+	for (i = 0, len = this._parts.length; i < len; i++) {
+		part = this._parts[i];
+
+		for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
+			p1 = part[j];
+			p2 = part[k];
+
+			if (((p1.y > p.y) !== (p2.y > p.y)) && (p.x < (p2.x - p1.x) * (p.y - p1.y) / (p2.y - p1.y) + p1.x)) {
+				inside = !inside;
+			}
+		}
+	}
+
+	return inside;
+};
+
+/*
+L.Circle.prototype._containsPoint = function (p) {
+	var center = this._point,
+	    w2 = this.options.stroke ? this.options.weight / 2 : 0;
+
+	return (p.distanceTo(center) <= this._radius + w2);
+};
+*/

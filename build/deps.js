@@ -155,14 +155,14 @@ var deps = {
 			'layer/vector2/Renderer.js',
 			'layer/vector2/SVG.js',
 			'layer/vector2/SVG.VML.js',
-			'layer/vector2/Canvas.js',
 			'layer/vector2/Path.js',
 			'layer/vector2/Path.Popup.js',
 			'geometry/LineUtil.js',
 			'layer/vector2/Polyline.js',
 			'geometry/PolyUtil.js',
 			'layer/vector2/Polygon.js',
-			'layer/vector2/Rectangle.js'
+			'layer/vector2/Rectangle.js',
+			'layer/vector2/Canvas.js'
 		],
 		desc: 'New vector layers implementation.'
 	},
