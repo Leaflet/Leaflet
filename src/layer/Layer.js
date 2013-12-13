@@ -7,8 +7,6 @@ L.Layer = L.Class.extend({
 	},
 
 	addTo: function (map) {
-		this._map = map;
-
 		var id = L.stamp(this);
 		if (map._layers[id]) { return this; }
 		map._layers[id] = this;
@@ -19,16 +17,20 @@ L.Layer = L.Class.extend({
 			this.beforeAdd(map);
 		}
 
+		this._mapToAdd = map;
 		map.whenReady(this._layerAdd, this);
 
 		return this;
 	},
 
 	_layerAdd: function () {
-		var map = this._map;
+		var map = this._mapToAdd;
 
 		// check in case layer gets added and then removed before the map is ready
 		if (!map) { return; }
+
+		this._map = map;
+		this._mapToAdd = null;
 
 		this.onAdd(map);
 
@@ -43,7 +45,7 @@ L.Layer = L.Class.extend({
 	remove: function () {
 
 		var id = L.stamp(this),
-		    map = this._map;
+		    map = this._map || this._mapToAdd;
 
 		if (!map || !map._layers[id]) { return this; }
 
@@ -62,7 +64,7 @@ L.Layer = L.Class.extend({
 			this.fire('remove');
 		}
 
-		this._map = null;
+		this._map = this._mapToAdd = null;
 
 		return this;
 	},

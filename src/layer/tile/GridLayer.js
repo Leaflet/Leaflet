@@ -53,7 +53,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	bringToFront: function () {
-		if (this._container) {
+		if (this._map) {
 			var pane = this.getPane();
 			pane.appendChild(this._container);
 			this._setAutoZIndex(pane, Math.max);
@@ -62,7 +62,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	bringToBack: function () {
-		if (this._container) {
+		if (this._map) {
 			var pane = this.getPane();
 			pane.insertBefore(this._container, pane.firstChild);
 			this._setAutoZIndex(pane, Math.min);
@@ -81,7 +81,7 @@ L.GridLayer = L.Layer.extend({
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
-		if (this._container) {
+		if (this._map) {
 			this._updateOpacity();
 		}
 		return this;
@@ -95,7 +95,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	redraw: function () {
-		if (this._container) {
+		if (this._map) {
 			this._reset({hard: true});
 			this._update();
 		}
