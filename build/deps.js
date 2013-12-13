@@ -163,6 +163,7 @@ var deps = {
 			'layer/vector2/Polygon.js',
 			'layer/vector2/Rectangle.js',
 			'layer/vector2/Circle.js',
+			'layer/vector2/CircleMarker.js',
 			'layer/vector2/Canvas.js'
 		],
 		desc: 'New vector layers implementation.'

@@ -16,6 +16,10 @@ L.Circle = L.Path.extend({
 
 	setLatLng: function (latlng) {
 		this._latlng = L.latLng(latlng);
+		// TODO move out to Popup?
+		if (this._popup) {
+			this._popup.setLatLng(latlng);
+		}
 		return this.redraw();
 	},
 
