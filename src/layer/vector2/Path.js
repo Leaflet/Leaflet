@@ -65,18 +65,6 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
-	_update: function () {
-		if (!this._map) { return; }
-
-		this._clipPoints();
-		this._simplifyPoints();
-		this._updatePath();
-	},
-
-	_updatePath: function () {
-		this._renderer._updatePoly(this);
-	},
-
 	_onMouseClick: function (e) {
 		if (this._map.dragging && this._map.dragging.moved()) { return; }
 		this._fireMouseEvent(e);

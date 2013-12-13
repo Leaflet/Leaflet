@@ -144,6 +144,18 @@ L.Polyline = L.Path.extend({
 		for (var i = 0, len = parts.length; i < len; i++) {
 			parts[i] = L.LineUtil.simplify(parts[i], tolerance);
 		}
+	},
+
+	_update: function () {
+		if (!this._map) { return; }
+
+		this._clipPoints();
+		this._simplifyPoints();
+		this._updatePath();
+	},
+
+	_updatePath: function () {
+		this._renderer._updatePoly(this);
 	}
 });
 
