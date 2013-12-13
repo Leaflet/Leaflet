@@ -107,10 +107,22 @@ L.SVG.include(!L.Browser.vml ? {} : {
 	},
 
 	_updatePoly: function (layer, closed) {
+		this._setPath(layer, L.SVG.pointsToPath(layer._parts, closed));
+	},
+
+	_updateCircle: function (layer) {
+		var p = layer._point.round(),
+		    r = Math.round(layer._radius);
+
+		this._setPath(layer, layer._empty() ? 'M0 0' :
+				'AL ' + p.x + ',' + p.y + ' ' + r + ',' + r + ' 0,' + (65535 * 360));
+	},
+
+	_setPath: function (layer, path) {
 		var style = layer._container.style;
 
 		style.display = 'none';
-		layer._path.v = L.SVG.pointsToPath(layer._parts, closed);
+		layer._path.v = path;
 		style.display = '';
 	}
 });

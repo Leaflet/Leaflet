@@ -102,6 +102,19 @@ L.SVG = L.Renderer.extend({
 		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._parts, closed));
 	},
 
+	_updateCircle: function (layer) {
+		var p = layer._point,
+		    r = layer._radius,
+		    arc = 'a' + r + ',' + r + ' 0 1,0 ';
+
+		var d = layer._empty() ? 'M0 0' :
+				'M' + (p.x - r) + ',' + p.y +
+				arc +  (r * 2) + ',0 ' +
+				arc + (-r * 2) + ',0 ';
+
+		layer._path.setAttribute('d', d);
+	},
+
 	_bringToFront: function (layer) {
 		this._addPath(layer);
 	},

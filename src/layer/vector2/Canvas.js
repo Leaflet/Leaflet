@@ -97,6 +97,24 @@ L.Canvas = L.Renderer.extend({
 			}
 		}
 
+		this._fillStroke(ctx, options);
+
+		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
+	},
+
+	_updateCircle: function (layer) {
+		var p = layer._point,
+		    ctx = this._ctx;
+
+		if (!layer._empty()) {
+			ctx.beginPath();
+			ctx.arc(p.x, p.y, layer._radius, 0, Math.PI * 2, false);
+
+			this._fillStroke(ctx, layer.options);
+		}
+	},
+
+	_fillStroke: function (ctx, options) {
 		ctx.globalAlpha = 1;
 
 		if (options.fill) {
@@ -113,13 +131,11 @@ L.Canvas = L.Renderer.extend({
 			ctx.lineJoin = options.lineJoin;
 			ctx.stroke();
 		}
-
-		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
 
 	_onClick: function (e) {
-		console.log(e);
 		var point = this._map.mouseEventToLayerPoint(e);
+
 		if (this._containsPoint(point)) {
 			this._onMouseClick(e);
 		}
@@ -199,11 +215,9 @@ L.Polygon.prototype._containsPoint = function (p) {
 	return inside;
 };
 
-/*
 L.Circle.prototype._containsPoint = function (p) {
 	var center = this._point,
 	    w2 = this.options.stroke ? this.options.weight / 2 : 0;
 
 	return (p.distanceTo(center) <= this._radius + w2);
 };
-*/
