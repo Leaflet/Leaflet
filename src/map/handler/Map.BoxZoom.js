@@ -20,7 +20,7 @@ L.Map.BoxZoom = L.Handler.extend({
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._container, 'mousedown', this._onMouseDown);
+		L.DomEvent.off(this._container, 'mousedown', this._onMouseDown, this);
 		this._moved = false;
 	},
 
