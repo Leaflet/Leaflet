@@ -70,7 +70,7 @@ L.TileLayer = L.GridLayer.extend({
 		}, this.options));
 	},
 
-	_tileOnLoad: function (done, tile, e) {
+	_tileOnLoad: function (done, tile) {
 		done(null, tile);
 	},
 
