@@ -124,9 +124,11 @@ L.Polyline = L.Path.extend({
 		var w = this._clickTolerance(),
 			p = [w, w];
 
-		this._pxBounds = new L.Bounds(
-			this._map.latLngToLayerPoint(this._bounds.getNorthWest()).subtract(p),
-			this._map.latLngToLayerPoint(this._bounds.getSouthEast()).add(p));
+		if (this._latlngs.length) {
+			this._pxBounds = new L.Bounds(
+				this._map.latLngToLayerPoint(this._bounds.getNorthWest()).subtract(p),
+				this._map.latLngToLayerPoint(this._bounds.getSouthEast()).add(p));
+		}
 	},
 
 	_projectLatlngs: function (latlngs, result) {
