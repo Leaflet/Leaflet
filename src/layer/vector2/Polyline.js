@@ -82,28 +82,31 @@ L.Polyline = L.Path.extend({
 	},
 
 	_project: function () {
-		this._originalPoints = this._projectLatlngs(this._latlngs);
+		this._rings = [];
+		this._projectLatlngs(this._latlngs, this._rings);
 	},
 
-	_projectLatlngs: function (latlngs) {
-		var result = [],
-		    flat = latlngs[0] instanceof L.LatLng;
+	_projectLatlngs: function (latlngs, result) {
+		var flat = latlngs[0] instanceof L.LatLng,
+		    len = latlngs.length,
+		    i, ring;
 
-		// TODO flatten to 2-dimensional
-
-		for (var i = 0, len = latlngs.length; i < len; i++) {
-			result[i] = flat ?
-					this._map.latLngToLayerPoint(latlngs[i]) :
-					this._projectLatlngs(latlngs[i]);
+		if (flat) {
+			ring = [];
+			for (i = 0; i < len; i++) {
+				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
+			}
+			result.push(ring);
+		} else {
+			for (i = 0; i < len; i++) {
+				this._projectLatlngs(latlngs[i], result);
+			}
 		}
-		return result;
 	},
 
 	_clipPoints: function () {
-		var points = this._originalPoints;
-
 		if (this.options.noClip) {
-			this._parts = [points];
+			this._parts = this._rings;
 			return;
 		}
 
@@ -111,21 +114,24 @@ L.Polyline = L.Path.extend({
 
 		var parts = this._parts,
 		    bounds = this._renderer._bounds,
-		    len = points.length,
-		    i, k, segment;
+		    i, j, k, segment, points;
 
-		for (i = 0, k = 0; i < len - 1; i++) {
-			segment = L.LineUtil.clipSegment(points[i], points[i + 1], bounds, i);
+		for (j = 0, k = 0, len = this._rings.length; j < len; j++) {
+			points = this._rings[j];
 
-			if (!segment) { continue; }
+			for (i = 0, len2 = points.length; i < len2 - 1; i++) {
+				segment = L.LineUtil.clipSegment(points[i], points[i + 1], bounds, i);
 
-			parts[k] = parts[k] || [];
-			parts[k].push(segment[0]);
+				if (!segment) { continue; }
 
-			// if segment goes out of screen, or it's the last one, it's the end of the line part
-			if ((segment[1] !== points[i + 1]) || (i === len - 2)) {
-				parts[k].push(segment[1]);
-				k++;
+				parts[k] = parts[k] || [];
+				parts[k].push(segment[0]);
+
+				// if segment goes out of screen, or it's the last one, it's the end of the line part
+				if ((segment[1] !== points[i + 1]) || (i === len2 - 2)) {
+					parts[k].push(segment[1]);
+					k++;
+				}
 			}
 		}
 	},

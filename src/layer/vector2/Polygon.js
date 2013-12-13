@@ -17,9 +17,12 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	_clipPoints: function () {
-		var points = this._originalPoints,
-		    bounds = this._renderer._bounds,
-		    parts = points[0] instanceof L.Point ? [points] : points,
+		if (this.options.noClip) {
+			this._parts = this._rings;
+			return;
+		}
+
+		var bounds = this._renderer._bounds,
 		    w = this.options.weight,
 		    p = new L.Point(w, w);
 
@@ -28,10 +31,8 @@ L.Polygon = L.Polyline.extend({
 
 		this._parts = [];
 
-		if (this.options.noClip) { return; }
-
-		for (var i = 0, len = parts.length; i < len; i++) {
-			var clipped = L.PolyUtil.clipPolygon(parts[i], bounds);
+		for (var i = 0, len = this._rings.length, clipped; i < len; i++) {
+			clipped = L.PolyUtil.clipPolygon(this._rings[i], bounds);
 			if (clipped.length) {
 				this._parts.push(clipped);
 			}
