@@ -295,7 +295,9 @@ L.Map.include({
 			popup = new L.Popup(options).setContent(content);
 		}
 
-		popup.setLatLng(latlng);
+		if (latlng) {
+			popup.setLatLng(latlng);
+		}
 
 		if (this.hasLayer(popup)) {
 			return this;
