@@ -114,13 +114,13 @@ L.Polyline = L.Path.extend({
 
 		var parts = this._parts,
 		    bounds = this._renderer._bounds,
-		    i, j, k, segment, points;
+		    i, j, k, len, len2, segment, points;
 
-		for (j = 0, k = 0, len = this._rings.length; j < len; j++) {
-			points = this._rings[j];
+		for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
+			points = this._rings[i];
 
-			for (i = 0, len2 = points.length; i < len2 - 1; i++) {
-				segment = L.LineUtil.clipSegment(points[i], points[i + 1], bounds, i);
+			for (j = 0, len2 = points.length; j < len2 - 1; j++) {
+				segment = L.LineUtil.clipSegment(points[j], points[j + 1], bounds, j);
 
 				if (!segment) { continue; }
 
@@ -128,7 +128,7 @@ L.Polyline = L.Path.extend({
 				parts[k].push(segment[0]);
 
 				// if segment goes out of screen, or it's the last one, it's the end of the line part
-				if ((segment[1] !== points[i + 1]) || (i === len2 - 2)) {
+				if ((segment[1] !== points[j + 1]) || (j === len2 - 2)) {
 					parts[k].push(segment[1]);
 					k++;
 				}

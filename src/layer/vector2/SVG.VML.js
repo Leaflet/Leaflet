@@ -18,7 +18,7 @@ L.Browser.vml = !L.Browser.svg && (function () {
 	}
 }());
 
-L.SVG.include(L.Browser.vml ? {} : {
+L.SVG.include(!L.Browser.vml ? {} : {
 
 	onAdd: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-vml-container', this.getPane());
@@ -115,15 +115,17 @@ L.SVG.include(L.Browser.vml ? {} : {
 	}
 });
 
-L.SVG.create = (function () {
-	try {
-		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
-		return function (name) {
-			return document.createElement('<lvml:' + name + ' class="lvml">');
-		};
-	} catch (e) {
-		return function (name) {
-			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
-		};
-	}
-})();
+if (L.Browser.vml) {
+	L.SVG.create = (function () {
+		try {
+			document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
+			return function (name) {
+				return document.createElement('<lvml:' + name + ' class="lvml">');
+			};
+		} catch (e) {
+			return function (name) {
+				return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+			};
+		}
+	})();
+}
