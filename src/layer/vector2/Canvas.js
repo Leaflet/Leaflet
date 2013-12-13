@@ -13,9 +13,6 @@ L.Canvas = L.Renderer.extend({
 
 		var ctx = this._ctx = container.getContext('2d');
 
-		ctx.lineCap = 'round';
-		ctx.lineJoin = 'round';
-
 		this.getPane().appendChild(container);
 		this._update();
 	},
@@ -104,23 +101,25 @@ L.Canvas = L.Renderer.extend({
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;
+			ctx.lineCap = options.lineCap;
+			ctx.lineJoin = options.lineJoin;
 			ctx.stroke();
 		}
 
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
 
-	_bringToFront: function (layer) {
-		// TODO
-	},
+	// _bringToFront: function (layer) {
+	// 	// TODO
+	// },
 
-	_bringToBack: function (layer) {
-		// TODO
-	},
+	// _bringToBack: function (layer) {
+	// 	// TODO
+	// },
 
-	_initEvents: function (layer) {
-		// TODO
-	}
+	// _initEvents: function (layer) {
+	// 	// TODO
+	// }
 });
 
 L.Browser.canvas = (function () {

@@ -7,8 +7,8 @@ L.Path = L.Layer.extend({
 		stroke: true,
 		color: '#0033ff',
 		// dashArray: null,
-		// lineCap: null,
-		// lineJoin: null,
+		lineCap: 'round',
+		lineJoin: 'round',
 		weight: 5,
 		opacity: 0.5,
 

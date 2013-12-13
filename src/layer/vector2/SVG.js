@@ -73,8 +73,8 @@ L.SVG = L.Renderer.extend({
 			path.setAttribute('stroke', options.color);
 			path.setAttribute('stroke-opacity', options.opacity);
 			path.setAttribute('stroke-width', options.weight);
-			path.setAttribute('stroke-linecap', options.lineCap || 'round');
-			path.setAttribute('stroke-linejoin', options.lineJoin || 'round');
+			path.setAttribute('stroke-linecap', options.lineCap);
+			path.setAttribute('stroke-linejoin', options.lineJoin);
 
 			if (options.dashArray) {
 				path.setAttribute('stroke-dasharray', options.dashArray);
