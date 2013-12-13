@@ -43,14 +43,14 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
-		layer._path = L.SVG.create('path');
+		var path = layer._path = L.SVG.create('path');
 
 		if (layer.options.className) {
-			L.DomUtil.addClass(layer._path, layer.options.className);
+			L.DomUtil.addClass(path, layer.options.className);
 		}
 
 		if (layer.options.clickable) {
-			this._initEvents(layer);
+			this._initEvents(layer, path);
 		}
 
 		this._updateStyle(layer);
@@ -124,14 +124,14 @@ L.SVG = L.Renderer.extend({
 	},
 
 	// TODO remove duplication with L.Map
-	_initEvents: function (layer) {
-		L.DomUtil.addClass(layer._path, 'leaflet-clickable');
+	_initEvents: function (layer, el) {
+		L.DomUtil.addClass(el, 'leaflet-clickable');
 
-		L.DomEvent.on(layer._path, 'click', layer._onMouseClick, layer);
+		L.DomEvent.on(el, 'click', layer._onMouseClick, layer);
 
 		var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
 		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.on(layer._path, events[i], layer._fireMouseEvent, layer);
+			L.DomEvent.on(el, events[i], layer._fireMouseEvent, layer);
 		}
 	}
 });
@@ -142,22 +142,22 @@ L.extend(L.SVG, {
 		return document.createElementNS('http://www.w3.org/2000/svg', name);
 	},
 
-	pointsToPath: function (points, closed) {
-		var flat = points[0] instanceof L.Point,
-		    str = '';
+	pointsToPath: function (rings, closed) {
+		var str = '',
+			i, j, len, len2, points, p;
 
-		for (var i = 0, len = points.length, p; i < len; i++) {
-			p = points[i];
-			str += flat ? (i ? 'L' : 'M') + p.x + ' ' + p.y : L.SVG.pointsToPath(p, closed);
+		for (i = 0, len = rings.length; i < len; i++) {
+			points = rings[i];
+
+			for (j = 0, len2 = points.length; j < len2; j++) {
+				p = points[j];
+				str += (j ? 'L' : 'M') + Math.round(p.x) + ' ' + Math.round(p.y);
+			}
+
+			str += closed ? (L.Browser.svg ? 'z' : 'x') : '';
 		}
 
-		str = str || 'M0 0';
-
-		if (closed) {
-			str += L.Browser.svg ? 'z' : 'x';
-		}
-
-		return str;
+		return str || 'M0 0';
 	}
 });
 

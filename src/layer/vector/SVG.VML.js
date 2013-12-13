@@ -45,7 +45,7 @@ L.SVG.include(!L.Browser.vml ? {} : {
 		container.appendChild(layer._path);
 
 		if (layer.options.clickable) {
-			this._initEvents(layer);
+			this._initEvents(layer, container);
 		}
 
 		this._updateStyle(layer);
@@ -65,8 +65,8 @@ L.SVG.include(!L.Browser.vml ? {} : {
 		    options = layer.options,
 		    container = layer._container;
 
-		container.stroked = options.stroke;
-		container.filled = options.fill;
+		container.stroked = !!options.stroke;
+		container.filled = !!options.fill;
 
 		if (options.stroke) {
 			if (!stroke) {
@@ -140,4 +140,6 @@ if (L.Browser.vml) {
 			};
 		}
 	})();
+
+	L.SVG.instance = L.svg();
 }

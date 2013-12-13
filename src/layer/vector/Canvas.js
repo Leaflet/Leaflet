@@ -181,7 +181,7 @@ L.Browser.canvas = (function () {
 }());
 
 L.canvas = function () {
-	return new L.Canvas();
+	return L.Browser.canvas ? new L.Canvas() : null;
 };
 
 if (L.Browser.canvas) {
