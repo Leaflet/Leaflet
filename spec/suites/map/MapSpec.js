@@ -199,6 +199,15 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#hasLayer", function () {
+		it("returns false when passed undefined, null, or false", function () {
+			var map = L.map(document.createElement('div'));
+			expect(map.hasLayer(undefined)).to.equal(false);
+			expect(map.hasLayer(null)).to.equal(false);
+			expect(map.hasLayer(false)).to.equal(false);
+		});
+	});
+
 	function layerSpy() {
 		var layer = new L.Layer();
 		layer.onAdd = sinon.spy();
