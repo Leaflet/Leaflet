@@ -110,12 +110,12 @@ L.SVG.include(L.Browser.vml ? {} : {
 		var style = layer._container.style;
 
 		style.display = 'none';
-		layer._path.v = L.SVG.pointsToPath(layer._parts, closed));
+		layer._path.v = L.SVG.pointsToPath(layer._parts, closed);
 		style.display = '';
 	}
 });
 
-L.SVG.create = (function (name) {
+L.SVG.create = (function () {
 	try {
 		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
 		return function (name) {

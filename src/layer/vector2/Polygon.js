@@ -6,10 +6,11 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	_convertLatLngs: function (latlngs) {
-		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs);
+		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs),
+		    len = result.length;
 
 		// remove last point if it equals first one
-		if (result.length >= 2 && result[0] instanceof L.LatLng && result[0].equals(result[len - 1])) {
+		if (len >= 2 && result[0] instanceof L.LatLng && result[0].equals(result[len - 1])) {
 			result.pop();
 		}
 		return result;

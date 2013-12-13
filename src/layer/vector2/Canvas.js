@@ -11,7 +11,7 @@ L.Canvas = L.Renderer.extend({
 			L.DomUtil.addClass(container, 'leaflet-zoom-animated');
 		}
 
-		var ctx = this._ctx = container.getContext('2d');
+		this._ctx = container.getContext('2d');
 
 		this.getPane().appendChild(container);
 		this._update();
