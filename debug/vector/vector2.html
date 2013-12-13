@@ -26,12 +26,12 @@
 		map.addLayer(L.marker(latlngs[0]));
 		map.addLayer(L.marker(latlngs[len - 1]));
 
-		var path = L.polygon([[latlngs, [[50.5, 30.5], [50.5, 40], [40, 40]]], [[20, 0], [20, 50], [0, 50]]]).addTo(map);
-		var poly = L.polyline([[60, 30], [60, 50], [40, 50]], {color: 'red'}).addTo(map);
+		var path = L.polygon([[latlngs, [[50.5, 30.5], [50.5, 40], [40, 40]]], [[20, 0], [20, 40], [0, 40]]]).addTo(map);
+		var poly = L.polyline([[[60, 30], [60, 50], [40, 50]], [[20, 50], [20, 70], [0, 70]]], {color: 'red'}).addTo(map);
 
 		map.fitBounds(path);
 
-		// path.bindPopup("Hello world");
+		path.bindPopup("Hello world");
 	</script>
 </body>
 </html>
