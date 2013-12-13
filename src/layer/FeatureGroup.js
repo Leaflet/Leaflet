@@ -75,7 +75,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 		var bounds = new L.LatLngBounds();
 
 		this.eachLayer(function (layer) {
-			bounds.extend((layer.getBounds || layer.getLatLng)());
+			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 		});
 
 		return bounds;
