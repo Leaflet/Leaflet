@@ -28,12 +28,23 @@ L.Canvas = L.Renderer.extend({
 
 		var b = this._bounds,
 		    size = b.getSize(),
+		    m = L.Browser.retina ? 2 : 1,
 		    container = this._container;
 
 		L.DomUtil.setPosition(container, b.min);
-		container.width = size.x;
-		container.height = size.y;
+		container.width = m * size.x;
+		container.height = m * size.y;
+		container.style.width = size.x + 'px';
+		container.style.height = size.y + 'px';
+		this._autoscale();
+
 		this._ctx.translate(-b.min.x, -b.min.y);
+	},
+
+	_autoscale: function () {
+		if (L.Browser.retina) {
+			this._ctx.scale(2, 2);
+		}
 	},
 
 	_initPath: function (layer) {
@@ -72,6 +83,8 @@ L.Canvas = L.Renderer.extend({
 	_fireRedraw: function () {
 		this._redrawRequest = null;
 		this._container.width = this._container.width; // clear canvas
+		this._autoscale();
+
 		this.fire('redraw');
 	},
 
@@ -157,7 +170,10 @@ L.Canvas = L.Renderer.extend({
 			this._mouseInside = false;
 			this._fireMouseEvent(e, 'mouseout');
 		}
-	}
+	},
+
+	_bringToFront: function () {},
+	_bringToBack: function () {}
 
 	// TODO _bringToFront & _bringToBack
 });
@@ -170,6 +186,9 @@ L.canvas = function () {
 	return new L.Canvas();
 };
 
+if (L.Browser.canvas) {
+	L.Canvas.instance = L.canvas();
+}
 
 L.Polyline.prototype._containsPoint = function (p, closed) {
 	var i, j, k, len, len2, part,

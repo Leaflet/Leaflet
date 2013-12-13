@@ -19,7 +19,7 @@ L.Path = L.Layer.extend({
 	},
 
 	onAdd: function () {
-		this._renderer = this._map.getRenderer(this.options.renderer || L.Path.defaultRenderer);
+		this._renderer = this._map.getRenderer(this.options.renderer);
 		this._renderer._initPath(this);
 
 		this._project();

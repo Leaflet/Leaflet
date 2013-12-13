@@ -163,8 +163,10 @@ L.extend(L.SVG, {
 
 L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
 
-L.Path.defaultRenderer = new L.SVG();
-
 L.svg = function () {
 	return new L.SVG();
 };
+
+if (L.Browser.svg) {
+	L.SVG.instance = L.svg();
+}

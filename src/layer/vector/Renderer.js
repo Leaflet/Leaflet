@@ -40,6 +40,9 @@ L.Renderer = L.Layer.extend({
 
 L.Map.include({
 	getRenderer: function (renderer) {
+		if (!renderer) {
+			renderer = this.options.renderer || (L.SVG && L.SVG.instance) || (L.Canvas && L.Canvas.instance);
+		}
 		if (!this.hasLayer(renderer)) {
 			this.addLayer(renderer);
 		}
