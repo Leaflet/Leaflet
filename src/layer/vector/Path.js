@@ -2,8 +2,6 @@
 L.Path = L.Layer.extend({
 
 	options: {
-		renderer: L.svg(),
-
 		stroke: true,
 		color: '#0033ff',
 		// dashArray: null,

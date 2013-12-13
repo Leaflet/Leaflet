@@ -84,96 +84,72 @@ var deps = {
 		desc: 'Extends LayerGroup with mouse events and bindPopup method shared between layers.'
 	},
 
-	// Path: {
-	// 	src: ['layer/vector/Path.js',
-	// 	      'layer/vector/Path.SVG.js',
-	// 	      'layer/vector/Path.Popup.js'],
-	// 	desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
-	// 	heading: 'Vector layers'
-	// },
 
-	// PathVML: {
-	// 	src: ['layer/vector/Path.VML.js'],
-	// 	desc: 'VML fallback for vector rendering core (IE 6-8).'
-	// },
-
-	// PathCanvas: {
-	// 	src: ['layer/vector/canvas/Path.Canvas.js'],
-	// 	deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
-	// 	desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
-	// },
-
-	// Polyline: {
-	// 	src: ['geometry/LineUtil.js',
-	// 	      'layer/vector/Polyline.js'],
-	// 	deps: ['Path'],
-	// 	desc: 'Polyline overlays.'
-	// },
-
-	// Polygon: {
-	// 	src: ['geometry/PolyUtil.js',
-	// 	      'layer/vector/Polygon.js'],
-	// 	deps: ['Polyline'],
-	// 	desc: 'Polygon overlays.'
-	// },
-
-	// MultiPoly: {
-	// 	src: ['layer/vector/MultiPoly.js'],
-	// 	deps: ['FeatureGroup', 'Polyline', 'Polygon'],
-	// 	desc: 'MultiPolygon and MultyPolyline layers.'
-	// },
-
-	// Rectangle: {
-	// 	src: ['layer/vector/Rectangle.js'],
-	// 	deps: ['Polygon'],
-	// 	desc: ['Rectangle overlays.']
-	// },
-
-	// Circle: {
-	// 	src: ['layer/vector/Circle.js'],
-	// 	deps: ['Path'],
-	// 	desc: 'Circle overlays (with radius in meters).'
-	// },
-
-	// CircleMarker: {
-	// 	src: ['layer/vector/CircleMarker.js'],
-	// 	deps: ['Circle'],
-	// 	desc: 'Circle overlays with a constant pixel radius.'
-	// },
-
-	// VectorsCanvas: {
-	// 	src: ['layer/vector/canvas/Polyline.Canvas.js',
-	// 	      'layer/vector/canvas/Polygon.Canvas.js',
-	// 	      'layer/vector/canvas/Circle.Canvas.js',
-	// 	      'layer/vector/canvas/CircleMarker.Canvas.js'],
-	// 	deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle', 'CircleMarker'],
-	// 	desc: 'Canvas fallback for vector layers (polygons, polylines, circles, circlemarkers)'
-	// },
-
-	Vector2: {
+	Path: {
 		src: [
-			'layer/vector2/Renderer.js',
-			'layer/vector2/SVG.js',
-			'layer/vector2/SVG.VML.js',
-			'layer/vector2/Path.js',
-			'layer/vector2/Path.Popup.js',
-			'geometry/LineUtil.js',
-			'layer/vector2/Polyline.js',
-			'geometry/PolyUtil.js',
-			'layer/vector2/Polygon.js',
-			'layer/vector2/Rectangle.js',
-			'layer/vector2/Circle.js',
-			'layer/vector2/CircleMarker.js',
-			'layer/vector2/Canvas.js'
+			'layer/vector/Renderer.js',
+			'layer/vector/Path.js',
+			'layer/vector/Path.Popup.js'
 		],
-		desc: 'New vector layers implementation.'
+		desc: 'Vector rendering core.',
+		heading: 'Vector layers'
 	},
 
-	// GeoJSON: {
-	// 	src: ['layer/GeoJSON.js'],
-	// 	deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
-	// 	desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
-	// },
+	Polyline: {
+		src: ['geometry/LineUtil.js',
+		      'layer/vector/Polyline.js'],
+		deps: ['Path'],
+		desc: 'Polyline overlays.'
+	},
+
+	Polygon: {
+		src: ['geometry/PolyUtil.js',
+		      'layer/vector/Polygon.js'],
+		deps: ['Polyline'],
+		desc: 'Polygon overlays.'
+	},
+
+	Rectangle: {
+		src: ['layer/vector/Rectangle.js'],
+		deps: ['Polygon'],
+		desc: ['Rectangle overlays.']
+	},
+
+	Circle: {
+		src: ['layer/vector/Circle.js'],
+		deps: ['Path'],
+		desc: 'Circle overlays (with radius in meters).'
+	},
+
+	CircleMarker: {
+		src: ['layer/vector/CircleMarker.js'],
+		deps: ['Circle'],
+		desc: 'Circle overlays with a constant pixel radius.'
+	},
+
+	SVG: {
+		src: ['layer/vector/SVG.js'],
+		deps: ['Path'],
+		desc: 'SVG backend for vector layers.'
+	},
+
+	VML: {
+		src: ['layer/vector/SVG.VML.js'],
+		deps: ['SVG'],
+		desc: 'VML fallback for vector layers in IE7-8.'
+	},
+
+	Canvas: {
+		src: ['layer/vector/Canvas.js'],
+		deps: ['Path'],
+		desc: 'Canvas backend for vector layers.'
+	},
+
+	GeoJSON: {
+		src: ['layer/GeoJSON.js'],
+		deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
+		desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
+	},
 
 
 	MapDrag: {

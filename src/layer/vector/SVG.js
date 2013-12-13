@@ -163,6 +163,7 @@ L.extend(L.SVG, {
 
 L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
 
+L.Path.prototype.renderer = L.svg();
 
 L.svg = function () {
 	return new L.SVG();
