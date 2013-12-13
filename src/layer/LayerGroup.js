@@ -42,7 +42,7 @@ L.LayerGroup = L.Layer.extend({
 	},
 
 	hasLayer: function (layer) {
-		return layer && (layer in this._layers || this.getLayerId(layer) in this._layers);
+		return !!layer && (layer in this._layers || this.getLayerId(layer) in this._layers);
 	},
 
 	clearLayers: function () {
