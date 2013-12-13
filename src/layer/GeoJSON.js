@@ -99,23 +99,14 @@ L.extend(L.GeoJSON, {
 			return new L.FeatureGroup(layers);
 
 		case 'LineString':
-			latlngs = this.coordsToLatLngs(coords, 0, coordsToLatLng);
+		case 'MultiLineString':
+			latlngs = this.coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, coordsToLatLng);
 			return new L.Polyline(latlngs, options);
 
 		case 'Polygon':
-			if (coords.length === 2 && !coords[1].length) {
-				throw new Error('Invalid GeoJSON object.');
-			}
-			latlngs = this.coordsToLatLngs(coords, 1, coordsToLatLng);
-			return new L.Polygon(latlngs, options);
-
-		case 'MultiLineString':
-			latlngs = this.coordsToLatLngs(coords, 1, coordsToLatLng);
-			return new L.MultiPolyline(latlngs, options);
-
 		case 'MultiPolygon':
-			latlngs = this.coordsToLatLngs(coords, 2, coordsToLatLng);
-			return new L.MultiPolygon(latlngs, options);
+			latlngs = this.coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, coordsToLatLng);
+			return new L.Polygon(latlngs, options);
 
 		case 'GeometryCollection':
 			for (i = 0, len = geometry.geometries.length; i < len; i++) {
@@ -157,11 +148,17 @@ L.extend(L.GeoJSON, {
 				[latlng.lng, latlng.lat];
 	},
 
-	latLngsToCoords: function (latLngs) {
+	latLngsToCoords: function (latlngs, levelsDeep, closed) {
 		var coords = [];
 
-		for (var i = 0, len = latLngs.length; i < len; i++) {
-			coords.push(L.GeoJSON.latLngToCoords(latLngs[i]));
+		for (var i = 0, len = latlngs.length; i < len; i++) {
+			coords.push(levelsDeep ?
+				L.GeoJSON.latLngsToCoords(latlngs[i], levelsDeep - 1, closed):
+				L.GeoJSON.latLngToCoords(latlngs[i]));
+		}
+
+		if (!levelsDeep && closed) {
+			coords.push(coords[0]);
 		}
 
 		return coords;
@@ -199,90 +196,83 @@ L.Marker.include(PointToGeoJSON);
 L.Circle.include(PointToGeoJSON);
 L.CircleMarker.include(PointToGeoJSON);
 
-L.Polyline.include({
-	toGeoJSON: function () {
-		return L.GeoJSON.getFeature(this, {
-			type: 'LineString',
-			coordinates: L.GeoJSON.latLngsToCoords(this.getLatLngs())
-		});
+L.Polyline.prototype.toGeoJSON = function () {
+	var multi = !this._flat(this._latlngs);
+
+	var coords = L.GeoJSON.latLngsToCoords(this._latlngs, multi ? 1 : 0);
+
+	return L.GeoJSON.getFeature(this, {
+		type: (multi ? 'Multi' : '') + 'LineString',
+		coordinates: coords
+	});
+};
+
+L.Polygon.prototype.toGeoJSON = function () {
+	var holes = !this._flat(this._latlngs),
+	    multi = holes && !this._flat(this._latlngs[0]);
+
+	var coords = L.GeoJSON.latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true);
+
+	if (holes && this._latlngs.length === 1) {
+		multi = true;
+		coords = [coords];
 	}
-});
+	if (!holes) {
+		coords = [coords];
+	}
 
-L.Polygon.include({
-	toGeoJSON: function () {
-		var coords = [L.GeoJSON.latLngsToCoords(this.getLatLngs())],
-		    i, len, hole;
+	return L.GeoJSON.getFeature(this, {
+		type: (multi ? 'Multi' : '') + 'Polygon',
+		coordinates: coords
+	});
+};
 
-		coords[0].push(coords[0][0]);
 
-		if (this._holes) {
-			for (i = 0, len = this._holes.length; i < len; i++) {
-				hole = L.GeoJSON.latLngsToCoords(this._holes[i]);
-				hole.push(hole[0]);
-				coords.push(hole);
-			}
-		}
+L.LayerGroup.include({
+	toMultiPoint: function () {
+		var coords = [];
+
+		this.eachLayer(function (layer) {
+			coords.push(layer.toGeoJSON().geometry.coordinates);
+		});
 
 		return L.GeoJSON.getFeature(this, {
-			type: 'Polygon',
+			type: 'MultiPoint',
 			coordinates: coords
 		});
-	}
-});
+	},
 
-(function () {
-	function multiToGeoJSON(type) {
-		return function () {
-			var coords = [];
+	toGeoJSON: function () {
 
-			this.eachLayer(function (layer) {
-				coords.push(layer.toGeoJSON().geometry.coordinates);
-			});
+		var type = this.feature && this.feature.geometry && this.feature.geometry.type;
 
+		if (type === 'MultiPoint') {
+			return this.toMultiPoint();
+		}
+
+		var isGeometryCollection = type === 'GeometryCollection',
+			jsons = [];
+
+		this.eachLayer(function (layer) {
+			if (layer.toGeoJSON) {
+				var json = layer.toGeoJSON();
+				jsons.push(isGeometryCollection ? json.geometry : L.GeoJSON.asFeature(json));
+			}
+		});
+
+		if (isGeometryCollection) {
 			return L.GeoJSON.getFeature(this, {
-				type: type,
-				coordinates: coords
+				geometries: jsons,
+				type: 'GeometryCollection'
 			});
+		}
+
+		return {
+			type: 'FeatureCollection',
+			features: jsons
 		};
 	}
-
-	L.MultiPolyline.include({toGeoJSON: multiToGeoJSON('MultiLineString')});
-	L.MultiPolygon.include({toGeoJSON: multiToGeoJSON('MultiPolygon')});
-
-	L.LayerGroup.include({
-		toGeoJSON: function () {
-
-			var geometry = this.feature && this.feature.geometry,
-				jsons = [],
-				json;
-
-			if (geometry && geometry.type === 'MultiPoint') {
-				return multiToGeoJSON('MultiPoint').call(this);
-			}
-
-			var isGeometryCollection = geometry && geometry.type === 'GeometryCollection';
-
-			this.eachLayer(function (layer) {
-				if (layer.toGeoJSON) {
-					json = layer.toGeoJSON();
-					jsons.push(isGeometryCollection ? json.geometry : L.GeoJSON.asFeature(json));
-				}
-			});
-
-			if (isGeometryCollection) {
-				return L.GeoJSON.getFeature(this, {
-					geometries: jsons,
-					type: 'GeometryCollection'
-				});
-			}
-
-			return {
-				type: 'FeatureCollection',
-				features: jsons
-			};
-		}
-	});
-}());
+});
 
 L.geoJson = function (geojson, options) {
 	return new L.GeoJSON(geojson, options);

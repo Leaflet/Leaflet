@@ -72,13 +72,17 @@ L.Polyline = L.Path.extend({
 
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] === 'number';
+		    flat = this._flat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			result[i] = flat ? L.latLng(latlngs[i]) : this._convertLatLngs(latlngs[i]);
 		}
 
 		return result;
+	},
+
+	_flat: function (latlngs) {
+		return !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] === 'number';
 	},
 
 	_project: function () {
