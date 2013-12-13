@@ -87,7 +87,7 @@ L.Map.include({
 	},
 
 	hasLayer: function (layer) {
-		return !layer || L.stamp(layer) in this._layers;
+		return layer || L.stamp(layer) in this._layers;
 	},
 
 	eachLayer: function (method, context) {
