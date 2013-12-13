@@ -10,7 +10,7 @@ L.TileLayer = L.GridLayer.extend({
 
 		subdomains: 'abc',
 		// errorTileUrl: '',
-		zoomOffset: 0,
+		zoomOffset: 0
 
 		/*
 		maxNativeZoom: <Number>,
@@ -53,8 +53,8 @@ L.TileLayer = L.GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		tile.onload = L.bind(this._tileOnLoad, this, done);
-		tile.onerror = L.bind(this._tileOnError, this, done);
+		tile.onload = L.bind(this._tileOnLoad, this, done, tile);
+		tile.onerror = L.bind(this._tileOnError, this, done, tile);
 
 		tile.src = this.getTileUrl(coords);
 
@@ -70,16 +70,16 @@ L.TileLayer = L.GridLayer.extend({
 		}, this.options));
 	},
 
-	_tileOnLoad: function (done, e) {
-		done(null, e.target);
+	_tileOnLoad: function (done, tile, e) {
+		done(null, tile);
 	},
 
-	_tileOnError: function (done, e) {
+	_tileOnError: function (done, tile, e) {
 		var errorUrl = this.options.errorTileUrl;
 		if (errorUrl) {
-			e.target.src = errorUrl;
+			tile.src = errorUrl;
 		}
-		done(e, e.target);
+		done(e, tile);
 	},
 
 	_getTileSize: function () {
