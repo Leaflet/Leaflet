@@ -93,5 +93,9 @@ L.Path = L.Layer.extend({
 		if (type !== 'mousemove') {
 			L.DomEvent.stopPropagation(e);
 		}
+	},
+
+	_clickTolerance: function () {
+		return (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
 	}
 });

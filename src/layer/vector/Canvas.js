@@ -147,9 +147,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_onClick: function (e) {
-		var point = this._map.mouseEventToLayerPoint(e);
-
-		if (this._containsPoint(point)) {
+		if (this._containsPoint(this._map.mouseEventToLayerPoint(e))) {
 			this._onMouseClick(e);
 		}
 	},
@@ -192,7 +190,9 @@ if (L.Browser.canvas) {
 
 L.Polyline.prototype._containsPoint = function (p, closed) {
 	var i, j, k, len, len2, part,
-	    w = (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
+	    w = this._clickTolerance();
+
+	if (!this._pxBounds.contains(p)) { return false; }
 
 	for (i = 0, len = this._parts.length; i < len; i++) {
 		part = this._parts[i];
@@ -212,7 +212,7 @@ L.Polygon.prototype._containsPoint = function (p) {
 	var inside = false,
 	    part, p1, p2, i, j, k, len, len2;
 
-	// TODO optimization: check if within bounds first
+	if (!this._pxBounds.contains(p)) { return false; }
 
 	// click on polygon border
 	if (L.Polyline.prototype._containsPoint.call(this, p, true)) { return true; }
@@ -236,7 +236,7 @@ L.Polygon.prototype._containsPoint = function (p) {
 
 L.Circle.prototype._containsPoint = function (p) {
 	var center = this._point,
-	    w2 = this.options.stroke ? this.options.weight / 2 : 0;
+	    w = this._clickTolerance();
 
-	return (p.distanceTo(center) <= this._radius + w2);
+	return (p.distanceTo(center) <= this._radius + w);
 };

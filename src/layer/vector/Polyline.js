@@ -91,16 +91,23 @@ L.Polyline = L.Path.extend({
 	},
 
 	getBounds: function () {
-		// TODO rings
-		return new L.LatLngBounds(this.getLatLngs());
+		return this._bounds;
 	},
 
-	_convertLatLngs: function (latlngs) {
+	_convertLatLngs: function (latlngs, nested) {
 		var result = [],
 		    flat = this._flat(latlngs);
 
+		if (!nested) {
+			this._bounds = new L.LatLngBounds();
+		}
 		for (var i = 0, len = latlngs.length; i < len; i++) {
-			result[i] = flat ? L.latLng(latlngs[i]) : this._convertLatLngs(latlngs[i]);
+			if (flat) {
+				result[i] = L.latLng(latlngs[i]);
+				this._bounds.extend(result[i]);
+			} else {
+				result[i] = this._convertLatLngs(latlngs[i], true);
+			}
 		}
 
 		return result;
@@ -113,6 +120,13 @@ L.Polyline = L.Path.extend({
 	_project: function () {
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings);
+
+		var w = this._clickTolerance(),
+			p = [w, w];
+
+		this._pxBounds = new L.Bounds(
+			this._map.latLngToLayerPoint(this._bounds.getNorthWest()).subtract(p),
+			this._map.latLngToLayerPoint(this._bounds.getSouthEast()).add(p));
 	},
 
 	_projectLatlngs: function (latlngs, result) {

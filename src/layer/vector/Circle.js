@@ -37,13 +37,13 @@ L.Circle = L.Path.extend({
 	},
 
 	getBounds: function () {
-		var lngRadius = this._getLngRadius(),
-		    latRadius = (this._mRadius / 40075017) * 360,
+		var rlng = this._getLngRadius(),
+		    rlat = this._getLatRadius(),
 		    latlng = this._latlng;
 
 		return new L.LatLngBounds(
-			[latlng.lat - latRadius, latlng.lng - lngRadius],
-			[latlng.lat + latRadius, latlng.lng + lngRadius]);
+			[latlng.lat - rlat, latlng.lng - rlng],
+			[latlng.lat + rlat, latlng.lng + rlng]);
 	},
 
 	_update: function () {
