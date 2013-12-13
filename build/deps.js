@@ -147,7 +147,7 @@ var deps = {
 
 	GeoJSON: {
 		src: ['layer/GeoJSON.js'],
-		deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
+		deps: ['Polygon', 'Circle', 'Marker', 'FeatureGroup'],
 		desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
 	},
 
