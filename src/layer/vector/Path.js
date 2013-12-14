@@ -3,15 +3,15 @@ L.Path = L.Layer.extend({
 
 	options: {
 		stroke: true,
-		color: '#0033ff',
-		// dashArray: null,
+		color: '#3377ff',
+		weight: 3,
+		opacity: 1,
 		lineCap: 'round',
 		lineJoin: 'round',
-		weight: 5,
-		opacity: 0.5,
+		// dashArray: null
 
-		// fill: false,
-		// fillColor: null, same as color by default
+		// fill: false
+		// fillColor: same as color by default
 		fillOpacity: 0.2,
 
 		// className: ''
