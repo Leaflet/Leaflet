@@ -35,6 +35,7 @@
 		], {color: 'red'}).addTo(map).bindPopup('Hello SVG');
 
 		var circle = L.circle([35, 0], 700000, {color: 'green', renderer: canvas}).addTo(map).bindPopup('Hello Circle');
+		var circleMarker = L.circleMarker([35, 30], {color: 'magenta', radius: 30}).addTo(map);
 
 		map.setView([36, 52], 3);
 	</script>

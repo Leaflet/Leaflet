@@ -115,16 +115,16 @@ var deps = {
 		desc: ['Rectangle overlays.']
 	},
 
-	Circle: {
-		src: ['layer/vector/Circle.js'],
-		deps: ['Path'],
-		desc: 'Circle overlays (with radius in meters).'
-	},
-
 	CircleMarker: {
 		src: ['layer/vector/CircleMarker.js'],
-		deps: ['Circle'],
+		deps: ['Path'],
 		desc: 'Circle overlays with a constant pixel radius.'
+	},
+
+	Circle: {
+		src: ['layer/vector/Circle.js'],
+		deps: ['CircleMarker'],
+		desc: 'Circle overlays (with radius in meters).'
 	},
 
 	SVG: {

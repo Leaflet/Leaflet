@@ -2,29 +2,12 @@
  * L.Circle is a circle overlay (with a certain radius in meters).
  */
 
-L.Circle = L.Path.extend({
-
-	options: {
-		fill: true
-	},
+L.Circle = L.CircleMarker.extend({
 
 	initialize: function (latlng, radius, options) {
 		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
-	},
-
-	setLatLng: function (latlng) {
-		this._latlng = L.latLng(latlng);
-		// TODO move out to Popup?
-		if (this._popup) {
-			this._popup.setLatLng(latlng);
-		}
-		return this.redraw();
-	},
-
-	getLatLng: function () {
-		return this._latlng;
 	},
 
 	setRadius: function (radius) {
@@ -46,14 +29,9 @@ L.Circle = L.Path.extend({
 			[latlng.lat + rlat, latlng.lng + rlng]);
 	},
 
-	_update: function () {
-		if (!this._map) { return; }
-
-		this._renderer._updateCircle(this);
-	},
+	setStyle: L.Path.prototype.setStyle,
 
 	// TODO Earth hardcoded, move into projection code!
-
 	_project: function () {
 		var lngRadius = this._getLngRadius(),
 		    latlng = this._latlng,
@@ -69,15 +47,6 @@ L.Circle = L.Path.extend({
 
 	_getLngRadius: function () {
 		return this._getLatRadius() / Math.cos((Math.PI / 180) * this._latlng.lat);
-	},
-
-	_empty: function () {
-		var b = this._renderer._bounds,
-		    r = this._radius + (this.options.stroke ? this.options.weight / 2 : 0),
-		    p = this._point;
-
-		return p.x - r > b.max.x || p.y - r > b.max.y ||
-		       p.x + r < b.min.x || p.y + r < b.min.y;
 	}
 });
 
