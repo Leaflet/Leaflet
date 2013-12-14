@@ -63,6 +63,7 @@ L.TileLayer = L.GridLayer.extend({
 
 	getTileUrl: function (coords) {
 		return L.Util.template(this._url, L.extend({
+			r: this.options.detectRetina && L.Browser.retina && this.options.maxZoom > 0 ? '' : '@2x',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: this.options.tms ? this._tileNumBounds.max.y - coords.y : coords.y,
