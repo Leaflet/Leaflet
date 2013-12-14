@@ -164,9 +164,7 @@ L.extend(L.SVG, {
 L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
 
 L.svg = function () {
-	return new L.SVG();
+	return L.Browser.svg || L.Browser.vml ? new L.SVG() : null;
 };
 
-if (L.Browser.svg) {
-	L.SVG.instance = L.svg();
-}
+L.SVG.instance = L.svg();

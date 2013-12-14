@@ -184,9 +184,8 @@ L.canvas = function () {
 	return L.Browser.canvas ? new L.Canvas() : null;
 };
 
-if (L.Browser.canvas) {
-	L.Canvas.instance = L.canvas();
-}
+L.Canvas.instance = L.canvas();
+
 
 L.Polyline.prototype._containsPoint = function (p, closed) {
 	var i, j, k, len, len2, part,
