@@ -18,6 +18,14 @@ L.Util = {
 		return dest;
 	},
 
+	create: Object.create || (function () {
+		function F() {}
+		return function (proto) {
+			F.prototype = proto;
+			return new F();
+		};
+	})(),
+
 	bind: function (fn, obj) {
 		var slice = Array.prototype.slice;
 
@@ -107,8 +115,10 @@ L.Util = {
 	},
 
 	setOptions: function (obj, options) {
-		obj.options = options ? L.extend({}, obj.options, options) : obj.options || {};
-		return obj.options;
+		if (!obj.hasOwnProperty('options')) {
+			obj.options = obj.options ? L.Util.create(obj.options) : {};
+		}
+		return L.extend(obj.options, options);
 	},
 
 	getParamString: function (obj, existingUrl, uppercase) {

@@ -50,8 +50,8 @@ L.Class.extend = function (props) {
 	}
 
 	// merge options
-	if (props.options && proto.options) {
-		props.options = L.extend({}, proto.options, props.options);
+	if (proto.options) {
+		props.options = L.Util.extend(L.Util.create(proto.options), props.options);
 	}
 
 	// mix given properties into the prototype
