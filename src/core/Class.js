@@ -21,11 +21,7 @@ L.Class.extend = function (props) {
 		}
 	};
 
-	// instantiate class without calling constructor
-	var F = function () {};
-	F.prototype = this.prototype;
-
-	var proto = new F();
+	var proto = L.Util.create(this.prototype);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
