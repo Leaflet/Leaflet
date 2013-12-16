@@ -248,6 +248,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/alfarisi/leaflet-deepzoom">TileLayer.DeepZoom</a>
+		</td><td>
+			A TileLayer for DeepZoom images.
+		</td><td>
+			<a href="https://github.com/alfarisi">Al Farisi</a>,
+			<a href="http://indokreatif.net">Indokreatif Teknologi</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/turban/Leaflet.Graticule">Leaflet.Graticule</a>
 		</td><td>
 			Draws a grid of latitude and longitude lines.
