@@ -17,12 +17,9 @@ This step-by-step guide will quickly get you started on Leaflet basics, includin
 
 Before writing any code for the map, you need to do the following preparation steps on your page:
 
- * Include Leaflet CSS files in the head section of your document:
+ * Include Leaflet CSS file in the head section of your document:
 
 		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.css" />
-		<!--[if lte IE 8]>
-			<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.1/leaflet.ie.css" />
-		<![endif]-->
 
  * Include Leaflet JavaScript file:
 
