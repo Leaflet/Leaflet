@@ -3,16 +3,14 @@
  */
 
 L.Util = {
-	extend: function (dest) { // (Object[, Object, ...]) ->
+	extend: function (dest) {
 		var sources = Array.prototype.slice.call(arguments, 1),
 		    i, j, len, src;
 
 		for (j = 0, len = sources.length; j < len; j++) {
-			src = sources[j] || {};
+			src = sources[j];
 			for (i in src) {
-				if (src.hasOwnProperty(i)) {
-					dest[i] = src[i];
-				}
+				dest[i] = src[i];
 			}
 		}
 		return dest;
@@ -118,7 +116,10 @@ L.Util = {
 		if (!obj.hasOwnProperty('options')) {
 			obj.options = obj.options ? L.Util.create(obj.options) : {};
 		}
-		return L.extend(obj.options, options);
+		for (var i in options) {
+			obj.options[i] = options[i];
+		}
+		return obj.options;
 	},
 
 	getParamString: function (obj, existingUrl, uppercase) {
