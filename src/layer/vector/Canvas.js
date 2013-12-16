@@ -50,9 +50,6 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
-		if (!layer._updatePath) {
-			debugger;
-		}
 		this.on('redraw', layer._updatePath, layer);
 
 		if (layer.options.clickable) {
@@ -239,8 +236,5 @@ L.Polygon.prototype._containsPoint = function (p) {
 };
 
 L.Circle.prototype._containsPoint = function (p) {
-	var center = this._point,
-	    w = this._clickTolerance();
-
-	return (p.distanceTo(center) <= this._radius + w);
+	return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 };
