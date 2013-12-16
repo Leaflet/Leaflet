@@ -25,7 +25,9 @@ L.Polyline = L.Path.extend({
 
 	addLatLng: function (latlng) {
 		// TODO rings
-		this._latlngs.push(L.latLng(latlng));
+		latlng = L.latLng(latlng);
+		this._latlngs.push(latlng);
+		this._bounds.extend(latlng);
 		return this.redraw();
 	},
 
