@@ -2,11 +2,15 @@
 L.SVG = L.Renderer.extend({
 
 	onAdd: function () {
-		var container = this._container = L.SVG.create('svg');
-		container.setAttribute('pointer-events', 'none');
+		var container = this._container;
 
-		if (this._zoomAnimated) {
-			L.DomUtil.addClass(container, 'leaflet-zoom-animated');
+		if (!container) {
+			container = this._container = L.SVG.create('svg');
+			container.setAttribute('pointer-events', 'none');
+
+			if (this._zoomAnimated) {
+				L.DomUtil.addClass(container, 'leaflet-zoom-animated');
+			}
 		}
 
 		this.getPane().appendChild(container);

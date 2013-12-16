@@ -48,8 +48,12 @@ L.CircleMarker = L.Path.extend({
 
 	_update: function () {
 		if (this._map) {
-			this._renderer._updateCircle(this);
+			this._updatePath();
 		}
+	},
+
+	_updatePath: function () {
+		this._renderer._updateCircle(this);
 	},
 
 	_empty: function () {

@@ -38,6 +38,18 @@
 		var circleMarker = L.circleMarker([35, 30], {color: 'magenta', radius: 30}).addTo(map);
 
 		map.setView([36, 52], 3);
+
+		var layersControl = new L.Control.Layers({
+		}, {
+			'poly': poly,
+			'path': path,
+			// 'rect': rect,
+			'circle': circle,
+			'circleMarker': circleMarker,
+			'canvas': canvas,
+			'svg': L.SVG.instance,
+		}, {collapsed: false});
+		map.addControl(layersControl);
 	</script>
 </body>
 </html>

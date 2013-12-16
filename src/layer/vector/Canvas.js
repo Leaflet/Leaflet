@@ -15,6 +15,8 @@ L.Canvas = L.Renderer.extend({
 
 		this.getPane().appendChild(container);
 		this._update();
+
+		this.fire('redraw');
 	},
 
 	onRemove: function () {
@@ -48,6 +50,9 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
+		if (!layer._updatePath) {
+			debugger;
+		}
 		this.on('redraw', layer._updatePath, layer);
 
 		if (layer.options.clickable) {
