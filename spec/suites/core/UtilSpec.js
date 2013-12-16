@@ -185,7 +185,47 @@ describe('Util', function () {
 		});
 	});
 
-	// TODO setOptions
+	describe('#setOptions', function () {
+		it('sets specified options on object', function () {
+			var o = {};
+			L.Util.setOptions(o, {foo: 'bar'});
+			expect(o.options.foo).to.eql('bar');
+		});
+
+		it('returns options', function () {
+			var o = {};
+			var r = L.Util.setOptions(o, {foo: 'bar'});
+			expect(r).to.equal(o.options);
+		});
+
+		it('accepts undefined', function () {
+			var o = {};
+			L.Util.setOptions(o, undefined);
+			expect(o.options).to.eql({});
+		});
+
+		it('creates a distinct options object', function () {
+			var opts = {},
+				o = L.Util.create({options: opts});
+			L.Util.setOptions(o, {});
+			expect(o.options).not.to.equal(opts);
+		});
+
+		it("doesn't create a distinct options object if object already has own options", function () {
+			var opts = {},
+				o = {options: opts};
+			L.Util.setOptions(o, {});
+			expect(o.options).to.equal(opts);
+		});
+
+		it('inherits options prototypally', function () {
+			var opts = {},
+				o = L.Util.create({options: opts});
+			L.Util.setOptions(o, {});
+			opts.foo = 'bar';
+			expect(o.options.foo).to.eql('bar');
+		});
+	});
 
 	describe('#template', function () {
 		it('evaluates templates with a given data object', function () {

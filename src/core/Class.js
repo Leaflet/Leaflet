@@ -21,11 +21,7 @@ L.Class.extend = function (props) {
 		}
 	};
 
-	// instantiate class without calling constructor
-	var F = function () {};
-	F.prototype = this.prototype;
-
-	var proto = new F();
+	var proto = L.Util.create(this.prototype);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
@@ -50,8 +46,8 @@ L.Class.extend = function (props) {
 	}
 
 	// merge options
-	if (props.options && proto.options) {
-		props.options = L.extend({}, proto.options, props.options);
+	if (proto.options) {
+		props.options = L.Util.extend(L.Util.create(proto.options), props.options);
 	}
 
 	// mix given properties into the prototype
