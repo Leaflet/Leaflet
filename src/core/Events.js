@@ -6,10 +6,10 @@ var eventsKey = '_leaflet_events';
 
 L.Evented = L.Class.extend({
 
-	addEventListener: function (types, fn, context) {
+	on: function (types, fn, context) {
 
 		// types can be a map of types/handlers
-		if (L.Util.invokeEach(types, this.addEventListener, this, fn, context)) { return this; }
+		if (L.Util.invokeEach(types, this.on, this, fn, context)) { return this; }
 
 		var events = this[eventsKey] = this[eventsKey] || {},
 		    contextId = context && context !== this && L.stamp(context),
@@ -53,13 +53,7 @@ L.Evented = L.Class.extend({
 		return this;
 	},
 
-	hasEventListeners: function (type) {
-		var events = this[eventsKey];
-		return !!events && ((type in events && events[type].length > 0) ||
-		                    (type + '_idx' in events && events[type + '_idx_len'] > 0));
-	},
-
-	removeEventListener: function (types, fn, context) {
+	off: function (types, fn, context) {
 
 		if (!this[eventsKey]) {
 			return this;
@@ -69,7 +63,7 @@ L.Evented = L.Class.extend({
 			return this.clearAllEventListeners();
 		}
 
-		if (L.Util.invokeEach(types, this.removeEventListener, this, fn, context)) { return this; }
+		if (L.Util.invokeEach(types, this.off, this, fn, context)) { return this; }
 
 		var events = this[eventsKey],
 		    contextId = context && context !== this && L.stamp(context),
@@ -114,12 +108,7 @@ L.Evented = L.Class.extend({
 		return this;
 	},
 
-	clearAllEventListeners: function () {
-		delete this[eventsKey];
-		return this;
-	},
-
-	fireEvent: function (type, data) {
+	fire: function (type, data) {
 		if (!this.hasEventListeners(type)) {
 			return this;
 		}
@@ -156,29 +145,39 @@ L.Evented = L.Class.extend({
 		return this;
 	},
 
-	addOneTimeEventListener: function (types, fn, context) {
+	hasEventListeners: function (type) {
+		var events = this[eventsKey];
+		return !!events && ((type in events && events[type].length > 0) ||
+		                    (type + '_idx' in events && events[type + '_idx_len'] > 0));
+	},
+
+	clearAllEventListeners: function () {
+		delete this[eventsKey];
+		return this;
+	},
+
+	once: function (types, fn, context) {
 
 		if (L.Util.invokeEach(types, this.addOneTimeEventListener, this, fn, context)) { return this; }
 
 		var handler = L.bind(function () {
 			this
-			    .removeEventListener(types, fn, context)
-			    .removeEventListener(types, handler, context);
+			    .off(types, fn, context)
+			    .off(types, handler, context);
 		}, this);
 
 		return this
-		    .addEventListener(types, fn, context)
-		    .addEventListener(types, handler, context);
+		    .on(types, fn, context)
+		    .on(types, handler, context);
 	}
 });
 
 var proto = L.Evented.prototype;
 
-L.Evented.include({
-	on: proto.addEventListener,
-	off: proto.removeEventListener,
-	once: proto.addOneTimeEventListener,
-	fire: proto.fireEvent
-});
+// aliases
+proto.addEventListener = proto.on;
+proto.removeEventListener = proto.off;
+proto.addOneTimeEventListener = proto.once;
+proto.fireEvent = proto.fire;
 
-L.Mixin = {Events: L.Evented.prototype};
+L.Mixin = {Events: proto};
