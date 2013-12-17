@@ -2,9 +2,7 @@
  * L.Map is the central class of the API - it is used to create a map.
  */
 
-L.Map = L.Class.extend({
-
-	includes: L.Mixin.Events,
+L.Map = L.Evented.extend({
 
 	options: {
 		crs: L.CRS.EPSG3857,

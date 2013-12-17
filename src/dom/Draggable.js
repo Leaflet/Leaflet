@@ -2,8 +2,7 @@
  * L.Draggable allows you to add dragging capabilities to any element. Supports mobile devices too.
  */
 
-L.Draggable = L.Class.extend({
-	includes: L.Mixin.Events,
+L.Draggable = L.Evented.extend({
 
 	statics: {
 		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],

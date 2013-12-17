@@ -1,16 +1,9 @@
 describe('Events', function () {
-	var Klass;
-
-	beforeEach(function () {
-		Klass = L.Class.extend({
-			includes: L.Mixin.Events
-		});
-	});
 
 	describe('#fireEvent', function () {
 
 		it('fires all listeners added through #addEventListener', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy1 = sinon.spy(),
 				spy2 = sinon.spy(),
 				spy3 = sinon.spy(),
@@ -43,10 +36,10 @@ describe('Events', function () {
 		});
 
 		it('provides event object to listeners and executes them in the right context', function () {
-			var obj = new Klass(),
-				obj2 = new Klass(),
-				obj3 = new Klass(),
-				obj4 = new Klass(),
+			var obj = new L.Evented(),
+				obj2 = new L.Evented(),
+				obj3 = new L.Evented(),
+				obj4 = new L.Evented(),
 				foo = {};
 
 			function listener1(e) {
@@ -89,7 +82,7 @@ describe('Events', function () {
 		});
 
 		it('calls no listeners removed through #removeEventListener', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy = sinon.spy(),
 				spy2 = sinon.spy(),
 				spy3 = sinon.spy(),
@@ -127,7 +120,7 @@ describe('Events', function () {
 		});
 
 		it('can handle calls to #removeEventListener on objects with no registered event listeners', function () {
-			var obj = new Klass();
+			var obj = new L.Evented();
 			var removeNonExistentListener = function () {
 				obj.removeEventListener('test');
 			};
@@ -136,7 +129,7 @@ describe('Events', function () {
 
 		// added due to context-sensitive removeListener optimization
 		it('fires multiple listeners with the same context with id', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy1 = sinon.spy(),
 				spy2 = sinon.spy(),
 				foo = {};
@@ -153,7 +146,7 @@ describe('Events', function () {
 		});
 
 		it('removes listeners with stamped contexts', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy1 = sinon.spy(),
 				spy2 = sinon.spy(),
 				foo = {};
@@ -172,7 +165,7 @@ describe('Events', function () {
 		});
 
 		it('removes listeners with a stamp originally added without one', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy1 = sinon.spy(),
 				spy2 = sinon.spy(),
 				foo = {};
@@ -191,8 +184,8 @@ describe('Events', function () {
 		});
 
 		it('removes listeners with context == this and a stamp originally added without one', function () {
-			var obj = new Klass(),
-				obj2 = new Klass(),
+			var obj = new L.Evented(),
+				obj2 = new L.Evented(),
 				spy1 = sinon.spy(),
 				spy2 = sinon.spy(),
 				spy3 = sinon.spy();
@@ -214,7 +207,7 @@ describe('Events', function () {
 		});
 
 		it('doesnt lose track of listeners when removing non existent ones', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    spy2 = sinon.spy(),
 			    foo = {},
@@ -236,7 +229,7 @@ describe('Events', function () {
 		});
 
 		it('correctly removes all listeners if given no fn', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 			    spy = sinon.spy(),
 			    foo = {},
 			    foo2 = {},
@@ -257,7 +250,7 @@ describe('Events', function () {
 		});
 
 		it('makes sure an event is not triggered if a listener is removed during dispatch', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 			    spy = sinon.spy();
 
 			obj.addEventListener('test', function () { obj.removeEventListener('test', spy); });
@@ -271,7 +264,7 @@ describe('Events', function () {
 	describe('#on, #off & #fire', function () {
 
 		it('works like #addEventListener && #removeEventListener', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy = sinon.spy();
 
 			obj.on('test', spy);
@@ -290,14 +283,13 @@ describe('Events', function () {
 				spy2 = sinon.spy(),
 				spy3 = sinon.spy();
 
-			var Klass2 = L.Class.extend({
-				includes: L.Mixin.Events,
+			var Klass = L.Evented.extend({
 				on: spy1,
 				off: spy2,
 				fire: spy3
 			});
 
-			var obj = new Klass2();
+			var obj = new Klass();
 
 			obj.on();
 			expect(spy1.called).to.be(true);
@@ -313,8 +305,8 @@ describe('Events', function () {
 	describe("#clearEventListeners", function () {
 		it("clears all registered listeners on an object", function () {
 			var spy = sinon.spy(),
-				obj = new Klass(),
-				otherObj = new Klass();
+				obj = new L.Evented(),
+				otherObj = new L.Evented();
 
 			obj.on('test', spy, obj);
 			obj.on('testTwo', spy);
@@ -329,7 +321,7 @@ describe('Events', function () {
 
 	describe('#once', function () {
 		it('removes event listeners after first trigger', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy = sinon.spy();
 
 			obj.once('test', spy, obj);
@@ -343,7 +335,7 @@ describe('Events', function () {
 		});
 
 		it('works with an object hash', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy = sinon.spy(),
 				otherSpy = sinon.spy();
 
@@ -366,7 +358,7 @@ describe('Events', function () {
 		});
 
 		it("doesn't call listeners to events that have been removed", function () {
-		    var obj = new Klass(),
+		    var obj = new L.Evented(),
                 spy = sinon.spy();
 
 		    obj.once('test', spy, obj);
@@ -378,7 +370,7 @@ describe('Events', function () {
 		});
 
 		it('works if called from a context that doesnt implement #Events', function () {
-			var obj = new Klass(),
+			var obj = new L.Evented(),
 				spy = sinon.spy(),
 				foo = {};
 
