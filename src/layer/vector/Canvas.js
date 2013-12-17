@@ -215,9 +215,6 @@ L.Polygon.prototype._containsPoint = function (p) {
 
 	if (!this._pxBounds.contains(p)) { return false; }
 
-	// click on polygon border
-	if (L.Polyline.prototype._containsPoint.call(this, p, true)) { return true; }
-
 	// ray casting algorithm for detecting if point is in polygon
 	for (i = 0, len = this._parts.length; i < len; i++) {
 		part = this._parts[i];
@@ -232,7 +229,8 @@ L.Polygon.prototype._containsPoint = function (p) {
 		}
 	}
 
-	return inside;
+	// also check if it's on polygon stroke
+	return inside || L.Polyline.prototype._containsPoint.call(this, p, true);
 };
 
 L.Circle.prototype._containsPoint = function (p) {
