@@ -5,13 +5,17 @@
 L.Canvas = L.Renderer.extend({
 
 	onAdd: function () {
-		var container = this._container = document.createElement('canvas');
+		var container = this._container;
 
-		if (this._zoomAnimated) {
-			L.DomUtil.addClass(container, 'leaflet-zoom-animated');
+		if (!container) {
+			container = this._container = document.createElement('canvas');
+
+			if (this._zoomAnimated) {
+				L.DomUtil.addClass(container, 'leaflet-zoom-animated');
+			}
+
+			this._ctx = container.getContext('2d');
 		}
-
-		this._ctx = container.getContext('2d');
 
 		this.getPane().appendChild(container);
 		this._update();
@@ -65,26 +69,29 @@ L.Canvas = L.Renderer.extend({
 				.off(this._container, 'click', this._onClick, layer);
 		}
 
-		this.off('redraw', layer._updatePath, layer);
-		this._requestRedraw();
+		layer._removed = true;
+		this._requestRedraw(layer);
 	},
 
-	_updateStyle: function () {
-		this._requestRedraw();
+	_updateStyle: function (layer) {
+		this._requestRedraw(layer);
 	},
 
-	_requestRedraw: function () {
+	_requestRedraw: function (layer) {
 		if (this._map) {
+			this._redrawBounds = this._redrawBounds || new L.Bounds();
+			this._redrawBounds.extend(layer._pxBounds.min).extend(layer._pxBounds.max);
 			this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._fireRedraw, this);
 		}
 	},
 
 	_fireRedraw: function () {
 		this._redrawRequest = null;
-
-		this._ctx.clearRect(0, 0, this._container.width, this._container.height);
-
+		this._clear = true;
 		this.fire('redraw');
+		this._clear = false;
+		this.fire('redraw');
+		this._redrawBounds = null;
 	},
 
 	_updatePoly: function (layer, closed) {
@@ -92,10 +99,9 @@ L.Canvas = L.Renderer.extend({
 		var i, j, len2, p,
 		    parts = layer._parts,
 		    len = parts.length,
-		    ctx = this._ctx,
-		    options = layer.options;
+		    ctx = this._ctx;
 
-		if (!len) { return; }
+	    if (!len || this._redrawBounds && !this._redrawBounds.intersects(layer._pxBounds)) { return; }
 
 		ctx.beginPath();
 
@@ -109,35 +115,49 @@ L.Canvas = L.Renderer.extend({
 			}
 		}
 
-		this._fillStroke(ctx, options);
+		this._fillStroke(ctx, layer);
 
 		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
 	},
 
 	_updateCircle: function (layer) {
+
+		if (layer._empty()) { return; }
+
 		var p = layer._point,
 		    ctx = this._ctx;
 
-		if (!layer._empty()) {
-			ctx.beginPath();
-			ctx.arc(p.x, p.y, layer._radius, 0, Math.PI * 2, false);
+		ctx.beginPath();
+		ctx.arc(p.x, p.y, layer._radius, 0, Math.PI * 2, false);
 
-			this._fillStroke(ctx, layer.options);
-		}
+		this._fillStroke(ctx, layer);
 	},
 
-	_fillStroke: function (ctx, options) {
-		ctx.globalAlpha = 1;
+	_fillStroke: function (ctx, layer) {
+		var clear = this._clear;
+
+		if (layer._removed && !clear) {
+			layer._removed = false;
+			this.off('redraw', layer._updatePath, layer);
+			return;
+		}
+
+		var options = layer.options;
+
+		ctx.globalCompositeOperation = clear ? 'destination-out' : 'source-over';
 
 		if (options.fill) {
-			ctx.globalAlpha = options.fillOpacity;
+			ctx.globalAlpha = clear ? 1 : options.fillOpacity;
 			ctx.fillStyle = options.fillColor || options.color;
 			ctx.fill('evenodd');
 		}
 
 		if (options.stroke) {
-			ctx.globalAlpha = options.opacity;
-			ctx.lineWidth = options.weight;
+			ctx.globalAlpha = clear ? 1 : options.opacity;
+
+			// if clearing shape, do it with the previously drawn line width
+			layer._prevWeight = ctx.lineWidth = clear ? layer._prevWeight + 1 : options.weight;
+
 			ctx.strokeStyle = options.color;
 			ctx.lineCap = options.lineCap;
 			ctx.lineJoin = options.lineJoin;
