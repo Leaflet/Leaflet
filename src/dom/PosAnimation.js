@@ -2,8 +2,7 @@
  * L.PosAnimation is used by Leaflet internally for pan animations.
  */
 
-L.PosAnimation = L.Class.extend({
-	includes: L.Mixin.Events,
+L.PosAnimation = L.Evented.extend({
 
 	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();

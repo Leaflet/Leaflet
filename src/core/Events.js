@@ -4,14 +4,12 @@
 
 var eventsKey = '_leaflet_events';
 
-L.Mixin = {};
+L.Evented = L.Class.extend({
 
-L.Mixin.Events = {
-
-	addEventListener: function (types, fn, context) { // (String, Function[, Object]) or (Object[, Object])
+	on: function (types, fn, context) {
 
 		// types can be a map of types/handlers
-		if (L.Util.invokeEach(types, this.addEventListener, this, fn, context)) { return this; }
+		if (L.Util.invokeEach(types, this.on, this, fn, context)) { return this; }
 
 		var events = this[eventsKey] = this[eventsKey] || {},
 		    contextId = context && context !== this && L.stamp(context),
@@ -55,13 +53,7 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	hasEventListeners: function (type) { // (String) -> Boolean
-		var events = this[eventsKey];
-		return !!events && ((type in events && events[type].length > 0) ||
-		                    (type + '_idx' in events && events[type + '_idx_len'] > 0));
-	},
-
-	removeEventListener: function (types, fn, context) { // ([String, Function, Object]) or (Object[, Object])
+	off: function (types, fn, context) {
 
 		if (!this[eventsKey]) {
 			return this;
@@ -71,7 +63,7 @@ L.Mixin.Events = {
 			return this.clearAllEventListeners();
 		}
 
-		if (L.Util.invokeEach(types, this.removeEventListener, this, fn, context)) { return this; }
+		if (L.Util.invokeEach(types, this.off, this, fn, context)) { return this; }
 
 		var events = this[eventsKey],
 		    contextId = context && context !== this && L.stamp(context),
@@ -116,12 +108,7 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	clearAllEventListeners: function () {
-		delete this[eventsKey];
-		return this;
-	},
-
-	fireEvent: function (type, data) { // (String[, Object])
+	fire: function (type, data) {
 		if (!this.hasEventListeners(type)) {
 			return this;
 		}
@@ -158,23 +145,39 @@ L.Mixin.Events = {
 		return this;
 	},
 
-	addOneTimeEventListener: function (types, fn, context) {
+	hasEventListeners: function (type) {
+		var events = this[eventsKey];
+		return !!events && ((type in events && events[type].length > 0) ||
+		                    (type + '_idx' in events && events[type + '_idx_len'] > 0));
+	},
+
+	clearAllEventListeners: function () {
+		delete this[eventsKey];
+		return this;
+	},
+
+	once: function (types, fn, context) {
 
 		if (L.Util.invokeEach(types, this.addOneTimeEventListener, this, fn, context)) { return this; }
 
 		var handler = L.bind(function () {
 			this
-			    .removeEventListener(types, fn, context)
-			    .removeEventListener(types, handler, context);
+			    .off(types, fn, context)
+			    .off(types, handler, context);
 		}, this);
 
 		return this
-		    .addEventListener(types, fn, context)
-		    .addEventListener(types, handler, context);
+		    .on(types, fn, context)
+		    .on(types, handler, context);
 	}
-};
+});
 
-L.Mixin.Events.on = L.Mixin.Events.addEventListener;
-L.Mixin.Events.off = L.Mixin.Events.removeEventListener;
-L.Mixin.Events.once = L.Mixin.Events.addOneTimeEventListener;
-L.Mixin.Events.fire = L.Mixin.Events.fireEvent;
+var proto = L.Evented.prototype;
+
+// aliases
+proto.addEventListener = proto.on;
+proto.removeEventListener = proto.off;
+proto.addOneTimeEventListener = proto.once;
+proto.fireEvent = proto.fire;
+
+L.Mixin = {Events: proto};

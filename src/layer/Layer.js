@@ -1,6 +1,5 @@
 
-L.Layer = L.Class.extend({
-	includes: L.Mixin.Events,
+L.Layer = L.Evented.extend({
 
 	options: {
 		pane: 'overlayPane'
