@@ -44,6 +44,13 @@ L.CircleMarker = L.Path.extend({
 
 	_project: function () {
 		this._point = this._map.latLngToLayerPoint(this._latlng);
+		this._updateBounds();
+	},
+
+	_updateBounds: function () {
+		var r = this._radius + this._clickTolerance(),
+		    p = [r, r];
+		this._pxBounds = new L.Bounds(this._point.subtract(p), this._point.add(p));
 	},
 
 	_update: function () {
@@ -57,12 +64,7 @@ L.CircleMarker = L.Path.extend({
 	},
 
 	_empty: function () {
-		var b = this._renderer._bounds,
-		    r = this._radius + (this.options.stroke ? this.options.weight / 2 : 0),
-		    p = this._point;
-
-		return p.x - r > b.max.x || p.y - r > b.max.y ||
-		       p.x + r < b.min.x || p.y + r < b.min.y;
+		return !this._renderer._bounds.intersects(this._pxBounds);
 	}
 });
 

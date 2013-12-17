@@ -39,6 +39,7 @@ L.Circle = L.CircleMarker.extend({
 
 		this._point = this._map.latLngToLayerPoint(latlng);
 		this._radius = Math.max(this._point.x - pointLeft.x, 1);
+		this._updateBounds();
 	},
 
 	_getLatRadius: function () {
