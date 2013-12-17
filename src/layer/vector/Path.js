@@ -3,7 +3,7 @@ L.Path = L.Layer.extend({
 
 	options: {
 		stroke: true,
-		color: '#3377ff',
+		color: '#3388ff',
 		weight: 3,
 		opacity: 1,
 		lineCap: 'round',
