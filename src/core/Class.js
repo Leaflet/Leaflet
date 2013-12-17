@@ -21,7 +21,10 @@ L.Class.extend = function (props) {
 		}
 	};
 
-	var proto = L.Util.create(this.prototype);
+	// jshint camelcase: false
+	var parentProto = NewClass.__super__ = this.prototype;
+
+	var proto = L.Util.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
@@ -55,17 +58,13 @@ L.Class.extend = function (props) {
 
 	proto._initHooks = [];
 
-	var parent = this;
-	// jshint camelcase: false
-	NewClass.__super__ = parent.prototype;
-
 	// add method for calling all hooks
 	proto.callInitHooks = function () {
 
 		if (this._initHooksCalled) { return; }
 
-		if (parent.prototype.callInitHooks) {
-			parent.prototype.callInitHooks.call(this);
+		if (parentProto.callInitHooks) {
+			parentProto.callInitHooks.call(this);
 		}
 
 		this._initHooksCalled = true;
