@@ -90,9 +90,6 @@ L.Path = L.Layer.extend({
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		if (type !== 'mousemove') {
-			L.DomEvent.stopPropagation(e);
-		}
 	},
 
 	_clickTolerance: function () {
