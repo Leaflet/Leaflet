@@ -125,6 +125,12 @@ L.Map = L.Evented.extend({
 		bounds = L.latLngBounds(bounds);
 
 		this.options.maxBounds = bounds;
+		if (this.options.maxBoundsResistance > 1.0) {
+			this.options.maxBoundsResistance = 1.0;
+		}
+		if (this.options.maxBoundsResistance < 0.0) {
+			this.options.maxBoundsResistance = 0.0;
+		}
 
 		if (!bounds) {
 			return this.off('moveend', this._panInsideMaxBounds, this);
