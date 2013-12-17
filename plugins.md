@@ -869,6 +869,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/alanshaw/">Alan Shaw</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bbecquet/Leaflet.MagnifyingGlass">leaflet-zoom-min</a>
+		</td><td>
+			Allows you to display a small portion of the map at another zoom level, either at a fixed position or linked to the mouse movement, for a magnifying glass effect.
+		</td><td>
+			<a href="https://github.com/bbecquet/">Benjamin Becquet</a>
+		</td>
+	</tr>
 </table>
 
 
