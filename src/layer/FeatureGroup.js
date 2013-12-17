@@ -5,16 +5,12 @@
 
 L.FeatureGroup = L.LayerGroup.extend({
 
-	statics: {
-		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu popupopen popupclose'
-	},
-
 	addLayer: function (layer) {
 		if (this.hasLayer(layer)) {
 			return this;
 		}
 
-		layer.on(L.FeatureGroup.EVENTS, this._propagateEvent, this);
+		layer.addEventParent(this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -33,7 +29,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 			layer = this._layers[layer];
 		}
 
-		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
+		layer.removeEventParent(this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
@@ -79,14 +75,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 		});
 
 		return bounds;
-	},
-
-	_propagateEvent: function (e) {
-		e = L.extend({
-			layer: e.target,
-			target: this
-		}, e);
-		this.fire(e.type, e);
 	}
 });
 
