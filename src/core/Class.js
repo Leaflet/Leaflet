@@ -16,7 +16,7 @@ L.Class.extend = function (props) {
 		}
 
 		// call all constructor hooks
-		if (this._initHooks) {
+		if (this._initHooks.length) {
 			this.callInitHooks();
 		}
 	};
