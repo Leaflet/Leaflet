@@ -3,18 +3,15 @@
  */
 
 L.LatLng = function (lat, lng, alt) {
-	lat = parseFloat(lat);
-	lng = parseFloat(lng);
-
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
 
-	this.lat = lat;
-	this.lng = lng;
+	this.lat = +lat;
+	this.lng = +lng;
 
 	if (alt !== undefined) {
-		this.alt = parseFloat(alt);
+		this.alt = +alt;
 	}
 };
 
@@ -57,16 +54,19 @@ L.LatLng.prototype = {
 	}
 };
 
-L.latLng = function (a, b) { // (LatLng) or ([Number, Number]) or (Number, Number)
+
+// constructs LatLng with different signatures
+// (LatLng) or ([Number, Number]) or (Number, Number) or (Object)
+
+L.latLng = function (a, b) {
 	if (a instanceof L.LatLng) {
 		return a;
 	}
-	if (L.Util.isArray(a)) {
-		if (typeof a[0] === 'number' || typeof a[0] === 'string') {
+	if (L.Util.isArray(a) && typeof a[0] !== 'object') {
+		if (a.length === 3) {
 			return new L.LatLng(a[0], a[1], a[2]);
-		} else {
-			return null;
 		}
+		return new L.LatLng(a[0], a[1]);
 	}
 	if (a === undefined || a === null) {
 		return a;
