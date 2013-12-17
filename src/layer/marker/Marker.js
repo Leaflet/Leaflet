@@ -59,7 +59,10 @@ L.Marker = L.Layer.extend({
 
 		this.update();
 
-		return this.fire('move', {latlng: this._latlng});
+		return this.fire('move', {
+			latLng: this._latlng,
+			latlng: this._latlng
+		});
 	},
 
 	setZIndexOffset: function (offset) {
@@ -239,6 +242,7 @@ L.Marker = L.Layer.extend({
 
 		this.fire(e.type, {
 			originalEvent: e,
+			latLng: this._latlng,
 			latlng: this._latlng
 		});
 	},
@@ -247,6 +251,7 @@ L.Marker = L.Layer.extend({
 		if (e.keyCode === 13) {
 			this.fire('click', {
 				originalEvent: e,
+				latLng: this._latlng,
 				latlng: this._latlng
 			});
 		}
@@ -256,6 +261,7 @@ L.Marker = L.Layer.extend({
 
 		this.fire(e.type, {
 			originalEvent: e,
+			latLng: this._latlng,
 			latlng: this._latlng
 		});
 

@@ -19,7 +19,7 @@
   var map = L.map('map').setView([51.505, -0.09], 13);
   L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 map.on('click', function(e) {
-    L.popup().setLatLng(e.latlng).setContent('Hello').openOn(map);
+    L.popup().setLatLng(e.latLng).setContent('Hello').openOn(map);
 });
 
 </script>

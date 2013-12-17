@@ -82,6 +82,7 @@ L.Map.include({
 		}
 
 		var data = {
+			latLng: latlng,
 			latlng: latlng,
 			bounds: bounds,
 			timestamp: pos.timestamp
