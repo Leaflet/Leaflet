@@ -38,15 +38,12 @@ L.Canvas = L.Renderer.extend({
 		container.height = m * size.y;
 		container.style.width = size.x + 'px';
 		container.style.height = size.y + 'px';
-		this._autoscale();
 
-		this._ctx.translate(-b.min.x, -b.min.y);
-	},
-
-	_autoscale: function () {
 		if (L.Browser.retina) {
 			this._ctx.scale(2, 2);
 		}
+
+		this._ctx.translate(-b.min.x, -b.min.y);
 	},
 
 	_initPath: function (layer) {
@@ -84,8 +81,8 @@ L.Canvas = L.Renderer.extend({
 
 	_fireRedraw: function () {
 		this._redrawRequest = null;
-		this._container.width = this._container.width; // clear canvas
-		this._autoscale();
+
+		this._ctx.clearRect(0, 0, this._container.width, this._container.height);
 
 		this.fire('redraw');
 	},
