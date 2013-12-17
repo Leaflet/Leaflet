@@ -84,6 +84,6 @@ L.Marker.include({
 	},
 
 	_movePopup: function (e) {
-		this._popup.setLatLng(e.latlng);
+		this._popup.setLatLng(e.latLng);
 	}
 });

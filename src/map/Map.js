@@ -575,6 +575,7 @@ L.Map = L.Evented.extend({
 		    latlng = this.layerPointToLatLng(layerPoint);
 
 		this.fire(type, {
+			latLng: latlng,
 			latlng: latlng,
 			layerPoint: layerPoint,
 			containerPoint: containerPoint,

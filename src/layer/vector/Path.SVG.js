@@ -148,6 +148,7 @@ L.Path = L.Path.extend({
 		    latlng = map.layerPointToLatLng(layerPoint);
 
 		this.fire(e.type, {
+			latLng: latlng,
 			latlng: latlng,
 			layerPoint: layerPoint,
 			containerPoint: containerPoint,
