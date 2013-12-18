@@ -878,6 +878,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/bbecquet/">Benjamin Becquet</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/lizardtechblog/Leaflet.OpacityControls">Leaflet.OpacityControls</a>
+		</td><td>
+			Simple Leaflet controls to adjust the opacity of a map layer.
+		</td><td>
+			<a href="https://github.com/lizardtechblog/">Jared Dominguez</a>
+		</td>
+	</tr>
 </table>
 
 
