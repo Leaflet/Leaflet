@@ -95,9 +95,9 @@ describe("L.Polyline#toGeoJSON", function () {
 	});
 });
 
-describe("L.MultiPolyline#toGeoJSON", function () {
+describe("L.Polyline (multi) #toGeoJSON", function () {
 	it("returns a 2D MultiLineString object", function () {
-		var multiPolyline = new L.MultiPolyline([[[10, 20], [2, 5]], [[1, 2], [3, 4]]]);
+		var multiPolyline = new L.Polyline([[[10, 20], [2, 5]], [[1, 2], [3, 4]]]);
 		expect(multiPolyline.toGeoJSON().geometry).to.eql({
 			type: 'MultiLineString',
 			coordinates: [
@@ -108,7 +108,7 @@ describe("L.MultiPolyline#toGeoJSON", function () {
 	});
 
 	it("returns a 3D MultiLineString object", function () {
-		var multiPolyline = new L.MultiPolyline([[[10, 20, 30], [2, 5, 10]], [[1, 2, 3], [4, 5, 6]]]);
+		var multiPolyline = new L.Polyline([[[10, 20, 30], [2, 5, 10]], [[1, 2, 3], [4, 5, 6]]]);
 		expect(multiPolyline.toGeoJSON().geometry).to.eql({
 			type: 'MultiLineString',
 			coordinates: [
@@ -159,9 +159,9 @@ describe("L.Polygon#toGeoJSON", function () {
 	});
 });
 
-describe("L.MultiPolygon#toGeoJSON", function () {
+describe("L.Polygon (multi) #toGeoJSON", function () {
 	it("returns a 2D MultiPolygon object", function () {
-		var multiPolygon = new L.MultiPolygon([[[1, 2], [3, 4], [5, 6]]]);
+		var multiPolygon = new L.Polygon([[[1, 2], [3, 4], [5, 6]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'MultiPolygon',
 			coordinates: [
@@ -171,7 +171,7 @@ describe("L.MultiPolygon#toGeoJSON", function () {
 	});
 
 	it("returns a 3D MultiPolygon object", function () {
-		var multiPolygon = new L.MultiPolygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
+		var multiPolygon = new L.Polygon([[[1, 2, 3], [4, 5, 6], [7, 8, 9]]]);
 		expect(multiPolygon.toGeoJSON().geometry).to.eql({
 			type: 'MultiPolygon',
 			coordinates: [

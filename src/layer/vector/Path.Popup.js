@@ -42,9 +42,7 @@ L.Path.include({
 
 		if (this._popup) {
 			// open the popup from one of the path's points if not specified
-			latlng = latlng || this._latlng ||
-			         this._latlngs[Math.floor(this._latlngs.length / 2)];
-
+			latlng = latlng || this._latlng || this.getCenter();
 			this._openPopup({latlng: latlng});
 		}
 
@@ -59,7 +57,6 @@ L.Path.include({
 	},
 
 	_openPopup: function (e) {
-		this._popup.setLatLng(e.latlng);
-		this._map.openPopup(this._popup);
+		this._map.openPopup(this._popup, e.latlng);
 	}
 });

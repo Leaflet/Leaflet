@@ -113,8 +113,8 @@ L.Draggable = L.Evented.extend({
 
 		for (var i in L.Draggable.MOVE) {
 			L.DomEvent
-			    .off(document, L.Draggable.MOVE[i], this._onMove)
-			    .off(document, L.Draggable.END[i], this._onUp);
+			    .off(document, L.Draggable.MOVE[i], this._onMove, this)
+			    .off(document, L.Draggable.END[i], this._onUp, this);
 		}
 
 		L.DomUtil.enableImageDrag();

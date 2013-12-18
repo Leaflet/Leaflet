@@ -1,110 +1,106 @@
 /*
- * L.Path is a base class for rendering vector paths on a map. Inherited by Polyline, Circle, etc.
+ * L.Path is the base class for all Leaflet vector layers like polygons and circles.
  */
 
 L.Path = L.Layer.extend({
 
-	statics: {
-		// how much to extend the clip area around the map view
-		// (relative to its size, e.g. 0.5 is half the screen in each direction)
-		// set it so that SVG element doesn't exceed 1280px (vectors flicker on dragend if it is)
-		CLIP_PADDING: (function () {
-			var max = L.Browser.mobile ? 1280 : 2000,
-			    target = (max / Math.max(window.outerWidth, window.outerHeight) - 1) / 2;
-			return Math.max(0, Math.min(0.5, target));
-		})()
-	},
-
 	options: {
 		stroke: true,
-		color: '#0033ff',
-		// dashArray: null,
-		// lineCap: null,
-		// lineJoin: null,
-		weight: 5,
-		opacity: 0.5,
+		color: '#3388ff',
+		weight: 3,
+		opacity: 1,
+		lineCap: 'round',
+		lineJoin: 'round',
+		// dashArray: null
 
-		// fill: false,
-		// fillColor: null, same as color by default
+		// fill: false
+		// fillColor: same as color by default
 		fillOpacity: 0.2,
 
 		// className: ''
-
 		clickable: true
 	},
 
-	initialize: function (options) {
-		L.setOptions(this, options);
-	},
-
 	onAdd: function () {
-		if (!this._container) {
-			this._initElements();
+		this._renderer = this._map.getRenderer(this);
+		this._renderer._initPath(this);
 
-			if (this.options.clickable) {
-				this._initEvents();
-			}
-		}
+		// defined in children classes
+		this._project();
+		this._update();
 
-		this.projectLatlngs();
-		this._updatePath();
-
-		if (this._container) {
-			this._map._pathRoot.appendChild(this._container);
-		}
+		this._renderer._addPath(this);
 	},
 
 	onRemove: function () {
-		L.DomUtil.remove(this._container);
-
-		// TODO move to Path.VML
-		if (L.Browser.vml) {
-			this._container = null;
-			this._stroke = null;
-			this._fill = null;
-		}
+		this._renderer._removePath(this);
 	},
 
 	getEvents: function () {
 		return {
-			viewreset: this.projectLatlngs,
-			moveend: this._updatePath
+			viewreset: this._project,
+			moveend: this._update
 		};
-	},
-
-	/*
-	projectLatlngs: function () {
-		// do all projection stuff here
-	},
-	*/
-
-	setStyle: function (style) {
-		L.setOptions(this, style);
-
-		if (this._container) {
-			this._updateStyle();
-		}
-
-		return this;
 	},
 
 	redraw: function () {
 		if (this._map) {
-			this.projectLatlngs();
-			this._updatePath();
+			this._project();
+			this._update();
 		}
 		return this;
-	}
-});
+	},
 
-L.Map.include({
-	_updatePathViewport: function () {
-		var p = L.Path.CLIP_PADDING,
-		    size = this.getSize(),
-		    panePos = L.DomUtil.getPosition(this._mapPane),
-		    min = panePos.multiplyBy(-1)._subtract(size.multiplyBy(p)._round()),
-		    max = min.add(size.multiplyBy(1 + p * 2)._round());
+	setStyle: function (style) {
+		L.setOptions(this, style);
+		if (this._renderer) {
+			this._renderer._updateStyle(this);
+		}
+		return this;
+	},
 
-		this._pathViewport = new L.Bounds(min, max);
+	bringToFront: function () {
+		this._renderer._bringToFront(this);
+		return this;
+	},
+
+	bringToBack: function () {
+		this._renderer._bringToBack(this);
+		return this;
+	},
+
+	_onMouseClick: function (e) {
+		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		this._fireMouseEvent(e);
+	},
+
+	_fireMouseEvent: function (e, type) {
+		type = type || e.type;
+
+		if (!this.hasEventListeners(type)) { return; }
+
+		var map = this._map,
+		    containerPoint = map.mouseEventToContainerPoint(e),
+		    layerPoint = map.containerPointToLayerPoint(containerPoint),
+		    latlng = map.layerPointToLatLng(layerPoint);
+
+		this.fire(type, {
+			latlng: latlng,
+			layerPoint: layerPoint,
+			containerPoint: containerPoint,
+			originalEvent: e
+		});
+
+		if (type === 'contextmenu') {
+			L.DomEvent.preventDefault(e);
+		}
+		if (e.type !== 'mousemove') {
+			L.DomEvent.stopPropagation(e);
+		}
+	},
+
+	_clickTolerance: function () {
+		// used when doing hit detection for Canvas layers
+		return (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
 	}
 });

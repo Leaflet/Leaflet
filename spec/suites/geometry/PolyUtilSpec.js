@@ -17,9 +17,9 @@ describe('PolyUtil', function () {
 			}
 
 			expect(clipped).to.eql([
-				new L.Point(7.5, 10),
+				new L.Point(8, 10),
 				new L.Point(5, 5),
-				new L.Point(10, 7.5),
+				new L.Point(10, 8),
 				new L.Point(10, 10)
 			]);
 		});

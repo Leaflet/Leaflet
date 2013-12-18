@@ -10,7 +10,8 @@
 .leaflet-shadow-pane,
 .leaflet-marker-pane,
 .leaflet-popup-pane,
-.leaflet-overlay-pane svg,
+.leaflet-map-pane svg,
+.leaflet-map-pane canvas,
 .leaflet-zoom-box,
 .leaflet-image-layer,
 .leaflet-layer {
@@ -64,6 +65,9 @@
 .leaflet-shadow-pane  { z-index: 5; }
 .leaflet-marker-pane  { z-index: 6; }
 .leaflet-popup-pane   { z-index: 7; }
+
+.leaflet-map-pane canvas { z-index: 1; }
+.leaflet-map-pane svg    { z-index: 2; }
 
 .leaflet-vml-shape {
 	width: 1px;

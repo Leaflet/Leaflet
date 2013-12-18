@@ -84,23 +84,15 @@ var deps = {
 		desc: 'Extends LayerGroup with mouse events and bindPopup method shared between layers.'
 	},
 
+
 	Path: {
-		src: ['layer/vector/Path.js',
-		      'layer/vector/Path.SVG.js',
-		      'layer/vector/Path.Popup.js'],
-		desc: 'Vector rendering core (SVG-powered), enables overlaying the map with SVG paths.',
+		src: [
+			'layer/vector/Renderer.js',
+			'layer/vector/Path.js',
+			'layer/vector/Path.Popup.js'
+		],
+		desc: 'Vector rendering core.',
 		heading: 'Vector layers'
-	},
-
-	PathVML: {
-		src: ['layer/vector/Path.VML.js'],
-		desc: 'VML fallback for vector rendering core (IE 6-8).'
-	},
-
-	PathCanvas: {
-		src: ['layer/vector/canvas/Path.Canvas.js'],
-		deps: ['Path', 'Polyline', 'Polygon', 'Circle'],
-		desc: 'Canvas fallback for vector rendering core (makes it work on Android 2+).'
 	},
 
 	Polyline: {
@@ -117,42 +109,45 @@ var deps = {
 		desc: 'Polygon overlays.'
 	},
 
-	MultiPoly: {
-		src: ['layer/vector/MultiPoly.js'],
-		deps: ['FeatureGroup', 'Polyline', 'Polygon'],
-		desc: 'MultiPolygon and MultyPolyline layers.'
-	},
-
 	Rectangle: {
 		src: ['layer/vector/Rectangle.js'],
 		deps: ['Polygon'],
 		desc: ['Rectangle overlays.']
 	},
 
-	Circle: {
-		src: ['layer/vector/Circle.js'],
-		deps: ['Path'],
-		desc: 'Circle overlays (with radius in meters).'
-	},
-
 	CircleMarker: {
 		src: ['layer/vector/CircleMarker.js'],
-		deps: ['Circle'],
+		deps: ['Path'],
 		desc: 'Circle overlays with a constant pixel radius.'
 	},
 
-	VectorsCanvas: {
-		src: ['layer/vector/canvas/Polyline.Canvas.js',
-		      'layer/vector/canvas/Polygon.Canvas.js',
-		      'layer/vector/canvas/Circle.Canvas.js',
-		      'layer/vector/canvas/CircleMarker.Canvas.js'],
-		deps: ['PathCanvas', 'Polyline', 'Polygon', 'Circle', 'CircleMarker'],
-		desc: 'Canvas fallback for vector layers (polygons, polylines, circles, circlemarkers)'
+	Circle: {
+		src: ['layer/vector/Circle.js'],
+		deps: ['CircleMarker'],
+		desc: 'Circle overlays (with radius in meters).'
+	},
+
+	SVG: {
+		src: ['layer/vector/SVG.js'],
+		deps: ['Path'],
+		desc: 'SVG backend for vector layers.'
+	},
+
+	VML: {
+		src: ['layer/vector/SVG.VML.js'],
+		deps: ['SVG'],
+		desc: 'VML fallback for vector layers in IE7-8.'
+	},
+
+	Canvas: {
+		src: ['layer/vector/Canvas.js'],
+		deps: ['Path'],
+		desc: 'Canvas backend for vector layers.'
 	},
 
 	GeoJSON: {
 		src: ['layer/GeoJSON.js'],
-		deps: ['CircleMarker', 'Marker', 'MultiPoly', 'FeatureGroup'],
+		deps: ['Polygon', 'Circle', 'CircleMarker', 'Marker', 'FeatureGroup'],
 		desc: 'GeoJSON layer, parses the data and adds corresponding layers above.'
 	},
 
