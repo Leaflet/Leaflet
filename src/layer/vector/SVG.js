@@ -6,6 +6,8 @@ L.SVG = L.Renderer.extend({
 
 	_initContainer: function () {
 		this._container = L.SVG.create('svg');
+
+		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 	},
 
@@ -25,6 +27,8 @@ L.SVG = L.Renderer.extend({
 		}
 
 		L.DomUtil.setPosition(container, b.min);
+
+		// update container viewBox so that we don't have to change coordinates of individual layers
 		container.setAttribute('width', size.x);
 		container.setAttribute('height', size.y);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
@@ -33,6 +37,8 @@ L.SVG = L.Renderer.extend({
 			pane.appendChild(container);
 		}
 	},
+
+	// methods below are called by vector layers implementations
 
 	_initPath: function (layer) {
 		var path = layer._path = L.SVG.create('path');
@@ -91,7 +97,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_updatePoly: function (layer, closed) {
-		layer._path.setAttribute('d', L.SVG.pointsToPath(layer._parts, closed));
+		this._setPath(layer, L.SVG.pointsToPath(layer._parts, closed));
 	},
 
 	_updateCircle: function (layer) {
@@ -99,18 +105,23 @@ L.SVG = L.Renderer.extend({
 		    r = layer._radius,
 		    arc = 'a' + r + ',' + r + ' 0 1,0 ';
 
+		// drawing a circle with two half-arcs
 		var d = layer._empty() ? 'M0 0' :
 				'M' + (p.x - r) + ',' + p.y +
 				arc +  (r * 2) + ',0 ' +
 				arc + (-r * 2) + ',0 ';
 
-		layer._path.setAttribute('d', d);
+		this._setPath(layer, d);
 	},
 
+	_setPath: function (layer, path) {
+		layer._path.setAttribute('d', path);
+	},
+
+	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
 	_bringToFront: function (layer) {
 		this._addPath(layer);
 	},
-
 	_bringToBack: function (layer) {
 		this._container.insertBefore(layer._path, this._container.firstChild);
 	},
@@ -134,6 +145,7 @@ L.extend(L.SVG, {
 		return document.createElementNS('http://www.w3.org/2000/svg', name);
 	},
 
+	// generates SVG path string for multiple rings, with each ring turning into "M..L..L.." instructions
 	pointsToPath: function (rings, closed) {
 		var str = '',
 			i, j, len, len2, points, p;
@@ -146,9 +158,11 @@ L.extend(L.SVG, {
 				str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 			}
 
+			// closes the ring for polygons; "x" is VML syntax
 			str += closed ? (L.Browser.svg ? 'z' : 'x') : '';
 		}
 
+		// SVG complains about empty path strings
 		return str || 'M0 0';
 	}
 });
@@ -159,4 +173,5 @@ L.svg = function () {
 	return L.Browser.svg || L.Browser.vml ? new L.SVG() : null;
 };
 
+// default instance to use when adding vectors to the map
 L.SVG.instance = L.svg();
