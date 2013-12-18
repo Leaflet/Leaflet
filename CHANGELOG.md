@@ -25,6 +25,7 @@ Leaflet vector layers rendering got a major rewrite, making it possible to switc
 * Improved `Polyline`/`Polygon` `getBounds` to be cached (so it works much faster).
 * Changed `Circle` to inherit from `CircleMarker` and not the other way.
 * Fixed `GeoJSON` `resetStyle` to work properly in case `style` option wasn't set.
+* Fixed a bug where map fired `moveend` when updating Canvas layers.
 
 ### Layers refactoring
 
