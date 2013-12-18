@@ -6,6 +6,8 @@ L.Canvas = L.Renderer.extend({
 
 	onAdd: function () {
 		L.Renderer.prototype.onAdd.call(this);
+
+		// redraw vectors since canvas is cleared upon removal
 		this.fire('redraw');
 	},
 
@@ -20,11 +22,13 @@ L.Canvas = L.Renderer.extend({
 		L.Renderer.prototype._update.call(this);
 
 		var b = this._bounds,
+		    container = this._container,
 		    size = b.getSize(),
-		    m = L.Browser.retina ? 2 : 1,
-		    container = this._container;
+		    m = L.Browser.retina ? 2 : 1;
 
 		L.DomUtil.setPosition(container, b.min);
+
+		// set canvas size (also clearing it); use double size on retina
 		container.width = m * size.x;
 		container.height = m * size.y;
 		container.style.width = size.x + 'px';
@@ -34,6 +38,7 @@ L.Canvas = L.Renderer.extend({
 			this._ctx.scale(2, 2);
 		}
 
+		// translate so we use the same path coordinates after canvas element moves
 		this._ctx.translate(-b.min.x, -b.min.y);
 	},
 
@@ -152,6 +157,9 @@ L.Canvas = L.Renderer.extend({
 		}
 	},
 
+	// Canvas obviously doesn't have mouse events for individual drawn objects,
+	// so we emulate that by calculating what's under the mouse on mousemove/click manually
+
 	_onClick: function (e) {
 		if (this._containsPoint(this._map.mouseEventToLayerPoint(e))) {
 			this._onMouseClick(e);
@@ -161,25 +169,29 @@ L.Canvas = L.Renderer.extend({
 	_onMouseMove: function (e) {
 		if (!this._map || this._map._animatingZoom) { return; }
 
-		var point = this._map.mouseEventToLayerPoint(e);
+		var point = this._map.mouseEventToLayerPoint(e),
+		    container = this._renderer._container,
+		    className = 'leaflet-clickable';
 
-		// TODO don't do on each move
+		// emulate mouseover/mouseout events
+		// TODO don't do on each move event, throttle since it's expensive
+
 		if (this._containsPoint(point)) {
-			this._renderer._container.style.cursor = 'pointer';
-			this._mouseInside = true;
+			L.DomUtil.addClass(container, className); // change cursor
 			this._fireMouseEvent(e, 'mouseover');
+			this._mouseInside = true;
 
 		} else if (this._mouseInside) {
-			this._renderer._container.style.cursor = '';
-			this._mouseInside = false;
+			L.DomUtil.removeClass(container, className);
 			this._fireMouseEvent(e, 'mouseout');
+			this._mouseInside = false;
 		}
 	},
 
-	_bringToFront: function () {},
-	_bringToBack: function () {}
+	// TODO _bringToFront & _bringToBack, pretty tricky
 
-	// TODO _bringToFront & _bringToBack
+	_bringToFront: L.Util.falseFn,
+	_bringToBack: L.Util.falseFn
 });
 
 L.Browser.canvas = (function () {
@@ -192,13 +204,13 @@ L.canvas = function () {
 
 L.Canvas.instance = L.canvas();
 
-
 L.Polyline.prototype._containsPoint = function (p, closed) {
 	var i, j, k, len, len2, part,
 	    w = this._clickTolerance();
 
 	if (!this._pxBounds.contains(p)) { return false; }
 
+	// hit detection for polylines
 	for (i = 0, len = this._parts.length; i < len; i++) {
 		part = this._parts[i];
 
