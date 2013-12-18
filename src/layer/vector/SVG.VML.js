@@ -20,13 +20,8 @@ L.Browser.vml = !L.Browser.svg && (function () {
 
 L.SVG.include(!L.Browser.vml ? {} : {
 
-	onAdd: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-vml-container', this.getPane());
-		this._update();
-	},
-
-	onRemove: function () {
-		L.DomUtil.remove(this._container);
+	_initContainer: function () {
+		this._container = L.DomUtil.create('div', 'leaflet-vml-container');
 	},
 
 	_update: function () {

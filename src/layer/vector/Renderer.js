@@ -1,3 +1,7 @@
+/*
+ * L.Renderer is a base class for renderer implementations (SVG, Canvas);
+ * handles renderer container, bounds and zoom animation.
+ */
 
 L.Renderer = L.Layer.extend({
 
@@ -9,6 +13,23 @@ L.Renderer = L.Layer.extend({
 	initialize: function (options) {
 		L.setOptions(this, options);
 		L.stamp(this);
+	},
+
+	onAdd: function () {
+		if (!this._container) {
+			this._initContainer();
+
+			if (this._zoomAnimated) {
+				L.DomUtil.addClass(this._container, 'leaflet-zoom-animated');
+			}
+		}
+
+		this.getPane().appendChild(this._container);
+		this._update();
+	},
+
+	onRemove: function () {
+		L.DomUtil.remove(this._container);
 	},
 
 	getEvents: function () {
@@ -29,6 +50,7 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_update: function () {
+		// update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		var p = this.options.padding,
 		    size = this._map.getSize(),
 		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();

@@ -1,30 +1,17 @@
 /*
- * Vector rendering for all browsers that support canvas.
+ * L.Canvas handles Canvas vector layers rendering and mouse events handling. All Canvas-specific code goes here.
  */
 
 L.Canvas = L.Renderer.extend({
 
 	onAdd: function () {
-		var container = this._container;
-
-		if (!container) {
-			container = this._container = document.createElement('canvas');
-
-			if (this._zoomAnimated) {
-				L.DomUtil.addClass(container, 'leaflet-zoom-animated');
-			}
-
-			this._ctx = container.getContext('2d');
-		}
-
-		this.getPane().appendChild(container);
-		this._update();
-
+		L.Renderer.prototype.onAdd.call(this);
 		this.fire('redraw');
 	},
 
-	onRemove: function () {
-		L.DomUtil.remove(this._container);
+	_initContainer: function () {
+		this._container = document.createElement('canvas');
+		this._ctx = this._container.getContext('2d');
 	},
 
 	_update: function () {

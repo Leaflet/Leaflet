@@ -1,24 +1,12 @@
+/*
+ * L.SVG renders vector layers with SVG. All SVG-specific code goes here.
+ */
 
 L.SVG = L.Renderer.extend({
 
-	onAdd: function () {
-		var container = this._container;
-
-		if (!container) {
-			container = this._container = L.SVG.create('svg');
-			container.setAttribute('pointer-events', 'none');
-
-			if (this._zoomAnimated) {
-				L.DomUtil.addClass(container, 'leaflet-zoom-animated');
-			}
-		}
-
-		this.getPane().appendChild(container);
-		this._update();
-	},
-
-	onRemove: function () {
-		L.DomUtil.remove(this._container);
+	_initContainer: function () {
+		this._container = L.SVG.create('svg');
+		this._container.setAttribute('pointer-events', 'none');
 	},
 
 	_update: function () {
