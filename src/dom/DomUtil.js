@@ -19,66 +19,6 @@ L.DomUtil = {
 		return value === 'auto' ? null : value;
 	},
 
-	getViewportOffset: function (element) {
-
-		var top = 0,
-		    left = 0,
-		    el = element,
-		    docBody = document.body,
-		    docEl = document.documentElement,
-		    pos;
-
-		do {
-			top  += el.offsetTop  || 0;
-			left += el.offsetLeft || 0;
-
-			//add borders
-			top += parseInt(L.DomUtil.getStyle(el, 'borderTopWidth'), 10) || 0;
-			left += parseInt(L.DomUtil.getStyle(el, 'borderLeftWidth'), 10) || 0;
-
-			pos = L.DomUtil.getStyle(el, 'position');
-
-			if (el.offsetParent === docBody && pos === 'absolute') { break; }
-
-			if (pos === 'fixed') {
-				top  += docBody.scrollTop  || docEl.scrollTop  || 0;
-				left += docBody.scrollLeft || docEl.scrollLeft || 0;
-				break;
-			}
-
-			if (pos === 'relative' && !el.offsetLeft) {
-				var width = L.DomUtil.getStyle(el, 'width'),
-				    maxWidth = L.DomUtil.getStyle(el, 'max-width'),
-				    r = el.getBoundingClientRect();
-
-				if (width !== 'none' || maxWidth !== 'none') {
-					left += r.left + el.clientLeft;
-				}
-
-				//calculate full y offset since we're breaking out of the loop
-				top += r.top + (docBody.scrollTop  || docEl.scrollTop  || 0);
-
-				break;
-			}
-
-			el = el.offsetParent;
-
-		} while (el);
-
-		el = element;
-
-		do {
-			if (el === docBody) { break; }
-
-			top  -= el.scrollTop  || 0;
-			left -= el.scrollLeft || 0;
-
-			el = el.parentNode;
-		} while (el);
-
-		return new L.Point(left, top);
-	},
-
 	documentIsLtr: function () {
 		L.DomUtil._docIsLtr = L.DomUtil._docIsLtr || L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
 		return L.DomUtil._docIsLtr;
