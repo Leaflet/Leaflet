@@ -143,7 +143,7 @@ L.extend(L.SVG, {
 
 			for (j = 0, len2 = points.length; j < len2; j++) {
 				p = points[j];
-				str += (j ? 'L' : 'M') + Math.round(p.x) + ' ' + Math.round(p.y);
+				str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
 			}
 
 			str += closed ? (L.Browser.svg ? 'z' : 'x') : '';
