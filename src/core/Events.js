@@ -113,42 +113,51 @@ L.Evented = L.Class.extend({
 			return this;
 		}
 
-		var event = L.Util.extend({}, data, { type: type, target: this });
-
-		var events = this[eventsKey],
+		var event = L.Util.extend({}, data, {type: type, target: this}),
+		    events = this[eventsKey],
 		    listeners, i, len, typeIndex, contextId;
 
-		if (events[type]) {
-			// make sure adding/removing listeners inside other listeners won't cause infinite loop
-			listeners = events[type].slice();
+		if (events) {
+			if (events[type]) {
+				// make sure adding/removing listeners inside other listeners won't cause infinite loop
+				listeners = events[type].slice();
 
-			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].action.call(listeners[i].context, event);
-			}
-		}
-
-		// fire event for the context-indexed listeners as well
-		typeIndex = events[type + '_idx'];
-
-		if (!typeIndex) { return this; }
-
-		for (contextId in typeIndex) {
-			listeners = typeIndex[contextId].slice();
-
-			if (listeners) {
 				for (i = 0, len = listeners.length; i < len; i++) {
 					listeners[i].action.call(listeners[i].context, event);
 				}
 			}
+
+			// fire event for the context-indexed listeners as well
+			typeIndex = events[type + '_idx'];
+
+			if (typeIndex) {
+				for (contextId in typeIndex) {
+					listeners = typeIndex[contextId].slice();
+
+					if (listeners) {
+						for (i = 0, len = listeners.length; i < len; i++) {
+							listeners[i].action.call(listeners[i].context, event);
+						}
+					}
+				}
+			}
 		}
+
+		this._propagateEvent(event);
 
 		return this;
 	},
 
 	hasEventListeners: function (type) {
 		var events = this[eventsKey];
-		return !!events && ((type in events && events[type].length > 0) ||
-		                    (type + '_idx' in events && events[type + '_idx_len'] > 0));
+		if (events && ((type in events && events[type].length > 0) ||
+		               (type + '_idx' in events && events[type + '_idx_len'] > 0))) {
+			return true;
+		}
+		for (var id in this._eventParents) {
+			if (this._eventParents[id].hasEventListeners(type)) { return true; }
+		}
+		return false;
 	},
 
 	clearAllEventListeners: function () {
@@ -169,6 +178,23 @@ L.Evented = L.Class.extend({
 		return this
 		    .on(types, fn, context)
 		    .on(types, handler, context);
+	},
+
+	addEventParent: function (obj) {
+		this._eventParents = this._eventParents || {};
+		this._eventParents[L.stamp(obj)] = obj;
+	},
+
+	removeEventParent: function (obj) {
+		if (this._eventParents) {
+			delete this._eventParents[L.stamp(obj)];
+		}
+	},
+
+	_propagateEvent: function (e) {
+		for (var id in this._eventParents) {
+			this._eventParents[id].fire(e.type, L.extend({layer: e.target}, e));
+		}
 	}
 });
 
