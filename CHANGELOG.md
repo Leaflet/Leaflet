@@ -11,7 +11,7 @@ This version contains a lot of beneficial but potentially breaking changes (espe
 
 ### Vectors refactoring
 
-Leaflet vector layers rendering got a major rewrite, making it possible to switch between rendering backends (Canvas, SVG) dynamically (and even use both for different layers at the same time), have more than one physical pane for vector layers, significantly improving Canvas performance and adding retina support, getting rid of ugly hacks and generally making the code much cleaner.
+Leaflet vector layers rendering got a major rewrite, making it possible to switch between rendering backends (Canvas, SVG) dynamically (and even use both for different layers at the same time), have more than one physical pane for vector layers, significantly improving Canvas performance and adding retina support, getting rid of ugly hacks and generally making the code much cleaner. PR [#2290](https://github.com/Leaflet/Leaflet/pull/2290).
 
 * Added `Renderer` layer (inherited by SVG/Canvas implementations) that handles renderer bounds and zoom animation.
 * Added `SVG` & `Canvas` classes that now contain all renderer-specific code for vector layers and can be added as layers to the map.
