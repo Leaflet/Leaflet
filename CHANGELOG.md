@@ -54,6 +54,12 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 
 ### Other improvements
 
+* Significantly improved `FeatureGroup` (and correspondingly `GeoJSON`) layer adding and events performance (about 10x) by implementing a much better event propagation mechanism. [#2311](https://github.com/Leaflet/Leaflet/pull/2311)
+* Significantly [improved](http://jsperf.com/leaflet-parsefloat-in-latlng/2) `LatLng` creation performance (8x).
+* Added `Evented` class that now many Leaflet classes inherit from (instead of mixing in events methods in each class), while keeping the old `includes: L.Mixin.Events` syntax available. [#2310](https://github.com/Leaflet/Leaflet/pull/2310)
+* Improved `Class` `options` to be prototypically inherited instead of copied over in children classes, which leads to more efficient memory use, faster object construction times and ability to change parent options that get propagated to all children automatically (by [@jfirebaugh](https://github.com/jfirebaugh)). [#2300](https://github.com/Leaflet/Leaflet/pull/2300) [#2294](https://github.com/Leaflet/Leaflet/issues/2294)
+* Added `{r}` variable to `TileLayer` `url` for adding `"@2x"` prefix on Retina-enabled devices (by [@urbaniak](https://github.com/urbaniak)). [#2296](https://github.com/Leaflet/Leaflet/pull/2296)
+* Removed `DomUtil.getViewportOffset` method as it is no longer necessary.
 * Added `Point` `ceil` method (by [@perliedman](https://github.com/perliedman)).
 * Added `Util.wrapNum` method for wrapping a number to lie in a certain range.
 * Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
@@ -63,6 +69,7 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Improved performance of layer objects construction.
 * Added popup fade out animation.
 * Improved the build system (`jake build`) to report gzipped library size.
+* Added Leaflet logo in vector format as `src/images/logo.svg`.
 
 
 ## 0.7.1 (December 6, 2013)
