@@ -1,3 +1,6 @@
+/*
+ * L.Polygon implements polygon vector layer (closed polyline with a fill inside).
+ */
 
 L.Polygon = L.Polyline.extend({
 
@@ -8,6 +11,8 @@ L.Polygon = L.Polyline.extend({
 	getCenter: function () {
 		var i, j, len, p1, p2, f, area, x, y,
 		    points = this._rings[0];
+
+		// polygon centroid algorithm; only uses the first ring if there are multiple
 
 		area = x = y = 0;
 
@@ -40,6 +45,8 @@ L.Polygon = L.Polyline.extend({
 			this._parts = this._rings;
 			return;
 		}
+
+		// polygons need a different clipping algorithm so we redefine that
 
 		var bounds = this._renderer._bounds,
 		    w = this.options.weight,

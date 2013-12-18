@@ -1,3 +1,6 @@
+/*
+ * L.Polyline implements polyline vector layer (a set of points connected with lines)
+ */
 
 L.Polyline = L.Path.extend({
 
@@ -39,7 +42,6 @@ L.Polyline = L.Path.extend({
 		return removed;
 	},
 
-	// TODO remove this method?
 	closestLayerPoint: function (p) {
 		var minDistance = Infinity,
 		    minPoint = null,
@@ -72,6 +74,8 @@ L.Polyline = L.Path.extend({
 		    points = this._rings[0],
 		    len = points.length;
 
+		// polyline centroid algorithm; only uses the first ring if there are multiple
+
 		for (i = 0, halfDist = 0; i < len - 1; i++) {
 			halfDist += points[i].distanceTo(points[i + 1]) / 2;
 		}
@@ -96,6 +100,7 @@ L.Polyline = L.Path.extend({
 		return this._bounds;
 	},
 
+	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs, nested) {
 		var result = [],
 		    flat = this._flat(latlngs);
@@ -116,13 +121,15 @@ L.Polyline = L.Path.extend({
 	},
 
 	_flat: function (latlngs) {
-		return !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] === 'number';
+		// true if it's a flat array of latlngs; false if nested
+		return !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] !== 'object';
 	},
 
 	_project: function () {
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings);
 
+		// project bounds as well to use later for Canvas hit detection/etc.
 		var w = this._clickTolerance(),
 			p = [w, w];
 
@@ -133,7 +140,9 @@ L.Polyline = L.Path.extend({
 		}
 	},
 
+	// recursively turns latlngs into a set of rings with projected coordinates
 	_projectLatlngs: function (latlngs, result) {
+
 		var flat = latlngs[0] instanceof L.LatLng,
 		    len = latlngs.length,
 		    i, ring;
@@ -151,6 +160,7 @@ L.Polyline = L.Path.extend({
 		}
 	},
 
+	// clip polyline by renderer bounds so that we have less to render for performance
 	_clipPoints: function () {
 		if (this.options.noClip) {
 			this._parts = this._rings;
@@ -183,7 +193,7 @@ L.Polyline = L.Path.extend({
 		}
 	},
 
-	// simplify each clipped part of the polyline
+	// simplify each clipped part of the polyline for performance
 	_simplifyPoints: function () {
 		var parts = this._parts,
 			tolerance = this.options.smoothFactor;
