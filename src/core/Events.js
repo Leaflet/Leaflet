@@ -9,7 +9,12 @@ L.Evented = L.Class.extend({
 	on: function (types, fn, context) {
 
 		// types can be a map of types/handlers
-		if (L.Util.invokeEach(types, this.on, this, fn, context)) { return this; }
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this.on(type, types[type], fn);
+			}
+			return this;
+		}
 
 		var events = this[eventsKey] = this[eventsKey] || {},
 		    contextId = context && context !== this && L.stamp(context),
@@ -63,7 +68,12 @@ L.Evented = L.Class.extend({
 			return this.clearAllEventListeners();
 		}
 
-		if (L.Util.invokeEach(types, this.off, this, fn, context)) { return this; }
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this.off(type, types[type], fn);
+			}
+			return this;
+		}
 
 		var events = this[eventsKey],
 		    contextId = context && context !== this && L.stamp(context),
@@ -167,7 +177,12 @@ L.Evented = L.Class.extend({
 
 	once: function (types, fn, context) {
 
-		if (L.Util.invokeEach(types, this.addOneTimeEventListener, this, fn, context)) { return this; }
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this.once(type, types[type], fn);
+			}
+			return this;
+		}
 
 		var handler = L.bind(function () {
 			this

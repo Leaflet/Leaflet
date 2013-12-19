@@ -47,21 +47,6 @@ L.Util = {
 		};
 	}()),
 
-	invokeEach: function (obj, method, context) {
-		var i, args;
-
-		if (typeof obj === 'object') {
-			args = Array.prototype.slice.call(arguments, 3);
-
-			for (i in obj) {
-				method.apply(context, [i, obj[i]].concat(args));
-			}
-			return true;
-		}
-
-		return false;
-	},
-
 	limitExecByInterval: function (fn, time, context) {
 		var lock, execOnUnlock;
 
