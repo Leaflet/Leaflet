@@ -65,7 +65,10 @@ L.DomUtil = {
 
 	removeClass: function (el, name) {
 		if (el.classList !== undefined) {
-			el.classList.remove(name);
+			var classes = L.Util.splitWords(name);
+			for (var i = 0, len = classes.length; i < len; i++) {
+				el.classList.remove(classes[i]);
+            		}
 		} else {
 			L.DomUtil.setClass(el, L.Util.trim((' ' + L.DomUtil.getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 		}
