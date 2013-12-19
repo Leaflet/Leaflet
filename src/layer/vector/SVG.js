@@ -7,6 +7,9 @@ L.SVG = L.Renderer.extend({
 	_initContainer: function () {
 		this._container = L.SVG.create('svg');
 
+		this._paths = {};
+		this._initEvents();
+
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 	},
@@ -48,10 +51,12 @@ L.SVG = L.Renderer.extend({
 		}
 
 		if (layer.options.clickable) {
-			this._initEvents(layer, path);
+			L.DomUtil.addClass(path, 'leaflet-clickable');
 		}
 
 		this._updateStyle(layer);
+
+		this._paths[L.stamp(path)] = layer;
 	},
 
 	_addPath: function (layer) {
@@ -60,6 +65,7 @@ L.SVG = L.Renderer.extend({
 
 	_removePath: function (layer) {
 		L.DomUtil.remove(layer._path);
+		delete this._paths[L.stamp(layer._path)];
 	},
 
 	_updateStyle: function (layer) {
@@ -127,14 +133,20 @@ L.SVG = L.Renderer.extend({
 	},
 
 	// TODO remove duplication with L.Map
-	_initEvents: function (layer, el) {
-		L.DomUtil.addClass(el, 'leaflet-clickable');
-
-		L.DomEvent.on(el, 'click', layer._onMouseClick, layer);
-
-		var events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
+	_initEvents: function () {
+		var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
 		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.on(el, events[i], layer._fireMouseEvent, layer);
+			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
+		}
+	},
+
+	_fireMouseEvent: function (e) {
+		var path = this._paths[L.stamp(e.target)];
+
+		if (e.type === 'click') {
+			path._onMouseClick(e);
+		} else {
+			path._fireMouseEvent(e);
 		}
 	}
 });
