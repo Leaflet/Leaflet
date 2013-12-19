@@ -38,14 +38,13 @@ L.Util = {
 		};
 	},
 
-	stamp: (function () {
-		var lastId = 0,
-		    key = '_leaflet_id';
-		return function (obj) {
-			obj[key] = obj[key] || ++lastId;
-			return obj[key];
-		};
-	}()),
+	stamp: function (obj) {
+		// jshint camelcase: false
+		obj._leaflet_id = obj._leaflet_id || ++L.Util.lastId;
+		return obj._leaflet_id;
+	},
+
+	lastId: 0,
 
 	limitExecByInterval: function (fn, time, context) {
 		var lock, execOnUnlock;
