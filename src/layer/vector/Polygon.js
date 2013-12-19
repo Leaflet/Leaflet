@@ -29,8 +29,8 @@ L.Polygon = L.Polyline.extend({
 		return this._map.layerPointToLatLng([x / area, y / area]);
 	},
 
-	_convertLatLngs: function (latlngs, nested) {
-		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs, nested),
+	_convertLatLngs: function (latlngs) {
+		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs),
 		    len = result.length;
 
 		// remove last point if it equals first one

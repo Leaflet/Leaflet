@@ -13,7 +13,7 @@ L.Polyline = L.Path.extend({
 
 	initialize: function (latlngs, options) {
 		L.setOptions(this, options);
-		this._latlngs = this._convertLatLngs(latlngs);
+		this._setLatLngs(latlngs);
 	},
 
 	getLatLngs: function () {
@@ -22,7 +22,7 @@ L.Polyline = L.Path.extend({
 	},
 
 	setLatLngs: function (latlngs) {
-		this._latlngs = this._convertLatLngs(latlngs);
+		this._setLatLngs(latlngs);
 		return this.redraw();
 	},
 
@@ -37,7 +37,7 @@ L.Polyline = L.Path.extend({
 	spliceLatLngs: function () {
 		// TODO rings
 		var removed = [].splice.apply(this._latlngs, arguments);
-		this._latlngs = this._convertLatLngs(this._latlngs);
+		this._setLatLngs(this._latlngs);
 		this.redraw();
 		return removed;
 	},
@@ -100,20 +100,22 @@ L.Polyline = L.Path.extend({
 		return this._bounds;
 	},
 
+	_setLatLngs: function (latlngs) {
+		this._bounds = new L.LatLngBounds();
+		this._latlngs = this._convertLatLngs(latlngs);
+	},
+
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
-	_convertLatLngs: function (latlngs, nested) {
+	_convertLatLngs: function (latlngs) {
 		var result = [],
 		    flat = this._flat(latlngs);
 
-		if (!nested) {
-			this._bounds = new L.LatLngBounds();
-		}
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
 				result[i] = L.latLng(latlngs[i]);
 				this._bounds.extend(result[i]);
 			} else {
-				result[i] = this._convertLatLngs(latlngs[i], true);
+				result[i] = this._convertLatLngs(latlngs[i]);
 			}
 		}
 
@@ -131,12 +133,12 @@ L.Polyline = L.Path.extend({
 
 		// project bounds as well to use later for Canvas hit detection/etc.
 		var w = this._clickTolerance(),
-			p = [w, w];
+			p = new L.Point(w, -w);
 
 		if (this._latlngs.length) {
 			this._pxBounds = new L.Bounds(
-				this._map.latLngToLayerPoint(this._bounds.getNorthWest()).subtract(p),
-				this._map.latLngToLayerPoint(this._bounds.getSouthEast()).add(p));
+				this._map.latLngToLayerPoint(this._bounds.getSouthWest())._subtract(p),
+				this._map.latLngToLayerPoint(this._bounds.getNorthEast())._add(p));
 		}
 	},
 
