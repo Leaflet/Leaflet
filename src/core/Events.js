@@ -59,7 +59,8 @@ L.Evented = L.Class.extend({
 	off: function (types, fn, context) {
 
 		if (!types) {
-			return this.clearAllEventListeners();
+			delete this[eventsKey];
+			return this;
 		}
 
 		if (typeof types === 'object') {
@@ -126,7 +127,7 @@ L.Evented = L.Class.extend({
 	},
 
 	fire: function (type, data, propagate) {
-		if (!this.hasEventListeners(type, propagate)) { return this; }
+		if (!this.listens(type, propagate)) { return this; }
 
 		var event = L.Util.extend({}, data, {type: type, target: this}),
 		    events = this[eventsKey];
@@ -162,22 +163,17 @@ L.Evented = L.Class.extend({
 		return this;
 	},
 
-	hasEventListeners: function (type, propagate) {
+	listens: function (type, propagate) {
 		var events = this[eventsKey];
 
 		if (events && (events[type] || events[type + '_len'])) { return true; }
 
 		if (propagate) {
 			for (var id in this._eventParents) {
-				if (this._eventParents[id].hasEventListeners(type)) { return true; }
+				if (this._eventParents[id].listens(type)) { return true; }
 			}
 		}
 		return false;
-	},
-
-	clearAllEventListeners: function () {
-		delete this[eventsKey];
-		return this;
 	},
 
 	once: function (types, fn, context) {
@@ -224,8 +220,9 @@ var proto = L.Evented.prototype;
 
 // aliases
 proto.addEventListener = proto.on;
-proto.removeEventListener = proto.off;
+proto.removeEventListener = proto.clearAllEventListeners = proto.off;
 proto.addOneTimeEventListener = proto.once;
 proto.fireEvent = proto.fire;
+proto.hasEventListeners = proto.listens;
 
 L.Mixin = {Events: proto};

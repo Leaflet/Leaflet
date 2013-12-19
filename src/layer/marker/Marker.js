@@ -229,7 +229,7 @@ L.Marker = L.Layer.extend({
 	_onMouseClick: function (e) {
 		var wasDragged = this.dragging && this.dragging.moved();
 
-		if (this.hasEventListeners(e.type) || wasDragged) {
+		if (this.listens(e.type) || wasDragged) {
 			L.DomEvent.stopPropagation(e);
 		}
 
@@ -261,7 +261,7 @@ L.Marker = L.Layer.extend({
 
 		// TODO proper custom event propagation
 		// this line will always be called if marker is in a FeatureGroup
-		if (e.type === 'contextmenu' && this.hasEventListeners(e.type)) {
+		if (e.type === 'contextmenu' && this.listens(e.type)) {
 			L.DomEvent.preventDefault(e);
 		}
 		if (e.type !== 'mousedown') {

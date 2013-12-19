@@ -240,13 +240,13 @@ describe('Events', function () {
 
 			obj.removeEventListener('test'); // Removes both of the above listeners
 
-			expect(obj.hasEventListeners('test')).to.be(false);
+			expect(obj.listens('test')).to.be(false);
 
 			//Add and remove a listener
 			obj.addEventListener('test', spy, foo2);
 			obj.removeEventListener('test', spy, foo2);
 
-			expect(obj.hasEventListeners('test')).to.be(false);
+			expect(obj.listens('test')).to.be(false);
 		});
 
 		it('makes sure an event is not triggered if a listener is removed during dispatch', function () {

@@ -564,7 +564,7 @@ L.Map = L.Evented.extend({
 
 		type = (type === 'mouseenter' ? 'mouseover' : (type === 'mouseleave' ? 'mouseout' : type));
 
-		if (!this.hasEventListeners(type)) { return; }
+		if (!this.listens(type)) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);

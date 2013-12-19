@@ -77,7 +77,7 @@ L.Path = L.Layer.extend({
 	_fireMouseEvent: function (e, type) {
 		type = type || e.type;
 
-		if (!this.hasEventListeners(type)) { return; }
+		if (!this.listens(type)) { return; }
 
 		var map = this._map,
 		    containerPoint = map.mouseEventToContainerPoint(e),
