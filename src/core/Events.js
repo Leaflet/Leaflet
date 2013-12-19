@@ -56,15 +56,13 @@ L.Evented = L.Class.extend({
 			// store listeners of a particular context in a separate hash (if it has an id)
 			// gives a major performance boost when removing thousands of map layers
 
-			var fnId = L.stamp(fn),
-			    indexKey = type + '_idx',
+			var indexKey = type + '_idx',
 			    indexLenKey = type + '_len',
-			    typeIndex = events[indexKey] = events[indexKey] || {};
+			    typeIndex = events[indexKey] = events[indexKey] || {},
+			    id = L.stamp(fn) + '_' + contextId;
 
-			typeIndex[fnId] = typeIndex[fnId] || {};
-
-			if (!typeIndex[fnId][contextId]) {
-				typeIndex[fnId][contextId] = {fn: fn, ctx: context};
+			if (!typeIndex[id]) {
+				typeIndex[id] = {fn: fn, ctx: context};
 
 				// keep track of the number of keys in the index to quickly check if it's empty
 				events[indexLenKey] = (events[indexLenKey] || 0) + 1;
@@ -92,16 +90,17 @@ L.Evented = L.Class.extend({
 		}
 
 		var contextId = context && context !== this && L.stamp(context),
-		    listeners, i, len, listener;
+		    listeners, i, len, listener, id;
 
 		if (contextId) {
-			listeners = events[indexKey] && events[indexKey][L.stamp(fn)];
+			id = L.stamp(fn) + '_' + contextId;
+			listeners = events[indexKey];
 
-			if (listeners && listeners[contextId]) {
+			if (listeners && listeners[id]) {
 				// set the old action to a no-op, because it is possible
 				// that the listener is being iterated over as part of a dispatch
-				listener = listeners[contextId];
-				delete listeners[contextId];
+				listener = listeners[id];
+				delete listeners[id];
 				events[indexLenKey]--;
 			}
 
@@ -131,7 +130,7 @@ L.Evented = L.Class.extend({
 
 		if (events) {
 		    var typeIndex = events[type + '_idx'],
-		        fnId, contextId, i, len, listeners, listener;
+		        i, len, listeners, id;
 
 			if (events[type]) {
 				// make sure adding/removing listeners inside other listeners won't cause infinite loop
@@ -143,13 +142,8 @@ L.Evented = L.Class.extend({
 			}
 
 			// fire event for the context-indexed listeners as well
-			if (typeIndex) {
-				for (fnId in typeIndex) {
-					for (contextId in typeIndex[fnId]) {
-						listener = typeIndex[fnId][contextId];
-						listener.fn.call(listener.ctx, event);
-					}
-				}
+			for (id in typeIndex) {
+				typeIndex[id].fn.call(typeIndex[id].ctx, event);
 			}
 		}
 
