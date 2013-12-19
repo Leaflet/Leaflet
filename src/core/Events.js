@@ -8,9 +8,11 @@ L.Evented = L.Class.extend({
 
 	on: function (types, fn, context) {
 
+		var type;
+
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
-			for (var type in types) {
+			for (type in types) {
 				this.on(type, types[type], fn);
 			}
 			return this;
@@ -18,7 +20,7 @@ L.Evented = L.Class.extend({
 
 		var events = this[eventsKey] = this[eventsKey] || {},
 		    contextId = context && context !== this && L.stamp(context),
-		    i, len, event, type, indexKey, indexLenKey, typeIndex;
+		    i, len, event, indexKey, indexLenKey, typeIndex;
 
 		// types can be a string of space-separated words
 		types = L.Util.splitWords(types);
@@ -68,8 +70,10 @@ L.Evented = L.Class.extend({
 			return this.clearAllEventListeners();
 		}
 
+		var type;
+
 		if (typeof types === 'object') {
-			for (var type in types) {
+			for (type in types) {
 				this.off(type, types[type], fn);
 			}
 			return this;
@@ -77,7 +81,7 @@ L.Evented = L.Class.extend({
 
 		var events = this[eventsKey],
 		    contextId = context && context !== this && L.stamp(context),
-		    i, len, type, listeners, j, indexKey, indexLenKey, typeIndex, removed;
+		    i, len, listeners, j, indexKey, indexLenKey, typeIndex, removed;
 
 		types = L.Util.splitWords(types);
 
