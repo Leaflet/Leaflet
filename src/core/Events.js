@@ -1,8 +1,6 @@
 /*
- * L.Mixin.Events is used to add custom events functionality to Leaflet classes.
+ * L.Evented is a base class that Leaflet classes inherit from to handle custom events.
  */
-
-var eventsKey = '_leaflet_events';
 
 L.Evented = L.Class.extend({
 
@@ -30,7 +28,7 @@ L.Evented = L.Class.extend({
 
 		if (!types) {
 			// clear all listeners if called without arguments
-			delete this[eventsKey];
+			delete this._events;
 
 		} else if (typeof types === 'object') {
 			for (var type in types) {
@@ -51,7 +49,7 @@ L.Evented = L.Class.extend({
 	// attach listener (without syntactic sugar now)
 	_on: function (type, fn, context) {
 
-		var events = this[eventsKey] = this[eventsKey] || {},
+		var events = this._events = this._events || {},
 		    contextId = context && context !== this && L.stamp(context);
 
 		if (contextId) {
@@ -79,7 +77,7 @@ L.Evented = L.Class.extend({
 	},
 
 	_off: function (type, fn, context) {
-		var events = this[eventsKey],
+		var events = this._events,
 		    indexKey = type + '_idx',
 		    indexLenKey = type + '_len';
 
@@ -129,7 +127,7 @@ L.Evented = L.Class.extend({
 		if (!this.listens(type, propagate)) { return this; }
 
 		var event = L.Util.extend({}, data, {type: type, target: this}),
-		    events = this[eventsKey];
+		    events = this._events;
 
 		if (events) {
 		    var typeIndex = events[type + '_idx'],
@@ -163,7 +161,7 @@ L.Evented = L.Class.extend({
 	},
 
 	listens: function (type, propagate) {
-		var events = this[eventsKey];
+		var events = this._events;
 
 		if (events && (events[type] || events[type + '_len'])) { return true; }
 
