@@ -33,6 +33,10 @@ L.Layer = L.Evented.extend({
 
 		this.onAdd(map);
 
+		if (this.getAttribution && this._map.attributionControl) {
+			this._map.attributionControl.addAttribution(this.getAttribution());
+		}
+
 		if (this.getEvents) {
 			map.on(this.getEvents(), this);
 		}
@@ -50,6 +54,10 @@ L.Layer = L.Evented.extend({
 
 		if (map._loaded) {
 			this.onRemove(map);
+		}
+
+		if (this.getAttribution && this._map.attributionControl) {
+			this._map.attributionControl.removeAttribution(this.getAttribution());
 		}
 
 		if (this.getEvents) {
