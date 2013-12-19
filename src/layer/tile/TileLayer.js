@@ -294,6 +294,8 @@ L.TileLayer = L.Class.extend({
 
 			// prevent custom zoom to use too many tiles
 			zoom = Math.min(zoom, map.getZoom() + 4);
+		} else {
+			zoom = Math.round(zoom);
 		}
 
 		return zoom;
