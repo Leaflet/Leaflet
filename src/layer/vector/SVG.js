@@ -55,17 +55,18 @@ L.SVG = L.Renderer.extend({
 		}
 
 		this._updateStyle(layer);
-
-		this._paths[L.stamp(path)] = layer;
 	},
 
 	_addPath: function (layer) {
-		this._container.appendChild(layer._path);
+		var path = layer._path;
+		this._container.appendChild(path);
+		this._paths[L.stamp(path)] = layer;
 	},
 
 	_removePath: function (layer) {
-		L.DomUtil.remove(layer._path);
-		delete this._paths[L.stamp(layer._path)];
+		var path = layer._path;
+		L.DomUtil.remove(path);
+		delete this._paths[L.stamp(path)];
 	},
 
 	_updateStyle: function (layer) {
