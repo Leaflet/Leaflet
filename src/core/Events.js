@@ -126,8 +126,8 @@ L.Evented = L.Class.extend({
 		}
 	},
 
-	fire: function (type, data) {
-		if (!this.hasEventListeners(type)) {
+	fire: function (type, data, propagate) {
+		if (!this.hasEventListeners(type, propagate)) {
 			return this;
 		}
 
@@ -161,19 +161,23 @@ L.Evented = L.Class.extend({
 			}
 		}
 
-		this._propagateEvent(event);
+		if (propagate) {
+			this._propagateEvent(event);
+		}
 
 		return this;
 	},
 
-	hasEventListeners: function (type) {
+	hasEventListeners: function (type, propagate) {
 		var events = this[eventsKey];
 		if (events && ((type in events && events[type].length > 0) ||
 		               (type + '_idx' in events && events[type + '_idx_len'] > 0))) {
 			return true;
 		}
-		for (var id in this._eventParents) {
-			if (this._eventParents[id].hasEventListeners(type)) { return true; }
+		if (propagate) {
+			for (var id in this._eventParents) {
+				if (this._eventParents[id].hasEventListeners(type)) { return true; }
+			}
 		}
 		return false;
 	},
@@ -206,12 +210,14 @@ L.Evented = L.Class.extend({
 	addEventParent: function (obj) {
 		this._eventParents = this._eventParents || {};
 		this._eventParents[L.stamp(obj)] = obj;
+		return this;
 	},
 
 	removeEventParent: function (obj) {
 		if (this._eventParents) {
 			delete this._eventParents[L.stamp(obj)];
 		}
+		return this;
 	},
 
 	_propagateEvent: function (e) {

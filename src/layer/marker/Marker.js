@@ -257,7 +257,7 @@ L.Marker = L.Layer.extend({
 		this.fire(e.type, {
 			originalEvent: e,
 			latlng: this._latlng
-		});
+		}, true);
 
 		// TODO proper custom event propagation
 		// this line will always be called if marker is in a FeatureGroup

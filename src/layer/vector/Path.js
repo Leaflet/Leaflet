@@ -89,7 +89,7 @@ L.Path = L.Layer.extend({
 			layerPoint: layerPoint,
 			containerPoint: containerPoint,
 			originalEvent: e
-		});
+		}, true);
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);

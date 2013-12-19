@@ -54,7 +54,7 @@ L.Popup = L.Layer.extend({
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
-			this._source.fire('popupopen', {popup: this});
+			this._source.fire('popupopen', {popup: this}, true);
 		}
 	},
 
@@ -74,7 +74,7 @@ L.Popup = L.Layer.extend({
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
-			this._source.fire('popupclose', {popup: this});
+			this._source.fire('popupclose', {popup: this}, true);
 		}
 	},
 

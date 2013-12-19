@@ -381,4 +381,36 @@ describe('Events', function () {
 			expect(spy.called).to.be(true);
 		});
 	});
+
+	describe('addEventParent && removeEventParent', function () {
+		it('makes the object propagate events with to the given one if fired with propagate=true', function () {
+			var obj = new L.Evented(),
+				parent1 = new L.Evented(),
+				parent2 = new L.Evented(),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy();
+
+			parent1.on('test', spy1);
+			parent2.on('test', spy2);
+
+			obj.addEventParent(parent1).addEventParent(parent2);
+
+			obj.fire('test');
+
+			expect(spy1.called).to.be(false);
+			expect(spy2.called).to.be(false);
+
+			obj.fire('test', null, true);
+
+			expect(spy1.called).to.be(true);
+			expect(spy2.called).to.be(true);
+
+			obj.removeEventParent(parent1);
+
+			obj.fire('test', null, true);
+
+			expect(spy1.callCount).to.be(1);
+			expect(spy2.callCount).to.be(2);
+		});
+	});
 });
