@@ -13,51 +13,55 @@ L.Evented = L.Class.extend({
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (type in types) {
-				this.on(type, types[type], fn);
+				this._on(type, types[type], fn);
 			}
 			return this;
 		}
 
-		var events = this[eventsKey] = this[eventsKey] || {},
-		    contextId = context && context !== this && L.stamp(context),
-		    i, len, event, indexKey, indexLenKey, typeIndex;
-
 		// types can be a string of space-separated words
 		types = L.Util.splitWords(types);
 
-		for (i = 0, len = types.length; i < len; i++) {
-			event = {
-				action: fn,
-				context: context || this
-			};
-			type = types[i];
-
-			if (contextId) {
-				// store listeners of a particular context in a separate hash (if it has an id)
-				// gives a major performance boost when removing thousands of map layers
-
-				indexKey = type + '_idx';
-				indexLenKey = indexKey + '_len';
-
-				typeIndex = events[indexKey] = events[indexKey] || {};
-
-				if (!typeIndex[contextId]) {
-					typeIndex[contextId] = [];
-
-					// keep track of the number of keys in the index to quickly check if it's empty
-					events[indexLenKey] = (events[indexLenKey] || 0) + 1;
-				}
-
-				typeIndex[contextId].push(event);
-
-
-			} else {
-				events[type] = events[type] || [];
-				events[type].push(event);
-			}
+		for (var i = 0, len = types.length; i < len; i++) {
+			this._on(types[i], fn, context);
 		}
 
 		return this;
+	},
+
+	// attach listener (without syntactic sugar now)
+	_on: function (type, fn, context) {
+		var events = this[eventsKey] = this[eventsKey] || {},
+		    contextId = context && context !== this && L.stamp(context),
+		    indexKey, indexLenKey, typeIndex;
+
+		var event = {
+			action: fn,
+			context: context || this
+		};
+
+		if (contextId) {
+			// store listeners of a particular context in a separate hash (if it has an id)
+			// gives a major performance boost when removing thousands of map layers
+
+			indexKey = type + '_idx';
+			indexLenKey = indexKey + '_len';
+
+			typeIndex = events[indexKey] = events[indexKey] || {};
+
+			if (!typeIndex[contextId]) {
+				typeIndex[contextId] = [];
+
+				// keep track of the number of keys in the index to quickly check if it's empty
+				events[indexLenKey] = (events[indexLenKey] || 0) + 1;
+			}
+
+			typeIndex[contextId].push(event);
+
+
+		} else {
+			events[type] = events[type] || [];
+			events[type].push(event);
+		}
 	},
 
 	off: function (types, fn, context) {
@@ -65,7 +69,6 @@ L.Evented = L.Class.extend({
 		if (!this[eventsKey]) {
 			return this;
 		}
-
 		if (!types) {
 			return this.clearAllEventListeners();
 		}
@@ -74,52 +77,53 @@ L.Evented = L.Class.extend({
 
 		if (typeof types === 'object') {
 			for (type in types) {
-				this.off(type, types[type], fn);
+				this._off(type, types[type], fn);
 			}
 			return this;
 		}
 
-		var events = this[eventsKey],
-		    contextId = context && context !== this && L.stamp(context),
-		    i, len, listeners, j, indexKey, indexLenKey, typeIndex, removed;
-
 		types = L.Util.splitWords(types);
 
-		for (i = 0, len = types.length; i < len; i++) {
-			type = types[i];
-			indexKey = type + '_idx';
-			indexLenKey = indexKey + '_len';
-
-			typeIndex = events[indexKey];
-
-			if (!fn) {
-				// clear all listeners for a type if function isn't specified
-				delete events[type];
-				delete events[indexKey];
-				delete events[indexLenKey];
-
-			} else {
-				listeners = contextId && typeIndex ? typeIndex[contextId] : events[type];
-
-				if (listeners) {
-					for (j = listeners.length - 1; j >= 0; j--) {
-						if ((listeners[j].action === fn) && (!context || (listeners[j].context === context))) {
-							removed = listeners.splice(j, 1);
-							// set the old action to a no-op, because it is possible
-							// that the listener is being iterated over as part of a dispatch
-							removed[0].action = L.Util.falseFn;
-						}
-					}
-
-					if (context && typeIndex && (listeners.length === 0)) {
-						delete typeIndex[contextId];
-						events[indexLenKey]--;
-					}
-				}
-			}
+		for (var i = 0, len = types.length; i < len; i++) {
+			this._off(types[i], fn, context);
 		}
 
 		return this;
+	},
+
+	_off: function (type, fn, context) {
+		var events = this[eventsKey],
+		    contextId = context && context !== this && L.stamp(context),
+		    indexKey = type + '_idx',
+		    indexLenKey = indexKey + '_len',
+		    typeIndex = events[indexKey],
+		    listeners, i, removed;
+
+		if (!fn) {
+			// clear all listeners for a type if function isn't specified
+			delete events[type];
+			delete events[indexKey];
+			delete events[indexLenKey];
+
+		} else {
+			listeners = contextId && typeIndex ? typeIndex[contextId] : events[type];
+
+			if (!listeners) { return; }
+
+			for (i = listeners.length - 1; i >= 0; i--) {
+				if ((listeners[i].action === fn) && (!context || (listeners[i].context === context))) {
+					removed = listeners.splice(i, 1);
+					// set the old action to a no-op, because it is possible
+					// that the listener is being iterated over as part of a dispatch
+					removed[0].action = L.Util.falseFn;
+				}
+			}
+
+			if (context && typeIndex && (listeners.length === 0)) {
+				delete typeIndex[contextId];
+				events[indexLenKey]--;
+			}
+		}
 	},
 
 	fire: function (type, data) {

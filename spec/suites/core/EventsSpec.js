@@ -15,14 +15,14 @@ describe('Events', function () {
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
 			obj.addEventListener({ test: spy4, other: spy5 });
-			obj.addEventListener({'test other': spy6 });
+			// obj.addEventListener({'test other': spy6 });
 
 			expect(spy1.called).to.be(false);
 			expect(spy2.called).to.be(false);
 			expect(spy3.called).to.be(false);
 			expect(spy4.called).to.be(false);
 			expect(spy5.called).to.be(false);
-			expect(spy6.called).to.be(false);
+			// expect(spy6.called).to.be(false);
 
 			obj.fireEvent('test');
 
@@ -31,8 +31,8 @@ describe('Events', function () {
 			expect(spy3.called).to.be(false);
 			expect(spy4.called).to.be(true);
 			expect(spy5.called).to.be(false);
-			expect(spy6.called).to.be(true);
-			expect(spy6.callCount).to.be(1);
+			// expect(spy6.called).to.be(true);
+			// expect(spy6.callCount).to.be(1);
 		});
 
 		it('provides event object to listeners and executes them in the right context', function () {
