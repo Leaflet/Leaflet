@@ -2,14 +2,15 @@
  * L.DomEvent contains functions for working with DOM events.
  */
 
+var eventsKey = '_leaflet_events';
+
 L.DomEvent = {
 	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
 	addListener: function (obj, type, fn, context) {
 
-		var id = L.stamp(fn) + (context ? '_' + L.stamp(context) : ''),
-		    key = '_leaflet_' + type + id;
+		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : '');
 
-		if (obj[key]) { return this; }
+		if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
 		var handler = function (e) {
 			return fn.call(context || obj, e || window.event);
@@ -51,16 +52,16 @@ L.DomEvent = {
 			obj.attachEvent('on' + type, handler);
 		}
 
-		obj[key] = handler;
+		obj[eventsKey] = obj[eventsKey] || {};
+		obj[eventsKey][id] = handler;
 
 		return this;
 	},
 
 	removeListener: function (obj, type, fn, context) {
 
-		var id = L.stamp(fn) + (context ? '_' + L.stamp(context) : ''),
-		    key = '_leaflet_' + type + id,
-		    handler = obj[key];
+		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : ''),
+		    handler = obj[eventsKey] && obj[eventsKey][id];
 
 		if (!handler) { return this; }
 
@@ -86,7 +87,7 @@ L.DomEvent = {
 			obj.detachEvent('on' + type, handler);
 		}
 
-		obj[key] = null;
+		obj[eventsKey][id] = null;
 
 		return this;
 	},
