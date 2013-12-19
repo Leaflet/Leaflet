@@ -13,14 +13,36 @@ L.Evented = L.Class.extend({
 			for (var type in types) {
 				this._on(type, types[type], fn);
 			}
-			return this;
+
+		} else {
+			// types can be a string of space-separated words
+			types = L.Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._on(types[i], fn, context);
+			}
 		}
 
-		// types can be a string of space-separated words
-		types = L.Util.splitWords(types);
+		return this;
+	},
 
-		for (var i = 0, len = types.length; i < len; i++) {
-			this._on(types[i], fn, context);
+	off: function (types, fn, context) {
+
+		if (!types) {
+			// clear all listeners if called without arguments
+			delete this[eventsKey];
+
+		} else if (typeof types === 'object') {
+			for (var type in types) {
+				this._off(type, types[type], fn);
+			}
+
+		} else {
+			types = L.Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._off(types[i], fn, context);
+			}
 		}
 
 		return this;
@@ -54,29 +76,6 @@ L.Evented = L.Class.extend({
 			events[type] = events[type] || [];
 			events[type].push({fn: fn});
 		}
-	},
-
-	off: function (types, fn, context) {
-
-		if (!types) {
-			delete this[eventsKey];
-			return this;
-		}
-
-		if (typeof types === 'object') {
-			for (var type in types) {
-				this._off(type, types[type], fn);
-			}
-			return this;
-		}
-
-		types = L.Util.splitWords(types);
-
-		for (var i = 0, len = types.length; i < len; i++) {
-			this._off(types[i], fn, context);
-		}
-
-		return this;
 	},
 
 	_off: function (type, fn, context) {
