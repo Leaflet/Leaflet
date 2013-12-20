@@ -9,6 +9,8 @@ L.Evented = L.Class.extend({
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (var type in types) {
+				// we don't process space-separated events here for performance;
+				// it's a hot path since Layer uses the on(obj) syntax
 				this._on(type, types[type], fn);
 			}
 
@@ -53,8 +55,8 @@ L.Evented = L.Class.extend({
 		    contextId = context && context !== this && L.stamp(context);
 
 		if (contextId) {
-			// store listeners of a particular context in a separate hash (if it has an id)
-			// gives a major performance boost when removing thousands of map layers
+			// store listeners with custom context in a separate hash (if it has an id);
+			// gives a major performance boost when firing and removing events (e.g. on map object)
 
 			var indexKey = type + '_idx',
 			    indexLenKey = type + '_len',
@@ -69,6 +71,9 @@ L.Evented = L.Class.extend({
 			}
 
 		} else {
+			// individual layers mostly use "this" for context and don't fire listeners too often
+			// so simple array makes the memory footprint better while not degrading performance
+
 			events[type] = events[type] || [];
 			events[type].push({fn: fn});
 		}
@@ -97,8 +102,6 @@ L.Evented = L.Class.extend({
 			listeners = events[indexKey];
 
 			if (listeners && listeners[id]) {
-				// set the old action to a no-op, because it is possible
-				// that the listener is being iterated over as part of a dispatch
 				listener = listeners[id];
 				delete listeners[id];
 				events[indexLenKey]--;
@@ -148,6 +151,7 @@ L.Evented = L.Class.extend({
 		}
 
 		if (propagate) {
+			// propagate the event to parents (set with addEventParent)
 			this._propagateEvent(event);
 		}
 
@@ -160,6 +164,7 @@ L.Evented = L.Class.extend({
 		if (events && (events[type] || events[type + '_len'])) { return true; }
 
 		if (propagate) {
+			// also check parents for listeners if event propagates
 			for (var id in this._eventParents) {
 				if (this._eventParents[id].listens(type)) { return true; }
 			}
@@ -182,11 +187,13 @@ L.Evented = L.Class.extend({
 			    .off(types, handler, context);
 		}, this);
 
+		// add a listener that's executed once and removed after that
 		return this
 		    .on(types, fn, context)
 		    .on(types, handler, context);
 	},
 
+	// adds a parent to propagate events to (when you fire with true as a 3rd argument)
 	addEventParent: function (obj) {
 		this._eventParents = this._eventParents || {};
 		this._eventParents[L.stamp(obj)] = obj;
@@ -209,7 +216,7 @@ L.Evented = L.Class.extend({
 
 var proto = L.Evented.prototype;
 
-// aliases
+// aliases; we should ditch those eventually
 proto.addEventListener = proto.on;
 proto.removeEventListener = proto.clearAllEventListeners = proto.off;
 proto.addOneTimeEventListener = proto.once;
