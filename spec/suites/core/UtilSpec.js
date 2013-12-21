@@ -133,11 +133,11 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#limitExecByInterval', function () {
+	describe('#throttle', function () {
 		it('limits execution to not more often than specified time interval', function (done) {
 			var spy = sinon.spy();
 
-			var fn = L.Util.limitExecByInterval(spy, 20);
+			var fn = L.Util.throttle(spy, 20);
 
 			fn();
 			fn();

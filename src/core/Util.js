@@ -51,30 +51,32 @@ L.Util = {
 	lastId: 0,
 
 	// return a function that won't be called more often than the given interval
-	limitExecByInterval: function (fn, time, context) {
-		var lock, execOnUnlock;
+	throttle: function (fn, time, context) {
+		var lock, args, wrapperFn, later;
 
-		return function wrapperFn() {
-			var args = arguments;
-
-			if (lock) {
-				execOnUnlock = true;
-				return;
+		later = function () {
+			// reset lock and call if queued
+			lock = false;
+			if (args) {
+				wrapperFn.apply(context, args);
+				args = false;
 			}
-
-			lock = true;
-
-			setTimeout(function () {
-				lock = false;
-
-				if (execOnUnlock) {
-					wrapperFn.apply(context, args);
-					execOnUnlock = false;
-				}
-			}, time);
-
-			fn.apply(context, args);
 		};
+
+		wrapperFn = function () {
+			if (lock) {
+				// called too soon, queue to call later
+				args = arguments;
+
+			} else {
+				// call and lock until later
+				fn.apply(context, arguments);
+				setTimeout(later, time);
+				lock = true;
+			}
+		};
+
+		return wrapperFn;
 	},
 
 	// wrap the given number to lie within a certain range (used for wrapping longitude)

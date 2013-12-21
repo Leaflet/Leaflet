@@ -32,7 +32,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (!this.options.updateWhenIdle) {
 			// update tiles on move, but not more often than once per given interval
-			this._update = L.Util.limitExecByInterval(this._update, this.options.updateInterval, this);
+			this._update = L.Util.throttle(this._update, this.options.updateInterval, this);
 		}
 
 		this._reset();
