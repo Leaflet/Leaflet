@@ -3,6 +3,7 @@
  */
 
 L.Util = {
+	// extend an object with properties of one or more other objects
 	extend: function (dest) {
 		var sources = Array.prototype.slice.call(arguments, 1),
 		    i, j, len, src;
@@ -16,6 +17,7 @@ L.Util = {
 		return dest;
 	},
 
+	// create an object from a given prototype
 	create: Object.create || (function () {
 		function F() {}
 		return function (proto) {
@@ -24,6 +26,7 @@ L.Util = {
 		};
 	})(),
 
+	// bind a function to be called with a given context
 	bind: function (fn, obj) {
 		var slice = Array.prototype.slice;
 
@@ -38,6 +41,7 @@ L.Util = {
 		};
 	},
 
+	// return unique ID of an object
 	stamp: function (obj) {
 		// jshint camelcase: false
 		obj._leaflet_id = obj._leaflet_id || ++L.Util.lastId;
@@ -46,6 +50,7 @@ L.Util = {
 
 	lastId: 0,
 
+	// return a function that won't be called more often than the given interval
 	limitExecByInterval: function (fn, time, context) {
 		var lock, execOnUnlock;
 
@@ -72,6 +77,7 @@ L.Util = {
 		};
 	},
 
+	// wrap the given number to lie within a certain range (used for wrapping longitude)
 	wrapNum: function (x, range, includeMax) {
 		var max = range[1],
 		    min = range[0],
@@ -79,23 +85,26 @@ L.Util = {
 		return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 	},
 
-	falseFn: function () {
-		return false;
-	},
+	// do nothing (used as a noop throughout the code)
+	falseFn: function () { return false; },
 
+	// round a given number to a given precision
 	formatNum: function (num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
 	},
 
+	// trim whitespace from both sides of a string
 	trim: function (str) {
 		return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 	},
 
+	// split a string into words
 	splitWords: function (str) {
 		return L.Util.trim(str).split(/\s+/);
 	},
 
+	// set options to an object, inheriting parent's options as well
 	setOptions: function (obj, options) {
 		if (!obj.hasOwnProperty('options')) {
 			obj.options = obj.options ? L.Util.create(obj.options) : {};
@@ -106,6 +115,7 @@ L.Util = {
 		return obj.options;
 	},
 
+	// make an URL with GET parameters out of a set of properties/values
 	getParamString: function (obj, existingUrl, uppercase) {
 		var params = [];
 		for (var i in obj) {
@@ -114,11 +124,14 @@ L.Util = {
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
+	// super-simple templating facility, used for TileLayer URLs
 	template: function (str, data) {
-		return str.replace(/\{ *([\w_]+) *\}/g, function (str, key) {
+		return str.replace(L.Util.templateRe, function (str, key) {
 			var value = data[key];
+
 			if (value === undefined) {
 				throw new Error('No value provided for variable ' + str);
+
 			} else if (typeof value === 'function') {
 				value = value(data);
 			}
@@ -126,30 +139,26 @@ L.Util = {
 		});
 	},
 
+	templateRe: /\{ *([\w_]+) *\}/g,
+
 	isArray: Array.isArray || function (obj) {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
+	// minimal image URI, set to an image when disposing to flush memory
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };
 
 (function () {
-
 	// inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 
 	function getPrefixed(name) {
-		var i, fn,
-		    prefixes = ['webkit', 'moz', 'o', 'ms'];
-
-		for (i = 0; i < prefixes.length && !fn; i++) {
-			fn = window[prefixes[i] + name];
-		}
-
-		return fn;
+		return window['webkit' + name] || window['moz' + name] || window['ms' + name];
 	}
 
 	var lastTime = 0;
 
+	// fallback for IE 7-8
 	function timeoutDefer(fn) {
 		var time = +new Date(),
 		    timeToCall = Math.max(0, 16 - (time - lastTime));
@@ -158,13 +167,9 @@ L.Util = {
 		return window.setTimeout(fn, timeToCall);
 	}
 
-	var requestFn = window.requestAnimationFrame ||
-	        getPrefixed('RequestAnimationFrame') || timeoutDefer;
-
-	var cancelFn = window.cancelAnimationFrame ||
-	        getPrefixed('CancelAnimationFrame') ||
-	        getPrefixed('CancelRequestAnimationFrame') ||
-	        function (id) { window.clearTimeout(id); };
+	var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer,
+	    cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+	               getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
@@ -182,8 +187,7 @@ L.Util = {
 			cancelFn.call(window, id);
 		}
 	};
-
-}());
+})();
 
 // shortcuts for most used utility functions
 L.extend = L.Util.extend;
