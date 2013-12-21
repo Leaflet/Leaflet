@@ -1,8 +1,8 @@
 /*
- * Popup extension to L.Path (polylines, polygons, circles), adding popup-related methods.
+ * Adds popup-related methods to all layers.
  */
 
-L.Path.include({
+L.Layer.include({
 
 	bindPopup: function (content, options) {
 
@@ -18,9 +18,9 @@ L.Path.include({
 		if (!this._popupHandlersAdded) {
 			this.on({
 				click: this._openPopup,
-				remove: this.closePopup
+				remove: this.closePopup,
+				move: this._movePopup
 			});
-
 			this._popupHandlersAdded = true;
 		}
 
@@ -29,25 +29,21 @@ L.Path.include({
 
 	unbindPopup: function () {
 		if (this._popup) {
-			this._popup = null;
-			this.off({
-				click: this._openPopup,
-				remove: this.closePopup
+			this.on({
+			    click: this._openPopup,
+			    remove: this.closePopup,
+			    move: this._movePopup
 			});
-
 			this._popupHandlersAdded = false;
+			this._popup = null;
 		}
 		return this;
 	},
 
 	openPopup: function (latlng) {
-
 		if (this._popup) {
-			// open the popup from one of the path's points if not specified
-			latlng = latlng || this._latlng || this.getCenter();
-			this._openPopup({latlng: latlng});
+			this._map.openPopup(this._popup, latlng || this._latlng || this.getCenter());
 		}
-
 		return this;
 	},
 
@@ -58,7 +54,33 @@ L.Path.include({
 		return this;
 	},
 
+	togglePopup: function () {
+		if (this._popup) {
+			if (this._popup._map) {
+				this.closePopup();
+			} else {
+				this.openPopup();
+			}
+		}
+		return this;
+	},
+
+	setPopupContent: function (content) {
+		if (this._popup) {
+			this._popup.setContent(content);
+		}
+		return this;
+	},
+
+	getPopup: function () {
+		return this._popup;
+	},
+
 	_openPopup: function (e) {
 		this._map.openPopup(this._popup, e.latlng);
+	},
+
+	_movePopup: function (e) {
+		this._popup.setLatLng(e.latlng);
 	}
 });

@@ -67,8 +67,11 @@ var deps = {
 	},
 
 	Popup: {
-		src: ['layer/Popup.js',
-		      'layer/marker/Marker.Popup.js'],
+		src: [
+			'layer/Popup.js',
+			'layer/Layer.Popup.js',
+			'layer/marker/Marker.Popup.js'
+		],
 		deps: ['Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
 	},
@@ -88,8 +91,7 @@ var deps = {
 	Path: {
 		src: [
 			'layer/vector/Renderer.js',
-			'layer/vector/Path.js',
-			'layer/vector/Path.Popup.js'
+			'layer/vector/Path.js'
 		],
 		desc: 'Vector rendering core.',
 		heading: 'Vector layers'
