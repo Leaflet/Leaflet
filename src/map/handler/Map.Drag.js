@@ -23,9 +23,9 @@ L.Map.Drag = L.Handler.extend({
 			this._draggable = new L.Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
-				'dragstart': this._onDragStart,
-				'drag': this._onDrag,
-				'dragend': this._onDragEnd
+				dragstart: this._onDragStart,
+				drag: this._onDrag,
+				dragend: this._onDragEnd
 			}, this);
 
 			if (map.options.worldCopyJump) {

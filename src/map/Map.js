@@ -127,14 +127,14 @@ L.Map = L.Evented.extend({
 		this.options.maxBounds = bounds;
 
 		if (!bounds) {
-			return this.off('moveend', this._panInsideMaxBounds, this);
+			return this.off('moveend', this._panInsideMaxBounds);
 		}
 
 		if (this._loaded) {
 			this._panInsideMaxBounds();
 		}
 
-		return this.on('moveend', this._panInsideMaxBounds, this);
+		return this.on('moveend', this._panInsideMaxBounds);
 	},
 
 	panInsideBounds: function (bounds, options) {

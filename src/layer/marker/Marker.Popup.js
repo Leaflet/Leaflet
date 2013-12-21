@@ -42,10 +42,11 @@ L.Marker.include({
 		options = L.extend({offset: anchor}, options);
 
 		if (!this._popupHandlersAdded) {
-			this
-			    .on('click', this.togglePopup, this)
-			    .on('remove', this.closePopup, this)
-			    .on('move', this._movePopup, this);
+			this.on({
+			    click: this.togglePopup,
+			    remove: this.closePopup,
+			    move: this._movePopup
+			});
 			this._popupHandlersAdded = true;
 		}
 
@@ -70,10 +71,11 @@ L.Marker.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
-			this
-			    .off('click', this.togglePopup, this)
-			    .off('remove', this.closePopup, this)
-			    .off('move', this._movePopup, this);
+			this.on({
+			    click: this.togglePopup,
+			    remove: this.closePopup,
+			    move: this._movePopup
+			});
 			this._popupHandlersAdded = false;
 		}
 		return this;

@@ -16,9 +16,10 @@ L.Path.include({
 		}
 
 		if (!this._popupHandlersAdded) {
-			this
-			    .on('click', this._openPopup, this)
-			    .on('remove', this.closePopup, this);
+			this.on({
+				click: this._openPopup,
+				remove: this.closePopup
+			});
 
 			this._popupHandlersAdded = true;
 		}
@@ -29,9 +30,10 @@ L.Path.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this._popup = null;
-			this
-			    .off('click', this._openPopup)
-			    .off('remove', this.closePopup);
+			this.off({
+				click: this._openPopup,
+				remove: this.closePopup
+			});
 
 			this._popupHandlersAdded = false;
 		}
