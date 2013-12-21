@@ -175,12 +175,10 @@ L.Util = {
 
 
 	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
-		fn = L.bind(fn, context);
-
 		if (immediate && requestFn === timeoutDefer) {
-			fn();
+			fn.call(context);
 		} else {
-			return requestFn.call(window, fn, element);
+			return requestFn.call(window, L.bind(fn, context), element);
 		}
 	};
 
