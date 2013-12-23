@@ -44,6 +44,7 @@ L.Popup = L.Layer.extend({
 			L.DomUtil.setOpacity(this._container, 0);
 		}
 
+		clearTimeout(this._removeTimeout);
 		this.getPane().appendChild(this._container);
 		this.update();
 
@@ -66,7 +67,7 @@ L.Popup = L.Layer.extend({
 	onRemove: function (map) {
 		if (map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, 0);
-			setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
+			this._removeTimeout = setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
 		} else {
 			L.DomUtil.remove(this._container);
 		}
