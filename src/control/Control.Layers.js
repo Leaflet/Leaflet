@@ -145,7 +145,9 @@ L.Control.Layers = L.Control.extend({
 			this._update();
 		}
 
-		var type = e.target.overlay ?
+		var overlay = this._layers[L.stamp(e.target)].overlay;
+
+		var type = overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);
 
