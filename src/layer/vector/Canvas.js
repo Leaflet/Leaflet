@@ -7,12 +7,19 @@ L.Canvas = L.Renderer.extend({
 	onAdd: function () {
 		L.Renderer.prototype.onAdd.call(this);
 
+		this._layers = this._layers || {};
+
 		// redraw vectors since canvas is cleared upon removal
-		this.fire('redraw');
+		this._draw();
 	},
 
 	_initContainer: function () {
 		this._container = document.createElement('canvas');
+
+		L.DomEvent
+			.on(this._container, 'mousemove', this._onMouseMove, this)
+			.on(this._container, 'click', this._onClick, this);
+
 		this._ctx = this._container.getContext('2d');
 	},
 
@@ -43,24 +50,12 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
-		this.on('redraw', layer._updatePath, layer);
-
-		if (layer.options.clickable) {
-			L.DomEvent
-				.on(this._container, 'mousemove', this._onMouseMove, layer)
-				.on(this._container, 'click', this._onClick, layer);
-		}
+		this._layers[L.stamp(layer)] = layer;
 	},
 
 	_addPath: L.Util.falseFn,
 
 	_removePath: function (layer) {
-		if (layer.options.clickable) {
-			L.DomEvent
-				.off(this._container, 'mousemove', this._onMouseMove, layer)
-				.off(this._container, 'click', this._onClick, layer);
-		}
-
 		layer._removed = true;
 		this._requestRedraw(layer);
 	},
@@ -70,20 +65,37 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_requestRedraw: function (layer) {
-		if (this._map) {
-			this._redrawBounds = this._redrawBounds || new L.Bounds();
-			this._redrawBounds.extend(layer._pxBounds.min).extend(layer._pxBounds.max);
-			this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._fireRedraw, this);
-		}
+		if (!this._map) { return; }
+
+		this._redrawBounds = this._redrawBounds || new L.Bounds();
+		this._redrawBounds.extend(layer._pxBounds.min).extend(layer._pxBounds.max);
+
+		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
 	},
 
-	_fireRedraw: function () {
+	_redraw: function () {
 		this._redrawRequest = null;
-		this._clear = true;
-		this.fire('redraw');
-		this._clear = false;
-		this.fire('redraw');
+
+		this._draw(true); // clear layers in redraw bounds
+		this._draw(); // draw layers
+
 		this._redrawBounds = null;
+	},
+
+	_draw: function (clear) {
+		this._clear = clear;
+		var layer;
+
+		for (var id in this._layers) {
+			layer = this._layers[id];
+			if (!this._redrawBounds || layer._pxBounds.intersects(this._redrawBounds)) {
+				layer._updatePath();
+			}
+			if (clear && layer._removed) {
+				delete layer._removed;
+				delete this._layers[id];
+			}
+		}
 	},
 
 	_updatePoly: function (layer, closed) {
@@ -93,7 +105,7 @@ L.Canvas = L.Renderer.extend({
 		    len = parts.length,
 		    ctx = this._ctx;
 
-	    if (!len || this._redrawBounds && !this._redrawBounds.intersects(layer._pxBounds)) { return; }
+	    if (!len) { return; }
 
 		ctx.beginPath();
 
@@ -126,15 +138,8 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_fillStroke: function (ctx, layer) {
-		var clear = this._clear;
-
-		if (layer._removed && !clear) {
-			layer._removed = false;
-			this.off('redraw', layer._updatePath, layer);
-			return;
-		}
-
-		var options = layer.options;
+		var clear = this._clear,
+		    options = layer.options;
 
 		ctx.globalCompositeOperation = clear ? 'destination-out' : 'source-over';
 
@@ -161,30 +166,40 @@ L.Canvas = L.Renderer.extend({
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
 	_onClick: function (e) {
-		if (this._containsPoint(this._map.mouseEventToLayerPoint(e))) {
-			this._onMouseClick(e);
+		var point = this._map.mouseEventToLayerPoint(e);
+
+		for (var id in this._layers) {
+			if (this._layers[id]._containsPoint(point)) {
+				this._layers[id]._onMouseClick(e);
+			}
 		}
 	},
 
 	_onMouseMove: function (e) {
 		if (!this._map || this._map._animatingZoom) { return; }
 
-		var point = this._map.mouseEventToLayerPoint(e),
-		    container = this._renderer._container,
-		    className = 'leaflet-clickable';
+		var point = this._map.mouseEventToLayerPoint(e);
 
 		// emulate mouseover/mouseout events
 		// TODO don't do on each move event, throttle since it's expensive
 
-		if (this._containsPoint(point)) {
-			L.DomUtil.addClass(container, className); // change cursor
-			this._fireMouseEvent(e, 'mouseover');
-			this._mouseInside = true;
+		for (var id in this._layers) {
+			this._handleHover(this._layers[id], e, point);
+		}
+	},
 
-		} else if (this._mouseInside) {
-			L.DomUtil.removeClass(container, className);
-			this._fireMouseEvent(e, 'mouseout');
-			this._mouseInside = false;
+	_handleHover: function (layer, e, point) {
+		if (!layer.options.clickable) { return; }
+
+		if (layer._containsPoint(point)) {
+			L.DomUtil.addClass(this._container, 'leaflet-clickable'); // change cursor
+			layer._fireMouseEvent(e, 'mouseover');
+			layer._mouseInside = true;
+
+		} else if (layer._mouseInside) {
+			L.DomUtil.removeClass(this._container, 'leaflet-clickable');
+			layer._fireMouseEvent(e, 'mouseout');
+			layer._mouseInside = false;
 		}
 	},
 
