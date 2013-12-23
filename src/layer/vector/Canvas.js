@@ -213,8 +213,8 @@ L.Browser.canvas = (function () {
 	return !!document.createElement('canvas').getContext;
 }());
 
-L.canvas = function () {
-	return L.Browser.canvas ? new L.Canvas() : null;
+L.canvas = function (options) {
+	return L.Browser.canvas ? new L.Canvas(options) : null;
 };
 
 L.Canvas.instance = L.canvas();
