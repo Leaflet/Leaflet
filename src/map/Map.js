@@ -486,6 +486,10 @@ L.Map = L.Evented.extend({
 		var loading = !this._loaded;
 		this._loaded = true;
 
+		if (loading) {
+			this.fire('load');
+		}
+
 		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
@@ -495,10 +499,6 @@ L.Map = L.Evented.extend({
 		}
 
 		this.fire('moveend', {hard: !preserveMapOffset});
-
-		if (loading) {
-			this.fire('load');
-		}
 	},
 
 	_rawPanBy: function (offset) {
