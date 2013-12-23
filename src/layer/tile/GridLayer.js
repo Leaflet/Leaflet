@@ -54,18 +54,16 @@ L.GridLayer = L.Layer.extend({
 
 	bringToFront: function () {
 		if (this._map) {
-			var pane = this.getPane();
-			pane.appendChild(this._container);
-			this._setAutoZIndex(pane, Math.max);
+			L.DomUtil.toFront(this._container);
+			this._setAutoZIndex(Math.max);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
 		if (this._map) {
-			var pane = this.getPane();
-			pane.insertBefore(this._container, pane.firstChild);
-			this._setAutoZIndex(pane, Math.min);
+			L.DomUtil.toBack(this._container);
+			this._setAutoZIndex(Math.min);
 		}
 		return this;
 	},
@@ -126,25 +124,25 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_setAutoZIndex: function (pane, compare) {
+	_setAutoZIndex: function (compare) {
+		// go through all other layers of the same pane, set zIndex to max + 1 (front) or min - 1 (back)
 
-		var layers = pane.children,
-		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
-		    zIndex, i, len;
+		var layers = this.getPane().children,
+		    edgeZIndex = -compare(-Infinity, Infinity); // -Infinity for max, Infinity for min
 
-		for (i = 0, len = layers.length; i < len; i++) {
+		for (var i = 0, len = layers.length, zIndex; i < len; i++) {
 
-			if (layers[i] !== this._container) {
-				zIndex = parseInt(layers[i].style.zIndex, 10);
+			zIndex = layers[i].style.zIndex;
 
-				if (!isNaN(zIndex)) {
-					edgeZIndex = compare(edgeZIndex, zIndex);
-				}
+			if (layers[i] !== this._container && zIndex) {
+				edgeZIndex = compare(edgeZIndex, +zIndex);
 			}
 		}
 
-		this.options.zIndex = this._container.style.zIndex =
-			(isFinite(edgeZIndex) ? edgeZIndex : 0) + compare(1, -1);
+		if (isFinite(edgeZIndex)) {
+			this.options.zIndex = edgeZIndex + compare(-1, 1);
+			this._updateZIndex();
+		}
 	},
 
 	_updateOpacity: function () {
@@ -487,7 +485,7 @@ L.GridLayer = L.Layer.extend({
 		    bg = this._bgBuffer;
 
 		front.style.visibility = '';
-		front.parentNode.appendChild(front); // bring to front
+		L.DomUtil.toFront(front); // bring to front
 
 		// force reflow
 		L.Util.falseFn(bg.offsetWidth);

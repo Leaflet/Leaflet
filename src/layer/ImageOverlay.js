@@ -35,18 +35,16 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
-	// TODO remove bringToFront/bringToBack duplication from TileLayer/Path
 	bringToFront: function () {
-		if (this._image) {
-			this.getPane().appendChild(this._image);
+		if (this._map) {
+			L.DomUtil.toFront(this._image);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
-		var pane = this.getPane();
-		if (this._image) {
-			pane.insertBefore(this._image, pane.firstChild);
+		if (this._map) {
+			L.DomUtil.toBack(this._image);
 		}
 		return this;
 	},

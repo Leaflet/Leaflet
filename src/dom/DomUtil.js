@@ -43,6 +43,15 @@ L.DomUtil = {
 		}
 	},
 
+	toFront: function (el) {
+		el.parentNode.appendChild(el);
+	},
+
+	toBack: function (el) {
+		var parent = el.parentNode;
+		parent.insertBefore(el, parent.firstChild);
+	},
+
 	hasClass: function (el, name) {
 		if (el.classList !== undefined) {
 			return el.classList.contains(name);

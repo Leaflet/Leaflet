@@ -127,10 +127,11 @@ L.SVG = L.Renderer.extend({
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
 	_bringToFront: function (layer) {
-		this._addPath(layer);
+		L.DomUtil.toFront(layer._path);
 	},
+
 	_bringToBack: function (layer) {
-		this._container.insertBefore(layer._path, this._container.firstChild);
+		L.DomUtil.toBack(layer._path);
 	},
 
 	// TODO remove duplication with L.Map
