@@ -457,7 +457,7 @@ L.GridLayer = L.Layer.extend({
 	// get the global tile coordinates range for the current zoom
 	_getTileNumBounds: function () {
 		var bounds = this._map.getPixelWorldBounds(),
-			size = this.options.tileSize;
+			size = this._getTileSize();
 
 		return bounds ? L.bounds(
 				bounds.min.divideBy(size).floor(),
