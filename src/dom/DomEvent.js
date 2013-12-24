@@ -141,27 +141,15 @@ L.DomEvent = {
 	},
 
 	getMousePosition: function (e, container) {
-		var body = document.body,
-		    docEl = document.documentElement,
-
-		    // gecko makes scrollLeft more negative as you scroll in rtl, other browsers don't
-			// ref: https://code.google.com/p/closure-library/source/browse/closure/goog/style/bidi.js
-
-			x = e.pageX ? e.pageX - body.scrollLeft -
-					docEl.scrollLeft * (L.DomUtil.documentIsLtr() || L.Browser.gecko ? 1 : -1) : e.clientX,
-		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop : e.clientY,
-
-		    pos = new L.Point(x, y);
-
 		if (!container) {
-			return pos;
+			return new L.Point(e.clientX, e.clientY);
 		}
 
-		var rect = container.getBoundingClientRect(),
-		    left = rect.left - container.clientLeft,
-		    top = rect.top - container.clientTop;
+		var rect = container.getBoundingClientRect();
 
-		return pos._subtract(new L.Point(left, top));
+		return new L.Point(
+			e.clientX - rect.left - container.clientLeft,
+			e.clientY - rect.top - container.clientTop);
 	},
 
 	getWheelDelta: function (e) {

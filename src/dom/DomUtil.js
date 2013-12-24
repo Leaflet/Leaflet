@@ -19,11 +19,6 @@ L.DomUtil = {
 		return value === 'auto' ? null : value;
 	},
 
-	documentIsLtr: function () {
-		L.DomUtil._docIsLtr = L.DomUtil._docIsLtr || L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
-		return L.DomUtil._docIsLtr;
-	},
-
 	create: function (tagName, className, container) {
 
 		var el = document.createElement(tagName);
