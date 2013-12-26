@@ -82,13 +82,13 @@ function bytesToKB(bytes) {
     return (bytes / 1024).toFixed(2) + ' KB';
 };
 
-exports.build = function (callback, compsBase32, buildName) {
+exports.build = function (callback, version, compsBase32, buildName) {
 
 	var files = getFiles(compsBase32);
 
 	console.log('Concatenating and compressing ' + files.length + ' files...');
 
-	var copy = fs.readFileSync('src/copyright.js', 'utf8'),
+	var copy = fs.readFileSync('src/copyright.js', 'utf8').replace('{VERSION}', version),
 	    intro = '(function (window, document, undefined) {',
 	    outro = '}(window, document));',
 	    newSrc = copy + intro + combineFiles(files) + outro,

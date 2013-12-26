@@ -12,7 +12,8 @@ To run the tests, run "jake test".
 For a custom build, open build/build.html in the browser and follow the instructions.
 */
 
-var build = require('./build/build.js');
+var build = require('./build/build.js'),
+    version = require('./src/Leaflet.js').version;
 
 function hint(msg, paths) {
 	return function () {
@@ -33,7 +34,14 @@ task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/sp
 
 desc('Combine and compress Leaflet source files');
 task('build', {async: true}, function (compsBase32, buildName) {
-	build.build(complete, compsBase32, buildName);
+	var v;
+
+	jake.exec('git log -1 --pretty=format:"%h"', {}, function () {
+		build.build(complete, v, compsBase32, buildName);
+
+	}).on('stdout', function (data) {
+		v = version + ' (' + data.toString() + ')';
+	})
 });
 
 desc('Run PhantomJS tests');
