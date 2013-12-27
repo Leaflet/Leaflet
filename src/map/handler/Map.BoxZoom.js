@@ -52,7 +52,9 @@ L.Map.BoxZoom = L.Handler.extend({
 			this._map.fire('boxzoomstart');
 		}
 
-		var bounds = new L.Bounds(this._map.mouseEventToContainerPoint(e), this._startPoint),
+		this._point = this._map.mouseEventToContainerPoint(e);
+
+		var bounds = new L.Bounds(this._point, this._startPoint),
 		    size = bounds.getSize();
 
 		L.DomUtil.setPosition(this._box, bounds.min);
@@ -76,24 +78,19 @@ L.Map.BoxZoom = L.Handler.extend({
 		    .off(document, 'keydown', this._onKeyDown, this);
 	},
 
-	_onMouseUp: function (e) {
+	_onMouseUp: function () {
 
 		this._finish();
 
-		var map = this._map,
-		    point = map.mouseEventToContainerPoint(e);
-
-		if (this._startPoint.equals(point)) { return; }
+		if (!this._moved) { return; }
 
 		var bounds = new L.LatLngBounds(
-		        map.containerPointToLatLng(this._startPoint),
-		        map.containerPointToLatLng(point));
+		        this._map.containerPointToLatLng(this._startPoint),
+		        this._map.containerPointToLatLng(this._point));
 
-		map.fitBounds(bounds);
-
-		map.fire('boxzoomend', {
-			boxZoomBounds: bounds
-		});
+		this._map
+			.fitBounds(bounds)
+			.fire('boxzoomend', {boxZoomBounds: bounds});
 	},
 
 	_onKeyDown: function (e) {
