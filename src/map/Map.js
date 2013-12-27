@@ -552,7 +552,7 @@ L.Map = L.Evented.extend({
 				e.type === 'mouseleave' ? 'mouseout' : e.type);
 	},
 
-	_fireMouseEvent: function (obj, e, type, propagate) {
+	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
 		type = type || e.type;
 
 		if (type === 'click') {
@@ -573,7 +573,7 @@ L.Map = L.Evented.extend({
 		};
 
 		data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
-		data.latlng = this.layerPointToLatLng(data.layerPoint);
+		data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
 
 		obj.fire(type, data, propagate);
 	},
