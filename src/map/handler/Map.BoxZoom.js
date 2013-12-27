@@ -12,7 +12,6 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
-		this._moved = false;
 	},
 
 	addHooks: function () {
@@ -21,7 +20,6 @@ L.Map.BoxZoom = L.Handler.extend({
 
 	removeHooks: function () {
 		L.DomEvent.off(this._container, 'mousedown', this._onMouseDown, this);
-		this._moved = false;
 	},
 
 	moved: function () {
@@ -36,7 +34,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.disableTextSelection();
 		L.DomUtil.disableImageDrag();
 
-		this._startLayerPoint = this._map.mouseEventToLayerPoint(e);
+		this._startPoint = this._map.mouseEventToContainerPoint(e);
 
 		L.DomEvent
 		    .on(document, 'mousemove', this._onMouseMove, this)
@@ -46,46 +44,36 @@ L.Map.BoxZoom = L.Handler.extend({
 
 	_onMouseMove: function (e) {
 		if (!this._moved) {
-			this._box = L.DomUtil.create('div', 'leaflet-zoom-box', this._pane);
-			L.DomUtil.setPosition(this._box, this._startLayerPoint);
+			this._moved = true;
 
-			//TODO refactor: move cursor to styles
-			this._container.style.cursor = 'crosshair';
+			this._box = L.DomUtil.create('div', 'leaflet-zoom-box', this._container);
+			L.DomUtil.addClass(this._container, 'leaflet-crosshair');
+
 			this._map.fire('boxzoomstart');
 		}
 
-		var startPoint = this._startLayerPoint,
-		    box = this._box,
+		var bounds = new L.Bounds(this._map.mouseEventToContainerPoint(e), this._startPoint),
+		    size = bounds.getSize();
 
-		    layerPoint = this._map.mouseEventToLayerPoint(e),
-		    offset = layerPoint.subtract(startPoint),
+		L.DomUtil.setPosition(this._box, bounds.min);
 
-		    newPos = new L.Point(
-		        Math.min(layerPoint.x, startPoint.x),
-		        Math.min(layerPoint.y, startPoint.y));
-
-		L.DomUtil.setPosition(box, newPos);
-
-		this._moved = true;
-
-		// TODO refactor: remove hardcoded 4 pixels
-		box.style.width  = (Math.max(0, Math.abs(offset.x) - 4)) + 'px';
-		box.style.height = (Math.max(0, Math.abs(offset.y) - 4)) + 'px';
+		this._box.style.width  = size.x + 'px';
+		this._box.style.height = size.y + 'px';
 	},
 
 	_finish: function () {
 		if (this._moved) {
 			L.DomUtil.remove(this._box);
-			this._container.style.cursor = '';
+			L.DomUtil.removeClass(this._container, 'leaflet-crosshair');
 		}
 
 		L.DomUtil.enableTextSelection();
 		L.DomUtil.enableImageDrag();
 
 		L.DomEvent
-		    .off(document, 'mousemove', this._onMouseMove)
-		    .off(document, 'mouseup', this._onMouseUp)
-		    .off(document, 'keydown', this._onKeyDown);
+		    .off(document, 'mousemove', this._onMouseMove, this)
+		    .off(document, 'mouseup', this._onMouseUp, this)
+		    .off(document, 'keydown', this._onKeyDown, this);
 	},
 
 	_onMouseUp: function (e) {
@@ -93,13 +81,13 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._finish();
 
 		var map = this._map,
-		    layerPoint = map.mouseEventToLayerPoint(e);
+		    point = map.mouseEventToContainerPoint(e);
 
-		if (this._startLayerPoint.equals(layerPoint)) { return; }
+		if (this._startPoint.equals(point)) { return; }
 
 		var bounds = new L.LatLngBounds(
-		        map.layerPointToLatLng(this._startLayerPoint),
-		        map.layerPointToLatLng(layerPoint));
+		        map.containerPointToLatLng(this._startPoint),
+		        map.containerPointToLatLng(point));
 
 		map.fitBounds(bounds);
 

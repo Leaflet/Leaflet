@@ -53,6 +53,8 @@
 .leaflet-zoom-box {
 	width: 0;
 	height: 0;
+	-moz-box-sizing: border-box;
+	     box-sizing: border-box;
 	}
 /* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
 .leaflet-overlay-pane svg {
@@ -169,6 +171,10 @@
 .leaflet-container {
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
+	}
+.leaflet-crosshair,
+.leaflet-crosshair .leaflet-clickable {
+	cursor: crosshair;
 	}
 .leaflet-popup-pane,
 .leaflet-control {
