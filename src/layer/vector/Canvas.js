@@ -170,7 +170,7 @@ L.Canvas = L.Renderer.extend({
 
 		for (var id in this._layers) {
 			if (this._layers[id]._containsPoint(point)) {
-				this._layers[id]._onMouseClick(e);
+				this._layers[id]._fireMouseEvent(e);
 			}
 		}
 	},

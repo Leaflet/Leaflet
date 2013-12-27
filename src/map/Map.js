@@ -526,14 +526,11 @@ L.Map = L.Evented.extend({
 
 		onOff = onOff || 'on';
 
-		L.DomEvent[onOff](this._container, 'click', this._onMouseClick, this);
+		var events = ['click', 'dblclick', 'mousedown', 'mouseup',
+				'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
 
-		var events = ['dblclick', 'mousedown', 'mouseup', 'mouseenter',
-		              'mouseleave', 'mousemove', 'contextmenu'],
-		    i, len;
-
-		for (i = 0, len = events.length; i < len; i++) {
-			L.DomEvent[onOff](this._container, events[i], this._fireMouseEvent, this);
+		for (var i = 0, len = events.length; i < len; i++) {
+			L.DomEvent[onOff](this._container, events[i], this._handleMouseEvent, this);
 		}
 
 		if (this.options.trackResize) {
@@ -547,39 +544,39 @@ L.Map = L.Evented.extend({
 		        function () { this.invalidateSize({debounceMoveend: true}); }, this, false, this._container);
 	},
 
-	_onMouseClick: function (e) {
-		if (!this._loaded || (!e._simulated &&
-		        ((this.dragging && this.dragging.moved()) ||
-		         (this.boxZoom  && this.boxZoom.moved()))) ||
-		            L.DomEvent._skipped(e)) { return; }
+	_handleMouseEvent: function (e) {
+		if (!this._loaded) { return; }
 
-		this.fire('preclick');
-		this._fireMouseEvent(e);
+		this._fireMouseEvent(this, e,
+				e.type === 'mouseenter' ? 'mouseover' :
+				e.type === 'mouseleave' ? 'mouseout' : e.type);
 	},
 
-	_fireMouseEvent: function (e) {
-		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
+	_fireMouseEvent: function (obj, e, type, propagate) {
+		type = type || e.type;
 
-		var type = e.type;
+		if (!obj.listens(type, propagate) || L.DomEvent._skipped(e)) { return; }
 
-		type = (type === 'mouseenter' ? 'mouseover' : (type === 'mouseleave' ? 'mouseout' : type));
+		if (type === 'click') {
+			if (!e._simulated && ((this.dragging && this.dragging.moved()) ||
+			                      (this.boxZoom && this.boxZoom.moved()))) { return; }
 
-		if (!this.listens(type)) { return; }
+			obj.fire('preclick');
+		}
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
 
-		var containerPoint = this.mouseEventToContainerPoint(e),
-		    layerPoint = this.containerPointToLayerPoint(containerPoint),
-		    latlng = this.layerPointToLatLng(layerPoint);
+		var data = {
+			originalEvent: e,
+			containerPoint: this.mouseEventToContainerPoint(e)
+		};
 
-		this.fire(type, {
-			latlng: latlng,
-			layerPoint: layerPoint,
-			containerPoint: containerPoint,
-			originalEvent: e
-		});
+		data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
+		data.latlng = this.layerPointToLatLng(data.layerPoint);
+
+		obj.fire(type, data, propagate);
 	},
 
 	_clearHandlers: function () {

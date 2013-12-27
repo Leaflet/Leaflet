@@ -69,34 +69,12 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
-	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
-		this._fireMouseEvent(e);
-	},
-
 	_fireMouseEvent: function (e, type) {
-		type = type || e.type;
-
-		if (!this.listens(type, true)) { return; }
-
-		var map = this._map,
-		    containerPoint = map.mouseEventToContainerPoint(e),
-		    layerPoint = map.containerPointToLayerPoint(containerPoint),
-		    latlng = map.layerPointToLatLng(layerPoint);
-
-		this.fire(type, {
-			latlng: latlng,
-			layerPoint: layerPoint,
-			containerPoint: containerPoint,
-			originalEvent: e
-		}, true);
-
-		if (type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
-		}
 		if (e.type !== 'mousemove') {
 			L.DomEvent.stopPropagation(e);
 		}
+
+		this._map._fireMouseEvent(this, e, type, true);
 	},
 
 	_clickTolerance: function () {
