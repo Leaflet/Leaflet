@@ -70,10 +70,6 @@ L.Path = L.Layer.extend({
 	},
 
 	_fireMouseEvent: function (e, type) {
-		if (e.type !== 'mousemove') {
-			L.DomEvent.stopPropagation(e);
-		}
-
 		this._map._fireMouseEvent(this, e, type, true);
 	},
 

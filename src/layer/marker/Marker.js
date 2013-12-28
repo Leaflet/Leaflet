@@ -202,8 +202,7 @@ L.Marker = L.Layer.extend({
 
 		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
 
-		var events = ['click', 'dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu', 'keypress'];
-
+		var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'contextmenu', 'keypress'];
 		for (var i = 0; i < events.length; i++) {
 			L.DomEvent.on(this._icon, events[i], this._fireMouseEvent, this);
 		}
@@ -218,10 +217,9 @@ L.Marker = L.Layer.extend({
 	},
 
 	_fireMouseEvent: function (e, type) {
+		// to prevent outline when clicking on keyboard-focusable marker
 		if (e.type === 'mousedown') {
 			L.DomEvent.preventDefault(e);
-		} else {
-			L.DomEvent.stopPropagation(e);
 		}
 
 		if (e.type === 'click' && this.dragging && this.dragging.moved()) { return; }

@@ -566,6 +566,9 @@ L.Map = L.Evented.extend({
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
+		if (type === 'click' || type === 'dblclick' || type === 'contextmenu') {
+			L.DomEvent.stopPropagation(e);
+		}
 
 		var data = {
 			originalEvent: e,
