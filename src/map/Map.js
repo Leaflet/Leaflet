@@ -437,8 +437,7 @@ L.Map = L.Evented.extend({
 
 		this._mapPane = panes.mapPane = this._createPane('leaflet-map-pane', this._container);
 
-		this._tilePane = panes.tilePane = this._createPane('leaflet-tile-pane', this._mapPane);
-		panes.objectsPane = this._createPane('leaflet-objects-pane', this._mapPane);
+		panes.tilePane = this._createPane('leaflet-tile-pane');
 		panes.shadowPane = this._createPane('leaflet-shadow-pane');
 		panes.overlayPane = this._createPane('leaflet-overlay-pane');
 		panes.markerPane = this._createPane('leaflet-marker-pane');
@@ -454,7 +453,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_createPane: function (className, container) {
-		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
+		return L.DomUtil.create('div', className, container || this._mapPane);
 	},
 
 

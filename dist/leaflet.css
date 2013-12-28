@@ -62,7 +62,6 @@
 	}
 
 .leaflet-tile-pane    { z-index: 2; }
-.leaflet-objects-pane { z-index: 3; }
 .leaflet-overlay-pane { z-index: 4; }
 .leaflet-shadow-pane  { z-index: 5; }
 .leaflet-marker-pane  { z-index: 6; }
