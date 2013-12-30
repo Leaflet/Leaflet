@@ -230,8 +230,12 @@ L.Map = L.Evented.extend({
 	},
 
 	createPane: function (name, container) {
-		var className = 'leaflet-pane leaflet-' + name + '-pane';
-		var pane = this._panes[name + 'Pane'] = L.DomUtil.create('div', className, container || this._mapPane);
+		var className = 'leaflet-pane' + (name ? ' leaflet-' + name + '-pane' : ''),
+		    pane = L.DomUtil.create('div', className, container || this._mapPane);
+
+		if (name) {
+			this._panes[name + 'Pane'] = pane;
+		}
 		return pane;
 	},
 
