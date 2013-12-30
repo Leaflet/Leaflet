@@ -1,15 +1,10 @@
 /* required styles */
 
-.leaflet-map-pane,
+.leaflet-pane,
 .leaflet-tile,
 .leaflet-marker-icon,
 .leaflet-marker-shadow,
-.leaflet-tile-pane,
 .leaflet-tile-container,
-.leaflet-overlay-pane,
-.leaflet-shadow-pane,
-.leaflet-marker-pane,
-.leaflet-popup-pane,
 .leaflet-map-pane svg,
 .leaflet-map-pane canvas,
 .leaflet-zoom-box,
@@ -60,6 +55,8 @@
 .leaflet-overlay-pane svg {
 	-moz-user-select: none;
 	}
+
+.leaflet-pane         { z-index: 4; }
 
 .leaflet-tile-pane    { z-index: 2; }
 .leaflet-overlay-pane { z-index: 4; }

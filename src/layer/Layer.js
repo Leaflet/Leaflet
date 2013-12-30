@@ -77,9 +77,7 @@ L.Layer = L.Evented.extend({
 	},
 
 	getPane: function (name) {
-		// TODO make pane if not present
-		var paneName = name ? (this.options[name] || name) : this.options.pane;
-		return this._map._panes[paneName];
+		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	}
 });
 

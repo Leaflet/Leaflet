@@ -229,6 +229,12 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
+	createPane: function (name, container) {
+		var className = 'leaflet-pane leaflet-' + name + '-pane';
+		var pane = this._panes[name + 'Pane'] = L.DomUtil.create('div', className, container || this._mapPane);
+		return pane;
+	},
+
 
 	// public methods for getting map state
 
@@ -315,6 +321,10 @@ L.Map = L.Evented.extend({
 
 	getPixelWorldBounds: function () {
 		return this.options.crs.getProjectedBounds(this.getZoom());
+	},
+
+	getPane: function (pane) {
+		return typeof pane === 'string' ? this._panes[pane] : pane;
 	},
 
 	getPanes: function () {
@@ -435,25 +445,18 @@ L.Map = L.Evented.extend({
 	_initPanes: function () {
 		var panes = this._panes = {};
 
-		this._mapPane = panes.mapPane = this._createPane('leaflet-map-pane', this._container);
+		this._mapPane = this.createPane('map', this._container);
 
-		panes.tilePane = this._createPane('leaflet-tile-pane');
-		panes.shadowPane = this._createPane('leaflet-shadow-pane');
-		panes.overlayPane = this._createPane('leaflet-overlay-pane');
-		panes.markerPane = this._createPane('leaflet-marker-pane');
-		panes.popupPane = this._createPane('leaflet-popup-pane');
-
-		var zoomHide = ' leaflet-zoom-hide';
+		this.createPane('tile');
+		this.createPane('shadow');
+		this.createPane('overlay');
+		this.createPane('marker');
+		this.createPane('popup');
 
 		if (!this.options.markerZoomAnimation) {
-			L.DomUtil.addClass(panes.markerPane, zoomHide);
-			L.DomUtil.addClass(panes.shadowPane, zoomHide);
-			L.DomUtil.addClass(panes.popupPane, zoomHide);
+			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
+			L.DomUtil.addClass(panes.shadowPane, 'leaflet-zoom-hide');
 		}
-	},
-
-	_createPane: function (className, container) {
-		return L.DomUtil.create('div', className, container || this._mapPane);
 	},
 
 
