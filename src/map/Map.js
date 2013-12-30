@@ -230,11 +230,11 @@ L.Map = L.Evented.extend({
 	},
 
 	createPane: function (name, container) {
-		var className = 'leaflet-pane' + (name ? ' leaflet-' + name + '-pane' : ''),
+		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
 		    pane = L.DomUtil.create('div', className, container || this._mapPane);
 
 		if (name) {
-			this._panes[name + 'Pane'] = pane;
+			this._panes[name] = pane;
 		}
 		return pane;
 	},
@@ -449,13 +449,13 @@ L.Map = L.Evented.extend({
 	_initPanes: function () {
 		var panes = this._panes = {};
 
-		this._mapPane = this.createPane('map', this._container);
+		this._mapPane = this.createPane('mapPane', this._container);
 
-		this.createPane('tile');
-		this.createPane('shadow');
-		this.createPane('overlay');
-		this.createPane('marker');
-		this.createPane('popup');
+		this.createPane('tilePane');
+		this.createPane('shadowPane');
+		this.createPane('overlayPane');
+		this.createPane('markerPane');
+		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
 			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
