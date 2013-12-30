@@ -14,13 +14,16 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initContainer: function () {
-		this._container = document.createElement('canvas');
+		var container = this._container = document.createElement('canvas');
 
-		L.DomEvent
-			.on(this._container, 'mousemove', this._onMouseMove, this)
-			.on(this._container, 'click', this._onClick, this);
+		L.DomEvent.on(container, 'mousemove', this._onMouseMove, this);
 
-		this._ctx = this._container.getContext('2d');
+		var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'contextmenu'];
+		for (var i = 0; i < events.length; i++) {
+			L.DomEvent.on(container, events[i], this._onClick, this);
+		}
+
+		this._ctx = container.getContext('2d');
 	},
 
 	_update: function () {
@@ -180,9 +183,7 @@ L.Canvas = L.Renderer.extend({
 
 		var point = this._map.mouseEventToLayerPoint(e);
 
-		// emulate mouseover/mouseout events
 		// TODO don't do on each move event, throttle since it's expensive
-
 		for (var id in this._layers) {
 			this._handleHover(this._layers[id], e, point);
 		}
@@ -192,11 +193,17 @@ L.Canvas = L.Renderer.extend({
 		if (!layer.options.clickable) { return; }
 
 		if (layer._containsPoint(point)) {
-			L.DomUtil.addClass(this._container, 'leaflet-clickable'); // change cursor
-			layer._fireMouseEvent(e, 'mouseover');
-			layer._mouseInside = true;
+			// if we just got inside the layer, fire mouseover
+			if (!layer._mouseInside) {
+				L.DomUtil.addClass(this._container, 'leaflet-clickable'); // change cursor
+				layer._fireMouseEvent(e, 'mouseover');
+				layer._mouseInside = true;
+			}
+			// fire mousemove
+			layer._fireMouseEvent(e);
 
 		} else if (layer._mouseInside) {
+			// if we're leaving the layer, fire mouseout
 			L.DomUtil.removeClass(this._container, 'leaflet-clickable');
 			layer._fireMouseEvent(e, 'mouseout');
 			layer._mouseInside = false;
