@@ -17,9 +17,9 @@ L.Control.Zoom = L.Control.extend({
 		    options = this.options;
 
 		this._zoomInButton  = this._createButton(options.zoomInText, options.zoomInTitle,
-		        zoomName + '-in',  container, this._zoomIn,  this);
+		        zoomName + '-in',  container, this._zoomIn);
 		this._zoomOutButton = this._createButton(options.zoomOutText, options.zoomOutTitle,
-		        zoomName + '-out', container, this._zoomOut, this);
+		        zoomName + '-out', container, this._zoomOut);
 
 		this._updateDisabled();
 		map.on('zoomend zoomlevelschange', this._updateDisabled, this);
@@ -45,12 +45,9 @@ L.Control.Zoom = L.Control.extend({
 		link.href = '#';
 		link.title = title;
 
-		var stop = L.DomEvent.stopPropagation;
-
 		L.DomEvent
+		    .on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
 		    .on(link, 'click', L.DomEvent.stop)
-		    .on(link, 'mousedown', stop)
-		    .on(link, 'dblclick', stop)
 		    .on(link, 'click', fn, this)
 		    .on(link, 'click', this._refocusOnMap, this);
 

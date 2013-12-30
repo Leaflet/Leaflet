@@ -123,9 +123,10 @@ L.Marker = L.Layer.extend({
 		this._initInteraction();
 
 		if (options.riseOnHover) {
-			L.DomEvent
-				.on(icon, 'mouseover', this._bringToFront, this)
-				.on(icon, 'mouseout', this._resetZIndex, this);
+			L.DomEvent.on(icon, {
+				mouseover: this._bringToFront,
+				mouseout: this._resetZIndex
+			}, this);
 		}
 
 		var newShadow = options.icon.createShadow(this._shadow),
@@ -157,9 +158,10 @@ L.Marker = L.Layer.extend({
 
 	_removeIcon: function () {
 		if (this.options.riseOnHover) {
-			L.DomEvent
-			    .off(this._icon, 'mouseover', this._bringToFront)
-			    .off(this._icon, 'mouseout', this._resetZIndex);
+			L.DomEvent.off(this._icon, {
+				mouseover: this._bringToFront,
+			    mouseout: this._resetZIndex
+			}, this);
 		}
 
 		L.DomUtil.remove(this._icon);
@@ -202,10 +204,8 @@ L.Marker = L.Layer.extend({
 
 		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
 
-		var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'contextmenu', 'keypress'];
-		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.on(this._icon, events[i], this._fireMouseEvent, this);
-		}
+		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mouseout contextmenu keypress',
+				this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
 			this.dragging = new L.Handler.MarkerDrag(this);

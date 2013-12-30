@@ -16,12 +16,9 @@ L.Canvas = L.Renderer.extend({
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
 
-		L.DomEvent.on(container, 'mousemove', this._onMouseMove, this);
-
-		var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'contextmenu'];
-		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.on(container, events[i], this._onClick, this);
-		}
+		L.DomEvent
+			.on(container, 'mousemove', this._onMouseMove, this)
+			.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
 
 		this._ctx = container.getContext('2d');
 	},

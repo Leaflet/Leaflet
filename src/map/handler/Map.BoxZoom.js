@@ -36,10 +36,11 @@ L.Map.BoxZoom = L.Handler.extend({
 
 		this._startPoint = this._map.mouseEventToContainerPoint(e);
 
-		L.DomEvent
-		    .on(document, 'mousemove', this._onMouseMove, this)
-		    .on(document, 'mouseup', this._onMouseUp, this)
-		    .on(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.on(document, {
+			mousemove: this._onMouseMove,
+		    mouseup: this._onMouseUp,
+		    keydown: this._onKeyDown
+		}, this);
 	},
 
 	_onMouseMove: function (e) {
@@ -72,10 +73,11 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.enableTextSelection();
 		L.DomUtil.enableImageDrag();
 
-		L.DomEvent
-		    .off(document, 'mousemove', this._onMouseMove, this)
-		    .off(document, 'mouseup', this._onMouseUp, this)
-		    .off(document, 'keydown', this._onKeyDown, this);
+		L.DomEvent.off(document, {
+			mousemove: this._onMouseMove,
+		    mouseup: this._onMouseUp,
+		    keydown: this._onKeyDown
+		}, this);
 	},
 
 	_onMouseUp: function () {

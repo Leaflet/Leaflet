@@ -1,13 +1,47 @@
 /*
  * L.DomEvent contains functions for working with DOM events.
+ * Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
  */
 
 var eventsKey = '_leaflet_events';
 
 L.DomEvent = {
-	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (obj, type, fn, context) {
 
+	on: function (obj, types, fn, context) {
+
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this._on(obj, type, types[type], fn);
+			}
+		} else {
+			types = L.Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._on(obj, types[i], fn, context);
+			}
+		}
+
+		return this;
+	},
+
+	off: function (obj, types, fn, context) {
+
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this._off(obj, type, types[type], fn);
+			}
+		} else {
+			types = L.Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._off(obj, types[i], fn, context);
+			}
+		}
+
+		return this;
+	},
+
+	_on: function (obj, type, fn, context) {
 		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : '');
 
 		if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
@@ -58,7 +92,7 @@ L.DomEvent = {
 		return this;
 	},
 
-	removeListener: function (obj, type, fn, context) {
+	_off: function (obj, type, fn, context) {
 
 		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : ''),
 		    handler = obj[eventsKey] && obj[eventsKey][id];
@@ -105,23 +139,18 @@ L.DomEvent = {
 	},
 
 	disableScrollPropagation: function (el) {
-		var stop = L.DomEvent.stopPropagation;
-
-		return L.DomEvent
-			.on(el, 'mousewheel', stop)
-			.on(el, 'MozMousePixelScroll', stop);
+		return L.DomEvent.on(el, 'mousewheel MozMousePixelScroll', L.DomEvent.stopPropagation);
 	},
 
 	disableClickPropagation: function (el) {
 		var stop = L.DomEvent.stopPropagation;
 
-		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
-			L.DomEvent.on(el, L.Draggable.START[i], stop);
-		}
+		L.DomEvent.on(el, L.Draggable.START.join(' '), stop);
 
-		return L.DomEvent
-			.on(el, 'click', L.DomEvent._fakeStop)
-			.on(el, 'dblclick', stop);
+		return L.DomEvent.on(el, {
+			click: L.DomEvent._fakeStop,
+			dblclick: stop
+		});
 	},
 
 	preventDefault: function (e) {
@@ -216,5 +245,5 @@ L.DomEvent = {
 	}
 };
 
-L.DomEvent.on = L.DomEvent.addListener;
-L.DomEvent.off = L.DomEvent.removeListener;
+L.DomEvent.addListener = L.DomEvent.on;
+L.DomEvent.removeListener = L.DomEvent.off;

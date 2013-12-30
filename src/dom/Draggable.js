@@ -28,9 +28,7 @@ L.Draggable = L.Evented.extend({
 	enable: function () {
 		if (this._enabled) { return; }
 
-		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
-			L.DomEvent.on(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
-		}
+		L.DomEvent.on(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
 
 		this._enabled = true;
 	},
@@ -38,9 +36,7 @@ L.Draggable = L.Evented.extend({
 	disable: function () {
 		if (!this._enabled) { return; }
 
-		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
-			L.DomEvent.off(this._dragStartTarget, L.Draggable.START[i], this._onDown, this);
-		}
+		L.DomEvent.off(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
 
 		this._enabled = false;
 		this._moved = false;
@@ -91,7 +87,7 @@ L.Draggable = L.Evented.extend({
 			this._startPos = L.DomUtil.getPosition(this._element).subtract(offset);
 
 			L.DomUtil.addClass(document.body, 'leaflet-dragging');
-			L.DomUtil.addClass((e.target || e.srcElement), 'leaflet-drag-target');
+			L.DomUtil.addClass(e.target || e.srcElement, 'leaflet-drag-target');
 		}
 
 		this._newPos = this._startPos.add(offset);
@@ -109,7 +105,7 @@ L.Draggable = L.Evented.extend({
 
 	_onUp: function (e) {
 		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
-		L.DomUtil.removeClass((e.target || e.srcElement), 'leaflet-drag-target');
+		L.DomUtil.removeClass(e.target || e.srcElement, 'leaflet-drag-target');
 
 		for (var i in L.Draggable.MOVE) {
 			L.DomEvent

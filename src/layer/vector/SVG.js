@@ -136,10 +136,8 @@ L.SVG = L.Renderer.extend({
 
 	// TODO remove duplication with L.Map
 	_initEvents: function () {
-		var events = ['click', 'dblclick', 'mousedown', 'mouseup', 'mouseover', 'mouseout', 'mousemove', 'contextmenu'];
-		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.on(this._container, events[i], this._fireMouseEvent, this);
-		}
+		L.DomEvent.on(this._container, 'click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu',
+				this._fireMouseEvent, this);
 	},
 
 	_fireMouseEvent: function (e) {

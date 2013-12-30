@@ -49,17 +49,19 @@ L.Map.Tap = L.Handler.extend({
 			}
 		}, this), 1000);
 
-		L.DomEvent
-			.on(document, 'touchmove', this._onMove, this)
-			.on(document, 'touchend', this._onUp, this);
+		L.DomEvent.on(document, {
+			touchmove: this._onMove,
+			touchend: this._onUp
+		}, this);
 	},
 
 	_onUp: function (e) {
 		clearTimeout(this._holdTimeout);
 
-		L.DomEvent
-			.off(document, 'touchmove', this._onMove, this)
-			.off(document, 'touchend', this._onUp, this);
+		L.DomEvent.off(document, {
+			touchmove: this._onMove,
+			touchend: this._onUp
+		}, this);
 
 		if (this._fireClick && e && e.changedTouches) {
 

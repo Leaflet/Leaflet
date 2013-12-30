@@ -525,12 +525,9 @@ L.Map = L.Evented.extend({
 
 		onOff = onOff || 'on';
 
-		var events = ['click', 'dblclick', 'mousedown', 'mouseup',
-				'mouseenter', 'mouseleave', 'mousemove', 'contextmenu'];
-
-		for (var i = 0, len = events.length; i < len; i++) {
-			L.DomEvent[onOff](this._container, events[i], this._handleMouseEvent, this);
-		}
+		L.DomEvent[onOff](this._container,
+			'click dblclick mousedown mouseup mouseenter mouseleave mousemove contextmenu',
+			this._handleMouseEvent, this);
 
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
