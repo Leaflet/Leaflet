@@ -41,7 +41,7 @@ L.Layer.include({
 	},
 
 	openPopup: function (latlng) {
-		if (this._popup) {
+		if (this._popup && this._map) {
 			this._map.openPopup(this._popup, latlng || this._latlng || this.getCenter());
 		}
 		return this;
