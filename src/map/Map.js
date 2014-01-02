@@ -375,7 +375,7 @@ L.Map = L.Evented.extend({
 	},
 
 	wrapLatLng: function (latlng) {
-		return this.options.crs.wrapLatLng(latlng);
+		return this.options.crs.wrapLatLng(L.latLng(latlng));
 	},
 
 	distance: function (latlng1, latlng2) {
