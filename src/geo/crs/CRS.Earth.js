@@ -7,16 +7,13 @@ L.CRS.Earth = L.extend({}, L.CRS, {
 
 	R: 6378137,
 
-	// distane between two geographic points using Harvesine formula
+	// distane between two geographical points using spherical law of cosines approximation
 	distance: function (latlng1, latlng2) {
 		var rad = Math.PI / 180,
 		    lat1 = latlng1.lat * rad,
-		    lat2 = latlng2.lat * rad,
-		    sin1 = Math.sin((lat2 - lat1) / 2),
-		    sin2 = Math.sin((latlng2.lng - latlng1.lng) * rad / 2);
+		    lat2 = latlng2.lat * rad;
 
-		var a = sin1 * sin1 + sin2 * sin2 * Math.cos(lat1) * Math.cos(lat2);
-
-		return this.R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		return this.R * Math.acos(Math.sin(lat1) * Math.sin(lat2) +
+				Math.cos(lat1) * Math.cos(lat2) * Math.cos((latlng2.lng - latlng1.lng) * rad));
 	}
 });
