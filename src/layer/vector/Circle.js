@@ -21,34 +21,26 @@ L.Circle = L.CircleMarker.extend({
 	},
 
 	getBounds: function () {
-		var rlng = this._getLngRadius(),
-		    rlat = this._getLatRadius(),
-		    latlng = this._latlng;
+		var half = [this._radius, this._radius];
 
 		return new L.LatLngBounds(
-			[latlng.lat - rlat, latlng.lng - rlng],
-			[latlng.lat + rlat, latlng.lng + rlng]);
+			this._map.layerPointToLatLng(this._point.subtract(half)),
+			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
 	setStyle: L.Path.prototype.setStyle,
 
-	// TODO Earth hardcoded, move into projection code!
 	_project: function () {
-		var lngRadius = this._getLngRadius(),
-		    latlng = this._latlng,
-		    pointLeft = this._map.latLngToLayerPoint([latlng.lat, latlng.lng - lngRadius]);
+		var crs = this._map.options.crs,
+		    p1 = crs.project(this._latlng),
+		    latlng2 = crs.unproject(p1.subtract([this._mRadius, 0]));
 
-		this._point = this._map.latLngToLayerPoint(latlng);
+		var pointLeft = this._map.latLngToLayerPoint(latlng2);
+
+		this._point = this._map.latLngToLayerPoint(this._latlng);
 		this._radius = Math.max(this._point.x - pointLeft.x, 1);
+
 		this._updateBounds();
-	},
-
-	_getLatRadius: function () {
-		return (this._mRadius / 40075017) * 360;
-	},
-
-	_getLngRadius: function () {
-		return this._getLatRadius() / Math.cos((Math.PI / 180) * this._latlng.lat);
 	}
 });
 
