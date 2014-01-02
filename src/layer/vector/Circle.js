@@ -21,7 +21,7 @@ L.Circle = L.CircleMarker.extend({
 	},
 
 	getBounds: function () {
-		var half = [this._radius, this._radius];
+		var half = [this._radius, this._radiusY];
 
 		return new L.LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
@@ -31,14 +31,20 @@ L.Circle = L.CircleMarker.extend({
 	setStyle: L.Path.prototype.setStyle,
 
 	_project: function () {
-		var crs = this._map.options.crs,
-		    p1 = crs.project(this._latlng),
-		    latlng2 = crs.unproject(p1.subtract([this._mRadius, 0]));
 
-		var pointLeft = this._map.latLngToLayerPoint(latlng2);
+		var lng = this._latlng.lng,
+		    map = this._map,
 
-		this._point = this._map.latLngToLayerPoint(this._latlng);
-		this._radius = Math.max(this._point.x - pointLeft.x, 1);
+		    latR = 360 * this._mRadius / (2 * L.CRS.Earth.R * Math.PI),
+		    top = map.latLngToLayerPoint([this._latlng.lat + latR, lng]),
+		    bottom = map.latLngToLayerPoint([this._latlng.lat - latR, lng]),
+		    p = this._point = top.add(bottom).divideBy(2),
+		    newLat = map.layerPointToLatLng(p).lat,
+		    lngR = latR / Math.cos(newLat * Math.PI / 180),
+		    left = map.latLngToLayerPoint([newLat, lng - lngR]);
+
+		this._radius = Math.max(p.x - left.x, 1);
+		this._radiusY = Math.max(p.y - top.y, 1);
 
 		this._updateBounds();
 	}
