@@ -2,9 +2,8 @@
  * L.CRS.EPSG3857 (World Mercator) CRS implementation.
  */
 
-L.CRS.EPSG3395 = L.extend({}, L.CRS, {
+L.CRS.EPSG3395 = L.extend({}, L.CRS.Earth, {
 	code: 'EPSG:3395',
-
 	projection: L.Projection.Mercator,
 
 	transformation: (function () {
@@ -13,7 +12,5 @@ L.CRS.EPSG3395 = L.extend({}, L.CRS, {
 		    scale = 0.5 / (Math.PI * r);
 
 		return new L.Transformation(scale, 0.5, -scale, 0.5);
-	}()),
-
-	wrapLng: [-180, 180]
+	}())
 });
