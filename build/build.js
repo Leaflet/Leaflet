@@ -143,7 +143,7 @@ exports.build = function (callback, version, compsBase32, buildName) {
 	});
 };
 
-exports.test = function(callback) {
+exports.test = function(complete, fail) {
 	var karma = require('karma'),
 	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
 
@@ -182,7 +182,9 @@ exports.test = function(callback) {
 	karma.server.start(testConfig, function(exitCode) {
 		if (!exitCode) {
 			console.log('\tTests ran successfully.\n');
+			complete();
+		} else {
+			process.exit(exitCode);
 		}
-		callback();
 	});
 };
