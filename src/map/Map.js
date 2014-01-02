@@ -378,6 +378,10 @@ L.Map = L.Evented.extend({
 		return this.options.crs.wrapLatLng(latlng);
 	},
 
+	distance: function (latlng1, latlng2) {
+		return this.options.crs.distance(L.latLng(latlng1), L.latLng(latlng2));
+	},
+
 	containerPointToLayerPoint: function (point) { // (Point)
 		return L.point(point).subtract(this._getMapPanePos());
 	},
