@@ -15,10 +15,10 @@ L.Projection.Mercator = {
 		    y = latlng.lat * d,
 		    tmp = this.R_MINOR / r,
 		    e = Math.sqrt(1 - tmp * tmp),
-		    max = 1 - 1E-15,
-		    sin = Math.max(Math.min(Math.sin(y), max), -max);
+		    con = e * Math.sin(y);
 
-		y = r * Math.log(((1 + sin) / (1 - sin)) / Math.pow((1 - e * sin) / (1 + e * sin), e / 2)) / 2;
+		var ts = Math.tan(Math.PI / 4 - y / 2) / Math.pow((1 - con) / (1 + con), e / 2);
+		y = -r * Math.log(Math.max(ts, 1E-10));
 
 		return new L.Point(latlng.lng * d * r, y);
 	},
