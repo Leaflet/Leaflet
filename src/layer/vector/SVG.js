@@ -110,7 +110,8 @@ L.SVG = L.Renderer.extend({
 	_updateCircle: function (layer) {
 		var p = layer._point,
 		    r = layer._radius,
-		    arc = 'a' + r + ',' + r + ' 0 1,0 ';
+		    r2 = layer._radiusY || r,
+		    arc = 'a' + r + ',' + r2 + ' 0 1,0 ';
 
 		// drawing a circle with two half-arcs
 		var d = layer._empty() ? 'M0 0' :

@@ -1,17 +1,18 @@
 describe('Circle', function () {
 	describe('#getBounds', function () {
 
-		var circle;
+		var map, circle;
 
 		beforeEach(function () {
-			circle = L.circle([50, 30], 200);
+			map = L.map(document.createElement('div')).setView([0, 0], 4);
+			circle = L.circle([50, 30], 200).addTo(map);
 		});
 
 		it('returns bounds', function () {
 			var bounds = circle.getBounds();
 
-			expect(bounds.getSouthWest().equals([49.998203369, 29.997204939])).to.be.ok();
-			expect(bounds.getNorthEast().equals([50.001796631, 30.002795061])).to.be.ok();
+			expect(bounds.getSouthWest()).nearLatLng(new L.LatLng(49.94347, 29.91211));
+			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.05646, 30.08789));
 		});
 	});
 });

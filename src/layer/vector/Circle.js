@@ -21,34 +21,44 @@ L.Circle = L.CircleMarker.extend({
 	},
 
 	getBounds: function () {
-		var rlng = this._getLngRadius(),
-		    rlat = this._getLatRadius(),
-		    latlng = this._latlng;
+		var half = [this._radius, this._radiusY];
 
 		return new L.LatLngBounds(
-			[latlng.lat - rlat, latlng.lng - rlng],
-			[latlng.lat + rlat, latlng.lng + rlng]);
+			this._map.layerPointToLatLng(this._point.subtract(half)),
+			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
 	setStyle: L.Path.prototype.setStyle,
 
-	// TODO Earth hardcoded, move into projection code!
 	_project: function () {
-		var lngRadius = this._getLngRadius(),
-		    latlng = this._latlng,
-		    pointLeft = this._map.latLngToLayerPoint([latlng.lat, latlng.lng - lngRadius]);
 
-		this._point = this._map.latLngToLayerPoint(latlng);
-		this._radius = Math.max(this._point.x - pointLeft.x, 1);
+		var lng = this._latlng.lng,
+		    lat = this._latlng.lat,
+		    map = this._map,
+		    crs = map.options.crs;
+
+		if (crs.distance === L.CRS.Earth.distance) {
+			var d = Math.PI / 180,
+			    latR = (this._mRadius / L.CRS.Earth.R) / d,
+			    top = map.project([lat + latR, lng]),
+			    bottom = map.project([lat - latR, lng]),
+			    p = top.add(bottom).divideBy(2),
+			    lat2 = map.unproject(p).lat,
+			    lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
+			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+
+			this._point = p.subtract(map.getPixelOrigin());
+			this._radius = isNaN(lngR) ? 0 : Math.max(Math.round(p.x - map.project([lat2, lng - lngR]).x), 1);
+			this._radiusY = Math.max(Math.round(p.y - top.y), 1);
+
+		} else {
+			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+
+			this._point = map.latLngToLayerPoint(this._latlng);
+			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
+		}
+
 		this._updateBounds();
-	},
-
-	_getLatRadius: function () {
-		return (this._mRadius / 40075017) * 360;
-	},
-
-	_getLngRadius: function () {
-		return this._getLatRadius() / Math.cos((Math.PI / 180) * this._latlng.lat);
 	}
 });
 

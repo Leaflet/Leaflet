@@ -104,10 +104,11 @@ L.SVG.include(!L.Browser.vml ? {} : {
 
 	_updateCircle: function (layer) {
 		var p = layer._point,
-		    r = Math.round(layer._radius);
+		    r = Math.round(layer._radius),
+		    r2 = Math.round(layer._radiusY || r);
 
 		this._setPath(layer, layer._empty() ? 'M0 0' :
-				'AL ' + p.x + ',' + p.y + ' ' + r + ',' + r + ' 0,' + (65535 * 360));
+				'AL ' + p.x + ',' + p.y + ' ' + r + ',' + r2 + ' 0,' + (65535 * 360));
 	},
 
 	_setPath: function (layer, path) {

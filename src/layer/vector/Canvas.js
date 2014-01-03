@@ -129,10 +129,21 @@ L.Canvas = L.Renderer.extend({
 		if (layer._empty()) { return; }
 
 		var p = layer._point,
-		    ctx = this._ctx;
+		    ctx = this._ctx,
+		    r = layer._radius,
+		    s = (layer._radiusY || r) / r;
+
+		if (s !== 1) {
+			ctx.save();
+			ctx.scale(1, s);
+		}
 
 		ctx.beginPath();
-		ctx.arc(p.x, p.y, layer._radius, 0, Math.PI * 2, false);
+		ctx.arc(p.x, p.y / s, r, 0, Math.PI * 2, false);
+
+		if (s !== 1) {
+			ctx.restore();
+		}
 
 		this._fillStroke(ctx, layer);
 	},
