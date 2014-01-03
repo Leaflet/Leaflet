@@ -63,7 +63,7 @@ L.CircleMarker = L.Path.extend({
 	},
 
 	_empty: function () {
-		return !this._renderer._bounds.intersects(this._pxBounds);
+		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
 	}
 });
 

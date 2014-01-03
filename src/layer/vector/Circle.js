@@ -45,11 +45,13 @@ L.Circle = L.CircleMarker.extend({
 
 		    lngR = Math.acos((Math.cos(latR * rad) - Math.sin(lat * rad) * Math.sin(lat2 * rad)) /
 		            (Math.cos(lat * rad) * Math.cos(lat2 * rad))) / rad || 0,
-		    left = map.project([lat2, lng - lngR]);
+		    left = map.project([lat2, lng - lngR]),
+		    r = p.x - left.x,
+		    ry = p.y - top.y;
 
 		this._point = p.subtract(map.getPixelOrigin());
-		this._radius = Math.max(Math.round(p.x - left.x), 1);
-		this._radiusY = Math.max(Math.round(p.y - top.y), 1);
+		this._radius = r ? Math.max(Math.round(r), 1) : 0;
+		this._radiusY = Math.max(Math.round(ry), 1);
 
 		this._updateBounds();
 	}
