@@ -420,9 +420,9 @@ L.GridLayer = L.Layer.extend({
 				error: err,
 				tile: tile
 			});
+		} else {
+			L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 		}
-
-		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 
 		this.fire('tileload', {tile: tile});
 
