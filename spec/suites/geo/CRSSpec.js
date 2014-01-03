@@ -24,8 +24,8 @@ describe("CRS.EPSG3857", function () {
 	describe("project", function () {
 		it('projects geo coords into meter coords correctly', function () {
 			expect(crs.project(new L.LatLng(50, 30))).near(new L.Point(3339584.7238, 6446275.84102));
-			expect(crs.project(new L.LatLng(90, 180))).near(new L.Point(20037508.34279, 20037508.34278));
-			expect(crs.project(new L.LatLng(-90, -180))).near(new L.Point(-20037508.34279, -20037508.34278));
+			expect(crs.project(new L.LatLng(85.0511287798, 180))).near(new L.Point(20037508.34279, 20037508.34278));
+			expect(crs.project(new L.LatLng(-85.0511287798, -180))).near(new L.Point(-20037508.34279, -20037508.34278));
 		});
 	});
 
