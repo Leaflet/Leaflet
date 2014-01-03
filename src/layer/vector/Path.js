@@ -45,8 +45,7 @@ L.Path = L.Layer.extend({
 
 	redraw: function () {
 		if (this._map) {
-			this._project();
-			this._update();
+			this._renderer._updatePath(this);
 		}
 		return this;
 	},

@@ -60,6 +60,14 @@ L.Canvas = L.Renderer.extend({
 		this._requestRedraw(layer);
 	},
 
+	_updatePath: function (layer) {
+		this._redrawBounds = layer._pxBounds;
+		this._draw(true);
+		layer._project();
+		this._draw();
+		this._redrawBounds = null;
+	},
+
 	_updateStyle: function (layer) {
 		this._requestRedraw(layer);
 	},

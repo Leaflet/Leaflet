@@ -69,6 +69,11 @@ L.SVG = L.Renderer.extend({
 		delete this._paths[L.stamp(path)];
 	},
 
+	_updatePath: function (layer) {
+		layer._project();
+		layer._update();
+	},
+
 	_updateStyle: function (layer) {
 		var path = layer._path,
 			options = layer.options;
