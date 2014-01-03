@@ -45,8 +45,10 @@ L.CircleMarker = L.Path.extend({
 	},
 
 	_updateBounds: function () {
-		var r = this._radius + this._clickTolerance(),
-		    p = [r, r];
+		var r = this._radius,
+		    r2 = this._radiusY || r,
+		    w = this._clickTolerance(),
+		    p = [r + w, r2 + w];
 		this._pxBounds = new L.Bounds(this._point.subtract(p), this._point.add(p));
 	},
 
