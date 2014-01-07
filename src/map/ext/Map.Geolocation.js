@@ -6,7 +6,7 @@ L.Map.IpProvider.None = null;
 L.Map.IpProvider.FreeGeoIp = {
 	url: 'http://freegeoip.net/json/',
 	cbParam: 'callback',
-	buildLocationObject: function(data) {
+	buildLocationObject: function (data) {
 		if (!data) {
 			return null;
 		}
@@ -22,15 +22,17 @@ L.Map.IpProvider.FreeGeoIp = {
 L.Map.IpProvider.GeoPlugin = {
 	url: 'http://www.geoplugin.net/json.gp',
 	cbParam: 'jsoncallback',
-	buildLocationObject: function(data) {
+	buildLocationObject: function (data) {
 		if (!data) {
 			return null;
 		}
 
 		return {
 			coords: {
+				/* jshint ignore:start */
 				latitude: data.geoplugin_latitude,
 				longitude: data.geoplugin_longitude
+				/* jshint ignore:end */
 			}
 		};
 	}
@@ -38,7 +40,7 @@ L.Map.IpProvider.GeoPlugin = {
 L.Map.IpProvider.Wikimedia = {
 	url: 'http://geoiplookup.wikimedia.org/',
 	cbParam: '',
-	buildLocationObject: function() {
+	buildLocationObject: function () {
 		var data = window.Geo,
 			result = {
 			coords: {
@@ -98,15 +100,15 @@ L.Map.include({
 	},
 
 	_fallbackToIp: function (errMsg) {
-		 if (!this._locateOptions.ipProvider) {
-			 this._handleGeolocationError(errMsg);
-			 return;
-		 }
+		if (!this._locateOptions.ipProvider) {
+			this._handleGeolocationError(errMsg);
+			return;
+		}
 
-		 var onResponse = L.bind(this._handleGeolocationResponse, this),
-			 onError = L.bind(this._handleGeolocationError, this);
+		var onResponse = L.bind(this._handleGeolocationResponse, this),
+			onError = L.bind(this._handleGeolocationError, this);
 
-		 this._locateByIP(onResponse, onError, this._locateOptions.ipProvider);
+		this._locateByIP(onResponse, onError, this._locateOptions.ipProvider);
 	},
 
 	_handleGeolocationError: function (error) {
@@ -130,8 +132,8 @@ L.Map.include({
 		    lng = pos.coords.longitude,
 		    latlng = new L.LatLng(lat, lng),
 
-		    latAccuracy = pos.ipBased ? 0 : 180 * pos.coords.accuracy / 40075017,
-		    lngAccuracy = pos.ipBased ? 0 : latAccuracy / Math.cos((Math.PI / 180) * lat),
+		    latAccuracy = (pos.ipBased) ? 0 : 180 * pos.coords.accuracy / 40075017,
+		    lngAccuracy = (pos.ipBased) ? 0 : latAccuracy / Math.cos((Math.PI / 180) * lat),
 
 		    bounds = L.latLngBounds(
 		            [lat - latAccuracy, lng - lngAccuracy],
@@ -168,7 +170,7 @@ L.Map.include({
 		this.fire('locationfound', data);
 	},
 
-	_handleIpResponse: function(data, responseCallback, errorCallback) {
+	_handleIpResponse: function (data, responseCallback, errorCallback) {
 		window.cbObject = null;
 		delete window.cbObject;
 
@@ -181,8 +183,8 @@ L.Map.include({
 		}
 	},
 
-	_locateByIP: function(responseCallback, errorCallback, source) {
-		var handlerFn = L.bind(function(data) {
+	_locateByIP: function (responseCallback, errorCallback, source) {
+		var handlerFn = L.bind(function (data) {
 			this._handleIpResponse(data, responseCallback, errorCallback);
 		}, this);
 
@@ -196,7 +198,7 @@ L.Map.include({
 		this._loadScript(source.url + '?' + source.cbParam + '= window.cbObject.fn');
 	},
 
-	_loadScript: function(url, callback, type) {
+	_loadScript: function (url, callback, type) {
 		var script = document.createElement('script');
 		script.type = (type === undefined) ? 'text/javascript' : type;
 
