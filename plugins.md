@@ -474,6 +474,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/tontita/">Seong Choi</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-layerJSON">Leaflet Generic JSON Layer</a>
+		</td><td>
+			Simple way for transform any JSON data source in a Leaflet Layer!<br />
+			Request Bounding Box on map move, filter remote JSON data, customize markers by attributes
+			and minimize remote requests with caching system.
+		</td><td>
+			<a href="http://labs.easyblog.it/">Stefano Cudini</a>
+		</td>
+	</tr>
 </table>
 
 
