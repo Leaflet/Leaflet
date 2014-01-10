@@ -8,6 +8,7 @@ L.Layer.include({
 
 		if (content instanceof L.Popup) {
 			this._popup = content;
+			content._source = this;
 		} else {
 			if (!this._popup || options) {
 				this._popup = new L.Popup(options, this);
