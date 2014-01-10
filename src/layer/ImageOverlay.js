@@ -85,14 +85,11 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		var map = this._map,
-		    image = this._image,
-		    scale = map.getZoomScale(e.zoom),
-		    topLeft = map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
-		    size = map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center)._subtract(topLeft),
-		    origin = topLeft._add(size._multiplyBy((1 - 1 / scale) / 2));
+		var topLeft = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
+		    size = this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center).subtract(topLeft),
+		    offset = topLeft.add(size._multiplyBy((1 - 1 / e.scale) / 2));
 
-		L.DomUtil.setTransform(image, origin, scale);
+		L.DomUtil.setTransform(this._image, offset, e.scale);
 	},
 
 	_reset: function () {
