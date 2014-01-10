@@ -141,8 +141,11 @@ L.DomUtil = {
 				point.y + 'px' + (is3d ? ',0)' : ')');
 	},
 
-	setTransform: function (el, point, scale) {
-		el.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(point) + (scale ? ' scale(' + scale + ')' : '');
+	setTransform: function (el, point, scale, oldTransform) {
+		el.style[L.DomUtil.TRANSFORM] =
+			(oldTransform ? oldTransform + ' ' : '') +
+			L.DomUtil.getTranslateString(point) +
+			(scale ? ' scale(' + scale + ')' : '');
 	},
 
 	getScaleString: function (scale, origin) {

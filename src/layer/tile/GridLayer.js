@@ -465,14 +465,17 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
+		var oldTransform;
+
 		if (!this._animating) {
 			this._animating = true;
 			this._prepareBgBuffer();
+			oldTransform = this._bgBuffer.style[L.DomUtil.TRANSFORM];
 		}
 
 		var offset = e.delta.add(e.origin.multiplyBy(1 - e.scale));
 
-		L.DomUtil.setTransform(this._bgBuffer, offset, e.scale);
+		L.DomUtil.setTransform(this._bgBuffer, offset, e.scale, oldTransform);
 	},
 
 	_endZoomAnim: function () {
