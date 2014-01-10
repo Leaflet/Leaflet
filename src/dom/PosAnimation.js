@@ -32,7 +32,9 @@ L.PosAnimation = L.Evented.extend({
 		// if we just removed the transition property, the element would jump to its final position,
 		// so we need to make it stay at the current position
 
-		L.DomUtil.setPosition(this._el, this._getPos());
+		this._newPos = this._getPos();
+		L.DomUtil.setPosition(this._el, this._newPos);
+
 		this._onTransitionEnd();
 		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a new animation
 	},

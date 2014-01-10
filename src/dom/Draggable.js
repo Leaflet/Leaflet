@@ -56,6 +56,8 @@ L.Draggable = L.Evented.extend({
 
 		if (this._moving) { return; }
 
+		this.fire('down');
+
 		var first = e.touches ? e.touches[0] : e;
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
