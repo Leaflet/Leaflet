@@ -44,10 +44,9 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		var scale = this._map.getZoomScale(e.zoom),
-		    offset = this._map._getCenterOffset(e.center)._multiplyBy(-scale)._add(this._bounds.min);
+		var offset = this._map._getCenterOffset(e.center)._multiplyBy(-e.scale)._add(this._bounds.min);
 
-		L.DomUtil.setTransform(this._container, offset, scale);
+		L.DomUtil.setTransform(this._container, offset, e.scale);
 	},
 
 	_update: function () {
