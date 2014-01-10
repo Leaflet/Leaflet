@@ -134,6 +134,7 @@ L.DomUtil = {
 		// on WebKit browsers, using translate3d instead of translate makes animation smoother
 		// as it ensures HW accel is used. Firefox doesn't care (same speed either way).
 		var is3d = L.Browser.webkit3d;
+		point = point || new L.Point(0, 0);
 
 		return 'translate' + (is3d ? '3d(' : '(') +
 				point.x + 'px,' +
