@@ -130,26 +130,17 @@ L.DomUtil = {
 		return false;
 	},
 
-	getTranslateString: function (point) {
-		// on WebKit browsers, using translate3d instead of translate makes animation smoother
-		// as it ensures HW accel is used. Firefox doesn't care (same speed either way).
-		var is3d = L.Browser.webkit3d;
-		point = point || new L.Point(0, 0);
-
-		return 'translate' + (is3d ? '3d(' : '(') +
-				point.x + 'px,' +
-				point.y + 'px' + (is3d ? ',0)' : ')');
-	},
-
 	setTransform: function (el, point, scale, oldTransform) {
+		// on WebKit browsers, using translate3d instead of translate makes animation smoother
+		// as it ensures HW acceleration is used. Firefox doesn't care (same speed either way).
+		var is3d = L.Browser.webkit3d,
+		    x = point ? point.x : 0,
+		    y = point ? point.y : 0;
+
 		el.style[L.DomUtil.TRANSFORM] =
 			(oldTransform ? oldTransform + ' ' : '') +
-			L.DomUtil.getTranslateString(point) +
+			'translate' + (is3d ? '3d(' : '(') + x + 'px,' + y + 'px' + (is3d ? ',0)' : ')') +
 			(scale ? ' scale(' + scale + ')' : '');
-	},
-
-	getScaleString: function (scale, origin) {
-		return L.DomUtil.getTranslateString(origin.multiplyBy(1 - scale)) + ' scale(' + scale + ') ';
 	},
 
 	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
