@@ -130,16 +130,15 @@ L.DomUtil = {
 		return false;
 	},
 
-	setTransform: function (el, point, scale, oldTransform) {
+	setTransform: function (el, offset, scale, origin, oldTransform) {
 		// on WebKit browsers, using translate3d instead of translate makes animation smoother
 		// as it ensures HW acceleration is used. Firefox doesn't care (same speed either way).
 		var is3d = L.Browser.webkit3d,
-		    x = point ? point.x : 0,
-		    y = point ? point.y : 0;
+		    pos = origin ? offset.add(origin.multiplyBy(1 - scale)) : offset || new L.Point(0, 0);
 
 		el.style[L.DomUtil.TRANSFORM] =
 			(oldTransform ? oldTransform + ' ' : '') +
-			'translate' + (is3d ? '3d(' : '(') + x + 'px,' + y + 'px' + (is3d ? ',0)' : ')') +
+			'translate' + (is3d ? '3d(' : '(') + pos.x + 'px,' + pos.y + 'px' + (is3d ? ',0)' : ')') +
 			(scale ? ' scale(' + scale + ')' : '');
 	},
 
