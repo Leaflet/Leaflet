@@ -498,7 +498,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (map && !map._animatingZoom && !map.touchZoom._zooming) {
 			this._bgBuffer.innerHTML = '';
-			this._bgBuffer.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString();
+			L.DomUtil.setTransform(this._bgBuffer);
 		}
 	},
 
@@ -514,7 +514,7 @@ L.GridLayer = L.Layer.extend({
 
 		// prepare the buffer to become the front tile pane
 		bg.style.visibility = 'hidden';
-		bg.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString();
+		L.DomUtil.setTransform(bg);
 
 		// switch out the current layer to be the new bg layer (and vice-versa)
 		this._tileContainer = bg;

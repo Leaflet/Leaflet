@@ -141,6 +141,10 @@ L.DomUtil = {
 				point.y + 'px' + (is3d ? ',0)' : ')');
 	},
 
+	setTransform: function (el, point, scale) {
+		el.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(point) + (scale ? ' scale(' + scale + ')' : '');
+	},
+
 	getScaleString: function (scale, origin) {
 		return L.DomUtil.getTranslateString(origin.multiplyBy(1 - scale)) + ' scale(' + scale + ') ';
 	},
@@ -151,7 +155,7 @@ L.DomUtil = {
 		el._leaflet_pos = point;
 
 		if (!disable3D && L.Browser.any3d) {
-			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
+			L.DomUtil.setTransform(el, point);
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';

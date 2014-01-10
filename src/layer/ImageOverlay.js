@@ -92,7 +92,7 @@ L.ImageOverlay = L.Layer.extend({
 		    size = map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center)._subtract(topLeft),
 		    origin = topLeft._add(size._multiplyBy((1 - 1 / scale) / 2));
 
-		image.style[L.DomUtil.TRANSFORM] = L.DomUtil.getTranslateString(origin) + ' scale(' + scale + ') ';
+		L.DomUtil.setTransform(image, origin, scale);
 	},
 
 	_reset: function () {
