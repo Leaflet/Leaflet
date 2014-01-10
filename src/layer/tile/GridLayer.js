@@ -470,14 +470,9 @@ L.GridLayer = L.Layer.extend({
 			this._prepareBgBuffer();
 		}
 
-		var bg = this._bgBuffer,
-		    transform = L.DomUtil.TRANSFORM,
-		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform],
-		    scaleStr = L.DomUtil.getScaleString(e.scale, e.origin);
+		var offset = e.delta.add(e.origin.multiplyBy(1 - e.scale));
 
-		bg.style[transform] = e.backwards ?
-				scaleStr + ' ' + initialTransform :
-				initialTransform + ' ' + scaleStr;
+		L.DomUtil.setTransform(this._bgBuffer, offset, e.scale);
 	},
 
 	_endZoomAnim: function () {

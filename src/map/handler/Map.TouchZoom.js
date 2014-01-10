@@ -80,12 +80,13 @@ L.Map.TouchZoom = L.Handler.extend({
 	},
 
 	_updateOnMove: function () {
-		var map = this._map,
-		    origin = this._getScaleOrigin(),
-		    center = map.layerPointToLatLng(origin),
-		    zoom = map.getScaleZoom(this._scale);
+		var map = this._map;
 
-		map._animateZoom(center, zoom, this._startCenter, this._scale, this._delta);
+		this._origin = this._getScaleOrigin();
+		this._center = map.layerPointToLatLng(this._origin);
+		this._zoom = map.getScaleZoom(this._scale);
+
+		map._animateZoom(this._center, this._zoom, this._startCenter, this._scale, this._delta);
 	},
 
 	_onTouchEnd: function () {
@@ -104,18 +105,13 @@ L.Map.TouchZoom = L.Handler.extend({
 		    .off(document, 'touchmove', this._onTouchMove)
 		    .off(document, 'touchend', this._onTouchEnd);
 
-		var origin = this._getScaleOrigin(),
-		    center = map.layerPointToLatLng(origin),
+		var oldZoom = map.getZoom(),
+		    zoomDelta = this._zoom - oldZoom,
+		    finalZoom = map._limitZoom(oldZoom + (zoomDelta > 0 ? Math.ceil(zoomDelta) : Math.floor(zoomDelta))),
+		    finalScale = map.getZoomScale(finalZoom),
+		    delta = this._delta.add(this._centerOffset.subtract(this._delta).multiplyBy(1 - 1 / this._scale));
 
-		    oldZoom = map.getZoom(),
-		    floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
-		    roundZoomDelta = (floatZoomDelta > 0 ?
-		            Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
-
-		    zoom = map._limitZoom(oldZoom + roundZoomDelta),
-		    scale = map.getZoomScale(zoom) / this._scale;
-
-		map._animateZoom(center, zoom, origin, scale);
+		map._animateZoom(this._center, finalZoom, this._origin, finalScale, delta);
 	},
 
 	_getScaleOrigin: function () {

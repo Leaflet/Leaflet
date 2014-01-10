@@ -57,12 +57,12 @@ L.Map.include(!zoomAnimated ? {} : {
 		    .fire('movestart')
 		    .fire('zoomstart');
 
-		this._animateZoom(center, zoom, origin, scale, null, true);
+		this._animateZoom(center, zoom, origin, scale, new L.Point(0, 0));
 
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
+	_animateZoom: function (center, zoom, origin, scale, delta) {
 
 		this._animatingZoom = true;
 
@@ -83,8 +83,7 @@ L.Map.include(!zoomAnimated ? {} : {
 			zoom: zoom,
 			origin: origin,
 			scale: scale,
-			delta: delta,
-			backwards: backwards
+			delta: delta
 		});
 	},
 
