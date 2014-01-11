@@ -149,9 +149,7 @@ L.Popup = L.Layer.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
-			L.DomEvent
-				.disableClickPropagation(closeButton)
-				.on(closeButton, 'click', this._onCloseButtonClick, this);
+			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
