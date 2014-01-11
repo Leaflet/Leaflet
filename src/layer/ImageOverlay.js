@@ -18,6 +18,10 @@ L.ImageOverlay = L.Layer.extend({
 	onAdd: function () {
 		if (!this._image) {
 			this._initImage();
+
+			if (this.options.opacity < 1) {
+				this._updateOpacity();
+			}
 		}
 
 		this.getPane().appendChild(this._image);
@@ -31,7 +35,10 @@ L.ImageOverlay = L.Layer.extend({
 
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
-		this._updateOpacity();
+
+		if (this._image) {
+			this._updateOpacity();
+		}
 		return this;
 	},
 
@@ -51,7 +58,11 @@ L.ImageOverlay = L.Layer.extend({
 
 	setUrl: function (url) {
 		this._url = url;
-		this._image.src = this._url;
+
+		if (this._image) {
+			this._image.src = url;
+		}
+		return this;
 	},
 
 	getAttribution: function () {
@@ -59,7 +70,9 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {viewreset: this._reset};
+		var events = {
+			viewreset: this._reset
+		};
 
 		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
@@ -69,19 +82,14 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_initImage: function () {
-		this._image = L.DomUtil.create('img',
+		var img = this._image = L.DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
-		this._updateOpacity();
+		img.onselectstart = L.Util.falseFn;
+		img.onmousemove = L.Util.falseFn;
 
-		//TODO createImage util method to remove duplication
-		L.extend(this._image, {
-			galleryimg: 'no',
-			onselectstart: L.Util.falseFn,
-			onmousemove: L.Util.falseFn,
-			onload: L.bind(this.fire, this, 'load'),
-			src: this._url
-		});
+		img.onload = L.bind(this.fire, this, 'load');
+		img.src = this._url;
 	},
 
 	_animateZoom: function (e) {
