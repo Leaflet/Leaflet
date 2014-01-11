@@ -101,11 +101,13 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_reset: function () {
-		var image   = this._image,
-		    topLeft = this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-		    size = this._map.latLngToLayerPoint(this._bounds.getSouthEast())._subtract(topLeft);
+		var image = this._image,
+		    bounds = new L.Bounds(
+		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
+		    size = bounds.getSize();
 
-		L.DomUtil.setPosition(image, topLeft);
+		L.DomUtil.setPosition(image, bounds.min);
 
 		image.style.width  = size.x + 'px';
 		image.style.height = size.y + 'px';
