@@ -109,12 +109,14 @@ L.Evented = L.Class.extend({
 
 		} else {
 			listeners = events[type];
-
-			for (i = 0, len = listeners.length; i < len; i++) {
-				if (listeners[i].fn === fn) {
-					listener = listeners[i];
-					listeners.splice(i, 1);
-					break;
+			
+			if(listeners){
+				for (i = 0, len = listeners.length; i < len; i++) {
+					if (listeners[i].fn === fn) {
+						listener = listeners[i];
+						listeners.splice(i, 1);
+						break;
+					}
 				}
 			}
 		}
