@@ -126,47 +126,11 @@ L.TileLayer = L.GridLayer.extend({
 		return this.options.subdomains[index];
 	},
 
-	_prepareBgBuffer: function () {
-
-		var front = this._tileContainer,
-		    bg = this._bgBuffer;
-
-		// if foreground layer doesn't have many tiles but bg layer does,
-		// keep the existing bg layer and just zoom it some more
-
-		var bgLoaded = this._getLoadedTilesPercentage(bg),
-		    frontLoaded = this._getLoadedTilesPercentage(front);
-
-		if (bg && bgLoaded > 0.5 && frontLoaded < 0.5) {
-
-			front.style.visibility = 'hidden';
-			this._stopLoadingImages(front);
-			return;
-		}
-
-		this._swapBgBuffer();
-		this._stopLoadingImages(bg);
-	},
-
-	_getLoadedTilesPercentage: function (container) {
-		var tiles = container.getElementsByTagName('img'),
-		    i, len, count = 0;
-
-		for (i = 0, len = tiles.length; i < len; i++) {
-			if (tiles[i].complete) {
-				count++;
-			}
-		}
-		return count / len;
-	},
-
 	// stops loading all tiles in the background layer
-	_stopLoadingImages: function (container) {
-		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
-		    i, len, tile;
-
-		for (i = 0, len = tiles.length; i < len; i++) {
-			tile = tiles[i];
+	_abortLoading: function () {
+		var i, tile;
+		for (i in this._tiles) {
+			tile = this._tiles[i];
 
 			if (!tile.complete) {
 				tile.onload = L.Util.falseFn;

@@ -191,6 +191,7 @@ L.GridLayer = L.Layer.extend({
 
 		this._tiles = {};
 		this._tilesToLoad = 0;
+		this._tilesTotal = 0;
 
 		this._tileContainer.innerHTML = '';
 
@@ -283,6 +284,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._tilesToLoad += tilesToLoad;
+		this._tilesTotal += tilesToLoad;
 
 		// sort tile queue to load tiles in order of their distance to center
 		queue.sort(function (a, b) {
@@ -495,14 +497,20 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_prepareBgBuffer: function () {
-		// overriden in TileLayer
-		this._swapBgBuffer();
-	},
-
-	_swapBgBuffer: function () {
 
 		var front = this._tileContainer,
 		    bg = this._bgBuffer;
+
+		if (this._abortLoading) {
+			this._abortLoading();
+		}
+
+		if (this._tilesToLoad / this._tilesTotal > 0.5) {
+			// if foreground layer doesn't have many tiles loaded,
+			// keep the existing bg layer and just zoom it some more
+			front.style.visibility = 'hidden';
+			return;
+		}
 
 		// prepare the buffer to become the front tile pane
 		bg.style.visibility = 'hidden';
