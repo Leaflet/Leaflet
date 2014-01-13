@@ -225,6 +225,8 @@ L.Map = L.Evented.extend({
 		}
 
 		this._clearHandlers();
+		
+		this.callDestroyHooks();
 
 		return this;
 	},
