@@ -465,15 +465,19 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		var oldTransform;
-
 		if (!this._animating) {
 			this._animating = true;
 			this._prepareBgBuffer();
-			oldTransform = this._bgBuffer.style[L.DomUtil.TRANSFORM];
+
+			this._prevTranslate = this._translate;
+			this._prevScale = this._scale;
 		}
 
-		L.DomUtil.setTransform(this._bgBuffer, e.delta, e.scale, e.origin, oldTransform);
+		// avoid stacking transforms by calculating cumulating translate/scale sequence
+		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale)).add(e.delta);
+		this._scale = this._prevScale * e.scale;
+
+		L.DomUtil.setTransform(this._bgBuffer, this._translate, this._scale);
 	},
 
 	_endZoomAnim: function () {
@@ -515,6 +519,10 @@ L.GridLayer = L.Layer.extend({
 		// switch out the current layer to be the new bg layer (and vice-versa)
 		this._tileContainer = bg;
 		this._bgBuffer = front;
+
+		// reset bg layer transform info
+		this._translate = new L.Point(0, 0);
+		this._scale = 1;
 
 		// prevent bg buffer from clearing right after zoom
 		clearTimeout(this._clearBgBufferTimer);
