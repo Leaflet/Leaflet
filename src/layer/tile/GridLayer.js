@@ -111,6 +111,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		if (this._zoomAnimated) {
+			events.zoomanimstart = this._startZoomAnim;
 			events.zoomanim = this._animateZoom;
 			events.zoomend = this._endZoomAnim;
 		}
@@ -464,15 +465,13 @@ L.GridLayer = L.Layer.extend({
 				bounds.max.divideBy(size).ceil().subtract([1, 1])) : null;
 	},
 
+	_startZoomAnim: function () {
+		this._prepareBgBuffer();
+		this._prevTranslate = this._translate;
+		this._prevScale = this._scale;
+	},
+
 	_animateZoom: function (e) {
-		if (!this._animating) {
-			this._animating = true;
-			this._prepareBgBuffer();
-
-			this._prevTranslate = this._translate;
-			this._prevScale = this._scale;
-		}
-
 		// avoid stacking transforms by calculating cumulating translate/scale sequence
 		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale)).add(e.delta);
 		this._scale = this._prevScale * e.scale;
@@ -481,16 +480,9 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_endZoomAnim: function () {
-		var front = this._tileContainer,
-		    bg = this._bgBuffer;
-
+		var front = this._tileContainer;
 		front.style.visibility = '';
 		L.DomUtil.toFront(front); // bring to front
-
-		// force reflow
-		L.Util.falseFn(bg.offsetWidth);
-
-		this._animating = false;
 	},
 
 	_clearBgBuffer: function () {

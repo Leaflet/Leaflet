@@ -63,11 +63,10 @@ L.Map.TouchZoom = L.Handler.extend({
 		}
 
 		if (!this._moved) {
-			L.DomUtil.addClass(map._mapPane, 'leaflet-touching');
-
 			map
 			    .fire('movestart')
-			    .fire('zoomstart');
+			    .fire('zoomstart')
+			    .fire('zoomanimstart');
 
 			this._moved = true;
 		}
@@ -111,6 +110,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		    finalScale = map.getZoomScale(finalZoom),
 		    delta = this._delta.add(this._centerOffset.subtract(this._delta).multiplyBy(1 - 1 / this._scale));
 
+		map._startZoomAnim(this._center, finalZoom);
 		map._animateZoom(this._center, finalZoom, this._origin, finalScale, delta);
 	},
 

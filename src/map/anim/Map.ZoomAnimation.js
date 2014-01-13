@@ -55,19 +55,17 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		this
 		    .fire('movestart')
-		    .fire('zoomstart');
+		    .fire('zoomstart')
+		    .fire('zoomanimstart');
 
+		this._startZoomAnim(center, zoom);
 		this._animateZoom(center, zoom, origin, scale, new L.Point(0, 0));
 
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, origin, scale, delta) {
-
+	_startZoomAnim: function (center, zoom) {
 		this._animatingZoom = true;
-
-		// put transform transition on all layers with leaflet-zoom-animated class
-		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 
 		// remember what center/zoom to set after animation
 		this._animateToCenter = center;
@@ -78,6 +76,10 @@ L.Map.include(!zoomAnimated ? {} : {
 			L.Draggable._disabled = true;
 		}
 
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+	},
+
+	_animateZoom: function (center, zoom, origin, scale, delta) {
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
