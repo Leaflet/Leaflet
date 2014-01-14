@@ -32,7 +32,7 @@ var deps = {
 	},
 
 	GridLayer: {
-		src: ['layer/tile/GridLayer.js'],
+		src: ['layer/tile/Grid.js', 'layer/tile/GridLayer.js'],
 		desc: 'Used as base class for grid-like layers like TileLayer.',
 		heading: 'Layers'
 	},
