@@ -405,10 +405,9 @@ L.GridLayer = L.Layer.extend({
 			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
 		}
 
-		// Chrome 20 layouts much faster with top/left (verify with timeline, frames)
-		// Android 4 browser has display issues with top/left and requires transform instead
-		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
+		// we prefer translate over top/left because it fixes gaps between tiles in Safari,
+		// but not 3d so that we don't create a HW-accelerated layer from each tile which is slow
+		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
 		this._tiles[this._tileCoordsToKey(coords)] = tile;
