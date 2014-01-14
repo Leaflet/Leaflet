@@ -185,7 +185,8 @@ L.GridLayer = L.Layer.extend({
 	_reset: function (e) {
 		for (var key in this._tiles) {
 			this.fire('tileunload', {
-				tile: this._tiles[key]
+				tile: this._tiles[key],
+				coords: this._keyToTileCoords(key)
 			});
 		}
 
@@ -334,16 +335,19 @@ L.GridLayer = L.Layer.extend({
 
 	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
-		return coords.x + ':' + coords.y;
+		return coords.x + ':' + coords.y + ':' + coords.z;
 	},
 
 	// converts tile cache key to coordiantes
 	_keyToTileCoords: function (key) {
 		var kArr = key.split(':'),
 		    x = parseInt(kArr[0], 10),
-		    y = parseInt(kArr[1], 10);
+		    y = parseInt(kArr[1], 10),
+		    z = parseInt(kArr[2], 10),
+		    coords = new L.Point(x, y);
 
-		return new L.Point(x, y);
+		coords.z = z;
+		return coords;
 	},
 
 	// remove any present tiles that are off the specified bounds
@@ -362,7 +366,10 @@ L.GridLayer = L.Layer.extend({
 
 		delete this._tiles[key];
 
-		this.fire('tileunload', {tile: tile});
+		this.fire('tileunload', {
+			tile: tile,
+			coords: this._keyToTileCoords(key)
+		});
 	},
 
 	_initTile: function (tile) {
@@ -394,7 +401,7 @@ L.GridLayer = L.Layer.extend({
 		// wrap tile coords if necessary (depending on CRS)
 		this._wrapCoords(coords);
 
-		var tile = this.createTile(coords, L.bind(this._tileReady, this));
+		var tile = this.createTile(coords, L.bind(this._tileReady, this, coords));
 
 		this._initTile(tile);
 
@@ -402,7 +409,7 @@ L.GridLayer = L.Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
+			setTimeout(L.bind(this._tileReady, this, coords, null, tile), 0);
 		}
 
 		// Chrome 20 layouts much faster with top/left (verify with timeline, frames)
@@ -414,20 +421,27 @@ L.GridLayer = L.Layer.extend({
 		this._tiles[this._tileCoordsToKey(coords)] = tile;
 
 		container.appendChild(tile);
-		this.fire('tileloadstart', {tile: tile});
+		this.fire('tileloadstart', {
+			tile: tile,
+			coords: coords
+		});
 	},
 
-	_tileReady: function (err, tile) {
+	_tileReady: function (coords, err, tile) {
 		if (err) {
 			this.fire('tileerror', {
 				error: err,
-				tile: tile
+				tile: tile,
+				coords: coords
 			});
 		}
 
 		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 
-		this.fire('tileload', {tile: tile});
+		this.fire('tileload', {
+			tile: tile,
+			coords: coords
+		});
 
 		this._tilesToLoad--;
 
