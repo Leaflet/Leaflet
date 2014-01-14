@@ -197,6 +197,13 @@ L.GridLayer = L.Layer.extend({
 
 		this._tileContainer.innerHTML = '';
 
+		if (this._zoomAnimated) {
+			// a pretty funny hack - Safari bugs out with HW-acceleration when you pan to the right
+			// and there are no elements in the top left corner of the tile container, this fixes it
+			var hack = L.DomUtil.create('div', 'leaflet-hack leaflet-tile-loaded', this._tileContainer);
+			L.DomUtil.setTransform(hack, null, null, true);
+		}
+
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
 		}
@@ -298,13 +305,6 @@ L.GridLayer = L.Layer.extend({
 
 		for (i = 0; i < tilesToLoad; i++) {
 			this._addTile(queue[i], fragment);
-		}
-
-		if (this._zoomAnimated) {
-			// a pretty funny hack - Safari bugs out with HW-acceleration when you pan to the right
-			// and there are no elements in the top left corner of the tile container, this fixes it
-			var hack = L.DomUtil.create('div', 'leaflet-hack', this._tileContainer);
-			L.DomUtil.setTransform(hack);
 		}
 
 		this._tileContainer.appendChild(fragment);
