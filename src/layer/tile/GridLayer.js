@@ -200,7 +200,7 @@ L.GridLayer = L.Layer.extend({
 		if (this._zoomAnimated) {
 			// a pretty funny hack - Safari bugs out with HW-acceleration when you pan to the right
 			// and there are no elements in the top left corner of the tile container, this fixes it
-			var hack = L.DomUtil.create('div', 'leaflet-hack leaflet-tile-loaded', this._tileContainer);
+			var hack = L.DomUtil.create('div', 'leaflet-hack leaflet-tile leaflet-tile-loaded', this._tileContainer);
 			L.DomUtil.setTransform(hack, null, null, true);
 		}
 
