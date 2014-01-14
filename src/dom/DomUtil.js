@@ -131,8 +131,8 @@ L.DomUtil = {
 	},
 
 	setTransform: function (el, offset, scale, no3d) {
-		no3d = no3d || !L.Browser.any3d,
-		pos = offset || new L.Point(0, 0);
+		var pos = offset || new L.Point(0, 0);
+		no3d = no3d || !L.Browser.any3d;
 
 		el.style[L.DomUtil.TRANSFORM] =
 			'translate' + (no3d ? '(' : '3d(') + pos.x + 'px,' + pos.y + 'px' + (no3d ? ')' : ',0)') +
