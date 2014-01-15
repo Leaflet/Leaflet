@@ -201,20 +201,25 @@ L.GridLayer = L.Layer.extend({
 			this._clearBgBuffer();
 		}
 
-		// TODO won't work
-		this._tileNumBounds = this._getTileNumBounds();
+		var map = this._map,
+		    zoom = map.getZoom(),
+		    center = map.getCenter();
+
+		this._tileSize = this._getTileSize();
+		this._tileZoom = Math.round(zoom);
+		this._tileRange = this._getTileRange();
 		this._resetWrap();
 
-		var zoom = this._map.getZoom(),
-		    center = this._map.getCenter();
-
-		this._tileZoom = Math.round(zoom);
-		this._pxOrigin = this._map._getNewTopLeftPoint(center, this._tileZoom);
-
 		if (this._zoomAnimated) {
-			var scale = this._origScale = this._map.getZoomScale(zoom) / this._map.getZoomScale(this._tileZoom);
-			var offset = this._origTranslate = this._map.getSize().multiplyBy((1 - scale) / 2).subtract(this._map._getMapPanePos());
-			L.DomUtil.setTransform(this._tileContainer, offset, scale);
+			this._pxOrigin = map._getNewTopLeftPoint(center, this._tileZoom);
+			this._origScale = map.getZoomScale(zoom) / map.getZoomScale(this._tileZoom);
+			this._origTranslate = map.getSize().multiplyBy((1 - this._origScale) / 2, true)
+				.subtract(map._getMapPanePos());
+
+			L.DomUtil.setTransform(this._tileContainer, this._origTranslate, this._origScale);
+
+		} else {
+			this._pxOrigin = map.getPixelOrigin();
 		}
 	},
 
@@ -224,19 +229,20 @@ L.GridLayer = L.Layer.extend({
 
 		if (crs.infinite) { return; }
 
-		var tileSize = this._getTileSize();
+		var tileSize = this._tileSize,
+		    zoom = this._tileZoom;
 
 		if (crs.wrapLng) {
 			this._wrapLng = [
-				Math.floor(map.project([0, crs.wrapLng[0]]).x / tileSize),
-				Math.ceil(map.project([0, crs.wrapLng[1]]).x / tileSize)
+				Math.floor(map.project([0, crs.wrapLng[0]], zoom).x / tileSize),
+				Math.ceil(map.project([0, crs.wrapLng[1]], zoom).x / tileSize)
 			];
 		}
 
 		if (crs.wrapLat) {
 			this._wrapLat = [
-				Math.floor(map.project([crs.wrapLat[0], 0]).y / tileSize),
-				Math.ceil(map.project([crs.wrapLat[1], 0]).y / tileSize)
+				Math.floor(map.project([crs.wrapLat[0], 0], zoom).y / tileSize),
+				Math.ceil(map.project([crs.wrapLat[1], 0], zoom).y / tileSize)
 			];
 		}
 	},
@@ -257,31 +263,28 @@ L.GridLayer = L.Layer.extend({
 		var bounds = this._map.getBounds(),
 		    pxBounds = new L.Bounds(
 		        this._map.project(bounds.getNorthWest(), this._tileZoom),
-		        this._map.project(bounds.getSouthEast(), this._tileZoom)),
-		    tileSize = this._getTileSize();
+		        this._map.project(bounds.getSouthEast(), this._tileZoom));
 
 		// tile coordinates range for the current view
-		var tileBounds = L.bounds(
-			pxBounds.min.divideBy(tileSize).floor(),
-			pxBounds.max.divideBy(tileSize).floor());
+		var tileRange = this._boundsToTileRange(pxBounds);
 
 		if (this.options.unloadInvisibleTiles) {
-			this._removeOtherTiles(tileBounds);
+			this._removeOtherTiles(tileRange);
 		}
 
-		this._addTiles(tileBounds);
+		this._addTiles(tileRange);
 	},
 
-	_addTiles: function (bounds) {
+	_addTiles: function (tileRange) {
 		var queue = [],
-		    center = bounds.getCenter(),
+		    center = tileRange.getCenter(),
 		    zoom = this._map.getZoom();
 
 		var j, i, coords;
 
 		// create a queue of coordinates to load tiles from
-		for (j = bounds.min.y; j <= bounds.max.y; j++) {
-			for (i = bounds.min.x; i <= bounds.max.x; i++) {
+		for (j = tileRange.min.y; j <= tileRange.max.y; j++) {
+			for (i = tileRange.min.x; i <= tileRange.max.x; i++) {
 
 				coords = new L.Point(i, j);
 				coords.z = zoom;
@@ -325,7 +328,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (!crs.infinite) {
 			// don't load tile if it's out of bounds and not wrapped
-			var bounds = this._tileNumBounds;
+			var bounds = this._tileRange;
 			if ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
 			    (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
 		}
@@ -386,12 +389,10 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_initTile: function (tile) {
-		var size = this._getTileSize();
-
 		L.DomUtil.addClass(tile, 'leaflet-tile');
 
-		tile.style.width = size + 'px';
-		tile.style.height = size + 'px';
+		tile.style.width = this._tileSize + 'px';
+		tile.style.height = this._tileSize + 'px';
 
 		tile.onselectstart = L.Util.falseFn;
 		tile.onmousemove = L.Util.falseFn;
@@ -466,9 +467,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_getTilePos: function (coords) {
-		return coords
-				.multiplyBy(this._getTileSize())
-				.subtract(this._pxOrigin);
+		return coords.multiplyBy(this._tileSize).subtract(this._pxOrigin);
 	},
 
 	_wrapCoords: function (coords) {
@@ -477,13 +476,15 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	// get the global tile coordinates range for the current zoom
-	_getTileNumBounds: function () {
-		var bounds = this._map.getPixelWorldBounds(),
-			size = this._getTileSize();
+	_getTileRange: function () {
+		var bounds = this._map.getPixelWorldBounds(this._tileZoom);
+		return bounds ? this._boundsToTileRange(bounds) : null;
+	},
 
-		return bounds ? L.bounds(
-				bounds.min.divideBy(size).floor(),
-				bounds.max.divideBy(size).ceil().subtract([1, 1])) : null;
+	_boundsToTileRange: function (bounds) {
+		return new L.Bounds(
+			bounds.min.divideBy(this._tileSize).floor(),
+			bounds.max.divideBy(this._tileSize).ceil().subtract([1, 1]));
 	},
 
 	_startZoomAnim: function () {
@@ -494,7 +495,7 @@ L.GridLayer = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		// avoid stacking transforms by calculating cumulating translate/scale sequence
-		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale));
+		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale)).round();
 		this._scale = this._prevScale * e.scale;
 
 		L.DomUtil.setTransform(this._bgBuffer, this._translate, this._scale);

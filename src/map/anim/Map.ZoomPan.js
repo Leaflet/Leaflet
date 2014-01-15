@@ -1,6 +1,6 @@
 
 L.Map.include({
-	zoomPanTo: function (center, targetZoom, options) {
+	zoomPanTo: function (center, targetZoom) {
 		var start = +new Date(),
 		    duration = 1000,
 		    from = this.project(this.getCenter()),
@@ -29,4 +29,4 @@ L.Map.include({
 
 		L.Util.requestAnimFrame(frame, this);
 	}
-})
+});
