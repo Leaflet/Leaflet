@@ -16,54 +16,15 @@ L.LatLngBounds.prototype = {
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
 		var southWest = this._southWest,
-			northEast = this._northEast;
+			northEast = this._northEast,
+			newSouthWest, newNorthEast;
 
 		if (obj instanceof L.LatLng) {
-			if (!southWest && !northEast) {
-				this._southWest = new L.LatLng(obj.lat, obj.lng);
-				this._northEast = new L.LatLng(obj.lat, obj.lng);
-			} else {
-				if (obj.lat < southWest.lat) {
-					southWest.lat = obj.lat;
-				}
-
-				if (obj.lng < southWest.lng) {
-					southWest.lng = obj.lng;
-				}
-
-				if (obj.lat > northEast.lat) {
-					northEast.lat = obj.lat;
-				}
-
-				if (obj.lng > northEast.lng) {
-					northEast.lng = obj.lng;
-				}
-			}
-
+			newSouthWest = obj;
+			newNorthEast = obj;
 		} else if (obj instanceof L.LatLngBounds) {
-			var oSouthWest = obj._southWest,
-				oNorthEast = obj._northEast;
-
-			if (!southWest && !northEast) {
-				this._southWest = new L.LatLng(oSouthWest.lat, oSouthWest.lng);
-				this._northEast = new L.LatLng(oNorthEast.lat, oNorthEast.lng);
-			} else {
-				if (oSouthWest.lat < southWest.lat) {
-					southWest.lat = oSouthWest.lat;
-				}
-
-				if (oSouthWest.lng < southWest.lng) {
-					southWest.lng = oSouthWest.lng;
-				}
-
-				if (oNorthEast.lat > northEast.lat) {
-					northEast.lat = oNorthEast.lat;
-				}
-
-				if (oNorthEast.lng > northEast.lng) {
-					northEast.lng = oNorthEast.lng;
-				}
-			}
+			newSouthWest = obj._southWest;
+			newNorthEast = obj._northEast;
 		} else if (obj) {
 			var latLng = L.latLng(obj);
 			if (latLng !== null) {
@@ -74,6 +35,21 @@ L.LatLngBounds.prototype = {
 					this.extend(latLngBounds);
 				}
 			}
+
+			return this;
+		}
+		else {
+			return this;
+		}
+
+		if (!southWest && !northEast) {
+			this._southWest = new L.LatLng(newSouthWest.lat, newSouthWest.lng);
+			this._northEast = new L.LatLng(newNorthEast.lat, newNorthEast.lng);
+		} else {
+			southWest.lat = Math.min(newSouthWest.lat, southWest.lat);
+			southWest.lng = Math.min(newSouthWest.lng, southWest.lng);
+			northEast.lat = Math.max(newNorthEast.lat, northEast.lat);
+			northEast.lng = Math.max(newNorthEast.lng, northEast.lng);
 		}
 
 		return this;
