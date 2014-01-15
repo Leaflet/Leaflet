@@ -121,7 +121,7 @@ L.TileLayer = L.GridLayer.extend({
 	_getZoomForUrl: function () {
 
 		var options = this.options,
-		    zoom = this._map.getZoom();
+		    zoom = this._tileZoom;
 
 		if (options.zoomReverse) {
 			zoom = options.maxZoom - zoom;

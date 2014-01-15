@@ -205,8 +205,21 @@ L.GridLayer = L.Layer.extend({
 			this._clearBgBuffer();
 		}
 
+		// TODO won't work
 		this._tileNumBounds = this._getTileNumBounds();
 		this._resetWrap();
+
+		var zoom = this._map.getZoom(),
+		    center = this._map.getCenter();
+
+		this._tileZoom = Math.round(zoom);
+		this._pxOrigin = this._map._getNewTopLeftPoint(center, this._tileZoom);
+
+		if (this._zoomAnimated) {
+			var scale = this._origScale = this._map.getZoomScale(zoom) / this._map.getZoomScale(this._tileZoom);
+			var offset = this._origTranslate = this._map.getSize().multiplyBy((1 - scale) / 2).subtract(this._map._getMapPanePos());
+			L.DomUtil.setTransform(this._tileContainer, offset, scale);
+		}
 	},
 
 	_resetWrap: function () {
@@ -237,12 +250,10 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_update: function () {
-
 		if (!this._map) { return; }
 
-		var bounds = this._map.getPixelBounds(),
-		    zoom = this._map.getZoom(),
-		    tileSize = this._getTileSize();
+		// TODO move to reset
+		var zoom = this._map.getZoom();
 
 		if (zoom > this.options.maxZoom ||
 		    zoom < this.options.minZoom) { 
@@ -250,16 +261,22 @@ L.GridLayer = L.Layer.extend({
 			return; 
 		}
 
+		var bounds = this._map.getBounds(),
+		    pxBounds = new L.Bounds(
+		        this._map.project(bounds.getNorthWest(), this._tileZoom),
+		        this._map.project(bounds.getSouthEast(), this._tileZoom)),
+		    tileSize = this._getTileSize();
+
 		// tile coordinates range for the current view
 		var tileBounds = L.bounds(
-			bounds.min.divideBy(tileSize).floor(),
-			bounds.max.divideBy(tileSize).floor());
-
-		this._addTiles(tileBounds);
+			pxBounds.min.divideBy(tileSize).floor(),
+			pxBounds.max.divideBy(tileSize).floor());
 
 		if (this.options.unloadInvisibleTiles) {
 			this._removeOtherTiles(tileBounds);
 		}
+
+		this._addTiles(tileBounds);
 	},
 
 	_addTiles: function (bounds) {
@@ -458,7 +475,7 @@ L.GridLayer = L.Layer.extend({
 	_getTilePos: function (coords) {
 		return coords
 				.multiplyBy(this._getTileSize())
-				.subtract(this._map.getPixelOrigin());
+				.subtract(this._pxOrigin);
 	},
 
 	_wrapCoords: function (coords) {
@@ -531,8 +548,8 @@ L.GridLayer = L.Layer.extend({
 		this._bgBuffer = front;
 
 		// reset bg layer transform info
-		this._translate = new L.Point(0, 0);
-		this._scale = 1;
+		this._translate = this._origTranslate;
+		this._scale = this._origScale;
 
 		// prevent bg buffer from clearing right after zoom
 		clearTimeout(this._clearBgBufferTimer);
