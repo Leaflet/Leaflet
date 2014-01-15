@@ -111,7 +111,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		if (this._zoomAnimated) {
-			events.zoomanimstart = this._startZoomAnim;
+			events.zoomstart = this._startZoomAnim;
 			events.zoomanim = this._animateZoom;
 			events.zoomend = this._endZoomAnim;
 		}
@@ -475,7 +475,7 @@ L.GridLayer = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		// avoid stacking transforms by calculating cumulating translate/scale sequence
-		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale)).add(e.delta);
+		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale));
 		this._scale = this._prevScale * e.scale;
 
 		L.DomUtil.setTransform(this._bgBuffer, this._translate, this._scale);
