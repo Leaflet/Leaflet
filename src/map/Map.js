@@ -329,8 +329,8 @@ L.Map = L.Evented.extend({
 		return this._initialTopLeftPoint;
 	},
 
-	getPixelWorldBounds: function () {
-		return this.options.crs.getProjectedBounds(this.getZoom());
+	getPixelWorldBounds: function (zoom) {
+		return this.options.crs.getProjectedBounds(zoom === undefined ? this.getZoom() : zoom);
 	},
 
 	getPane: function (pane) {
