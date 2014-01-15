@@ -276,7 +276,7 @@ L.TileLayer = L.Class.extend({
 		    tileSize = this.options.tileSize;
 
 		if (zoomN && zoom > zoomN) {
-			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
+			tileSize = map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize;
 		}
 
 		return tileSize * Math.pow(2, map.getZoom() - this.tileZoom);
@@ -441,6 +441,10 @@ L.TileLayer = L.Class.extend({
 		// get unused tile - or create a new tile
 		var tile = this._getTile();
 
+		// Use tileVirtSize +/- 1 to prevent gaps due to floats added and rounded
+  		tile.style.width = Math.round(this.tileVirtSize + tilePos.x) - Math.round(tilePos.x) + 'px';
+  		tile.style.height = Math.round(this.tileVirtSize + tilePos.y) - Math.round(tilePos.y) + 'px';
+
 		/*
 		Chrome 20 layouts much faster with top/left (verify with timeline, frames)
 		Android 4 browser has display issues with top/left and requires transform instead
@@ -448,7 +452,7 @@ L.TileLayer = L.Class.extend({
 		(reappear after zoom) https://github.com/CloudMade/Leaflet/issues/866
 		(other browsers don't currently care) - see debug/hacks/jitter.html for an example
 		*/
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome || L.Browser.android23);
+		L.DomUtil.setPosition(tile, tilePos.round(), L.Browser.chrome || L.Browser.android23);
 
 		this._tiles[tilePoint.x + ':' + tilePoint.y] = tile;
 
@@ -529,7 +533,6 @@ L.TileLayer = L.Class.extend({
 
 	_createTile: function () {
 		var tile = L.DomUtil.create('img', 'leaflet-tile');
-		tile.style.width = tile.style.height = Math.round(this.tileVirtSize) + 'px';
 		tile.galleryimg = 'no';
 
 		tile.onselectstart = tile.onmousemove = L.Util.falseFn;
