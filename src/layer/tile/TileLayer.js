@@ -356,6 +356,10 @@ L.TileLayer = L.Class.extend({
 
 		this._tilesToLoad += tilesToLoad;
 
+		// Will allow to zoom out if no tiles is found at this zoom level
+		this._tilesToLoadError = 0;
+		this._tilesToLoadInit = tilesToLoad;
+
 		for (i = 0; i < tilesToLoad; i++) {
 			this._addTile(queue[i], fragment);
 		}
@@ -547,6 +551,7 @@ L.TileLayer = L.Class.extend({
 		tile._layer  = this;
 		tile.onload  = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
+		tile.firstTry = true;
 
 		this._adjustTilePoint(tilePoint);
 		tile.src     = this.getTileUrl(tilePoint);
@@ -562,6 +567,9 @@ L.TileLayer = L.Class.extend({
 				clearTimeout(this._clearBgBufferTimer);
 				this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 500);
 			}
+
+			if (this._tilesToLoadError == this._tilesToLoadInit)
+				map.zoomOut();
 		}
 	},
 
@@ -583,6 +591,11 @@ L.TileLayer = L.Class.extend({
 
 	_tileOnError: function () {
 		var layer = this._layer;
+
+		if (this.firstTry) {
+			layer._tilesToLoadError++;
+			this.firstTry = false;
+		}
 
 		layer.fire('tileerror', {
 			tile: this,
