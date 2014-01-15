@@ -214,7 +214,7 @@ L.GridLayer = L.Layer.extend({
 			this._pxOrigin = map._getNewTopLeftPoint(center, this._tileZoom);
 			this._origScale = map.getZoomScale(zoom) / map.getZoomScale(this._tileZoom);
 			this._origTranslate = map.getSize().multiplyBy((1 - this._origScale) / 2, true)
-				.subtract(map._getMapPanePos());
+				.subtract(map._getMapPanePos()).round();
 
 			L.DomUtil.setTransform(this._tileContainer, this._origTranslate, this._origScale);
 
