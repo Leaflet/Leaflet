@@ -68,10 +68,16 @@ L.Control.Layers = L.Control.extend({
 
 		if (this.options.collapsed) {
 			if (!L.Browser.android) {
-				L.DomEvent.on(container, {
-					mouseover: this._expand,
-				    mouseout: this._collapse
-				}, this);
+				if(this.options.click) {
+					L.DomEvent.on(container, {
+						'click': this._expand
+					}, this);
+				} else {
+					L.DomEvent.on(container, {
+						mouseover: this._expand,
+					    mouseout: this._collapse
+					}, this);
+				}
 			}
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
