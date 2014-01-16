@@ -45,7 +45,7 @@ L.Renderer = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		var origin = e.origin.subtract(this._map._getCenterLayerPoint()),
-		    offset = this._bounds.min.add(origin.multiplyBy(1 - e.scale));
+		    offset = this._bounds.min.add(origin.multiplyBy(1 - e.scale)).add(e.offset).round();
 
 		L.DomUtil.setTransform(this._container, offset, e.scale);
 	},
