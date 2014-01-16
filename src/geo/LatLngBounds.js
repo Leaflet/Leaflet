@@ -25,6 +25,10 @@ L.LatLngBounds.prototype = {
 		} else if (obj instanceof L.LatLngBounds) {
 			newSouthWest = obj._southWest;
 			newNorthEast = obj._northEast;
+
+			if (!newSouthWest || !newNorthEast) {
+				return this;
+			}
 		} else if (obj) {
 			var latLng = L.latLng(obj);
 			if (latLng !== null) {

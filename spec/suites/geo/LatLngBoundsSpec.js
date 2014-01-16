@@ -38,6 +38,10 @@ describe('LatLngBounds', function () {
 			a.extend({lat: 20, lng: 50});
 			expect(a.getNorthEast()).to.eql(new L.LatLng(30, 50));
 		});
+
+		it('extend the bounds by an empty bounds object', function () {
+			expect(a.extend(new L.LatLngBounds())).to.eql(a);
+		});
 	});
 
 	describe('#getCenter', function () {
