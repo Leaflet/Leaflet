@@ -472,7 +472,7 @@ L.TileLayer = L.Class.extend({
 	_getWrapTileNum: function () {
 		var crs = this._map.options.crs,
 		    size = crs.getSize(this._map.getZoom());
-		return size.divideBy(this.options.tileSize);
+		return size.divideBy(this._getTileSize())._floor();
 	},
 
 	_adjustTilePoint: function (tilePoint) {
