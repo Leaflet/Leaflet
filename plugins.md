@@ -319,6 +319,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/atogle">Aaron Ogle</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jseppi/Leaflet.MakiMarkers">Leaflet.MakiMarkers</a>
+		</td><td>Create markers using <a href="https://www.mapbox.com/maki/">Maki Icons</a> from MapBox.
+		</td><td>
+			<a href="https://github.com/jseppi">James Seppi</a>
+		</td>
+	</tr>
+
 </table>
 
 
@@ -858,6 +867,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Adds a button to the zoom control that allows you to zoom to the map minimum zoom level in a single click.
 		</td><td>
 			<a href="https://github.com/alanshaw/">Alan Shaw</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bbecquet/Leaflet.MagnifyingGlass">Leaflet.MagnifyingGlass</a>
+		</td><td>
+			Allows you to display a small portion of the map at another zoom level, either at a fixed position or linked to the mouse movement, for a magnifying glass effect.
+		</td><td>
+			<a href="https://github.com/bbecquet/">Benjamin Becquet</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/lizardtechblog/Leaflet.OpacityControls">Leaflet.OpacityControls</a>
+		</td><td>
+			Simple Leaflet controls to adjust the opacity of a map layer.
+		</td><td>
+			<a href="https://github.com/lizardtechblog/">Jared Dominguez</a>
 		</td>
 	</tr>
 </table>
