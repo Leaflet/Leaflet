@@ -322,7 +322,7 @@ L.Map = L.Evented.extend({
 
 	getPixelOrigin: function () {
 		this._checkIfLoaded();
-		return this._initialTopLeftPoint;
+		return this._pixelOrigin;
 	},
 
 	getPixelWorldBounds: function (zoom) {
@@ -488,12 +488,10 @@ L.Map = L.Evented.extend({
 		this._zoom = zoom;
 		this._initialCenter = center;
 
-		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
+		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		if (!preserveMapOffset) {
 			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
-		} else {
-			this._initialTopLeftPoint._add(this._getMapPanePos());
 		}
 
 		var loading = !this._loaded;
@@ -612,7 +610,7 @@ L.Map = L.Evented.extend({
 	// private methods for getting map state
 
 	_getMapPanePos: function () {
-		return L.DomUtil.getPosition(this._mapPane);
+		return L.DomUtil.getPosition(this._mapPane) || new L.Point(0, 0);
 	},
 
 	_moved: function () {
@@ -624,15 +622,15 @@ L.Map = L.Evented.extend({
 		return this.getPixelOrigin().subtract(this._getMapPanePos());
 	},
 
-	_getNewTopLeftPoint: function (center, zoom) {
+	_getNewPixelOrigin: function (center, zoom) {
 		var viewHalf = this.getSize()._divideBy(2);
 		// TODO round on display, not calculation to increase precision?
-		return this.project(center, zoom)._subtract(viewHalf)._round();
+		return this.project(center, zoom)._subtract(viewHalf)._add(this._getMapPanePos())._round();
 	},
 
-	_latLngToNewLayerPoint: function (latlng, newZoom, newCenter) {
-		var topLeft = this._getNewTopLeftPoint(newCenter, newZoom).add(this._getMapPanePos());
-		return this.project(latlng, newZoom)._subtract(topLeft);
+	_latLngToNewLayerPoint: function (latlng, zoom, center) {
+		var topLeft = this._getNewPixelOrigin(center, zoom);
+		return this.project(latlng, zoom)._subtract(topLeft);
 	},
 
 	// layer point of the current center
