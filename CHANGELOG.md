@@ -92,7 +92,7 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Added Leaflet logo in vector format as `src/images/logo.svg`.
 
 
-## 0.7.2 (January 17, 2013)
+## 0.7.2 (January 17, 2014)
 
 * Fixed a bug that appeared with **Chrome 32 update** that made all **mouse events shifted on scrolled pages**. [#2352](https://github.com/Leaflet/Leaflet/issues/2352)
 * Fixed a bug that could break tile loading when using non-standard tile sizes. [#2288](https://github.com/Leaflet/Leaflet/issues/2288)
