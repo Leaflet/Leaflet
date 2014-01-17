@@ -7,7 +7,7 @@
 var oldL = window.L,
     L = {};
 
-L.version = '0.7.1';
+L.version = '0.7.2';
 
 // define Leaflet for Node module pattern loaders, including Browserify
 if (typeof module === 'object' && typeof module.exports === 'object') {
@@ -2894,7 +2894,7 @@ L.TileLayer = L.Class.extend({
 	_getWrapTileNum: function () {
 		var crs = this._map.options.crs,
 		    size = crs.getSize(this._map.getZoom());
-		return size.divideBy(this.options.tileSize);
+		return size.divideBy(this._getTileSize())._floor();
 	},
 
 	_adjustTilePoint: function (tilePoint) {
@@ -6535,26 +6535,15 @@ L.DomEvent = {
 	},
 
 	getMousePosition: function (e, container) {
-		var body = document.body,
-		    docEl = document.documentElement,
-		    //gecko makes scrollLeft more negative as you scroll in rtl, other browsers don't
-			//ref: https://code.google.com/p/closure-library/source/browse/closure/goog/style/bidi.js
-			x = L.DomUtil.documentIsLtr() ?
-					(e.pageX ? e.pageX - body.scrollLeft - docEl.scrollLeft : e.clientX) :
-						(L.Browser.gecko ? e.pageX - body.scrollLeft - docEl.scrollLeft :
-						 e.pageX ? e.pageX - body.scrollLeft + docEl.scrollLeft : e.clientX),
-		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop: e.clientY,
-		    pos = new L.Point(x, y);
-
 		if (!container) {
-			return pos;
+			return new L.Point(e.clientX, e.clientY);
 		}
 
-		var rect = container.getBoundingClientRect(),
-		    left = rect.left - container.clientLeft,
-		    top = rect.top - container.clientTop;
+		var rect = container.getBoundingClientRect();
 
-		return pos._subtract(new L.Point(left, top));
+		return new L.Point(
+			e.clientX - rect.left - container.clientLeft,
+			e.clientY - rect.top - container.clientTop);
 	},
 
 	getWheelDelta: function (e) {
