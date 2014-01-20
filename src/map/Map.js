@@ -492,11 +492,11 @@ L.Map = L.Evented.extend({
 		this._zoom = zoom;
 		this._initialCenter = center;
 
-		this._pixelOrigin = this._getNewPixelOrigin(center);
-
 		if (!preserveMapOffset) {
 			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 		}
+
+		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		var loading = !this._loaded;
 		this._loaded = true;

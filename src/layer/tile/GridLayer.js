@@ -201,11 +201,13 @@ L.GridLayer = L.Layer.extend({
 
 		if (this._zoomAnimated) {
 			this._origScale = map.getZoomScale(zoom) / map.getZoomScale(this._tileZoom);
-			this._origTranslate = map.getSize().multiplyBy((1 - this._origScale) / 2, true)
-				.subtract(map._getMapPanePos()).round();
+			this._origTranslate = map.containerPointToLayerPoint(map.getSize().divideBy(2))
+				.multiplyBy((1 - this._origScale));
 
 			L.DomUtil.setTransform(this._tileContainer, this._origTranslate, this._origScale);
 		}
+
+		this._pxOrigin = map._getNewPixelOrigin(map.getCenter(), roundZoom);
 
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
@@ -228,12 +230,11 @@ L.GridLayer = L.Layer.extend({
 
 	_resetGrid: function () {
 		var map = this._map,
-		    crs = map.options.crs;
+		    crs = map.options.crs,
 		    tileSize = this._tileSize = this._getTileSize(),
 		    tileZoom = this._tileZoom;
 
 		this._tileRange = this._getTileRange();
-		this._pxOrigin = map._getNewPixelOrigin(map.getCenter(), tileZoom).subtract(map._getMapPanePos());
 
 		this._wrapX = crs.wrapLng && [
 			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize),
@@ -278,8 +279,7 @@ L.GridLayer = L.Layer.extend({
 
 	_addTiles: function (tileRange) {
 		var queue = [],
-		    center = tileRange.getCenter(),
-		    zoom = this._map.getZoom();
+		    center = tileRange.getCenter();
 
 		var j, i, coords;
 
@@ -288,7 +288,7 @@ L.GridLayer = L.Layer.extend({
 			for (i = tileRange.min.x; i <= tileRange.max.x; i++) {
 
 				coords = new L.Point(i, j);
-				coords.z = zoom;
+				coords.z = this._tileZoom;
 
 				// add tile to queue if it's not in cache or out of bounds
 				if (!(this._tileCoordsToKey(coords) in this._tiles) && this._isValidTile(coords)) {
@@ -411,7 +411,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_addTile: function (coords, container) {
-		var tilePos = this._getTilePos(coords);
+		var tilePos = this._getTilePos(coords),
+		    key = this._tileCoordsToKey(coords);
 
 		// wrap tile coords if necessary (depending on CRS)
 		this._wrapCoords(coords);
@@ -432,7 +433,7 @@ L.GridLayer = L.Layer.extend({
 		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
-		this._tiles[this._tileCoordsToKey(coords)] = tile;
+		this._tiles[key] = tile;
 
 		container.appendChild(tile);
 		this.fire('tileloadstart', {tile: tile});
