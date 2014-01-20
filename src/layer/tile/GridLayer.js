@@ -187,25 +187,24 @@ L.GridLayer = L.Layer.extend({
 	_reset: function (e) {
 		var map = this._map,
 		    zoom = map.getZoom(),
-		    roundZoom = Math.round(zoom);
+		    tileZoom = Math.round(zoom),
+		    tileZoomChanged = this._tileZoom !== tileZoom;
 
-		this._clearTiles();
+		if (tileZoomChanged || e && e.hard) {
+			this._clearTiles();
 
-		if (this._tileZoom !== roundZoom) {
-			this._tileZoom = roundZoom;
-
+			this._tileZoom = tileZoom;
+			this._pxOrigin = map.project(map.unproject(map.getPixelOrigin()), tileZoom).round();
 			this._resetGrid();
 		}
 
 		if (this._zoomAnimated) {
-			this._origScale = map.getZoomScale(zoom) / map.getZoomScale(this._tileZoom);
-			this._origTranslate = map.containerPointToLayerPoint(map.getSize().divideBy(2))
-				.multiplyBy((1 - this._origScale));
+			this._origScale = map.getZoomScale(zoom, tileZoom);
+			this._origTranslate = this._pxOrigin.multiplyBy(this._origScale).subtract(map.getPixelOrigin()).round();
 
 			L.DomUtil.setTransform(this._tileContainer, this._origTranslate, this._origScale);
 		}
 
-		this._pxOrigin = map._getNewPixelOrigin(map.getCenter(), roundZoom);
 
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
