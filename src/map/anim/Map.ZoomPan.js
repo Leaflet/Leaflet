@@ -6,8 +6,9 @@ L.Map.include({
 		    to = this.project(center),
 		    u1 = to.distanceTo(from),
 		    size = this.getSize(),
+		    zoom = this._zoom,
 		    w0 = Math.max(size.x, size.y),
-		    w1 = w0 * this.getZoomScale(this._zoom) / this.getZoomScale(targetZoom),
+		    w1 = w0 * this.getZoomScale(targetZoom, zoom),
 		    rho = 1.42,
 		    rho2 = rho * rho;
 
@@ -26,10 +27,11 @@ L.Map.include({
 		function u(s) { return w0 * (cosh(r0) * tanh(r0 + rho * s) - sinh(r0)) / rho2; }
 
 		function step(s) {
-			var center = this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1))),
-			    zoom = this.getScaleZoom(this.getZoomScale(this._zoom) * w0 / w(s));
+			var center = this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), targetZoom),
+			    newZoom = this.getScaleZoom(w0 / w(s), zoom);
 
-			this._animateZoom(center, zoom);
+			this._resetView(center, newZoom, true, true);
+			this._animateZoom(center, newZoom);
 		}
 
 		function easeOut(t) { return 1 - Math.pow(1 - t, 2); }
