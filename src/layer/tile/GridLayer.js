@@ -35,6 +35,8 @@ L.GridLayer = L.Layer.extend({
 			this._update = L.Util.throttle(this._update, this.options.updateInterval, this);
 		}
 
+		this._levels = {};
+
 		this._reset();
 		this._update();
 	},
@@ -44,11 +46,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	onRemove: function (map) {
-		this._clearBgBuffer();
 		L.DomUtil.remove(this._container);
-
 		map._removeZoomLimit(this);
-
 		this._container = null;
 	},
 
@@ -111,9 +110,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		if (this._zoomAnimated) {
-			events.zoomstart = this._startZoomAnim;
 			events.zoomanim = this._animateZoom;
-			events.zoomend = this._endZoomAnim;
 		}
 
 		return events;
@@ -165,23 +162,29 @@ L.GridLayer = L.Layer.extend({
 		this._container = L.DomUtil.create('div', 'leaflet-layer');
 		this._updateZIndex();
 
-		if (this._zoomAnimated) {
-			var className = 'leaflet-tile-container leaflet-zoom-animated';
-
-			this._bgBuffer = L.DomUtil.create('div', className, this._container);
-			this._tileContainer = L.DomUtil.create('div', className, this._container);
-
-			L.DomUtil.setTransform(this._tileContainer);
-
-		} else {
-			this._tileContainer = this._container;
-		}
-
 		if (this.options.opacity < 1) {
 			this._updateOpacity();
 		}
 
 		this.getPane().appendChild(this._container);
+	},
+
+	_updateLevel: function () {
+		var zoom = this._tileZoom,
+		    level = this._levels[zoom];
+
+		if (!level) {
+			level = this._levels[zoom] = {};
+			level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+			level.el.style.zIndex = zoom;
+			level.zoom = zoom;
+			level.tiles = {};
+			var map = this._map;
+			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
+		}
+
+		this._level = level;
+		return level;
 	},
 
 	_reset: function (e) {
@@ -194,24 +197,28 @@ L.GridLayer = L.Layer.extend({
 			this._abortLoading();
 		}
 		if (tileZoomChanged || e && e.hard) {
-			this._clearTiles();
+			// this._clearTiles();
 
 			this._tileZoom = tileZoom;
-			this._pxOrigin = map.project(map.unproject(map.getPixelOrigin()), tileZoom).round();
+			this._updateLevel();
 			this._resetGrid();
 		}
 
-		if (this._zoomAnimated) {
-			this._origScale = map.getZoomScale(zoom, tileZoom);
-			this._origTranslate = this._pxOrigin.multiplyBy(this._origScale).subtract(map.getPixelOrigin()).round();
+		this._setZoomTransforms(map.getCenter(), zoom);
+	},
 
-			L.DomUtil.setTransform(this._tileContainer, this._origTranslate, this._origScale);
+	_setZoomTransforms: function (center, zoom) {
+		for (var i in this._levels) {
+			this._setZoomTransform(this._levels[i], center, zoom);
 		}
+	},
 
+	_setZoomTransform: function (level, center, zoom) {
+		var scale = this._map.getZoomScale(zoom, level.zoom),
+		    translate = level.origin.multiplyBy(scale)
+		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
 
-		if (this._zoomAnimated && e && e.hard) {
-			this._clearBgBuffer();
-		}
+		L.DomUtil.setTransform(level.el, translate, scale);
 	},
 
 	_clearTiles: function () {
@@ -270,9 +277,9 @@ L.GridLayer = L.Layer.extend({
 		// tile coordinates range for the current view
 		var tileRange = this._boundsToTileRange(pxBounds);
 
-		if (this.options.unloadInvisibleTiles) {
-			this._removeOtherTiles(tileRange);
-		}
+		// if (this.options.unloadInvisibleTiles) {
+		// 	this._removeOtherTiles(tileRange);
+		// }
 
 		this._addTiles(tileRange);
 	},
@@ -291,7 +298,7 @@ L.GridLayer = L.Layer.extend({
 				coords.z = this._tileZoom;
 
 				// add tile to queue if it's not in cache or out of bounds
-				if (!(this._tileCoordsToKey(coords) in this._tiles) && this._isValidTile(coords)) {
+				if (!(this._tileCoordsToKey(coords) in this._level.tiles) && this._isValidTile(coords)) {
 					queue.push(coords);
 				}
 			}
@@ -321,7 +328,7 @@ L.GridLayer = L.Layer.extend({
 			this._addTile(queue[i], fragment);
 		}
 
-		this._tileContainer.appendChild(fragment);
+		this._level.el.appendChild(fragment);
 	},
 
 	_isValidTile: function (coords) {
@@ -433,7 +440,7 @@ L.GridLayer = L.Layer.extend({
 		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
-		this._tiles[key] = tile;
+		this._level.tiles[key] = tile;
 
 		container.appendChild(tile);
 		this.fire('tileloadstart', {tile: tile});
@@ -460,16 +467,10 @@ L.GridLayer = L.Layer.extend({
 
 	_visibleTilesReady: function () {
 		this.fire('load');
-
-		if (this._zoomAnimated) {
-			// clear scaled tiles after all new tiles are loaded (for performance)
-			clearTimeout(this._clearBgBufferTimer);
-			this._clearBgBufferTimer = setTimeout(L.bind(this._clearBgBuffer, this), 300);
-		}
 	},
 
 	_getTilePos: function (coords) {
-		return coords.multiplyBy(this._tileSize).subtract(this._pxOrigin);
+		return coords.multiplyBy(this._tileSize).subtract(this._level.origin);
 	},
 
 	_wrapCoords: function (coords) {
@@ -489,69 +490,8 @@ L.GridLayer = L.Layer.extend({
 			bounds.max.divideBy(this._tileSize).ceil().subtract([1, 1]));
 	},
 
-	_startZoomAnim: function () {
-		this._prepareBgBuffer();
-		this._prevTranslate = this._translate || new L.Point(0, 0);
-		this._prevScale = this._scale;
-	},
-
 	_animateZoom: function (e) {
-		// avoid stacking transforms by calculating cumulating translate/scale sequence
-		this._translate = this._prevTranslate.multiplyBy(e.scale)
-			.add(e.origin.multiplyBy(1 - e.scale))
-			.add(e.offset).round();
-
-		this._scale = this._prevScale * e.scale;
-
-		L.DomUtil.setTransform(this._bgBuffer, this._translate, this._scale);
-	},
-
-	_endZoomAnim: function () {
-		var front = this._tileContainer;
-		front.style.visibility = '';
-		L.DomUtil.toFront(front); // bring to front
-	},
-
-	_clearBgBuffer: function () {
-		var map = this._map,
-			bg = this._bgBuffer;
-
-		if (map && !map._animatingZoom && !map.touchZoom._zooming && bg) {
-			L.DomUtil.empty(bg);
-			L.DomUtil.setTransform(bg);
-		}
-	},
-
-	_prepareBgBuffer: function () {
-
-		var front = this._tileContainer,
-		    bg = this._bgBuffer;
-
-		if (this._abortLoading) {
-			this._abortLoading();
-		}
-
-		if (this._tilesToLoad / this._tilesTotal > 0.5) {
-			// if foreground layer doesn't have many tiles loaded,
-			// keep the existing bg layer and just zoom it some more
-			front.style.visibility = 'hidden';
-			return;
-		}
-
-		// prepare the buffer to become the front tile pane
-		bg.style.visibility = 'hidden';
-		L.DomUtil.setTransform(bg);
-
-		// switch out the current layer to be the new bg layer (and vice-versa)
-		this._tileContainer = bg;
-		this._bgBuffer = front;
-
-		// reset bg layer transform info
-		this._translate = this._origTranslate;
-		this._scale = this._origScale;
-
-		// prevent bg buffer from clearing right after zoom
-		clearTimeout(this._clearBgBufferTimer);
+		this._setZoomTransforms(e.center, e.zoom);
 	}
 });
 
