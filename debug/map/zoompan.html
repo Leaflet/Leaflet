@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+	<style>
+	#map {
+		width: 600px;
+		height: 400px;
+	}
+	</style>
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<div style="position: absolute; left: 530px; top: 10px; z-index: 500">
+		<!-- <button id="london">London</button>
+		<button id="kyiv">Kyiv</button> -->
+		<button id="dc">DC</button>
+		<button id="sf">SF</button>
+	</div>
+
+	<script type="text/javascript">
+
+		var kyiv = [50.5, 30.5],
+			london = [51.51, -0.12],
+			sf = [37.77, -122.42],
+			dc = [38.91, -77.04];
+
+		var map = L.map('map').setView(dc, 10);
+
+		var tiles = L.tileLayer('http://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			attribution: '<a href="https://www.mapbox.com/about/maps/">Terms and Feedback</a>',
+			id: 'examples.map-20v6611k'
+		}).addTo(map);
+
+		var marker1 = L.marker(kyiv).addTo(map),
+			marker2 = L.marker(london).addTo(map);
+			// marker3 = L.marker(dc).addTo(map),
+			// marker4 = L.marker(sf).addTo(map);
+
+		document.getElementById('dc').onclick = function () { map.zoomPanTo(dc); };
+		document.getElementById('sf').onclick = function () { map.zoomPanTo(sf); };
+		// document.getElementById('london').onclick = function () { map.zoomPanTo(london); };
+		// document.getElementById('kyiv').onclick = function () { map.zoomPanTo(kyiv); };
+
+		function logEvent(e) { console.log(e.type); }
+
+		// map.on('click', logEvent);
+
+		// map.on('movestart', logEvent);
+		// map.on('move', logEvent);
+		// map.on('moveend', logEvent);
+
+		// map.on('zoomstart', logEvent);
+		// map.on('zoomend', logEvent);
+
+	</script>
+</body>
+</html>

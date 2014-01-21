@@ -29,11 +29,11 @@ L.Map.include({
 		function w(s) { return w0 * (cosh(r0) / cosh(r0 + rho * s)); }
 		function u(s) { return w0 * (cosh(r0) * tanh(r0 + rho * s) - sinh(r0)) / rho2; }
 
-		function easeOut(t) { return 1 - Math.pow(1 - t, 2); }
+		function easeOut(t) { return 1 - Math.pow(1 - t, 1.5); }
 
 		var start = Date.now(),
 		    S = (r(1) - r0) / rho,
-		    duration = 1000 * S;
+		    duration = 1000 * S * 0.8;
 
 		function frame() {
 			var t = (Date.now() - start) / duration,
