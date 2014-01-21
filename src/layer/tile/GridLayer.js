@@ -12,7 +12,7 @@ L.GridLayer = L.Layer.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		updateInterval: 150
+		updateInterval: 200
 
 		/*
 		minZoom: <Number>,
@@ -169,22 +169,43 @@ L.GridLayer = L.Layer.extend({
 		this.getPane().appendChild(this._container);
 	},
 
-	_updateLevel: function () {
-		var zoom = this._tileZoom,
-		    level = this._levels[zoom];
+	_updateLevels: function () {
+		var zoom = this._tileZoom;
 
-		if (!level) {
-			level = this._levels[zoom] = {};
-			level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-			level.el.style.zIndex = zoom;
-			level.zoom = zoom;
-			level.tiles = {};
-			var map = this._map;
-			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
+		for (var z in this._levels) {
+			z = parseInt(z, 10);
+			if (z > zoom + 2 || z < zoom - 2) {
+				this._destroyLevel(this._levels[z]);
+				delete this._levels[z];
+			} else {
+				this._levels[z].el.style.zIndex = -Math.abs(zoom - z);
+			}
 		}
+
+		var level = this._levels[zoom];
+
+		if (level) {
+			this._destroyLevel(level);
+		}
+
+		level = this._levels[zoom] = {};
+		level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+		level.el.style.zIndex = 0;
+		level.zoom = zoom;
+		level.tiles = {};
+
+		var map = this._map;
+		level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 
 		this._level = level;
 		return level;
+	},
+
+	_destroyLevel: function (level) {
+		for (var i in level.tiles) {
+			level.tiles[i].onload = null;
+		}
+		L.DomUtil.remove(level.el);
 	},
 
 	_reset: function (e) {
@@ -197,7 +218,7 @@ L.GridLayer = L.Layer.extend({
 			// this._clearTiles();
 
 			this._tileZoom = tileZoom;
-			this._updateLevel();
+			this._updateLevels();
 			this._resetGrid();
 		}
 
@@ -448,7 +469,9 @@ L.GridLayer = L.Layer.extend({
 			});
 		}
 
-		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
+		L.Util.requestAnimFrame(function () {
+			L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
+		});
 
 		this.fire('tileload', {tile: tile});
 
