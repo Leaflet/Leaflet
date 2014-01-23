@@ -114,4 +114,66 @@ describe("Marker", function () {
 			expect(marker.getLatLng()).to.be(afterLatLng);
 		});
 	});
+
+	describe("#setAngle", function () {
+		function expectAngle(marker, angle) {
+			expect(marker.getAngle()).to.be(angle);
+			if (L.Browser.any3d) {
+				var transform = marker._icon.style[L.DomUtil.TRANSFORM];
+				if (angle) {
+					expect(transform).to.contain('rotate(' + angle + 'deg)');
+					expect(transform).to.not.match(/rotate.*rotate/);
+				} else {
+					expect(transform).to.not.contain('rotate');
+				}
+			}
+		}
+
+		it("has a default angle of 0", function () {
+			var marker = new L.Marker([0, 0], { icon: icon1 });
+			map.addLayer(marker);
+			expectAngle(marker, 0);
+		});
+
+		it("changes angle", function () {
+			var marker = new L.Marker([0, 0], { icon: icon1, angle: 30 });
+			map.addLayer(marker);
+			expectAngle(marker, 30);
+			marker.setAngle(35);
+			expectAngle(marker, 35);
+			marker.setAngle(0);
+			expectAngle(marker, 0);
+		});
+	});
+
+	describe("#setScale", function () {
+		function expectScale(marker, scale) {
+			expect(marker.getScale()).to.be(scale);
+			if (L.Browser.any3d) {
+				var transform = marker._icon.style[L.DomUtil.TRANSFORM];
+				if (scale !== 1) {
+					expect(transform).to.contain('scale(' + scale + ')');
+					expect(transform).to.not.match(/scale.*scale/);
+				} else {
+					expect(transform).to.not.contain('scale');
+				}
+			}
+		}
+
+		it("has a default scale of 1", function () {
+			var marker = new L.Marker([0, 0], { icon: icon1 });
+			map.addLayer(marker);
+			expectScale(marker, 1);
+		});
+
+		it("changes scale", function () {
+			var marker = new L.Marker([0, 0], { icon: icon1, scale: 0.5 });
+			map.addLayer(marker);
+			expectScale(marker, 0.5);
+			marker.setScale(2);
+			expectScale(marker, 2);
+			marker.setScale(1);
+			expectScale(marker, 1);
+		});
+	});
 });

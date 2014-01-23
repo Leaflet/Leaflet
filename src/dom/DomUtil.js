@@ -89,31 +89,16 @@ L.DomUtil = {
 	},
 
 	setOpacity: function (el, value) {
-
 		if ('opacity' in el.style) {
 			el.style.opacity = value;
-
 		} else if ('filter' in el.style) {
-
-			var filter = false,
-			    filterName = 'DXImageTransform.Microsoft.Alpha';
-
-			// filters collection throws an error if we try to retrieve a filter that doesn't exist
-			try {
-				filter = el.filters.item(filterName);
-			} catch (e) {
-				// don't set opacity to 1 if we haven't already set an opacity,
-				// it isn't needed and breaks transparent pngs.
-				if (value === 1) { return; }
-			}
+			var filter = L.DomUtil.getFilter(el, 'DXImageTransform.Microsoft.Alpha');
 
 			value = Math.round(value * 100);
 
 			if (filter) {
 				filter.Enabled = (value !== 100);
 				filter.Opacity = value;
-			} else {
-				el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
 			}
 		}
 	},
@@ -137,8 +122,56 @@ L.DomUtil = {
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
 	},
 
-	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
+	getFilter: function (el, filterName) {
+		if (!el.style.filter) {
+			el.style.filter = 'progid:DXImageTransform.Microsoft.Matrix(enabled=false) ' +
+							  'progid:DXImageTransform.Microsoft.Alpha(enabled=false)';
+		}
+		return el.filters.item(filterName);
+	},
 
+	setAnchoredTransform: function (el, pos, anchor, angle, scale) { // (HTMLElement, Point, Point, number, number)
+		// this method positions rotated & scaled elements.
+		// rotation and scaling is performed at 'anchor'.
+		// an anchor of 0 0 rotates the element at the center.
+
+		var theta = angle * Math.PI / 180,
+			scaleSinTheta = Math.sin(theta) * scale,
+			scaleCosTheta = Math.cos(theta) * scale,
+			shift = L.point(pos.x + anchor.x - scaleCosTheta * anchor.x + scaleSinTheta * anchor.y,
+							pos.y + anchor.y - scaleCosTheta * anchor.y - scaleSinTheta * anchor.x);
+		
+		if (L.Browser.any3d) {
+			var is3d = L.Browser.webkit3d;
+			el.style[L.DomUtil.TRANSFORM] =
+				'translate' + (is3d ? '3d(' : '(') + shift.x + 'px,' + shift.y + 'px' + (is3d ? ',0)' : ')') +
+				(scale !== 1 ? ' scale(' + scale + ')' : '') +
+				(angle !== 0 ? ' rotate(' + angle + 'deg)' : '');
+		} else if (L.Browser.ie) {
+			// DXImageTransform shifts and enlarges the image to avoid clipping.
+			// We apply an opposite shift to ensure the element appears in the correct position.
+			var bounds = L.point(el.width, el.height),
+				rotatedBounds = L.point(el.width * Math.abs(scaleCosTheta) + el.height * Math.abs(scaleSinTheta),
+										el.width * Math.abs(scaleSinTheta) + el.height * Math.abs(scaleCosTheta));
+
+			shift = shift.add(bounds.subtract(rotatedBounds).divideBy(2));
+
+			var filter = L.DomUtil.getFilter(el, 'DXImageTransform.Microsoft.Matrix');
+			filter.sizingMethod = 'auto expand';
+			filter.m11 = scaleCosTheta;
+			filter.m12 = -scaleSinTheta;
+			filter.m21 = scaleSinTheta;
+			filter.m22 = scaleCosTheta;
+			filter.Enabled = true;
+			el.style.left = shift.x + 'px';
+			el.style.top = shift.y + 'px';
+		} else {
+			el.style.left = pos.x + 'px';
+			el.style.top = pos.y + 'px';
+		}
+	},
+
+	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
 		// jshint camelcase: false
 		el._leaflet_pos = point;
 
