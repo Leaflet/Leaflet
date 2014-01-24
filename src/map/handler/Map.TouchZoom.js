@@ -103,7 +103,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map,
 		    oldZoom = map.getZoom(),
 		    zoomDelta = this._zoom - oldZoom,
-		    finalZoom = map._limitZoom(oldZoom + (zoomDelta > 0 ? Math.ceil(zoomDelta) : Math.floor(zoomDelta)));
+		    finalZoom = map._limitZoom(zoomDelta > 0 ? Math.ceil(this._zoom) : Math.floor(this._zoom));
 
 		map._animateZoom(this._center, finalZoom, true);
 	},
