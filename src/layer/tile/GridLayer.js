@@ -182,20 +182,19 @@ L.GridLayer = L.Layer.extend({
 			}
 		}
 
-		var level = this._levels[zoom];
+		var level = this._levels[zoom],
+		    map = this._map;
 
-		if (level) {
-			this._destroyLevel(level);
+		if (!level) {
+			level = this._levels[zoom] = {};
+
+			level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+			level.el.style.zIndex = 0;
+
+			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
+			level.zoom = zoom;
+			level.tiles = {};
 		}
-
-		level = this._levels[zoom] = {};
-		level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-		level.el.style.zIndex = 0;
-		level.zoom = zoom;
-		level.tiles = {};
-
-		var map = this._map;
-		level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 
 		this._level = level;
 		return level;
@@ -215,8 +214,6 @@ L.GridLayer = L.Layer.extend({
 		    tileZoomChanged = this._tileZoom !== tileZoom;
 
 		if (tileZoomChanged || e && e.hard) {
-			// this._clearTiles();
-
 			this._tileZoom = tileZoom;
 			this._updateLevels();
 			this._resetGrid();
@@ -259,7 +256,10 @@ L.GridLayer = L.Layer.extend({
 		    tileSize = this._tileSize = this._getTileSize(),
 		    tileZoom = this._tileZoom;
 
-		this._tileRange = this._getTileRange();
+		var bounds = this._map.getPixelWorldBounds(this._tileZoom);
+		if (bounds) {
+			this._globalTileRange = this._pxBoundsToTileRange(bounds);
+		}
 
 		this._wrapX = crs.wrapLng && [
 			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize),
@@ -279,24 +279,26 @@ L.GridLayer = L.Layer.extend({
 		if (!this._map) { return; }
 
 		// TODO move to reset
-		var zoom = this._map.getZoom();
+		// var zoom = this._map.getZoom();
 
-		if (zoom > this.options.maxZoom ||
-		    zoom < this.options.minZoom) { return; }
+		// if (zoom > this.options.maxZoom ||
+		//     zoom < this.options.minZoom) { return; }
 
-		var bounds = this._map.getBounds(),
-		    pxBounds = new L.Bounds(
-		        this._map.project(bounds.getNorthWest(), this._tileZoom),
-		        this._map.project(bounds.getSouthEast(), this._tileZoom));
-
-		// tile coordinates range for the current view
-		var tileRange = this._boundsToTileRange(pxBounds);
+		var tileRange = this._getTileRange(this._map.getBounds(), this._tileZoom);
 
 		// if (this.options.unloadInvisibleTiles) {
 		// 	this._removeOtherTiles(tileRange);
 		// }
 
 		this._addTiles(tileRange);
+	},
+
+	// tile coordinates range for particular geo bounds and zoom
+	_getTileRange: function (bounds, zoom) {
+		var pxBounds = new L.Bounds(
+		        this._map.project(bounds.getNorthWest(), zoom),
+		        this._map.project(bounds.getSouthEast(), zoom));
+		return this._pxBoundsToTileRange(pxBounds);
 	},
 
 	_addTiles: function (tileRange) {
@@ -351,7 +353,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (!crs.infinite) {
 			// don't load tile if it's out of bounds and not wrapped
-			var bounds = this._tileRange;
+			var bounds = this._globalTileRange;
 			if ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
 			    (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
 		}
@@ -469,21 +471,15 @@ L.GridLayer = L.Layer.extend({
 			});
 		}
 
-		L.Util.requestAnimFrame(function () {
-			L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
-		});
+		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 
 		this.fire('tileload', {tile: tile});
 
 		this._tilesToLoad--;
 
 		if (this._tilesToLoad === 0) {
-			this._visibleTilesReady();
+			this.fire('load');
 		}
-	},
-
-	_visibleTilesReady: function () {
-		this.fire('load');
 	},
 
 	_getTilePos: function (coords) {
@@ -495,13 +491,7 @@ L.GridLayer = L.Layer.extend({
 		coords.y = this._wrapY ? L.Util.wrapNum(coords.y, this._wrapY) : coords.y;
 	},
 
-	// get the global tile coordinates range for the current zoom
-	_getTileRange: function () {
-		var bounds = this._map.getPixelWorldBounds(this._tileZoom);
-		return bounds ? this._boundsToTileRange(bounds) : null;
-	},
-
-	_boundsToTileRange: function (bounds) {
+	_pxBoundsToTileRange: function (bounds) {
 		return new L.Bounds(
 			bounds.min.divideBy(this._tileSize).floor(),
 			bounds.max.divideBy(this._tileSize).ceil().subtract([1, 1]));

@@ -39,6 +39,11 @@ L.TileLayer = L.GridLayer.extend({
 		if (typeof options.subdomains === 'string') {
 			options.subdomains = options.subdomains.split('');
 		}
+
+		// for https://github.com/Leaflet/Leaflet/issues/137
+		if (!L.Browser.android) {
+			this.on('tileunload', this._onTileRemove);
+		}
 	},
 
 	setUrl: function (url, noRedraw) {
@@ -101,16 +106,10 @@ L.TileLayer = L.GridLayer.extend({
 				options.tileSize;
 	},
 
-	_removeTile: function (key) {
-		var tile = this._tiles[key];
-
-		L.GridLayer.prototype._removeTile.call(this, key);
-
-		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!L.Browser.android) {
-			tile.onload = null;
-			tile.src = L.Util.emptyImageUrl;
-		}
+	_onTileRemove: function (e) {
+		e.tile.onload = null;
+		e.tile.src = L.Util.emptyImageUrl;
+		console.log('hello');
 	},
 
 	_getZoomForUrl: function () {
