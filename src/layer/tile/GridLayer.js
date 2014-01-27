@@ -195,13 +195,15 @@ L.GridLayer = L.Layer.extend({
 		this._tilesToLoad = 0;
 		this._tilesTotal = 0;
 
-		this._tileContainer.innerHTML = '';
+		var front = this._tileContainer;
 
-		if (this._zoomAnimated) {
-			// a pretty funny hack - Safari bugs out with HW-acceleration when you pan to the right
-			// and there are no elements in the top left corner of the tile container, this fixes it
-			var hack = L.DomUtil.create('div', 'leaflet-hack leaflet-tile leaflet-tile-loaded', this._tileContainer);
-			L.DomUtil.setTransform(hack, null, null, true);
+		front.innerHTML = '';
+
+		// hack that prevents hw layers "stretching" when loading new tiles
+		if (this._zoomAnimated && L.Browser.safari) {
+			front.style.width = '1600px';
+			front.style.height = '1600px';
+			front.style.WebkitTransformOrigin = '0 0';
 		}
 
 		if (this._zoomAnimated && e && e.hard) {
@@ -415,8 +417,8 @@ L.GridLayer = L.Layer.extend({
 			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
 		}
 
-		// we prefer translate over top/left because it fixes gaps between tiles in Safari,
-		// but not 3d so that we don't create a HW-accelerated layer from each tile which is slow
+		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile
+		// which is slow, and it also fixes gaps between tiles in Safari
 		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache

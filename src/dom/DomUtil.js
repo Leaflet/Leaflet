@@ -130,13 +130,11 @@ L.DomUtil = {
 		return false;
 	},
 
-	setTransform: function (el, offset, scale, no3d) {
+	setTransform: function (el, offset, scale) {
 		var pos = offset || new L.Point(0, 0);
-		no3d = no3d || !L.Browser.any3d;
 
 		el.style[L.DomUtil.TRANSFORM] =
-			'translate' + (no3d ? '(' : '3d(') + pos.x + 'px,' + pos.y + 'px' + (no3d ? ')' : ',0)') +
-			(scale ? ' scale(' + scale + ')' : '');
+			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
 	},
 
 	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
@@ -144,8 +142,8 @@ L.DomUtil = {
 		// jshint camelcase: false
 		el._leaflet_pos = point;
 
-		if (L.Browser.any3d) {
-			L.DomUtil.setTransform(el, point, null, no3d);
+		if (L.Browser.any3d && !no3d) {
+			L.DomUtil.setTransform(el, point);
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
