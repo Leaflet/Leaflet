@@ -200,11 +200,6 @@ L.GridLayer = L.Layer.extend({
 		front.innerHTML = '';
 
 		// hack that prevents hw layers "stretching" when loading new tiles
-		if (this._zoomAnimated && L.Browser.safari) {
-			front.style.width = '1600px';
-			front.style.height = '1600px';
-			front.style.WebkitTransformOrigin = '0 0';
-		}
 
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
