@@ -327,6 +327,14 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/jseppi">James Seppi</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tkrajina/leaflet-editable-polyline">Leaflet.Editable.Polyline</a>
+		</td><td>Editable polylines: move existing points, add new points and split polylines.
+		</td><td>
+			<a href="https://github.com/tkrajina">Tomo Krajina</a>
+		</td>
+	</tr>
 
 </table>
 
