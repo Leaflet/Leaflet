@@ -62,7 +62,7 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 
 ### Basic States Map
 
-Lets display our states data on a map with CloudMade tiles of style 22677 for nice grayscale tiles that look perfect as a background for visualizations:
+Let's display our states data on a map with CloudMade tiles of style 22677 for nice grayscale tiles that look perfect as a background for visualizations:
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
