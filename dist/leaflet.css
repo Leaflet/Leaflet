@@ -25,6 +25,7 @@
 	   -moz-user-select: none;
 	        user-select: none;
 	-webkit-user-drag: none;
+	image-rendering:-webkit-optimize-contrast;
 	}
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
