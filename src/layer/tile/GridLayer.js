@@ -195,11 +195,7 @@ L.GridLayer = L.Layer.extend({
 		this._tilesToLoad = 0;
 		this._tilesTotal = 0;
 
-		var front = this._tileContainer;
-
-		front.innerHTML = '';
-
-		// hack that prevents hw layers "stretching" when loading new tiles
+		this._tileContainer.innerHTML = '';
 
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
