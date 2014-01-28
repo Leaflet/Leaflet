@@ -205,9 +205,6 @@ L.Map = L.Evented.extend({
 	},
 
 	remove: function () {
-		if (this._loaded) {
-			this.fire('unload');
-		}
 
 		this._initEvents('off');
 
@@ -225,6 +222,10 @@ L.Map = L.Evented.extend({
 		}
 
 		this._clearHandlers();
+		
+		if (this._loaded) {
+			this.fire('unload');
+		}
 
 		return this;
 	},
