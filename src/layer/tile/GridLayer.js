@@ -171,6 +171,8 @@ L.GridLayer = L.Layer.extend({
 			this._bgBuffer = L.DomUtil.create('div', className, this._container);
 			this._tileContainer = L.DomUtil.create('div', className, this._container);
 
+			L.DomUtil.setTransform(this._tileContainer);
+
 		} else {
 			this._tileContainer = this._container;
 		}
@@ -297,6 +299,7 @@ L.GridLayer = L.Layer.extend({
 		for (i = 0; i < tilesToLoad; i++) {
 			this._addTile(queue[i], fragment);
 		}
+
 		this._tileContainer.appendChild(fragment);
 	},
 
@@ -383,7 +386,7 @@ L.GridLayer = L.Layer.extend({
 
 		// without this hack, tiles disappear after zoom on Chrome for Android
 		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (L.Browser.mobileWebkit3d) {
+		if (L.Browser.android && !L.Browser.android23) {
 			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
@@ -405,10 +408,9 @@ L.GridLayer = L.Layer.extend({
 			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
 		}
 
-		// Chrome 20 layouts much faster with top/left (verify with timeline, frames)
-		// Android 4 browser has display issues with top/left and requires transform instead
-		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
+		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile
+		// which is slow, and it also fixes gaps between tiles in Safari
+		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
 		this._tiles[this._tileCoordsToKey(coords)] = tile;

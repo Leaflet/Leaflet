@@ -12,6 +12,7 @@
 	    webkit    = ua.indexOf('webkit') !== -1,
 	    phantomjs = ua.indexOf('phantom') !== -1,
 	    android23 = ua.search('android [23]') !== -1,
+	    chrome    = ua.indexOf('chrome') !== -1,
 
 	    mobile = typeof orientation !== 'undefined',
 	    msPointer = navigator.msPointerEnabled && navigator.msMaxTouchPoints && !window.PointerEvent,
@@ -40,7 +41,8 @@
 		gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
 		android: ua.indexOf('android') !== -1,
 		android23: android23,
-		chrome: ua.indexOf('chrome') !== -1,
+		chrome: chrome,
+		safari: !chrome && ua.indexOf('safari') !== -1,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,
