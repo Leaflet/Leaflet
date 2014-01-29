@@ -109,7 +109,7 @@ describe("Marker", function () {
 			marker.setLatLng(afterLatLng);
 
 			expect(eventArgs).to.not.be(null);
-			expect(eventArgs.oldLatlng).to.be(beforeLatLng);
+			expect(eventArgs.oldLatLng).to.be(beforeLatLng);
 			expect(eventArgs.latlng).to.be(afterLatLng);
 			expect(marker.getLatLng()).to.be(afterLatLng);
 		});
