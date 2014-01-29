@@ -15,7 +15,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_update: function () {
-		if (this._map._animatingZoom) { return; }
+		if (this._map._animatingZoom && this._bounds) { return; }
 
 		L.Renderer.prototype._update.call(this);
 
