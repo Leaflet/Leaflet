@@ -229,7 +229,9 @@ L.Marker = L.Layer.extend({
 			type = 'click';
 		}
 
-		this._map._fireMouseEvent(this, e, type, true, this._latlng);
+		if (this._map) {
+			this._map._fireMouseEvent(this, e, type, true, this._latlng);
+		}
 	},
 
 	setOpacity: function (opacity) {
