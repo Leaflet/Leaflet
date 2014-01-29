@@ -166,7 +166,7 @@ L.Evented = L.Class.extend({
 		if (propagate) {
 			// also check parents for listeners if event propagates
 			for (var id in this._eventParents) {
-				if (this._eventParents[id].listens(type)) { return true; }
+				if (this._eventParents[id].listens(type, propagate)) { return true; }
 			}
 		}
 		return false;
@@ -209,7 +209,7 @@ L.Evented = L.Class.extend({
 
 	_propagateEvent: function (e) {
 		for (var id in this._eventParents) {
-			this._eventParents[id].fire(e.type, L.extend({layer: e.target}, e));
+			this._eventParents[id].fire(e.type, L.extend({layer: e.target}, e), true);
 		}
 	}
 });
