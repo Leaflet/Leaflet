@@ -490,11 +490,12 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_clearBgBuffer: function () {
-		var map = this._map;
+		var map = this._map,
+			bg = this._bgBuffer;
 
-		if (map && !map._animatingZoom && !map.touchZoom._zooming) {
-			this._bgBuffer.innerHTML = '';
-			L.DomUtil.setTransform(this._bgBuffer);
+		if (map && !map._animatingZoom && !map.touchZoom._zooming && bg) {
+			bg.innerHTML = '';
+			L.DomUtil.setTransform(bg);
 		}
 	},
 

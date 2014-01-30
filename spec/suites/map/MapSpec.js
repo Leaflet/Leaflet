@@ -376,6 +376,19 @@ describe("Map", function () {
 			map.removeLayer(layer);
 		});
 
+		it("supports adding and removing a tile layer without initializing the map", function () {
+			var layer = L.tileLayer("{z}{x}{y}");
+			map.addLayer(layer);
+			map.removeLayer(layer);
+		});
+
+		it("supports adding and removing a tile layer without initializing the map", function () {
+			map.setView([0, 0], 18);
+			var layer = L.tileLayer("{z}{x}{y}");
+			map.addLayer(layer);
+			map.removeLayer(layer);
+		});
+
 		describe("when the last tile layer on a map is removed", function () {
 			it("fires a zoomlevelschange event", function () {
 				map.whenReady(function () {
