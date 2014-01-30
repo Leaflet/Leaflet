@@ -56,8 +56,8 @@ L.Layer = L.Evented.extend({
 			this.onRemove(map);
 		}
 
-		if (this.getAttribution && this._map.attributionControl) {
-			this._map.attributionControl.removeAttribution(this.getAttribution());
+		if (this.getAttribution && map.attributionControl) {
+			map.attributionControl.removeAttribution(this.getAttribution());
 		}
 
 		if (this.getEvents) {
