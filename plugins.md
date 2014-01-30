@@ -482,6 +482,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/tontita/">Seong Choi</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/htoooth/Leaflet.ChineseTmsProviders">Leaflet.ChineseTmsProviders</a>
+		</td><td>
+			Contains configurations for various Chinese tile providers — TianDiTu, MapABC, GaoDe, etc.
+		</td><td>
+			<a href="https://github.com/htoooth/">Tao Huang</a>
+		</td>
+	</tr>
 </table>
 
 
