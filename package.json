@@ -13,6 +13,7 @@
     "karma-coverage": "~0.1.5"
   },
   "main": "dist/leaflet-src.js",
+  "style": "dist/leaflet.css",
   "scripts": {
     "test": "jake test",
     "prepublish": "jake build"
