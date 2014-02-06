@@ -543,6 +543,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/heyman/leaflet-areaselect/">Leaflet.AreaSelect</a>
+		</td><td>
+			A fixed positioned, resizable rectangle for selecting an area on the map.
+		</td><td>
+			<a href="http://heyman.info">Jonatan Heyman</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/Leaflet/Leaflet.draw">Leaflet.draw</a>
 		</td><td>
 			Enables drawing features like polylines, polygons, rectangles, circles and markers through a very nice user-friendly interface with icons and hints. <em>Recommended!</em>
