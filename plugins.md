@@ -335,6 +335,14 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/tkrajina">Tomo Krajina</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mylen/leaflet.TileLayer.WMTS">leaflet.TileLayer.WMTS</a>
+		</td><td>Add WMTS (IGN) layering for leaflet.
+		</td><td>
+			<a href="https://github.com/mylen">Alexandre Melard</a>
+		</td>
+	</tr>
 
 </table>
 
