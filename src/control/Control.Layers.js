@@ -68,9 +68,10 @@ L.Control.Layers = L.Control.extend({
 
 		if (this.options.collapsed) {
 			if (!L.Browser.android) {
-				L.DomEvent
-				    .on(container, 'mouseover', this._expand, this)
-				    .on(container, 'mouseout', this._collapse, this);
+				L.DomEvent.on(container, {
+					mouseover: this._expand,
+				    mouseout: this._collapse
+				}, this);
 			}
 
 			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
@@ -145,7 +146,9 @@ L.Control.Layers = L.Control.extend({
 			this._update();
 		}
 
-		var type = e.target.overlay ?
+		var overlay = this._layers[L.stamp(e.target)].overlay;
+
+		var type = overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);
 
@@ -225,7 +228,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_collapse: function () {
-		this._container.className = this._container.className.replace(' leaflet-control-layers-expanded', '');
+		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
 	}
 });
 

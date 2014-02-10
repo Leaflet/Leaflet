@@ -1,14 +1,11 @@
 
-L.Layer = L.Class.extend({
-	includes: L.Mixin.Events,
+L.Layer = L.Evented.extend({
 
 	options: {
 		pane: 'overlayPane'
 	},
 
 	addTo: function (map) {
-		this._map = map;
-
 		var id = L.stamp(this);
 		if (map._layers[id]) { return this; }
 		map._layers[id] = this;
@@ -19,18 +16,26 @@ L.Layer = L.Class.extend({
 			this.beforeAdd(map);
 		}
 
+		this._mapToAdd = map;
 		map.whenReady(this._layerAdd, this);
 
 		return this;
 	},
 
 	_layerAdd: function () {
-		var map = this._map;
+		var map = this._mapToAdd;
 
 		// check in case layer gets added and then removed before the map is ready
 		if (!map) { return; }
 
+		this._map = map;
+		this._mapToAdd = null;
+
 		this.onAdd(map);
+
+		if (this.getAttribution && this._map.attributionControl) {
+			this._map.attributionControl.addAttribution(this.getAttribution());
+		}
 
 		if (this.getEvents) {
 			map.on(this.getEvents(), this);
@@ -43,12 +48,16 @@ L.Layer = L.Class.extend({
 	remove: function () {
 
 		var id = L.stamp(this),
-		    map = this._map;
+		    map = this._map || this._mapToAdd;
 
 		if (!map || !map._layers[id]) { return this; }
 
 		if (map._loaded) {
 			this.onRemove(map);
+		}
+
+		if (this.getAttribution && map.attributionControl) {
+			map.attributionControl.removeAttribution(this.getAttribution());
 		}
 
 		if (this.getEvents) {
@@ -62,15 +71,13 @@ L.Layer = L.Class.extend({
 			this.fire('remove');
 		}
 
-		this._map = null;
+		this._map = this._mapToAdd = null;
 
 		return this;
 	},
 
 	getPane: function (name) {
-		// TODO make pane if not present
-		var paneName = name ? (this.options[name] || name) : this.options.pane;
-		return this._map._panes[paneName];
+		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	}
 });
 
@@ -87,7 +94,7 @@ L.Map.include({
 	},
 
 	hasLayer: function (layer) {
-		return !layer || L.stamp(layer) in this._layers;
+		return !!layer && (L.stamp(layer) in this._layers);
 	},
 
 	eachLayer: function (method, context) {

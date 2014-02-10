@@ -2,9 +2,7 @@
  * L.Map is the central class of the API - it is used to create a map.
  */
 
-L.Map = L.Class.extend({
-
-	includes: L.Mixin.Events,
+L.Map = L.Evented.extend({
 
 	options: {
 		crs: L.CRS.EPSG3857,
@@ -129,14 +127,14 @@ L.Map = L.Class.extend({
 		this.options.maxBounds = bounds;
 
 		if (!bounds) {
-			return this.off('moveend', this._panInsideMaxBounds, this);
+			return this.off('moveend', this._panInsideMaxBounds);
 		}
 
 		if (this._loaded) {
 			this._panInsideMaxBounds();
 		}
 
-		return this.on('moveend', this._panInsideMaxBounds, this);
+		return this.on('moveend', this._panInsideMaxBounds);
 	},
 
 	panInsideBounds: function (bounds, options) {
@@ -207,9 +205,6 @@ L.Map = L.Class.extend({
 	},
 
 	remove: function () {
-		if (this._loaded) {
-			this.fire('unload');
-		}
 
 		this._initEvents('off');
 
@@ -227,8 +222,22 @@ L.Map = L.Class.extend({
 		}
 
 		this._clearHandlers();
+		
+		if (this._loaded) {
+			this.fire('unload');
+		}
 
 		return this;
+	},
+
+	createPane: function (name, container) {
+		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
+		    pane = L.DomUtil.create('div', className, container || this._mapPane);
+
+		if (name) {
+			this._panes[name] = pane;
+		}
+		return pane;
 	},
 
 
@@ -319,6 +328,10 @@ L.Map = L.Class.extend({
 		return this.options.crs.getProjectedBounds(this.getZoom());
 	},
 
+	getPane: function (pane) {
+		return typeof pane === 'string' ? this._panes[pane] : pane;
+	},
+
 	getPanes: function () {
 		return this._panes;
 	},
@@ -363,7 +376,11 @@ L.Map = L.Class.extend({
 	},
 
 	wrapLatLng: function (latlng) {
-		return this.options.crs.wrapLatLng(latlng);
+		return this.options.crs.wrapLatLng(L.latLng(latlng));
+	},
+
+	distance: function (latlng1, latlng2) {
+		return this.options.crs.distance(L.latLng(latlng1), L.latLng(latlng2));
 	},
 
 	containerPointToLayerPoint: function (point) { // (Point)
@@ -419,6 +436,7 @@ L.Map = L.Class.extend({
 			(L.Browser.touch ? ' leaflet-touch' : '') +
 			(L.Browser.retina ? ' leaflet-retina' : '') +
 			(L.Browser.ielt9 ? ' leaflet-oldie' : '') +
+			(L.Browser.safari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
 		var position = L.DomUtil.getStyle(container, 'position');
@@ -437,26 +455,18 @@ L.Map = L.Class.extend({
 	_initPanes: function () {
 		var panes = this._panes = {};
 
-		this._mapPane = panes.mapPane = this._createPane('leaflet-map-pane', this._container);
+		this._mapPane = this.createPane('mapPane', this._container);
 
-		this._tilePane = panes.tilePane = this._createPane('leaflet-tile-pane', this._mapPane);
-		panes.objectsPane = this._createPane('leaflet-objects-pane', this._mapPane);
-		panes.shadowPane = this._createPane('leaflet-shadow-pane');
-		panes.overlayPane = this._createPane('leaflet-overlay-pane');
-		panes.markerPane = this._createPane('leaflet-marker-pane');
-		panes.popupPane = this._createPane('leaflet-popup-pane');
-
-		var zoomHide = ' leaflet-zoom-hide';
+		this.createPane('tilePane');
+		this.createPane('shadowPane');
+		this.createPane('overlayPane');
+		this.createPane('markerPane');
+		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
-			L.DomUtil.addClass(panes.markerPane, zoomHide);
-			L.DomUtil.addClass(panes.shadowPane, zoomHide);
-			L.DomUtil.addClass(panes.popupPane, zoomHide);
+			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
+			L.DomUtil.addClass(panes.shadowPane, 'leaflet-zoom-hide');
 		}
-	},
-
-	_createPane: function (className, container) {
-		return L.DomUtil.create('div', className, container || this._panes.objectsPane);
 	},
 
 
@@ -528,15 +538,9 @@ L.Map = L.Class.extend({
 
 		onOff = onOff || 'on';
 
-		L.DomEvent[onOff](this._container, 'click', this._onMouseClick, this);
-
-		var events = ['dblclick', 'mousedown', 'mouseup', 'mouseenter',
-		              'mouseleave', 'mousemove', 'contextmenu'],
-		    i, len;
-
-		for (i = 0, len = events.length; i < len; i++) {
-			L.DomEvent[onOff](this._container, events[i], this._fireMouseEvent, this);
-		}
+		L.DomEvent[onOff](this._container,
+			'click dblclick mousedown mouseup mouseenter mouseleave mousemove contextmenu',
+			this._handleMouseEvent, this);
 
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
@@ -549,39 +553,41 @@ L.Map = L.Class.extend({
 		        function () { this.invalidateSize({debounceMoveend: true}); }, this, false, this._container);
 	},
 
-	_onMouseClick: function (e) {
-		if (!this._loaded || (!e._simulated &&
-		        ((this.dragging && this.dragging.moved()) ||
-		         (this.boxZoom  && this.boxZoom.moved()))) ||
-		            L.DomEvent._skipped(e)) { return; }
+	_handleMouseEvent: function (e) {
+		if (!this._loaded) { return; }
 
-		this.fire('preclick');
-		this._fireMouseEvent(e);
+		this._fireMouseEvent(this, e,
+				e.type === 'mouseenter' ? 'mouseover' :
+				e.type === 'mouseleave' ? 'mouseout' : e.type);
 	},
 
-	_fireMouseEvent: function (e) {
-		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
+	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
+		type = type || e.type;
 
-		var type = e.type;
+		if (type === 'click') {
+			if (!e._simulated && ((this.dragging && this.dragging.moved()) ||
+			                      (this.boxZoom && this.boxZoom.moved()))) { return; }
+			obj.fire('preclick');
+		}
 
-		type = (type === 'mouseenter' ? 'mouseover' : (type === 'mouseleave' ? 'mouseout' : type));
-
-		if (!this.hasEventListeners(type)) { return; }
+		if (!obj.listens(type, propagate) || L.DomEvent._skipped(e)) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
+		if (type === 'click' || type === 'dblclick' || type === 'contextmenu') {
+			L.DomEvent.stopPropagation(e);
+		}
 
-		var containerPoint = this.mouseEventToContainerPoint(e),
-		    layerPoint = this.containerPointToLayerPoint(containerPoint),
-		    latlng = this.layerPointToLatLng(layerPoint);
+		var data = {
+			originalEvent: e,
+			containerPoint: this.mouseEventToContainerPoint(e)
+		};
 
-		this.fire(type, {
-			latlng: latlng,
-			layerPoint: layerPoint,
-			containerPoint: containerPoint,
-			originalEvent: e
-		});
+		data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
+		data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
+
+		obj.fire(type, data, propagate);
 	},
 
 	_clearHandlers: function () {

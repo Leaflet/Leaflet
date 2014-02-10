@@ -10,7 +10,7 @@ L.TileLayer = L.GridLayer.extend({
 
 		subdomains: 'abc',
 		// errorTileUrl: '',
-		zoomOffset: 0,
+		zoomOffset: 0
 
 		/*
 		maxNativeZoom: <Number>,
@@ -53,8 +53,8 @@ L.TileLayer = L.GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		tile.onload = L.bind(this._tileOnLoad, this, done);
-		tile.onerror = L.bind(this._tileOnError, this, done);
+		tile.onload = L.bind(this._tileOnLoad, this, done, tile);
+		tile.onerror = L.bind(this._tileOnError, this, done, tile);
 
 		tile.src = this.getTileUrl(coords);
 
@@ -63,6 +63,7 @@ L.TileLayer = L.GridLayer.extend({
 
 	getTileUrl: function (coords) {
 		return L.Util.template(this._url, L.extend({
+			r: this.options.detectRetina && L.Browser.retina && this.options.maxZoom > 0 ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: this.options.tms ? this._tileNumBounds.max.y - coords.y : coords.y,
@@ -70,16 +71,16 @@ L.TileLayer = L.GridLayer.extend({
 		}, this.options));
 	},
 
-	_tileOnLoad: function (done, e) {
-		done(null, e.target);
+	_tileOnLoad: function (done, tile) {
+		done(null, tile);
 	},
 
-	_tileOnError: function (done, e) {
+	_tileOnError: function (done, tile, e) {
 		var errorUrl = this.options.errorTileUrl;
 		if (errorUrl) {
-			e.target.src = errorUrl;
+			tile.src = errorUrl;
 		}
-		done(e, e.target);
+		done(e, tile);
 	},
 
 	_getTileSize: function () {
@@ -125,47 +126,11 @@ L.TileLayer = L.GridLayer.extend({
 		return this.options.subdomains[index];
 	},
 
-	_prepareBgBuffer: function () {
-
-		var front = this._tileContainer,
-		    bg = this._bgBuffer;
-
-		// if foreground layer doesn't have many tiles but bg layer does,
-		// keep the existing bg layer and just zoom it some more
-
-		var bgLoaded = this._getLoadedTilesPercentage(bg),
-		    frontLoaded = this._getLoadedTilesPercentage(front);
-
-		if (bg && bgLoaded > 0.5 && frontLoaded < 0.5) {
-
-			front.style.visibility = 'hidden';
-			this._stopLoadingImages(front);
-			return;
-		}
-
-		this._swapBgBuffer();
-		this._stopLoadingImages(bg);
-	},
-
-	_getLoadedTilesPercentage: function (container) {
-		var tiles = container.getElementsByTagName('img'),
-		    i, len, count = 0;
-
-		for (i = 0, len = tiles.length; i < len; i++) {
-			if (tiles[i].complete) {
-				count++;
-			}
-		}
-		return count / len;
-	},
-
 	// stops loading all tiles in the background layer
-	_stopLoadingImages: function (container) {
-		var tiles = Array.prototype.slice.call(container.getElementsByTagName('img')),
-		    i, len, tile;
-
-		for (i = 0, len = tiles.length; i < len; i++) {
-			tile = tiles[i];
+	_abortLoading: function () {
+		var i, tile;
+		for (i in this._tiles) {
+			tile = this._tiles[i];
 
 			if (!tile.complete) {
 				tile.onload = L.Util.falseFn;

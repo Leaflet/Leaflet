@@ -2,32 +2,27 @@
  * L.CircleMarker is a circle overlay with a permanent pixel radius.
  */
 
-L.CircleMarker = L.Circle.extend({
+L.CircleMarker = L.Path.extend({
+
 	options: {
-		radius: 10,
-		weight: 2
+		fill: true,
+		radius: 10
 	},
 
 	initialize: function (latlng, options) {
-		L.Circle.prototype.initialize.call(this, latlng, null, options);
+		L.setOptions(this, options);
+		this._latlng = L.latLng(latlng);
 		this._radius = this.options.radius;
 	},
 
-	projectLatlngs: function () {
-		this._point = this._map.latLngToLayerPoint(this._latlng);
-	},
-
-	_updateStyle : function () {
-		L.Circle.prototype._updateStyle.call(this);
-		this.setRadius(this.options.radius);
-	},
-
 	setLatLng: function (latlng) {
-		L.Circle.prototype.setLatLng.call(this, latlng);
-		if (this._popup) {
-			this._popup.setLatLng(latlng);
-		}
-		return this;
+		this._latlng = L.latLng(latlng);
+		this.redraw();
+		return this.fire('move', {latlng: this._latlng});
+	},
+
+	getLatLng: function () {
+		return this._latlng;
 	},
 
 	setRadius: function (radius) {
@@ -37,6 +32,38 @@ L.CircleMarker = L.Circle.extend({
 
 	getRadius: function () {
 		return this._radius;
+	},
+
+	setStyle : function (options) {
+		this._radius = options && options.radius || this._radius;
+		L.Path.prototype.setStyle.call(this, options);
+	},
+
+	_project: function () {
+		this._point = this._map.latLngToLayerPoint(this._latlng);
+		this._updateBounds();
+	},
+
+	_updateBounds: function () {
+		var r = this._radius,
+		    r2 = this._radiusY || r,
+		    w = this._clickTolerance(),
+		    p = [r + w, r2 + w];
+		this._pxBounds = new L.Bounds(this._point.subtract(p), this._point.add(p));
+	},
+
+	_update: function () {
+		if (this._map) {
+			this._updatePath();
+		}
+	},
+
+	_updatePath: function () {
+		this._renderer._updateCircle(this);
+	},
+
+	_empty: function () {
+		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
 	}
 });
 

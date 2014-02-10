@@ -99,12 +99,22 @@ describe("Class", function () {
 			});
 
 			var a = new KlassWithOptions2();
+			expect(a.options.foo1).to.eql(1);
+			expect(a.options.foo2).to.eql(3);
+			expect(a.options.foo3).to.eql(4);
+		});
 
-			expect(a.options).to.eql({
-				foo1: 1,
-				foo2: 3,
-				foo3: 4
-			});
+		it("gives new classes a distinct options object", function () {
+			var K1 = L.Class.extend({options: {}});
+			var K2 = K1.extend({});
+			expect(K2.prototype.options).not.to.equal(K1.prototype.options);
+		});
+
+		it("inherits options prototypally", function () {
+			var K1 = L.Class.extend({options: {}});
+			var K2 = K1.extend({options: {}});
+			K1.prototype.options.foo = 'bar';
+			expect(K2.prototype.options.foo).to.eql('bar');
 		});
 
 		it("adds constructor hooks correctly", function () {

@@ -14,21 +14,21 @@ L.Handler.MarkerDrag = L.Handler.extend({
 			this._draggable = new L.Draggable(icon, icon);
 		}
 
-		this._draggable
-			.on('dragstart', this._onDragStart, this)
-			.on('drag', this._onDrag, this)
-			.on('dragend', this._onDragEnd, this)
-			.enable();
+		this._draggable.on({
+			dragstart: this._onDragStart,
+			drag: this._onDrag,
+			dragend: this._onDragEnd
+		}, this).enable();
 
 		L.DomUtil.addClass(icon, 'leaflet-marker-draggable');
 	},
 
 	removeHooks: function () {
-		this._draggable
-			.off('dragstart', this._onDragStart, this)
-			.off('drag', this._onDrag, this)
-			.off('dragend', this._onDragEnd, this)
-			.disable();
+		this._draggable.off({
+			dragstart: this._onDragStart,
+			drag: this._onDrag,
+			dragend: this._onDragEnd
+		}, this).disable();
 
 		L.DomUtil.removeClass(this._marker._icon, 'leaflet-marker-draggable');
 	},

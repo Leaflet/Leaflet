@@ -47,8 +47,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		// offset is the pixel coords of the zoom origin relative to the current center
 		var scale = this.getZoomScale(zoom),
-		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale),
-			origin = this._getCenterLayerPoint()._add(offset);
+		    offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
 
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
@@ -57,34 +56,35 @@ L.Map.include(!zoomAnimated ? {} : {
 		    .fire('movestart')
 		    .fire('zoomstart');
 
-		this._animateZoom(center, zoom, origin, scale, null, true);
+		this._animateZoom(center, zoom, true);
 
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, origin, scale, delta, backwards) {
+	_animateZoom: function (center, zoom, startAnim) {
+		if (startAnim) {
+			this._animatingZoom = true;
 
-		this._animatingZoom = true;
+			// remember what center/zoom to set after animation
+			this._animateToCenter = center;
+			this._animateToZoom = zoom;
 
-		// put transform transition on all layers with leaflet-zoom-animated class
-		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+			// disable any dragging during animation
+			if (L.Draggable) {
+				L.Draggable._disabled = true;
+			}
 
-		// remember what center/zoom to set after animation
-		this._animateToCenter = center;
-		this._animateToZoom = zoom;
-
-		// disable any dragging during animation
-		if (L.Draggable) {
-			L.Draggable._disabled = true;
+			L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
+
+		var scale = this.getZoomScale(zoom),
+			origin = this._getCenterLayerPoint().add(this._getCenterOffset(center)._divideBy(1 - 1 / scale));
 
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
 			origin: origin,
-			scale: scale,
-			delta: delta,
-			backwards: backwards
+			scale: scale
 		});
 	},
 

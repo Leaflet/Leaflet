@@ -4,7 +4,6 @@ module.exports = function (config) {
 	var libSources = require(__dirname+'/../build/build.js').getFiles();
 
 	var files = [
-		"spec/before.js",
 		"spec/sinon.js",
 		"spec/expect.js"
 	].concat(libSources, [

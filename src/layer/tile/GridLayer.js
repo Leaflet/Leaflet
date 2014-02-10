@@ -32,7 +32,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (!this.options.updateWhenIdle) {
 			// update tiles on move, but not more often than once per given interval
-			this._update = L.Util.limitExecByInterval(this._update, this.options.updateInterval, this);
+			this._update = L.Util.throttle(this._update, this.options.updateInterval, this);
 		}
 
 		this._reset();
@@ -54,18 +54,16 @@ L.GridLayer = L.Layer.extend({
 
 	bringToFront: function () {
 		if (this._map) {
-			var pane = this.getPane();
-			pane.appendChild(this._container);
-			this._setAutoZIndex(pane, Math.max);
+			L.DomUtil.toFront(this._container);
+			this._setAutoZIndex(Math.max);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
 		if (this._map) {
-			var pane = this.getPane();
-			pane.insertBefore(this._container, pane.firstChild);
-			this._setAutoZIndex(pane, Math.min);
+			L.DomUtil.toBack(this._container);
+			this._setAutoZIndex(Math.min);
 		}
 		return this;
 	},
@@ -113,6 +111,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		if (this._zoomAnimated) {
+			events.zoomstart = this._startZoomAnim;
 			events.zoomanim = this._animateZoom;
 			events.zoomend = this._endZoomAnim;
 		}
@@ -126,25 +125,25 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_setAutoZIndex: function (pane, compare) {
+	_setAutoZIndex: function (compare) {
+		// go through all other layers of the same pane, set zIndex to max + 1 (front) or min - 1 (back)
 
-		var layers = pane.children,
-		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
-		    zIndex, i, len;
+		var layers = this.getPane().children,
+		    edgeZIndex = -compare(-Infinity, Infinity); // -Infinity for max, Infinity for min
 
-		for (i = 0, len = layers.length; i < len; i++) {
+		for (var i = 0, len = layers.length, zIndex; i < len; i++) {
 
-			if (layers[i] !== this._container) {
-				zIndex = parseInt(layers[i].style.zIndex, 10);
+			zIndex = layers[i].style.zIndex;
 
-				if (!isNaN(zIndex)) {
-					edgeZIndex = compare(edgeZIndex, zIndex);
-				}
+			if (layers[i] !== this._container && zIndex) {
+				edgeZIndex = compare(edgeZIndex, +zIndex);
 			}
 		}
 
-		this.options.zIndex = this._container.style.zIndex =
-			(isFinite(edgeZIndex) ? edgeZIndex : 0) + compare(1, -1);
+		if (isFinite(edgeZIndex)) {
+			this.options.zIndex = edgeZIndex + compare(-1, 1);
+			this._updateZIndex();
+		}
 	},
 
 	_updateOpacity: function () {
@@ -172,6 +171,8 @@ L.GridLayer = L.Layer.extend({
 			this._bgBuffer = L.DomUtil.create('div', className, this._container);
 			this._tileContainer = L.DomUtil.create('div', className, this._container);
 
+			L.DomUtil.setTransform(this._tileContainer);
+
 		} else {
 			this._tileContainer = this._container;
 		}
@@ -192,6 +193,7 @@ L.GridLayer = L.Layer.extend({
 
 		this._tiles = {};
 		this._tilesToLoad = 0;
+		this._tilesTotal = 0;
 
 		this._tileContainer.innerHTML = '';
 
@@ -284,6 +286,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._tilesToLoad += tilesToLoad;
+		this._tilesTotal += tilesToLoad;
 
 		// sort tile queue to load tiles in order of their distance to center
 		queue.sort(function (a, b) {
@@ -296,6 +299,7 @@ L.GridLayer = L.Layer.extend({
 		for (i = 0; i < tilesToLoad; i++) {
 			this._addTile(queue[i], fragment);
 		}
+
 		this._tileContainer.appendChild(fragment);
 	},
 
@@ -382,7 +386,7 @@ L.GridLayer = L.Layer.extend({
 
 		// without this hack, tiles disappear after zoom on Chrome for Android
 		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (L.Browser.mobileWebkit3d) {
+		if (L.Browser.android && !L.Browser.android23) {
 			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
@@ -404,10 +408,9 @@ L.GridLayer = L.Layer.extend({
 			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
 		}
 
-		// Chrome 20 layouts much faster with top/left (verify with timeline, frames)
-		// Android 4 browser has display issues with top/left and requires transform instead
-		// (other browsers don't currently care) - see debug/hacks/jitter.html for an example
-		L.DomUtil.setPosition(tile, tilePos, L.Browser.chrome);
+		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile
+		// which is slow, and it also fixes gaps between tiles in Safari
+		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
 		this._tiles[this._tileCoordsToKey(coords)] = tile;
@@ -459,68 +462,70 @@ L.GridLayer = L.Layer.extend({
 	// get the global tile coordinates range for the current zoom
 	_getTileNumBounds: function () {
 		var bounds = this._map.getPixelWorldBounds(),
-			size = this.options.tileSize;
+			size = this._getTileSize();
 
 		return bounds ? L.bounds(
 				bounds.min.divideBy(size).floor(),
 				bounds.max.divideBy(size).ceil().subtract([1, 1])) : null;
 	},
 
+	_startZoomAnim: function () {
+		this._prepareBgBuffer();
+		this._prevTranslate = this._translate;
+		this._prevScale = this._scale;
+	},
+
 	_animateZoom: function (e) {
-		if (!this._animating) {
-			this._animating = true;
-			this._prepareBgBuffer();
-		}
+		// avoid stacking transforms by calculating cumulating translate/scale sequence
+		this._translate = this._prevTranslate.multiplyBy(e.scale).add(e.origin.multiplyBy(1 - e.scale));
+		this._scale = this._prevScale * e.scale;
 
-		var bg = this._bgBuffer,
-		    transform = L.DomUtil.TRANSFORM,
-		    initialTransform = e.delta ? L.DomUtil.getTranslateString(e.delta) : bg.style[transform],
-		    scaleStr = L.DomUtil.getScaleString(e.scale, e.origin);
-
-		bg.style[transform] = e.backwards ?
-				scaleStr + ' ' + initialTransform :
-				initialTransform + ' ' + scaleStr;
+		L.DomUtil.setTransform(this._bgBuffer, this._translate, this._scale);
 	},
 
 	_endZoomAnim: function () {
-		var front = this._tileContainer,
-		    bg = this._bgBuffer;
-
+		var front = this._tileContainer;
 		front.style.visibility = '';
-		front.parentNode.appendChild(front); // bring to front
-
-		// force reflow
-		L.Util.falseFn(bg.offsetWidth);
-
-		this._animating = false;
+		L.DomUtil.toFront(front); // bring to front
 	},
 
 	_clearBgBuffer: function () {
-		var map = this._map;
+		var map = this._map,
+			bg = this._bgBuffer;
 
-		if (map && !map._animatingZoom && !map.touchZoom._zooming) {
-			this._bgBuffer.innerHTML = '';
-			this._bgBuffer.style[L.DomUtil.TRANSFORM] = '';
+		if (map && !map._animatingZoom && !map.touchZoom._zooming && bg) {
+			bg.innerHTML = '';
+			L.DomUtil.setTransform(bg);
 		}
 	},
 
 	_prepareBgBuffer: function () {
-		// overriden in TileLayer
-		this._swapBgBuffer();
-	},
-
-	_swapBgBuffer: function () {
 
 		var front = this._tileContainer,
 		    bg = this._bgBuffer;
 
+		if (this._abortLoading) {
+			this._abortLoading();
+		}
+
+		if (this._tilesToLoad / this._tilesTotal > 0.5) {
+			// if foreground layer doesn't have many tiles loaded,
+			// keep the existing bg layer and just zoom it some more
+			front.style.visibility = 'hidden';
+			return;
+		}
+
 		// prepare the buffer to become the front tile pane
 		bg.style.visibility = 'hidden';
-		bg.style[L.DomUtil.TRANSFORM] = '';
+		L.DomUtil.setTransform(bg);
 
 		// switch out the current layer to be the new bg layer (and vice-versa)
 		this._tileContainer = bg;
 		this._bgBuffer = front;
+
+		// reset bg layer transform info
+		this._translate = new L.Point(0, 0);
+		this._scale = 1;
 
 		// prevent bg buffer from clearing right after zoom
 		clearTimeout(this._clearBgBufferTimer);

@@ -23,9 +23,10 @@ L.Map.Drag = L.Handler.extend({
 			this._draggable = new L.Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
-				'dragstart': this._onDragStart,
-				'drag': this._onDrag,
-				'dragend': this._onDragEnd
+				down: this._onDown,
+				dragstart: this._onDragStart,
+				drag: this._onDrag,
+				dragend: this._onDragEnd
 			}, this);
 
 			if (map.options.worldCopyJump) {
@@ -46,12 +47,14 @@ L.Map.Drag = L.Handler.extend({
 		return this._draggable && this._draggable._moved;
 	},
 
+	_onDown: function () {
+		if (this._map._panAnim) {
+			this._map._panAnim.stop();
+		}
+	},
+
 	_onDragStart: function () {
 		var map = this._map;
-
-		if (map._panAnim) {
-			map._panAnim.stop();
-		}
 
 		map
 		    .fire('movestart')

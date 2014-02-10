@@ -9,6 +9,24 @@ An in-progress version being developed on the `master` branch. Includes `stable`
 
 This version contains a lot of beneficial but potentially breaking changes (especially if you're a plugin author), so please read through the changes carefully before upgrading.
 
+### Vectors refactoring
+
+Leaflet vector layers rendering got a major rewrite, making it possible to switch between rendering backends (Canvas, SVG) dynamically (and even use both for different layers at the same time), have more than one physical pane for vector layers, significantly improving Canvas performance and adding retina support, getting rid of ugly hacks and generally making the code much cleaner. PR [#2290](https://github.com/Leaflet/Leaflet/pull/2290).
+
+* Added `Renderer` layer (inherited by SVG/Canvas implementations) that handles renderer bounds and zoom animation.
+* Added `SVG` & `Canvas` classes that now contain all renderer-specific code for vector layers and can be added as layers to the map.
+* All vector layer classes (`Path`, `Polyline`, etc.) now don't contain any renderer-specific code and instead can be passed a renderer layer to use as `renderer` in options;
+* Removed `MultiPolyline` and `MultiPolygon` classes since multiple rings are now handled by `Polyline` and `Polygon` classes respectively. Layers with multiple rings now perform much better (since each is now physically a single path object instead of being a `FeatureGroup` of layers).
+* Dramatically improved performance of interactive Canvas layers. Mouse events work much faster (due to improved hit detection algorithms), and layers get updated many times faster (with partial redraws instead of redrawing the whole Canvas).
+* Added retina support for Canvas layers.
+* Improved default vector layer styles.
+* Added `Polyline` and `Polygon` `getCenter` for getting centroids.
+* Respectively, improved `Polyline` and `Polygon` popup positioning when calling `openPopup`.
+* Improved `Polyline`/`Polygon` `getBounds` to be cached (so it works much faster).
+* Changed `Circle` to inherit from `CircleMarker` and not the other way.
+* Fixed `GeoJSON` `resetStyle` to work properly in case `style` option wasn't set.
+* Fixed a bug where map fired `moveend` when updating Canvas layers.
+
 ### Layers refactoring
 
 All Leaflet layers (including markers, popups, tile and vector layers) have been refactored to have a common parent, `Layer` class, that shares the basic logic of adding and removing. The leads to the following changes (documented in PR [#2266](https://github.com/Leaflet/Leaflet/pull/2266)):
@@ -54,6 +72,14 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 
 ### Other improvements
 
+* Significantly improved `FeatureGroup` (and correspondingly `GeoJSON`) layer adding and events performance (about 10x) by implementing a much better event propagation mechanism. [#2311](https://github.com/Leaflet/Leaflet/pull/2311)
+* Significantly [improved](http://jsperf.com/leaflet-parsefloat-in-latlng/2) `LatLng` creation performance (8x).
+* Added `Evented` class that now many Leaflet classes inherit from (instead of mixing in events methods in each class), while keeping the old `includes: L.Mixin.Events` syntax available. [#2310](https://github.com/Leaflet/Leaflet/pull/2310)
+* Improved `Class` `options` to be prototypically inherited instead of copied over in children classes, which leads to more efficient memory use, faster object construction times and ability to change parent options that get propagated to all children automatically (by [@jfirebaugh](https://github.com/jfirebaugh)). [#2300](https://github.com/Leaflet/Leaflet/pull/2300) [#2294](https://github.com/Leaflet/Leaflet/issues/2294)
+* Fixed `DomUtil` `on` to make it possible to add the same listener to the same element for multiple contexts.
+* Changed `DomUtil` `off` to require `context` attribute if you remove a listener that was previously added with a particular context.
+* Added `{r}` variable to `TileLayer` `url` for adding `"@2x"` prefix on Retina-enabled devices (by [@urbaniak](https://github.com/urbaniak)). [#2296](https://github.com/Leaflet/Leaflet/pull/2296)
+* Removed `DomUtil.getViewportOffset` method as it is no longer necessary.
 * Added `Point` `ceil` method (by [@perliedman](https://github.com/perliedman)).
 * Added `Util.wrapNum` method for wrapping a number to lie in a certain range.
 * Improved `L.bind` to use native `Function` `bind` on modern browsers and prepend real arguments to bound ones.
@@ -63,11 +89,17 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Improved performance of layer objects construction.
 * Added popup fade out animation.
 * Improved the build system (`jake build`) to report gzipped library size.
+* Added Leaflet logo in vector format as `src/images/logo.svg`.
+
+
+## 0.7.2 (January 17, 2014)
+
+* Fixed a bug that appeared with **Chrome 32 update** that made all **mouse events shifted on scrolled pages**. [#2352](https://github.com/Leaflet/Leaflet/issues/2352)
+* Fixed a bug that could break tile loading when using non-standard tile sizes. [#2288](https://github.com/Leaflet/Leaflet/issues/2288)
+* Fixed a bug where `maxNativeZoom` option didn't work with TMS tile layers (by [@perliedman](https://github.com/perliedman)). [#2321](https://github.com/Leaflet/Leaflet/issues/2321) [#2314](https://github.com/Leaflet/Leaflet/issues/2314)
 
 
 ## 0.7.1 (December 6, 2013)
-
-A follow-up bugfix release to the recent stable version.
 
 * Fixed a bug where pinch-zooming quickly could occasionally leave the map at a fractional zoom thus breaking tile loading (by [@danzel](https://github.com/danzel)). [#2269](https://github.com/Leaflet/Leaflet/pull/2269) [#2255](https://github.com/Leaflet/Leaflet/issues/2255) [#1934](https://github.com/Leaflet/Leaflet/issues/1934)
 * Fixed tile flickering issues on some old Android 2/3 devices by disabling buggy hardware accelerated CSS there (by [@danzel](https://github.com/danzel)). [#2216](https://github.com/Leaflet/Leaflet/pull/2216) [#2198](https://github.com/Leaflet/Leaflet/issues/2198)

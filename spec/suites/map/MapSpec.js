@@ -199,6 +199,15 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#hasLayer", function () {
+		it("returns false when passed undefined, null, or false", function () {
+			var map = L.map(document.createElement('div'));
+			expect(map.hasLayer(undefined)).to.equal(false);
+			expect(map.hasLayer(null)).to.equal(false);
+			expect(map.hasLayer(false)).to.equal(false);
+		});
+	});
+
 	function layerSpy() {
 		var layer = new L.Layer();
 		layer.onAdd = sinon.spy();
@@ -363,6 +372,19 @@ describe("Map", function () {
 				done();
 			});
 			map.setView([0, 0], 0);
+			map.addLayer(layer);
+			map.removeLayer(layer);
+		});
+
+		it("supports adding and removing a tile layer without initializing the map", function () {
+			var layer = L.tileLayer("{z}{x}{y}");
+			map.addLayer(layer);
+			map.removeLayer(layer);
+		});
+
+		it("supports adding and removing a tile layer without initializing the map", function () {
+			map.setView([0, 0], 18);
+			var layer = L.tileLayer("{z}{x}{y}");
 			map.addLayer(layer);
 			map.removeLayer(layer);
 		});

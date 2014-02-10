@@ -38,23 +38,21 @@ L.Control.Scale = L.Control.extend({
 	},
 
 	_update: function () {
-		var bounds = this._map.getBounds(),
-		    centerLat = bounds.getCenter().lat,
-		    halfWorldMeters = 6378137 * Math.PI * Math.cos(centerLat * Math.PI / 180),
-		    dist = halfWorldMeters * (bounds.getEast() - bounds.getWest()) / 180,
+		var map = this._map,
+		    y = map.getSize().y / 2;
 
-		    size = this._map.getSize(),
-		    options = this.options,
-		    maxMeters = size.x > 0 ? dist * (options.maxWidth / size.x) : 0;
+		var maxMeters = L.CRS.Earth.distance(
+				map.containerPointToLatLng([0, y]),
+				map.containerPointToLatLng([this.options.maxWidth, y]));
 
-		this._updateScales(options, maxMeters);
+		this._updateScales(maxMeters);
 	},
 
-	_updateScales: function (options, maxMeters) {
-		if (options.metric && maxMeters) {
+	_updateScales: function (maxMeters) {
+		if (this.options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
-		if (options.imperial && maxMeters) {
+		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
 	},

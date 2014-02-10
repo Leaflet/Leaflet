@@ -18,26 +18,16 @@ L.Control.Attribution = L.Control.extend({
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		L.DomEvent.disableClickPropagation(this._container);
 
+		// TODO ugly, refactor
 		for (var i in map._layers) {
 			if (map._layers[i].getAttribution) {
 				this.addAttribution(map._layers[i].getAttribution());
 			}
 		}
-		
-		map
-		    .on('layeradd', this._onLayerAdd, this)
-		    .on('layerremove', this._onLayerRemove, this);
 
 		this._update();
 
 		return this._container;
-	},
-
-	onRemove: function (map) {
-		map
-		    .off('layeradd', this._onLayerAdd)
-		    .off('layerremove', this._onLayerRemove);
-
 	},
 
 	setPrefix: function (prefix) {
@@ -91,18 +81,6 @@ L.Control.Attribution = L.Control.extend({
 		}
 
 		this._container.innerHTML = prefixAndAttribs.join(' | ');
-	},
-
-	_onLayerAdd: function (e) {
-		if (e.layer.getAttribution) {
-			this.addAttribution(e.layer.getAttribution());
-		}
-	},
-
-	_onLayerRemove: function (e) {
-		if (e.layer.getAttribution) {
-			this.removeAttribution(e.layer.getAttribution());
-		}
 	}
 });
 

@@ -36,8 +36,11 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon(originalLatLngs);
 
-			//getLatLngs() returns only external ring
-			expect(polygon.getLatLngs()).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
+			// getLatLngs() returns both rings
+			expect(polygon.getLatLngs()).to.eql([
+				[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
+				[L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]
+			]);
 		});
 	});
 
@@ -68,8 +71,10 @@ describe('Polygon', function () {
 			var polygon = new L.Polygon([]);
 			polygon.setLatLngs(latLngs);
 
-			//getLatLngs() returns only external ring
-			expect(polygon.getLatLngs()).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
+			expect(polygon.getLatLngs()).to.eql([
+				[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
+				[L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]
+			]);
 		});
 	});
 

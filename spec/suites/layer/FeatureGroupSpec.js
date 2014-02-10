@@ -32,7 +32,7 @@
 					wasClicked1 = true;
 				});
 
-				marker.fire('click', { type: 'click' });
+				marker.fire('click', {type: 'click'}, true);
 
 				expect(wasClicked1).to.be(true);
 				expect(wasClicked2).to.be(true);

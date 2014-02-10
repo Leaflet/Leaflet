@@ -16,6 +16,22 @@ describe('GridLayer', function () {
 		document.body.removeChild(div);
 	});
 
+	describe('#redraw', function () {
+		it('can be called before map.setView', function () {
+			var map = L.map(div),
+				grid = L.gridLayer().addTo(map);
+			expect(grid.redraw()).to.equal(grid);
+		});
+	});
+
+	describe('#setOpacity', function () {
+		it('can be called before map.setView', function () {
+			var map = L.map(div),
+				grid = L.gridLayer().addTo(map);
+			expect(grid.setOpacity(0.5)).to.equal(grid);
+		});
+	});
+
 	it('positions tiles correctly with wrapping and bounding', function () {
 
 		var map = L.map(div).setView([0, 0], 1);

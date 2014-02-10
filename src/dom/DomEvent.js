@@ -1,15 +1,50 @@
 /*
  * L.DomEvent contains functions for working with DOM events.
+ * Inspired by John Resig, Dean Edwards and YUI addEvent implementations.
  */
 
+var eventsKey = '_leaflet_events';
+
 L.DomEvent = {
-	/* inspired by John Resig, Dean Edwards and YUI addEvent implementations */
-	addListener: function (obj, type, fn, context) { // (HTMLElement, String, Function[, Object])
 
-		var id = L.stamp(fn),
-		    key = '_leaflet_' + type + id;
+	on: function (obj, types, fn, context) {
 
-		if (obj[key]) { return this; }
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this._on(obj, type, types[type], fn);
+			}
+		} else {
+			types = L.Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._on(obj, types[i], fn, context);
+			}
+		}
+
+		return this;
+	},
+
+	off: function (obj, types, fn, context) {
+
+		if (typeof types === 'object') {
+			for (var type in types) {
+				this._off(obj, type, types[type], fn);
+			}
+		} else {
+			types = L.Util.splitWords(types);
+
+			for (var i = 0, len = types.length; i < len; i++) {
+				this._off(obj, types[i], fn, context);
+			}
+		}
+
+		return this;
+	},
+
+	_on: function (obj, type, fn, context) {
+		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : '');
+
+		if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
 		var handler = function (e) {
 			return fn.call(context || obj, e || window.event);
@@ -51,16 +86,16 @@ L.DomEvent = {
 			obj.attachEvent('on' + type, handler);
 		}
 
-		obj[key] = handler;
+		obj[eventsKey] = obj[eventsKey] || {};
+		obj[eventsKey][id] = handler;
 
 		return this;
 	},
 
-	removeListener: function (obj, type, fn) {  // (HTMLElement, String, Function)
+	_off: function (obj, type, fn, context) {
 
-		var id = L.stamp(fn),
-		    key = '_leaflet_' + type + id,
-		    handler = obj[key];
+		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : ''),
+		    handler = obj[eventsKey] && obj[eventsKey][id];
 
 		if (!handler) { return this; }
 
@@ -86,7 +121,7 @@ L.DomEvent = {
 			obj.detachEvent('on' + type, handler);
 		}
 
-		obj[key] = null;
+		obj[eventsKey][id] = null;
 
 		return this;
 	},
@@ -104,23 +139,18 @@ L.DomEvent = {
 	},
 
 	disableScrollPropagation: function (el) {
-		var stop = L.DomEvent.stopPropagation;
-
-		return L.DomEvent
-			.on(el, 'mousewheel', stop)
-			.on(el, 'MozMousePixelScroll', stop);
+		return L.DomEvent.on(el, 'mousewheel MozMousePixelScroll', L.DomEvent.stopPropagation);
 	},
 
 	disableClickPropagation: function (el) {
 		var stop = L.DomEvent.stopPropagation;
 
-		for (var i = L.Draggable.START.length - 1; i >= 0; i--) {
-			L.DomEvent.on(el, L.Draggable.START[i], stop);
-		}
+		L.DomEvent.on(el, L.Draggable.START.join(' '), stop);
 
-		return L.DomEvent
-			.on(el, 'click', L.DomEvent._fakeStop)
-			.on(el, 'dblclick', stop);
+		return L.DomEvent.on(el, {
+			click: L.DomEvent._fakeStop,
+			dblclick: stop
+		});
 	},
 
 	preventDefault: function (e) {
@@ -140,27 +170,15 @@ L.DomEvent = {
 	},
 
 	getMousePosition: function (e, container) {
-		var body = document.body,
-		    docEl = document.documentElement,
-
-		    // gecko makes scrollLeft more negative as you scroll in rtl, other browsers don't
-			// ref: https://code.google.com/p/closure-library/source/browse/closure/goog/style/bidi.js
-
-			x = e.pageX ? e.pageX - body.scrollLeft -
-					docEl.scrollLeft * (L.DomUtil.documentIsLtr() || L.Browser.gecko ? 1 : -1) : e.clientX,
-		    y = e.pageY ? e.pageY - body.scrollTop - docEl.scrollTop : e.clientY,
-
-		    pos = new L.Point(x, y);
-
 		if (!container) {
-			return pos;
+			return new L.Point(e.clientX, e.clientY);
 		}
 
-		var rect = container.getBoundingClientRect(),
-		    left = rect.left - container.clientLeft,
-		    top = rect.top - container.clientTop;
+		var rect = container.getBoundingClientRect();
 
-		return pos._subtract(new L.Point(left, top));
+		return new L.Point(
+			e.clientX - rect.left - container.clientLeft,
+			e.clientY - rect.top - container.clientTop);
 	},
 
 	getWheelDelta: function (e) {
@@ -212,12 +230,12 @@ L.DomEvent = {
 		var timeStamp = (e.timeStamp || e.originalEvent.timeStamp),
 			elapsed = L.DomEvent._lastClick && (timeStamp - L.DomEvent._lastClick);
 
-		// are they closer together than 1000ms yet more than 100ms?
+		// are they closer together than 500ms yet more than 100ms?
 		// Android typically triggers them ~300ms apart while multiple listeners
 		// on the same event should be triggered far faster;
 		// or check if click is simulated on the element, and if it is, reject any non-simulated events
 
-		if ((elapsed && elapsed > 100 && elapsed < 1000) || (e.target._simulatedClick && !e._simulated)) {
+		if ((elapsed && elapsed > 100 && elapsed < 500) || (e.target._simulatedClick && !e._simulated)) {
 			L.DomEvent.stop(e);
 			return;
 		}
@@ -227,5 +245,5 @@ L.DomEvent = {
 	}
 };
 
-L.DomEvent.on = L.DomEvent.addListener;
-L.DomEvent.off = L.DomEvent.removeListener;
+L.DomEvent.addListener = L.DomEvent.on;
+L.DomEvent.removeListener = L.DomEvent.off;

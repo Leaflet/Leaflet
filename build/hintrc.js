@@ -7,6 +7,7 @@
 		"define": true
 	},
 	"strict": false,
+	"es3": true,
 
 	// code style
 	"bitwise": true,

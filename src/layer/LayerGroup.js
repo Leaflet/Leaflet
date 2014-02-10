@@ -42,11 +42,13 @@ L.LayerGroup = L.Layer.extend({
 	},
 
 	hasLayer: function (layer) {
-		return !layer || layer in this._layers || this.getLayerId(layer) in this._layers;
+		return !!layer && (layer in this._layers || this.getLayerId(layer) in this._layers);
 	},
 
 	clearLayers: function () {
-		this.eachLayer(this.removeLayer, this);
+		for (var i in this._layers) {
+			this.removeLayer(this._layers[i]);
+		}
 		return this;
 	},
 
@@ -66,11 +68,15 @@ L.LayerGroup = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this.eachLayer(map.addLayer, map);
+		for (var i in this._layers) {
+			map.addLayer(this._layers[i]);
+		}
 	},
 
 	onRemove: function (map) {
-		this.eachLayer(map.removeLayer, map);
+		for (var i in this._layers) {
+			map.removeLayer(this._layers[i]);
+		}
 	},
 
 	eachLayer: function (method, context) {

@@ -55,11 +55,10 @@ L.Marker = L.Layer.extend({
 	},
 
 	setLatLng: function (latlng) {
+		var oldLatLng = this._latlng;
 		this._latlng = L.latLng(latlng);
-
 		this.update();
-
-		return this.fire('move', {latlng: this._latlng});
+		return this.fire('move', { oldLatLng: oldLatLng, latlng: this._latlng });
 	},
 
 	setZIndexOffset: function (offset) {
@@ -125,9 +124,10 @@ L.Marker = L.Layer.extend({
 		this._initInteraction();
 
 		if (options.riseOnHover) {
-			L.DomEvent
-				.on(icon, 'mouseover', this._bringToFront, this)
-				.on(icon, 'mouseout', this._resetZIndex, this);
+			L.DomEvent.on(icon, {
+				mouseover: this._bringToFront,
+				mouseout: this._resetZIndex
+			}, this);
 		}
 
 		var newShadow = options.icon.createShadow(this._shadow),
@@ -159,9 +159,10 @@ L.Marker = L.Layer.extend({
 
 	_removeIcon: function () {
 		if (this.options.riseOnHover) {
-			L.DomEvent
-			    .off(this._icon, 'mouseover', this._bringToFront)
-			    .off(this._icon, 'mouseout', this._resetZIndex);
+			L.DomEvent.off(this._icon, {
+				mouseover: this._bringToFront,
+			    mouseout: this._resetZIndex
+			}, this);
 		}
 
 		L.DomUtil.remove(this._icon);
@@ -202,20 +203,10 @@ L.Marker = L.Layer.extend({
 
 		if (!this.options.clickable) { return; }
 
-		// TODO refactor into something shared with Map/Path/etc. to DRY it up
+		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
 
-		var icon = this._icon,
-		    events = ['dblclick', 'mousedown', 'mouseover', 'mouseout', 'contextmenu'];
-
-		L.DomUtil.addClass(icon, 'leaflet-clickable');
-
-		L.DomEvent
-			.on(icon, 'click', this._onMouseClick, this)
-			.on(icon, 'keypress', this._onKeyPress, this);
-
-		for (var i = 0; i < events.length; i++) {
-			L.DomEvent.on(icon, events[i], this._fireMouseEvent, this);
-		}
+		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mouseout contextmenu keypress',
+				this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
 			this.dragging = new L.Handler.MarkerDrag(this);
@@ -226,48 +217,20 @@ L.Marker = L.Layer.extend({
 		}
 	},
 
-	_onMouseClick: function (e) {
-		var wasDragged = this.dragging && this.dragging.moved();
-
-		if (this.hasEventListeners(e.type) || wasDragged) {
-			L.DomEvent.stopPropagation(e);
-		}
-
-		if (wasDragged) { return; }
-
-		if ((!this.dragging || !this.dragging._enabled) && this._map.dragging && this._map.dragging.moved()) { return; }
-
-		this.fire(e.type, {
-			originalEvent: e,
-			latlng: this._latlng
-		});
-	},
-
-	_onKeyPress: function (e) {
-		if (e.keyCode === 13) {
-			this.fire('click', {
-				originalEvent: e,
-				latlng: this._latlng
-			});
-		}
-	},
-
-	_fireMouseEvent: function (e) {
-
-		this.fire(e.type, {
-			originalEvent: e,
-			latlng: this._latlng
-		});
-
-		// TODO proper custom event propagation
-		// this line will always be called if marker is in a FeatureGroup
-		if (e.type === 'contextmenu' && this.hasEventListeners(e.type)) {
+	_fireMouseEvent: function (e, type) {
+		// to prevent outline when clicking on keyboard-focusable marker
+		if (e.type === 'mousedown') {
 			L.DomEvent.preventDefault(e);
 		}
-		if (e.type !== 'mousedown') {
-			L.DomEvent.stopPropagation(e);
-		} else {
-			L.DomEvent.preventDefault(e);
+
+		if (e.type === 'click' && this.dragging && this.dragging.moved()) { return; }
+
+		if (e.type === 'keypress' && e.keyCode === 13) {
+			type = 'click';
+		}
+
+		if (this._map) {
+			this._map._fireMouseEvent(this, e, type, true, this._latlng);
 		}
 	},
 

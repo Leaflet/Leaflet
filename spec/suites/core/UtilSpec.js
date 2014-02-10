@@ -75,33 +75,6 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#invokeEach', function () {
-		it('calls the given method/context with each key/value and additional arguments', function () {
-			var spy = sinon.spy(),
-			    ctx = {};
-
-			var result = L.Util.invokeEach({
-				foo: 'bar',
-				yo: 'hey'
-			}, spy, ctx, 1, 2, 3);
-
-			expect(spy.firstCall.calledWith('foo', 'bar', 1, 2, 3)).to.be.ok();
-			expect(spy.secondCall.calledWith('yo', 'hey', 1, 2, 3)).to.be.ok();
-
-			expect(spy.firstCall.calledOn(ctx)).to.be.ok();
-			expect(spy.secondCall.calledOn(ctx)).to.be.ok();
-
-			expect(result).to.be(true);
-		});
-
-		it('returns false if the given agument is not object', function () {
-			var spy = sinon.spy();
-
-			expect(L.Util.invokeEach('foo', spy)).to.be(false);
-			expect(spy.called).to.be(false);
-		});
-	});
-
 	describe('#falseFn', function () {
 		it('returns false', function () {
 			expect(L.Util.falseFn()).to.be(false);
@@ -160,11 +133,11 @@ describe('Util', function () {
 		});
 	});
 
-	describe('#limitExecByInterval', function () {
+	describe('#throttle', function () {
 		it('limits execution to not more often than specified time interval', function (done) {
 			var spy = sinon.spy();
 
-			var fn = L.Util.limitExecByInterval(spy, 20);
+			var fn = L.Util.throttle(spy, 20);
 
 			fn();
 			fn();
@@ -185,7 +158,47 @@ describe('Util', function () {
 		});
 	});
 
-	// TODO setOptions
+	describe('#setOptions', function () {
+		it('sets specified options on object', function () {
+			var o = {};
+			L.Util.setOptions(o, {foo: 'bar'});
+			expect(o.options.foo).to.eql('bar');
+		});
+
+		it('returns options', function () {
+			var o = {};
+			var r = L.Util.setOptions(o, {foo: 'bar'});
+			expect(r).to.equal(o.options);
+		});
+
+		it('accepts undefined', function () {
+			var o = {};
+			L.Util.setOptions(o, undefined);
+			expect(o.options).to.eql({});
+		});
+
+		it('creates a distinct options object', function () {
+			var opts = {},
+				o = L.Util.create({options: opts});
+			L.Util.setOptions(o, {});
+			expect(o.options).not.to.equal(opts);
+		});
+
+		it("doesn't create a distinct options object if object already has own options", function () {
+			var opts = {},
+				o = {options: opts};
+			L.Util.setOptions(o, {});
+			expect(o.options).to.equal(opts);
+		});
+
+		it('inherits options prototypally', function () {
+			var opts = {},
+				o = L.Util.create({options: opts});
+			L.Util.setOptions(o, {});
+			opts.foo = 'bar';
+			expect(o.options.foo).to.eql('bar');
+		});
+	});
 
 	describe('#template', function () {
 		it('evaluates templates with a given data object', function () {

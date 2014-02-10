@@ -19,71 +19,6 @@ L.DomUtil = {
 		return value === 'auto' ? null : value;
 	},
 
-	getViewportOffset: function (element) {
-
-		var top = 0,
-		    left = 0,
-		    el = element,
-		    docBody = document.body,
-		    docEl = document.documentElement,
-		    pos;
-
-		do {
-			top  += el.offsetTop  || 0;
-			left += el.offsetLeft || 0;
-
-			//add borders
-			top += parseInt(L.DomUtil.getStyle(el, 'borderTopWidth'), 10) || 0;
-			left += parseInt(L.DomUtil.getStyle(el, 'borderLeftWidth'), 10) || 0;
-
-			pos = L.DomUtil.getStyle(el, 'position');
-
-			if (el.offsetParent === docBody && pos === 'absolute') { break; }
-
-			if (pos === 'fixed') {
-				top  += docBody.scrollTop  || docEl.scrollTop  || 0;
-				left += docBody.scrollLeft || docEl.scrollLeft || 0;
-				break;
-			}
-
-			if (pos === 'relative' && !el.offsetLeft) {
-				var width = L.DomUtil.getStyle(el, 'width'),
-				    maxWidth = L.DomUtil.getStyle(el, 'max-width'),
-				    r = el.getBoundingClientRect();
-
-				if (width !== 'none' || maxWidth !== 'none') {
-					left += r.left + el.clientLeft;
-				}
-
-				//calculate full y offset since we're breaking out of the loop
-				top += r.top + (docBody.scrollTop  || docEl.scrollTop  || 0);
-
-				break;
-			}
-
-			el = el.offsetParent;
-
-		} while (el);
-
-		el = element;
-
-		do {
-			if (el === docBody) { break; }
-
-			top  -= el.scrollTop  || 0;
-			left -= el.scrollLeft || 0;
-
-			el = el.parentNode;
-		} while (el);
-
-		return new L.Point(left, top);
-	},
-
-	documentIsLtr: function () {
-		L.DomUtil._docIsLtr = L.DomUtil._docIsLtr || L.DomUtil.getStyle(document.body, 'direction') === 'ltr';
-		return L.DomUtil._docIsLtr;
-	},
-
 	create: function (tagName, className, container) {
 
 		var el = document.createElement(tagName);
@@ -101,6 +36,15 @@ L.DomUtil = {
 		if (parent) {
 			parent.removeChild(el);
 		}
+	},
+
+	toFront: function (el) {
+		el.parentNode.appendChild(el);
+	},
+
+	toBack: function (el) {
+		var parent = el.parentNode;
+		parent.insertBefore(el, parent.firstChild);
 	},
 
 	hasClass: function (el, name) {
@@ -186,27 +130,20 @@ L.DomUtil = {
 		return false;
 	},
 
-	getTranslateString: function (point) {
-		// on WebKit browsers, using translate3d instead of translate makes animation smoother
-		// as it ensures HW accel is used. Firefox doesn't care (same speed either way).
-		var is3d = L.Browser.webkit3d;
+	setTransform: function (el, offset, scale) {
+		var pos = offset || new L.Point(0, 0);
 
-		return 'translate' + (is3d ? '3d(' : '(') +
-				point.x + 'px,' +
-				point.y + 'px' + (is3d ? ',0)' : ')');
+		el.style[L.DomUtil.TRANSFORM] =
+			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
 	},
 
-	getScaleString: function (scale, origin) {
-		return L.DomUtil.getTranslateString(origin.multiplyBy(1 - scale)) + ' scale(' + scale + ') ';
-	},
-
-	setPosition: function (el, point, disable3D) { // (HTMLElement, Point[, Boolean])
+	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
 
 		// jshint camelcase: false
 		el._leaflet_pos = point;
 
-		if (!disable3D && L.Browser.any3d) {
-			el.style[L.DomUtil.TRANSFORM] =  L.DomUtil.getTranslateString(point);
+		if (L.Browser.any3d && !no3d) {
+			L.DomUtil.setTransform(el, point);
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';

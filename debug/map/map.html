@@ -45,7 +45,9 @@
 		populate();
 		L.DomUtil.get('populate').onclick = populate;
 
-//		function logEvent(e) { console.log(e.type); }
+		function logEvent(e) { console.log(e.type); }
+
+		map.on('click', logEvent);
 //
 //		map.on('movestart', logEvent);
 //		map.on('move', logEvent);

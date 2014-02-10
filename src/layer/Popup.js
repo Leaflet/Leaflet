@@ -44,6 +44,7 @@ L.Popup = L.Layer.extend({
 			L.DomUtil.setOpacity(this._container, 0);
 		}
 
+		clearTimeout(this._removeTimeout);
 		this.getPane().appendChild(this._container);
 		this.update();
 
@@ -54,7 +55,7 @@ L.Popup = L.Layer.extend({
 		map.fire('popupopen', {popup: this});
 
 		if (this._source) {
-			this._source.fire('popupopen', {popup: this});
+			this._source.fire('popupopen', {popup: this}, true);
 		}
 	},
 
@@ -66,7 +67,7 @@ L.Popup = L.Layer.extend({
 	onRemove: function (map) {
 		if (map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, 0);
-			setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
+			this._removeTimeout = setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
 		} else {
 			L.DomUtil.remove(this._container);
 		}
@@ -74,7 +75,7 @@ L.Popup = L.Layer.extend({
 		map.fire('popupclose', {popup: this});
 
 		if (this._source) {
-			this._source.fire('popupclose', {popup: this});
+			this._source.fire('popupclose', {popup: this}, true);
 		}
 	},
 
@@ -148,9 +149,7 @@ L.Popup = L.Layer.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
-			L.DomEvent
-				.disableClickPropagation(closeButton)
-				.on(closeButton, 'click', this._onCloseButtonClick, this);
+			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
@@ -289,16 +288,21 @@ L.popup = function (options, source) {
 
 L.Map.include({
 	openPopup: function (popup, latlng, options) { // (Popup) or (String || HTMLElement, LatLng[, Object])
-		this.closePopup();
-
 		if (!(popup instanceof L.Popup)) {
 			var content = popup;
 
-			popup = new L.Popup(options)
-			    .setLatLng(latlng)
-			    .setContent(content);
+			popup = new L.Popup(options).setContent(content);
 		}
 
+		if (latlng) {
+			popup.setLatLng(latlng);
+		}
+
+		if (this.hasLayer(popup)) {
+			return this;
+		}
+
+		this.closePopup();
 		this._popup = popup;
 		return this.addLayer(popup);
 	},

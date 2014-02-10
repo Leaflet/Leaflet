@@ -8,11 +8,11 @@ describe("Projection.Mercator", function () {
 		});
 
 		it("projects the northeast corner of the world", function () {
-			expect(p.project(new L.LatLng(90, 180))).near(new L.Point(20037508, 20037508));
+			expect(p.project(new L.LatLng(85.0840591556, 180))).near(new L.Point(20037508, 20037508));
 		});
 
 		it("projects the southwest corner of the world", function () {
-			expect(p.project(new L.LatLng(-90, -180))).near(new L.Point(-20037508, -20037508));
+			expect(p.project(new L.LatLng(-85.0840591556, -180))).near(new L.Point(-20037508, -20037508));
 		});
 
 		it("projects other points", function () {
@@ -56,11 +56,11 @@ describe("Projection.SphericalMercator", function () {
 		});
 
 		it("projects the northeast corner of the world", function () {
-			expect(p.project(new L.LatLng(90, 180))).near(new L.Point(20037508, 20037508));
+			expect(p.project(new L.LatLng(85.0511287798, 180))).near(new L.Point(20037508, 20037508));
 		});
 
 		it("projects the southwest corner of the world", function () {
-			expect(p.project(new L.LatLng(-90, -180))).near(new L.Point(-20037508, -20037508));
+			expect(p.project(new L.LatLng(-85.0511287798, -180))).near(new L.Point(-20037508, -20037508));
 		});
 
 		it("projects other points", function () {
