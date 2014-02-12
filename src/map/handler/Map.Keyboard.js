@@ -125,7 +125,7 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_onKeyDown: function (e) {
-		if (e.altKey || e.ctrlKey || e.shiftKey || e.metaKey) { return; }
+		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		var key = e.keyCode,
 		    map = this._map;
