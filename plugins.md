@@ -362,7 +362,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			A set of plugins for: GPX, KML layers; Bing tile layer; Google and Yandex layers (implemented with their APIs), Permalink and alternative Scale controls.
 		</td><td>
-			<a href="https://github.com/shramov">Pavel Shramov</a>
+			<a href="https://github.com/shramov">Pavel Shramov</a>, <a href="https://github.com/brunob">Bruno B</a>
 		</td>
 	</tr>
 	<tr>
@@ -398,7 +398,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Stamen, Esri, etc.
 		</td><td>
-			<a href="https://github.com/seelmann">Stefan Seelmann</a>
+			<a href="https://github.com/leaflet-extras">leaflet-extras members</a>
 		</td>
 	</tr>
 	<tr>
