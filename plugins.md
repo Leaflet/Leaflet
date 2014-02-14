@@ -633,6 +633,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/naomap/leaflet-fusesearch">leaflet-fusesearch</a>
+		</td><td>
+			A control that provides a panel to search features in a GeoJSON layer using the lightweight fuzzy search Fuse.js
+		</td><td>
+			<a href="http://www.naomap.fr">Antoine Riche</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/kajic/leaflet-locationfilter/">leaflet-locationfilter</a>
 		</td><td>
 			A draggable/resizable rectangle for selecting an area on the map.
