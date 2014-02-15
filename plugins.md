@@ -533,6 +533,27 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
+### Route search
+
+<table class="plugins">
+	<tr>
+		<th>Plugin</th>
+		<th>Description</th>
+		<th>Maintainer</th>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/perliedman/leaflet-routing-machine">Leaflet Routing Machine</a>
+		</td><td>
+			Control for route search between waypoints, displaying itinerary and alternative routes. Currently
+			uses <a href="http://project-osrm.org/">OSRM</a> to search routes.
+		</td><td>
+			<a href="https://github.com/perliedman">Per Liedman</a>
+		</td>
+	</tr>
+</table>
+
+
 ### Controls and Interaction
 
 <table class="plugins">
