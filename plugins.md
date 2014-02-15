@@ -530,6 +530,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/sa3m">Samuel Piquet</a>
 		</td>
 	</tr>
+    <tr>
+        <td>
+            <a href="https://github.com/perliedman/leaflet-control-geocoder">Leaflet Control Geocoder</a>
+        </td><td>
+            A clean and extensible control that uses Nominatim (OSM) or Bing to locate places. Easy to adapt for other providers.
+        </td><td>
+            <a href="https://github.com/perliedman">Per Liedman</a>
+        </td>
+    </tr>
 </table>
 
 
