@@ -19,6 +19,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
+		</td><td>
+			Leaflet.ellipse place ellipses on map by specifying center point, semi-major axis, 
+			semi-minor axis, and tilt degrees from west.
+		</td><td>
+			<a href="https://github.com/jdfergason">JD Fergason</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/scripter-co/leaflet-plotter">Leaflet.plotter</a>
 		</td><td>
 			leaflet-plotter allows you to create routes using a leaflet powered map. You can click on the mid-points to create a new, draggable point.
