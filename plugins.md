@@ -952,6 +952,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/lizardtechblog/">Jared Dominguez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/dwilhelm89/Leaflet.StyleEditor">Leaflet.StyleEditor</a>
+		</td><td>
+			Enables editing the styles of features (lines, polygons, etc) and markers with a GUI.
+		</td><td>
+			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
+		</td>
+	</tr>
 </table>
 
 
