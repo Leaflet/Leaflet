@@ -360,7 +360,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/shramov/leaflet-plugins">Plugins by Pavel Shramov</a>
 		</td><td>
-			A set of plugins for: GPX, KML layers; Bing tile layer; Google and Yandex layers (implemented with their APIs), Permalink and alternative Scale controls.
+			A set of plugins for: GPX, KML layers; Bing tile layer; Google and Yandex layers (implemented with their APIs), permalink and distance measurement controls.
 		</td><td>
 			<a href="https://github.com/shramov">Pavel Shramov</a>, <a href="https://github.com/brunob">Bruno B</a>
 		</td>
