@@ -287,6 +287,6 @@ L.Polygon.prototype._containsPoint = function (p) {
 	return inside || L.Polyline.prototype._containsPoint.call(this, p, true);
 };
 
-L.Circle.prototype._containsPoint = function (p) {
+L.CircleMarker.prototype._containsPoint = function (p) {
 	return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 };
