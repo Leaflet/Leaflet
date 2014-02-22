@@ -64,6 +64,7 @@ L.Canvas = L.Renderer.extend({
 		this._redrawBounds = layer._pxBounds;
 		this._draw(true);
 		layer._project();
+		layer._update();
 		this._draw();
 		this._redrawBounds = null;
 	},
