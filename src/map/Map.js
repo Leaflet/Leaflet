@@ -222,7 +222,7 @@ L.Map = L.Evented.extend({
 		}
 
 		this._clearHandlers();
-		
+
 		if (this._loaded) {
 			this.fire('unload');
 		}
@@ -598,7 +598,7 @@ L.Map = L.Evented.extend({
 
 	whenReady: function (callback, context) {
 		if (this._loaded) {
-			callback.call(context || this, this);
+			callback.call(context || this, {target: this});
 		} else {
 			this.on('load', callback, context);
 		}

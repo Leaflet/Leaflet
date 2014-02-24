@@ -33,28 +33,26 @@
 
 		function populate() {
 			for (var i = 0; i < 10; i++) {
-				markers.addLayer(new L.Marker(getRandomLatLng(map)));
+				L.marker(getRandomLatLng(map)).addTo(markers);
 			}
 			return false;
 		}
 
-		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>");
-
-		map.addLayer(markers);
+		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>").addTo(map);
 
 		populate();
 		L.DomUtil.get('populate').onclick = populate;
 
 		function logEvent(e) { console.log(e.type); }
 
-		map.on('click', logEvent);
-//
-//		map.on('movestart', logEvent);
-//		map.on('move', logEvent);
-//		map.on('moveend', logEvent);
-//
-//		map.on('zoomstart', logEvent);
-//		map.on('zoomend', logEvent);
+		// map.on('click', logEvent);
+
+		// map.on('movestart', logEvent);
+		// map.on('move', logEvent);
+		// map.on('moveend', logEvent);
+
+		// map.on('zoomstart', logEvent);
+		// map.on('zoomend', logEvent);
 
 	</script>
 </body>

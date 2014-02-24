@@ -6,30 +6,33 @@ L.Layer = L.Evented.extend({
 	},
 
 	addTo: function (map) {
-		var id = L.stamp(this);
-		if (map._layers[id]) { return this; }
-		map._layers[id] = this;
-
-		this._zoomAnimated = map._zoomAnimated;
-
-		if (this.beforeAdd) {
-			this.beforeAdd(map);
-		}
-
-		this._mapToAdd = map;
-		map.whenReady(this._layerAdd, this);
-
+		map.addLayer(this);
 		return this;
 	},
 
-	_layerAdd: function () {
-		var map = this._mapToAdd;
+	remove: function () {
+		return this.removeFrom(this._map || this._mapToAdd);
+	},
+
+	removeFrom: function (obj) {
+		if (obj) {
+			obj.removeLayer(this);
+		}
+		return this;
+	},
+
+	getPane: function (name) {
+		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
+	},
+
+	_layerAdd: function (e) {
+		var map = e.target;
 
 		// check in case layer gets added and then removed before the map is ready
-		if (!map) { return; }
+		if (!map.hasLayer(this)) { return; }
 
 		this._map = map;
-		this._mapToAdd = null;
+		this._zoomAnimated = map._zoomAnimated;
 
 		this.onAdd(map);
 
@@ -43,53 +46,53 @@ L.Layer = L.Evented.extend({
 
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
-	},
-
-	remove: function () {
-
-		var id = L.stamp(this),
-		    map = this._map || this._mapToAdd;
-
-		if (!map || !map._layers[id]) { return this; }
-
-		if (map._loaded) {
-			this.onRemove(map);
-		}
-
-		if (this.getAttribution && map.attributionControl) {
-			map.attributionControl.removeAttribution(this.getAttribution());
-		}
-
-		if (this.getEvents) {
-			map.off(this.getEvents(), this);
-		}
-
-		delete map._layers[id];
-
-		if (map._loaded) {
-			map.fire('layerremove', {layer: this});
-			this.fire('remove');
-		}
-
-		this._map = this._mapToAdd = null;
-
-		return this;
-	},
-
-	getPane: function (name) {
-		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	}
 });
 
 
 L.Map.include({
 	addLayer: function (layer) {
-		layer.addTo(this);
+		var id = L.stamp(layer);
+		if (this._layers[id]) { return layer; }
+		this._layers[id] = layer;
+
+		layer._mapToAdd = this;
+
+		if (layer.beforeAdd) {
+			layer.beforeAdd(this);
+		}
+
+		this.whenReady(layer._layerAdd, layer);
+
 		return this;
 	},
 
 	removeLayer: function (layer) {
-		layer.remove();
+		var id = L.stamp(layer);
+
+		if (!this._layers[id]) { return this; }
+
+		if (this._loaded) {
+			layer.onRemove(this);
+		}
+
+		if (layer.getAttribution && this.attributionControl) {
+			this.attributionControl.removeAttribution(layer.getAttribution());
+		}
+
+		if (layer.getEvents) {
+			this.off(layer.getEvents(), layer);
+		}
+
+		delete this._layers[id];
+
+		if (this._loaded) {
+			this.fire('layerremove', {layer: layer});
+			layer.fire('remove');
+		}
+
+		layer._map = layer._mapToAdd = null;
+
 		return this;
 	},
 
