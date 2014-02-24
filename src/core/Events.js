@@ -109,8 +109,8 @@ L.Evented = L.Class.extend({
 
 		} else {
 			listeners = events[type];
-			
-			if(listeners){
+
+			if (listeners) {
 				for (i = 0, len = listeners.length; i < len; i++) {
 					if (listeners[i].fn === fn) {
 						listener = listeners[i];
