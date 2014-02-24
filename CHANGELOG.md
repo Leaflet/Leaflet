@@ -17,7 +17,8 @@ Leaflet vector layers rendering got a major rewrite, making it possible to switc
 * Added `SVG` & `Canvas` classes that now contain all renderer-specific code for vector layers and can be added as layers to the map.
 * All vector layer classes (`Path`, `Polyline`, etc.) now don't contain any renderer-specific code and instead can be passed a renderer layer to use as `renderer` in options;
 * Removed `MultiPolyline` and `MultiPolygon` classes since multiple rings are now handled by `Polyline` and `Polygon` classes respectively. Layers with multiple rings now perform much better (since each is now physically a single path object instead of being a `FeatureGroup` of layers).
-* Dramatically improved performance of interactive Canvas layers. Mouse events work much faster (due to improved hit detection algorithms), and layers get updated many times faster (with partial redraws instead of redrawing the whole Canvas).
+* **Dramatically improved performance of interactive Canvas layers**. Mouse events work much faster (due to improved hit detection algorithms), and layers get updated many times faster (with partial redraws instead of redrawing the whole Canvas).
+* **Dramatically improved performance of interactive SVG layers** (e.g. creating a big GeoJSON layer and adding to a map got 3x faster while taking 2.5x less memory). [#2240](https://github.com/Leaflet/Leaflet/issues/2240) [#2315](https://github.com/Leaflet/Leaflet/issues/2315)
 * Added retina support for Canvas layers.
 * Improved default vector layer styles.
 * Added `Polyline` and `Polygon` `getCenter` for getting centroids.
@@ -33,10 +34,14 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 
 * Added `Layer` class which all layers added to a map should inherit from.
 * Added `add` and `remove` events to all layers.
-* Added `pane` option to all layers that can be changed (e.g. you can set `pane: 'overlayPane'` to a tile layer).
 * Added `remove` method to layers and controls (`marker.remove()` is now equivalent to `map.removeLayer(marker)`).
+* Improved performance of adding and removing layers.
+* Added `pane` option to all layers that can be changed (e.g. you can set `pane: 'overlayPane'` to a tile layer).
+* Added `map` `createPane` method for custom panes. [#1742](https://github.com/Leaflet/Leaflet/issues/1742)
+* Simplified map panes &mdash; removed `objectsPane`, all panes are on the same level now.
 * Added `shadowPane` option to markers as well.
 * Added `getEvents` method to all layers that returns an `{event: listener, ...}` hash; layers now manage its listeners automatically without having to do this in `onAdd`/`onRemove`.
+* Added `togglePopup`, `setPopupContent`, `getPopup` methods to all layers. [#2279](https://github.com/Leaflet/Leaflet/issues/2279) [#2292](https://github.com/Leaflet/Leaflet/issues/2292)
 * Improved performance of adding/removing layers with layers control present (instead of listening to any layer add/remove, the control only listens to layers added in configuration).
 * Fixed `FeatureGroup` `getBounds` to work correctly when containing circle markers.
 * Removed `Map` `tilelayersload` event.
@@ -81,20 +86,27 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed gaps between tiles during animations in desktop Safari. [#2377](https://github.com/Leaflet/Leaflet/pull/2377)
 * Improved panning inertia behavior so that there are no tearing during animation when panning around quickly. [#2360](https://github.com/Leaflet/Leaflet/issues/2360)
 
-### Other performance and usability improvements
+## Other performance improvements
 
 * Significantly [improved](http://jsperf.com/leaflet-parsefloat-in-latlng/2) `LatLng` creation performance (8x).
 * Improved performance of layer objects construction.
 * Significantly improved `FeatureGroup` (and correspondingly `GeoJSON`) layer adding and events performance (about 10x) by implementing a much better event propagation mechanism. [#2311](https://github.com/Leaflet/Leaflet/pull/2311)
-* Improved keyboard support to ignore keystrokes with modifier keys (Ctrl, Alt, Meta) to not interfere with OS shortcuts.
+* Improved Leaflet events and DOM events memory footprint.
+* Improved `Evented` `off` performance by about 2 times.
+
+### Misc usability improvements
+
 * Added popup fade out animation.
+* Improved keyboard support to ignore keystrokes with modifier keys (Ctrl, Alt, Meta) to not interfere with OS shortcuts.
 
 ### Other breaking API changes
 
 * Changed `DomUtil` `off` to require `context` attribute if you remove a listener that was previously added with a particular context.
 * Removed `DomUtil.getViewportOffset` method as it is no longer necessary.
-* Removed `LatLng` `RAD_TO_DEG`, `DEG_TO_RAD` and `MAX_MARGIN` constants.
 * Removed `DomUtil` `getTranslateString` and `getScaleString` methods.
+* Removed `DomUtil` `documentIsLtr` method.
+* Removed `LatLng` `RAD_TO_DEG`, `DEG_TO_RAD` and `MAX_MARGIN` constants.
+* Renamed `Util.limitExecByInterval` to `Util.throttle`.
 
 ### Other API improvements
 
@@ -107,6 +119,9 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Added `LatLng` `equals` second argument `maxMargin`.
 * Added `DomUtil` `setClass` and `getClass` methods.
 * Improve `Marker` `move` event to include `oldLatlng` (by [@danzel](https://github.com/danzel)). [#2412](https://github.com/Leaflet/Leaflet/pull/2412)
+* Improved `DomEvent` `on`/`off` to accept space-separated events and object literals (`{type: fn}`).
+* Added `DomUtil` `toFront` and `toBack` methods.
+* Added `Evented` `listens` as a shortcut to `hasEventListeners`.
 
 ### Bugfixes
 
@@ -116,10 +131,13 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed a bug with popup close button in IE7/8. [#2351](https://github.com/Leaflet/Leaflet/issues/2351)
 * Fixed `ImageOverlay` mercator distortion on lower zoom levels.
 * Fixed a bug where layers didn't fire `popupopen` and `popupclose` events when manually creating a popup object and passing it to `bindPopup`. [#2354](https://github.com/Leaflet/Leaflet/issues/2354)
+* Fixed box-zoom overlay appearing under markers. [#1813](https://github.com/Leaflet/Leaflet/issues/1813)
+* Fixed an issue where clicks on Android were skipped when happened too fast. [#2303](https://github.com/Leaflet/Leaflet/issues/2303)
 
 ### Misc improvements
 
 * Improved the build system (`jake build`) to report gzipped library size.
+* Added version name and commit number to Leaflet builds. [#2276](https://github.com/Leaflet/Leaflet/issues/2276)
 * Added Leaflet logo in vector format as `src/images/logo.svg`.
 * Added reference to Leaflet CSS in `package.json` (by [@bclinkinbeard](https://github.com/bclinkinbeard)). [#2432](https://github.com/Leaflet/Leaflet/pull/2432)
 
