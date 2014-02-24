@@ -63,7 +63,7 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Added `CRS.Earth` which serves as a base for all Earth-based CRS (`EPSG3857` etc.). [#2345](https://github.com/Leaflet/Leaflet/pull/2345)
 * Added `Projection` `bounds` property that defines bounds for different projections (`Mercator`, etc.) in projected coordinates (by [@perliedman](https://github.com/perliedman)).
 * Added `CRS` `wrapLat` and `wrapLng` properties which define whether the world wraps on a given axis and in what range. Set as `[-180, 180]` for `EPSG:3857`, `EPSG:4326`, `EPSG:3395` by default.
-* Removed `LatLng` `wrap` method; added `CRS` and `Map` `wrapLatLng` instead (so that wrapping depends on the chosen CRS).
+* Added `CRS` and `Map` `wrapLatLng` (the latter depends on the chosen CRS).
 * Added `CRS` `infinite` property that disables boundaries (the world can go on infinitely in any direction), default for `CRS.Simple`.
 * Added `CRS` `getProjectedBounds` and `Map` `getPixelWorldBounds` methods that returns world bounds in projected coordinates depending on zoom (derived from `Projection` `bounds`) (by [@perliedman](https://github.com/perliedman)).
 * Added `CRS` `unproject` method that converts coordinates in CRS-dependent units into `LatLng` coordinates (by [@sowelie](https://github.com/sowelie)).
