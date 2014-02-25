@@ -918,11 +918,10 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://www.mapsmarker.com/"><img src="http://cdn.mapsmarker.com/wp-content/uploads/logo-opengraph-300x300.png"/ alt="plugin logo" title="www.mapsmarker.com" width="100" height="100"></a><br/>
 			<a href="http://www.mapsmarker.com/">Maps Marker Pro - mapping plugin for WordPress</a>
 		</td><td>
-			<a href="http://www.mapsmarker.com/">Maps Marker Pro</a> allows you to pin, organize and share your favorite places and tracks through your WordPress powered site easily. You can use maps from OpenStreetMap, Google Maps, Google Earth, Bing Maps or custom maps and additionally display your spots in innovative ways like through <a href="http://demo.mapsmarker.com/?page_id=2">augmented-reality browsers</a>.<br/>
-			Using Leaflet.js and currently the following plugins: <a href="https://github.com/shramov/leaflet-plugins">Plugins by Pavel Shramov for Google Maps and Bing Maps</a>, <a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>, <a href="https://github.com/mapbox/Leaflet.fullscreen">Leaflet.fullscreen</a>, <a href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet.MiniMap</a> and <a href="https://github.com/mpetazzoni/leaflet-gpx">Leaflet GPX</a>.
+			A WordPress plugin that enables users to pin, organize and share their favorite places and tracks through their WordPress powered site. You can use maps from OpenStreetMap, Google Maps, Google Earth, Bing Maps or custom maps and additionally display spots also via <a href="http://demo.mapsmarker.com/?page_id=2">augmented-reality browsers</a>.<br/>
+			Uses Leaflet.js and currently the following plugins: <a href="https://github.com/shramov/leaflet-plugins">Plugins by Pavel Shramov for Google Maps and Bing Maps</a>, <a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>, <a href="https://github.com/mapbox/Leaflet.fullscreen">Leaflet.fullscreen</a>, <a href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet.MiniMap</a> and <a href="https://github.com/mpetazzoni/leaflet-gpx">Leaflet GPX</a>.
 		</td><td>
 			<a href="http://www.harm.co.at/">Robert Harm</a>
 		</td>
