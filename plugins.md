@@ -920,8 +920,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="http://www.mapsmarker.com/">Maps Marker Pro - mapping plugin for WordPress</a>
 		</td><td>
-			A WordPress plugin that enables users to pin, organize and share their favorite places and tracks through their WordPress powered site. You can use maps from OpenStreetMap, Google Maps, Google Earth, Bing Maps or custom maps and additionally display spots also via <a href="http://demo.mapsmarker.com/?page_id=2">augmented-reality browsers</a>.<br/>
-			Uses Leaflet.js and currently the following plugins: <a href="https://github.com/shramov/leaflet-plugins">Plugins by Pavel Shramov for Google Maps and Bing Maps</a>, <a href="https://github.com/Leaflet/Leaflet.markercluster">Leaflet.markercluster</a>, <a href="https://github.com/mapbox/Leaflet.fullscreen">Leaflet.fullscreen</a>, <a href="https://github.com/Norkart/Leaflet-MiniMap">Leaflet.MiniMap</a> and <a href="https://github.com/mpetazzoni/leaflet-gpx">Leaflet GPX</a>.
+			A WordPress plugin that enables users to pin, organize and share their favorite places and tracks through their WordPress powered site.
 		</td><td>
 			<a href="http://www.harm.co.at/">Robert Harm</a>
 		</td>
