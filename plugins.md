@@ -636,6 +636,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/mapbox/Leaflet.fullscreen">Leaflet.fullscreen</a>
+		</td><td>
+			A fullscreen button control by mapbox
+		</td><td>
+			<a href="https://github.com/mapbox">mapbox</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://elidupuis.github.com/leaflet.zoomfs">leaflet.zoomfs</a>
 		</td><td>
 			A fullscreen button control.
@@ -983,9 +992,9 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://www.mapsmarker.com/">Leaflet Maps Marker</a>
+			<a href="http://www.mapsmarker.com/">Maps Marker Pro</a>
 		</td><td>
-			A Wordpress plugin that uses Leaflet and a set of its plugins for adding maps to your posts through a nice admin interface.
+			A WordPress plugin that enables users to pin, organize and share their favorite places and tracks through their WordPress powered site.
 		</td><td>
 			<a href="http://www.harm.co.at/">Robert Harm</a>
 		</td>
