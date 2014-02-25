@@ -918,7 +918,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://www.mapsmarker.com/">Maps Marker Pro - mapping plugin for WordPress</a>
+			<a href="http://www.mapsmarker.com/">Maps Marker Pro</a>
 		</td><td>
 			A WordPress plugin that enables users to pin, organize and share their favorite places and tracks through their WordPress powered site.
 		</td><td>
