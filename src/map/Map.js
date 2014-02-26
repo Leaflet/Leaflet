@@ -96,14 +96,15 @@ L.Map = L.Class.extend({
 		var paddingTL = L.point(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = L.point(options.paddingBottomRight || options.padding || [0, 0]),
 
-		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR)),
-		    paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
+		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
+
+		zoom = (options.maxZoom) ? Math.min(options.maxZoom, zoom) : zoom;
+
+		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
 
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
 		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
-
-		zoom = options && options.maxZoom ? Math.min(options.maxZoom, zoom) : zoom;
 
 		return this.setView(center, zoom, options);
 	},
