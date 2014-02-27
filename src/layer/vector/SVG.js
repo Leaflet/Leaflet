@@ -147,7 +147,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_fireMouseEvent: function (e) {
-		this._paths[L.stamp(e.target)]._fireMouseEvent(e);
+		this._paths[L.stamp(e.target || e.srcElement)]._fireMouseEvent(e);
 	}
 });
 
