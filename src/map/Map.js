@@ -565,13 +565,15 @@ L.Map = L.Evented.extend({
 	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
 		type = type || e.type;
 
+		if (L.DomEvent._skipped(e)) { return; }
+
 		if (type === 'click') {
 			if (!e._simulated && ((this.dragging && this.dragging.moved()) ||
 			                      (this.boxZoom && this.boxZoom.moved()))) { return; }
 			obj.fire('preclick');
 		}
 
-		if (!obj.listens(type, propagate) || L.DomEvent._skipped(e)) { return; }
+		if (!obj.listens(type, propagate)) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
