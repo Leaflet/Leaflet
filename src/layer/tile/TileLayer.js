@@ -56,6 +56,12 @@ L.TileLayer = L.GridLayer.extend({
 		tile.onload = L.bind(this._tileOnLoad, this, done, tile);
 		tile.onerror = L.bind(this._tileOnError, this, done, tile);
 
+		/*
+		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
+		 http://warc.calpoly.edu/accessibility/508indepth/alternate.html
+		*/
+		tile.alt = '';
+
 		tile.src = this.getTileUrl(coords);
 
 		return tile;
