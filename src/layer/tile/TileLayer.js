@@ -58,7 +58,7 @@ L.TileLayer = L.GridLayer.extend({
 
 		/*
 		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-		 http://warc.calpoly.edu/accessibility/508indepth/alternate.html
+		 http://www.w3.org/TR/WCAG20-TECHS/H67
 		*/
 		tile.alt = '';
 
