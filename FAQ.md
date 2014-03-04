@@ -29,7 +29,6 @@ Check out [this example](http://leaflet-extras.github.io/leaflet-providers/previ
 with half a hundred different layers to choose from.
 Popular commercial options, free up to a particular number of requests, include
 [MapBox](http://mapbox.com),
-[CloudMade](http://cloudmade.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-binge's-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
 [Esri ArcGIS](http://www.arcgis.com/features/maps/imagery.html) ([official plugin](https://github.com/Esri/esri-leaflet))
 and [Nokia Here](http://developer.here.com/web-experiences).
