@@ -7,18 +7,16 @@ L.Control.Scale = L.Control.extend({
 		position: 'bottomleft',
 		maxWidth: 100,
 		metric: true,
-		imperial: true,
-		updateWhenIdle: false
+		imperial: true
+		// updateWhenIdle: false
 	},
 
 	onAdd: function (map) {
-		this._map = map;
-
 		var className = 'leaflet-control-scale',
 		    container = L.DomUtil.create('div', className),
 		    options = this.options;
 
-		this._addScales(options, className, container);
+		this._addScales(options, className + '-line', container);
 
 		map.on(options.updateWhenIdle ? 'moveend' : 'move', this._update, this);
 		map.whenReady(this._update, this);
@@ -32,76 +30,68 @@ L.Control.Scale = L.Control.extend({
 
 	_addScales: function (options, className, container) {
 		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className + '-line', container);
+			this._mScale = L.DomUtil.create('div', className, container);
 		}
 		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className + '-line', container);
+			this._iScale = L.DomUtil.create('div', className, container);
 		}
 	},
 
 	_update: function () {
-		var bounds = this._map.getBounds(),
-		    centerLat = bounds.getCenter().lat,
-		    halfWorldMeters = 6378137 * Math.PI * Math.cos(centerLat * Math.PI / 180),
-		    dist = halfWorldMeters * (bounds.getNorthEast().lng - bounds.getSouthWest().lng) / 180,
+		var map = this._map,
+		    y = map.getSize().y / 2;
 
-		    size = this._map.getSize(),
-		    options = this.options,
-		    maxMeters = 0;
+		var maxMeters = L.CRS.Earth.distance(
+				map.containerPointToLatLng([0, y]),
+				map.containerPointToLatLng([this.options.maxWidth, y]));
 
-		if (size.x > 0) {
-			maxMeters = dist * (options.maxWidth / size.x);
-		}
-
-		this._updateScales(options, maxMeters);
+		this._updateScales(maxMeters);
 	},
 
-	_updateScales: function (options, maxMeters) {
-		if (options.metric && maxMeters) {
+	_updateScales: function (maxMeters) {
+		if (this.options.metric && maxMeters) {
 			this._updateMetric(maxMeters);
 		}
-
-		if (options.imperial && maxMeters) {
+		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
 		}
 	},
 
 	_updateMetric: function (maxMeters) {
-		var meters = this._getRoundNum(maxMeters);
+		var meters = this._getRoundNum(maxMeters),
+		    label = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
 
-		this._mScale.style.width = this._getScaleWidth(meters / maxMeters) + 'px';
-		this._mScale.innerHTML = meters < 1000 ? meters + ' m' : (meters / 1000) + ' km';
+		this._updateScale(this._mScale, label, meters / maxMeters);
 	},
 
 	_updateImperial: function (maxMeters) {
 		var maxFeet = maxMeters * 3.2808399,
-		    scale = this._iScale,
 		    maxMiles, miles, feet;
 
 		if (maxFeet > 5280) {
 			maxMiles = maxFeet / 5280;
 			miles = this._getRoundNum(maxMiles);
-
-			scale.style.width = this._getScaleWidth(miles / maxMiles) + 'px';
-			scale.innerHTML = miles + ' mi';
+			this._updateScale(this._iScale, miles + ' mi', miles / maxMiles);
 
 		} else {
 			feet = this._getRoundNum(maxFeet);
-
-			scale.style.width = this._getScaleWidth(feet / maxFeet) + 'px';
-			scale.innerHTML = feet + ' ft';
+			this._updateScale(this._iScale, feet + ' ft', feet / maxFeet);
 		}
 	},
 
-	_getScaleWidth: function (ratio) {
-		return Math.round(this.options.maxWidth * ratio) - 10;
+	_updateScale: function (scale, text, ratio) {
+		scale.style.width = (Math.round(this.options.maxWidth * ratio) - 10) + 'px';
+		scale.innerHTML = text;
 	},
 
 	_getRoundNum: function (num) {
 		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
 		    d = num / pow10;
 
-		d = d >= 10 ? 10 : d >= 5 ? 5 : d >= 3 ? 3 : d >= 2 ? 2 : 1;
+		d = d >= 10 ? 10 :
+		    d >= 5 ? 5 :
+		    d >= 3 ? 3 :
+		    d >= 2 ? 2 : 1;
 
 		return pow10 * d;
 	}

@@ -48,18 +48,22 @@ L.Map.Tap = L.Handler.extend({
 				this._simulateEvent('contextmenu', first);
 			}
 		}, this), 1000);
+		
+		this._simulateEvent('mousedown', first);
 
-		L.DomEvent
-			.on(document, 'touchmove', this._onMove, this)
-			.on(document, 'touchend', this._onUp, this);
+		L.DomEvent.on(document, {
+			touchmove: this._onMove,
+			touchend: this._onUp
+		}, this);
 	},
 
 	_onUp: function (e) {
 		clearTimeout(this._holdTimeout);
 
-		L.DomEvent
-			.off(document, 'touchmove', this._onMove, this)
-			.off(document, 'touchend', this._onUp, this);
+		L.DomEvent.off(document, {
+			touchmove: this._onMove,
+			touchend: this._onUp
+		}, this);
 
 		if (this._fireClick && e && e.changedTouches) {
 
@@ -69,6 +73,8 @@ L.Map.Tap = L.Handler.extend({
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
+			
+			this._simulateEvent('mouseup', first);
 
 			// simulate click if the touch didn't move too much
 			if (this._isTapValid()) {
@@ -102,6 +108,6 @@ L.Map.Tap = L.Handler.extend({
 	}
 });
 
-if (L.Browser.touch && !L.Browser.msTouch) {
+if (L.Browser.touch && !L.Browser.pointer) {
 	L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);
 }

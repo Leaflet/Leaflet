@@ -3,7 +3,7 @@
  * and polylines (clipping, simplification, distances, etc.)
  */
 
-/*jshint bitwise:false */ // allow bitwise oprations for this file
+/*jshint bitwise:false */ // allow bitwise operations for this file
 
 L.LineUtil = {
 
@@ -136,17 +136,27 @@ L.LineUtil = {
 		var dx = b.x - a.x,
 		    dy = b.y - a.y,
 		    min = bounds.min,
-		    max = bounds.max;
+		    max = bounds.max,
+		    x, y;
 
 		if (code & 8) { // top
-			return new L.Point(a.x + dx * (max.y - a.y) / dy, max.y);
+			x = a.x + dx * (max.y - a.y) / dy;
+			y = max.y;
+
 		} else if (code & 4) { // bottom
-			return new L.Point(a.x + dx * (min.y - a.y) / dy, min.y);
+			x = a.x + dx * (min.y - a.y) / dy;
+			y = min.y;
+
 		} else if (code & 2) { // right
-			return new L.Point(max.x, a.y + dy * (max.x - a.x) / dx);
+			x = max.x;
+			y = a.y + dy * (max.x - a.x) / dx;
+
 		} else if (code & 1) { // left
-			return new L.Point(min.x, a.y + dy * (min.x - a.x) / dx);
+			x = min.x;
+			y = a.y + dy * (min.x - a.x) / dx;
 		}
+
+		return new L.Point(x, y, true);
 	},
 
 	_getBitCode: function (/*Point*/ p, bounds) {
@@ -157,6 +167,7 @@ L.LineUtil = {
 		} else if (p.x > bounds.max.x) { // right
 			code |= 2;
 		}
+
 		if (p.y < bounds.min.y) { // bottom
 			code |= 4;
 		} else if (p.y > bounds.max.y) { // top

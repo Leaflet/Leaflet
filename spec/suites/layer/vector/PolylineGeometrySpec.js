@@ -1,4 +1,4 @@
-describe('PolylineGeometry', function() {
+describe('PolylineGeometry', function () {
 
 	var c = document.createElement('div');
 	c.style.width = '400px';
@@ -6,12 +6,12 @@ describe('PolylineGeometry', function() {
 	var map = new L.Map(c);
 	map.setView(new L.LatLng(55.8, 37.6), 6);
 
-	describe("#distanceTo", function() {
-		it("calculates distances to points", function() {
+	describe("#distanceTo", function () {
+		it("calculates distances to points", function () {
 			var p1 = map.latLngToLayerPoint(new L.LatLng(55.8, 37.6));
 			var p2 = map.latLngToLayerPoint(new L.LatLng(57.123076977278, 44.861962891635));
 			var latlngs = [[56.485503424111, 35.545556640339], [55.972522915346, 36.116845702918], [55.502459116923, 34.930322265253], [55.31534617509, 38.973291015816]]
-			.map(function(ll) {
+			.map(function (ll) {
 				return new L.LatLng(ll[0], ll[1]);
 			});
 			var polyline = new L.Polyline([], {

@@ -6,7 +6,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
 
 	<link rel="stylesheet" href="../css/screen.css" />
 	<script type="text/javascript" src="../../build/deps.js"></script>
@@ -33,7 +32,7 @@
 	  var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 17 });
 	  map.addLayer(osm);
 	  map.fitBounds(new L.LatLngBounds([51,7],[51,7]));
-	  
+
 	  var route = L.polyline([
 	    [51, 7.000],
 	    [51.002, 7.004],
@@ -45,8 +44,8 @@
 	    [51.002, 7.004]
 	  ],
 	  { clickable:false,color:'#f00' }
-	  ).addTo(map); 
-	  
+	  ).addTo(map);
+
 	  // when the mouse hovers over the red route2, you cannot click through the blue route1 beneath
 	};
 

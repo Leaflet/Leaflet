@@ -3,7 +3,8 @@
  */
 
 L.Map.mergeOptions({
-	touchZoom: L.Browser.touch && !L.Browser.android23
+	touchZoom: L.Browser.touch && !L.Browser.android23,
+	bounceAtZoomLimits: true
 });
 
 L.Map.TouchZoom = L.Handler.extend({
@@ -44,21 +45,20 @@ L.Map.TouchZoom = L.Handler.extend({
 	},
 
 	_onTouchMove: function (e) {
-		var map = this._map;
-
 		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
-		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
+		var map = this._map,
+		    p1 = map.mouseEventToLayerPoint(e.touches[0]),
 		    p2 = map.mouseEventToLayerPoint(e.touches[1]);
 
 		this._scale = p1.distanceTo(p2) / this._startDist;
 		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
 
-		if (this._scale === 1) { return; }
+		if (!map.options.bounceAtZoomLimits &&
+		    ((map.getZoom() === map.getMinZoom() && this._scale < 1) ||
+		     (map.getZoom() === map.getMaxZoom() && this._scale > 1))) { return; }
 
 		if (!this._moved) {
-			L.DomUtil.addClass(map._mapPane, 'leaflet-touching');
-
 			map
 			    .fire('movestart')
 			    .fire('zoomstart');
@@ -67,19 +67,18 @@ L.Map.TouchZoom = L.Handler.extend({
 		}
 
 		L.Util.cancelAnimFrame(this._animRequest);
-		this._animRequest = L.Util.requestAnimFrame(
-		        this._updateOnMove, this, true, this._map._container);
+		this._animRequest = L.Util.requestAnimFrame(this._updateOnMove, this, true, this._map._container);
 
 		L.DomEvent.preventDefault(e);
 	},
 
 	_updateOnMove: function () {
-		var map = this._map,
-		    origin = this._getScaleOrigin(),
-		    center = map.layerPointToLatLng(origin),
-		    zoom = map.getScaleZoom(this._scale);
+		var map = this._map;
 
-		map._animateZoom(center, zoom, this._startCenter, this._scale, this._delta);
+		this._center = map.layerPointToLatLng(this._getTargetCenter());
+		this._zoom = map.getScaleZoom(this._scale);
+
+		map._animateZoom(this._center, this._zoom);
 	},
 
 	_onTouchEnd: function () {
@@ -88,31 +87,22 @@ L.Map.TouchZoom = L.Handler.extend({
 			return;
 		}
 
-		var map = this._map;
-
 		this._zooming = false;
-		L.DomUtil.removeClass(map._mapPane, 'leaflet-touching');
 		L.Util.cancelAnimFrame(this._animRequest);
 
 		L.DomEvent
 		    .off(document, 'touchmove', this._onTouchMove)
 		    .off(document, 'touchend', this._onTouchEnd);
 
-		var origin = this._getScaleOrigin(),
-		    center = map.layerPointToLatLng(origin),
-
+		var map = this._map,
 		    oldZoom = map.getZoom(),
-		    floatZoomDelta = map.getScaleZoom(this._scale) - oldZoom,
-		    roundZoomDelta = (floatZoomDelta > 0 ?
-		            Math.ceil(floatZoomDelta) : Math.floor(floatZoomDelta)),
+		    zoomDelta = this._zoom - oldZoom,
+		    finalZoom = map._limitZoom(oldZoom + (zoomDelta > 0 ? Math.ceil(zoomDelta) : Math.floor(zoomDelta)));
 
-		    zoom = map._limitZoom(oldZoom + roundZoomDelta),
-		    scale = map.getZoomScale(zoom) / this._scale;
-
-		map._animateZoom(center, zoom, origin, scale);
+		map._animateZoom(this._center, finalZoom, true);
 	},
 
-	_getScaleOrigin: function () {
+	_getTargetCenter: function () {
 		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale);
 		return this._startCenter.add(centerOffset);
 	}

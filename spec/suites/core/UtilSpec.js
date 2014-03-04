@@ -1,16 +1,16 @@
-describe('Util', function() {
+describe('Util', function () {
 
-	describe('#extend', function() {
+	describe('#extend', function () {
 		var a;
 
-		beforeEach(function() {
+		beforeEach(function () {
 			a = {
 				foo: 5,
 				bar: 'asd'
 			};
 		});
 
-		it('extends the first argument with the properties of the second', function() {
+		it('extends the first argument with the properties of the second', function () {
 			L.Util.extend(a, {
 				bar: 7,
 				baz: 3
@@ -23,7 +23,7 @@ describe('Util', function() {
 			});
 		});
 
-		it('accepts more than 2 arguments', function() {
+		it('accepts more than 2 arguments', function () {
 			L.Util.extend(a, {bar: 7}, {baz: 3});
 
 			expect(a).to.eql({
@@ -34,9 +34,9 @@ describe('Util', function() {
 		});
 	});
 
-	describe('#bind', function() {
-		it('returns the given function with the given context', function() {
-			var fn = function() {
+	describe('#bind', function () {
+		it('returns the given function with the given context', function () {
+			var fn = function () {
 				return this;
 			};
 
@@ -49,18 +49,19 @@ describe('Util', function() {
 			var fn = sinon.spy(),
 				foo = {},
 				a = {},
-				b = {};
+				b = {},
+				c = {};
 
 			var fn2 = L.Util.bind(fn, foo, a, b);
 
-			fn2();
+			fn2(c);
 
-			expect(fn.calledWith(a, b)).to.be.ok();
+			expect(fn.calledWith(a, b, c)).to.be.ok();
 		});
 	});
 
-	describe('#stamp', function() {
-		it('sets a unique id on the given object and returns it', function() {
+	describe('#stamp', function () {
+		it('sets a unique id on the given object and returns it', function () {
 			var a = {},
 				id = L.Util.stamp(a);
 
@@ -71,33 +72,6 @@ describe('Util', function() {
 				id2 = L.Util.stamp(b);
 
 			expect(id2).not.to.eql(id);
-		});
-	});
-
-	describe('#invokeEach', function () {
-		it('calls the given method/context with each key/value and additional arguments', function () {
-			var spy = sinon.spy(),
-			    ctx = {};
-
-			var result = L.Util.invokeEach({
-				foo: 'bar',
-				yo: 'hey'
-			}, spy, ctx, 1, 2, 3);
-
-			expect(spy.firstCall.calledWith('foo', 'bar', 1, 2, 3)).to.be.ok();
-			expect(spy.secondCall.calledWith('yo', 'hey', 1, 2, 3)).to.be.ok();
-
-			expect(spy.firstCall.calledOn(ctx)).to.be.ok();
-			expect(spy.secondCall.calledOn(ctx)).to.be.ok();
-
-			expect(result).to.be(true);
-		});
-
-		it('returns false if the given agument is not object', function () {
-			var spy = sinon.spy();
-
-			expect(L.Util.invokeEach('foo', spy)).to.be(false);
-			expect(spy.called).to.be(false);
 		});
 	});
 
@@ -115,38 +89,37 @@ describe('Util', function() {
 	});
 
 
-	describe('#getParamString', function() {
-		it('creates a valid query string for appending depending on url input', function() {
+	describe('#getParamString', function () {
+		it('creates a valid query string for appending depending on url input', function () {
 			var a = {
-				url: "http://example.com/get",
+				url: 'http://example.com/get',
 				obj: {bar: 7, baz: 3},
-				result: "?bar=7&baz=3"
+				result: '?bar=7&baz=3'
 			};
 
-			expect(L.Util.getParamString(a.obj,a.url)).to.eql(a.result);
+			expect(L.Util.getParamString(a.obj, a.url)).to.eql(a.result);
 
 			var b = {
-				url: "http://example.com/get?justone=qs",
+				url: 'http://example.com/get?justone=qs',
 				obj: {bar: 7, baz: 3},
-				result: "&bar=7&baz=3"
+				result: '&bar=7&baz=3'
 			};
 
-			expect(L.Util.getParamString(b.obj,b.url)).to.eql(b.result);
+			expect(L.Util.getParamString(b.obj, b.url)).to.eql(b.result);
 
 			var c = {
 				url: undefined,
 				obj: {bar: 7, baz: 3},
-				result: "?bar=7&baz=3"
+				result: '?bar=7&baz=3'
 			};
 
-			expect(L.Util.getParamString(c.obj,c.url)).to.eql(c.result);
+			expect(L.Util.getParamString(c.obj, c.url)).to.eql(c.result);
 		});
 	});
 
 	describe('#requestAnimFrame', function () {
 		it('calles a function on next frame, unless canceled', function (done) {
 			var spy = sinon.spy(),
-				spy2 = sinon.spy(),
 				foo = {};
 
 			L.Util.requestAnimFrame(spy);
@@ -160,11 +133,11 @@ describe('Util', function() {
 		});
 	});
 
-	describe('#limitExecByInterval', function() {
+	describe('#throttle', function () {
 		it('limits execution to not more often than specified time interval', function (done) {
 			var spy = sinon.spy();
 
-			var fn = L.Util.limitExecByInterval(spy, 20);
+			var fn = L.Util.throttle(spy, 20);
 
 			fn();
 			fn();
@@ -185,57 +158,80 @@ describe('Util', function() {
 		});
 	});
 
-	// TODO setOptions
+	describe('#setOptions', function () {
+		it('sets specified options on object', function () {
+			var o = {};
+			L.Util.setOptions(o, {foo: 'bar'});
+			expect(o.options.foo).to.eql('bar');
+		});
+
+		it('returns options', function () {
+			var o = {};
+			var r = L.Util.setOptions(o, {foo: 'bar'});
+			expect(r).to.equal(o.options);
+		});
+
+		it('accepts undefined', function () {
+			var o = {};
+			L.Util.setOptions(o, undefined);
+			expect(o.options).to.eql({});
+		});
+
+		it('creates a distinct options object', function () {
+			var opts = {},
+				o = L.Util.create({options: opts});
+			L.Util.setOptions(o, {});
+			expect(o.options).not.to.equal(opts);
+		});
+
+		it("doesn't create a distinct options object if object already has own options", function () {
+			var opts = {},
+				o = {options: opts};
+			L.Util.setOptions(o, {});
+			expect(o.options).to.equal(opts);
+		});
+
+		it('inherits options prototypally', function () {
+			var opts = {},
+				o = L.Util.create({options: opts});
+			L.Util.setOptions(o, {});
+			opts.foo = 'bar';
+			expect(o.options.foo).to.eql('bar');
+		});
+	});
 
 	describe('#template', function () {
 		it('evaluates templates with a given data object', function () {
-			var tpl = 'Hello {foo} and {baz }!';
+			var tpl = 'Hello {foo} and {bar}!';
 
 			var str = L.Util.template(tpl, {
 				foo: 'Vlad',
-				bar: 'Dave',
-				baz:function(o){
-					return o.bar;
-				}
+				bar: 'Dave'
 			});
 
 			expect(str).to.eql('Hello Vlad and Dave!');
-		});
-		it('check the cache', function () {
-			var tpl = 'Hello {foo} and {baz }!';
-
-			var str = L.Util._templateCache[tpl]({
-				foo: 'ladies',
-				baz: function() {
-					return 'gentlemen';
-				}
-			});
-
-			expect(str).to.eql('Hello ladies and gentlemen!');
-		});
-		it('evaluates templates with a function', function () {
-			var tpl = L.Util.compileTemplate('Hello { foo } and { bar}!',{});
-
-			var str1 = tpl({
-				foo: 'Vlad',
-				bar: 'Dave'
-			});
-			var str2 = tpl({
-				foo: '{Calvin}',
-				bar: '{Simon}'
-			});
-
-			expect(str1).to.eql('Hello Vlad and Dave!');
-			expect(str2).to.eql('Hello {Calvin} and {Simon}!');
 		});
 		it('does not modify text without a token variable', function () {
 			expect(L.Util.template('foo', {})).to.eql('foo');
 		});
 
+		it('supports templates with double quotes', function () {
+			expect(L.Util.template('He said: "{foo}"!', {
+				foo: 'Hello'
+			})).to.eql('He said: "Hello"!');
+		});
+
 		it('throws when a template token is not given', function () {
 			expect(function () {
-				L.Util.template(tpl, {foo: 'bar'});
+				L.Util.template(undefined, {foo: 'bar'});
 			}).to.throwError();
 		});
+	});
+
+	describe('#isArray', function () {
+		expect(L.Util.isArray([1, 2, 3])).to.be(true);
+		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);
+		expect(L.Util.isArray('blabla')).to.be(false);
+		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);
 	});
 });

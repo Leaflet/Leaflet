@@ -12,7 +12,7 @@ describe("Control.Layers", function () {
 				spy = sinon.spy();
 
 			map.on('baselayerchange', spy)
-				.whenReady(function() {
+				.whenReady(function () {
 					happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
 
 					expect(spy.called).to.be.ok();

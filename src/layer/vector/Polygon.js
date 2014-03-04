@@ -1,90 +1,72 @@
 /*
- * L.Polygon is used to display polygons on a map.
+ * L.Polygon implements polygon vector layer (closed polyline with a fill inside).
  */
 
 L.Polygon = L.Polyline.extend({
+
 	options: {
 		fill: true
 	},
 
-	initialize: function (latlngs, options) {
-		var i, len, hole;
+	getCenter: function () {
+		var i, j, len, p1, p2, f, area, x, y,
+		    points = this._rings[0];
 
-		L.Polyline.prototype.initialize.call(this, latlngs, options);
+		// polygon centroid algorithm; only uses the first ring if there are multiple
 
-		if (latlngs && L.Util.isArray(latlngs[0]) && (typeof latlngs[0][0] !== 'number')) {
-			this._latlngs = this._convertLatLngs(latlngs[0]);
-			this._holes = latlngs.slice(1);
+		area = x = y = 0;
 
-			for (i = 0, len = this._holes.length; i < len; i++) {
-				hole = this._holes[i] = this._convertLatLngs(this._holes[i]);
-				if (hole[0].equals(hole[hole.length - 1])) {
-					hole.pop();
-				}
-			}
+		for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
+			p1 = points[i];
+			p2 = points[j];
+
+			f = p1.y * p2.x - p2.y * p1.x;
+			x += (p1.x + p2.x) * f;
+			y += (p1.y + p2.y) * f;
+			area += f * 3;
 		}
 
-		// filter out last point if its equal to the first one
-		latlngs = this._latlngs;
-
-		if (latlngs.length >= 2 && latlngs[0].equals(latlngs[latlngs.length - 1])) {
-			latlngs.pop();
-		}
+		return this._map.layerPointToLatLng([x / area, y / area]);
 	},
 
-	projectLatlngs: function () {
-		L.Polyline.prototype.projectLatlngs.call(this);
+	_convertLatLngs: function (latlngs) {
+		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs),
+		    len = result.length;
 
-		// project polygon holes points
-		// TODO move this logic to Polyline to get rid of duplication
-		this._holePoints = [];
-
-		if (!this._holes) { return; }
-
-		var i, j, len, len2, latlng,
-			magnetPoint = null;
-		if (this.options.magnetize) {
-			if (this._latlngs.length) {
-				magnetPoint = this._map.options.crs.projection.project(this._latlngs[0]);
-			} else {
-				magnetPoint = this.getDefaultMagnetPoint();
-			}
+		// remove last point if it equals first one
+		if (len >= 2 && result[0] instanceof L.LatLng && result[0].equals(result[len - 1])) {
+			result.pop();
 		}
-
-		for (i = 0, len = this._holes.length; i < len; i++) {
-			this._holePoints[i] = [];
-
-			for (j = 0, len2 = this._holes[i].length; j < len2; j++) {
-				latlng = L.latLng(this._holes[i][j]);
-				this._holePoints[i][j] = this._map.latLngToLayerPoint(latlng, magnetPoint);
-				if (this.options.magnetize) {
-					magnetPoint = this._map.options.crs.projection.project(latlng, magnetPoint);
-				}
-			}
-		}
+		return result;
 	},
 
 	_clipPoints: function () {
-		var points = this._originalPoints,
-		    newParts = [];
-
-		this._parts = [points].concat(this._holePoints);
-
-		if (this.options.noClip) { return; }
-
-		for (var i = 0, len = this._parts.length; i < len; i++) {
-			var clipped = L.PolyUtil.clipPolygon(this._parts[i], this._map._pathViewport);
-			if (clipped.length) {
-				newParts.push(clipped);
-			}
+		if (this.options.noClip) {
+			this._parts = this._rings;
+			return;
 		}
 
-		this._parts = newParts;
+		// polygons need a different clipping algorithm so we redefine that
+
+		var bounds = this._renderer._bounds,
+		    w = this.options.weight,
+		    p = new L.Point(w, w);
+
+		// increase clip padding by stroke width to avoid stroke on clip edges
+		bounds = new L.Bounds(bounds.min.subtract(p), bounds.max.add(p));
+
+		this._parts = [];
+
+		for (var i = 0, len = this._rings.length, clipped; i < len; i++) {
+			clipped = L.PolyUtil.clipPolygon(this._rings[i], bounds);
+			if (clipped.length) {
+				this._parts.push(clipped);
+			}
+		}
 	},
 
-	_getPathPartStr: function (points) {
-		var str = L.Polyline.prototype._getPathPartStr.call(this, points);
-		return str + (L.Browser.svg ? 'z' : 'x');
+	_updatePath: function () {
+		this._renderer._updatePoly(this, true);
 	}
 });
 

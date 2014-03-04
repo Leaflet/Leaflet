@@ -3,23 +3,22 @@
  */
 
 L.Projection.SphericalMercator = {
-	MAX_LATITUDE: 85.0511287798,
 
-	project: function (latlng, magnetPoint) { // (LatLng[, Point]) -> Point
+	R: 6378137,
+
+
+	project: function (latlng, magnetPoint) {
 		if (latlng._projectedPoint) {
 			return latlng._projectedPoint.clone();
 		}
-		var d = L.LatLng.DEG_TO_RAD,
-		    max = this.MAX_LATITUDE,
-		    lat = Math.max(Math.min(max, latlng.lat), -max),
-		    x = latlng.lng * d,
-		    y = lat * d,
-		    point;
-
-		y = Math.log(Math.tan((Math.PI / 4) + (y / 2)));
+		var d = Math.PI / 180,
+			max = 1 - 1E-15,
+			sin = Math.max(Math.min(Math.sin(latlng.lat * d), max), -max),
+			y = this.R * Math.log((1 + sin) / (1 - sin)) / 2,
+			x = this.R * latlng.lng * d;
 
 		if (magnetPoint) {
-			var w = 2 * Math.PI,
+			var w = 2 * Math.PI * this.R,
 				xPlus = x + w,
 				xMinus = x - w,
 				xToMagnet = Math.abs(magnetPoint.x - x);
@@ -31,17 +30,24 @@ L.Projection.SphericalMercator = {
 			}
 		}
 
-		point = new L.Point(x, y);
+		var point = new L.Point(x, y);
 		latlng._projectedPoint = point.clone();
 		return point;
 	},
 
-	unproject: function (point) { // (Point) -> LatLng
-		var d = L.LatLng.RAD_TO_DEG,
-			lng = point.x * d,
-			lat = (2 * Math.atan(Math.exp(point.y)) - (Math.PI / 2)) * d,
-			latlng = new L.LatLng(lat, lng);
+	unproject: function (point) {
+		var d = 180 / Math.PI,
+			latlng = new L.LatLng(
+			(2 * Math.atan(Math.exp(point.y / this.R)) - (Math.PI / 2)) * d,
+			point.x * d / this.R);
 		latlng._projectedPoint = point;
 		return latlng;
-	}
+	},
+
+
+	bounds: (function () {
+		var d = 6378137 * Math.PI;
+		return L.bounds([-d, -d], [d, d]);
+	})()
+
 };

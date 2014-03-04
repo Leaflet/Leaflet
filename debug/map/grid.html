@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+		var grid = L.gridLayer({
+			attribution: 'Grid Layer'
+		});
+
+		grid.createTile = function (coords, done) {
+			var tile = document.createElement('div');
+			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+			tile.style.outline = '1px solid red';
+			tile.style.background = 'white';
+
+			// test async
+			setTimeout(function () {
+				done(null, tile);
+			}, Math.random() * 500);
+
+			return tile;
+		};
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 10)
+				.addLayer(grid);
+
+	</script>
+</body>
+</html>

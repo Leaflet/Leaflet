@@ -34,29 +34,31 @@ L.Map.Keyboard = L.Handler.extend({
 			container.tabIndex = '0';
 		}
 
-		L.DomEvent
-		    .on(container, 'focus', this._onFocus, this)
-		    .on(container, 'blur', this._onBlur, this)
-		    .on(container, 'mousedown', this._onMouseDown, this);
+		L.DomEvent.on(container, {
+		    focus: this._onFocus,
+		    blur: this._onBlur,
+		    mousedown: this._onMouseDown
+		}, this);
 
-		this._map
-		    .on('focus', this._addHooks, this)
-		    .on('blur', this._removeHooks, this);
+		this._map.on({
+			focus: this._addHooks,
+		    blur: this._removeHooks
+		}, this);
 	},
 
 	removeHooks: function () {
 		this._removeHooks();
 
-		var container = this._map._container;
+		L.DomEvent.off(this._map._container, {
+		    focus: this._onFocus,
+		    blur: this._onBlur,
+		    mousedown: this._onMouseDown
+		}, this);
 
-		L.DomEvent
-		    .off(container, 'focus', this._onFocus, this)
-		    .off(container, 'blur', this._onBlur, this)
-		    .off(container, 'mousedown', this._onMouseDown, this);
-
-		this._map
-		    .off('focus', this._addHooks, this)
-		    .off('blur', this._removeHooks, this);
+		this._map.off({
+			focus: this._addHooks,
+		    blur: this._removeHooks
+		}, this);
 	},
 
 	_onMouseDown: function () {
@@ -123,6 +125,8 @@ L.Map.Keyboard = L.Handler.extend({
 	},
 
 	_onKeyDown: function (e) {
+		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
+
 		var key = e.keyCode,
 		    map = this._map;
 

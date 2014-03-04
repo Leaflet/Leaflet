@@ -75,6 +75,16 @@ L.Point.prototype = {
 		return this;
 	},
 
+	ceil: function () {
+		return this.clone()._ceil();
+	},
+
+	_ceil: function () {
+		this.x = Math.ceil(this.x);
+		this.y = Math.ceil(this.y);
+		return this;
+	},
+
 	distanceTo: function (point) {
 		point = L.point(point);
 

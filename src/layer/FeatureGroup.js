@@ -4,18 +4,13 @@
  */
 
 L.FeatureGroup = L.LayerGroup.extend({
-	includes: L.Mixin.Events,
-
-	statics: {
-		EVENTS: 'click dblclick mouseover mouseout mousemove contextmenu popupopen popupclose'
-	},
 
 	addLayer: function (layer) {
 		if (this.hasLayer(layer)) {
 			return this;
 		}
 
-		layer.on(L.FeatureGroup.EVENTS, this._propagateEvent, this);
+		layer.addEventParent(this);
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
@@ -34,7 +29,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 			layer = this._layers[layer];
 		}
 
-		layer.off(L.FeatureGroup.EVENTS, this._propagateEvent, this);
+		layer.removeEventParent(this);
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
@@ -49,6 +44,15 @@ L.FeatureGroup = L.LayerGroup.extend({
 		this._popupContent = content;
 		this._popupOptions = options;
 		return this.invoke('bindPopup', content, options);
+	},
+
+	openPopup: function (latlng) {
+		// open popup on the first layer
+		for (var id in this._layers) {
+			this._layers[id].openPopup(latlng);
+			break;
+		}
+		return this;
 	},
 
 	setStyle: function (style) {
@@ -67,19 +71,10 @@ L.FeatureGroup = L.LayerGroup.extend({
 		var bounds = new L.LatLngBounds();
 
 		this.eachLayer(function (layer) {
-			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
+			bounds.extend(layer.getBounds ? layer.getBounds() : layer.getLatLng());
 		});
 
 		return bounds;
-	},
-
-	_propagateEvent: function (e) {
-		if (!e.layer) {
-			e.layer = e.target;
-		}
-		e.target = this;
-
-		this.fire(e.type, e);
 	}
 });
 

@@ -1,32 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8">
-	<title>Spec Runner</title>
+	<meta charset="utf-8">
+	<title>Leaflet Spec Runner</title>
 	<link rel="stylesheet" type="text/css" href="../node_modules/mocha/mocha.css">
 </head>
 <body>
-    <div id="mocha"></div>
-    <script src="expect.js"></script>
-   	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
-	<script type="text/javascript" src="../node_modules/happen/src/happen.js"></script>
+	<div id="mocha"></div>
+	<script src="expect.js"></script>
+	<script type="text/javascript" src="../node_modules/mocha/mocha.js"></script>
+	<script type="text/javascript" src="../node_modules/happen/happen.js"></script>
 	<script type="text/javascript" src="sinon.js"></script>
 
 	<!-- source files -->
-	<script type="text/javascript" src="before.js"></script>
 	<script type="text/javascript" src="../build/deps.js"></script>
 
 	<script type="text/javascript" src="../debug/leaflet-include.js"></script>
 
-    <script>
-        mocha.setup('bdd');
-        mocha.ignoreLeaks();
-    </script>
+	<script>
+		mocha.setup({
+			ui: 'bdd',
+			ignoreLeaks: true
+		});
+	</script>
 
 	<!-- spec files -->
 
 	<script type="text/javascript" src="suites/SpecHelper.js"></script>
-	<script type="text/javascript" src="suites/LeafletSpec.js"></script>
 
 	<!-- /control -->
 	<script type="text/javascript" src="suites/control/Control.LayersSpec.js"></script>
@@ -58,8 +58,11 @@
 	<script type="text/javascript" src="suites/layer/FeatureGroupSpec.js"></script>
 	<script type="text/javascript" src="suites/layer/GeoJSONSpec.js"></script>
 	<script type="text/javascript" src="suites/layer/LayerGroupSpec.js"></script>
-	<script type="text/javascript" src="suites/layer/TileLayerSpec.js"></script>
 	<script type="text/javascript" src="suites/layer/PopupSpec.js"></script>
+
+	<!-- /layer/tile -->
+	<script type="text/javascript" src="suites/layer/tile/GridLayerSpec.js"></script>
+	<script type="text/javascript" src="suites/layer/tile/TileLayerSpec.js"></script>
 
 	<!-- /layer/marker/ -->
 	<script type="text/javascript" src="suites/layer/marker/MarkerSpec.js"></script>
@@ -77,8 +80,8 @@
 	<!-- /map/handler -->
 	<script type="text/javascript" src="suites/map/handler/Map.DragSpec.js"></script>
 
-    <script>
-        (window.mochaPhantomJS || window.mocha).run();
-    </script>
+	<script>
+		(window.mochaPhantomJS || window.mocha).run();
+	</script>
 </body>
 </html>

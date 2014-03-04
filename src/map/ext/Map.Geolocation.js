@@ -4,12 +4,12 @@
 
 L.Map.include({
 	_defaultLocateOptions: {
-		watch: false,
-		setView: false,
-		maxZoom: Infinity,
 		timeout: 10000,
-		maximumAge: 0,
-		enableHighAccuracy: false
+		watch: false
+		// setView: false
+		// maxZoom: <Number>
+		// maximumAge: 0
+		// enableHighAccuracy: false
 	},
 
 	locate: function (/*Object*/ options) {
@@ -68,7 +68,7 @@ L.Map.include({
 		    latlng = new L.LatLng(lat, lng),
 
 		    latAccuracy = 180 * pos.coords.accuracy / 40075017,
-		    lngAccuracy = latAccuracy / Math.cos(L.LatLng.DEG_TO_RAD * lat),
+		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * lat),
 
 		    bounds = L.latLngBounds(
 		            [lat - latAccuracy, lng - lngAccuracy],
@@ -77,13 +77,14 @@ L.Map.include({
 		    options = this._locateOptions;
 
 		if (options.setView) {
-			var zoom = Math.min(this.getBoundsZoom(bounds), options.maxZoom);
-			this.setView(latlng, zoom);
+			var zoom = this.getBoundsZoom(bounds);
+			this.setView(latlng, options.maxZoom ? Math.min(zoom, options.maxZoom) : zoom);
 		}
 
 		var data = {
 			latlng: latlng,
-			bounds: bounds
+			bounds: bounds,
+			timestamp: pos.timestamp
 		};
 
 		for (var i in pos.coords) {

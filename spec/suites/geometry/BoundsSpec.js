@@ -1,7 +1,7 @@
-describe('Bounds', function() {
+describe('Bounds', function () {
 	var a, b, c;
 
-	beforeEach(function() {
+	beforeEach(function () {
 		a = new L.Bounds(
 			new L.Point(14, 12),
 			new L.Point(30, 40));
@@ -13,19 +13,19 @@ describe('Bounds', function() {
 		c = new L.Bounds();
 	});
 
-	describe('constructor', function() {
-		it('creates bounds with proper min & max on (Point, Point)', function() {
+	describe('constructor', function () {
+		it('creates bounds with proper min & max on (Point, Point)', function () {
 			expect(a.min).to.eql(new L.Point(14, 12));
 			expect(a.max).to.eql(new L.Point(30, 40));
 		});
-		it('creates bounds with proper min & max on (Point[])', function() {
+		it('creates bounds with proper min & max on (Point[])', function () {
 			expect(b.min).to.eql(new L.Point(14, 12));
 			expect(b.max).to.eql(new L.Point(30, 40));
 		});
 	});
 
-	describe('#extend', function() {
-		it('extends the bounds to contain the given point', function() {
+	describe('#extend', function () {
+		it('extends the bounds to contain the given point', function () {
 			a.extend(new L.Point(50, 20));
 			expect(a.min).to.eql(new L.Point(14, 12));
 			expect(a.max).to.eql(new L.Point(50, 40));
@@ -36,14 +36,14 @@ describe('Bounds', function() {
 		});
 	});
 
-	describe('#getCenter', function() {
-		it('returns the center point', function() {
+	describe('#getCenter', function () {
+		it('returns the center point', function () {
 			expect(a.getCenter()).to.eql(new L.Point(22, 26));
 		});
 	});
 
-	describe('#contains', function() {
-		it('contains other bounds or point', function() {
+	describe('#contains', function () {
+		it('contains other bounds or point', function () {
 			a.extend(new L.Point(50, 10));
 			expect(a.contains(b)).to.be.ok();
 			expect(b.contains(a)).to.not.be.ok();
@@ -52,14 +52,14 @@ describe('Bounds', function() {
 		});
 	});
 
-	describe('#isValid', function() {
-		it('returns true if properly set up', function() {
+	describe('#isValid', function () {
+		it('returns true if properly set up', function () {
 			expect(a.isValid()).to.be.ok();
 		});
-		it('returns false if is invalid', function() {
+		it('returns false if is invalid', function () {
 			expect(c.isValid()).to.not.be.ok();
 		});
-		it('returns true if extended', function() {
+		it('returns true if extended', function () {
 			c.extend([0, 0]);
 			expect(c.isValid()).to.be.ok();
 		});

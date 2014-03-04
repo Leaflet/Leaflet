@@ -1,22 +1,14 @@
 /*
  * L.Circle is a circle overlay (with a certain radius in meters).
+ * It's an approximation and starts to diverge from a real circle closer to poles (due to projection distortion)
  */
 
-L.Circle = L.Path.extend({
-	initialize: function (latlng, radius, options) {
-		L.Path.prototype.initialize.call(this, options);
+L.Circle = L.CircleMarker.extend({
 
+	initialize: function (latlng, radius, options) {
+		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
-	},
-
-	options: {
-		fill: true
-	},
-
-	setLatLng: function (latlng) {
-		this._latlng = L.latLng(latlng);
-		return this.redraw();
 	},
 
 	setRadius: function (radius) {
@@ -24,73 +16,49 @@ L.Circle = L.Path.extend({
 		return this.redraw();
 	},
 
-	projectLatlngs: function () {
-		var lngRadius = this._getLngRadius(),
-		    latlng = this._latlng,
-		    magnetPoint = this.getDefaultMagnetPoint(),
-		    pointLeft = this._map.latLngToLayerPoint([latlng.lat, latlng.lng - lngRadius], magnetPoint);
-
-		this._point = this._map.latLngToLayerPoint(latlng, magnetPoint);
-		this._radius = Math.max(this._point.x - pointLeft.x, 1);
-	},
-
-	getBounds: function () {
-		var lngRadius = this._getLngRadius(),
-		    latRadius = (this._mRadius / 40075017) * 360,
-		    latlng = this._latlng;
-
-		return new L.LatLngBounds(
-		        [latlng.lat - latRadius, latlng.lng - lngRadius],
-		        [latlng.lat + latRadius, latlng.lng + lngRadius]);
-	},
-
-	getLatLng: function () {
-		return this._latlng;
-	},
-
-	getPathString: function () {
-		var p = this._point,
-		    r = this._radius;
-
-		if (this._checkIfEmpty()) {
-			return '';
-		}
-
-		if (L.Browser.svg) {
-			return 'M' + p.x + ',' + (p.y - r) +
-			       'A' + r + ',' + r + ',0,1,1,' +
-			       (p.x - 0.1) + ',' + (p.y - r) + ' z';
-		} else {
-			p._round();
-			r = Math.round(r);
-			return 'AL ' + p.x + ',' + p.y + ' ' + r + ',' + r + ' 0,' + (65535 * 360);
-		}
-	},
-
 	getRadius: function () {
 		return this._mRadius;
 	},
 
-	// TODO Earth hardcoded, move into projection code!
+	getBounds: function () {
+		var half = [this._radius, this._radiusY];
 
-	_getLatRadius: function () {
-		return (this._mRadius / 40075017) * 360;
+		return new L.LatLngBounds(
+			this._map.layerPointToLatLng(this._point.subtract(half)),
+			this._map.layerPointToLatLng(this._point.add(half)));
 	},
 
-	_getLngRadius: function () {
-		return this._getLatRadius() / Math.cos(L.LatLng.DEG_TO_RAD * this._latlng.lat);
-	},
+	setStyle: L.Path.prototype.setStyle,
 
-	_checkIfEmpty: function () {
-		if (!this._map) {
-			return false;
+	_project: function () {
+
+		var lng = this._latlng.lng,
+		    lat = this._latlng.lat,
+		    map = this._map,
+		    crs = map.options.crs;
+
+		if (crs.distance === L.CRS.Earth.distance) {
+			var d = Math.PI / 180,
+			    latR = (this._mRadius / L.CRS.Earth.R) / d,
+			    top = map.project([lat + latR, lng]),
+			    bottom = map.project([lat - latR, lng]),
+			    p = top.add(bottom).divideBy(2),
+			    lat2 = map.unproject(p).lat,
+			    lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
+			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
+
+			this._point = p.subtract(map.getPixelOrigin());
+			this._radius = isNaN(lngR) ? 0 : Math.max(Math.round(p.x - map.project([lat2, lng - lngR]).x), 1);
+			this._radiusY = Math.max(Math.round(p.y - top.y), 1);
+
+		} else {
+			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
+
+			this._point = map.latLngToLayerPoint(this._latlng, this.getDefaultMagnetPoint());
+			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
 		}
-		var vp = this._map._pathViewport,
-		    r = this._radius,
-		    p = this._point;
 
-		return p.x - r > vp.max.x || p.y - r > vp.max.y ||
-		       p.x + r < vp.min.x || p.y + r < vp.min.y;
+		this._updateBounds();
 	}
 });
 

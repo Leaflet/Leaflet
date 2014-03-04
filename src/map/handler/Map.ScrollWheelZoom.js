@@ -8,14 +8,19 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
-		L.DomEvent.on(this._map._container, 'MozMousePixelScroll', L.DomEvent.preventDefault);
+		L.DomEvent.on(this._map._container, {
+			mousewheel: this._onWheelScroll,
+			MozMousePixelScroll: L.DomEvent.preventDefault
+		}, this);
+
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll);
-		L.DomEvent.off(this._map._container, 'MozMousePixelScroll', L.DomEvent.preventDefault);
+		L.DomEvent.off(this._map._container, {
+			mousewheel: this._onWheelScroll,
+			MozMousePixelScroll: L.DomEvent.preventDefault
+		}, this);
 	},
 
 	_onWheelScroll: function (e) {
@@ -33,8 +38,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		clearTimeout(this._timer);
 		this._timer = setTimeout(L.bind(this._performZoom, this), left);
 
-		L.DomEvent.preventDefault(e);
-		L.DomEvent.stopPropagation(e);
+		L.DomEvent.stop(e);
 	},
 
 	_performZoom: function () {

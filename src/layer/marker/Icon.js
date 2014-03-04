@@ -3,8 +3,8 @@
  */
 
 L.Icon = L.Class.extend({
+	/*
 	options: {
-		/*
 		iconUrl: (String) (required)
 		iconRetinaUrl: (String) (optional, used for retina devices if detected)
 		iconSize: (Point) (can be set through CSS)
@@ -14,9 +14,9 @@ L.Icon = L.Class.extend({
 		shadowRetinaUrl: (String) (optional, used for retina devices if detected)
 		shadowSize: (Point)
 		shadowAnchor: (Point)
-		*/
-		className: ''
+		className: (String)
 	},
+	*/
 
 	initialize: function (options) {
 		L.setOptions(this, options);
@@ -40,12 +40,7 @@ L.Icon = L.Class.extend({
 			return null;
 		}
 
-		var img;
-		if (!oldIcon || oldIcon.tagName !== 'IMG') {
-			img = this._createImg(src);
-		} else {
-			img = this._createImg(src, oldIcon);
-		}
+		var img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
 		this._setIconStyles(img, name);
 
 		return img;
@@ -54,19 +49,10 @@ L.Icon = L.Class.extend({
 	_setIconStyles: function (img, name) {
 		var options = this.options,
 		    size = L.point(options[name + 'Size']),
-		    anchor;
+		    anchor = L.point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
+		            size && size.divideBy(2, true));
 
-		if (name === 'shadow') {
-			anchor = L.point(options.shadowAnchor || options.iconAnchor);
-		} else {
-			anchor = L.point(options.iconAnchor);
-		}
-
-		if (!anchor && size) {
-			anchor = size.divideBy(2, true);
-		}
-
-		img.className = 'leaflet-marker-' + name + ' ' + options.className;
+		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
 
 		if (anchor) {
 			img.style.marginLeft = (-anchor.x) + 'px';
@@ -80,27 +66,13 @@ L.Icon = L.Class.extend({
 	},
 
 	_createImg: function (src, el) {
-
-		if (!L.Browser.ie6) {
-			if (!el) {
-				el = document.createElement('img');
-			}
-			el.src = src;
-		} else {
-			if (!el) {
-				el = document.createElement('div');
-			}
-			el.style.filter =
-			        'progid:DXImageTransform.Microsoft.AlphaImageLoader(src="' + src + '")';
-		}
+		el = el || document.createElement('img');
+		el.src = src;
 		return el;
 	},
 
 	_getIconUrl: function (name) {
-		if (L.Browser.retina && this.options[name + 'RetinaUrl']) {
-			return this.options[name + 'RetinaUrl'];
-		}
-		return this.options[name + 'Url'];
+		return L.Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	}
 });
 

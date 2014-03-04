@@ -11,7 +11,8 @@ describe('TileLayer', function () {
 			it("has the same zoomlevels as the tilelayer", function () {
 				var maxZoom = 10,
 					minZoom = 5;
-					map.setView([0, 0], 1);
+
+				map.setView([0, 0], 1);
 
 				L.tileLayer(tileUrl, {
 					maxZoom: maxZoom,
@@ -36,33 +37,32 @@ describe('TileLayer', function () {
 			it("has its zoomlevels updated to fit the new layer", function () {
 				map.setView([0, 0], 1);
 
-				L.tileLayer(tileUrl, { minZoom:10, maxZoom: 15 }).addTo(map);
+				L.tileLayer(tileUrl, {minZoom: 10, maxZoom: 15}).addTo(map);
 				expect(map.getMinZoom()).to.be(10);
 				expect(map.getMaxZoom()).to.be(15);
 
-				L.tileLayer(tileUrl, { minZoom:5, maxZoom: 10 }).addTo(map);
+				L.tileLayer(tileUrl, {minZoom: 5, maxZoom: 10}).addTo(map);
 				expect(map.getMinZoom()).to.be(5);  // changed
 				expect(map.getMaxZoom()).to.be(15); // unchanged
 
-
-				L.tileLayer(tileUrl,{ minZoom:10, maxZoom: 20 }).addTo(map);
+				L.tileLayer(tileUrl, {minZoom: 10, maxZoom: 20}).addTo(map);
 				expect(map.getMinZoom()).to.be(5);  // unchanged
 				expect(map.getMaxZoom()).to.be(20); // changed
 
 
-				L.tileLayer(tileUrl, { minZoom:0, maxZoom: 25 }).addTo(map);
+				L.tileLayer(tileUrl, {minZoom: 0, maxZoom: 25}).addTo(map);
 				expect(map.getMinZoom()).to.be(0); // changed
 				expect(map.getMaxZoom()).to.be(25); // changed
 			});
 		});
 		describe("when a tilelayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
-				var tiles = [  L.tileLayer(tileUrl, { minZoom:10, maxZoom: 15 }).addTo(map),
-							   L.tileLayer(tileUrl, { minZoom:5, maxZoom: 10 }).addTo(map),
-							   L.tileLayer(tileUrl, { minZoom:10, maxZoom: 20 }).addTo(map),
-							   L.tileLayer(tileUrl, { minZoom:0, maxZoom: 25 }).addTo(map)
+				var tiles = [  L.tileLayer(tileUrl, {minZoom: 10, maxZoom: 15}).addTo(map),
+							   L.tileLayer(tileUrl, {minZoom: 5, maxZoom: 10}).addTo(map),
+							   L.tileLayer(tileUrl, {minZoom: 10, maxZoom: 20}).addTo(map),
+							   L.tileLayer(tileUrl, {minZoom: 0, maxZoom: 25}).addTo(map)
 							];
-				map.whenReady(function() {
+				map.whenReady(function () {
 					expect(map.getMinZoom()).to.be(0);
 					expect(map.getMaxZoom()).to.be(25);
 

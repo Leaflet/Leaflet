@@ -1,10 +1,10 @@
-describe('DomEvent', function() {
+describe('DomEvent', function () {
 	var el;
 
 	function simulateClick(el) {
 		if (document.createEvent) {
 			var e = document.createEvent('MouseEvents');
-			e.initMouseEvent('click', true, true, window, 
+			e.initMouseEvent('click', true, true, window,
 					0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			return el.dispatchEvent(e);
 		} else if (el.fireEvent) {
@@ -12,19 +12,19 @@ describe('DomEvent', function() {
 		}
 	}
 
-	beforeEach(function() {
+	beforeEach(function () {
 		el = document.createElement('div');
 		el.style.position = 'absolute';
 		el.style.top = el.style.left = '-10000px';
 		document.body.appendChild(el);
 	});
 
-	afterEach(function() {
+	afterEach(function () {
 		document.body.removeChild(el);
 	});
 
-	describe('#addListener', function() {
-		it('adds a listener and calls it on event', function() {
+	describe('#addListener', function () {
+		it('adds a listener and calls it on event', function () {
 			var listener1 = sinon.spy(),
 				listener2 = sinon.spy();
 
@@ -37,11 +37,11 @@ describe('DomEvent', function() {
 			expect(listener2.called).to.be.ok();
 		});
 
-		it('binds "this" to the given context', function() {
+		it('binds "this" to the given context', function () {
 			var obj = {foo: 'bar'},
 				result;
 
-			L.DomEvent.addListener(el, 'click', function() {
+			L.DomEvent.addListener(el, 'click', function () {
 				result = this;
 			}, obj);
 
@@ -50,10 +50,10 @@ describe('DomEvent', function() {
 			expect(result).to.eql(obj);
 		});
 
-		it('passes an event object to the listener', function() {
+		it('passes an event object to the listener', function () {
 			var type;
 
-			L.DomEvent.addListener(el, 'click', function(e) {
+			L.DomEvent.addListener(el, 'click', function (e) {
 				type = e && e.type;
 			});
 			simulateClick(el);
@@ -62,8 +62,8 @@ describe('DomEvent', function() {
 		});
 	});
 
-	describe('#removeListener', function() {
-		it('removes a previously added listener', function() {
+	describe('#removeListener', function () {
+		it('removes a previously added listener', function () {
 			var listener = sinon.spy();
 
 			L.DomEvent.addListener(el, 'click', listener);
@@ -75,8 +75,8 @@ describe('DomEvent', function() {
 		});
 	});
 
-	describe('#stopPropagation', function() {
-		it('stops propagation of the given event', function() {
+	describe('#stopPropagation', function () {
+		it('stops propagation of the given event', function () {
 			var child = document.createElement('div'),
 				listener = sinon.spy();
 
@@ -92,8 +92,8 @@ describe('DomEvent', function() {
 			el.removeChild(child);
 		});
 	});
-	describe('#preventDefault', function() {
-		it('prevents the default action of event', function() {
+	describe('#preventDefault', function () {
+		it('prevents the default action of event', function () {
 			L.DomEvent.addListener(el, 'click', L.DomEvent.preventDefault);
 
 			expect(simulateClick(el)).to.be(false);

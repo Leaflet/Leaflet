@@ -20,18 +20,13 @@ L.DivIcon = L.Icon.extend({
 		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
-		if (options.html !== false) {
-			div.innerHTML = options.html;
-		} else {
-			div.innerHTML = '';
-		}
+		div.innerHTML = options.html !== false ? options.html : '';
 
 		if (options.bgPos) {
-			div.style.backgroundPosition =
-			        (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
+			div.style.backgroundPosition = (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
 		}
-
 		this._setIconStyles(div, 'icon');
+
 		return div;
 	},
 
