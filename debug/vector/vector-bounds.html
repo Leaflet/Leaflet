@@ -16,8 +16,9 @@
     <button onclick="map.fitBounds(poly.getBounds())">Zoom to polygon</button>
 	<script src="route.js"></script>
 	<script>
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
 		var poly_points = [
 			[39.70348880963439, -104.98603820800781],
@@ -50,7 +51,7 @@
 		var poly = new L.Polygon(latlngs2);
 
 		var map = new L.Map('map', {
-		    layers: [cloudmade],
+		    layers: [osm],
 		    center: new L.LatLng(39.69596043694606, -104.95084762573242),
 		    zoom: 12
 		});

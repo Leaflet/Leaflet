@@ -16,15 +16,12 @@
 
 	<script type="text/javascript">
 
-		function getCloudMadeUrl(styleId) {
-			return 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/' + styleId + '/256/{z}/{x}/{y}.png';
-		}
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			osm2 = new L.TileLayer(osmUrl, {attribution: 'Hello world'});
 
-		var cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(getCloudMadeUrl(997), {attribution: cloudmadeAttribution}),
-			cloudmade2 = new L.TileLayer(getCloudMadeUrl(998), {attribution: 'Hello world'});
-
-		var map = new L.Map('map').addLayer(cloudmade).setView(new L.LatLng(50.5, 30.512), 15);
+		var map = new L.Map('map').addLayer(osm).setView(new L.LatLng(50.5, 30.512), 15);
 
 		var marker = new L.Marker(new L.LatLng(50.5, 30.505), {color: 'red'});
 		map.addLayer(marker);
@@ -34,8 +31,8 @@
 		map.addLayer(marker2);
 
 		var layersControl = new L.Control.Layers({
-			'CloudMade Fresh': cloudmade,
-			'CloudMade Pale Dawn': cloudmade2
+			'OSM': osm,
+			'OSM2': osm2
 		}, {
 			'Some marker': marker,
 			'Another marker': marker2

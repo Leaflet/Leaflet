@@ -16,8 +16,8 @@
     <button onclick="boundsExtendLatLng()">Extend the bounds of the center rectangle with the lower left marker</button>
 	<script src="route.js"></script>
 	<script>
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/997/256/{z}/{x}/{y}.png',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+		var osmUrl = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+			osm = new L.TileLayer(osmUrl, {maxZoom: 18});
 
         var latLng = new L.LatLng(54.18815548107151, -7.657470703124999);
 
@@ -26,7 +26,7 @@
         var bounds3;
 
     	var map = new L.Map('map', {
-		    layers: [cloudmade],
+		    layers: [osm],
 		    center: bounds1.getCenter(),
 		    zoom: 7
 		});

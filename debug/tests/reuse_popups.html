@@ -25,11 +25,8 @@
 
 		map.setView([51.505, -0.09], 13);
 
-		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			maxZoom: 18,
-			key: 'd4fc77ea4a63471cab2423e66626cbb6',
-			styleId: 997
+		var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		}).addTo(map);
 
 		var a_popup = L.popup().setContent('Previously created')
