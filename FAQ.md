@@ -86,6 +86,10 @@ Make sure you conform to the terms of use of the tile images provider(s) that yo
 
 ## Features
 
+#### What's the best way to put the data I have on a Leaflet map?
+
+Check out [this awesome cheatsheet](https://github.com/tmcw/mapmakers-cheatsheet).
+
 #### Why is there still no feature X in Leaflet?
 
 First of all, did you check out the [Leaflet plugins page](http://leafletjs.com/plugins.html)?
