@@ -1,12 +1,26 @@
 
 describe('TileLayer', function () {
-	var tileUrl = '';
+	var tileUrl = '',
+		map;
+
+	beforeEach(function () {
+		map = L.map(document.createElement('div'));
+	});
+
+	describe("#onAdd", function () {
+		it('is called after viewreset on first map load', function () {
+			var layer = L.tileLayer(tileUrl).addTo(map);
+			layer.onAdd = sinon.spy();
+
+			var onReset = sinon.spy();
+			map.on('viewreset', onReset);
+			map.setView([0, 0], 0);
+
+			expect(onReset.calledBefore(layer.onAdd)).to.be.ok();
+		});
+	});
 
 	describe("#getMaxZoom, #getMinZoom", function () {
-		var map;
-		beforeEach(function () {
-			map = L.map(document.createElement('div'));
-		});
 		describe("when a tilelayer is added to a map with no other layers", function () {
 			it("has the same zoomlevels as the tilelayer", function () {
 				var maxZoom = 10,
