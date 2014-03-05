@@ -499,11 +499,11 @@ L.Map = L.Evented.extend({
 		var loading = !this._loaded;
 		this._loaded = true;
 
+		this.fire('viewreset', {hard: !preserveMapOffset});
+
 		if (loading) {
 			this.fire('load');
 		}
-
-		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
 
