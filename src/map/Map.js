@@ -191,19 +191,21 @@ L.Map = L.Evented.extend({
 	},
 
 	// TODO handler.addTo
-	addHandler: function (name, HandlerClass) {
-		if (!HandlerClass) { return this; }
+    addHandler: function (name, HandlerClass) {
+        if (!HandlerClass) { return this; }
 
-		var handler = this[name] = new HandlerClass(this);
+        var options = this.options[name],
+            param = (options === Object(options)) ? options : null,
+            handler = this[name] = new HandlerClass(this, param);
 
-		this._handlers.push(handler);
+        this._handlers.push(handler);
 
-		if (this.options[name]) {
-			handler.enable();
-		}
+        if (options) {
+            handler.enable();
+        }
 
-		return this;
-	},
+        return this;
+    },
 
 	remove: function () {
 
