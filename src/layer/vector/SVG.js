@@ -93,6 +93,11 @@ L.SVG = L.Renderer.extend({
 				path.removeAttribute('stroke-dasharray');
 			}
 
+            if (options.dashArrayOffset) {
+                path.setAttribute('stroke-dashoffset', options.dashArrayOffset);
+            } else {
+                path.removeAttribute('stroke-dashoffset');
+            }
 		} else {
 			path.setAttribute('stroke', 'none');
 		}
