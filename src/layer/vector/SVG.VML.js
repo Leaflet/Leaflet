@@ -132,6 +132,4 @@ if (L.Browser.vml) {
 			};
 		}
 	})();
-
-	L.SVG.instance = L.svg();
 }

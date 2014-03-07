@@ -38,9 +38,9 @@
 		var circle = L.circle([35, 0], 700000, {color: 'green', renderer: canvas}).addTo(map).bindPopup('Hello Circle');
 		var circleMarker = L.circleMarker([35, 30], {color: 'magenta', radius: 30}).addTo(map).bindPopup('Happy New Year!');
 
-		map.on('mousemove', function (e) {
-			circle.setLatLng(e.latlng);
-		});
+		// map.on('mousemove', function (e) {
+		// 	circle.setLatLng(e.latlng);
+		// });
 
 		map.setView([36, 52], 3);
 
@@ -51,7 +51,7 @@
 			'circle': circle,
 			'circleMarker': circleMarker,
 			'canvas': canvas,
-			'svg': L.SVG.instance,
+			'svg': map._renderer,
 		}, {collapsed: false});
 		map.addControl(layersControl);
 	</script>

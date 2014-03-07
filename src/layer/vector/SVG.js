@@ -184,6 +184,3 @@ L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect
 L.svg = function (options) {
 	return L.Browser.svg || L.Browser.vml ? new L.SVG(options) : null;
 };
-
-// default instance to use when adding vectors to the map
-L.SVG.instance = L.svg();

@@ -241,8 +241,6 @@ L.canvas = function (options) {
 	return L.Browser.canvas ? new L.Canvas(options) : null;
 };
 
-L.Canvas.instance = L.canvas();
-
 L.Polyline.prototype._containsPoint = function (p, closed) {
 	var i, j, k, len, len2, part,
 	    w = this._clickTolerance();
