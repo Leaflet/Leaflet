@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+	    // Check the 'center' setting of the scroll-wheel, double-click and touch-zoom
+	    // handlers
+
+	   	var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {minZoom: 14, attribution: osmAttrib}),
+			latlng = new L.LatLng(51.1788409,-1.82618);
+
+		var map = new L.Map('map', {
+			center: latlng,
+			zoom: 15,
+			layers: [osm],
+			scrollWheelZoom: 'center', // zoom to center regardless where mouse is
+            doubleClickZoom: 'center',
+            touchZoom:       'center'
+		});
+
+		L.marker(latlng).addTo(map);
+
+		L.control.scale().addTo(map);
+
+
+
+	</script>
+</body>
+</html>
