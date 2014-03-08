@@ -481,7 +481,12 @@ L.Map = L.Evented.extend({
 			this.fire('movestart');
 
 			if (zoomChanged) {
-				this.fire('zoomstart');
+				// _resetView is called on initialization; getCenter throws if the map isn't initalized,
+				// hence the _loaded check here.  This should probably be done differently.
+				this.fire('zoomstart',
+						{ from: !this._loaded ? {} : { center: this.getCenter(), zoom: this._zoom},
+						  to:   { center: center, zoom: zoom }
+						});
 			}
 		}
 
