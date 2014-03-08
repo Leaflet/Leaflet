@@ -122,6 +122,7 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Improved `DomEvent` `on`/`off` to accept space-separated events and object literals (`{type: fn}`).
 * Added `DomUtil` `toFront` and `toBack` methods.
 * Added `Evented` `listens` as a shortcut to `hasEventListeners`.
+* Added optional support for center-oriented scroll for `L.map` option `touchZoom` (by [@mtmail](https://github.com/mtmail)). [#2527](https://github.com/Leaflet/Leaflet/pull/2527)
 
 ### Bugfixes
 
