@@ -353,6 +353,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mylen">Alexandre Melard</a>
 		</td>
 	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/mapbox/leaflet-omnivore">leaflet-omnivore</a>
+		</td><td>
+			Loads & converts CSV, KML, GPX, TopoJSON, WKT formats for Leaflet.
+		</td><td>
+			<a href="https://github.com/mapbox">Mapbox</a>
+		</td>
+	</tr>
 
 </table>
 
