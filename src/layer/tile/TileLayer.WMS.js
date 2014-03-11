@@ -29,6 +29,10 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		options = L.setOptions(this, options);
 
+		if (options.detectRetina) {
+			this._initRetina();
+		}
+
 		wmsParams.width = wmsParams.height =
 				options.tileSize * (options.detectRetina && L.Browser.retina ? 2 : 1);
 

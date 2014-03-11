@@ -26,14 +26,8 @@ L.TileLayer = L.GridLayer.extend({
 
 		options = L.setOptions(this, options);
 
-		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
-
-			options.tileSize = Math.floor(options.tileSize / 2);
-			options.zoomOffset++;
-
-			options.minZoom = Math.max(0, options.minZoom);
-			options.maxZoom--;
+		if (options.detectRetina) {
+			this._initRetina();
 		}
 
 		if (typeof options.subdomains === 'string') {
@@ -75,6 +69,20 @@ L.TileLayer = L.GridLayer.extend({
 			y: this.options.tms ? this._tileNumBounds.max.y - coords.y : coords.y,
 			z: this._getZoomForUrl()
 		}, this.options));
+	},
+
+	_initRetina: function() {
+		var options = this.options;
+
+		// detecting retina displays, adjusting tileSize and zoom levels
+		if (L.Browser.retina && options.maxZoom > 0) {
+
+			options.tileSize = Math.floor(options.tileSize / 2);
+			options.zoomOffset++;
+
+			options.minZoom = Math.max(0, options.minZoom);
+			options.maxZoom--;
+		}
 	},
 
 	_tileOnLoad: function (done, tile) {
