@@ -41,7 +41,7 @@ Now you're ready to initialize the map and do some stuff with it.
 <div id="map1" class="map" style="height: 180px"></div>
 
 
-Let's create a map of the center of London with pretty CloudMade tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
+Let's create a map of the center of London with pretty OpenStreetMap tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
 	var map = L.map('map').setView([51.505, -0.09], 13);
 
@@ -49,16 +49,15 @@ By default (as we didn't pass any options when creating the map instance), all m
 
 Note that `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next we'll add a tile layer to add to our map, in this case it's a CloudMade tile layer with Fresh style. Creating a tile layer usually involves setting the URL template for the tile images (get yours at [CloudMade](http://account.cloudmade.com/register)), the attribution text and the maximum zoom level of the layer:
+Next we'll add a tile layer to add to our map, in this case it's the OpenStreetMap tile layer. Creating a tile layer usually involves setting the URL template for the tile images, the attribution text and the maximum zoom level of the layer:
 
-<pre><code class="javascript">L.tileLayer('http://{s}.tile.cloudmade.com/<a href="http://account.cloudmade.com/register">API-key</a>/997/256/{z}/{x}/{y}.png', {
-	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://cloudmade.com"&gt;CloudMade&lt;/a&gt;</span>',
-	maxZoom: 18
+<pre><code class="javascript">L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+	attribution: '&amp;copy; &lt;a href="http://osm.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
 }).addTo(map);</code></pre>
 
 Make sure all the code is called after the `div` and `leaflet.js` inclusion. That's it! You have a working Leaflet map now.
 
-It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles, and it doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to (we'd recommend CloudMade though, it looks beautiful).
+It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles, and it doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to.
 
 
 ### Markers, circles and polygons
@@ -141,7 +140,7 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 	var map = L.map('map').setView([51.505, -0.09], 13);
 
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map);
 
 	L.marker([51.5, -0.09]).addTo(map)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
@@ -173,12 +172,12 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 
 	var map1 = L.map('map1').setView([51.505, -0.09], 13);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map1);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map1);
 
 
 
 	var map2 = L.map('map2').setView([51.505, -0.09], 13);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map2);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map2);
 
 	L.marker([51.5, -0.09]).addTo(map2);
 
@@ -197,7 +196,7 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 
 	var map3 = L.map('map3').setView([51.505, -0.09], 13);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map3);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map3);
 
 	L.marker([51.5, -0.09]).addTo(map3)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
