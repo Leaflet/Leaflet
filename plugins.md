@@ -997,6 +997,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Turistforeningen/leaflet-routing">Leaflet.Routing</a>
+		</td><td>
+			Leaflet controlls and interface for routing paths between waypoints using any user provided routing service.
+		</td><td>
+			<a href="https://github.com/turistforeningen">Norwegian Trekking Association</a>
+		</td>
+	</tr>
 </table>
 
 
