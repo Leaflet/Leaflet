@@ -11,3 +11,4 @@ coverage/
 *.js.html
 index.html
 .mailmap
+Gemfile.lock
