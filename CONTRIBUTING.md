@@ -137,7 +137,7 @@ Once it gets merged, the changes will immediately appear on the website.
 If you need to make edits in a local repository to see how it looks in the process, do the following:
 
  1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
- 2. Run `gem install jekyll` && 'gem install kramdown'.  Alternatively, use bundler by using 'bundle install'
+ 2. Run `gem install jekyll kramdown`.  Alternatively, use bundler by using 'bundle install'
  3. Run `jekyll serve --watch` in the root `Leaflet` folder.
  4. Open `localhost:4000` in your browser.
 
