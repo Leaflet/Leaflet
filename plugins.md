@@ -1006,6 +1006,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/chriscalip/L.UniformControl">Leaflet.UniformControl</a>
+		</td><td>
+			Provides easy to theme control widgets. Leaflet Control Widget augmented by uniform.js
+		</td><td>
+			<a href="https://github.com/chriscalip">Chris Calip</a>
+		</td>
+	</tr>
 </table>
 
 
