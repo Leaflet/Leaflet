@@ -35,7 +35,7 @@ L.Renderer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
-			moveend: this._update
+			move: this._update
 		};
 		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
