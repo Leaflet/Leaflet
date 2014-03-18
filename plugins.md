@@ -1006,6 +1006,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/dwilhelm89">Dennis Wilhelm</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/chriscalip/L.UniformControl">Leaflet.UniformControl</a>
+		</td><td>
+			Leaflet layer control with stylable checkboxes and radio buttons.
+		</td><td>
+			<a href="https://github.com/chriscalip">Chris Calip</a>
+		</td>
+	</tr>
 </table>
 
 
