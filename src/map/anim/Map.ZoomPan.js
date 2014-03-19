@@ -36,11 +36,12 @@ L.Map.include({
 		    duration = 1000 * S * 0.8;
 
 		function frame() {
+			//console.log('frame');
 			var t = (Date.now() - start) / duration,
 			    s = easeOut(t) * S;
 
 			if (t <= 1) {
-				L.Util.requestAnimFrame(frame, this);
+				this._zoomPanFrame = L.Util.requestAnimFrame(frame, this);
 
 				this._resetView(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
