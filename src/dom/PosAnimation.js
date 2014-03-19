@@ -52,21 +52,17 @@ L.PosAnimation = L.Evented.extend({
 		this.fire('step');
 	},
 
-	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
-	// we need to parse computed style (in case of transform it returns matrix string)
-
-	_transformRe: /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,
 
 	_getPos: function () {
-		var left, top, matches,
+		var left, top,
 		    el = this._el,
-		    style = window.getComputedStyle(el);
+		    style = el.style;
 
 		if (L.Browser.any3d) {
-			matches = style[L.DomUtil.TRANSFORM].match(this._transformRe);
-			if (!matches) { return; }
-			left = parseFloat(matches[1]);
-			top  = parseFloat(matches[2]);
+			var transform = L.DomUtil.getTransform(el);
+			if (!transform) { return; }
+			left = transform.offset.x;
+			top  = transform.offset.y;
 		} else {
 			left = parseFloat(style.left);
 			top  = parseFloat(style.top);

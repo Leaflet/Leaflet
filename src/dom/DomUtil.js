@@ -137,6 +137,30 @@ L.DomUtil = {
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
 	},
 
+	// you can't easily get intermediate values of properties animated with CSS3 Transitions,
+	// we need to parse computed style (in case of transform it returns matrix string)
+
+	_transformRe: /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,
+
+	//Gets the offset and scale of the given element as set by setTransform
+	getTransform: function (el) {
+		//Only handles scale and translate matrices.
+		//Handling rotation is more complicated and we never set rotation
+
+		//Extract offset and scale from the matrix
+		var style = window.getComputedStyle(el),
+			matches = style[L.DomUtil.TRANSFORM].match(L.DomUtil._transformRe);
+
+		if (!matches) {
+			return null;
+		}
+
+		return {
+			scale: parseFloat(matches[1]),
+			offset: L.point(parseFloat(matches[2]), parseFloat(matches[3]))
+		};
+	},
+
 	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
 
 		// jshint camelcase: false
