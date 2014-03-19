@@ -133,11 +133,11 @@ L.Popup = L.Layer.extend({
 	},
 	
 	isOpen: function () {
-        	if (this._map) {
-            		return this._map.hasLayer(this);
-        	}
-        	return false;
-        },
+		if (this._map) {
+			return this._map.hasLayer(this);
+		}
+		return false;
+	},
 
 	_close: function () {
 		if (this._map) {
