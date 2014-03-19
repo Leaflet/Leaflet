@@ -33,9 +33,7 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		this._centerOffset = viewCenter.subtract(this._startCenter);
 
-		if (map._panAnim) {
-			map._panAnim.stop();
-		}
+		map.stop();
 
 		L.DomEvent
 		    .on(document, 'touchmove', this._onTouchMove, this)
