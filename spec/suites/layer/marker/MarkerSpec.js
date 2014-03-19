@@ -58,7 +58,11 @@ describe("Marker", function () {
 			expect(oldIcon).to.not.be(marker._icon);
 			expect(oldIcon.parentNode).to.be(null);
 
-			expect(marker._icon.src).to.contain('marker-icon.png');
+			if (L.Browser.retina) {
+				expect(marker._icon.src).to.contain('marker-icon-2x.png');
+			} else {
+				expect(marker._icon.src).to.contain('marker-icon.png');
+			}
 			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
 		});
 
