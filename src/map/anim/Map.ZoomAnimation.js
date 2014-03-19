@@ -87,6 +87,20 @@ L.Map.include(!zoomAnimated ? {} : {
 		});
 	},
 
+	_stopAnimatedZoom: function () {
+
+		//Extract zoom and translate from the matrix
+		var regex = /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,
+		    style = window.getComputedStyle(this._proxy._el),
+		    matches = style[L.DomUtil.TRANSFORM].match(regex),
+		    px = L.point(matches[2], matches[3]);
+
+		//Replace the animation end variables with the current zoom/center
+		this._animateToZoom = this.getScaleZoom(parseFloat(matches[1]), 1);
+		this._animateToCenter = this.unproject(px, this._animateToZoom);
+
+		this._onZoomTransitionEnd();
+	},
 	_onZoomTransitionEnd: function () {
 
 		this._animatingZoom = false;

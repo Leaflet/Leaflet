@@ -197,6 +197,7 @@ L.Map = L.Evented.extend({
 
 		//zoomPan
 		L.Util.cancelAnimFrame(this._zoomPanFrame);
+		//TODO: Need to fire zoomend if this was what was going on
 
 		//PosAnimation
 		if (this._panAnim && this._panAnim._inProgress) {
@@ -206,34 +207,8 @@ L.Map = L.Evented.extend({
 
 		//zoomAnimation
 		if (this._animatingZoom) {
-			//Calculate _animateToZoom and _animateToCenter
-			var regex = /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/;
-			var style = window.getComputedStyle(this._proxy._el);
-			var matches = style[L.DomUtil.TRANSFORM].match(regex);
-			//Assuming this works!
-
-			//debugger;
-			this._animateToZoom = this.getScaleZoom(parseFloat(matches[1]), 1);
-			var px = L.point(matches[2], matches[3]);
-			this._animateToCenter = this.unproject(px, this._animateToZoom);
-
-			console.log('stop', this._animateToCenter);
-			//this._animateToCenter.lat = parseFloat(matches[2]);
-			//this._animateToCenter.lng = parseFloat(matches[3]);
-
-			//L.Util.falseFn(map._panes.mapPane.offsetWidth);
-
-			this._onZoomTransitionEnd();
-			//L.Util.falseFn(map._panes.mapPane.offsetWidth);
-
-			//Something like _onZoomTransitionEnd, but not quite, we don't want the _resetView call
-
-			//Or if we set _animateToCenter and _animateToZoom then we can just call it
+			this._stopAnimatedZoom();
 		}
-
-		//TODO do a reset view
-
-
 	},
 
 	// TODO handler.addTo
