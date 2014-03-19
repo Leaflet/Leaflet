@@ -38,7 +38,6 @@ L.Map.include({
 		    duration = 1000 * S * 0.8;
 
 		function frame() {
-			//console.log('frame');
 			var t = (Date.now() - start) / duration,
 			    s = easeOut(t) * S;
 
