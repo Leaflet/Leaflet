@@ -44,6 +44,8 @@ L.Map = L.Evented.extend({
 		this.callInitHooks();
 
 		this._addLayers(this.options.layers);
+
+		this._createAnimProxy();
 	},
 
 
@@ -188,6 +190,50 @@ L.Map = L.Evented.extend({
 			oldSize: oldSize,
 			newSize: newSize
 		});
+	},
+
+	stopAnimation: function () {
+		//TODO: Need to know if we are in a anim so we can fire zoomend
+
+		//zoomPan
+		L.Util.cancelAnimFrame(this._zoomPanFrame);
+
+		//PosAnimation
+		if (this._panAnim && this._panAnim._inProgress) {
+			this._panAnim.stop(); //This handles everything
+			return;
+		}
+
+		//zoomAnimation
+		if (this._animatingZoom) {
+			//Calculate _animateToZoom and _animateToCenter
+			var regex = /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/;
+			var style = window.getComputedStyle(this._proxy._el);
+			var matches = style[L.DomUtil.TRANSFORM].match(regex);
+			//Assuming this works!
+
+			//debugger;
+			this._animateToZoom = this.getScaleZoom(parseFloat(matches[1]), 1);
+			var px = L.point(matches[2], matches[3]);
+			this._animateToCenter = this.unproject(px, 14);
+
+			console.log('stop', this._animateToCenter);
+			//this._animateToCenter.lat = parseFloat(matches[2]);
+			//this._animateToCenter.lng = parseFloat(matches[3]);
+
+			//L.Util.falseFn(map._panes.mapPane.offsetWidth);
+
+			this._onZoomTransitionEnd();
+			//L.Util.falseFn(map._panes.mapPane.offsetWidth);
+
+			//Something like _onZoomTransitionEnd, but not quite, we don't want the _resetView call
+
+			//Or if we set _animateToCenter and _animateToZoom then we can just call it
+		}
+
+		//TODO do a reset view
+
+
 	},
 
 	// TODO handler.addTo
@@ -472,11 +518,38 @@ L.Map = L.Evented.extend({
 		}
 	},
 
+	_createAnimProxy: function () {
+		var proxy = new L.Layer();
+		this._proxy = proxy;
+
+		proxy.onAdd = function () {
+
+			proxy._el = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
+			proxy.getPane().appendChild(proxy._el);
+			this.update();
+		};
+		proxy._animateZoom = function (e) {
+			//TODO: Will probably need to do e.offset in the translate
+			L.DomUtil.setTransform(proxy._el, this._map.project(e.center, 14), this._map.getZoomScale(e.zoom, 1));
+
+			console.log('anim', e.center);
+		};
+		proxy.update = function () {
+			var c = this._map.getCenter();
+			L.DomUtil.setTransform(proxy._el, this._map.project(c, 14), this._map.getZoomScale(this._map.getZoom(), 1));
+			console.log('update', c);
+		};
+		proxy.getEvents = function () {
+			return { zoomanim: proxy._animateZoom, viewreset: proxy.update };
+		};
+
+		this.addLayer(proxy);
+	},
 
 	// private methods that modify map state
 
 	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
-
+		//console.log('resetView', center, zoom);
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (!afterZoomAnim) {
