@@ -540,7 +540,7 @@ L.Map = L.Evented.extend({
 			console.log('update', c);
 		};
 		proxy.getEvents = function () {
-			return { zoomanim: proxy._animateZoom, viewreset: proxy.update };
+			return { zoomanim: proxy._animateZoom, moveend: proxy.update };
 		};
 
 		this.addLayer(proxy);
