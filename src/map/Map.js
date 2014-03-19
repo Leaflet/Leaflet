@@ -195,7 +195,6 @@ L.Map = L.Evented.extend({
 	},
 
 	stop: function () {
-		//TODO: Need to know if we are in an anim so we can fire zoomend
 
 		//zoomPan
 		L.Util.cancelAnimFrame(this._zoomPanFrame);
@@ -203,13 +202,14 @@ L.Map = L.Evented.extend({
 
 		//PosAnimation
 		if (this._panAnim && this._panAnim._inProgress) {
-			this._panAnim.stop(); //This handles everything
+			this._panAnim.stop();
 			return;
 		}
 
 		//zoomAnimation
 		if (this._animatingZoom) {
 			this._stopAnimatedZoom();
+			return;
 		}
 	},
 
@@ -495,10 +495,11 @@ L.Map = L.Evented.extend({
 		}
 	},
 
+
 	// private methods that modify map state
 
 	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
-		//console.log('resetView', center, zoom);
+
 		var zoomChanged = (this._zoom !== zoom);
 
 		if (!afterZoomAnim) {
