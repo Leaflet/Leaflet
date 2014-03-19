@@ -27,6 +27,7 @@
 		<button id="kyiv">Kyiv</button> -->
 		<button id="dc">DC</button>
 		<button id="sf">SF</button>
+		<button id="stop">stop</button>
 	</div>
 
 	<script type="text/javascript">
@@ -48,8 +49,9 @@
 			// marker3 = L.marker(dc).addTo(map),
 			// marker4 = L.marker(sf).addTo(map);
 
-		document.getElementById('dc').onclick = function () { map.zoomPanTo(dc); };
-		document.getElementById('sf').onclick = function () { map.zoomPanTo(sf); };
+		document.getElementById('dc').onclick = function () { map.zoomPanTo(dc, 10); };
+		document.getElementById('sf').onclick = function () { map.zoomPanTo(sf, 10); };
+		document.getElementById('stop').onclick = function () { map.stop(); };
 		// document.getElementById('london').onclick = function () { map.zoomPanTo(london); };
 		// document.getElementById('kyiv').onclick = function () { map.zoomPanTo(kyiv); };
 
