@@ -48,8 +48,6 @@ L.Map = L.Evented.extend({
 		this.callInitHooks();
 
 		this._addLayers(this.options.layers);
-
-		this._createAnimProxy();
 	},
 
 
@@ -495,34 +493,6 @@ L.Map = L.Evented.extend({
 			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
 			L.DomUtil.addClass(panes.shadowPane, 'leaflet-zoom-hide');
 		}
-	},
-
-	_createAnimProxy: function () {
-		var proxy = new L.Layer();
-		this._proxy = proxy;
-
-		proxy.onAdd = function () {
-
-			proxy._el = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
-			proxy.getPane().appendChild(proxy._el);
-			this.update();
-		};
-		proxy._animateZoom = function (e) {
-			//TODO: Will probably need to do e.offset in the translate
-			L.DomUtil.setTransform(proxy._el, this._map.project(e.center, e.zoom), this._map.getZoomScale(e.zoom, 1));
-
-			console.log('anim', e.center);
-		};
-		proxy.update = function () {
-			var c = this._map.getCenter();
-			L.DomUtil.setTransform(proxy._el, this._map.project(c, this._map.getZoom()), this._map.getZoomScale(this._map.getZoom(), 1));
-			console.log('update', c);
-		};
-		proxy.getEvents = function () {
-			return { zoomanim: proxy._animateZoom, moveend: proxy.update };
-		};
-
-		this.addLayer(proxy);
 	},
 
 	// private methods that modify map state

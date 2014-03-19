@@ -18,12 +18,31 @@ if (zoomAnimated) {
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
 		if (this._zoomAnimated) {
-			L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+
+			this._createAnimProxy();
+
+			L.DomEvent.on(this._proxy, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
 	});
 }
 
 L.Map.include(!zoomAnimated ? {} : {
+
+	_createAnimProxy: function () {
+		
+		var proxy = this._proxy = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
+		this._panes.mapPane.appendChild(proxy);
+
+		this.on('zoomanim', function (e) {
+			L.DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
+		}, this);
+
+		this.on('load moveend', function () {
+			var c = this.getCenter(),
+				z = this.getZoom();
+			L.DomUtil.setTransform(proxy, this.project(c, z), this.getZoomScale(z, 1));
+		}, this);
+	},
 
 	_catchTransitionEnd: function (e) {
 		if (this._animatingZoom && e.propertyName.indexOf('transform') >= 0) {
@@ -91,7 +110,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		//Extract zoom and translate from the matrix
 		var regex = /([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*, ([-+]?(?:\d*\.)?\d+)\D*\)/,
-		    style = window.getComputedStyle(this._proxy._el),
+		    style = window.getComputedStyle(this._proxy),
 		    matches = style[L.DomUtil.TRANSFORM].match(regex),
 		    px = L.point(matches[2], matches[3]);
 
