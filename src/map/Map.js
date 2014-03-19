@@ -219,7 +219,7 @@ L.Map = L.Evented.extend({
 			//debugger;
 			this._animateToZoom = this.getScaleZoom(parseFloat(matches[1]), 1);
 			var px = L.point(matches[2], matches[3]);
-			this._animateToCenter = this.unproject(px, 14);
+			this._animateToCenter = this.unproject(px, this._animateToZoom);
 
 			console.log('stop', this._animateToCenter);
 			//this._animateToCenter.lat = parseFloat(matches[2]);
@@ -534,13 +534,13 @@ L.Map = L.Evented.extend({
 		};
 		proxy._animateZoom = function (e) {
 			//TODO: Will probably need to do e.offset in the translate
-			L.DomUtil.setTransform(proxy._el, this._map.project(e.center, 14), this._map.getZoomScale(e.zoom, 1));
+			L.DomUtil.setTransform(proxy._el, this._map.project(e.center, e.zoom), this._map.getZoomScale(e.zoom, 1));
 
 			console.log('anim', e.center);
 		};
 		proxy.update = function () {
 			var c = this._map.getCenter();
-			L.DomUtil.setTransform(proxy._el, this._map.project(c, 14), this._map.getZoomScale(this._map.getZoom(), 1));
+			L.DomUtil.setTransform(proxy._el, this._map.project(c, this._map.getZoom()), this._map.getZoomScale(this._map.getZoom(), 1));
 			console.log('update', c);
 		};
 		proxy.getEvents = function () {
