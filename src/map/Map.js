@@ -192,8 +192,8 @@ L.Map = L.Evented.extend({
 		});
 	},
 
-	stopAnimation: function () {
-		//TODO: Need to know if we are in a anim so we can fire zoomend
+	stop: function () {
+		//TODO: Need to know if we are in an anim so we can fire zoomend
 
 		//zoomPan
 		L.Util.cancelAnimFrame(this._zoomPanFrame);

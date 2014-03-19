@@ -2,7 +2,7 @@
 L.Map.include({
 	zoomPanTo: function (targetCenter, targetZoom) {
 
-		this.stopAnimation();
+		this.stop();
 
 		var from = this.project(this.getCenter()),
 		    to = this.project(targetCenter),
