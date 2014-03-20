@@ -190,6 +190,25 @@ L.Map = L.Evented.extend({
 		});
 	},
 
+	stop: function () {
+
+		//zoomPan
+		L.Util.cancelAnimFrame(this._zoomPanFrame);
+		//TODO: Need to fire zoomend if this was what was going on
+
+		//PosAnimation
+		if (this._panAnim && this._panAnim._inProgress) {
+			this._panAnim.stop();
+			return;
+		}
+
+		//zoomAnimation
+		if (this._animatingZoom) {
+			this._stopAnimatedZoom();
+			return;
+		}
+	},
+
 	// TODO handler.addTo
 	addHandler: function (name, HandlerClass) {
 		if (!HandlerClass) { return this; }

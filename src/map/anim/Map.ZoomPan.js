@@ -2,6 +2,8 @@
 L.Map.include({
 	zoomPanTo: function (targetCenter, targetZoom) {
 
+		this.stop();
+
 		var from = this.project(this.getCenter()),
 		    to = this.project(targetCenter),
 		    size = this.getSize(),
@@ -40,7 +42,7 @@ L.Map.include({
 			    s = easeOut(t) * S;
 
 			if (t <= 1) {
-				L.Util.requestAnimFrame(frame, this);
+				this._zoomPanFrame = L.Util.requestAnimFrame(frame, this);
 
 				this._resetView(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),

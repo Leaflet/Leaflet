@@ -48,9 +48,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onDown: function () {
-		if (this._map._panAnim) {
-			this._map._panAnim.stop();
-		}
+		this._map.stop();
 	},
 
 	_onDragStart: function () {
