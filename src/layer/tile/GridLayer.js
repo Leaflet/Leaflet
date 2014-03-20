@@ -39,7 +39,6 @@ L.GridLayer = L.Layer.extend({
 
 		this._tiles = {};
 		this._tilesToLoad = 0;
-		this._tilesTotal = 0;
 
 		this._reset();
 		this._update();
@@ -177,13 +176,7 @@ L.GridLayer = L.Layer.extend({
 		var zoom = this._tileZoom;
 
 		for (var z in this._levels) {
-			z = parseInt(z, 10);
-			if (z > zoom + 2 || z < zoom - 2) {
-				this._destroyLevel(this._levels[z]);
-				delete this._levels[z];
-			} else {
-				this._levels[z].el.style.zIndex = -Math.abs(zoom - z);
-			}
+			this._levels[z].el.style.zIndex = -Math.abs(zoom - z);
 		}
 
 		var level = this._levels[zoom],
@@ -201,14 +194,12 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._level = level;
+
 		return level;
 	},
 
-	_destroyLevel: function (level) {
-		for (var i in level.tiles) {
-			level.tiles[i].onload = null;
-		}
-		L.DomUtil.remove(level.el);
+	_pruneTiles: function () {
+		// prune tiles
 	},
 
 	_reset: function (e) {
@@ -238,20 +229,6 @@ L.GridLayer = L.Layer.extend({
 		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
 
 		L.DomUtil.setTransform(level.el, translate, scale);
-	},
-
-	_clearTiles: function () {
-		for (var key in this._tiles) {
-			this.fire('tileunload', {
-				tile: this._tiles[key]
-			});
-		}
-
-		this._tiles = {};
-		this._tilesToLoad = 0;
-		this._tilesTotal = 0;
-
-		this._tileContainer.innerHTML = '';
 	},
 
 	_resetGrid: function () {
@@ -290,9 +267,9 @@ L.GridLayer = L.Layer.extend({
 
 		var tileRange = this._getTileRange(this._map.getBounds(), this._tileZoom);
 
-		// if (this.options.unloadInvisibleTiles) {
-		// 	this._removeOtherTiles(tileRange);
-		// }
+		if (this.options.unloadInvisibleTiles) {
+			this._removeOtherTiles(tileRange);
+		}
 
 		this._addTiles(tileRange);
 	},
@@ -335,7 +312,6 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._tilesToLoad += tilesToLoad;
-		this._tilesTotal += tilesToLoad;
 
 		// sort tile queue to load tiles in order of their distance to center
 		queue.sort(function (a, b) {
@@ -402,21 +378,21 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	// remove any present tiles that are off the specified bounds
-	_removeOtherTiles: function (bounds) {
-		for (var key in this._tiles) {
-			if (!bounds.contains(this._keyToTileCoords(key))) {
-				this._removeTile(key);
+	_removeOtherTiles: function (tileRange) {
+		for (var key in this._level.tiles) {
+			var coords = this._keyToTileCoords(key);
+			if (!tileRange.contains(coords)) {
+				this._removeTile(key, coords.z);
 			}
 		}
 	},
 
-	_removeTile: function (key) {
-		var tile = this._tiles[key];
+	_removeTile: function (key, zoom) {
+		var tiles = this._levels[zoom].tiles,
+			tile = tiles[key];
 
 		L.DomUtil.remove(tile);
-
-		delete this._tiles[key];
-
+		delete tiles[key];
 		this.fire('tileunload', {tile: tile});
 	},
 
