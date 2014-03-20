@@ -369,6 +369,10 @@ L.GridLayer = L.Layer.extend({
 		return L.latLngBounds(this.options.bounds).intersects(tileBounds);
 	},
 
+	_keyToBounds: function (key) {
+		return this._tileCoordsToBounds(this._keyToTileCoords(key));
+	},
+
 	// converts tile coordinates to its geographical bounds
 	_tileCoordsToBounds: function (coords) {
 
@@ -386,16 +390,15 @@ L.GridLayer = L.Layer.extend({
 
 	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
-		return coords.x + ':' + coords.y;
+		return coords.x + ':' + coords.y + ':' + coords.z;
 	},
 
 	// converts tile cache key to coordiantes
 	_keyToTileCoords: function (key) {
-		var kArr = key.split(':'),
-		    x = parseInt(kArr[0], 10),
-		    y = parseInt(kArr[1], 10);
-
-		return new L.Point(x, y);
+		var k = key.split(':'),
+			coords = new L.Point(+k[0], +k[1]);
+		coords.z = +k[2];
+		return coords;
 	},
 
 	// remove any present tiles that are off the specified bounds
