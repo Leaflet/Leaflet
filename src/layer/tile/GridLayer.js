@@ -37,6 +37,10 @@ L.GridLayer = L.Layer.extend({
 
 		this._levels = {};
 
+		this._tiles = {};
+		this._tilesToLoad = 0;
+		this._tilesTotal = 0;
+
 		this._reset();
 		this._update();
 	},
