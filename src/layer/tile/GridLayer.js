@@ -287,9 +287,8 @@ L.GridLayer = L.Layer.extend({
 
 	_addTiles: function (tileRange) {
 		var queue = [],
-		    center = tileRange.getCenter();
-
-		var j, i, coords;
+		    center = tileRange.getCenter(),
+			j, i, coords;
 
 		// create a queue of coordinates to load tiles from
 		for (j = tileRange.min.y; j <= tileRange.max.y; j++) {
@@ -305,6 +304,11 @@ L.GridLayer = L.Layer.extend({
 			}
 		}
 
+		// sort tile queue to load tiles in order of their distance to center
+		queue.sort(function (a, b) {
+			return a.distanceTo(center) - b.distanceTo(center);
+		});
+
 		var tilesToLoad = queue.length;
 
 		if (tilesToLoad === 0) { return; }
@@ -315,11 +319,6 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._tilesToLoad += tilesToLoad;
-
-		// sort tile queue to load tiles in order of their distance to center
-		queue.sort(function (a, b) {
-			return a.distanceTo(center) - b.distanceTo(center);
-		});
 
 		// create DOM fragment to append tiles in one batch
 		var fragment = document.createDocumentFragment();
@@ -385,7 +384,7 @@ L.GridLayer = L.Layer.extend({
 		for (var key in this._level.tiles) {
 			var coords = this._keyToTileCoords(key);
 			if (!tileRange.contains(coords)) {
-				this._removeTile(key, coords.z);
+				this._removeTile(key);
 			}
 		}
 	},
