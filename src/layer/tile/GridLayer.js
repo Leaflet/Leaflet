@@ -387,13 +387,22 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_removeTile: function (key, zoom) {
-		var tiles = this._levels[zoom].tiles,
-			tile = tiles[key];
+	_removeTile: function (key) {
+		var coords = this._keyToTileCoords(key),
+			level = this._levels[coords.z],
+			tiles = level && level.tiles,
+			tile = tiles && tiles[key];
 
-		L.DomUtil.remove(tile);
-		delete tiles[key];
-		this.fire('tileunload', {tile: tile});
+		if (tile) {
+			L.DomUtil.remove(tile);
+
+			delete tiles[key];
+
+			this.fire('tileunload', {
+				tile: tile,
+				coords: coords
+			});
+		}
 	},
 
 	_initTile: function (tile) {
