@@ -199,7 +199,63 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_pruneTiles: function () {
-		// prune tiles
+		this._covered = {};
+
+		var bounds = this._map.getBounds(),
+			parentRange;
+
+		// prune lower resolution tiles
+		for (var z = this._tileZoom; z >= 0; z--) {
+
+			// mark each loaded tile of the current zoom as covered by itself
+			if (this._levels[z]) {
+				for (var key in this._levels[z].tiles) {
+					this._covered[key] = true;
+				}
+			}
+
+			var range = this._getTileRange(bounds, z);
+
+			if (z < this._tileZoom) {
+				for (var i = range.min.x; i <= range.max.x; i++) {
+					for (var j = range.min.y; j <= range.max.y; j++) {
+
+						var coords = new L.Point(i, j);
+						coords.z = z;
+
+						var key = this._tileCoordsToKey(coords);
+
+						// mark the tile as covered if child tiles are covered or out of range
+						if (!this._covered[key] &&
+							this._tileCovered(2 * i,     2 * j,     z + 1, parentRange) &&
+							this._tileCovered(2 * i + 1, 2 * j,     z + 1, parentRange) &&
+							this._tileCovered(2 * i,     2 * j + 1, z + 1, parentRange) &&
+							this._tileCovered(2 * i + 1, 2 * j + 1, z + 1, parentRange)) {
+
+							this._covered[key] = true;
+						}
+					}
+				}
+			}
+
+			parentRange = range;
+		}
+
+		// keep the native zoom tiles
+		for (var key in this._level.tiles) {
+			delete this._covered[key];
+		}
+
+		// remove all the rest
+		for (var key in this._covered) {
+			this._removeTile(key);
+		}
+	},
+
+	_tileCovered: function (x, y, z, range) {
+		var coords = new L.Point(x, y);
+		coords.z = z;
+		return !range.contains(coords) || this._covered[this._tileCoordsToKey(coords)];
 	},
 
 	_reset: function (e) {
