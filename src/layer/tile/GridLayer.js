@@ -35,6 +35,8 @@ L.GridLayer = L.Layer.extend({
 			this._update = L.Util.throttle(this._update, this.options.updateInterval, this);
 		}
 
+		this._pruneTiles = L.Util.throttle(this._pruneTiles, 200, this);
+
 		this._levels = {};
 
 		this._tiles = {};
@@ -200,8 +202,6 @@ L.GridLayer = L.Layer.extend({
 
 	_pruneTiles: function () {
 
-		console.time('prune');
-
 		this._retain = {};
 
 		var bounds = this._map.getBounds(),
@@ -216,26 +216,26 @@ L.GridLayer = L.Layer.extend({
 				this._retain[key] = true;
 
 				if (!this._loaded[key]) {
-					var found = this._retainParent(i, j, z, z - 4);
+					var found = this._retainParent(i, j, z, z - 5);
 
 					if (!found) {
-						this._retainChildren(i, j, z, z + 1);
+						this._retainChildren(i, j, z, z + 2);
 					}
 				}
 			}
 		}
 
-		console.timeEnd('prune');
-
-		console.time('prune-remove');
-
-		for (var key in this._tiles) {
+		function deferRemove(key) {
 			if (!this._retain[key]) {
 				this._removeTile(key);
 			}
 		}
 
-		console.timeEnd('prune-remove');
+		for (var key in this._tiles) {
+			if (!this._retain[key]) {
+				setTimeout(L.bind(deferRemove, this, key), 250);
+			}
+		}
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
@@ -250,7 +250,7 @@ L.GridLayer = L.Layer.extend({
 			return true;
 
 		} else if (z2 > minZoom) {
-			this._retainParent(x2, y2, z2, minZoom);
+			return this._retainParent(x2, y2, z2, minZoom);
 		}
 
 		return false;
@@ -463,18 +463,17 @@ L.GridLayer = L.Layer.extend({
 
 	_removeTile: function (key) {
 		var tile = this._tiles[key];
+		if (!tile) return;
 
-		if (tile) {
-			L.DomUtil.remove(tile);
+		L.DomUtil.remove(tile);
 
-			delete this._tiles[key];
-			delete this._loaded[key];
+		delete this._tiles[key];
+		delete this._loaded[key];
 
-			this.fire('tileunload', {
-				tile: tile,
-				coords: this._keyToTileCoords(key)
-			});
-		}
+		this.fire('tileunload', {
+			tile: tile,
+			coords: this._keyToTileCoords(key)
+		});
 	},
 
 	_initTile: function (tile) {
@@ -535,6 +534,13 @@ L.GridLayer = L.Layer.extend({
 				coords: coords
 			});
 		}
+
+		var key = this._tileCoordsToKey(coords);
+
+		if (!this._tiles[key]) { return; }
+
+		this._loaded[key] = true;
+		this._pruneTiles();
 
 		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 
