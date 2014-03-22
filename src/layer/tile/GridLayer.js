@@ -202,39 +202,38 @@ L.GridLayer = L.Layer.extend({
 
 	_pruneTiles: function () {
 
+		if (!this._map) { return; }
+
 		this._retain = {};
 
 		var bounds = this._map.getBounds(),
 			z = this._tileZoom,
-			range = this._getTileRange(bounds, z);
+			range = this._getTileRange(bounds, z),
+			i, j, key, found;
 
-		for (var i = range.min.x; i <= range.max.x; i++) {
-			for (var j = range.min.y; j <= range.max.y; j++) {
+		for (i = range.min.x; i <= range.max.x; i++) {
+			for (j = range.min.y; j <= range.max.y; j++) {
 
-				var key = i + ':' + j + ':' + z;
+				key = i + ':' + j + ':' + z;
 
 				this._retain[key] = true;
 
 				if (!this._loaded[key]) {
-					var found = this._retainParent(i, j, z, z - 5);
-
-					if (!found) {
-						this._retainChildren(i, j, z, z + 2);
-					}
+					found = this._retainParent(i, j, z, z - 5) || this._retainChildren(i, j, z, z + 2);
 				}
 			}
 		}
 
-		function deferRemove(key) {
+		for (key in this._tiles) {
 			if (!this._retain[key]) {
-				this._removeTile(key);
+				setTimeout(L.bind(this._deferRemove, this, key), 250);
 			}
 		}
+	},
 
-		for (var key in this._tiles) {
-			if (!this._retain[key]) {
-				setTimeout(L.bind(deferRemove, this, key), 250);
-			}
+	_deferRemove: function (key) {
+		if (!this._retain[key]) {
+			this._removeTile(key);
 		}
 	},
 
@@ -460,7 +459,7 @@ L.GridLayer = L.Layer.extend({
 
 	_removeTile: function (key) {
 		var tile = this._tiles[key];
-		if (!tile) return;
+		if (!tile) { return; }
 
 		L.DomUtil.remove(tile);
 
