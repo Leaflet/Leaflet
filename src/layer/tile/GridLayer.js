@@ -38,6 +38,7 @@ L.GridLayer = L.Layer.extend({
 		this._levels = {};
 
 		this._tiles = {};
+		this._loaded = {};
 		this._tilesToLoad = 0;
 
 		this._reset();
@@ -190,7 +191,6 @@ L.GridLayer = L.Layer.extend({
 
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
-			level.tiles = {};
 		}
 
 		this._level = level;
@@ -199,63 +199,78 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_pruneTiles: function () {
-		this._covered = {};
+
+		console.time('prune');
+
+		this._retain = {};
 
 		var bounds = this._map.getBounds(),
-			parentRange;
+			z = this._tileZoom,
+			range = this._getTileRange(bounds, z);
 
-		// prune lower resolution tiles
-		for (var z = this._tileZoom; z >= 0; z--) {
+		for (var i = range.min.x; i <= range.max.x; i++) {
+			for (var j = range.min.y; j <= range.max.y; j++) {
 
-			// mark each loaded tile of the current zoom as covered by itself
-			if (this._levels[z]) {
-				for (var key in this._levels[z].tiles) {
-					this._covered[key] = true;
-				}
-			}
+				var key = i + ':' + j + ':' + z;
 
-			var range = this._getTileRange(bounds, z);
+				this._retain[key] = true;
 
-			if (z < this._tileZoom) {
-				for (var i = range.min.x; i <= range.max.x; i++) {
-					for (var j = range.min.y; j <= range.max.y; j++) {
+				if (!this._loaded[key]) {
+					var found = this._retainParent(i, j, z, z - 4);
 
-						var coords = new L.Point(i, j);
-						coords.z = z;
-
-						var key = this._tileCoordsToKey(coords);
-
-						// mark the tile as covered if child tiles are covered or out of range
-						if (!this._covered[key] &&
-							this._tileCovered(2 * i,     2 * j,     z + 1, parentRange) &&
-							this._tileCovered(2 * i + 1, 2 * j,     z + 1, parentRange) &&
-							this._tileCovered(2 * i,     2 * j + 1, z + 1, parentRange) &&
-							this._tileCovered(2 * i + 1, 2 * j + 1, z + 1, parentRange)) {
-
-							this._covered[key] = true;
-						}
+					if (!found) {
+						this._retainChildren(i, j, z, z + 1);
 					}
 				}
 			}
-
-			parentRange = range;
 		}
 
-		// keep the native zoom tiles
-		for (var key in this._level.tiles) {
-			delete this._covered[key];
+		console.timeEnd('prune');
+
+		console.time('prune-remove');
+
+		for (var key in this._tiles) {
+			if (!this._retain[key]) {
+				this._removeTile(key);
+			}
 		}
 
-		// remove all the rest
-		for (var key in this._covered) {
-			this._removeTile(key);
-		}
+		console.timeEnd('prune-remove');
 	},
 
-	_tileCovered: function (x, y, z, range) {
-		var coords = new L.Point(x, y);
-		coords.z = z;
-		return !range.contains(coords) || this._covered[this._tileCoordsToKey(coords)];
+	_retainParent: function (x, y, z, minZoom) {
+		var x2 = Math.floor(x / 2),
+			y2 = Math.floor(y / 2),
+			z2 = z - 1;
+
+		var key = x2 + ':' + y2 + ':' + z2;
+
+		if (this._loaded[key]) {
+			this._retain[key] = true;
+			return true;
+
+		} else if (z2 > minZoom) {
+			this._retainParent(x2, y2, z2, minZoom);
+		}
+
+		return false;
+	},
+
+	_retainChildren: function (x, y, z, maxZoom) {
+
+		for (var i = 2 * x; i < 2 * x + 2; i++) {
+			for (var j = 2 * y; j < 2 * y + 2; j++) {
+
+				var key = i + ':' + j + ':' + (z + 1);
+
+				if (this._loaded[key]) {
+					this._retain[key] = true;
+
+				} else if (z + 1 < maxZoom) {
+					this._retainChildren(i, j, z + 1, maxZoom);
+				}
+			}
+		}
 	},
 
 	_reset: function (e) {
@@ -321,13 +336,13 @@ L.GridLayer = L.Layer.extend({
 		// if (zoom > this.options.maxZoom ||
 		//     zoom < this.options.minZoom) { return; }
 
-		var tileRange = this._getTileRange(this._map.getBounds(), this._tileZoom);
+		var bounds = this._map.getBounds();
 
 		if (this.options.unloadInvisibleTiles) {
-			this._removeOtherTiles(tileRange);
+			this._removeOtherTiles(bounds);
 		}
 
-		this._addTiles(tileRange);
+		this._addTiles(bounds);
 	},
 
 	// tile coordinates range for particular geo bounds and zoom
@@ -338,8 +353,9 @@ L.GridLayer = L.Layer.extend({
 		return this._pxBoundsToTileRange(pxBounds);
 	},
 
-	_addTiles: function (tileRange) {
+	_addTiles: function (bounds) {
 		var queue = [],
+			tileRange = this._getTileRange(bounds, this._tileZoom),
 		    center = tileRange.getCenter(),
 			j, i, coords;
 
@@ -351,7 +367,7 @@ L.GridLayer = L.Layer.extend({
 				coords.z = this._tileZoom;
 
 				// add tile to queue if it's not in cache or out of bounds
-				if (!(this._tileCoordsToKey(coords) in this._level.tiles) && this._isValidTile(coords)) {
+				if (!(this._tileCoordsToKey(coords) in this._tiles) && this._isValidTile(coords)) {
 					queue.push(coords);
 				}
 			}
@@ -433,29 +449,27 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	// remove any present tiles that are off the specified bounds
-	_removeOtherTiles: function (tileRange) {
-		for (var key in this._level.tiles) {
-			var coords = this._keyToTileCoords(key);
-			if (!tileRange.contains(coords)) {
+	_removeOtherTiles: function (bounds) {
+		for (var key in this._tiles) {
+			var tileBounds = this._keyToBounds(key);
+			if (!bounds.intersects(tileBounds)) {
 				this._removeTile(key);
 			}
 		}
 	},
 
 	_removeTile: function (key) {
-		var coords = this._keyToTileCoords(key),
-			level = this._levels[coords.z],
-			tiles = level && level.tiles,
-			tile = tiles && tiles[key];
+		var tile = this._tiles[key];
 
 		if (tile) {
 			L.DomUtil.remove(tile);
 
-			delete tiles[key];
+			delete this._tiles[key];
+			delete this._loaded[key];
 
 			this.fire('tileunload', {
 				tile: tile,
-				coords: coords
+				coords: this._keyToTileCoords(key)
 			});
 		}
 	},
@@ -488,7 +502,7 @@ L.GridLayer = L.Layer.extend({
 		// wrap tile coords if necessary (depending on CRS)
 		this._wrapCoords(coords);
 
-		var tile = this.createTile(coords, L.bind(this._tileReady, this));
+		var tile = this.createTile(coords, L.bind(this._tileReady, this, coords));
 
 		this._initTile(tile);
 
@@ -496,7 +510,7 @@ L.GridLayer = L.Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			setTimeout(L.bind(this._tileReady, this, null, tile), 0);
+			setTimeout(L.bind(this._tileReady, this, coords, null, tile), 0);
 		}
 
 		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile
@@ -504,23 +518,30 @@ L.GridLayer = L.Layer.extend({
 		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
-		this._level.tiles[key] = tile;
+		this._tiles[key] = tile;
 
 		container.appendChild(tile);
-		this.fire('tileloadstart', {tile: tile});
+		this.fire('tileloadstart', {
+			tile: tile,
+			coords: coords
+		});
 	},
 
-	_tileReady: function (err, tile) {
+	_tileReady: function (coords, err, tile) {
 		if (err) {
 			this.fire('tileerror', {
 				error: err,
-				tile: tile
+				tile: tile,
+				coords: coords
 			});
 		}
 
 		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
 
-		this.fire('tileload', {tile: tile});
+		this.fire('tileload', {
+			tile: tile,
+			coords: coords
+		});
 
 		this._tilesToLoad--;
 
