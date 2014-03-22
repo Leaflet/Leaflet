@@ -502,10 +502,7 @@ L.GridLayer = L.Layer.extend({
 		var tilePos = this._getTilePos(coords),
 		    key = this._tileCoordsToKey(coords);
 
-		// wrap tile coords if necessary (depending on CRS)
-		this._wrapCoords(coords);
-
-		var tile = this.createTile(coords, L.bind(this._tileReady, this, coords));
+		var tile = this.createTile(this._wrapCoords(coords), L.bind(this._tileReady, this, coords));
 
 		this._initTile(tile);
 
@@ -558,8 +555,11 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_wrapCoords: function (coords) {
-		coords.x = this._wrapX ? L.Util.wrapNum(coords.x, this._wrapX) : coords.x;
-		coords.y = this._wrapY ? L.Util.wrapNum(coords.y, this._wrapY) : coords.y;
+		var newCoords = new L.Point(
+			this._wrapX ? L.Util.wrapNum(coords.x, this._wrapX) : coords.x,
+			this._wrapY ? L.Util.wrapNum(coords.y, this._wrapY) : coords.y);
+		newCoords.z = coords.z;
+		return newCoords;
 	},
 
 	_pxBoundsToTileRange: function (bounds) {
