@@ -35,8 +35,10 @@ L.CircleMarker = L.Path.extend({
 	},
 
 	setStyle : function (options) {
-		this._radius = options && options.radius || this._radius;
+		var radius = options && options.radius || this._radius;
 		L.Path.prototype.setStyle.call(this, options);
+		this.setRadius(radius);
+		return this;
 	},
 
 	_project: function () {
