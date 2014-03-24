@@ -362,6 +362,14 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mapbox">Mapbox</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/astromatic/Leaflet.TileLayer.IIP">Leaflet.TileLayer.IIP</a>
+		</td><td>Add support for <a href="http://iipimage.sourceforge.net/">IIPImage</a> layers in Leaflet.
+		</td><td>
+			<a href="https://github.com/ebertin">Emmanuel Bertin</a>
+		</td>
+	</tr>
 
 </table>
 
