@@ -7,7 +7,7 @@ L.Evented = L.Class.extend({
 	on: function (types, fn, context) {
 
 		// types can be a map of types/handlers
-		if (types instanceof Object && !(types instanceof Array) ) {
+		if (types instanceof Object && !(types instanceof Array)) {
 			for (var type in types) {
 				// we don't process space-separated events here for performance;
 				// it's a hot path since Layer uses the on(obj) syntax
