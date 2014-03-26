@@ -1023,6 +1023,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/chriscalip">Chris Calip</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jdomingu/Leaflet.SimpleMarkers">Leaflet.SimpleMarkers</a>
+		</td><td>
+			A light-weight Leaflet plugin for adding and deleting markers.
+		</td><td>
+			<a href="https://github.com/jdomingu">Jared Dominguez</a>
+		</td>
+	</tr>
 </table>
 
 
