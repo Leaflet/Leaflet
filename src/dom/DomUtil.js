@@ -174,8 +174,8 @@ L.DomUtil = {
 			['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
 	L.DomUtil.TRANSITION_END =
-			transition ?
-			((transition === 'webkitTransition' || transition === 'OTransition') ? transition + 'End' : 'transitionend') :
+		transition ?
+			(transition === 'webkitTransition' || transition === 'OTransition' ? transition + 'End' : 'transitionend') :
 			false;
 
 
