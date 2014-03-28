@@ -50,6 +50,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		// reset any custom styles
 		layer.options = layer.defaultOptions;
 		this._setLayerStyle(layer, this.options.style);
+		return this;
 	},
 
 	setStyle: function (style) {
