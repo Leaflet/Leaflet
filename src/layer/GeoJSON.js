@@ -53,7 +53,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 	},
 
 	setStyle: function (style) {
-		this.eachLayer(function (layer) {
+		return this.eachLayer(function (layer) {
 			this._setLayerStyle(layer, style);
 		}, this);
 	},
