@@ -110,7 +110,7 @@ L.SVG = L.Renderer.extend({
 			path.setAttribute('fill', 'none');
 		}
 
-		path.setAttribute('pointer-events', options.pointerEvents || (options.clickable ? 'auto' : 'none'));
+		path.setAttribute('pointer-events', options.pointerEvents || (options.clickable ? 'visiblePainted' : 'none'));
 	},
 
 	_updatePoly: function (layer, closed) {
