@@ -471,7 +471,7 @@ L.GridLayer = L.Layer.extend({
 
 	_startZoomAnim: function () {
 		this._prepareBgBuffer();
-		this._prevTranslate = this._translate;
+		this._prevTranslate = this._translate || new L.Point(0, 0);
 		this._prevScale = this._scale;
 	},
 

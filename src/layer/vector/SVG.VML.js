@@ -23,6 +23,9 @@ L.SVG.include(!L.Browser.vml ? {} : {
 
 	_initContainer: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-vml-container');
+
+		this._paths = {};
+		this._initEvents();
 	},
 
 	_update: function () {
@@ -40,19 +43,19 @@ L.SVG.include(!L.Browser.vml ? {} : {
 		layer._path = L.SVG.create('path');
 		container.appendChild(layer._path);
 
-		if (layer.options.clickable) {
-			this._initEvents(layer, container);
-		}
-
 		this._updateStyle(layer);
 	},
 
 	_addPath: function (layer) {
-		this._container.appendChild(layer._container);
+		var container = layer._container;
+		this._container.appendChild(container);
+		this._paths[L.stamp(container)] = layer;
 	},
 
 	_removePath: function (layer) {
-		L.DomUtil.remove(layer._container);
+		var container = layer._container;
+		L.DomUtil.remove(container);
+		delete this._paths[L.stamp(container)];
 	},
 
 	_updateStyle: function (layer) {
@@ -129,6 +132,4 @@ if (L.Browser.vml) {
 			};
 		}
 	})();
-
-	L.SVG.instance = L.svg();
 }

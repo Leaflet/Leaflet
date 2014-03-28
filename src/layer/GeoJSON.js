@@ -70,27 +70,23 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 L.extend(L.GeoJSON, {
 	geometryToLayer: function (geojson, options) {
+
 		var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
 		    coords = geometry.coordinates,
 		    layers = [],
-		    coordsToLatLng = options.coordsToLatLng || this.coordsToLatLng,
+		    pointToLayer = options && options.pointToLayer,
+		    coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
 		    latlng, latlngs, i, len;
 
 		switch (geometry.type) {
 		case 'Point':
 			latlng = coordsToLatLng(coords);
-
-			return options.pointToLayer ?
-					options.pointToLayer(geojson, latlng) :
-					new L.Marker(latlng);
+			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
 
 		case 'MultiPoint':
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = coordsToLatLng(coords[i]);
-
-				layers.push(options.pointToLayer ?
-						options.pointToLayer(geojson, latlng) :
-						new L.Marker(latlng));
+				layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng));
 			}
 			return new L.FeatureGroup(layers);
 

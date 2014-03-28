@@ -75,7 +75,11 @@ L.Map.TouchZoom = L.Handler.extend({
 	_updateOnMove: function () {
 		var map = this._map;
 
-		this._center = map.layerPointToLatLng(this._getTargetCenter());
+		if (map.options.touchZoom === 'center') {
+			this._center = map.getCenter();
+		} else {
+			this._center = map.layerPointToLatLng(this._getTargetCenter());
+		}
 		this._zoom = map.getScaleZoom(this._scale);
 
 		map._animateZoom(this._center, this._zoom);

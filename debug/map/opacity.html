@@ -82,11 +82,9 @@
 		CASE 1: no opacity set on any layers
 		**********/
 		// OSM Basemap
-		var osm1 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
-		    attribution: '',
-		    key: 'BC9A493B41014CAABB98F0471D759707',
-		    styleId: 97941
-		}).addTo(map1);
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+
+		var osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}).addTo(map1);
 
 		// EEZs / Nations
 		var eez1 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
@@ -103,11 +101,7 @@
 		CASE 2: opacity set on overlays but not on basemap
 		**********/
 		// OSM Basemap
-		var osm2 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
-		    attribution: '',
-		    key: 'BC9A493B41014CAABB98F0471D759707',
-		    styleId: 97941
-		}).addTo(map2);
+		var osm2 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}).addTo(map2);
 
 		// EEZs / Nations
 		var eez2 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
@@ -126,12 +120,7 @@
 		CASE 3: opacity set on overlays but not on basemap, zIndex option set to 0 on basemap
 		**********/
 		// OSM Basemap
-		var osm3 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
-		    attribution: '',
-		    key: 'BC9A493B41014CAABB98F0471D759707',
-		    styleId: 97941,
-		    zIndex: 0
-		}).addTo(map3);
+		var osm3 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: '', zIndex: 0}).addTo(map3);
 
 		// EEZs / Nations
 		var eez3 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
@@ -150,12 +139,7 @@
 		CASE 4: opacity set on overlays but set to 1 on basemap
 		**********/
 		// OSM Basemap
-		var osm4 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
-		    attribution: '',
-		    key: 'BC9A493B41014CAABB98F0471D759707',
-		    styleId: 97941,
-		    opacity: 1
-		}).addTo(map4);
+		var osm4 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}).addTo(map4);
 
 		// EEZs / Nations
 		var eez4 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
@@ -174,12 +158,7 @@
 		CASE 5: opacity set to .5 on all layers
 		**********/
 		// OSM Basemap
-		var osm5 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
-		    attribution: '',
-		    key: 'BC9A493B41014CAABB98F0471D759707',
-		    styleId: 97941,
-		    opacity: 0.99
-		}).addTo(map5);
+		var osm5 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: '', opacity: 0.99}).addTo(map5);
 
 		// EEZs / Nations
 		var eez5 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
@@ -198,12 +177,7 @@
 		CASE 6: opacity set to .5 on 1st and 3rd layers and 1 on middle layer
 		**********/
 		// OSM Basemap
-		var osm6 = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png?v=1', {
-		    attribution: '',
-		    key: 'BC9A493B41014CAABB98F0471D759707',
-		    styleId: 97941,
-		    opacity: 0.99
-		}).addTo(map6);
+		var osm6 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: '', opacity: 0.99}).addTo(map6);
 
 		// EEZs / Nations
 		var eez6 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {

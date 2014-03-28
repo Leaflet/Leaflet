@@ -52,10 +52,8 @@
 
 		var map = L.map('map').setView([37.8, -96], 4);
 
-		var cloudmade = L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-			attribution: 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			key: 'd4fc77ea4a63471cab2423e66626cbb6',
-			styleId: 998
+		var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 		}).addTo(map);
 
 

@@ -24,7 +24,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_update: function () {
-		if (this._map._animatingZoom) { return; }
+		if (this._map._animatingZoom && this._bounds) { return; }
 
 		L.Renderer.prototype._update.call(this);
 
@@ -64,6 +64,7 @@ L.Canvas = L.Renderer.extend({
 		this._redrawBounds = layer._pxBounds;
 		this._draw(true);
 		layer._project();
+		layer._update();
 		this._draw();
 		this._redrawBounds = null;
 	},
@@ -240,8 +241,6 @@ L.canvas = function (options) {
 	return L.Browser.canvas ? new L.Canvas(options) : null;
 };
 
-L.Canvas.instance = L.canvas();
-
 L.Polyline.prototype._containsPoint = function (p, closed) {
 	var i, j, k, len, len2, part,
 	    w = this._clickTolerance();
@@ -287,6 +286,6 @@ L.Polygon.prototype._containsPoint = function (p) {
 	return inside || L.Polyline.prototype._containsPoint.call(this, p, true);
 };
 
-L.Circle.prototype._containsPoint = function (p) {
+L.CircleMarker.prototype._containsPoint = function (p) {
 	return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 };

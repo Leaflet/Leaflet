@@ -91,14 +91,15 @@ L.Map = L.Evented.extend({
 		var paddingTL = L.point(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = L.point(options.paddingBottomRight || options.padding || [0, 0]),
 
-		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR)),
-		    paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
+		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
+
+		zoom = options.maxZoom ? Math.min(options.maxZoom, zoom) : zoom;
+
+		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
 
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
 		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
-
-		zoom = options && options.maxZoom ? Math.min(options.maxZoom, zoom) : zoom;
 
 		return this.setView(center, zoom, options);
 	},
@@ -222,7 +223,7 @@ L.Map = L.Evented.extend({
 		}
 
 		this._clearHandlers();
-		
+
 		if (this._loaded) {
 			this.fire('unload');
 		}
@@ -498,11 +499,11 @@ L.Map = L.Evented.extend({
 		var loading = !this._loaded;
 		this._loaded = true;
 
+		this.fire('viewreset', {hard: !preserveMapOffset});
+
 		if (loading) {
 			this.fire('load');
 		}
-
-		this.fire('viewreset', {hard: !preserveMapOffset});
 
 		this.fire('move');
 
@@ -564,13 +565,15 @@ L.Map = L.Evented.extend({
 	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
 		type = type || e.type;
 
+		if (L.DomEvent._skipped(e)) { return; }
+
 		if (type === 'click') {
 			if (!e._simulated && ((this.dragging && this.dragging.moved()) ||
 			                      (this.boxZoom && this.boxZoom.moved()))) { return; }
 			obj.fire('preclick');
 		}
 
-		if (!obj.listens(type, propagate) || L.DomEvent._skipped(e)) { return; }
+		if (!obj.listens(type, propagate)) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
@@ -598,7 +601,7 @@ L.Map = L.Evented.extend({
 
 	whenReady: function (callback, context) {
 		if (this._loaded) {
-			callback.call(context || this, this);
+			callback.call(context || this, {target: this});
 		} else {
 			this.on('load', callback, context);
 		}

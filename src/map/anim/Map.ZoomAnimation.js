@@ -52,11 +52,12 @@ L.Map.include(!zoomAnimated ? {} : {
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		this
-		    .fire('movestart')
-		    .fire('zoomstart');
-
-		this._animateZoom(center, zoom, true);
+		L.Util.requestAnimFrame(function () {
+			this
+			    .fire('movestart')
+			    .fire('zoomstart')
+			    ._animateZoom(center, zoom, true);
+		}, this);
 
 		return true;
 	},

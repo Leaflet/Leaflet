@@ -13,32 +13,37 @@ L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLn
 };
 
 L.LatLngBounds.prototype = {
+
 	// extend the bounds to contain the given point or bounds
 	extend: function (obj) { // (LatLng) or (LatLngBounds)
-		if (!obj) { return this; }
-
-		var latLng = L.latLng(obj);
-		if (latLng !== null) {
-			obj = latLng;
-		} else {
-			obj = L.latLngBounds(obj);
-		}
+		var sw = this._southWest,
+			ne = this._northEast,
+			sw2, ne2;
 
 		if (obj instanceof L.LatLng) {
-			if (!this._southWest && !this._northEast) {
-				this._southWest = new L.LatLng(obj.lat, obj.lng);
-				this._northEast = new L.LatLng(obj.lat, obj.lng);
-			} else {
-				this._southWest.lat = Math.min(obj.lat, this._southWest.lat);
-				this._southWest.lng = Math.min(obj.lng, this._southWest.lng);
+			sw2 = obj;
+			ne2 = obj;
 
-				this._northEast.lat = Math.max(obj.lat, this._northEast.lat);
-				this._northEast.lng = Math.max(obj.lng, this._northEast.lng);
-			}
 		} else if (obj instanceof L.LatLngBounds) {
-			this.extend(obj._southWest);
-			this.extend(obj._northEast);
+			sw2 = obj._southWest;
+			ne2 = obj._northEast;
+
+			if (!sw2 || !ne2) { return this; }
+
+		} else {
+			return obj ? this.extend(L.latLng(obj) || L.latLngBounds(obj)) : this;
 		}
+
+		if (!sw && !ne) {
+			this._southWest = new L.LatLng(sw2.lat, sw2.lng);
+			this._northEast = new L.LatLng(ne2.lat, ne2.lng);
+		} else {
+			sw.lat = Math.min(sw2.lat, sw.lat);
+			sw.lng = Math.min(sw2.lng, sw.lng);
+			ne.lat = Math.max(ne2.lat, ne.lat);
+			ne.lng = Math.max(ne2.lng, ne.lng);
+		}
+
 		return this;
 	},
 

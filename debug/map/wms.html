@@ -17,10 +17,10 @@
 	<script type="text/javascript">
 		var map = new L.Map('map');
 
-		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/{styleId}/256/{z}/{x}/{y}.png',
-			cloudmadeAttribution = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cloudmade = new L.TileLayer(cloudmadeUrl, {styleId: 997, attribution: cloudmadeAttribution}),
-			cloudmade2 = new L.TileLayer(cloudmadeUrl, {styleId: 998, attribution: cloudmadeAttribution});
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {attribution: osmAttrib}),
+			osm2 = L.tileLayer(osmUrl, {attribution: osmAttrib});
 
 		var nexrad = new L.TileLayer.WMS("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
 			layers: 'nexrad-n0r-900913',
@@ -32,9 +32,9 @@
 
 		var bounds = new L.LatLngBounds(new L.LatLng(32, -126), new L.LatLng(50, -64));
 
-		map.addLayer(cloudmade).addLayer(nexrad).fitBounds(bounds);
+		map.addLayer(osm).addLayer(nexrad).fitBounds(bounds);
 
-		L.control.layers({"CM": cloudmade, "CM2": cloudmade2}, {"NexRad": nexrad}).addTo(map);
+		L.control.layers({"CM": osm, "CM2": osm2}, {"NexRad": nexrad}).addTo(map);
 	</script>
 </body>
 </html>
