@@ -135,6 +135,7 @@ L.DomUtil = {
 		// rotation and scaling is performed at 'anchor'.
 		// an anchor of 0 0 rotates the element at the center.
 
+		// jshint camelcase: false
 		this._leaflet_pos = pos;
 
 		var theta = angle * Math.PI / 180,
