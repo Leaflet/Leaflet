@@ -135,6 +135,8 @@ L.DomUtil = {
 		// rotation and scaling is performed at 'anchor'.
 		// an anchor of 0 0 rotates the element at the center.
 
+		this._leaflet_pos = pos;
+
 		var theta = angle * Math.PI / 180,
 			scaleSinTheta = Math.sin(theta) * scale,
 			scaleCosTheta = Math.cos(theta) * scale,
