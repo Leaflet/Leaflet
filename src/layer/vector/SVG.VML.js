@@ -106,7 +106,7 @@ L.SVG.include(!L.Browser.vml ? {} : {
 	},
 
 	_updateCircle: function (layer) {
-		var p = layer._point,
+		var p = layer._point.round(),
 		    r = Math.round(layer._radius),
 		    r2 = Math.round(layer._radiusY || r);
 
