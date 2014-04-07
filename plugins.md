@@ -1142,6 +1142,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/aratcliffe">Adam Ratcliffe</a>
 		</td>
 	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/Mappy/Leaflet-active-area">Leaflet-active-area</a>
+		</td><td>
+            This plugin allows you to use a smaller portion of the map as an active area.
+            All positionning methods (setView, fitBounds, setZoom) will be applied on this portion instead of the all map.
+		</td><td>
+			<a href="https://github.com/Mappy">Mappy</a>
+		</td>
+	</tr>
 </table>
 
 To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
