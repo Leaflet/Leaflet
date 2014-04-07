@@ -46,9 +46,10 @@ L.Map.include({
 		if (!offset.x && !offset.y) {
 			return this;
 		}
-		//If we pan too far then chrome gets issues with tiles and makes them disappear or appear in the wrong place (slightly offset) #2602
+		//If we pan too far then chrome gets issues with tiles
+		// and makes them disappear or appear in the wrong place (slightly offset) #2602
 		if (Math.abs(offset.x) > 10000 || Math.abs(offset.y) > 10000) {
-			return this._resetView(map.unproject(map.project(map.getCenter()).add(offset)), this.getZoom());
+			return this._resetView(this.unproject(this.project(this.getCenter()).add(offset)), this.getZoom());
 		}
 
 		if (!this._panAnim) {
