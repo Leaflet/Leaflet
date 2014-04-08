@@ -46,6 +46,11 @@ L.Map.include({
 		if (!offset.x && !offset.y) {
 			return this;
 		}
+		//If we pan too far then chrome gets issues with tiles
+		// and makes them disappear or appear in the wrong place (slightly offset) #2602
+		if (options.animate !== true && !this.getSize().contains(offset)) {
+			return this._resetView(this.unproject(this.project(this.getCenter()).add(offset)), this.getZoom());
+		}
 
 		if (!this._panAnim) {
 			this._panAnim = new L.PosAnimation();
