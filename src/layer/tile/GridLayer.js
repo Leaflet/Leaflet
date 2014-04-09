@@ -340,7 +340,7 @@ L.GridLayer = L.Layer.extend({
 		return coords.x + ':' + coords.y;
 	},
 
-	// converts tile cache key to coordiantes
+	// converts tile cache key to coordinates
 	_keyToTileCoords: function (key) {
 		var kArr = key.split(':'),
 		    x = parseInt(kArr[0], 10),
