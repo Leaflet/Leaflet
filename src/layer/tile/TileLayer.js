@@ -58,7 +58,7 @@ L.TileLayer = L.GridLayer.extend({
 		tile.onerror = L.bind(this._tileOnError, this, done, tile);
 		
 		if (this.options.crossOrigin) {
-			tile.crossOrigin = '';	
+			tile.crossOrigin = '';
 		}
 		
 		/*
