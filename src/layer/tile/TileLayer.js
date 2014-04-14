@@ -71,7 +71,7 @@ L.TileLayer = L.GridLayer.extend({
 		}, this.options));
 	},
 
-	_initRetina: function() {
+	_initRetina: function () {
 		var options = this.options;
 
 		// detecting retina displays, adjusting tileSize and zoom levels
