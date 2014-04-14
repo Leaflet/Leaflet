@@ -22,15 +22,24 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		// all keys that are not TileLayer options go to WMS params
 		for (var i in options) {
-			if (!this.options.hasOwnProperty(i) && i !== 'crs') {
+			if (!this.options.hasOwnProperty(i) && i !== 'crs' &&
+				i !== 'detectRetina' && i !== 'disableBigRetinaTiles') {
 				wmsParams[i] = options[i];
 			}
 		}
 
 		options = L.setOptions(this, options);
 
-		wmsParams.width = wmsParams.height =
-				options.tileSize * (options.detectRetina && L.Browser.retina ? 2 : 1);
+		if (options.detectRetina && L.Browser.retina) {
+			if (!options.disableBigRetinaTiles) {
+				wmsParams.width = wmsParams.height = options.tileSize * 2;
+			} else {
+				wmsParams.width = wmsParams.height = options.tileSize;
+				this._initRetina();
+			}
+		} else {
+			wmsParams.width = wmsParams.height = options.tileSize;
+		}
 
 		this.wmsParams = wmsParams;
 	},
