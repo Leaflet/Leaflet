@@ -69,8 +69,8 @@ L.Control.Layers = L.Control.extend({
 		if (this.options.collapsed) {
 			if (!L.Browser.android) {
 				L.DomEvent.on(container, {
-					mouseover: this._expand,
-					mouseout: this._collapse
+					mouseenter: this._expand,
+					mouseleave: this._collapse
 				}, this);
 			}
 

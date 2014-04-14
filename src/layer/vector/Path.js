@@ -12,6 +12,7 @@ L.Path = L.Layer.extend({
 		lineCap: 'round',
 		lineJoin: 'round',
 		// dashArray: null
+		// dashOffset: null
 
 		// fill: false
 		// fillColor: same as color by default
