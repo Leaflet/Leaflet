@@ -37,6 +37,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 				wmsParams.width = wmsParams.height = options.tileSize;
 				this._initRetina();
 			}
+		} else {
+			wmsParams.width = wmsParams.height = options.tileSize;
 		}
 
 		this.wmsParams = wmsParams;
