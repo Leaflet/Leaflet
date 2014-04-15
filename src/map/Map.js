@@ -357,12 +357,12 @@ L.Map = L.Evented.extend({
 	// conversion methods
 
 	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
-		zoom = zoom === undefined ? this._zoom : zoom;
+		var zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
-		zoom = zoom === undefined ? this._zoom : zoom;
+		var zoom = zoom === undefined ? this._zoom : zoom;
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
