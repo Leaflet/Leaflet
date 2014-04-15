@@ -175,6 +175,44 @@ L.Util = {
 
 }());
 
+(function () {
+	// inspired by http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+
+	function getPrefixed(name) {
+		return window['webkit' + name] || window['moz' + name] || window['ms' + name];
+	}
+
+	var lastTime = 0;
+
+	// fallback for IE 7-8
+	function timeoutDefer(fn) {
+		var time = +new Date(),
+		    timeToCall = Math.max(0, 16 - (time - lastTime));
+
+		lastTime = time + timeToCall;
+		return window.setTimeout(fn, timeToCall);
+	}
+
+	var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer,
+	    cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
+	               getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
+
+
+	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
+		if (immediate && requestFn === timeoutDefer) {
+			fn.call(context);
+		} else {
+			return requestFn.call(window, L.bind(fn, context), element);
+		}
+	};
+
+	L.Util.cancelAnimFrame = function (id) {
+		if (id) {
+			cancelFn.call(window, id);
+		}
+	};
+})();
+
 // shortcuts for most used utility functions
 L.extend = L.Util.extend;
 L.bind = L.Util.bind;
