@@ -5258,19 +5258,23 @@ MyClass.FOO; // 'bar'</code></pre>
 		<td><code>String</code></td>
 		<td>Applies a unique key to the object and returns that key. Has an <code>L.stamp</code> shortcut.</td>
 	</tr>
-	<!-- TODO Commented out for the time being:
-	https://github.com/Leaflet/Leaflet/pull/793#discussion_r1134904
 	<tr>
-		<td><code><b>requestAnimFrame</b>()</code></td>
-		<td></td>
-		<td></td>
+		<td><code><b>requestAnimFrame</b>(
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>immediate?</i></nobr>,
+			<nobr>&lt;HTMLElement&gt; <i>element?</i> )</nobr>
+		</code></td>
+		<td><code>Number</code></td>
+		<td>Schedules <code>fn</code> to be executed when the browser repaints. When <code>immediate</code> is set, <code>fn</code> is called immediately if the browser doesn't have native support for <code>requestAnimationFrame</code>, otherwise it's delayed. Returns an id that can be used to cancel the request</td>
 	</tr>
 	<tr>
-		<td><code><b>cancelAnimFrame</b>()</code></td>
-		<td></td>
-		<td></td>
+		<td><code><b>cancelAnimFrame</b>(
+			<nobr>&lt;Number&gt; <i>id</i> )</nobr>
+		</code></td>
+		<td>-</td>
+		<td>Cancels a previous request to <code>requestAnimFrame</code>.</td>
 	</tr>
-	-->
 	<tr>
 		<td><code><b>limitExecByInterval</b>(
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
