@@ -242,6 +242,18 @@ L.DomEvent = {
 		L.DomEvent._lastClick = timeStamp;
 
 		return handler(e);
+	},
+	
+	// workaround for some browsers that continually fire mousemove
+	_hasMouseMoved: function (previous) {
+		this._hasMouseMoved = function (current) {
+			if (previous.clientX === current.clientX && previous.clientY === current.clientY) {
+				return false;
+			}
+			previous = current;
+			return true;
+		};
+		return true;
 	}
 };
 
