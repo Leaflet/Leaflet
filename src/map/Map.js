@@ -581,6 +581,9 @@ L.Map = L.Evented.extend({
 		if (type === 'click' || type === 'dblclick' || type === 'contextmenu') {
 			L.DomEvent.stopPropagation(e);
 		}
+		if (type === 'mousemove' && !L.DomEvent._hasMouseMoved(e)) {
+			return;
+		}
 
 		var data = {
 			originalEvent: e,
