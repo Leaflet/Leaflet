@@ -2,19 +2,18 @@
 layout: v2
 ---
 
-<p class="notice">November 18, 2013 &mdash; <a href="2013/11/18/leaflet-0-7-released-plans-for-future.html">Leaflet 0.7 Release, MapBox &amp; Plans for Future</a> (Blog Post)</p>
-
-Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.
+Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps.
 It is developed by [Vladimir Agafonkin][] with a&nbsp;team of dedicated [contributors][].
 Weighing just about <abbr title="33 KB gzipped &mdash; that's 123 KB minified and 218 KB in the source form, with 10 KB of CSS (2 KB gzipped) and 11 KB of images.">33 KB of JS</abbr>,
 it has all the [features][] most developers ever need for online maps.
 
 Leaflet is designed with _simplicity_, _performance_ and _usability_ in mind.
-It works efficiently across all major desktop and mobile platforms out of the box,
-taking advantage of HTML5 and CSS3 on modern browsers while still being accessible on older ones.
-It can be extended with a huge amount of [plugins][],
+It works efficiently across all major desktop and mobile platforms,
+can be extended with lots of [plugins][],
 has a beautiful, easy to use and [well-documented API][]
 and a simple, readable [source code][] that is a&nbsp;joy to [contribute][] to.
+
+## Basic Example
 
 <div id="map" class="map" style="height: 300px"></div>
 
@@ -51,7 +50,6 @@ and spreading the word about Leaflet among your colleagues and friends.
 Check out the [contribution guide][contribute] for more information on getting involved with Leaflet development.
 
   [Vladimir Agafonkin]: http://agafonkin.com/en
-  [CloudMade]: http://cloudmade.com
   [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
   [features]: features.html
   [plugins]: plugins.html
