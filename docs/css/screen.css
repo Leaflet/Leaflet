@@ -284,27 +284,6 @@ td {
 		color: black;
 	}
 
-#forkme {
-	position: absolute;
-	top: 0;
-	right: 0;
-	border: 0;
-	opacity: 0.3;
-
-	-webkit-filter: blur(1px);
-	-webkit-transform: scale(0.8);
-	-webkit-transform-origin: 100% 0;
-
-	-webkit-transition: all 0.3s ease-out;  /* Saf3.2+, Chrome */
-     -moz-transition: all 0.3s ease-out;  /* FF4+ */
-       -o-transition: all 0.3s ease-out;  /* Opera 10.5+ */
-          transition: all 0.3s ease-out;
-	}
-a:hover #forkme, a:focus #forkme {
-	opacity: 1;
-	-webkit-filter: none;
-	-webkit-transform: scale(1);
-	}
 
 #toc {
 	padding-left: 20px;
