@@ -103,7 +103,32 @@ a {
 
 
 .usedby {
-	background: #eee;
-	height: 80px;
+	background: #f7f7f7;
 	margin: 50px 0;
+	text-align: center;
+	padding: 5px 10px 10px;
 }
+
+.logo {
+	opacity: 0.3;
+	padding-top: 55px;
+	overflow: hidden;
+	height: 0;
+	margin-right: 20px;
+	display: inline-block;
+	background: url(https://www.mapbox.com/home/home.png);
+}
+.logo:hover {
+	opacity: 1;
+}
+
+.logo-github { background-position: 50% -660px; width: 110px; }
+.logo-wpost { background-position: 50% -720px; width: 170px; }
+.logo-pinterest { background-position: 50% -1260px; width: 115px; }
+.logo-foursquare { background-position: 50% -360px; width: 135px; }
+.logo-500px { background-position: 50% -1200px; width: 65px; }
+.logo-usatoday { background-position: 50% -420px; width: 100px; }
+.logo-npr { background-position: 50% -600px; width: 120px; }
+.logo-ftimes { background-position: 50% -780px; width: 145px; }
+.logo-hipmunk { background-position: 50% -540px; width: 125px; }
+.logo-nps { background-position: 50% -960px; width: 45px; padding-top: 60px;}
