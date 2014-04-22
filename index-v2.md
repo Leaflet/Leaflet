@@ -2,8 +2,7 @@
 layout: v2
 ---
 
-Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps.
-It is developed by [Vladimir Agafonkin][] with a&nbsp;team of dedicated [contributors][].
+Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps, used by the world's biggest websites.
 Weighing just about <abbr title="33 KB gzipped &mdash; that's 123 KB minified and 218 KB in the source form, with 10 KB of CSS (2 KB gzipped) and 11 KB of images.">33 KB of JS</abbr>,
 it has all the [features][] most developers ever need for online maps.
 
@@ -15,22 +14,22 @@ and a simple, readable [source code][] that is a&nbsp;joy to [contribute][] to.
 
 ## Basic Example
 
+Let's create a map with <abbr title="Here we use OpenStreetMap tiles, but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr> and add a marker with some text in a popup:
+
 <div id="map" class="map" style="height: 300px"></div>
 
-In this basic example, we create a map with <abbr title="Here we use OpenStreetMap tiles, but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, add a marker and bind a popup with some text to it:
+    <div id="map"></div>
+    <script>
+      var map = L.map('map').setView([51.505, -0.09], 13);
 
-    // create a map in the "map" div, set the view to a given place and zoom
-    var map = L.map('map').setView([51.505, -0.09], 13);
+      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
 
-    // add OpenStreetMap tile layer
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
-
-    // add a marker, attach some popup content to it and show it
-    L.marker([51.5, -0.09]).addTo(map)
-      .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
-      .openPopup();
+      L.marker([51.5, -0.09]).addTo(map)
+        .bindPopup('A pretty CSS3 popup. <br> Easily customizable.')
+        .openPopup();
+    </script>
 
 Learn more with the [quick start guide](examples/quick-start.html), check out [other tutorials](examples.html), or head straight to the [API documentation](reference.html). <br>
 If you have any questions, take a look at the [FAQ](https://github.com/Leaflet/Leaflet/blob/master/FAQ.md) first.
@@ -48,6 +47,8 @@ tweeting to [@LeafletJS](http://twitter.com/LeafletJS)
 and spreading the word about Leaflet among your colleagues and friends.
 
 Check out the [contribution guide][contribute] for more information on getting involved with Leaflet development.
+
+Leaflet is developed by [Vladimir Agafonkin][] with a&nbsp;team of dedicated [contributors][].
 
   [Vladimir Agafonkin]: http://agafonkin.com/en
   [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors

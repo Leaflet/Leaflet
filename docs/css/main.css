@@ -9,6 +9,9 @@ body {
 	margin: 0 auto;
 }
 
+p {
+	margin: 1.4em 0;
+	}
 
 .container code, .container pre code {
 	font-family: "Consolas", "Menlo", "Lucida Console", "Courier New", monospace;
@@ -55,6 +58,10 @@ h2 {
 	margin-top: 40px;
 }
 
+
+.p-example {
+	margin-top: 40px;
+}
 
 .container .map {
 	border: 1px solid #ccc;
