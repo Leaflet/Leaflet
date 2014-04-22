@@ -1,6 +1,6 @@
 
 body {
-	font: 16px/1.5 'Helvetica Neue', Arial, Helvetica, sans-serif;
+	font: 16px/1.5 'Open Sans', Arial, Helvetica, sans-serif;
 	color: #333;
 	}
 
@@ -163,4 +163,10 @@ a {
 
 .quiet {
 	color: #999;
+}
+
+
+th, td {
+	text-align: left;
+	padding: 2px 5px;
 }
