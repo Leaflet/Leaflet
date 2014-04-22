@@ -12,7 +12,7 @@ Every tutorial here comes with step-by-step code explanation and is easy enough 
 
 ### [Leaflet Quick Start Guide][1]
 
-A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with CloudMade tiles) on your page, working with markers, polylines and popups, and dealing with events.
+A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with OSM tiles) on your page, working with markers, polylines and popups, and dealing with events.
 
 ***
 [<img src="docs/images/mobile.png" class="example-img" />][2]

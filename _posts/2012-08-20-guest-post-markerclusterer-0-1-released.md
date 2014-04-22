@@ -91,10 +91,10 @@ Dave Leaver.
 <script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.388.js"></script>
 
 <script>
-	var cloudmade = new L.TileLayer(CM_URL, {maxZoom: 18, attribution: CM_ATTR, styleId: 997}),
+	var osm = new L.TileLayer(OSM_URL, {maxZoom: 18, attribution: OSM_ATTRIB}),
 		latlng = new L.LatLng(-37.820, 175.217);
 
-	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});
+	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [osm]});
 
 	map.attributionControl.addAttribution("Points &copy 2012 LINZ");
 

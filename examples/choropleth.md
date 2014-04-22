@@ -62,14 +62,12 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 
 ### Basic States Map
 
-Let's display our states data on a map with CloudMade tiles of style 22677 for nice grayscale tiles that look perfect as a background for visualizations:
+Let's display our states data on a map with OpenStreetMap tiles.
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-		key: ...,
-		attribution: ...,
-		styleId: 22677
+	L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		attribution: '&amp;copy; &lt;a href="http://osm.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
 	}).addTo(map);
 
 	L.geoJson(statesData).addTo(map);
@@ -263,18 +261,18 @@ Enjoy the result on [the top of this page](#map) or on a [separate page](choropl
 <script src="us-states.js"></script>
 <script>
 	var map2 = L.map('map2').setView([37.8, -96], 4);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 22677}).addTo(map2);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map2);
 	L.geoJson(statesData).addTo(map2);
 
 
 	var map3 = L.map('map3').setView([37.8, -96], 4);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 22677}).addTo(map3);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map3);
 	L.geoJson(statesData, {style: style}).addTo(map3);
 
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 22677}).addTo(map);
+	L.tileLayer(OSM_URL, {attribution: OSM_ATTRIB}).addTo(map);
 
 	// control that shows state info on hover
 	var InfoControl = L.Control.extend({
