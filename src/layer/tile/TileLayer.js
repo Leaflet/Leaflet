@@ -17,6 +17,7 @@ L.TileLayer = L.GridLayer.extend({
 		tms: <Boolean>,
 		zoomReverse: <Number>,
 		detectRetina: <Number>,
+		crossOrigin: <Boolean>,
 		*/
 	},
 
@@ -55,7 +56,11 @@ L.TileLayer = L.GridLayer.extend({
 
 		tile.onload = L.bind(this._tileOnLoad, this, done, tile);
 		tile.onerror = L.bind(this._tileOnError, this, done, tile);
-
+		
+		if (this.options.crossOrigin) {
+			tile.crossOrigin = '';
+		}
+		
 		/*
 		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
 		 http://www.w3.org/TR/WCAG20-TECHS/H67
