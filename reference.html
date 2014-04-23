@@ -1943,6 +1943,12 @@ var map = L.map('map', {
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td><code><span class="literal">null</span></code></td>
 		<td>When this option is set, the TileLayer only loads tiles that are in the given geographical bounds.</td>
+    </tr>
+    <tr>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code><code>Boolean</code></code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>If <code><span class="literal">true</span></code>, all tiles will have their <code>crossOrigin</code> attribute set to <code>''</code>. This is needed if you want to access tile pixel data.</td>
 	</tr>
 </table>
 
