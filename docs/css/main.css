@@ -170,3 +170,22 @@ th, td {
 	text-align: left;
 	padding: 2px 5px;
 }
+
+
+.twitter {
+	position: absolute;
+	top: 30px;
+	right: 30px;
+	opacity: 0.5;
+}
+
+.github {
+	position: absolute;
+	top: 80px;
+	right: 20px;
+	opacity: 0.5;
+}
+
+.twitter:hover, .github:hover {
+	opacity: 1.0;
+}
