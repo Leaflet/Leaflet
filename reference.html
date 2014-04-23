@@ -1923,6 +1923,12 @@ var map = L.map('map', {
 		<td><code><span class="literal">false</span></code></td>
 		<td>If <code><span class="literal">true</span></code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will in theory keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
 	</tr>
+	<tr>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code><code>Boolean</code></code></td>
+		<td><code><span class="literal">false</span></code></td>
+		<td>If <code><span class="literal">true</span></code>, all tiles will have their <code>crossOrigin</code> attribute set to <code>''</code>. This is needed if you want to access tile pixel data.</td>
+	</tr>
 </table>
 
 <h3>Events</h3>
