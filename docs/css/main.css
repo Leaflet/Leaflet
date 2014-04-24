@@ -137,13 +137,13 @@ a {
 
 
 
-.cf:before,
-.cf:after {
+.clearfix:before,
+.clearfix:after {
     content: " "; /* 1 */
     display: table; /* 2 */
 }
 
-.cf:after {
+.clearfix:after {
     clear: both;
 }
 
@@ -191,5 +191,33 @@ th, td {
 	top: 132px;
 }
 
+hr {
+	background: #ddd;
+	color: #ddd;
+	height: 1px;
+	margin: 0 0 1.4em;
+	border: none;
+	clear: both;
+}
 
+.example-img {
+	float: left;
+	margin: 0 18px 18px 0;
 
+}
+
+.post-date {
+	float: left;
+	width: 130px;
+	line-height: 1.6;
+	color: #999;
+	font-size: 18px;
+}
+
+.post-info {
+	overflow: hidden;
+}
+
+.post-title {
+	margin-top: 0;
+}
