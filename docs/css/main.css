@@ -244,3 +244,9 @@ hr {
 .plugins td:last-child {
 	white-space: nowrap;
 }
+
+
+h4 {
+	color: #999;
+	margin: 1em 0 0.5em;
+}
