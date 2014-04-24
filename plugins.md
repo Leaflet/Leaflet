@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: v2
 title: Plugins
 bodyclass: plugins-page
 ---
