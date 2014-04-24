@@ -45,7 +45,7 @@ h3.tagline {
 	margin-top: -15px;
 	color: #777;
 	text-align: center;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	}
 
 h2 {
@@ -117,7 +117,8 @@ a {
 	height: 0;
 	margin-right: 20px;
 	display: inline-block;
-	background: url(https://www.mapbox.com/home/home.png);
+	background: url(https://www.mapbox.com/home/home@2x.png);
+	background-size: 300px 1360px;
 }
 .logo:hover {
 	opacity: 1;
@@ -172,20 +173,23 @@ th, td {
 }
 
 
-.twitter {
-	position: absolute;
-	top: 30px;
-	right: 30px;
-	opacity: 0.5;
-}
-
-.github {
-	position: absolute;
-	top: 80px;
+.ext-link {
+	position: fixed;
 	right: 20px;
 	opacity: 0.5;
 }
-
-.twitter:hover, .github:hover {
-	opacity: 1.0;
+.ext-link:hover {
+	opacity: 1;
 }
+.github {
+	top: 20px;
+}
+.twitter {
+	top: 76px;
+}
+.forum {
+	top: 132px;
+}
+
+
+
