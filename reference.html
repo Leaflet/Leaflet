@@ -1770,10 +1770,7 @@ var map = L.map('map', {
 
 <h3>Usage example</h3>
 
-<pre><code class="javascript">L.tileLayer('http://{s}.tile.cloudmade.com/{key}/{styleId}/256/{z}/{x}/{y}.png', {
-	key: 'API-key',
-	styleId: 997
-}).addTo(map);</code></pre>
+<pre><code class="javascript">L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}', {foo: 'bar'}).addTo(map);</code></pre>
 
 <h3>Creation</h3>
 
@@ -1855,7 +1852,7 @@ var map = L.map('map', {
 		<td><code><b>attribution</b></code></td>
 		<td><code>String</code></td>
 		<td><code><span class="string">''</span></code></td>
-		<td>e.g. "&copy; CloudMade" &mdash; the string used by the attribution control, describes the layer data.</td>
+		<td>e.g. "&copy; Mapbox" &mdash; the string used by the attribution control, describes the layer data.</td>
 	</tr>
 	<tr>
 		<td><code><b>tms</b></code></td>
@@ -4365,7 +4362,7 @@ map.addControl(control);</code></pre>
 			<nobr>&lt;String&gt; <i>text</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds an attribution text (e.g. <code><span class="string">'Vector data &amp;copy; CloudMade'</span></code>).</td>
+		<td>Adds an attribution text (e.g. <code><span class="string">'Vector data &amp;copy; Mapbox'</span></code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>removeAttribution</b>(
@@ -4382,7 +4379,7 @@ map.addControl(control);</code></pre>
 <p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control">Control</a>.</p>
 
 <pre><code>var baseLayers = {
-	"CloudMade": cloudmade,
+	"Mapbox": mapbox,
 	"OpenStreetMap": osm
 };
 

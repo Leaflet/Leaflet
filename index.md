@@ -20,6 +20,7 @@ and a simple, readable [source code][] that is a&nbsp;joy to [contribute][] to.
 Used by:
 [Flickr](http://flickr.com/map)
 [foursquare](https://foursquare.com/)
+[Pinterest](http://pinterest.com)
 [craigslist](http://t.co/V4EiURIA)
 [Data.gov](http://data.gov)
 [IGN](http://www.ign.com/wikis/the-elder-scrolls-5-skyrim/interactive-maps/Skyrim)
@@ -27,8 +28,7 @@ Used by:
 [OSM](http://openstreetmap.org)
 [Meetup](http://www.meetup.com/)
 [WSJ](http://projects.wsj.com/campaign2012/maps/)
-[MapBox](http://mapbox.com)
-[CloudMade](http://cloudmade.com)
+[Mapbox](http://mapbox.com)
 [CartoDB](http://cartodb.com)
 [GIS Cloud](http://www.giscloud.com/)
 ...

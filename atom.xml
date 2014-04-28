@@ -11,7 +11,7 @@ title: Leaflet Developer Blog Atom Feed
 	<link href="http://leafletjs.com"/>
 
 	<updated>{{ site.time | date_to_xmlschema }}</updated>
-	<id>http://leaflet.cloudmade.com/</id>
+	<id>http://leafletjs.com/</id>
 
 	<author>
 		<name>Vladimir Agafonkin</name>
@@ -22,7 +22,7 @@ title: Leaflet Developer Blog Atom Feed
 		<title>{{ post.title }}</title>
 		<link href="http://leafletjs.com{{ post.url }}"/>
 		<updated>{{ post.date | date_to_xmlschema }}</updated>
-		<id>http://leaflet.cloudmade.com{{ post.id }}</id>
+		<id>http://leafletjs.com{{ post.id }}</id>
 		<content type="html">{{ post.content | xml_escape }}</content>
 	</entry>
 	{% endfor %}
