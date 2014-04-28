@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+</head>
+<body>
+    <div id="map" style=></div>
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
+    <script>
+        map = L.map('map');
+        L.tileLayer('http://otile1.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpg').addTo(map);
+        map.setView([51.505, -0.09], 15);
+        L.circleMarker([51.5, -0.09], {}).addTo(map);
+        L.marker([51.505, -0.09]).addTo(map);
+        map.setZoom(14); //comment this to make it work
+    </script>
+</body>
+</html>
