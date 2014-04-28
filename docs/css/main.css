@@ -11,7 +11,7 @@ body {
 }
 
 p {
-	margin: 1.4em 0;
+	margin: 22px 0;
 	}
 
 .container code, .container pre code {
@@ -29,7 +29,7 @@ p {
 	}
 
 h1 {
-	margin-top: 50px;
+	margin: 50px 0 20px;
 	text-align: center;
 	}
 h1 a {
@@ -48,7 +48,7 @@ h3.tagline {
 	}
 
 h2 {
-	margin-top: 40px;
+	margin: 50px 0 20px;
 	font-weight: 400;
 	font-size: 28px;
 }
@@ -108,7 +108,7 @@ a {
 
 .usedby {
 	background: #f7f7f7;
-	margin: 30px 0 50px;
+	margin: 50px 0 50px;
 	text-align: center;
 	padding: 5px 10px 10px;
 	box-shadow: inset 0 0 25px rgba(0,0,0,0.05);
