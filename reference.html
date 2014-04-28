@@ -5029,7 +5029,7 @@ a instanceof MyClass; // true
 
 <pre><code>var MyChildClass = MyClass.extend({
 	initialize: function () {
-		MyClass.prototype.initialize.call("Yo");
+		MyClass.prototype.initialize.call(this, "Yo");
 	},
 
 	greet: function (name) {
