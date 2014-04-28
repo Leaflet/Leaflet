@@ -21,26 +21,26 @@
 		L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
 
-	    var cmAttr = 'Map data &copy; 2011 OpenStreetMap contributors, Imagery &copy; 2011 CloudMade',
-			cmUrl = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/{styleId}/256/{z}/{x}/{y}.png';
+	    var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			mbUrl = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
 
-	    var minimal   = L.tileLayer(cmUrl, {styleId: 22677, attribution: cmAttr}),
-		    midnight  = L.tileLayer(cmUrl, {styleId: 999,   attribution: cmAttr}),
-		    motorways = L.tileLayer(cmUrl, {styleId: 46561, attribution: cmAttr});
+	    var grayscale   = L.tileLayer(mbUrl, {id: 'examples.map-20v6611k', attribution: mbAttr}),
+		    streets  = L.tileLayer(mbUrl, {id: 'examples.map-9ijuk24y',   attribution: mbAttr});
 
 		var map = L.map('map', {
 			center: [39.73, -104.99],
 			zoom: 10,
-			layers: [minimal, motorways, cities]
+			layers: [grayscale, cities]
 		});
 
 		var baseLayers = {
-			"Minimal": minimal,
-			"Night View": midnight
+			"Grayscale": grayscale,
+			"Streets": streets
 		};
 
 		var overlays = {
-			"Motorways": motorways,
 			"Cities": cities
 		};
 

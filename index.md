@@ -68,7 +68,6 @@ and spreading the word about Leaflet among your colleagues and friends.
 Check out the [contribution guide][contribute] for more information on getting involved with Leaflet development.
 
   [Vladimir Agafonkin]: http://agafonkin.com/en
-  [CloudMade]: http://cloudmade.com
   [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
   [features]: features.html
   [plugins]: plugins.html
