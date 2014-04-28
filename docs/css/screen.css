@@ -51,8 +51,8 @@ h1 a:hover, h1 a:focus {
 
 h2 {
 	font-size: 1.8em;
-	margin-top: 1.3em;
-	margin-bottom: 1em;
+	margin-top: 20px;
+	margin-bottom: 16px;
 	font-weight: bold;
 	padding: 4px 12px 3px;
 	margin-left: 0;
