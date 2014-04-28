@@ -67,4 +67,38 @@ describe('GridLayer', function () {
 			'656:300': [0, 1]
 		});
 	});
+
+	it('fires tile events', function (done) {
+		var map = L.map(div).setView([0, 0], 10),
+		    grid = L.gridLayer(),
+		    loadingSpy = sinon.spy(),
+		    loadSpy = sinon.spy(),
+		    unloadSpy = sinon.spy();
+
+		grid.on({
+		    tileloadstart: loadingSpy,
+		    tileload: loadSpy,
+		    tileunload: unloadSpy
+		});
+
+		grid.createTile = function (coords) {
+			return document.createElement('div');
+		};
+
+		map.addLayer(grid);
+
+		setTimeout(function () {
+			expect(loadingSpy.callCount).to.be.equal(16);
+			expect(loadSpy.callCount).to.be.equal(16);
+			expect(loadSpy.lastCall.args[0].coords.z).to.be.equal(10);
+
+			map.setZoom(9);
+			setTimeout(function () {
+				expect(unloadSpy.callCount).to.be.equal(16);
+				expect(unloadSpy.lastCall.args[0].coords.z).to.be.equal(10);
+				done();
+			});
+		}, 0);
+		
+	});
 });
