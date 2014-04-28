@@ -91,7 +91,7 @@ Dave Leaver.
 <script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.388.js"></script>
 
 <script>
-	var cloudmade = new L.TileLayer(CM_URL, {maxZoom: 18, attribution: CM_ATTR, styleId: 997}),
+	var cloudmade = new L.TileLayer(MB_URL, {maxZoom: 18, attribution: MB_ATTR, id: 'examples.map-9ijuk24y'}),
 		latlng = new L.LatLng(-37.820, 175.217);
 
 	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [cloudmade]});

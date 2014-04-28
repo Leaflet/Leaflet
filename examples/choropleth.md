@@ -263,18 +263,18 @@ Enjoy the result on [the top of this page](#map) or on a [separate page](choropl
 <script src="us-states.js"></script>
 <script>
 	var map2 = L.map('map2').setView([37.8, -96], 4);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 22677}).addTo(map2);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map2);
 	L.geoJson(statesData).addTo(map2);
 
 
 	var map3 = L.map('map3').setView([37.8, -96], 4);
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 22677}).addTo(map3);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map3);
 	L.geoJson(statesData, {style: style}).addTo(map3);
 
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 22677}).addTo(map);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map);
 
 	// control that shows state info on hover
 	var InfoControl = L.Control.extend({

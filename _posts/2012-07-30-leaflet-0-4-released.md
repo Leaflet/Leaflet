@@ -215,7 +215,7 @@ Vladimir Agafonkin, Leaflet maintainer.
 <script>
 	var map = L.map('map').setView([51.503, -0.09], 13);
 
-	L.tileLayer(CM_URL, {attribution: CM_ATTR, styleId: 997}).addTo(map);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-9ijuk24y'}).addTo(map);
 
 	var polygon = L.polygon([
 		[51.509, -0.08],

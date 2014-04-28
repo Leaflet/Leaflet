@@ -31,30 +31,25 @@ Easy enough! Now you have a `cities` layer that combines your city markers into 
 
 Leaflet has a nice little control that allows your users control what layers they want to see on your map. In addition to showing you how to use it, we'll show another handy use for layer groups.
 
-There are two types of layers --- base layers that are mutually exclusive (only one can be visible on your map), e.g. tile layers, and overlays --- all the other stuff you put over the base layers. In this example, we want to have two base layers (minimal and night-style base map) to switch between, and two overlays to switch on and off --- a pink motorways overlay and city markers (those we created earlier). Lets create those layers and add the default ones to the map:
+There are two types of layers --- base layers that are mutually exclusive (only one can be visible on your map), e.g. tile layers, and overlays --- all the other stuff you put over the base layers. In this example, we want to have two base layers (grayscale and night-style base map) to switch between, and an overlay to switch on and off --- city markers (those we created earlier). Lets create those layers and add the default ones to the map:
 
-<pre><code>var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/<a href="http://account.cloudmade.com/register">API-key</a>/{styleId}/256/{z}/{x}/{y}.png',
-	cloudmadeAttribution = 'Map data &amp;copy; 2011 OpenStreetMap contributors, Imagery &amp;copy; 2011 CloudMade';
-
-var minimal   = L.tileLayer(cloudmadeUrl, {styleId: 22677, attribution: cloudmadeAttribution}),
-	midnight  = L.tileLayer(cloudmadeUrl, {styleId: 999,   attribution: cloudmadeAttribution}),
-	motorways = L.tileLayer(cloudmadeUrl, {styleId: 46561, attribution: cloudmadeAttribution});
+<pre><code>var grayscale = L.tileLayer(mapboxUrl, {id: 'examples.map-20v6611k', attribution: mapboxAttribution}),
+	streets   = L.tileLayer(mapboxUrl, {id: 'examples.map-9ijuk24y', attribution: mapboxAttribution});
 
 var map = L.map('map', {
-	center: new L.LatLng(39.73, -104.99),
+	center: [39.73, -104.99],
 	zoom: 10,
-	layers: [minimal, motorways, cities]
+	layers: [grayscale, cities]
 });</code></pre>
 
-Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are just simple objects with key/value pairs. The key is what sets the text for the layer in the control (e.g. "Night View"). The corresponding value is a reference to the layer (e.g. `midnight`).
+Next, we'll create two objects. One will contain our base layers and one will contain our overlays. These are just simple objects with key/value pairs. The key is what sets the text for the layer in the control (e.g. "Streets"). The corresponding value is a reference to the layer (e.g. `streets`).
 
 <pre><code>var baseMaps = {
-	"Minimal": minimal,
-	"Night View": midnight
+	"Grayscale": grayscale,
+	"Streets": streets
 };
 
 var overlayMaps = {
-    "Motorways": motorways,
     "Cities": cities
 };</code></pre>
 
@@ -62,7 +57,7 @@ Now, all that's left to do is to create a [Layers Control](../reference.html#con
 
 <pre><code>L.control.layers(baseMaps, overlayMaps).addTo(map);</code></pre>
 
-Note that we added `minimal`, `motorways` and `cities` layers to the map but didn't add `midnight`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
+Note that we added `grayscale`, `motorways` and `cities` layers to the map but didn't add `streets`. The layers control is smart enough to detect what layers we've already added and have corresponding checkboxes and radioboxes set.
 
 Also note that when using multiple base layers, only one of them should be added to the map at instantiation, but all of them should be present in the base layers object when creating the layers control.
 
@@ -76,23 +71,21 @@ Now lets [view the result on a separate page &rarr;](layers-control-example.html
 	L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
 	L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
-    var minimal   = L.tileLayer(CM_URL, {styleId: 22677, attribution: CM_ATTR}),
-	    midnight  = L.tileLayer(CM_URL, {styleId: 999,   attribution: CM_ATTR}),
-	    motorways = L.tileLayer(CM_URL, {styleId: 46561, attribution: CM_ATTR});
+    var grayscale = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}),
+	    streets = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-9ijuk24y'});
 
 	var map = L.map('map', {
 		center: [39.73, -104.99],
 		zoom: 10,
-		layers: [minimal, motorways, cities]
+		layers: [grayscale, cities]
 	});
 
 	var baseLayers = {
-		"Minimal": minimal,
-		"Night View": midnight
+		"Grayscale": grayscale,
+		"Streets": streets
 	};
 
 	var overlays = {
-		"Motorways": motorways,
 		"Cities": cities
 	};
 
