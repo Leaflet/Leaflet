@@ -257,6 +257,10 @@ L.Marker = L.Layer.extend({
 		this._updateZIndex(this.options.riseOffset);
 	},
 
+	bringToFront: function () {
+		this._bringToFront();
+	},
+
 	_resetZIndex: function () {
 		this._updateZIndex(0);
 	}
