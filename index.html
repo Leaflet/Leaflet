@@ -15,12 +15,12 @@ and a simple, readable&nbsp;<a title="Leaflet source code repository on GitHub" 
 
 <div id="map" class="map map-home" style="height: 300px; margin-top: 50px"></div>
 
-<p>Let's create a map in the <code>'map'</code> div, add <abbr title="Here we use OpenStreetMap tiles, but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, and then add a marker with some text in a popup:</p>
+<p>Here we create a map in the <code>'map'</code> div, add <abbr title="Here we use OpenStreetMap tiles, but Leaflet doesn't force you to &mdash; use whatever works for you, it's open source!">tiles of our choice</abbr>, and then add a marker with some text in a popup:</p>
 
 <pre class="basic-code javascript"><code>var map = L.map('map').setView([51.505, -0.09], 13);
 
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; &lt;a href="http://osm.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
+    attribution: '&amp;copy; &lt;a href="http://osm.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
 }).addTo(map);
 
 L.marker([51.5, -0.09]).addTo(map)
@@ -34,6 +34,7 @@ If you have any questions, take a look at the <a href="https://github.com/Leafle
 
 </div>
 
+<h2 class="usedby-title">Trusted by the best &hearts;</h2>
 <div class="usedby">
     <a class="logo logo-github" href="#">GitHub</a>
     <a class="logo logo-foursquare" href="#">foursquare</a>
