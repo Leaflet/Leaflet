@@ -34,7 +34,11 @@ h1 {
 	}
 h1 a {
 	-webkit-transition: 0.8s all;
+	-webkit-animation: leafanim 3s ease 3s 1 normal none;
 	}
+@-webkit-keyframes leafanim {
+	50%  { -webkit-filter: hue-rotate(-70deg) saturate(1.2); }
+}
 h1 a:hover, h1 a:focus {
 	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
 	}
@@ -129,7 +133,8 @@ a {
 	display: inline-block;
 	background: url(https://www.mapbox.com/home/home@2x.png);
 	background-size: 300px 1360px;
-}
+	}
+
 .logo:hover {
 	opacity: 1;
 }
@@ -199,7 +204,14 @@ table {
 	position: fixed;
 	right: 20px;
 	opacity: 0.5;
-}
+	-webkit-animation: fadein 1s;
+	}
+
+@-webkit-keyframes fadein {
+	0% { opacity: 0; }
+	100%  { opacity: 0.5; }
+	}
+
 .ext-link:hover {
 	opacity: 1;
 }
@@ -260,7 +272,8 @@ h4 {
 
 h2 {
 	font-weight: bold;
-	padding: 3px 12px 5px;
+	padding: 3px 15px 5px;
+	margin-bottom: 22px;
 	background: #edeeef;
 
 	color: white;
@@ -273,7 +286,7 @@ h2 {
 	background-image: linear-gradient(top, #b0de5c, #82cb00);
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6�IE9 */
 
-	border-radius: 5px;
+	border-radius: 7px;
 
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
 	}
