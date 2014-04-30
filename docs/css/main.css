@@ -118,7 +118,7 @@ a {
 
 
 h2.usedby-title {
-	background: #888;
+	background: #999;
 	border-radius: 0;
 	margin-bottom: 0;
 	text-align: center;
@@ -126,15 +126,15 @@ h2.usedby-title {
 	text-shadow: none;
 }
 .usedby {
-	background: #f0f0f0;
+	background: #f7f7f7;
 	margin: 0px 0 70px;
 	text-align: center;
 	padding: 10px 10px 15px;
-	box-shadow: inset 0 0 25px rgba(0,0,0,0.1);
+	box-shadow: inset 0 0 25px rgba(0,0,0,0.2);
 }
 
 .logo {
-	opacity: 0.5;
+	opacity: 0.6;
 	padding-top: 55px;
 	overflow: hidden;
 	height: 0;
@@ -195,6 +195,7 @@ th, td {
 	text-align: left;
 	padding: 8px 10px;
 	border: 1px solid #ccc;
+	vertical-align: top;
 }
 th {
 	background: #eee;
@@ -299,3 +300,55 @@ h2 {
 
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
 	}
+
+
+.toc-col {
+	float: left;
+	width: 160px;
+}
+
+.map-col {
+	width: 180px;
+	border-right: 1px solid #ddd;
+	margin-right: 40px;
+}
+
+#toc h4 {
+	margin-top: 0;
+}
+
+#toc ul {
+	padding: 0;
+	list-style: none;
+	margin-top: 0;
+	margin-bottom: 25px;
+}
+
+
+table td {
+	color: #666;
+}
+table td:first-child {
+	color: #777;
+}
+table td:last-child {
+	color: black;
+}
+
+table td code i {
+	color: #9a9;
+}
+
+table td code b {
+	color: black;
+	font-weight: normal;
+}
+
+.api-page table td,
+.api-page table th {
+	font-size: 14px;
+}
+
+.api-page h4 {
+	margin-top: 20px;
+}
