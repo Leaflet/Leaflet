@@ -37,16 +37,11 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._startPoint = this._map.mouseEventToContainerPoint(e);
 
 		L.DomEvent.on(document, {
-			contextmenu: this._onPreventDefault,
+			contextmenu: L.DomEvent.stop,
 			mousemove: this._onMouseMove,
 			mouseup: this._onMouseUp,
 			keydown: this._onKeyDown
 		}, this);
-	},
-
-	_onPreventDefault: function (e) {
-		L.DomEvent.preventDefault(e);
-		L.DomEvent.stopPropagation(e);
 	},
 
 	_onMouseMove: function (e) {
@@ -80,7 +75,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.enableImageDrag();
 
 		L.DomEvent.off(document, {
-			contextmenu: this._onPreventDefault,
+			contextmenu: L.DomEvent.stop,
 			mousemove: this._onMouseMove,
 			mouseup: this._onMouseUp,
 			keydown: this._onKeyDown
