@@ -337,3 +337,51 @@ h2.usedby-title {
 .api-page h4 {
 	margin-top: 20px;
 }
+
+tr:target {
+	background: yellow;
+	-webkit-animation: highlight 2s ease 0.5s 1 normal forwards;
+	        animation: highlight 2s ease 0.5s 1 normal forwards;
+}
+
+@-webkit-keyframes highlight {
+	0%   { background: yellow; }
+	100% { background: white; }
+}
+@keyframes highlight {
+	0%   { background: yellow; }
+	100% { background: white; }
+}
+
+.api-page h2[id]:before,
+.api-page tr[id] td:first-child:before {
+	content: 'Permalink';
+	display: inline-block;
+	margin: 0px 5px 0px -35px;
+	width: 30px;
+	height: 0;
+	overflow: hidden;
+	padding-top: 20px;
+	line-height: 20px;
+	vertical-align: baseline;
+	background: url(../images/sprite.png) -0px -0px no-repeat;
+	opacity: 0.2;
+	border-radius: 50%;
+	cursor: pointer;
+	position: absolute;
+	}
+
+.api-page h2[id]:before {
+	margin-left: -40px;
+	margin-top: 10px;
+}
+
+.api-page tr[id] td:first-child:before {
+    opacity:0;
+    }
+
+.api-page tr[id]:hover td:first-child:before {
+    opacity:1;
+    }
+
+.api-page h2[id]:hover:before { opacity:1; }

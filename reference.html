@@ -6381,7 +6381,7 @@ for (var i = 0, len = tables.length; i < len; i++) {
         if (tds[j].cellIndex === 0) {
             tds[j].parentNode.id = id + '-' + (tds[j].textContent || tds[j].innerText).split('(')[0].toLowerCase();
             tds[j].parentNode.onclick = function(e) {
-                if ((window.innerWidth / 2) - e.clientX > 394) window.location.hash = '#' + this.id;
+                if ((window.innerWidth / 2) - e.clientX > 460) window.location.hash = '#' + this.id;
             };
         }
     }
