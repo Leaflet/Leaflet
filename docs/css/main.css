@@ -1,32 +1,100 @@
 
+/* general styles */
+
 body {
 	font: 16px/1.5 'Open Sans', Arial, Helvetica, sans-serif;
 	color: #333;
-	}
+}
+p {
+	margin: 24px 0;
+}
+a {
+	color: #0a6;
+}
+hr {
+	background: #ddd;
+	color: #ddd;
+	height: 1px;
+	margin: 0 0 1.4em;
+	border: none;
+	clear: both;
+}
+
+.clearfix:before,
+.clearfix:after {
+    content: " "; /* 1 */
+    display: table; /* 2 */
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}
+th, td {
+	text-align: left;
+	padding: 8px 10px;
+	border: 1px solid #ccc;
+	vertical-align: top;
+}
+th {
+	background: #eee;
+	text-shadow: 1px 1px 0 white;
+	background-color: #eeeeee;
+	background-image: -webkit-linear-gradient(top, #eeeeee, #d7d7d7);
+	background-image:         linear-gradient(to bottom, #eeeeee, #d7d7d7);
+}
+
+
+/* headings */
+
+h2 {
+	margin: 50px 0 20px;
+	font-weight: 400;
+	font-size: 28px;
+	font-weight: bold;
+	padding: 3px 15px 5px;
+	margin-bottom: 22px;
+	background: #edeeef;
+
+	color: white;
+
+	background-color: #b0de5c;
+	background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00);
+	background-image:         linear-gradient(top, #b0de5c, #82cb00);
+
+	border-radius: 7px;
+
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
+}
+
+h3 {
+	margin-top: 2em;
+	color: #777;
+}
+h4 {
+	color: #999;
+	margin: 1em 0 0.5em;
+}
+
+
+/* general layout */
 
 .container {
 	max-width: 920px;
 	padding: 0 30px;
 	margin: 0 auto;
 }
+.footer {
+	margin-top: 50px;
+	color: #777;
+}
 
-p {
-	margin: 24px 0;
-	}
 
-.container code, .container pre code {
-	font-family: "Consolas", "Menlo", "Lucida Console", "Courier New", monospace;
-	}
-.container pre code {
-	padding: 10px 15px;
-	background: white;
-	color: #444;
-	}
-.container pre {
-	border-radius: 5px;
-	border: 1px dotted #aaa;
-	box-shadow: 0 0 15px rgba(0,0,0,0.05);
-	}
+/* header */
 
 h1 {
 	margin: 50px 0 20px;
@@ -37,11 +105,12 @@ h1 a {
 	-webkit-animation: leafanim 3s ease 3s 1 normal none;
 	}
 @-webkit-keyframes leafanim {
-	50%  { -webkit-filter: hue-rotate(-70deg) saturate(1.2); }
+	50% { -webkit-filter: hue-rotate(-70deg) saturate(1.2); }
 }
 h1 a:hover, h1 a:focus {
 	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
-	}
+}
+
 h3.tagline {
 	font-weight: 300;
 	font-size: 30px;
@@ -49,30 +118,6 @@ h3.tagline {
 	color: #777;
 	text-align: center;
 	margin-bottom: 30px;
-	}
-
-h2 {
-	margin: 50px 0 20px;
-	font-weight: 400;
-	font-size: 28px;
-}
-
-
-.container .map {
-	border: 1px solid #ccc;
-}
-.container .map:focus {
-	border-color: #999;
-}
-
-
-h2, h3, .nav {
-	font-family: 'Open Sans', sans-serif;
-}
-
-h3 {
-	margin-top: 2em;
-	color: #777;
 }
 
 .nav {
@@ -84,38 +129,81 @@ h3 {
 	margin-bottom: 40px;
 	border-bottom: 1px solid #ddd;
 	padding-bottom: 40px;
-	}
+}
 .nav li {
 	display: inline;
 	padding: 10px;
 	font-weight: 300;
 	color: #999;
-	}
+}
 .nav li a {
 	font-weight: 400;
 	text-decoration: none;
 	color: #0b3;
-	}
+}
 .nav li a:hover {
 	color: #0d5;
-	}
-
-a {
-	color: #0a6;
 }
+
+.ext-link {
+	position: fixed;
+	right: 20px;
+	opacity: 0.5;
+	-webkit-animation: fadein 1s;
+}
+.ext-link:hover {
+	opacity: 1;
+}
+@-webkit-keyframes fadein {
+	from { opacity: 0; }
+	to   { opacity: 0.5; }
+}
+.github {
+	top: 20px;
+}
+.twitter {
+	top: 76px;
+}
+.forum {
+	top: 132px;
+}
+
+
+/* content */
+
+.container code, .container pre code {
+	font-family: "Consolas", "Menlo", "Lucida Console", "Courier New", monospace;
+}
+.container pre code {
+	padding: 10px 15px;
+	background: white;
+	color: #444;
+}
+.container pre {
+	border-radius: 5px;
+	border: 1px dotted #aaa;
+	box-shadow: 0 0 15px rgba(0,0,0,0.05);
+}
+
+.container .map {
+	border: 1px solid #ccc;
+}
+.container .map:focus {
+	border-color: #999;
+}
+
+.quiet {
+	color: #999;
+}
+
+
+/* frontpage */
 
 .map-home {
 	height: 300px;
 	margin-top: 50px;
 	margin-bottom: 50px;
 }
-
-
-.footer {
-	margin-top: 50px;
-	color: #777;
-}
-
 
 h2.usedby-title {
 	background: #999;
@@ -142,12 +230,10 @@ h2.usedby-title {
 	display: inline-block;
 	background: url(https://www.mapbox.com/home/home@2x.png);
 	background-size: 300px 1360px;
-	}
-
+}
 .logo:hover {
 	opacity: 1;
 }
-
 .logo-github { background-position: 50% -660px; width: 110px; }
 .logo-wpost { background-position: 50% -720px; width: 170px; }
 .logo-pinterest { background-position: 50% -1260px; width: 115px; }
@@ -158,19 +244,6 @@ h2.usedby-title {
 .logo-ftimes { background-position: 50% -780px; width: 145px; }
 .logo-hipmunk { background-position: 50% -540px; width: 125px; }
 .logo-nps { background-position: 50% -960px; width: 45px; padding-top: 60px; position: relative; top: 5px;}
-
-
-
-.clearfix:before,
-.clearfix:after {
-    content: " "; /* 1 */
-    display: table; /* 2 */
-}
-
-.clearfix:after {
-    clear: both;
-}
-
 
 .features {
 	-webkit-column-count: 3;
@@ -186,70 +259,14 @@ h2.usedby-title {
 	margin: 0;
 }
 
-.quiet {
-	color: #999;
-}
 
-
-th, td {
-	text-align: left;
-	padding: 8px 10px;
-	border: 1px solid #ccc;
-	vertical-align: top;
-}
-th {
-	background: #eee;
-	text-shadow: 1px 1px 0 white;
-	background-color: #eeeeee;
-	background-image: -webkit-linear-gradient(top, #eeeeee, #d7d7d7);
-	background-image:         linear-gradient(to bottom, #eeeeee, #d7d7d7);
-}
-table {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-
-.ext-link {
-	position: fixed;
-	right: 20px;
-	opacity: 0.5;
-	-webkit-animation: fadein 1s;
-	}
-
-@-webkit-keyframes fadein {
-	0% { opacity: 0; }
-	100%  { opacity: 0.5; }
-	}
-
-.ext-link:hover {
-	opacity: 1;
-}
-.github {
-	top: 20px;
-}
-.twitter {
-	top: 76px;
-}
-.forum {
-	top: 132px;
-}
-
-hr {
-	background: #ddd;
-	color: #ddd;
-	height: 1px;
-	margin: 0 0 1.4em;
-	border: none;
-	clear: both;
-}
+/* tutorials */
 
 .example-img {
 	float: left;
 	margin: 0 18px 18px 0;
 
 }
-
 .post-date {
 	float: left;
 	width: 130px;
@@ -257,56 +274,28 @@ hr {
 	color: #999;
 	font-size: 18px;
 }
-
 .post-info {
 	overflow: hidden;
 }
-
 .post-title {
 	margin-top: 0;
 }
 
 
+/* plugins */
+
 .plugins td:first-child,
-.plugins td:last-child {
+.plugins td:last-child a {
 	white-space: nowrap;
 }
 
 
-h4 {
-	color: #999;
-	margin: 1em 0 0.5em;
-}
-
-
-
-h2 {
-	font-weight: bold;
-	padding: 3px 15px 5px;
-	margin-bottom: 22px;
-	background: #edeeef;
-
-	color: white;
-
-	background-color: #b0de5c;
-	background-image: -moz-linear-gradient(top, #b0de5c, #82cb00); /* FF3.6 */
-	background-image: -o-linear-gradient(top, #b0de5c, #82cb00); /* Opera 11.10+ */
-	background-image: -webkit-gradient(linear, left top, left bottom, from(#b0de5c), to(#82cb00)); /* Saf4+, Chrome */
-	background-image: -webkit-linear-gradient(top, #b0de5c, #82cb00); /* Chrome 10+, Saf5.1+ */
-	background-image: linear-gradient(top, #b0de5c, #82cb00);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#b0de5c', EndColorStr='#82cb00'); /* IE6�IE9 */
-
-	border-radius: 7px;
-
-	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
-	}
-
+/* API docs */
 
 .toc-col {
 	float: left;
 	width: 160px;
 }
-
 .map-col {
 	width: 180px;
 	border-right: 1px solid #ddd;
@@ -324,26 +313,22 @@ h2 {
 	margin-bottom: 25px;
 }
 
-
-table td {
+.api-page table td {
 	color: #666;
 }
-table td:first-child {
+.api-page table td:first-child {
 	color: #777;
 }
-table td:last-child {
+.api-page table td:last-child {
 	color: black;
 }
-
-table td code i {
+.api-page table td code i {
 	color: #9a9;
 }
-
-table td code b {
+.api-page table td code b {
 	color: black;
 	font-weight: normal;
 }
-
 .api-page table td,
 .api-page table th {
 	font-size: 14px;
