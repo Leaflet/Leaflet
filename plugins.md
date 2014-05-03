@@ -370,6 +370,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ebertin">Emmanuel Bertin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ScanEx/Leaflet.imageTransform">Leaflet.ImageTransform</a>
+		</td><td>Add support of image overlays with arbitrary perspective transformation.
+		</td><td>
+			<a href="https://github.com/aparshin">Alexander Parshin</a>, 
+			<a href="https://github.com/OriginalSin">Sergey Alekseev</a>
+		</td>
+	</tr>
 
 </table>
 
