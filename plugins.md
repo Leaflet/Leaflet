@@ -173,7 +173,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Leaflet plugin for loading a CSV file as geoJSON layer.
 		</td><td>
 			<a href="https://github.com/joker-x">Iván Eixarch</a>
-		</td>
+		</td>c
 	</tr>
 	<tr>
 		<td>
@@ -1039,6 +1039,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A light-weight Leaflet plugin for adding and deleting markers.
 		</td><td>
 			<a href="https://github.com/jdomingu">Jared Dominguez</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-panel-layers">Leaflet Panel Layers</a>
+		</td><td>
+			Leaflet Control Layers extended for group of layers and icons legend
+		</td><td>
+			<a href="http://labs.easyblog.it">Stefano Cudini</a>
 		</td>
 	</tr>
 </table>
