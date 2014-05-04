@@ -5,20 +5,27 @@
 L.Evented = L.Class.extend({
 
 	on: function (types, fn, context) {
+		var i, len;
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
 			for (var type in types) {
 				// we don't process space-separated events here for performance;
 				// it's a hot path since Layer uses the on(obj) syntax
-				this._on(type, types[type], fn);
+				if (L.Util.isArray(types[type])) {
+					for (i = 0, len = types[type].length; i < len; i++) {
+						this._on(type, types[type][i], fn);
+					}
+				} else {
+					this._on(type, types[type], fn);
+				}
 			}
 
 		} else {
 			// types can be a string of space-separated words
 			types = L.Util.splitWords(types);
 
-			for (var i = 0, len = types.length; i < len; i++) {
+			for (i = 0, len = types.length; i < len; i++) {
 				this._on(types[i], fn, context);
 			}
 		}
@@ -27,6 +34,7 @@ L.Evented = L.Class.extend({
 	},
 
 	off: function (types, fn, context) {
+		var i, len;
 
 		if (!types) {
 			// clear all listeners if called without arguments
@@ -34,13 +42,18 @@ L.Evented = L.Class.extend({
 
 		} else if (typeof types === 'object') {
 			for (var type in types) {
-				this._off(type, types[type], fn);
+				if (L.Util.isArray(types[type])) {
+					for (i = 0, len = types[type].length; i < len; i++) {
+						this._off(type, types[type][i], fn);
+					}
+				} else {
+					this._off(type, types[type], fn);
+				}
 			}
-
 		} else {
 			types = L.Util.splitWords(types);
 
-			for (var i = 0, len = types.length; i < len; i++) {
+			for (i = 0, len = types.length; i < len; i++) {
 				this._off(types[i], fn, context);
 			}
 		}
