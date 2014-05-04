@@ -300,6 +300,36 @@ describe('Events', function () {
 			obj.fire();
 			expect(spy3.called).to.be(true);
 		});
+
+		it("accepts an object", function () {
+			var obj = new L.Evented(),
+				spy = sinon.spy();
+
+			obj.on({
+				'test': spy
+			});
+
+			obj.fire('test');
+
+			expect(spy.calledOnce).to.be(true);
+		});
+
+		it("accepts an object with array of methods", function () {
+			var obj = new L.Evented(),
+				spy1 = sinon.spy(),
+				spy2 = sinon.spy(),
+				spy3 = sinon.spy();
+
+			obj.on({
+				'test': [spy1, spy2, spy3]
+			});
+
+			obj.fire('test');
+
+			expect(spy1.calledOnce).to.be(true);
+			expect(spy2.calledOnce).to.be(true);
+			expect(spy3.calledOnce).to.be(true);
+		});
 	});
 
 	describe("#clearEventListeners", function () {
