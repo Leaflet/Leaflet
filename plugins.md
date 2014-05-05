@@ -173,7 +173,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Leaflet plugin for loading a CSV file as geoJSON layer.
 		</td><td>
 			<a href="https://github.com/joker-x">Iván Eixarch</a>
-		</td>c
+		</td>
 	</tr>
 	<tr>
 		<td>
