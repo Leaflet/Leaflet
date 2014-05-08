@@ -51,7 +51,7 @@ Note that `setView` call also returns the map object --- most Leaflet methods ac
 
 Next we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the URL template for the tile images (get yours at [Mapbox](http://mapbox.com)), the attribution text and the maximum zoom level of the layer:
 
-<pre><code class="javascript">L.tileLayer('http://{s}.tiles.mapbox.com/v3/<a href="https://mapbox.com">MapID</a>/997/256/{z}/{x}/{y}.png', {
+<pre><code class="javascript">L.tileLayer('http://{s}.tiles.mapbox.com/v3/<a href="https://mapbox.com">MapID</a>/{z}/{x}/{y}.png', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://mapbox.com"&gt;Mapbox&lt;/a&gt;</span>',
 	maxZoom: 18
 }).addTo(map);</code></pre>
