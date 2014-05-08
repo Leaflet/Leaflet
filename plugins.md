@@ -379,6 +379,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/OriginalSin">Sergey Alekseev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/SINTEF-9012/PruneCluster">PruneCluster</a>
+		</td><td>
+			Fast and realtime marker clustering library.
+		</td><td>
+			<a href="https://github.com/yellowiscool">Antoine Pultier</a>
+		</td>
+	</tr>
 
 </table>
 
