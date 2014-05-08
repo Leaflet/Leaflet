@@ -1170,6 +1170,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/Mappy">Mappy</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://wordpress.org/plugins/leaflet-map/">WordPress Leaflet Map</a>
+		</td><td>
+			Interactive and flexible shortcode to create multiple maps in posts and pages, 
+			and to add multiple markers on those maps.
+		</td><td>
+			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
+		</td>
+	</tr>
 </table>
 
 To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
