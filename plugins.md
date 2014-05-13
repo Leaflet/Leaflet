@@ -662,6 +662,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/CliffCloud/Leaflet.EasyButton">L.EasyButton</a>
+		</td><td>
+			In one line, add a Font Awesome control button with attached click events.
+			<a href="https://cliffcloud.github.io/Leaflet.EasyButton"> Demo</a>
+		</td><td>
+			<a href="https://github.com/atstp">atstp</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/kartena/Leaflet.EditableHandlers">Leaflet.EditableHandlers</a>
 		</td><td>
 			A set of plugins that includes circle editing, measuring tool, and label for polygon sides.
