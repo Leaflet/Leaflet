@@ -34,7 +34,7 @@ Leaflet has a nice little control that allows your users control what layers the
 There are two types of layers --- base layers that are mutually exclusive (only one can be visible on your map), e.g. tile layers, and overlays --- all the other stuff you put over the base layers. In this example, we want to have two base layers (grayscale and night-style base map) to switch between, and an overlay to switch on and off --- city markers (those we created earlier). Lets create those layers and add the default ones to the map:
 
 <pre><code>var grayscale = L.tileLayer(mapboxUrl, {id: 'examples.map-20v6611k', attribution: mapboxAttribution}),
-	streets   = L.tileLayer(mapboxUrl, {id: 'examples.map-9ijuk24y', attribution: mapboxAttribution});
+	streets   = L.tileLayer(mapboxUrl, {id: 'examples.map-i86knfo3', attribution: mapboxAttribution});
 
 var map = L.map('map', {
 	center: [39.73, -104.99],
@@ -72,7 +72,7 @@ Now lets [view the result on a separate page &rarr;](layers-control-example.html
 	L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
     var grayscale = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}),
-	    streets = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-9ijuk24y'});
+	    streets = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i86knfo3'});
 
 	var map = L.map('map', {
 		center: [39.73, -104.99],
