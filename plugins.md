@@ -679,6 +679,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://www.kartena.se/">Kartena</a>
 		</td>
 	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/CliffCloud/Leaflet.LocationShare">L.LocationShare</a>
+		</td><td>
+			Allow users to send and receive a marker with a message.
+			<a href="https://cliffcloud.github.io/Leaflet.LocationShare"> Demo</a>
+		</td><td>
+			<a href="https://github.com/atstp">atstp</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="http://kartena.github.com/Leaflet.Pancontrol/">Leaflet.Pancontrol</a>
