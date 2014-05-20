@@ -592,6 +592,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
             <a href="https://github.com/perliedman">Per Liedman</a>
         </td>
     </tr>
+    	<tr>
+		<td>
+			<a href="https://github.com/jakubdostal/leaflet-geoip">Leaflet GeoIP Locator</a>
+		</td><td>
+			A simple plugin that allows finding the approximate location of IP addresses and map centering on said location.
+		</td><td>
+			<a href="https://github.com/jakubdostal>Jakub Dostal</a>
+		</td>
+	</tr>
 </table>
 
 
