@@ -598,7 +598,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			A simple plugin that allows finding the approximate location of IP addresses and map centering on said location.
 		</td><td>
-			<a href="https://github.com/jakubdostal>Jakub Dostal</a>
+			<a href="https://github.com/jakubdostal">Jakub Dostal</a>
 		</td>
 	</tr>
 </table>
