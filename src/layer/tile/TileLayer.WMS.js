@@ -57,7 +57,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 			    [se.y, nw.x, nw.y, se.x] :
 			    [nw.x, se.y, se.x, nw.y]).join(','),
 
-		    url = L.Util.template(this._url, {s: this._getSubdomain(coords)});
+		    url = L.TileLayer.prototype.getTileUrl.call(this, coords);
 
 		return url + L.Util.getParamString(this.wmsParams, url, true) + '&BBOX=' + bbox;
 	},
