@@ -1088,6 +1088,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://labs.easyblog.it">Stefano Cudini</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/robbiet480/leaflet-categorized-layers">Leaflet Categorized Layers</a>
+		</td><td>
+			Leaflet Control Layers extended for groups of categorized layers
+		</td><td>
+			<a href="http://robbie.io/">Robbie Trencheny</a>
+		</td>
+	</tr>
 </table>
 
 
