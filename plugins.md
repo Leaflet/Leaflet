@@ -388,6 +388,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/yellowiscool">Antoine Pultier</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/cbaines/leaflet-indoor">Leaflet.Indoor</a>
+		</td><td>
+			Create indoor maps.
+		</td><td>
+			<a href="https://github.com/cbaines">Christopher Baines</a>
+		</td>
+	</tr>
 
 </table>
 
