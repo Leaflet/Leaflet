@@ -35,9 +35,8 @@
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github.css" />
 
 	<!-- Leaflet -->
-	<link rel="stylesheet" href="{{ root }}dist/leaflet.css" />
-	<!--[if lte IE 8]><link rel="stylesheet" href="{{ root }}dist/leaflet.ie.css" /><![endif]-->
-	<script src="{{ root }}dist/leaflet.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+	<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 
@@ -46,7 +45,7 @@
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 				'Imagery © <a href="http://mapbox.com">Mapbox</a>';
 
-		MB_URL = 'https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
+		MB_URL = 'http://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
 
 		OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
