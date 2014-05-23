@@ -2,7 +2,7 @@
 layout: default
 ---
 
-<p class="notice">November 18, 2013 &mdash; <a href="2013/11/18/leaflet-0-7-released-plans-for-future.html">Leaflet 0.7 Release, MapBox &amp; Plans for Future</a> (Blog Post)</p>
+<!-- <p class="notice">November 18, 2013 &mdash; <a href="2013/11/18/leaflet-0-7-released-plans-for-future.html">Leaflet 0.7 Release, MapBox &amp; Plans for Future</a> (Blog Post)</p> -->
 
 Leaflet is a modern open-source JavaScript library for mobile-friendly interactive maps.
 It is developed by [Vladimir Agafonkin][] with a&nbsp;team of dedicated [contributors][].
