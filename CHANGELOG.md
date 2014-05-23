@@ -5,6 +5,7 @@ Leaflet Changelog
 
 ## 0.7.3-dev (stable branch)
 
+* Added proper **bower** and **component** support (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#2561](https://github.com/Leaflet/Leaflet/pull/2561) [#1903](https://github.com/Leaflet/Leaflet/issues/1903)
 * Fixed a bug where dragging the map outside the window caused an error on FF. [#2610](https://github.com/Leaflet/Leaflet/issues/2610)
 * Fixed a bug where some taps on Android where not working, often falsely perceived as drags (by [@axefrog](https://github.com/axefrog)). [#2503](https://github.com/Leaflet/Leaflet/pull/2503)
 * Fixed a bug where tapping too quickly on Android ignored most taps. [#2303](https://github.com/Leaflet/Leaflet/issues/2303)
