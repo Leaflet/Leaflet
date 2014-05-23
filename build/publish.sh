@@ -10,16 +10,16 @@ npm run prepublish
 git add dist/leaflet-src.js dist/leaflet.js -f
 
 # create the bower and component files
-copyfiles -u 1 build/*.json ./
-tin -v $VERSION
+node_modules/copyfiles/copyfiles -u 1 build/*.json ./
+node_modules/tin/bin/tin -v $VERSION
 git add component.json bower.json -f
 
 git commit -m "build v$VERSION"
 
 # Tag and push
-echo git tag v$VERSION
-git push --tags
+git tag v$VERSION
+git push --tags --force
 
 # # # Cleanup
-# git checkout master
-# git branch -D build
+git checkout stable
+git branch -D build
