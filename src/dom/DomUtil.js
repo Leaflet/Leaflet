@@ -38,6 +38,12 @@ L.DomUtil = {
 		}
 	},
 
+	empty: function (el) {
+		while (el.firstChild) {
+			el.removeChild(el.firstChild);
+		}
+	},
+
 	toFront: function (el) {
 		el.parentNode.appendChild(el);
 	},

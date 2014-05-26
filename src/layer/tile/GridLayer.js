@@ -195,7 +195,7 @@ L.GridLayer = L.Layer.extend({
 		this._tilesToLoad = 0;
 		this._tilesTotal = 0;
 
-		this._tileContainer.innerHTML = '';
+		L.DomUtil.empty(this._tileContainer);
 
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
@@ -494,7 +494,7 @@ L.GridLayer = L.Layer.extend({
 			bg = this._bgBuffer;
 
 		if (map && !map._animatingZoom && !map.touchZoom._zooming && bg) {
-			bg.innerHTML = '';
+			L.DomUtil.empty(bg);
 			L.DomUtil.setTransform(bg);
 		}
 	},
