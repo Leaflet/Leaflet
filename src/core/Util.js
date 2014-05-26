@@ -174,11 +174,11 @@ L.Util = {
 	               getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 
-	L.Util.requestAnimFrame = function (fn, context, immediate, element) {
+	L.Util.requestAnimFrame = function (fn, context, immediate) {
 		if (immediate && requestFn === timeoutDefer) {
 			fn.call(context);
 		} else {
-			return requestFn.call(window, L.bind(fn, context), element);
+			return requestFn.call(window, L.bind(fn, context));
 		}
 	};
 
