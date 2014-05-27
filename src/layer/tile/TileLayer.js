@@ -16,7 +16,7 @@ L.TileLayer = L.GridLayer.extend({
 		maxNativeZoom: <Number>,
 		tms: <Boolean>,
 		zoomReverse: <Number>,
-		detectRetina: <Number>,
+		detectRetina: <Boolean>,
 		crossOrigin: <Boolean>,
 		*/
 	},
