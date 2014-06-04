@@ -324,7 +324,7 @@ L.GridLayer = L.Layer.extend({
 	_tileCoordsToBounds: function (coords) {
 
 		var map = this._map,
-		    tileSize = this.options.tileSize,
+		    tileSize = this._getTileSize(),
 
 		    nwPoint = coords.multiplyBy(tileSize),
 		    sePoint = nwPoint.add([tileSize, tileSize]),
