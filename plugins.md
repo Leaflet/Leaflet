@@ -1106,6 +1106,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://robbie.io/">Robbie Trencheny</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/davidchouse/Leaflet.NavBar">Leaflet Navigation Toolbar</a>
+		</td><td>
+			Leaflet control for simple back, forward and home navigation.
+		</td><td>
+			<a href="https://github.com/davidchouse">David C</a>
+		</td>
+	</tr>
 </table>
 
 
