@@ -107,19 +107,25 @@ L.Polyline = L.Path.extend({
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
-		var result = [],
-		    flat = this._flat(latlngs);
+		
+		/* calculate bounds */
+		this._calcBounds(latlngs);
+		
+		return latlngs;
+	},
+
+	_calcBounds: function (latlngs) {
+		var flat = this._flat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
-				result[i] = L.latLng(latlngs[i]);
-				this._bounds.extend(result[i]);
+				var latLng = latlngs[i];
+				L.assert(latLng instanceof L.LatLng, 'not a LatLng:', latLng);
+				this._bounds.extend(latLng);
 			} else {
-				result[i] = this._convertLatLngs(latlngs[i]);
+				this._calcBounds(latlngs[i]);
 			}
 		}
-
-		return result;
 	},
 
 	_flat: function (latlngs) {
