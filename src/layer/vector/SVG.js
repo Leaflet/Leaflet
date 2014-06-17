@@ -16,6 +16,7 @@ L.SVG = L.Renderer.extend({
 
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
+		if (this._map._panAnim && this._map._panAnim._inProgress) { return; }
 
 		L.Renderer.prototype._update.call(this);
 
