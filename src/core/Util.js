@@ -3,13 +3,19 @@
  */
 
 L.Util = {
+	// utility function for fail-fast behaviour
+	assert: function(condition) {
+		if (!condition) {
+			throw new Error(Array.prototype.slice.call(arguments, 1).join(' '));
+		}
+	},
+	
 	// extend an object with properties of one or more other objects
 	extend: function (dest) {
-		var sources = Array.prototype.slice.call(arguments, 1),
-		    i, j, len, src;
+		var i, j, len, src;
 
-		for (j = 0, len = sources.length; j < len; j++) {
-			src = sources[j];
+		for (j = 1, len = arguments.length; j < len; j++) {
+			src = arguments[j];
 			for (i in src) {
 				dest[i] = src[i];
 			}
@@ -190,6 +196,7 @@ L.Util = {
 })();
 
 // shortcuts for most used utility functions
+L.assert = L.Util.assert;
 L.extend = L.Util.extend;
 L.bind = L.Util.bind;
 L.stamp = L.Util.stamp;
