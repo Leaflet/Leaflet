@@ -553,6 +553,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/htoooth/">Tao Huang</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://esri.github.io/esri-leaflet">Esri Leaflet</a>
+		</td><td>
+			A set of tools for using ArcGIS services with Leaflet. Support for map services, feature layers, ArcGIS Online tiles and more.
+		</td><td>
+			<a href="https://github.com/patrickarlt/">Patrick Arlt</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -608,6 +617,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A simple plugin that allows finding the approximate location of IP addresses and map centering on said location.
 		</td><td>
 			<a href="https://github.com/jakubdostal">Jakub Dostal</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Esri/esri-leaflet-geocoder">Esri Leaflet Geocoder</a>
+		</td><td>
+			A geocoding control with suggestions powered by the ArcGIS Online geocoder.
+		</td><td>
+			<a href="https://github.com/patrickarlt/">Patrick Arlt</a>
 		</td>
 	</tr>
 </table>
