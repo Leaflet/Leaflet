@@ -21,13 +21,7 @@ L.SVG = L.Renderer.extend({
 
 		var b = this._bounds,
 		    size = b.getSize(),
-		    container = this._container,
-		    pane = this.getPane();
-
-		// hack to make flicker on drag end on mobile webkit less irritating
-		if (L.Browser.mobileWebkit) {
-			pane.removeChild(container);
-		}
+		    container = this._container;
 
 		L.DomUtil.setPosition(container, b.min);
 
@@ -41,10 +35,6 @@ L.SVG = L.Renderer.extend({
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		L.DomUtil.setPosition(container, b.min);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
-		
-		if (L.Browser.mobileWebkit) {
-			pane.appendChild(container);
-		}
 	},
 
 	// methods below are called by vector layers implementations
