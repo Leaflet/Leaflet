@@ -5,11 +5,10 @@
 L.Util = {
 	// extend an object with properties of one or more other objects
 	extend: function (dest) {
-		var sources = Array.prototype.slice.call(arguments, 1),
-		    i, j, len, src;
+		var i, j, len, src;
 
-		for (j = 0, len = sources.length; j < len; j++) {
-			src = sources[j];
+		for (j = 1, len = arguments.length; j < len; j++) {
+			src = arguments[j];
 			for (i in src) {
 				dest[i] = src[i];
 			}
