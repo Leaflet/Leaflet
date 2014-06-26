@@ -21,7 +21,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
 		</td><td>
-			Leaflet.ellipse place ellipses on map by specifying center point, semi-major axis, 
+			Leaflet.ellipse place ellipses on map by specifying center point, semi-major axis,
 			semi-minor axis, and tilt degrees from west.
 		</td><td>
 			<a href="https://github.com/jdfergason">JD Fergason</a>
@@ -375,7 +375,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ScanEx/Leaflet.imageTransform">Leaflet.ImageTransform</a>
 		</td><td>Add support of image overlays with arbitrary perspective transformation.
 		</td><td>
-			<a href="https://github.com/aparshin">Alexander Parshin</a>, 
+			<a href="https://github.com/aparshin">Alexander Parshin</a>,
 			<a href="https://github.com/OriginalSin">Sergey Alekseev</a>
 		</td>
 	</tr>
@@ -626,6 +626,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			A geocoding control with suggestions powered by the ArcGIS Online geocoder.
 		</td><td>
 			<a href="https://github.com/patrickarlt/">Patrick Arlt</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/lokku/leaflet-opencage-search">Leaflet.OpenCage.Search</a>
+		</td>
+		<td>
+			A search plugin plugin that uses <a href="http://geocoder.opencagedata.com/">OpenCage Data's geocoding API</a>.
+		</td>
+		<td>
+			The <a href="https://github.com/lokku">OpenCage</a> team
 		</td>
 	</tr>
 </table>
@@ -1257,7 +1268,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="http://wordpress.org/plugins/leaflet-map/">WordPress Leaflet Map</a>
 		</td><td>
-			Interactive and flexible shortcode to create multiple maps in posts and pages, 
+			Interactive and flexible shortcode to create multiple maps in posts and pages,
 			and to add multiple markers on those maps.
 		</td><td>
 			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
