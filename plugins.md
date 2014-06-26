@@ -1133,6 +1133,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/davidchouse">David C</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gist.github.com/Zverik/09961fbd60257bdf26c9">Leaflet LimitZoom</a>
+		</td><td>
+			Limits available zoom levels to a given list.
+		</td><td>
+			<a href="https://github.com/zverik">Ilya Zverev</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1261,6 +1270,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			and to add multiple markers on those maps.
 		</td><td>
 			<a href="https://twitter.com/bozdoz">Benjamin J DeLong</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://mapbbcode.org/leaflet.html">MapBBCode-related leaflet plugins</a>
+		</td><td>
+			Seven plugins for various features, independent of the MapBBCode library.
+			From circular and popup icons to buttons, layer switcher, better search and attribution.
+		</td><td>
+			<a href="https://github.com/zverik">Ilya Zverev</a>
 		</td>
 	</tr>
 </table>
