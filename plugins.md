@@ -1146,9 +1146,10 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://gist.github.com/Zverik/09961fbd60257bdf26c9">Leaflet LimitZoom</a>
+			<a href="https://github.com/Zverik/Leaflet.LimitZoom">Leaflet LimitZoom</a>
 		</td><td>
-			Limits available zoom levels to a given list.
+			Plugins to limit available zoom levels to a given list, either by
+			restricting zooming or by interpolating tiles.
 		</td><td>
 			<a href="https://github.com/zverik">Ilya Zverev</a>
 		</td>
