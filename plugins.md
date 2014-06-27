@@ -1154,6 +1154,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/zverik">Ilya Zverev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/zimmicz/Leaflet-Coordinates-Control">Leaflet Coordinates Control</a>
+		</td><td>
+			Captures mouseclick and displays its coordinates with easy way to copy them.
+		</td><td>
+			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
+		</td>
+	</tr>
 </table>
 
 
