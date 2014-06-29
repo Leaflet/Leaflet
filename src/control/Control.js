@@ -83,11 +83,14 @@ L.control = function (options) {
 // adds control-related methods to L.Map
 
 L.Map.include({
-	addControl: function (control) {
-		control.addTo(this);
+	addControl: function (controls) {
+		controls = controls ? (L.Util.isArray(controls) ? controls : [controls]) : [];
+
+		for (var i = 0, len = controls.length; i < len; i++) {
+			controls[i].addTo(this);
+		}
 		return this;
 	},
-
 	removeControl: function (control) {
 		control.removeFrom(this);
 		return this;
