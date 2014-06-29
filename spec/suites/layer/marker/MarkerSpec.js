@@ -26,6 +26,22 @@ describe("Marker", function () {
 			expect(afterIcon.src).to.contain(icon2._getIconUrl('icon'));
 		});
 
+		it("preserves draggability", function () {
+			var marker = new L.Marker([0, 0], {icon: icon1});
+			map.addLayer(marker);
+
+			marker.dragging.disable();
+			marker.setIcon(icon2);
+
+			expect(marker.dragging.enabled()).to.be(false);
+
+			marker.dragging.enable();
+
+			marker.setIcon(icon1);
+
+			expect(marker.dragging.enabled()).to.be(true);
+		});
+
 		it("changes the icon to another DivIcon", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text' }) });
 			map.addLayer(marker);

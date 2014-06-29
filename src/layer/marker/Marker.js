@@ -206,13 +206,18 @@ L.Marker = L.Layer.extend({
 		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
 
 		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mouseout contextmenu keypress',
-				this._fireMouseEvent, this);
+			this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
+			var isDraggingEnabled = this.options.draggable;
+			if(this.dragging) {
+				isDraggingEnabled = this.dragging.enabled();
+			}
 			this.dragging = new L.Handler.MarkerDrag(this);
-
-			if (this.options.draggable) {
+			if (isDraggingEnabled) {
 				this.dragging.enable();
+			} else {
+				this.dragging.disable();
 			}
 		}
 	},
