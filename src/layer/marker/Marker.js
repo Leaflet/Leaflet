@@ -209,13 +209,15 @@ L.Marker = L.Layer.extend({
 				this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
+			var draggable = this.options.draggable;
 			if (this.dragging) {
+				draggable = this.dragging.enabled();
 				this.dragging.disable();
 			}
-			
+
 			this.dragging = new L.Handler.MarkerDrag(this);
 
-			if (this.options.draggable) {
+			if (draggable) {
 				this.dragging.enable();
 			}
 		}
