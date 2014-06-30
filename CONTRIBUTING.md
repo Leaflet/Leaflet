@@ -44,7 +44,7 @@ try asking [on the Leaflet forum](https://groups.google.com/forum/#!forum/leafle
 
 ### Considerations for Accepting Patches
 
-While we happily accept patches, we're also commited to keeping Leaflet simple, lightweight and blazingly fast.
+While we happily accept patches, we're also committed to keeping Leaflet simple, lightweight and blazingly fast.
 So bugfixes, performance optimizations and small improvements that don't add a lot of code
 are much more likely to get accepted quickly.
 
@@ -53,7 +53,7 @@ Before sending a pull request with a new feature, first check if it's been discu
 or [Leaflet UserVoice](http://leaflet.uservoice.com/)),
 and then ask yourself two questions:
 
- 1. Are you sure that this new feature is important enough to justify its presense in the Leaflet core?
+ 1. Are you sure that this new feature is important enough to justify its presence in the Leaflet core?
     Or will it look better as a plugin in a separate repository?
  2. Is it written in a simple, concise way that doesn't add bulk to the codebase?
 
@@ -85,7 +85,7 @@ Please do not commit to the `master` branch, or your unrelated changes will go i
 You should also follow the code style and whitespace conventions of the original codebase.
 In particular, use tabs for indentation and spaces for alignment.
 
-Before commiting your changes, run `jake lint` to catch any JS errors in the code and fix them.
+Before committing your changes, run `jake lint` to catch any JS errors in the code and fix them.
 If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js`
 so that the build system knows about them.
 
@@ -142,7 +142,7 @@ If you need to make edits in a local repository to see how it looks in the proce
  4. Open `localhost:4000` in your browser.
 
 Now any file changes will be updated when you reload pages automatically.
-After commiting the changes, just send a pull request.
+After committing the changes, just send a pull request.
 
 If you need to update documentation according to a new feature that only appeared in the master version (not stable one),
 you need to make changes to `gh-pages-master` branch instead of `gh-pages`.
