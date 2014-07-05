@@ -24,7 +24,7 @@
 	-webkit-user-select: none;
 	   -moz-user-select: none;
 	        user-select: none;
-	-webkit-user-drag: none;
+	  -webkit-user-drag: none;
 	}
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
 .leaflet-safari .leaflet-tile {
