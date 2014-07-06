@@ -26,7 +26,7 @@ You can roll your own tiles as well.
 but there are providers that use other sources.
 
 Check out [this example](http://leaflet-extras.github.io/leaflet-providers/preview/)
-with half a hundred different layers to choose from.
+with over seventy different layers to choose from.
 Popular commercial options, free up to a particular number of requests, include
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
