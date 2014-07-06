@@ -10,6 +10,12 @@ L.Layer = L.Evented.extend({
 		return this;
 	},
 
+	addAndListen: function (map, event, callback) {
+		map.addLayer(this);
+		this.on(event, callback);
+		return this;
+	},
+
 	remove: function () {
 		return this.removeFrom(this._map || this._mapToAdd);
 	},
