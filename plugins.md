@@ -669,6 +669,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/turistforeningen">Norwegian Trekking Association</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/route360/r360-js">Route360°</a>
+		</td><td>
+			Route360° visualizes the area which is reachable from a set of starting points in a given time and gives detailed routing information (walk, bike, car and <b>public transportation</b>) to targets.
+		</td><td>
+			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
+		</td>
+	</tr>
 </table>
 
 
