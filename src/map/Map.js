@@ -216,7 +216,7 @@ L.Map = L.Evented.extend({
 			this._container._leaflet = undefined;
 		}
 
-		L.DomUtil.remove(this._mapPane);
+		L.DomUtil.remove(this._mapPane.getContainer());
 
 		if (this._clearControlPos) {
 			this._clearControlPos();
@@ -232,20 +232,10 @@ L.Map = L.Evented.extend({
 	},
 
 	createPane: function (name, container) {
-		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
-		    pane = L.DomUtil.create('div', className, container || this._mapPane);
-
-		if (name) {
-			this._panes[name] = pane;
-		}
-		return pane;
-	},
-
-	createPane2: function (name, container) {
 		var pane = L.pane(this, name, container);
 
 		if (name) {
-			this._panes2[name] = pane;
+			this._panes[name] = pane;
 		}
 		return pane;
 	},
@@ -463,7 +453,7 @@ L.Map = L.Evented.extend({
 
 	_initPanes: function () {
 		var panes = this._panes = {};
-		var panes2 = this._panes2 = {};
+		// var panes2 = this._panes2 = {};
 
 		this._mapPane = this.createPane('mapPane', this._container);
 
@@ -473,7 +463,7 @@ L.Map = L.Evented.extend({
 		this.createPane('markerPane');
 		this.createPane('popupPane');
 
-		this.createPane2('jakePane');
+		this.createPane('jakePane');
 
 		if (!this.options.markerZoomAnimation) {
 			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
@@ -502,7 +492,7 @@ L.Map = L.Evented.extend({
 		this._initialTopLeftPoint = this._getNewTopLeftPoint(center);
 
 		if (!preserveMapOffset) {
-			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
+			L.DomUtil.setPosition(this._mapPane.getContainer(), new L.Point(0, 0));
 		} else {
 			this._initialTopLeftPoint._add(this._getMapPanePos());
 		}
@@ -526,7 +516,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_rawPanBy: function (offset) {
-		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
+		L.DomUtil.setPosition(this._mapPane.getContainer(), this._getMapPanePos().subtract(offset));
 	},
 
 	_getZoomSpan: function () {
@@ -623,7 +613,7 @@ L.Map = L.Evented.extend({
 	// private methods for getting map state
 
 	_getMapPanePos: function () {
-		return L.DomUtil.getPosition(this._mapPane);
+		return L.DomUtil.getPosition(this._mapPane.getContainer());
 	},
 
 	_moved: function () {

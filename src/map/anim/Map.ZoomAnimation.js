@@ -18,7 +18,7 @@ if (zoomAnimated) {
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
 		if (this._zoomAnimated) {
-			L.DomEvent.on(this._mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+			L.DomEvent.on(this._mapPane.getContainer(), L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
 	});
 }
@@ -75,7 +75,7 @@ L.Map.include(!zoomAnimated ? {} : {
 				L.Draggable._disabled = true;
 			}
 
-			L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+			L.DomUtil.addClass(this._mapPane.getContainer(), 'leaflet-zoom-anim');
 		}
 
 		var scale = this.getZoomScale(zoom),
@@ -93,7 +93,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		this._animatingZoom = false;
 
-		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		L.DomUtil.removeClass(this._mapPane.getContainer(), 'leaflet-zoom-anim');
 
 		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
