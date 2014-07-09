@@ -150,10 +150,10 @@ L.Marker = L.Layer.extend({
 
 
 		if (addIcon) {
-			this.getPane().appendChild(this._icon);
+			this.getPane().add(this._icon);
 		}
 		if (newShadow && addShadow) {
-			this.getPane('shadowPane').appendChild(this._shadow);
+			this.getPane('shadowPane').add(this._shadow);
 		}
 	},
 

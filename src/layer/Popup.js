@@ -45,7 +45,7 @@ L.Popup = L.Layer.extend({
 		}
 
 		clearTimeout(this._removeTimeout);
-		this.getPane().appendChild(this._container);
+		this.getPane().add(this._container);
 		this.update();
 
 		if (map._fadeAnimated) {
@@ -131,7 +131,7 @@ L.Popup = L.Layer.extend({
 		}
 		return events;
 	},
-	
+
 	isOpen: function () {
 		return !!this._map && this._map.hasLayer(this);
 	},

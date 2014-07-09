@@ -181,7 +181,7 @@ L.GridLayer = L.Layer.extend({
 			this._updateOpacity();
 		}
 
-		this.getPane().appendChild(this._container);
+		this.getPane().add(this._container);
 	},
 
 	_reset: function (e) {
