@@ -340,7 +340,15 @@ L.Map = L.Evented.extend({
 	},
 
 	getPane: function (pane) {
-		return typeof pane === 'string' ? this._panes[pane] : pane;
+		if (typeof pane === 'string' ) {
+			// Automatically create Pane if it doesn't exist
+			if ( !this.paneExists(pane) ) {
+				this.createPane(pane);
+			}
+			return this._panes[pane];
+		} else {
+			return pane;
+		}
 	},
 
 	getPanes: function () {
