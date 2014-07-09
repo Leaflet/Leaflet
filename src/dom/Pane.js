@@ -5,14 +5,22 @@
 L.Pane = L.Class.extend({
 
 	initialize: function (map, name, container) {
-		console.log('initializing pane object: ' + name);
-
 		this._name = name;
 
-		var className = 'leaflet-pane2' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : '');
-		this._container = L.DomUtil.create('div', className, container || map._mapPane);
+		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : '');
+		this._container = L.DomUtil.create('div', className, container || map._mapPane.getContainer());
+	},
 
-		console.log(this);
+	getContainer: function () {
+		return this._container;
+	},
+
+	add: function (container) {
+		this._container.appendChild(container);
+	},
+
+	remove: function (container) {
+		this._container.removeChild(container);
 	}
 
 
