@@ -59,7 +59,7 @@ describe("Marker", function () {
 			expect(oldIcon.parentNode).to.be(null);
 
 			expect(marker._icon.src).to.contain('marker-icon.png');
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode).to.be(map._panes.markerPane.getContainer());
 		});
 
 		it("changes an image to a DivIcon", function () {
@@ -73,7 +73,7 @@ describe("Marker", function () {
 			expect(oldIcon.parentNode).to.be(null);
 
 			expect(marker._icon.innerHTML).to.contain('Inner1Text');
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
+			expect(marker._icon.parentNode).to.be(map._panes.markerPane.getContainer());
 		});
 
 		it("reuses the icon/shadow when changing icon", function () {
@@ -87,8 +87,8 @@ describe("Marker", function () {
 			expect(oldIcon).to.be(marker._icon);
 			expect(oldShadow).to.be(marker._shadow);
 
-			expect(marker._icon.parentNode).to.be(map._panes.markerPane);
-			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane);
+			expect(marker._icon.parentNode).to.be(map._panes.markerPane.getContainer());
+			expect(marker._shadow.parentNode).to.be(map._panes.shadowPane.getContainer());
 		});
 	});
 
