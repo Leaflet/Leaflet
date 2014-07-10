@@ -241,6 +241,14 @@ L.Map = L.Evented.extend({
 		return pane;
 	},
 
+	createPane2: function (name, container) {
+		var pane = L.pane(this, name, container);
+
+		if (name) {
+			this._panes2[name] = pane;
+		}
+		return pane;
+	},
 
 	// public methods for getting map state
 
@@ -455,6 +463,7 @@ L.Map = L.Evented.extend({
 
 	_initPanes: function () {
 		var panes = this._panes = {};
+		var panes2 = this._panes2 = {};
 
 		this._mapPane = this.createPane('mapPane', this._container);
 
@@ -463,6 +472,8 @@ L.Map = L.Evented.extend({
 		this.createPane('overlayPane');
 		this.createPane('markerPane');
 		this.createPane('popupPane');
+
+		this.createPane2('jakePane');
 
 		if (!this.options.markerZoomAnimation) {
 			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');

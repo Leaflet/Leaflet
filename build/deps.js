@@ -88,6 +88,10 @@ var deps = {
 		desc: 'Extends LayerGroup with mouse events and bindPopup method shared between layers.'
 	},
 
+	Pane: {
+		src: ['dom/Pane.js'],
+		desc: 'Pane management'
+	},
 
 	Path: {
 		src: [
