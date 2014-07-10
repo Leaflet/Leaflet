@@ -6,7 +6,6 @@ L.Pane = L.Class.extend({
 
 	initialize: function (map, name, container) {
 		this._name = name;
-		this._renderer = null;
 
 		// Define the class name for the container
 		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : '');
@@ -18,15 +17,18 @@ L.Pane = L.Class.extend({
 		this.style = this._container.style;
 	},
 
+	// Get the name of the pane
 	getName: function() {
 		return this._name;
 	},
 
+	// Get the container of the pane
 	getContainer: function () {
 		return this._container;
 	},
 
-	getRenderer: function (layer) {
+	// Get the renderer (creates a new one if it doesn't exist)
+	getRenderer: function () {
 		var renderer = this._renderer;
 
 		// Create renderer if it doesn't exist
@@ -38,10 +40,12 @@ L.Pane = L.Class.extend({
 		return renderer;
 	},
 
+	// Add DOM element to pane
 	add: function (container) {
 		this._container.appendChild(container);
 	},
 
+	// Remove DOM element from pane
 	remove: function (container) {
 		this._container.removeChild(container);
 	}
