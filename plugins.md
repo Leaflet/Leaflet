@@ -1282,7 +1282,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
 		</td>
 	</tr>
-<tr>
+	<tr>
 		<td>
 			<a href="https://github.com/Mappy/Leaflet-active-area">Leaflet-active-area</a>
 		</td><td>
