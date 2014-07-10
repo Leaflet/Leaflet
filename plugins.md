@@ -1172,6 +1172,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/zimmicz">Michal Zimmermann</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/SINTEF-9012/Leaflet.GameController">Leaflet GameController</a>
+		</td><td>
+			Interaction handler providing support for gamepads.
+		</td><td>
+			<a href="https://github.com/yellowiscool">Antoine Pultier</a>
+		</td>
+	</tr>
 </table>
 
 
