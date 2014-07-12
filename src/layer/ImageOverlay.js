@@ -25,7 +25,7 @@ L.ImageOverlay = L.Layer.extend({
 			}
 		}
 
-		this.getPane().add(this._image);
+		this.getPane().appendChild(this._image);
 
 		this._reset();
 	},

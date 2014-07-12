@@ -45,7 +45,7 @@ L.Popup = L.Layer.extend({
 		}
 
 		clearTimeout(this._removeTimeout);
-		this.getPane().add(this._container);
+		this.getPane().appendChild(this._container);
 		this.update();
 
 		if (map._fadeAnimated) {

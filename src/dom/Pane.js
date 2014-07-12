@@ -13,7 +13,7 @@ L.Pane = L.Class.extend({
 		// Create the container
 		this._container = L.DomUtil.create('div', className, container || map._mapPane.getContainer());
 
-		// Shortcut for accessing Pane's container's styles
+		// Shortcut for accessing DOM container styles
 		this.style = this._container.style;
 	},
 
@@ -41,14 +41,14 @@ L.Pane = L.Class.extend({
 	},
 
 	// Add DOM element to pane
-	add: function (container) {
+	appendChild: function (container) {
 		this._container.appendChild(container);
 	},
 
 	// Remove DOM element from pane
-	remove: function (container) {
+	removeChild: function (container) {
 		this._container.removeChild(container);
-	}
+	},
 
 });
 

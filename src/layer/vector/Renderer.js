@@ -25,7 +25,7 @@ L.Renderer = L.Layer.extend({
 			}
 		}
 
-		this.getPane().add(this._container);
+		this.getPane().appendChild(this._container);
 		this._update();
 	},
 

@@ -26,7 +26,7 @@ L.SVG = L.Renderer.extend({
 
 		// hack to make flicker on drag end on mobile webkit less irritating
 		if (L.Browser.mobileWebkit) {
-			pane.remove(container);
+			pane.removeChild(container);
 		}
 
 		L.DomUtil.setPosition(container, b.min);
@@ -43,7 +43,7 @@ L.SVG = L.Renderer.extend({
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		if (L.Browser.mobileWebkit) {
-			pane.add(container);
+			pane.appendChild(container);
 		}
 	},
 
