@@ -128,7 +128,7 @@ L.GridLayer = L.Layer.extend({
 	_setAutoZIndex: function (compare) {
 		// go through all other layers of the same pane, set zIndex to max + 1 (front) or min - 1 (back)
 
-		var layers = this.getPane().children,
+		var layers = this.getPane().getContainer().children,
 		    edgeZIndex = -compare(-Infinity, Infinity); // -Infinity for max, Infinity for min
 
 		for (var i = 0, len = layers.length, zIndex; i < len; i++) {
@@ -181,7 +181,7 @@ L.GridLayer = L.Layer.extend({
 			this._updateOpacity();
 		}
 
-		this.getPane().add(this._container);
+		this.getPane().appendChild(this._container);
 	},
 
 	_reset: function (e) {
