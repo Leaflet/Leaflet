@@ -43,7 +43,7 @@ L.SVG = L.Renderer.extend({
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		if (L.Browser.mobileWebkit) {
-			pane.appendChild(container);
+			pane.add(container);
 		}
 	},
 
