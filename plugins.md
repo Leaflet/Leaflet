@@ -1181,6 +1181,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/yellowiscool">Antoine Pultier</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-compass">Leaflet Control Compass</a>
+		</td><td>
+			A leaflet control plugin to build a simple rotating compass
+		</td><td>
+			<a href="http://labs.easyblog.it/web-mapping/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
