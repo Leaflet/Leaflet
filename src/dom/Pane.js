@@ -48,7 +48,7 @@ L.Pane = L.Class.extend({
 	// Remove DOM element from pane
 	removeChild: function (container) {
 		this._container.removeChild(container);
-	},
+	}
 
 });
 
