@@ -205,7 +205,7 @@ L.Marker = L.Layer.extend({
 
 		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
 
-		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mouseout contextmenu keypress',
+		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
 				this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
