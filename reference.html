@@ -820,6 +820,18 @@ var map = L.map('map', {
 		<td><code>Boolean</code></td>
 		<td>Returns <code><span class="literal">true</span></code> if the given layer is currently added to the map.</td>
 	</tr>
+	<tr>
+		<td><code><b>eachLayer</b>(
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Iterates over the layers of the map, optionally specifying context of the iterator function.
+<pre><code>map.eachLayer(function (layer) {
+	layer.bindPopup('Hello');
+});</code></pre>
+		</td>
+	</tr>
 
 	<tr id="map-openpopup">
 		<td><code><b>openPopup</b>(
