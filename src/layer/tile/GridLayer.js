@@ -191,6 +191,10 @@ L.GridLayer = L.Layer.extend({
 			});
 		}
 
+		if (this._abortLoading) {
+			this._abortLoading();
+		}
+
 		this._tiles = {};
 		this._tilesToLoad = 0;
 		this._tilesTotal = 0;
