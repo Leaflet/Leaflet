@@ -4657,7 +4657,7 @@ map.off('click', onClick);</code></pre>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object.</td>
+		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object.  Note that if you passed a custom context to <code>addEventListener</code>, you must pass the same context to <code>removeEventListener</code> in order to remove the listener.</td>
 	</tr>
 	<tr>
 		<td><code><b>removeEventListener</b>(
