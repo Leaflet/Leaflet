@@ -194,6 +194,7 @@ L.Map = L.Evented.extend({
 
 		//zoomPan
 		L.Util.cancelAnimFrame(this._zoomPanFrame);
+		this._zoomPanFrame = undefined;
 		//TODO: Need to fire zoomend if this was what was going on
 
 		//PosAnimation

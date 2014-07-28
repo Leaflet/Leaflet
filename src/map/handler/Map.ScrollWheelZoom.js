@@ -38,6 +38,10 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		clearTimeout(this._timer);
 		this._timer = setTimeout(L.bind(this._performZoom, this), left);
 
+		if (typeof(this._map._zoomPanFrame) !== 'undefined') {
+			this._map.stop();
+		}
+
 		L.DomEvent.stop(e);
 	},
 

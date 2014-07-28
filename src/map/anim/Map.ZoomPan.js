@@ -49,6 +49,7 @@ L.Map.include({
 					this.getScaleZoom(w0 / w(s), startZoom), true, true);
 
 			} else {
+				this._zoomPanFrame = undefined;
 				this._resetView(targetCenter, targetZoom, true, true);
 			}
 		}
