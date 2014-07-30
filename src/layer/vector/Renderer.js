@@ -30,6 +30,9 @@ L.Renderer = L.Layer.extend({
 	},
 
 	onRemove: function () {
+		if (this._container) {
+			this._deinitContainer();
+		}
 		L.DomUtil.remove(this._container);
 	},
 

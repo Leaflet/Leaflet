@@ -14,6 +14,10 @@ L.SVG = L.Renderer.extend({
 		this._container.setAttribute('pointer-events', 'none');
 	},
 
+	_deinitContainer: function() {
+		this._deinitEvents();
+	},
+
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
@@ -41,7 +45,7 @@ L.SVG = L.Renderer.extend({
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		L.DomUtil.setPosition(container, b.min);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
-		
+
 		if (L.Browser.mobileWebkit) {
 			pane.appendChild(container);
 		}
@@ -154,6 +158,12 @@ L.SVG = L.Renderer.extend({
 	// TODO remove duplication with L.Map
 	_initEvents: function () {
 		L.DomEvent.on(this._container, 'click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu',
+				this._fireMouseEvent, this);
+	},
+
+	// TODO remove duplication with L.Map
+	_deinitEvents: function () {
+		L.DomEvent.off(this._container, 'click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu',
 				this._fireMouseEvent, this);
 	},
 
