@@ -44,6 +44,20 @@ If you want to download the full source code, including unit tests, files for de
 you can <a href="https://github.com/Leaflet/Leaflet/releases">download it</a>
 from the <a href="https://github.com/Leaflet/Leaflet">GitHub repository</a>.
 
+### Using Nuget-package
+
+Also available nuget-package - http://nuget.org/packages/leaflet. It is harmonized with ASP.NET MVC application [folders structure][mvcstructure], used by default:
+
+    Content
+    |-images
+    | |-*.png
+    |-leaflet.css
+    Scripts
+    |-leaflet-{version}.js
+    |-leaflet-{version}.min.js
+    
+[mvcstructure]: http://msdn.microsoft.com/en-us/library/dd410120(v=vs.98).aspx
+
 ### Building Leaflet from the Source
 
 Leaflet build system is powered by the [Node.js](http://nodejs.org) platform,
