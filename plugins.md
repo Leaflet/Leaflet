@@ -406,7 +406,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/henrythasler">Henry Thasler</a>
 		</td>
 	</tr>
-
+	<tr>
+ 		<td>
+ 			<a href="https://github.com/makinacorpus/Leaflet.LineExtremities">Leaflet.LineExtremities</a>
+ 		</td><td>
+ 			Show symbols at the extremities of polylines, using SVG markers. 
+ 		</td><td>
+ 			<a href="https://github.com/fredericbonifas">Frédéric Bonifas</a>
+ 		</td>
+ 	</tr>
 </table>
 
 
