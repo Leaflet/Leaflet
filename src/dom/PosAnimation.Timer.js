@@ -1,9 +1,8 @@
 /*
- * L.PosAnimation fallback implementation that powers Leaflet pan animations
- * in browsers that don't support CSS3 Transitions.
+ * L.PosAnimation powers Leaflet pan animations internally.
  */
 
-L.PosAnimation = L.DomUtil.TRANSITION ? L.PosAnimation : L.PosAnimation.extend({
+L.PosAnimation = L.Evented.extend({
 
 	run: function (el, newPos, duration, easeLinearity) { // (HTMLElement, Point[, Number, Number])
 		this.stop();
