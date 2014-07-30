@@ -9,7 +9,7 @@ L.Map.mergeOptions({
 	inertiaDeceleration: 3400, // px/s^2
 	inertiaMaxSpeed: Infinity, // px/s
 	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
-	easeLinearity: 0.25,
+	easeLinearity: 0.2,
 
 	// TODO refactor, move to CRS
 	worldCopyJump: false
@@ -72,7 +72,7 @@ L.Map.Drag = L.Handler.extend({
 			this._positions.push(pos);
 			this._times.push(time);
 
-			if (time - this._times[0] > 200) {
+			if (time - this._times[0] > 100) {
 				this._positions.shift();
 				this._times.shift();
 			}
@@ -141,7 +141,8 @@ L.Map.Drag = L.Handler.extend({
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,
-						noMoveStart: true
+						noMoveStart: true,
+						animate: true
 					});
 				});
 			}
