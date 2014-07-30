@@ -227,7 +227,7 @@ var deps = {
 	AnimationPan: {
 		src: [
 			'dom/DomEvent.js',
-			'dom/PosAnimation.Timer.js',
+			'dom/PosAnimation.js',
 			'map/anim/Map.PanAnimation.js'
 			],
 		heading: 'Animation',

@@ -1,5 +1,5 @@
 /*
- * L.PosAnimation is used by Leaflet internally for pan animations.
+ * L.PosAnimation powers Leaflet pan animations internally.
  */
 
 L.PosAnimation = L.Evented.extend({
@@ -9,83 +9,58 @@ L.PosAnimation = L.Evented.extend({
 
 		this._el = el;
 		this._inProgress = true;
-		this._newPos = newPos;
+		this._duration = duration || 0.25;
+		this._easeOutPower = 1 / Math.max(easeLinearity || 0.5, 0.2);
+
+		this._startPos = L.DomUtil.getPosition(el);
+		this._offset = newPos.subtract(this._startPos);
+		this._startTime = +new Date();
 
 		this.fire('start');
 
-		el.style[L.DomUtil.TRANSITION] = 'all ' + (duration || 0.25) +
-		        's cubic-bezier(0,0,' + (easeLinearity || 0.5) + ',1)';
-
-		L.DomEvent.on(el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
-		L.DomUtil.setPosition(el, newPos);
-
-		// there's no native way to track value updates of transitioned properties, so we imitate this
-		this._stepTimer = setInterval(L.bind(this._onStep, this), 50);
+		this._animate();
 	},
 
 	stop: function () {
 		if (!this._inProgress) { return; }
 
-		// if we just removed the transition property, the element would jump to its final position,
-		// so we need to make it stay at the current position
-
-                // Only setPosition if _getPos actually returns a valid position.
-		this._newPos = this._getPos();
-		if (this._newPos) {
-		    L.DomUtil.setPosition(this._el, this._newPos);
-		}
-
-		this._onTransitionEnd();
-		L.Util.falseFn(this._el.offsetWidth); // force reflow in case we are about to start a new animation
+		this._step();
+		this._complete();
 	},
 
-	_onStep: function () {
-		var stepPos = this._getPos();
-		if (!stepPos) {
-			this._onTransitionEnd();
-			return;
+	_animate: function () {
+		// animation loop
+		this._animId = L.Util.requestAnimFrame(this._animate, this);
+		this._step();
+	},
+
+	_step: function () {
+		var elapsed = (+new Date()) - this._startTime,
+		    duration = this._duration * 1000;
+
+		if (elapsed < duration) {
+			this._runFrame(this._easeOut(elapsed / duration));
+		} else {
+			this._runFrame(1);
+			this._complete();
 		}
-		// jshint camelcase: false
-		// make L.DomUtil.getPosition return intermediate position value during animation
-		this._el._leaflet_pos = stepPos;
+	},
+
+	_runFrame: function (progress) {
+		var pos = this._startPos.add(this._offset.multiplyBy(progress));
+		L.DomUtil.setPosition(this._el, pos);
 
 		this.fire('step');
 	},
 
+	_complete: function () {
+		L.Util.cancelAnimFrame(this._animId);
 
-	_getPos: function () {
-		var left, top,
-		    el = this._el,
-		    style = el.style;
-
-		if (L.Browser.any3d) {
-			var transform = L.DomUtil.getTransform(el);
-			if (!transform) { return; }
-			left = transform.offset.x;
-			top  = transform.offset.y;
-		} else {
-			left = parseFloat(style.left);
-			top  = parseFloat(style.top);
-		}
-
-		return new L.Point(left, top, true);
+		this._inProgress = false;
+		this.fire('end');
 	},
 
-	_onTransitionEnd: function () {
-		L.DomEvent.off(this._el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
-
-		if (!this._inProgress) { return; }
-		this._inProgress = false;
-
-		this._el.style[L.DomUtil.TRANSITION] = '';
-
-		// jshint camelcase: false
-		// make sure L.DomUtil.getPosition returns the final position value after animation
-		this._el._leaflet_pos = this._newPos;
-
-		clearInterval(this._stepTimer);
-
-		this.fire('step').fire('end');
+	_easeOut: function (t) {
+		return 1 - Math.pow(1 - t, this._easeOutPower);
 	}
-
 });
