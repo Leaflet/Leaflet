@@ -158,6 +158,8 @@ L.Marker = L.Layer.extend({
 	},
 
 	_removeIcon: function () {
+		this._deinitInteraction();
+
 		if (this.options.riseOnHover) {
 			L.DomEvent.off(this._icon, {
 				mouseover: this._bringToFront,
@@ -212,13 +214,21 @@ L.Marker = L.Layer.extend({
 			if (this.dragging) {
 				this.dragging.disable();
 			}
-			
+
 			this.dragging = new L.Handler.MarkerDrag(this);
 
 			if (this.options.draggable) {
 				this.dragging.enable();
 			}
 		}
+	},
+
+	_deinitInteraction: function () {
+
+		if (!this.options.clickable) { return; }
+
+		L.DomEvent.off(this._icon, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
+				this._fireMouseEvent, this);
 	},
 
 	_fireMouseEvent: function (e, type) {
