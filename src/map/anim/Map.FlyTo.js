@@ -1,6 +1,6 @@
 
 L.Map.include({
-	zoomPanTo: function (targetCenter, targetZoom) {
+	flyTo: function (targetCenter, targetZoom) {
 
 		this.stop();
 

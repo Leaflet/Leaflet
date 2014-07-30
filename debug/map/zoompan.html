@@ -49,11 +49,11 @@
 			// marker3 = L.marker(dc).addTo(map),
 			// marker4 = L.marker(sf).addTo(map);
 
-		document.getElementById('dc').onclick = function () { map.zoomPanTo(dc, 10); };
-		document.getElementById('sf').onclick = function () { map.zoomPanTo(sf, 10); };
+		document.getElementById('dc').onclick = function () { map.flyTo(dc, 10); };
+		document.getElementById('sf').onclick = function () { map.flyTo(sf, 10); };
 		document.getElementById('stop').onclick = function () { map.stop(); };
-		// document.getElementById('london').onclick = function () { map.zoomPanTo(london); };
-		// document.getElementById('kyiv').onclick = function () { map.zoomPanTo(kyiv); };
+		// document.getElementById('london').onclick = function () { map.flyTo(london); };
+		// document.getElementById('kyiv').onclick = function () { map.flyTo(kyiv); };
 
 		function logEvent(e) { console.log(e.type); }
 
