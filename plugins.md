@@ -1207,6 +1207,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/zvaraondrej">Ondrej Zvara</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aratcliffe/Leaflet.twofingerzoom">Leaflet.twofingerZoom</a>
+		</td><td>
+			 Interaction handler for touch devices enabling zooming out with a two finger tap.
+		</td><td>
+			<a href="https://github.com/aratcliffe/">Adam Ratcliffe</a>
+		</td>
+	</tr>
 </table>
 
 
