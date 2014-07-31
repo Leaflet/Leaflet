@@ -19,9 +19,6 @@ L.PosAnimation = L.Evented.extend({
 		L.DomEvent.on(el, L.DomUtil.TRANSITION_END, this._onTransitionEnd, this);
 		L.DomUtil.setPosition(el, newPos);
 
-		// toggle reflow, Chrome flickers for some reason if you don't do this
-		L.Util.falseFn(el.offsetWidth);
-
 		// there's no native way to track value updates of transitioned properties, so we imitate this
 		this._stepTimer = setInterval(L.bind(this._onStep, this), 50);
 	},

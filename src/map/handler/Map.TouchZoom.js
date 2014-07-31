@@ -54,9 +54,11 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._scale = p1.distanceTo(p2) / this._startDist;
 		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
 
-		if (!map.options.bounceAtZoomLimits &&
-		    ((map.getZoom() === map.getMinZoom() && this._scale < 1) ||
-		     (map.getZoom() === map.getMaxZoom() && this._scale > 1))) { return; }
+		if (!map.options.bounceAtZoomLimits) {
+			var currentZoom = map.getScaleZoom(this._scale);
+			if ((currentZoom <= map.getMinZoom() && this._scale < 1) ||
+		     (currentZoom >= map.getMaxZoom() && this._scale > 1)) { return; }
+		}
 
 		if (!this._moved) {
 			map
