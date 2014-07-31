@@ -397,7 +397,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/cbaines">Christopher Baines</a>
 		</td>
 	</tr>
-
+	<tr>
+		<td>
+			<a href="https://github.com/henrythasler/Leaflet.Geodesic">Leaflet.Geodesic</a>
+		</td><td>
+			Draw geodesic (poly)lines. A geodesic line is the shortest path between two given positions on the earth surface. and You can also calculate the exact distance between two given points on the map. 
+		</td><td>
+			<a href="https://github.com/henrythasler">Henry Thasler</a>
+		</td>
+	</tr>
+	<tr>
+ 		<td>
+ 			<a href="https://github.com/makinacorpus/Leaflet.LineExtremities">Leaflet.LineExtremities</a>
+ 		</td><td>
+ 			Show symbols at the extremities of polylines, using SVG markers. 
+ 		</td><td>
+ 			<a href="https://github.com/fredericbonifas">Frédéric Bonifas</a>
+ 		</td>
+ 	</tr>
 </table>
 
 
@@ -1183,11 +1200,29 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/zvaraondrej/Leaflet.MeasureAreaControl">Leaflet.MeasureAreaControl</a>
+		</td><td>
+			 Control for measuring element's area.
+		</td><td>
+			<a href="https://github.com/zvaraondrej">Ondrej Zvara</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aratcliffe/Leaflet.twofingerzoom">Leaflet.twofingerZoom</a>
+		</td><td>
+			 Interaction handler for touch devices enabling zooming out with a two finger tap.
+		</td><td>
+			<a href="https://github.com/aratcliffe/">Adam Ratcliffe</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/stefanocudini/leaflet-compass">Leaflet Control Compass</a>
 		</td><td>
 			A leaflet control plugin to build a simple rotating compass
 		</td><td>
-			<a href="http://labs.easyblog.it/web-mapping/">Stefano Cudini</a>
+			<a href="http://labs.easyblog.it/">Stefano Cudini</a>
 		</td>
 	</tr>	
 </table>
