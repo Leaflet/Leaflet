@@ -95,7 +95,7 @@ L.Map.Tap = L.Handler.extend({
 	_simulateEvent: function (type, e) {
 		var simulatedEvent = document.createEvent('MouseEvents');
 
-		simulatedEvent._simulated = true;
+		e.target._simulated = true;
 		e.target._simulatedClick = true;
 
 		simulatedEvent.initMouseEvent(

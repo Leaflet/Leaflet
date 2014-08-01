@@ -235,7 +235,7 @@ L.DomEvent = {
 		// on the same event should be triggered far faster;
 		// or check if click is simulated on the element, and if it is, reject any non-simulated events
 
-		if ((elapsed && elapsed > 100 && elapsed < 500) || (e.target._simulatedClick && !e._simulated)) {
+		if ((elapsed && elapsed > 100 && elapsed < 500) || (e.target._simulatedClick && !e.target._simulated)) {
 			L.DomEvent.stop(e);
 			return;
 		}
