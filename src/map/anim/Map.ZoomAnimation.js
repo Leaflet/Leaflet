@@ -29,7 +29,7 @@ if (zoomAnimated) {
 L.Map.include(!zoomAnimated ? {} : {
 
 	_createAnimProxy: function () {
-		
+
 		var proxy = this._proxy = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
 		this._panes.mapPane.appendChild(proxy);
 
@@ -106,16 +106,6 @@ L.Map.include(!zoomAnimated ? {} : {
 		});
 	},
 
-	_stopAnimatedZoom: function () {
-
-		var transform = L.DomUtil.getTransform(this._proxy);
-
-		//Replace the animation end variables with the current zoom/center
-		this._animateToZoom = this.getScaleZoom(transform.scale, 1);
-		this._animateToCenter = this.unproject(transform.offset, this._animateToZoom);
-
-		this._onZoomTransitionEnd();
-	},
 	_onZoomTransitionEnd: function () {
 
 		this._animatingZoom = false;

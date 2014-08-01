@@ -42,7 +42,7 @@ L.Map.include({
 			    s = easeOut(t) * S;
 
 			if (t <= 1) {
-				this._zoomPanFrame = L.Util.requestAnimFrame(frame, this);
+				this._flyToFrame = L.Util.requestAnimFrame(frame, this);
 
 				this._resetView(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
