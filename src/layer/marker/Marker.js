@@ -227,7 +227,10 @@ L.Marker = L.Layer.extend({
 			L.DomEvent.preventDefault(e);
 		}
 
-		if (e.type === 'click' && this.dragging && this.dragging.moved()) { return; }
+		if (e.type === 'click' && this.dragging && this.dragging.moved()) {
+			L.DomEvent.stopPropagation(e);
+			return;
+		}
 
 		if (e.type === 'keypress' && e.keyCode === 13) {
 			type = 'click';
