@@ -110,14 +110,6 @@ describe('TileLayer', function () {
 		var tileUrl1 = 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
 			tileUrl2 = 'http://{s}.tile.stamen.com/toner/{z}/{x}/{y}.png';
 
-		// Inject Leaflet css
-		var head = document.getElementsByTagName("head")[0],
-			link = document.createElement("link");
-		link.href = "../dist/leaflet.css";
-		link.type = "text/css";
-		link.rel = "stylesheet";
-		head.appendChild(link);
-
 		// Add map div to DOM. The map panning tests do not work reliably unless
 		// the Leaflet map is properly styled and part of the DOM
 		var mapDiv = document.createElement('div');
