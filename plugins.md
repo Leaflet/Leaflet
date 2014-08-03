@@ -1225,6 +1225,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://labs.easyblog.it/">Stefano Cudini</a>
 		</td>
 	</tr>	
+	<tr>
+		<td>
+			<a href="https://github.com/yohanboniface/Leaflet.Editable">Leaflet.Editable</a>
+		</td><td>
+			Lightweight fully customisable and controlable drawing/editing plugin.
+		</td><td>
+			<a href="http://yohanboniface.me/">Yohan Boniface</a>
+		</td>
+	</tr>
 </table>
 
 
