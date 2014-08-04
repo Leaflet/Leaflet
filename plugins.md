@@ -1234,6 +1234,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://yohanboniface.me/">Yohan Boniface</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/M165437/Leaflet.AccuratePosition">Leaflet.AccuratePosition</a>
+		</td><td>
+			Leaflet.AccuratePosition aims to provide a desired device location accuracy.
+		</td><td>
+			<a href="https://github.com/M165437">Michael Schmidt-Voigt</a>
+		</td>
+	</tr>
 </table>
 
 
