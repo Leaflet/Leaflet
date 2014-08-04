@@ -566,9 +566,8 @@ L.Map = L.Evented.extend({
 		type = type || e.type;
 
 		if (L.DomEvent._skipped(e)) { return; }
-
 		if (type === 'click') {
-			if (!e._simulated && ((this.dragging && this.dragging.moved()) ||
+			if (!e._simulated && ((obj.dragging && obj.dragging.moved()) ||
 			                      (this.boxZoom && this.boxZoom.moved()))) { return; }
 			obj.fire('preclick');
 		}
