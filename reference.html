@@ -244,6 +244,12 @@ var map = L.map('map', {
 		<td>Whether the map can be zoomed by using the mouse wheel. If passed <code><span class="string">'center'</span></code>, it will zoom to the center of the view regardless of where the mouse was.</td>
 	</tr>
 	<tr>
+		<td><code><b>wheelDebounceTime</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="literal">40</span></code></td>
+		<td>Limits the rate at which a wheel can fire (in milliseconds). By default user can't zoom via wheel more often than once per 40 ms.</td>
+	</tr>
+	<tr>
 		<td><code><b>doubleClickZoom</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
