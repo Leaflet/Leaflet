@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<!--[if lte IE 8]><link rel="stylesheet" href="../../dist/leaflet.ie.css" /><![endif]-->
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+    <script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+    <style type="text/css">
+        #map {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+    </style>
+</head>
+<body>
+	<div id="map"></div>
+	<script>
+		var cloudmadeUrl = 'http://{s}.tile.cloudmade.com/BC9A493B41014CAABB98F0471D759707/997/256/{z}/{x}/{y}.png',
+			cloudmade = new L.TileLayer(cloudmadeUrl, {maxZoom: 18});
+
+
+    	var map = new L.Map('map', {
+		    layers: [cloudmade],
+		    center: [-40, 170],
+		    zoom: 4
+		});
+
+        L.polyline([
+            [80, -180],
+            [-80, 180],
+        ], {weight: 2, color: 'red'}).addTo(map).bindPopup("I'm the date line");
+
+        L.polyline([
+            [-32, 179],
+            [-33, 170],
+            [-34, -171],
+            [-35, -174],
+        ]).addTo(map).bindPopup("I'm a polyline crossing date line");
+
+        L.geoJson({"crs": null, "type": "FeatureCollection", "features": [{"geometry": {"type": "LineString", "coordinates": [[-0.3515625, 45.82879925192134], [-32.6953125, 43.068887774169625], [-2.109375, -49.610709938074216], [155.390625, -50.736455137010644], [-163.828125, -51.618016548773696], [-43.2421875, -59.7120971733229], [-27.421875, -4.915832801313164], [-31.640625, 35.460669951495305], [-11.25, 40.44694705960048]]}, "type": "Feature", "id": 41, "properties": {}}]},
+            {
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup("I'm a polyline around the world, created from a GeoJSON");
+                }
+            }).addTo(map);
+
+        L.polygon([
+            [-40, 176],
+            [-45, 178],
+            [-46, -178],
+            [-40, -175],
+        ]).addTo(map).bindPopup("I'm a polygon crossing date line");
+
+        L.polygon([
+            [-45, -176],
+            [-49, -178],
+            [-51, -174],
+            [-48, -173],
+        ]).addTo(map).bindPopup("I'm a polygon after date line");
+
+        L.polygon([
+            [-43, 176],
+            [-48, 178],
+            [-52, 174],
+            [-47, 173]
+        ]).addTo(map).bindPopup("I'm a polygon before date line");
+
+        L.polygon([
+            [-43, -147],
+            [-47, 160],
+            [-48, 160],
+            [-52, -130]
+        ], {magnetize: false}).addTo(map).bindPopup("I'm a polygon not magnetized, so I can cross the world");
+
+        L.polygon([
+            [[-10, 176], [-15, 178], [-16, -178], [-10, -175]],
+            [[-11, 177], [-14, 179], [-15, -179], [-11, -177]]
+        ]).addTo(map).bindPopup("I'm a polygon with a hole");
+
+        L.marker([-39, 178]).addTo(map).bindPopup("I'm a marker before date line");
+        L.marker([-39, -178]).addTo(map).bindPopup("I'm a marker after date line");
+        L.marker([-38, 180]).addTo(map).bindPopup("I'm a marker over date line with longitude = 180");
+        L.marker([-58, -180]).addTo(map).bindPopup("I'm a marker over date line with longitude = -180");
+        L.marker([-58, -180], {magnetize: false}).addTo(map).bindPopup("I'm a marker not magnetized");
+        L.marker([-50, 160]).addTo(map).bindPopup("I'm a dragable marker").dragging.enable();
+
+        L.circle([-40, 165], 150000).addTo(map).bindPopup("I'm a circle");
+        L.circle([-40, -165], 150000).addTo(map).bindPopup("I'm a circle over date line");
+        L.circle([75, 178], 150000).addTo(map).bindPopup("I'm a circle close to the pole");
+
+        L.circleMarker([-35, 165]).addTo(map).bindPopup("I'm a circle marker");
+        L.circleMarker([-35, -165]).addTo(map).bindPopup("I'm a circle marker over date line");
+
+        L.rectangle([[-53, -176], [-53, 178], [-55, -178], [-55, -176]]).addTo(map).bindPopup("I'm a rectangle crossing date line");
+
+	</script>
+</body>
+</html>

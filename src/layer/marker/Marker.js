@@ -16,7 +16,9 @@ L.Marker = L.Layer.extend({
 		zIndexOffset: 0,
 		opacity: 1,
 		// riseOnHover: false,
-		riseOffset: 250
+		riseOffset: 250,
+		magnetize: true,
+		magnetPoint: null
 	},
 
 	initialize: function (latlng, options) {
@@ -85,11 +87,15 @@ L.Marker = L.Layer.extend({
 	update: function () {
 
 		if (this._icon) {
-			var pos = this._map.latLngToLayerPoint(this._latlng).round();
+			var pos = this._map.latLngToLayerPoint(this._latlng, this.getDefaultMagnetPoint()).round();
 			this._setPos(pos);
 		}
 
 		return this;
+	},
+
+	getDefaultMagnetPoint: function () {
+		return this.options.magnetize ? this.options.magnetPoint || this._map.getDefaultMagnetPoint(): null;
 	},
 
 	_initIcon: function () {

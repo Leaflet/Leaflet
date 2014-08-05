@@ -356,9 +356,9 @@ L.Map = L.Evented.extend({
 
 	// conversion methods
 
-	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
+	project: function (latlng, zoom, magnetPoint) { // (LatLng[, Number[, Point]]) -> Point
 		zoom = zoom === undefined ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom);
+		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom, magnetPoint);
 	},
 
 	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
@@ -366,13 +366,23 @@ L.Map = L.Evented.extend({
 		return this.options.crs.pointToLatLng(L.point(point), zoom);
 	},
 
+	getDefaultMagnetPoint: function () {
+		if (!this.options.defaultMagnetPoint) {
+			this.options.defaultMagnetPoint = this.options.crs.projection.project(this.getCenter());
+		}
+		return this.options.defaultMagnetPoint;
+	},
+
 	layerPointToLatLng: function (point) { // (Point)
 		var projectedPoint = L.point(point).add(this.getPixelOrigin());
 		return this.unproject(projectedPoint);
 	},
 
-	latLngToLayerPoint: function (latlng) { // (LatLng)
-		var projectedPoint = this.project(L.latLng(latlng))._round();
+	latLngToLayerPoint: function (latlng, magnetPoint) { // (LatLng[, Point]) -> Point
+		if (typeof magnetPoint === 'undefined') {
+			magnetPoint = this.getDefaultMagnetPoint();
+		}
+		var projectedPoint = this.project(L.latLng(latlng), this._zoom, magnetPoint)._round();
 		return projectedPoint._subtract(this.getPixelOrigin());
 	},
 

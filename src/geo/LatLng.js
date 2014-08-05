@@ -16,6 +16,9 @@ L.LatLng = function (lat, lng, alt) {
 };
 
 L.LatLng.prototype = {
+
+	_projectedPoint: null,
+
 	equals: function (obj, maxMargin) {
 		if (!obj) { return false; }
 

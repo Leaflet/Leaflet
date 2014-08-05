@@ -4,8 +4,8 @@
 
 L.CRS = {
 	// converts geo coords to pixel ones
-	latLngToPoint: function (latlng, zoom) {
-		var projectedPoint = this.projection.project(latlng),
+	latLngToPoint: function (latlng, zoom, magnetPoint) {
+		var projectedPoint = this.projection.project(latlng, magnetPoint),
 		    scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);

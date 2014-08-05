@@ -1,3 +1,11 @@
+expect.Assertion.prototype.near = function (expected, delta) {
+	delta = delta || 1;
+	expect(this.obj.x).to
+		.be.within(expected.x - delta, expected.x + delta);
+	expect(this.obj.y).to
+		.be.within(expected.y - delta, expected.y + delta);
+};
+
 describe("Projection.Mercator", function () {
 	var p = L.Projection.Mercator;
 
@@ -46,6 +54,7 @@ describe("Projection.Mercator", function () {
 		});
 	});
 });
+
 describe("Projection.SphericalMercator", function () {
 	var p = L.Projection.SphericalMercator;
 
@@ -92,5 +101,167 @@ describe("Projection.SphericalMercator", function () {
 			// from https://github.com/Leaflet/Leaflet/issues/1578
 			expect(pr(new L.Point(8918060.964088084, 6755099.410887127)));
 		});
+	});
+
+	describe("#magnetization", function () {
+		it("should magnetize negative Lng with a positive magnet close to date line", function () {
+			var magnetPoint = new L.Point(p.R * 3, 1);
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(new L.Point(p.R * Math.PI * 7 / 4, 0));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(new L.Point(p.R * Math.PI * 3 / 2, 0));
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(new L.Point(p.R * Math.PI * 5 / 4, 0));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(new L.Point(p.R * Math.PI, 0));
+		});
+
+		it("should magnetize negative Lng with a positive magnet onto date line", function () {
+			var magnetPoint = new L.Point(p.R * Math.PI, 1);
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(new L.Point(p.R * Math.PI * 7 / 4, 0));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(new L.Point(p.R * Math.PI * 3 / 2, 0));
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(new L.Point(p.R * Math.PI * 5 / 4, 0));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(new L.Point(p.R * Math.PI, 0));
+		});
+
+		it("should not magnetize negative Lng with a negative magnet close to date line", function () {
+			var magnetPoint = new L.Point(p.R * -3, 1);
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+		});
+
+		it("should not magnetize negative Lng with a negative magnet onto date line", function () {
+			var magnetPoint = new L.Point(p.R * -Math.PI, 1);
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+		});
+
+		it("should magnetize positive Lng with a negative magnet close to date line", function () {
+			var magnetPoint = new L.Point(p.R * -3, 1);
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(new L.Point(p.R * -Math.PI * 7 / 4, 0));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(new L.Point(p.R * -Math.PI * 3 / 2, 0));
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(new L.Point(p.R * -Math.PI * 5 / 4, 0));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(new L.Point(p.R * -Math.PI, 0));
+		});
+
+		it("should not magnetize positive Lng with a positive magnet close to date line", function () {
+			var magnetPoint = new L.Point(3, 1);
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+		});
+
+		it("should not magnetize positive Lng with a positive magnet close to 0", function () {
+			var magnetPoint = new L.Point(0.1, 1);
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+		});
+
+		it("should not magnetize positive Lng with a positive magnet onto date line", function () {
+			var magnetPoint = new L.Point(Math.PI, 1);
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+		});
+
+		it("should not magnetize with a lng 0 magnet", function () {
+			var magnetPoint = new L.Point(0, 1);
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+		});
+
+		it("should not magnetize lng closer than or equal to 180° from magnet point", function () {
+			var magnetPoint = new L.Point(Math.PI / 2, 1);  // 90°
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+			magnetPoint = new L.Point(-Math.PI / 2, 1);  // -90°
+			expect(p.project(new L.LatLng(0, -45), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -90), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 45), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 90), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+		});
+
+		it("should magnetize lng farther than 180° from magnet point", function () {
+			var magnetPoint = new L.Point(p.R * Math.PI / 2, 1);  // 90°
+			expect(p.project(new L.LatLng(0, -135), magnetPoint)).near(new L.Point(p.R * Math.PI * 5 / 4, 0));
+			expect(p.project(new L.LatLng(0, -180), magnetPoint)).near(new L.Point(p.R * Math.PI, 0));
+			magnetPoint = new L.Point(p.R * -Math.PI / 2, 1);  // -90°
+			expect(p.project(new L.LatLng(0, 135), magnetPoint)).near(new L.Point(p.R * -Math.PI * 5 / 4, 0));
+			expect(p.project(new L.LatLng(0, 180), magnetPoint)).near(new L.Point(p.R * -Math.PI, 0));
+		});
+
+		it("should wrap lng before magnetizing", function () {
+			var magnetPoint = new L.Point(p.R * Math.PI / 2, 1);  // 90°
+			expect(p.project(new L.LatLng(0, -405), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -450), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -495), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -540), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 405), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 450), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 495), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 540), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+			magnetPoint = new L.Point(p.R * Math.PI, 1);
+			expect(p.project(new L.LatLng(0, -405), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -450), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -495), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -540), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 405), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 450), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 495), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 540), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+			magnetPoint = new L.Point(p.R * 3, 1);
+			expect(p.project(new L.LatLng(0, -405), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -450), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -495), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -540), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 405), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 450), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 495), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 540), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+			magnetPoint = new L.Point(p.R * -3, 1);
+			expect(p.project(new L.LatLng(0, -405), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -450), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -495), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -540), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 405), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 450), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 495), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 540), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+			magnetPoint = new L.Point(p.R * 0.1, 1);
+			expect(p.project(new L.LatLng(0, -405), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -450), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -495), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -540), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 405), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 450), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 495), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 540), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+			magnetPoint = new L.Point(p.R * -0.1, 1);
+			expect(p.project(new L.LatLng(0, -405), magnetPoint)).near(p.project(new L.LatLng(0, -45)));
+			expect(p.project(new L.LatLng(0, -450), magnetPoint)).near(p.project(new L.LatLng(0, -90)));
+			expect(p.project(new L.LatLng(0, -495), magnetPoint)).near(p.project(new L.LatLng(0, -135)));
+			expect(p.project(new L.LatLng(0, -540), magnetPoint)).near(p.project(new L.LatLng(0, -180)));
+			expect(p.project(new L.LatLng(0, 405), magnetPoint)).near(p.project(new L.LatLng(0, 45)));
+			expect(p.project(new L.LatLng(0, 450), magnetPoint)).near(p.project(new L.LatLng(0, 90)));
+			expect(p.project(new L.LatLng(0, 495), magnetPoint)).near(p.project(new L.LatLng(0, 135)));
+			expect(p.project(new L.LatLng(0, 540), magnetPoint)).near(p.project(new L.LatLng(0, 180)));
+		});
+
 	});
 });

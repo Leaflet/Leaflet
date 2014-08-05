@@ -19,7 +19,10 @@ L.Path = L.Layer.extend({
 		fillOpacity: 0.2,
 
 		// className: ''
-		clickable: true
+		clickable: true,
+
+		magnetize: true,
+		magnetPoint: null
 	},
 
 	onAdd: function () {
@@ -76,5 +79,9 @@ L.Path = L.Layer.extend({
 	_clickTolerance: function () {
 		// used when doing hit detection for Canvas layers
 		return (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
+	},
+
+	getDefaultMagnetPoint: function () {
+		return this.options.magnetize ? this.options.magnetPoint || this._map.getDefaultMagnetPoint(): null;
 	}
 });

@@ -54,7 +54,7 @@ L.Circle = L.CircleMarker.extend({
 		} else {
 			var latlng2 = crs.unproject(crs.project(this._latlng).subtract([this._mRadius, 0]));
 
-			this._point = map.latLngToLayerPoint(this._latlng);
+			this._point = map.latLngToLayerPoint(this._latlng, this.getDefaultMagnetPoint());
 			this._radius = this._point.x - map.latLngToLayerPoint(latlng2).x;
 		}
 

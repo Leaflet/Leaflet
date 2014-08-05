@@ -147,12 +147,17 @@ L.Polyline = L.Path.extend({
 
 		var flat = latlngs[0] instanceof L.LatLng,
 		    len = latlngs.length,
-		    i, ring;
+		    i, ring, latlng,
+		    magnetPoint = this.getDefaultMagnetPoint();
 
 		if (flat) {
 			ring = [];
 			for (i = 0; i < len; i++) {
-				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
+				latlng = latlngs[i];
+				ring[i] = this._map.latLngToLayerPoint(latlng, magnetPoint);
+				if (this.options.magnetize) {
+					magnetPoint = latlng._projectedPoint;
+				}
 			}
 			result.push(ring);
 		} else {
