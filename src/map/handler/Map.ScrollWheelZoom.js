@@ -25,8 +25,8 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = L.DomEvent.getWheelDelta(e),
-			debounce = this._map.options.wheelDebounceTime;
+		var delta = L.DomEvent.getWheelDelta(e);
+		var debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
