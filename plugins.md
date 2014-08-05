@@ -579,6 +579,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/patrickarlt/">Patrick Arlt</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/albburtsev/Leaflet.geojsonCSS">Leaflet.geojsonCSS</a>
+		</td><td>
+			<a href="http://wiki.openstreetmap.org/wiki/Geojson_CSS">Geojson CSS</a> implementation for Leaflet.
+		</td><td>
+			<a href="https://github.com/albburtsev/">Alexander Burtsev</a>
+		</td>
+	</tr>
 </table>
 
 
