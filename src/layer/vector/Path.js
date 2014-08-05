@@ -17,6 +17,7 @@ L.Path = L.Layer.extend({
 		// fill: false
 		// fillColor: same as color by default
 		fillOpacity: 0.2,
+		fillRule: 'evenodd',
 
 		// className: ''
 		clickable: true
