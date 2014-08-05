@@ -19,7 +19,7 @@ L.Path = L.Layer.extend({
 		fillOpacity: 0.2,
 
 		// className: ''
-		clickable: true
+		interactive: true
 	},
 
 	onAdd: function () {

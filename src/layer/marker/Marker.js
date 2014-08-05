@@ -10,7 +10,7 @@ L.Marker = L.Layer.extend({
 		icon: new L.Icon.Default(),
 		// title: '',
 		// alt: '',
-		clickable: true,
+		interactive: true,
 		// draggable: false,
 		keyboard: true,
 		zIndexOffset: 0,
@@ -201,9 +201,9 @@ L.Marker = L.Layer.extend({
 
 	_initInteraction: function () {
 
-		if (!this.options.clickable) { return; }
+		if (!this.options.interactive) { return; }
 
-		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
+		L.DomUtil.addClass(this._icon, 'leaflet-interactive');
 
 		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
 				this._fireMouseEvent, this);
