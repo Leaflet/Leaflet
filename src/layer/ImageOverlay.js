@@ -33,7 +33,7 @@ L.ImageOverlay = L.Layer.extend({
 
 		this._reset();
 
-		this._visibility();
+		this._updateVisibilility();
 	},
 
 	onRemove: function () {
@@ -79,7 +79,7 @@ L.ImageOverlay = L.Layer.extend({
 	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
-			moveend: this._visibility
+			moveend: this._updateVisibilility
 		};
 
 		if (this._zoomAnimated) {
@@ -122,7 +122,7 @@ L.ImageOverlay = L.Layer.extend({
 		image.style.height = size.y + 'px';
 	},
 
-	_visibility: function() {
+	_updateVisibilility: function() {
 		var p = this.options.padding,
 		    mapBounds = this._map.getBounds().pad(p);
 
