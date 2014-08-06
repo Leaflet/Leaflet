@@ -126,8 +126,7 @@ L.ImageOverlay = L.Layer.extend({
 		var p = this.options.padding,
 		    mapBounds = this._map.getBounds().pad(p);
 
-		this._image.style.display = mapBounds.intersects(this._bounds) || mapBounds.contains(this._bounds) ?
-		    '' : 'none';
+		this._image.style.display = mapBounds.intersects(this._bounds) ? '' : 'none';
 	},
 
 	_updateOpacity: function () {
