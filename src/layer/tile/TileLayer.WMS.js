@@ -22,7 +22,9 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		// all keys that are not TileLayer options go to WMS params
 		for (var i in options) {
-			if (!this.options.hasOwnProperty(i) && i !== 'crs') {
+			if (!this.options.hasOwnProperty(i) &&
+					i !== 'crs' &&
+					i !== 'uppercase') {
 				wmsParams[i] = options[i];
 			}
 		}
@@ -38,6 +40,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	onAdd: function (map) {
 
 		this._crs = this.options.crs || map.options.crs;
+		this._uppercase = this.options.uppercase || false;
 
 		this._wmsVersion = parseFloat(this.wmsParams.version);
 
@@ -59,7 +62,9 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		    url = L.TileLayer.prototype.getTileUrl.call(this, coords);
 
-		return url + L.Util.getParamString(this.wmsParams, url, true) + '&BBOX=' + bbox;
+		return url +
+			L.Util.getParamString(this.wmsParams, url, this._uppercase) +
+			(this._uppercase ? '&BBOX=' : '&bbox=') + bbox;
 	},
 
 	setParams: function (params, noRedraw) {
