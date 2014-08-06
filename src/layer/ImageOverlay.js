@@ -6,7 +6,11 @@ L.ImageOverlay = L.Layer.extend({
 
 	options: {
 		opacity: 1,
-		alt: ''
+		alt: '',
+		// how much to extend the clip area around the map view (relative to its size)
+		// e.g. 0.1 would be 10% of map view in each direction
+		// defaults to clip with a two times bigger map view
+		padding: 1
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -28,6 +32,8 @@ L.ImageOverlay = L.Layer.extend({
 		this.getPane().appendChild(this._image);
 
 		this._reset();
+
+		this._visibility();
 	},
 
 	onRemove: function () {
@@ -72,7 +78,8 @@ L.ImageOverlay = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
-			viewreset: this._reset
+			viewreset: this._reset,
+			moveend: this._visibility
 		};
 
 		if (this._zoomAnimated) {
@@ -113,6 +120,14 @@ L.ImageOverlay = L.Layer.extend({
 
 		image.style.width  = size.x + 'px';
 		image.style.height = size.y + 'px';
+	},
+
+	_visibility: function() {
+		var p = this.options.padding,
+		    mapBounds = this._map.getBounds().pad(p);
+
+		this._image.style.display = mapBounds.intersects(this._bounds) || mapBounds.contains(this._bounds) ?
+		    '' : 'none';
 	},
 
 	_updateOpacity: function () {
