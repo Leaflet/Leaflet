@@ -171,7 +171,7 @@
 
 /* cursors */
 
-.leaflet-clickable {
+.leaflet-interactive {
 	cursor: pointer;
 	}
 .leaflet-container {
@@ -179,7 +179,7 @@
 	cursor:    -moz-grab;
 	}
 .leaflet-crosshair,
-.leaflet-crosshair .leaflet-clickable {
+.leaflet-crosshair .leaflet-interactive {
 	cursor: crosshair;
 	}
 .leaflet-popup-pane,
@@ -187,7 +187,7 @@
 	cursor: auto;
 	}
 .leaflet-dragging .leaflet-container,
-.leaflet-dragging .leaflet-clickable {
+.leaflet-dragging .leaflet-interactive {
 	cursor: move;
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
