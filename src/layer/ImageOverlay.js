@@ -81,6 +81,10 @@ L.ImageOverlay = L.Layer.extend({
 
 		return events;
 	},
+	
+	getBounds: function() {
+		return this._bounds;
+	},
 
 	_initImage: function () {
 		var img = this._image = L.DomUtil.create('img',
