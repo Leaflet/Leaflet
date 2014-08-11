@@ -33,6 +33,10 @@ L.Map = L.Evented.extend({
 			this.setMaxBounds(options.maxBounds);
 		}
 
+		if (options.zoom !== undefined) {
+			this._zoom = options.zoom;
+		}
+
 		if (options.center && options.zoom !== undefined) {
 			this.setView(L.latLng(options.center), options.zoom, {reset: true});
 		}
