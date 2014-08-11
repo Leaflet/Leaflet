@@ -34,7 +34,7 @@ L.Map = L.Evented.extend({
 		}
 
 		if (options.zoom !== undefined) {
-			this._zoom = options.zoom;
+			this._zoom = this._limitZoom(options.zoom);
 		}
 
 		if (options.center && options.zoom !== undefined) {
