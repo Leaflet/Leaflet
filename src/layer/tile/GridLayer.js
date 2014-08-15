@@ -191,6 +191,10 @@ L.GridLayer = L.Layer.extend({
 			});
 		}
 
+		if (this._abortLoading) {
+			this._abortLoading();
+		}
+
 		this._tiles = {};
 		this._tilesToLoad = 0;
 		this._tilesTotal = 0;
@@ -241,7 +245,10 @@ L.GridLayer = L.Layer.extend({
 		    tileSize = this._getTileSize();
 
 		if (zoom > this.options.maxZoom ||
-		    zoom < this.options.minZoom) { return; }
+		    zoom < this.options.minZoom) { 
+			this._clearBgBuffer();
+			return; 
+		}
 
 		// tile coordinates range for the current view
 		var tileBounds = L.bounds(

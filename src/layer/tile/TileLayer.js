@@ -143,11 +143,11 @@ L.TileLayer = L.GridLayer.extend({
 		for (i in this._tiles) {
 			tile = this._tiles[i];
 
-			if (!tile.complete) {
-				tile.onload = L.Util.falseFn;
-				tile.onerror = L.Util.falseFn;
-				tile.src = L.Util.emptyImageUrl;
+			tile.onload = L.Util.falseFn;
+			tile.onerror = L.Util.falseFn;
 
+			if (!tile.complete) {
+				tile.src = L.Util.emptyImageUrl;
 				L.DomUtil.remove(tile);
 			}
 		}

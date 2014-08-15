@@ -3,7 +3,8 @@
  */
 
 L.Map.mergeOptions({
-	scrollWheelZoom: true
+	scrollWheelZoom: true,
+	wheelDebounceTime: 40
 });
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
@@ -25,6 +26,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_onWheelScroll: function (e) {
 		var delta = L.DomEvent.getWheelDelta(e);
+		var debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
@@ -33,7 +35,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 			this._startTime = +new Date();
 		}
 
-		var left = Math.max(40 - (+new Date() - this._startTime), 0);
+		var left = Math.max(debounce - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
 		this._timer = setTimeout(L.bind(this._performZoom, this), left);

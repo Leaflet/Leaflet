@@ -10,7 +10,7 @@ L.Marker = L.Layer.extend({
 		icon: new L.Icon.Default(),
 		// title: '',
 		// alt: '',
-		clickable: true,
+		interactive: true,
 		// draggable: false,
 		keyboard: true,
 		zIndexOffset: 0,
@@ -201,11 +201,11 @@ L.Marker = L.Layer.extend({
 
 	_initInteraction: function () {
 
-		if (!this.options.clickable) { return; }
+		if (!this.options.interactive) { return; }
 
-		L.DomUtil.addClass(this._icon, 'leaflet-clickable');
+		L.DomUtil.addClass(this._icon, 'leaflet-interactive');
 
-		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mouseout contextmenu keypress',
+		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
 			this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
@@ -228,8 +228,6 @@ L.Marker = L.Layer.extend({
 		if (e.type === 'mousedown') {
 			L.DomEvent.preventDefault(e);
 		}
-
-		if (e.type === 'click' && this.dragging && this.dragging.moved()) { return; }
 
 		if (e.type === 'keypress' && e.keyCode === 13) {
 			type = 'click';

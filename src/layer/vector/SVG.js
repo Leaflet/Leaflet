@@ -56,8 +56,8 @@ L.SVG = L.Renderer.extend({
 			L.DomUtil.addClass(path, layer.options.className);
 		}
 
-		if (layer.options.clickable) {
-			L.DomUtil.addClass(path, 'leaflet-clickable');
+		if (layer.options.interactive) {
+			L.DomUtil.addClass(path, 'leaflet-interactive');
 		}
 
 		this._updateStyle(layer);
@@ -116,7 +116,7 @@ L.SVG = L.Renderer.extend({
 			path.setAttribute('fill', 'none');
 		}
 
-		path.setAttribute('pointer-events', options.pointerEvents || (options.clickable ? 'visiblePainted' : 'none'));
+		path.setAttribute('pointer-events', options.pointerEvents || (options.interactive ? 'visiblePainted' : 'none'));
 	},
 
 	_updatePoly: function (layer, closed) {

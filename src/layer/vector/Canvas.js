@@ -207,12 +207,12 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_handleHover: function (layer, e, point) {
-		if (!layer.options.clickable) { return; }
+		if (!layer.options.interactive) { return; }
 
 		if (layer._containsPoint(point)) {
 			// if we just got inside the layer, fire mouseover
 			if (!layer._mouseInside) {
-				L.DomUtil.addClass(this._container, 'leaflet-clickable'); // change cursor
+				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
 				layer._fireMouseEvent(e, 'mouseover');
 				layer._mouseInside = true;
 			}
@@ -221,7 +221,7 @@ L.Canvas = L.Renderer.extend({
 
 		} else if (layer._mouseInside) {
 			// if we're leaving the layer, fire mouseout
-			L.DomUtil.removeClass(this._container, 'leaflet-clickable');
+			L.DomUtil.removeClass(this._container, 'leaflet-interactive');
 			layer._fireMouseEvent(e, 'mouseout');
 			layer._mouseInside = false;
 		}
