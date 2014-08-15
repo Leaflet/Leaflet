@@ -212,6 +212,7 @@ L.Marker = L.Layer.extend({
 			var isDraggingEnabled = this.options.draggable;
 			if(this.dragging) {
 				isDraggingEnabled = this.dragging.enabled();
+				this.dragging.disable();
 			}
 			this.dragging = new L.Handler.MarkerDrag(this);
 			if (isDraggingEnabled) {
