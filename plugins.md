@@ -1252,6 +1252,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/M165437">Michael Schmidt-Voigt</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mithron/leaflet.locationlist">Leaflet Locationlist</a>
+		</td><td>
+			A control to jump between predefined locations and zooms. 
+		</td><td>
+			<a href="https://github.com/mithron">Ivan Ignatyev</a>
+		</td>
+	</tr>
 </table>
 
 
