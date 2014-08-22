@@ -38,13 +38,24 @@
 
         map.addLayer(markerDraggable);
         markerDraggable.bindPopup("Draggable");
+
+        var poly = new L.Polygon([[0, 10], [0, 15.5], [0, 50], [20, 20.5]]);
+        map.addLayer(poly);
+
+
         markerDraggable.on('click', function(e) {
             console.log('markerDraggable click');
         });
+        markerStatic.on('click', function(e) {
+            console.log('markerStatic click');
+        })
         map.on('click', function(e) {
             console.log('map click');
         });
 
+        poly.on('click', function(e) {
+            console.log('poly click');
+        });
 
         L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
             attribution: "Map: Tiles Courtesy of MapQuest (OpenStreetMap, CC-BY-SA)",
