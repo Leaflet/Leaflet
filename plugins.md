@@ -1265,7 +1265,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/nguyenning/Leaflet.defaultextent">Leaflet.defaultextent</a>
 		</td><td>
-			A control pan/zoom to the original (home) location when the map loaded.
+			A control that returns to the original start extent of the map.  Similar to the [HomeButton](https://developers.arcgis.com/javascript/jssamples/widget_home.html) widget.
 		</td><td>
 			<a href="https://github.com/nguyenning">Alex Nguyen</a>
 		</td>
