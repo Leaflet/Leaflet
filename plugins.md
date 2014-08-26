@@ -1261,6 +1261,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mithron">Ivan Ignatyev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/nguyenning/Leaflet.defaultextent">Leaflet.defaultextent</a>
+		</td><td>
+			A control pan/zoom to the original (home) location when the map loaded.
+		</td><td>
+			<a href="https://github.com/nguyenning">Alex Nguyen</a>
+		</td>
+	</tr>
 </table>
 
 
