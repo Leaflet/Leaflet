@@ -1270,6 +1270,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mithron">Ivan Ignatyev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/nguyenning/Leaflet.defaultextent">Leaflet.defaultextent</a>
+		</td>
+		<td>
+			A control that returns to the original start extent of the map.  Similar to the <a href="https://developers.arcgis.com/javascript/jssamples/widget_home.html">HomeButton</a> widget.
+		</td>
+		<td>
+			<a href="https://github.com/nguyenning">Alex Nguyen</a>
+		</td>
+	</tr>
 </table>
 
 
