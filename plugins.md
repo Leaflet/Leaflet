@@ -19,7 +19,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/Wildhoney/Leaflet.FreeDraw">Leaflet.ellipse</a>
+			<a href="https://github.com/Wildhoney/Leaflet.FreeDraw">Leaflet.FreeDraw</a>
 		</td><td>
 			Zoopla inspired freehand polygon creation using Leaflet.js and D3.
 		</td><td>
