@@ -1430,6 +1430,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/zverik">Ilya Zverev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/moklick/generator-leaflet">Leaflet Yeoman Generator</a>
+		</td>
+		<td>
+			Yeoman generator that scaffolds out a basic Leaflet map application.
+		</td>
+		<td>
+			<a href="https://github.com/moklick">Moritz Klack</a>
+		</td>
+	</tr>
 </table>
 
 To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
