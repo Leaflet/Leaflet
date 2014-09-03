@@ -44,6 +44,10 @@
 .leaflet-container img {
 	max-width: none !important;
 	}
+/* reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+.leaflet-container svg {
+	max-width: none !important;
+	}
 /* stupid Android 2 doesn't understand "max-width: none" properly */
 .leaflet-container img.leaflet-image-layer {
 	max-width: 15000px !important;
