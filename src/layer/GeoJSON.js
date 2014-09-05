@@ -33,8 +33,10 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		if (options.filter && !options.filter(geojson)) { return; }
 
-		var layer = L.GeoJSON.geometryToLayer(geojson, options);
-		layer.feature = L.GeoJSON.asFeature(geojson);
+		var layer = L.GeoJSON.geometryToLayer(geojson, options),
+			properties = layer.geoJSONProperties();
+
+		layer.feature = L.GeoJSON.asFeature(geojson, properties);
 
 		layer.defaultOptions = layer.options;
 		this.resetStyle(layer);
@@ -158,21 +160,29 @@ L.extend(L.GeoJSON, {
 	},
 
 	getFeature: function (layer, newGeometry) {
+		var properties = layer.geoJSONProperties();
+
 		return layer.feature ?
 				L.extend({}, layer.feature, {geometry: newGeometry}) :
-				L.GeoJSON.asFeature(newGeometry);
+				L.GeoJSON.asFeature(newGeometry, properties);
 	},
 
-	asFeature: function (geoJSON) {
+	asFeature: function (geoJSON, properties) {
 		if (geoJSON.type === 'Feature') {
 			return geoJSON;
 		}
 
 		return {
 			type: 'Feature',
-			properties: {},
+			properties: properties,
 			geometry: geoJSON
 		};
+	}
+});
+
+L.Layer.include({
+	geoJSONProperties: function() {
+		return {};
 	}
 });
 
@@ -248,8 +258,10 @@ L.LayerGroup.include({
 
 		this.eachLayer(function (layer) {
 			if (layer.toGeoJSON) {
-				var json = layer.toGeoJSON();
-				jsons.push(isGeometryCollection ? json.geometry : L.GeoJSON.asFeature(json));
+				var json = layer.toGeoJSON(),
+					properties = layer.geoJSONProperties();
+
+				jsons.push(isGeometryCollection ? json.geometry : L.GeoJSON.asFeature(json, properties));
 			}
 		});
 
