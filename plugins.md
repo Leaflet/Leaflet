@@ -1118,6 +1118,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/turbo87/sidebar-v2/">sidebar-v2</a>
+		</td><td>
+			Another responsive sidebar plugin. This time with tabs!
+		</td><td>
+			<a href="https://github.com/turbo87/">Tobias Bieniek</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/alanshaw/leaflet-zoom-min/">leaflet-zoom-min</a>
 		</td><td>
 			Adds a button to the zoom control that allows you to zoom to the map minimum zoom level in a single click.
