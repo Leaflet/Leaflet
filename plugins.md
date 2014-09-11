@@ -424,6 +424,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
  			<a href="https://github.com/fredericbonifas">Frédéric Bonifas</a>
  		</td>
  	</tr>
+ 	<tr>
+ 		<td>
+ 			<a href="https://github.com/hiasinho/Leaflet.vector-markers">Leaflet.VectorMarkers</a>
+ 		</td><td>
+ 			Vector SVG markers for Leaflet, with an option for Font Awesome/Twitter Bootstrap icons. 
+ 		</td><td>
+ 			<a href="https://github.com/hiasinho">Mathias Schneider</a>
+ 		</td>
+ 	</tr>
 </table>
 
 
