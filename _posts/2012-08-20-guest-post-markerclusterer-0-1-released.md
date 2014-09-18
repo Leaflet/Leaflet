@@ -91,7 +91,7 @@ Dave Leaver.
 <script src="http://leaflet.github.io/Leaflet.markercluster/example/realworld.388.js"></script>
 
 <script>
-	var mapbox = new L.TileLayer(MB_URL, {maxZoom: 18, attribution: MB_ATTR, id: 'examples.map-i86knfo3'}),
+	var mapbox = new L.TileLayer(MB_URL, {maxZoom: 18, attribution: MB_ATTR, id: 'examples.map-i875mjb7'}),
 		latlng = new L.LatLng(-37.820, 175.217);
 
 	var map = new L.Map('map', {center: latlng, zoom: 15, layers: [mapbox]});
