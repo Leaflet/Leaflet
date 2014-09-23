@@ -973,6 +973,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/davicustodio/Leaflet.StyledLayerControl">Leaflet.StyledLayerControl</a>
+		</td><td>
+			A Leaflet plugin that implements the management and control of layers by organization into categories or groups. The StyledLayerControl class extends the original L.control.layers control. The plugin uses HTML5 and CSS3 to style the presentation in a modern way.
+		</td><td>
+			<a href="https://github.com/davicustodio">Davi Custodio</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/MrMufflon/Leaflet.Coordinates">Leaflet.Coordinates</a>
 		</td><td>
 			A simple Leaflet plugin viewing the mouse LatLng-coordinates. Also views a marker with coordinate popup on userinput.
