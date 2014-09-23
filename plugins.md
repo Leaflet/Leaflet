@@ -131,7 +131,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://ursudio.com/webgl-heatmap-leaflet/">WebGL Heatmap</a>
+			<a href="http://ursudio.com/webgl-heatmap-leaflet/">WebGL Heatmap</a> 
 		</td><td>
 			High performance Javascript heatmap plugin using WebGL.
 
@@ -969,6 +969,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			a Leaflet plugin which adds new control to switch between different layers on the map. New control replaces L.Control.Layers radio button panel with select tag.
 		</td><td>
 			<a href="https://github.com/vogdb">vogdb</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/davicustodio/Leaflet.StyledLayerControl">Leaflet.StyledLayerControl</a>
+		</td><td>
+			A Leaflet plugin that implements the management and control of layers by organization into categories or groups. 
+		</td><td>
+			<a href="https://github.com/davicustodio">Davi Custodio</a>
 		</td>
 	</tr>
 	<tr>
