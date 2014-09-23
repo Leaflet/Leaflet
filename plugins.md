@@ -131,7 +131,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="http://ursudio.com/webgl-heatmap-leaflet/">WebGL Heatmap</a>
+			<a href="http://ursudio.com/webgl-heatmap-leaflet/">WebGL Heatmap</a> 
 		</td><td>
 			High performance Javascript heatmap plugin using WebGL.
 
