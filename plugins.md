@@ -1308,6 +1308,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/nguyenning">Alex Nguyen</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/skeate/Leaflet.buffer">Leaflet.buffer</a>
+		</td><td>
+			Enables buffering of shapes drawn with Leaflet.draw.
+		</td><td>
+			<a href="https://github.com/skeate">Jonathan Skeate</a>
+		</td>
+	</tr>
 </table>
 
 
