@@ -1372,6 +1372,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Bitmap painting plugin designed for touch devices.
 		</td><td>
 			<a href="https://github.com/yellowiscool">Antoine Pultier</a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+			<a href="https://github.com/florpor/Leaflet.ShowAll">Leaflet.ShowAll</a>
+		</td><td>
+			A control that can show a predefined extent while saving the current one so it can be jumped back to.
+		</td><td>
+			<a href="https://github.com/florpor">Mor Yariv</a>
 		</td>
 	</tr>
 </table>
