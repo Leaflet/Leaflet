@@ -117,6 +117,15 @@ L.SVG = L.Renderer.extend({
 		}
 
 		path.setAttribute('pointer-events', options.pointerEvents || (options.interactive ? 'visiblePainted' : 'none'));
+
+		if (options.className) {
+			var eClasses = L.Util.splitWords(L.DomUtil.getClass(path))
+			.filter(function(e){
+				return e.indexOf('leaflet-') === 0;
+			})
+			.join(' ');
+			L.DomUtil.setClass(path,eClasses + ' ' + options.className);
+		}
 	},
 
 	_updatePoly: function (layer, closed) {

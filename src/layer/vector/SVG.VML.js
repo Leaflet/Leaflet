@@ -103,6 +103,15 @@ L.SVG.include(!L.Browser.vml ? {} : {
 			container.removeChild(fill);
 			layer._fill = null;
 		}
+
+		if (options.className) {
+			var eClasses = L.Util.splitWords(L.DomUtil.getClass(container))
+			.filter(function(e){
+				return e.indexOf('leaflet-') === 0;
+			})
+			.join(' ');
+			L.DomUtil.setClass(container,eClasses + ' ' + options.className);
+		}
 	},
 
 	_updateCircle: function (layer) {
