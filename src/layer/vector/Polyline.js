@@ -179,7 +179,7 @@ L.Polyline = L.Path.extend({
 			points = this._rings[i];
 
 			for (j = 0, len2 = points.length; j < len2 - 1; j++) {
-				segment = L.LineUtil.clipSegment(points[j], points[j + 1], bounds, j);
+				segment = L.LineUtil.clipSegment(points[j], points[j + 1], bounds, j, true);
 
 				if (!segment) { continue; }
 

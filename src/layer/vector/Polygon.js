@@ -58,7 +58,7 @@ L.Polygon = L.Polyline.extend({
 		this._parts = [];
 
 		for (var i = 0, len = this._rings.length, clipped; i < len; i++) {
-			clipped = L.PolyUtil.clipPolygon(this._rings[i], bounds);
+			clipped = L.PolyUtil.clipPolygon(this._rings[i], bounds, true);
 			if (clipped.length) {
 				this._parts.push(clipped);
 			}
