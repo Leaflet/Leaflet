@@ -286,6 +286,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/ablakey/Leaflet.SimpleGraticule">Leaflet.SimpleGraticule</a>
+		</td><td>
+			Draws a grid lines for L.CRS.Simple coordinate system.
+		</td><td>
+			<a href="https://github.com/ablakey">Andrew Blakey</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
 			Plugin for plotting a marker representing a user - or multiple users - on a map,
