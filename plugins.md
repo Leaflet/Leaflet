@@ -442,6 +442,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
  			<a href="https://github.com/hiasinho">Mathias Schneider</a>
  		</td>
  	</tr>
+ 	<tr>
+ 		<td>
+ 			<a href="https://github.com/ewoken/Leaflet.MovingMarker">Leaflet.MovingMarker</a>
+ 		</td><td>
+ 			Allow to move markers along a polyline with custom durations. 
+ 		</td><td>
+ 			<a href="https://github.com/ewoken">Ewoken</a>
+ 		</td>
+ 	</tr>
 </table>
 
 
