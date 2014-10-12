@@ -169,16 +169,29 @@ L.DomEvent = {
 			.stopPropagation(e);
 	},
 
+	_mousePosition: new L.Point(0,0),
 	getMousePosition: function (e, container) {
-		if (!container) {
-			return new L.Point(e.clientX, e.clientY);
+		var pos = this._mousePosition,
+			rect,
+			x,
+			y;
+
+		if (container === undefined) {
+			x = e.clientX;
+			y = e.clientY;
+
+		} else {
+
+			rect = container.getBoundingClientRect();
+
+			x = e.clientX - rect.left - container.clientLeft;
+			y =	e.clientY - rect.top - container.clientTop;
 		}
 
-		var rect = container.getBoundingClientRect();
+		pos.x = x;
+		pos.y = y;
 
-		return new L.Point(
-			e.clientX - rect.left - container.clientLeft,
-			e.clientY - rect.top - container.clientTop);
+		return pos;
 	},
 
 	getWheelDelta: function (e) {
