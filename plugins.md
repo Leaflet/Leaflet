@@ -624,7 +624,20 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/albburtsev/">Alexander Burtsev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/heigeo/leaflet.wms">leaflet.wms</a>
+		</td><td>
+			Enhanced WMS support for Leaflet, including single-tile/untiled layers, shared WMS sources, and layer identify via GetFeatureInfo.
+		</td><td>
+			<a href="https://github.com/sheppard/">S. Andrew Sheppard</a><br>(<a href="https://github.com/heigeo/">HEI Geo</a>)
+		</td>
+	</tr>
 </table>
+
+
+
+
 
 
 ### Geocoding (Address Lookup)
