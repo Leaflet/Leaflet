@@ -636,10 +636,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 </table>
 
 
-
-
-
-
 ### Geocoding (Address Lookup)
 
 <table class="plugins">
