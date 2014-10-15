@@ -154,9 +154,9 @@ Here is an example of a `package.json` file for a Leaflet plugin.
 
 ## Module Loaders
 
-Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) impliment module systems like AMD (Asyncronous Module Definition) and CommonJS to allow developers to modularize and load their code.
+Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
 
-You can add support for AMD/CommonJS loaders to your Leaflet plugin by follwoing this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
+You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
 
 ```js
 (function (factory, window) {
@@ -179,7 +179,7 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by follwoing
     }
 }(function (L) {
     var MyLeafletPlugin = {};
-    // impliment your plguin
+    // implement your plugin
 
     // return your plugin when you are done
     return MyLeafletPlugin;
