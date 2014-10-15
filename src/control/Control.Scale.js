@@ -80,7 +80,7 @@ L.Control.Scale = L.Control.extend({
 	},
 
 	_updateScale: function (scale, text, ratio) {
-		scale.style.width = (Math.round(this.options.maxWidth * ratio) - 10) + 'px';
+		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
 		scale.innerHTML = text;
 	},
 

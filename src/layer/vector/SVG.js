@@ -31,11 +31,17 @@ L.SVG = L.Renderer.extend({
 
 		L.DomUtil.setPosition(container, b.min);
 
-		// update container viewBox so that we don't have to change coordinates of individual layers
-		container.setAttribute('width', size.x);
-		container.setAttribute('height', size.y);
-		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		// set size of svg-container if changed
+		if (!this._svgSize || !this._svgSize.equals(size)) {
+			this._svgSize = size;
+			container.setAttribute('width', size.x);
+			container.setAttribute('height', size.y);
+		}
 
+		// movement: update container viewBox so that we don't have to change coordinates of individual layers
+		L.DomUtil.setPosition(container, b.min);
+		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		
 		if (L.Browser.mobileWebkit) {
 			pane.appendChild(container);
 		}
@@ -50,8 +56,8 @@ L.SVG = L.Renderer.extend({
 			L.DomUtil.addClass(path, layer.options.className);
 		}
 
-		if (layer.options.clickable) {
-			L.DomUtil.addClass(path, 'leaflet-clickable');
+		if (layer.options.interactive) {
+			L.DomUtil.addClass(path, 'leaflet-interactive');
 		}
 
 		this._updateStyle(layer);
@@ -110,7 +116,7 @@ L.SVG = L.Renderer.extend({
 			path.setAttribute('fill', 'none');
 		}
 
-		path.setAttribute('pointer-events', options.pointerEvents || (options.clickable ? 'visiblePainted' : 'none'));
+		path.setAttribute('pointer-events', options.pointerEvents || (options.interactive ? 'visiblePainted' : 'none'));
 	},
 
 	_updatePoly: function (layer, closed) {
@@ -152,7 +158,10 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_fireMouseEvent: function (e) {
-		this._paths[L.stamp(e.target || e.srcElement)]._fireMouseEvent(e);
+		var path = this._paths[L.stamp(e.target || e.srcElement)];
+		if (path) {
+			path._fireMouseEvent(e);
+		}
 	}
 });
 

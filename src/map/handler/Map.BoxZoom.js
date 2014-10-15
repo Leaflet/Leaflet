@@ -27,9 +27,9 @@ L.Map.BoxZoom = L.Handler.extend({
 	},
 
 	_onMouseDown: function (e) {
-		this._moved = false;
-
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
+
+		this._moved = false;
 
 		L.DomUtil.disableTextSelection();
 		L.DomUtil.disableImageDrag();
@@ -37,9 +37,10 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._startPoint = this._map.mouseEventToContainerPoint(e);
 
 		L.DomEvent.on(document, {
+			contextmenu: L.DomEvent.stop,
 			mousemove: this._onMouseMove,
-		    mouseup: this._onMouseUp,
-		    keydown: this._onKeyDown
+			mouseup: this._onMouseUp,
+			keydown: this._onKeyDown
 		}, this);
 	},
 
@@ -74,13 +75,15 @@ L.Map.BoxZoom = L.Handler.extend({
 		L.DomUtil.enableImageDrag();
 
 		L.DomEvent.off(document, {
+			contextmenu: L.DomEvent.stop,
 			mousemove: this._onMouseMove,
-		    mouseup: this._onMouseUp,
-		    keydown: this._onKeyDown
+			mouseup: this._onMouseUp,
+			keydown: this._onKeyDown
 		}, this);
 	},
 
-	_onMouseUp: function () {
+	_onMouseUp: function (e) {
+		if ((e.which !== 1) && (e.button !== 1)) { return false; }
 
 		this._finish();
 

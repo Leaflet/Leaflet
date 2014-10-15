@@ -5,7 +5,8 @@
 L.ImageOverlay = L.Layer.extend({
 
 	options: {
-		opacity: 1
+		opacity: 1,
+		alt: ''
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -80,6 +81,10 @@ L.ImageOverlay = L.Layer.extend({
 
 		return events;
 	},
+	
+	getBounds: function() {
+		return this._bounds;
+	},
 
 	_initImage: function () {
 		var img = this._image = L.DomUtil.create('img',
@@ -90,6 +95,7 @@ L.ImageOverlay = L.Layer.extend({
 
 		img.onload = L.bind(this.fire, this, 'load');
 		img.src = this._url;
+		img.alt = this.options.alt;
 	},
 
 	_animateZoom: function (e) {

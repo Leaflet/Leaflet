@@ -26,10 +26,10 @@ You can roll your own tiles as well.
 but there are providers that use other sources.
 
 Check out [this example](http://leaflet-extras.github.io/leaflet-providers/preview/)
-with half a hundred different layers to choose from.
+with over seventy different layers to choose from.
 Popular commercial options, free up to a particular number of requests, include
 [MapBox](http://mapbox.com),
-[Bing Maps](http://www.microsoft.com/maps/choose-your-binge's-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
+[Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
 [Esri ArcGIS](http://www.arcgis.com/features/maps/imagery.html) ([official plugin](https://github.com/Esri/esri-leaflet))
 and [Nokia Here](http://developer.here.com/web-experiences).
 A notable exception is [MapQuest Open](http://developer.mapquest.com/web/products/open/map), which is free for any number of requests.
@@ -45,7 +45,7 @@ and [MapQuest Open](http://developer.mapquest.com/web/products/open/map) provide
 
 #### I want to use Google Maps API tiles with Leaflet, can I do that?
 
-The problem with Google is that its [Terms of Use](https://developers.google.com/maps/terms?hl=ru) forbid any means of tile access other than through the Google Maps API.
+The problem with Google is that its [Terms of Use](https://developers.google.com/maps/terms) forbid any means of tile access other than through the Google Maps API.
 
 You can add the Google Maps API as a Leaflet layer with a [plugin](https://github.com/shramov/leaflet-plugins). But note that the map experience will not be perfect, because Leaflet will just act as a proxy to the Google Maps JS engine, so you won't get all the performance and usability benefits of using Leaflet when the Google layer is on.
 

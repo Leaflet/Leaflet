@@ -191,11 +191,15 @@ L.GridLayer = L.Layer.extend({
 			});
 		}
 
+		if (this._abortLoading) {
+			this._abortLoading();
+		}
+
 		this._tiles = {};
 		this._tilesToLoad = 0;
 		this._tilesTotal = 0;
 
-		this._tileContainer.innerHTML = '';
+		L.DomUtil.empty(this._tileContainer);
 
 		if (this._zoomAnimated && e && e.hard) {
 			this._clearBgBuffer();
@@ -241,7 +245,10 @@ L.GridLayer = L.Layer.extend({
 		    tileSize = this._getTileSize();
 
 		if (zoom > this.options.maxZoom ||
-		    zoom < this.options.minZoom) { return; }
+		    zoom < this.options.minZoom) { 
+			this._clearBgBuffer();
+			return; 
+		}
 
 		// tile coordinates range for the current view
 		var tileBounds = L.bounds(
@@ -324,7 +331,7 @@ L.GridLayer = L.Layer.extend({
 	_tileCoordsToBounds: function (coords) {
 
 		var map = this._map,
-		    tileSize = this.options.tileSize,
+		    tileSize = this._getTileSize(),
 
 		    nwPoint = coords.multiplyBy(tileSize),
 		    sePoint = nwPoint.add([tileSize, tileSize]),
@@ -340,7 +347,7 @@ L.GridLayer = L.Layer.extend({
 		return coords.x + ':' + coords.y;
 	},
 
-	// converts tile cache key to coordiantes
+	// converts tile cache key to coordinates
 	_keyToTileCoords: function (key) {
 		var kArr = key.split(':'),
 		    x = parseInt(kArr[0], 10),
@@ -494,7 +501,7 @@ L.GridLayer = L.Layer.extend({
 			bg = this._bgBuffer;
 
 		if (map && !map._animatingZoom && !map.touchZoom._zooming && bg) {
-			bg.innerHTML = '';
+			L.DomUtil.empty(bg);
 			L.DomUtil.setTransform(bg);
 		}
 	},

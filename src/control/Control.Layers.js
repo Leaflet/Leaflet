@@ -124,8 +124,8 @@ L.Control.Layers = L.Control.extend({
 	_update: function () {
 		if (!this._container) { return; }
 
-		this._baseLayersList.innerHTML = '';
-		this._overlaysList.innerHTML = '';
+		L.DomUtil.empty(this._baseLayersList);
+		L.DomUtil.empty(this._overlaysList);
 
 		var baseLayersPresent, overlaysPresent, i, obj;
 

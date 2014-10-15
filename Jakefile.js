@@ -23,7 +23,7 @@ function hint(msg, paths) {
 			console.log('\tCheck passed.\n');
 			complete();
 		});
-	}
+	};
 }
 
 desc('Check Leaflet source for errors with JSHint');
@@ -36,12 +36,14 @@ desc('Combine and compress Leaflet source files');
 task('build', {async: true}, function (compsBase32, buildName) {
 	var v;
 
-	jake.exec('git log -1 --pretty=format:"%h"', {}, function () {
+	jake.exec('git log -1 --pretty=format:"%h"', {breakOnError: false}, function () {
 		build.build(complete, v, compsBase32, buildName);
 
 	}).on('stdout', function (data) {
 		v = version + ' (' + data.toString() + ')';
-	})
+	}).on('error', function () {
+		v = version;
+	});
 });
 
 desc('Run PhantomJS tests');

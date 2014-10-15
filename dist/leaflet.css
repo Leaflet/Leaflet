@@ -24,7 +24,7 @@
 	-webkit-user-select: none;
 	   -moz-user-select: none;
 	        user-select: none;
-	-webkit-user-drag: none;
+	  -webkit-user-drag: none;
 	}
 /* Safari renders non-retina tile on retina better with this, but Chrome is worse */
 .leaflet-safari .leaflet-tile {
@@ -40,7 +40,9 @@
 .leaflet-marker-shadow {
 	display: block;
 	}
-/* map is broken in FF if you have max-width: 100% on tiles */
+/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */
+/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
+.leaflet-container svg,
 .leaflet-container img {
 	max-width: none !important;
 	}
@@ -171,7 +173,7 @@
 
 /* cursors */
 
-.leaflet-clickable {
+.leaflet-interactive {
 	cursor: pointer;
 	}
 .leaflet-container {
@@ -179,7 +181,7 @@
 	cursor:    -moz-grab;
 	}
 .leaflet-crosshair,
-.leaflet-crosshair .leaflet-clickable {
+.leaflet-crosshair .leaflet-interactive {
 	cursor: crosshair;
 	}
 .leaflet-popup-pane,
@@ -187,7 +189,7 @@
 	cursor: auto;
 	}
 .leaflet-dragging .leaflet-container,
-.leaflet-dragging .leaflet-clickable {
+.leaflet-dragging .leaflet-interactive {
 	cursor: move;
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;

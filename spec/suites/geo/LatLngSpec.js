@@ -64,6 +64,12 @@ describe('LatLng', function () {
 
 			expect(Math.abs(Math.round(a.distanceTo(b) / 1000) - 2084) < 5).to.eql(true);
 		});
+		it('does not return NaN if input points are equal', function () {
+			var a = new L.LatLng(50.5, 30.5);
+			var b = new L.LatLng(50.5, 30.5);
+
+			expect(a.distanceTo(b)).to.eql(0);
+		});
 	});
 
 	describe('L.latLng factory', function () {
