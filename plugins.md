@@ -1344,6 +1344,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/skeate">Jonathan Skeate</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/w8r/Leaflet.Bookmarks">Leaflet.Bookmarks</a>
+		</td>
+		<td>
+			Control for adding and navigating between user-created bookmarks on the map.
+		</td>
+		<td>
+			<a href="https://github.com/w8r/">Alexander Milevski</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1524,6 +1535,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td>
 		<td>
 			<a href="https://github.com/dagjomar">Dag Jomar Mersland</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/w8r/GreinerHormann">Greiner-Hormann</a>
+		</td>
+		<td>
+			Greiner-Hormann algorithm for polygon clipping and binary operations, adapted for use with Leaflet.
+		</td>
+		<td>
+			<a href="https://github.com/w8r">Alexander Milevski</a>
 		</td>
 	</tr>
 </table>
