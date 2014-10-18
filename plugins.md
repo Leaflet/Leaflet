@@ -451,6 +451,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
  			<a href="https://github.com/ewoken">Ewoken</a>
  		</td>
  	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/perliedman/leaflet-realtime">Leaflet Realtime</a>
+		</td><td>
+			Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
+		</td><td>
+			<a href="https://github.com/perliedman/">Per Liedman</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -631,15 +640,6 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Enhanced WMS support for Leaflet, including single-tile/untiled layers, shared WMS sources, and layer identify via GetFeatureInfo.
 		</td><td>
 			<a href="https://github.com/sheppard/">S. Andrew Sheppard</a><br>(<a href="https://github.com/heigeo/">HEI Geo</a>)
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/perliedman/leaflet-realtime">Leaflet Realtime</a>
-		</td><td>
-			Put realtime data on a Leaflet map: live tracking GPS units, sensor data or just about anything.
-		</td><td>
-			<a href="https://github.com/perliedman/">Per Liedman</a>
 		</td>
 	</tr>
 </table>
