@@ -53,13 +53,12 @@ L.DomEvent = {
 		var originalHandler = handler;
 
 		if (L.Browser.pointer && type.indexOf('touch') === 0) {
-			return this.addPointerListener(obj, type, handler, id);
-		}
-		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+			this.addPointerListener(obj, type, handler, id);
+		
+		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
 			this.addDoubleTapListener(obj, handler, id);
-		}
 
-		if ('addEventListener' in obj) {
+		} else if ('addEventListener' in obj) {
 
 			if (type === 'mousewheel') {
 				obj.addEventListener('DOMMouseScroll', handler, false);
