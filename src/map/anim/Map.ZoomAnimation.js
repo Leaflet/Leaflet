@@ -78,8 +78,11 @@ L.Map.include(!zoomAnimated ? {} : {
 			L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
 
-		var scale = this.getZoomScale(zoom),
-			origin = this._getCenterLayerPoint().add(this._getCenterOffset(center)._divideBy(1 - 1 / scale));
+		var scale = this.getZoomScale(zoom);
+		if (scale === 1) {
+			scale += 0.001;
+		}
+		var origin = this._getCenterLayerPoint().add(this._getCenterOffset(center)._divideBy(1 - 1 / scale));
 
 		this.fire('zoomanim', {
 			center: center,
