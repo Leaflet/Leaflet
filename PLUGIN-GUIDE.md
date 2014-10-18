@@ -15,6 +15,8 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [File Structure](#file-structure)
 	- [Code Conventions](#code-conventions)
 	- [Plugin API](#plugin-api)
+3. [Publishing on NPM](#publishing-on-npm)
+4. [Module Loaders](#module-loaders)
 
 ## Presentation
 
@@ -125,3 +127,63 @@ marker.myPlugin('bla', {
 ```
 
 And most importantly, keep it simple. Leaflet is all about *simplicity*.
+
+## Publishing on NPM
+
+NPM (Node Packaged Modules) is a package manager and code repository for JavaScript. Publishing your module on NPM allows other developers to quickly find and install your plugin as well as any other plugins it depends on.
+
+NPM has an excellent [developers guide](https://www.npmjs.org/doc/misc/npm-developers.html) to help you through the process.
+
+When you publish your plugin you should add a depenency on `leaflet` to your `package.json` file. This will automatically install Leaflet when your package is installed.
+
+Here is an example of a `package.json` file for a Leaflet plugin.
+
+```json
+{
+  "name": "my-leaflet-plugin",
+  "version": "1.0.0",
+  "description": "A simple leaflet plugin.",
+  "main": "my-plugin.js",
+  "author": "You",
+  "license": "IST",
+  "dependencies": {
+    "leaflet": "^1.0.0"
+  }
+}
+```
+
+## Module Loaders
+
+Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
+
+You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
+
+```js
+(function (factory, window) {
+
+    // define an AMD module that relies on 'leaflet'
+    if (typeof define === 'function' && define.amd) {
+        define(['leaflet'], function (L) {
+            return (exports = factory(L));
+        });
+    
+    // define a Common JS module that relies on 'leaflet'
+    } else if (typeof exports === 'object') {
+        module.exports = factory(require('leaflet'));
+    
+    }
+
+    // attach your plugin to the global 'L' variable
+    if(typeof window !== 'undefined' && window.L){
+      window.L.YourPlugin = factory(L);
+    }
+}(function (L) {
+    var MyLeafletPlugin = {};
+    // implement your plugin
+
+    // return your plugin when you are done
+    return MyLeafletPlugin;
+}, window));
+```
+
+Now your plugin is available as an AMD and CommonJS module and can used used in module loaders like Browserify and RequireJS.
