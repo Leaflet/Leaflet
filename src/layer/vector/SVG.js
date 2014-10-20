@@ -111,7 +111,7 @@ L.SVG = L.Renderer.extend({
 		if (options.fill) {
 			path.setAttribute('fill', options.fillColor || options.color);
 			path.setAttribute('fill-opacity', options.fillOpacity);
-			path.setAttribute('fill-rule', 'evenodd');
+			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
 			path.setAttribute('fill', 'none');
 		}
