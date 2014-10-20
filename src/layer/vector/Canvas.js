@@ -166,7 +166,7 @@ L.Canvas = L.Renderer.extend({
 		if (options.fill) {
 			ctx.globalAlpha = clear ? 1 : options.fillOpacity;
 			ctx.fillStyle = options.fillColor || options.color;
-			ctx.fill('evenodd');
+			ctx.fill(options.fillRule || 'evenodd');
 		}
 
 		if (options.stroke) {
