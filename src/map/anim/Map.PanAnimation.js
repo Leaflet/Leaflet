@@ -68,10 +68,10 @@ L.Map.include({
 
 		// animate pan unless animate: false specified
 		if (options.animate !== false) {
-			L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
+			L.DomUtil.addClass(this._mapPane.getContainer(), 'leaflet-pan-anim');
 
 			var newPos = this._getMapPanePos().subtract(offset);
-			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
+			this._panAnim.run(this._mapPane.getContainer(), newPos, options.duration || 0.25, options.easeLinearity);
 		} else {
 			this._rawPanBy(offset);
 			this.fire('move').fire('moveend');
@@ -85,7 +85,7 @@ L.Map.include({
 	},
 
 	_onPanTransitionEnd: function () {
-		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
+		L.DomUtil.removeClass(this._mapPane.getContainer(), 'leaflet-pan-anim');
 		this.fire('moveend');
 	},
 

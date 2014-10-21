@@ -64,11 +64,8 @@ L.Renderer = L.Layer.extend({
 L.Map.include({
 	// used by each vector layer to decide which renderer to use
 	getRenderer: function (layer) {
-		var renderer = layer.options.renderer || this.options.renderer || this._renderer;
-
-		if (!renderer) {
-			renderer = this._renderer = (L.SVG && L.svg()) || (L.Canvas && L.canvas());
-		}
+		// Get the renderer from the layer's pane
+		var renderer = layer.getPane().getRenderer();
 
 		if (!this.hasLayer(renderer)) {
 			this.addLayer(renderer);

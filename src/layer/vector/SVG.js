@@ -41,7 +41,7 @@ L.SVG = L.Renderer.extend({
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		L.DomUtil.setPosition(container, b.min);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
-		
+
 		if (L.Browser.mobileWebkit) {
 			pane.appendChild(container);
 		}
