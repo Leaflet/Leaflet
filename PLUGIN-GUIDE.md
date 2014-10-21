@@ -163,9 +163,7 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 
     // define an AMD module that relies on 'leaflet'
     if (typeof define === 'function' && define.amd) {
-        define(['leaflet'], function (L) {
-            return (exports = factory(L));
-        });
+        define(['leaflet'], factory);
     
     // define a Common JS module that relies on 'leaflet'
     } else if (typeof exports === 'object') {
