@@ -122,6 +122,10 @@ L.GridLayer = L.Layer.extend({
 		return events;
 	},
 
+	createTile: function () {
+		return document.createElement('div');
+	},
+
 	_updateZIndex: function () {
 		if (this._container && this.options.zIndex !== undefined) {
 			this._container.style.zIndex = this.options.zIndex;
