@@ -36,6 +36,9 @@
 			return tile;
 		};
 
+		grid.on('loading', function() { console.log('loading'); });
+		grid.on('load', function() { console.log('load'); });
+
 		var map = L.map('map')
 				.setView([50.5, 30.51], 10)
 				.addLayer(grid);

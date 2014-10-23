@@ -230,7 +230,12 @@ L.GridLayer = L.Layer.extend({
 
 		for (key in this._tiles) {
 			if (!this._retain[key]) {
-				setTimeout(L.bind(this._deferRemove, this, key), 250);
+				if (!this._loaded[key]) {
+					this._removeTile(key);
+					this._tilesToLoad--;
+				} else {
+					setTimeout(L.bind(this._deferRemove, this, key), 250);
+				}
 			}
 		}
 	},
@@ -403,6 +408,8 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._level.el.appendChild(fragment);
+
+		this._pruneTiles();
 	},
 
 	_isValidTile: function (coords) {
