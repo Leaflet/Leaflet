@@ -99,7 +99,7 @@ L.GridLayer = L.Layer.extend({
 
 	redraw: function () {
 		if (this._map) {
-			this._reset({hard: true});
+			this._removeAllTiles();
 			this._update();
 		}
 		return this;
@@ -240,6 +240,12 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
+	_removeAllTiles: function () {
+		for (var key in this._tiles) {
+			this._removeTile(key);
+		}
+	},
+
 	_deferRemove: function (key) {
 		if (!this._retain[key]) {
 			this._removeTile(key);
@@ -287,7 +293,7 @@ L.GridLayer = L.Layer.extend({
 		    tileZoom = Math.round(zoom),
 		    tileZoomChanged = this._tileZoom !== tileZoom;
 
-		if (tileZoomChanged || e && e.hard) {
+		if (tileZoomChanged || (e && e.hard)) {
 			if (this._abortLoading) {
 				this._abortLoading();
 			}
