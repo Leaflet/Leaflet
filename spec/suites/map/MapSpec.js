@@ -384,7 +384,7 @@ describe("Map", function () {
 
 		it("supports adding and removing a tile layer without initializing the map", function () {
 			map.setView([0, 0], 18);
-			var layer = L.tileLayer("{z}{x}{y}");
+			var layer = L.gridLayer();
 			map.addLayer(layer);
 			map.removeLayer(layer);
 		});
