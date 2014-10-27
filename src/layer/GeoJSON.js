@@ -206,10 +206,6 @@ L.Polygon.prototype.toGeoJSON = function () {
 
 	var coords = L.GeoJSON.latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true);
 
-	if (holes && this._latlngs.length === 1) {
-		multi = true;
-		coords = [coords];
-	}
 	if (!holes) {
 		coords = [coords];
 	}
