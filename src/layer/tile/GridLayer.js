@@ -55,6 +55,7 @@ L.GridLayer = L.Layer.extend({
 		L.DomUtil.remove(this._container);
 		map._removeZoomLimit(this);
 		this._container = null;
+		this._tileZoom = null;
 	},
 
 	bringToFront: function () {
