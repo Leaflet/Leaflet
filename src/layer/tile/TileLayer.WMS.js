@@ -14,6 +14,11 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		transparent: false
 	},
 
+	options: {
+		crs: null,
+		uppercase: false
+	},
+
 	initialize: function (url, options) {
 
 		this._url = url;
@@ -22,17 +27,14 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 		// all keys that are not TileLayer options go to WMS params
 		for (var i in options) {
-			if (!this.options.hasOwnProperty(i) &&
-					i !== 'crs' &&
-					i !== 'uppercase') {
+			if (!(i in this.options)) {
 				wmsParams[i] = options[i];
 			}
 		}
 
 		options = L.setOptions(this, options);
 
-		wmsParams.width = wmsParams.height =
-				options.tileSize * (options.detectRetina && L.Browser.retina ? 2 : 1);
+		wmsParams.width = wmsParams.height = options.tileSize * (options.detectRetina && L.Browser.retina ? 2 : 1);
 
 		this.wmsParams = wmsParams;
 	},
@@ -40,8 +42,6 @@ L.TileLayer.WMS = L.TileLayer.extend({
 	onAdd: function (map) {
 
 		this._crs = this.options.crs || map.options.crs;
-		this._uppercase = this.options.uppercase || false;
-
 		this._wmsVersion = parseFloat(this.wmsParams.version);
 
 		var projectionKey = this._wmsVersion >= 1.3 ? 'crs' : 'srs';
@@ -63,8 +63,8 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		    url = L.TileLayer.prototype.getTileUrl.call(this, coords);
 
 		return url +
-			L.Util.getParamString(this.wmsParams, url, this._uppercase) +
-			(this._uppercase ? '&BBOX=' : '&bbox=') + bbox;
+			L.Util.getParamString(this.wmsParams, url, this.options.uppercase) +
+			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
 	},
 
 	setParams: function (params, noRedraw) {

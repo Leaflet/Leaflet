@@ -12,15 +12,14 @@ L.GridLayer = L.Layer.extend({
 
 		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
-		updateInterval: 200
+		updateInterval: 200,
 
-		/*
-		minZoom: <Number>,
-		maxZoom: <Number>,
-		attribution: <String>,
-		zIndex: <Number>,
-		bounds: <LatLngBounds>
-		*/
+		attribution: null,
+		zIndex: null,
+		bounds: null,
+
+		minZoom: 0
+		// maxZoom: <Number>
 	},
 
 	initialize: function (options) {

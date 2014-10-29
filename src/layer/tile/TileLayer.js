@@ -5,20 +5,17 @@
 L.TileLayer = L.GridLayer.extend({
 
 	options: {
-		minZoom: 0,
 		maxZoom: 18,
 
 		subdomains: 'abc',
-		// errorTileUrl: '',
-		zoomOffset: 0
+		errorTileUrl: '',
+		zoomOffset: 0,
 
-		/*
-		maxNativeZoom: <Number>,
-		tms: <Boolean>,
-		zoomReverse: <Number>,
-		detectRetina: <Boolean>,
-		crossOrigin: <Boolean>,
-		*/
+		maxNativeZoom: null, // Number
+		tms: false,
+		zoomReverse: false,
+		detectRetina: false,
+		crossOrigin: false
 	},
 
 	initialize: function (url, options) {
@@ -61,11 +58,11 @@ L.TileLayer = L.GridLayer.extend({
 
 		tile.onload = L.bind(this._tileOnLoad, this, done, tile);
 		tile.onerror = L.bind(this._tileOnError, this, done, tile);
-		
+
 		if (this.options.crossOrigin) {
 			tile.crossOrigin = '';
 		}
-		
+
 		/*
 		 Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
 		 http://www.w3.org/TR/WCAG20-TECHS/H67
