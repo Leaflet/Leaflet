@@ -79,7 +79,7 @@ L.TileLayer = L.GridLayer.extend({
 			r: this.options.detectRetina && L.Browser.retina && this.options.maxZoom > 0 ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
-			y: this.options.tms ? this._tileNumBounds.max.y - coords.y : coords.y,
+			y: this.options.tms ? this._globalTileRange.max.y - coords.y : coords.y,
 			z: this._getZoomForUrl()
 		}, this.options));
 	},
