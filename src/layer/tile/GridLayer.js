@@ -245,6 +245,7 @@ L.GridLayer = L.Layer.extend({
 		for (var key in this._tiles) {
 			this._removeTile(key);
 		}
+		this._tilesToLoad = 0;
 	},
 
 	_deferRemove: function (key) {
