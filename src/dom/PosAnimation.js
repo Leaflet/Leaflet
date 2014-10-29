@@ -24,7 +24,7 @@ L.PosAnimation = L.Evented.extend({
 	stop: function () {
 		if (!this._inProgress) { return; }
 
-		this._step();
+		this._step(true);
 		this._complete();
 	},
 
@@ -34,20 +34,23 @@ L.PosAnimation = L.Evented.extend({
 		this._step();
 	},
 
-	_step: function () {
+	_step: function (round) {
 		var elapsed = (+new Date()) - this._startTime,
 		    duration = this._duration * 1000;
 
 		if (elapsed < duration) {
-			this._runFrame(this._easeOut(elapsed / duration));
+			this._runFrame(this._easeOut(elapsed / duration), round);
 		} else {
 			this._runFrame(1);
 			this._complete();
 		}
 	},
 
-	_runFrame: function (progress) {
+	_runFrame: function (progress, round) {
 		var pos = this._startPos.add(this._offset.multiplyBy(progress));
+		if (round) {
+			pos._round();
+		}
 		L.DomUtil.setPosition(this._el, pos);
 
 		this.fire('step');
