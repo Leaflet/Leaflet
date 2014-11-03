@@ -5270,7 +5270,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		</code></td>
 
 		<td><code>Function</code></td>
-		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.</td>
+		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.  Not a polyfill for ES 5 <code>bind</code> (compare <code>L.bind</code> to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill">MDN-recommended polyfill</a> for <code>Function.prototype.bind</code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
