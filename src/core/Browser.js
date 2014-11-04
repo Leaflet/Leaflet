@@ -23,14 +23,6 @@
 	    gecko3d = 'MozPerspective' in doc.style,
 	    opera3d = 'OTransition' in doc.style;
 
-
-	var retina = 'devicePixelRatio' in window && window.devicePixelRatio > 1;
-
-	if (!retina && 'matchMedia' in window) {
-		var matches = window.matchMedia('(min-resolution:144dpi)');
-		retina = matches && matches.matches;
-	}
-
 	var touch = !window.L_NO_TOUCH && !phantomjs && (pointer || 'ontouchstart' in window ||
 			(window.DocumentTouch && document instanceof window.DocumentTouch));
 
@@ -59,7 +51,7 @@
 		msPointer: !!msPointer,
 		pointer: !!pointer,
 
-		retina: !!retina
+		retina: (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1
 	};
 
 }());
