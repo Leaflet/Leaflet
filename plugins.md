@@ -1364,6 +1364,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/w8r/">Alexander Milevski</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/SINTEF-9012/Leaflet.MapPaint">Leaflet.MapPaint</a>
+		</td>
+		<td>
+			Bitmap painting plugin designed for touch devices.
+		</td><td>
+			<a href="https://github.com/yellowiscool">Antoine Pultier</a>
+		</td>
+	</tr>
 </table>
 
 
