@@ -11,5 +11,5 @@ describe('Path', function () {
 			var path = new L.Path();
 			expect(path.bringToFront()).to.equal(path);
 		});
-	})
+	});
 });
