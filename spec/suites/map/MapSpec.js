@@ -121,11 +121,18 @@ describe("Map", function () {
 			expect(map.getZoom()).to.be(13);
 			expect(map.getCenter().distanceTo([51.505, -0.09])).to.be.lessThan(5);
 		});
+
 		it("can be passed without a zoom specified", function () {
 			map.setZoom(13);
 			expect(map.setView([51.605, -0.11])).to.be(map);
 			expect(map.getZoom()).to.be(13);
 			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
+		});
+
+		it("defaults to zoom passed as map option", function () {
+			map = L.map(document.createElement('div'), {zoom: 13});
+			expect(map.setView([51.605, -0.11])).to.be(map);
+			expect(map.getZoom()).to.be(13);
 		});
 	});
 
