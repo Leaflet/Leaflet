@@ -54,6 +54,44 @@
 		});
 	});
 
+	describe("#setLayers", function () {
+		it('adds layers', function () {
+			var initialMarkers = [
+				L.marker([0, 0])
+			];
+
+			var lg = L.layerGroup(initialMarkers);
+
+			var newMarkers = [
+				L.marker([0, 1]),
+				L.marker([1, 1])
+			];
+
+			var allMarkers = initialMarkers.concat( newMarkers );
+
+			lg.setLayers(allMarkers);
+
+			expect(lg.getLayers()).to.eql(allMarkers);
+		});
+
+		it('removes layers', function () {
+			var initialMarkers = [
+				L.marker([0, 0]),
+				L.marker([0, 1]),
+				L.marker([1, 1]),
+				L.marker([1, 2])
+			];
+
+			var lg = L.layerGroup(initialMarkers);
+
+			var newMarkers = initialMarkers.splice(1,1);
+
+			lg.setLayers( newMarkers );
+
+			expect(lg.getLayers()).to.eql(newMarkers);
+		});
+	});
+
 	describe("#eachLayer", function () {
 		it('iterates over all layers', function () {
 			var lg = L.layerGroup(),

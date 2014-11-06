@@ -99,6 +99,34 @@ L.LayerGroup = L.Layer.extend({
 		return layers;
 	},
 
+	setLayers: function (layers) {
+		// What exists in new layers, but not current layers?
+		for (var newLayerIndex in layers) {
+			if (!this.hasLayer(layers[newLayerIndex])) {
+				this.addLayer(layers[newLayerIndex]);
+			}
+		}
+
+		// What exists in current layers, but not new layers?
+		for (var existingLayerIndex in this._layers) {
+			var found = false;
+
+			for (var newLayerIndex2 in layers) {
+				if (this._layers[existingLayerIndex] === layers[newLayerIndex2]) {
+					found = true;
+
+					break;
+				}
+			}
+
+			if (!found) {
+				this.removeLayer(this._layers[existingLayerIndex]);
+			}
+		}
+
+		return this;
+	},
+
 	setZIndex: function (zIndex) {
 		return this.invoke('setZIndex', zIndex);
 	},
