@@ -66,14 +66,7 @@ L.Map.include({
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
 		    latlng = new L.LatLng(lat, lng),
-
-		    latAccuracy = 180 * pos.coords.accuracy / 40075017,
-		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * lat),
-
-		    bounds = L.latLngBounds(
-		            [lat - latAccuracy, lng - lngAccuracy],
-		            [lat + latAccuracy, lng + lngAccuracy]),
-
+		    bounds = latlng.toBounds(pos.coords.accuracy),
 		    options = this._locateOptions;
 
 		if (options.setView) {
