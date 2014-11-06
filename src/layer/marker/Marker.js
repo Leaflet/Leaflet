@@ -206,17 +206,19 @@ L.Marker = L.Layer.extend({
 		L.DomUtil.addClass(this._icon, 'leaflet-interactive');
 
 		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
-				this._fireMouseEvent, this);
+			this._fireMouseEvent, this);
 
 		if (L.Handler.MarkerDrag) {
-			if (this.dragging) {
+			var isDraggingEnabled = this.options.draggable;
+			if(this.dragging) {
+				isDraggingEnabled = this.dragging.enabled();
 				this.dragging.disable();
 			}
-			
 			this.dragging = new L.Handler.MarkerDrag(this);
-
-			if (this.options.draggable) {
+			if (isDraggingEnabled) {
 				this.dragging.enable();
+			} else {
+				this.dragging.disable();
 			}
 		}
 	},
