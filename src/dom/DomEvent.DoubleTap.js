@@ -32,7 +32,7 @@ L.extend(L.DomEvent, {
 			last = now;
 		}
 
-		function onTouchEnd(e) {
+		function onTouchEnd() {
 			if (doubleTap) {
 				if (L.Browser.pointer) {
 					// work around .type being readonly with MSPointer* events
