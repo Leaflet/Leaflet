@@ -10,6 +10,7 @@ L.extend(L.DomEvent, {
 	POINTER_CANCEL: L.Browser.msPointer ? 'MSPointerCancel' : 'pointercancel',
 
 	_pointers: {},
+	_pointersCount: 0,
 
 	// Provides a touch events wrapper for (ms)pointer events.
 	// ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
@@ -50,22 +51,33 @@ L.extend(L.DomEvent, {
 		var onDown = L.bind(function (e) {
 			L.DomEvent.preventDefault(e);
 
-			this._pointers[e.pointerId] = e;
 			this._handlePointer(e, handler);
 		}, this);
 
 		obj['_leaflet_touchstart' + id] = onDown;
 		obj.addEventListener(this.POINTER_DOWN, onDown, false);
 
-		// need to also listen for end events to keep the _pointers object accurate
+		// need to keep track of what pointers and how many are active to provide e.touches emulation
 		if (!this._pointerDocListener) {
+			var addPointer = L.bind(function (e) {
+				this._pointers[e.pointerId] = e;
+				this._pointersCount++;
+			}, this);
+			var updatePointer = L.bind(function (e) {
+				if (this._pointers[e.pointerId]) {
+					this._pointers[e.pointerId] = e;
+				}
+			}, this);
 			var removePointer = L.bind(function (e) {
 				delete this._pointers[e.pointerId];
+				this._pointersCount--;
 			}, this);
 
 			// we listen documentElement as any drags that end by moving the touch off the screen get fired there
-			document.documentElement.addEventListener(this.POINTER_UP, removePointer, false);
-			document.documentElement.addEventListener(this.POINTER_CANCEL, removePointer, false);
+			document.documentElement.addEventListener(this.POINTER_DOWN, addPointer, true);
+			document.documentElement.addEventListener(this.POINTER_MOVE, updatePointer, true);
+			document.documentElement.addEventListener(this.POINTER_UP, removePointer, true);
+			document.documentElement.addEventListener(this.POINTER_CANCEL, removePointer, true);
 
 			this._pointerDocListener = true;
 		}
@@ -86,7 +98,6 @@ L.extend(L.DomEvent, {
 			// don't fire touch moves when mouse isn't down
 			if ((e.pointerType === e.MSPOINTER_TYPE_MOUSE || e.pointerType === 'mouse') && e.buttons === 0) { return; }
 
-			this._pointers[e.pointerId] = e;
 			this._handlePointer(e, handler);
 		}, this);
 
@@ -96,7 +107,6 @@ L.extend(L.DomEvent, {
 
 	_addPointerEnd: function (obj, handler, id) {
 		var onUp = L.bind(function (e) {
-			delete this._pointers[e.pointerId];
 			this._handlePointer(e, handler);
 		}, this);
 

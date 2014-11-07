@@ -11,15 +11,13 @@ L.extend(L.DomEvent, {
 	addDoubleTapListener: function (obj, handler, id) {
 		var last, touch,
 		    doubleTap = false,
-		    delay = 250,
-		    trackedTouches = [];
+		    delay = 250;
 
 		function onTouchStart(e) {
 			var count;
 
 			if (L.Browser.pointer) {
-				trackedTouches.push(e.pointerId);
-				count = trackedTouches.length;
+				count = L.DomEvent._pointersCount;
 			} else {
 				count = e.touches.length;
 			}
@@ -34,13 +32,7 @@ L.extend(L.DomEvent, {
 			last = now;
 		}
 
-		function onTouchEnd(e) {
-			if (L.Browser.pointer) {
-				var idx = trackedTouches.indexOf(e.pointerId);
-				if (idx === -1) { return; }
-				trackedTouches.splice(idx, 1);
-			}
-
+		function onTouchEnd() {
 			if (doubleTap) {
 				if (L.Browser.pointer) {
 					// work around .type being readonly with MSPointer* events
@@ -66,31 +58,17 @@ L.extend(L.DomEvent, {
 		obj[pre + touchstart + id] = onTouchStart;
 		obj[pre + touchend + id] = onTouchEnd;
 
-		// on pointer we need to listen on the document, otherwise a drag starting on the map and moving off screen
-		// will not come through to us, so we will lose track of how many touches are ongoing
-		var endElement = L.Browser.pointer ? document.documentElement : obj;
-
 		obj.addEventListener(touchstart, onTouchStart, false);
-
-		endElement.addEventListener(touchend, onTouchEnd, false);
-		if (L.Browser.pointer) {
-			endElement.addEventListener(L.DomEvent.POINTER_CANCEL, onTouchEnd, false);
-		}
-
+		obj.addEventListener(touchend, onTouchEnd, false);
 		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_',
-		    endElement = L.Browser.pointer ? document.documentElement : obj,
 		    touchend = obj[pre + this._touchend + id];
 
 		obj.removeEventListener(this._touchstart, obj[pre + this._touchstart + id], false);
-
-		endElement.removeEventListener(this._touchend, touchend, false);
-		if (L.Browser.pointer) {
-			endElement.removeEventListener(L.DomEvent.POINTER_CANCEL, touchend, false);
-		}
+		obj.removeEventListener(this._touchend, touchend, false);
 
 		return this;
 	}
