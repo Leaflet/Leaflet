@@ -49,7 +49,7 @@ L.LatLng.prototype = {
 		return L.latLngBounds(
 		        [this.lat - latAccuracy, this.lng - lngAccuracy],
 		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
-	} 
+	}
 };
 
 
