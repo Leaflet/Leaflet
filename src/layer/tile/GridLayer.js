@@ -29,11 +29,6 @@ L.GridLayer = L.Layer.extend({
 	onAdd: function () {
 		this._initContainer();
 
-		if (!this.options.updateWhenIdle) {
-			// update tiles on move, but not more often than once per given interval
-			this._update = L.Util.throttle(this._update, this.options.updateInterval, this);
-		}
-
 		this._pruneTiles = L.Util.throttle(this._pruneTiles, 200, this);
 
 		this._levels = {};
@@ -113,7 +108,8 @@ L.GridLayer = L.Layer.extend({
 		};
 
 		if (!this.options.updateWhenIdle) {
-			events.move = this._update;
+			// update tiles on move, but not more often than once per given interval
+			events.move = L.Util.throttle(this._update, this.options.updateInterval, this);
 		}
 
 		if (this._zoomAnimated) {
