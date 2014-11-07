@@ -40,6 +40,7 @@ L.GridLayer = L.Layer.extend({
 
 		this._tiles = {};
 		this._loaded = {};
+		this._retain = {};
 		this._tilesToLoad = 0;
 
 		this._reset();
@@ -384,8 +385,11 @@ L.GridLayer = L.Layer.extend({
 				coords = new L.Point(i, j);
 				coords.z = this._tileZoom;
 
+				var key = this._tileCoordsToKey(coords);
+				this._retain[key] = true;
+
 				// add tile to queue if it's not in cache or out of bounds
-				if (!(this._tileCoordsToKey(coords) in this._tiles) && this._isValidTile(coords)) {
+				if (!(key in this._tiles) && this._isValidTile(coords)) {
 					queue.push(coords);
 				}
 			}
