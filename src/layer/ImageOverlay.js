@@ -43,6 +43,13 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
+	setStyle: function (styleOpts) {
+		if (styleOpts.opacity) { 
+			this.setOpacity(styleOpts.opacity); 
+		}
+		return this;
+	}, 
+
 	bringToFront: function () {
 		if (this._map) {
 			L.DomUtil.toFront(this._image);
