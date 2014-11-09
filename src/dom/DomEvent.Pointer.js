@@ -59,28 +59,32 @@ L.extend(L.DomEvent, {
 
 		// need to keep track of what pointers and how many are active to provide e.touches emulation
 		if (!this._pointerDocListener) {
-			var addPointer = L.bind(function (e) {
-				this._pointers[e.pointerId] = e;
-				this._pointersCount++;
-			}, this);
-			var updatePointer = L.bind(function (e) {
-				if (this._pointers[e.pointerId]) {
-					this._pointers[e.pointerId] = e;
-				}
-			}, this);
-			var removePointer = L.bind(function (e) {
-				delete this._pointers[e.pointerId];
-				this._pointersCount--;
-			}, this);
+			var pointerUp = L.bind(this._globalPointerUp, this);
 
 			// we listen documentElement as any drags that end by moving the touch off the screen get fired there
-			document.documentElement.addEventListener(this.POINTER_DOWN, addPointer, true);
-			document.documentElement.addEventListener(this.POINTER_MOVE, updatePointer, true);
-			document.documentElement.addEventListener(this.POINTER_UP, removePointer, true);
-			document.documentElement.addEventListener(this.POINTER_CANCEL, removePointer, true);
+			document.documentElement.addEventListener(this.POINTER_DOWN, L.bind(this._globalPointerDown, this), true);
+			document.documentElement.addEventListener(this.POINTER_MOVE, L.bind(this._globalPointerMove, this), true);
+			document.documentElement.addEventListener(this.POINTER_UP, pointerUp, true);
+			document.documentElement.addEventListener(this.POINTER_CANCEL, pointerUp, true);
 
 			this._pointerDocListener = true;
 		}
+	},
+
+	_globalPointerDown: function (e) {
+		this._pointers[e.pointerId] = e;
+		this._pointersCount++;
+	},
+
+	_globalPointerMove: function (e) {
+		if (this._pointers[e.pointerId]) {
+			this._pointers[e.pointerId] = e;
+		}
+	},
+
+	_globalPointerUp: function (e) {
+		delete this._pointers[e.pointerId];
+		this._pointersCount--;
 	},
 
 	_handlePointer: function (e, handler) {
