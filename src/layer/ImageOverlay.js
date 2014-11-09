@@ -6,7 +6,8 @@ L.ImageOverlay = L.Layer.extend({
 
 	options: {
 		opacity: 1,
-		alt: ''
+		alt: '',
+		interactive: false
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -26,7 +27,7 @@ L.ImageOverlay = L.Layer.extend({
 		}
 
 		this.getPane().appendChild(this._image);
-
+		this._initInteraction();
 		this._reset();
 	},
 
@@ -55,6 +56,19 @@ L.ImageOverlay = L.Layer.extend({
 			L.DomUtil.toBack(this._image);
 		}
 		return this;
+	},
+
+	_initInteraction: function () {
+		if (!this.options.interactive) { return; }
+		L.DomUtil.addClass(this._image, 'leaflet-interactive');
+		L.DomEvent.on(this._image, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
+				this._fireMouseEvent, this);
+	},
+
+	_fireMouseEvent: function (e, type) {
+		if (this._map) {
+			this._map._fireMouseEvent(this, e, type, true);
+		}
 	},
 
 	setUrl: function (url) {
