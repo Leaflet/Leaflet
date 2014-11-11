@@ -29,11 +29,6 @@ L.GridLayer = L.Layer.extend({
 	onAdd: function () {
 		this._initContainer();
 
-		if (!this.options.updateWhenIdle) {
-			// update tiles on move, but not more often than once per given interval
-			this._update = L.Util.throttle(this._update, this.options.updateInterval, this);
-		}
-
 		this._pruneTiles = L.Util.throttle(this._pruneTiles, 200, this);
 
 		this._levels = {};
@@ -113,7 +108,8 @@ L.GridLayer = L.Layer.extend({
 		};
 
 		if (!this.options.updateWhenIdle) {
-			events.move = this._update;
+			// update tiles on move, but not more often than once per given interval
+			events.move = L.Util.throttle(this._update, this.options.updateInterval, this);
 		}
 
 		if (this._zoomAnimated) {
@@ -234,8 +230,10 @@ L.GridLayer = L.Layer.extend({
 				if (!this._loaded[key]) {
 					this._removeTile(key);
 					this._tilesToLoad--;
-				} else {
+				} else if (this._map._fadeAnimated) {
 					setTimeout(L.bind(this._deferRemove, this, key), 250);
+				} else {
+					this._removeTile(key);
 				}
 			}
 		}
@@ -385,11 +383,8 @@ L.GridLayer = L.Layer.extend({
 				coords = new L.Point(i, j);
 				coords.z = this._tileZoom;
 
-				var key = this._tileCoordsToKey(coords);
-				this._retain[key] = true;
-
 				// add tile to queue if it's not in cache or out of bounds
-				if (!(key in this._tiles) && this._isValidTile(coords)) {
+				if (!(this._tileCoordsToKey(coords) in this._tiles) && this._isValidTile(coords)) {
 					queue.push(coords);
 				}
 			}
@@ -402,23 +397,24 @@ L.GridLayer = L.Layer.extend({
 
 		var tilesToLoad = queue.length;
 
-		if (tilesToLoad === 0) { return; }
 
-		// if its the first batch of tiles to load
-		if (!this._tilesToLoad) {
-			this.fire('loading');
+		if (tilesToLoad !== 0) {
+			// if its the first batch of tiles to load
+			if (!this._tilesToLoad) {
+				this.fire('loading');
+			}
+
+			this._tilesToLoad += tilesToLoad;
+
+			// create DOM fragment to append tiles in one batch
+			var fragment = document.createDocumentFragment();
+
+			for (i = 0; i < tilesToLoad; i++) {
+				this._addTile(queue[i], fragment);
+			}
+
+			this._level.el.appendChild(fragment);
 		}
-
-		this._tilesToLoad += tilesToLoad;
-
-		// create DOM fragment to append tiles in one batch
-		var fragment = document.createDocumentFragment();
-
-		for (i = 0; i < tilesToLoad; i++) {
-			this._addTile(queue[i], fragment);
-		}
-
-		this._level.el.appendChild(fragment);
 
 		this._pruneTiles();
 	},

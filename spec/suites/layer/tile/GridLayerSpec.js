@@ -68,6 +68,70 @@ describe('GridLayer', function () {
 		});
 	});
 
+	describe('tile pyramid', function () {
+		var clock;
+
+		beforeEach(function () {
+			clock = sinon.useFakeTimers();
+		});
+
+		afterEach(function () {
+			clock.restore();
+		});
+
+		it('removes tiles for unused zoom levels', function (done) {
+			map.remove();
+			map = L.map(div, {fadeAnimation: false});
+			map.setView([0, 0], 1);
+
+			var grid = L.gridLayer();
+			var tiles = {};
+
+			grid.createTile = function (coords) {
+				tiles[grid._tileCoordsToKey(coords)] = true;
+				return document.createElement('div');
+			};
+
+			grid.on('tileunload', function (e) {
+				delete tiles[grid._tileCoordsToKey(e.coords)];
+				if (Object.keys(tiles).length === 1) {
+					expect(Object.keys(tiles)).to.eql(['0:0:0']);
+					done();
+				}
+			});
+
+			map.addLayer(grid);
+			map.setZoom(0, {animate: false});
+			clock.tick(250);
+		});
+
+		it('prunes and retains the correct tiles for back-to-back zooms', function () {
+			map.setView([0, 0], 1);
+
+			var grid = L.gridLayer();
+			var tiles = {};
+
+			grid.createTile = function (coords) {
+				tiles[grid._tileCoordsToKey(coords)] = true;
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid);
+			clock.tick(500);
+
+			map.setZoom(0, {animate: false});
+			clock.tick(250);
+
+			map.setZoom(1, {animate: false});
+			clock.tick(500);
+
+			var tileContainers = div.querySelectorAll('.leaflet-tile-container');
+			expect(tileContainers.length).to.eql(2);
+			expect(tileContainers[0].childNodes.length).to.equal(8);
+			expect(tileContainers[1].childNodes.length).to.equal(0);
+		});
+	});
+
 	describe("#onAdd", function () {
 		it('is called after viewreset on first map load', function () {
 			var layer = L.gridLayer().addTo(map);
