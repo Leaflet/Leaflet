@@ -81,7 +81,7 @@ L.ImageOverlay = L.Layer.extend({
 
 		return events;
 	},
-	
+
 	getBounds: function () {
 		return this._bounds;
 	},
@@ -99,9 +99,11 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		var topLeft = this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
-		    size = this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center).subtract(topLeft),
-		    offset = topLeft.add(size._multiplyBy((1 - 1 / e.scale) / 2));
+		var bounds = new L.Bounds(
+			this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
+		    this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center));
+
+		var offset = bounds.min.add(bounds.getSize()._multiplyBy((1 - 1 / e.scale) / 2));
 
 		L.DomUtil.setTransform(this._image, offset, e.scale);
 	},
