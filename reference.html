@@ -5017,18 +5017,7 @@ var a = new MyClass("Hello");
 a.greet("World");
 </code></pre>
 
-
-<h3>Class Constructors</h3>
-
-<p>Class constructors can be created by assigning a constructor function to the <code>initialize</code> key:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	initialize: function (greeter) {
-		this.greeter = greeter;
-		// class constructor
-});</code></pre>
-
-<p>Please note that if you assign a new <code>initialize</code> method, it overwrites its parent <code>initialize</code> method.</p>
+<p>The <code>initialize</code> method is your class's constructor function, meaning that it gets called when you do <code>new MyClass(...)</code>.</p>
 
 
 <h3>Class Factories</h3>
