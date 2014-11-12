@@ -45,11 +45,11 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	setStyle: function (styleOpts) {
-		if (styleOpts.opacity) { 
-			this.setOpacity(styleOpts.opacity); 
+		if (styleOpts.opacity) {
+			this.setOpacity(styleOpts.opacity);
 		}
 		return this;
-	}, 
+	},
 
 	bringToFront: function () {
 		if (this._map) {
