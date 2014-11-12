@@ -24,7 +24,8 @@ L.Popup = L.Layer.extend({
 		closeButton: true,
 		// keepInView: false,
 		// className: '',
-		zoomAnimation: true
+		zoomAnimation: true,
+		closeable: true
 	},
 
 	initialize: function (options, source) {
@@ -136,9 +137,9 @@ L.Popup = L.Layer.extend({
 		return !!this._map && this._map.hasLayer(this);
 	},
 
-	_close: function () {
+	_close: function (closeClick) {
 		if (this._map) {
-			this._map.closePopup(this);
+			this._map.closePopup(this, closeClick);
 		}
 	},
 
@@ -280,7 +281,7 @@ L.Popup = L.Layer.extend({
 	},
 
 	_onCloseButtonClick: function (e) {
-		this._close();
+		this._close(true);
 		L.DomEvent.stop(e);
 	}
 });
@@ -311,12 +312,13 @@ L.Map.include({
 		return this.addLayer(popup);
 	},
 
-	closePopup: function (popup) {
+	closePopup: function (popup, closeClick) {
 		if (!popup || popup === this._popup) {
 			popup = this._popup;
 			this._popup = null;
 		}
-		if (popup) {
+
+		if (popup && (popup.options.closeable || closeClick)) {
 			this.removeLayer(popup);
 		}
 		return this;
