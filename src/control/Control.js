@@ -37,6 +37,10 @@ L.Control = L.Class.extend({
 	},
 
 	addTo: function (map) {
+        if (this._isAdd) {
+            return this;
+        }
+
 		this._map = map;
 
 		var container = this._container = this.onAdd(map),
@@ -51,6 +55,8 @@ L.Control = L.Class.extend({
 			corner.appendChild(container);
 		}
 
+        this._isAdd = true;
+
 		return this;
 	},
 
@@ -61,6 +67,7 @@ L.Control = L.Class.extend({
 			this.onRemove(this._map);
 		}
 
+        this._isAdd = false;
 		this._map = null;
 
 		return this;
