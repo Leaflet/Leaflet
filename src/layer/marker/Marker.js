@@ -123,7 +123,7 @@ L.Marker = L.Layer.extend({
 		this._icon = icon;
 		this._initInteraction();
 
-		if (options.riseOnHover) {
+		if (L.DomEvent && options.riseOnHover) {
 			L.DomEvent.on(icon, {
 				mouseover: this._bringToFront,
 				mouseout: this._resetZIndex
@@ -158,7 +158,7 @@ L.Marker = L.Layer.extend({
 	},
 
 	_removeIcon: function () {
-		if (this.options.riseOnHover) {
+		if (L.DomEvent && this.options.riseOnHover) {
 			L.DomEvent.off(this._icon, {
 				mouseover: this._bringToFront,
 			    mouseout: this._resetZIndex
@@ -205,8 +205,11 @@ L.Marker = L.Layer.extend({
 
 		L.DomUtil.addClass(this._icon, 'leaflet-interactive');
 
-		L.DomEvent.on(this._icon, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
+		if (L.DomEvent) {
+			L.DomEvent.on(this._icon,
+				'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu keypress',
 				this._fireMouseEvent, this);
+		}
 
 		if (L.Handler.MarkerDrag) {
 			var draggable = this.options.draggable;
