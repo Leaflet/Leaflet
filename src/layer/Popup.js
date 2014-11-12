@@ -22,6 +22,7 @@ L.Popup = L.Layer.extend({
 		// autoPanPaddingBottomRight: <Point>,
 
 		closeButton: true,
+		autoClose: true,
 		// keepInView: false,
 		// className: '',
 		zoomAnimation: true
@@ -306,7 +307,10 @@ L.Map.include({
 			return this;
 		}
 
-		this.closePopup();
+		if (this._popup && this._popup.options.autoClose) {
+			this.closePopup();
+		}
+
 		this._popup = popup;
 		return this.addLayer(popup);
 	},
