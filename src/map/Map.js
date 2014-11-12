@@ -581,7 +581,10 @@ L.Map = L.Evented.extend({
 		if (type === 'click') {
 			var draggableObj = obj.options.draggable === true ? obj : this;
 			if (!e._simulated && ((draggableObj.dragging && draggableObj.dragging.moved()) ||
-			                      (this.boxZoom && this.boxZoom.moved()))) { return; }
+			                      (this.boxZoom && this.boxZoom.moved()))) {
+				L.DomEvent.stopPropagation(e);
+				return;
+			}
 			obj.fire('preclick');
 		}
 
