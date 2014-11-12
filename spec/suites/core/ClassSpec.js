@@ -158,6 +158,17 @@ describe("Class", function () {
 			expect(spy1.called).to.be.ok();
 			expect(spy2.called).to.eql(false);
 		});
+
+		it("calls parent constructor hooks when child has none", function () {
+			var spy1 = sinon.spy();
+
+			Klass.addInitHook(spy1);
+
+			var Klass2 = Klass.extend({});
+			var a = new Klass2();
+
+			expect(spy1.called).to.be.ok();
+		});
 	});
 
 	// TODO Class.include
