@@ -34,9 +34,14 @@
 		map.fitBounds(bounds);
 
 		var overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
-			opacity: 0.5
+			opacity: 0.5,
+			interactive: true
 		});
 		map.addLayer(overlay);
+
+		overlay.on('dblclick',function (e) {
+			console.log('Double click on image.')
+		})
 
 	</script>
 </body>
