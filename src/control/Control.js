@@ -37,6 +37,10 @@ L.Control = L.Class.extend({
 	},
 
 	addTo: function (map) {
+		if (this._map) {
+			this.remove();
+		}
+
 		this._map = map;
 
 		var container = this._container = this.onAdd(map),
