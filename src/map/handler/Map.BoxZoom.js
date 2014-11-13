@@ -47,28 +47,19 @@ L.Map.BoxZoom = L.Handler.extend({
 	_onMouseMove: function (e) {
 		if (!this._moved) {
 			this._moved = true;
-
-			this._box = L.DomUtil.create('div', 'leaflet-zoom-box', this._container);
-			L.DomUtil.addClass(this._container, 'leaflet-crosshair');
-
+			this._map._makeBoxZoomRectangle();
 			this._map.fire('boxzoomstart');
 		}
 
 		this._point = this._map.mouseEventToContainerPoint(e);
 
-		var bounds = new L.Bounds(this._point, this._startPoint),
-		    size = bounds.getSize();
-
-		L.DomUtil.setPosition(this._box, bounds.min);
-
-		this._box.style.width  = size.x + 'px';
-		this._box.style.height = size.y + 'px';
+		var bounds = new L.Bounds(this._point, this._startPoint);
+		this._map._adjustBoxZoomRectangle(bounds);
 	},
 
 	_finish: function () {
 		if (this._moved) {
-			L.DomUtil.remove(this._box);
-			L.DomUtil.removeClass(this._container, 'leaflet-crosshair');
+			this._map._removeBoxZoomRectangle();
 		}
 
 		L.DomUtil.enableTextSelection();
