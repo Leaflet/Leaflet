@@ -26,4 +26,26 @@ describe("Control", function () {
 			expect(map.getContainer().querySelector('.leaflet-test-control')).to.equal(control.getContainer());
 		});
 	});
+
+	describe("#remove", function () {
+		it("removes the container from the map", function () {
+			var control = new L.Control();
+			control.onAdd = onAdd;
+			control.addTo(map).remove();
+			expect(map.getContainer().querySelector('.leaflet-test-control')).to.equal(null);
+		});
+
+		it("calls onRemove if defined", function () {
+			var control = new L.Control();
+			control.onAdd = onAdd;
+			control.onRemove = sinon.spy();
+			control.addTo(map).remove();
+			expect(control.onRemove.called).to.be(true);
+		});
+
+		it("is a no-op if the control has not been added", function () {
+			var control = new L.Control();
+			expect(control.remove()).to.equal(control);
+		});
+	});
 });
