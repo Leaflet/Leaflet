@@ -126,6 +126,20 @@ L.Map = L.Evented.extend({
 		return this.fire('moveend');
 	},
 
+	zoomToBox: function (bounds, delay) {
+		var self = this;
+		var topLeft = this.latLngToContainerPoint(bounds.getNorthEast());
+		var bottomRight = this.latLngToContainerPoint(bounds.getSouthWest());
+		var convertedBounds = L.bounds(topLeft,bottomRight);
+		this._makeBoxZoomRectangle();
+		this._adjustBoxZoomRectangle(convertedBounds);
+		setTimeout(function () {
+			self.fitBounds(bounds)
+				.fire('boxzoomend', {boxZoomBounds: bounds});
+			self._removeBoxZoomRectangle();
+		}, delay);
+	},
+
 	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
@@ -702,6 +716,24 @@ L.Map = L.Evented.extend({
 		    max = this.getMaxZoom();
 
 		return Math.max(min, Math.min(max, zoom));
+	},
+
+	_makeBoxZoomRectangle: function () {
+		this._box = L.DomUtil.create('div', 'leaflet-zoom-box', this._container);
+		L.DomUtil.addClass(this._container, 'leaflet-crosshair');
+	},
+
+	_adjustBoxZoomRectangle: function (bounds) {
+		var size = bounds.getSize();
+		L.DomUtil.setPosition(this._box, bounds.min);
+
+		this._box.style.width  = size.x + 'px';
+		this._box.style.height = size.y + 'px';
+	},
+
+	_removeBoxZoomRectangle: function () {
+		L.DomUtil.remove(this._box);
+		L.DomUtil.removeClass(this._container, 'leaflet-crosshair');
 	}
 });
 
