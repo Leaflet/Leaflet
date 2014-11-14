@@ -141,7 +141,7 @@ L.Map.Keyboard = L.Handler.extend({
 			}
 
 		} else if (key in this._zoomKeys) {
-			map.setZoom(map.getZoom() + this._zoomKeys[key]);
+			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
 
 		} else if (key === 27) {
 			map.closePopup();
