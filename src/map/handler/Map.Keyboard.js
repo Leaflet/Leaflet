@@ -5,7 +5,8 @@
 L.Map.mergeOptions({
 	keyboard: true,
 	keyboardPanOffset: 80,
-	keyboardZoomOffset: 1
+	keyboardZoomOffset: 1,
+	shiftZoomFactor: 3
 });
 
 L.Map.Keyboard = L.Handler.extend({
@@ -128,7 +129,7 @@ L.Map.Keyboard = L.Handler.extend({
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		var key = e.keyCode,
-		    map = this._map;
+		    map = this._map, zoomOffset;
 
 		if (key in this._panKeys) {
 
@@ -141,7 +142,8 @@ L.Map.Keyboard = L.Handler.extend({
 			}
 
 		} else if (key in this._zoomKeys) {
-			map.setZoom(map.getZoom() + this._zoomKeys[key]);
+			zoomOffset = e.shiftKey ? this._zoomKeys[key] * this._map.options.shiftZoomFactor : this._zoomKeys[key];
+			map.setZoom(map.getZoom() + zoomOffset);
 
 		} else if (key === 27) {
 			map.closePopup();
