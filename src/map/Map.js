@@ -292,8 +292,8 @@ L.Map = L.Evented.extend({
 		padding = L.point(padding || [0, 0]);
 		step = step || 1;
 
-		var minZoom = this.getMinZoom(),
-		    maxZoom = Math.min(this.getMaxZoom(), 18) + step,
+		var minZoom = this.getMinZoom() - (inside ? step : 0),
+		    maxZoom = Math.min(this.getMaxZoom(), 18) + (inside ? 0 : step),
 		    size = this.getSize(),
 
 		    nw = bounds.getNorthWest(),
@@ -309,15 +309,25 @@ L.Map = L.Evented.extend({
 
 			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding).floor();
 
-			if (!inside ? size.contains(boundsSize) : boundsSize.x < size.x || boundsSize.y < size.y) {
-				minZoom = zoom;
-				zoomNotFound = false;
+			if (!inside) {
+				if (size.contains(boundsSize)) {
+					minZoom = zoom;
+					zoomNotFound = false;
+				} else {
+					maxZoom = zoom;
+					zoom = minZoom;
+				}
 			} else {
-				maxZoom = zoom;
-				zoom = minZoom;
+				 if (boundsSize.contains(size)) {
+					maxZoom = zoom;
+					zoomNotFound = false;
+				} else {
+					minZoom = zoom;
+					zoom = maxZoom;
+				}
 			}
 
-		} while (Math.round((maxZoom - minZoom) / step) > 1 || (zoomNotFound && minZoom !== maxZoom));
+		} while (Math.round((maxZoom - minZoom) / step) > 1);
 
 		if (zoomNotFound && inside) {
 			return null;
