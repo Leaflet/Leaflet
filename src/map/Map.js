@@ -554,7 +554,7 @@ L.Map = L.Evented.extend({
 		onOff = onOff || 'on';
 
 		L.DomEvent[onOff](this._container,
-			'click dblclick mousedown mouseup mouseenter mouseleave mousemove contextmenu',
+			'click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu keypress',
 			this._handleMouseEvent, this);
 
 		this._targets = {};
@@ -575,9 +575,24 @@ L.Map = L.Evented.extend({
 
 		var target = this._targets[L.stamp(e.target || e.srcElement)];
 
-		this._fireMouseEvent(target || this, e,
-				e.type === 'mouseenter' ? 'mouseover' :
-				e.type === 'mouseleave' ? 'mouseout' : e.type, true);
+		var type =
+			e.type === 'mouseenter' ? 'mouseover' :
+			e.type === 'mouseleave' ? 'mouseout' : e.type;
+
+		if (e.type === 'keypress' && e.keyCode === 13) {
+			type = 'click';
+		}
+
+		// to prevent outline when clicking on keyboard-focusable element
+		if (type === 'mousedown') {
+			L.DomEvent.preventDefault(e);
+		}
+
+		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
+		if (!target && (e.type === 'mouseover' || e.type === 'mouseout') &&
+				!L.DomEvent._checkMouse(this._container, e)) { return; }
+
+		this._fireMouseEvent(target || this, e, type, true);
 	},
 
 	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
@@ -604,12 +619,15 @@ L.Map = L.Evented.extend({
 		}
 
 		var data = {
-			originalEvent: e,
-			containerPoint: this.mouseEventToContainerPoint(e)
+			originalEvent: e
 		};
 
-		data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
-		data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
+		if (e.type !== 'keypress') {
+			// TODO latlng isn't used, wrong latlng for markers
+			data.containerPoint = this.mouseEventToContainerPoint(e);
+			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
+			data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
+		}
 
 		obj.fire(type, data, propagate);
 	},
