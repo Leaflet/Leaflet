@@ -557,6 +557,8 @@ L.Map = L.Evented.extend({
 			'click dblclick mousedown mouseup mouseenter mouseleave mousemove contextmenu',
 			this._handleMouseEvent, this);
 
+		this._targets = {};
+
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
 		}
@@ -571,9 +573,11 @@ L.Map = L.Evented.extend({
 	_handleMouseEvent: function (e) {
 		if (!this._loaded) { return; }
 
-		this._fireMouseEvent(this, e,
+		var target = this._targets[L.stamp(e.target || e.srcElement)];
+
+		this._fireMouseEvent(target || this, e,
 				e.type === 'mouseenter' ? 'mouseover' :
-				e.type === 'mouseleave' ? 'mouseout' : e.type);
+				e.type === 'mouseleave' ? 'mouseout' : e.type, true);
 	},
 
 	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
