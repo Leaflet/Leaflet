@@ -1,5 +1,4 @@
 var fs = require('fs'),
-    jshint = require('jshint'),
     UglifyJS = require('uglify-js'),
     zlib = require('zlib'),
 
