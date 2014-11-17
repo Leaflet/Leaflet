@@ -7,9 +7,6 @@ L.SVG = L.Renderer.extend({
 	_initContainer: function () {
 		this._container = L.SVG.create('svg');
 
-		this._paths = {};
-		this._initEvents();
-
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 	},
@@ -54,15 +51,13 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_addPath: function (layer) {
-		var path = layer._path;
-		this._container.appendChild(path);
-		this._paths[L.stamp(path)] = layer;
+		this._container.appendChild(layer._path);
+		layer.addInteractiveTarget(layer._path);
 	},
 
 	_removePath: function (layer) {
-		var path = layer._path;
-		L.DomUtil.remove(path);
-		delete this._paths[L.stamp(path)];
+		L.DomUtil.remove(layer._path);
+		layer.removeInteractiveTarget(layer._path);
 	},
 
 	_updatePath: function (layer) {
@@ -139,19 +134,6 @@ L.SVG = L.Renderer.extend({
 
 	_bringToBack: function (layer) {
 		L.DomUtil.toBack(layer._path);
-	},
-
-	// TODO remove duplication with L.Map
-	_initEvents: function () {
-		L.DomEvent.on(this._container, 'click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu',
-				this._fireMouseEvent, this);
-	},
-
-	_fireMouseEvent: function (e) {
-		var path = this._paths[L.stamp(e.target || e.srcElement)];
-		if (path) {
-			path._fireMouseEvent(e);
-		}
 	}
 });
 
