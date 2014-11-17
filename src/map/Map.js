@@ -293,7 +293,7 @@ L.Map = L.Evented.extend({
 		step = step || 1;
 
 		var minZoom = this.getMinZoom() - (inside ? step : 0),
-		    maxZoom = Math.min(this.getMaxZoom(), 18) + (inside ? 0 : step),
+		    maxZoom = (isFinite(this.getMaxZoom()) ? this.getMaxZoom() : 18) + (inside ? 0 : step),
 		    size = this.getSize(),
 
 		    nw = bounds.getNorthWest(),
