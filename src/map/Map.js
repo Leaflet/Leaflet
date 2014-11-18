@@ -581,7 +581,7 @@ L.Map = L.Evented.extend({
 				!L.DomEvent._checkMouse(this._container, e)) { return; }
 
 		// prevents outline when clicking on keyboard-focusable element
-		if (type === 'mousedown') {
+		if (target && type === 'mousedown') {
 			L.DomEvent.preventDefault(e);
 		}
 

@@ -11,7 +11,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		var icon = this._marker._icon;
 
 		if (!this._draggable) {
-			this._draggable = new L.Draggable(icon, icon);
+			this._draggable = new L.Draggable(icon, icon, true);
 		}
 
 		this._draggable.on({
