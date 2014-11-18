@@ -219,4 +219,19 @@ L.DomUtil = {
 	L.DomUtil.enableImageDrag = function () {
 		L.DomEvent.off(window, 'dragstart', L.DomEvent.preventDefault);
 	};
+
+	L.DomUtil.preventOutline = function (element) {
+		L.DomUtil.restoreOutline();
+		this._outlineElement = element;
+		this._outlineStyle = element.style.outline;
+		element.style.outline = 'none';
+		L.DomEvent.on(window, 'keydown', L.DomUtil.restoreOutline, this);
+	};
+	L.DomUtil.restoreOutline = function () {
+		if (!this._outlineElement) { return; }
+		this._outlineElement.style.outline = this._outlineStyle;
+		delete this._outlineElement;
+		delete this._outlineStyle;
+		L.DomEvent.off(window, 'keydown', L.DomUtil.restoreOutline, this);
+	};
 })();
