@@ -220,7 +220,7 @@ L.Map = L.Evented.extend({
 
 	remove: function () {
 
-		this._initEvents('off');
+		this._initEvents(true);
 
 		try {
 			// throws error in IE6-8
@@ -546,18 +546,17 @@ L.Map = L.Evented.extend({
 		}
 	},
 
-	// map events
+	// DOM event handling
 
-	_initEvents: function (onOff) {
+	_initEvents: function (remove) {
 		if (!L.DomEvent) { return; }
 
-		onOff = onOff || 'on';
-
-		L.DomEvent[onOff](this._container,
-			'click dblclick mousedown mouseup mouseover mouseout mousemove contextmenu keypress',
-			this._handleMouseEvent, this);
-
 		this._targets = {};
+
+		var onOff = remove ? 'off' : 'on';
+
+		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
+			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
@@ -570,66 +569,51 @@ L.Map = L.Evented.extend({
 		        function () { this.invalidateSize({debounceMoveend: true}); }, this, false, this._container);
 	},
 
-	_handleMouseEvent: function (e) {
-		if (!this._loaded) { return; }
+	_handleDOMEvent: function (e) {
+		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
 
-		var target = this._targets[L.stamp(e.target || e.srcElement)];
+		// find the layer the event is propagating from
+		var target = this._targets[L.stamp(e.target || e.srcElement)],
+			type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
-		var type =
-			e.type === 'mouseenter' ? 'mouseover' :
-			e.type === 'mouseleave' ? 'mouseout' : e.type;
+		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
+		if (!target && (type === 'mouseover' || type === 'mouseout') &&
+				!L.DomEvent._checkMouse(this._container, e)) { return; }
 
-		if (e.type === 'keypress' && e.keyCode === 13) {
-			type = 'click';
-		}
-
-		// to prevent outline when clicking on keyboard-focusable element
+		// prevents outline when clicking on keyboard-focusable element
 		if (type === 'mousedown') {
 			L.DomEvent.preventDefault(e);
 		}
 
-		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
-		if (!target && (e.type === 'mouseover' || e.type === 'mouseout') &&
-				!L.DomEvent._checkMouse(this._container, e)) { return; }
+		target = target || this;
 
-		this._fireMouseEvent(target || this, e, type, true);
-	},
-
-	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
-		type = type || e.type;
-
-		if (L.DomEvent._skipped(e)) { return; }
-		if (type === 'click') {
-			var draggableObj = obj.options.draggable === true ? obj : this;
-			if (!e._simulated && ((draggableObj.dragging && draggableObj.dragging.moved()) ||
-			                      (this.boxZoom && this.boxZoom.moved()))) {
-				L.DomEvent.stopPropagation(e);
-				return;
-			}
-			obj.fire('preclick');
-		}
-
-		if (!obj.listens(type, propagate)) { return; }
+		if (!target.listens(type, true) && (type !== 'click' || !target.listens('preclick', true))) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		if (type === 'click' || type === 'dblclick' || type === 'contextmenu') {
-			L.DomEvent.stopPropagation(e);
-		}
+
+		// prevents firing click after you just dragged an object
+		if (e.type === 'click' && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
 			originalEvent: e
 		};
-
 		if (e.type !== 'keypress') {
 			// TODO latlng isn't used, wrong latlng for markers
 			data.containerPoint = this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
-			data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
+			data.latlng = this.layerPointToLatLng(data.layerPoint);
 		}
+		if (type === 'click') {
+			target.fire('preclick', data, true);
+		}
+		target.fire(type, data, true);
+	},
 
-		obj.fire(type, data, propagate);
+	_draggableMoved: function (obj) {
+		obj = obj.options.draggable ? obj : this;
+		return (obj.dragging && obj.dragging.moved()) || (this.boxZoom && this.boxZoom.moved());
 	},
 
 	_clearHandlers: function () {
