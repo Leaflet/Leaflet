@@ -585,8 +585,10 @@ L.Map = L.Evented.extend({
 			L.DomEvent.preventDefault(e);
 		}
 
-		target = target || this;
+		this._fireDOMEvent(target || this, e, type);
+	},
 
+	_fireDOMEvent: function (target, e, type) {
 		if (!target.listens(type, true) && (type !== 'click' || !target.listens('preclick', true))) { return; }
 
 		if (type === 'contextmenu') {
