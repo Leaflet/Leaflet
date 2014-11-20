@@ -15,7 +15,7 @@ L.GridLayer = L.Layer.extend({
 		updateInterval: 200,
 
 		attribution: null,
-		zIndex: null,
+		zIndex: 'auto',
 		bounds: null,
 
 		minZoom: 0
