@@ -44,6 +44,7 @@ L.Map = L.Evented.extend({
 		this._handlers = [];
 		this._layers = {};
 		this._zoomBoundLayers = {};
+		this._sizeChanged = true;
 
 		this.callInitHooks();
 
