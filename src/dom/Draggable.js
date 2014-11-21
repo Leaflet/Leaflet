@@ -49,7 +49,7 @@ L.Draggable = L.Evented.extend({
 
 		L.DomEvent.stopPropagation(e);
 
-		if (L.Draggable._disabled) { return; }
+		if (L.DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
 		L.DomUtil.disableImageDrag();
 		L.DomUtil.disableTextSelection();
