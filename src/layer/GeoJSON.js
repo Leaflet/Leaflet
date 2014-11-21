@@ -107,7 +107,8 @@ L.extend(L.GeoJSON, {
 				layers.push(this.geometryToLayer({
 					geometry: geometry.geometries[i],
 					type: 'Feature',
-					properties: geojson.properties
+					properties: geojson.properties,
+					id: geojson.id
 				}, options));
 			}
 			return new L.FeatureGroup(layers);
