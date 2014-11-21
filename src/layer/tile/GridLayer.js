@@ -15,7 +15,7 @@ L.GridLayer = L.Layer.extend({
 		updateInterval: 200,
 
 		attribution: null,
-		zIndex: 'auto',
+		zIndex: null,
 		bounds: null,
 
 		minZoom: 0
@@ -124,7 +124,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateZIndex: function () {
-		if (this._container && this.options.zIndex !== undefined) {
+		if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
 			this._container.style.zIndex = this.options.zIndex;
 		}
 	},
