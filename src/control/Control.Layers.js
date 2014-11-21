@@ -202,6 +202,8 @@ L.Control.Layers = L.Control.extend({
 	_onInputClick: function () {
 		var inputs = this._form.getElementsByTagName('input'),
 		    input, layer, hasLayer;
+		var addedLayers = [],
+		    removedLayers = [];
 
 		this._handlingClick = true;
 
@@ -211,11 +213,19 @@ L.Control.Layers = L.Control.extend({
 			hasLayer = this._map.hasLayer(layer);
 
 			if (input.checked && !hasLayer) {
-				this._map.addLayer(layer);
+				addedLayers.push(layer);
 
 			} else if (!input.checked && hasLayer) {
-				this._map.removeLayer(layer);
+				removedLayers.push(layer);
 			}
+		}
+
+		// Bugfix issue 2318: Should remove all old layers before readding new ones
+		for (i = 0; i < removedLayers.length; i++) {
+			this._map.removeLayer(removedLayers[i]);
+		}
+		for (i = 0; i < addedLayers.length; i++) {
+			this._map.addLayer(addedLayers[i]);
 		}
 
 		this._handlingClick = false;
