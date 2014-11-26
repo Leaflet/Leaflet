@@ -5,6 +5,7 @@
 L.Layer.include({
 
 	bindPopup: function (content, options) {
+		var events;
 
 		if (content instanceof L.Popup) {
 			this._popup = content;
@@ -17,11 +18,14 @@ L.Layer.include({
 		}
 
 		if (!this._popupHandlersAdded) {
-			this.on({
-				click: this._openPopup,
+			events = {
 				remove: this.closePopup,
 				move: this._movePopup
-			});
+			};
+			if ('openOnClick' in options ? options.openOnClick : true) {
+				events.click = this._openPopup;
+			}
+			this.on(events);
 			this._popupHandlersAdded = true;
 		}
 
