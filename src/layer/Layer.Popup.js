@@ -22,7 +22,7 @@ L.Layer.include({
 				remove: this.closePopup,
 				move: this._movePopup
 			};
-			if ('openOnClick' in options ? options.openOnClick : true) {
+			if (options.openOnClick !== false) {
 				events.click = this._openPopup;
 			}
 			this.on(events);
