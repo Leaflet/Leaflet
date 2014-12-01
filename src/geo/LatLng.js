@@ -56,7 +56,7 @@ L.LatLng.prototype = {
 // constructs LatLng with different signatures
 // (LatLng) or ([Number, Number]) or (Number, Number) or (Object)
 
-L.latLng = function (a, b) {
+L.latLng = function (a, b, c) {
 	if (a instanceof L.LatLng) {
 		return a;
 	}
@@ -70,11 +70,11 @@ L.latLng = function (a, b) {
 		return a;
 	}
 	if (typeof a === 'object' && 'lat' in a) {
-		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon);
+		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
 	}
 	if (b === undefined) {
 		return null;
 	}
-	return new L.LatLng(a, b);
+	return new L.LatLng(a, b, c);
 };
 

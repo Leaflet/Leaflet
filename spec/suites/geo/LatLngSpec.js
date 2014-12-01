@@ -103,6 +103,15 @@ describe('LatLng', function () {
 		it('returns null if lng not specified', function () {
 			expect(L.latLng(50)).to.be(null);
 		});
+
+		it('accepts altitude as third parameter', function () {
+			expect(L.latLng(50, 30, 100)).to.eql(new L.LatLng(50, 30, 100));
+		});
+
+		it('accepts an object with alt', function () {
+			expect(L.latLng({lat: 50, lng: 30, alt:100})).to.eql(new L.LatLng(50, 30, 100));
+			expect(L.latLng({lat: 50, lon: 30, alt:100})).to.eql(new L.LatLng(50, 30, 100));
+		});
 	});
 });
 
