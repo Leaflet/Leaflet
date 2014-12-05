@@ -80,7 +80,10 @@ describe('LatLng', function () {
 		});
 
 		it('accepts an array of coordinates', function () {
+			expect(L.latLng([])).to.eql(null);
+			expect(L.latLng([50])).to.eql(null);
 			expect(L.latLng([50, 30])).to.eql(new L.LatLng(50, 30));
+			expect(L.latLng([50, 30, 100])).to.eql(new L.LatLng(50, 30, 100));
 		});
 
 		it('passes null or undefined as is', function () {
