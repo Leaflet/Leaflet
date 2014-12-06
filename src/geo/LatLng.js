@@ -61,8 +61,11 @@ L.latLng = function (a, b, c) {
 		return a;
 	}
 	if (L.Util.isArray(a) && typeof a[0] !== 'object') {
-		if (a.length >= 2) {
+		if (a.length === 3) {
 			return new L.LatLng(a[0], a[1], a[2]);
+		}
+		if (a.length === 2) {
+			return new L.LatLng(a[0], a[1]);
 		}
 		return null;
 	}
