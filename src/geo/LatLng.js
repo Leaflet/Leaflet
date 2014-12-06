@@ -64,7 +64,10 @@ L.latLng = function (a, b, c) {
 		if (a.length === 3) {
 			return new L.LatLng(a[0], a[1], a[2]);
 		}
-		return new L.LatLng(a[0], a[1]);
+		if (a.length === 2) {
+			return new L.LatLng(a[0], a[1]);
+		}
+		return null;
 	}
 	if (a === undefined || a === null) {
 		return a;
