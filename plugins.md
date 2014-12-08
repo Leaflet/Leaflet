@@ -1383,6 +1383,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/florpor">Mor Yariv</a>
 		</td>
 	</tr>
+	<tr>
+        <td>
+			<a href="https://github.com/skeate/Leaflet.timeline">Leaflet.timeline</a>
+		</td><td>
+			Display arbitrary GeoJSON on a map with a timeline slider and play button.
+		</td><td>
+			<a href="https://github.com/skeate">Jonathan Skeate</a>
+		</td>
+	</tr>
 </table>
 
 
