@@ -460,6 +460,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/perliedman/">Per Liedman</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mejackreed/Leaflet-IIIF">Leaflet-IIIF</a>
+		</td><td>
+			A <a href="http://iiif.io/">IIIF</a> (International Image Interoperability Framework) viewer for Leaflet. See the <a href="http://mejackreed.github.io/Leaflet-IIIF/examples/example.html">demo</a>.
+		</td><td>
+			<a href="https://github.com/mejackreed">Jack Reed</a>
+		</td>
+	</tr>
 </table>
 
 
