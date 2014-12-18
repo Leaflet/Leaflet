@@ -6,7 +6,8 @@ L.Control.Layers = L.Control.extend({
 	options: {
 		collapsed: true,
 		position: 'topright',
-		autoZIndex: true
+		autoZIndex: true,
+		hideSingleBase: false
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -127,13 +128,20 @@ L.Control.Layers = L.Control.extend({
 		L.DomUtil.empty(this._baseLayersList);
 		L.DomUtil.empty(this._overlaysList);
 
-		var baseLayersPresent, overlaysPresent, i, obj;
+		var baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
 
 		for (i in this._layers) {
 			obj = this._layers[i];
 			this._addItem(obj);
 			overlaysPresent = overlaysPresent || obj.overlay;
 			baseLayersPresent = baseLayersPresent || !obj.overlay;
+			baseLayersCount += !obj.overlay ? 1 : 0;
+		}
+
+		// Hide base layers section if there's only one layer.
+		if (this.options.hideSingleBase) {
+			baseLayersPresent = baseLayersPresent && baseLayersCount > 1;
+			this._baseLayersList.style.display = baseLayersPresent ? '' : 'none';
 		}
 
 		this._separator.style.display = overlaysPresent && baseLayersPresent ? '' : 'none';
