@@ -7,7 +7,7 @@ L.Control.Layers = L.Control.extend({
 		collapsed: true,
 		position: 'topright',
 		autoZIndex: true,
-		hideSingleBase: true
+		hideSingleBase: false
 	},
 
 	initialize: function (baseLayers, overlays, options) {
