@@ -9,13 +9,13 @@ Contributing to Leaflet
 ## Getting Involved
 
 Third-party patches are absolutely essential on our quest to create the best mapping library that will ever exist.
-However, they're not the only way to get involved with the development of Leaflet.
-You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs),
-[improving documentation](#improving-documentation),
+However, they're not the only way to get involved with Leaflet development.
+You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs);
+[improving documentation](#improving-documentation);
 helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js)
-and [GitHub issues](https://github.com/Leaflet/Leaflet/issues),
-showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com),
-tweeting to [@LeafletJS](http://twitter.com/LeafletJS)
+and [GitHub issues](https://github.com/Leaflet/Leaflet/issues);
+showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com);
+tweeting to [@LeafletJS](http://twitter.com/LeafletJS);
 and spreading the word about Leaflet among your colleagues and friends.
 
 ## Reporting Bugs
@@ -26,7 +26,7 @@ first make sure that your issue is caused by Leaflet, not your application code
 Second, search the already reported issues for similar cases,
 and if it's already reported, just add any additional details in the comments.
 
-After you made sure that you've found a new Leaflet bug,
+After you've made sure that you've found a new Leaflet bug,
 here are some tips for creating a helpful report that will make fixing it much easier and quicker:
 
  * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
@@ -48,10 +48,10 @@ While we happily accept patches, we're also committed to keeping Leaflet simple,
 So bugfixes, performance optimizations and small improvements that don't add a lot of code
 are much more likely to get accepted quickly.
 
-Before sending a pull request with a new feature, first check if it's been discussed before already
+Before sending a pull request with a new feature, check if it's been discussed before already
 (either on [GitHub issues](https://github.com/Leaflet/Leaflet/issues)
 or [Leaflet UserVoice](http://leaflet.uservoice.com/)),
-and then ask yourself two questions:
+and ask yourself two questions:
 
  1. Are you sure that this new feature is important enough to justify its presence in the Leaflet core?
     Or will it look better as a plugin in a separate repository?
@@ -144,12 +144,12 @@ If you need to make edits in a local repository to see how it looks in the proce
 Now any file changes will be updated when you reload pages automatically.
 After committing the changes, just send a pull request.
 
-If you need to update documentation according to a new feature that only appeared in the master version (not stable one),
-you need to make changes to `gh-pages-master` branch instead of `gh-pages`.
+If you need to update documentation according to a new feature that only appeared in the master version (not the stable one),
+you need to make changes to the `gh-pages-master` branch instead of `gh-pages`.
 It will get merged into the latter when released as stable.
 
 ## Thank You
 
-Not only are we grateful for any contributions, &mdash; helping Leaflet and its community actually makes you AWESOME.
+Not only does your contribution to Leaflet and its community earn our gratitude, but it also makes you AWESOME.
 Join [this approved list of awesome people](https://github.com/Leaflet/Leaflet/graphs/contributors)
 and help us push the limits of what's possible with online maps!
