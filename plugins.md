@@ -469,6 +469,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mejackreed">Jack Reed</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/teralytics/Leaflet.D3SvgOverlay">Leaflet.D3SvgOverlay</a>
+		</td><td>
+			SVG overlay class for using with <a href="http://d3js.org">D3</a> library. Supports zoom animation and scaling without need to redraw the layer.
+		</td><td>
+			<a href="https://github.com/xEviL">Kirill Zhuravlev</a>
+		</td>
+	</tr>
 </table>
 
 
