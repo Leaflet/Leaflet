@@ -5094,7 +5094,7 @@ a.options; // {foo: 'bar', bla: 10}</code></pre>
 
 <h3>Includes</h3>
 
-<p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins). A good example of this is <code>L.Mixin.Events</code> that <a href="#events">event-related methods</a> like <code>on</code>, <code>off</code> and <code>fire</code> to the class.</p>
+<p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins).
 
 <pre><code> var MyMixin = {
 	foo: function () { ... },
@@ -5139,9 +5139,35 @@ MyClass.FOO; // 'bar'</code></pre>
 
 <pre><code>MyClass.addInitHook('methodName', arg1, arg2, &hellip;);</code></pre>
 
-<h2 id="evented"></h2>
+<h2 id="evented">Evented</h2>
 
-<h2 id="layer"></h2>
+<p>When creating a plguin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-releated methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
+
+<pre><code>MyEventedClass = L.Evented.extend({
+	fire: function(){
+		this.fire('custom', {
+			// you can attach optional data to an event as an object
+		});
+	}
+});
+
+var myEvents = new MyEventedClass();
+
+myEvents.on('custom', function(e){
+	// e.type will  be 'custom'
+	// anything else you passed in the
+});
+
+myEvents.fire();</code></pre>
+
+You can still use the old-style `L.Mixin.Events` for backward compatibility.
+
+<pre><code>// this class will include all event methods
+MyEventedClass = L.Class.extend({
+	includes: L.Mixin.Evvents
+});</code></pre>
+
+<h2 id="layer">Layer</h2>
 
 <h2 id="browser">Browser</h2>
 
