@@ -5167,7 +5167,7 @@ MyClass.FOO; // 'bar'</code></pre>
 
 <h2 id="evented">Evented</h2>
 
-<p>When creating a plguin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-releated methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
+<p>When creating a plugin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-related methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
 
 <pre><code>MyEventedClass = L.Evented.extend({
 	fire: function(){
@@ -5190,10 +5190,79 @@ You can still use the old-style `L.Mixin.Events` for backward compatibility.
 
 <pre><code>// this class will include all event methods
 MyEventedClass = L.Class.extend({
-	includes: L.Mixin.Evvents
+	includes: L.Mixin.Events
 });</code></pre>
 
 <h2 id="layer">Layer</h2>
+
+<p>When implementing a custom layer the <code>L.Layer</code> class can be extended to implementing basic functionality that all layers need to share, these methods can be used when extending <code>L.Layer</code> when <a href="#ilayer">implementing custom layers</a>.</p>
+
+<h3 id="layer-options">Options</h3>
+
+<table data-id="layer">
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default value</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'overlayPane'</span></code></td>
+		<td>By default the layer will be added to the maps <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+</table>
+
+<h3>Events</h3>
+
+<table data-id="layer">
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>add</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired after the layer is added to a map.</td>
+	</tr>
+	<tr>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired after the layer is removed from a map.</td>
+	</tr>
+</table>
+
+<h3>Methods</h3>
+
+<table data-id="layer">
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Adds the layer to the given map.</td>
+	</tr>
+	<tr>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Removes the layer to the given map.</td>
+	</tr>
+	<tr>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt; <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. Or if <code>name</code> is omitted the pane for this layer.</td>
+	</tr>
+</table>
 
 <h2 id="browser">Browser</h2>
 
@@ -6032,7 +6101,7 @@ draggable.enable();
 
 <h2 id="ilayer">ILayer</h2>
 
-<p>Represents an object attached to a particular location (or a set of locations) on a map. Implemented by <a href="#tilelayer">tile layers</a>, <a href="#marker">markers</a>, <a href="#popup">popups</a>, <a href="#imageoverlay">image overlays</a>, <a href="#path">vector layers</a> and <a href="#layergroup">layer groups</a>.</p>
+<p>Represents an object attached to a particular location (or a set of locations) on a map. Extends the <code>L.Layer</code> base class and is implemented by <a href="#tilelayer">tile layers</a>, <a href="#marker">markers</a>, <a href="#popup">popups</a>, <a href="#imageoverlay">image overlays</a>, <a href="#path">vector layers</a> and <a href="#layergroup">layer groups</a>.</p>
 
 <h3>Methods</h3>
 
@@ -6062,6 +6131,8 @@ draggable.enable();
 
 <h3>Implementing Custom Layers</h3>
 
+<p>Custom layers should extend the <code>L.Layer</code> base class. <code>L.Layer</code> provides convenience methods for your layer like <code>addTo(map)</code>, <code>removeFrom(map)</code> and <code>getPane()</code>.</p>
+
 <p>The most important things know about when implementing custom layers are Map <a href="#map-viewreset">viewreset</a> event and <a href="#map-latlngtolayerpoint">latLngToLayerPoint</a> method. <code>viewreset</code> is fired when the map needs to reposition its layers (e.g. on zoom), and <code>latLngToLayerPoint</code> is used to get coordinates for the layer's new position.</p>
 
 <p>Another event often used in layer implementations is <a href="#map-moveend">moveend</a> which fires after any movement of the map (panning, zooming, etc.).</p>
@@ -6072,29 +6143,32 @@ draggable.enable();
 
 <p>Here's how a custom layer implementation usually looks:</p>
 
-<pre><code>var MyCustomLayer = L.Class.extend({
+<pre><code>var MyCustomLayer = L.Layer.extend({
 
 	initialize: function (latlng) {
 		// save position of the layer or any options from the constructor
 		this._latlng = latlng;
 	},
 
-	onAdd: function (map) {
-		this._map = map;
+	// these events will be added and removed from the map with the layer
+	getEvents: function(){
+		return {
+			viewreset: this._reset
+		}
+	},
 
-		// create a DOM element and put it into one of the map panes
+	onAdd: function (map) {
+		// create a DOM element and put it into one of the map panes, by default the overlayPane
 		this._el = L.DomUtil.create('div', 'my-custom-layer leaflet-zoom-hide');
-		map.getPanes().overlayPane.appendChild(this._el);
+		this.getPane().appendChild(this._el);
 
 		// add a viewreset event listener for updating layer's position, do the latter
-		map.on('viewreset', this._reset, this);
 		this._reset();
 	},
 
 	onRemove: function (map) {
 		// remove layer's DOM elements and listeners
-		map.getPanes().overlayPane.removeChild(this._el);
-		map.off('viewreset', this._reset, this);
+		this.getPane().overlayPane.removeChild(this._el);
 	},
 
 	_reset: function () {
@@ -6104,10 +6178,8 @@ draggable.enable();
 	}
 });
 
-map.addLayer(new MyCustomLayer(latlng));
+var myLayer = new MyCustomLayer(latlng).addTo(map);
 </code></pre>
-
-
 
 <h2 id="icontrol">IControl</h2>
 
