@@ -210,6 +210,12 @@ var map = L.map('map', {
 		<td><code>L.CRS.<br/>EPSG3857</code></td>
 		<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
 	</tr>
+	<tr>
+		<td><code><b>renderer</b></code></td>
+		<td><code>Renderer</code></td>
+		<td><code>depends</code></td>
+		<td>The default method for drawing vector layers on the map. <code>L.SVG</code> or <code>L.Canvas</code> by default depending on browser support.</td>
+	</tr>
 </table>
 
 <h4>Interaction Options</h4>
@@ -876,6 +882,13 @@ var map = L.map('map', {
 
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes the given control from the map.</td>
+	</tr>
+		<td><code><b>getRenderer</b>(
+			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i>)</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">Renderer</span></code></td>
+		<td>Returns the renderer for the given layer.</td>
 	</tr>
 </table>
 
@@ -2404,6 +2417,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code>Boolean</code></td>
 		<td><code><span class="literal">true</span></code></td>
 		<td>If <code><span class="literal">false</span></code>, the vector will not emit mouse events and will act as a part of the underlying map.</td>
+	</tr>
+	<tr>
+		<td><code><b>renderer</b></code></td>
+		<td><code>Renderer</code></td>
+		<td><code>depends</code></td>
+		<td><code>L.SVG</code> or <code>L.Canvas</code> by default depending on browser support.</td>
 	</tr>
 	<tr>
 		<td><code><b>pointerEvents</b></code></td>
