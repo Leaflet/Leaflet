@@ -44,9 +44,7 @@ bodyclass: api-page
 		<ul>
 			<li><a href="#path">Path</a></li>
 			<li><a href="#polyline">Polyline</a></li>
-			<li><a href="#multipolyline">MultiPolyline</a></li>
 			<li><a href="#polygon">Polygon</a></li>
-			<li><a href="#multipolygon">MultiPolygon</a></li>
 			<li><a href="#rectangle">Rectangle</a></li>
 			<li><a href="#circle">Circle</a></li>
 			<li><a href="#circlemarker">CircleMarker</a></li>
@@ -803,12 +801,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-addlayer">
 		<td><code><b>addLayer</b>(
-<<<<<<< HEAD
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i>,</nobr>
-=======
 			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i>,</nobr>
-			<nobr>&lt;Boolean&gt; <i>insertAtTheBottom?</i> )</nobr>
->>>>>>> refactory into utilities and base classes
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -2611,6 +2604,33 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 <h3>Usage example</h3>
 <pre><code class="javascript">// create a red polyline from an array of LatLng points
+var latlngs = [
+  [-122.68, 45.51],
+  [-122.43, 37.77],
+  [-118.2, 34.04]
+];
+
+var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+
+// zoom the map to the polyline
+map.fitBounds(polyline.getBounds());</code></pre>
+
+<p>You can also pass a multi-dimensional array to represent a MultiPolyline shape.</p>
+
+<pre><code class="javascript">// create a red polyline from an arrays  of arrays of LatLng points
+var latlngs = [
+	[
+	  [-122.68, 45.51],
+	  [-122.43, 37.77],
+	  [-118.2, 34.04]
+	],
+	[
+	  [-73.91, 40.78],
+	  [-87.62, 41.83],
+	  [-96.72, 32.76]
+	]
+]
+
 var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 
 // zoom the map to the polyline
@@ -2631,7 +2651,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		</code></td>
 
 
-		<td>Instantiates a polyline object given an array of geographical points and optionally an options object.</td>
+		<td>Instantiates a polyline object given an array of geographical points and optionally an options object. You can create a a Polyline with multiple separate lines (MultiPolyline) by passing an array that contains arrays of geographic points.</td>
 	</tr>
 </table>
 
@@ -2714,80 +2734,54 @@ map.fitBounds(polyline.getBounds());</code></pre>
 </table>
 
 
-
-<h2 id="multipolyline">MultiPolyline</h2>
-
-<p>Extends <a href="#featuregroup">FeatureGroup</a> to allow creating multi-polylines (single layer that consists of several polylines that share styling/popup).</p>
-
-<h3>Creation</h3>
-
-<table data-id='multipolyline'>
-	<tr>
-		<th>Factory</th>
-
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>L.multiPolyline</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>,
-			<nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-
-
-		<td>Instantiates a multi-polyline object given an array of arrays of geographical points (one for each individual polyline) and optionally an options object.</td>
-	</tr>
-</table>
-
-
-<h3>Methods</h3>
-
-<p>MultiPolylines accept all <a href="#polyline">Polyline methods</a> but
-have different behavior around their coordinate contents since they can contain
-multiple line features:</p>
-
-<table data-id='multipolyline'>
-	<tr>
-		<th class="width250">Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>setLatLngs</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Replace all lines and their paths with the given array of arrays of
-        geographical points.</td>
-    </tr>
-	<tr>
-		<td><code><b>getLatLngs</b>()</td>
-
-		<td><code><nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>
-		</code></td>
-		<td>Returns an array of arrays of geographical points in each line.</td>
-    </tr>
-	<tr>
-		<td><code><b>openPopup</b>()</td>
-
-		<td><code>this</code></td>
-		<td>Opens the popup previously bound by <a href="#path-bindpopup">bindPopup</a>.</td>
-    </tr>
-	<tr id="multipolyline-togeojson">
-		<td><code><b>toGeoJSON</b>()</code></td>
-		<td><code>Object</code></td>
-		<td>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> representation of the multipolyline (GeoJSON MultiLineString Feature).</td>
-	</tr>
-</table>
-
-
-
 <h2 id="polygon">Polygon</h2>
 
 <p>A class for drawing polygon overlays on a map. Extends <a href="#polyline">Polyline</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
 <p>Note that points you pass when creating a polygon shouldn't have an additional last point equal to the first one &mdash; it's better to filter out such points.</p>
+
+<h3>Usage example</h3>
+<pre><code class="javascript">// create a red polygon from an arrays of LatLng points
+var latlngs = [
+  [ [-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41] ]
+];
+
+var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+
+// zoom the map to the polygon
+map.fitBounds(polygon.getBounds());</code></pre>
+
+<p>You can also pass a array of arrays of latlngs, the first array represents the outer shape and the other arrays represent holes in the outer shape.</p>
+
+<pre><code class="javascript">// create a red polygon from an arrays of LatLng points
+var latlngs = [
+  [ [-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41] ]
+  [ [-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29] ]
+];
+
+var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+
+// zoom the map to the polygon
+map.fitBounds(polygon.getBounds());</code></pre>
+
+<p>You can also pass a multi-dimensional array to represent a MultiPolyline shape.</p>
+
+<pre><code class="javascript">// create a red polygon from an arrays of arrays of LatLng points
+var latlngs = [
+  [
+    [ [-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41] ],
+    [ [-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29] ]
+  ],
+  [
+    [ [-109.05, 37],[-109.03, 41],[-102.05, 41],[-102.04, 37],[-109.05, 38] ]
+  ]
+]
+
+var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+
+// zoom the map to the polygon
+map.fitBounds(polygon.getBounds());</code></pre>
+
 
 <h3>Creation</h3>
 
@@ -2804,7 +2798,7 @@ multiple line features:</p>
 		</code></td>
 
 
-		<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside.</td>
+		<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside. You can create a a Polygon with multiple separate lines (MultiPolygon) by passing an array of Polygon coordinates.</td>
 	</tr>
 </table>
 
@@ -2826,69 +2820,6 @@ multiple line features:</p>
 </table>
 
 
-<h2 id="multipolygon">MultiPolygon</h2>
-
-<p>Extends <a href="#featuregroup">FeatureGroup</a> to allow creating multi-polygons (single layer that consists of several polygons that share styling/popup).</p>
-
-<h3>Creation</h3>
-
-<table data-id='multipolygon'>
-	<tr>
-		<th>Factory</th>
-
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>L.multiPolygon</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>,
-			<nobr>&lt;<a href="#polyline-options">Polyline options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-
-		<td>Instantiates a multi-polygon object given an array of latlngs arrays (one for each individual polygon) and optionally an options object (the same as for MultiPolyline).</td>
-	</tr>
-</table>
-
-<h3>Methods</h3>
-
-<p>MultiPolygons accept all <a href="#polyline">Polyline methods</a> but
-have different behavior around their coordinate contents since they can contain
-multiple polygon features:</p>
-
-<table data-id='multipolygon'>
-	<tr>
-		<th class="width250">Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>setLatLngs</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Replace all polygons and their paths with the given array of arrays of
-        geographical points.</td>
-    </tr>
-	<tr>
-		<td><code><b>getLatLngs</b>()</td>
-
-		<td><code><nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i></nobr>
-		</code></td>
-		<td>Returns an array of arrays of geographical points in each polygon.</td>
-    </tr>
-	<tr>
-		<td><code><b>openPopup</b>()</td>
-
-		<td><code>this</code></td>
-		<td>Opens the popup previously bound by <a href="#path-bindpopup">bindPopup</a>.</td>
-    </tr>
-	<tr id="multipolygon-togeojson">
-		<td><code><b>toGeoJSON</b>()</code></td>
-		<td><code>Object</code></td>
-		<td>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON">GeoJSON</a> representation of the multipolygon (GeoJSON MultiPolygon Feature).</td>
-	</tr>
-</table>
 
 <h2 id="rectangle">Rectangle</h2>
 
