@@ -737,6 +737,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			The <a href="https://github.com/lokku">OpenCage</a> team
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.Geonames">Leaflet.Geonames</a>
+		</td>
+		<td>
+			A lightweight geocoding control powered by <a href="http://www.geonames.org/">GeoNames</a>.  <a href="https://consbio.github.io/Leaflet.Geonames">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/brendan-ward">Brendan Ward</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1408,6 +1419,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			Display arbitrary GeoJSON on a map with a timeline slider and play button.
 		</td><td>
 			<a href="https://github.com/skeate">Jonathan Skeate</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.ZoomBox">Leaflet.ZoomBox</a>
+		</td>
+		<td>
+			A lightweight zoom box control: draw a box around the area you want to zoom to. <a href="https://consbio.github.io/Leaflet.ZoomBox">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/brendan-ward">Brendan Ward</a>
 		</td>
 	</tr>
 </table>
