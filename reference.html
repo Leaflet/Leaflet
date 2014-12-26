@@ -72,7 +72,6 @@ bodyclass: api-page
 		</ul>
 		<h4>Controls</h4>
 		<ul>
-			<li><a href="#control">Control</a></li>
 			<li><a href="#control-zoom">Zoom</a></li>
 			<li><a href="#control-attribution">Attribution</a></li>
 			<li><a href="#control-layers">Layers</a></li>
@@ -87,9 +86,6 @@ bodyclass: api-page
 		</ul>
 		<h4>Utility</h4>
 		<ul>
-			<li><a href="#class">Class</a></li>
-			<li><a href="#evented">Evented</a></li>
-			<li><a href="#layer">Layer</a></li>
 			<li><a href="#browser">Browser</a></li>
 			<li><a href="#util">Util</a></li>
 			<li><a href="#transformation">Transformation</a></li>
@@ -105,14 +101,16 @@ bodyclass: api-page
 		</ul>
 	</div>
 	<div class="toc-col last-col">
-		<h4>Interfaces</h4>
+		<h4>Base Classes</h4>
 		<ul>
-			<li><a href="#ihandler">IHandler</a></li>
-			<li><a href="#ilayer">ILayer</a></li>
+			<li><a href="#class">Class</a></li>
+			<li><a href="#evented">Evented</a></li>
+			<li><a href="#layer">Layer</a></li>
+			<li><a href="#control">Control</a></li>
+			<li><a href="#handler">Handler</a></li>
 			<!--<li><a class="nodocs" href="#">IFeature</a></li>-->
-			<li><a href="#icontrol">IControl</a></li>
-			<li><a href="#iprojection">IProjection</a></li>
-			<li><a href="#icrs">ICRS</a></li>
+			<li><a href="#projection">Projection</a></li>
+			<li><a href="#crs">CRS</a></li>
 		</ul>
 
 		<h4>Misc</h4>
@@ -188,7 +186,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>layers</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a>[]</code></td>
+		<td><code><a href="#layer">ILayer</a>[]</code></td>
 		<td><code><span class="literal">null</span></code></td>
 		<td>Layers that will be added to the map initially.</td>
 	</tr>
@@ -212,7 +210,7 @@ var map = L.map('map', {
     </tr>
 	<tr>
 		<td><code><b>crs</b></code></td>
-		<td><code><a href="#icrs">CRS</a></code></td>
+		<td><code><a href="#crs">CRS</a></code></td>
 		<td><code>L.CRS.<br/>EPSG3857</code></td>
 		<td>Coordinate Reference System to use. Don't change this if you're not sure what it means.</td>
 	</tr>
@@ -807,7 +805,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-addlayer">
 		<td><code><b>addLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i>,</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i></nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -815,7 +813,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -823,7 +821,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>hasLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
@@ -869,7 +867,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-addcontrol">
 		<td><code><b>addControl</b>(
-			<nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr>
+			<nobr>&lt;<a href="#control">IControl</a>&gt; <i>control</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -877,7 +875,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>removeControl</b>(
-			<nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr>
+			<nobr>&lt;<a href="#control">IControl</a>&gt; <i>control</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -1188,7 +1186,7 @@ var map = L.map('map', {
 
 <h3 id="map-properties">Properties</h3>
 
-<p>Map properties include interaction handlers that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging or touch zoom (see <a href="#ihandler">IHandler</a> methods). Example:</p>
+<p>Map properties include interaction handlers that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging or touch zoom (see <a href="#handler">IHandler</a> methods). Example:</p>
 
 <pre><code class="javascript">map.doubleClickZoom.disable();</code></pre>
 
@@ -1204,37 +1202,37 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>dragging</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Map dragging handler (by both mouse and touch).</td>
 	</tr>
 	<tr>
 		<td><code><b>touchZoom</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Touch zoom handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>doubleClickZoom</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Double click zoom handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>scrollWheelZoom</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Scroll wheel zoom handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>boxZoom</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Box (shift-drag with mouse) zoom handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>keyboard</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Keyboard navigation handler.</td>
 	</tr>
 	<tr>
 		<td><code><b>tap</b></code></td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Mobile touch hacks (quick tap and touch hold) handler.</td>
 	</tr>
 	<tr>
@@ -1585,7 +1583,7 @@ var map = L.map('map', {
 
 <h3 id="marker-interaction-handlers">Interaction handlers</h3>
 
-<p>Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see <a href="#ihandler">IHandler</a> methods). Example:</p>
+<p>Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see <a href="#handler">IHandler</a> methods). Example:</p>
 
 <pre><code class="javascript">marker.dragging.disable();</code></pre>
 
@@ -1597,7 +1595,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td>dragging</td>
-		<td><a href="#ihandler"><code>IHandler</code></a></td>
+		<td><a href="#handler"><code>IHandler</code></a></td>
 		<td>Marker dragging handler (by both mouse and touch).</td>
 	</tr>
 </table>
@@ -1629,7 +1627,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>L.popup</b>(
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i>,</nobr>
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>source?</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>source?</i> )</nobr>
 		</code></td>
 
 
@@ -1792,7 +1790,7 @@ var map = L.map('map', {
 
 <h2 id="tilelayer">TileLayer</h2>
 
-<p>Used to load and display tile layers on the map, implements <a href="#ilayer">ILayer</a> interface.</p>
+<p>Used to load and display tile layers on the map, implements <a href="#layer">ILayer</a> interface.</p>
 
 <h3>Usage example</h3>
 
@@ -2135,7 +2133,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>crs</b></code></td>
-		<td><code><a href="#icrs">CRS</a></code></td>
+		<td><code><a href="#crs">CRS</a></code></td>
 		<td><code><span class="literal">null</span></code></td>
 		<td>Coordinate Reference System to use for the WMS requests, defaults to map CRS. Don't change this if you're not sure what it means.</td>
 	</tr>
@@ -2239,7 +2237,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 <h2 id="imageoverlay">ImageOverlay</h2>
 
-<p>Used to load and display a single image over specific bounds of the map, implements <a href="#ilayer">ILayer</a> interface.</p>
+<p>Used to load and display a single image over specific bounds of the map, implements <a href="#layer">ILayer</a> interface.</p>
 
 <h3>Usage example</h3>
 
@@ -3076,7 +3074,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h2 id="layergroup">LayerGroup</h2>
 
-<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Implements <a href="#ilayer">ILayer</a> interface.</p>
+<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Implements <a href="#layer">ILayer</a> interface.</p>
 
 <pre><code class="javascript">L.layerGroup([marker1, marker2])
 	.addLayer(polyline)
@@ -3090,8 +3088,8 @@ map.fitBounds(bounds);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>L.layerGroup</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
+		<td><code><b>L.LayerGroup</b>(
+			<nobr>&lt;<a href="#layer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
 		</code></td>
 
 
@@ -3117,7 +3115,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>addLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -3125,7 +3123,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -3141,7 +3139,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>hasLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
@@ -3152,7 +3150,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;String&gt; <i>id</i> )</nobr>
 		</code></td>
 
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#layer">ILayer</a></code></td>
 		<td>Returns the layer with the given id.</td>
 	</tr>
 	<tr>
@@ -3188,7 +3186,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h2 id="featuregroup">FeatureGroup</h2>
 
-<p>Extended <a href="#layergroup">layerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#ilayer">ILayer</a> interface.</p>
+<p>Extended <a href="#layergroup">layerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#layer">ILayer</a> interface.</p>
 
 <pre><code class="javascript">L.featureGroup([marker1, marker2, polyline])
 	.bindPopup('Hello world!')
@@ -3205,7 +3203,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>L.featureGroup</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
 		</code></td>
 
 
@@ -3367,7 +3365,7 @@ map.fitBounds(bounds);</code></pre>
 	<tr id="geojson-oneachfeature">
 		<td><code><b>onEachFeature</b>(
 			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td>Function that will be called on each created feature layer. Useful for attaching events and popups to features.</td>
@@ -3375,7 +3373,7 @@ map.fitBounds(bounds);</code></pre>
 	<tr id="geojson-filter">
 		<td><code><b>filter</b>(
 			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td>Function that will be used to decide whether to show a feature or not.</td>
@@ -3439,7 +3437,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr>
 		</code></td>
 
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#layer">ILayer</a></code></td>
 		<td>Creates a layer from a given GeoJSON feature.</td>
 	</tr>
 	<tr>
@@ -4169,122 +4167,6 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 	</tr>
 </table>
 
-
-
-
-<h2 id="control">Control</h2>
-
-<p>The base class for all Leaflet controls. Implements <a href="#icontrol">IControl</a> interface. You can add controls to the map like this:</p>
-
-<pre><code>control.addTo(map);
-// the same as
-map.addControl(control);</code></pre>
-
-<h3>Creation</h3>
-<table data-id='control'>
-	<tr>
-		<th class="width300">Factory</th>
-
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>L.control</b>(
-			<nobr>&lt;<a href="#control-options">Control options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-
-
-		<td>Creates a control with the given options.</td>
-	</tr>
-</table>
-
-<h3>Options</h3>
-<table data-id='control'>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>position</b></code></td>
-		<td><code>String</code></td>
-		<td><code><span class="string">'topright'</span></td>
-		<td>The initial position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
-	</tr>
-</table>
-
-<h3>Methods</h3>
-<table data-id='control'>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>setPosition</b>(
-			<nobr>&lt;String&gt; <i>position</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Sets the position of the control. See <a href="#control-positions">control positions</a>.</td>
-	</tr>
-	<tr>
-		<td><code><b>getPosition</b>()</code></td>
-		<td><code>String</code></td>
-		<td>Returns the current position of the control.</td>
-	</tr>
-	<tr>
-		<td><code><b>addTo</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds the control to the map.</td>
-	</tr>
-	<tr>
-		<td><code><b>removeFrom</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Removes the control from the map.</td>
-	</tr>
-	<tr>
-		<td><code><b>getContainer</b>()</code></td>
-		<td><code>HTMLElement</code></td>
-		<td>Returns the HTML container of the control.</td>
-	</tr>
-</table>
-
-<h3 id="control-positions">Control Positions</h3>
-
-<p>Control positions (map corner to put a control to) are set using strings. Margins between controls and the map border are set with CSS, so that you can easily override them.</p>
-
-<table data-id='control'>
-	<tr>
-		<th class="minwidth">Position</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><span class="string">'topleft'</span></code></td>
-		<td>Top left of the map.</td>
-	</tr>
-	<tr>
-		<td><code><span class="string">'topright'</span></code></td>
-		<td>Top right of the map.</td>
-	</tr>
-	<tr>
-		<td><code><span class="string">'bottomleft'</span></code></td>
-		<td>Bottom left of the map.</td>
-	</tr>
-	<tr>
-		<td><code><span class="string">'bottomright'</span></code></td>
-		<td>Bottom right of the map.</td>
-	</tr>
-</table>
-
-
 <h2 id="control-zoom">Control.zoom</h2>
 
 <p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code><span class="literal">false</span></code>. Extends <a href="#control">Control</a>.</p>
@@ -4465,7 +4347,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>addBaseLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>,
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i></nobr>,
 			<nobr>&lt;String&gt; <i>name</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
@@ -4473,7 +4355,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>addOverlay</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>,
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i></nobr>,
 			<nobr>&lt;String&gt; <i>name</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
@@ -4481,7 +4363,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Remove the given layer from the control.</td>
@@ -4891,7 +4773,7 @@ map.off('click', onClick);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#layer">ILayer</a></code></td>
 		<td>The layer that was added or removed.</td>
 	</tr>
 </table>
@@ -4906,7 +4788,7 @@ map.off('click', onClick);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#layer">ILayer</a></code></td>
 		<td>The layer that was added or removed.</td>
 	</tr>
 	<tr>
@@ -4961,7 +4843,7 @@ map.off('click', onClick);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#layer">ILayer</a></code></td>
 		<td>The layer for the GeoJSON feature that is being added to the map.</td>
 	</tr>
 	<tr>
@@ -5013,264 +4895,6 @@ map.off('click', onClick);</code></pre>
 
 
 <!-- <h3>TileEvent</h3> -->
-
-
-
-<h2 id="class">Class</h2>
-
-<p><code>L.Class</code> powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.</p>
-<p>In addition to implementing a simple classical inheritance model, it introduces several special properties for convenient code organization &mdash; <code>options</code>, <code>includes</code> and <code>statics</code>.</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	initialize: function (greeter) {
-		this.greeter = greeter;
-		// class constructor
-	},
-
-	greet: function (name) {
-		alert(this.greeter + ', ' + name)
-	}
-});
-
-// create instance of MyClass, passing "Hello" to the constructor
-var a = new MyClass("Hello");
-
-// call greet method, alerting "Hello, World"
-a.greet("World");
-</code></pre>
-
-<p>The <code>initialize</code> method is your class's constructor function, meaning that it gets called when you do <code>new MyClass(...)</code>.</p>
-
-
-<h3>Class Factories</h3>
-
-<p>You may have noticed that Leaflet objects are created without using the <code>new</code> keyword. This is achieved by complementing each class with a lowercase factory method:</p>
-
-<pre><code>new L.Map('map'); // becomes:
-L.map('map');</code></pre>
-
-<p>The factories are implemented very easily, and you can do this for your own classes:</p>
-
-<pre><code>L.map = function (id, options) {
-	return new L.Map(id, options);
-};</code></pre>
-
-
-<h3>Inheritance</h3>
-
-<p>You use <code>L.Class.extend</code> to define new classes, but you can use the same method on any class to inherit from it:</p>
-
-<pre><code>var MyChildClass = MyClass.extend({
-	// ... new properties and methods
-});</code></pre>
-
-<p>This will create a class that inherits all methods and properties of the parent class (through a proper prototype chain), adding or overriding the ones you pass to <code>extend</code>. It will also properly react to <code>instanceof</code>:</p>
-
-<pre><code>var a = new MyChildClass();
-a instanceof MyChildClass; // true
-a instanceof MyClass; // true
-</code></pre>
-
-<p>You can call parent methods (including constructor) from corresponding child ones (as you do with <code>super</code> calls in other languages) by accessing parent class prototype and using JavaScript's <code>call</code> or <code>apply</code>:</p>
-
-<pre><code>var MyChildClass = MyClass.extend({
-	initialize: function () {
-		MyClass.prototype.initialize.call(this, "Yo");
-	},
-
-	greet: function (name) {
-		MyClass.prototype.greet.call(this, 'bro ' + name + '!');
-	}
-});
-
-var a = new MyChildClass();
-a.greet('Jason'); // alerts "Yo, bro Jason!"</code></pre>
-
-<h3 id="class-options">Options</h3>
-
-<p><code>options</code> is a special property that unlike other objects that you pass to <code>extend</code> will be merged with the parent one instead of overriding it completely, which makes managing configuration of objects and default values convenient:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	options: {
-		myOption1: 'foo',
-		myOption2: 'bar'
-	}
-});
-
-var MyChildClass = MyClass.extend({
-	options: {
-		myOption1: 'baz',
-		myOption3: 5
-	}
-});
-
-var a = new MyChildClass();
-a.options.myOption1; // 'baz'
-a.options.myOption2; // 'bar'
-a.options.myOption3; // 5</code></pre>
-
-<p>There's also <code>L.Util.setOptions</code>, a method for conveniently merging options passed to constructor with the defaults defined in the class:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	options: {
-		foo: 'bar',
-		bla: 5
-	},
-
-	initialize: function (options) {
-		L.Util.setOptions(this, options);
-		...
-	}
-});
-
-var a = new MyClass({bla: 10});
-a.options; // {foo: 'bar', bla: 10}</code></pre>
-
-<h3>Includes</h3>
-
-<p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins).
-
-<pre><code> var MyMixin = {
-	foo: function () { ... },
-	bar: 5
-};
-
-var MyClass = L.Class.extend({
-	includes: MyMixin
-});
-
-var a = new MyClass();
-a.foo();</code></pre>
-
-<p>You can also do such includes in runtime with the <code>include</code> method:</p>
-
-<pre><code><b>MyClass.include</b>(MyMixin);</code></pre>
-
-<h3>Statics</h3>
-
-<p><code>statics</code> is just a convenience property that injects specified object properties as the static properties of the class, useful for defining constants:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	statics: {
-		FOO: 'bar',
-		BLA: 5
-	}
-});
-
-MyClass.FOO; // 'bar'</code></pre>
-
-
-<h3>Constructor Hooks</h3>
-
-<p>If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for <code>L.Polyline</code>). Leaflet comes with a way to do it easily using the <code>addInitHook</code> method:</p>
-
-<pre><code>MyClass.addInitHook(function () {
-	// ... do something in constructor additionally
-	// e.g. add event listeners, set custom properties etc.
-});</code></pre>
-
-<p>You can also use the following shortcut when you just need to make one additional method call:</p>
-
-<pre><code>MyClass.addInitHook('methodName', arg1, arg2, &hellip;);</code></pre>
-
-<h2 id="evented">Evented</h2>
-
-<p>When creating a plugin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-related methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
-
-<pre><code>MyEventedClass = L.Evented.extend({
-	fire: function(){
-		this.fire('custom', {
-			// you can attach optional data to an event as an object
-		});
-	}
-});
-
-var myEvents = new MyEventedClass();
-
-myEvents.on('custom', function(e){
-	// e.type will  be 'custom'
-	// anything else you passed in the
-});
-
-myEvents.fire();</code></pre>
-
-You can still use the old-style `L.Mixin.Events` for backward compatibility.
-
-<pre><code>// this class will include all event methods
-MyEventedClass = L.Class.extend({
-	includes: L.Mixin.Events
-});</code></pre>
-
-<h2 id="layer">Layer</h2>
-
-<p>When implementing a custom layer the <code>L.Layer</code> class can be extended to implementing basic functionality that all layers need to share, these methods can be used when extending <code>L.Layer</code> when <a href="#ilayer">implementing custom layers</a>.</p>
-
-<h3 id="layer-options">Options</h3>
-
-<table data-id="layer">
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default value</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>pane</b></code></td>
-		<td><code>String</code></td>
-		<td><code><span class="string">'overlayPane'</span></code></td>
-		<td>By default the layer will be added to the maps <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
-	</tr>
-</table>
-
-<h3>Events</h3>
-
-<table data-id="layer">
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>add</b></code></td>
-		<td><code><a href="#event">Event</a></code></td>
-		<td>Fired after the layer is added to a map.</td>
-	</tr>
-	<tr>
-		<td><code><b>remove</b></code></td>
-		<td><code><a href="#event">Event</a></code></td>
-		<td>Fired after the layer is removed from a map.</td>
-	</tr>
-</table>
-
-<h3>Methods</h3>
-
-<table data-id="layer">
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
-		<td><code class="javascript"><span class="keyword">this</span></code></td>
-		<td>Adds the layer to the given map.</td>
-	</tr>
-	<tr>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
-		<td><code class="javascript"><span class="keyword">this</span></code></td>
-		<td>Removes the layer to the given map.</td>
-	</tr>
-	<tr>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code class="javascript"><span class="keyword">this</span></code></td>
-		<td>Removes the layer from the map it is currently active on.</td>
-	</tr>
-	<tr>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt; <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. Or if <code>name</code> is omitted the pane for this layer.</td>
-	</tr>
-</table>
 
 <h2 id="browser">Browser</h2>
 
@@ -5392,6 +5016,7 @@ MyEventedClass = L.Class.extend({
 		</code></td>
 
 		<td><code>Function</code></td>
+
 		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.  Not a polyfill for ES 5 <code>bind</code> (compare <code>L.bind</code> to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill">MDN-recommended polyfill</a> for <code>Function.prototype.bind</code>).</td>
 	</tr>
 	<tr>
@@ -6078,64 +5703,192 @@ draggable.enable();
 	</tr>
 </table>-->
 
+<h2 id="class">Class</h2>
+
+<p><code>L.Class</code> powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.</p>
+<p>In addition to implementing a simple classical inheritance model, it introduces several special properties for convenient code organization &mdash; <code>options</code>, <code>includes</code> and <code>statics</code>.</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	initialize: function (greeter) {
+		this.greeter = greeter;
+		// class constructor
+	},
+
+	greet: function (name) {
+		alert(this.greeter + ', ' + name)
+	}
+});
+
+// create instance of MyClass, passing "Hello" to the constructor
+var a = new MyClass("Hello");
+
+// call greet method, alerting "Hello, World"
+a.greet("World");
+</code></pre>
 
 
-<h2 id="ihandler">IHandler</h2>
-<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
+<h3>Class Factories</h3>
 
-<table data-id='ihandler'>
-	<tr>
-		<th class="width100">Method</th>
-		<th class="width100">Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>enable</b>()</code></td>
-		<td>-</td>
-		<td>Enables the handler.</td>
-	</tr>
-	<tr>
-		<td><code><b>disable</b>()</code></td>
-		<td>-</td>
-		<td>Disables the handler.</td>
-	</tr>
-	<tr>
-		<td><code><b>enabled</b>()</code></td>
-		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the handler is enabled.</td>
-	</tr>
-</table>
+<p>You may have noticed that Leaflet objects are created without using the <code>new</code> keyword. This is achieved by complementing each class with a lowercase factory method:</p>
+
+<pre><code>new L.Map('map'); // becomes:
+L.map('map');</code></pre>
+
+<p>The factories are implemented very easily, and you can do this for your own classes:</p>
+
+<pre><code>L.map = function (id, options) {
+	return new L.Map(id, options);
+};</code></pre>
 
 
-<h2 id="ilayer">ILayer</h2>
+<h3>Inheritance</h3>
 
-<p>Represents an object attached to a particular location (or a set of locations) on a map. Extends the <code>L.Layer</code> base class and is implemented by <a href="#tilelayer">tile layers</a>, <a href="#marker">markers</a>, <a href="#popup">popups</a>, <a href="#imageoverlay">image overlays</a>, <a href="#path">vector layers</a> and <a href="#layergroup">layer groups</a>.</p>
+<p>You use <code>L.Class.extend</code> to define new classes, but you can use the same method on any class to inherit from it:</p>
 
-<h3>Methods</h3>
+<pre><code>var MyChildClass = MyClass.extend({
+	// ... new properties and methods
+});</code></pre>
 
-<table data-id='ilayer'>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>onAdd</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
+<p>This will create a class that inherits all methods and properties of the parent class (through a proper prototype chain), adding or overriding the ones you pass to <code>extend</code>. It will also properly react to <code>instanceof</code>:</p>
 
-		<td>-</td>
-		<td>Should contain code that creates DOM elements for the overlay, adds them to <a href="#map-panes">map panes</a> where they should belong and puts listeners on relevant map events. Called on <code>map.addLayer(layer)</code>.</td>
-	</tr>
-	<tr>
-		<td><code><b>onRemove</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
+<pre><code>var a = new MyChildClass();
+a instanceof MyChildClass; // true
+a instanceof MyClass; // true
+</code></pre>
 
-		<td>-</td>
-		<td>Should contain all clean up code that removes the overlay's elements from the DOM and removes listeners previously added in <code>onAdd</code>. Called on <code>map.removeLayer(layer)</code>.</td>
-	</tr>
-</table>
+<p>You can call parent methods (including constructor) from corresponding child ones (as you do with <code>super</code> calls in other languages) by accessing parent class prototype and using JavaScript's <code>call</code> or <code>apply</code>:</p>
+
+<pre><code>var MyChildClass = MyClass.extend({
+	initialize: function () {
+		MyClass.prototype.initialize.call("Yo");
+	},
+
+	greet: function (name) {
+		MyClass.prototype.greet.call(this, 'bro ' + name + '!');
+	}
+});
+
+var a = new MyChildClass();
+a.greet('Jason'); // alerts "Yo, bro Jason!"</code></pre>
+
+<h3 id="class-options">Options</h3>
+
+<p><code>options</code> is a special property that unlike other objects that you pass to <code>extend</code> will be merged with the parent one instead of overriding it completely, which makes managing configuration of objects and default values convenient:</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	options: {
+		myOption1: 'foo',
+		myOption2: 'bar'
+	}
+});
+
+var MyChildClass = L.Class.extend({
+	options: {
+		myOption1: 'baz',
+		myOption3: 5
+	}
+});
+
+var a = new MyChildClass();
+a.options.myOption1; // 'baz'
+a.options.myOption2; // 'bar'
+a.options.myOption3; // 5</code></pre>
+
+<p>There's also <code>L.Util.setOptions</code>, a method for conveniently merging options passed to constructor with the defauls defines in the class:</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	options: {
+		foo: 'bar',
+		bla: 5
+	},
+
+	initialize: function (options) {
+		L.Util.setOptions(this, options);
+		...
+	}
+});
+
+var a = new MyClass({bla: 10});
+a.options; // {foo: 'bar', bla: 10}</code></pre>
+
+<h3>Includes</h3>
+
+<p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins).
+
+<pre><code> var MyMixin = {
+	foo: function () { ... },
+	bar: 5
+};
+
+var MyClass = L.Class.extend({
+	includes: MyMixin
+});
+
+var a = new MyClass();
+a.foo();</code></pre>
+
+<p>You can also do such includes in runtime with the <code>include</code> method:</p>
+
+<pre><code><b>MyClass.include</b>(MyMixin);</code></pre>
+
+<h3>Statics</h3>
+
+<p><code>statics</code> is just a convenience property that injects specified object properties as the static properties of the class, useful for defining constants:</p>
+
+<pre><code>var MyClass = L.Class.extend({
+	statics: {
+		FOO: 'bar',
+		BLA: 5
+	}
+});
+
+MyClass.FOO; // 'bar'</code></pre>
+
+
+<h3>Constructor Hooks</h3>
+
+<p>If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for <code>L.Polyline</code>). Leaflet comes with a way to do it easily using the <code>addInitHook</code> method:</p>
+
+<pre><code>MyClass.addInitHook(function () {
+	// ... do something in constructor additionally
+	// e.g. add event listeners, set custom properties etc.
+});</code></pre>
+
+<p>You can also use the following shortcut when you just need to make one additional method call:</p>
+
+<pre><code>MyClass.addInitHook('methodName', arg1, arg2, &hellip;);</code></pre>
+
+<h2 id="evented">Evented</h2>
+
+<p>When creating a plugin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-related methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
+
+<pre><code>MyEventedClass = L.Evented.extend({
+	fire: function(){
+		this.fire('custom', {
+			// you can attach optional data to an event as an object
+		});
+	}
+});
+
+var myEvents = new MyEventedClass();
+
+myEvents.on('custom', function(e){
+	// e.type will  be 'custom'
+	// anything else you passed in the
+});
+
+myEvents.fire();</code></pre>
+
+You can still use the old-style `L.Mixin.Events` for backward compatibility.
+
+<pre><code>// this class will include all event methods
+MyEventedClass = L.Class.extend({
+	includes: L.Mixin.Events
+});</code></pre>
+
+<h2 id="layer">Layer</h2>
+
+<p>The base class for all Leaflet layers that impliments basic shared methods and functionality. Can be extended to create custom layers by extending <code>L.Layer</code> and implimenting the <code>onAdd</code> and <code>onRemove</code> methods.</p>
 
 <h3>Implementing Custom Layers</h3>
 
@@ -6146,6 +5899,33 @@ draggable.enable();
 <p>Another event often used in layer implementations is <a href="#map-moveend">moveend</a> which fires after any movement of the map (panning, zooming, etc.).</p>
 
 <p>Another thing to note is that you'll usually need to add <code>leaflet-zoom-hide</code> class to the DOM elements you create for the layer so that it hides during zoom animation. Implementing zoom animation for custom layers is a complex topic and will be documented separately in future, but meanwhile you can take a look at how it's done for Leaflet layers (e.g. <code>ImageOverlay</code>) in the source.</p>
+
+<h3>Methods</h3>
+
+<p>Every layer should extend from <code>L.Layer</code> and impliment the following methods:</p>
+
+<table data-id="layer">
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Should contain code that creates DOM elements for the overlay, adds them to <a href="#map-panes">map panes</a> where they should belong and puts listeners on relevant map events. Called on <code>map.addLayer(layer)</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Should contain all clean up code that removes the overlay's elements from the DOM and removes listeners previously added in onAdd. Called on <code>map.removeLayer(layer)</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code class="javascript">Object</code></td>
+		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code>for <a href="#events-addeventlistener">addEventListener</a>. These events will be automatically added and removed from the map with your layer.</td>
+	</tr>
+</table>
 
 <h3>Custom Layer Example</h3>
 
@@ -6176,7 +5956,7 @@ draggable.enable();
 
 	onRemove: function (map) {
 		// remove layer's DOM elements and listeners
-		this.getPane().overlayPane.removeChild(this._el);
+		this.getPane().removeChild(this._el);
 	},
 
 	_reset: function () {
@@ -6189,9 +5969,82 @@ draggable.enable();
 var myLayer = new MyCustomLayer(latlng).addTo(map);
 </code></pre>
 
-<h2 id="icontrol">IControl</h2>
+<h3 id="layer-options">Inherited Options</h3>
 
-<p>Represents a UI element in one of the corners of the map. Implemented by <a href="#control-zoom">zoom</a>, <a href="#control-attribution">attribution</a>, <a href="#control-scale">scale</a> and <a href="#control-layers">layers</a> controls.</p>
+<p>Classes extending from <code>L.Layer</code> will also inherit the following options:</p>
+
+<table data-id="layer">
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default value</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'overlayPane'</span></code></td>
+		<td>By default the layer will be added to the maps <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+</table>
+
+<h3>Inherited Events</h3>
+
+<p>Classes extending from <code>L.Layer</code> will also fire the following events:</p>
+
+<table data-id="layer">
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>add</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired after the layer is added to a map.</td>
+	</tr>
+	<tr>
+		<td><code><b>remove</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired after the layer is removed from a map.</td>
+	</tr>
+</table>
+
+<h3>Inherited Methods</h3>
+
+<p>Classes extending from <code>L.Layer</code> will also inherit the following methods:</p>
+
+<table data-id="layer">
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Adds the layer to the given map.</td>
+	</tr>
+	<tr>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Removes the layer to the given map.</td>
+	</tr>
+	<tr>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Removes the layer from the map it is currently active on.</td>
+	</tr>
+	<tr>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt; <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the <code>HTMLElement</code> representing the named pane on the map. Or if <code>name</code> is omitted the pane for this layer.</td>
+	</tr>
+</table>
+
+<h2 id="control">Control</h2>
+
+<p>Controls represents a UI element in one of the corners of the map. Implemented by <a href="#control-zoom">zoom</a>, <a href="#control-attribution">attribution</a>, <a href="#control-scale">scale</a> and <a href="#control-layers">layers</a> controls. Can be used to create custom controls by extending <code> L.Control</code> and implimenting the <code>onAdd</code> and <code>onRemove</code> methods.</p>
 
 <h3>Methods</h3>
 
@@ -6255,16 +6108,132 @@ map.addControl(new MyControl());
 
 <pre><code>map.addControl(new MyControl('bar', {position: 'bottomleft'}));</code></pre>
 
+<h3>Options</h3>
+
+<p>Classes extending from <code>L.Control</code> will also inherit the following options:</p>
+
+<table data-id='control'>
+  <tr>
+    <th>Option</th>
+    <th>Type</th>
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code><b>position</b></code></td>
+    <td><code>String</code></td>
+    <td><code><span class="string">'topright'</span></td>
+    <td>The initial position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
+  </tr>
+</table>
+
+<h3>Inherited Methods</h3>
+
+<p>Classes extending from <code>L.Control</code> will also inherit the following methods:</p>
+
+<table data-id='control'>
+  <tr>
+    <th>Method</th>
+    <th>Returns</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code><b>setPosition</b>(
+      <nobr>&lt;String&gt; <i>position</i> )</nobr>
+    </code></td>
+
+    <td><code><span class="keyword">this</span></code></td>
+    <td>Sets the position of the control. See <a href="#control-positions">control positions</a>.</td>
+  </tr>
+  <tr>
+    <td><code><b>getPosition</b>()</code></td>
+    <td><code>String</code></td>
+    <td>Returns the current position of the control.</td>
+  </tr>
+  <tr>
+    <td><code><b>addTo</b>(
+      <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+    </code></td>
+
+    <td><code><span class="keyword">this</span></code></td>
+    <td>Adds the control to the map.</td>
+  </tr>
+  <tr>
+    <td><code><b>removeFrom</b>(
+      <nobr>&lt;<a href="#map">Map</a>&gt; <i>map</i> )</nobr>
+    </code></td>
+
+    <td><code><span class="keyword">this</span></code></td>
+    <td>Removes the control from the map.</td>
+  </tr>
+  <tr>
+    <td><code><b>getContainer</b>()</code></td>
+    <td><code>HTMLElement</code></td>
+    <td>Returns the HTML container of the control.</td>
+  </tr>
+</table>
+
+<h3 id="control-positions">Control Positions</h3>
+
+<p>Control positions (map corner to put a control to) are set using strings. Margins between controls and the map border are set with CSS, so that you can easily override them.</p>
+
+<table data-id='control'>
+  <tr>
+    <th class="minwidth">Position</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><code><span class="string">'topleft'</span></code></td>
+    <td>Top left of the map.</td>
+  </tr>
+  <tr>
+    <td><code><span class="string">'topright'</span></code></td>
+    <td>Top right of the map.</td>
+  </tr>
+  <tr>
+    <td><code><span class="string">'bottomleft'</span></code></td>
+    <td>Bottom left of the map.</td>
+  </tr>
+  <tr>
+    <td><code><span class="string">'bottomright'</span></code></td>
+    <td>Bottom right of the map.</td>
+  </tr>
+</table>
 
 
+<h2 id="handler">Handler</h2>
+<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
 
-<h2 id="iprojection">IProjection</h2>
+<table data-id='handler'>
+	<tr>
+		<th class="width100">Method</th>
+		<th class="width100">Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>enable</b>()</code></td>
+		<td>-</td>
+		<td>Enables the handler.</td>
+	</tr>
+	<tr>
+		<td><code><b>disable</b>()</code></td>
+		<td>-</td>
+		<td>Disables the handler.</td>
+	</tr>
+	<tr>
+		<td><code><b>enabled</b>()</code></td>
+		<td><code>Boolean</code></td>
+		<td>Returns <code><span class="literal">true</span></code> if the handler is enabled.</td>
+	</tr>
+</table>
+
+<h2 id="projection">Projection</h2>
 
 <p>An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_projection">Map projection</a>.</p>
 
 <h3>Methods</h3>
 
-<table data-id='iprojection'>
+<table data-id='projection'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -6317,13 +6286,13 @@ map.addControl(new MyControl());
 
 
 
-<h2 id="icrs">ICRS</h2>
+<h2 id="crs">CRS</h2>
 
 <p>Defines coordinate reference systems for projecting geographical points into pixel (screen) coordinates and back (and to coordinates in other units for WMS services). See <a href="http://en.wikipedia.org/wiki/Coordinate_reference_system">Spatial reference system</a>.</p>
 
 <h3>Methods</h3>
 
-<table data-id='icrs'>
+<table data-id='crs'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
@@ -6375,7 +6344,7 @@ map.addControl(new MyControl());
 
 <h3>Properties</h3>
 
-<table data-id='icrs'>
+<table data-id='crs'>
 	<tr>
 		<th>Property</th>
 		<th>Type</th>
@@ -6384,7 +6353,7 @@ map.addControl(new MyControl());
 	<tr>
 		<td><code><b>projection</b></code></td>
 
-		<td><code><a href="#iprojection">IProjection</a></code></td>
+		<td><code><a href="#projection">IProjection</a></code></td>
 		<td>Projection that this CRS uses.</td>
 	</tr>
 	<tr>
