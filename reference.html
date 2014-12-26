@@ -1793,7 +1793,7 @@ var map = L.map('map', {
 
 <h2 id="tilelayer">TileLayer</h2>
 
-<p>Used to load and display tile layers on the map, implements <a href="#layer">ILayer</a> interface.</p>
+<p>Used to load and display tile layers on the map. Extends <a href="#layer">Layer</a>.</p>
 
 <h3>Usage example</h3>
 
@@ -2240,7 +2240,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 
 <h2 id="imageoverlay">ImageOverlay</h2>
 
-<p>Used to load and display a single image over specific bounds of the map, implements <a href="#layer">ILayer</a> interface.</p>
+<p>Used to load and display a single image over specific bounds of the map. Extends <a href="#layer">Layer</a>.</p>
 
 <h3>Usage example</h3>
 
@@ -3071,7 +3071,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h2 id="layergroup">LayerGroup</h2>
 
-<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Implements <a href="#layer">ILayer</a> interface.</p>
+<p>Used to group several layers and handle them as one. If you add it to the map, any layers added or removed from the group will be added/removed on the map as well. Extends <a href="#layer">Layer</a>.</p>
 
 <pre><code class="javascript">L.layerGroup([marker1, marker2])
 	.addLayer(polyline)
@@ -3183,7 +3183,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h2 id="featuregroup">FeatureGroup</h2>
 
-<p>Extended <a href="#layergroup">layerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Implements <a href="#layer">ILayer</a> interface.</p>
+<p>Extended <a href="#layergroup">layerGroup</a> that also has mouse events (propagated from members of the group) and a shared bindPopup method. Extends <a href="#layer">Layer</a>.</p>
 
 <pre><code class="javascript">L.featureGroup([marker1, marker2, polyline])
 	.bindPopup('Hello world!')
@@ -6586,7 +6586,7 @@ map.addControl(new MyControl());
 
 
 <h2 id="handler">Handler</h2>
-<p>An interface implemented by <a href="#map-interaction-handlers">interaction handlers</a>.</p>
+<p>Implemented by <a href="#map-interaction-handlers">map interaction handlers</a>.</p>
 
 <table data-id='handler'>
 	<tr>
