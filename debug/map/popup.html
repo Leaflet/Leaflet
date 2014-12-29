@@ -21,7 +21,7 @@
   <button id="openLine">Open Line</button>
   <button id="openPoly">Open Polygon</button>
   <button id="close">Close</button>
-  <button id="toggle">Toggle</button>
+  <button id="toggle">Toggle Marker</button>
   <button id="change">Change content</button>
 
   <script type="text/javascript">
@@ -35,9 +35,8 @@
         .addLayer(osm);
 
     var features = new L.FeatureGroup();
-    for (var i = 0; i < 100; i++) {
-      var marker = L.marker(getRandomLatLng(map)).addTo(features);
-    }
+
+    var marker = L.marker(getRandomLatLng(map)).addTo(features);
 
     var line = L.polyline([
         getRandomLatLng(map),
@@ -52,12 +51,9 @@
       getRandomLatLng(map)
     ]).addTo(features);
 
-    // features.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>").addTo(map);
     features.bindPopup(function(layer){
-      return layer._leaflet_id + '';
+      return "Layer ID is " + L.stamp(layer);
     }).addTo(map);
-
-    function logEvent(e) { console.log(e.type); }
 
     L.DomUtil.get('change').onclick = function(){
       features.setPopupContent('Foo');
@@ -84,18 +80,8 @@
     };
 
     L.DomUtil.get('toggle').onclick = function(){
-      features.togglePopup();
+      features.togglePopup(features.getLayerId(marker));
     };
-
-    // map.on('click', logEvent);
-
-    // map.on('movestart', logEvent);
-    // map.on('move', logEvent);
-    // map.on('moveend', logEvent);
-
-    // map.on('zoomstart', logEvent);
-    // map.on('zoomend', logEvent);
-
   </script>
 </body>
 </html>

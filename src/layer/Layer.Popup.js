@@ -79,7 +79,7 @@ L.Layer.include({
 	},
 
 	_openPopup: function (e) {
-		this._popup.options.offset = this._popupAnchor(e.layer);
+		this._popup.options.offset = this._popupAnchor(e.layer || e.target);
 		if(typeof this._popup._content === 'function') {
 			this._popup._source = e.layer;
 			this._popup.update();
@@ -88,7 +88,7 @@ L.Layer.include({
 	},
 
 	_popupAnchor: function(layer){
-		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0,0];
+		var anchor = (layer._getPopupAnchor) ? layer._getPopupAnchor() : [0,0];
 		return L.point(anchor).add(L.Popup.prototype.options.offset);
 	},
 
