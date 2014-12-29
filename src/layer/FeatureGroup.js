@@ -14,10 +14,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		L.LayerGroup.prototype.addLayer.call(this, layer);
 
-		if (this._popupContent && layer.bindPopup) {
-			layer.bindPopup(this._popupContent, this._popupOptions);
-		}
-
 		return this.fire('layeradd', {layer: layer});
 	},
 
@@ -33,24 +29,37 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		L.LayerGroup.prototype.removeLayer.call(this, layer);
 
-		if (this._popupContent) {
-			this.invoke('unbindPopup');
-		}
-
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	bindPopup: function (content, options) {
-		this._popupContent = content;
-		this._popupOptions = options;
-		return this.invoke('bindPopup', content, options);
+	openPopup: function (layerid) {
+		if(layerid){
+			layer = this.getLayer(layerid);
+		} else {
+			// open popup on the first layer
+			for (var id in this._layers) {
+				layer = this._layers[id];
+				break;
+			}
+		}
+
+		if (this._popup && this._map) {
+			this._popup.options.offset = this._popupAnchor(layer);
+			this._popup._source = layer;
+			this._popup.update();
+			this._map.openPopup(this._popup, layer._latlng || layer.getCenter());
+		}
+
+		return this;
 	},
 
-	openPopup: function (latlng) {
-		// open popup on the first layer
-		for (var id in this._layers) {
-			this._layers[id].openPopup(latlng);
-			break;
+	togglePopup: function(layerid){
+		if (this._popup) {
+			if (this._popup._map) {
+				this.closePopup();
+			} else {
+				this.openPopup(layerid);
+			}
 		}
 		return this;
 	},

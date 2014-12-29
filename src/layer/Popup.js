@@ -132,7 +132,7 @@ L.Popup = L.Layer.extend({
 		}
 		return events;
 	},
-	
+
 	isOpen: function () {
 		return !!this._map && this._map.hasLayer(this);
 	},
@@ -173,8 +173,9 @@ L.Popup = L.Layer.extend({
 		if (!this._content) { return; }
 
 		var node = this._contentNode;
-
-		if (typeof this._content === 'string') {
+		if (typeof this._content === 'function') {
+			node.innerHTML = this._content(this._source || this);
+		} else if (typeof this._content === 'string') {
 			node.innerHTML = this._content;
 		} else {
 			while (node.hasChildNodes()) {

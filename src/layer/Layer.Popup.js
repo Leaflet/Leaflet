@@ -43,7 +43,8 @@ L.Layer.include({
 
 	openPopup: function (latlng) {
 		if (this._popup && this._map) {
-			this._map.openPopup(this._popup, latlng || this._latlng || this.getCenter());
+			this._popup.options.offset = this._popupAnchor(this);
+			this._map.openPopup(this._popup, latlng ||  this._latlng || this.getCenter());
 		}
 		return this;
 	},
@@ -78,7 +79,17 @@ L.Layer.include({
 	},
 
 	_openPopup: function (e) {
+		this._popup.options.offset = this._popupAnchor(e.layer);
+		if(typeof this._popup._content === 'function') {
+			this._popup._source = e.layer;
+			this._popup.update();
+		}
 		this._map.openPopup(this._popup, e.latlng);
+	},
+
+	_popupAnchor: function(layer){
+		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0,0];
+		return L.point(anchor).add(L.Popup.prototype.options.offset);
 	},
 
 	_movePopup: function (e) {

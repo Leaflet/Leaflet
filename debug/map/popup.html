@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Leaflet debug page</title>
+
+  <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="../css/screen.css" />
+
+  <script type="text/javascript" src="../../build/deps.js"></script>
+  <script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <button id="open">Open</button>
+  <button id="openMarker">Open Marker</button>
+  <button id="openLine">Open Line</button>
+  <button id="openPoly">Open Polygon</button>
+  <button id="close">Close</button>
+  <button id="toggle">Toggle</button>
+  <button id="change">Change content</button>
+
+  <script type="text/javascript">
+
+    var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+    var map = L.map('map')
+        .setView([50.5, 30.51], 15)
+        .addLayer(osm);
+
+    var features = new L.FeatureGroup();
+    for (var i = 0; i < 100; i++) {
+      var marker = L.marker(getRandomLatLng(map)).addTo(features);
+    }
+
+    var line = L.polyline([
+        getRandomLatLng(map),
+        getRandomLatLng(map),
+        getRandomLatLng(map)
+      ]).addTo(features);
+
+    var poly = L.polygon([
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map)
+    ]).addTo(features);
+
+    // features.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>").addTo(map);
+    features.bindPopup(function(layer){
+      return layer._leaflet_id + '';
+    }).addTo(map);
+
+    function logEvent(e) { console.log(e.type); }
+
+    L.DomUtil.get('change').onclick = function(){
+      features.setPopupContent('Foo');
+    };
+
+    L.DomUtil.get('open').onclick = function(){
+      features.openPopup();
+    };
+
+    L.DomUtil.get('openMarker').onclick = function(){
+      features.openPopup(features.getLayerId(marker));
+    };
+
+    L.DomUtil.get('openLine').onclick = function(){
+      features.openPopup(features.getLayerId(line));
+    };
+
+    L.DomUtil.get('openPoly').onclick = function(){
+      features.openPopup(features.getLayerId(poly));
+    };
+
+    L.DomUtil.get('close').onclick = function(){
+      features.closePopup();
+    };
+
+    L.DomUtil.get('toggle').onclick = function(){
+      features.togglePopup();
+    };
+
+    // map.on('click', logEvent);
+
+    // map.on('movestart', logEvent);
+    // map.on('move', logEvent);
+    // map.on('moveend', logEvent);
+
+    // map.on('zoomstart', logEvent);
+    // map.on('zoomend', logEvent);
+
+  </script>
+</body>
+</html>
