@@ -79,12 +79,16 @@ L.Layer.include({
 	},
 
 	_openPopup: function (e) {
-		this._popup.options.offset = this._popupAnchor(e.layer || e.target);
-		if(typeof this._popup._content === 'function') {
+		if(this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === e.layer){
+			this.closePopup();
+		} else {
+			this._popup.options.offset = this._popupAnchor(e.layer || e.target);
 			this._popup._source = e.layer;
-			this._popup.update();
+			if(typeof this._popup._content === 'function') {
+				this._popup.update();
+			}
+			this._map.openPopup(this._popup, e.latlng);
 		}
-		this._map.openPopup(this._popup, e.latlng);
 	},
 
 	_popupAnchor: function(layer){

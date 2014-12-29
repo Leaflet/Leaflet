@@ -36,25 +36,23 @@
 
     var features = new L.FeatureGroup();
 
-    for (var i = 0; i < 10000; i++) {
-      var marker = L.marker(getRandomLatLng(map)).addTo(features);
-    }
+    var marker = L.marker(getRandomLatLng(map)).addTo(features);
 
-    // var line = L.polyline([
-    //     getRandomLatLng(map),
-    //     getRandomLatLng(map),
-    //     getRandomLatLng(map)
-    //   ]).addTo(features);
+    var line = L.polyline([
+        getRandomLatLng(map),
+        getRandomLatLng(map),
+        getRandomLatLng(map)
+      ]).addTo(features);
 
-    // var poly = L.polygon([
-    //   getRandomLatLng(map),
-    //   getRandomLatLng(map),
-    //   getRandomLatLng(map),
-    //   getRandomLatLng(map)
-    // ]).addTo(features);
+    var poly = L.polygon([
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map)
+    ]).addTo(features);
 
     features.bindPopup(function(layer){
-      return layer._leaflet_id + 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.';
+      return 'Leaflet ID is ' + layer._leaflet_id;
     }).addTo(map);
 
     L.DomUtil.get('change').onclick = function(){
