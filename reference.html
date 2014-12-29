@@ -37,7 +37,6 @@ bodyclass: api-page
 		<ul>
 			<li><a href="#tilelayer">TileLayer</a></li>
 			<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
-			<li><a href="#tilelayer-canvas">TileLayer.Canvas</a></li>
 			<li><a href="#imageoverlay">ImageOverlay</a></li>
 		</ul>
 		<h4>Vector Layers</h4>
@@ -56,6 +55,7 @@ bodyclass: api-page
 			<li><a href="#layergroup">LayerGroup</a></li>
 			<li><a href="#featuregroup">FeatureGroup</a></li>
 			<li><a href="#geojson">GeoJSON</a></li>
+			<li><a href="#gridlayer">GridLayer</a></li>
 		</ul>
 		<h4>Basic Types</h4>
 		<ul>
@@ -75,10 +75,11 @@ bodyclass: api-page
 		</ul>
 	</div>
 	<div class="span-3">
-		<h4>Events</h4>
+		<h4>Shared Methods</h4>
 		<ul>
-			<li><a href="#events">Event methods</a></li>
-			<li><a href="#event-objects">Event objects</a></li>
+			<li><a href="#events">Event</a></li>
+            <li><a href="#layers">Layer</a></li>
+			<li><a href="#popups">Popup</a></li>
 		</ul>
 		<h4>Utility</h4>
 		<ul>
@@ -111,6 +112,7 @@ bodyclass: api-page
 
 		<h4>Misc</h4>
 		<ul>
+			<li><a href="#event-objects">Event objects</a></li>
 			<li><a href="#global">global switches</a></li>
 			<li><a href="#noconflict">noConflict</a></li>
 			<li><a href="#version">version</a></li>
@@ -1007,6 +1009,20 @@ var map = L.map('map', {
 		<td>Returns the container element of the map.</td>
 	</tr>
 	<tr>
+		<td><code><b>createPane</b>(
+			<nobr>&lt;String&gt; <i>name</i>, </nobr> <nobr>&lt;HTMLElement&gt; <i>contianer?</i>
+		)</code></td>
+		<td><a href="#map-panes"><code>MapPane</code></td>
+		<td>Creates a pane with the given name. Created panes will be given a generated class based on the name like <code class="css"><span class="selector">.leaflet-pane-name</span></code>"</td>
+	</tr>
+	<tr>
+		<td><code><b>getPane</b>(
+			<nobr>&lt;String&gt; <i>name</i>
+		)</code></td>
+		<td><a href="#map-panes"><code>MapPane</code></td>
+		<td>Returns the HTML element representing the named map pane.</td>
+	</tr>
+	<tr>
 		<td><code><b>getPanes</b>()</code></td>
 		<td><code><a href="#map-panes">MapPanes</a></code></td>
 		<td>Returns an object with different map panes (to render overlays in).</td>
@@ -1259,47 +1275,51 @@ var map = L.map('map', {
 
 <h3 id="map-panes">Map Panes</h3>
 
-<p>An object literal (returned by <a href="#map-getpanes">map.getPanes</a></code>) that contains different map panes that you can use to put your custom overlays in. The difference is mostly in zIndex order that such overlays get.</p>
+<p>Panes are DOM elements used to control the ordering of layers on the map. You can access panes with <a href="#map-getpane">map.getPane</a> or <a href="#map-getpanes">map.getPanes</a>methods. New panes can be created with the <a href="#map-getpane">map.createPane</a> method.<p>
+
+<p>Every map has the following panes that differ only in zIndex.</p>
 
 <table data-id='map'>
 	<tr>
-		<th class="width100">Property</th>
+		<th class="width100">Pane</th>
 		<th class="width100">Type</th>
+		<th class="width100">Z Index</th>
 		<th>Description</th>
 	</tr>
 	<tr>
 		<td><code><b>mapPane</b></code></td>
 		<td><code>HTMLElement</code></td>
+		<td><code class="javascript"><span class="string">'auto'</span></code></td>
 		<td>Pane that contains all other map panes.</td>
 	</tr>
 	<tr>
 		<td><code><b>tilePane</b></code></td>
 		<td><code>HTMLElement</code></td>
+		<td><code class="javascript"><span class="number">2</span></code></td>
 		<td>Pane for tile layers.</td>
-	</tr>
-	<tr>
-		<td><code><b>objectsPane</b></code></td>
-		<td><code>HTMLElement</code></td>
-		<td>Pane that contains all the panes except tile pane.</td>
-	</tr>
-	<tr>
-		<td><code><b>shadowPane</b></code></td>
-		<td><code>HTMLElement</code></td>
-		<td>Pane for overlay shadows (e.g. marker shadows).</td>
 	</tr>
 	<tr>
 		<td><code><b>overlayPane</b></code></td>
 		<td><code>HTMLElement</code></td>
+		<td><code class="javascript"><span class="number">4</span></code></td>
 		<td>Pane for overlays like polylines and polygons.</td>
+	</tr>
+	<tr>
+		<td><code><b>shadowPane</b></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><code class="javascript"><span class="number">5</span></code></td>
+		<td>Pane for overlay shadows (e.g. marker shadows).</td>
 	</tr>
 	<tr>
 		<td><code><b>markerPane</b></code></td>
 		<td><code>HTMLElement</code></td>
+		<td><code class="javascript"><span class="number">6</span></code></td>
 		<td>Pane for marker icons.</td>
 	</tr>
 	<tr>
 		<td><code><b>popupPane</b></code></td>
 		<td><code>HTMLElement</code></td>
+		<td><code class="javascript"><span class="number">7</span></code></td>
 		<td>Pane for popups.</td>
 	</tr>
 </table>
@@ -1307,7 +1327,7 @@ var map = L.map('map', {
 
 <h2 id="marker">Marker</h2>
 
-<p>Used to put markers on the map.</p>
+<p>Used to put markers on the map. Extends <a href="#layer">Layer</a>.</p>
 
 <pre><code class="javascript">L.marker([50.5, 30.5]).addTo(map);</code></pre>
 
@@ -1398,6 +1418,18 @@ var map = L.map('map', {
 		<td><code><span class="number">250</span></code></td>
 		<td>The z-index offset used for the <code>riseOnHover</code> feature.</td>
 	</tr>
+	<tr>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'markerPane'</span></code></td>
+		<td><a href="#map-panes">Map pane</a> where the markers icon will be added.</td>
+	</tr>
+	<tr>
+		<td><code><b>shadowPane</b></code></td>
+		<td><code>String</code></td>
+		<td><code><span class="string">'shadowPane'</span></code></td>
+		<td><a href="#map-panes">Map pane</a> where the markers shadow will be added.</td>
+	</tr>
 </table>
 
 <h3>Events</h3>
@@ -1484,19 +1516,13 @@ var map = L.map('map', {
 
 <h3>Methods</h3>
 
+<p>In addition to <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
+
 <table data-id='marker'>
 	<tr>
 		<th>Method</th>
 		<th>Returns</th>
 		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>addTo</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds the marker to the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>getLatLng</b>()</code></td>
@@ -1737,21 +1763,35 @@ var map = L.map('map', {
 	</tr>
 </table>
 
+<h3>Events</h3>
+
+<table data-id='popup'>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>added</b></code></td>
+		<td><code><a href="#popup-event">PopupEvent</a></code></td>
+		<td>Fired when the popup is added to the map.</td>
+	</tr>
+	<tr>
+		<td><code><b>removed</b></code></td>
+		<td><code><a href="#popup-event">PopupEvent</a></code></td>
+		<td>Fired when the popup is removed from the map.</td>
+	</tr>
+</table>
+
 <h3>Methods</h3>
+
+<p>In addition to <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> you can also use the following methods:</p>
 
 <table data-id='popup'>
 	<tr>
 		<th class="width250">Method</th>
 		<th class="minwidth">Returns</th>
 		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>addTo</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds the popup to the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>openOn</b>(
@@ -1828,9 +1868,9 @@ var map = L.map('map', {
 
 <p>A string of the following form:</p>
 
-<pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}.png'</code></pre>
+<pre><code class="javascript">'http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png'</code></pre>
 
-<p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates.</p>
+<p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> &mdash; zoom level, <code>{x}</code> and <code>{y}</code> &mdash; tile coordinates. <code>{r}</code> can be used to add <code>@2x</code> to the URL to load retina tiles.</p>
 
 <p>You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
 
@@ -1930,6 +1970,12 @@ var map = L.map('map', {
 		<td>The explicit zIndex of the tile layer. Not set by default.</td>
 	</tr>
 	<tr>
+		<td><code><b>updateInterval</b></code></td>
+		<td><code>Number</code></td>
+		<td><code class="javascript"><span class="number">200</span></code></td>
+		<td>Tiles will not update more then once every <code>updateInterval</code>.</td>
+	</tr>
+	<tr>
 		<td><code><b>unloadInvisibleTiles</b></code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
@@ -2001,6 +2047,11 @@ var map = L.map('map', {
 		<td><code><b>tileunload</b></code></td>
 		<td><code><a href="#tile-event">TileEvent</a></code></td>
 		<td>Fired when a tile is removed (e.g. when you have <code>unloadInvisibleTiles</code> on).</td>
+	</tr>
+	<tr>
+		<td><code><b>tileerror</b></code></td>
+		<td><code><a href="#tileerror-event">TileEvent</a></code></td>
+		<td>Fired when there is an error loading a tile.</td>
 	</tr>
 </table>
 
@@ -2173,77 +2224,6 @@ var map = L.map('map', {
 </table>
 
 
-<h2 id="tilelayer-canvas">TileLayer.Canvas</h2>
-
-<p>Used to create Canvas-based tile layers where tiles get drawn on the browser side. Extends <a href="#tilelayer">TileLayer</a>.</p>
-
-<h3>Usage example</h3>
-
-<pre><code class="javascript">var canvasTiles = L.tileLayer.canvas();
-
-canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
-	var ctx = canvas.getContext('2d');
-	// draw something on the tile canvas
-}</code></pre>
-
-<h3>Creation</h3>
-
-<table data-id='tilelayer-canvas'>
-	<tr>
-		<th class="width200">Factory</th>
-
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>L.tileLayer.canvas</b>(
-			<nobr>&lt;<a href="#tilelayer-options">TileLayer options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-		<td>Instantiates a Canvas tile layer object given an options object (optionally).</td>
-	</tr>
-</table>
-
-<h3>Options</h3>
-<table data-id='tilelayer-canvas'>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>async</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>Indicates that tiles will be drawn asynchronously. <a href="#tilelayer-canvas-tiledrawn">tileDrawn</a> method should be called for each tile after drawing completion.</td>
-	</tr>
-</table>
-
-<h3>Methods</h3>
-
-<table data-id='tilelayer-canvas'>
-	<tr>
-		<th class="width200">Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr id = "tilelayer-canvas-drawtile">
-		<td><code><b>drawTile</b>(
-			<nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr>,
-			<nobr>&lt;<a href="#point">Point</a>&gt; <i>tilePoint</i></nobr>,
-			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
-		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
-	</tr>
-	<tr id="tilelayer-canvas-tiledrawn">
-		<td><code><b>tileDrawn</b>( <nobr>&lt;HTMLCanvasElement&gt; <i>canvas</i></nobr> )</code></td>
-		<td>-</td>
-		<td>If <code>async</code> option is defined, this function should be called for each tile after drawing completion. <code>canvas</code> is the same canvas element, that was passed to <a href="#tilelayer-canvas-drawtile">drawTile</a>.</td>
-	</tr>
-</table>
-
-
 <h2 id="imageoverlay">ImageOverlay</h2>
 
 <p>Used to load and display a single image over specific bounds of the map. Extends <a href="#layer">Layer</a>.</p>
@@ -2342,7 +2322,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 
 
 <h2 id="path">Path</h2>
-<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly.
+<p>An abstract class that contains options and constants shared between vector overlays (Polygon, Polyline, Circle). Do not use it directly. Extends <a href="#layer">Layer</a>.
 
 <h3 id="path-options">Options</h3>
 <table data-id='path'>
@@ -2501,12 +2481,16 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 </table>
 
 <h3 id="path-methods">Methods</h3>
+
+<p>In addition to <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
+
 <table data-id='path'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
 		<th>Description</th>
 	</tr>
+<<<<<<< HEAD
 	<tr>
 		<td><code><b>addTo</b>(
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
@@ -2692,7 +2676,7 @@ var latlngs = [
 
 <h3>Methods</h3>
 
-<p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
+<p>In addition to <a href="#path-methods">Path methods</a> like <code>redraw()</code> and <code>bringToFront()</code>, <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
 
 <table data-id='polyline'>
 	<tr>
@@ -2807,7 +2791,7 @@ var latlngs = [
 
 <h3>Methods</h3>
 
-<p>Polygon has the same options and methods as Polyline, with the following differences:</p>
+<p>In addition to <a href="#path-methods">Path methods</a> like <code>redraw()</code> and <code>bringToFront()</code>, <a href="#polyline-methods">Polyline mehtods</a> like <code>setLatLngs()</code> and <code>getLatLngs()</code>, <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
 
 <table data-id='polygon'>
 	<tr>
@@ -2859,7 +2843,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Methods</h3>
 
-<p>You can use <a href="#path-methods">Path methods</a> and additionally the following methods:</p>
+<p>In addition to <a href="#path-methods">Path methods</a> like <code>redraw()</code> and <code>bringToFront()</code>, <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
 
 <table data-id='rectangle'>
 	<tr>
@@ -2905,6 +2889,8 @@ map.fitBounds(bounds);</code></pre>
 </table>
 
 <h3>Methods</h3>
+
+<p>In addition to <a href="#path-methods">Path methods</a> like <code>redraw()</code> and <code>bringToFront()</code>, <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
 
 <table data-id='circle'>
 	<tr>
@@ -2971,6 +2957,8 @@ map.fitBounds(bounds);</code></pre>
 </table>
 
 <h3>Methods</h3>
+
+<p>In addition to <a href="#path-methods">Path methods</a> like <code>redraw()</code> and <code>bringToFront()</code>, <a href="#layers">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popups">popup methods</a> like <code>bindPopup()</code> you can also use the following methods:</p>
 
 <table data-id='circlemarker'>
 	<tr>
@@ -3144,8 +3132,6 @@ map.fitBounds(bounds);</code></pre>
 </table>
 
 <h3>Methods</h3>
-
-<p>Has all <a href="#layergroup">layerGroup</a> methods and additionally:</p>
 
 <table data-id='featuregroup'>
 	<tr>
@@ -3392,8 +3378,216 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 </table>
 
+<h2 id="gridlayer">GridLayer</h2>
 
+<p>Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces <code>TileLayer.Canvas</code>.</p>
 
+<p>GridLayer can be extended to create a tiled grid of HTML Elements like <code>&lt;canvas&gt;</code>, <code>&lt;img&gt;</code> or <code>&lt;div&gt;</code>.GridLayer will handle creating and animating these DOM elements for you.</p>
+
+<h3>Synchronous usage example</h3>
+
+<p>To create a custom layer, extend GridLayer and impliment the <code>createTile()</code> method, which will be passed a <a href="#point">Point</a> object with the <code>x</code>, <code>y</code>, and <code>z</code> (zoom level) coordinates to draw your tile.</p>
+
+<pre><code class="javascript">var CanvasLayer = L.GridLayer.extend({
+	createTile: function(coords){
+		// create a &lt;canvas&gt; element for drawing
+		var tile = L.DomUtil.create('canvas', 'leaflet-tile');
+
+		// setup tile width and height according to the options
+		tile.width = tile.height = this.options.tileSize;
+
+		// get a canvas context and draw something on it using coords.x, coords.y and coords.z
+		var ctx = canvas.getContext('2d');
+
+		// return the tile so it can be rendered on screen
+		return tile;
+	}
+});</code></pre>
+
+<h3>Asyncronous usage example</h3>
+
+<p>Tile creation can also be asyncronous, this is useful when using a third-party drawing library. Once the tile is finsihed drawing it can be passed to the <code>done()</code> callback.</p>
+
+<pre><code class="javascript">var CanvasLayer = L.GridLayer.extend({
+	createTile: function(coords, done){
+		var error;
+
+		// create a &lt;canvas&gt; element for drawing
+		var tile = L.DomUtil.create('canvas', 'leaflet-tile');
+
+		// setup tile width and height according to the options
+		tile.width = tile.height = this.options.tileSize;
+
+		// draw something and pass the tile to the done() callback
+		done(error, tile);
+	}
+});</code></pre>
+
+<h3>Constructor</h3>
+
+<table>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code>L.gridLayer(&lt;<a href="#gridlayer-options">GridLayer options</a>&gt; <i>options</i>?)</code></td>
+		<td>Creates a new instance of GridLayer with the supplied options.</td>
+	</tr>
+</table>
+
+<h3 id="gridlayer-options">Options</h3>
+
+<table>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default value</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>maxZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code class="javascript"><span class="string">'tilePane'</span></code></td>
+		<td>The <a href="#map-panes">map pane</a> the layer will be added to.</td>
+	</tr>
+	<tr>
+		<td><code><b>tileSize</b></code></td>
+		<td><code>Number</code></td>
+		<td><code class="javascript"><span class="number">256</span></code></td>
+		<td>Width and height of tiles in the grid. Can be used in the <code>createTile()</code> function.</td>
+	</tr>
+	<tr>
+		<td><code><b>opacity</b></code></td>
+		<td><code>Number</code></td>
+		<td><code class="javascript"><span class="number">1</span></code></td>
+		<td>Opacity of the tiles. Can be used in the <code>createTile()</code> function.</td>
+	</tr>
+	<tr>
+		<td><code><b>unloadInvisibleTiles</b></code></td>
+		<td><code>Boolean</code></td>
+		<td>depends</td>
+		<td>If <code><span class="literal">true</span></code>, all the tiles that are not visible after panning are removed (for better performance). <code><span class="literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="literal">false</span></code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>updateWhenIdle</b></code></td>
+		<td><code>Boolean</code></td>
+		<td>depends</td>
+		<td>If <code><span class="literal">false</span></code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code><span class="literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="literal">false</span></code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>updateInterval</b></code></td>
+		<td><code>Number</code></td>
+		<td><code class="javascript"><span class="number">200</span></code></td>
+		<td>Tiles will not update more then once every <code>updateInterval</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>The explicit zIndex of the tile layer. Not set by default.</td>
+	</tr>
+	<tr>
+		<td><code><b>bounds</b></code></td>
+		<td><code><a href="latlngbounds">LatLngBounds</a></code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>If set tiles will only be loaded inside inside the set <a href="latlngbounds">LatLngBounds</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>bounds</b></code></td>
+		<td><code><a href="latlngbounds">LatLngBounds</a></code></td>
+		<td><code><span class="literal">null</span></code></td>
+		<td>If set tiles will only be loaded inside inside the set <a href="latlngbounds">LatLngBounds</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>minZoom</b></code></td>
+		<td><code>Number</code></td>
+		<td><code class="javascript"><span class="number">0</span></code></td>
+		<td>The minimum zoom level that tiles will be loaded at. By default the entire map.</td>
+	</tr>
+</table>
+
+<h3>Methods</h3>
+
+<table>
+	<tr>
+		<td><code><b>bringToFront</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the tile layer to the top of all tile layers.</td>
+	</tr>
+	<tr>
+		<td><code><b>bringToBack</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Brings the tile layer to the bottom of all tile layers.</td>
+	</tr>
+	<tr>
+		<td><code><b>setOpacity</b>(
+			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Changes the opacity of the tile layer.</td>
+	</tr>
+	<tr>
+		<td><code><b>setZIndex</b>(
+			<nobr>&lt;Number&gt; <i>zIndex</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Sets the zIndex of the tile layer.</td>
+	</tr>
+	<tr>
+		<td><code><b>redraw</b>()</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Causes the layer to clear all the tiles and request them again.</td>
+	</tr>
+	<tr>
+		<td><code><b>getContainer</b>()</nobr>
+		</code></td>
+		<td><code>HTMLElement</code></td>
+		<td>Returns the HTML element that contains the tiles for this layer.</td>
+	</tr>
+</table>
+
+<h3>Events</h3>
+
+<table data-id='tilelayer'>
+	<tr>
+		<th class="width100">Event</th>
+		<th class="width100">Data</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>loading</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired when the tile layer starts loading tiles.</td>
+	</tr>
+	<tr>
+		<td><code><b>load</b></code></td>
+		<td><code><a href="#event">Event</a></code></td>
+		<td>Fired when the tile layer loaded all visible tiles.</td>
+	</tr>
+    <tr>
+		<td><code><b>tileloadstart</b></code></td>
+		<td><code><a href="#tile-event">TileEvent</a></code></td>
+		<td>Fired when a tile is requested and starts loading.</td>
+	</tr>
+	<tr>
+		<td><code><b>tileload</b></code></td>
+		<td><code><a href="#tile-event">TileEvent</a></code></td>
+		<td>Fired when a tile loads.</td>
+	</tr>
+	<tr>
+		<td><code><b>tileunload</b></code></td>
+		<td><code><a href="#tile-event">TileEvent</a></code></td>
+		<td>Fired when a tile is removed (e.g. when you have <code>unloadInvisibleTiles</code> on).</td>
+	</tr>
+	<tr>
+		<td><code><b>tileerror</b></code></td>
+		<td><code><a href="#tileerror-event">TileEvent</a></code></td>
+		<td>Fired when there is an error loading a tile.</td>
+	</tr>
+</table>
 
 <h2 id="latlng">LatLng</h2>
 
@@ -4439,10 +4633,9 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 </table>
 
 
-
 <h2 id="events">Events methods</h2>
 
-<p>A set of methods shared between event-powered classes (like Map). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map <code><span class="string">'click'</span></code> event).</p>
+<p>A set of methods shared between event-powered classes (like Map and Marker). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map to fire <code><span class="string">'click'</span></code> event).</p>
 
 <h3>Example</h3>
 
@@ -4564,589 +4757,13 @@ map.off('click', onClick);</code></pre>
 </table>
 
 
-<h2 id="event-objects">Event objects</h2>
+<h2 id="layers">Layer methods</h2>
 
-<p>Event object is an object that you receive as an argument in a listener function when some event is fired, containing useful information about that event. For example:</p>
+A set of methods inherited from the <a href="#layer">Layer</a> base class that all Leaflet layers use.
 
-<pre><code class="javascript">map.on('click', function(e) {
-	alert(e.latlng); // e is an event object (MouseEvent in this case)
-});</code></pre>
-
-<h3 id="event">Event</h3>
-
-<p>The base event object. All other event objects contain these properties too.</p>
-
-<table data-id='events'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>type</b></code></td>
-		<td><code>String</code></td>
-		<td>The event type (e.g. <code><span class="string">'click'</span></code>).</td>
-	</tr>
-	<tr>
-		<td><code><b>target</b></code></td>
-		<td><code>Object</code></td>
-		<td>The object that fired the event.</td>
-	</tr>
-</table>
-
-<h3 id="mouse-event">MouseEvent</h3>
-
-<table data-id='events'>
-	<tr>
-		<th class="width100">property</th>
-		<th>type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>latlng</b></code></td>
-		<td><code><a href="#latlng">LatLng</a></code></td>
-		<td>The geographical point where the mouse event occured.</td>
-	</tr>
-	<tr>
-		<td><code><b>layerPoint</b></code></td>
-		<td><code><a href="#point">Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
-	</tr>
-	<tr>
-		<td><code><b>containerPoint</b></code></td>
-		<td><code><a href="#point">Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map сontainer.</td>
-	</tr>
-	<tr>
-		<td><code><b>originalEvent</b></code></td>
-		<td><code>DOMMouseEvent</code></td>
-		<td>The original DOM mouse event fired by the browser.</td>
-	</tr>
-</table>
-
-<h3 id="location-event">LocationEvent</h3>
-
-<table data-id='events'>
-	<tr>
-		<th class="width100">property</th>
-		<th>type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>latlng</b></code></td>
-		<td><code><a href="#latlng">LatLng</a></code></td>
-		<td>Detected geographical location of the user.</td>
-	</tr>
-	<tr>
-		<td><code><b>bounds</b></code></td>
-		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
-		<td>Geographical bounds of the area user is located in (with respect to the accuracy of location).</td>
-	</tr>
-	<tr>
-		<td><code><b>accuracy</b></code></td>
-		<td><code>Number</code></td>
-		<td>Accuracy of location in meters.</td>
-	</tr>
-	<tr>
-		<td><code><b>altitude</b></code></td>
-		<td><code>Number</code></td>
-		<td>Height of the position above the WGS84 ellipsoid in meters.</td>
-	</tr>
-	<tr>
-		<td><code><b>altitudeAccuracy</b></code></td>
-		<td><code>Number</code></td>
-		<td>Accuracy of altitude in meters.</td>
-	</tr>
-	<tr>
-		<td><code><b>heading</b></code></td>
-		<td><code>Number</code></td>
-		<td>The direction of travel in degrees counting clockwise from true North.</td>
-	</tr>
-	<tr>
-		<td><code><b>speed</b></code></td>
-		<td><code>Number</code></td>
-		<td>Current velocity in meters per second.</td>
-	</tr>
-	<tr>
-		<td><code><b>timestamp</b></code></td>
-		<td><code>Number</code></td>
-		<td>The time when the position was acquired.</td>
-	</tr>
-</table>
-
-<h3 id="error-event">ErrorEvent</h3>
-
-<table data-id='error-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>message</b></code></td>
-		<td><code>String</code></td>
-		<td>Error message.</td>
-	</tr>
-	<tr>
-		<td><code><b>code</b></code></td>
-		<td><code>Number</code></td>
-		<td>Error code (if applicable).</td>
-	</tr>
-</table>
-
-<h3 id="layer-event">LayerEvent</h3>
-
-<table data-id='layer-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>layer</b></code></td>
-		<td><code><a href="#layer">ILayer</a></code></td>
-		<td>The layer that was added or removed.</td>
-	</tr>
-</table>
-
-<h3 id="layers-control-event">LayersControlEvent</h3>
-
-<table data-id='layer-control-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>layer</b></code></td>
-		<td><code><a href="#layer">ILayer</a></code></td>
-		<td>The layer that was added or removed.</td>
-	</tr>
-	<tr>
-		<td><code><b>name</b></code></td>
-		<td><code>String</code></td>
-		<td>The name of the layer that was added or removed.</td>
-	</tr>
-</table>
-
-<h3 id="tile-event">TileEvent</h3>
-
-<table data-id='tile-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>tile</b></code></td>
-		<td><code>HTMLElement</code></td>
-		<td>The tile element (image).</td>
-	</tr>
-</table>
-
-<h3 id="resize-event">ResizeEvent</h3>
-
-<table data-id='resize-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>oldSize</b></code></td>
-		<td><code><a href="#point">Point</a></code></td>
-		<td>The old size before resize event.</td>
-	</tr>
-	<tr>
-		<td><code><b>newSize</b></code></td>
-		<td><code><a href="#point">Point</a></code></td>
-		<td>The new size after the resize event.</td>
-	</tr>
-</table>
-
-<h3 id="geojson-event">GeoJSON event</h3>
-
-<table data-id='geojson-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>layer</b></code></td>
-		<td><code><a href="#layer">ILayer</a></code></td>
-		<td>The layer for the GeoJSON feature that is being added to the map.</td>
-	</tr>
-	<tr>
-		<td><code><b>properties</b></code></td>
-		<td><code>Object</code></td>
-		<td>GeoJSON properties of the feature.</td>
-	</tr>
-	<tr>
-		<td><code><b>geometryType</b></code></td>
-		<td><code>String</code></td>
-		<td>GeoJSON geometry type of the feature.</td>
-	</tr>
-	<tr>
-		<td><code><b>id</b></code></td>
-		<td><code>String</code></td>
-		<td>GeoJSON ID of the feature (if present).</td>
-	</tr>
-</table>
-
-<h3 id="popup-event">Popup event</h3>
-
-<table data-id='popup-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>popup</b></code></td>
-		<td><code><a href="#popup">Popup</a></code></td>
-		<td>The popup that was opened or closed.</td>
-	</tr>
-</table>
-
-<h3 id="dragend-event">DragEndEvent</h3>
-
-<table data-id='layer-event'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>distance</b></code></td>
-		<td><code>Number</code></td>
-		<td>The distance in pixels the draggable element was moved by.</td>
-	</tr>
-</table>
-
-
-<!-- <h3>TileEvent</h3> -->
-
-<h2 id="browser">Browser</h2>
-
-<p>A namespace with properties for browser/feature detection used by Leaflet internally.</p>
-
-<pre><code>if (L.Browser.ie6) {
-	alert('Upgrade your browser, dude!');
-}</code></pre>
-
-<table data-id='browser'>
-	<tr>
-		<th class="width100">property</th>
-		<th class="width100">type</th>
-		<th>description</th>
-	</tr>
-	<tr>
-		<td><code><b>ie</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for all Internet Explorer versions.</td>
-	</tr>
-	<tr>
-		<td><code><b>ie6</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Internet Explorer 6.</td>
-	</tr>
-	<tr>
-		<td><code><b>ie7</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Internet Explorer 7.</td>
-	</tr>
-	<tr>
-		<td><code><b>webkit</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
-	</tr>
-	<tr>
-		<td><code><b>webkit3d</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for webkit-based browsers that support CSS 3D transformations.</td>
-	</tr>
-	<!--<tr>
-		<td><code><b>gecko</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Gecko-based browsers like Firefox and Mozilla.</td>
-	</tr>
-	<tr>
-		<td><code><b>opera</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Opera.</td>
-	</tr>-->
-	<tr>
-		<td><code><b>android</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Android mobile browser.</td>
-	</tr>
-	<tr>
-		<td><code><b>android23</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for old Android stock browsers (2 and 3).</td>
-	</tr>
-	<tr>
-		<td><code><b>mobile</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for modern mobile browsers (including iOS Safari and different Android browsers).</td>
-	</tr>
-	<tr>
-		<td><code><b>mobileWebkit</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for mobile webkit-based browsers.</td>
-	</tr>
-	<tr>
-		<td><code><b>mobileOpera</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for mobile Opera.</td>
-	</tr>
-	<tr>
-		<td><code><b>touch</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for all browsers on touch devices.</td>
-	</tr>
-	<tr>
-		<td><code><b>msTouch</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for browsers with Microsoft touch model (e.g. IE10).</td>
-	</tr>
-	<tr>
-		<td><code><b>retina</b></code></td>
-		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for devices with Retina screens.</td>
-	</tr>
-</table>
-
-
-<h2 id="util">Util</h2>
-
-<p>Various utility functions, used by Leaflet internally.</p>
-
-<<<<<<< HEAD
-<p>The <code>initialize</code> method is your class's constructor function, meaning that it gets called when you do <code>new MyClass(...)</code>.</p>
-
-=======
-<h3>Methods</h3>
->>>>>>> refactory into utilities and base classes
-
-<table data-id='util'>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>extend</b>(
-			<nobr>&lt;Object&gt; <i>dest</i></nobr>,
-			<nobr>&lt;Object&gt; <i>src?..</i> )</nobr>
-		</code></td>
-
-		<td><code>Object</code></td>
-		<td>Merges the properties of the <code>src</code> object (or multiple objects) into <code>dest</code> object and returns the latter. Has an <code>L.extend</code> shortcut.</td>
-	</tr>
-	<tr>
-		<td><code><b>bind</b>(
-			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
-			<nobr>&lt;Object&gt; <i>obj</i> )</nobr>
-		</code></td>
-
-<<<<<<< HEAD
-<pre><code>new L.Map('map'); // becomes:
-L.map('map');</code></pre>
-
-<p>The factories are implemented very easily, and you can do this for your own classes:</p>
-
-<pre><code>L.map = function (id, options) {
-	return new L.Map(id, options);
-};</code></pre>
-
-
-<h3>Inheritance</h3>
-
-<p>You use <code>L.Class.extend</code> to define new classes, but you can use the same method on any class to inherit from it:</p>
-
-<pre><code>var MyChildClass = MyClass.extend({
-	// ... new properties and methods
-});</code></pre>
-
-<p>This will create a class that inherits all methods and properties of the parent class (through a proper prototype chain), adding or overriding the ones you pass to <code>extend</code>. It will also properly react to <code>instanceof</code>:</p>
-
-<pre><code>var a = new MyChildClass();
-a instanceof MyChildClass; // true
-a instanceof MyClass; // true
-</code></pre>
-
-<p>You can call parent methods (including constructor) from corresponding child ones (as you do with <code>super</code> calls in other languages) by accessing parent class prototype and using JavaScript's <code>call</code> or <code>apply</code>:</p>
-
-<pre><code>var MyChildClass = MyClass.extend({
-	initialize: function () {
-		MyClass.prototype.initialize.call(this, "Yo");
-	},
-
-	greet: function (name) {
-		MyClass.prototype.greet.call(this, 'bro ' + name + '!');
-	}
-});
-
-var a = new MyChildClass();
-a.greet('Jason'); // alerts "Yo, bro Jason!"</code></pre>
-
-<h3 id="class-options">Options</h3>
-
-<p><code>options</code> is a special property that unlike other objects that you pass to <code>extend</code> will be merged with the parent one instead of overriding it completely, which makes managing configuration of objects and default values convenient:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	options: {
-		myOption1: 'foo',
-		myOption2: 'bar'
-	}
-});
-
-var MyChildClass = MyClass.extend({
-	options: {
-		myOption1: 'baz',
-		myOption3: 5
-	}
-});
-
-var a = new MyChildClass();
-a.options.myOption1; // 'baz'
-a.options.myOption2; // 'bar'
-a.options.myOption3; // 5</code></pre>
-
-<p>There's also <code>L.Util.setOptions</code>, a method for conveniently merging options passed to constructor with the defauls defines in the class:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	options: {
-		foo: 'bar',
-		bla: 5
-	},
-
-	initialize: function (options) {
-		L.Util.setOptions(this, options);
-		...
-	}
-});
-
-var a = new MyClass({bla: 10});
-a.options; // {foo: 'bar', bla: 10}</code></pre>
-
-<h3>Includes</h3>
-
-<p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins).
-
-<pre><code> var MyMixin = {
-	foo: function () { ... },
-	bar: 5
-};
-
-var MyClass = L.Class.extend({
-	includes: MyMixin
-});
-
-var a = new MyClass();
-a.foo();</code></pre>
-
-<p>You can also do such includes in runtime with the <code>include</code> method:</p>
-
-<pre><code><b>MyClass.include</b>(MyMixin);</code></pre>
-
-<h3>Statics</h3>
-
-<p><code>statics</code> is just a convenience property that injects specified object properties as the static properties of the class, useful for defining constants:</p>
-
-<pre><code>var MyClass = L.Class.extend({
-	statics: {
-		FOO: 'bar',
-		BLA: 5
-	}
-});
-
-MyClass.FOO; // 'bar'</code></pre>
-
-
-<h3>Constructor Hooks</h3>
-
-<p>If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for <code>L.Polyline</code>). Leaflet comes with a way to do it easily using the <code>addInitHook</code> method:</p>
-
-<pre><code>MyClass.addInitHook(function () {
-	// ... do something in constructor additionally
-	// e.g. add event listeners, set custom properties etc.
-});</code></pre>
-
-<p>You can also use the following shortcut when you just need to make one additional method call:</p>
-
-<pre><code>MyClass.addInitHook('methodName', arg1, arg2, &hellip;);</code></pre>
-
-<h2 id="evented">Evented</h2>
-
-<p>When creating a plugin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-related methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
-
-<pre><code>MyEventedClass = L.Evented.extend({
-	fire: function(){
-		this.fire('custom', {
-			// you can attach optional data to an event as an object
-		});
-	}
-});
-
-var myEvents = new MyEventedClass();
-
-myEvents.on('custom', function(e){
-	// e.type will  be 'custom'
-	// anything else you passed in the
-});
-
-myEvents.fire();</code></pre>
-
-You can still use the old-style `L.Mixin.Events` for backward compatibility.
-
-<pre><code>// this class will include all event methods
-MyEventedClass = L.Class.extend({
-	includes: L.Mixin.Events
-});</code></pre>
-
-<h2 id="layer">Layer</h2>
-
-<p>When implementing a custom layer the <code>L.Layer</code> class can be extended to implementing basic functionality that all layers need to share, these methods can be used when extending <code>L.Layer</code> when <a href="#ilayer">implementing custom layers</a>.</p>
-
-<h3 id="layer-options">Options</h3>
-
-<table data-id="layer">
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default value</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>pane</b></code></td>
-		<td><code>String</code></td>
-		<td><code><span class="string">'overlayPane'</span></code></td>
-		<td>By default the layer will be added to the maps <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
-	</tr>
-</table>
-
-<h3>Events</h3>
-
-<table data-id="layer">
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>add</b></code></td>
-		<td><code><a href="#event">Event</a></code></td>
-		<td>Fired after the layer is added to a map.</td>
-	</tr>
-	<tr>
-		<td><code><b>remove</b></code></td>
-		<td><code><a href="#event">Event</a></code></td>
-		<td>Fired after the layer is removed from a map.</td>
-	</tr>
-</table>
+<pre><code class="javascript">var layer = L.Marker(latlng).addTo(map);
+layer.addTo(map);
+layer.remove();</code></pre>
 
 <h3>Methods</h3>
 
@@ -5178,6 +4795,61 @@ MyEventedClass = L.Class.extend({
 	</tr>
 </table>
 
+<h2 id="popups">Popup methods</h2>
+
+A set of methods inherited from the <a href="#layer">Layer</a> base class that all Leaflet layers use. These methods provide convieniant ways of binding popups to any layer.
+
+<pre><code class="javascript">var layer = L.Polgon(latlngs).bindPopup('Hi There!').addTo(map);
+layer.openPopup();
+layer.closePopup();
+</code></pre>
+
+Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from the map or another popup is opened.
+
+<h3>Methods</h3>
+<table>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|<a href="popup">Popup</a>&gt;</nobr> <i>content</i>, <nobr>&lt;<a href="#popup-options">PopupOptions</a>&gt; <i>options?</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Binds the passed <code>content</code> to the layer and sets up the neccessary event listeners.</td>
+	</tr>
+	<tr>
+		<td><code><b>unbindPopup</b>()</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Removes the popup previously bound with <code>bindPopup</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>openPopup</b>(<a href="#latlng">LatLng</a> <i>latlng?</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Opens the bound popup at the specificed <code>latlng</code> or at the default popup anchor if no <code>latlng</code> is passed.</td>
+	</tr>
+	<tr>
+		<td><code><b>closePopup</b>()</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Closes the popup if it is open.</td>
+	</tr>
+	<tr>
+		<td><code><b>togglePopup</b>()</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Opens or closes the popup depending on its current state.</td>
+	</tr>
+	<tr>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|<a href="popup">Popup</a>&gt;</nobr> <i>content</i>, <nobr>&lt;<a href="#popup-options">PopupOptions</a>&gt; <i>options?</i>)</nobr></code></td>
+		<td><code class="javascript"><span class="keyword">this</span></code></td>
+		<td>Sets the content of the popup.</td>
+	</tr>
+	<tr>
+		<td><code><b>getPopup</b>()</nobr></code></td>
+		<td><code><a href="#popup">Popup</a></code></td>
+		<td>Returns the popup bound to this layer.</td>
+	</tr>
+</table>
+
 <h2 id="browser">Browser</h2>
 
 <p>A namespace with properties for browser/feature detection used by Leaflet internally.</p>
@@ -5296,20 +4968,14 @@ MyEventedClass = L.Class.extend({
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
 			<nobr>&lt;Object&gt; <i>obj</i> )</nobr>
 		</code></td>
-
-		<td><code>Function</code></td>
-		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.  Not a polyfill for ES 5 <code>bind</code> (compare <code>L.bind</code> to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill">MDN-recommended polyfill</a> for <code>Function.prototype.bind</code>).</td>
-=======
 		<td><code>Function</code></td>
 		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.</td>
->>>>>>> refactory into utilities and base classes
 	</tr>
 	<tr>
 		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
 		<td><code>String</code></td>
 		<td>Applies a unique key to the object and returns that key. Has an <code>L.stamp</code> shortcut.</td>
 	</tr>
-<<<<<<< HEAD
 	<tr>
 		<td><code><b>requestAnimFrame</b>(
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
@@ -5327,21 +4993,6 @@ MyEventedClass = L.Class.extend({
 		<td>-</td>
 		<td>Cancels a previous request to <code>requestAnimFrame</code>.</td>
 	</tr>
-=======
-	<!-- TODO Commented out for the time being:
-	https://github.com/Leaflet/Leaflet/pull/793#discussion_r1134904
-	<tr>
-		<td><code><b>requestAnimFrame</b>()</code></td>
-		<td></td>
-		<td></td>
-	</tr>
-	<tr>
-		<td><code><b>cancelAnimFrame</b>()</code></td>
-		<td></td>
-		<td></td>
-	</tr>
-	-->
->>>>>>> refactory into utilities and base classes
 	<tr>
 		<td><code><b>limitExecByInterval</b>(
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
@@ -6212,22 +5863,6 @@ MyEventedClass = L.Class.extend({
 		<th>Description</th>
 	</tr>
 	<tr>
-<<<<<<< HEAD
-		<td><code><b>onAdd</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td>-</td>
-		<td>Should contain code that creates DOM elements for the overlay, adds them to <a href="#map-panes">map panes</a> where they should belong and puts listeners on relevant map events. Called on <code>map.addLayer(layer)</code>.</td>
-	</tr>
-	<tr>
-		<td><code><b>onRemove</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td>-</td>
-		<td>Should contain all clean up code that removes the overlay's elements from the DOM and removes listeners previously added in <code>onAdd</code>. Called on <code>map.removeLayer(layer)</code>.</td>
-=======
 		<td><code><b>onAdd</b>(<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i>)</nobr></code></td>
 		<td><code class="javascript"><span class="keyword">this</span></code></td>
 		<td>Should contain code that creates DOM elements for the overlay, adds them to <a href="#map-panes">map panes</a> where they should belong and puts listeners on relevant map events. Called on <code>map.addLayer(layer)</code>.</td>
@@ -6241,7 +5876,6 @@ MyEventedClass = L.Class.extend({
 		<td><code><b>getEvents</b>()</nobr></code></td>
 		<td><code class="javascript">Object</code></td>
 		<td>This optional method should return an object like <code>{ viewreset: this._reset }</code>for <a href="#events-addeventlistener">addEventListener</a>. These events will be automatically added and removed from the map with your layer.</td>
->>>>>>> refactory into utilities and base classes
 	</tr>
 </table>
 
@@ -6722,6 +6356,280 @@ map.addControl(new MyControl());
 
 <p>If you want to use some obscure CRS not listed here, take a look at the <a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.</p>
 
+<h2 id="event-objects">Event objects</h2>
+
+<p>Event object is an object that you recieve as an argument in a listener function when some event is fired, containing useful information about that event. For example:</p>
+
+<pre><code class="javascript">map.on('click', function(e) {
+	alert(e.latlng); // e is an event object (MouseEvent in this case)
+});</code></pre>
+
+<h3 id="event">Event</h3>
+
+<p>The base event object. All other event objects contain these properties too.</p>
+
+<table data-id='events'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>type</b></code></td>
+		<td><code>String</code></td>
+		<td>The event type (e.g. <code><span class="string">'click'</span></code>).</td>
+	</tr>
+	<tr>
+		<td><code><b>target</b></code></td>
+		<td><code>Object</code></td>
+		<td>The object that fired the event.</td>
+	</tr>
+</table>
+
+<h3 id="mouse-event">MouseEvent</h3>
+
+<table data-id='events'>
+	<tr>
+		<th class="width100">property</th>
+		<th>type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>latlng</b></code></td>
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>The geographical point where the mouse event occured.</td>
+	</tr>
+	<tr>
+		<td><code><b>layerPoint</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
+	</tr>
+	<tr>
+		<td><code><b>containerPoint</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Pixel coordinates of the point where the mouse event occured relative to the map сontainer.</td>
+	</tr>
+	<tr>
+		<td><code><b>originalEvent</b></code></td>
+		<td><code>DOMMouseEvent</code></td>
+		<td>The original DOM mouse event fired by the browser.</td>
+	</tr>
+</table>
+
+<h3 id="location-event">LocationEvent</h3>
+
+<table data-id='events'>
+	<tr>
+		<th class="width100">property</th>
+		<th>type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>latlng</b></code></td>
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Detected geographical location of the user.</td>
+	</tr>
+	<tr>
+		<td><code><b>bounds</b></code></td>
+		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+		<td>Geographical bounds of the area user is located in (with respect to the accuracy of location).</td>
+	</tr>
+	<tr>
+		<td><code><b>accuracy</b></code></td>
+		<td><code>Number</code></td>
+		<td>Accuracy of location in meters.</td>
+	</tr>
+	<tr>
+		<td><code><b>altitude</b></code></td>
+		<td><code>Number</code></td>
+		<td>Height of the position above the WGS84 ellipsoid in meters.</td>
+	</tr>
+	<tr>
+		<td><code><b>altitudeAccuracy</b></code></td>
+		<td><code>Number</code></td>
+		<td>Accuracy of altitude in meters.</td>
+	</tr>
+	<tr>
+		<td><code><b>heading</b></code></td>
+		<td><code>Number</code></td>
+		<td>The direction of travel in degrees counting clockwise from true North.</td>
+	</tr>
+	<tr>
+		<td><code><b>speed</b></code></td>
+		<td><code>Number</code></td>
+		<td>Current velocity in meters per second.</td>
+	</tr>
+	<tr>
+		<td><code><b>timestamp</b></code></td>
+		<td><code>Number</code></td>
+		<td>The time when the position was acquired.</td>
+	</tr>
+</table>
+
+<h3 id="error-event">ErrorEvent</h3>
+
+<table data-id='error-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>message</b></code></td>
+		<td><code>String</code></td>
+		<td>Error message.</td>
+	</tr>
+	<tr>
+		<td><code><b>code</b></code></td>
+		<td><code>Number</code></td>
+		<td>Error code (if applicable).</td>
+	</tr>
+</table>
+
+<h3 id="layer-event">LayerEvent</h3>
+
+<table data-id='layer-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>layer</b></code></td>
+		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td>The layer that was added or removed.</td>
+	</tr>
+</table>
+
+<h3 id="layers-control-event">LayersControlEvent</h3>
+
+<table data-id='layer-control-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>layer</b></code></td>
+		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td>The layer that was added or removed.</td>
+	</tr>
+	<tr>
+		<td><code><b>name</b></code></td>
+		<td><code>String</code></td>
+		<td>The name of the layer that was added or removed.</td>
+	</tr>
+</table>
+
+<h3 id="tile-event">TileEvent</h3>
+
+<table data-id='tile-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>tile</b></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>The tile element (image).</td>
+	</tr>
+</table>
+
+<h3 id="tileerror-event">TileErrorEvent</h3>
+
+<table data-id='tileerror-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>tile</b></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>The tile element (image).</td>
+	</tr>
+</table>
+
+<h3 id="resize-event">ResizeEvent</h3>
+
+<table data-id='resize-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>oldSize</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>The old size before resize event.</td>
+	</tr>
+	<tr>
+		<td><code><b>newSize</b></code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>The new size after the resize event.</td>
+	</tr>
+</table>
+
+<h3 id="geojson-event">GeoJSON event</h3>
+
+<table data-id='geojson-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>layer</b></code></td>
+		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td>The layer for the GeoJSON feature that is being added to the map.</td>
+	</tr>
+	<tr>
+		<td><code><b>properties</b></code></td>
+		<td><code>Object</code></td>
+		<td>GeoJSON properties of the feature.</td>
+	</tr>
+	<tr>
+		<td><code><b>geometryType</b></code></td>
+		<td><code>String</code></td>
+		<td>GeoJSON geometry type of the feature.</td>
+	</tr>
+	<tr>
+		<td><code><b>id</b></code></td>
+		<td><code>String</code></td>
+		<td>GeoJSON ID of the feature (if present).</td>
+	</tr>
+</table>
+
+<h3 id="popup-event">Popup event</h3>
+
+<table data-id='popup-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>popup</b></code></td>
+		<td><code><a href="#popup">Popup</a></code></td>
+		<td>The popup that was opened or closed.</td>
+	</tr>
+</table>
+
+<h3 id="dragend-event">DragEndEvent</h3>
+
+<table data-id='layer-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>distance</b></code></td>
+		<td><code>Number</code></td>
+		<td>The distance in pixels the draggable element was moved by.</td>
+	</tr>
+</table>
 
 <h2 id="global">Global Switches</h2>
 
