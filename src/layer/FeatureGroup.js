@@ -33,6 +33,8 @@ L.FeatureGroup = L.LayerGroup.extend({
 	},
 
 	openPopup: function (layerid) {
+		var layer;
+
 		if(layerid){
 			layer = this.getLayer(layerid);
 		} else {
