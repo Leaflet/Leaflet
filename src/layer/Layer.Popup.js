@@ -52,14 +52,14 @@ L.Layer.include({
 		// * [lat,lng]
 		// * LatLng
 
-		if(!target) {
+		if (!target) {
 			for (var id in this._layers) {
 				layer = this._layers[id];
 				break;
 			}
 			layer = layer || this;
 			latlng = layer._latlng || layer.getCenter();
-		} else if(target instanceof L.Layer) {
+		} else if (target instanceof L.Layer) {
 			layer = target;
 			latlng = layer._latlng || layer.getCenter();
 		} else {
@@ -107,13 +107,13 @@ L.Layer.include({
 	},
 
 	_togglePopup: function (e) {
-		if(this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === e.layer){
+		if (this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === e.layer) {
 			this.closePopup();
 		} else {
 			var popupTarget = e.layer || e.target;
 			this._popup.options.offset = this._popupAnchor(popupTarget);
 			this._popup._source = popupTarget;
-			if(typeof this._popup._content === 'function') {
+			if (typeof this._popup._content === 'function') {
 				this._popup.update();
 			}
 			this._map.openPopup(this._popup, e.latlng);
