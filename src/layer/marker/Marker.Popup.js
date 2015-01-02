@@ -3,7 +3,7 @@
  */
 
 L.Marker.include({
-  _getPopupAnchor: function(){
-     return this.options.icon.options.popupAnchor || [0, 0];
-  }
+	_getPopupAnchor: function(){
+		return this.options.icon.options.popupAnchor || [0, 0];
+	}
 });

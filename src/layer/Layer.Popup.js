@@ -31,9 +31,9 @@ L.Layer.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this.off({
-			    click: this._openPopup,
-			    remove: this.closePopup,
-			    move: this._movePopup
+				click: this._openPopup,
+				remove: this.closePopup,
+				move: this._movePopup
 			});
 			this._popupHandlersAdded = false;
 			this._popup = null;
