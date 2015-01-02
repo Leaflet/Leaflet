@@ -56,11 +56,11 @@ describe('Popup', function () {
 		happen.click(c);
 
 		// toggle open popup
-		sinon.spy(marker, "_openPopup");
+		sinon.spy(marker, "_togglePopup");
 		marker.fire('click');
-		expect(marker._openPopup.calledOnce).to.be(true);
+		expect(marker._togglePopup.calledOnce).to.be(true);
 		expect(map.hasLayer(marker._popup)).to.be(true);
-		marker.openPopup.restore();
+		marker._togglePopup.restore();
 
 		// toggle close popup
 		sinon.spy(marker, "closePopup");

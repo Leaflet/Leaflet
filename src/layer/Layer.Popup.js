@@ -64,7 +64,7 @@ L.Layer.include({
 			latlng = layer._latlng || layer.getCenter();
 		} else {
 			layer = this;
-			latlng = target
+			latlng = target;
 		}
 
 		if (this._popup && this._map) {
