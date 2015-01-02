@@ -32,40 +32,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	openPopup: function (layerid) {
-		var layer;
-
-		if(layerid) {
-			layer = this.getLayer(layerid);
-		} else {
-			// open popup on the first layer
-			for (var id in this._layers) {
-				layer = this._layers[id];
-				break;
-			}
-		}
-
-		if (this._popup && this._map) {
-			this._popup.options.offset = this._popupAnchor(layer);
-			this._popup._source = layer;
-			this._popup.update();
-			this._map.openPopup(this._popup, layer._latlng || layer.getCenter());
-		}
-
-		return this;
-	},
-
-	togglePopup: function(layerid){
-		if (this._popup) {
-			if (this._popup._map) {
-				this.closePopup();
-			} else {
-				this.openPopup(layerid);
-			}
-		}
-		return this;
-	},
-
 	setStyle: function (style) {
 		return this.invoke('setStyle', style);
 	},

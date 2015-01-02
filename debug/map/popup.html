@@ -55,6 +55,27 @@
       return 'Leaflet ID is ' + layer._leaflet_id;
     }).addTo(map);
 
+    var polygon = L.polygon([
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map)
+    ], {
+      color: 'red'
+    }).bindPopup('I\'m a red polygon').addTo(map);
+
+    var polyline = L.polyline([
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+      getRandomLatLng(map),
+    ], {
+      color: 'red'
+    }).bindPopup('I\'m a red polyline').addTo(map);
+
+    var marker = L.circleMarker(getRandomLatLng(map), {
+      color: 'red'
+    }).bindPopup('I\'m a red circle').addTo(map);
+
     L.DomUtil.get('change').onclick = function(){
       features.setPopupContent('Foo');
     };
@@ -64,15 +85,15 @@
     };
 
     L.DomUtil.get('openMarker').onclick = function(){
-      features.openPopup(features.getLayerId(marker));
+      features.openPopup(marker);
     };
 
     L.DomUtil.get('openLine').onclick = function(){
-      features.openPopup(features.getLayerId(line));
+      features.openPopup(line);
     };
 
     L.DomUtil.get('openPoly').onclick = function(){
-      features.openPopup(features.getLayerId(poly));
+      features.openPopup(poly);
     };
 
     L.DomUtil.get('close').onclick = function(){
@@ -80,7 +101,7 @@
     };
 
     L.DomUtil.get('toggle').onclick = function(){
-      features.togglePopup(features.getLayerId(marker));
+      features.togglePopup(marker);
     };
   </script>
 </body>

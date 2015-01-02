@@ -18,7 +18,7 @@ L.Layer.include({
 
 		if (!this._popupHandlersAdded) {
 			this.on({
-				click: this._openPopup,
+				click: this._togglePopup,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -31,7 +31,7 @@ L.Layer.include({
 	unbindPopup: function () {
 		if (this._popup) {
 			this.off({
-				click: this._openPopup,
+				click: this._togglePopup,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -41,11 +41,39 @@ L.Layer.include({
 		return this;
 	},
 
-	openPopup: function (latlng) {
-		if (this._popup && this._map) {
-			this._popup.options.offset = this._popupAnchor(this);
-			this._map.openPopup(this._popup, latlng ||  this._latlng || this.getCenter());
+	openPopup: function (target) {
+		var layer;
+		var latlng;
+
+		// handles figuring out `layer` and `latlng` from `target`
+		// assumes target will be one of
+		// * undefined
+		// * Layer
+		// * [lat,lng]
+		// * LatLng
+
+		if(!target) {
+			for (var id in this._layers) {
+				layer = this._layers[id];
+				break;
+			}
+			layer = layer || this;
+			latlng = layer._latlng || layer.getCenter();
+		} else if(target instanceof L.Layer) {
+			layer = target;
+			latlng = layer._latlng || layer.getCenter();
+		} else {
+			layer = this;
+			latlng = target
 		}
+
+		if (this._popup && this._map) {
+			this._popup.options.offset = this._popupAnchor(layer); // update the popup offset based on our layer
+			this._popup._source = layer; // update popup source
+			this._popup.update(); // update the popup (will update content if popup uses a function)
+			this._map.openPopup(this._popup, latlng);
+		}
+
 		return this;
 	},
 
@@ -56,12 +84,12 @@ L.Layer.include({
 		return this;
 	},
 
-	togglePopup: function () {
+	togglePopup: function (target) {
 		if (this._popup) {
 			if (this._popup._map) {
 				this.closePopup();
 			} else {
-				this.openPopup();
+				this.openPopup(target);
 			}
 		}
 		return this;
@@ -78,12 +106,13 @@ L.Layer.include({
 		return this._popup;
 	},
 
-	_openPopup: function (e) {
+	_togglePopup: function (e) {
 		if(this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === e.layer){
 			this.closePopup();
 		} else {
-			this._popup.options.offset = this._popupAnchor(e.layer || e.target);
-			this._popup._source = e.layer;
+			var popupTarget = e.layer || e.target;
+			this._popup.options.offset = this._popupAnchor(popupTarget);
+			this._popup._source = popupTarget;
 			if(typeof this._popup._content === 'function') {
 				this._popup.update();
 			}
