@@ -1432,6 +1432,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/brendan-ward">Brendan Ward</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/w8r/L.Control.LineStringSelect">L.Control.LineStringSelect</a>
+		</td>
+		<td>
+			Fast LineString(polyline) partial selection tool: select a stretch between two points in a complex path. <a href="https://w8r.github.io/L.Control.LineStringSelect">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/w8r">Alexander Milevski</a>
+		</td>
+	</tr>
 </table>
 
 
