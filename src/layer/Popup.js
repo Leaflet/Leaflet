@@ -173,15 +173,15 @@ L.Popup = L.Layer.extend({
 		if (!this._content) { return; }
 
 		var node = this._contentNode;
-		if (typeof this._content === 'function') {
-			node.innerHTML = this._content(this._source || this);
-		} else if (typeof this._content === 'string') {
-			node.innerHTML = this._content;
+		var content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
+
+		if (typeof content === 'string') {
+			node.innerHTML = content;
 		} else {
 			while (node.hasChildNodes()) {
 				node.removeChild(node.firstChild);
 			}
-			node.appendChild(this._content);
+			node.appendChild(content);
 		}
 		this.fire('contentupdate');
 	},
