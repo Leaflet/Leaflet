@@ -42,35 +42,24 @@ L.Layer.include({
 	},
 
 	openPopup: function (target) {
-		var layer;
+		var layer = this;
 		var latlng;
-
-		// handles figuring out `layer` and `latlng` from `target`
-		// assumes target will be one of
-		// * undefined
-		// * Layer
-		// * [lat,lng]
-		// * LatLng
 
 		if (!target) {
 			for (var id in this._layers) {
 				layer = this._layers[id];
 				break;
 			}
-			layer = layer || this;
-			latlng = layer._latlng || layer.getCenter();
-		} else if (target instanceof L.Layer) {
-			layer = target;
-			latlng = layer._latlng || layer.getCenter();
-		} else {
-			layer = this;
-			latlng = target;
 		}
 
+		if (target instanceof L.Layer) {
+			layer = target;
+		}
+
+		latlng = layer._latlng || layer.getCenter();
+
 		if (this._popup && this._map) {
-			this._popup.options.offset = this._popupAnchor(layer); // update the popup offset based on our layer
-			this._popup._source = layer; // update popup source
-			this._popup.update(); // update the popup (will update content if popup uses a function)
+			this._setupPopup(layer);
 			this._map.openPopup(this._popup, latlng);
 		}
 
@@ -110,13 +99,17 @@ L.Layer.include({
 		if (this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === e.layer) {
 			this.closePopup();
 		} else {
-			var popupTarget = e.layer || e.target;
-			this._popup.options.offset = this._popupAnchor(popupTarget);
-			this._popup._source = popupTarget;
-			if (typeof this._popup._content === 'function') {
-				this._popup.update();
-			}
+			var layer = e.layer || e.target;
+			this._setupPopup(layer);
 			this._map.openPopup(this._popup, e.latlng);
+		}
+	},
+
+	_setupPopup: function (layer) {
+		this._popup.options.offset = this._popupAnchor(layer);
+		if (typeof this._popup._content === 'function') {
+			this._popup._source = layer;
+			this._popup.update();
 		}
 	},
 
