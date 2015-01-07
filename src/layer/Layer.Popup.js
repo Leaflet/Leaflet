@@ -42,7 +42,7 @@ L.Layer.include({
 	},
 
 	openPopup: function (target) {
-		var layer = this;
+		var layer;
 		var latlng;
 
 		if (!target) {
@@ -50,16 +50,17 @@ L.Layer.include({
 				layer = this._layers[id];
 				break;
 			}
+			layer = layer || this;
 		}
 
 		if (target instanceof L.Layer) {
 			layer = target;
 		}
 
-		latlng = layer._latlng || layer.getCenter();
+		latlng = (layer) ? layer._popupLatLng() : target;
 
 		if (this._popup && this._map) {
-			this._setupPopup(layer);
+			this._setupPopup(layer || this);
 			this._map.openPopup(this._popup, latlng);
 		}
 
@@ -96,10 +97,10 @@ L.Layer.include({
 	},
 
 	_togglePopup: function (e) {
-		if (this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === e.layer) {
+		var layer = e.layer || e.target;
+		if (this._popup && this._map && this._map.hasLayer(this._popup) && this._popup._source === layer) {
 			this.closePopup();
 		} else {
-			var layer = e.layer || e.target;
 			this._setupPopup(layer);
 			this._map.openPopup(this._popup, e.latlng);
 		}
@@ -107,10 +108,8 @@ L.Layer.include({
 
 	_setupPopup: function (layer) {
 		this._popup.options.offset = this._popupAnchor(layer);
-		if (typeof this._popup._content === 'function') {
-			this._popup._source = layer;
-			this._popup.update();
-		}
+		this._popup._source = layer;
+		this._popup.update();
 	},
 
 	_popupAnchor: function(layer){
@@ -120,5 +119,9 @@ L.Layer.include({
 
 	_movePopup: function (e) {
 		this._popup.setLatLng(e.latlng);
+	},
+
+	_popupLatLng: function(){
+		return this._latlng || this.getCenter();
 	}
 });
