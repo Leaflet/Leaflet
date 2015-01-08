@@ -478,6 +478,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/xEviL">Kirill Zhuravlev</a>
 		</td>
 	</tr>
+    <tr>
+        <td>
+            <a href="https://github.com/naturalatlas/leaflet-transitionedicon">Leaflet.TransitionedIcon</a>
+        </td><td>
+            Transition in/out markers with CSS3 transitions. It supports jitter
+            for staggering markers into view to prevent visual overload. See the <a href="http://naturalatlas.github.io/leaflet-transitionedicon/">demo</a>.
+        </td><td>
+            <a href="https://github.com/brianreavis">Brian Reavis</a>
+        </td>
+    </tr>
 </table>
 
 
