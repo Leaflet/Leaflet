@@ -488,6 +488,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
             <a href="https://github.com/brianreavis">Brian Reavis</a>
         </td>
     </tr>
+	<tr>
+		<td>
+			<a href="https://github.com/kartenkarsten/leaflet-layer-overpass/">Leaflet Layer Overpass</a>
+		</td><td>
+      Easily include data from the <a href="http://overpass-api.de">overpass api</a>.
+		</td><td>
+			<a href="https://github.com/kartenkarsten">kartenkarsten</a>
+		</td>
+	</tr>
 </table>
 
 
