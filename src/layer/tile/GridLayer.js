@@ -32,9 +32,7 @@ L.GridLayer = L.Layer.extend({
 		this._pruneTiles = L.Util.throttle(this._pruneTiles, 200, this);
 
 		this._levels = {};
-
 		this._tiles = {};
-		this._tilesToLoad = 0;
 
 		this._reset();
 		this._update();
@@ -232,7 +230,6 @@ L.GridLayer = L.Layer.extend({
 			if (!tile.retain) {
 				if (!tile.loaded) {
 					this._removeTile(key);
-					this._tilesToLoad--;
 				} else if (this._map._fadeAnimated) {
 					setTimeout(L.bind(this._deferRemove, this, key), 250);
 				} else {
@@ -246,7 +243,6 @@ L.GridLayer = L.Layer.extend({
 		for (var key in this._tiles) {
 			this._removeTile(key);
 		}
-		this._tilesToLoad = 0;
 	},
 
 	_deferRemove: function (key) {
@@ -402,21 +398,16 @@ L.GridLayer = L.Layer.extend({
 			return a.distanceTo(center) - b.distanceTo(center);
 		});
 
-		var tilesToLoad = queue.length;
-
-
-		if (tilesToLoad !== 0) {
+		if (queue.length !== 0) {
 			// if its the first batch of tiles to load
-			if (!this._tilesToLoad) {
+			if (this._tilesToLoad() === 0) {
 				this.fire('loading');
 			}
-
-			this._tilesToLoad += tilesToLoad;
 
 			// create DOM fragment to append tiles in one batch
 			var fragment = document.createDocumentFragment();
 
-			for (i = 0; i < tilesToLoad; i++) {
+			for (i = 0; i < queue.length; i++) {
 				this._addTile(queue[i], fragment);
 			}
 
@@ -573,9 +564,7 @@ L.GridLayer = L.Layer.extend({
 			coords: coords
 		});
 
-		this._tilesToLoad--;
-
-		if (this._tilesToLoad === 0) {
+		if (this._tilesToLoad() === 0) {
 			this.fire('load');
 		}
 	},
@@ -600,6 +589,14 @@ L.GridLayer = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		this._setZoomTransforms(e.center, e.zoom);
+	},
+
+	_tilesToLoad: function () {
+		var result = 0;
+		for (var key in this._tiles) {
+			if (this._tiles[key].loading) { result++; }
+		}
+		return result;
 	}
 });
 
