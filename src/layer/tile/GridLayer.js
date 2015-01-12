@@ -360,6 +360,7 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._addTiles(bounds);
+		this._pruneTiles();
 	},
 
 	// tile coordinates range for particular geo bounds and zoom
@@ -415,8 +416,6 @@ L.GridLayer = L.Layer.extend({
 
 			this._level.el.appendChild(fragment);
 		}
-
-		this._pruneTiles();
 	},
 
 	_isValidTile: function (coords) {
