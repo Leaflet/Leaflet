@@ -295,9 +295,7 @@ L.popup = function (options, source) {
 L.Map.include({
 	openPopup: function (popup, latlng, options) { // (Popup) or (String || HTMLElement, LatLng[, Object])
 		if (!(popup instanceof L.Popup)) {
-			var content = popup;
-
-			popup = new L.Popup(options).setContent(content);
+			popup = new L.Popup(options).setContent(popup);
 		}
 
 		if (latlng) {
