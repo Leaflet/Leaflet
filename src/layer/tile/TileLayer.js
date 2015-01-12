@@ -136,7 +136,7 @@ L.TileLayer = L.GridLayer.extend({
 	_abortLoading: function () {
 		var i, tile;
 		for (i in this._tiles) {
-			tile = this._tiles[i];
+			tile = this._tiles[i].el;
 
 			tile.onload = L.Util.falseFn;
 			tile.onerror = L.Util.falseFn;

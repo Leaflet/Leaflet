@@ -34,8 +34,6 @@ L.GridLayer = L.Layer.extend({
 		this._levels = {};
 
 		this._tiles = {};
-		this._loaded = {};
-		this._retain = {};
 		this._tilesToLoad = 0;
 
 		this._reset();
@@ -156,7 +154,7 @@ L.GridLayer = L.Layer.extend({
 		if (L.Browser.ielt9) {
 			// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
 			for (var i in this._tiles) {
-				L.DomUtil.setOpacity(this._tiles[i], opacity);
+				L.DomUtil.setOpacity(this._tiles[i].el, opacity);
 			}
 		} else {
 			L.DomUtil.setOpacity(this._container, opacity);
@@ -205,29 +203,34 @@ L.GridLayer = L.Layer.extend({
 
 		if (!this._map) { return; }
 
-		this._retain = {};
-
 		var bounds = this._map.getBounds(),
 			z = this._tileZoom,
 			range = this._getTileRange(bounds, z),
-			i, j, key, found;
+			i, j, key, tile, found;
+
+		for (key in this._tiles) {
+			this._tiles[key].retain = false;
+		}
 
 		for (i = range.min.x; i <= range.max.x; i++) {
 			for (j = range.min.y; j <= range.max.y; j++) {
 
 				key = i + ':' + j + ':' + z;
+				tile = this._tiles[key];
 
-				this._retain[key] = true;
+				if (!tile) { continue; }
+				tile.retain = true;
 
-				if (!this._loaded[key]) {
+				if (!tile.loaded) {
 					found = this._retainParent(i, j, z, z - 5) || this._retainChildren(i, j, z, z + 2);
 				}
 			}
 		}
 
 		for (key in this._tiles) {
-			if (!this._retain[key]) {
-				if (!this._loaded[key]) {
+			tile = this._tiles[key];
+			if (!tile.retain) {
+				if (!tile.loaded) {
 					this._removeTile(key);
 					this._tilesToLoad--;
 				} else if (this._map._fadeAnimated) {
@@ -247,7 +250,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_deferRemove: function (key) {
-		if (!this._retain[key]) {
+		var tile = this._tiles[key];
+		if (tile && !tile.retain) {
 			this._removeTile(key);
 		}
 	},
@@ -257,10 +261,11 @@ L.GridLayer = L.Layer.extend({
 			y2 = Math.floor(y / 2),
 			z2 = z - 1;
 
-		var key = x2 + ':' + y2 + ':' + z2;
+		var key = x2 + ':' + y2 + ':' + z2,
+			tile = this._tiles[key];
 
-		if (this._loaded[key]) {
-			this._retain[key] = true;
+		if (tile && tile.loaded) {
+			tile.retain = true;
 			return true;
 
 		} else if (z2 > minZoom) {
@@ -275,10 +280,11 @@ L.GridLayer = L.Layer.extend({
 		for (var i = 2 * x; i < 2 * x + 2; i++) {
 			for (var j = 2 * y; j < 2 * y + 2; j++) {
 
-				var key = i + ':' + j + ':' + (z + 1);
+				var key = i + ':' + j + ':' + (z + 1),
+					tile = this._tiles[key];
 
-				if (this._loaded[key]) {
-					this._retain[key] = true;
+				if (tile && tile.loaded) {
+					tile.retain = true;
 
 				} else if (z + 1 < maxZoom) {
 					this._retainChildren(i, j, z + 1, maxZoom);
@@ -481,13 +487,12 @@ L.GridLayer = L.Layer.extend({
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
-		L.DomUtil.remove(tile);
+		L.DomUtil.remove(tile.el);
 
 		delete this._tiles[key];
-		delete this._loaded[key];
 
 		this.fire('tileunload', {
-			tile: tile,
+			tile: tile.el,
 			coords: this._keyToTileCoords(key)
 		});
 	},
@@ -533,7 +538,9 @@ L.GridLayer = L.Layer.extend({
 		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
-		this._tiles[key] = tile;
+		this._tiles[key] = {
+			el: tile
+		};
 
 		container.appendChild(tile);
 		this.fire('tileloadstart', {
@@ -553,15 +560,16 @@ L.GridLayer = L.Layer.extend({
 
 		var key = this._tileCoordsToKey(coords);
 
-		if (!this._tiles[key]) { return; }
+		tile = this._tiles[key];
+		if (!tile) { return; }
 
-		this._loaded[key] = true;
+		tile.loaded = true;
 		this._pruneTiles();
 
-		L.DomUtil.addClass(tile, 'leaflet-tile-loaded');
+		L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');
 
 		this.fire('tileload', {
-			tile: tile,
+			tile: tile.el,
 			coords: coords
 		});
 
