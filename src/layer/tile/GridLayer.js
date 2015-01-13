@@ -149,13 +149,32 @@ L.GridLayer = L.Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		if (L.Browser.ielt9) {
-			// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
-			for (var i in this._tiles) {
-				L.DomUtil.setOpacity(this._tiles[i].el, opacity);
-			}
-		} else {
+		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
+		if (!L.Browser.ielt9 && !this._map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, opacity);
+			return;
+		}
+
+		var now = +new Date(),
+			nextFrame = false;
+
+		for (var key in this._tiles) {
+			var tile = this._tiles[key];
+			if (!tile.loaded || tile.active) { continue; }
+
+			var fade = Math.min(1, (now - tile.loaded) / 200);
+			if (fade < 1) {
+				L.DomUtil.setOpacity(tile.el, opacity * fade);
+				nextFrame = true;
+			} else {
+				L.DomUtil.setOpacity(tile.el, opacity);
+				tile.active = true;
+				this._pruneTiles();
+			}
+		}
+
+		if (nextFrame) {
+			L.Util.requestAnimFrame(this._updateOpacity, this);
 		}
 	},
 
@@ -194,6 +213,18 @@ L.GridLayer = L.Layer.extend({
 
 		this._level = level;
 
+		if (this._map._fadeAnimated) {
+			var now = +new Date();
+			for (var key in this._tiles) {
+				var tile = this._tiles[key];
+				if (tile.loaded && this._keyToTileCoords(key).z === zoom) {
+					tile.active = false;
+					tile.loaded = now;
+				}
+			}
+			this._updateOpacity();
+		}
+
 		return level;
 	},
 
@@ -204,7 +235,7 @@ L.GridLayer = L.Layer.extend({
 		var bounds = this._map.getBounds(),
 			z = this._tileZoom,
 			range = this._getTileRange(bounds, z),
-			i, j, key, tile, found;
+			i, j, key, tile;
 
 		for (key in this._tiles) {
 			this._tiles[key].retain = false;
@@ -216,39 +247,25 @@ L.GridLayer = L.Layer.extend({
 				key = i + ':' + j + ':' + z;
 				tile = this._tiles[key];
 
-				if (!tile) { continue; }
-				tile.retain = true;
+				if ((!tile || !tile.active) && !this._retainParent(i, j, z, z - 5)) {
+					this._retainChildren(i, j, z, z + 2);
+				}
 
-				if (!tile.loaded) {
-					found = this._retainParent(i, j, z, z - 5);
-					if (!found) { this._retainChildren(i, j, z, z + 2); }
+				if (tile) {
+					tile.retain = true;
 				}
 			}
 		}
 
 		for (key in this._tiles) {
-			tile = this._tiles[key];
-			if (!tile.retain) {
-				if (!tile.loaded) {
-					this._removeTile(key);
-				} else if (this._map._fadeAnimated) {
-					setTimeout(L.bind(this._deferRemove, this, key), 250);
-				} else {
-					this._removeTile(key);
-				}
+			if (!this._tiles[key].retain) {
+				this._removeTile(key);
 			}
 		}
 	},
 
 	_removeAllTiles: function () {
 		for (var key in this._tiles) {
-			this._removeTile(key);
-		}
-	},
-
-	_deferRemove: function (key) {
-		var tile = this._tiles[key];
-		if (tile && !tile.retain) {
 			this._removeTile(key);
 		}
 	},
@@ -555,7 +572,13 @@ L.GridLayer = L.Layer.extend({
 		tile = this._tiles[key];
 		if (!tile) { return; }
 
-		tile.loaded = true;
+		tile.loaded = +new Date();
+		if (this._map._fadeAnimated) {
+			L.Util.requestAnimFrame(this._updateOpacity, this);
+		} else {
+			tile.active = true;
+		}
+
 		this._pruneTiles();
 
 		L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');

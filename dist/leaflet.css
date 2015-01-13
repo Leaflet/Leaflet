@@ -139,7 +139,6 @@
 
 /* zoom and fade animations */
 
-.leaflet-fade-anim .leaflet-tile,
 .leaflet-fade-anim .leaflet-popup {
 	opacity: 0;
 	-webkit-transition: opacity 0.2s linear;
@@ -147,7 +146,6 @@
 	     -o-transition: opacity 0.2s linear;
 	        transition: opacity 0.2s linear;
 	}
-.leaflet-fade-anim .leaflet-tile-loaded,
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
 	opacity: 1;
 	}
