@@ -400,7 +400,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (queue.length !== 0) {
 			// if its the first batch of tiles to load
-			if (this._tilesToLoad() === 0) {
+			if (this._noTilesToLoad()) {
 				this.fire('loading');
 			}
 
@@ -564,7 +564,7 @@ L.GridLayer = L.Layer.extend({
 			coords: coords
 		});
 
-		if (this._tilesToLoad() === 0) {
+		if (this._noTilesToLoad()) {
 			this.fire('load');
 		}
 	},
@@ -591,12 +591,11 @@ L.GridLayer = L.Layer.extend({
 		this._setZoomTransforms(e.center, e.zoom);
 	},
 
-	_tilesToLoad: function () {
-		var result = 0;
+	_noTilesToLoad: function () {
 		for (var key in this._tiles) {
-			if (this._tiles[key].loading) { result++; }
+			if (!this._tiles[key].loaded) { return false; }
 		}
-		return result;
+		return true;
 	}
 });
 
