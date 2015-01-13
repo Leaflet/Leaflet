@@ -107,7 +107,6 @@ L.Map.Drag = L.Handler.extend({
 	_onDragEnd: function (e) {
 		var map = this._map,
 		    options = map.options,
-		    delay = +new Date() - this._lastTime,
 
 		    noInertia = !options.inertia || this._times.length < 2;
 
