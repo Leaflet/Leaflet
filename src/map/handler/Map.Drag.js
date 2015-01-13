@@ -8,7 +8,6 @@ L.Map.mergeOptions({
 	inertia: !L.Browser.android23,
 	inertiaDeceleration: 3400, // px/s^2
 	inertiaMaxSpeed: Infinity, // px/s
-	inertiaThreshold: Infinity,
 	easeLinearity: 0.2,
 
 	// TODO refactor, move to CRS
@@ -110,7 +109,7 @@ L.Map.Drag = L.Handler.extend({
 		    options = map.options,
 		    delay = +new Date() - this._lastTime,
 
-		    noInertia = !options.inertia || delay > options.inertiaThreshold || this._times.length < 2;
+		    noInertia = !options.inertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
