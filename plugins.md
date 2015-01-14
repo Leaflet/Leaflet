@@ -1462,6 +1462,18 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/w8r">Alexander Milevski</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/socib/Leaflet.TimeDimension">Leaflet.TimeDimension</a>
+		</td>
+		<td>
+			Add time dimension capabilities on a Leaflet map. <a href="http://apps.socib.es/Leaflet.TimeDimension/examples/index.html">Demos</a>
+		</td>
+		<td>
+			<a href="http://www.socib.eu">ICTS SOCIB</a>
+		</td>
+	</tr>
+	
 </table>
 
 
