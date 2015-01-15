@@ -96,6 +96,6 @@ L.Map.include({
 
 		this.panBy(offset, options);
 
-		return true;
+		return options.animate !== false;
 	}
 });
