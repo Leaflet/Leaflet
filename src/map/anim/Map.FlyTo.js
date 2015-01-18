@@ -9,6 +9,7 @@ L.Map.include({
 		    size = this.getSize(),
 		    startZoom = this._zoom;
 
+		targetCenter = L.latLng(targetCenter);
 		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
 
 		var w0 = Math.max(size.x, size.y),
