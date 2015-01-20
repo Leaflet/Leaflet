@@ -40,6 +40,11 @@ describe("Marker", function () {
 			marker.setIcon(icon1);
 
 			expect(marker.dragging.enabled()).to.be(true);
+
+                        map.removeLayer(marker);
+			map.addLayer(marker);
+
+			expect(marker.dragging.enabled()).to.be(true);
 		});
 
 		it("changes the icon to another DivIcon", function () {

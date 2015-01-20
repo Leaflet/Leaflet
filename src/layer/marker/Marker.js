@@ -32,8 +32,8 @@ L.Marker = L.Layer.extend({
 	},
 
 	onRemove: function () {
-		if (this.dragging) {
-			this.dragging.disable();
+		if (this.dragging && this.dragging.enabled()) {
+			this.dragging.removeHooks();
 		}
 
 		this._removeIcon();
