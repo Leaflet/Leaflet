@@ -12,10 +12,6 @@ L.Control.Layers = L.Control.extend({
 	initialize: function (baseLayers, overlays, options) {
 		L.setOptions(this, options);
 
-		if (this.options.autoCollapse && !this.options.autoCollapseTimeout) {
-			this.options.autoCollapseTimeout = 5000; // default to 5s
-		}
-
 		this._layers = {};
 		this._lastZIndex = 0;
 		this._handlingClick = false;
@@ -233,7 +229,8 @@ L.Control.Layers = L.Control.extend({
 				clearTimeout(this._collapseTimer);
 			}
 			this._collapseTimer = setTimeout(L.bind(this._collapse, this),
-			                                 this.options.autoCollapseTimeout);
+			                                 this.options.autoCollapse === true ?
+			                                 5000 : this.options.autoCollapse);
 		}
 	},
 
