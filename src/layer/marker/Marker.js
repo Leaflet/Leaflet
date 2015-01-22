@@ -99,7 +99,9 @@ L.Marker = L.Class.extend({
 	update: function () {
 		if (this._icon) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
-			this._setPos(pos);
+			L.Util.requestAnimFrame(function () {
+				this._setPos(pos);
+			}, this);
 		}
 
 		return this;
