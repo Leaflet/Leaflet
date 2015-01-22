@@ -73,6 +73,13 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		if (options.fill) {
 			this._ctx.fillStyle = options.fillColor || options.color;
 		}
+
+		if (options.lineCap) {
+			this._ctx.lineCap = options.lineCap;
+		}
+		if (options.lineJoin) {
+			this._ctx.lineJoin = options.lineJoin;
+		}
 	},
 
 	_drawPath: function () {
