@@ -32,25 +32,25 @@ L.Control.Zoom = L.Control.extend({
 	},
 
 	disable: function () {
-		this._enabled = false;
+		this._disabled = true;
 		this._updateDisabled();
 		return this;
 	},
 
 	enable: function () {
-		this._enabled = true;
+		this._disabled = false;
 		this._updateDisabled();
 		return this;
 	},
 
 	_zoomIn: function (e) {
-		if (this._enabled) {
+		if (!this._disabled) {
 			this._map.zoomIn(e.shiftKey ? 3 : 1);
 		}
 	},
 
 	_zoomOut: function (e) {
-		if (this._enabled) {
+		if (!this._disabled) {
 			this._map.zoomOut(e.shiftKey ? 3 : 1);
 		}
 	},
@@ -77,10 +77,10 @@ L.Control.Zoom = L.Control.extend({
 		L.DomUtil.removeClass(this._zoomInButton, className);
 		L.DomUtil.removeClass(this._zoomOutButton, className);
 
-		if (!this._enabled || map._zoom === map.getMinZoom()) {
+		if (this._disabled || map._zoom === map.getMinZoom()) {
 			L.DomUtil.addClass(this._zoomOutButton, className);
 		}
-		if (!this._enabled || map._zoom === map.getMaxZoom()) {
+		if (this._disabled || map._zoom === map.getMaxZoom()) {
 			L.DomUtil.addClass(this._zoomInButton, className);
 		}
 	}
