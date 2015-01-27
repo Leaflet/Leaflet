@@ -73,6 +73,22 @@ L.Icon = L.Class.extend({
 
 	_getIconUrl: function (name) {
 		return L.Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+	},
+
+	getCenter: function () {
+		return L.point(this.options.iconSize).divideBy(2);
+	},
+
+	getAnchor: function () {
+		return L.point(this.options.iconAnchor || this.getCenter());
+	},
+
+	getShadowCenter: function () {
+		return L.point(this.options.shadowSize).divideBy(2);
+	},
+
+	getShadowAnchor: function () {
+		return L.point(this.options.shadowAnchor || this.options.iconAnchor || this.getCenter());
 	}
 });
 

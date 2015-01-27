@@ -16,7 +16,9 @@ L.Marker = L.Layer.extend({
 		zIndexOffset: 0,
 		opacity: 1,
 		// riseOnHover: false,
-		riseOffset: 250
+		riseOffset: 250,
+		angle: 0,
+		scale: 1
 	},
 
 	initialize: function (latlng, options) {
@@ -59,6 +61,24 @@ L.Marker = L.Layer.extend({
 		this._latlng = L.latLng(latlng);
 		this.update();
 		return this.fire('move', { oldLatLng: oldLatLng, latlng: this._latlng });
+	},
+
+	getAngle: function () {
+		return this.options.angle;
+	},
+
+	setAngle: function (angle) {
+		this.options.angle = angle;
+		this.update();
+	},
+
+	getScale: function () {
+		return this.options.scale;
+	},
+
+	setScale: function (scale) {
+		this.options.scale = scale;
+		this.update();
 	},
 
 	setZIndexOffset: function (offset) {
@@ -178,10 +198,14 @@ L.Marker = L.Layer.extend({
 	},
 
 	_setPos: function (pos) {
-		L.DomUtil.setPosition(this._icon, pos);
+		var icon = this.options.icon;
+		
+		var iconAnchor = icon.getAnchor().subtract(icon.getCenter());
+		L.DomUtil.setAnchoredTransform(this._icon, pos, iconAnchor, this.options.angle, this.options.scale);
 
 		if (this._shadow) {
-			L.DomUtil.setPosition(this._shadow, pos);
+			var shadowAnchor = icon.getShadowAnchor().subtract(icon.getShadowCenter());
+			L.DomUtil.setAnchoredTransform(this._shadow, pos, shadowAnchor, 1, this.options.scale);
 		}
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
