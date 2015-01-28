@@ -117,4 +117,3 @@ describe('LatLng', function () {
 		});
 	});
 });
-

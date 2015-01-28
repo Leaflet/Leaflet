@@ -1,4 +1,5 @@
 if (!Array.prototype.map) {
+	/*eslint no-extend-native:0*/
 	Array.prototype.map = function (fun /*, thisp */) {
 		"use strict";
 
@@ -7,7 +8,6 @@ if (!Array.prototype.map) {
 		}
 
 		var t = Object(this);
-		// jshint bitwise: false
 		var len = t.length >>> 0;
 		if (typeof fun !== "function") {
 			throw new TypeError();

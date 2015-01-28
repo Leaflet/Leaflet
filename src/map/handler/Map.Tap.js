@@ -48,7 +48,7 @@ L.Map.Tap = L.Handler.extend({
 				this._simulateEvent('contextmenu', first);
 			}
 		}, this), 1000);
-		
+
 		this._simulateEvent('mousedown', first);
 
 		L.DomEvent.on(document, {
@@ -73,7 +73,7 @@ L.Map.Tap = L.Handler.extend({
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
 				L.DomUtil.removeClass(el, 'leaflet-active');
 			}
-			
+
 			this._simulateEvent('mouseup', first);
 
 			// simulate click if the touch didn't move too much

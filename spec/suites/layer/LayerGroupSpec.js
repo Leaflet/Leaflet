@@ -58,7 +58,7 @@
 		it('iterates over all layers', function () {
 			var lg = L.layerGroup(),
 				marker = L.marker([0, 0]),
-				ctx = { foo: 'bar' };
+				ctx = {foo: 'bar'};
 
 			lg.addLayer(marker);
 

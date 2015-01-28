@@ -145,8 +145,9 @@ L.DomUtil = {
 
 	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
 
-		// jshint camelcase: false
+		/*eslint-disable */
 		el._leaflet_pos = point;
+		/*eslint-enable */
 
 		if (L.Browser.any3d && !no3d) {
 			L.DomUtil.setTransform(el, point);
@@ -160,7 +161,6 @@ L.DomUtil = {
 		// this method is only used for elements previously positioned using setPosition,
 		// so it's safe to cache the position for performance
 
-		// jshint camelcase: false
 		return el._leaflet_pos;
 	}
 };

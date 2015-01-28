@@ -202,11 +202,12 @@ describe('GridLayer', function () {
 		});
 		describe("when a tilelayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
-				var tiles = [  L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
-							   L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
-							   L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
-							   L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
-							];
+				var tiles = [
+					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
+					L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
+					L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
+					L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
+				];
 				map.whenReady(function () {
 					expect(map.getMinZoom()).to.be(0);
 					expect(map.getMaxZoom()).to.be(25);

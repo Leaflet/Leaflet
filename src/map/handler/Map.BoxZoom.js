@@ -83,7 +83,7 @@ L.Map.BoxZoom = L.Handler.extend({
 	},
 
 	_onMouseUp: function (e) {
-		if ((e.which !== 1) && (e.button !== 1)) { return false; }
+		if ((e.which !== 1) && (e.button !== 1)) { return; }
 
 		this._finish();
 

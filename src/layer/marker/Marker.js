@@ -58,7 +58,7 @@ L.Marker = L.Layer.extend({
 		var oldLatLng = this._latlng;
 		this._latlng = L.latLng(latlng);
 		this.update();
-		return this.fire('move', { oldLatLng: oldLatLng, latlng: this._latlng });
+		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
 	setZIndexOffset: function (offset) {
