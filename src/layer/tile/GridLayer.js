@@ -192,8 +192,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateLevels: function () {
-		var zoom = this._tileZoom,
-			offset;
+		var zoom = this._tileZoom;
 
 		for (var z in this._levels) {
 			this._levels[z].el.style.zIndex = -Math.abs(zoom - z);
@@ -212,7 +211,7 @@ L.GridLayer = L.Layer.extend({
 			level.zoom = zoom;
 
 			this._setZoomTransform(level, map.getCenter(), map.getZoom());
-			offset = level.el.offsetWidth; // Force recalculation to trigger transitions.
+			L.Util.falseFn(level.el.offsetWidth); // Force recalculation to trigger transitions.
 		}
 
 		this._level = level;
