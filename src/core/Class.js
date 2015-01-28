@@ -19,7 +19,6 @@ L.Class.extend = function (props) {
 		this.callInitHooks();
 	};
 
-	// jshint camelcase: false
 	var parentProto = NewClass.__super__ = this.prototype;
 
 	var proto = L.Util.create(parentProto);

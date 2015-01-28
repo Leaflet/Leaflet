@@ -3,8 +3,6 @@
  * and polylines (clipping, simplification, distances, etc.)
  */
 
-/*jshint bitwise:false */ // allow bitwise operations for this file
-
 L.LineUtil = {
 
 	// Simplify polyline with vertex reduction and Douglas-Peucker simplification.

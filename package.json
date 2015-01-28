@@ -7,7 +7,6 @@
     "eslint": "^0.13.0",
     "happen": "~0.1.3",
     "jake": "~8.0.10",
-    "jshint": "~2.6.0",
     "karma": "~0.12.31",
     "karma-chrome-launcher": "^0.1.7",
     "karma-coverage": "~0.2.7",
@@ -39,33 +38,5 @@
       "type": "BSD-2-Clause",
       "url": "https://github.com/Leaflet/Leaflet/blob/master/LICENSE"
     }
-  ],
-  "eslintConfig": {
-    "rules": {
-      "camelcase": 2,
-      "quotes": [2, "single"],
-      "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
-      "space-after-function-name": 2,
-      "space-in-parens": 2,
-      "space-in-brackets": 2,
-      "space-before-blocks": 2,
-      "space-after-keywords": 2,
-      "no-lonely-if": 2,
-      "comma-style": 2,
-      "no-underscore-dangle": 0,
-      "no-constant-condition": 0,
-      "no-multi-spaces": 0,
-      "strict": 0,
-      "key-spacing": 0,
-      "no-shadow": 0
-    },
-    "globals": {
-      "L": true,
-      "module": false,
-      "define": false
-    },
-    "env": {
-      "browser": true
-    }
-  }
+  ]
 }
