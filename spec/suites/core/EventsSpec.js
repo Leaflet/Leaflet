@@ -14,7 +14,7 @@ describe('Events', function () {
 			obj.addEventListener('test', spy1);
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
-			obj.addEventListener({ test: spy4, other: spy5 });
+			obj.addEventListener({test: spy4, other: spy5});
 			// obj.addEventListener({'test other': spy6 });
 
 			expect(spy1.called).to.be(false);
@@ -72,8 +72,8 @@ describe('Events', function () {
 
 			obj.addEventListener('test', listener1);
 			obj2.addEventListener('test', listener2, foo);
-			obj3.addEventListener({ test: listener3 });
-			obj4.addEventListener({ test: listener4 }, foo);
+			obj3.addEventListener({test: listener3});
+			obj4.addEventListener({test: listener4}, foo);
 
 			obj.fireEvent('test', {baz: 1});
 			obj2.fireEvent('test', {baz: 2});

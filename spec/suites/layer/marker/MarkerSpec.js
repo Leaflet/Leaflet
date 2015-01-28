@@ -48,11 +48,11 @@ describe("Marker", function () {
 		});
 
 		it("changes the icon to another DivIcon", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text' }) });
+			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
 			var beforeIcon = marker._icon;
-			marker.setIcon(new L.DivIcon({html: 'Inner2Text' }));
+			marker.setIcon(new L.DivIcon({html: 'Inner2Text'}));
 			var afterIcon = marker._icon;
 
 			expect(beforeIcon).to.be(afterIcon);
@@ -60,7 +60,7 @@ describe("Marker", function () {
 		});
 
 		it("removes text when changing to a blank DivIcon", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text' }) });
+			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
 			marker.setIcon(new L.DivIcon());
@@ -70,7 +70,7 @@ describe("Marker", function () {
 		});
 
 		it("changes a DivIcon to an image", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text' }) });
+			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
 
@@ -92,7 +92,7 @@ describe("Marker", function () {
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
 
-			marker.setIcon(new L.DivIcon({html: 'Inner1Text' }));
+			marker.setIcon(new L.DivIcon({html: 'Inner1Text'}));
 
 			expect(oldIcon).to.not.be(marker._icon);
 			expect(oldIcon.parentNode).to.be(null);
@@ -102,7 +102,7 @@ describe("Marker", function () {
 		});
 
 		it("reuses the icon/shadow when changing icon", function () {
-			var marker = new L.Marker([0, 0], { icon: icon1});
+			var marker = new L.Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 			var oldIcon = marker._icon;
 			var oldShadow = marker._shadow;
@@ -120,7 +120,7 @@ describe("Marker", function () {
 	describe("#setLatLng", function () {
 		it("fires a move event", function () {
 
-			var marker = new L.Marker([0, 0], { icon: icon1 });
+			var marker = new L.Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
 			var beforeLatLng = marker._latlng;
