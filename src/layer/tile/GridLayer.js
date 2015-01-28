@@ -220,7 +220,8 @@ L.GridLayer = L.Layer.extend({
 				tile.retain = true;
 
 				if (!tile.loaded) {
-					found = this._retainParent(i, j, z, z - 5) || this._retainChildren(i, j, z, z + 2);
+					found = this._retainParent(i, j, z, z - 5);
+					if (!found) { this._retainChildren(i, j, z, z + 2); }
 				}
 			}
 		}

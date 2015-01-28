@@ -3,20 +3,21 @@
   "version": "0.8.0-dev",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
-    "jake": "~8.0.10",
-    "jshint": "~2.5.7",
-    "uglify-js": "~2.4.15",
-    "mocha": "~2.0.1",
+    "copyfiles": "0.1.0",
+    "eslint": "^0.13.0",
     "happen": "~0.1.3",
-    "karma": "~0.12.24",
-    "karma-mocha": "~0.1.9",
-    "karma-coverage": "~0.2.6",
+    "jake": "~8.0.10",
+    "jshint": "~2.6.0",
+    "karma": "~0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-coverage": "~0.2.7",
+    "karma-firefox-launcher": "~0.1.4",
+    "karma-mocha": "~0.1.10",
     "karma-phantomjs-launcher": "^0.1.4",
-    "karma-chrome-launcher": "^0.1.5",
-    "karma-firefox-launcher": "~0.1.3",
     "karma-safari-launcher": "~0.1.1",
+    "mocha": "~2.1.0",
     "tin": "^0.5.0",
-    "copyfiles": "0.1.0"
+    "uglify-js": "~2.4.16"
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
@@ -38,5 +39,33 @@
       "type": "BSD-2-Clause",
       "url": "https://github.com/Leaflet/Leaflet/blob/master/LICENSE"
     }
-  ]
+  ],
+  "eslintConfig": {
+    "rules": {
+      "camelcase": 2,
+      "quotes": [2, "single"],
+      "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
+      "space-after-function-name": 2,
+      "space-in-parens": 2,
+      "space-in-brackets": 2,
+      "space-before-blocks": 2,
+      "space-after-keywords": 2,
+      "no-lonely-if": 2,
+      "comma-style": 2,
+      "no-underscore-dangle": 0,
+      "no-constant-condition": 0,
+      "no-multi-spaces": 0,
+      "strict": 0,
+      "key-spacing": 0,
+      "no-shadow": 0
+    },
+    "globals": {
+      "L": true,
+      "module": false,
+      "define": false
+    },
+    "env": {
+      "browser": true
+    }
+  }
 }
