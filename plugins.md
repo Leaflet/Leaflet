@@ -1473,6 +1473,28 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://www.socib.eu">ICTS SOCIB</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tinuzz/leaflet-liveupdate">Leaflet.Liveupdate</a>
+		</td>
+		<td>
+			Periodically ('live') update something on a map (<a href="https://www.grendelman.net/leaflet/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/tinuzz/">Martijn Grendelman</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tinuzz/leaflet-messagebox">Leaflet.Messagebox</a>
+		</td>
+		<td>
+			Display a temporary text message on a map (<a href="https://www.grendelman.net/leaflet/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/tinuzz/">Martijn Grendelman</a>
+		</td>
+	</tr>
 	
 </table>
 
