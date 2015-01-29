@@ -130,6 +130,23 @@ var deps = {
 		desc: 'Circle overlays (with radius in meters).'
 	},
 
+	Pattern: {
+		src: ['layer/vector/Pattern.js'],
+		desc: 'Fill Patterns for use in Paths.'
+	},
+
+	Stripes: {
+		src: ['layer/vector/Stripes.js'],
+		deps: ['Pattern'],
+		desc: 'Stripe pattern for use in Path fill.'
+	},
+
+	PatternPath: {
+		src: ['layer/vector/PatternPath.js'],
+		deps: ['Pattern'],
+		desc: 'Path for use in fill Patterns'
+	},
+
 	SVG: {
 		src: ['layer/vector/SVG.js'],
 		deps: ['Path'],
