@@ -18,6 +18,7 @@ L.Path = L.Layer.extend({
 		// fillColor: same as color by default
 		fillOpacity: 0.2,
 		fillRule: 'evenodd',
+		// fillPattern: L.Pattern
 
 		// className: ''
 		interactive: true

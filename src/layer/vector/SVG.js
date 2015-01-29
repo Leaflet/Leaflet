@@ -7,6 +7,10 @@ L.SVG = L.Renderer.extend({
 	_initContainer: function () {
 		this._container = L.SVG.create('svg');
 
+		this._defs = L.SVG.create('defs');
+		this._container.appendChild(this._defs);
+
+		this._patterns = {};
 		this._paths = {};
 		this._initEvents();
 
@@ -38,6 +42,86 @@ L.SVG = L.Renderer.extend({
 	},
 
 	// methods below are called by vector layers implementations
+
+	_initPattern: function (pattern) {
+		var defPattern = pattern._defPattern = L.SVG.create('pattern');
+
+		if (pattern.options.className) {
+			L.DomUtil.addClass(defPattern, pattern.options.className);
+		}
+
+		this._updatePatternStyle(pattern);
+	},
+
+	_initPatternPath: function (layer) {
+		var path = layer._path = L.SVG.create('path');
+
+		if (layer.options.className) {
+			L.DomUtil.addClass(path, layer.options.className);
+		}
+
+		this._updateStyle(layer);
+	},
+
+	_addPatternPath: function (pattern, layer) {
+		pattern._defPattern.appendChild(layer._path);
+	},
+
+	_updatePatternPath: function(layer) {
+		layer._path.setAttribute('d', layer.options.d);
+	},
+
+	_addPattern: function (pattern) {
+		var defPattern = pattern._defPattern;
+		this._defs.appendChild(defPattern);
+		this._patterns[L.stamp(pattern)] = pattern;
+	},
+
+	_removePattern: function (pattern) {
+		var defPattern = pattern._defPattern;
+		L.DomUtil.remove(defPattern);
+		delete this._patterns[L.stamp(pattern)];
+	},
+
+	_updatePattern: function (pattern) {
+		pattern._update();
+	},
+
+	_updatePatternStyle: function (pattern) {
+		var defPattern = pattern._defPattern,
+			options = pattern.options;
+
+		if (!defPattern) { return; }
+
+		defPattern.setAttribute('id', L.stamp(pattern));
+		defPattern.setAttribute('x', options.x);
+		defPattern.setAttribute('y', options.y);
+		defPattern.setAttribute('width', options.width);
+		defPattern.setAttribute('height', options.height);
+		defPattern.setAttribute('patternUnits', options.patternUnits);
+		defPattern.setAttribute('patternContentUnits', options.patternContentUnits);
+
+		if (options.patternTransform || options.angle) {
+			var transform = options.patternTransform ? options.patternTransform + " " : "";
+			transform += options.angle ?  "rotate(" + options.angle + ") " : "";
+			defPattern.setAttribute('patternTransform', transform);
+		}
+		else{
+			defPattern.removeAttribute('patternTransform');
+		}
+
+		for (var i in pattern._paths) {
+			this._updateStyle(pattern._paths[i]);
+		}
+	},
+
+	_updateStripes: function (pattern) {
+		var stripeDef = 'M0 ' + pattern._stripe.options.weight / 2 + ' H ' + pattern.options.width;
+		var spaceDef = 'M0 ' + (pattern._stripe.options.weight + pattern._space.options.weight / 2) + ' H ' + pattern.options.width;
+
+		pattern._stripe.options.d = stripeDef;
+		pattern._space.options.d = spaceDef;
+	},
 
 	_initPath: function (layer) {
 		var path = layer._path = L.SVG.create('path');
@@ -99,7 +183,12 @@ L.SVG = L.Renderer.extend({
 		}
 
 		if (options.fill) {
-			path.setAttribute('fill', options.fillColor || options.color);
+			if(options.fillPattern){
+				path.setAttribute('fill', 'url(#' + L.stamp(options.fillPattern) + ")");
+			}
+			else{
+				path.setAttribute('fill', options.fillColor || options.color);
+			}
 			path.setAttribute('fill-opacity', options.fillOpacity);
 			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
