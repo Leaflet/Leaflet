@@ -1495,6 +1495,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/tinuzz/">Martijn Grendelman</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/w8r/Leaflet.Path.Drag">Leaflet.Path.Drag</a>
+		</td>
+		<td>
+			Drag handler and interaction for polygons and polylines (<a href="https://w8r.github.io/Leaflet.Path.Drag">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/w8r/">Alexander Milevski</a>
+		</td>
+	</tr>
 	
 </table>
 
