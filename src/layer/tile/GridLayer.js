@@ -214,18 +214,6 @@ L.GridLayer = L.Layer.extend({
 
 		this._level = level;
 
-		if (this._map._fadeAnimated) {
-			var now = +new Date();
-			for (var key in this._tiles) {
-				var tile = this._tiles[key];
-				if (tile.loaded && this._keyToTileCoords(key).z === zoom) {
-					tile.active = false;
-					tile.loaded = now;
-				}
-			}
-			this._updateOpacity();
-		}
-
 		return level;
 	},
 
