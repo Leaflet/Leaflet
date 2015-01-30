@@ -402,13 +402,11 @@ L.GridLayer = L.Layer.extend({
 		if (center === undefined) { center = map.getCenter(); }
 		if (zoom === undefined) { zoom = map.getZoom(); }
 
-		var topLeftPoint = map._getNewPixelOrigin(center, zoom).subtract(map._getMapPanePos()),
-			pixelBounds = new L.Bounds(topLeftPoint, topLeftPoint.add(map.getSize())),
-			queue = [],
-			key,
+		var pixelBounds = map.getPixelBounds(center, zoom),
 			tileRange = this._pxBoundsToTileRange(pixelBounds),
 			tileCenter = tileRange.getCenter(),
-			j, i, coords;
+			queue = [],
+			key, j, i, coords;
 
 		for (key in this._tiles) {
 			this._tiles[key].retain = false;
