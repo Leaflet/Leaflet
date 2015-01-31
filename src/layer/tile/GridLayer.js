@@ -172,7 +172,8 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		if (nextFrame) {
-			L.Util.requestAnimFrame(this._updateOpacity, this);
+			L.Util.cancelAnimFrame(this._fadeFrame);
+			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
 		}
 	},
 
