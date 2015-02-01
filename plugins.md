@@ -497,6 +497,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/kartenkarsten">kartenkarsten</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/teastman/Leaflet.pattern">Leaflet.pattern</a>
+		</td><td>
+			Add support for pattern fills on Paths.
+		</td><td>
+			<a href="https://github.com/teastman">Tyler Eastman</a>
+		</td>
+	</tr>
 </table>
 
 
