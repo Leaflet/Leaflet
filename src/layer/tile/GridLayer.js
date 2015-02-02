@@ -337,7 +337,7 @@ L.GridLayer = L.Layer.extend({
 			this._tileZoom = tileZoom;
 			this._updateLevels();
 			this._resetGrid();
-			this._update(center, zoom, noPrune);
+			this._update(center, tileZoom, noPrune);
 		}
 
 		this._setZoomTransforms(center, zoom);
@@ -397,7 +397,7 @@ L.GridLayer = L.Layer.extend({
 		//     zoom < this.options.minZoom) { return; }
 
 		if (center === undefined) { center = map.getCenter(); }
-		if (zoom === undefined) { zoom = map.getZoom(); }
+		if (zoom === undefined) { zoom = Math.round(map.getZoom()); }
 
 		var pixelBounds = map.getPixelBounds(center, zoom),
 			tileRange = this._pxBoundsToTileRange(pixelBounds),
@@ -414,7 +414,7 @@ L.GridLayer = L.Layer.extend({
 			for (i = tileRange.min.x; i <= tileRange.max.x; i++) {
 
 				coords = new L.Point(i, j);
-				coords.z = this._tileZoom;
+				coords.z = zoom;
 
 				if (!this._isValidTile(coords)) { continue; }
 
