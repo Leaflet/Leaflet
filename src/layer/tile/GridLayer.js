@@ -239,11 +239,15 @@ L.GridLayer = L.Layer.extend({
 		var key = x2 + ':' + y2 + ':' + z2,
 			tile = this._tiles[key];
 
-		if (tile && tile.loaded) {
+		if (tile && tile.active) {
 			tile.retain = true;
 			return true;
 
-		} else if (z2 > minZoom) {
+		} else if (tile && tile.loaded) {
+			tile.retain = true;
+		}
+
+		if (z2 > minZoom) {
 			return this._retainParent(x2, y2, z2, minZoom);
 		}
 
@@ -258,7 +262,7 @@ L.GridLayer = L.Layer.extend({
 		var key = x2 + ':' + y2 + ':' + z2,
 			tile = this._tiles[key];
 
-		if (tile && tile.loaded) {
+		if (tile && tile.active) {
 			this._removeTile(key);
 			return true;
 
@@ -277,10 +281,15 @@ L.GridLayer = L.Layer.extend({
 				var key = i + ':' + j + ':' + (z + 1),
 					tile = this._tiles[key];
 
-				if (tile && tile.loaded) {
+				if (tile && tile.active) {
 					tile.retain = true;
+					continue;
 
-				} else if (z + 1 < maxZoom) {
+				} else if (tile && tile.loaded) {
+					tile.retain = true;
+				}
+
+				if (z + 1 < maxZoom) {
 					this._retainChildren(i, j, z + 1, maxZoom);
 				}
 			}
@@ -295,7 +304,7 @@ L.GridLayer = L.Layer.extend({
 				var key = i + ':' + j + ':' + (z + 1),
 					tile = this._tiles[key];
 
-				if (tile && tile.loaded) {
+				if (tile && tile.active) {
 					this._removeTile(key);
 
 				} else if (z + 1 < maxZoom) {
