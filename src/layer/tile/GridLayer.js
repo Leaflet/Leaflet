@@ -323,10 +323,10 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		this._reset(e.center, e.zoom);
+		this._reset(e.center, e.zoom, false, true);
 	},
 
-	_reset: function (center, zoom, hard) {
+	_reset: function (center, zoom, hard, noPrune) {
 		var tileZoom = Math.round(zoom),
 			tileZoomChanged = this._tileZoom !== tileZoom;
 
@@ -337,7 +337,7 @@ L.GridLayer = L.Layer.extend({
 			this._tileZoom = tileZoom;
 			this._updateLevels();
 			this._resetGrid();
-			this._update(center, zoom);
+			this._update(center, zoom, noPrune);
 		}
 
 		this._setZoomTransforms(center, zoom);
@@ -386,8 +386,7 @@ L.GridLayer = L.Layer.extend({
 		this._update();
 	},
 
-	_update: function (center, zoom) {
-
+	_update: function (center, zoom, noPrune) {
 		var map = this._map;
 		if (!map) { return; }
 
@@ -453,6 +452,8 @@ L.GridLayer = L.Layer.extend({
 
 			this._level.el.appendChild(fragment);
 		}
+
+		if (noPrune) { return; }
 
 		for (key in this._tiles) {
 			if (!this._tiles[key].retain) {
