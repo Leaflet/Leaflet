@@ -604,7 +604,8 @@ L.GridLayer = L.Layer.extend({
 
 		tile.loaded = +new Date();
 		if (this._map._fadeAnimated) {
-			L.Util.requestAnimFrame(this._updateOpacity, this);
+			L.Util.cancelAnimFrame(this._fadeFrame);
+			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
 		} else {
 			tile.active = true;
 			this._pruneTiles(coords);
