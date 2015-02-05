@@ -235,7 +235,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			Shameless copy of Awesome-Markers with more shapes, colors and semantic-ui support
 		</td><td>
-			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>, <a href="http://www.corysilva.com">Cory Silva</a>
+			<a href="http://www.corysilva.com">Cory Silva</a>
 		</td>
 	</tr>
 	<tr>
