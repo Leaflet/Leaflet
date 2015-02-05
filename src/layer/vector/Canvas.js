@@ -169,7 +169,7 @@ L.Canvas = L.Renderer.extend({
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
-		if (options.stroke) {
+		if (options.stroke && options.weight !== 0) {
 			ctx.globalAlpha = clear ? 1 : options.opacity;
 
 			// if clearing shape, do it with the previously drawn line width
