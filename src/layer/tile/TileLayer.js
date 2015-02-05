@@ -110,7 +110,6 @@ L.TileLayer = L.GridLayer.extend({
 
 	_onTileRemove: function (e) {
 		e.tile.onload = null;
-		e.tile.src = L.Util.emptyImageUrl;
 	},
 
 	_getZoomForUrl: function () {
