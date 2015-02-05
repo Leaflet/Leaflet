@@ -158,7 +158,7 @@ L.GridLayer = L.Layer.extend({
 
 		for (var key in this._tiles) {
 			var tile = this._tiles[key];
-			if (!tile.loaded || tile.active) { continue; }
+			if (!tile.current || !tile.loaded || tile.active) { continue; }
 
 			var fade = Math.min(1, (now - tile.loaded) / 200);
 			if (fade < 1) {
