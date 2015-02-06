@@ -191,10 +191,16 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateLevels: function () {
-		var zoom = this._tileZoom;
+		var zoom = this._tileZoom,
+			maxZoom = this.options.maxZoom;
 
 		for (var z in this._levels) {
-			this._levels[z].el.style.zIndex = -Math.abs(zoom - z);
+			if (this._levels[z].el.children.length || z === zoom) {
+				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
+			} else {
+				L.DomUtil.remove(this._levels[z].el);
+				delete this._levels[z];
+			}
 		}
 
 		var level = this._levels[zoom],
@@ -204,7 +210,7 @@ L.GridLayer = L.Layer.extend({
 			level = this._levels[zoom] = {};
 
 			level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-			level.el.style.zIndex = 0;
+			level.el.style.zIndex = maxZoom;
 
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 			level.zoom = zoom;
