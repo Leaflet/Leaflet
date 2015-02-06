@@ -3,8 +3,7 @@
  */
 
 L.Map.mergeOptions({
-	scrollWheelZoom: true,
-	wheelDebounceTime: 40
+	scrollWheelZoom: true
 });
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
@@ -13,8 +12,6 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 			mousewheel: this._onWheelScroll,
 			MozMousePixelScroll: L.DomEvent.preventDefault
 		}, this);
-
-		this._delta = 0;
 	},
 
 	removeHooks: function () {
@@ -25,27 +22,18 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = L.DomEvent.getWheelDelta(e);
-		var debounce = this._map.options.wheelDebounceTime;
+		var delta = L.DomEvent.getWheelDelta(e),
+			mousePos = this._map.mouseEventToContainerPoint(e);
 
-		this._delta += delta;
-		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
-
-		if (!this._startTime) {
-			this._startTime = +new Date();
+		if (!map._animatingZoom) {
+			this._performZoom(delta, mousePos);
 		}
-
-		var left = Math.max(debounce - (+new Date() - this._startTime), 0);
-
-		clearTimeout(this._timer);
-		this._timer = setTimeout(L.bind(this._performZoom, this), left);
 
 		L.DomEvent.stop(e);
 	},
 
-	_performZoom: function () {
+	_performZoom: function (delta, mousePos) {
 		var map = this._map,
-		    delta = this._delta,
 		    zoom = map.getZoom();
 
 		map.stop(); // stop panning and fly animations if any
@@ -54,15 +42,12 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		delta = Math.max(Math.min(delta, 4), -4);
 		delta = map._limitZoom(zoom + delta) - zoom;
 
-		this._delta = 0;
-		this._startTime = null;
-
 		if (!delta) { return; }
 
 		if (map.options.scrollWheelZoom === 'center') {
 			map.setZoom(zoom + delta);
 		} else {
-			map.setZoomAround(this._lastMousePos, zoom + delta);
+			map.setZoomAround(mousePos, zoom + delta);
 		}
 	}
 });
