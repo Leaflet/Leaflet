@@ -23,10 +23,13 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_onWheelScroll: function (e) {
 		var delta = L.DomEvent.getWheelDelta(e),
-			mousePos = this._map.mouseEventToContainerPoint(e);
+			map = this._map,
+			mousePos = map.mouseEventToContainerPoint(e);
 
 		if (!map._animatingZoom) {
 			this._performZoom(delta, mousePos);
+		} else {
+			map.once('moveend', L.bind(this._performZoom, this, delta, mousePos));
 		}
 
 		L.DomEvent.stop(e);
@@ -38,8 +41,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 		map.stop(); // stop panning and fly animations if any
 
-		delta = delta > 0 ? Math.ceil(delta) : Math.floor(delta);
-		delta = Math.max(Math.min(delta, 4), -4);
+		delta = delta > 0 ? 1 : -1;
 		delta = map._limitZoom(zoom + delta) - zoom;
 
 		if (!delta) { return; }
