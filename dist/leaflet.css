@@ -139,7 +139,7 @@
 
 /* zoom and fade animations */
 
-.leaflet-tile {
+.leaflet-fade-anim .leaflet-tile {
 	will-change: opacity;
 	}
 .leaflet-fade-anim .leaflet-popup {
@@ -152,7 +152,7 @@
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
 	opacity: 1;
 	}
-.leaflet-zoom-animated {
+.leaflet-zoom-anim .leaflet-zoom-animated {
 	will-change: transform;
 	}
 .leaflet-zoom-anim .leaflet-zoom-animated {
