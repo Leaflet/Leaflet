@@ -567,6 +567,7 @@ L.GridLayer = L.Layer.extend({
 
 		tile.loaded = +new Date();
 		if (this._map._fadeAnimated) {
+			L.DomUtil.setOpacity(tile.el, 0);
 			L.Util.cancelAnimFrame(this._fadeFrame);
 			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
 		} else {
