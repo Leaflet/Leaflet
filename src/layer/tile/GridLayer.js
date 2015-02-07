@@ -10,7 +10,6 @@ L.GridLayer = L.Layer.extend({
 		tileSize: 256,
 		opacity: 1,
 
-		unloadInvisibleTiles: L.Browser.mobile,
 		updateWhenIdle: L.Browser.mobile,
 		updateInterval: 200,
 
@@ -304,9 +303,6 @@ L.GridLayer = L.Layer.extend({
 	_viewReset: function (e) {
 		var map = this._map;
 		this._reset(map.getCenter(), map.getZoom(), e && e.hard);
-		if (this.options.unloadInvisibleTiles) {
-			this._removeOtherTiles(map.getBounds());
-		}
 	},
 
 	_animateZoom: function (e) {
@@ -487,16 +483,6 @@ L.GridLayer = L.Layer.extend({
 		return coords;
 	},
 
-	// remove any present tiles that are off the specified bounds
-	_removeOtherTiles: function (bounds) {
-		for (var key in this._tiles) {
-			var tileBounds = this._keyToBounds(key);
-			if (!bounds.intersects(tileBounds)) {
-				this._removeTile(key);
-			}
-		}
-	},
-
 	_removeTile: function (key) {
 		var tile = this._tiles[key];
 		if (!tile) { return; }
@@ -581,6 +567,7 @@ L.GridLayer = L.Layer.extend({
 
 		tile.loaded = +new Date();
 		if (this._map._fadeAnimated) {
+			L.DomUtil.setOpacity(tile.el, 0);
 			L.Util.cancelAnimFrame(this._fadeFrame);
 			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
 		} else {
