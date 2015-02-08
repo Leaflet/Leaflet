@@ -7,7 +7,7 @@ L.CRS.Earth = L.extend({}, L.CRS, {
 
 	R: 6378137,
 
-	// distane between two geographical points using spherical law of cosines approximation
+	// distance between two geographical points using spherical law of cosines approximation
 	distance: function (latlng1, latlng2) {
 		var rad = Math.PI / 180,
 		    lat1 = latlng1.lat * rad,
