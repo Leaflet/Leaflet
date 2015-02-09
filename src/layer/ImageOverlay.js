@@ -1,5 +1,5 @@
 /*
- * L.ImageOverlay is used to overlay images over the map (to specific geographical bounds).
+ * L.ImageOverlay is used to overlay images or an SVG element over the map (to specific geographical bounds).
  */
 
 L.ImageOverlay = L.Layer.extend({
@@ -10,15 +10,22 @@ L.ImageOverlay = L.Layer.extend({
 		interactive: false
 	},
 
-	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
-		this._url = url;
+	initialize: function (url, bounds, options) { // (String or SvgElement, LatLngBounds, Object)
+
+    // Note: could use 'setUrl(url)' to be more DRY
+    //
+    if (typeof url === 'string' || url instanceof String) {
+		  this._url = url;    // 'this._elem' will be initialized later to the '<img>' element
+		} else {
+		  this._svg = url;   // <svg> element (may already be populated by the caller)
+		}
 		this._bounds = L.latLngBounds(bounds);
 
 		L.setOptions(this, options);
 	},
 
 	onAdd: function () {
-		if (!this._image) {
+		if (!this._el) {
 			this._initImage();
 
 			if (this.options.opacity < 1) {
@@ -26,19 +33,19 @@ L.ImageOverlay = L.Layer.extend({
 			}
 		}
 
-		this.getPane().appendChild(this._image);
+		this.getPane().appendChild(this._elem);
 		this._initInteraction();
 		this._reset();
 	},
 
 	onRemove: function () {
-		L.DomUtil.remove(this._image);
+		L.DomUtil.remove(this._el);
 	},
 
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
-		if (this._image) {
+		if (this._el) {
 			this._updateOpacity();
 		}
 		return this;
@@ -53,22 +60,22 @@ L.ImageOverlay = L.Layer.extend({
 
 	bringToFront: function () {
 		if (this._map) {
-			L.DomUtil.toFront(this._image);
+			L.DomUtil.toFront(this._el);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
 		if (this._map) {
-			L.DomUtil.toBack(this._image);
+			L.DomUtil.toBack(this._el);
 		}
 		return this;
 	},
 
 	_initInteraction: function () {
 		if (!this.options.interactive) { return; }
-		L.DomUtil.addClass(this._image, 'leaflet-interactive');
-		L.DomEvent.on(this._image, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
+		L.DomUtil.addClass(this._el, 'leaflet-interactive');
+		L.DomEvent.on(this._el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
 				this._fireMouseEvent, this);
 	},
 
@@ -78,11 +85,20 @@ L.ImageOverlay = L.Layer.extend({
 		}
 	},
 
-	setUrl: function (url) {
-		this._url = url;
+	setUrl: function (url) {   // (String)   (we don't support changing the SVG element like this; even the name of the method says 'Url')
 
-		if (this._image) {
-			this._image.src = url;
+    if (typeof url === 'string' || url instanceof String) {
+      if ((!this._url) && this._el) {
+        // about to replace an 'svg' with an 'img' - we should remove the svg first, or disallow such use? tbd
+        throw 'replacing \'svg\' element with \'img\' currently not allowed';
+      }
+		  this._url = url;
+    } else {
+      throw 'using \'setUrl()\' with svg element currently not allowed';
+    }
+
+		if (this._el) {
+			this._el.src = url;
 		}
 		return this;
 	},
@@ -108,15 +124,34 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_initImage: function () {
-		var img = this._image = L.DomUtil.create('img',
+    var el;
+
+    if (this._url) {
+		  el = this._el = L.DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
-		img.onselectstart = L.Util.falseFn;
-		img.onmousemove = L.Util.falseFn;
+      el.onselectstart = L.Util.falseFn;
+      el.onmousemove = L.Util.falseFn;
 
-		img.onload = L.bind(this.fire, this, 'load');
-		img.src = this._url;
-		img.alt = this.options.alt;
+      el.onload = L.bind(this.fire, this, 'load');
+      el.src = this._url;
+      el.alt = this.options.alt;
+    } else {
+      // 'this._svg' has the svg element, provided by the application level
+      //
+      el = this._el = this._svg;
+		  el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
+
+      // No need to trigger 'onload' for vectors, is there (the reason would be to keep the
+      // interface 1-to-1 with images.
+      //
+      L.bind(this.fire, this, 'load')();    // call immediately
+
+      el.onselectstart = L.Util.falseFn;
+      el.onmousemove = L.Util.falseFn;
+
+      this.fire('load');   // element is there already (emulate a load)
+    }
 	},
 
 	_animateZoom: function (e) {
@@ -126,24 +161,24 @@ L.ImageOverlay = L.Layer.extend({
 
 		var offset = bounds.min.add(bounds.getSize()._multiplyBy((1 - 1 / e.scale) / 2));
 
-		L.DomUtil.setTransform(this._image, offset, e.scale);
+		L.DomUtil.setTransform(this._el, offset, e.scale);
 	},
 
 	_reset: function () {
-		var image = this._image,
+		var el = this._el,
 		    bounds = new L.Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		    size = bounds.getSize();
 
-		L.DomUtil.setPosition(image, bounds.min);
+		L.DomUtil.setPosition(el, bounds.min);
 
-		image.style.width  = size.x + 'px';
-		image.style.height = size.y + 'px';
+		el.style.width  = size.x + 'px';
+		el.style.height = size.y + 'px';
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._image, this.options.opacity);
+		L.DomUtil.setOpacity(this._el, this.options.opacity);
 	}
 });
 
