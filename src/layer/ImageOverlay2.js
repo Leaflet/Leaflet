@@ -1,8 +1,12 @@
 /*
- * L.ImageOverlay is used to overlay images or an SVG element over the map (to specific geographical bounds).
+ * L.VectorOverlay takes an SVG element over the map (to specific geographical bounds).
+ *
+ * This is modeled according to 'L.ImageOverlay' and could really be mastered as just
+ * modifying that code, but for some reason my code went always to mapbox.js stuff
+ * so I decided to use wholly different name to be sure. AK090215
  */
 
-L.ImageOverlay = L.Layer.extend({
+L.ImageOverlay2 = L.Layer.extend({
 
 	options: {
 		opacity: 1,
@@ -15,7 +19,7 @@ L.ImageOverlay = L.Layer.extend({
     // Note: could use 'setUrl(url)' to be more DRY
     //
     if (typeof url === 'string' || url instanceof String) {
-		  this._url = url;    // 'this._el' will be initialized later to the '<img>' element
+		  this._url = url;    // 'this._elem' will be initialized later to the '<img>' element
 		} else {
 		  this._svg = url;   // <svg> element (may already be populated by the caller)
 		}
@@ -33,7 +37,7 @@ L.ImageOverlay = L.Layer.extend({
 			}
 		}
 
-		this.getPane().appendChild(this._el);
+		this.getPane().appendChild(this._elem);
 		this._initInteraction();
 		this._reset();
 	},
@@ -182,6 +186,6 @@ L.ImageOverlay = L.Layer.extend({
 	}
 });
 
-L.imageOverlay = function (url, bounds, options) {
-	return new L.ImageOverlay(url, bounds, options);
+L.imageOverlay2 = function (url, bounds, options) {
+	return new L.ImageOverlay2(url, bounds, options);
 };

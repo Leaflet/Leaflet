@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<!--
+- Demo on using SVG elements in place of picture.
+-->
+
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+    var HELSINKI= new L.LatLng( 60.192059, 24.945831 );
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+			latlng = HELSINKI;
+
+		var map = new L.Map('map');
+		map.addLayer(osm);
+
+		var	bounds = new L.LatLngBounds(
+                   new L.LatLng( 60.19473, 24.93961 ),   // NW
+                   new L.LatLng( 60.18952, 24.95497 )    // SE
+                 );
+
+		map.fitBounds(bounds);
+
+		var overlay = new L.ImageOverlay( "snapsvg_mascot.svg" /*REMOVE "https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg"*/, bounds, {
+			opacity: 0.8,
+			interactive: true
+		});
+		map.addLayer(overlay);
+
+		overlay.on('dblclick',function (e) {
+			console.log('Double click on image.');
+		});
+
+	</script>
+</body>
+</html>
