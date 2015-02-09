@@ -19,7 +19,7 @@ L.ImageOverlay2 = L.Layer.extend({
     // Note: could use 'setUrl(url)' to be more DRY
     //
     if (typeof url === 'string' || url instanceof String) {
-		  this._url = url;    // 'this._elem' will be initialized later to the '<img>' element
+		  this._url = url;    // 'this._el' will be initialized later to the '<img>' element
 		} else {
 		  this._svg = url;   // <svg> element (may already be populated by the caller)
 		}
@@ -37,7 +37,10 @@ L.ImageOverlay2 = L.Layer.extend({
 			}
 		}
 
-		this.getPane().appendChild(this._elem);
+    console.log( "getPane: " + this.getPane() );
+    console.log( "_el: " + this._el );
+
+		this.getPane().appendChild(this._el);
 		this._initInteraction();
 		this._reset();
 	},
@@ -182,7 +185,14 @@ L.ImageOverlay2 = L.Layer.extend({
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._el, this.options.opacity);
+    if (this.options.opacity < 1) {
+      // tbd. Is it true 'svg' element has no opacity setting in DOM? How about CSS styling it?
+      //      (i.e. can we make 'L.DomUtil.setOpacity' support it?
+      //
+      throw 'Cannot set <svg> opacity (use a group within it)';
+
+		  L.DomUtil.setOpacity(this._el, this.options.opacity);
+    }
 	}
 });
 

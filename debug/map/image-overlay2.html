@@ -15,6 +15,10 @@
 
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
+
+  <!-- Snap.svg
+  -->
+  <script src="http://cdn.jsdelivr.net/snap.svg/0.3.0/snap.svg-min.js"></script>
 </head>
 <body>
 
@@ -38,10 +42,41 @@
 
 		map.fitBounds(bounds);
 
-		var overlay = new L.ImageOverlay( "snapsvg_mascot.svg" /*REMOVE "https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg"*/, bounds, {
-			opacity: 0.8,
-			interactive: true
-		});
+    var overlay;
+    if (true) {
+      // Add SVG element in use and created by Snap.svg
+      //
+      var S= Snap();
+    
+      Snap.load( "snapsvg_mascot.svg", function (f) {
+        // traverse and change attr before SVG is even added to the page
+        f.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
+        var g = f.select("g");
+        S.append(g);
+        // make croc draggable
+        g.drag();
+      } );
+  
+      if (!L.imageOverlay2) {
+        throw "WHAT?";
+      }
+      
+      // This needs a patched Leaflet - image source is an SVG element.
+      //
+      overlay = L.imageOverlay2( S, bounds, {
+        //opacity: 0.8,     // not available
+        interactive: true
+      });
+
+    } else {
+      // SVG from file (works with stock Leaflet)
+      //
+      overlay = L.imageOverlay("snapsvg_mascot.svg", bounds, {
+        opacity: 0.8,
+        interactive: true
+      });
+    }
+
 		map.addLayer(overlay);
 
 		overlay.on('dblclick',function (e) {
