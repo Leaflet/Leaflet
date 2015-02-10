@@ -22,7 +22,10 @@
 </head>
 <body>
 
-	<div id="map"></div>
+	<div id="map">
+  </div>
+  
+  <svg id="testsvg"></svg>
 
 	<script type="text/javascript">
     var HELSINKI= new L.LatLng( 60.192059, 24.945831 );
@@ -44,9 +47,24 @@
 
     var overlay;
     if (true) {
+    
+      // This needs a patched Leaflet - image source is an SVG element.
+      //
+      overlay = L.imageOverlay2( bounds, {
+        //opacity: 0.8,     // not available
+        interactive: true
+      });
+    
+      // The '<svg>' element must be created like this, programmatically.
+      // It will roam free in the DOM until Leaflet shows it where to sit.
+      //
+      //var svgElem= document.createElementNS('http://www.w3.org/2000/svg','svg');
+      
+      var svgElem = overlay.svgElem;
+
       // Add SVG element in use and created by Snap.svg
       //
-      var S= Snap();
+      var S= Snap( svgElem );
     
       Snap.load( "snapsvg_mascot.svg", function (f) {
         // traverse and change attr before SVG is even added to the page
@@ -56,17 +74,15 @@
         // make croc draggable
         g.drag();
       } );
-  
-      if (!L.imageOverlay2) {
-        throw "WHAT?";
-      }
-      
-      // This needs a patched Leaflet - image source is an SVG element.
+
+      //console.log( S.svg() );
+
+      // Can we tie 'S' to the '#map' div, at all?
       //
-      overlay = L.imageOverlay2( S, bounds, {
-        //opacity: 0.8,     // not available
-        interactive: true
-      });
+      // Leaflet will need to do this; if we cannot, so cannot it. AK090215
+      //
+      //console.log( "S: "+ S );
+      document.getElementById("map").appendChild( svgElem );    // yes we can
 
     } else {
       // SVG from file (works with stock Leaflet)

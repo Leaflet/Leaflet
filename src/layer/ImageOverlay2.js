@@ -1,5 +1,5 @@
 /*
- * L.VectorOverlay takes an SVG element over the map (to specific geographical bounds).
+ * L.ImageOverlay2 takes an SVG element over the map (to specific geographical bounds).
  *
  * This is modeled according to 'L.ImageOverlay' and could really be mastered as just
  * modifying that code, but for some reason my code went always to mapbox.js stuff
@@ -9,46 +9,46 @@
 L.ImageOverlay2 = L.Layer.extend({
 
 	options: {
-		opacity: 1,
+		//opacity: 1,
 		alt: '',
 		interactive: false
 	},
 
-	initialize: function (url, bounds, options) { // (String or SvgElement, LatLngBounds, Object)
+	initialize: function (bounds, options) { // (LatLngBounds, Object)
+    this.svgElem= document.createElementNS('http://www.w3.org/2000/svg','svg');
 
-    // Note: could use 'setUrl(url)' to be more DRY
-    //
-    if (typeof url === 'string' || url instanceof String) {
-		  this._url = url;    // 'this._el' will be initialized later to the '<img>' element
-		} else {
-		  this._svg = url;   // <svg> element (may already be populated by the caller)
-		}
 		this._bounds = L.latLngBounds(bounds);
 
 		L.setOptions(this, options);
 	},
 
 	onAdd: function () {
-		if (!this._el) {
-			this._initImage();
+    var el= this.svgElem;
+    
+    el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
+console.log(el);
 
-			if (this.options.opacity < 1) {
-				this._updateOpacity();
-			}
-		}
+    // No need to trigger 'onload' for vectors, is there (the reason would be to keep the
+    // interface 1-to-1 with images.
+    //
+    //L.bind(this.fire, this, 'load')();    // call immediately
 
-    console.log( "getPane: " + this.getPane() );
-    console.log( "_el: " + this._el );
+    el.onselectstart = L.Util.falseFn;
+    el.onmousemove = L.Util.falseFn;
 
-		this.getPane().appendChild(this._el);
+    //console.log( "getPane: " + this.getPane() );
+    //console.log( "_svg_el: " + this.svgElem );
+        
+		this.getPane().appendChild(el);
 		this._initInteraction();
 		this._reset();
 	},
 
 	onRemove: function () {
-		L.DomUtil.remove(this._el);
+		L.DomUtil.remove(this.svgElem);
 	},
 
+  /**
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
@@ -64,25 +64,26 @@ L.ImageOverlay2 = L.Layer.extend({
 		}
 		return this;
 	},
+	**/
 
 	bringToFront: function () {
 		if (this._map) {
-			L.DomUtil.toFront(this._el);
+			L.DomUtil.toFront(this.svgElem);
 		}
 		return this;
 	},
 
 	bringToBack: function () {
 		if (this._map) {
-			L.DomUtil.toBack(this._el);
+			L.DomUtil.toBack(this.svgElem);
 		}
 		return this;
 	},
 
 	_initInteraction: function () {
 		if (!this.options.interactive) { return; }
-		L.DomUtil.addClass(this._el, 'leaflet-interactive');
-		L.DomEvent.on(this._el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
+		L.DomUtil.addClass(this.svgElem, 'leaflet-interactive');
+		L.DomEvent.on(this.svgElem, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
 				this._fireMouseEvent, this);
 	},
 
@@ -92,6 +93,7 @@ L.ImageOverlay2 = L.Layer.extend({
 		}
 	},
 
+  /***
 	setUrl: function (url) {   // (String)   (we don't support changing the SVG element like this; even the name of the method says 'Url')
 
     if (typeof url === 'string' || url instanceof String) {
@@ -109,7 +111,8 @@ L.ImageOverlay2 = L.Layer.extend({
 		}
 		return this;
 	},
-
+  ***/
+  
 	getAttribution: function () {
 		return this.options.attribution;
 	},
@@ -130,10 +133,13 @@ L.ImageOverlay2 = L.Layer.extend({
 		return this._bounds;
 	},
 
+  /***
 	_initImage: function () {
     var el;
 
     if (this._url) {
+      // TBD: What is the "elem" that 'L.DomUtil' creates? It only gets added to the DOM later, in 'onAdd'.
+      //
 		  el = this._el = L.DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
@@ -144,22 +150,22 @@ L.ImageOverlay2 = L.Layer.extend({
       el.src = this._url;
       el.alt = this.options.alt;
     } else {
-      // 'this._svg' has the svg element, provided by the application level
-      //
-      el = this._el = this._svg;
-		  el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
+      el = this._svg_el;
+      el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
+console.log(el);
 
       // No need to trigger 'onload' for vectors, is there (the reason would be to keep the
       // interface 1-to-1 with images.
       //
-      L.bind(this.fire, this, 'load')();    // call immediately
+      //L.bind(this.fire, this, 'load')();    // call immediately
 
       el.onselectstart = L.Util.falseFn;
       el.onmousemove = L.Util.falseFn;
 
-      this.fire('load');   // element is there already (emulate a load)
+      //this.fire('load');   // element is there already (emulate a load)
     }
 	},
+	***/
 
 	_animateZoom: function (e) {
 		var bounds = new L.Bounds(
@@ -168,11 +174,11 @@ L.ImageOverlay2 = L.Layer.extend({
 
 		var offset = bounds.min.add(bounds.getSize()._multiplyBy((1 - 1 / e.scale) / 2));
 
-		L.DomUtil.setTransform(this._el, offset, e.scale);
+		L.DomUtil.setTransform(this.svgElem, offset, e.scale);
 	},
 
 	_reset: function () {
-		var el = this._el,
+		var el = this.svgElem,
 		    bounds = new L.Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
@@ -182,8 +188,9 @@ L.ImageOverlay2 = L.Layer.extend({
 
 		el.style.width  = size.x + 'px';
 		el.style.height = size.y + 'px';
-	},
+	} //,
 
+  /***
 	_updateOpacity: function () {
     if (this.options.opacity < 1) {
       // tbd. Is it true 'svg' element has no opacity setting in DOM? How about CSS styling it?
@@ -194,8 +201,9 @@ L.ImageOverlay2 = L.Layer.extend({
 		  L.DomUtil.setOpacity(this._el, this.options.opacity);
     }
 	}
+	***/
 });
 
-L.imageOverlay2 = function (url, bounds, options) {
-	return new L.ImageOverlay2(url, bounds, options);
+L.imageOverlay2 = function (bounds, options) {
+	return new L.ImageOverlay2(bounds, options);
 };

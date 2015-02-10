@@ -21,7 +21,8 @@ L.DomUtil = {
 
 	create: function (tagName, className, container) {
 
-		var el = document.createElement(tagName);
+		var el = (tagName === 'svg') ? document.createElementNS('http://www.w3.org/2000/svg',tagName) 
+		                             : document.createElement(tagName);
 		el.className = className;
 
 		if (container) {
