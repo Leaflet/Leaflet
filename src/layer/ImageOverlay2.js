@@ -9,7 +9,6 @@
 L.ImageOverlay2 = L.Layer.extend({
 
 	options: {
-		//opacity: 1,
 		alt: '',
 		interactive: false
 	},
@@ -36,9 +35,6 @@ console.log(el);
     el.onselectstart = L.Util.falseFn;
     el.onmousemove = L.Util.falseFn;
 
-    //console.log( "getPane: " + this.getPane() );
-    //console.log( "_svg_el: " + this.svgElem );
-        
 		this.getPane().appendChild(el);
 		this._initInteraction();
 		this._reset();
@@ -47,24 +43,6 @@ console.log(el);
 	onRemove: function () {
 		L.DomUtil.remove(this.svgElem);
 	},
-
-  /**
-	setOpacity: function (opacity) {
-		this.options.opacity = opacity;
-
-		if (this._el) {
-			this._updateOpacity();
-		}
-		return this;
-	},
-
-	setStyle: function (styleOpts) {
-		if (styleOpts.opacity) {
-			this.setOpacity(styleOpts.opacity);
-		}
-		return this;
-	},
-	**/
 
 	bringToFront: function () {
 		if (this._map) {
@@ -93,26 +71,6 @@ console.log(el);
 		}
 	},
 
-  /***
-	setUrl: function (url) {   // (String)   (we don't support changing the SVG element like this; even the name of the method says 'Url')
-
-    if (typeof url === 'string' || url instanceof String) {
-      if ((!this._url) && this._el) {
-        // about to replace an 'svg' with an 'img' - we should remove the svg first, or disallow such use? tbd
-        throw 'replacing \'svg\' element with \'img\' currently not allowed';
-      }
-		  this._url = url;
-    } else {
-      throw 'using \'setUrl()\' with svg element currently not allowed';
-    }
-
-		if (this._el) {
-			this._el.src = url;
-		}
-		return this;
-	},
-  ***/
-  
 	getAttribution: function () {
 		return this.options.attribution;
 	},
@@ -133,40 +91,6 @@ console.log(el);
 		return this._bounds;
 	},
 
-  /***
-	_initImage: function () {
-    var el;
-
-    if (this._url) {
-      // TBD: What is the "elem" that 'L.DomUtil' creates? It only gets added to the DOM later, in 'onAdd'.
-      //
-		  el = this._el = L.DomUtil.create('img',
-				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
-
-      el.onselectstart = L.Util.falseFn;
-      el.onmousemove = L.Util.falseFn;
-
-      el.onload = L.bind(this.fire, this, 'load');
-      el.src = this._url;
-      el.alt = this.options.alt;
-    } else {
-      el = this._svg_el;
-      el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
-console.log(el);
-
-      // No need to trigger 'onload' for vectors, is there (the reason would be to keep the
-      // interface 1-to-1 with images.
-      //
-      //L.bind(this.fire, this, 'load')();    // call immediately
-
-      el.onselectstart = L.Util.falseFn;
-      el.onmousemove = L.Util.falseFn;
-
-      //this.fire('load');   // element is there already (emulate a load)
-    }
-	},
-	***/
-
 	_animateZoom: function (e) {
 		var bounds = new L.Bounds(
 			this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
@@ -184,24 +108,18 @@ console.log(el);
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		    size = bounds.getSize();
 
-		L.DomUtil.setPosition(el, bounds.min);
-
+    console.log( "setPosition: " + bounds.min.x +" "+ bounds.min.y );
+    
+		//L.DomUtil.setPosition(el, bounds.min);
+    //
+    var point= bounds.min;
+		el._leaflet_pos = point;
+		L.DomUtil.setTransform(el, point);
+    el.style.top = 0;
+    el.style.left = 0;
 		el.style.width  = size.x + 'px';
 		el.style.height = size.y + 'px';
-	} //,
-
-  /***
-	_updateOpacity: function () {
-    if (this.options.opacity < 1) {
-      // tbd. Is it true 'svg' element has no opacity setting in DOM? How about CSS styling it?
-      //      (i.e. can we make 'L.DomUtil.setOpacity' support it?
-      //
-      throw 'Cannot set <svg> opacity (use a group within it)';
-
-		  L.DomUtil.setOpacity(this._el, this.options.opacity);
-    }
 	}
-	***/
 });
 
 L.imageOverlay2 = function (bounds, options) {
