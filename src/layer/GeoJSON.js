@@ -165,7 +165,11 @@ L.extend(L.GeoJSON, {
 
 	asFeature: function (geoJSON) {
 		if (geoJSON.type === 'Feature') {
-			return geoJSON;
+			return {
+				type: geoJSON.type,
+				properties: geoJSON.properties,
+				geometry: geoJSON.geometry
+			};
 		}
 
 		return {
