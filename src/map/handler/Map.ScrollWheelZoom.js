@@ -67,4 +67,12 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	}
 });
 
+L.Map.addInitHook(function () {
+	if (this.options.scrollWheelZoom === 'onFocus') {
+		this.options.scrollWheelZoom = false;
+		this.on('blur', function() { this.scrollWheelZoom.disable(); });
+		this.on('focus', function() { this.scrollWheelZoom.enable(); });
+	}
+});
+
 L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
