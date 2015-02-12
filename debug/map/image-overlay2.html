@@ -9,6 +9,13 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 
+  <!-- adopted from D3SvgOverlay code
+  -->
+  <style>
+    svg.d3-overlay { pointer-events:none; position:absolute; }
+    svg.d3-overlay > g.origin * { pointer-events:visiblePainted; }
+  </style>    
+  
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 	<link rel="stylesheet" href="../css/screen.css" />
@@ -22,11 +29,8 @@
 </head>
 <body>
 
-	<div id="map">
-  </div>
+	<div id="map"></div>
   
-  <svg id="testsvg"></svg>
-
 	<script type="text/javascript">
     var HELSINKI= new L.LatLng( 60.192059, 24.945831 );
 
@@ -36,14 +40,22 @@
 			latlng = HELSINKI;
 
 		var map = new L.Map('map');
-		map.addLayer(osm);
-
+    osm.addTo(map);
+    
 		var	bounds = new L.LatLngBounds(
                    new L.LatLng( 60.19473, 24.93961 ),   // NW
                    new L.LatLng( 60.18952, 24.95497 )    // SE
                  );
 
 		map.fitBounds(bounds);
+
+    //---
+    // Scale control
+    //
+    L.control.scale( {
+      metric: true,
+      imperial: false
+    } ).addTo(map);
 
     var overlay;
     if (true) {
@@ -66,6 +78,8 @@
       //
       var S= Snap( svgElem );
     
+      // tbd. could possibly include the mascot in the HTML (enclose full demo in one file)
+      //
       Snap.load( "snapsvg_mascot.svg", function (f) {
         // traverse and change attr before SVG is even added to the page
         f.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
@@ -75,7 +89,17 @@
         //g.drag();
       } );
 
-      //console.log( S.svg() );
+      // 100 x 100 m square, from (0,0)
+      //
+      console.log(S.rect);
+
+      S.rect( 0,0, 100,100, 10,10 )    // last params: edge rounding radius
+        .attr( {
+          stroke: "#f00",
+          strokeWidth: 2              // even this in meters
+        } );
+
+      //console.log( "rect: "+ rect );    // "<rect x="0" ..."
 
       // Can we tie 'S' to the '#map' div, at all?
       //
