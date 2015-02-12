@@ -9,11 +9,15 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 
-  <!-- adopted from D3SvgOverlay code
+  <!-- adopted from D3SvgOverlay code (may need changing, or are irrelevant) tbd.
   -->
   <style>
-    svg.d3-overlay { pointer-events:none; position:absolute; }
-    svg.d3-overlay > g.origin * { pointer-events:visiblePainted; }
+    svg.leaflet-interactive { 
+      pointer-events:none; 
+      position:absolute; 
+      border: thin solid red;  // for debugging
+    }
+    svg.leaflet-interactive > g.origin * { pointer-events:visiblePainted; }
   </style>    
   
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -32,22 +36,30 @@
 	<div id="map"></div>
   
 	<script type="text/javascript">
-    var HELSINKI= new L.LatLng( 60.192059, 24.945831 );
+    var HELSINKI= L.latLng( 60.192059, 24.945831 );
 
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 			latlng = HELSINKI;
 
-		var map = new L.Map('map');
+		var map = L.map('map');
     osm.addTo(map);
     
-		var	bounds = new L.LatLngBounds(
-                   new L.LatLng( 60.19473, 24.93961 ),   // NW
-                   new L.LatLng( 60.18952, 24.95497 )    // SE
+		var	bounds = L.latLngBounds(
+                   L.latLng( 60.19473, 24.93961 ),   // NW
+                   L.latLng( 60.18952, 24.95497 )    // SE
                  );
 
 		map.fitBounds(bounds);
+
+    // SVG as an image
+    //
+		var overlay = new L.ImageOverlay("snapsvg_mascot.svg", bounds, {
+			opacity: 0.5,
+			interactive: true
+		});
+		map.addLayer(overlay);
 
     //---
     // Scale control
@@ -98,15 +110,6 @@
           stroke: "#f00",
           strokeWidth: 2              // even this in meters
         } );
-
-      //console.log( "rect: "+ rect );    // "<rect x="0" ..."
-
-      // Can we tie 'S' to the '#map' div, at all?
-      //
-      // Leaflet will need to do this; if we cannot, so cannot it. AK090215
-      //
-      //console.log( "S: "+ S );
-      document.getElementById("map").appendChild( svgElem );    // yes we can
 
     } else {
       // SVG from file (works with stock Leaflet)

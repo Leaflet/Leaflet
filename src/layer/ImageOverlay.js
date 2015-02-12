@@ -155,6 +155,8 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
+    //console.log( "EVENT IMG animateZoom: "+ e );
+
 		var bounds = new L.Bounds(
 			this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
 		    this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center));
@@ -165,6 +167,8 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_reset: function () {
+    console.log( "EVENT IMG reset" );
+
 		var el = this._el,
 		    bounds = new L.Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),

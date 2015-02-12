@@ -143,8 +143,14 @@ L.DomUtil = {
 	setTransform: function (el, offset, scale) {
 		var pos = offset || new L.Point(0, 0);
 
+    //console.log( L.DomUtil.TRANSFORM );   // WebkitTransform
 		el.style[L.DomUtil.TRANSFORM] =
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
+
+    var tag = el.tagName.toLowerCase();
+    if (tag === "svg" || tag === "img") {
+      console.log( tag + ": "+ 'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '') );
+    }
 	},
 
 	setPosition: function (el, point, no3d) { // (HTMLElement or SVGElement, Point[, Boolean])
