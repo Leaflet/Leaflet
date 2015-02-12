@@ -1515,7 +1515,18 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/w8r/">Alexander Milevski</a>
 		</td>
 	</tr>
-	
+	<tr>
+		<td>
+			<a href="https://github.com/mahmoodvcs/Leaflet.NACCoordinates">Leaflet.NACCoordinates</a>
+		</td>
+		<td>
+			Displays NAC coordinate of the mouse pointer on mouse move (<a href="http://mahmoodvcs.github.io/Leaflet.NACCoordinates/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/mahmoodvcs">Mahmood Dehghan</a>
+		</td>
+	</tr>
+
 </table>
 
 
