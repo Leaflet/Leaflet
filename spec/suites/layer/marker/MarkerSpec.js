@@ -41,10 +41,16 @@ describe("Marker", function () {
 
 			expect(marker.dragging.enabled()).to.be(true);
 
-                        map.removeLayer(marker);
+			map.removeLayer(marker);
 			map.addLayer(marker);
 
 			expect(marker.dragging.enabled()).to.be(true);
+
+			map.removeLayer(marker);
+			// Dragging is still enabled, we should be able to disable it,
+			// even if marker is off the map.
+			marker.dragging.disable();
+			map.addLayer(marker);
 		});
 
 		it("changes the icon to another DivIcon", function () {
