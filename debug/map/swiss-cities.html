@@ -57,7 +57,12 @@
   
   // Load the CSV data
   //
-  d3.csv("swiss-cities.csv",function(data){
+  // Note: Chrome fails to read this:
+  //  <<
+  //  XMLHttpRequest cannot load file:///Users/askokauppi/Source/Leaflet.asko/debug/map/swiss-cities.csv. Cross origin requests are only supported for protocol schemes: http, data, chrome, chrome-extension, https, chrome-extension-resource.
+  //	<<
+  //
+  d3.csv("swiss-cities.csv", function(data){
 
     // Find the min & max coordinates for bounds
     //
