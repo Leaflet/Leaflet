@@ -9,18 +9,15 @@
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 
-  <!-- adopted from D3SvgOverlay code (may need changing, or are irrelevant) tbd.
-  -->
   <style>
     svg.leaflet-interactive { 
-      pointer-events:none; 
-      position:absolute; 
       border: thin solid red;  // for debugging
     }
-    svg.leaflet-interactive > g.origin * { pointer-events:visiblePainted; }
   </style>    
-  
+
+  <!-- remove? this is for "mobile devices only"  
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  -->
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
@@ -98,18 +95,25 @@
         var g = f.select("g");
         S.append(g);
         // make croc draggable
-        //g.drag();
+        g.drag();
+        
+        g.click( function() {
+          alert("!!");
+          log.console( arguments );
+        } );
+        
+        prepareCrocAnim( S.select("g") );
       } );
 
       // 100 x 100 m square, from (0,0)
       //
-      console.log(S.rect);
-
       S.rect( 0,0, 100,100, 10,10 )    // last params: edge rounding radius
         .attr( {
           stroke: "#f00",
           strokeWidth: 2              // even this in meters
         } );
+
+      S.text( 200, 100, "*** SVG ***" );
 
     } else {
       // SVG from file (works with stock Leaflet)
@@ -122,10 +126,80 @@
 
 		map.addLayer(overlay);
 
+    // This does not seem to be catching
+    //
+    /***
 		overlay.on('dblclick',function (e) {
 			console.log('Double click on svg.');
 		});
+		***/
 
+    // Following code adopted from http://snapsvg.io home page
+    //
+    function prepareCrocAnim( SVG_croc ) {    // (SVG element)    
+      console.log( "Croc: "+ SVG_croc );
+
+      var //croc = Snap.select("#crocodile"),
+          SVG_head = SVG_croc.select("#upper-head"),
+          SVG_jaw = SVG_croc.select("#upper-jaw"),
+          SVG_symbol = SVG_croc.select("#symbol"),
+          //
+          clearId = [],
+          scrollTop = 0;
+          
+      var pivots = [
+          [44, 147],
+          [92, 126]
+      ];
+
+      function clearTimer() {
+          for (var i = 0; i < clearId.length; i++) {
+              clearTimeout(clearId[i]);
+          }
+          clearId = [];
+      }
+
+      function close() {
+          clearTimer();
+
+          SVG_head.animate({ 
+              transform: "r" + [8, pivots[0][0], pivots[0][1]]
+          }, 500, mina.backin);
+          
+          SVG_jaw.animate({
+              transform: "r" + [37, pivots[1][0], pivots[1][1]]
+          }, 500, mina.backin);
+
+          clearId.push( setTimeout(function() {
+              SVG_symbol.animate({
+                  transform: "t" + (-70) + "," + (40) + "r" + (40)
+              }, 100);
+          }, 400));
+      }
+
+      function open() {
+          clearTimer();
+
+          SVG_head.animate({ 
+              transform: "r" + [0, pivots[0][0], pivots[0][1]]
+          }, 700, mina.elastic);
+          
+          SVG_jaw.animate({
+              transform: "r" + [0, pivots[1][0], pivots[1][1]]
+          }, 700, mina.elastic);
+
+          SVG_symbol.animate({
+              transform: "t" + (0) + "," + (0) + "r" + (0)
+          }, 500, mina.elastic);
+      }
+
+      SVG_croc.hover(open, 
+          function() {
+              clearId.push(setTimeout(close, 200));
+      });
+      
+    } // prepareCrocAnim
+        
 	</script>
 </body>
 </html>

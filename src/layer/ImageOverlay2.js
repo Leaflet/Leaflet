@@ -22,7 +22,7 @@ L.ImageOverlay2 = L.Layer.extend({
     this.svgElem= document.createElementNS('http://www.w3.org/2000/svg','svg');
 
 		this._bounds = bounds;
-    this._zoomAnimated = true;
+        this._zoomAnimated = true;
 
 		L.setOptions(this, options);
 	},
