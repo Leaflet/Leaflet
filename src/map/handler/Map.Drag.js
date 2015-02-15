@@ -35,10 +35,12 @@ L.Map.Drag = L.Handler.extend({
 				map.whenReady(this._onViewReset, this);
 			}
 		}
+		L.DomUtil.addClass(this._map._container, 'leaflet-grab');
 		this._draggable.enable();
 	},
 
 	removeHooks: function () {
+		L.DomUtil.removeClass(this._map._container, 'leaflet-grab');
 		this._draggable.disable();
 	},
 
