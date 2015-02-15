@@ -5,8 +5,8 @@
  * just as for an image overlay.
  *
  * This is modeled according to 'L.ImageOverlay' and could really be mastered as just
- * modifying that code, but for some reason my code went always to mapbox.js stuff
- * so I decided to use wholly different name to be sure. AK090215
+ * modifying that code, but I decided to use wholly different name to be sure. 
+ * At least until I hear feedback on this. AK090215
  */
 
 L.ImageOverlay2 = L.Layer.extend({
@@ -15,14 +15,11 @@ L.ImageOverlay2 = L.Layer.extend({
 		interactive: false
 	},
 
-	initialize: function (bounds, options) { // (LatLngBounds [, Object])
+	initialize: function (svgElem, bounds, options) { // (Svg element, LatLngBounds [, Object])
 	
-    // Note: 'svg' elements must be programmatically created like this.
-    //
-    this.svgElem= document.createElementNS('http://www.w3.org/2000/svg','svg');
-
+    this.svgElem= svgElem;  
 		this._bounds = bounds;
-        this._zoomAnimated = true;
+    this._zoomAnimated = true;
 
 		L.setOptions(this, options);
 	},
@@ -69,16 +66,34 @@ L.ImageOverlay2 = L.Layer.extend({
 		return this;
 	},
 
+    /*
+    * What is this 'interaction', anyways?
+    */
 	_initInteraction: function () {
-		if (this.options.interactive) { 
-		  L.DomUtil.addClass(this.svgElem, 'leaflet-interactive');
-		  L.DomEvent.on(this.svgElem, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
+    console.log( "Interactive: "+ this.options.interactive );
+
+		if (this.options.interactive) {
+		  var el = this.svgElem;
+		  L.DomUtil.addClass(el, 'leaflet-interactive');
+
+      // Note: Trying to disabled "dual panning" if the app makes 'svgElem' draggable (= can move above the map);
+      //      we don't want also the map to move around.
+      //		  
+      // If we have this on, croc can be dragged relative the map (though it seems jerky),
+      // but the "open" map areas won't pan, either (which is not what we want). AK150215
+      //
+      //L.DomEvent.disableClickPropagation(el);
+		  
+		  L.DomEvent.on(el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
 				this._fireMouseEvent, this);
 		}
 	},
 
+
 	_fireMouseEvent: function (e, type) {
 		if (this._map) {
+      // Note: This does not seem to matter, at all.
+      //
 			this._map._fireMouseEvent(this, e, type, true);
 		}
 	},
