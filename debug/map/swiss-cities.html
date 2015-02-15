@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<!--
+- Swiss cities demo
+-
+- Swiss cities (red) and towns (blue) on the map. Circle size shows population magnitude difference.
+-
+- Shows the 'ImageOverlay'-based Leaflet/SVG binding working an D3 library
+- (it is library agnostic, the other library demoed is Snap.svg). 
+-
+- This demo shows how to place SVG data by lat,lng coordinates.
+-
+- Adapted from:
+-   http://bl.ocks.org/xEviL/4921fff1d70f5601d159
+-
+- Dataset: © OpenStreetMap contributors 
+-->
+<html>
+<head>
+  <title>L.ImageOverlay2: Leaflet + D3, simple example</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+  <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+  </style>
+
+  <!-- for debugging 
+  -->
+  <style>
+    svg.leaflet-image-layer { border: thin solid red; }
+  </style>    
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.9/d3.min.js"></script>
+</head>
+
+<body>
+  <div id="map-canvas"></div>
+
+<script>
+
+  var map = L.map("map-canvas",{center:[46.81509864599243, 8.3221435546875],zoom:8});
+  L.tileLayer('http://otile{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.jpeg', {
+    attribution: 'Tiles Courtesy of <a href="http://www.mapquest.com/">MapQuest</a> '
+    +'&mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    subdomains: '1234'
+  }).addTo(map);
+  
+  var cities = [];
+  var citiesOverlay = 
+  
+  // Load the CSV data
+  //
+  d3.csv("swiss-cities.csv",function(data){
+
+    // Find the min & max coordinates for bounds
+    //
+    var bounds = boundsAddMargin_km( 
+      map,
+      L.latLngBounds( data.map( function(d) { return L.latLng(d.lat, d.lng); } ) ),
+      1.0 );
+
+    console.log(bounds);
+
+    // Set up the SVG
+    //
+    var svgElem= L.DomUtil.create('svg');   //document.createElementNS('http://www.w3.org/2000/svg','svg');
+    
+    var overlay = L.imageOverlay2( svgElem, bounds );
+    overlay.addTo(map);    
+
+    var root= d3.select(svgElem);
+    //var proj= overlay.latLngToSvgPoint   // (LatLng) -> Point (meters from North-West, east and south)
+
+    // tbd. Do this in the 'overlay', finally..
+    //
+    function proj( latLng ) {
+      var offset = L.DomUtil.getPosition(svgElem);    // svgElem._leaflet_pos
+      var p= map.latLngToLayerPoint( latLng ).subtract( offset );
+      return p;
+    }
+    
+    // Fill with data
+    //    
+    var cities = data.map(function(d){    // [ { latLng: [lat_num,lng_num], population: int, place: str }, ... ]
+      d.latLng = L.latLng(+d.lat,+d.lng);
+      d.population = (d.population == '') ? 2000 : +d.population; //NAs
+      // d.name     str
+      // d.place:   "town"|"city"
+      return d;
+    });
+    
+    var minLogPop = Math.log2(d3.min(cities,function(d){return d.population;}));
+    var citiesUpd = root.selectAll('circle').data(cities);
+    citiesUpd.enter()
+      .append('circle')
+      .attr('r',function(d){return Math.log2(d.population) - minLogPop + 2;})
+      .attr('cx',function(d){return proj(d.latLng).x;})
+      .attr('cy',function(d){return proj(d.latLng).y;})
+      .attr('stroke','black')
+      .attr('stroke-width',1)
+      .attr('fill',function(d){return (d.place == 'city') ? "red" : "blue";});
+  });
+
+  //---
+  // Helper functions
+
+  /*
+  * Extend the 'bounds' by 'margin_km' to every direction
+  */
+  function boundsAddMargin_km( map, bounds, margin_km ) {   // (Map, Bounds, num) -> Bounds
+    
+    // TBD
+    
+    return bounds;
+  }
+    
+</script>
+    
+</body>
+</html>
+

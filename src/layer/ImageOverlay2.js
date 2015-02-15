@@ -91,9 +91,9 @@ L.ImageOverlay2 = L.Layer.extend({
 
 
 	_fireMouseEvent: function (e, type) {
+    // Note: This does not seem to matter, at all. (because 'this._map' is 'undefined')
+    //
 		if (this._map) {
-      // Note: This does not seem to matter, at all.
-      //
 			this._map._fireMouseEvent(this, e, type, true);
 		}
 	},
@@ -158,6 +158,31 @@ L.ImageOverlay2 = L.Layer.extend({
     
 		el.style.width  = size.x + 'px';
 		el.style.height = size.y + 'px';
+	},
+	
+	/*
+	* Conversion of LatLng coordinates to/from SVG coordinates. 
+	*
+	* Note: For a normal image, this would mean conversion from/to pixel coordinates
+	*      (which feature is not in the 'ImageOverlay' API but could be).
+	*
+	* TBD. Which are the right conversion functions here, or should we use 'distance()'? AK150215
+	*/
+	latLngToSvgPoint: function( latLng ) {  // (LatLng) -> Point
+
+    console.log( this._map );
+    console.log( this._map.latLngToLayerPoint );
+    
+    var p= this._map.latLngToLayerPoint( latLng );
+    
+    return p;
+	},
+	
+	svgPointToLatLng: function( p ) {   // (Point) -> LatLng
+
+    var latlng= this._map.layerPointToLatLng( p );
+    
+    return latlng;
 	}
 });
 
