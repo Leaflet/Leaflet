@@ -21,7 +21,7 @@ L.DomUtil = {
 
 	create: function (tagName, className, container) {
 
-		var el = (tagName === 'svg') ? document.createElementNS('http://www.w3.org/2000/svg',tagName) 
+		var el = (tagName === 'svg') ? document.createElementNS('http://www.w3.org/2000/svg', tagName)
 		                             : document.createElement(tagName);
 		el.className = className;
 
@@ -147,9 +147,13 @@ L.DomUtil = {
 		el.style[L.DomUtil.TRANSFORM] =
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
 
-    var tag = el.tagName.toLowerCase();
-    if (tag === "svg" || tag === "img") {
-      console.log( tag + ": "+ 'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '') );
+    if (false) {
+      var tag = el.tagName.toLowerCase();
+      if (tag === 'svg' || tag === 'img') {
+		    /*eslint-disable */
+        console.log( tag + ": "+ 'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '') );
+		    /*eslint-enable */
+      }
     }
 	},
 

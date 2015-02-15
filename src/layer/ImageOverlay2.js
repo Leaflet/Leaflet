@@ -5,7 +5,7 @@
  * just as for an image overlay.
  *
  * This is modeled according to 'L.ImageOverlay' and could really be mastered as just
- * modifying that code, but I decided to use wholly different name to be sure. 
+ * modifying that code, but I decided to use wholly different name to be sure.
  * At least until I hear feedback on this. AK090215
  */
 
@@ -16,32 +16,32 @@ L.ImageOverlay2 = L.Layer.extend({
 	},
 
 	initialize: function (svgElem, bounds, options) { // (Svg element, LatLngBounds [, Object])
-	
-    this.svgElem= svgElem;  
+
+		this.svgElem = svgElem;
 		this._bounds = bounds;
-    this._zoomAnimated = true;
+		this._zoomAnimated = true;
 
 		L.setOptions(this, options);
 	},
 
 	onAdd: function () {
-    var el= this.svgElem;
-    
-    el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
+		var el = this.svgElem;
 
-    console.log( el.classList );
-    el.classList.add( 'leaflet-image-layer' );
-    if (this._zoomAnimated) {
-      el.classList.add( 'leaflet-zoom-animated' );
-    }
+		el.className = 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
 
-    // No need to trigger 'onload' for vectors, is there (the reason would be to keep the
-    // interface 1-to-1 with images.
-    //
-    //L.bind(this.fire, this, 'load')();    // call immediately
+		//console.log( el.classList );
+		el.classList.add('leaflet-image-layer');
+		if (this._zoomAnimated) {
+			el.classList.add('leaflet-zoom-animated');
+		}
 
-    el.onselectstart = L.Util.falseFn;
-    el.onmousemove = L.Util.falseFn;
+		// No need to trigger 'onload' for vectors, is there (the reason would be to keep the
+		// interface 1-to-1 with images.
+		//
+		//L.bind(this.fire, this, 'load')();    // call immediately
+
+		el.onselectstart = L.Util.falseFn;
+		el.onmousemove = L.Util.falseFn;
 
 		this.getPane().appendChild(el);
 		this._initInteraction();
@@ -66,11 +66,11 @@ L.ImageOverlay2 = L.Layer.extend({
 		return this;
 	},
 
-    /*
-    * What is this 'interaction', anyways?
-    */
+	/*
+	* What is this 'interaction', anyways?
+	*/
 	_initInteraction: function () {
-    console.log( "Interactive: "+ this.options.interactive );
+    //console.log( "Interactive: "+ this.options.interactive );
 
 		if (this.options.interactive) {
 		  var el = this.svgElem;
@@ -78,12 +78,12 @@ L.ImageOverlay2 = L.Layer.extend({
 
       // Note: Trying to disabled "dual panning" if the app makes 'svgElem' draggable (= can move above the map);
       //      we don't want also the map to move around.
-      //		  
+      //
       // If we have this on, croc can be dragged relative the map (though it seems jerky),
       // but the "open" map areas won't pan, either (which is not what we want). AK150215
       //
       //L.DomEvent.disableClickPropagation(el);
-		  
+
 		  L.DomEvent.on(el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
 				this._fireMouseEvent, this);
 		}
@@ -120,69 +120,68 @@ L.ImageOverlay2 = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		var bounds = L.bounds(
-			this._map._latLngToNewLayerPoint( this._bounds.getNorthWest(), e.zoom, e.center ),
-		  this._map._latLngToNewLayerPoint( this._bounds.getSouthEast(), e.zoom, e.center )
+			this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
+		  this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center)
 		);
 
-		var offset = bounds.min.add( bounds.getSize()._multiplyBy((1 - 1 / e.scale) / 2) );
+		var offset = bounds.min.add(bounds.getSize()._multiplyBy((1 - 1 / e.scale) / 2));
 
-		L.DomUtil.setTransform( this.svgElem, offset, e.scale );
+		L.DomUtil.setTransform(this.svgElem, offset, e.scale);
 	},
 
-  /*
-  * 
-  */
+	/*
+	*
+	*/
 	_reset: function () {
-    console.log( "EVENT SVG viewReset" );
-    //console.log( this._map );
+		//console.log( "EVENT SVG viewReset" );
+		//console.log( this._map );
 
-    var el = this.svgElem;
-    
+		var el = this.svgElem;
+
 		var bounds = L.bounds(
-		      this._map.latLngToLayerPoint( this._bounds.getNorthWest() ),
-		      this._map.latLngToLayerPoint( this._bounds.getSouthEast() )
-		    ),
+		      this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+		      this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		    size = bounds.getSize();
 
-    if (!this._initial) {
-      this._initial = true;
-		  el.setAttribute( "viewBox", [0, 0, size.x, size.y].join(" ") );
-    }
-    
-    //console.log( "initial size: " + this._initialSize.x +" "+ this._initialSize.y );
-    //console.log( "current size: " + size.x +" "+ size.y );
-    
-    //console.log( "setPosition: " + bounds.min.x +" "+ bounds.min.y );
+		if (!this._initial) {
+			this._initial = true;
+			el.setAttribute('viewBox', [0, 0, size.x, size.y].join(' '));
+		}
+
+		//console.log( "initial size: " + this._initialSize.x +" "+ this._initialSize.y );
+		//console.log( "current size: " + size.x +" "+ size.y );
+
+		//console.log( "setPosition: " + bounds.min.x +" "+ bounds.min.y );
 
 		L.DomUtil.setPosition(el, bounds.min);
-    
+
 		el.style.width  = size.x + 'px';
 		el.style.height = size.y + 'px';
 	},
-	
+
 	/*
-	* Conversion of LatLng coordinates to/from SVG coordinates. 
+	* Conversion of LatLng coordinates to/from SVG coordinates.
 	*
 	* Note: For a normal image, this would mean conversion from/to pixel coordinates
 	*      (which feature is not in the 'ImageOverlay' API but could be).
 	*
 	* TBD. Which are the right conversion functions here, or should we use 'distance()'? AK150215
 	*/
-	latLngToSvgPoint: function( latLng ) {  // (LatLng) -> Point
+	latLngToSvgPoint: function(latLng) {  // (LatLng) -> Point
 
-    console.log( this._map );
-    console.log( this._map.latLngToLayerPoint );
-    
-    var p= this._map.latLngToLayerPoint( latLng );
-    
-    return p;
+		//console.log( this._map );
+		//console.log( this._map.latLngToLayerPoint );
+
+		var p = this._map.latLngToLayerPoint(latLng);
+
+		return p;
 	},
-	
-	svgPointToLatLng: function( p ) {   // (Point) -> LatLng
 
-    var latlng= this._map.layerPointToLatLng( p );
-    
-    return latlng;
+	svgPointToLatLng: function(p) {   // (Point) -> LatLng
+
+		var latlng = this._map.layerPointToLatLng(p);
+
+		return latlng;
 	}
 });
 

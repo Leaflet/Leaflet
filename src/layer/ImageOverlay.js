@@ -167,7 +167,7 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_reset: function () {
-    console.log( "EVENT IMG reset" );
+    //console.log( "EVENT IMG reset" );
 
 		var el = this._el,
 		    bounds = new L.Bounds(

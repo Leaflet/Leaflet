@@ -129,8 +129,8 @@ L.DomEvent = {
 		return this;
 	},
 
-    // This is for one-time event propagation stopping (i.e. for the event 'e' instance only). 
-    // See -> http://stackoverflow.com/questions/387736/how-to-stop-event-propagation-with-inline-onclick-attribute 
+    // This is for one-time event propagation stopping (i.e. for the event 'e' instance only).
+    // See -> http://stackoverflow.com/questions/387736/how-to-stop-event-propagation-with-inline-onclick-attribute
     //
 	stopPropagation: function (e) {
 
