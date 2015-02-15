@@ -61,10 +61,10 @@
 
     // Find the min & max coordinates for bounds
     //
-    var bounds = boundsAddMargin_km( 
+    var bounds = boundsAddMargin_m( 
       map,
       L.latLngBounds( data.map( function(d) { return L.latLng(d.lat, d.lng); } ) ),
-      1.0 );
+      10000 /*m*/ );
 
     console.log(bounds);
 
@@ -112,13 +112,17 @@
   // Helper functions
 
   /*
-  * Extend the 'bounds' by 'margin_km' to every direction
+  * Extend the 'bounds' by 'margin_m' to every direction
   */
-  function boundsAddMargin_km( map, bounds, margin_km ) {   // (Map, Bounds, num) -> Bounds
+  function boundsAddMargin_m( map, bounds, margin_m ) {   // (Map, LatLngBounds, num) -> LatLngBounds
     
-    // TBD
+    var newSW = bounds.getSouthWest().toBounds(margin_m).getSouthWest();
+    var newNE = bounds.getNorthEast().toBounds(margin_m).getNorthEast();
+
+    console.log( bounds.getSouthWest() );
+    console.log( newSW );    
     
-    return bounds;
+    return L.latLngBounds( newSW, newNE );
   }
     
 </script>
