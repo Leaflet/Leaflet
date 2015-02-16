@@ -555,7 +555,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/perliedman/leaflet-tilejson">leaflet-tilejson</a>
+			<a href="https://github.com/kartena/leaflet-tilejson">leaflet-tilejson</a>
 		</td><td>
 			Adds support for the <a href="https://github.com/mapbox/TileJSON">TileJSON</a> specification to Leaflet.
 		</td><td>
