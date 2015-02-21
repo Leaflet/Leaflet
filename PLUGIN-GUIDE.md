@@ -113,7 +113,7 @@ Function, method and property names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.
 
 If you have a lot of arguments in your function, consider accepting an options object instead
-(putting default values where possible so that users don't need to specify all of them):
+(putting default values where possible so that users don't need specify all of them):
 
 ```js
 // bad

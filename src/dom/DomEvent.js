@@ -11,9 +11,6 @@ L.DomEvent = {
 
 		if (typeof types === 'object') {
 			for (var type in types) {
-                // BUG? This looks rather wrong. Shouldn't it be ('context' not used, function got to its slot):   AK150215
-				//this._on(obj, type, fn, context);
-                //
 				this._on(obj, type, types[type], fn);
 			}
 		} else {
@@ -129,9 +126,6 @@ L.DomEvent = {
 		return this;
 	},
 
-    // This is for one-time event propagation stopping (i.e. for the event 'e' instance only).
-    // See -> http://stackoverflow.com/questions/387736/how-to-stop-event-propagation-with-inline-onclick-attribute
-    //
 	stopPropagation: function (e) {
 
 		if (e.stopPropagation) {
