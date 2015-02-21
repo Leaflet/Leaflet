@@ -31,7 +31,7 @@ here are some tips for creating a helpful report that will make fixing it much e
 
  * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
  * Include **browser, OS and Leaflet version** info in the description.
- * Create a **simple test case** that demonstrates the bug (e.g. using [JSFiddle](http://jsfiddle.net/)).
+ * Create a **simple test case** that demonstrates the bug (e.g. using [JSFiddle](http://jsfiddle.net/) or [JS Bin](http://jsbin.com/)).
  * Check whether the bug can be reproduced in **other browsers**.
  * Check if the bug occurs in the stable version, master, or both.
  * *Bonus tip:* if the bug only appears in the master version but the stable version is fine,
@@ -125,7 +125,7 @@ From there you can click through folders/files to get details on their individua
 ## Improving Documentation
 
 The code of the live Leaflet website that contains all documentation and examples is located in the `gh-pages` branch
-and is automatically generated from a set of HTML and Markdown files by [Jekyll](https://github.com/mojombo/jekyll).
+and is automatically generated from a set of HTML and Markdown files by [Jekyll](http://jekyllrb.com/).
 
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
