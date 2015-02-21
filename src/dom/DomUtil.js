@@ -143,18 +143,8 @@ L.DomUtil = {
 	setTransform: function (el, offset, scale) {
 		var pos = offset || new L.Point(0, 0);
 
-    //console.log( L.DomUtil.TRANSFORM );   // WebkitTransform
 		el.style[L.DomUtil.TRANSFORM] =
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
-
-    if (false) {
-      var tag = el.tagName.toLowerCase();
-      if (tag === 'svg' || tag === 'img') {
-		    /*eslint-disable */
-        console.log( tag + ": "+ 'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '') );
-		    /*eslint-enable */
-      }
-    }
 	},
 
 	setPosition: function (el, point, no3d) { // (HTMLElement or SVGElement, Point[, Boolean])

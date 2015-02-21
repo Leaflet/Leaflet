@@ -2,9 +2,6 @@
 <!--
 - Demo on using SVG elements with interactive logic, within Leaflet.js. 
 - 
-- Unlike the earlier Leaflet/SVG integrations, this builds upon the 'ImageOverlay'
-- model, treating the SVG as a "picture" of fixed size, relative to the map. 
--
 - The application code is given free hands as to which SVG library to use, and
 - what to do with it (i.e. whole applications can be crafted).
 -->
@@ -20,14 +17,10 @@
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 
-  <!-- Snap.svg
-  -->
   <script src="http://cdn.jsdelivr.net/snap.svg/0.3.0/snap.svg-min.js"></script>
 
-  <!-- for debugging 
-  -->
   <style>
-    svg.leaflet-image-layer { border: thin solid red; }
+    svg.leaflet-active-layer { border: thin solid red; }
   </style>    
 </head>
 <body>
@@ -49,100 +42,67 @@
 
 		map.fitBounds(bounds);
 
-    //---
-    // Scale control
-    //
     L.control.scale( {
       metric: true,
       imperial: false
     } ).addTo(map);
 
-    //---
-    // SVG as an image
+    // The '<svg>' element must be created like this, if it's done programmatically.
+    // It will roam free in the DOM until passed on to Leaflet.
     //
-    // This is here to show that the existing (0.8.x) 'L.ImageOverlay' already shows
-    // SVG images, if they are loaded into an 'img' container.
+    var svgElem= L.DomUtil.create('svg');   //document.createElementNS('http://www.w3.org/2000/svg','svg');
+
+    // Add the svg to the map (and through there to the DOM) at large.
     //
-    if (true) {
-      var imageOverlay = new L.ImageOverlay("snapsvg_mascot.svg", bounds, {
-        opacity: 0.5,
-        interactive: false
-      });
-      map.addLayer(imageOverlay);
-    }
-
-    //---
-    // SVG as itself (can include logic)
+    // For some reason, the loading seems more snappy, if we do this here (and not after
+    // the SVG has been populated).
     //
-    if (true) {
-      // The '<svg>' element must be created like this, if it's done programmatically.
-      // It will roam free in the DOM until Leaflet shows it where to sit.
-      //
-      var svgElem= L.DomUtil.create('svg');   //document.createElementNS('http://www.w3.org/2000/svg','svg');
+    var overlay = L.activeOverlay( svgElem, bounds, {
+      // This is a bit vague - the croc gets the events even if we have this 'false'.
+      //interactive: false
+    });
+  
+    var S= Snap( svgElem );
 
-      // Add the svg to the map (and through there to the DOM) at large.
-      //
-      // This needs a patched Leaflet - image source is an SVG element.
-      //
-      // For some reason, the loading seems more snappy, if we do this here (and not after
-      // the SVG has been populated).
-      //
-      var overlay = L.imageOverlay2( svgElem, bounds, {
-        //opacity: 0.8,     // not available
+    // Note: Can include the mascot SVG in the HTML if needed (for packaging of Leaflet).
+    //
+    Snap.load( "snapsvg_mascot.svg", function (croc) {    /* (SVG Element) */
 
-        // This is a bit vague - the croc gets the events even if we have this 'false'.
-        //
-        interactive: true
-      });
-    
-      // Add SVG element in use and created by Snap.svg
+      // traverse and change attr before SVG is even added to the page
       //
-      var S= Snap( svgElem );
-    
-      // tbd. could possibly include the mascot in the HTML (enclose full demo in one file)
+      croc.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
+
+      var g = croc.select("g");
+      g.drag();     // make croc draggable
+
+      // Needed so that we don't get double dragging - i.e. the croc gets dragged above
+      // a stationary map, the map won't move.
       //
-      Snap.load( "snapsvg_mascot.svg", function (root) {    /* (SVG Element) */
-        
-        // traverse and change attr before SVG is even added to the page
-        //
-        root.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
-
-        var g = root.select("g");
-        S.append(g);
-        g.drag();     // make croc draggable
-
-        // This does not work, trying to disable map panning in the area of the croc. AK150215 
-        // 
-        //L.DomEvent.disableClickPropagation(g);
-
-        // Needed so that we don't get double dragging - i.e. the croc gets dragged above
-        // a stationary map, the map won't move.
-        //
-        g.mousedown( function(e) {
-          L.DomEvent.stop(e);
-        } );
-
-        prepareCrocAnim( g );
+      g.mousedown( function(e) {
+        L.DomEvent.stop(e);
       } );
 
-      // 100 x 100 m square, from (0,0)
-      //
-      S.rect( 0,0, 100,100, 10,10 )    // last params: edge rounding radius
-        .attr( {
-          stroke: "#f00",
-          strokeWidth: 2
-        } );
+      prepareCrocAnim( g );
 
-      //S.text( 200, 100, "*** SVG ***" );
+      S.append(g);
+    } );
 
-		  map.addLayer(overlay);
-    }
+    // 100 x 100 m square, from (0,0)
+    //
+    S.rect( 0,0, 100,100, 10,10 )    // last params: edge rounding radius
+      .attr( {
+        stroke: "#f00",
+        strokeWidth: 2
+      } );
+
+    //S.text( 200, 100, "Active Overlay" );
+
+    map.addLayer(overlay);
 
     //---
     // Following code adopted from http://snapsvg.io home page
     //
     function prepareCrocAnim( SVG_croc ) {    // (SVG element)    
-      //console.log( "Croc: "+ SVG_croc );
 
       var SVG_head = SVG_croc.select("#upper-head"),
           SVG_jaw = SVG_croc.select("#upper-jaw"),
