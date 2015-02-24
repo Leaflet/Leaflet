@@ -213,6 +213,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/hosuaby/Leaflet.SmoothMarkerBouncing">Leaflet.SmoothMarkerBouncing</a>
+		</td><td>
+			Smooth animation of marker bouncing for Leaflet.
+		</td><td>
+			<a href="https://github.com/hosuaby">Alexei KLENIN</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/makinacorpus/Leaflet.TextPath">Leaflet.TextPath</a>
 		</td><td>
 			Allows you to draw text along Polylines.
