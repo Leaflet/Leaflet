@@ -1535,6 +1535,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mahmoodvcs">Mahmood Dehghan</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Eclipse1979/leaflet-slider">Leaflet.Slider</a>
+		</td>
+		<td>
+			Adds a <code>&lt;input type="range"&gt;</code> slider that calls a function every time its input is changed (<a href="https://github.com/Eclipse1979/leaflet-slider">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/Eclipse1979">EPP</a>
+		</td>
+	</tr>
 
 </table>
 
