@@ -27,10 +27,10 @@ function hint(msg, args) {
 }
 
 desc('Check Leaflet source for errors with ESLint');
-task('lint', {async: true}, hint('Checking for JS errors...', 'src --config build/eslintrc.json'));
+task('lint', {async: true}, hint('Checking for JS errors...', 'src --config .eslintrc'));
 
 desc('Check Leaflet specs source for errors with ESLint');
-task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/suites --config spec/eslintrc.json'));
+task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/suites --config spec/.eslintrc'));
 
 desc('Combine and compress Leaflet source files');
 task('build', {async: true}, function (compsBase32, buildName) {
