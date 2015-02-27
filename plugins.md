@@ -538,6 +538,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/Estimap/Spectrum4Leaflet">Spectrum4Leaflet</a>
+		</td><td>
+			Tools for using Spectrum Spatial Server services with leaflet. This plugin supports: map service, tile service, feature service. It has layers, legend and feature controls.
+		</td><td>
+			<a href="https://github.com/SVoyt">SVoyt</a>, <a href="https://github.com/Estimap">ESTI MAP</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a>
 		</td><td>
 			<a href="http://trac.osgeo.org/proj4js/">Proj4js</a> integration plugin, allowing you to use all kinds of weird projections in Leaflet.
