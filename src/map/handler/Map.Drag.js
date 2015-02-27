@@ -4,6 +4,7 @@
 
 L.Map.mergeOptions({
 	dragging: true,
+	touchPan: true,
 
 	inertia: !L.Browser.android23,
 	inertiaDeceleration: 3400, // px/s^2
@@ -19,7 +20,8 @@ L.Map.Drag = L.Handler.extend({
 		if (!this._draggable) {
 			var map = this._map;
 
-			this._draggable = new L.Draggable(map._mapPane, map._container);
+
+			this._draggable = new L.Draggable(map._mapPane, map._container, map.options.touchPan);
 
 			this._draggable.on({
 				down: this._onDown,

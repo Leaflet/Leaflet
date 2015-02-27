@@ -5,7 +5,6 @@
 L.Draggable = L.Evented.extend({
 
 	statics: {
-		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
 		END: {
 			mousedown: 'mouseup',
 			touchstart: 'touchend',
@@ -20,15 +19,17 @@ L.Draggable = L.Evented.extend({
 		}
 	},
 
-	initialize: function (element, dragStartTarget) {
+	initialize: function (element, dragStartTarget, touchDisabled) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
+
+		this._start = (L.Browser.touch && !touchDisabled) ? ['touchstart', 'mousedown'] : ['mousedown'];
 	},
 
 	enable: function () {
 		if (this._enabled) { return; }
 
-		L.DomEvent.on(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
+		L.DomEvent.on(this._dragStartTarget, this._start.join(' '), this._onDown, this);
 
 		this._enabled = true;
 	},
@@ -36,7 +37,7 @@ L.Draggable = L.Evented.extend({
 	disable: function () {
 		if (!this._enabled) { return; }
 
-		L.DomEvent.off(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
+		L.DomEvent.off(this._dragStartTarget, this._start.join(' '), this._onDown, this);
 
 		this._enabled = false;
 		this._moved = false;
