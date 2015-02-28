@@ -26,7 +26,7 @@ L.Class.extend = function (props) {
 
 	NewClass.prototype = proto;
 
-	//inherit parent's statics
+	// inherit parent's statics
 	for (var i in this) {
 		if (this.hasOwnProperty(i) && i !== 'prototype') {
 			NewClass[i] = this[i];
