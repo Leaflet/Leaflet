@@ -40,13 +40,17 @@
                    L.latLng( 60.18952, 24.95497 )    // SE
                  );
 
+    // Traditional Leaflet rectangle to mark the bounds
+    //
+    L.rectangle( bounds, {color: "#ff7800", weight: 1} ).addTo(map);
+
 		map.fitBounds(bounds);
 
     L.control.scale( {
       metric: true,
       imperial: false
     } ).addTo(map);
-
+    
     // The '<svg>' element must be created like this, if it's done programmatically.
     // It will roam free in the DOM until passed on to Leaflet.
     //
@@ -101,6 +105,104 @@
       } );
 
     map.addLayer(overlay);
+
+    //---
+    // Make a circle in the center of the map, by pushing 'c'. This helps test
+    // '.latLngToSvgPoint()' works on all zooms.
+    //
+    document.onkeydown = function(ev) {
+      ev = ev || window.event;
+      
+      switch (ev.keyCode) {
+      case 67:  // 'c'
+        var center = map.getCenter();   // current center on the screen
+        //console.log(center.lat, center.lng);
+
+        var zoom = map.getZoom();       // current zoom (s.a. 16)
+        //console.log( zoom );
+        
+        var p = overlay.latLngToSvgPoint(center);
+        //console.log(p.x, p.y);
+        S.circle(p.x,p.y,5).attr( {
+          style: "fill: " + colorByZoom(zoom) +";"
+        } );
+        break;
+      }
+    }
+
+    //---
+    // Color for circles, based on zoom level
+    //
+    function colorByZoom(zoom) {    // (int) -> str
+      switch(zoom) {
+      case 14: return "yellow";
+      case 15: return "purple";
+      case 16: return "red";      // default
+      case 17: return "blue";
+      case 18: return "orange";
+      //
+      default: return "black";
+      }
+    }
+    
+    //---
+    // initially, and on Zoom: check that '.latLngToSvgPoint' gives right results
+    //
+    (function() {
+      var nw= bounds.getNorthWest();    // should lead to (0,0) in SVG coords
+      var se= bounds.getSouthEast();
+
+      var dx= bounds.getNorthEast().distanceTo(nw);   // width (m = SVG units)
+      var dy= bounds.getSouthWest().distanceTo(nw);   // height (m = SVG units)
+
+      var p1= L.point(0,0);     // what bounds NW should match in SVG coords
+      var p2= L.point(dx,dy);   // what bounds SE should match in SVG coords
+
+      function assertProjection() {
+        var errors = [];
+        
+        // LatLng -> SVG
+        //
+        var topLeft = overlay.latLngToSvgPoint(nw);
+        var bottomRight = overlay.latLngToSvgPoint(se);
+        
+        console.log( "Top left should be "+ p1 +": "+ topLeft );
+        console.log( "Bottom right should be "+ p2 +": "+ bottomRight );
+
+        if (topLeft.distanceTo(p1) > 0.05) {
+          errors.push( "Top left should be "+ p1 +", not "+ topLeft );
+        }
+        if (bottomRight.distanceTo(p1) > 0.05) {
+          errors.push( "Bottom right should be "+ p2 +", not "+ bottomRight );
+        }
+        
+        // ...and SVG -> LatLng
+        //
+        var nw2 = overlay.svgPointToLatLng(p1);
+        var se2 = overlay.svgPointToLatLng(p2);
+
+        console.log( "NW should be "+ nw2 +": "+ nw );
+        console.log( "SE should be "+ se2 +": "+ se );
+        
+        if (nw.distanceTo(nw2) > 0.05) {
+          errors.push( "NW should be "+ nw2 +": "+ nw );
+        }
+        if (se.distanceTo(se2) > 0.05) {
+          errors.push( "SE should be "+ se2 +": "+ se );
+        }
+        
+        // ...and report
+        //
+        if (errors.length > 0) {
+          alert( "Projections are wrong!\n\n" + errors.join("\n") );
+        }
+      }
+      assertProjection();   // with default zoom
+
+      map.on('zoomend', function(e) {
+        assertProjection();   // after zoom changed
+      } );
+    }());
 
     //---
     // Following code adopted from http://snapsvg.io home page

@@ -35,7 +35,8 @@ L.ActiveOverlay = L.Layer.extend({
 		// Set by '._reset()':
 		//
 		// this._initialized: boolean
-		// this._top: Point             // NW corner in layer coordinates
+		// this._svgWidth: number
+		// this._factor: number
 
 		L.setOptions(this, options);
 	},
@@ -147,23 +148,38 @@ L.ActiveOverlay = L.Layer.extend({
 	},
 
 	/*
-	*
+	* Called at 'onAdd' and 'viewreset'
 	*/
 	_reset: function () {
 		var el = this._svgElem;
 
+    // Pixels from the top left of the map, if the map hasn't been panned
+    //
 		var bounds = L.bounds(
-		      this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-		      this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
-		    size = bounds.getSize();
+      this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+      this._map.latLngToLayerPoint(this._bounds.getSouthEast()));
+      
+    var size = bounds.getSize();    // size in screen pixels
 
+    //console.log( "LLBounds: "+ this._bounds.getNorthWest() +" "+ this._bounds.getSouthEast() );
+    console.log( "Bounds: "+ bounds.min +" "+ bounds.max );
+    console.log( "Size: "+ size );
+    
 		if (!this._initial) {
 			this._initial = true;
+			
+			// The actual dimensions (in meters) get anchored in the SVG 'viewBox' properties
+			// (and don't change by zooming or panning). These are the SVG coordinate dimensions
+			// of the bounding box.
+			//
 			el.setAttribute('viewBox', [0, 0, size.x, size.y].join(' '));
+			this._svgWidth = size.x; 
+			this._factor = 1.0;
+		} else {
+		  this._factor = size.x / this._svgWidth;     // pixel's size in meters (note: syntax highlighting problem with SEE')
 		}
 
 		L.DomUtil.setPosition(el, bounds.min);
-		this._top = bounds.min;
 
 		el.style.width  = size.x + 'px';
 		el.style.height = size.y + 'px';
@@ -174,18 +190,24 @@ L.ActiveOverlay = L.Layer.extend({
 	*
 	* Note: For a normal image, this would mean conversion from/to pixel coordinates
 	*      (which feature is not in the 'ImageOverlay' API but could be).
+	*
+	* Q: We're currently using the normal 'Point' object for the SVG coordinates, but 
+	*    these are conceptually different than the pixel coordinates. Is this okay, or
+	*    should a special 'SvgPoint' be made to be more specific?
 	*/
-	latLngToSvgPoint: function(latLng) {  // (LatLng) -> Point
-    var offset = this._top;   // same as: L.DomUtil.getPosition(this._svgElem); (cached by 'L.DomUtil.setPosition')
-    var p = this._map.latLngToLayerPoint(latLng).subtract(offset);
+	latLngToSvgPoint: function(latLng) {  // (LatLng) -> SvgPoint
+    var offset = L.DomUtil.getPosition(this._svgElem);    // offset in screen pixels, without panning
+
+    var p = this._map.latLngToLayerPoint(latLng)._subtract(offset)._divideBy(this._factor);
 		return p;
 	},
 
   // Note: This has not been tested!!
   //
-	svgPointToLatLng: function(p) {   // (Point) -> LatLng
-    var offset = this._top;
-		var latlng = this._map.layerPointToLatLng(p.add(offset));
+	svgPointToLatLng: function(p) {   // (SvgPoint) -> LatLng
+    var offset = L.DomUtil.getPosition(this._svgElem);
+
+		var latlng = this._map.layerPointToLatLng( p.multiplyBy(this._factor)._add(offset) );
 		return latlng;
 	}
 });
