@@ -104,6 +104,11 @@
         style: "fill: white; stroke: #000000;  font-size: 48px;"
       } );
 
+    S.text( 170, 450, "Press 'c'" )
+      .attr( {
+        style: "fill: gray; font-size: 24px;"
+      } );
+
     map.addLayer(overlay);
 
     //---
@@ -116,13 +121,9 @@
       switch (ev.keyCode) {
       case 67:  // 'c'
         var center = map.getCenter();   // current center on the screen
-        //console.log(center.lat, center.lng);
-
         var zoom = map.getZoom();       // current zoom (s.a. 16)
-        //console.log( zoom );
         
         var p = overlay.latLngToSvgPoint(center);
-        //console.log(p.x, p.y);
         S.circle(p.x,p.y,5).attr( {
           style: "fill: " + colorByZoom(zoom) +";"
         } );
@@ -162,6 +163,7 @@
       var p1= L.point(0,0);                   // what bounds NW should match in SVG coords
       var p2= L.point(svgWidth,svgHeight);    // what bounds SE should match in SVG coords
 
+      //---
       // Ideally, the distance measurements should give the SVG viewbox size.
       //
       // Maybe I'm not understanding them correctly, but it seems that the '.distanceTo'
@@ -181,8 +183,6 @@
 
         var p3= L.point(westEast,northSouth);
         
-        console.log( "Measures: "+ p3 +" should be "+p2 );
-
         if (p3.distanceTo(p2) > 0.5) {
           console.log( "ERROR: Map measures are wrong: " + p3 +" vs. "+ p2 );
         }
@@ -198,14 +198,11 @@
         var topLeft = overlay.latLngToSvgPoint(nw);
         var bottomRight = overlay.latLngToSvgPoint(se);
         
-        console.log( "Top left should be "+ p1 +": "+ topLeft );
-        console.log( "Bottom right should be "+ p2 +": "+ bottomRight );
-
-        console.log( topLeft.distanceTo(p1) );
+        //console.log( topLeft.distanceTo(p1) );
         if (topLeft.distanceTo(p1) > 0.51) {
           errors.push( "Top left should be "+ p1 +", not "+ topLeft );
         }
-        console.log( bottomRight.distanceTo(p1) );
+        //console.log( bottomRight.distanceTo(p1) );
         if (bottomRight.distanceTo(p2) > 0.51) {
           errors.push( "Bottom right should be "+ p2 +", not "+ bottomRight );
         }
@@ -218,14 +215,11 @@
         var nw2 = overlay.svgPointToLatLng(p1);
         var se2 = overlay.svgPointToLatLng(p2);
 
-        console.log( "NW should be "+ nw2 +": "+ nw );
-        console.log( "SE should be "+ se2 +": "+ se );
-        
-        console.log( nw.distanceTo(nw2) );    // 0.38..., 0.21....
+        //console.log( nw.distanceTo(nw2) );    // 0.38..., 0.21....
         if (nw.distanceTo(nw2) > 1.0) {
           errors.push( "NW should be "+ nw2 +": "+ nw );
         }
-        console.log( se.distanceTo(se2) );    // 0.19..., 0.76...
+        //console.log( se.distanceTo(se2) );    // 0.19..., 0.76...
         if (se.distanceTo(se2) > 1.0) {
           errors.push( "SE should be "+ se2 +": "+ se );
         }
@@ -240,14 +234,11 @@
 
       // Check after zoom changes
       //
-      // Note: with zoom levels <= 14, inaccuracies start to creep in. Probably okay 
+      // Note: with zoom levels <= 14, inaccuracies start to creep in. Probably okay
       //      (log them on the console but don't give alerts).
       //
       map.on('zoomend', function(e) {
-        var zoom = map.getZoom();
-        
-        console.log("Zoom: "+ zoom);
-        assertProjection( zoom >= 15 );
+        assertProjection( map.getZoom() >= 15 );
       } );
     }());
 
