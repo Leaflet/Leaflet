@@ -137,26 +137,26 @@ L.ActiveOverlay = L.Layer.extend({
 		L.DomUtil.setTransform(this._svgElem, offset, e.scale);
 	},
 
-	_reset: function (ev) {      // ([Event]) -> 
+	_reset: function () {      // ([Event]) ->
 		var el = this._svgElem;
 
 		if (!this._initial) {
 			this._initial = true;
 
-      // Find the width and height of the bounding box, in meters.
-      //
-      var nw = this._bounds.getNorthWest();
+			// Find the width and height of the bounding box, in meters.
+			//
+			var nw = this._bounds.getNorthWest();
 
-      var mWidth= nw.distanceTo( this._bounds.getNorthEast() );    // width (m = SVG units)
-      var mHeight= nw.distanceTo( this._bounds.getSouthWest() );   // height (m = SVG units)
-      
+			var mWidth = nw.distanceTo(this._bounds.getNorthEast());    // width (m = SVG units)
+			var mHeight = nw.distanceTo(this._bounds.getSouthWest());   // height (m = SVG units)
+
 			// The actual dimensions (in meters) get anchored in the SVG 'viewBox' properties
 			// (and don't change by zooming or panning). These are the SVG coordinate dimensions
 			// of the bounding box.
 			//
 			el.setAttribute('viewBox', [0, 0, mWidth, mHeight].join(' '));
 
-			this._svgSize = L.point( mWidth, mHeight );
+			this._svgSize = L.point(mWidth, mHeight);
 		}
 
 		// Pixels from the top left of the map, if the map hasn't been panned
@@ -167,13 +167,13 @@ L.ActiveOverlay = L.Layer.extend({
 
 		var size = pBounds.getSize();    // size in screen pixels
 
-    // Note: We're currently only considering the 'x' factor in latLngToSvgPoint
-    //      calculations. To be more precise, we could consider both (they are
-    //      close to each other but not completely the same).
-    //
-    console.log( "X factor: "+ (size.x / this._svgSize.x) );
-    console.log( "Y factor: "+ (size.y / this._svgSize.y) );
-    
+		// Note: We're currently only considering the 'x' factor in latLngToSvgPoint
+		//      calculations. To be more precise, we could consider both (they are
+		//      close to each other but not completely the same).
+		//
+		//console.log('X factor: ' + (size.x / this._svgSize.x));
+		//console.log('Y factor: ' + (size.y / this._svgSize.y));
+
 		this._factor = size.x / this._svgSize.x;
 
 		L.DomUtil.setPosition(el, pBounds.min);
