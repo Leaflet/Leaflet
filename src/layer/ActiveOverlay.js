@@ -86,10 +86,10 @@ L.ActiveOverlay = L.Layer.extend({
 	_initInteraction: function () {
 
 		if (this.options.interactive) {
-		  var el = this._svgElem;
-		  L.DomUtil.addClass(el, 'leaflet-interactive');
+			var el = this._svgElem;
+			L.DomUtil.addClass(el, 'leaflet-interactive');
 
-		  L.DomEvent.on(el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
+			L.DomEvent.on(el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
 				this._fireMouseEvent, this);
 		}
 	},
