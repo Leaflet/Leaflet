@@ -163,47 +163,20 @@
       var p1= L.point(0,0);                   // what bounds NW should match in SVG coords
       var p2= L.point(svgWidth,svgHeight);    // what bounds SE should match in SVG coords
 
-      //---
-      // Ideally, the distance measurements should give the SVG viewbox size.
-      //
-      // Maybe I'm not understanding them correctly, but it seems that the '.distanceTo'
-      // is at fault (this may be an issue unrelated to SVG?).
-      //
-      if (true) {
-        // Currently, '.distanceTo' gives 849.8960308984219 m compared to SVG 716 (+19%)
-        //                                579.974543920269 m compared to SVG 488 (+19%)
-        //
-        // Q: Why is that, cannot be right.
-        //
-        // Based on the screen (width of 100m scale control in pixels and the width of the SVG element),
-        // the SVG measures (716,488) seem right. Why is '.distanceTo' throwing values so far off?
-        //
-        var westEast= nw.distanceTo( bounds.getNorthEast() );   // width (m = SVG units)
-        var northSouth= nw.distanceTo( bounds.getSouthWest() );   // height (m = SVG units)
-
-        var p3= L.point(westEast,northSouth);
-        
-        if (p3.distanceTo(p2) > 0.5) {
-          console.log( "ERROR: Map measures are wrong: " + p3 +" vs. "+ p2 );
-        }
-      }
-
       function assertProjection(report) {   // (bool)
         var errors = [];
         
         // LatLng -> SVG
         //
-        // Note: When zooming, we seem to get 0.5m inaccuracies (which is okay).
-        //
         var topLeft = overlay.latLngToSvgPoint(nw);
         var bottomRight = overlay.latLngToSvgPoint(se);
         
-        //console.log( topLeft.distanceTo(p1) );
+        console.log( topLeft.distanceTo(p1) );
         if (topLeft.distanceTo(p1) > 0.51) {
           errors.push( "Top left should be "+ p1 +", not "+ topLeft );
         }
-        //console.log( bottomRight.distanceTo(p1) );
-        if (bottomRight.distanceTo(p2) > 0.51) {
+        console.log( bottomRight.distanceTo(p2) );
+        if (bottomRight.distanceTo(p2) > 1.0) {
           errors.push( "Bottom right should be "+ p2 +", not "+ bottomRight );
         }
         
@@ -215,11 +188,11 @@
         var nw2 = overlay.svgPointToLatLng(p1);
         var se2 = overlay.svgPointToLatLng(p2);
 
-        //console.log( nw.distanceTo(nw2) );    // 0.38..., 0.21....
+        console.log( nw.distanceTo(nw2) );    // 0.38..., 0.21....
         if (nw.distanceTo(nw2) > 1.0) {
           errors.push( "NW should be "+ nw2 +": "+ nw );
         }
-        //console.log( se.distanceTo(se2) );    // 0.19..., 0.76...
+        console.log( se.distanceTo(se2) );    // 0.19..., 0.76...
         if (se.distanceTo(se2) > 1.0) {
           errors.push( "SE should be "+ se2 +": "+ se );
         }

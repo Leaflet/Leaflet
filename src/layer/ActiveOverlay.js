@@ -34,8 +34,9 @@ L.ActiveOverlay = L.Layer.extend({
 
 		// Set by '._reset()':
 		//
-		// this._initialized: boolean
-		// this._factor: number
+		// this._initialized: boolean   (true)
+		// this._svgSize: Point         (constant)
+		// this._factor: number         (varies by the zoom level)
 
 		L.setOptions(this, options);
 	},
@@ -136,34 +137,46 @@ L.ActiveOverlay = L.Layer.extend({
 		L.DomUtil.setTransform(this._svgElem, offset, e.scale);
 	},
 
-	_reset: function () {
+	_reset: function (ev) {      // ([Event]) -> 
 		var el = this._svgElem;
-
-		// Pixels from the top left of the map, if the map hasn't been panned
-		//
-		var bounds = L.bounds(
-			this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-			this._map.latLngToLayerPoint(this._bounds.getSouthEast()));
-
-		var size = bounds.getSize();    // size in screen pixels
 
 		if (!this._initial) {
 			this._initial = true;
 
+      // Find the width and height of the bounding box, in meters.
+      //
+      var nw = this._bounds.getNorthWest();
+
+      var mWidth= nw.distanceTo( this._bounds.getNorthEast() );    // width (m = SVG units)
+      var mHeight= nw.distanceTo( this._bounds.getSouthWest() );   // height (m = SVG units)
+      
 			// The actual dimensions (in meters) get anchored in the SVG 'viewBox' properties
 			// (and don't change by zooming or panning). These are the SVG coordinate dimensions
 			// of the bounding box.
 			//
-			// Q: Would it be more akin to Leaflet design to cache the initial 'size.x' as 'this._svgWidth'?
-			//   We now read it back from the viewBox property. Less code or less members? Both work.
-			//
-			el.setAttribute('viewBox', [0, 0, size.x, size.y].join(' '));
-			this._factor = 1.0;
-		} else {
-			this._factor = size.x / el.getAttribute('viewBox').split(' ')[2];
+			el.setAttribute('viewBox', [0, 0, mWidth, mHeight].join(' '));
+
+			this._svgSize = L.point( mWidth, mHeight );
 		}
 
-		L.DomUtil.setPosition(el, bounds.min);
+		// Pixels from the top left of the map, if the map hasn't been panned
+		//
+		var pBounds = L.bounds(
+			this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+			this._map.latLngToLayerPoint(this._bounds.getSouthEast()));
+
+		var size = pBounds.getSize();    // size in screen pixels
+
+    // Note: We're currently only considering the 'x' factor in latLngToSvgPoint
+    //      calculations. To be more precise, we could consider both (they are
+    //      close to each other but not completely the same).
+    //
+    console.log( "X factor: "+ (size.x / this._svgSize.x) );
+    console.log( "Y factor: "+ (size.y / this._svgSize.y) );
+    
+		this._factor = size.x / this._svgSize.x;
+
+		L.DomUtil.setPosition(el, pBounds.min);
 
 		el.style.width  = size.x + 'px';
 		el.style.height = size.y + 'px';
