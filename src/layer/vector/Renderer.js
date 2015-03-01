@@ -77,7 +77,9 @@ L.Map.include({
 	},
 
 	_getPaneRenderer: function (name) {
-		if (name == 'overlayPane' || typeof name === 'undefined') return false;
+		if (name == 'overlayPane' || typeof name == 'undefined') {
+			return false;
+		}
 
 		var renderer = this._paneRenderers[name];
 		if (typeof renderer === 'undefined') {
@@ -85,5 +87,5 @@ L.Map.include({
 			this._paneRenderers[name] = renderer;
 		}
 		return renderer;
-	},
+	}
 });
