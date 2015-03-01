@@ -77,12 +77,12 @@ L.Map.include({
 	},
 
 	_getPaneRenderer: function (name) {
-		if (name == 'overlayPane' || typeof name == 'undefined') {
+		if (name === 'overlayPane' || name === undefined) {
 			return false;
 		}
 
 		var renderer = this._paneRenderers[name];
-		if (typeof renderer === 'undefined') {
+		if (renderer === undefined) {
 			renderer = (L.SVG && L.svg({pane: name})) || (L.Canvas && L.canvas({pane: name}));
 			this._paneRenderers[name] = renderer;
 		}
