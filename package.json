@@ -4,7 +4,7 @@
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "copyfiles": "0.1.0",
-    "eslint": "^0.13.0",
+    "eslint": "^0.15.1",
     "happen": "~0.1.3",
     "jake": "~8.0.10",
     "karma": "~0.12.31",

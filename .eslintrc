@@ -10,6 +10,7 @@
     "space-after-keywords": 2,
     "no-lonely-if": 2,
     "comma-style": 2,
+    "indent": [2, "tab"],
     "no-underscore-dangle": 0,
     "no-constant-condition": 0,
     "no-multi-spaces": 0,
