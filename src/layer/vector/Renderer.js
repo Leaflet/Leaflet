@@ -64,7 +64,7 @@ L.Renderer = L.Layer.extend({
 L.Map.include({
 	// used by each vector layer to decide which renderer to use
 	getRenderer: function (layer) {
-		var renderer = layer.options.renderer || this.options.renderer || this._renderer;
+		var renderer = layer.options.renderer || this._getPaneRenderer(layer.options.pane) || this.options.renderer || this._renderer;
 
 		if (!renderer) {
 			renderer = this._renderer = (L.SVG && L.svg()) || (L.Canvas && L.canvas());
@@ -74,5 +74,16 @@ L.Map.include({
 			this.addLayer(renderer);
 		}
 		return renderer;
-	}
+	},
+
+	_getPaneRenderer: function (name) {
+		if (name == 'overlayPane' || typeof name === 'undefined') return false;
+
+		var renderer = this._paneRenderers[name];
+		if (typeof renderer === 'undefined') {
+			renderer = (L.SVG && L.svg({pane: name})) || (L.Canvas && L.canvas({pane: name}));
+			this._paneRenderers[name] = renderer;
+		}
+		return renderer;
+	},
 });
