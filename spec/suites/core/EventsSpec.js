@@ -358,15 +358,15 @@ describe('Events', function () {
 		});
 
 		it("doesn't call listeners to events that have been removed", function () {
-		    var obj = new L.Evented(),
-                spy = sinon.spy();
+			var obj = new L.Evented(),
+					spy = sinon.spy();
 
-		    obj.once('test', spy, obj);
-		    obj.off('test', spy, obj);
+			obj.once('test', spy, obj);
+			obj.off('test', spy, obj);
 
-		    obj.fire('test');
+			obj.fire('test');
 
-		    expect(spy.called).to.be(false);
+			expect(spy.called).to.be(false);
 		});
 
 		it('works if called from a context that doesnt implement #Events', function () {
