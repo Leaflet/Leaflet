@@ -69,7 +69,9 @@
     //
     var svgElem= L.DomUtil.create('svg');   //document.createElementNS('http://www.w3.org/2000/svg','svg');
     
-    var overlay = L.activeOverlay( svgElem, bounds );
+    var overlay = L.activeOverlay( svgElem, bounds, {
+      unit: 417   // SVG unit's size in m (adjusts so that the outcome looks like original D3 demo)
+    } );
     overlay.addTo(map);    
 
     var root= d3.select(svgElem);

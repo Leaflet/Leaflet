@@ -18,7 +18,8 @@ L.ActiveOverlay = L.Layer.extend({
 	 * Q: what does 'interactive' actually do for us? Maybe not needed?
 	 */
 	options: {
-		interactive: false
+		interactive: false,
+		unit: 1.0             // SVG units (meters)
 	},
 
 	/* Design note: either the caller (as in here) or us could create the 'svgElem'.
@@ -38,7 +39,7 @@ L.ActiveOverlay = L.Layer.extend({
 		// this._svgSize: Point         (constant)
 		// this._factor: number         (varies by the zoom level)
 
-		L.setOptions(this, options);
+		L.Util.setOptions(this, options);
 	},
 
 	onAdd: function () {
@@ -147,16 +148,18 @@ L.ActiveOverlay = L.Layer.extend({
 			//
 			var nw = this._bounds.getNorthWest();
 
-			var mWidth = nw.distanceTo(this._bounds.getNorthEast());    // width (m = SVG units)
-			var mHeight = nw.distanceTo(this._bounds.getSouthWest());   // height (m = SVG units)
+			var mWidth = nw.distanceTo(this._bounds.getNorthEast());    // width (m)
+			var mHeight = nw.distanceTo(this._bounds.getSouthWest());   // height (m)
+
+			var svgSize = L.point(mWidth, mHeight)._divideBy(this.options.unit);
 
 			// The actual dimensions (in meters) get anchored in the SVG 'viewBox' properties
 			// (and don't change by zooming or panning). These are the SVG coordinate dimensions
 			// of the bounding box.
 			//
-			el.setAttribute('viewBox', [0, 0, mWidth, mHeight].join(' '));
+			el.setAttribute('viewBox', [0, 0, svgSize.x, svgSize.y].join(' '));
 
-			this._svgSize = L.point(mWidth, mHeight);
+			this._svgSize = svgSize;
 		}
 
 		// Pixels from the top left of the map, if the map hasn't been panned
@@ -205,6 +208,6 @@ L.ActiveOverlay = L.Layer.extend({
 	}
 });
 
-L.activeOverlay = function (bounds, options) {
-	return new L.ActiveOverlay(bounds, options);
+L.activeOverlay = function (svgElem, bounds, options) {   // (SVGelem, LatLngBounds [, Object])
+	return new L.ActiveOverlay(svgElem, bounds, options);
 };
