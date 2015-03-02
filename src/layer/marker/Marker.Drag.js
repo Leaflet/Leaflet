@@ -46,7 +46,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    .fire('dragstart');
 	},
 
-	_onDrag: function () {
+	_onDrag: function (e) {
 		var marker = this._marker,
 		    shadow = marker._shadow,
 		    iconPos = L.DomUtil.getPosition(marker._icon),
@@ -58,10 +58,11 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		}
 
 		marker._latlng = latlng;
+		e.latlng = latlng;
 
 		marker
-		    .fire('move', {latlng: latlng})
-		    .fire('drag');
+		    .fire('move', e)
+		    .fire('drag', e);
 	},
 
 	_onDragEnd: function (e) {

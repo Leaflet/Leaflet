@@ -104,13 +104,15 @@ L.Draggable = L.Evented.extend({
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
+		this._lastEvent = e;
 		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
 	_updatePosition: function () {
-		this.fire('predrag');
+		var e = {originalEvent: this._lastEvent};
+		this.fire('predrag', e);
 		L.DomUtil.setPosition(this._element, this._newPos);
-		this.fire('drag');
+		this.fire('drag', e);
 	},
 
 	_onUp: function () {
