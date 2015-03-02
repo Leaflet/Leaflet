@@ -63,7 +63,7 @@ L.Map.Drag = L.Handler.extend({
 		}
 	},
 
-	_onDrag: function () {
+	_onDrag: function (e) {
 		if (this._map.options.inertia) {
 			var time = this._lastTime = +new Date(),
 			    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
@@ -78,8 +78,8 @@ L.Map.Drag = L.Handler.extend({
 		}
 
 		this._map
-		    .fire('move')
-		    .fire('drag');
+		    .fire('move', e)
+		    .fire('drag', e);
 	},
 
 	_onViewReset: function () {

@@ -26,13 +26,20 @@ L.ImageOverlay = L.Layer.extend({
 			}
 		}
 
+		if (this.options.interactive) {
+			L.DomUtil.addClass(this._image, 'leaflet-interactive');
+			this.addInteractiveTarget(this._image);
+		}
+
 		this.getPane().appendChild(this._image);
-		this._initInteraction();
 		this._reset();
 	},
 
 	onRemove: function () {
 		L.DomUtil.remove(this._image);
+		if (this.options.interactive) {
+			this.removeInteractiveTarget(this._image);
+		}
 	},
 
 	setOpacity: function (opacity) {
@@ -63,19 +70,6 @@ L.ImageOverlay = L.Layer.extend({
 			L.DomUtil.toBack(this._image);
 		}
 		return this;
-	},
-
-	_initInteraction: function () {
-		if (!this.options.interactive) { return; }
-		L.DomUtil.addClass(this._image, 'leaflet-interactive');
-		L.DomEvent.on(this._image, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
-				this._fireMouseEvent, this);
-	},
-
-	_fireMouseEvent: function (e, type) {
-		if (this._map) {
-			this._map._fireMouseEvent(this, e, type, true);
-		}
 	},
 
 	setUrl: function (url) {
