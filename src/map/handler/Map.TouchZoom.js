@@ -80,9 +80,12 @@ L.Map.TouchZoom = L.Handler.extend({
 		} else {
 			this._center = map.layerPointToLatLng(this._getTargetCenter());
 		}
+
 		this._zoom = map.getScaleZoom(this._scale);
 
-		map._animateZoom(this._center, this._zoom);
+		if (this._scale !== 1 || this._delta.x !== 0 || this._delta.y !== 0) {
+			map._animateZoom(this._center, this._zoom);
+		}
 	},
 
 	_onTouchEnd: function () {
