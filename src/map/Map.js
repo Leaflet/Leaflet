@@ -602,8 +602,8 @@ L.Map = L.Evented.extend({
 			originalEvent: e
 		};
 		if (e.type !== 'keypress') {
-			// TODO latlng isn't used, wrong latlng for markers
-			data.containerPoint = this.mouseEventToContainerPoint(e);
+			data.containerPoint = target instanceof L.Marker ?
+					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = this.layerPointToLatLng(data.layerPoint);
 		}
