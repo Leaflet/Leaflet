@@ -552,6 +552,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_tileReady: function (coords, err, tile) {
+		if (!this._map) { return; }
+
 		if (err) {
 			this.fire('tileerror', {
 				error: err,
