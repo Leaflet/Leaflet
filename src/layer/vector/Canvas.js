@@ -190,7 +190,8 @@ L.Canvas = L.Renderer.extend({
 
 		for (var id in this._layers) {
 			if (this._layers[id]._containsPoint(point)) {
-				this._layers[id]._fireMouseEvent(e);
+				L.DomEvent._fakeStop(e);
+				this._fireEvent(this._layers[id], e);
 			}
 		}
 	},
@@ -213,18 +214,22 @@ L.Canvas = L.Renderer.extend({
 			// if we just got inside the layer, fire mouseover
 			if (!layer._mouseInside) {
 				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
-				layer._fireMouseEvent(e, 'mouseover');
+				this._fireEvent(layer, e, 'mouseover');
 				layer._mouseInside = true;
 			}
 			// fire mousemove
-			layer._fireMouseEvent(e);
+			this._fireEvent(layer, e);
 
 		} else if (layer._mouseInside) {
 			// if we're leaving the layer, fire mouseout
 			L.DomUtil.removeClass(this._container, 'leaflet-interactive');
-			layer._fireMouseEvent(e, 'mouseout');
+			this._fireEvent(layer, e, 'mouseout');
 			layer._mouseInside = false;
 		}
+	},
+
+	_fireEvent: function (layer, e, type) {
+		this._map._fireDOMEvent(layer, e, type || e.type);
 	},
 
 	// TODO _bringToFront & _bringToBack, pretty tricky

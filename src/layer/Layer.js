@@ -25,6 +25,16 @@ L.Layer = L.Evented.extend({
 		return this._map.getPane(name ? (this.options[name] || name) : this.options.pane);
 	},
 
+	addInteractiveTarget: function (targetEl) {
+		this._map._targets[L.stamp(targetEl)] = this;
+		return this;
+	},
+
+	removeInteractiveTarget: function (targetEl) {
+		delete this._map._targets[L.stamp(targetEl)];
+		return this;
+	},
+
 	_layerAdd: function (e) {
 		var map = e.target;
 

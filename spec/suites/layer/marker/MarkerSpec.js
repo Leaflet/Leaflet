@@ -1,16 +1,25 @@
 describe("Marker", function () {
 	var map,
 		spy,
+		div,
 		icon1,
 		icon2;
 
 	beforeEach(function () {
-		map = L.map(document.createElement('div')).setView([0, 0], 0);
+		div = document.createElement('div');
+		div.style.height = '100px';
+		document.body.appendChild(div);
+
+		map = L.map(div).setView([0, 0], 0);
 		icon1 = new L.Icon.Default();
 		icon2 = new L.Icon.Default({
 			iconUrl: icon1._getIconUrl('icon') + '?2',
 			shadowUrl: icon1._getIconUrl('shadow') + '?2'
 		});
+	});
+
+	afterEach(function () {
+		document.body.removeChild(div);
 	});
 
 	describe("#setIcon", function () {
@@ -143,6 +152,19 @@ describe("Marker", function () {
 			expect(eventArgs.oldLatLng).to.be(beforeLatLng);
 			expect(eventArgs.latlng).to.be(afterLatLng);
 			expect(marker.getLatLng()).to.be(afterLatLng);
+		});
+	});
+
+	describe('events', function () {
+		it('fires click event when clicked', function () {
+			var spy = sinon.spy();
+
+			var marker = L.marker([0, 0]).addTo(map);
+
+			marker.on('click', spy);
+			happen.click(marker._icon);
+
+			expect(spy.called).to.be.ok();
 		});
 	});
 });
