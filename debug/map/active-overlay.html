@@ -68,6 +68,62 @@
   
     var S= Snap( svgElem );
 
+    /*
+    * Make Snap.svg's '<Element>.drag()' do the right thing, scaling to our overlay's
+    * ratio (which depends on the zooming).
+    *
+    * Note: we could provide this as an outside tool. We just need access to 'Snap'
+    *     and 'overlay'.
+    */
+    Snap.plugin( function (Snap, Element, Paper, glob, Fragment) {
+      var proto = Element.prototype;
+
+      var old_drag = proto.drag;
+      if (!old_drag) {
+        throw new Error( "'Element.drag' not found!" );
+      }
+
+      /*
+      * NOTE: The dragging performance seems to vary greatly by browser:
+      *     - Safari 8.0.3 (OS X) - adequate, not great (we optimized code below to avoid
+      *                           object creation because of this)
+      *     - Firefox 35.0.1 (OS X) - just amazing!
+      *     - Chrome: couldn't test due to their CORS policy
+      *
+      *     So.. it depends. AK030315
+      */
+      var DRAG_T0_KEY = 'dragTransform';  // initial transform string
+      var DRAG_RATIO_KEY = 'dragRatio';
+  
+      function dragStart() {
+        this.data( DRAG_T0_KEY, this.transform().local );
+        this.data( DRAG_RATIO_KEY, overlay._pixelsToSvgRatio( L.point(1,1) ) );    // size of a pixel in SVG (constant per zoom level)
+      }
+  
+      function dragMove (dx,dy) {    // (num,num)
+        var r = this.data(DRAG_RATIO_KEY);
+        this.transform( this.data(DRAG_T0_KEY) + "t"+ (dx*r.x)+" "+(dy*r.y) );
+      }
+  
+      function dragStop() {
+        this.removeData( DRAG_T0_KEY );
+        this.removeData( DRAG_RATIO_KEY );
+      }
+
+      proto.drag = function( move, start, stop ) {
+        // Note: the '.mousedown()' is needed so that we don't get double dragging - 
+        //      i.e. the croc gets dragged above a stationary map, the map won't move.
+        //
+        this.mousedown( function(e) { L.DomEvent.stop(e); } );
+      
+        if (!move) {
+          old_drag.call( this, dragMove, dragStart, dragStop );
+        } else {
+          old_drag.call( this, move, start, stop );   // bypass
+        }
+      };
+    } );
+
     // Note: Can include the mascot SVG in the HTML if needed (for packaging of Leaflet).
     //
     Snap.load( "snapsvg_mascot.svg", function (croc) {    /* (SVG Element) */
@@ -77,15 +133,7 @@
       croc.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
 
       var g = croc.select("g");
-      
-      // Note: the '.mousedown()' is needed so that we don't get double dragging - 
-      //      i.e. the croc gets dragged above a stationary map, the map won't move.
-      //
-      //      tbd. We should override Snapsvg's '.drag' in a way that makes these
-      //          Leaflet-specific things the default (or provide '.dragOnLeaflet').
-      //
-      g.drag( dragMove, dragBegin, dragEnd )
-       .mousedown( function(e) { L.DomEvent.stop(e); } );
+      g.drag();
 
       prepareCrocAnim( g );
 
@@ -99,8 +147,7 @@
         stroke: "#f00",
         strokeWidth: 2
       } )
-      .drag( dragMove, dragBegin, dragEnd )
-      .mousedown( function(e) { L.DomEvent.stop(e); } );
+      .drag();
 
     S.text( 200, 100, "Drag the croc" )
       .attr( {
@@ -218,37 +265,6 @@
       } );
     }());
 
-    /*
-    * Called by Snap.svg
-    *
-    * NOTE: This is performance challenged (jerky) on Safari 8.0.3 (OS X)
-    *     but Absolutely Gorgeous on Firefox 35.0.1 (OS X)
-    *     (on Chrome cannot test because of their CORS policy).
-    *
-    *     So.. it depends. AK030315
-    */
-    var DRAG_T0_KEY = 'dragTransform';  // initial transform string
-    var DRAG_RATIO_KEY = 'dragRatio';
-
-    function dragBegin() {
-      this.data( DRAG_T0_KEY, this.transform().local );
-      this.data( DRAG_RATIO_KEY, overlay.pixelsToSvgRatio() );    // constant during dragging (expecting no concurrent drag & zoom)
-    }
-
-    // Note: 'L.Util.throttle' used to be 'L.Util.limitExecByInterval'
-    //
-    // Note: Tried 'L.Util.throttle' here, but didn't get called at all.
-    // 
-    function dragMove (dx,dy) {    // (num,num)
-      var r = this.data(DRAG_RATIO_KEY);
-      this.transform( this.data(DRAG_T0_KEY) + "t"+ (dx/r.x)+" "+(dy/r.y) );
-    }
-
-    function dragEnd() {
-      this.removeData( DRAG_T0_KEY );
-      this.removeData( DRAG_RATIO_KEY );
-    }
-    
     //---
     // Following code adopted from http://snapsvg.io home page
     //

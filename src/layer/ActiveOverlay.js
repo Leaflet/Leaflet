@@ -177,7 +177,7 @@ L.ActiveOverlay = L.Layer.extend({
 		//console.log('X factor: ' + (size.x / this._svgSize.x));
 		//console.log('Y factor: ' + (size.y / this._svgSize.y));
 
-		this._factor = size.x / this._svgSize.x;
+		this._factor = size.x / this._svgSize.x;      // pixels / m
 
 		L.DomUtil.setPosition(el, pBounds.min);
 
@@ -206,16 +206,18 @@ L.ActiveOverlay = L.Layer.extend({
 		var latlng = this._map.layerPointToLatLng(p.multiplyBy(this._factor)._add(offset));
 		return latlng;
 	},
-	
+
 	/*
 	* Conversion of pixel dimensions (dx,dy) to/from SVG dimensions.
 	*
-	* Note: It makes more sense to provide the conversion factor, since when using
-	*      this (e.g. for drag handlers), performance is vital and we don't want to
-	*      create any GC:lable entities (s.a. arrays, points).
+	* Note: The ratio remains constant on a certain zoom level, so instead of calling
+	*      conversions per each drag event (for example), the upper level can cache
+	*      the ratios for (1,1) pixel and convert locally.
+	*
+	* Note: '_' preceding means we can destroy the argument.
 	*/
-	pixelsToSvgRatio: function() {    // () -> Point
-    return L.point( this._factor, this._factor );     // ready if we decide to have different ratio for x & y
+	_pixelsToSvgRatio: function(_p) {    // (Point) -> Point
+		return _p._divideBy( this._factor );
 	}
 });
 
