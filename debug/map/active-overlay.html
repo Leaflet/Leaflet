@@ -220,6 +220,12 @@
 
     /*
     * Called by Snap.svg
+    *
+    * NOTE: This is performance challenged (jerky) on Safari 8.0.3 (OS X)
+    *     but Absolutely Gorgeous on Firefox 35.0.1 (OS X)
+    *     (on Chrome cannot test because of their CORS policy).
+    *
+    *     So.. it depends. AK030315
     */
     var DRAG_T0_KEY = 'dragTransform';  // initial transform string
     var DRAG_RATIO_KEY = 'dragRatio';
