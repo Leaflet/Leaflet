@@ -217,7 +217,7 @@ L.ActiveOverlay = L.Layer.extend({
 	* Note: '_' preceding means we can destroy the argument.
 	*/
 	_pixelsToSvgRatio: function(_p) {    // (Point) -> Point
-		return _p._divideBy( this._factor );
+		return _p._divideBy(this._factor);
 	}
 });
 
