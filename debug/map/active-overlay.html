@@ -83,44 +83,47 @@
         throw new Error( "'Element.drag' not found!" );
       }
 
-      /*
-      * NOTE: The dragging performance seems to vary greatly by browser:
-      *     - Safari 8.0.3 (OS X) - adequate, not great (we optimized code below to avoid
-      *                           object creation because of this)
-      *     - Firefox 35.0.1 (OS X) - just amazing!
-      *     - Chrome: couldn't test due to their CORS policy
-      *
-      *     So.. it depends. AK030315
-      */
       var DRAG_T0_KEY = 'dragTransform';  // initial transform string
       var DRAG_RATIO_KEY = 'dragRatio';
-  
-      function dragStart() {
-        this.data( DRAG_T0_KEY, this.transform().local );
-        this.data( DRAG_RATIO_KEY, overlay._pixelsToSvgRatio( L.point(1,1) ) );    // size of a pixel in SVG (constant per zoom level)
-      }
-  
-      function dragMove (dx,dy) {    // (num,num)
-        var r = this.data(DRAG_RATIO_KEY);
-        this.transform( this.data(DRAG_T0_KEY) + "t"+ (dx*r.x)+" "+(dy*r.y) );
-      }
-  
-      function dragStop() {
-        this.removeData( DRAG_T0_KEY );
-        this.removeData( DRAG_RATIO_KEY );
-      }
 
-      proto.drag = function( move, start, stop ) {
+      // Note: We could change the API, to e.g. using an options object, 
+      //      and give a warning if the old like use seems to happen.
+      //
+      proto.drag = function( customMove, customStart, customStop ) {
+  
+        function dragStart() {
+          this.data( DRAG_T0_KEY, this.transform().local );
+          this.data( DRAG_RATIO_KEY, overlay._pixelsToSvgRatio( L.point(1,1) ) );    // size of a pixel in SVG (constant per zoom level)
+          
+          if (customStart) {
+            customStart.call(this);
+          }
+        }
+    
+        function dragMove (dx,dy) {    // (num,num)
+          var r = this.data(DRAG_RATIO_KEY);
+          this.transform( this.data(DRAG_T0_KEY) + "t"+ (dx*r.x)+" "+(dy*r.y) );
+          
+          if (customMove) {
+            customMove.call(this,dx,dy);    // note: this is now pixel coords
+          }
+        }
+    
+        function dragStop() {
+          this.removeData( DRAG_T0_KEY );
+          this.removeData( DRAG_RATIO_KEY );
+          
+          if (customStop) {
+            customStop.call(this);
+          }
+        }
+
         // Note: the '.mousedown()' is needed so that we don't get double dragging - 
         //      i.e. the croc gets dragged above a stationary map, the map won't move.
         //
         this.mousedown( function(e) { L.DomEvent.stop(e); } );
       
-        if (!move) {
-          old_drag.call( this, dragMove, dragStart, dragStop );
-        } else {
-          old_drag.call( this, move, start, stop );   // bypass
-        }
+        old_drag.call( this, dragMove, dragStart, dragStop );
       };
     } );
 
@@ -133,9 +136,12 @@
       croc.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
 
       var g = croc.select("g");
-      g.drag();
+      var h= new CrocAnim(g);
 
-      prepareCrocAnim( g );
+      g.drag( null, 
+            function() { h.muteAnimation(true); },  // drag start
+            function() { h.muteAnimation(false); }  // drag end
+      );
 
       S.append(g);
     } );
@@ -268,7 +274,7 @@
     //---
     // Following code adopted from http://snapsvg.io home page
     //
-    function prepareCrocAnim( SVG_croc ) {    // (SVG element)    
+    function CrocAnim( SVG_croc ) {    // (SVG element)    
 
       var SVG_head = SVG_croc.select("#upper-head"),
           SVG_jaw = SVG_croc.select("#upper-jaw"),
@@ -325,12 +331,38 @@
           }, 500, mina.elastic);
       }
 
-      SVG_croc.hover(open, 
-          function() {
-              clearId.push(setTimeout(close, 200));
-      });
+      //--- members ---
+      //
+      this._muted = false;
 
-    } // prepareCrocAnim
+      SVG_croc.hover(
+        function () {     // hover in
+          if (!this._muted) {
+            open();
+          }
+        }, 
+        function() {      // hover out
+          if (!this._muted) {
+            clearId.push(setTimeout(close, 200));
+          }
+        }
+      );
+
+      //--- methods ---
+
+      /*
+      * The 'hover' events may cause significant jerkiness in dragging (on Safari
+      * 8.0.3 they do, on Firefox 35.0.1 they don't), so it's best to mute them
+      * during the drags.
+      *
+      * NOTE: Funnily, just changing the structure of the code to allow this
+      *     muting seems to have taken the problem away. The croc got scared!! ;)
+      */
+      this.muteAnimation = function (mute) {    // (bool) ->
+        //this._muted = mute;
+      }
+
+    } // CrocAnim
         
 	</script>
 </body>
