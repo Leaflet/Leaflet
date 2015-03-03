@@ -77,14 +77,15 @@
       croc.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
 
       var g = croc.select("g");
-      g.drag( dragMove, dragBegin, dragEnd );
-
-      // Needed so that we don't get double dragging - i.e. the croc gets dragged above
-      // a stationary map, the map won't move.
+      
+      // Note: the '.mousedown()' is needed so that we don't get double dragging - 
+      //      i.e. the croc gets dragged above a stationary map, the map won't move.
       //
-      g.mousedown( function(e) {
-        L.DomEvent.stop(e);
-      } );
+      //      tbd. We should override Snapsvg's '.drag' in a way that makes these
+      //          Leaflet-specific things the default (or provide '.dragOnLeaflet').
+      //
+      g.drag( dragMove, dragBegin, dragEnd )
+       .mousedown( function(e) { L.DomEvent.stop(e); } );
 
       prepareCrocAnim( g );
 
@@ -97,7 +98,9 @@
       .attr( {
         stroke: "#f00",
         strokeWidth: 2
-      } );
+      } )
+      .drag( dragMove, dragBegin, dragEnd )
+      .mousedown( function(e) { L.DomEvent.stop(e); } );
 
     S.text( 200, 100, "Drag the croc" )
       .attr( {
@@ -218,28 +221,26 @@
     /*
     * Called by Snap.svg
     */
-    var DRAG_DATA_KEY = 'origMatrix';
+    var DRAG_T0_KEY = 'dragTransform';  // initial transform string
+    var DRAG_RATIO_KEY = 'dragRatio';
 
     function dragBegin() {
-      this.data( DRAG_DATA_KEY, this.transform().localMatrix );
+      this.data( DRAG_T0_KEY, this.transform().local );
+      this.data( DRAG_RATIO_KEY, overlay.pixelsToSvgRatio() );    // constant during dragging (expecting no concurrent drag & zoom)
     }
 
-    function dragMove(dx,dy) {    // (num,num)
-      //console.log( "Move "+ dx +" "+ dy );
-
-      var svgD = overlay._pixelsToSvgSize( L.point(dx,dy) );
-            
-      // Presumably, '<Matrix>.translate()' changes the underlying matrix? tbd 
-      //
-      var m= this.data(DRAG_DATA_KEY).clone().translate(svgD.x, svgD.y);
-
-      this.attr({
-        transform: m.toTransformString()
-      });      
+    // Note: 'L.Util.throttle' used to be 'L.Util.limitExecByInterval'
+    //
+    // Note: Tried 'L.Util.throttle' here, but didn't get called at all.
+    // 
+    function dragMove (dx,dy) {    // (num,num)
+      var r = this.data(DRAG_RATIO_KEY);
+      this.transform( this.data(DRAG_T0_KEY) + "t"+ (dx/r.x)+" "+(dy/r.y) );
     }
 
     function dragEnd() {
-      this.removeData( DRAG_DATA_KEY );
+      this.removeData( DRAG_T0_KEY );
+      this.removeData( DRAG_RATIO_KEY );
     }
     
     //---

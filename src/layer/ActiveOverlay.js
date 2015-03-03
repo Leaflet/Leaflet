@@ -210,10 +210,12 @@ L.ActiveOverlay = L.Layer.extend({
 	/*
 	* Conversion of pixel dimensions (dx,dy) to/from SVG dimensions.
 	*
-	* Note: The '_' beginning variant edits the point in-place (as similar Leaflet operators do).
+	* Note: It makes more sense to provide the conversion factor, since when using
+	*      this (e.g. for drag handlers), performance is vital and we don't want to
+	*      create any GC:lable entities (s.a. arrays, points).
 	*/
-	_pixelsToSvgSize: function(_p) {   // (Point) -> Point
-    return _p._divideBy(this._factor);
+	pixelsToSvgRatio: function() {    // () -> Point
+    return L.point( this._factor, this._factor );     // ready if we decide to have different ratio for x & y
 	}
 });
 
