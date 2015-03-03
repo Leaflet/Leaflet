@@ -205,6 +205,15 @@ L.ActiveOverlay = L.Layer.extend({
 
 		var latlng = this._map.layerPointToLatLng(p.multiplyBy(this._factor)._add(offset));
 		return latlng;
+	},
+	
+	/*
+	* Conversion of pixel dimensions (dx,dy) to/from SVG dimensions.
+	*
+	* Note: The '_' beginning variant edits the point in-place (as similar Leaflet operators do).
+	*/
+	_pixelsToSvgSize: function(_p) {   // (Point) -> Point
+    return _p._divideBy(this._factor);
 	}
 });
 

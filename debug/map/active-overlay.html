@@ -77,7 +77,7 @@
       croc.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
 
       var g = croc.select("g");
-      g.drag();     // make croc draggable
+      g.drag( dragMove, dragBegin, dragEnd );
 
       // Needed so that we don't get double dragging - i.e. the croc gets dragged above
       // a stationary map, the map won't move.
@@ -215,6 +215,33 @@
       } );
     }());
 
+    /*
+    * Called by Snap.svg
+    */
+    var DRAG_DATA_KEY = 'origMatrix';
+
+    function dragBegin() {
+      this.data( DRAG_DATA_KEY, this.transform().localMatrix );
+    }
+
+    function dragMove(dx,dy) {    // (num,num)
+      //console.log( "Move "+ dx +" "+ dy );
+
+      var svgD = overlay._pixelsToSvgSize( L.point(dx,dy) );
+            
+      // Presumably, '<Matrix>.translate()' changes the underlying matrix? tbd 
+      //
+      var m= this.data(DRAG_DATA_KEY).clone().translate(svgD.x, svgD.y);
+
+      this.attr({
+        transform: m.toTransformString()
+      });      
+    }
+
+    function dragEnd() {
+      this.removeData( DRAG_DATA_KEY );
+    }
+    
     //---
     // Following code adopted from http://snapsvg.io home page
     //
