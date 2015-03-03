@@ -81,7 +81,7 @@ L.Map.include(!zoomAnimated ? {} : {
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, startAnim) {
+	_animateZoom: function (center, zoom, startAnim, noUpdate) {
 		if (startAnim) {
 			this._animatingZoom = true;
 
@@ -97,7 +97,8 @@ L.Map.include(!zoomAnimated ? {} : {
 			zoom: zoom,
 			scale: this.getZoomScale(zoom),
 			origin: this.latLngToLayerPoint(center),
-			offset: this._getCenterOffset(center).multiplyBy(-1)
+			offset: this._getCenterOffset(center).multiplyBy(-1),
+			noUpdate: noUpdate
 		});
 	},
 
