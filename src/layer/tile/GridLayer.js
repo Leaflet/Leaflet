@@ -215,7 +215,9 @@ L.GridLayer = L.Layer.extend({
 			level.zoom = zoom;
 
 			this._setZoomTransform(level, map.getCenter(), map.getZoom());
-			L.Util.falseFn(level.el.offsetWidth); // Force recalculation to trigger transitions.
+
+			// force the browser to consider the newly added element for transition
+			L.Util.falseFn(level.el.offsetWidth);
 		}
 
 		this._level = level;
@@ -301,26 +303,31 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_viewReset: function (e) {
-		var map = this._map;
-		this._reset(map.getCenter(), map.getZoom(), e && e.hard);
+		this._reset(this._map.getCenter(), this._map.getZoom(), e && e.hard);
 	},
 
 	_animateZoom: function (e) {
-		this._reset(e.center, e.zoom, false, true);
+		this._reset(e.center, e.zoom, false, true, e.noUpdate);
 	},
 
-	_reset: function (center, zoom, hard, noPrune) {
+	_reset: function (center, zoom, hard, noPrune, noUpdate) {
 		var tileZoom = Math.round(zoom),
 			tileZoomChanged = this._tileZoom !== tileZoom;
 
-		if (tileZoomChanged || hard) {
+		if (!noUpdate && (hard || tileZoomChanged)) {
+
 			if (this._abortLoading) {
 				this._abortLoading();
 			}
+
 			this._tileZoom = tileZoom;
 			this._updateLevels();
 			this._resetGrid();
-			this._update(center, tileZoom);
+
+			if (!L.Browser.mobileWebkit) {
+				this._update(center, tileZoom);
+			}
+
 			if (!noPrune) {
 				this._pruneTiles();
 			}

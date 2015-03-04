@@ -34,7 +34,15 @@ L.Map.include(!zoomAnimated ? {} : {
 		this._panes.mapPane.appendChild(proxy);
 
 		this.on('zoomanim', function (e) {
+			var prop = L.DomUtil.TRANSFORM,
+				transform = proxy.style[prop];
+
 			L.DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
+
+			// workaround for case when transform is the same and so transitionend event is not fired
+			if (transform === proxy.style[prop] & this._animatingZoom) {
+				this._onZoomTransitionEnd();
+			}
 		}, this);
 
 		this.on('load moveend', function () {
@@ -81,7 +89,7 @@ L.Map.include(!zoomAnimated ? {} : {
 		return true;
 	},
 
-	_animateZoom: function (center, zoom, startAnim) {
+	_animateZoom: function (center, zoom, startAnim, noUpdate) {
 		if (startAnim) {
 			this._animatingZoom = true;
 
@@ -97,7 +105,8 @@ L.Map.include(!zoomAnimated ? {} : {
 			zoom: zoom,
 			scale: this.getZoomScale(zoom),
 			origin: this.latLngToLayerPoint(center),
-			offset: this._getCenterOffset(center).multiplyBy(-1)
+			offset: this._getCenterOffset(center).multiplyBy(-1),
+			noUpdate: noUpdate
 		});
 	},
 

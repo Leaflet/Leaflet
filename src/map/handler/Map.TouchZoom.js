@@ -84,7 +84,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		this._zoom = map.getScaleZoom(this._scale);
 
 		if (this._scale !== 1 || this._delta.x !== 0 || this._delta.y !== 0) {
-			map._animateZoom(this._center, this._zoom);
+			map._animateZoom(this._center, this._zoom, false, true);
 		}
 	},
 
@@ -106,7 +106,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		    zoomDelta = this._zoom - oldZoom,
 		    finalZoom = map._limitZoom(zoomDelta > 0 ? Math.ceil(this._zoom) : Math.floor(this._zoom));
 
-		map._animateZoom(this._center, finalZoom, true);
+		map._animateZoom(this._center, finalZoom, true, true);
 	},
 
 	_getTargetCenter: function () {
