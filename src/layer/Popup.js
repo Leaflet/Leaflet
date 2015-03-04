@@ -122,7 +122,7 @@ L.Popup = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {zoomend: this._updatePosition},
+		var events = {zoom: this._updatePosition},
 		    options = this.options;
 
 		if (this._zoomAnimated) {

@@ -81,8 +81,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		L.Util.requestAnimFrame(function () {
 			this
-			    .fire('movestart')
-			    .fire('zoomstart')
+			    ._moveStart(true)
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
@@ -116,6 +115,8 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
-		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
+		this
+			._move(this._animateToCenter, this._animateToZoom)
+			._moveEnd(true);
 	}
 });
