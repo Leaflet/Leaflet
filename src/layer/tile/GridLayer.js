@@ -31,7 +31,7 @@ L.GridLayer = L.Layer.extend({
 		this._levels = {};
 		this._tiles = {};
 
-		this._viewReset();
+		this._resetView();
 		this._update();
 	},
 
@@ -97,13 +97,13 @@ L.GridLayer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
-			viewreset: this._viewReset,
-			moveend: this._move
+			zoomend: this._resetView,
+			moveend: this._onMoveEnd
 		};
 
 		if (!this.options.updateWhenIdle) {
 			// update tiles on move, but not more often than once per given interval
-			events.move = L.Util.throttle(this._move, this.options.updateInterval, this);
+			events.move = L.Util.throttle(this._onMoveEnd, this.options.updateInterval, this);
 		}
 
 		if (this._zoomAnimated) {
@@ -311,19 +311,19 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_viewReset: function (e) {
-		this._reset(this._map.getCenter(), this._map.getZoom(), e && e.hard);
+	_resetView: function () {
+		this._setView(this._map.getCenter(), this._map.getZoom());
 	},
 
 	_animateZoom: function (e) {
-		this._reset(e.center, e.zoom, false, true, e.noUpdate);
+		this._setView(e.center, e.zoom, true, e.noUpdate);
 	},
 
-	_reset: function (center, zoom, hard, noPrune, noUpdate) {
+	_setView: function (center, zoom, noPrune, noUpdate) {
 		var tileZoom = Math.round(zoom),
 			tileZoomChanged = this._tileZoom !== tileZoom;
 
-		if (!noUpdate && (hard || tileZoomChanged)) {
+		if (!noUpdate && tileZoomChanged) {
 
 			if (this._abortLoading) {
 				this._abortLoading();
@@ -388,7 +388,7 @@ L.GridLayer = L.Layer.extend({
 		return this.options.tileSize;
 	},
 
-	_move: function () {
+	_onMoveEnd: function () {
 		this._update();
 		this._pruneTiles();
 	},

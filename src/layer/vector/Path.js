@@ -40,7 +40,7 @@ L.Path = L.Layer.extend({
 
 	getEvents: function () {
 		return {
-			viewreset: this._project,
+			zoomend: this._project,
 			moveend: this._update
 		};
 	},

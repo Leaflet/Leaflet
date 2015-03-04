@@ -545,19 +545,19 @@ L.Map = L.Evented.extend({
 		var loading = !this._loaded;
 		this._loaded = true;
 
+		// WARNING: viewreset event deprecated
 		this.fire('viewreset', {hard: !preserveMapOffset});
-
-		if (loading) {
-			this.fire('load');
-		}
-
-		this.fire('move');
 
 		if (zoomChanged || afterZoomAnim) {
 			this.fire('zoomend');
 		}
 
-		this.fire('moveend', {hard: !preserveMapOffset});
+		this.fire('move');
+		this.fire('moveend');
+
+		if (loading) {
+			this.fire('load');
+		}
 	},
 
 	_rawPanBy: function (offset) {

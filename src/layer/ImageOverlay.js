@@ -87,7 +87,7 @@ L.ImageOverlay = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
-			viewreset: this._reset
+			zoomend: this._reset
 		};
 
 		if (this._zoomAnimated) {
