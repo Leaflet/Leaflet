@@ -17,7 +17,6 @@ L.Polyline = L.Path.extend({
 	},
 
 	getLatLngs: function () {
-		// TODO rings
 		return this._latlngs;
 	},
 
@@ -26,20 +25,31 @@ L.Polyline = L.Path.extend({
 		return this.redraw();
 	},
 
-	addLatLng: function (latlng) {
-		// TODO rings
+	addLatLng: function (latlng, latlngs) {
+		latlngs = latlngs || this._defaultShape();
 		latlng = L.latLng(latlng);
-		this._latlngs.push(latlng);
+		latlngs.push(latlng);
 		this._bounds.extend(latlng);
 		return this.redraw();
 	},
 
 	spliceLatLngs: function () {
-		// TODO rings
-		var removed = [].splice.apply(this._latlngs, arguments);
+		var last = arguments[arguments.length - 1],
+			latlngs = this._defaultShape(),
+			args = arguments;
+		if (L.Util.isArray(last) && (L.Util.isArray(last[0]) || last[0] instanceof L.LatLng)) {
+			latlngs = last;
+			args = Array.prototype.slice.call(arguments);
+			args.pop();
+		}
+		var removed = [].splice.apply(latlngs, args);
 		this._setLatLngs(this._latlngs);
 		this.redraw();
 		return removed;
+	},
+
+	_defaultShape: function () {
+		return this._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	closestLayerPoint: function (p) {
