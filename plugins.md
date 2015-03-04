@@ -288,7 +288,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/MazeMap/Leaflet.TileLayer.PouchDBCached">TileLayer.PouchDBCached</a>
 		</td><td>
-			A TileLayer which caches into PouchDB for transparent offline use.
+			Allows all Leaflet TileLayers to cache into PouchDB for offline use.
 		</td><td>
 			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
 			<a href="https://github.com/MazeMap">MazeMap</a>
