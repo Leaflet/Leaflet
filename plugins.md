@@ -286,6 +286,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/namrehs/Leaflet.Gigapan">TileLayer.Gigapan</a>
+		</td><td>
+			A TileLayer for Gigapan images.
+		</td><td>
+			<a href="https://github.com/namrehs">Dan Sherman</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/MazeMap/Leaflet.TileLayer.PouchDBCached">TileLayer.PouchDBCached</a>
 		</td><td>
 			A TileLayer which caches into PouchDB for transparent offline use.
