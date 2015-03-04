@@ -311,8 +311,9 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_resetView: function () {
-		this._setView(this._map.getCenter(), this._map.getZoom());
+	_resetView: function (e) {
+		var pinch = e && e.pinch;
+		this._setView(this._map.getCenter(), this._map.getZoom(), pinch, pinch);
 	},
 
 	_animateZoom: function (e) {
