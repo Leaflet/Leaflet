@@ -45,13 +45,13 @@ L.Control.Zoom = L.Control.extend({
 
 	_zoomIn: function (e) {
 		if (!this._disabled) {
-			this._map.zoomIn(e.shiftKey ? 3 : 1);
+			this._map.zoomIn(e.shiftKey ? this._map.zoomFactor * 3 : this._map.zoomFactor);
 		}
 	},
 
 	_zoomOut: function (e) {
 		if (!this._disabled) {
-			this._map.zoomOut(e.shiftKey ? 3 : 1);
+			this._map.zoomOut(e.shiftKey ? this._map.zoomFactor * 3 : this._map.zoomFactor);
 		}
 	},
 

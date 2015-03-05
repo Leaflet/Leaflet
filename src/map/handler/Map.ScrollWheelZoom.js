@@ -53,6 +53,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		delta = delta > 0 ? Math.ceil(delta) : Math.floor(delta);
 		delta = Math.max(Math.min(delta, 4), -4);
 		delta = map._limitZoom(zoom + delta) - zoom;
+		delta = delta * this._map.zoomFactor;
 
 		this._delta = 0;
 		this._startTime = null;

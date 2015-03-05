@@ -15,7 +15,8 @@ L.Map = L.Evented.extend({
 
 		fadeAnimation: true,
 		trackResize: true,
-		markerZoomAnimation: true
+		markerZoomAnimation: true,
+		zoomFactor: 1
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -45,6 +46,7 @@ L.Map = L.Evented.extend({
 		this._layers = {};
 		this._zoomBoundLayers = {};
 		this._sizeChanged = true;
+		this.zoomFactor = options.zoomFactor;
 
 		this.callInitHooks();
 
