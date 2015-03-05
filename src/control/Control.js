@@ -73,7 +73,7 @@ L.Control = L.Class.extend({
 
 	_refocusOnMap: function (e) {
 		// if map exists and event is keyboard event
-		if (this._map && (e.x > 0 && e.y > 0 && e.screenX > 0 && e.screenY > 0)) {
+		if (this._map && e && e.screenX > 0 && e.screenY > 0) {
 			this._map.getContainer().focus();
 		}
 	}
