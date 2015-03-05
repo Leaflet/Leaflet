@@ -1563,7 +1563,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/mahmoodvcs">Mahmood Dehghan</a>
 		</td>
 	</tr>
-
+	<tr>
+		<td>
+			<a href="https://github.com/torfuspolymorphus/leaflet.zoomhome">Leaflet.zoomhome</a>
+		</td>
+		<td>
+			Zoom control with a home button for resetting the view (<a href="http://torfuspolymorphus.github.io/leaflet.zoomhome/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/torfuspolymorphus">Florian Brucker</a>
+		</td>
+	</tr>
 </table>
 
 
