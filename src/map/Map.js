@@ -72,11 +72,11 @@ L.Map = L.Evented.extend({
 	},
 
 	zoomIn: function (delta, options) {
-		return this.setZoom(this._zoom + (delta || 1), options);
+		return this.setZoom(this._zoom + (delta || 1) * this.zoomFactor, options);
 	},
 
 	zoomOut: function (delta, options) {
-		return this.setZoom(this._zoom - (delta || 1), options);
+		return this.setZoom(this._zoom - (delta || 1) * this.zoomFactor, options);
 	},
 
 	setZoomAround: function (latlng, zoom, options) {
