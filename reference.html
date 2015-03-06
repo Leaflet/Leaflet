@@ -2490,52 +2490,6 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<th>Returns</th>
 		<th>Description</th>
 	</tr>
-<<<<<<< HEAD
-	<tr>
-		<td><code><b>addTo</b>(
-			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds the layer to the map.</td>
-	</tr>
-	<tr id="path-bindpopup">
-		<td><code><b>bindPopup</b>(
-			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i> |</nobr> <nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i>,</nobr>
-			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Binds a popup with a particular HTML content to a click on this path.</td>
-	</tr>
-	<tr>
-		<td><code><b>bindPopup</b>(
-			<nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i></nobr>,
-			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Binds a given popup object to the path.</td>
-	</tr>
-	<tr id="path-unbindpopup">
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Unbinds the popup previously bound to the path with <code>bindPopup</code>.</td>
-	</tr>
-	<tr id="path-openpopup">
-		<td><code><b>openPopup</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Opens the popup previously bound by the <a href="#path-bindpopup">bindPopup</a> method in the given point, or in one of the path's points if not specified.</td>
-	</tr>
-	<tr id="path-closepopup">
-		<td><code><b>closePopup</b>()</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Closes the path's bound popup if it is opened.</td>
-	</tr>
 	<tr id="path-setstyle">
 		<td><code><b>setStyle</b>(
 			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>object</i> )</nobr>
@@ -5812,7 +5766,7 @@ MyClass.FOO; // 'bar'</code></pre>
 
 <h2 id="evented">Evented</h2>
 
-<p>When creating a plugin you may want your code to have access to the <a href="#event-methods">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-related methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
+<p>When creating a plugin you may want your code to have access to the <a href="#events">event methods</a>. By extending the <code>Evented</code> class you can create a class which inherits event-related methods like <code>on</code>, <code>off</code> and <code>fire</code></p>
 
 <pre><code>MyEventedClass = L.Evented.extend({
 	fire: function(){
