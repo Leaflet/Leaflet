@@ -25,7 +25,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = L.DomEvent.getWheelDelta(e);
+		var delta = L.DomEvent.getWheelDelta(e) * this._map.zoomFactor;
 		var debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
@@ -50,10 +50,8 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 		map.stop(); // stop panning and fly animations if any
 
-		delta = delta > 0 ? Math.ceil(delta) : Math.floor(delta);
 		delta = Math.max(Math.min(delta, 4), -4);
 		delta = map._limitZoom(zoom + delta) - zoom;
-		delta = delta * this._map.zoomFactor;
 
 		this._delta = 0;
 		this._startTime = null;
