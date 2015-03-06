@@ -2642,26 +2642,17 @@ var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
 // zoom the map to the polyline
 map.fitBounds(polyline.getBounds());</code></pre>
 
-<p>You can also pass a multi-dimensional array to represent a MultiPolyline shape.</p>
+<p>You can also pass a multi-dimensional array to represent a <code>MultiPolyline</code> shape:</p>
 
-<pre><code class="javascript">// create a red polyline from an arrays  of arrays of LatLng points
+<pre><code class="javascript">// create a red polyline from an array of arrays of LatLng points
 var latlngs = [
-	[
-	  [-122.68, 45.51],
-	  [-122.43, 37.77],
-	  [-118.2, 34.04]
-	],
-	[
-	  [-73.91, 40.78],
-	  [-87.62, 41.83],
-	  [-96.72, 32.76]
-	]
-]
-
-var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-
-// zoom the map to the polyline
-map.fitBounds(polyline.getBounds());</code></pre>
+  [[-122.68, 45.51],
+   [-122.43, 37.77],
+   [-118.2, 34.04]],
+  [[-73.91, 40.78],
+   [-87.62, 41.83],
+   [-96.72, 32.76]]
+];</code></pre>
 
 <h3>Creation</h3>
 
@@ -2678,7 +2669,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 		</code></td>
 
 
-		<td>Instantiates a polyline object given an array of geographical points and optionally an options object. You can create a a Polyline with multiple separate lines (MultiPolyline) by passing an array that contains arrays of geographic points.</td>
+		<td>Instantiates a polyline object given an array of geographical points and optionally an options object. You can create a <code>Polyline</code> object with multiple separate lines (<code>MultiPolyline</code>) by passing an array of arrays of geographic points.</td>
 	</tr>
 </table>
 
@@ -2773,46 +2764,34 @@ map.fitBounds(polyline.getBounds());</code></pre>
 <p>Note that points you pass when creating a polygon shouldn't have an additional last point equal to the first one &mdash; it's better to filter out such points.</p>
 
 <h3>Usage example</h3>
-<pre><code class="javascript">// create a red polygon from an arrays of LatLng points
-var latlngs = [
-  [ [-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41] ]
-];
+<pre><code class="javascript">// create a red polygon from an array of LatLng points
+var latlngs = [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]];
 
 var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
 
 // zoom the map to the polygon
 map.fitBounds(polygon.getBounds());</code></pre>
 
-<p>You can also pass a array of arrays of latlngs, the first array represents the outer shape and the other arrays represent holes in the outer shape.</p>
+<p>You can also pass an array of arrays of latlngs, with the first array representing the outer shape and the other arrays representing holes in the outer shape:</p>
 
-<pre><code class="javascript">// create a red polygon from an arrays of LatLng points
+<pre><code class="javascript">
 var latlngs = [
-  [ [-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41] ]
-  [ [-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29] ]
-];
+  [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
+  [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+];</code></pre>
 
-var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+<p>Additionally, you can pass a multi-dimensional array to represent a <code>MultiPolygon</code> shape.</p>
 
-// zoom the map to the polygon
-map.fitBounds(polygon.getBounds());</code></pre>
-
-<p>You can also pass a multi-dimensional array to represent a MultiPolyline shape.</p>
-
-<pre><code class="javascript">// create a red polygon from an arrays of arrays of LatLng points
+<pre><code class="javascript">
 var latlngs = [
-  [
-    [ [-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41] ],
-    [ [-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29] ]
+  [ // first polygon
+    [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
+    [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
   ],
-  [
-    [ [-109.05, 37],[-109.03, 41],[-102.05, 41],[-102.04, 37],[-109.05, 38] ]
+  [ // second polygon
+    [[-109.05, 37],[-109.03, 41],[-102.05, 41],[-102.04, 37],[-109.05, 38]]
   ]
-]
-
-var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
-
-// zoom the map to the polygon
-map.fitBounds(polygon.getBounds());</code></pre>
+];</code></pre>
 
 
 <h3>Creation</h3>
@@ -2830,7 +2809,7 @@ map.fitBounds(polygon.getBounds());</code></pre>
 		</code></td>
 
 
-		<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside. You can create a a Polygon with multiple separate lines (MultiPolygon) by passing an array of Polygon coordinates.</td>
+		<td>Instantiates a polygon object given an array of geographical points and optionally an options object (the same as for Polyline). You can also create a polygon with holes by passing an array of arrays of latlngs, with the first latlngs array representing the exterior ring while the remaining represent the holes inside. You can create a a <code>Polygon</code> with multiple separate shapes (<code>MultiPolygon</code>) by passing an array of <code>Polygon</code> coordinates.</td>
 	</tr>
 </table>
 
