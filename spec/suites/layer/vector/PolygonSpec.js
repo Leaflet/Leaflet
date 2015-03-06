@@ -13,6 +13,7 @@ describe('Polygon', function () {
 			var polygon = new L.Polygon(latLngs);
 
 			expect(polygon._flat(polygon._latlngs)).to.be(false);
+			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
 		it("doesn't overwrite the given latlng array", function () {
@@ -30,12 +31,13 @@ describe('Polygon', function () {
 
 		it("can be called with an empty array", function () {
 			var polygon = new L.Polygon([]);
-			expect(polygon.getLatLngs()).to.eql([[]]);
+			expect(polygon._latlngs).to.eql([[]]);
+			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
 		it("can be initialized with holes", function () {
 			var originalLatLngs = [
-				[ //external rink
+				[ //external ring
 					[0, 10], [10, 10], [10, 0]
 				], [ //hole
 					[2, 3], [2, 4], [3, 4]
@@ -44,11 +46,11 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon(originalLatLngs);
 
-			// getLatLngs() returns both rings
-			expect(polygon.getLatLngs()).to.eql([
+			expect(polygon._latlngs).to.eql([
 				[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
 				[L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]
 			]);
+			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
 		it("can be initialized with multi including hole", function () {
@@ -59,10 +61,11 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon(latLngs);
 
-			expect(polygon.getLatLngs()).to.eql([
+			expect(polygon._latlngs).to.eql([
 				[[L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]],
 				[[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])], [L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]]
 			]);
+			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 	});
 
@@ -83,7 +86,7 @@ describe('Polygon', function () {
 
 		it("can be set external ring and holes", function () {
 			var latLngs = [
-				[ //external rink
+				[ //external ring
 					[0, 10], [10, 10], [10, 0]
 				], [ //hole
 					[2, 3], [2, 4], [3, 4]
@@ -98,6 +101,22 @@ describe('Polygon', function () {
 				[L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]
 			]);
 		});
+
+		it("can be set multi including hole", function () {
+			var latLngs = [
+				[[[10, 20], [30, 40], [50, 60]]],
+				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
+			];
+
+			var polygon = new L.Polygon([]);
+			polygon.setLatLngs(latLngs);
+
+			expect(polygon.getLatLngs()).to.eql([
+				[[L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]],
+				[[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])], [L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]]
+			]);
+		});
+
 	});
 
 });
