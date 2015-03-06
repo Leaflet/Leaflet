@@ -36,8 +36,9 @@
 
 		// map.on('zoomstart', logEvent);
 		// map.on('zoomend', logEvent);
+
 		map.on('zoomend', function(e){
-			console.log(e.target._zoom);
+			console.log("Current Zoom: " + e.target._zoom);
 		});
 
 	</script>
