@@ -17,7 +17,8 @@
     "strict": 0,
     "key-spacing": 0,
     "no-shadow": 0,
-    "no-irregular-whitespace": 0
+    "no-irregular-whitespace": 0,
+    "no-console": 0
   },
   "globals": {
     "L": true,
