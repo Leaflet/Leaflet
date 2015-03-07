@@ -575,11 +575,25 @@ L.Map = L.Evented.extend({
 		this._container.scrollLeft = 0;
 	},
 
+	_findEventTarget: function (src) {
+		while (src) {
+			var target = this._targets[L.stamp(src)];
+			if (target) {
+				return target;
+			}
+			if (src === this._container) {
+				break;
+			}
+			src = src.parentNode;
+		}
+		return null;
+	},
+
 	_handleDOMEvent: function (e) {
 		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
 
 		// find the layer the event is propagating from
-		var target = this._targets[L.stamp(e.target || e.srcElement)],
+		var target = this._findEventTarget(e.target || e.srcElement),
 			type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
 		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
