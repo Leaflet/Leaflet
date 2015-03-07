@@ -116,6 +116,41 @@ describe('Popup', function () {
 		marker1.closePopup();
 		expect(spy.callCount).to.be(2);
 	});
+
+	it("should take into account icon popupAnchor option", function () {
+		var autoPanBefore = L.Popup.prototype.options.autoPan;
+		L.Popup.prototype.options.autoPan = false;
+		var popupAnchorBefore = L.Icon.Default.prototype.options.popupAnchor;
+		L.Icon.Default.prototype.options.popupAnchor = [0, 0];
+
+		var latlng = new L.LatLng(55.8, 37.6),
+			offset = new L.Point(20, 30),
+			icon = new L.DivIcon({popupAnchor: offset}),
+			marker1 = new L.Marker(latlng),
+			marker2 = new L.Marker(latlng, {icon: icon});
+		marker1.bindPopup('Popup').addTo(map);
+		marker1.openPopup();
+		var defaultLeft = parseInt(marker1._popup._container.style.left, 10);
+		var defaultBottom = parseInt(marker1._popup._container.style.bottom, 10);
+		marker2.bindPopup('Popup').addTo(map);
+		marker2.openPopup();
+		var offsetLeft = parseInt(marker2._popup._container.style.left, 10);
+		var offsetBottom = parseInt(marker2._popup._container.style.bottom, 10);
+		expect(offsetLeft - offset.x).to.eql(defaultLeft);
+		expect(offsetBottom + offset.y).to.eql(defaultBottom);
+
+		// Now retry passing a popup instance to bindPopup
+		marker2.bindPopup(new L.Popup());
+		marker2.openPopup();
+		offsetLeft = parseInt(marker2._popup._container.style.left, 10);
+		offsetBottom = parseInt(marker2._popup._container.style.bottom, 10);
+		expect(offsetLeft - offset.x).to.eql(defaultLeft);
+		expect(offsetBottom + offset.y).to.eql(defaultBottom);
+
+		L.Popup.prototype.options.autoPan = autoPanBefore;
+		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
+	});
+
 });
 
 describe("L.Map#openPopup", function () {
