@@ -573,7 +573,7 @@ describe("Map", function () {
 
 	describe('#flyTo', function () {
 
-		it('move to requested center and zoom, and call callback once', function (done) {
+		it('move to requested center and zoom, and call zoomend once', function (done) {
 			var spy = sinon.spy(),
 				newCenter = new L.LatLng(10, 11),
 				newZoom = 12,
