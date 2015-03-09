@@ -585,7 +585,7 @@ describe("Map", function () {
 					done();
 				};
 			map.setView([0, 0], 0);
-			map.flyTo(newCenter, newZoom, callback);
+			map.once('zoomend', callback).flyTo(newCenter, newZoom);
 		});
 
 	});

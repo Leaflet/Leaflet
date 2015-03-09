@@ -1,6 +1,6 @@
 
 L.Map.include({
-	flyTo: function (targetCenter, targetZoom, callback) {
+	flyTo: function (targetCenter, targetZoom) {
 
 		this.stop();
 
@@ -51,9 +51,6 @@ L.Map.include({
 
 			} else {
 				this._resetView(targetCenter, targetZoom, true, true);
-				if (callback) {
-					callback();
-				}
 			}
 		}
 
