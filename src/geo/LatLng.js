@@ -42,6 +42,10 @@ L.LatLng.prototype = {
 		return L.CRS.Earth.wrapLatLng(this);
 	},
 
+  // Note: There would be a need for 'offsetBy(dx,dy)', to be able to 'move'
+  //      a 'LatLng' point by meters. Currently, this method is the only way
+  //      to bind positional change in meters to LatLng objects. AKa110315
+  //
 	toBounds: function (sizeInMeters) {
 		var latAccuracy = 180 * sizeInMeters / 40075017,
 				lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
