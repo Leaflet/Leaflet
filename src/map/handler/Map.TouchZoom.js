@@ -61,7 +61,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (!this._moved) {
 			map
 			    .fire('movestart')
-			    .fire('zoomstart');
+			    .fire('zoomstart', {newZoom: map._zoom * this._scale});
 
 			this._moved = true;
 		}

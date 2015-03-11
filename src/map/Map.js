@@ -497,10 +497,9 @@ L.Map = L.Evented.extend({
 			this.fire('movestart');
 
 			if (zoomChanged) {
-				this.fire('zoomstart');
+				this.fire('zoomstart', {newZoom: zoom});
 			}
 		}
-
 		this._zoom = zoom;
 		this._initialCenter = center;
 
