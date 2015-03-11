@@ -1574,6 +1574,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/torfuspolymorphus">Florian Brucker</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ljagis/leaflet-measure">leaflet-measure</a>
+		</td>
+		<td>
+			Coordinate, linear, and area measure control for Leaflet maps
+		</td>
+		<td>
+			<a href="https://github.com/ljagis">LJA GIS</a>
+		</td>
+	</tr>
 </table>
 
 
