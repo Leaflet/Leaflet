@@ -63,6 +63,10 @@ module.exports = function (config) {
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 5000,
 
+		// Workaround for PhantomJS random DISCONNECTED error
+		browserDisconnectTimeout: 10000, // default 2000
+		browserDisconnectTolerance: 1, // default 0
+
 		// Continuous Integration mode
 		// if true, it capture browsers, run tests and exit
 		singleRun: true
