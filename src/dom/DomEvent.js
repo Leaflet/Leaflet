@@ -128,12 +128,14 @@ L.DomEvent = {
 
 	stopPropagation: function (e) {
 
+		L.DomEvent._skipped(e);
 		if (e.stopPropagation) {
 			e.stopPropagation();
 		} else {
 			e.cancelBubble = true;
+			// In case of Leaflet event.
+			L.DomEvent._fakeStop(e);
 		}
-		L.DomEvent._skipped(e);
 
 		return this;
 	},

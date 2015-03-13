@@ -646,14 +646,20 @@ L.Map = L.Evented.extend({
 
 		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
 		if (!target && (type === 'mouseover' || type === 'mouseout') &&
-				!L.DomEvent._checkMouse(this._container, e)) { return; }
+		                !L.DomEvent._checkMouse(this._container, e)) { return; }
 
 		// prevents outline when clicking on keyboard-focusable element
 		if (type === 'mousedown') {
 			L.DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
-		this._fireDOMEvent(target || this, e, type);
+		if (target && target !== this) {
+			this._fireDOMEvent(target, e, type);
+			if (type === 'mouseover' || type === 'mouseout') { return; }
+		}
+		if (!L.DomEvent._skipped(e)) {  // In case the Leaflet event has been stopped on some target listener.
+			this._fireDOMEvent(this, e, type);
+		}
 	},
 
 	_fireDOMEvent: function (target, e, type) {
