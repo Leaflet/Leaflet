@@ -50,24 +50,20 @@ describe('Popup', function () {
 		var marker = new L.Marker(new L.LatLng(55.8, 37.6));
 		map.addLayer(marker);
 
-		marker.bindPopup('Popup1').openPopup();
-
+		marker.bindPopup('Popup1');
 		map.options.closePopupOnClick = true;
-		happen.click(c);
 
 		// toggle open popup
-		sinon.spy(marker, "openPopup");
-		marker.fire('click');
-		expect(marker.openPopup.calledOnce).to.be(true);
+		marker.fire('click', {
+			latlng: new L.LatLng(55.8, 37.6)
+		});
 		expect(map.hasLayer(marker._popup)).to.be(true);
-		marker.openPopup.restore();
 
 		// toggle close popup
-		sinon.spy(marker, "closePopup");
-		marker.fire('click');
-		expect(marker.closePopup.calledOnce).to.be(true);
+		marker.fire('click', {
+			latlng: new L.LatLng(55.8, 37.6)
+		});
 		expect(map.hasLayer(marker._popup)).to.be(false);
-		marker.closePopup.restore();
 	});
 
 	it("triggers popupopen on marker when popup opens", function () {
