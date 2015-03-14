@@ -33,6 +33,21 @@ describe('LineUtil', function () {
 
 			expect(segment).to.be(false);
 		});
+
+		it('can round numbers in clipped bounds', function () {
+			var a = new L.Point(4, 5);
+			var b = new L.Point(8, 6);
+
+			var segment1 = L.LineUtil.clipSegment(a, b, bounds);
+
+			expect(segment1[0]).to.eql(new L.Point(5, 5.25));
+			expect(segment1[1]).to.eql(b);
+
+			var segment2 = L.LineUtil.clipSegment(a, b, bounds, false, true);
+
+			expect(segment2[0]).to.eql(new L.Point(5, 5));
+			expect(segment2[1]).to.eql(b);
+		});
 	});
 
 	describe('#pointToSegmentDistance & #closestPointOnSegment', function () {

@@ -3,14 +3,12 @@
  * and polylines (clipping, simplification, distances, etc.)
  */
 
-/*jshint bitwise:false */ // allow bitwise operations for this file
-
 L.LineUtil = {
 
 	// Simplify polyline with vertex reduction and Douglas-Peucker simplification.
 	// Improves rendering performance dramatically by lessening the number of points to draw.
 
-	simplify: function (/*Point[]*/ points, /*Number*/ tolerance) {
+	simplify: function (points, tolerance) {
 		if (!tolerance || !points.length) {
 			return points.slice();
 		}
@@ -27,11 +25,11 @@ L.LineUtil = {
 	},
 
 	// distance from a point to a segment between two points
-	pointToSegmentDistance:  function (/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
+	pointToSegmentDistance:  function (p, p1, p2) {
 		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
-	closestPointOnSegment: function (/*Point*/ p, /*Point*/ p1, /*Point*/ p2) {
+	closestPointOnSegment: function (p, p1, p2) {
 		return this._sqClosestPointOnSegment(p, p1, p2);
 	},
 
@@ -99,7 +97,7 @@ L.LineUtil = {
 	// Cohen-Sutherland line clipping algorithm.
 	// Used to avoid rendering parts of a polyline that are not currently visible.
 
-	clipSegment: function (a, b, bounds, useLastCode) {
+	clipSegment: function (a, b, bounds, useLastCode, round) {
 		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
 		    codeB = this._getBitCode(b, bounds),
 
@@ -118,7 +116,7 @@ L.LineUtil = {
 			// other cases
 			} else {
 				codeOut = codeA || codeB;
-				p = this._getEdgeIntersection(a, b, codeOut, bounds);
+				p = this._getEdgeIntersection(a, b, codeOut, bounds, round);
 				newCode = this._getBitCode(p, bounds);
 
 				if (codeOut === codeA) {
@@ -132,7 +130,7 @@ L.LineUtil = {
 		}
 	},
 
-	_getEdgeIntersection: function (a, b, code, bounds) {
+	_getEdgeIntersection: function (a, b, code, bounds, round) {
 		var dx = b.x - a.x,
 		    dy = b.y - a.y,
 		    min = bounds.min,
@@ -156,7 +154,7 @@ L.LineUtil = {
 			y = a.y + dy * (min.x - a.x) / dx;
 		}
 
-		return new L.Point(x, y, true);
+		return new L.Point(x, y, round);
 	},
 
 	_getBitCode: function (/*Point*/ p, bounds) {

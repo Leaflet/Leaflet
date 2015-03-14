@@ -104,32 +104,6 @@ describe('GridLayer', function () {
 			map.setZoom(0, {animate: false});
 			clock.tick(250);
 		});
-
-		it('prunes and retains the correct tiles for back-to-back zooms', function () {
-			map.setView([0, 0], 1);
-
-			var grid = L.gridLayer();
-			var tiles = {};
-
-			grid.createTile = function (coords) {
-				tiles[grid._tileCoordsToKey(coords)] = true;
-				return document.createElement('div');
-			};
-
-			map.addLayer(grid);
-			clock.tick(500);
-
-			map.setZoom(0, {animate: false});
-			clock.tick(250);
-
-			map.setZoom(1, {animate: false});
-			clock.tick(500);
-
-			var tileContainers = div.querySelectorAll('.leaflet-tile-container');
-			expect(tileContainers.length).to.eql(2);
-			expect(tileContainers[0].childNodes.length).to.equal(8);
-			expect(tileContainers[1].childNodes.length).to.equal(0);
-		});
 	});
 
 	describe("#onAdd", function () {
@@ -202,11 +176,12 @@ describe('GridLayer', function () {
 		});
 		describe("when a tilelayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
-				var tiles = [  L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
-							   L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
-							   L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
-							   L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
-							];
+				var tiles = [
+					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
+					L.gridLayer({minZoom: 5, maxZoom: 10}).addTo(map),
+					L.gridLayer({minZoom: 10, maxZoom: 20}).addTo(map),
+					L.gridLayer({minZoom: 0, maxZoom: 25}).addTo(map)
+				];
 				map.whenReady(function () {
 					expect(map.getMinZoom()).to.be(0);
 					expect(map.getMaxZoom()).to.be(25);

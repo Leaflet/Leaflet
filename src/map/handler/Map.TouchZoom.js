@@ -80,9 +80,12 @@ L.Map.TouchZoom = L.Handler.extend({
 		} else {
 			this._center = map.layerPointToLatLng(this._getTargetCenter());
 		}
+
 		this._zoom = map.getScaleZoom(this._scale);
 
-		map._animateZoom(this._center, this._zoom);
+		if (this._scale !== 1 || this._delta.x !== 0 || this._delta.y !== 0) {
+			map._animateZoom(this._center, this._zoom, false, true);
+		}
 	},
 
 	_onTouchEnd: function () {
@@ -103,7 +106,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		    zoomDelta = this._zoom - oldZoom,
 		    finalZoom = map._limitZoom(zoomDelta > 0 ? Math.ceil(this._zoom) : Math.floor(this._zoom));
 
-		map._animateZoom(this._center, finalZoom, true);
+		map._animateZoom(this._center, finalZoom, true, true);
 	},
 
 	_getTargetCenter: function () {

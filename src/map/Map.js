@@ -220,7 +220,7 @@ L.Map = L.Evented.extend({
 
 	remove: function () {
 
-		this._initEvents('off');
+		this._initEvents(true);
 
 		try {
 			// throws error in IE6-8
@@ -328,8 +328,8 @@ L.Map = L.Evented.extend({
 		return this._size.clone();
 	},
 
-	getPixelBounds: function () {
-		var topLeftPoint = this._getTopLeftPoint();
+	getPixelBounds: function (center, zoom) {
+		var topLeftPoint = this._getTopLeftPoint(center, zoom);
 		return new L.Bounds(topLeftPoint, topLeftPoint.add(this.getSize()));
 	},
 
@@ -470,6 +470,7 @@ L.Map = L.Evented.extend({
 
 	_initPanes: function () {
 		var panes = this._panes = {};
+		this._paneRenderers = {};
 
 		this._mapPane = this.createPane('mapPane', this._container);
 
@@ -545,16 +546,17 @@ L.Map = L.Evented.extend({
 		}
 	},
 
-	// map events
+	// DOM event handling
 
-	_initEvents: function (onOff) {
+	_initEvents: function (remove) {
 		if (!L.DomEvent) { return; }
 
-		onOff = onOff || 'on';
+		this._targets = {};
 
-		L.DomEvent[onOff](this._container,
-			'click dblclick mousedown mouseup mouseenter mouseleave mousemove contextmenu',
-			this._handleMouseEvent, this);
+		var onOff = remove ? 'off' : 'on';
+
+		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
+			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
@@ -567,46 +569,53 @@ L.Map = L.Evented.extend({
 		        function () { this.invalidateSize({debounceMoveend: true}); }, this, false, this._container);
 	},
 
-	_handleMouseEvent: function (e) {
-		if (!this._loaded) { return; }
+	_handleDOMEvent: function (e) {
+		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
 
-		this._fireMouseEvent(this, e,
-				e.type === 'mouseenter' ? 'mouseover' :
-				e.type === 'mouseleave' ? 'mouseout' : e.type);
-	},
+		// find the layer the event is propagating from
+		var target = this._targets[L.stamp(e.target || e.srcElement)],
+			type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
-	_fireMouseEvent: function (obj, e, type, propagate, latlng) {
-		type = type || e.type;
+		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
+		if (!target && (type === 'mouseover' || type === 'mouseout') &&
+				!L.DomEvent._checkMouse(this._container, e)) { return; }
 
-		if (L.DomEvent._skipped(e)) { return; }
-		if (type === 'click') {
-			var draggableObj = obj.options.draggable === true ? obj : this;
-			if (!e._simulated && ((draggableObj.dragging && draggableObj.dragging.moved()) ||
-			                      (this.boxZoom && this.boxZoom.moved()))) {
-				L.DomEvent.stopPropagation(e);
-				return;
-			}
-			obj.fire('preclick');
+		// prevents outline when clicking on keyboard-focusable element
+		if (type === 'mousedown') {
+			L.DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
-		if (!obj.listens(type, propagate)) { return; }
+		this._fireDOMEvent(target || this, e, type);
+	},
+
+	_fireDOMEvent: function (target, e, type) {
+		if (!target.listens(type, true) && (type !== 'click' || !target.listens('preclick', true))) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		if (type === 'click' || type === 'dblclick' || type === 'contextmenu') {
-			L.DomEvent.stopPropagation(e);
-		}
+
+		// prevents firing click after you just dragged an object
+		if (e.type === 'click' && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
-			originalEvent: e,
-			containerPoint: this.mouseEventToContainerPoint(e)
+			originalEvent: e
 		};
+		if (e.type !== 'keypress') {
+			data.containerPoint = target instanceof L.Marker ?
+					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
+			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
+			data.latlng = this.layerPointToLatLng(data.layerPoint);
+		}
+		if (type === 'click') {
+			target.fire('preclick', data, true);
+		}
+		target.fire(type, data, true);
+	},
 
-		data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
-		data.latlng = latlng || this.layerPointToLatLng(data.layerPoint);
-
-		obj.fire(type, data, propagate);
+	_draggableMoved: function (obj) {
+		obj = obj.options.draggable ? obj : this;
+		return (obj.dragging && obj.dragging.moved()) || (this.boxZoom && this.boxZoom.moved());
 	},
 
 	_clearHandlers: function () {
@@ -636,8 +645,11 @@ L.Map = L.Evented.extend({
 		return pos && !pos.equals([0, 0]);
 	},
 
-	_getTopLeftPoint: function () {
-		return this.getPixelOrigin().subtract(this._getMapPanePos());
+	_getTopLeftPoint: function (center, zoom) {
+		var pixelOrigin = center && zoom !== undefined ?
+			this._getNewPixelOrigin(center, zoom) :
+			this.getPixelOrigin();
+		return pixelOrigin.subtract(this._getMapPanePos());
 	},
 
 	_getNewPixelOrigin: function (center, zoom) {

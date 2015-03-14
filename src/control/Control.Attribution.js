@@ -39,7 +39,7 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	addAttribution: function (text) {
-		if (!text) { return; }
+		if (!text) { return this; }
 
 		if (!this._attributions[text]) {
 			this._attributions[text] = 0;
@@ -52,7 +52,7 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	removeAttribution: function (text) {
-		if (!text) { return; }
+		if (!text) { return this; }
 
 		if (this._attributions[text]) {
 			this._attributions[text]--;

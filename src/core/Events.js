@@ -134,8 +134,8 @@ L.Evented = L.Class.extend({
 		    events = this._events;
 
 		if (events) {
-		    var typeIndex = events[type + '_idx'],
-		        i, len, listeners, id;
+			var typeIndex = events[type + '_idx'],
+			    i, len, listeners, id;
 
 			if (events[type]) {
 				// make sure adding/removing listeners inside other listeners won't cause infinite loop

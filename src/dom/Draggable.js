@@ -20,9 +20,10 @@ L.Draggable = L.Evented.extend({
 		}
 	},
 
-	initialize: function (element, dragStartTarget) {
+	initialize: function (element, dragStartTarget, preventOutline) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
+		this._preventOutline = preventOutline;
 	},
 
 	enable: function () {
@@ -45,9 +46,13 @@ L.Draggable = L.Evented.extend({
 	_onDown: function (e) {
 		this._moved = false;
 
-		if (e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if (e.shiftKey || ((e.which !== 1) && (e.button !== 0) && !e.touches)) { return; }
 
 		L.DomEvent.stopPropagation(e);
+
+		if (this._preventOutline) {
+			L.DomUtil.preventOutline(this._element);
+		}
 
 		if (L.DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
@@ -99,13 +104,15 @@ L.Draggable = L.Evented.extend({
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
+		this._lastEvent = e;
 		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
 	_updatePosition: function () {
-		this.fire('predrag');
+		var e = {originalEvent: this._lastEvent};
+		this.fire('predrag', e);
 		L.DomUtil.setPosition(this._element, this._newPos);
-		this.fire('drag');
+		this.fire('drag', e);
 	},
 
 	_onUp: function () {

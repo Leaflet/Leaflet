@@ -35,14 +35,14 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 
 		L.DomEvent.on(container, {
-		    focus: this._onFocus,
-		    blur: this._onBlur,
-		    mousedown: this._onMouseDown
+			focus: this._onFocus,
+			blur: this._onBlur,
+			mousedown: this._onMouseDown
 		}, this);
 
 		this._map.on({
 			focus: this._addHooks,
-		    blur: this._removeHooks
+			blur: this._removeHooks
 		}, this);
 	},
 
@@ -50,14 +50,14 @@ L.Map.Keyboard = L.Handler.extend({
 		this._removeHooks();
 
 		L.DomEvent.off(this._map._container, {
-		    focus: this._onFocus,
-		    blur: this._onBlur,
-		    mousedown: this._onMouseDown
+			focus: this._onFocus,
+			blur: this._onBlur,
+			mousedown: this._onMouseDown
 		}, this);
 
 		this._map.off({
 			focus: this._addHooks,
-		    blur: this._removeHooks
+			blur: this._removeHooks
 		}, this);
 	},
 

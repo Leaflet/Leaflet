@@ -113,7 +113,7 @@ Function, method and property names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.
 
 If you have a lot of arguments in your function, consider accepting an options object instead
-(putting default values where possible so that users don't need specify all of them):
+(putting default values where possible so that users don't need to specify all of them):
 
 ```js
 // bad
@@ -168,12 +168,11 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
     // define a Common JS module that relies on 'leaflet'
     } else if (typeof exports === 'object') {
         module.exports = factory(require('leaflet'));
-    
     }
 
     // attach your plugin to the global 'L' variable
-    if(typeof window !== 'undefined' && window.L){
-      window.L.YourPlugin = factory(L);
+    if (typeof window !== 'undefined' && window.L) {
+        window.L.YourPlugin = factory(L);
     }
 }(function (L) {
     var MyLeafletPlugin = {};

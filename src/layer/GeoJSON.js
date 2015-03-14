@@ -31,7 +31,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 		var options = this.options;
 
-		if (options.filter && !options.filter(geojson)) { return; }
+		if (options.filter && !options.filter(geojson)) { return this; }
 
 		var layer = L.GeoJSON.geometryToLayer(geojson, options);
 		layer.feature = L.GeoJSON.asFeature(geojson);
@@ -146,7 +146,7 @@ L.extend(L.GeoJSON, {
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			coords.push(levelsDeep ?
-				L.GeoJSON.latLngsToCoords(latlngs[i], levelsDeep - 1, closed):
+				L.GeoJSON.latLngsToCoords(latlngs[i], levelsDeep - 1, closed) :
 				L.GeoJSON.latLngToCoords(latlngs[i]));
 		}
 

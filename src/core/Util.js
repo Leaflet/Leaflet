@@ -42,9 +42,10 @@ L.Util = {
 
 	// return unique ID of an object
 	stamp: function (obj) {
-		// jshint camelcase: false
+		/*eslint-disable */
 		obj._leaflet_id = obj._leaflet_id || ++L.Util.lastId;
 		return obj._leaflet_id;
+		/*eslint-enable */
 	},
 
 	lastId: 0,
@@ -116,7 +117,7 @@ L.Util = {
 		return obj.options;
 	},
 
-	// make an URL with GET parameters out of a set of properties/values
+	// make a URL with GET parameters out of a set of properties/values
 	getParamString: function (obj, existingUrl, uppercase) {
 		var params = [];
 		for (var i in obj) {

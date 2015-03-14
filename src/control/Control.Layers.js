@@ -123,7 +123,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_update: function () {
-		if (!this._container) { return; }
+		if (!this._container) { return this; }
 
 		L.DomUtil.empty(this._baseLayersList);
 		L.DomUtil.empty(this._overlaysList);

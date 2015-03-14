@@ -99,18 +99,17 @@ L.TileLayer = L.GridLayer.extend({
 	_getTileSize: function () {
 		var map = this._map,
 		    options = this.options,
-		    zoom = map.getZoom() + options.zoomOffset,
+		    zoom = this._tileZoom + options.zoomOffset,
 		    zoomN = options.maxNativeZoom;
 
 		// increase tile size when overscaling
 		return zoomN !== null && zoom > zoomN ?
-				Math.round(map.getZoomScale(zoomN, zoom) * options.tileSize) :
+				Math.round(options.tileSize / map.getZoomScale(zoomN, zoom)) :
 				options.tileSize;
 	},
 
 	_onTileRemove: function (e) {
 		e.tile.onload = null;
-		e.tile.src = L.Util.emptyImageUrl;
 	},
 
 	_getZoomForUrl: function () {
@@ -136,7 +135,7 @@ L.TileLayer = L.GridLayer.extend({
 	_abortLoading: function () {
 		var i, tile;
 		for (i in this._tiles) {
-			tile = this._tiles[i];
+			tile = this._tiles[i].el;
 
 			tile.onload = L.Util.falseFn;
 			tile.onerror = L.Util.falseFn;

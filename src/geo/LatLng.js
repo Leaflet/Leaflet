@@ -80,4 +80,3 @@ L.latLng = function (a, b, c) {
 	}
 	return new L.LatLng(a, b, c);
 };
-

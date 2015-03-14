@@ -40,9 +40,9 @@ describe('Util', function () {
 				return this;
 			};
 
-			var fn2 = L.Util.bind(fn, { foo: 'bar' });
+			var fn2 = L.Util.bind(fn, {foo: 'bar'});
 
-			expect(fn2()).to.eql({ foo: 'bar' });
+			expect(fn2()).to.eql({foo: 'bar'});
 		});
 
 		it('passes additional arguments to the bound function', function () {
@@ -230,6 +230,7 @@ describe('Util', function () {
 
 	describe('#isArray', function () {
 		expect(L.Util.isArray([1, 2, 3])).to.be(true);
+		/*eslint no-array-constructor:0*/
 		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);
 		expect(L.Util.isArray('blabla')).to.be(false);
 		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);

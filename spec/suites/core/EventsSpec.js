@@ -14,7 +14,7 @@ describe('Events', function () {
 			obj.addEventListener('test', spy1);
 			obj.addEventListener('test', spy2);
 			obj.addEventListener('other', spy3);
-			obj.addEventListener({ test: spy4, other: spy5 });
+			obj.addEventListener({test: spy4, other: spy5});
 			// obj.addEventListener({'test other': spy6 });
 
 			expect(spy1.called).to.be(false);
@@ -72,8 +72,8 @@ describe('Events', function () {
 
 			obj.addEventListener('test', listener1);
 			obj2.addEventListener('test', listener2, foo);
-			obj3.addEventListener({ test: listener3 });
-			obj4.addEventListener({ test: listener4 }, foo);
+			obj3.addEventListener({test: listener3});
+			obj4.addEventListener({test: listener4}, foo);
 
 			obj.fireEvent('test', {baz: 1});
 			obj2.fireEvent('test', {baz: 2});
@@ -358,15 +358,15 @@ describe('Events', function () {
 		});
 
 		it("doesn't call listeners to events that have been removed", function () {
-		    var obj = new L.Evented(),
-                spy = sinon.spy();
+			var obj = new L.Evented(),
+					spy = sinon.spy();
 
-		    obj.once('test', spy, obj);
-		    obj.off('test', spy, obj);
+			obj.once('test', spy, obj);
+			obj.off('test', spy, obj);
 
-		    obj.fire('test');
+			obj.fire('test');
 
-		    expect(spy.called).to.be(false);
+			expect(spy.called).to.be(false);
 		});
 
 		it('works if called from a context that doesnt implement #Events', function () {
