@@ -66,7 +66,8 @@
     }).bindPopup('I\'m a red polyline').addTo(map);
 
     var marker = L.circleMarker(getRandomLatLng(map), {
-      color: 'red'
+      color: 'red',
+      radius: 25
     }).bindPopup('I\'m a red circle').addTo(map);
   </script>
 </body>

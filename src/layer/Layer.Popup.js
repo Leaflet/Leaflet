@@ -43,18 +43,21 @@ L.Layer.include({
 	},
 
 	openPopup: function (layer, latlng) {
-
 		if (!(layer instanceof L.Layer)) {
 			latlng = layer;
 			layer = this;
 		}
+
 		if (layer instanceof L.FeatureGroup) {
 			for (var id in this._layers) {
 				layer = this._layers[id];
 				break;
 			}
 		}
-		if (!latlng) latlng = layer.getCenter ? layer.getCenter() : layer.getLatLng();
+
+		if (!latlng) {
+			latlng = layer.getCenter ? layer.getCenter() : layer.getLatLng();
+		}
 
 		if (this._popup && this._map) {
 			this._popup.options.offset = this._popupAnchor(layer);
@@ -96,11 +99,34 @@ L.Layer.include({
 	},
 
 	_openPopup: function (e) {
-		this.openPopup(e.layer || e.target, e.latlng);
+		var layer = e.layer || e.target;
+
+		if (!this._popup) {
+			return;
+		}
+
+		if (!this._map) {
+			return;
+		}
+
+		// if this inherits from Path its a vector and we can just
+		// open the popup at the new location
+		if (layer instanceof L.Path) {
+			this.openPopup(e.layer || e.target, e.latlng);
+			return;
+		}
+
+		// otherwise treat it like a marker and figure out
+		// if we should toggle it open/closed
+		if (this._map.hasLayer(this._popup) && this._popup._source === layer) {
+			this.closePopup();
+		} else {
+			this.openPopup(layer, e.latlng);
+		}
 	},
 
-	_popupAnchor: function(layer){
-		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0,0];
+	_popupAnchor: function (layer) {
+		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0, 0];
 		return L.point(anchor).add(L.Popup.prototype.options.offset);
 	},
 
