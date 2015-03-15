@@ -725,6 +725,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/sheppard/">S. Andrew Sheppard</a><br>(<a href="https://github.com/heigeo/">HEI Geo</a>)
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/balrog-kun/Leaflet.bpg">Leaflet.bpg</a>
+		</td><td>
+			TileLayer with <a href="http://bellard.org/bpg/">.bpg</a> image format decoding.
+		</td><td>
+			<a href="https://github.com/balrog-kun/">Andrzej Zaborowski</a>
+		</td>
+	</tr>
 </table>
 
 
