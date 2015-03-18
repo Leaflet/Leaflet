@@ -27,7 +27,7 @@ L.Map.BoxZoom = L.Handler.extend({
 	},
 
 	_onMouseDown: function (e) {
-		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 0))) { return false; }
+		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		this._moved = false;
 
@@ -83,7 +83,7 @@ L.Map.BoxZoom = L.Handler.extend({
 	},
 
 	_onMouseUp: function (e) {
-		if ((e.which !== 1) && (e.button !== 0)) { return; }
+		if ((e.which !== 1) && (e.button !== 1)) { return; }
 
 		this._finish();
 
