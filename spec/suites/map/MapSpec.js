@@ -570,4 +570,24 @@ describe("Map", function () {
 			expect(spy.called).to.be.ok();
 		});
 	});
+
+	describe('#flyTo', function () {
+
+		it('move to requested center and zoom, and call zoomend once', function (done) {
+			var spy = sinon.spy(),
+				newCenter = new L.LatLng(10, 11),
+				newZoom = 12,
+				callback = function () {
+					expect(map.getCenter()).to.eql(newCenter);
+					expect(map.getZoom()).to.eql(newZoom);
+					spy();
+					expect(spy.calledOnce).to.be.ok();
+					done();
+				};
+			map.setView([0, 0], 0);
+			map.once('zoomend', callback).flyTo(newCenter, newZoom);
+		});
+
+	});
+
 });
