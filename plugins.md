@@ -1594,6 +1594,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/ljagis">LJA GIS</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/cscott530/leaflet-history">Leaflet-History</a>
+		</td>
+		<td>
+			Track history of map movements and zoom locations similar to a browser.
+		</td>
+		<td>
+			<a href="https://github.com/cscott530">Chris Scott</a>
+		</td>
+	</tr>
 </table>
 
 
