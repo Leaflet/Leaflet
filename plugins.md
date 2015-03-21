@@ -295,6 +295,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+                        <a href="https://github.com/gregallensworth/L.TileLayer.Cordova">TileLayer.Cordova</a>
+		</td><td>
+			For use with Cordova/Phonegap, adds tile caching onto local device storage, switching between offline and online mode.
+		</td><td>
+			<a href="https://github.com/gregallensworth">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/MazeMap/Leaflet.TileLayer.PouchDBCached">TileLayer.PouchDBCached</a>
 		</td><td>
 			Allows all Leaflet TileLayers to cache into PouchDB for offline use.
