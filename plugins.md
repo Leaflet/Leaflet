@@ -2,7 +2,7 @@
 layout: default
 title: Plugins
 ---
-
+con
 ## Notable Leaflet Plugins
 
 While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are lots of nice plugins to choose from.
@@ -1614,6 +1614,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/cscott530">Chris Scott</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-geojson-list">Leaflet GeoJSON List</a>
+		</td>
+		<td>
+			Leaflet Control for listing GeoJSON properties in a interactive menu(<a href="http://labs.easyblog.it/maps/leaflet-geojson-list/">Demo</a>).
+		</td>
+		<td>
+			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
