@@ -901,6 +901,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/CliffCloud/Leaflet.Sleep">L.Sleep</a>
+		</td><td>
+			Avoid unwanted scroll capturing. 
+			<a href="https://cliffcloud.github.io/Leaflet.Sleep"> Demo</a>
+		</td><td>
+			<a href="https://github.com/atstp">atstp</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/danzel/Leaflet.utfgrid">Leaflet.utfgrid</a>
 		</td><td>
 			Provides a utfgrid interaction handler for leaflet a very small footprint.
