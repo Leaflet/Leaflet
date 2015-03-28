@@ -939,6 +939,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/gregallensworth/L.Control.BoxZoom">Leaflet.BoxZoom</a>
+		</td><td>
+			A visible, clickable control to perform a box zoom.
+		</td><td>
+			<a href="https://github.com/gregallensworth/L.Control.BoxZoom">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://kartena.github.com/Leaflet.zoomslider/">Leaflet.zoomslider</a>
 		</td><td>
 			A zoom slider control.
