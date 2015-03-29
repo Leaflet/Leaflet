@@ -1569,48 +1569,6 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Updates the marker position, useful if coordinates of its <code>latLng</code> object were changed directly.</td>
 	</tr>
-	<tr id="marker-bindpopup">
-		<td><code><b>bindPopup</b>(
-			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i> |</nobr> <nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i>,</nobr>
-			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
-	</tr>
-	<tr id="marker-unbindpopup">
-		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Unbinds the popup previously bound to the marker with <code>bindPopup</code>.</td>
-	</tr>
-	<tr id="marker-openpopup">
-		<td><code><b>openPopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Opens the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
-	</tr>
-	<tr>
-		<td><code><b>getPopup</b>()</code></td>
-		<td><code><a href="#popup">Popup</a></code></td>
-		<td>Returns the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
-	</tr>
-	<tr id="marker-closepopup">
-		<td><code><b>closePopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Closes the bound popup of the marker if it's opened.</td>
-	</tr>
-	<tr id="marker-togglepopup">
-		<td><code><b>togglePopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Toggles the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
-	</tr>
-	<tr id="marker-bindpopup">
-		<td><code><b>setPopupContent</b>(
-			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Sets an HTML content of the popup of this marker.</td>
-	</tr>
 	<tr id="marker-togeojson">
 		<td><code><b>toGeoJSON</b>()</code></td>
 		<td><code>Object</code></td>
@@ -1818,11 +1776,11 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>setContent</b>(
-			<nobr>&lt;String|HTMLElement&gt; <i>htmlContent</i> )</nobr>
+			<nobr>&lt;String|HTMLElement|Function&gt; <i>htmlContent</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Sets the HTML content of the popup.</td>
+		<td>Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a <code>String</code> or <code>HTMLElement</code> to be used in the popup.</td>
 	</tr>
 	<tr>
 		<td><code><b>getContent</b>()</code></td>
@@ -3103,20 +3061,13 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Methods</h3>
 
+<p>In addition to <a href="#layers">shared layer methods</a> like <code class="javascript">addTo()</code> and <code class="javascript">remove()</code> and <a href="#popups">popup methods</a> like <code class="javascript">bindPopup()</code> you can also use the following methods:</p>
+
 <table data-id='featuregroup'>
 	<tr>
 		<th class="width250">Method</th>
 		<th>Returns</th>
 		<th>Description</th>
-	</tr>
-	<tr>
-		<td><code><b>bindPopup</b>(
-			<nobr>&lt;String&gt; <i>htmlContent</i></nobr>,
-			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
-		</code></td>
-
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Binds a popup with a particular HTML content to a click on any layer from the group that has a <code>bindPopup</code> method.</td>
 	</tr>
 	<tr>
 		<td><code><b>getBounds</b>()</code></td>
@@ -3202,10 +3153,9 @@ map.fitBounds(bounds);</code></pre>
 <pre><code class="javascript">L.geoJson(data, {
 	style: function (feature) {
 		return {color: feature.properties.color};
-	},
-	onEachFeature: function (feature, layer) {
-		layer.bindPopup(feature.properties.description);
 	}
+}).bindPopup(function (layer) {
+	return layer.feature.properties.description;
 }).addTo(map);</code></pre>
 
 <p>Each feature layer created by it gets a <code>feature</code> property that links to the GeoJSON feature data the layer was created from (so that you can access its properties later).</p>
@@ -3277,6 +3227,8 @@ map.fitBounds(bounds);</code></pre>
 <p>Additionally accepts all <a href="#path-options">Path options</a> for polylines and polygons.</p>
 
 <h3>Methods</h3>
+
+<p>In addition to <a href="#layers">shared layer methods</a> like <code class="javascript">addTo()</code> and <code class="javascript">remove()</code> and <a href="#popups">popup methods</a> like <code class="javascript">bindPopup()</code> you can also use the following methods:</p>
 
 <table data-id='geojson'>
 	<tr>
@@ -4784,9 +4736,12 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|<a href="popup">Popup</a>&gt;</nobr> <i>content</i>, <nobr>&lt;<a href="#popup-options">PopupOptions</a>&gt; <i>options?</i>)</nobr></code></td>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|<a href="popup">Popup</a>&gt;</nobr> <i>content</i>, <nobr>&lt;<a href="#popup-options">PopupOptions</a>&gt; <i>options?</i>)</nobr></code></td>
 		<td><code class="javascript"><span class="keyword">this</span></code></td>
-		<td>Binds the passed <code>content</code> to the layer and sets up the neccessary event listeners.</td>
+		<td>Binds the passed <code>content</code> to the layer and sets up the neccessary event listeners. If a <code>Function</code> is passed the function will recive a layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</td>
+		<pre><code class="javascript">featureGroup.bindPopup(function(layer){
+	return "a unique template for this layer.";
+});</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>unbindPopup</b>()</nobr></code></td>
