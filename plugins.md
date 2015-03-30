@@ -543,6 +543,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/teastman">Tyler Eastman</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tomaszbrue/leaflet.boatmarker">Leaflet.BoatMarker</a>
+		</td><td>
+			A leaflet boat/yacht marker using HTML Canvas. <a href="http://tomaszbrue.github.io/leaflet.boatmarker/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/tomaszbrue">Thomas Brüggemann</a>
+		</td>
+	</tr>
 </table>
 
 
