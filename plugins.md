@@ -547,7 +547,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/tomaszbrue/leaflet.boatmarker">Leaflet.BoatMarker</a>
 		</td><td>
-			A leaflet boat/yacht marker using HTML Canvas. <a href="http://tomaszbrue.github.io/leaflet.boatmarker/">Demo</a>.
+			A boat marker using HTML Canvas for displaying yachts and sailboats with heading and wind information. <a href="http://tomaszbrue.github.io/leaflet.boatmarker/">Demo</a>.
 		</td><td>
 			<a href="https://github.com/tomaszbrue">Thomas Brüggemann</a>
 		</td>
