@@ -56,6 +56,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/MazeMap/Leaflet.LayerGroup.Collision">Leaflet.LayerGroup.Collision</a>
+		</td><td>
+			Provides collision detection for groups of markers. Unlike clustering, this takes into account the shape & size of the markers.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
+			<a href="https://github.com/MazeMap">MazeMap</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/Leaflet/Leaflet.label">Leaflet.label</a>
 		</td><td>
 			Adds text labels to map markers and vector layers.
