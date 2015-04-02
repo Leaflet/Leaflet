@@ -37,6 +37,10 @@ L.TileLayer = L.GridLayer.extend({
 		if (typeof options.subdomains === 'string') {
 			options.subdomains = options.subdomains.split('');
 		}
+		
+		if(this.options.crs) {
+			this._supportCrs();
+		}			
 
 		// for https://github.com/Leaflet/Leaflet/issues/137
 		if (!L.Browser.android) {
@@ -143,6 +147,70 @@ L.TileLayer = L.GridLayer.extend({
 			if (!tile.complete) {
 				tile.src = L.Util.emptyImageUrl;
 				L.DomUtil.remove(tile);
+			}
+		}
+	},
+	
+	_supportCrs: function () {
+		var self = this,
+			objSync = {},
+			fn_override = arguments.callee.fn_list || ['_reset','_update'],
+			ltNameProps = arguments.callee.leftPoint_propNames || ['_initialTopLeftPoint','_pixelOrigin'],
+			override,
+			f,fn_name;
+					
+		for(f in fn_override) {
+			fn_name = fn_override[f];			
+			if(fn_name in self) {
+				
+				override = function() {
+					
+					var context_fn = arguments.callee,
+						params = !! objSync.running ? context_fn.caller.arguments : arguments;
+					
+					if(!!!objSync.running) {						
+						
+						var result,							
+							m = self._map,
+							o = m&&m.options,
+							z = m&&m.getZoom(),
+							new_crs = self.options.crs,
+							old_crs = o&&o.crs,
+							old_lt,
+							fn_map = function(a, b, c) {
+								for(var i=0;i<b.length;i++) {
+									if(b[i] in a)
+										a[b[i]] = c(b[i], a[b[i]]);
+								}
+							};
+									
+						if(m&&!(new_crs === old_crs)) {									  									
+								  old_lt  = old_lt || {};
+								  fn_map(m, ltNameProps, function(key, value) {
+									 old_lt[key] = value;
+									 return new_crs.latLngToPoint(old_crs.pointToLatLng(value,z), z).round();				 
+								  });
+								  o.crs = new_crs;
+						}
+						
+						objSync.running = true;
+						result = context_fn.original.apply(self, params);
+						objSync.running = false;
+						
+						if(old_lt) {
+							fn_map(m, ltNameProps, function(key, value){
+								return old_lt[key]; 
+								});
+							o.crs = old_crs;
+						}							
+												
+						return result;
+					}
+					
+					return context_fn.original.apply(self, params);
+				};				
+				override.original = self[fn_name];
+				self[fn_name] = override;
 			}
 		}
 	}
