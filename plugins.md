@@ -1815,6 +1815,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/gregallensworth/L.Control.Credits">L.Credits</a>
+		</td>
+		<td>
+			A simple, attractive, interactive control to put your logo and link in the corner of your map.
+		</td>
+		<td>
+			<a href="https://github.com/gregallensworth/">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/Norkart/Leaflet-LayerConfig">Leaflet LayerConfig</a>
 		</td>
 		<td>
