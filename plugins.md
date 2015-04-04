@@ -1653,6 +1653,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
 		</td>
 	</tr>	
+	<tr>
+		<td>
+			<a href="https://github.com/oskosk/Leaflet.Weather">Leaflet Weather</a>
+		</td>
+		<td>
+			A Leaflet plugin for adding a weather widget to the map using OpenWeatherMap API (<a href="http://oskosk.github.io/Leaflet.Weather/">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/oskosk">Osk</a>
+		</td>
+	</tr>	
 </table>
 
 
