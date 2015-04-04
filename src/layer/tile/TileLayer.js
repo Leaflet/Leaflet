@@ -154,22 +154,17 @@ L.TileLayer = L.GridLayer.extend({
 	_supportCrs: function () {
 		var self = this,
 			objSync = {},
-			fn = arguments.callee,
+			fn = self._supportCrs,
 			fnOverride = fn.fn_list || ['_reset', '_update'],
 			ltNameProps = fn.leftPoint_propNames || ['_initialTopLeftPoint', '_pixelOrigin'],
 			override,
-			f, fnName;
-
-		for (f in fnOverride) {
-			fnName = fnOverride[f];
-			if (fnName in self) {
-
-				override = function() {
+			f, fnName,
+			overrideBuilder = function () {
+				return function contextFn() {
 
 					objSync.running = !!objSync.running;
 
-					var contextFn = arguments.callee,
-						params = objSync.running ? contextFn.caller.arguments : arguments;
+					var params = objSync.running ? contextFn.caller.arguments : arguments;
 
 					if (!objSync.running) {
 
@@ -188,7 +183,7 @@ L.TileLayer = L.GridLayer.extend({
 								}
 							};
 
-						if (m&&!(newCrs === oldCrs)) {
+						if (m && !(newCrs === oldCrs)) {
 							oldLt  = oldLt || {};
 							fnMap(m, ltNameProps, function(key, value) {
 								oldLt[key] = value;
@@ -213,6 +208,12 @@ L.TileLayer = L.GridLayer.extend({
 
 					return contextFn.original.apply(self, params);
 				};
+			};
+
+		for (f in fnOverride) {
+			fnName = fnOverride[f];
+			if (fnName in self) {
+				override = overrideBuilder();
 				override.original = self[fnName];
 				self[fnName] = override;
 			}
