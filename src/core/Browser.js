@@ -35,6 +35,7 @@
 		android23: android23,
 		chrome: chrome,
 		safari: !chrome && ua.indexOf('safari') !== -1,
+		opera12: opera3d,
 
 		ie3d: ie3d,
 		webkit3d: webkit3d,

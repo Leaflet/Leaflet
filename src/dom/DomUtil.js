@@ -141,9 +141,9 @@ L.DomUtil = {
 
 	setTransform: function (el, offset, scale) {
 		var pos = offset || new L.Point(0, 0),
-			is3d = L.Browser.webkit3d,
-		    open = 'translate' + (is3d ? '3d' : '') + '(',
-		    close = (is3d ? ',0' : '') + ')';
+			is3d = !L.Browser.opera12,
+			open = 'translate' + (is3d ? '3d' : '') + '(',
+			close = (is3d ? ',0' : '') + ')';
 
 		el.style[L.DomUtil.TRANSFORM] =
 			open + pos.x + 'px,' + pos.y + 'px' + close + (scale ? ' scale(' + scale + ')' : '');
