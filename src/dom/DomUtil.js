@@ -140,13 +140,10 @@ L.DomUtil = {
 	},
 
 	setTransform: function (el, offset, scale) {
-		var pos = offset || new L.Point(0, 0),
-			is3d = L.Browser.webkit3d,
-		    open = 'translate' + (is3d ? '3d' : '') + '(',
-		    close = (is3d ? ',0' : '') + ')';
+		var pos = offset || new L.Point(0, 0);
 
 		el.style[L.DomUtil.TRANSFORM] =
-			open + pos.x + 'px,' + pos.y + 'px' + close + (scale ? ' scale(' + scale + ')' : '');
+			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
 	},
 
 	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
