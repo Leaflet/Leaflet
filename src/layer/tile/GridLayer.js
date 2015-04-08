@@ -86,6 +86,10 @@ L.GridLayer = L.Layer.extend({
 		return this;
 	},
 
+	isLoading: function () {
+		return this._loading;
+	},
+
 	redraw: function () {
 		if (this._map) {
 			this._removeAllTiles();
@@ -426,7 +430,8 @@ L.GridLayer = L.Layer.extend({
 
 		if (queue.length !== 0) {
 			// if its the first batch of tiles to load
-			if (this._noTilesToLoad()) {
+			if (!this._loading) {
+				this._loading = true;
 				this.fire('loading');
 			}
 
@@ -592,6 +597,7 @@ L.GridLayer = L.Layer.extend({
 		});
 
 		if (this._noTilesToLoad()) {
+			this._loading = false;
 			this.fire('load');
 		}
 	},
