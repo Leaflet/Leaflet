@@ -72,10 +72,7 @@ L.GridLayer = L.Layer.extend({
 
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
-
-		if (this._map) {
-			this._updateOpacity();
-		}
+		this._updateOpacity();
 		return this;
 	},
 
@@ -148,6 +145,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateOpacity: function () {
+		if (!this._map) { return; }
 		var opacity = this.options.opacity;
 
 		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
