@@ -85,7 +85,12 @@ L.TileLayer = L.GridLayer.extend({
 	},
 
 	_tileOnLoad: function (done, tile) {
-		done(null, tile);
+		// For https://github.com/Leaflet/Leaflet/issues/3332
+		if (L.Browser.ielt9) {
+			setTimeout(L.bind(done, this, null, tile), 0);
+		} else {
+			done(null, tile);
+		}
 	},
 
 	_tileOnError: function (done, tile, e) {
