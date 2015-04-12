@@ -9,14 +9,17 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	getCenter: function () {
-		var i, j, len, p1, p2, f, area, x, y,
-		    points = this._rings[0];
+		var i, j, p1, p2, f, area, x, y, center,
+		    points = this._rings[0],
+		    len = points.length;
+
+		if (!len) { return null; }
 
 		// polygon centroid algorithm; only uses the first ring if there are multiple
 
 		area = x = y = 0;
 
-		for (i = 0, len = points.length, j = len - 1; i < len; j = i++) {
+		for (i = 0, j = len - 1; i < len; j = i++) {
 			p1 = points[i];
 			p2 = points[j];
 
@@ -26,7 +29,13 @@ L.Polygon = L.Polyline.extend({
 			area += f * 3;
 		}
 
-		return this._map.layerPointToLatLng([x / area, y / area]);
+		if (area === 0) {
+			// Polygon is so small that all points are on same pixel.
+			center = points[0];
+		} else {
+			center = [x / area, y / area];
+		}
+		return this._map.layerPointToLatLng(center);
 	},
 
 	_convertLatLngs: function (latlngs) {

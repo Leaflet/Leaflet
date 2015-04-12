@@ -93,4 +93,26 @@ describe('Polygon', function () {
 			expect(polygon._latlngs).to.eql([L.latLng([1, 2]), L.latLng([7, 8]), L.latLng([5, 6])]);
 		});
 	});
+
+	describe('#getCenter', function () {
+
+		it('should compute center of a big simple polygon around equator', function () {
+			var latlngs = [
+				[[0, 0], [10, 0], [10, 10], [0, 10]]
+			];
+			var layer = new L.Polygon(latlngs).addTo(map);
+			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([5, 5]), 1e-1);
+		});
+
+		it('should compute center of a small simple polygon', function () {
+			var latlngs = [
+				[[0, 0], [0.010, 0], [0.010, 0.010], [0, 0.010]]
+			];
+			var layer = new L.Polygon(latlngs).addTo(map);
+			map.setZoom(0);  // Make the polygon disappear in screen.
+			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([0, 0]));
+		});
+
+	});
+
 });
