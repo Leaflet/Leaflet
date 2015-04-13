@@ -172,15 +172,19 @@ L.DomEvent = {
 	},
 
 	getMousePosition: function (e, container) {
+		var evt = e;
+		if (evt.touches) {
+			evt = evt.touches[0] || evt.changedTouches[0];
+		}
 		if (!container) {
-			return new L.Point(e.clientX, e.clientY);
+			return new L.Point(evt.clientX, evt.clientY);
 		}
 
 		var rect = container.getBoundingClientRect();
 
 		return new L.Point(
-			e.clientX - rect.left - container.clientLeft,
-			e.clientY - rect.top - container.clientTop);
+			evt.clientX - rect.left - container.clientLeft,
+			evt.clientY - rect.top - container.clientTop);
 	},
 
 	getWheelDelta: function (e) {
