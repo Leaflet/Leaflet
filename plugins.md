@@ -562,6 +562,24 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/tomaszbrue">Thomas Brüggemann</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/publiclab/Leaflet.DistortableImage">Leaflet.DistortableImage</a>
+		</td><td>
+			Enable users to <a href="https://publiclab.github.io/Leaflet.DistortableImage/examples/">scale, rotate, and distort images</a> on Leaflet maps.
+		</td><td>
+			<a href="https://github.com/publiclab">Public Lab</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/manleyjster/Leaflet.Illustrate">Leaflet.Illustrate</a>
+		</td><td>
+			Extension for Leaflet.draw enabling users to <a href="http://manleyjster.github.io/Leaflet.Illustrate/examples/0.0.2/simple/">type annotations directly on maps</a>.
+		</td><td>
+			<a href="https://github.com/manleyjster">Justin Manley</a>
+		</td>
+	</tr>	
 </table>
 
 
@@ -1672,6 +1690,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td>
 		<td>
 			<a href="https://github.com/oskosk">Osk</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Leaflet/Leaflet.toolbar">Leaflet.toolbar</a>
+		</td>
+		<td>
+			Flexible, extensible toolbars for Leaflet maps. View an example <a href="http://leaflet.github.io/Leaflet.toolbar/examples/popup.html">here</a>.
+		</td>
+		<td>
+			<a href="https://github.com/manleyjster">Justin Manley</a>
 		</td>
 	</tr>	
 </table>
