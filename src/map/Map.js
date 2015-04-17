@@ -147,16 +147,20 @@ L.Map = L.Evented.extend({
 		this.options.minZoom = zoom;
 
 		if (this._loaded && this.getZoom() < this.options.minZoom) {
-			this.setZoom(zoom);
+			return this.setZoom(zoom);
 		}
+
+		return this;
 	},
 
 	setMaxZoom: function (zoom) {
 		this.options.maxZoom = zoom;
 
 		if (this._loaded && (this.getZoom() > this.options.maxZoom)) {
-			this.setZoom(zoom);
+			return this.setZoom(zoom);
 		}
+
+		return this;
 	},
 
 	panInsideBounds: function (bounds, options) {
