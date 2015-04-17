@@ -143,6 +143,26 @@ L.Map = L.Evented.extend({
 		return this.on('moveend', this._panInsideMaxBounds);
 	},
 
+	setMinZoom: function (zoom) {
+		this.options.minZoom = zoom;
+
+		if (this._loaded && this.getZoom() < this.options.minZoom) {
+			return this.setZoom(zoom);
+		}
+
+		return this;
+	},
+
+	setMaxZoom: function (zoom) {
+		this.options.maxZoom = zoom;
+
+		if (this._loaded && (this.getZoom() > this.options.maxZoom)) {
+			return this.setZoom(zoom);
+		}
+
+		return this;
+	},
+
 	panInsideBounds: function (bounds, options) {
 		var center = this.getCenter(),
 			newCenter = this._limitCenter(center, this._zoom, bounds);
