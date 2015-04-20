@@ -28,6 +28,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/Wildhoney/L.Pather">Leaflet.Pather</a>
+		</td><td>
+			L.Pather is a freehand polyline creator that simplifies the polyline for mutability. Requires D3 support.
+		</td><td>
+			<a href="https://github.com/Wildhoney">Wildhoney</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
 		</td><td>
 			Leaflet.ellipse place ellipses on map by specifying center point, semi-major axis,
