@@ -56,5 +56,10 @@ L.Map.include({
 
 		this.fire('zoomstart');
 		frame.call(this);
+	},
+
+	flyToBounds: function(bounds, options) {
+		var target = this._getBoundsCenterZoom(bounds, options);
+		return this.flyTo(target.center, target.zoom);
 	}
 });
