@@ -116,4 +116,25 @@ describe('LatLng', function () {
 			expect(L.latLng({lat: 50, lon: 30, alt: 100})).to.eql(new L.LatLng(50, 30, 100));
 		});
 	});
+
+	describe('#clone', function () {
+
+		it('should clone attributes', function () {
+			var a = new L.LatLng(50.5, 30.5, 100);
+			var b = a.clone();
+
+			expect(b.lat).to.equal(50.5);
+			expect(b.lng).to.equal(30.5);
+			expect(b.alt).to.equal(100);
+		});
+
+		it('should create another reference', function () {
+			var a = new L.LatLng(50.5, 30.5, 100);
+			var b = a.clone();
+
+			expect(a === b).to.be(false);
+		});
+
+	});
+
 });
