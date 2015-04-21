@@ -40,7 +40,7 @@ L.Map.include(!zoomAnimated ? {} : {
 			L.DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
 
 			// workaround for case when transform is the same and so transitionend event is not fired
-			if (transform === proxy.style[prop] & this._animatingZoom) {
+			if (transform === proxy.style[prop] && this._animatingZoom) {
 				this._onZoomTransitionEnd();
 			}
 		}, this);

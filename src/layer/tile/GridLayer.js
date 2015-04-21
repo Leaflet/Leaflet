@@ -72,10 +72,7 @@ L.GridLayer = L.Layer.extend({
 
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
-
-		if (this._map) {
-			this._updateOpacity();
-		}
+		this._updateOpacity();
 		return this;
 	},
 
@@ -84,6 +81,10 @@ L.GridLayer = L.Layer.extend({
 		this._updateZIndex();
 
 		return this;
+	},
+
+	isLoading: function () {
+		return this._loading;
 	},
 
 	redraw: function () {
@@ -144,6 +145,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateOpacity: function () {
+		if (!this._map) { return; }
 		var opacity = this.options.opacity;
 
 		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
@@ -426,7 +428,8 @@ L.GridLayer = L.Layer.extend({
 
 		if (queue.length !== 0) {
 			// if its the first batch of tiles to load
-			if (this._noTilesToLoad()) {
+			if (!this._loading) {
+				this._loading = true;
 				this.fire('loading');
 			}
 
@@ -592,6 +595,7 @@ L.GridLayer = L.Layer.extend({
 		});
 
 		if (this._noTilesToLoad()) {
+			this._loading = false;
 			this.fire('load');
 		}
 	},

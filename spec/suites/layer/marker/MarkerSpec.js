@@ -166,5 +166,46 @@ describe("Marker", function () {
 
 			expect(spy.called).to.be.ok();
 		});
+
+		it('fires click event when clicked with DivIcon', function () {
+			var spy = sinon.spy();
+
+			var marker = L.marker([0, 0], {icon: new L.DivIcon()}).addTo(map);
+
+			marker.on('click', spy);
+			happen.click(marker._icon);
+
+			expect(spy.called).to.be.ok();
+		});
+
+		it('fires click event when clicked on DivIcon child element', function () {
+			var spy = sinon.spy();
+
+			var marker = L.marker([0, 0], {icon: new L.DivIcon({html: '<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />'})}).addTo(map);
+
+			marker.on('click', spy);
+
+			happen.click(marker._icon);
+			expect(spy.called).to.be.ok();
+
+			happen.click(marker._icon.querySelector('img'));
+			expect(spy.calledTwice).to.be.ok();
+		});
+
+		it('fires click event when clicked on DivIcon child element set using setIcon', function () {
+			var spy = sinon.spy();
+
+			var marker = L.marker([0, 0]).addTo(map);
+			marker.setIcon(new L.DivIcon({html: '<img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" />'}));
+
+			marker.on('click', spy);
+
+			happen.click(marker._icon);
+			expect(spy.called).to.be.ok();
+
+			happen.click(marker._icon.querySelector('img'));
+			expect(spy.calledTwice).to.be.ok();
+		});
+
 	});
 });
