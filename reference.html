@@ -739,6 +739,23 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Destroys the map and clears all related event listeners.</td>
 	</tr>
+	<tr id="map-flyto">
+		<td><code><b>flyTo</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;Number&gt; <i>zoom?</i>,</nobr>
+			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Sets the view of the map (geographical center and zoom) performing a smooth pan-zoom animation.</td>
+	</tr>
+	<tr>
+		<td><code><b>flyToBounds</b>(
+			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
+			<nobr>&lt;<a href="#map-fitboundsoptions">fitBounds options</a>&gt; <i>options?</i> )</nobr>
+		</code></td>
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Sets the view of the map with a smooth animation like <a href="#map-flyto">flyTo</a>, but takes a bounds parameter like <a href="#map-fitbounds">fitBounds</a>.</td>
+	</tr>
 </table>
 
 <h3 id="map-get-methods">Methods for Getting Map State</h3>
