@@ -789,6 +789,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/balrog-kun/">Andrzej Zaborowski</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aparshin/leaflet-GIBS">Leaflet.GIBS</a>
+		</td><td>
+			 <a href="https://earthdata.nasa.gov/gibs">NASA EOSDIS GIBS</a> imagery integration. The plugin provides <a href="https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products">96 daily updated layers</a> with satellite imagery and science parameters. <a href="http://aparshin.github.io/leaflet-GIBS/examples/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/aparshin">Alexander Parshin</a>
+		</td>
+	</tr>
 </table>
 
 
