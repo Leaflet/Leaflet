@@ -27,6 +27,7 @@
 		<button id="kyiv">Kyiv</button> -->
 		<button id="dc">DC</button>
 		<button id="sf">SF</button>
+		<button id="trd">TRD</button>
 		<button id="stop">stop</button>
 	</div>
 
@@ -36,6 +37,7 @@
 			london = [51.51, -0.12],
 			sf = [37.77, -122.42],
 			dc = [38.91, -77.04];
+			trd = [63.41, 10.41];
 
 		var map = L.map('map').setView(dc, 10);
 
@@ -51,6 +53,7 @@
 
 		document.getElementById('dc').onclick = function () { map.flyTo(dc, 10); };
 		document.getElementById('sf').onclick = function () { map.flyTo(sf, 10); };
+		document.getElementById('trd').onclick = function () { map.flyTo(trd, 10, {duration: 20}); };
 		document.getElementById('stop').onclick = function () { map.stop(); };
 		// document.getElementById('london').onclick = function () { map.flyTo(london); };
 		// document.getElementById('kyiv').onclick = function () { map.flyTo(kyiv); };
