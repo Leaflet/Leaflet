@@ -30,7 +30,7 @@ with over seventy different layers to choose from.
 Popular commercial options, free up to a particular number of requests, include
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
-[Esri ArcGIS](http://www.arcgis.com/features/maps/imagery.html) ([official plugin](https://github.com/Esri/esri-leaflet))
+[Esri ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers) ([official plugin](https://github.com/Esri/esri-leaflet))
 and [Nokia Here](http://developer.here.com/web-experiences).
 A notable exception is [MapQuest Open](http://developer.mapquest.com/web/products/open/map), which is free for any number of requests.
 
@@ -40,7 +40,7 @@ Always be sure to **read the terms of use** of a chosen tile provider, **know it
 
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx),
-[ArcGIS](http://www.arcgis.com/features/maps/imagery.html)
+[ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers)
 and [MapQuest Open](http://developer.mapquest.com/web/products/open/map) provide satellite imagery among others.
 
 #### I want to use Google Maps API tiles with Leaflet, can I do that?
