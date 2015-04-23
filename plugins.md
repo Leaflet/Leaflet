@@ -588,7 +588,16 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		</td><td>
 			<a href="https://github.com/manleyjster">Justin Manley</a>
 		</td>
-	</tr>	
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/oliverroick/Leaflet.Deflate">Leaflet.Deflate</a>
+		</td><td>
+			Deflates lines and polygons to a marker when their screen size becomes too small in lower zoom levels.
+		</td><td>
+			<a href="https://github.com/oliverroick">Oliver Roick</a>
+		</td>
+	</tr>
 </table>
 
 
