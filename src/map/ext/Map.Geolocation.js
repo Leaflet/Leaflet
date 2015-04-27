@@ -16,7 +16,7 @@ L.Map.include({
 
 		options = this._locateOptions = L.extend({}, this._defaultLocateOptions, options);
 
-		if (!navigator.geolocation) {
+		if (!('geolocation' in navigator)) {
 			this._handleGeolocationError({
 				code: 0,
 				message: 'Geolocation not supported.'
