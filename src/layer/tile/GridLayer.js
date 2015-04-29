@@ -220,6 +220,12 @@ L.GridLayer = L.Layer.extend({
 
 			// force the browser to consider the newly added element for transition
 			L.Util.falseFn(level.el.offsetWidth);
+
+			if (L.Browser.ie) {
+				L.DomEvent.on(level.el, 'focus', function() {
+					this._map._container.focus();
+				}, this);
+			}
 		}
 
 		this._level = level;
