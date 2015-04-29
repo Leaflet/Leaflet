@@ -33,6 +33,8 @@
 		var latlngs = L.rectangle(bounds).getLatLngs();
 		L.polyline(latlngs.concat([latlngs[0]])).addTo(map);
 
+		map.setMaxBounds(bounds);	// Should not enter infinite recursion
+
 	</script>
 </body>
 </html>
