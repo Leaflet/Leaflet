@@ -88,7 +88,7 @@ L.Bounds.prototype = {
 };
 
 L.bounds = function (a, b) { // (Bounds) or (Point, Point) or (Point[])
-	if (!a || a instanceof L.Bounds) {
+	if (a instanceof L.Bounds || a === undefined || a === null) {
 		return a;
 	}
 	return new L.Bounds(a, b);
