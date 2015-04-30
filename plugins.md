@@ -1732,7 +1732,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/Alpstein/leaflet-plugin/tree/master/singleclick_0.7">singleclick</a>
+			<a href="https://github.com/Alpstein/leaflet-singleclick_0.7">singleclick</a>
 		</td>
 		<td>
 			Extend Map to fire a <code>singleclick</code> event (<a href="http://leaflet.github.io/singleclick/index.html">example</a>).
