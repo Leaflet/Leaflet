@@ -53,7 +53,7 @@ var overlayMaps = {
     "Cities": cities
 };</code></pre>
 
-Now, all that's left to do is to create a [Layers Control](../reference.html#control-layers) and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional --- for example, you can pass just a base layers object by ommiting the second argument, or just an overlays objects by passing `null` as the first argument.
+Now, all that's left to do is to create a [Layers Control](../reference.html#control-layers) and add it to the map. The first argument passed when creating the layers control is the base layers object. The second argument is the overlays object. Both arguments are optional --- for example, you can pass just a base layers object by omitting the second argument, or just an overlays objects by passing `null` as the first argument.
 
 <pre><code>L.control.layers(baseMaps, overlayMaps).addTo(map);</code></pre>
 
