@@ -2,7 +2,30 @@
  * L.LatLng represents a geographical point with latitude and longitude coordinates.
  */
 
-L.LatLng = function (lat, lng, alt) {
+// constructs LatLng with different signatures
+// (LatLng) or ([Number, Number]) or (Number, Number) or (Object)
+L.LatLng = function (a, b, c) {
+	var lat, lng, alt;
+	if (L.Util.isArray(a) && typeof a[0] !== 'object') {
+		if (a.length === 3) {
+			lat = a[0];
+			lng = a[1];
+			alt = a[2];
+		}
+		if (a.length === 2) {
+			lat = a[0];
+			lng = a[1];
+		}
+	} else if (typeof a === 'object' && 'lat' in a) {
+		lat = a.lat;
+		lng = 'lng' in a ? a.lng : a.lon;
+		alt = a.alt;
+	} else {
+		lat = a;
+		lng = b;
+		alt = c;
+	}
+
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
@@ -53,30 +76,13 @@ L.LatLng.prototype = {
 };
 
 
-// constructs LatLng with different signatures
-// (LatLng) or ([Number, Number]) or (Number, Number) or (Object)
-
 L.latLng = function (a, b, c) {
-	if (a instanceof L.LatLng) {
+	if (a instanceof L.LatLng || a === null) {
 		return a;
 	}
-	if (L.Util.isArray(a) && typeof a[0] !== 'object') {
-		if (a.length === 3) {
-			return new L.LatLng(a[0], a[1], a[2]);
-		}
-		if (a.length === 2) {
-			return new L.LatLng(a[0], a[1]);
-		}
+	try {
+		return new L.LatLng(a, b, c);
+	} catch(err) {
 		return null;
 	}
-	if (a === undefined || a === null) {
-		return a;
-	}
-	if (typeof a === 'object' && 'lat' in a) {
-		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
-	}
-	if (b === undefined) {
-		return null;
-	}
-	return new L.LatLng(a, b, c);
 };

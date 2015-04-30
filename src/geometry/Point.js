@@ -3,6 +3,12 @@
  */
 
 L.Point = function (x, y, round) {
+	if (L.Util.isArray(x)) {
+		round = y;
+		y = x[1];
+		x = x[0];
+	}
+
 	this.x = (round ? Math.round(x) : x);
 	this.y = (round ? Math.round(y) : y);
 };
@@ -116,13 +122,7 @@ L.Point.prototype = {
 };
 
 L.point = function (x, y, round) {
-	if (x instanceof L.Point) {
-		return x;
-	}
-	if (L.Util.isArray(x)) {
-		return new L.Point(x[0], x[1]);
-	}
-	if (x === undefined || x === null) {
+	if (x instanceof L.Point || x === null) {
 		return x;
 	}
 	return new L.Point(x, y, round);

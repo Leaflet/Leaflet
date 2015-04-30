@@ -10,6 +10,12 @@ describe('LatLng', function () {
 			expect(b.lng).to.eql(-74);
 		});
 
+		it('throws an error if lng not specified', function () {
+			expect(function () {
+				var a = new L.LatLng(50);
+			}).to.throwError();
+		});
+
 		it('throws an error if invalid lat or lng', function () {
 			expect(function () {
 				var a = new L.LatLng(NaN, NaN);
@@ -105,6 +111,10 @@ describe('LatLng', function () {
 
 		it('returns null if lng not specified', function () {
 			expect(L.latLng(50)).to.be(null);
+		});
+
+		it('returns null if invalid lat/lng', function () {
+			expect(L.latLng(NaN, NaN)).to.be(null);
 		});
 
 		it('accepts altitude as third parameter', function () {
