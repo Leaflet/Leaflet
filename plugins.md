@@ -259,6 +259,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/coryasilva/Leaflet.ExtraMarkers">Leaflet.Extra-Markers</a>
+		</td><td>
+			Shameless copy of Awesome-Markers with more shapes, colors and semantic-ui support
+		</td><td>
+			<a href="http://www.corysilva.com">Cory Silva</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="http://humangeo.github.com/leaflet-dvf/">Leaflet Data Visualization Framework</a>
 		</td><td>
 			New markers, layers, and utility classes for easy thematic mapping and data visualization.
