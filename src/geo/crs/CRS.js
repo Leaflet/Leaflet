@@ -56,8 +56,9 @@ L.CRS = {
 	// wraps geo coords in certain ranges if applicable
 	wrapLatLng: function (latlng) {
 		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat;
+		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+		    alt = latlng.alt;
 
-		return L.latLng(lat, lng);
+		return L.latLng(lat, lng, alt);
 	}
 };
