@@ -16,7 +16,7 @@
 	    android23 = ua.search('android [23]') !== -1,
 		gecko = ua.indexOf('gecko') !== -1,
 
-	    mobile = typeof orientation !== undefined + '',
+	    mobile = typeof orientation !== undefined + '' || (screen && typeof screen.mozOrientation !== 'undefined'),
 	    msPointer = window.navigator && window.navigator.msPointerEnabled &&
 	              window.navigator.msMaxTouchPoints && !window.PointerEvent,
 		pointer = (window.PointerEvent && window.navigator.pointerEnabled && window.navigator.maxTouchPoints) ||
