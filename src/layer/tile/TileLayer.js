@@ -360,7 +360,7 @@ L.TileLayer = L.Class.extend({
 		}
 
 		if (options.bounds) {
-			var tileSize = options.tileSize,
+			var tileSize = this._getTileSize(),
 			    nwPoint = tilePoint.multiplyBy(tileSize),
 			    sePoint = nwPoint.add([tileSize, tileSize]),
 			    nw = this._map.unproject(nwPoint),
