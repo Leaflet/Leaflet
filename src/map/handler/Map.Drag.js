@@ -128,9 +128,9 @@ L.Map.Drag = L.Handler.extend({
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
 			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
-			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2);
 
-			if (!offset.x || !offset.y) {
+			if (!offset.x && !offset.y) {
 				map.fire('moveend');
 
 			} else {
