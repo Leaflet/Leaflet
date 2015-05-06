@@ -88,7 +88,7 @@ L.Map = L.Evented.extend({
 		return this.setView(newCenter, zoom, {zoom: options});
 	},
 
-	fitBounds: function (bounds, options) {
+	_getBoundsCenterZoom: function (bounds, options) {
 
 		options = options || {};
 		bounds = bounds.getBounds ? bounds.getBounds() : L.latLngBounds(bounds);
@@ -106,7 +106,15 @@ L.Map = L.Evented.extend({
 		    nePoint = this.project(bounds.getNorthEast(), zoom),
 		    center = this.unproject(swPoint.add(nePoint).divideBy(2).add(paddingOffset), zoom);
 
-		return this.setView(center, zoom, options);
+		return {
+			center: center,
+			zoom: zoom
+		};
+	},
+
+	fitBounds: function (bounds, options) {
+		var target = this._getBoundsCenterZoom(bounds, options);
+		return this.setView(target.center, target.zoom, options);
 	},
 
 	fitWorld: function (options) {
@@ -130,17 +138,39 @@ L.Map = L.Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
-		this.options.maxBounds = bounds;
-
 		if (!bounds) {
 			return this.off('moveend', this._panInsideMaxBounds);
+		} else if (this.options.maxBounds) {
+			this.off('moveend', this._panInsideMaxBounds);
 		}
+
+		this.options.maxBounds = bounds;
 
 		if (this._loaded) {
 			this._panInsideMaxBounds();
 		}
 
 		return this.on('moveend', this._panInsideMaxBounds);
+	},
+
+	setMinZoom: function (zoom) {
+		this.options.minZoom = zoom;
+
+		if (this._loaded && this.getZoom() < this.options.minZoom) {
+			return this.setZoom(zoom);
+		}
+
+		return this;
+	},
+
+	setMaxZoom: function (zoom) {
+		this.options.maxZoom = zoom;
+
+		if (this._loaded && (this.getZoom() > this.options.maxZoom)) {
+			return this.setZoom(zoom);
+		}
+
+		return this;
 	},
 
 	panInsideBounds: function (bounds, options) {

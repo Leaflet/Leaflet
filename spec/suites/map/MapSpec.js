@@ -206,6 +206,27 @@ describe("Map", function () {
 		});
 	});
 
+	describe("#getMinZoom and #getMaxZoom", function () {
+		describe('#getMinZoom', function () {
+			it('returns 0 if not set by Map options or TileLayer options', function () {
+				var map = L.map(document.createElement('div'));
+				expect(map.getMinZoom()).to.be(0);
+			});
+		});
+
+		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
+
+			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
+
+			L.tileLayer("{z}{x}{y}", {minZoom: 4, maxZoom: 10}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 6, maxZoom: 17}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 22}).addTo(map);
+
+			expect(map.getMinZoom()).to.be(2);
+			expect(map.getMaxZoom()).to.be(20);
+		});
+	});
+
 	describe("#hasLayer", function () {
 		it("returns false when passed undefined, null, or false", function () {
 			var map = L.map(document.createElement('div'));
