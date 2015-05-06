@@ -1729,6 +1729,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<td>
 			<a href="https://github.com/manleyjster">Justin Manley</a>
 		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Alpstein/leaflet-singleclick_0.7">singleclick</a>
+		</td>
+		<td>
+			Extend Map to fire a <code>singleclick</code> event (<a href="http://alpstein.github.io/leaflet-singleclick_0.7/">example</a>).
+		</td>
+		<td>
+			<a href="http://glat.info">Guillaume Lathoud</a>
+		</td>
 	</tr>	
 </table>
 
