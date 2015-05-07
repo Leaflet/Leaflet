@@ -1956,6 +1956,17 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="http://www.sparkgeo.com/">Sparkgeo</a>
  		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/PaulLeCam/react-leaflet">react-leaflet</a>
+		</td>
+		<td>
+			<a href="https://facebook.github.io/react/">React</a> components for Leaflet maps.
+		</td>
+		<td>
+			<a href="http://paullecam.github.io/">Paul Le Cam</a>
+ 		</td>
+	</tr>
 </table>
 
 To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
