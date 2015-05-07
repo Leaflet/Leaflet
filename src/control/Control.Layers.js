@@ -178,6 +178,20 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_addItem: function (obj) {
+		var arrName = obj.name.split("#");
+		var layerName = (arrName.length == 1) ? obj.name : arrName[1];
+
+		if(arrName.length == 2)
+		{
+			var label = document.createElement('label');
+			label.classList.add("leaflet-base-layers-label");
+			var name = document.createElement('span');
+			name.innerHTML = arrName[0];
+			label.appendChild(name);
+			var container = obj.overlay ? this._overlaysList : this._baseLayersList;
+			container.appendChild(label);
+		}
+		
 		var label = document.createElement('label'),
 		    checked = this._map.hasLayer(obj.layer),
 		    input;
@@ -196,7 +210,7 @@ L.Control.Layers = L.Control.extend({
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
 		var name = document.createElement('span');
-		name.innerHTML = ' ' + obj.name;
+		name.innerHTML = ' ' + layerName;
 
 		label.appendChild(input);
 		label.appendChild(name);

@@ -498,3 +498,11 @@
 	background: #fff;
 	border: 1px solid #666;
 	}
+
+.leaflet-base-layers-label {
+	margin-top: 8px;
+	margin-bottom: 4px;
+	font-size: 10px;
+	text-align: center;
+	background: #e8e8e8;
+	}
