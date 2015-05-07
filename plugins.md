@@ -7,62 +7,91 @@ title: Plugins
 
 While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are literally hundreds of nice plugins to choose from.
 
----
 
-## <a name='index'></a> Index
+<div id="toc" class="clearfix">
+	<div class="span-4">
+		<h4>Tile & image layers</h4>
+
+		<ul>
+			<li> <a href='#basemap-providers'>Basemap providers</a></li>
+			<li> <a href='#basemap-formats'>Basemap formats</a></li>
+			<li> <a href='#basemap-nonmap'>Non-map base layers</a></li>
+			<li> <a href='#tiledisplay'>Tile/image display</a></li>
+			<li> <a href='#tileload'>Tile load</a></li>
+		</ul>
+
+		<h4>Overlay data</h4>
+
+		<ul>
+			<li> <a href='#vectordata-formats'>Overlay data formats</a></li>
+			<li> <a href='#vectordata-dynamic'>Dynamic data loading</a></li>
+			<li> <a href='#vectordata-synthetic'>Synthetic overlays</a></li>
+			<li> <a href='#vectordata-providers'>Data providers</a></li>
+		</ul>
+	</div>
+	<div class="span-4">
+
+		<h4>Overlay Display</h4>
+		<ul>
+			<li><a href="#vectordisplay-symbolizers">Markers & renderers</a></li>
+			<li><a href="#vectordisplay-animations">Overlay animations</a></li>
+			<li><a href="#vectordisplay-cluster">Clustering/decluttering</a></li>
+			<li><a href="#vectordisplay-heatmap">Heatmaps</a></li>
+			<li><a href="#vectordisplay-dataviz">DataViz</a></li>
+		</ul>
+		<h4>Overlay interaction</h4>
+		<ul>
+			<li><a href="#geometryinteraction-edit">Edit geometries</a></li>
+			<li><a href="#geometryinteraction-time">Time & elevation</a></li>
+			<li><a href="#geometryinteraction-search">Search & popups</a></li>
+			<li><a href="#geometryinteraction-selection">Area/overlay selection</a></li>
+		</ul>
+	</div>
+	<div class="span-5">
+		<h4>Map interaction</h4>
+		<ul>
+			<li><a href="#mapcontrols-layerswitchers">Layer switching controls</a></li>
+			<li><a href="#mapcontrols-panzoom-interactive">Interactive pan/zoom</a></li>
+			<li><a href="#mapcontrols-panzoom-bookmarked">Bookmarked pan/zoom</a></li>
+			<li><a href="#mapcontrols-fullscreen">Fullscreen</a></li>
+			<li><a href="#mapcontrols-minimaps">Minimaps &amp; synced maps</a></li>
+			<li><a href="#mapcontrols-measure">Measurement</a></li>
+			<li><a href="#mapcontrols-mousecoords">Mouse coordinates</a></li>
+			<li><a href="#mapcontrols-events">Events</a></li>
+			<li><a href="#mapcontrols-userinterface">User interface</a></li>
+			<li><a href="#mapcontrols-print">Print/export</a></li>
+			<li><a href="#mapcontrols-geolocation">Geolocation</a></li>
+		</ul>
+	</div>
+	<div class="span-4">
+		<h4>Miscellaneous</h4>
+		<ul>
+			<li><a href="#geoprocessing">Geoprocessing</a></li>
+			<li><a href="#routing">Routing</a></li>
+			<li><a href="#geocoding">Geocoding</a></li>
+			<li><a href="#collections">Plugin collections</a></li>
+		</ul>
+		<h4>Integration</h4>
+		<ul>
+			<li><a href="#integration-frameworks">Frameworks &amp; build systems</a></li>
+			<li><a href="#integration-3rdparty">3<sup>rd</sup> party</a></li>
+		</ul>
+		<hr>
+		<a href="#develop">Develop your own</a>
+	</div>
+
+</div>
 
 
-* [Basemaps](#basemap)
-	* [Basemap providers](#basemap-providers)
-	* [Basemap formats](#basemap-formats)
-	* [Non-map base layers](#basemap-nonmap)
-* [Tile/image display](#tiledisplay)
-* [Tile load](#tileload)
-* [Vector Data](#vectordata)
-	* [Vector formats](#vectordata-formats)
-	* [Dynamic vector loading](#vectordata-dynamic)
-	* [Synthetic vectors](#vectordata-synthetic)
-	* [Vector providers](#vectordata-providers)
-* [Vector Display](#vectordisplay)
-	* [Vector symbolizers](#vectordisplay-symbolizers)
-	* [Marker animations](#vectordisplay-animations)
-	* [Clustering/decluttering](#vectordisplay-cluster)
-	* [Heatmaps](#vectordisplay-heatmap)
-	* [DataViz & miscellaneous](#vectordisplay-misc)
-* [Geoprocessing](#geoprocessing)
-* [Routing](#routing)
-* [Interaction with geometries](#geometryinteraction)
-	* [Edit geometries](#geometryinteraction-edit)
-	* [Geometries with time or elevation](#geometryinteraction-time)
-	* [Feature search/properties/popups](#geometryinteraction-search)
-	* [Area/feature selection](#geometryinteraction-selection)
-* [Map interaction](#mapcontrols)
-	* [Layer switching controls](#mapcontrols-layerswitchers)
-	* [Interactive pan/zoom](#mapcontrols-panzoom-interactive)
-	* [Bookmarked pan/zoom](#mapcontrols-panzoom-bookmarked)
-	* [Fullscreen](#mapcontrols-fullscreen)
-	* [Minimaps & synced maps](#mapcontrols-minimaps)
-	* [Measurement](#mapcontrols-measure)
-	* [Mouse coordinates](#mapcontrols-mousecoords)
-	* [Events](#mapcontrols-events)
-	* [User interface](#mapcontrols-userinterface)
-	* [Print/export](#mapcontrols-print)
-	* [Geolocation](#mapcontrols-geolocation)
-* [Geocoding](#geocoding)
-* [Integration](#integration)
-	* [Frameworks & build systems](#integration-frameworks)
-	* [3<sup>rd</sup> party](#integration-3rdparty)
-* [Plugin collections](#collections)
+## <a name='basemap'></a>Tile & image layers
 
-
-## <a name='basemap'></a>Basemaps
-
-The following plugins provide new tiled basemaps, or a way to display commonly used basemap formats. They behave as subclasses of `L.TileLayer`.
-
+The following plugins allow loading different maps and provide functionality to tile and image layers.
 
 * [Basemap providers](#basemap-providers)
 * [Basemap formats](#basemap-formats)
 * [Non-map base layers](#basemap-nonmap)
+* [Tile/image display](#tiledisplay)
+* [Tile load](#tileload)
 
 
 ### <a name='basemap-providers'></a>Basemap providers
@@ -121,7 +150,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 
 ### <a name='basemap-formats'></a>Basemap formats
 
-Plugins for loading basemaps or GIS layers in common (albeit non-default) formats.
+Plugins for loading basemaps or GIS raster layers in common (albeit non-default) formats.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -252,7 +281,7 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 
 
 
-## <a name='tiledisplay'></a>Tile/image display
+### <a name='tiledisplay'></a>Tile/image display
 
 The following plugins change the way that tile or image layers are displayed in the map.
 
@@ -306,9 +335,9 @@ The following plugins change the way that tile or image layers are displayed in 
 
 
 
-## <a name='tileload'></a>Tile Load
+### <a name='tileload'></a>Tile Load
 
-The following plugins change the way that tile layers are loaded in the map.
+The following plugins change the way that tile layers are loaded into the map.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -360,16 +389,16 @@ The following plugins change the way that tile layers are loaded in the map.
 </table>
 
 
-## <a name='vectordata'></a>Vector data
+## <a name='vectordata'></a>Overlay data
 
-The following plugins provide new ways of loading vector data.
+The following plugins provide new ways of loading overlay data (GIS vector data): points, lines and polygons.
 
-* [Vector formats](#vectordata-formats)
-* [Dynamic vector loading](#vectordata-dynamic)
-* [Synthetic vectors](#vectordata-synthetic)
-* [Vector providers](#vectordata-providers)
+* [Overlay data formats](#vectordata-formats)
+* [Dynamic data loading](#vectordata-dynamic)
+* [Synthetic overlays](#vectordata-synthetic)
+* [Data providers](#vectordata-providers)
 
-### <a name='vectordata-formats'></a>Vector formats
+### <a name='vectordata-formats'></a>Overlay data formats
 
 Load your own data from various GIS formats.
 
@@ -450,9 +479,9 @@ Load your own data from various GIS formats.
 
 
 
-### <a name='vectordata-dynamic'></a>Dynamic/custom vector loading
+### <a name='vectordata-dynamic'></a>Dynamic/custom data loading
 
-Load dynamic data which is updated in the map, or load vector data in non-standard ways.
+Load dynamic data which is updated in the map, or load GIS vector data in non-standard ways.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -506,9 +535,9 @@ Load dynamic data which is updated in the map, or load vector data in non-standa
 
 
 
-### <a name='vectordata-synthetic'></a>Synthetic vectors
+### <a name='vectordata-synthetic'></a>Synthetic overlays
 
-These plugins create useful vector data from scratch, without loading it from anywhere..
+These plugins create useful overlays from scratch, no loading required.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -541,9 +570,9 @@ These plugins create useful vector data from scratch, without loading it from an
 
 
 
-### <a name='vectordata-providers'></a>Vector providers
+### <a name='vectordata-providers'></a>Data providers
 
-Load data from third-party-services.
+Load overlay data from third-party-services. See also [basemap providers](#basemap-providers) and [plugin collections](#collections).
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -577,20 +606,20 @@ Load data from third-party-services.
 
 
 
-## <a name='vectordisplay'></a>Vector display
+## <a name='vectordisplay'></a>Overlay display
 
-The following plugins provide new ways of displaying vector information:
+The following plugins provide new ways of displaying overlay data information.
 
-* [Vector symbolizers](#vectordisplay-symbolizers)
+* [Markers & renderers](#vectordisplay-symbolizers)
 * [Marker animations](#vectordisplay-animations)
 * [Clustering/decluttering](#vectordisplay-cluster)
 * [Heatmaps](#vectordisplay-heatmap)
-* [DataViz & miscellaneous](#vectordisplay-misc)
+* [DataViz](#vectordisplay-dataviz)
 
 
-### <a name='vectordisplay-symbolizers'></a>Vector symbolizers
+### <a name='vectordisplay-symbolizers'></a>Markers & renderers
 
-A symbolizer renders a geometry in a different way.
+These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also known these as symbolizers.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -743,9 +772,9 @@ A symbolizer renders a geometry in a different way.
 
 
 
-### <a name='vectordisplay-animations'></a>Vector animation
+### <a name='vectordisplay-animations'></a>Overlay animations
 
-These plugins animate markers or some geometries. See also [geometries with time or elevation](#geometryinteraction-time)
+These plugins animate markers or some geometries. See also [geometries with time or elevation](#geometryinteraction-time).
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -908,7 +937,7 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 </table>
 
 
-### <a name='vectordisplay-misc'></a>DataViz / miscellaneous
+### <a name='vectordisplay-dataviz'></a>DataViz
 
 Powerful multi-purpose libraries for data visualization.
 
@@ -944,140 +973,20 @@ Powerful multi-purpose libraries for data visualization.
 
 
 
-
-## <a name='geoprocessing'></a>Geoprocessing
-
-The following plugins perform several sorts of geoprocessing.
-
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-	<tr>
-		<td>
-			<a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a>
-		</td><td>
-			<a href="http://trac.osgeo.org/proj4js/">Proj4js</a> integration plugin, allowing you to use all kinds of weird projections in Leaflet.
-		</td><td>
-			<a href="http://www.kartena.se/">Kartena</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/springmeyer/arc.js">arc.js</a>
-		</td><td>
-			A JS library for drawing great circle routes that can be used with Leaflet.
-		</td><td>
-			<a href="https://github.com/springmeyer">Dane Springmeyer</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/tmcw/leaflet-pip">Leaflet-pip</a>
-		</td><td>
-			Simple point in polygon calculation using <a href="https://github.com/substack/point-in-polygon">point-in-polygon</a>.
-		</td><td>
-			<a href="https://github.com/tmcw">Tom MacWright</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/makinacorpus/Leaflet.GeometryUtil">Leaflet.GeometryUtil</a>
-		</td><td>
-			A collection of utilities for Leaflet geometries (linear referencing, etc.)
-		</td><td>
-			<a href="https://github.com/bbecquet">Benjamin Becquet</a>, <a href="https://github.com/leplatrem">Mathieu Leplatre</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/w8r/GreinerHormann">Greiner-Hormann</a>
-		</td>
-		<td>
-			Greiner-Hormann algorithm for polygon clipping and binary operations, adapted for use with Leaflet.
-		</td>
-		<td>
-			<a href="https://github.com/w8r">Alexander Milevski</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/henrythasler/Leaflet.Geodesic">Leaflet.Geodesic</a>
-		</td><td>
-			Draw geodesic (poly)lines. A geodesic line is the shortest path between two given positions on the earth surface. and You can also calculate the exact distance between two given points on the map.
-		</td><td>
-			<a href="https://github.com/henrythasler">Henry Thasler</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/skeate/Leaflet.buffer">Leaflet.buffer</a>
-		</td><td>
-			Enables buffering of shapes drawn with Leaflet.draw.
-		</td><td>
-			<a href="https://github.com/skeate">Jonathan Skeate</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/makinacorpus/Leaflet.LayerIndex">Leaflet.LayerIndex</a>
-		</td><td>
-			An efficient spatial index for features and layers, using <a href="https://github.com/imbcmdth/RTree">RTree.js</a>.
-		</td><td>
-			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
-		</td>
-	</tr>
-</table>
-
-
-
-## <a name='routing'></a> Routing and route search
-
-
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-	<tr>
-		<td>
-			<a href="https://github.com/perliedman/leaflet-routing-machine">Leaflet Routing Machine</a>
-		</td><td>
-			Control for route search between waypoints, displaying itinerary and alternative routes. Currently
-			uses <a href="http://project-osrm.org/">OSRM</a> to search routes.
-		</td><td>
-			<a href="https://github.com/perliedman">Per Liedman</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/Turistforeningen/leaflet-routing">Leaflet.Routing</a>
-		</td><td>
-			Leaflet controller and interface for routing paths between waypoints using any user provided routing service.
-		</td><td>
-			<a href="https://github.com/turistforeningen">Norwegian Trekking Association</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/route360/r360-js">Route360°</a>
-		</td><td>
-			Route360° visualizes the area which is reachable from a set of starting points in a given time and gives detailed routing information (walk, bike, car and <b>public transportation</b>) to targets.
-		</td><td>
-			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
-		</td>
-	</tr>
-</table>
-
-
-
-
 ## <a name='geometryinteraction'></a> Interaction with geometries/features
 
-The following plugins enable users to interact with geometries: edit geometries, select areas or features, interact with the time dimension, search features.
+The following plugins enable users to interact with overlay data: edit geometries, select areas or features, interact with the time dimension, search features and display information about them.
 
 * [Edit geometries](#geometryinteraction-edit)
-* [Geometries with time or elevation](#geometryinteraction-time)
-* [Feature search/properties/popups](#geometryinteraction-search)
-* [Area/feature selection](#geometryinteraction-selection)
+* [Time & elevation](#geometryinteraction-time)
+* [Search & popups](#geometryinteraction-search)
+* [Area/overlay selection](#geometryinteraction-selection)
 
 ### <a name='geometryinteraction-edit'></a> Edit geometries
 
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+Allows users to create, draw, edit and/or delete points, lines and polygons.
 
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
 			<a href="https://github.com/Wildhoney/Leaflet.FreeDraw">Leaflet.FreeDraw</a>
@@ -1210,9 +1119,9 @@ The following plugins enable users to interact with geometries: edit geometries,
 </table>
 
 
-### <a name='geometryinteraction-time'></a> Geometries with time or elevation
+### <a name='geometryinteraction-time'></a>Time & elevation
 
-View/manipulate geometries with elevation or time dimensions.
+Most data is two-dimensional (latitude and longitude), but some data has more dimensions (altitude and/or time). The following plugins help users navigate these extra dimensions.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1245,7 +1154,7 @@ View/manipulate geometries with elevation or time dimensions.
 		</td>
 	</tr>
 	<tr>
-        <td>
+		<td>
 			<a href="https://github.com/skeate/Leaflet.timeline">Leaflet.timeline</a>
 		</td><td>
 			Display arbitrary GeoJSON on a map with a timeline slider and play button.
@@ -1267,9 +1176,9 @@ View/manipulate geometries with elevation or time dimensions.
 
 
 
-### <a name='geometryinteraction-search'></a> Feature search/properties/popups
+### <a name='geometryinteraction-search'></a>Search & popups
 
-Plugins that search for features and enhance how to display information about them.
+Plugins that search for overlays and enhance how to display information about them.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1333,7 +1242,9 @@ Plugins that search for features and enhance how to display information about th
 
 
 
-### <a name='geometryinteraction-selection'></a> Area/feature selection
+### <a name='geometryinteraction-selection'></a>Area/overlay selection
+
+These plugins help users select either overlays or areas in the map.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1379,6 +1290,8 @@ Plugins that search for features and enhance how to display information about th
 
 ## <a name='mapcontrols'></a> Map interaction
 
+New ways to interact with the map itself.
+
 * [Layer switching controls](#mapcontrols-layerswitchers)
 * [Interactive pan/zoom](#mapcontrols-panzoom-interactive)
 * [Bookmarked pan/zoom](#mapcontrols-panzoom-bookmarked)
@@ -1393,7 +1306,7 @@ Plugins that search for features and enhance how to display information about th
 
 ### <a name='mapcontrols-layerswitchers'></a>Layer switching controls
 
-Enhance or extend `L.Control.Layers`.
+The following plugins enhance or extend `L.Control.Layers`.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1665,7 +1578,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 
 ### <a name='mapcontrols-fullscreen'></a>Fullscreen controls
 
-Allows display of the Leaflet map in full-screen mode.
+Allows display of the map in full-screen mode.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1845,7 +1758,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 
 ### <a name='mapcontrols-events'></a>Events
 
-Extend Leaflet event handling.
+These plugins extend Leaflet event handling.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -1911,7 +1824,7 @@ Extend Leaflet event handling.
 
 ### <a name='mapcontrol-userinterface'></a>User interface
 
-Generic buttons, sliders, toolbars, sidebars, panels.
+Buttons, sliders, toolbars, sidebars, and panels.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -2022,6 +1935,11 @@ Generic buttons, sliders, toolbars, sidebars, panels.
 
 Print or export your map.
 
+<!--
+- Saving a Leaflet Map to a PNG Example using Javascript and PHP https://github.com/tegansnyder/Leaflet-Save-Map-to-PNG
+- Get a PNG from a Leaflet map and export it in PDF https://github.com/chrissom/leaflet-pdf
+-->
+
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
@@ -2042,12 +1960,6 @@ Print or export your map.
 		</td>
 	</tr>
 </table>
-
-
-
-
-
-
 
 
 
@@ -2098,7 +2010,135 @@ Plugins that extend Leaflet's geolocation capabilities.
 
 
 
-### <a name='geocoding'></a>Geocoding (Address Lookup)
+
+## <a name='misc'></a>Miscellaneous
+
+
+
+### <a name='geoprocessing'></a>Geoprocessing
+
+The following plugins perform several sorts of geoprocessing (mathematical and topological operations on points, lines and polygons).
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a>
+		</td><td>
+			<a href="http://trac.osgeo.org/proj4js/">Proj4js</a> integration plugin, allowing you to use all kinds of weird projections in Leaflet.
+		</td><td>
+			<a href="http://www.kartena.se/">Kartena</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/springmeyer/arc.js">arc.js</a>
+		</td><td>
+			A JS library for drawing great circle routes that can be used with Leaflet.
+		</td><td>
+			<a href="https://github.com/springmeyer">Dane Springmeyer</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tmcw/leaflet-pip">Leaflet-pip</a>
+		</td><td>
+			Simple point in polygon calculation using <a href="https://github.com/substack/point-in-polygon">point-in-polygon</a>.
+		</td><td>
+			<a href="https://github.com/tmcw">Tom MacWright</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.GeometryUtil">Leaflet.GeometryUtil</a>
+		</td><td>
+			A collection of utilities for Leaflet geometries (linear referencing, etc.)
+		</td><td>
+			<a href="https://github.com/bbecquet">Benjamin Becquet</a>, <a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/w8r/GreinerHormann">Greiner-Hormann</a>
+		</td>
+		<td>
+			Greiner-Hormann algorithm for polygon clipping and binary operations, adapted for use with Leaflet.
+		</td>
+		<td>
+			<a href="https://github.com/w8r">Alexander Milevski</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/henrythasler/Leaflet.Geodesic">Leaflet.Geodesic</a>
+		</td><td>
+			Draw geodesic (poly)lines. A geodesic line is the shortest path between two given positions on the earth surface. and You can also calculate the exact distance between two given points on the map.
+		</td><td>
+			<a href="https://github.com/henrythasler">Henry Thasler</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/skeate/Leaflet.buffer">Leaflet.buffer</a>
+		</td><td>
+			Enables buffering of shapes drawn with Leaflet.draw.
+		</td><td>
+			<a href="https://github.com/skeate">Jonathan Skeate</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/makinacorpus/Leaflet.LayerIndex">Leaflet.LayerIndex</a>
+		</td><td>
+			An efficient spatial index for features and layers, using <a href="https://github.com/imbcmdth/RTree">RTree.js</a>.
+		</td><td>
+			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+</table>
+
+
+
+### <a name='routing'></a> Routing
+
+The following plugins use external services to calculate driving or walking routes.
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/perliedman/leaflet-routing-machine">Leaflet Routing Machine</a>
+		</td><td>
+			Control for route search between waypoints, displaying itinerary and alternative routes. Currently
+			uses <a href="http://project-osrm.org/">OSRM</a> to search routes.
+		</td><td>
+			<a href="https://github.com/perliedman">Per Liedman</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Turistforeningen/leaflet-routing">Leaflet.Routing</a>
+		</td><td>
+			Leaflet controller and interface for routing paths between waypoints using any user provided routing service.
+		</td><td>
+			<a href="https://github.com/turistforeningen">Norwegian Trekking Association</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/route360/r360-js">Route360°</a>
+		</td><td>
+			Route360° visualizes the area which is reachable from a set of starting points in a given time and gives detailed routing information (walk, bike, car and <b>public transportation</b>) to targets.
+		</td><td>
+			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
+		</td>
+	</tr>
+</table>
+
+
+
+
+### <a name='geocoding'></a>Geocoding
+
+External services that transform an address or the name of a place into latitude and longitude (or vice versa).
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -2182,10 +2222,48 @@ Plugins that extend Leaflet's geolocation capabilities.
 
 
 
+## <a name='collections'></a>Plugin collections
+
+Sets of plugins that span several categories.
+
+Plugin developers: please keep future plugins in individual repositories.
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/shramov/leaflet-plugins">Plugins by Pavel Shramov</a>
+		</td><td>
+			A set of plugins for: GPX, KML layers; Bing tile layer; Google and Yandex layers (implemented with their APIs), permalink and distance measurement controls.
+		</td><td>
+			<a href="https://github.com/shramov">Pavel Shramov</a>, <a href="https://github.com/brunob">Bruno B</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Estimap/Spectrum4Leaflet">Spectrum4Leaflet</a>
+		</td><td>
+			Tools for using Spectrum Spatial Server services with leaflet. This plugin supports: map service, tile service, feature service. It has layers, legend and feature controls.
+		</td><td>
+			<a href="https://github.com/SVoyt">SVoyt</a>, <a href="https://github.com/Estimap">ESTI MAP</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="http://mapbbcode.org/leaflet.html">MapBBCode-related leaflet plugins</a>
+		</td><td>
+			Seven plugins for various features, independent of the MapBBCode library.
+			From circular and popup icons to buttons, layer switcher, better search and attribution.
+		</td><td>
+			<a href="https://github.com/zverik">Ilya Zverev</a>
+		</td>
+	</tr>
+</table>
+
+
 
 ## <a name='integration'></a>Integration
 
-## <a name='integration-frameworks'></a> Frameworks & build systems
+### <a name='integration-frameworks'></a> Frameworks & build systems
 
 Ease your development integrating Leaflet into a development framework or automating some of the javascript/CSS work for complex applications.
 
@@ -2303,50 +2381,13 @@ The following plugins integrate Leaflet into third party services or websites.
 
 
 
-## <a name='collections'></a>Plugin collections
-
-Sets of plugins that span several categories.
-
-Plugin developers: please keep future plugins in individual repositories.
-
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-	<tr>
-		<td>
-			<a href="https://github.com/shramov/leaflet-plugins">Plugins by Pavel Shramov</a>
-		</td><td>
-			A set of plugins for: GPX, KML layers; Bing tile layer; Google and Yandex layers (implemented with their APIs), permalink and distance measurement controls.
-		</td><td>
-			<a href="https://github.com/shramov">Pavel Shramov</a>, <a href="https://github.com/brunob">Bruno B</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/Estimap/Spectrum4Leaflet">Spectrum4Leaflet</a>
-		</td><td>
-			Tools for using Spectrum Spatial Server services with leaflet. This plugin supports: map service, tile service, feature service. It has layers, legend and feature controls.
-		</td><td>
-			<a href="https://github.com/SVoyt">SVoyt</a>, <a href="https://github.com/Estimap">ESTI MAP</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="http://mapbbcode.org/leaflet.html">MapBBCode-related leaflet plugins</a>
-		</td><td>
-			Seven plugins for various features, independent of the MapBBCode library.
-			From circular and popup icons to buttons, layer switcher, better search and attribution.
-		</td><td>
-			<a href="https://github.com/zverik">Ilya Zverev</a>
-		</td>
-	</tr>
-</table>
 
 
+## <a name='develop'></a> Develop your own
 
+Leaflet keeps it simple. If you can think of a feature that is not required by all of Leaflet users, and you can write the javascript code in a reusable way, you've got yourself a Leaflet plugin already.
 
+There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
 
-To submit your own Leaflet plugin to this list, just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
+Once your plugin is ready, you can submit it to this list: just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
 
-<!--
-- Saving a Leaflet Map to a PNG Example using Javascript and PHP https://github.com/tegansnyder/Leaflet-Save-Map-to-PNG
-- Get a PNG from a Leaflet map and export it in PDF https://github.com/chrissom/leaflet-pdf
--->
