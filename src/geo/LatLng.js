@@ -49,6 +49,10 @@ L.LatLng.prototype = {
 		return L.latLngBounds(
 		        [this.lat - latAccuracy, this.lng - lngAccuracy],
 		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
+	},
+
+	clone: function () {
+		return new L.LatLng(this.lat, this.lng, this.alt);
 	}
 };
 
