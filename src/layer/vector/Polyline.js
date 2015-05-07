@@ -131,7 +131,7 @@ L.Polyline = L.Path.extend({
 
 	_flat: function (latlngs) {
 		// true if it's a flat array of latlngs; false if nested
-		return !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] !== 'object';
+		return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 	},
 
 	_project: function () {
