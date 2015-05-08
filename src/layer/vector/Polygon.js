@@ -51,7 +51,7 @@ L.Polygon = L.Polyline.extend({
 
 	_setLatLngs: function (latlngs) {
 		L.Polyline.prototype._setLatLngs.call(this, latlngs);
-		if (this._flat(this._latlngs)) {
+		if (L.Polyline._flat(this._latlngs)) {
 			this._latlngs = [this._latlngs];
 		}
 	},
