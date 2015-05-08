@@ -79,7 +79,8 @@ L.DomEvent = {
 						return L.DomEvent._filterClick(e, originalHandler);
 					};
 				}
-				obj.addEventListener(type, handler, false);
+				// focus and blur are not bubbled up, so capture them down instead
+				obj.addEventListener(type, handler, type === 'focus' || type === 'blur');
 			}
 
 		} else if ('attachEvent' in obj) {
