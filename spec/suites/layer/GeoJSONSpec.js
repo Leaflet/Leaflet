@@ -21,6 +21,103 @@ describe("L.GeoJSON", function () {
 			expect(layer.getLayers()[0].feature).to.eql(geoJSON);
 		});
 	});
+
+	describe("constructor", function () {
+		it("throws an error on an invalid point", function() {
+			expect(function () {
+				var layer = new L.GeoJSON({
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'Point',
+						coordinates: [20]
+					}});
+			}).to.throwException(function (e) {
+				expect(e.message).to.eql("Invalid GeoJSON Point.");
+			});
+		});
+
+		it("throws an error on an invalid multipoint", function() {
+			expect(function () {
+				var layer = new L.GeoJSON({
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'MultiPoint',
+						coordinates: [[20, 10], [10, 20], [NaN, NaN]]
+					}});
+			}).to.throwException(function (e) {
+				expect(e.message).to.eql("Invalid GeoJSON Multipoint.");
+			});
+		});
+
+		it("throws an error on an invalid linestring", function() {
+			expect(function () {
+				var layer = new L.GeoJSON({
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'LineString',
+						coordinates: [[20, 10], [10, 20], [NaN, NaN]]
+					}});
+			}).to.throwException(function (e) {
+				expect(e.message).to.eql("Invalid GeoJSON LineString/MultiLineString.");
+			});
+		});
+
+		it("throws an error on an invalid multilinestring", function() {
+			expect(function () {
+				var layer = new L.GeoJSON({
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'MultiLineString',
+						coordinates: [[[20, 10], [10, 20]], [[NaN]]]
+					}});
+			}).to.throwException(function (e) {
+				expect(e.message).to.eql("Invalid GeoJSON LineString/MultiLineString.");
+			});
+		});
+	});
+
+	it("throws an error on an invalid polygon", function() {
+		expect(function () {
+			var layer = new L.GeoJSON({
+				type: 'Feature',
+				properties: {},
+				geometry: {
+					type: 'Polygon',
+					coordinates: [[[]]]
+				}});
+		}).to.throwException(function (e) {
+			expect(e.message).to.eql("Invalid GeoJSON Polygon/MultiPolygon.");
+		});
+	});
+
+	it("throws an error on an invalid feature collection", function() {
+		expect(function () {
+			var layer = new L.GeoJSON({
+				type: 'FeatureCollection',
+				features: [{
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'LineString',
+						coordinates: [[20, 10, 5], [20, 30, 5], [10, 30, 5]]
+					}
+				}, {
+					type: 'Feature',
+					properties: {},
+					geometry: {
+						type: 'Point',
+						coordinates: [NaN, NaN]
+					}
+				}]
+			});
+		}).to.throwException(function (e) {
+			expect(e.message).to.eql("Invalid GeoJSON Point.");
+		});
+	});
 });
 
 describe("L.Marker#toGeoJSON", function () {
