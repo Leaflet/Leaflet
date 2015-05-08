@@ -190,7 +190,7 @@ L.Circle.include(PointToGeoJSON);
 L.CircleMarker.include(PointToGeoJSON);
 
 L.Polyline.prototype.toGeoJSON = function () {
-	var multi = !this._flat(this._latlngs);
+	var multi = !L.Polyline._flat(this._latlngs);
 
 	var coords = L.GeoJSON.latLngsToCoords(this._latlngs, multi ? 1 : 0);
 
@@ -201,8 +201,8 @@ L.Polyline.prototype.toGeoJSON = function () {
 };
 
 L.Polygon.prototype.toGeoJSON = function () {
-	var holes = !this._flat(this._latlngs),
-	    multi = holes && !this._flat(this._latlngs[0]);
+	var holes = !L.Polyline._flat(this._latlngs),
+	    multi = holes && !L.Polyline._flat(this._latlngs[0]);
 
 	var coords = L.GeoJSON.latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true);
 
