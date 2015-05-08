@@ -1,12 +1,12 @@
 ---
 layout: default
 title: Plugins
+bodyclass: plugins-page
 ---
-
-## Notable Leaflet Plugins
 
 While Leaflet is meant to be as lightweight as possible, and focuses on a core set of features, an easy way to extend its functionality is to use third-party plugins. Thanks to the awesome community behind Leaflet, there are literally hundreds of nice plugins to choose from.
 
+---
 
 <div id="toc" class="clearfix">
 	<div class="span-4">
@@ -15,52 +15,52 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<ul>
 			<li> <a href='#basemap-providers'>Basemap providers</a></li>
 			<li> <a href='#basemap-formats'>Basemap formats</a></li>
-			<li> <a href='#basemap-nonmap'>Non-map base layers</a></li>
-			<li> <a href='#tiledisplay'>Tile/image display</a></li>
-			<li> <a href='#tileload'>Tile load</a></li>
+			<li> <a href='#non-map-base-layers'>Non-map base layers</a></li>
+			<li> <a href='#tileimage-display'>Tile/image display</a></li>
+			<li> <a href='#tile-load'>Tile load</a></li>
 		</ul>
 
 		<h4>Overlay data</h4>
 
 		<ul>
-			<li> <a href='#vectordata-formats'>Overlay data formats</a></li>
-			<li> <a href='#vectordata-dynamic'>Dynamic data loading</a></li>
-			<li> <a href='#vectordata-synthetic'>Synthetic overlays</a></li>
-			<li> <a href='#vectordata-providers'>Data providers</a></li>
+			<li> <a href='#overlay-data-formats'>Overlay data formats</a></li>
+			<li> <a href='#dynamiccustom-data-loading'>Dynamic data loading</a></li>
+			<li> <a href='#synthetic-overlays'>Synthetic overlays</a></li>
+			<li> <a href='#data-providers'>Data providers</a></li>
 		</ul>
 	</div>
 	<div class="span-4">
 
 		<h4>Overlay Display</h4>
 		<ul>
-			<li><a href="#vectordisplay-symbolizers">Markers & renderers</a></li>
-			<li><a href="#vectordisplay-animations">Overlay animations</a></li>
-			<li><a href="#vectordisplay-cluster">Clustering/decluttering</a></li>
-			<li><a href="#vectordisplay-heatmap">Heatmaps</a></li>
-			<li><a href="#vectordisplay-dataviz">DataViz</a></li>
+			<li><a href="#markers--renderers">Markers & renderers</a></li>
+			<li><a href="#overlay-animations">Overlay animations</a></li>
+			<li><a href="#clusteringdecluttering">Clustering/decluttering</a></li>
+			<li><a href="#heatmaps">Heatmaps</a></li>
+			<li><a href="#dataviz">DataViz</a></li>
 		</ul>
 		<h4>Overlay interaction</h4>
 		<ul>
-			<li><a href="#geometryinteraction-edit">Edit geometries</a></li>
-			<li><a href="#geometryinteraction-time">Time & elevation</a></li>
-			<li><a href="#geometryinteraction-search">Search & popups</a></li>
-			<li><a href="#geometryinteraction-selection">Area/overlay selection</a></li>
+			<li><a href="#edit-geometries">Edit geometries</a></li>
+			<li><a href="#time--elevation">Time & elevation</a></li>
+			<li><a href="#search--popups">Search & popups</a></li>
+			<li><a href="#areaoverlay-selection">Area/overlay selection</a></li>
 		</ul>
 	</div>
 	<div class="span-5">
 		<h4>Map interaction</h4>
 		<ul>
-			<li><a href="#mapcontrols-layerswitchers">Layer switching controls</a></li>
-			<li><a href="#mapcontrols-panzoom-interactive">Interactive pan/zoom</a></li>
-			<li><a href="#mapcontrols-panzoom-bookmarked">Bookmarked pan/zoom</a></li>
-			<li><a href="#mapcontrols-fullscreen">Fullscreen</a></li>
-			<li><a href="#mapcontrols-minimaps">Minimaps &amp; synced maps</a></li>
-			<li><a href="#mapcontrols-measure">Measurement</a></li>
-			<li><a href="#mapcontrols-mousecoords">Mouse coordinates</a></li>
-			<li><a href="#mapcontrols-events">Events</a></li>
-			<li><a href="#mapcontrols-userinterface">User interface</a></li>
-			<li><a href="#mapcontrols-print">Print/export</a></li>
-			<li><a href="#mapcontrols-geolocation">Geolocation</a></li>
+			<li><a href="#layer-switching-controls">Layer switching controls</a></li>
+			<li><a href="#interactive-panzoom">Interactive pan/zoom</a></li>
+			<li><a href="#bookmarked-panzoom">Bookmarked pan/zoom</a></li>
+			<li><a href="#fullscreen-controls">Fullscreen</a></li>
+			<li><a href="#minimaps--synced-maps">Minimaps &amp; synced maps</a></li>
+			<li><a href="#measurement">Measurement</a></li>
+			<li><a href="#mouse-coordinates">Mouse coordinates</a></li>
+			<li><a href="#events">Events</a></li>
+			<li><a href="#user-interface">User interface</a></li>
+			<li><a href="#printexport">Print/export</a></li>
+			<li><a href="#geolocation">Geolocation</a></li>
 		</ul>
 	</div>
 	<div class="span-4">
@@ -69,32 +69,32 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li><a href="#geoprocessing">Geoprocessing</a></li>
 			<li><a href="#routing">Routing</a></li>
 			<li><a href="#geocoding">Geocoding</a></li>
-			<li><a href="#collections">Plugin collections</a></li>
+			<li><a href="#plugin-collections">Plugin collections</a></li>
 		</ul>
 		<h4>Integration</h4>
 		<ul>
-			<li><a href="#integration-frameworks">Frameworks &amp; build systems</a></li>
-			<li><a href="#integration-3rdparty">3<sup>rd</sup> party</a></li>
+			<li><a href="#frameworks--build-systems">Frameworks &amp; build systems</a></li>
+			<li><a href="#suprdsup-party-integration">3<sup>rd</sup> party</a></li>
 		</ul>
 		<hr>
-		<a href="#develop">Develop your own</a>
+		<a href="#develop-your-own">Develop your own</a>
 	</div>
 
 </div>
 
 
-## <a name='basemap'></a>Tile & image layers
+## Tile & image layers
 
 The following plugins allow loading different maps and provide functionality to tile and image layers.
 
 * [Basemap providers](#basemap-providers)
 * [Basemap formats](#basemap-formats)
-* [Non-map base layers](#basemap-nonmap)
-* [Tile/image display](#tiledisplay)
-* [Tile load](#tileload)
+* [Non-map base layers](#non-map-base-layers)
+* [Tile/image display](#tileimage-display)
+* [Tile load](#tile-load)
 
 
-### <a name='basemap-providers'></a>Basemap providers
+### Basemap providers
 
 Ready-to-go basemaps, with little or no configuration at all.
 
@@ -148,7 +148,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 
 
 
-### <a name='basemap-formats'></a>Basemap formats
+### Basemap formats
 
 Plugins for loading basemaps or GIS raster layers in common (albeit non-default) formats.
 
@@ -227,7 +227,7 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 </table>
 
 
-### <a name='basemap-nonmap'></a>Non-map base tilelayers
+### Non-map base layers
 
 Sometimes you don't want to load a map, just big custom images. **Really** big ones.
 
@@ -281,7 +281,7 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 
 
 
-### <a name='tiledisplay'></a>Tile/image display
+### Tile/image display
 
 The following plugins change the way that tile or image layers are displayed in the map.
 
@@ -335,7 +335,7 @@ The following plugins change the way that tile or image layers are displayed in 
 
 
 
-### <a name='tileload'></a>Tile Load
+### Tile Load
 
 The following plugins change the way that tile layers are loaded into the map.
 
@@ -389,16 +389,16 @@ The following plugins change the way that tile layers are loaded into the map.
 </table>
 
 
-## <a name='vectordata'></a>Overlay data
+## Overlay data
 
 The following plugins provide new ways of loading overlay data (GIS vector data): points, lines and polygons.
 
-* [Overlay data formats](#vectordata-formats)
-* [Dynamic data loading](#vectordata-dynamic)
-* [Synthetic overlays](#vectordata-synthetic)
-* [Data providers](#vectordata-providers)
+* [Overlay data formats](#overlay-data-formats)
+* [Dynamic data loading](#dynamiccustom-data-loading)
+* [Synthetic overlays](#synthetic-overlays)
+* [Data providers](#data-providers)
 
-### <a name='vectordata-formats'></a>Overlay data formats
+### Overlay data formats
 
 Load your own data from various GIS formats.
 
@@ -479,7 +479,7 @@ Load your own data from various GIS formats.
 
 
 
-### <a name='vectordata-dynamic'></a>Dynamic/custom data loading
+### Dynamic/custom data loading
 
 Load dynamic data which is updated in the map, or load GIS vector data in non-standard ways.
 
@@ -535,7 +535,7 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 
 
 
-### <a name='vectordata-synthetic'></a>Synthetic overlays
+### Synthetic overlays
 
 These plugins create useful overlays from scratch, no loading required.
 
@@ -570,7 +570,7 @@ These plugins create useful overlays from scratch, no loading required.
 
 
 
-### <a name='vectordata-providers'></a>Data providers
+### Data providers
 
 Load overlay data from third-party-services. See also [basemap providers](#basemap-providers) and [plugin collections](#collections).
 
@@ -606,18 +606,18 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 
 
 
-## <a name='vectordisplay'></a>Overlay display
+## Overlay display
 
 The following plugins provide new ways of displaying overlay data information.
 
-* [Markers & renderers](#vectordisplay-symbolizers)
-* [Marker animations](#vectordisplay-animations)
-* [Clustering/decluttering](#vectordisplay-cluster)
-* [Heatmaps](#vectordisplay-heatmap)
-* [DataViz](#vectordisplay-dataviz)
+* [Markers & renderers](#markers--renderers)
+* [Overlay animations](#overlay-animations)
+* [Clustering/decluttering](#clusteringdecluttering)
+* [Heatmaps](#heatmaps)
+* [DataViz](#dataviz)
 
 
-### <a name='vectordisplay-symbolizers'></a>Markers & renderers
+### Markers & renderers
 
 These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also known these as symbolizers.
 
@@ -772,7 +772,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 
 
 
-### <a name='vectordisplay-animations'></a>Overlay animations
+### Overlay animations
 
 These plugins animate markers or some geometries. See also [geometries with time or elevation](#geometryinteraction-time).
 
@@ -827,7 +827,7 @@ These plugins animate markers or some geometries. See also [geometries with time
 
 
 
-### <a name='vectordisplay-cluster'></a>Clustering/Decluttering
+### Clustering/Decluttering
 
 When you are displaying a lot of data, these plugins will make your map look cleaner.
 
@@ -880,7 +880,7 @@ When you are displaying a lot of data, these plugins will make your map look cle
 	</tr>
 </table>
 
-### <a name='vectordisplay-heatmap'></a>Heatmaps
+### Heatmaps
 
 These plugins create heatmaps and heatmap-like visualizations from vector data.
 
@@ -937,7 +937,7 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 </table>
 
 
-### <a name='vectordisplay-dataviz'></a>DataViz
+### DataViz
 
 Powerful multi-purpose libraries for data visualization.
 
@@ -973,16 +973,16 @@ Powerful multi-purpose libraries for data visualization.
 
 
 
-## <a name='geometryinteraction'></a> Interaction with geometries/features
+## Interaction with geometries/features
 
 The following plugins enable users to interact with overlay data: edit geometries, select areas or features, interact with the time dimension, search features and display information about them.
 
-* [Edit geometries](#geometryinteraction-edit)
-* [Time & elevation](#geometryinteraction-time)
-* [Search & popups](#geometryinteraction-search)
-* [Area/overlay selection](#geometryinteraction-selection)
+* [Edit geometries](#edit-geometries)
+* [Time & elevation](#time--elevation)
+* [Search & popups](#ge#search--popups)
+* [Area/overlay selection](#areaoverlay-selection)
 
-### <a name='geometryinteraction-edit'></a> Edit geometries
+### Edit geometries
 
 Allows users to create, draw, edit and/or delete points, lines and polygons.
 
@@ -1119,7 +1119,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 </table>
 
 
-### <a name='geometryinteraction-time'></a>Time & elevation
+### Time & elevation
 
 Most data is two-dimensional (latitude and longitude), but some data has more dimensions (altitude and/or time). The following plugins help users navigate these extra dimensions.
 
@@ -1176,7 +1176,7 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 
 
 
-### <a name='geometryinteraction-search'></a>Search & popups
+### Search & popups
 
 Plugins that search for overlays and enhance how to display information about them.
 
@@ -1242,7 +1242,7 @@ Plugins that search for overlays and enhance how to display information about th
 
 
 
-### <a name='geometryinteraction-selection'></a>Area/overlay selection
+### Area/overlay selection
 
 These plugins help users select either overlays or areas in the map.
 
@@ -1288,23 +1288,23 @@ These plugins help users select either overlays or areas in the map.
 
 
 
-## <a name='mapcontrols'></a> Map interaction
+## Map interaction
 
 New ways to interact with the map itself.
 
-* [Layer switching controls](#mapcontrols-layerswitchers)
-* [Interactive pan/zoom](#mapcontrols-panzoom-interactive)
-* [Bookmarked pan/zoom](#mapcontrols-panzoom-bookmarked)
-* [Fullscreen](#mapcontrols-fullscreen)
-* [Minimaps & synced maps](#mapcontrols-minimaps)
-* [Measurement](#mapcontrols-measure)
-* [Mouse coordinates](#mapcontrols-mousecoords)
-* [Events](#mapcontrols-events)
-* [User interface](#mapcontrols-userinterface)
-* [Print/export](#mapcontrols-print)
-* [Geolocation](#mapcontrols-geolocation)
+* [Layer switching controls](#layer-switching-controls)
+* [Interactive pan/zoom](#interactive-panzoom)
+* [Bookmarked pan/zoom](#bookmarked-panzoom)
+* [Fullscreen](#fullscreen-controls)
+* [Minimaps & synced maps](#minimaps--synced-maps)
+* [Measurement](#measurement)
+* [Mouse coordinates](#mouse-coordinates)
+* [Events](#events)
+* [User interface](#user-interface)
+* [Print/export](#printexport)
+* [Geolocation](#geolocation)
 
-### <a name='mapcontrols-layerswitchers'></a>Layer switching controls
+### Layer switching controls
 
 The following plugins enhance or extend `L.Control.Layers`.
 
@@ -1375,7 +1375,7 @@ The following plugins enhance or extend `L.Control.Layers`.
 </table>
 
 
-### <a name='control-panzoom-interactive'></a>Interactive pan/zoom
+### Interactive pan/zoom
 
 Change the way the user can interactively move around the map.
 
@@ -1460,7 +1460,7 @@ Change the way the user can interactively move around the map.
 
 
 
-### <a name='mapcontrols-panzoom-bookmarked'></a>Bookmarked pan/zoom
+### Bookmarked pan/zoom
 
 Change the way the user is moved around the map, by jumping to predefined/stored places.
 
@@ -1576,7 +1576,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 
 
 
-### <a name='mapcontrols-fullscreen'></a>Fullscreen controls
+### Fullscreen controls
 
 Allows display of the map in full-screen mode.
 
@@ -1612,7 +1612,7 @@ Allows display of the map in full-screen mode.
 
 
 
-### <a name='controls-minimaps'></a>Minimaps & synced maps
+### Minimaps & synced maps
 
 Display two maps at once. One of them might be a different size and zoom level, usable as a minimap to aid with navigation.
 
@@ -1660,7 +1660,7 @@ Display two maps at once. One of them might be a different size and zoom level, 
 
 
 
-### <a name='controls-measurement'></a>Measurement
+### Measurement
 
 Allow the user to measure distances or areas.
 
@@ -1703,7 +1703,7 @@ Allow the user to measure distances or areas.
 
 
 
-### <a name='mapcontrols-mousecoords'></a>Mouse coordinates
+### Mouse coordinates
 
 Show the geographical coordinates under the mouse cursor in different ways.
 
@@ -1756,7 +1756,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 
 
 
-### <a name='mapcontrols-events'></a>Events
+### Events
 
 These plugins extend Leaflet event handling.
 
@@ -1822,7 +1822,7 @@ These plugins extend Leaflet event handling.
 
 
 
-### <a name='mapcontrol-userinterface'></a>User interface
+### User interface
 
 Buttons, sliders, toolbars, sidebars, and panels.
 
@@ -1931,7 +1931,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 
 
 
-### <a name='mapcontrols-print'></a>Print/export
+### Print/export
 
 Print or export your map.
 
@@ -1963,7 +1963,7 @@ Print or export your map.
 
 
 
-### <a name='mapcontrols-geolocation'></a>Geolocation
+### Geolocation
 
 Plugins that extend Leaflet's geolocation capabilities.
 
@@ -2011,11 +2011,11 @@ Plugins that extend Leaflet's geolocation capabilities.
 
 
 
-## <a name='misc'></a>Miscellaneous
+## Miscellaneous
 
 
 
-### <a name='geoprocessing'></a>Geoprocessing
+### Geoprocessing
 
 The following plugins perform several sorts of geoprocessing (mathematical and topological operations on points, lines and polygons).
 
@@ -2098,7 +2098,7 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 
 
 
-### <a name='routing'></a> Routing
+### Routing
 
 The following plugins use external services to calculate driving or walking routes.
 
@@ -2136,7 +2136,7 @@ The following plugins use external services to calculate driving or walking rout
 
 
 
-### <a name='geocoding'></a>Geocoding
+### Geocoding
 
 External services that transform an address or the name of a place into latitude and longitude (or vice versa).
 
@@ -2222,7 +2222,7 @@ External services that transform an address or the name of a place into latitude
 
 
 
-## <a name='collections'></a>Plugin collections
+### Plugin collections
 
 Sets of plugins that span several categories.
 
@@ -2261,9 +2261,9 @@ Plugin developers: please keep future plugins in individual repositories.
 
 
 
-## <a name='integration'></a>Integration
+## Integration
 
-### <a name='integration-frameworks'></a> Frameworks & build systems
+### Frameworks & build systems
 
 Ease your development integrating Leaflet into a development framework or automating some of the javascript/CSS work for complex applications.
 
@@ -2366,7 +2366,7 @@ Ease your development integrating Leaflet into a development framework or automa
 </table>
 
 
-### <a name='integration-3rdparty'></a> 3<sup>rd</sup> party integration
+### 3<sup>rd</sup> party integration
 
 The following plugins integrate Leaflet into third party services or websites.
 
@@ -2416,7 +2416,7 @@ The following plugins integrate Leaflet into third party services or websites.
 
 
 
-## <a name='develop'></a> Develop your own
+## Develop your own
 
 Leaflet keeps it simple. If you can think of a feature that is not required by all of Leaflet users, and you can write the javascript code in a reusable way, you've got yourself a Leaflet plugin already.
 

@@ -76,11 +76,13 @@ h2 {
 	text-shadow: 0 -1px 1px rgba(0,0,0,0.35);
 	}
 
-.api-page h2 {
+.api-page h2, .plugins-page h2, .plugins-page h3 {
 	cursor: pointer;
 	}
 
 .api-page h2[id]:before,
+.plugins-page h2[id]:before,
+.plugins-page h3[id]:before,
 .api-page tr[id] td:first-child:before {
 	content: 'Permalink';
 	display: inline-block;
@@ -98,6 +100,10 @@ h2 {
 	position: absolute;
 	}
 
+.plugins-page h3[id]:before {
+	margin: 0px 5px 0px -23px;
+	}
+
 .api-page tr[id] td:first-child:before {
     opacity:0;
     }
@@ -106,7 +112,11 @@ h2 {
     opacity:1;
     }
 
-.api-page h2[id]:hover:before { opacity:1; }
+.api-page h2[id]:hover:before,
+.plugins-page h2[id]:hover:before,
+.plugins-page h3[id]:hover:before {
+	opacity:1;
+	}
 
 .api-page h2 {
 	margin-top: 2.5em;
