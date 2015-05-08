@@ -17,29 +17,12 @@ L.Polyline = L.Path.extend({
 	},
 
 	getLatLngs: function () {
-		// TODO rings
 		return this._latlngs;
 	},
 
 	setLatLngs: function (latlngs) {
 		this._setLatLngs(latlngs);
 		return this.redraw();
-	},
-
-	addLatLng: function (latlng) {
-		// TODO rings
-		latlng = L.latLng(latlng);
-		this._latlngs.push(latlng);
-		this._bounds.extend(latlng);
-		return this.redraw();
-	},
-
-	spliceLatLngs: function () {
-		// TODO rings
-		var removed = [].splice.apply(this._latlngs, arguments);
-		this._setLatLngs(this._latlngs);
-		this.redraw();
-		return removed;
 	},
 
 	closestLayerPoint: function (p) {
@@ -107,9 +90,21 @@ L.Polyline = L.Path.extend({
 		return this._bounds;
 	},
 
+	addLatLng: function (latlng, latlngs) {
+		latlngs = latlngs || this._defaultShape();
+		latlng = L.latLng(latlng);
+		latlngs.push(latlng);
+		this._bounds.extend(latlng);
+		return this.redraw();
+	},
+
 	_setLatLngs: function (latlngs) {
 		this._bounds = new L.LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
+	},
+
+	_defaultShape: function () {
+		return L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
