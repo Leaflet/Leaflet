@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<!--
+- Demo on using SVG elements with interactive logic, within Leaflet.js. 
+- 
+- The application code is given free hands as to which SVG library to use, and
+- what to do with it (i.e. whole applications can be crafted).
+-->
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+
+  <script src="http://cdn.jsdelivr.net/snap.svg/0.3.0/snap.svg-min.js"></script>
+
+  <style>
+    svg.leaflet-active-layer { border: thin solid red; }
+  </style>    
+</head>
+<body>
+
+	<div id="map"></div>
+  
+	<script type="text/javascript">
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map');
+    osm.addTo(map);
+    
+		var	bounds = L.latLngBounds(
+                   L.latLng( 60.19473, 24.93961 ),   // NW
+                   L.latLng( 60.18952, 24.95497 )    // SE
+                 );
+
+    // Traditional Leaflet rectangle to mark the bounds
+    //
+    L.rectangle( bounds, {color: "#ff7800", weight: 1} ).addTo(map);
+
+		map.fitBounds(bounds);
+
+    L.control.scale( {
+      metric: true,
+      imperial: false
+    } ).addTo(map);
+    
+    // The '<svg>' element must be created like this, if it's done programmatically.
+    // It will roam free in the DOM until passed on to Leaflet.
+    //
+    var svgElem= L.DomUtil.create('svg');   //document.createElementNS('http://www.w3.org/2000/svg','svg');
+
+    // Add the svg to the map (and through there to the DOM) at large.
+    //
+    // For some reason, the loading seems more snappy, if we do this here (and not after
+    // the SVG has been populated).
+    //
+    var overlay = L.activeOverlay( svgElem, bounds, {
+      // This is a bit vague - the croc gets the events even if we have this 'false'.
+      //interactive: false
+    });
+  
+    var S= Snap( svgElem );
+
+    /*
+    * Make Snap.svg's '<Element>.drag()' do the right thing, scaling to our overlay's
+    * ratio (which depends on the zooming).
+    *
+    * Note: we could provide this as an outside tool. We just need access to 'Snap'
+    *     and 'overlay'.
+    */
+    Snap.plugin( function (Snap, Element, Paper, glob, Fragment) {
+      var proto = Element.prototype;
+
+      var old_drag = proto.drag;
+      if (!old_drag) {
+        throw new Error( "'Element.drag' not found!" );
+      }
+
+      var DRAG_T0_KEY = 'dragTransform';  // initial transform string
+      var DRAG_RATIO_KEY = 'dragRatio';
+
+      // Note: We could change the API, to e.g. using an options object, 
+      //      and give a warning if the old like use seems to happen.
+      //
+      proto.drag = function( customMove, customStart, customStop ) {
+  
+        function dragStart() {
+          this.data( DRAG_T0_KEY, this.transform().local );
+          this.data( DRAG_RATIO_KEY, overlay._pixelsToSvgRatio( L.point(1,1) ) );    // size of a pixel in SVG (constant per zoom level)
+          
+          if (customStart) {
+            customStart.call(this);
+          }
+        }
+    
+        function dragMove (dx,dy) {    // (num,num)
+          var r = this.data(DRAG_RATIO_KEY);
+          this.transform( this.data(DRAG_T0_KEY) + "t"+ (dx*r.x)+" "+(dy*r.y) );
+          
+          if (customMove) {
+            customMove.call(this,dx,dy);    // note: this is now pixel coords
+          }
+        }
+    
+        function dragStop() {
+          this.removeData( DRAG_T0_KEY );
+          this.removeData( DRAG_RATIO_KEY );
+          
+          if (customStop) {
+            customStop.call(this);
+          }
+        }
+
+        // Note: the '.mousedown()' is needed so that we don't get double dragging - 
+        //      i.e. the croc gets dragged above a stationary map, the map won't move.
+        //
+        this.mousedown( function(e) { L.DomEvent.stop(e); } );
+      
+        old_drag.call( this, dragMove, dragStart, dragStop );
+      };
+    } );
+
+    // Note: Can include the mascot SVG in the HTML if needed (for packaging of Leaflet).
+    //
+    Snap.load( "snapsvg_mascot.svg", function (croc) {    /* (SVG Element) */
+
+      // traverse and change attr before SVG is even added to the page
+      //
+      croc.select("polygon[fill='#09B39C']").attr({fill: "#bada55"});
+
+      var g = croc.select("g");
+      var h= new CrocAnim(g);
+
+      g.drag( null, 
+            function() { h.muteAnimation(true); },  // drag start
+            function() { h.muteAnimation(false); }  // drag end
+      );
+
+      S.append(g);
+    } );
+
+    // 100 x 100 m square, from (0,0)
+    //
+    S.rect( 0,0, 100,100, 10,10 )    // last params: edge rounding radius
+      .attr( {
+        stroke: "#f00",
+        strokeWidth: 2
+      } )
+      .drag();
+
+    S.text( 200, 100, "Drag the croc" )
+      .attr( {
+        style: "fill: white; stroke: #000000;  font-size: 48px;"
+      } );
+
+    S.text( 170, 450, "Press 'c'" )
+      .attr( {
+        style: "fill: gray; font-size: 24px;"
+      } );
+
+    map.addLayer(overlay);
+
+    //---
+    // Make a circle in the center of the map, by pushing 'c'. This helps test
+    // '.latLngToSvgPoint()' works on all zooms.
+    //
+    document.onkeydown = function(ev) {
+      ev = ev || window.event;
+      
+      switch (ev.keyCode) {
+      case 67:  // 'c'
+        var center = map.getCenter();   // current center on the screen
+        var zoom = map.getZoom();       // current zoom (s.a. 16)
+        
+        var p = overlay.latLngToSvgPoint(center);
+        S.circle(p.x,p.y,5).attr( {
+          style: "fill: " + colorByZoom(zoom) +";"
+        } );
+        break;
+      }
+    }
+
+    //---
+    // Color for circles, based on zoom level
+    //
+    function colorByZoom(zoom) {    // (int) -> str
+      switch(zoom) {
+      case 14: return "yellow";
+      case 15: return "purple";
+      case 16: return "red";      // default
+      case 17: return "blue";
+      case 18: return "orange";
+      //
+      default: return "black";
+      }
+    }
+    
+    //---
+    // initially, and on Zoom: check that '.latLngToSvgPoint' gives right results
+    //
+    (function() {
+      var nw= bounds.getNorthWest();    // should lead to (0,0) in SVG coords
+      var se= bounds.getSouthEast();
+
+      // Dimensions of SVG viewport (= SVG coordinate bounds)
+      //
+			var viewbox= svgElem.getAttribute('viewBox').split(' ');    // [0,0,<width>,<height>]
+        //
+        var svgWidth= viewbox[2];
+        var svgHeight= viewbox[3];
+
+      var p1= L.point(0,0);                   // what bounds NW should match in SVG coords
+      var p2= L.point(svgWidth,svgHeight);    // what bounds SE should match in SVG coords
+
+      function assertProjection(report) {   // (bool)
+        var errors = [];
+        
+        // LatLng -> SVG
+        //
+        var topLeft = overlay.latLngToSvgPoint(nw);
+        var bottomRight = overlay.latLngToSvgPoint(se);
+        
+        console.log( topLeft.distanceTo(p1) );
+        if (topLeft.distanceTo(p1) > 0.51) {
+          errors.push( "Top left should be "+ p1 +", not "+ topLeft );
+        }
+        console.log( bottomRight.distanceTo(p2) );
+        if (bottomRight.distanceTo(p2) > 1.0) {
+          errors.push( "Bottom right should be "+ p2 +", not "+ bottomRight );
+        }
+        
+        // ...and SVG -> LatLng
+        //
+        // Note: For these, we seem to need a wider margin; comparing seemingly same
+        //      values gives distance of 0.19 .. 0.76 m between them.
+        //
+        var nw2 = overlay.svgPointToLatLng(p1);
+        var se2 = overlay.svgPointToLatLng(p2);
+
+        console.log( nw.distanceTo(nw2) );    // 0.38..., 0.21....
+        if (nw.distanceTo(nw2) > 1.0) {
+          errors.push( "NW should be "+ nw2 +": "+ nw );
+        }
+        console.log( se.distanceTo(se2) );    // 0.19..., 0.76...
+        if (se.distanceTo(se2) > 1.0) {
+          errors.push( "SE should be "+ se2 +": "+ se );
+        }
+        
+        // ...and report
+        //
+        if ((errors.length > 0) && report) {
+          alert( "Projections are wrong!\n\n" + errors.join("\n") );
+        }
+      }
+      assertProjection(true);   // with default zoom
+
+      // Check after zoom changes
+      //
+      // Note: with zoom levels <= 14, inaccuracies start to creep in. Probably okay
+      //      (log them on the console but don't give alerts).
+      //
+      map.on('zoomend', function(e) {
+        assertProjection( map.getZoom() >= 15 );
+      } );
+    }());
+
+    //---
+    // Following code adopted from http://snapsvg.io home page
+    //
+    function CrocAnim( SVG_croc ) {    // (SVG element)    
+
+      var SVG_head = SVG_croc.select("#upper-head"),
+          SVG_jaw = SVG_croc.select("#upper-jaw"),
+          SVG_symbol = SVG_croc.select("#symbol"),
+          //
+          clearId = [],
+          scrollTop = 0;
+          
+      var pivots = [
+          [44, 147],
+          [92, 126]
+      ];
+
+      close(true);    // start with mouth shut
+
+      function clearTimer() {
+          for (var i = 0; i < clearId.length; i++) {
+              clearTimeout(clearId[i]);
+          }
+          clearId = [];
+      }
+
+      function close( force ) {   // (boolean)
+          clearTimer();
+
+          SVG_head.animate({ 
+              transform: "r" + [8, pivots[0][0], pivots[0][1]]
+          }, force ? 0 : 500, mina.backin);
+          
+          SVG_jaw.animate({
+              transform: "r" + [37, pivots[1][0], pivots[1][1]]
+          }, force ? 0 : 500, mina.backin);
+
+          clearId.push( setTimeout(function() {
+              SVG_symbol.animate({
+                  transform: "t" + (-70) + "," + (40) + "r" + (40)
+              }, force ? 0 : 100);
+          }, force ? 0 : 400));
+      }
+
+      function open() {
+          clearTimer();
+
+          SVG_head.animate({ 
+              transform: "r" + [0, pivots[0][0], pivots[0][1]]
+          }, 700, mina.elastic);
+          
+          SVG_jaw.animate({
+              transform: "r" + [0, pivots[1][0], pivots[1][1]]
+          }, 700, mina.elastic);
+
+          SVG_symbol.animate({
+              transform: "t" + (0) + "," + (0) + "r" + (0)
+          }, 500, mina.elastic);
+      }
+
+      //--- members ---
+      //
+      this._muted = false;
+
+      SVG_croc.hover(
+        function () {     // hover in
+          if (!this._muted) {
+            open();
+          }
+        }, 
+        function() {      // hover out
+          if (!this._muted) {
+            clearId.push(setTimeout(close, 200));
+          }
+        }
+      );
+
+      //--- methods ---
+
+      /*
+      * The 'hover' events may cause significant jerkiness in dragging (on Safari
+      * 8.0.3 they do, on Firefox 35.0.1 they don't), so it's best to mute them
+      * during the drags.
+      *
+      * NOTE: Funnily, just changing the structure of the code to allow this
+      *     muting seems to have taken the problem away. The croc got scared!! ;)
+      */
+      this.muteAnimation = function (mute) {    // (bool) ->
+        //this._muted = mute;
+      }
+
+    } // CrocAnim
+        
+	</script>
+</body>
+</html>

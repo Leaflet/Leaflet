@@ -54,6 +54,11 @@ var deps = {
 		desc: 'Used to display an image over a particular rectangular area of the map.'
 	},
 
+	ActiveOverlay: {
+		src: ['layer/ActiveOverlay.js'],
+		desc: 'Used to display an SVG element over a particular rectangular area of the map.'
+	},
+
 	Marker: {
 		src: ['layer/marker/Icon.js',
 		      'layer/marker/Icon.Default.js',

@@ -47,6 +47,10 @@ L.LatLngBounds.prototype = {
 		return this;
 	},
 
+  // Note: There would be a need for .padByM(dx[,dy]) -> LatLng, which would
+  //      pad by meters (and/or feet) instead of the relative size. However,
+  //      just getting '<latlng>.offsetBy' would help with that as well. AKa110315
+
 	// extend the bounds by a percentage
 	pad: function (bufferRatio) { // (Number) -> LatLngBounds
 		var sw = this._southWest,
