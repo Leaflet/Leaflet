@@ -180,7 +180,7 @@
 .leaflet-interactive {
 	cursor: pointer;
 	}
-.leaflet-container {
+.leaflet-grab {
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;
 	}
@@ -192,8 +192,9 @@
 .leaflet-control {
 	cursor: auto;
 	}
-.leaflet-dragging .leaflet-container,
-.leaflet-dragging .leaflet-interactive {
+.leaflet-dragging .leaflet-grab,
+.leaflet-dragging .leaflet-grab .leaflet-interactive,
+.leaflet-dragging .leaflet-marker-draggable {
 	cursor: move;
 	cursor: -webkit-grabbing;
 	cursor:    -moz-grabbing;
