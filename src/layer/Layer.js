@@ -54,6 +54,8 @@ L.Layer = L.Evented.extend({
 			map.on(this.getEvents(), this);
 		}
 
+		this.addEventParent(map);
+
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
 	}
@@ -93,6 +95,8 @@ L.Map.include({
 		if (layer.getEvents) {
 			this.off(layer.getEvents(), layer);
 		}
+
+		layer.removeEventParent(this);
 
 		delete this._layers[id];
 
