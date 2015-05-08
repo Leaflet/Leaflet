@@ -133,4 +133,80 @@ describe('Polyline', function () {
 
 	});
 
+	describe("#_defaultShape", function () {
+
+		it("should return latlngs when flat", function () {
+			var latLngs = [L.latLng([1, 2]), L.latLng([3, 4])];
+
+			var polyline = new L.Polyline(latLngs);
+
+			expect(polyline._defaultShape()).to.eql(latLngs);
+		});
+
+		it("should return first latlngs on a multi", function () {
+			var latLngs = [
+				[L.latLng([1, 2]), L.latLng([3, 4])],
+				[L.latLng([11, 12]), L.latLng([13, 14])]
+			];
+
+			var polyline = new L.Polyline(latLngs);
+
+			expect(polyline._defaultShape()).to.eql(latLngs[0]);
+		});
+
+	});
+
+	describe("#addLatLng", function () {
+
+		it("should add latlng to latlngs", function () {
+			var latLngs = [
+				[1, 2],
+				[3, 4]
+			];
+
+			var polyline = new L.Polyline(latLngs);
+
+			polyline.addLatLng([5, 6]);
+
+			expect(polyline._latlngs).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
+		});
+
+		it("should add latlng to first latlngs on a multi", function () {
+			var latLngs = [
+				[[1, 2], [3, 4]],
+				[[11, 12], [13, 14]]
+			];
+
+			var polyline = new L.Polyline(latLngs);
+
+			polyline.addLatLng([5, 6]);
+
+			expect(polyline._latlngs[0]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
+			expect(polyline._latlngs[1]).to.eql([L.latLng([11, 12]), L.latLng([13, 14])]);
+		});
+
+		it("should add latlng to latlngs by reference", function () {
+			var latLngs = [
+				[[11, 12], [13, 14]],
+				[[1, 2], [3, 4]]
+			];
+
+			var polyline = new L.Polyline(latLngs);
+
+			polyline.addLatLng([5, 6], polyline._latlngs[1]);
+
+			expect(polyline._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
+			expect(polyline._latlngs[0]).to.eql([L.latLng([11, 12]), L.latLng([13, 14])]);
+		});
+
+		it("should add latlng on empty polyline", function () {
+			var polyline = new L.Polyline([]);
+
+			polyline.addLatLng([1, 2]);
+
+			expect(polyline._latlngs).to.eql([L.latLng([1, 2])]);
+		});
+
+	});
+
 });

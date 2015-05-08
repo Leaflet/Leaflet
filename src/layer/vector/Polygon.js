@@ -56,6 +56,10 @@ L.Polygon = L.Polyline.extend({
 		}
 	},
 
+	_defaultShape: function () {
+		return L.Polyline._flat(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0];
+	},
+
 	_clipPoints: function () {
 		if (this.options.noClip) {
 			this._parts = this._rings;

@@ -140,4 +140,157 @@ describe('Polygon', function () {
 
 	});
 
+	describe("#_defaultShape", function () {
+
+		it("should return latlngs on a simple polygon", function () {
+			var latlngs = [
+				L.latLng([1, 2]),
+				L.latLng([3, 4])
+			];
+
+			var polygon = new L.Polygon(latlngs);
+
+			expect(polygon._defaultShape()).to.eql(latlngs);
+		});
+
+		it("should return first latlngs on a polygon with hole", function () {
+			var latlngs = [
+				[L.latLng([0, 12]), L.latLng([13, 14]), L.latLng([15, 16])],
+				[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]
+			];
+
+			var polygon = new L.Polygon(latlngs);
+
+			expect(polygon._defaultShape()).to.eql(latlngs[0]);
+		});
+
+		it("should return first latlngs on a multipolygon", function () {
+			var latlngs = [
+				[[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]],
+				[[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]
+			];
+
+			var polygon = new L.Polygon(latlngs);
+
+			expect(polygon._defaultShape()).to.eql(latlngs[0][0]);
+		});
+
+		it("should return first latlngs on a multipolygon with hole", function () {
+			var latlngs = [
+				[
+					[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
+					[L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]
+				],
+				[[L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]]
+			];
+
+			var polygon = new L.Polygon(latlngs);
+
+			expect(polygon._defaultShape()).to.eql(latlngs[0][0]);
+		});
+
+	});
+
+	describe("#addLatLng", function () {
+		it("should add latlng to latlngs", function () {
+			var latLngs = [
+				[1, 2],
+				[3, 4]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([5, 6]);
+
+			expect(polygon._latlngs).to.eql([[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]]);
+		});
+
+		it("should add latlng to first latlngs on a polygon with hole", function () {
+			var latLngs = [
+				[[0, 12], [13, 14], [15, 16]],
+				[[1, 2], [3, 4], [5, 6]]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([17, 0]);
+
+			expect(polygon._latlngs[0]).to.eql([L.latLng([0, 12]), L.latLng([13, 14]), L.latLng([15, 16]), L.latLng([17, 0])]);
+			expect(polygon._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]);
+		});
+
+		it("should add latlng by reference on a polygon with hole", function () {
+			var latLngs = [
+				[[0, 12], [13, 14], [15, 16]],
+				[[1, 2], [3, 4], [5, 6]]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([7, 8], polygon._latlngs[1]);
+
+			expect(polygon._latlngs[0]).to.eql([L.latLng([0, 12]), L.latLng([13, 14]), L.latLng([15, 16])]);
+			expect(polygon._latlngs[1]).to.eql([L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6]), L.latLng([7, 8])]);
+		});
+
+		it("should add latlng to first latlngs on a multi", function () {
+			var latLngs = [
+				[[[1, 2], [3, 4]]],
+				[[[11, 12], [13, 14], [15, 16]]]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([5, 6]);
+
+			expect(polygon._latlngs[0]).to.eql([[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]]);
+			expect(polygon._latlngs[1]).to.eql([[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]);
+		});
+
+		it("should add latlng to latlngs by reference on a multi", function () {
+			var latLngs = [
+				[[[11, 12], [13, 14], [15, 16]]],
+				[[[1, 2], [3, 4]]]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([5, 6], polygon._latlngs[1][0]);
+
+			expect(polygon._latlngs[1]).to.eql([[L.latLng([1, 2]), L.latLng([3, 4]), L.latLng([5, 6])]]);
+			expect(polygon._latlngs[0]).to.eql([[L.latLng([11, 12]), L.latLng([13, 14]), L.latLng([15, 16])]]);
+		});
+
+		it("should add latlng on first latlngs by default on a multipolygon with hole", function () {
+			var latLngs = [
+				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]],
+				[[[10, 20], [30, 40], [50, 60]]]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([-10, -10]);
+
+			expect(polygon._latlngs[0][0]).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0]), L.latLng([-10, -10])]);
+			expect(polygon._latlngs[0][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]);
+			expect(polygon._latlngs[1][0]).to.eql([L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]);
+		});
+
+		it("should add latlng by reference on a multipolygon with hole", function () {
+			var latLngs = [
+				[[[10, 20], [30, 40], [50, 60]]],
+				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
+			];
+
+			var polygon = new L.Polygon(latLngs);
+
+			polygon.addLatLng([2, 2], polygon._latlngs[1][1]);
+
+			expect(polygon._latlngs[0][0]).to.eql([L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]);
+			expect(polygon._latlngs[1][0]).to.eql([L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])]);
+			expect(polygon._latlngs[1][1]).to.eql([L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4]), L.latLng([2, 2])]);
+		});
+
+	});
+
 });
