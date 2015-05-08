@@ -2636,7 +2636,7 @@ var latlngs = [
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds a given point to the polyline. By default, adds to the first ring of the polyline in case of a multi-polyline, but can be overriden passing another LatLngs group with <code>latlngs</code> parameter.</td>
+		<td>Adds a given point to the polyline. By default, adds to the first ring of the polyline in case of a multi-polyline, but can be overridden by passing a specific ring as a <code>LatLng</code> array (that you can earlier access with <a href="#polyline-getlatlngs">getLatLngs</a>).</td>
 	</tr>
 	<tr>
 		<td><code><b>setLatLngs</b>(
@@ -2649,17 +2649,7 @@ var latlngs = [
 	<tr>
 		<td><code><b>getLatLngs</b>()</code></td>
 		<td><code><a href="#latlng">LatLng</a>[]</code></td>
-		<td>Returns an array of the points in the path.</td>
-	</tr>
-	<tr>
-		<td><code><b>spliceLatLngs</b>(
-			<nobr>&lt;Number&gt; <i>index</i></nobr>,
-			<nobr>&lt;Number&gt; <i>pointsToRemove</i></nobr>,
-			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i>, &hellip; )</nobr>
-		</code></td>
-
-		<td><code><a href="#latlng">LatLng</a>[]</code></td>
-		<td>Allows adding, removing or replacing points in the polyline. Syntax is the same as in <a href="https://developer.mozilla.org/en/JavaScript/Reference/Global_Objects/Array/splice">Array#splice</a>. Returns the array of removed points (if any).</td>
+		<td>Returns an array of the points in the path, or nested arrays of points in case of multi-polyline.</td>
 	</tr>
 	<tr id="path-getbounds">
 		<td><code><b>getBounds</b>()</code></td>
