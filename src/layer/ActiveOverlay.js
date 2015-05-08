@@ -14,11 +14,8 @@ L.ActiveOverlay = L.Layer.extend({
 	 *       so it's left out of options, compared to 'L.ImageOverlay'. To get the
 	 *       same effect, one would set one group ('<g>') within the SVG and control
 	 *       its opacity instead.
-	 *
-	 * Q: what does 'interactive' actually do for us? Maybe not needed?
 	 */
 	options: {
-		interactive: false,
 		unit: 1.0             // SVG units (meters)
 	},
 
@@ -61,7 +58,6 @@ L.ActiveOverlay = L.Layer.extend({
 		el.onmousemove = L.Util.falseFn;
 
 		this.getPane().appendChild(el);
-		this._initInteraction();      // Q: do we need this? ('ImageOverlay' has it but we're interactive anyways)
 		this._reset();
 	},
 
@@ -81,34 +77,6 @@ L.ActiveOverlay = L.Layer.extend({
 			L.DomUtil.toBack(this._svgElem);
 		}
 		return this;
-	},
-
-	// Q: is this needed?
-	//
-	_initInteraction: function () {
-
-		if (this.options.interactive) {
-			var el = this._svgElem;
-			L.DomUtil.addClass(el, 'leaflet-interactive');
-
-			L.DomEvent.on(el, 'click dblclick mousedown mouseup mouseover mousemove mouseout contextmenu',
-				this._fireMouseEvent, this);
-		}
-	},
-
-	_fireMouseEvent: function (e, type) {
-		// Note: This does not seem to matter, at all. (because 'this._map' is 'undefined')
-		//
-		if (this._map) {
-			this._map._fireMouseEvent(this, e, type, true);
-		}
-	},
-
-	// Q: should we have it here? (if it's about the attribution of the image,
-	//    then we don't).
-	//
-	getAttribution: function () {
-		return this.options.attribution;
 	},
 
 	getEvents: function () {
