@@ -98,7 +98,7 @@ L.Polyline = L.Path.extend({
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = this._flat(latlngs);
+		    flat = L.Polyline._flat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
@@ -110,11 +110,6 @@ L.Polyline = L.Path.extend({
 		}
 
 		return result;
-	},
-
-	_flat: function (latlngs) {
-		// true if it's a flat array of latlngs; false if nested
-		return !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] !== 'object';
 	},
 
 	_project: function () {
@@ -210,4 +205,9 @@ L.Polyline = L.Path.extend({
 
 L.polyline = function (latlngs, options) {
 	return new L.Polyline(latlngs, options);
+};
+
+L.Polyline._flat = function (latlngs) {
+	// true if it's a flat array of latlngs; false if nested
+	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 };
