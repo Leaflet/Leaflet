@@ -2631,11 +2631,12 @@ var latlngs = [
 	</tr>
 	<tr>
 		<td><code><b>addLatLng</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
+			<nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds a given point to the polyline.</td>
+		<td>Adds a given point to the polyline. By default, adds to the first ring of the polyline in case of a multi-polyline, but can be overriden passing another LatLngs group with <code>latlngs</code> parameter.</td>
 	</tr>
 	<tr>
 		<td><code><b>setLatLngs</b>(
