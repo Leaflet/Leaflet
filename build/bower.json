@@ -2,7 +2,6 @@
   "name": "leaflet",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "main": [
-    "dist/leaflet.js",
     "dist/leaflet.css",
     "dist/leaflet-src.js",
     "dist/images/layers-2x.png",
