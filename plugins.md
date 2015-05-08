@@ -2330,6 +2330,39 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/dagjomar">Dag Jomar Mersland</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IjzerenHein/famous-map">famous-map</a>
+		</td>
+		<td>
+			Integrate Leaflet in applications made with the <a href='famo.us'>famo.us</a> web framework.
+		</td>
+		<td>
+			<a href="http://www.gloey.nl">Hein Rutjes</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/tombatossals/angular-leaflet-directive">Angular Leaflet directive</a>
+		</td>
+		<td>
+			Integrate Leaflet in applications made with the <a href='http://angularjs.org/'>AngularJS</a> web framework.
+		</td>
+		<td>
+			<a href="https://github.com/tombatossals">David Rubert</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/prtksxna/leaflet-map-component">Leaflet map component</a>
+		</td>
+		<td>
+			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/'>Polymer</a> web framework.
+		</td>
+		<td>
+			<a href="https://github.com/prtksxna">Prateek Saxena</a>
+		</td>
+	</tr>
 </table>
 
 
