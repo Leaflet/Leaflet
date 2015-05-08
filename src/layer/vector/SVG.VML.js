@@ -23,9 +23,6 @@ L.SVG.include(!L.Browser.vml ? {} : {
 
 	_initContainer: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-vml-container');
-
-		this._paths = {};
-		this._initEvents();
 	},
 
 	_update: function () {
@@ -49,13 +46,13 @@ L.SVG.include(!L.Browser.vml ? {} : {
 	_addPath: function (layer) {
 		var container = layer._container;
 		this._container.appendChild(container);
-		this._paths[L.stamp(container)] = layer;
+		layer.addInteractiveTarget(container);
 	},
 
 	_removePath: function (layer) {
 		var container = layer._container;
 		L.DomUtil.remove(container);
-		delete this._paths[L.stamp(container)];
+		layer.removeInteractiveTarget(container);
 	},
 
 	_updateStyle: function (layer) {
