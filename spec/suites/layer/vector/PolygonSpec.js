@@ -75,6 +75,30 @@ describe('Polygon', function () {
 
 	});
 
+	describe("#isEmpty", function () {
+
+		it('should return true for a polygon with no latlngs', function () {
+			var layer = new L.Polygon([]);
+			expect(layer.isEmpty()).to.be(true);
+		});
+
+		it('should return false for simple polygon', function () {
+			var latLngs = [[1, 2], [3, 4], [5, 6]];
+			var layer = new L.Polygon(latLngs);
+			expect(layer.isEmpty()).to.be(false);
+		});
+
+		it('should return false for a multi-polygon', function () {
+			var latLngs = [
+				[[[10, 20], [30, 40], [50, 60]]],
+				[[[0, 10], [10, 10], [10, 0]], [[2, 3], [2, 4], [3, 4]]]
+			];
+			var layer = new L.Polygon(latLngs);
+			expect(layer.isEmpty()).to.be(false);
+		});
+
+	});
+
 	describe("#setLatLngs", function () {
 		it("doesn't overwrite the given latlng array", function () {
 			var originalLatLngs = [

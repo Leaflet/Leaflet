@@ -8,6 +8,10 @@ L.Polygon = L.Polyline.extend({
 		fill: true
 	},
 
+	isEmpty: function () {
+		return !this._latlngs.length || !this._latlngs[0].length;
+	},
+
 	getCenter: function () {
 		var i, j, p1, p2, f, area, x, y, center,
 		    points = this._rings[0],

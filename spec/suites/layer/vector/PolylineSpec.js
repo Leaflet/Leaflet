@@ -49,6 +49,30 @@ describe('Polyline', function () {
 
 	});
 
+	describe("#isEmpty", function () {
+
+		it('should return true for a polyline with no latlngs', function () {
+			var polyline = new L.Polyline([]);
+			expect(polyline.isEmpty()).to.be(true);
+		});
+
+		it('should return false for simple polyline', function () {
+			var latLngs = [[1, 2], [3, 4]];
+			var polyline = new L.Polyline(latLngs);
+			expect(polyline.isEmpty()).to.be(false);
+		});
+
+		it('should return false for multi-polyline', function () {
+			var latLngs = [
+				[[1, 2], [3, 4]],
+				[[11, 12], [13, 14]]
+			];
+			var polyline = new L.Polyline(latLngs);
+			expect(polyline.isEmpty()).to.be(false);
+		});
+
+	});
+
 	describe("#setLatLngs", function () {
 		it("doesn't overwrite the given latlng array", function () {
 			var originalLatLngs = [
