@@ -475,6 +475,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/arthur-e/">K. Arthur Endsley</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/geolicious/qgis2leaf">QGIS2Leaf</a>
+		</td><td>
+			QGIS2Leaf exports the vector layers in QGIS as GeoJSON and creates a basic Leaflet webmap from it. Additionally your raster data is added as image overlays with an opacity slider.
+		</td><td>
+			<a href="https://github.com/Geolicious">Geolicious</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2411,8 +2420,6 @@ The following plugins integrate Leaflet into third party services or websites.
 		</td>
 	</tr>
 </table>
-
-
 
 
 
