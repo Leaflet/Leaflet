@@ -25,6 +25,10 @@ L.Polyline = L.Path.extend({
 		return this.redraw();
 	},
 
+	isEmpty: function () {
+		return !this._latlngs.length;
+	},
+
 	closestLayerPoint: function (p) {
 		var minDistance = Infinity,
 		    minPoint = null,
