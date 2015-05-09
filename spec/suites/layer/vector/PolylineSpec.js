@@ -42,6 +42,11 @@ describe('Polyline', function () {
 			expect(polyline.getLatLngs()).to.eql(polyline._latlngs);
 		});
 
+		it("can be added to the map when empty", function () {
+			var polyline = new L.Polyline([]).addTo(map);
+			expect(map.hasLayer(polyline)).to.be(true);
+		});
+
 	});
 
 	describe("#setLatLngs", function () {

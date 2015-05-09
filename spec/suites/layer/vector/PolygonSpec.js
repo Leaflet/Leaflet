@@ -67,6 +67,12 @@ describe('Polygon', function () {
 			]);
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
+
+		it("can be added to the map when empty", function () {
+			var polygon = new L.Polygon([]).addTo(map);
+			expect(map.hasLayer(polygon)).to.be(true);
+		});
+
 	});
 
 	describe("#setLatLngs", function () {
