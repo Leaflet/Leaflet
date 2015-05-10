@@ -1810,7 +1810,7 @@ These plugins extend Leaflet event handling.
 		<td>
 			<a href="http://glat.info">Guillaume Lathoud</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -1927,6 +1927,18 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/oskosk">Osk</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/dalbrx/Leaflet.ResizableControl">Leaflet ResizableControl</a>
+		</td>
+		<td>
+			A Leaflet plugin to add a resizable and scrollable control to the map (<a href="http://dalbrx.github.io/Leaflet.ResizableControl/">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/dalbrx">David Albrecht</a>
+		</td>
+	</tr>
+
 </table>
 
 
@@ -2423,4 +2435,3 @@ Leaflet keeps it simple. If you can think of a feature that is not required by a
 There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
 
 Once your plugin is ready, you can submit it to this list: just send a pull request with the addition to Leaflet repo's [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages) (`plugins.md` file).
-
