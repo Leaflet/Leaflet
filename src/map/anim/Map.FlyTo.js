@@ -3,7 +3,7 @@ L.Map.include({
 	flyTo: function (targetCenter, targetZoom, options) {
 
 		options = options || {};
-		if (options.animate === false) {
+		if (options.animate === false || !L.Browser.any3d) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 

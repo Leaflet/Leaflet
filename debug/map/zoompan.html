@@ -13,6 +13,10 @@
 		width: 600px;
 		height: 400px;
 	}
+	button {
+		min-width: 3em;
+		text-align: center;
+	}
 	</style>
 
 	<script type="text/javascript" src="../../build/deps.js"></script>
@@ -22,21 +26,22 @@
 
 	<div id="map"></div>
 
-	<div style="position: absolute; left: 530px; top: 10px; z-index: 500">
-		<!-- <button id="london">London</button>
-		<button id="kyiv">Kyiv</button> -->
-		<button id="dc">DC</button>
-		<button id="sf">SF</button>
-		<button id="trd">TRD</button>
-		<button id="stop">stop</button>
+	<div style="position: absolute; left: 620px; top: 10px; z-index: 500">
+		<div><button id="dc">DC</button></div>
+		<div><button id="sf">SF</button></div>
+		<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
+		<div><button id="lnd">LND</button>(fract. zoom)</div>
+		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+		<div><button id="stop">stop</button></div>
+		<div id='pos'></div>
 	</div>
 
 	<script type="text/javascript">
 
 		var kyiv = [50.5, 30.5],
-			london = [51.51, -0.12],
+			lnd = [51.51, -0.12],
 			sf = [37.77, -122.42],
-			dc = [38.91, -77.04];
+			dc = [38.91, -77.04],
 			trd = [63.41, 10.41];
 
 		var map = L.map('map').setView(dc, 10);
@@ -47,18 +52,23 @@
 		}).addTo(map);
 
 		var marker1 = L.marker(kyiv).addTo(map),
-			marker2 = L.marker(london).addTo(map);
+			marker2 = L.marker(lnd).addTo(map);
 			// marker3 = L.marker(dc).addTo(map),
 			// marker4 = L.marker(sf).addTo(map);
 
 		document.getElementById('dc').onclick = function () { map.flyTo(dc, 10); };
 		document.getElementById('sf').onclick = function () { map.flyTo(sf, 10); };
 		document.getElementById('trd').onclick = function () { map.flyTo(trd, 10, {duration: 20}); };
+		document.getElementById('lnd').onclick = function () { map.flyTo(lnd, 9.25); };
+		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
 		document.getElementById('stop').onclick = function () { map.stop(); };
-		// document.getElementById('london').onclick = function () { map.flyTo(london); };
-		// document.getElementById('kyiv').onclick = function () { map.flyTo(kyiv); };
 
 		function logEvent(e) { console.log(e.type); }
+
+		map.on('move', function(){
+
+			document.getElementById('pos').innerHTML = map.getCenter() + ' z' + map.getZoom();
+		});
 
 		// map.on('click', logEvent);
 

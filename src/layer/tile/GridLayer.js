@@ -349,7 +349,11 @@ L.GridLayer = L.Layer.extend({
 		    translate = level.origin.multiplyBy(scale)
 		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
 
-		L.DomUtil.setTransform(level.el, translate, scale);
+		if (L.Browser.any3d) {
+			L.DomUtil.setTransform(level.el, translate, scale);
+		} else {
+			L.DomUtil.setPosition(level.el, translate);
+		}
 	},
 
 	_resetGrid: function () {
