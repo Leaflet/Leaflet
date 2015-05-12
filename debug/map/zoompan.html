@@ -33,7 +33,12 @@
 		<div><button id="lnd">LND</button>(fract. zoom)</div>
 		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
 		<div><button id="stop">stop</button></div>
-		<div id='pos'></div>
+		<table>
+		<tr><td>on movestart</td><td id='movestart'></td></tr>
+		<tr><td>on zoomstart</td><td id='zoomstart'></td></tr>
+		<tr><td>on move</td><td id='move'></td></tr>
+		<tr><td>on moveend</td><td id='moveend'></td></tr>
+		<tr><td>on zoomend</td><td id='zoomend'></td></tr>
 	</div>
 
 	<script type="text/javascript">
@@ -65,10 +70,17 @@
 
 		function logEvent(e) { console.log(e.type); }
 
-		map.on('move', function(){
+		function attachMoveEvent(name) {
+			map.on(name, function(){
+				document.getElementById(name).innerHTML = map.getCenter() + ' z' + map.getZoom();
+			});
+		}
 
-			document.getElementById('pos').innerHTML = map.getCenter() + ' z' + map.getZoom();
-		});
+		attachMoveEvent('movestart');
+		attachMoveEvent('zoomstart');
+		attachMoveEvent('move');
+		attachMoveEvent('moveend');
+		attachMoveEvent('zoomend');
 
 		// map.on('click', logEvent);
 

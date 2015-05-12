@@ -226,9 +226,14 @@ L.Map = L.Evented.extend({
 	},
 
 	stop: function () {
-		L.Util.cancelAnimFrame(this._flyToFrame);
+		if (this._flyToFrame) {
+			L.Util.cancelAnimFrame(this._flyToFrame);
+			this.fire('moveend');
+			this.fire('zoomend');
+		}
 		if (this._panAnim) {
 			this._panAnim.stop();
+			this.fire('moveend');
 		}
 		return this;
 	},
@@ -520,11 +525,11 @@ L.Map = L.Evented.extend({
 
 	// private methods that modify map state
 
-	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
+	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim, flying) {
 
 		var zoomChanged = (this._zoom !== zoom);
 
-		if (!afterZoomAnim) {
+		if (!afterZoomAnim && !flying) {
 			this.fire('movestart');
 
 			if (zoomChanged) {
@@ -552,11 +557,13 @@ L.Map = L.Evented.extend({
 
 		this.fire('move');
 
-		if (zoomChanged || afterZoomAnim) {
-			this.fire('zoomend');
-		}
+		if (!flying) {
+			if (zoomChanged || afterZoomAnim) {
+				this.fire('zoomend');
+			}
 
-		this.fire('moveend', {hard: !preserveMapOffset});
+			this.fire('moveend', {hard: !preserveMapOffset});
+		}
 	},
 
 	_rawPanBy: function (offset) {
