@@ -10,7 +10,18 @@ L.Util = {
 		for (j = 1, len = arguments.length; j < len; j++) {
 			src = arguments[j];
 			for (i in src) {
-				dest[i] = src[i];
+        // handle getters/setters differently, so that we copy the getter/setter, not the
+        // initial value. See http://ejohn.org/blog/javascript-getters-and-setters/
+        //
+        var g = src.__lookupGetter__(i),
+            s = src.__lookupSetter__(i);
+
+        if (g || s) {
+          if (g) { dest.__defineGetter__(i, g); }
+          if (s) { dest.__defineSetter__(i, s); }
+        } else {
+				  dest[i] = src[i];
+				}
 			}
 		}
 		return dest;

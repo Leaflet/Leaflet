@@ -32,6 +32,18 @@ describe('Util', function () {
 				baz: 3
 			});
 		});
+
+		it('extends getters and setters (copying them, not their value)', function () {
+			L.Util.extend(a, {
+				_foo: 0,
+				get foo() { return this._foo * 2; },  // just some arbitrary transformation
+				set foo(v) { this._foo = v; }
+			});
+
+			expect(a.foo).to.eql(0);
+			a.foo = 12;
+			expect(a.foo).to.eql(24);
+		});
 	});
 
 	describe('#bind', function () {
