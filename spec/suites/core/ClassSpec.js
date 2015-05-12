@@ -169,6 +169,30 @@ describe("Class", function () {
 
 			expect(spy1.called).to.be.ok();
 		});
+
+		it("allows class(es) to have getter methods", function () {
+			var Klass2 = Klass.extend({
+				initialize: function (v) {
+					this._goo = v;
+				},
+				get goo () {
+					if (!this._goo) { throw "'initialize' should have run first!"; }   // using assert would need 'require("assert")';
+					return this._goo * 2;
+				}
+			});
+			var a = new Klass2(9);
+
+			expect(a.goo).to.eql(9 * 2);
+
+			var Klass3 = Klass2.extend({
+				initialize: function() {
+					Klass2.prototype.initialize.call(this, 11);
+				}
+			});
+			var b = new Klass3();
+
+			expect(b.goo).to.eql(11 * 2);
+		});
 	});
 
 	// TODO Class.include
