@@ -52,13 +52,14 @@ L.Map.include({
 
 				this._resetView(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
-					this.getScaleZoom(w0 / w(s), startZoom), true, true);
+					this.getScaleZoom(w0 / w(s), startZoom), true, true, true);
 
 			} else {
-				this._resetView(targetCenter, targetZoom, true, true);
+				this._resetView(targetCenter, targetZoom, true, true, false);
 			}
 		}
 
+		this.fire('movestart');
 		this.fire('zoomstart');
 		frame.call(this);
 		return this;
