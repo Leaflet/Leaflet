@@ -58,13 +58,13 @@ L.Map = L.Evented.extend({
 	// replaced by animation-powered implementation in Map.PanAnimation.js
 	setView: function (center, zoom) {
 		zoom = zoom === undefined ? this.getZoom() : zoom;
-		this._resetView(L.latLng(center), this._limitZoom(zoom));
+		this._resetView(L.latLng(center), zoom);
 		return this;
 	},
 
 	setZoom: function (zoom, options) {
 		if (!this._loaded) {
-			this._zoom = this._limitZoom(zoom);
+			this._zoom = zoom;
 			return this;
 		}
 		return this.setView(this.getCenter(), zoom, {zoom: options});
@@ -527,6 +527,7 @@ L.Map = L.Evented.extend({
 
 		var loading = !this._loaded;
 		this._loaded = true;
+		zoom = this._limitZoom(zoom);
 
 		var zoomChanged = this._zoom !== zoom;
 		this
