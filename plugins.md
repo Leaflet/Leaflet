@@ -978,6 +978,15 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/xEviL">Kirill Zhuravlev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mapbox/mapbox-gl-leaflet">mapbox-gl-leaflet</a>
+		</td><td>
+			Binding from Mapbox GL JS to the Leaflet API
+		</td><td>
+			<a href="https://github.com/tmcw">Tom MacWright</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1978,6 +1987,15 @@ Print or export your map.
 				A simple leaflet plugin which adds an icon to print the map. The resulting print page will strip ot the other content on the page and only print the leaflet map div.
 		</td><td>
 			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mapbox/leaflet-image">Leaflet-image</a>
+		</td><td>
+			Export images out of Leaflet maps without a server component, by using Canvas and CORS.
+		</td><td>
+			<a href="https://github.com/tmcw">Tom MacWright</a>
 		</td>
 	</tr>
 </table>
