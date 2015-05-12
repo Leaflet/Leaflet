@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/mobile.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			bounds = new L.LatLngBounds(new L.LatLng(49.5, Number.NEGATIVE_INFINITY), new L.LatLng(61.2, Number.POSITIVE_INFINITY));
+
+		var map = new L.Map('map', {
+			center: L.latLng(49.5, 30),
+			zoom: 7,
+			layers: [osm],
+			maxBounds: bounds
+		});
+
+		var latlngs = L.rectangle(bounds).getLatLngs();
+		L.polyline(latlngs.concat([latlngs[0]])).addTo(map);
+
+		map.setMaxBounds(bounds);	// Should not enter infinite recursion
+
+	</script>
+</body>
+</html>
