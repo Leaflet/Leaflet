@@ -1982,15 +1982,6 @@ Print or export your map.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/rowanwins/leaflet-easyPrint">Leaflet-easyPrint</a>
-		</td><td>
-				A simple leaflet plugin which adds an icon to print the map. The resulting print page will strip ot the other content on the page and only print the leaflet map div.
-		</td><td>
-			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
 			<a href="https://github.com/mapbox/leaflet-image">Leaflet-image</a>
 		</td><td>
 			Export images out of Leaflet maps without a server component, by using Canvas and CORS.
