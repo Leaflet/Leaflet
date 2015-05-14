@@ -54,8 +54,8 @@ Next we'll add a tile layer to add to our map, in this case it's a Mapbox Street
 <pre><code class="javascript">L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://mapbox.com"&gt;Mapbox&lt;/a&gt;</span>',
 	maxZoom: 18,
-	id: '[your.mapbox.project.id](https://www.mapbox.com/projects/)',
-	accessToken: '[your.mapbox.public.access.token](https://www.mapbox.com/account/apps/)'
+	id: '<a href="https://www.mapbox.com/projects/">your.mapbox.project.id</a>',
+	accessToken: '<a href="https://www.mapbox.com/account/apps/">your.mapbox.public.access.token</a>'
 }).addTo(map);</code></pre>
 
 Make sure all the code is called after the `div` and `leaflet.js` inclusion. That's it! You have a working Leaflet map now.
