@@ -1813,9 +1813,19 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/Mappy/Leaflet-active-area">Leaflet-active-area</a>
 		</td><td>
 			This plugin allows you to use a smaller portion of the map as an active area.
-			All positionning methods (setView, fitBounds, setZoom) will be applied on this portion instead of the all map.
+			All positioning methods (setView, fitBounds, setZoom) will be applied on this portion instead of the all map.
 		</td><td>
 			<a href="https://github.com/Mappy">Mappy</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MazeMap/Leaflet.ControlledBounds">Leaflet.ControlledBounds</a>
+		</td><td>
+			Inspired by Leaflet-active-area, automatically detects the largest area of the map not covered by any map controls and applies setView, fitBounds, setZoom, getBounds to that area.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
+			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
 	<tr>
