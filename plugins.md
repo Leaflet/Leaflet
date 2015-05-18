@@ -777,6 +777,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/ubergesundheit">Gerald Pape</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gismartwaredev/leaflet.orientedMarker">Leaflet.orientedMarker</a>
+		</td><td>
+			Allows to manage orientation of markers dynamically.
+		</td><td>
+			<a href="https://github.com/gismartwaredev">Gismartwaredev</a>
+		</td>
+	</tr>
 </table>
 
 
