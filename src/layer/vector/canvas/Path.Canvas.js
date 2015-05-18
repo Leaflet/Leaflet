@@ -117,7 +117,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
-			ctx.fill();
+			ctx.fill(options.fillRule || 'evenodd');
 		}
 
 		if (options.stroke) {
