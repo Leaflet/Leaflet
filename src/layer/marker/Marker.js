@@ -82,6 +82,10 @@ L.Marker = L.Layer.extend({
 		return this;
 	},
 
+	getElement: function () {
+		return this._icon;
+	},
+
 	update: function () {
 
 		if (this._icon) {

@@ -103,6 +103,10 @@ L.Popup = L.Layer.extend({
 		return this;
 	},
 
+	getElement: function () {
+		return this._container;
+	},
+
 	update: function () {
 		if (!this._map) { return; }
 

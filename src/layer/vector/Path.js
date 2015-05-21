@@ -74,6 +74,10 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
+	getElement: function () {
+		return this._path;
+	},
+
 	_clickTolerance: function () {
 		// used when doing hit detection for Canvas layers
 		return (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
