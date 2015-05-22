@@ -1782,6 +1782,23 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/mahmoodvcs">Mahmood Dehghan</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/leaflet/mouseCoordinate">Leaflet.mouseCoordinates</a>
+		</td>
+		<td>
+			Displays the Mouse Coordinate in a Box.
+			Multiple Formats Are Possible
+			<ul>
+				<li>GPS</li>
+				<li>UTM</li>
+				<li>UTMREF / MGRS</li>
+			<ul>
+		</td>
+		<td>
+			<a href="https://gitlab.com/u/PowerPan">Johannes Rudolph</a>
+		</td>
+	</tr>
 </table>
 
 
