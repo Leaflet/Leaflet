@@ -62,10 +62,9 @@ function mapLines(data){
       newCoordsArray.push([lat, lon]);
     }
     feat = {'type': 'Feature', 'geometry':{'type':'LineString', 'coordinates':newCoordsArray}, "id":i+1};
-    if (i<100)
       L.geoJson(feat).addTo(map);
     console.log(i);
-    if (i> 100)
+    if (i> 20000)
       break;
   }
   
