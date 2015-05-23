@@ -286,6 +286,15 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 			<a href="https://github.com/mejackreed">Jack Reed</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IvanSanchez/Leaflet.MandelbrotGL">Leaflet.MandelbrotGL</a>
+		</td><td>
+			Renders the <a href="https://en.wikipedia.org/wiki/Mandelbrot_set">Mandelbrot set</a> using WebGL (<a href="https://ivansanchez.github.io/Leaflet.MandelbrotGL/demo.html">demo</a>).
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
+		</td>
+	</tr>
 </table>
 
 
