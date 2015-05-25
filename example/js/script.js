@@ -1,9 +1,3 @@
-// MapQuest OSM Tiles
-
-// Attribution (https://gist.github.com/mourner/1804938)
-var osmAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>',
-    mqTilesAttr = 'Tiles &copy; <a href="http://www.mapquest.com/"" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" />';
-
 var command="";
 command += "PREFIX rdf: <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#>";
 command += "PREFIX local: <http:\/\/localhost\/general_ontology#>";
@@ -40,42 +34,18 @@ command += "    }";
 command += "  }";
 command += "}";
 
-
-$.ajax({
+function ajaxRequest(theQuery, resultProcessingFunction) {
+  $.ajax({
     type: 'POST',
     url: 'http://localhost:3030/ds/query',
     dataType: 'jsonp',
-    data: { query: command }
-}).done(mapLines);
+    data: { query: theQuery }
+  }).done(resultProcessingFunction);
+}
+
+ajaxRequest(command, mapLines);
 
 var myLines = [];
-
-function mapPoints(data){
-  console.log(data.results);
-  for (i=0; i<data.results.bindings.length;i++){
-    var point = data.results.bindings[i].point.value;
-    var roadType = data.results.bindings[i].type.value;
-    var lat = point.split("(")[1].split(")")[0].split(" ")[0];
-    var lon = point.split("(")[1].split(")")[0].split(" ")[1];
-    console.log("lat: "+lat+" long: "+lon);
-    feat = {'type': 'Feature', "properties": {"linetype": "road-"+roadType, "name": name, "popupContent": name}, 'geometry':{'type':'Point', 'coordinates':[lat, lon]}, onEachFeature: onEachFeature
-};
-    if (i<100)
-      L.geoJson(feat, {
-        style: function(feature) {
-        switch (feature.properties.linetype) {
-            case 'road-motorway_link': return {color: "#ff0000"};
-            case 'road-primary': return {color: "#ff0000"};
-            case 'road-secondary': return {color: "#ff0000"};
-            case 'road-tertiary': return {color: "#ff0000"};
-            case 'car':   return {color: "#0000ff"};
-            case 'bus':   return {color: "#0000ff"};
-        }
-    }
-      }).addTo(map);
-  }
-  
-}
 
 function mapLines(data){
   for (i=0; i<data.results.bindings.length;i++){
@@ -104,21 +74,21 @@ function mapLines(data){
       L.geoJson(feat, {
         style: function(feature) {
           switch (feature.properties.linetype) {
-              case 'road-motorway_link': return {color: "#ff0000"};
-              case 'road-primary': return {color: "#ff0000"};
-              case 'road-secondary': return {color: "#ff0000"};
-              case 'road-tertiary': return {color: "#ff0000"};
-              case 'map': return {color: "#010011"};
-              case 'car':   return {color: "#e65d1f"};
-              case 'bus':   return {color: "#509ddd"};
+            case 'road-motorway': return {color: "#0000FF"};
+            case 'road-motorway_link': return {color: "#0000FF"};
+            case 'road-trunk': return {color: "#008000"};
+            case 'road-primary': return {color: "#FF0000"};
+            case 'road-secondary': return {color: "#FFA500"};
+            case 'road-tertiary': return {color: "#FFFF00s"};
+            default: return {color: "#585858"};
           }
         },
         onEachFeature: onEachFeature
       }).addTo(map);
-    console.log(i);
-    if (i> 20000)
-      break;
+      console.log(i);
+      if (i> 20000)
+        break;
+    }
+
   }
-  
-}
-L.geoJson(myLines).addTo(map);
+  L.geoJson(myLines).addTo(map);
