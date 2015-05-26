@@ -1802,7 +1802,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 				<li>GPS</li>
 				<li>UTM</li>
 				<li>UTMREF / MGRS</li>
-			<ul>
+			</ul>
 		</td>
 		<td>
 			<a href="https://gitlab.com/u/PowerPan">Johannes Rudolph</a>
