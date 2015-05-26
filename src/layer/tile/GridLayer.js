@@ -220,6 +220,10 @@ L.GridLayer = L.Layer.extend({
 
 			// force the browser to consider the newly added element for transition
 			L.Util.falseFn(level.el.offsetWidth);
+
+		// ie8 style.top and style.left are limited to 1342177 pixels
+		} else if (L.Browser.ielt9 && (Math.abs(level.origin.x) > 1342177 || Math.abs(level.origin.y) > 1342177)) {
+			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
 		}
 
 		this._level = level;
