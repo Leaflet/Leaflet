@@ -18,6 +18,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li> <a href='#non-map-base-layers'>Non-map base layers</a></li>
 			<li> <a href='#tileimage-display'>Tile/image display</a></li>
 			<li> <a href='#tile-load'>Tile load</a></li>
+			<li> <a href='#vector-tiles'>Vector tiles</a></li>
 		</ul>
 
 		<h4>Overlay data</h4>
@@ -92,6 +93,7 @@ The following plugins allow loading different maps and provide functionality to 
 * [Non-map base layers](#non-map-base-layers)
 * [Tile/image display](#tileimage-display)
 * [Tile load](#tile-load)
+* [Vector tiles](#vector-tiles)
 
 
 ### Basemap providers
@@ -402,6 +404,42 @@ The following plugins change the way that tile layers are loaded into the map.
 			A simple control that adds a loading indicator as tiles and other data are loaded.
 		</td><td>
 			<a href="https://github.com/ebrelsford/">Eric Brelsford</a>
+		</td>
+	</tr>
+</table>
+
+
+
+### Vector tiles
+
+Plugins to display <a href="https://github.com/mapbox/vector-tile-spec">vector tiles</a>.
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/SpatialServer/Leaflet.MapboxVectorTile">Leaflet.MapboxVectorTile</a>
+		</td><td>
+			A Leaflet Plugin that renders Mapbox Vector Tiles on canvas. See <a href="http://spatialserver.github.io/Leaflet.MapboxVectorTile/examples/confetti.html">demo</a>
+		</td><td>
+			<a href="http://spatialdev.com/">SpatialDev</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/devTristan/hoverboard">Hoverboard</a>
+		</td><td>
+			Render vector tiles on canvas with leaflet (geojson, topojson, and protobuf). See <a href="http://tristan.io/hoverboard/">demo</a>.
+		</td><td>
+			<a href="http://tristan.io/">Tristan Davies</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mapbox/geojson-vt">geojson-vt</a>
+		</td><td>
+			Efficient library for slicing GeoJSON data into vector tiles on the fly.
+		</td><td>
+			<a href="https://www.mapbox.com/">Mapbox</a>
 		</td>
 	</tr>
 </table>
@@ -2176,6 +2214,15 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 			An efficient spatial index for features and layers, using <a href="https://github.com/imbcmdth/RTree">RTree.js</a>.
 		</td><td>
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mapzen/leaflet-spatial-prefix-tree">leaflet-spatial-prefix-tree</a>
+		</td><td>
+			Leaflet plugin for visualizing spatial prefix trees, quadtree and geohash. See <a href="http://mapzen.github.io/leaflet-spatial-prefix-tree/">demo</a>
+		</td><td>
+			<a href="http://mapzen.com/">Mapzen</a>
 		</td>
 	</tr>
 </table>
