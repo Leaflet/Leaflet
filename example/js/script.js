@@ -92,3 +92,106 @@ function mapLines(data){
 
   }
   L.geoJson(myLines).addTo(map);
+
+var commandData="";
+commandData += "PREFIX rdf: <http:\/\/www.w3.org\/1999\/02\/22-rdf-syntax-ns#>";
+commandData += "PREFIX local: <http:\/\/localhost\/general_ontology#>";
+commandData += "PREFIX rdfs: <http:\/\/www.w3.org\/2000\/01\/rdf-schema#>";
+commandData += "PREFIX void: <http:\/\/rdfs.org\/ns\/void#>";
+commandData += "PREFIX geo: <http:\/\/www.opengis.net\/ont\/geosparql#>";
+commandData += "PREFIX geof: <http:\/\/www.opengis.net\/def\/geosparql\/function\/>";
+commandData += "PREFIX spatial: <http:\/\/geovocab.org\/spatial#>";
+commandData += "PREFIX strdf: <http:\/\/strdf.di.uoa.gr\/ontology#>";
+commandData += " ";
+commandData += "SELECT DISTINCT ?agg_ID ?eq_ID ?date ?latitude ?longitude ";
+commandData += "WHERE {";
+commandData += "  ?dbData void:sparqlEndpoint ?dataEndpoint .";
+commandData += "  FILTER REGEX(STR(?dbData), \"agosto\")";
+commandData += "  ?dbData local:hasClass ?dataClass .";
+commandData += "  ?dataClass local:className ?dataClassName.";
+commandData += "  FILTER REGEX(STR(?dataClassName), \"agosto\")";
+commandData += "  ?dataClass local:hasField ?dataField.";
+commandData += "  ?dataField local:fieldName ?dataFieldName.";
+commandData += "  FILTER REGEX(STR(?dataField), \"AGG_ID\")";
+commandData += "  ?dataClass local:hasField ?dataEidField.";
+commandData += "  ?dataEidField local:fieldName ?dataEidFieldName.";
+commandData += "  FILTER REGEX(STR(?dataEidField), \"EQUIPMENT\")";
+commandData += "  ?dataClass local:hasField ?dataDateField.";
+commandData += "  ?dataDateField local:fieldName ?dataDateFieldName.";
+commandData += "  FILTER REGEX(STR(?dataDateField), \"AGG_PERIOD_START\")";
+commandData += "  ";
+commandData += "  ?dbSensors void:sparqlEndpoint ?sensorEndpoint .";
+commandData += "  FILTER REGEX(STR(?dbSensors), \"sensor\")";
+commandData += "  ?dbSensors local:hasClass ?sensorClass .";
+commandData += "  ?sensorClass local:className ?sensorClassName.";
+commandData += "  FILTER REGEX(STR(?sensorClassName), \"sensor\")";
+commandData += "  ?sensorClass local:hasField ?sensorField.";
+commandData += "  ?sensorField local:fieldName ?sensorFieldName.";
+commandData += "  FILTER REGEX(STR(?sensorField), \"EQUIPMENTID\")";
+commandData += "  ?sensorClass local:hasField ?sensorLat.";
+commandData += "  ?sensorLat local:fieldName ?sensorLatName.";
+commandData += "  FILTER REGEX(STR(?sensorLatName), \"latitude\")";
+commandData += "  ?sensorClass local:hasField ?sensorLon.";
+commandData += "  ?sensorLon local:fieldName ?sensorLonName.";
+commandData += "  FILTER REGEX(STR(?sensorLonName), \"longitude\")";
+commandData += "  ";
+commandData += "  {";
+commandData += "    SERVICE ?dataEndpoint{";
+commandData += "      ?b a ?dataClassName.";
+commandData += "      ?b ?dataFieldName ?agg_ID.";
+commandData += "      ?b ?dataEidFieldName ?eq_ID.";
+commandData += "      ?b ?dataDateFieldName ?date.";
+commandData += "      FILTER REGEX(str(?date), \"2014-08-02 00:00\")";
+commandData += "    }";
+commandData += "    SERVICE ?sensorEndpoint{";
+commandData += "      ?c a ?sensorClassName.";
+commandData += "      ?c ?sensorFieldName ?eq_ID.";
+commandData += "      ?c ?sensorLatName ?latitude .";
+commandData += "      ?c ?sensorLonName ?longitude";
+commandData += "    }";
+commandData += "  }";
+commandData += "}";
+
+ajaxRequest(commandData, mapData);
+
+
+function mapData(data){
+  console.log(data);
+  var features = [];
+  for (i=0; i<data.results.bindings.length;i++){
+    var agg_ID = data.results.bindings[i].agg_ID.value;
+    var date = data.results.bindings[i].date.value;
+    var eq_ID = data.results.bindings[i].eq_ID.value;
+    var longitude = data.results.bindings[i].latitude.value.replace(",", ".");
+    var latitude = data.results.bindings[i].longitude.value.replace(",", ".");
+    if (isNaN(latitude) || isNaN(longitude)){
+      console.log("there coords are wrong-> lat: "+latitude+" long: "+longitude);
+      continue;
+    }
+    features.push({
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    latitude,
+                    longitude
+                ]
+            },
+            "type": "Feature",
+            "properties": {
+                "popupContent": agg_ID+" "+date
+            },
+            "id": i+1
+        });
+    console.log("lat: "+latitude+" long: "+longitude);
+    console.log(i);
+    if (i> 20000)
+      break;
+    }
+    var indLoopsFeat = {
+      'type': 'FeatureCollection', 
+      "features": features};
+      L.geoJson(indLoopsFeat,{
+        onEachFeature: onEachFeature}
+      ).addTo(map);
+    
+  }
