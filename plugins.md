@@ -952,6 +952,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 			<a href="https://github.com/oliverroick">Oliver Roick</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/andy-kay/Leaflet.GridCluster">Leaflet.GridCluster</a>
+		</td><td>
+			Create grid-based clusters in realtime.
+		</td><td>
+			<a href="https://github.com/andy-kay">Andreas Kiefer</a>
+		</td>
+	</tr>
 </table>
 
 ### Heatmaps
