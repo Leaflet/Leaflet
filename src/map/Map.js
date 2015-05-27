@@ -644,12 +644,19 @@ L.Map = L.Evented.extend({
 		var target = this._findEventTarget(e.target || e.srcElement),
 			type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
+		if (e.type === 'click') {
+			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
+			var synth = L.Util.extend({}, e);
+			synth.type = 'preclick';
+			this._handleDOMEvent(synth);
+		}
+
 		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
 		if (!target && (type === 'mouseover' || type === 'mouseout') &&
 		                !L.DomEvent._checkMouse(this._container, e)) { return; }
 
-		// prevents outline when clicking on keyboard-focusable element
 		if (type === 'mousedown') {
+			// prevents outline when clicking on keyboard-focusable element
 			L.DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
@@ -663,7 +670,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_fireDOMEvent: function (target, e, type) {
-		if (!target.listens(type, true) && (type !== 'click' || !target.listens('preclick', true))) { return; }
+		if (!target.listens(type, true)) { return; }
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
@@ -680,9 +687,6 @@ L.Map = L.Evented.extend({
 					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = this.layerPointToLatLng(data.layerPoint);
-		}
-		if (type === 'click') {
-			target.fire('preclick', data, true);
 		}
 		target.fire(type, data, true);
 	},
