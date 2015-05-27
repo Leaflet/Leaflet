@@ -35,6 +35,10 @@ L.Layer = L.Evented.extend({
 		return this;
 	},
 
+	isPopupOpen: function() {
+		return !!(this._map._popup && this._map._popup.isOpen);
+	},
+
 	_layerAdd: function (e) {
 		var map = e.target;
 
