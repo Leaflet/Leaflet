@@ -33,10 +33,5 @@
     "gis",
     "map"
   ],
-  "licenses": [
-    {
-      "type": "BSD-2-Clause",
-      "url": "https://github.com/Leaflet/Leaflet/blob/master/LICENSE"
-    }
-  ]
+  "license": "BSD-2-Clause"
 }
