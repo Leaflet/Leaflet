@@ -297,6 +297,15 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/aparshin/leaflet-fractal">leaflet-fractal</a>
+		</td><td>
+			Renders some fractals (Mandelbrot set, Julia set and some others) using 2D canvas (<a href="http://aparshin.github.io/leaflet-fractal/">demo</a>).
+		</td><td>
+			<a href="https://github.com/aparshin">Alexander Parshin</a>
+		</td>
+	</tr>
 </table>
 
 
