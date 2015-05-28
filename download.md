@@ -34,8 +34,8 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
 
 ### Leaflet Source Code
 
