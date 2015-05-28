@@ -2519,7 +2519,7 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/prtksxna/leaflet-map-component">Leaflet map component</a>
 		</td>
 		<td>
-			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/0.5/'>Polymer 0.5<.5<.5<.5<.5</a> web framework.
+			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/0.5/'>Polymer 0.5</a> web framework.
 		</td>
 		<td>
 			<a href="https://github.com/prtksxna">Prateek Saxena</a>
