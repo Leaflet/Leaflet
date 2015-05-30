@@ -360,6 +360,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/publiclab">Public Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/frogcat/leaflet-tilelayer-mask">Leaflet.TileLayer.Mask</a>
+		</td><td>
+			A TileLayer with mask effect (<a href="http://frogcat.github.io/leaflet-tilelayer-mask/default/">demo</a>)
+		</td><td>
+			<a href="https://github.com/frogcat">Yuzo Matsuzawa</a>
+		</td>
+	</tr>
 </table>
 
 
