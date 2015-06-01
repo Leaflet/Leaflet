@@ -979,6 +979,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 			<a href="https://github.com/andy-kay">Andreas Kiefer</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/spatialdev/q-cluster">q-cluster</a>
+		</td><td>
+			Quick point clustering library with D3 categorization.
+		</td><td>
+			<a href="https://github.com/hallahan">Nicholas Hallahan</a>
+		</td>
+	</tr>
 </table>
 
 ### Heatmaps
