@@ -660,13 +660,7 @@ L.Map = L.Evented.extend({
 			L.DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
-		if (target && target !== this) {
-			this._fireDOMEvent(target, e, type);
-			if (type === 'mouseover' || type === 'mouseout') { return; }
-		}
-		if (!L.DomEvent._skipped(e)) {  // In case the Leaflet event has been stopped on some target listener.
-			this._fireDOMEvent(this, e, type);
-		}
+		this._fireDOMEvent(target || this, e, type);
 	},
 
 	_fireDOMEvent: function (target, e, type) {
@@ -680,15 +674,16 @@ L.Map = L.Evented.extend({
 		if (e.type === 'click' && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
-			originalEvent: e
-		};
+				originalEvent: e
+			},
+			propagate = (type !== 'mouseover' && type !== 'mouseout');
 		if (e.type !== 'keypress') {
 			data.containerPoint = target instanceof L.Marker ?
 					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = this.layerPointToLatLng(data.layerPoint);
 		}
-		target.fire(type, data, true);
+		target.fire(type, data, propagate);
 	},
 
 	_draggableMoved: function (obj) {

@@ -211,6 +211,7 @@ L.Evented = L.Class.extend({
 
 	_propagateEvent: function (e) {
 		for (var id in this._eventParents) {
+			if (e._stopped) { break; }
 			this._eventParents[id].fire(e.type, L.extend({layer: e.target}, e), true);
 		}
 	}
