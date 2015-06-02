@@ -102,9 +102,6 @@ L.Map.include(!zoomAnimated ? {} : {
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
-			scale: this.getZoomScale(zoom),
-			origin: this.latLngToLayerPoint(center),
-			offset: this._getCenterOffset(center).multiplyBy(-1),
 			noUpdate: noUpdate
 		});
 	},

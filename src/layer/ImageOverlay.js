@@ -118,13 +118,14 @@ L.ImageOverlay = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
+		var scale = this._map.getZoomScale(e.zoom);
 		var bounds = new L.Bounds(
 			this._map._latLngToNewLayerPoint(this._bounds.getNorthWest(), e.zoom, e.center),
 		    this._map._latLngToNewLayerPoint(this._bounds.getSouthEast(), e.zoom, e.center));
 
-		var offset = bounds.min.add(bounds.getSize()._multiplyBy((1 - 1 / e.scale) / 2));
+		var offset = bounds.min.add(bounds.getSize()._multiplyBy((1 - 1 / scale) / 2));
 
-		L.DomUtil.setTransform(this._image, offset, e.scale);
+		L.DomUtil.setTransform(this._image, offset, scale);
 	},
 
 	_reset: function () {
