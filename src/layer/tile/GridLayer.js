@@ -230,6 +230,10 @@ L.GridLayer = L.Layer.extend({
 	_pruneTiles: function () {
 		var key, tile;
 
+		var zoom = this._map.getZoom();
+		if (zoom > this.options.maxZoom ||
+			zoom < this.options.minZoom) { return this._removeAllTiles(); }
+
 		for (key in this._tiles) {
 			tile = this._tiles[key];
 			tile.retain = tile.current;
