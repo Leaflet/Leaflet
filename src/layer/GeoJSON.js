@@ -87,7 +87,7 @@ L.extend(L.GeoJSON, {
 		case 'MultiPoint':
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = coordsToLatLng(coords[i]);
-				layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng));
+				layers.push(pointToLayer ? pointToLayer(geojson, latlng, i) : new L.Marker(latlng));
 			}
 			return new L.FeatureGroup(layers);
 
