@@ -9,6 +9,7 @@ L.TileLayer = L.GridLayer.extend({
 
 		subdomains: 'abc',
 		errorTileUrl: '',
+		outOfZoomTileUrl: '',
 		zoomOffset: 0,
 
 		maxNativeZoom: null, // Number
@@ -75,12 +76,19 @@ L.TileLayer = L.GridLayer.extend({
 	},
 
 	getTileUrl: function (coords) {
+		var z = this._getZoomForUrl();
+
+		if (z > this.options.maxZoom ||
+			z < this.options.minZoom) {
+			return this.options.outOfZoomTileUrl;
+		}
+
 		return L.Util.template(this._url, L.extend({
 			r: this.options.detectRetina && L.Browser.retina && this.options.maxZoom > 0 ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: this.options.tms ? this._globalTileRange.max.y - coords.y : coords.y,
-			z: this._getZoomForUrl()
+			z: z
 		}, this.options));
 	},
 

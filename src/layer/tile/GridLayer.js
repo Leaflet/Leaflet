@@ -396,8 +396,8 @@ L.GridLayer = L.Layer.extend({
 		if (center === undefined) { center = map.getCenter(); }
 		if (zoom === undefined) { zoom = Math.round(map.getZoom()); }
 
-		if (zoom > this.options.maxZoom ||
-			zoom < this.options.minZoom) { return; }
+		//if (zoom > this.options.maxZoom ||
+		//	zoom < this.options.minZoom) { return; }
 
 		var pixelBounds = map.getPixelBounds(center, zoom),
 			tileRange = this._pxBoundsToTileRange(pixelBounds),
