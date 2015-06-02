@@ -23,8 +23,6 @@ L.SVG = L.Renderer.extend({
 		    size = b.getSize(),
 		    container = this._container;
 
-		L.DomUtil.setPosition(container, b.min);
-
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
 			this._svgSize = size;
