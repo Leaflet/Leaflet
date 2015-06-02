@@ -462,7 +462,7 @@ L.GridLayer = L.Layer.extend({
 
 		// don't load tile if it doesn't intersect the bounds in options
 		var tileBounds = this._tileCoordsToBounds(coords);
-		return L.latLngBounds(this.options.bounds).intersects(tileBounds);
+		return L.latLngBounds(this.options.bounds).overlaps(tileBounds);
 	},
 
 	_keyToBounds: function (key) {

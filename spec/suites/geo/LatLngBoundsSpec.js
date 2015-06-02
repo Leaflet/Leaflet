@@ -143,6 +143,19 @@ describe('LatLngBounds', function () {
 			expect(a.intersects([[16, 20], [50, 60]])).to.eql(true);
 			expect(a.contains([[40, 50], [50, 60]])).to.eql(false);
 		});
+
+		it('returns true if just touches the boundary of the given bounds', function () {
+			expect(a.intersects([[25, 40], [55, 50]])).to.eql(true);
+		});
+	});
+
+	describe('#overlaps', function () {
+		it('returns true if overlaps the given bounds', function () {
+			expect(a.overlaps([[16, 20], [50, 60]])).to.eql(true);
+		});
+		it('returns false if just touches the boundary of the given bounds', function () {
+			expect(a.overlaps([[25, 40], [55, 50]])).to.eql(false);
+		});
 	});
 
 });

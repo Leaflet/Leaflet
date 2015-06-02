@@ -119,7 +119,7 @@ L.LatLngBounds.prototype = {
 		       (sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
-	intersects: function (bounds) { // (LatLngBounds)
+	intersects: function (bounds) { // (LatLngBounds) -> Boolean
 		bounds = L.latLngBounds(bounds);
 
 		var sw = this._southWest,
@@ -131,6 +131,20 @@ L.LatLngBounds.prototype = {
 		    lngIntersects = (ne2.lng >= sw.lng) && (sw2.lng <= ne.lng);
 
 		return latIntersects && lngIntersects;
+	},
+
+	overlaps: function (bounds) { // (LatLngBounds) -> Boolean
+		bounds = L.latLngBounds(bounds);
+
+		var sw = this._southWest,
+		    ne = this._northEast,
+		    sw2 = bounds.getSouthWest(),
+		    ne2 = bounds.getNorthEast(),
+
+		    latOverlaps = (ne2.lat > sw.lat) && (sw2.lat < ne.lat),
+		    lngOverlaps = (ne2.lng > sw.lng) && (sw2.lng < ne.lng);
+
+		return latOverlaps && lngOverlaps;
 	},
 
 	toBBoxString: function () {
