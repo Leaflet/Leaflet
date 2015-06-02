@@ -393,11 +393,11 @@ L.GridLayer = L.Layer.extend({
 		// TODO move to reset
 		// var zoom = this._map.getZoom();
 
-		// if (zoom > this.options.maxZoom ||
-		//     zoom < this.options.minZoom) { return; }
-
 		if (center === undefined) { center = map.getCenter(); }
 		if (zoom === undefined) { zoom = Math.round(map.getZoom()); }
+
+		if (zoom > this.options.maxZoom ||
+			zoom < this.options.minZoom) { return; }
 
 		var pixelBounds = map.getPixelBounds(center, zoom),
 			tileRange = this._pxBoundsToTileRange(pixelBounds),
