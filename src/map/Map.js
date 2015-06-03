@@ -15,7 +15,8 @@ L.Map = L.Evented.extend({
 
 		fadeAnimation: true,
 		trackResize: true,
-		markerZoomAnimation: true
+		markerZoomAnimation: true,
+		zoomFactor: 1
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -45,6 +46,7 @@ L.Map = L.Evented.extend({
 		this._layers = {};
 		this._zoomBoundLayers = {};
 		this._sizeChanged = true;
+		this.zoomFactor = options.zoomFactor;
 
 		this.callInitHooks();
 
@@ -70,11 +72,11 @@ L.Map = L.Evented.extend({
 	},
 
 	zoomIn: function (delta, options) {
-		return this.setZoom(this._zoom + (delta || 1), options);
+		return this.setZoom(this._zoom + (delta || 1) * this.zoomFactor, options);
 	},
 
 	zoomOut: function (delta, options) {
-		return this.setZoom(this._zoom - (delta || 1), options);
+		return this.setZoom(this._zoom - (delta || 1) * this.zoomFactor, options);
 	},
 
 	setZoomAround: function (latlng, zoom, options) {
