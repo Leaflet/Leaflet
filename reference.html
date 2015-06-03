@@ -206,8 +206,14 @@ var map = L.map('map', {
 		<td><code><b>maxBounds</b></code></td>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td><code><span class="literal">null</span></code></td>
-		<td>When this option is set, the map restricts the view to the given geographical bounds, bouncing the user back when he tries to pan outside the view. To set the restriction dynamically, use <a href="#map-setmaxbounds">setMaxBounds</a> method</td>
-    </tr>
+		<td>When this option is set, the map restricts the view to the given geographical bounds, bouncing the user back when he tries to pan outside the view. To set the restriction dynamically, use <a href="#map-setmaxbounds">setMaxBounds</a> method.</td>
+	</tr>
+	<tr id="map-maxbounds">
+		<td><code><b>maxBoundsViscosity</b></code></td>
+		<td><code>Number</code></td>
+		<td><code><span class="number">0.0</span></code></td>
+		<td>If <code>maxBounds</code> is set, this options will control how solid the bounds are when dragging the map around. The default value of <span class="number">0.0</span> allows the user to drag outside the bounds at normal speed, higher values will slow down map dragging outside bounds, and <span class="number">1.0</span> makes the bounds fully solid, preventing the user from dragging outside the bounds.</td>
+	</tr>
 	<tr>
 		<td><code><b>crs</b></code></td>
 		<td><code><a href="#crs">CRS</a></code></td>
