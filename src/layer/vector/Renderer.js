@@ -54,8 +54,8 @@ L.Renderer = L.Layer.extend({
 
 	_updateTransform: function () {
 		var zoom = this._map.getZoom(),
-			center = this._map.getCenter(),
-			scale = this._map.getZoomScale(zoom, this._zoom),
+		    center = this._map.getCenter(),
+		    scale = this._map.getZoomScale(zoom, this._zoom),
 		    offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
 
 		L.DomUtil.setTransform(this._container, offset, scale);
@@ -73,7 +73,7 @@ L.Renderer = L.Layer.extend({
 		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = new L.Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
-		
+
 		this._topLeft = this._map.layerPointToLatLng(min);
 		this._zoom = this._map.getZoom();
 	}
