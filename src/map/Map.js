@@ -272,6 +272,10 @@ L.Map = L.Evented.extend({
 			this.fire('unload');
 		}
 
+		for (var i in this._layers) {
+			this._layers[i].remove();
+		}
+
 		return this;
 	},
 
