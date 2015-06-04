@@ -91,8 +91,6 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 
 ### Animations refactoring
 
-* Improved performance in iOS Safari; pinch-zooming should be smoother now. [#2377](https://github.com/Leaflet/Leaflet/pull/2377)
-* Fixed gaps between tiles during animations in desktop Safari. [#2377](https://github.com/Leaflet/Leaflet/pull/2377)
 * Improved panning inertia behavior so that there are no tearing during animation when panning around quickly. [#2360](https://github.com/Leaflet/Leaflet/issues/2360)
 
 ## Other performance improvements
