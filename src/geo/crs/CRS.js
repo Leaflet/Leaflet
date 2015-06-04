@@ -31,7 +31,13 @@ L.CRS = {
 
 	// defines how the world scales with zoom
 	scale: function (zoom) {
-		return 256 * Math.pow(2, zoom);
+		var iZoom = Math.floor(zoom);
+        var baseScale = 256 * Math.pow(2, iZoom);
+        var nextScale = 256 * Math.pow(2, iZoom + 1);
+        var scaleDiff = nextScale - baseScale;
+        var zDiff = (zoom - iZoom);
+
+        return baseScale + scaleDiff * zDiff;
 	},
 
 	// returns the bounds of the world in projected coords if applicable
