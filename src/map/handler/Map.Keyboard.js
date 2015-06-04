@@ -74,12 +74,15 @@ L.Map.Keyboard = L.Handler.extend({
 		window.scrollTo(left, top);
 	},
 
-	_onFocus: function () {
+	_onFocus: function (ev) {
+		// Focus events on DOM children are captured by DomEvent and should be ignored.
+		if (ev.eventPhase === Event.CAPTURING_PHASE) { return; }
 		this._focused = true;
 		this._map.fire('focus');
 	},
 
-	_onBlur: function () {
+	_onBlur: function (ev) {
+		if (ev.eventPhase === Event.CAPTURING_PHASE) { return; }
 		this._focused = false;
 		this._map.fire('blur');
 	},
