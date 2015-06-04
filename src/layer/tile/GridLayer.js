@@ -155,11 +155,12 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		var now = +new Date(),
-			nextFrame = false;
+			nextFrame = false,
+			willPrune = false;
 
 		for (var key in this._tiles) {
 			var tile = this._tiles[key];
-			if (!tile.current || !tile.loaded || tile.active) { continue; }
+			if (!tile.current || !tile.loaded) { continue; }
 
 			var fade = Math.min(1, (now - tile.loaded) / 200);
 			if (fade < 1) {
@@ -167,10 +168,12 @@ L.GridLayer = L.Layer.extend({
 				nextFrame = true;
 			} else {
 				L.DomUtil.setOpacity(tile.el, opacity);
+				if (tile.active) { willPrune = true; }
 				tile.active = true;
-				this._pruneTiles();
 			}
 		}
+
+		if (willPrune) { this._pruneTiles(); }
 
 		if (nextFrame) {
 			L.Util.cancelAnimFrame(this._fadeFrame);
