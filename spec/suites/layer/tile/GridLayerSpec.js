@@ -107,7 +107,7 @@ describe('GridLayer', function () {
 	});
 
 	describe("#onAdd", function () {
-		it('is called after viewreset on first map load', function () {
+		it('is called after zoomend on first map load', function () {
 			var layer = L.gridLayer().addTo(map);
 
 			var onAdd = layer.onAdd,
@@ -118,7 +118,7 @@ describe('GridLayer', function () {
 			};
 
 			var onReset = sinon.spy();
-			map.on('viewreset', onReset);
+			map.on('zoomend', onReset);
 			map.setView([0, 0], 0);
 
 			expect(onReset.calledBefore(onAddSpy)).to.be.ok();

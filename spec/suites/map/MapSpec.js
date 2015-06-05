@@ -129,6 +129,14 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
 		});
 
+		it("limits initial zoom when no zoom specified", function () {
+			map.options.maxZoom = 20;
+			map.setZoom(100);
+			expect(map.setView([51.605, -0.11])).to.be(map);
+			expect(map.getZoom()).to.be(20);
+			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
+		});
+
 		it("defaults to zoom passed as map option", function () {
 			map = L.map(document.createElement('div'), {zoom: 13});
 			expect(map.setView([51.605, -0.11])).to.be(map);

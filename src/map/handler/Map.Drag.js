@@ -31,9 +31,9 @@ L.Map.Drag = L.Handler.extend({
 			this._draggable.on('predrag', this._onPreDragLimit, this);
 			if (map.options.worldCopyJump) {
 				this._draggable.on('predrag', this._onPreDragWrap, this);
-				map.on('viewreset', this._onViewReset, this);
+				map.on('zoomend', this._onZoomEnd, this);
 
-				map.whenReady(this._onViewReset, this);
+				map.whenReady(this._onZoomEnd, this);
 			}
 		}
 		L.DomUtil.addClass(this._map._container, 'leaflet-grab');
@@ -98,7 +98,7 @@ L.Map.Drag = L.Handler.extend({
 		    .fire('drag', e);
 	},
 
-	_onViewReset: function () {
+	_onZoomEnd: function () {
 		var pxCenter = this._map.getSize().divideBy(2),
 		    pxWorldCenter = this._map.latLngToLayerPoint([0, 0]);
 

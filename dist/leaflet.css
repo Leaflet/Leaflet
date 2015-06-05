@@ -153,6 +153,11 @@
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup {
 	opacity: 1;
 	}
+.leaflet-zoom-animated {
+	-webkit-transform-origin: 0 0;
+	    -ms-transform-origin: 0 0;
+	        transform-origin: 0 0;
+	}
 .leaflet-zoom-anim .leaflet-zoom-animated {
 	will-change: transform;
 	}

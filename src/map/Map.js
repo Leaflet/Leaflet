@@ -58,13 +58,13 @@ L.Map = L.Evented.extend({
 	// replaced by animation-powered implementation in Map.PanAnimation.js
 	setView: function (center, zoom) {
 		zoom = zoom === undefined ? this.getZoom() : zoom;
-		this._resetView(L.latLng(center), this._limitZoom(zoom));
+		this._resetView(L.latLng(center), zoom);
 		return this;
 	},
 
 	setZoom: function (zoom, options) {
 		if (!this._loaded) {
-			this._zoom = this._limitZoom(zoom);
+			this._zoom = zoom;
 			return this;
 		}
 		return this.setView(this.getCenter(), zoom, {zoom: options});
@@ -193,7 +193,7 @@ L.Map = L.Evented.extend({
 
 		var oldSize = this.getSize();
 		this._sizeChanged = true;
-		this._initialCenter = null;
+		this._lastCenter = null;
 
 		var newSize = this.getSize(),
 		    oldCenter = oldSize.divideBy(2).round(),
@@ -295,8 +295,8 @@ L.Map = L.Evented.extend({
 	getCenter: function () { // (Boolean) -> LatLng
 		this._checkIfLoaded();
 
-		if (this._initialCenter && !this._moved()) {
-			return this._initialCenter;
+		if (this._lastCenter && !this._moved()) {
+			return this._lastCenter;
 		}
 		return this.layerPointToLatLng(this._getCenterLayerPoint());
 	},
@@ -509,6 +509,7 @@ L.Map = L.Evented.extend({
 		this._paneRenderers = {};
 
 		this._mapPane = this.createPane('mapPane', this._container);
+		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 
 		this.createPane('tilePane');
 		this.createPane('shadowPane');
@@ -525,43 +526,55 @@ L.Map = L.Evented.extend({
 
 	// private methods that modify map state
 
-	_resetView: function (center, zoom, preserveMapOffset, afterZoomAnim) {
-
-		var zoomChanged = (this._zoom !== zoom);
-
-		if (!afterZoomAnim) {
-			this.fire('movestart');
-
-			if (zoomChanged) {
-				this.fire('zoomstart');
-			}
-		}
-
-		this._zoom = zoom;
-		this._initialCenter = center;
-
-		if (!preserveMapOffset) {
-			L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
-		}
-
-		this._pixelOrigin = this._getNewPixelOrigin(center);
+	_resetView: function (center, zoom) {
+		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 
 		var loading = !this._loaded;
 		this._loaded = true;
+		zoom = this._limitZoom(zoom);
 
-		this.fire('viewreset', {hard: !preserveMapOffset});
+		var zoomChanged = this._zoom !== zoom;
+		this
+			._moveStart(zoomChanged)
+			._move(center, zoom)
+			._moveEnd(zoomChanged);
+
+		this.fire('viewreset');
 
 		if (loading) {
 			this.fire('load');
 		}
+	},
 
-		this.fire('move');
+	_moveStart: function (zoomChanged) {
+		if (zoomChanged) {
+			this.fire('zoomstart');
+		}
+		return this.fire('movestart');
+	},
 
-		if (zoomChanged || afterZoomAnim) {
-			this.fire('zoomend');
+	_move: function (center, zoom, data) {
+		if (zoom === undefined) {
+			zoom = this._zoom;
 		}
 
-		this.fire('moveend', {hard: !preserveMapOffset});
+		var zoomChanged = this._zoom !== zoom;
+
+		this._zoom = zoom;
+		this._lastCenter = center;
+		this._pixelOrigin = this._getNewPixelOrigin(center);
+
+		if (zoomChanged) {
+			this.fire('zoom', data);
+		}
+		return this.fire('move', data);
+	},
+
+	_moveEnd: function (zoomChanged) {
+		if (zoomChanged) {
+			this.fire('zoomend');
+		}
+		return this.fire('moveend');
 	},
 
 	_rawPanBy: function (offset) {
@@ -709,7 +722,6 @@ L.Map = L.Evented.extend({
 
 	_getNewPixelOrigin: function (center, zoom) {
 		var viewHalf = this.getSize()._divideBy(2);
-		// TODO round on display, not calculation to increase precision?
 		return this.project(center, zoom)._subtract(viewHalf)._add(this._getMapPanePos())._round();
 	},
 

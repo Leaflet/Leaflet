@@ -8,7 +8,7 @@ L.Renderer = L.Layer.extend({
 	options: {
 		// how much to extend the clip area around the map view (relative to its size)
 		// e.g. 0.1 would be 10% of map view in each direction; defaults to clip with the map view
-		padding: 0
+		padding: 0.1
 	},
 
 	initialize: function (options) {
@@ -35,6 +35,8 @@ L.Renderer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
+			viewreset: this._reset,
+			zoom: this._updateTransform,
 			moveend: this._update
 		};
 		if (this._zoomAnimated) {
@@ -44,10 +46,24 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		var origin = e.origin.subtract(this._map._getCenterLayerPoint()),
-		    offset = this._bounds.min.add(origin.multiplyBy(1 - e.scale)).add(e.offset).round();
+		var scale = this._map.getZoomScale(e.zoom, this._zoom),
+		    offset = this._map._latLngToNewLayerPoint(this._topLeft, e.zoom, e.center);
 
-		L.DomUtil.setTransform(this._container, offset, e.scale);
+		L.DomUtil.setTransform(this._container, offset, scale);
+	},
+
+	_updateTransform: function () {
+		var zoom = this._map.getZoom(),
+		    center = this._map.getCenter(),
+		    scale = this._map.getZoomScale(zoom, this._zoom),
+		    offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
+
+		L.DomUtil.setTransform(this._container, offset, scale);
+	},
+
+	_reset: function () {
+		this._update();
+		this._updateTransform();
 	},
 
 	_update: function () {
@@ -57,6 +73,9 @@ L.Renderer = L.Layer.extend({
 		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = new L.Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
+
+		this._topLeft = this._map.layerPointToLatLng(min);
+		this._zoom = this._map.getZoom();
 	}
 });
 

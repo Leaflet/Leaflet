@@ -21,17 +21,16 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
 
-		var p1 = map.mouseEventToLayerPoint(e.touches[0]),
-		    p2 = map.mouseEventToLayerPoint(e.touches[1]),
-		    viewCenter = map._getCenterLayerPoint();
+		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
+		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
 
-		this._startCenter = p1.add(p2)._divideBy(2);
+		this._pinchStartPoint = p1.add(p2)._divideBy(2);
+		this._startCenter = map.containerPointToLatLng(map.getSize()._divideBy(2));
 		this._startDist = p1.distanceTo(p2);
+		this._startZoom = map.getZoom();
 
 		this._moved = false;
 		this._zooming = true;
-
-		this._centerOffset = viewCenter.subtract(this._startCenter);
 
 		map.stop();
 
@@ -46,46 +45,39 @@ L.Map.TouchZoom = L.Handler.extend({
 		if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
 
 		var map = this._map,
-		    p1 = map.mouseEventToLayerPoint(e.touches[0]),
-		    p2 = map.mouseEventToLayerPoint(e.touches[1]);
+		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
+		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
+		    scale = p1.distanceTo(p2) / this._startDist,
+		    delta;
 
-		this._scale = p1.distanceTo(p2) / this._startDist;
-		this._delta = p1._add(p2)._divideBy(2)._subtract(this._startCenter);
+		this._zoom = map.getScaleZoom(scale, this._startZoom);
+
+		if (map.options.touchZoom === 'center') {
+			delta = new L.Point(0, 0);
+			this._center = map.getCenter();
+		} else {
+			delta = p1._add(p2)._divideBy(2)._subtract(this._pinchStartPoint);
+			this._center = map.containerPointToLatLng(map.latLngToContainerPoint(this._startCenter).subtract(delta));
+		}
+
+		if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
 
 		if (!map.options.bounceAtZoomLimits) {
-			var currentZoom = map.getScaleZoom(this._scale);
-			if ((currentZoom <= map.getMinZoom() && this._scale < 1) ||
-		     (currentZoom >= map.getMaxZoom() && this._scale > 1)) { return; }
+			if ((this._zoom <= map.getMinZoom() && scale < 1) ||
+		        (this._zoom >= map.getMaxZoom() && scale > 1)) { return; }
 		}
 
 		if (!this._moved) {
-			map
-			    .fire('movestart')
-			    .fire('zoomstart');
-
+			map._moveStart(true);
 			this._moved = true;
 		}
 
 		L.Util.cancelAnimFrame(this._animRequest);
-		this._animRequest = L.Util.requestAnimFrame(this._updateOnMove, this, true, this._map._container);
+
+		var moveFn = L.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
+		this._animRequest = L.Util.requestAnimFrame(moveFn, this, true, map._container);
 
 		L.DomEvent.preventDefault(e);
-	},
-
-	_updateOnMove: function () {
-		var map = this._map;
-
-		if (map.options.touchZoom === 'center') {
-			this._center = map.getCenter();
-		} else {
-			this._center = map.layerPointToLatLng(this._getTargetCenter());
-		}
-
-		this._zoom = map.getScaleZoom(this._scale);
-
-		if (this._scale !== 1 || this._delta.x !== 0 || this._delta.y !== 0) {
-			map._animateZoom(this._center, this._zoom, false, true);
-		}
 	},
 
 	_onTouchEnd: function () {
@@ -101,17 +93,11 @@ L.Map.TouchZoom = L.Handler.extend({
 		    .off(document, 'touchmove', this._onTouchMove)
 		    .off(document, 'touchend', this._onTouchEnd);
 
-		var map = this._map,
-		    oldZoom = map.getZoom(),
-		    zoomDelta = this._zoom - oldZoom,
-		    finalZoom = map._limitZoom(zoomDelta > 0 ? Math.ceil(this._zoom) : Math.floor(this._zoom));
+		var zoom = this._zoom;
+		zoom = this._map._limitZoom(zoom - this._startZoom > 0 ? Math.ceil(zoom) : Math.floor(zoom));
 
-		map._animateZoom(this._center, finalZoom, true, true);
-	},
 
-	_getTargetCenter: function () {
-		var centerOffset = this._centerOffset.subtract(this._delta).divideBy(this._scale);
-		return this._startCenter.add(centerOffset);
+		this._map._animateZoom(this._center, zoom, true, true);
 	}
 });
 

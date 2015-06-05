@@ -27,13 +27,19 @@
 	<div id="map"></div>
 
 	<div style="position: absolute; left: 620px; top: 10px; z-index: 500">
-		<div><button id="dc">DC</button></div>
-		<div><button id="sf">SF</button></div>
+		<div><button id="dc">DC</button>(flyTo)</div>
+		<div><button id="sf">SF</button>(setView, 5 sec)</div>
 		<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
 		<div><button id="lnd">LND</button>(fract. zoom)</div>
 		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+		<div><button id="nul">NUL</button>(image overlay)</div>
 		<div><button id="stop">stop</button></div>
-		<div id='pos'></div>
+		<table>
+		<tr><td>on movestart</td><td id='movestart'></td></tr>
+		<tr><td>on zoomstart</td><td id='zoomstart'></td></tr>
+		<tr><td>on move</td><td id='move'></td></tr>
+		<tr><td>on moveend</td><td id='moveend'></td></tr>
+		<tr><td>on zoomend</td><td id='zoomend'></td></tr>
 	</div>
 
 	<script type="text/javascript">
@@ -53,31 +59,33 @@
 
 		var marker1 = L.marker(kyiv).addTo(map),
 			marker2 = L.marker(lnd).addTo(map);
-			// marker3 = L.marker(dc).addTo(map),
-			// marker4 = L.marker(sf).addTo(map);
+			marker3 = L.marker(dc).addTo(map),
+			marker4 = L.marker(sf).addTo(map),
+			marker5 = L.marker(trd).addTo(map);
 
-		document.getElementById('dc').onclick = function () { map.flyTo(dc, 10); };
-		document.getElementById('sf').onclick = function () { map.flyTo(sf, 10); };
-		document.getElementById('trd').onclick = function () { map.flyTo(trd, 10, {duration: 20}); };
-		document.getElementById('lnd').onclick = function () { map.flyTo(lnd, 9.25); };
+		var nullIslandKitten = L.imageOverlay('http://placekitten.com/g/300/400', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
+
+		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
+		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5}); };
+		document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 20}); };
+		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
 		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
+		document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10); };
 		document.getElementById('stop').onclick = function () { map.stop(); };
 
 		function logEvent(e) { console.log(e.type); }
 
-		map.on('move', function(){
+		function attachMoveEvent(name) {
+			map.on(name, function(){
+				document.getElementById(name).innerHTML = map.getCenter() + ' z' + map.getZoom();
+			});
+		}
 
-			document.getElementById('pos').innerHTML = map.getCenter() + ' z' + map.getZoom();
-		});
-
-		// map.on('click', logEvent);
-
-		// map.on('movestart', logEvent);
-		// map.on('move', logEvent);
-		// map.on('moveend', logEvent);
-
-		// map.on('zoomstart', logEvent);
-		// map.on('zoomend', logEvent);
+		attachMoveEvent('movestart');
+		attachMoveEvent('zoomstart');
+		attachMoveEvent('move');
+		attachMoveEvent('moveend');
+		attachMoveEvent('zoomend');
 
 	</script>
 </body>
