@@ -82,7 +82,7 @@ L.Map.include(!zoomAnimated ? {} : {
 		L.Util.requestAnimFrame(function () {
 			this
 			    .fire('movestart')
-			    .fire('zoomstart')
+			    .fire('zoomstart', {newZoom: zoom})
 			    ._animateZoom(center, zoom, true);
 		}, this);
 
