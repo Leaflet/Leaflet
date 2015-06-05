@@ -35,6 +35,7 @@ L.Renderer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
+			viewreset: this._reset,
 			zoom: this._updateTransform,
 			moveend: this._update
 		};
@@ -58,6 +59,11 @@ L.Renderer = L.Layer.extend({
 		    offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
 
 		L.DomUtil.setTransform(this._container, offset, scale);
+	},
+
+	_reset: function () {
+		this._update();
+		this._updateTransform();
 	},
 
 	_update: function () {

@@ -535,6 +535,8 @@ L.Map = L.Evented.extend({
 			._move(center, zoom)
 			._moveEnd(zoomChanged);
 
+		this.fire('viewreset');
+
 		if (loading) {
 			this.fire('load');
 		}

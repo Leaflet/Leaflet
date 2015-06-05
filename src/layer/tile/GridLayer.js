@@ -97,6 +97,7 @@ L.GridLayer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
+			viewreset: this._resetAll,
 			zoom: this._resetView,
 			moveend: this._onMoveEnd
 		};
@@ -195,6 +196,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateLevels: function () {
+
 		var zoom = this._tileZoom,
 			maxZoom = this.options.maxZoom;
 
@@ -263,6 +265,17 @@ L.GridLayer = L.Layer.extend({
 		for (var key in this._tiles) {
 			this._removeTile(key);
 		}
+	},
+
+	_resetAll: function () {
+		for (var z in this._levels) {
+			L.DomUtil.remove(this._levels[z].el);
+			delete this._levels[z];
+		}
+		this._removeAllTiles();
+
+		this._tileZoom = null;
+		this._resetView();
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
@@ -395,11 +408,9 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_update: function (center, zoom) {
+
 		var map = this._map;
 		if (!map) { return; }
-
-		// TODO move to reset
-		// var zoom = this._map.getZoom();
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (zoom === undefined) { zoom = Math.round(map.getZoom()); }
