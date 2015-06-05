@@ -80,7 +80,7 @@ L.Map = L.Evented.extend({
 
 	setZoomAround: function (latlng, zoom, options) {
 		var scale = this.getZoomScale(zoom),
-		    viewHalf = this.getSize().divideBy(2),
+		    viewHalf = this.getSize(true).divideBy(2),
 		    containerPoint = latlng instanceof L.Point ? latlng : this.latLngToContainerPoint(latlng),
 
 		    centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
@@ -192,10 +192,9 @@ L.Map = L.Evented.extend({
 		}, options === true ? {animate: true} : options);
 
 		var oldSize = this.getSize();
-		this._sizeChanged = true;
 		this._initialCenter = null;
 
-		var newSize = this.getSize(),
+		var newSize = this.getSize(true),
 		    oldCenter = oldSize.divideBy(2).round(),
 		    newCenter = newSize.divideBy(2).round(),
 		    offset = oldCenter.subtract(newCenter);
@@ -328,7 +327,7 @@ L.Map = L.Evented.extend({
 
 		var zoom = this.getMinZoom() - (inside ? 1 : 0),
 		    maxZoom = this.getMaxZoom(),
-		    size = this.getSize(),
+		    size = this.getSize(true),
 
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
@@ -352,13 +351,11 @@ L.Map = L.Evented.extend({
 		return inside ? zoom : zoom - 1;
 	},
 
-	getSize: function () {
-		if (!this._size || this._sizeChanged) {
+	getSize: function (refresh) {
+		if (!this._size || refresh) {
 			this._size = new L.Point(
 				this._container.clientWidth,
 				this._container.clientHeight);
-
-			this._sizeChanged = false;
 		}
 		return this._size.clone();
 	},
