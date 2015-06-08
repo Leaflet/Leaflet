@@ -50,7 +50,7 @@ L.Map.Drag = L.Handler.extend({
 	},
 
 	_onDown: function () {
-		this._map.stop();
+		this._map._stop();
 	},
 
 	_onDragStart: function () {

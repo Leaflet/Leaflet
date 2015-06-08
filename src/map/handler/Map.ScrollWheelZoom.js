@@ -45,12 +45,11 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_performZoom: function () {
 		var map = this._map,
-		    delta = this._delta,
+		    delta = this._delta * this._map.options.zoomDelta,
 		    zoom = map.getZoom();
 
-		map.stop(); // stop panning and fly animations if any
+		map._stop(); // stop panning and fly animations if any
 
-		delta = delta > 0 ? Math.ceil(delta) : Math.floor(delta);
 		delta = Math.max(Math.min(delta, 4), -4);
 		delta = map._limitZoom(zoom + delta) - zoom;
 

@@ -7,7 +7,7 @@ L.Map.include({
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
-		this.stop();
+		this._stop();
 
 		var from = this.project(this.getCenter()),
 		    to = this.project(targetCenter),

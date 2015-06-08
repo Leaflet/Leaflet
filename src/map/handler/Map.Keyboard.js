@@ -4,8 +4,7 @@
 
 L.Map.mergeOptions({
 	keyboard: true,
-	keyboardPanOffset: 80,
-	keyboardZoomOffset: 1
+	keyboardPanDelta: 80
 });
 
 L.Map.Keyboard = L.Handler.extend({
@@ -22,8 +21,8 @@ L.Map.Keyboard = L.Handler.extend({
 	initialize: function (map) {
 		this._map = map;
 
-		this._setPanOffset(map.options.keyboardPanOffset);
-		this._setZoomOffset(map.options.keyboardZoomOffset);
+		this._setPanDelta(map.options.keyboardPanDelta);
+		this._setZoomDelta(map.options.zoomDelta);
 	},
 
 	addHooks: function () {
@@ -84,7 +83,7 @@ L.Map.Keyboard = L.Handler.extend({
 		this._map.fire('blur');
 	},
 
-	_setPanOffset: function (pan) {
+	_setPanDelta: function (pan) {
 		var keys = this._panKeys = {},
 		    codes = this.keyCodes,
 		    i, len;
@@ -103,7 +102,7 @@ L.Map.Keyboard = L.Handler.extend({
 		}
 	},
 
-	_setZoomOffset: function (zoom) {
+	_setZoomDelta: function (zoom) {
 		var keys = this._zoomKeys = {},
 		    codes = this.keyCodes,
 		    i, len;
