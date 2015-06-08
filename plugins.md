@@ -1813,6 +1813,17 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/ljagis">LJA GIS</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/nerik/leaflet-graphicscale">leaflet-graphicscale</a>
+		</td>
+		<td>
+			Animated graphic scale control (<a href='http://nerik.github.io/leaflet-graphicscale/demo/'>demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/nerik">Erik Escoffier</a>
+		</td>
+	</tr>
 </table>
 
 
