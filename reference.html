@@ -3590,11 +3590,12 @@ map.panTo(L.latLng(50, 30));</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>equals</b>(
-			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>otherLatlng</i> )</nobr>
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>otherLatlng</i>, </nobr>
+			<nobr>&lt;Number&gt; <i>maxMargin?</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the given LatLng point is at the same position (within a small margin of error).</td>
+		<td>Returns <code><span class="literal">true</span></code> if the given LatLng point is at the same position (within a small margin of error). The margin of error can be overriden by setting <code>maxMargin</code> to a small number.</td>
 	</tr>
 	<tr>
 		<td><code><b>toString</b>()</code></td>
@@ -3922,6 +3923,11 @@ map.panBy(L.point(200, 300));</code></pre>
 		<td><code><b>floor</b>()</code></td>
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns a copy of the current point with floored coordinates (rounded down).</td>
+	</tr>
+	<tr>
+		<td><code><b>ceil</b>()</code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Returns a copy of the current point with ceiled coordinates (rounded up).</td>
 	</tr>
 	<tr>
 		<td><code><b>equals</b>(
@@ -4916,10 +4922,13 @@ Popups will also be automatically opened when the layer is clicked on and closed
 	<tr>
 		<td><code><b>bind</b>(
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
-			<nobr>&lt;Object&gt; <i>obj</i> )</nobr>
+			<nobr>&lt;Object&gt; <i>obj</i></nobr>,
+			<nobr>&lt;Any&gt; <i>arg1?</i></nobr>,
+			<nobr>&lt;Any&gt; <i>arg2?</i></nobr>,
+			<nobr>&lt;Any&gt; <i>arg3?</i></nobr>, &hellip; )
 		</code></td>
 		<td><code>Function</code></td>
-		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.</td>
+		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). The arguments received by the bound function will be any arguments passed when binding the function, followed by any arguments passed when invoking the bound function. Has an <code>L.bind</code> shortcut. Works exactly like <a href='https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind'><code>Function.prototype.bind</code></a> in modern browsers compliant with ECMAScript 5.</td>
 	</tr>
 	<tr>
 		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
@@ -4967,6 +4976,16 @@ Popups will also be automatically opened when the layer is clicked on and closed
 
 		<td><code>Number</code></td>
 		<td>Returns the number <code>num</code> rounded to <code>digits</code> decimals.</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapNum</b>(
+			<nobr>&lt;Number&gt; <i>num</i></nobr>,
+			<nobr>&lt;Array&gt; <i>range</i></nobr>,
+			<nobr>&lt;Boolean&gt; <i>includeMax</i> )</nobr>
+		</code></td>
+
+		<td><code>Number</code></td>
+		<td>Returns the number <code>num</code> modulo <code>range</code> in such a way so it lies within <code>range[0]</code> and <code>range[1]</code>. The returned value will be always smaller than <code>range[1]</code> unless <code>includeMax</code> is set to <code><span class="literal">true</span></code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>splitWords</b>(
@@ -5353,6 +5372,25 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		<td>-</td>
 
 		<td>Removes <code>name</code> from the element's class attribute.</td>
+	</tr>
+	<tr>
+		<td><code><b>getClass</b>(
+			<nobr>&lt;Element&gt; <i>el</i> )</nobr>
+		</code></td>
+
+		<td>&lt;String&gt;</td>
+
+		<td>Returns the element's CSS class (for HTML elements) or SVG class (for SVG elements).</td>
+	</tr>
+	<tr>
+		<td><code><b>setClass</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>name</i> )</nobr>
+		</code></td>
+
+		<td>-</td>
+
+		<td>Sets the element's CSS class (for HTML elements) or SVG class (for SVG elements).</td>
 	</tr>
 	<tr>
 		<td><code><b>setOpacity</b>(
