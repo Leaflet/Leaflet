@@ -32,38 +32,8 @@
 	    opera3d = 'OTransition' in doc.style,
 	    any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d || opera3d) && !phantomjs;
 
-
-	// PhantomJS has 'ontouchstart' in document.documentElement, but doesn't actually support touch.
-	// https://github.com/Leaflet/Leaflet/pull/1434#issuecomment-13843151
-
-	var touch = !window.L_NO_TOUCH && !phantomjs && (function () {
-
-		var startName = 'ontouchstart';
-
-		// IE10+ (We simulate these into touch* events in L.DomEvent and L.DomEvent.Pointer) or WebKit, etc.
-		if (pointer || (startName in doc)) {
-			return true;
-		}
-
-		// Firefox/Gecko
-		var div = document.createElement('div'),
-		    supported = false;
-
-		if (!div.setAttribute) {
-			return false;
-		}
-		div.setAttribute(startName, 'return;');
-
-		if (typeof div[startName] === 'function') {
-			supported = true;
-		}
-
-		div.removeAttribute(startName);
-		div = null;
-
-		return supported;
-	}());
-
+	var touch = !window.L_NO_TOUCH && !phantomjs && (pointer || 'ontouchstart' in window ||
+		(window.DocumentTouch && document instanceof window.DocumentTouch));
 
 	L.Browser = {
 		ie: ie,
