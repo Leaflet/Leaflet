@@ -40,10 +40,10 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_performZoom: function () {
 		var map = this._map,
-		    delta = this._delta,
+		    delta = this._delta * this._map.options.zoomDelta,
 		    zoom = map.getZoom();
 
-		map.stop(); // stop panning and fly animations if any
+		map._stop(); // stop panning and fly animations if any
 
 		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
 		var d2 = Math.ceil(4 * Math.log(2 / (1 + Math.exp(-Math.abs(delta / 200)))) / Math.LN2);

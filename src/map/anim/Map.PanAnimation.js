@@ -10,7 +10,7 @@ L.Map.include({
 		center = this._limitCenter(L.latLng(center), zoom, this.options.maxBounds);
 		options = options || {};
 
-		this.stop();
+		this._stop();
 
 		if (this._loaded && !options.reset && options !== true) {
 
