@@ -127,7 +127,8 @@ L.Layer.include({
 
 	_popupAnchor: function (layer) {
 		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0, 0];
-		return L.point(anchor).add(L.Popup.prototype.options.offset);
+		var offsetToAdd = layer._popup ? layer._popup.options.offset : L.Popup.prototype.options.offset;
+		return L.point(anchor).add(offsetToAdd);
 	},
 
 	_movePopup: function (e) {
