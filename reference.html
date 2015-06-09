@@ -1024,6 +1024,14 @@ var map = L.map('map', {
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
 	</tr>
+	<tr>
+		<td><code><b>wrapLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Returns a <code>LatLng</code> where <code>lat</code> and <code>lng</code> has been wrapped according to the map's CRS's <code><a href="#crs-wraplat">wrapLat</a></code> and <code><a href="#crs-wraplng">wrapLng</a></code> properties, if they are outside the CRS's bounds.</td>
+	</tr>
 </table>
 
 <h3 id="map-misc-methods">Other Methods</h3>
@@ -6310,6 +6318,14 @@ map.addControl(new MyControl());
 
 		<td><code><a href="#bounds">Bounds</a></code></td>
 		<td>Returns the projection's bounds scaled and transformed for the provided <code>zoom</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Returns a <code>LatLng</code> where <code>lat</code> and <code>lng</code> has been wrapped according to the CRS's <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outside the CRS's bounds.</td>
 	</tr>
 </table>
 
