@@ -413,15 +413,19 @@ L.GridLayer = L.Layer.extend({
 		if (!map) { return; }
 
 		if (center === undefined) { center = map.getCenter(); }
-		if (zoom === undefined) { zoom = Math.round(map.getZoom()); }
+		if (zoom === undefined) { zoom = map.getZoom(); }
+		var tileZoom = Math.round(zoom);
 
-		if (zoom > this.options.maxZoom ||
-			zoom < this.options.minZoom) { return; }
+		if (tileZoom > this.options.maxZoom ||
+			tileZoom < this.options.minZoom) { return; }
 
-		var pixelBounds = map.getPixelBounds(center, zoom),
-			tileRange = this._pxBoundsToTileRange(pixelBounds),
-			tileCenter = tileRange.getCenter(),
-			queue = [];
+		var scale = this._map.getZoomScale(zoom, tileZoom),
+		    pixelCenter = map.project(center, tileZoom).floor(),
+		    halfSize = map.getSize().divideBy(scale * 2),
+		    pixelBounds = new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize)),
+		    tileRange = this._pxBoundsToTileRange(pixelBounds),
+		    tileCenter = tileRange.getCenter(),
+		    queue = [];
 
 		for (var key in this._tiles) {
 			this._tiles[key].current = false;
@@ -431,7 +435,7 @@ L.GridLayer = L.Layer.extend({
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
 			for (var i = tileRange.min.x; i <= tileRange.max.x; i++) {
 				var coords = new L.Point(i, j);
-				coords.z = zoom;
+				coords.z = tileZoom;
 
 				if (!this._isValidTile(coords)) { continue; }
 
