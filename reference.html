@@ -6349,6 +6349,14 @@ map.addControl(new MyControl());
 		<td>Projects geographical coordinates into coordinates in units accepted for this CRS (e.g. meters for <code>EPSG:3857</code>, for passing it to WMS services).</td>
 	</tr>
 	<tr>
+		<td><code><b>unproject</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Given a projected coordinate returns the corresponding <code>LatLng</code>. The inverse of <code><a href="#crs-project">project</a></code>.</td>
+	</tr>
+	<tr>
 		<td><code><b>scale</b>(
 			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
 		</code></td>
