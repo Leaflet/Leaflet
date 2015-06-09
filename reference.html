@@ -6234,7 +6234,7 @@ map.addControl(new MyControl());
 
 <h3>Properties</h3>
 
-<table>
+<table data-id='projection'>
 	<tr>
 		<th>Property</th>
 		<th>Type</th>
@@ -6349,12 +6349,12 @@ map.addControl(new MyControl());
 		<td>Returns the scale used when transforming projected coordinates into pixel coordinates for a particular zoom. For example, it returns <code>256 * 2^zoom</code> for Mercator-based CRS.</td>
 	</tr>
 	<tr>
-		<td><code><b>getSize</b>(
+		<td><code><b>getProjectedBounds</b>(
 			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
 		</code></td>
 
-		<td><code><a href="#point">Point</a></code></td>
-		<td>Returns the size of the world in pixels for a particular zoom.</td>
+		<td><code><a href="#bounds">Bounds</a></code></td>
+		<td>Returns the projection's bounds scaled and transformed for the provided <code>zoom</code>.</td>
 	</tr>
 </table>
 
@@ -6384,6 +6384,21 @@ map.addControl(new MyControl());
 
 		<td><code>String</code></td>
 		<td>Standard code name of the CRS passed into WMS services (e.g. <code><span class="string">'EPSG:3857'</span></code>).</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapLat</b></code></td>
+		<td><code>Number[]</code></td>
+		<td>Latitude bounds, lower followed by upper, at which latitudes should wrap around, or <code>null</code> to disable wrapping</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapLng</b></code></td>
+		<td><code>Number[]</code></td>
+		<td>Longitude bounds, lower followed by upper, at which longitudes should wrap around, or <code>null</code> to disable wrapping</td>
+	</tr>
+	<tr>
+		<td><code><b>infinite</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> if the CRS bounds should be ignored; coordinates in an infinite CRS will not be wrapped</td>
 	</tr>
 </table>
 
