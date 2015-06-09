@@ -820,6 +820,14 @@ var map = L.map('map', {
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the projected pixel coordinates of the top left point of the map layer (useful in custom layer and overlay implementations).</td>
 	</tr>
+	<tr>
+		<td><code><b>getPixelWorldBounds</b>(
+			<nobr>&lt;Number&gt; <i>zoom?</i></nobr> )
+		</code></td>
+		<td><code><a href="#bounds">Bounds</a></code></td>
+		<td>Returns the world's bounds in pixel coordinates for zoom level <code>zoom</code>. If <code>zoom</code> is omitted, the map's
+			current zoom is used.</td>
+	</tr>
 </table>
 
 <h3 id="map-stuff-methods">Methods for Layers and Controls</h3>
