@@ -104,7 +104,11 @@ L.GridLayer = L.Layer.extend({
 
 		if (!this.options.updateWhenIdle) {
 			// update tiles on move, but not more often than once per given interval
-			events.move = L.Util.throttle(this._onMoveEnd, this.options.updateInterval, this);
+			if (!this._onMove) {
+				this._onMove = L.Util.throttle(this._onMoveEnd, this.options.updateInterval, this);
+			}
+
+			events.move = this._onMove;
 		}
 
 		if (this._zoomAnimated) {
