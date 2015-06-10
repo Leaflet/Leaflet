@@ -407,6 +407,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_onMoveEnd: function () {
+		if (!this._map) { return; }
+
 		this._update();
 		this._pruneTiles();
 	},
