@@ -24,8 +24,12 @@ L.Map.TouchZoom = L.Handler.extend({
 		var p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]);
 
-		this._pinchStartPoint = p1.add(p2)._divideBy(2);
-		this._startCenter = map.containerPointToLatLng(map.getSize()._divideBy(2));
+		this._centerPoint = map.getSize()._divideBy(2);
+		this._startLatLng = map.containerPointToLatLng(this._centerPoint);
+		if (map.options.touchZoom !== 'center') {
+			this._pinchStartLatLng = map.containerPointToLatLng(p1.add(p2)._divideBy(2));
+		}
+
 		this._startDist = p1.distanceTo(p2);
 		this._startZoom = map.getZoom();
 
@@ -47,20 +51,20 @@ L.Map.TouchZoom = L.Handler.extend({
 		var map = this._map,
 		    p1 = map.mouseEventToContainerPoint(e.touches[0]),
 		    p2 = map.mouseEventToContainerPoint(e.touches[1]),
-		    scale = p1.distanceTo(p2) / this._startDist,
-		    delta;
+		    scale = p1.distanceTo(p2) / this._startDist;
+
 
 		this._zoom = map.getScaleZoom(scale, this._startZoom);
 
 		if (map.options.touchZoom === 'center') {
-			delta = new L.Point(0, 0);
-			this._center = map.getCenter();
+			this._center = this._startLatLng;
+			if (scale === 1) { return; }
 		} else {
-			delta = p1._add(p2)._divideBy(2)._subtract(this._pinchStartPoint);
-			this._center = map.containerPointToLatLng(map.latLngToContainerPoint(this._startCenter).subtract(delta));
+			// Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
+			var delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
+			if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
+			this._center = map.unproject(map.project(this._pinchStartLatLng).subtract(delta));
 		}
-
-		if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
 
 		if (!map.options.bounceAtZoomLimits) {
 			if ((this._zoom <= map.getMinZoom() && scale < 1) ||
