@@ -6444,6 +6444,13 @@ map.addControl(new MyControl());
 		<th>Description</th>
 	</tr>
 	<tr>
+		<td><code><b>L.CRS.Earth</b></code></td>
+
+		<td>Serves as the base for CRS that are global such that they cover the earth. Can only be used as the base for
+		other CRS and cannot be used directly, since it does not have a <code>code</code>, <code>projection</code> or 
+		<code>transformation</code>.</td>
+	</tr>
+	<tr>
 		<td><code><b>L.CRS.EPSG3857</b></code></td>
 
 		<td>The most common CRS for online maps, used by almost all free and commercial tile providers. Uses Spherical Mercator projection. Set in by default in Map's <code>crs</code> option.</td>
