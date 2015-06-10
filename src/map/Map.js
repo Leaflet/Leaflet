@@ -331,41 +331,25 @@ L.Map = L.Evented.extend({
 
 	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
 		bounds = L.latLngBounds(bounds);
-
-		var zoom,
-		    maxZoom = this.getMaxZoom(),
-		    size = this.getSize(),
-		    snap = L.Browser.any3d ? this.options.zoomSnap : 1,
-
-		    nw = bounds.getNorthWest(),
-		    se = bounds.getSouthEast(),
-
-		    zoomNotFound = true,
-		    boundsSize;
-
 		padding = L.point(padding || [0, 0]);
 
-		if (snap <= 0) {
-			zoom = this.getZoom();
-			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding);
-			var scale = Math.min(size.x / boundsSize.x , size.y / boundsSize.y);
-			return this.getScaleZoom(scale, zoom);
+		var zoom = this.getZoom(),
+		    min = this.getMinZoom(),
+		    max = this.getMaxZoom(),
+		    nw = bounds.getNorthWest(),
+		    se = bounds.getSouthEast(),
+		    size = this.getSize(),
+		    boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding),
+		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
+
+		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
+		zoom = this.getScaleZoom(scale, zoom);
+
+		if (snap) {
+			zoom = inside ? Math.ceil(zoom / snap) * snap : Math.floor(zoom / snap) * snap;
 		}
 
-		zoom = this.getMinZoom() - (inside ? snap : 0);
-
-		do {
-			zoom += snap;
-			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding).floor();
-			zoomNotFound = !inside ? size.contains(boundsSize) : boundsSize.x < size.x || boundsSize.y < size.y;
-
-		} while (zoomNotFound && zoom <= maxZoom);
-
-		if (zoomNotFound && inside) {
-			return null;
-		}
-
-		return inside ? zoom : zoom - snap;
+		return Math.max(min, Math.min(max, zoom));
 	},
 
 	getSize: function () {
