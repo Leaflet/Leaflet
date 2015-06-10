@@ -5224,25 +5224,46 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><b>addListener</b>(
+		<td><code><b>on</b>(
 			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
-			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;String&gt; <i>types</i></nobr>,
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds a listener <code>fn</code> to the element's DOM event of the specified type. <code><span class="keyword">this</span></code> keyword inside the listener will point to <code>context</code>, or to the element if not specified.</td>
+		<td>Adds a listener <code>fn</code> to the element's DOM events. <code>types</code> is a space-separated list of DOM event types to listen to. <code><span class="keyword">this</span></code> keyword inside the listener will point to <code>context</code>, or to the element if not specified.</td>
 	</tr>
 	<tr>
-		<td><code><b>removeListener</b>(
+		<td><code><b>addListener</b>(
 			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
-			<nobr>&lt;String&gt; <i>type</i></nobr>,
+			<nobr>&lt;String&gt; <i>types</i></nobr>,
+			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
+			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Alias for <a href="#domevent-on">DomEvent.on</a>.</td>
+	</tr>
+	<tr>
+		<td><code><b>off</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>types</i></nobr>,
 			<nobr>&lt;Function&gt; <i>fn</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Removes an event listener from the element.</td>
+		<td>Removes the event listener <code>fn</code> from the element, for the DOM event types in <code>types</code> (a space-separated list). <i>fn</i> must be equal to the function currently listening to the event for it to be removed.</td>
+	</tr>
+	<tr>
+		<td><code><b>removeListener</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;String&gt; <i>types</i></nobr>,
+			<nobr>&lt;Function&gt; <i>fn</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="keyword">this</span></code></td>
+		<td>Alias for <a href="#domevent-off">DomEvent.off</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>stopPropagation</b>(
@@ -5345,6 +5366,20 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		<td>Creates an element with <code>tagName</code>, sets the <code>className</code>, and optionally appends it to <code>container</code> element.</td>
 	</tr>
 	<tr>
+		<td><code><b>remove</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
+		</code></td>
+		<td>-</td>
+		<td>Removes <code>el</code> from its parent element.</td>
+	</tr>
+	<tr>
+		<td><code><b>empty</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
+		</code></td>
+		<td>-</td>
+		<td>Removes all of <code>el</code>'s children elements from <code>el</code>.</td>
+	</tr>
+	<tr>
 		<td><code><b>disableTextSelection</b>()</code></td>
 		<td>-</td>
 		<td>Makes sure text cannot be selected, for example during dragging.</td>
@@ -5425,31 +5460,22 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		<td>Goes through the array of style names and returns the first name that is a valid style name for an element. If no such name is found, it returns <code><span class="literal">false</span></code>. Useful for vendor-prefixed styles like <code>transform</code>.</td>
 	</tr>
 	<tr>
-		<td><code><b>getTranslateString</b>(
-			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		<td><code><b>setTransform</b>(
+			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>offset</i></nobr>,
+			<nobr>&lt;Number&gt; <i>scale?</i> )</nobr>
 		</code></td>
-
-		<td><code>String</code></td>
-		<td>Returns a CSS transform string to move an element by the offset provided in the given point. Uses 3D translate on WebKit for hardware-accelerated transforms and 2D on other browsers.</td>
-	</tr>
-	<tr>
-		<td><code><b>getScaleString</b>(
-			<nobr>&lt;Number&gt; <i>scale</i></nobr>,
-			<nobr>&lt;<a href="#point">Point</a>&gt; <i>origin</i> )</nobr>
-		</code></td>
-
-		<td><code>String</code></td>
-		<td>Returns a CSS transform string to scale an element (with the given scale origin).</td>
+		<td>-</td>
+		<td>Resets the 3D CSS transform of <code>el</code> so it is translated by <code>offset</code> and optionally scaled by <code>scale</code>. Does not have an effect if the browser doesn't support 3D CSS transforms.</td>
 	</tr>
 	<tr>
 		<td><code><b>setPosition</b>(
 			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
-			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
-			<nobr>&lt;Boolean&gt; <i>disable3D?</i> )</nobr>
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
 		</code></td>
 
 		<td>-</td>
-		<td>Sets the position of an element to coordinates specified by <code>point</code>, using CSS translate or top/left positioning depending on the browser (used by Leaflet internally to position its layers). Forces top/left positioning if <code>disable3D</code> is <code><span class="literal">true</span></code>.</td>
+		<td>Sets the position of an element to coordinates specified by <code>point</code>, using CSS translate or top/left positioning depending on the browser (used by Leaflet internally to position its layers).</td>
 	</tr>
 	<tr>
 		<td><code><b>getPosition</b>(
