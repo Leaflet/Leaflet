@@ -820,6 +820,14 @@ var map = L.map('map', {
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the projected pixel coordinates of the top left point of the map layer (useful in custom layer and overlay implementations).</td>
 	</tr>
+	<tr>
+		<td><code><b>getPixelWorldBounds</b>(
+			<nobr>&lt;Number&gt; <i>zoom?</i></nobr> )
+		</code></td>
+		<td><code><a href="#bounds">Bounds</a></code></td>
+		<td>Returns the world's bounds in pixel coordinates for zoom level <code>zoom</code>. If <code>zoom</code> is omitted, the map's
+			current zoom is used.</td>
+	</tr>
 </table>
 
 <h3 id="map-stuff-methods">Methods for Layers and Controls</h3>
@@ -1015,6 +1023,23 @@ var map = L.map('map', {
 
 		<td><code><a href="#latlng">LatLng</a></code></td>
 		<td>Returns the geographical coordinates of the point the mouse clicked on given the click's event object.</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Returns a <code>LatLng</code> where <code>lat</code> and <code>lng</code> has been wrapped according to the map's CRS's <code><a href="#crs-wraplat">wrapLat</a></code> and <code><a href="#crs-wraplng">wrapLng</a></code> properties, if they are outside the CRS's bounds.</td>
+	</tr>
+	<tr>
+		<td><code><b>distance</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng1</i>,</nobr>
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng2</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Returns the distance in meters between two geographic coordinates in the map's CRS.</td>
 	</tr>
 </table>
 
@@ -6217,6 +6242,21 @@ map.addControl(new MyControl());
 
 <p>An object with methods for projecting geographical coordinates of the world onto a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_projection">Map projection</a>.</p>
 
+<h3>Properties</h3>
+
+<table data-id='projection'>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>bounds</b></code></td>
+		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
+		<td>The bounds where the projection is valid</td>
+	</tr>
+</table>
+
 <h3>Methods</h3>
 
 <table data-id='projection'>
@@ -6311,6 +6351,14 @@ map.addControl(new MyControl());
 		<td>Projects geographical coordinates into coordinates in units accepted for this CRS (e.g. meters for <code>EPSG:3857</code>, for passing it to WMS services).</td>
 	</tr>
 	<tr>
+		<td><code><b>unproject</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Given a projected coordinate returns the corresponding <code>LatLng</code>. The inverse of <code><a href="#crs-project">project</a></code>.</td>
+	</tr>
+	<tr>
 		<td><code><b>scale</b>(
 			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
 		</code></td>
@@ -6319,12 +6367,29 @@ map.addControl(new MyControl());
 		<td>Returns the scale used when transforming projected coordinates into pixel coordinates for a particular zoom. For example, it returns <code>256 * 2^zoom</code> for Mercator-based CRS.</td>
 	</tr>
 	<tr>
-		<td><code><b>getSize</b>(
+		<td><code><b>getProjectedBounds</b>(
 			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
 		</code></td>
 
-		<td><code><a href="#point">Point</a></code></td>
-		<td>Returns the size of the world in pixels for a particular zoom.</td>
+		<td><code><a href="#bounds">Bounds</a></code></td>
+		<td>Returns the projection's bounds scaled and transformed for the provided <code>zoom</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>distance</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng1</i>,</nobr>
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng2</i> )</nobr>
+		</code></td>
+
+		<td><code>Number</code></td>
+		<td>Returns the distance in meters between two geographic coordinates in this CRS.</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapLatLng</b>(
+			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#latlng">LatLng</a></code></td>
+		<td>Returns a <code>LatLng</code> where <code>lat</code> and <code>lng</code> has been wrapped according to the CRS's <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outside the CRS's bounds.</td>
 	</tr>
 </table>
 
@@ -6355,6 +6420,21 @@ map.addControl(new MyControl());
 		<td><code>String</code></td>
 		<td>Standard code name of the CRS passed into WMS services (e.g. <code><span class="string">'EPSG:3857'</span></code>).</td>
 	</tr>
+	<tr>
+		<td><code><b>wrapLat</b></code></td>
+		<td><code>Number[]</code></td>
+		<td>Latitude bounds, lower followed by upper, at which latitudes should wrap around, or <code>null</code> to disable wrapping</td>
+	</tr>
+	<tr>
+		<td><code><b>wrapLng</b></code></td>
+		<td><code>Number[]</code></td>
+		<td>Longitude bounds, lower followed by upper, at which longitudes should wrap around, or <code>null</code> to disable wrapping</td>
+	</tr>
+	<tr>
+		<td><code><b>infinite</b></code></td>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> if the CRS bounds should be ignored; coordinates in an infinite CRS will not be wrapped</td>
+	</tr>
 </table>
 
 <h3>Defined CRS</h3>
@@ -6365,6 +6445,13 @@ map.addControl(new MyControl());
 	<tr>
 		<th>Projection</th>
 		<th>Description</th>
+	</tr>
+	<tr>
+		<td><code><b>L.CRS.Earth</b></code></td>
+
+		<td>Serves as the base for CRS that are global such that they cover the earth. Can only be used as the base for
+		other CRS and cannot be used directly, since it does not have a <code>code</code>, <code>projection</code> or 
+		<code>transformation</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>L.CRS.EPSG3857</b></code></td>
