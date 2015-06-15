@@ -155,6 +155,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/knreise">Kultur og naturreise / Atle Frenvik Sveen</a>
 		</td>
 	</tr>
+        <tr>
+		<td>
+			<a href="https://github.com/sigdeletras/Leaflet.Spain.WMS">Leaflet.Spain.WMS</a>
+		</td><td>
+                        JavaScript file with a compilation of Web Map Services (WMS) for Spain.
+		</td><td>
+			<a href="https://github.com/sigdeletras">Patricio Soriano</a>
+		</td>
+	</tr>	
 </table>
 
 
