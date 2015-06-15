@@ -150,11 +150,21 @@ Ready-to-go basemaps, with little or no configuration at all.
 		<td>
 			<a href="https://github.com/knreise/L.TileLayer.Kartverket">L.TileLayer.Kartverket</a>
 		</td><td>
-                        Provides easy setup of the tile layers from <a href="http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/">Kartverket</a> (The Norwegian Mapping Authority)
+			Provides easy setup of the tile layers from <a href="http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/">Kartverket</a> (The Norwegian Mapping Authority)
 		</td><td>
 			<a href="https://github.com/knreise">Kultur og naturreise / Atle Frenvik Sveen</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sigdeletras/Leaflet.Spain.WMS">Leaflet.Spain.WMS</a>
+		</td><td>
+			Provides easy setup for several Web Map Services (WMS) layers for Spain (PNOA, IGN base, Catastro, etc), from Spanish mapping agencies.
+		</td><td>
+			<a href="https://github.com/sigdeletras">Patricio Soriano</a>
+		</td>
+	</tr>
+
 </table>
 
 
