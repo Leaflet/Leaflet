@@ -695,6 +695,15 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/kr1/">Kr1</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Flexberry/Leaflet-WFST">Leaflet-WFST</a>
+		</td><td>
+			<a href="http://www.opengeospatial.org/standards/wfs">WFS</a> client layer with transaction support
+		</td><td>
+			<a href="https://github.com/Flexberry/">Flexberry</a>
+		</td>
+	</tr>
 </table>
 
 
