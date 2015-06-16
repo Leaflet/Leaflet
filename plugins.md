@@ -1501,6 +1501,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 			<a href="https://github.com/chriscalip">Chris Calip</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ScanEx/Leaflet-IconLayers">Leaflet-IconLayers</a>
+		</td><td>
+			Leaflet control that displays base layers as small icons (<a href="http://scanex.github.io/Leaflet-IconLayers/examples">demo</a>).
+		</td><td>
+			<a href="https://github.com/zverev">Alexander Zverev</a>
+		</td>
+	</tr>
 </table>
 
 
