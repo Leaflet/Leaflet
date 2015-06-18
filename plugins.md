@@ -568,6 +568,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/Geolicious">Geolicious</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Flexberry/Leaflet-WFST">Leaflet-WFST</a>
+		</td><td>
+			<a href="http://www.opengeospatial.org/standards/wfs">WFS</a> client layer with transaction support
+		</td><td>
+			<a href="https://github.com/Flexberry/">Flexberry</a>
+		</td>
+	</tr>
 </table>
 
 
