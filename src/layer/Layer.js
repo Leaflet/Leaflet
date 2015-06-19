@@ -67,9 +67,6 @@ L.Layer = L.Evented.extend({
 L.Map.include({
 	addLayer: function (layer) {
 		var id = L.stamp(layer);
-
-		layer.addEventParent(this);
-
 		if (this._layers[id]) { return layer; }
 		this._layers[id] = layer;
 
@@ -86,8 +83,6 @@ L.Map.include({
 
 	removeLayer: function (layer) {
 		var id = L.stamp(layer);
-
-		layer.removeEventParent(this);
 
 		if (!this._layers[id]) { return this; }
 

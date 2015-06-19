@@ -601,6 +601,7 @@ L.Map = L.Evented.extend({
 		if (!L.DomEvent) { return; }
 
 		this._targets = {};
+		this._targets[L.stamp(this._container)] = this;
 
 		var onOff = remove ? 'off' : 'on';
 
@@ -623,26 +624,27 @@ L.Map = L.Evented.extend({
 		this._container.scrollLeft = 0;
 	},
 
-	_findEventTarget: function (src) {
+	_findEventTargets: function (src, bubble) {
+		var targets = [], target;
 		while (src) {
-			var target = this._targets[L.stamp(src)];
+			target = this._targets[L.stamp(src)];
 			if (target) {
-				return target;
+				targets.push(target);
+				if (!bubble) { break; }
 			}
 			if (src === this._container) {
 				break;
 			}
 			src = src.parentNode;
 		}
-		return null;
+		return targets;
 	},
 
 	_handleDOMEvent: function (e) {
 		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
 
-		// find the layer the event is propagating from
-		var target = this._findEventTarget(e.target || e.srcElement),
-			type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
+		// find the layer the event is propagating from and its parents
+		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
 		if (e.type === 'click') {
 			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
@@ -651,39 +653,48 @@ L.Map = L.Evented.extend({
 			this._handleDOMEvent(synth);
 		}
 
-		// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
-		if (!target && (type === 'mouseover' || type === 'mouseout') &&
-		                !L.DomEvent._checkMouse(this._container, e)) { return; }
-
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
 			L.DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
-		this._fireDOMEvent(target || this, e, type);
+		this._fireDOMEvent(e, type);
 	},
 
-	_fireDOMEvent: function (target, e, type) {
-		if (!target.listens(type, true)) { return; }
+	_fireDOMEvent: function (e, type) {
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
+		var targets = this._findEventTargets(e.target || e.srcElement, !(e.type === 'mouseover' || e.type === 'mouseout'));
+
+		if (!targets.length) {
+			targets = [this];
+
+			// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
+			if ((type === 'mouseover' || type === 'mouseout') &&
+			                !L.DomEvent._checkMouse(this._container, e)) { return; }
+		}
+
+		var target = targets[0];
 
 		// prevents firing click after you just dragged an object
 		if (e.type === 'click' && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
 				originalEvent: e
-			},
-			propagate = (type !== 'mouseover' && type !== 'mouseout');
+			};
 		if (e.type !== 'keypress') {
 			data.containerPoint = target instanceof L.Marker ?
 					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = this.layerPointToLatLng(data.layerPoint);
 		}
-		target.fire(type, data, propagate);
+		for (var i = 0; i < targets.length; i++) {
+			if (data.originalEvent._stopped) { break; }
+			if (!targets[i].listens(type, true)) { continue; }
+			targets[i].fire(type, data);
+		}
 	},
 
 	_draggableMoved: function (obj) {
