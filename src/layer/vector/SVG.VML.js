@@ -46,7 +46,10 @@ L.SVG.include(!L.Browser.vml ? {} : {
 	_addPath: function (layer) {
 		var container = layer._container;
 		this._container.appendChild(container);
-		layer.addInteractiveTarget(container);
+
+		if (layer.options.interactive) {
+			layer.addInteractiveTarget(container);
+		}
 	},
 
 	_removePath: function (layer) {
