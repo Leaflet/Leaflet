@@ -17,8 +17,11 @@ L.GridLayer = L.Layer.extend({
 		zIndex: null,
 		bounds: null,
 
-		minZoom: 0
+		minZoom: 0,
 		// maxZoom: <Number>
+
+		// edgeBuffer: the number of tiles to load beyond those required for the current viewport
+		edgeBuffer: 0
 	},
 
 	initialize: function (options) {
@@ -436,6 +439,12 @@ L.GridLayer = L.Layer.extend({
 			tileZoom < this.options.minZoom) { return; }
 
 		var pixelBounds = this._getTiledPixelBounds(center, zoom, tileZoom);
+
+		// add buffer so that we cache some off-screen tiles.
+		if (this.options.edgeBuffer > 0) {
+			var pixelEdgeBuffer = this.options.edgeBuffer * this._getTileSize();
+			pixelBounds = new L.Bounds(pixelBounds.min.subtract([pixelEdgeBuffer, pixelEdgeBuffer]), pixelBounds.max.add([pixelEdgeBuffer, pixelEdgeBuffer]));
+		}
 
 		var tileRange = this._pxBoundsToTileRange(pixelBounds),
 			tileCenter = tileRange.getCenter(),
