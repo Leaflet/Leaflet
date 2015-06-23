@@ -113,6 +113,17 @@ title: Using GeoJSON with Leaflet
 
 <pre><code>L.geoJson(geojsonFeature).addTo(map);</code></pre>
 
+<p>GeoJSON objects may also be passed as an array of valid GeoJSON objects.</p>
+
+<pre><code>var myLines = [{
+	"type": "LineString",
+	"coordinates": [[-100, 40], [-105, 45], [-110, 55]]
+}, {
+	"type": "LineString",
+	"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+}];
+</code></pre>
+
 <p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to it later.</p>
 
 <pre><code>var myLayer = L.geoJson().addTo(map);
