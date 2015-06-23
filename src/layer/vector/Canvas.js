@@ -114,6 +114,7 @@ L.Canvas = L.Renderer.extend({
 			this._updatePolys(color, this._fills[color]);
 		}
 
+		this._fills = {};
 		this._deferredUpdateRequest = null;
 	},
 
