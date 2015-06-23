@@ -165,15 +165,19 @@ L.Polyline = L.Path.extend({
 
 	// clip polyline by renderer bounds so that we have less to render for performance
 	_clipPoints: function () {
+		var bounds = this._renderer._bounds;
+
+		this._parts = [];
+		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+			return;
+		}
+
 		if (this.options.noClip) {
 			this._parts = this._rings;
 			return;
 		}
 
-		this._parts = [];
-
 		var parts = this._parts,
-		    bounds = this._renderer._bounds,
 		    i, j, k, len, len2, segment, points;
 
 		for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
