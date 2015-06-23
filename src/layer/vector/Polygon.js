@@ -65,11 +65,6 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	_clipPoints: function () {
-		if (this.options.noClip) {
-			this._parts = this._rings;
-			return;
-		}
-
 		// polygons need a different clipping algorithm so we redefine that
 
 		var bounds = this._renderer._bounds,
@@ -81,6 +76,11 @@ L.Polygon = L.Polyline.extend({
 
 		this._parts = [];
 		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+			return;
+		}
+
+		if (this.options.noClip) {
+			this._parts = this._rings;
 			return;
 		}
 
