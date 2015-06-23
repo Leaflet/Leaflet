@@ -26,27 +26,9 @@ L.Canvas = L.Renderer.extend({
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
+		this._fills = {};
+
 		L.Renderer.prototype._update.call(this);
-
-		var b = this._bounds,
-		    container = this._container,
-		    size = b.getSize(),
-		    m = L.Browser.retina ? 2 : 1;
-
-		L.DomUtil.setPosition(container, b.min);
-
-		// set canvas size (also clearing it); use double size on retina
-		container.width = m * size.x;
-		container.height = m * size.y;
-		container.style.width = size.x + 'px';
-		container.style.height = size.y + 'px';
-
-		if (L.Browser.retina) {
-			this._ctx.scale(2, 2);
-		}
-
-		// translate so we use the same path coordinates after canvas element moves
-		this._ctx.translate(-b.min.x, -b.min.y);
 	},
 
 	_initPath: function (layer) {
@@ -107,30 +89,68 @@ L.Canvas = L.Renderer.extend({
 		}
 	},
 
+	_deferredUpdate: function () {
+		var container = this._container,
+			b = this._bounds,
+		    size = b.getSize(),
+		    m = L.Browser.retina ? 2 : 1;
+
+		// set canvas size (also clearing it); use double size on retina
+		container.width = m * size.x;
+		container.height = m * size.y;
+		container.style.width = size.x + 'px';
+		container.style.height = size.y + 'px';
+
+		L.DomUtil.setPosition(this._container, b.min);
+
+		if (L.Browser.retina) {
+			this._ctx.scale(2, 2);
+		}
+
+		// translate so we use the same path coordinates after canvas element moves
+		this._ctx.translate(-b.min.x, -b.min.y);
+
+		for (var color in this._fills) {
+			this._updatePolys(color, this._fills[color]);
+		}
+
+		this._deferredUpdateRequest = null;
+	},
+
+	_updatePolys: function (color, polys) {
+		var ctx = this._ctx;
+		var polyI, polyLen = polys.length;
+		var parts, partsI, partsLen, partI, partLen, p;
+
+		ctx.fillStyle = color;
+
+		for (polyI = 0; polyI < polyLen; polyI++) {
+			ctx.beginPath();
+			parts = polys[polyI]._parts;
+			partsLen = parts.length;
+			for (partsI = 0; partsI < partsLen; partsI++) {
+				for (partI = 0, partLen = parts[partsI].length; partI < partLen; partI++) {
+					p = parts[partsI][partI];
+					ctx[partI ? 'lineTo' : 'moveTo'](p.x, p.y);
+				}
+				ctx.closePath();
+			}
+			ctx.fill();
+		}
+	},
+
 	_updatePoly: function (layer, closed) {
 
-		var i, j, len2, p,
-		    parts = layer._parts,
-		    len = parts.length,
-		    ctx = this._ctx;
+		var parts = layer._parts,
+		    len = parts.length;
 
 		if (!len) { return; }
 
-		ctx.beginPath();
+		var color = layer.options.fillColor;
+		if (!this._fills[color]) { this._fills[color] = []; }
+		this._fills[color].push(layer);
 
-		for (i = 0; i < len; i++) {
-			for (j = 0, len2 = parts[i].length; j < len2; j++) {
-				p = parts[i][j];
-				ctx[j ? 'lineTo' : 'moveTo'](p.x, p.y);
-			}
-			if (closed) {
-				ctx.closePath();
-			}
-		}
-
-		this._fillStroke(ctx, layer);
-
-		// TODO optimization: 1 fill/stroke for all features with equal style instead of 1 for each feature
+		this._deferredUpdateRequest = this._deferredUpdateRequest || L.Util.requestAnimFrame(this._deferredUpdate, this);
 	},
 
 	_updateCircle: function (layer) {
