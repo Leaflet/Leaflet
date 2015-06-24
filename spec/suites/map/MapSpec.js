@@ -693,6 +693,28 @@ describe("Map", function () {
 			expect(mapSpy.calledOnce).to.be.ok();
 		});
 
+		it("preclick is fired before click on marker and map", function () {
+			var called = 0;
+			var layer = new L.Marker([1, 2]).addTo(map);
+			layer.on("preclick", function (e) {
+				expect(called++).to.eql(0);
+				expect(e.latlng).to.ok();
+			});
+			layer.on("click", function (e) {
+				expect(called++).to.eql(2);
+				expect(e.latlng).to.ok();
+			});
+			map.on("preclick", function (e) {
+				expect(called++).to.eql(1);
+				expect(e.latlng).to.ok();
+			});
+			map.on("click", function (e) {
+				expect(called++).to.eql(3);
+				expect(e.latlng).to.ok();
+			});
+			happen.click(layer._icon);
+		});
+
 	});
 
 });
