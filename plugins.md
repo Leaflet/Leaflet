@@ -1309,6 +1309,15 @@ Most data is two-dimensional (latitude and longitude), but some data has more di
 			<a href="https://github.com/MrMufflon">Felix Bache</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/iosphere/Leaflet.hotline">Leaflet.hotline</a>
+		</td><td>
+			A Leaflet plugin for drawing gradients along polylines.
+		</td><td>
+			<a href="https://github.com/iosphere">iosphere</a>
+		</td>
+	</tr>
 </table>
 
 
