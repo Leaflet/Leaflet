@@ -1,0 +1,37 @@
+<html>
+	<head>
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<link rel="stylesheet" href="../css/screen.css" />
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	</head>
+	<body>
+
+		<div id="map"></div>
+
+		<script>
+
+		// Modify the behaviour of the default tilelayer, running the previously
+		//   defined methid inside the newly defined method
+		L.TileLayer.include(function(previous) { return {
+			getTileUrl: function (coords) {
+				var url = previous.getTileUrl.call(this, coords);
+				console.log('The URL for the tile with coords ', coords, 'is', url);
+				return url;
+			}
+		}});
+
+
+		var map = L.map('map', {
+			center: [39.84, -96.591],
+			zoom: 4
+		});
+
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		</script>
+
+	</body>
+</html>
