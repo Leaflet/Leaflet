@@ -77,7 +77,11 @@ L.Class.extend = function (props) {
 
 // method for adding properties to prototype
 L.Class.include = function (props) {
-	L.extend(this.prototype, props);
+	if (typeof props === 'function') {
+		L.extend(this.prototype, props(L.extend({}, this.prototype)));
+	} else {
+		L.extend(this.prototype, props);
+	}
 };
 
 // merge new default options to the Class
