@@ -356,66 +356,6 @@ td {
   display: none;
 }
 
-/*
-#toc-copy {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 3em;
-  height: 3em;
-}
-
-#toc-copy:before {
-  content: '';
-  width: 1.5em;
-  height: 1em;
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -.5em -.75em;
-  font-size: .75em;
-  box-shadow: inset 0 3px white, inset 0 5px black;
-  box-sizing: border-box;
-}
-
-#toc-copy:hover:before {
-  display: none;
-}
-
-#toc-copy:hover:after {
-  content: '';
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-  background-color: rgba(255, 255, 255, 0.85);
-  pointer-events: none;
-}
-
-#toc-copy:hover div, #toc-copy > div:hover {
-  display: block;
-}
-
-#toc-copy:hover {
-  width: auto;
-  height: auto;
-  padding: 2em;
-}
-
-#toc-copy > div {
-  display: none;
-  float: none;
-  width: auto;
-  padding: 0;
-  margin: 0;
-  border: 0;
-}
-
-*/
-
 @media screen and (min-width: 1350px) and (min-height: 600px) {
   #toc-copy {
     position: fixed;
@@ -427,6 +367,15 @@ td {
     display: block;
     opacity: 0;
     transition: opacity .25s ease;
+  }
+
+  #toc-copy:before {
+    content: 'Table of contents';
+    margin: -.25em 0 1em;
+    display: block;
+    font-size: 75%;
+    text-transform: uppercase;
+    font-weight: 300;
   }
 
   .scrolled #toc-copy {

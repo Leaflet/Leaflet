@@ -12,30 +12,29 @@ if (toc) {
 
   for (var i = 0; i < menus.length; i++) {
     menus[i].addEventListener('mouseover', function() {
-      console.log('over');
       this.previousElementSibling.classList.add('hover')
     });
 
     menus[i].addEventListener('mouseout', function() {
-      console.log('out');
       this.previousElementSibling.classList.remove('hover')
     });
   }
-}
 
-var scrollPos = function scrollPos () {
-  var scroll = window.scrollY;
+  var scrollPos = function scrollPos () {
+    var scroll = window.scrollY;
 
-  if (scroll >= 810) {
-    document.body.classList.add('scrolled');
-  } else {
-    document.body.classList.remove('scrolled');
+    if (scroll >= (toc.offsetHeight + toc.offsetTop)) {
+      document.body.classList.add('scrolled');
+    } else {
+      document.body.classList.remove('scrolled');
+    }
   }
+
+  scrollPos();
+
+  window.addEventListener('scroll', function(e) {
+    scrollPos();
+  });
 }
 
-scrollPos();
-
-window.addEventListener('scroll', function(e) {
-  scrollPos();
-});
 
