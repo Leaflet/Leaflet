@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400,400italic,700,900);
+@import url(//fonts.googleapis.com/css?family=Roboto:300,400,400italic,700);
 
 html, body {
   min-width: 840px;
@@ -16,7 +16,7 @@ html, body, input, select, button, textarea, table {
   background: white;
   position: relative;
   z-index: 1;
-  padding: 2em 3em;
+  padding: 1em 2em 2em;
   max-width: 50em;
   width: auto;
 }
@@ -36,14 +36,31 @@ h1 a {
   margin-bottom: 8px;
   text-decoration: none;
   -webkit-transition: 0.8s all;
-  -webkit-animation-duration: 35s;
-  /*-webkit-animation-delay: 15s;*/
-  -webkit-animation-name: autumn;
+  -webkit-animation-duration: 60s;
+  -webkit-animation-delay: 15s;
+  -webkit-animation-name: rainbow;
   -webkit-animation-iteration-count: infinite;
   -webkit-animation-direction: alternate;
+  transition: 0.8s all;
+  animation-duration: 60s;
+  animation-delay: 15s;
+  animation-name: rainbow;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
-@-webkit-keyframes autumn {
+@-webkit-keyframes rainbow {
+  from {
+    -webkit-filter: none;
+  }
+
+  to {
+    -webkit-filter: hue-rotate(-360deg) saturate(1.5);
+  }
+}
+
+
+@keyframes rainbow {
   from {
     -webkit-filter: none;
   }
@@ -102,6 +119,22 @@ h2:target {
   position: absolute;
 }
 
+.api-page h2[id]:before,
+.plugins-page h2[id]:before {
+  height: 30px;
+  line-height: 30px;
+  background-position: 0px 10px;
+}
+
+@media (-webkit-min-device-pixel-ratio: 1.25), (min-resolution: 120dpi) {
+  .api-page h2[id]:before,
+  .plugins-page h2[id]:before,
+  .plugins-page h3[id]:before,
+  .api-page tr[id] td:first-child:before {
+    background-image: url(../images/sprite.svg);
+  }
+}
+
 .plugins-page h3[id]:before {
   margin: 0px 5px 0px -23px;
 }
@@ -121,11 +154,18 @@ h2:target {
 }
 
 .api-page h2 {
-  margin-top: 2.5em;
+  margin-top: 1.5em;
+  padding-top: 1em;
+}
+
+.api-page h3 {
+  margin-top: .5em;
+  padding-top: 1em;
 }
 
 h3 {
   margin-top: 1.5em;
+  font-size: 1.333em;
 }
 
 h4 {
@@ -138,8 +178,8 @@ h4 {
 
 h3.alt {
   color: #999;
-  font-weight: 100;
-  font-size: 1.75em;
+  font-weight: 300;
+  font-size: 1.5em;
   line-height: 1.25em;
 }
 
@@ -159,9 +199,8 @@ h3.alt a:hover {
 
 .container pre code {
   padding: .75em 1em;
-  border: 1px solid #ccc;
-  background: #fafafa;
-  color: #444;
+  background: #3E474C;
+  color: #f8f8f2;
   border-radius: 5px;
 }
 
@@ -175,6 +214,8 @@ pre code a:hover {
 
 p code, td:last-child code {
   color: #666;
+  background: transparent;
+  padding: 0;
 }
 
 p, ul, ol, table {
@@ -204,7 +245,7 @@ td {
 }
 
 .nav {
-  margin: 2em 0;
+  margin: 1em 0 2em;
   padding: 0;
   list-style: none;
   font-size: 1.025em;
@@ -217,14 +258,19 @@ td {
 
 .nav li a, .nav li span {
   display: block;
-  padding: .5em .75em;
+  padding: .5em 0;
+  margin-right: .5em;
   border-bottom: 2px solid transparent;
-  padding-left: 0;
+}
+
+.nav li:nth-last-child(4) ~ li {
+  float: right;
+  padding: .25em;
 }
 
 .nav a {
   text-decoration: none;
-  color: #000;
+  color: #555;
   background-color: rgba(0, 0, 0, 0);
   background-repeat: no-repeat;
   -webkit-transition: 0.08s all;
@@ -238,6 +284,7 @@ td {
 
 .nav li a:hover, .nav li a:focus, .nav li a.active {
   color: black;
+  border-bottom-color: #aaa;
 }
 
 .nav li a.github-link,
@@ -298,23 +345,152 @@ td {
   padding-right: 14px;
 }
 
-@media screen and (min-width: 1440px) {
-  #toc {
+#toc .span-3 {
+  margin: 0;
+  padding-right: 3em;
+  width: 17.75%;
+  box-sizing: border-box;
+}
+
+#toc .span-3.last {
+  padding-right: 0;
+}
+
+#toc-copy {
+  display: none;
+}
+
+/*
+#toc-copy {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 3em;
+  height: 3em;
+}
+
+#toc-copy:before {
+  content: '';
+  width: 1.5em;
+  height: 1em;
+  border-top: 2px solid black;
+  border-bottom: 2px solid black;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -.5em -.75em;
+  font-size: .75em;
+  box-shadow: inset 0 3px white, inset 0 5px black;
+  box-sizing: border-box;
+}
+
+#toc-copy:hover:before {
+  display: none;
+}
+
+#toc-copy:hover:after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+
+#toc-copy:hover div, #toc-copy > div:hover {
+  display: block;
+}
+
+#toc-copy:hover {
+  width: auto;
+  height: auto;
+  padding: 2em;
+}
+
+#toc-copy > div {
+  display: none;
+  float: none;
+  width: auto;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+
+*/
+
+@media screen and (min-width: 1350px) and (min-height: 600px) {
+  #toc-copy {
     position: fixed;
     top: 0;
     left: 0;
-    padding: 1em;
-    overflow-x: hidden;
-    overflow-y: scroll;
-    bottom: 0;
+    padding: 2em;
+    width: auto;
+    height: auto;
+    display: block;
+    opacity: 0;
+    transition: opacity .25s ease;
   }
 
-  #toc > div {
-    float: none;
-    width: auto;
-    padding: 0;
-    margin: 0;
+  .scrolled #toc-copy {
+    opacity: 1;
+  }
+
+  #toc-copy div {
     border: 0;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    float: none;
+  }
+
+  #toc-copy h4 {
+    padding-right: 5em;
+    margin: 0;
+    padding-bottom: .333em;
+  }
+
+  #toc-copy ul {
+    display: none;
+    position: absolute;
+    left: 100%;
+    margin: -5.333em 0 0 -4.5em;
+    padding: 3em 6em 3em 0;
+    list-style: none;
+  }
+
+  #toc-copy ul li {
+    white-space: nowrap;
+  }
+
+  #toc-copy ul li a {
+    position: relative;
+    padding: .25em .5em 0;
+    font-size: 1.125em;
+    z-index: 10;
+  }
+
+  #toc-copy h4:hover + ul,
+  #toc-copy ul:hover {
+    display: block;
+  }
+
+  #toc-copy h4:hover + ul:before,
+  #toc-copy ul:hover:before {
+    content: '';
+    position: absolute;
+    top: 3.775em;
+    right: 100%;
+    margin-right: .75em;
+    width: 2em;
+    height: 1em;
+    border-top: 2px solid #eee;
+  }
+
+  #toc-copy h4:hover, #toc-copy h4.hover {
+    color: black;
+    cursor: pointer;
   }
 }
 
@@ -398,6 +574,19 @@ table td code b {
   font-weight: normal;
 }
 
+table tbody tr {
+  background-color: #fafafa;
+}
+
+table tbody tr:nth-child(odd) {
+  background-color: whitesmoke;
+}
+
+th, td {
+  border: 0;
+  padding: 1em;
+}
+
 .width250 {
   width: 250px;
 }
@@ -440,10 +629,10 @@ table.factory-table td, table.factory-table th {
 }
 
 .social-buttons {
-  margin: 18px 0 0;
-  padding: 6px 0 2px 8px;
+  margin: 0;
+  padding: 0;
   position: absolute;
-  top: 2em;
+  top: 2.5em;
   right: 3em;
 }
 
