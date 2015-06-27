@@ -1,22 +1,26 @@
 
 var tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
-tocCopy.innerHTML = document.querySelector('.api-page #toc').innerHTML;
 
-document.getElementsByClassName('container')[0].appendChild(tocCopy);
+var toc = document.querySelector('.api-page #toc');
 
-var menus = document.querySelectorAll('#toc-copy ul');
+if (toc) {
+  tocCopy.innerHTML = toc.innerHTML;
+  document.getElementsByClassName('container')[0].appendChild(tocCopy);
 
-for (var i = 0; i < menus.length; i++) {
-  menus[i].addEventListener('mouseover', function() {
-    console.log('over');
-    this.previousElementSibling.classList.add('hover')
-  });
+  var menus = document.querySelectorAll('#toc-copy ul');
 
-  menus[i].addEventListener('mouseout', function() {
-    console.log('out');
-    this.previousElementSibling.classList.remove('hover')
-  });
+  for (var i = 0; i < menus.length; i++) {
+    menus[i].addEventListener('mouseover', function() {
+      console.log('over');
+      this.previousElementSibling.classList.add('hover')
+    });
+
+    menus[i].addEventListener('mouseout', function() {
+      console.log('out');
+      this.previousElementSibling.classList.remove('hover')
+    });
+  }
 }
 
 var scrollPos = function scrollPos () {

@@ -1,9 +1,5 @@
 @import url(//fonts.googleapis.com/css?family=Roboto:300,400,400italic,700);
 
-html, body {
-  min-width: 840px;
-}
-
 html, body, input, select, button, textarea, table {
   font-size: 100%;
   font-family: 'Roboto', 'Open Sans', 'Helvetica Neue', sans-serif;
@@ -348,7 +344,7 @@ td {
 #toc .span-3 {
   margin: 0;
   padding-right: 3em;
-  width: 17.75%;
+  width: 16.825%;
   box-sizing: border-box;
 }
 
@@ -779,5 +775,193 @@ tr:target {
 
   100% {
     background: white;
+  }
+}
+
+
+@media screen and (max-width: 767px) {
+  .social-buttons {
+    position: static;
+    text-align: center;
+    padding: .5em;
+  }
+
+  h3.alt {
+    text-align: center;
+    margin-top: 0;
+  }
+
+  h1 a {
+    max-width: 100%;
+    background-size: contain;
+    margin: auto;
+    width: 180px;
+    padding-top: 60px;
+  }
+
+  .nav li {
+    float: left;
+    width: 50%;
+    box-sizing: border-box;
+    padding: 0 .5em;
+    margin: 0 0 .5em;
+  }
+
+  .nav li a, .nav li span {
+    border-bottom-color: #eee;
+    margin: 0;
+    padding: .25em 0;
+  }
+
+  .nav li span {
+    border-bottom-color: inherit;
+  }
+
+  .nav li:nth-last-child(4) + li {
+    clear: both;
+  }
+
+  .nav li:nth-last-child(4) ~ li {
+    float: left;
+    width: auto;
+    padding: .5em .333em;
+  }
+
+  .nav li a.github-link,
+  .nav li a.twitter-link,
+  .nav li a.forum-link {
+    float: none;
+    padding: .5em .5em .5em 2em;
+    border: 0;
+  }
+
+  #toc .colborder {
+    padding: 0;
+  }
+
+  .colborder {
+    margin: 0;
+    border: 0;
+  }
+
+  #toc .span-3, #toc .span-4, #toc .span-5 {
+    width: 50%;
+    float: none;
+    display: inline-block;
+    margin: 0;
+    padding-right: .5em;
+    margin-right: -.25em;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+
+  #toc .span-3.last {
+    clear: both;
+  }
+
+  .container pre code {
+    word-wrap: break-word;
+    white-space: pre;
+  }
+
+  .nav {
+    margin: 1em -.5em;
+  }
+
+  table.plugins tbody tr {
+    display: block;
+    padding-bottom: 1em;
+  }
+
+  table.plugins tbody tr td {
+    white-space: normal;
+    display: inline-block;
+    padding-bottom: 0;
+  }
+
+  table.plugins tr:first-child {
+    padding-bottom: 0;
+  }
+
+  table.plugins tr:first-child th {
+    display: block;
+  }
+
+  table.plugins tr:first-child th ~ th {
+    display: none;
+  }
+
+  table.plugins td:first-child {
+    display: block;
+    white-space: normal;
+  }
+
+  .api-page table tbody tr {
+    display: block;
+  }
+
+  .api-page table tbody tr th,
+  .api-page table tbody tr td {
+    display: inline-block;
+    background-color: transparent;
+    width: auto;
+  }
+
+  .api-page table tr:first-child th ~ th {
+    display: none;
+  }
+
+  .api-page table tbody tr th:nth-child(2),
+  .api-page table tbody tr th:nth-child(3) {
+    display: inline-block;
+  }
+
+  .api-page table tr th:last-child {
+    display: none !important;
+  }
+
+  .api-page table tbody tr td:last-child {
+    display: block;
+    border-top: thin dashed #ddd;
+    padding: 1em;
+  }
+
+  .api-page table tbody tr td:last-child:before {
+    content: 'Description';
+    display: block;
+    text-transform: uppercase;
+    font-weight: 700;
+    font-size: 90%;
+    margin-bottom: .75em;
+  }
+
+  td code {
+    word-break: break-word;
+  }
+}
+
+@media screen and (max-width: 54em) {
+  #features {
+    width: auto;
+    float: none;
+  }
+
+  #features .span-6, #features .span-9, #features .span-5 {
+    float: none;
+    width: auto;
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    max-width: 16em;
+    padding-right: 1em;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .example-img {
+    float: none;
+    display: block;
+    margin: 0 0 -1em;
+    border: 0;
   }
 }
