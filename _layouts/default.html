@@ -21,7 +21,7 @@
 
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ post.root }}{% endif %}{% endcapture %}
 
-	<link rel="icon" type="image/png" href="{{ root }}docs/images/favicon.png" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ root }}docs/images/favicon.ico" />
 
 	<link href="http://leafletjs.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
 
@@ -137,7 +137,7 @@
 
 		<div class="footer">
 			<hr />
-			<p class="quiet">&copy; 2010&ndash;2014 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010&ndash;2011 <a href="http://cloudmade.com">CloudMade</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+			<p class="quiet">&copy; 2010&ndash;2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>, 2010&ndash;2011 <a href="http://cloudmade.com">CloudMade</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 		</div>
 	</div>
 
@@ -214,5 +214,7 @@
 			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(uv, s);
 		})();
 	</script>-->
+
+  <script type="text/javascript" src="{{ root }}docs/js/docs.js"></script>
 </body>
 </html>
