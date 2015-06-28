@@ -20,6 +20,20 @@ if (toc) {
     });
   }
 
+  var labels = document.querySelectorAll('#toc-copy h4');
+
+  for (var i = 0; i < labels.length; i++) {
+    labels[i].addEventListener('click', function() {
+      this.classList.toggle('active')
+    });
+  }
+
+  tocCopy.addEventListener('click', function(e) {
+    if (e.target.nodeName != 'H4') {
+      this.classList.toggle('active');
+    }
+  });
+
   var scrollPos = function scrollPos () {
     var scroll = window.scrollY;
 
@@ -36,5 +50,3 @@ if (toc) {
     scrollPos();
   });
 }
-
-
