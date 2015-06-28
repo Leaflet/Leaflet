@@ -177,6 +177,8 @@ h3.alt {
   font-weight: 300;
   font-size: 1.5em;
   line-height: 1.25em;
+  margin-top: 0.5em;
+  padding-top: 0;
 }
 
 h3.alt a {
