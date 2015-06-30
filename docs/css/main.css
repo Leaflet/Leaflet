@@ -48,12 +48,18 @@ hr {
 table {
 	width: 100%;
 	border-collapse: collapse;
+	margin-bottom: 2em;
 }
 
 th, td {
 	text-align: left;
 	border: 0;
-	padding: 1em;
+	border-bottom: 1px solid #eee;
+	padding: 0.5em 1em 0.5em 5px;
+}
+
+table th {
+	background: #eee;
 }
 
 table td {
@@ -75,14 +81,6 @@ table td code i {
 table td code b {
 	color: black;
 	font-weight: normal;
-}
-
-table tbody tr {
-	background-color: #fafafa;
-}
-
-table tbody tr:nth-child(odd) {
-	background-color: #f5f5f5;
 }
 
 
@@ -111,7 +109,7 @@ h3 {
 }
 h4 {
 	color: #999;
-	margin: 1em 0 0.5em;
+	margin: 1em 0 1em;
 }
 
 
@@ -414,7 +412,6 @@ table.plugins td:first-child a {
 }
 
 .api-page .toc-col.map-col {
-	padding-right: 1.5em;
 	border-right: thin solid #eee;
 }
 
@@ -702,8 +699,8 @@ table.plugins td:first-child a {
 	font-size: 14px;
 }
 
-.api-page h4 {
-	margin-top: 20px;
+.api-page p {
+	margin-top: 0;
 }
 
 tr:target {
@@ -926,4 +923,27 @@ tr:target {
 
 	.api-page h2[id] { text-indent: 24px; }
 	.api-page h2[id]:before { margin-left: -28px; }
+}
+
+.width250 {
+	width: 250px;
+}
+.width200 {
+	width: 200px;
+}
+.width300 {
+	width: 300px;
+}
+.width100 {
+	width: 100px;
+}
+.width140 {
+	width: 140px;
+}
+.minwidth {
+	width: 1px;
+}
+
+.download-page table td a {
+	white-space: nowrap;
 }

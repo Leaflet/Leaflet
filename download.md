@@ -1,6 +1,7 @@
 ---
 layout: v2
 title: Download
+bodyclass: download-page
 ---
 
 ## Download Leaflet
