@@ -121,13 +121,17 @@
 		minZoom: -4,
 		crs: L.CRS.Simple,
 		maxBounds: bounds,
-		zoomControl: false
-	}).setView(L.latLng(1934, 3730), -1);
-
-	var leaves = new L.ImageOverlay("14089157395_c6a7843c93_o.jpg", bounds, {
-		attribution: "Background image by <a href='https://www.flickr.com/photos/54336566@N08/14089157395/'>Jonas Weckschmied</a>, CC-nc",
-		opacity: 0.1
-		});
+		zoomControl: false,
+		attributionControl: false
+	})
+	
+	backgroundmap.on('load resize', function(){
+		backgroundmap.options.minZoom = backgroundmap.getBoundsZoom(bounds, true);
+	});
+	
+	backgroundmap.setView(L.latLng(1934, 3730), -1);
+	
+	var leaves = new L.ImageOverlay("background-leaves-image/background-leaves.jpg", bounds, {});
 	backgroundmap.addLayer(leaves);
 </script>
 
@@ -139,7 +143,7 @@
 {{ content }}
 
 <div class="footer">
-	<p>&copy; 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+	<p>&copy; 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors. Header background image &copy; <a href='https://www.flickr.com/photos/54336566@N08/14089157395/'>Jonas Weckschmied</a>.</p>
 </div>
 
 </div>

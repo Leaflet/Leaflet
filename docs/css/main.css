@@ -176,12 +176,12 @@ h3.tagline {
 .nav {
 	overflow: hidden;
 	list-style: none;
-	padding: 0 30px;
 	text-align: center;
 	font-size: 1.25em;
 	margin-bottom: 40px;
-	border-bottom: 1px solid #ddd;
-	padding-bottom: 40px;
+	display: inline-block;
+	padding: 0;
+	margin: 0 0 40px 0;
 }
 
 .nav li {
@@ -221,6 +221,8 @@ h3.tagline {
 
 header {
 	position: relative;
+	border-bottom: 1px solid #ddd;
+	text-align: center;
 }
 
 header h1, header h3, header ul {
