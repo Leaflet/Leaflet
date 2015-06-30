@@ -221,7 +221,7 @@ h3.tagline {
 }
 .container pre code {
 	padding: .75em 1em;
-	background: white;
+	background: #ddd;
 	color: #444;
   border-radius: 5px;
 }
@@ -346,7 +346,7 @@ table.plugins td:first-child a {
 
 .plugins-page .toc-col {
 	float: left;
-	width: 230px;
+	width: 25%;
 }
 
 
@@ -674,8 +674,8 @@ tr:target {
 }
 
 .api-page h2[id]:before {
-	margin-left: -40px;
-	margin-top: 10px;
+  margin-left: -32px;
+  margin-top: 14px;
 }
 
 .api-page tr[id] td:first-child:before {
@@ -693,4 +693,172 @@ tr:target {
   .api-page tr[id] td:first-child:before {
     background-image: url(../images/sprite.svg);
   }
+}
+
+@media screen and (max-width: 767px) {
+  #toc .colborder {
+    padding: 0;
+  }
+
+  .colborder {
+    margin: 0;
+    border: 0;
+  }
+
+  #toc .toc-col {
+    width: 50%;
+    float: none;
+    display: inline-block;
+    margin: 0;
+    border: 0;
+    padding-right: .5em;
+    margin-right: -.25em;
+    vertical-align: top;
+    box-sizing: border-box;
+  }
+
+  .toc-col.last-col {
+    clear: both;
+  }
+
+  .container pre code {
+    word-wrap: break-word;
+    white-space: pre;
+  }
+
+  table.plugins tbody tr {
+    display: block;
+    padding-bottom: 1em;
+  }
+
+  table.plugins tbody tr td {
+    white-space: normal;
+    display: inline-block;
+    padding-bottom: 0;
+  }
+
+  table.plugins tr:first-child {
+    padding-bottom: 0;
+  }
+
+  table.plugins tr:first-child th {
+    display: block;
+  }
+
+  table.plugins tr:first-child th ~ th {
+    display: none;
+  }
+
+  table.plugins td:first-child {
+    display: block;
+    white-space: normal;
+  }
+
+  .api-page table tbody tr {
+    display: block;
+  }
+
+  .api-page table tbody tr th,
+  .api-page table tbody tr td {
+    display: inline-block;
+    background-color: transparent;
+    width: auto;
+  }
+
+  .api-page table tr:first-child th ~ th {
+    display: none;
+  }
+
+  .api-page table tbody tr th:nth-child(2),
+  .api-page table tbody tr th:nth-child(3) {
+    display: inline-block;
+  }
+
+  .api-page table tr th:last-child {
+    display: none !important;
+  }
+
+  .api-page table tbody tr td:last-child {
+    display: block;
+    border-top: thin dashed #ddd;
+    padding: 1em;
+  }
+
+  .api-page table tbody tr td:last-child:before {
+    content: 'Description';
+    display: block;
+    text-transform: uppercase;
+    font-size: 90%;
+    margin-bottom: .75em;
+    color: #666;
+  }
+
+  td code {
+    word-break: break-word;
+  }
+}
+
+@media screen and (max-width: 56em) {
+  .container {
+    padding: 0 2em 1.5em;
+  }
+
+  .footer, .social-buttons {
+    text-align: center;
+  }
+
+  .footer {
+    margin-top: 2em;
+  }
+
+  .ext-links {
+    position: static;
+    margin: 0 auto 2em;
+    text-align: center;
+    clear: both;
+  }
+
+  .ext-link {
+    display: inline-block;
+    vertical-align: middle;
+    margin: .25em;
+  }
+
+  .features { -webkit-column-count: 2; }
+
+  .api-page h2[id]:before {
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .nav {
+    font-size: 1.25em;
+  }
+
+  h3.tagline {
+    font-size: 1.333em;
+    margin: 0 2em;
+  }
+
+  .container {
+    padding: 0 1.5em 1.5em;
+  }
+
+  .usedby {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .features { -webkit-column-count: 1; }
+
+  .example-img {
+    float: none;
+    display: block;
+    width: auto;
+    margin: 0 0 -.25em;
+    border: 0;
+  }
+
+  .api-page h2[id] { text-indent: 24px; }
+  .api-page h2[id]:before { margin-left: -28px; }
 }
