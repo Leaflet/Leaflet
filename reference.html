@@ -3350,7 +3350,9 @@ map.fitBounds(bounds);</code></pre>
 		var tile = L.DomUtil.create('canvas', 'leaflet-tile');
 
 		// setup tile width and height according to the options
-		tile.width = tile.height = this.options.tileSize;
+		var size = this.getTileSize();
+		tile.width = size.x;
+		tile.height = size.y;
 
 		// get a canvas context and draw something on it using coords.x, coords.y and coords.z
 		var ctx = canvas.getContext('2d');
@@ -3372,7 +3374,9 @@ map.fitBounds(bounds);</code></pre>
 		var tile = L.DomUtil.create('canvas', 'leaflet-tile');
 
 		// setup tile width and height according to the options
-		tile.width = tile.height = this.options.tileSize;
+		var size = this.getTileSize();
+		tile.width = size.x;
+		tile.height = size.y;
 
 		// draw something and pass the tile to the done() callback
 		done(error, tile);
@@ -3409,9 +3413,9 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>tileSize</b></code></td>
-		<td><code>Number</code></td>
+		<td><code>Number</code> or <code><a href="#point">Point</a></code></td>
 		<td><code class="javascript"><span class="number">256</span></code></td>
-		<td>Width and height of tiles in the grid. Can be used in the <code>createTile()</code> function.</td>
+		<td>Width and height of tiles in the grid. Use a number if width and height are equal, or <code>L.point(width, height)</code> otherwise.</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
@@ -3502,6 +3506,12 @@ map.fitBounds(bounds);</code></pre>
 		</code></td>
 		<td><code>HTMLElement</code></td>
 		<td>Returns the HTML element that contains the tiles for this layer.</td>
+	</tr>
+	<tr>
+		<td><code><b>getTileSize</b>()</nobr>
+		</code></td>
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Normalizes the <code>tileSize</code> option into a point. Used by the <code>createTile()</code> method.</td>
 	</tr>
 </table>
 
@@ -3895,6 +3905,22 @@ map.panBy(L.point(200, 300));</code></pre>
 
 		<td><code><a href="#point">Point</a></code></td>
 		<td>Returns the result of division of the current point by the given number. If optional <code>round</code> is set to <code><span class="literal">true</span></code>, returns a rounded result.</td>
+	</tr>
+	<tr>
+		<td><code><b>scaleBy</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>scale</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Multiply each coordinate of the current point by each coordinate of <code>scale</code>. In linear algebra terms, multiply the point by the <a href='https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation'>scaling matrix</a> defined by <code>scale</code>.</td>
+	</tr>
+	<tr>
+		<td><code><b>unscaleBy</b>(
+			<nobr>&lt;<a href="#point">Point</a>&gt; <i>otherPoint</i> )</nobr>
+		</code></td>
+
+		<td><code><a href="#point">Point</a></code></td>
+		<td>Inverse of <code>multiplyCoordinates</code>. Divide each coordinate of the current point by each coordinate of <code>scale</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>distanceTo</b>(
