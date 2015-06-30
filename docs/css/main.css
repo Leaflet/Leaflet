@@ -949,3 +949,7 @@ tr:target {
 .download-page table td a {
 	white-space: nowrap;
 }
+
+.tutorials-back {
+	margin-bottom: -3em;
+}
