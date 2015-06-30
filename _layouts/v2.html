@@ -31,7 +31,7 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,300' rel='stylesheet' type='text/css'>
 
 	<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
-	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github.css" />
+	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
 	<link rel="stylesheet" href="{{ root }}dist/leaflet.css" />
@@ -123,7 +123,7 @@
 </nav>
 
 <script>
-	hljs.tabReplace = '    ';
+	hljs.configure({tabReplace: '    '});
 
 	(function () {
 		var codes = document.getElementsByTagName('code'),

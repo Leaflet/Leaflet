@@ -18,7 +18,7 @@ p {
 	margin: 24px 0;
 }
 
-a {
+a, a span.hljs-string {
 	color: #1EB300;
 }
 
@@ -54,8 +54,8 @@ table {
 th, td {
 	text-align: left;
 	border: 0;
-	border-bottom: 1px solid #eee;
-	padding: 0.5em 1em 0.5em 5px;
+	border: 1px solid #eee;
+	padding: 0.5em 1em 0.5em 1em;
 }
 
 table th {
