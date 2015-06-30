@@ -5,16 +5,17 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 */
 
 pre code {
-  display: block; padding: 0.5em;
-  color: #000;
-  background: #f8f8ff
+  display: block;
+  padding: 0.5em;
+  color: #f8f8f2;
+  background: #475457;
 }
 
 code .comment,
 pre .template_comment,
 pre .diff .header,
 pre .javadoc {
-  color: #998;
+  color: #8C8C8C;
 }
 
 code .keyword,
@@ -26,31 +27,31 @@ pre .nginx .title,
 pre .subst,
 pre .request,
 pre .status {
-  color: #026D97;
+  color: white;
   font-weight: normal;
 }
 
 pre .javascript .title {
-  color: black;
+  color: white;
   font-weight: bold;
 }
 
 code .number,
 pre .hexcolor,
 code .literal {
-  color: #00A707
+  color: #1DC925;
 }
 
 code .string,
 pre .tag .value,
 pre .phpdoc,
 pre .tex .formula {
-  color: #E43E59;
+  color: #FB5692;
 }
 
 pre .title,
 pre .id {
-  color: #900;
+  color: #F66;
   font-weight: bold
 }
 
@@ -72,7 +73,7 @@ pre .tag,
 pre .tag .title,
 pre .rules .property,
 pre .django .tag .keyword {
-  color: #000080;
+  color: #99F;
   font-weight: normal
 }
 
@@ -80,7 +81,7 @@ pre .attribute,
 pre .variable,
 pre .instancevar,
 pre .lisp .body {
-  color: #008080
+  color: #00E5E6;
 }
 
 pre .regexp {
