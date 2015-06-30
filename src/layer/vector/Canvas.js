@@ -27,7 +27,7 @@ L.Canvas = L.Renderer.extend({
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		this._drawnLayers = [];
+		this._drawnLayers = {};
 
 		L.Renderer.prototype._update.call(this);
 
@@ -119,7 +119,7 @@ L.Canvas = L.Renderer.extend({
 
 		if (!len) { return; }
 
-		this._drawnLayers.push(layer);
+		this._drawnLayers[layer._leaflet_id] = layer;
 
 		ctx.beginPath();
 
