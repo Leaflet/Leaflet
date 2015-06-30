@@ -326,6 +326,10 @@
 	color: #333;
 	background: #fff;
 	}
+.leaflet-control-layers-scrollbar {
+	overflow-y: scroll;
+	padding-right: 5px;
+	}
 .leaflet-control-layers-selector {
 	margin-top: 2px;
 	position: relative;

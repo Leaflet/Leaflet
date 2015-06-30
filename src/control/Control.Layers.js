@@ -248,15 +248,11 @@ L.Control.Layers = L.Control.extend({
 
 	_expand: function () {
 		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
-		var getLegendDiv = document.getElementsByClassName('leaflet-control-layers-list')[0];
-		var legendHeight = getLegendDiv.clientHeight;
-		var getMap = document.getElementById('map');
-		var controlHeight = getMap.clientHeight - 40;
-		if (controlHeight < legendHeight)
+		var acceptableHeight = this._map._size.y - (this._container.offsetTop * 4);
+		if (acceptableHeight < this._form.clientHeight)
 		{
-			getLegendDiv.style.height = controlHeight + 'px';
-			getLegendDiv.style.overflowY = 'scroll';
-			getLegendDiv.style.paddingRight = '10px';
+			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
+			this._form.style.height = acceptableHeight + 'px';
 		}
 	},
 
