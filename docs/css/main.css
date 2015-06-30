@@ -356,6 +356,7 @@ table.plugins td:first-child a {
 	float: left;
 	width: 160px;
 }
+
 .map-col {
 	width: 180px;
 	border-right: 1px solid #ddd;
@@ -372,6 +373,243 @@ table.plugins td:first-child a {
 	margin-top: 0;
 	margin-bottom: 25px;
 }
+
+#toc .colborder {
+  padding-right: 14px;
+}
+
+#toc .span-3 {
+  margin: 0;
+  padding-right: 3em;
+  width: 16.825%;
+  box-sizing: border-box;
+}
+
+#toc .span-3.last {
+  padding-right: 0;
+}
+
+#toc-copy {
+  display: none;
+}
+
+#toc-copy div {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: auto;
+  float: none;
+}
+
+#toc-copy h4 {
+  margin: 0;
+  padding-bottom: .333em;
+}
+
+#toc-copy ul {
+  display: none;
+  list-style: none;
+}
+
+#toc-copy ul li {
+  white-space: nowrap;
+}
+
+#toc-copy ul li a {
+  position: relative;
+  padding: .25em .5em 0;
+  z-index: 10;
+}
+
+@media screen and (max-width: 1350px) {
+  #toc-copy {
+    display: block;
+    position: fixed;
+    top: 0.1em;
+    left: 0.25em;
+    width: 32px;
+    height: 32px;
+    opacity: 0;
+    cursor: pointer;
+    -webkit-transition: opacity .2s ease;
+    transition: opacity .2s ease;
+  }
+
+  #toc-copy > div { display: none; }
+
+  .scrolled #toc-copy {
+    opacity: 1;
+    background: white;
+  }
+
+  #toc-copy.active {
+    background-color: white;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 2em;
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    cursor: default;
+    box-sizing: border-box;
+  }
+
+  #toc-copy:before,
+  #toc-copy:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    width: 22px;
+    height: 14px;
+    border-top: 2px solid black;
+    cursor: pointer;
+    box-sizing: border-box;
+    -webkit-transition: -webkit-transform .25s ease;
+    transition: transform .25s ease;
+  }
+
+  #toc-copy:before {
+    top: 9px;
+    border-bottom: 2px solid black;
+  }
+
+  #toc-copy:after {
+    top: 15px;
+  }
+
+  #toc-copy.active:before {
+    top: 5px;
+    left: 9px;
+    border-bottom: 0;
+    -webkit-transform: rotate(-135deg);
+    transform: rotate(-135deg);
+  }
+
+  #toc-copy.active:after {
+    top: 13px;
+    left: 9px;
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+
+  #toc-copy.active div { display: block; }
+
+  #toc-copy h4.active, #toc-copy h4:hover {
+    color: black;
+    cursor: pointer;
+  }
+
+  #toc-copy h4.active + ul {
+    display: block;
+    padding: 0;
+    margin: 0 0 .5em;
+  }
+
+  #toc-copy ul li a { padding: .25em 0; }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1350px) {
+  #toc-copy {
+    width: 40px;
+    height: 40px;
+  }
+
+  #toc-copy.active {
+    padding: 2.5em;
+  }
+
+  #toc-copy:before,
+  #toc-copy:after {
+    left: 8px;
+  }
+
+  #toc-copy:before { top: 13px; }
+
+  #toc-copy:after { top: 19px; }
+
+  #toc-copy.active:before {
+    top: 7px;
+    left: 10px;
+  }
+
+  #toc-copy.active:after {
+    top: 15px;
+    left: 10px;
+  }
+}
+
+@media screen and (min-width: 1350px) and (min-height: 600px) {
+  #toc-copy {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 2em;
+    opacity: 0;
+    transition: opacity .25s ease;
+    -webkit-transition: opacity .25s ease;
+  }
+
+  #toc-copy:before {
+    content: 'Table of contents';
+    display: block;
+    margin: -.25em 0 1em;
+    font-size: 75%;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
+
+  .scrolled #toc-copy { opacity: 1; }
+
+  #toc-copy h4 { padding-right: 5em; }
+
+  #toc-copy ul {
+    position: absolute;
+    left: 100%;
+    margin: -4.9em 0 0 -4.5em;
+    padding: 3em 6em 3em 0;
+  }
+
+  #toc-copy h4:hover + ul,
+  #toc-copy ul:hover {
+    display: block;
+  }
+
+  #toc-copy h4:hover + ul:before,
+  #toc-copy ul:hover:before {
+    content: '';
+    position: absolute;
+    top: 3.775em;
+    right: 100%;
+    margin-right: .25em;
+    width: 1em;
+    height: 1em;
+    border-top: 2px solid #eee;
+  }
+
+  #toc-copy h4:hover + ul:after,
+  #toc-copy ul:hover:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: -1000px;
+    bottom: -1000px;
+    left: 0;
+    right: 3em;
+    background: white;
+    background: rgba(255,255,255,0.9);
+    display: block;
+  }
+
+  #toc-copy h4:hover, #toc-copy h4.hover {
+    color: black;
+    cursor: pointer;
+  }
+}
+
+/* API docs - tables */
 
 .api-page table td {
 	color: #666;
