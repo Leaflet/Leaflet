@@ -130,9 +130,10 @@ h4 {
 
 /* header */
 
-h1 {
-	margin: 1.25em 0 1.5em;
+header h1 {
+	margin: 0 0 1.5em;
 	text-align: center;
+	padding-top: 1.25em;
 }
 
 h1 a {
@@ -216,6 +217,28 @@ h3.tagline {
 @keyframes fadein {
 	from { opacity: 0; }
 	to   { opacity: 0.5; }
+}
+
+header {
+	position: relative;
+}
+
+header h1, header h3, header ul {
+	position: relative;
+	z-index:1;
+}
+
+header h1, header h3 {
+	pointer-events: none;
+}
+
+#background-leaves {
+	position:absolute; 
+	top:0; 
+	bottom:0; 
+	right:0; 
+	left:0; 
+	background:white;
 }
 
 
