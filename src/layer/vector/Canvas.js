@@ -20,6 +20,7 @@ L.Canvas = L.Renderer.extend({
 		L.Renderer.prototype.onAdd.call(this);
 
 		this._layers = this._layers || {};
+		this._deferredUpdates = {};
 
 		// redraw vectors since canvas is cleared upon removal
 		this._draw();
@@ -37,8 +38,6 @@ L.Canvas = L.Renderer.extend({
 
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
-
-		this._deferredUpdates = {};
 
 		L.Renderer.prototype._update.call(this);
 	},
