@@ -37,7 +37,8 @@
 		var map = L.map('map', mapopts);
 
 		var grid = L.gridLayer({
-			attribution: 'Grid Layer'
+			attribution: 'Grid Layer',
+			tileSize: L.point(150, 80)
 		});
 
 		grid.createTile = function (coords, done) {

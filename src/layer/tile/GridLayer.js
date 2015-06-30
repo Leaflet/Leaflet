@@ -122,6 +122,11 @@ L.GridLayer = L.Layer.extend({
 		return document.createElement('div');
 	},
 
+	getTileSize: function () {
+		var s = this.options.tileSize;
+		return s instanceof L.Point ? s : new L.Point(s, s);
+	},
+
 	_updateZIndex: function () {
 		if (this._container && this.options.zIndex !== undefined && this.options.zIndex !== null) {
 			this._container.style.zIndex = this.options.zIndex;
@@ -384,7 +389,7 @@ L.GridLayer = L.Layer.extend({
 	_resetGrid: function () {
 		var map = this._map,
 		    crs = map.options.crs,
-		    tileSize = this._tileSize = this._getTileSize(),
+		    tileSize = this._tileSize = this.getTileSize(),
 		    tileZoom = this._tileZoom;
 
 		var bounds = this._map.getPixelWorldBounds(this._tileZoom);
@@ -393,17 +398,13 @@ L.GridLayer = L.Layer.extend({
 		}
 
 		this._wrapX = crs.wrapLng && [
-			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize),
-			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize)
+			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize.x),
+			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize.y)
 		];
 		this._wrapY = crs.wrapLat && [
-			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize),
-			Math.ceil(map.project([crs.wrapLat[1], 0], tileZoom).y / tileSize)
+			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize.x),
+			Math.ceil(map.project([crs.wrapLat[1], 0], tileZoom).y / tileSize.y)
 		];
-	},
-
-	_getTileSize: function () {
-		return this.options.tileSize;
 	},
 
 	_onMoveEnd: function () {
@@ -510,10 +511,10 @@ L.GridLayer = L.Layer.extend({
 	_tileCoordsToBounds: function (coords) {
 
 		var map = this._map,
-		    tileSize = this._getTileSize(),
+		    tileSize = this.getTileSize(),
 
-		    nwPoint = coords.multiplyBy(tileSize),
-		    sePoint = nwPoint.add([tileSize, tileSize]),
+		    nwPoint = coords.dotProduct(tileSize),
+		    sePoint = nwPoint.add(tileSize),
 
 		    nw = map.wrapLatLng(map.unproject(nwPoint, coords.z)),
 		    se = map.wrapLatLng(map.unproject(sePoint, coords.z));
@@ -551,8 +552,9 @@ L.GridLayer = L.Layer.extend({
 	_initTile: function (tile) {
 		L.DomUtil.addClass(tile, 'leaflet-tile');
 
-		tile.style.width = this._tileSize + 'px';
-		tile.style.height = this._tileSize + 'px';
+		var tileSize = this.getTileSize();
+		tile.style.width = tileSize.x + 'px';
+		tile.style.height = tileSize.y + 'px';
 
 		tile.onselectstart = L.Util.falseFn;
 		tile.onmousemove = L.Util.falseFn;
@@ -642,7 +644,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_getTilePos: function (coords) {
-		return coords.multiplyBy(this._tileSize).subtract(this._level.origin);
+		return coords.dotProduct(this.getTileSize()).subtract(this._level.origin);
 	},
 
 	_wrapCoords: function (coords) {
@@ -654,9 +656,10 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_pxBoundsToTileRange: function (bounds) {
+		var tileSize = this.getTileSize();
 		return new L.Bounds(
-			bounds.min.divideBy(this._tileSize).floor(),
-			bounds.max.divideBy(this._tileSize).ceil().subtract([1, 1]));
+			bounds.min.dotDivision(tileSize).floor(),
+			bounds.max.dotDivision(tileSize).ceil().subtract([1, 1]));
 	},
 
 	_noTilesToLoad: function () {
