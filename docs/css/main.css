@@ -288,11 +288,15 @@ h2.usedby-title {
 .plugins td:last-child a {
 	white-space: nowrap;
 }
+.plugins-page .toc-col {
+	float: left;
+	width: 230px;
+}
 
 
 /* API docs */
 
-.toc-col {
+.api-page .toc-col {
 	float: left;
 	width: 160px;
 }

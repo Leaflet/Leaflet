@@ -11,8 +11,8 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 ---
 
 <div id="toc" class="clearfix">
-	<div class="span-4">
-		<h4>Tile & image layers</h4>
+	<div class="toc-col">
+		<h4>Tile &amp; image layers</h4>
 
 		<ul>
 			<li> <a href='#basemap-providers'>Basemap providers</a></li>
@@ -32,11 +32,11 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li> <a href='#data-providers'>Data providers</a></li>
 		</ul>
 	</div>
-	<div class="span-4">
+	<div class="toc-col">
 
 		<h4>Overlay Display</h4>
 		<ul>
-			<li><a href="#markers--renderers">Markers & renderers</a></li>
+			<li><a href="#markers--renderers">Markers &amp; renderers</a></li>
 			<li><a href="#overlay-animations">Overlay animations</a></li>
 			<li><a href="#clusteringdecluttering">Clustering/decluttering</a></li>
 			<li><a href="#heatmaps">Heatmaps</a></li>
@@ -45,12 +45,12 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<h4>Overlay interaction</h4>
 		<ul>
 			<li><a href="#edit-geometries">Edit geometries</a></li>
-			<li><a href="#time--elevation">Time & elevation</a></li>
-			<li><a href="#search--popups">Search & popups</a></li>
+			<li><a href="#time--elevation">Time &amp; elevation</a></li>
+			<li><a href="#search--popups">Search &amp; popups</a></li>
 			<li><a href="#areaoverlay-selection">Area/overlay selection</a></li>
 		</ul>
 	</div>
-	<div class="span-5">
+	<div class="toc-col">
 		<h4>Map interaction</h4>
 		<ul>
 			<li><a href="#layer-switching-controls">Layer switching controls</a></li>
@@ -66,7 +66,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li><a href="#geolocation">Geolocation</a></li>
 		</ul>
 	</div>
-	<div class="span-4">
+	<div class="toc-col">
 		<h4>Miscellaneous</h4>
 		<ul>
 			<li><a href="#geoprocessing">Geoprocessing</a></li>
@@ -493,7 +493,7 @@ Load your own data from various GIS formats.
 		<td>
 			<a href="https://github.com/mapbox/leaflet-omnivore">leaflet-omnivore</a>
 		</td><td>
-			Loads & converts CSV, KML, GPX, TopoJSON, WKT formats for Leaflet.
+			Loads &amp; converts CSV, KML, GPX, TopoJSON, WKT formats for Leaflet.
 		</td><td>
 			<a href="https://github.com/mapbox">Mapbox</a>
 		</td>
@@ -785,7 +785,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/lvoogdt/Leaflet.awesome-markers">Leaflet.Awesome-Markers</a>
 		</td><td>
-			Colorful, iconic & retina-proof markers based on the Font Awesome icons/Twitter Bootstrap icons
+			Colorful, iconic &amp; retina-proof markers based on the Font Awesome icons/Twitter Bootstrap icons
 		</td><td>
 			<a href="http://www.lennardvoogdt.nl">Lennard Voogdt</a>
 		</td>
@@ -958,7 +958,7 @@ When you are displaying a lot of data, these plugins will make your map look cle
 		<td>
 			<a href="https://github.com/MazeMap/Leaflet.LayerGroup.Collision">Leaflet.LayerGroup.Collision</a>
 		</td><td>
-			Provides collision detection for groups of markers. Unlike clustering, this takes into account the shape & size of the markers.
+			Provides collision detection for groups of markers. Unlike clustering, this takes into account the shape &amp; size of the markers.
 		</td><td>
 			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
 			<a href="https://github.com/MazeMap">MazeMap</a>
