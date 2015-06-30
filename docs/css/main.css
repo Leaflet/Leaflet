@@ -484,6 +484,10 @@ table.plugins td:first-child a {
   z-index: 10;
 }
 
+#toc-copy .toc-col {
+	position: static;
+}
+
 @media screen and (max-width: 1350px) {
   #toc-copy {
     display: block;
