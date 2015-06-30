@@ -513,7 +513,7 @@ L.GridLayer = L.Layer.extend({
 		var map = this._map,
 		    tileSize = this.getTileSize(),
 
-		    nwPoint = coords.dotProduct(tileSize),
+		    nwPoint = coords.scaleBy(tileSize),
 		    sePoint = nwPoint.add(tileSize),
 
 		    nw = map.wrapLatLng(map.unproject(nwPoint, coords.z)),
@@ -644,7 +644,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_getTilePos: function (coords) {
-		return coords.dotProduct(this.getTileSize()).subtract(this._level.origin);
+		return coords.scaleBy(this.getTileSize()).subtract(this._level.origin);
 	},
 
 	_wrapCoords: function (coords) {
@@ -658,8 +658,8 @@ L.GridLayer = L.Layer.extend({
 	_pxBoundsToTileRange: function (bounds) {
 		var tileSize = this.getTileSize();
 		return new L.Bounds(
-			bounds.min.dotDivision(tileSize).floor(),
-			bounds.max.dotDivision(tileSize).ceil().subtract([1, 1]));
+			bounds.min.unscaleBy(tileSize).floor(),
+			bounds.max.unscaleBy(tileSize).ceil().subtract([1, 1]));
 	},
 
 	_noTilesToLoad: function () {

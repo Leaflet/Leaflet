@@ -55,11 +55,11 @@ L.Point.prototype = {
 		return this;
 	},
 
-	dotProduct: function(point) {
+	scaleBy: function(point) {
 		return new L.Point(this.x * point.x, this.y * point.y);
 	},
 
-	dotDivision: function(point) {
+	unscaleBy: function(point) {
 		return new L.Point(this.x / point.x, this.y / point.y);
 	},
 
