@@ -4,8 +4,14 @@
 
 var contextProps = ['fill', 'fillOpacity', 'fillColor', 'fillRule', 'color', 'stroke', 'weight',
 	'lineCap', 'lineJoin'];
+var contextPropsLen = contextProps.length;
+
 function getContextHash(layer, closed) {
-	return contextProps.map(function (prop) { return layer.options[prop]; }).join('#') + '#' + closed;
+	var hash = closed;
+	for (var i = 0; i < contextPropsLen; i++) {
+		hash += '|' + layer.options[contextProps[i]];
+	}
+	return hash;
 }
 
 L.Canvas = L.Renderer.extend({
