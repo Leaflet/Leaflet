@@ -1,6 +1,7 @@
 ---
 layout: v2
 title: Tutorials
+bodyclass: examples
 ---
 
 ## Leaflet Tutorials
