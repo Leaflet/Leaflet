@@ -146,21 +146,27 @@ h1 a {
 }
 
 @-webkit-keyframes leafanim {
-	50% { -webkit-filter: hue-rotate(-70deg) saturate(1.2); }
+  50% { -webkit-filter: hue-rotate(-70deg) saturate(1.2); }
 }
 
 @keyframes leafanim {
   50% { -webkit-filter: hue-rotate(-70deg) saturate(1.2); }
 }
 
+h1 a img {
+  display: block;
+  margin: auto;
+  max-width: 100%;
+}
+
 h1 a:hover, h1 a:focus {
-	-webkit-filter: hue-rotate(-70deg) saturate(1.5);
+  -webkit-filter: hue-rotate(-70deg) saturate(1.5);
 }
 
 h3.tagline {
 	font-weight: 300;
-	font-size: 30px;
-	margin-top: -15px;
+	font-size: 1.5em;
+	margin-top: -.75em;
 	color: #777;
 	text-align: center;
 	margin-bottom: 30px;
@@ -171,15 +177,15 @@ h3.tagline {
 	list-style: none;
 	padding: 0 30px;
 	text-align: center;
-	font-size: 24px;
+	font-size: 1.25em;
 	margin-bottom: 40px;
 	border-bottom: 1px solid #ddd;
 	padding-bottom: 40px;
 }
 
 .nav li {
-	display: inline;
-	padding: 10px;
+  display: inline-block;
+  padding: .333em .5em;
 	color: #999;
 }
 
@@ -220,9 +226,8 @@ h3.tagline {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 .container pre code {
+  font-size: 14px;
 	padding: .75em 1em;
-  background: #f5f5f5;
-  color: #444;
   border-radius: 5px;
   white-space: pre;
   overflow: scroll;
@@ -261,7 +266,7 @@ h3.tagline {
 .usedby {
   margin: 0;
   text-align: center;
-  padding: 0 3em 2em;
+  padding: 0 3em 3.5em;
   background-color: #f5f5f5;
 }
 
@@ -400,14 +405,25 @@ table.plugins td:first-child a {
 /* API docs */
 
 .api-page .toc-col {
-	float: left;
-	width: 160px;
+  position: relative;
+  float: left;
+  width: 20%;
+  padding-right: 1em;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.map-col {
-	width: 180px;
-	border-right: 1px solid #ddd;
-	margin-right: 40px;
+.api-page .toc-col.map-col {
+  padding-right: 1.5em;
+  border-right: thin solid #eee;
+}
+
+.api-page .toc-col.map-col ~ .toc-col {
+    right: -1.5em;
+}
+
+.api-page .toc-col.map-col h4 {
+    color: #666;
 }
 
 #toc h4 {
@@ -644,10 +660,9 @@ table.plugins td:first-child a {
     top: -1000px;
     bottom: -1000px;
     left: 0;
-    right: 3em;
+    width: 12.5em;
     background: white;
     background: rgba(255,255,255,0.9);
-    display: block;
   }
 
   #toc-copy h4:hover, #toc-copy h4.hover {
@@ -755,6 +770,7 @@ tr:target {
   #toc .toc-col {
     width: 50%;
     float: none;
+    position: static;
     display: inline-block;
     margin: 0;
     border: 0;
@@ -766,11 +782,6 @@ tr:target {
 
   .toc-col.last-col {
     clear: both;
-  }
-
-  .container pre code {
-    word-wrap: break-word;
-    white-space: pre;
   }
 
   table.plugins tbody tr {
@@ -872,9 +883,6 @@ tr:target {
   }
 
   .features { -webkit-column-count: 2; }
-
-  .api-page h2[id]:before {
-  }
 }
 
 @media screen and (max-width: 500px) {
@@ -904,6 +912,12 @@ tr:target {
     width: auto;
     margin: 0 0 -.25em;
     border: 0;
+  }
+
+  .post-date {
+    float: none;
+    width: auto;
+    margin: 0 0 .333em;
   }
 
   .api-page h2[id] { text-indent: 24px; }
