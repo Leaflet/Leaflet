@@ -9,6 +9,5 @@ _site
 _site
 coverage/
 *.js.html
-index.html
 .mailmap
 Gemfile.lock

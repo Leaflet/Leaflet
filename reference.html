@@ -1,11 +1,13 @@
 ---
-layout: default
+layout: v2
 title: Documentation
 bodyclass: api-page
 ---
 
+<h2>API Reference</h2>
+
 <div id="toc" class="clearfix">
-	<div class="span-5 colborder">
+	<div class="toc-col map-col">
 		<h4>Map</h4>
 		<ul>
 			<li><a href="#map-usage">Usage example</a></li>
@@ -15,9 +17,9 @@ bodyclass: api-page
 		</ul>
 		<h4>Map Methods</h4>
 		<ul>
-			<li><a href="#map-set-methods">For modifying map state</a></li>
-			<li><a href="#map-get-methods">For getting map state</a></li>
-			<li><a href="#map-stuff-methods">For layers and controls</a></li>
+			<li><a href="#map-set-methods">Modifying map state</a></li>
+			<li><a href="#map-get-methods">Getting map state</a></li>
+			<li><a href="#map-stuff-methods">Layers and controls</a></li>
 			<li><a href="#map-conversion-methods">Conversion methods</a></li>
 			<li><a href="#map-misc-methods">Other methods</a></li>
 		</ul>
@@ -27,7 +29,7 @@ bodyclass: api-page
 			<li><a href="#map-panes">Panes</a></li>
 		</ul>
 	</div>
-	<div class="span-3">
+	<div class="toc-col">
 		<h4>UI Layers</h4>
 		<ul>
 			<li><a href="#marker">Marker</a></li>
@@ -52,7 +54,7 @@ bodyclass: api-page
 			<li><a href="#circlemarker">CircleMarker</a></li>
 		</ul>
 	</div>
-	<div class="span-3">
+	<div class="toc-col">
 		<h4>Other Layers</h4>
 		<ul>
 			<li><a href="#layergroup">LayerGroup</a></li>
@@ -77,7 +79,7 @@ bodyclass: api-page
 			<li><a href="#control-scale">Scale</a></li>
 		</ul>
 	</div>
-	<div class="span-3">
+	<div class="toc-col">
 		<h4>Events</h4>
 		<ul>
 			<li><a href="#events">Event methods</a></li>
@@ -100,7 +102,7 @@ bodyclass: api-page
 			<li><a href="#draggable">Draggable</a></li>
 		</ul>
 	</div>
-	<div class="span-3 last">
+	<div class="toc-col last-col">
 		<h4>Interfaces</h4>
 		<ul>
 			<li><a href="#ihandler">IHandler</a></li>
@@ -173,37 +175,37 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>center</b></code></td>
 		<td><code><a href="#latlng">LatLng</a></code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Initial geographical center of the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Initial map zoom.</td>
 	</tr>
 	<tr>
 		<td><code><b>layers</b></code></td>
 		<td><code><a href="#ilayer">ILayer</a>[]</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Layers that will be added to the map initially.</td>
 	</tr>
 	<tr>
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Minimum zoom level of the map. Overrides any <code>minZoom</code> set on map layers.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Maximum zoom level of the map. This overrides any <code>maxZoom</code> set on map layers.</td>
 	</tr>
 	<tr id="map-maxbounds">
 		<td><code><b>maxBounds</b></code></td>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>When this option is set, the map restricts the view to the given geographical bounds, bouncing the user back when he tries to pan outside the view. To set the restriction dynamically, use <a href="#map-setmaxbounds">setMaxBounds</a> method</td>
     </tr>
 	<tr>
@@ -226,68 +228,68 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>dragging</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the map be draggable with mouse/touch or not.</td>
 	</tr>
 	<tr>
 		<td><code><b>touchZoom</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the map can be zoomed by touch-dragging with two fingers.</td>
 	</tr>
 	<tr>
 		<td><code><b>scrollWheelZoom</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Whether the map can be zoomed by using the mouse wheel. If passed <code><span class="string">'center'</span></code>, it will zoom to the center of the view regardless of where the mouse was.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>Whether the map can be zoomed by using the mouse wheel. If passed <code><span class="hljs-string">'center'</span></code>, it will zoom to the center of the view regardless of where the mouse was.</td>
 	</tr>
 	<tr>
 		<td><code><b>doubleClickZoom</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Whether the map can be zoomed in by double clicking on it and zoomed out by double clicking while holding shift. If passed <code><span class="string">'center'</span></code>, double-click zoom will zoom to the center of the view regardless of where the mouse was.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>Whether the map can be zoomed in by double clicking on it and zoomed out by double clicking while holding shift. If passed <code><span class="hljs-string">'center'</span></code>, double-click zoom will zoom to the center of the view regardless of where the mouse was.</td>
 	</tr>
 	<tr>
 		<td><code><b>boxZoom</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the map can be zoomed to a rectangular area specified by dragging the mouse while pressing shift.</td>
 	</tr>
 	<tr>
 		<td><code><b>tap</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Enables mobile hacks for supporting instant taps (fixing 200ms click delay on iOS/Android) and touch holds (fired as <code>contextmenu</code> events).</td>
 	</tr>
 	<tr>
 		<td><code><b>tapTolerance</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">15</span></code></td>
+		<td><code><span class="hljs-number">15</span></code></td>
 		<td>The max number of pixels a user can shift his finger during touch for it to be considered a valid tap.</td>
 	</tr>
 	<tr>
 		<td><code><b>trackResize</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the map automatically handles browser window resize to update itself.</td>
 	</tr>
 	<tr>
 		<td><code><b>worldCopyJump</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
+		<td><code><span class="hljs-literal">false</span></code></td>
 		<td>With this option enabled, the map tracks when you pan to another "copy" of the world and seamlessly jumps to the original one so that all overlays like markers and vector layers are still visible.</td>
 	</tr>
 	<tr>
 		<td><code><b>closePopupOnClick</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Set it to <code><span class="literal">false</span></code> if you don't want popups to close when user clicks the map.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>Set it to <code><span class="hljs-literal">false</span></code> if you don't want popups to close when user clicks the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>bounceAtZoomLimits</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Set it to <code><span class="literal">false</span></code> if you don't want the map to zoom beyond min/max zoom and then bounce back when pinch-zooming.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>Set it to <code><span class="hljs-literal">false</span></code> if you don't want the map to zoom beyond min/max zoom and then bounce back when pinch-zooming.</td>
 	</tr>
 </table>
 
@@ -303,19 +305,19 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>keyboard</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Makes the map focusable and allows users to navigate the map with keyboard arrows and <code>+</code>/<code>-</code> keys.</td>
 	</tr>
 	<tr>
 		<td><code><b>keyboardPanOffset</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">80</span></code></td>
+		<td><code><span class="hljs-number">80</span></code></td>
 		<td>Amount of pixels to pan when pressing an arrow key.</td>
 	</tr>
 	<tr>
 		<td><code><b>keyboardZoomOffset</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1</span></code></td>
+		<td><code><span class="hljs-number">1</span></code></td>
 		<td>Number of zoom levels to change when pressing <code>+</code> or <code>-</code> key.</td>
 	</tr>
 </table>
@@ -332,26 +334,26 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>inertia</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>If enabled, panning of the map will have an inertia effect where the map builds momentum while dragging and continues moving in the same direction for some time. Feels especially nice on touch devices.</td>
 	</tr>
 	<tr>
 		<td><code><b>inertiaDeceleration</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">3000</span></code></td>
+		<td><code><span class="hljs-number">3000</span></code></td>
 		<td>The rate with which the inertial movement slows down, in pixels/second<sup>2</sup>.</td>
 	</tr>
 	<tr>
 		<td><code><b>inertiaMaxSpeed</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1500</span></code></td>
+		<td><code><span class="hljs-number">1500</span></code></td>
 		<td>Max speed of the inertial movement, in pixels/second.</td>
 	</tr>
 	<tr>
 		<td><code><b>inertiaThreshold</b></code></td>
 		<td><code>Number</code></td>
 		<td><code>depends</code></td>
-		<td>Number of milliseconds that should pass between stopping the movement and releasing the mouse or touch to prevent inertial movement. <code><span class="number">32</span></code> for touch devices and <code><span class="number">14</span></code> for the rest by default.</td>
+		<td>Number of milliseconds that should pass between stopping the movement and releasing the mouse or touch to prevent inertial movement. <code><span class="hljs-number">32</span></code> for touch devices and <code><span class="hljs-number">14</span></code> for the rest by default.</td>
 	</tr>
 </table>
 
@@ -367,13 +369,13 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>zoomControl</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the <a href="#control-zoom">zoom control</a> is added to the map by default.</td>
 	</tr>
 	<tr>
 		<td><code><b>attributionControl</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the <a href="#control-attribution">attribution control</a> is added to the map by default.</td>
 	</tr>
 </table>
@@ -402,7 +404,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>zoomAnimationThreshold</b></code></td>
 		<td><code>Number</code></td>
-		<td><span class="number">4</span></td>
+		<td><span class="hljs-number">4</span></td>
 		<td>Won't animate zoom if the zoom difference exceeds this value.</td>
 	</tr>
 	<tr>
@@ -611,7 +613,7 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <i>zoom?</i>,</nobr>
 			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the view of the map (geographical center and zoom) with the given animation options.</td>
 	</tr>
 	<tr>
@@ -619,7 +621,7 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <i>zoom</i></nobr>,
 			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the zoom of the map.</td>
 	</tr>
 	<tr>
@@ -627,16 +629,16 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <em>delta?</em></nobr>,
 			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Increases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Increases the zoom of the map by <code>delta</code> (<code><span class="hljs-number">1</span></code> by default).</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomOut</b>(
 			<nobr>&lt;Number&gt; <em>delta?</em></nobr>,
 			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Decreases the zoom of the map by <code>delta</code> (<code><span class="number">1</span></code> by default).</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Decreases the zoom of the map by <code>delta</code> (<code><span class="hljs-number">1</span></code> by default).</td>
 	</tr>
 	<tr>
 		<td><code><b>setZoomAround</b>(
@@ -644,7 +646,7 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <i>zoom</i></nobr>,
 			<nobr>&lt;<a href="#map-zoomoptions">zoom options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Zooms the map while keeping a specified point on the map stationary (e.g. used internally for scroll zoom and double-click zoom).</td>
 	</tr>
 	<tr id="map-fitbounds">
@@ -652,14 +654,14 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
 			<nobr>&lt;<a href="#map-fitboundsoptions">fitBounds options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets a map view that contains the given geographical bounds with the maximum zoom level possible.</td>
 	</tr>
 	<tr id="map-fitworld">
 		<td><code><b>fitWorld</b>(
 			<nobr>&lt;<a href="#map-fitboundsoptions">fitBounds options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets a map view that mostly contains the whole world with the maximum zoom level possible.</td>
 	</tr>
 	<tr>
@@ -667,7 +669,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
 			<nobr>&lt;<a href="#map-panoptions">pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Pans the map to a given center. Makes an animated pan if new center is not more than one screen away from the current one.</td>
 	</tr>
 	<tr id="map-paninsidebounds">
@@ -675,7 +677,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr>,
 			<nobr>&lt;<a href="#map-panoptions">pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Pans the map to the closest view that would lie inside the given bounds (if it's not already), controlling the animation using the options specific, if any.</td>
 	</tr>
 	<tr>
@@ -683,46 +685,46 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#point">Point</a>&gt; <i>point</i></nobr>,
 			<nobr>&lt;<a href="#map-panoptions">pan options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Pans the map by a given number of pixels (animated).</td>
 	</tr>
 	<tr>
 		<td><code><b>invalidateSize</b>(
 			<nobr>&lt;Boolean&gt; <i>animate</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default.</td>
 	</tr>
 	<tr>
 		<td><code><b>invalidateSize</b>(
 			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default. If <code>options.pan</code> is <code><span class="literal">false</span></code>, panning will not occur. If <code>options.debounceMoveend</code> is <code><span class="literal">true</span></code>, it will delay <code>moveend</code> event so that it doesn't happen often even if the method is called many times in a row.</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Checks if the map container size changed and updates the map if so &mdash; call it after you've changed the map size dynamically, also animating pan by default. If <code>options.pan</code> is <code><span class="hljs-literal">false</span></code>, panning will not occur. If <code>options.debounceMoveend</code> is <code><span class="hljs-literal">true</span></code>, it will delay <code>moveend</code> event so that it doesn't happen often even if the method is called many times in a row.</td>
 	</tr>
 	<tr id="map-setmaxbounds">
 		<td><code><b>setMaxBounds</b>(
 			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i></nobr><!--,
 			<nobr>&lt;<a href="#map-zoompanoptions">zoom/pan options</a>&gt; <i>options?</i> )</nobr>-->
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Restricts the map view to the given bounds (see <a href="#map-maxbounds">map maxBounds</a> option)<!--, animating the map view if bounds are changed.  The given animation options are passed through to `setView` or `panInsideBounds`, depending on map zoom level, and can be used to control how the map animates during this change-->.</td>
 	</tr>
 	<tr id="map-locate">
 		<td><code><b>locate</b>(
 			<nobr>&lt;<a href="#map-locate-options">Locate options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Tries to locate the user using the <a href="https://en.wikipedia.org/wiki/W3C_Geolocation_API">Geolocation API</a>, firing a <code>locationfound</code> event with location data on success or a <code>locationerror</code> event on failure, and optionally sets the map view to the user's location with respect to detection accuracy (or to the world view if geolocation failed). See <a href="#map-locate-options">Locate options</a> for more details.</td>
 	</tr>
 	<tr>
 		<td><code><b>stopLocate</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Stops watching location previously initiated by <code><b>map.locate</b>({watch: true})</code> and aborts resetting the map view if <code>map.locate</code> was called with <code>{setView: true}</code>.</td>
 	</tr>
 	<tr id="map-remove">
 		<td><code><b>remove</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Destroys the map and clears all related event listeners.</td>
 	</tr>
 </table>
@@ -768,7 +770,7 @@ var map = L.map('map', {
 
 		<td><code>Number</code></td>
 
-		<td>Returns the maximum zoom level on which the given bounds fit to the map view in its entirety. If <code>inside</code> (optional) is set to <code><span class="literal">true</span></code>, the method instead returns the minimum zoom level on which the map view fits into the given bounds in its entirety.</td>
+		<td>Returns the maximum zoom level on which the given bounds fit to the map view in its entirety. If <code>inside</code> (optional) is set to <code><span class="hljs-literal">true</span></code>, the method instead returns the minimum zoom level on which the map view fits into the given bounds in its entirety.</td>
 	</tr>
 	<tr>
 		<td><code><b>getSize</b>()</code></td>
@@ -800,7 +802,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i>,</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the given layer to the map.</td>
 	</tr>
 	<tr>
@@ -808,7 +810,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes the given layer from the map.</td>
 	</tr>
 	<tr>
@@ -817,14 +819,14 @@ var map = L.map('map', {
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the given layer is currently added to the map.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the given layer is currently added to the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>eachLayer</b>(
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Iterates over the layers of the map, optionally specifying context of the iterator function.
 <pre><code>map.eachLayer(function (layer) {
 	layer.bindPopup('Hello');
@@ -837,7 +839,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).</td>
 	</tr>
 	<tr id="map-openpopup2">
@@ -847,14 +849,14 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Creates a popup with the specified options and opens it in the given point on a map.</td>
 	</tr>
 	<tr id="map-closepopup">
 		<td><code><b>closePopup</b>(
 			<nobr>&lt;<a href="#popup">Popup</a>&gt; <i>popup?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Closes the popup previously opened with <a href="#map-openpopup">openPopup</a> (or the given one).</td>
 	</tr>
 	<tr id="map-addcontrol">
@@ -862,7 +864,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the given control to the map.</td>
 	</tr>
 	<tr>
@@ -870,7 +872,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#icontrol">IControl</a>&gt; <i>control</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes the given control from the map.</td>
 	</tr>
 </table>
@@ -1015,37 +1017,37 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>watch</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, starts continous watching of location changes (instead of detecting it once) using W3C <code>watchPosition</code> method. You can later stop watching using <code><b>map.stopLocate</b>()</code> method.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, starts continous watching of location changes (instead of detecting it once) using W3C <code>watchPosition</code> method. You can later stop watching using <code><b>map.stopLocate</b>()</code> method.</td>
 	</tr>
 	<tr>
 		<td><code><b>setView</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, automatically sets the map view to the user location with respect to detection accuracy, or to world view if geolocation failed.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, automatically sets the map view to the user location with respect to detection accuracy, or to world view if geolocation failed.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">Infinity</span></code></td>
+		<td><code><span class="hljs-number">Infinity</span></code></td>
 		<td>The maximum zoom for automatic view setting when using `setView` option.</td>
 	</tr>
 	<tr>
 		<td><code><b>timeout</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">10000</span></code></td>
+		<td><code><span class="hljs-number">10000</span></code></td>
 		<td>Number of milliseconds to wait for a response from geolocation before firing a <code>locationerror</code> event.</td>
 	</tr>
 	<tr>
 		<td><code><b>maximumAge</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0</span></code></td>
+		<td><code><span class="hljs-number">0</span></code></td>
 		<td>Maximum age of detected location. If less than this amount of milliseconds passed since last geolocation response, <code>locate</code> will return a cached location.</td>
 	</tr>
 	<tr>
 		<td><code><b>enableHighAccuracy</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
+		<td><code><span class="hljs-literal">false</span></code></td>
 		<td>Enables high accuracy, see <a href="http://dev.w3.org/geo/api/spec-source.html#high-accuracy">description in the W3C spec</a>.</td>
 	</tr>
 </table>
@@ -1063,8 +1065,8 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>reset</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the map view will be completely reset (without any animations).</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, the map view will be completely reset (without any animations).</td>
 	</tr>
 	<tr>
 		<td><code><b>pan</b></code></td>
@@ -1081,7 +1083,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>animate</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">-</span></code></td>
+		<td><code><span class="hljs-literal">-</span></code></td>
 		<td>An equivalent of passing <code>animate</code> to both zoom and pan options (see below).</td>
 	</tr>
 </table>
@@ -1099,25 +1101,25 @@ var map = L.map('map', {
 		<td><code><b>animate</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>-</code></td>
-		<td>If <code><span class="literal">true</span></code>, panning will always be animated if possible. If <code><span class="literal">false</span></code>, it will not animate panning, either resetting the map view if panning more than a screen away, or just setting a new offset for the map pane (except for `panBy` which always does the latter).</td>
+		<td>If <code><span class="hljs-literal">true</span></code>, panning will always be animated if possible. If <code><span class="hljs-literal">false</span></code>, it will not animate panning, either resetting the map view if panning more than a screen away, or just setting a new offset for the map pane (except for `panBy` which always does the latter).</td>
 	</tr>
 	<tr>
 		<td><code><b>duration</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0.25</span></code></td>
+		<td><code><span class="hljs-number">0.25</span></code></td>
 		<td>Duration of animated panning.</td>
 	</tr>
 	<tr>
 		<td><code><b>easeLinearity</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0.25</span></code></td>
-		<td>The curvature factor of panning animation easing (third parameter of the <a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). <span class="number">1.0</span> means linear animation, the less the more bowed the curve.</td>
+		<td><code><span class="hljs-number">0.25</span></code></td>
+		<td>The curvature factor of panning animation easing (third parameter of the <a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). <span class="hljs-number">1.0</span> means linear animation, the less the more bowed the curve.</td>
 	</tr>
 	<tr>
 		<td><code><b>noMoveStart</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, panning won't fire <code>movestart</code> event on start (used internally for panning inertia).</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, panning won't fire <code>movestart</code> event on start (used internally for panning inertia).</td>
 	</tr>
 </table>
 
@@ -1134,7 +1136,7 @@ var map = L.map('map', {
 		<td><code><b>animate</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code>-</code></td>
-		<td>If not specified, zoom animation will happen if the zoom origin is inside the current view. If <code><span class="literal">true</span></code>, the map will attempt animating zoom disregarding where zoom origin is. Setting <code><span class="literal">false</span></code> will make it always reset the view completely without animation.</td>
+		<td>If not specified, zoom animation will happen if the zoom origin is inside the current view. If <code><span class="hljs-literal">true</span></code>, the map will attempt animating zoom disregarding where zoom origin is. Setting <code><span class="hljs-literal">false</span></code> will make it always reset the view completely without animation.</td>
 	</tr>
 </table>
 
@@ -1152,25 +1154,25 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>paddingTopLeft</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td><code><nobr>[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]</nobr>
 		<td>Sets the amount of padding in the top left corner of a map container that shouldn't be accounted for when setting the view to fit bounds. Useful if you have some control overlays on the map like a sidebar and you don't want them to obscure objects you're zooming to.</td>
 	</tr>
 	<tr>
 		<td><code><b>paddingBottomRight</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td><code><nobr>[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]</nobr>
 		<td>The same for bottom right corner of the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>padding</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td><code><nobr>[<span class="hljs-number">0</span>, <span class="hljs-number">0</span>]</nobr>
 		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><nobr><span class="literal">null</span></nobr></code></td>
+		<td><code><nobr><span class="hljs-literal">null</span></nobr></code></td>
 		<td>The maximum possible zoom to use.</td>
 	</tr>
 </table>
@@ -1330,55 +1332,55 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>clickable</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>If <code><span class="literal">false</span></code>, the marker will not emit mouse events and will act as a part of the underlying map.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>If <code><span class="hljs-literal">false</span></code>, the marker will not emit mouse events and will act as a part of the underlying map.</td>
 	</tr>
 	<tr>
 		<td><code><b>draggable</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
+		<td><code><span class="hljs-literal">false</span></code></td>
 		<td>Whether the marker is draggable with mouse/touch or not.</td>
 	</tr>
 	<tr>
 		<td><code><b>keyboard</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.</td>
 	</tr>
 	<tr>
 		<td><code><b>title</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>Text for the browser tooltip that appear on marker hover (no tooltip by default).</td>
 	</tr>
 	<tr>
 		<td><code><b>alt</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>Text for the <code>alt</code> attribute of the icon image (useful for accessibility).</td>
 	</tr>
 	<tr id="marker-zindexoffset">
 		<td><code><b>zIndexOffset</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0</span></code></td>
+		<td><code><span class="hljs-number">0</span></code></td>
 		<td>By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1.0</span></code></td>
+		<td><code><span class="hljs-number">1.0</span></code></td>
 		<td>The opacity of the marker.</td>
 	</tr>
 	<tr>
 		<td><code><b>riseOnHover</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the marker will get on top of others when you hover the mouse over it.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, the marker will get on top of others when you hover the mouse over it.</td>
 	</tr>
 	<tr>
 		<td><code><b>riseOffset</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">250</span></code></td>
+		<td><code><span class="hljs-number">250</span></code></td>
 		<td>The z-index offset used for the <code>riseOnHover</code> feature.</td>
 	</tr>
 </table>
@@ -1469,7 +1471,7 @@ var map = L.map('map', {
 
 <table data-id='marker'>
 	<tr>
-		<th>Method</th>
+		<th class="width250">Method</th>
 		<th>Returns</th>
 		<th>Description</th>
 	</tr>
@@ -1478,7 +1480,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the marker to the map.</td>
 	</tr>
 	<tr>
@@ -1491,7 +1493,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the marker position to the given point.</td>
 	</tr>
 	<tr>
@@ -1499,7 +1501,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#icon">Icon</a>&gt; <i>icon</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the marker icon.</td>
 	</tr>
 	<tr>
@@ -1507,21 +1509,21 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <i>offset</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the <a href="#marker-zindexoffset">zIndex offset</a> of the marker.</td>
 	</tr>
 	<tr>
 		<td><code><b>setOpacity</b>(
 			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the opacity of the marker.</td>
 	</tr>
 	<tr>
 		<td><code><b>update</b>()</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Updates the marker position, useful if coordinates of its <code>latLng</code> object were changed directly.</td>
 	</tr>
 	<tr id="marker-bindpopup">
@@ -1530,17 +1532,17 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this marker. You can also open the bound popup with the Marker <a href="#marker-openpopup">openPopup</a> method.</td>
 	</tr>
 	<tr id="marker-unbindpopup">
 		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Unbinds the popup previously bound to the marker with <code>bindPopup</code>.</td>
 	</tr>
 	<tr id="marker-openpopup">
 		<td><code><b>openPopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Opens the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
 	</tr>
 	<tr>
@@ -1550,12 +1552,12 @@ var map = L.map('map', {
 	</tr>
 	<tr id="marker-closepopup">
 		<td><code><b>closePopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Closes the bound popup of the marker if it's opened.</td>
 	</tr>
 	<tr id="marker-togglepopup">
 		<td><code><b>togglePopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Toggles the popup previously bound by the <a href="#marker-bindpopup">bindPopup</a> method.</td>
 	</tr>
 	<tr id="marker-bindpopup">
@@ -1563,7 +1565,7 @@ var map = L.map('map', {
 			<nobr>&lt;String&gt; <i>html</i> |</nobr> <nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets an HTML content of the popup of this marker.</td>
 	</tr>
 	<tr id="marker-togeojson">
@@ -1639,83 +1641,83 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>maxWidth</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">300</span></code></td>
+		<td><code><span class="hljs-number">300</span></code></td>
 		<td>Max width of the popup.</td>
 	</tr>
 	<tr>
 		<td><code><b>minWidth</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">50</span></code></td>
+		<td><code><span class="hljs-number">50</span></code></td>
 		<td>Min width of the popup.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxHeight</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>If set, creates a scrollable container of the given height inside a popup if its content exceeds it.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoPan</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Set it to <code><span class="literal">false</span></code> if you don't want the map to do panning animation to fit the opened popup.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>Set it to <code><span class="hljs-literal">false</span></code> if you don't want the map to do panning animation to fit the opened popup.</td>
 	</tr>
 	<tr>
 		<td><code><b>keepInView</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>Set it to <code><span class="literal">true</span></code> if you want to prevent users from panning the popup off of the screen while it is open.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>Set it to <code><span class="hljs-literal">true</span></code> if you want to prevent users from panning the popup off of the screen while it is open.</td>
 	</tr>
 	<tr>
 		<td><code><b>closeButton</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Controls the presense of a close button in the popup.</td>
 	</tr>
 	<tr>
 		<td><code><b>offset</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>Point(<span class="number">0</span>, <span class="number">6</span>)</nobr>
+		<td><code><nobr>Point(<span class="hljs-number">0</span>, <span class="hljs-number">6</span>)</nobr>
 		</code></td>
 		<td>The offset of the popup position. Useful to control the anchor of the popup when opening it on some overlays.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoPanPaddingTopLeft</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		</code></td>
 		<td>The margin between the popup and the top left corner of the map view after autopanning was performed.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoPanPaddingBottomRight</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		</code></td>
 		<td>The margin between the popup and the bottom right corner of the map view after autopanning was performed.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoPanPadding</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>Point(<span class="number">5</span>, <span class="number">5</span>)</nobr>
+		<td><code><nobr>Point(<span class="hljs-number">5</span>, <span class="hljs-number">5</span>)</nobr>
 		</code></td>
 		<td>Equivalent of setting both top left and bottom right autopan padding to the same value.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomAnimation</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether to animate the popup on zoom. Disable it if you have problems with Flash content inside popups.</td>
 	</tr>
 	<tr>
 		<td><code><b>closeOnClick</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">null</span></code></td>
-		<td>Set it to <code><span class="literal">false</span></code> if you want to override the default behavior of the popup closing when user clicks the map (set globally by the <code>Map</code> <code>closePopupOnClick</code> option).</td>
+		<td><code><span class="hljs-literal">null</span></code></td>
+		<td>Set it to <code><span class="hljs-literal">false</span></code> if you want to override the default behavior of the popup closing when user clicks the map (set globally by the <code>Map</code> <code>closePopupOnClick</code> option).</td>
 	</tr>
 	<tr>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code></td>
-		<td><code class="javascript"><span class="string">''</span></code></td>
+		<td><code class="javascript"><span class="hljs-string">''</span></code></td>
 		<td>A custom class name to assign to the popup.</td>
 	</tr>
 </table>
@@ -1733,7 +1735,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the popup to the map.</td>
 	</tr>
 	<tr>
@@ -1741,7 +1743,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the popup to the map and closes the previous one. The same as <code>map.openPopup(popup)</code>.</td>
 	</tr>
 	<tr>
@@ -1749,7 +1751,7 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the geographical point where the popup will open.</td>
 	</tr>
 	<tr>
@@ -1762,7 +1764,7 @@ var map = L.map('map', {
 			<nobr>&lt;String|HTMLElement&gt; <i>htmlContent</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the HTML content of the popup.</td>
 	</tr>
 	<tr>
@@ -1773,7 +1775,7 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>update</b>()</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.</td>
 	</tr>
 </table>
@@ -1831,115 +1833,115 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0</span></code></td>
+		<td><code><span class="hljs-number">0</span></code></td>
 		<td>Minimum zoom number.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">18</span></code></td>
+		<td><code><span class="hljs-number">18</span></code></td>
 		<td>Maximum zoom number.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxNativeZoom</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded from <code>maxZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr>
 		<td><code><b>tileSize</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">256</span></code></td>
+		<td><code><span class="hljs-number">256</span></code></td>
 		<td>Tile size (width and height in pixels, assuming tiles are square).</td>
 	</tr>
 	<tr>
 		<td><code><b>subdomains</b></code></td>
 		<td><code>String</code> or <code>String[]</code></td>
-		<td><code><span class="string">'abc'</span></code></td>
+		<td><code><span class="hljs-string">'abc'</span></code></td>
 		<td>Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.</td>
 	</tr>
 	<tr>
 		<td><code><b>errorTileUrl</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>URL to the tile image to show in place of the tile that failed to load.</td>
 	</tr>
 	<tr>
 		<td><code><b>attribution</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>e.g. "&copy; Mapbox" &mdash; the string used by the attribution control, describes the layer data.</td>
 	</tr>
 	<tr>
 		<td><code><b>tms</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, inverses Y axis numbering for tiles (turn this on for TMS services).</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, inverses Y axis numbering for tiles (turn this on for TMS services).</td>
 	</tr>
 	<tr>
 		<td><code><b>continuousWorld</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If set to <code><span class="literal">true</span></code>, the tile coordinates won't be wrapped by world width (-180 to 180 longitude) or clamped to lie within world height (-90 to 90). Use this if you use Leaflet for maps that don't reflect the real world (e.g. game, indoor or photo maps).</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If set to <code><span class="hljs-literal">true</span></code>, the tile coordinates won't be wrapped by world width (-180 to 180 longitude) or clamped to lie within world height (-90 to 90). Use this if you use Leaflet for maps that don't reflect the real world (e.g. game, indoor or photo maps).</td>
 	</tr>
 	<tr>
 		<td><code><b>noWrap</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If set to <code><span class="literal">true</span></code>, the tiles just won't load outside the world width (-180 to 180 longitude) instead of repeating.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If set to <code><span class="hljs-literal">true</span></code>, the tiles just won't load outside the world width (-180 to 180 longitude) instead of repeating.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomOffset</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0</span></code></td>
+		<td><code><span class="hljs-number">0</span></code></td>
 		<td>The zoom number used in tile URLs will be offset with this value.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomReverse</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If set to <code><span class="literal">true</span></code>, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>)</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If set to <code><span class="hljs-literal">true</span></code>, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>)</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1.0</span></code></td>
+		<td><code><span class="hljs-number">1.0</span></code></td>
 		<td>The opacity of the tile layer.</td>
 	</tr>
 	<tr>
 		<td><code><b>zIndex</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>The explicit zIndex of the tile layer. Not set by default.</td>
 	</tr>
 	<tr>
 		<td><code><b>unloadInvisibleTiles</b></code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
-		<td>If <code><span class="literal">true</span></code>, all the tiles that are not visible after panning are removed (for better performance). <code><span class="literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="literal">false</span></code>.</td>
+		<td>If <code><span class="hljs-literal">true</span></code>, all the tiles that are not visible after panning are removed (for better performance). <code><span class="hljs-literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="hljs-literal">false</span></code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>updateWhenIdle</b></code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
-		<td>If <code><span class="literal">false</span></code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code><span class="literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="literal">false</span></code>.</td>
+		<td>If <code><span class="hljs-literal">false</span></code>, new tiles are loaded during panning, otherwise only after it (for better performance). <code><span class="hljs-literal">true</span></code> by default on mobile WebKit, otherwise <code><span class="hljs-literal">false</span></code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>detectRetina</b></code></td>
 		<td><code><code>Boolean</code></code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code> and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code> and user is on a retina display, it will request four tiles of half the specified size and a bigger zoom level in place of one to utilize the high resolution.</td>
 	</tr>
 	<tr>
 		<td><code><b>reuseTiles</b></code></td>
 		<td><code><code>Boolean</code></code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will in theory keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, all the tiles that are not visible after panning are placed in a reuse queue from which they will be fetched when new tiles become visible (as opposed to dynamically creating new ones). This will in theory keep memory usage low and eliminate the need for reserving new memory whenever a new tile is needed.</td>
 	</tr>
 	<tr>
 		<td><code><b>bounds</b></code></td>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>When this option is set, the TileLayer only loads tiles that are in the given geographical bounds.</td>
 	</tr>
 </table>
@@ -1994,17 +1996,17 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the layer to the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToFront</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the tile layer to the top of all tile layers.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToBack</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the tile layer to the bottom of all tile layers.</td>
 	</tr>
 	<tr>
@@ -2012,7 +2014,7 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the opacity of the tile layer.</td>
 	</tr>
 	<tr>
@@ -2020,19 +2022,19 @@ var map = L.map('map', {
 			<nobr>&lt;Number&gt; <i>zIndex</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the zIndex of the tile layer.</td>
 	</tr>
 	<tr>
 		<td><code><b>redraw</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Causes the layer to clear all the tiles and request them again.</td>
 	</tr>
 	<tr>
 		<td><code><b>setUrl</b>(
 			<nobr>&lt;String&gt; <i><a href="#url-template">urlTemplate</a></i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Updates the layer's URL template and redraws it.</td>
 	</tr>
 	<tr>
@@ -2090,37 +2092,37 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>layers</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td><b>(required)</b> Comma-separated list of WMS layers to show.</td>
 	</tr>
 	<tr>
 		<td><code><b>styles</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>Comma-separated list of WMS styles.</td>
 	</tr>
 	<tr>
 		<td><code><b>format</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'image/jpeg'</span></code></td>
-		<td>WMS image format (use <code><span class="string">'image/png'</span></code> for layers with transparency).</td>
+		<td><code><span class="hljs-string">'image/jpeg'</span></code></td>
+		<td>WMS image format (use <code><span class="hljs-string">'image/png'</span></code> for layers with transparency).</td>
 	</tr>
 	<tr>
 		<td><code><b>transparent</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the WMS service will return images with transparency.</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, the WMS service will return images with transparency.</td>
 	</tr>
 	<tr>
 		<td><code><b>version</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'1.1.1'</span></code></td>
+		<td><code><span class="hljs-string">'1.1.1'</span></code></td>
 		<td>Version of the WMS service to use.</td>
 	</tr>
 	<tr>
 		<td><code><b>crs</b></code></td>
 		<td><code><a href="#icrs">CRS</a></code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Coordinate Reference System to use for the WMS requests, defaults to map CRS. Don't change this if you're not sure what it means.</td>
 	</tr>
 </table>
@@ -2138,8 +2140,8 @@ var map = L.map('map', {
 			<nobr>&lt;<a href="#tilelayer-wms-options">WMS parameters</a>&gt; <i>params</i></nobr>,
 			<nobr>&lt;Boolean&gt; <i>noRedraw?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Merges an object with the new parameters and re-requests tiles on the current screen (unless <code>noRedraw</code> was set to <code><span class="literal">true</span></code>).</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Merges an object with the new parameters and re-requests tiles on the current screen (unless <code>noRedraw</code> was set to <code><span class="hljs-literal">true</span></code>).</td>
 	</tr>
 </table>
 
@@ -2185,7 +2187,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 	<tr>
 		<td><code><b>async</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
+		<td><code><span class="hljs-literal">false</span></code></td>
 		<td>Indicates that tiles will be drawn asynchronously. <a href="#tilelayer-canvas-tiledrawn">tileDrawn</a> method should be called for each tile after drawing completion.</td>
 	</tr>
 </table>
@@ -2204,7 +2206,7 @@ canvasTiles.drawTile = function(canvas, tilePoint, zoom) {
 			<nobr>&lt;<a href="#point">Point</a>&gt; <i>tilePoint</i></nobr>,
 			<nobr>&lt;Number&gt; <i>zoom</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>You need to define this method after creating the instance to draw tiles; <code>canvas</code> is the actual canvas tile on which you can draw, <code>tilePoint</code> represents the tile numbers, and <code>zoom</code> is the current zoom.</td>
 	</tr>
 	<tr id="tilelayer-canvas-tiledrawn">
@@ -2257,13 +2259,13 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>opacity</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1.0</span></code></td>
+		<td><code><span class="hljs-number">1.0</span></code></td>
 		<td>The opacity of the image overlay.</td>
 	</tr>
 	<tr>
 		<td><code><b>attribution</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>The attribution text of the image overlay.</td>
 	</tr>
 </table>
@@ -2280,7 +2282,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the overlay to the map.</td>
 	</tr>
 	<tr>
@@ -2288,7 +2290,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;Number&gt; <i>opacity</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the opacity of the overlay.</td>
 	</tr>
 	<tr>
@@ -2296,17 +2298,17 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;String&gt; <i>imageUrl</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the URL of the image.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToFront</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the layer to the top of all overlays.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToBack</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the layer to the bottom of all overlays.</td>
 	</tr>
 </table>
@@ -2326,32 +2328,32 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>stroke</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>Whether to draw stroke along the path. Set it to <code><span class="literal">false</span></code> to disable borders on polygons or circles.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>Whether to draw stroke along the path. Set it to <code><span class="hljs-literal">false</span></code> to disable borders on polygons or circles.</td>
 	</tr>
 	<tr>
 		<td><code><b>color</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'#03f'</span></code></td>
+		<td><code><span class="hljs-string">'#03f'</span></code></td>
 		<td>Stroke color.</td>
 	</tr>
 	<tr>
 		<td><code><b>weight</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">5</span></code></td>
+		<td><code><span class="hljs-number">5</span></code></td>
 		<td>Stroke width in pixels.</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0.5</span></code></td>
+		<td><code><span class="hljs-number">0.5</span></code></td>
 		<td>Stroke opacity.</td>
 	</tr>
 	<tr>
 		<td><code><b>fill</b></code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
-		<td>Whether to fill the path with color. Set it to <code><span class="literal">false</span></code> to disable filling on polygons or circles.</td>
+		<td>Whether to fill the path with color. Set it to <code><span class="hljs-literal">false</span></code> to disable filling on polygons or circles.</td>
 	</tr>
 	<tr>
 		<td><code><b>fillColor</b></code></td>
@@ -2362,49 +2364,49 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>fillOpacity</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">0.2</span></code></td>
+		<td><code><span class="hljs-number">0.2</span></code></td>
 		<td>Fill opacity.</td>
 	</tr>
 	<tr>
 		<td><code><b>fillRule</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'evenodd'</span></code></td>
+		<td><code><span class="hljs-string">'evenodd'</span></code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
 	</tr>
 	<tr>
 		<td><code><b>dashArray</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>A string that defines the stroke <a href="https://developer.mozilla.org/en/SVG/Attribute/stroke-dasharray">dash pattern</a>. Doesn't work on canvas-powered layers (e.g. Android 2).</td>
 	</tr>
 	<tr>
 		<td><code><b>lineCap</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linecap">shape to be used at the end</a> of the stroke.</td>
 	</tr>
 	<tr>
 		<td><code><b>lineJoin</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Attribute/stroke-linejoin">shape to be used at the corners</a> of the stroke.</td>
 	</tr>
 	<tr>
 		<td><code><b>clickable</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>If <code><span class="literal">false</span></code>, the vector will not emit mouse events and will act as a part of the underlying map.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>If <code><span class="hljs-literal">false</span></code>, the vector will not emit mouse events and will act as a part of the underlying map.</td>
 	</tr>
 	<tr>
 		<td><code><b>pointerEvents</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="literal">null</span></code></td>
+		<td><code><span class="hljs-literal">null</span></code></td>
 		<td>Sets the <code>pointer-events</code> attribute on the path if SVG backend is used.</td>
 	</tr>
 	<tr>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">''</span></code></td>
+		<td><code><span class="hljs-string">''</span></code></td>
 		<td>Custom class name set on an element.</td>
 	</tr>
 </table>
@@ -2483,7 +2485,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the layer to the map.</td>
 	</tr>
 	<tr id="path-bindpopup">
@@ -2492,7 +2494,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on this path.</td>
 	</tr>
 	<tr>
@@ -2501,12 +2503,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Binds a given popup object to the path.</td>
 	</tr>
 	<tr id="path-unbindpopup">
 		<td><code><b>unbindPopup</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Unbinds the popup previously bound to the path with <code>bindPopup</code>.</td>
 	</tr>
 	<tr id="path-openpopup">
@@ -2514,13 +2516,13 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Opens the popup previously bound by the <a href="#path-bindpopup">bindPopup</a> method in the given point, or in one of the path's points if not specified.</td>
 	</tr>
 	<tr id="path-closepopup">
 		<td><code><b>closePopup</b>()</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Closes the path's bound popup if it is opened.</td>
 	</tr>
 	<tr id="path-setstyle">
@@ -2528,7 +2530,7 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>object</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes the appearance of a Path based on the options in the <a href="#path-options">Path options</a> object.</td>
 	</tr>
 	<tr id="path-getbounds">
@@ -2538,17 +2540,17 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>bringToFront</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the layer to the top of all path layers.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToBack</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the layer to the bottom of all path layers.</td>
 	</tr>
 	<tr>
 		<td><code><b>redraw</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Redraws the layer. Sometimes useful after you changed the coordinates that the path uses.</td>
 	</tr>
 </table>
@@ -2577,12 +2579,12 @@ L.imageOverlay(imageUrl, imageBounds).addTo(map);</code></pre>
 		<td><code>CANVAS</code></td>
 		<td><code>Boolean</code></td>
 		<td>depends</td>
-		<td>True if Canvas is used for vector rendering (Android 2). You can also force this by setting global variable <code>L_PREFER_CANVAS</code> to <code><span class="literal">true</span></code> <em>before</em> the Leaflet include on your page — sometimes it can increase performance dramatically when rendering thousands of circle markers, but currently suffers from a bug that causes removing such layers to be extremely slow.</td>
+		<td>True if Canvas is used for vector rendering (Android 2). You can also force this by setting global variable <code>L_PREFER_CANVAS</code> to <code><span class="hljs-literal">true</span></code> <em>before</em> the Leaflet include on your page — sometimes it can increase performance dramatically when rendering thousands of circle markers, but currently suffers from a bug that causes removing such layers to be extremely slow.</td>
 	</tr>
 	<tr>
 		<td><code>CLIP_PADDING</code></td>
 		<td><code>Number</code></td>
-		<td><nobr><code><span class="number">0.5</span></code> for SVG</nobr><br /><nobr><code><span class="number">0.02</span></code> for VML</nobr></td>
+		<td><nobr><code><span class="hljs-number">0.5</span></code> for SVG</nobr><br /><nobr><code><span class="hljs-number">0.02</span></code> for VML</nobr></td>
 		<td>How much to extend the clip area around the map view (relative to its size, e.g. 0.5 is half the screen in each direction). Smaller values mean that you will see clipped ends of paths while you're dragging the map, and bigger values decrease drawing performance.</td>
 	</tr>
 </table>
@@ -2632,13 +2634,13 @@ map.fitBounds(polyline.getBounds());</code></pre>
 	<tr>
 		<td><code><b>smoothFactor</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1.0</span></code></td>
+		<td><code><span class="hljs-number">1.0</span></code></td>
 		<td>How much to simplify the polyline on each zoom level. More means better performance and smoother look, and less means more accurate representation.</td>
 	</tr>
 	<tr>
 		<td><code><b>noClip</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
+		<td><code><span class="hljs-literal">false</span></code></td>
 		<td>Disabled polyline clipping.</td>
 	</tr>
 </table>
@@ -2658,7 +2660,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds a given point to the polyline.</td>
 	</tr>
 	<tr>
@@ -2666,7 +2668,7 @@ map.fitBounds(polyline.getBounds());</code></pre>
 			<nobr>&lt;<a href="#latlng">LatLng</a>[]&gt; <i>latlngs</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Replaces all the points in the polyline with the given array of geographical points.</td>
 	</tr>
 	<tr>
@@ -2740,7 +2742,7 @@ multiple line features:</p>
 			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Replace all lines and their paths with the given array of arrays of
         geographical points.</td>
     </tr>
@@ -2849,7 +2851,7 @@ multiple polygon features:</p>
 			<nobr>&lt;<a href="#latlng">LatLng</a>[][]&gt; <i>latlngs</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Replace all polygons and their paths with the given array of arrays of
         geographical points.</td>
     </tr>
@@ -2921,7 +2923,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#latlngbounds">LatLngBounds</a>&gt; <i>bounds</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Redraws the rectangle with the passed bounds.</td>
 	</tr>
 </table>
@@ -2976,7 +2978,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the position of a circle to a new location.</td>
 	</tr>
 	<tr>
@@ -2984,7 +2986,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;Number&gt; <i>radius</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the radius of a circle. Units are in meters.</td>
 	</tr>
 	<tr id="circle-togeojson">
@@ -3032,7 +3034,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the position of a circle marker to a new location.</td>
 	</tr>
 	<tr>
@@ -3040,7 +3042,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;Number&gt; <i>radius</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the radius of a circle marker. Units are in pixels.</td>
 	</tr>
 	<tr id="circlemarker-togeojson">
@@ -3090,7 +3092,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the group of layers to the map.</td>
 	</tr>
 	<tr>
@@ -3098,7 +3100,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds a given layer to the group.</td>
 	</tr>
 	<tr>
@@ -3106,7 +3108,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes a given layer from the group.</td>
 	</tr>
 	<tr>
@@ -3114,7 +3116,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;String&gt; <i>id</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes a given layer of the given id from the group.</td>
 	</tr>
 	<tr>
@@ -3123,7 +3125,7 @@ map.fitBounds(bounds);</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the given layer is currently added to the group.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the given layer is currently added to the group.</td>
 	</tr>
 	<tr>
 		<td><code><b>getLayer</b>(
@@ -3140,7 +3142,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>clearLayers</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes all the layers from the group.</td>
 	</tr>
 	<tr>
@@ -3148,7 +3150,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;Function&gt; <i>fn</i></nobr>,
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Iterates over the layers of the group, optionally specifying context of the iterator function.
 <pre><code>group.eachLayer(function (layer) {
 	layer.bindPopup('Hello');
@@ -3208,7 +3210,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Binds a popup with a particular HTML content to a click on any layer from the group that has a <code>bindPopup</code> method.</td>
 	</tr>
 	<tr>
@@ -3220,17 +3222,17 @@ map.fitBounds(bounds);</code></pre>
 		<td><code><b>setStyle</b>(
 			<nobr>&lt;<a href="#path-options">Path options</a>&gt; <i>style</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the given path options to each layer of the group that has a <code>setStyle</code> method.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToFront</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the layer group to the top of all other layers.</td>
 	</tr>
 	<tr>
 		<td><code><b>bringToBack</b>()</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Brings the layer group to the bottom of all other layers.</td>
 	</tr>
 </table>
@@ -3390,7 +3392,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;Function&gt; <i><a href="#geojson-style">style</a></i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Changes styles of GeoJSON vector layers with the given style function.</td>
 	</tr>
 	<tr id="geojson-resetstyle">
@@ -3398,7 +3400,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#path">Path</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.</td>
 	</tr>
 </table>
@@ -3427,7 +3429,7 @@ map.fitBounds(bounds);</code></pre>
 		</code></td>
 
 		<td><code><a href="#latlng">LatLng</a></code></td>
-		<td>Creates a LatLng object from an array of 2 numbers (latitude, longitude) used in GeoJSON for points. If <code>reverse</code> is set to <code><span class="literal">true</span></code>, the numbers will be interpreted as (longitude, latitude).</td>
+		<td>Creates a LatLng object from an array of 2 numbers (latitude, longitude) used in GeoJSON for points. If <code>reverse</code> is set to <code><span class="hljs-literal">true</span></code>, the numbers will be interpreted as (longitude, latitude).</td>
 	</tr>
 	<tr>
 		<td><code><b>coordsToLatLngs</b>(
@@ -3437,7 +3439,7 @@ map.fitBounds(bounds);</code></pre>
 		</code></td>
 
 		<td><code>Array</code></td>
-		<td>Creates a multidimensional array of LatLng objects from a GeoJSON coordinates array. <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default). If <code>reverse</code> is set to <code><span class="literal">true</span></code>, the numbers will be interpreted as (longitude, latitude).</td>
+		<td>Creates a multidimensional array of LatLng objects from a GeoJSON coordinates array. <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default). If <code>reverse</code> is set to <code><span class="hljs-literal">true</span></code>, the numbers will be interpreted as (longitude, latitude).</td>
 	</tr>
 </table>
 
@@ -3518,7 +3520,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the given LatLng point is at the same position (within a small margin of error).</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the given LatLng point is at the same position (within a small margin of error).</td>
 	</tr>
 	<tr>
 		<td><code><b>toString</b>()</code></td>
@@ -3532,7 +3534,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code><a href="#latlng">LatLng</a></code></td>
-		<td>Returns a new <code>LatLng</code> object with the longitude wrapped around <code>left</code> and <code>right</code> boundaries (<code><span class="number">-180</span></code> to <code><span class="number">180</span></code> by default).</td>
+		<td>Returns a new <code>LatLng</code> object with the longitude wrapped around <code>left</code> and <code>right</code> boundaries (<code><span class="hljs-number">-180</span></code> to <code><span class="hljs-number">180</span></code> by default).</td>
 	</tr>
 </table>
 
@@ -3548,19 +3550,19 @@ map.panTo(L.latLng(50, 30));</code></pre>
 	<tr>
 		<td><code><b>DEG_TO_RAD</b></code></td>
 		<td><code>Number</code></td>
-		<td><code>Math.PI / <span class="number">180</span></code></td>
+		<td><code>Math.PI / <span class="hljs-number">180</span></code></td>
 		<td>A multiplier for converting degrees into radians.</td>
 	</tr>
 	<tr>
 		<td><code><b>RAD_TO_DEG</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">180</span> / Math.PI</code></td>
+		<td><code><span class="hljs-number">180</span> / Math.PI</code></td>
 		<td>A multiplier for converting radians into degrees.</td>
 	</tr>
 	<tr>
 		<td><code><b>MAX_MARGIN</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">1.0E-9</span></code></td>
+		<td><code><span class="hljs-number">1.0E-9</span></code></td>
 		<td>Max margin of error for the equality check.</td>
 	</tr>
 </table>
@@ -3622,7 +3624,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 			<nobr>&lt;<a href="#latlng">LatLng</a>|<a href="#latlngbounds">LatLngBounds</a>&gt; <i>latlng</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Extends the bounds to contain the given point or bounds.</td>
 	</tr>
 	<tr>
@@ -3676,7 +3678,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given one.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle contains the given one.</td>
 	</tr>
 	<tr>
 		<td><code><b>contains</b>(
@@ -3684,7 +3686,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given point.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle contains the given point.</td>
 	</tr>
 	<tr>
 		<td><code><b>intersects</b>(
@@ -3692,7 +3694,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle intersects the given bounds.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle intersects the given bounds.</td>
 	</tr>
 	<tr>
 		<td><code><b>equals</b>(
@@ -3700,12 +3702,12 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle is equivalent (within a small margin of error) to the given bounds.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle is equivalent (within a small margin of error) to the given bounds.</td>
 	</tr>
 	<tr>
 		<td><code><b>toBBoxString</b>()</code></td>
 		<td><code>String</code></td>
-		<td>Returns a string with bounding box coordinates in a <code><span class="string">'southwest_lng,southwest_lat,northeast_lng,northeast_lat'</span></code> format. Useful for sending requests to web services that return geo data.</td>
+		<td>Returns a string with bounding box coordinates in a <code><span class="hljs-string">'southwest_lng,southwest_lat,northeast_lng,northeast_lat'</span></code> format. Useful for sending requests to web services that return geo data.</td>
 	</tr>
 	<tr>
 		<td><code><b>pad</b>(
@@ -3720,7 +3722,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the bounds are properly initialized.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the bounds are properly initialized.</td>
 	</tr>
 </table>
 
@@ -3751,7 +3753,7 @@ map.panBy(L.point(200, 300));</code></pre>
 			<nobr>&lt;Boolean&gt; <i>round?</i> )</nobr>
 		</code></td>
 
-		<td>Creates a Point object with the given <code>x</code> and <code>y</code> coordinates. If optional <code>round</code> is set to <code><span class="literal">true</span></code>, rounds the <code>x</code> and <code>y</code> values.</td>
+		<td>Creates a Point object with the given <code>x</code> and <code>y</code> coordinates. If optional <code>round</code> is set to <code><span class="hljs-literal">true</span></code>, rounds the <code>x</code> and <code>y</code> values.</td>
 	</tr>
 </table>
 
@@ -3814,7 +3816,7 @@ map.panBy(L.point(200, 300));</code></pre>
 		</code></td>
 
 		<td><code><a href="#point">Point</a></code></td>
-		<td>Returns the result of division of the current point by the given number. If optional <code>round</code> is set to <code><span class="literal">true</span></code>, returns a rounded result.</td>
+		<td>Returns the result of division of the current point by the given number. If optional <code>round</code> is set to <code><span class="hljs-literal">true</span></code>, returns a rounded result.</td>
 	</tr>
 	<tr>
 		<td><code><b>distanceTo</b>(
@@ -3845,7 +3847,7 @@ map.panBy(L.point(200, 300));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the given point has the same coordinates.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the given point has the same coordinates.</td>
 	</tr>
 	<tr>
 		<td><code><b>contains</b>(
@@ -3853,7 +3855,7 @@ map.panBy(L.point(200, 300));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).</td>
 	</tr>
 	<tr>
 		<td><code><b>toString</b>()</code></td>
@@ -3950,7 +3952,7 @@ map.panBy(L.point(200, 300));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given one.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle contains the given one.</td>
 	</tr>
 	<tr>
 		<td><code><b>contains</b>(
@@ -3958,7 +3960,7 @@ map.panBy(L.point(200, 300));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle contains the given point.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle contains the given point.</td>
 	</tr>
 	<tr>
 		<td><code><b>intersects</b>(
@@ -3966,13 +3968,13 @@ map.panBy(L.point(200, 300));</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the rectangle intersects the given bounds.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the rectangle intersects the given bounds.</td>
 	</tr>
 	<tr>
 		<td><code><b>isValid</b>()</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the bounds are properly initialized.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the bounds are properly initialized.</td>
 	</tr>
 	<tr>
 		<td><code><b>getSize</b>()</code></td>
@@ -4091,7 +4093,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
 L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 
-<p>By default, it has a <code><span class="string">'leaflet-div-icon'</span></code> class and is styled as a little white square with a shadow.</p>
+<p>By default, it has a <code><span class="hljs-string">'leaflet-div-icon'</span></code> class and is styled as a little white square with a shadow.</p>
 
 <h3>Creation</h3>
 
@@ -4138,7 +4140,7 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>className</b></code></td>
 		<td><code>String</code>
-		<td>A custom class name to assign to the icon. <code><span class="string">'leaflet-div-icon'</span></code> by default.</td>
+		<td>A custom class name to assign to the icon. <code><span class="hljs-string">'leaflet-div-icon'</span></code> by default.</td>
 	</tr>
 	<tr>
 		<td><code><b>html</b></code></td>
@@ -4187,7 +4189,7 @@ map.addControl(control);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'topright'</span></td>
+		<td><code><span class="hljs-string">'topright'</span></td>
 		<td>The initial position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 </table>
@@ -4204,7 +4206,7 @@ map.addControl(control);</code></pre>
 			<nobr>&lt;String&gt; <i>position</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the position of the control. See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
@@ -4217,7 +4219,7 @@ map.addControl(control);</code></pre>
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds the control to the map.</td>
 	</tr>
 	<tr>
@@ -4225,7 +4227,7 @@ map.addControl(control);</code></pre>
 			<nobr>&lt;<a href="#map-class">Map</a>&gt; <i>map</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes the control from the map.</td>
 	</tr>
 	<tr>
@@ -4245,19 +4247,19 @@ map.addControl(control);</code></pre>
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><code><span class="string">'topleft'</span></code></td>
+		<td><code><span class="hljs-string">'topleft'</span></code></td>
 		<td>Top left of the map.</td>
 	</tr>
 	<tr>
-		<td><code><span class="string">'topright'</span></code></td>
+		<td><code><span class="hljs-string">'topright'</span></code></td>
 		<td>Top right of the map.</td>
 	</tr>
 	<tr>
-		<td><code><span class="string">'bottomleft'</span></code></td>
+		<td><code><span class="hljs-string">'bottomleft'</span></code></td>
 		<td>Bottom left of the map.</td>
 	</tr>
 	<tr>
-		<td><code><span class="string">'bottomright'</span></code></td>
+		<td><code><span class="hljs-string">'bottomright'</span></code></td>
 		<td>Bottom right of the map.</td>
 	</tr>
 </table>
@@ -4265,7 +4267,7 @@ map.addControl(control);</code></pre>
 
 <h2 id="control-zoom">Control.zoom</h2>
 
-<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code><span class="literal">false</span></code>. Extends <a href="#control">Control</a>.</p>
+<p>A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its <code>zoomControl</code> option to <code><span class="hljs-literal">false</span></code>. Extends <a href="#control">Control</a>.</p>
 
 <h3>Creation</h3>
 <table data-id='control-zoom'>
@@ -4295,31 +4297,31 @@ map.addControl(control);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'topleft'</span></td>
+		<td><code><span class="hljs-string">'topleft'</span></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomInText</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'+'</span></td>
+		<td><code><span class="hljs-string">'+'</span></td>
 		<td>The text set on the zoom in button.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomOutText</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'-'</span></td>
+		<td><code><span class="hljs-string">'-'</span></td>
 		<td>The text set on the zoom out button.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomInTitle</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'Zoom in'</span></td>
+		<td><code><span class="hljs-string">'Zoom in'</span></td>
 		<td>The title set on the zoom in button.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomOutTitle</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'Zoom out'</span></td>
+		<td><code><span class="hljs-string">'Zoom out'</span></td>
 		<td>The title set on the zoom out button.</td>
 	</tr>
 </table>
@@ -4328,7 +4330,7 @@ map.addControl(control);</code></pre>
 
 <h2 id="control-attribution">Control.Attribution</h2>
 
-<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code><span class="literal">false</span></code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Extends <a href="#control">Control</a>.</p>
+<p>The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its <code>attributionControl</code> option to <code><span class="hljs-literal">false</span></code>, and it fetches attribution texts from layers with <code>getAttribution</code> method automatically. Extends <a href="#control">Control</a>.</p>
 
 <h3>Creation</h3>
 <table data-id='control-attribution'>
@@ -4359,14 +4361,14 @@ map.addControl(control);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'bottomright'</span></td>
+		<td><code><span class="hljs-string">'bottomright'</span></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>prefix</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'Leaflet'</span></td>
-		<td>The HTML text shown before the attributions. Pass <code><span class="literal">false</span></code> to disable.</td>
+		<td><code><span class="hljs-string">'Leaflet'</span></td>
+		<td>The HTML text shown before the attributions. Pass <code><span class="hljs-literal">false</span></code> to disable.</td>
 	</tr>
 </table>
 
@@ -4381,21 +4383,21 @@ map.addControl(control);</code></pre>
 		<td><code><b>setPrefix</b>(
 			<nobr>&lt;String&gt; <i>prefix</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Sets the text before the attributions.</td>
 	</tr>
 	<tr>
 		<td><code><b>addAttribution</b>(
 			<nobr>&lt;String&gt; <i>text</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds an attribution text (e.g. <code><span class="string">'Vector data &amp;copy; Mapbox'</span></code>).</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Adds an attribution text (e.g. <code><span class="hljs-string">'Vector data &amp;copy; Mapbox'</span></code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>removeAttribution</b>(
 			<nobr>&lt;String&gt; <i>text</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes an attribution text.</td>
 	</tr>
 </table>
@@ -4446,7 +4448,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>,
 			<nobr>&lt;String&gt; <i>name</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds a base layer (radio button entry) with the given name to the control.</td>
 	</tr>
 	<tr>
@@ -4454,14 +4456,14 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i></nobr>,
 			<nobr>&lt;String&gt; <i>name</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds an overlay (checkbox entry) with the given name to the control.</td>
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
 			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Remove the given layer from the control.</td>
 	</tr>
 </table>
@@ -4478,20 +4480,20 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'topright'</span></td>
+		<td><code><span class="hljs-string">'topright'</span></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>collapsed</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the control will be collapsed into an icon and expanded on mouse hover or touch.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, the control will be collapsed into an icon and expanded on mouse hover or touch.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoZIndex</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.</td>
+		<td><code><span class="hljs-literal">true</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.</td>
 	</tr>
 </table>
 
@@ -4574,32 +4576,32 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'bottomleft'</span></td>
+		<td><code><span class="hljs-string">'bottomleft'</span></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>maxWidth</b></code></td>
 		<td><code>Number</code></td>
-		<td><code><span class="number">100</span></code></td>
+		<td><code><span class="hljs-number">100</span></code></td>
 		<td>Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).</td>
 	</tr>
 	<tr>
 		<td><code><b>metric</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether to show the metric scale line (m/km).</td>
 	</tr>
 	<tr>
 		<td><code><b>imperial</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code></td>
+		<td><code><span class="hljs-literal">true</span></code></td>
 		<td>Whether to show the imperial scale line (mi/ft).</td>
 	</tr>
 	<tr>
 		<td><code><b>updateWhenIdle</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">false</span></code></td>
-		<td>If <code><span class="literal">true</span></code>, the control is updated on <code>moveend</code>, otherwise it's always up-to-date (updated on <code>move</code>).</td>
+		<td><code><span class="hljs-literal">false</span></code></td>
+		<td>If <code><span class="hljs-literal">true</span></code>, the control is updated on <code>moveend</code>, otherwise it's always up-to-date (updated on <code>move</code>).</td>
 	</tr>
 </table>
 
@@ -4607,7 +4609,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 
 <h2 id="events">Events methods</h2>
 
-<p>A set of methods shared between event-powered classes (like Map). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map <code><span class="string">'click'</span></code> event).</p>
+<p>A set of methods shared between event-powered classes (like Map). Generally, events allow you to execute some function when something happens with an object (e.g. the user clicks on the map, causing the map <code><span class="hljs-string">'click'</span></code> event).</p>
 
 <h3>Example</h3>
 
@@ -4636,8 +4638,8 @@ map.off('click', onClick);</code></pre>
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code><span class="keyword">this</span></code> keyword will point to). You can also pass several space-separated types (e.g. <code><span class="string">'click dblclick'</span></code>).</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the <code><span class="hljs-keyword">this</span></code> keyword will point to). You can also pass several space-separated types (e.g. <code><span class="hljs-string">'click dblclick'</span></code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>addOneTimeEventListener</b>(
@@ -4646,7 +4648,7 @@ map.off('click', onClick);</code></pre>
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>The same as above except the listener will only get fired once and then removed.</td>
 	</tr>
 	<tr>
@@ -4655,7 +4657,7 @@ map.off('click', onClick);</code></pre>
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
 	</tr>
 	<tr>
@@ -4665,7 +4667,7 @@ map.off('click', onClick);</code></pre>
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object.  Note that if you passed a custom context to <code>addEventListener</code>, you must pass the same context to <code>removeEventListener</code> in order to remove the listener.</td>
 	</tr>
 	<tr>
@@ -4674,13 +4676,13 @@ map.off('click', onClick);</code></pre>
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes a set of type/listener pairs.</code></td>
 	</tr>
 	<tr>
 		<td><code><b>removeEventListener</b>()</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes all listeners. An alias to <code>clearAllEventListeners</code> when you use it without arguments.</td>
 	</tr>
 	<tr>
@@ -4689,7 +4691,7 @@ map.off('click', onClick);</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if a particular event type has some listeners attached to it.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if a particular event type has some listeners attached to it.</td>
 	</tr>
 	<tr>
 		<td><code><b>fireEvent</b>(
@@ -4697,33 +4699,33 @@ map.off('click', onClick);</code></pre>
 			<nobr>&lt;Object&gt; <i>data?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
 	</tr>
 	<tr>
 		<td><code><b>clearAllEventListeners</b>()</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes all listeners to all events on the object.</code></td>
 	</tr>
 	<tr>
 		<td><code><b>on</b>( &hellip; )</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Alias to <code>addEventListener</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>once</b>( &hellip; )</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Alias to <code>addOneTimeEventListener</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>off</b>( &hellip; )</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Alias to <code>removeEventListener</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>fire</b>( &hellip; )</code></td>
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Alias to <code>fireEvent</code>.</td>
 	</tr>
 </table>
@@ -4750,7 +4752,7 @@ map.off('click', onClick);</code></pre>
 	<tr>
 		<td><code><b>type</b></code></td>
 		<td><code>String</code></td>
-		<td>The event type (e.g. <code><span class="string">'click'</span></code>).</td>
+		<td>The event type (e.g. <code><span class="hljs-string">'click'</span></code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>target</b></code></td>
@@ -5174,77 +5176,77 @@ MyClass.FOO; // 'bar'</code></pre>
 	<tr>
 		<td><code><b>ie</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for all Internet Explorer versions.</td>
+		<td><code><span class="hljs-literal">true</span></code> for all Internet Explorer versions.</td>
 	</tr>
 	<tr>
 		<td><code><b>ie6</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Internet Explorer 6.</td>
+		<td><code><span class="hljs-literal">true</span></code> for Internet Explorer 6.</td>
 	</tr>
 	<tr>
 		<td><code><b>ie7</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Internet Explorer 7.</td>
+		<td><code><span class="hljs-literal">true</span></code> for Internet Explorer 7.</td>
 	</tr>
 	<tr>
 		<td><code><b>webkit</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
+		<td><code><span class="hljs-literal">true</span></code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
 	</tr>
 	<tr>
 		<td><code><b>webkit3d</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for webkit-based browsers that support CSS 3D transformations.</td>
+		<td><code><span class="hljs-literal">true</span></code> for webkit-based browsers that support CSS 3D transformations.</td>
 	</tr>
 	<!--<tr>
 		<td><code><b>gecko</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Gecko-based browsers like Firefox and Mozilla.</td>
+		<td><code><span class="hljs-literal">true</span></code> for Gecko-based browsers like Firefox and Mozilla.</td>
 	</tr>
 	<tr>
 		<td><code><b>opera</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Opera.</td>
+		<td><code><span class="hljs-literal">true</span></code> for Opera.</td>
 	</tr>-->
 	<tr>
 		<td><code><b>android</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for Android mobile browser.</td>
+		<td><code><span class="hljs-literal">true</span></code> for Android mobile browser.</td>
 	</tr>
 	<tr>
 		<td><code><b>android23</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for old Android stock browsers (2 and 3).</td>
+		<td><code><span class="hljs-literal">true</span></code> for old Android stock browsers (2 and 3).</td>
 	</tr>
 	<tr>
 		<td><code><b>mobile</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for modern mobile browsers (including iOS Safari and different Android browsers).</td>
+		<td><code><span class="hljs-literal">true</span></code> for modern mobile browsers (including iOS Safari and different Android browsers).</td>
 	</tr>
 	<tr>
 		<td><code><b>mobileWebkit</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for mobile webkit-based browsers.</td>
+		<td><code><span class="hljs-literal">true</span></code> for mobile webkit-based browsers.</td>
 	</tr>
 	<tr>
 		<td><code><b>mobileOpera</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for mobile Opera.</td>
+		<td><code><span class="hljs-literal">true</span></code> for mobile Opera.</td>
 	</tr>
 	<tr>
 		<td><code><b>touch</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for all browsers on touch devices.</td>
+		<td><code><span class="hljs-literal">true</span></code> for all browsers on touch devices.</td>
 	</tr>
 	<tr>
 		<td><code><b>msTouch</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for browsers with Microsoft touch model (e.g. IE10).</td>
+		<td><code><span class="hljs-literal">true</span></code> for browsers with Microsoft touch model (e.g. IE10).</td>
 	</tr>
 	<tr>
 		<td><code><b>retina</b></code></td>
 		<td><code>Boolean</code></td>
-		<td><code><span class="literal">true</span></code> for devices with Retina screens.</td>
+		<td><code><span class="hljs-literal">true</span></code> for devices with Retina screens.</td>
 	</tr>
 </table>
 
@@ -5277,7 +5279,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		</code></td>
 
 		<td><code>Function</code></td>
-		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.  Not a polyfill for ES 5 <code>bind</code> (compare <code>L.bind</code> to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill">MDN-recommended polyfill</a> for <code>Function.prototype.bind</code>).</td>
+		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="hljs-keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). Has an <code>L.bind</code> shortcut.  Not a polyfill for ES 5 <code>bind</code> (compare <code>L.bind</code> to the <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind#Polyfill">MDN-recommended polyfill</a> for <code>Function.prototype.bind</code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
@@ -5315,7 +5317,7 @@ MyClass.FOO; // 'bar'</code></pre>
 	<tr>
 		<td><code><b>falseFn</b>()</code></td>
 		<td><code>Function</code></td>
-		<td>Always returns <code><span class="literal">false</span></code>.</td>
+		<td>Always returns <code><span class="hljs-literal">false</span></code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>formatNum</b>(
@@ -5349,7 +5351,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		</code></td>
 
 		<td><code>String</code></td>
-		<td>Converts an object into a parameter URL string, e.g. <nobr><code>{a: "foo", b: "bar"}</code></nobr> translates to <code><span class="string">'?a=foo&amp;b=bar'</span></code>.</td>
+		<td>Converts an object into a parameter URL string, e.g. <nobr><code>{a: "foo", b: "bar"}</code></nobr> translates to <code><span class="hljs-string">'?a=foo&amp;b=bar'</span></code>.</td>
 	</tr>
 	<tr id="util-template">
 		<td><code><b>template</b>(
@@ -5357,7 +5359,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		</code></td>
 
 		<td><code>String</code></td>
-		<td>Simple templating facility, accepts a template string of the form <code><span class="string">'Hello {a}, {b}'</span></code> and a data object like <code>{a: 'foo', b: 'bar'}</code>, returns evaluated string (<code><span class="string">'Hello foo, bar'</span></code>). You can also specify functions instead of strings for data values &mdash; they will be evaluated passing <code>data</code> as an argument.</td>
+		<td>Simple templating facility, accepts a template string of the form <code><span class="hljs-string">'Hello {a}, {b}'</span></code> and a data object like <code>{a: 'foo', b: 'bar'}</code>, returns evaluated string (<code><span class="hljs-string">'Hello foo, bar'</span></code>). You can also specify functions instead of strings for data values &mdash; they will be evaluated passing <code>data</code> as an argument.</td>
 	</tr>
 	<tr>
 		<td><code><b>isArray</b>(
@@ -5365,7 +5367,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		</code></td>
 
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the given object is an array.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the given object is an array.</td>
 	</tr>
 	<tr>
 		<td><code><b>trim</b>(
@@ -5560,8 +5562,8 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;Object&gt; <i>context?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds a listener <code>fn</code> to the element's DOM event of the specified type. <code><span class="keyword">this</span></code> keyword inside the listener will point to <code>context</code>, or to the element if not specified.</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Adds a listener <code>fn</code> to the element's DOM event of the specified type. <code><span class="hljs-keyword">this</span></code> keyword inside the listener will point to <code>context</code>, or to the element if not specified.</td>
 	</tr>
 	<tr>
 		<td><code><b>removeListener</b>(
@@ -5570,7 +5572,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;Function&gt; <i>fn</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Removes an event listener from the element.</td>
 	</tr>
 	<tr>
@@ -5578,7 +5580,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Stop the given event from propagation to parent elements. Used inside the listener functions:
 <pre><code>L.DomEvent.addListener(div, 'click', function (e) {
 	L.DomEvent.stopPropagation(e);
@@ -5590,7 +5592,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Prevents the default action of the event from happening (such as following a link in the <code>href</code> of the <code>a</code> element, or doing a <code>POST</code> request with page reload when <code>form</code> is submitted). Use it inside listener functions.</pre>
 		</td>
 	</tr>
@@ -5599,7 +5601,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;DOMEvent&gt; <i>e</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
 		<td>Does <code>stopPropagation</code> and <code>preventDefault</code> at the same time.</td>
 	</tr>
 	<tr>
@@ -5607,8 +5609,8 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;HTMLElement&gt; <i>el</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Adds <code>stopPropagation</code> to the element's <code><span class="string">'click'</span></code>, <code><span class="string">'doubleclick'</span></code>, <code><span class="string">'mousedown'</span></code> and <code><span class="string">'touchstart'</span></code> events.</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Adds <code>stopPropagation</code> to the element's <code><span class="hljs-string">'click'</span></code>, <code><span class="hljs-string">'doubleclick'</span></code>, <code><span class="hljs-string">'mousedown'</span></code> and <code><span class="hljs-string">'touchstart'</span></code> events.</td>
 	</tr>
 	<tr>
 		<td><code><b>getMousePosition</b>(
@@ -5698,7 +5700,7 @@ MyClass.FOO; // 'bar'</code></pre>
 
 		<td><code>Boolean</code></td>
 
-		<td>Returns <code><span class="literal">true</span></code> if the element class attribute contains <code>name</code>.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the element class attribute contains <code>name</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>addClass</b>(
@@ -5734,8 +5736,8 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;String[]&gt; <i>props</i> )</nobr>
 		</code></td>
 
-		<td><code>String</code> or <code><span class="literal">false</span></code></td>
-		<td>Goes through the array of style names and returns the first name that is a valid style name for an element. If no such name is found, it returns <code><span class="literal">false</span></code>. Useful for vendor-prefixed styles like <code>transform</code>.</td>
+		<td><code>String</code> or <code><span class="hljs-literal">false</span></code></td>
+		<td>Goes through the array of style names and returns the first name that is a valid style name for an element. If no such name is found, it returns <code><span class="hljs-literal">false</span></code>. Useful for vendor-prefixed styles like <code>transform</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>getTranslateString</b>(
@@ -5762,7 +5764,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		</code></td>
 
 		<td>-</td>
-		<td>Sets the position of an element to coordinates specified by <code>point</code>, using CSS translate or top/left positioning depending on the browser (used by Leaflet internally to position its layers). Forces top/left positioning if <code>disable3D</code> is <code><span class="literal">true</span></code>.</td>
+		<td>Sets the position of an element to coordinates specified by <code>point</code>, using CSS translate or top/left positioning depending on the browser (used by Leaflet internally to position its layers). Forces top/left positioning if <code>disable3D</code> is <code><span class="hljs-literal">true</span></code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>getPosition</b>(
@@ -5786,7 +5788,7 @@ MyClass.FOO; // 'bar'</code></pre>
 		<td><code><b>TRANSITION</b></nobr>
 		</code></td>
 		<td><code>String</code></td>
-		<td>Vendor-prefixed transition style name (e.g. <code><span class="string">'webkitTransition'</span></code> for WebKit).</td>
+		<td>Vendor-prefixed transition style name (e.g. <code><span class="hljs-string">'webkitTransition'</span></code> for WebKit).</td>
 	</tr>
 	<tr>
 		<td><code><b>TRANSFORM</b></nobr>
@@ -5835,8 +5837,8 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 			<nobr>&lt;Number&gt; <i>easeLinearity?</i> )</nobr>
 		</code></td>
 
-		<td><code><span class="keyword">this</span></code></td>
-		<td>Run an animation of a given element to a new position, optionally setting duration in seconds (<code><span class="number">0.25</span></code> by default) and easing linearity factor (3rd argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>, <code><span class="number">0.5</span></code> by default)</td>
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Run an animation of a given element to a new position, optionally setting duration in seconds (<code><span class="hljs-number">0.25</span></code> by default) and easing linearity factor (3rd argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>, <code><span class="hljs-number">0.5</span></code> by default)</td>
 	</tr>
 </table>
 
@@ -5957,17 +5959,17 @@ draggable.enable();
 	<tr>
 		<td><code><b>START</b></code></td>
 		<td><code>String</code></td>
-		<td>Name of the DOM event that initiates dragging. <code><span class="string">'mousedown'</span></code> for desktop browsers, <code><span class="string">'touchstart'</span></code> for mobile devices.</td>
+		<td>Name of the DOM event that initiates dragging. <code><span class="hljs-string">'mousedown'</span></code> for desktop browsers, <code><span class="hljs-string">'touchstart'</span></code> for mobile devices.</td>
 	</tr>
 	<tr>
 		<td><code><b>MOVE</b></code></td>
 		<td><code>String</code></td>
-		<td>Name of the DOM event for drag moving. <code><span class="string">'mousemove'</span></code> for desktop browsers, <code><span class="string">'touchmove'</span></code> for mobile devices.</td>
+		<td>Name of the DOM event for drag moving. <code><span class="hljs-string">'mousemove'</span></code> for desktop browsers, <code><span class="hljs-string">'touchmove'</span></code> for mobile devices.</td>
 	</tr>
 	<tr>
 		<td><code><b>END</b></code></td>
 		<td><code>String</code></td>
-		<td>Name of the DOM event that ends dragging. <code><span class="string">'mouseup'</span></code> for desktop browsers, <code><span class="string">'touchend'</span></code> for mobile devices.</td>
+		<td>Name of the DOM event that ends dragging. <code><span class="hljs-string">'mouseup'</span></code> for desktop browsers, <code><span class="hljs-string">'touchend'</span></code> for mobile devices.</td>
 	</tr>
 </table>-->
 
@@ -5995,7 +5997,7 @@ draggable.enable();
 	<tr>
 		<td><code><b>enabled</b>()</code></td>
 		<td><code>Boolean</code></td>
-		<td>Returns <code><span class="literal">true</span></code> if the handler is enabled.</td>
+		<td>Returns <code><span class="hljs-literal">true</span></code> if the handler is enabled.</td>
 	</tr>
 </table>
 
@@ -6288,7 +6290,7 @@ map.addControl(new MyControl());
 		<td><code><b>code</b></code></td>
 
 		<td><code>String</code></td>
-		<td>Standard code name of the CRS passed into WMS services (e.g. <code><span class="string">'EPSG:3857'</span></code>).</td>
+		<td>Standard code name of the CRS passed into WMS services (e.g. <code><span class="hljs-string">'EPSG:3857'</span></code>).</td>
 	</tr>
 </table>
 
@@ -6328,7 +6330,7 @@ map.addControl(new MyControl());
 
 <h2 id="global">Global Switches</h2>
 
-<p>Global switches are created for rare cases and generally make Leaflet to not detect a particular browser feature even if it's there. You need to set the switch as a global variable to <code><span class="literal">true</span></code> <em>before</em> including Leaflet on the page, like this:</p>
+<p>Global switches are created for rare cases and generally make Leaflet to not detect a particular browser feature even if it's there. You need to set the switch as a global variable to <code><span class="hljs-literal">true</span></code> <em>before</em> including Leaflet on the page, like this:</p>
 
 <pre><code>&lt;script&gt;L_PREFER_CANVAS = true;&lt;/script&gt;
 &lt;script src="leaflet.js"&gt;&lt;/script&gt;</code></pre>
@@ -6379,7 +6381,7 @@ for (var i = 0, len = tables.length; i < len; i++) {
         if (tds[j].cellIndex === 0) {
             tds[j].parentNode.id = id + '-' + (tds[j].textContent || tds[j].innerText).split('(')[0].toLowerCase();
             tds[j].parentNode.onclick = function(e) {
-                if ((window.innerWidth / 2) - e.clientX > 394) window.location.hash = '#' + this.id;
+                window.location.hash = '#' + this.id;
             };
         }
     }

@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: v2
 title: Download
+bodyclass: download-page
 ---
 
 ## Download Leaflet
@@ -53,7 +54,7 @@ Here are the steps to set it up:
  1. [Download and install Node](http://nodejs.org)
  2. Run the following commands in the command line:
 
- <pre><code class="no-highlight">npm install -g jake
+ <pre><code>npm install -g jake
 npm install</code></pre>
 
 Now that you have everything installed, run `jake build` inside the Leaflet directory.
