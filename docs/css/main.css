@@ -103,8 +103,8 @@ h2:target {
 }
 
 h3 {
-  margin-top: 1.5em;
-  padding-top: .5em;
+	margin-top: 1.5em;
+	padding-top: .5em;
 	color: black;
 	font-weight: 500;
 	font-size: 1.4em;
@@ -169,6 +169,7 @@ h3.tagline {
 	font-weight: 300;
 	font-size: 1.5em;
 	margin-top: -.75em;
+	padding: 0;
 	color: #777;
 	text-align: center;
 	margin-bottom: 30px;
@@ -354,6 +355,7 @@ h3.tagline {
 }
 .features h3 {
 	margin: 0 0 0.5em;
+	padding: 0;
 }
 .features h4 {
 	margin: 0 0 0.3em;
@@ -479,13 +481,13 @@ table.plugins td:first-child a {
 }
 
 #toc-copy hr {
-  background-color: transparent;
-  margin: 0 0 .5em;
+	background-color: transparent;
+	margin: 0 0 .5em;
 }
 
 #toc-copy ul {
-  display: none;
-  list-style: none;
+	display: none;
+	list-style: none;
 }
 
 #toc-copy ul li {
@@ -683,10 +685,10 @@ table.plugins td:first-child a {
 		background: rgba(255,255,255,0.9);
 	}
 
-  .plugins-page #toc-copy h4:hover + ul:after,
-  .plugins-page #toc-copy ul:hover:after {
-    width: 17em;
-  }
+	.plugins-page #toc-copy h4:hover + ul:after,
+	.plugins-page #toc-copy ul:hover:after {
+		width: 17em;
+	}
 
 	#toc-copy h4:hover, #toc-copy h4.hover {
 		color: black;
