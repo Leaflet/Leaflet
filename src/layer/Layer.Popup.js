@@ -26,6 +26,9 @@ L.Layer.include({
 			this._popupHandlersAdded = true;
 		}
 
+		// save the originally passed offset
+		this._originalPopupOffset = this._popup.options.offset;
+
 		return this;
 	},
 
@@ -60,9 +63,16 @@ L.Layer.include({
 		}
 
 		if (this._popup && this._map) {
+			// set the popup offset for this layer
 			this._popup.options.offset = this._popupAnchor(layer);
+
+			// set popup source to this layer
 			this._popup._source = layer;
+
+			// update the popup (content, layout, ect...)
 			this._popup.update();
+
+			// open the popup on the map
 			this._map.openPopup(this._popup, latlng);
 		}
 
@@ -126,8 +136,14 @@ L.Layer.include({
 	},
 
 	_popupAnchor: function (layer) {
+		// where shold we anchor the popup on this layer?
 		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0, 0];
-		return L.point(anchor).add(L.Popup.prototype.options.offset);
+
+		// add the users passed offset to that
+		var offsetToAdd = this._originalPopupOffset || L.Popup.prototype.options.offset;
+
+		// return the final point to anchor the popup
+		return L.point(anchor).add(offsetToAdd);
 	},
 
 	_movePopup: function (e) {
