@@ -7,6 +7,10 @@ describe("L.GeoJSON", function () {
 				type: 'Point',
 				coordinates: [20, 10, 5]
 			}
+		}, geoJSONEmpty = {
+			type: 'Feature',
+			properties: {},
+			geometry: null
 		};
 
 		it("sets feature property on member layers", function () {
@@ -19,6 +23,12 @@ describe("L.GeoJSON", function () {
 			var layer = new L.GeoJSON();
 			layer.addData(geoJSON.geometry);
 			expect(layer.getLayers()[0].feature).to.eql(geoJSON);
+		});
+
+		it("accepts geojson with null geometry", function () {
+			var layer = new L.GeoJSON();
+			layer.addData(geoJSONEmpty);
+			expect(layer.getLayers().length).to.eql(0);
 		});
 	});
 });
