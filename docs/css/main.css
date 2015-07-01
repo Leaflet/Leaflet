@@ -787,6 +787,15 @@ tr:target {
 		clear: both;
 	}
 
+	th,
+	td {
+		border: 0;
+	}
+
+	tr {
+		border-bottom: 1px solid #eee;
+	}
+
 	table.plugins tbody tr {
 		display: block;
 		padding-bottom: 1em;
@@ -845,14 +854,14 @@ tr:target {
 		padding: 1em;
 	}
 
-	.api-page table tbody tr td:last-child:before {
+	/*.api-page table tbody tr td:last-child:before {
 		content: 'Description';
 		display: block;
 		text-transform: uppercase;
 		font-size: 90%;
 		margin-bottom: .75em;
 		color: #666;
-	}
+	}*/
 
 	td code {
 		word-break: break-word;

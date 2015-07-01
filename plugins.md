@@ -154,7 +154,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 		</td><td>
 			Provides easy setup of the tile layers from <a href="http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/">Kartverket</a> (The Norwegian Mapping Authority)
 		</td><td>
-			<a href="https://github.com/knreise">Kultur og naturreise / Atle Frenvik Sveen</a>
+			<a href="https://github.com/knreise">Kultur og naturreise</a> / <a href="https://github.com/atlefren">Atle Frenvik Sveen</a>
 		</td>
 	</tr>
 	<tr>
