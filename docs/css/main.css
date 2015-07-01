@@ -900,20 +900,37 @@ tr:target {
 @media screen and (max-width: 500px) {
 	.nav {
 		font-size: 1.25em;
+		padding-bottom: 1em;
+		line-height: 1.2;
+	}
+
+	h1 {
+		margin: 1em 0;
 	}
 
 	h3.tagline {
-		font-size: 1.333em;
-		margin: 0 2em;
+		font-size: 1.1em;
+		margin: 0 1em;
 	}
 
 	.container {
 		padding: 0 1.5em 1.5em;
 	}
 
+	.logo {
+		margin: 0.6em;
+	}
+
+	.usedby-title {
+		padding-top: 1em;
+		padding-bottom: 0.5em;
+		font-size: 1.8em;
+	}
+
 	.usedby {
 		padding-left: 0;
 		padding-right: 0;
+		padding-bottom: 0;
 	}
 
 	.features { -webkit-column-count: 1; }
