@@ -11,7 +11,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
 		L.DomEvent.on(this._map._container, {
 			mousewheel: this._onWheelScroll,
-			MozMousePixelScroll: L.DomEvent.preventDefault
+			MozMousePixelScroll: this._preventScroll
 		}, this);
 
 		this._delta = 0;
@@ -20,14 +20,13 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	removeHooks: function () {
 		L.DomEvent.off(this._map._container, {
 			mousewheel: this._onWheelScroll,
-			MozMousePixelScroll: L.DomEvent.preventDefault
+			MozMousePixelScroll: this._preventScroll
 		}, this);
 	},
 
 	_onWheelScroll: function (e) {
 		var delta = L.DomEvent.getWheelDelta(e);
 		var debounce = this._map.options.wheelDebounceTime;
-
 		this._delta += delta;
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
@@ -40,7 +39,18 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		clearTimeout(this._timer);
 		this._timer = setTimeout(L.bind(this._performZoom, this), left);
 
-		L.DomEvent.stop(e);
+		this._preventScroll(e, delta);
+	},
+
+	_preventScroll: function(e, delta) {
+		var map = this._map;
+		if (!delta) { delta = L.DomEvent.getWheelDelta(e); }
+
+		var zoom = map.getZoom();
+		if ((delta < 0 && map.getMinZoom() < zoom) ||
+			(delta > 0 && map.getMaxZoom() > zoom)) {
+			L.DomEvent.stop(e);
+		}
 	},
 
 	_performZoom: function () {
