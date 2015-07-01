@@ -87,16 +87,15 @@ table td code b {
 /* headings */
 
 h2 {
-	margin: 30px 0 20px;
-	padding-top: 20px;
 	font-weight: 400;
 	font-size: 2em;
 	font-weight: 300;
 	color: black;
+	margin-top: 1.8em;
 }
 
-.container > h2:first-child {
-	margin-bottom: 40px;
+h2:first-child {
+	margin-top: 1em;
 }
 
 h2:target {
@@ -422,10 +421,6 @@ table.plugins td:first-child a {
 
 .api-page .toc-col.map-col ~ .toc-col {
 	right: -1.5em;
-}
-
-.api-page .toc-col.map-col h4 {
-	color: #666;
 }
 
 .api-page h2 {
