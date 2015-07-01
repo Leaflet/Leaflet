@@ -4,7 +4,8 @@
 
 L.Map.mergeOptions({
 	scrollWheelZoom: true,
-	wheelDebounceTime: 40
+	wheelDebounceTime: 40,
+	scrollAtZoomLimits: false
 });
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
@@ -44,13 +45,15 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 	_preventScroll: function(e, delta) {
 		var map = this._map;
-		if (!delta) { delta = L.DomEvent.getWheelDelta(e); }
-
-		var zoom = map.getZoom();
-		if ((delta < 0 && map.getMinZoom() < zoom) ||
-			(delta > 0 && map.getMaxZoom() > zoom)) {
-			L.DomEvent.stop(e);
+		if (map.options.scrollAtZoomLimits) {
+			if (!delta) { delta = L.DomEvent.getWheelDelta(e); }
+			var zoom = map.getZoom();
+			if ((delta < 0 && map.getMinZoom() >= zoom) ||
+				(delta > 0 && map.getMaxZoom() <= zoom)) {
+				return;
+			}
 		}
+		L.DomEvent.stop(e);
 	},
 
 	_performZoom: function () {
