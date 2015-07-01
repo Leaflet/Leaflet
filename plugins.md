@@ -534,6 +534,15 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<a href="https://github.com/teastman">Tyler Eastman</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/TolonUK/Leaflet.EdgeBuffer">Leaflet.EdgeBuffer</a>
+		</td><td>
+			Buffer tiles beyond the edge of the viewport. <a href="http://www.tolon.co.uk/Leaflet.EdgeBuffer/comparison.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/TolonUK">Alex Paterson</a>
+		</td>
+	</tr>
 </table>
 
 
