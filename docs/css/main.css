@@ -105,10 +105,13 @@ h2:target {
 
 h3 {
 	margin-top: 2em;
-	color: #777;
+	color: black;
+	font-weight: 500;
+	font-size: 1.4em;
 }
 h4 {
-	color: #999;
+	font-size: 1.1em;
+	font-weight: 500;
 	margin: 1em 0 1em;
 }
 
@@ -345,14 +348,14 @@ h3.tagline {
 	column-count: 3;
 }
 .features ul {
-	padding-left: 1.2em;
-	margin: 0 0 1em;
+	padding-left: 1.6em;
+	margin: 0 0 1.5em;
 }
 .features h3 {
-	margin: 0.5em 0;
+	margin: 0 0 0.5em;
 }
 .features h4 {
-	margin: 0;
+	margin: 0 0 0.3em;
 }
 
 
@@ -423,6 +426,16 @@ table.plugins td:first-child a {
 
 .api-page .toc-col.map-col h4 {
 	color: #666;
+}
+
+.api-page h2 {
+	border-bottom: 7px solid #bbb;
+}
+.api-page h2:target {
+	border-color: #1EB300;
+}
+.api-page h2:first-child {
+	border: none;
 }
 
 #toc h4 {
