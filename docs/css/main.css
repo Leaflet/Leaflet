@@ -1056,3 +1056,8 @@ tr:target {
 .post-page h2 {
 	margin-top: 0;
 }
+
+.post-meta {
+	color: #888;
+	margin-top: -1em;
+}
