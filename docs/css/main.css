@@ -1052,3 +1052,7 @@ tr:target {
 .tutorials-back {
 	margin-bottom: -3em;
 }
+
+.post-page h2 {
+	margin-top: 0;
+}
