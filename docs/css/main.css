@@ -110,6 +110,10 @@ h3 {
 	font-size: 1.4em;
 }
 
+.blog-page h3 {
+	padding-top: 0;
+}
+
 h4 {
 	font-size: 1.1em;
 	font-weight: 500;
@@ -267,7 +271,7 @@ h3.tagline {
 }
 
 .usedby {
-	margin: 0;
+	margin: 0 0 3em;
 	text-align: center;
 	padding: 0 3em 2em;
 	background-color: #f5f5f5;
@@ -390,10 +394,10 @@ h3.tagline {
 }
 .features ul {
 	padding-left: 1.6em;
-	margin: 0 0 1.5em;
+	margin: 0 0 1.8em;
 }
 .features h3 {
-	margin: 0 0 0.5em;
+	margin: 0 0 0.8em;
 	padding: 0;
 }
 .features h4 {

@@ -1,6 +1,7 @@
 ---
 layout: v2
 title: Blog
+bodyclass: blog-page
 ---
 
 ## Leaflet Developer Blog
