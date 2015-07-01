@@ -959,14 +959,18 @@ tr:target {
 		margin: .25em;
 	}
 
-	.features { -webkit-column-count: 2; }
+	.features {
+		-webkit-column-count: 2;
+		-moz-column-count: 2;
+		column-count: 2;
+	}
 }
 
 @media screen and (max-width: 500px) {
 	.nav {
 		font-size: 1.25em;
 		padding-bottom: 1em;
-		line-height: 1.2;
+		line-height: 1;
 	}
 
 	h1 {
@@ -974,7 +978,7 @@ tr:target {
 	}
 
 	h3.tagline {
-		font-size: 1.1em;
+		font-size: 1.05em;
 		margin: 0 1em;
 	}
 
@@ -998,7 +1002,11 @@ tr:target {
 		padding-bottom: 0;
 	}
 
-	.features { -webkit-column-count: 1; }
+	.features {
+		-webkit-column-count: 1;
+		-moz-column-count: 1;
+		column-count: 1;
+	}
 
 	.example-img {
 		float: none;
