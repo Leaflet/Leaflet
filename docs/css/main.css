@@ -281,17 +281,14 @@ h3.tagline {
 	text-indent: -9999px;
 	margin: 1em;
 	background: url(../images/logos.png);
+	background-repeat: no-repeat;
 	background-size: 100%;
 	vertical-align: middle;
+	-webkit-transition: opacity .15s ease;
+	transition: opacity .15s ease;
 }
 
 .logo:hover { opacity: 1; }
-
-.logo-github {
-	background-position: 4px -529px;
-	width: 110px;
-	background-size: 110px;
-}
 
 .logo-foursquare {
 	background-position: 50% -4px;
@@ -305,43 +302,85 @@ h3.tagline {
 
 .logo-500px {
 	background-position: 50% -48px;
-	width: 55px;
-	background-size: 5em;
+	width: 52px;
+	background-size: 80px;
 }
 
 .logo-evernote {
-	background-position: 50% -713px;
+	background-position: 50% -169px;
 	width: 170px;
 	height: 43px;
 }
 
 .logo-ftimes {
-	background-position: 9px -189px;
-	width: 130px;
+	background-position: 50% -190px;
+	width: 112px;
 	height: 40px;
 	background-size: 145px;
 }
 
+.logo-github {
+	background-position: 50% -178px;
+	width: 110px;
+}
+
 .logo-wpost {
-	background-position: 50% -870px;
+	background-position: 50% -327px;
 	width: 170px;
 }
 
 .logo-npr {
-	background-position: 50% -641px;
-	width: 120px;
-	height: 40px;
+	background-position: 50% -214px;
+	width: 100px;
+	height: 34px;
 }
 
 .logo-usatoday {
-	background-position: 50% -682px;
+	background-position: 50% -299px;
 	width: 120px;
 	height: 30px;
 }
 
-.logo-hipmunk {
-	background-position: 50% -741px;
+.logo-facebook {
+	background-position: 50% -356px;
+	width: 130px;
+}
+
+.logo-flickr {
+	background-position: 50% -277px;
+	width: 92px;
+	height: 29px;
+}
+
+.logo-datagov {
+	background-position: 50% -452px;
+	width: 135px;
+	height: 26px;
+}
+
+.logo-ign {
+	background-position: 50% -393px;
+	width: 110px;
+}
+
+.logo-etsy {
+	background-position: 50% -428px;
+	width: 57px;
+	background-size: 110px;
+}
+
+.logo-european-commission {
+	background-position: 50% -526px;
 	width: 125px;
+}
+
+.logo-nps {
+	background-position: 50% -483px;
+	width: 32px;
+	height: 40px;
+	margin-top: .5em;
+	margin-bottom: .5em;
+	background-size: 106px;
 }
 
 .features {
