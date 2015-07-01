@@ -122,7 +122,7 @@ Every time something happens in Leaflet, e.g. user clicks on a marker or map zoo
 
 Each object has its own set of events --- see [documentation](../reference.html) for details. The first argument of the listener function is an event object --- it contains useful information about the event that happened. For example, map click event object (`e` in the example above) has `latlng` property which is a location at which the click occured.
 
-Lets improve our example by using a popup instead of an alert:
+Let's improve our example by using a popup instead of an alert:
 
 	var popup = L.popup();
 

@@ -113,7 +113,7 @@ Looks much better now!
 
 ### Adding Interaction
 
-Now lets make the states highlighted visually in some way when they are hovered with a mouse. First we'll define an event listener for layer `mouseover` event:
+Now let's make the states highlighted visually in some way when they are hovered with a mouse. First we'll define an event listener for layer `mouseover` event:
 
 	function highlightFeature(e) {
 		var layer = e.target;
@@ -144,7 +144,7 @@ The handy `geojson.resetStyle` method will reset the layer style to its default 
 	// ... our listeners
 	geojson = L.geoJson(...);
 
-As an additional touch, lets define a `click` listener that zooms to the state:
+As an additional touch, let's define a `click` listener that zooms to the state:
 
 	function zoomToFeature(e) {
 		map.fitBounds(e.target.getBounds());

@@ -48,7 +48,7 @@ Now putting a marker with this icon on a map is easy:
 
 ### Defining an icon class
 
-What if we need to create several icons that have lots in common? Lets define our own icon class containing the shared options, inheriting from `L.Icon`! It's really easy in Leaflet:
+What if we need to create several icons that have lots in common? Let's define our own icon class containing the shared options, inheriting from `L.Icon`! It's really easy in Leaflet:
 
 	var LeafIcon = L.Icon.extend({
 		options: {
