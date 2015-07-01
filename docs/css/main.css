@@ -230,7 +230,7 @@ h3.tagline {
 	padding: .75em 1em;
 	border-radius: 5px;
 	white-space: pre;
-	overflow: scroll;
+	overflow: auto;
 }
 .container pre {
 	border-radius: 5px;
