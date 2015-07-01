@@ -2,7 +2,7 @@
 var tocCopy = document.createElement('div');
 tocCopy.id = 'toc-copy';
 
-var toc = document.querySelector('.api-page #toc');
+var toc = document.querySelector('#toc');
 
 if (toc) {
   tocCopy.innerHTML = toc.innerHTML;

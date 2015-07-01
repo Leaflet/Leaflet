@@ -103,11 +103,13 @@ h2:target {
 }
 
 h3 {
-	margin-top: 2em;
+  margin-top: 1.5em;
+  padding-top: .5em;
 	color: black;
 	font-weight: 500;
 	font-size: 1.4em;
 }
+
 h4 {
 	font-size: 1.1em;
 	font-weight: 500;
@@ -476,9 +478,14 @@ table.plugins td:first-child a {
 	padding-bottom: .333em;
 }
 
+#toc-copy hr {
+  background-color: transparent;
+  margin: 0 0 .5em;
+}
+
 #toc-copy ul {
-	display: none;
-	list-style: none;
+  display: none;
+  list-style: none;
 }
 
 #toc-copy ul li {
@@ -675,6 +682,11 @@ table.plugins td:first-child a {
 		background: white;
 		background: rgba(255,255,255,0.9);
 	}
+
+  .plugins-page #toc-copy h4:hover + ul:after,
+  .plugins-page #toc-copy ul:hover:after {
+    width: 17em;
+  }
 
 	#toc-copy h4:hover, #toc-copy h4.hover {
 		color: black;
