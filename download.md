@@ -38,6 +38,20 @@ it straight away, place this in the `head` of your HTML code:
     <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
     <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
 
+### Using a Downloaded Version of Leaflet
+
+Inside the archives downloaded from the above links, you will see four things:
+
+- `leaflet.js` - This is the minified Leaflet JavaScript code.
+- `leaflet-src.js` - This is the readable, unminified Leaflet JavaScript, which is sometimes helpful for debugging.
+- `leaflet.css` - This is the stylesheet for Leaflet.
+- `images` - This is a folder that contains images referenced by `leaflet.css`. It must be in the same directory as `leaflet.css`.
+
+Unzip the downloaded archive to your website's directory and add this to the `head` of your HTML code:
+
+    <link rel="stylesheet" href="/path/to/leaflet.css" />
+    <script src="/path/to/leaflet.js"></script> <!-- or use leaflet-src.js --!>
+
 ### Leaflet Source Code
 
 These download packages above only contain the library itself.
