@@ -91,7 +91,8 @@ h2 {
 	font-size: 2em;
 	font-weight: 300;
 	color: black;
-	margin-top: 1.8em;
+	margin-top: 1.6em;
+	padding-top: .2em;
 }
 
 h2:first-child {
@@ -470,10 +471,14 @@ table.plugins td:first-child a {
 	right: -1.5em;
 }
 
-.api-page h2 {
-	border-bottom: 7px solid #bbb;
+.api-page #toc ~ h2 {
+	font-weight: 700;
+	font-size: 1.75em;
+	color: #333;
+	border-bottom: 3px solid #555;
+	transition: border-color .25s ease;
 }
-.api-page h2:target {
+.api-page #toc ~ h2:target {
 	border-color: #1EB300;
 }
 .api-page h2:first-child {
