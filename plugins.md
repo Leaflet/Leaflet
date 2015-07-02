@@ -2402,7 +2402,8 @@ External services that transform an address or the name of a place into latitude
 		<td>
 			<a href="https://github.com/perliedman/leaflet-control-geocoder">Leaflet Control Geocoder</a>
 		</td><td>
-			A clean and extensible control that uses Nominatim (OSM) or Bing to locate places. Easy to adapt for other providers.
+			A clean and extensible control for both geocoding and reverse geocoding. Builtin support for
+			Nominatim, Bing, MapQuest, Mapbox, What3Words, Google and Photon. Easy to extend to other providers.
 		</td><td>
 			<a href="https://github.com/perliedman">Per Liedman</a>
 		</td>
