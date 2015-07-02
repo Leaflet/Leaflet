@@ -403,7 +403,7 @@ The following plugins change the way that tile layers are loaded into the map.
 		<td>
 			<a href="https://github.com/ismyrnow/Leaflet.functionaltilelayer">Leaflet.FunctionalTileLayer</a>
 		</td><td>
-			Allows you to define tile layer URLs using a function, with support for jQuery deferreds.
+			Allows you to define tile layer URLs using a function. Even works with asynchronous sources, using promises.
 		</td><td>
 			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
 		</td>
