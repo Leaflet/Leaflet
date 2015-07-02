@@ -778,7 +778,7 @@ table.plugins td:first-child a {
 tr:target {
 	background: yellow;
 	-webkit-animation: highlight 2s ease 0.5s 1 normal forwards;
-					animation: highlight 2s ease 0.5s 1 normal forwards;
+	        animation: highlight 2s ease 0.5s 1 normal forwards;
 }
 
 @-webkit-keyframes highlight {
@@ -1070,3 +1070,8 @@ tr:target {
 iframe[src*='youtube.com'] {
 	max-width: 100% !important;
 }
+
+#disqus_thread {
+	margin-top: 3em;
+}
+
