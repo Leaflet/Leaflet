@@ -2322,10 +2322,12 @@ The following plugins use external services to calculate driving or walking rout
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/perliedman/leaflet-routing-machine">Leaflet Routing Machine</a>
+			<a href="http://www.liedman.net/leaflet-routing-machine/">Leaflet Routing Machine</a>
 		</td><td>
-			Control for route search between waypoints, displaying itinerary and alternative routes. Currently
-			uses <a href="http://project-osrm.org/">OSRM</a> to search routes.
+			Control for route search with via points, displaying itinerary and alternative routes. Uses 
+			<a href="http://project-osrm.org/">OSRM</a> by default, but also supports
+			<a href="https://graphhopper.com/">GraphHopper</a>,
+			<a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a> and more.
 		</td><td>
 			<a href="https://github.com/perliedman">Per Liedman</a>
 		</td>
