@@ -70,16 +70,16 @@
 	-moz-user-select: none;
 	}
 
-.leaflet-pane         { z-index: 4; }
+.leaflet-pane         { z-index: 400; }
 
-.leaflet-tile-pane    { z-index: 2; }
-.leaflet-overlay-pane { z-index: 4; }
-.leaflet-shadow-pane  { z-index: 5; }
-.leaflet-marker-pane  { z-index: 6; }
-.leaflet-popup-pane   { z-index: 7; }
+.leaflet-tile-pane    { z-index: 200; }
+.leaflet-overlay-pane { z-index: 400; }
+.leaflet-shadow-pane  { z-index: 500; }
+.leaflet-marker-pane  { z-index: 600; }
+.leaflet-popup-pane   { z-index: 700; }
 
-.leaflet-map-pane canvas { z-index: 1; }
-.leaflet-map-pane svg    { z-index: 2; }
+.leaflet-map-pane canvas { z-index: 100; }
+.leaflet-map-pane svg    { z-index: 200; }
 
 .leaflet-vml-shape {
 	width: 1px;
