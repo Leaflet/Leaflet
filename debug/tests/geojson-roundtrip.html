@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	<button id="round-trip">Round-trip</button>
+
+	<script type="text/javascript">
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map')
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+    var polygon = L.polygon([
+      [
+        [ [50.50578477651406,30.499076843261722], [50.5000253549703,30.499076843261722], [50.50294609727766,30.508003234863285], [50.50600312938757,30.506930351257328], [50.50701299829381,30.50160884857178] ],
+        [ [50.5053753621549,30.50285339355469], [50.502973393082804,30.50160884857178], [50.502973393082804,30.503497123718265], [50.505047828111785,30.503497123718265] ],
+        [ [50.504720291796914,30.504527091979984], [50.50409250751008,30.504226684570316], [50.503655783084,30.50735950469971], [50.50461111252044,30.50688743591309] ]
+      ],
+      [
+        [ [50.50442004817923,30.511522293090824], [50.49991616483956,30.51585674285889], [50.50089886692881,30.51834583282471], [50.505702893926205,30.514011383056644] ]
+      ],
+      [
+        [ [50.499015336629185,30.519118309021], [50.49699523515102,30.501523017883304], [50.49407412483012,30.505771636962894], [50.49571215286349,30.522723197937015] ],
+        [ [50.4971044320343,30.51036357879639], [50.495193450131524,30.51066398620606], [50.495439152135596,30.51439762115479], [50.4975412170431,30.513496398925785] ]
+      ]
+    ]).addTo(map);
+
+    function roundTrip () {
+      var geojson = polygon.toGeoJSON();
+      polygon.removeFrom(map);
+      L.geoJson(geojson).addTo(map);
+    }
+
+    L.DomUtil.get('round-trip').onclick = roundTrip;
+	</script>
+</body>
+</html>
