@@ -666,14 +666,15 @@ L.Map = L.Evented.extend({
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, !(e.type === 'mouseover' || e.type === 'mouseout')));
+
+		var isHover = type === 'mouseover' || type === 'mouseout';
+		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, !isHover));
 
 		if (!targets.length) {
 			targets = [this];
 
 			// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
-			if ((type === 'mouseover' || type === 'mouseout') &&
-			                !L.DomEvent._checkMouse(this._container, e)) { return; }
+			if (isHover && !L.DomEvent._checkMouse(this._container, e)) { return; }
 		}
 
 		var target = targets[0];
@@ -682,18 +683,21 @@ L.Map = L.Evented.extend({
 		if (e.type === 'click' && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
-				originalEvent: e
-			};
+			originalEvent: e
+		};
+
 		if (e.type !== 'keypress') {
 			data.containerPoint = target instanceof L.Marker ?
 					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
 			data.latlng = this.layerPointToLatLng(data.layerPoint);
 		}
+
 		for (var i = 0; i < targets.length; i++) {
-			if (data.originalEvent._stopped) { break; }
-			if (!targets[i].listens(type, true)) { continue; }
-			targets[i].fire(type, data);
+			if (targets[i].listens(type, true)) {
+				targets[i].fire(type, data);
+				if (data.originalEvent._stopped) { return; }
+			}
 		}
 	},
 
