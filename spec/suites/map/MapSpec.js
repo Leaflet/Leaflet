@@ -644,6 +644,14 @@ describe("Map", function () {
 			expect(spy.calledOnce).to.be.ok();
 		});
 
+		it("DOM events propagate from canvas polygon to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]], {rendered: L.canvas()}).addTo(map);
+			happen.mousemove(layer._path);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
 		it("DOM events propagate from marker to map", function () {
 			var spy = sinon.spy();
 			map.on("mousemove", spy);
@@ -659,6 +667,28 @@ describe("Map", function () {
 			var layer = new L.Marker([1, 2]).addTo(map);
 			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
 			happen.mousemove(layer._icon);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._path);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]], {rendered: L.canvas()}).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._path);
 			expect(layerSpy.calledOnce).to.be.ok();
 			expect(mapSpy.called).not.to.be.ok();
 		});

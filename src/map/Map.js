@@ -661,12 +661,12 @@ L.Map = L.Evented.extend({
 		this._fireDOMEvent(e, type);
 	},
 
-	_fireDOMEvent: function (e, type) {
+	_fireDOMEvent: function (e, type, targets) {
 
 		if (type === 'contextmenu') {
 			L.DomEvent.preventDefault(e);
 		}
-		var targets = this._findEventTargets(e.target || e.srcElement, !(e.type === 'mouseover' || e.type === 'mouseout'));
+		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, !(e.type === 'mouseover' || e.type === 'mouseout')));
 
 		if (!targets.length) {
 			targets = [this];

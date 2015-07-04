@@ -233,7 +233,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_fireEvent: function (layer, e, type) {
-		this._map._fireDOMEvent(layer, e, type || e.type);
+		this._map._fireDOMEvent(e, type || e.type, [layer]);
 	},
 
 	// TODO _bringToFront & _bringToBack, pretty tricky
