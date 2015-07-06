@@ -695,7 +695,7 @@ L.Map = L.Evented.extend({
 
 		for (var i = 0; i < targets.length; i++) {
 			if (targets[i].listens(type, true)) {
-				targets[i].fire(type, data);
+				targets[i].fire(type, data, true);
 				if (data.originalEvent._stopped) { return; }
 			}
 		}
