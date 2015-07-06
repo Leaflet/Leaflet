@@ -29,7 +29,8 @@
 		for (var i = 0, latlngs = [], len = route.length; i < len; i++) {
 			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
 		}
-		var path = new L.Polyline(latlngs);
+		var canvas = L.canvas();
+		var path = new L.Polyline(latlngs, {renderer: canvas});
 
 		var map = new L.Map('map', {layers: [osm]});
 
@@ -41,7 +42,8 @@
 		circleOptions = {
 		    color: 'red',
 		    fillColor: 'yellow',
-		    fillOpacity: 0.7
+		    fillOpacity: 0.7,
+		    renderer: canvas
 		};
 
 		var circle = new L.Circle(circleLocation, 500000, circleOptions),
@@ -79,7 +81,8 @@
 
 		var polygon = new L.Polygon([polygonPoints, holePoints], {
 			fillColor: "#333",
-			color: 'green'
+			color: 'green',
+			renderer: canvas
 		});
 		group.addLayer(polygon);
 

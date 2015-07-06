@@ -619,4 +619,132 @@ describe("Map", function () {
 
 	});
 
+	describe('#DOM events', function () {
+
+		var c, map;
+
+		beforeEach(function () {
+			c = document.createElement('div');
+			c.style.width = '400px';
+			c.style.height = '400px';
+			map = new L.Map(c);
+			map.setView(new L.LatLng(0, 0), 0);
+			document.body.appendChild(c);
+		});
+
+		afterEach(function () {
+			document.body.removeChild(c);
+		});
+
+		it("DOM events propagate from polygon to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			happen.mousemove(layer._path);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events propagate from canvas polygon to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]], {rendered: L.canvas()}).addTo(map);
+			happen.mousemove(layer._path);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events propagate from marker to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Marker([1, 2]).addTo(map);
+			happen.mousemove(layer._icon);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events fired on marker can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Marker([1, 2]).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._icon);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._path);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]], {rendered: L.canvas()}).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._path);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("mouseout is only forwared if fired on the original target", function () {
+			var mapSpy = sinon.spy(),
+				layerSpy = sinon.spy(),
+				otherSpy = sinon.spy();
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			var other = new L.Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			other.on("mouseout", otherSpy);
+			happen.mouseout(layer._path);
+			expect(mapSpy.called).not.to.be.ok();
+			expect(otherSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).to.be.ok();
+		});
+
+		it("mouseout is not forwared to layers if fired on the map", function () {
+			var mapSpy = sinon.spy(),
+				layerSpy = sinon.spy(),
+				otherSpy = sinon.spy();
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			var other = new L.Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			other.on("mouseout", otherSpy);
+			happen.mouseout(map._container);
+			expect(otherSpy.called).not.to.be.ok();
+			expect(layerSpy.called).not.to.be.ok();
+			expect(mapSpy.calledOnce).to.be.ok();
+		});
+
+		it("preclick is fired before click on marker and map", function () {
+			var called = 0;
+			var layer = new L.Marker([1, 2]).addTo(map);
+			layer.on("preclick", function (e) {
+				expect(called++).to.eql(0);
+				expect(e.latlng).to.ok();
+			});
+			layer.on("click", function (e) {
+				expect(called++).to.eql(2);
+				expect(e.latlng).to.ok();
+			});
+			map.on("preclick", function (e) {
+				expect(called++).to.eql(1);
+				expect(e.latlng).to.ok();
+			});
+			map.on("click", function (e) {
+				expect(called++).to.eql(3);
+				expect(e.latlng).to.ok();
+			});
+			happen.click(layer._icon);
+		});
+
+	});
+
 });
