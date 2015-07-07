@@ -109,7 +109,7 @@ L.TileLayer = L.GridLayer.extend({
 
 		// increase tile size when overscaling
 		return zoomN !== null && zoom > zoomN ?
-				Math.round(tileSize / map.getZoomScale(zoomN, zoom)) :
+				tileSize.divideBy(map.getZoomScale(zoomN, zoom)).round() :
 				tileSize;
 	},
 
