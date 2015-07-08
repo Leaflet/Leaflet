@@ -84,7 +84,7 @@ That's it. Now take a look at the [full example](custom-icons-example.html), the
 <script>
 	var map = L.map('map').setView([51.5, -0.09], 13);
 
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.light'}).addTo(map);
 
 	var LeafIcon = L.Icon.extend({
 		options: {
@@ -116,7 +116,7 @@ That's it. Now take a look at the [full example](custom-icons-example.html), the
 
 	var map2 = L.map('map2').setView([51.505, -0.09], 13);
 
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map2);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.light'}).addTo(map2);
 
 	var greenIcon2 = L.icon({
 		iconUrl: '../docs/images/leaf-green.png',
