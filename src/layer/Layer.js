@@ -2,7 +2,8 @@
 L.Layer = L.Evented.extend({
 
 	options: {
-		pane: 'overlayPane'
+		pane: 'overlayPane',
+		nonBubblingEvents: []  // Array of events that should not be bubbled to DOM parents (like the map)
 	},
 
 	addTo: function (map) {
