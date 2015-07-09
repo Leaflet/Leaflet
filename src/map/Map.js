@@ -624,11 +624,11 @@ L.Map = L.Evented.extend({
 		this._container.scrollLeft = 0;
 	},
 
-	_findEventTargets: function (src, bubble) {
+	_findEventTargets: function (src, type, bubble) {
 		var targets = [], target;
 		while (src) {
 			target = this._targets[L.stamp(src)];
-			if (target) {
+			if (target && target.listens(type, true)) {
 				targets.push(target);
 				if (!bubble) { break; }
 			}
@@ -668,7 +668,7 @@ L.Map = L.Evented.extend({
 		}
 
 		var isHover = type === 'mouseover' || type === 'mouseout';
-		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, !isHover));
+		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, type, !isHover));
 
 		if (!targets.length) {
 			targets = [this];
@@ -687,18 +687,17 @@ L.Map = L.Evented.extend({
 		};
 
 		if (e.type !== 'keypress') {
-			data.containerPoint = target instanceof L.Marker ?
+			var isMarker = target instanceof L.Marker;
+			data.containerPoint = isMarker ?
 					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
-			data.latlng = this.layerPointToLatLng(data.layerPoint);
+			data.latlng = isMarker ? target.getLatLng() : this.layerPointToLatLng(data.layerPoint);
 		}
 
 		for (var i = 0; i < targets.length; i++) {
-			if (targets[i].listens(type, true)) {
-				targets[i].fire(type, data, true);
-				if (data.originalEvent._stopped
-					|| (targets[i].options.nonBubblingEvents && L.Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
-			}
+			targets[i].fire(type, data, true);
+			if (data.originalEvent._stopped
+				|| (targets[i].options.nonBubblingEvents && L.Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
 		}
 	},
 
