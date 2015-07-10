@@ -71,8 +71,8 @@ Now let's [view the result on a separate page &rarr;](layers-control-example.htm
 	L.marker([39.73, -104.8]).bindPopup('This is Aurora, CO.').addTo(cities),
 	L.marker([39.77, -105.23]).bindPopup('This is Golden, CO.').addTo(cities);
 
-    var grayscale = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}),
-	    streets = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'});
+    var grayscale = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.light'}),
+	    streets = L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.streets'});
 
 	var map = L.map('map', {
 		center: [39.73, -104.99],
