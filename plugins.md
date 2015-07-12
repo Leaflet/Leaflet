@@ -1350,17 +1350,6 @@ Plugins that search for overlays and enhance how to display information about th
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/stefanocudini/leaflet-geojson-list">Leaflet GeoJSON List</a>
-		</td>
-		<td>
-			Leaflet Control for listing GeoJSON properties in a interactive menu(<a href="http://labs.easyblog.it/maps/leaflet-geojson-list/">Demo</a>).
-		</td>
-		<td>
-			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
 			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
 		</td><td>
 			A Leaflet Plugin for Edge Cases.  For use when you want popups on <em>mouseover</em>, not <em>click</em>, and
@@ -1433,6 +1422,17 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/atogle">Aaron Ogle</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-geojson-selector">Leaflet GeoJSON Selector</a>
+		</td>
+		<td>
+			Leaflet Control for selection from GeoJSON feature in a interactive list and map(<a href="http://labs.easyblog.it/maps/leaflet-geojson-selector/">Demo</a>).
+		</td>
+		<td>
+			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
