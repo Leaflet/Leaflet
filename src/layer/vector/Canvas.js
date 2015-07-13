@@ -18,7 +18,8 @@ L.Canvas = L.Renderer.extend({
 
 		L.DomEvent
 			.on(container, 'mousemove', this._onMouseMove, this)
-			.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this);
+			.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this)
+			.on(container, 'mouseout', this._handleMouseOut, this);
 
 		this._ctx = container.getContext('2d');
 	},
@@ -204,9 +205,10 @@ L.Canvas = L.Renderer.extend({
 		this._handleMouseHover(e, point);
 	},
 
+
 	_handleMouseOut: function (e, point) {
 		var layer = this._hoveredLayer;
-		if (layer && !layer._containsPoint(point)) {
+		if (layer && (e.type === 'mouseout' || !layer._containsPoint(point))) {
 			// if we're leaving the layer, fire mouseout
 			L.DomUtil.removeClass(this._container, 'leaflet-interactive');
 			this._fireEvent(layer, e, 'mouseout');
