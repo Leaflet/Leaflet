@@ -1,9 +1,6 @@
 <html>
     <head>
     <link rel="stylesheet" href="../../dist/leaflet.css" />
-    <script>
-        L_PREFER_CANVAS = true;
-    </script>
     <link rel="stylesheet" href="../css/screen.css" />
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -20,7 +17,8 @@
             //Init a map, and attempt a locate.
             var map = L.map('map', {
                 center: [39.84, -96.591],
-                zoom: 4
+                zoom: 4,
+                preferCanvas: true
             }).locate();
 
             L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {

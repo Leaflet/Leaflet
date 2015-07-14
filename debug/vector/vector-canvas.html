@@ -7,9 +7,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script>
-		L_PREFER_CANVAS = true; // experimental
-	</script>
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
@@ -32,7 +29,7 @@
 		var canvas = L.canvas();
 		var path = new L.Polyline(latlngs, {renderer: canvas});
 
-		var map = new L.Map('map', {layers: [osm]});
+		var map = new L.Map('map', {layers: [osm], preferCanvas: true});
 
 		var group = new L.LayerGroup();
 
