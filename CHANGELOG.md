@@ -9,9 +9,9 @@ An in-progress version being developed on the `master` branch. Includes `stable`
 
 This version contains a lot of beneficial but potentially breaking changes (especially if you're a plugin author), so please read through the changes carefully before upgrading.
 
-### Vectors refactoring
+### Vectors API improvements
 
-Leaflet vector layers rendering got a major rewrite, making it possible to switch between rendering backends (Canvas, SVG) dynamically (and even use both for different layers at the same time), have more than one physical pane for vector layers, significantly improving Canvas performance and adding retina support, getting rid of ugly hacks and generally making the code much cleaner. Main PR [#2290](https://github.com/Leaflet/Leaflet/pull/2290).
+Leaflet vector layers rendering got a major rewrite, making it possible to switch between rendering backends (Canvas, SVG) dynamically (and even use both for different layers at the same time), have more than one physical pane for vector layers, significantly improving performance, adding Canvas retina support, getting rid of ugly hacks and generally making the code much cleaner. Main PR [#2290](https://github.com/Leaflet/Leaflet/pull/2290).
 
 * Added `Renderer` layer (inherited by SVG/Canvas implementations) that handles renderer bounds and zoom animation.
 * Added `SVG` & `Canvas` classes that now contain all renderer-specific code for vector layers and can be added as layers to the map.
@@ -32,7 +32,7 @@ Leaflet vector layers rendering got a major rewrite, making it possible to switc
 * Added the ability to specify a custom pane for vector layers (making it possible to easily do stacks like vectors-tiles-vectors with proper z-index order) (by [@Jakobud](https://github.com/Jakobud)). [#3266](https://github.com/Leaflet/Leaflet/pull/3266) [#2786](https://github.com/Leaflet/Leaflet/pull/2786)
 * Added vector layers `fillRule` option (by [@bullgare](https://github.com/bullgare)). [#2834](https://github.com/Leaflet/Leaflet/pull/2834)
 
-### Layers refactoring
+### Layers API improvements
 
 All Leaflet layers (including markers, popups, tile and vector layers) have been refactored to have a common parent, `Layer` class, that shares the basic logic of adding and removing. The leads to the following changes (main PR [#2266](https://github.com/Leaflet/Leaflet/pull/2266)):
 
@@ -58,11 +58,11 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 
 In addition, layer events implementation was rewritten to use **event delegation**, significantly improving add/remove performance and memory footprint. [#3032](https://github.com/Leaflet/Leaflet/pull/3032) [#46](https://github.com/Leaflet/Leaflet/issues/46)
 
-### TileLayer & Projections refactoring
+### TileLayer & Projections API improvements
 
 TileLayer code and everything projections-related has undergone a major refactoring, documented in PR [#2247](https://github.com/Leaflet/Leaflet/pull/2247). It includes the following changes (in addition to much cleaner and simpler code):
 
-#### TileLayer-related changes
+#### TileLayer API improvements
 
 These changes make implementing custom grid-like layers for Leaflet much easier.
 
@@ -71,7 +71,7 @@ These changes make implementing custom grid-like layers for Leaflet much easier.
 * Improved tile wrapping and bounding logic in `TileLayer` to work transparently and completely depent on the CRS used; removed the need for `TileLayer` hacks when using custom projections.
 * Removed `url` property in `tileload` and `tileloadstart` events (get it through `tile.src`).
 
-#### Projections-related changes
+#### Projections API improvements
 
 These changes were targeted at removing any hardcoded projection-specific logic accross Leaflet classes, making it transparent and driven by the chosen CRS. They make using Leaflet with custom projections (including flat maps) much easier, and remove the need for ugly hacks in the [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
 
@@ -91,25 +91,22 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed scale control precision in non-EPSG:3857 projections. [#2345](https://github.com/Leaflet/Leaflet/pull/2345)
 * Fixed `ImageOverlay` not working properly in some non-standard projections. [#3011](https://github.com/Leaflet/Leaflet/issues/3011)
 
-### Animations refactoring
+### UX improvements
 
 * Improved panning inertia behavior so that there are no tearing during animation when panning around quickly. [#2360](https://github.com/Leaflet/Leaflet/issues/2360)
+* Improved inertial scrolling to have a nicer, more natural feel (by [@RickMohr](https://github.com/RickMohr)). [Leaflet/Leaflet#3063](https://github.com/Leaflet/Leaflet/pull/3063) [#3063](https://github.com/Leaflet/Leaflet/pull/3063) [#3062](https://github.com/Leaflet/Leaflet/issues/3062) [#2987](https://github.com/Leaflet/Leaflet/issues/2987)
+* Added popup fade out animation.
+* Improved keyboard support to ignore keystrokes with modifier keys (Ctrl, Alt, Meta) to not interfere with OS shortcuts.
+* Made popup to close when pressing Escape (by [@snkashis](https://github.com/snkashis)). [#951](https://github.com/Leaflet/Leaflet/issues/951) [#3000](https://github.com/Leaflet/Leaflet/pull/3000)
+* Improved keyboard zoom to zoom by 3 levels if shift key is pressed (by [@yohanboniface](https://github.com/yohanboniface)). [#3024](https://github.com/Leaflet/Leaflet/pull/3024)
 
-## Other performance improvements
+### Misc. performance improvements
 
 * Significantly [improved](http://jsperf.com/leaflet-parsefloat-in-latlng/2) `LatLng` creation performance (8x).
 * Improved performance of layer objects construction.
 * Significantly improved `FeatureGroup` (and correspondingly `GeoJSON`) layer adding and events performance (about 10x) by implementing a much better event propagation mechanism. [#2311](https://github.com/Leaflet/Leaflet/pull/2311)
 * Improved Leaflet events and DOM events memory footprint.
 * Improved `Evented` `off` performance by about 2 times.
-
-### Misc usability improvements
-
-* Improved inertial scrolling to have a nicer, more natural feel (by [@RickMohr](https://github.com/RickMohr)). [Leaflet/Leaflet#3063](https://github.com/Leaflet/Leaflet/pull/3063) [#3063](https://github.com/Leaflet/Leaflet/pull/3063) [#3062](https://github.com/Leaflet/Leaflet/issues/3062) [#2987](https://github.com/Leaflet/Leaflet/issues/2987)
-* Added popup fade out animation.
-* Improved keyboard support to ignore keystrokes with modifier keys (Ctrl, Alt, Meta) to not interfere with OS shortcuts.
-* Made popup to close when pressing Escape (by [@snkashis](https://github.com/snkashis)). [#951](https://github.com/Leaflet/Leaflet/issues/951) [#3000](https://github.com/Leaflet/Leaflet/pull/3000)
-* Improved keyboard zoom to zoom by 3 levels if shift key is pressed (by [@yohanboniface](https://github.com/yohanboniface)). [#3024](https://github.com/Leaflet/Leaflet/pull/3024)
 
 ### Other breaking API changes
 
@@ -213,6 +210,7 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Switched from JSHint to ESLint for checking code style and made the checks more strict. [#3176](https://github.com/Leaflet/Leaflet/pull/3176)
 * Added a plugin guide section on module loaders and publishing plugins (by [@patrickarlt](https://github.com/patrickarlt)). [#2955](https://github.com/Leaflet/Leaflet/pull/2955) [Leaflet/Leaflet#2955](https://github.com/Leaflet/Leaflet/pull/2955)
 * Fixed the build system to work in non-git Leaflet folder (by [@cschwarz](https://github.com/cschwarz)). [#2758](https://github.com/Leaflet/Leaflet/pull/2758)
+
 
 ## 0.7.3 (May 23, 2014)
 
