@@ -91,6 +91,15 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Fixed scale control precision in non-EPSG:3857 projections. [#2345](https://github.com/Leaflet/Leaflet/pull/2345)
 * Fixed `ImageOverlay` not working properly in some non-standard projections. [#3011](https://github.com/Leaflet/Leaflet/issues/3011)
 
+
+### Animations improvements and fractional zoom
+
+Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https://github.com/Leaflet/Leaflet/pull/2382)), bringing improvements such as:
+
+- Multi-level tile buffering for more seamless zooming experience with less flickering
+- Optimal path animation (`map.flyTo`) for zooming to a particular place in a curve (simultaneously zooming and panning)
+- Fractional zoom support &mdash; now you can do things like `map.setZoom(12.45)` and it just works.
+
 ### UX improvements
 
 * Improved panning inertia behavior so that there are no tearing during animation when panning around quickly. [#2360](https://github.com/Leaflet/Leaflet/issues/2360)
@@ -144,6 +153,7 @@ These changes were targeted at removing any hardcoded projection-specific logic 
 * Added `TileLayer.WMS` `uppercase` option (now `false` by default) (by [@kdeloach](https://github.com/kdeloach)). [#2831](https://github.com/Leaflet/Leaflet/pull/2831) [#1751](https://github.com/Leaflet/Leaflet/issues/1751)
 * Added `ImageOverlay` `alt` option (by [@francis-liberty](https://github.com/francis-liberty)). [#2767](https://github.com/Leaflet/Leaflet/pull/2767) [#2564](https://github.com/Leaflet/Leaflet/issues/2564)
 * Improved `L.Util.extend` performance (by [@fab1an](https://github.com/fab1an)). [#2746](https://github.com/Leaflet/Leaflet/pull/2746)
+* Added `Map` `stop` method for stopping panning or `flyTo` animation.
 
 ### Bugfixes
 
