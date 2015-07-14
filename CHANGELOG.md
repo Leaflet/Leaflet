@@ -5,9 +5,13 @@ Leaflet Changelog
 
 ## 1.0-dev (master)
 
-An in-progress version being developed on the `master` branch. Includes `stable` branch fixes.
+An in-progress version being developed on the `master` branch. No changes since the last tagged release yet.
 
-This version contains a lot of beneficial but potentially breaking changes (especially if you're a plugin author), so please read through the changes carefully before upgrading.
+## 1.0-beta1 (July 14, 2015)
+
+The first beta of the huge, long-awaited Leaflet 1.0 release.
+
+This version contains a lot of beneficial but potentially breaking changes (especially if you're a plugin author), so please read through the changes carefully if your code breaks after upgrading.
 
 ### Vectors API improvements
 
@@ -31,6 +35,7 @@ Leaflet vector layers rendering got a major rewrite, making it possible to switc
 * Changed `Polygon` `getLatLngs` to always return an array of rings (nested array)  by [@yohanboniface](https://github.com/yohanboniface)). [#2618](https://github.com/Leaflet/Leaflet/issues/2618) [#3386](https://github.com/Leaflet/Leaflet/pull/3386) [Leaflet/Leaflet#3279](https://github.com/Leaflet/Leaflet/pull/3279) [#2648](https://github.com/Leaflet/Leaflet/issues/2648)
 * Added the ability to specify a custom pane for vector layers (making it possible to easily do stacks like vectors-tiles-vectors with proper z-index order) (by [@Jakobud](https://github.com/Jakobud)). [#3266](https://github.com/Leaflet/Leaflet/pull/3266) [#2786](https://github.com/Leaflet/Leaflet/pull/2786)
 * Added vector layers `fillRule` option (by [@bullgare](https://github.com/bullgare)). [#2834](https://github.com/Leaflet/Leaflet/pull/2834)
+* Removed `L_PREFER_CANVAS` global switch and added `Map` `preferCanvas` option instead (by [@yohanboniface](https://github.com/yohanboniface)). [#3623](https://github.com/Leaflet/Leaflet/pull/3623)
 
 ### Layers API improvements
 
@@ -45,7 +50,7 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 * Simplified map panes &mdash; removed `objectsPane`, all panes are on the same level now.
 * Added `shadowPane` option to markers as well.
 * Added `getEvents` method to all layers that returns an `{event: listener, ...}` hash; layers now manage its listeners automatically without having to do this in `onAdd`/`onRemove`.
-* Added `togglePopup`, `setPopupContent`, `getPopup` methods to all layers. [#2279](https://github.com/Leaflet/Leaflet/issues/2279) [#2292](https://github.com/Leaflet/Leaflet/issues/2292)
+* Added `togglePopup`, `setPopupContent`, `getPopup`, `isPopupOpen` methods to all layers. [#2279](https://github.com/Leaflet/Leaflet/issues/2279) [#2292](https://github.com/Leaflet/Leaflet/issues/2292)
 * Improved performance of adding/removing layers with layers control present (instead of listening to any layer add/remove, the control only listens to layers added in configuration).
 * Fixed `FeatureGroup` `getBounds` to work correctly when containing circle markers.
 * Removed `Map` `tilelayersload` event.
@@ -55,6 +60,9 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 * Added `ImageOverlay` interactivity (mouse events, etc.) (by [@snkashis](https://github.com/snkashis)). [#3009](https://github.com/Leaflet/Leaflet/pull/3009) [#1727](https://github.com/Leaflet/Leaflet/issues/1727)
 * Added `ImageOverlay` `getBounds` (by [@brunob](https://github.com/brunob)). [#2848](https://github.com/Leaflet/Leaflet/pull/2848)
 * Renamed `clickable` option to `interactive` (by [@AndriiHeonia](https://github.com/AndriiHeonia)). [#2838](https://github.com/Leaflet/Leaflet/pull/2838) [#2499](https://github.com/Leaflet/Leaflet/issues/2499)
+* Changed the default z-index of panes to be bigger, leaving more room for customization (by [@patrickarlt](https://github.com/patrickarlt)). [#3591](https://github.com/Leaflet/Leaflet/pull/3591)
+* Improved DOM event bubbling mechanism for layers (by [@yohanboniface](https://github.com/yohanboniface)). [Leaflet/Leaflet#3307](https://github.com/Leaflet/Leaflet/pull/3307) [#3450](https://github.com/Leaflet/Leaflet/pull/3450) [#3307](https://github.com/Leaflet/Leaflet/pull/3307)
+* Added `nonBubblingEvents` option to layers (by [@yohanboniface](https://github.com/yohanboniface)). [#3605](https://github.com/Leaflet/Leaflet/pull/3605) [#3307](https://github.com/Leaflet/Leaflet/pull/3307) [#3604](https://github.com/Leaflet/Leaflet/issues/3604)
 
 In addition, layer events implementation was rewritten to use **event delegation**, significantly improving add/remove performance and memory footprint. [#3032](https://github.com/Leaflet/Leaflet/pull/3032) [#46](https://github.com/Leaflet/Leaflet/issues/46)
 
@@ -69,6 +77,7 @@ These changes make implementing custom grid-like layers for Leaflet much easier.
 * Moved most of the `TileLayer` logic into the new `GridLayer` class (which `TileLayer` now inherits, extending it with logic specific to tile servers).
 * Removed `TileLayer.Canvas` in favor of the much more flexible and powerful `GridLayer`.
 * Improved tile wrapping and bounding logic in `TileLayer` to work transparently and completely depent on the CRS used; removed the need for `TileLayer` hacks when using custom projections.
+* Added non-square tiles support (by [@IvanSanchez](https://github.com/IvanSanchez)). [#3573](https://github.com/Leaflet/Leaflet/pull/3573) [#3570](https://github.com/Leaflet/Leaflet/issues/3570)
 * Removed `url` property in `tileload` and `tileloadstart` events (get it through `tile.src`).
 
 #### Projections API improvements
@@ -99,6 +108,7 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 - Multi-level tile buffering for more seamless zooming experience with less flickering
 - Optimal path animation (`map.flyTo`) for zooming to a particular place in a curve (simultaneously zooming and panning)
 - Fractional zoom support &mdash; now you can do things like `map.setZoom(12.45)` and it just works.
+- Layers now rely on `zoom` event in addition to `viewreset` for frame-by-frame zoom animations. [#3278](https://github.com/Leaflet/Leaflet/pull/3278)
 
 ### UX improvements
 
@@ -108,6 +118,7 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 * Improved keyboard support to ignore keystrokes with modifier keys (Ctrl, Alt, Meta) to not interfere with OS shortcuts.
 * Made popup to close when pressing Escape (by [@snkashis](https://github.com/snkashis)). [#951](https://github.com/Leaflet/Leaflet/issues/951) [#3000](https://github.com/Leaflet/Leaflet/pull/3000)
 * Improved keyboard zoom to zoom by 3 levels if shift key is pressed (by [@yohanboniface](https://github.com/yohanboniface)). [#3024](https://github.com/Leaflet/Leaflet/pull/3024)
+* Improved layers control to become scrollable when there are too many layers (by [@rowanwins](https://github.com/rowanwins)). [#3571](https://github.com/Leaflet/Leaflet/pull/3571) [#3167](https://github.com/Leaflet/Leaflet/issues/3167)
 
 ### Misc. performance improvements
 
@@ -154,6 +165,9 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 * Added `ImageOverlay` `alt` option (by [@francis-liberty](https://github.com/francis-liberty)). [#2767](https://github.com/Leaflet/Leaflet/pull/2767) [#2564](https://github.com/Leaflet/Leaflet/issues/2564)
 * Improved `L.Util.extend` performance (by [@fab1an](https://github.com/fab1an)). [#2746](https://github.com/Leaflet/Leaflet/pull/2746)
 * Added `Map` `stop` method for stopping panning or `flyTo` animation.
+* Added `Map` `maxBoundsViscosity` option that controls how much the map resits dragging out of max bounds (set to `1` for a hard limit) (by [@IvanSanchez](https://github.com/IvanSanchez)). [#2224](https://github.com/Leaflet/Leaflet/pull/2224) [#3510](https://github.com/Leaflet/Leaflet/pull/3510) [#1673](https://github.com/Leaflet/Leaflet/issues/1673)
+* Added `Bounds` and `LatLngBounds` `overlaps` method (by [@IvanSanchez](https://github.com/IvanSanchez)). [#2981](https://github.com/Leaflet/Leaflet/issues/2981) [#3508](https://github.com/Leaflet/Leaflet/pull/3508)
+* Added `ImageOverlay` `crossOrigin` option (by [@patrickarlt](https://github.com/patrickarlt)). [#3594](https://github.com/Leaflet/Leaflet/pull/3594) [#2621](https://github.com/Leaflet/Leaflet/pull/2621)
 
 ### Bugfixes
 
@@ -210,6 +224,13 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 * Fixed a memory leak with `Marker` `setIcon` (by [@jfgodoy](https://github.com/jfgodoy)). [#2811](https://github.com/Leaflet/Leaflet/pull/2811)
 * Fixed `LatLng` `distanceTo` to not return `NaN` on equal locations.  [#2705](https://github.com/Leaflet/Leaflet/issues/2705)
 * Fixed a bug where `TileLayer` `maxNativeZoom` didn't work properly with `bounds` option set (by [@mlegenhausen](https://github.com/mlegenhausen)). [#2725](https://github.com/Leaflet/Leaflet/pull/2725) [#2704](https://github.com/Leaflet/Leaflet/issues/2704)
+* Fixed a bug where tiles touching the edge of the bounds from outside where loaded (by [@IvanSanchez](https://github.com/IvanSanchez)). [#2981](https://github.com/Leaflet/Leaflet/issues/2981) [#3508](https://github.com/Leaflet/Leaflet/pull/3508)
+* Fixed a memory leak in `map.remove()` (by [@IvanSanchez](https://github.com/IvanSanchez)). [#3514](https://github.com/Leaflet/Leaflet/pull/3514) [#2718](https://github.com/Leaflet/Leaflet/issues/2718)
+* Fixed a bug where layers control collapsed when hovering over a disabled radio button (by [@rowanwins](https://github.com/rowanwins)). [#3564](https://github.com/Leaflet/Leaflet/pull/3564) [#2771](https://github.com/Leaflet/Leaflet/issues/2771) [Leaflet#2771](https://github.com/Leaflet/Leaflet/issues/2771)
+* Fixed GeoJSON not accepting null geometry (by [@pglotov](https://github.com/pglotov)). [#3585](https://github.com/Leaflet/Leaflet/pull/3585)
+* Fixed occasional popup 1px horizontal offset (by [@patrickarlt](https://github.com/patrickarlt)). [#3587](https://github.com/Leaflet/Leaflet/pull/3587) [#3526](https://github.com/Leaflet/Leaflet/pull/3526) [#3586](https://github.com/Leaflet/Leaflet/issues/3586) [#3525](https://github.com/Leaflet/Leaflet/issues/3525)
+* Fixed some inconsistencies in mouse events for Canvas vector layers (by [@wpf500](https://github.com/wpf500)). [#3590](https://github.com/Leaflet/Leaflet/pull/3590) [#3568](https://github.com/Leaflet/Leaflet/issues/3568) [#3618](https://github.com/Leaflet/Leaflet/pull/3618)
+* Fixed scale control for non-earth CRS (by [@cmulders](https://github.com/cmulders)). [#3614](https://github.com/Leaflet/Leaflet/pull/3614)
 
 ### Misc improvements
 
