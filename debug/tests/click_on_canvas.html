@@ -11,7 +11,6 @@
     <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.0.js'></script>
 
     <script>
-        L_PREFER_CANVAS = true;
         $(document).ready(function() {
             var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
                 osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -22,7 +21,8 @@
                 maxZoom: 19,
                 center: [51.505, -0.09],
                 zoom: 9,
-                layers: [osm]
+                layers: [osm],
+                preferCanvas: true
             });
 
             var polygons = new L.FeatureGroup();
