@@ -143,7 +143,7 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 	var map = L.map('map').setView([51.505, -0.09], 13);
 
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'}).addTo(map);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.streets'}).addTo(map);
 
 	L.marker([51.5, -0.09]).addTo(map)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
@@ -175,12 +175,12 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 
 	var map1 = L.map('map1').setView([51.505, -0.09], 13);
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'}).addTo(map1);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.streets'}).addTo(map1);
 
 
 
 	var map2 = L.map('map2').setView([51.505, -0.09], 13);
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'}).addTo(map2);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.streets'}).addTo(map2);
 
 	L.marker([51.5, -0.09]).addTo(map2);
 
@@ -199,7 +199,7 @@ Now you've learned Leaflet basics and can start building map apps straight away!
 
 
 	var map3 = L.map('map3').setView([51.505, -0.09], 13);
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-i875mjb7'}).addTo(map3);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.streets'}).addTo(map3);
 
 	L.marker([51.5, -0.09]).addTo(map3)
 		.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();

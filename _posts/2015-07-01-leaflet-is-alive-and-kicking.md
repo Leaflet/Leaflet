@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Leaflet is Alive and Kicking, Stay Tuned for 1.0!
-description: Leaflet 0.7 Released &mdash; with IE11 touch support, upscaling tiles and tons of other improvements and bugfixes! Meanwhile, I've joined the MapBox team full-time.
+description: We're on the finishing line of releasing Leaflet 1.0 &mdash; the biggest and greatest Leaflet release ever. Meanwhile, I'm happy to present you the new redesigned Leaflet website!
 author: Vladimir Agafonkin
 authorsite: http://agafonkin.com/en
 ---

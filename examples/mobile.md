@@ -32,7 +32,7 @@ We'll now initialize the map in the JavaScript code exactly like we did in the [
 
 <pre><code class="javascript">var map = L.map('map');
 
-L.tileLayer('http://{s}.tiles.mapbox.com/v3/<a href="https://mapbox.com">MapID</a>/997/256/{z}/{x}/{y}.png', {
+L.tileLayer('https://api.tiles.mapbox.com/v4/<a href="https://mapbox.com">MapID</a>/997/256/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://mapbox.com"&gt;Mapbox&lt;/a&gt;</span>',
 	maxZoom: 18
 }).addTo(map);</code></pre>

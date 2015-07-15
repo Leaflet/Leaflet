@@ -64,10 +64,11 @@ The GeoJSON with state shapes was kindly shared by [Mike Bostock](http://bost.oc
 
 Let's display our states data on a map with a custom Mapbox style for nice grayscale tiles that look perfect as a background for visualizations:
 
+	var mapboxAccessToken = {your access token here};
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer('http://{s}.tiles.mapbox.com/{id}/{z}/{x}/{y}.png', {
-		id: 'examples.map-20v6611k',
+	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + mapboxAccessToken, {
+		id: 'mapbox.light',
 		attribution: ...
 	}).addTo(map);
 
@@ -262,18 +263,18 @@ Enjoy the result on [the top of this page](#map) or on a [separate page](choropl
 <script src="us-states.js"></script>
 <script>
 	var map2 = L.map('map2').setView([37.8, -96], 4);
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map2);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.light'}).addTo(map2);
 	L.geoJson(statesData).addTo(map2);
 
 
 	var map3 = L.map('map3').setView([37.8, -96], 4);
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map3);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.light'}).addTo(map3);
 	L.geoJson(statesData, {style: style}).addTo(map3);
 
 
 	var map = L.map('map').setView([37.8, -96], 4);
 
-	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'examples.map-20v6611k'}).addTo(map);
+	L.tileLayer(MB_URL, {attribution: MB_ATTR, id: 'mapbox.light'}).addTo(map);
 
 	// control that shows state info on hover
 	var InfoControl = L.Control.extend({

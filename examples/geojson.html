@@ -16,7 +16,7 @@ title: Using GeoJSON with Leaflet
 
 	L.tileLayer(MB_URL, {
 		attribution: MB_ATTR,
-		id: 'examples.map-20v6611k'
+		id: 'mapbox.light'
 	}).addTo(map);
 
 	var baseballIcon = L.icon({
@@ -112,6 +112,17 @@ title: Using GeoJSON with Leaflet
 <p>GeoJSON objects are added to the map through a <a href="http://leafletjs.com/reference.html#geojson">GeoJSON layer</a>. To create it and add it to a map, we can use the following code:</p>
 
 <pre><code>L.geoJson(geojsonFeature).addTo(map);</code></pre>
+
+<p>GeoJSON objects may also be passed as an array of valid GeoJSON objects.</p>
+
+<pre><code>var myLines = [{
+	"type": "LineString",
+	"coordinates": [[-100, 40], [-105, 45], [-110, 55]]
+}, {
+	"type": "LineString",
+	"coordinates": [[-105, 40], [-110, 45], [-115, 55]]
+}];
+</code></pre>
 
 <p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to it later.</p>
 

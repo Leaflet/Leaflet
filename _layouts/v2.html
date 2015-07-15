@@ -40,17 +40,15 @@
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 
 	<script>
+		ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ';
 		CM_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-				'Imagery © <a href="http://cloudmade.com">CloudMade</a>';
-
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://cloudmade.com">CloudMade</a>';
 		CM_URL = 'http://{s}.tile.cloudmade.com/d4fc77ea4a63471cab2423e66626cbb6/{styleId}/256/{z}/{x}/{y}.png';
-
-    MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-        '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-        'Imagery © <a href="http://mapbox.com">Mapbox</a>';
-    MB_URL = 'http://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png';
-
+		MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>';
+		MB_URL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + ACCESS_TOKEN;
 		OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
 		OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 	</script>
@@ -124,38 +122,23 @@
 
 <script>
 	hljs.configure({tabReplace: '    '});
+	hljs.initHighlighting();
 
 	(function () {
-		var codes = document.getElementsByTagName('code'),
-			parentClass;
+		if (document.body.className.indexOf('api-page') !== -1) {
+			var headers = document.getElementsByTagName('h2');
 
-		for (var i = 0, len = codes.length; i < len; i++) {
-			if (!codes[i].className) {
-				parentClass = codes[i].parentNode.className;
-				if (parentClass) {
-					codes[i].className = parentClass;
-				} else if (codes[i].innerHTML.match(/^\s*&lt;/)) {
-					codes[i].className = 'xml';
-				} else {
-					codes[i].className = 'javascript';
+			for (var i = 0, len = headers.length; i < len; i++) {
+				if (headers[i].id) {
+					headers[i].onclick = function(e) {
+						if (e.offsetX < 0) {
+							window.location.hash = '#' + this.id;
+						}
+					};
 				}
 			}
 		}
 	})();
-
-	(function () {
-		var headers = document.getElementsByTagName('h2');
-
-		for (var i = 0, len = headers.length; i < len; i++) {
-			if (headers[i].id) {
-				headers[i].onclick = function() {
-					window.location.hash = '#' + this.id;
-				};
-			}
-		}
-	})();
-
-	hljs.initHighlighting();
 </script>
 
 <script>

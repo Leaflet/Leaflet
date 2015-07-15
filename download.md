@@ -20,7 +20,11 @@ bodyclass: download-page
 		<td>Previous stable version, released on June 26, 2013 and last updated on July 25, 2013.</td>
 	</tr>
 	<tr>
-		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-master.zip">Leaflet 0.8-dev</a></td>
+		<td><a href="http://cdn.leafletjs.com/downloads/leaflet-1.0.0-b1.zip">Leaflet 1.0 beta 1</a></td>
+		<td>Last 1.0 beta, released on July 14, 2015.</td>
+	</tr>
+	<tr>
+		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-master.zip">Leaflet 1.0-dev</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
 	</tr>
 </table>
@@ -35,8 +39,22 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
-    <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.css" />
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+### Using a Downloaded Version of Leaflet
+
+Inside the archives downloaded from the above links, you will see four things:
+
+- `leaflet.js` - This is the minified Leaflet JavaScript code.
+- `leaflet-src.js` - This is the readable, unminified Leaflet JavaScript, which is sometimes helpful for debugging.
+- `leaflet.css` - This is the stylesheet for Leaflet.
+- `images` - This is a folder that contains images referenced by `leaflet.css`. It must be in the same directory as `leaflet.css`.
+
+Unzip the downloaded archive to your website's directory and add this to the `head` of your HTML code:
+
+    <link rel="stylesheet" href="/path/to/leaflet.css" />
+    <script src="/path/to/leaflet.js"></script> <!-- or use leaflet-src.js --!>
 
 ### Leaflet Source Code
 

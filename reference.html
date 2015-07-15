@@ -3192,7 +3192,7 @@ map.fitBounds(bounds);</code></pre>
 
 <h2 id="geojson">GeoJson</h2>
 
-<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> layer. Allows you to parse GeoJSON data and display it on the map. Extends <a href="#featuregroup">FeatureGroup</a>.</p>
+<p>Represents a <a href="http://geojson.org/geojson-spec.html">GeoJSON</a> object or an array of GeoJSON objects. Allows you to parse GeoJSON data and display it on the map. Extends <a href="#featuregroup">FeatureGroup</a>.</p>
 
 <pre><code class="javascript">L.geoJson(data, {
 	style: function (feature) {
@@ -6839,14 +6839,19 @@ var Leaflet = L.noConflict();
 
 <script>
 var tables = document.getElementsByTagName('table');
+
 for (var i = 0, len = tables.length; i < len; i++) {
     var id = tables[i].getAttribute('data-id'),
         tds = tables[i].getElementsByTagName('td');
+
     for (var j = 0, tdLen = tds.length; j < tdLen; j++) {
         if (tds[j].cellIndex === 0) {
             tds[j].parentNode.id = id + '-' + (tds[j].textContent || tds[j].innerText).split('(')[0].toLowerCase();
+
             tds[j].parentNode.onclick = function(e) {
-                window.location.hash = '#' + this.id;
+            	if (e.offsetX < 0) {
+                	window.location.hash = '#' + this.id;
+                }
             };
         }
     }

@@ -403,7 +403,7 @@ The following plugins change the way that tile layers are loaded into the map.
 		<td>
 			<a href="https://github.com/ismyrnow/Leaflet.functionaltilelayer">Leaflet.FunctionalTileLayer</a>
 		</td><td>
-			Allows you to define tile layer URLs using a function, with support for jQuery deferreds.
+			Allows you to define tile layer URLs using a function. Even works with asynchronous sources, using promises.
 		</td><td>
 			<a href="https://github.com/ismyrnow">Ishmael Smyrnow</a>
 		</td>
@@ -1359,17 +1359,6 @@ Plugins that search for overlays and enhance how to display information about th
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/stefanocudini/leaflet-geojson-list">Leaflet GeoJSON List</a>
-		</td>
-		<td>
-			Leaflet Control for listing GeoJSON properties in a interactive menu(<a href="http://labs.easyblog.it/maps/leaflet-geojson-list/">Demo</a>).
-		</td>
-		<td>
-			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
 			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
 		</td><td>
 			A Leaflet Plugin for Edge Cases.  For use when you want popups on <em>mouseover</em>, not <em>click</em>, and
@@ -1442,6 +1431,17 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/atogle">Aaron Ogle</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-geojson-selector">Leaflet GeoJSON Selector</a>
+		</td>
+		<td>
+			Leaflet Control for selection from GeoJSON feature in a interactive list and map(<a href="http://labs.easyblog.it/maps/leaflet-geojson-selector/">Demo</a>).
+		</td>
+		<td>
+			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
@@ -2331,10 +2331,12 @@ The following plugins use external services to calculate driving or walking rout
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="https://github.com/perliedman/leaflet-routing-machine">Leaflet Routing Machine</a>
+			<a href="http://www.liedman.net/leaflet-routing-machine/">Leaflet Routing Machine</a>
 		</td><td>
-			Control for route search between waypoints, displaying itinerary and alternative routes. Currently
-			uses <a href="http://project-osrm.org/">OSRM</a> to search routes.
+			Control for route search with via points, displaying itinerary and alternative routes. Uses 
+			<a href="http://project-osrm.org/">OSRM</a> by default, but also supports
+			<a href="https://graphhopper.com/">GraphHopper</a>,
+			<a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a> and more.
 		</td><td>
 			<a href="https://github.com/perliedman">Per Liedman</a>
 		</td>
@@ -2409,7 +2411,8 @@ External services that transform an address or the name of a place into latitude
 		<td>
 			<a href="https://github.com/perliedman/leaflet-control-geocoder">Leaflet Control Geocoder</a>
 		</td><td>
-			A clean and extensible control that uses Nominatim (OSM) or Bing to locate places. Easy to adapt for other providers.
+			A clean and extensible control for both geocoding and reverse geocoding. Builtin support for
+			Nominatim, Bing, MapQuest, Mapbox, What3Words, Google and Photon. Easy to extend to other providers.
 		</td><td>
 			<a href="https://github.com/perliedman">Per Liedman</a>
 		</td>
