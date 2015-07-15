@@ -56,7 +56,7 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 * Removed `Map` `tilelayersload` event.
 * Removed `Popup` `open` and `close` events in favor of `add` and `remove` for consistency.
 * Moved all layer-related logic in `Map.js` to `Layer.js`.
-* Improved `FeatureGroup` `bindPopup` to accept a function for generating popup content, significantly improving memory footpring when adding popups to a huge number of layers (by [@patrickarlt](https://github.com/patrickarlt)). [#3109](https://github.com/Leaflet/Leaflet/pull/3109) [#3059](https://github.com/Leaflet/Leaflet/pull/3059)
+* Improved `FeatureGroup` `bindPopup` to accept a function for generating popup content, significantly improving memory footprint when adding popups to a huge number of layers (by [@patrickarlt](https://github.com/patrickarlt)). [#3109](https://github.com/Leaflet/Leaflet/pull/3109) [#3059](https://github.com/Leaflet/Leaflet/pull/3059)
 * Added `ImageOverlay` interactivity (mouse events, etc.) (by [@snkashis](https://github.com/snkashis)). [#3009](https://github.com/Leaflet/Leaflet/pull/3009) [#1727](https://github.com/Leaflet/Leaflet/issues/1727)
 * Added `ImageOverlay` `getBounds` (by [@brunob](https://github.com/brunob)). [#2848](https://github.com/Leaflet/Leaflet/pull/2848)
 * Renamed `clickable` option to `interactive` (by [@AndriiHeonia](https://github.com/AndriiHeonia)). [#2838](https://github.com/Leaflet/Leaflet/pull/2838) [#2499](https://github.com/Leaflet/Leaflet/issues/2499)
