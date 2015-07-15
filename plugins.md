@@ -247,6 +247,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/emikhalev/">Eugene Mikhalev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/geobricks/Leaflet.GeoJSON.Encoded">Leaflet GeoJSON Encoded</a>
+		</td><td>
+			Extends the L.GeoJSON layer using Google polyline encoding algorithm, allowing an optimized data transfer.
+		</td><td>
+			<a href="https://github.com/geobricks/">Geobricks</a>
+		</td>
+	</tr>	
 </table>
 
 
