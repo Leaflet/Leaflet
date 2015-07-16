@@ -185,7 +185,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>layers</b></code></td>
-		<td><code><a href="#layer">ILayer</a>[]</code></td>
+		<td><code><a href="#layer">Layer</a>[]</code></td>
 		<td><code><span class="literal">null</span></code></td>
 		<td>Layers that will be added to the map initially.</td>
 	</tr>
@@ -841,7 +841,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-addlayer">
 		<td><code><b>addLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i></nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i></nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -849,7 +849,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -857,7 +857,7 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>hasLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
@@ -918,7 +918,7 @@ var map = L.map('map', {
 		<td>Removes the given control from the map.</td>
 	</tr>
 		<td><code><b>getRenderer</b>(
-			<nobr>&lt;<a href="#ilayer">ILayer</a>&gt; <i>layer</i>)</nobr>
+			<nobr>&lt;<a href="#ilayer">Layer</a>&gt; <i>layer</i>)</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">Renderer</span></code></td>
@@ -1669,11 +1669,11 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>L.popup</b>(
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i>,</nobr>
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>source?</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>source?</i> )</nobr>
 		</code></td>
 
 
-		<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional source object that is used to tag the popup with a reference to the ILayer to which it refers.</td>
+		<td>Instantiates a Popup object given an optional options object that describes its appearance and location and an optional source object that is used to tag the popup with a reference to the Layer to which it refers.</td>
 	</tr>
 </table>
 
@@ -2979,7 +2979,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>L.LayerGroup</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>[]&gt; <i>layers?</i> )</nobr>
 		</code></td>
 
 
@@ -3005,7 +3005,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>addLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -3013,7 +3013,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
@@ -3029,7 +3029,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>hasLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td><code>Boolean</code></td>
@@ -3040,7 +3040,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;String&gt; <i>id</i> )</nobr>
 		</code></td>
 
-		<td><code><a href="#layer">ILayer</a></code></td>
+		<td><code><a href="#layer">Layer</a></code></td>
 		<td>Returns the layer with the given id.</td>
 	</tr>
 	<tr>
@@ -3093,7 +3093,7 @@ map.fitBounds(bounds);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>L.featureGroup</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>[]&gt; <i>layers?</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>[]&gt; <i>layers?</i> )</nobr>
 		</code></td>
 
 
@@ -3245,7 +3245,7 @@ map.fitBounds(bounds);</code></pre>
 	<tr id="geojson-oneachfeature">
 		<td><code><b>onEachFeature</b>(
 			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td>Function that will be called on each created feature layer. Useful for attaching events and popups to features.</td>
@@ -3253,7 +3253,7 @@ map.fitBounds(bounds);</code></pre>
 	<tr id="geojson-filter">
 		<td><code><b>filter</b>(
 			<nobr>&lt;GeoJSON&gt; <i>featureData</i></nobr>,
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 
 		<td>Function that will be used to decide whether to show a feature or not.</td>
@@ -3319,7 +3319,7 @@ map.fitBounds(bounds);</code></pre>
 			<nobr>&lt;<a href="#geojson-pointtolayer">Function</a>&gt; <i>pointToLayer?</i> )</nobr>
 		</code></td>
 
-		<td><code><a href="#layer">ILayer</a></code></td>
+		<td><code><a href="#layer">Layer</a></code></td>
 		<td>Creates a layer from a given GeoJSON feature.</td>
 	</tr>
 	<tr>
@@ -4455,7 +4455,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>addBaseLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i></nobr>,
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i></nobr>,
 			<nobr>&lt;String&gt; <i>name</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
@@ -4463,7 +4463,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>addOverlay</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i></nobr>,
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i></nobr>,
 			<nobr>&lt;String&gt; <i>name</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
@@ -4471,7 +4471,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	</tr>
 	<tr>
 		<td><code><b>removeLayer</b>(
-			<nobr>&lt;<a href="#layer">ILayer</a>&gt; <i>layer</i> )</nobr>
+			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i> )</nobr>
 		</code></td>
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Remove the given layer from the control.</td>
@@ -6657,7 +6657,7 @@ map.addControl(new MyControl());
 	</tr>
 	<tr>
 		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#ilayer">Layer</a></code></td>
 		<td>The layer that was added or removed.</td>
 	</tr>
 </table>
@@ -6672,7 +6672,7 @@ map.addControl(new MyControl());
 	</tr>
 	<tr>
 		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#ilayer">Layer</a></code></td>
 		<td>The layer that was added or removed.</td>
 	</tr>
 	<tr>
@@ -6742,7 +6742,7 @@ map.addControl(new MyControl());
 	</tr>
 	<tr>
 		<td><code><b>layer</b></code></td>
-		<td><code><a href="#ilayer">ILayer</a></code></td>
+		<td><code><a href="#ilayer">Layer</a></code></td>
 		<td>The layer for the GeoJSON feature that is being added to the map.</td>
 	</tr>
 	<tr>
