@@ -680,7 +680,7 @@ L.Map = L.Evented.extend({
 		var target = targets[0];
 
 		// prevents firing click after you just dragged an object
-		if (e.type === 'click' && !e._simulated && this._draggableMoved(target)) { return; }
+		if ((e.type === 'click' || e.type === 'preclick') && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
 			originalEvent: e
