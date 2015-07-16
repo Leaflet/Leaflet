@@ -275,4 +275,25 @@ describe("L.Map#openPopup", function () {
 		expect(map.hasLayer(p1)).to.be(true);
 		expect(map.hasLayer(p2)).to.be(true);
 	});
+
+	it('should not be closen when dragging map', function (done) {
+		document.body.appendChild(c);
+		c.style.position = 'absolute';
+		c.style.left = 0;
+		c.style.top = 0;
+		c.style.zIndex = 10000;
+		var coords = map._container.getBoundingClientRect();
+		var spy = sinon.spy();
+		var p = new L.Popup().setLatLng(new L.LatLng(55.8, 37.6));
+		map.openPopup(p);
+		expect(map.hasLayer(p)).to.be(true);
+		map.on('drag', spy);
+		happen.drag(coords.left + 100, coords.top + 100, coords.left + 110, coords.top + 110, function () {
+			expect(spy.called).to.be(true);
+			expect(map.hasLayer(p)).to.be(true);
+			document.body.removeChild(c);
+			done();
+		});
+	});
+
 });
