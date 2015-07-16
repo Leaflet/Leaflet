@@ -63,7 +63,7 @@
 	height: 0;
 	-moz-box-sizing: border-box;
 	     box-sizing: border-box;
-	z-index: 8;
+	z-index: 800;
 	}
 /* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */
 .leaflet-overlay-pane svg {
