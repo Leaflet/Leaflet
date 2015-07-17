@@ -663,10 +663,6 @@ L.Map = L.Evented.extend({
 
 	_fireDOMEvent: function (e, type, targets) {
 
-		if (type === 'contextmenu') {
-			L.DomEvent.preventDefault(e);
-		}
-
 		var isHover = type === 'mouseover' || type === 'mouseout';
 		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, type, !isHover));
 
@@ -675,6 +671,9 @@ L.Map = L.Evented.extend({
 
 			// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
 			if (isHover && !L.DomEvent._checkMouse(this._container, e)) { return; }
+		} else if (type === 'contextmenu') {
+			// we only want to call preventDefault when targets listen to it.
+			L.DomEvent.preventDefault(e);
 		}
 
 		var target = targets[0];
