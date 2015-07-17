@@ -26,10 +26,14 @@ L.Map.BoxZoom = L.Handler.extend({
 		return this._moved;
 	},
 
+	_resetState: function () {
+		this._moved = false;
+	},
+
 	_onMouseDown: function (e) {
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
-		this._moved = false;
+		this._resetState();
 
 		L.DomUtil.disableTextSelection();
 		L.DomUtil.disableImageDrag();
@@ -88,6 +92,9 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._finish();
 
 		if (!this._moved) { return; }
+		// Postpone to next JS tick so internal click event handling
+		// still see it as "moved".
+		setTimeout(L.bind(this._resetState, this), 0);
 
 		var bounds = new L.LatLngBounds(
 		        this._map.containerPointToLatLng(this._startPoint),
