@@ -61,8 +61,7 @@ L.DomEvent = {
 		} else if ('addEventListener' in obj) {
 
 			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
+				obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
 
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				handler = function (e) {
@@ -108,8 +107,7 @@ L.DomEvent = {
 		} else if ('removeEventListener' in obj) {
 
 			if (type === 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false);
-				obj.removeEventListener(type, handler, false);
+				obj.removeEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
 
 			} else {
 				obj.removeEventListener(
@@ -184,16 +182,9 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
-
-		var delta = 0;
-
-		if (e.wheelDelta) {
-			delta = e.wheelDelta / 120;
-		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
-		return delta;
+		return e.deltaY ? -e.deltaY :
+			e.wheelDelta ? e.wheelDelta / 40 :
+			e.detail ? -e.detail : 0;
 	},
 
 	_skipEvents: {},
