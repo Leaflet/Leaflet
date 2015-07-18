@@ -277,11 +277,14 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_resetAll: function () {
+		var mapZoom = this._map.getZoom();
 		for (var z in this._levels) {
-			L.DomUtil.remove(this._levels[z].el);
-			delete this._levels[z];
+			if (parseInt(z) !== mapZoom) {
+				L.DomUtil.remove(this._levels[z].el);
+				delete this._levels[z];
+			}
 		}
-		this._removeAllTiles();
+		this._pruneTiles();
 
 		this._tileZoom = null;
 		this._resetView();
