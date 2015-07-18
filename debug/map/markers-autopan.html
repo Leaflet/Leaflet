@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map"></div>
+
+<script type="text/javascript">
+function getOffsetSum(elem) {
+    var top=0, left=0;
+    while(elem) {
+        top = top + parseInt(elem.offsetTop);
+        left = left + parseInt(elem.offsetLeft);
+        elem = elem.offsetParent;
+    }
+   return {top: top, left: left};
+}
+
+    var map = L.map('map', {
+        maxZoom: 12,
+        minZoom: 3,
+       // crs: L.CRS.Earth
+    }).setView([0,0],1)
+
+        var markerDraggable = new L.Marker([0, 10], {
+            draggable: true,
+            title: 'Draggable and on the edges I pan the map'
+        });
+		
+	var mapScreenBounds;
+
+	var panBounds = L.bounds(L.point(-0.85,-0.85),L.point(0.85,0.85));
+	
+		markerDraggable.on('dragstart',function(e){
+			console.log('Start:', e, map.getSize())
+			var mapPosLeftTopRaw = getOffsetSum(map.getContainer()),
+				mapPosLeftTopPoint = L.point(mapPosLeftTopRaw.left,mapPosLeftTopRaw.top);
+				mapPosRightBottom = mapPosLeftTopPoint.add(map.getSize());
+			mapScreenBounds = L.bounds(mapPosLeftTopPoint,mapPosRightBottom);
+		});
+
+		markerDraggable.on('drag',function(e){
+			var mouseLocation = L.point(e.originalEvent.clientX,e.originalEvent.clientY),
+				deltaPoint = mouseLocation.subtract(mapScreenBounds.getCenter()),
+				scalePoint = deltaPoint.unscaleBy(map.getSize().divideBy(2));
+			
+			var panVector;
+			if(!panBounds.contains(scalePoint)) {
+				sizeFromCenter = panBounds.getSize().divideBy(2);
+				panVector = scalePoint.unscaleBy(sizeFromCenter).multiplyBy(100);
+				map.panBy(panVector)
+			}
+		});
+		
+        map.addLayer(markerDraggable);
+        markerDraggable.bindPopup("Draggable");
+
+    		
+	L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+		attribution: "Map: Tiles Courtesy of MapQuest (OpenStreetMap, CC-BY-SA)",
+		subdomains: ["otile1","otile2","otile3","otile4"],
+		maxZoom: 12,
+		minZoom: 2
+	}).addTo(map);
+</script>
+</body>
+</html>
