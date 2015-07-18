@@ -20,10 +20,11 @@ L.Draggable = L.Evented.extend({
 		}
 	},
 
-	initialize: function (element, dragStartTarget, preventOutline) {
+	initialize: function (element, dragStartTarget, preventOutline, contextMap) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
+		this._contextMap = contextMap;
 	},
 
 	enable: function () {
@@ -68,9 +69,27 @@ L.Draggable = L.Evented.extend({
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
+		this._startPosMap = (this._contextMap ? this._contextMap._getCenterLayerPoint() : L.point(0, 0));
+		this._offsetMap = L.point(0, 0);
+
+		if (this._contextMap) {
+			this._contextMap.on('move', this._onMapMoved, this);
+		}
+
 		L.DomEvent
 		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
+	},
+
+	_onMapMoved: function() {
+		if (!this._moved) { return; }
+
+		var oldOffset = this._offsetMap;
+		this._offsetMap = this._startPosMap.subtract(this._contextMap._getCenterLayerPoint());
+		this._newPos = this._newPos.add(oldOffset).subtract(this._offsetMap);
+
+		L.Util.cancelAnimFrame(this._animRequest);
+		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true, this._dragStartTarget);
 	},
 
 	_onMove: function (e) {
@@ -100,7 +119,7 @@ L.Draggable = L.Evented.extend({
 			L.DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
 		}
 
-		this._newPos = this._startPos.add(offset);
+		this._newPos = this._startPos.add(offset).subtract(this._offsetMap);
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
@@ -127,6 +146,10 @@ L.Draggable = L.Evented.extend({
 			L.DomEvent
 			    .off(document, L.Draggable.MOVE[i], this._onMove, this)
 			    .off(document, L.Draggable.END[i], this._onUp, this);
+		}
+
+		if (this._contextMap) {
+			this._contextMap.off('move', this._onMapMoved, this);
 		}
 
 		L.DomUtil.enableImageDrag();
