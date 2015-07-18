@@ -119,9 +119,9 @@ L.Draggable = L.Evented.extend({
 			L.DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
 		}
 
-		if (this._contextMap) {    
-		    this._offsetMap = this._startPosMap.subtract(this._contextMap._getCenterLayerPoint());    
-        }
+		if (this._contextMap) {
+			this._offsetMap = this._startPosMap.subtract(this._contextMap._getCenterLayerPoint());
+		}
 		this._newPos = this._startPos.add(offset).subtract(this._offsetMap);
 		this._moving = true;
 
