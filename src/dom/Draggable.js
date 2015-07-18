@@ -73,7 +73,7 @@ L.Draggable = L.Evented.extend({
 		this._offsetMap = L.point(0, 0);
 
 		if (this._contextMap) {
-			this._contextMap.on('move', this._onMapMoved, this);
+			this._contextMap.on('moveend', this._onMapMoved, this);
 		}
 
 		L.DomEvent
@@ -119,6 +119,9 @@ L.Draggable = L.Evented.extend({
 			L.DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
 		}
 
+		if (this._contextMap) {    
+		    this._offsetMap = this._startPosMap.subtract(this._contextMap._getCenterLayerPoint());    
+        }
 		this._newPos = this._startPos.add(offset).subtract(this._offsetMap);
 		this._moving = true;
 
@@ -149,7 +152,7 @@ L.Draggable = L.Evented.extend({
 		}
 
 		if (this._contextMap) {
-			this._contextMap.off('move', this._onMapMoved, this);
+			this._contextMap.off('moveend', this._onMapMoved, this);
 		}
 
 		L.DomUtil.enableImageDrag();
