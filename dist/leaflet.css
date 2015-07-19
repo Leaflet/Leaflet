@@ -96,7 +96,7 @@
 
 .leaflet-control {
 	position: relative;
-	z-index: 7;
+	z-index: 800;
 	pointer-events: auto;
 	}
 .leaflet-top,
