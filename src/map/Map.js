@@ -630,8 +630,8 @@ L.Map = L.Evented.extend({
 			target = this._targets[L.stamp(src)];
 			if (target && target.listens(type, true)) {
 				targets.push(target);
-				if (!bubble) { break; }
 			}
+			if (!bubble) { break; }
 			if (src === this._container) {
 				break;
 			}
