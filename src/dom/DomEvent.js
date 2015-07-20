@@ -139,7 +139,7 @@ L.DomEvent = {
 	},
 
 	disableScrollPropagation: function (el) {
-		return L.DomEvent.on(el, 'mousewheel MozMousePixelScroll', L.DomEvent.stopPropagation);
+		return L.DomEvent.on(el, 'mousewheel', L.DomEvent.stopPropagation);
 	},
 
 	disableClickPropagation: function (el) {
@@ -183,7 +183,7 @@ L.DomEvent = {
 
 	getWheelDelta: function (e) {
 		return e.deltaY ? -e.deltaY :
-			e.wheelDelta ? e.wheelDelta / 40 :
+			e.wheelDelta ? (e.wheelDeltaY || e.wheelDelta) / 40 :
 			e.detail ? -e.detail : 0;
 	},
 
