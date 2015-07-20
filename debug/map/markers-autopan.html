@@ -7,7 +7,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<link rel="stylesheet" href="../css/screen.css" />
+	<link rel="stylesheet" href="../css/mobile.css" />
 
 	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
@@ -16,6 +16,8 @@
 	<div id="map"></div>
 
 <script type="text/javascript">
+//Function to calculate the 'map'-div position relative to the users window
+// TODO: change to a more elegant way to detect when to pan
 function getOffsetSum(elem) {
     var top=0, left=0;
     while(elem) {
@@ -44,21 +46,35 @@ function getOffsetSum(elem) {
 		markerDraggable.on('dragstart',function(e){
 			console.log('Start:', e, map.getSize())
 			var mapPosLeftTopRaw = getOffsetSum(map.getContainer()),
-				mapPosLeftTopPoint = L.point(mapPosLeftTopRaw.left,mapPosLeftTopRaw.top);
+				mapPosLeftTopPoint = L.point(mapPosLeftTopRaw.left,mapPosLeftTopRaw.top),
 				mapPosRightBottom = mapPosLeftTopPoint.add(map.getSize());
+		
 			mapScreenBounds = L.bounds(mapPosLeftTopPoint,mapPosRightBottom);
 		});
 
 		markerDraggable.on('drag',function(e){
-			var mouseLocation = L.point(e.originalEvent.clientX,e.originalEvent.clientY),
-				deltaPoint = mouseLocation.subtract(mapScreenBounds.getCenter()),
-				scalePoint = deltaPoint.unscaleBy(map.getSize().divideBy(2));
-			
+						//Re-center drag location into pixel location of the map bounding box
+			var first = (e.originalEvent.touches && e.originalEvent.touches.length === 1 ? e.originalEvent.touches[0] : e.originalEvent),
+			    dragLocation = L.point(first.clientX,first.clientY),
+			    deltaPoint = dragLocation.subtract(mapScreenBounds.getCenter()),
+			    scalePoint = deltaPoint.unscaleBy(map.getSize().divideBy(2));
+
 			var panVector;
 			if(!panBounds.contains(scalePoint)) {
-				sizeFromCenter = panBounds.getSize().divideBy(2);
-				panVector = scalePoint.unscaleBy(sizeFromCenter).multiplyBy(100);
-				map.panBy(panVector)
+				var absoluteVector = L.point(Math.abs(scalePoint.x),Math.abs(scalePoint.y)),
+				    direction = absoluteVector.unscaleBy(scalePoint).round(); //(1,1) || (-1,1) || (-1,-1) etc
+				
+				/*
+				 * Calculate smooth increase of pan by moving further to the edge by calculating
+				 * first a index between 0 (the pan bounding box edge) to 1 (the map edge)
+				 * and then plug that value into a sigmoid function to get a smooth transition
+				 */
+				panSizeOfVector = absoluteVector.subtract(panBounds.getSize().divideBy(2)).unscaleBy(L.point(1,1).subtract(panBounds.getSize().divideBy(2)));
+				var panX = 1/(1+Math.exp(-14*(panSizeOfVector.x-0.4))),
+				    panY = 1/(1+Math.exp(-14*(panSizeOfVector.y-0.4))),
+				    panVector = L.point(panX,panY).multiplyBy(50); //Max pan velocity: 50
+				
+				map.panBy(panVector.scaleBy(direction))
 			}
 		});
 		
