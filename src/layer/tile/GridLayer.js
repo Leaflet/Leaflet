@@ -172,7 +172,7 @@ L.GridLayer = L.Layer.extend({
 			var tile = this._tiles[key];
 			if (!tile.current || !tile.loaded) { continue; }
 
-			var fade = Math.min(1, (now - tile.loaded) / 200);
+			var fade = Math.min(opacity, (now - tile.loaded) / 200);
 			if (fade < 1) {
 				L.DomUtil.setOpacity(tile.el, opacity * fade);
 				nextFrame = true;
