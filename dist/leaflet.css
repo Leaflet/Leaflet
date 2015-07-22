@@ -45,12 +45,9 @@
 /* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */
 .leaflet-container .leaflet-overlay-pane svg,
 .leaflet-container .leaflet-marker-pane img,
-.leaflet-container .leaflet-tile-pane img {
-	max-width: none !important;
-	}
-/* stupid Android 2 doesn't understand "max-width: none" properly */
+.leaflet-container .leaflet-tile-pane img,
 .leaflet-container img.leaflet-image-layer {
-	max-width: 15000px !important;
+	max-width: none !important;
 	}
 .leaflet-tile {
 	filter: inherit;
