@@ -17,7 +17,7 @@ L.Canvas = L.Renderer.extend({
 		var container = this._container = document.createElement('canvas');
 
 		L.DomEvent
-			.on(container, 'mousemove', L.Util.throttle(this._onMouseMove, 66, this), this)
+			.on(container, 'mousemove', L.Util.throttle(this._onMouseMove, 32, this), this)
 			.on(container, 'click dblclick mousedown mouseup contextmenu', this._onClick, this)
 			.on(container, 'mouseout', this._handleMouseOut, this);
 
