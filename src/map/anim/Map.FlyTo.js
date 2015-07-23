@@ -19,7 +19,7 @@ L.Map.include({
 
 		var w0 = Math.max(size.x, size.y),
 		    w1 = w0 * this.getZoomScale(startZoom, targetZoom),
-		    u1 = to.distanceTo(from),
+		    u1 = (to.distanceTo(from)) || 1,
 		    rho = 1.42,
 		    rho2 = rho * rho;
 
