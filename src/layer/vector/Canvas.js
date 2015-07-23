@@ -100,13 +100,12 @@ L.Canvas = L.Renderer.extend({
 
 		for (var id in this._layers) {
 			layer = this._layers[id];
-
+			if (!this._redrawBounds || layer._pxBounds.intersects(this._redrawBounds)) {
+				layer._updatePath();
+			}
 			if (clear && layer._removed) {
 				delete layer._removed;
 				delete this._layers[id];
-
-			} else if (!this._redrawBounds || layer._pxBounds.intersects(this._redrawBounds)) {
-				layer._updatePath();
 			}
 		}
 	},
