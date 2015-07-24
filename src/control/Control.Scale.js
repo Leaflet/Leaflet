@@ -81,7 +81,7 @@ L.Control.Scale = L.Control.extend({
 
 	_updateScale: function (scale, text, ratio) {
 		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
-		scale.innerHTML = '<span>'+text+'</span>';
+		scale.innerHTML = '<span>' + text + '</span>';
 	},
 
 	_getRoundNum: function (num) {
