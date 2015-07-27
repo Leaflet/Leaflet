@@ -52,6 +52,7 @@ L.Marker.include({
 		if (content instanceof L.Popup) {
 			L.setOptions(content, options);
 			this._popup = content;
+			content._source = this;
 		} else {
 			this._popup = new L.Popup(options, this)
 				.setContent(content);
