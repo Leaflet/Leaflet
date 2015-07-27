@@ -1350,7 +1350,7 @@ Plugins that search for overlays and enhance how to display information about th
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/stefanocudini/leaflet-search">leaflet-search</a>
+			<a href="https://github.com/stefanocudini/leaflet-search">Leaflet Search</a>
 		</td><td>
 			A control for search Markers/Features location by custom property in LayerGroup/GeoJSON. Support AJAX/JSONP, Autocompletion and 3rd party service
 		</td><td>
@@ -1941,6 +1941,17 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://gitlab.com/u/PowerPan">Johannes Rudolph</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stefanocudini/leaflet-locationpicker">Leaflet Location Picker</a>
+		</td>
+		<td>
+			Simple location picker with mini Leaflet map (<a href="http://labs.easyblog.it/maps/leaflet-locationpicker/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
+		</td>
+	</tr>	
 </table>
 
 
