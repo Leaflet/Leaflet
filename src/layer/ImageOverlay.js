@@ -88,7 +88,9 @@ L.ImageOverlay = L.Layer.extend({
 	setBounds: function (bounds) {
 		this._bounds = bounds;
 
-		this._reset();
+		if (this._map) {
+			this._reset();
+		}
 		return this;
 	},
 
