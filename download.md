@@ -12,21 +12,21 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.7.3.zip">Leaflet 0.7.3</a></td>
+		<td class="width100"><a href="http://cdn.leafletjs.com/downloads/leaflet-0.7.3.zip">Leaflet 0.7.3</a></td>
 		<td>Stable version, released on November 18, 2013 and last updated on May 23, 2014.</td>
 	</tr>
-	<tr>
+	<!--<tr>
 		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip">Leaflet 0.6.4</a></td>
 		<td>Previous stable version, released on June 26, 2013 and last updated on July 25, 2013.</td>
-	</tr>
+	</tr>-->
 	<tr>
 		<td><a href="http://cdn.leafletjs.com/downloads/leaflet-1.0.0-b1.zip">Leaflet 1.0 beta 1</a></td>
 		<td>Last 1.0 beta, released on July 14, 2015.</td>
 	</tr>
-	<tr>
+	<!--<tr>
 		<td><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-master.zip">Leaflet 1.0-dev</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
-	</tr>
+	</tr>-->
 </table>
 
 [View Changelog](https://github.com/Leaflet/Leaflet/blob/master/CHANGELOG.md)
