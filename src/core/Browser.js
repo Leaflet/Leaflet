@@ -16,7 +16,7 @@
 	    gecko     = ua.indexOf('gecko') !== -1  && !webkit && !window.opera && !ie,
 
 	    mobile = typeof orientation !== 'undefined' || ua.indexOf('mobile') !== -1,
-	    msPointer = navigator.msPointerEnabled && navigator.msMaxTouchPoints && !window.PointerEvent,
+	    msPointer = !window.PointerEvent && window.MSPointerEvent,
 	    pointer = (window.PointerEvent && navigator.pointerEnabled && navigator.maxTouchPoints) || msPointer,
 
 	    ie3d = ie && ('transition' in doc.style),
