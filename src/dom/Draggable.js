@@ -46,7 +46,7 @@ L.Draggable = L.Evented.extend({
 	_onDown: function (e) {
 		this._moved = false;
 
-		if (L.Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		if (L.Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches) || !this._enabled) { return; }
 		L.Draggable._dragging = true;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
