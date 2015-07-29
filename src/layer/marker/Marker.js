@@ -130,7 +130,6 @@ L.Marker = L.Layer.extend({
 		}
 
 		this._icon = icon;
-		this._initInteraction();
 
 		if (options.riseOnHover) {
 			this.on({
@@ -160,6 +159,7 @@ L.Marker = L.Layer.extend({
 
 		if (addIcon) {
 			this.getPane().appendChild(this._icon);
+			this._initInteraction();
 		}
 		if (newShadow && addShadow) {
 			this.getPane('shadowPane').appendChild(this._shadow);
