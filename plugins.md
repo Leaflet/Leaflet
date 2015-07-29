@@ -801,6 +801,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/coryasilva/Leaflet.ExtraMarkers">Leaflet.Extra-Markers</a>
+		</td><td>
+			Shameless copy of Awesome-Markers with more shapes, colors and semantic-ui support
+		</td><td>
+			<a href="http://www.corysilva.com">Cory Silva</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/jseppi/Leaflet.MakiMarkers">Leaflet.MakiMarkers</a>
 		</td><td>Create markers using <a href="https://www.mapbox.com/maki/">Maki Icons</a> from MapBox.
 		</td><td>
@@ -1016,6 +1025,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 			Quick point clustering library with D3 categorization.
 		</td><td>
 			<a href="https://github.com/hallahan">Nicholas Hallahan</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Eclipse1979/leaflet-conditionalLayer">Leaflet.ConditionalLayer</a>
+		</td><td>
+			A FeatureGroup that does not show any more than a certain amount of markers visible in the viewport. (<a href="http://eclipse1979.github.io/Leaflet.ConditionalLayer/example/leaflet-conditionalLayer2.html">Demo</a>)
+		</td><td>
+			<a href="https://github.com/Eclipse1979">EPP</a>
 		</td>
 	</tr>
 </table>
@@ -2154,7 +2172,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/dalbrx">David Albrecht</a>
 		</td>
 	</tr>
-
+	<tr>
+		<td>
+			<a href="https://github.com/Eclipse1979/leaflet-slider">Leaflet.Slider</a>
+		</td>
+		<td>
+			Adds a <code>&lt;input type="range"&gt;</code> slider that calls a function every time its input is changed (<a href="https://github.com/Eclipse1979/leaflet-slider">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/Eclipse1979">EPP</a>
+		</td>
+	</tr>
 </table>
 
 
