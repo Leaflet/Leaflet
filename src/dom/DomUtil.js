@@ -143,7 +143,7 @@ L.DomUtil = {
 		var pos = offset || new L.Point(0, 0);
 
 		el.style[L.DomUtil.TRANSFORM] =
-			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
+			(L.Browser.ie3d ? 'translate(' + pos.x + 'px,' + pos.y + 'px' + ')' : 'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)') + (scale ? ' scale(' + scale + ')' : '');
 	},
 
 	setPosition: function (el, point) { // (HTMLElement, Point[, Boolean])
