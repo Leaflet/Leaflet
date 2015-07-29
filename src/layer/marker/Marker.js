@@ -130,7 +130,10 @@ L.Marker = L.Layer.extend({
 		}
 
 		this._icon = icon;
-		this._initInteraction();
+
+		if (addIcon) {
+			this._initInteraction();
+		}
 
 		if (options.riseOnHover) {
 			this.on({
