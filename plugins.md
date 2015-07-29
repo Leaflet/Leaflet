@@ -644,6 +644,15 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 			<a href="https://github.com/cbaines">Christopher Baines</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Eclipse1979/leaflet-conditionalLayer">Leaflet.ConditionalLayer</a>
+		</td><td>
+			A type of Layer that allows to manipulate a large amount of ILayers without performance issue. (<a href="http://eclipse1979.github.io/Leaflet.ConditionalLayer/example/leaflet-conditionalLayer2.html">Demo</a>)
+		</td><td>
+			<a href="https://github.com/Eclipse1979">EPP</a>
+		</td>
+	</tr>
 </table>
 
 
