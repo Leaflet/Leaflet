@@ -26,11 +26,18 @@ L.Control.Layers = L.Control.extend({
 		}
 	},
 
-	onAdd: function () {
+	onAdd: function (map) {
 		this._initLayout();
 		this._update();
 
+		this._map = map;
+		map.on('zoomend', this._checkDisabledLayers, this);
+
 		return this._container;
+	},
+
+	onRemove: function() {
+		this._map.off('zoomend', this._checkDisabledLayers, this);
 	},
 
 	addBaseLayer: function (layer, name) {
@@ -209,6 +216,7 @@ L.Control.Layers = L.Control.extend({
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
 		container.appendChild(label);
 
+		this._checkDisabledLayers();
 		return label;
 	},
 
@@ -254,10 +262,26 @@ L.Control.Layers = L.Control.extend({
 			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
 			this._form.style.height = acceptableHeight + 'px';
 		}
+		this._checkDisabledLayers();
 	},
 
 	_collapse: function () {
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+	},
+
+	_checkDisabledLayers: function () {
+		var inputs = this._form.getElementsByTagName('input'),
+		    input,
+		    layer,
+		    zoom = this._map.getZoom();
+
+		for (var i = inputs.length - 1; i >= 0; i--) {
+			input = inputs[i];
+			layer = this._layers[input.layerId].layer;
+			input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
+			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
+
+		}
 	}
 });
 
