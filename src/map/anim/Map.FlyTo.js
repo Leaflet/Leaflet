@@ -55,11 +55,15 @@ L.Map.include({
 					this.getScaleZoom(w0 / w(s), startZoom));
 
 			} else {
+
+				L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 				this
 					._move(targetCenter, targetZoom)
 					._moveEnd(true);
 			}
 		}
+
+		L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 
 		this._moveStart(true);
 
