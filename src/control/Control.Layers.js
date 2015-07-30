@@ -154,14 +154,14 @@ L.Control.Layers = L.Control.extend({
 			this._update();
 		}
 
-		var overlay = this._layers[L.stamp(e.target)].overlay;
+		var obj = this._layers[L.stamp(e.target)];
 
-		var type = overlay ?
+		var type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);
 
 		if (type) {
-			this._map.fire(type, e.target);
+			this._map.fire(type, obj);
 		}
 	},
 
@@ -198,8 +198,13 @@ L.Control.Layers = L.Control.extend({
 		var name = document.createElement('span');
 		name.innerHTML = ' ' + obj.name;
 
-		label.appendChild(input);
-		label.appendChild(name);
+		// Helps from preventing layer control flicker when checkboxes are disabled
+		// https://github.com/Leaflet/Leaflet/issues/2771
+		var holder = document.createElement('div');
+
+		label.appendChild(holder);
+		holder.appendChild(input);
+		holder.appendChild(name);
 
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
 		container.appendChild(label);
@@ -215,7 +220,7 @@ L.Control.Layers = L.Control.extend({
 
 		this._handlingClick = true;
 
-		for (var i = 0, len = inputs.length; i < len; i++) {
+		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
 			layer = this._layers[input.layerId].layer;
 			hasLayer = this._map.hasLayer(layer);
@@ -243,6 +248,12 @@ L.Control.Layers = L.Control.extend({
 
 	_expand: function () {
 		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
+		var acceptableHeight = this._map._size.y - (this._container.offsetTop * 4);
+		if (acceptableHeight < this._form.clientHeight)
+		{
+			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
+			this._form.style.height = acceptableHeight + 'px';
+		}
 	},
 
 	_collapse: function () {

@@ -147,6 +147,13 @@ L.Util = {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
+	indexOf: function (array, el) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i] === el) { return i; }
+		}
+		return -1;
+	},
+
 	// minimal image URI, set to an image when disposing to flush memory
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };

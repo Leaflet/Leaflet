@@ -21,10 +21,10 @@
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-			bounds = new L.LatLngBounds(new L.LatLng(49.5, -11.3), new L.LatLng(61.2, 2.5));
+			bounds = new L.LatLngBounds(new L.LatLng(49.5, Number.NEGATIVE_INFINITY), new L.LatLng(61.2, Number.POSITIVE_INFINITY));
 
 		var map = new L.Map('map', {
-			center: bounds.getCenter(),
+			center: L.latLng(49.5, 30),
 			zoom: 7,
 			layers: [osm],
 			maxBounds: bounds

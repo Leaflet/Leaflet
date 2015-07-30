@@ -207,5 +207,50 @@ describe("Marker", function () {
 			expect(spy.calledTwice).to.be.ok();
 		});
 
+		it("do not propagate click event", function () {
+			var spy = sinon.spy();
+			var spy2 = sinon.spy();
+			var mapSpy = sinon.spy();
+			var marker = new L.Marker(new L.LatLng(55.8, 37.6));
+			map.addLayer(marker);
+			marker.on('click', spy);
+			marker.on('click', spy2);
+			map.on('click', mapSpy);
+			happen.click(marker._icon);
+			expect(spy.called).to.be.ok();
+			expect(spy2.called).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("do not propagate dblclick event", function () {
+			var spy = sinon.spy();
+			var spy2 = sinon.spy();
+			var mapSpy = sinon.spy();
+			var marker = new L.Marker(new L.LatLng(55.8, 37.6));
+			map.addLayer(marker);
+			marker.on('dblclick', spy);
+			marker.on('dblclick', spy2);
+			map.on('dblclick', mapSpy);
+			happen.dblclick(marker._icon);
+			expect(spy.called).to.be.ok();
+			expect(spy2.called).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("do not catch event if it does not listen to it", function () {
+			var marker = new L.Marker([55, 37]);
+			map.addLayer(marker);
+			marker.once('mousemove', function (e) {
+				// It should be the marker coordinates
+				expect(e.latlng).to.be.nearLatLng(marker.getLatLng());
+			});
+			happen.mousemove(marker._icon);
+			map.once('mousemove', function (e) {
+				// It should be the mouse coordinates, not the marker ones
+				expect(e.latlng).not.to.be.nearLatLng(marker.getLatLng());
+			});
+			happen.mousemove(marker._icon);
+		});
+
 	});
 });

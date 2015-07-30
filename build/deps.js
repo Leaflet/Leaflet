@@ -144,7 +144,7 @@ var deps = {
 
 	Canvas: {
 		src: ['layer/vector/Canvas.js'],
-		deps: ['Path'],
+		deps: ['CircleMarker', 'Path', 'Polygon', 'Polyline'],
 		desc: 'Canvas backend for vector layers.'
 	},
 
@@ -185,6 +185,7 @@ var deps = {
 
 	BoxZoom: {
 		src: ['map/handler/Map.BoxZoom.js'],
+		deps: ['MouseZoom'],
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
 

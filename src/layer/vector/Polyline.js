@@ -17,7 +17,6 @@ L.Polyline = L.Path.extend({
 	},
 
 	getLatLngs: function () {
-		// TODO rings
 		return this._latlngs;
 	},
 
@@ -26,20 +25,8 @@ L.Polyline = L.Path.extend({
 		return this.redraw();
 	},
 
-	addLatLng: function (latlng) {
-		// TODO rings
-		latlng = L.latLng(latlng);
-		this._latlngs.push(latlng);
-		this._bounds.extend(latlng);
-		return this.redraw();
-	},
-
-	spliceLatLngs: function () {
-		// TODO rings
-		var removed = [].splice.apply(this._latlngs, arguments);
-		this._setLatLngs(this._latlngs);
-		this.redraw();
-		return removed;
+	isEmpty: function () {
+		return !this._latlngs.length;
 	},
 
 	closestLayerPoint: function (p) {
@@ -107,15 +94,27 @@ L.Polyline = L.Path.extend({
 		return this._bounds;
 	},
 
+	addLatLng: function (latlng, latlngs) {
+		latlngs = latlngs || this._defaultShape();
+		latlng = L.latLng(latlng);
+		latlngs.push(latlng);
+		this._bounds.extend(latlng);
+		return this.redraw();
+	},
+
 	_setLatLngs: function (latlngs) {
 		this._bounds = new L.LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
 	},
 
+	_defaultShape: function () {
+		return L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
+	},
+
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = this._flat(latlngs);
+		    flat = L.Polyline._flat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
@@ -129,11 +128,6 @@ L.Polyline = L.Path.extend({
 		return result;
 	},
 
-	_flat: function (latlngs) {
-		// true if it's a flat array of latlngs; false if nested
-		return !L.Util.isArray(latlngs[0]) || typeof latlngs[0][0] !== 'object';
-	},
-
 	_project: function () {
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings);
@@ -142,7 +136,7 @@ L.Polyline = L.Path.extend({
 		var w = this._clickTolerance(),
 			p = new L.Point(w, -w);
 
-		if (this._latlngs.length) {
+		if (this._bounds.isValid()) {
 			this._pxBounds = new L.Bounds(
 				this._map.latLngToLayerPoint(this._bounds.getSouthWest())._subtract(p),
 				this._map.latLngToLayerPoint(this._bounds.getNorthEast())._add(p));
@@ -171,15 +165,19 @@ L.Polyline = L.Path.extend({
 
 	// clip polyline by renderer bounds so that we have less to render for performance
 	_clipPoints: function () {
+		var bounds = this._renderer._bounds;
+
+		this._parts = [];
+		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+			return;
+		}
+
 		if (this.options.noClip) {
 			this._parts = this._rings;
 			return;
 		}
 
-		this._parts = [];
-
 		var parts = this._parts,
-		    bounds = this._renderer._bounds,
 		    i, j, k, len, len2, segment, points;
 
 		for (i = 0, k = 0, len = this._rings.length; i < len; i++) {
@@ -227,4 +225,9 @@ L.Polyline = L.Path.extend({
 
 L.polyline = function (latlngs, options) {
 	return new L.Polyline(latlngs, options);
+};
+
+L.Polyline._flat = function (latlngs) {
+	// true if it's a flat array of latlngs; false if nested
+	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 };

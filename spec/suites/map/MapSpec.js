@@ -129,6 +129,14 @@ describe("Map", function () {
 			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
 		});
 
+		it("limits initial zoom when no zoom specified", function () {
+			map.options.maxZoom = 20;
+			map.setZoom(100);
+			expect(map.setView([51.605, -0.11])).to.be(map);
+			expect(map.getZoom()).to.be(20);
+			expect(map.getCenter().distanceTo([51.605, -0.11])).to.be.lessThan(5);
+		});
+
 		it("defaults to zoom passed as map option", function () {
 			map = L.map(document.createElement('div'), {zoom: 13});
 			expect(map.setView([51.605, -0.11])).to.be(map);
@@ -182,6 +190,27 @@ describe("Map", function () {
 			// the view is inside the bounds
 			expect(bounds.contains(map.getBounds())).to.be(true);
 			document.body.removeChild(container);
+		});
+	});
+
+	describe("#getMinZoom and #getMaxZoom", function () {
+		describe('#getMinZoom', function () {
+			it('returns 0 if not set by Map options or TileLayer options', function () {
+				var map = L.map(document.createElement('div'));
+				expect(map.getMinZoom()).to.be(0);
+			});
+		});
+
+		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
+
+			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
+
+			L.tileLayer("{z}{x}{y}", {minZoom: 4, maxZoom: 10}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 6, maxZoom: 17}).addTo(map);
+			L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 22}).addTo(map);
+
+			expect(map.getMinZoom()).to.be(2);
+			expect(map.getMaxZoom()).to.be(20);
 		});
 	});
 
@@ -586,6 +615,134 @@ describe("Map", function () {
 				};
 			map.setView([0, 0], 0);
 			map.once('zoomend', callback).flyTo(newCenter, newZoom);
+		});
+
+	});
+
+	describe('#DOM events', function () {
+
+		var c, map;
+
+		beforeEach(function () {
+			c = document.createElement('div');
+			c.style.width = '400px';
+			c.style.height = '400px';
+			map = new L.Map(c);
+			map.setView(new L.LatLng(0, 0), 0);
+			document.body.appendChild(c);
+		});
+
+		afterEach(function () {
+			document.body.removeChild(c);
+		});
+
+		it("DOM events propagate from polygon to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			happen.mousemove(layer._path);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events propagate from canvas polygon to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]], {rendered: L.canvas()}).addTo(map);
+			happen.mousemove(layer._path);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events propagate from marker to map", function () {
+			var spy = sinon.spy();
+			map.on("mousemove", spy);
+			var layer = new L.Marker([1, 2]).addTo(map);
+			happen.mousemove(layer._icon);
+			expect(spy.calledOnce).to.be.ok();
+		});
+
+		it("DOM events fired on marker can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Marker([1, 2]).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._icon);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._path);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("DOM events fired on canvas polygon can be cancelled before being caught by the map", function () {
+			var mapSpy = sinon.spy();
+			var layerSpy = sinon.spy();
+			map.on("mousemove", mapSpy);
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]], {rendered: L.canvas()}).addTo(map);
+			layer.on("mousemove", L.DomEvent.stopPropagation).on("mousemove", layerSpy);
+			happen.mousemove(layer._path);
+			expect(layerSpy.calledOnce).to.be.ok();
+			expect(mapSpy.called).not.to.be.ok();
+		});
+
+		it("mouseout is only forwared if fired on the original target", function () {
+			var mapSpy = sinon.spy(),
+				layerSpy = sinon.spy(),
+				otherSpy = sinon.spy();
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			var other = new L.Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			other.on("mouseout", otherSpy);
+			happen.mouseout(layer._path);
+			expect(mapSpy.called).not.to.be.ok();
+			expect(otherSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).to.be.ok();
+		});
+
+		it("mouseout is not forwared to layers if fired on the map", function () {
+			var mapSpy = sinon.spy(),
+				layerSpy = sinon.spy(),
+				otherSpy = sinon.spy();
+			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
+			var other = new L.Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			other.on("mouseout", otherSpy);
+			happen.mouseout(map._container);
+			expect(otherSpy.called).not.to.be.ok();
+			expect(layerSpy.called).not.to.be.ok();
+			expect(mapSpy.calledOnce).to.be.ok();
+		});
+
+		it("preclick is fired before click on marker and map", function () {
+			var called = 0;
+			var layer = new L.Marker([1, 2]).addTo(map);
+			layer.on("preclick", function (e) {
+				expect(called++).to.eql(0);
+				expect(e.latlng).to.ok();
+			});
+			layer.on("click", function (e) {
+				expect(called++).to.eql(2);
+				expect(e.latlng).to.ok();
+			});
+			map.on("preclick", function (e) {
+				expect(called++).to.eql(1);
+				expect(e.latlng).to.ok();
+			});
+			map.on("click", function (e) {
+				expect(called++).to.eql(3);
+				expect(e.latlng).to.ok();
+			});
+			happen.click(layer._icon);
 		});
 
 	});

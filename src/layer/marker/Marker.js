@@ -6,6 +6,7 @@ L.Marker = L.Layer.extend({
 
 	options: {
 		pane: 'markerPane',
+		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 
 		icon: new L.Icon.Default(),
 		// title: '',
@@ -33,6 +34,7 @@ L.Marker = L.Layer.extend({
 
 	onRemove: function () {
 		if (this.dragging && this.dragging.enabled()) {
+			this.options.draggable = true;
 			this.dragging.removeHooks();
 		}
 
@@ -41,7 +43,10 @@ L.Marker = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {viewreset: this.update};
+		var events = {
+			zoom: this.update,
+			viewreset: this.update
+		};
 
 		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
@@ -80,6 +85,10 @@ L.Marker = L.Layer.extend({
 		}
 
 		return this;
+	},
+
+	getElement: function () {
+		return this._icon;
 	},
 
 	update: function () {
@@ -121,7 +130,6 @@ L.Marker = L.Layer.extend({
 		}
 
 		this._icon = icon;
-		this._initInteraction();
 
 		if (options.riseOnHover) {
 			this.on({
@@ -151,6 +159,7 @@ L.Marker = L.Layer.extend({
 
 		if (addIcon) {
 			this.getPane().appendChild(this._icon);
+			this._initInteraction();
 		}
 		if (newShadow && addShadow) {
 			this.getPane('shadowPane').appendChild(this._shadow);

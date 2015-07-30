@@ -20,11 +20,11 @@ L.Map.include({
 			}
 
 			// try animating pan or zoom
-			var animated = (this._zoom !== zoom) ?
+			var moved = (this._zoom !== zoom) ?
 				this._tryAnimatedZoom && this._tryAnimatedZoom(center, zoom, options.zoom) :
 				this._tryAnimatedPan(center, options.pan);
 
-			if (animated) {
+			if (moved) {
 				// prevent resize handler call, the view will refresh after animation anyway
 				clearTimeout(this._sizeTimer);
 				return this;
@@ -42,7 +42,7 @@ L.Map.include({
 		options = options || {};
 
 		if (!offset.x && !offset.y) {
-			return this;
+			return this.fire('moveend');
 		}
 		//If we pan too far then chrome gets issues with tiles
 		// and makes them disappear or appear in the wrong place (slightly offset) #2602
@@ -97,6 +97,6 @@ L.Map.include({
 
 		this.panBy(offset, options);
 
-		return (options && options.animate) !== false;
+		return true;
 	}
 });

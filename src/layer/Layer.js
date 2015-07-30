@@ -2,7 +2,8 @@
 L.Layer = L.Evented.extend({
 
 	options: {
-		pane: 'overlayPane'
+		pane: 'overlayPane',
+		nonBubblingEvents: []  // Array of events that should not be bubbled to DOM parents (like the map)
 	},
 
 	addTo: function (map) {
@@ -33,6 +34,10 @@ L.Layer = L.Evented.extend({
 	removeInteractiveTarget: function (targetEl) {
 		delete this._map._targets[L.stamp(targetEl)];
 		return this;
+	},
+
+	isPopupOpen: function() {
+		return this._popup.isOpen();
 	},
 
 	_layerAdd: function (e) {

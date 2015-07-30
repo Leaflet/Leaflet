@@ -40,3 +40,38 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 	expect(this.obj.lng).to
 		.be.within(expected.lng - delta, expected.lng + delta);
 };
+
+happen.at = function (what, x, y, props) {
+	this.once(document.elementFromPoint(x, y), L.Util.extend({
+        type: what,
+        clientX: x,
+        clientY: y,
+        screenX: x,
+        screenY: y,
+        which: 1,
+        button: 0
+    }, props || {}));
+};
+happen.drag = function (fromX, fromY, toX, toY, then, duration) {
+	happen.at('mousemove', fromX, fromY);
+	happen.at('mousedown', fromX, fromY);
+	var moveX = function () {
+		if (fromX <= toX) {
+			happen.at('mousemove', fromX++, fromY);
+			window.setTimeout(moveX, 5);
+		}
+	};
+	moveX();
+	var moveY = function () {
+		if (fromY <= toY) {
+			happen.at('mousemove', fromX, fromY++);
+			window.setTimeout(moveY, 5);
+		}
+	};
+	moveY();
+	window.setTimeout(function () {
+		happen.at('mouseup', toX, toY);
+		happen.at('click', toX, toY);
+		if (then) { then(); }
+	}, duration || 100);
+};

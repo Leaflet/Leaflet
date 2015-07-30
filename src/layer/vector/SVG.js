@@ -9,6 +9,9 @@ L.SVG = L.Renderer.extend({
 
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
+
+		this._rootGroup = L.SVG.create('g');
+		this._container.appendChild(this._rootGroup);
 	},
 
 	_update: function () {
@@ -19,8 +22,6 @@ L.SVG = L.Renderer.extend({
 		var b = this._bounds,
 		    size = b.getSize(),
 		    container = this._container;
-
-		L.DomUtil.setPosition(container, b.min);
 
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
@@ -51,7 +52,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_addPath: function (layer) {
-		this._container.appendChild(layer._path);
+		this._rootGroup.appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
 	},
 

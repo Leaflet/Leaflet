@@ -55,6 +55,14 @@ L.Point.prototype = {
 		return this;
 	},
 
+	scaleBy: function(point) {
+		return new L.Point(this.x * point.x, this.y * point.y);
+	},
+
+	unscaleBy: function(point) {
+		return new L.Point(this.x / point.x, this.y / point.y);
+	},
+
 	round: function () {
 		return this.clone()._round();
 	},

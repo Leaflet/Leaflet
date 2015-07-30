@@ -41,6 +41,7 @@
 
         var poly = new L.Polygon([[0, 10], [0, 15.5], [0, 50], [20, 20.5]]);
         map.addLayer(poly);
+        poly.bindPopup("Polygon");
 
 
         markerDraggable.on('click', function(e) {

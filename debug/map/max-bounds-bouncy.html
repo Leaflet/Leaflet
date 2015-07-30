@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/mobile.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<h1>Left: Bouncy maxBounds. Right: Not bouncy.</h1>
+
+	<div id="map1" style="float: left; width:45%; height: 80%;"></div>
+	<div id="map2" style="float: left; width:45%; height: 80%;"></div>
+
+	<script type="text/javascript">
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm1 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			osm2 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			bounds = new L.LatLngBounds(new L.LatLng(49.5, -11.3), new L.LatLng(61.2, 2.5));
+
+		var map1 = new L.Map('map1', {
+			center: bounds.getCenter(),
+			zoom: 5,
+			layers: [osm1],
+			maxBounds: bounds,
+			maxBoundsViscosity: 0.75
+		});
+
+		var map2 = new L.Map('map2', {
+			center: bounds.getCenter(),
+			zoom: 5,
+			layers: [osm2],
+			maxBounds: bounds,
+			maxBoundsViscosity: 1.0
+		});
+
+		var latlngs = L.rectangle(bounds).getLatLngs();
+		L.polyline(latlngs.concat([latlngs[0]])).addTo(map1);
+		L.polyline(latlngs.concat([latlngs[0]])).addTo(map2);
+
+	</script>
+</body>
+</html>

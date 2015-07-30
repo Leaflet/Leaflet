@@ -63,6 +63,14 @@ describe("CRS.EPSG3857", function () {
 			expect(crs.wrapLatLng(new L.LatLng(0, 180)).lng).to.eql(180);
 		});
 
+		it("does not drop altitude", function () {
+			expect(crs.wrapLatLng(new L.LatLng(0, 190, 1234)).lng).to.eql(-170);
+			expect(crs.wrapLatLng(new L.LatLng(0, 190, 1234)).alt).to.eql(1234);
+
+			expect(crs.wrapLatLng(new L.LatLng(0, 380, 1234)).lng).to.eql(20);
+			expect(crs.wrapLatLng(new L.LatLng(0, 380, 1234)).alt).to.eql(1234);
+		});
+
 	});
 
 });

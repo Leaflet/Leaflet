@@ -26,11 +26,7 @@ L.Path = L.Layer.extend({
 	onAdd: function () {
 		this._renderer = this._map.getRenderer(this);
 		this._renderer._initPath(this);
-
-		// defined in children classes
-		this._project();
-		this._update();
-
+		this._reset();
 		this._renderer._addPath(this);
 	},
 
@@ -40,8 +36,9 @@ L.Path = L.Layer.extend({
 
 	getEvents: function () {
 		return {
-			viewreset: this._project,
-			moveend: this._update
+			zoomend: this._project,
+			moveend: this._update,
+			viewreset: this._reset
 		};
 	},
 
@@ -72,6 +69,16 @@ L.Path = L.Layer.extend({
 			this._renderer._bringToBack(this);
 		}
 		return this;
+	},
+
+	getElement: function () {
+		return this._path;
+	},
+
+	_reset: function () {
+		// defined in children classes
+		this._project();
+		this._update();
 	},
 
 	_clickTolerance: function () {

@@ -1,6 +1,11 @@
 
 L.Map.include({
-	flyTo: function (targetCenter, targetZoom) {
+	flyTo: function (targetCenter, targetZoom, options) {
+
+		options = options || {};
+		if (options.animate === false || !L.Browser.any3d) {
+			return this.setView(targetCenter, targetZoom, options);
+		}
 
 		this.stop();
 
@@ -36,7 +41,7 @@ L.Map.include({
 
 		var start = Date.now(),
 		    S = (r(1) - r0) / rho,
-		    duration = 1000 * S * 0.8;
+		    duration = options.duration ? 1000 * options.duration : 1000 * S * 0.8;
 
 		function frame() {
 			var t = (Date.now() - start) / duration,
@@ -45,16 +50,25 @@ L.Map.include({
 			if (t <= 1) {
 				this._flyToFrame = L.Util.requestAnimFrame(frame, this);
 
-				this._resetView(
+				this._move(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
-					this.getScaleZoom(w0 / w(s), startZoom), true, true);
+					this.getScaleZoom(w0 / w(s), startZoom));
 
 			} else {
-				this._resetView(targetCenter, targetZoom, true, true);
+				this
+					._move(targetCenter, targetZoom)
+					._moveEnd(true);
 			}
 		}
 
-		this.fire('zoomstart');
+		this._moveStart(true);
+
 		frame.call(this);
+		return this;
+	},
+
+	flyToBounds: function(bounds, options) {
+		var target = this._getBoundsCenterZoom(bounds, options);
+		return this.flyTo(target.center, target.zoom, options);
 	}
 });

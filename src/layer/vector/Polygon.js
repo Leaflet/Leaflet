@@ -8,6 +8,10 @@ L.Polygon = L.Polyline.extend({
 		fill: true
 	},
 
+	isEmpty: function () {
+		return !this._latlngs.length || !this._latlngs[0].length;
+	},
+
 	getCenter: function () {
 		var i, j, p1, p2, f, area, x, y, center,
 		    points = this._rings[0],
@@ -49,12 +53,18 @@ L.Polygon = L.Polyline.extend({
 		return result;
 	},
 
-	_clipPoints: function () {
-		if (this.options.noClip) {
-			this._parts = this._rings;
-			return;
+	_setLatLngs: function (latlngs) {
+		L.Polyline.prototype._setLatLngs.call(this, latlngs);
+		if (L.Polyline._flat(this._latlngs)) {
+			this._latlngs = [this._latlngs];
 		}
+	},
 
+	_defaultShape: function () {
+		return L.Polyline._flat(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0];
+	},
+
+	_clipPoints: function () {
 		// polygons need a different clipping algorithm so we redefine that
 
 		var bounds = this._renderer._bounds,
@@ -65,6 +75,14 @@ L.Polygon = L.Polyline.extend({
 		bounds = new L.Bounds(bounds.min.subtract(p), bounds.max.add(p));
 
 		this._parts = [];
+		if (!this._pxBounds || !this._pxBounds.intersects(bounds)) {
+			return;
+		}
+
+		if (this.options.noClip) {
+			this._parts = this._rings;
+			return;
+		}
 
 		for (var i = 0, len = this._rings.length, clipped; i < len; i++) {
 			clipped = L.PolyUtil.clipPolygon(this._rings[i], bounds, true);

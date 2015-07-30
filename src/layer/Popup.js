@@ -103,6 +103,10 @@ L.Popup = L.Layer.extend({
 		return this;
 	},
 
+	getElement: function () {
+		return this._container;
+	},
+
 	update: function () {
 		if (!this._map) { return; }
 
@@ -118,16 +122,18 @@ L.Popup = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {viewreset: this._updatePosition},
-		    options = this.options;
+		var events = {
+			zoom: this._updatePosition,
+			viewreset: this._updatePosition
+		};
 
 		if (this._zoomAnimated) {
 			events.zoomanim = this._animateZoom;
 		}
-		if ('closeOnClick' in options ? options.closeOnClick : this._map.options.closePopupOnClick) {
+		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
 		}
-		if (options.keepInView) {
+		if (this.options.keepInView) {
 			events.moveend = this._adjustPan;
 		}
 		return events;

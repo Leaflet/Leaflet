@@ -13,9 +13,10 @@
 	    phantomjs = ua.indexOf('phantom') !== -1,
 	    android23 = ua.search('android [23]') !== -1,
 	    chrome    = ua.indexOf('chrome') !== -1,
+	    gecko     = ua.indexOf('gecko') !== -1  && !webkit && !window.opera && !ie,
 
-	    mobile = typeof orientation !== 'undefined',
-	    msPointer = navigator.msPointerEnabled && navigator.msMaxTouchPoints && !window.PointerEvent,
+	    mobile = typeof orientation !== 'undefined' || ua.indexOf('mobile') !== -1,
+	    msPointer = !window.PointerEvent && window.MSPointerEvent,
 	    pointer = (window.PointerEvent && navigator.pointerEnabled && navigator.maxTouchPoints) || msPointer,
 
 	    ie3d = ie && ('transition' in doc.style),
@@ -30,7 +31,7 @@
 		ie: ie,
 		ielt9: ie && !document.addEventListener,
 		webkit: webkit,
-		gecko: (ua.indexOf('gecko') !== -1) && !webkit && !window.opera && !ie,
+		gecko: gecko,
 		android: ua.indexOf('android') !== -1,
 		android23: android23,
 		chrome: chrome,
@@ -46,6 +47,7 @@
 		mobileWebkit: mobile && webkit,
 		mobileWebkit3d: mobile && webkit3d,
 		mobileOpera: mobile && window.opera,
+		mobileGecko: mobile && gecko,
 
 		touch: !!touch,
 		msPointer: !!msPointer,

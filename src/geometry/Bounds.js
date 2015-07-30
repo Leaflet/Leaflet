@@ -82,6 +82,19 @@ L.Bounds.prototype = {
 		return xIntersects && yIntersects;
 	},
 
+	overlaps: function (bounds) { // (Bounds) -> Boolean
+		bounds = L.bounds(bounds);
+
+		var min = this.min,
+		    max = this.max,
+		    min2 = bounds.min,
+		    max2 = bounds.max,
+		    xOverlaps = (max2.x > min.x) && (min2.x < max.x),
+		    yOverlaps = (max2.y > min.y) && (min2.y < max.y);
+
+		return xOverlaps && yOverlaps;
+	},
+
 	isValid: function () {
 		return !!(this.min && this.max);
 	}
