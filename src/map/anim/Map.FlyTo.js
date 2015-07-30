@@ -51,7 +51,7 @@ L.Map.include({
 				this._flyToFrame = L.Util.requestAnimFrame(frame, this);
 
 				this._move(
-					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
+					this.unproject(u1 ? from.add(to.subtract(from).multiplyBy(u(s) / u1)) : from, startZoom),
 					this.getScaleZoom(w0 / w(s), startZoom));
 
 			} else {
