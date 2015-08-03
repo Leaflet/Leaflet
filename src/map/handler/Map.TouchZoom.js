@@ -79,7 +79,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		L.Util.cancelAnimFrame(this._animRequest);
 
 		var moveFn = L.bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
-		this._animRequest = L.Util.requestAnimFrame(moveFn, this, true, map._container);
+		this._animRequest = L.Util.requestAnimFrame(moveFn, this, true);
 
 		L.DomEvent.preventDefault(e);
 	},
