@@ -37,7 +37,7 @@ L.Map.include({
 	},
 
 	stopLocate: function () {
-		if (navigator.geolocation) {
+		if (navigator.geolocation && navigator.geolocation.clearWatch) {
 			navigator.geolocation.clearWatch(this._locationWatchId);
 		}
 		if (this._locateOptions) {
