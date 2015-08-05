@@ -11,7 +11,9 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		layers: '',
 		styles: '',
 		format: 'image/jpeg',
-		transparent: false
+		transparent: false,
+		time: '',
+		elevation: ''
 	},
 
 	options: {
