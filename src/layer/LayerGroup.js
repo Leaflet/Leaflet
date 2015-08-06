@@ -90,11 +90,12 @@ L.LayerGroup = L.Layer.extend({
 		return this._layers[id];
 	},
 
-	getLayers: function () {
-		var layers = [];
+	getLayers: function (ids) {
+		var layers = [],
+			l = ids ? ids : this._layers;
 
-		for (var i in this._layers) {
-			layers.push(this._layers[i]);
+		for (var i in ids) {
+			layers.push(this._layers[ids[i]]);
 		}
 		return layers;
 	},
