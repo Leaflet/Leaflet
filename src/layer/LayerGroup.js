@@ -94,8 +94,8 @@ L.LayerGroup = L.Layer.extend({
 		var layers = [],
 			l = ids ? ids : this._layers;
 
-		for (var i in ids) {
-			layers.push(this._layers[ids[i]]);
+		for (var i in l) {
+			layers.push(this._layers[l[i]]);
 		}
 		return layers;
 	},
