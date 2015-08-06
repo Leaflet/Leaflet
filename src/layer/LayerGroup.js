@@ -95,7 +95,8 @@ L.LayerGroup = L.Layer.extend({
 			l = ids ? ids : this._layers;
 
 		for (var i in l) {
-			layers.push(this._layers[l[i]]);
+			var t = ids ? l[i] : l[i]._leaflet_id;
+			layers.push(this._layers[t]);
 		}
 		return layers;
 	},
