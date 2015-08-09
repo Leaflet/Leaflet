@@ -13,7 +13,7 @@ L.GridLayer = L.Layer.extend({
 
 		updateWhenIdle: L.Browser.mobile,
 		updateInterval: 200,
-		
+
 		attribution: null,
 		bounds: null,
 
