@@ -9,12 +9,12 @@ L.GridLayer = L.Layer.extend({
 
 		tileSize: 256,
 		opacity: 1,
+		zIndex: 1,
 
 		updateWhenIdle: L.Browser.mobile,
 		updateInterval: 200,
-
+		
 		attribution: null,
-		zIndex: null,
 		bounds: null,
 
 		minZoom: 0
