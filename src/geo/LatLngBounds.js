@@ -151,6 +151,10 @@ L.LatLngBounds.prototype = {
 		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
 	},
 
+	toBBoxArray: function () {
+		return [[this.getWest(), this.getSouth()], [this.getEast(), this.getNorth()]];
+	},
+
 	equals: function (bounds) { // (LatLngBounds)
 		if (!bounds) { return false; }
 
