@@ -87,9 +87,13 @@ L.GridLayer = L.Layer.extend({
 		return this._loading;
 	},
 
-	redraw: function () {
+	redraw: function (removeTiles) {
+		if (typeof removeTiles === 'undefined') { removeTiles = true; }
+
 		if (this._map) {
-			this._removeAllTiles();
+			if (removeTiles) {
+				this._removeAllTiles();
+			}
 			this._update();
 		}
 		return this;
