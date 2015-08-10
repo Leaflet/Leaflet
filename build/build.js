@@ -1,6 +1,7 @@
 var fs = require('fs'),
     UglifyJS = require('uglify-js'),
     zlib = require('zlib'),
+    MagicString = require('magic-string'),
 
     deps = require('./deps.js').deps;
 
@@ -69,12 +70,21 @@ function loadSilently(path) {
 	}
 }
 
-function combineFiles(files) {
-	var content = '';
+function bundleFiles(files, copy) {
+	var bundle = new MagicString.Bundle();
+
 	for (var i = 0, len = files.length; i < len; i++) {
-		content += fs.readFileSync(files[i], 'utf8') + '\n\n';
+		bundle.addSource({
+			filename: files[i],
+			content: new MagicString( fs.readFileSync(files[i], 'utf8') + '\n\n' )
+		});
 	}
-	return content;
+
+	bundle.prepend(
+		copy + '(function (window, document, undefined) {'
+	).append('}(window, document));');
+
+	return bundle;
 }
 
 function bytesToKB(bytes) {
@@ -85,15 +95,19 @@ exports.build = function (callback, version, compsBase32, buildName) {
 
 	var files = getFiles(compsBase32);
 
-	console.log('Concatenating and compressing ' + files.length + ' files...');
+	console.log('Bundling and compressing ' + files.length + ' files...');
 
 	var copy = fs.readFileSync('src/copyright.js', 'utf8').replace('{VERSION}', version),
-	    intro = '(function (window, document, undefined) {',
-	    outro = '}(window, document));',
-	    newSrc = copy + intro + combineFiles(files) + outro,
 
-	    pathPart = 'dist/leaflet' + (buildName ? '-' + buildName : ''),
+	    filenamePart = 'leaflet' + (buildName ? '-' + buildName : ''),
+	    pathPart = 'dist/' + filenamePart,
 	    srcPath = pathPart + '-src.js',
+	    mapPath = pathPart + '-src.map',
+	    srcFilename = filenamePart + '-src.js',
+	    mapFilename = filenamePart + '-src.map',
+
+	    bundle = bundleFiles(files, copy),
+	    newSrc = bundle.toString() + '\n//# sourceMappingURL=' + mapFilename,
 
 	    oldSrc = loadSilently(srcPath),
 	    srcDelta = getSizeDelta(newSrc, oldSrc, true);
@@ -102,6 +116,11 @@ exports.build = function (callback, version, compsBase32, buildName) {
 
 	if (newSrc !== oldSrc) {
 		fs.writeFileSync(srcPath, newSrc);
+		fs.writeFileSync(mapPath, bundle.generateMap({
+			file: srcFilename,
+			includeContent: true,
+			hires: false
+		}));
 		console.log('\tSaved to ' + srcPath);
 	}
 
