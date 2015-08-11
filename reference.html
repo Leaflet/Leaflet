@@ -3373,9 +3373,10 @@ map.fitBounds(bounds);</code></pre>
 
 <h3>Asyncronous usage example</h3>
 
-<p>Tile creation can also be asyncronous, this is useful when using a third-party drawing library. Once the tile is finsihed drawing it can be passed to the <code>done()</code> callback.</p>
+<p>Tile creation can also be asyncronous, this is useful when using a third-party drawing library. Once the tile has finished drawing it must be passed to the <code>done()</code> callback.</p>
 
 <pre><code class="javascript">var CanvasLayer = L.GridLayer.extend({
+	// createTile has a 'done' parameter when on async mode
 	createTile: function(coords, done){
 		var error;
 
@@ -3387,8 +3388,14 @@ map.fitBounds(bounds);</code></pre>
 		tile.width = size.x;
 		tile.height = size.y;
 
-		// draw something and pass the tile to the done() callback
-		done(error, tile);
+		// For this example simply wait one second before tile is ready
+		window.setTimeout(function(){
+			// draw something and pass the tile to the done() callback
+			done(error, tile);
+		}, 1000);
+
+		// return the tile so its progress can be tracked
+		return tile;
 	}
 });</code></pre>
 
