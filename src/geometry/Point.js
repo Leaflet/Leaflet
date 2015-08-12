@@ -1,5 +1,21 @@
 /*
- * L.Point represents a point with x and y coordinates.
+ * 🍂class Point
+ * 🍂aka L.Point
+ *
+ * Represents a point with `x` and `y` coordinates in pixels.
+ *
+ * 🍂example
+ *
+ * ```js
+ * var point = L.point(200, 300);
+ * ```
+ *
+ * All Leaflet methods and options that accept `Point` objects also accept them in a simple Array form (unless noted otherwise), so these lines are equivalent:
+ *
+ * ```js
+ * map.panBy([200, 300]);
+ * map.panBy(L.point(200, 300));
+ * ```
  */
 
 L.Point = function (x, y, round) {
@@ -9,22 +25,28 @@ L.Point = function (x, y, round) {
 
 L.Point.prototype = {
 
+	// 🍂method clone(): Point
+	// Returns a copy of the current point.
 	clone: function () {
 		return new L.Point(this.x, this.y);
 	},
 
-	// non-destructive, returns a new point
+	// 🍂method add(otherPoint: Point): Point
+	// Returns the result of addition of the current and the given points.
 	add: function (point) {
+		// non-destructive, returns a new point
 		return this.clone()._add(L.point(point));
 	},
 
-	// destructive, used directly for performance in situations where it's safe to modify existing point
 	_add: function (point) {
+		// destructive, used directly for performance in situations where it's safe to modify existing point
 		this.x += point.x;
 		this.y += point.y;
 		return this;
 	},
 
+	// 🍂method subtract(otherPoint: Point): Point
+	// Returns the result of subtraction of the given point from the current.
 	subtract: function (point) {
 		return this.clone()._subtract(L.point(point));
 	},
@@ -35,6 +57,8 @@ L.Point.prototype = {
 		return this;
 	},
 
+	// 🍂method divideBy(num: Number): Point
+	// Returns the result of division of the current point by the given number.
 	divideBy: function (num) {
 		return this.clone()._divideBy(num);
 	},
@@ -45,6 +69,8 @@ L.Point.prototype = {
 		return this;
 	},
 
+	// 🍂method multiplyBy(num: Number): Point
+	// Returns the result of multiplication of the current point by the given number.
 	multiplyBy: function (num) {
 		return this.clone()._multiplyBy(num);
 	},
@@ -55,14 +81,24 @@ L.Point.prototype = {
 		return this;
 	},
 
+	// 🍂method scaleBy(scale: Point): Point
+	// Multiply each coordinate of the current point by each coordinate of
+	// `scale`. In linear algebra terms, multiply the point by the
+	// [scaling matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation)
+	// defined by `scale`.
 	scaleBy: function (point) {
 		return new L.Point(this.x * point.x, this.y * point.y);
 	},
 
+	// 🍂method unscaleBy(scale: Point)
+	// Inverse of `scaleBy`. Divide each coordinate of the current point by
+	// each coordinate of `scale`.
 	unscaleBy: function (point) {
 		return new L.Point(this.x / point.x, this.y / point.y);
 	},
 
+	// 🍂method round(): Point
+	// Returns a copy of the current point with rounded coordinates.
 	round: function () {
 		return this.clone()._round();
 	},
@@ -73,6 +109,8 @@ L.Point.prototype = {
 		return this;
 	},
 
+	// 🍂method floor(): Point
+	// Returns a copy of the current point with floored coordinates (rounded down).
 	floor: function () {
 		return this.clone()._floor();
 	},
@@ -83,6 +121,8 @@ L.Point.prototype = {
 		return this;
 	},
 
+	// 🍂method ceil(): Point
+	// Returns a copy of the current point with ceiled coordinates (rounded up).
 	ceil: function () {
 		return this.clone()._ceil();
 	},
@@ -93,6 +133,8 @@ L.Point.prototype = {
 		return this;
 	},
 
+	// 🍂method distanceTo(otherPoint: Point): Number
+	// Returns the cartesian distance between the current and the given points.
 	distanceTo: function (point) {
 		point = L.point(point);
 
@@ -102,6 +144,8 @@ L.Point.prototype = {
 		return Math.sqrt(x * x + y * y);
 	},
 
+	// 🍂method equals(otherPoint: Point): Boolean
+	// Returns `true` if the given point has the same coordinates.
 	equals: function (point) {
 		point = L.point(point);
 
@@ -109,6 +153,8 @@ L.Point.prototype = {
 		       point.y === this.y;
 	},
 
+	// 🍂method contains(otherPoint: Point): Boolean
+	// Returns `true` if both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).
 	contains: function (point) {
 		point = L.point(point);
 
@@ -116,6 +162,8 @@ L.Point.prototype = {
 		       Math.abs(point.y) <= Math.abs(this.y);
 	},
 
+	// 🍂method toString(): String
+	// Returns a string representation of the point for debugging purposes.
 	toString: function () {
 		return 'Point(' +
 		        L.Util.formatNum(this.x) + ', ' +
@@ -123,6 +171,12 @@ L.Point.prototype = {
 	}
 };
 
+// 🍂factory L.point(x: Number, y: Number, round?: Boolean)
+// Creates a Point object with the given `x` and `y` coordinates. If optional `round` is set to true, rounds the `x` and `y` values.
+
+// 🍂alternative
+// 🍂factory L.point(coords: Number[])
+// Expects an array of the form `[x, y]` instead.
 L.point = function (x, y, round) {
 	if (x instanceof L.Point) {
 		return x;

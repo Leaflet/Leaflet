@@ -1,5 +1,10 @@
 /*
- * A simple CRS that can be used for flat non-Earth maps like panoramas or game maps.
+ * 🍂namespace CRS
+ * 🍂crs L.CRS.Simple
+ *
+ * A simple CRS that maps longitude and latitude into `x` and `y` directly.
+ * May be used for maps of flat surfaces (e.g. game maps). Note that the `y`
+ * axis should still be inverted (going from bottom to top).
  */
 
 L.CRS.Simple = L.extend({}, L.CRS, {

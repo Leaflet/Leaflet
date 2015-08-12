@@ -1,14 +1,37 @@
 /*
- * L.Control.Scale is used for displaying metric/imperial scale on the map.
+ * 🍂class Control.Scale
+ * 🍂aka L.Control.Scale
+ * 🍂inherits Control
+ *
+ * A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
+ *
+ * 🍂example
+ *
+ * ```js
+ * L.control.scale().addTo(map);
+ * ```
  */
 
 L.Control.Scale = L.Control.extend({
+	// 🍂section
+	// 🍂aka Control.Scale options
 	options: {
 		position: 'bottomleft',
+
+		// 🍂option maxWidth: Number = 100
+		// Maximum width of the control in pixels. The width is set dynamically to show round values (e.g. 100, 200, 500).
 		maxWidth: 100,
+
+		// 🍂option metric: Boolean = True
+		// Whether to show the metric scale line (m/km).
 		metric: true,
+
+		// 🍂option imperial: Boolean = True
+		// Whether to show the imperial scale line (mi/ft).
 		imperial: true
-		// updateWhenIdle: false
+
+		// 🍂option updateWhenIdle: Boolean = false
+		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
 	},
 
 	onAdd: function (map) {
@@ -97,6 +120,9 @@ L.Control.Scale = L.Control.extend({
 	}
 });
 
+
+// 🍂factory L.control.scale(options?: Control.Scale options)
+// Creates an scale control with the given options.
 L.control.scale = function (options) {
 	return new L.Control.Scale(options);
 };

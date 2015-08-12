@@ -2,16 +2,47 @@
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
+// 🍂namespace Map
+// 🍂section Interaction Options
 L.Map.mergeOptions({
+	// 🍂option dragging: Boolean = true
+	// Whether the map be draggable with mouse/touch or not.
 	dragging: true,
 
+	// 🍂section Panning Inertia Options
+	// 🍂option inertia: Boolean = *
+	// If enabled, panning of the map will have an inertia effect where
+	// the map builds momentum while dragging and continues moving in
+	// the same direction for some time. Feels especially nice on touch
+	// devices. Enabled by default unless running on old Android devices.
 	inertia: !L.Browser.android23,
+
+	// 🍂option inertiaDeceleration: Number = 3000
+	// The rate with which the inertial movement slows down, in pixels/second².
 	inertiaDeceleration: 3400, // px/s^2
+
+	// 🍂option inertiaMaxSpeed: Number = Infinity
+	// Max speed of the inertial movement, in pixels/second.
 	inertiaMaxSpeed: Infinity, // px/s
+
+	// 🍂option easeLinearity: Number = 0.2
 	easeLinearity: 0.2,
 
 	// TODO refactor, move to CRS
-	worldCopyJump: false
+	// 🍂option worldCopyJump: Boolean = false
+	// With this option enabled, the map tracks when you pan to another "copy"
+	// of the world and seamlessly jumps to the original one so that all overlays
+	// like markers and vector layers are still visible.
+	worldCopyJump: false,
+
+	// 🍂section Interaction Options
+	// 🍂option maxBoundsViscosity: Number = 0.0
+	// If `maxBounds` is set, this option will control how solid the bounds
+	// are when dragging the map around. The default value of `0.0` allows the
+	// user to drag outside the bounds at normal speed, higher values will
+	// slow down map dragging outside bounds, and `1.0` makes the bounds fully
+	// solid, preventing the user from dragging outside the bounds.
+	maxBoundsViscosity: 0.0
 });
 
 L.Map.Drag = L.Handler.extend({
@@ -189,4 +220,7 @@ L.Map.Drag = L.Handler.extend({
 	}
 });
 
+// 🍂section Handlers
+// 🍂property dragging: Handler
+// Map dragging handler (by both mouse and touch).
 L.Map.addInitHook('addHandler', 'dragging', L.Map.Drag);

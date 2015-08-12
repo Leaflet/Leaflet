@@ -1,9 +1,14 @@
 /*
- * L.Handler.ShiftDragZoom is used to add shift-drag zoom interaction to the map
-  * (zoom to a selected bounding box), enabled by default.
+ * L.Handler.BoxZoom is used to add shift-drag zoom interaction to the map
+ * (zoom to a selected bounding box), enabled by default.
  */
 
+// 🍂namespace Map
+// 🍂section Interaction Options
 L.Map.mergeOptions({
+	// 🍂option boxZoom: Boolean = true
+	// Whether the map can be zoomed to a rectangular area specified by
+	// dragging the mouse while pressing the shift key.
 	boxZoom: true
 });
 
@@ -112,4 +117,7 @@ L.Map.BoxZoom = L.Handler.extend({
 	}
 });
 
+// 🍂section Handlers
+// 🍂property boxZoom: Handler
+// Box (shift-drag with mouse) zoom handler.
 L.Map.addInitHook('addHandler', 'boxZoom', L.Map.BoxZoom);

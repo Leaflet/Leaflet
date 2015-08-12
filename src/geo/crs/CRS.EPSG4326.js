@@ -1,5 +1,8 @@
 /*
- * L.CRS.EPSG4326 is a CRS popular among advanced GIS specialists.
+ * 🍂namespace CRS
+ * 🍂crs L.CRS.EPSG4326
+ *
+ * A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.
  */
 
 L.CRS.EPSG4326 = L.extend({}, L.CRS.Earth, {

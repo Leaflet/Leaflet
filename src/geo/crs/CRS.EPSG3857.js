@@ -1,5 +1,10 @@
 /*
- * L.CRS.EPSG3857 (Spherical Mercator) is the most common CRS for web mapping and is used by Leaflet by default.
+ * 🍂namespace CRS
+ * 🍂crs L.CRS.EPSG3857
+ *
+ * The most common CRS for online maps, used by almost all free and commercial
+ * tile providers. Uses Spherical Mercator projection. Set in by default in
+ * Map's `crs` option.
  */
 
 L.CRS.EPSG3857 = L.extend({}, L.CRS.Earth, {

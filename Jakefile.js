@@ -7,12 +7,13 @@ To use, install Node, then run the following commands in the project root:
     npm install
 
 To check the code for errors and build Leaflet from source, run "jake".
-To run the tests, run "jake test".
+To run the tests, run "jake test". To build the documentation, run "jake docs".
 
 For a custom build, open build/build.html in the browser and follow the instructions.
 */
 
 var build = require('./build/build.js'),
+    buildDocs = require('./build/docs'),
     version = require('./src/Leaflet.js').version;
 
 function hint(msg, args) {
@@ -49,6 +50,11 @@ task('build', {async: true}, function (compsBase32, buildName) {
 desc('Run PhantomJS tests');
 task('test', ['lint', 'lintspec'], {async: true}, function () {
 	build.test(complete);
+});
+
+desc('Build documentation');
+task('docs', {}, function() {
+	buildDocs();
 });
 
 task('default', ['test', 'build']);

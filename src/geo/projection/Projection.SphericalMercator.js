@@ -1,5 +1,10 @@
 /*
- * Spherical Mercator is the most popular map projection, used by EPSG:3857 CRS used by default.
+ * 🍂namespace Projection
+ * 🍂projection L.Projection.SphericalMercator
+ *
+ * Spherical Mercator projection — the most common projection for online maps,
+ * used by almost all free and commercial tile providers. Assumes that Earth is
+ * a sphere. Used by the `EPSG:3857` CRS.
  */
 
 L.Projection.SphericalMercator = {

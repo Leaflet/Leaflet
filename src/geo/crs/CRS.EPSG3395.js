@@ -1,5 +1,8 @@
 /*
- * L.CRS.EPSG3857 (World Mercator) CRS implementation.
+ * 🍂namespace CRS
+ * 🍂crs L.CRS.EPSG3395
+ *
+ * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
  */
 
 L.CRS.EPSG3395 = L.extend({}, L.CRS.Earth, {

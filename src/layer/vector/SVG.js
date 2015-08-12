@@ -1,5 +1,37 @@
 /*
- * L.SVG renders vector layers with SVG. All SVG-specific code goes here.
+ * 🍂class SVG
+ * 🍂inherits Renderer
+ * 🍂aka L.SVG
+ *
+ * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
+ * Inherits `Renderer`.
+ *
+ * Due to [technical limitations](http://caniuse.com/#search=svg), SVG is not
+ * available in all web browsers, notably Android 2.x and 3.x.
+ *
+ * Although SVG is not available on IE7 and IE8, these browsers support
+ * [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language)
+ * (a now deprecated technology), and the SVG renderer will fall back to VML in
+ * this case.
+ *
+ * 🍂example
+ *
+ * Use SVG by default for all paths in the map:
+ *
+ * ```js
+ * var map = L.map('map', {
+ * 	renderer: L.svg();
+ * });
+ * ```
+ *
+ * Use a SVG renderer with extra padding for specific vector geometries:
+ *
+ * ```js
+ * var map = L.map('map');
+ * var myRenderer = L.svg({ padding: 0.5 });
+ * var line = L.polyline( coordinates, { renderer: myRenderer } );
+ * var circle = L.circle( center, { renderer: myRenderer } );
+ * ```
  */
 
 L.SVG = L.Renderer.extend({
@@ -53,6 +85,9 @@ L.SVG = L.Renderer.extend({
 	_initPath: function (layer) {
 		var path = layer._path = L.SVG.create('path');
 
+		// 🍂namespace Path
+		// 🍂option className: string = null
+		// Custom class name set on an element. Only for SVG renderer.
 		if (layer.options.className) {
 			L.DomUtil.addClass(path, layer.options.className);
 		}
@@ -152,12 +187,20 @@ L.SVG = L.Renderer.extend({
 });
 
 
+// 🍂namespace SVG; 🍂section
+// There are several static functions which can be called without instantiating L.SVG:
 L.extend(L.SVG, {
+	// 🍂function create(name: String): SVGElement
+	// Returns a instance of [SVGElement](https://developer.mozilla.org/docs/Web/API/SVGElement),
+	// corresponding to the class name passed. For example, using 'line' will return
+	// an instance of [SVGLineElement](https://developer.mozilla.org/docs/Web/API/SVGLineElement).
 	create: function (name) {
 		return document.createElementNS('http://www.w3.org/2000/svg', name);
 	},
 
-	// generates SVG path string for multiple rings, with each ring turning into "M..L..L.." instructions
+	// 🍂function pointsToPath(rings: [], closed: Boolean): String
+	// Generates a SVG path string for multiple rings, with each ring turning
+	// into "M..L..L.." instructions
 	pointsToPath: function (rings, closed) {
 		var str = '',
 		    i, j, len, len2, points, p;
@@ -179,8 +222,14 @@ L.extend(L.SVG, {
 	}
 });
 
+// 🍂namespace Browser; 🍂property svg: Boolean
+// `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
 L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
 
+
+// 🍂namespace SVG
+// 🍂factory L.svg(options?: SVG options)
+// Creates a SVG renderer with the given options.
 L.svg = function (options) {
 	return L.Browser.svg || L.Browser.vml ? new L.SVG(options) : null;
 };

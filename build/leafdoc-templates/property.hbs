@@ -1,0 +1,15 @@
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	{{#each documentables}}
+	<tr id='{{id}}'>
+		<td><code><b>{{name}}</b>
+		<td><code>{{{type type}}}</code></td>
+		<td>{{{markdown comments}}}</td>
+	</tr>
+	{{/each}}
+</tbody></table>
