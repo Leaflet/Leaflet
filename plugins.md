@@ -166,6 +166,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/sigdeletras">Patricio Soriano</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/GeoSensorWebLab/polarmap.js">PolarMap.js</a>
+		</td><td>
+			JavaScript library for displaying tiles from <a href="http://webmap.arcticconnect.org">ArcticWebMap</a>, a free tile provider with OSM data in multiple Arctic polar projections. Includes lower-level API for deeper integration with other Leaflet plugins.
+		</td><td>
+			<a href="https://github.com/geosensorweblab">GeoSensorWeb Lab</a>
+		</td>
+	</tr>
 
 </table>
 
