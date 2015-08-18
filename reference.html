@@ -1018,7 +1018,7 @@ var map = L.map('map', {
 		<td><code><b>watch</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="hljs-literal">false</span></code></td>
-		<td>If <code><span class="hljs-literal">true</span></code>, starts continous watching of location changes (instead of detecting it once) using W3C <code>watchPosition</code> method. You can later stop watching using <code><b>map.stopLocate</b>()</code> method.</td>
+		<td>If <code><span class="hljs-literal">true</span></code>, starts continuous watching of location changes (instead of detecting it once) using W3C <code>watchPosition</code> method. You can later stop watching using <code><b>map.stopLocate</b>()</code> method.</td>
 	</tr>
 	<tr>
 		<td><code><b>setView</b></code></td>
@@ -1363,7 +1363,7 @@ var map = L.map('map', {
 		<td><code><b>zIndexOffset</b></code></td>
 		<td><code>Number</code></td>
 		<td><code><span class="hljs-number">0</span></code></td>
-		<td>By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
+		<td>By default, zIndex for the marker image is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like <code>1000</code> (or high negative value, respectively).</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
@@ -4772,17 +4772,17 @@ map.off('click', onClick);</code></pre>
 	<tr>
 		<td><code><b>latlng</b></code></td>
 		<td><code><a href="#latlng">LatLng</a></code></td>
-		<td>The geographical point where the mouse event occured.</td>
+		<td>The geographical point where the mouse event occurred.</td>
 	</tr>
 	<tr>
 		<td><code><b>layerPoint</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map layer.</td>
+		<td>Pixel coordinates of the point where the mouse event occurred relative to the map layer.</td>
 	</tr>
 	<tr>
 		<td><code><b>containerPoint</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td>Pixel coordinates of the point where the mouse event occured relative to the map сontainer.</td>
+		<td>Pixel coordinates of the point where the mouse event occurred relative to the map сontainer.</td>
 	</tr>
 	<tr>
 		<td><code><b>originalEvent</b></code></td>
@@ -5535,7 +5535,7 @@ MyClass.FOO; // 'bar'</code></pre>
 
 		<td><code><a href="#point">Point</a>[]</code></td>
 
-		<td>Clips the polygon geometry defined by the given points by rectangular bounds. Used by Leaflet to only show polygon points that are on the screen or near, increasing performance. Note that polygon points needs different algorithm for clipping than polyline, so there's a seperate method for it.</td>
+		<td>Clips the polygon geometry defined by the given points by rectangular bounds. Used by Leaflet to only show polygon points that are on the screen or near, increasing performance. Note that polygon points needs different algorithm for clipping than polyline, so there's a separate method for it.</td>
 	</tr>
 </table>
 
