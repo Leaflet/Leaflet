@@ -17,8 +17,10 @@ L.GridLayer = L.Layer.extend({
 		zIndex: null,
 		bounds: null,
 
-		minZoom: 0
-		// maxZoom: <Number>
+		minZoom: 0,
+		// maxZoom: <Number>,
+
+		buffer: 0
 	},
 
 	initialize: function (options) {
@@ -658,8 +660,8 @@ L.GridLayer = L.Layer.extend({
 	_pxBoundsToTileRange: function (bounds) {
 		var tileSize = this.getTileSize();
 		return new L.Bounds(
-			bounds.min.unscaleBy(tileSize).floor(),
-			bounds.max.unscaleBy(tileSize).ceil().subtract([1, 1]));
+			bounds.min.unscaleBy(tileSize).floor().subtract([this.options.buffer, this.options.buffer]),
+			bounds.max.unscaleBy(tileSize).ceil().subtract([1, 1]).add([this.options.buffer, this.options.buffer]));
 	},
 
 	_noTilesToLoad: function () {
