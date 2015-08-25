@@ -35,7 +35,7 @@ L.Icon.Default.imagePath = (function () {
 	var i, len, src, path;
 
 	for (i = 0, len = scripts.length; i < len; i++) {
-		src = scripts[i].src;
+		src = scripts[i].src || '';
 
 		if (src.match(leafletRe)) {
 			path = src.split(leafletRe)[0];
