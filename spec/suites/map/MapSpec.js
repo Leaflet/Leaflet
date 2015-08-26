@@ -693,7 +693,7 @@ describe("Map", function () {
 			expect(mapSpy.called).not.to.be.ok();
 		});
 
-		it("mouseout is only forwared if fired on the original target", function () {
+		it("mouseout is forwarded if fired on the original target", function () {
 			var mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
 			    otherSpy = sinon.spy();
@@ -702,13 +702,60 @@ describe("Map", function () {
 			map.on("mouseout", mapSpy);
 			layer.on("mouseout", layerSpy);
 			other.on("mouseout", otherSpy);
-			happen.mouseout(layer._path);
+			happen.mouseout(layer._path, {relatedTarget: map._container});
 			expect(mapSpy.called).not.to.be.ok();
 			expect(otherSpy.called).not.to.be.ok();
 			expect(layerSpy.calledOnce).to.be.ok();
 		});
 
-		it("mouseout is not forwared to layers if fired on the map", function () {
+		it("mouseout is forwarded when using a DivIcon", function () {
+			var icon = L.divIcon({
+				html: "<p>this is text in a child element</p>",
+				iconSize: [100, 100]
+			});
+			var mapSpy = sinon.spy(),
+			    layerSpy = sinon.spy(),
+			    layer = L.marker([1, 2], {icon: icon}).addTo(map);
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			happen.mouseout(layer._icon, {relatedTarget: map._container});
+			expect(mapSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).to.be.ok();
+		});
+
+		it("mouseout is not forwarded if relatedTarget is a target's child", function () {
+			var icon = L.divIcon({
+				html: "<p>this is text in a child element</p>",
+				iconSize: [100, 100]
+			});
+			var mapSpy = sinon.spy(),
+			    layerSpy = sinon.spy(),
+			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
+			    child = layer._icon.querySelector('p');
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			happen.mouseout(layer._icon, {relatedTarget: child});
+			expect(mapSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).not.to.be.ok();
+		});
+
+		it("mouseout is not forwarded if fired on target's child", function () {
+			var icon = L.divIcon({
+				html: "<p>this is text in a child element</p>",
+				iconSize: [100, 100]
+			});
+			var mapSpy = sinon.spy(),
+			    layerSpy = sinon.spy(),
+			    layer = L.marker([1, 2], {icon: icon}).addTo(map),
+			    child = layer._icon.querySelector('p');
+			map.on("mouseout", mapSpy);
+			layer.on("mouseout", layerSpy);
+			happen.mouseout(child, {relatedTarget: layer._icon});
+			expect(mapSpy.called).not.to.be.ok();
+			expect(layerSpy.calledOnce).not.to.be.ok();
+		});
+
+		it("mouseout is not forwarded to layers if fired on the map", function () {
 			var mapSpy = sinon.spy(),
 			    layerSpy = sinon.spy(),
 			    otherSpy = sinon.spy();
