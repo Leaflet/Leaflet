@@ -21,7 +21,7 @@ L.Circle = L.CircleMarker.extend({
 	},
 
 	getBounds: function () {
-		var half = [this._radius, this._radiusY];
+		var half = [this._radius, this._radiusY || this._radius];
 
 		return new L.LatLngBounds(
 			this._map.layerPointToLatLng(this._point.subtract(half)),
