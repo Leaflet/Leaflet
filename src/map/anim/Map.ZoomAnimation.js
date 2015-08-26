@@ -88,10 +88,13 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 				delta: delta,
 				backwards: backwards
 			});
+			// horrible hack to work around a Chrome bug https://github.com/Leaflet/Leaflet/issues/3689
+			setTimeout(L.bind(this._onZoomTransitionEnd, this), 250);
 		}, this);
 	},
 
 	_onZoomTransitionEnd: function () {
+		if (!this._animatingZoom) return;
 
 		this._animatingZoom = false;
 
