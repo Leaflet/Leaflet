@@ -94,7 +94,7 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 	},
 
 	_onZoomTransitionEnd: function () {
-		if (!this._animatingZoom) return;
+		if (!this._animatingZoom) { return; }
 
 		this._animatingZoom = false;
 
