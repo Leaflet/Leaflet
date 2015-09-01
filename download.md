@@ -12,8 +12,8 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="http://cdn.leafletjs.com/downloads/leaflet-0.7.3.zip">Leaflet 0.7.3</a></td>
-		<td>Stable version, released on November 18, 2013 and last updated on May 23, 2014.</td>
+		<td class="width100"><a href="http://cdn.leafletjs.com/downloads/leaflet-0.7.4.zip">Leaflet 0.7.4</a></td>
+		<td>Stable version, released on November 18, 2013 and last updated on Sep 1, 2015.</td>
 	</tr>
 	<!--<tr>
 		<td class="width100"><a href="http://leaflet-cdn.s3.amazonaws.com/build/leaflet-0.6.4.zip">Leaflet 0.6.4</a></td>
@@ -39,8 +39,8 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.4/leaflet.css" />
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.4/leaflet.js"></script>
 
 ### Using a Downloaded Version of Leaflet
 
