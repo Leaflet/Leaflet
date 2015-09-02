@@ -19,11 +19,11 @@ Before writing any code for the map, you need to do the following preparation st
 
  * Include Leaflet CSS file in the head section of your document:
 
-		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.4/leaflet.css" />
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
 
  * Include Leaflet JavaScript file:
 
-		<script src="http://cdn.leafletjs.com/leaflet-0.7.4/leaflet.js"></script>
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
 
  * Put a `div` element with a certain `id` where you want your map to be:
 
