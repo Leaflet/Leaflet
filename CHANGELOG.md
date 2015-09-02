@@ -3,7 +3,11 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 0.7.4 (Aug 2015, 31)
+## 0.7.5 (September 2, 2015)
+
+* Fixed a regression that broke animation in Leaflet.markercluster. [#3796](https://github.com/Leaflet/Leaflet/issues/3796)
+
+## 0.7.4 (September 1, 2015)
 
 * Fixed a bug introduced by a recent Chrome update that caused the map not to react to interactions until all tiles are loaded. [#3689](https://github.com/Leaflet/Leaflet/issues/3689)
 * Fixed a bug where tile layers were not respecting their `minZoom` or `maxZoom` options (by [@ivansanchez](https://github.com/ivansanchez)) [#3778](https://github.com/Leaflet/Leaflet/pull/3778)
@@ -17,7 +21,7 @@ Leaflet Changelog
 * Allow canvas lines to use `lineCap` and `lineJoin` options (by [@northerneyes](https://github.com/northerneyes)) [#3156](https://github.com/Leaflet/Leaflet/pull/3156)
 * Updated bower definitions to comply with best practices (by [@guptaso2](https://github.com/guptaso2)) [#2726](https://github.com/Leaflet/Leaflet/pull/2726) [#3448](https://github.com/Leaflet/Leaflet/pull/3448)
 
-## 0.7.3 (May 2014, 23)
+## 0.7.3 (May 23, 2014)
 
 * Added proper **bower** and **component** support (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#2561](https://github.com/Leaflet/Leaflet/pull/2561) [#1903](https://github.com/Leaflet/Leaflet/issues/1903)
 * Fixed a bug where dragging the map outside the window caused an error on FF. [#2610](https://github.com/Leaflet/Leaflet/issues/2610)

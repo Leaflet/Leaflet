@@ -1,6 +1,6 @@
 {
   "name": "leaflet",
-  "version": "0.7.4",
+  "version": "0.7.5",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "jake": "~0.7.4",
