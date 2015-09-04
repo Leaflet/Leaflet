@@ -1075,3 +1075,7 @@ iframe[src*='youtube.com'] {
 	margin-top: 3em;
 }
 
+.no-break {
+	display: inline-block;
+	width: 100%;
+}
