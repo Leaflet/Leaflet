@@ -106,7 +106,7 @@ L.Map.Drag = L.Handler.extend({
 		this._worldWidth = this._map.getPixelWorldBounds().getSize().x;
 	},
 
-	_viscousLimit: function(value, threshold) {
+	_viscousLimit: function (value, threshold) {
 		return value - (value - threshold) * this._viscosity;
 	},
 

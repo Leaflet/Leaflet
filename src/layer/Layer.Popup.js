@@ -97,7 +97,7 @@ L.Layer.include({
 		return this;
 	},
 
-	isPopupOpen: function() {
+	isPopupOpen: function () {
 		return this._popup.isOpen();
 	},
 

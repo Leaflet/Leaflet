@@ -73,7 +73,7 @@ describe('Popup', function () {
 
 		marker1.description = "I'm marker 1.";
 		marker2.description = "I'm marker 2.";
-		group.bindPopup(function(layer) {
+		group.bindPopup(function (layer) {
 			return layer.description;
 		});
 
@@ -103,7 +103,7 @@ describe('Popup', function () {
 
 		marker1.description = "I'm marker 1.";
 		marker2.description = "I'm marker 2.";
-		group.bindPopup(function(layer) {
+		group.bindPopup(function (layer) {
 			return layer.description;
 		});
 
@@ -128,13 +128,13 @@ describe('Popup', function () {
 		expect(group._popup._contentNode.innerHTML).to.be("I'm marker 2.");
 	});
 
-	it("should use a function for popup content when a source is passed to Popup", function() {
+	it("should use a function for popup content when a source is passed to Popup", function () {
 		var marker = new L.Marker(new L.LatLng(55.8, 37.6)).addTo(map);
 		var popup = L.popup({}, marker);
 
 		marker.description = "I am a marker.";
 
-		marker.bindPopup(function(layer) {
+		marker.bindPopup(function (layer) {
 			return layer.description;
 		});
 

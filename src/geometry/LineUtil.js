@@ -108,24 +108,22 @@ L.LineUtil = {
 
 		while (true) {
 			// if a,b is inside the clip window (trivial accept)
-			if (!(codeA | codeB)) {
-				return [a, b];
-			// if a,b is outside the clip window (trivial reject)
-			} else if (codeA & codeB) {
-				return false;
-			// other cases
-			} else {
-				codeOut = codeA || codeB;
-				p = this._getEdgeIntersection(a, b, codeOut, bounds, round);
-				newCode = this._getBitCode(p, bounds);
+			if (!(codeA | codeB)) { return [a, b]; }
 
-				if (codeOut === codeA) {
-					a = p;
-					codeA = newCode;
-				} else {
-					b = p;
-					codeB = newCode;
-				}
+			// if a,b is outside the clip window (trivial reject)
+			if (codeA & codeB) { return false; }
+
+			// other cases
+			codeOut = codeA || codeB;
+			p = this._getEdgeIntersection(a, b, codeOut, bounds, round);
+			newCode = this._getBitCode(p, bounds);
+
+			if (codeOut === codeA) {
+				a = p;
+				codeA = newCode;
+			} else {
+				b = p;
+				codeB = newCode;
 			}
 		}
 	},

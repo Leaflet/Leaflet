@@ -3,7 +3,7 @@ if (!Array.prototype.map) {
 	Array.prototype.map = function (fun /*, thisp */) {
 		"use strict";
 
-		if (this === void 0 || this === null) {
+		if (this === undefined || this === null) {
 			throw new TypeError();
 		}
 

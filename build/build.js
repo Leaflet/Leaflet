@@ -197,7 +197,7 @@ exports.test = function(complete, fail) {
 
 	console.log('Running tests...');
 
-	karma.server.start(testConfig, function(exitCode) {
+	var server = new karma.Server(testConfig, function(exitCode) {
 		if (!exitCode) {
 			console.log('\tTests ran successfully.\n');
 			complete();
@@ -205,4 +205,5 @@ exports.test = function(complete, fail) {
 			process.exit(exitCode);
 		}
 	});
+	server.start();
 };

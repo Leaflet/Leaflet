@@ -249,8 +249,7 @@ L.Control.Layers = L.Control.extend({
 	_expand: function () {
 		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
 		var acceptableHeight = this._map._size.y - (this._container.offsetTop * 4);
-		if (acceptableHeight < this._form.clientHeight)
-		{
+		if (acceptableHeight < this._form.clientHeight) {
 			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
 			this._form.style.height = acceptableHeight + 'px';
 		}

@@ -1,21 +1,7 @@
 {
   "rules": {
-    "camelcase": 2,
-    "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
-    "space-after-function-name": 2,
-    "space-in-parens": 2,
-    "space-in-brackets": 2,
-    "space-before-blocks": 2,
-    "space-after-keywords": 2,
-    "no-lonely-if": 2,
-    "comma-style": 2,
     "no-unused-vars": 0,
     "quotes": 0,
-    "no-underscore-dangle": 0,
-    "no-constant-condition": 0,
-    "no-multi-spaces": 0,
-    "strict": 0,
-    "key-spacing": 0,
     "no-shadow": 0,
     "no-irregular-whitespace": 0,
     "no-console": 0
