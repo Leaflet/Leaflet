@@ -343,8 +343,15 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
-		var tileZoom = Math.round(zoom),
-			tileZoomChanged = this._tileZoom !== tileZoom;
+		var tileZoom = Math.round(zoom);
+		if (this.options.maxZoom !== undefined) {
+			tileZoom = Math.min(tileZoom, this.options.maxZoom);
+		}
+		if (this.options.minZoom !== undefined) {
+			tileZoom = Math.max(tileZoom, this.options.minZoom);
+		}
+
+		var tileZoomChanged = (this._tileZoom !== tileZoom);
 
 		if (!noUpdate && tileZoomChanged) {
 
@@ -431,12 +438,8 @@ L.GridLayer = L.Layer.extend({
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (zoom === undefined) { zoom = map.getZoom(); }
-		var tileZoom = Math.round(zoom);
 
-		if (tileZoom > this.options.maxZoom ||
-			tileZoom < this.options.minZoom) { return; }
-
-		var pixelBounds = this._getTiledPixelBounds(center, zoom, tileZoom);
+		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom);
 
 		var tileRange = this._pxBoundsToTileRange(pixelBounds),
 			tileCenter = tileRange.getCenter(),
@@ -446,11 +449,13 @@ L.GridLayer = L.Layer.extend({
 			this._tiles[key].current = false;
 		}
 
+		if (Math.abs(zoom - this._tileZoom) > 1) { return; }
+
 		// create a queue of coordinates to load tiles from
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
 			for (var i = tileRange.min.x; i <= tileRange.max.x; i++) {
 				var coords = new L.Point(i, j);
-				coords.z = tileZoom;
+				coords.z = this._tileZoom;
 
 				if (!this._isValidTile(coords)) { continue; }
 
