@@ -909,15 +909,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td>
 	</tr>
 	<tr>
-+		<td>
-+			<a href="https://github.com/mapshakers/leaflet-icon-pulse">leaflet-icon-pulse</a>
-+		</td><td>
-+		Renders pulsing icon using CSS3. It can be used for location marker.  
-+		</td><td>
-+			<a href="https://github.com/mapshakers">mapshakers</a>/
-+			<a href="https://github.com/filipzava">Filip Zavadil</a>
-+		</td>
-+	</tr>
+		<td>
+			<a href="https://github.com/mapshakers/leaflet-icon-pulse">leaflet-icon-pulse</a>
+		</td><td>
+		Renders pulsing icon using CSS3. It can be used for location marker.  
+		</td><td>
+			<a href="https://github.com/mapshakers">mapshakers</a>/
+			<a href="https://github.com/filipzava">Filip Zavadil</a>
+		</td>
+	</tr>
 </table>
 
 
