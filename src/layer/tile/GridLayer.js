@@ -353,11 +353,12 @@ L.GridLayer = L.Layer.extend({
 
 		if (!noUpdate || tileZoomChanged) {
 
+			this._tileZoom = tileZoom;
+			
 			if (this._abortLoading) {
 				this._abortLoading();
 			}
 
-			this._tileZoom = tileZoom;
 			this._updateLevels();
 			this._resetGrid();
 

@@ -140,14 +140,16 @@ L.TileLayer = L.GridLayer.extend({
 	_abortLoading: function () {
 		var i, tile;
 		for (i in this._tiles) {
-			tile = this._tiles[i].el;
+			if (this._tiles[i].coords.z !== this._tileZoom) {
+				tile = this._tiles[i].el;
 
-			tile.onload = L.Util.falseFn;
-			tile.onerror = L.Util.falseFn;
+				tile.onload = L.Util.falseFn;
+				tile.onerror = L.Util.falseFn;
 
-			if (!tile.complete) {
-				tile.src = L.Util.emptyImageUrl;
-				L.DomUtil.remove(tile);
+				if (!tile.complete) {
+					tile.src = L.Util.emptyImageUrl;
+					L.DomUtil.remove(tile);
+				}
 			}
 		}
 	}
