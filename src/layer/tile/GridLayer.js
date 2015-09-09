@@ -183,7 +183,7 @@ L.GridLayer = L.Layer.extend({
 			}
 		}
 
-		if (willPrune) { this._pruneTiles(); }
+		if (willPrune && !this._noPrune) { this._pruneTiles(); }
 
 		if (nextFrame) {
 			L.Util.cancelAnimFrame(this._fadeFrame);
@@ -334,8 +334,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_resetView: function (e) {
-		var pinch = e && e.pinch;
-		this._setView(this._map.getCenter(), this._map.getZoom(), pinch, pinch);
+		var animating = e && (e.pinch || e.flyTo);
+		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
 	},
 
 	_animateZoom: function (e) {
@@ -351,9 +351,9 @@ L.GridLayer = L.Layer.extend({
 			tileZoom = Math.max(tileZoom, this.options.minZoom);
 		}
 
-		var tileZoomChanged = (this._tileZoom !== tileZoom);
+		var tileZoomChanged = (Math.abs(tileZoom - this._tileZoom) > 1 || this._tileZoom === undefined);
 
-		if (!noUpdate && tileZoomChanged) {
+		if (!noUpdate || tileZoomChanged) {
 
 			if (this._abortLoading) {
 				this._abortLoading();
@@ -363,13 +363,15 @@ L.GridLayer = L.Layer.extend({
 			this._updateLevels();
 			this._resetGrid();
 
-			if (!L.Browser.mobileWebkit) {
-				this._update(center, tileZoom);
-			}
+			this._update(center, tileZoom);
 
 			if (!noPrune) {
 				this._pruneTiles();
 			}
+
+			// Flag to prevent _updateOpacity from pruning tiles during
+			// a zoom anim or a pinch gesture
+			this._noPrune = !!noPrune;
 		}
 
 		this._setZoomTransforms(center, zoom);
@@ -417,8 +419,7 @@ L.GridLayer = L.Layer.extend({
 	_onMoveEnd: function () {
 		if (!this._map) { return; }
 
-		this._update();
-		this._pruneTiles();
+		this._resetView();
 	},
 
 	_getTiledPixelBounds: function (center, zoom, tileZoom) {
@@ -432,12 +433,12 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_update: function (center, zoom) {
-
 		var map = this._map;
 		if (!map) { return; }
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (zoom === undefined) { zoom = map.getZoom(); }
+		if (this._tileZoom === undefined) { return; }
 
 		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom);
 
@@ -449,7 +450,7 @@ L.GridLayer = L.Layer.extend({
 			this._tiles[key].current = false;
 		}
 
-		if (Math.abs(zoom - this._tileZoom) > 1) { return; }
+		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom); }
 
 		// create a queue of coordinates to load tiles from
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
@@ -588,7 +589,7 @@ L.GridLayer = L.Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			setTimeout(L.bind(this._tileReady, this, coords, null, tile), 0);
+			L.Util.requestAnimFrame(this._tileReady, this, coords, null, tile);
 		}
 
 		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile

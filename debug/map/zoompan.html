@@ -52,9 +52,8 @@
 
 		var map = L.map('map').setView(dc, 10);
 
-		var tiles = L.tileLayer('http://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
-			attribution: '<a href="https://www.mapbox.com/about/maps/">Terms and Feedback</a>',
-			id: 'examples.map-20v6611k'
+		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
 		}).addTo(map);
 
 		var marker1 = L.marker(kyiv).addTo(map),
