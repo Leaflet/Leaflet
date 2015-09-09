@@ -2202,6 +2202,16 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/Eclipse1979">EPP</a>
 		</td>
 	</tr>
+	<tr>
++		<td>
++			<a href="https://github.com/mapshakers/leaflet-control-window">leaflet-control-window</a>
++		</td><td>
++		Creates modal/modeless, draggable, responsive, customisable window in your map.
++		</td><td>
++			<a href="https://github.com/mapshakers">mapshakers</a>/
++			<a href="https://github.com/filipzava">Filip Zavadil</a>
++		</td>
++	</tr>
 </table>
 
 
