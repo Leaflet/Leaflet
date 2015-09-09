@@ -344,14 +344,12 @@ L.GridLayer = L.Layer.extend({
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
 		var tileZoom = Math.round(zoom);
-		if (this.options.maxZoom !== undefined) {
-			tileZoom = Math.min(tileZoom, this.options.maxZoom);
-		}
-		if (this.options.minZoom !== undefined) {
-			tileZoom = Math.max(tileZoom, this.options.minZoom);
+		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
+		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
+			tileZoom = undefined;
 		}
 
-		var tileZoomChanged = (Math.abs(tileZoom - this._tileZoom) > 1 || this._tileZoom === undefined);
+		var tileZoomChanged = (tileZoom !== this._tileZoom);
 
 		if (!noUpdate || tileZoomChanged) {
 
@@ -363,7 +361,9 @@ L.GridLayer = L.Layer.extend({
 			this._updateLevels();
 			this._resetGrid();
 
-			this._update(center, tileZoom);
+			if (tileZoom !== undefined) {
+				this._update(center, tileZoom);
+			}
 
 			if (!noPrune) {
 				this._pruneTiles();
@@ -589,7 +589,7 @@ L.GridLayer = L.Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			L.Util.requestAnimFrame(this._tileReady, this, coords, null, tile);
+			L.Util.requestAnimFrame(L.bind(this._tileReady, this, coords, null, tile));
 		}
 
 		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile
