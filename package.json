@@ -1,6 +1,6 @@
 {
   "name": "leaflet",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.1",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "copyfiles": "0.2.1",
