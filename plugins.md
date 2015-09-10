@@ -908,6 +908,16 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/gismartwaredev">Gismartwaredev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mapshakers/leaflet-icon-pulse">leaflet-icon-pulse</a>
+		</td><td>
+		Renders pulsing icon using CSS3. It can be used for location marker.  
+		</td><td>
+			<a href="https://github.com/mapshakers">mapshakers</a>/
+			<a href="https://github.com/filipzava">Filip Zavadil</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2190,6 +2200,16 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td>
 		<td>
 			<a href="https://github.com/Eclipse1979">EPP</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mapshakers/leaflet-control-window">leaflet-control-window</a>
+		</td><td>
+		Creates modal/modeless, draggable, responsive, customisable window in your map.
+		</td><td>
+			<a href="https://github.com/mapshakers">mapshakers</a>/
+			<a href="https://github.com/filipzava">Filip Zavadil</a>
 		</td>
 	</tr>
 </table>
