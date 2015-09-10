@@ -363,7 +363,7 @@ L.GridLayer = L.Layer.extend({
 			this._resetGrid();
 
 			if (tileZoom !== undefined) {
-				this._update(center, tileZoom);
+				this._update(center);
 			}
 
 			if (!noPrune) {
@@ -434,12 +434,12 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
-	_update: function (center, zoom) {
+	_update: function (center) {
 		var map = this._map;
 		if (!map) { return; }
+		var zoom = map.getZoom();
 
 		if (center === undefined) { center = map.getCenter(); }
-		if (zoom === undefined) { zoom = map.getZoom(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
 		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom);
