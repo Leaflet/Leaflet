@@ -3,6 +3,8 @@
  */
 
 L.CRS = {
+  zoomRelation: 2,
+  
 	// converts geo coords to pixel ones
 	latLngToPoint: function (latlng, zoom) {
 		var projectedPoint = this.projection.project(latlng),
@@ -31,7 +33,11 @@ L.CRS = {
 
 	// defines how the world scales with zoom
 	scale: function (zoom) {
-		return 256 * Math.pow(2, zoom);
+		return 256 * Math.pow(this.zoomRelation, zoom);
+	},
+	
+	zoom: function (scale) {
+	  return Math.pow(scale / 256, 1 / this.zoomRelation);
 	},
 
 	// returns the bounds of the world in projected coords if applicable
