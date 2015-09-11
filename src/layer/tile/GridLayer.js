@@ -586,8 +586,6 @@ L.GridLayer = L.Layer.extend({
 			setTimeout(L.bind(this._tileReady, this, coords, null, tile), 0);
 		}
 
-		// we prefer top/left over translate3d so that we don't create a HW-accelerated layer from each tile
-		// which is slow, and it also fixes gaps between tiles in Safari
 		L.DomUtil.setPosition(tile, tilePos);
 
 		// save tile in cache

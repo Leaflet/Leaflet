@@ -16,7 +16,8 @@ L.Map = L.Evented.extend({
 		fadeAnimation: true,
 		trackResize: true,
 		markerZoomAnimation: true,
-		maxBoundsViscosity: 0.0
+		maxBoundsViscosity: 0.0,
+		transform3DLimit: 9999990
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
@@ -611,6 +612,8 @@ L.Map = L.Evented.extend({
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
 		}
+
+		this[onOff]('moveend', this._onMoveEnd);
 	},
 
 	_onResize: function () {
@@ -622,6 +625,16 @@ L.Map = L.Evented.extend({
 	_onScroll: function () {
 		this._container.scrollTop  = 0;
 		this._container.scrollLeft = 0;
+	},
+
+	_onMoveEnd: function () {
+		if (L.Browser.any3d && this.options.transform3DLimit &&
+			(Math.abs(this._mapPane._leaflet_pos.x) >= this.options.transform3DLimit
+			 || Math.abs(this._mapPane._leaflet_pos.y) >= this.options.transform3DLimit)) {
+			// https://bugzilla.mozilla.org/show_bug.cgi?id=1203873 but Webkit also have
+			// a pixel offset on very high values, see: http://jsfiddle.net/dg6r5hhb/
+			this._resetView(this.getCenter(), this.getZoom());
+		}
 	},
 
 	_findEventTargets: function (src, type, bubble) {
