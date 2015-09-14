@@ -33,6 +33,10 @@ L.CRS = {
 	scale: function (zoom) {
 		return 256 * Math.pow(2, zoom);
 	},
+	
+	zoom: function (scale) {
+		return Math.log(scale / 256) / Math.LN2;
+	},
 
 	// returns the bounds of the world in projected coords if applicable
 	getProjectedBounds: function (zoom) {
