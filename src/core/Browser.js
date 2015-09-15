@@ -17,7 +17,7 @@
 
 	    mobile = typeof orientation !== 'undefined' || ua.indexOf('mobile') !== -1,
 	    msPointer = !window.PointerEvent && window.MSPointerEvent,
-	    pointer = (window.PointerEvent && navigator.pointerEnabled && navigator.maxTouchPoints) || msPointer,
+	    pointer = (window.PointerEvent && navigator.pointerEnabled) || msPointer,
 
 	    ie3d = ie && ('transition' in doc.style),
 	    webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23,
