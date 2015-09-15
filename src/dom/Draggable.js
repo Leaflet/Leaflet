@@ -81,7 +81,7 @@ L.Draggable = L.Evented.extend({
 		    .on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
-	_onMapMoved: function() {
+	_onMapMoved: function () {
 		if (!this._moved) { return; }
 
 		var oldOffset = this._offsetMap;
