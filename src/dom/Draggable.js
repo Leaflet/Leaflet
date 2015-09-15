@@ -71,8 +71,8 @@ L.Draggable = L.Evented.extend({
 
 
 		if (this._contextMap) {
-        	this._offsetMap = L.point(0, 0);
-    		this._startPosMap = (this._contextMap ? this._contextMap._getCenterLayerPoint() : L.point(0, 0));
+			this._offsetMap = L.point(0, 0);
+			this._startPosMap = (this._contextMap ? this._contextMap._getCenterLayerPoint() : L.point(0, 0));
 			this._contextMap.on('moveend', this._onMapMoved, this);
 		}
 
@@ -119,13 +119,13 @@ L.Draggable = L.Evented.extend({
 			L.DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
 		}
 
-		this._newPos = this._startPos.add(offset)
-		
+		this._newPos = this._startPos.add(offset);
+
 		if (this._contextMap) {
 			this._offsetMap = this._startPosMap.subtract(this._contextMap._getCenterLayerPoint());
 			this._newPos = this._newPos.subtract(this._offsetMap);
 		}
-		
+
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
