@@ -24,7 +24,7 @@ L.Draggable = L.Evented.extend({
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
-		this._contextMap = contextMap;
+		this._contextMap = (contextMap instanceof L.Map) ? contextMap : undefined;
 	},
 
 	enable: function () {
@@ -69,10 +69,10 @@ L.Draggable = L.Evented.extend({
 		this._startPoint = new L.Point(first.clientX, first.clientY);
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
-		this._startPosMap = (this._contextMap ? this._contextMap._getCenterLayerPoint() : L.point(0, 0));
-		this._offsetMap = L.point(0, 0);
 
 		if (this._contextMap) {
+        	this._offsetMap = L.point(0, 0);
+    		this._startPosMap = (this._contextMap ? this._contextMap._getCenterLayerPoint() : L.point(0, 0));
 			this._contextMap.on('moveend', this._onMapMoved, this);
 		}
 
@@ -119,10 +119,13 @@ L.Draggable = L.Evented.extend({
 			L.DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
 		}
 
+		this._newPos = this._startPos.add(offset)
+		
 		if (this._contextMap) {
 			this._offsetMap = this._startPosMap.subtract(this._contextMap._getCenterLayerPoint());
+			this._newPos = this._newPos.subtract(this._offsetMap);
 		}
-		this._newPos = this._startPos.add(offset).subtract(this._offsetMap);
+		
 		this._moving = true;
 
 		L.Util.cancelAnimFrame(this._animRequest);
