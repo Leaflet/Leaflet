@@ -356,9 +356,7 @@ L.GridLayer = L.Layer.extend({
 			this._updateLevels();
 			this._resetGrid();
 
-			if (!L.Browser.mobileWebkit) {
-				this._update(center, tileZoom);
-			}
+			this._update(center, tileZoom);
 
 			if (!noPrune) {
 				this._pruneTiles();
