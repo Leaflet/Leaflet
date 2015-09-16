@@ -434,7 +434,7 @@ L.GridLayer = L.Layer.extend({
 		var tileZoom = Math.round(zoom);
 
 		if (tileZoom > this.options.maxZoom ||
-			tileZoom < this.options.minZoom) { return; }
+			zoom < this.options.minZoom) { return; }
 
 		var pixelBounds = this._getTiledPixelBounds(center, zoom, tileZoom);
 
