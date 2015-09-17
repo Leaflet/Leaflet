@@ -183,7 +183,7 @@ L.GridLayer = L.Layer.extend({
 			}
 		}
 
-		if (willPrune) { this._pruneTiles(); }
+		if (willPrune && !this._noPrune) { this._pruneTiles(); }
 
 		if (nextFrame) {
 			L.Util.cancelAnimFrame(this._fadeFrame);
@@ -334,8 +334,8 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_resetView: function (e) {
-		var pinch = e && e.pinch;
-		this._setView(this._map.getCenter(), this._map.getZoom(), pinch, pinch);
+		var animating = e && (e.pinch || e.flyTo);
+		this._setView(this._map.getCenter(), this._map.getZoom(), animating, animating);
 	},
 
 	_animateZoom: function (e) {
@@ -343,26 +343,36 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_setView: function (center, zoom, noPrune, noUpdate) {
-		var tileZoom = Math.round(zoom),
-			tileZoomChanged = this._tileZoom !== tileZoom;
+		var tileZoom = Math.round(zoom);
+		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
+		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
+			tileZoom = undefined;
+		}
 
-		if (!noUpdate && tileZoomChanged) {
+		var tileZoomChanged = (tileZoom !== this._tileZoom);
+
+		if (!noUpdate || tileZoomChanged) {
+
+			this._tileZoom = tileZoom;
 
 			if (this._abortLoading) {
 				this._abortLoading();
 			}
 
-			this._tileZoom = tileZoom;
 			this._updateLevels();
 			this._resetGrid();
 
-			if (!L.Browser.mobileWebkit) {
-				this._update(center, tileZoom);
+			if (tileZoom !== undefined) {
+				this._update(center);
 			}
 
 			if (!noPrune) {
 				this._pruneTiles();
 			}
+
+			// Flag to prevent _updateOpacity from pruning tiles during
+			// a zoom anim or a pinch gesture
+			this._noPrune = !!noPrune;
 		}
 
 		this._setZoomTransforms(center, zoom);
@@ -410,8 +420,7 @@ L.GridLayer = L.Layer.extend({
 	_onMoveEnd: function () {
 		if (!this._map) { return; }
 
-		this._update();
-		this._pruneTiles();
+		this._resetView();
 	},
 
 	_getTiledPixelBounds: function (center, zoom, tileZoom) {
@@ -424,19 +433,16 @@ L.GridLayer = L.Layer.extend({
 		return new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},
 
-	_update: function (center, zoom) {
-
+	// Private method to load tiles in the grid's active zoom level according to map bounds
+	_update: function (center) {
 		var map = this._map;
 		if (!map) { return; }
+		var zoom = map.getZoom();
 
 		if (center === undefined) { center = map.getCenter(); }
-		if (zoom === undefined) { zoom = map.getZoom(); }
-		var tileZoom = Math.round(zoom);
+		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
-		if (tileZoom > this.options.maxZoom ||
-			tileZoom < this.options.minZoom) { return; }
-
-		var pixelBounds = this._getTiledPixelBounds(center, zoom, tileZoom);
+		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom);
 
 		var tileRange = this._pxBoundsToTileRange(pixelBounds),
 			tileCenter = tileRange.getCenter(),
@@ -446,11 +452,15 @@ L.GridLayer = L.Layer.extend({
 			this._tiles[key].current = false;
 		}
 
+		// _update just loads more tiles. If the tile zoom level differs too much
+		// from the map's, let _setView reset levels and prune old tiles.
+		if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom); return; }
+
 		// create a queue of coordinates to load tiles from
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
 			for (var i = tileRange.min.x; i <= tileRange.max.x; i++) {
 				var coords = new L.Point(i, j);
-				coords.z = tileZoom;
+				coords.z = this._tileZoom;
 
 				if (!this._isValidTile(coords)) { continue; }
 
@@ -583,7 +593,7 @@ L.GridLayer = L.Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			setTimeout(L.bind(this._tileReady, this, coords, null, tile), 0);
+			L.Util.requestAnimFrame(L.bind(this._tileReady, this, coords, null, tile));
 		}
 
 		L.DomUtil.setPosition(tile, tilePos);

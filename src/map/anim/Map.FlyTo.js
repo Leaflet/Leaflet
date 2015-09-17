@@ -52,7 +52,8 @@ L.Map.include({
 
 				this._move(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
-					this.getScaleZoom(w0 / w(s), startZoom));
+					this.getScaleZoom(w0 / w(s), startZoom),
+					{flyTo: true});
 
 			} else {
 				this
