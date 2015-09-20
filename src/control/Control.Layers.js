@@ -36,7 +36,7 @@ L.Control.Layers = L.Control.extend({
 		return this._container;
 	},
 
-	onRemove: function() {
+	onRemove: function () {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
 	},
 
