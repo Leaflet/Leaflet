@@ -9,7 +9,8 @@ L.Canvas = L.Renderer.extend({
 
 		this._layers = this._layers || {};
 
-		// redraw vectors since canvas is cleared upon removal
+		// Redraw vectors since canvas is cleared upon removal,
+		// in case of removing the renderer itself from the map.
 		this._draw();
 	},
 
@@ -79,8 +80,10 @@ L.Canvas = L.Renderer.extend({
 	_requestRedraw: function (layer) {
 		if (!this._map) { return; }
 
+		var padding = (layer.options.weight || 0) + 1;
 		this._redrawBounds = this._redrawBounds || new L.Bounds();
-		this._redrawBounds.extend(layer._pxBounds.min).extend(layer._pxBounds.max);
+		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]))
+		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
 
 		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
 	},
@@ -96,11 +99,17 @@ L.Canvas = L.Renderer.extend({
 
 	_draw: function (clear) {
 		this._clear = clear;
-		var layer;
+		var layer, bounds = this._redrawBounds;
+		this._ctx.save();
+		if (bounds) {
+			this._ctx.beginPath();
+			this._ctx.rect(bounds.min.x, bounds.min.y, bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y);
+			this._ctx.clip();
+		}
 
 		for (var id in this._layers) {
 			layer = this._layers[id];
-			if (!this._redrawBounds || layer._pxBounds.intersects(this._redrawBounds)) {
+			if (!bounds || layer._pxBounds.intersects(bounds)) {
 				layer._updatePath();
 			}
 			if (clear && layer._removed) {
@@ -108,6 +117,7 @@ L.Canvas = L.Renderer.extend({
 				delete this._layers[id];
 			}
 		}
+		this._ctx.restore();  // Restore state before clipping.
 	},
 
 	_updatePoly: function (layer, closed) {
