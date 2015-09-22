@@ -103,8 +103,13 @@ L.Polyline = L.Path.extend({
 	},
 
 	_setLatLngs: function (latlngs) {
-		this._bounds = new L.LatLngBounds();
-		this._latlngs = this._convertLatLngs(latlngs);
+		this._bounds = new L.Bounds();
+		this._pxBounds = new L.Bounds(new L.Point(), new L.Point());
+		this._latlngs = latlngs;
+		this._points = [];
+		this._rings = [];
+		var unitScale = L.CRS.EPSG3857.scale(0);
+		this._convertLatLngs(latlngs, this._points, this._rings, this._bounds, unitScale);
 	},
 
 	_defaultShape: function () {
@@ -112,53 +117,56 @@ L.Polyline = L.Path.extend({
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
-	_convertLatLngs: function (latlngs) {
-		var result = [],
-		    flat = L.Polyline._flat(latlngs);
+	_convertLatLngs: function (latlngs, points, rings, bounds, scale) {
+		var i, len = latlngs.length, point, ring, p;
 
-		for (var i = 0, len = latlngs.length; i < len; i++) {
-			if (flat) {
-				result[i] = L.latLng(latlngs[i]);
-				this._bounds.extend(result[i]);
-			} else {
-				result[i] = this._convertLatLngs(latlngs[i]);
+		if (L.Polyline._flat(latlngs)) {
+			point = []; ring = [];
+			for (i = 0; i < len; i++) {
+				p  = new L.Point(latlngs[i].lng / scale, latlngs[i].lat / scale);
+				point.push(p);
+				ring.push(p.clone());
+				bounds = bounds.extend(p);
+			}
+			points.push(point);
+			rings.push(ring);
+		} else {
+			for (i = 0; i < len; i++) {
+				this._convertLatLngs(latlngs[i], points, rings, bounds, scale);
 			}
 		}
-
-		return result;
 	},
 
 	_project: function () {
-		this._rings = [];
-		this._projectLatlngs(this._latlngs, this._rings);
+		var scale = this._map.options.crs.scale(this._map.getZoom()),
+			origin = this._map.getPixelOrigin();
+		this._projectLatlngs(this._points, this._rings, scale, origin);
 
 		// project bounds as well to use later for Canvas hit detection/etc.
-		var w = this._clickTolerance(),
-			p = new L.Point(w, -w);
+		var w = this._clickTolerance();
+		var pxB = this._pxBounds, b = this._bounds;
 
-		if (this._bounds.isValid()) {
-			this._pxBounds = new L.Bounds(
-				this._map.latLngToLayerPoint(this._bounds.getSouthWest())._subtract(p),
-				this._map.latLngToLayerPoint(this._bounds.getNorthEast())._add(p));
+		if (b.isValid()) {
+			pxB.min.x = Math.round(b.min.x * scale) - origin.x - w;
+			pxB.max.y = Math.round(b.max.y * scale) - origin.y + w;
+			pxB.max.x = Math.round(b.max.x * scale) - origin.x + w;
+			pxB.min.y = Math.round(b.min.y * scale) - origin.y - w;
 		}
 	},
 
 	// recursively turns latlngs into a set of rings with projected coordinates
-	_projectLatlngs: function (latlngs, result) {
+	_projectLatlngs: function (points, rings, scale, origin) {
+		var i, len = points.length;
 
-		var flat = latlngs[0] instanceof L.LatLng,
-		    len = latlngs.length,
-		    i, ring;
-
-		if (flat) {
-			ring = [];
+		if (points[0] instanceof L.Point) {
 			for (i = 0; i < len; i++) {
-				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
+				var point = points[i], ring = rings[i];
+				ring.x = Math.round(point.x * scale) - origin.x;
+				ring.y = Math.round(point.y * scale) - origin.y;
 			}
-			result.push(ring);
 		} else {
 			for (i = 0; i < len; i++) {
-				this._projectLatlngs(latlngs[i], result);
+				this._projectLatlngs(points[i], rings[i], scale, origin);
 			}
 		}
 	},

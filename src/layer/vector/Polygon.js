@@ -42,17 +42,6 @@ L.Polygon = L.Polyline.extend({
 		return this._map.layerPointToLatLng(center);
 	},
 
-	_convertLatLngs: function (latlngs) {
-		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs),
-		    len = result.length;
-
-		// remove last point if it equals first one
-		if (len >= 2 && result[0] instanceof L.LatLng && result[0].equals(result[len - 1])) {
-			result.pop();
-		}
-		return result;
-	},
-
 	_setLatLngs: function (latlngs) {
 		L.Polyline.prototype._setLatLngs.call(this, latlngs);
 		if (L.Polyline._flat(this._latlngs)) {
