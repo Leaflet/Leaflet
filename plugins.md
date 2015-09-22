@@ -741,7 +741,7 @@ The following plugins provide new ways of displaying overlay data information.
 
 ### Markers & renderers
 
-These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also known these as symbolizers.
+These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
@@ -926,6 +926,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td><td>
 			<a href="https://github.com/mapshakers">mapshakers</a>/
 			<a href="https://github.com/filipzava">Filip Zavadil</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/elfalem/Leaflet.curve">Leaflet.curve</a>
+		</td><td>
+			A Leaflet plugin for drawing Bézier curves and other complex shapes. <a href="http://elfalem.github.io/Leaflet.curve/">Demo</a>.  
+		</td><td>
+			<a href="https://github.com/elfalem">elfalem</a>
 		</td>
 	</tr>
 </table>
