@@ -410,11 +410,11 @@ The following plugins change the way that tile layers are loaded into the map.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
-			<a href="http://moonlite.github.com/Leaflet.MultiTileLayer/">Leaflet.MultiTileLayer</a>
+			<a href="https://github.com/mattiasb/Leaflet.MultiTileLayer">Leaflet.MultiTileLayer</a>
 		</td><td>
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
 		</td><td>
-			<a href="https://github.com/moonlite">Mattias Bengtsson</a>
+			<a href="https://github.com/mattiasb">Mattias Bengtsson</a>
 		</td>
 	</tr>
 	<tr>
