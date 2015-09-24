@@ -11,9 +11,9 @@ L.CRS.Simple = L.extend({}, L.CRS, {
 	},
 
 	zoom: function (scale) {
-            return Math.log(scale) / Math.LN2;
-        }, 
-	
+		return Math.log(scale) / Math.LN2;
+	}, 
+
 	distance: function (latlng1, latlng2) {
 		var dx = latlng2.lng - latlng1.lng,
 		    dy = latlng2.lat - latlng1.lat;
