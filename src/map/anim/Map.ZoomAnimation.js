@@ -100,10 +100,12 @@ L.Map.include(!L.DomUtil.TRANSITION ? {} : {
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
-		this._resetView(this._animateToCenter, this._animateToZoom, true, true);
+		L.Util.requestAnimFrame(function () {
+			this._resetView(this._animateToCenter, this._animateToZoom, true, true);
 
-		if (L.Draggable) {
-			L.Draggable._disabled = false;
-		}
+			if (L.Draggable) {
+				L.Draggable._disabled = false;
+			}
+		}, this);
 	}
 });
