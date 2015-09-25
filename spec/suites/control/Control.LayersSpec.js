@@ -12,8 +12,8 @@ describe("Control.Layers", function () {
 
 		it("is fired on input that changes the base layer", function () {
 			var baseLayers = {"Layer 1": L.tileLayer(''), "Layer 2": L.tileLayer('')},
-				layers = L.control.layers(baseLayers).addTo(map),
-				spy = sinon.spy();
+			    layers = L.control.layers(baseLayers).addTo(map),
+			    spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
 			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
@@ -28,8 +28,8 @@ describe("Control.Layers", function () {
 
 		it("is not fired on input that doesn't change the base layer", function () {
 			var overlays = {"Marker 1": L.marker([0, 0]), "Marker 2": L.marker([0, 0])},
-				layers = L.control.layers({}, overlays).addTo(map),
-				spy = sinon.spy();
+			    layers = L.control.layers({}, overlays).addTo(map),
+			    spy = sinon.spy();
 
 			map.on('baselayerchange', spy);
 			happen.click(layers._overlaysList.getElementsByTagName("input")[0]);
@@ -45,8 +45,8 @@ describe("Control.Layers", function () {
 
 		it("when an included layer is addded or removed", function () {
 			var baseLayer = L.tileLayer(),
-				overlay = L.marker([0, 0]),
-				layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
+			    overlay = L.marker([0, 0]),
+			    layers = L.control.layers({"Base": baseLayer}, {"Overlay": overlay}).addTo(map);
 
 			var spy = sinon.spy(layers, '_update');
 
@@ -59,8 +59,8 @@ describe("Control.Layers", function () {
 
 		it("not when a non-included layer is added or removed", function () {
 			var baseLayer = L.tileLayer(),
-				overlay = L.marker([0, 0]),
-				layers = L.control.layers({"Base": baseLayer}).addTo(map);
+			    overlay = L.marker([0, 0]),
+			    layers = L.control.layers({"Base": baseLayer}).addTo(map);
 
 			var spy = sinon.spy(layers, '_update');
 

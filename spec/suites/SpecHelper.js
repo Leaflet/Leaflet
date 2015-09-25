@@ -43,14 +43,14 @@ expect.Assertion.prototype.nearLatLng = function (expected, delta) {
 
 happen.at = function (what, x, y, props) {
 	this.once(document.elementFromPoint(x, y), L.Util.extend({
-        type: what,
-        clientX: x,
-        clientY: y,
-        screenX: x,
-        screenY: y,
-        which: 1,
-        button: 0
-    }, props || {}));
+		type: what,
+		clientX: x,
+		clientY: y,
+		screenX: x,
+		screenY: y,
+		which: 1,
+		button: 0
+	}, props || {}));
 };
 happen.drag = function (fromX, fromY, toX, toY, then, duration) {
 	happen.at('mousemove', fromX, fromY);

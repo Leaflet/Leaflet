@@ -1,9 +1,9 @@
 describe("Marker", function () {
 	var map,
-		spy,
-		div,
-		icon1,
-		icon2;
+	    spy,
+	    div,
+	    icon1,
+	    icon2;
 
 	beforeEach(function () {
 		div = document.createElement('div');

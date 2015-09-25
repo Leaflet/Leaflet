@@ -247,8 +247,8 @@ describe("L.LayerGroup#toGeoJSON", function () {
 
 	it("returns a 3D FeatureCollection object", function () {
 		var marker = new L.Marker([10, 20, 30]),
-				polyline = new L.Polyline([[10, 20, 30], [2, 5, 10]]),
-				layerGroup = new L.LayerGroup([marker, polyline]);
+		    polyline = new L.Polyline([[10, 20, 30], [2, 5, 10]]),
+		    layerGroup = new L.LayerGroup([marker, polyline]);
 		expect(layerGroup.toGeoJSON()).to.eql({
 			type: 'FeatureCollection',
 			features: [marker.toGeoJSON(), polyline.toGeoJSON()]

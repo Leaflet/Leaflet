@@ -200,10 +200,11 @@ describe('Popup', function () {
 		L.Icon.Default.prototype.options.popupAnchor = [0, 0];
 
 		var latlng = new L.LatLng(55.8, 37.6),
-			offset = new L.Point(20, 30),
-			icon = new L.DivIcon({popupAnchor: offset}),
-			marker1 = new L.Marker(latlng),
-			marker2 = new L.Marker(latlng, {icon: icon});
+		    offset = new L.Point(20, 30),
+		    icon = new L.DivIcon({popupAnchor: offset}),
+		    marker1 = new L.Marker(latlng),
+		    marker2 = new L.Marker(latlng, {icon: icon});
+
 		marker1.bindPopup('Popup').addTo(map);
 		marker1.openPopup();
 		var defaultLeft = parseInt(marker1._popup._container.style.left, 10);

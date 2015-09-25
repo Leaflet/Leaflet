@@ -4,8 +4,7 @@
     "quotes": 0,
     "no-shadow": 0,
     "no-irregular-whitespace": 0,
-    "no-console": 0,
-    "indent": 0
+    "no-console": 0
   },
   "env": {
     "mocha": true

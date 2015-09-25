@@ -11,7 +11,7 @@
 	describe("#addLayer", function () {
 		it('adds a layer', function () {
 			var lg = L.layerGroup(),
-				marker = L.marker([0, 0]);
+			    marker = L.marker([0, 0]);
 
 			expect(lg.addLayer(marker)).to.eql(lg);
 
@@ -22,7 +22,7 @@
 	describe("#removeLayer", function () {
 		it('removes a layer', function () {
 			var lg = L.layerGroup(),
-				marker = L.marker([0, 0]);
+			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.removeLayer(marker)).to.eql(lg);
@@ -34,7 +34,7 @@
 	describe("#clearLayers", function () {
 		it('removes all layers', function () {
 			var lg = L.layerGroup(),
-				marker = L.marker([0, 0]);
+			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
 			expect(lg.clearLayers()).to.eql(lg);
@@ -46,7 +46,7 @@
 	describe("#getLayers", function () {
 		it('gets all layers', function () {
 			var lg = L.layerGroup(),
-				marker = L.marker([0, 0]);
+			    marker = L.marker([0, 0]);
 
 			lg.addLayer(marker);
 
@@ -57,8 +57,8 @@
 	describe("#eachLayer", function () {
 		it('iterates over all layers', function () {
 			var lg = L.layerGroup(),
-				marker = L.marker([0, 0]),
-				ctx = {foo: 'bar'};
+			    marker = L.marker([0, 0]),
+			    ctx = {foo: 'bar'};
 
 			lg.addLayer(marker);
 

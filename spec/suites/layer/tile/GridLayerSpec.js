@@ -51,7 +51,7 @@ describe('GridLayer', function () {
 
 		for (var i = 0; i < tiles.length; i++) {
 			var coords = tiles[i].coords,
-				pos = L.DomUtil.getPosition(tiles[i].tile);
+			    pos = L.DomUtil.getPosition(tiles[i].tile);
 
 			loaded[pos.x + ':' + pos.y] = [coords.x, coords.y];
 		}
@@ -111,7 +111,7 @@ describe('GridLayer', function () {
 			var layer = L.gridLayer().addTo(map);
 
 			var onAdd = layer.onAdd,
-				onAddSpy = sinon.spy();
+			    onAddSpy = sinon.spy();
 			layer.onAdd = function () {
 				onAdd.apply(this, arguments);
 				onAddSpy();
@@ -129,7 +129,7 @@ describe('GridLayer', function () {
 		describe("when a tilelayer is added to a map with no other layers", function () {
 			it("has the same zoomlevels as the tilelayer", function () {
 				var maxZoom = 10,
-					minZoom = 5;
+				    minZoom = 5;
 
 				map.setView([0, 0], 1);
 

@@ -37,11 +37,8 @@ describe('Polygon', function () {
 
 		it("can be initialized with holes", function () {
 			var originalLatLngs = [
-				[ //external ring
-					[0, 10], [10, 10], [10, 0]
-				], [ //hole
-					[2, 3], [2, 4], [3, 4]
-				]
+				[[0, 10], [10, 10], [10, 0]], // external ring
+				[[2, 3], [2, 4], [3, 4]] // hole
 			];
 
 			var polygon = new L.Polygon(originalLatLngs);
@@ -116,11 +113,8 @@ describe('Polygon', function () {
 
 		it("can be set external ring and holes", function () {
 			var latLngs = [
-				[ //external ring
-					[0, 10], [10, 10], [10, 0]
-				], [ //hole
-					[2, 3], [2, 4], [3, 4]
-				]
+				[[0, 10], [10, 10], [10, 0]], // external ring
+				[[2, 3], [2, 4], [3, 4]] // hole
 			];
 
 			var polygon = new L.Polygon([]);
@@ -207,10 +201,8 @@ describe('Polygon', function () {
 
 		it("should return first latlngs on a multipolygon with hole", function () {
 			var latlngs = [
-				[
-					[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
-					[L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]
-				],
+				[[L.latLng([0, 10]), L.latLng([10, 10]), L.latLng([10, 0])],
+				 [L.latLng([2, 3]), L.latLng([2, 4]), L.latLng([3, 4])]],
 				[[L.latLng([10, 20]), L.latLng([30, 40]), L.latLng([50, 60])]]
 			];
 

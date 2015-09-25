@@ -2,8 +2,8 @@ describe("Class", function () {
 
 	describe("#extend", function () {
 		var Klass,
-			constructor,
-			method;
+		    constructor,
+		    method;
 
 		beforeEach(function () {
 			constructor = sinon.spy();
@@ -131,7 +131,7 @@ describe("Class", function () {
 
 		it("inherits constructor hooks", function () {
 			var spy1 = sinon.spy(),
-				spy2 = sinon.spy();
+			    spy2 = sinon.spy();
 
 			var Klass2 = Klass.extend({});
 
@@ -146,7 +146,7 @@ describe("Class", function () {
 
 		it("does not call child constructor hooks", function () {
 			var spy1 = sinon.spy(),
-				spy2 = sinon.spy();
+			    spy2 = sinon.spy();
 
 			var Klass2 = Klass.extend({});
 

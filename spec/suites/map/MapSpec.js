@@ -1,6 +1,6 @@
 describe("Map", function () {
 	var map,
-		spy;
+	    spy;
 	beforeEach(function () {
 		map = L.map(document.createElement('div'));
 	});
@@ -9,7 +9,7 @@ describe("Map", function () {
 		it("fires an unload event if loaded", function () {
 			var container = document.createElement('div'),
 			    map = new L.Map(container).setView([0, 0], 0),
-				spy = sinon.spy();
+			    spy = sinon.spy();
 			map.on('unload', spy);
 			map.remove();
 			expect(spy.called).to.be.ok();
@@ -18,7 +18,7 @@ describe("Map", function () {
 		it("fires no unload event if not loaded", function () {
 			var container = document.createElement('div'),
 			    map = new L.Map(container),
-				spy = sinon.spy();
+			    spy = sinon.spy();
 			map.on('unload', spy);
 			map.remove();
 			expect(spy.called).not.to.be.ok();
@@ -27,7 +27,7 @@ describe("Map", function () {
 		describe("corner case checking", function () {
 			it("throws an exception upon reinitialization", function () {
 				var container = document.createElement('div'),
-					map = new L.Map(container);
+				    map = new L.Map(container);
 				expect(function () {
 					L.map(container);
 				}).to.throwException(function (e) {
@@ -56,7 +56,7 @@ describe("Map", function () {
 		it("unbinds events", function () {
 			var container = document.createElement('div'),
 			    map = new L.Map(container).setView([0, 0], 1),
-				spy = sinon.spy();
+			    spy = sinon.spy();
 
 			map.on('click dblclick mousedown mouseup mousemove', spy);
 			map.remove();
@@ -443,7 +443,7 @@ describe("Map", function () {
 			it("fires a zoomlevelschange event", function () {
 				map.whenReady(function () {
 					var spy = sinon.spy(),
-						tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
+					    tl = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 10}).addTo(map),
 					    t2 = L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 15}).addTo(map);
 
 					map.on("zoomlevelschange", spy);
@@ -480,7 +480,7 @@ describe("Map", function () {
 		it("calls the provided function for each layer", function () {
 			var t1 = L.tileLayer("{z}{x}{y}").addTo(map),
 			    t2 = L.tileLayer("{z}{x}{y}").addTo(map),
-				spy = sinon.spy();
+			    spy = sinon.spy();
 
 			map.eachLayer(spy);
 
@@ -491,7 +491,7 @@ describe("Map", function () {
 
 		it("calls the provided function with the provided context", function () {
 			var t1 = L.tileLayer("{z}{x}{y}").addTo(map),
-				spy = sinon.spy();
+			    spy = sinon.spy();
 
 			map.eachLayer(spy, map);
 
@@ -502,7 +502,7 @@ describe("Map", function () {
 	describe("#invalidateSize", function () {
 		var container,
 		    origWidth = 100,
-			clock;
+		    clock;
 
 		beforeEach(function () {
 			container = map.getContainer();
@@ -604,15 +604,15 @@ describe("Map", function () {
 
 		it('move to requested center and zoom, and call zoomend once', function (done) {
 			var spy = sinon.spy(),
-				newCenter = new L.LatLng(10, 11),
-				newZoom = 12,
-				callback = function () {
-					expect(map.getCenter()).to.eql(newCenter);
-					expect(map.getZoom()).to.eql(newZoom);
-					spy();
-					expect(spy.calledOnce).to.be.ok();
-					done();
-				};
+			    newCenter = new L.LatLng(10, 11),
+			    newZoom = 12;
+			var callback = function () {
+				expect(map.getCenter()).to.eql(newCenter);
+				expect(map.getZoom()).to.eql(newZoom);
+				spy();
+				expect(spy.calledOnce).to.be.ok();
+				done();
+			};
 			map.setView([0, 0], 0);
 			map.once('zoomend', callback).flyTo(newCenter, newZoom);
 		});
@@ -695,8 +695,8 @@ describe("Map", function () {
 
 		it("mouseout is only forwared if fired on the original target", function () {
 			var mapSpy = sinon.spy(),
-				layerSpy = sinon.spy(),
-				otherSpy = sinon.spy();
+			    layerSpy = sinon.spy(),
+			    otherSpy = sinon.spy();
 			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			var other = new L.Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
 			map.on("mouseout", mapSpy);
@@ -710,8 +710,8 @@ describe("Map", function () {
 
 		it("mouseout is not forwared to layers if fired on the map", function () {
 			var mapSpy = sinon.spy(),
-				layerSpy = sinon.spy(),
-				otherSpy = sinon.spy();
+			    layerSpy = sinon.spy(),
+			    otherSpy = sinon.spy();
 			var layer = new L.Polygon([[1, 2], [3, 4], [5, 6]]).addTo(map);
 			var other = new L.Polygon([[10, 20], [30, 40], [50, 60]]).addTo(map);
 			map.on("mouseout", mapSpy);

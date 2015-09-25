@@ -18,7 +18,7 @@
 				fg2.addLayer(marker);
 
 				var wasClicked1,
-					wasClicked2;
+				    wasClicked2;
 
 				fg2.on('click', function (e) {
 					expect(e.layer).to.be(marker);
