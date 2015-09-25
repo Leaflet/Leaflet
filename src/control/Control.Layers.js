@@ -262,7 +262,7 @@ L.Control.Layers = L.Control.extend({
 			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
 			this._form.style.height = acceptableHeight + 'px';
 		} else {
-			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');	
+			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
 		}
 		this._checkDisabledLayers();
 	},

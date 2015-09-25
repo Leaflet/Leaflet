@@ -35,7 +35,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		this.on('zoomanim', function (e) {
 			var prop = L.DomUtil.TRANSFORM,
-				transform = proxy.style[prop];
+			    transform = proxy.style[prop];
 
 			L.DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
 
@@ -47,7 +47,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		this.on('load moveend', function () {
 			var c = this.getCenter(),
-				z = this.getZoom();
+			    z = this.getZoom();
 			L.DomUtil.setTransform(proxy, this.project(c, z), this.getZoomScale(z, 1));
 		}, this);
 	},

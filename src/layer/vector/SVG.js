@@ -68,7 +68,7 @@ L.SVG = L.Renderer.extend({
 
 	_updateStyle: function (layer) {
 		var path = layer._path,
-			options = layer.options;
+		    options = layer.options;
 
 		if (!path) { return; }
 
@@ -147,7 +147,7 @@ L.extend(L.SVG, {
 	// generates SVG path string for multiple rings, with each ring turning into "M..L..L.." instructions
 	pointsToPath: function (rings, closed) {
 		var str = '',
-			i, j, len, len2, points, p;
+		    i, j, len, len2, points, p;
 
 		for (i = 0, len = rings.length; i < len; i++) {
 			points = rings[i];

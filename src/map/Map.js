@@ -177,7 +177,7 @@ L.Map = L.Evented.extend({
 
 	panInsideBounds: function (bounds, options) {
 		var center = this.getCenter(),
-			newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
+		    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
 
 		if (center.equals(newCenter)) { return this; }
 
@@ -709,8 +709,8 @@ L.Map = L.Evented.extend({
 
 		for (var i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
-			if (data.originalEvent._stopped
-				|| (targets[i].options.nonBubblingEvents && L.Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
+			if (data.originalEvent._stopped ||
+				(targets[i].options.nonBubblingEvents && L.Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
 		}
 	},
 

@@ -160,7 +160,7 @@ describe("CRS.Simple", function () {
 
 describe("CRS", function () {
 	var crs = L.CRS;
-	
+
 	describe("#zoom && #scale", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
 			var zoom = 2.5;
@@ -188,7 +188,7 @@ describe("CRS.ZoomNotPowerOfTwo", function () {
 			expect(crs.zoom(1.5 * scale)).to.eql(zoom + 1);
 		});
 	});
-	
+
 	describe("#zoom && #scale", function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
 			var zoom = 2;

@@ -144,8 +144,8 @@ L.Map.include({
 
 	_updateZoomLevels: function () {
 		var minZoom = Infinity,
-			maxZoom = -Infinity,
-			oldZoomSpan = this._getZoomSpan();
+		    maxZoom = -Infinity,
+		    oldZoomSpan = this._getZoomSpan();
 
 		for (var i in this._zoomBoundLayers) {
 			var options = this._zoomBoundLayers[i].options;

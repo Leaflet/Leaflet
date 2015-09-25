@@ -25,7 +25,7 @@ L.Map.include({
 		}
 
 		var onResponse = L.bind(this._handleGeolocationResponse, this),
-			onError = L.bind(this._handleGeolocationError, this);
+		    onError = L.bind(this._handleGeolocationError, this);
 
 		if (options.watch) {
 			this._locationWatchId =

@@ -37,7 +37,7 @@ L.extend(L.DomEvent, {
 				if (L.Browser.pointer) {
 					// work around .type being readonly with MSPointer* events
 					var newTouch = {},
-						prop, i;
+					    prop, i;
 
 					for (i in touch) {
 						prop = touch[i];

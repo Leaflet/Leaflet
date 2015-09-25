@@ -44,7 +44,7 @@ L.LatLng.prototype = {
 
 	toBounds: function (sizeInMeters) {
 		var latAccuracy = 180 * sizeInMeters / 40075017,
-				lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
+		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
 		return L.latLngBounds(
 		        [this.lat - latAccuracy, this.lng - lngAccuracy],

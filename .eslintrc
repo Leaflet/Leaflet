@@ -1,42 +1,18 @@
 {
-  "rules": {
-    "eqeqeq": 2,
-    "consistent-return": 2,
-    "no-loop-func": 2,
-    "no-use-before-define": [2, "nofunc"],
-    "no-lonely-if": 2,
-    "no-else-return": 2,
-    "no-new": 2,
-    "no-throw-literal": 2,
-    "no-self-compare": 2,
-    "no-void": 2,
-    "no-eq-null": 2,
-
-    "quotes": [2, "single"],
-    "camelcase": 2,
-    "comma-style": 2,
-    "comma-spacing": 2,
-    "new-cap": 2,
-    "no-empty": 2,
-    "brace-style": [2, "1tbs", {"allowSingleLine": true}],
-    "space-in-parens": 2,
-    "space-before-blocks": 2,
-    "space-after-keywords": 2,
-    "space-infix-ops": 2,
-    "space-unary-ops": 2,
-    "space-before-function-paren": [2, {"anonymous": "always", "named": "never"}],
-    "array-bracket-spacing": 2,
-    "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
-
-    "no-constant-condition": 0
-  },
   "globals": {
     "L": true,
-    "module": false,
-    "define": false
   },
   "env": {
-    "browser": true
+    "commonjs": true,
+    "amd": true,
+    "node": false
   },
-  "extends": "eslint:recommended"
+  "extends": "mourner",
+  "rules": {
+    "no-mixed-spaces-and-tabs": [2, "smart-tabs"],
+    "indent": [2, "tab", {"VariableDeclarator": 0}],
+    "strict": 0,
+    "wrap-iife": 0,
+    "key-spacing": 0
+  }
 }

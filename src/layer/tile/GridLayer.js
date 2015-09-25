@@ -165,8 +165,8 @@ L.GridLayer = L.Layer.extend({
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
 		var now = +new Date(),
-			nextFrame = false,
-			willPrune = false;
+		    nextFrame = false,
+		    willPrune = false;
 
 		for (var key in this._tiles) {
 			var tile = this._tiles[key];
@@ -207,7 +207,7 @@ L.GridLayer = L.Layer.extend({
 	_updateLevels: function () {
 
 		var zoom = this._tileZoom,
-			maxZoom = this.options.maxZoom;
+		    maxZoom = this.options.maxZoom;
 
 		for (var z in this._levels) {
 			if (this._levels[z].el.children.length || z === zoom) {
@@ -289,11 +289,11 @@ L.GridLayer = L.Layer.extend({
 
 	_retainParent: function (x, y, z, minZoom) {
 		var x2 = Math.floor(x / 2),
-			y2 = Math.floor(y / 2),
-			z2 = z - 1;
+		    y2 = Math.floor(y / 2),
+		    z2 = z - 1;
 
 		var key = x2 + ':' + y2 + ':' + z2,
-			tile = this._tiles[key];
+		    tile = this._tiles[key];
 
 		if (tile && tile.active) {
 			tile.retain = true;
@@ -316,7 +316,7 @@ L.GridLayer = L.Layer.extend({
 			for (var j = 2 * y; j < 2 * y + 2; j++) {
 
 				var key = i + ':' + j + ':' + (z + 1),
-					tile = this._tiles[key];
+				    tile = this._tiles[key];
 
 				if (tile && tile.active) {
 					tile.retain = true;
@@ -424,11 +424,10 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_getTiledPixelBounds: function (center, zoom, tileZoom) {
-		var map = this._map;
-
-		var scale = map.getZoomScale(zoom, tileZoom),
-			pixelCenter = map.project(center, tileZoom).floor(),
-			halfSize = map.getSize().divideBy(scale * 2);
+		var map = this._map,
+		    scale = map.getZoomScale(zoom, tileZoom),
+		    pixelCenter = map.project(center, tileZoom).floor(),
+		    halfSize = map.getSize().divideBy(scale * 2);
 
 		return new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},
@@ -442,11 +441,10 @@ L.GridLayer = L.Layer.extend({
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
-		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom);
-
-		var tileRange = this._pxBoundsToTileRange(pixelBounds),
-			tileCenter = tileRange.getCenter(),
-			queue = [];
+		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom),
+		    tileRange = this._pxBoundsToTileRange(pixelBounds),
+		    tileCenter = tileRange.getCenter(),
+		    queue = [];
 
 		for (var key in this._tiles) {
 			this._tiles[key].current = false;
@@ -540,7 +538,7 @@ L.GridLayer = L.Layer.extend({
 	// converts tile cache key to coordinates
 	_keyToTileCoords: function (key) {
 		var k = key.split(':'),
-			coords = new L.Point(+k[0], +k[1]);
+		    coords = new L.Point(+k[0], +k[1]);
 		coords.z = +k[2];
 		return coords;
 	},

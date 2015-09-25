@@ -746,7 +746,7 @@ describe("Map", function () {
 		});
 
 	});
-	
+
 	describe('#getScaleZoom && #getZoomScale', function () {
 		it("convert zoom to scale and viceversa and return the same values", function () {
 			var toZoom = 6.25;

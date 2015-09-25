@@ -82,7 +82,7 @@ L.Canvas = L.Renderer.extend({
 
 		var padding = (layer.options.weight || 0) + 1;
 		this._redrawBounds = this._redrawBounds || new L.Bounds();
-		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]))
+		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
 
 		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
