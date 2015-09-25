@@ -242,7 +242,7 @@ describe('Events', function () {
 
 			expect(obj.listens('test')).to.be(false);
 
-			//Add and remove a listener
+			// Add and remove a listener
 			obj.addEventListener('test', spy, foo2);
 			obj.removeEventListener('test', spy, foo2);
 

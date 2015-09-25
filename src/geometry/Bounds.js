@@ -2,7 +2,7 @@
  * L.Bounds represents a rectangular area on the screen in pixel coordinates.
  */
 
-L.Bounds = function (a, b) { //(Point, Point) or Point[]
+L.Bounds = function (a, b) { // (Point, Point) or Point[]
 	if (!a) { return; }
 
 	var points = b ? [a, b] : a;

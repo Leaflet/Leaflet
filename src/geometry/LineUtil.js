@@ -155,7 +155,7 @@ L.LineUtil = {
 		return new L.Point(x, y, round);
 	},
 
-	_getBitCode: function (/*Point*/ p, bounds) {
+	_getBitCode: function (p, bounds) {
 		var code = 0;
 
 		if (p.x < bounds.min.x) { // left

@@ -3,7 +3,7 @@ describe("Projection.Mercator", function () {
 
 	describe("#project", function () {
 		it("projects a center point", function () {
-			//edge cases
+			// edge cases
 			expect(p.project(new L.LatLng(0, 0))).near(new L.Point(0, 0));
 		});
 
@@ -51,7 +51,7 @@ describe("Projection.SphericalMercator", function () {
 
 	describe("#project", function () {
 		it("projects a center point", function () {
-			//edge cases
+			// edge cases
 			expect(p.project(new L.LatLng(0, 0))).near(new L.Point(0, 0));
 		});
 

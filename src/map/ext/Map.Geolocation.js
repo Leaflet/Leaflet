@@ -12,7 +12,7 @@ L.Map.include({
 		// enableHighAccuracy: false
 	},
 
-	locate: function (/*Object*/ options) {
+	locate: function (options) {
 
 		options = this._locateOptions = L.extend({}, this._defaultLocateOptions, options);
 

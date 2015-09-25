@@ -230,7 +230,7 @@ describe('Util', function () {
 
 	describe('#isArray', function () {
 		expect(L.Util.isArray([1, 2, 3])).to.be(true);
-		/*eslint no-array-constructor:0*/
+		/* eslint no-array-constructor: 0 */
 		expect(L.Util.isArray(new Array(1, 2, 3))).to.be(true);
 		expect(L.Util.isArray('blabla')).to.be(false);
 		expect(L.Util.isArray({0: 1, 1: 2})).to.be(false);

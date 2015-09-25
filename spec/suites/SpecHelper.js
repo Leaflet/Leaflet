@@ -1,6 +1,5 @@
 if (!Array.prototype.map) {
-	/*eslint no-extend-native:0*/
-	Array.prototype.map = function (fun /*, thisp */) {
+	Array.prototype.map = function (fun) {
 		"use strict";
 
 		if (this === undefined || this === null) {

@@ -10,7 +10,7 @@ describe('PolyUtil', function () {
 				new L.Point(10, 15)
 			];
 
-			//check clip without rounding
+			// check clip without rounding
 			var clipped = L.PolyUtil.clipPolygon(points, bounds);
 
 			for (var i = 0, len = clipped.length; i < len; i++) {
@@ -24,7 +24,7 @@ describe('PolyUtil', function () {
 				new L.Point(10, 10)
 			]);
 
-			//check clip with rounding
+			// check clip with rounding
 			var clippedRounded = L.PolyUtil.clipPolygon(points, bounds, true);
 
 			for (i = 0, len = clippedRounded.length; i < len; i++) {

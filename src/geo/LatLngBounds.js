@@ -165,7 +165,7 @@ L.LatLngBounds.prototype = {
 	}
 };
 
-//TODO International date line?
+// TODO International date line?
 
 L.latLngBounds = function (a, b) { // (LatLngBounds) or (LatLng, LatLng)
 	if (!a || a instanceof L.LatLngBounds) {
