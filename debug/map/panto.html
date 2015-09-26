@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+<p>This page tests the "tiles not loading on pan animation frame" bug from <a href='https://github.com/Leaflet/Leaflet/issues/3355'>https://github.com/Leaflet/Leaflet/issues/3355</a></p>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+	
+	var map = new L.map('map', {
+		layers: new L.TileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png'),
+		zoom:10,
+		center:new L.LatLng(-19.003049, 22.414856)
+	});   
+
+	var i = 0;
+	
+	function animate(){
+	
+// 		if (i++ >= 25) return;
+	
+		var target = map.getCenter();
+		target.lng += 0.0001;
+		map.panTo(target, {animate:false, duration:0});
+		requestAnimationFrame(animate);
+	}
+
+	setTimeout(animate,5000);
+
+	</script>
+</body>
+</html>
