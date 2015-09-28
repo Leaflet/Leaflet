@@ -134,7 +134,7 @@ NPM (Node Packaged Modules) is a package manager and code repository for JavaScr
 
 NPM has an excellent [developers guide](https://www.npmjs.org/doc/misc/npm-developers.html) to help you through the process.
 
-When you publish your plugin you should add a depenency on `leaflet` to your `package.json` file. This will automatically install Leaflet when your package is installed.
+When you publish your plugin you should add a dependency on `leaflet` to your `package.json` file. This will automatically install Leaflet when your package is installed.
 
 Here is an example of a `package.json` file for a Leaflet plugin.
 
