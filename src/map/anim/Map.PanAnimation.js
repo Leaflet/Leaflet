@@ -95,7 +95,9 @@ L.Map.include({
 		// don't animate too far unless animate: true specified in options
 		if ((options && options.animate) !== true && !this.getSize().contains(offset)) { return false; }
 
-		this.panBy(offset, options);
+		if (offset.x || offset.y) {
+			this.panBy(offset, options);
+		}
 
 		return true;
 	}
