@@ -2077,10 +2077,21 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/Alpstein/leaflet-singleclick_0.7">singleclick</a>
 		</td>
 		<td>
-			Extend Map to fire a <code>singleclick</code> event (<a href="http://alpstein.github.io/leaflet-singleclick_0.7/">example</a>).
+			Extend <code>L.Map</code> to fire a <code>singleclick</code> event (<a href="http://alpstein.github.io/leaflet-singleclick_0.7/">demo</a>). Compatible with Leaflet 0.7.x only.
 		</td>
 		<td>
 			<a href="http://glat.info">Guillaume Lathoud</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MazeMap/Leaflet.singleclick">singleclick</a>
+		</td>
+		<td>
+			Extend <code>L.Evented</code> to fire a <code>singleclick</code> event (<a href="https://mazemap.github.io/Leaflet.singleclick/">demo</a>). Compatible with Leaflet 1.0.0-beta1 and greater only.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
+			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
 </table>
