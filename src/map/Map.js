@@ -176,12 +176,15 @@ L.Map = L.Evented.extend({
 	},
 
 	panInsideBounds: function (bounds, options) {
+		this._enforcingBounds = true;
 		var center = this.getCenter(),
 		    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
 
 		if (center.equals(newCenter)) { return this; }
 
-		return this.panTo(newCenter, options);
+		this.panTo(newCenter, options);
+		this._enforcingBounds = false;
+		return this;
 	},
 
 	invalidateSize: function (options) {
@@ -587,7 +590,9 @@ L.Map = L.Evented.extend({
 	},
 
 	_panInsideMaxBounds: function () {
-		this.panInsideBounds(this.options.maxBounds);
+		if (!this._enforcingBounds) {
+			this.panInsideBounds(this.options.maxBounds);
+		}
 	},
 
 	_checkIfLoaded: function () {
