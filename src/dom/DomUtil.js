@@ -182,11 +182,12 @@ L.DomUtil = {
 	// webkitTransition comes first because some browser versions that drop vendor prefix don't do
 	// the same for the transitionend event, in particular the Android 4.1 stock browser
 
-	var transition = L.DomUtil.TRANSITION = L.DomUtil.testProp(
+	L.DomUtil.TRANSITION = L.DomUtil.testProp(
 			['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
 
-	L.DomUtil.TRANSITION_END =
-			transition === 'webkitTransition' || transition === 'OTransition' ? transition + 'End' : 'transitionend';
+	// trying to decide which type is appropriate is not as robust as adding all available types
+	// although this adds overhead (e.g LG G4 stock browser uses webkitTransition but fires transitionend)
+	L.DomUtil.TRANSITION_END = 'webkitTransitionEnd OTransitionEnd transitionend';
 
 
 	if ('onselectstart' in document) {
