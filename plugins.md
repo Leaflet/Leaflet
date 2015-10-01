@@ -1679,6 +1679,15 @@ Change the way the user can interactively move around the map.
 			<a href="https://github.com/zverik">Ilya Zverev</a>
 		</td>
 	</tr>
+  <tr>
+		<td>
+			<a href="https://github.com/GhostGroup/Leaflet.DoubleRightClickZoom">Leaflet.DoubleRightClickZoom</a>
+		</td><td>
+			 Interaction handler enabling zooming out with double right click.
+		</td><td>
+			<a href="https://github.com/mikeotoole/">Mike O'Toole</a>
+		</td>
+	</tr>
 </table>
 
 
