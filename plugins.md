@@ -2708,6 +2708,17 @@ Ease your development integrating Leaflet into a development framework or automa
 		</td>
 	</tr>
 	<tr>
+		<td>
+			<a href="https://github.com/CleverMaps/tiny-leaflet-directive">Tiny Leaflet Directive</a>
+		</td>
+		<td>
+			Tiny LeafletJS map directive for your AngularJS apps.
+		</td>
+		<td>
+			<a href="https://github.com/mattesCZ">Martin Tesař</a>
+		</td>
+	</tr>
+	<tr>
                 <td>
                         <a href="https://github.com/leaflet-extras/leaflet-map">&lt;leaflet-map&gt;</a>
                 </td>
@@ -2729,17 +2740,6 @@ Ease your development integrating Leaflet into a development framework or automa
 		</td>
 		<td>
 			<a href="https://github.com/prtksxna">Prateek Saxena</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/CleverMaps/tiny-leaflet-directive">Tiny Leaflet Directive</a>
-		</td>
-		<td>
-			Tiny LeafletJS map directive for your AngularJS apps.
-		</td>
-		<td>
-			<a href="https://github.com/mattesCZ">Martin Tesař</a>
 		</td>
 	</tr>
 </table>
