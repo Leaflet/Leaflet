@@ -30,7 +30,7 @@ L.Map.Keyboard = L.Handler.extend({
 		var container = this._map._container;
 
 		// make the container focusable by tabbing
-		if (container.tabIndex === -1) {
+		if (container.tabIndex <= 0) {
 			container.tabIndex = '0';
 		}
 
