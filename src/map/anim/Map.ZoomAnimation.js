@@ -104,9 +104,13 @@ L.Map.include(!zoomAnimated ? {} : {
 			zoom: zoom,
 			noUpdate: noUpdate
 		});
+
+		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
+		setTimeout(L.bind(this._onZoomTransitionEnd, this), 250);
 	},
 
 	_onZoomTransitionEnd: function () {
+		if (!this._animatingZoom) { return; }
 
 		this._animatingZoom = false;
 
