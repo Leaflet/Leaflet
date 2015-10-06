@@ -19,6 +19,7 @@ L.GridLayer = L.Layer.extend({
 
 		minZoom: 0
 		// maxZoom: <Number>
+		// noWrap: false
 	},
 
 	initialize: function (options) {
@@ -407,11 +408,11 @@ L.GridLayer = L.Layer.extend({
 			this._globalTileRange = this._pxBoundsToTileRange(bounds);
 		}
 
-		this._wrapX = crs.wrapLng && [
+		this._wrapX = crs.wrapLng && !this.options.noWrap && [
 			Math.floor(map.project([0, crs.wrapLng[0]], tileZoom).x / tileSize.x),
 			Math.ceil(map.project([0, crs.wrapLng[1]], tileZoom).x / tileSize.y)
 		];
-		this._wrapY = crs.wrapLat && [
+		this._wrapY = crs.wrapLat && !this.options.noWrap && [
 			Math.floor(map.project([crs.wrapLat[0], 0], tileZoom).y / tileSize.x),
 			Math.ceil(map.project([crs.wrapLat[1], 0], tileZoom).y / tileSize.y)
 		];
