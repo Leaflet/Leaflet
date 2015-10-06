@@ -235,6 +235,9 @@ L.Map = L.Evented.extend({
 		if (this._panAnim) {
 			this._panAnim.stop();
 		}
+		if (this._animatingZoom) {
+			this._onZoomTransitionEnd();
+		}
 		return this;
 	},
 
