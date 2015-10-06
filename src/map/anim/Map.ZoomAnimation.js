@@ -104,6 +104,14 @@ L.Map.include(!zoomAnimated ? {} : {
 			zoom: zoom,
 			noUpdate: noUpdate
 		});
+
+
+		// This shouldn't be needed if browsers fired ontransitionend consistently
+		setTimeout(L.bind(function () {
+			if (this._animatingZoom) {
+				this._onZoomTransitionEnd();
+			}
+		}, this), 630);
 	},
 
 	_onZoomTransitionEnd: function () {

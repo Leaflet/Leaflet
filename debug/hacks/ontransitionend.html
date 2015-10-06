@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width,initial-scale=1 maximum-scale=1.0 user-scalable=0">
+	<link rel="stylesheet" href="../css/mobile.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+	<div >
+
+    <button onclick="map._onZoomTransitionEnd();" id="hack-btn" style="position: relative; bottom: 60px; margin: 0 auto; width: 230px; height: 40px; z-index: 9999; overflow: auto; font-family: monospace; font-size: 10px; display: block;">
+      hack:<br />map._onZoomTransitionEnd();
+    </button>
+
+</div>
+  <script>
+
+    var map = L.map('map', {zoom: 24, maxZoom: 24, center: [63.41753,10.40410], bounceAtZoomLimits:true});
+
+    var layer = L.tileLayer.wms("https://wms{s}.mazemap.com/wms",{
+      format : "image/png8",
+      tileSize: 256,
+      maxZoom : 24,
+      minZoom : 12,
+      subdomains: ["a", "b", "c", "d"],
+      SRS : 'EPSG:900913',
+      transparent: true,
+      continuousWorld: false,
+      layers: "overlay_1"
+    }).addTo(map);
+
+
+    alert('try to pinch-zoom slightly beyond the maxZoom and let go. \n\nThe map should become unresponsive until _onZoomTransitionEnd() is catched.\n\nSometimes doesn\'t happen the first time...(!?!?)');
+
+    L.DomEvent.on(map.getContainer(), 'transitionend touchend', function(ev) {
+      console.log(ev.type, window.hasOwnProperty('performance') ? performance.now() : null);
+    });
+
+    </script>
+</body>
+</html>
