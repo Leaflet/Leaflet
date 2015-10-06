@@ -47,18 +47,22 @@ L.Renderer = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		var scale = this._map.getZoomScale(e.zoom, this._zoom),
-		    offset = this._map._latLngToNewLayerPoint(this._topLeft, e.zoom, e.center);
+		    position = L.DomUtil.getPosition(this._container),
+		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
+		    currentCenterPoint = this._map.project(this._map.getCenter(), e.zoom),
+		    destCenterPoint = this._map.project(e.center, e.zoom),
+		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
-		L.DomUtil.setTransform(this._container, offset, scale);
+		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+
+		L.DomUtil.setTransform(this._container, topLeftOffset, scale);
 	},
 
 	_updateTransform: function () {
 		var zoom = this._map.getZoom(),
-		    center = this._map.getCenter(),
-		    scale = this._map.getZoomScale(zoom, this._zoom),
-		    offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
+		    scale = this._map.getZoomScale(zoom, this._zoom);
 
-		L.DomUtil.setTransform(this._container, offset, scale);
+		L.DomUtil.setTransform(this._container, this._map._getCenterOffset(this._center), scale);
 	},
 
 	_reset: function () {
@@ -74,7 +78,7 @@ L.Renderer = L.Layer.extend({
 
 		this._bounds = new L.Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
 
-		this._topLeft = this._map.layerPointToLatLng(min);
+		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
 	}
 });
