@@ -806,6 +806,7 @@ tr:target {
 	border-radius: 50%;
 	cursor: pointer;
 	position: absolute;
+	z-index: 1;
 }
 
 .api-page h2[id]:before {
