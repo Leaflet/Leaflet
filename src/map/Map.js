@@ -763,6 +763,11 @@ L.Map = L.Evented.extend({
 		return this.project(center, zoom)._subtract(viewHalf)._add(this._getMapPanePos())._round();
 	},
 
+	_latLngToNewLayerPoint: function (latlng, zoom, center) {
+		var topLeft = this._getNewPixelOrigin(center, zoom);
+		return this.project(latlng, zoom)._subtract(topLeft);
+	},
+
 	// layer point of the current center
 	_getCenterLayerPoint: function () {
 		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
