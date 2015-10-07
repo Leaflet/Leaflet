@@ -112,12 +112,15 @@ L.Map.include(!zoomAnimated ? {} : {
 	_onZoomTransitionEnd: function () {
 		if (!this._animatingZoom) { return; }
 
-		this._animatingZoom = false;
-
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
-		this
-			._move(this._animateToCenter, this._animateToZoom)
-			._moveEnd(true);
+		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
+		L.Util.requestAnimFrame(function () {
+			this._animatingZoom = false;
+
+			this
+				._move(this._animateToCenter, this._animateToZoom)
+				._moveEnd(true);
+		}, this);
 	}
 });
