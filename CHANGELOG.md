@@ -9,10 +9,10 @@ An in-progress version being developed on the `master` branch. No changes since 
 
 ## 1.0-beta2 (date TBC)
 
-Beta 2 fixes over 50 bug that were reported by users trying out beta 1. The vast majority of changes are small fixes to problems that are triggered in very specific situations or conditions, a few API consolidation changes, and a few browser workarounds.
+Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vast majority of changes are small fixes to problems that are triggered in very specific situations or conditions, a few API consolidation changes, and a few browser workarounds.
 
 * Fixed event propagation on double finger tap (by [@IvanSanchez](https://github.com/IvanSanchez)) [#3532](https://github.com/Leaflet/Leaflet/issues/3532)
-* Implemented canvas optimizations on mousehover interactions (by [@philippelatulippe](https://github.com/philippelatulippe)); [#3076](https://github.com/Leaflet/Leaflet/issues/3076)
+* Implemented canvas optimizations on mousehover interactions (by [@philippelatulippe](https://github.com/philippelatulippe)) [#3076](https://github.com/Leaflet/Leaflet/issues/3076)
 * Fixed style changes on re-added layers (by [@wpf500](https://github.com/wpf500))
 * Fixed `preventOutline` exceptions [#3625](https://github.com/Leaflet/Leaflet/issues/3625)
 * Improved drag behaviour by preventing a `preclick` event during drag (by [@yohanboniface](https://github.com/yohanboniface)) [#3632](https://github.com/Leaflet/Leaflet/issues/3632)
