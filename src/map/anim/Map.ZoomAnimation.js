@@ -107,7 +107,14 @@ L.Map.include(!zoomAnimated ? {} : {
 	},
 
 	_onZoomTransitionEnd: function () {
+		this._cleanupZoomTransition();
+	},
 
+	_stopZoomTransition: function () {
+		this._cleanupZoomTransition();
+	},
+
+	_cleanupZoomTransition: function () {
 		this._animatingZoom = false;
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
