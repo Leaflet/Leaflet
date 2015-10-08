@@ -143,6 +143,20 @@ L.Popup = L.Layer.extend({
 		return !!this._map && this._map.hasLayer(this);
 	},
 
+	bringToFront: function () {
+		if (this._map) {
+			L.DomUtil.toFront(this._container);
+		}
+		return this;
+	},
+
+	bringToBack: function () {
+		if (this._map) {
+			L.DomUtil.toBack(this._container);
+		}
+		return this;
+	},
+
 	_close: function () {
 		if (this._map) {
 			this._map.closePopup(this);

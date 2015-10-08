@@ -5,7 +5,9 @@ Leaflet Changelog
 
 ## 1.0-dev (master)
 
-An in-progress version being developed on the `master` branch. No changes since the last tagged release yet.
+An in-progress version being developed on the `master` branch.
+
+* Added `bringToFront` and `bringToBack` to popups (by [@danzel](https://github.com/danzel)). [#3908](https://github.com/Leaflet/Leaflet/pull/3908) [#3307](https://github.com/Leaflet/Leaflet/issues/3813)
 
 ## 1.0-beta1 (July 14, 2015)
 
