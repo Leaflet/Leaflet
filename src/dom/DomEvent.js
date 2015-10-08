@@ -67,7 +67,7 @@ L.DomEvent = {
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				handler = function (e) {
 					e = e || window.event;
-					if (L.DomEvent._checkMouse(obj, e)) {
+					if (L.DomEvent._isExternalTarget(obj, e)) {
 						originalHandler(e);
 					}
 				};
@@ -211,7 +211,7 @@ L.DomEvent = {
 	},
 
 	// check if element really left/entered the event target (for mouseenter/mouseleave)
-	_checkMouse: function (el, e) {
+	_isExternalTarget: function (el, e) {
 
 		var related = e.relatedTarget;
 

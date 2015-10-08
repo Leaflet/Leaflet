@@ -643,18 +643,24 @@ L.Map = L.Evented.extend({
 		}
 	},
 
-	_findEventTargets: function (src, type, bubble) {
-		var targets = [], target;
+	_findEventTargets: function (e, type) {
+		var targets = [],
+		    target,
+		    isHover = type === 'mouseout' || type === 'mouseover',
+		    src = e.target || e.srcElement;
+
 		while (src) {
 			target = this._targets[L.stamp(src)];
 			if (target && target.listens(type, true)) {
+				if (isHover && !L.DomEvent._isExternalTarget(src, e)) { break; }
 				targets.push(target);
+				if (isHover) { break; }
 			}
-			if (!bubble) { break; }
-			if (src === this._container) {
-				break;
-			}
+			if (src === this._container) { break; }
 			src = src.parentNode;
+		}
+		if (!targets.length && !isHover && L.DomEvent._isExternalTarget(src, e)) {
+			targets = [this];
 		}
 		return targets;
 	},
@@ -682,20 +688,14 @@ L.Map = L.Evented.extend({
 
 	_fireDOMEvent: function (e, type, targets) {
 
-		var isHover = type === 'mouseover' || type === 'mouseout';
-		targets = (targets || []).concat(this._findEventTargets(e.target || e.srcElement, type, !isHover));
+		targets = (targets || []).concat(this._findEventTargets(e, type));
 
-		if (!targets.length) {
-			targets = [this];
-
-			// special case for map mouseover/mouseout events so that they're actually mouseenter/mouseleave
-			if (isHover && !L.DomEvent._checkMouse(this._container, e)) { return; }
-		} else if (type === 'contextmenu') {
-			// we only want to call preventDefault when targets listen to it.
-			L.DomEvent.preventDefault(e);
-		}
+		if (!targets.length) { return; }
 
 		var target = targets[0];
+		if (type === 'contextmenu' && target.listens(type, true)) {
+			L.DomEvent.preventDefault(e);
+		}
 
 		// prevents firing click after you just dragged an object
 		if ((e.type === 'click' || e.type === 'preclick') && !e._simulated && this._draggableMoved(target)) { return; }
