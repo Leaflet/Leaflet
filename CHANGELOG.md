@@ -63,6 +63,7 @@ All Leaflet layers (including markers, popups, tile and vector layers) have been
 * Changed the default z-index of panes to be bigger, leaving more room for customization (by [@patrickarlt](https://github.com/patrickarlt)). [#3591](https://github.com/Leaflet/Leaflet/pull/3591)
 * Improved DOM event bubbling mechanism for layers (by [@yohanboniface](https://github.com/yohanboniface)). [Leaflet/Leaflet#3307](https://github.com/Leaflet/Leaflet/pull/3307) [#3450](https://github.com/Leaflet/Leaflet/pull/3450) [#3307](https://github.com/Leaflet/Leaflet/pull/3307)
 * Added `nonBubblingEvents` option to layers (by [@yohanboniface](https://github.com/yohanboniface)). [#3605](https://github.com/Leaflet/Leaflet/pull/3605) [#3307](https://github.com/Leaflet/Leaflet/pull/3307) [#3604](https://github.com/Leaflet/Leaflet/issues/3604)
+* Added `bringToFront` and `bringToBack` to popups (by [@danzel](https://github.com/danzel)). [#3908](https://github.com/Leaflet/Leaflet/pull/3908) [#3307](https://github.com/Leaflet/Leaflet/issues/3813)
 
 In addition, layer events implementation was rewritten to use **event delegation**, significantly improving add/remove performance and memory footprint. [#3032](https://github.com/Leaflet/Leaflet/pull/3032) [#46](https://github.com/Leaflet/Leaflet/issues/46)
 
