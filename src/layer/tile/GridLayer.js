@@ -419,7 +419,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_onMoveEnd: function () {
-		if (!this._map) { return; }
+		if (!this._map || this._map._animatingZoom) { return; }
 
 		this._resetView();
 	},
