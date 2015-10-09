@@ -688,6 +688,8 @@ L.Map = L.Evented.extend({
 
 	_fireDOMEvent: function (e, type, targets) {
 
+		if (e._stopped) { return; }
+
 		targets = (targets || []).concat(this._findEventTargets(e, type));
 
 		if (!targets.length) { return; }
