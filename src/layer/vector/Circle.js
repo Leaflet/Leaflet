@@ -8,7 +8,7 @@ L.Circle = L.CircleMarker.extend({
 	initialize: function (latlng, options) {
 		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
-		this._mRadius = options.radius;
+		this._mRadius = this.options.radius;
 	},
 
 	setRadius: function (radius) {
