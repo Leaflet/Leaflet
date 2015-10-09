@@ -1,4 +1,14 @@
 describe('Circle', function () {
+
+	describe('#init', function () {
+
+		it('uses default radius if not given', function () {
+			var circle = L.circle([0, 0]);
+			expect(circle.getRadius()).to.eql(10);
+		});
+
+	});
+
 	describe('#getBounds', function () {
 
 		var map, circle;
@@ -32,4 +42,5 @@ describe('Circle', function () {
 			expect(bounds.getNorthEast()).nearLatLng(new L.LatLng(50.05646, 30.08789));
 		});
 	});
+
 });
