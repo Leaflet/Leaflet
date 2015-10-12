@@ -71,6 +71,8 @@ Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vas
 * Fixed uncorrect length of scale control due to CSS styles (by [@yohanboniface](https://github.com/yohanboniface)) [#3668](https://github.com/Leaflet/Leaflet/issues/3668)
 * Fixed detection of default image path for icons (by [@ilfa](https://github.com/ilfa)) [#3770](https://github.com/Leaflet/Leaflet/pull/3770)
 * Various Canvas events fixes (by [@yohanboniface](https://github.com/yohanboniface)) [#3917](https://github.com/Leaflet/Leaflet/pull/3917)
+* Fix touch scroll in layers control (by [@yohanboniface](https://github.com/yohanboniface)) [#2882](https://github.com/Leaflet/Leaflet/issues/2882)
+* Fix duration not passed through from setView to panBy (by [@yohanboniface](https://github.com/yohanboniface)) [#3300](https://github.com/Leaflet/Leaflet/issues/3300)
 
 
 ## 1.0-beta1 (July 14, 2015)
