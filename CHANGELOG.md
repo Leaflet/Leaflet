@@ -26,6 +26,7 @@ Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vas
 * Armored against browsers not implementing `Geolocation.clearWatch()` [#3707](https://github.com/Leaflet/Leaflet/issues/3707)
 * Implemented generation of sourcemaps when building and minifying source files (by [@IvanSanchez](https://github.com/IvanSanchez)) [#3723](https://github.com/Leaflet/Leaflet/pull/3723)
 * Added `bringToFront` and `bringToBack` to popups (by [@danzel](https://github.com/danzel)). [#3908](https://github.com/Leaflet/Leaflet/pull/3908) [#3307](https://github.com/Leaflet/Leaflet/issues/3813)
+* Multiply offset by 3 on keyboard pan when shift key is pressed (by [@yohanboniface](https://github.com/yohanboniface)) [#3921](https://github.com/Leaflet/Leaflet/pull/3921)
 
 ### Bug fixes
 
@@ -69,7 +70,7 @@ Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vas
 * Fixed popups panning the map while running another pan animation (by [@yohanboniface](https://github.com/yohanboniface)) [#3744](https://github.com/Leaflet/Leaflet/issues/3744)
 * Fixed uncorrect length of scale control due to CSS styles (by [@yohanboniface](https://github.com/yohanboniface)) [#3668](https://github.com/Leaflet/Leaflet/issues/3668)
 * Fixed detection of default image path for icons (by [@ilfa](https://github.com/ilfa)) [#3770](https://github.com/Leaflet/Leaflet/pull/3770)
-
+* Various Canvas events fixes (by [@yohanboniface](https://github.com/yohanboniface)) [#3917](https://github.com/Leaflet/Leaflet/pull/3917)
 
 
 ## 1.0-beta1 (July 14, 2015)
