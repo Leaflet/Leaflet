@@ -142,6 +142,14 @@ describe("Map", function () {
 			expect(map.setView([51.605, -0.11])).to.be(map);
 			expect(map.getZoom()).to.be(13);
 		});
+
+		it("passes duration option to panBy", function () {
+			map = L.map(document.createElement('div'), {zoom: 13, center: [0, 0]});
+			map.panBy = sinon.spy();
+			map.setView([51.605, -0.11], 13, {animate: true, duration: 13});
+			expect(map.panBy.callCount).to.eql(1);
+			expect(map.panBy.args[0][1].duration).to.eql(13);
+		});
 	});
 
 	describe("#getBounds", function () {
