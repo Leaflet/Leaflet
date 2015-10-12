@@ -65,7 +65,7 @@
 		var nullIslandKitten = L.imageOverlay('http://placekitten.com/g/300/400', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
 
 		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
-		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5}); };
+		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5, animate: true}); };
 		document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 20}); };
 		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
 		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
