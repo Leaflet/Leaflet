@@ -61,7 +61,6 @@ L.Canvas = L.Renderer.extend({
 
 	_removePath: function (layer) {
 		layer._removed = true;
-		delete this._layers[L.stamp(layer)];
 		this._requestRedraw(layer);
 	},
 
