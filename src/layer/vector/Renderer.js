@@ -36,21 +36,37 @@ L.Renderer = L.Layer.extend({
 	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
-			zoom: this._updateTransform,
+			zoomstart: this._onZoomStart,
+			zoom: this._onZoom,
 			moveend: this._update
 		};
 		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
+			events.zoomanim = this._onAnimZoom;
 		}
 		return events;
 	},
 
-	_animateZoom: function (e) {
-		var scale = this._map.getZoomScale(e.zoom, this._zoom),
+	_onAnimZoom: function (ev) {
+		this._updateTransform(ev.center, ev.zoom);
+	},
+
+	_onZoom: function () {
+		this._updateTransform(this._map.getCenter(), this._map.getZoom());
+	},
+
+	_onZoomStart: function () {
+		// Drag-then-pinch interactions might mess up the center and zoom.
+		// In this case, the easiest way to prevent this is re-do the renderer
+		//   bounds and padding when the zooming starts.
+		this._update();
+	},
+
+	_updateTransform: function (center, zoom) {
+		var scale = this._map.getZoomScale(zoom, this._zoom),
 		    position = L.DomUtil.getPosition(this._container),
 		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
-		    currentCenterPoint = this._map.project(this._map.getCenter(), e.zoom),
-		    destCenterPoint = this._map.project(e.center, e.zoom),
+		    currentCenterPoint = this._map.project(this._center, zoom),
+		    destCenterPoint = this._map.project(center, zoom),
 		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
 		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
@@ -58,16 +74,9 @@ L.Renderer = L.Layer.extend({
 		L.DomUtil.setTransform(this._container, topLeftOffset, scale);
 	},
 
-	_updateTransform: function () {
-		var zoom = this._map.getZoom(),
-		    scale = this._map.getZoomScale(zoom, this._zoom);
-
-		L.DomUtil.setTransform(this._container, this._map._getCenterOffset(this._center), scale);
-	},
-
 	_reset: function () {
 		this._update();
-		this._updateTransform();
+		this._updateTransform(this._center, this._zoom);
 	},
 
 	_update: function () {
