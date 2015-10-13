@@ -2119,7 +2119,7 @@ These plugins extend Leaflet event handling.
 	        </td>
 	        <td>
 	            Adds visual feedback when user clicks/taps the map (<a href="https://github.com/MazeMap/Leaflet.VisualClick/">demo</a>).
-	            Useful when further action is delayed by server requests, or implmentation of Leaflet.singleclick. 
+	            Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick. 
 	            Or just because it looks cool :)
 	            Only tested with Leaflet 1.0.0-beta1.
 	        </td><td>
