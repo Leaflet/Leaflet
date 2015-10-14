@@ -6,7 +6,7 @@ addons:
     paths:
     - dist
     target_paths:
-    - content/build/${TRAVIS_BRANCH}
+    - content/leaflet/${NAME}
 env:
   global:
   - ARTIFACTS_BUCKET=leafletjs-cdn
@@ -19,5 +19,23 @@ env:
       XW1hzORAtSpTgTKkQwel5gRMDy6SotzeSRsVV2jQCn46VIMx8G/J5nOI+ImL
       yeoH12PhCR0h39dM7mq8TYJo5DHwvbotI5nQhpMruSt8eMFbym8nGiqQh806
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
-after_success: >
-  cd dist && zip -x .DS_Store -r leaflet.zip .
+after_success:
+  - npm run release
+  - NAME=$TRAVIS_BRANCH
+  - "[[ $TRAVIS_PULL_REQUEST != 'false' ]] && NAME=$TRAVIS_PULL_REQUEST"
+  - "[[ -n $TRAVIS_TAG ]] && NAME=$TRAVIS_TAG"
+deploy:
+  provider: releases
+  api_key:
+    secure: JrqxB0Ed8TO2Aoy3Rcp7JS3O799b7qDKEYvdekEgCVmUyRa9Gd4/cSpDbUdlTSnlBS42pqIImar9V5tTT1A6ygcDZBKJnAdfUGCNxz5JDiVqd8HwHbqA2/m/jEUt34+i5yzVLZo4RR7Zvyiq0wPSBBvP9EvphBhrx6vHlb0M2Vg=
+  file:
+    - "dist/leaflet.js"
+    - "dist/leaflet-src.js"
+    - "bower.json"
+    - "component.json"
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: Leaflet/Leaflet
+  after_deploy:
+    - npm publish
