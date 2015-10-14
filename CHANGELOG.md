@@ -8,12 +8,13 @@ Leaflet Changelog
 An in-progress version being developed on the `master` branch.
 
 
-## 1.0-beta2 (date TBC)
+## 1.0-beta2 (October 14, 2015)
 
 Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vast majority of changes are small fixes to problems that are triggered in very specific situations or conditions, a few API consolidation changes, and a few browser workarounds.
 
 ### API changes
-* Make `L.Circle` and `L.CircleMarker` radius options consistent (by [@IvanSanchez](https://github.com/IvanSanchez))
+
+* `L.circle` now accepts `radius` as an option (like `L.circleMarker`) rather than a second argument (by [@IvanSanchez](https://github.com/IvanSanchez))
 
 ### Improvements
 
