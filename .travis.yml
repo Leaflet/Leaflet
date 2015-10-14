@@ -38,4 +38,4 @@ deploy:
     tags: true
     repo: Leaflet/Leaflet
   after_deploy:
-    - npm publish
+    - npm publish --tag beta

@@ -7,3 +7,4 @@ tmp/**/*
 *.sublime-*
 _site
 coverage/
+dist/leaflet.zip
