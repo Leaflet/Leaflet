@@ -16,8 +16,8 @@ bodyclass: download-page
 		<td>Stable version, released on November 18, 2013 and last updated on Sep 2, 2015.</td>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/downloads/leaflet-1.0.0-b1.zip">Leaflet 1.0 beta 1</a></td>
-		<td>Last 1.0 beta, released on July 14, 2015.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.zip">Leaflet 1.0 beta 2</a></td>
+		<td>Last 1.0 beta, released on October 14, 2015.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/build/master/dist/leaflet.zip">Leaflet 1.0-dev</a></td>
