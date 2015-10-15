@@ -215,7 +215,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_onMouseMove: function (e) {
-		if (!this._map || (this._map.dragging._enabled && this._map.dragging._draggable._moving) || this._map._animatingZoom) { return; }
+		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		var point = this._map.mouseEventToLayerPoint(e);
 		this._handleMouseOut(e, point);
