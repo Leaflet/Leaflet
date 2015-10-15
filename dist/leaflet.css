@@ -203,6 +203,15 @@
 	cursor:    -moz-grabbing;
 	}
 
+/* marker interactivity */
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	pointer-events: none;
+	}
+
+.leaflet-marker-icon.leaflet-interactive {
+	pointer-events: auto;
+	}
 
 /* visual tweaks */
 
