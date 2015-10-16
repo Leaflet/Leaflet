@@ -14,6 +14,13 @@ L.SVG = L.Renderer.extend({
 		this._container.appendChild(this._rootGroup);
 	},
 
+	_onZoomStart: function () {
+		// Drag-then-pinch interactions might mess up the center and zoom.
+		// In this case, the easiest way to prevent this is re-do the renderer
+		//   bounds and padding when the zooming starts.
+		this._update();
+	},
+
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
