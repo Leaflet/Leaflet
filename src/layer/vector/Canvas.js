@@ -25,8 +25,6 @@ L.Canvas = L.Renderer.extend({
 		this._ctx = container.getContext('2d');
 	},
 
-	_onZoomStart: L.Util.falseFn,
-
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 

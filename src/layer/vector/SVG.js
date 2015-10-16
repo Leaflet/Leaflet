@@ -4,6 +4,12 @@
 
 L.SVG = L.Renderer.extend({
 
+	getEvents: function () {
+		var events = L.Renderer.prototype.getEvents.call(this);
+		events.zoomstart = this._onZoomStart;
+		return events;
+	},
+
 	_initContainer: function () {
 		this._container = L.SVG.create('svg');
 
@@ -12,6 +18,13 @@ L.SVG = L.Renderer.extend({
 
 		this._rootGroup = L.SVG.create('g');
 		this._container.appendChild(this._rootGroup);
+	},
+
+	_onZoomStart: function () {
+		// Drag-then-pinch interactions might mess up the center and zoom.
+		// In this case, the easiest way to prevent this is re-do the renderer
+		//   bounds and padding when the zooming starts.
+		this._update();
 	},
 
 	_update: function () {
