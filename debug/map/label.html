@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style type="text/css">
+		.my-div-icon {
+		    background-color: goldenrod;
+		    text-align: center;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="map"></div>
+
+
+	<script type="text/javascript">
+		var center = [41.2058, 9.4307];
+
+		var map = L.map('map').setView(center, 13);
+
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+		    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		L.polygon([[41.21, 9.42], [41.22, 9.40], [41.23, 9.40]]).addTo(map).bindLabel('Default centered polygon label');
+		L.polygon([[41.20, 9.41], [41.20, 9.39], [41.21, 9.40]]).addTo(map).bindLabel('Polygon label following mouse', {followMouse: true});
+		L.polygon([[41.18, 9.42], [41.17, 9.40], [41.19, 9.38]]).addTo(map).bindLabel('Permanent polygon label', {static: true});
+		L.marker([41.20, 9.4307]).addTo(map).bindLabel('label on the left', {direction: 'left'});
+		L.marker([41.206, 9.44]).addTo(map).bindLabel('permanent label', {static: true});
+		L.circleMarker([41.206, 9.48], {color: "Chocolate", radius: 12}).bindLabel( "Hello Left World", {direction: 'left'}).addTo(map);
+		var icon = L.divIcon({
+		    className: 'my-div-icon',
+		    html: "<p>A div icon</p>",
+		    iconSize: [50, 50],
+		    labelAnchor: [20, 0]
+		});
+		L.marker([41.22, 9.48], {icon: icon}).addTo(map).bindLabel('A div icon label following mouse', {followMouse: true, direction: 'auto'});
+		L.marker([41.23, 9.47], {icon: icon}).addTo(map).bindLabel('A div icon label');
+		L.marker([41.23, 9.42], {draggable: true}).addTo(map).bindLabel('Draggable marker label', {static: true});
+		L.marker([41.19, 9.45]).addTo(map).bindLabel('Clickable marker label', {static: true, clickable: true}).on('click', function () { alert('clicked!'); });
+
+	</script>
+</body>
+</html>

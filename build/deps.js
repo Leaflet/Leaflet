@@ -69,11 +69,22 @@ var deps = {
 
 	Popup: {
 		src: [
+			'layer/PopupBase.js',
 			'layer/Popup.js',
 			'layer/Layer.Popup.js',
 			'layer/marker/Marker.Popup.js'
 		],
 		deps: ['Marker'],
+		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
+	},
+
+	Label: {
+		src: [
+			'layer/Label.js',
+			'layer/Layer.Label.js',
+			'layer/marker/Marker.Label.js'
+		],
+		deps: ['Popup', 'Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
 	},
 

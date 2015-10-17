@@ -519,6 +519,7 @@ L.Map = L.Evented.extend({
 		this.createPane('shadowPane');
 		this.createPane('overlayPane');
 		this.createPane('markerPane');
+		this.createPane('labelPane');
 		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
