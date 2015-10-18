@@ -1604,6 +1604,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 			<a href="https://github.com/zverev">Alexander Zverev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bambrikii/leaflet-layer-tree-plugin">Leafet.LayerTreePlugin</a>
+		</td><td>
+			Leaflet control allows to switch layers on and off, display them in a tree-like way (<a href="http://rawgit.com/bambrikii/leaflet-layer-tree-plugin/master/examples/basic-example.htm">demo</a>).
+		</td><td>
+			<a href="https://github.com/bambrikii">Alexander Arakelyan</a>
+		</td>
+	</tr>
 </table>
 
 
