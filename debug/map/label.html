@@ -34,7 +34,7 @@
 		L.polygon([[41.20, 9.41], [41.20, 9.39], [41.21, 9.40]]).addTo(map).bindLabel('Polygon label following mouse', {followMouse: true});
 		L.polygon([[41.18, 9.42], [41.17, 9.40], [41.19, 9.38]]).addTo(map).bindLabel('Permanent polygon label', {static: true});
 		L.marker([41.20, 9.4307]).addTo(map).bindLabel('label on the left', {direction: 'left'});
-		L.marker([41.206, 9.44]).addTo(map).bindLabel('permanent label', {static: true});
+		L.marker([41.206, 9.44]).addTo(map).bindLabel('click me, I have a popup', {static: true, clickable: true}).bindPopup('See?');
 		L.circleMarker([41.206, 9.48], {color: "Chocolate", radius: 12}).bindLabel( "Hello Left World", {direction: 'left'}).addTo(map);
 		var icon = L.divIcon({
 		    className: 'my-div-icon',

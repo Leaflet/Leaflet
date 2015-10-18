@@ -9,7 +9,6 @@ L.Map.mergeOptions({
 L.Popup = L.PopupBase.extend({
 
 	options: {
-		pane: 'popupPane',
 
 		minWidth: 50,
 		maxWidth: 300,
