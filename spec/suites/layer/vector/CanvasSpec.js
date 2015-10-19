@@ -75,4 +75,27 @@ describe('Canvas', function () {
 
 	});
 
+	describe("#events(interactive=false)", function () {
+		var layer;
+
+		beforeEach(function () {
+			layer = L.polygon(latLngs, {interactive: false}).addTo(map);
+		});
+
+		afterEach(function () {
+			layer.remove();
+		});
+
+		it("should not fire click when not interactive", function () {
+			var spy = sinon.spy();
+			layer.on('click', spy);
+			happen.at('click', 50, 50);  // Click on the layer.
+			expect(spy.callCount).to.eql(0);
+			happen.at('click', 150, 150);  // Click outside layer.
+			expect(spy.callCount).to.eql(0);
+			layer.off("click", spy);
+		});
+
+	});
+
 });
