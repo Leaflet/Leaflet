@@ -36,7 +36,6 @@ L.Renderer = L.Layer.extend({
 	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
-			zoomstart: this._onZoomStart,
 			zoom: this._onZoom,
 			moveend: this._update
 		};
@@ -52,13 +51,6 @@ L.Renderer = L.Layer.extend({
 
 	_onZoom: function () {
 		this._updateTransform(this._map.getCenter(), this._map.getZoom());
-	},
-
-	_onZoomStart: function () {
-		// Drag-then-pinch interactions might mess up the center and zoom.
-		// In this case, the easiest way to prevent this is re-do the renderer
-		//   bounds and padding when the zooming starts.
-		this._update();
 	},
 
 	_updateTransform: function (center, zoom) {
