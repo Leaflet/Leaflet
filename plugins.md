@@ -1001,6 +1001,16 @@ These plugins animate markers or some geometries. See also [geometries with time
 			<a href="https://github.com/brianreavis">Brian Reavis</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IvanSanchez/Leaflet.Polyline.SnakeAnim">Leaflet.Polyline.SnakeAnim</a>
+		</td><td>
+			Animates (poly)lines into existence, as if they were being slowly drawn from start to end.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
+			<a href="https://github.com/MazeMap">MazeMap</a>
+		</td>
+	</tr>
 </table>
 
 
