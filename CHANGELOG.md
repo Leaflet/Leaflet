@@ -312,6 +312,17 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 * Fixed the build system to work in non-git Leaflet folder (by [@cschwarz](https://github.com/cschwarz)). [#2758](https://github.com/Leaflet/Leaflet/pull/2758)
 
 
+## 0.7.7 (October 26, 2015)
+
+* Fixed a regression that could sometimes cause tiles to disappear when pinch-zooming on iOS devices.
+* Fixed a regression related to msPointer detection in IE10 (affecting Leaflet.draw and some other plugins) (by @danzel) #3842 #3839 #3804
+* Fixed a bug where a mouseout could fire after a vector element was removed (by @sambernet). #3849 #3829
+* Fixed touch interactions in Edge browser (by @mitchless & @Neorth). #3853 #3379
+* Fixed a bug where removing a layer group from a feature group would throw an error (by @Lambdac0re). #3869
+
+Note tha we skipped 0.7.6 version for which we accidentally published a broken build to NPM.
+
+
 ## 0.7.5 (September 2, 2015)
 
 * Fixed a regression that broke animation in Leaflet.markercluster. [#3796](https://github.com/Leaflet/Leaflet/issues/3796)
