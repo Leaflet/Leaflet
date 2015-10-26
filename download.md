@@ -12,7 +12,7 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="http://http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip">Leaflet 0.7.7</a></td>
+		<td class="width100"><a href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip">Leaflet 0.7.7</a></td>
 		<td>Stable version, released on November 18, 2013 and last updated on October 26, 2015.</td>
 	</tr>
 	<tr>
