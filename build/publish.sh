@@ -9,7 +9,7 @@ npm test || exit 1
 git checkout -b build
 
 npm run build
-git add dist/leaflet-src.js dist/leaflet.js dist/leaflet-src.map -f
+git add dist/leaflet-src.js dist/leaflet.js -f
 
 copyfiles -u 1 build/*.json ./
 tin -v $VERSION
