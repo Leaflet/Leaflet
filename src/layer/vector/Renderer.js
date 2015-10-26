@@ -56,14 +56,11 @@ L.Renderer = L.Layer.extend({
 	_updateTransform: function (center, zoom) {
 		var scale = this._map.getZoomScale(zoom, this._zoom),
 		    position = L.DomUtil.getPosition(this._container),
-		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		    currentCenterPoint = this._map.project(this._center, zoom),
 		    destCenterPoint = this._map.project(center, zoom),
-		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
+		    centerOffset = currentCenterPoint.subtract(destCenterPoint);
 
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
-
-		L.DomUtil.setTransform(this._container, topLeftOffset, scale);
+		L.DomUtil.setTransform(this._container, position.add(centerOffset), scale);
 	},
 
 	_reset: function () {

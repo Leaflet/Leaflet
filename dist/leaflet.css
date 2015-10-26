@@ -156,6 +156,12 @@
 	    -ms-transform-origin: 0 0;
 	        transform-origin: 0 0;
 	}
+svg.leaflet-zoom-animated,
+canvas.leaflet-zoom-animated {
+	-webkit-transform-origin: 50% 50%;
+	    -ms-transform-origin: 50% 50%;
+	        transform-origin: 50% 50%;
+	}
 .leaflet-zoom-anim .leaflet-zoom-animated {
 	will-change: transform;
 	}
