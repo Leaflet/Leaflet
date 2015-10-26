@@ -1,28 +1,27 @@
----
+sudo: false
 language: node_js
-node_js:
-- "0.10"
+node_js: 0.12
+addons:
+  artifacts:
+    paths:
+    - dist
+    target_paths:
+    - content/leaflet/${NAME}
 env:
   global:
-  - "ARTIFACTS_S3_BUCKET=leaflet-cdn"
+  - ARTIFACTS_BUCKET=leafletjs-cdn
+  - ARTIFACTS_PERMISSIONS=public-read
   - secure: |-
-      LnvY/vWpmAIObabLrpu1mWYw1udllVpZJrrhzsn3traL+qU6yaGniQOn6u+l
-      iWSCuu7kXX3xv1GD7Fc6lTfQCg9F9dukWv9zlc4gFciyRpiUBuluuqtdV51A
-      5yqpLkMpX2PMG7vwrOYttVW0uDlUcwGjyHxWZvnBOXCnnHSpnbI=
+      JlC1rD7WryxlUbWmD3NWVX9E60XB/+ss7+j0OaY3WqWziGUWDCuoVkOMGXnp
+      Ev27O8qhlmRkeyiimUN64UzK0yeZ139DcZMY6r4A5E2kwHYRAO/H/zl5RAGo
+      Yd9GUPwZfr3xV8WhH2GFy/L/mRjkGwue2o6ZxdsqBOKfYaF9Ryg=
   - secure: |-
-      EQ4c2c8VklzFZRxKnizI0/VK0anHhlyc1Rv0vqkMj/YPKxmbWNfOlsOCN2gM
-      p+q8QzCG1Np9D1Kq9K0miYqHgZxgu4D/4Mwy04bh1UfyoUcDfB1tJmEtsKY/
-      8Bl46ZfhxbTG39b6Y315GuU+49QdFMEXhSqx/G7on1xC4aYLXLc=
-before_script: >
-  test ${TRAVIS_BRANCH} = master ||
-  test ${TRAVIS_BRANCH} = stable &&
-  test ${TRAVIS_PULL_REQUEST} = false &&
-  gem install --no-rdoc --no-ri --version 0.8.9 faraday &&
-  gem install --no-rdoc --no-ri travis-artifacts || true
-after_success: >
-  test ${TRAVIS_BRANCH} = master ||
-  test ${TRAVIS_BRANCH} = stable &&
-  test ${TRAVIS_PULL_REQUEST} = false &&
-  travis-artifacts upload --path dist --target-path build/${TRAVIS_BRANCH} &&
-  cd dist && zip -x .DS_Store -r leaflet-${TRAVIS_BRANCH}.zip . &&
-  travis-artifacts upload --path leaflet-${TRAVIS_BRANCH}.zip --target-path build
+      XW1hzORAtSpTgTKkQwel5gRMDy6SotzeSRsVV2jQCn46VIMx8G/J5nOI+ImL
+      yeoH12PhCR0h39dM7mq8TYJo5DHwvbotI5nQhpMruSt8eMFbym8nGiqQh806
+      fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
+after_success:
+  - npm run build
+  - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..
+  - NAME=$TRAVIS_BRANCH
+  - '[[ $TRAVIS_PULL_REQUEST != ''false'' ]] && NAME=$TRAVIS_PULL_REQUEST'
+  - '[[ -n $TRAVIS_TAG ]] && NAME=$TRAVIS_TAG'

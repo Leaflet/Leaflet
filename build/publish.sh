@@ -1,25 +1,26 @@
 #!/bin/bash
 
-# get current version
+npm update
+
 VERSION=$(node --eval "console.log(require('./package.json').version);")
 
-# Build
-git checkout -b build
 npm test || exit 1
-npm run prepublish
-git add dist/leaflet-src.js dist/leaflet.js -f
 
-# create the bower and component files
-node_modules/copyfiles/copyfiles -u 1 build/*.json ./
-node_modules/tin/bin/tin -v $VERSION
+git checkout -b build
+
+npm run build
+git add dist/leaflet-src.js dist/leaflet.js dist/leaflet-src.map -f
+
+copyfiles -u 1 build/*.json ./
+tin -v $VERSION
 git add component.json bower.json -f
 
-git commit -m "build v$VERSION"
+git commit -m "v$VERSION"
 
-# Tag and push
-git tag v$VERSION
-git push --tags --force
+git tag v$VERSION -f
+git push --tags -f
 
-# # # Cleanup
-git checkout stable
+npm publish --tag beta
+
+git checkout master
 git branch -D build
