@@ -1,0 +1,23 @@
+{
+  "name": "leaflet",
+  "version": "0.7.7",
+  "description": "JavaScript library for mobile-friendly interactive maps",
+  "main": [
+    "dist/leaflet.css",
+    "dist/leaflet-src.js",
+    "dist/images/layers-2x.png",
+    "dist/images/layers.png",
+    "dist/images/marker-icon-2x.png",
+    "dist/images/marker-icon.png",
+    "dist/images/marker-shadow.png"
+  ],
+  "ignore": [
+    ".*",
+    "CHANGELOG.json",
+    "FAQ.md",
+    "debug",
+    "spec",
+    "src",
+    "build"
+  ]
+}
