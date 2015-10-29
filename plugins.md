@@ -2785,7 +2785,6 @@ Ease your development integrating Leaflet into a development framework or automa
                         <a href="https://github.com/prtksxna">Prateek Saxena</a>
                 </td>
         </tr>
-
 	<tr>
 		<td>
 			<a href="https://github.com/prtksxna/leaflet-map-component">Leaflet map component</a>
@@ -2795,6 +2794,17 @@ Ease your development integrating Leaflet into a development framework or automa
 		</td>
 		<td>
 			<a href="https://github.com/prtksxna">Prateek Saxena</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/themrleon/JSF2Leaf">JSF2Leaf</a>
+		</td>
+		<td>
+			A JavaServer Faces wrapper for Leaflet.
+		</td>
+		<td>
+			<a href="https://github.com/themrleon">Leonardo Ciocari</a>
 		</td>
 	</tr>
 </table>
