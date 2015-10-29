@@ -886,7 +886,7 @@ var map = L.map('map', {
 	</tr>
 	<tr id="map-openpopup2">
 		<td><code><b>openPopup</b>(
-			<nobr>&lt;String&gt; <i>html</i> </nobr> | <nobr>&lt;HTMLElement&gt; <i>el</i>,
+			<nobr>&lt;String&gt; <i>html</i> </nobr> | <nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
 			<nobr>&lt;<a href="#latlng">LatLng</a>&gt; <i>latlng</i></nobr>,
 			<nobr>&lt;<a href="#popup-options">Popup options</a>&gt; <i>options?</i> )</nobr>
 		</code></td>
@@ -917,6 +917,7 @@ var map = L.map('map', {
 		<td><code><span class="keyword">this</span></code></td>
 		<td>Removes the given control from the map.</td>
 	</tr>
+	<tr>
 		<td><code><b>getRenderer</b>(
 			<nobr>&lt;<a href="#layer">Layer</a>&gt; <i>layer</i>)</nobr>
 		</code></td>
@@ -1059,16 +1060,16 @@ var map = L.map('map', {
 	</tr>
 	<tr>
 		<td><code><b>createPane</b>(
-			<nobr>&lt;String&gt; <i>name</i>, </nobr> <nobr>&lt;HTMLElement&gt; <i>contianer?</i>
+			<nobr>&lt;String&gt; <i>name</i>, </nobr> <nobr>&lt;HTMLElement&gt; <i>container?</i></nobr>
 		)</code></td>
-		<td><a href="#map-panes"><code>MapPane</code></td>
+		<td><a href="#map-panes"><code>MapPane</code></a></td>
 		<td>Creates a pane with the given name. Created panes will be given a generated class based on the name like <code class="css"><span class="selector">.leaflet-pane-name</span></code>"</td>
 	</tr>
 	<tr>
 		<td><code><b>getPane</b>(
-			<nobr>&lt;String&gt; <i>name</i>
+			<nobr>&lt;String&gt; <i>name</i></nobr>
 		)</code></td>
-		<td><a href="#map-panes"><code>MapPane</code></td>
+		<td><a href="#map-panes"><code>MapPane</code></a></td>
 		<td>Returns the HTML element representing the named map pane.</td>
 	</tr>
 	<tr>
@@ -1234,19 +1235,19 @@ var map = L.map('map', {
 	<tr>
 		<td><code><b>paddingTopLeft</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr></code></td>
 		<td>Sets the amount of padding in the top left corner of a map container that shouldn't be accounted for when setting the view to fit bounds. Useful if you have some control overlays on the map like a sidebar and you don't want them to obscure objects you're zooming to.</td>
 	</tr>
 	<tr>
 		<td><code><b>paddingBottomRight</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr></code></td>
 		<td>The same for bottom right corner of the map.</td>
 	</tr>
 	<tr>
 		<td><code><b>padding</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
-		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr>
+		<td><code><nobr>[<span class="number">0</span>, <span class="number">0</span>]</nobr></code></td>
 		<td>Equivalent of setting both top left and bottom right padding to the same value.</td>
 	</tr>
 	<tr>
@@ -1733,14 +1734,12 @@ var map = L.map('map', {
 		<td><code><b>autoPanPaddingTopLeft</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
 		<td><code><span class="literal">null</span></code></td>
-		</code></td>
 		<td>The margin between the popup and the top left corner of the map view after autopanning was performed.</td>
 	</tr>
 	<tr>
 		<td><code><b>autoPanPaddingBottomRight</b></code></td>
 		<td><code><a href="#point">Point</a></code></td>
 		<td><code><span class="literal">null</span></code></td>
-		</code></td>
 		<td>The margin between the popup and the bottom right corner of the map view after autopanning was performed.</td>
 	</tr>
 	<tr>
@@ -2151,7 +2150,7 @@ var map = L.map('map', {
 		<td><code><b>L.tileLayer.wms</b>(
 			<nobr>&lt;String&gt; <i>baseUrl</i></nobr>,
 			<nobr>&lt;<a href="#tilelayer-wms-options">TileLayer.WMS options</a>&gt; <i>options</i> )</nobr>
-
+		</code></td>
 
 		<td>Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.</td>
 	</tr>
@@ -2837,7 +2836,7 @@ map.fitBounds(bounds);</code></pre>
 
 <p>A class for drawing circle overlays on a map. Extends <a href="#circlemarker">CircleMarker</a>. Use <a href="#map-addlayer">Map#addLayer</a> to add it to the map.</p>
 
-<pre><code class="javascript">L.circle([50.5, 30.5], 200).addTo(map);</pre></code>
+<pre><code class="javascript">L.circle([50.5, 30.5], 200).addTo(map);</code></pre>
 
 <h3>Creation</h3>
 
@@ -4314,31 +4313,31 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'topleft'</span></td>
+		<td><code><span class="string">'topleft'</span></code></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomInText</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'+'</span></td>
+		<td><code><span class="string">'+'</span></code></td>
 		<td>The text set on the zoom in button.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomOutText</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'-'</span></td>
+		<td><code><span class="string">'-'</span></code></td>
 		<td>The text set on the zoom out button.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomInTitle</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'Zoom in'</span></td>
+		<td><code><span class="string">'Zoom in'</span></code></td>
 		<td>The title set on the zoom in button.</td>
 	</tr>
 	<tr>
 		<td><code><b>zoomOutTitle</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'Zoom out'</span></td>
+		<td><code><span class="string">'Zoom out'</span></code></td>
 		<td>The title set on the zoom out button.</td>
 	</tr>
 </table>
@@ -4378,13 +4377,13 @@ L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'bottomright'</span></td>
+		<td><code><span class="string">'bottomright'</span></code></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>prefix</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'Leaflet'</span></td>
+		<td><code><span class="string">'Leaflet'</span></code></td>
 		<td>The HTML text shown before the attributions. Pass <code><span class="literal">false</span></code> to disable.</td>
 	</tr>
 </table>
@@ -4497,7 +4496,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'topright'</span></td>
+		<td><code><span class="string">'topright'</span></code></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
@@ -4593,7 +4592,7 @@ L.control.layers(baseLayers, overlays).addTo(map);</code></pre>
 	<tr>
 		<td><code><b>position</b></code></td>
 		<td><code>String</code></td>
-		<td><code><span class="string">'bottomleft'</span></td>
+		<td><code><span class="string">'bottomleft'</span></code></td>
 		<td>The position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
 	</tr>
 	<tr>
@@ -4693,7 +4692,7 @@ map.off('click', onClick);</code></pre>
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Removes a set of type/listener pairs.</code></td>
+		<td>Removes a set of type/listener pairs.</td>
 	</tr>
 	<tr>
 		<td><code><b>off</b>()</code></td>
@@ -4737,7 +4736,7 @@ map.off('click', onClick);</code></pre>
 		<td><code><b>clearAllEventListeners</b>()</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Alias to <code>off()</code>.</code></td>
+		<td>Alias to <code>off()</code>.</td>
 	</tr>
 	<tr>
 		<td><code><b>hasEventListeners</b>( &hellip; )</code></td>
@@ -4973,7 +4972,7 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		<td>Returns a function which executes function <code>fn</code> with the given scope <code>obj</code> (so that <code><span class="keyword">this</span></code> keyword refers to <code>obj</code> inside the function code). The arguments received by the bound function will be any arguments passed when binding the function, followed by any arguments passed when invoking the bound function. Has an <code>L.bind</code> shortcut. Works exactly like <a href='https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind'><code>Function.prototype.bind</code></a> in modern browsers compliant with ECMAScript 5.</td>
 	</tr>
 	<tr>
-		<td><code><b>stamp</b>( &lt;Object&gt; <i>obj</i></nobr> )<nobr></code></td>
+		<td><code><b>stamp</b>( <nobr>&lt;Object&gt; <i>obj</i></nobr> )</code></td>
 		<td><code>String</code></td>
 		<td>Applies a unique key to the object and returns that key. Has an <code>L.stamp</code> shortcut.</td>
 	</tr>
@@ -5035,7 +5034,7 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		</code></td>
 
 		<td><code>String[]</code></td>
-		<td>Trims and splits the string on whitespace and returns the array of parts.</code></td>
+		<td>Trims and splits the string on whitespace and returns the array of parts.</td>
 	</tr>
 	<tr>
 		<td><code><b>setOptions</b>(
@@ -5297,7 +5296,7 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Removes a set of type/listener pairs.</code></td>
+		<td>Removes a set of type/listener pairs.</td>
 	</tr>	<tr>
 		<td><code><b>addListener</b>(
 			<nobr>&lt;HTMLElement&gt; <i>el</i></nobr>,
@@ -5338,8 +5337,7 @@ Popups will also be automatically opened when the layer is clicked on and closed
 		</code></td>
 
 		<td><code><span class="keyword">this</span></code></td>
-		<td>Prevents the default action of the event from happening (such as following a link in the <code>href</code> of the <code>a</code> element, or doing a <code>POST</code> request with page reload when <code>form</code> is submitted). Use it inside listener functions.</pre>
-		</td>
+		<td>Prevents the default action of the event from happening (such as following a link in the <code>href</code> of the <code>a</code> element, or doing a <code>POST</code> request with page reload when <code>form</code> is submitted). Use it inside listener functions.</td>
 	</tr>
 	<tr>
 		<td><code><b>stop</b>(
@@ -6180,7 +6178,7 @@ map.addControl(new MyControl());
   <tr>
     <td><code><b>position</b></code></td>
     <td><code>String</code></td>
-    <td><code><span class="string">'topright'</span></td>
+    <td><code><span class="string">'topright'</span></code></td>
     <td>The initial position of the control (one of the map corners). See <a href="#control-positions">control positions</a>.</td>
   </tr>
 </table>
