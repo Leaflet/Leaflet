@@ -6007,7 +6007,14 @@ MyEventedClass = L.Class.extend({
 		this.getPane().appendChild(this._el);
 
 		// add a viewreset event listener for updating layer's position, do the latter
-		this._reset();
+		this.update();
+		map.on('zoom viewreset', this.update, this);
+	},
+
+	update: function () {
+		// update layer's position
+		var pos = this._map.latLngToLayerPoint(this._latlng);
+		L.DomUtil.setPosition(this._el, pos);
 	},
 
 	onRemove: function (map) {
