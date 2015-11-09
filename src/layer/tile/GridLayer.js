@@ -595,7 +595,7 @@ L.GridLayer = L.Layer.extend({
 			L.Util.requestAnimFrame(L.bind(this._tileReady, this, coords, null, tile));
 		}
 
-		L.DomUtil.setPosition(tile, tilePos);
+		L.DomUtil.setPosition(tile, tilePos, true);
 
 		// save tile in cache
 		this._tiles[key] = {

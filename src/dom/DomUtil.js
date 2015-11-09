@@ -149,13 +149,13 @@ L.DomUtil = {
 			(scale ? ' scale(' + scale + ')' : '');
 	},
 
-	setPosition: function (el, point) { // (HTMLElement, Point[, Boolean])
+	setPosition: function (el, point, noTransform) { // (HTMLElement, Point[, Boolean])
 
 		/*eslint-disable */
 		el._leaflet_pos = point;
 		/*eslint-enable */
 
-		if (L.Browser.any3d) {
+		if (L.Browser.any3d && !noTransform) {
 			L.DomUtil.setTransform(el, point);
 		} else {
 			el.style.left = point.x + 'px';
