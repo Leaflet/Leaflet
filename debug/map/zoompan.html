@@ -32,6 +32,7 @@
 		<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
 		<div><button id="lnd">LND</button>(fract. zoom)</div>
 		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+		<div><button id="mad">MAD</button>(fitBounds)</div>
 		<div><button id="nul">NUL</button>(image overlay)</div>
 		<div><button id="stop">stop</button></div>
 		<table>
@@ -48,7 +49,9 @@
 			lnd = [51.51, -0.12],
 			sf = [37.77, -122.42],
 			dc = [38.91, -77.04],
-			trd = [63.41, 10.41];
+			trd = [63.41, 10.41],
+			madBounds = [[40.70, -4.19], [40.12, -3.31]],
+			mad = [40.40, -3.7];
 
 		var map = L.map('map').setView(dc, 10);
 
@@ -56,11 +59,14 @@
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
 		}).addTo(map);
 
+		var path = new L.Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);
+
 		var marker1 = L.marker(kyiv).addTo(map),
 			marker2 = L.marker(lnd).addTo(map);
 			marker3 = L.marker(dc).addTo(map),
 			marker4 = L.marker(sf).addTo(map),
-			marker5 = L.marker(trd).addTo(map);
+			marker5 = L.marker(trd).addTo(map),
+			marker6 = L.marker(mad).addTo(map);
 
 		var nullIslandKitten = L.imageOverlay('http://placekitten.com/g/300/400', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
 
@@ -70,6 +76,7 @@
 		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
 		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
 		document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10); };
+		document.getElementById('mad').onclick  = function () { map.fitBounds(madBounds); };
 		document.getElementById('stop').onclick = function () { map.stop(); };
 
 		function logEvent(e) { console.log(e.type); }
