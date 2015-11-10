@@ -183,16 +183,17 @@ L.Evented = L.Class.extend({
 			return this;
 		}
 
-		var handler = L.bind(function () {
-			this
-			    .off(types, fn, context)
-			    .off(types, handler, context);
-		}, this);
+		// remove the listener first to avoid potential recursion and then execute the function
 
-		// add a listener that's executed once and removed after that
+		var origFn = fn;
+		var _this = this;
+		fn = function () {
+			_this.off(types, fn, context);
+			return origFn.apply(_this, arguments);
+		};
+
 		return this
-		    .on(types, fn, context)
-		    .on(types, handler, context);
+			.on(types, fn, context);
 	},
 
 	// adds a parent to propagate events to (when you fire with true as a 3rd argument)

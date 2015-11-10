@@ -362,7 +362,7 @@ describe('Events', function () {
 			    spy = sinon.spy();
 
 			obj.once('test', spy, obj);
-			obj.off('test', spy, obj);
+			obj.off('test');
 
 			obj.fire('test');
 
