@@ -5111,6 +5111,8 @@ a.options.myOption3; // 5</code></pre>
 var a = new MyClass({bla: 10});
 a.options; // {foo: 'bar', bla: 10}</code></pre>
 
+<p>All options that are passed into <code>setOptions</code> will be merged with the options object, including ones that aren't specifically documented.</p>
+
 <h3>Includes</h3>
 
 <p><code>includes</code> is a special class property that merges all specified objects into the class (such objects are called mixins). A good example of this is <code>L.Mixin.Events</code> that <a href="#events">event-related methods</a> like <code>on</code>, <code>off</code> and <code>fire</code> to the class.</p>
