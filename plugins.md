@@ -1800,7 +1800,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 			Zoom control with a home button for resetting the view (<a href="http://torfsen.github.io/leaflet.zoomhome/">Demo</a>)
 		</td>
 		<td>
-			<a href="https://github.com/torfuspolymorphus">Florian Brucker</a>
+			<a href="https://github.com/torfsen">Florian Brucker</a>
 		</td>
 	</tr>
 	<tr>
