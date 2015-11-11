@@ -1794,10 +1794,10 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/torfuspolymorphus/leaflet.zoomhome">Leaflet.zoomhome</a>
+			<a href="https://github.com/torfsen/leaflet.zoomhome">Leaflet.zoomhome</a>
 		</td>
 		<td>
-			Zoom control with a home button for resetting the view (<a href="http://torfuspolymorphus.github.io/leaflet.zoomhome/">Demo</a>)
+			Zoom control with a home button for resetting the view (<a href="http://torfsen.github.io/leaflet.zoomhome/">Demo</a>)
 		</td>
 		<td>
 			<a href="https://github.com/torfuspolymorphus">Florian Brucker</a>
