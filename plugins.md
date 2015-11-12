@@ -946,6 +946,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/MAD-GooZe">Alexey Gusev</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/timwis/leaflet-choropleth">leaflet-choropleth</a>
+		</td><td>
+			Extends L.geoJson to add a choropleth visualization (color scale based on value). <a href="http://timwis.com/leaflet-choropleth/examples/basic">Demo</a>.
+		</td><td>
+			<a href="http://timwis.com">Tim Wisniewski</a>
+		</td>
+	</tr>
 </table>
 
 
