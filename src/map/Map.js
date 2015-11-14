@@ -668,7 +668,6 @@ L.Map = L.Evented.extend({
 	_handleDOMEvent: function (e) {
 		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
 
-		// find the layer the event is propagating from and its parents
 		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
 		if (e.type === 'click') {
@@ -690,6 +689,7 @@ L.Map = L.Evented.extend({
 
 		if (e._stopped) { return; }
 
+		// Find the layer the event is propagating from and its parents.
 		targets = (targets || []).concat(this._findEventTargets(e, type));
 
 		if (!targets.length) { return; }
