@@ -57,6 +57,7 @@ L.Popup = L.Layer.extend({
 
 		if (this._source) {
 			this._source.fire('popupopen', {popup: this}, true);
+			this._source.on('preclick', L.DomEvent.stopPropagation);
 		}
 	},
 
@@ -77,6 +78,7 @@ L.Popup = L.Layer.extend({
 
 		if (this._source) {
 			this._source.fire('popupclose', {popup: this}, true);
+			this._source.off('preclick', L.DomEvent.stopPropagation);
 		}
 	},
 
