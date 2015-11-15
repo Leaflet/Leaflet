@@ -74,6 +74,20 @@ describe('Label', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
+	it("honours opacity option", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindLabel('Label', {static: true, opacity: 0.57});
+		expect(layer._label._container.style.opacity).to.eql(0.57);
+	});
+
+	it("can change opacity with setOpacity", function () {
+		var layer = new L.Marker(center).addTo(map);
+		layer.bindLabel('Label', {static: true});
+		expect(layer._label._container.style.opacity).to.eql(1);
+		layer._label.setOpacity(0.57);
+		expect(layer._label._container.style.opacity).to.eql(0.57);
+	});
+
 	it("it should use a label with a function as content with a FeatureGroup", function () {
 		var marker1 = new L.Marker(new L.LatLng(55.8, 37.6), {description: "I'm marker 1."});
 		var marker2 = new L.Marker(new L.LatLng(54.6, 38.2), {description: "I'm marker 2."});

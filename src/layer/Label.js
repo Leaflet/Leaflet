@@ -11,12 +11,14 @@ L.Label = L.PopupBase.extend({
 		static: false,  // Reserved word, use "permanent" instead?
 		followMouse: false,
 		clickable: false,
+		opacity: 1,
 		// className: '',
 		zoomAnimation: true
 	},
 
 	onAdd: function (map) {
 		L.PopupBase.prototype.onAdd.call(this, map);
+		this.setOpacity(this.options.opacity);
 
 		map.fire('labelopen', {popup: this});
 

@@ -52,7 +52,7 @@
 		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
 		group.bindLabel(function (layer) {
 			return 'Group label: ' + layer.options.description;
-		});
+		}, {opacity: 0.7});
 
 	</script>
 </body>
