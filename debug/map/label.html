@@ -37,15 +37,22 @@
 		L.marker([41.206, 9.44]).addTo(map).bindLabel('click me, I have a popup', {static: true, clickable: true}).bindPopup('See?');
 		L.circleMarker([41.206, 9.48], {color: "Chocolate", radius: 12}).bindLabel( "Hello Left World", {direction: 'left'}).addTo(map);
 		var icon = L.divIcon({
-		    className: 'my-div-icon',
-		    html: "<p>A div icon</p>",
-		    iconSize: [50, 50],
-		    labelAnchor: [20, 0]
+			className: 'my-div-icon',
+			html: '<p>A div icon</p>',
+			iconSize: [50, 50],
+			labelAnchor: [20, 0]
 		});
 		L.marker([41.22, 9.48], {icon: icon}).addTo(map).bindLabel('A div icon label following mouse', {followMouse: true, direction: 'auto'});
 		L.marker([41.23, 9.47], {icon: icon}).addTo(map).bindLabel('A div icon label');
 		L.marker([41.23, 9.42], {draggable: true}).addTo(map).bindLabel('Draggable marker label', {static: true});
 		L.marker([41.19, 9.45]).addTo(map).bindLabel('Clickable marker label', {static: true, clickable: true}).on('click', function () { alert('clicked!'); });
+
+		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		group.bindLabel(function (layer) {
+			return 'Group label: ' + layer.options.description;
+		});
 
 	</script>
 </body>
