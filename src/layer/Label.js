@@ -15,6 +15,26 @@ L.Label = L.PopupBase.extend({
 		zoomAnimation: true
 	},
 
+	onAdd: function (map) {
+		L.PopupBase.prototype.onAdd.call(this, map);
+
+		map.fire('labelopen', {popup: this});
+
+		if (this._source) {
+			this._source.fire('labelopen', {popup: this}, true);
+		}
+	},
+
+	onRemove: function (map) {
+		L.PopupBase.prototype.onRemove.call(this, map);
+
+		map.fire('labelclose', {popup: this});
+
+		if (this._source) {
+			this._source.fire('labelclose', {popup: this}, true);
+		}
+	},
+
 	openOn: function (map) {
 		map.openLabel(this);
 		return this;

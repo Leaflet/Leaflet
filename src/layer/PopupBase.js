@@ -54,12 +54,6 @@ L.PopupBase = L.Layer.extend({
 		}
 
 		this.bringToFront();
-
-		map.fire('popupopen', {popup: this});
-
-		if (this._source) {
-			this._source.fire('popupopen', {popup: this}, true);
-		}
 	},
 
 	onRemove: function (map) {
@@ -68,12 +62,6 @@ L.PopupBase = L.Layer.extend({
 			this._removeTimeout = setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
 		} else {
 			L.DomUtil.remove(this._container);
-		}
-
-		map.fire('popupclose', {popup: this});
-
-		if (this._source) {
-			this._source.fire('popupclose', {popup: this}, true);
 		}
 	},
 

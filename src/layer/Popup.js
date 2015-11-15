@@ -41,6 +41,26 @@ L.Popup = L.PopupBase.extend({
 		return events;
 	},
 
+	onAdd: function (map) {
+		L.PopupBase.prototype.onAdd.call(this, map);
+
+		map.fire('popupopen', {popup: this});
+
+		if (this._source) {
+			this._source.fire('popupopen', {popup: this}, true);
+		}
+	},
+
+	onRemove: function (map) {
+		L.PopupBase.prototype.onRemove.call(this, map);
+
+		map.fire('popupclose', {popup: this});
+
+		if (this._source) {
+			this._source.fire('popupclose', {popup: this}, true);
+		}
+	},
+
 	openOn: function (map) {
 		map.openPopup(this);
 		return this;
