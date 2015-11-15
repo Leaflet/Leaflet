@@ -151,6 +151,26 @@ L.PopupBase = L.Layer.extend({
 			node.appendChild(content);
 		}
 		this.fire('contentupdate');
+	},
+
+	_updatePosition: function () {
+		if (!this._map) { return; }
+
+		var pos = this._map.latLngToLayerPoint(this._latlng),
+		    offset = L.point(this.options.offset);
+
+		if (this._zoomAnimated) {
+			L.DomUtil.setPosition(this._container, pos);
+		} else {
+			offset = offset.add(pos);
+		}
+
+		var bottom = this._containerBottom = -offset.y,
+		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
+
+		// bottom position the popup in case the height of the popup changes (images loading etc)
+		this._container.style.bottom = bottom + 'px';
+		this._container.style.left = left + 'px';
 	}
 
 });
