@@ -85,7 +85,7 @@ var deps = {
 			'layer/marker/Marker.Label.js'
 		],
 		deps: ['Popup', 'Marker'],
-		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
+		desc: 'Used to display the map label (used mostly for binding short descriptions to markers and paths on mouseover).'
 	},
 
 	LayerGroup: {
