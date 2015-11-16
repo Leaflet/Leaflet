@@ -1469,6 +1469,15 @@ Plugins that search for overlays and enhance how to display information about th
 			<a href="http://yohanboniface.me">Yohan Boniface</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/utahemre/Leaflet.GeoJSONAutocomplete">Leaflet.GeoJSONAutocomplete</a>
+		</td><td>
+			Leaflet Autocomplete For Remote Searching with GeoJSON Services.
+		</td><td>
+			<a href="https://github.com/utahemre">Yunus Emre ÖZKAYA</a>
+		</td>
+	</tr>
 </table>
 
 
