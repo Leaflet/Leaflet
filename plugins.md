@@ -1475,7 +1475,7 @@ Plugins that search for overlays and enhance how to display information about th
 		</td><td>
 			Leaflet Autocomplete For Remote Searching with GeoJSON Services.
 		</td><td>
-			<a href="https://github.com/utahemre">Yunus Emre ÖZKAYA</a>
+			<a href="https://github.com/utahemre">Yunus Emre Özkaya</a>
 		</td>
 	</tr>
 </table>
