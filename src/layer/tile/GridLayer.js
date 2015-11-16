@@ -430,9 +430,10 @@ L.GridLayer = L.Layer.extend({
 		var map = this._map,
 		    scale = map.getZoomScale(zoom, tileZoom),
 		    pixelCenter = map.project(center, tileZoom).floor(),
-		    halfSize = map.getSize().divideBy(scale * 2);
+		    // Include some extra margin for smoother panning.
+		    twoThirdsSize = map.getSize().divideBy(scale * 1.5);
 
-		return new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
+		return new L.Bounds(pixelCenter.subtract(twoThirdsSize), pixelCenter.add(twoThirdsSize));
 	},
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
