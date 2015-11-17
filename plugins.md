@@ -2825,6 +2825,17 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/themrleon">Leonardo Ciocari</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://www.ember-leaflet.com/">ember-leaflet</a>
+		</td>
+		<td>
+			Easy and declarative mapping for <a href="http://emberjs.com/">Ember.js</a> using Leaflet.
+		</td>
+		<td>
+			<a href="https://github.com/miguelcobain">Miguel Andrade</a>
+		</td>
+	</tr>
 </table>
 
 
