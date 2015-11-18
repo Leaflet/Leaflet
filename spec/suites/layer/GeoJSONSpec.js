@@ -1,4 +1,5 @@
 describe("L.GeoJSON", function () {
+
 	describe("addData", function () {
 		var geoJSON = {
 			type: 'Feature',
@@ -31,6 +32,29 @@ describe("L.GeoJSON", function () {
 			expect(layer.getLayers().length).to.eql(0);
 		});
 	});
+
+	describe('resetStyle', function () {
+
+		it('should reset init options', function () {
+			var feature = {
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates:[[-2.35, 51.38], [-2.38, 51.38]]
+				}
+			};
+			var geojson = L.geoJson(feature, {weight: 7, color: 'chocolate'});
+			geojson.setStyle({weight: 22, color: 'coral'});
+			var layer = geojson.getLayers()[0];
+			expect(layer.options.weight).to.be(22);
+			expect(layer.options.color).to.be('coral');
+			geojson.resetStyle(layer);
+			expect(layer.options.weight).to.be(7);
+			expect(layer.options.color).to.be('chocolate');
+		});
+
+	});
+
 });
 
 describe("L.Marker#toGeoJSON", function () {
