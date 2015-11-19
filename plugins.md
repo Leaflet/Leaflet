@@ -934,7 +934,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td><td>
 			Plugin to show geotagged photos on a Leaflet map. <a href="http://turban.github.io/Leaflet.Photo/examples/picasa.html">Demo</a>.
 		</td><td>
-			<a href="https://github.com/turban">Bjorn Sandvik</a>
+			<a href="https://github.com/turban">Bjørn Sandvik</a>
 		</td>
 	</tr>
 	<tr>
