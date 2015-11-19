@@ -152,6 +152,8 @@ L.Canvas = L.Renderer.extend({
 
 		if (layer._empty()) { return; }
 
+		this._drawnLayers[layer._leaflet_id] = layer;
+
 		var p = layer._point,
 		    ctx = this._ctx,
 		    r = layer._radius,
