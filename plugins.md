@@ -930,6 +930,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/turban/Leaflet.Photo">Leaflet.Photo</a>
+		</td><td>
+			Plugin to show geotagged photos on a Leaflet map. <a href="http://turban.github.io/Leaflet.Photo/examples/picasa.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/turban">Bjorn Sandvik</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/elfalem/Leaflet.curve">Leaflet.curve</a>
 		</td><td>
 			A Leaflet plugin for drawing Bézier curves and other complex shapes. <a href="http://elfalem.github.io/Leaflet.curve/">Demo</a>.  
@@ -1100,6 +1109,15 @@ When you are displaying a lot of data, these plugins will make your map look cle
 			A FeatureGroup that does not show any more than a certain amount of markers visible in the viewport. (<a href="http://eclipse1979.github.io/Leaflet.ConditionalLayer/example/leaflet-conditionalLayer2.html">Demo</a>)
 		</td><td>
 			<a href="https://github.com/Eclipse1979">EPP</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ghybs/Leaflet.FeatureGroup.SubGroup">Leaflet.FeatureGroup.SubGroup</a>
+		</td><td>
+			A simple plugin to create Feature Groups that add their child layers into a parent group. Typical usage is to switch them through L.Control.Layers to dynamically add/remove groups of markers from Leaflet.markercluster. <a href="http://ghybs.github.io/Leaflet.FeatureGroup.SubGroup/examples/subGroup-markercluster-controlLayers-realworld.388.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/ghybs">ghybs</a>
 		</td>
 	</tr>
 </table>
