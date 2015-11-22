@@ -106,6 +106,48 @@ describe('GridLayer', function () {
 		});
 	});
 
+	describe('#createTile', function () {
+
+		beforeEach(function () {
+			// Simpler sizes to test.
+			div.style.width = '512px';
+			div.style.height = '512px';
+		});
+
+		afterEach(function () {
+			div.style.width = '800px';
+			div.style.height = '600px';
+		});
+
+		// Passes on Firefox, but fails on phantomJS: done is never called.
+		xit('only creates tiles for visible area on zoom in', function (done) {
+			map.remove();
+			map = L.map(div);
+			map.setView([0, 0], 10);
+
+			var grid = L.gridLayer(),
+			    count = 0,
+			    loadCount = 0;
+			grid.createTile = function (coords) {
+				count++;
+				return document.createElement('div');
+			};
+			var onLoad = function (e) {
+				expect(count).to.eql(4);
+				count = 0;
+				loadCount++;
+				if (loadCount === 1) {  // On layer add.
+					map.zoomIn();
+				} else {  // On zoom in.
+					done();
+				}
+			};
+			grid.on('load', onLoad);
+			map.addLayer(grid);
+		});
+
+	});
+
 	describe("#onAdd", function () {
 		it('is called after zoomend on first map load', function () {
 			var layer = L.gridLayer().addTo(map);

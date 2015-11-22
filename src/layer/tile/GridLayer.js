@@ -426,11 +426,10 @@ L.GridLayer = L.Layer.extend({
 		this._resetView();
 	},
 
-	_getTiledPixelBounds: function (center, zoom, tileZoom) {
+	_getTiledPixelBounds: function (center) {
 		var map = this._map,
-		    scale = map.getZoomScale(zoom, tileZoom),
-		    pixelCenter = map.project(center, tileZoom).floor(),
-		    halfSize = map.getSize().divideBy(scale * 2);
+		    pixelCenter = map.project(center, this._tileZoom).floor(),
+		    halfSize = map.getSize().divideBy(2);
 
 		return new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},
@@ -444,7 +443,7 @@ L.GridLayer = L.Layer.extend({
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
 
-		var pixelBounds = this._getTiledPixelBounds(center, zoom, this._tileZoom),
+		var pixelBounds = this._getTiledPixelBounds(center),
 		    tileRange = this._pxBoundsToTileRange(pixelBounds),
 		    tileCenter = tileRange.getCenter(),
 		    queue = [];
