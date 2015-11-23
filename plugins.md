@@ -454,6 +454,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="https://github.com/ebrelsford/">Eric Brelsford</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ghybs/Leaflet.TileLayer.Fallback">Leaflet.TileLayer.Fallback</a>
+		</td><td>
+			Replaces missing Tiles (HTTP 404 Not Found Error) by scaled up equivalent Tiles from lower zooms.
+		</td><td>
+			<a href="https://github.com/ghybs">ghybs</a>
+		</td>
+	</tr>
 </table>
 
 
