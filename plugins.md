@@ -825,7 +825,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/jseppi">James Seppi</a>
 		</td>
 	</tr>
-		<tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IvanSanchez/Leaflet.Icon.Glyph">Leaflet.Icon.Glyph</a>
+		</td><td>
+			Use icon font glyphs in your markers (from Font Awesome, Material Design Icons, Glyphicons,
+			Metro UI icons, Elusive, and other icon fonts). (<a href='https://ivansanchez.github.io/Leaflet.Icon.Glyph/demo.html'>demo</a>)
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
+	<tr>
 		<td>
 			<a href="https://github.com/makinacorpus/Leaflet.LineExtremities">Leaflet.LineExtremities</a>
 		</td><td>
