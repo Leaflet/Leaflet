@@ -733,6 +733,17 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/kr1/">Kr1</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MatthewBarker/leaflet-wikipedia">Leaflet-Wikipedia</a>
+		</td>
+		<td>
+			A leaflet plugin to display Wikipedia API entries on a map layer.
+		</td>
+		<td>
+			<a href="https://github.com/MatthewBarker">Matthew Barker</a>
+		</td>
+	</tr>
 </table>
 
 
