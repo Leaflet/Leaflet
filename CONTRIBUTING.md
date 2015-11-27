@@ -12,7 +12,8 @@ Third-party patches are absolutely essential on our quest to create the best map
 However, they're not the only way to get involved with Leaflet development.
 You can help the project tremendously by discovering and [reporting bugs](#reporting-bugs);
 [improving documentation](#improving-documentation);
-helping others on the [Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js)
+helping others on [Stack Overflow](https://stackoverflow.com/questions/tagged/leaflet),
+[GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet)
 and [GitHub issues](https://github.com/Leaflet/Leaflet/issues);
 showing your support for your favorite feature suggestions on [Leaflet UserVoice page](http://leaflet.uservoice.com);
 tweeting to [@LeafletJS](http://twitter.com/LeafletJS);
@@ -38,7 +39,8 @@ here are some tips for creating a helpful report that will make fixing it much e
    use `git bisect` to find the exact commit that introduced the bug.
 
 If you just want some help with your project,
-try asking [on the Leaflet forum](https://groups.google.com/forum/#!forum/leaflet-js) instead.
+try asking on [Stack Overflow](https://stackoverflow.com/questions/tagged/leaflet)
+or [GIS Stack Exchange](https://gis.stackexchange.com/questions/tagged/leaflet) instead.
 
 ## Contributing Code
 
