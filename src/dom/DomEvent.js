@@ -185,6 +185,7 @@ L.DomEvent = {
 		return (e.deltaY && e.deltaMode === 0) ? -e.deltaY :        // Pixels
 		       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 18 :   // Lines
 		       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 52 :   // Pages
+		       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
 		       e.wheelDelta ? (e.wheelDeltaY || e.wheelDelta) / 2 : // Legacy IE pixels
 		       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 18 : // Legacy Moz lines
 		       e.detail ? e.detail / -32765 * 52 : // Legacy Moz pages
