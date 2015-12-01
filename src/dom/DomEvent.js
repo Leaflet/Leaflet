@@ -61,8 +61,7 @@ L.DomEvent = {
 		} else if ('addEventListener' in obj) {
 
 			if (type === 'mousewheel') {
-				obj.addEventListener('DOMMouseScroll', handler, false);
-				obj.addEventListener(type, handler, false);
+				obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
 
 			} else if ((type === 'mouseenter') || (type === 'mouseleave')) {
 				handler = function (e) {
@@ -108,8 +107,7 @@ L.DomEvent = {
 		} else if ('removeEventListener' in obj) {
 
 			if (type === 'mousewheel') {
-				obj.removeEventListener('DOMMouseScroll', handler, false);
-				obj.removeEventListener(type, handler, false);
+				obj.removeEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
 
 			} else {
 				obj.removeEventListener(
@@ -141,7 +139,7 @@ L.DomEvent = {
 	},
 
 	disableScrollPropagation: function (el) {
-		return L.DomEvent.on(el, 'mousewheel MozMousePixelScroll', L.DomEvent.stopPropagation);
+		return L.DomEvent.on(el, 'mousewheel', L.DomEvent.stopPropagation);
 	},
 
 	disableClickPropagation: function (el) {
@@ -184,16 +182,14 @@ L.DomEvent = {
 	},
 
 	getWheelDelta: function (e) {
-
-		var delta = 0;
-
-		if (e.wheelDelta) {
-			delta = e.wheelDelta / 120;
-		}
-		if (e.detail) {
-			delta = -e.detail / 3;
-		}
-		return delta;
+		return (e.deltaY && e.deltaMode === 0) ? -e.deltaY :        // Pixels
+		       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 18 :   // Lines
+		       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 52 :   // Pages
+		       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
+		       e.wheelDelta ? (e.wheelDeltaY || e.wheelDelta) / 2 : // Legacy IE pixels
+		       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 18 : // Legacy Moz lines
+		       e.detail ? e.detail / -32765 * 52 : // Legacy Moz pages
+		       0;
 	},
 
 	_skipEvents: {},

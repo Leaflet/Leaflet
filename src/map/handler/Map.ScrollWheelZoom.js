@@ -9,23 +9,18 @@ L.Map.mergeOptions({
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, {
-			mousewheel: this._onWheelScroll,
-			MozMousePixelScroll: L.DomEvent.preventDefault
-		}, this);
+		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
 
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, {
-			mousewheel: this._onWheelScroll,
-			MozMousePixelScroll: L.DomEvent.preventDefault
-		}, this);
+		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll, this);
 	},
 
 	_onWheelScroll: function (e) {
 		var delta = L.DomEvent.getWheelDelta(e);
+
 		var debounce = this._map.options.wheelDebounceTime;
 
 		this._delta += delta;
@@ -50,9 +45,9 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 
 		map.stop(); // stop panning and fly animations if any
 
-		delta = delta > 0 ? Math.ceil(delta) : Math.floor(delta);
-		delta = Math.max(Math.min(delta, 4), -4);
-		delta = map._limitZoom(zoom + delta) - zoom;
+		// map the delta with a sigmoid function to -4..4 range leaning on -1..1
+		var d2 = Math.ceil(4 * Math.log(2 / (1 + Math.exp(-Math.abs(delta / 200)))) / Math.LN2);
+		delta = map._limitZoom(zoom + (delta > 0 ? d2 : -d2)) - zoom;
 
 		this._delta = 0;
 		this._startTime = null;
