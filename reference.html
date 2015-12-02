@@ -4661,6 +4661,14 @@ map.off('click', onClick);</code></pre>
 		<td>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
 	</tr>
 	<tr>
+		<td><code><b>addEventParent</b>(
+			<nobr>&lt;Object&gt; <i>parent</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Adds a parent object to propogate events to (when <code>fire()</code> is called with <code>true</code> passed as the third parameter)</td>
+	</tr>
+	<tr>
 		<td><code><b>removeEventListener</b>(
 			<nobr>&lt;String&gt; <i>type</i></nobr>,
 			<nobr>&lt;Function&gt; <i>fn?</i></nobr>,
@@ -4686,6 +4694,14 @@ map.off('click', onClick);</code></pre>
 		<td>Removes all listeners. An alias to <code>clearAllEventListeners</code> when you use it without arguments.</td>
 	</tr>
 	<tr>
+		<td><code><b>removeEventParent</b>(
+			<nobr>&lt;Object&gt; <i>parent</i> )</nobr>
+		</code></td>
+
+		<td><code><span class="hljs-keyword">this</span></code></td>
+		<td>Removes a previously added parent object to cease event propogation.</td>
+	</tr>
+	<tr>
 		<td><code><b>hasEventListeners</b>(
 			<nobr>&lt;String&gt; <i>type</i> )</nobr>
 		</code></td>
@@ -4696,11 +4712,12 @@ map.off('click', onClick);</code></pre>
 	<tr>
 		<td><code><b>fireEvent</b>(
 			<nobr>&lt;String&gt; <i>type</i></nobr>,
-			<nobr>&lt;Object&gt; <i>data?</i> )</nobr>
+			<nobr>&lt;Object&gt; <i>data?</i> )</nobr>,
+			<nobr>&lt;Boolean&gt; <i>propogate?</i> )</nobr>
 		</code></td>
 
 		<td><code><span class="hljs-keyword">this</span></code></td>
-		<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties.</td>
+		<td>Fires an event of the specified type. You can optionally provide an data object &mdash; the first argument of the listener function will contain its properties. Set the third parameter to <code>true</code> if you'd like the event to propogate to a parent.</code></td>
 	</tr>
 	<tr>
 		<td><code><b>clearAllEventListeners</b>()</code></td>
