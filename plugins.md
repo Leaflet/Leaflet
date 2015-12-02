@@ -175,6 +175,15 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/geosensorweblab">GeoSensorWeb Lab</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gmaclennan/leaflet-bing-layer">Bing Maps Layer</a>
+		</td><td>
+			Add <a href="https://msdn.microsoft.com/en-us/library/ff701721.aspx">Bing Maps tiles</a> to your Leaflet Map. Requires Leaflet v1.0.0.beta.2 or later.
+		</td><td>
+			<a href="https://github.com/gmaclennan">Gregor MacLennan</a>
+		</td>
+	</tr>
 
 </table>
 
