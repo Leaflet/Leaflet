@@ -408,6 +408,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/frogcat">Yuzo Matsuzawa</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/digidem/leaflet-side-by-side">Leaflet.Control.SideBySide</a>
+		</td><td>
+			A Leaflet control to add a split screen to compare two map overlays (<a href="http://lab.digital-democracy.org/leaflet-side-by-side/">demo</a>).
+		</td><td>
+			<a href="http://www.digital-democracy.org">Digital Democracy</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1696,15 +1705,6 @@ The following plugins enhance or extend `L.Control.Layers`.
 			Leaflet control allows to switch layers on and off, display them in a tree-like way (<a href="http://rawgit.com/bambrikii/leaflet-layer-tree-plugin/master/examples/basic-example.htm">demo</a>).
 		</td><td>
 			<a href="https://github.com/bambrikii">Alexander Arakelyan</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/digidem/leaflet-side-by-side">Leaflet.Control.SideBySide</a>
-		</td><td>
-			A Leaflet control to add a split screen to compare two map overlays (<a href="http://lab.digital-democracy.org/leaflet-side-by-side/">demo</a>).
-		</td><td>
-			<a href="http://www.digital-democracy.org">Digital Democracy</a>
 		</td>
 	</tr>
 </table>
