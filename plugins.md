@@ -2703,10 +2703,10 @@ External services that transform an address or the name of a place into latitude
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/pelias/leaflet-geocoder">Mapzen Search (Pelias) Leaflet Geocoder</a>
+			<a href="https://github.com/mapzen/leaflet-geocoder">Mapzen Search Leaflet Geocoder</a>
 		</td>
 		<td>
-			A geocoding control using <a href="https://mapzen.com/projects/search">Mapzen Search</a> or any hosted service powered by the <a href="https://github.com/pelias/api">Pelias Geocoder API</a>.  <a href="https://pelias.github.io/leaflet-geocoder/">Demo</a>
+			A geocoding control using <a href="https://mapzen.com/projects/search">Mapzen Search</a> or any hosted service powered by the <a href="https://github.com/pelias/api">Pelias Geocoder API</a>.  <a href="https://mapzen.github.io/leaflet-geocoder/">Demo</a>
 		</td>
 		<td>
 			<a href="https://github.com/louh">Lou Huang</a>
