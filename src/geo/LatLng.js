@@ -17,15 +17,7 @@ L.LatLng = function (lat, lng, alt) {
 
 L.LatLng.prototype = {
 	equals: function (obj, maxMargin) {
-		if (!obj) { return false; }
-
-		obj = L.latLng(obj);
-
-		var margin = Math.max(
-		        Math.abs(this.lat - obj.lat),
-		        Math.abs(this.lng - obj.lng));
-
-		return margin <= (maxMargin === undefined ? 1.0E-9 : maxMargin);
+		return L.CRS.Earth.equals(this, obj, maxMargin);
 	},
 
 	toString: function (precision) {
