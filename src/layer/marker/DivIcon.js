@@ -17,17 +17,30 @@ L.DivIcon = L.Icon.extend({
 	},
 
 	createIcon: function (oldIcon) {
-		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
-		    options = this.options;
+		var options = this.options;
 
-		div.innerHTML = options.html !== false ? options.html : '';
+		this._container = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div');
+		this._innerHTML = (options.html !== false) ? options.html : '';
+
+		this._updateHTMLContent();
 
 		if (options.bgPos) {
-			div.style.backgroundPosition = (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
+			this._container.style.backgroundPosition = (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
 		}
-		this._setIconStyles(div, 'icon');
+		this._setIconStyles(this._container, 'icon');
 
-		return div;
+		return this._container;
+	},
+
+	_updateHTMLContent: function() {
+		if (typeof this._innerHTML === 'string') {
+			this._container.innerHTML = this._innerHTML;
+		} else {
+			while (this._container.hasChildNodes()) {
+				this._container.removeChild(this._container.firstChild);
+			}
+			this._container.appendChild(this._innerHTML);
+		}
 	},
 
 	createShadow: function () {
