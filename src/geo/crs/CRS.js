@@ -64,5 +64,18 @@ L.CRS = {
 		    alt = latlng.alt;
 
 		return L.latLng(lat, lng, alt);
+	},
+
+	equals: function (a, b, maxMargin) {
+		if (!a || !b) { return false; }
+
+		a = L.latLng(a);
+		b = L.latLng(b);
+
+		var margin = Math.max(
+		        Math.abs(a.lat - b.lat),
+		        Math.abs(a.lng - b.lng));
+
+		return margin <= (maxMargin === undefined ? 1.0E-9 : maxMargin);
 	}
 };
