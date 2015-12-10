@@ -21,6 +21,10 @@ L.Icon.Default = L.Icon.extend({
 		var path = L.Icon.Default.imagePath;
 
 		if (!path) {
+			path = L.Icon.Default.imagePath = computeImagePath();
+		}
+
+		if (!path) {
 			throw new Error('Couldn\'t autodetect L.Icon.Default.imagePath, set it manually.');
 		}
 
@@ -28,11 +32,17 @@ L.Icon.Default = L.Icon.extend({
 	}
 });
 
-L.Icon.Default.imagePath = (function () {
-	var el = L.DomUtil.create('div', 'leaflet-control-layers-toggle', document.body),
-	    path = L.DomUtil.getStyle(el, 'background-image');
-	document.body.removeChild(el);
-	if (path) {
-		return path.replace(/^url\(\"?/, '').replace(/\/layers.+png\"?\)/, '');
+L.Icon.Default.imagePath = computeImagePath();
+
+function computeImagePath() {
+	try {
+		var el = L.DomUtil.create('div', 'leaflet-control-layers-toggle', document.body),
+		    path = L.DomUtil.getStyle(el, 'background-image');
+		document.body.removeChild(el);
+		if (path) {
+			return path.replace(/^url\(\"?/, '').replace(/\/layers.+png\"?\)/, '');
+		}
+	} catch (e) {
+		return null;
 	}
-}());
+}
