@@ -806,6 +806,7 @@ tr:target {
 	border-radius: 50%;
 	cursor: pointer;
 	position: absolute;
+	z-index: 1;
 }
 
 .api-page h2[id]:before {
@@ -1075,3 +1076,7 @@ iframe[src*='youtube.com'] {
 	margin-top: 3em;
 }
 
+.no-break {
+	display: inline-block;
+	width: 100%;
+}
