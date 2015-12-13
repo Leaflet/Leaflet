@@ -23,7 +23,7 @@ and push the limits of what's possible with online maps!
 
  [Vladimir Agafonkin]: http://agafonkin.com/en
  [contributors]: https://github.com/Leaflet/Leaflet/graphs/contributors
- [features]: http://leafletjs.com/features.html
+ [features]: http://leafletjs.com/#features
  [plugins]: http://leafletjs.com/plugins.html
  [well-documented]: http://leafletjs.com/reference.html "Leaflet API reference"
  [source code]: https://github.com/Leaflet/Leaflet "Leaflet GitHub repository"
