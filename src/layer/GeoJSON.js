@@ -123,6 +123,15 @@ L.extend(L.GeoJSON, {
 			}
 			return new L.FeatureGroup(layers);
 
+		case 'FeatureCollection':
+			for (i = 0, len = geometry.features.length; i < len; i++) {
+				layers.push(this.geometryToLayer(geometry.features[i],
+					pointToLayer,
+					coordsToLatLng,
+					vectorOptions));
+			}
+			return new L.FeatureGroup(layers);
+
 		default:
 			throw new Error('Invalid GeoJSON object.');
 		}
