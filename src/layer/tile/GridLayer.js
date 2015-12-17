@@ -41,6 +41,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	onRemove: function (map) {
+		this._removeAllTiles();
 		L.DomUtil.remove(this._container);
 		map._removeZoomLimit(this);
 		this._container = null;
@@ -217,6 +218,7 @@ L.GridLayer = L.Layer.extend({
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
 			} else {
 				L.DomUtil.remove(this._levels[z].el);
+				this._removeTilesAtZoom(z);
 				delete this._levels[z];
 			}
 		}
@@ -270,6 +272,15 @@ L.GridLayer = L.Layer.extend({
 			if (!this._tiles[key].retain) {
 				this._removeTile(key);
 			}
+		}
+	},
+
+	_removeTilesAtZoom: function (zoom) {
+		for (var key in this._tiles) {
+			if (this._tiles[key].coords.z !== zoom) {
+				continue;
+			}
+			this._removeTile(key);
 		}
 	},
 
