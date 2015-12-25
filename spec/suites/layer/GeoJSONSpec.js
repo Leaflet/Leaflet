@@ -1,14 +1,14 @@
 describe("L.GeoJSON", function () {
 
 	describe("addData", function () {
-		var geoJSON = {
+		var geojson = {
 			type: 'Feature',
 			properties: {},
 			geometry: {
 				type: 'Point',
 				coordinates: [20, 10, 5]
 			}
-		}, geoJSONEmpty = {
+		}, geojsonEmpty = {
 			type: 'Feature',
 			properties: {},
 			geometry: null
@@ -16,19 +16,19 @@ describe("L.GeoJSON", function () {
 
 		it("sets feature property on member layers", function () {
 			var layer = new L.GeoJSON();
-			layer.addData(geoJSON);
-			expect(layer.getLayers()[0].feature).to.eql(geoJSON);
+			layer.addData(geojson);
+			expect(layer.getLayers()[0].feature).to.eql(geojson);
 		});
 
 		it("normalizes a geometry to a Feature", function () {
 			var layer = new L.GeoJSON();
-			layer.addData(geoJSON.geometry);
-			expect(layer.getLayers()[0].feature).to.eql(geoJSON);
+			layer.addData(geojson.geometry);
+			expect(layer.getLayers()[0].feature).to.eql(geojson);
 		});
 
 		it("accepts geojson with null geometry", function () {
 			var layer = new L.GeoJSON();
-			layer.addData(geoJSONEmpty);
+			layer.addData(geojsonEmpty);
 			expect(layer.getLayers().length).to.eql(0);
 		});
 	});
@@ -43,7 +43,7 @@ describe("L.GeoJSON", function () {
 					coordinates:[[-2.35, 51.38], [-2.38, 51.38]]
 				}
 			};
-			var geojson = L.geoJson(feature, {weight: 7, color: 'chocolate'});
+			var geojson = L.geoJSON(feature, {weight: 7, color: 'chocolate'});
 			geojson.setStyle({weight: 22, color: 'coral'});
 			var layer = geojson.getLayers()[0];
 			expect(layer.options.weight).to.be(22);
@@ -327,7 +327,7 @@ describe("L.LayerGroup#toGeoJSON", function () {
 			}]
 		};
 
-		expect(L.geoJson(json).toGeoJSON()).to.eql(json);
+		expect(L.geoJSON(json).toGeoJSON()).to.eql(json);
 	});
 
 	it('roundtrips MiltiPoint features', function () {
@@ -345,7 +345,7 @@ describe("L.LayerGroup#toGeoJSON", function () {
 			}]
 		};
 
-		expect(L.geoJson(json).toGeoJSON()).to.eql(json);
+		expect(L.geoJSON(json).toGeoJSON()).to.eql(json);
 	});
 
 	it("omits layers which do not implement toGeoJSON", function () {
