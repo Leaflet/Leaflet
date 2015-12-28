@@ -177,17 +177,15 @@ L.Map = L.Evented.extend({
 
 	panInsideBounds: function (bounds, options) {
 		this._enforcingBounds = true;
-		try {
-			var center = this.getCenter(),
-			    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
+		var center = this.getCenter(),
+		    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
 
-			if (center.equals(newCenter)) { return this; }
-
+		if (!center.equals(newCenter)) {
 			this.panTo(newCenter, options);
-			return this;
-		} finally {
-			this._enforcingBounds = false;
 		}
+
+		this._enforcingBounds = false;
+		return this;
 	},
 
 	invalidateSize: function (options) {
