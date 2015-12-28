@@ -37,7 +37,7 @@ L.Path = (L.Path.SVG && !window.L_PREFER_CANVAS) || !L.Browser.canvas ? L.Path :
 		    .off('moveend', this._updatePath, this);
 
 		if (this.options.clickable) {
-			this._map.off('click', this._onClick, this);
+			this._map.off('click', this._onClick || function() {}, this);
 			this._map.off('mousemove', this._onMouseMove, this);
 		}
 
