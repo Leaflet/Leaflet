@@ -180,9 +180,10 @@ L.Map = L.Evented.extend({
 		var center = this.getCenter(),
 		    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
 
-		if (center.equals(newCenter)) { return this; }
+		if (!center.equals(newCenter)) {
+			this.panTo(newCenter, options);
+		}
 
-		this.panTo(newCenter, options);
 		this._enforcingBounds = false;
 		return this;
 	},
