@@ -1809,6 +1809,17 @@ Change the way the user can interactively move around the map.
 			<a href="https://github.com/mikeotoole/">Mike O'Toole</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/unbam/Leaflet.ZoomLabel">Leaflet.ZoomLabel</a>
+		</td>
+		<td>
+			A simple zoom label control.
+		</td>
+		<td>
+			<a href="https://github.com/unbam">Masashi Takeshita</a>
+		</td>
+	</tr>
 </table>
 
 
