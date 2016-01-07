@@ -1287,7 +1287,7 @@ The following plugins enable users to interact with overlay data: edit geometrie
 
 * [Edit geometries](#edit-geometries)
 * [Time & elevation](#time--elevation)
-* [Search & popups](#ge#search--popups)
+* [Search & popups](#search--popups)
 * [Area/overlay selection](#areaoverlay-selection)
 
 ### Edit geometries
