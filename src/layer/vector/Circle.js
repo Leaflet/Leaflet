@@ -47,6 +47,10 @@ L.Circle = L.CircleMarker.extend({
 			    lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
 			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
 
+			if (isNaN(lngR) || lngR === 0) {
+				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
+			}
+
 			this._point = p.subtract(map.getPixelOrigin());
 			this._radius = isNaN(lngR) ? 0 : Math.max(Math.round(p.x - map.project([lat2, lng - lngR]).x), 1);
 			this._radiusY = Math.max(Math.round(p.y - top.y), 1);
