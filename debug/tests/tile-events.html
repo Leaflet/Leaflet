@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style>
+	#map {
+		margin: 0;
+		width: auto;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+	table th, table td {
+		border: 1px #444 solid;
+		margin: 0;
+	}
+
+	</style>
+</head>
+<body>
+
+	<p>Keep track of how many tileload/tileunload events are being fired. The counts should always match. See <a href='https://github.com/Leaflet/Leaflet/issues/4093'>#4093</a></p>
+
+	<div id="map" class="map"></div>
+
+	<table>
+		<tr><th>Start<th>Load<th>Error<th>Unload
+		<tr><td id='tileloadstart'><td id='tileload'><td id='tileerror'><td id='tileunload'>
+	</table>
+
+	<p>start = unload + visible on screen</p>
+
+	<script type="text/javascript">
+		var mapopts =  {
+		    center: [35, -122],
+		    zoom : 5.7
+		};
+
+		var map = L.map('map', mapopts);
+
+		var grid = L.gridLayer({
+			attribution: 'Grid Layer',
+// 			tileSize: L.point(150, 80)
+			tileSize: L.point(256, 256)
+		});
+
+		grid.createTile = function (coords, done) {
+			var tile = document.createElement('div');
+			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+			tile.style.border = '2px solid red';
+// 			tile.style.background = 'white';
+
+			// test async
+			setTimeout(function () {
+				done(null, tile);
+			}, Math.random() * 1000);
+
+			return tile;
+		};
+
+		var counts = {
+			tileload: 0,
+			tileerror: 0,
+			tileloadstart: 0,
+			tileunload: 0
+		};
+
+		grid.on('tileload tileunload tileerror tileloadstart', function(ev){
+			document.getElementById(ev.type).innerHTML = ++counts[ev.type];
+		});
+
+		map.addLayer(grid);
+
+
+
+
+	</script>
+</body>
+</html>
