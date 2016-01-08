@@ -648,10 +648,16 @@ L.Map = L.Evented.extend({
 		var targets = [],
 		    target,
 		    isHover = type === 'mouseout' || type === 'mouseover',
-		    src = e.target || e.srcElement;
+		    src = e.target || e.srcElement,
+		    dragging = false;
 
 		while (src) {
 			target = this._targets[L.stamp(src)];
+			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
+				// Prevent firing click after you just dragged an object.
+				dragging = true;
+				break;
+			}
 			if (target && target.listens(type, true)) {
 				if (isHover && !L.DomEvent._isExternalTarget(src, e)) { break; }
 				targets.push(target);
@@ -660,7 +666,7 @@ L.Map = L.Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !isHover && L.DomEvent._isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && L.DomEvent._isExternalTarget(src, e)) {
 			targets = [this];
 		}
 		return targets;
@@ -699,9 +705,6 @@ L.Map = L.Evented.extend({
 		if (type === 'contextmenu' && target.listens(type, true)) {
 			L.DomEvent.preventDefault(e);
 		}
-
-		// prevents firing click after you just dragged an object
-		if ((e.type === 'click' || e.type === 'preclick') && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
 			originalEvent: e
