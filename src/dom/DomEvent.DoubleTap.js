@@ -63,7 +63,8 @@ L.extend(L.DomEvent, {
 		obj.addEventListener(touchend, onTouchEnd, false);
 
 		// On some platforms (notably, chrome on win10 + touchscreen + mouse),
-		// the browser doesn't fire touchend/pointerup events but does fire native dblclicks
+		// the browser doesn't fire touchend/pointerup events but does fire
+		// native dblclicks. See #4127.
 		obj.addEventListener('dblclick', handler, false);
 
 		return this;
