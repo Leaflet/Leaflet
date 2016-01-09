@@ -1609,6 +1609,18 @@ These plugins help users select either overlays or areas in the map.
 		<td>
 			<a href="http://labs.easyblog.it/stefano-cudini/">Stefano Cudini</a>
 		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IvanSanchez/Leaflet.CheapLayerAt">Leaflet.CheapLayerAt</a>
+		</td>
+		<td>
+			Allows querying which layer is under a screen coordinate (<a href="http://ivansanchez.github.io/Leaflet.CheapLayerAt/demo.html">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
+			<a href="https://github.com/MazeMap">MazeMap</a>
+		</td>
 	</tr>	
 </table>
 
