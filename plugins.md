@@ -2797,22 +2797,18 @@ Ease your development integrating Leaflet into a development framework or automa
 	<tr>
 		<td>
 			<a href="https://github.com/moklick/generator-leaflet">Leaflet Yeoman Generator</a>
-		</td>
-		<td>
+		</td><td>
 			Yeoman generator that scaffolds out a basic Leaflet map application.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/moklick">Moritz Klack</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/PaulLeCam/react-leaflet">react-leaflet</a>
-		</td>
-		<td>
+		</td><td>
 			<a href="https://facebook.github.io/react/">React</a> components for Leaflet maps.
-		</td>
-		<td>
+		</td><td>
 			<a href="http://paullecam.github.io/">Paul Le Cam</a>
 		</td>
 	</tr>
@@ -2828,11 +2824,9 @@ Ease your development integrating Leaflet into a development framework or automa
 	<tr>
 		<td>
 			<a href="https://github.com/Norkart/Leaflet-LayerConfig">Leaflet LayerConfig</a>
-		</td>
-		<td>
+		</td><td>
 			Provide a json file or service response with a configuration of layers and markers to automatically set up a Leaflet client.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/alexanno">Alexander Nossum</a>
 		</td>
 	</tr>
@@ -2848,102 +2842,85 @@ Ease your development integrating Leaflet into a development framework or automa
 	<tr>
 		<td>
 			<a href="https://github.com/dagjomar/Leaflet.ZoomCSS">Leaflet ZoomLevel CSS Class</a>
-		</td>
-		<td>
+		</td><td>
 			Add zoom level css class to map element for easy style updates based on zoom levels
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/dagjomar">Dag Jomar Mersland</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/IjzerenHein/famous-map">famous-map</a>
-		</td>
-		<td>
+		</td><td>
 			Integrate Leaflet in applications made with the <a href='famo.us'>famo.us</a> web framework.
-		</td>
-		<td>
+		</td><td>
 			<a href="http://www.gloey.nl">Hein Rutjes</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/tombatossals/angular-leaflet-directive">Angular Leaflet directive</a>
-		</td>
-		<td>
+		</td><td>
 			Integrate Leaflet in applications made with the <a href='http://angularjs.org/'>AngularJS</a> web framework.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/tombatossals">David Rubert</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/CleverMaps/tiny-leaflet-directive">Tiny Leaflet Directive</a>
-		</td>
-		<td>
+		</td><td>
 			Tiny LeafletJS map directive for your AngularJS apps.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/mattesCZ">Martin Tesař</a>
 		</td>
 	</tr>
 	<tr>
-                <td>
-                        <a href="https://github.com/leaflet-extras/leaflet-map">&lt;leaflet-map&gt;</a>
-                </td>
-                <td>
-                        Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/'>Polymer &gt;= 1.0</a> web component framework.
-                </td>
-                <td>
-                        <a href="https://github.com/nhnb">Hendrik Brummermann</a>,
-                        <a href="https://github.com/prtksxna">Prateek Saxena</a>
-                </td>
-        </tr>
+		<td>
+			<a href="https://github.com/leaflet-extras/leaflet-map">&lt;leaflet-map&gt;</a>
+		</td><td>
+			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/'>Polymer &gt;= 1.0</a> web component framework.
+		</td><td>
+			<a href="https://github.com/nhnb">Hendrik Brummermann</a>,
+			<a href="https://github.com/prtksxna">Prateek Saxena</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/prtksxna/leaflet-map-component">Leaflet map component</a>
-		</td>
-		<td>
+		</td><td>
 			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/0.5/'>Polymer 0.5</a> web framework.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/prtksxna">Prateek Saxena</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/themrleon/JSF2Leaf">JSF2Leaf</a>
-		</td>
-		<td>
+		</td><td>
 			A JavaServer Faces wrapper for Leaflet.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/themrleon">Leonardo Ciocari</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="http://www.ember-leaflet.com/">ember-leaflet</a>
-		</td>
-		<td>
+		</td><td>
 			Easy and declarative mapping for <a href="http://emberjs.com/">Ember.js</a> using Leaflet.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/miguelcobain">Miguel Andrade</a>
 		</td>
 	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/bevanhunt/meteor-leaflet">meteor-leaflet</a>
-		</td>
-		<td>
+		</td><td>
 			Provides a Meteor package to quickly build real-time cross-platform map apps.
-		</td>
-		<td>
+		</td><td>
 			<a href="https://github.com/bevanhunt">Bevan Hunt</a>
 		</td>
+	</tr>
 </table>
 
 
