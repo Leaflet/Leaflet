@@ -273,7 +273,7 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 		</td><td>
 			<a href="https://github.com/geobricks/">Geobricks</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -1621,7 +1621,7 @@ These plugins help users select either overlays or areas in the map.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
 			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -2169,7 +2169,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 		<td>
 			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -2256,14 +2256,14 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
-	
+
 	<tr>
 	        <td>
 	            <a href="https://github.com/MazeMap/Leaflet.VisualClick">Leaflet.VisualClick</a>
 	        </td>
 	        <td>
 	            Adds visual feedback when user clicks/taps the map (<a href="https://github.com/MazeMap/Leaflet.VisualClick/">demo</a>).
-	            Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick. 
+	            Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick.
 	            Or just because it looks cool :)
 	            Only tested with Leaflet 1.0.0-beta1.
 	        </td><td>
@@ -2609,7 +2609,7 @@ The following plugins use external services to calculate driving or walking rout
 		<td>
 			<a href="http://www.liedman.net/leaflet-routing-machine/">Leaflet Routing Machine</a>
 		</td><td>
-			Control for route search with via points, displaying itinerary and alternative routes. Uses 
+			Control for route search with via points, displaying itinerary and alternative routes. Uses
 			<a href="http://project-osrm.org/">OSRM</a> by default, but also supports
 			<a href="https://graphhopper.com/">GraphHopper</a>,
 			<a href="https://www.mapbox.com/developers/api/directions/">Mapbox Directions API</a> and more.
@@ -2635,7 +2635,7 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
 		</td>
 	</tr>
-	
+
 	<tr>
 		<td>
 			<a href="https://github.com/StephanGeorg/leaflet-routeboxer">Leaflet RouteBoxer</a>
@@ -2934,6 +2934,16 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/miguelcobain">Miguel Andrade</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bevanhunt/meteor-leaflet">meteor-leaflet</a>
+		</td>
+		<td>
+			Provides a Meteor package to quickly build real-time cross-platform map apps.
+		</td>
+		<td>
+			<a href="https://github.com/bevanhunt">Bevan Hunt</a>
+		</td>
 </table>
 
 
