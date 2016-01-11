@@ -2877,6 +2877,15 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/grantHarris/L.AngularControl">Leaflet Angular Control</a>
+		</td><td>
+			Insert and use Angularized HTML code in your Leaflet map as a Leaflet control.
+		</td><td>
+			<a href="https://github.com/grantHarris">Grant Harris</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/leaflet-extras/leaflet-map">&lt;leaflet-map&gt;</a>
 		</td><td>
 			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/'>Polymer &gt;= 1.0</a> web component framework.
