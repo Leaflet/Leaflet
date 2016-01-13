@@ -5,6 +5,7 @@ Contributing to Leaflet
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
  4. [Improving Documentation](#improving-documentation)
+ 5. [Code of Conduct](#code-of-conduct)
 
 ## Getting Involved
 
@@ -149,6 +150,15 @@ After committing the changes, just send a pull request.
 If you need to update documentation according to a new feature that only appeared in the master version (not the stable one),
 you need to make changes to the `gh-pages-master` branch instead of `gh-pages`.
 It will get merged into the latter when released as stable.
+
+## Code of Conduct
+
+Everyone is invited to participate in the Leaflet community and related projects:
+we want to create a welcoming and friendly environment.
+Harassment of participants or other unethical and unprofessional behavior will not be tolerated in our spaces.
+The [Contributor Covenant](http://contributor-covenant.org/version/1/3/0/)
+applies to all projects under the Leaflet organization.
+Report any issues to agafonkin@gmail.com.
 
 ## Thank You
 
