@@ -30,6 +30,7 @@
 	L.Browser = {
 		ie: ie,
 		ielt9: ie && !document.addEventListener,
+		edge: 'msLaunchUri' in navigator && !('documentMode' in document),
 		webkit: webkit,
 		gecko: gecko,
 		android: ua.indexOf('android') !== -1,
