@@ -129,23 +129,22 @@ L.Polyline = L.Path.extend({
 	},
 
 	_project: function () {
+		var pxBounds = new L.Bounds();
 		this._rings = [];
-		this._projectLatlngs(this._latlngs, this._rings);
+		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
-		// project bounds as well to use later for Canvas hit detection/etc.
 		var w = this._clickTolerance(),
-		    p = new L.Point(w, -w);
+		    p = new L.Point(w, w);
 
 		if (this._bounds.isValid()) {
-			this._pxBounds = new L.Bounds(
-				this._map.latLngToLayerPoint(this._bounds.getSouthWest())._subtract(p),
-				this._map.latLngToLayerPoint(this._bounds.getNorthEast())._add(p));
+			pxBounds.min._subtract(p);
+			pxBounds.max._add(p);
+			this._pxBounds = pxBounds;
 		}
 	},
 
 	// recursively turns latlngs into a set of rings with projected coordinates
-	_projectLatlngs: function (latlngs, result) {
-
+	_projectLatlngs: function (latlngs, result, projectedBounds) {
 		var flat = latlngs[0] instanceof L.LatLng,
 		    len = latlngs.length,
 		    i, ring;
@@ -154,11 +153,12 @@ L.Polyline = L.Path.extend({
 			ring = [];
 			for (i = 0; i < len; i++) {
 				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
+				projectedBounds.extend(ring[i]);
 			}
 			result.push(ring);
 		} else {
 			for (i = 0; i < len; i++) {
-				this._projectLatlngs(latlngs[i], result);
+				this._projectLatlngs(latlngs[i], result, projectedBounds);
 			}
 		}
 	},
