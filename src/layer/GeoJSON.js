@@ -87,16 +87,24 @@ L.extend(L.GeoJSON, {
 		}
 
 		switch (geometry.type) {
-		case 'Point':
-			latlng = coordsToLatLng(coords);
-			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
+        case 'Point':
+            if (vectorOptions.icon) {
+                var myIcon = L.icon(vectorOptions.icon);
+                vectorOptions.icon = myIcon;
+            }
+            latlng = coordsToLatLng(coords);
+            return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng, vectorOptions);
 
-		case 'MultiPoint':
-			for (i = 0, len = coords.length; i < len; i++) {
-				latlng = coordsToLatLng(coords[i]);
-				layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng));
-			}
-			return new L.FeatureGroup(layers);
+        case 'MultiPoint':
+            if (vectorOptions.icon) {
+                var myIcon = L.icon(vectorOptions.icon);
+                vectorOptions.icon = myIcon;
+            }
+            for (i = 0, len = coords.length; i < len; i++) {
+                latlng = coordsToLatLng(coords[i]);
+                layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng, vectorOptions));
+            }
+            return new L.FeatureGroup(layers);
 
 		case 'LineString':
 		case 'MultiLineString':
