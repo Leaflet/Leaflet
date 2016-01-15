@@ -411,14 +411,16 @@ L.Map = L.Evented.extend({
 
 	// conversion methods
 
-	project: function (latlng, zoom) { // (LatLng[, Number]) -> Point
+	project: function (latlng, zoom, crs) { // (LatLng[, Number][, L.CRS]) -> Point
+		crs = !crs ? this.options.crs : crs;
 		zoom = zoom === undefined ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom);
+		return crs.latLngToPoint(L.latLng(latlng), zoom);
 	},
 
-	unproject: function (point, zoom) { // (Point[, Number]) -> LatLng
+	unproject: function (point, zoom, crs) { // (Point[, Number][,L.CRS]) -> LatLng
+		crs = !crs ? this.options.crs : crs;
 		zoom = zoom === undefined ? this._zoom : zoom;
-		return this.options.crs.pointToLatLng(L.point(point), zoom);
+		return crs.pointToLatLng(L.point(point), zoom);
 	},
 
 	layerPointToLatLng: function (point) { // (Point)
@@ -764,9 +766,9 @@ L.Map = L.Evented.extend({
 		return pixelOrigin.subtract(this._getMapPanePos());
 	},
 
-	_getNewPixelOrigin: function (center, zoom) {
+	_getNewPixelOrigin: function (center, zoom, crs) {
 		var viewHalf = this.getSize()._divideBy(2);
-		return this.project(center, zoom)._subtract(viewHalf)._add(this._getMapPanePos())._round();
+		return this.project(center, zoom, crs)._subtract(viewHalf)._add(this._getMapPanePos())._round();
 	},
 
 	_latLngToNewLayerPoint: function (latlng, zoom, center) {
