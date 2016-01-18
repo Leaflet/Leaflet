@@ -23,7 +23,8 @@ L.DivIcon = L.Icon.extend({
 		div.innerHTML = options.html !== false ? options.html : '';
 
 		if (options.bgPos) {
-			div.style.backgroundPosition = (-options.bgPos.x) + 'px ' + (-options.bgPos.y) + 'px';
+			var bgPos = L.point(options.bgPos);
+			div.style.backgroundPosition = (-bgPos.x) + 'px ' + (-bgPos.y) + 'px';
 		}
 		this._setIconStyles(div, 'icon');
 

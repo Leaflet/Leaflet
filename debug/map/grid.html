@@ -38,6 +38,7 @@
 
 		grid.on('loading', function() { console.log('loading'); });
 		grid.on('load', function() { console.log('load'); });
+		grid.on('tileunload', function(tile) { console.log('tileunload ' + tile.coords.x + ',' + tile.coords.y + ',' + tile.coords.z); });
 
 		var map = L.map('map')
 				.setView([50.5, 30.51], 10)

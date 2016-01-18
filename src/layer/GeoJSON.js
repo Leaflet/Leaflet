@@ -51,7 +51,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 
 	resetStyle: function (layer) {
 		// reset any custom styles
-		layer.options = layer.defaultOptions;
+		layer.options = L.Util.extend({}, layer.defaultOptions);
 		this._setLayerStyle(layer, this.options.style);
 		return this;
 	},
@@ -181,15 +181,15 @@ L.extend(L.GeoJSON, {
 				L.GeoJSON.asFeature(newGeometry);
 	},
 
-	asFeature: function (geoJSON) {
-		if (geoJSON.type === 'Feature') {
-			return geoJSON;
+	asFeature: function (geojson) {
+		if (geojson.type === 'Feature') {
+			return geojson;
 		}
 
 		return {
 			type: 'Feature',
 			properties: {},
-			geometry: geoJSON
+			geometry: geojson
 		};
 	}
 });
@@ -281,6 +281,8 @@ L.LayerGroup.include({
 	}
 });
 
-L.geoJson = function (geojson, options) {
+L.geoJSON = function (geojson, options) {
 	return new L.GeoJSON(geojson, options);
 };
+// Backward compatibility.
+L.geoJson = L.geoJSON;

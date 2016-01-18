@@ -157,6 +157,8 @@ L.Canvas = L.Renderer.extend({
 		    r = layer._radius,
 		    s = (layer._radiusY || r) / r;
 
+		this._drawnLayers[layer._leaflet_id] = layer;
+
 		if (s !== 1) {
 			ctx.save();
 			ctx.scale(1, s);
@@ -236,17 +238,16 @@ L.Canvas = L.Renderer.extend({
 
 	_handleMouseHover: function (e, point) {
 		var id, layer;
-		if (!this._hoveredLayer) {
-			for (id in this._drawnLayers) {
-				layer = this._drawnLayers[id];
-				if (layer.options.interactive && layer._containsPoint(point)) {
-					L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
-					this._fireEvent([layer], e, 'mouseover');
-					this._hoveredLayer = layer;
-					break;
-				}
+
+		for (id in this._drawnLayers) {
+			layer = this._drawnLayers[id];
+			if (layer.options.interactive && layer._containsPoint(point)) {
+				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
+				this._fireEvent([layer], e, 'mouseover');
+				this._hoveredLayer = layer;
 			}
 		}
+
 		if (this._hoveredLayer) {
 			this._fireEvent([this._hoveredLayer], e);
 		}

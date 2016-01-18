@@ -180,9 +180,10 @@ L.Map = L.Evented.extend({
 		var center = this.getCenter(),
 		    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
 
-		if (center.equals(newCenter)) { return this; }
+		if (!center.equals(newCenter)) {
+			this.panTo(newCenter, options);
+		}
 
-		this.panTo(newCenter, options);
 		this._enforcingBounds = false;
 		return this;
 	},
@@ -647,10 +648,16 @@ L.Map = L.Evented.extend({
 		var targets = [],
 		    target,
 		    isHover = type === 'mouseout' || type === 'mouseover',
-		    src = e.target || e.srcElement;
+		    src = e.target || e.srcElement,
+		    dragging = false;
 
 		while (src) {
 			target = this._targets[L.stamp(src)];
+			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
+				// Prevent firing click after you just dragged an object.
+				dragging = true;
+				break;
+			}
 			if (target && target.listens(type, true)) {
 				if (isHover && !L.DomEvent._isExternalTarget(src, e)) { break; }
 				targets.push(target);
@@ -659,7 +666,7 @@ L.Map = L.Evented.extend({
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !isHover && L.DomEvent._isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && L.DomEvent._isExternalTarget(src, e)) {
 			targets = [this];
 		}
 		return targets;
@@ -698,9 +705,6 @@ L.Map = L.Evented.extend({
 		if (type === 'contextmenu' && target.listens(type, true)) {
 			L.DomEvent.preventDefault(e);
 		}
-
-		// prevents firing click after you just dragged an object
-		if ((e.type === 'click' || e.type === 'preclick') && !e._simulated && this._draggableMoved(target)) { return; }
 
 		var data = {
 			originalEvent: e
@@ -790,6 +794,13 @@ L.Map = L.Evented.extend({
 		    viewBounds = new L.Bounds(centerPoint.subtract(viewHalf), centerPoint.add(viewHalf)),
 		    offset = this._getBoundsOffset(viewBounds, bounds, zoom);
 
+		// If offset is less than a pixel, ignore.
+		// This prevents unstable projections from getting into
+		// an infinite loop of tiny offsets.
+		if (offset.round().equals([0, 0])) {
+			return center;
+		}
+
 		return this.unproject(centerPoint.add(offset), zoom);
 	},
 
@@ -805,11 +816,15 @@ L.Map = L.Evented.extend({
 
 	// returns offset needed for pxBounds to get inside maxBounds at a specified zoom
 	_getBoundsOffset: function (pxBounds, maxBounds, zoom) {
-		var nwOffset = this.project(maxBounds.getNorthWest(), zoom).subtract(pxBounds.min),
-		    seOffset = this.project(maxBounds.getSouthEast(), zoom).subtract(pxBounds.max),
+		var projectedMaxBounds = L.bounds(
+		        this.project(maxBounds.getNorthEast(), zoom),
+		        this.project(maxBounds.getSouthWest(), zoom)
+		    ),
+		    minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
+		    maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
 
-		    dx = this._rebound(nwOffset.x, -seOffset.x),
-		    dy = this._rebound(nwOffset.y, -seOffset.y);
+		    dx = this._rebound(minOffset.x, -maxOffset.x),
+		    dy = this._rebound(minOffset.y, -maxOffset.y);
 
 		return new L.Point(dx, dy);
 	},
