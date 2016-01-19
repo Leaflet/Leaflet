@@ -139,7 +139,7 @@ L.DomEvent = {
 	},
 
 	disableScrollPropagation: function (el) {
-		return L.DomEvent.on(el, 'mousewheel', L.DomEvent.stopPropagation);
+		return L.DomEvent.on(el, 'mousewheel', L.DomEvent.stop);
 	},
 
 	disableClickPropagation: function (el) {
