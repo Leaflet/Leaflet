@@ -782,16 +782,6 @@ The following plugins provide new ways of displaying overlay data information.
 These plugins provide new markers or news ways of converting abstract data into images in your screen. Leaflet users versed in GIS also know these as symbolizers.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-    <tr>
-		<td>
-			<a href="https://github.com/rubenspgcavalcante/leaflet-ant-path">Leaflet.AntPath</a>
-		</td><td>
-			Leaflet.AntPath put a flux animation (like ants walking) into a Polyline.
-			(<a href='http://rubenspgcavalcante.github.io/leaflet-ant-path/'>demo</a>)
-		</td><td>
-			<a href="https://github.com/rubenspgcavalcante">Rubens Pinheiro</a>
-		</td>
-	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/jdfergason/Leaflet.Ellipse">Leaflet.ellipse</a>
@@ -1087,7 +1077,16 @@ These plugins animate markers or some geometries. See also [geometries with time
 			<a href="https://github.com/MazeMap">MazeMap</a>
 		</td>
 	</tr>
-</table>
+	<tr>
+		<td>
+			<a href="https://github.com/rubenspgcavalcante/leaflet-ant-path">Leaflet.AntPath</a>
+		</td><td>
+			Leaflet.AntPath put a flux animation (like ants walking) into a Polyline.
+			(<a href='http://rubenspgcavalcante.github.io/leaflet-ant-path/'>demo</a>)
+		</td><td>
+			<a href="https://github.com/rubenspgcavalcante">Rubens Pinheiro</a>
+		</td>
+	</tr></table>
 
 
 
