@@ -2179,6 +2179,17 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/stefanocudini/">Stefano Cudini</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/xguaita/Leaflet.MapCenterCoord">Leaflet.MapCenterCoord</a>
+		</td>
+		<td>
+			A Leaflet control to display the coordinates of the map center, especially useful on touch/mobile devices. (<a href="http://xguaita.github.io/Leaflet.MapCenterCoord/">Doc & demos</a>)
+		</td>
+		<td>
+			<a href="https://github.com/xguaita">Xisco Guaita</a>
+		</td>
+	</tr>
 </table>
 
 
