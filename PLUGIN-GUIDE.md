@@ -169,6 +169,11 @@ trigger a build/minification just before publishing your package with a
 }
 ```
 
+You can then use the [`.gitignore`](https://help.github.com/articles/ignoring-files/) 
+file to make sure the minified files are not versioned, and an 
+[empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package) 
+to ensure that they are published to NPM.
+
 ## Module Loaders
 
 Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
