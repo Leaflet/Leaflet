@@ -45,11 +45,11 @@ L.Layer = L.Evented.extend({
 		this._map = map;
 		this._zoomAnimated = map._zoomAnimated;
 
+		this.onAdd(map);
+
 		if (this.getEvents) {
 			map.on(this.getEvents(), this);
 		}
-
-		this.onAdd(map);
 
 		if (this.getAttribution && this._map.attributionControl) {
 			this._map.attributionControl.addAttribution(this.getAttribution());
