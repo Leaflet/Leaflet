@@ -2440,6 +2440,15 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/filipzava">Filip Zavadil</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/utahemre/Leaflet.CoordinatedImagePreview">Leaflet.CoordinatedImagePreview</a>
+		</td><td>
+			Displays coordinated images in map bounds.
+		</td><td>
+			<a href="https://github.com/utahemre">Yunus Emre Özkaya</a>
+		</td>
+	</tr>
 </table>
 
 
