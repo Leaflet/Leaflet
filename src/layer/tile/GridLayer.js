@@ -99,7 +99,8 @@ L.GridLayer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
-			viewreset: this._resetAll,
+			viewprereset: this._invalidateAll,
+			viewreset: this._resetView,
 			zoom: this._resetView,
 			moveend: this._onMoveEnd
 		};
@@ -247,6 +248,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_pruneTiles: function () {
+
 		var key, tile;
 
 		var zoom = this._map.getZoom();
@@ -290,7 +292,7 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_resetAll: function () {
+	_invalidateAll: function () {
 		for (var z in this._levels) {
 			L.DomUtil.remove(this._levels[z].el);
 			delete this._levels[z];
@@ -298,7 +300,6 @@ L.GridLayer = L.Layer.extend({
 		this._removeAllTiles();
 
 		this._tileZoom = null;
-		this._resetView();
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
@@ -652,7 +653,7 @@ L.GridLayer = L.Layer.extend({
 			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
 		} else {
 			tile.active = true;
-			this._pruneTiles();
+// 			this._pruneTiles();
 		}
 
 		L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');
@@ -665,6 +666,7 @@ L.GridLayer = L.Layer.extend({
 		if (this._noTilesToLoad()) {
 			this._loading = false;
 			this.fire('load');
+			this._pruneTiles();
 		}
 	},
 

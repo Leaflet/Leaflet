@@ -94,8 +94,12 @@ describe('GridLayer', function () {
 
 			grid.on('tileunload', function (e) {
 				delete tiles[grid._tileCoordsToKey(e.coords)];
+			});
+
+			grid.on('load', function (e) {
 				if (Object.keys(tiles).length === 1) {
 					expect(Object.keys(tiles)).to.eql(['0:0:0']);
+					grid.off();
 					done();
 				}
 			});
@@ -343,9 +347,7 @@ describe('GridLayer', function () {
 			clock.tick(250);
 		});
 //
-		it("Loads 48, unloads 32 256x256px tiles @800x600px zoom 1", function (done) {
-
-// 			console.log(counts);
+		it("Loads 32, unloads 16 256x256px tiles @800x600px zoom 10-11", function (done) {
 
 			// Event handler just for logging
 			grid.on('tileload tileunload', function (ev) {
@@ -353,25 +355,32 @@ describe('GridLayer', function () {
 				for (var key in grid._tiles) {
 					if (!grid._tiles[key].loaded) { pending++; }
 				}
-				console.log(ev.type + ': ', ev.coords, grid._loading, pending);
-				console.log(counts);
+// 				console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
+// 				console.log(counts);
 			});
 
 			function firstTest() {
-				console.log('loaded at zoom 10');
-				console.log(counts);
+// 				console.log('loaded at zoom 10');
+// 				console.log(counts);
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
-				grid.off();
+				grid.off('load');
 				grid.on('load', secondTest);
 				map.setZoom(11);
 				clock.tick(250);
 			}
 
 			function secondTest() {
-				console.log('loaded at zoom 11');
-				console.log(counts);
+
+				var pending = 0, total = 0;
+				for (var key in grid._tiles) {
+					if (!grid._tiles[key].loaded) { pending++; }
+					total++;
+				}
+
+// 				console.log('loaded at zoom 11, pending/total:', pending, '/', total);
+// 				console.log(counts);
 				expect(counts.tileloadstart).to.be(32);
 				expect(counts.tileload).to.be(32);
 				expect(counts.tileunload).to.be(16);
