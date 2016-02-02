@@ -2449,6 +2449,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/utahemre">Yunus Emre Özkaya</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/unbam/Leaflet.SlideMenu">Leaflet.SlideMenu</a>
+		</td>
+		<td>
+			A simple slide menu for Leaflet.
+		</td>
+		<td>
+			<a href="https://github.com/unbam">Masashi Takeshita</a>
+		</td>
+	</tr>
 </table>
 
 
