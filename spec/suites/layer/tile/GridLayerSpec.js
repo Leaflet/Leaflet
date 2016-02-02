@@ -216,6 +216,7 @@ describe('GridLayer', function () {
 				expect(map.getMaxZoom()).to.be(25); // changed
 			});
 		});
+
 		describe("when a tilelayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [
@@ -247,4 +248,143 @@ describe('GridLayer', function () {
 			});
 		});
 	});
+
+	describe("number of tiles loaded in synchronous grid", function () {
+		var clock, grid, counts;
+
+		beforeEach(function () {
+			clock = sinon.useFakeTimers();
+
+			grid = L.gridLayer({
+				attribution: 'Grid Layer',
+	// 			tileSize: L.point(150, 80)
+				tileSize: L.point(256, 256)
+			});
+
+			grid.createTile = function (coords /* , done*/) {
+				var tile = document.createElement('div');
+				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+				tile.style.border = '2px solid red';
+	// 			tile.style.background = 'white';
+
+// 				console.log('Creating new tile: ', [coords.x, coords.y, coords.z].join(', '));
+
+				// test async
+// 				setTimeout(function () {
+// 					done(null, tile);
+// 				}, Math.random() * 100);
+
+				return tile;
+			};
+
+			counts = {
+				tileload: 0,
+				tileerror: 0,
+				tileloadstart: 0,
+				tileunload: 0
+			};
+
+			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
+// 				console.log(ev.type);
+				counts[ev.type]++;
+			});
+// 			grid.on('tileunload', function (ev) {
+// 				console.log(ev.type, ev.coords, counts);
+// 			});
+
+			map.options.fadeAnimation = false;
+		});
+
+		afterEach(function () {
+			clock.restore();
+			grid.off();
+			grid = undefined;
+			counts = undefined;
+		});
+
+		it("Loads 8 256x256px tiles @800x600px zoom 1", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(8);
+				expect(counts.tileload).to.be(8);
+				expect(counts.tileunload).to.be(0);
+				done();
+			});
+
+			map.addLayer(grid).setView([0, 0], 1);
+			clock.tick(250);
+		});
+
+		it("Loads 5 256x256px tiles @800x600px zoom 0", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(5);
+				expect(counts.tileload).to.be(5);
+				expect(counts.tileunload).to.be(0);
+				done();
+			});
+
+			map.addLayer(grid).setView([0, 0], 0);
+			clock.tick(250);
+		});
+//
+		it("Loads 16 256x256px tiles @800x600px zoom 10", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off();
+
+				done();
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+//
+		it("Loads 48, unloads 32 256x256px tiles @800x600px zoom 1", function (done) {
+
+// 			console.log(counts);
+
+			// Event handler just for logging
+			grid.on('tileload tileunload', function (ev) {
+				var pending = 0;
+				for (var key in grid._tiles) {
+					if (!grid._tiles[key].loaded) { pending++; }
+				}
+				console.log(ev.type + ': ', ev.coords, grid._loading, pending);
+				console.log(counts);
+			});
+
+			function firstTest() {
+				console.log('loaded at zoom 10');
+				console.log(counts);
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off();
+				grid.on('load', secondTest);
+				map.setZoom(11);
+				clock.tick(250);
+			}
+
+			function secondTest() {
+				console.log('loaded at zoom 11');
+				console.log(counts);
+				expect(counts.tileloadstart).to.be(32);
+				expect(counts.tileload).to.be(32);
+				expect(counts.tileunload).to.be(16);
+				done();
+			}
+
+			grid.on('load', firstTest);
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+
+	});
+
 });

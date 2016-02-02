@@ -54,16 +54,16 @@
 			tileSize: L.point(256, 256)
 		});
 
-		grid.createTile = function (coords, done) {
+		grid.createTile = function (coords /* , done*/) {
 			var tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.border = '2px solid red';
 // 			tile.style.background = 'white';
 
 			// test async
-			setTimeout(function () {
-				done(null, tile);
-			}, Math.random() * 1000);
+// 			setTimeout(function () {
+// 				done(null, tile);
+// 			}, Math.random() * 1000);
 
 			return tile;
 		};
