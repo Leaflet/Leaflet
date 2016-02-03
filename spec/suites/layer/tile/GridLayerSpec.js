@@ -253,7 +253,7 @@ describe('GridLayer', function () {
 		});
 	});
 
-	describe("number of tiles loaded in synchronous grid", function () {
+	describe("number of 256px tiles loaded in synchronous non-animated grid @800x600px", function () {
 		var clock, grid, counts;
 
 		beforeEach(function () {
@@ -261,23 +261,13 @@ describe('GridLayer', function () {
 
 			grid = L.gridLayer({
 				attribution: 'Grid Layer',
-	// 			tileSize: L.point(150, 80)
 				tileSize: L.point(256, 256)
 			});
 
-			grid.createTile = function (coords /* , done*/) {
+			grid.createTile = function (coords) {
 				var tile = document.createElement('div');
 				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 				tile.style.border = '2px solid red';
-	// 			tile.style.background = 'white';
-
-// 				console.log('Creating new tile: ', [coords.x, coords.y, coords.z].join(', '));
-
-				// test async
-// 				setTimeout(function () {
-// 					done(null, tile);
-// 				}, Math.random() * 100);
-
 				return tile;
 			};
 
@@ -297,6 +287,7 @@ describe('GridLayer', function () {
 // 			});
 
 			map.options.fadeAnimation = false;
+			map.options.zoomAnimation = false;
 		});
 
 		afterEach(function () {
@@ -306,7 +297,7 @@ describe('GridLayer', function () {
 			counts = undefined;
 		});
 
-		it("Loads 8 256x256px tiles @800x600px zoom 1", function (done) {
+		it("Loads 8 tiles zoom 1", function (done) {
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(8);
@@ -319,7 +310,7 @@ describe('GridLayer', function () {
 			clock.tick(250);
 		});
 
-		it("Loads 5 256x256px tiles @800x600px zoom 0", function (done) {
+		it("Loads 5 tiles zoom 0", function (done) {
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(5);
@@ -331,8 +322,8 @@ describe('GridLayer', function () {
 			map.addLayer(grid).setView([0, 0], 0);
 			clock.tick(250);
 		});
-//
-		it("Loads 16 256x256px tiles @800x600px zoom 10", function (done) {
+
+		it("Loads 16 tiles zoom 10", function (done) {
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -346,50 +337,251 @@ describe('GridLayer', function () {
 			map.addLayer(grid).setView([0, 0], 10);
 			clock.tick(250);
 		});
-//
-		it("Loads 32, unloads 16 256x256px tiles @800x600px zoom 10-11", function (done) {
 
-			// Event handler just for logging
-			grid.on('tileload tileunload', function (ev) {
-				var pending = 0;
-				for (var key in grid._tiles) {
-					if (!grid._tiles[key].loaded) { pending++; }
-				}
-// 				console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
-// 				console.log(counts);
-			});
+		it("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
 
-			function firstTest() {
-// 				console.log('loaded at zoom 10');
-// 				console.log(counts);
+			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
-				grid.on('load', secondTest);
-				map.setZoom(11);
+
+				grid.on('load', function () {
+					expect(counts.tileloadstart).to.be(32);
+					expect(counts.tileload).to.be(32);
+					expect(counts.tileunload).to.be(16);
+					done();
+				});
+
+				map.setZoom(11, {animate: false});
 				clock.tick(250);
-			}
+			});
 
-			function secondTest() {
-
-				var pending = 0, total = 0;
-				for (var key in grid._tiles) {
-					if (!grid._tiles[key].loaded) { pending++; }
-					total++;
-				}
-
-// 				console.log('loaded at zoom 11, pending/total:', pending, '/', total);
-// 				console.log(counts);
-				expect(counts.tileloadstart).to.be(32);
-				expect(counts.tileload).to.be(32);
-				expect(counts.tileunload).to.be(16);
-				done();
-			}
-
-			grid.on('load', firstTest);
 
 			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+					expect(counts.tileloadstart).to.be(32);
+					expect(counts.tileload).to.be(32);
+					expect(counts.tileunload).to.be(16);
+					done();
+				});
+
+				map.setZoom(10, {animate: false});
+				clock.tick(250);
+			});
+
+
+			map.addLayer(grid).setView([0, 0], 11);
+			clock.tick(250);
+		});
+
+
+		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+					expect(counts.tileloadstart).to.be(32);
+					expect(counts.tileload).to.be(32);
+					expect(counts.tileunload).to.be(16);
+					done();
+				});
+
+				map.setZoom(10, {animate: false});
+				clock.tick(250);
+			});
+
+
+			map.addLayer(grid).setView([0, 0], 18);
+			clock.tick(250);
+		});
+
+	});
+
+
+	// NOTE: This test has different behaviour in PhantomJS and graphical
+	// browsers due to CSS animations!
+	describe("number of 256px tiles loaded in synchronous animated grid @800x600px", function () {
+		var clock, grid, counts;
+
+		beforeEach(function () {
+			clock = sinon.useFakeTimers();
+
+			grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256)
+			});
+
+			grid.createTile = function (coords) {
+				var tile = document.createElement('div');
+				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+				tile.style.border = '2px solid red';
+				return tile;
+			};
+
+			counts = {
+				tileload: 0,
+				tileerror: 0,
+				tileloadstart: 0,
+				tileunload: 0
+			};
+
+			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
+// 				console.log(ev.type);
+				counts[ev.type]++;
+			});
+		});
+
+		afterEach(function () {
+			clock.restore();
+			grid.off();
+			grid = undefined;
+			counts = undefined;
+		});
+
+		it("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
+
+			// Event handler just for logging
+// 			grid.on('tileload tileunload load', function (ev) {
+// 				var pending = 0;
+// 				for (var key in grid._tiles) {
+// 					if (!grid._tiles[key].loaded) { pending++; }
+// 				}
+// 				console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
+// // 				console.log(counts);
+// 			});
+
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+
+					// In this particular scenario, the tile unloads happen in the
+					// next render frame after the grid's 'load' event.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileload).to.be(32);
+						expect(counts.tileunload).to.be(16);
+						done();
+					});
+				});
+
+				map.setZoom(11, {animate: true});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it("Loads 32, unloads 16 tiles zooming in 10-18", function (done) {
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+
+					// In this particular scenario, the tile unloads happen in the
+					// next render frame after the grid's 'load' event.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileload).to.be(32);
+						expect(counts.tileunload).to.be(16);
+						done();
+					});
+				});
+
+				map.setZoom(18, {animate: true});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+
+					// In this particular scenario, the tile unloads happen in the
+					// next render frame after the grid's 'load' event.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileload).to.be(32);
+						expect(counts.tileunload).to.be(16);
+						done();
+					});
+				});
+
+				map.setZoom(10, {animate: true});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 11);
+			clock.tick(250);
+		});
+
+		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
+
+			// Event handler just for logging
+// 			grid.on('tileload tileunload load', function (ev) {
+// 				var pending = 0;
+// 				for (var key in grid._tiles) {
+// 					if (!grid._tiles[key].loaded) { pending++; }
+// 				}
+// 				console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
+// // 				console.log(counts);
+// 			});
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+
+					// In this particular scenario, the tile unloads happen in the
+					// next render frame after the grid's 'load' event.
+					L.Util.requestAnimFrame(function () {
+						expect(counts.tileloadstart).to.be(32);
+						expect(counts.tileload).to.be(32);
+						expect(counts.tileunload).to.be(16);
+						done();
+					});
+				});
+
+				map.setZoom(10, {animate: true});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 18);
 			clock.tick(250);
 		});
 

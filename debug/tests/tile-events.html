@@ -34,8 +34,20 @@
 	<div id="map" class="map"></div>
 
 	<table>
-		<tr><th>Start<th>Load<th>Error<th>Unload
-		<tr><td id='tileloadstart'><td id='tileload'><td id='tileerror'><td id='tileunload'>
+		<tr>
+			<th>Start
+			<th>Load
+			<th>Error
+			<th>Unload
+			<th>Visible
+			<th>Grid load
+		<tr>
+			<td id='tileloadstart'>
+			<td id='tileload'>
+			<td id='tileerror'>
+			<td id='tileunload'>
+			<td id='visible'>
+			<td id='load'>
 	</table>
 
 	<p>start = unload + visible on screen</p>
@@ -55,7 +67,7 @@
 			tileSize: L.point(256, 256)
 		});
 
-		grid.createTile = function (coords /* , done*/) {
+		grid.createTile = function (coords/*, done*/) {
 			var tile = document.createElement('div');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 			tile.style.border = '2px solid red';
@@ -64,7 +76,7 @@
 			// test async
 // 			setTimeout(function () {
 // 				done(null, tile);
-// 			}, Math.random() * 1000);
+// 			}, Math.random() * 100);
 
 			return tile;
 		};
@@ -73,11 +85,13 @@
 			tileload: 0,
 			tileerror: 0,
 			tileloadstart: 0,
-			tileunload: 0
+			tileunload: 0,
+			load: 0
 		};
 
-		grid.on('tileload tileunload tileerror tileloadstart', function(ev){
+		grid.on('tileload tileunload tileerror tileloadstart load', function(ev){
 			document.getElementById(ev.type).innerHTML = ++counts[ev.type];
+			document.getElementById('visible').innerHTML = document.querySelectorAll('.leaflet-tile').length
 		});
 
 		map.addLayer(grid);

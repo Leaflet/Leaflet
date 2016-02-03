@@ -445,7 +445,8 @@ L.GridLayer = L.Layer.extend({
 
 	_getTiledPixelBounds: function (center) {
 		var map = this._map,
-		    scale = map.getZoomScale(map.getZoom(), this._tileZoom),
+		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
+		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
 		    halfSize = map.getSize().divideBy(scale * 2);
 
