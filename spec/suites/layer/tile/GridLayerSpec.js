@@ -414,9 +414,11 @@ describe('GridLayer', function () {
 	});
 
 
-	// NOTE: This test has different behaviour in PhantomJS and graphical
-	// browsers due to CSS animations!
 	describe("number of 256px tiles loaded in synchronous animated grid @800x600px", function () {
+
+		// We'll want to skip a couple of things when in PhantomJS :-/
+		it.skipInPhantom = L.Browser.any3d ? it : it.skip;
+
 		var clock, grid, counts;
 
 		beforeEach(function () {
@@ -442,7 +444,6 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
 				counts[ev.type]++;
 			});
 		});
@@ -454,18 +455,20 @@ describe('GridLayer', function () {
 			counts = undefined;
 		});
 
-		it("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
+		// Debug helper
+		function logTiles(ev) {
+			var pending = 0;
+			for (var key in grid._tiles) {
+				if (!grid._tiles[key].loaded) { pending++; }
+			}
+			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
+		}
 
-			// Event handler just for logging
-// 			grid.on('tileload tileunload load', function (ev) {
-// 				var pending = 0;
-// 				for (var key in grid._tiles) {
-// 					if (!grid._tiles[key].loaded) { pending++; }
-// 				}
-// 				console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
-// // 				console.log(counts);
-// 			});
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
+		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
 
+// 			grid.on('tileload tileunload tileloadstart load', logTiles);
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -473,10 +476,24 @@ describe('GridLayer', function () {
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
 
+// 				grid.on('load', logTiles);
 				grid.on('load', function () {
 
-					// In this particular scenario, the tile unloads happen in the
-					// next render frame after the grid's 'load' event.
+					// We're one frame into the zoom animation, there are
+					// 16 tiles for z10 plus 16 tiles for z11 covering the
+					// bounds at the *end* of the zoom-*in* anim
+					expect(counts.tileloadstart).to.be(32);
+					expect(counts.tileload).to.be(32);
+					expect(counts.tileunload).to.be(0);
+
+					// Wait > 250msec for the tile fade-in animation to complete,
+					// which triggers the tile pruning
+					clock.tick(300);
+
+					// After the zoom-in, the 'outside' 12 tiles (not the 4
+					// at the center, still in bounds) have been unloaded.
+					expect(counts.tileunload).to.be(12);
+
 					L.Util.requestAnimFrame(function () {
 						expect(counts.tileloadstart).to.be(32);
 						expect(counts.tileload).to.be(32);
@@ -520,22 +537,46 @@ describe('GridLayer', function () {
 			clock.tick(250);
 		});
 
-		it("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
+		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
+
+// 			grid.on('tileload tileunload load', logTiles);
+
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
 
+// 				grid.on('load', logTiles);
 				grid.on('load', function () {
 
-					// In this particular scenario, the tile unloads happen in the
-					// next render frame after the grid's 'load' event.
+					grid.off('load');
+// 					grid.on('load', logTiles);
+
+					// We're one frame into the zoom animation, there are
+					// 16 tiles for z11 plus 4 tiles for z10 covering the
+					// bounds at the *beginning* of the zoom-*out* anim
+					expect(counts.tileloadstart).to.be(20);
+					expect(counts.tileload).to.be(20);
+					expect(counts.tileunload).to.be(0);
+
+
+					// Wait > 250msec for the tile fade-in animation to complete,
+					// which triggers the tile pruning
+					clock.tick(300);
 					L.Util.requestAnimFrame(function () {
-						expect(counts.tileloadstart).to.be(32);
-						expect(counts.tileload).to.be(32);
 						expect(counts.tileunload).to.be(16);
-						done();
+
+						// The next 'load' event happens when the zoom anim is
+						// complete, and triggers loading of all the z10 tiles.
+						grid.on('load', function () {
+							expect(counts.tileloadstart).to.be(32);
+							expect(counts.tileload).to.be(32);
+							done();
+						});
+
 					});
 				});
 
@@ -548,16 +589,6 @@ describe('GridLayer', function () {
 		});
 
 		it("Loads 32, unloads 16 tiles zooming out 18-10", function (done) {
-
-			// Event handler just for logging
-// 			grid.on('tileload tileunload load', function (ev) {
-// 				var pending = 0;
-// 				for (var key in grid._tiles) {
-// 					if (!grid._tiles[key].loaded) { pending++; }
-// 				}
-// 				console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
-// // 				console.log(counts);
-// 			});
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);

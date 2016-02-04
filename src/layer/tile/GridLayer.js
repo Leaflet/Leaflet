@@ -667,7 +667,14 @@ L.GridLayer = L.Layer.extend({
 		if (this._noTilesToLoad()) {
 			this._loading = false;
 			this.fire('load');
-			this._pruneTiles();
+
+			if (L.Browser.ielt9 || !this._map._fadeAnimated) {
+				L.Util.requestAnimFrame(this._pruneTiles, this);
+			} else {
+				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
+				// to trigger a pruning.
+				setTimeout(L.bind(this._pruneTiles, this), 250);
+			}
 		}
 	},
 
