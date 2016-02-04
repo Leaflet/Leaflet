@@ -71,7 +71,8 @@
 			layers: [osm1],
 			zoom: 5,
 			zoomSnap: 0.25,
-			zoomDelta: 0.5
+			zoomDelta: 0.5,
+			wheelPxPerZoomLevel: 50
 		});
 
 		var map2 = new L.Map('map2', {
@@ -79,7 +80,8 @@
 			layers: [osm2],
 			zoom: 5,
 			zoomSnap: 0,
-			zoomDelta: 0.25
+			zoomDelta: 0.25,
+			wheelPxPerZoomLevel: 50
 		});
 
 		map1.on('zoomend',function(){
