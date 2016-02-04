@@ -136,7 +136,7 @@ L.Polyline = L.Path.extend({
 		var w = this._clickTolerance(),
 		    p = new L.Point(w, w);
 
-		if (this._bounds.isValid()) {
+		if (this._bounds.isValid() && pxBounds.isValid()) {
 			pxBounds.min._subtract(p);
 			pxBounds.max._add(p);
 			this._pxBounds = pxBounds;
