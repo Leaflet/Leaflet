@@ -97,7 +97,7 @@ L.Map.TouchZoom = L.Handler.extend({
 		    .off(document, 'touchmove', this._onTouchMove)
 		    .off(document, 'touchend', this._onTouchEnd);
 
-		// Pinch shall update GridLayers' levels only when snapzoom is off.
+		// Pinch updates GridLayers' levels only when snapZoom is off, so snapZoom becomes noUpdate.
 		this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.snapZoom);
 	}
 });
