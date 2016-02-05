@@ -35,6 +35,7 @@
 
 	<table>
 		<tr>
+			<th>
 			<th>Start
 			<th>Load
 			<th>Error
@@ -42,12 +43,21 @@
 			<th>Visible
 			<th>Grid load
 		<tr>
-			<td id='tileloadstart'>
-			<td id='tileload'>
-			<td id='tileerror'>
-			<td id='tileunload'>
-			<td id='visible'>
-			<td id='load'>
+			<th>Grid
+			<td id='grid-tileloadstart'>
+			<td id='grid-tileload'>
+			<td id='grid-tileerror'>
+			<td id='grid-tileunload'>
+			<td id='grid-visible'>
+			<td id='grid-load'>
+		<tr>
+			<th>Positron
+			<td id='positron-tileloadstart'>
+			<td id='positron-tileload'>
+			<td id='positron-tileerror'>
+			<td id='positron-tileunload'>
+			<td id='positron-visible'>
+			<td id='positron-load'>
 	</table>
 
 	<p>start = unload + visible on screen</p>
@@ -79,11 +89,14 @@
 
 		var map = L.map('map', mapopts);
 
+		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+		}).addTo(map);
+
 		var grid = L.gridLayer({
 			attribution: 'Grid Layer',
 // 			tileSize: L.point(150, 80)
-			tileSize: L.point(256, 256),
-			bounds: L.latLngBounds([-89, -90], [89, 90])
+			tileSize: L.point(256, 256)
 		});
 
 		grid.createTile = function (coords/*, done*/) {
@@ -109,8 +122,12 @@
 		};
 
 		grid.on('tileload tileunload tileerror tileloadstart load', function(ev){
-			document.getElementById(ev.type).innerHTML = ++counts[ev.type];
-			document.getElementById('visible').innerHTML = document.querySelectorAll('.leaflet-tile').length
+			document.getElementById('grid-' + ev.type).innerHTML = ++counts[ev.type];
+			document.getElementById('grid-visible').innerHTML = grid._container.querySelectorAll('.leaflet-tile').length;		});
+
+		positron.on('tileload tileunload tileerror tileloadstart load', function(ev){
+			document.getElementById('positron-' + ev.type).innerHTML = ++counts[ev.type];
+			document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
 		});
 
 		map.addLayer(grid);
