@@ -654,7 +654,7 @@ L.GridLayer = L.Layer.extend({
 			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
 		} else {
 			tile.active = true;
-// 			this._pruneTiles();
+			this._pruneTiles();
 		}
 
 		L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');

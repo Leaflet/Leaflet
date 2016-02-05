@@ -76,7 +76,7 @@
 		var mapopts =  {
 		    center: [35, -122],
 		    zoom : 5.7,
-		    fadeAnimation: false
+		    fadeAnimation: true
 		};
 
 		var kyiv = [50.5, 30.5],
@@ -91,7 +91,7 @@
 
 		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-		}).addTo(map);
+		})
 
 		var grid = L.gridLayer({
 			attribution: 'Grid Layer',
@@ -127,10 +127,35 @@
 
 		positron.on('tileload tileunload tileerror tileloadstart load', function(ev){
 			document.getElementById('positron-' + ev.type).innerHTML = ++counts[ev.type];
-			document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
+// 			document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
 		});
 
-		map.addLayer(grid);
+// 		positron.createTile = function (coords, done) {
+// 			var tile = document.createElement('img');
+//
+// 			L.DomEvent.on(tile, 'load', L.bind(this._tileOnLoad, this, done, tile));
+// 			L.DomEvent.on(tile, 'error', L.bind(this._tileOnError, this, done, tile));
+//
+// 			if (this.options.crossOrigin) {
+// 				tile.crossOrigin = '';
+// 			}
+//
+// 			/*
+// 			Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
+// 			http://www.w3.org/TR/WCAG20-TECHS/H67
+// 			*/
+// 			tile.alt = '';
+//
+// 			var url = this.getTileUrl(coords);
+// 			setTimeout(function() {
+// 				tile.src = url;
+// 			}, 50 + Math.random() * 3950);
+//
+// 			return tile;
+// 		},
+
+		map.addLayer(positron);
+// 		map.addLayer(grid);
 
 
 		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };

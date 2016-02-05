@@ -41,6 +41,7 @@
 		<tr><td>on move</td><td id='move'></td></tr>
 		<tr><td>on moveend</td><td id='moveend'></td></tr>
 		<tr><td>on zoomend</td><td id='zoomend'></td></tr>
+		<tr><td>on grid load</td><td id='load'></td></tr>
 	</div>
 
 	<script type="text/javascript">
@@ -92,6 +93,10 @@
 		attachMoveEvent('move');
 		attachMoveEvent('moveend');
 		attachMoveEvent('zoomend');
+
+		positron.on('load', function(){
+			document.getElementById('load').innerHTML = map.getCenter() + ' z' + map.getZoom();
+		});
 
 	</script>
 </body>
