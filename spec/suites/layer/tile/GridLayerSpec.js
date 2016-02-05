@@ -416,9 +416,6 @@ describe('GridLayer', function () {
 
 	describe("number of 256px tiles loaded in synchronous animated grid @800x600px", function () {
 
-		// We'll want to skip a couple of things when in PhantomJS :-/
-		it.skipInPhantom = L.Browser.any3d ? it : it.skip;
-
 		var clock, grid, counts;
 
 		beforeEach(function () {
@@ -462,6 +459,24 @@ describe('GridLayer', function () {
 				if (!grid._tiles[key].loaded) { pending++; }
 			}
 			console.log(ev.type + ': ', ev.coords, grid._loading, counts, ' pending: ', pending);
+		}
+
+
+		// animationFrame helper, just runs requestAnimFrame() a given number of times
+		function runFrames(n) {
+			return _runFrames(n)();
+		}
+
+		function _runFrames(n) {
+			if (n) {
+				return function () {
+					clock.tick(40); // 40msec/frame ~= 25fps
+					map.fire('_frame');
+					L.Util.requestAnimFrame(_runFrames(n - 1));
+				};
+			} else {
+				return L.Util.falseFn;
+			}
 		}
 
 		// NOTE: This test has different behaviour in PhantomJS and graphical
@@ -616,6 +631,40 @@ describe('GridLayer', function () {
 			clock.tick(250);
 		});
 
+		// NOTE: This test has different behaviour in PhantomJS and graphical
+		// browsers due to CSS animations!
+		it.skipInPhantom("Loads 290, unloads 275 tiles on MAD-TRD flyTo()", function (done) {
+
+			this.timeout(10000); // This test takes longer than usual due to frames
+
+			var mad = [40.40, -3.7], trd = [63.41, 10.41];
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(12);
+				expect(counts.tileload).to.be(12);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				map.on('zoomend', function () {
+					expect(counts.tileloadstart).to.be(290);
+					expect(counts.tileunload).to.be(275);
+					expect(counts.tileload).to.be(290);
+					expect(grid._container.querySelectorAll('div').length).to.be(16);	// 15 + container
+					done();
+				});
+
+				map.flyTo(trd, 12, {animate: true});
+
+// 				map.on('_frame', function () {
+// 					console.log('frame', counts);
+// 				});
+
+				runFrames(500);
+			});
+
+			map.addLayer(grid).setView(mad, 12);
+			clock.tick(250);
+		});
 
 	});
 

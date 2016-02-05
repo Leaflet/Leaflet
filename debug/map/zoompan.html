@@ -68,7 +68,7 @@
 			marker5 = L.marker(trd).addTo(map),
 			marker6 = L.marker(mad).addTo(map);
 
-		var nullIslandKitten = L.imageOverlay('http://placekitten.com/g/300/400', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
+		var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
 
 		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
 		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5, animate: true}); };
