@@ -98,13 +98,16 @@ Happy coding!
 
 ## Running the Tests
 
-To run the tests from the command line,
-install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
-then run:
+To run the tests from the command line, first make sure you have installed all
+the build system requirements with `npm install`. Then, simply run:
 
 ```
-jake test
+npm test
 ```
+
+By default, the tests will run in [PhantomJS](http://phantomjs.org/), and also
+in [SlimerJS](https://slimerjs.org/) if possible. If `npm test` complains about
+PhantomJS, install it manually and make sure it's in your `PATH`.
 
 To run all the tests in actual browsers at the same time, you can do:
 
