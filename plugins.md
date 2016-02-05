@@ -474,6 +474,15 @@ The following plugins change the way that tile layers are loaded into the map.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/TolonUK/Leaflet.EdgeBuffer">Leaflet.EdgeBuffer</a>
+		</td><td>
+			Buffer tiles beyond the edge of the viewport. <a href="http://www.tolon.co.uk/Leaflet.EdgeBuffer/comparison.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/TolonUK">Alex Paterson</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/ghybs/Leaflet.TileLayer.Fallback">Leaflet.TileLayer.Fallback</a>
 		</td><td>
 			Replaces missing Tiles (HTTP 404 Not Found Error) by scaled up equivalent Tiles from lower zooms.
