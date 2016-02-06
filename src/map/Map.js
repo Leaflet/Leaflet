@@ -98,7 +98,7 @@ L.Map = L.Evented.extend({
 		var paddingTL = L.point(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = L.point(options.paddingBottomRight || options.padding || [0, 0]),
 
-		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR));
+		    zoom = this.getBoundsZoom(bounds, false, paddingTL.add(paddingBR), options.step);
 
 		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
 
@@ -328,33 +328,53 @@ L.Map = L.Evented.extend({
 			this.options.maxZoom;
 	},
 
-	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
+	getBoundsZoom: function (bounds, inside, padding, step) { // (LatLngBounds[, Boolean, Point]) -> Number
 		bounds = L.latLngBounds(bounds);
+		padding = L.point(padding || [0, 0]);
+		step = step || 1;
 
-		var zoom = this.getMinZoom() - (inside ? 1 : 0),
-		    maxZoom = this.getMaxZoom(),
+		var minZoom = this.getMinZoom() - (inside ? step : 0),
+		    maxZoom = (isFinite(this.getMaxZoom()) ? this.getMaxZoom() : 18) + (inside ? 0 : step),
 		    size = this.getSize(),
 
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
 
 		    zoomNotFound = true,
+		    zoom,
 		    boundsSize;
 
-		padding = L.point(padding || [0, 0]);
-
 		do {
-			zoom++;
-			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding).floor();
-			zoomNotFound = !inside ? size.contains(boundsSize) : boundsSize.x < size.x || boundsSize.y < size.y;
+			zoom = (minZoom + maxZoom) / 2;
+			zoom = zoom - (((zoom / step) % 1) * step);
 
-		} while (zoomNotFound && zoom <= maxZoom);
+			boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding).floor();
+
+			if (!inside) {
+				if (size.contains(boundsSize)) {
+					minZoom = zoom;
+					zoomNotFound = false;
+				} else {
+					maxZoom = zoom;
+					zoom = minZoom;
+				}
+			} else {
+				 if (boundsSize.contains(size)) {
+					maxZoom = zoom;
+					zoomNotFound = false;
+				} else {
+					minZoom = zoom;
+					zoom = maxZoom;
+				}
+			}
+
+		} while (Math.round((maxZoom - minZoom) / step) > 1);
 
 		if (zoomNotFound && inside) {
 			return null;
 		}
 
-		return inside ? zoom : zoom - 1;
+		return zoom;
 	},
 
 	getSize: function () {
