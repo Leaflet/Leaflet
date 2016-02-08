@@ -54,7 +54,9 @@
 			madBounds = [[40.70, -4.19], [40.12, -3.31]],
 			mad = [40.40, -3.7];
 
-		var map = L.map('map').setView(dc, 10);
+		var map = L.map('map', {
+            zoomSnap: 0.25
+        }).setView(dc, 10);
 
 		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
