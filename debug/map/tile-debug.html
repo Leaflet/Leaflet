@@ -54,6 +54,9 @@
         top: 10px;
         bottom: 0;
     }
+    #zoomtable td {
+        height: 40px;
+    }
     .diag {
         margin-bottom: 20px;
     }
@@ -82,8 +85,8 @@
             <div><button id="stop">stop</button></div>
         </div>
 
-        <table class="diag">
-            <tr><td>on movestart</td><td id='movestart'></td></tr>
+        <table id="zoomtable" class="diag">
+            <tr><td>on movestart</td><td id='movestart' width=230></td></tr>
             <tr><td>on zoomstart</td><td id='zoomstart'></td></tr>
             <tr><td>on move</td><td id='move'></td></tr>
             <tr><td>on moveend</td><td id='moveend'></td></tr>
