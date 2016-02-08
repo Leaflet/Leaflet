@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<meta name="viewport" content="initial-scale=1.0" />
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/mobile.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style>
+	.container {
+		float:left; width: 600px; height: 600px;
+		position: relative;
+		border: 1px solid gray;
+	}
+	#map1, #map2 {
+		position:absolute;
+		top:2em;
+		bottom:2em;
+		left:0;
+		right:0;
+	}
+	#zoom1, #zoom2 {
+		position:absolute;
+		bottom:0;
+		left:0;
+		right:0;
+	}
+	</style>
+</head>
+<body>
+
+	<h1>Zoom delta test.</h1>
+
+	<p>Zooming with touch zoom, box zoom or flyTo then <code>map.stop()</code> must make the zoom level snap to the value of the <code>zoomSnap</code> option. Zoom interactions (keyboard, mouse wheel, zoom control buttons must change the zoom by the amount in the <code>zoomDelta</code> option.</p>
+
+	<div>
+		<button id="sf">SF</button>
+		<button id="trd">TRD</button>
+		<button id="stop">stop</button>
+	</div>
+
+	<div class='container'>
+		Snap: 0.25. Delta: 0.5.
+		<div id="map1"></div>
+		<span id="zoom1"></span>
+	</div>
+	<div class='container'>
+		Snap: 0 (off). Delta: 0.25.
+		<div id="map2"></div>
+		<span id="zoom2"></span>
+	</div>
+
+	<script type="text/javascript">
+
+		var sf = [37.77, -122.42],
+			trd = [63.41, 10.41];
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm1 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			osm2 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			center = L.latLng(63.41, 10.41);
+
+		var map1 = new L.Map('map1', {
+			center: center,
+			layers: [osm1],
+			zoom: 5,
+			zoomSnap: 0.25,
+			zoomDelta: 0.5,
+			wheelPxPerZoomLevel: 50
+		});
+
+		var map2 = new L.Map('map2', {
+			center: center,
+			layers: [osm2],
+			zoom: 5,
+			zoomSnap: 0,
+			zoomDelta: 0.25,
+			wheelPxPerZoomLevel: 50
+		});
+
+		map1.on('zoomend',function(){
+			document.getElementById('zoom1').innerHTML = "Zoom level: " + map1.getZoom();
+		});
+		map2.on('zoomend',function(){
+			document.getElementById('zoom2').innerHTML = "Zoom level: " + map2.getZoom();
+		});
+
+		document.getElementById('sf').onclick   = function () {
+			map1.flyTo(sf, 10, {duration: 20});
+			map2.flyTo(sf, 10, {duration: 20});
+		};
+		document.getElementById('trd').onclick  = function () {
+			map1.flyTo(trd, 10, {duration: 20});
+			map2.flyTo(trd, 10, {duration: 20});
+		};
+		document.getElementById('stop').onclick = function () {
+			map1.stop();
+			map2.stop();
+		};
+
+	</script>
+</body>
+</html>

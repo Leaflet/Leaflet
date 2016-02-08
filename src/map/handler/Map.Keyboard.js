@@ -4,8 +4,7 @@
 
 L.Map.mergeOptions({
 	keyboard: true,
-	keyboardPanOffset: 80,
-	keyboardZoomOffset: 1
+	keyboardPanDelta: 80
 });
 
 L.Map.Keyboard = L.Handler.extend({
@@ -22,8 +21,8 @@ L.Map.Keyboard = L.Handler.extend({
 	initialize: function (map) {
 		this._map = map;
 
-		this._setPanOffset(map.options.keyboardPanOffset);
-		this._setZoomOffset(map.options.keyboardZoomOffset);
+		this._setPanDelta(map.options.keyboardPanDelta);
+		this._setZoomDelta(map.options.zoomDelta);
 	},
 
 	addHooks: function () {
@@ -84,35 +83,35 @@ L.Map.Keyboard = L.Handler.extend({
 		this._map.fire('blur');
 	},
 
-	_setPanOffset: function (pan) {
+	_setPanDelta: function (panDelta) {
 		var keys = this._panKeys = {},
 		    codes = this.keyCodes,
 		    i, len;
 
 		for (i = 0, len = codes.left.length; i < len; i++) {
-			keys[codes.left[i]] = [-1 * pan, 0];
+			keys[codes.left[i]] = [-1 * panDelta, 0];
 		}
 		for (i = 0, len = codes.right.length; i < len; i++) {
-			keys[codes.right[i]] = [pan, 0];
+			keys[codes.right[i]] = [panDelta, 0];
 		}
 		for (i = 0, len = codes.down.length; i < len; i++) {
-			keys[codes.down[i]] = [0, pan];
+			keys[codes.down[i]] = [0, panDelta];
 		}
 		for (i = 0, len = codes.up.length; i < len; i++) {
-			keys[codes.up[i]] = [0, -1 * pan];
+			keys[codes.up[i]] = [0, -1 * panDelta];
 		}
 	},
 
-	_setZoomOffset: function (zoom) {
+	_setZoomDelta: function (zoomDelta) {
 		var keys = this._zoomKeys = {},
 		    codes = this.keyCodes,
 		    i, len;
 
 		for (i = 0, len = codes.zoomIn.length; i < len; i++) {
-			keys[codes.zoomIn[i]] = zoom;
+			keys[codes.zoomIn[i]] = zoomDelta;
 		}
 		for (i = 0, len = codes.zoomOut.length; i < len; i++) {
-			keys[codes.zoomOut[i]] = -zoom;
+			keys[codes.zoomOut[i]] = -zoomDelta;
 		}
 	},
 
