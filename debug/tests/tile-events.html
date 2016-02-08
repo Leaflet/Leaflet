@@ -17,6 +17,12 @@
 		width: auto;
 	}
 
+	.redTile {
+		border: red 1px solid;
+		line-height: 256px;
+		text-align: center;
+	}
+
 	table {
 		border-collapse: collapse;
 	}
@@ -29,7 +35,7 @@
 </head>
 <body>
 
-	<p>Keep track of how many tileload/tileunload events are being fired. The counts should always match. See <a href='https://github.com/Leaflet/Leaflet/issues/4093'>#4093</a></p>
+	<p>Keep track of how many tileload/tileunload events are being fired. The counts should always match. See <a href='https://github.com/Leaflet/Leaflet/issues/4093'>#4093</a>, <a href='https://github.com/Leaflet/Leaflet/issues/4193'>#4193</a></p>
 
 	<div id="map" class="map"></div>
 
@@ -100,20 +106,21 @@
 		});
 
 		grid.createTile = function (coords/*, done*/) {
-			var tile = document.createElement('div');
+			var tile = L.DomUtil.create('div', 'redTile');
 			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-			tile.style.border = '2px solid red';
-// 			tile.style.background = 'white';
-
-			// test async
-// 			setTimeout(function () {
-// 				done(null, tile);
-// 			}, Math.random() * 100);
 
 			return tile;
 		};
 
-		var counts = {
+		var gridCounts = {
+			tileload: 0,
+			tileerror: 0,
+			tileloadstart: 0,
+			tileunload: 0,
+			load: 0
+		};
+
+		var positronCounts = {
 			tileload: 0,
 			tileerror: 0,
 			tileloadstart: 0,
@@ -122,40 +129,17 @@
 		};
 
 		grid.on('tileload tileunload tileerror tileloadstart load', function(ev){
-			document.getElementById('grid-' + ev.type).innerHTML = ++counts[ev.type];
-			document.getElementById('grid-visible').innerHTML = grid._container.querySelectorAll('.leaflet-tile').length;		});
-
-		positron.on('tileload tileunload tileerror tileloadstart load', function(ev){
-			document.getElementById('positron-' + ev.type).innerHTML = ++counts[ev.type];
-// 			document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
+			document.getElementById('grid-' + ev.type).innerHTML = ++gridCounts[ev.type];
+			document.getElementById('grid-visible').innerHTML = grid._container.querySelectorAll('.leaflet-tile').length;
 		});
 
-// 		positron.createTile = function (coords, done) {
-// 			var tile = document.createElement('img');
-//
-// 			L.DomEvent.on(tile, 'load', L.bind(this._tileOnLoad, this, done, tile));
-// 			L.DomEvent.on(tile, 'error', L.bind(this._tileOnError, this, done, tile));
-//
-// 			if (this.options.crossOrigin) {
-// 				tile.crossOrigin = '';
-// 			}
-//
-// 			/*
-// 			Alt tag is set to empty string to keep screen readers from reading URL and for compliance reasons
-// 			http://www.w3.org/TR/WCAG20-TECHS/H67
-// 			*/
-// 			tile.alt = '';
-//
-// 			var url = this.getTileUrl(coords);
-// 			setTimeout(function() {
-// 				tile.src = url;
-// 			}, 50 + Math.random() * 3950);
-//
-// 			return tile;
-// 		},
+		positron.on('tileload tileunload tileerror tileloadstart load', function(ev){
+			document.getElementById('positron-' + ev.type).innerHTML = ++positronCounts[ev.type];
+			document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
+		});
 
 		map.addLayer(positron);
-// 		map.addLayer(grid);
+		map.addLayer(grid);
 
 
 		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
