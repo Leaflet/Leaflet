@@ -533,6 +533,8 @@ L.Map = L.Evented.extend({
 		this._loaded = true;
 		zoom = this._limitZoom(zoom);
 
+		this.fire('viewprereset');
+
 		var zoomChanged = this._zoom !== zoom;
 		this
 			._moveStart(zoomChanged)

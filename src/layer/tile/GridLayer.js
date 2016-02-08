@@ -99,7 +99,8 @@ L.GridLayer = L.Layer.extend({
 
 	getEvents: function () {
 		var events = {
-			viewreset: this._resetAll,
+			viewprereset: this._invalidateAll,
+			viewreset: this._resetView,
 			zoom: this._resetView,
 			moveend: this._onMoveEnd
 		};
@@ -247,6 +248,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_pruneTiles: function () {
+
 		var key, tile;
 
 		var zoom = this._map.getZoom();
@@ -290,7 +292,7 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_resetAll: function () {
+	_invalidateAll: function () {
 		for (var z in this._levels) {
 			L.DomUtil.remove(this._levels[z].el);
 			delete this._levels[z];
@@ -298,7 +300,6 @@ L.GridLayer = L.Layer.extend({
 		this._removeAllTiles();
 
 		this._tileZoom = null;
-		this._resetView();
 	},
 
 	_retainParent: function (x, y, z, minZoom) {
@@ -444,7 +445,8 @@ L.GridLayer = L.Layer.extend({
 
 	_getTiledPixelBounds: function (center) {
 		var map = this._map,
-		    scale = map.getZoomScale(map.getZoom(), this._tileZoom),
+		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
+		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
 		    halfSize = map.getSize().divideBy(scale * 2);
 
@@ -665,6 +667,14 @@ L.GridLayer = L.Layer.extend({
 		if (this._noTilesToLoad()) {
 			this._loading = false;
 			this.fire('load');
+
+			if (L.Browser.ielt9 || !this._map._fadeAnimated) {
+				L.Util.requestAnimFrame(this._pruneTiles, this);
+			} else {
+				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
+				// to trigger a pruning.
+				setTimeout(L.bind(this._pruneTiles, this), 250);
+			}
 		}
 	},
 
