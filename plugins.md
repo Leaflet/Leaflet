@@ -1295,6 +1295,15 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/wandergis">wandergis</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/atlefren/storymap">jquery-storymap</a>
+		</td><td>
+			A jQuery plugin to display several map locations as the user scrolls through paragraphs.
+		</td><td>
+			<a href="https://github.com/atlefren">Atle Frenvik Sveen</a>
+		</td>
+	</tr>
 </table>
 
 
