@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet tile debug</title>
+    <title>Leaflet tile debug</title>
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<link rel="stylesheet" href="../css/screen.css" />
-	<style>
+    <link rel="stylesheet" href="../css/screen.css" />
+    <style>
     * {
         margin: 0;
         padding: 0;
@@ -31,14 +31,15 @@
         pointer-events: none;
         z-index: 1000;
         border-color: rgba(0, 255, 0, 0.4);
-	}
+    }
     #map {
         overflow: visible;
     }
-	button {
-		min-width: 3em;
-		text-align: center;
-	}
+    button {
+        width: 40px;
+        text-align: center;
+        margin-right: 5px;
+    }
     .grid {
         border: red 1px solid;
         line-height: 256px;
@@ -57,12 +58,12 @@
         margin-bottom: 20px;
     }
     tr:nth-child(odd) {
-       background-color: #eee;
+        background-color: #eee;
     }
-	</style>
+    </style>
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
 </head>
 <body>
     <div id="outer"></div>
@@ -70,16 +71,16 @@
     <div id="map"></div>
 
     <div id="stats">
-    	<div class="diag">
-    		<div><button id="dc">DC</button>(flyTo)</div>
-    		<div><button id="sf">SF</button>(setView, 5 sec)</div>
-    		<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
-    		<div><button id="lnd">LND</button>(fract. zoom)</div>
-    		<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
-    		<div><button id="mad">MAD</button>(fitBounds)</div>
-    		<div><button id="nul">NUL</button>(image overlay)</div>
-    		<div><button id="stop">stop</button></div>
-    	</div>
+        <div class="diag">
+            <div><button id="dc">DC</button>(flyTo)</div>
+            <div><button id="sf">SF</button>(setView)</div>
+            <div><button id="trd">TRD</button>(flyTo)</div>
+            <div><button id="lnd">LND</button>(fract. zoom)</div>
+            <div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+            <div><button id="mad">MAD</button>(fitBounds)</div>
+            <div><button id="nul">NUL</button>(image overlay)</div>
+            <div><button id="stop">stop</button></div>
+        </div>
 
         <table class="diag">
             <tr><td>on movestart</td><td id='movestart'></td></tr>
@@ -122,57 +123,46 @@
                 <td id='positron-visible'></td>
             </tr>
             <tr>
-                <td>load</td>
+                <td>grid load</td>
                 <td id='grid-load'></td>
                 <td id='positron-load'></td>
             </tr>
         </table>
+        <button id="reset">reset</button>
     </div>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
-		var kyiv = [50.5, 30.5],
-			lnd = [51.51, -0.12],
-			sf = [37.77, -122.42],
-			dc = [38.91, -77.04],
-			trd = [63.41, 10.41],
-			madBounds = [[40.70, -4.19], [40.12, -3.31]],
-			mad = [40.40, -3.7];
+        var kyiv = [50.5, 30.5],
+            lnd = [51.51, -0.12],
+            sf = [37.77, -122.42],
+            dc = [38.91, -77.04],
+            trd = [63.41, 10.41],
+            madBounds = [[40.70, -4.19], [40.12, -3.31]],
+            mad = [40.40, -3.7];
 
-		var map = L.map('map', {
+        var map = L.map('map', {
             zoomSnap: 0,
             fadeAnimation: false
         }).setView(dc, 10);
 
-        var gridCounts = {
-            tileload: 0,
-            tileerror: 0,
-            tileloadstart: 0,
-            tileunload: 0,
-            load: 0
-        };
+        var gridCounts = {},
+            positronCounts = {};
 
-        var positronCounts = {
-            tileload: 0,
-            tileerror: 0,
-            tileloadstart: 0,
-            tileunload: 0,
-            load: 0
-        };
+        resetCounter();
 
-		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-		}).addTo(map);
+        var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+        });
 
         var grid = L.gridLayer({
             attribution: 'Grid Layer',
             tileSize: L.point(256, 256)
         });
 
-        grid.createTile = function (coords/*, done*/) {
+        grid.createTile = function (coords) {
             var tile = L.DomUtil.create('div', 'grid');
             tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
-
             return tile;
         };
 
@@ -189,40 +179,54 @@
         map.addLayer(positron);
         map.addLayer(grid);
 
-		var marker1 = L.marker(kyiv).addTo(map),
-			marker2 = L.marker(lnd).addTo(map);
-			marker3 = L.marker(dc).addTo(map),
-			marker4 = L.marker(sf).addTo(map),
-			marker5 = L.marker(trd).addTo(map),
-			marker6 = L.marker(mad).addTo(map);
+        var marker1 = L.marker(kyiv).addTo(map),
+            marker2 = L.marker(lnd).addTo(map);
+            marker3 = L.marker(dc).addTo(map),
+            marker4 = L.marker(sf).addTo(map),
+            marker5 = L.marker(trd).addTo(map),
+            marker6 = L.marker(mad).addTo(map);
 
-		var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
+        var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
 
-		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
-		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5, animate: true}); };
-		document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 40}); };
-		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
-		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
-		document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10); };
-		document.getElementById('mad').onclick  = function () { map.fitBounds(madBounds); };
-		document.getElementById('stop').onclick = function () { map.stop(); };
+        document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
+        document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 40, animate: true}); };
+        document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 40}); };
+        document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25, {duration: 40}); };
+        document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25, {duration: 40}); };
+        document.getElementById('mad').onclick  = function () { map.fitBounds(madBounds); };
+        document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10, {duration: 40}); };
+        document.getElementById('stop').onclick = function () { map.stop(); };
 
-		function attachMoveEvent(name) {
-			map.on(name, function(){
-				document.getElementById(name).innerHTML = map.getCenter() + ' z' + map.getZoom();
-			});
-		}
+        document.getElementById('reset').onclick = function () {
+            resetCounter();
+        }
 
-		attachMoveEvent('movestart');
-		attachMoveEvent('zoomstart');
-		attachMoveEvent('move');
-		attachMoveEvent('moveend');
-		attachMoveEvent('zoomend');
+        function attachMoveEvent(name) {
+            map.on(name, function(){
+                document.getElementById(name).innerHTML = map.getCenter() + ' z' + map.getZoom();
+            });
+        }
 
-		positron.on('load', function(){
-			document.getElementById('load').innerHTML = map.getCenter() + ' z' + map.getZoom();
-		});
+        attachMoveEvent('movestart');
+        attachMoveEvent('zoomstart');
+        attachMoveEvent('move');
+        attachMoveEvent('moveend');
+        attachMoveEvent('zoomend');
 
-	</script>
+        positron.on('load', function(){
+            document.getElementById('load').innerHTML = map.getCenter() + ' z' + map.getZoom();
+        });
+
+        function resetCounter() {
+            var fields = ['tileload', 'tileerror', 'tileloadstart', 'tileunload', 'load', 'visible'];
+
+            for (var i = 0; i < fields.length; i++) {
+                gridCounts[fields[i]] = 0;
+                positronCounts[fields[i]] = 0;
+                document.getElementById('positron-' + fields[i]).innerHTML = 0;
+                document.getElementById('grid-' + fields[i]).innerHTML = 0;
+            }
+        };
+    </script>
 </body>
 </html>
