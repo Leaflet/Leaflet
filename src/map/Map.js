@@ -333,7 +333,7 @@ L.Map = L.Evented.extend({
 		bounds = L.latLngBounds(bounds);
 		padding = L.point(padding || [0, 0]);
 
-		var zoom = this.getZoom(),
+		var zoom = this.getZoom() || 0,
 		    min = this.getMinZoom(),
 		    max = this.getMaxZoom(),
 		    nw = bounds.getNorthWest(),
