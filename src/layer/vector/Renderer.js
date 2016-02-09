@@ -63,7 +63,11 @@ L.Renderer = L.Layer.extend({
 
 		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
 
-		L.DomUtil.setTransform(this._container, topLeftOffset, scale);
+		if (L.Browser.any3d) {
+			L.DomUtil.setTransform(this._container, topLeftOffset, scale);
+		} else {
+			L.DomUtil.setPosition(this._container, topLeftOffset);
+		}
 	},
 
 	_reset: function () {
