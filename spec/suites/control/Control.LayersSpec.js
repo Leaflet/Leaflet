@@ -70,4 +70,22 @@ describe("Control.Layers", function () {
 			expect(spy.called).to.not.be.ok();
 		});
 	});
+
+	describe("is removed cleanly", function () {
+		beforeEach(function () {
+			map.setView([0, 0], 14);
+		});
+
+		it("and layers in the control can still be removed", function () {
+			var baseLayer = L.tileLayer('').addTo(map);
+			var layersCtrl = L.control.layers({'Base': baseLayer}).addTo(map);
+			map.removeControl(layersCtrl);
+
+			expect(function () {
+				map.removeLayer(baseLayer);
+			}).to.not.throwException();
+
+		});
+	});
+
 });
