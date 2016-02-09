@@ -181,7 +181,7 @@ L.GridLayer = L.Layer.extend({
 			if (fade < 1) {
 				nextFrame = true;
 			} else {
-				if (tile.active) { willPrune = true; }
+				willPrune = true;
 				tile.active = true;
 			}
 		}
