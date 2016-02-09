@@ -763,6 +763,43 @@ describe("Map", function () {
 
 	});
 
+
+	describe('#fitBounds after layers set', function () {
+		var center = L.latLng(22, 33),
+		    bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122)),
+		    boundsCenter = bounds.getCenter();
+
+		beforeEach(function () {
+			// fitBounds needs a map container with non-null area
+			var container = map.getContainer();
+			container.style.width = container.style.height = "100px";
+			document.body.appendChild(container);
+		});
+
+		afterEach(function () {
+			document.body.removeChild(map.getContainer());
+		});
+
+		it('Snaps to a number after adding tile layer', function (done) {
+			L.Browser.any3d = true;
+			map.addLayer(L.tileLayer('file:///dev/null'));
+			expect(map.getZoom()).to.be(undefined);
+			map.fitBounds(bounds);
+			expect(map.getZoom()).to.be(2);
+			done();
+		});
+
+		it('Snaps to a number after adding marker', function (done) {
+			L.Browser.any3d = true;
+			map.addLayer(L.marker(center));
+			expect(map.getZoom()).to.be(undefined);
+			map.fitBounds(bounds);
+			expect(map.getZoom()).to.be(2);
+			done();
+		});
+
+	});
+
 	describe('#DOM events', function () {
 
 		var c, map;
@@ -925,6 +962,17 @@ describe("Map", function () {
 			var fromZoom = 8.5;
 			var scale = map.getScaleZoom(toZoom, fromZoom);
 			expect(Math.round(map.getZoomScale(scale, fromZoom) * 100) / 100).to.eql(toZoom);
+		});
+	});
+
+	describe('#getZoom', function () {
+		it("returns undefined if map not initialized", function () {
+			expect(map.getZoom()).to.be(undefined);
+		});
+
+		it("returns undefined if map not initialized but layers added", function () {
+			map.addLayer(L.tileLayer('file:///dev/null'));
+			expect(map.getZoom()).to.be(undefined);
 		});
 	});
 });
