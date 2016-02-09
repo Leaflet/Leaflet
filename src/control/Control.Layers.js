@@ -38,6 +38,10 @@ L.Control.Layers = L.Control.extend({
 
 	onRemove: function () {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
+
+		for (var id in this._layers) {
+			this._layers[id].layer.off('add remove', this._onLayerChange, this);
+		}
 	},
 
 	addBaseLayer: function (layer, name) {
