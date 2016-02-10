@@ -172,7 +172,6 @@ exports.test = function(complete, fail) {
 		var child = require('child_process').execFileSync(
 			require('slimerjs').path
 		);
-		var child = require('child_process').exec('killall');
 		console.log('Running tests with both PhantomJS and SlimerJS');
 		testConfig.browsers.push('SlimerJS');
 		autoSlimer = true;
@@ -213,7 +212,7 @@ exports.test = function(complete, fail) {
 	var server = new karma.Server(testConfig, function(exitCode) {
 
 		// Work around https://github.com/karma-runner/karma-slimerjs-launcher/issues/1
-		if (autoSlimer) {	// Only if we were able to run slimerjs and killall
+		if (autoSlimer && require('os').platform() !== 'win32' ) {	// Kill process only in linux/osx, as win32 seems to work fine
 			var slimerjsPids = require('child_process').execSync('ps -Af | grep slimerjs | grep xulrunner | awk \'{print $2}\'').toString();
 			slimerjsPids = slimerjsPids.trim().split('\n');
 			for (var i=0; i<slimerjsPids.length; i++) {
