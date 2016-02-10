@@ -969,7 +969,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/mapshakers/leaflet-icon-pulse">leaflet-icon-pulse</a>
 		</td><td>
-			Renders pulsing icon using CSS3. It can be used for location marker.  
+			Renders pulsing icon using CSS3. It can be used for location marker.
 		</td><td>
 			<a href="https://github.com/mapshakers">mapshakers</a>/
 			<a href="https://github.com/filipzava">Filip Zavadil</a>
@@ -979,7 +979,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/mapshakers/leaflet-mapkey-icon">leaflet-mapkey-icon</a>
 		</td><td>
-			Set of cartographic font icons based on <a href="http://www.mapkeyicons.com">mapkeyicons</a>.  
+			Set of cartographic font icons based on <a href="http://www.mapkeyicons.com">mapkeyicons</a>.
 		</td><td>
 			<a href="https://github.com/mapshakers">mapshakers</a>/
 			<a href="https://github.com/filipzava">Filip Zavadil</a>
@@ -998,7 +998,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/elfalem/Leaflet.curve">Leaflet.curve</a>
 		</td><td>
-			A Leaflet plugin for drawing Bézier curves and other complex shapes. <a href="http://elfalem.github.io/Leaflet.curve/">Demo</a>.  
+			A Leaflet plugin for drawing Bézier curves and other complex shapes. <a href="http://elfalem.github.io/Leaflet.curve/">Demo</a>.
 		</td><td>
 			<a href="https://github.com/elfalem">elfalem</a>
 		</td>
@@ -1302,6 +1302,15 @@ Powerful multi-purpose libraries for data visualization.
 			A jQuery plugin to display several map locations as the user scrolls through paragraphs.
 		</td><td>
 			<a href="https://github.com/atlefren">Atle Frenvik Sveen</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rstudio/leaflet">Leaflet for R</a>
+		</td><td>
+			Allows using Leaflet from within <a href="https://en.wikipedia.org/wiki/R_%28programming_language%29">R</a> programs, a programming language popular for statistical analysis and data mining.
+		</td><td>
+			<a href="https://github.com/rstudio/">RStudio team</a>
 		</td>
 	</tr>
 </table>
