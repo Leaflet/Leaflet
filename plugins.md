@@ -1021,6 +1021,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="http://timwis.com">Tim Wisniewski</a>
 		</td>
 	</tr>
+        <tr>
+                <td>
+                        <a href="https://github.com/lethexa/leaflet-tracksymbol">leaflet-tracksymbol</a>
+                </td><td>
+                        This marker provides a tracksymbol with orientation, velocity-vector and configurable shape.
+                </td><td>
+                        <a href="https://github.com/lethexa">Tim Leerhoff</a>
+                </td>
+        </tr>
 </table>
 
 
