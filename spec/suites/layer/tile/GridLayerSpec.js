@@ -30,6 +30,17 @@ describe('GridLayer', function () {
 			var grid = L.gridLayer().addTo(map);
 			expect(grid.setOpacity(0.5)).to.equal(grid);
 		});
+
+		it('works when map has fadeAnimated=false (IE8 is exempt)', function (done) {
+			map.remove();
+			map = L.map(div, {fadeAnimation: false}).setView([0, 0], 0);
+
+			var grid = L.gridLayer().setOpacity(0.5).addTo(map);
+			grid.on('load', function () {
+				expect(grid._container.style.opacity).to.equal('0.5');
+				done();
+			});
+		});
 	});
 
 	it('positions tiles correctly with wrapping and bounding', function () {
