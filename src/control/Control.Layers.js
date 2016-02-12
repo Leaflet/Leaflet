@@ -13,7 +13,7 @@ L.Control.Layers = L.Control.extend({
 	initialize: function (baseLayers, overlays, options) {
 		L.setOptions(this, options);
 
-		this._layers = {};
+		this._layers = [];
 		this._lastZIndex = 0;
 		this._handlingClick = false;
 
@@ -57,7 +57,8 @@ L.Control.Layers = L.Control.extend({
 	removeLayer: function (layer) {
 		layer.off('add remove', this._onLayerChange, this);
 
-		delete this._layers[L.stamp(layer)];
+		var obj = this._getLayer(L.stamp(layer));
+		this._layers.splice(this._layers.indexOf(obj), 1);
 		return (this._map) ? this._update() : this;
 	},
 
@@ -113,16 +114,22 @@ L.Control.Layers = L.Control.extend({
 		container.appendChild(form);
 	},
 
+	_getLayer: function (id) {
+		for (var i = 0; i <= this._layers.length; i++) {
+			if (L.stamp(this._layers[i].layer) === id) {
+				return this._layers[i];
+			}
+		}
+	},
+
 	_addLayer: function (layer, name, overlay) {
 		layer.on('add remove', this._onLayerChange, this);
 
-		var id = L.stamp(layer);
-
-		this._layers[id] = {
+		this._layers.push({
 			layer: layer,
 			name: name,
 			overlay: overlay
-		};
+		});
 
 		if (this.options.autoZIndex && layer.setZIndex) {
 			this._lastZIndex++;
@@ -162,7 +169,7 @@ L.Control.Layers = L.Control.extend({
 			this._update();
 		}
 
-		var obj = this._layers[L.stamp(e.target)];
+		var obj = this._getLayer(L.stamp(e.target));
 
 		var type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
@@ -231,7 +238,7 @@ L.Control.Layers = L.Control.extend({
 
 		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
-			layer = this._layers[input.layerId].layer;
+			layer = this._getLayer(input.layerId).layer;
 			hasLayer = this._map.hasLayer(layer);
 
 			if (input.checked && !hasLayer) {
@@ -280,7 +287,7 @@ L.Control.Layers = L.Control.extend({
 
 		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
-			layer = this._layers[input.layerId].layer;
+			layer = this._getLayer(input.layerId).layer;
 			input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
 			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
 
