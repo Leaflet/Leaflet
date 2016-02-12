@@ -237,6 +237,9 @@ L.Map = L.Evented.extend({
 
 	stop: function () {
 		this.setZoom(this._limitZoom(this._zoom));
+		if (!this.options.zoomSnap) {
+			this.fire('viewreset');
+		}
 		return this._stop();
 	},
 
