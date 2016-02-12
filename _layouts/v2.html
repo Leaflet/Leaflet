@@ -21,17 +21,17 @@
 
 	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ post.root }}{% endif %}{% endcapture %}
 
-	<link rel="shortcut icon" type="image/x-icon" href="{{ root }}docs/images/favicon.ico" />
+	<link rel="shortcut icon" type="image/x-icon" href="{{ layout.root }}docs/images/favicon.ico" />
 
 	<link href="http://leafletjs.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
 
-	<link rel="stylesheet" href="{{ root }}docs/css/normalize.css" />
-	<link rel="stylesheet" href="{{ root }}docs/css/main.css" />
+	<link rel="stylesheet" href="{{ layout.root }}docs/css/normalize.css" />
+	<link rel="stylesheet" href="{{ layout.root }}docs/css/main.css" />
 
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,300' rel='stylesheet' type='text/css'>
 
-	<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
-	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
+	<script src="{{ layout.root }}docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="{{ layout.root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
@@ -51,7 +51,7 @@
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
 
-<h1><a href="http://leafletjs.com"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
+<h1><a href="http://leafletjs.com"><img src="{{ layout.root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
 <h3 class="tagline">an open-source JavaScript library<br> for mobile-friendly interactive maps</h3>
 
 <ul class="nav">
@@ -59,42 +59,42 @@
 		{% if page.title == nil %}
 			<span>Overview</span>
 		{% else %}
-			<a href="{{ root }}index.html">Overview</a>
+			<a href="{{ layout.root }}index.html">Overview</a>
 		{% endif %}
 	</li>
 	<li>
 		{% if page.title == 'Tutorials' %}
 			<span>Tutorials</span>
 		{% else %}
-			<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
+			<a href="{{ layout.root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
 		{% endif %}
 	</li>
 	<li>
 		{% if page.title == 'Documentation' %}
 			<span>Docs</span>
 		{% else %}
-			<a href="{{ root }}reference.html">Docs</a>
+			<a href="{{ layout.root }}reference.html">Docs</a>
 		{% endif %}
 	</li>
 	<li>
 		{% if page.title == 'Download' %}
 			<span>Download</span>
 		{% else %}
-			<a href="{{ root }}download.html">Download</a>
+			<a href="{{ layout.root }}download.html">Download</a>
 		{% endif %}
 	</li>
 	<li>
 		{% if page.title == 'Plugins' %}
 			<span>Plugins</span>
 		{% else %}
-			<a href="{{ root }}plugins.html">Plugins</a>
+			<a href="{{ layout.root }}plugins.html">Plugins</a>
 		{% endif %}
 	</li>
 	<li>
 		{% if page.title == 'Blog' %}
 			<span>Blog</span>
 		{% else %}
-			<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
+			<a href="{{ layout.root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
 		{% endif %}
 	</li>
 </ul>
@@ -111,9 +111,9 @@
 </div>
 
 <nav class="ext-links">
-  <a class="ext-link twitter" href="http://twitter.com/LeafletJS" title="Follow LeafletJS on Twitter"><img alt="Follow LeafletJS on Twitter" src="{{root}}docs/images/twitter-round.png" width="46" /></a>
-  <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.png" width="46" /></a>
-  <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{root}}docs/images/forum-round.png" width="46" /></a>
+  <a class="ext-link twitter" href="http://twitter.com/LeafletJS" title="Follow LeafletJS on Twitter"><img alt="Follow LeafletJS on Twitter" src="{{ layout.root }}docs/images/twitter-round.png" width="46" /></a>
+  <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{ layout.root }}docs/images/github-round.png" width="46" /></a>
+  <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{ layout.root }}docs/images/forum-round.png" width="46" /></a>
 </nav>
 
 <script>
@@ -154,6 +154,6 @@
 	})();
 </script>
 
-<script type="text/javascript" src="{{ root }}docs/js/docs.js"></script>
+<script type="text/javascript" src="{{ layout.root }}docs/js/docs.js"></script>
 </body>
 </html>
