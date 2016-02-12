@@ -148,7 +148,7 @@
             // zoomSnap: 0,
             // zoomAnimation: false,
             fadeAnimation: false
-        }).setView(dc, 10);
+        }).setView(dc, 16);
 
         var gridCounts = {},
             positronCounts = {},
@@ -172,7 +172,14 @@
                 gridLoadData[indexStr] = 0;
             }
             tile.innerHTML = ++gridLoadData[indexStr];
-            tile.style.backgroundColor = 'rgba(255,0,0,' + gridLoadData[indexStr] / 10 + ')';
+
+            // double tile loading alert
+            // if (gridLoadData[indexStr] > 1) {
+                // alert(indexStr);
+            // }
+
+            // more tile loadings -> more red grid tile
+            tile.style.backgroundColor = 'rgba(255,0,0,' + (gridLoadData[indexStr] - 1) / 5 + ')';
             return tile;
         };
 
@@ -198,7 +205,7 @@
 
         var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
 
-        document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
+        document.getElementById('dc').onclick   = function () { map.flyTo(dc,  7, {duration: 40}); };
         document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 40, animate: true}); };
         document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 40}); };
         document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25, {duration: 40}); };
