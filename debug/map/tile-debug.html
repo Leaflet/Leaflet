@@ -145,12 +145,14 @@
             mad = [40.40, -3.7];
 
         var map = L.map('map', {
-            zoomSnap: 0,
+            // zoomSnap: 0,
+            // zoomAnimation: false,
             fadeAnimation: false
         }).setView(dc, 10);
 
         var gridCounts = {},
-            positronCounts = {};
+            positronCounts = {},
+            gridLoadData = {};
 
         resetCounter();
 
@@ -165,7 +167,12 @@
 
         grid.createTile = function (coords) {
             var tile = L.DomUtil.create('div', 'grid');
-            tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+            var indexStr = [coords.x, coords.y, coords.z].join(', ');
+            if (!(indexStr in gridLoadData)) {
+                gridLoadData[indexStr] = 0;
+            }
+            tile.innerHTML = ++gridLoadData[indexStr];
+            tile.style.backgroundColor = 'rgba(255,0,0,' + gridLoadData[indexStr] / 10 + ')';
             return tile;
         };
 
