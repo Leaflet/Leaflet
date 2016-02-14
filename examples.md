@@ -62,7 +62,7 @@ If markers, popups and vectors are not enough for you, here's a guide for creati
 -->
 
 ***
-If you find that an important tutorial is missing here, let us know!
+If you find that an important tutorial is missing here, [let us know][8]!
 
  [1]: examples/quick-start.html
  [2]: examples/mobile.html
@@ -71,3 +71,4 @@ If you find that an important tutorial is missing here, let us know!
  [5]: http://geojson.org/
  [6]: examples/layers-control.html
  [7]: examples/choropleth.html
+ [8]: https://github.com/Leaflet/Leaflet/blob/master/CONTRIBUTING.md
