@@ -8,6 +8,9 @@ L.Circle = L.CircleMarker.extend({
 	initialize: function (latlng, options) {
 		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
+
+		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
+
 		this._mRadius = this.options.radius;
 	},
 
