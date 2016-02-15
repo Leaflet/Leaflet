@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<p>This test is meant for testing the performance of doubleclick event handler in IE. See <a href='https://github.com/Leaflet/Leaflet/issues/4127'>#4127</a> and <a href='https://github.com/Leaflet/Leaflet/issues/2820'>#2820</a></p>
+
+	<div id="map"></div>
+	<button id="populate">Populate with 100 more markers</button><div id='perf'></div>
+
+	<script type="text/javascript">
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map')
+				.setView([0, 0], 0)
+				.addLayer(osm);
+
+		var markers = new L.FeatureGroup();
+
+		function getEventHandler(i) {
+			return function(ev) { document.getElementById('perf').innerHTML = ('Event on marker ' + i + ': ' + ev.type); }
+		}
+
+
+		function populate() {
+			var start = performance ? performance.now() : 0;
+
+			for (var i = 0; i < 100; i++) {
+				L.marker(getRandomLatLng(map)).addTo(markers).on('dblclick', getEventHandler(i));
+			}
+
+			var end = performance ? performance.now() : 0;
+
+			document.getElementById('perf').innerHTML = 'Adding 100 markers took ' + (end - start) + ' milliseconds.';
+
+			return false;
+		}
+
+		markers.addTo(map);
+
+		populate();
+		L.DomUtil.get('populate').onclick = populate;
+
+		function logEvent(e) { console.log(e.type); }
+
+		// map.on('click', logEvent);
+		// map.on('contextmenu', logEvent);
+
+		// map.on('movestart', logEvent);
+		// map.on('move', logEvent);
+		// map.on('moveend', logEvent);
+
+		// map.on('zoomstart', logEvent);
+		// map.on('zoomend', logEvent);
+
+	</script>
+</body>
+</html>
