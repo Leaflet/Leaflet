@@ -6,6 +6,8 @@ L.Circle = L.Path.extend({
 	initialize: function (latlng, radius, options) {
 		L.Path.prototype.initialize.call(this, options);
 
+		if (isNaN(radius)) { throw new Error('Circle radius cannot be NaN'); }
+
 		this._latlng = L.latLng(latlng);
 		this._mRadius = radius;
 	},
