@@ -50,6 +50,17 @@ A case study of creating a colorful interactive [choropleth map](http://en.wikip
 
 A tutorial on how to manage groups of layers and use the layer switching control.
 
+***
+
+The following tutorials use features available **only in Leaflet 1.0**:
+
+***
+[<img src="docs/images/labels-pane.png" class="example-img bordered-img" />][8]
+
+### [Working with map panes][8]
+
+How the default map panes work to display overlays on top of tiles, and how to override that.
+
 <!--***
 <h3><a class="noimpl" href="#">Custom Controls</a></h3>
 
@@ -71,3 +82,4 @@ If you find that an important tutorial is missing here, let us know!
  [5]: http://geojson.org/
  [6]: examples/layers-control.html
  [7]: examples/choropleth.html
+ [8]: examples/map-panes.html
