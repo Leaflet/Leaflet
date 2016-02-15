@@ -309,8 +309,10 @@ describe("Map", function () {
 			map.on('layeradd', spy);
 			map.addLayer(layer);
 			map.removeLayer(layer);
-			map.setView([0, 0], 0);
-			expect(spy.called).not.to.be.ok();
+			map.on('layerremove', function () {
+				map.setView([0, 0], 0);
+				expect(spy.called).not.to.be.ok();
+			});
 		});
 
 		it("adds the layer before firing layeradd", function (done) {
