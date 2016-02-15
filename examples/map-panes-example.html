@@ -40,6 +40,10 @@
 	
 		geojson = L.geoJson(euCountries).addTo(map);
 		
+		geojson.eachLayer(function (layer) {
+			layer.bindPopup(layer.feature.properties.name);
+		});
+
 		map.setView({ lat: 47.040182144806664, lng: 9.667968750000002 }, 4);
 	</script>
 </body>
