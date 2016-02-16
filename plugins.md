@@ -1030,6 +1030,15 @@ These plugins provide new markers or news ways of converting abstract data into 
                         <a href="https://github.com/lethexa">Tim Leerhoff</a>
                 </td>
         </tr>
+        <tr>
+                <td>
+                        <a href="https://github.com/PowerPan/leaflet-ais-tracksymbol">leaflet-ais-tracksymbol</a>
+                </td><td>
+                        This Plugin provides a AIS Layer with tracksymbol based on <a href="https://github.com/lethexa/leaflet-tracksymbol">leaflet-tracksymbol</a>
+                </td><td>
+                        <a href="https://github.com/powerpan">Johannes Rudolph</a>
+                </td>
+        </tr>
 </table>
 
 
