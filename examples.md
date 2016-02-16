@@ -51,6 +51,13 @@ A case study of creating a colorful interactive [choropleth map](http://en.wikip
 A tutorial on how to manage groups of layers and use the layer switching control.
 
 ***
+[<img src="examples/crs-simple/thumbnail.png" class="example-img bordered-img" />][6]
+
+### [Non-geographical maps][9]
+
+A primer on `L.CRS.Simple`, how to make maps with no concept of "latitude" or "longitude".
+
+***
 
 The following tutorials use features available **only in Leaflet 1.0**:
 
@@ -83,3 +90,4 @@ If you find that an important tutorial is missing here, let us know!
  [6]: examples/layers-control.html
  [7]: examples/choropleth.html
  [8]: examples/map-panes.html
+ [9]: examples/crs-simple/crs-simple.html

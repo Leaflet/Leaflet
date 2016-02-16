@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet Layers Control Example</title>
+	<title>Leaflet Map Panes Example</title>
 	<meta charset="utf-8" />
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,22 +13,22 @@
 
 	<script src="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.js"></script>
 	<script type="text/javascript" src="eu-countries.js"></script>
-	
-	<script>
-	
-		var map = L.map('map');
-	
-		map.createPane('labels');    
-		
-		// This pane is above markers but below popups
-		map.getPane('labels').style.zIndex = 650;	
-		
-		// Layers in this pane are non-interactive and do not obscure mouse/touch events
-		map.getPane('labels').style.pointerEvents = 'none';	
 
-		
+	<script>
+
+		var map = L.map('map');
+
+		map.createPane('labels');
+
+		// This pane is above markers but below popups
+		map.getPane('labels').style.zIndex = 650;
+
+		// Layers in this pane are non-interactive and do not obscure mouse/touch events
+		map.getPane('labels').style.pointerEvents = 'none';
+
+
 		var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
-		
+
 		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}.png', {
 			attribution: cartodbAttribution
 		}).addTo(map);
@@ -37,9 +37,9 @@
 			attribution: cartodbAttribution,
 			pane: 'labels'
 		}).addTo(map);
-	
+
 		geojson = L.geoJson(euCountries).addTo(map);
-		
+
 		geojson.eachLayer(function (layer) {
 			layer.bindPopup(layer.feature.properties.name);
 		});
