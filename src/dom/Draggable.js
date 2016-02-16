@@ -45,7 +45,6 @@ L.Draggable = L.Evented.extend({
 
 	_onDown: function (e) {
 		L.DomEvent.stopPropagation(e);
-
 		this._moved = false;
 
 		if (L.DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
