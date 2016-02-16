@@ -7,6 +7,12 @@ describe('Circle', function () {
 			expect(circle.getRadius()).to.eql(10);
 		});
 
+		it('throws error if radius is NaN', function () {
+			expect(function () {
+				L.circle([0, 0], NaN);
+			}).to.throwException('Circle radius cannot be NaN');
+		});
+
 	});
 
 	describe('#getBounds', function () {

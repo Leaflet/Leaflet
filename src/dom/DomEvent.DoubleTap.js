@@ -57,18 +57,32 @@ L.extend(L.DomEvent, {
 
 		obj[pre + touchstart + id] = onTouchStart;
 		obj[pre + touchend + id] = onTouchEnd;
+		obj[pre + 'dblclick' + id] = handler;
 
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
+
+		// On some platforms (notably, chrome on win10 + touchscreen + mouse),
+		// the browser doesn't fire touchend/pointerup events but does fire
+		// native dblclicks. See #4127.
+		if (!L.Browser.edge) {
+			obj.addEventListener('dblclick', handler, false);
+		}
+
 		return this;
 	},
 
 	removeDoubleTapListener: function (obj, id) {
 		var pre = '_leaflet_',
-		    touchend = obj[pre + this._touchend + id];
+		    touchstart = obj[pre + this._touchstart + id],
+		    touchend = obj[pre + this._touchend + id],
+		    dblclick = obj[pre + 'dblclick' + id];
 
-		obj.removeEventListener(this._touchstart, obj[pre + this._touchstart + id], false);
+		obj.removeEventListener(this._touchstart, touchstart, false);
 		obj.removeEventListener(this._touchend, touchend, false);
+		if (!L.Browser.edge) {
+			obj.removeEventListener('dblclick', dblclick, false);
+		}
 
 		return this;
 	}
