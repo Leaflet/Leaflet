@@ -44,8 +44,6 @@ L.Draggable = L.Evented.extend({
 	},
 
 	_onDown: function (e) {
-		L.DomEvent.stopPropagation(e);
-
 		this._moved = false;
 
 		if (L.DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
@@ -61,6 +59,8 @@ L.Draggable = L.Evented.extend({
 		L.DomUtil.disableTextSelection();
 
 		if (this._moving) { return; }
+
+		L.DomEvent.stopPropagation(e);
 
 		this.fire('down');
 
