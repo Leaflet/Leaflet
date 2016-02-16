@@ -51,11 +51,18 @@ A case study of creating a colorful interactive [choropleth map](http://en.wikip
 A tutorial on how to manage groups of layers and use the layer switching control.
 
 ***
-[<img src="examples/crs-simple/thumbnail.png" class="example-img bordered-img" />][6]
+[<img src="examples/crs-simple/thumbnail.png" class="example-img bordered-img" />][9]
 
 ### [Non-geographical maps][9]
 
 A primer on `L.CRS.Simple`, how to make maps with no concept of "latitude" or "longitude".
+
+***
+[<img src="examples/custom-crs/thumbnail.png" class="example-img bordered-img" />][10]
+
+### [Custom coordinate systems][10]
+
+Fun with math, greek letters, and pixels.
 
 ***
 
@@ -91,3 +98,4 @@ If you find that an important tutorial is missing here, let us know!
  [7]: examples/choropleth.html
  [8]: examples/map-panes.html
  [9]: examples/crs-simple/crs-simple.html
+ [10]: examples/custom-crs/custom-crs.html
