@@ -78,11 +78,13 @@ L.Class.extend = function (props) {
 // method for adding properties to prototype
 L.Class.include = function (props) {
 	L.extend(this.prototype, props);
+	return this;
 };
 
 // merge new default options to the Class
 L.Class.mergeOptions = function (options) {
 	L.extend(this.prototype.options, options);
+	return this;
 };
 
 // add a constructor hook
@@ -95,4 +97,5 @@ L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
 
 	this.prototype._initHooks = this.prototype._initHooks || [];
 	this.prototype._initHooks.push(init);
+	return this;
 };
