@@ -1,6 +1,7 @@
 ---
-layout: default
+layout: v2
 title: Tutorials
+bodyclass: examples
 ---
 
 ## Leaflet Tutorials
@@ -12,7 +13,7 @@ Every tutorial here comes with step-by-step code explanation and is easy enough 
 
 ### [Leaflet Quick Start Guide][1]
 
-A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with CloudMade tiles) on your page, working with markers, polylines and popups, and dealing with events.
+A simple step-by-step guide that will quickly get you started with Leaflet basics, including setting up a Leaflet map (with Mapbox tiles) on your page, working with markers, polylines and popups, and dealing with events.
 
 ***
 [<img src="docs/images/mobile.png" class="example-img" />][2]
@@ -49,6 +50,24 @@ A case study of creating a colorful interactive [choropleth map](http://en.wikip
 
 A tutorial on how to manage groups of layers and use the layer switching control.
 
+***
+[<img src="examples/crs-simple/thumbnail.png" class="example-img bordered-img" />][6]
+
+### [Non-geographical maps][9]
+
+A primer on `L.CRS.Simple`, how to make maps with no concept of "latitude" or "longitude".
+
+***
+
+The following tutorials use features available **only in Leaflet 1.0**:
+
+***
+[<img src="docs/images/labels-pane.png" class="example-img bordered-img" />][8]
+
+### [Working with map panes][8]
+
+How the default map panes work to display overlays on top of tiles, and how to override that.
+
 <!--***
 <h3><a class="noimpl" href="#">Custom Controls</a></h3>
 
@@ -70,3 +89,5 @@ If you find that an important tutorial is missing here, let us know!
  [5]: http://geojson.org/
  [6]: examples/layers-control.html
  [7]: examples/choropleth.html
+ [8]: examples/map-panes.html
+ [9]: examples/crs-simple/crs-simple.html
