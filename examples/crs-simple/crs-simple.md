@@ -91,7 +91,6 @@ The debate about whether `[lng, lat]` or `[lat, lng]` or `[y, x]` or `[x, y]` [i
 
 If working with `[y, x]` coordinates with something named `L.LatLng` doesn't make much sense to you, you can easily create wrappers for them:
 
-	var YX = L.LatLng;
 	var yx = L.latLng;
 
 	var xy = function(x, y) {

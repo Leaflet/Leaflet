@@ -21,7 +21,6 @@
 			minZoom: -3
 		});
 
-		var YX = L.LatLng;
 		var yx = L.latLng;
 
 		var xy = function(x, y) {
@@ -46,7 +45,7 @@
 
 		var travel = L.polyline([sol, deneb]).addTo(map);
 
-		map.setView( xy(120, 70), 1);
+		map.setView(xy(120, 70), 1);
 
 	</script>
 </body>
