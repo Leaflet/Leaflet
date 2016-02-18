@@ -65,4 +65,54 @@ describe("Control.Attribution", function () {
 		});
 	});
 
+	describe('on layer add/remove', function () {
+		it('changes text', function () {
+			var fooLayer = new L.Layer();
+			var barLayer = new L.Layer();
+			var bazLayer = new L.Layer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			barLayer.getAttribution = function () { return 'bar'; };
+			bazLayer.getAttribution = function () { return 'baz'; };
+
+			expect(container.innerHTML).to.eql('prefix');
+			map.addLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.addLayer(barLayer);
+			expect(container.innerHTML).to.eql('prefix | foo, bar');
+			map.addLayer(bazLayer);
+			expect(container.innerHTML).to.eql('prefix | foo, bar, baz');
+
+			map.removeLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | bar, baz');
+			map.removeLayer(barLayer);
+			expect(container.innerHTML).to.eql('prefix | baz');
+			map.removeLayer(bazLayer);
+			expect(container.innerHTML).to.eql('prefix');
+		});
+
+		it('keeps count of duplicated attributions', function () {
+			var fooLayer = new L.Layer();
+			var fo2Layer = new L.Layer();
+			var fo3Layer = new L.Layer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			fo2Layer.getAttribution = function () { return 'foo'; };
+			fo3Layer.getAttribution = function () { return 'foo'; };
+
+			expect(container.innerHTML).to.eql('prefix');
+			map.addLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.addLayer(fo2Layer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.addLayer(fo3Layer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+
+			map.removeLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.removeLayer(fo2Layer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.removeLayer(fo3Layer);
+			expect(container.innerHTML).to.eql('prefix');
+		});
+	});
+
 });

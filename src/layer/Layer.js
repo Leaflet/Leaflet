@@ -73,6 +73,10 @@ L.Map.include({
 			layer.beforeAdd(this);
 		}
 
+		if (layer.getAttribution && this.attributionControl) {
+			this.attributionControl.addAttribution(layer.getAttribution());
+		}
+
 		this.whenReady(layer._layerAdd, layer);
 
 		return this;
