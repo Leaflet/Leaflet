@@ -15,6 +15,7 @@ L.Control.Attribution = L.Control.extend({
 	},
 
 	onAdd: function (map) {
+		map.attributionControl = this;
 		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
 		if (L.DomEvent) {
 			L.DomEvent.disableClickPropagation(this._container);
@@ -92,7 +93,7 @@ L.Map.mergeOptions({
 
 L.Map.addInitHook(function () {
 	if (this.options.attributionControl) {
-		this.attributionControl = (new L.Control.Attribution()).addTo(this);
+		new L.Control.Attribution().addTo(this);
 	}
 });
 
