@@ -22,9 +22,10 @@
 	    ie3d = ie && ('transition' in doc.style),
 	    webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23,
 	    gecko3d = 'MozPerspective' in doc.style,
-	    opera12 = 'OTransition' in doc.style;
+	    opera12 = 'OTransition' in doc.style,
+	maxTouchPoints = navigator.MaxTouchPoints || navigator.msMaxTouchPoints || 0;
 
-	var touch = !window.L_NO_TOUCH && !phantomjs && (pointer || 'ontouchstart' in window ||
+	var touch = !window.L_NO_TOUCH && !phantomjs && maxTouchPoints > 0 && (pointer || 'ontouchstart' in window ||
 			(window.DocumentTouch && document instanceof window.DocumentTouch));
 
 	L.Browser = {
