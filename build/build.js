@@ -163,9 +163,21 @@ exports.build = function (callback, version, compsBase32, buildName) {
 
 exports.test = function(complete, fail) {
 	var karma = require('karma'),
-	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
+	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'},
+	    autoSlimer = false;
 
 	testConfig.browsers = ['PhantomJS'];
+
+	try {
+		var child = require('child_process').execFileSync(
+			require('slimerjs').path
+		);
+		console.log('Running tests with both PhantomJS and SlimerJS');
+		testConfig.browsers.push('SlimerJS');
+		autoSlimer = true;
+	} catch(e) {
+		console.log('Cannot start SlimerJS, will run tests only in PhantomJS');
+	}
 
 	function isArgv(optName) {
 		return process.argv.indexOf(optName) !== -1;
@@ -198,6 +210,19 @@ exports.test = function(complete, fail) {
 	console.log('Running tests...');
 
 	var server = new karma.Server(testConfig, function(exitCode) {
+
+		// Work around https://github.com/karma-runner/karma-slimerjs-launcher/issues/1
+		if (autoSlimer && require('os').platform() !== 'win32' ) {	// Kill process only in linux/osx, as win32 seems to work fine
+			var slimerjsPids = require('child_process').execSync('ps -Af | grep slimerjs | grep xulrunner | awk \'{print $2}\'').toString();
+			slimerjsPids = slimerjsPids.trim().split('\n');
+			for (var i=0; i<slimerjsPids.length; i++) {
+				try {
+					var pid = Number(slimerjsPids[i]);
+					require('child_process').execSync('ps -A | grep ' + pid + ' && kill ' + pid);
+				} catch(e) {}
+			}
+		}
+
 		if (!exitCode) {
 			console.log('\tTests ran successfully.\n');
 			complete();
