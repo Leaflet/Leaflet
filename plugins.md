@@ -2496,6 +2496,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/unbam">Masashi Takeshita</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/NBTSolutions/Leaflet.Dialog">Leaflet.Dialog</a>
+		</td>
+		<td>
+			A simple resizable, movable, customizable dialog box. (<a href="http://nbtsolutions.github.io/Leaflet.Dialog/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/NBTSolutions">NBT Solutions</a>
+		</td>
+	</tr>
 </table>
 
 
