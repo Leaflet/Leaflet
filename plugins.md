@@ -1342,6 +1342,15 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/codeofsumit/leaflet.pm">Leaflet.PM</a>
+		</td><td>
+			Polygon Management specifically for Leaflet 1.0. Draw, Edit and listen to changes.
+		</td><td>
+			<a href="https://github.com/codeofsumit">Sumit Kumar</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/Wildhoney/Leaflet.FreeDraw">Leaflet.FreeDraw</a>
 		</td><td>
 			Zoopla inspired freehand polygon creation using Leaflet.js and D3.
