@@ -3073,6 +3073,15 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="http://www.sparkgeo.com/">Sparkgeo</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="http://drupal.org/project/leaflet">Leaflet for Drupal</a>
+		</td><td>
+			A Drupal (7.x and 8.x) module to integrate Leaflet maps in your Drupal site. Contains a field formatter to show a map for fields containing geospatial data, Views integration to plot data on a map, and a lightweight and easy to use API. Currently used by over 10.000 sites.
+		</td><td>
+			<a href="http://marzeelabs.org">Marzee Labs</a>, and more maintainers listed at <a href="http://drupal.org/project/leaflet">drupal.org</a>
+		</td>
+	</tr>
 </table>
 
 
