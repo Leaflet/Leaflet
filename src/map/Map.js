@@ -742,6 +742,7 @@ L.Map = L.Evented.extend({
 	},
 
 	whenReady: function (callback, context) {
+		callback = callback || function(e) {};
 		if (this._loaded) {
 			callback.call(context || this, {target: this});
 		} else {
