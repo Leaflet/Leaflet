@@ -2374,6 +2374,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 	</tr>
 		<tr>
 		<td>
+			<a href="https://github.com/ahalota/Leaflet.CountrySelect/">Leaflet.CountrySelect</a>
+		</td><td>
+			Control with menu of all countries, and an event listener that returns
+			the selected country as a GeoJSON feature (<a href="http://ahalota.github.io/Leaflet.CountrySelect/demo.html">demo</a>)
+		</td><td>
+			<a href="https://github.com/ahalota/">Anika Halota</a>
+		</td>
+			
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/turbo87/leaflet-sidebar/">leaflet-sidebar</a>
 		</td><td>
 			A responsive sidebar plugin.
