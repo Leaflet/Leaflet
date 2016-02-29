@@ -12,11 +12,11 @@
     "karma-coverage": "~0.5.1",
     "karma-firefox-launcher": "~0.1.6",
     "karma-mocha": "~0.2.0",
-    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-phantomjs-launcher": "^1.0.0",
     "karma-safari-launcher": "~0.1.1",
     "magic-string": "^0.7.0",
     "mocha": "~2.3.0",
-    "phantomjs": "^1.9.18",
+    "phantomjs-prebuilt": "^2.1.4",
     "uglify-js": "~2.4.23"
   },
   "main": "dist/leaflet-src.js",
