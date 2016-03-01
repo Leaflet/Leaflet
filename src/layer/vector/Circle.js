@@ -5,7 +5,11 @@
 
 L.Circle = L.CircleMarker.extend({
 
-	initialize: function (latlng, options) {
+	initialize: function (latlng, options, legacyOptions) {
+		if (typeof options === 'number') {
+			// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
+			options = L.extend({}, legacyOptions, {radius: options});
+		}
 		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
 
@@ -70,9 +74,5 @@ L.Circle = L.CircleMarker.extend({
 });
 
 L.circle = function (latlng, options, legacyOptions) {
-	if (typeof options === 'number') {
-		// Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-		options = L.extend({}, legacyOptions, {radius: options});
-	}
-	return new L.Circle(latlng, options);
+	return new L.Circle(latlng, options, legacyOptions);
 };
