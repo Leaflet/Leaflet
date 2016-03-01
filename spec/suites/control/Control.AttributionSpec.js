@@ -7,8 +7,16 @@ describe("Control.Attribution", function () {
 		control = new L.Control.Attribution({
 			prefix: 'prefix'
 		}).addTo(map);
+		map.setView([0, 0], 1);
 		container = control.getContainer();
 	});
+
+	function dummyLayer() {
+		var layer = new L.Layer();
+		layer.onAdd = function () { };
+		layer.onRemove = function () { };
+		return layer;
+	}
 
 	it("contains just prefix if no attributions added", function () {
 		expect(container.innerHTML).to.eql('prefix');
@@ -67,9 +75,9 @@ describe("Control.Attribution", function () {
 
 	describe('on layer add/remove', function () {
 		it('changes text', function () {
-			var fooLayer = new L.Layer();
-			var barLayer = new L.Layer();
-			var bazLayer = new L.Layer();
+			var fooLayer = dummyLayer();
+			var barLayer = dummyLayer();
+			var bazLayer = dummyLayer();
 			fooLayer.getAttribution = function () { return 'foo'; };
 			barLayer.getAttribution = function () { return 'bar'; };
 			bazLayer.getAttribution = function () { return 'baz'; };
@@ -91,9 +99,9 @@ describe("Control.Attribution", function () {
 		});
 
 		it('keeps count of duplicated attributions', function () {
-			var fooLayer = new L.Layer();
-			var fo2Layer = new L.Layer();
-			var fo3Layer = new L.Layer();
+			var fooLayer = dummyLayer();
+			var fo2Layer = dummyLayer();
+			var fo3Layer = dummyLayer();
 			fooLayer.getAttribution = function () { return 'foo'; };
 			fo2Layer.getAttribution = function () { return 'foo'; };
 			fo3Layer.getAttribution = function () { return 'foo'; };
