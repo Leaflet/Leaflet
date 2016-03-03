@@ -1607,6 +1607,15 @@ Plugins that search for overlays and enhance how to display information about th
 			<a href="https://github.com/utahemre">Yunus Emre Özkaya</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/maydemirx/leaflet-tag-filter-button">L.tagFilterButton</a>
+		</td><td>
+			LeafLet marker filtering by tags
+		</td><td>
+			<a href="https://github.com/maydemirx">Mehmet Aydemir</a>
+		</td>
+	</tr>
 </table>
 
 
