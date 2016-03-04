@@ -1600,6 +1600,16 @@ Plugins that search for overlays and enhance how to display information about th
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/perliedman/leaflet-underneath">Leaflet Underneath</a>
+		</td><td>
+			Find interesting features near a location using Mapbox Vector Tiles data, to add
+			interactive functionality to a tile layer with speed and limited bandwidth.
+		</td><td>
+			<a href="http://github.com/perliedman">Per Liedman</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/utahemre/Leaflet.GeoJSONAutocomplete">Leaflet.GeoJSONAutocomplete</a>
 		</td><td>
 			Leaflet Autocomplete For Remote Searching with GeoJSON Services.
