@@ -9,12 +9,12 @@
 	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.css" />
 </head>
 <body>
-	<div id="map" style="width: 600px; height: 400px"></div>
+	<div id="mapid" style="width: 600px; height: 400px"></div>
 
 	<script src="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.js"></script>
 	<script>
 
-		var map = L.map('map').setView([51.505, -0.09], 13);
+		var mymap = L.map('mapid').setView([51.505, -0.09], 13);
 
 		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
 			maxZoom: 18,
@@ -22,23 +22,23 @@
 				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 			id: 'mapbox.streets'
-		}).addTo(map);
+		}).addTo(mymap);
 
 
-		L.marker([51.5, -0.09]).addTo(map)
+		L.marker([51.5, -0.09]).addTo(mymap)
 			.bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
 
 		L.circle([51.508, -0.11], 500, {
 			color: 'red',
 			fillColor: '#f03',
 			fillOpacity: 0.5
-		}).addTo(map).bindPopup("I am a circle.");
+		}).addTo(mymap).bindPopup("I am a circle.");
 
 		L.polygon([
 			[51.509, -0.08],
 			[51.503, -0.06],
 			[51.51, -0.047]
-		]).addTo(map).bindPopup("I am a polygon.");
+		]).addTo(mymap).bindPopup("I am a polygon.");
 
 
 		var popup = L.popup();
@@ -47,10 +47,10 @@
 			popup
 				.setLatLng(e.latlng)
 				.setContent("You clicked the map at " + e.latlng.toString())
-				.openOn(map);
+				.openOn(mymap);
 		}
 
-		map.on('click', onMapClick);
+		mymap.on('click', onMapClick);
 
 	</script>
 </body>
