@@ -60,8 +60,6 @@ L.Draggable = L.Evented.extend({
 
 		if (this._moving) { return; }
 
-		L.DomEvent.stopPropagation(e);
-
 		this.fire('down');
 
 		var first = e.touches ? e.touches[0] : e;
