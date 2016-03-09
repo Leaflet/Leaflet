@@ -2106,7 +2106,7 @@ Display two maps at once. One of them might be a different size and zoom level, 
 		<td>
 			<a href="https://github.com/chriswhong/leaflet-globeminimap/">Leaflet.GlobeMiniMap</a>
 		</td><td>
-			Simple minimap control that places a 3D Globe in the corner of your map, centered on the same location as the main map.
+			Simple minimap control that places a 3D Globe in the corner of your map, centered on the same location as the main map (<a href='http://chriswhong.github.io/leaflet-globeminimap/example/'>demo</a>).
 		</td><td>
 			<a href="https://github.com/chriswhong">Chris Whong</a>
 		</td>
