@@ -28,12 +28,12 @@
 		map.addLayer(osm);
 
 		var	bounds = new L.LatLngBounds(
-      		new L.LatLng(40.71222,-74.22655),
-      		new L.LatLng(40.77394,-74.12544));
+      		new L.LatLng(51.284581,-0.960963),
+      		new L.LatLng(51.284064,-0.960008));
 
 		map.fitBounds(bounds);
 
-		var overlay = new L.ImageOverlay("https://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg", bounds, {
+		var overlay = new L.ImageOverlay("http://www.accidental.com.au/media/catalog/product/meeting-point.jpg", bounds, {
 			opacity: 0.5,
 			interactive: true
 		});
