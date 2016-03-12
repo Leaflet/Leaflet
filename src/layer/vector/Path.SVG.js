@@ -129,7 +129,7 @@ L.Path = L.Path.extend({
 	},
 
 	_onMouseClick: function (e) {
-		if (this._map.dragging && this._map.dragging.moved()) { return; }
+		if (!e._simulated && this._map.dragging && this._map.dragging.moved()) { return; }
 
 		this._fireMouseEvent(e);
 	},
