@@ -1030,6 +1030,17 @@ These plugins provide new markers or news ways of converting abstract data into 
                         <a href="https://github.com/lethexa">Tim Leerhoff</a>
                 </td>
         </tr>
+	<tr>
+		<td>
+			<a href="https://github.com/wwwouaiebe/leaflet.marker.pin">leaflet.marker.pin</a>
+		</td>
+		<td>
+			Pins are markers that can be added and edited on the map by the end user. <a href="http://wwwouaiebe.github.io/leaflet.marker.pin/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/wwwouaiebe">Christian Guyette</a>
+		</td>
+	</tr>
 </table>
 
 
