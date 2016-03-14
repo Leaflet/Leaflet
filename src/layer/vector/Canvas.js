@@ -74,6 +74,11 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_updateStyle: function (layer) {
+
+		if (layer.options.dashArray) {
+			layer.options._dashArray = layer.options.dashArray.split(',').map(Number);
+		}
+
 		this._requestRedraw(layer);
 	},
 
@@ -132,6 +137,8 @@ L.Canvas = L.Renderer.extend({
 		this._drawnLayers[layer._leaflet_id] = layer;
 
 		ctx.beginPath();
+
+		ctx.setLineDash(layer.options && layer.options._dashArray || []);
 
 		for (i = 0; i < len; i++) {
 			for (j = 0, len2 = parts[i].length; j < len2; j++) {
