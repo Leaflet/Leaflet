@@ -124,7 +124,7 @@ describe('GridLayer', function () {
 		});
 
 		// Passes on Firefox, but fails on phantomJS: done is never called.
-		xit('only creates tiles for visible area on zoom in', function (done) {
+		it.skipInPhantom('only creates tiles for visible area on zoom in', function (done) {
 			map.remove();
 			map = L.map(div);
 			map.setView([0, 0], 10);

@@ -9,6 +9,7 @@ module.exports = function (config) {
 	].concat(libSources, [
 		"spec/after.js",
 		"node_modules/happen/happen.js",
+		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
 		"spec/suites/SpecHelper.js",
 		"spec/suites/**/*.js",
 		{pattern: "dist/images/*.png", included: false}
