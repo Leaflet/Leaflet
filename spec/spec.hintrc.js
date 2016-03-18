@@ -1,7 +1,7 @@
 {
 	"browser": true,
 	"node": true,
-	"predef": ["define", "L", "expect", "describe", "it", "sinon", "happen", "beforeEach", "afterEach"],
+	"predef": ["define", "L", "expect", "describe", "it", "sinon", "happen", "beforeEach", "afterEach", "Hand"],
 	"strict": false,
 	"bitwise": true,
 	"camelcase": true,

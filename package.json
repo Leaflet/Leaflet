@@ -17,6 +17,7 @@
     "magic-string": "^0.7.0",
     "mocha": "~2.3.0",
     "phantomjs-prebuilt": "^2.1.4",
+    "prosthetic-hand": "^1.2.0",
     "uglify-js": "~2.4.23"
   },
   "main": "dist/leaflet-src.js",

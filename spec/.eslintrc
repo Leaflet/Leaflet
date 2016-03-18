@@ -12,6 +12,7 @@
   "globals": {
     "expect": false,
     "sinon": false,
-    "happen": false
+    "happen": false,
+    "Hand": false
   }
 }
