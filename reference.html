@@ -211,7 +211,7 @@ var map = L.map('map', {
 		<td><code><b>maxBounds</b></code></td>
 		<td><code><a href="#latlngbounds">LatLngBounds</a></code></td>
 		<td><code><span class="hljs-literal">null</span></code></td>
-		<td>When this option is set, the map restricts the view to the given geographical bounds, bouncing the user back when he tries to pan outside the view. To set the restriction dynamically, use <a href="#map-setmaxbounds">setMaxBounds</a> method</td>
+		<td>When this option is set, the map restricts the view to the given geographical bounds, bouncing the user back when he tries to pan outside the view. To set the restriction dynamically, use <a href="#map-setmaxbounds">setMaxBounds</a> method.</td>
     </tr>
 	<tr>
 		<td><code><b>crs</b></code></td>
@@ -1905,7 +1905,7 @@ var map = L.map('map', {
 		<td><code><b>zoomReverse</b></code></td>
 		<td><code>Boolean</code></td>
 		<td><code><span class="hljs-literal">false</span></code></td>
-		<td>If set to <code><span class="hljs-literal">true</span></code>, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>)</td>
+		<td>If set to <code><span class="hljs-literal">true</span></code>, the zoom number used in tile URLs will be reversed (<code>maxZoom - zoom</code> instead of <code>zoom</code>).</td>
 	</tr>
 	<tr>
 		<td><code><b>opacity</b></code></td>
@@ -3517,7 +3517,7 @@ map.panTo(L.latLng(50, 30));</code></pre>
 		</code></td>
 
 		<td><code>Number</code></td>
-		<td>Returns the distance (in meters) to the given LatLng calculated using the Haversine formula. See <a href="http://en.wikipedia.org/wiki/Haversine_formula">description on wikipedia</a></td>
+		<td>Returns the distance (in meters) to the given LatLng calculated using the Haversine formula. See <a href="http://en.wikipedia.org/wiki/Haversine_formula">description on wikipedia</a>.</td>
 	</tr>
 	<tr>
 		<td><code><b>equals</b>(
@@ -5304,7 +5304,7 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;HTMLElement&gt; <i>element?</i> )</nobr>
 		</code></td>
 		<td><code>Number</code></td>
-		<td>Schedules <code>fn</code> to be executed when the browser repaints. When <code>immediate</code> is set, <code>fn</code> is called immediately if the browser doesn't have native support for <code>requestAnimationFrame</code>, otherwise it's delayed. Returns an id that can be used to cancel the request</td>
+		<td>Schedules <code>fn</code> to be executed when the browser repaints. When <code>immediate</code> is set, <code>fn</code> is called immediately if the browser doesn't have native support for <code>requestAnimationFrame</code>, otherwise it's delayed. Returns an id that can be used to cancel the request.</td>
 	</tr>
 	<tr>
 		<td><code><b>cancelAnimFrame</b>(
@@ -5848,7 +5848,7 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 		</code></td>
 
 		<td><code><span class="hljs-keyword">this</span></code></td>
-		<td>Run an animation of a given element to a new position, optionally setting duration in seconds (<code><span class="hljs-number">0.25</span></code> by default) and easing linearity factor (3rd argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>, <code><span class="hljs-number">0.5</span></code> by default)</td>
+		<td>Runs an animation of a given element to a new position, optionally setting duration in seconds (<code><span class="hljs-number">0.25</span></code> by default) and easing linearity factor (3rd argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</a>, <code><span class="hljs-number">0.5</span></code> by default).</td>
 	</tr>
 </table>
 
@@ -5883,7 +5883,7 @@ fx.run(el, [300, 500], 0.5);</code></pre>
 
 <h2 id="draggable">Draggable</h2>
 
-<p>A class for making DOM elements draggable (including touch support). Used internally for map and marker dragging. Only works for elements that were positioned with <a href="#domutil-setposition">DomUtil#setPosition</a></p>
+<p>A class for making DOM elements draggable (including touch support). Used internally for map and marker dragging. Only works for elements that were positioned with <a href="#domutil-setposition">DomUtil#setPosition</a>.</p>
 
 <pre><code class="javascript">var draggable = new L.Draggable(elementToDrag);
 draggable.enable();
