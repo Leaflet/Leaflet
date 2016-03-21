@@ -75,11 +75,14 @@ L.TileLayer = L.GridLayer.extend({
 	},
 
 	getTileUrl: function (coords) {
+		var invertedY = this._globalTileRange.max.y - coords.y;
+
 		return L.Util.template(this._url, L.extend({
 			r: L.Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
-			y: this.options.tms ? this._globalTileRange.max.y - coords.y : coords.y,
+			y: this.options.tms ? invertedY : coords.y,
+			'-y': invertedY,
 			z: this._getZoomForUrl()
 		}, this.options));
 	},
