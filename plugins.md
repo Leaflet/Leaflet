@@ -2228,7 +2228,7 @@ Show the geographical coordinates under the mouse cursor in different ways.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://gitlab.com/leaflet/mouseCoordinate">Leaflet.mouseCoordinates</a>
+			<a href="https://github.com/PowerPan/leaflet.mouseCoordinate">Leaflet.mouseCoordinates</a>
 		</td>
 		<td>
 			Displays the Mouse Coordinate in a Box.
@@ -2237,10 +2237,11 @@ Show the geographical coordinates under the mouse cursor in different ways.
 				<li>GPS</li>
 				<li>UTM</li>
 				<li>UTMREF / MGRS</li>
+				<li>QTH</li>
 			</ul>
 		</td>
 		<td>
-			<a href="https://gitlab.com/u/PowerPan">Johannes Rudolph</a>
+			<a href="https://github.com/PowerPan">Johannes Rudolph</a>
 		</td>
 	</tr>
 	<tr>
