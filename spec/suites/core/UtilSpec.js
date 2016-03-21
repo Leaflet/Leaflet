@@ -211,6 +211,7 @@ describe('Util', function () {
 
 			expect(str).to.eql('Hello Vlad and Dave!');
 		});
+
 		it('does not modify text without a token variable', function () {
 			expect(L.Util.template('foo', {})).to.eql('foo');
 		});
@@ -225,6 +226,11 @@ describe('Util', function () {
 			expect(function () {
 				L.Util.template(undefined, {foo: 'bar'});
 			}).to.throwError();
+		});
+
+		it('allows underscores and dashes in placeholders', function () {
+			expect(L.Util.template('{nice_stuff}', {'nice_stuff': 'foo'})).to.eql('foo');
+			expect(L.Util.template('{-y}', {'-y': 1})).to.eql('1');
 		});
 	});
 
