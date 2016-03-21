@@ -141,7 +141,7 @@ L.Util = {
 		});
 	},
 
-	templateRe: /\{ *([\w_]+) *\}/g,
+	templateRe: /\{ *([\w_\-]+) *\}/g,
 
 	isArray: Array.isArray || function (obj) {
 		return (Object.prototype.toString.call(obj) === '[object Array]');

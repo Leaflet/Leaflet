@@ -287,6 +287,75 @@ describe('TileLayer', function () {
 
 	});
 
+	describe('url template', function () {
+		beforeEach(function () {
+			div = document.createElement('div');
+			div.style.width = '400px';
+			div.style.height = '400px';
+			div.style.visibility = 'hidden';
 
+			document.body.appendChild(div);
+
+			map = L.map(div).setView([0, 0], 2);
+		});
+
+		function eachImg(layer, callback) {
+			var imgtags = layer._container.children[0].children;
+			for (var i in imgtags) {
+				if (imgtags[i].tagName === 'IMG') {
+					callback(imgtags[i]);
+				}
+			}
+		}
+
+		it('replaces {y} with y coordinate', function () {
+			var layer = L.tileLayer('http://example.com/{z}/{y}/{x}.png').addTo(map);
+
+			var urls = [
+				'http://example.com/2/1/1.png',
+				'http://example.com/2/1/2.png',
+				'http://example.com/2/2/1.png',
+				'http://example.com/2/2/2.png'
+			];
+
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+		it('replaces {-y} with inverse y coordinate', function () {
+			var layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png').addTo(map);
+			var urls = [
+				'http://example.com/2/2/1.png',
+				'http://example.com/2/2/2.png',
+				'http://example.com/2/1/1.png',
+				'http://example.com/2/1/2.png'
+			];
+			var i = 0;
+			eachImg(layer, function (img) {
+				expect(img.src).to.eql(urls[i]);
+				i++;
+			});
+		});
+
+		it('replaces {s} with [abc] by default', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
+
+			eachImg(layer, function (img) {
+				expect(['a', 'b', 'c'].indexOf(img.src[7]) >= 0).to.eql(true);
+			});
+		});
+
+		it('replaces {s} with specified prefixes', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				subdomains: 'qrs'
+			}).addTo(map);
+
+			eachImg(layer, function (img) {
+				expect(['q', 'r', 's'].indexOf(img.src[7]) >= 0).to.eql(true);
+			});
+		});
+	});
 });
-
