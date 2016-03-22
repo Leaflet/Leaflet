@@ -2251,6 +2251,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/filipzava">Filip Zavadil</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MAD-GooZe/Leaflet.BootstrapZoom">Leaflet.BootstrapZoom</a>
+		</td>
+		<td>
+			Overrides default zoom control buttons with Twitter Bootstrap styled ones
+		</td>
+		<td>
+			<a href="https://github.com/MAD-GooZe">Alexey Gusev</a>
+		</td>
+	</tr>
 </table>
 
 
