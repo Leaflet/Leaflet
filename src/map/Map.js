@@ -559,14 +559,13 @@ L.Map = L.Evented.extend({
 		if (zoom === undefined) {
 			zoom = this._zoom;
 		}
-
 		var zoomChanged = this._zoom !== zoom;
 
 		this._zoom = zoom;
 		this._lastCenter = center;
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
-		if (zoomChanged) {
+		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
 		return this.fire('move', data);
