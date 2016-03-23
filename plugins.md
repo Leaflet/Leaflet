@@ -148,7 +148,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
 	</tr>
-        <tr>
+		<tr>
 		<td>
 			<a href="https://github.com/knreise/L.TileLayer.Kartverket">L.TileLayer.Kartverket</a>
 		</td><td>
@@ -543,7 +543,7 @@ The following plugins provide new ways of loading overlay data (GIS vector data)
 Load your own data from various GIS formats.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-    <tr>
+	<tr>
 		<td>
 			<a href="https://github.com/mapbox/leaflet-omnivore">leaflet-omnivore</a>
 		</td><td>
@@ -746,7 +746,7 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 		<td>
 			<a href="https://github.com/kartenkarsten/leaflet-layer-overpass/">Leaflet Layer Overpass</a>
 		</td><td>
-      Easily include data from the <a href="http://overpass-api.de">overpass api</a>.
+	  Easily include data from the <a href="http://overpass-api.de">overpass api</a>.
 		</td><td>
 			<a href="https://github.com/kartenkarsten">kartenkarsten</a>
 		</td>
@@ -1021,15 +1021,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="http://timwis.com">Tim Wisniewski</a>
 		</td>
 	</tr>
-        <tr>
-                <td>
-                        <a href="https://github.com/lethexa/leaflet-tracksymbol">leaflet-tracksymbol</a>
-                </td><td>
-                        This marker provides a tracksymbol with orientation, velocity-vector and configurable shape.
-                </td><td>
-                        <a href="https://github.com/lethexa">Tim Leerhoff</a>
-                </td>
-        </tr>
+		<tr>
+				<td>
+						<a href="https://github.com/lethexa/leaflet-tracksymbol">leaflet-tracksymbol</a>
+				</td><td>
+						This marker provides a tracksymbol with orientation, velocity-vector and configurable shape.
+				</td><td>
+						<a href="https://github.com/lethexa">Tim Leerhoff</a>
+				</td>
+		</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/wwwouaiebe/leaflet.marker.pin">leaflet.marker.pin</a>
@@ -1984,7 +1984,7 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 		</td>
 	</tr>
 	<tr>
-        <td>
+		<td>
 			<a href="https://github.com/florpor/Leaflet.ShowAll">Leaflet.ShowAll</a>
 		</td><td>
 			A control that can show a predefined extent while saving the current one so it can be jumped back to.
@@ -2354,19 +2354,19 @@ These plugins extend Leaflet event handling.
 	</tr>
 
 	<tr>
-	        <td>
-	            <a href="https://github.com/MazeMap/Leaflet.VisualClick">Leaflet.VisualClick</a>
-	        </td>
-	        <td>
-	            Adds visual feedback when user clicks/taps the map (<a href="https://github.com/MazeMap/Leaflet.VisualClick/">demo</a>).
-	            Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick.
-	            Or just because it looks cool :)
-	            Only tested with Leaflet 1.0.0-beta1.
-	        </td><td>
-	            <a href="https://github.com/dagjomar">Dag Jomar Mersland</a>,
-	            <a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
-	            <a href="https://github.com/MazeMap">MazeMap</a>
-	        </td>
+			<td>
+				<a href="https://github.com/MazeMap/Leaflet.VisualClick">Leaflet.VisualClick</a>
+			</td>
+			<td>
+				Adds visual feedback when user clicks/taps the map (<a href="https://github.com/MazeMap/Leaflet.VisualClick/">demo</a>).
+				Useful when further action is delayed by server requests, or implementation of Leaflet.singleclick.
+				Or just because it looks cool :)
+				Only tested with Leaflet 1.0.0-beta1.
+			</td><td>
+				<a href="https://github.com/dagjomar">Dag Jomar Mersland</a>,
+				<a href="https://github.com/IvanSanchez">Iván Sánchez Ortega</a>,
+				<a href="https://github.com/MazeMap">MazeMap</a>
+			</td>
 	</tr>
 </table>
 
@@ -2556,6 +2556,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td>
 		<td>
 			<a href="https://github.com/NBTSolutions">NBT Solutions</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MAD-GooZe/Leaflet.BootstrapZoom">Leaflet.BootstrapZoom</a>
+		</td>
+		<td>
+			Overrides default zoom control buttons with Twitter Bootstrap styled ones
+		</td>
+		<td>
+			<a href="https://github.com/MAD-GooZe">Alexey Gusev</a>
 		</td>
 	</tr>
 </table>
@@ -2831,7 +2842,7 @@ External services that transform an address or the name of a place into latitude
 			<a href="https://github.com/perliedman">Per Liedman</a>
 		</td>
 	</tr>
-    	<tr>
+		<tr>
 		<td>
 			<a href="https://github.com/jakubdostal/leaflet-geoip">Leaflet GeoIP Locator</a>
 		</td><td>
