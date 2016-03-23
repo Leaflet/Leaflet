@@ -114,8 +114,8 @@ Also note that Leaflet supports very few [coordinate systems](https://en.wikiped
 	}).addTo(map);
 
 {% include frame.html url="wms-example-crs.html" %}
-	
-	
+
+
 ## TMS in Leaflet
 
 Leaflet doesn't have explicit support for TMS services, but the tile naming structure is so similar to the common `L.TileLayer` naming scheme, that displaying a TMS service is almost trivial.
