@@ -689,6 +689,15 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 			<a href="https://github.com/cbaines">Christopher Baines</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/BenjaminVadant/leaflet-ugeojson">Leaflet uGeoJSON</a>
+		</td><td>
+			Add an auto updating GeoJSON data Layer via ajax post requests.
+		</td><td>
+			<a href="https://github.com/BenjaminVadant/">Benjamin VADANT</a>
+		</td>
+	</tr>
 </table>
 
 
