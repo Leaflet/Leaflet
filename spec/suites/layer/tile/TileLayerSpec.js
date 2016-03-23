@@ -340,6 +340,26 @@ describe('TileLayer', function () {
 			});
 		});
 
+		it('Does not replace {-y} on map with infinite CRS', function () {
+			var simplediv = document.createElement('div');
+			simplediv.style.width = '400px';
+			simplediv.style.height = '400px';
+			simplediv.style.visibility = 'hidden';
+
+			document.body.appendChild(simplediv);
+			var simpleMap = L.map(simplediv, {
+				crs: L.CRS.Simple
+			}).setView([0, 0], 5);
+			var layer = L.tileLayer('http://example.com/{z}/{-y}/{x}.png');
+
+			expect(function () {
+				layer.addTo(simpleMap);
+			}).to.throwError('No value provided for variable {-y}');
+
+			simpleMap.remove();
+			document.body.removeChild(simplediv);
+		});
+
 		it('replaces {s} with [abc] by default', function () {
 			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png').addTo(map);
 
