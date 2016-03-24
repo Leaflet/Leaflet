@@ -66,7 +66,7 @@ For the example WMS server we're using, there is a `ne:ne_10m_admin_0_countries`
 		layers: 'ne:ne_10m_admin_0_countries,ne:ne_10m_admin_0_boundary_lines_land'
 	}).addTo(map);
 
-Note this will request *one* image to the WMS server. This is different than creating a `L.TileLayer.WMS` for the countries, another one for the boundaries, and adding them both to the map. In the first case, there is one image request and it's the WMS server who decides how to compose (put on top of each other) the image. In the second case, there would be two image requests and it's the Leaflet webpage who decides how to compose them.
+Note this will request *one* image to the WMS server. This is different than creating a `L.TileLayer.WMS` for the countries, another one for the boundaries, and adding them both to the map. In the first case, there is one image request and it's the WMS server who decides how to compose (put on top of each other) the image. In the second case, there would be two image requests and it's the Leaflet code running in the web browser who decides how to compose them.
 
 If we combine this with the [layers control](/examples/layers-control.html), then we can build a simple map to see the difference:
 
@@ -103,9 +103,19 @@ From a GIS point of view, WMS handling in Leaflet is quite basic. There's no `Ge
 
 `L.TileLayer.WMS` has extra options, which can be found in [Leaflet's API documentation](http://leafletjs.com/reference.html#tilelayer-wms-options). Any option not described there will be passed to the WMS server in the `getImage` URLs.
 
-Also note that Leaflet only supports `CRS:3857`. If your WMS service doesn't serve images in that coordinate system, you might need to use [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) to use a different coordinate system in Leaflet.
+Also note that Leaflet supports very few [coordinate systems](https://en.wikipedia.org/wiki/Spatial_reference_system): `CRS:3857`, `CRS:3395` and `CRS:4326` (See the documentation for `L.CRS`). If your WMS service doesn't serve images in those coordinate systems, you might need to use [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) to use a different coordinate system in Leaflet. Other than that, just use the right CRS when initializing your map, and any WMS layers added will use it:
 
+	var map = L.map('map', {
+		crs: L.CRS.EPSG4326
+	});
 
+	var wmsLayer = L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+		layers: 'nasa:bluemarble'
+	}).addTo(map);
+
+{% include frame.html url="wms-example-crs.html" %}
+	
+	
 ## TMS in Leaflet
 
 Leaflet doesn't have explicit support for TMS services, but the tile naming structure is so similar to the common `L.TileLayer` naming scheme, that displaying a TMS service is almost trivial.
@@ -118,7 +128,7 @@ Checking the [MapCache help about TMS](http://mapserver.org/mapcache/services.ht
 
 	http://base_url/tms/1.0.0/ {tileset} / {z} / {x} / {y} .png
 
-To use the OpenGeo TMS services as a `L.TileLayer`, we can gheck the capabilities document (the same as the base endpoint, in our case [`http://demo.opengeo.org/geoserver/gwc/service/tms/1.0.0`](http://demo.opengeo.org/geoserver/gwc/service/tms/1.0.0)) to see what `tileset`s are available, and build our base URLs:
+To use the OpenGeo TMS services as a `L.TileLayer`, we can check the capabilities document (the same as the base endpoint, in our case [`http://demo.opengeo.org/geoserver/gwc/service/tms/1.0.0`](http://demo.opengeo.org/geoserver/gwc/service/tms/1.0.0)) to see what `tileset`s are available, and build our base URLs:
 
 	http://demo.opengeo.org/geoserver/gwc/service/tms/1.0.0/ne:ne@EPSG:900913@png/{z}/{x}/{y}.png
 
