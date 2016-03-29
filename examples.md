@@ -77,6 +77,13 @@ The following tutorials use features available **only in Leaflet 1.0**:
 
 How the default map panes work to display overlays on top of tiles, and how to override that.
 
+***
+[<img src="examples/extending/thumbnail.png" class="example-img bordered-img" />][11]
+
+### [Extending Leaflet][11]
+
+And **advanced** tutorial on how to make Leaflet plugins.
+
 <!--***
 <h3><a class="noimpl" href="#">Custom Controls</a></h3>
 
@@ -101,3 +108,4 @@ If you find that an important tutorial is missing here, let us know!
  [8]: examples/map-panes.html
  [9]: examples/crs-simple/crs-simple.html
  [10]: examples/wms/wms.html
+ [11]: examples/extending/extending-leaflet.html
