@@ -242,6 +242,12 @@ describe("L.Map#openPopup", function () {
 		map.setView(new L.LatLng(55.8, 37.6), 6);
 	});
 
+	afterEach(function () {
+		if (document.body.contains(c)) {
+			document.body.removeChild(c);
+		}
+	});
+
 	it("adds the popup layer to the map", function () {
 		var popup = new L.Popup()
 			.setLatLng(new L.LatLng(55.8, 37.6));
@@ -298,7 +304,6 @@ describe("L.Map#openPopup", function () {
 		setTimeout(function () {
 			expect(spy.called).to.be(true);
 			expect(map.hasLayer(p)).to.be(true);
-			document.body.removeChild(c);
 			done();
 		}, 100);
 	});
