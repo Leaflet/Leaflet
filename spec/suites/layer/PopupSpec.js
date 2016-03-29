@@ -300,7 +300,7 @@ describe("L.Map#openPopup", function () {
 			expect(map.hasLayer(p)).to.be(true);
 			document.body.removeChild(c);
 			done();
-		}, 60);
+		}, 100);
 	});
 
 });
