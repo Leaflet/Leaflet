@@ -119,6 +119,11 @@ L.Map = L.Evented.extend({
 	},
 
 	fitBounds: function (bounds, options) {
+
+		if (!bounds.isValid()) {
+			throw new Error('Bounds are not valid.');
+		}
+
 		var target = this._getBoundsCenterZoom(bounds, options);
 		return this.setView(target.center, target.zoom, options);
 	},
