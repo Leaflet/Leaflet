@@ -25,6 +25,7 @@ L.Popup = L.Layer.extend({
 		autoClose: true,
 		// keepInView: false,
 		// className: '',
+		// id: '',
 		zoomAnimation: true
 	},
 
@@ -170,6 +171,10 @@ L.Popup = L.Layer.extend({
 		    container = this._container = L.DomUtil.create('div',
 			prefix + ' ' + (this.options.className || '') +
 			' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide'));
+
+		if (this.options.id !== '') {
+			container.id = this.options.id;
+		}
 
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
