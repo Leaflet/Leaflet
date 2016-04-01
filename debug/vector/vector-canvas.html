@@ -83,6 +83,11 @@
 		});
 		group.addLayer(polygon);
 
+		var line = new L.Polyline([h1, h4, h5], {
+			dashArray: '5, 5'
+		});
+		group.addLayer(line);
+
 		polygon.bindPopup('I am a polygon');
 
 		map.addLayer(group);
