@@ -273,9 +273,7 @@ L.GridLayer = L.Layer.extend({
 		if (!this._map) { return; }
 
 		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
-		if (L.Browser.ielt9 || !this._map._fadeAnimated) {
-			return;
-		}
+		if (L.Browser.ielt9) { return; }
 
 		L.DomUtil.setOpacity(this._container, this.options.opacity);
 
