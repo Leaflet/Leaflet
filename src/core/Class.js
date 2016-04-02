@@ -1,9 +1,9 @@
 
-// 🍂class Class
-// 🍂aka L.Class
+// @class Class
+// @aka L.Class
 
-// 🍂section
-// 🍂uninheritable
+// @section
+// @uninheritable
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
@@ -11,7 +11,7 @@ L.Class = function () {};
 
 L.Class.extend = function (props) {
 
-	// 🍂function extend(props: Object): Function
+	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
 	// Returns a Javascript function that is a class constructor (to be called with `new`).
 	var NewClass = function () {
@@ -81,21 +81,21 @@ L.Class.extend = function (props) {
 };
 
 
-// 🍂function include(properties: Object)
+// @function include(properties: Object)
 // [Includes a mixin](#class-includes) into the current class.
 L.Class.include = function (props) {
 	L.extend(this.prototype, props);
 	return this;
 };
 
-// 🍂function mergeOptions(options: Object)
+// @function mergeOptions(options: Object)
 // [Merges `options`](#class-options) into the defaults of the class.
 L.Class.mergeOptions = function (options) {
 	L.extend(this.prototype.options, options);
 	return this;
 };
 
-// 🍂function addInitHook(fn: Function)
+// @function addInitHook(fn: Function)
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
 L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	var args = Array.prototype.slice.call(arguments, 1);

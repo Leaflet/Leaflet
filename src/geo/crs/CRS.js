@@ -1,6 +1,6 @@
 /*
- * 🍂class CRS
- * 🍂aka L.CRS
+ * @class CRS
+ * @aka L.CRS
  * Abstract class that defines coordinate reference systems for projecting
  * geographical points into pixel (screen) coordinates and back (and to
  * coordinates in other units for WMS services). See
@@ -12,7 +12,7 @@
  */
 
 L.CRS = {
-	// 🍂method latLngToPoint(latlng: LatLng, zoom: Number): Point
+	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
 		var projectedPoint = this.projection.project(latlng),
@@ -21,7 +21,7 @@ L.CRS = {
 		return this.transformation._transform(projectedPoint, scale);
 	},
 
-	// 🍂method pointToLatLng(point: Point, zoom: Number): LatLng
+	// @method pointToLatLng(point: Point, zoom: Number): LatLng
 	// The inverse of `latLngToPoint`. Projects pixel coordinates on a given
 	// zoom into geographical coordinates.
 	pointToLatLng: function (point, zoom) {
@@ -31,21 +31,21 @@ L.CRS = {
 		return this.projection.unproject(untransformedPoint);
 	},
 
-	// 🍂method project(latlng: LatLng): Point
+	// @method project(latlng: LatLng): Point
 	// Projects geographical coordinates into coordinates in units accepted for
 	// this CRS (e.g. meters for EPSG:3857, for passing it to WMS services).
 	project: function (latlng) {
 		return this.projection.project(latlng);
 	},
 
-	// 🍂method unproject(point: Point): LatLng
+	// @method unproject(point: Point): LatLng
 	// Given a projected coordinate returns the corresponding LatLng.
 	// The inverse of `project`.
 	unproject: function (point) {
 		return this.projection.unproject(point);
 	},
 
-	// 🍂method scale(zoom: Number): Number
+	// @method scale(zoom: Number): Number
 	// Returns the scale used when transforming projected coordinates into
 	// pixel coordinates for a particular zoom. For example, it returns
 	// `256 * 2^zoom` for Mercator-based CRS.
@@ -53,14 +53,14 @@ L.CRS = {
 		return 256 * Math.pow(2, zoom);
 	},
 
-	// 🍂method zoom(scale: Number): Number
+	// @method zoom(scale: Number): Number
 	// Inverse of `scale()`, returns the zoom level correspondingto a scale
 	// factor of `scale`.
 	zoom: function (scale) {
 		return Math.log(scale / 256) / Math.LN2;
 	},
 
-	// 🍂method getProjectedBounds(zoom): Bounds
+	// @method getProjectedBounds(zoom): Bounds
 	// Returns the projection's bounds scaled and transformed for the provided `zoom`.
 	getProjectedBounds: function (zoom) {
 		if (this.infinite) { return null; }
@@ -73,25 +73,25 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
-	// 🍂property code: String
+	// @property code: String
 	// Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`)
 	//
-	// 🍂property wrapLng: Number[]
+	// @property wrapLng: Number[]
 	// An array of two numbers defining whether the longitude coordinate axis
 	// wraps around a given range and how. Defaults to `[-180, 180]` in most
 	// geographical CRSs.
 	//
-	// 🍂property wrapLat: Number[]
+	// @property wrapLat: Number[]
 	// Like `wrapLng`, but for the latitude axis.
 
 	// wrapLng: [min, max],
 	// wrapLat: [min, max],
 
-	// 🍂property infinite: Boolean = false
+	// @property infinite: Boolean = false
 	// If true, the coordinate space will be unbounded (infinite in both axes)
 	infinite: false,
 
-	// 🍂method wrapLatLng(latlng: LatLng): LatLng
+	// @method wrapLatLng(latlng: LatLng): LatLng
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {

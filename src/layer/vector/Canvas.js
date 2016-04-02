@@ -1,7 +1,7 @@
 /*
- * 🍂class Canvas
- * 🍂inherits Renderer
- * 🍂aka L.Canvas
+ * @class Canvas
+ * @inherits Renderer
+ * @aka L.Canvas
  *
  * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
  * Inherits `Renderer`.
@@ -10,7 +10,7 @@
  * available in all web browsers, notably IE8, and overlapping geometries might
  * not display properly in some edge cases.
  *
- * 🍂example
+ * @example
  *
  * Use Canvas by default for all paths in the map:
  *
@@ -303,14 +303,14 @@ L.Canvas = L.Renderer.extend({
 	_bringToBack: L.Util.falseFn
 });
 
-// 🍂namespace Browser; 🍂property canvas: Boolean
+// @namespace Browser; @property canvas: Boolean
 // `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
 L.Browser.canvas = (function () {
 	return !!document.createElement('canvas').getContext;
 }());
 
-// 🍂namespace Canvas
-// 🍂factory L.canvas(options?: Canvas options)
+// @namespace Canvas
+// @factory L.canvas(options?: Canvas options)
 // Creates a Canvas renderer with the given options.
 L.canvas = function (options) {
 	return L.Browser.canvas ? new L.Canvas(options) : null;

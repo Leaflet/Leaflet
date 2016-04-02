@@ -1,7 +1,7 @@
 /*
- * 🍂class SVG
- * 🍂inherits Renderer
- * 🍂aka L.SVG
+ * @class SVG
+ * @inherits Renderer
+ * @aka L.SVG
  *
  * Allows vector layers to be displayed with [SVG](https://developer.mozilla.org/docs/Web/SVG).
  * Inherits `Renderer`.
@@ -14,7 +14,7 @@
  * (a now deprecated technology), and the SVG renderer will fall back to VML in
  * this case.
  *
- * 🍂example
+ * @example
  *
  * Use SVG by default for all paths in the map:
  *
@@ -85,8 +85,8 @@ L.SVG = L.Renderer.extend({
 	_initPath: function (layer) {
 		var path = layer._path = L.SVG.create('path');
 
-		// 🍂namespace Path
-		// 🍂option className: string = null
+		// @namespace Path
+		// @option className: string = null
 		// Custom class name set on an element. Only for SVG renderer.
 		if (layer.options.className) {
 			L.DomUtil.addClass(path, layer.options.className);
@@ -187,10 +187,10 @@ L.SVG = L.Renderer.extend({
 });
 
 
-// 🍂namespace SVG; 🍂section
+// @namespace SVG; @section
 // There are several static functions which can be called without instantiating L.SVG:
 L.extend(L.SVG, {
-	// 🍂function create(name: String): SVGElement
+	// @function create(name: String): SVGElement
 	// Returns a instance of [SVGElement](https://developer.mozilla.org/docs/Web/API/SVGElement),
 	// corresponding to the class name passed. For example, using 'line' will return
 	// an instance of [SVGLineElement](https://developer.mozilla.org/docs/Web/API/SVGLineElement).
@@ -198,7 +198,7 @@ L.extend(L.SVG, {
 		return document.createElementNS('http://www.w3.org/2000/svg', name);
 	},
 
-	// 🍂function pointsToPath(rings: [], closed: Boolean): String
+	// @function pointsToPath(rings: [], closed: Boolean): String
 	// Generates a SVG path string for multiple rings, with each ring turning
 	// into "M..L..L.." instructions
 	pointsToPath: function (rings, closed) {
@@ -222,13 +222,13 @@ L.extend(L.SVG, {
 	}
 });
 
-// 🍂namespace Browser; 🍂property svg: Boolean
+// @namespace Browser; @property svg: Boolean
 // `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
 L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
 
 
-// 🍂namespace SVG
-// 🍂factory L.svg(options?: SVG options)
+// @namespace SVG
+// @factory L.svg(options?: SVG options)
 // Creates a SVG renderer with the given options.
 L.svg = function (options) {
 	return L.Browser.svg || L.Browser.vml ? new L.SVG(options) : null;

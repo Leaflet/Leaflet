@@ -3,7 +3,7 @@
  */
 
 /*
- * 🍂class SVG
+ * @class SVG
  *
  * Although SVG is not available on IE7 and IE8, these browsers support [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language), and the SVG renderer will fall back to VML in this case.
  *
@@ -11,7 +11,7 @@
  * with old versions of Internet Explorer.
  */
 
-// 🍂namespace Browser; 🍂property vml: Boolean
+// @namespace Browser; @property vml: Boolean
 // `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
 L.Browser.vml = !L.Browser.svg && (function () {
 	try {

@@ -1,9 +1,9 @@
 /*
- * 🍂namespace Projection
- * 🍂section
+ * @namespace Projection
+ * @section
  * Leaflet comes with a set of already defined Projections out of the box:
  *
- * 🍂projection L.Projection.LonLat
+ * @projection L.Projection.LonLat
  *
  * Equirectangular, or Plate Carree projection — the most simple projection,
  * mostly used by GIS enthusiasts. Directly maps `x` as longitude, and `y` as

@@ -1,9 +1,9 @@
-/* 🍂class LatLng
- * 🍂aka L.LatLng
+/* @class LatLng
+ * @aka L.LatLng
  *
  * Represents a geographical point with a certain latitude and longitude.
  *
- * 🍂example
+ * @example
  *
  * ```
  * var latlng = L.latLng(50.5, 30.5);
@@ -24,15 +24,15 @@ L.LatLng = function (lat, lng, alt) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
 
-	// 🍂property lat: Number
+	// @property lat: Number
 	// Latitude in degrees
 	this.lat = +lat;
 
-	// 🍂property lng: Number
+	// @property lng: Number
 	// Longitude in degrees
 	this.lng = +lng;
 
-	// 🍂property alt: Number
+	// @property alt: Number
 	// Altitude in meters (optional)
 	if (alt !== undefined) {
 		this.alt = +alt;
@@ -40,7 +40,7 @@ L.LatLng = function (lat, lng, alt) {
 };
 
 L.LatLng.prototype = {
-	// 🍂method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
+	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overriden by setting `maxMargin` to a small number.
 	equals: function (obj, maxMargin) {
 		if (!obj) { return false; }
@@ -54,7 +54,7 @@ L.LatLng.prototype = {
 		return margin <= (maxMargin === undefined ? 1.0E-9 : maxMargin);
 	},
 
-	// 🍂method toString(): String
+	// @method toString(): String
 	// Returns a string representation of the point (for debugging purposes).
 	toString: function (precision) {
 		return 'LatLng(' +
@@ -62,19 +62,19 @@ L.LatLng.prototype = {
 		        L.Util.formatNum(this.lng, precision) + ')';
 	},
 
-	// 🍂method distanceTo(otherLatLng: LatLng): Number
+	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](http://en.wikipedia.org/wiki/Haversine_formula).
 	distanceTo: function (other) {
 		return L.CRS.Earth.distance(this, L.latLng(other));
 	},
 
-	// 🍂method wrap(): LatLng
+	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap: function () {
 		return L.CRS.Earth.wrapLatLng(this);
 	},
 
-	// 🍂method toBounds(sizeInMeters: Number): LatLngBounds
+	// @method toBounds(sizeInMeters: Number): LatLngBounds
 	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters` meters apart from the `LatLng`.
 	toBounds: function (sizeInMeters) {
 		var latAccuracy = 180 * sizeInMeters / 40075017,
@@ -92,15 +92,15 @@ L.LatLng.prototype = {
 
 
 
-// 🍂factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
+// @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
 // Creates an object representing a geographical point with the given latitude and longitude (and optionally altitude).
 
-// 🍂alternative
-// 🍂factory L.latLng(coords: Array): LatLng
+// @alternative
+// @factory L.latLng(coords: Array): LatLng
 // Expects an array of the form `[Number, Number]` or `[Number, Number, Number]` instead.
 
-// 🍂alternative
-// 🍂factory L.latLng(coords: Object): LatLng
+// @alternative
+// @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 
 L.latLng = function (a, b, c) {

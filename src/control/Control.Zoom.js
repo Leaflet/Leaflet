@@ -1,28 +1,28 @@
 /*
- * 🍂class Control.Zoom
- * 🍂aka L.Control.Zoom
- * 🍂inherits Control
+ * @class Control.Zoom
+ * @aka L.Control.Zoom
+ * @inherits Control
  *
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  */
 
 L.Control.Zoom = L.Control.extend({
-	// 🍂section
-	// 🍂aka Control.Zoom options
+	// @section
+	// @aka Control.Zoom options
 	options: {
-		// 🍂option zoomInText: String = '+'
+		// @option zoomInText: String = '+'
 		// The text set on the 'zoom in' button.
 		zoomInText: '+',
 
-		// 🍂option zoomInTitle: String = 'Zoom in'
+		// @option zoomInTitle: String = 'Zoom in'
 		// The title set on the 'zoom in' button.
 		zoomInTitle: 'Zoom in',
 
-		// 🍂option zoomOutText: String = '-'
+		// @option zoomOutText: String = '-'
 		// The text set on the 'zoom out' button.
 		zoomOutText: '-',
 
-		// 🍂option zoomOutTitle: String = 'Zoom out'
+		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
 		zoomOutTitle: 'Zoom out'
 	},
@@ -102,9 +102,9 @@ L.Control.Zoom = L.Control.extend({
 	}
 });
 
-// 🍂namespace Map
-// 🍂section Control options
-// 🍂option zoomControl: Boolean = true
+// @namespace Map
+// @section Control options
+// @option zoomControl: Boolean = true
 // Whether a [zoom control](#control-zoom) is added to the map by default.
 L.Map.mergeOptions({
 	zoomControl: true
@@ -117,8 +117,8 @@ L.Map.addInitHook(function () {
 	}
 });
 
-// 🍂namespace Control.Zoom
-// 🍂factory L.control.zoom(options: Control.Zoom options)
+// @namespace Control.Zoom
+// @factory L.control.zoom(options: Control.Zoom options)
 // Creates a zoom control
 L.control.zoom = function (options) {
 	return new L.Control.Zoom(options);

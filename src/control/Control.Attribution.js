@@ -1,18 +1,18 @@
 /*
- * 🍂class Control.Attribution
- * 🍂aka L.Control.Attribution
- * 🍂inherits Control
+ * @class Control.Attribution
+ * @aka L.Control.Attribution
+ * @inherits Control
  *
  * The attribution control allows you to display attribution data in a small text box on a map. It is put on the map by default unless you set its [`attributionControl` option](#map-attributioncontrol) to `false`, and it fetches attribution texts from layers with the [`getAttribution` method](#layer-getattribution) automatically. Extends Control.
  */
 
 L.Control.Attribution = L.Control.extend({
-	// 🍂section
-	// 🍂aka Control.Attribution options
+	// @section
+	// @aka Control.Attribution options
 	options: {
 		position: 'bottomright',
 
-		// 🍂option prefix: String = 'Leaflet'
+		// @option prefix: String = 'Leaflet'
 		// The HTML text shown before the attributions. Pass `false` to disable.
 		prefix: '<a href="http://leafletjs.com" title="A JS library for interactive maps">Leaflet</a>'
 	},
@@ -42,7 +42,7 @@ L.Control.Attribution = L.Control.extend({
 		return this._container;
 	},
 
-	// 🍂method setPrefix(prefix: String): this
+	// @method setPrefix(prefix: String): this
 	// Sets the text before the attributions.
 	setPrefix: function (prefix) {
 		this.options.prefix = prefix;
@@ -50,7 +50,7 @@ L.Control.Attribution = L.Control.extend({
 		return this;
 	},
 
-	// 🍂method addAttribution(text: String): this
+	// @method addAttribution(text: String): this
 	// Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
 	addAttribution: function (text) {
 		if (!text) { return this; }
@@ -65,7 +65,7 @@ L.Control.Attribution = L.Control.extend({
 		return this;
 	},
 
-	// 🍂method removeAttribution(text: String): this
+	// @method removeAttribution(text: String): this
 	// Removes an attribution text.
 	removeAttribution: function (text) {
 		if (!text) { return this; }
@@ -102,9 +102,9 @@ L.Control.Attribution = L.Control.extend({
 	}
 });
 
-// 🍂namespace Map
-// 🍂section Control options
-// 🍂option attributionControl: Boolean = true
+// @namespace Map
+// @section Control options
+// @option attributionControl: Boolean = true
 // Whether a [attribution control](#control-attribution) is added to the map by default.
 L.Map.mergeOptions({
 	attributionControl: true
@@ -116,8 +116,8 @@ L.Map.addInitHook(function () {
 	}
 });
 
-// 🍂namespace Control.Attribution
-// 🍂factory L.control.attribution(options: Control.Attribution options)
+// @namespace Control.Attribution
+// @factory L.control.attribution(options: Control.Attribution options)
 // Creates an attribution control.
 L.control.attribution = function (options) {
 	return new L.Control.Attribution(options);

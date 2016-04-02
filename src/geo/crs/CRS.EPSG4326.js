@@ -1,6 +1,6 @@
 /*
- * 🍂namespace CRS
- * 🍂crs L.CRS.EPSG4326
+ * @namespace CRS
+ * @crs L.CRS.EPSG4326
  *
  * A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.
  */

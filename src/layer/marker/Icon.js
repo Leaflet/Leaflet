@@ -1,11 +1,11 @@
 /*
- * 🍂class Icon
- * 🍂aka L.Icon
- * 🍂inherits Layer
+ * @class Icon
+ * @aka L.Icon
+ * @inherits Layer
  *
  * Represents an icon to provide when creating a marker.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * var myIcon = L.icon({
@@ -29,40 +29,40 @@
 
 L.Icon = L.Class.extend({
 
-	/* 🍂section
-	 * 🍂aka Icon options
+	/* @section
+	 * @aka Icon options
 	 *
-	 * 🍂option iconUrl: String = null
+	 * @option iconUrl: String = null
 	 * **(required)** The URL to the icon image (absolute or relative to your script path).
 	 *
-	 * 🍂option iconRetinaUrl: String = null
+	 * @option iconRetinaUrl: String = null
 	 * The URL to a retina sized version of the icon image (absolute or relative to your
 	 * script path). Used for Retina screen devices.
 	 *
-	 * 🍂option iconSize: Point = null
+	 * @option iconSize: Point = null
 	 * Size of the icon image in pixels.
 	 *
-	 * 🍂option iconAnchor: Point = null
+	 * @option iconAnchor: Point = null
 	 * The coordinates of the "tip" of the icon (relative to its top left corner). The icon
 	 * will be aligned so that this point is at the marker's geographical location. Centered
 	 * by default if size is specified, also can be set in CSS with negative margins.
 	 *
-	 * 🍂option popupAnchor: Point = null
+	 * @option popupAnchor: Point = null
 	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
 	 *
-	 * 🍂option shadowUrl: String = null
+	 * @option shadowUrl: String = null
 	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
 	 *
-	 * 🍂option shadowRetinaUrl: String = null
+	 * @option shadowRetinaUrl: String = null
 	 *
-	 * 🍂option shadowSize: Point = null
+	 * @option shadowSize: Point = null
 	 * Size of the shadow image in pixels.
 	 *
-	 * 🍂option shadowAnchor: Point = null
+	 * @option shadowAnchor: Point = null
 	 * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same
 	 * as iconAnchor if not specified).
 	 *
-	 * 🍂option className: String = ''
+	 * @option className: String = ''
 	 * A custom class name to assign to both icon and shadow images. Empty by default.
 	 */
 
@@ -70,14 +70,14 @@ L.Icon = L.Class.extend({
 		L.setOptions(this, options);
 	},
 
-	// 🍂method createIcon(oldIcon: HTMLElement|null): HTMLElement
+	// @method createIcon(oldIcon: HTMLElement|null): HTMLElement
 	// Called internally when the icon has to be shown, returns a `<img>` HTML element
 	// styled according to the options.
 	createIcon: function (oldIcon) {
 		return this._createIcon('icon', oldIcon);
 	},
 
-	// 🍂method createShadow(oldIcon: HTMLElement|null): HTMLElement
+	// @method createShadow(oldIcon: HTMLElement|null): HTMLElement
 	// As `createIcon`, but for the shadow beneath it.
 	createShadow: function (oldIcon) {
 		return this._createIcon('shadow', oldIcon);
@@ -130,7 +130,7 @@ L.Icon = L.Class.extend({
 });
 
 
-// 🍂factory L.icon(options: Icon options)
+// @factory L.icon(options: Icon options)
 // Creates an icon instance with the given options.
 L.icon = function (options) {
 	return new L.Icon(options);

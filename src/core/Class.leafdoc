@@ -1,13 +1,13 @@
 
-🍂class Class
-🍂aka L.Class
+@class Class
+@aka L.Class
 
 L.Class powers the OOP facilities of Leaflet and is used to create almost all of the Leaflet classes documented here.
 
 In addition to implementing a simple classical inheritance model, it introduces several special properties for convenient code organization — options, includes and statics.
 
 
-🍂example
+@example
 
 ```js
 var MyClass = L.Class.extend({
@@ -28,8 +28,8 @@ var a = new MyClass("Hello");
 a.greet("World");
 ```
 
-🍂section Class Factories
-🍂example
+@section Class Factories
+@example
 
 You may have noticed that Leaflet objects are created without using
 the `new` keyword. This is achieved by complementing each class with a
@@ -47,8 +47,8 @@ L.map = function (id, options) {
     return new L.Map(id, options);
 };
 ```
-🍂section Inheritance
-🍂example
+@section Inheritance
+@example
 
 You use L.Class.extend to define new classes, but you can use the same method on any class to inherit from it:
 
@@ -83,8 +83,8 @@ var a = new MyChildClass();
 a.greet('Jason'); // alerts "Yo, bro Jason!"
 ```
 
-🍂section Options
-🍂example
+@section Options
+@example
 
 `options` is a special property that unlike other objects that you pass
 to `extend` will be merged with the parent one instead of overriding it
@@ -133,8 +133,8 @@ var a = new MyClass({bla: 10});
 a.options; // {foo: 'bar', bla: 10}
 ```
 
-🍂section Includes
-🍂example
+@section Includes
+@example
 
 `includes` is a special class property that merges all specified objects into the class (such objects are called mixins).
 
@@ -172,8 +172,8 @@ MyClass.FOO; // 'bar'
 ```
 
 
-🍂section Constructor hooks
-🍂example
+@section Constructor hooks
+@example
 
 If you're a plugin developer, you often need to add additional initialization code to existing classes (e.g. editing hooks for `L.Polyline`). Leaflet comes with a way to do it easily using the `addInitHook` method:
 

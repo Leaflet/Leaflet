@@ -1,11 +1,11 @@
 /*
- * 🍂namespace PolyUtil
+ * @namespace PolyUtil
  * Various utility functions for polygon geometries.
  */
 
 L.PolyUtil = {};
 
-/* 🍂function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
+/* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
  * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgeman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
  * Used by Leaflet to only show polygon points that are on the screen or near, increasing
  * performance. Note that polygon points needs different algorithm for clipping

@@ -1,11 +1,11 @@
 /*
- * 🍂class ImageOverlay
- * 🍂aka L.ImageOverlay
- * 🍂inherits Layer
+ * @class ImageOverlay
+ * @aka L.ImageOverlay
+ * @inherits Layer
  *
  * Used to load and display a single image over specific bounds of the map. Extends `Layer`.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * var imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
@@ -17,19 +17,19 @@
 L.ImageOverlay = L.Layer.extend({
 
 	options: {
-		// 🍂option opacity: Number = 1.0
+		// @option opacity: Number = 1.0
 		// The opacity of the image overlay.
 		opacity: 1,
 
-		// 🍂option alt: String = ''
+		// @option alt: String = ''
 		// Text for the `alt` attribute of the image (useful for accessibility).
 		alt: '',
 
-		// 🍂option interactive: Boolean = true
+		// @option interactive: Boolean = true
 		// If `true`, the image overlay will emit mouse events when clicked or hovered.
 		interactive: false,
 
-		// 🍂option attribution: String = null
+		// @option attribution: String = null
 		// An optional string containing HTML to be shown on the `Attribution control`
 		attribution: null
 
@@ -70,7 +70,7 @@ L.ImageOverlay = L.Layer.extend({
 		}
 	},
 
-	// 🍂method setOpacity(): this
+	// @method setOpacity(): this
 	// Sets the opacity of the overlay.
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
@@ -88,7 +88,7 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
-	// 🍂method bringToFront(): this
+	// @method bringToFront(): this
 	// Brings the layer to the top of all overlays.
 	bringToFront: function () {
 		if (this._map) {
@@ -97,7 +97,7 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
-	// 🍂method bringToBack(): this
+	// @method bringToBack(): this
 	// Brings the layer to the bottom of all overlays.
 	bringToBack: function () {
 		if (this._map) {
@@ -106,7 +106,7 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
-	// 🍂method setUrl(url: String): this
+	// @method setUrl(url: String): this
 	// Changes the URL of the image.
 	setUrl: function (url) {
 		this._url = url;
@@ -193,7 +193,7 @@ L.ImageOverlay = L.Layer.extend({
 	}
 });
 
-// 🍂factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
+// @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
 L.imageOverlay = function (url, bounds, options) {

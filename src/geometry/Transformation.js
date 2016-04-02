@@ -1,12 +1,12 @@
 /*
- * 🍂class Transformation
- * 🍂aka L.Transformation
+ * @class Transformation
+ * @aka L.Transformation
  *
  * Represents an affine transformation: a set of coefficients `a`, `b`, `c`, `d`
  * for transforming a point of a form `(x, y)` into `(a*x + b, c*y + d)` and doing
  * the reverse. Used by Leaflet in its projections code.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * var transformation = new L.Transformation(2, 5, -1, 10),
@@ -27,7 +27,7 @@ L.Transformation = function (a, b, c, d) {
 };
 
 L.Transformation.prototype = {
-	// 🍂method transform(point: Point, scale?: Number)
+	// @method transform(point: Point, scale?: Number)
 	// Returns a transformed point, optionally multiplied by the given scale.
 	// Only accepts real `L.Point` instances, not arrays.
 	transform: function (point, scale) { // (Point, Number) -> Point
@@ -42,7 +42,7 @@ L.Transformation.prototype = {
 		return point;
 	},
 
-	// 🍂method untransform(point: Point, scale?: Number)
+	// @method untransform(point: Point, scale?: Number)
 	// Returns the reverse transformation of the given point, optionally divided
 	// by the given scale. Only accepts real `L.Point` instances, not arrays.
 	untransform: function (point, scale) {

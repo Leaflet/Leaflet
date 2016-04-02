@@ -1,5 +1,5 @@
 /*
- * 🍂namespace LineUtil
+ * @namespace LineUtil
  *
  * Various utility functions for polyine points processing, used by Leaflet internally to make polylines lightning-fast.
  */
@@ -9,7 +9,7 @@ L.LineUtil = {
 	// Simplify polyline with vertex reduction and Douglas-Peucker simplification.
 	// Improves rendering performance dramatically by lessening the number of points to draw.
 
-	// 🍂function simplify(points: Point[], tolerance: Number): Point[]
+	// @function simplify(points: Point[], tolerance: Number): Point[]
 	// Dramatically reduces the number of points in a polyline while retaining
 	// its shape and returns a new array of simplified points, using the
 	// [Douglas-Peucker algorithm](http://en.wikipedia.org/wiki/Douglas-Peucker_algorithm).
@@ -33,13 +33,13 @@ L.LineUtil = {
 		return points;
 	},
 
-	// 🍂function pointToSegmentDistance(p: Point, p1: Point, p2: Point): Number
+	// @function pointToSegmentDistance(p: Point, p1: Point, p2: Point): Number
 	// Returns the distance between point `p` and segment `p1` to `p2`.
 	pointToSegmentDistance:  function (p, p1, p2) {
 		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
-	// 🍂function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
+	// @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
 	// Returns the closest point from a point `p` on a segment `p1` to `p2`.
 	closestPointOnSegment: function (p, p1, p2) {
 		return this._sqClosestPointOnSegment(p, p1, p2);

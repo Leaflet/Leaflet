@@ -1,6 +1,6 @@
 /*
- * 🍂namespace CRS
- * 🍂crs L.CRS.EPSG3395
+ * @namespace CRS
+ * @crs L.CRS.EPSG3395
  *
  * Rarely used by some commercial tile providers. Uses Elliptical Mercator projection.
  */

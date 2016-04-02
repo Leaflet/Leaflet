@@ -1,10 +1,10 @@
 /*
- * 🍂class Bounds
- * 🍂aka L.Bounds
+ * @class Bounds
+ * @aka L.Bounds
  *
  * Represents a rectangular area in pixel coordinates.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * var p1 = L.point(10, 10),
@@ -30,14 +30,14 @@ L.Bounds = function (a, b) {
 };
 
 L.Bounds.prototype = {
-	// 🍂method extend(point: Point): this
+	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
 	extend: function (point) { // (Point)
 		point = L.point(point);
 
-		// 🍂property min: Point
+		// @property min: Point
 		// The top left corner of the rectangle.
-		// 🍂property max: Point
+		// @property max: Point
 		// The bottom right corner of the rectangle.
 		if (!this.min && !this.max) {
 			this.min = point.clone();
@@ -51,7 +51,7 @@ L.Bounds.prototype = {
 		return this;
 	},
 
-	// 🍂method getCenter(): Point
+	// @method getCenter(): Point
 	// Returns the center point of the bounds.
 	getCenter: function (round) {
 		return new L.Point(
@@ -59,28 +59,28 @@ L.Bounds.prototype = {
 		        (this.min.y + this.max.y) / 2, round);
 	},
 
-	// 🍂method getBottomLeft(): Point
+	// @method getBottomLeft(): Point
 	// Returns the bottom-left point of the bounds.
 	getBottomLeft: function () {
 		return new L.Point(this.min.x, this.max.y);
 	},
 
-	// 🍂method getTopRight(): Point
+	// @method getTopRight(): Point
 	// Returns the top-right point of the bounds.
 	getTopRight: function () { // -> Point
 		return new L.Point(this.max.x, this.min.y);
 	},
 
-	// 🍂method getSize(): Point
+	// @method getSize(): Point
 	// Returns the size of the given bounds
 	getSize: function () {
 		return this.max.subtract(this.min);
 	},
 
-	// 🍂method contains(otherBounds: Bounds): Boolean
+	// @method contains(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle contains the given one.
-	// 🍂alternative
-	// 🍂method contains(point: Point): Boolean
+	// @alternative
+	// @method contains(point: Point): Boolean
 	// Returns `true` if the rectangle contains the given poing.
 	contains: function (obj) {
 		var min, max;
@@ -104,7 +104,7 @@ L.Bounds.prototype = {
 		       (max.y <= this.max.y);
 	},
 
-	// 🍂method intersects(otherBounds: Bounds): Boolean
+	// @method intersects(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds
 	// intersect if they have at least one point in common.
 	intersects: function (bounds) { // (Bounds) -> Boolean
@@ -120,7 +120,7 @@ L.Bounds.prototype = {
 		return xIntersects && yIntersects;
 	},
 
-	// 🍂method overlaps(otherBounds: Bounds): Boolean
+	// @method overlaps(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds
 	// overlap if their intersection is an area.
 	overlaps: function (bounds) { // (Bounds) -> Boolean
@@ -142,10 +142,10 @@ L.Bounds.prototype = {
 };
 
 
-// 🍂factory L.bounds(topLeft: Point, bottomRight: Point)
+// @factory L.bounds(topLeft: Point, bottomRight: Point)
 // Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).
-// 🍂alternative
-// 🍂factory L.bounds(points: Point[])
+// @alternative
+// @factory L.bounds(points: Point[])
 // Creates a Bounds object from the points it contains
 L.bounds = function (a, b) {
 	if (!a || a instanceof L.Bounds) {

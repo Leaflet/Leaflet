@@ -1,6 +1,6 @@
 /*
- * 🍂namespace Projection
- * 🍂projection L.Projection.Mercator
+ * @namespace Projection
+ * @projection L.Projection.Mercator
  *
  * Elliptical Mercator projection — more complex than Spherical Mercator. Takes into account that Earth is a geoid, not a perfect sphere. Used by the EPSG:3395 CRS.
  */

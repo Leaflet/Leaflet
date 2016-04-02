@@ -1,7 +1,7 @@
 /*
- * 🍂class Path
- * 🍂aka L.Path
- * 🍂inherits Layer
+ * @class Path
+ * @aka L.Path
+ * @inherits Layer
  *
  * An abstract class that contains options and constants shared between vector
  * overlays (Polygon, Polyline, Circle). Do not use it directly. Extends `Layer`.
@@ -9,60 +9,60 @@
 
 L.Path = L.Layer.extend({
 
-	// 🍂section
-	// 🍂aka Path options
+	// @section
+	// @aka Path options
 	options: {
-		// 🍂option stroke: Boolean = true
+		// @option stroke: Boolean = true
 		// Whether to draw stroke along the path. Set it to `false` to disable borders on polygons or circles.
 		stroke: true,
 
-		// 🍂option color: String = '#3388ff'
+		// @option color: String = '#3388ff'
 		// Stroke color
 		color: '#3388ff',
 
-		// 🍂option weight: Number = 3
+		// @option weight: Number = 3
 		// Stroke width in pixels
 		weight: 3,
 
-		// 🍂option opacity: Number = 1.0
+		// @option opacity: Number = 1.0
 		// Stroke opacity
 		opacity: 1,
 
-		// 🍂option lineCap: String= 'round'
+		// @option lineCap: String= 'round'
 		// A string that defines [shape to be used at the end](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-linecap) of the stroke.
 		lineCap: 'round',
 
-		// 🍂option lineJoin: String = 'round'
+		// @option lineJoin: String = 'round'
 		// A string that defines [shape to be used at the corners](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-linejoin) of the stroke.
 		lineJoin: 'round',
 
-		// 🍂option dashArray: String = null
+		// @option dashArray: String = null
 		// A string that defines the stroke [dash pattern](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dasharray). Doesn't work on canvas-powered layers (e.g. Android 2).
 		dashArray: null,
 
-		// 🍂option dashOffset: String = null
+		// @option dashOffset: String = null
 		// A string that defines the [distance into the dash pattern to start the dash](https://developer.mozilla.org/docs/Web/SVG/Attribute/stroke-dashoffset). Doesn't work on canvas-powered layers
 		dashOffset: null,
 
-		// 🍂option fill: Boolean = depends
+		// @option fill: Boolean = depends
 		// Whether to fill the path with color. Set it to `false` to disable filling on polygons or circles.
 		fill: false,
 
-		// 🍂option fillColor: String = *
+		// @option fillColor: String = *
 		// Fill color. Defaults to the value of the [`color`](#path-color) option
 		fillColor: null,
 
-		// 🍂option fillOpacity: Number = 0.2
+		// @option fillOpacity: Number = 0.2
 		// Fill opacity.
 		fillOpacity: 0.2,
 
-		// 🍂option fillRule: String = 'evenodd'
+		// @option fillRule: String = 'evenodd'
 		// A string that defines [how the inside of a shape](https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule) is determined.
 		fillRule: 'evenodd',
 
 		// className: '',
 
-		// 🍂option interactive: Boolean = true
+		// @option interactive: Boolean = true
 		// If `false`, the vector will not emit mouse events and will act as a part of the underlying map.
 		interactive: true
 	},
@@ -91,7 +91,7 @@ L.Path = L.Layer.extend({
 		};
 	},
 
-	// 🍂method redraw(): this
+	// @method redraw(): this
 	// Redraws the layer. Sometimes useful after you changed the coordinates that the path uses.
 	redraw: function () {
 		if (this._map) {
@@ -100,7 +100,7 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
-	// 🍂method setStyle(style: Path options): this
+	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle: function (style) {
 		L.setOptions(this, style);
@@ -110,7 +110,7 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
-	// 🍂method bringToFront(): this
+	// @method bringToFront(): this
 	// Brings the layer to the top of all path layers.
 	bringToFront: function () {
 		if (this._renderer) {
@@ -119,7 +119,7 @@ L.Path = L.Layer.extend({
 		return this;
 	},
 
-	// 🍂method bringToBack(): this
+	// @method bringToBack(): this
 	// Brings the layer to the bottom of all path layers.
 	bringToBack: function () {
 		if (this._renderer) {

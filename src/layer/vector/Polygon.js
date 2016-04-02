@@ -1,14 +1,14 @@
 /*
- * 🍂class Polygon
- * 🍂aka L.Polygon
- * 🍂inherits Polyline
+ * @class Polygon
+ * @aka L.Polygon
+ * @inherits Polyline
  *
  * A class for drawing polygon overlays on a map. Extends `Polyline`.
  *
  * Note that points you pass when creating a polygon shouldn't have an additional last point equal to the first one — it's better to filter out such points.
  *
  *
- * 🍂example
+ * @example
  *
  * ```js
  * // create a red polygon from an array of LatLng points
@@ -140,7 +140,7 @@ L.Polygon = L.Polyline.extend({
 });
 
 
-// 🍂factory L.polygon(latlngs: LatLng[], options?: Path options)
+// @factory L.polygon(latlngs: LatLng[], options?: Path options)
 L.polygon = function (latlngs, options) {
 	return new L.Polygon(latlngs, options);
 };

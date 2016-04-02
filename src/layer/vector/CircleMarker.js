@@ -1,7 +1,7 @@
 /*
- * 🍂class CircleMarker
- * 🍂aka L.CircleMarker
- * 🍂inherits Path
+ * @class CircleMarker
+ * @aka L.CircleMarker
+ * @inherits Path
  *
  * A circle of a fixed size with radius specified in pixels. Extends `Path`.
  */
@@ -11,7 +11,7 @@ L.CircleMarker = L.Path.extend({
 	options: {
 		fill: true,
 
-		// 🍂option radius: Number = 10
+		// @option radius: Number = 10
 		// Radius of the circle marker, in pixels
 		radius: 10
 	},
@@ -22,7 +22,7 @@ L.CircleMarker = L.Path.extend({
 		this._radius = this.options.radius;
 	},
 
-	// 🍂method setLatLng(latLng: LatLng): this
+	// @method setLatLng(latLng: LatLng): this
 	// Sets the position of a circle marker to a new location.
 	setLatLng: function (latlng) {
 		this._latlng = L.latLng(latlng);
@@ -30,20 +30,20 @@ L.CircleMarker = L.Path.extend({
 		return this.fire('move', {latlng: this._latlng});
 	},
 
-	// 🍂method getLatLng(): LatLng
+	// @method getLatLng(): LatLng
 	// Returns the current geographical position of the circle marker
 	getLatLng: function () {
 		return this._latlng;
 	},
 
-	// 🍂method setRadius(radius: Number): this
+	// @method setRadius(radius: Number): this
 	// Sets the radius of a circle marker. Units are in pixels.
 	setRadius: function (radius) {
 		this.options.radius = this._radius = radius;
 		return this.redraw();
 	},
 
-	// 🍂method getRadius(): Number
+	// @method getRadius(): Number
 	// Returns the current radius of the circle
 	getRadius: function () {
 		return this._radius;
@@ -85,7 +85,7 @@ L.CircleMarker = L.Path.extend({
 });
 
 
-// 🍂factory L.circleMarker(latlng: LatLng, options? CircleMarker options)
+// @factory L.circleMarker(latlng: LatLng, options? CircleMarker options)
 //
 L.circleMarker = function (latlng, options) {
 	return new L.CircleMarker(latlng, options);

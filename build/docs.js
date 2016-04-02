@@ -8,7 +8,8 @@ function buildDocs() {
 	var LeafDoc = require('leafdoc');
 	var doc = new LeafDoc({
 		templateDir: 'build/leafdoc-templates',
-		showInheritancesWhenEmpty: true
+		showInheritancesWhenEmpty: true,
+		leadingCharacter: '@'
 	});
 
 	// Note to Vladimir: Iván's never gonna uncomment the following line. He's

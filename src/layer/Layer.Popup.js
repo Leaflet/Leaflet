@@ -1,6 +1,6 @@
 /*
- * 🍂namespace Layer
- * 🍂section Popup methods example
+ * @namespace Layer
+ * @section Popup methods example
  *
  * All layers share a set of methods convenient for binding popups to it.
  *
@@ -13,10 +13,10 @@
  * Popups will also be automatically opened when the layer is clicked on and closed when the layer is removed from the map or another popup is opened.
  */
 
-// 🍂section Popup methods
+// @section Popup methods
 L.Layer.include({
 
-	// 🍂method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
+	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
 	// Binds a popup to the layer with the passed `content` and sets up the
 	// neccessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
@@ -48,7 +48,7 @@ L.Layer.include({
 		return this;
 	},
 
-	// 🍂method unbindPopup(): this
+	// @method unbindPopup(): this
 	// Removes the popup previously bound with `bindPopup`.
 	unbindPopup: function () {
 		if (this._popup) {
@@ -63,7 +63,7 @@ L.Layer.include({
 		return this;
 	},
 
-	// 🍂method openPopup(latlng?: LatLng): this
+	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specificed `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (layer, latlng) {
 		if (!(layer instanceof L.Layer)) {
@@ -99,7 +99,7 @@ L.Layer.include({
 		return this;
 	},
 
-	// 🍂method closePopup(): this
+	// @method closePopup(): this
 	// Closes the popup bound to this layer if it is open.
 	closePopup: function () {
 		if (this._popup) {
@@ -108,7 +108,7 @@ L.Layer.include({
 		return this;
 	},
 
-	// 🍂method closePopup(): this
+	// @method closePopup(): this
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup: function (target) {
 		if (this._popup) {
@@ -121,13 +121,13 @@ L.Layer.include({
 		return this;
 	},
 
-	// 🍂method closePopup(): this
+	// @method closePopup(): this
 	// Returns `true` if the popup bound to this layer is currently open.
 	isPopupOpen: function () {
 		return this._popup.isOpen();
 	},
 
-	// 🍂method setPopupContent(content: String|HTMLElement|Popup, options?: Popup options): this
+	// @method setPopupContent(content: String|HTMLElement|Popup, options?: Popup options): this
 	// Sets the content of the popup bound to this layer.
 	setPopupContent: function (content) {
 		if (this._popup) {
@@ -136,7 +136,7 @@ L.Layer.include({
 		return this;
 	},
 
-	// 🍂method getPopup(): Popup
+	// @method getPopup(): Popup
 	// Returns the popup bound to this layer.
 	getPopup: function () {
 		return this._popup;

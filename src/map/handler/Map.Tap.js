@@ -2,16 +2,16 @@
  * L.Map.Tap is used to enable mobile hacks like quick taps and long hold.
  */
 
-// 🍂namespace Map
-// 🍂section Interaction Options
+// @namespace Map
+// @section Interaction Options
 L.Map.mergeOptions({
-	// 🍂section Touch interaction options
-	// 🍂option tap: Boolean = true
+	// @section Touch interaction options
+	// @option tap: Boolean = true
 	// Enables mobile hacks for supporting instant taps (fixing 200ms click
 	// delay on iOS/Android) and touch holds (fired as `contextmenu` events).
 	tap: true,
 
-	// 🍂option tapTolerance: Number = 15
+	// @option tapTolerance: Number = 15
 	// The max number of pixels a user can shift his finger during touch
 	// for it to be considered a valid tap.
 	tapTolerance: 15
@@ -119,8 +119,8 @@ L.Map.Tap = L.Handler.extend({
 	}
 });
 
-// 🍂section Handlers
-// 🍂property tap: Handler
+// @section Handlers
+// @property tap: Handler
 // Mobile touch hacks (quick tap and touch hold) handler.
 if (L.Browser.touch && !L.Browser.pointer) {
 	L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);

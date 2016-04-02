@@ -1,10 +1,10 @@
 /*
- * 🍂class LatLngBounds
- * 🍂aka L.LatLngBounds
+ * @class LatLngBounds
+ * @aka L.LatLngBounds
  *
  * Represents a rectangular geographical area on a map.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * var southWest = L.latLng(40.712, -74.227),
@@ -34,11 +34,11 @@ L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLn
 
 L.LatLngBounds.prototype = {
 
-	// 🍂method extend(latlng: LatLng)
+	// @method extend(latlng: LatLng)
 	// Extend the bounds to contain the given point
 
-	// 🍂alternative
-	// 🍂method extend(otherBounds: LatLngBounds)
+	// @alternative
+	// @method extend(otherBounds: LatLngBounds)
 	// Extend the bounds to contain the given bounds
 	extend: function (obj) {
 		var sw = this._southWest,
@@ -72,7 +72,7 @@ L.LatLngBounds.prototype = {
 		return this;
 	},
 
-	// 🍂method pad(bufferRatio: Number): LatLngBounds
+	// @method pad(bufferRatio: Number): LatLngBounds
 	// Returns bigger bounds created by extending the current bounds by a given percentage in each direction.
 	pad: function (bufferRatio) {
 		var sw = this._southWest,
@@ -85,7 +85,7 @@ L.LatLngBounds.prototype = {
 		        new L.LatLng(ne.lat + heightBuffer, ne.lng + widthBuffer));
 	},
 
-	// 🍂method getCenter(): LatLng
+	// @method getCenter(): LatLng
 	// Returns the center point of the bounds.
 	getCenter: function () {
 		return new L.LatLng(
@@ -93,59 +93,59 @@ L.LatLngBounds.prototype = {
 		        (this._southWest.lng + this._northEast.lng) / 2);
 	},
 
-	// 🍂method getSouthWest(): LatLng
+	// @method getSouthWest(): LatLng
 	// Returns the south-west point of the bounds.
 	getSouthWest: function () {
 		return this._southWest;
 	},
 
-	// 🍂method getNorthEast(): LatLng
+	// @method getNorthEast(): LatLng
 	// Returns the north-east point of the bounds.
 	getNorthEast: function () {
 		return this._northEast;
 	},
 
-	// 🍂method getNorthWest(): LatLng
+	// @method getNorthWest(): LatLng
 	// Returns the north-west point of the bounds.
 	getNorthWest: function () {
 		return new L.LatLng(this.getNorth(), this.getWest());
 	},
 
-	// 🍂method getSouthEast(): LatLng
+	// @method getSouthEast(): LatLng
 	// Returns the south-east point of the bounds.
 	getSouthEast: function () {
 		return new L.LatLng(this.getSouth(), this.getEast());
 	},
 
-	// 🍂method getWest(): Number
+	// @method getWest(): Number
 	// Returns the west longitude of the bounds
 	getWest: function () {
 		return this._southWest.lng;
 	},
 
-	// 🍂method getSouth(): Number
+	// @method getSouth(): Number
 	// Returns the south latitude of the bounds
 	getSouth: function () {
 		return this._southWest.lat;
 	},
 
-	// 🍂method getEast(): Number
+	// @method getEast(): Number
 	// Returns the east longitude of the bounds
 	getEast: function () {
 		return this._northEast.lng;
 	},
 
-	// 🍂method getNorth(): Number
+	// @method getNorth(): Number
 	// Returns the north latitude of the bounds
 	getNorth: function () {
 		return this._northEast.lat;
 	},
 
-	// 🍂method contains(otherBounds: LatLngBounds): Boolean
+	// @method contains(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle contains the given one.
 
-	// 🍂alternative
-	// 🍂method contains (latlng: LatLng): Boolean
+	// @alternative
+	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if the rectangle contains the given point.
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
 		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
@@ -169,7 +169,7 @@ L.LatLngBounds.prototype = {
 		       (sw2.lng >= sw.lng) && (ne2.lng <= ne.lng);
 	},
 
-	// 🍂method intersects(otherBounds: LatLngBounds): Boolean
+	// @method intersects(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds intersect if they have at least one point in common.
 	intersects: function (bounds) {
 		bounds = L.latLngBounds(bounds);
@@ -185,7 +185,7 @@ L.LatLngBounds.prototype = {
 		return latIntersects && lngIntersects;
 	},
 
-	// 🍂method overlaps(otherBounds: Bounds): Boolean
+	// @method overlaps(otherBounds: Bounds): Boolean
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds overlap if their intersection is an area.
 	overlaps: function (bounds) {
 		bounds = L.latLngBounds(bounds);
@@ -201,13 +201,13 @@ L.LatLngBounds.prototype = {
 		return latOverlaps && lngOverlaps;
 	},
 
-	// 🍂method toBBoxString(): String
+	// @method toBBoxString(): String
 	// Returns a string with bounding box coordinates in a 'southwest_lng,southwest_lat,northeast_lng,northeast_lat' format. Useful for sending requests to web services that return geo data.
 	toBBoxString: function () {
 		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
 	},
 
-	// 🍂method equals(otherBounds: LatLngBounds): Boolean
+	// @method equals(otherBounds: LatLngBounds): Boolean
 	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds.
 	equals: function (bounds) {
 		if (!bounds) { return false; }
@@ -218,7 +218,7 @@ L.LatLngBounds.prototype = {
 		       this._northEast.equals(bounds.getNorthEast());
 	},
 
-	// 🍂method isValid(): Boolean
+	// @method isValid(): Boolean
 	// Returns `true` if the bounds are properly initialized.
 	isValid: function () {
 		return !!(this._southWest && this._northEast);
@@ -227,11 +227,11 @@ L.LatLngBounds.prototype = {
 
 // TODO International date line?
 
-// 🍂factory L.latLngBounds(southWest: LatLng, northEast: LatLng)
+// @factory L.latLngBounds(southWest: LatLng, northEast: LatLng)
 // Creates a `LatLngBounds` object by defining south-west and north-east corners of the rectangle.
 
-// 🍂alternative
-// 🍂factory L.latLngBounds(latlngs: LatLng[])
+// @alternative
+// @factory L.latLngBounds(latlngs: LatLng[])
 // Creates a `LatLngBounds` object defined by the geographical points it contains. Very useful for zooming the map to fit a particular set of locations with [`fitBounds`](#map-fitbounds).
 L.latLngBounds = function (a, b) {
 	if (a instanceof L.LatLngBounds) {

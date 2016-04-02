@@ -1,5 +1,5 @@
 
-🍂namespace Event objects
+@namespace Event objects
 
 
 Whenever a class inheriting from `Evented` fires an event, a listener function
@@ -15,102 +15,102 @@ map.on('click', function(ev) {
 The information available depends on the event type:
 
 
-🍂miniclass Event (Event objects)
-🍂section
+@miniclass Event (Event objects)
+@section
 The base event object. All other event objects contain these properties too.
-🍂property type: String
+@property type: String
 The event type (e.g. `'click'`).
-🍂property target: Object
+@property target: Object
 The object that fired the event.
 
 
-🍂miniclass MouseEvent (Event objects)
-🍂inherits Event
-🍂property latlng: LatLng
+@miniclass MouseEvent (Event objects)
+@inherits Event
+@property latlng: LatLng
 The geographical point where the mouse event occured.
-🍂property layerPoint: Point
+@property layerPoint: Point
 Pixel coordinates of the point where the mouse event occured relative to the map layer.
-🍂property containerPoint: Point
+@property containerPoint: Point
 Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
-🍂property originalEvent: DOMMouseEvent
+@property originalEvent: DOMMouseEvent
 The original DOM mouse event fired by the browser.
 
 
 
-🍂miniclass LocationEvent (Event objects)
-🍂inherits Event
-🍂property latlng: LatLng
+@miniclass LocationEvent (Event objects)
+@inherits Event
+@property latlng: LatLng
 Detected geographical location of the user.
-🍂property bounds: LatLngBounds
+@property bounds: LatLngBounds
 Geographical bounds of the area user is located in (with respect to the accuracy of location).
-🍂property accuracy: Number
+@property accuracy: Number
 Accuracy of location in meters.
-🍂property altitude: Number
+@property altitude: Number
 Height of the position above the WGS84 ellipsoid in meters.
-🍂property altitudeAccuracy: Number
+@property altitudeAccuracy: Number
 Accuracy of altitude in meters.
-🍂property heading: Number
+@property heading: Number
 The direction of travel in degrees counting clockwise from true North.
-🍂property speed: Number
+@property speed: Number
 Current velocity in meters per second.
-🍂property timestamp: Number
+@property timestamp: Number
 The time when the position was acquired.
 
-🍂miniclass ErrorEvent (Event objects)
-🍂inherits Event
-🍂property message: String
+@miniclass ErrorEvent (Event objects)
+@inherits Event
+@property message: String
 Error message.
-🍂property code: Number
+@property code: Number
 Error code (if applicable).
 
-🍂miniclass LayerEvent (Event objects)
-🍂inherits Event
-🍂property layer: ILayer
+@miniclass LayerEvent (Event objects)
+@inherits Event
+@property layer: ILayer
 The layer that was added or removed.
 
-🍂miniclass LayersControlEvent (Event objects)
-🍂inherits Event
-🍂property layer: ILayer
+@miniclass LayersControlEvent (Event objects)
+@inherits Event
+@property layer: ILayer
 The layer that was added or removed.
-🍂property name: String
+@property name: String
 The name of the layer that was added or removed.
 
-🍂miniclass TileEvent (Event objects)
-🍂inherits Event
-🍂property tile: HTMLElement
+@miniclass TileEvent (Event objects)
+@inherits Event
+@property tile: HTMLElement
 The tile element (image).
 
-🍂miniclass TileErrorEvent (Event objects)
-🍂inherits Event
-🍂property tile: HTMLElement
+@miniclass TileErrorEvent (Event objects)
+@inherits Event
+@property tile: HTMLElement
 The tile element (image).
 
-🍂miniclass ResizeEvent (Event objects)
-🍂inherits Event
-🍂property oldSize: Point
+@miniclass ResizeEvent (Event objects)
+@inherits Event
+@property oldSize: Point
 The old size before resize event.
-🍂property newSize: Point
+@property newSize: Point
 The new size after the resize event.
 
-🍂miniclass GeoJSON event (Event objects)
-🍂inherits Event
-🍂property layer: ILayer
+@miniclass GeoJSON event (Event objects)
+@inherits Event
+@property layer: ILayer
 The layer for the GeoJSON feature that is being added to the map.
-🍂property properties: Object
+@property properties: Object
 GeoJSON properties of the feature.
-🍂property geometryType: String
+@property geometryType: String
 GeoJSON geometry type of the feature.
-🍂property id: String
+@property id: String
 GeoJSON ID of the feature (if present).
 
-🍂miniclass Popup event (Event objects)
-🍂inherits Event
-🍂property popup: Popup
+@miniclass Popup event (Event objects)
+@inherits Event
+@property popup: Popup
 The popup that was opened or closed.
 
-🍂miniclass DragEndEvent (Event objects)
-🍂inherits Event
-🍂property distance: Number
+@miniclass DragEndEvent (Event objects)
+@inherits Event
+@property distance: Number
 The distance in pixels the draggable element was moved by.
 
 

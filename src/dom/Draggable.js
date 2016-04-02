@@ -1,13 +1,13 @@
 /*
- * 🍂class Draggable
- * 🍂aka L.Draggable
- * 🍂inherits Evented
+ * @class Draggable
+ * @aka L.Draggable
+ * @inherits Evented
  *
  * A class for making DOM elements draggable (including touch support).
  * Used internally for map and marker dragging. Only works for elements
  * that were positioned with [`L.DomUtil.setPosition`](#domutil-setposition).
  *
- * 🍂example
+ * @example
  * ```js
  * var draggable = new L.Draggable(elementToDrag);
  * draggable.enable();
@@ -32,7 +32,7 @@ L.Draggable = L.Evented.extend({
 		}
 	},
 
-	// 🍂constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline: Boolean)
+	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline: Boolean)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
 	initialize: function (element, dragStartTarget, preventOutline) {
 		this._element = element;
@@ -40,7 +40,7 @@ L.Draggable = L.Evented.extend({
 		this._preventOutline = preventOutline;
 	},
 
-	// 🍂method enable()
+	// @method enable()
 	// Enables the dragging ability
 	enable: function () {
 		if (this._enabled) { return; }
@@ -50,7 +50,7 @@ L.Draggable = L.Evented.extend({
 		this._enabled = true;
 	},
 
-	// 🍂method disable()
+	// @method disable()
 	// Disables the dragging ability
 	disable: function () {
 		if (!this._enabled) { return; }
@@ -78,7 +78,7 @@ L.Draggable = L.Evented.extend({
 
 		if (this._moving) { return; }
 
-		// 🍂event down: Event
+		// @event down: Event
 		// Fired when a drag is about to start.
 		this.fire('down');
 
@@ -108,7 +108,7 @@ L.Draggable = L.Evented.extend({
 		L.DomEvent.preventDefault(e);
 
 		if (!this._moved) {
-			// 🍂event dragstart: Event
+			// @event dragstart: Event
 			// Fired when a drag starts
 			this.fire('dragstart');
 
@@ -132,13 +132,13 @@ L.Draggable = L.Evented.extend({
 	_updatePosition: function () {
 		var e = {originalEvent: this._lastEvent};
 
-		// 🍂event predrag: Event
+		// @event predrag: Event
 		// Fired continuously during dragging *before* each corresponding
 		// update of the element's position.
 		this.fire('predrag', e);
 		L.DomUtil.setPosition(this._element, this._newPos);
 
-		// 🍂event predrag: Event
+		// @event predrag: Event
 		// Fired continuously during dragging.
 		this.fire('drag', e);
 	},
@@ -164,7 +164,7 @@ L.Draggable = L.Evented.extend({
 			// ensure drag is not fired after dragend
 			L.Util.cancelAnimFrame(this._animRequest);
 
-			// 🍂event dragend: Event
+			// @event dragend: Event
 			// Fired when the drag ends.
 			this.fire('dragend', {
 				distance: this._newPos.distanceTo(this._startPos)

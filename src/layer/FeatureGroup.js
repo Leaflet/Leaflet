@@ -1,11 +1,11 @@
 /*
- * 🍂class FeatureGroup
- * 🍂aka L.FeatureGroup
- * 🍂inherits LayerGroup
+ * @class FeatureGroup
+ * @aka L.FeatureGroup
+ * @inherits LayerGroup
  *
  * Extended `LayerGroup` that also has mouse events (propagated from members of the group) and a shared bindPopup method.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * L.featureGroup([marker1, marker2, polyline])
@@ -44,25 +44,25 @@ L.FeatureGroup = L.LayerGroup.extend({
 		return this.fire('layerremove', {layer: layer});
 	},
 
-	// 🍂method setStyle(style: Path options): this
+	// @method setStyle(style: Path options): this
 	// Sets the given path options to each layer of the group that has a `setStyle` method.
 	setStyle: function (style) {
 		return this.invoke('setStyle', style);
 	},
 
-	// 🍂method bringToFront(): this
+	// @method bringToFront(): this
 	// Brings the layer group to the top of all other layers
 	bringToFront: function () {
 		return this.invoke('bringToFront');
 	},
 
-	// 🍂method bringToBack(): this
+	// @method bringToBack(): this
 	// Brings the layer group to the top of all other layers
 	bringToBack: function () {
 		return this.invoke('bringToBack');
 	},
 
-	// 🍂method getBounds(): LatLngBounds
+	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
 	getBounds: function () {
 		var bounds = new L.LatLngBounds();
@@ -75,7 +75,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	}
 });
 
-// 🍂factory L.featureGroup(layers: Layer[])
+// @factory L.featureGroup(layers: Layer[])
 // Create a feature group, optionally given an initial set of layers.
 L.featureGroup = function (layers) {
 	return new L.FeatureGroup(layers);

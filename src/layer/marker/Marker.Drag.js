@@ -3,8 +3,8 @@
  */
 
 
-/* 🍂namespace Marker
- * 🍂section Interaction handlers
+/* @namespace Marker
+ * @section Interaction handlers
  *
  * Interaction handlers are properties of a marker instance that allow you to control interaction behavior in runtime, enabling or disabling certain features such as dragging (see `Handler` methods). Example:
  *
@@ -12,7 +12,7 @@
  * marker.dragging.disable();
  * ```
  *
- * 🍂property dragging: Handler
+ * @property dragging: Handler
  * Marker dragging handler (by both mouse and touch).
  */
 
@@ -54,11 +54,11 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	_onDragStart: function () {
-		// 🍂section Dragging events
-		// 🍂event dragstart: Event
+		// @section Dragging events
+		// @event dragstart: Event
 		// Fired when the user starts dragging the marker.
 
-		// 🍂event movestart: Event
+		// @event movestart: Event
 		// Fired when the marker starts moving (because of dragging).
 		this._marker
 		    .closePopup()
@@ -80,7 +80,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		marker._latlng = latlng;
 		e.latlng = latlng;
 
-		// 🍂event drag: Event
+		// @event drag: Event
 		// Fired repeatedly while the user drags the marker.
 		marker
 		    .fire('move', e)
@@ -88,10 +88,10 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	},
 
 	_onDragEnd: function (e) {
-		// 🍂event dragend: DragEndEvent
+		// @event dragend: DragEndEvent
 		// Fired when the user stops dragging the marker.
 
-		// 🍂event moveend: Event
+		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).
 		this._marker
 		    .fire('moveend')

@@ -1,6 +1,6 @@
 /*
- * 🍂namespace Projection
- * 🍂projection L.Projection.SphericalMercator
+ * @namespace Projection
+ * @projection L.Projection.SphericalMercator
  *
  * Spherical Mercator projection — the most common projection for online maps,
  * used by almost all free and commercial tile providers. Assumes that Earth is

@@ -3,13 +3,13 @@
  */
 
 /*
- * 🍂class Rectangle
- * 🍂aka L.Retangle
- * 🍂inherits Polygon
+ * @class Rectangle
+ * @aka L.Retangle
+ * @inherits Polygon
  *
  * A class for drawing rectangle overlays on a map. Extends `Polygon`.
  *
- * 🍂example
+ * @example
  *
  * ```js
  * // define rectangle geographical bounds
@@ -30,7 +30,7 @@ L.Rectangle = L.Polygon.extend({
 		L.Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},
 
-	// 🍂method setBounds(latLngBounds: LatLngBounds): this
+	// @method setBounds(latLngBounds: LatLngBounds): this
 	// Redraws the rectangle with the passed bounds.
 	setBounds: function (latLngBounds) {
 		return this.setLatLngs(this._boundsToLatLngs(latLngBounds));
@@ -48,7 +48,7 @@ L.Rectangle = L.Polygon.extend({
 });
 
 
-// 🍂factory L.rectangle(latLngBounds: LatLngBounds, options?: Path options)
+// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Path options)
 L.rectangle = function (latLngBounds, options) {
 	return new L.Rectangle(latLngBounds, options);
 };

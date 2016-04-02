@@ -1,23 +1,23 @@
 /*
- * 🍂class PosAnimation
- * 🍂aka L.PosAnimation
- * 🍂inherits Evented
+ * @class PosAnimation
+ * @aka L.PosAnimation
+ * @inherits Evented
  * Used internally for panning animations, utilizing CSS3 Transitions for modern browsers and a timer fallback for IE6-9.
  *
- * 🍂example
+ * @example
  * ```js
  * var fx = new L.PosAnimation();
  f x.run(el, [300, 500], 0.5);*
  * ```
  *
- * 🍂constructor L.PosAnimation()
+ * @constructor L.PosAnimation()
  * Creates a `PosAnimation` object.
  *
  */
 
 L.PosAnimation = L.Evented.extend({
 
-	// 🍂method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
+	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
 	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
 	// argument of the [cubic bezier curve](http://cubic-bezier.com/#0,0,.5,1),
@@ -34,14 +34,14 @@ L.PosAnimation = L.Evented.extend({
 		this._offset = newPos.subtract(this._startPos);
 		this._startTime = +new Date();
 
-		// 🍂event start: Event
+		// @event start: Event
 		// Fired when the animation starts
 		this.fire('start');
 
 		this._animate();
 	},
 
-	// 🍂method stop()
+	// @method stop()
 	// Stops the animation (if currently running).
 	stop: function () {
 		if (!this._inProgress) { return; }
@@ -75,7 +75,7 @@ L.PosAnimation = L.Evented.extend({
 		}
 		L.DomUtil.setPosition(this._el, pos);
 
-		// 🍂event step: Event
+		// @event step: Event
 		// Fired continuously during the animation.
 		this.fire('step');
 	},
@@ -84,7 +84,7 @@ L.PosAnimation = L.Evented.extend({
 		L.Util.cancelAnimFrame(this._animId);
 
 		this._inProgress = false;
-		// 🍂event end: Event
+		// @event end: Event
 		// Fired when the animation ends.
 		this.fire('end');
 	},
