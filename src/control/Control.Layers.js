@@ -62,6 +62,7 @@ L.Control.Layers = L.Control.extend({
 		this._layers = {};
 		this._lastZIndex = 0;
 		this._handlingClick = false;
+		this._collapseTimer = null;
 
 		for (var i in baseLayers) {
 			this._addLayer(baseLayers[i], i);
@@ -314,6 +315,16 @@ L.Control.Layers = L.Control.extend({
 		this._handlingClick = false;
 
 		this._refocusOnMap();
+
+		// Close control after tap on touch devices. Issue #2713
+		if(L.Browser.touch && this.options.autoCollapse) {
+			if (this._collapseTimer) {
+				clearTimeout(this._collapseTimer);
+			}
+			this._collapseTimer = setTimeout(L.bind(this._collapse, this),
+			                                 this.options.autoCollapse === true ?
+			                                 5000 : this.options.autoCollapse);
+		}
 	},
 
 	_expand: function () {
@@ -330,6 +341,10 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_collapse: function () {
+		if (this._collapseTimer) {
+			clearTimeout(this._collapseTimer);
+			this._collapseTimer = null;
+		}
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
 	},
 
