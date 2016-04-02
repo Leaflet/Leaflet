@@ -222,6 +222,8 @@ L.Map = L.Evented.extend({
 	// maximum zoom level possible.
 	fitBounds: function (bounds, options) {
 
+		bounds = L.latLngBounds(bounds);
+
 		if (!bounds.isValid()) {
 			throw new Error('Bounds are not valid.');
 		}
