@@ -6,7 +6,7 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0</strong>.</p>
+<p>This reference reflects <strong>Leaflet 1.0.0-rc1</strong>.</p>
 
 <p>Docs for 0.7 are <a href='reference.html'>available here</a>.
 
@@ -260,6 +260,25 @@ By default, all <code>Path</code>s are rendered in a <a href="#svg"><code>SVG</c
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you don&#39;t want popups to close when user clicks the map.</td>
 	</tr>
+	<tr id='map-zoomsnap'>
+		<td><code><b>zoomSnap</b></code></td>
+		<td><code>Number </code>
+		<td><code>1</code></td>
+		<td>Forces the map&#39;s zoom level to always be a multiple of this, particularly
+right after a <a href="#map-fitbounds"><code>fitBounds()</code></a> or a pinch-zoom.
+By default, the zoom level snaps to the nearest integer; lower values
+(e.g. <code>0.5</code> or <code>0.1</code>) allow for greater granularity. A value of <code>0</code>
+means the zoom level will not be snapped after <code>fitBounds</code> or a pinch-zoom.</td>
+	</tr>
+	<tr id='map-zoomdelta'>
+		<td><code><b>zoomDelta</b></code></td>
+		<td><code>Number </code>
+		<td><code>1</code></td>
+		<td>Controls how much the map&#39;s zoom level will change after a
+<a href="#map-zoomin"><code>zoomIn()</code></a>, <a href="#map-zoomout"><code>zoomOut()</code></a>, pressing <code>+</code>
+or <code>-</code> on the keyboard, or using the <a href="#control-zoom">zoom controls</a>.
+Values smaller than <code>1</code> (e.g. <code>0.5</code>) allow for greater granularity.</td>
+	</tr>
 	<tr id='map-trackresize'>
 		<td><code><b>trackResize</b></code></td>
 		<td><code>Boolean </code>
@@ -297,50 +316,6 @@ are when dragging the map around. The default value of <code>0.0</code> allows t
 user to drag outside the bounds at normal speed, higher values will
 slow down map dragging outside bounds, and <code>1.0</code> makes the bounds fully
 solid, preventing the user from dragging outside the bounds.</td>
-	</tr>
-	<tr id='map-scrollwheelzoom'>
-		<td><code><b>scrollWheelZoom</b></code></td>
-		<td><code>Boolean </code>
-		<td><code>true</code></td>
-		<td>Whether the map can be zoomed by using the mouse wheel. If passed <code>&#39;center&#39;</code>,
-it will zoom to the center of the view regardless of where the mouse was.</td>
-	</tr>
-	<tr id='map-wheeldebouncetime'>
-		<td><code><b>wheelDebounceTime</b></code></td>
-		<td><code>Number </code>
-		<td><code>40</code></td>
-		<td>Limits the rate at which a wheel can fire (in milliseconds). By default
-user can&#39;t zoom via wheel more often than once per 40 ms.</td>
-	</tr>
-	<tr id='map-tap'>
-		<td><code><b>tap</b></code></td>
-		<td><code>Boolean </code>
-		<td><code>true</code></td>
-		<td>Enables mobile hacks for supporting instant taps (fixing 200ms click
-delay on iOS/Android) and touch holds (fired as <code>contextmenu</code> events).</td>
-	</tr>
-	<tr id='map-taptolerance'>
-		<td><code><b>tapTolerance</b></code></td>
-		<td><code>Number </code>
-		<td><code>15</code></td>
-		<td>The max number of pixels a user can shift his finger during touch
-for it to be considered a valid tap.</td>
-	</tr>
-	<tr id='map-touchzoom'>
-		<td><code><b>touchZoom</b></code></td>
-		<td><code>Boolean </code>
-		<td><code>*</code></td>
-		<td>Whether the map can be zoomed by touch-dragging with two fingers. If
-passed <code>&#39;center&#39;</code>, it will zoom to the center of the view regardless of
-where the touch events (fingers) were. Enabled for touch-capable web
-browsers except for old Androids.</td>
-	</tr>
-	<tr id='map-bounceatzoomlimits'>
-		<td><code><b>bounceAtZoomLimits</b></code></td>
-		<td><code>Boolean </code>
-		<td><code>true</code></td>
-		<td>Set it to false if you don&#39;t want the map to zoom beyond min/max zoom
-and then bounce back when pinch-zooming.</td>
 	</tr>
 </tbody></table>
 
@@ -543,17 +518,93 @@ like markers and vector layers are still visible.</td>
 		<td>Makes the map focusable and allows users to navigate the map with keyboard
 arrows and <code>+</code>/<code>-</code> keys.</td>
 	</tr>
-	<tr id='map-keyboardpanoffset'>
-		<td><code><b>keyboardPanOffset</b></code></td>
+	<tr id='map-keyboardpandelta'>
+		<td><code><b>keyboardPanDelta</b></code></td>
 		<td><code>Number </code>
 		<td><code>80</code></td>
 		<td>Amount of pixels to pan when pressing an arrow key.</td>
 	</tr>
-	<tr id='map-keyboardzoomoffset'>
-		<td><code><b>keyboardZoomOffset</b></code></td>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-mousewheel-options'>Mousewheel options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-scrollwheelzoom'>
+		<td><code><b>scrollWheelZoom</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>Whether the map can be zoomed by using the mouse wheel. If passed <code>&#39;center&#39;</code>,
+it will zoom to the center of the view regardless of where the mouse was.</td>
+	</tr>
+	<tr id='map-wheeldebouncetime'>
+		<td><code><b>wheelDebounceTime</b></code></td>
 		<td><code>Number </code>
-		<td><code>1</code></td>
-		<td>Number of zoom levels to change when pressing <code>+</code> or <code>-</code> key.</td>
+		<td><code>40</code></td>
+		<td>Limits the rate at which a wheel can fire (in milliseconds). By default
+user can&#39;t zoom via wheel more often than once per 40 ms.</td>
+	</tr>
+	<tr id='map-wheelpxperzoomlevel'>
+		<td><code><b>wheelPxPerZoomLevel</b></code></td>
+		<td><code>Number </code>
+		<td><code>50</code></td>
+		<td>How many scroll pixels (as reported by <a href="#domevent-getwheeldelta">L.DomEvent.getWheelDelta</a>)
+mean a change of one full zoom level. Smaller values will make wheel-zooming
+faster (and vice versa).</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-touch-interaction-options'>Touch interaction options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-tap'>
+		<td><code><b>tap</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>Enables mobile hacks for supporting instant taps (fixing 200ms click
+delay on iOS/Android) and touch holds (fired as <code>contextmenu</code> events).</td>
+	</tr>
+	<tr id='map-taptolerance'>
+		<td><code><b>tapTolerance</b></code></td>
+		<td><code>Number </code>
+		<td><code>15</code></td>
+		<td>The max number of pixels a user can shift his finger during touch
+for it to be considered a valid tap.</td>
+	</tr>
+	<tr id='map-touchzoom'>
+		<td><code><b>touchZoom</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>*</code></td>
+		<td>Whether the map can be zoomed by touch-dragging with two fingers. If
+passed <code>&#39;center&#39;</code>, it will zoom to the center of the view regardless of
+where the touch events (fingers) were. Enabled for touch-capable web
+browsers except for old Androids.</td>
+	</tr>
+	<tr id='map-bounceatzoomlimits'>
+		<td><code><b>bounceAtZoomLimits</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>true</code></td>
+		<td>Set it to false if you don&#39;t want the map to zoom beyond min/max zoom
+and then bounce back when pinch-zooming.</td>
 	</tr>
 </tbody></table>
 
@@ -794,7 +845,7 @@ handlers start running).</td>
 	</tr>
 	<tr id='map-locationfound'>
 		<td><code><b>locationfound</b>
-		<td><code><a href='#errorevent'>ErrorEvent</a></code></td>
+		<td><code><a href='#locationevent'>LocationEvent</a></code></td>
 		<td>Fired when geolocation (using the <a href="#map-locate"><code>locate</code></a> method)
 went successfully.</td>
 	</tr>
@@ -916,13 +967,13 @@ animation options.</p>
 	<tr id='map-zoomin'>
 		<td><code><b>zoomIn</b>(<nobr>&lt;Number&gt;</nobr> <i>delta?</i>, <nobr>&lt;<a href='#zoom-options'>Zoom options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Increases the zoom of the map by <code>delta</code> (<code>1</code> by default).</p>
+		<td><p>Increases the zoom of the map by <code>delta</code> (<a href="#map-zoomdelta"><code>zoomDelta</code></a> by default).</p>
 </td>
 	</tr>
 	<tr id='map-zoomout'>
 		<td><code><b>zoomOut</b>(<nobr>&lt;Number&gt;</nobr> <i>delta?</i>, <nobr>&lt;<a href='#zoom-options'>Zoom options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Decreases the zoom of the map by <code>delta</code> (<code>1</code> by default).</p>
+		<td><p>Decreases the zoom of the map by <code>delta</code> (<a href="#map-zoomdelta"><code>zoomDelta</code></a> by default).</p>
 </td>
 	</tr>
 	<tr id='map-setzoomaround'>
@@ -1370,11 +1421,11 @@ and aborts resetting the map view if map.locate was called with
 </td>
 	</tr>
 	<tr id='map-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='map-listens'>
@@ -2412,11 +2463,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='marker-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='marker-listens'>
@@ -2974,11 +3025,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='popup-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='popup-listens'>
@@ -3071,8 +3122,7 @@ properties.</p>
 
 <p>A string of the following form:</p>
 <pre><code>&#39;http://{s}.somedomain.com/blabla/{z}/{x}/{y}{r}.png&#39;
-</code></pre><p><code>{s}</code> means one of the available subdomains (used sequentially to help with browser parallel requests per domain limitation; subdomain values are specified in options; <code>a</code>, <code>b</code> or <code>c</code> by default, can be omitted), <code>{z}</code> — zoom level, <code>{x}</code> and <code>{y}</code> — tile coordinates. <code>{r}</code> can be used to add @2x to the URL to load retina tiles.
-You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
+</code></pre><p>You can use custom keys in the template, which will be <a href="#util-template">evaluated</a> from TileLayer options, like this:</p>
 <pre><code>L.tileLayer(&#39;http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png&#39;, {foo: &#39;bar&#39;});
 </code></pre>
 
@@ -3136,7 +3186,9 @@ You can use custom keys in the template, which will be <a href="#util-template">
 		<td><code><b>maxNativeZoom</b></code></td>
 		<td><code>Number </code>
 		<td><code>null</code></td>
-		<td>Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded from <code>maxZoom</code> level and auto-scaled.</td>
+		<td>Maximum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
+from <code>maxNativeZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr id='tilelayer-subdomains'>
 		<td><code><b>subdomains</b></code></td>
@@ -3664,11 +3716,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='tilelayer-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-listens'>
@@ -3875,7 +3927,9 @@ map CRS. Don&#39;t change this if you&#39;re not sure what it means.</td>
 		<td><code><b>maxNativeZoom</b></code></td>
 		<td><code>Number </code>
 		<td><code>null</code></td>
-		<td>Maximum zoom number the tiles source has available. If it is specified, the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded from <code>maxZoom</code> level and auto-scaled.</td>
+		<td>Maximum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
+from <code>maxNativeZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr id='tilelayer-wms-subdomains'>
 		<td><code><b>subdomains</b></code></td>
@@ -4409,11 +4463,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='tilelayer-wms-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-listens'>
@@ -4864,11 +4918,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='imageoverlay-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-listens'>
@@ -5344,11 +5398,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='path-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='path-listens'>
@@ -5985,11 +6039,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='polyline-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='polyline-listens'>
@@ -6654,11 +6708,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='polygon-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='polygon-listens'>
@@ -7333,11 +7387,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='rectangle-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='rectangle-listens'>
@@ -7441,7 +7495,7 @@ It&#39;s an approximation and starts to diverge from a real circle closer to pol
 	</tr>
 	</thead><tbody>
 	<tr id='circle-l-circle'>
-		<td><code><b>L.circle</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>radius</i>, <nobr>&lt;<a href='#path-option'>Path options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code><b>L.circle</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;<a href='#path-option'>Path options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td>Instantiates a circle object given a geographical point, and an options object
 which contains the circle radius.</td>
 	</tr>
@@ -7456,15 +7510,9 @@ Do not use in new applications or plugins.</td>
 
 
 </section><section>
-<h3 id=''>Options</h3>
+<h3 id='circle-option'>Options</h3>
 
-
-
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#circlemarker'>CircleMarker</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
+<section >
 
 
 
@@ -7479,15 +7527,14 @@ Do not use in new applications or plugins.</td>
 	</thead><tbody>
 	<tr id='circle-radius'>
 		<td><code><b>radius</b></code></td>
-		<td><code>Number </code>
-		<td><code>10</code></td>
-		<td>Radius of the circle marker, in pixels</td>
+		<td><code>Number</code>
+		<td><code></code></td>
+		<td>Radius of the circle, in meters.</td>
 	</tr>
 </tbody></table>
 
-</section></div>
-	</div>
-</div>
+</section>
+
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Options inherited from <a href='#path'>Path</a></label>
@@ -7972,11 +8019,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='circle-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='circle-listens'>
@@ -8553,11 +8600,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='circlemarker-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-listens'>
@@ -8976,11 +9023,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='svg-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='svg-listens'>
@@ -9427,11 +9474,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='canvas-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='canvas-listens'>
@@ -9898,11 +9945,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='layergroup-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='layergroup-listens'>
@@ -10413,11 +10460,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='featuregroup-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-listens'>
@@ -11008,11 +11055,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='geojson-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='geojson-listens'>
@@ -11098,9 +11145,11 @@ properties.</p>
 	</tr>
 	</thead><tbody>
 	<tr id='geojson-geometrytolayer'>
-		<td><code><b>geometryToLayer</b>(<nobr>&lt;Object&gt;</nobr> <i>featureData</i>, <nobr>&lt;Function&gt;</nobr> <i>pointToLayer?</i>)</nobr></code></td>
+		<td><code><b>geometryToLayer</b>(<nobr>&lt;Object&gt;</nobr> <i>featureData</i>, <nobr>&lt;<a href='#geojson-option'>GeoJSON options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code><a href='#layer'>Layer</a></code></td>
-		<td>Creates a <a href="#layer"><code>Layer</code></a> from a given GeoJSON feature. Can use a custom <a href="#geojson-pointtolayer"><code>pointToLayer</code></a> function.</td>
+		<td>Creates a <a href="#layer"><code>Layer</code></a> from a given GeoJSON feature. Can use a custom
+<a href="#geojson-pointtolayer"><code>pointToLayer</code></a> and/or <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a>
+functions if provided as options.</td>
 	</tr>
 	<tr id='geojson-coordstolatlng'>
 		<td><code><b>coordsToLatLng</b>(<nobr>&lt;Array&gt;</nobr> <i>coords</i>)</nobr></code></td>
@@ -11667,11 +11716,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='gridlayer-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-listens'>
@@ -12395,12 +12444,10 @@ overlap if their intersection is an area.</p>
 
 <pre><code class="lang-js">var myIcon = L.icon({
     iconUrl: &#39;my-icon.png&#39;,
-    iconRetinaUrl: &#39;my-icon@2x.png&#39;,
     iconSize: [38, 95],
     iconAnchor: [22, 94],
     popupAnchor: [-3, -76],
     shadowUrl: &#39;my-icon-shadow.png&#39;,
-    shadowRetinaUrl: &#39;my-icon-shadow@2x.png&#39;,
     shadowSize: [68, 95],
     shadowAnchor: [22, 94]
 });
@@ -12802,11 +12849,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='icon-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='icon-listens'>
@@ -13328,11 +13375,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='divicon-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='divicon-listens'>
@@ -13777,6 +13824,18 @@ L.control.layers(baseLayers, overlays).addTo(map);
 		<td><code><b>removeLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Remove the given layer from the control.</p>
+</td>
+	</tr>
+	<tr id='control-layers-expand'>
+		<td><code><b>expand</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Expand the control container if collapsed.</p>
+</td>
+	</tr>
+	<tr id='control-layers-collapse'>
+		<td><code><b>collapse</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Collapse the control container if expanded.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -14432,7 +14491,10 @@ Use it inside listener functions.</td>
 	<tr id='domevent-getwheeldelta'>
 		<td><code><b>getWheelDelta</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
 		<td><code>Number</code></td>
-		<td>Gets normalized wheel delta from a mousewheel DOM event.</td>
+		<td>Gets normalized wheel delta from a mousewheel DOM event, in vertical
+pixels scrolled (negative if scrolling down).
+Events from pointing devices without precise scrolling are mapped to
+a best guess of between 50-60 pixels.</td>
 	</tr>
 	<tr id='domevent-addlistener'>
 		<td><code><b>addListener</b>(<i>…</i>)</nobr></code></td>
@@ -14769,11 +14831,11 @@ argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</
 </td>
 	</tr>
 	<tr id='posanimation-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='posanimation-listens'>
@@ -14985,11 +15047,11 @@ Fired continuously during dragging.</td>
 </td>
 	</tr>
 	<tr id='draggable-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='draggable-listens'>
@@ -15349,11 +15411,11 @@ map.off(&#39;click&#39;, onClick);
 </td>
 	</tr>
 	<tr id='evented-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='evented-listens'>
@@ -15720,11 +15782,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='layer-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='layer-listens'>
@@ -16448,11 +16510,11 @@ Returns <code>true</code> if the popup bound to this layer is currently open.</p
 </td>
 	</tr>
 	<tr id='renderer-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>)</nobr></code></td>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties.</p>
+properties. The event might can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='renderer-listens'>
@@ -17410,14 +17472,8 @@ var Leaflet = L.noConflict();
 	label,
 	section > h4 {
 		display: block;
-/* 		padding: 0.75em 1em 0.25em 0; */
-/* 		font-size: 14px; */
-/* 		font-weight: bold; */
-/* 		font-size: 1.1em; */
 		font-weight: 500;
 		margin: 1em 0 0.25em;
-/* 		margin: 0; */
-/* 		color: #666; */
 	}
 
 	label {
@@ -17509,3 +17565,4 @@ var Leaflet = L.noConflict();
 
 
 </style>
+</body></html>
