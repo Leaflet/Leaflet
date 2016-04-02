@@ -113,7 +113,7 @@ L.Control.Layers = L.Control.extend({
 		return (this._map) ? this._update() : this;
 	},
 
-	// @method expand(): undefined
+	// @method expand(): this
 	// Expand the control container if collapsed.
 	expand: function () {
 		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
@@ -126,12 +126,14 @@ L.Control.Layers = L.Control.extend({
 			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
 		}
 		this._checkDisabledLayers();
+		return this;
 	},
 
-	// @method collapse(): undefined
+	// @method collapse(): this
 	// Collapse the control container if expanded.
 	collapse: function () {
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+		return this;
 	},
 
 	_initLayout: function () {
@@ -354,12 +356,12 @@ L.Control.Layers = L.Control.extend({
 
 	_expand: function () {
 		// Backward compatibility, remove me in 1.1.
-		this.expand();
+		return this.expand();
 	},
 
 	_collapse: function () {
 		// Backward compatibility, remove me in 1.1.
-		this.collapse();
+		return this.collapse();
 	}
 
 });
