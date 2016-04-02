@@ -21,6 +21,7 @@ L.Layer.include({
 	// neccessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindPopup: function (content, options) {
+		var events;
 
 		if (content instanceof L.Popup) {
 			L.setOptions(content, options);
@@ -34,11 +35,14 @@ L.Layer.include({
 		}
 
 		if (!this._popupHandlersAdded) {
-			this.on({
-				click: this._openPopup,
+			events = {
 				remove: this.closePopup,
 				move: this._movePopup
-			});
+			};
+			if (options.openOnClick !== false) {
+				events.click = this._openPopup;
+			}
+			this.on(events);
 			this._popupHandlersAdded = true;
 		}
 
