@@ -1986,6 +1986,11 @@ var map = L.map('map', {
 		<td><code><a href="#tile-event">TileEvent</a></code></td>
 		<td>Fired when a tile is removed (e.g. when you have <code>unloadInvisibleTiles</code> on).</td>
 	</tr>
+	<tr>
+		<td><code><b>tileerror</b></code></td>
+		<td><code><a href="#tileerror-event">TileEvent</a></code></td>
+		<td>Fired when there is an error loading a tile.</td>
+	</tr>
 </table>
 
 <h3>Methods</h3>
@@ -4918,6 +4923,26 @@ map.off('click', onClick);</code></pre>
 		<td><code><b>url</b></code></td>
 		<td><code>String</code></td>
 		<td>The source URL of the tile.</td>
+	</tr>
+</table>
+
+<h3 id="tileerror-event">TileErrorEvent</h3>
+
+<table data-id='tileerror-event'>
+	<tr>
+		<th class="width100">property</th>
+		<th class="width100">type</th>
+		<th>description</th>
+	</tr>
+	<tr>
+		<td><code><b>tile</b></code></td>
+		<td><code>HTMLElement</code></td>
+		<td>The tile element (image).</td>
+	</tr>
+	<tr>
+		<td><code><b>url</b></code></td>
+		<td><code>String</code></td>
+		<td>The <code>src</code> attribute of the tile element.</td>
 	</tr>
 </table>
 
