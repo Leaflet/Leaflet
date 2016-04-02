@@ -53,24 +53,25 @@ describe("Map.Drag", function () {
 			});
 			map.setView([0, 0], 1);
 
-			var hand = new Hand({timing: 'fastframe'});
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					var center = map.getCenter();
+					var zoom = map.getZoom();
+					document.body.removeChild(container);
+					expect(center.lat).to.be.within(21.9430, 21.9431);
+					expect(center.lng).to.be(-180);
+					expect(zoom).to.be(1);
+
+					done();
+				}
+			});
 			var mouse = hand.growFinger('mouse');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
 			mouse.wait(100).moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
-
-			setTimeout(function () {
-				var center = map.getCenter();
-				var zoom = map.getZoom();
-				document.body.removeChild(container);
-				expect(center.lat).to.be.within(21.9430, 21.9431);
-				expect(center.lng).to.be(-180);
-				expect(zoom).to.be(1);
-
-				done();
-			}, 100);
 		});
 	});
 
@@ -90,24 +91,25 @@ describe("Map.Drag", function () {
 			});
 			map.setView([0, 0], 1);
 
-			var hand = new Hand({timing: 'fastframe'});
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					var center = map.getCenter();
+					var zoom = map.getZoom();
+					document.body.removeChild(container);
+					expect(center.lat).to.be.within(21.9430, 21.9431);
+					expect(center.lng).to.be(-180);
+					expect(zoom).to.be(1);
+
+					done();
+				}
+			});
 			var toucher = hand.growFinger('touch');
 
 			// We move 5 pixels first to overcome the 3-pixel threshold of
 			// L.Draggable.
 			toucher.wait(100).moveTo(200, 200, 0)
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
-
-			setTimeout(function () {
-				var center = map.getCenter();
-				var zoom = map.getZoom();
-				document.body.removeChild(container);
-				expect(center.lat).to.be.within(21.9430, 21.9431);
-				expect(center.lng).to.be(-180);
-				expect(zoom).to.be(1);
-
-				done();
-			}, 100);
 		});
 	});
 
