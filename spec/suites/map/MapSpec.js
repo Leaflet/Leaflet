@@ -761,6 +761,22 @@ describe("Map", function () {
 			map.fitBounds(bounds, {animate: false});
 		});
 
+		it('can be called with an array', function (done) {
+			map.once('zoomend', function () {
+				expect(map.getZoom()).to.eql(2);
+				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
+				done();
+			});
+			var bounds = [[1, 102], [11, 122]];
+			map.fitBounds(bounds, {animate: false});
+		});
+
+		it('throws an error with invalid bounds', function () {
+			expect(function () {
+				map.fitBounds(NaN);
+			}).to.throwError();
+		});
+
 	});
 
 
