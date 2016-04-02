@@ -657,7 +657,7 @@ describe("Map", function () {
 				done();
 			});
 
-			map.flyTo(dc,  4);
+			map.flyTo(dc, 4);
 		});
 	});
 

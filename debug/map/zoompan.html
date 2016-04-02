@@ -56,7 +56,7 @@
 
 		var map = L.map('map', {
             zoomSnap: 0.25
-        }).setView(dc, 10);
+        }).setView(dc, 14);
 
 		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
 			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
@@ -73,7 +73,7 @@
 
 		var nullIslandKitten = L.imageOverlay('http://placekitten.com/300/400?image=6', [[-0.2,-0.15], [0.2, 0.15]]).addTo(map);
 
-		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
+		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  4); };
 		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5, animate: true}); };
 		document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 20}); };
 		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
