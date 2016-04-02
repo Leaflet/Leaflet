@@ -609,8 +609,26 @@ describe("Map", function () {
 	});
 
 	describe('#flyTo', function () {
+		var div;
 
-		it('move to requested center and zoom, and call zoomend once', function (done) {
+		beforeEach(function () {
+			div = document.createElement('div');
+			div.style.width = '800px';
+			div.style.height = '600px';
+			div.style.visibility = 'hidden';
+
+			document.body.appendChild(div);
+
+			map = L.map(div);
+		});
+
+		afterEach(function () {
+			document.body.removeChild(div);
+		});
+
+		it.skipInPhantom('move to requested center and zoom, and call zoomend once', function (done) {
+			this.timeout(10000); // This test takes longer than usual due to frames
+
 			var spy = sinon.spy(),
 			    newCenter = new L.LatLng(10, 11),
 			    newZoom = 12;
@@ -622,7 +640,22 @@ describe("Map", function () {
 				done();
 			};
 			map.setView([0, 0], 0);
-			map.once('zoomend', callback).flyTo(newCenter, newZoom);
+			map.on('zoomend', callback).flyTo(newCenter, newZoom);
+		});
+
+		it.skipInPhantom('flyTo start latlng == end latlng', function (done) {
+			this.timeout(10000); // This test takes longer than usual due to frames
+
+			var dc = new L.LatLng(38.91, -77.04);
+			map.setView(dc, 14);
+
+			map.on('zoomend', function () {
+				expect(map.getCenter()).to.eql(dc);
+				expect(map.getZoom()).to.eql(4);
+				done();
+			});
+
+			map.flyTo(dc, 4);
 		});
 	});
 
