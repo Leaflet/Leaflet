@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/mobile.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+	<div id="map"></div>
+
+<script type="text/javascript">
+    var map = L.map('map', {
+        maxZoom: 12,
+        minZoom: 3,
+    }).setView([0,0],1);
+    
+    L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+		attribution: "Map: Tiles Courtesy of MapQuest (OpenStreetMap, CC-BY-SA)",
+		subdomains: ["otile1","otile2","otile3","otile4"],
+		maxZoom: 12,
+		minZoom: 2
+	}).addTo(map);
+	
+	var markerDraggable = new L.Marker([0, 10], {
+		draggable: true,
+		title: 'Draggable and on the edges I pan the map'
+	}).addTo(map);
+
+	markerDraggable.bindPopup("Draggable");
+	
+	//Parameters for superellipse boundaries (feels more natural)
+	// https://en.wikipedia.org/wiki/Superellipse 
+	var panOptions = {a:0.90,b:0.90,n:5,maxVelocity:50};
+	
+	markerDraggable.on('drag',function(e){
+		//Transform mouse coordinates [0,0] to [mapSizeX,mapSizeY] to [-1,+1] to [+1,-1] coordinates
+		var halfMapSize = map.getSize()._divideBy(2),
+			//Fix event for touch input
+			fixedEvent = (e.originalEvent.touches && e.originalEvent.touches.length === 1) ? e.originalEvent.touches[0] : e.originalEvent,
+			dragPoint = map.mouseEventToContainerPoint(fixedEvent),
+			scaledPoint = dragPoint.subtract(halfMapSize).unscaleBy(halfMapSize),
+			superEllipse = Math.pow(Math.abs(scaledPoint.x/panOptions.a),panOptions.n) + Math.pow(Math.abs(scaledPoint.y/panOptions.b),panOptions.n);
+		
+		if(superEllipse >= 1) {
+			/*
+			 * Calculate smooth increase of pan by moving further to the edge by calculating
+			 * first a index between 0 (the pan bounding box edge) to 1 (the map edge)
+			 * and then plug that value into a sigmoid function to get a smooth transition
+			 */
+			var panSmoothed = 1/(1+Math.exp(-12*(superEllipse-1))),
+				panMagnitude = L.point(panSmoothed,panSmoothed).multiplyBy(panOptions.maxVelocity),
+				panAngle = Math.atan2(scaledPoint.y,scaledPoint.x);
+			
+			map.panBy(panMagnitude.scaleBy(L.point(Math.cos(panAngle),Math.sin(panAngle))))
+		}
+	});
+</script>
+</body>
+</html>
