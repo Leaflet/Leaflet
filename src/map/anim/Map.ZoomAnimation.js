@@ -21,7 +21,7 @@ if (zoomAnimated) {
 
 			this._createAnimProxy();
 
-			L.DomEvent.on(this._proxy, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+			L.DomEvent.on(this._panes.mapPane, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
 	});
 }
@@ -30,7 +30,7 @@ L.Map.include(!zoomAnimated ? {} : {
 
 	_createAnimProxy: function () {
 
-		var proxy = this._proxy = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
+		var proxy = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
 		this._panes.mapPane.appendChild(proxy);
 
 		this.on('zoomanim', function (e) {
