@@ -113,6 +113,27 @@ L.Control.Layers = L.Control.extend({
 		return (this._map) ? this._update() : this;
 	},
 
+	// @method expand(): undefined
+	// Expand the control container if collapsed.
+	expand: function () {
+		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
+		this._form.style.height = null;
+		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
+		if (acceptableHeight < this._form.clientHeight) {
+			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
+			this._form.style.height = acceptableHeight + 'px';
+		} else {
+			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
+		}
+		this._checkDisabledLayers();
+	},
+
+	// @method collapse(): undefined
+	// Collapse the control container if expanded.
+	collapse: function () {
+		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+	},
+
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
 		    container = this._container = L.DomUtil.create('div', className);
@@ -130,8 +151,8 @@ L.Control.Layers = L.Control.extend({
 		if (this.options.collapsed) {
 			if (!L.Browser.android) {
 				L.DomEvent.on(container, {
-					mouseenter: this._expand,
-					mouseleave: this._collapse
+					mouseenter: this.expand,
+					mouseleave: this.collapse
 				}, this);
 			}
 
@@ -142,9 +163,9 @@ L.Control.Layers = L.Control.extend({
 			if (L.Browser.touch) {
 				L.DomEvent
 				    .on(link, 'click', L.DomEvent.stop)
-				    .on(link, 'click', this._expand, this);
+				    .on(link, 'click', this.expand, this);
 			} else {
-				L.DomEvent.on(link, 'focus', this._expand, this);
+				L.DomEvent.on(link, 'focus', this.expand, this);
 			}
 
 			// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
@@ -152,10 +173,10 @@ L.Control.Layers = L.Control.extend({
 				setTimeout(L.bind(this._onInputClick, this), 0);
 			}, this);
 
-			this._map.on('click', this._collapse, this);
+			this._map.on('click', this.collapse, this);
 			// TODO keyboard accessibility
 		} else {
-			this._expand();
+			this.expand();
 		}
 
 		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
@@ -316,23 +337,6 @@ L.Control.Layers = L.Control.extend({
 		this._refocusOnMap();
 	},
 
-	_expand: function () {
-		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
-		this._form.style.height = null;
-		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
-		if (acceptableHeight < this._form.clientHeight) {
-			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
-			this._form.style.height = acceptableHeight + 'px';
-		} else {
-			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
-		}
-		this._checkDisabledLayers();
-	},
-
-	_collapse: function () {
-		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
-	},
-
 	_checkDisabledLayers: function () {
 		var inputs = this._form.getElementsByTagName('input'),
 		    input,
@@ -346,7 +350,18 @@ L.Control.Layers = L.Control.extend({
 			                 (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
 
 		}
+	},
+
+	_expand: function () {
+		// Backward compatibility, remove me in 1.1.
+		this.expand();
+	},
+
+	_collapse: function () {
+		// Backward compatibility, remove me in 1.1.
+		this.collapse();
 	}
+
 });
 
 
