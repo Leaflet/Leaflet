@@ -714,7 +714,7 @@ describe("Map", function () {
 	});
 
 	describe('#fitBounds', function () {
-		var center = L.latLng(22, 33),
+		var center = L.latLng(50.5, 30.51),
 		    bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122)),
 		    boundsCenter = bounds.getCenter();
 
@@ -723,7 +723,7 @@ describe("Map", function () {
 			var container = map.getContainer();
 			container.style.width = container.style.height = "100px";
 			document.body.appendChild(container);
-			map.setView(center, 10);
+			map.setView(center, 15);
 		});
 
 		afterEach(function () {
@@ -777,6 +777,18 @@ describe("Map", function () {
 			}).to.throwError();
 		});
 
+		it('Fits to same scale and zoom', function (done) {
+			var bounds = map.getBounds(),
+			    zoom = map.getZoom();
+			map.once('moveend zoomend', function () {
+				var newBounds = map.getBounds();
+				expect(newBounds.getSouthWest()).to.nearLatLng(bounds.getSouthWest());
+				expect(newBounds.getNorthEast()).to.nearLatLng(bounds.getNorthEast());
+				expect(map.getZoom()).to.eql(zoom);
+				done();
+			});
+			map.fitBounds(bounds, {animate: false});
+		});
 	});
 
 
