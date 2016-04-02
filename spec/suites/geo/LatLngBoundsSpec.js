@@ -17,6 +17,17 @@ describe('LatLngBounds', function () {
 			expect(b).to.eql(a);
 			expect(b.getNorthWest()).to.eql(new L.LatLng(30, 12));
 		});
+
+		it('returns an empty bounds when not argument is given', function () {
+			var bounds = new L.LatLngBounds();
+			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
+		});
+
+		it('returns an empty bounds when not argument is given to factory', function () {
+			var bounds = L.latLngBounds();
+			expect(bounds instanceof L.LatLngBounds).to.be.ok(a);
+		});
+
 	});
 
 	describe('#extend', function () {
