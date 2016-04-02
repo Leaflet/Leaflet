@@ -378,6 +378,9 @@ L.Map = L.Evented.extend({
 	// Stops the currently running `panTo` or `flyTo` animation, if any.
 	stop: function () {
 		this.setZoom(this._limitZoom(this._zoom));
+		if (!this.options.zoomSnap) {
+			this.fire('viewreset');
+		}
 		return this._stop();
 	},
 
