@@ -1,5 +1,10 @@
-
+// @namespace Map
+// @section Methods for modifying map state
 L.Map.include({
+
+	// @method flyTo(latlng: LatLng, zoom?: Number, options? Zoom/Pan options): this
+	// Sets the view of the map (geographical center and zoom) performing a smooth
+	// pan-zoom animation.
 	flyTo: function (targetCenter, targetZoom, options) {
 
 		options = options || {};
@@ -68,6 +73,9 @@ L.Map.include({
 		return this;
 	},
 
+	// @method flyToBounds(bounds: LatLngBounds, options?: fitBounds options): this
+	// Sets the view of the map with a smooth animation like [`flyTo`](#map-flyto),
+	// but takes a bounds parameter like [`fitBounds`](#map-fitbounds).
 	flyToBounds: function (bounds, options) {
 		var target = this._getBoundsCenterZoom(bounds, options);
 		return this.flyTo(target.center, target.zoom, options);

@@ -1,6 +1,17 @@
 /*
- * L.Circle is a circle overlay (with a certain radius in meters).
- * It's an approximation and starts to diverge from a real circle closer to poles (due to projection distortion)
+ * @class Circle
+ * @aka L.Circle
+ * @inherits CircleMarker
+ *
+ * A class for drawing circle overlays on a map. Extends `CircleMarker`.
+ *
+ * It's an approximation and starts to diverge from a real circle closer to poles (due to projection distortion).
+ *
+ * @example
+ *
+ * ```js
+ * L.circle([50.5, 30.5], 200).addTo(map);
+ * ```
  */
 
 L.Circle = L.CircleMarker.extend({
@@ -15,18 +26,25 @@ L.Circle = L.CircleMarker.extend({
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
+		// @option radius: Number; Radius of the circle, in meters.
 		this._mRadius = this.options.radius;
 	},
 
+	// @method setRadius(radius: Number): this
+	// Sets the radius of a circle. Units are in meters.
 	setRadius: function (radius) {
 		this._mRadius = radius;
 		return this.redraw();
 	},
 
+	// @method getRadius(): Number
+	// Returns the current radius of a circle. Units are in meters.
 	getRadius: function () {
 		return this._mRadius;
 	},
 
+	// @method getBounds(): LatLngBounds
+	// Returns the `LatLngBounds` of the path.
 	getBounds: function () {
 		var half = [this._radius, this._radiusY || this._radius];
 
@@ -73,6 +91,13 @@ L.Circle = L.CircleMarker.extend({
 	}
 });
 
+// @factory L.circle(latlng: LatLng, options?: Path options)
+// Instantiates a circle object given a geographical point, and an options object
+// which contains the circle radius.
+// @alternative
+// @factory L.circle(latlng: LatLng, radius: Number, options?: Path options)
+// Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
+// Do not use in new applications or plugins.
 L.circle = function (latlng, options, legacyOptions) {
 	return new L.Circle(latlng, options, legacyOptions);
 };

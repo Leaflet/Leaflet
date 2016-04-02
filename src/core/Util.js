@@ -1,9 +1,13 @@
 /*
- * L.Util contains various utility functions used throughout Leaflet code.
+ * @namespace Util
+ *
+ * Various utility functions, used by Leaflet internally.
  */
 
 L.Util = {
-	// extend an object with properties of one or more other objects
+
+	// @function extend(dest: Object, src?: Object): Object
+	// Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
 	extend: function (dest) {
 		var i, j, len, src;
 
@@ -16,7 +20,8 @@ L.Util = {
 		return dest;
 	},
 
-	// create an object from a given prototype
+	// @function create(proto: Object, properties?: Object): Object
+	// Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
 	create: Object.create || (function () {
 		function F() {}
 		return function (proto) {
@@ -25,7 +30,9 @@ L.Util = {
 		};
 	})(),
 
-	// bind a function to be called with a given context
+	// @function bind(fn: Function, …): Function
+	// Returns a new function bound to the arguments passed, like [Function.prototype.bind](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Function/bind).
+	// Has a `L.bind()` shortcut.
 	bind: function (fn, obj) {
 		var slice = Array.prototype.slice;
 
@@ -40,7 +47,8 @@ L.Util = {
 		};
 	},
 
-	// return unique ID of an object
+	// @function stamp(obj: Object): Number
+	// Returns the unique ID of an object, assiging it one if it doesn't have it.
 	stamp: function (obj) {
 		/*eslint-disable */
 		obj._leaflet_id = obj._leaflet_id || ++L.Util.lastId;
@@ -48,9 +56,13 @@ L.Util = {
 		/*eslint-enable */
 	},
 
+	// @property lastId: Number
+	// Last unique ID used by [`stamp()`](#util-stamp)
 	lastId: 0,
 
-	// return a function that won't be called more often than the given interval
+	// @function throttle(fn: Function, time: Number, context: Object): Function
+	// Returns a function which executes function `fn` with the given scope `context`
+	// (so that the `this` keyword refers to `context` inside `fn`'s code). The arguments received by the bound function will be any arguments passed when binding the function, followed by any arguments passed when invoking the bound function. Has an `L.bind` shortcut.
 	throttle: function (fn, time, context) {
 		var lock, args, wrapperFn, later;
 
@@ -79,7 +91,10 @@ L.Util = {
 		return wrapperFn;
 	},
 
-	// wrap the given number to lie within a certain range (used for wrapping longitude)
+	// @function wrapNum(num: Number, range: Number[], includeMax?: Boolean): Number
+	// Returns the number `num` modulo `range` in such a way so it lies within
+	// `range[0]` and `range[1]`. The returned value will be always smaller than
+	// `range[1]` unless `includeMax` is set to `true`.
 	wrapNum: function (x, range, includeMax) {
 		var max = range[1],
 		    min = range[0],
@@ -87,26 +102,31 @@ L.Util = {
 		return x === max && includeMax ? x : ((x - min) % d + d) % d + min;
 	},
 
-	// do nothing (used as a noop throughout the code)
+	// @function falseFn(): Function
+	// Returns a function which always returns `false`.
 	falseFn: function () { return false; },
 
-	// round a given number to a given precision
+	// @function formatNum(num: Number, digits?: Number): Number
+	// Returns the number `num` rounded to `digits` decimals, or to 5 decimals by default.
 	formatNum: function (num, digits) {
 		var pow = Math.pow(10, digits || 5);
 		return Math.round(num * pow) / pow;
 	},
 
-	// trim whitespace from both sides of a string
+	// @function trim(str: String): String
+	// Compatibility polyfill for [String.prototype.trim](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String/Trim)
 	trim: function (str) {
 		return str.trim ? str.trim() : str.replace(/^\s+|\s+$/g, '');
 	},
 
-	// split a string into words
+	// @function splitWords(str: String): String[]
+	// Trims and splits the string on whitespace and returns the array of parts.
 	splitWords: function (str) {
 		return L.Util.trim(str).split(/\s+/);
 	},
 
-	// set options to an object, inheriting parent's options as well
+	// @function setOptions(obj: Object: options: Object): Object
+	// Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 	setOptions: function (obj, options) {
 		if (!obj.hasOwnProperty('options')) {
 			obj.options = obj.options ? L.Util.create(obj.options) : {};
@@ -117,7 +137,11 @@ L.Util = {
 		return obj.options;
 	},
 
-	// make a URL with GET parameters out of a set of properties/values
+	// @function getParamString(obj: Object, existingUrl?: String, uppercase?: Boolean): String
+	// Converts an object into a parameter URL string, e.g. `{a: "foo", b: "bar"}`
+	// translates to `'?a=foo&b=bar'`. If `existingUrl` is set, the parameters will
+	// be appended at the end. If `uppercase` is `true`, the parameter names will
+	// be uppercased (e.g. `'?A=foo&B=bar'`)
 	getParamString: function (obj, existingUrl, uppercase) {
 		var params = [];
 		for (var i in obj) {
@@ -126,7 +150,11 @@ L.Util = {
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
-	// super-simple templating facility, used for TileLayer URLs
+	// @template (str: String, data: Object)
+	// Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
+	// and a data object like `{a: 'foo', b: 'bar'}`, returns evaluated string
+	// `('Hello foo, bar')`. You can also specify functions instead of strings for
+	// data values — they will be evaluated passing `data` as an argument.
 	template: function (str, data) {
 		return str.replace(L.Util.templateRe, function (str, key) {
 			var value = data[key];
@@ -143,10 +171,14 @@ L.Util = {
 
 	templateRe: /\{ *([\w_\-]+) *\}/g,
 
+	// @function isArray(obj): Boolean
+	// Compatibility polyfill for [Array.isArray](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray)
 	isArray: Array.isArray || function (obj) {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
+	// @function indexOf
+	// Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 	indexOf: function (array, el) {
 		for (var i = 0; i < array.length; i++) {
 			if (array[i] === el) { return i; }
@@ -154,7 +186,10 @@ L.Util = {
 		return -1;
 	},
 
-	// minimal image URI, set to an image when disposing to flush memory
+	// @property emptyImageUrl: String
+	// Data URI string containing a base64-encoded empty GIF image.
+	// Used as a hack to free memory from unused images on WebKit-powered
+	// mobile devices (by setting image `src` to this string).
 	emptyImageUrl: 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='
 };
 
@@ -181,6 +216,12 @@ L.Util = {
 	               getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 
+	// @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): requestId: Number
+	// Schedules `fn` to be executed when the browser repaints. `fn` is bound to
+	// `context` if given. When `immediate` is set, `fn` is called immediately if
+	// the browser doesn't have native support for
+	// [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
+	// otherwise it's delayed. Returns an id that can be used to cancel the request.
 	L.Util.requestAnimFrame = function (fn, context, immediate) {
 		if (immediate && requestFn === timeoutDefer) {
 			fn.call(context);
@@ -189,6 +230,8 @@ L.Util = {
 		}
 	};
 
+	// @function cancelAnimFrame(id: Number)
+	// Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 	L.Util.cancelAnimFrame = function (id) {
 		if (id) {
 			cancelFn.call(window, id);

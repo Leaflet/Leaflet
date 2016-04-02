@@ -14,6 +14,7 @@
     "karma-mocha": "~0.2.0",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-safari-launcher": "~0.1.1",
+    "leafdoc": "^1.2.0",
     "magic-string": "^0.7.0",
     "mocha": "~2.3.0",
     "phantomjs-prebuilt": "^2.1.4",

@@ -1,31 +1,84 @@
 /*
- * L.Icon is an image-based icon class that you can use with L.Marker for custom markers.
+ * @class Icon
+ * @aka L.Icon
+ * @inherits Layer
+ *
+ * Represents an icon to provide when creating a marker.
+ *
+ * @example
+ *
+ * ```js
+ * var myIcon = L.icon({
+ *     iconUrl: 'my-icon.png',
+ *     iconRetinaUrl: 'my-icon@2x.png',
+ *     iconSize: [38, 95],
+ *     iconAnchor: [22, 94],
+ *     popupAnchor: [-3, -76],
+ *     shadowUrl: 'my-icon-shadow.png',
+ *     shadowRetinaUrl: 'my-icon-shadow@2x.png',
+ *     shadowSize: [68, 95],
+ *     shadowAnchor: [22, 94]
+ * });
+ *
+ * L.marker([50.505, 30.57], {icon: myIcon}).addTo(map);
+ * ```
+ *
+ * `L.Icon.Default` extends `L.Icon` and is the blue icon Leaflet uses for markers by default.
+ *
  */
 
 L.Icon = L.Class.extend({
-	/*
-	options: {
-		iconUrl: (String) (required)
-		iconRetinaUrl: (String) (optional, used for retina devices if detected)
-		iconSize: (Point) (can be set through CSS)
-		iconAnchor: (Point) (centered by default, can be set in CSS with negative margins)
-		popupAnchor: (Point) (if not specified, popup opens in the anchor point)
-		shadowUrl: (String) (no shadow by default)
-		shadowRetinaUrl: (String) (optional, used for retina devices if detected)
-		shadowSize: (Point)
-		shadowAnchor: (Point)
-		className: (String)
-	},
-	*/
+
+	/* @section
+	 * @aka Icon options
+	 *
+	 * @option iconUrl: String = null
+	 * **(required)** The URL to the icon image (absolute or relative to your script path).
+	 *
+	 * @option iconRetinaUrl: String = null
+	 * The URL to a retina sized version of the icon image (absolute or relative to your
+	 * script path). Used for Retina screen devices.
+	 *
+	 * @option iconSize: Point = null
+	 * Size of the icon image in pixels.
+	 *
+	 * @option iconAnchor: Point = null
+	 * The coordinates of the "tip" of the icon (relative to its top left corner). The icon
+	 * will be aligned so that this point is at the marker's geographical location. Centered
+	 * by default if size is specified, also can be set in CSS with negative margins.
+	 *
+	 * @option popupAnchor: Point = null
+	 * The coordinates of the point from which popups will "open", relative to the icon anchor.
+	 *
+	 * @option shadowUrl: String = null
+	 * The URL to the icon shadow image. If not specified, no shadow image will be created.
+	 *
+	 * @option shadowRetinaUrl: String = null
+	 *
+	 * @option shadowSize: Point = null
+	 * Size of the shadow image in pixels.
+	 *
+	 * @option shadowAnchor: Point = null
+	 * The coordinates of the "tip" of the shadow (relative to its top left corner) (the same
+	 * as iconAnchor if not specified).
+	 *
+	 * @option className: String = ''
+	 * A custom class name to assign to both icon and shadow images. Empty by default.
+	 */
 
 	initialize: function (options) {
 		L.setOptions(this, options);
 	},
 
+	// @method createIcon(oldIcon: HTMLElement|null): HTMLElement
+	// Called internally when the icon has to be shown, returns a `<img>` HTML element
+	// styled according to the options.
 	createIcon: function (oldIcon) {
 		return this._createIcon('icon', oldIcon);
 	},
 
+	// @method createShadow(oldIcon: HTMLElement|null): HTMLElement
+	// As `createIcon`, but for the shadow beneath it.
 	createShadow: function (oldIcon) {
 		return this._createIcon('shadow', oldIcon);
 	},
@@ -76,6 +129,9 @@ L.Icon = L.Class.extend({
 	}
 });
 
+
+// @factory L.icon(options: Icon options)
+// Creates an icon instance with the given options.
 L.icon = function (options) {
 	return new L.Icon(options);
 };

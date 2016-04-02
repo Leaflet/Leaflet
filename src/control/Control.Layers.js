@@ -1,12 +1,58 @@
 /*
- * L.Control.Layers is a control to allow users to switch between different layers on the map.
+ * @class Control.Layers
+ * @aka L.Control.Layers
+ * @inherits Control
+ *
+ * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control.html)). Extends `Control`.
+ *
+ * @example
+ *
+ * ```js
+ * var baseLayers = {
+ * 	"Mapbox": mapbox,
+ * 	"OpenStreetMap": osm
+ * };
+ *
+ * var overlays = {
+ * 	"Marker": marker,
+ * 	"Roads": roadsLayer
+ * };
+ *
+ * L.control.layers(baseLayers, overlays).addTo(map);
+ * ```
+ *
+ * The `baseLayers` and `overlays` parameters are object literals with layer names as keys and `Layer` objects as values:
+ *
+ * ```js
+ * {
+ *     "<someName1>": layer1,
+ *     "<someName2>": layer2
+ * }
+ * ```
+ *
+ * The layer names can contain HTML, which allows you to add additional styling to the items:
+ *
+ * ```js
+ * {"<img src='my-layer-icon' /> <span class='my-layer-item'>My Layer</span>": myLayer}
+ * ```
  */
 
+
 L.Control.Layers = L.Control.extend({
+	// @section
+	// @aka Control.Layers options
 	options: {
+		// @option collapsed: Boolean = true
+		// If `true`, the control will be collapsed into an icon and expanded on mouse hover or touch.
 		collapsed: true,
 		position: 'topright',
+
+		// @option autoZIndex: Boolean = true
+		// If `true`, the control will assign zIndexes in increasing order to all of its layers so that the order is preserved when switching them on/off.
 		autoZIndex: true,
+
+		// @option hideSingleBase: Boolean = false
+		// If `true`, the base layers in the control will be hidden when there is only one.
 		hideSingleBase: false
 	},
 
@@ -44,16 +90,22 @@ L.Control.Layers = L.Control.extend({
 		}
 	},
 
+	// @method addBaseLayer(layer: Layer, name: String): this
+	// Adds a base layer (radio button entry) with the given name to the control.
 	addBaseLayer: function (layer, name) {
 		this._addLayer(layer, name);
 		return (this._map) ? this._update() : this;
 	},
 
+	// @method addOverlay(layer: Layer, name: String): this
+	// Adds an overlay (checkbox entry) with the given name to the control.
 	addOverlay: function (layer, name) {
 		this._addLayer(layer, name, true);
 		return (this._map) ? this._update() : this;
 	},
 
+	// @method removeLayer(layer: Layer): this
+	// Remove the given layer from the control.
 	removeLayer: function (layer) {
 		layer.off('add remove', this._onLayerChange, this);
 
@@ -164,6 +216,15 @@ L.Control.Layers = L.Control.extend({
 
 		var obj = this._layers[L.stamp(e.target)];
 
+		// @namespace Map
+		// @section Layer events
+		// @event baselayerchange: LayersControlEvent
+		// Fired when the base layer is changed through the [layer control](#control-layers).
+		// @event overlayadd: LayersControlEvent
+		// Fired when an overlay is selected through the [layer control](#control-layers).
+		// @event overlayremove: LayersControlEvent
+		// Fired when an overlay is deselected through the [layer control](#control-layers).
+		// @namespace Control.Layers
 		var type = obj.overlay ?
 			(e.type === 'add' ? 'overlayadd' : 'overlayremove') :
 			(e.type === 'add' ? 'baselayerchange' : null);
@@ -288,6 +349,9 @@ L.Control.Layers = L.Control.extend({
 	}
 });
 
+
+// @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
+// Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
 L.control.layers = function (baseLayers, overlays, options) {
 	return new L.Control.Layers(baseLayers, overlays, options);
 };

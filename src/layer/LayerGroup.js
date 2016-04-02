@@ -1,6 +1,19 @@
 /*
- * L.LayerGroup is a class to combine several layers into one so that
- * you can manipulate the group (e.g. add/remove it) as one layer.
+ * @class LayerGroup
+ * @aka L.LayerGroup
+ * @inherits Layer
+ *
+ * Used to group several layers and handle them as one. If you add it to the map,
+ * any layers added or removed from the group will be added/removed on the map as
+ * well. Extends `Layer`.
+ *
+ * @example
+ *
+ * ```js
+ * L.layerGroup([marker1, marker2])
+ * 	.addLayer(polyline)
+ * 	.addTo(map);
+ * ```
  */
 
 L.LayerGroup = L.Layer.extend({
@@ -17,6 +30,8 @@ L.LayerGroup = L.Layer.extend({
 		}
 	},
 
+	// @method addLayer(layer: Layer): this
+	// Adds the given layer to the group.
 	addLayer: function (layer) {
 		var id = this.getLayerId(layer);
 
@@ -29,6 +44,11 @@ L.LayerGroup = L.Layer.extend({
 		return this;
 	},
 
+	// @method removeLayer(layer: Layer): this
+	// Removes the given layer from the group.
+	// @alternative
+	// @method removeLayer(id: Number): this
+	// Removes the layer with the given internal ID from the group.
 	removeLayer: function (layer) {
 		var id = layer in this._layers ? layer : this.getLayerId(layer);
 
@@ -41,10 +61,14 @@ L.LayerGroup = L.Layer.extend({
 		return this;
 	},
 
+	// @method hasLayer(layer: Layer): Boolean
+	// Returns `true` if the given layer is currently added to the group.
 	hasLayer: function (layer) {
 		return !!layer && (layer in this._layers || this.getLayerId(layer) in this._layers);
 	},
 
+	// @method clearLayers(): this
+	// Removes all the layers from the group.
 	clearLayers: function () {
 		for (var i in this._layers) {
 			this.removeLayer(this._layers[i]);
@@ -52,6 +76,10 @@ L.LayerGroup = L.Layer.extend({
 		return this;
 	},
 
+	// @method invoke(methodName: string, …): this
+	// Calls `methodName` on every layer contained in this group, passing any
+	// additional parameters. Has no effect if the layers contained do not
+	// implement `methodName`.
 	invoke: function (methodName) {
 		var args = Array.prototype.slice.call(arguments, 1),
 		    i, layer;
@@ -79,6 +107,13 @@ L.LayerGroup = L.Layer.extend({
 		}
 	},
 
+	// @method eachLayer(fn: Function, context?: Object): this
+	// Iterates over the layers of the group, optionally specifying context of the iterator function.
+	// ```js
+	// group.eachLayer(function (layer) {
+	// 	layer.bindPopup('Hello');
+	// });
+	// ```
 	eachLayer: function (method, context) {
 		for (var i in this._layers) {
 			method.call(context, this._layers[i]);
@@ -86,10 +121,14 @@ L.LayerGroup = L.Layer.extend({
 		return this;
 	},
 
+	// @method getLayer(id: Number): Layer
+	// Returns the layer with the given internal ID.
 	getLayer: function (id) {
 		return this._layers[id];
 	},
 
+	// @method getLayers(): Layer[]
+	// Returns an array of all the layers added to the group.
 	getLayers: function () {
 		var layers = [];
 
@@ -99,15 +138,22 @@ L.LayerGroup = L.Layer.extend({
 		return layers;
 	},
 
+	// @method setZIndex(zIndex): this
+	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
 	setZIndex: function (zIndex) {
 		return this.invoke('setZIndex', zIndex);
 	},
 
+	// @method getLayerId(layer: Layer): Number
+	// Returns the internal ID for a layer
 	getLayerId: function (layer) {
 		return L.stamp(layer);
 	}
 });
 
+
+// @factory L.layerGroup(layers: Layer[])
+// Create a layer group, optionally given an initial set of layers.
 L.layerGroup = function (layers) {
 	return new L.LayerGroup(layers);
 };

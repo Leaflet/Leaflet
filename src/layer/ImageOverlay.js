@@ -1,13 +1,37 @@
 /*
- * L.ImageOverlay is used to overlay images over the map (to specific geographical bounds).
+ * @class ImageOverlay
+ * @aka L.ImageOverlay
+ * @inherits Layer
+ *
+ * Used to load and display a single image over specific bounds of the map. Extends `Layer`.
+ *
+ * @example
+ *
+ * ```js
+ * var imageUrl = 'http://www.lib.utexas.edu/maps/historical/newark_nj_1922.jpg',
+ * 	imageBounds = [[40.712216, -74.22655], [40.773941, -74.12544]];
+ * L.imageOverlay(imageUrl, imageBounds).addTo(map);
+ * ```
  */
 
 L.ImageOverlay = L.Layer.extend({
 
 	options: {
+		// @option opacity: Number = 1.0
+		// The opacity of the image overlay.
 		opacity: 1,
+
+		// @option alt: String = ''
+		// Text for the `alt` attribute of the image (useful for accessibility).
 		alt: '',
-		interactive: false
+
+		// @option interactive: Boolean = true
+		// If `true`, the image overlay will emit mouse events when clicked or hovered.
+		interactive: false,
+
+		// @option attribution: String = null
+		// An optional string containing HTML to be shown on the `Attribution control`
+		attribution: null
 
 		/*
 		crossOrigin: <Boolean>,
@@ -46,6 +70,8 @@ L.ImageOverlay = L.Layer.extend({
 		}
 	},
 
+	// @method setOpacity(): this
+	// Sets the opacity of the overlay.
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
@@ -62,6 +88,8 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
+	// @method bringToFront(): this
+	// Brings the layer to the top of all overlays.
 	bringToFront: function () {
 		if (this._map) {
 			L.DomUtil.toFront(this._image);
@@ -69,6 +97,8 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
+	// @method bringToBack(): this
+	// Brings the layer to the bottom of all overlays.
 	bringToBack: function () {
 		if (this._map) {
 			L.DomUtil.toBack(this._image);
@@ -76,6 +106,8 @@ L.ImageOverlay = L.Layer.extend({
 		return this;
 	},
 
+	// @method setUrl(url: String): this
+	// Changes the URL of the image.
 	setUrl: function (url) {
 		this._url = url;
 
@@ -161,6 +193,9 @@ L.ImageOverlay = L.Layer.extend({
 	}
 });
 
+// @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
+// Instantiates an image overlay object given the URL of the image and the
+// geographical bounds it is tied to.
 L.imageOverlay = function (url, bounds, options) {
 	return new L.ImageOverlay(url, bounds, options);
 };

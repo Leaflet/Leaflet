@@ -126,11 +126,20 @@ exports.build = function (callback, version, compsBase32, buildName) {
 
 	var path = pathPart + '.js',
 	    oldCompressed = loadSilently(path),
-	    newCompressed = copy + UglifyJS.minify(newSrc, {
-	        warnings: true,
-	        fromString: true
-	    }).code,
-	    delta = getSizeDelta(newCompressed, oldCompressed);
+	    newCompressed;
+
+	try {
+		newCompressed = copy + UglifyJS.minify(newSrc, {
+			warnings: true,
+			fromString: true
+		}).code;
+	} catch(err) {
+		console.error('UglifyJS failed to minify the files');
+		console.error(err);
+		callback(err);
+	}
+
+	var delta = getSizeDelta(newCompressed, oldCompressed);
 
 	console.log('\tCompressed: ' + bytesToKB(newCompressed.length) + delta);
 

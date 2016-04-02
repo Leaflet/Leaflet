@@ -1,24 +1,96 @@
 /*
- * L.Marker is used to display clickable/draggable icons on the map.
+ * @class Marker
+ * @inherits Layer
+ * @aka L.Marker
+ * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
+ *
+ * @example
+ *
+ * ```js
+ * L.marker([50.5, 30.5]).addTo(map);
+ * ```
  */
 
 L.Marker = L.Layer.extend({
 
 	options: {
-		pane: 'markerPane',
-		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
-
+		// @option icon: L.Icon = *
+		// Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.
 		icon: new L.Icon.Default(),
-		// title: '',
-		// alt: '',
+
+		// @option interactive: Boolean = true
+		// If `false`, the marker will not emit mouse events and will act as a part of the underlying map.
 		interactive: true,
-		// draggable: false,
+
+		// @option draggable: Boolean = false
+		// Whether the marker is draggable with mouse/touch or not.
+		draggable: false,
+
+		// @option keyboard: Boolean = true
+		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
+
+		// @option title: String = ''
+		// Text for the browser tooltip that appear on marker hover (no tooltip by default).
+		title: '',
+
+		// @option alt: String = ''
+		// Text for the `alt` attribute of the icon image (useful for accessibility).
+		alt: '',
+
+		// @option zIndexOffset: Number = 0
+		// By default, marker images zIndex is set automatically based on its latitude. Use this option if you want to put the marker on top of all others (or below), specifying a high value like `1000` (or high negative value, respectively).
 		zIndexOffset: 0,
+
+		// @option opacity: Number = 1.0
+		// The opacity of the marker.
 		opacity: 1,
-		// riseOnHover: false,
-		riseOffset: 250
+
+		// @option riseOnHover: Boolean = false
+		// If `true`, the marker will get on top of others when you hover the mouse over it.
+		riseOnHover: false,
+
+		// @option riseOffset: Number = 250
+		// The z-index offset used for the `riseOnHover` feature.
+		riseOffset: 250,
+
+		// @option pane: String = 'markerPane'
+		// `Map pane` where the markers icon will be added.
+		pane: 'markerPane',
+
+		// FIXME: shadowPane is no longer a valid option
+		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu']
 	},
+
+	/* @section
+	 *
+	 * You can subscribe to the following events using [these methods](#evented-method).
+	 *
+	 * @event click: MouseEvent
+	 * Fired when the user clicks (or taps) the marker.
+	 *
+	 * @event dblclick: MouseEvent
+	 * Fired when the user double-clicks (or double-taps) the marker.
+	 *
+	 * @event mousedown: MouseEvent
+	 * Fired when the user pushes the mouse button on the marker.
+	 *
+	 * @event mouseover: MouseEvent
+	 * Fired when the mouse enters the marker.
+	 *
+	 * @event mouseout: MouseEvent
+	 * Fired when the mouse leaves the marker.
+	 *
+	 * @event contextmenu: MouseEvent
+	 * Fired when the user right-clicks on the marker.
+	 */
+
+
+
+	/* @section
+	 *
+	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
+	 */
 
 	initialize: function (latlng, options) {
 		L.setOptions(this, options);
@@ -55,22 +127,33 @@ L.Marker = L.Layer.extend({
 		return events;
 	},
 
+	// @method getLatLng: LatLng
+	// Returns the current geographical position of the marker.
 	getLatLng: function () {
 		return this._latlng;
 	},
 
+	// @method setLatLng(latlng: LatLng): this
+	// Changes the marker position to the given point.
 	setLatLng: function (latlng) {
 		var oldLatLng = this._latlng;
 		this._latlng = L.latLng(latlng);
 		this.update();
+
+		// @event move: Event
+		// Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
 		return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
 	},
 
+	// @method setZIndexOffset(offset: Number): this
+	// Changes the [zIndex offset](#marker-zindexoffset) of the marker.
 	setZIndexOffset: function (offset) {
 		this.options.zIndexOffset = offset;
 		return this.update();
 	},
 
+	// @method setIcon(icon: Icon): this
+	// Changes the marker icon.
 	setIcon: function (icon) {
 
 		this.options.icon = icon;
@@ -232,6 +315,8 @@ L.Marker = L.Layer.extend({
 		}
 	},
 
+	// @method setOpacity(opacity: Number): this
+	// Changes the opacity of the marker.
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 		if (this._map) {
@@ -260,6 +345,11 @@ L.Marker = L.Layer.extend({
 	}
 });
 
+
+// factory L.marker(latlng: LatLng, options? : Marker options)
+
+// @factory L.marker(latlng: LatLng, options? : Marker options)
+// Instantiates a Marker object given a geographical point and optionally an options object.
 L.marker = function (latlng, options) {
 	return new L.Marker(latlng, options);
 };
