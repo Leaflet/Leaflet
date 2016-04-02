@@ -13,23 +13,25 @@ describe("Map.TouchZoom", function () {
 		});
 		map.setView([0, 0], 1);
 
-		var hand = new Hand({timing: 'fastframe'});
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				map.once('zoomend', function () {
+					var center = map.getCenter();
+					var zoom = map.getZoom();
+					document.body.removeChild(container);
+					expect(center.lat).to.be(0);
+					expect(center.lng).to.be(0);
+
+					// Initial zoom 1, initial distance 50px, final distance 450px
+					expect(zoom).to.be(4);
+
+					done();
+				});
+			}
+		});
 		var f1 = hand.growFinger('touch');
 		var f2 = hand.growFinger('touch');
-
-// 		L.DomEvent.on(document, 'prostheticHandStop', function () {
-		setTimeout(function () {
-			var center = map.getCenter();
-			var zoom = map.getZoom();
-			document.body.removeChild(container);
-			expect(center.lat).to.be(0);
-			expect(center.lng).to.be(0);
-
-			// Initial zoom 1, initial distance 50px, final distance 450px
-			expect(zoom).to.be(4);
-
-			done();
-		}, 100);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(275, 300, 0)
@@ -53,23 +55,25 @@ describe("Map.TouchZoom", function () {
 		});
 		map.setView([0, 0], 4);
 
-		var hand = new Hand({timing: 'fastframe'});
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				map.once('zoomend', function () {
+					var center = map.getCenter();
+					var zoom = map.getZoom();
+					document.body.removeChild(container);
+					expect(center.lat).to.be(0);
+					expect(center.lng).to.be(0);
+
+					// Initial zoom 4, initial distance 450px, final distance 50px
+					expect(zoom).to.be(1);
+
+					done();
+				});
+			}
+		});
 		var f1 = hand.growFinger('touch');
 		var f2 = hand.growFinger('touch');
-
-// 		L.DomEvent.on(document, 'prostheticHandStop', function () {
-		setTimeout(function () {
-			var center = map.getCenter();
-			var zoom = map.getZoom();
-			document.body.removeChild(container);
-			expect(center.lat).to.be(0);
-			expect(center.lng).to.be(0);
-
-			// Initial zoom 4, initial distance 450px, final distance 50px
-			expect(zoom).to.be(1);
-
-			done();
-		}, 100);
 
 		hand.sync(5);
 		f1.wait(100).moveTo(75, 300, 0)
