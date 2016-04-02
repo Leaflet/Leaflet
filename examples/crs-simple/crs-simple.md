@@ -46,9 +46,9 @@ And show the whole map:
 
 	map.fitBounds(bounds);
 
-<iframe src='crs-simple-example1.html' width='616' height='416'></iframe>
+{% include frame.html url="crs-simple-example1.html" %}
 
-You can see [this example](crs-simple-example1.html) stand-alone. It doesn't quite work, as we cannot see the whole map after doing a `fitBounds()`.
+This example doesn't quite work, as we cannot see the whole map after doing a `fitBounds()`.
 
 
 ## Common gotchas in CRS.Simple maps
@@ -77,9 +77,7 @@ While we're at it, let's add some markers:
 	L.marker(sol).addTo(map);
 	map.setView( [70, 120], 1);
 
-<iframe src='crs-simple-example2.html' width='616' height='416'></iframe>
-
-You can see [this example](crs-simple-example2.html) stand-alone.
+{% include frame.html url="crs-simple-example2.html" %}
 
 ### This is not the `LatLng` you're looking for
 
@@ -114,7 +112,6 @@ Now we can add a few stars and even a navigation line with `[x, y]` coordinates:
 
 	var travel = L.polyline([sol, deneb]).addTo(map);
 
-The [resulting map](crs-simple-example3.html) looks pretty much the same, but the code is a bit more readable.
+The map looks pretty much the same, but the code is a bit more readable:
 
-<iframe src='crs-simple-example3.html' width='616' height='416'></iframe>
-
+{% include frame.html url="crs-simple-example3.html" %}
