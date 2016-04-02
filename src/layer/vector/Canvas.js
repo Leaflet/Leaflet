@@ -109,7 +109,13 @@ L.Canvas = L.Renderer.extend({
 
 	_updateDashArray: function (layer) {
 		if (layer.options.dashArray) {
-			layer.options._dashArray = layer.options.dashArray.split(',').map(Number);
+			var parts = layer.options.dashArray.split(','),
+			    dashArray = [],
+			    i;
+			for (i = 0; i < parts.length; i++) {
+				dashArray.push(Number(parts[i]));
+			}
+			layer.options._dashArray = dashArray;
 		}
 	},
 
