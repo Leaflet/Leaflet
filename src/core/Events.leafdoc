@@ -113,4 +113,8 @@ The popup that was opened or closed.
 @property distance: Number
 The distance in pixels the draggable element was moved by.
 
-
+@miniclass ZoomAnimEvent (Event ojects)
+@inherits Event
+@property center: LatLng; The current center of the map
+@property zoom: Number; The current zoom level of the map
+@property noUpdate: Boolean; Whether layers should update their contents due to this event

@@ -107,6 +107,8 @@ L.Map.include(!zoomAnimated ? {} : {
 			L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
 
+		// @event zoomanim: ZoomAnimEvent
+		// Fired on every frame of a zoom animation
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
