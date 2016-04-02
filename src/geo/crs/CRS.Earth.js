@@ -5,7 +5,10 @@
 L.CRS.Earth = L.extend({}, L.CRS, {
 	wrapLng: [-180, 180],
 
-	R: 6378137,
+	// Mean Earth Radius, as recommended for use by
+	// the International Union of Geodesy and Geophysics,
+	// see http://rosettacode.org/wiki/Haversine_formula
+	R: 6371000,
 
 	// distance between two geographical points using spherical law of cosines approximation
 	distance: function (latlng1, latlng2) {
