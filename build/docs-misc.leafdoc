@@ -2,7 +2,7 @@ Miscellaneous bits of documentation that don't really fit anywhere else
 
 
 
-🍂namespace Global Switches
+@namespace Global Switches
 
 Global switches are created for rare cases and generally make
 Leaflet to not detect a particular browser feature even if it's
@@ -20,7 +20,7 @@ before including Leaflet on the page, like this:
 | `L_DISABLE_3D` | Forces Leaflet to not use hardware-accelerated CSS 3D transforms for positioning (which may cause glitches in some rare environments) even if they're supported. |
 
 
-🍂namespace noConflict
+@namespace noConflict
 
 This method restores the `L` global variable to the original value
 it had before Leaflet inclusion, and returns the real Leaflet
@@ -40,7 +40,7 @@ var Leaflet = L.noConflict();
 ```
 
 
-🍂namespace version
+@namespace version
 
 A constant that represents the Leaflet version in use.
 
