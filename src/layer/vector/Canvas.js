@@ -54,6 +54,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
+		this._updateDashArray(layer);
 		this._layers[L.stamp(layer)] = layer;
 	},
 
@@ -74,12 +75,14 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_updateStyle: function (layer) {
+		this._updateDashArray();
+		this._requestRedraw(layer);
+	},
 
+	_updateDashArray: function (layer) {
 		if (layer.options.dashArray) {
 			layer.options._dashArray = layer.options.dashArray.split(',').map(Number);
 		}
-
-		this._requestRedraw(layer);
 	},
 
 	_requestRedraw: function (layer) {
@@ -138,7 +141,9 @@ L.Canvas = L.Renderer.extend({
 
 		ctx.beginPath();
 
-		ctx.setLineDash(layer.options && layer.options._dashArray || []);
+		if (ctx.setLineDash) {
+			ctx.setLineDash(layer.options && layer.options._dashArray || []);
+		}
 
 		for (i = 0; i < len; i++) {
 			for (j = 0, len2 = parts[i].length; j < len2; j++) {
