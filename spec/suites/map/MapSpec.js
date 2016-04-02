@@ -646,14 +646,12 @@ describe("Map", function () {
 		it.skipInPhantom('flyTo start latlng == end latlng', function (done) {
 			this.timeout(10000); // This test takes longer than usual due to frames
 
-			var dc = [38.91, -77.04];
+			var dc = new L.LatLng(38.91, -77.04);
 			map.setView(dc, 14);
 
 			map.on('zoomend', function () {
-				console.log('zoomend');
-				console.log('done');
-				console.log(map.getCenter());
-				console.log(map.getZoom());
+				expect(map.getCenter()).to.eql(dc);
+				expect(map.getZoom()).to.eql(4);
 				done();
 			});
 
