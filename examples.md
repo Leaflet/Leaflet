@@ -82,7 +82,7 @@ How the default map panes work to display overlays on top of tiles, and how to o
 
 ### [Extending Leaflet][11]
 
-And **advanced** tutorial on how to make Leaflet plugins.
+An **advanced** tutorial on how to make Leaflet plugins.
 
 <!--***
 <h3><a class="noimpl" href="#">Custom Controls</a></h3>

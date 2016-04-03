@@ -18,7 +18,7 @@ Please note that this tutorial assumes you have a good grasp of:
 
 ## Leaflet architecture
 
-Let's have a look at a simplified UML Class diagram for Leaflet 1.0.0. There are more than 60 javascript classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `L.ImageOverlay`:
+Let's have a look at a simplified UML Class diagram for Leaflet 1.0.0. There are more than 60 JavaScript classes, so the diagram is a bit big. Luckily we can make a zoomable image with a `L.ImageOverlay`:
 
 {% include frame.html url="class-diagram.html" %}
 
@@ -35,11 +35,11 @@ From a technical point of view, Leaflet can be extended in different ways:
 	* Using ``
 * Changing parts of an existing class (replacing how a class method works)
 
-This tutorial covers some classes and methods available only in Leaflet 1.0.0. Use caution if you are developing a plugin compatible for previous versions.
+This tutorial covers some classes and methods available only in Leaflet 1.0.0. Use caution if you are developing a plugin for a previous version.
 
 ## `L.Class`
 
-Javascript is a bit of a weird language. It's not really an object-oriented language, but rather a [prototype-oriented language](https://en.wikipedia.org/wiki/Prototype-based_programming). This has made JavaScript historically difficult to use class inheritance in the classic OOP meaning of the term.
+JavaScript is a bit of a weird language. It's not really an object-oriented language, but rather a [prototype-oriented language](https://en.wikipedia.org/wiki/Prototype-based_programming). This has made JavaScript historically difficult to use class inheritance in the classic OOP meaning of the term.
 
 Leaflet works around this by having `L.Class`, which eases up class inheritance.
 
@@ -67,7 +67,7 @@ When naming classes, methods and properties, adhere to the following conventions
     
 * Function, method, property and factory names should be in [`lowerCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
 * Class names should be in [`UpperCamelCase`](https://en.wikipedia.org/wiki/CamelCase).
-* Private properties and methods start with an underscore (`_`). This doesn't make them private: just tells other programmers that they should stay away from them.
+* Private properties and methods start with an underscore (`_`). This doesn't make them private, just recommends developers not to use them directly.
 
 ### `L.Class.include()`    
     
@@ -85,7 +85,7 @@ If a class is already defined, existing properties/methods can be redefined, or 
 
     var mySecondDemoInstance = new MyDemoClass();
     
-    // This will output "50"
+    // This will output "78"
     console.log( mySecondDemoInstance.myDemoMethod() );
     
     // However, properties and methods from before still exist
@@ -140,7 +140,7 @@ It's quite common for child classes to run the parent's constructor, and then th
         this._area = this.options.width * this.options.length;
     });
 
-That will run after `initialize()` (which calls `setOptions()`) is called - this means that `this.options` exist and is valid when the init hook runs.
+That will run after `initialize()` is called (which calls `setOptions()`). This means that `this.options` exist and is valid when the init hook runs.
 
 `addInitHook` has an alternate syntax, which uses method names and can fill method arguments in:
 
@@ -220,15 +220,15 @@ Let's illustrate with a custom `L.TileLayer` that will display random kitten ima
 
 {% include frame.html url="kittenlayer.html" %}
 
-Normally, `getTileLayer()` receives the tile coordinates (as `coords.x`, `coords.y` and `coords.z`) and builds a tile URL with them. In our example, we ignore those and simply use a random number to get a different kitten every time.
+Normally, `getTileLayer()` receives the tile coordinates (as `coords.x`, `coords.y` and `coords.z`) and generates a tile URL from them. In our example, we ignore those and simply use a random number to get a different kitten every time.
 
 ### `L.GridLayer` and DOM elements
 
-Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assume that there is a grid of images (as `<img>` elements), `L.GridLayer` doesn't assume that - it allows creating grids of any kind of [HTML Element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
+Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assumes that there is a grid of images (as `<img>` elements), `L.GridLayer` doesn't assume that - it allows creating grids of any kind of [HTML Elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
 
 `L.GridLayer` allows creating grids of `<img>`s, but grids of [`<div>`s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/div), [`<canvas>`es](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/canvas) or [`<picture>`s](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/picture) (or anything) are possible. `createTile()` just has to return an instance of [`HTMLElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement) given the tile coordinates. Knowing how to manipulate elements in the [DOM](https://developer.mozilla.org/en-US/docs/Web/API/Document_Object_Model/Introduction) is important here: Leaflet expects instances of `HTMLElement`, so elements created with libraries like jQuery will be problematic.
 
-A example of a custom `GridLayer` is showing the tile coordinates in a `<div>`. This is particularly useful when debugging the internals of Leaflet, and for understanding how the tile coordinates work:
+An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`. This is particularly useful when debugging the internals of Leaflet, and for understanding how the tile coordinates work:
 
 	L.GridLayer.DebugCoords = L.GridLayer.extend({
 		createTile: function (coords) {
