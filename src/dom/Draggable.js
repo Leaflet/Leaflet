@@ -16,6 +16,13 @@
 
 L.Draggable = L.Evented.extend({
 
+	options: {
+		// @option clickTolerance: Number = 15
+		// The max number of pixels a user can shift the mouse pointer during a click
+		// for it to be considered a valid click (as opposed to a mouse drag).
+		clickTolerance: 3
+	},
+
 	statics: {
 		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
 		END: {
@@ -88,8 +95,8 @@ L.Draggable = L.Evented.extend({
 		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
 		L.DomEvent
-		    .on(document, L.Draggable.MOVE[e.type], this._onMove, this)
-		    .on(document, L.Draggable.END[e.type], this._onUp, this);
+			.on(document, L.Draggable.MOVE[e.type], this._onMove, this)
+			.on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -103,7 +110,7 @@ L.Draggable = L.Evented.extend({
 		    offset = newPoint.subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
-		if (L.Browser.touch && Math.abs(offset.x) + Math.abs(offset.y) < 3) { return; }
+		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
 
 		L.DomEvent.preventDefault(e);
 
@@ -158,8 +165,8 @@ L.Draggable = L.Evented.extend({
 
 		for (var i in L.Draggable.MOVE) {
 			L.DomEvent
-			    .off(document, L.Draggable.MOVE[i], this._onMove, this)
-			    .off(document, L.Draggable.END[i], this._onUp, this);
+				.off(document, L.Draggable.MOVE[i], this._onMove, this)
+				.off(document, L.Draggable.END[i], this._onUp, this);
 		}
 
 		L.DomUtil.enableImageDrag();
