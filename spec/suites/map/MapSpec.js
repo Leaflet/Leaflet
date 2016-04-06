@@ -822,6 +822,36 @@ describe("Map", function () {
 			});
 			map.fitBounds(bounds, {animate: false});
 		});
+
+		it('Fits to small bounds from small zoom', function (done) {
+			map.once('zoomend', function () {
+				map.once('zoomend', function () {
+					expect(map.getZoom()).to.eql(11);
+					expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
+					done();
+				});
+				map.fitBounds(bounds);
+			});
+
+			bounds = L.latLngBounds([57.73, 11.93], [57.75, 11.95]);
+			boundsCenter = bounds.getCenter();
+			map.setZoom(0);
+		});
+
+		it('Fits to large bounds from large zoom', function (done) {
+			map.once('zoomend', function () {
+				map.once('zoomend', function () {
+					expect(map.getZoom()).to.eql(0);
+					expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
+					done();
+				});
+				map.fitBounds(bounds);
+			});
+
+			bounds = L.latLngBounds([90, -180], [-90, 180]);
+			boundsCenter = bounds.getCenter();
+			map.setZoom(22);
+		});
 	});
 
 
