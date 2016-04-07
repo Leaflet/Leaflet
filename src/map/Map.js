@@ -521,7 +521,8 @@ L.Map = L.Evented.extend({
 		zoom = this.getScaleZoom(scale, zoom);
 
 		if (snap) {
-			zoom = inside ? Math.ceil(zoom / snap) * snap : Math.round(zoom / snap) * snap;
+			zoom = Math.round(zoom / (snap / 100)) * (snap / 100); // don't jump if within 1% of a snap level
+			zoom = inside ? Math.ceil(zoom / snap) * snap : Math.floor(zoom / snap) * snap;
 		}
 
 		return Math.max(min, Math.min(max, zoom));
