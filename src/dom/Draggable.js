@@ -17,7 +17,7 @@
 L.Draggable = L.Evented.extend({
 
 	options: {
-		// @option clickTolerance: Number = 15
+		// @option clickTolerance: Number = 3
 		// The max number of pixels a user can shift the mouse pointer during a click
 		// for it to be considered a valid click (as opposed to a mouse drag).
 		clickTolerance: 3
