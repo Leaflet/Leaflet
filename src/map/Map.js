@@ -518,11 +518,10 @@ L.Map = L.Evented.extend({
 		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
 
 		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
-		scale = Math.round(scale * 1e9) / 1e9;
 		zoom = this.getScaleZoom(scale, zoom);
 
 		if (snap) {
-			zoom = inside ? Math.ceil(zoom / snap) * snap : Math.floor(zoom / snap) * snap;
+			zoom = inside ? Math.ceil(zoom / snap) * snap : Math.round(zoom / snap) * snap;
 		}
 
 		return Math.max(min, Math.min(max, zoom));
