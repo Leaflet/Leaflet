@@ -51,6 +51,9 @@ L.extend(L.DomEvent, {
 	_addPointerStart: function (obj, handler, id) {
 		var onDown = L.bind(function (e) {
 			if (e.pointerType !== 'mouse' && e.pointerType !== e.MSPOINTER_TYPE_MOUSE) {
+				// In IE11, some touch events needs to fire for form controls, or
+				// the controls will stop working. We keep a whitelist of tag names that
+				// need these events. For other target tags, we prevent default on the event.
 				if (this.TAG_WHITE_LIST.indexOf(e.target.tagName) < 0) {
 					L.DomEvent.preventDefault(e);
 				} else {
