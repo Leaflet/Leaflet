@@ -98,4 +98,18 @@ describe('Canvas', function () {
 
 	});
 
+	describe('#dashArray', function () {
+		it('can add polyline with dashArray', function () {
+			var layer = L.polygon(latLngs, {
+				dashArray: "5,5"
+			}).addTo(map);
+		});
+		it('can setStyle with dashArray', function () {
+			var layer = L.polygon(latLngs).addTo(map);
+			layer.setStyle({
+				dashArray: "5,5"
+			});
+		});
+	});
+
 });

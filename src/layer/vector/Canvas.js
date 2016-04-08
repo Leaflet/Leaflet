@@ -103,7 +103,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_updateStyle: function (layer) {
-		this._updateDashArray();
+		this._updateDashArray(layer);
 		this._requestRedraw(layer);
 	},
 
