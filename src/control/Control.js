@@ -13,7 +13,7 @@ L.Control = L.Class.extend({
 		// @option position: String = 'topleft'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
-		position: 'topright'
+		position: 'topleft'
 	},
 
 	initialize: function (options) {
