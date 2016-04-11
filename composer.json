@@ -21,18 +21,18 @@
     "issues": "https://github.com/Leaflet/Leaflet/issues",
     "forum": "https://stackoverflow.com/questions/tagged/leaflet",
     "source": "https://github.com/Leaflet/Leaflet",
-    "docs": "http://leafletjs.com/reference.html",
-    "extra": {
-      "component": {
-        "scripts": [
-          "dist/leaflet-src.js"
-        ],
-        "files": [
-          "dist/leaflet.js",
-          "dist/leaflet.css",
-          "dist/images/*.png"
-        ]
-      }
+    "docs": "http://leafletjs.com/reference.html"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "dist/leaflet-src.js"
+      ],
+      "files": [
+        "dist/leaflet.js",
+        "dist/leaflet.css",
+        "dist/images/*.png"
+      ]
     }
   }
 }
