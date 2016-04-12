@@ -2877,7 +2877,16 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/grantHarris/L.AngularControl">Leaflet Angular Control</a>
+			<a href="https://github.com/grantHarris/leaflet-popup-angular">Leaflet Popup Angular</a>
+		</td><td>
+			Use AngularJS in your Leaflet popups. Extends the built-in L.popup.
+		</td><td>
+			<a href="https://github.com/grantHarris">Grant Harris</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/grantHarris/leaflet-control-angular">Leaflet Control Angular</a>
 		</td><td>
 			Insert and use Angularized HTML code in your Leaflet map as a Leaflet control.
 		</td><td>
