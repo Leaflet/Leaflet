@@ -5542,9 +5542,9 @@ MyClass.FOO; // 'bar'</code></pre>
 			<nobr>&lt;<a href="#bounds">Bounds</a>&gt; <i>bounds</i> )</nobr>
 		</code></td>
 
-		<td><code>-</code></td>
+		<td><code><a href="#point">Point</a>[]</code></td>
 
-		<td>Clips the segment <code>a</code> to <code>b</code> by rectangular bounds (modifying the segment points directly!). Used by Leaflet to only show polyline points that are on the screen or near, increasing performance.</td>
+		<td>Clips the segment <code>a</code> to <code>b</code> by rectangular bounds. Returns either false or an array of clipped points. Used by Leaflet to only show polyline points that are on the screen or near, increasing performance.</td>
 	</tr>
 </table>
 
