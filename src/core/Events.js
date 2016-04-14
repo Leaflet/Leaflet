@@ -290,7 +290,7 @@ proto.addOneTimeEventListener = proto.once;
 // Alias to [`fire(…)`](#evented-fire)
 proto.fireEvent = proto.fire;
 
-// @method hasEventListeners(…): this
+// @method hasEventListeners(…): Boolean
 // Alias to [`listens(…)`](#evented-listens)
 proto.hasEventListeners = proto.listens;
 
