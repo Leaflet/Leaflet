@@ -97,7 +97,7 @@ L.GridLayer = L.Layer.extend({
 
 		// @option maxZoom: Number = undefined
 		// The maximum zoom level that tiles will be loaded at.
-//		maxZoom: undefined,
+		maxZoom: undefined,
 
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
