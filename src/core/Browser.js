@@ -98,8 +98,8 @@
 		any3d: !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantomjs,
 
 
-		// @property ie: Boolean
-		// `true` for all browsers running in a mobile devide.
+		// @property mobile: Boolean
+		// `true` for all browsers running in a mobile device.
 		mobile: mobile,
 
 		// @property mobileWebkit: Boolean
