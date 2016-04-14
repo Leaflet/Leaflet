@@ -36,7 +36,7 @@ L.TileLayer.WMS = L.TileLayer.extend({
 		// WMS image format (use `'image/png'` for layers with transparency).
 		format: 'image/jpeg',
 
-		// @option styles: Boolean = false
+		// @option transparent: Boolean = false
 		// If `true`, the WMS service will return images with transparency.
 		transparent: false,
 
