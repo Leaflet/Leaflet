@@ -25,7 +25,7 @@ L.ImageOverlay = L.Layer.extend({
 		// Text for the `alt` attribute of the image (useful for accessibility).
 		alt: '',
 
-		// @option interactive: Boolean = true
+		// @option interactive: Boolean = false
 		// If `true`, the image overlay will emit mouse events when clicked or hovered.
 		interactive: false,
 
