@@ -71,14 +71,6 @@ L.Map = L.Evented.extend({
 		// enabled in all browsers that support CSS3 Transitions except Android.
 		markerZoomAnimation: true,
 
-		// @option maxBoundsViscosity: Number = 0.0
-		// If `maxBounds` is set, this options will control how solid the bounds
-		// are when dragging the map around. The default value of 0.0 allows the
-		// user to drag outside the bounds at normal speed, higher values will
-		// slow down map dragging outside bounds, and 1.0 makes the bounds fully
-		// solid, preventing the user from dragging outside the bounds.
-		maxBoundsViscosity: 0.0,
-
 		// @option transform3DLimit: Number = 2^23
 		// Defines the maximum size of a CSS translation transform. The default
 		// value should not be changed unless a web browser positions layers in
