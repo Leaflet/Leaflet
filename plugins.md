@@ -1050,6 +1050,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/wwwouaiebe">Christian Guyette</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IvanSanchez/Leaflet.Marker.Stack">Leaflet.Marker.Stack</a>
+		</td>
+		<td>
+			A pure Leaflet implementation of CartoDB's "<a href="http://blog.cartodb.com/stacking-chips-a-map-hack/">stacked chips</a>" symbolizer. <a href="http://ivansanchez.github.io/Leaflet.Marker.Stack/demo.html">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
+		</td>
+	</tr>
 </table>
 
 
