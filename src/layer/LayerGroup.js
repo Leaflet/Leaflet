@@ -138,7 +138,7 @@ L.LayerGroup = L.Layer.extend({
 		return layers;
 	},
 
-	// @method setZIndex(zIndex): this
+	// @method setZIndex(zIndex: Number): this
 	// Calls `setZIndex` on every layer contained in this group, passing the z-index.
 	setZIndex: function (zIndex) {
 		return this.invoke('setZIndex', zIndex);
