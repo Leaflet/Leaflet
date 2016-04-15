@@ -51,7 +51,7 @@ L.Bounds.prototype = {
 		return this;
 	},
 
-	// @method getCenter(): Point
+	// @method getCenter(round?: Boolean): Point
 	// Returns the center point of the bounds.
 	getCenter: function (round) {
 		return new L.Point(
