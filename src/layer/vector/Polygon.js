@@ -140,7 +140,7 @@ L.Polygon = L.Polyline.extend({
 });
 
 
-// @factory L.polygon(latlngs: LatLng[], options?: Path options)
+// @factory L.polygon(latlngs: LatLng[], options?: Polyline options)
 L.polygon = function (latlngs, options) {
 	return new L.Polygon(latlngs, options);
 };
