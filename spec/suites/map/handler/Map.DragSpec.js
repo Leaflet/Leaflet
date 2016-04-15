@@ -192,6 +192,64 @@ describe("Map.Drag", function () {
 			toucher.wait(100).moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
+
+		it.skipIfNotTouch('reset itself after touchend', function (done) {
+
+			var container = document.createElement('div');
+			container.style.width = container.style.height = '600px';
+			container.style.top = container.style.left = 0;
+			container.style.position = 'absolute';
+			document.body.appendChild(container);
+			var map = new L.Map(container, {
+				dragging: true,
+				inertia: false,
+				zoomAnimation: false	// If true, the test has to wait extra 250msec
+			});
+			map.setView([0, 0], 1);
+
+			// Change default events order to make the tap comming before the touchzoom.
+			// See #4315
+			map.dragging.disable();
+			map.dragging.enable();
+
+			var center = map.getCenter(),
+			zoom = map.getZoom();
+
+
+			var mouseHand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					document.body.removeChild(container);
+					expect(map.getCenter()).to.eql(center);
+					expect(map.getZoom()).to.eql(zoom);
+
+					done();
+				}
+			});
+			var mouse = mouseHand.growFinger('mouse');
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					expect(map.getCenter()).not.to.eql(center);
+					expect(map.getZoom()).not.to.eql(zoom);
+					center = map.getCenter();
+					zoom = map.getZoom();
+					mouse.moveTo(220, 220, 0).moveBy(200, 0, 2000);
+				}
+			});
+
+			var f1 = hand.growFinger('touch');
+			var f2 = hand.growFinger('touch');
+
+			hand.sync(5);
+			f1.wait(100).moveTo(275, 300, 0)
+				.down().moveBy(-200, 0, 1000).up(200);
+			// This finger should touch me map after the other one.
+			f2.wait(110).moveTo(325, 300, 0)
+				.down().moveBy(210, 0, 1000).up(200);
+
+		});
+
 	});
 
 });
