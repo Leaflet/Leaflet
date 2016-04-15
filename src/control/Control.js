@@ -20,10 +20,18 @@ L.Control = L.Class.extend({
 		L.setOptions(this, options);
 	},
 
+	/* @section
+	 * Classes extending L.Control will inherit the following methods:
+	 *
+	 * @method getPosition: string
+	 * Returns the position of the control.
+	 */
 	getPosition: function () {
 		return this.options.position;
 	},
 
+	// @method setPosition(position: string): this
+	// Sets the position of the control.
 	setPosition: function (position) {
 		var map = this._map;
 
@@ -40,10 +48,14 @@ L.Control = L.Class.extend({
 		return this;
 	},
 
+	// @method getContainer: HTMLElement
+	// Returns the HTMLElement that contains the control.
 	getContainer: function () {
 		return this._container;
 	},
 
+	// @method addTo(map: Map): this
+	// Adds the control to the given map.
 	addTo: function (map) {
 		this.remove();
 		this._map = map;
@@ -63,6 +75,8 @@ L.Control = L.Class.extend({
 		return this;
 	},
 
+	// @method remove: this
+	// Removes the control from the map it is currently active on.
 	remove: function () {
 		if (!this._map) {
 			return this;
