@@ -90,7 +90,7 @@ L.Point.prototype = {
 		return new L.Point(this.x * point.x, this.y * point.y);
 	},
 
-	// @method unscaleBy(scale: Point)
+	// @method unscaleBy(scale: Point): Point
 	// Inverse of `scaleBy`. Divide each coordinate of the current point by
 	// each coordinate of `scale`.
 	unscaleBy: function (point) {
