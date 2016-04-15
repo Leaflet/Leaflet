@@ -442,7 +442,7 @@ L.Map = L.Evented.extend({
 	},
 
 	// @section Other Methods
-	// @method createPane(name, container?): HTMLElement
+	// @method createPane(name: String, container?: HTMLElement): HTMLElement
 	// Creates a new map pane with the given name if it doesn't exist already,
 	// then returns it. The pane is created as a children of `container`, or
 	// as a children of the main map pane if not set.
