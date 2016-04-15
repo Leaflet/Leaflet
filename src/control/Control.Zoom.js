@@ -10,6 +10,8 @@ L.Control.Zoom = L.Control.extend({
 	// @section
 	// @aka Control.Zoom options
 	options: {
+		position: 'topleft',
+
 		// @option zoomInText: String = '+'
 		// The text set on the 'zoom in' button.
 		zoomInText: '+',
