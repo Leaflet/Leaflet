@@ -560,7 +560,7 @@ L.Map = L.Evented.extend({
 		return this._pixelOrigin;
 	},
 
-	// @method getPixelWorldBounds(zoom?): Bounds
+	// @method getPixelWorldBounds(zoom?: Number): Bounds
 	// Returns the world's bounds in pixel coordinates for zoom level `zoom`.
 	// If `zoom` is omitted, the map's current zoom level is used.
 	getPixelWorldBounds: function (zoom) {
