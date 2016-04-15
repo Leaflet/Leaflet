@@ -34,11 +34,11 @@ L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLn
 
 L.LatLngBounds.prototype = {
 
-	// @method extend(latlng: LatLng)
+	// @method extend(latlng: LatLng): this
 	// Extend the bounds to contain the given point
 
 	// @alternative
-	// @method extend(otherBounds: LatLngBounds)
+	// @method extend(otherBounds: LatLngBounds): this
 	// Extend the bounds to contain the given bounds
 	extend: function (obj) {
 		var sw = this._southWest,
