@@ -35,7 +35,6 @@ L.Map.mergeOptions({
 	// like markers and vector layers are still visible.
 	worldCopyJump: false,
 
-	// @section Interaction Options
 	// @option maxBoundsViscosity: Number = 0.0
 	// If `maxBounds` is set, this option will control how solid the bounds
 	// are when dragging the map around. The default value of `0.0` allows the
