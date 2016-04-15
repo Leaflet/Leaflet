@@ -48,7 +48,7 @@ L.Rectangle = L.Polygon.extend({
 });
 
 
-// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Path options)
+// @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
 L.rectangle = function (latLngBounds, options) {
 	return new L.Rectangle(latLngBounds, options);
 };
