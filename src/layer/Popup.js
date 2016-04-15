@@ -63,7 +63,7 @@ L.Popup = L.Layer.extend({
 		// view after autopanning was performed.
 		autoPanPaddingTopLeft: null,
 
-		// @option autoPanPaddingTopLeft: Point = null
+		// @option autoPanPaddingBottomRight: Point = null
 		// The margin between the popup and the bottom right corner of the map
 		// view after autopanning was performed.
 		autoPanPaddingBottomRight: null,
