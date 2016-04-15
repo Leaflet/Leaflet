@@ -202,7 +202,7 @@ L.extend(L.GeoJSON, {
 		return new L.LatLng(coords[1], coords[0], coords[2]);
 	},
 
-	// @function coordsToLatLngs(coords: Array, levelsDeep: Number, coordsToLatLng?: Function): Array
+	// @function coordsToLatLngs(coords: Array, levelsDeep?: Number, coordsToLatLng?: Function): Array
 	// Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array.
 	// `levelsDeep` specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
 	// Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
@@ -228,8 +228,9 @@ L.extend(L.GeoJSON, {
 				[latlng.lng, latlng.lat];
 	},
 
-	// @function latLngsToCoords(latlngs: Array): Array
+	// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
 	// Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
+	// `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
 	latLngsToCoords: function (latlngs, levelsDeep, closed) {
 		var coords = [];
 
