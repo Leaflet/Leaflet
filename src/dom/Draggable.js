@@ -166,6 +166,9 @@ L.Draggable = L.Evented.extend({
 	},
 
 	_onUp: function (e) {
+		// Ignore simulated events, since we handle both touch and
+		// mouse explicitly; otherwise we risk getting duplicates of
+		// touch events, see #4315.
 		if (e._simulated) { return; }
 
 		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
