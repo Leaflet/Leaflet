@@ -10,7 +10,7 @@ L.Control = L.Class.extend({
 	// @section
 	// @aka Control options
 	options: {
-		// @option position: String = 'topleft'
+		// @option position: String = 'topright'
 		// The position of the control (one of the map corners). Possible values are `'topleft'`,
 		// `'topright'`, `'bottomleft'` or `'bottomright'`
 		position: 'topright'
