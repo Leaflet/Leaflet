@@ -108,8 +108,6 @@ L.Map.include({
 	// `Path`. It will ensure that the `renderer` options of the map and paths
 	// are respected, and that the renderers do exist on the map.
 	getRenderer: function (layer) {
-		// @namespace Map; @option renderer: Renderer
-		// Use this specific instance of `Renderer` by default for new `Path`s added to the map
 		// @namespace Path; @option renderer: Renderer
 		// Use this specific instance of `Renderer` for this path. Takes
 		// precedence over the map's [default renderer](#map-renderer).
