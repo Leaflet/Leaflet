@@ -199,12 +199,6 @@ and optionally an object literal with <code>Map options</code>.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='map-renderer'>
-		<td><code><b>renderer</b></code></td>
-		<td><code><a href='#renderer'>Renderer</a></code>
-		<td><code></code></td>
-		<td>Use this specific instance of <a href="#renderer"><code>Renderer</code></a> by default for new <a href="#path"><code>Path</code></a>s added to the map</td>
-	</tr>
 	<tr id='map-prefercanvas'>
 		<td><code><b>preferCanvas</b></code></td>
 		<td><code>Boolean </code>
@@ -307,16 +301,6 @@ zoomed out by double clicking while holding shift. If passed
 		<td><code>true</code></td>
 		<td>Whether the map be draggable with mouse/touch or not.</td>
 	</tr>
-	<tr id='map-maxboundsviscosity'>
-		<td><code><b>maxBoundsViscosity</b></code></td>
-		<td><code>Number </code>
-		<td><code>0.0</code></td>
-		<td>If <code>maxBounds</code> is set, this option will control how solid the bounds
-are when dragging the map around. The default value of <code>0.0</code> allows the
-user to drag outside the bounds at normal speed, higher values will
-slow down map dragging outside bounds, and <code>1.0</code> makes the bounds fully
-solid, preventing the user from dragging outside the bounds.</td>
-	</tr>
 </tbody></table>
 
 </section><section class='collapsable'>
@@ -415,16 +399,6 @@ in all browsers that support CSS3 Transitions except Android.</td>
 they will disappear for the length of the animation. By default it&#39;s
 enabled in all browsers that support CSS3 Transitions except Android.</td>
 	</tr>
-	<tr id='map-maxboundsviscosity'>
-		<td><code><b>maxBoundsViscosity</b></code></td>
-		<td><code>Number </code>
-		<td><code>0.0</code></td>
-		<td>If <code>maxBounds</code> is set, this options will control how solid the bounds
-are when dragging the map around. The default value of 0.0 allows the
-user to drag outside the bounds at normal speed, higher values will
-slow down map dragging outside bounds, and 1.0 makes the bounds fully
-solid, preventing the user from dragging outside the bounds.</td>
-	</tr>
 	<tr id='map-transform3dlimit'>
 		<td><code><b>transform3DLimit</b></code></td>
 		<td><code>Number </code>
@@ -495,6 +469,16 @@ devices. Enabled by default unless running on old Android devices.</td>
 		<td>With this option enabled, the map tracks when you pan to another &quot;copy&quot;
 of the world and seamlessly jumps to the original one so that all overlays
 like markers and vector layers are still visible.</td>
+	</tr>
+	<tr id='map-maxboundsviscosity'>
+		<td><code><b>maxBoundsViscosity</b></code></td>
+		<td><code>Number </code>
+		<td><code>0.0</code></td>
+		<td>If <code>maxBounds</code> is set, this option will control how solid the bounds
+are when dragging the map around. The default value of <code>0.0</code> allows the
+user to drag outside the bounds at normal speed, higher values will
+slow down map dragging outside bounds, and <code>1.0</code> makes the bounds fully
+solid, preventing the user from dragging outside the bounds.</td>
 	</tr>
 </tbody></table>
 
@@ -828,6 +812,25 @@ handlers start running).</td>
 
 </section><section class='collapsable'>
 
+<h4 id='map-animation-options'>Animation Options</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-zoomanim'>
+		<td><code><b>zoomanim</b>
+		<td><code><a href='#zoomanimevent'>ZoomAnimEvent</a></code></td>
+		<td>Fired on every frame of a zoom animation</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
 <h4 id='map-location-events'>Location events</h4>
 
 
@@ -1065,7 +1068,7 @@ pan by default.</p>
 </td>
 	</tr>
 	<tr id='map-flyto'>
-		<td><code><b>flyTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <i>options</i>)</nobr></code></td>
+		<td><code><b>flyTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <nobr>&lt;Zoom/Pan options&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the view of the map (geographical center and zoom) performing a smooth
 pan-zoom animation.</p>
@@ -1105,7 +1108,7 @@ but takes a bounds parameter like <a href="#map-fitbounds"><code>fitBounds</code
 </td>
 	</tr>
 	<tr id='map-createpane'>
-		<td><code><b>createPane</b>(<i>name</i>, <i>container?</i>)</nobr></code></td>
+		<td><code><b>createPane</b>(<nobr>&lt;String&gt;</nobr> <i>name</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>container?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Creates a new map pane with the given name if it doesn&#39;t exist already,
 then returns it. The pane is created as a children of <code>container</code>, or
@@ -1174,8 +1177,13 @@ if it&#39;s already initialized, optionally passing a function context.</p>
 	<tr id='map-getminzoom'>
 		<td><code><b>getMinZoom</b>()</nobr></code></td>
 		<td><code>Number</code></td>
-		<td><p>Returns the minimum zoom level of the map (if set in the <code>minZoom</code> option of the map or of any layers), or <code>0</code> by default.
-Returns the minimum zoom level of the map (if set in the <code>minZoom</code> option of the map or of any layers).</p>
+		<td><p>Returns the minimum zoom level of the map (if set in the <code>minZoom</code> option of the map or of any layers), or <code>0</code> by default.</p>
+</td>
+	</tr>
+	<tr id='map-getmaxzoom'>
+		<td><code><b>getMaxZoom</b>()</nobr></code></td>
+		<td><code>Number</code></td>
+		<td><p>Returns the maximum zoom level of the map (if set in the <code>maxZoom</code> option of the map or of any layers).</p>
 </td>
 	</tr>
 	<tr id='map-getboundszoom'>
@@ -1208,7 +1216,7 @@ the map layer (useful in custom layer and overlay implementations).</p>
 </td>
 	</tr>
 	<tr id='map-getpixelworldbounds'>
-		<td><code><b>getPixelWorldBounds</b>(<i>zoom?</i>)</nobr></code></td>
+		<td><code><b>getPixelWorldBounds</b>(<nobr>&lt;Number&gt;</nobr> <i>zoom?</i>)</nobr></code></td>
 		<td><code><a href='#bounds'>Bounds</a></code></td>
 		<td><p>Returns the world&#39;s bounds in pixel coordinates for zoom level <code>zoom</code>.
 If <code>zoom</code> is omitted, the map&#39;s current zoom level is used.</p>
@@ -1484,7 +1492,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='map-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -2526,7 +2534,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='marker-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -2663,8 +2671,13 @@ to fit the opened popup.</td>
 		<td><code>Point </code>
 		<td><code>null</code></td>
 		<td>The margin between the popup and the top left corner of the map
-view after autopanning was performed.
-The margin between the popup and the bottom right corner of the map
+view after autopanning was performed.</td>
+	</tr>
+	<tr id='popup-autopanpaddingbottomright'>
+		<td><code><b>autoPanPaddingBottomRight</b></code></td>
+		<td><code>Point </code>
+		<td><code>null</code></td>
+		<td>The margin between the popup and the bottom right corner of the map
 view after autopanning was performed.</td>
 	</tr>
 	<tr id='popup-autopanpadding'>
@@ -3088,7 +3101,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='popup-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -3523,7 +3536,7 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 </td>
 	</tr>
 	<tr id='tilelayer-getcontainer'>
-		<td><code><b>getcontainer</b>()</nobr></code></td>
+		<td><code><b>getContainer</b>()</nobr></code></td>
 		<td><code>String</code></td>
 		<td><p>Returns the HTML element that contains the tiles for this layer.</p>
 </td>
@@ -3779,7 +3792,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='tilelayer-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -3862,14 +3875,19 @@ properties. The event might can optionally be propagated to event parents.</p>
 		<td><code><b>styles</b></code></td>
 		<td><code>String </code>
 		<td><code>&#x27;&#x27;</code></td>
-		<td>Comma-separated list of WMS styles.
-If <code>true</code>, the WMS service will return images with transparency.</td>
+		<td>Comma-separated list of WMS styles.</td>
 	</tr>
 	<tr id='tilelayer-wms-format'>
 		<td><code><b>format</b></code></td>
 		<td><code>String </code>
 		<td><code>&#x27;image/jpeg&#x27;</code></td>
 		<td>WMS image format (use <code>&#39;image/png&#39;</code> for layers with transparency).</td>
+	</tr>
+	<tr id='tilelayer-wms-transparent'>
+		<td><code><b>transparent</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, the WMS service will return images with transparency.</td>
 	</tr>
 	<tr id='tilelayer-wms-version'>
 		<td><code><b>version</b></code></td>
@@ -4270,7 +4288,7 @@ callback is called when the tile has been loaded.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-getcontainer'>
-		<td><code><b>getcontainer</b>()</nobr></code></td>
+		<td><code><b>getContainer</b>()</nobr></code></td>
 		<td><code>String</code></td>
 		<td><p>Returns the HTML element that contains the tiles for this layer.</p>
 </td>
@@ -4526,7 +4544,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='tilelayer-wms-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -4612,7 +4630,7 @@ geographical bounds it is tied to.</td>
 	<tr id='imageoverlay-interactive'>
 		<td><code><b>interactive</b></code></td>
 		<td><code>Boolean </code>
-		<td><code>true</code></td>
+		<td><code>false</code></td>
 		<td>If <code>true</code>, the image overlay will emit mouse events when clicked or hovered.</td>
 	</tr>
 	<tr id='imageoverlay-attribution'>
@@ -4620,6 +4638,12 @@ geographical bounds it is tied to.</td>
 		<td><code>String </code>
 		<td><code>null</code></td>
 		<td>An optional string containing HTML to be shown on the <code>Attribution control</code></td>
+	</tr>
+	<tr id='imageoverlay-crossorigin'>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code>Boolean </code>
+		<td><code>false</code></td>
+		<td>If true, the image will have its crossOrigin attribute set to &#39;&#39;. This is needed if you want to access image pixel data.</td>
 	</tr>
 </tbody></table>
 
@@ -4981,7 +5005,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='imageoverlay-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -5461,7 +5485,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='path-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -6102,7 +6126,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='polyline-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -6168,7 +6192,7 @@ map.fitBounds(polygon.getBounds());
 	</tr>
 	</thead><tbody>
 	<tr id='polygon-l-polygon'>
-		<td><code><b>L.polygon</b>(<nobr>&lt;LatLng[]&gt;</nobr> <i>latlngs</i>, <nobr>&lt;<a href='#path-option'>Path options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code><b>L.polygon</b>(<nobr>&lt;LatLng[]&gt;</nobr> <i>latlngs</i>, <nobr>&lt;Polyline options&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td></td>
 	</tr>
 </tbody></table>
@@ -6771,7 +6795,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='polygon-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -6820,7 +6844,7 @@ map.fitBounds(bounds);
 	</tr>
 	</thead><tbody>
 	<tr id='rectangle-l-rectangle'>
-		<td><code><b>L.rectangle</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>latLngBounds</i>, <nobr>&lt;<a href='#path-option'>Path options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code><b>L.rectangle</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>latLngBounds</i>, <nobr>&lt;Polyline options&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td></td>
 	</tr>
 </tbody></table>
@@ -7450,7 +7474,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='rectangle-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -8082,7 +8106,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='circle-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -8663,7 +8687,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='circlemarker-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -9086,7 +9110,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='svg-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -9537,7 +9561,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='canvas-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -9777,7 +9801,7 @@ implement <code>methodName</code>.</p>
 </td>
 	</tr>
 	<tr id='layergroup-setzindex'>
-		<td><code><b>setZIndex</b>(<i>zIndex</i>)</nobr></code></td>
+		<td><code><b>setZIndex</b>(<nobr>&lt;Number&gt;</nobr> <i>zIndex</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Calls <code>setZIndex</code> on every layer contained in this group, passing the z-index.</p>
 </td>
@@ -10008,7 +10032,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='layergroup-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -10291,7 +10315,7 @@ implement <code>methodName</code>.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-setzindex'>
-		<td><code><b>setZIndex</b>(<i>zIndex</i>)</nobr></code></td>
+		<td><code><b>setZIndex</b>(<nobr>&lt;Number&gt;</nobr> <i>zIndex</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Calls <code>setZIndex</code> on every layer contained in this group, passing the z-index.</p>
 </td>
@@ -10523,7 +10547,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='featuregroup-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -10886,7 +10910,7 @@ implement <code>methodName</code>.</p>
 </td>
 	</tr>
 	<tr id='geojson-setzindex'>
-		<td><code><b>setZIndex</b>(<i>zIndex</i>)</nobr></code></td>
+		<td><code><b>setZIndex</b>(<nobr>&lt;Number&gt;</nobr> <i>zIndex</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Calls <code>setZIndex</code> on every layer contained in this group, passing the z-index.</p>
 </td>
@@ -11118,7 +11142,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='geojson-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -11158,7 +11182,7 @@ functions if provided as options.</td>
 or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.</td>
 	</tr>
 	<tr id='geojson-coordstolatlngs'>
-		<td><code><b>coordsToLatLngs</b>(<nobr>&lt;Array&gt;</nobr> <i>coords</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep</i>, <nobr>&lt;Function&gt;</nobr> <i>coordsToLatLng?</i>)</nobr></code></td>
+		<td><code><b>coordsToLatLngs</b>(<nobr>&lt;Array&gt;</nobr> <i>coords</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep?</i>, <nobr>&lt;Function&gt;</nobr> <i>coordsToLatLng?</i>)</nobr></code></td>
 		<td><code>Array</code></td>
 		<td>Creates a multidimensional array of <a href="#latlng"><code>LatLng</code></a>s from a GeoJSON coordinates array.
 <code>levelsDeep</code> specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
@@ -11170,9 +11194,10 @@ Can use a custom <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></
 		<td>Reverse of <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a></td>
 	</tr>
 	<tr id='geojson-latlngstocoords'>
-		<td><code><b>latLngsToCoords</b>(<nobr>&lt;Array&gt;</nobr> <i>latlngs</i>)</nobr></code></td>
+		<td><code><b>latLngsToCoords</b>(<nobr>&lt;Array&gt;</nobr> <i>latlngs</i>, <nobr>&lt;Number&gt;</nobr> <i>levelsDeep?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>closed?</i>)</nobr></code></td>
 		<td><code>Array</code></td>
-		<td>Reverse of <a href="#geojson-coordstolatlngs"><code>coordsToLatLngs</code></a></td>
+		<td>Reverse of <a href="#geojson-coordstolatlngs"><code>coordsToLatLngs</code></a>
+<code>closed</code> determines whether the first point should be appended to the end of the array to close the feature, only used when <code>levelsDeep</code> is 0. False by default.</td>
 	</tr>
 	<tr id='geojson-asfeature'>
 		<td><code><b>asFeature</b>(<nobr>&lt;Object&gt;</nobr> <i>geojson</i>)</nobr></code></td>
@@ -11501,7 +11526,7 @@ GridLayer will only be displayed once at low zoom levels.</td>
 </td>
 	</tr>
 	<tr id='gridlayer-getcontainer'>
-		<td><code><b>getcontainer</b>()</nobr></code></td>
+		<td><code><b>getContainer</b>()</nobr></code></td>
 		<td><code>String</code></td>
 		<td><p>Returns the HTML element that contains the tiles for this layer.</p>
 </td>
@@ -11779,7 +11804,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='gridlayer-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -11999,13 +12024,13 @@ bounds = L.latLngBounds(southWest, northEast);
 	</thead><tbody>
 	<tr id='latlngbounds-extend'>
 		<td><code><b>extend</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</nobr></code></td>
-		<td><code></code></td>
+		<td><code>this</code></td>
 		<td><p>Extend the bounds to contain the given point</p>
 </td>
 	</tr>
 	<tr id='latlngbounds-extend'>
 		<td><code><b>extend</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
-		<td><code></code></td>
+		<td><code>this</code></td>
 		<td><p>Extend the bounds to contain the given bounds</p>
 </td>
 	</tr>
@@ -12222,7 +12247,7 @@ defined by <code>scale</code>.</p>
 	</tr>
 	<tr id='point-unscaleby'>
 		<td><code><b>unscaleBy</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>scale</i>)</nobr></code></td>
-		<td><code></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Inverse of <code>scaleBy</code>. Divide each coordinate of the current point by
 each coordinate of <code>scale</code>.</p>
 </td>
@@ -12347,7 +12372,7 @@ bounds = L.bounds(p1, p2);
 </td>
 	</tr>
 	<tr id='bounds-getcenter'>
-		<td><code><b>getCenter</b>()</nobr></code></td>
+		<td><code><b>getCenter</b>(<nobr>&lt;Boolean&gt;</nobr> <i>round?</i>)</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Returns the center point of the bounds.</p>
 </td>
@@ -12680,14 +12705,14 @@ as iconAnchor if not specified).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='icon-createicon'>
-		<td><code><b>createIcon</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code><b>createIcon</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>oldIcon?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Called internally when the icon has to be shown, returns a <code>&lt;img&gt;</code> HTML element
 styled according to the options.</p>
 </td>
 	</tr>
 	<tr id='icon-createshadow'>
-		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>oldIcon?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>As <code>createIcon</code>, but for the shadow beneath it.</p>
 </td>
@@ -12912,7 +12937,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='icon-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -13205,14 +13230,14 @@ as iconAnchor if not specified).</td>
 	</tr>
 	</thead><tbody>
 	<tr id='divicon-createicon'>
-		<td><code><b>createIcon</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code><b>createIcon</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>oldIcon?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Called internally when the icon has to be shown, returns a <code>&lt;img&gt;</code> HTML element
 styled according to the options.</p>
 </td>
 	</tr>
 	<tr id='divicon-createshadow'>
-		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement|null&gt;</nobr> <i>oldIcon</i>)</nobr></code></td>
+		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>oldIcon?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>As <code>createIcon</code>, but for the shadow beneath it.</p>
 </td>
@@ -13438,7 +13463,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='divicon-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -13537,9 +13562,66 @@ properties. The event might can optionally be propagated to event parents.</p>
 	<tr id='control-zoom-position'>
 		<td><code><b>position</b></code></td>
 		<td><code>String </code>
-		<td><code>&#x27;topleft&#x27;</code></td>
+		<td><code>&#x27;topright&#x27;</code></td>
 		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,
 <code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id=''>Methods</h3>
+
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-zoom-getposition'>
+		<td><code><b>getPosition</b>()</nobr></code></td>
+		<td><code>string</code></td>
+		<td><p>Returns the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-zoom-setposition'>
+		<td><code><b>setPosition</b>(<nobr>&lt;string&gt;</nobr> <i>position</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-zoom-getcontainer'>
+		<td><code><b>getContainer</b>()</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the HTMLElement that contains the control.</p>
+</td>
+	</tr>
+	<tr id='control-zoom-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the control to the given map.</p>
+</td>
+	</tr>
+	<tr id='control-zoom-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the control from the map it is currently active on.</p>
+</td>
 	</tr>
 </tbody></table>
 
@@ -13618,7 +13700,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	<tr id='control-attribution-position'>
 		<td><code><b>position</b></code></td>
 		<td><code>String </code>
-		<td><code>&#x27;topleft&#x27;</code></td>
+		<td><code>&#x27;topright&#x27;</code></td>
 		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,
 <code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
 	</tr>
@@ -13665,6 +13747,57 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-attribution-getposition'>
+		<td><code><b>getPosition</b>()</nobr></code></td>
+		<td><code>string</code></td>
+		<td><p>Returns the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-attribution-setposition'>
+		<td><code><b>setPosition</b>(<nobr>&lt;string&gt;</nobr> <i>position</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-attribution-getcontainer'>
+		<td><code><b>getContainer</b>()</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the HTMLElement that contains the control.</p>
+</td>
+	</tr>
+	<tr id='control-attribution-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the control to the given map.</p>
+</td>
+	</tr>
+	<tr id='control-attribution-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the control from the map it is currently active on.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 </section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
 
@@ -13783,7 +13916,7 @@ L.control.layers(baseLayers, overlays).addTo(map);
 	<tr id='control-layers-position'>
 		<td><code><b>position</b></code></td>
 		<td><code>String </code>
-		<td><code>&#x27;topleft&#x27;</code></td>
+		<td><code>&#x27;topright&#x27;</code></td>
 		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,
 <code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
 	</tr>
@@ -13842,6 +13975,57 @@ L.control.layers(baseLayers, overlays).addTo(map);
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-layers-getposition'>
+		<td><code><b>getPosition</b>()</nobr></code></td>
+		<td><code>string</code></td>
+		<td><p>Returns the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-layers-setposition'>
+		<td><code><b>setPosition</b>(<nobr>&lt;string&gt;</nobr> <i>position</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-layers-getcontainer'>
+		<td><code><b>getContainer</b>()</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the HTMLElement that contains the control.</p>
+</td>
+	</tr>
+	<tr id='control-layers-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the control to the given map.</p>
+</td>
+	</tr>
+	<tr id='control-layers-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the control from the map it is currently active on.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 </section><h2 id='control-scale'>Control.Scale</h2><p>A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends <a href="#control"><code>Control</code></a>.</p>
 
@@ -13949,9 +14133,66 @@ L.control.layers(baseLayers, overlays).addTo(map);
 	<tr id='control-scale-position'>
 		<td><code><b>position</b></code></td>
 		<td><code>String </code>
-		<td><code>&#x27;topleft&#x27;</code></td>
+		<td><code>&#x27;topright&#x27;</code></td>
 		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,
 <code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id=''>Methods</h3>
+
+
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#control'>Control</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-scale-getposition'>
+		<td><code><b>getPosition</b>()</nobr></code></td>
+		<td><code>string</code></td>
+		<td><p>Returns the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-scale-setposition'>
+		<td><code><b>setPosition</b>(<nobr>&lt;string&gt;</nobr> <i>position</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-scale-getcontainer'>
+		<td><code><b>getContainer</b>()</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the HTMLElement that contains the control.</p>
+</td>
+	</tr>
+	<tr id='control-scale-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the control to the given map.</p>
+</td>
+	</tr>
+	<tr id='control-scale-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the control from the map it is currently active on.</p>
+</td>
 	</tr>
 </tbody></table>
 
@@ -13998,8 +14239,7 @@ L.control.layers(baseLayers, overlays).addTo(map);
 	<tr id='browser-ie'>
 		<td><code><b>ie</b>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> for all Internet Explorer versions (not Edge).
-<code>true</code> for all browsers running in a mobile devide.</td>
+		<td><code>true</code> for all Internet Explorer versions (not Edge).</td>
 	</tr>
 	<tr id='browser-ielt9'>
 		<td><code><b>ielt9</b>
@@ -14065,6 +14305,11 @@ L.control.layers(baseLayers, overlays).addTo(map);
 		<td><code><b>any3d</b>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for all browsers supporting CSS transforms.</td>
+	</tr>
+	<tr id='browser-mobile'>
+		<td><code><b>mobile</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for all browsers running in a mobile device.</td>
 	</tr>
 	<tr id='browser-mobilewebkit'>
 		<td><code><b>mobileWebkit</b>
@@ -14221,7 +14466,7 @@ data values — they will be evaluated passing <code>data</code> as an argument.
 	</tr>
 	<tr id='util-indexof'>
 		<td><code><b>indexOf</b>()</nobr></code></td>
-		<td><code></code></td>
+		<td><code>Number</code></td>
 		<td>Compatibility polyfill for <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf">Array.prototype.indexOf</a></td>
 	</tr>
 	<tr id='util-requestanimframe'>
@@ -14587,8 +14832,12 @@ including computed values or values set through CSS.</td>
 	<tr id='domutil-setclass'>
 		<td><code><b>setClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</nobr></code></td>
 		<td><code></code></td>
-		<td>Sets the element&#39;s class.
-Sets the element&#39;s class.</td>
+		<td>Sets the element&#39;s class.</td>
+	</tr>
+	<tr id='domutil-getclass'>
+		<td><code><b>getClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
+		<td><code>String</code></td>
+		<td>Returns the element&#39;s class.</td>
 	</tr>
 	<tr id='domutil-setopacity'>
 		<td><code><b>setOpacity</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
@@ -14894,7 +15143,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='posanimation-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -14920,9 +15169,37 @@ that were positioned with <a href="#domutil-setposition"><code>L.DomUtil.setPosi
 <pre><code class="lang-js">var draggable = new L.Draggable(elementToDrag);
 draggable.enable();
 </code></pre>
-<p>Creates a <a href="#draggable"><code>Draggable</code></a> object for moving <code>el</code> when you start dragging the <code>dragHandle</code> element (equals <code>el</code> itself by default).</p>
 
 
+
+</section>
+
+
+</section><section>
+<h3 id='draggable-option'>Options</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='draggable-clicktolerance'>
+		<td><code><b>clickTolerance</b></code></td>
+		<td><code>Number </code>
+		<td><code>3</code></td>
+		<td>The max number of pixels a user can shift the mouse pointer during a click
+for it to be considered a valid click (as opposed to a mouse drag).
+Creates a <a href="#draggable"><code>Draggable</code></a> object for moving <code>el</code> when you start dragging the <code>dragHandle</code> element (equals <code>el</code> itself by default).</td>
+	</tr>
+</tbody></table>
 
 </section>
 
@@ -15110,7 +15387,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='draggable-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -15474,7 +15751,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='evented-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -15845,7 +16122,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='layer-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
@@ -15877,9 +16154,60 @@ All other controls extend from this class.</p>
 	<tr id='control-position'>
 		<td><code><b>position</b></code></td>
 		<td><code>String </code>
-		<td><code>&#x27;topleft&#x27;</code></td>
+		<td><code>&#x27;topright&#x27;</code></td>
 		<td>The position of the control (one of the map corners). Possible values are <code>&#39;topleft&#39;</code>,
 <code>&#39;topright&#39;</code>, <code>&#39;bottomleft&#39;</code> or <code>&#39;bottomright&#39;</code></td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+</section><section>
+<h3 id='control-method'>Methods</h3>
+
+<section >
+
+
+
+<div class='section-comments'>Classes extending L.Control will inherit the following methods:</div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='control-getposition'>
+		<td><code><b>getPosition</b>()</nobr></code></td>
+		<td><code>string</code></td>
+		<td><p>Returns the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-setposition'>
+		<td><code><b>setPosition</b>(<nobr>&lt;string&gt;</nobr> <i>position</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the position of the control.</p>
+</td>
+	</tr>
+	<tr id='control-getcontainer'>
+		<td><code><b>getContainer</b>()</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the HTMLElement that contains the control.</p>
+</td>
+	</tr>
+	<tr id='control-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the control to the given map.</p>
+</td>
+	</tr>
+	<tr id='control-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the control from the map it is currently active on.</p>
+</td>
 	</tr>
 </tbody></table>
 
@@ -16573,7 +16901,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 	</tr>
 	<tr id='renderer-haseventlisteners'>
 		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
+		<td><code>Boolean</code></td>
 		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
