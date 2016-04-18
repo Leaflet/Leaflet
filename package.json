@@ -5,6 +5,7 @@
   "devDependencies": {
     "eslint": "^2.8.0",
     "eslint-config-mourner": "^2.0.1",
+    "git-rev": "^0.2.1",
     "happen": "~0.3.1",
     "jake": "~8.0.12",
     "karma": "~0.13.22",

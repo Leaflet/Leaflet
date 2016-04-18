@@ -70,13 +70,23 @@ function loadSilently(path) {
 	}
 }
 
-function bundleFiles(files, copy) {
+// Concatenate the files while building up a sourcemap for the concatenation,
+// and replace the line defining L.version with the string prepared in the jakefile
+function bundleFiles(files, copy, version) {
 	var node = new SourceNode(null, null, null, '');
 
 	node.add(new SourceNode(null, null, null, copy + '(function (window, document, undefined) {'));
 
 	for (var i = 0, len = files.length; i < len; i++) {
 		var contents = fs.readFileSync(files[i], 'utf8');
+
+		if (files[i] === 'src/Leaflet.js') {
+			contents = contents.replace(
+				new RegExp('version: \'.*\''),
+				'version: ' + JSON.stringify(version)
+			);
+		}
+
 		var lines = contents.split('\n');
 		var lineCount = lines.length;
 		var fileNode = new SourceNode(null, null, null, '');
@@ -119,7 +129,7 @@ exports.build = function (callback, version, compsBase32, buildName) {
 	    srcFilename = filenamePart + '-src.js',
 	    mapFilename = filenamePart + '-src.map',
 
-	    bundle = bundleFiles(files, copy),
+	    bundle = bundleFiles(files, copy, version),
 	    newSrc = bundle.src + '\n//# sourceMappingURL=' + mapFilename,
 
 	    oldSrc = loadSilently(srcPath),
