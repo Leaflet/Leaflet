@@ -92,7 +92,7 @@ An in-progress version being developed on the `master` branch.
 * Added a Code of Conduct (by [@mourner](https://github.com/mourner)) [#4142](https://github.com/Leaflet/Leaflet/pull/4142)
 * Dual 1.0 & 0.7 docs to gh-pages (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4085](https://github.com/Leaflet/Leaflet/pull/4085)
 * 🍂doc (by [@IvanSanchez](https://github.com/IvanSanchez)) [#3916](https://github.com/Leaflet/Leaflet/pull/3916)
-* A lot of documentation improvements (by [@nathancahill](https://github.com/nathancahill)) [#4418](https://github.com/Leaflet/Leaflet/pull/4418), [#4419](https://github.com/Leaflet/Leaflet/pull/4419), [#4418](https://github.com/Leaflet/Leaflet/pull/4418), [#4423](https://github.com/Leaflet/Leaflet/pull/4423), [#4425](https://github.com/Leaflet/Leaflet/pull/4425) and [a lot more](https://github.com/Leaflet/Leaflet/pulls?q=is%3Apr+author%3Anathancahill+is%3Aclosed)
+* A lot of documentation improvements (by [@nathancahill](https://github.com/nathancahill)) [#4418](https://github.com/Leaflet/Leaflet/pull/4418), [#4419](https://github.com/Leaflet/Leaflet/pull/4419), [#4423](https://github.com/Leaflet/Leaflet/pull/4423), [#4425](https://github.com/Leaflet/Leaflet/pull/4425) and [a lot more](https://github.com/Leaflet/Leaflet/pulls?q=is%3Apr+author%3Anathancahill+is%3Aclosed)
 * Replace links to google groups with ones to GIS StackExchange (by [@IvanSanchez](https://github.com/IvanSanchez)) [#3886](https://github.com/Leaflet/Leaflet/pull/3886)
 
 
