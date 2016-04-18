@@ -8,7 +8,7 @@ Leaflet Changelog
 An in-progress version being developed on the `master` branch.
 
 
-## 1.0-rc1 (XXXX, 2016)
+## 1.0-rc1 (April 18, 2016)
 
 ### API changes
 * Make `L.Control.Layers.collapse`/`expand` public methods (by [@yohanboniface](https://github.com/yohanboniface)) [#4370](https://github.com/Leaflet/Leaflet/pull/4370)
