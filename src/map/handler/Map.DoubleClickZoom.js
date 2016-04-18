@@ -6,7 +6,7 @@
 // @section Interaction Options
 
 L.Map.mergeOptions({
-	// @option doubleClickZoom: Boolean = true
+	// @option doubleClickZoom: Boolean|String = true
 	// Whether the map can be zoomed in by double clicking on it and
 	// zoomed out by double clicking while holding shift. If passed
 	// `'center'`, double-click zoom will zoom to the center of the
