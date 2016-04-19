@@ -116,12 +116,8 @@ L.GridLayer = L.Layer.extend({
 		// `Map pane` where the grid layer will be added.
 		pane: 'tilePane',
 
-         // @option className: String = ''
-<<<<<<< 001b26838ce01ca6ac10d7f2d059521b99f6f2cf
-         // A custom class name to assign to the tile layer. Empty by default.
-=======
-		 // A custom class name to assign to the tile layer. Empty by default.
->>>>>>> Added className option to the options object on GridLayer.
+		// @option className: String = ''
+        // A custom class name to assign to the tile layer. Empty by default.
 		className: ''
 	},
 
