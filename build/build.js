@@ -1,7 +1,7 @@
 var fs = require('fs'),
     UglifyJS = require('uglify-js'),
     zlib = require('zlib'),
-    MagicString = require('magic-string'),
+    SourceNode = require( 'source-map' ).SourceNode;
 
     deps = require('./deps.js').deps;
 
@@ -70,21 +70,44 @@ function loadSilently(path) {
 	}
 }
 
-function bundleFiles(files, copy) {
-	var bundle = new MagicString.Bundle();
+// Concatenate the files while building up a sourcemap for the concatenation,
+// and replace the line defining L.version with the string prepared in the jakefile
+function bundleFiles(files, copy, version) {
+	var node = new SourceNode(null, null, null, '');
+
+	node.add(new SourceNode(null, null, null, copy + '(function (window, document, undefined) {'));
 
 	for (var i = 0, len = files.length; i < len; i++) {
-		bundle.addSource({
-			filename: files[i],
-			content: new MagicString( fs.readFileSync(files[i], 'utf8') + '\n\n' )
-		});
+		var contents = fs.readFileSync(files[i], 'utf8');
+
+		if (files[i] === 'src/Leaflet.js') {
+			contents = contents.replace(
+				new RegExp('version: \'.*\''),
+				'version: ' + JSON.stringify(version)
+			);
+		}
+
+		var lines = contents.split('\n');
+		var lineCount = lines.length;
+		var fileNode = new SourceNode(null, null, null, '');
+
+		fileNode.setSourceContent(files[i], contents);
+
+		for (var j=0; j<lineCount; j++) {
+			fileNode.add(new SourceNode(j+1, 0, files[i], lines[j] + '\n'));
+		}
+		node.add(fileNode);
+
+		node.add(new SourceNode(null, null, null, '\n\n'));
 	}
 
-	bundle.prepend(
-		copy + '(function (window, document, undefined) {'
-	).append('}(window, document));');
+	node.add(new SourceNode(null, null, null, '}(window, document));'));
 
-	return bundle;
+	var bundle = node.toStringWithSourceMap();
+	return {
+		src: bundle.code,
+		srcmap: bundle.map.toString()
+	};
 }
 
 function bytesToKB(bytes) {
@@ -106,8 +129,8 @@ exports.build = function (callback, version, compsBase32, buildName) {
 	    srcFilename = filenamePart + '-src.js',
 	    mapFilename = filenamePart + '-src.map',
 
-	    bundle = bundleFiles(files, copy),
-	    newSrc = bundle.toString() + '\n//# sourceMappingURL=' + mapFilename,
+	    bundle = bundleFiles(files, copy, version),
+	    newSrc = bundle.src + '\n//# sourceMappingURL=' + mapFilename,
 
 	    oldSrc = loadSilently(srcPath),
 	    srcDelta = getSizeDelta(newSrc, oldSrc, true);
@@ -116,11 +139,7 @@ exports.build = function (callback, version, compsBase32, buildName) {
 
 	if (newSrc !== oldSrc) {
 		fs.writeFileSync(srcPath, newSrc);
-		fs.writeFileSync(mapPath, bundle.generateMap({
-			file: srcFilename,
-			includeContent: true,
-			hires: false
-		}));
+		fs.writeFileSync(mapPath, bundle.srcmap);
 		console.log('\tSaved to ' + srcPath);
 	}
 

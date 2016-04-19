@@ -8,7 +8,7 @@ npm test || exit 1
 
 git checkout -b build
 
-npm run build
+jake build[,,true]
 git add dist/leaflet-src.js dist/leaflet.js dist/leaflet-src.map -f
 
 git commit -m "v$VERSION"
