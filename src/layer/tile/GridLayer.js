@@ -75,8 +75,12 @@ L.GridLayer = L.Layer.extend({
 		// If `false`, new tiles are loaded during panning, otherwise only after it (for better performance). `true` by default on mobile browsers, otherwise `false`.
 		updateWhenIdle: L.Browser.mobile,
 
+		// @option updateWhenZooming: Boolean = true
+		// By default, a smooth zoom animation (during a [touch zoom](#map-touchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
+		updateWhenZooming: true,
+
 		// @option updateInterval: Number = 200
-		// Tiles will not update more than once every `updateInterval` milliseconds.
+		// Tiles will not update more than once every `updateInterval` milliseconds when panning.
 		updateInterval: 200,
 
 		// @option attribution: String = null
@@ -485,7 +489,7 @@ L.GridLayer = L.Layer.extend({
 			tileZoom = undefined;
 		}
 
-		var tileZoomChanged = (tileZoom !== this._tileZoom);
+		var tileZoomChanged = this.options.updateWhenZooming && (tileZoom !== this._tileZoom);
 
 		if (!noUpdate || tileZoomChanged) {
 
