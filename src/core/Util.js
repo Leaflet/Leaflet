@@ -150,7 +150,7 @@ L.Util = {
 		return ((!existingUrl || existingUrl.indexOf('?') === -1) ? '?' : '&') + params.join('&');
 	},
 
-	// @template (str: String, data: Object)
+	// @function template(str: String, data: Object): String
 	// Simple templating facility, accepts a template string of the form `'Hello {a}, {b}'`
 	// and a data object like `{a: 'foo', b: 'bar'}`, returns evaluated string
 	// `('Hello foo, bar')`. You can also specify functions instead of strings for
