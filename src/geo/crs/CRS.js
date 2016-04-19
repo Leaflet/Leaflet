@@ -73,6 +73,9 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
+	// @method distance(latlng1: LatLng, latlng1: LatLng): Number
+	// Returns the distance between two geographical coordinates.
+
 	// @property code: String
 	// Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`)
 	//
