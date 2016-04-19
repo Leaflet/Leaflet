@@ -152,7 +152,7 @@ describe("Map.Drag", function () {
 				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
 		});
 
-		it("does not change the center of the map when finger is moved less than the drag threshold", function (done) {
+		it.skipIfNotTouch("does not change the center of the map when finger is moved less than the drag threshold", function (done) {
 			var container = document.createElement('div');
 			container.style.width = container.style.height = '600px';
 			container.style.top = container.style.left = 0;
