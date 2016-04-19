@@ -107,6 +107,7 @@ L.LineUtil = {
 	},
 
 
+	// @function clipSegment(a: Point, b: Point, bounds: Bounds, useLastCode?: Boolean, round?: Boolean): Point[]|boolean
 	// Clips the segment a to b by rectangular bounds with the
 	// [Cohen-Sutherland algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm)
 	// (modifying the segment points directly!). Used by Leaflet to only show polyline
@@ -122,10 +123,14 @@ L.LineUtil = {
 
 		while (true) {
 			// if a,b is inside the clip window (trivial accept)
-			if (!(codeA | codeB)) { return [a, b]; }
+			if (!(codeA | codeB)) {
+				return [a, b];
+			}
 
 			// if a,b is outside the clip window (trivial reject)
-			if (codeA & codeB) { return false; }
+			if (codeA & codeB) {
+				return false;
+			}
 
 			// other cases
 			codeOut = codeA || codeB;
