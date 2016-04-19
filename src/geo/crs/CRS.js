@@ -15,7 +15,7 @@ L.CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
-		var projectedPoint = this.projection.project(latlng),
+		var projectedPoint = this.projection.project(L.latLng(latlng)),
 		    scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);
@@ -26,7 +26,7 @@ L.CRS = {
 	// zoom into geographical coordinates.
 	pointToLatLng: function (point, zoom) {
 		var scale = this.scale(zoom),
-		    untransformedPoint = this.transformation.untransform(point, scale);
+		    untransformedPoint = this.transformation.untransform(L.point(point), scale);
 
 		return this.projection.unproject(untransformedPoint);
 	},
@@ -35,14 +35,14 @@ L.CRS = {
 	// Projects geographical coordinates into coordinates in units accepted for
 	// this CRS (e.g. meters for EPSG:3857, for passing it to WMS services).
 	project: function (latlng) {
-		return this.projection.project(latlng);
+		return this.projection.project(L.latLng(latlng));
 	},
 
 	// @method unproject(point: Point): LatLng
 	// Given a projected coordinate returns the corresponding LatLng.
 	// The inverse of `project`.
 	unproject: function (point) {
-		return this.projection.unproject(point);
+		return this.projection.unproject(L.point(point));
 	},
 
 	// @method scale(zoom: Number): Number
@@ -95,9 +95,11 @@ L.CRS = {
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
-		    alt = latlng.alt;
+		var _latlng = L.latLng(latlng);
+
+		var lng = this.wrapLng ? L.Util.wrapNum(_latlng.lng, this.wrapLng, true) : _latlng.lng,
+		    lat = this.wrapLat ? L.Util.wrapNum(_latlng.lat, this.wrapLat, true) : _latlng.lat,
+		    alt = _latlng.alt;
 
 		return L.latLng(lat, lng, alt);
 	}
