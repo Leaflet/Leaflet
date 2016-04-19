@@ -116,8 +116,8 @@ L.GridLayer = L.Layer.extend({
 		// `Map pane` where the grid layer will be added.
 		pane: 'tilePane',
 
-		// @option className: String = ''
-		// A custom class name to assign to the tile layer. Empty by default.
+         // @option className: String = ''
+		 // A custom class name to assign to the tile layer. Empty by default.
 		className: ''
 	},
 
@@ -319,7 +319,7 @@ L.GridLayer = L.Layer.extend({
 	_initContainer: function () {
 		if (this._container) { return; }
 
-		this._container = L.DomUtil.create('div', 'leaflet-layer ' + (this.options.className || ''));
+		this._container = L.DomUtil.create('div', 'leaflet-layer ' + this.options.className);
 
 		this._updateZIndex();
 
