@@ -311,7 +311,9 @@ L.GridLayer = L.Layer.extend({
 	_initContainer: function () {
 		if (this._container) { return; }
 
-		this._container = L.DomUtil.create('div', 'leaflet-layer');
+		// Impliment the className option for layers inheriting from GridLayer.
+		this._container = L.DomUtil.create('div', 'leaflet-layer ' + (this.options.className || ''));
+
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
