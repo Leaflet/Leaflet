@@ -101,7 +101,7 @@ L.GridLayer = L.Layer.extend({
 
 		// @option maxZoom: Number = undefined
 		// The maximum zoom level that tiles will be loaded at.
-//		maxZoom: undefined,
+		// maxZoom: undefined,
 
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
@@ -112,8 +112,8 @@ L.GridLayer = L.Layer.extend({
 		// `Map pane` where the grid layer will be added.
 		pane: 'tilePane',
 
-		// @option className: String = ''
-        // A custom class name to assign to the tile layer. Empty by default.
+         // @option className: String = ''
+         // A custom class name to assign to the tile layer. Empty by default.
 		className: ''
 	},
 
