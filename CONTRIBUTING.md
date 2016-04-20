@@ -33,7 +33,7 @@ here are some tips for creating a helpful report that will make fixing it much e
 
  * Write a **descriptive, specific title**. Bad: *Problem with polylines*. Good: *Doing X in IE9 causes Z*.
  * Include **browser, OS and Leaflet version** info in the description.
- * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet JS Bin](http://playground-leaflet.rhcloud.com/)).
+ * Create a **simple test case** that demonstrates the bug (e.g. using [Leaflet playground](http://playground-leaflet.rhcloud.com/)).
  * Check whether the bug can be reproduced in **other browsers**.
  * Check if the bug occurs in the stable version, master, or both.
  * *Bonus tip:* if the bug only appears in the master version but the stable version is fine,
@@ -133,7 +133,7 @@ and is automatically generated from a set of HTML and Markdown files by [Jekyll]
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
 browse the [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages),
-choose a certain file for editing (e.g. `reference.html` for API reference),
+choose a certain file for editing (e.g. `plugins.html` for the list of Leaflet plugins),
 click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
 
@@ -147,9 +147,25 @@ If you need to make edits in a local repository to see how it looks in the proce
 Now any file changes will be updated when you reload pages automatically.
 After committing the changes, just send a pull request.
 
-If you need to update documentation according to a new feature that only appeared in the master version (not the stable one),
-you need to make changes to the `gh-pages-master` branch instead of `gh-pages`.
-It will get merged into the latter when released as stable.
+### API documentation
+
+Since Leaflet 1.0.0-rc1, the API documentation in `reference-1.0.0.html` is handled
+via [Leafdoc](https://github.com/Leaflet/Leafdoc). This means that next to the
+code for every method, option or property there is a special code comment documenting
+that feature. In order to edit the API documentation, just edit these comments in the
+source code.
+
+In order to generate the documentation, just run
+
+```
+jake docs
+```
+
+and you'll find a `.html` file in the `dist/` directory.
+
+On every release of a new Leaflet version, this file will be generated and copied
+over to the `gh-pages` branch - there is no need to send pull requests to this
+branch anymore to update the API documentation.
 
 ## Code of Conduct
 
