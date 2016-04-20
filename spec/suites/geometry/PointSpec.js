@@ -96,6 +96,9 @@ describe("Point", function () {
 		it('creates a point from an array of coordinates', function () {
 			expect(L.point([50, 30])).to.eql(new L.Point(50, 30));
 		});
+		it("creates a point from an object with x and y properties", function () {
+			expect(L.point({x: 50, y: 30})).to.eql(new L.Point(50, 30));
+		});
 		it('does not fail on invalid arguments', function () {
 			expect(L.point(undefined)).to.be(undefined);
 			expect(L.point(null)).to.be(null);
