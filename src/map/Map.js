@@ -134,7 +134,7 @@ L.Map = L.Evented.extend({
 
 	// @section Methods for modifying map state
 
-	// @method setView(center: LatLnt, zoom: Number, options?: Zoom/Pan options): this
+	// @method setView(center: LatLng, zoom: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) with the given
 	// animation options.
 	setView: function (center, zoom) {
@@ -144,7 +144,7 @@ L.Map = L.Evented.extend({
 		return this;
 	},
 
-	// @method setZoom(zoom: Number, options: Zoom/Pan options): this
+	// @method setZoom(zoom: Number, options: Zoom/pan options): this
 	// Sets the zoom of the map.
 	setZoom: function (zoom, options) {
 		if (!this._loaded) {

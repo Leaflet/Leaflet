@@ -27,7 +27,7 @@ L.Transformation = function (a, b, c, d) {
 };
 
 L.Transformation.prototype = {
-	// @method transform(point: Point, scale?: Number)
+	// @method transform(point: Point, scale?: Number): Point
 	// Returns a transformed point, optionally multiplied by the given scale.
 	// Only accepts real `L.Point` instances, not arrays.
 	transform: function (point, scale) { // (Point, Number) -> Point
@@ -42,7 +42,7 @@ L.Transformation.prototype = {
 		return point;
 	},
 
-	// @method untransform(point: Point, scale?: Number)
+	// @method untransform(point: Point, scale?: Number): Point
 	// Returns the reverse transformation of the given point, optionally divided
 	// by the given scale. Only accepts real `L.Point` instances, not arrays.
 	untransform: function (point, scale) {

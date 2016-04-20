@@ -17,6 +17,8 @@
 
 L.Renderer = L.Layer.extend({
 
+	// @section
+	// @aka Renderer options
 	options: {
 		// @option padding: Number = 0.1
 		// How much to extend the clip area around the map view (relative to its size)

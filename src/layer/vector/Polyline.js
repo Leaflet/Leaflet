@@ -46,7 +46,7 @@ L.Polyline = L.Path.extend({
 		// better performance and smoother look, and less means more accurate representation.
 		smoothFactor: 1.0,
 
-		// @option noClip: Boolean: false
+		// @option noClip: Boolean = false
 		// Disable polyline clipping.
 		noClip: false
 	},

@@ -65,12 +65,12 @@ Error code (if applicable).
 
 @miniclass LayerEvent (Event objects)
 @inherits Event
-@property layer: ILayer
+@property layer: Layer
 The layer that was added or removed.
 
 @miniclass LayersControlEvent (Event objects)
 @inherits Event
-@property layer: ILayer
+@property layer: Layer
 The layer that was added or removed.
 @property name: String
 The name of the layer that was added or removed.
@@ -94,7 +94,7 @@ The new size after the resize event.
 
 @miniclass GeoJSON event (Event objects)
 @inherits Event
-@property layer: ILayer
+@property layer: Layer
 The layer for the GeoJSON feature that is being added to the map.
 @property properties: Object
 GeoJSON properties of the feature.
@@ -103,7 +103,7 @@ GeoJSON geometry type of the feature.
 @property id: String
 GeoJSON ID of the feature (if present).
 
-@miniclass Popup event (Event objects)
+@miniclass PopupEvent (Event objects)
 @inherits Event
 @property popup: Popup
 The popup that was opened or closed.
