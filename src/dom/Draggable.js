@@ -160,7 +160,7 @@ L.Draggable = L.Evented.extend({
 		this.fire('predrag', e);
 		L.DomUtil.setPosition(this._element, this._newPos);
 
-		// @event predrag: Event
+		// @event drag: Event
 		// Fired continuously during dragging.
 		this.fire('drag', e);
 	},
