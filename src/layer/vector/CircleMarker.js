@@ -8,6 +8,8 @@
 
 L.CircleMarker = L.Path.extend({
 
+	// @section
+	// @aka CircleMarker options
 	options: {
 		fill: true,
 
@@ -85,8 +87,8 @@ L.CircleMarker = L.Path.extend({
 });
 
 
-// @factory L.circleMarker(latlng: LatLng, options? CircleMarker options)
-//
+// @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
+// Instantiates a circle marker object given a geographical point, and an optional options object.
 L.circleMarker = function (latlng, options) {
 	return new L.CircleMarker(latlng, options);
 };

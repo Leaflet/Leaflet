@@ -38,6 +38,8 @@
 
 L.Polyline = L.Path.extend({
 
+	// @section
+	// @aka Polyline options
 	options: {
 		// @option smoothFactor: Number = 1.0
 		// How much to simplify the polyline on each zoom level. More means
@@ -275,7 +277,7 @@ L.Polyline = L.Path.extend({
 	}
 });
 
-// @factory L.polyline(latlngs: LatLng[], options?: Path options)
+// @factory L.polyline(latlngs: LatLng[], options?: Polyline options)
 // Instantiates a polyline object given an array of geographical points and
 // optionally an options object. You can create a `Polyline` object with
 // multiple separate lines (`MultiPolyline`) by passing an array of arrays

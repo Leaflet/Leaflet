@@ -26,6 +26,8 @@ L.Circle = L.CircleMarker.extend({
 
 		if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
 
+		// @section
+		// @aka Circle options
 		// @option radius: Number; Radius of the circle, in meters.
 		this._mRadius = this.options.radius;
 	},
@@ -91,11 +93,11 @@ L.Circle = L.CircleMarker.extend({
 	}
 });
 
-// @factory L.circle(latlng: LatLng, options?: Path options)
+// @factory L.circle(latlng: LatLng, options?: Circle options)
 // Instantiates a circle object given a geographical point, and an options object
 // which contains the circle radius.
 // @alternative
-// @factory L.circle(latlng: LatLng, radius: Number, options?: Path options)
+// @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
 // Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
 // Do not use in new applications or plugins.
 L.circle = function (latlng, options, legacyOptions) {
