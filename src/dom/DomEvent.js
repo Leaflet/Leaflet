@@ -37,14 +37,15 @@ L.DomEvent = {
 		return this;
 	},
 
-	// @function off(el: HTMLElement, types: String, fn: Function, context?: Object)
+	// @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
 	// Removes a previously added listener function. If no function is specified,
 	// it will remove all the listeners of that particular DOM event from the element.
 	// Note that if you passed a custom context to on, you must pass the same
 	// context to `off` in order to remove the listener.
 
 	// @alternative
-	// @function off(el: HTMLElement, types: eventMap: Object, context?: Object): this
+	// @function off(el: HTMLElement, eventMap: Object, context?: Object): this
+	// Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	off: function (obj, types, fn, context) {
 
 		if (typeof types === 'object') {

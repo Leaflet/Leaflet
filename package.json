@@ -15,7 +15,7 @@
     "karma-mocha": "~0.2.2",
     "karma-phantomjs-launcher": "^1.0.0",
     "karma-safari-launcher": "~0.1.1",
-    "leafdoc": "^1.2.1",
+    "leafdoc": "^1.2.2",
     "mocha": "~2.4.5",
     "phantomjs-prebuilt": "^2.1.7",
     "prosthetic-hand": "^1.3.0",

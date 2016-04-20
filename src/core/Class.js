@@ -81,21 +81,21 @@ L.Class.extend = function (props) {
 };
 
 
-// @function include(properties: Object)
+// @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 L.Class.include = function (props) {
 	L.extend(this.prototype, props);
 	return this;
 };
 
-// @function mergeOptions(options: Object)
+// @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
 L.Class.mergeOptions = function (options) {
 	L.extend(this.prototype.options, options);
 	return this;
 };
 
-// @function addInitHook(fn: Function)
+// @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
 L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	var args = Array.prototype.slice.call(arguments, 1);

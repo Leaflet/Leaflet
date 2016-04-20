@@ -216,12 +216,12 @@ L.Util = {
 	               getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
 
 
-	// @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): requestId: Number
+	// @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
 	// Schedules `fn` to be executed when the browser repaints. `fn` is bound to
 	// `context` if given. When `immediate` is set, `fn` is called immediately if
 	// the browser doesn't have native support for
 	// [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
-	// otherwise it's delayed. Returns an id that can be used to cancel the request.
+	// otherwise it's delayed. Returns an request ID that can be used to cancel the request.
 	L.Util.requestAnimFrame = function (fn, context, immediate) {
 		if (immediate && requestFn === timeoutDefer) {
 			fn.call(context);
@@ -230,7 +230,7 @@ L.Util = {
 		}
 	};
 
-	// @function cancelAnimFrame(id: Number)
+	// @function cancelAnimFrame(id: Number): undefined
 	// Cancels a previous `requestAnimFrame`. See also [window.cancelAnimationFrame](https://developer.mozilla.org/docs/Web/API/window/cancelAnimationFrame).
 	L.Util.cancelAnimFrame = function (id) {
 		if (id) {

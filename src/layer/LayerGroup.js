@@ -76,7 +76,7 @@ L.LayerGroup = L.Layer.extend({
 		return this;
 	},
 
-	// @method invoke(methodName: string, …): this
+	// @method invoke(methodName: String, …): this
 	// Calls `methodName` on every layer contained in this group, passing any
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.

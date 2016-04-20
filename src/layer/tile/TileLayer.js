@@ -26,13 +26,13 @@
  * ```
  * L.tileLayer('http://{s}.somedomain.com/{foo}/{z}/{x}/{y}.png', {foo: 'bar'});
  * ```
- *
- * @section
  */
 
 
 L.TileLayer = L.GridLayer.extend({
 
+	// @section
+	// @aka TileLayer options
 	options: {
 		// @option minZoom: Number = 0
 		// Minimum zoom number.
@@ -236,7 +236,7 @@ L.TileLayer = L.GridLayer.extend({
 });
 
 
-// @factory L.tilelayer(urlTemplate: String, options? TileLayer options)
+// @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 
 L.tileLayer = function (url, options) {

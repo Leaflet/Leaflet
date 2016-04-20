@@ -86,7 +86,7 @@ L.SVG = L.Renderer.extend({
 		var path = layer._path = L.SVG.create('path');
 
 		// @namespace Path
-		// @option className: string = null
+		// @option className: String = null
 		// Custom class name set on an element. Only for SVG renderer.
 		if (layer.options.className) {
 			L.DomUtil.addClass(path, layer.options.className);
@@ -196,7 +196,7 @@ L.extend(L.SVG, {
 		return document.createElementNS('http://www.w3.org/2000/svg', name);
 	},
 
-	// @function pointsToPath(rings: [], closed: Boolean): String
+	// @function pointsToPath(rings: Point[], closed: Boolean): String
 	// Generates a SVG path string for multiple rings, with each ring turning
 	// into "M..L..L.." instructions
 	pointsToPath: function (rings, closed) {
@@ -226,7 +226,7 @@ L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect
 
 
 // @namespace SVG
-// @factory L.svg(options?: SVG options)
+// @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
 L.svg = function (options) {
 	return L.Browser.svg || L.Browser.vml ? new L.SVG(options) : null;

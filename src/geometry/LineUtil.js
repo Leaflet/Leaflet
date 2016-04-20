@@ -107,7 +107,7 @@ L.LineUtil = {
 	},
 
 
-	// @function clipSegment(a: Point, b: Point, bounds: Bounds, useLastCode?: Boolean, round?: Boolean): Point[]|boolean
+	// @function clipSegment(a: Point, b: Point, bounds: Bounds, useLastCode?: Boolean, round?: Boolean): Point[]|Boolean
 	// Clips the segment a to b by rectangular bounds with the
 	// [Cohen-Sutherland algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm)
 	// (modifying the segment points directly!). Used by Leaflet to only show polyline

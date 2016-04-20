@@ -316,7 +316,7 @@ L.Browser.canvas = (function () {
 }());
 
 // @namespace Canvas
-// @factory L.canvas(options?: Canvas options)
+// @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
 L.canvas = function (options) {
 	return L.Browser.canvas ? new L.Canvas(options) : null;

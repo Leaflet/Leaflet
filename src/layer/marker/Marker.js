@@ -13,8 +13,10 @@
 
 L.Marker = L.Layer.extend({
 
+	// @section
+	// @aka Marker options
 	options: {
-		// @option icon: L.Icon = *
+		// @option icon: Icon = *
 		// Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.
 		icon: new L.Icon.Default(),
 
