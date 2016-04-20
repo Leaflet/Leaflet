@@ -150,9 +150,10 @@ After committing the changes, just send a pull request.
 ### API documentation
 
 Since Leaflet 1.0.0-rc1, the API documentation in `reference-1.0.0.html` is handled
-via [Leafdoc](https://github.com/Leaflet/Leafdoc). The file in `gh-pages` is synchronized
-on every release of a new Leaflet version, and may not necessarily reflect the development
-code in the `master` branch.
+via [Leafdoc](https://github.com/Leaflet/Leafdoc). This means that next to the
+code for every method, option or property there is a special code comment documenting
+that feature. In order to edit the API documentation, just edit these comments in the
+source code.
 
 In order to generate the documentation, just run
 
@@ -161,6 +162,10 @@ jake docs
 ```
 
 and you'll find a `.html` file in the `dist/` directory.
+
+On every release of a new Leaflet version, this file will be generated and copied
+over to the `gh-pages` branch - there is no need to send pull requests to this
+branch anymore to update the API documentation.
 
 ## Code of Conduct
 
