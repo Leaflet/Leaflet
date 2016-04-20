@@ -221,7 +221,7 @@ L.Util = {
 	// `context` if given. When `immediate` is set, `fn` is called immediately if
 	// the browser doesn't have native support for
 	// [`window.requestAnimationFrame`](https://developer.mozilla.org/docs/Web/API/window/requestAnimationFrame),
-	// otherwise it's delayed. Returns an request ID that can be used to cancel the request.
+	// otherwise it's delayed. Returns a request ID that can be used to cancel the request.
 	L.Util.requestAnimFrame = function (fn, context, immediate) {
 		if (immediate && requestFn === timeoutDefer) {
 			fn.call(context);
