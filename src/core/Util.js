@@ -177,7 +177,7 @@ L.Util = {
 		return (Object.prototype.toString.call(obj) === '[object Array]');
 	},
 
-	// @function indexOf: Number
+	// @function indexOf(array: Array, el: Object): Number
 	// Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
 	indexOf: function (array, el) {
 		for (var i = 0; i < array.length; i++) {
