@@ -476,7 +476,7 @@ The following plugins change the way that tile layers are loaded into the map.
 		<td>
 			<a href="https://github.com/TolonUK/Leaflet.EdgeBuffer">Leaflet.EdgeBuffer</a>
 		</td><td>
-			Buffer tiles beyond the edge of the viewport. <a href="http://www.tolon.co.uk/Leaflet.EdgeBuffer/comparison.html">Demo</a>.
+			Buffer tiles beyond the edge of the viewport, for Leaflet 1.0. <a href="http://www.tolon.co.uk/Leaflet.EdgeBuffer/comparison.html">Demo</a>.
 		</td><td>
 			<a href="https://github.com/TolonUK">Alex Paterson</a>
 		</td>
