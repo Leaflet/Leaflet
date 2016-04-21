@@ -503,7 +503,7 @@ Plugins to display <a href="https://github.com/mapbox/vector-tile-spec">vector t
 		<td>
 			<a href="https://github.com/SpatialServer/Leaflet.MapboxVectorTile">Leaflet.MapboxVectorTile</a>
 		</td><td>
-			A Leaflet Plugin that renders Mapbox Vector Tiles on canvas. See <a href="http://spatialserver.github.io/Leaflet.MapboxVectorTile/examples/confetti.html">demo</a>
+			A Leaflet Plugin that renders Mapbox Vector Tiles on canvas. See <a href="http://spatialserver.github.io/Leaflet.MapboxVectorTile/examples/confetti.html">demo</a>. Compatible with Leaflet 0.7.x only.
 		</td><td>
 			<a href="http://spatialdev.com/">SpatialDev</a>
 		</td>
@@ -512,7 +512,7 @@ Plugins to display <a href="https://github.com/mapbox/vector-tile-spec">vector t
 		<td>
 			<a href="https://github.com/devTristan/hoverboard">Hoverboard</a>
 		</td><td>
-			Render vector tiles on canvas with leaflet (geojson, topojson, and protobuf). See <a href="http://tristan.io/hoverboard/">demo</a>.
+			Render vector tiles on canvas with leaflet (geojson, topojson, and protobuf). See <a href="http://tristan.io/hoverboard/">demo</a>. Compatible with Leaflet 0.7.x only.
 		</td><td>
 			<a href="http://tristan.io/">Tristan Davies</a>
 		</td>
@@ -524,6 +524,15 @@ Plugins to display <a href="https://github.com/mapbox/vector-tile-spec">vector t
 			Efficient library for slicing GeoJSON data into vector tiles on the fly.
 		</td><td>
 			<a href="https://www.mapbox.com/">Mapbox</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/IvanSanchez/Leaflet.VectorGrid">Leaflet.VectorGrid</a>
+		</td><td>
+			Display gridded vector data (GeoJSON or TopoJSON sliced with geojson-vt, or protobuf vector tiles) in Leaflet 1.0.0. See <a href="https://github.com/IvanSanchez/Leaflet.VectorGrid#demo">demos</a>. Not compatible with 0.7.x.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
 </table>
