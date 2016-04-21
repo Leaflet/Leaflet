@@ -7,7 +7,7 @@
  * @example
  * ```js
  * var fx = new L.PosAnimation();
- f x.run(el, [300, 500], 0.5);*
+ * fx.run(el, [300, 500], 0.5);
  * ```
  *
  * @constructor L.PosAnimation()
