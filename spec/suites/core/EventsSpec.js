@@ -438,6 +438,17 @@ describe('Events', function () {
 			obj.off('test', spy);
 			expect(obj.listens('test')).to.be(false);
 		});
+
+		it('changes for a "once" handler', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			obj.once('test', spy);
+			expect(obj.listens('test')).to.be(true);
+
+			obj.fire('test');
+			expect(obj.listens('test')).to.be(false);
+		});
 	});
 
 });
