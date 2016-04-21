@@ -159,6 +159,9 @@ L.Evented = L.Class.extend({
 					}
 				}
 			}
+			if (listeners.length === 0) {
+				delete events[type];
+			}
 		}
 
 		// set the removed listener to noop so that's not called if remove happens in fire
