@@ -359,7 +359,7 @@ L.Map = L.Evented.extend({
 		}
 
 		// @section Map state change events
-		// @event resize: Event
+		// @event resize: ResizeEvent
 		// Fired when the map is resized.
 		return this.fire('resize', {
 			oldSize: oldSize,
