@@ -191,7 +191,7 @@ L.Draggable = L.Evented.extend({
 			// ensure drag is not fired after dragend
 			L.Util.cancelAnimFrame(this._animRequest);
 
-			// @event dragend: Event
+			// @event dragend: DragEndEvent
 			// Fired when the drag ends.
 			this.fire('dragend', {
 				distance: this._newPos.distanceTo(this._startPos)
