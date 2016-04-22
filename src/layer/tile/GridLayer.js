@@ -761,7 +761,7 @@ L.GridLayer = L.Layer.extend({
 		if (!this._map) { return; }
 
 		if (err) {
-			// @event tileerror: TileEvent
+			// @event tileerror: TileErrorEvent
 			// Fired when there is an error loading a tile.
 			this.fire('tileerror', {
 				error: err,
@@ -796,7 +796,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (this._noTilesToLoad()) {
 			this._loading = false;
-			// @event load: TileEvent
+			// @event load: Event
 			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
 
