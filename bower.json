@@ -1,6 +1,6 @@
 {
-  "name": "leaflet",
-  "description": "JavaScript library for mobile-friendly interactive maps",
+  "name": "leaflet-jays-fork",
+  "description": "Fork of Leaflet that includs the className option on TileLayers",
   "main": [
     "dist/leaflet.css",
     "dist/leaflet-src.js"
