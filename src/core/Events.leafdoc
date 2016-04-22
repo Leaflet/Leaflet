@@ -92,7 +92,7 @@ The old size before resize event.
 @property newSize: Point
 The new size after the resize event.
 
-@miniclass GeoJSON event (Event objects)
+@miniclass GeoJSONEvent (Event objects)
 @inherits Event
 @property layer: Layer
 The layer for the GeoJSON feature that is being added to the map.
