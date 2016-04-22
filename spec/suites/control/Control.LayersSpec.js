@@ -100,6 +100,16 @@ describe("Control.Layers", function () {
 			expect(map._container.querySelector('.leaflet-control-layers-overlays').children.length)
 				.to.be.equal(0);
 		});
+
+		it('silently returns when trying to remove a non-existing layer from the control', function () {
+			var layers = L.control.layers({'base': L.tileLayer()}).addTo(map);
+
+			expect(function () {
+				layers.removeLayer(L.marker([0, 0]));
+			}).to.not.throwException();
+
+			expect(layers._layers.length).to.be.equal(1);
+		});
 	});
 
 	describe("is removed cleanly", function () {
