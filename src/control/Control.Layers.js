@@ -110,7 +110,9 @@ L.Control.Layers = L.Control.extend({
 		layer.off('add remove', this._onLayerChange, this);
 
 		var obj = this._getLayer(L.stamp(layer));
-		this._layers.splice(this._layers.indexOf(obj), 1);
+		if (obj) {
+			this._layers.splice(this._layers.indexOf(obj), 1);
+		}
 		return (this._map) ? this._update() : this;
 	},
 
@@ -191,7 +193,8 @@ L.Control.Layers = L.Control.extend({
 
 	_getLayer: function (id) {
 		for (var i = 0; i <= this._layers.length; i++) {
-			if (L.stamp(this._layers[i].layer) === id) {
+
+			if (this._layers[i] && L.stamp(this._layers[i].layer) === id) {
 				return this._layers[i];
 			}
 		}
