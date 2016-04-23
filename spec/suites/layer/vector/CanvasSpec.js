@@ -73,6 +73,23 @@ describe('Canvas', function () {
 			map.off("click", spy);
 		});
 
+		it("should fire preclick before click", function () {
+			var clickSpy = sinon.spy();
+			var preclickSpy = sinon.spy();
+			layer.on('click', clickSpy);
+			layer.on('preclick', preclickSpy);
+			layer.once('preclick', function (e) {
+				expect(clickSpy.called).to.be(false);
+			});
+			happen.at('click', 50, 50);  // Click on the layer.
+			expect(clickSpy.callCount).to.eql(1);
+			expect(preclickSpy.callCount).to.eql(1);
+			happen.at('click', 150, 150);  // Click outside layer.
+			expect(clickSpy.callCount).to.eql(1);
+			expect(preclickSpy.callCount).to.eql(1);
+			layer.off();
+		});
+
 	});
 
 	describe("#events(interactive=false)", function () {
