@@ -90,6 +90,34 @@ describe('Canvas', function () {
 			layer.off();
 		});
 
+		it("should not fire click when dragging the map on top of it", function (done) {
+			var downSpy = sinon.spy();
+			var clickSpy = sinon.spy();
+			var preclickSpy = sinon.spy();
+			layer.on('click', clickSpy);
+			layer.on('preclick', preclickSpy);
+			layer.on('mousedown', downSpy);
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					// Prosthetic does not fire a click when we down+up, but it real world
+					// browsers would, so let's simulate it.
+					happen.at('click', 70, 60);
+					expect(downSpy.called).to.be(true);
+					expect(clickSpy.called).to.be(false);
+					expect(preclickSpy.called).to.be(false);
+					layer.off();
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+
+			// We move 5 pixels first to overcome the 3-pixel threshold of
+			// L.Draggable.
+			mouse.moveTo(50, 50, 0)
+				.down().moveBy(20, 10, 200).up();
+		});
+
 	});
 
 	describe("#events(interactive=false)", function () {
