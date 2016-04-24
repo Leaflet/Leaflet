@@ -106,14 +106,19 @@ L.control = function (options) {
 };
 
 
-// adds control-related methods to L.Map
-
+/* @namespace Map
+ * @section Methods for Layers and Controls
+ */
 L.Map.include({
+	// @method addControl(control: Control): this
+	// Adds the given control to the map
 	addControl: function (control) {
 		control.addTo(this);
 		return this;
 	},
 
+	// @method removeControl(control: Control): this
+	// Removes the given control from the map
 	removeControl: function (control) {
 		control.remove();
 		return this;
