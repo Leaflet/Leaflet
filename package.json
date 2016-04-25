@@ -17,6 +17,7 @@
     "uglify-js": "~2.5.0"
   },
   "main": "dist/leaflet-src.js",
+  "style": "dist/leaflet.css",
   "scripts": {
     "test": "jake test",
     "build": "jake build",
