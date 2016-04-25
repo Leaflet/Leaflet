@@ -138,7 +138,7 @@ L.Map.include({
 	// Adds the given layer to the map
 	addLayer: function (layer) {
 		var id = L.stamp(layer);
-		if (this._layers[id]) { return layer; }
+		if (this._layers[id]) { return this; }
 		this._layers[id] = layer;
 
 		layer._mapToAdd = this;
