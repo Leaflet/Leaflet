@@ -87,12 +87,12 @@
 		var osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}).addTo(map1);
 
 		// EEZs / Nations
-		var eez1 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		var eez1 = L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
 		    tms: true
 		}).addTo(map1);
 
 		// Marine Protected Areas overlay
-		var mpa1 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		var mpa1 = L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
 		    tms: false
 		}).addTo(map1);
 
@@ -104,13 +104,13 @@
 		var osm2 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}).addTo(map2);
 
 		// EEZs / Nations
-		var eez2 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		var eez2 = L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
 		    tms: true,
 		    opacity: 0.99
 		}).addTo(map2);
 
 		// Marine Protected Areas overlay
-		var mpa2 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		var mpa2 = L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
 		    tms: false,
 		    opacity: 0.99
 		}).addTo(map2);
@@ -123,13 +123,13 @@
 		var osm3 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: '', zIndex: 0}).addTo(map3);
 
 		// EEZs / Nations
-		var eez3 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		var eez3 = L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
 		    tms: true,
 		    opacity: 0.99
 		}).addTo(map3);
 
 		// Marine Protected Areas overlay
-		var mpa3 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		var mpa3 = L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
 		    tms: false,
 		    opacity: 0.99
 		}).addTo(map3);
@@ -142,13 +142,13 @@
 		var osm4 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}).addTo(map4);
 
 		// EEZs / Nations
-		var eez4 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		var eez4 = L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
 		    tms: true,
 		    opacity: 0.99
 		}).addTo(map4);
 
 		// Marine Protected Areas overlay
-		var mpa4 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		var mpa4 = L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
 		    tms: false,
 		    opacity: 0.99
 		}).addTo(map4);
@@ -161,13 +161,13 @@
 		var osm5 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: '', opacity: 0.99}).addTo(map5);
 
 		// EEZs / Nations
-		var eez5 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		var eez5 = L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
 		    tms: true,
 		    opacity: 0.99
 		}).addTo(map5);
 
 		// Marine Protected Areas overlay
-		var mpa5 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		var mpa5 = L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
 		    tms: false,
 		    opacity: 0.99
 		}).addTo(map5);
@@ -180,13 +180,13 @@
 		var osm6 = L.tileLayer(osmUrl, {maxZoom: 18, attribution: '', opacity: 0.99}).addTo(map6);
 
 		// EEZs / Nations
-		var eez6 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
+		var eez6 = L.tileLayer('http://tile1.mpatlas.org/tilecache/eezs/{z}/{x}/{y}.png', {
 		    tms: true,
 		    opacity: 1
 		}).addTo(map6);
 
 		// Marine Protected Areas overlay
-		var mpa6 = new L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
+		var mpa6 = L.tileLayer('http://tile1.mpatlas.org/tilecache/mpas/{z}/{x}/{y}.png', {
 		    tms: false,
 		    opacity: 0.99
 		}).addTo(map6);
