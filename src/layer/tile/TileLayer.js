@@ -87,10 +87,16 @@ L.TileLayer = L.GridLayer.extend({
 		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
-			options.zoomOffset++;
+
+			if (!options.zoomReverse) {
+				options.zoomOffset++;
+				options.maxZoom--;
+			} else {
+				options.zoomOffset--;
+				options.minZoom++;
+			}
 
 			options.minZoom = Math.max(0, options.minZoom);
-			options.maxZoom--;
 		}
 
 		if (typeof options.subdomains === 'string') {
