@@ -194,6 +194,11 @@ var deps = {
 		desc: 'Enables keyboard pan/zoom when the map is focused.'
 	},
 
+	ContainerMutation: {
+		src: ['map/handler/Map.ContainerMutation.js'],
+		desc: 'Enables tracking DOM mutations to the map container size.'
+	},
+
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
 		deps: ['Marker'],
