@@ -55,9 +55,9 @@
 		path.bindPopup('I am a polyline');
 
 		var p1 = latlngs[0],
-			p2 = latlngs[parseInt(len/4)],
-			p3 = latlngs[parseInt(len/3)],
-			p4 = latlngs[parseInt(len/2)],
+		    p2 = latlngs[Math.round(len / 4)],
+		    p3 = latlngs[Math.round(len / 3)],
+		    p4 = latlngs[Math.round(len / 2)],
 			p5 = latlngs[len - 1],
 			polygonPoints = [p1, p2, p3, p4, p5];
 

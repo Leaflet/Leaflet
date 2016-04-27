@@ -13,7 +13,7 @@
 	    osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
 
 
-	recreateMap = function(){
+	var recreateMap = function(){
 		// destroy previous map and div
 
 		if(map) map.remove();	// This will destroy all DOM childs from layers and controls

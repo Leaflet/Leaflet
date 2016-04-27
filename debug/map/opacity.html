@@ -83,6 +83,7 @@
 		**********/
 		// OSM Basemap
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 		var osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: ''}).addTo(map1);
 
