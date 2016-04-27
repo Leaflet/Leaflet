@@ -16,8 +16,8 @@ L.Map.include({
 	},
 
 	// @method locate(options?: Locate options): this
-	// Tries to locate the user using the Geolocation API, firing a `locationfound`
-	// event with location data on success or a `locationerror` event on failure,
+	// Tries to locate the user using the Geolocation API, firing a [`locationfound`](#map-locationfound)
+	// event with location data on success or a [`locationerror`](#map-locationerror) event on failure,
 	// and optionally sets the map view to the user's location with respect to
 	// detection accuracy (or to the world view if geolocation failed).
 	// See `Locate options` for more details.
