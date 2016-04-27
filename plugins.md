@@ -1295,7 +1295,7 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 		<td>
 			<a href="https://github.com/Leaflet/Leaflet.heat">Leaflet.heat</a>
 		</td><td>
-			A tiny, simple and fast Leaflet heatmap plugin. Uses [simpleheat](https://github.com/mourner/simpleheat) under the hood, additionally clustering points into a grid for performance. ([Demo](http://leaflet.github.io/Leaflet.heat/demo))
+			A tiny, simple and fast Leaflet heatmap plugin. Uses <a href='https://github.com/mourner/simpleheat'>simpleheat</a> under the hood, additionally clustering points into a grid for performance. (<a href='http://leaflet.github.io/Leaflet.heat/demo'>Demo</a>)
 
 		</td><td>
 			<a href="https://github.com/mourner">Vladimir Agafonkin</a>
