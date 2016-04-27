@@ -125,7 +125,7 @@ L.Util = {
 		return L.Util.trim(str).split(/\s+/);
 	},
 
-	// @function setOptions(obj: Object: options: Object): Object
+	// @function setOptions(obj: Object, options: Object): Object
 	// Merges the given properties to the `options` of the `obj` object, returning the resulting options. See `Class options`. Has an `L.setOptions` shortcut.
 	setOptions: function (obj, options) {
 		if (!obj.hasOwnProperty('options')) {
