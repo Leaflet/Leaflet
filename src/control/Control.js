@@ -105,6 +105,17 @@ L.control = function (options) {
 	return new L.Control(options);
 };
 
+/* @section Extension methods
+ * @uninheritable
+ *
+ * Every control should extend from `L.Control` and (re-)implement the following methods.
+ *
+ * @method onAdd(map: Map): HTMLElement
+ * Should return the container DOM element for the control and add listeners on relevant map events. Called on [`control.addTo(map)`](#control-addTo).
+ *
+ * @method onRemove(map: Map)
+ * Optional method. Should contain all clean up code that removes the listeners previously added in [`onAdd`](#control-onadd). Called on [`control.remove()`](#control-remove).
+ */
 
 // adds control-related methods to L.Map
 
