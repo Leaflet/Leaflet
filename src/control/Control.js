@@ -66,10 +66,14 @@ L.Control = L.Class.extend({
 
 		L.DomUtil.addClass(container, 'leaflet-control');
 
-		if (pos.indexOf('bottom') !== -1) {
-			corner.insertBefore(container, corner.firstChild);
+		if (corner) {
+			if (pos.indexOf('bottom') !== -1) {
+				corner.insertBefore(container, corner.firstChild);
+			} else {
+				corner.appendChild(container);
+			}
 		} else {
-			corner.appendChild(container);
+			map._controlContainer.appendChild(container);
 		}
 
 		return this;
