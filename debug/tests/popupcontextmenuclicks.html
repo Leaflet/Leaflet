@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Leaflet debug page</title>
+    <title>Leaflet debug page</title>
 
-	<link rel="stylesheet" href="../../dist/leaflet.css" />
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
 
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-	<link rel="stylesheet" href="../css/screen.css" />
+    <link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
-	<script src="../leaflet-include.js"></script>
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
 </head>
 <body>
 
-	<div id="map"></div>
-	<button id="populate">Populate with 10 markers</button>
+    <div id="map"></div>
+    <button id="populate">Populate with 10 markers</button>
 
-	<script type="text/javascript">
+    <script type="text/javascript">
 
 var map = L.map('map').setView([36.9, -95.4], 5);
 map.on('contextmenu', function (e) {
@@ -53,6 +53,6 @@ var marker = L.marker([36, -95]).addTo(map);
 marker.bindPopup('Right-click me <br> to test contextmenu <br> event capture').openPopup();
 
 
-	</script>
+    </script>
 </body>
 </html>

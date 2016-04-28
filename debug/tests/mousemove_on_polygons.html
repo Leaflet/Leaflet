@@ -49,9 +49,9 @@
 	<script type="text/javascript">
 
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-		    osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-		    osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
-		    latlng = new L.LatLng(39.05, 8.40);
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib}),
+			latlng = new L.LatLng(39.05, 8.40);
 
 		var map = new L.Map('map', {center: latlng, zoom: 12, layers: [osm]});
 
@@ -70,24 +70,24 @@
 			[39.10, 8.50],
 			[39.05, 8.30]
 		])).addTo(map).on('mouseover',update('enter1'))
-		              .on('mousemove',update('move1'))
-		              .on('mouseout',update('exit1'))
-		              .on('click',update('click1'))
-		              .bindPopup('Triangle 1');
+			.on('mousemove',update('move1'))
+			.on('mouseout',update('exit1'))
+			.on('click',update('click1'))
+			.bindPopup('Triangle 1');
 		
 		var polygon2 = (new L.Polygon([
 			[39.03, 8.30],
 			[39.10, 8.40],
 			[39.00, 8.30]
 		])).addTo(map).on('mouseover',update('enter2'))
-		              .on('mousemove',update('move2'))
-		              .on('mouseout',update('exit2'))
-		              .on('click',update('click2'))
-		              .bindPopup('Triangle 2');
+			.on('mousemove',update('move2'))
+			.on('mouseout',update('exit2'))
+			.on('click',update('click2'))
+			.bindPopup('Triangle 2');
 
 		
 		var marker = new L.Marker(latlng, {draggable: true})
-		              .bindPopup('Marker');;
+			.bindPopup('Marker');;
 		map.addLayer(marker);
 		
 
@@ -95,9 +95,9 @@
 // 			marker.setLatLng(e.latlng);
 // 		});
 		map.on('mouseover',update('enter3'))
-		   .on('mousemove',update('move3'))
-		   .on('mouseout',update('exit3'))
-		   .on('click',update('click3'));
+			.on('mousemove',update('move3'))
+			.on('mouseout',update('exit3'))
+			.on('click',update('click3'));
 		
 		// We should be able to move marker around in a fluid way,
 		// plus going over the polygon with no issue.
