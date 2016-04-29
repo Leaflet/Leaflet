@@ -24,29 +24,29 @@
 	initmap();
 
 	function initmap() {
-	  // set up the map
-	  map = new L.Map('map');
+	 	// set up the map
+	 	map = new L.Map('map');
 
-	  // create the tile layer with correct attribution
-	  var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
-	  var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 17 });
-	  map.addLayer(osm);
-	  map.fitBounds(new L.LatLngBounds([51,7],[51,7]));
+		// create the tile layer with correct attribution
+		var osmUrl = 'http://a.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		var osm = new L.TileLayer(osmUrl, { minZoom: 1, maxZoom: 17 });
+		map.addLayer(osm);
+		map.fitBounds(new L.LatLngBounds([51,7],[51,7]));
 
-	  var route = L.polyline([
-	    [51, 7.000],
-	    [51.002, 7.004],
-	    [51.004, 7.006]
-	  ]).addTo(map).on('click',function(e){console.log('bottom')})
+		var route = L.polyline([
+			[51, 7.000],
+			[51.002, 7.004],
+			[51.004, 7.006]
+		]).addTo(map).on('click',function(e){console.log('bottom')})
 
-	  var route2 = L.polyline([
-	    [51, 7.000],
-	    [51.002, 7.004]
-	  ],
-	  { interactive:false,color:'#f00' }
-	  ).addTo(map);
+		var route2 = L.polyline([
+			[51, 7.000],
+			[51.002, 7.004]
+		],
+		{ interactive:false,color:'#f00' }
+		).addTo(map);
 
-	  // when the mouse hovers over the red route2, you cannot click through the blue route1 beneath
+		// when the mouse hovers over the red route2, you cannot click through the blue route1 beneath
 	};
 
 	</script>

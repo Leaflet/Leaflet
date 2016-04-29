@@ -12,9 +12,9 @@
 </head>
 <body>
 	<div id="map" style="width: 800px; height: 600px; border: 1px solid #ccc"></div>
-    <button onclick="group.removeLayer(path)">Remove path</button>
-    <button onclick="group.removeLayer(circle)">Remove circle</button>
-    <button onclick="group.clearLayers()">Remove all layers</button>
+	<button onclick="group.removeLayer(path)">Remove path</button>
+	<button onclick="group.removeLayer(circle)">Remove circle</button>
+	<button onclick="group.clearLayers()">Remove all layers</button>
 
 
 	<script src="route.js"></script>
@@ -37,10 +37,10 @@
 
 		var circleLocation = new L.LatLng(51.508, -0.11),
 		circleOptions = {
-		    color: 'red',
-		    fillColor: 'yellow',
-		    fillOpacity: 0.7,
-		    renderer: canvas
+			color: 'red',
+			fillColor: 'yellow',
+			fillOpacity: 0.7,
+			renderer: canvas
 		};
 
 		var circle = new L.Circle(circleLocation, 500000, circleOptions),
@@ -55,9 +55,9 @@
 		path.bindPopup('I am a polyline');
 
 		var p1 = latlngs[0],
-			p2 = latlngs[parseInt(len/4)],
-			p3 = latlngs[parseInt(len/3)],
-			p4 = latlngs[parseInt(len/2)],
+			p2 = latlngs[Math.round(len / 4)],
+			p3 = latlngs[Math.round(len / 3)],
+			p4 = latlngs[Math.round(len / 2)],
 			p5 = latlngs[len - 1],
 			polygonPoints = [p1, p2, p3, p4, p5];
 
