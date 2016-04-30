@@ -1079,6 +1079,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bradhamson/L.Control.Rose">L.Control.Rose</a>
+		</td>
+		<td>
+			This plugin allows users to add a variety of north arrows to Leaflet maps. <a href="http://bradhamson.github.io/L.Control.Rose/#11/39.2846/-76.6200">Demo</a>
+		</td>
+		<td>
+			<a href="https://github.com/bradhamson">Brad Hamson</a>
+		</td>
+	</tr>
 </table>
 
 
