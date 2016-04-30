@@ -18,7 +18,9 @@
 			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-		var map = new L.Map('map', {layers: [osm]});
+		var svg = L.svg();
+
+		var map = new L.Map('map', {layers: [osm], renderer: svg});
 
 		map.addLayer(L.marker(route[0]));
 		map.addLayer(L.marker(route[route.length - 1]));
@@ -51,7 +53,7 @@
 			'circle': circle,
 			'circleMarker': circleMarker,
 			'canvas': canvas,
-			'svg': map._renderer,
+			'svg': svg,
 		}, {collapsed: false});
 		map.addControl(layersControl);
 	</script>

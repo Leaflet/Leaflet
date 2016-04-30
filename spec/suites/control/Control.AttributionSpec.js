@@ -7,8 +7,16 @@ describe("Control.Attribution", function () {
 		control = new L.Control.Attribution({
 			prefix: 'prefix'
 		}).addTo(map);
+		map.setView([0, 0], 1);
 		container = control.getContainer();
 	});
+
+	function dummyLayer() {
+		var layer = new L.Layer();
+		layer.onAdd = function () { };
+		layer.onRemove = function () { };
+		return layer;
+	}
 
 	it("contains just prefix if no attributions added", function () {
 		expect(container.innerHTML).to.eql('prefix');
@@ -62,6 +70,56 @@ describe("Control.Attribution", function () {
 		it('creates Control.Attribution instance', function () {
 			var options = {prefix: 'prefix'};
 			expect(L.control.attribution(options)).to.eql(new L.Control.Attribution(options));
+		});
+	});
+
+	describe('on layer add/remove', function () {
+		it('changes text', function () {
+			var fooLayer = dummyLayer();
+			var barLayer = dummyLayer();
+			var bazLayer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			barLayer.getAttribution = function () { return 'bar'; };
+			bazLayer.getAttribution = function () { return 'baz'; };
+
+			expect(container.innerHTML).to.eql('prefix');
+			map.addLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.addLayer(barLayer);
+			expect(container.innerHTML).to.eql('prefix | foo, bar');
+			map.addLayer(bazLayer);
+			expect(container.innerHTML).to.eql('prefix | foo, bar, baz');
+
+			map.removeLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | bar, baz');
+			map.removeLayer(barLayer);
+			expect(container.innerHTML).to.eql('prefix | baz');
+			map.removeLayer(bazLayer);
+			expect(container.innerHTML).to.eql('prefix');
+		});
+
+		it('keeps count of duplicated attributions', function () {
+			var fooLayer = dummyLayer();
+			var fo2Layer = dummyLayer();
+			var fo3Layer = dummyLayer();
+			fooLayer.getAttribution = function () { return 'foo'; };
+			fo2Layer.getAttribution = function () { return 'foo'; };
+			fo3Layer.getAttribution = function () { return 'foo'; };
+
+			expect(container.innerHTML).to.eql('prefix');
+			map.addLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.addLayer(fo2Layer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.addLayer(fo3Layer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+
+			map.removeLayer(fooLayer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.removeLayer(fo2Layer);
+			expect(container.innerHTML).to.eql('prefix | foo');
+			map.removeLayer(fo3Layer);
+			expect(container.innerHTML).to.eql('prefix');
 		});
 	});
 

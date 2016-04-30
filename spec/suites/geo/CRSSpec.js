@@ -197,3 +197,15 @@ describe("CRS.ZoomNotPowerOfTwo", function () {
 		});
 	});
 });
+
+describe("CRS.Earth", function () {
+	describe("#distance", function () {
+		// Test values from http://rosettacode.org/wiki/Haversine_formula,
+		// we assume using mean earth radius (https://en.wikipedia.org/wiki/Earth_radius#Mean_radius)
+		// is correct, since that's what International Union of Geodesy and Geophysics recommends,
+		// and that sounds serious.
+		var p1 = L.latLng(36.12, -86.67);
+		var p2 = L.latLng(33.94, -118.40);
+		expect(L.CRS.Earth.distance(p1, p2)).to.be.within(2886444.43, 2886444.45);
+	});
+});

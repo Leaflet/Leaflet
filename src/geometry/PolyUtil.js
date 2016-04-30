@@ -1,12 +1,15 @@
 /*
- * L.PolyUtil contains utility functions for polygons (clipping, etc.).
+ * @namespace PolyUtil
+ * Various utility functions for polygon geometries.
  */
 
 L.PolyUtil = {};
 
-/*
- * Sutherland-Hodgeman polygon clipping algorithm.
- * Used to avoid rendering parts of a polygon that are not currently visible.
+/* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
+ * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgeman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
+ * Used by Leaflet to only show polygon points that are on the screen or near, increasing
+ * performance. Note that polygon points needs different algorithm for clipping
+ * than polyline, so there's a seperate method for it.
  */
 L.PolyUtil.clipPolygon = function (points, bounds, round) {
 	var clippedPoints,

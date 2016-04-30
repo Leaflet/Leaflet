@@ -51,26 +51,12 @@ happen.at = function (what, x, y, props) {
 		button: 0
 	}, props || {}));
 };
-happen.drag = function (fromX, fromY, toX, toY, then, duration) {
-	happen.at('mousemove', fromX, fromY);
-	happen.at('mousedown', fromX, fromY);
-	var moveX = function () {
-		if (fromX <= toX) {
-			happen.at('mousemove', fromX++, fromY);
-			window.setTimeout(moveX, 5);
-		}
-	};
-	moveX();
-	var moveY = function () {
-		if (fromY <= toY) {
-			happen.at('mousemove', fromX, fromY++);
-			window.setTimeout(moveY, 5);
-		}
-	};
-	moveY();
-	window.setTimeout(function () {
-		happen.at('mouseup', toX, toY);
-		happen.at('click', toX, toY);
-		if (then) { then(); }
-	}, duration || 100);
-};
+
+// We'll want to skip a couple of things when in PhantomJS, due to lack of CSS animations
+it.skipInPhantom = L.Browser.any3d ? it : it.skip;
+
+// A couple of tests need the browser to be touch-capable
+it.skipIfNotTouch = window.TouchEvent ? it : it.skip;
+
+// A couple of tests need the browser to be pointer-capable
+it.skipIfNotEdge = window.PointerEvent ? it : it.skip;

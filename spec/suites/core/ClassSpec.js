@@ -171,7 +171,30 @@ describe("Class", function () {
 		});
 	});
 
-	// TODO Class.include
+
+	describe("#include", function () {
+		var Klass;
+
+		beforeEach(function () {
+			Klass = L.Class.extend({});
+		});
+
+		it("returns the class with the extra methods", function () {
+
+			var q = sinon.spy();
+
+			var Qlass = Klass.include({quux: q});
+
+			var a = new Klass();
+			var b = new Qlass();
+
+			a.quux();
+			expect(q.called).to.be.ok();
+
+			b.quux();
+			expect(q.called).to.be.ok();
+		});
+	});
 
 	// TODO Class.mergeOptions
 });

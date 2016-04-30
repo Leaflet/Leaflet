@@ -1,31 +1,89 @@
 /*
- * L.Popup is used for displaying popups on the map.
+ * @class PopupBase
+ * @inherits Layer
+ * @aka L.PopupBase
+ * Base model for L.Popup and L.Label. Inherit from it for very custom popup like plugins.
  */
 
+/* @namespace Map
+ * @section Interaction Options
+ * @option closePopupOnClick: Boolean = true
+ * Set it to `false` if you don't want popups to close when user clicks the map.
+ */
 L.Map.mergeOptions({
 	closePopupOnClick: true
 });
 
+// @namespace PopupBase
 L.PopupBase = L.Layer.extend({
 
+	// @section
+	// @aka PopupBase options
 	options: {
-		pane: 'popupPane',
-
-		minWidth: 50,
+		// @option maxWidth: Number = 300
+		// Max width of the popup, in pixels.
 		maxWidth: 300,
-		// maxHeight: <Number>,
+
+		// @option minWidth: Number = 50
+		// Min width of the popup, in pixels.
+		minWidth: 50,
+
+		// @option maxHeight: Number = null
+		// If set, creates a scrollable container of the given height
+		// inside a popup if its content exceeds it.
+		maxHeight: null,
+
+		// @option autoPan: Boolean = true
+		// Set it to `false` if you don't want the map to do panning animation
+		// to fit the opened popup.
+		autoPan: true,
+
+		// @option autoPanPaddingTopLeft: Point = null
+		// The margin between the popup and the top left corner of the map
+		// view after autopanning was performed.
+		autoPanPaddingTopLeft: null,
+
+		// @option autoPanPaddingBottomRight: Point = null
+		// The margin between the popup and the bottom right corner of the map
+		// view after autopanning was performed.
+		autoPanPaddingBottomRight: null,
+
+		// @option autoPanPadding: Point = Point(5, 5)
+		// Equivalent of setting both top left and bottom right autopan padding to the same value.
+		autoPanPadding: [5, 5],
+
+		// @option keepInView: Boolean = false
+		// Set it to `true` if you want to prevent users from panning the popup
+		// off of the screen while it is open.
+		keepInView: false,
+
+		// @option closeButton: Boolean = true
+		// Controls the presence of a close button in the popup.
+		closeButton: true,
+
+		// @option offset: Point = Point(0, 7)
+		// The offset of the popup position. Useful to control the anchor
+		// of the popup when opening it on some overlays.
 		offset: [0, 7],
 
-		autoPan: true,
-		autoPanPadding: [5, 5],
-		// autoPanPaddingTopLeft: <Point>,
-		// autoPanPaddingBottomRight: <Point>,
-
-		closeButton: true,
+		// @option autoClose: Boolean = true
+		// Set it to `false` if you want to override the default behavior of
+		// the popup closing when user clicks the map (set globally by
+		// the Map's [closePopupOnClick](#map-closepopuponclick) option).
 		autoClose: true,
-		// keepInView: false,
-		// className: '',
-		zoomAnimation: true
+
+		// @option zoomAnimation: Boolean = true
+		// Whether to animate the popup on zoom. Disable it if you have
+		// problems with Flash content inside popups.
+		zoomAnimation: true,
+
+		// @option className: String = ''
+		// A custom CSS class name to assign to the popup.
+		className: '',
+
+		// @option pane: String = 'popupPane'
+		// `Map pane` where the popup will be added.
+		pane: 'popupPane'
 	},
 
 	initialize: function (options, source) {
@@ -65,10 +123,15 @@ L.PopupBase = L.Layer.extend({
 		}
 	},
 
+	// @namespace Popup
+	// @method getLatLng: LatLng
+	// Returns the geographical point of popup.
 	getLatLng: function () {
 		return this._latlng;
 	},
 
+	// @method setLatLng(latlng: LatLng): this
+	// Sets the geographical point where the popup will open.
 	setLatLng: function (latlng) {
 		this._latlng = L.latLng(latlng);
 		if (this._map) {
@@ -78,20 +141,28 @@ L.PopupBase = L.Layer.extend({
 		return this;
 	},
 
+	// @method getContent: String|HTMLElement
+	// Returns the content of the popup.
 	getContent: function () {
 		return this._content;
 	},
 
+	// @method setContent(htmlContent: String|HTMLElement|Function): this
+	// Sets the HTML content of the popup. If a function is passed the source layer will be passed to the function. The function should return a `String` or `HTMLElement` to be used in the popup.
 	setContent: function (content) {
 		this._content = content;
 		this.update();
 		return this;
 	},
 
+	// @method getElement: String|HTMLElement
+	// Alias for [getContent()](#popup-getcontent)
 	getElement: function () {
 		return this._container;
 	},
 
+	// @method update: null
+	// Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.
 	update: function () {
 		if (!this._map) { return; }
 
@@ -118,10 +189,14 @@ L.PopupBase = L.Layer.extend({
 		return events;
 	},
 
+	// @method isOpen: Boolean
+	// Returns `true` when the popup is visible on the map.
 	isOpen: function () {
 		return !!this._map && this._map.hasLayer(this);
 	},
 
+	// @method bringToFront: this
+	// Brings this popup in front of other popups (in the same map pane).
 	bringToFront: function () {
 		if (this._map) {
 			L.DomUtil.toFront(this._container);
@@ -129,6 +204,8 @@ L.PopupBase = L.Layer.extend({
 		return this;
 	},
 
+	// @method bringToBack: this
+	// Brings this popup to the back of other popups (in the same map pane).
 	bringToBack: function () {
 		if (this._map) {
 			L.DomUtil.toBack(this._container);

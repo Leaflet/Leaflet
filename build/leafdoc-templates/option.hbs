@@ -1,0 +1,17 @@
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	{{#each documentables}}
+	<tr id='{{id}}'>
+		<td><code><b>{{name}}</b></code></td>
+		<td><code>{{{type type}}}</code>
+		<td><code>{{defaultValue}}</code></td>
+		<td>{{{markdown comments}}}</td>
+	</tr>
+	{{/each}}
+</tbody></table>

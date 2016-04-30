@@ -1,5 +1,33 @@
 /*
- * L.Canvas handles Canvas vector layers rendering and mouse events handling. All Canvas-specific code goes here.
+ * @class Canvas
+ * @inherits Renderer
+ * @aka L.Canvas
+ *
+ * Allows vector layers to be displayed with [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
+ * Inherits `Renderer`.
+ *
+ * Due to [technical limitations](http://caniuse.com/#search=canvas), Canvas is not
+ * available in all web browsers, notably IE8, and overlapping geometries might
+ * not display properly in some edge cases.
+ *
+ * @example
+ *
+ * Use Canvas by default for all paths in the map:
+ *
+ * ```js
+ * var map = L.map('map', {
+ * 	renderer: L.canvas();
+ * });
+ * ```
+ *
+ * Use a Canvas renderer with extra padding for specific vector geometries:
+ *
+ * ```js
+ * var map = L.map('map');
+ * var myRenderer = L.canvas({ padding: 0.5 });
+ * var line = L.polyline( coordinates, { renderer: myRenderer } );
+ * var circle = L.circle( center, { renderer: myRenderer } );
+ * ```
  */
 
 L.Canvas = L.Renderer.extend({
@@ -54,6 +82,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_initPath: function (layer) {
+		this._updateDashArray(layer);
 		this._layers[L.stamp(layer)] = layer;
 	},
 
@@ -74,7 +103,20 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_updateStyle: function (layer) {
+		this._updateDashArray(layer);
 		this._requestRedraw(layer);
+	},
+
+	_updateDashArray: function (layer) {
+		if (layer.options.dashArray) {
+			var parts = layer.options.dashArray.split(','),
+			    dashArray = [],
+			    i;
+			for (i = 0; i < parts.length; i++) {
+				dashArray.push(Number(parts[i]));
+			}
+			layer.options._dashArray = dashArray;
+		}
 	},
 
 	_requestRedraw: function (layer) {
@@ -133,6 +175,10 @@ L.Canvas = L.Renderer.extend({
 
 		ctx.beginPath();
 
+		if (ctx.setLineDash) {
+			ctx.setLineDash(layer.options && layer.options._dashArray || []);
+		}
+
 		for (i = 0; i < len; i++) {
 			for (j = 0, len2 = parts[i].length; j < len2; j++) {
 				p = parts[i][j];
@@ -156,6 +202,8 @@ L.Canvas = L.Renderer.extend({
 		    ctx = this._ctx,
 		    r = layer._radius,
 		    s = (layer._radiusY || r) / r;
+
+		this._drawnLayers[layer._leaflet_id] = layer;
 
 		if (s !== 1) {
 			ctx.save();
@@ -201,12 +249,13 @@ L.Canvas = L.Renderer.extend({
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
 	_onClick: function (e) {
-		var point = this._map.mouseEventToLayerPoint(e), layers = [];
+		var point = this._map.mouseEventToLayerPoint(e), layers = [], layer;
 
 		for (var id in this._layers) {
-			if (this._layers[id]._containsPoint(point)) {
+			layer = this._layers[id];
+			if (layer.options.interactive && layer._containsPoint(point)) {
 				L.DomEvent._fakeStop(e);
-				layers.push(this._layers[id]);
+				layers.push(layer);
 			}
 		}
 		if (layers.length)  {
@@ -215,7 +264,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_onMouseMove: function (e) {
-		if (!this._map || this._map.dragging._draggable._moving || this._map._animatingZoom) { return; }
+		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		var point = this._map.mouseEventToLayerPoint(e);
 		this._handleMouseOut(e, point);
@@ -235,17 +284,16 @@ L.Canvas = L.Renderer.extend({
 
 	_handleMouseHover: function (e, point) {
 		var id, layer;
-		if (!this._hoveredLayer) {
-			for (id in this._drawnLayers) {
-				layer = this._drawnLayers[id];
-				if (layer.options.interactive && layer._containsPoint(point)) {
-					L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
-					this._fireEvent([layer], e, 'mouseover');
-					this._hoveredLayer = layer;
-					break;
-				}
+
+		for (id in this._drawnLayers) {
+			layer = this._drawnLayers[id];
+			if (layer.options.interactive && layer._containsPoint(point)) {
+				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
+				this._fireEvent([layer], e, 'mouseover');
+				this._hoveredLayer = layer;
 			}
 		}
+
 		if (this._hoveredLayer) {
 			this._fireEvent([this._hoveredLayer], e);
 		}
@@ -261,10 +309,15 @@ L.Canvas = L.Renderer.extend({
 	_bringToBack: L.Util.falseFn
 });
 
+// @namespace Browser; @property canvas: Boolean
+// `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
 L.Browser.canvas = (function () {
 	return !!document.createElement('canvas').getContext;
 }());
 
+// @namespace Canvas
+// @factory L.canvas(options?: Renderer options)
+// Creates a Canvas renderer with the given options.
 L.canvas = function (options) {
 	return L.Browser.canvas ? new L.Canvas(options) : null;
 };

@@ -2,8 +2,16 @@
  * Extends L.Map to handle zoom animations.
  */
 
+// @namespace Map
+// @section Animation Options
 L.Map.mergeOptions({
+	// @option zoomAnimation: Boolean = true
+	// Whether the map zoom animation is enabled. By default it's enabled
+	// in all browsers that support CSS3 Transitions except Android.
 	zoomAnimation: true,
+
+	// @option zoomAnimationThreshold: Number = 4
+	// Won't animate zoom if the zoom difference exceeds this value.
 	zoomAnimationThreshold: 4
 });
 
@@ -99,6 +107,8 @@ L.Map.include(!zoomAnimated ? {} : {
 			L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
 
+		// @event zoomanim: ZoomAnimEvent
+		// Fired on every frame of a zoom animation
 		this.fire('zoomanim', {
 			center: center,
 			zoom: zoom,
@@ -114,13 +124,13 @@ L.Map.include(!zoomAnimated ? {} : {
 
 		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
+		this._animatingZoom = false;
+
+		this._move(this._animateToCenter, this._animateToZoom);
+
 		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
 		L.Util.requestAnimFrame(function () {
-			this._animatingZoom = false;
-
-			this
-				._move(this._animateToCenter, this._animateToZoom)
-				._moveEnd(true);
+			this._moveEnd(true);
 		}, this);
 	}
 });

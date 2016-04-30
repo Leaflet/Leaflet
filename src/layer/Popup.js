@@ -1,30 +1,78 @@
 /*
- * L.Popup is used for displaying popups on the map.
+ * @class Popup
+ * @inherits PopupBase
+ * @aka L.Popup
+ * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup) to
+ * open popups while making sure that only one popup is open at one time
+ * (recommended for usability), or use [Map.addLayer](#map-addlayer) to open as many as you want.
+ *
+ * @example
+ *
+ * If you want to just bind a popup to marker click and then open it, it's really easy:
+ *
+ * ```js
+ * marker.bindPopup(popupContent).openPopup();
+ * ```
+ * Path overlays like polylines also have a `bindPopup` method.
+ * Here's a more complicated way to open a popup on a map:
+ *
+ * ```js
+ * var popup = L.popup()
+ * 	.setLatLng(latlng)
+ * 	.setContent('<p>Hello world!<br />This is a nice popup.</p>')
+ * 	.openOn(map);
+ * ```
  */
 
-L.Map.mergeOptions({
-	closePopupOnClick: true
-});
 
+// @namespace Popup
 L.Popup = L.PopupBase.extend({
 
-	options: {
+	// @namespace Popup
+	// @method openOn(map: Map): this
+	// Adds the popup to the map and closes the previous one. The same as `map.openPopup(popup)`.
+	openOn: function (map) {
+		map.openPopup(this);
+		return this;
+	},
 
-		minWidth: 50,
-		maxWidth: 300,
-		// maxHeight: <Number>,
-		offset: [0, 7],
+	onAdd: function (map) {
+		L.PopupBase.prototype.onAdd.call(this, map);
 
-		autoPan: true,
-		autoPanPadding: [5, 5],
-		// autoPanPaddingTopLeft: <Point>,
-		// autoPanPaddingBottomRight: <Point>,
+		// @namespace Map
+		// @section Popup events
+		// @event popupopen: PopupEvent
+		// Fired when a popup is opened in the map
+		map.fire('popupopen', {popup: this});
 
-		closeButton: true,
-		autoClose: true,
-		// keepInView: false,
-		// className: '',
-		zoomAnimation: true
+		if (this._source) {
+			// @namespace Layer
+			// @section Popup events
+			// @event popupopen: PopupEvent
+			// Fired when a popup bound to this layer is opened
+			this._source.fire('popupopen', {popup: this}, true);
+			this._source.on('preclick', L.DomEvent.stopPropagation);
+		}
+	},
+
+	onRemove: function (map) {
+		L.PopupBase.prototype.onRemove.call(this, map);
+
+		// @namespace Map
+		// @section Popup events
+		// @event popupclose: PopupEvent
+		// Fired when a popup in the map is closed
+		map.fire('popupclose', {popup: this});
+
+		if (this._source) {
+			// @namespace Layer
+			// @section Popup events
+			// @event popupclose: PopupEvent
+			// Fired when a popup bound to this layer is closed
+			// @namespace Popup
+			this._source.fire('popupclose', {popup: this}, true);
+			this._source.off('preclick', L.DomEvent.stopPropagation);
+		}
 	},
 
 	getEvents: function () {
@@ -39,31 +87,6 @@ L.Popup = L.PopupBase.extend({
 		}
 
 		return events;
-	},
-
-	onAdd: function (map) {
-		L.PopupBase.prototype.onAdd.call(this, map);
-
-		map.fire('popupopen', {popup: this});
-
-		if (this._source) {
-			this._source.fire('popupopen', {popup: this}, true);
-		}
-	},
-
-	onRemove: function (map) {
-		L.PopupBase.prototype.onRemove.call(this, map);
-
-		map.fire('popupclose', {popup: this});
-
-		if (this._source) {
-			this._source.fire('popupclose', {popup: this}, true);
-		}
-	},
-
-	openOn: function (map) {
-		map.openPopup(this);
-		return this;
 	},
 
 	_close: function () {
@@ -128,6 +151,11 @@ L.Popup = L.PopupBase.extend({
 		this._containerWidth = this._container.offsetWidth;
 	},
 
+	_animateZoom: function (e) {
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+		L.DomUtil.setPosition(this._container, pos);
+	},
+
 	_adjustPan: function () {
 		if (!this.options.autoPan || (this._map._panAnim && this._map._panAnim._inProgress)) { return; }
 
@@ -161,6 +189,10 @@ L.Popup = L.PopupBase.extend({
 			dy = containerPos.y - paddingTL.y;
 		}
 
+		// @namespace Map
+		// @section Popup events
+		// @event autopanstart: Event
+		// Fired when the map starts autopanning when opening a popup.
 		if (dx || dy) {
 			map
 			    .fire('autopanstart')
@@ -171,23 +203,26 @@ L.Popup = L.PopupBase.extend({
 	_onCloseButtonClick: function (e) {
 		this._close();
 		L.DomEvent.stop(e);
-	},
-
-
-	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
-		L.DomUtil.setPosition(this._container, pos);
 	}
-
 });
 
+// @namespace Popup
+// @factory L.popup(options?: Popup options, source?: Layer)
+// Instantiates a Popup object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
 L.popup = function (options, source) {
 	return new L.Popup(options, source);
 };
 
 
+// @namespace Map
+// @section Methods for Layers and Controls
 L.Map.include({
-	openPopup: function (popup, latlng, options) { // (Popup) or (String || HTMLElement, LatLng[, Object])
+	// @method openPopup(popup: Popup): this
+	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
+	// @alternative
+	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
+	// Creates a popup with the specified content and options and opens it in the given point on a map.
+	openPopup: function (popup, latlng, options) {
 		if (!(popup instanceof L.Popup)) {
 			popup = new L.Popup(options).setContent(popup);
 		}
@@ -208,6 +243,8 @@ L.Map.include({
 		return this.addLayer(popup);
 	},
 
+	// @method closePopup(popup?: Popup): this
+	// Closes the popup previously opened with [openPopup](#map-openpopup) (or the given one).
 	closePopup: function (popup) {
 		if (!popup || popup === this._popup) {
 			popup = this._popup;

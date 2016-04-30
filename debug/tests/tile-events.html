@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style>
+	#map {
+		margin: 0;
+		width: auto;
+	}
+
+	.redTile {
+		border: red 1px solid;
+		line-height: 256px;
+		text-align: center;
+	}
+
+	table {
+		border-collapse: collapse;
+	}
+	table th, table td {
+		border: 1px #444 solid;
+		margin: 0;
+	}
+
+	</style>
+</head>
+<body>
+
+	<p>Keep track of how many tileload/tileunload events are being fired. The counts should always match. See <a href='https://github.com/Leaflet/Leaflet/issues/4093'>#4093</a>, <a href='https://github.com/Leaflet/Leaflet/issues/4193'>#4193</a></p>
+
+	<div id="map" class="map"></div>
+
+	<table>
+		<tr>
+			<th>
+			<th>Start
+			<th>Load
+			<th>Error
+			<th>Unload
+			<th>Visible
+			<th>Grid load
+		<tr>
+			<th>Grid
+			<td id='grid-tileloadstart'>
+			<td id='grid-tileload'>
+			<td id='grid-tileerror'>
+			<td id='grid-tileunload'>
+			<td id='grid-visible'>
+			<td id='grid-load'>
+		<tr>
+			<th>Positron
+			<td id='positron-tileloadstart'>
+			<td id='positron-tileload'>
+			<td id='positron-tileerror'>
+			<td id='positron-tileunload'>
+			<td id='positron-visible'>
+			<td id='positron-load'>
+	</table>
+
+	<p>start = unload + visible on screen</p>
+
+	<div><button id="dc">DC</button>(flyTo)</div>
+	<div><button id="sf">SF</button>(setView, 5 sec)</div>
+	<div><button id="trd">TRD</button>(flyTo 20 sec)</div>
+	<div><button id="lnd">LND</button>(fract. zoom)</div>
+	<div><button id="kyiv">KIEV</button>(setView, fract. zoom)</div>
+	<div><button id="mad">MAD</button>(fitBounds)</div>
+	<div><button id="nul">NUL</button>(image overlay)</div>
+	<div><button id="stop">stop</button></div>
+
+
+	<script type="text/javascript">
+		var mapopts =  {
+			center: [35, -122],
+			zoom: 5.75,
+			zoomSnap: 0.25,
+			fadeAnimation: true
+		};
+
+		var kyiv = [50.5, 30.5],
+			lnd = [51.51, -0.12],
+			sf = [37.77, -122.42],
+			dc = [38.91, -77.04],
+			trd = [63.41, 10.41],
+			madBounds = [[40.70, -4.19], [40.12, -3.31]],
+			mad = [40.40, -3.7];
+
+		var map = L.map('map', mapopts);
+
+		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+		})
+
+		var grid = L.gridLayer({
+			attribution: 'Grid Layer',
+// 			tileSize: L.point(150, 80)
+			tileSize: L.point(256, 256)
+		});
+
+		grid.createTile = function (coords/*, done*/) {
+			var tile = L.DomUtil.create('div', 'redTile');
+			tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+
+			return tile;
+		};
+
+		var gridCounts = {
+			tileload: 0,
+			tileerror: 0,
+			tileloadstart: 0,
+			tileunload: 0,
+			load: 0
+		};
+
+		var positronCounts = {
+			tileload: 0,
+			tileerror: 0,
+			tileloadstart: 0,
+			tileunload: 0,
+			load: 0
+		};
+
+		grid.on('tileload tileunload tileerror tileloadstart load', function(ev){
+			document.getElementById('grid-' + ev.type).innerHTML = ++gridCounts[ev.type];
+			document.getElementById('grid-visible').innerHTML = grid._container.querySelectorAll('.leaflet-tile').length;
+		});
+
+		positron.on('tileload tileunload tileerror tileloadstart load', function(ev){
+			document.getElementById('positron-' + ev.type).innerHTML = ++positronCounts[ev.type];
+			document.getElementById('positron-visible').innerHTML = positron._container.querySelectorAll('.leaflet-tile').length;
+		});
+
+		map.addLayer(positron);
+		map.addLayer(grid);
+
+
+		document.getElementById('dc').onclick   = function () { map.flyTo(dc,  10); };
+		document.getElementById('sf').onclick   = function () { map.setView(sf, 10, {duration: 5, animate: true}); };
+		document.getElementById('trd').onclick  = function () { map.flyTo(trd, 10, {duration: 20}); };
+		document.getElementById('lnd').onclick  = function () { map.flyTo(lnd, 9.25); };
+		document.getElementById('kyiv').onclick = function () { map.setView(kyiv, 9.25); };
+		document.getElementById('nul').onclick  = function () { map.flyTo([0, 0], 10); };
+		document.getElementById('mad').onclick  = function () { map.fitBounds(madBounds); };
+		document.getElementById('stop').onclick = function () { map.stop(); };
+
+	</script>
+</body>
+</html>

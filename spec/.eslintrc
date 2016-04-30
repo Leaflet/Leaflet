@@ -4,7 +4,8 @@
     "quotes": 0,
     "no-shadow": 0,
     "no-irregular-whitespace": 0,
-    "no-console": 0
+    "no-console": 0,
+    "no-extend-native": 0
   },
   "env": {
     "mocha": true
@@ -12,6 +13,7 @@
   "globals": {
     "expect": false,
     "sinon": false,
-    "happen": false
+    "happen": false,
+    "Hand": false
   }
 }

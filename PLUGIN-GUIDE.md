@@ -17,6 +17,7 @@ This guide lists a number of best practices for publishing a Leaflet plugin that
 	- [Plugin API](#plugin-api)
 3. [Publishing on NPM](#publishing-on-npm)
 4. [Module Loaders](#module-loaders)
+5. [Adding to the plugins list](#adding-to-the-plugins-list)
 
 ## Presentation
 
@@ -107,9 +108,10 @@ and putting a space after the `function` keyword.
 Never expose global variables in your plugin.<br>
 If you have a new class, put it directly in the `L` namespace (`L.MyPlugin`).<br>
 If you inherit one of the existing classes, make it a sub-property (`L.TileLayer.Banana`).<br>
+Every class should have a factory function in camelCase, e.g. (`L.tileLayer.banana`).<br>
 If you want to add new methods to existing Leaflet classes, you can do it like this: `L.Marker.include({myPlugin: …})`.
 
-Function, method and property names should be in `camelCase`.<br>
+Function, method, property and factory names should be in `camelCase`.<br>
 Class names should be in `CapitalizedCamelCase`.
 
 If you have a lot of arguments in your function, consider accepting an options object instead
@@ -152,6 +154,26 @@ Here is an example of a `package.json` file for a Leaflet plugin.
 }
 ```
 
+If possible, do not commit your minified files (e.g. `dist`) to a repo; this can
+lead to confussion when trying to debug the wrong file. Instead, use `npm` to 
+trigger a build/minification just before publishing your package with a
+[`prepublish` script](https://docs.npmjs.com/misc/scripts#common-uses), for example:
+
+```json
+{
+  "name": "my-leaflet-plugin",
+  ...
+  "scripts": {
+    "prepublish": "grunt build"
+  }
+}
+```
+
+You can then use the [`.gitignore`](https://help.github.com/articles/ignoring-files/) 
+file to make sure the minified files are not versioned, and an 
+[empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package) 
+to ensure that they are published to NPM.
+
 ## Module Loaders
 
 Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
@@ -184,3 +206,17 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 ```
 
 Now your plugin is available as an AMD and CommonJS module and can used used in module loaders like Browserify and RequireJS.
+
+
+## Adding to the plugins list
+
+Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so: 
+
+* [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
+* Clone your repo locally, and switch to the [`gh-pages` branch](https://github.com/Leaflet/Leaflet/tree/gh-pages).
+* In the `plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
+* Commit the code to your fork.
+* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your `gh-pages` branch to Leaflet's `gh-pages` branch.
+
+Once the pull request is done, a Leaflet maintainer will have a quick look at your 
+plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.

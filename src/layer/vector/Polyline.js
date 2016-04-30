@@ -1,14 +1,54 @@
 /*
- * L.Polyline implements polyline vector layer (a set of points connected with lines)
+ * @class Polyline
+ * @aka L.Polyline
+ * @inherits Path
+ *
+ * A class for drawing polyline overlays on a map. Extends `Path`.
+ *
+ * @example
+ *
+ * ```js
+ * // create a red polyline from an array of LatLng points
+ * var latlngs = [
+ * 	[-122.68, 45.51],
+ * 	[-122.43, 37.77],
+ * 	[-118.2, 34.04]
+ * ];
+ *
+ * var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+ *
+ * // zoom the map to the polyline
+ * map.fitBounds(polyline.getBounds());
+ * ```
+ *
+ * You can also pass a multi-dimensional array to represent a `MultiPolyline` shape:
+ *
+ * ```js
+ * // create a red polyline from an array of arrays of LatLng points
+ * var latlngs = [
+ * 	[[-122.68, 45.51],
+ * 	 [-122.43, 37.77],
+ * 	 [-118.2, 34.04]],
+ * 	[[-73.91, 40.78],
+ * 	 [-87.62, 41.83],
+ * 	 [-96.72, 32.76]]
+ * ];
+ * ```
  */
 
 L.Polyline = L.Path.extend({
 
+	// @section
+	// @aka Polyline options
 	options: {
-		// how much to simplify the polyline on each zoom level
-		// more = better performance and smoother look, less = more accurate
-		smoothFactor: 1.0
-		// noClip: false
+		// @option smoothFactor: Number = 1.0
+		// How much to simplify the polyline on each zoom level. More means
+		// better performance and smoother look, and less means more accurate representation.
+		smoothFactor: 1.0,
+
+		// @option noClip: Boolean = false
+		// Disable polyline clipping.
+		noClip: false
 	},
 
 	initialize: function (latlngs, options) {
@@ -16,15 +56,21 @@ L.Polyline = L.Path.extend({
 		this._setLatLngs(latlngs);
 	},
 
+	// @method getLatLngs(): LatLng[]
+	// Returns an array of the points in the path, or nested arrays of points in case of multi-polyline.
 	getLatLngs: function () {
 		return this._latlngs;
 	},
 
+	// @method setLatLngs(latlngs: LatLng[]): this
+	// Replaces all the points in the polyline with the given array of geographical points.
 	setLatLngs: function (latlngs) {
 		this._setLatLngs(latlngs);
 		return this.redraw();
 	},
 
+	// @method isEmpty(): Boolean
+	// Returns `true` if the Polyline has no LatLngs.
 	isEmpty: function () {
 		return !this._latlngs.length;
 	},
@@ -56,6 +102,8 @@ L.Polyline = L.Path.extend({
 		return minPoint;
 	},
 
+	// @method getCenter(): LatLng
+	// Returns the center ([centroid](http://en.wikipedia.org/wiki/Centroid)) of the polyline.
 	getCenter: function () {
 		var i, halfDist, segDist, dist, p1, p2, ratio,
 		    points = this._rings[0],
@@ -90,10 +138,16 @@ L.Polyline = L.Path.extend({
 		}
 	},
 
+	// @method getBounds(): LatLngBounds
+	// Returns the `LatLngBounds` of the path.
 	getBounds: function () {
 		return this._bounds;
 	},
 
+	// @method addLatLng(latlng: LatLng, latlngs? LatLng[]): this
+	// Adds a given point to the polyline. By default, adds to the first ring of
+	// the polyline in case of a multi-polyline, but can be overridden by passing
+	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng: function (latlng, latlngs) {
 		latlngs = latlngs || this._defaultShape();
 		latlng = L.latLng(latlng);
@@ -129,23 +183,22 @@ L.Polyline = L.Path.extend({
 	},
 
 	_project: function () {
+		var pxBounds = new L.Bounds();
 		this._rings = [];
-		this._projectLatlngs(this._latlngs, this._rings);
+		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
-		// project bounds as well to use later for Canvas hit detection/etc.
 		var w = this._clickTolerance(),
-		    p = new L.Point(w, -w);
+		    p = new L.Point(w, w);
 
-		if (this._bounds.isValid()) {
-			this._pxBounds = new L.Bounds(
-				this._map.latLngToLayerPoint(this._bounds.getSouthWest())._subtract(p),
-				this._map.latLngToLayerPoint(this._bounds.getNorthEast())._add(p));
+		if (this._bounds.isValid() && pxBounds.isValid()) {
+			pxBounds.min._subtract(p);
+			pxBounds.max._add(p);
+			this._pxBounds = pxBounds;
 		}
 	},
 
 	// recursively turns latlngs into a set of rings with projected coordinates
-	_projectLatlngs: function (latlngs, result) {
-
+	_projectLatlngs: function (latlngs, result, projectedBounds) {
 		var flat = latlngs[0] instanceof L.LatLng,
 		    len = latlngs.length,
 		    i, ring;
@@ -154,11 +207,12 @@ L.Polyline = L.Path.extend({
 			ring = [];
 			for (i = 0; i < len; i++) {
 				ring[i] = this._map.latLngToLayerPoint(latlngs[i]);
+				projectedBounds.extend(ring[i]);
 			}
 			result.push(ring);
 		} else {
 			for (i = 0; i < len; i++) {
-				this._projectLatlngs(latlngs[i], result);
+				this._projectLatlngs(latlngs[i], result, projectedBounds);
 			}
 		}
 	},
@@ -223,6 +277,11 @@ L.Polyline = L.Path.extend({
 	}
 });
 
+// @factory L.polyline(latlngs: LatLng[], options?: Polyline options)
+// Instantiates a polyline object given an array of geographical points and
+// optionally an options object. You can create a `Polyline` object with
+// multiple separate lines (`MultiPolyline`) by passing an array of arrays
+// of geographic points.
 L.polyline = function (latlngs, options) {
 	return new L.Polyline(latlngs, options);
 };

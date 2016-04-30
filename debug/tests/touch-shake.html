@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+
+	<script>
+		// Trick Leaflet into believing we have a touchscreen (for Chrome)
+		if (window.Touch) { window.ontouchstart = function(){} };
+	</script>
+
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+
+	<script src="../../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
+  <meta charset="utf-8">
+  <title>Leaflet test for pinch-zoom-without-bounce</title>
+  <style>
+	#map {
+		position:absolute;
+		top: 50px;
+		bottom: 0;
+		left:0;
+		right:0;
+	}
+	body {margin:0; padding: 0}
+
+	.label-right, .label-left, .label-bottom, .label-top {
+		line-height: 20px;
+		color: black;
+	}
+
+	.label-right {
+		text-align: left;
+	}
+
+	.label-left {
+		text-align: right;
+	}
+
+	.label-bottom, .label-top{
+		text-align: center;
+	}
+
+	</style>
+</head>
+<body>
+
+	This is a semi-automated test for checking touch-zoom shaking.
+
+	<div>
+		<button onclick='resetMap()'>reset</button>
+		<button onclick='pinchAndPanL()' >⌐¬</button>
+		<button onclick='pinchAndPanV()' >∧</button>
+		<button onclick='pinchAndPanII()'>||</button>
+	</div>
+
+  <div id='map'></div>
+
+
+  <script>
+
+	var map = L.map('map', {
+		crs: L.CRS.Simple,
+		minZoom: -3,
+		bounceAtZoomLimits: false,
+		maxZoom: 1
+	});
+
+	var bounds = [[0,0],[1000,1000]];
+
+	// Map bounds
+	L.rectangle(bounds,{
+		fill: false,
+		weight: 3,
+		color: 'black'
+	}).addTo(map);
+
+	// Reticule
+	for (var i=100; i<=900; i+=100) {
+		// Vertical line
+		L.polyline([[0, i],[1000, i]], {
+			fill: false,
+			weight: 1,
+			color: 'black'
+		}).addTo(map);
+
+		// Horizontal line
+		L.polyline([[i, 0],[i, 1000]], {
+			fill: false,
+			weight: 1,
+			color: 'black'
+		}).addTo(map);
+
+	}
+
+	for (var i=0; i<=1000; i+=100) {
+		// Right label
+		L.marker([i, 1000], { icon: L.divIcon({
+			iconSize: [40, 20],
+			iconAnchor: [-2, 10],
+			html: i,
+			className: 'label-right'
+		}) }).addTo(map);
+
+		// Left label
+		L.marker([i, 0], { icon: L.divIcon({
+			iconSize: [40, 20],
+			iconAnchor: [42, 10],
+			html: i,
+			className: 'label-left'
+		}) }).addTo(map);
+
+		// Top label
+		L.marker([1000, i], { icon: L.divIcon({
+			iconSize: [40, 20],
+			iconAnchor: [20, 22],
+			html: i,
+			className: 'label-top'
+		}) }).addTo(map);
+
+		// Bottom label
+		L.marker([0, i], { icon: L.divIcon({
+			iconSize: [40, 20],
+			iconAnchor: [20, -2],
+			html: i,
+			className: 'label-bottom'
+		}) }).addTo(map);
+	}
+
+	map.fitBounds(bounds);
+
+
+	var marker = L.marker([500, 500]).addTo(map);
+
+	var marker2 = L.marker([900, 400]).addTo(map);
+
+	var hand = new Hand({timing: 'frame'});
+	var f1 = hand.growFinger('touch');
+	var f2 = hand.growFinger('touch');
+
+	function resetMap() {
+		map.setView(myCenter, 15);
+	}
+
+	function pinchAndPanL() {
+
+		var start = map.getSize().divideBy(2);
+		start.y += 50;
+
+		hand.sync(1000);
+		f1.wait(200).moveTo(start.x - 50, start.y, 0)
+			.down()
+			.moveBy( -50, 0, 1500)
+// 			.moveBy(  -1, 0, 1500)
+			.moveBy( -50, 0, 1500)
+			.moveBy(0, 100, 1500)
+			.wait(1500)
+			.up();
+		f2.wait(200).moveTo(start.x + 50, start.y, 0)
+			.down()
+			.moveBy( 50, 0, 1500)
+// 			.moveBy(  1, 0, 1500)
+			.moveBy( 50, 0, 1500)
+			.moveBy(0, 100, 1500)
+			.wait(1500)
+			.up();
+	};
+
+	function pinchAndPanV() {
+		hand.sync(1000);
+
+		var start = map.latLngToContainerPoint([900, 300]);
+		start.y += 50;
+
+		f1.wait(200).moveTo(start.x - 25, start.y, 0)
+			.down()
+			.moveBy(-100, 300, 5000)
+			.wait(1500)
+			.up();
+		f2.wait(200).moveTo(start.x + 25, start.y, 0)
+			.down()
+			.moveBy( 100, 300, 5000)
+			.wait(1500)
+			.up();
+	};
+
+	function pinchAndPanII() {
+		hand.sync(5);
+		f1.wait(200).moveTo(175, 100, 0)
+			.down()
+			.moveBy(0, 300, 5000)
+			.wait(1500)
+			.up();
+		f2.wait(200).moveTo(225, 100, 0)
+			.down()
+			.moveBy(0, 300, 5000)
+			.wait(1500)
+			.up();
+	};
+
+
+
+
+	map.on('mousedown mouseup zoomend', function(ev){
+// 		console.log('L: ', performance.now(), JSON.stringify(ev.originalEvent));
+		console.log('L: ', performance.now(), ev.type);
+	});
+
+// 	L.DomEvent.on(map._container, 'touchstart touchend touchmove', function(ev){
+// 		console.log('T: ', performance.now(), ev.type, ev.touches.length, ev.changedTouches.length, ev);
+// 	});
+
+
+// 	pinchAndPanL();
+	pinchAndPanV();
+// 	pinchAndPanII();
+
+  </script>
+</body>
+</html>
