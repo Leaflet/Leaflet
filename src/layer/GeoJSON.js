@@ -45,11 +45,11 @@ L.GeoJSON = L.FeatureGroup.extend({
 	 * ```
 	 *
 	 * @option onEachFeature: Function = *
-	 * A `Function` that will be called once for each created `Layer`, after it has
+	 * A `Function` that will be called once for each created `Feature`, after it has
 	 * been created and styled. Useful for attaching events and popups to features.
 	 * The default is to do nothing with the newly created layers:
 	 * ```js
-	 * function (layer) {}
+	 * function (feature, layer) {}
 	 * ```
 	 *
 	 * @option filter: Function = *
