@@ -505,8 +505,8 @@ L.Map = L.Evented.extend({
 		    max = this.getMaxZoom(),
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
-		    size = this.getSize(),
-		    boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding),
+		    size = this.getSize().subtract(padding),
+		    boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)),
 		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
 
 		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
