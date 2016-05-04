@@ -1,6 +1,6 @@
 import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
-import {Point} from '../geometry/Point';
+import { Point } from '../geometry/Point';
 import * as Browser from '../core/Browser';
 
 /*
@@ -33,6 +33,8 @@ export var TRANSITION = testProp(
 export var TRANSITION_END =
 	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? TRANSITION + 'End' : 'transitionend';
 
+export var DEG_TO_RAD = Math.PI / 180;
+export var RAD_TO_DEG = 180 / Math.PI;
 
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
@@ -170,7 +172,7 @@ export function setOpacity(el, value) {
 
 function _setOpacityIE(el, value) {
 	var filter = false,
-	    filterName = 'DXImageTransform.Microsoft.Alpha';
+		filterName = 'DXImageTransform.Microsoft.Alpha';
 
 	// filters collection throws an error if we try to retrieve a filter that doesn't exist
 	try {
@@ -210,14 +212,23 @@ export function testProp(props) {
 // Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
-export function setTransform(el, offset, scale) {
+export function setTransform(el, offset, scale, bearing, pivot) {
 	var pos = offset || new Point(0, 0);
 
-	el.style[TRANSFORM] =
-		(Browser.ie3d ?
-			'translate(' + pos.x + 'px,' + pos.y + 'px)' :
-			'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
-		(scale ? ' scale(' + scale + ')' : '');
+	if (!bearing) {
+		el.style[TRANSFORM] =
+			(Browser.ie3d ?
+				'translate(' + pos.x + 'px,' + pos.y + 'px)' :
+				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
+			(scale ? ' scale(' + scale + ')' : '');
+	} else {
+		pos = pos.rotateFrom(bearing, pivot);
+
+		el.style[TRANSFORM] =
+			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' +
+			(scale ? ' scale(' + scale + ')' : '') +
+			' rotate(' + bearing + 'rad)';
+	}
 }
 
 // @function setPosition(el: HTMLElement, position: Point)
@@ -231,7 +242,8 @@ export function setPosition(el, point) {
 	/* eslint-enable */
 
 	if (Browser.any3d) {
-		setTransform(el, point);
+		setTransform(el, point, undefined, bearing, pivot);
+
 	} else {
 		el.style.left = point.x + 'px';
 		el.style.top = point.y + 'px';

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<script src="../vector/route.js"></script>
+
+	<style>
+	td {
+		width: 7em;
+		overflow: hidden;
+		max-width: 7em;
+		text-overflow: ellipsis;
+	}
+	th {
+		text-align: left;
+	}
+	td.long {
+		width: calc(90vw - 21em);
+		max-width: calc(90vw - 21em);
+	}
+	div.crosshair {
+		position:absolute;
+		width:1px;
+		height:1px;
+		border: 1px dotted green;
+		z-index: 100;
+	}
+	div.pivot {
+		position:absolute;
+		width:1px;
+		height:1px;
+		border: 1px solid purple;
+		z-index: 100;
+	}
+	div.pixelorigin {
+		position:absolute;
+		width:1px;
+		height:1px;
+		border: 1px solid cyan;
+		z-index: 100;
+	}
+	div.panebounds.main {
+		position:absolute;
+		width:800px;
+		height:600px;
+		border: 1px solid red;
+		border-bottom: 1px red dashed;
+		border-right: 1px red dashed;
+		z-index: 100;
+	}
+	div.panebounds.rotate {
+		position:absolute;
+		width:800px;
+		height:600px;
+		border: 1px solid purple;
+		border-bottom: 1px purple dashed;
+		border-right: 1px purple dashed;
+		z-index: 100;
+	}
+	div.crosshair.c1 {
+		left:399px;
+		top:299px;
+	}
+	div.crosshair.c2 {
+		left:499px;
+		top:399px;
+	}
+	</style>
+</head>
+<body>
+
+
+	<div id="map">
+		<div class="crosshair c1"></div>
+<!-- 		<div class="crosshair c2"></div> -->
+	</div>
+
+
+
+	<table>
+		<tr><th>LatLng          </th><td id='llx'></td><td id='lly'></td>
+			<td class='long'>LatLng of mouse pointer</td></tr>
+		<tr><th>Rel to pane     </th><td id='lyx'></td><td id='lyy'></td>
+			<td class='long'>Mouse pointer pixel coords relative to _rotatePane</td></tr>
+		<tr><th>Rel to container</th><td id='cnx'></td><td id='cny'></td>
+			<td class='long'>Mouse pointer coords relative to map &lt;div&gt;</td></tr>
+		<tr><th>Pivot           </th><td id='pvx'></td><td id='pvy'></td>
+			<td class='long'>Last _rotationPane pivot pixel coords relative to _rotationPane</td></tr>
+		<tr><th>Pane offset     </th><td id='pox'></td><td id='poy'></td>
+			<td class='long'>Pixel offset of _mapPane</td></tr>
+		<tr><th>Pixel origin    </th><td id='ogx'></td><td id='ogy'></td>
+			<td class='long'>Negative pixel coords of the (0,0) CRS point relative to _rotatePane</td></tr>
+	</table>
+
+	<input type="range" min="0" max="360" step="1" name="rho" id='rho_input' /><span id='rho'></span>
+
+	<div>
+		<button onclick="map.setBearing(0);" > 0</button>
+		<button onclick="map.setBearing(15);">15</button>
+		<button onclick="map.setBearing(30);">30</button>
+		<button onclick="map.setBearing(45);">45</button>
+		<button onclick="map.setBearing(60);">60</button>
+		<button onclick="map.setBearing(75);">75</button>
+		<button onclick="map.setBearing(90);">90</button>
+	</div>
+
+	<div>
+		<button onclick="map.flyTo(trd, 10);" >flyTo TRD</button>
+		<button onclick="map.flyTo(kyiv, 10);">flyTo Kiev</button>
+		<button onclick="map.flyTo(sf, 10);">flyTo SF</button>
+	</div>
+
+
+	<script type="text/javascript">
+
+		var kyiv = [50.5, 30.5],
+			lnd = [51.51, -0.12],
+			sf = [37.77, -122.42],
+			dc = [38.91, -77.04],
+			trd = [63.41, 10.41];
+
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+
+		for (var i = 0, latlngs = [], len = route.length; i < len; i++) {
+			latlngs.push(new L.LatLng(route[i][0], route[i][1]));
+		}
+		var path = new L.Polyline(latlngs, {
+			renderer: L.canvas()
+		});
+
+
+		var map = L.map('map', {rotate: true})
+				.setView([55, 10], 0)
+				.addLayer(osm)
+				.addLayer(path);
+
+		var marker1 = L.marker(kyiv).addTo(map),
+			marker2 = L.marker(lnd).addTo(map);
+			marker3 = L.marker(dc).addTo(map),
+			marker4 = L.marker(sf).addTo(map),
+			marker5 = L.marker(trd).addTo(map);
+
+		var loremIpsum = "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>";
+
+		marker1.bindPopup(loremIpsum + '<p>Kyiv</p>').addTo(map);
+		marker2.bindPopup(loremIpsum + '<p>Lnd</p>').addTo(map);
+		marker3.bindPopup(loremIpsum + '<p>DC</p>').addTo(map);
+		marker4.bindPopup(loremIpsum + '<p>DF</p>').addTo(map);
+		marker5.bindPopup(loremIpsum + '<p>Trd</p>').addTo(map);
+
+
+		function logEvent(e) { console.log(e, e.type); }
+
+		function logMouse(ev) {
+			document.getElementById('llx').innerHTML = ev.latlng.lng;
+			document.getElementById('lly').innerHTML = ev.latlng.lat;
+			document.getElementById('lyx').innerHTML = ev.layerPoint.x;
+			document.getElementById('lyy').innerHTML = ev.layerPoint.y;
+			document.getElementById('cnx').innerHTML = ev.containerPoint.x;
+			document.getElementById('cny').innerHTML = ev.containerPoint.y;
+		}
+
+		function rotate(ev) {
+			if (ev.buttons === 0) return;
+			var angle = ev.target.valueAsNumber;
+// 			console.log(angle);
+			map.setBearing(angle);
+		}
+
+
+		map.on('move rotate zoomend', function(ev) {
+			var panePos = this._getMapPanePos();
+			document.getElementById('pox').innerHTML = panePos.x;
+			document.getElementById('poy').innerHTML = panePos.y;
+
+		});
+
+
+		var pixelOrigin = L.DomUtil.create('div', 'pixelorigin', map._rotatePane);
+		function updatePixelOrigin(ev) {
+			document.getElementById('ogx').innerHTML = map._pixelOrigin.x;
+			document.getElementById('ogy').innerHTML = map._pixelOrigin.y;
+			pixelOrigin.style.left = ( - map._pixelOrigin.x -1 ) + 'px';
+			pixelOrigin.style.top  = ( - map._pixelOrigin.y -1 ) + 'px';
+		};
+		map.on('rotate zoomend load', updatePixelOrigin);
+		updatePixelOrigin();
+
+		document.getElementById('rho_input').addEventListener('change', rotate);
+		document.getElementById('rho_input').addEventListener('mousemove', rotate);
+
+
+		function rotateOneDegree() {
+			var angle = document.getElementById('rho_input').valueAsNumber++;
+			if (document.getElementById('rho_input').valueAsNumber >= 360) {
+				document.getElementById('rho_input').valueAsNumber = 0;
+			}
+			map.setBearing(angle);
+		}
+
+
+		var pivotDot = L.DomUtil.create('div', 'pivot', map._mapPane);
+		L.DomUtil.create('div', 'panebounds rotate', map._rotatePane);
+		L.DomUtil.create('div', 'panebounds main', map._mapPane);
+
+		map.on('rotate', function(ev) {
+			document.getElementById('pvx').innerHTML = map._pivot.x;
+			document.getElementById('pvy').innerHTML = map._pivot.y;
+			pivotDot.style.left = ( map._pivot.x -1 ) + 'px';
+			pivotDot.style.top  = ( map._pivot.y -1 ) + 'px';
+		});
+
+
+
+// 		window.setInterval(rotateOneDegree, 500);
+
+
+		map.on('mousemove', logMouse);
+		// map.on('click', logEvent);
+
+		// map.on('movestart', logEvent);
+		// 		map.on('move', logEvent);
+		// map.on('moveend', logEvent);
+
+		// map.on('zoomstart', logEvent);
+		// map.on('zoomend', logEvent);
+
+	</script>
+</body>
+</html>

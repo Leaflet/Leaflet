@@ -22,7 +22,7 @@
 			osmAttrib = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-		var map = L.map('map')
+		var map = L.map('map', {rotate: true, bearing: 45})
 				.setView([50.5, 30.51], 15)
 				.addLayer(osm);
 
