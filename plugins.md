@@ -499,6 +499,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="https://github.com/ghybs">ghybs</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Outdooractive/Leaflet.FeatureGroup.LoadEvents">Leaflet.FeatureGroup.LoadEvents</a>
+		</td><td>
+			`FeatureGroup` that supports the `"loading"` and `"load"` events (for v0.7.*).
+		</td><td>
+			<a href="http://glat.info">G. Lathoud</a>, <a href="http://www.outdooractive.com">Outdooractive</a>.
+		</td>
+	</tr>
 </table>
 
 
