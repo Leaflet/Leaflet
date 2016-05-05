@@ -2323,6 +2323,17 @@ Show the geographical coordinates under the mouse cursor in different ways.
 			<a href="https://github.com/xguaita">Xisco Guaita</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/matlads/Leaflet.Mapcodes">Leaflet.Mapcodes</a>
+		</td>
+		<td>
+			Displays the <a href="http://www.mapcode.com">Mapcode</a> of the mouse pointer on mouse move (<a href="http://matlads.github.io/Leaflet.Mapcodes/">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/matlads">Martin Atukunda</a>
+		</td>
+	</tr>
 </table>
 
 
