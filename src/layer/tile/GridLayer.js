@@ -632,7 +632,20 @@ export var GridLayer = Layer.extend({
 		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
 		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
-		    halfSize = map.getSize().divideBy(scale * 2);
+			size = map.getSize(),
+			halfSize;
+
+		if (this._map._rotate && this._map._bearing) {
+			halfSize = new L.Bounds([
+				map.containerPointToLayerPoint([0, 0]).floor(),
+				map.containerPointToLayerPoint([size.x, 0]).floor(),
+				map.containerPointToLayerPoint([0, size.y]).floor(),
+				map.containerPointToLayerPoint([size.x, size.y]).floor()
+			]).getSize().divideBy(scale * 2);
+		}
+		else {
+			halfSize = size.divideBy(scale * 2);
+		}
 
 		return new Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},
