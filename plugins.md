@@ -2389,10 +2389,10 @@ These plugins extend Leaflet event handling.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/Alpstein/leaflet-singleclick_0.7">singleclick</a>
+			<a href="https://github.com/Outdooractive/leaflet-singleclick_0.7">singleclick</a>
 		</td>
 		<td>
-			Extend <code>L.Map</code> to fire a <code>singleclick</code> event (<a href="http://alpstein.github.io/leaflet-singleclick_0.7/">demo</a>). Compatible with Leaflet 0.7.x only.
+			Extend <code>L.Map</code> to fire a <code>singleclick</code> event (<a href="http://outdooractive.github.io/leaflet-singleclick_0.7/">demo</a>). Compatible with Leaflet 0.7.x only.
 		</td>
 		<td>
 			<a href="http://glat.info">Guillaume Lathoud</a>
