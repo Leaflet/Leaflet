@@ -50,8 +50,12 @@
  *         tile.width = size.x;
  *         tile.height = size.y;
  *
- *         // draw something and pass the tile to the done() callback
- *         done(error, tile);
+ *         // draw something asynchronously and pass the tile to the done() callback
+ *         setTimeout(function() {
+ *             done(error, tile);
+ *         }, 1000);
+ *
+ *         return tile;
  *     }
  * });
  * ```
