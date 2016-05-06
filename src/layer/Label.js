@@ -6,7 +6,7 @@ L.Label = L.PopupBase.extend({
 
 	options: {
 		pane: 'labelPane',
-		offset: [12, -15],
+		offset: [6, -6],
 		direction: 'right',
 		static: false,  // Reserved word, use "permanent" instead?
 		followMouse: false,
@@ -67,22 +67,27 @@ L.Label = L.PopupBase.extend({
 		    labelPoint = map.layerPointToContainerPoint(pos),
 		    direction = this.options.direction,
 		    labelWidth = container.offsetWidth,
-		    offset = L.point(this.options.offset);
+		    labelHeight = container.offsetHeight,
+		    offset = L.point(this.options.offset),
+		    anchor = this._getAnchor();
 
-		// position to the right (right or auto & needs to)
-		if (direction === 'right' || direction === 'auto' && labelPoint.x < centerPoint.x) {
-			L.DomUtil.addClass(container, 'leaflet-label-right');
-			L.DomUtil.removeClass(container, 'leaflet-label-left');
-
-			// if (!this._zoomAnimated) { pos = pos.add(offset); }
-			pos = pos.add(offset);
-		} else { // position to the left
-			L.DomUtil.addClass(container, 'leaflet-label-left');
-			L.DomUtil.removeClass(container, 'leaflet-label-right');
-
-			pos = pos.add(L.point(-offset.x - labelWidth, offset.y));
+		if (direction === 'top') {
+			pos = pos.add(L.point(-labelWidth / 2, -labelHeight + offset.y + anchor.y));
+		} else if (direction === 'bottom') {
+			pos = pos.subtract(L.point(labelWidth / 2, offset.y));
+		} else if (direction === 'right' || direction === 'auto' && labelPoint.x < centerPoint.x) {
+			direction = 'right';
+			pos = pos.add([offset.x + anchor.x, anchor.y - labelHeight / 2]);
+		} else {
+			direction = 'left';
+			pos = pos.subtract(L.point(offset.x + labelWidth + anchor.x, labelHeight / 2 - anchor.y));
 		}
 
+		L.DomUtil.removeClass(container, 'leaflet-label-right');
+		L.DomUtil.removeClass(container, 'leaflet-label-left');
+		L.DomUtil.removeClass(container, 'leaflet-label-top');
+		L.DomUtil.removeClass(container, 'leaflet-label-bottom');
+		L.DomUtil.addClass(container, 'leaflet-label-' + direction);
 		L.DomUtil.setPosition(container, pos);
 	},
 
@@ -101,6 +106,11 @@ L.Label = L.PopupBase.extend({
 			pos = pos.add(offset);
 		}
 		L.DomUtil.setPosition(this._container, pos);
+	},
+
+	_getAnchor: function () {
+		// Where should we anchor the label on the source layer?
+		return L.point(this._source._getLabelAnchor && !this.options.followMouse ? this._source._getLabelAnchor() : [0, 0]);
 	}
 
 });

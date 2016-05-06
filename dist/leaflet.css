@@ -526,12 +526,12 @@
 
 /* Label */
 .leaflet-label {
-	background: rgb(235, 235, 235);
-	background: rgba(235, 235, 235, 0.81);
+	background: rgb(255, 255, 255);
+	background: rgba(255, 255, 255, 0.8);
 	background-clip: padding-box;
 	border-color: #777;
-	border-color: rgba(0,0,0,0.25);
-	border-radius: 4px;
+	border-color: rgba(255,255,255,0.8);
+	border-radius: 2px;
 	border-style: solid;
 	border-width: 4px;
 	color: #111;
@@ -547,6 +547,7 @@
 	pointer-events: none;
 	white-space: nowrap;
 	z-index: 6;
+	box-sizing: border-box;
 }
 
 .leaflet-label.leaflet-clickable {
@@ -558,6 +559,7 @@
 .leaflet-label:after {
 	border-top: 6px solid transparent;
 	border-bottom: 6px solid transparent;
+	border-right: 6px solid transparent;
 	content: none;
 	position: absolute;
 	top: 5px;
@@ -572,9 +574,60 @@
 .leaflet-label:after {
 	border-left: 6px solid black;
 	border-left-color: inherit;
-	right: -10px;
+	right: -16px;
 }
 
+.leaflet-label-top:after,
+.leaflet-label-top:before {
+	/* Calc include 4 px of border - minus half of the 6px of tip size  */
+	left: calc(-50% + 1px);
+	border-top-color: black;
+	border-top-color: rgba(255,255,255,0.8);
+	position: relative;
+	top: 29px;
+}
+
+.leaflet-label-top:before {
+	display: none;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+	border-top-color: transparent;
+}
+
+.leaflet-label-top:after {
+	content: ' ';
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+}
+
+.leaflet-label-bottom:before {
+	display: none;
+	border-right-color: transparent;
+	border-bottom-color: transparent;
+	border-left-color: transparent;
+	border-top-color: transparent;
+}
+
+.leaflet-label-bottom:after,
+.leaflet-label-bottom:before {
+	/* Calc include 4 px of border - minus half of the 6px of tip size  */
+	left: calc(-50% + 1px);
+	border-bottom-color: black;
+	border-bottom-color: rgba(255,255,255,0.8);
+	position: relative;
+	top: -28px;
+}
+
+.leaflet-label-bottom:after {
+	border-right-color: transparent;
+	border-top-color: transparent;
+	border-left-color: transparent;
+}
+
+.leaflet-label-bottom:after,
+.leaflet-label-top:after,
 .leaflet-label-right:before,
 .leaflet-label-left:after {
 	content: "";

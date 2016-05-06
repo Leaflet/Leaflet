@@ -14,6 +14,10 @@
 		    background-color: goldenrod;
 		    text-align: center;
 		}
+		#map {
+			width: 100%;
+		}
+
 	</style>
 </head>
 <body>
@@ -35,16 +39,16 @@
 		L.polygon([[41.18, 9.42], [41.17, 9.40], [41.19, 9.38]]).addTo(map).bindLabel('Permanent polygon label', {static: true});
 		L.marker([41.20, 9.4307]).addTo(map).bindLabel('label on the left', {direction: 'left'});
 		L.marker([41.206, 9.44]).addTo(map).bindLabel('click me, I have a popup', {static: true, clickable: true}).bindPopup('See?');
-		L.circleMarker([41.206, 9.48], {color: "Chocolate", radius: 12}).bindLabel( "Hello Left World", {direction: 'left'}).addTo(map);
+		L.circleMarker([41.206, 9.48], {color: "Chocolate", radius: 12}).addTo(map).bindLabel( "Hello Left World", {direction: 'left'});
+		L.circleMarker([41.20, 9.50], {color: "Chocolate", radius: 12}).addTo(map).bindLabel( "Hello top World", {direction: 'top', static: true, clickable: true});
 		var icon = L.divIcon({
 			className: 'my-div-icon',
 			html: '<p>A div icon</p>',
 			iconSize: [50, 50],
-			labelAnchor: [20, 0]
 		});
 		L.marker([41.22, 9.48], {icon: icon}).addTo(map).bindLabel('A div icon label following mouse', {followMouse: true, direction: 'auto'});
 		L.marker([41.23, 9.47], {icon: icon}).addTo(map).bindLabel('A div icon label');
-		L.marker([41.23, 9.42], {draggable: true}).addTo(map).bindLabel('Draggable marker label', {static: true});
+		L.marker([41.23, 9.42], {draggable: true}).addTo(map).bindLabel('Draggable marker label', {static: true, direction: 'auto'});
 		L.marker([41.19, 9.45]).addTo(map).bindLabel('Clickable marker label', {static: true, clickable: true}).on('click', function () { alert('clicked!'); });
 
 		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
@@ -53,6 +57,10 @@
 		group.bindLabel(function (layer) {
 			return 'Group label: ' + layer.options.description;
 		}, {opacity: 0.7});
+		L.marker([41.18, 9.35]).addTo(map).bindLabel('Top label is top', {static: true, direction: 'top', clickable: true});
+		L.marker([41.173, 9.37]).addTo(map).bindLabel('Bottom label is weird but ok', {static: true, direction: 'bottom'});
+		L.polyline([[41.20, 9.36], [41.205, 9.35], [41.19, 9.34]]).addTo(map).bindLabel('Polyline label', {static: true, direction: 'top'});
+		L.polygon([[41.21, 9.36], [41.24, 9.35], [41.23, 9.34]]).addTo(map).bindLabel('Top label following mouse', {followMouse: true, direction: 'top'});
 
 	</script>
 </body>

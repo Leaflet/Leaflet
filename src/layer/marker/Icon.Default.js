@@ -8,7 +8,7 @@ L.Icon.Default = L.Icon.extend({
 		iconSize:    [25, 41],
 		iconAnchor:  [12, 41],
 		popupAnchor: [1, -34],
-		labelAnchor: [9, -20],
+		labelAnchor: [16, -28],
 		shadowSize:  [41, 41]
 	},
 

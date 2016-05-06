@@ -15,14 +15,14 @@ L.Layer.include({
 				this._label = L.label(options, this);
 			}
 			this._label.setContent(content);
+
 		}
+		// save the originally passed offset
+		this._originalLabelOffset = this._label.options.offset;
 
 		this._initLabelInteractions();
 
 		if (this._label.options.static) { this.openLabel(); }
-
-		// save the originally passed offset
-		this._originalLabelOffset = this._label.options.offset;
 
 		return this;
 	},
@@ -74,8 +74,6 @@ L.Layer.include({
 		}
 
 		if (this._label && this._map) {
-			// set the label offset for this layer
-			this._label.options.offset = this._labelAnchor(layer);
 
 			// set label source to this layer
 			this._label._source = layer;
@@ -139,17 +137,6 @@ L.Layer.include({
 			return;
 		}
 		this.openLabel(layer, this._label.options.followMouse ? e.latlng : undefined);
-	},
-
-	_labelAnchor: function (layer) {
-		// where shold we anchor the label on this layer?
-		var anchor = layer._getLabelAnchor && !this._label.options.followMouse ? layer._getLabelAnchor() : [0, 0];
-
-		// add the users passed offset to that
-		var offsetToAdd = this._originalLabelOffset || L.Label.prototype.options.offset;
-
-		// return the final point to anchor the label
-		return L.point(anchor).add(offsetToAdd);
 	},
 
 	_moveLabel: function (e) {
