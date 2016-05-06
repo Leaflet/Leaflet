@@ -97,7 +97,6 @@ L.Map = L.Evented.extend({
 		// Whether the map automatically handles browser window resize to update itself.
 		trackResize: true,
 
-		bearing: 0,
 		rotate: false
 	},
 
@@ -106,10 +105,7 @@ L.Map = L.Evented.extend({
 
 		if (options.rotate) {
 			this._rotate = true;
-
-			if (options.bearing) {
-				this._bearing = options.bearing; // TODO: mod 360
-			}
+			this._bearing = 0;
 		}
 
 		this._initContainer(id);
@@ -760,7 +756,7 @@ L.Map = L.Evented.extend({
 	},
 
 	getBearing: function() {
-		return (this._bearing || 0) * L.DomUtil.RAD_TO_DEG;
+		return this._bearing * L.DomUtil.RAD_TO_DEG;
 	},
 
 
@@ -824,7 +820,6 @@ L.Map = L.Evented.extend({
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 
 		if (this._rotate) {
-			this._pivot = this.getSize().divideBy(2);
 			this._rotatePane = this.createPane('rotatePane', this._mapPane);
 			L.DomUtil.setPosition(this._rotatePane, new L.Point(0, 0), this._bearing, this._pivot);
 		}
