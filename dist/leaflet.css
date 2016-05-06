@@ -526,11 +526,9 @@
 
 /* Label */
 .leaflet-label {
-	background: rgb(255, 255, 255);
-	background: rgba(255, 255, 255, 0.8);
+	background: white;
 	background-clip: padding-box;
-	border-color: #777;
-	border-color: rgba(255,255,255,0.8);
+	border-color: white;
 	border-radius: 2px;
 	border-style: solid;
 	border-width: 4px;
@@ -581,8 +579,7 @@
 .leaflet-label-top:before {
 	/* Calc include 4 px of border - minus half of the 6px of tip size  */
 	left: calc(-50% + 1px);
-	border-top-color: black;
-	border-top-color: rgba(255,255,255,0.8);
+	border-top-color: white;
 	position: relative;
 	top: 29px;
 }
@@ -614,8 +611,7 @@
 .leaflet-label-bottom:before {
 	/* Calc include 4 px of border - minus half of the 6px of tip size  */
 	left: calc(-50% + 1px);
-	border-bottom-color: black;
-	border-bottom-color: rgba(255,255,255,0.8);
+	border-bottom-color: white;
 	position: relative;
 	top: -28px;
 }

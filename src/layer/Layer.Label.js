@@ -1,9 +1,23 @@
 /*
- * Adds label-related methods to all layers.
+ * @namespace Layer
+ * @section Label methods example
+ *
+ * All layers share a set of methods convenient for binding labels to it.
+ *
+ * ```js
+ * var layer = L.Polygon(latlngs).bindLabel('Hi There!').addTo(map);
+ * layer.openLabel();
+ * layer.closeLabel();
+ * ```
  */
 
+// @section Label methods
 L.Layer.include({
 
+	// @method bindLabel(content: String|HTMLElement|Function|Label, options?: Label options): this
+	// Binds a label to the layer with the passed `content` and sets up the
+	// neccessary event listeners. If a `Function` is passed it will receive
+	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindLabel: function (content, options) {
 
 		if (content instanceof L.Label) {
@@ -22,11 +36,13 @@ L.Layer.include({
 
 		this._initLabelInteractions();
 
-		if (this._label.options.static) { this.openLabel(); }
+		if (this._label.options.permanent) { this.openLabel(); }
 
 		return this;
 	},
 
+	// @method unbindLabel(): this
+	// Removes the label previously bound with `bindLabel`.
 	unbindLabel: function () {
 		if (this._label) {
 			this._initLabelInteractions(true);
@@ -42,10 +58,10 @@ L.Layer.include({
 			remove: this.closeLabel,
 			move: this._moveLabel
 		    };
-		if (!this._label.options.static) {
+		if (!this._label.options.permanent) {
 			events.mouseover = this._openLabel;
 			events.mouseout = this.closeLabel;
-			if (this._label.options.followMouse) {
+			if (this._label.options.sticky) {
 				events.mousemove = this._moveLabel;
 			}
 			if (L.Browser.touch) {
@@ -56,6 +72,8 @@ L.Layer.include({
 		this._labelHandlersAdded = !remove;
 	},
 
+	// @method openLabel(latlng?: LatLng): this
+	// Opens the bound label at the specificed `latlng` or at the default label anchor if no `latlng` is passed.
 	openLabel: function (layer, latlng) {
 		if (!(layer instanceof L.Layer)) {
 			latlng = layer;
@@ -93,6 +111,8 @@ L.Layer.include({
 		return this;
 	},
 
+	// @method closeLabel(): this
+	// Closes the label bound to this layer if it is open.
 	closeLabel: function () {
 		if (this._label) {
 			this._label._close();
@@ -104,6 +124,8 @@ L.Layer.include({
 		return this;
 	},
 
+	// @method toggleLabel(): this
+	// Opens or closes the label bound to this layer depending on its current state.
 	toggleLabel: function (target) {
 		if (this._label) {
 			if (this._label._map) {
@@ -115,10 +137,14 @@ L.Layer.include({
 		return this;
 	},
 
+	// @method isLabelOpen(): boolean
+	// Returns `true` if the label bound to this layer is currently open.
 	isLabelOpen: function () {
 		return this._label.isOpen();
 	},
 
+	// @method setLabelContent(content: String|HTMLElement|Label): this
+	// Sets the content of the label bound to this layer.
 	setLabelContent: function (content) {
 		if (this._label) {
 			this._label.setContent(content);
@@ -126,6 +152,8 @@ L.Layer.include({
 		return this;
 	},
 
+	// @method getLabel(): Label
+	// Returns the label bound to this layer.
 	getLabel: function () {
 		return this._label;
 	},
@@ -136,12 +164,12 @@ L.Layer.include({
 		if (!this._label || !this._map) {
 			return;
 		}
-		this.openLabel(layer, this._label.options.followMouse ? e.latlng : undefined);
+		this.openLabel(layer, this._label.options.sticky ? e.latlng : undefined);
 	},
 
 	_moveLabel: function (e) {
 		var latlng = e.latlng, containerPoint, layerPoint;
-		if (this._label.options.followMouse && e.originalEvent) {
+		if (this._label.options.sticky && e.originalEvent) {
 			containerPoint = this._map.mouseEventToContainerPoint(e.originalEvent);
 			layerPoint = this._map.containerPointToLayerPoint(containerPoint);
 			latlng = this._map.layerPointToLatLng(layerPoint);

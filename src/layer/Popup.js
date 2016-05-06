@@ -69,7 +69,6 @@ L.Popup = L.PopupBase.extend({
 			// @section Popup events
 			// @event popupclose: PopupEvent
 			// Fired when a popup bound to this layer is closed
-			// @namespace Popup
 			this._source.fire('popupclose', {popup: this}, true);
 			this._source.off('preclick', L.DomEvent.stopPropagation);
 		}

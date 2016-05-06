@@ -36,17 +36,17 @@ describe('Label', function () {
 		expect(map.hasLayer(layer._label)).to.be(false);
 	});
 
-	it("stays open on marker when static", function () {
+	it("stays open on marker when permanent", function () {
 		var layer = new L.Marker(center).addTo(map);
 
-		layer.bindLabel('Label', {static: true});
+		layer.bindLabel('Label', {permanent: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 	});
 
 	it("is removed when removing marker", function () {
 		var layer = new L.Marker(center).addTo(map);
 
-		layer.bindLabel('Label', {static: true});
+		layer.bindLabel('Label', {permanent: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 		layer.remove();
 		expect(map.hasLayer(layer._label)).to.be(false);
@@ -57,7 +57,7 @@ describe('Label', function () {
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
-		layer.bindLabel('Label', {static: true, interactive: true});
+		layer.bindLabel('Label', {permanent: true, interactive: true});
 		happen.click(layer._label._container);
 		expect(spy.calledOnce).to.be(true);
 	});
@@ -68,7 +68,7 @@ describe('Label', function () {
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
-		layer.bindLabel('A long label that should be displayed on the left', {static: true, direction: 'left', interactive: true});
+		layer.bindLabel('A long label that should be displayed on the left', {permanent: true, direction: 'left', interactive: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 		happen.at('click', 150, 190);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
@@ -76,14 +76,14 @@ describe('Label', function () {
 
 	it("honours opacity option", function () {
 		var layer = new L.Marker(center).addTo(map);
-		layer.bindLabel('Label', {static: true, opacity: 0.57});
+		layer.bindLabel('Label', {permanent: true, opacity: 0.57});
 		expect(layer._label._container.style.opacity).to.eql(0.57);
 	});
 
 	it("can change opacity with setOpacity", function () {
 		var layer = new L.Marker(center).addTo(map);
-		layer.bindLabel('Label', {static: true});
-		expect(layer._label._container.style.opacity).to.eql(1);
+		layer.bindLabel('Label', {permanent: true});
+		expect(layer._label._container.style.opacity).to.eql(0.8);
 		layer._label.setOpacity(0.57);
 		expect(layer._label._container.style.opacity).to.eql(0.57);
 	});
@@ -121,10 +121,10 @@ describe('Label', function () {
 		expect(map.hasLayer(layer._label)).to.be(false);
 	});
 
-	it("stays open on polygon when static", function () {
+	it("stays open on polygon when permanent", function () {
 		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
-		layer.bindLabel('Label', {static: true});
+		layer.bindLabel('Label', {permanent: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 	});
 
@@ -141,10 +141,10 @@ describe('Label', function () {
 		expect(map.hasLayer(layer._label)).to.be(false);
 	});
 
-	it("stays open on marker when static", function () {
+	it("stays open on marker when permanent", function () {
 		var layer = new L.Polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
-		layer.bindLabel('Label', {static: true});
+		layer.bindLabel('Label', {permanent: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 	});
 
