@@ -10,7 +10,7 @@ L.Label = L.PopupBase.extend({
 		direction: 'right',
 		static: false,  // Reserved word, use "permanent" instead?
 		followMouse: false,
-		clickable: false,
+		interactive: false,
 		opacity: 1,
 		// className: '',
 		zoomAnimation: true

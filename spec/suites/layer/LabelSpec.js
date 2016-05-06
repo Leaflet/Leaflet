@@ -52,12 +52,12 @@ describe('Label', function () {
 		expect(map.hasLayer(layer._label)).to.be(false);
 	});
 
-	it("can be make clickable", function () {
+	it("can be make interactive", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
-		layer.bindLabel('Label', {static: true, clickable: true});
+		layer.bindLabel('Label', {static: true, interactive: true});
 		happen.click(layer._label._container);
 		expect(spy.calledOnce).to.be(true);
 	});
@@ -68,7 +68,7 @@ describe('Label', function () {
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
-		layer.bindLabel('A long label that should be displayed on the left', {static: true, direction: 'left', clickable: true});
+		layer.bindLabel('A long label that should be displayed on the left', {static: true, direction: 'left', interactive: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 		happen.at('click', 150, 190);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);

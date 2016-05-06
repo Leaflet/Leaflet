@@ -84,7 +84,7 @@ L.Layer.include({
 			// open the label on the map
 			this._map.openLabel(this._label, latlng);
 
-			if (this._label.options.clickable) {
+			if (this._label.options.interactive) {
 				L.DomUtil.addClass(this._label._container, 'leaflet-clickable');
 				this.addInteractiveTarget(this._label._container);
 			}
@@ -96,7 +96,7 @@ L.Layer.include({
 	closeLabel: function () {
 		if (this._label) {
 			this._label._close();
-			if (this._label.options.clickable) {
+			if (this._label.options.interactive) {
 				L.DomUtil.removeClass(this._label._container, 'leaflet-clickable');
 				this.removeInteractiveTarget(this._label._container);
 			}
