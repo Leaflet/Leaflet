@@ -644,11 +644,11 @@ Load your own data from various GIS formats.
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/geolicious/qgis2leaf">QGIS2Leaf</a>
+			<a href="https://github.com/tomchadwin/qgis2web">qgis2web</a>
 		</td><td>
-			QGIS2Leaf exports the vector layers in QGIS as GeoJSON and creates a basic Leaflet webmap from it. Additionally your raster data is added as image overlays with an opacity slider.
+			A <a href="http://qgis.org/">QGIS</a> plugin to make webmaps without coding.
 		</td><td>
-			<a href="https://github.com/Geolicious">Geolicious</a>
+			<a href="https://github.com/tomchadwin">Tom Chadwin</a>
 		</td>
 	</tr>
 	<tr>
