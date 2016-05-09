@@ -163,7 +163,7 @@ describe("Map", function () {
 	});
 
 	describe("#getBoundsZoom", function () {
-		var halfLength = 0.0001;
+		var halfLength = 0.00025;
 		var bounds = [[-halfLength, -halfLength], [halfLength, halfLength]];
 		var padding = [100, 100];
 		var height = '400px';
@@ -172,7 +172,7 @@ describe("Map", function () {
 			var container = map.getContainer();
 			container.style.height = height;
 			document.body.appendChild(container);
-			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(21);
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19);
 		});
 
 		it("returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers", function () {
@@ -180,10 +180,12 @@ describe("Map", function () {
 			container.style.height = height;
 			document.body.appendChild(container);
 			L.Browser.any3d = true;
-			map.options.zoomSnap = 5;
-			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(20);
-			map.options.zoomSnap = 0.25;
-			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(21);
+			map.options.zoomSnap = 0.5;
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.5);
+			map.options.zoomSnap = 0.2;
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.6);
+			map.options.zoomSnap = 0;
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.within(19.6864560, 19.6864561);
 		});
 	});
 
