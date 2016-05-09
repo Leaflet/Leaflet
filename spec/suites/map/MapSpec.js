@@ -190,11 +190,20 @@ describe("Map", function () {
 	});
 
 	describe('#setMaxBounds', function () {
+		var container;
+
+		beforeEach(function () {
+			container = map.getContainer();
+			document.body.appendChild(container);
+		});
+
+		afterEach(function () {
+			// document.body.removeChild(container);
+		});
+
 		it("aligns pixel-wise map view center with maxBounds center if it cannot move view bounds inside maxBounds (#1908)", function () {
-			var container = map.getContainer();
 			// large view, cannot fit within maxBounds
 			container.style.width = container.style.height = "1000px";
-			document.body.appendChild(container);
 			// maxBounds
 			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
 			map.setMaxBounds(bounds, {animate: false});
@@ -203,13 +212,11 @@ describe("Map", function () {
 			// get center of bounds in pixels
 			var boundsCenter = map.project(bounds.getCenter()).round();
 			expect(map.project(map.getCenter()).round()).to.eql(boundsCenter);
-			document.body.removeChild(container);
 		});
+
 		it("moves map view within maxBounds by changing one coordinate", function () {
-			var container = map.getContainer();
 			// small view, can fit within maxBounds
 			container.style.width = container.style.height = "200px";
-			document.body.appendChild(container);
 			// maxBounds
 			var bounds = L.latLngBounds([51, -0.2], [52, 0.2]);
 			map.setMaxBounds(bounds, {animate: false});
@@ -224,8 +231,22 @@ describe("Map", function () {
 			expect(pixelCenter.y).not.to.eql(pixelInit.y);
 			// the view is inside the bounds
 			expect(bounds.contains(map.getBounds())).to.be(true);
-			document.body.removeChild(container);
 		});
+
+		it("remove listeners when called without arguments", function () {
+			L.tileLayer('http://tilecache.openstreetmap.fr/hot/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 20}).addTo(map);
+			container.style.width = container.style.height = "500px";
+			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
+			map.setMaxBounds(bounds, {animate: false});
+			map.setMaxBounds();
+			// set view outside
+			var center = L.latLng([0, 0]);
+			map.once('moveend', function () {
+				expect(center.equals(map.getCenter())).to.be(true);
+			});
+			map.setView(center, 18, {animate: false});
+		});
+
 	});
 
 	describe("#getMinZoom and #getMaxZoom", function () {

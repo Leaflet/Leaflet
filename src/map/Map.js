@@ -254,7 +254,8 @@ L.Map = L.Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
-		if (!bounds) {
+		if (!bounds.isValid()) {
+			this.options.maxBounds = null;
 			return this.off('moveend', this._panInsideMaxBounds);
 		} else if (this.options.maxBounds) {
 			this.off('moveend', this._panInsideMaxBounds);
