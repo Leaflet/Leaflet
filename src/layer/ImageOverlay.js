@@ -31,12 +31,11 @@ L.ImageOverlay = L.Layer.extend({
 
 		// @option attribution: String = null
 		// An optional string containing HTML to be shown on the `Attribution control`
-		attribution: null
+		attribution: null,
 
 		// @option crossOrigin: Boolean = false
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
-
-		// crossOrigin: false,
+		crossOrigin: false
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
