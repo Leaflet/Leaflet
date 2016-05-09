@@ -319,7 +319,7 @@ L.GridLayer = L.Layer.extend({
 	_initContainer: function () {
 		if (this._container) { return; }
 
-		this._container = L.DomUtil.create('div', 'leaflet-layer ' + this.options.className);
+		this._container = L.DomUtil.create('div', ('leaflet-layer ' + (this.options.className || '')).trim());
 
 		this._updateZIndex();
 
