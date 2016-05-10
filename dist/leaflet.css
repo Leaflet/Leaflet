@@ -16,8 +16,6 @@
 	}
 .leaflet-container {
 	overflow: hidden;
-	-ms-touch-action: none;
-	touch-action: none;
 	}
 .leaflet-tile,
 .leaflet-marker-icon,
@@ -49,6 +47,18 @@
 .leaflet-container img.leaflet-image-layer {
 	max-width: none !important;
 	}
+
+.leaflet-container.leaflet-touch-zoom {
+	-ms-touch-action: pan-x pan-y;
+	touch-action: pan-x pan-y;
+	}
+.leaflet-container.leaflet-touch-drag {
+	-ms-touch-action: pinch-zoom;
+	}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-drag {
+	-ms-touch-action: none;
+	touch-action: none;
+}
 .leaflet-tile {
 	filter: inherit;
 	visibility: hidden;
