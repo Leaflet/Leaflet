@@ -280,36 +280,28 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_addItem: function (obj) {
-		var label = document.createElement('label'),
-		    checked = this._map.hasLayer(obj.layer),
-		    input;
+		var container = obj.overlay ? this._overlaysList : this._baseLayersList,
+			label = L.DomUtil.create('label','', container),
+			// Helps from preventing layer control flicker when checkboxes are disabled
+			// https://github.com/Leaflet/Leaflet/issues/2771
+			holder = L.DomUtil.create('div', '', label),
+			checked = this._map.hasLayer(obj.layer),
+			name,
+			input;
 
 		if (obj.overlay) {
-			input = document.createElement('input');
+			input = L.DomUtil.create('input', 'leaflet-control-layers-selector', holder )
 			input.type = 'checkbox';
-			input.className = 'leaflet-control-layers-selector';
 			input.defaultChecked = checked;
 		} else {
-			input = this._createRadioElement('leaflet-base-layers', checked);
+			input = this._createRadioElement('leaflet-base-layers', checked, holder);
 		}
-
 		input.layerId = L.stamp(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
-		var name = document.createElement('span');
+		name = L.DomUtil.create('span','', holder);
 		name.innerHTML = ' ' + obj.name;
-
-		// Helps from preventing layer control flicker when checkboxes are disabled
-		// https://github.com/Leaflet/Leaflet/issues/2771
-		var holder = document.createElement('div');
-
-		label.appendChild(holder);
-		holder.appendChild(input);
-		holder.appendChild(name);
-
-		var container = obj.overlay ? this._overlaysList : this._baseLayersList;
-		container.appendChild(label);
 
 		this._checkDisabledLayers();
 		return label;
