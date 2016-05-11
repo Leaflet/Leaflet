@@ -20,6 +20,9 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	// @section
 	// @aka TileLayer.WMS options
+	// If any custom options not documented here are used, they will be sent to the
+	// WMS server as extra parameters in each request URL. This can be useful for
+	// [non-standard vendor WMS parameters](http://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',
