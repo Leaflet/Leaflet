@@ -39,6 +39,8 @@ L.tileLayer('https://api.tiles.mapbox.com/v4/<a href="https://mapbox.com">MapID<
 
 ### Geolocation
 
+Note that [some browsers](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/Using_geolocation#Browser_compatibility) require the page to be served from HTTPS in order to allow geolocation.
+
 Leaflet has a very handy shortcut for zooming the map view to the detected location --- `locate` method with the `setView` option, replacing the usual `setView` method in the code:
 
 	map.locate({setView: true, maxZoom: 16});
