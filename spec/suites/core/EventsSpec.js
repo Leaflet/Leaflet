@@ -259,6 +259,17 @@ describe('Events', function () {
 
 			expect(spy.called).to.be(false);
 		});
+
+		it('makes sure an event is not triggered if all listeners are removed during dispatch', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			obj.addEventListener('test', function () { obj.removeEventListener('test'); });
+			obj.addEventListener('test', spy);
+			obj.fire('test');
+
+			expect(spy.called).to.be(false);
+		});
 	});
 
 	describe('#on, #off & #fire', function () {
