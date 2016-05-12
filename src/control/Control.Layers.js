@@ -275,7 +275,7 @@ L.Control.Layers = L.Control.extend({
 
 		var radioFragment = document.createElement('div');
 		radioFragment.innerHTML = radioHtml;
-		
+
 		if (container) {
 			container.appendChild(radioFragment.firstChild);
 		}
@@ -285,16 +285,16 @@ L.Control.Layers = L.Control.extend({
 
 	_addItem: function (obj) {
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList,
-			label = L.DomUtil.create('label','', container),
-			// Helps from preventing layer control flicker when checkboxes are disabled
-			// https://github.com/Leaflet/Leaflet/issues/2771
-			holder = L.DomUtil.create('div', '', label),
-			checked = this._map.hasLayer(obj.layer),
-			name,
-			input;
+		label = L.DomUtil.create('label', '', container),
+		// Helps from preventing layer control flicker when checkboxes are disabled
+		// https://github.com/Leaflet/Leaflet/issues/2771
+		holder = L.DomUtil.create('div', '', label),
+		checked = this._map.hasLayer(obj.layer),
+		name,
+		input;
 
 		if (obj.overlay) {
-			input = L.DomUtil.create('input', 'leaflet-control-layers-selector', holder )
+			input = L.DomUtil.create('input', 'leaflet-control-layers-selector', holder);
 			input.type = 'checkbox';
 			input.defaultChecked = checked;
 		} else {
@@ -304,7 +304,7 @@ L.Control.Layers = L.Control.extend({
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
-		name = L.DomUtil.create('span','', holder);
+		name = L.DomUtil.create('span', '', holder);
 		name.innerHTML = ' ' + obj.name;
 
 		this._checkDisabledLayers();
