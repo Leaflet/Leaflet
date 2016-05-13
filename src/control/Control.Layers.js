@@ -308,7 +308,7 @@ L.Control.Layers = L.Control.extend({
 		name.innerHTML = ' ' + obj.name;
 
 		container.appendChild(label);
-	
+
 		this._checkDisabledLayers();
 		return label;
 	},
