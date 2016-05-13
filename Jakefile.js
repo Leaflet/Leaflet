@@ -43,7 +43,7 @@ function calculateVersion(officialRelease, callback) {
 }
 
 desc('Check Leaflet source for errors with ESLint');
-task('lint', {async: true}, hint('Checking for JS errors...', 'src --config .eslintrc'));
+task('lint', {async: true}, hint('Checking for JS errors...', 'src --config package.json'));
 
 desc('Check Leaflet specs source for errors with ESLint');
 task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/suites --config spec/.eslintrc'));
