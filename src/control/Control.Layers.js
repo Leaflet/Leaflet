@@ -306,9 +306,9 @@ L.Control.Layers = L.Control.extend({
 
 		name = L.DomUtil.create('span', '', holder);
 		name.innerHTML = ' ' + obj.name;
-		
+
 		container.appendChild(label);
-		
+	
 		this._checkDisabledLayers();
 		return label;
 	},
