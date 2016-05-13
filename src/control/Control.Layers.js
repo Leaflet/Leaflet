@@ -285,7 +285,7 @@ L.Control.Layers = L.Control.extend({
 
 	_addItem: function (obj) {
 		var container = obj.overlay ? this._overlaysList : this._baseLayersList,
-		label = L.DomUtil.create('label', '', container),
+		label = L.DomUtil.create('label'),
 		// Helps from preventing layer control flicker when checkboxes are disabled
 		// https://github.com/Leaflet/Leaflet/issues/2771
 		holder = L.DomUtil.create('div', '', label),
@@ -306,7 +306,9 @@ L.Control.Layers = L.Control.extend({
 
 		name = L.DomUtil.create('span', '', holder);
 		name.innerHTML = ' ' + obj.name;
-
+		
+		container.appendChild(label);
+		
 		this._checkDisabledLayers();
 		return label;
 	},
