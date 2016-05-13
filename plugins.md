@@ -419,6 +419,17 @@ The following plugins change the way that tile or image layers are displayed in 
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/GreenInfo-Network/L.TileLayer.PixelFilter/">Leaflet.TileLayer.PixelFilter</a>
+		</td><td>
+			A TileLayer which can filter and replace pixels by RGB code.
+			<br/>
+			<a href="http://greeninfo-network.github.io/L.TileLayer.PixelFilter/demo1.html">demo 1</a> &bull; <a href="http://greeninfo-network.github.io/L.TileLayer.PixelFilter/demo2.html">demo 2</a>
+		</td><td>
+			<a href="https://github.com/GreenInfo-Network/">GreenInfo Network</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/digidem/leaflet-side-by-side">Leaflet.Control.SideBySide</a>
 		</td><td>
 			A Leaflet control to add a split screen to compare two map overlays (<a href="http://lab.digital-democracy.org/leaflet-side-by-side/">demo</a>).
