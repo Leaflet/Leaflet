@@ -72,6 +72,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li><a href="#geoprocessing">Geoprocessing</a></li>
 			<li><a href="#routing">Routing</a></li>
 			<li><a href="#geocoding">Geocoding</a></li>
+			<li><a href="#external-framework-controls">External framework controls</a></li>
 			<li><a href="#plugin-collections">Plugin collections</a></li>
 		</ul>
 		<h4>Integration</h4>
@@ -2970,6 +2971,33 @@ External services that transform an address or the name of a place into latitude
 		</td>
 		<td>
 			<a href="https://github.com/louh">Lou Huang</a>
+		</td>
+	</tr>
+</table>
+
+
+
+### External framework controls
+
+Map controls for working with features and behaviors of other frameworks, e.g. jQuery and Bootstrap.
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gregallensworth/L.Control.BootstrapModal">L.Control.BootstrapModal</a>
+		</td><td>
+			Trigger a Bootstrap modal using an on-map control.
+		</td><td>
+			<a href="https://github.com/gregallensworth">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gregallensworth/L.Control.jQueryDialog">L.Control.jQueryDialog</a>
+		</td><td>
+			Trigger a jQuery UI dialog/modal using an on-map control.
+		</td><td>
+			<a href="https://github.com/gregallensworth">Greg Allensworth</a>
 		</td>
 	</tr>
 </table>
