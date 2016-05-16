@@ -437,6 +437,15 @@ The following plugins change the way that tile layers are loaded into the map.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/aebadirad/Leaflet.AutoLayers">Leaflet.AutoLayers</a>
+		</td><td>
+			Automatically pull layers from multiple mapservers and organize/search them with user controlled overlay zindex management.
+		</td><td>
+			<a href="https://github.com/aebadirad">Alex Ebadirad</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/mattiasb/Leaflet.MultiTileLayer">Leaflet.MultiTileLayer</a>
 		</td><td>
 			Allows to compose a TileLayer from several tile sources. Each source is active only on a defined set of zoomlevels.
