@@ -1790,6 +1790,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/aebadirad/Leaflet.AutoLayers">Leaflet.AutoLayers</a>
+		</td><td>
+			Automatically pull layers from multiple mapservers and organize/search them with user controlled overlay zindex management.
+		</td><td>
+			<a href="https://github.com/aebadirad">Alex Ebadirad</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/vogdb/SelectLayersControl">Leaflet.SelectLayers</a>
 		</td><td>
 			a Leaflet plugin which adds new control to switch between different layers on the map. New control replaces L.Control.Layers radio button panel with select tag.
