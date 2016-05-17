@@ -104,6 +104,7 @@ L.Marker = L.Layer.extend({
 
 		this._initIcon();
 		this.update();
+		map.on('rotate', this.update, this);
 	},
 
 	onRemove: function () {
@@ -273,7 +274,13 @@ L.Marker = L.Layer.extend({
 	},
 
 	_setPos: function (pos) {
-		L.DomUtil.setPosition(this._icon, pos);
+		if (this._map._rotate) {
+			var anchor = this.options.icon.options.iconAnchor || new L.Point(0, 0);
+			L.DomUtil.setPosition(this._icon, pos, -this._map._bearing || 0, pos.add(anchor));
+		} else {
+			L.DomUtil.setPosition(this._icon, pos);
+		}
+
 
 		if (this._shadow) {
 			L.DomUtil.setPosition(this._shadow, pos);
