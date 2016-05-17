@@ -1,6 +1,6 @@
 import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
-import { Point } from '../geometry/Point';
+import {Point} from '../geometry/Point';
 import * as Browser from '../core/Browser';
 
 /*
