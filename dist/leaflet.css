@@ -576,14 +576,25 @@
 }
 
 .leaflet-label-top:after,
-.leaflet-label-top:before {
+.leaflet-label-top:before,
+.leaflet-label-bottom:after,
+.leaflet-label-bottom:before {
+	left: -49%; /* IE8 fallback */
 	/* Calc include 4 px of border - minus half of the 6px of tip size  */
 	left: calc(-50% + 1px);
-	border-top-color: white;
 	position: relative;
 	top: 29px;
 }
+.leaflet-label-top:after,
+.leaflet-label-top:before {
+	border-top-color: white;
+}
 
+.leaflet-label-bottom:after,
+.leaflet-label-bottom:before {
+	border-bottom-color: white;
+	top: -28px;
+}
 .leaflet-label-top:before {
 	display: none;
 	border-right-color: transparent;
@@ -605,15 +616,6 @@
 	border-bottom-color: transparent;
 	border-left-color: transparent;
 	border-top-color: transparent;
-}
-
-.leaflet-label-bottom:after,
-.leaflet-label-bottom:before {
-	/* Calc include 4 px of border - minus half of the 6px of tip size  */
-	left: calc(-50% + 1px);
-	border-bottom-color: white;
-	position: relative;
-	top: -28px;
 }
 
 .leaflet-label-bottom:after {
