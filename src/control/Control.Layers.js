@@ -293,7 +293,7 @@ L.Control.Layers = L.Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = L.stamp( obj.layer );
+		input.layerId = L.stamp(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
