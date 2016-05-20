@@ -20,7 +20,7 @@
 
 		return files;
 	}
-	var scripts = getFiles();
+	var sources = getFiles();
 
 	function getSrcUrl() {
 		var scripts = document.getElementsByTagName('script');
@@ -36,12 +36,14 @@
 	}
 
 	var path = getSrcUrl();
-    for (var i = 0; i < scripts.length; i++) {
-		if (scripts[i].substr(-3) === '.js') {
-			document.writeln("<script src='" + path + scripts[i] + "'></script>");
+
+
+    for (var i = 0; i < sources.length; i++) {
+		if (sources[i].substr(-3) === '.js') {
+			document.writeln("<script src='" + path + sources[i] + "'></script>");
 		}
-		if (scripts[i].substr(-4) === '.css') {
-			document.writeln("<link rel='stylesheet' href='" + path + scripts[i] + "'/>");
+		if (sources[i].substr(-4) === '.css') {
+			document.writeln("<link rel='stylesheet' href='" + path + sources[i] + "'/>");
 		}
 	}
     document.writeln('<script defer>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
