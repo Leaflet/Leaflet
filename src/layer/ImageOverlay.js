@@ -1,7 +1,7 @@
 /*
  * @class ImageOverlay
  * @aka L.ImageOverlay
- * @inherits Layer
+ * @inherits Interactive layer
  *
  * Used to load and display a single image over specific bounds of the map. Extends `Layer`.
  *
@@ -26,7 +26,7 @@ L.ImageOverlay = L.Layer.extend({
 		alt: '',
 
 		// @option interactive: Boolean = false
-		// If `true`, the image overlay will emit mouse events when clicked or hovered.
+		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
 		interactive: false,
 
 		// @option attribution: String = null
