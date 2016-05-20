@@ -764,20 +764,20 @@ L.Map = L.Evented.extend({
 		this._mapPane = this.createPane('mapPane', this._container);
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 
-		// @pane tilePane: HTMLElement = 2
-		// Pane for tile layers
+		// @pane tilePane: HTMLElement = 200
+		// Pane for `GridLayer`s and `TileLayer`s
 		this.createPane('tilePane');
-		// @pane overlayPane: HTMLElement = 4
-		// Pane for overlays like polylines and polygons
+		// @pane overlayPane: HTMLElement = 400
+		// Pane for vector overlays (`Path`s), like `Polyline`s and `Polygon`s
 		this.createPane('shadowPane');
-		// @pane shadowPane: HTMLElement = 5
-		// Pane for overlay shadows (e.g. marker shadows)
+		// @pane shadowPane: HTMLElement = 500
+		// Pane for overlay shadows (e.g. `Marker` shadows)
 		this.createPane('overlayPane');
-		// @pane markerPane: HTMLElement = 6
-		// Pane for marker icons
+		// @pane markerPane: HTMLElement = 600
+		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
-		// @pane popupPane: HTMLElement = 7
-		// Pane for popups.
+		// @pane popupPane: HTMLElement = 700
+		// Pane for `Popup`s.
 		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
