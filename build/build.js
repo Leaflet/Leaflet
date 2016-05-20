@@ -1,6 +1,8 @@
 var fs = require('fs'),
     UglifyJS = require('uglify-js'),
     cssnano = require('cssnano'),
+    autoprefixer = require('autoprefixer'),
+    postcss = require('postcss');
     zlib = require('zlib'),
     SourceNode = require( 'source-map' ).SourceNode;
 
@@ -187,17 +189,22 @@ exports.build = function (callback, version, compsBase32, buildName) {
 
 	console.log('\tMinified JS: ' + bytesToKB(newCompressed.length) + delta);
 
-	cssnano.process(newCss, {
+	postcss([ autoprefixer({
+		browsers: ['> 0.5%', 'IE 7', 'IE 8', 'IE 9', 'IE 10']
+	}), cssnano({
 		autoprefixer: false,
 		zindex: false,
-		core: true
-	})
+		core: false
+	}) ])
+	.process(newCss, { from: 'dist/leaflet-src.css', map: false })
 	.catch(function(err) {
 		console.error('cssnano failed to minify the files');
 		console.error(err);
 		callback(err);
 	})
-	.then(function(cssnanoed){
+	.then(function (cssnanoed) {
+// 		fs.writeFileSync('app.css', result.css);
+// 		if ( result.map ) fs.writeFileSync('app.css.map', result.map);
 		minifiedCss = cssnanoed.css;
 		var delta = getSizeDelta(minifiedCss, oldCssCompressed);
 		console.log('\tMinified CSS: ' + bytesToKB(oldCssCompressed.length) + delta);
