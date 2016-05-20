@@ -32,8 +32,8 @@ The geographical point where the mouse event occured.
 Pixel coordinates of the point where the mouse event occured relative to the map layer.
 @property containerPoint: Point
 Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
-@property originalEvent: DOMMouseEvent
-The original DOM mouse event fired by the browser.
+@property originalEvent: DOM MouseEvent
+The original [DOM mouse event](https://developer.mozilla.org/docs/Web/API/MouseEvent) fired by the browser.
 
 
 

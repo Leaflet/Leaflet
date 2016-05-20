@@ -16,6 +16,8 @@
 
 L.ImageOverlay = L.Layer.extend({
 
+	// @section
+	// @aka ImageOverlay options
 	options: {
 		// @option opacity: Number = 1.0
 		// The opacity of the image overlay.
