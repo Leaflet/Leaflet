@@ -1,5 +1,6 @@
 var fs = require('fs'),
     UglifyJS = require('uglify-js'),
+    cssnano = require('cssnano'),
     zlib = require('zlib'),
     SourceNode = require( 'source-map' ).SourceNode;
 
@@ -58,7 +59,6 @@ function getSizeDelta(newContent, oldContent, fixCRLF) {
 		oldContent = oldContent.replace(/\r\n?/g, '\n');
 	}
 	var delta = newContent.length - oldContent.length;
-
 	return delta === 0 ? '' : ' (' + (delta > 0 ? '+' : '') + delta + ' bytes)';
 }
 
@@ -66,16 +66,17 @@ function loadSilently(path) {
 	try {
 		return fs.readFileSync(path, 'utf8');
 	} catch (e) {
-		return null;
+		return '';
 	}
 }
 
 // Concatenate the files while building up a sourcemap for the concatenation,
 // and replace the line defining L.version with the string prepared in the jakefile
 function bundleFiles(files, copy, version) {
-	var node = new SourceNode(null, null, null, '');
+	var js  = new SourceNode(null, null, null, '');
+	var css = new SourceNode(null, null, null, '');
 
-	node.add(new SourceNode(null, null, null, copy + '(function (window, document, undefined) {'));
+	js.add(new SourceNode(null, null, null, copy + '(function (window, document, undefined) {'));
 
 	for (var i = 0, len = files.length; i < len; i++) {
 		var contents = fs.readFileSync(files[i], 'utf8');
@@ -96,17 +97,26 @@ function bundleFiles(files, copy, version) {
 		for (var j=0; j<lineCount; j++) {
 			fileNode.add(new SourceNode(j+1, 0, files[i], lines[j] + '\n'));
 		}
-		node.add(fileNode);
 
-		node.add(new SourceNode(null, null, null, '\n\n'));
+		if (files[i].substr(-3) === '.js') {
+			js.add(fileNode);
+			js.add(new SourceNode(null, null, null, '\n\n'));
+		}
+		if (files[i].substr(-4) === '.css') {
+			css.add(fileNode);
+			css.add(new SourceNode(null, null, null, '\n\n'));
+		}
 	}
 
-	node.add(new SourceNode(null, null, null, '}(window, document));'));
+	js.add(new SourceNode(null, null, null, '}(window, document));'));
 
-	var bundle = node.toStringWithSourceMap();
+	var jsbundle = js.toStringWithSourceMap();
+	var cssbundle = css.toStringWithSourceMap();
 	return {
-		src: bundle.code,
-		srcmap: bundle.map.toString()
+		src: jsbundle.code,
+		srcmap: jsbundle.map.toString(),
+		css: cssbundle.code,
+		cssmap: cssbundle.map.toString()
 	};
 }
 
@@ -125,26 +135,40 @@ exports.build = function (callback, version, compsBase32, buildName) {
 	    filenamePart = 'leaflet' + (buildName ? '-' + buildName : ''),
 	    pathPart = 'dist/' + filenamePart,
 	    srcPath = pathPart + '-src.js',
-	    mapPath = pathPart + '-src.map',
+	    mapPath = pathPart + '-src.js.map',
+	    cssPath = pathPart + '-src.css',
+	    cssmapPath = pathPart + '-src.css.map',
 	    srcFilename = filenamePart + '-src.js',
-	    mapFilename = filenamePart + '-src.map',
+	    mapFilename = filenamePart + '-src.js.map',
+	    cssFilename = filenamePart + '-src.css',
+	    cssmapFilename = filenamePart + '-src.css.map',
 
 	    bundle = bundleFiles(files, copy, version),
 	    newSrc = bundle.src + '\n//# sourceMappingURL=' + mapFilename,
+	    newCss = bundle.css + '\n/*# sourceMappingURL=' + cssmapFilename + ' */',
 
 	    oldSrc = loadSilently(srcPath),
+	    oldCss = loadSilently(cssPath),
 	    srcDelta = getSizeDelta(newSrc, oldSrc, true);
 
-	console.log('\tUncompressed: ' + bytesToKB(newSrc.length) + srcDelta);
+	console.log('\tUncompressed JS: ' + bytesToKB(newSrc.length) + srcDelta);
+	console.log('\tUncompressed CSS: ' + bytesToKB(newCss.length) + srcDelta);
 
 	if (newSrc !== oldSrc) {
 		fs.writeFileSync(srcPath, newSrc);
 		fs.writeFileSync(mapPath, bundle.srcmap);
-		console.log('\tSaved to ' + srcPath);
+		console.log('\tSaved JS to ' + srcPath);
+	}
+	if (newCss !== oldCss) {
+		fs.writeFileSync(cssPath, newCss);
+		fs.writeFileSync(cssmapPath, bundle.cssmap);
+		console.log('\tSaved CSS to ' + cssPath);
 	}
 
 	var path = pathPart + '.js',
+	    cssPath = pathPart + '.css',
 	    oldCompressed = loadSilently(path),
+	    oldCssCompressed = loadSilently(cssPath),
 	    newCompressed;
 
 	try {
@@ -159,34 +183,59 @@ exports.build = function (callback, version, compsBase32, buildName) {
 	}
 
 	var delta = getSizeDelta(newCompressed, oldCompressed);
+	var minifiedCss;
 
-	console.log('\tCompressed: ' + bytesToKB(newCompressed.length) + delta);
+	console.log('\tMinified JS: ' + bytesToKB(newCompressed.length) + delta);
+
+	cssnano.process(newCss, {
+		autoprefixer: false,
+		zindex: false,
+		core: true
+	})
+	.catch(function(err) {
+		console.error('cssnano failed to minify the files');
+		console.error(err);
+		callback(err);
+	})
+	.then(function(cssnanoed){
+		minifiedCss = cssnanoed.css;
+		var delta = getSizeDelta(minifiedCss, oldCssCompressed);
+		console.log('\tMinified CSS: ' + bytesToKB(oldCssCompressed.length) + delta);
+
+		zip();
+	});
 
 	var newGzipped,
 	    gzippedDelta = '';
 
+	function zip() {
+		zlib.gzip(newCompressed, function (err, gzipped) {
+			if (err) { return; }
+			newGzipped = gzipped;
+			if (oldCompressed && (oldCompressed !== newCompressed)) {
+				zlib.gzip(oldCompressed, function (err, oldGzipped) {
+					if (err) { return; }
+					gzippedDelta = getSizeDelta(gzipped, oldGzipped);
+					done();
+				});
+			} else {
+				done();
+			}
+		});
+	};
+
 	function done() {
 		if (newCompressed !== oldCompressed) {
 			fs.writeFileSync(path, newCompressed);
-			console.log('\tSaved to ' + path);
+			console.log('\t.min.js saved to ' + path);
+		}
+		if (minifiedCss !== oldCssCompressed) {
+			fs.writeFileSync(cssPath, minifiedCss);
+			console.log('\t.min.css saved to ' + cssPath);
 		}
 		console.log('\tGzipped: ' + bytesToKB(newGzipped.length) + gzippedDelta);
 		callback();
 	}
-
-	zlib.gzip(newCompressed, function (err, gzipped) {
-		if (err) { return; }
-		newGzipped = gzipped;
-		if (oldCompressed && (oldCompressed !== newCompressed)) {
-			zlib.gzip(oldCompressed, function (err, oldGzipped) {
-				if (err) { return; }
-				gzippedDelta = getSizeDelta(gzipped, oldGzipped);
-				done();
-			});
-		} else {
-			done();
-		}
-	});
 };
 
 exports.test = function(complete, fail) {

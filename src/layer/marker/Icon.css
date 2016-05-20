@@ -1,0 +1,4 @@
+.leaflet-marker-icon,
+.leaflet-marker-shadow {
+	display: block;
+}

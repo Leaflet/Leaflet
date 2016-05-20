@@ -1,0 +1,77 @@
+/* control positioning */
+
+.leaflet-control {
+	position: relative;
+	z-index: 800;
+	pointer-events: auto;
+}
+.leaflet-top,
+.leaflet-bottom {
+	position: absolute;
+	z-index: 1000;
+	pointer-events: none;
+}
+.leaflet-top {
+	top: 0;
+}
+.leaflet-right {
+	right: 0;
+}
+.leaflet-bottom {
+	bottom: 0;
+}
+.leaflet-left {
+	left: 0;
+}
+.leaflet-control {
+	float: left;
+	clear: both;
+}
+.leaflet-right .leaflet-control {
+	float: right;
+}
+.leaflet-top .leaflet-control {
+	margin-top: 10px;
+}
+.leaflet-bottom .leaflet-control {
+	margin-bottom: 10px;
+}
+.leaflet-left .leaflet-control {
+	margin-left: 10px;
+}
+.leaflet-right .leaflet-control {
+	margin-right: 10px;
+}
+
+
+/* attribution and scale controls */
+
+.leaflet-container .leaflet-control-attribution {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.7);
+	margin: 0;
+}
+.leaflet-control-attribution,
+.leaflet-control-scale-line {
+	padding: 0 5px;
+	color: #333;
+}
+
+.leaflet-container .leaflet-control-attribution,
+.leaflet-container .leaflet-control-scale {
+	font-size: 11px;
+}
+
+.leaflet-touch .leaflet-control-attribution,
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	box-shadow: none;
+}
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+	border: 2px solid rgba(0,0,0,0.2);
+	background-clip: padding-box;
+}
+
+
+

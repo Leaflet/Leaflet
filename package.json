@@ -3,6 +3,7 @@
   "version": "1.0.0-rc.1",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
+    "cssnano": "^3.6.2",
     "eslint": "^2.8.0",
     "eslint-config-mourner": "^2.0.1",
     "git-rev": "^0.2.1",
@@ -23,7 +24,7 @@
     "uglify-js": "~2.6.2"
   },
   "main": "dist/leaflet-src.js",
-  "style": "dist/leaflet.css",
+  "style": "dist/leaflet-src.css",
   "scripts": {
     "test": "jake test",
     "build": "jake build",

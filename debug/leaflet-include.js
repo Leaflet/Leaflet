@@ -37,7 +37,12 @@
 
 	var path = getSrcUrl();
     for (var i = 0; i < scripts.length; i++) {
-		document.writeln("<script src='" + path + scripts[i] + "'></script>");
+		if (scripts[i].substr(-3) === '.js') {
+			document.writeln("<script src='" + path + scripts[i] + "'></script>");
+		}
+		if (scripts[i].substr(-4) === '.css') {
+			document.writeln("<link rel='stylesheet' href='" + path + scripts[i] + "'/>");
+		}
 	}
     document.writeln('<script defer>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();

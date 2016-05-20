@@ -19,7 +19,9 @@ var deps = {
 		      'geo/crs/CRS.EPSG3857.js',
 		      'geo/crs/CRS.EPSG4326.js',
 		      'map/Map.js',
-		      'layer/Layer.js'
+		      'map/Map.css',
+		      'layer/Layer.js',
+		      'layer/Layer.css'
 		      ],
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
@@ -32,7 +34,8 @@ var deps = {
 	},
 
 	GridLayer: {
-		src: ['layer/tile/GridLayer.js'],
+		src: ['layer/tile/GridLayer.js',
+		      'layer/tile/GridLayer.css'],
 		desc: 'Used as base class for grid-like layers like TileLayer.',
 		heading: 'Layers'
 	},
@@ -56,13 +59,15 @@ var deps = {
 
 	Marker: {
 		src: ['layer/marker/Icon.js',
+		      'layer/marker/Icon.css',
 		      'layer/marker/Icon.Default.js',
 		      'layer/marker/Marker.js'],
 		desc: 'Markers to put on the map.'
 	},
 
 	DivIcon: {
-		src: ['layer/marker/DivIcon.js'],
+		src: ['layer/marker/DivIcon.js',
+		      'layer/marker/DivIcon.css'],
 		deps: ['Marker'],
 		desc: 'Lightweight div-based icon for markers.'
 	},
@@ -70,6 +75,7 @@ var deps = {
 	Popup: {
 		src: [
 			'layer/Popup.js',
+			'layer/Popup.css',
 			'layer/Layer.Popup.js',
 			'layer/marker/Marker.Popup.js'
 		],
@@ -131,19 +137,22 @@ var deps = {
 	},
 
 	SVG: {
-		src: ['layer/vector/SVG.js'],
+		src: ['layer/vector/SVG.js',
+		      'layer/vector/SVG.css'],
 		deps: ['Path'],
 		desc: 'SVG backend for vector layers.'
 	},
 
 	VML: {
-		src: ['layer/vector/SVG.VML.js'],
+		src: ['layer/vector/SVG.VML.js',
+		      'layer/vector/SVG.VML.css'],
 		deps: ['SVG'],
 		desc: 'VML fallback for vector layers in IE7-8.'
 	},
 
 	Canvas: {
-		src: ['layer/vector/Canvas.js'],
+		src: ['layer/vector/Canvas.js',
+		      'layer/vector/Canvas.css'],
 		deps: ['CircleMarker', 'Path', 'Polygon', 'Polyline'],
 		desc: 'Canvas backend for vector layers.'
 	},
@@ -158,6 +167,7 @@ var deps = {
 	MapDrag: {
 		src: ['dom/DomEvent.js',
 		      'dom/Draggable.js',
+		      'dom/Draggable.css',
 		      'core/Handler.js',
 		      'map/handler/Map.Drag.js'],
 		desc: 'Makes the map draggable (by mouse or touch).',
@@ -184,7 +194,8 @@ var deps = {
 	},
 
 	BoxZoom: {
-		src: ['map/handler/Map.BoxZoom.js'],
+		src: ['map/handler/Map.BoxZoom.js',
+		      'map/handler/Map.BoxZoom.css'],
 		deps: ['MouseZoom'],
 		desc: 'Enables zooming to bounding box by shift-dragging the map.'
 	},
@@ -202,25 +213,33 @@ var deps = {
 
 	ControlZoom: {
 		src: ['control/Control.js',
-		      'control/Control.Zoom.js'],
+		      'control/Control.css',
+		      'control/Control.Zoom.js',
+		      'control/Control.Zoom.css'],
 		heading: 'Controls',
 		desc: 'Basic zoom control with two buttons (zoom in / zoom out).'
 	},
 
 	ControlAttrib: {
 		src: ['control/Control.js',
+		      'control/Control.css',
+		      'control/Control.Attribution.css',
 		      'control/Control.Attribution.js'],
 		desc: 'Attribution control.'
 	},
 
 	ControlScale: {
 		src: ['control/Control.js',
+		      'control/Control.css',
+		      'control/Control.Scale.css',
 		      'control/Control.Scale.js'],
 		desc: 'Scale control.'
 	},
 
 	ControlLayers: {
 		src: ['control/Control.js',
+		      'control/Control.css',
+		      'control/Control.Layers.css',
 		      'control/Control.Layers.js'],
 		desc: 'Layer Switcher control.'
 	},
@@ -238,6 +257,7 @@ var deps = {
 	AnimationZoom: {
 		src: [
 			'map/anim/Map.ZoomAnimation.js',
+			'map/anim/Map.ZoomAnimation.css',
 			'map/anim/Map.FlyTo.js'
 			],
 		deps: ['AnimationPan'],

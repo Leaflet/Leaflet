@@ -1,0 +1,11 @@
+
+
+/* Attribution control */
+
+.leaflet-control-attribution a {
+	text-decoration: none;
+}
+.leaflet-control-attribution a:hover {
+	text-decoration: underline;
+}
+
