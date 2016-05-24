@@ -1993,6 +1993,17 @@ Change the way the user can interactively move around the map.
 			<a href="https://github.com/unbam">Masashi Takeshita</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/zzarcon/Leaflet.smoothzoom">Leaflet.smoothzoom</a>
+		</td>
+		<td>
+			Fixes the default leaflet zoom on OSX.
+		</td>
+		<td>
+			<a href="https://github.com/zzarcon">Hector Zarco</a>
+		</td>
+	</tr>
 </table>
 
 
