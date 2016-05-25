@@ -35,7 +35,8 @@
 	    ie3d = ie && ('transition' in doc.style),
 	    webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23,
 	    gecko3d = 'MozPerspective' in doc.style,
-	    opera12 = 'OTransition' in doc.style;
+	    opera12 = 'OTransition' in doc.style,
+	    edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 
 
 	var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
@@ -53,7 +54,7 @@
 
 		// @property edge: Boolean
 		// `true` for the Edge web browser.
-		edge: 'msLaunchUri' in navigator && !('documentMode' in document),
+		edge: edge,
 
 		// @property webkit: Boolean
 		// `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
@@ -73,7 +74,7 @@
 
 		// @property chrome: Boolean
 		// `true` for the Chrome browser.
-		chrome: chrome,
+		chrome: chrome && !edge,
 
 		// @property safari: Boolean
 		// `true` for the Safari browser.
