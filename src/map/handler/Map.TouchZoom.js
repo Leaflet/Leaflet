@@ -111,8 +111,11 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		var snap = L.Browser.any3d ? this._map.options.zoomSnap : 1;
 		if (snap) {
-			if (this._startZoom > this._zoom) this._zoom = this._zoom - snap;
-			else if (this._startZoom < this._zoom) this._zoom = this._zoom + snap;
+			if (this._startZoom > this._zoom) {
+				this._zoom = this._zoom - snap;
+			} else if (this._startZoom < this._zoom) {
+				this._zoom = this._zoom + snap;
+			}
 		}
 
 		// Pinch updates GridLayers' levels only when snapZoom is off, so snapZoom becomes noUpdate.
