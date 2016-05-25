@@ -227,9 +227,10 @@ L.DomEvent = {
 
 	// Chrome on Win scrolls double the pixels as in other platforms (see #4538),
 	// and Firefox scrolls device pixels, not CSS pixels
-	_wheelPxFactor: (L.Browser.win && L.Browser.chrome) ? 2 :
-	                (L.Browser.gecko) ? window.devicePixelRatio :
-	                1,
+	_wheelPxFactor: ((L.Browser.win && L.Browser.chrome)||L.Browser.safari) ? 2 :
+					L.Browser.edge ? 3 :
+					(L.Browser.gecko) ? window.devicePixelRatio :
+					1,
 
 	// @function getWheelDelta(ev: DOMEvent): Number
 	// Gets normalized wheel delta from a mousewheel DOM event, in vertical
