@@ -24,7 +24,7 @@ describe("Map.TouchZoom", function () {
 					expect(center.lng).to.be(0);
 
 					// Initial zoom 1, initial distance 50px, final distance 450px
-					expect(zoom).to.be(4);
+					expect(zoom).to.be(5);
 
 					done();
 				});
@@ -66,7 +66,7 @@ describe("Map.TouchZoom", function () {
 					expect(center.lng).to.be(0);
 
 					// Initial zoom 4, initial distance 450px, final distance 50px
-					expect(zoom).to.be(1);
+					expect(zoom).to.be(0);
 
 					done();
 				});
