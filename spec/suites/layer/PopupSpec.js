@@ -233,12 +233,19 @@ describe('Popup', function () {
 		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.7], [56.0, 37.8]]).addTo(map);
 		layer.bindPopup("layer popup");
 
-		var spy = sinon.spy();
-		map.on('click', spy);
+		var mapClicked = false;
+		map.on('click', function (e) {
+			mapClicked = true;
+			new L.Popup()
+				.setLatLng(e.latlng)
+				.setContent("map popup")
+				.openOn(map);
+		});
 
-		expect(spy.called).to.be(false);
+		expect(map.hasLayer(layer._popup)).to.be(false);
 		happen.click(layer._path);
-		expect(spy.called).to.be(false);
+		expect(mapClicked).to.be(false);
+		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
 
 });
