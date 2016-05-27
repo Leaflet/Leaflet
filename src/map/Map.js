@@ -436,7 +436,7 @@ L.Map = L.Evented.extend({
 
 	// @section Other Methods
 	// @method createPane(name: String, container?: HTMLElement): HTMLElement
-	// Creates a new map pane with the given name if it doesn't exist already,
+	// Creates a new [map pane](#map-pane) with the given name if it doesn't exist already,
 	// then returns it. The pane is created as a children of `container`, or
 	// as a children of the main map pane if not set.
 	createPane: function (name, container) {
@@ -563,13 +563,13 @@ L.Map = L.Evented.extend({
 	// @section Other Methods
 
 	// @method getPane(pane: String|HTMLElement): HTMLElement
-	// Returns a map pane, given its name or its HTML element (its identity).
+	// Returns a [map pane](#map-pane), given its name or its HTML element (its identity).
 	getPane: function (pane) {
 		return typeof pane === 'string' ? this._panes[pane] : pane;
 	},
 
 	// @method getPanes(): Object
-	// Returns a plain object containing the names of all panes as keys and
+	// Returns a plain object containing the names of all [panes](#map-pane) as keys and
 	// the panes as values.
 	getPanes: function () {
 		return this._panes;
