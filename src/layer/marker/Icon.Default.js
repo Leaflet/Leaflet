@@ -32,11 +32,11 @@ L.Icon.Default = L.Icon.extend({
 		// way, set this option to point to the right absolute path.
 		if (!('imagePath' in this.options)) {
 			var el = L.DomUtil.create('div',  'leaflet-default-icon-path', document.body);
-			this.options.imagePath = L.DomUtil.getStyle(el, 'background-image')
-				.replace(/^url\([\"\']?/, '')
-				.replace(/[\"\']?\)$/, '');
+			var path = L.DomUtil.getStyle(el, 'background-image');
 
-			console.log(this.options.imagePath);
+			this.options.imagePath = path.indexOf('url') === 0 ?
+				path.replace(/^url\([\"\']?/, '').replace(/[\"\']?\)$/, '') : '';
+
 			document.body.removeChild(el);
 		}
 

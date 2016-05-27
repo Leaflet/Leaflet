@@ -13,8 +13,8 @@ describe("Marker", function () {
 		map = L.map(div).setView([0, 0], 0);
 		icon1 = new L.Icon.Default();
 		icon2 = new L.Icon.Default({
-			iconUrl: icon1._getIconUrl('icon') + '?2',
-			shadowUrl: icon1._getIconUrl('shadow') + '?2'
+			iconUrl: icon1.options.iconUrl + '?2',
+			shadowUrl: icon1.options.shadowUrl + '?2'
 		});
 	});
 
