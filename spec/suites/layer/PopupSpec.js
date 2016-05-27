@@ -229,6 +229,18 @@ describe('Popup', function () {
 		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
 	});
 
+	it("prevents an underlying map click for Layer", function () {
+		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.7], [56.0, 37.8]]).addTo(map);
+		layer.bindPopup("layer popup");
+
+		var spy = sinon.spy();
+		map.on('click', spy);
+
+		expect(spy.called).to.be(false);
+		happen.click(layer._path);
+		expect(spy.called).to.be(false);
+	});
+
 });
 
 describe("L.Map#openPopup", function () {
