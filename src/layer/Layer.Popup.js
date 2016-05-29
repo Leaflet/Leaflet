@@ -153,6 +153,9 @@ L.Layer.include({
 			return;
 		}
 
+		// prevent map click
+		L.DomEvent.stop(e);
+
 		// if this inherits from Path its a vector and we can just
 		// open the popup at the new location
 		if (layer instanceof L.Path) {
