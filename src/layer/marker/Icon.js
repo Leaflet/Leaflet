@@ -51,10 +51,10 @@ L.Icon = L.Class.extend({
 		var sizeOption = options[name + 'Size'];
 
 		if (!L.Util.isArray(sizeOption)) {
-			options[name + 'Size'] = [options[name + 'Size'], options[name + 'Size']];
+			sizeOption = [sizeOption, sizeOption];
 		}
 
-		var size = L.point(options[name + 'Size']),
+		var size = L.point(sizeOption),
 		    anchor = L.point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 
