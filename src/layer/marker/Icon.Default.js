@@ -7,7 +7,7 @@
  * no icon is specified. Points to the blue marker image distributed with Leaflet
  * releases.
  *
- * In order to change the default icon, just change the properties of `L.Icon.Default.options`
+ * In order to change the default icon, just change the properties of `L.Icon.Default.prototype.options`
  * (which is a set of `Icon options`).
  */
 
@@ -31,13 +31,20 @@ L.Icon.Default = L.Icon.extend({
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right absolute path.
 		if (!('imagePath' in this.options)) {
-			var el = L.DomUtil.create('div',  'leaflet-default-icon-path', document.body);
-			var path = L.DomUtil.getStyle(el, 'background-image') || L.DomUtil.getStyle(el, 'backgroundImage');
 
-			this.options.imagePath = path.indexOf('url') === 0 ?
-				path.replace(/^url\([\"\']?/, '').replace(/[\"\']?\)$/, '') : '';
+			if (L.Icon.Default.imagePath) {	// Deprecated, backwards-compatibility only
+				this.options.imagePath = L.Icon.Default.imagePath;
+			} else {
 
-			document.body.removeChild(el);
+				var el = L.DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+				var path = L.DomUtil.getStyle(el, 'background-image') ||
+				           L.DomUtil.getStyle(el, 'backgroundImage');	// IE8
+
+				this.options.imagePath = path.indexOf('url') === 0 ?
+					path.replace(/^url\([\"\']?/, '').replace(/[\"\']?\)$/, '') : '';
+
+				document.body.removeChild(el);
+			}
 		}
 
 		return this.options.imagePath + L.Icon.prototype._getIconUrl.call(this, name);
