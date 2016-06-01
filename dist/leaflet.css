@@ -430,6 +430,7 @@
 .leaflet-popup {
 	position: absolute;
 	text-align: center;
+	margin-bottom: 20px;
 	}
 .leaflet-popup-content-wrapper {
 	padding: 1px;
@@ -444,11 +445,13 @@
 	margin: 18px 0;
 	}
 .leaflet-popup-tip-container {
-	margin: 0 auto;
 	width: 40px;
 	height: 20px;
-	position: relative;
+	position: absolute;
+	left: 50%;
+	margin-left: -20px;
 	overflow: hidden;
+	pointer-events: none;
 	}
 .leaflet-popup-tip {
 	width: 17px;
