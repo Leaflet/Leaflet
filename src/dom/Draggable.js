@@ -97,7 +97,6 @@ L.Draggable = L.Evented.extend({
 		var first = e.touches ? e.touches[0] : e;
 
 		this._startPoint = new L.Point(first.clientX, first.clientY);
-		this._startPos = this._newPos = L.DomUtil.getPosition(this._element);
 
 		L.DomEvent
 			.on(document, L.Draggable.MOVE[e.type], this._onMove, this)
