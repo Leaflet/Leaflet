@@ -253,7 +253,7 @@ L.Canvas = L.Renderer.extend({
 
 		for (var id in this._layers) {
 			layer = this._layers[id];
-			if (layer.options.interactive && layer._containsPoint(point)) {
+			if (layer.options.interactive && layer._containsPoint(point) && !this._map._draggableMoved(layer)) {
 				L.DomEvent._fakeStop(e);
 				layers.push(layer);
 			}

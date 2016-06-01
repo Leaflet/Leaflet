@@ -990,17 +990,6 @@ L.Map = L.Evented.extend({
 
 		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
-		if (e.type === 'click') {
-			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
-			// @event preclick: MouseEvent
-			// Fired before mouse click on the map (sometimes useful when you
-			// want something to happen on click before any existing click
-			// handlers start running).
-			var synth = L.Util.extend({}, e);
-			synth.type = 'preclick';
-			this._handleDOMEvent(synth);
-		}
-
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
 			L.DomUtil.preventOutline(e.target || e.srcElement);
@@ -1010,6 +999,17 @@ L.Map = L.Evented.extend({
 	},
 
 	_fireDOMEvent: function (e, type, targets) {
+
+		if (e.type === 'click') {
+			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
+			// @event preclick: MouseEvent
+			// Fired before mouse click on the map (sometimes useful when you
+			// want something to happen on click before any existing click
+			// handlers start running).
+			var synth = L.Util.extend({}, e);
+			synth.type = 'preclick';
+			this._fireDOMEvent(synth, synth.type, targets);
+		}
 
 		if (e._stopped) { return; }
 
