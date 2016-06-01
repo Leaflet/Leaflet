@@ -43,10 +43,10 @@ function calculateVersion(officialRelease, callback) {
 }
 
 desc('Check Leaflet source for errors with ESLint');
-task('lint', {async: true}, hint('Checking for JS errors...', 'src --config package.json'));
+task('lint', {async: true}, hint('Checking for JS errors...', 'src'));
 
 desc('Check Leaflet specs source for errors with ESLint');
-task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/suites --config spec/.eslintrc'));
+task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/suites'));
 
 desc('Combine and compress Leaflet source files');
 task('build', {async: true}, function (compsBase32, buildName, officialRelease) {
