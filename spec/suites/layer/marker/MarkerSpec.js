@@ -56,21 +56,6 @@ describe("Marker", function () {
 			expect(icon.style.width).to.be(expectedXY + 'px');
 			expect(icon.style.height).to.be(expectedXY + 'px');
 		});
-	});
-
-	describe("#setIcon", function () {
-
-		it("changes the icon to another image", function () {
-			var marker = new L.Marker([0, 0], {icon: icon1});
-			map.addLayer(marker);
-
-			var beforeIcon = marker._icon;
-			marker.setIcon(icon2);
-			var afterIcon = marker._icon;
-
-			expect(beforeIcon).to.be(afterIcon);
-			expect(afterIcon.src).to.contain(icon2._getIconUrl('icon'));
-		});
 
 		it("changes the icon to another image", function () {
 			var marker = new L.Marker([0, 0], {icon: icon1});
