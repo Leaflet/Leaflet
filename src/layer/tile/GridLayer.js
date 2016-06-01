@@ -120,7 +120,15 @@ L.GridLayer = L.Layer.extend({
 
 		// @option className: String = ''
 		// A custom class name to assign to the tile layer. Empty by default.
-		className: ''
+		className: '',
+
+		// @option bufferSize: Number|Point = [256, 256]
+		// How many pixels this grid extends out of the visible map container.
+		// This increases the amount of tiles to be loaded and kept. Lower values
+		// will decrease network usage, and higher values will prevent grey areas
+		// when dragging or zooming quickly. Use a number if the top/bottom and
+		// left/right buffer sizes are equal, or `L.point(leftRight, topBottom)` otherwise.
+		bufferSize: 256
 	},
 
 	initialize: function (options) {
@@ -253,6 +261,11 @@ L.GridLayer = L.Layer.extend({
 	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
 	getTileSize: function () {
 		var s = this.options.tileSize;
+		return s instanceof L.Point ? s : new L.Point(s, s);
+	},
+
+	_getBufferSize: function () {
+		var s = this.options.bufferSize;
 		return s instanceof L.Point ? s : new L.Point(s, s);
 	},
 
@@ -578,7 +591,7 @@ L.GridLayer = L.Layer.extend({
 		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
 		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
-		    halfSize = map.getSize().divideBy(scale * 2);
+		    halfSize = map.getSize().divideBy(scale * 2).add(this._getBufferSize());
 
 		return new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},

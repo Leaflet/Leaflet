@@ -19,7 +19,8 @@
 	<script type="text/javascript">
 
 		var grid = L.gridLayer({
-			attribution: 'Grid Layer'
+			attribution: 'Grid Layer',
+			bufferSize: 0
 		});
 
 		grid.createTile = function (coords, done) {
