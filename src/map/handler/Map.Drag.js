@@ -66,7 +66,7 @@ L.Map.Drag = L.Handler.extend({
 				map.whenReady(this._onZoomEnd, this);
 			}
 		}
-		L.DomUtil.addClass(this._map._container, 'leaflet-grab');
+		L.DomUtil.addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
 		this._draggable.enable();
 		this._positions = [];
 		this._times = [];
@@ -74,6 +74,7 @@ L.Map.Drag = L.Handler.extend({
 
 	removeHooks: function () {
 		L.DomUtil.removeClass(this._map._container, 'leaflet-grab');
+		L.DomUtil.removeClass(this._map._container, 'leaflet-touch-drag');
 		this._draggable.disable();
 	},
 
