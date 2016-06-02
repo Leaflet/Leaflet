@@ -84,6 +84,50 @@ L.Polygon = L.Polyline.extend({
 		return this._map.layerPointToLatLng(center);
 	},
 
+	// @method contains (latlng: LatLng): Boolean
+	// Returns `true` if the polygon contains the given point.
+	contains: function (obj) {
+		if (!this.getBounds().contains(obj)) {
+			return false;
+		} else {
+			// check based on the winding number method
+			var wn = 0,
+			    nodes = this.getLatLngs()[0];
+
+			for (var i = 0, len = nodes.length; i < len; ++i) {
+				// through all edges of the polygon, with last edge linked to
+				// the first node
+				var next = (i < len - 1) ? i + 1 : 0;
+				if (nodes[i].lat <= obj.lat) {
+					if ((nodes[next].lat > obj.lat) &&
+							(this._checkLeft(obj, nodes[i], nodes[next]) > 0)) {
+						// upward crossing with obj on the left of current polygon
+						// edge
+						++wn;
+					}
+				}	else if ((nodes[next].lat <= obj.lat) &&
+									 (this._checkLeft(obj, nodes[i], nodes[next]) < 0)) {
+					// downward crossing with obj on the right of current
+					// polygon edge
+					--wn;
+				}
+			}
+			return (wn !== 0);
+		}
+	},
+
+	_checkLeft: function (obj, latlng1, latlng2) {
+		// Return a positive (resp. negative) value if obj is left
+		// (resp. right) of the oriented line defined by latlng1 and
+		// latlng2 (using the (latlng1 latlng2)x(latlng1 obj) cross
+		// product z-component to check).
+		var u1 = latlng2.lng - latlng1.lng,
+		    u2 = latlng2.lat - latlng1.lat,
+		    v1 = obj.lng - latlng1.lng,
+		    v2 = obj.lat - latlng1.lat;
+		return u1 * v2 - u2 * v1;
+	},
+
 	_convertLatLngs: function (latlngs) {
 		var result = L.Polyline.prototype._convertLatLngs.call(this, latlngs),
 		    len = result.length;
