@@ -87,33 +87,38 @@ L.Polygon = L.Polyline.extend({
 	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if the polygon contains the given point.
 	contains: function (obj) {
-		if (!this.getBounds().contains(obj)) {
-			return false;
-		} else {
-			// check based on the winding number method
-			var wn = 0,
-			    nodes = this.getLatLngs()[0];
+		var contained = !this.isEmpty() &&
+				this.getBounds().contains(obj) &&
+				this._ringContains(this._latlngs[0], obj);
 
-			for (var i = 0, len = nodes.length; i < len; ++i) {
-				// through all edges of the polygon, with last edge linked to
-				// the first node
-				var next = (i < len - 1) ? i + 1 : 0;
-				if (nodes[i].lat <= obj.lat) {
-					if ((nodes[next].lat > obj.lat) &&
-							(this._checkLeft(obj, nodes[i], nodes[next]) > 0)) {
-						// upward crossing with obj on the left of current polygon
-						// edge
-						++wn;
-					}
-				}	else if ((nodes[next].lat <= obj.lat) &&
-									 (this._checkLeft(obj, nodes[i], nodes[next]) < 0)) {
-					// downward crossing with obj on the right of current
-					// polygon edge
-					--wn;
-				}
-			}
-			return (wn !== 0);
+		for (var i = 1, len = this._latlngs.length; contained && i < len; ++i) {
+			contained = contained && !this._ringContains(this._latlngs[i], obj);
 		}
+		return contained;
+	},
+
+	_ringContains: function (latLngs, obj) {
+		// check based on the wind number method
+		var wn = 0;
+
+		for (var i = 0, len = latLngs.length; i < len; ++i) {
+			// through all edges of the ring, with last edge linked to the
+			// first node
+			var next = (i < len - 1) ? i + 1 : 0;
+			if (latLngs[i].lat <= obj.lat) {
+				if ((latLngs[next].lat > obj.lat) &&
+						(this._checkLeft(obj, latLngs[i], latLngs[next]) > 0)) {
+					// upward crossing with obj on the left of current ring edge
+					++wn;
+				}
+			}	else if ((latLngs[next].lat <= obj.lat) &&
+								 (this._checkLeft(obj, latLngs[i], latLngs[next]) < 0)) {
+				// downward crossing with obj on the right of current ring
+				// edge
+				--wn;
+			}
+		}
+		return (wn !== 0);
 	},
 
 	_checkLeft: function (obj, latlng1, latlng2) {
