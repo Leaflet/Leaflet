@@ -87,33 +87,34 @@ L.Polygon = L.Polyline.extend({
 	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if the polygon contains the given point.
 	contains: function (obj) {
-		var contained = !this.isEmpty() &&
+		var point = this._map.latLngToLayerPoint(obj),
+		    contained = !this.isEmpty() &&
 				this.getBounds().contains(obj) &&
-				this._ringContains(this._latlngs[0], obj);
+				this._ringContains(this._rings[0], point);
 
-		for (var i = 1, len = this._latlngs.length; contained && i < len; ++i) {
-			contained = contained && !this._ringContains(this._latlngs[i], obj);
+		for (var i = 1, len = this._rings.length; contained && i < len; ++i) {
+			contained = contained && !this._ringContains(this._rings[i], point);
 		}
 		return contained;
 	},
 
-	_ringContains: function (latLngs, obj) {
+	_ringContains: function (ring, point) {
 		// check based on the wind number method
 		var wn = 0;
 
-		for (var i = 0, len = latLngs.length; i < len; ++i) {
+		for (var i = 0, len = ring.length; i < len; ++i) {
 			// through all edges of the ring, with last edge linked to the
 			// first node
 			var next = (i < len - 1) ? i + 1 : 0;
-			if (latLngs[i].lat <= obj.lat) {
-				if ((latLngs[next].lat > obj.lat) &&
-						(this._checkLeft(obj, latLngs[i], latLngs[next]) > 0)) {
-					// upward crossing with obj on the left of current ring edge
+			if (ring[i].y <= point.y) {
+				if ((ring[next].y > point.y) &&
+						(this._checkLeft(point, ring[i], ring[next]) > 0)) {
+					// upward crossing with point on the left of current ring edge
 					++wn;
 				}
-			}	else if ((latLngs[next].lat <= obj.lat) &&
-								 (this._checkLeft(obj, latLngs[i], latLngs[next]) < 0)) {
-				// downward crossing with obj on the right of current ring
+			}	else if ((ring[next].y <= point.y) &&
+								 (this._checkLeft(point, ring[i], ring[next]) < 0)) {
+				// downward crossing with point on the right of current ring
 				// edge
 				--wn;
 			}
@@ -121,16 +122,11 @@ L.Polygon = L.Polyline.extend({
 		return (wn !== 0);
 	},
 
-	_checkLeft: function (obj, latlng1, latlng2) {
-		// Return a positive (resp. negative) value if obj is left
-		// (resp. right) of the oriented line defined by latlng1 and
-		// latlng2 (using the (latlng1 latlng2)x(latlng1 obj) cross
-		// product z-component to check).
-		var u1 = latlng2.lng - latlng1.lng,
-		    u2 = latlng2.lat - latlng1.lat,
-		    v1 = obj.lng - latlng1.lng,
-		    v2 = obj.lat - latlng1.lat;
-		return u1 * v2 - u2 * v1;
+	_checkLeft: function (p0, p1, p2) {
+		// Return a positive (resp. negative) value if point p0 is left
+		// (resp. right) of the oriented line defined by p1 and p2 (using
+		// the (p1 p2)x(p1 p0) cross product z-component to check).
+		return (p2.x - p1.x) * (p0.y - p1.y) - (p2.y - p1.y) * (p0.x - p1.x);
 	},
 
 	_convertLatLngs: function (latlngs) {
