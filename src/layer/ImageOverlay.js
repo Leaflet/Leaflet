@@ -1,7 +1,7 @@
 /*
  * @class ImageOverlay
  * @aka L.ImageOverlay
- * @inherits Layer
+ * @inherits Interactive layer
  *
  * Used to load and display a single image over specific bounds of the map. Extends `Layer`.
  *
@@ -16,6 +16,8 @@
 
 L.ImageOverlay = L.Layer.extend({
 
+	// @section
+	// @aka ImageOverlay options
 	options: {
 		// @option opacity: Number = 1.0
 		// The opacity of the image overlay.
@@ -26,17 +28,16 @@ L.ImageOverlay = L.Layer.extend({
 		alt: '',
 
 		// @option interactive: Boolean = false
-		// If `true`, the image overlay will emit mouse events when clicked or hovered.
+		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
 		interactive: false,
 
 		// @option attribution: String = null
 		// An optional string containing HTML to be shown on the `Attribution control`
-		attribution: null
+		attribution: null,
 
 		// @option crossOrigin: Boolean = false
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
-
-		// crossOrigin: false,
+		crossOrigin: false
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)

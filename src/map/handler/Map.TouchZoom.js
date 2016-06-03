@@ -21,10 +21,12 @@ L.Map.mergeOptions({
 
 L.Map.TouchZoom = L.Handler.extend({
 	addHooks: function () {
+		L.DomUtil.addClass(this._map._container, 'leaflet-touch-zoom');
 		L.DomEvent.on(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 
 	removeHooks: function () {
+		L.DomUtil.removeClass(this._map._container, 'leaflet-touch-zoom');
 		L.DomEvent.off(this._map._container, 'touchstart', this._onTouchStart, this);
 	},
 

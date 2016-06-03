@@ -1,0 +1,32 @@
+@class Interactive layer
+@inherits Layer
+
+Some `Layer`s can be made interactive - when the user interacts
+with such a layer, mouse events like `click` and `mouseover` can be handled.
+Use the [event handling methods](#evented-method) to handle these events.
+
+@option interactive: Boolean = true
+If `false`, the layer will not emit mouse events and will act as a part of the underlying map.
+
+@section Mouse events
+
+@event click: MouseEvent
+Fired when the user clicks (or taps) the layer.
+
+@event dblclick: MouseEvent
+Fired when the user double-clicks (or double-taps) the layer.
+
+@event mousedown: MouseEvent
+Fired when the user pushes the mouse button on the layer.
+
+@event mouseover: MouseEvent
+Fired when the mouse enters the layer.
+
+@event mouseout: MouseEvent
+Fired when the mouse leaves the layer.
+
+@event contextmenu: MouseEvent
+Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).

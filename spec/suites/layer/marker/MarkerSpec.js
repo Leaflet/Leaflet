@@ -23,6 +23,40 @@ describe("Marker", function () {
 	});
 
 	describe("#setIcon", function () {
+
+		it("set the correct x and y size attributes", function () {
+			var expectedX = 96;
+			var expectedY = 100;
+			var sizedIcon = new L.Icon.Default({
+				iconUrl: icon1._getIconUrl('icon') + '?3',
+				iconSize: [expectedX, expectedY]
+			});
+
+			var marker = new L.Marker([0, 0], {icon: sizedIcon});
+			map.addLayer(marker);
+
+			var icon = marker._icon;
+
+			expect(icon.style.width).to.be(expectedX + 'px');
+			expect(icon.style.height).to.be(expectedY + 'px');
+		});
+
+		it("set the correct x and y size attributes passing only one value", function () {
+			var expectedXY = 96;
+			var sizedIcon = new L.Icon.Default({
+				iconUrl: icon1._getIconUrl('icon') + '?3',
+				iconSize: expectedXY
+			});
+
+			var marker = new L.Marker([0, 0], {icon: sizedIcon});
+			map.addLayer(marker);
+
+			var icon = marker._icon;
+
+			expect(icon.style.width).to.be(expectedXY + 'px');
+			expect(icon.style.height).to.be(expectedXY + 'px');
+		});
+
 		it("changes the icon to another image", function () {
 			var marker = new L.Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);

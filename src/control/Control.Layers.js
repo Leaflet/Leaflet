@@ -192,7 +192,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	_getLayer: function (id) {
-		for (var i = 0; i <= this._layers.length; i++) {
+		for (var i = 0; i < this._layers.length; i++) {
 
 			if (this._layers[i] && L.stamp(this._layers[i].layer) === id) {
 				return this._layers[i];

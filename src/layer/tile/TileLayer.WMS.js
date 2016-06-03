@@ -2,7 +2,7 @@
  * @class TileLayer.WMS
  * @inherits TileLayer
  * @aka L.TileLayer.WMS
- * Used to display WMS services as tile layers on the map. Extends `TileLayer`.
+ * Used to display [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services as tile layers on the map. Extends `TileLayer`.
  *
  * @example
  *
@@ -20,6 +20,9 @@ L.TileLayer.WMS = L.TileLayer.extend({
 
 	// @section
 	// @aka TileLayer.WMS options
+	// If any custom options not documented here are used, they will be sent to the
+	// WMS server as extra parameters in each request URL. This can be useful for
+	// [non-standard vendor WMS parameters](http://docs.geoserver.org/stable/en/user/services/wms/vendor.html).
 	defaultWmsParams: {
 		service: 'WMS',
 		request: 'GetMap',

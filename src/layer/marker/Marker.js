@@ -1,6 +1,6 @@
 /*
  * @class Marker
- * @inherits Layer
+ * @inherits Interactive layer
  * @aka L.Marker
  * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  *
@@ -20,8 +20,7 @@ L.Marker = L.Layer.extend({
 		// Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.
 		icon: new L.Icon.Default(),
 
-		// @option interactive: Boolean = true
-		// If `false`, the marker will not emit mouse events and will act as a part of the underlying map.
+		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
 
 		// @option draggable: Boolean = false
@@ -63,31 +62,6 @@ L.Marker = L.Layer.extend({
 		// FIXME: shadowPane is no longer a valid option
 		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu']
 	},
-
-	/* @section
-	 *
-	 * You can subscribe to the following events using [these methods](#evented-method).
-	 *
-	 * @event click: MouseEvent
-	 * Fired when the user clicks (or taps) the marker.
-	 *
-	 * @event dblclick: MouseEvent
-	 * Fired when the user double-clicks (or double-taps) the marker.
-	 *
-	 * @event mousedown: MouseEvent
-	 * Fired when the user pushes the mouse button on the marker.
-	 *
-	 * @event mouseover: MouseEvent
-	 * Fired when the mouse enters the marker.
-	 *
-	 * @event mouseout: MouseEvent
-	 * Fired when the mouse leaves the marker.
-	 *
-	 * @event contextmenu: MouseEvent
-	 * Fired when the user right-clicks on the marker.
-	 */
-
-
 
 	/* @section
 	 *

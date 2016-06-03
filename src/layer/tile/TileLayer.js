@@ -61,7 +61,7 @@ L.TileLayer = L.GridLayer.extend({
 		zoomOffset: 0,
 
 		// @option tms: Boolean = false
-		// If `true`, inverses Y axis numbering for tiles (turn this on for TMS services).
+		// If `true`, inverses Y axis numbering for tiles (turn this on for [TMS](https://en.wikipedia.org/wiki/Tile_Map_Service) services).
 		tms: false,
 
 		// @option zoomReverse: Boolean = false

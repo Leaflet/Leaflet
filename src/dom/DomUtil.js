@@ -38,7 +38,7 @@ L.DomUtil = {
 	create: function (tagName, className, container) {
 
 		var el = document.createElement(tagName);
-		el.className = className;
+		el.className = className || '';
 
 		if (container) {
 			container.appendChild(el);

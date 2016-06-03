@@ -122,12 +122,23 @@ L.Evented = L.Class.extend({
 	_off: function (type, fn, context) {
 		var events = this._events,
 		    indexKey = type + '_idx',
-		    indexLenKey = type + '_len';
+		    indexLenKey = type + '_len',
+		    listener, listeners, i, len;
 
 		if (!events) { return; }
 
 		if (!fn) {
 			// clear all listeners for a type if function isn't specified
+			// set the removed listeners to noop so that's not called if remove happens in fire
+			listeners = events[indexKey];
+			for (i in listeners) {
+				listeners[i].fn = L.Util.falseFn;
+			}
+			listeners = events[type] || [];
+			for (i = 0, len = listeners.length; i < len; i++) {
+				listeners[i].fn = L.Util.falseFn;
+			}
+
 			delete events[type];
 			delete events[indexKey];
 			delete events[indexLenKey];
@@ -135,7 +146,7 @@ L.Evented = L.Class.extend({
 		}
 
 		var contextId = context && context !== this && L.stamp(context),
-		    listeners, i, len, listener, id;
+		    id;
 
 		if (contextId) {
 			id = L.stamp(fn) + '_' + contextId;

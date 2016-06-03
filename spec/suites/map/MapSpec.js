@@ -162,12 +162,48 @@ describe("Map", function () {
 		});
 	});
 
-	describe('#setMaxBounds', function () {
-		it("aligns pixel-wise map view center with maxBounds center if it cannot move view bounds inside maxBounds (#1908)", function () {
+	describe("#getBoundsZoom", function () {
+		var halfLength = 0.00025;
+		var bounds = [[-halfLength, -halfLength], [halfLength, halfLength]];
+		var padding = [100, 100];
+		var height = '400px';
+
+		it("returns high levels of zoom with small areas and big padding", function () {
 			var container = map.getContainer();
+			container.style.height = height;
+			document.body.appendChild(container);
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19);
+		});
+
+		it("returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers", function () {
+			var container = map.getContainer();
+			container.style.height = height;
+			document.body.appendChild(container);
+			L.Browser.any3d = true;
+			map.options.zoomSnap = 0.5;
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.5);
+			map.options.zoomSnap = 0.2;
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.6);
+			map.options.zoomSnap = 0;
+			expect(map.getBoundsZoom(bounds, false, padding)).to.be.within(19.6864560, 19.6864561);
+		});
+	});
+
+	describe('#setMaxBounds', function () {
+		var container;
+
+		beforeEach(function () {
+			container = map.getContainer();
+			document.body.appendChild(container);
+		});
+
+		afterEach(function () {
+			// document.body.removeChild(container);
+		});
+
+		it("aligns pixel-wise map view center with maxBounds center if it cannot move view bounds inside maxBounds (#1908)", function () {
 			// large view, cannot fit within maxBounds
 			container.style.width = container.style.height = "1000px";
-			document.body.appendChild(container);
 			// maxBounds
 			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
 			map.setMaxBounds(bounds, {animate: false});
@@ -176,13 +212,11 @@ describe("Map", function () {
 			// get center of bounds in pixels
 			var boundsCenter = map.project(bounds.getCenter()).round();
 			expect(map.project(map.getCenter()).round()).to.eql(boundsCenter);
-			document.body.removeChild(container);
 		});
+
 		it("moves map view within maxBounds by changing one coordinate", function () {
-			var container = map.getContainer();
 			// small view, can fit within maxBounds
 			container.style.width = container.style.height = "200px";
-			document.body.appendChild(container);
 			// maxBounds
 			var bounds = L.latLngBounds([51, -0.2], [52, 0.2]);
 			map.setMaxBounds(bounds, {animate: false});
@@ -197,29 +231,22 @@ describe("Map", function () {
 			expect(pixelCenter.y).not.to.eql(pixelInit.y);
 			// the view is inside the bounds
 			expect(bounds.contains(map.getBounds())).to.be(true);
-			document.body.removeChild(container);
 		});
-	});
 
-	describe("#getMinZoom and #getMaxZoom", function () {
-		describe('#getMinZoom', function () {
-			it('returns 0 if not set by Map options or TileLayer options', function () {
-				var map = L.map(document.createElement('div'));
-				expect(map.getMinZoom()).to.be(0);
+		it("remove listeners when called without arguments", function () {
+			L.tileLayer('http://tilecache.openstreetmap.fr/hot/{z}/{x}/{y}.png', {minZoom: 0, maxZoom: 20}).addTo(map);
+			container.style.width = container.style.height = "500px";
+			var bounds = L.latLngBounds([51.5, -0.05], [51.55, 0.05]);
+			map.setMaxBounds(bounds, {animate: false});
+			map.setMaxBounds();
+			// set view outside
+			var center = L.latLng([0, 0]);
+			map.once('moveend', function () {
+				expect(center.equals(map.getCenter())).to.be(true);
 			});
+			map.setView(center, 18, {animate: false});
 		});
 
-		it("minZoom and maxZoom options overrides any minZoom and maxZoom set on layers", function () {
-
-			var map = L.map(document.createElement('div'), {minZoom: 2, maxZoom: 20});
-
-			L.tileLayer("{z}{x}{y}", {minZoom: 4, maxZoom: 10}).addTo(map);
-			L.tileLayer("{z}{x}{y}", {minZoom: 6, maxZoom: 17}).addTo(map);
-			L.tileLayer("{z}{x}{y}", {minZoom: 0, maxZoom: 22}).addTo(map);
-
-			expect(map.getMinZoom()).to.be(2);
-			expect(map.getMaxZoom()).to.be(20);
-		});
 	});
 
 	describe("#getMinZoom and #getMaxZoom", function () {
