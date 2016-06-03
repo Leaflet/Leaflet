@@ -3,7 +3,7 @@
  * @aka L.CRS
  * Abstract class that defines coordinate reference systems for projecting
  * geographical points into pixel (screen) coordinates and back (and to
- * coordinates in other units for WMS services). See
+ * coordinates in other units for [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services). See
  * [spatial reference system](http://en.wikipedia.org/wiki/Coordinate_reference_system).
  *
  * Leaflet defines the most usual CRSs by default. If you want to use a
