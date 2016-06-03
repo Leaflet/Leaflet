@@ -100,6 +100,7 @@ L.Polygon = L.Polyline.extend({
 
 	_ringContains: function (ring, point) {
 		// check based on the wind number method
+		// (http://geomalgorithms.com/a03-_inclusion.html)
 		var wn = 0;
 
 		for (var i = 0, len = ring.length; i < len; ++i) {
