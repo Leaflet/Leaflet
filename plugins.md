@@ -1513,6 +1513,17 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/w8r/Leaflet.Path.Transform">Leaflet.Path.Transform</a>
+		</td>
+		<td>
+			Scale & rotate handler and interaction for polygons and polylines (<a href="https://w8r.github.io/Leaflet.Path.Transform">Demo</a>)
+		</td>
+		<td>
+			<a href="https://github.com/w8r/">Alexander Milevski</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/makinacorpus/Leaflet.Snap">Leaflet.Snap</a>
 		</td><td>
 			Enables snapping of draggable markers to polylines and other layers.
@@ -2500,7 +2511,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td><td>
 			<a href="https://github.com/ahalota/">Anika Halota</a>
 		</td>
-			
+
 	</tr>
 	<tr>
 		<td>
