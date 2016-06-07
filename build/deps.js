@@ -200,6 +200,12 @@ var deps = {
 		desc: 'Makes markers draggable (by mouse or touch).'
 	},
 
+	PathDrag: {
+		src: ['layer/vector/Path.Drag.js'],
+		deps: ['Path', 'Draggable'],
+		desc: 'Makes paths draggable (by mouse or touch).'
+	},
+
 	ControlZoom: {
 		src: ['control/Control.js',
 		      'control/Control.Zoom.js'],

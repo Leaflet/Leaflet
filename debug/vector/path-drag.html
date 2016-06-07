@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
+    <style type="text/css">
+        #map {
+            width: 1000px;
+            height: 800px;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script type="text/javascript">
+        var center = [41.2058, 9.4307];
+
+        var map = L.map('map', {preferCanvas: false}).setView(center, 13);
+
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        L.polygon([[41.21, 9.42], [41.22, 9.40], [41.23, 9.40]], {draggable: true}).addTo(map);
+        L.polygon([[[41.20, 9.41], [41.20, 9.39], [41.21, 9.41]], [[41.18, 9.42], [41.17, 9.40], [41.19, 9.38]]], {color: 'Tomato', draggable: true}).addTo(map);
+        L.circleMarker([41.20, 9.45], {color: 'Chocolate', radius: 12, draggable: true}).addTo(map);
+        L.polyline([[41.20, 9.36], [41.205, 9.38], [41.19, 9.37]], {draggable: true}).addTo(map);
+
+    </script>
+</body>
+</html>
