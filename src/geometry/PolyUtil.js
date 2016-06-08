@@ -54,3 +54,28 @@ L.PolyUtil.clipPolygon = function (points, bounds, round) {
 
 	return points;
 };
+
+/* @function ringContains(points: Point[], point: Point): Boolean
+ * Check if `point` is inside the ring defined by `points`.
+ */
+L.PolyUtil.ringContains = function (points, point) {
+	// Based on the winding number (http://geomalgorithms.com/a03-_inclusion.html)
+	var wn = 0;
+
+	for (var i = 0, len = points.length; i < len; ++i) {
+		// through all ring edges (last edge linked back to the first node)
+		var next = (i < len - 1) ? i + 1 : 0;
+		if (points[i].y <= point.y) {
+			if ((points[next].y > point.y) &&
+					(L.LineUtil.pointToLineOrientation(point, points[i], points[next]) > 0)) {
+				// upward crossing with point on the "left" of current ring edge
+				++wn;
+			}
+		}	else if ((points[next].y <= point.y) &&
+							 (L.LineUtil.pointToLineOrientation(point, points[i], points[next]) < 0)) {
+			// downward crossing with point on the "right" of current ring edge
+			--wn;
+		}
+	}
+	return (wn !== 0);
+};

@@ -39,6 +39,16 @@ L.LineUtil = {
 		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
+	// @function pointToLineOrientation(p: Point, p1: Point, p2: Point): Number
+	// Return a positive (resp. negative) value if point `p` is "left"
+	// (resp. "right") of the oriented line defined by `p1` and `p2`.
+	// Warning: "left" and "right" refer to the situation with a usual
+	// axis setting (y-axis not pointing downard).
+	pointToLineOrientation: function (p, p1, p2) {
+		// Use the (p1 p2) * (p1 p) cross product z-component.
+		return (p2.x - p1.x) * (p.y - p1.y) - (p2.y - p1.y) * (p.x - p1.x);
+	},
+
 	// @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
 	// Returns the closest point from a point `p` on a segment `p1` to `p2`.
 	closestPointOnSegment: function (p, p1, p2) {

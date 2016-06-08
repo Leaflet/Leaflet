@@ -65,6 +65,25 @@ describe('LineUtil', function () {
 		});
 	});
 
+	describe('#pointToLineOrientation', function () {
+
+		var p1 = new L.Point(0, 10);
+		var p2 = new L.Point(10, 0);
+		var p = new L.Point(0, 0);
+
+		it('verify orientation for point not on the line', function () {
+			expect((L.LineUtil.pointToLineOrientation(p, p1, p2) < 0)).to.be.ok();
+			expect((L.LineUtil.pointToLineOrientation(p, p2, p1) > 0)).to.be.ok();
+		});
+
+		it('verify orientation for point on the line', function () {
+			expect((L.LineUtil.pointToLineOrientation(p1, p1, p2) === 0)).to.be.ok();
+			expect((L.LineUtil.pointToLineOrientation(p2, p2, p1) === 0)).to.be.ok();
+			expect((L.LineUtil.pointToLineOrientation(new L.Point(5, 5), p2, p1) === 0)).to.be.ok();
+			expect((L.LineUtil.pointToLineOrientation(new L.Point(20, -10), p2, p1) === 0)).to.be.ok();
+		});
+	});
+
 	describe('#simplify', function () {
 		it('simplifies polylines according to tolerance', function () {
 			var points = [

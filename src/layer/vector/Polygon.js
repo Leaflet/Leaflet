@@ -85,49 +85,17 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	// @method contains (latlng: LatLng): Boolean
-	// Returns `true` if the polygon contains the given point.
-	contains: function (obj) {
-		var point = this._map.latLngToLayerPoint(obj),
+	// Returns `true` if `latlng` is inside the polygon.
+	contains: function (latlng) {
+		var point = this._map.latLngToLayerPoint(latlng),
 		    contained = !this.isEmpty() &&
-				this.getBounds().contains(obj) &&
-				this._ringContains(this._rings[0], point);
+				this.getBounds().contains(latlng) &&
+				L.PolyUtil.ringContains(this._rings[0], point);
 
 		for (var i = 1, len = this._rings.length; contained && i < len; ++i) {
-			contained = contained && !this._ringContains(this._rings[i], point);
+			contained = contained && !L.PolyUtil.ringContains(this._rings[i], point);
 		}
 		return contained;
-	},
-
-	_ringContains: function (ring, point) {
-		// check based on the wind number method
-		// (http://geomalgorithms.com/a03-_inclusion.html)
-		var wn = 0;
-
-		for (var i = 0, len = ring.length; i < len; ++i) {
-			// through all edges of the ring, with last edge linked to the
-			// first node
-			var next = (i < len - 1) ? i + 1 : 0;
-			if (ring[i].y <= point.y) {
-				if ((ring[next].y > point.y) &&
-						(this._checkLeft(point, ring[i], ring[next]) > 0)) {
-					// upward crossing with point on the left of current ring edge
-					++wn;
-				}
-			}	else if ((ring[next].y <= point.y) &&
-								 (this._checkLeft(point, ring[i], ring[next]) < 0)) {
-				// downward crossing with point on the right of current ring
-				// edge
-				--wn;
-			}
-		}
-		return (wn !== 0);
-	},
-
-	_checkLeft: function (p0, p1, p2) {
-		// Return a positive (resp. negative) value if point p0 is left
-		// (resp. right) of the oriented line defined by p1 and p2 (using
-		// the (p1 p2)x(p1 p0) cross product z-component to check).
-		return (p2.x - p1.x) * (p0.y - p1.y) - (p2.y - p1.y) * (p0.x - p1.x);
 	},
 
 	_convertLatLngs: function (latlngs) {
