@@ -103,7 +103,7 @@ L.Icon = L.Class.extend({
 		var options = this.options;
 		var sizeOption = options[name + 'Size'];
 
-		if (!L.Util.isArray(sizeOption)) {
+		if (typeof sizeOption === 'number') {
 			sizeOption = [sizeOption, sizeOption];
 		}
 
