@@ -62,7 +62,11 @@ L.Util = {
 
 	// @function throttle(fn: Function, time: Number, context: Object): Function
 	// Returns a function which executes function `fn` with the given scope `context`
-	// (so that the `this` keyword refers to `context` inside `fn`'s code). The arguments received by the bound function will be any arguments passed when binding the function, followed by any arguments passed when invoking the bound function. Has an `L.bind` shortcut.
+	// (so that the `this` keyword refers to `context` inside `fn`'s code). The function
+	// `fn` will be called no more than one time per given amount of `time`. The arguments
+	// received by the bound function will be any arguments passed when binding the
+	// function, followed by any arguments passed when invoking the bound function.
+	// Has an `L.bind` shortcut.
 	throttle: function (fn, time, context) {
 		var lock, args, wrapperFn, later;
 
