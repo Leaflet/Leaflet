@@ -35,11 +35,11 @@ L.TileLayer = L.GridLayer.extend({
 	// @aka TileLayer options
 	options: {
 		// @option minZoom: Number = 0
-		// Minimum zoom number.
+		// Minimum zoom number. This will override the [minimum zoom level](#map-minzoom) set on the map.
 		minZoom: 0,
 
 		// @option maxZoom: Number = 18
-		// Maximum zoom number.
+		// Maximum zoom number. This will override the [maximum zoom level](#map-maxzoom) set on the map.
 		maxZoom: 18,
 
 		// @option maxNativeZoom: Number = null
