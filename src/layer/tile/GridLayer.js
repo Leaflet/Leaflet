@@ -102,11 +102,11 @@ L.GridLayer = L.Layer.extend({
 		bounds: null,
 
 		// @option minZoom: Number = 0
-		// The minimum zoom level that tiles will be loaded at. By default the entire map.  This will override the [minimum zoom level](#map-minzoom) set on the map.
+		// The minimum zoom level that tiles will be loaded at. By default the entire map. If the map's [minimum zoom level](#map-minzoom) option is set to a lower value than this, then this layer will not be displayed when zooming fully out.
 		minZoom: 0,
 
 		// @option maxZoom: Number = undefined
-		// The maximum zoom level that tiles will be loaded at.  This will override the [maximum zoom level](#map-maxzoom) set on the map.
+		// The maximum zoom level that tiles will be loaded at. By default the entire map. If the map's [maximum zoom level](#map-maxzoom) option is set to a hhigher value than this, then this layer will not be displayed when zooming fully in.
 		maxZoom: undefined,
 
 		// @option noWrap: Boolean = false

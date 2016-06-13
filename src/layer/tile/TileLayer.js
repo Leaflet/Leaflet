@@ -35,11 +35,11 @@ L.TileLayer = L.GridLayer.extend({
 	// @aka TileLayer options
 	options: {
 		// @option minZoom: Number = 0
-		// Minimum zoom number. This will override the [minimum zoom level](#map-minzoom) set on the map.
+		// The minimum zoom level that tiles will be loaded at. By default the entire map.  If the map's [minimum zoom level](#map-minzoom) option is set to a lower value than this, then this layer will not be displayed when zooming fully out.
 		minZoom: 0,
 
 		// @option maxZoom: Number = 18
-		// Maximum zoom number. This will override the [maximum zoom level](#map-maxzoom) set on the map.
+		// The maximum zoom level that tiles will be loaded at. By default the entire map.  If the map's [maximum zoom level](#map-maxzoom) option is set to a higher value than this, then this layer will not be displayed when zooming fully in.
 		maxZoom: 18,
 
 		// @option maxNativeZoom: Number = null
