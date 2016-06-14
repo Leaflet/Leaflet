@@ -42,9 +42,10 @@ L.Layer.include({
 			this._popupHandlersAdded = true;
 		}
 
-		// save the originally passed offset
-		this._originalPopupOffset = this._popup.options.offset;
-
+		if (!this._originalPopupOffset) {
+			// save the originally passed offset
+			this._originalPopupOffset = this._popup.options.offset;
+		}
 		return this;
 	},
 
