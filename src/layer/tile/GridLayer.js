@@ -384,10 +384,11 @@ L.GridLayer = L.Layer.extend({
 			this._removeAllTiles();
 			return;
 		}
-
+		
+		var now = +new Date();
 		for (key in this._tiles) {
 			tile = this._tiles[key];
-			tile.retain = tile.current;
+			tile.retain = tile.current || (this.options.tileRecycleDelay > 0 && (tile.loaded === undefined || (now - tile.loaded < this.options.tileRecycleDelay * 1000)));
 		}
 
 		for (key in this._tiles) {
