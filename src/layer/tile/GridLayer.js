@@ -384,7 +384,7 @@ L.GridLayer = L.Layer.extend({
 			this._removeAllTiles();
 			return;
 		}
-		
+
 		var now = +new Date();
 		for (key in this._tiles) {
 			tile = this._tiles[key];
