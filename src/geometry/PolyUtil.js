@@ -56,9 +56,26 @@ L.PolyUtil.clipPolygon = function (points, bounds, round) {
 };
 
 /* @function ringContains(points: Point[], point: Point): Boolean
- * Check if `point` is inside the ring defined by `points`.
+ * Returns `true` if `point` is inside the ring defined by `points`.
+ * @alternative
+ * @function ringContains(latlngs: LatLng[], latlng: LatLng, map: Map): Boolean
+ * Returns `true` if the `map` projection of `latlng` is inside the ring defined by
+ * projected `latlngs`.
  */
-L.PolyUtil.ringContains = function (points, point) {
+L.PolyUtil.ringContains = function (objs, obj, map) {
+	var point, points;
+
+	if (objs[0] instanceof L.Point && obj instanceof L.Point) {
+		point = obj;
+		points = objs;
+	} else if (map && objs[0] instanceof L.LatLng && obj instanceof L.LatLng) {
+		point = map.project(obj);
+		points = [];
+		for (var j = 0; j < objs.length; j++) {
+			points.push(map.project(objs[j]));
+		}
+	}
+
 	// Based on the winding number (http://geomalgorithms.com/a03-_inclusion.html)
 	var wn = 0;
 

@@ -87,13 +87,12 @@ L.Polygon = L.Polyline.extend({
 	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if `latlng` is inside the polygon.
 	contains: function (latlng) {
-		var point = this._map.latLngToLayerPoint(latlng),
-		    contained = !this.isEmpty() &&
+		var contained = !this.isEmpty() &&
 				this.getBounds().contains(latlng) &&
-				L.PolyUtil.ringContains(this._rings[0], point);
+				L.PolyUtil.ringContains(this._latlngs[0], latlng, this._map);
 
-		for (var i = 1, len = this._rings.length; contained && i < len; ++i) {
-			contained = contained && !L.PolyUtil.ringContains(this._rings[i], point);
+		for (var i = 1, len = this._latlngs.length; contained && i < len; ++i) {
+			contained = contained && !L.PolyUtil.ringContains(this._latlngs[i], latlng, this._map);
 		}
 		return contained;
 	},
