@@ -120,21 +120,31 @@ L.GridLayer = L.Layer.extend({
 
 		// @option className: String = ''
 		// A custom class name to assign to the tile layer. Empty by default.
-		className: ''
+		className: '',
+
+		// @option keepOffscreenRatio: Number = 1
+		// How many tiles to keep loaded when they move off the screen, as a proportion
+		// of the number of tiles that can fit on the screen.
+		keepOffscreenRatio: 1
 	},
 
 	initialize: function (options) {
 		options = L.setOptions(this, options);
 	},
 
-	onAdd: function () {
+	onAdd: function (map) {
 		this._initContainer();
 
 		this._levels = {};
 		this._tiles = {};
+		this._mruIndex = 0;
+		this._mruSize = 0;
+		this._mruTiles = [];
+		this._onMapResize();
 
 		this._resetView();
 		this._update();
+		map.on('resize', this._onMapResize, this);
 	},
 
 	beforeAdd: function (map) {
@@ -147,6 +157,7 @@ L.GridLayer = L.Layer.extend({
 		map._removeZoomLimit(this);
 		this._container = null;
 		this._tileZoom = null;
+		map.off('resize', this._onMapResize, this);
 	},
 
 	// @method bringToFront: this
@@ -595,10 +606,11 @@ L.GridLayer = L.Layer.extend({
 		var pixelBounds = this._getTiledPixelBounds(center),
 		    tileRange = this._pxBoundsToTileRange(pixelBounds),
 		    tileCenter = tileRange.getCenter(),
-		    queue = [];
+		    queue = [],
+		    key;
 
-		for (var key in this._tiles) {
-			this._tiles[key].current = false;
+		for (key in this._tiles) {
+			this._tiles[key].inBounds = false;
 		}
 
 		// _update just loads more tiles. If the tile zoom level differs too much
@@ -615,10 +627,23 @@ L.GridLayer = L.Layer.extend({
 
 				var tile = this._tiles[this._tileCoordsToKey(coords)];
 				if (tile) {
-					tile.current = true;
+					tile.current = tile.inBounds = true;
+					tile.inMru = false;
 				} else {
 					queue.push(coords);
 				}
+			}
+		}
+
+		// Push tiles outside bounds to MRU list
+		for (key in this._tiles) {
+			if (!this._tiles[key].inBounds && !this._tiles[key].inMru) {
+				var mrui = this._mruIndex = (this._mruIndex + 1) % this._mruSize;
+				if (this._mruTiles[mrui]) {
+					this._mruTiles[mrui].current = this._mruTiles[mrui].inBounds;
+				}
+				this._mruTiles[mrui] = this._tiles[key];
+				this._tiles[key].current = this._tiles[key].inMru = true;
 			}
 		}
 
@@ -844,7 +869,22 @@ L.GridLayer = L.Layer.extend({
 			if (!this._tiles[key].loaded) { return false; }
 		}
 		return true;
+	},
+
+	// (re)calculate size of offscreen tiles MRU FIFO.
+	_onMapResize: function () {
+		var size = this._map.getSize().unscaleBy(this.getTileSize()).ceil(),
+		    max = this._mruSize = size.x * size.y * this.options.keepOffscreenRatio,
+		    len = this._mruTiles.length;
+
+		for (var i = max; i < len; i++) {
+			if (this._mruTiles[i]) {
+				this._mruTiles[i].inMru = false;
+			}
+		}
+		this._mruTiles.splice(max, Math.min(0, len - max));
 	}
+
 });
 
 // @factory L.gridLayer(options?: GridLayer options)
