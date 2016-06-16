@@ -897,7 +897,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		<td>
 			<a href="https://github.com/iatkin/leaflet-svgicon">Leaflet-SVGIcon</a>
 		</td><td>
-			A simple and customizable SVG icon with no external dependencies. <a href="http://iatkin.github.io/leaflet-svgicon/">Customizable demo with example subclasses</a>
+			A simple and customizable SVG icon with no external dependencies. Also included is a convenience Marker class and two example subclasses. <a href="http://iatkin.github.io/leaflet-svgicon/">Customizable demo with example subclasses</a>
 		</td><td>
 			<a href="https://github.com/iatkin">Ilya Atkin</a>
 		</td>
