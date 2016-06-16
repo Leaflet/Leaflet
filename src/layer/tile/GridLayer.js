@@ -120,7 +120,11 @@ L.GridLayer = L.Layer.extend({
 
 		// @option className: String = ''
 		// A custom class name to assign to the tile layer. Empty by default.
-		className: ''
+		className: '',
+
+		// @option maxOffScreenTiles: Number = 10
+		// How many tiles to keep loaded when they move off the screen.
+		maxOffScreenTiles: 10
 	},
 
 	initialize: function (options) {
@@ -132,6 +136,8 @@ L.GridLayer = L.Layer.extend({
 
 		this._levels = {};
 		this._tiles = {};
+		this._mruIndex = 0;
+		this._mruTiles = new Array(this.options.maxOffScreenTiles);
 
 		this._resetView();
 		this._update();
@@ -595,10 +601,11 @@ L.GridLayer = L.Layer.extend({
 		var pixelBounds = this._getTiledPixelBounds(center),
 		    tileRange = this._pxBoundsToTileRange(pixelBounds),
 		    tileCenter = tileRange.getCenter(),
-		    queue = [];
+		    queue = [],
+		    key;
 
-		for (var key in this._tiles) {
-			this._tiles[key].current = false;
+		for (key in this._tiles) {
+			this._tiles[key].inBounds = false;
 		}
 
 		// _update just loads more tiles. If the tile zoom level differs too much
@@ -615,10 +622,23 @@ L.GridLayer = L.Layer.extend({
 
 				var tile = this._tiles[this._tileCoordsToKey(coords)];
 				if (tile) {
-					tile.current = true;
+					tile.current = tile.inBounds = true;
+					tile.inMru = false;
 				} else {
 					queue.push(coords);
 				}
+			}
+		}
+
+		// Push tiles outside bounds to MRU list
+		for (key in this._tiles) {
+			if (!this._tiles[key].inBounds && !this._tiles[key].inMru) {
+				var mrui = this._mruIndex = (this._mruIndex + 1) % this.options.maxOffScreenTiles;
+				if (this._mruTiles[mrui]) {
+					this._mruTiles[mrui].current = this._mruTiles[mrui].inBounds;
+				}
+				this._mruTiles[mrui] = this._tiles[key];
+				this._tiles[key].current = this._tiles[key].inMru = true;
 			}
 		}
 
