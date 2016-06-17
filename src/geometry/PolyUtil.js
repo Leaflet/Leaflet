@@ -74,6 +74,8 @@ L.PolyUtil.ringContains = function (objs, obj, map) {
 		for (var j = 0; j < objs.length; j++) {
 			points.push(map.project(objs[j]));
 		}
+	} else {
+		throw new Error('Incompatible input arguments.');
 	}
 
 	// Based on the winding number (http://geomalgorithms.com/a03-_inclusion.html)
@@ -88,7 +90,7 @@ L.PolyUtil.ringContains = function (objs, obj, map) {
 				// upward crossing with point on the "left" of current ring edge
 				++wn;
 			}
-		}	else if ((points[next].y <= point.y) &&
+		} else if ((points[next].y <= point.y) &&
 							 (L.LineUtil.pointToLineOrientation(point, points[i], points[next]) < 0)) {
 			// downward crossing with point on the "right" of current ring edge
 			--wn;

@@ -85,8 +85,11 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	// @method contains (latlng: LatLng): Boolean
-	// Returns `true` if `latlng` is inside the (multi)polygon.
+	// Returns `true` if `latlng` is inside the (multi)polygon. All
+	// computations are performed on projected points so the polygon has
+	// to be added to a map beforehand.
 	contains: function (latlng) {
+		latlng = L.latLng(latlng);
 		var inside = false;
 		if (!this.isEmpty() && this.getBounds().contains(latlng)) {
 			var latlngs = this._latlngs;

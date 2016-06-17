@@ -365,6 +365,10 @@ describe('Polygon', function () {
 			expect(polygon.contains(new L.LatLng(4, 3))).to.not.be.ok();
 		});
 
+		it("checks for latlng provided as an array", function () {
+			expect(polygon.contains([3, 2])).to.be.ok();
+		});
+
 		var multi = new L.Polygon([
 			[
 				[[1, 2], [1, 4], [3, 4], [3, 2]]
