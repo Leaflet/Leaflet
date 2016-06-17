@@ -315,16 +315,16 @@ describe("L.Map#openPopup", function () {
 		map.openPopup(p);
 		expect(map.hasLayer(p)).to.be(true);
 		map.on('drag', spy);
-		var hand = new Hand({timing: 'fastframe'});
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				expect(spy.called).to.be(true);
+				expect(map.hasLayer(p)).to.be(true);
+				done();
+			}});
 		var mouse = hand.growFinger('mouse');
 		mouse.moveTo(coords.left + 100, coords.left + 100, 0)
 			.down().moveBy(10, 10, 20).up();
-
-		setTimeout(function () {
-			expect(spy.called).to.be(true);
-			expect(map.hasLayer(p)).to.be(true);
-			done();
-		}, 100);
 	});
 
 });
