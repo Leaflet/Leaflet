@@ -85,14 +85,29 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	// @method contains (latlng: LatLng): Boolean
-	// Returns `true` if `latlng` is inside the polygon.
+	// Returns `true` if `latlng` is inside the (multi)polygon.
 	contains: function (latlng) {
-		var contained = !this.isEmpty() &&
-				this.getBounds().contains(latlng) &&
-				L.PolyUtil.ringContains(this._latlngs[0], latlng, this._map);
+		var inside = false;
+		if (!this.isEmpty() && this.getBounds().contains(latlng)) {
+			var latlngs = this._latlngs;
+			if (L.Polyline._flat(latlngs[0])) {
+				// Describe single polygons as a multi-polygons with one element
+				latlngs = [latlngs];
+			}
+			for (var i = 0, len = latlngs.length; !inside && i < len; i++) {
+				inside = this._singleContains(latlngs[i], latlng);
+			}
+		}
+		return inside;
+	},
 
-		for (var i = 1, len = this._latlngs.length; contained && i < len; ++i) {
-			contained = contained && !L.PolyUtil.ringContains(this._latlngs[i], latlng, this._map);
+	_singleContains: function (latlngs, latlng) {
+		// Deal with latlngs describing a _single_ polygon, start by checking first ring
+		var contained = L.PolyUtil.ringContains(latlngs[0], latlng, this._map);
+
+		for (var i = 1, len = latlngs.length; contained && i < len; ++i) {
+			// Check holes
+			contained = contained && !L.PolyUtil.ringContains(latlngs[i], latlng, this._map);
 		}
 		return contained;
 	},
