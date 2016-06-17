@@ -665,7 +665,7 @@ L.Map = L.Evented.extend({
 	// Given a pixel coordinate relative to the map container, returns the corresponding
 	// pixel coordinate relative to the [origin pixel](#map-getpixelorigin).
 	containerPointToLayerPoint: function (point) { // (Point)
-		if (this._rotate && this._bearing) {
+		if (this._rotate) {
 			return L.point(point)
 				.subtract(this._getMapPanePos())
 				.rotateFrom(-this._bearing, this._getRotatePanePos())
@@ -680,7 +680,7 @@ L.Map = L.Evented.extend({
 	// Given a pixel coordinate relative to the [origin pixel](#map-getpixelorigin),
 	// returns the corresponding pixel coordinate relative to the map container.
 	layerPointToContainerPoint: function (point) { // (Point)
-		if (this._rotate && this._bearing) {
+		if (this._rotate) {
 			return L.point(point)
 				.add(this._getRotatePanePos())
 				.rotateFrom(this._bearing, this._getRotatePanePos())
@@ -1162,7 +1162,7 @@ L.Map = L.Evented.extend({
 	_getNewPixelOrigin: function (center, zoom) {
 		var viewHalf = this.getSize()._divideBy(2);
 
-		if (this._rotate && this._bearing) {
+		if (this._rotate) {
 			return this.project(center, zoom)
 				.rotate(this._bearing)
 				._subtract(viewHalf)

@@ -581,7 +581,7 @@ L.GridLayer = L.Layer.extend({
 			size = map.getSize(),
 			halfSize;
 
-		if (this._map._rotate && this._map._bearing) {
+		if (this._map._rotate) {
 			halfSize = new L.Bounds([
 				map.containerPointToLayerPoint([0, 0]).floor(),
 				map.containerPointToLayerPoint([size.x, 0]).floor(),
