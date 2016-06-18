@@ -47,7 +47,7 @@ export var Renderer = Layer.extend({
 		this._layers = this._layers || {};
 	},
 
-	onAdd: function () {
+	onAdd: function (map) {
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
@@ -59,10 +59,12 @@ export var Renderer = Layer.extend({
 		this.getPane().appendChild(this._container);
 		this._update();
 		this.on('update', this._updatePaths, this);
+		this._map.on('rotate', this._update, this);
 	},
 
 	onRemove: function () {
 		this.off('update', this._updatePaths, this);
+		this._map.off('rotate', this._update, this);
 		this._destroyContainer();
 	},
 
@@ -92,15 +94,16 @@ export var Renderer = Layer.extend({
 		    position = DomUtil.getPosition(this._container),
 		    viewHalf = this._map.getSize().multiplyBy(0.5 + this.options.padding),
 		    currentCenterPoint = this._map.project(this._center, zoom),
-		    destCenterPoint = this._map.project(center, zoom),
-		    centerOffset = destCenterPoint.subtract(currentCenterPoint),
+			destCenterPoint = this._map.project(center, zoom),
+			offset = this._map._latLngToNewLayerPoint(this._topLeft, zoom, center);
+		    // centerOffset = destCenterPoint.subtract(currentCenterPoint),
 
-		    topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
+		    // topLeftOffset = viewHalf.multiplyBy(-scale).add(position).add(viewHalf).subtract(centerOffset);
 
 		if (Browser.any3d) {
-			DomUtil.setTransform(this._container, topLeftOffset, scale);
+			DomUtil.setTransform(this._container, offset, scale);
 		} else {
-			DomUtil.setPosition(this._container, topLeftOffset);
+			DomUtil.setPosition(this._container, offset);
 		}
 	},
 
@@ -129,10 +132,22 @@ export var Renderer = Layer.extend({
 		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
 		// Subclasses are responsible of firing the 'update' event.
 		var p = this.options.padding,
+		    map = this._map,
 		    size = this._map.getSize(),
-		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+		    padMin = size.multiplyBy(-p),
+		    padMax = size.multiplyBy(1 + p),
+		    //// TODO: Somehow refactor this out into map.something() - the code is
+		    ////   pretty much the same as in GridLayer.
+		    clip = new L.Bounds([
+		        map.containerPointToLayerPoint([padMin.x, padMin.y]).floor(),
+		        map.containerPointToLayerPoint([padMin.x, padMax.y]).floor(),
+		        map.containerPointToLayerPoint([padMax.x, padMin.y]).floor(),
+		        map.containerPointToLayerPoint([padMax.x, padMax.y]).floor()
+		    ]);
+			//min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
-		this._bounds = new Bounds(min, min.add(size.multiplyBy(1 + p * 2)).round());
+		this._bounds = clip;
+		this._topLeft = clip.min;
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();

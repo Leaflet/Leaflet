@@ -79,12 +79,20 @@
 <body>
 
 
-	<div id="map">
+	<div id="map" style="height: 500px;>
 		<div class="crosshair c1"></div>
 <!-- 		<div class="crosshair c2"></div> -->
 	</div>
 
-
+	<div>
+		<button onclick="map.setBearing(0);" > 0</button>
+		<button onclick="map.setBearing(15);">15</button>
+		<button onclick="map.setBearing(30);">30</button>
+		<button onclick="map.setBearing(45);">45</button>
+		<button onclick="map.setBearing(60);">60</button>
+		<button onclick="map.setBearing(75);">75</button>
+		<button onclick="map.setBearing(90);">90</button>
+	</div>
 
 	<table>
 		<tr><th>LatLng          </th><td id='llx'></td><td id='lly'></td>
@@ -103,15 +111,7 @@
 
 	<input type="range" min="0" max="360" step="1" name="rho" id='rho_input' /><span id='rho'></span>
 
-	<div>
-		<button onclick="map.setBearing(0);" > 0</button>
-		<button onclick="map.setBearing(15);">15</button>
-		<button onclick="map.setBearing(30);">30</button>
-		<button onclick="map.setBearing(45);">45</button>
-		<button onclick="map.setBearing(60);">60</button>
-		<button onclick="map.setBearing(75);">75</button>
-		<button onclick="map.setBearing(90);">90</button>
-	</div>
+
 
 	<div>
 		<button onclick="map.flyTo(trd, 10);" >flyTo TRD</button>
@@ -143,7 +143,7 @@
 
 
 		var map = L.map('map', {rotate: true})
-				.setView([55, 10], 0)
+				.setView([55, 10], 2)
 				.addLayer(osm)
 				.addLayer(path);
 
