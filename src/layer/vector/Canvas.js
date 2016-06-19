@@ -151,7 +151,7 @@ L.Canvas = L.Renderer.extend({
 
 		for (var id in this._layers) {
 			layer = this._layers[id];
-			if (!bounds || layer._pxBounds.intersects(bounds)) {
+			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
 			}
 			if (clear && layer._removed) {
