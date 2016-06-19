@@ -104,7 +104,7 @@ L.Renderer = L.Layer.extend({
 			//min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = clip;
-		this._topLeft = clip.min;
+		this._topLeft = this._map.layerPointToLatLng(clip.min);
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
