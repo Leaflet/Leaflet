@@ -199,6 +199,11 @@ var deps = {
 		desc: 'Enables tracking DOM mutations to the map container size.'
 	},
 
+	CompassBearing: {
+		src: ['map/handler/Map.CompassBearing.js'],
+		desc: 'Enables rotating the map based on the device compass'
+	},
+	
 	MarkerDrag: {
 		src: ['layer/marker/Marker.Drag.js'],
 		deps: ['Marker'],
