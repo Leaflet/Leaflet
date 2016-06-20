@@ -1,3 +1,5 @@
+/* global Polymer */
+/* eslint no-undef: "error" */
 /*
  * Vector rendering for IE7-8 through VML.
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
@@ -6,12 +8,12 @@
 L.Browser.vml = !L.Browser.svg && (function () {
 	try {
 		var div = document.createElement('div');
-		div.innerHTML = '<v:shape adj="1"/>';
+		Polymer.dom(div).innerHTML = '<v:shape adj="1"/>';
 
-		var shape = div.firstChild;
-		shape.style.behavior = 'url(#default#VML)';
+		var shape = Polymer.dom(div).firstChild;
+		Polymer.dom(shape).node.style.behavior = 'url(#default#VML)';
 
-		return shape && (typeof shape.adj === 'object');
+		return shape && (typeof Polymer.dom(shape).node.adj === 'object');
 
 	} catch (e) {
 		return false;
@@ -38,14 +40,14 @@ L.SVG.include(!L.Browser.vml ? {} : {
 		container.coordsize = '1 1';
 
 		layer._path = L.SVG.create('path');
-		container.appendChild(layer._path);
+		Polymer.dom(container).appendChild(layer._path);
 
 		this._updateStyle(layer);
 	},
 
 	_addPath: function (layer) {
 		var container = layer._container;
-		this._container.appendChild(container);
+		Polymer.dom(this._container).appendChild(container);
 
 		if (layer.options.interactive) {
 			layer.addInteractiveTarget(container);
@@ -70,7 +72,7 @@ L.SVG.include(!L.Browser.vml ? {} : {
 		if (options.stroke) {
 			if (!stroke) {
 				stroke = layer._stroke = L.SVG.create('stroke');
-				container.appendChild(stroke);
+                                Polymer.dom(container).appendChild(stroke);
 			}
 			stroke.weight = options.weight + 'px';
 			stroke.color = options.color;
@@ -87,20 +89,20 @@ L.SVG.include(!L.Browser.vml ? {} : {
 			stroke.joinstyle = options.lineJoin;
 
 		} else if (stroke) {
-			container.removeChild(stroke);
+			Polymer.dom(container).removeChild(stroke);
 			layer._stroke = null;
 		}
 
 		if (options.fill) {
 			if (!fill) {
 				fill = layer._fill = L.SVG.create('fill');
-				container.appendChild(fill);
+				Polymer.dom(container).appendChild(fill);
 			}
 			fill.color = options.fillColor || options.color;
 			fill.opacity = options.fillOpacity;
 
 		} else if (fill) {
-			container.removeChild(fill);
+			Polymer.dom(container).removeChild(fill);
 			layer._fill = null;
 		}
 	},

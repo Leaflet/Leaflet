@@ -201,7 +201,7 @@ L.GridLayer = L.Layer.extend({
 			this._updateOpacity();
 		}
 
-		this.getPane().appendChild(this._container);
+		Polymer.dom(this.getPane()).appendChild(this._container);
 	},
 
 	_updateLevels: function () {
@@ -482,7 +482,7 @@ L.GridLayer = L.Layer.extend({
 				this._addTile(queue[i], fragment);
 			}
 
-			this._level.el.appendChild(fragment);
+			Polymer.dom(this._level.el).appendChild(fragment);
 		}
 	},
 
@@ -597,7 +597,7 @@ L.GridLayer = L.Layer.extend({
 			current: true
 		};
 
-		container.appendChild(tile);
+		Polymer.dom(container).appendChild(tile);
 		this.fire('tileloadstart', {
 			tile: tile,
 			coords: coords

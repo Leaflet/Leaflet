@@ -1,3 +1,5 @@
+/* global Polymer */
+/* eslint no-undef: "error" */
 /*
  * L.Control.Attribution is used for displaying attribution on the map (added by default).
  */
@@ -82,7 +84,7 @@ L.Control.Attribution = L.Control.extend({
 			prefixAndAttribs.push(attribs.join(', '));
 		}
 
-		this._container.innerHTML = prefixAndAttribs.join(' | ');
+		Polymer.dom(this._container).innerHTML = prefixAndAttribs.join(' | ');
 	}
 });
 

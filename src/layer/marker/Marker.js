@@ -159,10 +159,10 @@ L.Marker = L.Layer.extend({
 
 
 		if (addIcon) {
-			this.getPane().appendChild(this._icon);
+			Polymer.dom(this.getPane()).appendChild(this._icon);
 		}
 		if (newShadow && addShadow) {
-			this.getPane('shadowPane').appendChild(this._shadow);
+			Polymer.dom(this.getPane('shadowPane')).appendChild(this._shadow);
 		}
 	},
 

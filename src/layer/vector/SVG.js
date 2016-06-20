@@ -8,10 +8,10 @@ L.SVG = L.Renderer.extend({
 		this._container = L.SVG.create('svg');
 
 		// makes it possible to click through svg root; we'll reset it back in individual paths
-		this._container.setAttribute('pointer-events', 'none');
+		Polymer.dom(this._container).setAttribute('pointer-events', 'none');
 
 		this._rootGroup = L.SVG.create('g');
-		this._container.appendChild(this._rootGroup);
+		Polymer.dom(this._container).appendChild(this._rootGroup);
 	},
 
 	_update: function () {
@@ -26,13 +26,13 @@ L.SVG = L.Renderer.extend({
 		// set size of svg-container if changed
 		if (!this._svgSize || !this._svgSize.equals(size)) {
 			this._svgSize = size;
-			container.setAttribute('width', size.x);
-			container.setAttribute('height', size.y);
+			Polymer.dom(container).setAttribute('width', size.x);
+			Polymer.dom(container).setAttribute('height', size.y);
 		}
 
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		L.DomUtil.setPosition(container, b.min);
-		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+		Polymer.dom(container).setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 	},
 
 	// methods below are called by vector layers implementations
@@ -52,7 +52,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_addPath: function (layer) {
-		this._rootGroup.appendChild(layer._path);
+		Polymer.dom(this._rootGroup).appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
 	},
 
@@ -73,36 +73,36 @@ L.SVG = L.Renderer.extend({
 		if (!path) { return; }
 
 		if (options.stroke) {
-			path.setAttribute('stroke', options.color);
-			path.setAttribute('stroke-opacity', options.opacity);
-			path.setAttribute('stroke-width', options.weight);
-			path.setAttribute('stroke-linecap', options.lineCap);
-			path.setAttribute('stroke-linejoin', options.lineJoin);
+			Polymer.dom(path).setAttribute('stroke', options.color);
+			Polymer.dom(path).setAttribute('stroke-opacity', options.opacity);
+			Polymer.dom(path).setAttribute('stroke-width', options.weight);
+			Polymer.dom(path).setAttribute('stroke-linecap', options.lineCap);
+			Polymer.dom(path).setAttribute('stroke-linejoin', options.lineJoin);
 
 			if (options.dashArray) {
-				path.setAttribute('stroke-dasharray', options.dashArray);
+				Polymer.dom(path).setAttribute('stroke-dasharray', options.dashArray);
 			} else {
-				path.removeAttribute('stroke-dasharray');
+				Polymer.dom(path).removeAttribute('stroke-dasharray');
 			}
 
 			if (options.dashOffset) {
-				path.setAttribute('stroke-dashoffset', options.dashOffset);
+				Polymer.dom(path).setAttribute('stroke-dashoffset', options.dashOffset);
 			} else {
-				path.removeAttribute('stroke-dashoffset');
+				Polymer.dom(path).removeAttribute('stroke-dashoffset');
 			}
 		} else {
-			path.setAttribute('stroke', 'none');
+			Polymer.dom(path).setAttribute('stroke', 'none');
 		}
 
 		if (options.fill) {
-			path.setAttribute('fill', options.fillColor || options.color);
-			path.setAttribute('fill-opacity', options.fillOpacity);
-			path.setAttribute('fill-rule', options.fillRule || 'evenodd');
+			Polymer.dom(path).setAttribute('fill', options.fillColor || options.color);
+			Polymer.dom(path).setAttribute('fill-opacity', options.fillOpacity);
+			Polymer.dom(path).setAttribute('fill-rule', options.fillRule || 'evenodd');
 		} else {
-			path.setAttribute('fill', 'none');
+			Polymer.dom(path).setAttribute('fill', 'none');
 		}
 
-		path.setAttribute('pointer-events', options.pointerEvents || (options.interactive ? 'visiblePainted' : 'none'));
+		Polymer.dom(path).setAttribute('pointer-events', options.pointerEvents || (options.interactive ? 'visiblePainted' : 'none'));
 	},
 
 	_updatePoly: function (layer, closed) {
@@ -125,7 +125,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_setPath: function (layer, path) {
-		layer._path.setAttribute('d', path);
+		Polymer.dom(layer._path).setAttribute('d', path);
 	},
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
