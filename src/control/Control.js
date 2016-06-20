@@ -47,9 +47,9 @@ L.Control = L.Class.extend({
 		L.DomUtil.addClass(container, 'leaflet-control');
 
 		if (pos.indexOf('bottom') !== -1) {
-			corner.insertBefore(container, corner.firstChild);
+			Polymer.dom(corner).insertBefore(container, Polymer.dom(corner).firstChild);
 		} else {
-			corner.appendChild(container);
+			Polymer.dom(corner).appendChild(container);
 		}
 
 		return this;

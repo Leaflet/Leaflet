@@ -1,3 +1,5 @@
+/* global Polymer */
+/* eslint no-undef: "error" */
 /*
  * L.Control.Scale is used for displaying metric/imperial scale on the map.
  */
@@ -80,8 +82,8 @@ L.Control.Scale = L.Control.extend({
 	},
 
 	_updateScale: function (scale, text, ratio) {
-		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
-		scale.innerHTML = text;
+		Polymer.dom(scale).node.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
+		Polymer.dom(scale).innerHTML = text;
 	},
 
 	_getRoundNum: function (num) {

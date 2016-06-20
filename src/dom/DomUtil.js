@@ -9,9 +9,10 @@ L.DomUtil = {
 
 	getStyle: function (el, style) {
 
-		var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
+		var value = Polymer.dom(el).node.style[style] || (Polymer.dom(el).node.currentStyle && Polymer.dom(el).node.currentStyle[style]);
 
 		if ((!value || value === 'auto') && document.defaultView) {
+			Polymer.dom.flush();
 			var css = document.defaultView.getComputedStyle(el, null);
 			value = css ? css[style] : null;
 		}
@@ -22,50 +23,52 @@ L.DomUtil = {
 	create: function (tagName, className, container) {
 
 		var el = document.createElement(tagName);
-		el.className = className;
+		el.className = className || '';
 
 		if (container) {
-			container.appendChild(el);
+			Polymer.dom(container).appendChild(el);
 		}
 
 		return el;
 	},
 
+	// @function remove(el: HTMLElement)
+	// Removes `el` from its parent element
 	remove: function (el) {
-		var parent = el.parentNode;
+		var parent = Polymer.dom(el).parentNode;
 		if (parent) {
-			parent.removeChild(el);
+			Polymer.dom(parent).removeChild(el);
 		}
 	},
 
 	empty: function (el) {
-		while (el.firstChild) {
-			el.removeChild(el.firstChild);
+		while (Polymer.dom(el).firstChild) {
+			Polymer.dom(el).removeChild(Polymer.dom(el).firstChild);
 		}
 	},
 
 	toFront: function (el) {
-		el.parentNode.appendChild(el);
+		Polymer.dom(Polymer.dom(el).parentNode).appendChild(el);
 	},
 
 	toBack: function (el) {
-		var parent = el.parentNode;
-		parent.insertBefore(el, parent.firstChild);
+		var parent = Polymer.dom(el).parentNode;
+		Polymer.dom(parent).insertBefore(el, Polymer.dom(parent).firstChild);
 	},
 
 	hasClass: function (el, name) {
-		if (el.classList !== undefined) {
-			return el.classList.contains(name);
+		if (Polymer.dom(el).classList !== undefined) {
+			return Polymer.dom(el).classList.contains(name);
 		}
 		var className = L.DomUtil.getClass(el);
 		return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
 	},
 
 	addClass: function (el, name) {
-		if (el.classList !== undefined) {
+		if (Polymer.dom(el).classList !== undefined) {
 			var classes = L.Util.splitWords(name);
 			for (var i = 0, len = classes.length; i < len; i++) {
-				el.classList.add(classes[i]);
+				Polymer.dom(el).classList.add(classes[i]);
 			}
 		} else if (!L.DomUtil.hasClass(el, name)) {
 			var className = L.DomUtil.getClass(el);
@@ -74,32 +77,32 @@ L.DomUtil = {
 	},
 
 	removeClass: function (el, name) {
-		if (el.classList !== undefined) {
-			el.classList.remove(name);
+		if (Polymer.dom(el).classList !== undefined) {
+			Polymer.dom(el).classList.remove(name);
 		} else {
 			L.DomUtil.setClass(el, L.Util.trim((' ' + L.DomUtil.getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 		}
 	},
 
 	setClass: function (el, name) {
-		if (el.className.baseVal === undefined) {
-			el.className = name;
+		if (Polymer.dom(el).classList.node.className.baseVal === undefined) {
+			Polymer.dom(el).classList.node.className = name;
 		} else {
 			// in case of SVG element
-			el.className.baseVal = name;
+			Polymer.dom(el).classList.node.className.baseVal = name;
 		}
 	},
 
 	getClass: function (el) {
-		return el.className.baseVal === undefined ? el.className : el.className.baseVal;
+		return Polymer.dom(el).classList.node.className.baseVal === undefined ? Polymer.dom(el).classList.node.className : Polymer.dom(el).classList.node.className.baseVal;
 	},
 
 	setOpacity: function (el, value) {
 
-		if ('opacity' in el.style) {
-			el.style.opacity = value;
+		if ('opacity' in Polymer.dom(el).node.style) {
+			Polymer.dom(el).node.style.opacity = value;
 
-		} else if ('filter' in el.style) {
+		} else if ('filter' in Polymer.dom(el).node.style) {
 			L.DomUtil._setOpacityIE(el, value);
 		}
 	},
@@ -110,7 +113,7 @@ L.DomUtil = {
 
 		// filters collection throws an error if we try to retrieve a filter that doesn't exist
 		try {
-			filter = el.filters.item(filterName);
+			filter = Polymer.dom(el).filters.item(filterName);
 		} catch (e) {
 			// don't set opacity to 1 if we haven't already set an opacity,
 			// it isn't needed and breaks transparent pngs.
@@ -123,7 +126,7 @@ L.DomUtil = {
 			filter.Enabled = (value !== 100);
 			filter.Opacity = value;
 		} else {
-			el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
+			Polymer.dom(el).node.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
 		}
 	},
 
@@ -142,21 +145,24 @@ L.DomUtil = {
 	setTransform: function (el, offset, scale) {
 		var pos = offset || new L.Point(0, 0);
 
-		el.style[L.DomUtil.TRANSFORM] =
-			'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' + (scale ? ' scale(' + scale + ')' : '');
+		Polymer.dom(el).node.style[L.DomUtil.TRANSFORM] =
+			(L.Browser.ie3d ?
+				'translate(' + pos.x + 'px,' + pos.y + 'px)' :
+				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
+			(scale ? ' scale(' + scale + ')' : '');
 	},
 
 	setPosition: function (el, point) { // (HTMLElement, Point[, Boolean])
 
 		/*eslint-disable */
-		el._leaflet_pos = point;
+		Polymer.dom(el)._leaflet_pos = point;
 		/*eslint-enable */
 
 		if (L.Browser.any3d) {
 			L.DomUtil.setTransform(el, point);
 		} else {
-			el.style.left = point.x + 'px';
-			el.style.top = point.y + 'px';
+			Polymer.dom(el).node.style.left = point.x + 'px';
+			Polymer.dom(el).node.style.top = point.y + 'px';
 		}
 	},
 
@@ -164,7 +170,7 @@ L.DomUtil = {
 		// this method is only used for elements previously positioned using setPosition,
 		// so it's safe to cache the position for performance
 
-		return el._leaflet_pos;
+		return Polymer.dom(el)._leaflet_pos || new L.Point(0, 0);
 	}
 };
 
@@ -221,19 +227,19 @@ L.DomUtil = {
 	};
 
 	L.DomUtil.preventOutline = function (element) {
-		while (element.tabIndex === -1) {
-			element = element.parentNode;
+		while (Polymer.dom(element).node.tabIndex === -1) {
+			element = Polymer.dom(element).parentNode;
 		}
-		if (!element) { return; }
+		if (!element || !Polymer.dom(element).node.style) { return; }
 		L.DomUtil.restoreOutline();
 		this._outlineElement = element;
-		this._outlineStyle = element.style.outline;
-		element.style.outline = 'none';
+		this._outlineStyle = Polymer.dom(element).node.style.outline;
+		Polymer.dom(element).node.style.outline = 'none';
 		L.DomEvent.on(window, 'keydown', L.DomUtil.restoreOutline, this);
 	};
 	L.DomUtil.restoreOutline = function () {
 		if (!this._outlineElement) { return; }
-		this._outlineElement.style.outline = this._outlineStyle;
+		Polymer.dom(this._outlineElement).node.style.outline = this._outlineStyle;
 		delete this._outlineElement;
 		delete this._outlineStyle;
 		L.DomEvent.off(window, 'keydown', L.DomUtil.restoreOutline, this);

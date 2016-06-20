@@ -46,7 +46,7 @@ L.Popup = L.Layer.extend({
 		}
 
 		clearTimeout(this._removeTimeout);
-		this.getPane().appendChild(this._container);
+		Polymer.dom(this.getPane()).appendChild(this._container);
 		this.update();
 
 		if (map._fadeAnimated) {
@@ -182,12 +182,12 @@ L.Popup = L.Layer.extend({
 		var content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
 
 		if (typeof content === 'string') {
-			node.innerHTML = content;
+			Polymer.dom(node).innerHTML = content;
 		} else {
-			while (node.hasChildNodes()) {
-				node.removeChild(node.firstChild);
+			while (Polymer.dom(node).hasChildNodes()) {
+				Polymer.dom(node).removeChild(Polymer.dom(node).firstChild);
 			}
-			node.appendChild(content);
+			Polymer.dom(node).appendChild(content);
 		}
 		this.fire('contentupdate');
 	},

@@ -1,3 +1,5 @@
+/* global Polymer */
+/* eslint no-undef: "error" */
 /*
  * Extends L.Map to handle zoom animations.
  */
@@ -31,7 +33,7 @@ L.Map.include(!zoomAnimated ? {} : {
 	_createAnimProxy: function () {
 
 		var proxy = this._proxy = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
-		this._panes.mapPane.appendChild(proxy);
+		Polymer.dom(this._panes.mapPane).appendChild(proxy);
 
 		this.on('zoomanim', function (e) {
 			var prop = L.DomUtil.TRANSFORM,

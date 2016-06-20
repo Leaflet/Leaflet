@@ -35,7 +35,7 @@ L.ImageOverlay = L.Layer.extend({
 			this.addInteractiveTarget(this._image);
 		}
 
-		this.getPane().appendChild(this._image);
+		Polymer.dom(this.getPane()).appendChild(this._image);
 		this._reset();
 	},
 

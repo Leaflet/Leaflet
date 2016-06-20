@@ -1,3 +1,5 @@
+/* global Polymer */
+/* eslint no-undef: "error" */
 /*
  * L.Control.Zoom is used for the default zoom buttons on the map.
  */
@@ -57,9 +59,9 @@ L.Control.Zoom = L.Control.extend({
 
 	_createButton: function (html, title, className, container, fn) {
 		var link = L.DomUtil.create('a', className, container);
-		link.innerHTML = html;
-		link.href = '#';
-		link.title = title;
+		Polymer.dom(link).innerHTML = html;
+		Polymer.dom(link).node.href = '#';
+		Polymer.dom(link).node.title = title;
 
 		L.DomEvent
 		    .on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
