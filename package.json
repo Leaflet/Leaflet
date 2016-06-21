@@ -30,6 +30,7 @@
     "release": "./build/publish.sh"
   },
   "eslintConfig": {
+    "root": true,
     "globals": {
       "L": true
     },
