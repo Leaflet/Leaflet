@@ -78,7 +78,6 @@ L.Marker = L.Layer.extend({
 
 		this._initIcon();
 		this.update();
-		map.on('rotate', this.update, this);
 	},
 
 	onRemove: function () {
@@ -94,7 +93,8 @@ L.Marker = L.Layer.extend({
 	getEvents: function () {
 		var events = {
 			zoom: this.update,
-			viewreset: this.update
+			viewreset: this.update,
+			rotate: this.update
 		};
 
 		if (this._zoomAnimated) {
