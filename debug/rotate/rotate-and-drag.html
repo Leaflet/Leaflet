@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+
+	<style>
+	</style>
+</head>
+<body>
+
+
+	<div id="map"></div>
+
+	<input type="range" min="0" max="360" step="1" name="rho" id='rho_input' style='width:800px'/><span id='rho'></span>
+
+	<div>
+		<button onclick="map.setBearing(0);" > 0</button>
+		<button onclick="map.setBearing(15);">15</button>
+		<button onclick="map.setBearing(30);">30</button>
+		<button onclick="map.setBearing(45);">45</button>
+		<button onclick="map.setBearing(60);">60</button>
+		<button onclick="map.setBearing(75);">75</button>
+		<button onclick="map.setBearing(90);">90</button>
+	</div>
+
+	<script type="text/javascript">
+
+		var kyiv = [50.5, 30.5],
+			lnd = [51.51, -0.12],
+			sf = [37.77, -122.42],
+			dc = [38.91, -77.04],
+			trd = [63.41, 10.41];
+
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map')	//, {bearing: Math.PI / 4})
+				.setView([55, 10], 0)
+				.addLayer(osm);
+
+		var marker1 = L.marker(kyiv, {draggable: true}).addTo(map),
+			marker2 = L.marker(lnd,  {draggable: true}).addTo(map);
+			marker3 = L.marker(dc,   {draggable: true}).addTo(map),
+			marker4 = L.marker(sf,   {draggable: true}).addTo(map),
+			marker5 = L.marker(trd,  {draggable: true}).addTo(map);
+
+		var loremIpsum = "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>";
+
+		marker1.bindPopup(loremIpsum + '<p>Kyiv</p>').addTo(map);
+		marker2.bindPopup(loremIpsum + '<p>Lnd</p>').addTo(map);
+		marker3.bindPopup(loremIpsum + '<p>DC</p>').addTo(map);
+		marker4.bindPopup(loremIpsum + '<p>DF</p>').addTo(map);
+		marker5.bindPopup(loremIpsum + '<p>Trd</p>').addTo(map);
+
+		function rotate(ev) {
+			if (ev.buttons === 0) return;
+			var angle = ev.target.valueAsNumber;
+// 			console.log(angle);
+			map.setBearing(angle);
+		}
+
+		document.getElementById('rho_input').addEventListener('change', rotate);
+		document.getElementById('rho_input').addEventListener('mousemove', rotate);
+
+	</script>
+</body>
+</html>

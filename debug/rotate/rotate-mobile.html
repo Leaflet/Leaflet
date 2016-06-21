@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet geolocation debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/mobile.css" />
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = new L.Map('map', {
+			zoom: 15,
+			layers: [osm],
+			rotate: true,
+			touchRotate: true
+		});
+
+		map.compassBearing.enable();
+
+		function logEvent(e) { console.log(e.type); }
+
+		function resetHeading(ev) {
+
+			console.log(ev);
+
+			if (ev.heading !== null) {
+				map.setBearing(ev.heading);
+			}
+
+		}
+
+// 		map.on('locationerror', logEvent);
+// 		map.on('locationfound', logEvent);
+		map.on('locationfound', resetHeading);
+
+		window.setInterval( function(){
+			map.locate({
+				setView: true,
+				enableHighAccuracy: true
+				});
+		}, 10000);
+
+	</script>
+</body>
+</html>
