@@ -785,6 +785,8 @@ describe('GridLayer', function () {
 
 		it("Loads map, moves forth and back by 512 px, default keepBuffer", function (done) {
 
+			var spy = sinon.spy();
+
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
 				expect(counts.tileload).to.be(16);
@@ -795,18 +797,15 @@ describe('GridLayer', function () {
 					expect(counts.tileloadstart).to.be(28);
 					expect(counts.tileload).to.be(28);
 					expect(counts.tileunload).to.be(0);
-
 					grid.off('load');
-					grid.on('load', function () {
-						// this is never triggered as we are not loading any tiles!
-						expect(counts.tileloadstart).to.be(28);
-						expect(counts.tileload).to.be(28);
-						expect(counts.tileunload).to.be(0);
-						done();
-					});
+
+					grid.addEventListener('load', spy);
 
 					map.panBy([-512, -512], {animate: false});
 					clock.tick(250);
+
+					expect(spy.called).to.be(false);
+					done();
 				});
 
 				map.panBy([512, 512], {animate: false});
