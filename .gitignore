@@ -11,5 +11,4 @@ coverage/
 *.js.html
 index.html
 .mailmap
-bower.json
 component.json
