@@ -42,9 +42,6 @@ L.Layer.include({
 			this._popupHandlersAdded = true;
 		}
 
-		// save the originally passed offset
-		this._originalPopupOffset = this._popup.options.offset;
-
 		return this;
 	},
 
@@ -83,9 +80,6 @@ L.Layer.include({
 		}
 
 		if (this._popup && this._map) {
-			// set the popup offset for this layer
-			this._popup.options.offset = this._popupAnchor(layer);
-
 			// set popup source to this layer
 			this._popup._source = layer;
 
