@@ -166,17 +166,6 @@ L.Layer.include({
 		}
 	},
 
-	_popupAnchor: function (layer) {
-		// where shold we anchor the popup on this layer?
-		var anchor = layer._getPopupAnchor ? layer._getPopupAnchor() : [0, 0];
-
-		// add the users passed offset to that
-		var offsetToAdd = this._originalPopupOffset || L.Popup.prototype.options.offset;
-
-		// return the final point to anchor the popup
-		return L.point(anchor).add(offsetToAdd);
-	},
-
 	_movePopup: function (e) {
 		this._popup.setLatLng(e.latlng);
 	}
