@@ -1,5 +1,5 @@
 {
-  "name": "mapml-leaflet",
+  "name": "polymer-leaflet",
   "description": "Customized Leaflet v1.0.0-beta.1 library supporting the web-map-custom-element component",
   "main": [
     "leaflet-src.js",
@@ -21,7 +21,7 @@
     "component",
     "polyfill"
   ],
-  "homepage": "https://github.com/Maps4HTML/MapML-Leaflet",
+  "homepage": "https://github.com/Maps4HTML/Polymer-Leaflet",
   "ignore": [
     "**/.*",
     "node_modules",
