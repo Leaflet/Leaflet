@@ -574,7 +574,7 @@ L.GridLayer = L.Layer.extend({
 	_onMoveEnd: function () {
 		if (!this._map || this._map._animatingZoom) { return; }
 
-		this._resetView();
+		this._update();
 	},
 
 	_getTiledPixelBounds: function (center) {
