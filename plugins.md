@@ -818,6 +818,17 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 			<a href="https://github.com/MatthewBarker">Matthew Barker</a>
 		</td>
 	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/J-F-O/Leaflet-copyright-loader">Leaflet-copyright-loader</a>
+		</td>
+		<td>
+			Simple JSON copyright loader for Leaflet with HERE hybrid map.
+		</td>
+		<td>
+			<a href="https://github.com/J-F-O">J.F.O.</a>
+		</td>
+	</tr>
 </table>
 
 
