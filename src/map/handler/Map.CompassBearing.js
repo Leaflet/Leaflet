@@ -5,8 +5,10 @@
 L.Map.CompassBearing = L.Handler.extend({
 
 	initialize: function(map) {
-
 		this._capable = false;
+		if (!map._rotate){
+			return;
+		}
 		this._map = map;
 
 		if (!window.DeviceOrientationEvent) { return; }
