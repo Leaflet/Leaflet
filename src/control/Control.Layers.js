@@ -291,7 +291,7 @@ L.Control.Layers = L.Control.extend({
 		holder = L.DomUtil.create('div', '', label),
 		checked = this._map.hasLayer(obj.layer),
 		name,
-		input;
+		input = {};
 
 		if (obj.overlay) {
 			input = L.DomUtil.create('input', 'leaflet-control-layers-selector', holder);
