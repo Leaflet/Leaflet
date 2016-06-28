@@ -362,7 +362,13 @@ L.Popup = L.Layer.extend({
 		    offset = L.point(this.options.offset);
 
 		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos);
+			if (this._map._rotate) {
+				// rotation relative to the marker's anchor
+				var rotationOffset = pos.add([-this._containerLeft, this._container.offsetHeight + this._tipContainer.offsetHeight - offset.y]);
+				L.DomUtil.setPosition(this._container, pos, -this._map._bearing || 0, rotationOffset);
+			} else {
+				L.DomUtil.setPosition(this._container, pos);
+			}
 		} else {
 			offset = offset.add(pos);
 		}
@@ -377,7 +383,13 @@ L.Popup = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
-		L.DomUtil.setPosition(this._container, pos);
+		if (this._map._rotate) {
+			var offset = L.point(this.options.offset);
+			var rotationOffset = pos.add([-this._containerLeft, this._container.offsetHeight + this._tipContainer.offsetHeight - offset.y]);
+			L.DomUtil.setPosition(this._container, pos, -this._map._bearing || 0, rotationOffset);
+		} else {
+			L.DomUtil.setPosition(this._container, pos);
+		}
 	},
 
 	_adjustPan: function () {
