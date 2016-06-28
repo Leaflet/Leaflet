@@ -1,4 +1,4 @@
-An unofficial branch for making rotation work in rc1. 
+An unofficial branch for making rotation work in rc1. Developed by @hyperknot and @fnicollet.
 
 Based on @IvanSanchez's [rotate work](https://github.com/Leaflet/Leaflet/tree/rotate) for pre-1.0.
 
@@ -9,3 +9,6 @@ Philosophy:
 
 1. Porting the core features, one by one
 2. Making sure everything works and as performant as possible before adding new features.
+
+Known issues:
+- No support for `zoomAnimation: false` for popups
