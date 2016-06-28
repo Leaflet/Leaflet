@@ -902,6 +902,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iatkin">Ilya Atkin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rowanwins/Leaflet.SvgShapeMarkers">Leaflet.SvgShapeMarkers</a>
+		</td><td>
+			Additional SVG marker types for leaflet.js such as triangle, diamond and square. Check out the <a href="http://rowanwins.github.io/Leaflet.SvgShapeMarkers/example/">demo</a>. This plugin extends the path class so you can pass any valid through any valid options such as fillOpacity or color.
+		</td><td>
+			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
+		</td>
+	</tr>
     <tr>
 		<td>
 			<a href="https://github.com/marslan390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
