@@ -72,7 +72,9 @@ L.Draggable = L.Evented.extend({
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
-		if (e._simulated) { return; }
+		// Also ignore the event if disabled; this happens in IE11
+		// under some circumstances, see #3666.
+		if (e._simulated || !this._enabled) { return; }
 
 		this._moved = false;
 
@@ -107,7 +109,9 @@ L.Draggable = L.Evented.extend({
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
-		if (e._simulated) { return; }
+		// Also ignore the event if disabled; this happens in IE11
+		// under some circumstances, see #3666.
+		if (e._simulated || !this._enabled) { return; }
 
 		if (e.touches && e.touches.length > 1) {
 			this._moved = true;
@@ -168,7 +172,9 @@ L.Draggable = L.Evented.extend({
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
-		if (e._simulated) { return; }
+		// Also ignore the event if disabled; this happens in IE11
+		// under some circumstances, see #3666.
+		if (e._simulated || !this._enabled) { return; }
 
 		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 

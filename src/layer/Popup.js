@@ -359,12 +359,13 @@ L.Popup = L.Layer.extend({
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    offset = L.point(this.options.offset);
+		    offset = L.point(this.options.offset),
+		    anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos);
+			L.DomUtil.setPosition(this._container, pos.add(anchor));
 		} else {
-			offset = offset.add(pos);
+			offset = offset.add(pos).add(anchor);
 		}
 
 		var bottom = this._containerBottom = -offset.y,
@@ -376,8 +377,9 @@ L.Popup = L.Layer.extend({
 	},
 
 	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
-		L.DomUtil.setPosition(this._container, pos);
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
+		    anchor = this._getAnchor();
+		L.DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
 	_adjustPan: function () {
@@ -427,7 +429,13 @@ L.Popup = L.Layer.extend({
 	_onCloseButtonClick: function (e) {
 		this._close();
 		L.DomEvent.stop(e);
+	},
+
+	_getAnchor: function () {
+		// Where should we anchor the popup on the source layer?
+		return L.point(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
+
 });
 
 // @namespace Popup
