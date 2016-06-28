@@ -30,8 +30,10 @@
 			maxBounds: bounds
 		});
 
+
+
 		var latlngs = L.rectangle(bounds).getLatLngs();
-		L.polyline(latlngs.concat([latlngs[0]])).addTo(map);
+		L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map);
 
 		map.setMaxBounds(bounds);	// Should not enter infinite recursion
 
