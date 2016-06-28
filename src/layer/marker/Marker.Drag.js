@@ -64,6 +64,9 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    .closePopup()
 		    .fire('movestart')
 		    .fire('dragstart');
+		if (this._marker._map._rotate){
+			this._draggable.updateMapBearing(this._marker._map._bearing);	
+		}
 	},
 
 	_onDrag: function (e) {
@@ -72,9 +75,19 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    iconPos = L.DomUtil.getPosition(marker._icon),
 		    latlng = marker._map.layerPointToLatLng(iconPos);
 
+		if (marker._map._rotate) {
+			var iconAnchor = marker.options.icon.options.iconAnchor;
+			L.DomUtil.setPosition(marker._icon, iconPos, -marker._map._bearing, iconPos.add(iconAnchor));
+		}
+
 		// update shadow position
 		if (shadow) {
-			L.DomUtil.setPosition(shadow, iconPos);
+			if (marker._map._rotate) {
+				var shadowAnchor = marker.options.icon.options.shadowAnchor ? iconPos.add(marker.options.icon.options.shadowAnchor) : iconPos.add(iconAnchor);
+				L.DomUtil.setPosition(shadow, iconPos, -marker._map._bearing || 0, shadowAnchor);
+			} else {
+				L.DomUtil.setPosition(shadow, iconPos);
+			}
 		}
 
 		marker._latlng = latlng;
