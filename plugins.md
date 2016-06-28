@@ -188,7 +188,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 		<td>
 			<a href="https://gitlab.com/IvanSanchez/Leaflet.TileLayer.HERE">L.TileLayer.HERE</a>
 		</td><td>
-			Displays map tiles from HERE maps (<a href="https://ivansanchez.github.io/Leaflet.TileLayer.HERE/demo.html">demo</a>).
+			Displays map tiles from HERE maps (<a href="https://ivansanchez.gitlab.io/Leaflet.TileLayer.HERE/demo.html">demo</a>).
 		</td><td>
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
