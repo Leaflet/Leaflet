@@ -142,7 +142,11 @@
 
 		// @property retina: Boolean
 		// `true` for browsers on a high-resolution "retina" screen.
-		retina: (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1
+		retina: (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1,
+
+		// @property retina: Boolean
+		// `true` for browsers which implement [mutation observers](https://developer.mozilla.org/docs/Web/API/MutationObserver)
+		mutation: 'MutationObserver' in window
 	};
 
 }());
