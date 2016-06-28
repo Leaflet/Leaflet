@@ -237,7 +237,8 @@ L.Popup = L.Layer.extend({
 	getEvents: function () {
 		var events = {
 			zoom: this._updatePosition,
-			viewreset: this._updatePosition
+			viewreset: this._updatePosition,
+			rotate: this._updatePosition
 		};
 
 		if (this._zoomAnimated) {
@@ -363,7 +364,13 @@ L.Popup = L.Layer.extend({
 		    anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos.add(anchor));
+			if (this._map._rotate) {
+				// rotation relative to the marker's anchor
+				var popupAnchor = pos.add([-this._containerLeft, this._container.offsetHeight + this._tipContainer.offsetHeight - offset.y]);
+				L.DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing || 0, popupAnchor);
+			} else {
+				L.DomUtil.setPosition(this._container, pos.add(anchor));
+			}
 		} else {
 			offset = offset.add(pos).add(anchor);
 		}
@@ -378,8 +385,14 @@ L.Popup = L.Layer.extend({
 
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
-		    anchor = this._getAnchor();
-		L.DomUtil.setPosition(this._container, pos.add(anchor));
+			anchor = this._getAnchor();
+		if (this._map._rotate) {
+			var offset = L.point(this.options.offset);
+			var popupAnchor = pos.add([-this._containerLeft, this._container.offsetHeight + this._tipContainer.offsetHeight - offset.y]);
+			L.DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing || 0, popupAnchor);
+		} else {
+			L.DomUtil.setPosition(this._container, pos.add(anchor));
+		}
 	},
 
 	_adjustPan: function () {
