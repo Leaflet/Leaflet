@@ -88,7 +88,7 @@ L.Layer = L.Evented.extend({
 		if (this.getEvents) {
 			var events = this.getEvents();
 			map.on(events, this);
-			this.on('remove', function () {
+			this.once('remove', function () {
 				map.off(events, this);
 			}, this);
 		}
