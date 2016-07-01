@@ -76,14 +76,22 @@ L.Marker = L.Layer.extend({
 	onAdd: function (map) {
 		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
+		if (this._zoomAnimated) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._initIcon();
 		this.update();
 	},
 
-	onRemove: function () {
+	onRemove: function (map) {
 		if (this.dragging && this.dragging.enabled()) {
 			this.options.draggable = true;
 			this.dragging.removeHooks();
+		}
+
+		if (this._zoomAnimated) {
+			map.off('zoomanim', this._animateZoom, this);
 		}
 
 		this._removeIcon();
@@ -91,16 +99,10 @@ L.Marker = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {
+		return {
 			zoom: this.update,
 			viewreset: this.update
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-
-		return events;
 	},
 
 	// @method getLatLng: LatLng
