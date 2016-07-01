@@ -1,4 +1,4 @@
-<img src="http://leafletjs.com/docs/images/logo.png" alt="Leaflet" />
+<img src="src/images/logo.svg" alt="Leaflet" />
 
 Leaflet is the leading open-source JavaScript library for **mobile-friendly interactive maps**.
 Weighing just about 33 KB of gzipped JS code, it has all the mapping [features][] most developers ever need.
