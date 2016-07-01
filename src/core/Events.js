@@ -70,7 +70,7 @@ L.Evented = L.Class.extend({
 
 		if (!types) {
 			// clear all listeners if called without arguments
-			this._events = undefined;
+			delete this._events;
 
 		} else if (typeof types === 'object') {
 			for (var type in types) {
@@ -103,8 +103,8 @@ L.Evented = L.Class.extend({
 		}
 
 		var contextId = context && context !== this && L.stamp(context),
-			newListener = {fn: fn, ctx: context};
-			
+		    newListener = {fn: fn, ctx: context};
+
 		if (!contextId) {
 			contextId = 'no_context';
 			newListener.ctx = undefined;
@@ -118,66 +118,79 @@ L.Evented = L.Class.extend({
 		}
 
 		// check if fn already there
-		var found = false;
-		for (var i=0, len=listeners.length; i<len; i++) {
+		for (var i = 0, len = listeners.length; i < len; i++) {
 			if (listeners[i].fn === fn) {
-				found = true;
-				break;
+				return;
 			}
 		}
-		
-		if (!found) {
-			listeners.push(newListener);
-			typeListeners.count++;
-		}
+
+		listeners.push(newListener);
+		typeListeners.count++;
 	},
 
 	_off: function (type, fn, context) {
+		var typeListeners,
+		    contextId,
+		    listeners,
+		    i,
+		    len;
+
 		if (!this._events) { return; }
-		
+
 		if (!fn) {
-			// clear all listeners for a type if function isn't specified
-			delete this._events[type];
+			// Set all removed listeners to noop so they are not called if remove happens in fire
+			typeListeners = this._events[type];
+			if (typeListeners) {
+				for (contextId in typeListeners.listeners) {
+					listeners = typeListeners.listeners[contextId];
+					for (i = 0, len = listeners.length; i < len; i++) {
+						listeners[i].fn = L.Util.falseFn;
+					}
+				}
+				// clear all listeners for a type if function isn't specified
+				delete this._events[type];
+			}
 			return;
 		}
 
-		var typeListeners = this._events[type];
+		typeListeners = this._events[type];
 		if (!typeListeners) {
 			return;
 		}
-		
-		var contextId = context && context !== this && L.stamp(context);
+
+		contextId = context && context !== this && L.stamp(context);
 		if (!contextId) {
 			contextId = 'no_context';
 		}
-		
-		var listeners = typeListeners.listeners[contextId];
+
+		listeners = typeListeners.listeners[contextId];
 		if (listeners) {
 
 			// find fn and remove it
-			for (var i=0, len = listeners.length; i<len; i++) {
+			for (i = 0, len = listeners.length; i < len; i++) {
 				var l = listeners[i];
 				if (l.fn === fn) {
-				
+
 					// set the removed listener to noop so that's not called if remove happens in fire
 					l.fn = L.Util.falseFn;
 					typeListeners.count--;
-				
+
 					if (len > 1) {
 						if (!this._isFiring) {
-							listeners.splice(i,1);							
+							listeners.splice(i, 1);
 						} else {
 							/* copy array in case events are being fired */
-							typeListeners.listeners[contextId] = listeners.slice().splice(i,1);
+							typeListeners.listeners[contextId] = listeners.slice();
+							typeListeners.listeners[contextId].splice(i, 1);
 						}
 					} else {
 						delete typeListeners.listeners[contextId];
 					}
-				
+
 					return;
 				}
 				if (listeners.length === 0) {
-					delete events[type];
+					delete typeListeners.listeners[contextId];
 				}
 			}
 		}
@@ -194,25 +207,23 @@ L.Evented = L.Class.extend({
 
 		if (this._events) {
 			var typeListeners = this._events[type];
-			
-			this._isFiring = true;
-			
-			// each context
-			for (var contextId in typeListeners.listeners) {
-				var listeners = typeListeners.listeners[contextId];
-				
-				// each fn in context
-				for (var i=0, len = listeners.length; i<len; i++) {
-					var l = listeners[i];
-					if (l.ctx) {
-						l.fn.call(l.ctx, event);												
-					} else {
-						l.fn.call(this, event);
+
+			if (typeListeners) {
+				this._isFiring = true;
+
+				// each context
+				for (var contextId in typeListeners.listeners) {
+					var listeners = typeListeners.listeners[contextId];
+
+					// each fn in context
+					for (var i = 0, len = listeners.length; i < len; i++) {
+						var l = listeners[i];
+						l.fn.call(l.ctx || this, event);
 					}
 				}
+
+				this._isFiring = false;
 			}
-			
-			this._isFiring = false;
 		}
 
 		if (propagate) {
