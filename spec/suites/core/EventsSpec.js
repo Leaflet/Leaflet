@@ -247,8 +247,8 @@ describe('Events', function () {
 			obj.removeEventListener('test', spy, foo2);
 
 			expect(obj.listens('test')).to.be(false);
-			
-			//Add and remove a listener without context
+
+			// Add and remove a listener without context
 			obj.addEventListener('test', spy);
 			obj.removeEventListener('test', spy);
 
@@ -258,9 +258,9 @@ describe('Events', function () {
 		it('makes sure an event is not triggered if a listener is removed during dispatch', function () {
 			var obj = new L.Evented(),
 			    spy = sinon.spy(),
-				spy2 = sinon.spy(),
-				spy3 = sinon.spy(),
-				foo = {};
+			    spy2 = sinon.spy(),
+			    spy3 = sinon.spy(),
+			    foo = {};
 
 			/* without context */
 			obj.addEventListener('test', function () { obj.removeEventListener('test', spy); });
@@ -268,7 +268,7 @@ describe('Events', function () {
 			obj.fireEvent('test');
 
 			expect(spy.called).to.be(false);
-			
+
 			/* with context */
 			obj.addEventListener('test2', function () { obj.removeEventListener('test2', spy2, foo); }, foo);
 			obj.addEventListener('test2', spy2, foo);
