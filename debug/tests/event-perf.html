@@ -12,6 +12,45 @@
 </head>
 <body>
   <script>
+  function benchmark(name, fn, setup) {
+    //warmup
+    for (var i = 0; i < 100; i++) {
+      if (setup) {
+        setup();
+      }
+      fn();
+    }
+
+    var t = 0;
+    for (var i = 0; i < 100; i++) {
+      if (setup) {
+        setup();
+      }
+      var t0 = performance.now();
+      fn();
+      t += performance.now() - t0;
+    }
+    console.log(name, (t / 100) + ' ms/run');
+  }
+
+
+  benchmark('Adding same fn', function() {
+    var obj = new L.Evented();
+    var fn = function () {};
+    var t0 = performance.now();
+    for (var p = 0; p < 1000; p++) {
+      obj.on('test', fn);
+    }
+  });
+
+  benchmark('Adding different fn', function() {
+    var obj = new L.Evented();
+    var fn = function () {};
+    var t0 = performance.now();
+    for (var p = 0; p < 1000; p++) {
+      obj.on('test', (function(p) { return function() { var x = 2 + p; }})(p));
+    }
+  });
 
   function benchmark(name, fn, setup) {
     //warmup
