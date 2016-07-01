@@ -14,9 +14,7 @@ L.Projection.SphericalMercator = {
 
 	project: function (latlng) {
 		var d = Math.PI / 180,
-		    max = this.MAX_LATITUDE,
-		    lat = Math.max(Math.min(max, latlng.lat), -max),
-		    sin = Math.sin(lat * d);
+		    sin = Math.sin(latlng.lat * d);
 
 		return new L.Point(
 				this.R * latlng.lng * d,

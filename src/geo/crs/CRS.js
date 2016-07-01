@@ -15,8 +15,13 @@ L.CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
-		var projectedPoint = this.projection.project(latlng),
-		    scale = this.scale(zoom);
+		var projectedPoint = this.projection.project(latlng);
+
+		if (!this.infinite) {
+			projectedPoint = this.projection.bounds.clampPoint(projectedPoint);
+		}
+
+		var scale = this.scale(zoom);
 
 		return this.transformation._transform(projectedPoint, scale);
 	},
