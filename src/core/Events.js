@@ -169,6 +169,9 @@ L.Evented = L.Class.extend({
 						break;
 					}
 				}
+				if (listeners.length === 0) {
+					delete events[type];
+				}
 			}
 		}
 

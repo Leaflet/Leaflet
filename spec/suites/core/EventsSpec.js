@@ -424,4 +424,42 @@ describe('Events', function () {
 			expect(spy2.callCount).to.be(2);
 		});
 	});
+
+	describe('#listens', function () {
+		it('is false if there is no event handler', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			expect(obj.listens('test')).to.be(false);
+		});
+
+		it('is true if there is an event handler', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			obj.on('test', spy);
+			expect(obj.listens('test')).to.be(true);
+		});
+
+		it('is false if event handler has been removed', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			obj.on('test', spy);
+			obj.off('test', spy);
+			expect(obj.listens('test')).to.be(false);
+		});
+
+		it('changes for a "once" handler', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			obj.once('test', spy);
+			expect(obj.listens('test')).to.be(true);
+
+			obj.fire('test');
+			expect(obj.listens('test')).to.be(false);
+		});
+	});
+
 });
