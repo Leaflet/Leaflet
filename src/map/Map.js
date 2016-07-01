@@ -1191,7 +1191,11 @@ L.Map = L.Evented.extend({
 
 	// offset of the specified place to the current center in pixels
 	_getCenterOffset: function (latlng) {
-		return this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint());
+		var centerOffset = this.latLngToLayerPoint(latlng).subtract(this._getCenterLayerPoint())
+		if (this._rotate){
+			centerOffset = centerOffset.rotate(this._bearing);
+		}
+		return centerOffset;
 	},
 
 	// adjust center for view to get inside bounds
