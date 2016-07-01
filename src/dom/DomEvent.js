@@ -228,22 +228,23 @@ L.DomEvent = {
 	// Chrome on Win scrolls double the pixels as in other platforms (see #4538),
 	// and Firefox scrolls device pixels, not CSS pixels
 	_wheelPxFactor: (L.Browser.win && L.Browser.chrome) ? 2 :
-	                (L.Browser.gecko) ? window.devicePixelRatio :
+	                L.Browser.gecko ? window.devicePixelRatio :
 	                1,
 
 	// @function getWheelDelta(ev: DOMEvent): Number
 	// Gets normalized wheel delta from a mousewheel DOM event, in vertical
 	// pixels scrolled (negative if scrolling down).
 	// Events from pointing devices without precise scrolling are mapped to
-	// a best guess of between 50-60 pixels.
+	// a best guess of 60 pixels.
 	getWheelDelta: function (e) {
-		return (e.deltaY && e.deltaMode === 0) ? -e.deltaY / L.DomEvent._wheelPxFactor : // Pixels
-		       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 18 : // Lines
-		       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 52 : // Pages
+		return (L.Browser.edge) ? e.wheelDeltaY / 2 : // Don't trust window-geometry-based delta
+		       (e.deltaY && e.deltaMode === 0) ? -e.deltaY / L.DomEvent._wheelPxFactor : // Pixels
+		       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
+		       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages
 		       (e.deltaX || e.deltaZ) ? 0 :	// Skip horizontal/depth wheel events
 		       e.wheelDelta ? (e.wheelDeltaY || e.wheelDelta) / 2 : // Legacy IE pixels
-		       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 18 : // Legacy Moz lines
-		       e.detail ? e.detail / -32765 * 52 : // Legacy Moz pages
+		       (e.detail && Math.abs(e.detail) < 32765) ? -e.detail * 20 : // Legacy Moz lines
+		       e.detail ? e.detail / -32765 * 60 : // Legacy Moz pages
 		       0;
 	},
 
