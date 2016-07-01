@@ -311,6 +311,22 @@ describe('Events', function () {
 			obj.fire();
 			expect(spy3.called).to.be(true);
 		});
+
+
+		it('does not add twice the same function', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			/* register without context */
+			obj.on("test", spy);
+			obj.on("test", spy);
+
+			/* Should be called once */
+			obj.fire("test");
+
+			expect(spy.callCount).to.eql(1);
+		});
+
 	});
 
 	describe("#clearEventListeners", function () {

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width" />
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
+
+  <meta charset="utf-8">
+  <title>Leaflet test for event adding/firing/removing performance</title>
+</head>
+<body>
+  <script>
+
+  var obj = new L.Evented();
+  var fn = function (e) {called += e.count;},
+    fns = [],
+    called = 0;
+  for (var p = 0; p < 1000; p++) {
+    fns.push(function(e) { called += e.count;});
+  }
+  console.time('Overall');
+  console.time('Adding same function x1000');
+  for (var p = 0; p < 1000; p++) {
+    obj.on('test', fn);
+  }
+  console.timeEnd('Adding same function x1000');
+  console.time('Adding same function x1000');
+  for (var p = 0; p < 1000; p++) {
+    obj.on('test', fns[p]);
+  }
+  console.timeEnd('Adding different functions x1000');
+  console.time('Firing');
+  for (var p = 0; p < 1000; p++) {
+    obj.fire('test', {count: 1});
+  }
+  console.timeEnd('Firing');
+  console.time('Removing');
+  for (var p = 0; p < 1000; p++) {
+    obj.off('test', fn);
+  }
+  obj.off('test');  // Remove all listeners.
+  console.timeEnd('Removing');
+  console.timeEnd('Overall');
+  console.log('Total call count', called);
+  </script>
+</body>
+</html>
