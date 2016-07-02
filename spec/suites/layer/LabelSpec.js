@@ -62,19 +62,40 @@ describe('Label', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	// Passes on Firefox, but fails on PhantomJS.
-	xit("can be forced on left direction", function () {
+	it.skipInPhantom("can be forced on left direction", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindLabel('A long label that should be displayed on the left', {permanent: true, direction: 'left', interactive: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
-		happen.at('click', 150, 190);  // Marker is on the map center, which is 400px large.
+		happen.at('click', 150, 180);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	it("can be forced on center", function () {
+	it.skipInPhantom("can be forced on top direction", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+		layer.on('click', spy);
+
+		layer.bindLabel('A label that should be displayed on the top', {permanent: true, direction: 'top', interactive: true});
+		expect(map.hasLayer(layer._label)).to.be(true);
+		happen.at('click', 200, 170);  // Marker is on the map center, which is 400px large.
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it.skipInPhantom("can be forced on bottom direction", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+		layer.on('click', spy);
+
+		layer.bindLabel('A label that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true});
+		expect(map.hasLayer(layer._label)).to.be(true);
+		happen.at('click', 200, 210);  // Marker is on the map center, which is 400px large.
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it.skipInPhantom("can be forced on center", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
