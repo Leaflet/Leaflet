@@ -113,6 +113,48 @@ describe("Map.Drag", function () {
 			mouse.wait(100).moveTo(200, 200, 0)
 				.down().moveBy(1, 0, 20).moveBy(1, 0, 200).up();
 		});
+
+		it("does not change the center of the map when drag is disabled on click", function (done) {
+			var container = document.createElement('div');
+			container.style.width = container.style.height = '600px';
+			container.style.top = container.style.left = 0;
+			container.style.position = 'absolute';
+
+			document.body.appendChild(container);
+
+			var map = new L.Map(container, {
+				dragging: true,
+				inertia: false
+			});
+			var originalCenter = L.latLng(0, 0);
+			map.setView(originalCenter, 1);
+
+			map.on('mousedown', function () {
+				map.dragging.disable();
+			});
+			var spy = sinon.spy();
+			map.on('drag', spy);
+
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					var center = map.getCenter();
+					var zoom = map.getZoom();
+					document.body.removeChild(container);
+					expect(center).to.be(originalCenter); // Expect center point to be the same as before the click
+					expect(spy.callCount).to.eql(0); // No drag event should have been fired.
+					expect(zoom).to.be(1);
+
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+
+			// We move 5 pixels first to overcome the 3-pixel threshold of
+			// L.Draggable.
+			mouse.wait(100).moveTo(200, 200, 0)
+				.down().moveBy(5, 0, 20).moveBy(256, 32, 200).up();
+		});
 	});
 
 	describe("touch events", function () {
@@ -249,7 +291,6 @@ describe("Map.Drag", function () {
 				.down().moveBy(210, 0, 1000).up(200);
 
 		});
-
 	});
 
 });

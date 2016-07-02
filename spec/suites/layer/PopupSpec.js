@@ -229,6 +229,25 @@ describe('Popup', function () {
 		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
 	});
 
+	it("prevents an underlying map click for Layer", function () {
+		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.7], [56.0, 37.8]]).addTo(map);
+		layer.bindPopup("layer popup");
+
+		var mapClicked = false;
+		map.on('click', function (e) {
+			mapClicked = true;
+			new L.Popup()
+				.setLatLng(e.latlng)
+				.setContent("map popup")
+				.openOn(map);
+		});
+
+		expect(map.hasLayer(layer._popup)).to.be(false);
+		happen.click(layer._path);
+		expect(mapClicked).to.be(false);
+		expect(map.hasLayer(layer._popup)).to.be(true);
+	});
+
 });
 
 describe("L.Map#openPopup", function () {
@@ -296,16 +315,16 @@ describe("L.Map#openPopup", function () {
 		map.openPopup(p);
 		expect(map.hasLayer(p)).to.be(true);
 		map.on('drag', spy);
-		var hand = new Hand({timing: 'fastframe'});
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				expect(spy.called).to.be(true);
+				expect(map.hasLayer(p)).to.be(true);
+				done();
+			}});
 		var mouse = hand.growFinger('mouse');
 		mouse.moveTo(coords.left + 100, coords.left + 100, 0)
 			.down().moveBy(10, 10, 20).up();
-
-		setTimeout(function () {
-			expect(spy.called).to.be(true);
-			expect(map.hasLayer(p)).to.be(true);
-			done();
-		}, 100);
 	});
 
 });

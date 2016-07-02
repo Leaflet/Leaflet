@@ -1,6 +1,6 @@
 /*
  * @class Marker
- * @inherits Layer
+ * @inherits Interactive layer
  * @aka L.Marker
  * L.Marker is used to display clickable/draggable icons on the map. Extends `Layer`.
  *
@@ -20,8 +20,7 @@ L.Marker = L.Layer.extend({
 		// Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.
 		icon: new L.Icon.Default(),
 
-		// @option interactive: Boolean = true
-		// If `false`, the marker will not emit mouse events and will act as a part of the underlying map.
+		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
 
 		// @option draggable: Boolean = false
@@ -66,31 +65,6 @@ L.Marker = L.Layer.extend({
 
 	/* @section
 	 *
-	 * You can subscribe to the following events using [these methods](#evented-method).
-	 *
-	 * @event click: MouseEvent
-	 * Fired when the user clicks (or taps) the marker.
-	 *
-	 * @event dblclick: MouseEvent
-	 * Fired when the user double-clicks (or double-taps) the marker.
-	 *
-	 * @event mousedown: MouseEvent
-	 * Fired when the user pushes the mouse button on the marker.
-	 *
-	 * @event mouseover: MouseEvent
-	 * Fired when the mouse enters the marker.
-	 *
-	 * @event mouseout: MouseEvent
-	 * Fired when the mouse leaves the marker.
-	 *
-	 * @event contextmenu: MouseEvent
-	 * Fired when the user right-clicks on the marker.
-	 */
-
-
-
-	/* @section
-	 *
 	 * In addition to [shared layer methods](#Layer) like `addTo()` and `remove()` and [popup methods](#Popup) like bindPopup() you can also use the following methods:
 	 */
 
@@ -102,14 +76,22 @@ L.Marker = L.Layer.extend({
 	onAdd: function (map) {
 		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
+		if (this._zoomAnimated) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._initIcon();
 		this.update();
 	},
 
-	onRemove: function () {
+	onRemove: function (map) {
 		if (this.dragging && this.dragging.enabled()) {
 			this.options.draggable = true;
 			this.dragging.removeHooks();
+		}
+
+		if (this._zoomAnimated) {
+			map.off('zoomanim', this._animateZoom, this);
 		}
 
 		this._removeIcon();
@@ -117,16 +99,10 @@ L.Marker = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {
+		return {
 			zoom: this.update,
 			viewreset: this.update
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-
-		return events;
 	},
 
 	// @method getLatLng: LatLng

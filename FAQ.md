@@ -30,9 +30,9 @@ with over seventy different layers to choose from.
 Popular commercial options, free up to a particular number of requests, include
 [MapBox](http://mapbox.com),
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
-[Esri ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers) ([official plugin](https://github.com/Esri/esri-leaflet))
+[Esri ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers) ([official plugin](https://github.com/Esri/esri-leaflet)),
+[MapQuest](https://developer.mapquest.com/products) ([official plugins](https://developer.mapquest.com/documentation/leaflet-plugins))
 and [Nokia Here](http://developer.here.com/web-experiences).
-A notable exception is [MapQuest Open](http://developer.mapquest.com/web/products/open/map), which is free for any number of requests.
 
 Always be sure to **read the terms of use** of a chosen tile provider, **know its limitations**, and **attribute it properly** in your app.
 

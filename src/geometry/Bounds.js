@@ -81,7 +81,7 @@ L.Bounds.prototype = {
 	// Returns `true` if the rectangle contains the given one.
 	// @alternative
 	// @method contains(point: Point): Boolean
-	// Returns `true` if the rectangle contains the given poing.
+	// Returns `true` if the rectangle contains the given point.
 	contains: function (obj) {
 		var min, max;
 

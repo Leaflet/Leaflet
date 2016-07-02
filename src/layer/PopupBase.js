@@ -234,12 +234,13 @@ L.PopupBase = L.Layer.extend({
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    offset = L.point(this.options.offset);
+		    offset = L.point(this.options.offset),
+		    anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos);
+			L.DomUtil.setPosition(this._container, pos.add(anchor));
 		} else {
-			offset = offset.add(pos);
+			offset = offset.add(pos).add(anchor);
 		}
 
 		var bottom = this._containerBottom = -offset.y,
@@ -248,6 +249,10 @@ L.PopupBase = L.Layer.extend({
 		// bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = bottom + 'px';
 		this._container.style.left = left + 'px';
+	},
+
+	_getAnchor: function () {
+		return [0, 0];
 	}
 
 });

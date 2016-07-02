@@ -254,7 +254,8 @@ L.Map = L.Evented.extend({
 	setMaxBounds: function (bounds) {
 		bounds = L.latLngBounds(bounds);
 
-		if (!bounds) {
+		if (!bounds.isValid()) {
+			this.options.maxBounds = null;
 			return this.off('moveend', this._panInsideMaxBounds);
 		} else if (this.options.maxBounds) {
 			this.off('moveend', this._panInsideMaxBounds);
@@ -435,7 +436,7 @@ L.Map = L.Evented.extend({
 
 	// @section Other Methods
 	// @method createPane(name: String, container?: HTMLElement): HTMLElement
-	// Creates a new map pane with the given name if it doesn't exist already,
+	// Creates a new [map pane](#map-pane) with the given name if it doesn't exist already,
 	// then returns it. The pane is created as a children of `container`, or
 	// as a children of the main map pane if not set.
 	createPane: function (name, container) {
@@ -505,8 +506,8 @@ L.Map = L.Evented.extend({
 		    max = this.getMaxZoom(),
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
-		    size = this.getSize(),
-		    boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)).add(padding),
+		    size = this.getSize().subtract(padding),
+		    boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)),
 		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
 
 		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
@@ -562,13 +563,13 @@ L.Map = L.Evented.extend({
 	// @section Other Methods
 
 	// @method getPane(pane: String|HTMLElement): HTMLElement
-	// Returns a map pane, given its name or its HTML element (its identity).
+	// Returns a [map pane](#map-pane), given its name or its HTML element (its identity).
 	getPane: function (pane) {
 		return typeof pane === 'string' ? this._panes[pane] : pane;
 	},
 
 	// @method getPanes(): Object
-	// Returns a plain object containing the names of all panes as keys and
+	// Returns a plain object containing the names of all [panes](#map-pane) as keys and
 	// the panes as values.
 	getPanes: function () {
 		return this._panes;
@@ -763,23 +764,23 @@ L.Map = L.Evented.extend({
 		this._mapPane = this.createPane('mapPane', this._container);
 		L.DomUtil.setPosition(this._mapPane, new L.Point(0, 0));
 
-		// @pane tilePane: HTMLElement = 2
-		// Pane for tile layers
+		// @pane tilePane: HTMLElement = 200
+		// Pane for `GridLayer`s and `TileLayer`s
 		this.createPane('tilePane');
-		// @pane overlayPane: HTMLElement = 4
-		// Pane for overlays like polylines and polygons
+		// @pane overlayPane: HTMLElement = 400
+		// Pane for vector overlays (`Path`s), like `Polyline`s and `Polygon`s
 		this.createPane('shadowPane');
-		// @pane shadowPane: HTMLElement = 5
-		// Pane for overlay shadows (e.g. marker shadows)
+		// @pane shadowPane: HTMLElement = 500
+		// Pane for overlay shadows (e.g. `Marker` shadows)
 		this.createPane('overlayPane');
-		// @pane markerPane: HTMLElement = 6
-		// Pane for marker icons
+		// @pane markerPane: HTMLElement = 600
+		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
 		// @pane labelPane: HTMLElement = 7
 		// Pane for labels.
 		this.createPane('labelPane');
-		// @pane popupPane: HTMLElement = 8
-		// Pane for popups.
+		// @pane popupPane: HTMLElement = 700
+		// Pane for `Popup`s.
 		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
@@ -992,17 +993,6 @@ L.Map = L.Evented.extend({
 
 		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
-		if (e.type === 'click') {
-			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
-			// @event preclick: MouseEvent
-			// Fired before mouse click on the map (sometimes useful when you
-			// want something to happen on click before any existing click
-			// handlers start running).
-			var synth = L.Util.extend({}, e);
-			synth.type = 'preclick';
-			this._handleDOMEvent(synth);
-		}
-
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
 			L.DomUtil.preventOutline(e.target || e.srcElement);
@@ -1012,6 +1002,17 @@ L.Map = L.Evented.extend({
 	},
 
 	_fireDOMEvent: function (e, type, targets) {
+
+		if (e.type === 'click') {
+			// Fire a synthetic 'preclick' event which propagates up (mainly for closing popups).
+			// @event preclick: MouseEvent
+			// Fired before mouse click on the map (sometimes useful when you
+			// want something to happen on click before any existing click
+			// handlers start running).
+			var synth = L.Util.extend({}, e);
+			synth.type = 'preclick';
+			this._fireDOMEvent(synth, synth.type, targets);
+		}
 
 		if (e._stopped) { return; }
 

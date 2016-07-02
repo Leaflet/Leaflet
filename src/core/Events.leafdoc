@@ -32,8 +32,8 @@ The geographical point where the mouse event occured.
 Pixel coordinates of the point where the mouse event occured relative to the map layer.
 @property containerPoint: Point
 Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
-@property originalEvent: DOMMouseEvent
-The original DOM mouse event fired by the browser.
+@property originalEvent: DOM MouseEvent
+The original [DOM mouse event](https://developer.mozilla.org/docs/Web/API/MouseEvent) fired by the browser.
 
 
 
@@ -79,11 +79,17 @@ The name of the layer that was added or removed.
 @inherits Event
 @property tile: HTMLElement
 The tile element (image).
+@property coords: Point
+Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates.
 
 @miniclass TileErrorEvent (Event objects)
 @inherits Event
 @property tile: HTMLElement
 The tile element (image).
+@property coords: Point
+Point object with the tile's `x`, `y`, and `z` (zoom level) coordinates.
+@property error: *
+Error passed to the tile's `done()` callback.
 
 @miniclass ResizeEvent (Event objects)
 @inherits Event

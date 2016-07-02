@@ -45,11 +45,11 @@ L.GeoJSON = L.FeatureGroup.extend({
 	 * ```
 	 *
 	 * @option onEachFeature: Function = *
-	 * A `Function` that will be called once for each created `Layer`, after it has
+	 * A `Function` that will be called once for each created `Feature`, after it has
 	 * been created and styled. Useful for attaching events and popups to features.
 	 * The default is to do nothing with the newly created layers:
 	 * ```js
-	 * function (layer) {}
+	 * function (feature, layer) {}
 	 * ```
 	 *
 	 * @option filter: Function = *
@@ -76,6 +76,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 	},
 
+	// @function addData( <GeoJSON> data ): Layer
+	// Adds a GeoJSON object to the layer.
 	addData: function (geojson) {
 		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
 		    i, len, feature;
@@ -111,6 +113,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 		return this.addLayer(layer);
 	},
 
+	// @function resetStyle( <Path> layer ): Layer
+	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
 	resetStyle: function (layer) {
 		// reset any custom styles
 		layer.options = L.Util.extend({}, layer.defaultOptions);
@@ -118,6 +122,8 @@ L.GeoJSON = L.FeatureGroup.extend({
 		return this;
 	},
 
+	// @function setStyle( <Function> style ): Layer
+	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle: function (style) {
 		return this.eachLayer(function (layer) {
 			this._setLayerStyle(layer, style);

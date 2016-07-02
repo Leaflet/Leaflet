@@ -4,13 +4,13 @@
  * @aka L.GridLayer
  *
  * Generic class for handling a tiled grid of HTML elements. This is the base class for all tile layers and replaces `TileLayer.Canvas`.
- * GridLayer can be extended to create a tiled grid of HTML Elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
+ * GridLayer can be extended to create a tiled grid of HTML elements like `<canvas>`, `<img>` or `<div>`. GridLayer will handle creating and animating these DOM elements for you.
  *
  *
  * @section Synchronous usage
  * @example
  *
- * To create a custom layer, extend GridLayer and impliment the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
+ * To create a custom layer, extend GridLayer and implement the `createTile()` method, which will be passed a `Point` object with the `x`, `y`, and `z` (zoom level) coordinates to draw your tile.
  *
  * ```js
  * var CanvasLayer = L.GridLayer.extend({
@@ -24,7 +24,7 @@
  *         tile.height = size.y;
  *
  *         // get a canvas context and draw something on it using coords.x, coords.y and coords.z
- *         var ctx = canvas.getContext('2d');
+ *         var ctx = tile.getContext('2d');
  *
  *         // return the tile so it can be rendered on screen
  *         return tile;
@@ -32,10 +32,10 @@
  * });
  * ```
  *
- * @section Asynchrohous usage
+ * @section Asynchronous usage
  * @example
  *
- * Tile creation can also be asyncronous, this is useful when using a third-party drawing library. Once the tile is finsihed drawing it can be passed to the done() callback.
+ * Tile creation can also be asynchronous, this is useful when using a third-party drawing library. Once the tile is finished drawing it can be passed to the `done()` callback.
  *
  * ```js
  * var CanvasLayer = L.GridLayer.extend({
@@ -50,8 +50,12 @@
  *         tile.width = size.x;
  *         tile.height = size.y;
  *
- *         // draw something and pass the tile to the done() callback
- *         done(error, tile);
+ *         // draw something asynchronously and pass the tile to the done() callback
+ *         setTimeout(function() {
+ *             done(error, tile);
+ *         }, 1000);
+ *
+ *         return tile;
  *     }
  * });
  * ```
@@ -62,6 +66,8 @@
 
 L.GridLayer = L.Layer.extend({
 
+	// @section
+	// @aka GridLayer options
 	options: {
 		// @option tileSize: Number|Point = 256
 		// Width and height of tiles in the grid. Use a number if width and height are equal, or `L.point(width, height)` otherwise.
@@ -92,7 +98,7 @@ L.GridLayer = L.Layer.extend({
 		zIndex: 1,
 
 		// @option bounds: LatLngBounds = undefined
-		// If set, tiles will only be loaded inside inside the set `LatLngBounds`.
+		// If set, tiles will only be loaded inside the set `LatLngBounds`.
 		bounds: null,
 
 		// @option minZoom: Number = 0
@@ -101,7 +107,7 @@ L.GridLayer = L.Layer.extend({
 
 		// @option maxZoom: Number = undefined
 		// The maximum zoom level that tiles will be loaded at.
-//		maxZoom: undefined,
+		maxZoom: undefined,
 
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
@@ -110,7 +116,15 @@ L.GridLayer = L.Layer.extend({
 
 		// @option pane: String = 'tilePane'
 		// `Map pane` where the grid layer will be added.
-		pane: 'tilePane'
+		pane: 'tilePane',
+
+		// @option className: String = ''
+		// A custom class name to assign to the tile layer. Empty by default.
+		className: '',
+
+		// @option keepBuffer: Number = 2
+		// When panning the map, keep this many rows and columns of tiles before unloading them.
+		keepBuffer: 2
 	},
 
 	initialize: function (options) {
@@ -311,7 +325,7 @@ L.GridLayer = L.Layer.extend({
 	_initContainer: function () {
 		if (this._container) { return; }
 
-		this._container = L.DomUtil.create('div', 'leaflet-layer');
+		this._container = L.DomUtil.create('div', 'leaflet-layer ' + (this.options.className || ''));
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -515,7 +529,9 @@ L.GridLayer = L.Layer.extend({
 			this._noPrune = !!noPrune;
 		}
 
-		this._setZoomTransforms(center, zoom);
+		if (tileZoomChanged) {
+			this._setZoomTransforms(center, zoom);
+		}
 	},
 
 	_setZoomTransforms: function (center, zoom) {
@@ -585,10 +601,16 @@ L.GridLayer = L.Layer.extend({
 		var pixelBounds = this._getTiledPixelBounds(center),
 		    tileRange = this._pxBoundsToTileRange(pixelBounds),
 		    tileCenter = tileRange.getCenter(),
-		    queue = [];
+		    queue = [],
+		    margin = this.options.keepBuffer,
+		    noPruneRange = new L.Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
+		                              tileRange.getTopRight().add([margin, -margin]));
 
 		for (var key in this._tiles) {
-			this._tiles[key].current = false;
+			var c = this._tiles[key].coords;
+			if (c.z !== this._tileZoom || !noPruneRange.contains(L.point(c.x, c.y))) {
+				this._tiles[key].current = false;
+			}
 		}
 
 		// _update just loads more tiles. If the tile zoom level differs too much
@@ -622,7 +644,7 @@ L.GridLayer = L.Layer.extend({
 			if (!this._loading) {
 				this._loading = true;
 				// @event loading: Event
-				// Fired when the grid layer starts loading tiles
+				// Fired when the grid layer starts loading tiles.
 				this.fire('loading');
 			}
 
@@ -761,7 +783,7 @@ L.GridLayer = L.Layer.extend({
 		if (!this._map) { return; }
 
 		if (err) {
-			// @event tileerror: TileEvent
+			// @event tileerror: TileErrorEvent
 			// Fired when there is an error loading a tile.
 			this.fire('tileerror', {
 				error: err,
@@ -796,7 +818,7 @@ L.GridLayer = L.Layer.extend({
 
 		if (this._noTilesToLoad()) {
 			this._loading = false;
-			// @event load: TileEvent
+			// @event load: Event
 			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
 
