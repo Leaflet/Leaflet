@@ -41,6 +41,8 @@
 		L.marker([41.206, 9.44]).addTo(map).bindLabel('click me, I have a popup', {permanent: true, interactive: true}).bindPopup('See?');
 		L.circleMarker([41.206, 9.48], {color: 'Chocolate', radius: 12}).addTo(map).bindLabel('Hello Left World', {direction: 'left'});
 		L.circleMarker([41.20, 9.50], {color: 'Chocolate', radius: 12}).addTo(map).bindLabel('Hello top World', {direction: 'top', permanent: true});
+        L.circleMarker([41.20, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindLabel('Seems I am centered', {direction: 'center', permanent: true, interactive: true}).bindPopup('Yeah');
+        L.circleMarker([41.195, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindLabel('Me too', {direction: 'center'}).bindPopup('Yeah');
 		var icon = L.divIcon({
 			className: 'my-div-icon',
 			html: '<p>A div icon</p>',
@@ -49,7 +51,7 @@
 		L.marker([41.22, 9.48], {icon: icon}).addTo(map).bindLabel('A div icon label following mouse', {sticky: true, direction: 'auto'});
 		L.marker([41.23, 9.47], {icon: icon}).addTo(map).bindLabel('A div icon label');
 		L.marker([41.23, 9.42], {draggable: true}).addTo(map).bindLabel('Draggable marker label', {permanent: true, direction: 'auto'});
-		L.marker([41.19, 9.45]).addTo(map).bindLabel('Clickable marker label', {permanent: true, interactive: true}).on('click', function () { alert('clicked!'); });
+		L.marker([41.19, 9.43]).addTo(map).bindLabel('Clickable marker label', {permanent: true, interactive: true}).on('click', function () { alert('clicked!'); });
 
 		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
 		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});

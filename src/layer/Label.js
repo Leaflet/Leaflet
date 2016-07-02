@@ -36,7 +36,7 @@ L.Label = L.PopupBase.extend({
 
 		// @option direction: String = 'right'
 		// Direction where to open the label. Possible values are: `right`, `left`,
-		// `top`, `bottom`, `auto`.
+		// `top`, `bottom`, `center`, `auto`.
 		// `auto` will dynamicaly switch between `right` and `left` according to the label
 		// position on the map.
 		direction: 'right',
@@ -128,6 +128,8 @@ L.Label = L.PopupBase.extend({
 			pos = pos.add(L.point(-labelWidth / 2, -labelHeight + offset.y + anchor.y));
 		} else if (direction === 'bottom') {
 			pos = pos.subtract(L.point(labelWidth / 2, offset.y));
+		} else if (direction === 'center') {
+			pos = pos.subtract(L.point(labelWidth / 2, labelHeight / 2 - anchor.y));
 		} else if (direction === 'right' || direction === 'auto' && labelPoint.x < centerPoint.x) {
 			direction = 'right';
 			pos = pos.add([offset.x + anchor.x, anchor.y - labelHeight / 2]);

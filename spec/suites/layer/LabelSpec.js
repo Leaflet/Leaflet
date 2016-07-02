@@ -52,7 +52,7 @@ describe('Label', function () {
 		expect(map.hasLayer(layer._label)).to.be(false);
 	});
 
-	it("can be make interactive", function () {
+	it("can be made interactive", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
@@ -71,6 +71,17 @@ describe('Label', function () {
 		layer.bindLabel('A long label that should be displayed on the left', {permanent: true, direction: 'left', interactive: true});
 		expect(map.hasLayer(layer._label)).to.be(true);
 		happen.at('click', 150, 190);  // Marker is on the map center, which is 400px large.
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("can be forced on center", function () {
+		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+		layer.on('click', spy);
+
+		layer.bindLabel('A label that should be displayed on the center', {permanent: true, direction: 'center', interactive: true});
+		expect(map.hasLayer(layer._label)).to.be(true);
+		happen.at('click', 150, 180);  // Marker is on the map center, which is 400px large.
 		expect(spy.calledOnce).to.be(true);
 	});
 
