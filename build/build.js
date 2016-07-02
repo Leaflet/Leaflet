@@ -193,7 +193,7 @@ exports.test = function(complete, fail) {
 	var karma = require('karma'),
 	    testConfig = {configFile : __dirname + '/../spec/karma.conf.js'};
 
-	testConfig.browsers = ['PhantomJS'];
+	testConfig.browsers = ['PhantomJSCustom'];
 
 	function isArgv(optName) {
 		return process.argv.indexOf(optName) !== -1;

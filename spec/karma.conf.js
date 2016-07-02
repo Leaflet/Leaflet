@@ -1,7 +1,7 @@
 // Karma configuration
 module.exports = function (config) {
 
-	var libSources = require(__dirname+'/../build/build.js').getFiles();
+	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
 		"spec/sinon.js",
@@ -60,7 +60,21 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJS'],
+		browsers: ['PhantomJSCustom'],
+
+		customLaunchers: {
+			'PhantomJSCustom': {
+				base: 'PhantomJS',
+				flags: ['--load-images=true'],
+				options: {
+					onCallback: function (data) {
+						if (data.render) {
+							page.render(data.render);
+						}
+					}
+				}
+			}
+		},
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 5000,
