@@ -13,7 +13,7 @@ module.exports = function (config) {
 		"spec/suites/SpecHelper.js",
 		"spec/suites/**/*.js",
 		"dist/*.css",
-		{pattern: "dist/images/*.png", included: false}
+		{pattern: "dist/images/*.png", included: false, serve: true}
 	]);
 
 	config.set({
@@ -33,6 +33,9 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: files,
+		proxies: {
+			'/base/dist/images/': 'dist/images/'
+		},
 		exclude: [],
 
 		// test results reporter to use
