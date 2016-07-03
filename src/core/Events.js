@@ -133,29 +133,45 @@ L.Evented = L.Class.extend({
 	},
 
 	_off: function (type, fn, context) {
+		var typeListeners,
+		    contextId,
+		    listeners,
+		    i,
+		    len;
+
 		if (!this._events) { return; }
 
 		if (!fn) {
-			// clear all listeners for a type if function isn't specified
-			delete this._events[type];
+			// Set all removed listeners to noop so they are not called if remove happens in fire
+			typeListeners = this._events[type];
+			if (typeListeners) {
+				for (contextId in typeListeners.listeners) {
+					listeners = typeListeners.listeners[contextId];
+					for (i = 0, len = listeners.length; i < len; i++) {
+						listeners[i].fn = L.Util.falseFn;
+					}
+				}
+				// clear all listeners for a type if function isn't specified
+				delete this._events[type];
+			}
 			return;
 		}
 
-		var typeListeners = this._events[type];
+		typeListeners = this._events[type];
 		if (!typeListeners) {
 			return;
 		}
 
-		var contextId = context && context !== this && L.stamp(context);
+		contextId = context && context !== this && L.stamp(context);
 		if (!contextId) {
 			contextId = 'no_context';
 		}
 
-		var listeners = typeListeners.listeners[contextId];
+		listeners = typeListeners.listeners[contextId];
 		if (listeners) {
 
 			// find fn and remove it
-			for (var i = 0, len = listeners.length; i < len; i++) {
+			for (i = 0, len = listeners.length; i < len; i++) {
 				var l = listeners[i];
 				if (l.fn === fn) {
 
