@@ -233,6 +233,12 @@ L.GridLayer = L.Layer.extend({
 			}
 
 			events.move = this._onMove;
+
+			if (!this._onRotate) {
+				this._onRotate = L.Util.throttle(this._onMoveEnd, this.options.updateInterval, this);
+			}
+
+			events.rotate = this._onRotate;
 		}
 
 		if (this._zoomAnimated) {
