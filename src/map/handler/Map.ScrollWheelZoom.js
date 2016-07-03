@@ -20,7 +20,7 @@ L.Map.mergeOptions({
 	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
 	// mean a change of one full zoom level. Smaller values will make wheel-zooming
 	// faster (and vice versa).
-	wheelPxPerZoomLevel: 50
+	wheelPxPerZoomLevel: 60
 });
 
 L.Map.ScrollWheelZoom = L.Handler.extend({
