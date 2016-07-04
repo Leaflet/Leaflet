@@ -1125,6 +1125,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/cloudybay/leaflet-polygon-fillPattern">leaflet-polygon.fillPattern</a>
+		</td>
+		<td>
+			Extend the Polygon Object to fill SVG Path element with an image pattern.<a href="http://lwsu.github.io/leaflet-polygon-fillPattern/example/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/cloudybay/">CloudyBay</a>
+		</td>
+	</tr>
 </table>
 
 
