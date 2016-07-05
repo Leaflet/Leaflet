@@ -97,6 +97,7 @@ L.Evented = L.Class.extend({
 		if (!typeListeners) {
 			typeListeners = {
 				listeners: {},
+				fnIndices: {},
 				count: 0
 			};
 			this._events[type] = typeListeners;
@@ -111,20 +112,23 @@ L.Evented = L.Class.extend({
 		}
 
 		// fn array for context
-		var listeners = typeListeners.listeners[contextId];
+		var listeners = typeListeners.listeners[contextId],
+		    fnIndices = typeListeners.fnIndices[contextId];
 		if (!listeners) {
 			listeners = [];
+			fnIndices = {};
 			typeListeners.listeners[contextId] = listeners;
+			typeListeners.fnIndices[contextId] = fnIndices;
 		}
 
 		// check if fn already there
-		for (var i = 0, len = listeners.length; i < len; i++) {
-			if (listeners[i].fn === fn) {
-				return;
-			}
+		var fnStamp = L.stamp(fn);
+		if (fnIndices[fnStamp]) {
+			return;
 		}
 
 		listeners.push(newListener);
+		fnIndices[fnStamp] = listeners.length - 1;
 		typeListeners.count++;
 	},
 
@@ -165,32 +169,34 @@ L.Evented = L.Class.extend({
 
 		listeners = typeListeners.listeners[contextId];
 		if (listeners) {
+			var fnStamp = L.stamp(fn),
+			    fnIndices = typeListeners.fnIndices[contextId],
+			    listenerIndex = fnIndices[fnStamp];
 
-			// find fn and remove it
-			for (i = 0, len = listeners.length; i < len; i++) {
-				var l = listeners[i];
-				if (l.fn === fn) {
+			if (listenerIndex >= 0) {
+				// find fn and remove it
+				var l = listeners[listenerIndex];
+				// set the removed listener to noop so that's not called if remove happens in fire
+				l.fn = L.Util.falseFn;
+				typeListeners.count--;
 
-					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = L.Util.falseFn;
-					typeListeners.count--;
-
-					if (len > 1) {
-						if (!this._isFiring) {
-							listeners.splice(i, 1);
-						} else {
-							/* copy array in case events are being fired */
-							typeListeners.listeners[contextId] = listeners.slice();
-							typeListeners.listeners[contextId].splice(i, 1);
-						}
+				if (listeners.length > 1) {
+					if (!this._isFiring) {
+						listeners.splice(listenerIndex, 1);
 					} else {
-						delete typeListeners.listeners[contextId];
+						/* copy array in case events are being fired */
+						typeListeners.listeners[contextId] = listeners.slice();
+						typeListeners.listeners[contextId].splice(listenerIndex, 1);
 					}
-
-					return;
-				}
-				if (listeners.length === 0) {
+					delete fnIndices[fnStamp];
+					for (fnStamp in fnIndices) {
+						if (fnIndices[fnStamp] > listenerIndex) {
+							fnIndices[fnStamp]--;
+						}
+					}
+				} else {
 					delete typeListeners.listeners[contextId];
+					delete typeListeners.fnIndices[contextId];
 				}
 			}
 		}
