@@ -44,6 +44,7 @@ L.Layer.include({
 	unbindLabel: function () {
 		if (this._label) {
 			this._initLabelInteractions(true);
+			this.closeLabel();
 			this._label = null;
 		}
 		return this;
