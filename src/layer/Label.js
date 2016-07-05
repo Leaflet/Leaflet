@@ -34,12 +34,12 @@ L.Label = L.PopupBase.extend({
 		// label tip in CSS.
 		offset: [6, -6],
 
-		// @option direction: String = 'right'
+		// @option direction: String = 'auto'
 		// Direction where to open the label. Possible values are: `right`, `left`,
 		// `top`, `bottom`, `center`, `auto`.
 		// `auto` will dynamicaly switch between `right` and `left` according to the label
 		// position on the map.
-		direction: 'right',
+		direction: 'auto',
 
 		// @option permanent: Boolean = false
 		// Whether to open the label permanently or only on mouseover.
