@@ -123,7 +123,7 @@ L.Evented = L.Class.extend({
 
 		// check if fn already there
 		var fnStamp = L.stamp(fn);
-		if (fnIndices[fnStamp]) {
+		if (fnIndices[fnStamp] >= 0) {
 			return;
 		}
 
