@@ -70,7 +70,7 @@ L.Evented = L.Class.extend({
 
 		if (!types) {
 			// clear all listeners if called without arguments
-			this._events = undefined;
+			delete this._events;
 
 		} else if (typeof types === 'object') {
 			for (var type in types) {
@@ -118,18 +118,14 @@ L.Evented = L.Class.extend({
 		}
 
 		// check if fn already there
-		var found = false;
 		for (var i = 0, len = listeners.length; i < len; i++) {
 			if (listeners[i].fn === fn) {
-				found = true;
-				break;
+				return;
 			}
 		}
 
-		if (!found) {
-			listeners.push(newListener);
-			typeListeners.count++;
-		}
+		listeners.push(newListener);
+		typeListeners.count++;
 	},
 
 	_off: function (type, fn, context) {
@@ -221,11 +217,7 @@ L.Evented = L.Class.extend({
 				// each fn in context
 				for (var i = 0, len = listeners.length; i < len; i++) {
 					var l = listeners[i];
-					if (l.ctx) {
-						l.fn.call(l.ctx, event);
-					} else {
-						l.fn.call(this, event);
-					}
+					l.fn.call(l.ctx || this, event);
 				}
 			}
 
