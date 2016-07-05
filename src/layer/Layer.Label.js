@@ -31,8 +31,6 @@ L.Layer.include({
 			this._label.setContent(content);
 
 		}
-		// save the originally passed offset
-		this._originalLabelOffset = this._label.options.offset;
 
 		this._initLabelInteractions();
 
