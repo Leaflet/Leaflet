@@ -101,7 +101,9 @@ L.Layer.include({
 			// open the label on the map
 			this._map.openLabel(this._label, latlng);
 
-			if (this._label.options.interactive) {
+			// Label container may not be defined if not permanent and never
+			// opened.
+			if (this._label.options.interactive && this._label._container) {
 				L.DomUtil.addClass(this._label._container, 'leaflet-clickable');
 				this.addInteractiveTarget(this._label._container);
 			}
