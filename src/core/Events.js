@@ -184,7 +184,8 @@ L.Evented = L.Class.extend({
 							listeners.splice(i, 1);
 						} else {
 							/* copy array in case events are being fired */
-							typeListeners.listeners[contextId] = listeners.slice().splice(i, 1);
+							typeListeners.listeners[contextId] = listeners.slice();
+							typeListeners.listeners[contextId].splice(i, 1);
 						}
 					} else {
 						delete typeListeners.listeners[contextId];
