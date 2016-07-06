@@ -2308,6 +2308,15 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/nerik">Erik Escoffier</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MarcChasse/leaflet.ScaleFactor">Leaflet.ScaleFactor</a>
+		</td><td>
+			Display a Scale Factor (e.g. 1:50,000) for Leaflet maps (<a href="https://marcchasse.github.io/leaflet.ScaleFactor/">Demo</a>)
+		</td><td>
+			<a href="https://github.com/MarcChasse">Marc Chasse</a>
+		</td>
+	</tr>
 </table>
 
 
