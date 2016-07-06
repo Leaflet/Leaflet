@@ -2166,6 +2166,15 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 			<a href="https://github.com/mlevans">Michael Lawrence Evans</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/MarcChasse/leaflet.Permalink">Leaflet.Permalink</a>
+		</td><td>
+			Adds the maps center and zoom as a permalink and sets up browsing history (<a href="https://marcchasse.github.io/leaflet.Permalink/">Demo</a>)
+		</td><td>
+			<a href="https://github.com/MarcChasse">Marc Chasse</a>
+		</td>
+	</tr>
 </table>
 
 
