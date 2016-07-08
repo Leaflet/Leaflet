@@ -11,8 +11,8 @@
 	<script src="../leaflet-include.js"></script>
 	<style type="text/css">
 		.my-div-icon {
-		    background-color: goldenrod;
-		    text-align: center;
+			background-color: goldenrod;
+			text-align: center;
 		}
 		#map {
 			width: 100%;
@@ -41,8 +41,8 @@
 		L.marker([41.206, 9.44]).addTo(map).bindLabel('click me, I have a popup', {permanent: true, interactive: true}).bindPopup('See?');
 		L.circleMarker([41.206, 9.48], {color: 'Chocolate', radius: 12}).addTo(map).bindLabel('Hello Left World', {direction: 'left'});
 		L.circleMarker([41.20, 9.50], {color: 'Chocolate', radius: 12}).addTo(map).bindLabel('Hello top World', {direction: 'top', permanent: true});
-        L.circleMarker([41.20, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindLabel('Seems I am centered', {direction: 'center', permanent: true, interactive: true}).bindPopup('Yeah');
-        L.circleMarker([41.195, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindLabel('Me too', {direction: 'center'}).bindPopup('Yeah');
+		L.circleMarker([41.20, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindLabel('Seems I am centered', {direction: 'center', permanent: true, interactive: true}).bindPopup('Yeah');
+		L.circleMarker([41.195, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindLabel('Me too', {direction: 'center'}).bindPopup('Yeah');
 		var icon = L.divIcon({
 			className: 'my-div-icon',
 			html: '<p>A div icon</p>',
