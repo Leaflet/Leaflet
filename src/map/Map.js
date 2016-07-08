@@ -1043,7 +1043,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_draggableMoved: function (obj) {
-		obj = obj.options.draggable ? obj : this;
+		obj = obj.dragging && obj.dragging.enabled() ? obj : this;
 		return (obj.dragging && obj.dragging.moved()) || (this.boxZoom && this.boxZoom.moved());
 	},
 
