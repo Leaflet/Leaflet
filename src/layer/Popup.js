@@ -1,6 +1,6 @@
 /*
  * @class Popup
- * @inherits PopupBase
+ * @inherits DivOverlay
  * @aka L.Popup
  * Used to open popups in certain places of the map. Use [Map.openPopup](#map-openpopup) to
  * open popups while making sure that only one popup is open at one time
@@ -26,7 +26,7 @@
 
 
 // @namespace Popup
-L.Popup = L.PopupBase.extend({
+L.Popup = L.DivOverlay.extend({
 
 	// @section
 	// @aka Popup options
@@ -88,7 +88,7 @@ L.Popup = L.PopupBase.extend({
 	},
 
 	onAdd: function (map) {
-		L.PopupBase.prototype.onAdd.call(this, map);
+		L.DivOverlay.prototype.onAdd.call(this, map);
 
 		// @namespace Map
 		// @section Popup events
@@ -107,7 +107,7 @@ L.Popup = L.PopupBase.extend({
 	},
 
 	onRemove: function (map) {
-		L.PopupBase.prototype.onRemove.call(this, map);
+		L.DivOverlay.prototype.onRemove.call(this, map);
 
 		// @namespace Map
 		// @section Popup events
@@ -126,7 +126,7 @@ L.Popup = L.PopupBase.extend({
 	},
 
 	getEvents: function () {
-		var events = L.PopupBase.prototype.getEvents.call(this);
+		var events = L.DivOverlay.prototype.getEvents.call(this);
 
 		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;

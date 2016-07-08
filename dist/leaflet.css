@@ -84,7 +84,7 @@
 .leaflet-overlay-pane { z-index: 400; }
 .leaflet-shadow-pane  { z-index: 500; }
 .leaflet-marker-pane  { z-index: 600; }
-.leaflet-label-pane   { z-index: 650; }
+.leaflet-tooltip-pane   { z-index: 650; }
 .leaflet-popup-pane   { z-index: 700; }
 
 .leaflet-map-pane canvas { z-index: 100; }
@@ -539,9 +539,9 @@
 	}
 
 
-/* Label */
+/* Tooltip */
 /* Base styles for the element that has a tooltip */
-.leaflet-label {
+.leaflet-tooltip {
 	position: absolute;
 	padding: 6px;
 	background-color: #fff;
@@ -555,14 +555,14 @@
 	user-select: none;
 	pointer-events: none;
 	}
-.leaflet-label.leaflet-clickable {
+.leaflet-tooltip.leaflet-clickable {
 	cursor: pointer;
 	pointer-events: auto;
 	}
-.leaflet-label-top:before,
-.leaflet-label-bottom:before,
-.leaflet-label-left:before,
-.leaflet-label-right:before {
+.leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
 	position: absolute;
 	pointer-events: none;
 	border: 6px solid transparent;
@@ -572,33 +572,33 @@
 
 /* Directions */
 
-.leaflet-label-bottom:before,
-.leaflet-label-top:before {
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-top:before {
 	left: 50%;
 	margin-left: -6px;
 	}
-.leaflet-label-top:before {
+.leaflet-tooltip-top:before {
 	bottom: 0;
 	margin-bottom: -12px;
 	border-top-color: #fff;
 	}
-.leaflet-label-bottom:before {
+.leaflet-tooltip-bottom:before {
 	top: 0;
 	margin-top: -12px;
 	margin-left: -6px;
 	border-bottom-color: #fff;
 	}
-.leaflet-label-left:before,
-.leaflet-label-right:before {
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
 	top: 50%;
 	margin-top: -6px;
 	}
-.leaflet-label-left:before {
+.leaflet-tooltip-left:before {
 	right: 0;
 	margin-right: -12px;
 	border-left-color: #fff;
 	}
-.leaflet-label-right:before {
+.leaflet-tooltip-right:before {
 	left: 0;
 	margin-left: -12px;
 	border-right-color: #fff;

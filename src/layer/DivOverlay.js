@@ -1,8 +1,8 @@
 /*
- * @class PopupBase
+ * @class DivOverlay
  * @inherits Layer
- * @aka L.PopupBase
- * Base model for L.Popup and L.Label. Inherit from it for very custom popup like plugins.
+ * @aka L.DivOverlay
+ * Base model for L.Popup and L.Tooltip. Inherit from it for custom popup like plugins.
  */
 
 /* @namespace Map
@@ -14,11 +14,11 @@ L.Map.mergeOptions({
 	closePopupOnClick: true
 });
 
-// @namespace PopupBase
-L.PopupBase = L.Layer.extend({
+// @namespace DivOverlay
+L.DivOverlay = L.Layer.extend({
 
 	// @section
-	// @aka PopupBase options
+	// @aka DivOverlay options
 	options: {
 		// @option offset: Point = Point(0, 7)
 		// The offset of the popup position. Useful to control the anchor
