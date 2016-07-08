@@ -214,20 +214,22 @@ L.Evented = L.Class.extend({
 		if (this._events) {
 			var typeListeners = this._events[type];
 
-			this._isFiring = true;
+			if (typeListeners) {
+				this._isFiring = true;
 
-			// each context
-			for (var contextId in typeListeners.listeners) {
-				var listeners = typeListeners.listeners[contextId];
+				// each context
+				for (var contextId in typeListeners.listeners) {
+					var listeners = typeListeners.listeners[contextId];
 
-				// each fn in context
-				for (var i = 0, len = listeners.length; i < len; i++) {
-					var l = listeners[i];
-					l.fn.call(l.ctx || this, event);
+					// each fn in context
+					for (var i = 0, len = listeners.length; i < len; i++) {
+						var l = listeners[i];
+						l.fn.call(l.ctx || this, event);
+					}
 				}
-			}
 
-			this._isFiring = false;
+				this._isFiring = false;
+			}
 		}
 
 		if (propagate) {
