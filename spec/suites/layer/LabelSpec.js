@@ -62,7 +62,7 @@ describe('Label', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	it.skipInPhantom("can be forced on left direction", function () {
+	it("can be forced on left direction", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
@@ -73,7 +73,7 @@ describe('Label', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	it.skipInPhantom("can be forced on top direction", function () {
+	it("can be forced on top direction", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
@@ -84,7 +84,7 @@ describe('Label', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	it.skipInPhantom("can be forced on bottom direction", function () {
+	it("can be forced on bottom direction", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
@@ -95,7 +95,7 @@ describe('Label', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	it.skipInPhantom("can be forced on center", function () {
+	it("can be forced on center", function () {
 		var layer = new L.Marker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
