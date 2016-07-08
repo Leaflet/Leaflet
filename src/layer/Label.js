@@ -53,9 +53,9 @@ L.Label = L.PopupBase.extend({
 		// If true, the label will listen to the feature events.
 		interactive: false,
 
-		// @option opacity: Number = 1.0
+		// @option opacity: Number = 0.9
 		// Label container opacity.
-		opacity: 0.8
+		opacity: 0.9
 	},
 
 	onAdd: function (map) {

@@ -545,7 +545,8 @@
 	position: absolute;
 	padding: 6px;
 	background-color: #fff;
-	border: 1px solid #222;
+	border: 1px solid #fff;
+	border-radius: 2px;
 	color: #222;
 	white-space: nowrap;
 	-webkit-user-select: none;
@@ -579,13 +580,13 @@
 .leaflet-label-top:before {
 	bottom: 0;
 	margin-bottom: -12px;
-	border-top-color: #222;
+	border-top-color: #fff;
 	}
 .leaflet-label-bottom:before {
 	top: 0;
 	margin-top: -12px;
 	margin-left: -6px;
-	border-bottom-color: #222;
+	border-bottom-color: #fff;
 	}
 .leaflet-label-left:before,
 .leaflet-label-right:before {
@@ -595,10 +596,10 @@
 .leaflet-label-left:before {
 	right: 0;
 	margin-right: -12px;
-	border-left-color: #222;
+	border-left-color: #fff;
 	}
 .leaflet-label-right:before {
 	left: 0;
 	margin-left: -12px;
-	border-right-color: #222;
+	border-right-color: #fff;
 	}

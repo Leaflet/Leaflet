@@ -115,7 +115,7 @@ describe('Label', function () {
 	it("can change opacity with setOpacity", function () {
 		var layer = new L.Marker(center).addTo(map);
 		layer.bindLabel('Label', {permanent: true});
-		expect(layer._label._container.style.opacity).to.eql(0.8);
+		expect(layer._label._container.style.opacity).to.eql(0.9);
 		layer._label.setOpacity(0.57);
 		expect(layer._label._container.style.opacity).to.eql(0.57);
 	});
