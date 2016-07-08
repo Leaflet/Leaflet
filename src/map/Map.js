@@ -776,7 +776,7 @@ L.Map = L.Evented.extend({
 		// @pane markerPane: HTMLElement = 600
 		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
-		// @pane labelPane: HTMLElement = 7
+		// @pane labelPane: HTMLElement = 700
 		// Pane for labels.
 		this.createPane('labelPane');
 		// @pane popupPane: HTMLElement = 700
