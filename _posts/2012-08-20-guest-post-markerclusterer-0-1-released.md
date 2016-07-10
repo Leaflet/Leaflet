@@ -10,7 +10,7 @@ _This is a guest post from Dave Leaver, an active Leaflet contributor (particula
 
 Almost anyone who has a map with markers on it will eventually end up having those markers overlap. At my day job at <a href="http://www.smartrak.co.nz/" title="Smartrak GPS Fleet Tracking">Smartrak</a> we regularly have customers with thousands of points on the map. When you zoom it out, these markers all overlap and make the map look messy and crowded. There are also cases where the markers overlap even on the maximum zoom level, which makes interacting with them impossible. Also, having a large amount of markers on the map usually ends up lowering performance to an unacceptable level.
 
-To improve this, many sites use marker clustering, a technique of grouping markers that are close to each other together on each zom level. One good example of this is <a href="http://www.redfin.com/homes-for-sale">Redfin</a>. We needed something like this, but in Leaflet. In the spirit of open source we developed and released our solution so that everyone can take advantage of it. So we proudly present <a href="https://github.com/danzel/Leaflet.markercluster">Leaflet.MarkerCluster</a>.
+To improve this, many sites use marker clustering, a technique of grouping markers that are close to each other together on each zom level. One good example of this is <a href="http://www.redfin.com/homes-for-sale">Redfin</a>. We needed something like this, but in Leaflet. In the spirit of open source we developed and released our solution so that everyone can take advantage of it. So we proudly present <a href="https://github.com/leaflet/Leaflet.markercluster">Leaflet.MarkerCluster</a>.
 
 <div id="map" class="map" style="height: 320px"></div>
 
@@ -20,7 +20,7 @@ To improve this, many sites use marker clustering, a technique of grouping marke
 The clusterer has all sorts of great built in behaviour:
 
  * Everything is brilliantly animated. As you zoom in and out you can logically see which clusters have become which markers.
- * It is very fast, so for example [clustering 50,000 points](http://danzel.github.com/Leaflet.markercluster/example/marker-clustering-realworld.50000.html) isn't a problem. Also, all the heavy calculation happens on initial page load, and after this the map works smoothly.
+ * It is very fast, so for example [clustering 50,000 points](https://leaflet.github.com/Leaflet.markercluster/example/marker-clustering-realworld.50000.html) isn't a problem. Also, all the heavy calculation happens on initial page load, and after this the map works smoothly.
  * Markers that don't need clustering aren't and will be visible at the relevant zoom levels.
  * When you mouse over a cluster the bounds of the marker within that cluster are shown.
  * Clicking a cluster will zoom you in to the bounds of its children.
@@ -54,7 +54,7 @@ You can also use all of the [FeatureGroup events](../../../reference.html#featur
 
 ### Get It
 
-You can download the latest release on the <a href="https://github.com/danzel/Leaflet.markercluster/downloads">github download page</a>.
+You can download the latest release on the <a href="https://github.com/leaflet/Leaflet.markercluster/downloads">github download page</a>.
 
 ### The Technical Bits
 
@@ -73,13 +73,13 @@ These clusters are stored in a tree (A cluster contains its child clusters) with
 `L.DistanceGrid` provides some nice optimization when clustering (contributed by [Vladimir](http://agafonkin.com/en/), Leaflet maintainer).
 
 To cluster the markers, we need to compare every marker with every other marker to try form a cluster.
-To make this quicker, we need reduce the set of markers we need to compare with. `DistanceGrid` does this by putting all markers on a grid sized the same as the distance we need to search. Then, when looking for a marker to cluster with, we only need to look at markers in the grid square we are in and its immediate neighbours. This can be quite a big performance win as we only look at markers that we are likely to form a cluster with. (<a href="https://github.com/danzel/Leaflet.markercluster/pull/29">check out the initial PR for numbers</a>)
+To make this quicker, we need reduce the set of markers we need to compare with. `DistanceGrid` does this by putting all markers on a grid sized the same as the distance we need to search. Then, when looking for a marker to cluster with, we only need to look at markers in the grid square we are in and its immediate neighbours. This can be quite a big performance win as we only look at markers that we are likely to form a cluster with. (<a href="https://github.com/leaflet/Leaflet.markercluster/pull/29">check out the initial PR for numbers</a>)
 
 ### Closing Words
 
 I hope you enjoy using the clusterer and get everything you want out of it. If you do use it in a public site please <a href="mailto:danzel@localhost.geek.nz">throw me an email</a> so I can check it out and potentially link it on the github site.
 
-If you have any issues also please log a bug on <a href="https://github.com/danzel/Leaflet.markercluster">the github page</a>.
+If you have any issues also please log a bug on <a href="https://github.com/leaflet/Leaflet.markercluster">the github page</a>.
 
 Enjoy!<br />
 Dave Leaver.
