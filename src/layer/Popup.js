@@ -93,8 +93,8 @@ L.Popup = L.Layer.extend({
 		autoClose: true,
 
 		// @option zoomAnimation: Boolean = true
-		// Whether to animate the popup on zoom. Disable it if you have
-		// problems with Flash content inside popups.
+		// Whether to animate the popup on zoom. When disabled, the popup will
+		// be momentarily hidden during zoom animations.
 		zoomAnimation: true,
 
 		// @option className: String = ''
@@ -360,17 +360,11 @@ L.Popup = L.Layer.extend({
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
 		    offset = L.point(this.options.offset),
-		    anchor = this._getAnchor();
-
-		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos.add(anchor));
-		} else {
-			offset = offset.add(pos).add(anchor);
-		}
-
-		var bottom = this._containerBottom = -offset.y,
+		    anchor = this._getAnchor(),
+		    bottom = this._containerBottom = -offset.y,
 		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
 
+		L.DomUtil.setPosition(this._container, pos.add(anchor));
 		// bottom position the popup in case the height of the popup changes (images loading etc)
 		this._container.style.bottom = bottom + 'px';
 		this._container.style.left = left + 'px';
