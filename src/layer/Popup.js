@@ -92,11 +92,6 @@ L.Popup = L.Layer.extend({
 		// the Map's [closePopupOnClick](#map-closepopuponclick) option).
 		autoClose: true,
 
-		// @option zoomAnimation: Boolean = true
-		// Whether to animate the popup on zoom. Disable it if you have
-		// problems with Flash content inside popups.
-		zoomAnimation: true,
-
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
 		className: '',
@@ -113,8 +108,6 @@ L.Popup = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._zoomAnimated = this._zoomAnimated && this.options.zoomAnimation;
-
 		if (!this._container) {
 			this._initLayout();
 		}
@@ -237,12 +230,10 @@ L.Popup = L.Layer.extend({
 	getEvents: function () {
 		var events = {
 			zoom: this._updatePosition,
-			viewreset: this._updatePosition
+			viewreset: this._updatePosition,
+			zoomanim: this._animateZoom
 		};
 
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
 		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
 		}
@@ -286,7 +277,7 @@ L.Popup = L.Layer.extend({
 		var prefix = 'leaflet-popup',
 		    container = this._container = L.DomUtil.create('div',
 			prefix + ' ' + (this.options.className || '') +
-			' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide'));
+			' leaflet-zoom-animated');
 
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
@@ -362,11 +353,7 @@ L.Popup = L.Layer.extend({
 		    offset = L.point(this.options.offset),
 		    anchor = this._getAnchor();
 
-		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos.add(anchor));
-		} else {
-			offset = offset.add(pos).add(anchor);
-		}
+		L.DomUtil.setPosition(this._container, pos.add(anchor));
 
 		var bottom = this._containerBottom = -offset.y,
 		    left = this._containerLeft = -Math.round(this._containerWidth / 2) + offset.x;
@@ -390,9 +377,7 @@ L.Popup = L.Layer.extend({
 		    containerWidth = this._containerWidth,
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		if (this._zoomAnimated) {
-			layerPos._add(L.DomUtil.getPosition(this._container));
-		}
+		layerPos._add(L.DomUtil.getPosition(this._container));
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
 		    padding = L.point(this.options.autoPanPadding),
