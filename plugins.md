@@ -910,7 +910,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iatkin">Ilya Atkin</a>
 		</td>
 	</tr>
-    <tr>
+    	<tr>
 		<td>
 			<a href="https://github.com/marslan390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
 		</td><td>
@@ -991,7 +991,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/tomaszbrue">Thomas Brüggemann</a>
 		</td>
 	</tr>
-		<tr>
+	<tr>
 		<td>
 			<a href="https://github.com/heyman/leaflet-usermarker">leaflet-usermarker</a>
 		</td><td>
@@ -1134,6 +1134,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td>
 		<td>
 			<a href="https://github.com/cloudybay/">CloudyBay</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/bbecquet/Leaflet.PolylineOffset">Leaflet Polyline Offset</a>
+		</td>
+		<td>
+			Adds to <code>L.Polyline</code> the ability to be shifted with a relative pixel offset, without modifying its actual <code>LatLng</code>s. The offset value can be either negative or positive, for left- or right-side offset, and remains constant across zoom levels (<a href="http://bbecquet.github.io/Leaflet.PolylineOffset/examples/example.html">basic demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
 		</td>
 	</tr>
 </table>
