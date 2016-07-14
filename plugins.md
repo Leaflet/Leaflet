@@ -779,6 +779,17 @@ These plugins create useful overlays from scratch, no loading required.
 			<a href="https://github.com/joergdietrich">J&ouml;rg Dietrich</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/cloudybay/leaflet.latlng-graticule">leaflet.latlng-graticule</a>
+		</td>
+		<td>
+			Create a Canvas as ImageOverlay to draw the Lat/Lon Graticule, and show the grid tick label at the edges of the map.<a href="https://cloudybay.github.io/leaflet.latlng-graticule/example/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/cloudybay/">CloudyBay</a>
+		</td>
+	</tr>
 </table>
 
 
