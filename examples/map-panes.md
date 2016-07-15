@@ -54,19 +54,19 @@ If we create a Leaflet map with these two tile layers, any marker or polygon wil
 
 <div id="map" class="map" style="height: 250px"></div>
 
-<link rel="stylesheet" href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.css" />
-<script src="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.js"></script>
+<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
+<script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
 <script type="text/javascript" src="eu-countries.js"></script>
 <script>
 var map = L.map('map');
 
-map.createPane('labels');    
+map.createPane('labels');
 
 // This pane is above markers but below popups
-map.getPane('labels').style.zIndex = 650;	
+map.getPane('labels').style.zIndex = 650;
 
 // Layers in this pane are non-interactive and do not obscure mouse/touch events
-map.getPane('labels').style.pointerEvents = 'none';	
+map.getPane('labels').style.pointerEvents = 'none';
 
 
 var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
@@ -125,7 +125,7 @@ With the pane now ready, we can add the layers, paying attention to use the `pan
     }).addTo(map);
 
     var geojson = L.geoJson(GeoJsonData, geoJsonOptions).addTo(map);
-   
+
 Finally, add some interaction to each feature on the GeoJSON layer:
 
     geojson.eachLayer(function (layer) {
