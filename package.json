@@ -1,6 +1,6 @@
 {
   "name": "leaflet",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "eslint": "^2.11.1",
