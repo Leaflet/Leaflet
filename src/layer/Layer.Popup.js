@@ -102,7 +102,7 @@ L.Layer.include({
 		return this;
 	},
 
-	// @method closePopup(): this
+	// @method togglePopup(): this
 	// Opens or closes the popup bound to this layer depending on its current state.
 	togglePopup: function (target) {
 		if (this._popup) {
@@ -115,13 +115,13 @@ L.Layer.include({
 		return this;
 	},
 
-	// @method closePopup(): this
+	// @method isPopupOpen(): boolean
 	// Returns `true` if the popup bound to this layer is currently open.
 	isPopupOpen: function () {
 		return this._popup.isOpen();
 	},
 
-	// @method setPopupContent(content: String|HTMLElement|Popup, options?: Popup options): this
+	// @method setPopupContent(content: String|HTMLElement|Popup): this
 	// Sets the content of the popup bound to this layer.
 	setPopupContent: function (content) {
 		if (this._popup) {

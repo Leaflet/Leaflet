@@ -114,6 +114,11 @@ GeoJSON ID of the feature (if present).
 @property popup: Popup
 The popup that was opened or closed.
 
+@miniclass TooltipEvent (Event objects)
+@inherits Event
+@property tooltip: Tooltip
+The tooltip that was opened or closed.
+
 @miniclass DragEndEvent (Event objects)
 @inherits Event
 @property distance: Number
