@@ -22,6 +22,7 @@ An in-progress version being developed on the `master` branch.
 * Refactoring of events (by [@fab1an](https://github.com/fab1an) and [@perliedman](https://github.com/perliedman)) [#4697](https://github.com/Leaflet/Leaflet/pull/4697)
 * Do not alter `popup.options.offset` when computing popup offset (fix #4645) (by [@yohanboniface](https://github.com/yohanboniface)) [#4662](https://github.com/Leaflet/Leaflet/pull/4662)
 * Use different `L.Bounds` for "marking as prunable" and loading tiles (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4650](https://github.com/Leaflet/Leaflet/pull/4650)
+* Added `L.Tooltip` class to display small tooltips on the map (by [@yohanboniface](https://github.com/yohanboniface)) [#3952](https://github.com/Leaflet/Leaflet/pull/3952)
 
 ### Bug fixes
 * Fixed `GridLayer`'s outer edge snapping to vertical center of map (fix #4702) (by [@yohanboniface](https://github.com/yohanboniface)) [#4704](https://github.com/Leaflet/Leaflet/pull/4704)
