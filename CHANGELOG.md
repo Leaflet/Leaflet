@@ -8,7 +8,7 @@ Leaflet Changelog
 An in-progress version being developed on the `master` branch.
 
 
-## 1.0-rc2 (July XX, 2016)
+## 1.0-rc2 (July 18, 2016)
 
 ### API changes
 * Make `L.Handler.enable`/`disable` return `this` (by [@yohanboniface](https://github.com/yohanboniface)) [#4708](https://github.com/Leaflet/Leaflet/pull/4708)
