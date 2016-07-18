@@ -16,7 +16,7 @@ bodyclass: download-page
 		<td>Stable version, released on November 18, 2013 and last updated on October 26, 2015.</td>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.1/leaflet.zip">Leaflet 1.0.0-rc1</a></td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.2/leaflet.zip">Leaflet 1.0.0-rc2</a></td>
 		<td>Last 1.0 release candidate, released on April 18, 2016.</td>
 	</tr>
 	<tr>
@@ -40,8 +40,8 @@ it straight away, place this in the `head` of your HTML code:
 
 or
 
-    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.1/dist/leaflet.css" />
-    <script src="https://npmcdn.com/leaflet@1.0.0-rc.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
+    <script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
 
 ### Using a Downloaded Version of Leaflet
 
