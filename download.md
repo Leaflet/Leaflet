@@ -17,7 +17,7 @@ bodyclass: download-page
 	</tr>
 	<tr>
 		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.2/leaflet.zip">Leaflet 1.0.0-rc2</a></td>
-		<td>Last 1.0 release candidate, released on April 18, 2016.</td>
+		<td>Last 1.0 release candidate, released on July 18, 2016.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.0-dev</a></td>
