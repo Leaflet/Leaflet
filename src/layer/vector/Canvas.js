@@ -344,27 +344,9 @@ L.Polyline.prototype._containsPoint = function (p, closed) {
 };
 
 L.Polygon.prototype._containsPoint = function (p) {
-	var inside = false,
-	    part, p1, p2, i, j, k, len, len2;
-
 	if (!this._pxBounds.contains(p)) { return false; }
 
-	// ray casting algorithm for detecting if point is in polygon
-	for (i = 0, len = this._parts.length; i < len; i++) {
-		part = this._parts[i];
-
-		for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
-			p1 = part[j];
-			p2 = part[k];
-
-			if (((p1.y > p.y) !== (p2.y > p.y)) && (p.x < (p2.x - p1.x) * (p.y - p1.y) / (p2.y - p1.y) + p1.x)) {
-				inside = !inside;
-			}
-		}
-	}
-
-	// also check if it's on polygon stroke
-	return inside || L.Polyline.prototype._containsPoint.call(this, p, true);
+	return this._singleContains(this._parts, p);
 };
 
 L.CircleMarker.prototype._containsPoint = function (p) {
