@@ -32,7 +32,7 @@
 
 L.Canvas = L.Renderer.extend({
 
-	onAdd: function () {
+	onAdd: function (map) {
 		L.Renderer.prototype.onAdd.call(this);
 
 		this._layers = this._layers || {};
@@ -40,6 +40,14 @@ L.Canvas = L.Renderer.extend({
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
+		
+		// When rotating the canvas itself, it is cleared by some weird reason, so redraw.
+		map.on('rotate', this._redraw, this);
+	},
+
+	onRemove: function () {
+		L.Renderer.prototype.onRemove.call(this);
+		this._map.off('rotate', this._redraw, this);
 	},
 
 	_initContainer: function () {
