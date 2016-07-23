@@ -8,6 +8,45 @@ Leaflet Changelog
 An in-progress version being developed on the `master` branch.
 
 
+## 1.0-rc2 (July 18, 2016)
+
+### API changes
+* Make `L.Handler.enable`/`disable` return `this` (by [@yohanboniface](https://github.com/yohanboniface)) [#4708](https://github.com/Leaflet/Leaflet/pull/4708)
+* Icon `size` option can now be initialised with a number (by [@rheh](https://github.com/rheh)) [#4608](https://github.com/Leaflet/Leaflet/pull/4608)
+* Add `classname` option to `L.GridLayer` (by [@jayvarner](https://github.com/jayvarner)) [#4553](https://github.com/Leaflet/Leaflet/pull/4553)
+* Consistent returns for `Map.addLayer` (by [@nathancahill](https://github.com/nathancahill)) [#4504](https://github.com/Leaflet/Leaflet/pull/4504)
+* Create points from objects with `x` and `y` properties (by [@nathancahill](https://github.com/nathancahill)) [#4465](https://github.com/Leaflet/Leaflet/pull/4465)
+* Add `updateWhenZooming` option to `L.GridLayer` (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4462](https://github.com/Leaflet/Leaflet/pull/4462)
+
+### Improvements
+* Refactoring of events (by [@fab1an](https://github.com/fab1an) and [@perliedman](https://github.com/perliedman)) [#4697](https://github.com/Leaflet/Leaflet/pull/4697)
+* Do not alter `popup.options.offset` when computing popup offset (fix #4645) (by [@yohanboniface](https://github.com/yohanboniface)) [#4662](https://github.com/Leaflet/Leaflet/pull/4662)
+* Use different `L.Bounds` for "marking as prunable" and loading tiles (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4650](https://github.com/Leaflet/Leaflet/pull/4650)
+* Added `L.Tooltip` class to display small tooltips on the map (by [@yohanboniface](https://github.com/yohanboniface)) [#3952](https://github.com/Leaflet/Leaflet/pull/3952)
+
+### Bug fixes
+* Fixed `GridLayer`'s outer edge snapping to vertical center of map (fix #4702) (by [@yohanboniface](https://github.com/yohanboniface)) [#4704](https://github.com/Leaflet/Leaflet/pull/4704)
+* Fixed scrollwheel zoom too fast in MS Edge (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4694](https://github.com/Leaflet/Leaflet/pull/4694)
+* Use `pointer-events: visiblePainted` as fallback for IE <11 (by [@perliedman](https://github.com/perliedman)) [#4690](https://github.com/Leaflet/Leaflet/pull/4690)
+* Avoid double borders on `abbr` in website (by [@brunob](https://github.com/brunob)) [#4663](https://github.com/Leaflet/Leaflet/pull/4663)
+* Prevent firing map click when layer has popup (by [@jwoyame](https://github.com/jwoyame)) [#4603](https://github.com/Leaflet/Leaflet/pull/4603)
+* Disable pointer events on popup tip (by [@jwoyame](https://github.com/jwoyame)) [#4599](https://github.com/Leaflet/Leaflet/pull/4599)
+* Prevent `L.DomUtil.create()` from automatically setting a CSS class name (by [@MuellerMatthew](https://github.com/MuellerMatthew)) [#4563](https://github.com/Leaflet/Leaflet/pull/4563)
+* Fix off-by-one bug in `Control.Layers._getLayer` (by [@ValentinH](https://github.com/ValentinH)) [#4561](https://github.com/Leaflet/Leaflet/pull/4561)
+* Fix scrollwheel events zomming two levelz in Chrome by scaling down `getWheelDelta()` (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4538](https://github.com/Leaflet/Leaflet/pull/4538)
+* Prevent event listeners from being called when all listeners are removed (by [@perliedman](https://github.com/perliedman)) [#4555](https://github.com/Leaflet/Leaflet/pull/4555)
+* Don't prevent browser's touch scroll and/or zoom unless handlers are enabled (by [@perliedman](https://github.com/perliedman)) [#4552](https://github.com/Leaflet/Leaflet/pull/4552)
+* Fixed `getBoundsZoom` with small size and padding (by [@dianjin](https://github.com/dianjin)) [#4532](https://github.com/Leaflet/Leaflet/pull/4532)
+* Fixed `L.Control.Layers` in IE8 (by [@jieter](https://github.com/jieter)) [#4509](https://github.com/Leaflet/Leaflet/pull/4509)
+* Fixed `TileLayer`'s retina logic when `zoomReverse` is enabled. (by [@perliedman](https://github.com/perliedman)) [#4503](https://github.com/Leaflet/Leaflet/pull/4503)
+* Fixed `setMaxBounds` not resetting `maxBounds` when passing `null` argument (by [@yohanboniface](https://github.com/yohanboniface)) [#4494](https://github.com/Leaflet/Leaflet/pull/4494)
+* Fixed canvas not filtering click event after drag (by [@yohanboniface](https://github.com/yohanboniface)) [#4493](https://github.com/Leaflet/Leaflet/pull/4493)
+* Fixed `L.Control.removeLayer()` raising an error when trying to remove a layer not yet added (by [@jieter](https://github.com/jieter)) [#4487](https://github.com/Leaflet/Leaflet/pull/4487)
+* Fixed disabling drag on click in IE11 (by [@perliedman](https://github.com/perliedman)) [#4479](https://github.com/Leaflet/Leaflet/pull/4479)
+* Fixed `L.Evented.listens()` on removed event handlers, #4474 (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4476](https://github.com/Leaflet/Leaflet/pull/4476)
+* Better handling of `markerZoomAnimation` event hooks (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4460](https://github.com/Leaflet/Leaflet/pull/4460)
+
+
 ## 1.0-rc1 (April 18, 2016)
 
 ### API changes

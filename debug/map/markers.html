@@ -32,12 +32,12 @@
 
 
         var markerDraggable = new L.Marker([0, 10], {
-            draggable: true,
             title: 'Draggable'
         });
 
         map.addLayer(markerDraggable);
         markerDraggable.bindPopup("Draggable");
+        markerDraggable.dragging.enable();
 
         var poly = new L.Polygon([[0, 10], [0, 15.5], [0, 50], [20, 20.5]]);
         map.addLayer(poly);

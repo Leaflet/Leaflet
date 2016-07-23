@@ -7,6 +7,7 @@ This file just defines the order of the classes in the docs.
 
 @class Marker
 @class Popup
+@class Tooltip
 
 @class TileLayer
 @class TileLayer.WMS
