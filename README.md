@@ -24,7 +24,7 @@ var map = L.map('map', {rotate: true, touchRotate: true})
 
 [Map rotated according to the orientation of your device, if supported](https://rawgit.com/fnicollet/Leaflet/rotate-master/debug/rotate/rotate-mobile.html)
 
-[Map with tri-state control for map rotation (locked, unlocked, follow](https://rawgit.com/fnicollet/Leaflet/rotate-master/debug/rotate/rotate-control.html)
+[Map with tri-state control for map rotation (locked, unlocked, follow)](https://rawgit.com/fnicollet/Leaflet/rotate-master/debug/rotate/rotate-control.html)
 
 [Map with draggable markers](https://rawgit.com/fnicollet/Leaflet/rotate-master/debug/rotate/rotate-and-drag.html)
 
