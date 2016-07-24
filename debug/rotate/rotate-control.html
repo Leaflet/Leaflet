@@ -187,7 +187,8 @@
 		var map = new L.Map('map', {
 			zoom: 15,
 			layers: [osm],
-			rotate: true
+			rotate: true,
+			touchRotate: true
 		}).setView([63.41, 10.41], 17);
 
 // 		map.touchRotate.enable();
@@ -210,12 +211,12 @@
 		map.on('locationfound', logEvent);
 		map.on('locationfound', resetHeading);
 
-// 		window.setInterval( function(){
-// 			map.locate({
-// 				setView: true,
-// // 				enableHighAccuracy: true
-// 				});
-// 		}, 2000);
+ 		window.setInterval( function(){
+ 			map.locate({
+ 				setView: true,
+ 					enableHighAccuracy: true
+ 				});
+ 		}, 2000);
 
 	</script>
 </body>
