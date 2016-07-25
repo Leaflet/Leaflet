@@ -58,12 +58,9 @@
             console.log('poly click');
         });
 
-        L.tileLayer('http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
-            attribution: "Map: Tiles Courtesy of MapQuest (OpenStreetMap, CC-BY-SA)",
-            subdomains: ["otile1","otile2","otile3","otile4"],
-            maxZoom: 12,
-            minZoom: 2
-        }).addTo(map);
+        var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+    			attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    		}).addTo(map);
     </script>
 </body>
 </html>
