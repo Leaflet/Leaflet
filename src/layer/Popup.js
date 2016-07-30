@@ -272,6 +272,16 @@ L.popup = function (options, source) {
 };
 
 
+/* @namespace Map
+ * @section Interaction Options
+ * @option closePopupOnClick: Boolean = true
+ * Set it to `false` if you don't want popups to close when user clicks the map.
+ */
+L.Map.mergeOptions({
+	closePopupOnClick: true
+});
+
+
 // @namespace Map
 // @section Methods for Layers and Controls
 L.Map.include({
