@@ -94,6 +94,16 @@ L.Tooltip = L.DivOverlay.extend({
 		}
 	},
 
+	getEvents: function () {
+		var events = L.DivOverlay.prototype.getEvents.call(this);
+
+		if (L.Browser.touch && !this.options.permanent) {
+			events.preclick = this._close;
+		}
+
+		return events;
+	},
+
 	_close: function () {
 		if (this._map) {
 			this._map.closeTooltip(this);
