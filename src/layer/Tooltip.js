@@ -11,9 +11,9 @@
  * ```
  * Note about tooltip offset. Leaflet takes two options in consideration
  * for computing tooltip offseting:
- * - the `offset` Tooltip option: it defaults to [6, -6], because the tooltip
- *   tip is 6px width and height. Remember to change this value if you override
- *   the tip in CSS.
+ * - the `offset` Tooltip option: it defaults to [0, 0], and it's specific to one tooltip.
+ *   Add a positive x offset to move the tooltip to the right, and a positive y offset to
+ *   move it to the bottom. Negatives will move to the left and top.
  * - the `tooltipAnchor` Icon option: this will only be considered for Marker. You
  *   should adapt this value if you use a custom icon.
  */
@@ -29,10 +29,9 @@ L.Tooltip = L.DivOverlay.extend({
 		// `Map pane` where the tooltip will be added.
 		pane: 'tooltipPane',
 
-		// @option offset: Point = Point(6, -6)
-		// The offset of the tooltip position. Update it if you customize the
-		// tooltip tip in CSS.
-		offset: [6, -6],
+		// @option offset: Point = Point(0, 0)
+		// Optional offset of the tooltip position.
+		offset: [0, 0],
 
 		// @option direction: String = 'auto'
 		// Direction where to open the tooltip. Possible values are: `right`, `left`,
@@ -125,17 +124,17 @@ L.Tooltip = L.DivOverlay.extend({
 		    anchor = this._getAnchor();
 
 		if (direction === 'top') {
-			pos = pos.add(L.point(-tooltipWidth / 2, -tooltipHeight + offset.y + anchor.y));
+			pos = pos.add(L.point(-tooltipWidth / 2 + offset.x, -tooltipHeight + offset.y + anchor.y));
 		} else if (direction === 'bottom') {
-			pos = pos.subtract(L.point(tooltipWidth / 2, offset.y));
+			pos = pos.subtract(L.point(tooltipWidth / 2 - offset.x, -offset.y));
 		} else if (direction === 'center') {
-			pos = pos.subtract(L.point(tooltipWidth / 2, tooltipHeight / 2 - anchor.y));
+			pos = pos.subtract(L.point(tooltipWidth / 2 + offset.x, tooltipHeight / 2 - anchor.y + offset.y));
 		} else if (direction === 'right' || direction === 'auto' && tooltipPoint.x < centerPoint.x) {
 			direction = 'right';
-			pos = pos.add([offset.x + anchor.x, anchor.y - tooltipHeight / 2]);
+			pos = pos.add([offset.x + anchor.x, anchor.y - tooltipHeight / 2 + offset.y]);
 		} else {
 			direction = 'left';
-			pos = pos.subtract(L.point(offset.x + tooltipWidth + anchor.x, tooltipHeight / 2 - anchor.y));
+			pos = pos.subtract(L.point(tooltipWidth + anchor.x - offset.x, tooltipHeight / 2 - anchor.y - offset.y));
 		}
 
 		L.DomUtil.removeClass(container, 'leaflet-tooltip-right');
