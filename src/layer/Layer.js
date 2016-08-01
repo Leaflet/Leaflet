@@ -101,6 +101,15 @@ L.Layer = L.Evented.extend({
 
 		this.fire('add');
 		map.fire('layeradd', {layer: this});
+	},
+
+	// @method toSingleLayersArray(): Layer[]
+	// Returns an array of child **non-group** layers recursively.
+	// If this is a non-group layer, returns an array if this only.
+	toSingleLayersArray: function () {
+		var getSingle = this.getSingleLayersRecursive;
+
+		return getSingle ? getSingle() : [this];
 	}
 });
 
