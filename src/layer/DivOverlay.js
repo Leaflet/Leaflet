@@ -5,15 +5,6 @@
  * Base model for L.Popup and L.Tooltip. Inherit from it for custom popup like plugins.
  */
 
-/* @namespace Map
- * @section Interaction Options
- * @option closePopupOnClick: Boolean = true
- * Set it to `false` if you don't want popups to close when user clicks the map.
- */
-L.Map.mergeOptions({
-	closePopupOnClick: true
-});
-
 // @namespace DivOverlay
 L.DivOverlay = L.Layer.extend({
 
