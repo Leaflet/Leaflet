@@ -112,9 +112,8 @@ L.Tooltip = L.DivOverlay.extend({
 
 	_adjustPan: function () {},
 
-	_updatePosition: function () {
+	_setPosition: function (pos) {
 		var map = this._map,
-		    pos = map.latLngToLayerPoint(this._latlng),
 		    container = this._container,
 		    centerPoint = map.latLngToContainerPoint(map.getCenter()),
 		    tooltipPoint = map.layerPointToContainerPoint(pos),
@@ -146,6 +145,11 @@ L.Tooltip = L.DivOverlay.extend({
 		L.DomUtil.setPosition(container, pos);
 	},
 
+	_updatePosition: function () {
+		var pos = this._map.latLngToLayerPoint(this._latlng);
+		this._setPosition(pos);
+	},
+
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
 
@@ -155,12 +159,8 @@ L.Tooltip = L.DivOverlay.extend({
 	},
 
 	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center), offset;
-		if (this.options.offset) {
-			offset = L.point(this.options.offset);
-			pos = pos.add(offset);
-		}
-		L.DomUtil.setPosition(this._container, pos);
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+		this._setPosition(pos);
 	},
 
 	_getAnchor: function () {
