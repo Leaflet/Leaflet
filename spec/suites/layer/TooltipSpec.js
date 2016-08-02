@@ -82,25 +82,63 @@ describe('Tooltip', function () {
 		expect(spy.calledOnce).to.be(true);
 	});
 
-	it("can be forced on top direction", function () {
+	it("honours offset on left direction", function () {
 		var layer = new L.Marker(center).addTo(map);
+		var spy = sinon.spy();
+		layer.on('click', spy);
+
+		layer.bindTooltip('A long tooltip that should be displayed on the left', {permanent: true, direction: 'left', interactive: true, offset: [-20, -20]});
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+		happen.at('click', 150, 180);
+		expect(spy.calledOnce).to.be(false);
+		happen.at('click', 130, 160);
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("can be forced on top direction", function () {
+		var layer = L.circleMarker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'top', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 200, 170);  // Marker is on the map center, which is 400px large.
+		happen.at('click', 200, 180);  // Marker is on the map center, which is 400px large.
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("honours offset on top direction", function () {
+		var layer = L.circleMarker(center).addTo(map);
+		var spy = sinon.spy();
+		layer.on('click', spy);
+
+		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'top', interactive: true, offset: [-20, -20]});
+		happen.at('click', 200, 180);
+		expect(spy.calledOnce).to.be(false);
+		happen.at('click', 180, 150);
 		expect(spy.calledOnce).to.be(true);
 	});
 
 	it("can be forced on bottom direction", function () {
-		var layer = new L.Marker(center).addTo(map);
+		var layer = L.circleMarker(center).addTo(map);
 		var spy = sinon.spy();
 		layer.on('click', spy);
 
 		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true});
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
-		happen.at('click', 200, 210);  // Marker is on the map center, which is 400px large.
+		happen.at('click', 200, 220);  // Marker is on the map center, which is 400px large.
+		expect(spy.calledOnce).to.be(true);
+	});
+
+	it("honours offset on bottom direction", function () {
+		var layer = L.circleMarker(center).addTo(map);
+		var spy = sinon.spy();
+		layer.on('click', spy);
+
+		layer.bindTooltip('A tooltip that should be displayed on the top', {permanent: true, direction: 'bottom', interactive: true, offset: [20, 20]});
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+		happen.at('click', 200, 220);
+		expect(spy.calledOnce).to.be(false);
+		happen.at('click', 220, 230);
 		expect(spy.calledOnce).to.be(true);
 	});
 

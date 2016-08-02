@@ -573,6 +573,12 @@
 
 /* Directions */
 
+.leaflet-tooltip-bottom {
+	margin-top: 6px;
+}
+.leaflet-tooltip-top {
+	margin-top: -6px;
+}
 .leaflet-tooltip-bottom:before,
 .leaflet-tooltip-top:before {
 	left: 50%;
@@ -589,6 +595,12 @@
 	margin-left: -6px;
 	border-bottom-color: #fff;
 	}
+.leaflet-tooltip-left {
+	margin-left: -6px;
+}
+.leaflet-tooltip-right {
+	margin-left: 6px;
+}
 .leaflet-tooltip-left:before,
 .leaflet-tooltip-right:before {
 	top: 50%;
