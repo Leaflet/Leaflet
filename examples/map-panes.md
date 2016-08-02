@@ -54,8 +54,8 @@ If we create a Leaflet map with these two tile layers, any marker or polygon wil
 
 <div id="map" class="map" style="height: 250px"></div>
 
-<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.css" />
-<script src="https://npmcdn.com/leaflet@1.0.0-rc.2/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+<script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
 <script type="text/javascript" src="eu-countries.js"></script>
 <script>
 var map = L.map('map');
