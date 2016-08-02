@@ -34,7 +34,9 @@ L.Layer.include({
 
 		this._initTooltipInteractions();
 
-		if (this._tooltip.options.permanent) { this.openTooltip(); }
+		if (this._tooltip.options.permanent && this._map && this._map.hasLayer(this)) {
+			this.openTooltip();
+		}
 
 		return this;
 	},
@@ -66,6 +68,8 @@ L.Layer.include({
 			if (L.Browser.touch) {
 				events.click = this._openTooltip;
 			}
+		} else {
+			events.add = this._openTooltip;
 		}
 		this[onOff](events);
 		this._tooltipHandlersAdded = !remove;

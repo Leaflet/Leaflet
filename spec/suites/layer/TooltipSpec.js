@@ -43,6 +43,15 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
+	it("can be added with bindTooltip before added to the map", function () {
+		var layer = new L.Marker(center);
+
+		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+		layer.addTo(map);
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+	});
+
 	it("is removed when removing marker", function () {
 		var layer = new L.Marker(center).addTo(map);
 
@@ -160,6 +169,19 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
+	it("can be added on polygon with bindTooltip before beind added to the map", function () {
+		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
+
+		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+		layer.addTo(map);
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+		layer.remove();
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+		layer.addTo(map);
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+	});
+
 	it("opens on polyline mouseover and close on mouseout", function () {
 		var layer = new L.Polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
@@ -173,10 +195,23 @@ describe('Tooltip', function () {
 		expect(map.hasLayer(layer._tooltip)).to.be(false);
 	});
 
-	it("stays open on marker when permanent", function () {
+	it("stays open on polyline when permanent", function () {
 		var layer = new L.Polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]).addTo(map);
 
 		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+	});
+
+	it("can be added on polyline with bindTooltip before added to the map", function () {
+		var layer = new L.Polyline([[55.8, 37.6], [55.9, 37.6], [55.8, 37.5]]);
+
+		layer.bindTooltip('Tooltip', {permanent: true});
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+		layer.addTo(map);
+		expect(map.hasLayer(layer._tooltip)).to.be(true);
+		layer.remove();
+		expect(map.hasLayer(layer._tooltip)).to.be(false);
+		layer.addTo(map);
 		expect(map.hasLayer(layer._tooltip)).to.be(true);
 	});
 
