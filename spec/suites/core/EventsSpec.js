@@ -35,6 +35,62 @@ describe('Events', function () {
 			// expect(spy6.callCount).to.be(1);
 		});
 
+		it('fires all listeners in the order they are added', function () {
+			var obj = new L.Evented(),
+			    ctx1 = new L.Class(),
+			    ctx2 = new L.Class(),
+			    count = {one: 0, two: 0, three: 0, four: 0};
+
+			function listener1(e) {
+				count.one++;
+				expect(count.two).to.eql(0);
+			}
+
+			function listener2(e) {
+				count.two++;
+				expect(count.one).to.eql(1);
+				expect(count.three).to.eql(0);
+				if (count.two === 1) {
+					expect(this).to.eql(ctx2);
+				} else if (count.two === 2) {
+					expect(this).to.eql(ctx1);
+				} else {
+					expect(this).to.eql(obj);
+				}
+			}
+
+			function listener3(e) {
+				count.three++;
+				expect(count.two).to.eql(3);
+				expect(count.four).to.eql(0);
+				if (count.three === 1) {
+					expect(this).to.eql(ctx1);
+				} else if (count.three === 2) {
+					expect(this).to.eql(ctx2);
+				}
+			}
+
+			function listener4(e) {
+				count.four++;
+				expect(count.three).to.eql(2);
+			}
+
+			obj.on('test', listener1, ctx1);
+			obj.on('test', listener2, ctx2);
+			obj.on('test', listener2, ctx1);  // Same listener but with different context.
+			obj.on('test', listener2);  // Same listener but without context.
+			obj.on('test', listener3, ctx1);
+			obj.on('test', listener3, ctx2);
+			obj.on('test', listener4, ctx2);
+
+			obj.fireEvent('test');
+
+			expect(count.one).to.be(1);
+			expect(count.two).to.be(3);
+			expect(count.three).to.be(2);
+			expect(count.four).to.be(1);
+		});
+
 		it('provides event object to listeners and executes them in the right context', function () {
 			var obj = new L.Evented(),
 			    obj2 = new L.Evented(),
