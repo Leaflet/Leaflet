@@ -102,7 +102,11 @@ L.Popup = L.DivOverlay.extend({
 			// @event popupopen: PopupEvent
 			// Fired when a popup bound to this layer is opened
 			this._source.fire('popupopen', {popup: this}, true);
-			this._source.on('preclick', L.DomEvent.stopPropagation);
+			// For non-path layers, we toggle the popup when clicking
+			// again the layer, so prevent the map to reopen it.
+			if (!(this._source instanceof L.Path)) {
+				this._source.on('preclick', L.DomEvent.stopPropagation);
+			}
 		}
 	},
 
@@ -121,7 +125,9 @@ L.Popup = L.DivOverlay.extend({
 			// @event popupclose: PopupEvent
 			// Fired when a popup bound to this layer is closed
 			this._source.fire('popupclose', {popup: this}, true);
-			this._source.off('preclick', L.DomEvent.stopPropagation);
+			if (!(this._source instanceof L.Path)) {
+				this._source.off('preclick', L.DomEvent.stopPropagation);
+			}
 		}
 	},
 
