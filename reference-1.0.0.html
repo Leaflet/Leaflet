@@ -6,7 +6,7 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.0-rc2</strong>.</p>
+<p>This reference reflects <strong>Leaflet 1.0.0-rc3</strong>.</p>
 
 <p>Docs for 0.7 are <a href='reference.html'>available here</a>.
 
@@ -3483,9 +3483,9 @@ properties. The event might can optionally be propagated to event parents.</p>
 <p>Note about tooltip offset. Leaflet takes two options in consideration
 for computing tooltip offseting:</p>
 <ul>
-<li>the <code>offset</code> Tooltip option: it defaults to [6, -6], because the tooltip
-tip is 6px width and height. Remember to change this value if you override
-the tip in CSS.</li>
+<li>the <code>offset</code> Tooltip option: it defaults to [0, 0], and it&#39;s specific to one tooltip.
+Add a positive x offset to move the tooltip to the right, and a positive y offset to
+move it to the bottom. Negatives will move to the left and top.</li>
 <li>the <code>tooltipAnchor</code> Icon option: this will only be considered for Marker. You
 should adapt this value if you use a custom icon.</li>
 </ul>
@@ -3543,9 +3543,8 @@ should adapt this value if you use a custom icon.</li>
 	<tr id='tooltip-offset'>
 		<td><code><b>offset</b></code></td>
 		<td><code><a href='#point'>Point</a></code>
-		<td><code>Point(6, -6)</code></td>
-		<td>The offset of the tooltip position. Update it if you customize the
-tooltip tip in CSS.</td>
+		<td><code>Point(0, 0)</code></td>
+		<td>Optional offset of the tooltip position.</td>
 	</tr>
 	<tr id='tooltip-direction'>
 		<td><code><b>direction</b></code></td>
@@ -22495,7 +22494,6 @@ var Leaflet = L.noConflict();
 <h2 id='version'>version</h2><p>A constant that represents the Leaflet version in use.</p>
 <pre><code class="lang-js">L.version; // contains &quot;1.0.0&quot; (or whatever version is currently in use)
 </code></pre>
-
 
 
 
