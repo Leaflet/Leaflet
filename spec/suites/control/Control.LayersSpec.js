@@ -148,6 +148,30 @@ describe("Control.Layers", function () {
 		it("keeps original order by default", function () {
 			var baseLayerOne = L.tileLayer('').addTo(map);
 			var baseLayerTwo = L.tileLayer('').addTo(map);
+			var markerC = L.marker([0, 2]).addTo(map);
+			var markerB = L.marker([0, 1]).addTo(map);
+			var markerA = L.marker([0, 0]).addTo(map);
+
+			var layersCtrl = L.control.layers({
+				'Base One': baseLayerOne,
+				'Base Two': baseLayerTwo
+			}, {
+				'Marker C': markerC,
+				'Marker B': markerB,
+				'Marker A': markerA
+			}).addTo(map);
+
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
+			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
+			expect(elems[2].innerHTML.trim()).to.be.equal('Marker C');
+			expect(elems[3].innerHTML.trim()).to.be.equal('Marker B');
+			expect(elems[4].innerHTML.trim()).to.be.equal('Marker A');
+		});
+
+		it("sorts alphabetically if no function is specified", function () {
+			var baseLayerOne = L.tileLayer('').addTo(map);
+			var baseLayerTwo = L.tileLayer('').addTo(map);
 			var markerA = L.marker([0, 0]).addTo(map);
 			var markerB = L.marker([0, 1]).addTo(map);
 			var markerC = L.marker([0, 2]).addTo(map);
@@ -159,6 +183,8 @@ describe("Control.Layers", function () {
 				'Marker A': markerA,
 				'Marker B': markerB,
 				'Marker C': markerC
+			}, {
+				sortLayers: true
 			}).addTo(map);
 
 			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
@@ -184,7 +210,8 @@ describe("Control.Layers", function () {
 				'Marker B': markerB,
 				'Marker C': markerC
 			}, {
-				sortLayers: function (a, b) { return a.options.customOption - b.options.customOption; }
+				sortLayers: true,
+				sortFunction: function (a, b) { return a.options.customOption - b.options.customOption; }
 			}).addTo(map);
 
 			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');

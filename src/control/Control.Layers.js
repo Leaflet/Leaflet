@@ -55,12 +55,20 @@ L.Control.Layers = L.Control.extend({
 		// If `true`, the base layers in the control will be hidden when there is only one.
 		hideSingleBase: false,
 
-		// @option sortLayers : Function|Boolean = false
-		// Sort the layers with the given [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort);
-		// this function may access user-defined properties of the layers.
-		// If not given, layers will keep the order in which they were added to
-		// the control.
-		sortLayers: false
+		// @option sortLayers: Boolean = false
+		// Whether to sort the layers. When `false`, layers will keep the order
+		// in which they were added to the control.
+		sortLayers: false,
+
+		// @option sortFunction: Function = *
+		// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+		// that will be used for sorting the layers, when `sortLayers` is `true`.
+		// The function receives both the `L.Layer` instances and their names, as in
+		// `sortFunction(layerA, layerB, nameA, nameB)`.
+		// By default, it sorts layers alphabetically by their name.
+		sortFunction: function (layerA, layerB, nameA, nameB) {
+			return nameA - nameB;
+		}
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -218,7 +226,7 @@ L.Control.Layers = L.Control.extend({
 
 		if (this.options.sortLayers) {
 			this._layers.sort(L.bind(function (a, b) {
-				return this.options.sortLayers(a.layer, b.layer);
+				return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
 			}, this));
 		}
 
