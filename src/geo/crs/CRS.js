@@ -80,17 +80,17 @@ L.CRS = {
 	// Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`)
 	//
 	// @property wrapLng: Number[]
-	// An array of two numbers defining whether the longitude coordinate axis
-	// wraps around a given range and how. Defaults to `[-180, 180]` in most
-	// geographical CRSs.
+	// An array of two numbers defining whether the longitude (horizontal) coordinate
+	// axis wraps around a given range and how. Defaults to `[-180, 180]` in most
+	// geographical CRSs. If `undefined`, the longitude axis does not wrap around.
 	//
 	// @property wrapLat: Number[]
-	// Like `wrapLng`, but for the latitude axis.
+	// Like `wrapLng`, but for the latitude (vertical) axis.
 
 	// wrapLng: [min, max],
 	// wrapLat: [min, max],
 
-	// @property infinite: Boolean = false
+	// @property infinite: Boolean
 	// If true, the coordinate space will be unbounded (infinite in both axes)
 	infinite: false,
 
