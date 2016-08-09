@@ -405,11 +405,19 @@ L.Map = L.Evented.extend({
 
 		this._initEvents(true);
 
+		if (this._containerId !== this._container._leaflet_id) {
+			throw new Error('Map container is being reused by another instance');
+		}
+
 		try {
 			// throws error in IE6-8
-			delete this._container._leaflet;
+			delete this._container._leaflet_id;
+			delete this._containerId;
 		} catch (e) {
-			this._container._leaflet = undefined;
+			/*eslint-disable */
+			this._container._leaflet_id = undefined;
+			/*eslint-enable */
+			this._containerId = undefined;
 		}
 
 		L.DomUtil.remove(this._mapPane);
@@ -712,12 +720,12 @@ L.Map = L.Evented.extend({
 
 		if (!container) {
 			throw new Error('Map container not found.');
-		} else if (container._leaflet) {
+		} else if (container._leaflet_id) {
 			throw new Error('Map container is already initialized.');
 		}
 
 		L.DomEvent.addListener(container, 'scroll', this._onScroll, this);
-		container._leaflet = true;
+		this._containerId = L.Util.stamp(container);
 	},
 
 	_initLayout: function () {

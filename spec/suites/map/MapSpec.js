@@ -69,6 +69,19 @@ describe("Map", function () {
 
 			expect(spy.called).to.not.be.ok();
 		});
+
+		it("throws error if container is reused by other instance", function () {
+			var container = document.createElement('div'),
+			    map = L.map(container),
+			    map2;
+
+			map.remove();
+			map2 = L.map(container);
+
+			expect(function () {
+				map.remove();
+			}).to.throwException();
+		});
 	});
 
 	describe('#getCenter', function () {
