@@ -2,7 +2,7 @@
 // @section Methods for modifying map state
 L.Map.include({
 
-	// @method flyTo(latlng: LatLng, zoom?: Number, options?: Zoom/Pan options): this
+	// @method flyTo(latlng: LatLng, zoom?: Number, options?: Zoom/pan options): this
 	// Sets the view of the map (geographical center and zoom) performing a smooth
 	// pan-zoom animation.
 	flyTo: function (targetCenter, targetZoom, options) {
