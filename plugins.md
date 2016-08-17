@@ -3044,7 +3044,7 @@ External services that transform an address or the name of a place into latitude
 			A search plugin plugin that uses <a href="http://geocoder.opencagedata.com/">OpenCage Data's geocoding API</a>.
 		</td>
 		<td>
-			The <a href="https://github.com/lokku">OpenCage</a> team
+			The <a href="https://github.com/opencagedata">OpenCage</a> team
 		</td>
 	</tr>
 	<tr>
