@@ -190,7 +190,7 @@ L.DomUtil = {
 		el.style[L.DomUtil.TRANSFORM] =
 			(L.Browser.ie3d ?
 				'translate(' + pos.x + 'px,' + pos.y + 'px)' :
-				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
+				'translate3d(' + Math.round(pos.x) + 'px,' + Math.round(pos.y) + 'px,0)') +
 			(scale ? ' scale(' + scale + ')' : '');
 	},
 
