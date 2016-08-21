@@ -83,21 +83,21 @@ How the default map panes work to display overlays on top of tiles, and how to o
 The following tutorials cover how to create plugins for Leaflet, and are intended only for developers experienced in Javascript:
 
 ***
-[<img src="examples/extending/thumbnail.png" class="example-img bordered-img" />][11]
+[<img src="examples/extending/thumbnail-1.png" class="example-img bordered-img" />][11]
 
 ### [Extending Leaflet: Class Theory][11]
 
 An overview of Leaflet's classes, class inheritance, and conventions.
 
 ***
-[<img src="examples/extending/thumbnail.png" class="example-img bordered-img" />][12]
+[<img src="examples/extending/thumbnail-2.png" class="example-img bordered-img" />][12]
 
 ### [Extending Leaflet: Layers][12]
 
 How to extend layers or create new ones, using specific entry points for doing so.
 
 ***
-[<img src="examples/extending/thumbnail.png" class="example-img bordered-img" />][13]
+[<img src="examples/extending/thumbnail-3.png" class="example-img bordered-img" />][13]
 
 ### [Extending Leaflet: Handlers and Controls][13]
 
