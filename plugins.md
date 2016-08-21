@@ -73,6 +73,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 			<li><a href="#routing">Routing</a></li>
 			<li><a href="#geocoding">Geocoding</a></li>
 			<li><a href="#plugin-collections">Plugin collections</a></li>
+			<li><a href="#games">Games</a></li>
 		</ul>
 		<h4>Integration</h4>
 		<ul>
@@ -3110,7 +3111,23 @@ Plugin developers: please keep future plugins in individual repositories.
 	</tr>
 </table>
 
+### Games
 
+A list of games written in Leaflet.
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://gamb.github.io/Leaflet.snake/">Leaflet.snake</a>
+		</td>
+		<td>
+			An implementation of Snake in Leaflet.
+		</td>
+		<td>
+			<a href="https://github.com/gamb">Adam Gamble</a>
+		</td>
+	</tr>
+</table>
 
 ## Integration
 
@@ -3336,24 +3353,6 @@ The following plugins integrate Leaflet into third party services or websites.
 			A Drupal (7.x and 8.x) module to integrate Leaflet maps in your Drupal site. Contains a field formatter to show a map for fields containing geospatial data, Views integration to plot data on a map, and a lightweight and easy to use API. Currently used by over 10.000 sites.
 		</td><td>
 			<a href="http://marzeelabs.org">Marzee Labs</a>, and more maintainers listed at <a href="http://drupal.org/project/leaflet">drupal.org</a>
-		</td>
-	</tr>
-</table>
-
-### Games
-
-A list of games written in Leaflet.
-
-<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
-	<tr>
-		<td>
-			<a href="https://gamb.github.io/Leaflet.snake/">Leaflet.snake</a>
-		</td>
-        <td>
-			An implementation of Snake in Leaflet.
-		</td>
-        <td>
-			<a href="https://github.com/gamb">Adam Gamble</a>
 		</td>
 	</tr>
 </table>
