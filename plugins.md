@@ -3340,7 +3340,23 @@ The following plugins integrate Leaflet into third party services or websites.
 	</tr>
 </table>
 
+### Games
 
+A list of games written in Leaflet.
+
+<table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+	<tr>
+		<td>
+			<a href="https://gamb.github.io/Leaflet.snake/">Leaflet.snake</a>
+		</td>
+        <td>
+			An implementation of Snake in Leaflet.
+		</td>
+        <td>
+			<a href="https://github.com/gamb">Adam Gamble</a>
+		</td>
+	</tr>
+</table>
 
 ## Develop your own
 
