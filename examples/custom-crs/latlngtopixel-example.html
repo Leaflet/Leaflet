@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LatLngToPoint example</title>
+	<meta charset="utf-8" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.css" />
+	
+	<style>
+	body, html { margin: 0; overflow: hidden;}
+	#map { width: 100vw; height: 100vh; }
+	#spy { 
+		pointer-events: none; 
+		font-family: monospace; 
+		position: absolute; 
+		z-index: 2000;
+		background: white;
+	}
+	
+	</style>
+	
+	<script src="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.js"></script>
+</head>
+<body>
+	<div id="map"></div>
+	<div id="spy"></div>
+
+
+	<script>
+
+		var map = L.map('map', {});
+		var spy = document.getElementById('spy');
+		
+		var cartodbAttribution = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>';
+		
+		var positron = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
+				attribution: cartodbAttribution
+		}).addTo(map);
+
+		
+		map.on('click mousemove', function(ev){
+// 			console.log(ev);
+			var zoom = map.getZoom();
+			var px = map.options.crs.latLngToPoint(ev.latlng, zoom);
+			
+			spy.innerHTML = "Lat: " + ev.latlng.lat + "<br/>" +
+			                "Lng: " + ev.latlng.lng + "<br/>" +
+			                "X: " + px.x + "<br/>" +
+			                "Y: " + px.y + "<br/>" +
+			                "Scale: " + L.CRS.EPSG3857.scale(zoom);
+			                
+			spy.style.left = ev.originalEvent.clientX + 'px';
+			spy.style.top  = ev.originalEvent.clientY + 'px';
+		});
+		
+		
+		
+		map.fitWorld();
+
+	</script>
+</body>
+</html>

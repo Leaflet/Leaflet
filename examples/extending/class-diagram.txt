@@ -79,7 +79,9 @@
 [L.LayerGroup] ^- [L.FeatureGroup]
 [L.FeatureGroup] ^- [L.GeoJSON]
 
-[L.Layer] ^- [L.Popup]
+[L.Layer] ^- [L.DivOverlay]
+[L.DivOverlay] ^- [L.Popup]
+[L.DivOverlay] ^- [L.Tooltip]
 
 
 

@@ -4,7 +4,7 @@ title: Leaflet class diagram
 ---
 <script type='text/javascript'>
 
-	var bounds = [[0,0], [1570,1560]];
+	var bounds = [[0,0], [1570,1661]];
 	
 	var map = L.map('map', {
 		crs: L.CRS.Simple,
