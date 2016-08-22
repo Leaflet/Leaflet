@@ -374,6 +374,11 @@
 	margin: 5px -10px 5px -6px;
 	}
 
+/* Default icon URLs */
+.leaflet-default-icon-path {
+	background-image: url(images/);
+	}
+
 
 /* attribution and scale controls */
 
