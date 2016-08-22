@@ -174,7 +174,7 @@ L.Tooltip = L.DivOverlay.extend({
 
 	_getAnchor: function () {
 		// Where should we anchor the tooltip on the source layer?
-		return L.point(this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return L.point(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });

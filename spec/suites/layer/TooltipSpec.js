@@ -278,5 +278,14 @@ describe('Tooltip', function () {
 		L.Browser.touch = oldTouch;
 	});
 
+
+	it("opens with map.openTooltip", function (done) {
+		map.on('tooltipopen', function (e) {
+			expect(map.hasLayer(e.tooltip)).to.be(true);
+			done();
+		});
+		map.openTooltip('Tooltip', center);
+	});
+
 });
 
