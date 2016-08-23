@@ -129,4 +129,4 @@ If you find that an important tutorial is missing here, let us know!
  [10]: examples/wms/wms.html
  [11]: examples/extending/extending-1-classes.html
  [12]: examples/extending/extending-2-layers.html
- [13]: examples/extending/extending-3-control.html
+ [13]: examples/extending/extending-3-controls.html
