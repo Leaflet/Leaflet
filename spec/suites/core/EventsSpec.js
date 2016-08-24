@@ -344,22 +344,22 @@ describe('Events', function () {
 
 		it('handles reentrant event firing', function () {
 			var obj = new L.Evented(),
-			    spy = sinon.spy();
+			    spy1 = sinon.spy(),
+			    spy2 = sinon.spy();
 
 			obj
 				.addEventListener('test1', function () {
 					obj.fire('test2');
 				})
-				.addEventListener('test2', function () {
-					// NOP, just to make sure event actually fires
-				})
+				.addEventListener('test2', spy1)
 				.addEventListener('test1', function () {
-					obj.removeEventListener('test1', spy);
+					obj.removeEventListener('test1', spy2);
 				})
-				.addEventListener('test1', spy);
+				.addEventListener('test1', spy2);
 
 			obj.fireEvent('test1');
-			expect(spy.called).to.be(false);
+			expect(spy1.called).to.be(true);
+			expect(spy2.called).to.be(false);
 		});
 	});
 
