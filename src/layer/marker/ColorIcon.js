@@ -31,8 +31,7 @@ L.ColorIcon = L.Icon.extend({
 
 	createIcon: function (oldIcon) {
 		var color = this.options.color;
-		var src = ('data:image/svg+xml;utf-8,'
-			+ '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
+		var src = ('data:image/svg+xml;base64,' + btoa('<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
 			+ '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="25" height="41">'
 			+ '<path style="fill:' + color + ';stroke:rgba(0,0,0,0.4);stroke-width:1.1;stroke-linecap:round"'
 				+ ' d="m 12.544,0.93645 c -6.573,0 -12.044,5.691 -12.044,11.866 0,2.778 1.564,6.308 2.694,8.746'
@@ -44,7 +43,7 @@ L.ColorIcon = L.Icon.extend({
 				+ ' l 0.031,0.031 8.313,15.969 8.25,-15.969 0.031,-0.031 c 1.135,-2.448 2.625,-5.706 2.625,-8.25 0,-5.538'
 				+ ' -4.931,-10.75 -10.875,-10.75 z m 0,4.969 c 3.168,0.021 5.781,2.601 5.781,5.781 0,3.18 -2.613,5.761'
 				+ ' -5.781,5.781 -3.168,-0.02 -5.75,-2.61 -5.75,-5.781 0,-3.172 2.582,-5.761 5.75,-5.781 z" />'
-			+ '</svg>');
+			+ '</svg>'));
 
 		var img = this._createImg(src, oldIcon && oldIcon.tagName === 'IMG' ? oldIcon : null);
 		this._setIconStyles(img, 'icon');
@@ -72,8 +71,10 @@ L.ColorIcon = L.Icon.extend({
 
 });
 
-// @factory L.colorIcon(options: ColorIcon options)
-// Creates a `ColorIcon` instance with the given options.
+/**
+ * @factory L.colorIcon(options: ColorIcon options)
+ * Creates a `ColorIcon` instance with the given options.
+ */
 L.colorIcon = function (options) {
 	return new L.ColorIcon(options);
 };
