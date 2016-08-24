@@ -163,7 +163,7 @@ L.Evented = L.Class.extend({
 					l.fn = L.Util.falseFn;
 					typeListeners.count--;
 
-					if (this._isFiring) {
+					if (this._firingCount) {
 						/* copy array in case events are being fired */
 						listeners = listeners.slice();
 					}
@@ -188,14 +188,14 @@ L.Evented = L.Class.extend({
 			var typeListeners = this._events[type];
 
 			if (typeListeners) {
-				this._isFiring = true;
+				this._firingCount = (this._firingCount + 1) || 1;
 				var listeners = typeListeners.listeners;
 				for (var i = 0, len = listeners.length; i < len; i++) {
 					var l = listeners[i];
 					l.fn.call(l.ctx || this, event);
 				}
 
-				this._isFiring = false;
+				this._firingCount--;
 			}
 		}
 

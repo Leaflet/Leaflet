@@ -341,6 +341,26 @@ describe('Events', function () {
 
 			expect(spy.called).to.be(false);
 		});
+
+		it('handles reentrant event firing', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			obj
+				.addEventListener('test1', function () {
+					obj.fire('test2');
+				})
+				.addEventListener('test2', function () {
+					// NOP, just to make sure event actually fires
+				})
+				.addEventListener('test1', function () {
+					obj.removeEventListener('test1', spy);
+				})
+				.addEventListener('test1', spy);
+
+			obj.fireEvent('test1');
+			expect(spy.called).to.be(false);
+		});
 	});
 
 	describe('#on, #off & #fire', function () {
