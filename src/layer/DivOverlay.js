@@ -16,11 +16,6 @@ L.DivOverlay = L.Layer.extend({
 		// of the popup when opening it on some overlays.
 		offset: [0, 7],
 
-		// @option zoomAnimation: Boolean = true
-		// Whether to animate the popup on zoom. Disable it if you have
-		// problems with Flash content inside popups.
-		zoomAnimation: true,
-
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
 		className: '',
@@ -37,7 +32,7 @@ L.DivOverlay = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._zoomAnimated = this._zoomAnimated && this.options.zoomAnimation;
+		this._zoomAnimated = map._zoomAnimated;
 
 		if (!this._container) {
 			this._initLayout();
