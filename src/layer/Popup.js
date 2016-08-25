@@ -76,7 +76,11 @@ L.Popup = L.DivOverlay.extend({
 		// Set it to `false` if you want to override the default behavior of
 		// the popup closing when user clicks the map (set globally by
 		// the Map's [closePopupOnClick](#map-closepopuponclick) option).
-		autoClose: true
+		autoClose: true,
+
+		// @option className: String = ''
+		// A custom CSS class name to assign to the popup.
+		className: ''
 	},
 
 	// @namespace Popup
@@ -155,7 +159,7 @@ L.Popup = L.DivOverlay.extend({
 		var prefix = 'leaflet-popup',
 		    container = this._container = L.DomUtil.create('div',
 			prefix + ' ' + (this.options.className || '') +
-			' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide'));
+			' leaflet-zoom-animated');
 
 		if (this.options.closeButton) {
 			var closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
@@ -222,9 +226,7 @@ L.Popup = L.DivOverlay.extend({
 		    containerWidth = this._containerWidth,
 		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		if (this._zoomAnimated) {
-			layerPos._add(L.DomUtil.getPosition(this._container));
-		}
+		layerPos._add(L.DomUtil.getPosition(this._container));
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
 		    padding = L.point(this.options.autoPanPadding),
