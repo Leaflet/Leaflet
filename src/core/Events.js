@@ -95,10 +95,7 @@ L.Evented = L.Class.extend({
 		/* get/init listeners for type */
 		var typeListeners = this._events[type];
 		if (!typeListeners) {
-			typeListeners = {
-				listeners: [],
-				count: 0
-			};
+			typeListeners = [];
 			this._events[type] = typeListeners;
 		}
 
@@ -107,7 +104,7 @@ L.Evented = L.Class.extend({
 			context = undefined;
 		}
 		var newListener = {fn: fn, ctx: context},
-		    listeners = typeListeners.listeners;
+		    listeners = typeListeners;
 
 		// check if fn already there
 		for (var i = 0, len = listeners.length; i < len; i++) {
@@ -121,20 +118,17 @@ L.Evented = L.Class.extend({
 	},
 
 	_off: function (type, fn, context) {
-		var typeListeners,
-		    listeners,
+		var listeners,
 		    i,
 		    len;
 
 		if (!this._events) { return; }
 
-		typeListeners = this._events[type];
+		listeners = this._events[type];
 
-		if (!typeListeners) {
+		if (!listeners) {
 			return;
 		}
-
-		listeners = typeListeners.listeners;
 
 		if (!fn) {
 			// Set all removed listeners to noop so they are not called if remove happens in fire
@@ -145,7 +139,6 @@ L.Evented = L.Class.extend({
 			delete this._events[type];
 			return;
 		}
-
 
 		if (context === this) {
 			context = undefined;
@@ -161,11 +154,10 @@ L.Evented = L.Class.extend({
 
 					// set the removed listener to noop so that's not called if remove happens in fire
 					l.fn = L.Util.falseFn;
-					typeListeners.count--;
 
 					if (this._firingCount) {
 						/* copy array in case events are being fired */
-						typeListeners.listeners = listeners = listeners.slice();
+						this._events[type] = listeners = listeners.slice();
 					}
 					listeners.splice(i, 1);
 
@@ -185,11 +177,10 @@ L.Evented = L.Class.extend({
 		var event = L.Util.extend({}, data, {type: type, target: this});
 
 		if (this._events) {
-			var typeListeners = this._events[type];
+			var listeners = this._events[type];
 
-			if (typeListeners) {
+			if (listeners) {
 				this._firingCount = (this._firingCount + 1) || 1;
-				var listeners = typeListeners.listeners;
 				for (var i = 0, len = listeners.length; i < len; i++) {
 					var l = listeners[i];
 					l.fn.call(l.ctx || this, event);
@@ -210,8 +201,8 @@ L.Evented = L.Class.extend({
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
 	listens: function (type, propagate) {
-		var typeListeners = this._events && this._events[type];
-		if (typeListeners && typeListeners.count) { return true; }
+		var listeners = this._events && this._events[type];
+		if (listeners && listeners.length) { return true; }
 
 		if (propagate) {
 			// also check parents for listeners if event propagates

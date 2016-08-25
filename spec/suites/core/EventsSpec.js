@@ -377,11 +377,7 @@ describe('Events', function () {
 
 			obj.removeEventListener('test', removeSpy);
 
-			// expect(obj.listens('test', L.Util.falseFn)).to.be(false);
-			// Remove the expect below and comment out the one above, once we've
-			// gotten rid of _events.count (which makes the expect above pass).
-			var listeners = obj._events['test'];
-			expect(listeners.count === listeners.listeners.length).to.be(true);
+			expect(obj.listens('test')).to.be(false);
 		});
 	});
 
