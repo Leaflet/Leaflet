@@ -165,7 +165,7 @@ L.Evented = L.Class.extend({
 
 					if (this._firingCount) {
 						/* copy array in case events are being fired */
-						listeners = listeners.slice();
+						typeListeners.listeners = listeners = listeners.slice();
 					}
 					listeners.splice(i, 1);
 

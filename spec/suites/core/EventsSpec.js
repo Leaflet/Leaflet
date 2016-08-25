@@ -361,6 +361,28 @@ describe('Events', function () {
 			expect(spy1.called).to.be(true);
 			expect(spy2.called).to.be(false);
 		});
+
+		it('can remove an event listener while firing', function () {
+			var obj = new L.Evented(),
+			    spy = sinon.spy();
+
+			var removeSpy = function () {
+				obj.removeEventListener('test', spy);
+			};
+
+			obj.addEventListener('test', spy);
+			obj.addEventListener('test', removeSpy);
+
+			obj.fire('test');
+
+			obj.removeEventListener('test', removeSpy);
+
+			// expect(obj.listens('test', L.Util.falseFn)).to.be(false);
+			// Remove the expect below and comment out the one above, once we've
+			// gotten rid of _events.count (which makes the expect above pass).
+			var listeners = obj._events['test'];
+			expect(listeners.count === listeners.listeners.length).to.be(true);
+		});
 	});
 
 	describe('#on, #off & #fire', function () {
