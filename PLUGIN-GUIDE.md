@@ -213,10 +213,9 @@ Now your plugin is available as an AMD and CommonJS module and can used used in 
 Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
-* Clone your repo locally, and switch to the [`gh-pages` branch](https://github.com/Leaflet/Leaflet/tree/gh-pages).
-* In the `plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
+* In the `docs/plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
 * Commit the code to your fork.
-* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your `gh-pages` branch to Leaflet's `gh-pages` branch.
+* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
 
 Once the pull request is done, a Leaflet maintainer will have a quick look at your
 plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.
