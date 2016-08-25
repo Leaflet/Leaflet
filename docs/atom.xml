@@ -1,0 +1,29 @@
+---
+title: Leaflet Developer Blog Atom Feed
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+	<title>Leaflet Dev Blog</title>
+
+	<link href="http://leafletjs.com/atom.xml" rel="self"/>
+	<link href="http://leafletjs.com"/>
+
+	<updated>{{ site.time | date_to_xmlschema }}</updated>
+	<id>http://leafletjs.com/</id>
+
+	<author>
+		<name>Vladimir Agafonkin</name>
+	</author>
+
+	{% for post in site.posts %}
+	<entry>
+		<title>{{ post.title }}</title>
+		<link href="http://leafletjs.com{{ post.url }}"/>
+		<updated>{{ post.date | date_to_xmlschema }}</updated>
+		<id>http://leafletjs.com{{ post.id }}</id>
+		<content type="html">{{ post.content | xml_escape }}</content>
+	</entry>
+	{% endfor %}
+
+</feed>
