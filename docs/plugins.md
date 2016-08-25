@@ -1158,6 +1158,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/bbecquet">Benjamin Becquet</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/w8r/leaflet-labeled-circle">leaflet-labeled-circle</a>
+		</td>
+		<td>
+			Special type of SVG marker with a label inside and draggable around the anchor point (<a href="https://w8r.github.io/leaflet-labeled-circle/demo/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/w8r/">Alexander Milevski</a>
+		</td>
+	</tr>
 </table>
 
 
