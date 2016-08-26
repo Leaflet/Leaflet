@@ -126,12 +126,12 @@ Now let's make the states highlighted visually in some way when they are hovered
 			fillOpacity: 0.7
 		});
 
-		if (!L.Browser.ie && !L.Browser.opera) {
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
 	}
 
-Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states (but not for IE or Opera, since they have problems doing `bringToFront` on `mouseover`).
+Here we get access to the layer that was hovered through `e.target`, set a thick grey border on the layer as our highlight effect, also bringing it to the front so that the border doesn't clash with nearby states (but not for IE, Opera or Edge, since they have problems doing `bringToFront` on `mouseover`).
 
 Next we'll define what happens on `mouseout`:
 
@@ -330,7 +330,7 @@ Enjoy the result on [the top of this page](#map) or on a [separate page](choropl
 			fillOpacity: 0.7
 		});
 
-		if (!L.Browser.ie && !L.Browser.opera) {
+		if (!L.Browser.ie && !L.Browser.opera && !L.Browser.edge) {
 			layer.bringToFront();
 		}
 
