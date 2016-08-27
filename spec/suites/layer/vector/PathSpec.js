@@ -52,7 +52,7 @@ describe('Path', function () {
 			expect(mapSpy.called).to.be.ok();
 		});
 
-		it('can add a layer while being inside a moveend handler', function () {
+		it('can add a layer while being inside a moveend handler', function (done) {
 			var zoneLayer = L.layerGroup();
 			var polygon;
 			map.addLayer(zoneLayer);
@@ -63,10 +63,18 @@ describe('Path', function () {
 				zoneLayer.addLayer(polygon);
 			});
 
-			map.setView([0, 0], 12, {animate: false});
-			expect(polygon._parts.length).to.be(0);
-			map.setView([0, 0], 0, {animate: false});
-			expect(polygon._parts.length).to.be(1);
+			map.invalidateSize();
+			map.setView([1, 2], 12, {animate: false});
+
+			map.panBy([-260, 0]);
+			setTimeout(function () {
+				expect(polygon._parts.length).to.be(0);
+				map.panBy([260, 0]);
+				setTimeout(function () {
+					expect(polygon._parts.length).to.be(1);
+					done();
+				}, 300);
+			}, 300);
 		});
 
 	});
