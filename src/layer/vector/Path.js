@@ -81,6 +81,7 @@ L.Path = L.Layer.extend({
 
 	onRemove: function () {
 		this._renderer._removePath(this);
+		this._renderer.off('update', this._update, this);
 	},
 
 	getEvents: function () {
