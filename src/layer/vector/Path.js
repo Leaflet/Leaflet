@@ -76,6 +76,7 @@ L.Path = L.Layer.extend({
 		this._renderer._initPath(this);
 		this._reset();
 		this._renderer._addPath(this);
+		this._renderer.on('update', this._update, this);
 	},
 
 	onRemove: function () {
@@ -85,7 +86,6 @@ L.Path = L.Layer.extend({
 	getEvents: function () {
 		return {
 			zoomend: this._project,
-			moveend: this._update,
 			viewreset: this._reset
 		};
 	},
