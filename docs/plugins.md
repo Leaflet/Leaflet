@@ -1114,6 +1114,15 @@ These plugins provide new markers or news ways of converting abstract data into 
                         <a href="https://github.com/lethexa">Tim Leerhoff</a>
                 </td>
         </tr>
+        <tr>
+                <td>
+                        <a href="https://github.com/PowerPan/leaflet-ais-tracksymbol">leaflet-ais-tracksymbol</a>
+                </td><td>
+                        AIS Extension for leaflet-tracksymbol It displays AIS Contacts on the Map.
+                </td><td>
+                        <a href="https://github.com/powerpan">Johannes Rudolph</a>
+                </td>
+        </tr>
 	<tr>
 		<td>
 			<a href="https://github.com/wwwouaiebe/leaflet.marker.pin">leaflet.marker.pin</a>
