@@ -1252,7 +1252,18 @@ These plugins animate markers or some geometries. See also [geometries with time
 		</td><td>
 			<a href="https://github.com/rubenspgcavalcante">Rubens Pinheiro</a>
 		</td>
-	</tr></table>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.Marker.SlideTo">Leaflet.Marker.SlideTo</a>
+		</td><td>
+			Smoothly move (slide) markers to a new location. (<a href='http://ivansanchez.gitlab.io/Leaflet.Marker.SlideTo/demo.html'>demo</a>)
+		</td><td>
+			<a href="https://gitlab.com/u/IvanSanchez">Iván Sánchez Ortega</a>,
+			<a href="https://github.com/MazeMap">MazeMap</a>
+		</td>
+	</tr>
+	</table>
 
 
 
