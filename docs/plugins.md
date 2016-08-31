@@ -1988,6 +1988,16 @@ The following plugins enhance or extend `L.Control.Layers`.
 			<a href="https://github.com/bambrikii">Alexander Arakelyan</a>
 		</td>
 	</tr>
+		<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.Basemaps">Leaflet.Basemaps</a>
+		</td><td>
+			A basemap chooser with a preview image from the tile stack.
+			<a href="http://consbio.github.io/Leaflet.Basemaps/">Example</a>
+		</td><td>
+			<a href="https://github.com/brendan-ward">Brendan Ward</a>
+		</td>
+	</tr>
 </table>
 
 
