@@ -13,6 +13,9 @@
  *
  * Do not use this class directly, use `SVG` and `Canvas` instead.
  *
+ * @event update: Event
+ * Fired when the renderer updates its bounds, center and zoom, for example when
+ * its map has moved
  */
 
 L.Renderer = L.Layer.extend({
@@ -100,6 +103,8 @@ L.Renderer = L.Layer.extend({
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
+
+		this.fire('update');
 	}
 });
 
