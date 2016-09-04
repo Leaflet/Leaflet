@@ -1178,6 +1178,18 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/w8r/">Alexander Milevski</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/dagjomar/Leaflet.ParallaxMarker">Leaflet.ParallaxMarker</a>
+		</td>
+		<td>
+			Add markers that moves with a parallax-effect relative to the map when panning (<a href="https://dagjomar.github.io/Leaflet.ParallaxMarker/">demos / examples</a>).
+		</td>
+		<td>
+			<a href="https://github.com/dagjomar/">Dag Jomar Mersland</a>
+		</td>
+	</tr>
+
 </table>
 
 
