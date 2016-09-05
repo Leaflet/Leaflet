@@ -527,6 +527,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="http://glat.info">G. Lathoud</a>, <a href="http://www.outdooractive.com">Outdooractive</a>.
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.GridLayer.FadeOut">Leaflet.GridLayer.FadeOut</a>
+		</td><td>
+			Fades out grid layers and tilelayers when they are removed, making basemap changes smoother (for 1.0.0). <a href="http://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
+		</td>
+	</tr>
 </table>
 
 
