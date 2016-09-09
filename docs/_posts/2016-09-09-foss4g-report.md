@@ -5,15 +5,17 @@ description: Some of the Leaflet maintainers met at the FOSS4G conference in Bon
 author: Iván Sánchez Ortega
 ---
 
-A couple of weeks ago, a few of the Leaflet maintainers attended the [FOSS4G conference held in Bonn](http://2016.foss4g.org/). We forgot to pose for a photo, so you'll have to find us in [this photo from the FOSS4G Gala Event](https://www.flickr.com/photos/146261124@N02/28982312300/):
+A couple of weeks ago, a few of the Leaflet maintainers attended the [FOSS4G conference held in Bonn](http://2016.foss4g.org/). It was really nice and we met [hundreds of GIS people](https://www.flickr.com/photos/146261124@N02/28982312300/):
 
 ![The Leaflet folks are somewhere in there](/docs/images/2016-09-09-foss4g-party-boat.jpg)
 
-
 Web mapping libraries, such as Leaflet, OpenLayers or Cesium are a big part of today's GIS software, and there were some talks about them. If you missed this conference, the full [video archive](http://video.foss4g.org/foss4g2016/videos/index.html) is up, with all talks recorded.
 
+We managed to meet in Bonn, hack in the (amazing) BaseCamp facilities, and skip a few talks to work on the final release of Leaflet 1.0.0:
 
-Originally, we wanted to meet in Bonn to hack in the (amazing) BaseCamp facilities, and discuss the final release of Leaflet 1.0.0, but then we discovered that...
+![Vlad and Iván ponder while Per codes](/docs/images/2016-09-09-foss4g.jpg)
+
+While we made some progress, unfortunately we discovered that...
 
 ### Event handling is hard.
 
