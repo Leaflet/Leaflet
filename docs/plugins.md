@@ -1198,7 +1198,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/dagjomar/">Dag Jomar Mersland</a>
 		</td>
 	</tr>
-
+	<tr>
+		<td>
+			<a href="https://github.com/adoroszlai/leaflet-distance-markers">leaflet-distance-markers</a>
+		</td>
+		<td>
+			Allows displaying markers along a route (L.Polyline) at equivalent distances (eg. one per mile) (<a href="http://adoroszlai.github.io/leaflet-distance-markers/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/adoroszlai">Doroszlai, Attila</a>
+		</td>
+	</tr>
 </table>
 
 
