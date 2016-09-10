@@ -180,7 +180,7 @@ L.GridLayer = L.Layer.extend({
 		return this.options.attribution;
 	},
 
-	// @method getContainer: String
+	// @method getContainer: HTMLElement
 	// Returns the HTML element that contains the tiles for this layer.
 	getContainer: function () {
 		return this._container;
