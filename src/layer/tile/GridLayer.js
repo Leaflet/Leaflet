@@ -688,8 +688,13 @@ L.GridLayer = L.Layer.extend({
 		    nwPoint = coords.scaleBy(tileSize),
 		    sePoint = nwPoint.add(tileSize),
 
-		    nw = map.wrapLatLng(map.unproject(nwPoint, coords.z)),
-		    se = map.wrapLatLng(map.unproject(sePoint, coords.z));
+		    nw = map.unproject(nwPoint, coords.z),
+		    se = map.unproject(sePoint, coords.z);
+
+		if (!this.options.noWrap) {
+			nw = map.wrapLatLng(nw);
+			se = map.wrapLatLng(se);
+		}
 
 		return new L.LatLngBounds(nw, se);
 	},
