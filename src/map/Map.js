@@ -934,7 +934,7 @@ L.Map = L.Evented.extend({
 		// default browser context menu from showing if there are listeners on
 		// this event. Also fired on mobile when the user holds a single touch
 		// for a second (also called long press).
-		// @event keypress: Event
+		// @event keypress: KeyboardEvent
 		// Fired when the user presses a key from the keyboard while the map is focused.
 		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
 			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
