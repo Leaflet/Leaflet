@@ -2411,6 +2411,15 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/MarcChasse">Marc Chasse</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/PowerPan/leaflet.nauticscale">Leaflet.nauticscale</a>
+		</td><td>
+			Display a Nauticscale on Leaflet maps
+		</td><td>
+			<a href="https://github.com/PowerPan">Johannes Rudolph</a>
+		</td>
+	</tr>
 </table>
 
 
