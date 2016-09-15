@@ -60,7 +60,7 @@ L.CRS = {
 		return Math.log(scale / 256) / Math.LN2;
 	},
 
-	// @method getProjectedBounds(zoom): Bounds
+	// @method getProjectedBounds(zoom: Number): Bounds
 	// Returns the projection's bounds scaled and transformed for the provided `zoom`.
 	getProjectedBounds: function (zoom) {
 		if (this.infinite) { return null; }
@@ -73,7 +73,7 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
-	// @method distance(latlng1: LatLng, latlng1: LatLng): Number
+	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
 	// Returns the distance between two geographical coordinates.
 
 	// @property code: String
