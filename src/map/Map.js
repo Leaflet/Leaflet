@@ -609,7 +609,8 @@ L.Map = L.Evented.extend({
 	getScaleZoom: function (scale, fromZoom) {
 		var crs = this.options.crs;
 		fromZoom = fromZoom === undefined ? this._zoom : fromZoom;
-		return crs.zoom(scale * crs.scale(fromZoom));
+		var zoom = crs.zoom(scale * crs.scale(fromZoom));
+		return isNaN(zoom) ? Infinity : zoom;
 	},
 
 	// @method project(latlng: LatLng, zoom: Number): Point
@@ -851,14 +852,14 @@ L.Map = L.Evented.extend({
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		// @event zoom: Event
-		// Fired repeteadly during any change in zoom level, including zoom
+		// Fired repeatedly during any change in zoom level, including zoom
 		// and fly animations.
 		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
 
 		// @event move: Event
-		// Fired repeteadly during any movement of the map, including pan and
+		// Fired repeatedly during any movement of the map, including pan and
 		// fly animations.
 		return this.fire('move', data);
 	},

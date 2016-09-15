@@ -54,7 +54,7 @@ L.CRS = {
 	},
 
 	// @method zoom(scale: Number): Number
-	// Inverse of `scale()`, returns the zoom level correspondingto a scale
+	// Inverse of `scale()`, returns the zoom level corresponding to a scale
 	// factor of `scale`.
 	zoom: function (scale) {
 		return Math.log(scale / 256) / Math.LN2;

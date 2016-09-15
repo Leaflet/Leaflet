@@ -1088,11 +1088,20 @@ describe("Map", function () {
 	});
 
 	describe('#getScaleZoom && #getZoomScale', function () {
-		it("convert zoom to scale and viceversa and return the same values", function () {
+		it("converts zoom to scale and vice versa and returns the same values", function () {
 			var toZoom = 6.25;
 			var fromZoom = 8.5;
-			var scale = map.getScaleZoom(toZoom, fromZoom);
-			expect(Math.round(map.getZoomScale(scale, fromZoom) * 100) / 100).to.eql(toZoom);
+			var scale = map.getZoomScale(toZoom, fromZoom);
+			expect(Math.round(map.getScaleZoom(scale, fromZoom) * 100) / 100).to.eql(toZoom);
+		});
+
+		it("converts scale to zoom and returns Infinity if map crs.zoom returns NaN", function () {
+			var stub = sinon.stub(map.options.crs, "zoom");
+			stub.returns(NaN);
+			var scale = 0.25;
+			var fromZoom = 8.5;
+			expect(map.getScaleZoom(scale, fromZoom)).to.eql(Infinity);
+			map.options.crs.zoom.restore();
 		});
 	});
 
