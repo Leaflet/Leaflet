@@ -1141,6 +1141,15 @@ These plugins provide new markers or news ways of converting abstract data into 
                         <a href="https://github.com/powerpan">Johannes Rudolph</a>
                 </td>
         </tr>
+        <tr>
+                <td>
+                        <a href="https://github.com/PowerPan/leaflet-ais-tracksymbol-search">leaflet-ais-tracksymbol-search</a>
+                </td><td>
+                        Adds a Seach Box for your Leaflet Map and Your [leaflet-ais-trackymbol](https://github.com/PowerPan/leaflet-ais-tracksymbol)
+                </td><td>
+                        <a href="https://github.com/powerpan">Johannes Rudolph</a>
+                </td>
+        </tr>
 	<tr>
 		<td>
 			<a href="https://github.com/wwwouaiebe/leaflet.marker.pin">leaflet.marker.pin</a>
