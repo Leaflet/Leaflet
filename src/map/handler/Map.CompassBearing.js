@@ -12,7 +12,7 @@ L.Map.CompassBearing = L.Handler.extend({
 		this._capable = true;
 		this._map = map;
 
-		this._throttled = L.Util.throttle(this._onDeviceOrientation, 100, this);
+		this._throttled = L.Util.throttle(this._onDeviceOrientation, 1000, this);
 	},
 
 	addHooks: function () {
@@ -29,7 +29,7 @@ L.Map.CompassBearing = L.Handler.extend({
 
 	_onDeviceOrientation: function(event) {
 		if (event.alpha !== null) {
-			this._map.setBearing(event.alpha);
+			this._map.setBearing(event.alpha - window.orientation);
 		}
 	}
 });
