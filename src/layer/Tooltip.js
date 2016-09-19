@@ -11,9 +11,9 @@
  * ```
  * Note about tooltip offset. Leaflet takes two options in consideration
  * for computing tooltip offseting:
- * - the `offset` Tooltip option: it defaults to [6, -6], because the tooltip
- *   tip is 6px width and height. Remember to change this value if you override
- *   the tip in CSS.
+ * - the `offset` Tooltip option: it defaults to [0, 0], and it's specific to one tooltip.
+ *   Add a positive x offset to move the tooltip to the right, and a positive y offset to
+ *   move it to the bottom. Negatives will move to the left and top.
  * - the `tooltipAnchor` Icon option: this will only be considered for Marker. You
  *   should adapt this value if you use a custom icon.
  */
@@ -29,10 +29,9 @@ L.Tooltip = L.DivOverlay.extend({
 		// `Map pane` where the tooltip will be added.
 		pane: 'tooltipPane',
 
-		// @option offset: Point = Point(6, -6)
-		// The offset of the tooltip position. Update it if you customize the
-		// tooltip tip in CSS.
-		offset: [6, -6],
+		// @option offset: Point = Point(0, 0)
+		// Optional offset of the tooltip position.
+		offset: [0, 0],
 
 		// @option direction: String = 'auto'
 		// Direction where to open the tooltip. Possible values are: `right`, `left`,
@@ -95,6 +94,16 @@ L.Tooltip = L.DivOverlay.extend({
 		}
 	},
 
+	getEvents: function () {
+		var events = L.DivOverlay.prototype.getEvents.call(this);
+
+		if (L.Browser.touch && !this.options.permanent) {
+			events.preclick = this._close;
+		}
+
+		return events;
+	},
+
 	_close: function () {
 		if (this._map) {
 			this._map.closeTooltip(this);
@@ -112,9 +121,8 @@ L.Tooltip = L.DivOverlay.extend({
 
 	_adjustPan: function () {},
 
-	_updatePosition: function () {
+	_setPosition: function (pos) {
 		var map = this._map,
-		    pos = map.latLngToLayerPoint(this._latlng),
 		    container = this._container,
 		    centerPoint = map.latLngToContainerPoint(map.getCenter()),
 		    tooltipPoint = map.layerPointToContainerPoint(pos),
@@ -125,17 +133,17 @@ L.Tooltip = L.DivOverlay.extend({
 		    anchor = this._getAnchor();
 
 		if (direction === 'top') {
-			pos = pos.add(L.point(-tooltipWidth / 2, -tooltipHeight + offset.y + anchor.y));
+			pos = pos.add(L.point(-tooltipWidth / 2 + offset.x, -tooltipHeight + offset.y + anchor.y));
 		} else if (direction === 'bottom') {
-			pos = pos.subtract(L.point(tooltipWidth / 2, offset.y));
+			pos = pos.subtract(L.point(tooltipWidth / 2 - offset.x, -offset.y));
 		} else if (direction === 'center') {
-			pos = pos.subtract(L.point(tooltipWidth / 2, tooltipHeight / 2 - anchor.y));
+			pos = pos.subtract(L.point(tooltipWidth / 2 + offset.x, tooltipHeight / 2 - anchor.y + offset.y));
 		} else if (direction === 'right' || direction === 'auto' && tooltipPoint.x < centerPoint.x) {
 			direction = 'right';
-			pos = pos.add([offset.x + anchor.x, anchor.y - tooltipHeight / 2]);
+			pos = pos.add([offset.x + anchor.x, anchor.y - tooltipHeight / 2 + offset.y]);
 		} else {
 			direction = 'left';
-			pos = pos.subtract(L.point(offset.x + tooltipWidth + anchor.x, tooltipHeight / 2 - anchor.y));
+			pos = pos.subtract(L.point(tooltipWidth + anchor.x - offset.x, tooltipHeight / 2 - anchor.y - offset.y));
 		}
 
 		L.DomUtil.removeClass(container, 'leaflet-tooltip-right');
@@ -144,6 +152,11 @@ L.Tooltip = L.DivOverlay.extend({
 		L.DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
 		L.DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
 		L.DomUtil.setPosition(container, pos);
+	},
+
+	_updatePosition: function () {
+		var pos = this._map.latLngToLayerPoint(this._latlng);
+		this._setPosition(pos);
 	},
 
 	setOpacity: function (opacity) {
@@ -155,17 +168,13 @@ L.Tooltip = L.DivOverlay.extend({
 	},
 
 	_animateZoom: function (e) {
-		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center), offset;
-		if (this.options.offset) {
-			offset = L.point(this.options.offset);
-			pos = pos.add(offset);
-		}
-		L.DomUtil.setPosition(this._container, pos);
+		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center);
+		this._setPosition(pos);
 	},
 
 	_getAnchor: function () {
 		// Where should we anchor the tooltip on the source layer?
-		return L.point(this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return L.point(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });

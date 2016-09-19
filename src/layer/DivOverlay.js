@@ -5,15 +5,6 @@
  * Base model for L.Popup and L.Tooltip. Inherit from it for custom popup like plugins.
  */
 
-/* @namespace Map
- * @section Interaction Options
- * @option closePopupOnClick: Boolean = true
- * Set it to `false` if you don't want popups to close when user clicks the map.
- */
-L.Map.mergeOptions({
-	closePopupOnClick: true
-});
-
 // @namespace DivOverlay
 L.DivOverlay = L.Layer.extend({
 
@@ -24,11 +15,6 @@ L.DivOverlay = L.Layer.extend({
 		// The offset of the popup position. Useful to control the anchor
 		// of the popup when opening it on some overlays.
 		offset: [0, 7],
-
-		// @option zoomAnimation: Boolean = true
-		// Whether to animate the popup on zoom. Disable it if you have
-		// problems with Flash content inside popups.
-		zoomAnimation: true,
 
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
@@ -46,7 +32,7 @@ L.DivOverlay = L.Layer.extend({
 	},
 
 	onAdd: function (map) {
-		this._zoomAnimated = this._zoomAnimated && this.options.zoomAnimation;
+		this._zoomAnimated = map._zoomAnimated;
 
 		if (!this._container) {
 			this._initLayout();

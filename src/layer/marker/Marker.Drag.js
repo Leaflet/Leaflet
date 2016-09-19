@@ -60,6 +60,8 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 		// @event movestart: Event
 		// Fired when the marker starts moving (because of dragging).
+
+		this._oldLatLng = this._marker.getLatLng();
 		this._marker
 		    .closePopup()
 		    .fire('movestart')
@@ -92,6 +94,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 		marker._latlng = latlng;
 		e.latlng = latlng;
+		e.oldLatLng = this._oldLatLng;
 
 		// @event drag: Event
 		// Fired repeatedly while the user drags the marker.
@@ -106,6 +109,7 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).
+		delete this._oldLatLng;
 		this._marker
 		    .fire('moveend')
 		    .fire('dragend', e);

@@ -162,6 +162,16 @@ describe('Polygon', function () {
 			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([0, 0]));
 		});
 
+		it('throws error if not yet added to map', function () {
+			expect(function () {
+				var latlngs = [
+					[[0, 0], [10, 0], [10, 10], [0, 10]]
+				];
+				var layer = new L.Polygon(latlngs);
+				var center = layer.getCenter();
+			}).to.throwException('Must add layer to map before using getCenter()');
+		});
+
 	});
 
 	describe("#_defaultShape", function () {

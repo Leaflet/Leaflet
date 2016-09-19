@@ -55,6 +55,11 @@ L.Polygon = L.Polyline.extend({
 	},
 
 	getCenter: function () {
+		// throws error when not yet added to map as this center calculation requires projected coordinates
+		if (!this._map) {
+			throw new Error('Must add layer to map before using getCenter()');
+		}
+
 		var i, j, p1, p2, f, area, x, y, center,
 		    points = this._rings[0],
 		    len = points.length;

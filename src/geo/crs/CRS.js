@@ -54,13 +54,13 @@ L.CRS = {
 	},
 
 	// @method zoom(scale: Number): Number
-	// Inverse of `scale()`, returns the zoom level correspondingto a scale
+	// Inverse of `scale()`, returns the zoom level corresponding to a scale
 	// factor of `scale`.
 	zoom: function (scale) {
 		return Math.log(scale / 256) / Math.LN2;
 	},
 
-	// @method getProjectedBounds(zoom): Bounds
+	// @method getProjectedBounds(zoom: Number): Bounds
 	// Returns the projection's bounds scaled and transformed for the provided `zoom`.
 	getProjectedBounds: function (zoom) {
 		if (this.infinite) { return null; }
@@ -73,24 +73,24 @@ L.CRS = {
 		return L.bounds(min, max);
 	},
 
-	// @method distance(latlng1: LatLng, latlng1: LatLng): Number
+	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
 	// Returns the distance between two geographical coordinates.
 
 	// @property code: String
 	// Standard code name of the CRS passed into WMS services (e.g. `'EPSG:3857'`)
 	//
 	// @property wrapLng: Number[]
-	// An array of two numbers defining whether the longitude coordinate axis
-	// wraps around a given range and how. Defaults to `[-180, 180]` in most
-	// geographical CRSs.
+	// An array of two numbers defining whether the longitude (horizontal) coordinate
+	// axis wraps around a given range and how. Defaults to `[-180, 180]` in most
+	// geographical CRSs. If `undefined`, the longitude axis does not wrap around.
 	//
 	// @property wrapLat: Number[]
-	// Like `wrapLng`, but for the latitude axis.
+	// Like `wrapLng`, but for the latitude (vertical) axis.
 
 	// wrapLng: [min, max],
 	// wrapLat: [min, max],
 
-	// @property infinite: Boolean = false
+	// @property infinite: Boolean
 	// If true, the coordinate space will be unbounded (infinite in both axes)
 	infinite: false,
 

@@ -72,7 +72,7 @@ L.ImageOverlay = L.Layer.extend({
 		}
 	},
 
-	// @method setOpacity(): this
+	// @method setOpacity(opacity: Number): this
 	// Sets the opacity of the overlay.
 	setOpacity: function (opacity) {
 		this.options.opacity = opacity;
