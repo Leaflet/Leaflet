@@ -78,6 +78,8 @@ L.SVG = L.Renderer.extend({
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
 		L.DomUtil.setPosition(container, b.min);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
+
+		this.fire('update');
 	},
 
 	// methods below are called by vector layers implementations
