@@ -94,7 +94,8 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_update: function () {
-		// update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Subclasses are responsible of firing the 'update' event.
 		var p = this.options.padding,
 		    size = this._map.getSize(),
 		    min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
@@ -103,8 +104,6 @@ L.Renderer = L.Layer.extend({
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
-
-		this.fire('update');
 	}
 });
 
