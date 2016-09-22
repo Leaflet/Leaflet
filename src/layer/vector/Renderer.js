@@ -13,6 +13,9 @@
  *
  * Do not use this class directly, use `SVG` and `Canvas` instead.
  *
+ * @event update: Event
+ * Fired when the renderer updates its bounds, center and zoom, for example when
+ * its map has moved
  */
 
 L.Renderer = L.Layer.extend({
@@ -87,7 +90,8 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_update: function () {
-		// update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Subclasses are responsible of firing the 'update' event.
 		var p = this.options.padding,
 		    map = this._map,
 		    size = this._map.getSize(),

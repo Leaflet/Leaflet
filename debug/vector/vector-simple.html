@@ -17,6 +17,8 @@
 
 	<script>
 		var map = L.map('map');
+		
+		map.setView([51.505, -0.09], 13);
 
 		var marker = L.marker([51.5, -0.09])
 			.bindPopup("<b>Hello world!</b><br />I am a popup.")
@@ -32,8 +34,6 @@
 			[51.51,  -0.047]])
 			.bindPopup("I am a polygon.")
 			.addTo(map);
-
-		map.setView([51.505, -0.09], 13);
 
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',

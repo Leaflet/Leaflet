@@ -13,8 +13,8 @@ describe("Marker", function () {
 		map = L.map(div).setView([0, 0], 0);
 		icon1 = new L.Icon.Default();
 		icon2 = new L.Icon.Default({
-			iconUrl: icon1._getIconUrl('icon') + '?2',
-			shadowUrl: icon1._getIconUrl('shadow') + '?2'
+			iconUrl: icon1.options.iconUrl + '?2',
+			shadowUrl: icon1.options.shadowUrl + '?2'
 		});
 	});
 
@@ -287,17 +287,19 @@ describe("Marker", function () {
 			expect(mapSpy.called).not.to.be.ok();
 		});
 
-		it("do not catch event if it does not listen to it", function () {
+		it("do not catch event if it does not listen to it", function (done) {
 			var marker = new L.Marker([55, 37]);
 			map.addLayer(marker);
 			marker.once('mousemove', function (e) {
 				// It should be the marker coordinates
-				expect(e.latlng).to.be.nearLatLng(marker.getLatLng());
+				expect(e.latlng.equals(marker.getLatLng())).to.be.equal(true);
 			});
 			happen.mousemove(marker._icon);
+
 			map.once('mousemove', function (e) {
 				// It should be the mouse coordinates, not the marker ones
-				expect(e.latlng).not.to.be.nearLatLng(marker.getLatLng());
+				expect(e.latlng.equals(marker.getLatLng())).to.be.equal(false);
+				done();
 			});
 			happen.mousemove(marker._icon);
 		});

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style type="text/css">
+		.my-div-icon {
+			background-color: goldenrod;
+			text-align: center;
+		}
+		#map {
+			width: 100%;
+		}
+
+	</style>
+</head>
+<body>
+
+	<div id="map"></div>
+
+
+	<script type="text/javascript">
+		var center = [41.2058, 9.4307];
+
+		var map = L.map('map').setView(center, 13);
+
+		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		L.polygon([[41.21, 9.42], [41.22, 9.40], [41.23, 9.40]]).addTo(map).bindTooltip('Default centered polygon tooltip');
+		L.polygon([[41.20, 9.41], [41.20, 9.39], [41.21, 9.40]]).addTo(map).bindTooltip('Polygon tooltip following mouse', {sticky: true});
+		L.polygon([[41.18, 9.42], [41.17, 9.40], [41.19, 9.38]]).addTo(map).bindTooltip('Permanent polygon tooltip', {permanent: true});
+		L.marker([41.20, 9.4307]).addTo(map).bindTooltip('tooltip on the left', {direction: 'left'});
+		L.marker([41.206, 9.44]).addTo(map).bindTooltip('click me, I have a popup', {permanent: true, interactive: true}).bindPopup('See?');
+		L.circleMarker([41.206, 9.48], {color: 'Chocolate', radius: 12}).addTo(map).bindTooltip('Hello Left World', {direction: 'left'});
+		L.circleMarker([41.20, 9.50], {color: 'Chocolate', radius: 12}).addTo(map).bindTooltip('Hello top World', {direction: 'top', permanent: true});
+		L.circleMarker([41.20, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindTooltip('Seems I am centered', {direction: 'center', permanent: true, interactive: true}).bindPopup('Yeah');
+		L.circleMarker([41.195, 9.47], {color: 'Tomato', radius: 10}).addTo(map).bindTooltip('Me too', {direction: 'center'}).bindPopup('Yeah');
+		var icon = L.divIcon({
+			className: 'my-div-icon',
+			html: '<p>A div icon</p>',
+			iconSize: [50, 50]
+		});
+		L.marker([41.22, 9.48], {icon: icon}).addTo(map).bindTooltip('A div icon tooltip following mouse', {sticky: true, direction: 'auto'});
+		L.marker([41.23, 9.47], {icon: icon}).addTo(map).bindTooltip('A div icon tooltip with custom offset', {direction: 'top', offset: [-25, -25]});
+		L.marker([41.23, 9.42], {draggable: true}).addTo(map).bindTooltip('Draggable marker tooltip', {permanent: true, direction: 'auto'});
+		L.marker([41.19, 9.43]).addTo(map).bindTooltip('Clickable marker tooltip', {permanent: true, interactive: true}).on('click', function () { alert('clicked!'); });
+
+		var marker1 = L.marker([41.18, 9.45], {description: 'Marker 1'});
+		var marker2 = L.marker([41.18, 9.46], {description: 'Marker 2'});
+		var group = new L.FeatureGroup([marker1, marker2]).addTo(map);
+		group.bindTooltip(function (layer) {
+			return 'Group tooltip: ' + layer.options.description;
+		}, {opacity: 0.7});
+		L.marker([41.18, 9.35]).addTo(map).bindTooltip('Top tooltip is top', {permanent: true, direction: 'top'});
+		L.marker([41.173, 9.37]).addTo(map).bindTooltip('Bottom tooltip is weird but ok', {permanent: true, direction: 'bottom'});
+		L.polyline([[41.20, 9.36], [41.205, 9.35], [41.19, 9.34]]).bindTooltip('Polyline tooltip', {permanent: true, direction: 'top'}).addTo(map);
+		L.polygon([[41.21, 9.36], [41.24, 9.35], [41.23, 9.34]]).addTo(map).bindTooltip('Top tooltip following mouse', {sticky: true, direction: 'top'});
+
+	</script>
+</body>
+</html>

@@ -39,7 +39,6 @@
     for (var i = 0; i < scripts.length; i++) {
 		document.writeln("<script src='" + path + scripts[i] + "'></script>");
 	}
-    document.writeln('<script defer>L.Icon.Default.imagePath = "' + path + '../dist/images";</script>');
 })();
 
 function getRandomLatLng(map) {

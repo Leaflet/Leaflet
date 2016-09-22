@@ -60,3 +60,8 @@ it.skipIfNotTouch = window.TouchEvent ? it : it.skip;
 
 // A couple of tests need the browser to be pointer-capable
 it.skipIfNotEdge = window.PointerEvent ? it : it.skip;
+
+
+function takeScreenshot(path) {
+	window.top.callPhantom({'render': path || 'screenshot.png'});
+}

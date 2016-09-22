@@ -135,7 +135,7 @@ describe('GridLayer', function () {
 		});
 
 		// Passes on Firefox, but fails on phantomJS: done is never called.
-		it.skipInPhantom('only creates tiles for visible area on zoom in', function (done) {
+		it('only creates tiles for visible area on zoom in', function (done) {
 			map.remove();
 			map = L.map(div);
 			map.setView([0, 0], 10);
@@ -678,5 +678,214 @@ describe('GridLayer', function () {
 		});
 
 	});
+
+	describe("configurable tile pruning", function () {
+		var clock, grid, counts;
+
+		beforeEach(function () {
+			clock = sinon.useFakeTimers();
+
+			grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256)
+			});
+
+			grid.createTile = function (coords) {
+				var tile = document.createElement('div');
+				tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
+				tile.style.border = '2px solid red';
+				return tile;
+			};
+
+			counts = {
+				tileload: 0,
+				tileerror: 0,
+				tileloadstart: 0,
+				tileunload: 0
+			};
+
+			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
+// 				console.log(ev.type);
+				counts[ev.type]++;
+			});
+// 			grid.on('tileunload', function (ev) {
+// 				console.log(ev.type, ev.coords, counts);
+// 			});
+
+			map.options.fadeAnimation = false;
+			map.options.zoomAnimation = false;
+		});
+
+		afterEach(function () {
+			clock.restore();
+			grid.off();
+			grid = undefined;
+			counts = undefined;
+		});
+
+		it("Loads map, moves forth by 512 px, keepBuffer = 0", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+					expect(counts.tileloadstart).to.be(28);
+					expect(counts.tileload).to.be(28);
+					expect(counts.tileunload).to.be(12);
+					done();
+				});
+
+				map.panBy([512, 512], {animate: false});
+				clock.tick(250);
+			});
+
+			grid.options.keepBuffer = 0;
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it("Loads map, moves forth and back by 512 px, keepBuffer = 0", function (done) {
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+					expect(counts.tileloadstart).to.be(28);
+					expect(counts.tileload).to.be(28);
+					expect(counts.tileunload).to.be(12);
+
+					grid.off('load');
+					grid.on('load', function () {
+						expect(counts.tileloadstart).to.be(40);
+						expect(counts.tileload).to.be(40);
+						expect(counts.tileunload).to.be(24);
+						done();
+					});
+
+					map.panBy([-512, -512], {animate: false});
+					clock.tick(250);
+				});
+
+				map.panBy([512, 512], {animate: false});
+				clock.tick(250);
+			});
+
+			grid.options.keepBuffer = 0;
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+
+		it("Loads map, moves forth and back by 512 px, default keepBuffer", function (done) {
+
+			var spy = sinon.spy();
+
+			grid.on('load', function () {
+				expect(counts.tileloadstart).to.be(16);
+				expect(counts.tileload).to.be(16);
+				expect(counts.tileunload).to.be(0);
+				grid.off('load');
+
+				grid.on('load', function () {
+					expect(counts.tileloadstart).to.be(28);
+					expect(counts.tileload).to.be(28);
+					expect(counts.tileunload).to.be(0);
+					grid.off('load');
+
+					grid.addEventListener('load', spy);
+
+					map.panBy([-512, -512], {animate: false});
+					clock.tick(250);
+
+					expect(spy.called).to.be(false);
+					done();
+				});
+
+				map.panBy([512, 512], {animate: false});
+				clock.tick(250);
+			});
+
+			map.addLayer(grid).setView([0, 0], 10);
+			clock.tick(250);
+		});
+	});
+
+	describe("nowrap option", function () {
+		it("When false, uses same coords at zoom 0 for all tiles", function (done) {
+
+			var grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256),
+				noWrap: false
+			});
+			var loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 0);
+
+			grid.on('load', function () {
+				expect(loadedTileKeys).to.eql(["0:0:0", "0:0:0", "0:0:0", "0:0:0", "0:0:0"]);
+				done();
+			});
+		});
+
+		it("When true, uses different coords at zoom level 0 for all tiles", function (done) {
+
+			var grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256),
+				noWrap: true
+			});
+			var loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 0);
+
+			grid.on('load', function () {
+				expect(loadedTileKeys).to.eql(['0:0:0', '-1:0:0', '1:0:0', '-2:0:0', '2:0:0']);
+				done();
+			});
+		});
+
+		it("When true and with bounds, loads just one tile at zoom level 0", function (done) {
+
+			var grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256),
+				bounds: [[-90, -180], [90, 180]],
+				noWrap: true
+			});
+			var loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 0);
+
+			grid.on('load', function () {
+				expect(loadedTileKeys).to.eql(['0:0:0']);
+				done();
+			});
+		});
+	});
+
+
 
 });

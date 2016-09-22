@@ -412,11 +412,19 @@ L.Map = L.Evented.extend({
 
 		this._initEvents(true);
 
+		if (this._containerId !== this._container._leaflet_id) {
+			throw new Error('Map container is being reused by another instance');
+		}
+
 		try {
 			// throws error in IE6-8
-			delete this._container._leaflet;
+			delete this._container._leaflet_id;
+			delete this._containerId;
 		} catch (e) {
-			this._container._leaflet = undefined;
+			/*eslint-disable */
+			this._container._leaflet_id = undefined;
+			/*eslint-enable */
+			this._containerId = undefined;
 		}
 
 		L.DomUtil.remove(this._mapPane);
@@ -608,7 +616,8 @@ L.Map = L.Evented.extend({
 	getScaleZoom: function (scale, fromZoom) {
 		var crs = this.options.crs;
 		fromZoom = fromZoom === undefined ? this._zoom : fromZoom;
-		return crs.zoom(scale * crs.scale(fromZoom));
+		var zoom = crs.zoom(scale * crs.scale(fromZoom));
+		return isNaN(zoom) ? Infinity : zoom;
 	},
 
 	// @method project(latlng: LatLng, zoom: Number): Point
@@ -758,12 +767,12 @@ L.Map = L.Evented.extend({
 
 		if (!container) {
 			throw new Error('Map container not found.');
-		} else if (container._leaflet) {
+		} else if (container._leaflet_id) {
 			throw new Error('Map container is already initialized.');
 		}
 
 		L.DomEvent.addListener(container, 'scroll', this._onScroll, this);
-		container._leaflet = true;
+		this._containerId = L.Util.stamp(container);
 	},
 
 	_initLayout: function () {
@@ -842,8 +851,11 @@ L.Map = L.Evented.extend({
 			// @pane markerPane: HTMLElement = 6
 			// Pane for marker icons
 		this.createPane('markerPane');
-			// @pane popupPane: HTMLElement = 7
-			// Pane for popups.
+		// @pane tooltipPane: HTMLElement = 650
+		// Pane for tooltip.
+		this.createPane('tooltipPane');
+		// @pane popupPane: HTMLElement = 700
+		// Pane for `Popup`s.
 		this.createPane('popupPane');
 		}
 
@@ -907,14 +919,14 @@ L.Map = L.Evented.extend({
 		this._pixelOrigin = this._getNewPixelOrigin(center);
 
 		// @event zoom: Event
-		// Fired repeteadly during any change in zoom level, including zoom
+		// Fired repeatedly during any change in zoom level, including zoom
 		// and fly animations.
 		if (zoomChanged || (data && data.pinch)) {	// Always fire 'zoom' if pinching because #3530
 			this.fire('zoom', data);
 		}
 
 		// @event move: Event
-		// Fired repeteadly during any movement of the map, including pan and
+		// Fired repeatedly during any movement of the map, including pan and
 		// fly animations.
 		return this.fire('move', data);
 	},
@@ -990,7 +1002,7 @@ L.Map = L.Evented.extend({
 		// default browser context menu from showing if there are listeners on
 		// this event. Also fired on mobile when the user holds a single touch
 		// for a second (also called long press).
-		// @event keypress: Event
+		// @event keypress: KeyboardEvent
 		// Fired when the user presses a key from the keyboard while the map is focused.
 		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
 			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
@@ -1110,7 +1122,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_draggableMoved: function (obj) {
-		obj = obj.options.draggable ? obj : this;
+		obj = obj.dragging && obj.dragging.enabled() ? obj : this;
 		return (obj.dragging && obj.dragging.moved()) || (this.boxZoom && this.boxZoom.moved());
 	},
 

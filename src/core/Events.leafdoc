@@ -24,6 +24,11 @@ The event type (e.g. `'click'`).
 The object that fired the event.
 
 
+@miniclass KeyboardEvent (Event objects)
+@inherits Event
+@property originalEvent: DOMEvent
+The original [DOM `KeyboardEvent`](https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent) that triggered this Leaflet event.
+
 @miniclass MouseEvent (Event objects)
 @inherits Event
 @property latlng: LatLng
@@ -32,10 +37,8 @@ The geographical point where the mouse event occured.
 Pixel coordinates of the point where the mouse event occured relative to the map layer.
 @property containerPoint: Point
 Pixel coordinates of the point where the mouse event occured relative to the map сontainer.
-@property originalEvent: DOM MouseEvent
-The original [DOM mouse event](https://developer.mozilla.org/docs/Web/API/MouseEvent) fired by the browser.
-
-
+@property originalEvent: DOMEvent
+The original [DOM `MouseEvent`](https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent) or [DOM `TouchEvent`](https://developer.mozilla.org/en-US/docs/Web/API/TouchEvent) that triggered this Leaflet event.
 
 @miniclass LocationEvent (Event objects)
 @inherits Event
@@ -113,6 +116,11 @@ GeoJSON ID of the feature (if present).
 @inherits Event
 @property popup: Popup
 The popup that was opened or closed.
+
+@miniclass TooltipEvent (Event objects)
+@inherits Event
+@property tooltip: Tooltip
+The tooltip that was opened or closed.
 
 @miniclass DragEndEvent (Event objects)
 @inherits Event

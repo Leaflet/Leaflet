@@ -127,12 +127,12 @@ From there you can click through folders/files to get details on their individua
 
 ## Improving Documentation
 
-The code of the live Leaflet website that contains all documentation and examples is located in the `gh-pages` branch
+The code of the live Leaflet website that contains all documentation and examples is located in the `docs/` directory of the `master` branch
 and is automatically generated from a set of HTML and Markdown files by [Jekyll](http://jekyllrb.com/).
 
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
-browse the [gh-pages branch](https://github.com/Leaflet/Leaflet/tree/gh-pages),
+browse the [`docs/ directory`](https://github.com/Leaflet/Leaflet/tree/master/docs),
 choose a certain file for editing (e.g. `plugins.html` for the list of Leaflet plugins),
 click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
@@ -141,8 +141,11 @@ If you need to make edits in a local repository to see how it looks in the proce
 
  1. [Install Ruby](http://www.ruby-lang.org/en/) if don't have it yet.
  2. Run `gem install jekyll`.
- 3. Run `jekyll serve --watch` in the root `Leaflet` folder.
- 4. Open `localhost:4000` in your browser.
+ 3. Enter the directory where you cloned the Leaflet repository
+ 4. Make sure you are in the `master` branch by running `git checkout master`
+ 5. Enter the documentation subdirectory by running `cd docs`
+ 6. Run `jekyll serve --watch`.
+ 7. Open `localhost:4000` in your web browser.
 
 Now any file changes will be updated when you reload pages automatically.
 After committing the changes, just send a pull request.
@@ -164,8 +167,7 @@ jake docs
 and you'll find a `.html` file in the `dist/` directory.
 
 On every release of a new Leaflet version, this file will be generated and copied
-over to the `gh-pages` branch - there is no need to send pull requests to this
-branch anymore to update the API documentation.
+over to `docs/reference.html` - there is no need to send pull requests with changes to this file to update the API documentation.
 
 ## Code of Conduct
 
