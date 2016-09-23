@@ -9,7 +9,7 @@
  * @example
  *
  * ```js
- * L.geoJson(data, {
+ * L.geoJSON(data, {
  * 	style: function (feature) {
  * 		return {color: feature.properties.color};
  * 	}
