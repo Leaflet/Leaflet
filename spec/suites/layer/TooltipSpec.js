@@ -287,5 +287,11 @@ describe('Tooltip', function () {
 		map.openTooltip('Tooltip', center);
 	});
 
+	it("can call closeTooltip while not on the map", function () {
+		var layer = new L.Marker(center);
+		layer.bindTooltip('Tooltip', {interactive: true});
+		layer.closeTooltip();
+	});
+
 });
 
