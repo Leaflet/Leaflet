@@ -51,7 +51,7 @@
  *         tile.height = size.y;
  *
  *         // draw something asynchronously and pass the tile to the done() callback
- *         setTimeout(function() {
+ *         setTimeout(function () {
  *             done(error, tile);
  *         }, 1000);
  *
@@ -125,7 +125,12 @@ L.GridLayer = L.Layer.extend({
 
 		// @option keepBuffer: Number = 2
 		// When panning the map, keep this many rows and columns of tiles before unloading them.
-		keepBuffer: 2
+		keepBuffer: 2,
+
+		// @option dumpToCanvas: Boolean = false
+		// Whether to dump loaded tiles to a `<canvas>` to prevent some rendering
+		// artifacts. Useful only when tiles are `<img>`s or `<canvas>`es.
+		dumpToCanvas: false
 	},
 
 	initialize: function (options) {
@@ -310,7 +315,11 @@ L.GridLayer = L.Layer.extend({
 			if (fade < 1) {
 				nextFrame = true;
 			} else {
-				if (tile.active) { willPrune = true; }
+				if (tile.active) {
+					willPrune = true;
+				} else if (this.options.dumpToCanvas) {
+					this._dumpTileToCanvas(tile);
+				}
 				tile.active = true;
 			}
 		}
@@ -337,24 +346,30 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_updateLevels: function () {
-
 		var zoom = this._tileZoom,
-		    maxZoom = this.options.maxZoom;
+		    maxZoom = this.options.maxZoom,
+		    dump = this.options.dumpToCanvas;
 
 		if (zoom === undefined) { return undefined; }
 
 		for (var z in this._levels) {
-			if (this._levels[z].el.children.length || z === zoom) {
+			if (this._levels[z].el.children.length || (zoom - z) === 0) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
+				if (dump) {
+					this._levels[z].canvas.style.zIndex = maxZoom - Math.abs(zoom - z);
+				}
 			} else {
 				L.DomUtil.remove(this._levels[z].el);
+				if (dump) {
+					L.DomUtil.remove(this._levels[z].canvas);
+				}
 				this._removeTilesAtZoom(z);
 				delete this._levels[z];
 			}
 		}
 
 		var level = this._levels[zoom],
-		    map = this._map;
+		map = this._map;
 
 		if (!level) {
 			level = this._levels[zoom] = {};
@@ -369,10 +384,15 @@ L.GridLayer = L.Layer.extend({
 
 			// force the browser to consider the newly added element for transition
 			L.Util.falseFn(level.el.offsetWidth);
+
+			if (dump) {
+				level.canvas = L.DomUtil.create('canvas', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+				level.ctx = level.canvas.getContext('2d');
+				this._resetCanvasSize(level);
+			}
 		}
 
 		this._level = level;
-
 		return level;
 	},
 
@@ -549,6 +569,22 @@ L.GridLayer = L.Layer.extend({
 		} else {
 			L.DomUtil.setPosition(level.el, translate);
 		}
+		if (this.options.dumpToCanvas) {
+			this._setCanvasZoomTransform(level, center, zoom);
+		}
+	},
+
+	_setCanvasZoomTransform: function(level, center, zoom){
+		if (!level.canvasOrigin) { return; }
+		var scale = this._map.getZoomScale(zoom, level.zoom),
+		    translate = level.canvasOrigin.multiplyBy(scale)
+		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
+
+		if (L.Browser.any3d) {
+			L.DomUtil.setTransform(level.canvas, translate, scale);
+		} else {
+			L.DomUtil.setPosition(level.canvas, translate);
+		}
 	},
 
 	_resetGrid: function () {
@@ -718,6 +754,18 @@ L.GridLayer = L.Layer.extend({
 
 		L.DomUtil.remove(tile.el);
 
+		if (this.options.dumpToCanvas) {
+			// Clear the portion of the level canvas that this tile used to be at
+			var level = this._levels[tile.coords.z],
+			    tileSize = this.getTileSize();
+
+			if (level) {
+				var offset = L.point(tile.coords.x, tile.coords.y).subtract(level.canvasRange.min).scaleBy(tileSize);
+
+				level.ctx.clearRect(offset.x, offset.y, tileSize.x, tileSize.y);
+			}
+		}
+
 		delete this._tiles[key];
 
 		// @event tileunload: TileEvent
@@ -726,6 +774,93 @@ L.GridLayer = L.Layer.extend({
 			tile: tile.el,
 			coords: this._keyToTileCoords(key)
 		});
+	},
+
+	_resetCanvasSize: function(level) {
+		var buff = this.options.keepBuffer,
+		    pixelBounds = this._getTiledPixelBounds(map.getCenter()),
+		    tileRange = this._pxBoundsToTileRange(pixelBounds),
+		    tileSize = this.getTileSize();
+
+		tileRange.min = tileRange.min.subtract([buff, buff]);	// This adds the no-prune buffer
+		tileRange.max = tileRange.max.add([buff+1, buff+1]);
+
+		var pixelRange = L.bounds(
+		        tileRange.min.scaleBy(tileSize),
+		        tileRange.max.add([1, 1]).scaleBy(tileSize)	// This prevents an off-by-one when checking if tiles are inside
+		    ),
+		    mustRepositionCanvas = false,
+		    neededSize = pixelRange.max.subtract(pixelRange.min);
+
+		// Resize the canvas, if needed, and only to make it bigger.
+		if (neededSize.x > level.canvas.width || neededSize.y > level.canvas.height) {
+			// Resizing canvases erases the currently drawn content, I'm afraid.
+			// To keep it, dump the pixels to another canvas, then display it on
+			// top. This could be done with getImageData/putImageData, but that
+			// would break for tainted canvases (in non-CORS tilesets)
+			var oldSize = {x: level.canvas.width, y: level.canvas.height};
+
+			var tmpCanvas = L.DomUtil.create('canvas');
+			tmpCanvas.style.width  = (tmpCanvas.width  = oldSize.x) + 'px';
+			tmpCanvas.style.height = (tmpCanvas.height = oldSize.y) + 'px';
+			tmpCanvas.getContext('2d').drawImage(level.canvas, 0, 0);
+
+			level.canvas.style.width  = (level.canvas.width  = neededSize.x) + 'px';
+			level.canvas.style.height = (level.canvas.height = neededSize.y) + 'px';
+			level.ctx.drawImage(tmpCanvas, 0, 0);
+		}
+
+		// Translate the canvas contents if it's moved around
+		if (level.canvasRange) {
+			var offset = level.canvasRange.min.subtract(tileRange.min).scaleBy(this.getTileSize());
+
+			if (!L.Browser.safari) {
+				// By default, canvases copy things "on top of" existing pixels, but we want
+				// this to *replace* the existing pixels when doing a drawImage() call.
+				// This will also clear the sides, so no clearRect() calls are needed to make room
+				// for the new tiles.
+				level.ctx.globalCompositeOperation = 'copy';
+				level.ctx.drawImage(level.canvas, offset.x, offset.y);
+				level.ctx.globalCompositeOperation = 'source-over';
+			} else {
+				// Safari clears the canvas when copying from itself :-(
+				if (!this._tmpCanvas) {
+					var t = this._tmpCanvas = L.DomUtil.create('canvas');
+					t.width  = level.canvas.width;
+					t.height = level.canvas.height;
+					this._tmpContext = t.getContext('2d');
+				}
+				this._tmpContext.clearRect(0, 0, level.canvas.width, level.canvas.height);
+				this._tmpContext.drawImage(level.canvas, 0, 0);
+				level.ctx.clearRect(0, 0, level.canvas.width, level.canvas.height);
+				level.ctx.drawImage(this._tmpCanvas, offset.x, offset.y);
+			}
+
+			mustRepositionCanvas = true;	// Wait until new props are set
+		}
+
+		level.canvasRange = tileRange;
+		level.canvasPxRange = pixelRange;
+		level.canvasOrigin = pixelRange.min;
+
+		if (mustRepositionCanvas) {
+			this._setCanvasZoomTransform(level, this._map.getCenter(), this._map.getZoom());
+		}
+	},
+
+	_dumpTileToCanvas: function(tile){
+		var level = this._levels[tile.coords.z];
+		var tileSize = this.getTileSize();
+
+		if (!level.canvasRange.contains(tile.coords)) {
+			this._resetCanvasSize(level);
+		}
+
+		var offset = L.point(tile.coords.x, tile.coords.y).subtract(level.canvasRange.min).scaleBy(tileSize);
+
+		level.ctx.drawImage(tile.el, offset.x, offset.y, tileSize.x, tileSize.y);
+
+		tile.el.style.display = 'none';
 	},
 
 	_initTile: function (tile) {
