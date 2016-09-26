@@ -3,9 +3,32 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.0-dev (master)
+## 1.1 (master)
 
 An in-progress version being developed on the `master` branch.
+
+## 1.0.0 (September 26, 2016)
+
+### API changes
+
+* Remove deprecated `zoomanimated` option for `L.Popup`s (by [@fnicollet](https://github.com/fnicollet)) [#4699](https://github.com/Leaflet/Leaflet/pull/4699)
+
+### Improvements
+
+* Several minor fixes to the documentation (by [@IvanSanchez](https://github.com/IvanSanchez), [@alejo90](https://github.com/alejo90), [@ghybs](https://github.com/ghybs), [@JonasDralle](https://github.com/JonasDralle))
+* Add license to `bower.json` (by [@anotherredward](https://github.com/anotherredward)) [#4865](https://github.com/Leaflet/Leaflet/pull/4865)
+* Allow creating tooltips without a source layer (by [@yohanboniface](https://github.com/yohanboniface)) [#4836](https://github.com/Leaflet/Leaflet/pull/4836)
+* Detect `L.Icon` default path using CSS (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4605](https://github.com/Leaflet/Leaflet/pull/4605)
+
+### Bug fixes
+
+* Fix handling of `getScaleZoom` in some custom CRSs (by [@theashyster](https://github.com/theashyster)) [#4919](https://github.com/Leaflet/Leaflet/pull/4919)
+* Guard `L.Path` event handlers against race conditions (by [@perliedman](https://github.com/perliedman) and [@IvanSanchez](https://github.com/IvanSanchez)) [#4855](https://github.com/Leaflet/Leaflet/pull/4855) [#4929](https://github.com/Leaflet/Leaflet/pull/4929) [#4838](https://github.com/Leaflet/Leaflet/pull/4838)
+* In `L.GridLayer`s, wrap `tileBounds` when `noWrap` is false (by [@fyeah](https://github.com/fyeah)) [#4908](https://github.com/Leaflet/Leaflet/pull/4908)
+* Fix `L.Path`'s `bringToFront()` behaviour in the Edge browser (by [@nikolai-b](https://github.com/nikolai-b)) [#4848](https://github.com/Leaflet/Leaflet/pull/4848)
+* Remove spurious counting of event handlers (by [@perliedman](https://github.com/perliedman)) [#4842](https://github.com/Leaflet/Leaflet/pull/4842)
+* Throw error on `getCenter()` when a `L.Polygon` has no map and thus no CRS (by [@snkashis](https://github.com/snkashis)) [#4820](https://github.com/Leaflet/Leaflet/pull/4820)
+* Add a `_leaflet_id` to map containers to prevent error when removing a map twice (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4810](https://github.com/Leaflet/Leaflet/pull/4810)
 
 
 ## 1.0-rc3 (August 5, 2016)
