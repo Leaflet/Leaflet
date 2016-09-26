@@ -121,7 +121,7 @@ L.Layer.include({
 	closeTooltip: function () {
 		if (this._tooltip) {
 			this._tooltip._close();
-			if (this._tooltip.options.interactive) {
+			if (this._tooltip.options.interactive && this._tooltip._container) {
 				L.DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
 				this.removeInteractiveTarget(this._tooltip._container);
 			}
