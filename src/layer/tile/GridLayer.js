@@ -574,7 +574,7 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_setCanvasZoomTransform: function(level, center, zoom){
+	_setCanvasZoomTransform: function (level, center, zoom) {
 		if (!level.canvasOrigin) { return; }
 		var scale = this._map.getZoomScale(zoom, level.zoom),
 		    translate = level.canvasOrigin.multiplyBy(scale)
@@ -776,14 +776,14 @@ L.GridLayer = L.Layer.extend({
 		});
 	},
 
-	_resetCanvasSize: function(level) {
+	_resetCanvasSize: function (level) {
 		var buff = this.options.keepBuffer,
-		    pixelBounds = this._getTiledPixelBounds(map.getCenter()),
+		    pixelBounds = this._getTiledPixelBounds(this._map.getCenter()),
 		    tileRange = this._pxBoundsToTileRange(pixelBounds),
 		    tileSize = this.getTileSize();
 
 		tileRange.min = tileRange.min.subtract([buff, buff]);	// This adds the no-prune buffer
-		tileRange.max = tileRange.max.add([buff+1, buff+1]);
+		tileRange.max = tileRange.max.add([buff + 1, buff + 1]);
 
 		var pixelRange = L.bounds(
 		        tileRange.min.scaleBy(tileSize),
@@ -848,7 +848,7 @@ L.GridLayer = L.Layer.extend({
 		}
 	},
 
-	_dumpTileToCanvas: function(tile){
+	_dumpTileToCanvas: function (tile) {
 		var level = this._levels[tile.coords.z];
 		var tileSize = this.getTileSize();
 
