@@ -16,7 +16,7 @@
  *
  * ```js
  * var map = L.map('map', {
- * 	renderer: L.canvas();
+ * 	renderer: L.canvas()
  * });
  * ```
  *
