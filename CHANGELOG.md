@@ -16,9 +16,9 @@ An in-progress version being developed on the `master` branch.
 ### Improvements
 
 * Several minor fixes to the documentation (by [@IvanSanchez](https://github.com/IvanSanchez), [@alejo90](https://github.com/alejo90), [@ghybs](https://github.com/ghybs), [@JonasDralle](https://github.com/JonasDralle))
-* Add license to `bower.json` (by [@anotherredward](https://github.com/anotherredward) [#4865](https://github.com/Leaflet/Leaflet/pull/4865)
-* Allow creating tooltips without a source layer (by [@yohanboniface](https://github.com/yohanboniface) [#4836](https://github.com/Leaflet/Leaflet/pull/4836)
-* Detect `L.Icon` default path using CSS (by [@IvanSanchez](https://github.com/IvanSanchez) [#4605](https://github.com/Leaflet/Leaflet/pull/4605)
+* Add license to `bower.json` (by [@anotherredward](https://github.com/anotherredward)) [#4865](https://github.com/Leaflet/Leaflet/pull/4865)
+* Allow creating tooltips without a source layer (by [@yohanboniface](https://github.com/yohanboniface)) [#4836](https://github.com/Leaflet/Leaflet/pull/4836)
+* Detect `L.Icon` default path using CSS (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4605](https://github.com/Leaflet/Leaflet/pull/4605)
 
 ### Bug fixes
 
