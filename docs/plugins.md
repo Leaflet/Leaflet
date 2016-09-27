@@ -1864,6 +1864,15 @@ Plugins that search for overlays and enhance how to display information about th
 			<a href="https://github.com/maydemirx">Mehmet Aydemir</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Twista/leaflet-google-places-autocomplete">Leaflet-gplaces-autocomplete</a>
+		</td><td>
+			Add google places search into map
+		</td><td>
+			<a href="https://github.com/Twista">Michal Haták</a>
+		</td>
+	</tr>
 </table>
 
 
