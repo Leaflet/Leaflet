@@ -34,7 +34,7 @@ L.Renderer = L.Layer.extend({
 		L.stamp(this);
 	},
 
-	onAdd: function (map) {
+	onAdd: function () {
 		if (!this._container) {
 			this._initContainer(); // defined by renderer implementations
 
@@ -97,15 +97,15 @@ L.Renderer = L.Layer.extend({
 		    size = this._map.getSize(),
 		    padMin = size.multiplyBy(-p),
 		    padMax = size.multiplyBy(1 + p),
-		    //// TODO: Somehow refactor this out into map.something() - the code is
-		    ////   pretty much the same as in GridLayer.
+		    // // TODO: Somehow refactor this out into map.something() - the code is
+		    // //   pretty much the same as in GridLayer.
 		    clip = new L.Bounds([
-		        map.containerPointToLayerPoint([padMin.x, padMin.y]).floor(),
-		        map.containerPointToLayerPoint([padMin.x, padMax.y]).floor(),
-		        map.containerPointToLayerPoint([padMax.x, padMin.y]).floor(),
-		        map.containerPointToLayerPoint([padMax.x, padMax.y]).floor()
+			    map.containerPointToLayerPoint([padMin.x, padMin.y]).floor(),
+			    map.containerPointToLayerPoint([padMin.x, padMax.y]).floor(),
+			    map.containerPointToLayerPoint([padMax.x, padMin.y]).floor(),
+			    map.containerPointToLayerPoint([padMax.x, padMax.y]).floor()
 		    ]);
-			//min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
+			// min = this._map.containerPointToLayerPoint(size.multiplyBy(-p)).round();
 
 		this._bounds = clip;
 		this._topLeft = this._map.layerPointToLatLng(clip.min);

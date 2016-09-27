@@ -583,8 +583,8 @@ L.GridLayer = L.Layer.extend({
 		    mapZoom = map._animatingZoom ? Math.max(map._animateToZoom, map.getZoom()) : map.getZoom(),
 		    scale = map.getZoomScale(mapZoom, this._tileZoom),
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
-			size = map.getSize(),
-			halfSize;
+		size = map.getSize(),
+		halfSize;
 
 		if (this._map._rotate && this._map._bearing) {
 			halfSize = new L.Bounds([
@@ -593,8 +593,7 @@ L.GridLayer = L.Layer.extend({
 				map.containerPointToLayerPoint([0, size.y]).floor(),
 				map.containerPointToLayerPoint([size.x, size.y]).floor()
 			]).getSize().divideBy(scale * 2);
-		}
-		else {
+		} else {
 			halfSize = size.divideBy(scale * 2);
 		}
 

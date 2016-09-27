@@ -679,8 +679,7 @@ L.Map = L.Evented.extend({
 				.subtract(this._getMapPanePos())
 				.rotateFrom(-this._bearing, this._getRotatePanePos())
 				.subtract(this._getRotatePanePos());
-		}
-		else {
+		} else {
 			return L.point(point).subtract(this._getMapPanePos());
 		}
 	},
@@ -694,8 +693,7 @@ L.Map = L.Evented.extend({
 				.add(this._getRotatePanePos())
 				.rotateFrom(this._bearing, this._getRotatePanePos())
 				.add(this._getMapPanePos());
-		}
-		else {
+		} else {
 			return L.point(point).add(this._getMapPanePos());
 		}
 	},
@@ -738,7 +736,7 @@ L.Map = L.Evented.extend({
 
 	// Rotation methods
 	// setBearing will work with just the 'theta' parameter.
-	setBearing: function(theta) {
+	setBearing: function (theta) {
 		if (!L.Browser.any3d || !this._rotate) { return; }
 
 		var rotatePanePos = this._getRotatePanePos();
@@ -755,7 +753,7 @@ L.Map = L.Evented.extend({
 		this.fire('rotate');
 	},
 
-	getBearing: function() {
+	getBearing: function () {
 		return this._bearing * L.DomUtil.RAD_TO_DEG;
 	},
 
@@ -1166,8 +1164,7 @@ L.Map = L.Evented.extend({
 				._add(this._getRotatePanePos())
 				.rotate(-this._bearing)
 				._round();
-		}
-		else {
+		} else {
 			return this.project(center, zoom)
 				._subtract(viewHalf)
 				._add(this._getMapPanePos())

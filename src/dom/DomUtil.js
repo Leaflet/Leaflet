@@ -197,7 +197,7 @@ L.DomUtil = {
 			pos = pos.rotateFrom(bearing, pivot);
 
 			el.style[L.DomUtil.TRANSFORM] =
-				'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' +
+				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)' +
 				(scale ? ' scale(' + scale + ')' : '') +
 				' rotate(' + bearing + 'rad)';
 		}
