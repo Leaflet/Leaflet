@@ -1117,7 +1117,7 @@ export var Map = Evented.extend({
 
 	// Rotation methods
 	// setBearing will work with just the 'theta' parameter.
-	setBearing: function(theta) {
+	setBearing: function (theta) {
 		if (!L.Browser.any3d || !this._rotate) { return; }
 
 		var rotatePanePos = this._getRotatePanePos();
@@ -1134,7 +1134,7 @@ export var Map = Evented.extend({
 		this.fire('rotate');
 	},
 
-	getBearing: function() {
+	getBearing: function () {
 		return this._bearing * L.DomUtil.RAD_TO_DEG;
 	},
 
@@ -1554,8 +1554,7 @@ export var Map = Evented.extend({
 				._add(this._getRotatePanePos())
 				.rotate(-this._bearing)
 				._round();
-		}
-		else {
+		} else {
 			return this.project(center, zoom)
 				._subtract(viewHalf)
 				._add(this._getMapPanePos())

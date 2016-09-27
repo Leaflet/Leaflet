@@ -194,7 +194,7 @@ Point.prototype = {
 		        formatNum(this.y) + ')';
 	},
 
-	rotate: function(theta) {
+	rotate: function (theta) {
 		if (!theta) { return this; }
 		// Rotate around (0,0) by applying the 2D rotation matrix:
 		// ⎡ x' ⎤ = ⎡ cos θ  -sin θ ⎤ ⎡ x ⎤
@@ -209,7 +209,7 @@ Point.prototype = {
 		);
 	},
 
-	rotateFrom: function(theta, pivot) {
+	rotateFrom: function (theta, pivot) {
 		if (!theta) { return this; }
 		return this.clone().subtract(pivot).rotate(theta).add(pivot);
 	}
