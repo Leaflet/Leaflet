@@ -20,7 +20,7 @@
  *
  * ```js
  * var map = L.map('map', {
- * 	renderer: L.svg();
+ * 	renderer: L.svg()
  * });
  * ```
  *
