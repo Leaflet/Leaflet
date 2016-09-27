@@ -71,8 +71,7 @@ var deps = {
 		src: [
 			'layer/DivOverlay.js',
 			'layer/Popup.js',
-			'layer/Layer.Popup.js',
-			'layer/marker/Marker.Popup.js'
+			'layer/Layer.Popup.js'
 		],
 		deps: ['Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
@@ -81,8 +80,7 @@ var deps = {
 	Tooltip: {
 		src: [
 			'layer/Tooltip.js',
-			'layer/Layer.Tooltip.js',
-			'layer/marker/Marker.Tooltip.js'
+			'layer/Layer.Tooltip.js'
 		],
 		deps: ['Popup', 'Marker'],
 		desc: 'Used to display the map tooltip (used mostly for binding short descriptions to markers and paths on mouseover).'
