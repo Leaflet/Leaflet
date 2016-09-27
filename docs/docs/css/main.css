@@ -1080,3 +1080,9 @@ iframe[src*='youtube.com'] {
 	display: inline-block;
 	width: 100%;
 }
+
+.announcement {
+	background: #eee;
+	padding: 5px 10px;
+	border-radius: 10px;
+}
