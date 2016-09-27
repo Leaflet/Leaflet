@@ -199,7 +199,6 @@ L.DomUtil = {
 	// using CSS translate or top/left positioning depending on the browser
 	// (used by Leaflet internally to position its layers).
 	setPosition: function (el, point, no3d) { // (HTMLElement, Point[, Boolean])
-		//no3d = no3d || false;
 		/*eslint-disable */
 		el._leaflet_pos = point;
 		/*eslint-enable */
