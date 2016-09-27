@@ -60,7 +60,11 @@ L.Marker = L.Layer.extend({
 		pane: 'markerPane',
 
 		// FIXME: shadowPane is no longer a valid option
-		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu']
+		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
+		
+		// @option markerRotate: Boolean = true
+		// Whether the marker remains upright when rotating the map
+		markerRotate: true
 	},
 
 	/* @section
@@ -251,7 +255,7 @@ L.Marker = L.Layer.extend({
 
 	_setPos: function (pos) {
 		var iconAnchor = this.options.icon.options.iconAnchor || new L.Point(0, 0);
-		if (this._map._rotate) {
+		if (this._map._rotate && this.options.markerRotate) {
 			L.DomUtil.setPosition(this._icon, pos, -this._map._bearing || 0, pos.add(iconAnchor));
 		} else {
 			L.DomUtil.setPosition(this._icon, pos);
@@ -259,7 +263,7 @@ L.Marker = L.Layer.extend({
 
 
 		if (this._shadow) {
-			if (this._map._rotate) {
+			if (this._map._rotate && this.options.markerRotate) {
 				if (this.options.icon.options.shadowAnchor){
 					L.DomUtil.setPosition(this._shadow, pos, -this._map._bearing || 0, pos.add(this.options.icon.options.shadowAnchor));
 				} else {
