@@ -12,16 +12,16 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td class="width100"><a href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip">Leaflet 0.7.7</a></td>
-		<td>Stable version, released on November 18, 2013 and last updated on October 26, 2015.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0/leaflet.zip">Leaflet 1.0.0</a></td>
+		<td>Stable version, released on September 27, 2016.</td>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0-rc.3/leaflet.zip">Leaflet 1.0.0-rc3</a></td>
-		<td>Last 1.0 release candidate, released on August 5, 2016.</td>
-	</tr>
-	<tr>
-		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.0-dev</a></td>
+		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.1-dev</a></td>
 		<td>In-progress version, developed on the <code>master</code> branch.</td>
+	</tr>
+	<tr>
+		<td class="width100"><a href="http://cdn.leafletjs.com/leaflet/v0.7.7/leaflet.zip">Leaflet 0.7.7</a></td>
+		<td>Legacy version, released on November 18, 2013 and last updated on October 26, 2015.</td>
 	</tr>
 </table>
 
@@ -35,13 +35,8 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@0.7.7/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@0.7.7/dist/leaflet.js"></script>
-
-or
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
 
 ### Using a Downloaded Version of Leaflet
 
