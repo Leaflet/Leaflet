@@ -3,9 +3,11 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## 1.1 (master)
+## master
 
 An in-progress version being developed on the `master` branch.
+
+- Fixed vector rendering regression in IE8 (by [@perliedman](https://github.com/perliedman)). [#4699](https://github.com/Leaflet/Leaflet/pull/4956)
 
 ## 1.0.0 (September 26, 2016)
 
