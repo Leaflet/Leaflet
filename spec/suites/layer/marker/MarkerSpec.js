@@ -28,7 +28,7 @@ describe("Marker", function () {
 			var expectedX = 96;
 			var expectedY = 100;
 			var sizedIcon = new L.Icon.Default({
-				iconUrl: icon1._getIconUrl('icon') + '?3',
+				iconUrl: icon1.options.iconUrl + '?3',
 				iconSize: [expectedX, expectedY]
 			});
 
@@ -44,7 +44,7 @@ describe("Marker", function () {
 		it("set the correct x and y size attributes passing only one value", function () {
 			var expectedXY = 96;
 			var sizedIcon = new L.Icon.Default({
-				iconUrl: icon1._getIconUrl('icon') + '?3',
+				iconUrl: icon1.options.iconUrl + '?3',
 				iconSize: expectedXY
 			});
 
@@ -60,7 +60,7 @@ describe("Marker", function () {
 		it("set the correct x and y size attributes passing a L.Point instance", function () {
 			var expectedXY = 96;
 			var sizedIcon = new L.Icon.Default({
-				iconUrl: icon1._getIconUrl('icon') + '?3',
+				iconUrl: icon1.options.iconUrl + '?3',
 				iconSize: L.point(expectedXY, expectedXY)
 			});
 
