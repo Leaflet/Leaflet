@@ -246,8 +246,7 @@ var deps = {
 
 	AnimationZoom: {
 		src: [
-			'map/anim/Map.ZoomAnimation.js',
-			'map/anim/Map.FlyTo.js'
+			'map/anim/Map.ZoomAnimation.js'
 			],
 		deps: ['AnimationPan'],
 		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
