@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	<style>
+		html {
+			height: 100%;
+			width: 100%;
+		}
+
+		.content {
+			width: 100%;
+			min-width: 980px;
+			height: 100%;
+			margin-top: -37px;
+			padding-top: 37px;
+			box-sizing: border-box;
+			-webkit-transition: padding 1s;
+			transition: padding 1s;
+		}
+		#map {
+			min-height: 100px;
+			height: 100%;
+			width: 100%;
+			background: rgb(173, 176, 157);
+			/* position: relative; */
+		}
+
+
+		body {
+			height: 100%;
+			min-height: 640px;
+			position: relative;
+			color: #d8d7c0;
+			font-family: Arial, "Helvetica CY", Helvetica, sans-serif;
+			font-size: 15px;
+			line-height: 1.538em;
+			background: #fafafa;
+
+		}
+	</style>
+</head>
+<body class="body">
+	<div class="content">
+		<div id="map"></div>
+	</div>
+
+
+	<script type="text/javascript">
+		var mapopts =  {
+			center: [
+				53.92773728062649,
+				27.590038776397705
+			],
+			zoom : 8
+		};
+
+		var map = L.map('map', mapopts);
+
+		var tilesUrls = [
+			'https://cwxstatic-ru.wargaming.net/v25/background/{z}/{x}/{y}.jpg',
+			'https://cwxstatic-ru.wargaming.net/v25/game-ru/{z}/{x}/{y}.png',
+			'https://cwxstatic-ru.wargaming.net/v25/labels-ru/{z}/{x}/{y}.png'
+		];
+
+		var maxZoom = 9; // max tactical zoom
+		var minZoom = 3; // min tactical zoom
+
+
+		var layerOptions = {
+			tileSize: 256, // to reduce memory consumption need to set to 512
+			//zoomOffset: -1, //to reduce memory consumption
+			maxZoom: maxZoom,
+			minZoom: minZoom,
+			//no3d: true, // reduce GPU consumption in 2-5 times
+			reuseTiles: true // need to reduce memory consumption
+		};
+
+
+		tilesUrls.forEach(function (url) {
+			L.tileLayer(url, layerOptions).addTo(map);
+		});
+	</script>
+</body>
+</html>

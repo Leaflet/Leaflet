@@ -150,9 +150,6 @@
 
 /* zoom and fade animations */
 
-.leaflet-fade-anim .leaflet-tile {
-	will-change: opacity;
-	}
 .leaflet-fade-anim .leaflet-popup {
 	opacity: 0;
 	-webkit-transition: opacity 0.2s linear;
