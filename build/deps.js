@@ -251,12 +251,6 @@ var deps = {
 			],
 		deps: ['AnimationPan'],
 		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
-	},
-
-	Geolocation: {
-		src: ['map/ext/Map.Geolocation.js'],
-		desc: 'Adds Map#locate method and related events to make geolocation easier.',
-		heading: 'Misc'
 	}
 };
 
