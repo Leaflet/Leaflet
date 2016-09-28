@@ -1,5 +1,5 @@
 ---
 layout: redirected
 sitemap: false
-redirect_to:  mobile/mobile.html
+redirect_to:  geojson/geojson-example.html
 ---

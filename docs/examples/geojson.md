@@ -1,5 +1,5 @@
 ---
 layout: redirected
 sitemap: false
-redirect_to:  choropleth/choropleth.html
+redirect_to:  geojson/geojson.html
 ---
