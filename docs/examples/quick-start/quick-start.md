@@ -70,10 +70,11 @@ Besides tile layers, you can easily add other things to your map, including mark
 
 Adding a circle is the same (except for specifying the radius in meters as a second argument), but lets you control how it looks by passing options as the last argument when creating the object:
 
-	var circle = L.circle([51.508, -0.11], 500, {
+	var circle = L.circle([51.508, -0.11], {
 		color: 'red',
 		fillColor: '#f03',
-		fillOpacity: 0.5
+		fillOpacity: 0.5,
+		radius: 500
 	}).addTo(mymap);
 
 Adding a polygon is as easy:
