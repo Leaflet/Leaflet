@@ -10,7 +10,7 @@
  * @example
  *
  * ```js
- * L.circle([50.5, 30.5], 200).addTo(map);
+ * L.circle([50.5, 30.5], {radius: 200}).addTo(map);
  * ```
  */
 
