@@ -5,7 +5,7 @@ title: Interactive Choropleth Map
 
 ## Interactive Choropleth Map
 
-This is a case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](geojson.html) and some [custom controls](../reference.html#icontrol) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
+This is a case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](geojson.html) and some [custom controls](../../reference.html#icontrol) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
 
 The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/library/data/us-senate-runoff-results-map/) (also powered by Leaflet), created by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/).
 
@@ -13,7 +13,7 @@ The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](ht
 
 ### Data Source
 
-We'll be creating a visualization of population density per US state. As the amount of data (state shapes and the density value for each state) is not very big, the most convenient and simple way to store and then display it is [GeoJSON](geojson.html).
+We'll be creating a visualization of population density per US state. As the amount of data (state shapes and the density value for each state) is not very big, the most convenient and simple way to store and then display it is [GeoJSON](../geojson/geojson.html).
 
 Each feature of our GeoJSON data ([us-states.js](us-states.js)) will look like this:
 
@@ -139,7 +139,7 @@ This makes the states highlight nicely on hover and gives us the ability to add 
 
 ### Custom Info Control
 
-We could use the usual popups on click to show information about different states, but we'll choose a different route --- showing it on state hover inside a [custom control](../reference.html#icontrol).
+We could use the usual popups on click to show information about different states, but we'll choose a different route --- showing it on state hover inside a [custom control](../../reference.html#icontrol).
 
 Here's the code for our control:
 

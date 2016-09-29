@@ -76,4 +76,4 @@ You can do the same with your classes too. OK, lets finally put some markers wit
 	L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
 	L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
 
-That's it. Now take a look at the [full example](custom-icons-example.html), the [L.Icon docs](../reference.html#icon), or browse [other examples](../examples.html).
+That's it. Now take a look at the [full example](custom-icons-example.html), the [L.Icon docs](../../reference.html#icon), or browse [other examples](../../examples.html).

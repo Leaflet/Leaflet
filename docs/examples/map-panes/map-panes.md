@@ -7,7 +7,7 @@ title: Working with map panes
 
 In Leaflet, map panes group layers together implicitly, without the developer knowing about it. This grouping allows web browsers to work with several layers at once in a more efficient way than working with layers individually.
 
-Map panes use the [z-index CSS property](https://developer.mozilla.org/docs/Web/CSS/z-index) to always show some layers on top of others. The [default order](http://leafletjs.com/reference.html#map-panes) is:
+Map panes use the [z-index CSS property](https://developer.mozilla.org/docs/Web/CSS/z-index) to always show some layers on top of others. The [default order](../../reference.html#map-panes) is:
 
 * `TileLayer`s and `GridLayer`s
 * `Path`s, like lines, polylines, circles, or `GeoJSON` layers.
@@ -64,7 +64,7 @@ Custom map panes are created on a per-map basis, so first create an instance of 
     map.createPane('labels');
 
 
-The next step is setting the z-index of the pane. Looking at the [defaults](https://github.com/Leaflet/Leaflet/blob/master/dist/leaflet.css#L73), a value of 650 will make the `TileLayer` with the labels show on top of markers but below pop-ups. By using `getPane()`, we have a reference to the [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement) representing the pane, and change its z-index:
+The next step is setting the z-index of the pane. Looking at the [defaults](https://github.com/Leaflet/Leaflet/blob/v1.0.0/dist/leaflet.css#L87), a value of 650 will make the `TileLayer` with the labels show on top of markers but below pop-ups. By using `getPane()`, we have a reference to the [`HTMLElement`](https://developer.mozilla.org/docs/Web/API/HTMLElement) representing the pane, and change its z-index:
 
 
     map.getPane('labels').style.zIndex = 650;
