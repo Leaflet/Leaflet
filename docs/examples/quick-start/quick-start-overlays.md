@@ -18,10 +18,11 @@ customMapContainer: "true"
 
 	L.marker([51.5, -0.09]).addTo(mymap);
 
-	L.circle([51.508, -0.11], 500, {
+	L.circle([51.508, -0.11], {
 		color: 'red',
 		fillColor: '#f03',
-		fillOpacity: 0.5
+		fillOpacity: 0.5,
+		radius: 500
 	}).addTo(mymap);
 
 	L.polygon([
