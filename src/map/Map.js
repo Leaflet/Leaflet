@@ -9,7 +9,15 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-import {isAny3D, isMobileOpera, isTouch, isRetina, isIELT9, isSafari} from '../core/Browser';
+
+import {
+	any3d as isAny3D,
+	mobileOpera as isMobileOpera,
+	touch as isTouch,
+	retina as isRetina,
+	ielt9 as isIELT9,
+	safari as isSafari
+} from '../core/Browser';
 
 /*
  * @class Map

@@ -16,92 +16,92 @@
 var style = document.documentElement.style;
 
 // @property ie: Boolean; `true` for all Internet Explorer versions (not Edge).
-export var isIE = 'ActiveXObject' in window;
+export var ie = 'ActiveXObject' in window;
 
 // @property ielt9: Boolean; `true` for Internet Explorer versions less than 9.
-export var isIELT9 = isIE && !document.addEventListener;
+export var ielt9 = ie && !document.addEventListener;
 
 // @property edge: Boolean; `true` for the Edge web browser.
-export var isEdge = 'msLaunchUri' in navigator && !('documentMode' in document);
+export var edge = 'msLaunchUri' in navigator && !('documentMode' in document);
 
 // @property webkit: Boolean;
 // `true` for webkit-based browsers like Chrome and Safari (including mobile versions).
-export var isWebKit = userAgentContains('webkit');
+export var webkit = userAgentContains('webkit');
 
 // @property android: Boolean
 // `true` for any browser running on an Android platform.
-export var isAndroid = userAgentContains('android');
+export var android = userAgentContains('android');
 
 // @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
-export var isAndroid23 = userAgentContains('android 2') || userAgentContains('android 3');
+export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
-export var isGecko = userAgentContains('gecko') && !isWebKit && !isOpera && !isIE;
+export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
 
 // @property safari: Boolean; `true` for the Safari browser.
-export var isSafari = !isChrome && userAgentContains('safari');
+export var safari = !chrome && userAgentContains('safari');
 
-export var isPhantom = userAgentContains('phantom');
+export var phantom = userAgentContains('phantom');
 
 // @property chrome: Boolean; `true` for the Chrome browser.
-export var isChrome = userAgentContains('chrome');
+export var chrome = userAgentContains('chrome');
 
 // @property opera: Boolean; `true` for the Opera browser
-export var isOpera = !!window.opera;
+export var opera = !!window.opera;
 
 // @property opera12: Boolean
 // `true` for the Opera browser supporting CSS transforms (version 12 or later).
-export var isOpera12 = 'OTransition' in style;
+export var opera12 = 'OTransition' in style;
 
 // @property win: Boolean; `true` when the browser is running in a Windows platform
-export var isWin = navigator.platform.indexOf('Win') === 0;
+export var win = navigator.platform.indexOf('Win') === 0;
 
 // @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
-export var isIE3D = isIE && ('transition' in style);
+export var ie32 = ie && ('transition' in style);
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
-export var isWebKit3D = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !isAndroid23;
+export var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
 
 // @property gecko3d: Boolean; `true` for gecko-based browsers supporting CSS transforms.
-export var isGecko3D = 'MozPerspective' in style;
+export var gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-export var isAny3D = !window.L_DISABLE_3D && (isIE3D || isWebKit3D || isGecko3D) && !isOpera12 && !isPhantom;
+export var any3d = !window.L_DISABLE_3D && (ie32 || webkit3d || gecko3d) && !opera12 && !phantom;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
-export var isMobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
+export var mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');
 
 // @property mobileWebkit: Boolean; `true` for all webkit-based browsers in a mobile device.
-export var isMobileWebkit = isMobile && isWebKit;
+export var mobileWebkit = mobile && webkit;
 
 // @property mobileWebkit3d: Boolean
 // `true` for all webkit-based browsers in a mobile device supporting CSS transforms.
-export var isMobileWebkit3D = isMobile && isWebKit3D;
+export var mobileWebkit3d = mobile && webkit3d;
 
 // @property msPointer: Boolean
 // `true` for browsers implementing the Microsoft touch events model (notably IE10).
-export var isMSPointer = !window.PointerEvent && window.MSPointerEvent;
+export var msPointer = !window.PointerEvent && window.MSPointerEvent;
 
 // @property pointer: Boolean
 // `true` for all browsers supporting [pointer events](https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx).
-export var isPointer = window.PointerEvent || isMSPointer;
+export var pointer = window.PointerEvent || msPointer;
 
 // @property touch: Boolean
 // `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
-export var isTouch = !window.L_NO_TOUCH && (isPointer || 'ontouchstart' in window ||
+export var touch = !window.L_NO_TOUCH && (pointer || 'ontouchstart' in window ||
 		(window.DocumentTouch && document instanceof window.DocumentTouch));
 
 // @property mobileOpera: Boolean; `true` for the Opera browser in a mobile device.
-export var isMobileOpera = isMobile && isOpera;
+export var mobileOpera = mobile && opera;
 
 // @property mobileGecko: Boolean
 // `true` for gecko-based browsers running in a mobile device.
-export var isMobileGecko = isMobile && isGecko;
+export var mobileGecko = mobile && gecko;
 
 // @property retina: Boolean
 // `true` for browsers on a high-resolution "retina" screen.
-export var isRetina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
 
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;
