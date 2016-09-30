@@ -53,13 +53,15 @@ L.GeoJSON = L.FeatureGroup.extend({
 	 * ```
 	 *
 	 * @option filter: Function = *
-	 * A `Function` that will be used to decide whether to show a feature or not.
-	 * The default is to show all features:
+	 * A `Function` that will be used to decide whether to include a feature or not.
+	 * The default is to include all features:
 	 * ```js
 	 * function (geoJsonFeature) {
 	 * 	return true;
 	 * }
 	 * ```
+	 * Note: dynamically changing the `filter` option will have effect only on newly
+	 * added data. It will _not_ re-evaluate already included features.
 	 *
 	 * @option coordsToLatLng: Function = *
 	 * A `Function` that will be used for converting GeoJSON coordinates to `LatLng`s.
