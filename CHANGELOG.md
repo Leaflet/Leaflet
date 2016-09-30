@@ -7,7 +7,12 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch.
 
-- Fixed vector rendering regression in IE8 (by [@perliedman](https://github.com/perliedman)). [#4699](https://github.com/Leaflet/Leaflet/pull/4956)
+## 1.0.1 (September 30, 2016)
+
+### Bug fixes
+
+* Fixed vector rendering regression in IE8 (by [@perliedman](https://github.com/perliedman)). [#4656](https://github.com/Leaflet/Leaflet/pull/4956)
+* Fixed Webpack error when bundling Leaflet's CSS (by [@jefbarn](https://github.com/jefbarn)). [#4679](https://github.com/Leaflet/Leaflet/pull/4979)
 
 ## 1.0.0 (September 26, 2016)
 
