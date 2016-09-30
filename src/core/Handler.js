@@ -1,3 +1,5 @@
+import {Class} from './Class';
+
 /*
 	L.Handler is a base class for handler classes that are used internally to inject
 	interaction features like dragging to classes like Map and Marker.
@@ -7,7 +9,7 @@
 // @aka L.Handler
 // Abstract class for map interaction handlers
 
-L.Handler = L.Class.extend({
+export var Handler = Class.extend({
 	initialize: function (map) {
 		this._map = map;
 	},

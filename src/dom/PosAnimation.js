@@ -1,3 +1,5 @@
+import {requestAnimFrame, cancelAnimFrame} from '../core/Util';
+
 /*
  * @class PosAnimation
  * @aka L.PosAnimation
@@ -15,7 +17,7 @@
  *
  */
 
-L.PosAnimation = L.Evented.extend({
+export var PosAnimation = L.Evented.extend({
 
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
@@ -52,7 +54,7 @@ L.PosAnimation = L.Evented.extend({
 
 	_animate: function () {
 		// animation loop
-		this._animId = L.Util.requestAnimFrame(this._animate, this);
+		this._animId = requestAnimFrame(this._animate, this);
 		this._step();
 	},
 
@@ -81,7 +83,7 @@ L.PosAnimation = L.Evented.extend({
 	},
 
 	_complete: function () {
-		L.Util.cancelAnimFrame(this._animId);
+		cancelAnimFrame(this._animId);
 
 		this._inProgress = false;
 		// @event end: Event
