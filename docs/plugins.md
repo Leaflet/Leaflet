@@ -697,6 +697,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/Flexberry/">Flexberry</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/daniellsu/leaflet-betterscale">Leaflet-BetterScale</a>
+		</td><td>
+			A new, more GIS-like scalebar with alternating black/white bars.
+		</td><td>
+			<a href="https://github.com/daniellsu/">Dan Brown</a>
+		</td>
+	</tr>
 </table>
 
 
