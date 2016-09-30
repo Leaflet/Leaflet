@@ -1,3 +1,6 @@
+import {CRS} from './CRS';
+import {extend} from '../../core/Util';
+
 /*
  * @namespace CRS
  * @crs L.CRS.Earth
@@ -8,7 +11,7 @@
  * meters.
  */
 
-L.CRS.Earth = L.extend({}, L.CRS, {
+export var Earth = extend({}, CRS, {
 	wrapLng: [-180, 180],
 
 	// Mean Earth Radius, as recommended for use by

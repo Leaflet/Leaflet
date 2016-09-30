@@ -1,3 +1,7 @@
+import {Bounds} from '../../geometry/Bounds';
+import {LatLng} from '../LatLng';
+import {wrapNum} from '../../core/Util';
+
 /*
  * @class CRS
  * @aka L.CRS
@@ -11,7 +15,7 @@
  * [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
  */
 
-L.CRS = {
+export var CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
@@ -70,7 +74,7 @@ L.CRS = {
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
 
-		return L.bounds(min, max);
+		return Bounds(min, max);
 	},
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -98,10 +102,10 @@ L.CRS = {
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+		var lng = this.wrapLng ? wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+		    lat = this.wrapLat ? wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
-		return L.latLng(lat, lng, alt);
+		return new LatLng(lat, lng, alt);
 	}
 };

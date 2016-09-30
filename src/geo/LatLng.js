@@ -1,3 +1,6 @@
+import {isArray, formatNum} from '../core/Util';
+import {Earth} from '../geo/crs/CRS.Earth';
+
 /* @class LatLng
  * @aka L.LatLng
  *
@@ -19,7 +22,7 @@
  * ```
  */
 
-L.LatLng = function (lat, lng, alt) {
+export function LatLng(lat, lng, alt) {
 	if (isNaN(lat) || isNaN(lng)) {
 		throw new Error('Invalid LatLng object: (' + lat + ', ' + lng + ')');
 	}
@@ -39,13 +42,13 @@ L.LatLng = function (lat, lng, alt) {
 	}
 };
 
-L.LatLng.prototype = {
+LatLng.prototype = {
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overriden by setting `maxMargin` to a small number.
 	equals: function (obj, maxMargin) {
 		if (!obj) { return false; }
 
-		obj = L.latLng(obj);
+		obj = toLatLng(obj);
 
 		var margin = Math.max(
 		        Math.abs(this.lat - obj.lat),
@@ -58,20 +61,20 @@ L.LatLng.prototype = {
 	// Returns a string representation of the point (for debugging purposes).
 	toString: function (precision) {
 		return 'LatLng(' +
-		        L.Util.formatNum(this.lat, precision) + ', ' +
-		        L.Util.formatNum(this.lng, precision) + ')';
+		        formatNum(this.lat, precision) + ', ' +
+		        formatNum(this.lng, precision) + ')';
 	},
 
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](http://en.wikipedia.org/wiki/Haversine_formula).
 	distanceTo: function (other) {
-		return L.CRS.Earth.distance(this, L.latLng(other));
+		return Earth.distance(this, toLatLng(other));
 	},
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
 	wrap: function () {
-		return L.CRS.Earth.wrapLatLng(this);
+		return Earth.wrapLatLng(this);
 	},
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
@@ -86,7 +89,7 @@ L.LatLng.prototype = {
 	},
 
 	clone: function () {
-		return new L.LatLng(this.lat, this.lng, this.alt);
+		return new LatLng(this.lat, this.lng, this.alt);
 	}
 };
 
@@ -103,16 +106,16 @@ L.LatLng.prototype = {
 // @factory L.latLng(coords: Object): LatLng
 // Expects an plain object of the form `{lat: Number, lng: Number}` or `{lat: Number, lng: Number, alt: Number}` instead.
 
-L.latLng = function (a, b, c) {
-	if (a instanceof L.LatLng) {
+export function toLatLng(a, b, c) {
+	if (a instanceof LatLng) {
 		return a;
 	}
-	if (L.Util.isArray(a) && typeof a[0] !== 'object') {
+	if (isArray(a) && typeof a[0] !== 'object') {
 		if (a.length === 3) {
-			return new L.LatLng(a[0], a[1], a[2]);
+			return new LatLng(a[0], a[1], a[2]);
 		}
 		if (a.length === 2) {
-			return new L.LatLng(a[0], a[1]);
+			return new LatLng(a[0], a[1]);
 		}
 		return null;
 	}
@@ -120,10 +123,10 @@ L.latLng = function (a, b, c) {
 		return a;
 	}
 	if (typeof a === 'object' && 'lat' in a) {
-		return new L.LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
+		return new LatLng(a.lat, 'lng' in a ? a.lng : a.lon, a.alt);
 	}
 	if (b === undefined) {
 		return null;
 	}
-	return new L.LatLng(a, b, c);
+	return new LatLng(a, b, c);
 };

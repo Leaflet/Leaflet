@@ -1,3 +1,5 @@
+import {isArray, formatNum} from '../core/Util';
+
 /*
  * @class Point
  * @aka L.Point
@@ -18,24 +20,24 @@
  * ```
  */
 
-L.Point = function (x, y, round) {
+export function Point(x, y, round) {
 	this.x = (round ? Math.round(x) : x);
 	this.y = (round ? Math.round(y) : y);
-};
+}
 
-L.Point.prototype = {
+Point.prototype = {
 
 	// @method clone(): Point
 	// Returns a copy of the current point.
 	clone: function () {
-		return new L.Point(this.x, this.y);
+		return new Point(this.x, this.y);
 	},
 
 	// @method add(otherPoint: Point): Point
 	// Returns the result of addition of the current and the given points.
 	add: function (point) {
 		// non-destructive, returns a new point
-		return this.clone()._add(L.point(point));
+		return this.clone()._add(toPoint(point));
 	},
 
 	_add: function (point) {
@@ -48,7 +50,7 @@ L.Point.prototype = {
 	// @method subtract(otherPoint: Point): Point
 	// Returns the result of subtraction of the given point from the current.
 	subtract: function (point) {
-		return this.clone()._subtract(L.point(point));
+		return this.clone()._subtract(toPoint(point));
 	},
 
 	_subtract: function (point) {
@@ -87,14 +89,14 @@ L.Point.prototype = {
 	// [scaling matrix](https://en.wikipedia.org/wiki/Scaling_%28geometry%29#Matrix_representation)
 	// defined by `scale`.
 	scaleBy: function (point) {
-		return new L.Point(this.x * point.x, this.y * point.y);
+		return new Point(this.x * point.x, this.y * point.y);
 	},
 
 	// @method unscaleBy(scale: Point): Point
 	// Inverse of `scaleBy`. Divide each coordinate of the current point by
 	// each coordinate of `scale`.
 	unscaleBy: function (point) {
-		return new L.Point(this.x / point.x, this.y / point.y);
+		return new Point(this.x / point.x, this.y / point.y);
 	},
 
 	// @method round(): Point
@@ -136,7 +138,7 @@ L.Point.prototype = {
 	// @method distanceTo(otherPoint: Point): Number
 	// Returns the cartesian distance between the current and the given points.
 	distanceTo: function (point) {
-		point = L.point(point);
+		point = toPoint(point);
 
 		var x = point.x - this.x,
 		    y = point.y - this.y;
@@ -147,7 +149,7 @@ L.Point.prototype = {
 	// @method equals(otherPoint: Point): Boolean
 	// Returns `true` if the given point has the same coordinates.
 	equals: function (point) {
-		point = L.point(point);
+		point = toPoint(point);
 
 		return point.x === this.x &&
 		       point.y === this.y;
@@ -156,7 +158,7 @@ L.Point.prototype = {
 	// @method contains(otherPoint: Point): Boolean
 	// Returns `true` if both coordinates of the given point are less than the corresponding current point coordinates (in absolute values).
 	contains: function (point) {
-		point = L.point(point);
+		point = toPoint(point);
 
 		return Math.abs(point.x) <= Math.abs(this.x) &&
 		       Math.abs(point.y) <= Math.abs(this.y);
@@ -166,8 +168,8 @@ L.Point.prototype = {
 	// Returns a string representation of the point for debugging purposes.
 	toString: function () {
 		return 'Point(' +
-		        L.Util.formatNum(this.x) + ', ' +
-		        L.Util.formatNum(this.y) + ')';
+		        formatNum(this.x) + ', ' +
+		        formatNum(this.y) + ')';
 	}
 };
 
@@ -181,18 +183,18 @@ L.Point.prototype = {
 // @alternative
 // @factory L.point(coords: Object)
 // Expects a plain object of the form `{x: Number, y: Number}` instead.
-L.point = function (x, y, round) {
-	if (x instanceof L.Point) {
+export function toPoint(x, y, round) {
+	if (x instanceof Point) {
 		return x;
 	}
-	if (L.Util.isArray(x)) {
-		return new L.Point(x[0], x[1]);
+	if (isArray(x)) {
+		return new Point(x[0], x[1]);
 	}
 	if (x === undefined || x === null) {
 		return x;
 	}
 	if (typeof x === 'object' && 'x' in x && 'y' in x) {
-		return new L.Point(x.x, x.y);
+		return new Point(x.x, x.y);
 	}
-	return new L.Point(x, y, round);
+	return new Point(x, y, round);
 };
