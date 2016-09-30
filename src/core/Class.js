@@ -1,3 +1,4 @@
+import {create, extend} from './Util.js';
 
 // @class Class
 // @aka L.Class
@@ -7,9 +8,9 @@
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
-L.Class = function () {};
+export function Class() {};
 
-L.Class.extend = function (props) {
+Class.extend = function (props) {
 
 	// @function extend(props: Object): Function
 	// [Extends the current class](#class-inheritance) given the properties to be included.
@@ -27,7 +28,7 @@ L.Class.extend = function (props) {
 
 	var parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = L.Util.create(parentProto);
+	var proto = create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
@@ -41,23 +42,23 @@ L.Class.extend = function (props) {
 
 	// mix static properties into the class
 	if (props.statics) {
-		L.extend(NewClass, props.statics);
+		extend(NewClass, props.statics);
 		delete props.statics;
 	}
 
 	// mix includes into the prototype
 	if (props.includes) {
-		L.Util.extend.apply(null, [proto].concat(props.includes));
+		extend.apply(null, [proto].concat(props.includes));
 		delete props.includes;
 	}
 
 	// merge options
 	if (proto.options) {
-		props.options = L.Util.extend(L.Util.create(proto.options), props.options);
+		props.options = extend(create(proto.options), props.options);
 	}
 
 	// mix given properties into the prototype
-	L.extend(proto, props);
+	extend(proto, props);
 
 	proto._initHooks = [];
 
@@ -83,21 +84,21 @@ L.Class.extend = function (props) {
 
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
-L.Class.include = function (props) {
-	L.extend(this.prototype, props);
+Class.include = function (props) {
+	extend(this.prototype, props);
 	return this;
 };
 
 // @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
-L.Class.mergeOptions = function (options) {
-	L.extend(this.prototype.options, options);
+Class.mergeOptions = function (options) {
+	extend(this.prototype.options, options);
 	return this;
 };
 
 // @function addInitHook(fn: Function): this
 // Adds a [constructor hook](#class-constructor-hooks) to the class.
-L.Class.addInitHook = function (fn) { // (Function) || (String, args...)
+Class.addInitHook = function (fn) { // (Function) || (String, args...)
 	var args = Array.prototype.slice.call(arguments, 1);
 
 	var init = typeof fn === 'function' ? fn : function () {
