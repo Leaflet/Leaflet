@@ -1,3 +1,8 @@
+import {Base} from './CRS.Base';
+import {LonLat} from '../projection/Projection.LonLat';
+import {Transformation} from '../../geometry/Transformation';
+import {extend} from '../../core/Util';
+
 /*
  * @namespace CRS
  * @crs L.CRS.Simple
@@ -8,9 +13,9 @@
  * simple euclidean distance.
  */
 
-L.CRS.Simple = L.extend({}, L.CRS, {
-	projection: L.Projection.LonLat,
-	transformation: new L.Transformation(1, 0, -1, 0),
+export var Simple = extend({}, Base, {
+	projection: LonLat,
+	transformation: new Transformation(1, 0, -1, 0),
 
 	scale: function (zoom) {
 		return Math.pow(2, zoom);

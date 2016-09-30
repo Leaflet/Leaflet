@@ -1,4 +1,4 @@
-import {CRS} from './CRS';
+import {Base} from './CRS.Base';
 import {extend} from '../../core/Util';
 
 /*
@@ -11,7 +11,7 @@ import {extend} from '../../core/Util';
  * meters.
  */
 
-export var Earth = extend({}, CRS, {
+export var Earth = extend({}, Base, {
 	wrapLng: [-180, 180],
 
 	// Mean Earth Radius, as recommended for use by
