@@ -1,3 +1,5 @@
+import {Point, toPoint} from './Point';
+
 /*
  * @class Bounds
  * @aka L.Bounds
@@ -19,7 +21,7 @@
  * ```
  */
 
-L.Bounds = function (a, b) {
+export function Bounds(a, b) {
 	if (!a) { return; }
 
 	var points = b ? [a, b] : a;
@@ -29,11 +31,11 @@ L.Bounds = function (a, b) {
 	}
 };
 
-L.Bounds.prototype = {
+Bounds.prototype = {
 	// @method extend(point: Point): this
 	// Extends the bounds to contain the given point.
 	extend: function (point) { // (Point)
-		point = L.point(point);
+		point = toPoint(point);
 
 		// @property min: Point
 		// The top left corner of the rectangle.
@@ -54,7 +56,7 @@ L.Bounds.prototype = {
 	// @method getCenter(round?: Boolean): Point
 	// Returns the center point of the bounds.
 	getCenter: function (round) {
-		return new L.Point(
+		return new Point(
 		        (this.min.x + this.max.x) / 2,
 		        (this.min.y + this.max.y) / 2, round);
 	},
@@ -62,13 +64,13 @@ L.Bounds.prototype = {
 	// @method getBottomLeft(): Point
 	// Returns the bottom-left point of the bounds.
 	getBottomLeft: function () {
-		return new L.Point(this.min.x, this.max.y);
+		return new Point(this.min.x, this.max.y);
 	},
 
 	// @method getTopRight(): Point
 	// Returns the top-right point of the bounds.
 	getTopRight: function () { // -> Point
-		return new L.Point(this.max.x, this.min.y);
+		return new Point(this.max.x, this.min.y);
 	},
 
 	// @method getSize(): Point
@@ -85,13 +87,13 @@ L.Bounds.prototype = {
 	contains: function (obj) {
 		var min, max;
 
-		if (typeof obj[0] === 'number' || obj instanceof L.Point) {
-			obj = L.point(obj);
+		if (typeof obj[0] === 'number' || obj instanceof Point) {
+			obj = toPoint(obj);
 		} else {
-			obj = L.bounds(obj);
+			obj = toBounds(obj);
 		}
 
-		if (obj instanceof L.Bounds) {
+		if (obj instanceof Bounds) {
 			min = obj.min;
 			max = obj.max;
 		} else {
@@ -108,7 +110,7 @@ L.Bounds.prototype = {
 	// Returns `true` if the rectangle intersects the given bounds. Two bounds
 	// intersect if they have at least one point in common.
 	intersects: function (bounds) { // (Bounds) -> Boolean
-		bounds = L.bounds(bounds);
+		bounds = toBounds(bounds);
 
 		var min = this.min,
 		    max = this.max,
@@ -124,7 +126,7 @@ L.Bounds.prototype = {
 	// Returns `true` if the rectangle overlaps the given bounds. Two bounds
 	// overlap if their intersection is an area.
 	overlaps: function (bounds) { // (Bounds) -> Boolean
-		bounds = L.bounds(bounds);
+		bounds = toBounds(bounds);
 
 		var min = this.min,
 		    max = this.max,
@@ -147,9 +149,9 @@ L.Bounds.prototype = {
 // @alternative
 // @factory L.bounds(points: Point[])
 // Creates a Bounds object from the points it contains
-L.bounds = function (a, b) {
-	if (!a || a instanceof L.Bounds) {
+export function toBounds(a, b) {
+	if (!a || a instanceof Bounds) {
 		return a;
 	}
-	return new L.Bounds(a, b);
+	return new Bounds(a, b);
 };

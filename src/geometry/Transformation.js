@@ -1,3 +1,5 @@
+import {Point} from './Point';
+
 /*
  * @class Transformation
  * @aka L.Transformation
@@ -19,14 +21,14 @@
 
 // factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
 // Creates a `Transformation` object with the given coefficients.
-L.Transformation = function (a, b, c, d) {
+export function Transformation(a, b, c, d) {
 	this._a = a;
 	this._b = b;
 	this._c = c;
 	this._d = d;
 };
 
-L.Transformation.prototype = {
+Transformation.prototype = {
 	// @method transform(point: Point, scale?: Number): Point
 	// Returns a transformed point, optionally multiplied by the given scale.
 	// Only accepts actual `L.Point` instances, not arrays.
@@ -47,7 +49,7 @@ L.Transformation.prototype = {
 	// by the given scale. Only accepts actual `L.Point` instances, not arrays.
 	untransform: function (point, scale) {
 		scale = scale || 1;
-		return new L.Point(
+		return new Point(
 		        (point.x / scale - this._b) / this._a,
 		        (point.y / scale - this._d) / this._c);
 	}
