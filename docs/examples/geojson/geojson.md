@@ -35,7 +35,7 @@ title: Using GeoJSON with Leaflet
 
 <p>GeoJSON objects are added to the map through a <a href="http://leafletjs.com/reference.html#geojson">GeoJSON layer</a>. To create it and add it to a map, we can use the following code:</p>
 
-<pre><code>L.geoJson(geojsonFeature).addTo(map);</code></pre>
+<pre><code>L.geoJSON(geojsonFeature).addTo(map);</code></pre>
 
 <p>GeoJSON objects may also be passed as an array of valid GeoJSON objects.</p>
 
@@ -50,7 +50,7 @@ title: Using GeoJSON with Leaflet
 
 <p>Alternatively, we could create an empty GeoJSON layer and assign it to a variable so that we can add more features to it later.</p>
 
-<pre><code>var myLayer = L.geoJson().addTo(map);
+<pre><code>var myLayer = L.geoJSON().addTo(map);
 myLayer.addData(geojsonFeature);
 </code></pre>
 
@@ -74,7 +74,7 @@ var myStyle = {
 	"opacity": 0.65
 };
 
-L.geoJson(myLines, {
+L.geoJSON(myLines, {
 	style: myStyle
 }).addTo(map);</code></pre>
 
@@ -108,7 +108,7 @@ L.geoJson(myLines, {
 	}
 }];
 
-L.geoJson(states, {
+L.geoJSON(states, {
 	style: function(feature) {
 		switch (feature.properties.party) {
 			case 'Republican': return {color: "#ff0000"};
@@ -132,7 +132,7 @@ L.geoJson(states, {
 	fillOpacity: 0.8
 };
 
-L.geoJson(someGeojsonFeature, {
+L.geoJSON(someGeojsonFeature, {
 	pointToLayer: function (feature, latlng) {
 		return L.circleMarker(latlng, geojsonMarkerOptions);
 	}
@@ -164,7 +164,7 @@ var geojsonFeature = {
 	}
 };
 
-L.geoJson(geojsonFeature, {
+L.geoJSON(geojsonFeature, {
 	onEachFeature: onEachFeature
 }).addTo(map);</code></pre>
 
@@ -196,7 +196,7 @@ L.geoJson(geojsonFeature, {
 	}
 }];
 
-L.geoJson(someFeatures, {
+L.geoJSON(someFeatures, {
 	filter: function(feature, layer) {
 		return feature.properties.show_on_map;
 	}
