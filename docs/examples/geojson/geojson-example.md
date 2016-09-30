@@ -33,7 +33,7 @@ title: GeoJSON tutorial
 		layer.bindPopup(popupContent);
 	}
 
-	L.geoJson([bicycleRental, campus], {
+	L.geoJSON([bicycleRental, campus], {
 
 		style: function (feature) {
 			return feature.properties && feature.properties.style;
@@ -53,7 +53,7 @@ title: GeoJSON tutorial
 		}
 	}).addTo(map);
 
-	L.geoJson(freeBus, {
+	L.geoJSON(freeBus, {
 
 		filter: function (feature, layer) {
 			if (feature.properties) {
@@ -66,7 +66,7 @@ title: GeoJSON tutorial
 		onEachFeature: onEachFeature
 	}).addTo(map);
 
-	var coorsLayer = L.geoJson(coorsField, {
+	var coorsLayer = L.geoJSON(coorsField, {
 
 		pointToLayer: function (feature, latlng) {
 			return L.marker(latlng, {icon: baseballIcon});
