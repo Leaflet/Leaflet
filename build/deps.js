@@ -232,20 +232,6 @@ var deps = {
 		src: ['control/Control.js',
 		      'control/Control.Layers.js'],
 		desc: 'Layer Switcher control.'
-	},
-
-	AnimationPan: {
-		src: [
-			],
-		heading: 'Animation',
-		desc: 'Core panning animation support.'
-	},
-
-	AnimationZoom: {
-		src: [
-			'map/anim/Map.ZoomAnimation.js'
-			],
-		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
 	}
 };
 
