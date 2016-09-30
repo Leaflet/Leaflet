@@ -1,5 +1,5 @@
 ---
 layout: redirected
 sitemap: false
-redirect_to:  choropleth/
+redirect_to:  quick-start/example.html
 ---

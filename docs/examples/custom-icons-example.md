@@ -1,5 +1,5 @@
 ---
 layout: redirected
 sitemap: false
-redirect_to:  mobile/
+redirect_to:  custom-icons/example.html
 ---

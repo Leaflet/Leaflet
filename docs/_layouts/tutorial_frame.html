@@ -12,17 +12,19 @@
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
 	<script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
 
+{% unless page.customMapContainer == "true" %}
 	<style>
 		#map {
-			width:600px;
+			width: 600px;
 			height: 400px;
 		}
 	</style>
+{% endunless %}
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 </head>
 <body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
 
-<div id='map'></div>
+{% unless page.customMapContainer == "true" %}<div id='map'></div>{% endunless %}
 
 {{ content }}
 
