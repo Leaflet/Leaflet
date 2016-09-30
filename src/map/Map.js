@@ -7,6 +7,7 @@ import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
+import {isAny3D, isMobileOpera, isTouch, isRetina, isIELT9, isSafari} from '../core/Browser';
 
 /*
  * @class Map
@@ -148,7 +149,7 @@ export var Map = Evented.extend({
 		this.callInitHooks();
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
-		this._zoomAnimated = L.DomUtil.TRANSITION && L.Browser.any3d && !L.Browser.mobileOpera &&
+		this._zoomAnimated = L.DomUtil.TRANSITION && isAny3D && !isMobileOpera &&
 				this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
@@ -213,14 +214,14 @@ export var Map = Evented.extend({
 	// @method zoomIn(delta?: Number, options?: Zoom options): this
 	// Increases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
 	zoomIn: function (delta, options) {
-		delta = delta || (L.Browser.any3d ? this.options.zoomDelta : 1);
+		delta = delta || (isAny3D ? this.options.zoomDelta : 1);
 		return this.setZoom(this._zoom + delta, options);
 	},
 
 	// @method zoomOut(delta?: Number, options?: Zoom options): this
 	// Decreases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
 	zoomOut: function (delta, options) {
-		delta = delta || (L.Browser.any3d ? this.options.zoomDelta : 1);
+		delta = delta || (isAny3D ? this.options.zoomDelta : 1);
 		return this.setZoom(this._zoom - delta, options);
 	},
 
@@ -343,7 +344,7 @@ export var Map = Evented.extend({
 	flyTo: function (targetCenter, targetZoom, options) {
 
 		options = options || {};
-		if (options.animate === false || !L.Browser.any3d) {
+		if (options.animate === false || !isAny3D) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
@@ -794,8 +795,8 @@ export var Map = Evented.extend({
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
 		    size = this.getSize().subtract(padding),
-		    boundsSize = L.bounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
-		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
+		    boundsSize = toBounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
+		    snap = isAny3D ? this.options.zoomSnap : 1;
 
 		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
 		zoom = this.getScaleZoom(scale, zoom);
@@ -1021,13 +1022,13 @@ export var Map = Evented.extend({
 	_initLayout: function () {
 		var container = this._container;
 
-		this._fadeAnimated = this.options.fadeAnimation && L.Browser.any3d;
+		this._fadeAnimated = this.options.fadeAnimation && isAny3D;
 
 		L.DomUtil.addClass(container, 'leaflet-container' +
-			(L.Browser.touch ? ' leaflet-touch' : '') +
-			(L.Browser.retina ? ' leaflet-retina' : '') +
-			(L.Browser.ielt9 ? ' leaflet-oldie' : '') +
-			(L.Browser.safari ? ' leaflet-safari' : '') +
+			(isTouch ? ' leaflet-touch' : '') +
+			(isRetina ? ' leaflet-retina' : '') +
+			(isIELT9 ? ' leaflet-oldie' : '') +
+			(isSafari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
 		var position = L.DomUtil.getStyle(container, 'position');
@@ -1233,7 +1234,7 @@ export var Map = Evented.extend({
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);
 		}
 
-		if (L.Browser.any3d && this.options.transform3DLimit) {
+		if (isAny3D && this.options.transform3DLimit) {
 			this[onOff]('moveend', this._onMoveEnd);
 		}
 	},
@@ -1472,7 +1473,7 @@ export var Map = Evented.extend({
 	_limitZoom: function (zoom) {
 		var min = this.getMinZoom(),
 		    max = this.getMaxZoom(),
-		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
+		    snap = isAny3D ? this.options.zoomSnap : 1;
 		if (snap) {
 			zoom = Math.round(zoom / snap) * snap;
 		}
