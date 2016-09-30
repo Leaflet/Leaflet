@@ -19,7 +19,9 @@ var deps = {
 		      'geo/crs/CRS.EPSG3857.js',
 		      'geo/crs/CRS.EPSG4326.js',
 		      'map/Map.js',
-		      'layer/Layer.js'
+		      'layer/Layer.js',
+		      'dom/DomEvent.js',
+		      'dom/PosAnimation.js'
 		      ],
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
@@ -234,9 +236,6 @@ var deps = {
 
 	AnimationPan: {
 		src: [
-			'dom/DomEvent.js',
-			'dom/PosAnimation.js',
-			'map/anim/Map.PanAnimation.js'
 			],
 		heading: 'Animation',
 		desc: 'Core panning animation support.'
@@ -246,7 +245,6 @@ var deps = {
 		src: [
 			'map/anim/Map.ZoomAnimation.js'
 			],
-		deps: ['AnimationPan'],
 		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
 	}
 };
