@@ -44,6 +44,6 @@ L.Icon.Default = L.Icon.extend({
 		document.body.removeChild(el);
 
 		return path.indexOf('url') === 0 ?
-			path.replace(/^url\([\"\']?/, '').replace(/[\"\']?\)$/, '') : '';
+			path.replace(/^url\([\"\']?/, '').replace(/marker-icon\.png[\"\']?\)$/, '') : '';
 	}
 });
