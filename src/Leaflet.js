@@ -1,29 +1,14 @@
 
-var L = {
-	version: '1.0.1'
-};
+import * as Util from './core/Util';
+import {extend, bind, stamp, setOptions} from './core/Util';
 
-function expose() {
-	var oldL = window.L;
+export var version = '1.0.1';
+export {Map, map} from './map/Map';
+export {Util, extend, bind, stamp, setOptions};
 
-	L.noConflict = function () {
-		window.L = oldL;
-		return this;
-	};
+var oldL = window.L;
 
-	window.L = L;
-}
-
-// define Leaflet for Node module pattern loaders, including Browserify
-if (typeof module === 'object' && typeof module.exports === 'object') {
-	module.exports = L;
-
-// define Leaflet as an AMD module
-} else if (typeof define === 'function' && define.amd) {
-	define(L);
-}
-
-// define Leaflet as a global L variable, saving the original L to restore later if needed
-if (typeof window !== 'undefined') {
-	expose();
+export function noConflict() {
+	window.L = oldL;
+	return this;
 }

@@ -1,3 +1,8 @@
+import {Evented} from '../core/Events';
+import {
+	bind, extend, setOptions, stamp, indexOf,
+	requestAnimFrame, cancelAnimFrame} from '../core/Util';
+
 /*
  * @class Map
  * @aka L.Map
@@ -17,7 +22,7 @@
  *
  */
 
-L.Map = L.Evented.extend({
+export var Map = Evented.extend({
 
 	options: {
 		// @section Map State Options
@@ -108,13 +113,13 @@ L.Map = L.Evented.extend({
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
-		options = L.setOptions(this, options);
+		options = setOptions(this, options);
 
 		this._initContainer(id);
 		this._initLayout();
 
 		// hack for https://github.com/Leaflet/Leaflet/issues/1980
-		this._onResize = L.bind(this._onResize, this);
+		this._onResize = bind(this._onResize, this);
 
 		this._initEvents();
 
@@ -168,8 +173,8 @@ L.Map = L.Evented.extend({
 		if (this._loaded && !options.reset && options !== true) {
 
 			if (options.animate !== undefined) {
-				options.zoom = L.extend({animate: options.animate}, options.zoom);
-				options.pan = L.extend({animate: options.animate, duration: options.duration}, options.pan);
+				options.zoom = extend({animate: options.animate}, options.zoom);
+				options.pan = extend({animate: options.animate, duration: options.duration}, options.pan);
 			}
 
 			// try animating pan or zoom
@@ -388,7 +393,7 @@ L.Map = L.Evented.extend({
 			    s = easeOut(t) * S;
 
 			if (t <= 1) {
-				this._flyToFrame = L.Util.requestAnimFrame(frame, this);
+				this._flyToFrame = requestAnimFrame(frame, this);
 
 				this._move(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
@@ -492,7 +497,7 @@ L.Map = L.Evented.extend({
 	invalidateSize: function (options) {
 		if (!this._loaded) { return this; }
 
-		options = L.extend({
+		options = extend({
 			animate: false,
 			pan: true
 		}, options === true ? {animate: true} : options);
@@ -520,7 +525,7 @@ L.Map = L.Evented.extend({
 
 			if (options.debounceMoveend) {
 				clearTimeout(this._sizeTimer);
-				this._sizeTimer = setTimeout(L.bind(this.fire, this, 'moveend'), 200);
+				this._sizeTimer = setTimeout(bind(this.fire, this, 'moveend'), 200);
 			} else {
 				this.fire('moveend');
 			}
@@ -557,7 +562,7 @@ L.Map = L.Evented.extend({
 	// See `Locate options` for more details.
 	locate: function (options) {
 
-		options = this._locateOptions = L.extend({
+		options = this._locateOptions = extend({
 			timeout: 10000,
 			watch: false
 			// setView: false
@@ -574,8 +579,8 @@ L.Map = L.Evented.extend({
 			return this;
 		}
 
-		var onResponse = L.bind(this._handleGeolocationResponse, this),
-		    onError = L.bind(this._handleGeolocationError, this);
+		var onResponse = bind(this._handleGeolocationResponse, this),
+		    onError = bind(this._handleGeolocationError, this);
 
 		if (options.watch) {
 			this._locationWatchId =
@@ -995,7 +1000,7 @@ L.Map = L.Evented.extend({
 		}
 
 		L.DomEvent.addListener(container, 'scroll', this._onScroll, this);
-		this._containerId = L.Util.stamp(container);
+		this._containerId = stamp(container);
 	},
 
 	_initLayout: function () {
@@ -1147,7 +1152,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_stop: function () {
-		L.Util.cancelAnimFrame(this._flyToFrame);
+		cancelAnimFrame(this._flyToFrame);
 		if (this._panAnim) {
 			this._panAnim.stop();
 		}
@@ -1181,7 +1186,7 @@ L.Map = L.Evented.extend({
 		if (!L.DomEvent) { return; }
 
 		this._targets = {};
-		this._targets[L.stamp(this._container)] = this;
+		this._targets[stamp(this._container)] = this;
 
 		var onOff = remove ? 'off' : 'on';
 
@@ -1219,8 +1224,8 @@ L.Map = L.Evented.extend({
 	},
 
 	_onResize: function () {
-		L.Util.cancelAnimFrame(this._resizeRequest);
-		this._resizeRequest = L.Util.requestAnimFrame(
+		cancelAnimFrame(this._resizeRequest);
+		this._resizeRequest = requestAnimFrame(
 		        function () { this.invalidateSize({debounceMoveend: true}); }, this);
 	},
 
@@ -1246,7 +1251,7 @@ L.Map = L.Evented.extend({
 		    dragging = false;
 
 		while (src) {
-			target = this._targets[L.stamp(src)];
+			target = this._targets[stamp(src)];
 			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
@@ -1287,7 +1292,7 @@ L.Map = L.Evented.extend({
 			// Fired before mouse click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
-			var synth = L.Util.extend({}, e);
+			var synth = extend({}, e);
 			synth.type = 'preclick';
 			this._fireDOMEvent(synth, synth.type, targets);
 		}
@@ -1319,7 +1324,7 @@ L.Map = L.Evented.extend({
 		for (var i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.nonBubblingEvents && L.Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
+				(targets[i].options.nonBubblingEvents && indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
 		}
 	},
 
@@ -1521,7 +1526,7 @@ L.Map = L.Evented.extend({
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		L.Util.requestAnimFrame(function () {
+		requestAnimFrame(function () {
 			this
 			    ._moveStart(true)
 			    ._animateZoom(center, zoom, true);
@@ -1550,7 +1555,7 @@ L.Map = L.Evented.extend({
 		});
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(L.bind(this._onZoomTransitionEnd, this), 250);
+		setTimeout(bind(this._onZoomTransitionEnd, this), 250);
 	},
 
 	_onZoomTransitionEnd: function () {
@@ -1563,7 +1568,7 @@ L.Map = L.Evented.extend({
 		this._move(this._animateToCenter, this._animateToZoom);
 
 		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
-		L.Util.requestAnimFrame(function () {
+		requestAnimFrame(function () {
 			this._moveEnd(true);
 		}, this);
 	}
@@ -1579,6 +1584,6 @@ L.Map = L.Evented.extend({
 // @factory L.map(el: HTMLElement, options?: Map options)
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `Map options`.
-L.map = function (id, options) {
+export function map (id, options) {
 	return new L.Map(id, options);
 };
