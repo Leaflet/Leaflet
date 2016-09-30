@@ -7,7 +7,7 @@ title: Layer Groups and Layers Control
 
 This tutorial will show you how to group several layers into one, and how to use the layers control to allow users to easily switch different layers on your map.
 
-{% include frame.html url="layers-control-example.html" %}
+{% include frame.html url="example.html" %}
 
 ### Layer Groups
 
@@ -58,5 +58,5 @@ Note that we added `grayscale` and `cities` layers to the map but didn't add `st
 
 Also note that when using multiple base layers, only one of them should be added to the map at instantiation, but all of them should be present in the base layers object when creating the layers control.
 
-Now let's [view the result on a separate page &rarr;](layers-control-example.html)
+Now let's [view the result on a separate page &rarr;](example.html)
 

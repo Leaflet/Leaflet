@@ -1,5 +1,5 @@
 ---
 layout: redirected
 sitemap: false
-redirect_to:  layers-control/layers-control.html
+redirect_to:  layers-control/
 ---

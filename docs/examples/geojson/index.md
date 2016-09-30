@@ -7,7 +7,7 @@ title: Using GeoJSON with Leaflet
 
 <p>GeoJSON is becoming a very popular data format among many GIS technologies and services — it's simple, lightweight, straightforward, and Leaflet is quite good at handling it. In this example, you'll learn how to create and interact with map vectors created from <a href="http://geojson.org/">GeoJSON</a> objects.</p>
 
-{% include frame.html url="geojson-example.html" %}
+{% include frame.html url="example.html" %}
 
 <h3>About GeoJSON</h3>
 
@@ -202,4 +202,4 @@ L.geoJSON(someFeatures, {
 	}
 }).addTo(map);</code></pre>
 
-<p>View the <a href="geojson-example.html">example page</a> to see in detail what is possible with the GeoJSON layer.</p>
+<p>View the <a href="example.html">example page</a> to see in detail what is possible with the GeoJSON layer.</p>

@@ -1,5 +1,5 @@
 ---
 layout: redirected
 sitemap: false
-redirect_to:  custom-icons/custom-icons.html
+redirect_to:  custom-icons/
 ---

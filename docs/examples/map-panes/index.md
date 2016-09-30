@@ -51,7 +51,7 @@ Labels on top of basemap
 
 If we create a Leaflet map with these two tile layers, any marker or polygon will show on top of both, but having the labels on top [looks much nicer](http://blog.cartodb.com/let-your-labels-shine/). How can we do that?
 
-{% include frame.html url="map-panes-example.html" %}
+{% include frame.html url="example.html" %}
 
 ## Custom pane
 
@@ -99,7 +99,7 @@ Finally, add some interaction to each feature on the GeoJSON layer:
     map.fitBounds(geojson.getBounds());
 
 
-Now the [example map](map-panes-example.html) is complete!
+Now the [example map](example.html) is complete!
 
 
 

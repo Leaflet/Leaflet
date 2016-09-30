@@ -7,7 +7,7 @@ title: Quick Start Guide
 
 This step-by-step guide will quickly get you started on Leaflet basics, including setting up a Leaflet map, working with markers, polylines and popups, and dealing with events.
 
-{% include frame.html url="quick-start-example.html" %}
+{% include frame.html url="example.html" %}
 
 ### Preparing your page
 
@@ -35,7 +35,7 @@ Now you're ready to initialize the map and do some stuff with it.
 ### Setting up the map
 
 
-{% include frame.html url="quick-start-basic.html" %}
+{% include frame.html url="example-basic.html" %}
 
 Let's create a map of the center of London with pretty Mapbox Streets tiles. First we'll initialize the map and set its view to our chosen geographical coordinates and a zoom level:
 
@@ -61,7 +61,7 @@ It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enf
 
 ### Markers, circles and polygons
 
-{% include frame.html url="quick-start-overlays.html" %}
+{% include frame.html url="example-overlays.html" %}
 
 
 Besides tile layers, you can easily add other things to your map, including markers, polylines, polygons, circles, and popups. Let's add a marker:
@@ -88,7 +88,7 @@ Adding a polygon is as easy:
 
 ### Working with popups
 
-{% include frame.html url="quick-start-popups.html" %}
+{% include frame.html url="example-popups.html" %}
 
 Popups are usually used when you want to attach some information to a particular object on a map. Leaflet has a very handy shortcut for this:
 
@@ -133,7 +133,7 @@ Let's improve our example by using a popup instead of an alert:
 
 	mymap.on('click', onMapClick);
 
-Try clicking on the map and you will see the coordinates in a popup. <a target="_blank" href="quick-start-example.html">View the full example &rarr;</a>
+Try clicking on the map and you will see the coordinates in a popup. <a target="_blank" href="example.html">View the full example &rarr;</a>
 
 Now you've learned Leaflet basics and can start building map apps straight away! Don't forget to take a look at the detailed <a href="../../reference.html">documentation</a> or <a href="../../examples.html">other examples</a>.
 

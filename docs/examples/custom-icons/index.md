@@ -7,7 +7,7 @@ title: Markers With Custom Icons
 
 In this tutorial, you'll learn how to easily define your own icons for use by the markers you put on the map.
 
-{% include frame.html url="custom-icons-example.html" %}
+{% include frame.html url="example.html" %}
 
 ### Preparing the images
 
@@ -41,7 +41,7 @@ Now putting a marker with this icon on a map is easy:
 
 	L.marker([51.5, -0.09], {icon: greenIcon}).addTo(map);
 
-{% include frame.html url="custom-icons-one-icon.html" %}
+{% include frame.html url="example-one-icon.html" %}
 
 ### Defining an icon class
 
@@ -76,4 +76,4 @@ You can do the same with your classes too. OK, lets finally put some markers wit
 	L.marker([51.495, -0.083], {icon: redIcon}).addTo(map).bindPopup("I am a red leaf.");
 	L.marker([51.49, -0.1], {icon: orangeIcon}).addTo(map).bindPopup("I am an orange leaf.");
 
-That's it. Now take a look at the [full example](custom-icons-example.html), the [L.Icon docs](../../reference.html#icon), or browse [other examples](../../examples.html).
+That's it. Now take a look at the [full example](example.html), the [`L.Icon` docs](../../reference.html#icon), or browse [other examples](../../examples.html).

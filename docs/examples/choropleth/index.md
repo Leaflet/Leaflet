@@ -5,15 +5,15 @@ title: Interactive Choropleth Map
 
 ## Interactive Choropleth Map
 
-This is a case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](geojson.html) and some [custom controls](../../reference.html#icontrol) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
+This is a case study of creating a colorful interactive [choropleth map](http://en.wikipedia.org/wiki/Choropleth_map) of US States Population Density with the help of [GeoJSON](../geojson/) and some [custom controls](../../reference.html#control) (that will hopefully convince all the remaining major news and government websites that do not use Leaflet yet to start doing so).
 
 The tutorial was inspired by the [Texas Tribune US Senate Runoff Results map](http://www.texastribune.org/library/data/us-senate-runoff-results-map/) (also powered by Leaflet), created by [Ryan Murphy](http://www.texastribune.org/about/staff/ryan-murphy/).
 
-{% include frame.html url="choropleth-example.html" width=816 height=516 %}
+{% include frame.html url="example.html" width=816 height=516 %}
 
 ### Data Source
 
-We'll be creating a visualization of population density per US state. As the amount of data (state shapes and the density value for each state) is not very big, the most convenient and simple way to store and then display it is [GeoJSON](../geojson/geojson.html).
+We'll be creating a visualization of population density per US state. As the amount of data (state shapes and the density value for each state) is not very big, the most convenient and simple way to store and then display it is [GeoJSON](../geojson/).
 
 Each feature of our GeoJSON data ([us-states.js](us-states.js)) will look like this:
 
@@ -43,7 +43,7 @@ Let's display our states data on a map with a custom Mapbox style for nice grays
 
 	L.geoJson(statesData).addTo(map);
 
-{% include frame.html url="choropleth-basic.html" %}
+{% include frame.html url="example-basic.html" %}
 
 
 ### Adding Some Color
@@ -78,7 +78,7 @@ Next we define a styling function for our GeoJSON layer so that its `fillColor` 
 
 Looks much better now!
 
-{% include frame.html url="choropleth-color.html" %}
+{% include frame.html url="example-color.html" %}
 
 
 ### Adding Interaction
@@ -227,6 +227,6 @@ CSS styles for the control (we also reuse the `info` class defined earlier):
 		opacity: 0.7;
 	}
 
-Enjoy the result on the top of this page, or on a [separate page](choropleth-example.html).
+Enjoy the result on the top of this page, or on a [separate page](example.html).
 
 
