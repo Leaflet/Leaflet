@@ -78,7 +78,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 	},
 
-	// @function addData( <GeoJSON> data ): Layer
+	// @method addData( <GeoJSON> data ): Layer
 	// Adds a GeoJSON object to the layer.
 	addData: function (geojson) {
 		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
@@ -115,7 +115,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		return this.addLayer(layer);
 	},
 
-	// @function resetStyle( <Path> layer ): Layer
+	// @method resetStyle( <Path> layer ): Layer
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
 	resetStyle: function (layer) {
 		// reset any custom styles
@@ -124,7 +124,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		return this;
 	},
 
-	// @function setStyle( <Function> style ): Layer
+	// @method setStyle( <Function> style ): Layer
 	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle: function (style) {
 		return this.eachLayer(function (layer) {
