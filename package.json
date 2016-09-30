@@ -29,7 +29,7 @@
     "test": "jake test",
     "build": "jake build",
     "release": "./build/publish.sh",
-    "rollup": "rollup src/index.js -f umd -n L > bundle.js"
+    "rollup": "rollup src/Leaflet.js -f umd -n L > bundle.js"
   },
   "eslintConfig": {
     "root": true,
