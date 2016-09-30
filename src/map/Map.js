@@ -19,6 +19,15 @@ import {
 	safari as isSafari
 } from '../core/Browser';
 
+import {
+	on as onDOMEvent,
+	off as offDOMEvent,
+	isExternalTarget,
+	getMousePosition,
+	preventDefault,
+	skipped as skippedDOMEvent
+} from '../dom/DomEvent';
+
 /*
  * @class Map
  * @aka L.Map
@@ -166,7 +175,7 @@ export var Map = Evented.extend({
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
 		if (this._zoomAnimated) {
 			this._createAnimProxy();
-			L.DomEvent.on(this._proxy, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+			onDOMEvent(this._proxy, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
 
 		this._addLayers(this.options.layers);
@@ -986,7 +995,7 @@ export var Map = Evented.extend({
 	// Given a MouseEvent object, returns the pixel coordinate relative to the
 	// map container where the event took place.
 	mouseEventToContainerPoint: function (e) {
-		return L.DomEvent.getMousePosition(e, this._container);
+		return getMousePosition(e, this._container);
 	},
 
 	// @method mouseEventToLayerPoint(ev: MouseEvent): Point
@@ -1015,7 +1024,7 @@ export var Map = Evented.extend({
 			throw new Error('Map container is already initialized.');
 		}
 
-		L.DomEvent.addListener(container, 'scroll', this._onScroll, this);
+		onDOMEvent(container, 'scroll', this._onScroll, this);
 		this._containerId = stamp(container);
 	},
 
@@ -1199,12 +1208,10 @@ export var Map = Evented.extend({
 
 	// @section Interaction events
 	_initEvents: function (remove) {
-		if (!L.DomEvent) { return; }
-
 		this._targets = {};
 		this._targets[stamp(this._container)] = this;
 
-		var onOff = remove ? 'off' : 'on';
+		var onOff = remove ? offDOMEvent : onDOMEvent;
 
 		// @event click: MouseEvent
 		// Fired when the user clicks (or taps) the map.
@@ -1227,15 +1234,15 @@ export var Map = Evented.extend({
 		// for a second (also called long press).
 		// @event keypress: KeyboardEvent
 		// Fired when the user presses a key from the keyboard while the map is focused.
-		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
+		onOff(this._container, 'click dblclick mousedown mouseup ' +
 			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
-			L.DomEvent[onOff](window, 'resize', this._onResize, this);
+			onOff(window, 'resize', this._onResize, this);
 		}
 
 		if (isAny3D && this.options.transform3DLimit) {
-			this[onOff]('moveend', this._onMoveEnd);
+			(remove ? this.off : this.on).call(this, 'moveend', this._onMoveEnd);
 		}
 	},
 
@@ -1274,21 +1281,21 @@ export var Map = Evented.extend({
 				break;
 			}
 			if (target && target.listens(type, true)) {
-				if (isHover && !L.DomEvent._isExternalTarget(src, e)) { break; }
+				if (isHover && !isExternalTarget(src, e)) { break; }
 				targets.push(target);
 				if (isHover) { break; }
 			}
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && L.DomEvent._isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && isExternalTarget(src, e)) {
 			targets = [this];
 		}
 		return targets;
 	},
 
 	_handleDOMEvent: function (e) {
-		if (!this._loaded || L.DomEvent._skipped(e)) { return; }
+		if (!this._loaded || skippedDOMEvent(e)) { return; }
 
 		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
@@ -1322,7 +1329,7 @@ export var Map = Evented.extend({
 
 		var target = targets[0];
 		if (type === 'contextmenu' && target.listens(type, true)) {
-			L.DomEvent.preventDefault(e);
+			preventDefault(e);
 		}
 
 		var data = {
