@@ -1,6 +1,10 @@
 
 export var version = '1.0.1';
 
+import {Evented} from './core/Events';
+export {Evented};
+export var Mixin = {Events: Evented.prototype};
+
 import * as Util from './core/Util';
 import {extend, bind, stamp, setOptions} from './core/Util';
 export {Util, extend, bind, stamp, setOptions};

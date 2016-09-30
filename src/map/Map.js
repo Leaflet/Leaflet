@@ -1,7 +1,9 @@
-import {Evented} from '../core/Events';
 import {
 	bind, extend, setOptions, stamp, indexOf,
-	requestAnimFrame, cancelAnimFrame} from '../core/Util';
+	requestAnimFrame, cancelAnimFrame
+} from '../core/Util';
+
+import {Evented} from '../core/Events';
 import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
 import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
@@ -1591,5 +1593,5 @@ export var Map = Evented.extend({
 // Instantiates a map object given an instance of a `<div>` HTML element
 // and optionally an object literal with `Map options`.
 export function createMap(id, options) {
-	return new L.Map(id, options);
+	return new Map(id, options);
 };

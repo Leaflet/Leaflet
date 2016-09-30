@@ -262,7 +262,7 @@ export var Evented = Class.extend({
 	}
 });
 
-var proto = L.Evented.prototype;
+var proto = Evented.prototype;
 
 // aliases; we should ditch those eventually
 
@@ -288,5 +288,3 @@ proto.fireEvent = proto.fire;
 // @method hasEventListeners(…): Boolean
 // Alias to [`listens(…)`](#evented-listens)
 proto.hasEventListeners = proto.listens;
-
-export var Mixin = {Events: proto};

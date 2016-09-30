@@ -1,5 +1,6 @@
 import {isArray, formatNum} from '../core/Util';
-import {Earth} from '../geo/crs/CRS.Earth';
+import {Earth} from './crs/CRS.Earth';
+import {toLatLngBounds} from './LatLngBounds';
 
 /* @class LatLng
  * @aka L.LatLng
@@ -83,7 +84,7 @@ LatLng.prototype = {
 		var latAccuracy = 180 * sizeInMeters / 40075017,
 		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
-		return L.latLngBounds(
+		return toLatLngBounds(
 		        [this.lat - latAccuracy, this.lng - lngAccuracy],
 		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
 	},
