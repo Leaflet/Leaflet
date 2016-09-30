@@ -8,8 +8,9 @@ export {Util, extend, bind, stamp, setOptions};
 export {Map, createMap as map} from './map/Map';
 
 import {CRS} from './geo/crs/CRS';
-import {EPSG3857} from './geo/crs/CRS.EPSG3857';
+import {EPSG3857, EPSG900913} from './geo/crs/CRS.EPSG3857';
 CRS.EPSG3857 = EPSG3857;
+CRS.EPSG900913 = EPSG900913;
 export {CRS};
 
 export {Point, toPoint as point} from './geometry/Point';

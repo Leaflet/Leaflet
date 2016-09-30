@@ -5,6 +5,8 @@ import {
 import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
 import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
+import {LatLng, toLatLng} from '../geo/LatLng';
+import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
 
 /*
  * @class Map
@@ -135,7 +137,7 @@ export var Map = Evented.extend({
 		}
 
 		if (options.center && options.zoom !== undefined) {
-			this.setView(L.latLng(options.center), options.zoom, {reset: true});
+			this.setView(toLatLng(options.center), options.zoom, {reset: true});
 		}
 
 		this._handlers = [];
@@ -168,7 +170,7 @@ export var Map = Evented.extend({
 	setView: function (center, zoom, options) {
 
 		zoom = zoom === undefined ? this._zoom : this._limitZoom(zoom);
-		center = this._limitCenter(L.latLng(center), zoom, this.options.maxBounds);
+		center = this._limitCenter(toLatLng(center), zoom, this.options.maxBounds);
 		options = options || {};
 
 		this._stop();
@@ -242,7 +244,7 @@ export var Map = Evented.extend({
 	_getBoundsCenterZoom: function (bounds, options) {
 
 		options = options || {};
-		bounds = bounds.getBounds ? bounds.getBounds() : L.latLngBounds(bounds);
+		bounds = bounds.getBounds ? bounds.getBounds() : toLatLngBounds(bounds);
 
 		var paddingTL = toPoint(options.paddingTopLeft || options.padding || [0, 0]),
 		    paddingBR = toPoint(options.paddingBottomRight || options.padding || [0, 0]),
@@ -268,7 +270,7 @@ export var Map = Evented.extend({
 	// maximum zoom level possible.
 	fitBounds: function (bounds, options) {
 
-		bounds = L.latLngBounds(bounds);
+		bounds = toLatLngBounds(bounds);
 
 		if (!bounds.isValid()) {
 			throw new Error('Bounds are not valid.');
@@ -352,7 +354,7 @@ export var Map = Evented.extend({
 		    size = this.getSize(),
 		    startZoom = this._zoom;
 
-		targetCenter = L.latLng(targetCenter);
+		targetCenter = toLatLng(targetCenter);
 		targetZoom = targetZoom === undefined ? startZoom : targetZoom;
 
 		var w0 = Math.max(size.x, size.y),
@@ -427,7 +429,7 @@ export var Map = Evented.extend({
 	// @method setMaxBounds(bounds: Bounds): this
 	// Restricts the map view to the given bounds (see the [maxBounds](#map-maxbounds) option).
 	setMaxBounds: function (bounds) {
-		bounds = L.latLngBounds(bounds);
+		bounds = toLatLngBounds(bounds);
 
 		if (!bounds.isValid()) {
 			this.options.maxBounds = null;
@@ -474,7 +476,7 @@ export var Map = Evented.extend({
 	panInsideBounds: function (bounds, options) {
 		this._enforcingBounds = true;
 		var center = this.getCenter(),
-		    newCenter = this._limitCenter(center, this._zoom, L.latLngBounds(bounds));
+		    newCenter = this._limitCenter(center, this._zoom, toLatLngBounds(bounds));
 
 		if (!center.equals(newCenter)) {
 			this.panTo(newCenter, options);
@@ -630,7 +632,7 @@ export var Map = Evented.extend({
 	_handleGeolocationResponse: function (pos) {
 		var lat = pos.coords.latitude,
 		    lng = pos.coords.longitude,
-		    latlng = new L.LatLng(lat, lng),
+		    latlng = new LatLng(lat, lng),
 		    bounds = latlng.toBounds(pos.coords.accuracy),
 		    options = this._locateOptions;
 
@@ -760,7 +762,7 @@ export var Map = Evented.extend({
 		    sw = this.unproject(bounds.getBottomLeft()),
 		    ne = this.unproject(bounds.getTopRight());
 
-		return new L.LatLngBounds(sw, ne);
+		return new LatLngBounds(sw, ne);
 	},
 
 	// @method getMinZoom(): Number
@@ -783,7 +785,7 @@ export var Map = Evented.extend({
 	// instead returns the minimum zoom level on which the map view fits into
 	// the given bounds in its entirety.
 	getBoundsZoom: function (bounds, inside, padding) { // (LatLngBounds[, Boolean, Point]) -> Number
-		bounds = L.latLngBounds(bounds);
+		bounds = toLatLngBounds(bounds);
 		padding = toPoint(padding || [0, 0]);
 
 		var zoom = this.getZoom() || 0,
@@ -897,7 +899,7 @@ export var Map = Evented.extend({
 	// the CRS origin.
 	project: function (latlng, zoom) {
 		zoom = zoom === undefined ? this._zoom : zoom;
-		return this.options.crs.latLngToPoint(L.latLng(latlng), zoom);
+		return this.options.crs.latLngToPoint(toLatLng(latlng), zoom);
 	},
 
 	// @method unproject(point: Point, zoom: Number): LatLng
@@ -919,7 +921,7 @@ export var Map = Evented.extend({
 	// Given a geographical coordinate, returns the corresponding pixel coordinate
 	// relative to the [origin pixel](#map-getpixelorigin).
 	latLngToLayerPoint: function (latlng) {
-		var projectedPoint = this.project(L.latLng(latlng))._round();
+		var projectedPoint = this.project(toLatLng(latlng))._round();
 		return projectedPoint._subtract(this.getPixelOrigin());
 	},
 
@@ -930,14 +932,14 @@ export var Map = Evented.extend({
 	// By default this means longitude is wrapped around the dateline so its
 	// value is between -180 and +180 degrees.
 	wrapLatLng: function (latlng) {
-		return this.options.crs.wrapLatLng(L.latLng(latlng));
+		return this.options.crs.wrapLatLng(toLatLng(latlng));
 	},
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
 	// Returns the distance between two geographical coordinates according to
 	// the map's CRS. By default this measures distance in meters.
 	distance: function (latlng1, latlng2) {
-		return this.options.crs.distance(L.latLng(latlng1), L.latLng(latlng2));
+		return this.options.crs.distance(toLatLng(latlng1), toLatLng(latlng2));
 	},
 
 	// @method containerPointToLayerPoint(point: Point): Point
@@ -966,7 +968,7 @@ export var Map = Evented.extend({
 	// Given a geographical coordinate, returns the corresponding pixel coordinate
 	// relative to the map container.
 	latLngToContainerPoint: function (latlng) {
-		return this.layerPointToContainerPoint(this.latLngToLayerPoint(L.latLng(latlng)));
+		return this.layerPointToContainerPoint(this.latLngToLayerPoint(toLatLng(latlng)));
 	},
 
 	// @method mouseEventToContainerPoint(ev: MouseEvent): Point
