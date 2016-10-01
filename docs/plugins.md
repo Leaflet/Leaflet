@@ -1571,7 +1571,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 		<td>
 			<a href="https://github.com/codeofsumit/leaflet.pm">Leaflet.PM</a>
 		</td><td>
-			Polygon Management specifically for Leaflet 1.0. Draw, Edit and listen to changes.
+			Geometry Management for Leaflet 1.0. Draw, Edit, Drag and Snap Polylines, Polygons, LayerGroups and geoJSON.
 		</td><td>
 			<a href="https://github.com/codeofsumit">Sumit Kumar</a>
 		</td>
