@@ -1378,6 +1378,16 @@ L.Map = L.Evented.extend({
 		return this.project(latlng, zoom)._subtract(topLeft);
 	},
 
+	_latLngBoundsToNewLayerBounds: function (latLngBounds, zoom, center) {
+		var topLeft = this._getNewPixelOrigin(center, zoom);
+		return L.bounds([
+			this.project(latLngBounds.getSouthWest(), zoom)._subtract(topLeft),
+			this.project(latLngBounds.getNorthWest(), zoom)._subtract(topLeft),
+			this.project(latLngBounds.getSouthEast(), zoom)._subtract(topLeft),
+			this.project(latLngBounds.getNorthEast(), zoom)._subtract(topLeft)
+		]);
+	},
+
 	// layer point of the current center
 	_getCenterLayerPoint: function () {
 		return this.containerPointToLayerPoint(this.getSize()._divideBy(2));
