@@ -41,7 +41,7 @@ L.Draggable = L.Evented.extend({
 
 	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline: Boolean)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline) {
+	initialize(element, dragStartTarget, preventOutline) {
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
@@ -49,7 +49,7 @@ L.Draggable = L.Evented.extend({
 
 	// @method enable()
 	// Enables the dragging ability
-	enable: function () {
+	enable() {
 		if (this._enabled) { return; }
 
 		L.DomEvent.on(this._dragStartTarget, L.Draggable.START, this._onDown, this);
@@ -59,7 +59,7 @@ L.Draggable = L.Evented.extend({
 
 	// @method disable()
 	// Disables the dragging ability
-	disable: function () {
+	disable() {
 		if (!this._enabled) { return; }
 
 		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown, this);
@@ -68,7 +68,7 @@ L.Draggable = L.Evented.extend({
 		this._moved = false;
 	},
 
-	_onDown: function (e) {
+	_onDown(e) {
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
@@ -105,7 +105,7 @@ L.Draggable = L.Evented.extend({
 			.on(document, L.Draggable.END[e.type], this._onUp, this);
 	},
 
-	_onMove: function (e) {
+	_onMove(e) {
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.
@@ -154,7 +154,7 @@ L.Draggable = L.Evented.extend({
 		this._animRequest = L.Util.requestAnimFrame(this._updatePosition, this, true);
 	},
 
-	_updatePosition: function () {
+	_updatePosition() {
 		var e = {originalEvent: this._lastEvent};
 
 		// @event predrag: Event
@@ -168,7 +168,7 @@ L.Draggable = L.Evented.extend({
 		this.fire('drag', e);
 	},
 
-	_onUp: function (e) {
+	_onUp(e) {
 		// Ignore simulated events, since we handle both touch and
 		// mouse explicitly; otherwise we risk getting duplicates of
 		// touch events, see #4315.

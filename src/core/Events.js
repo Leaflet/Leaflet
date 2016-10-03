@@ -35,7 +35,7 @@ export var Evented = Class.extend({
 	 * @method on(eventMap: Object): this
 	 * Adds a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
 	 */
-	on: function (types, fn, context) {
+	on(types, fn, context) {
 
 		// types can be a map of types/handlers
 		if (typeof types === 'object') {
@@ -68,7 +68,7 @@ export var Evented = Class.extend({
 	 * @method off: this
 	 * Removes all listeners to all events on the object.
 	 */
-	off: function (types, fn, context) {
+	off(types, fn, context) {
 
 		if (!types) {
 			// clear all listeners if called without arguments
@@ -91,7 +91,7 @@ export var Evented = Class.extend({
 	},
 
 	// attach listener (without syntactic sugar now)
-	_on: function (type, fn, context) {
+	_on(type, fn, context) {
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
@@ -119,7 +119,7 @@ export var Evented = Class.extend({
 		typeListeners.count++;
 	},
 
-	_off: function (type, fn, context) {
+	_off(type, fn, context) {
 		var listeners,
 		    i,
 		    len;
@@ -173,7 +173,7 @@ export var Evented = Class.extend({
 	// Fires an event of the specified type. You can optionally provide an data
 	// object — the first argument of the listener function will contain its
 	// properties. The event might can optionally be propagated to event parents.
-	fire: function (type, data, propagate) {
+	fire(type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
 		var event = extend({}, data, {type: type, target: this});
@@ -202,7 +202,7 @@ export var Evented = Class.extend({
 
 	// @method listens(type: String): Boolean
 	// Returns `true` if a particular event type has any listeners attached to it.
-	listens: function (type, propagate) {
+	listens(type, propagate) {
 		var listeners = this._events && this._events[type];
 		if (listeners && listeners.length) { return true; }
 
@@ -217,7 +217,7 @@ export var Evented = Class.extend({
 
 	// @method once(…): this
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
-	once: function (types, fn, context) {
+	once(types, fn, context) {
 
 		if (typeof types === 'object') {
 			for (var type in types) {
@@ -240,7 +240,7 @@ export var Evented = Class.extend({
 
 	// @method addEventParent(obj: Evented): this
 	// Adds an event parent - an `Evented` that will receive propagated events
-	addEventParent: function (obj) {
+	addEventParent(obj) {
 		this._eventParents = this._eventParents || {};
 		this._eventParents[stamp(obj)] = obj;
 		return this;
@@ -248,14 +248,14 @@ export var Evented = Class.extend({
 
 	// @method removeEventParent(obj: Evented): this
 	// Removes an event parent, so it will stop receiving propagated events
-	removeEventParent: function (obj) {
+	removeEventParent(obj) {
 		if (this._eventParents) {
 			delete this._eventParents[stamp(obj)];
 		}
 		return this;
 	},
 
-	_propagateEvent: function (e) {
+	_propagateEvent(e) {
 		for (var id in this._eventParents) {
 			this._eventParents[id].fire(e.type, extend({layer: e.target}, e), true);
 		}
