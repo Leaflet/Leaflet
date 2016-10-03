@@ -24,7 +24,7 @@ export var PosAnimation = L.Evented.extend({
 	// duration in seconds (`0.25` by default) and easing linearity factor (3rd
 	// argument of the [cubic bezier curve](http://cubic-bezier.com/#0,0,.5,1),
 	// `0.5` by default).
-	run: function (el, newPos, duration, easeLinearity) {
+	run(el, newPos, duration, easeLinearity) {
 		this.stop();
 
 		this._el = el;
@@ -45,20 +45,20 @@ export var PosAnimation = L.Evented.extend({
 
 	// @method stop()
 	// Stops the animation (if currently running).
-	stop: function () {
+	stop() {
 		if (!this._inProgress) { return; }
 
 		this._step(true);
 		this._complete();
 	},
 
-	_animate: function () {
+	_animate() {
 		// animation loop
 		this._animId = requestAnimFrame(this._animate, this);
 		this._step();
 	},
 
-	_step: function (round) {
+	_step(round) {
 		var elapsed = (+new Date()) - this._startTime,
 		    duration = this._duration * 1000;
 
@@ -70,7 +70,7 @@ export var PosAnimation = L.Evented.extend({
 		}
 	},
 
-	_runFrame: function (progress, round) {
+	_runFrame(progress, round) {
 		var pos = this._startPos.add(this._offset.multiplyBy(progress));
 		if (round) {
 			pos._round();
@@ -82,7 +82,7 @@ export var PosAnimation = L.Evented.extend({
 		this.fire('step');
 	},
 
-	_complete: function () {
+	_complete() {
 		cancelAnimFrame(this._animId);
 
 		this._inProgress = false;
@@ -91,7 +91,7 @@ export var PosAnimation = L.Evented.extend({
 		this.fire('end');
 	},
 
-	_easeOut: function (t) {
+	_easeOut(t) {
 		return 1 - Math.pow(1 - t, this._easeOutPower);
 	}
 });

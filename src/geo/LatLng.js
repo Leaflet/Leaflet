@@ -46,7 +46,7 @@ export function LatLng(lat, lng, alt) {
 LatLng.prototype = {
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
 	// Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overriden by setting `maxMargin` to a small number.
-	equals: function (obj, maxMargin) {
+	equals(obj, maxMargin) {
 		if (!obj) { return false; }
 
 		obj = toLatLng(obj);
@@ -60,7 +60,7 @@ LatLng.prototype = {
 
 	// @method toString(): String
 	// Returns a string representation of the point (for debugging purposes).
-	toString: function (precision) {
+	toString(precision) {
 		return 'LatLng(' +
 		        formatNum(this.lat, precision) + ', ' +
 		        formatNum(this.lng, precision) + ')';
@@ -68,19 +68,19 @@ LatLng.prototype = {
 
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](http://en.wikipedia.org/wiki/Haversine_formula).
-	distanceTo: function (other) {
+	distanceTo(other) {
 		return Earth.distance(this, toLatLng(other));
 	},
 
 	// @method wrap(): LatLng
 	// Returns a new `LatLng` object with the longitude wrapped so it's always between -180 and +180 degrees.
-	wrap: function () {
+	wrap() {
 		return Earth.wrapLatLng(this);
 	},
 
 	// @method toBounds(sizeInMeters: Number): LatLngBounds
 	// Returns a new `LatLngBounds` object in which each boundary is `sizeInMeters` meters apart from the `LatLng`.
-	toBounds: function (sizeInMeters) {
+	toBounds(sizeInMeters) {
 		var latAccuracy = 180 * sizeInMeters / 40075017,
 		    lngAccuracy = latAccuracy / Math.cos((Math.PI / 180) * this.lat);
 
@@ -89,7 +89,7 @@ LatLng.prototype = {
 		        [this.lat + latAccuracy, this.lng + lngAccuracy]);
 	},
 
-	clone: function () {
+	clone() {
 		return new LatLng(this.lat, this.lng, this.alt);
 	}
 };
