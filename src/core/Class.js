@@ -8,7 +8,7 @@ import {create, extend} from './Util.js';
 
 // Thanks to John Resig and Dean Edwards for inspiration!
 
-export function Class() {};
+export function Class() {}
 
 Class.extend = function (props) {
 

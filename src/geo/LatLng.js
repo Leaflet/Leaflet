@@ -41,7 +41,7 @@ export function LatLng(lat, lng, alt) {
 	if (alt !== undefined) {
 		this.alt = +alt;
 	}
-};
+}
 
 LatLng.prototype = {
 	// @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
@@ -130,4 +130,4 @@ export function toLatLng(a, b, c) {
 		return null;
 	}
 	return new LatLng(a, b, c);
-};
+}

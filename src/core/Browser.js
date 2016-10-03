@@ -35,6 +35,12 @@ export var android = userAgentContains('android');
 // @property android23: Boolean; `true` for browsers running on Android 2 or Android 3.
 export var android23 = userAgentContains('android 2') || userAgentContains('android 3');
 
+// @property opera: Boolean; `true` for the Opera browser
+export var opera = !!window.opera;
+
+// @property chrome: Boolean; `true` for the Chrome browser.
+export var chrome = userAgentContains('chrome');
+
 // @property gecko: Boolean; `true` for gecko-based browsers like Firefox.
 export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
 
@@ -42,12 +48,6 @@ export var gecko = userAgentContains('gecko') && !webkit && !opera && !ie;
 export var safari = !chrome && userAgentContains('safari');
 
 export var phantom = userAgentContains('phantom');
-
-// @property chrome: Boolean; `true` for the Chrome browser.
-export var chrome = userAgentContains('chrome');
-
-// @property opera: Boolean; `true` for the Opera browser
-export var opera = !!window.opera;
 
 // @property opera12: Boolean
 // `true` for the Opera browser supporting CSS transforms (version 12 or later).
