@@ -195,7 +195,7 @@ export function preventDefault(e) {
 // @function stop(ev): this
 // Does `stopPropagation` and `preventDefault` at the same time.
 export function stop(e) {
-	preventDefault(e)
+	preventDefault(e);
 	stopPropagation(e);
 	return this;
 }

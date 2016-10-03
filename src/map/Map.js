@@ -1609,4 +1609,4 @@ export var Map = Evented.extend({
 // and optionally an object literal with `Map options`.
 export function createMap(id, options) {
 	return new Map(id, options);
-};
+}

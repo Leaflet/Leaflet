@@ -1,6 +1,6 @@
 import {Bounds} from '../../geometry/Bounds';
 import {LatLng} from '../LatLng';
-import {wrapNum} from '../../core/Util';
+import {wrapNum, extend} from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -15,7 +15,7 @@ import {wrapNum} from '../../core/Util';
  * [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
  */
 
-export var Base = {
+export var Base = extend({}, {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
@@ -74,7 +74,7 @@ export var Base = {
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
 
-		return Bounds(min, max);
+		return new Bounds(min, max);
 	},
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -108,4 +108,4 @@ export var Base = {
 
 		return new LatLng(lat, lng, alt);
 	}
-};
+});

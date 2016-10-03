@@ -29,7 +29,7 @@ export function Bounds(a, b) {
 	for (var i = 0, len = points.length; i < len; i++) {
 		this.extend(points[i]);
 	}
-};
+}
 
 Bounds.prototype = {
 	// @method extend(point: Point): this
@@ -154,4 +154,4 @@ export function toBounds(a, b) {
 		return a;
 	}
 	return new Bounds(a, b);
-};
+}

@@ -29,7 +29,8 @@
     "test": "jake test",
     "build": "jake build",
     "release": "./build/publish.sh",
-    "rollup": "rollup src/Leaflet.js -f umd -n L > bundle.js"
+    "lint": "node_modules/.bin/eslint --fix src/",
+    "rollup": "rollup src/Leaflet.js -f umd -n L > dist/leaflet-rollup.js"
   },
   "eslintConfig": {
     "root": true,
@@ -42,7 +43,15 @@
       "node": false
     },
     "extends": "mourner",
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module"
+    },
     "rules": {
+      "linebreak-style": [
+        0,
+        "unix"
+      ],
       "no-mixed-spaces-and-tabs": [
         2,
         "smart-tabs"

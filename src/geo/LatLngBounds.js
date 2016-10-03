@@ -32,7 +32,7 @@ export function LatLngBounds(southWest, northEast) { // (LatLng, LatLng) or (Lat
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		this.extend(latlngs[i]);
 	}
-};
+}
 
 LatLngBounds.prototype = {
 
@@ -240,4 +240,4 @@ export function toLatLngBounds(a, b) {
 		return a;
 	}
 	return new LatLngBounds(a, b);
-};
+}

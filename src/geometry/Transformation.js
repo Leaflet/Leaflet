@@ -26,7 +26,7 @@ export function Transformation(a, b, c, d) {
 	this._b = b;
 	this._c = c;
 	this._d = d;
-};
+}
 
 Transformation.prototype = {
 	// @method transform(point: Point, scale?: Number): Point

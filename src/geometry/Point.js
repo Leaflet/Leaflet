@@ -197,4 +197,4 @@ export function toPoint(x, y, round) {
 		return new Point(x.x, x.y);
 	}
 	return new Point(x, y, round);
-};
+}
