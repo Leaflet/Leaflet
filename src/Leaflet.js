@@ -1,6 +1,26 @@
 
 export var version = '1.0.1';
 
+// control
+
+import {Control, control} from './control/Control';
+import {Layers, layers} from './control/Control.Layers';
+import {Zoom, zoom} from './control/Control.Zoom';
+import {Scale, scale} from './control/Control.Scale';
+import {Attribution, attribution} from './control/Control.Attribution.js';
+
+Control.Layers = Layers;
+Control.Zoom = Zoom;
+Control.Scale = Scale;
+Control.Attribution = Attribution;
+
+control.layers = layers;
+control.zoom = zoom;
+control.scale = scale;
+control.attribution = attribution;
+
+export {Control, control};
+
 // core
 
 import * as Browser from './core/Browser';
@@ -46,12 +66,14 @@ import {EPSG3395} from './geo/crs/CRS.EPSG3395';
 import {EPSG3857, EPSG900913} from './geo/crs/CRS.EPSG3857';
 import {EPSG4326} from './geo/crs/CRS.EPSG4326';
 import {Simple} from './geo/crs/CRS.Simple';
+
 CRS.Earth = Earth;
 CRS.EPSG3395 = EPSG3395;
 CRS.EPSG3857 = EPSG3857;
 CRS.EPSG900913 = EPSG900913;
 CRS.EPSG4326 = EPSG4326;
 CRS.Simple = Simple;
+
 export {CRS};
 
 // map

@@ -1,3 +1,8 @@
+
+import {Class} from '../core/Class';
+import {Map} from '../map/Map';
+import {setOptions} from '../core/Util';
+
 /*
  * @class Control
  * @aka L.Control
@@ -6,7 +11,7 @@
  * All other controls extend from this class.
  */
 
-L.Control = L.Class.extend({
+export var Control = Class.extend({
 	// @section
 	// @aka Control options
 	options: {
@@ -17,7 +22,7 @@ L.Control = L.Class.extend({
 	},
 
 	initialize: function (options) {
-		L.setOptions(this, options);
+		setOptions(this, options);
 	},
 
 	/* @section
@@ -101,8 +106,8 @@ L.Control = L.Class.extend({
 	}
 });
 
-L.control = function (options) {
-	return new L.Control(options);
+export var control = function (options) {
+	return new Control(options);
 };
 
 /* @section Extension methods
@@ -120,7 +125,7 @@ L.control = function (options) {
 /* @namespace Map
  * @section Methods for Layers and Controls
  */
-L.Map.include({
+Map.include({
 	// @method addControl(control: Control): this
 	// Adds the given control to the map
 	addControl: function (control) {

@@ -1,3 +1,7 @@
+
+import {Control} from './Control';
+import {Map} from '../map/Map';
+
 /*
  * @class Control.Zoom
  * @aka L.Control.Zoom
@@ -6,7 +10,7 @@
  * A basic zoom control with two buttons (zoom in and zoom out). It is put on the map by default unless you set its [`zoomControl` option](#map-zoomcontrol) to `false`. Extends `Control`.
  */
 
-L.Control.Zoom = L.Control.extend({
+export var Zoom = Control.extend({
 	// @section
 	// @aka Control.Zoom options
 	options: {
@@ -108,13 +112,13 @@ L.Control.Zoom = L.Control.extend({
 // @section Control options
 // @option zoomControl: Boolean = true
 // Whether a [zoom control](#control-zoom) is added to the map by default.
-L.Map.mergeOptions({
+Map.mergeOptions({
 	zoomControl: true
 });
 
-L.Map.addInitHook(function () {
+Map.addInitHook(function () {
 	if (this.options.zoomControl) {
-		this.zoomControl = new L.Control.Zoom();
+		this.zoomControl = new Zoom();
 		this.addControl(this.zoomControl);
 	}
 });
@@ -122,6 +126,6 @@ L.Map.addInitHook(function () {
 // @namespace Control.Zoom
 // @factory L.control.zoom(options: Control.Zoom options)
 // Creates a zoom control
-L.control.zoom = function (options) {
-	return new L.Control.Zoom(options);
+export var zoom = function (options) {
+	return new Zoom(options);
 };

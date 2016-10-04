@@ -1,3 +1,8 @@
+
+import {Control} from './Control';
+import {setOptions, stamp, bind} from '../core/Util';
+import {touch, android} from '../core/Browser';
+
 /*
  * @class Control.Layers
  * @aka L.Control.Layers
@@ -37,8 +42,7 @@
  * ```
  */
 
-
-L.Control.Layers = L.Control.extend({
+export var Layers = Control.extend({
 	// @section
 	// @aka Control.Layers options
 	options: {
@@ -57,7 +61,7 @@ L.Control.Layers = L.Control.extend({
 	},
 
 	initialize: function (baseLayers, overlays, options) {
-		L.setOptions(this, options);
+		setOptions(this, options);
 
 		this._layers = [];
 		this._lastZIndex = 0;
@@ -109,7 +113,7 @@ L.Control.Layers = L.Control.extend({
 	removeLayer: function (layer) {
 		layer.off('add remove', this._onLayerChange, this);
 
-		var obj = this._getLayer(L.stamp(layer));
+		var obj = this._getLayer(stamp(layer));
 		if (obj) {
 			this._layers.splice(this._layers.indexOf(obj), 1);
 		}
@@ -147,14 +151,14 @@ L.Control.Layers = L.Control.extend({
 		container.setAttribute('aria-haspopup', true);
 
 		L.DomEvent.disableClickPropagation(container);
-		if (!L.Browser.touch) {
+		if (!touch) {
 			L.DomEvent.disableScrollPropagation(container);
 		}
 
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			if (!L.Browser.android) {
+			if (!android) {
 				L.DomEvent.on(container, {
 					mouseenter: this.expand,
 					mouseleave: this.collapse
@@ -165,7 +169,7 @@ L.Control.Layers = L.Control.extend({
 			link.href = '#';
 			link.title = 'Layers';
 
-			if (L.Browser.touch) {
+			if (touch) {
 				L.DomEvent
 				    .on(link, 'click', L.DomEvent.stop)
 				    .on(link, 'click', this.expand, this);
@@ -175,7 +179,7 @@ L.Control.Layers = L.Control.extend({
 
 			// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
 			L.DomEvent.on(form, 'click', function () {
-				setTimeout(L.bind(this._onInputClick, this), 0);
+				setTimeout(bind(this._onInputClick, this), 0);
 			}, this);
 
 			this._map.on('click', this.collapse, this);
@@ -194,7 +198,7 @@ L.Control.Layers = L.Control.extend({
 	_getLayer: function (id) {
 		for (var i = 0; i < this._layers.length; i++) {
 
-			if (this._layers[i] && L.stamp(this._layers[i].layer) === id) {
+			if (this._layers[i] && stamp(this._layers[i].layer) === id) {
 				return this._layers[i];
 			}
 		}
@@ -247,7 +251,7 @@ L.Control.Layers = L.Control.extend({
 			this._update();
 		}
 
-		var obj = this._getLayer(L.stamp(e.target));
+		var obj = this._getLayer(stamp(e.target));
 
 		// @namespace Map
 		// @section Layer events
@@ -293,7 +297,7 @@ L.Control.Layers = L.Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = L.stamp(obj.layer);
+		input.layerId = stamp(obj.layer);
 
 		L.DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -379,6 +383,6 @@ L.Control.Layers = L.Control.extend({
 
 // @factory L.control.layers(baselayers?: Object, overlays?: Object, options?: Control.Layers options)
 // Creates an attribution control with the given layers. Base layers will be switched with radio buttons, while overlays will be switched with checkboxes. Note that all base layers should be passed in the base layers object, but only one should be added to the map during map instantiation.
-L.control.layers = function (baseLayers, overlays, options) {
-	return new L.Control.Layers(baseLayers, overlays, options);
+export var layers = function (baseLayers, overlays, options) {
+	return new Layers(baseLayers, overlays, options);
 };

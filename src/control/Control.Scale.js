@@ -1,3 +1,6 @@
+
+import {Control} from './Control';
+
 /*
  * @class Control.Scale
  * @aka L.Control.Scale
@@ -12,7 +15,7 @@
  * ```
  */
 
-L.Control.Scale = L.Control.extend({
+export var Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
 	options: {
@@ -123,6 +126,6 @@ L.Control.Scale = L.Control.extend({
 
 // @factory L.control.scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-L.control.scale = function (options) {
-	return new L.Control.Scale(options);
+export var scale = function (options) {
+	return new Scale(options);
 };
