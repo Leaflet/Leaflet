@@ -29,7 +29,7 @@
     "test": "jake test",
     "build": "jake build",
     "release": "./build/publish.sh",
-    "lint": "node_modules/.bin/eslint --fix src/",
+    "lint": "eslint src",
     "rollup": "rollup src/Leaflet.js -f umd -n L > dist/leaflet-rollup.js"
   },
   "eslintConfig": {

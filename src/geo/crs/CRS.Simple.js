@@ -1,4 +1,4 @@
-import {Base} from './CRS.Base';
+import {CRS} from './CRS';
 import {LonLat} from '../projection/Projection.LonLat';
 import {Transformation} from '../../geometry/Transformation';
 import {extend} from '../../core/Util';
@@ -13,7 +13,7 @@ import {extend} from '../../core/Util';
  * simple euclidean distance.
  */
 
-export var Simple = extend({}, Base, {
+export var Simple = extend({}, CRS, {
 	projection: LonLat,
 	transformation: new Transformation(1, 0, -1, 0),
 
