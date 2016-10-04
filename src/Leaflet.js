@@ -1,17 +1,44 @@
 
 export var version = '1.0.1';
 
+// core
+
+import * as Browser from './core/Browser';
+export {Browser};
+
+export {Class} from './core/Class';
+
 import {Evented} from './core/Events';
 export {Evented};
 export var Mixin = {Events: Evented.prototype};
+
+export {Handler} from './core/Handler';
 
 import * as Util from './core/Util';
 export {Util};
 export {extend, bind, stamp, setOptions} from './core/Util';
 
-export {Map, createMap as map} from './map/Map';
+// dom
+
+export {PosAnimation} from './dom/PosAnimation';
+
+// geometry
+
 export {Point, toPoint as point} from './geometry/Point';
 export {Bounds, toBounds as bounds} from './geometry/Bounds';
+export {Transformation} from './geometry/Transformation';
+
+// geo
+
+export {LatLng, toLatLng as latLng} from './geo/LatLng';
+export {LatLngBounds, toLatLngBounds as latLngBounds} from './geo/LatLngBounds';
+
+// geo/projection
+
+import * as Projection from './geo/projection/Projection';
+export {Projection};
+
+// geo/crs
 
 import {CRS} from './geo/crs/CRS';
 import {Earth} from './geo/crs/CRS.Earth';
@@ -27,8 +54,11 @@ CRS.EPSG4326 = EPSG4326;
 CRS.Simple = Simple;
 export {CRS};
 
-import * as Browser from './core/Browser';
-export {Browser};
+// map
+
+export {Map, createMap as map} from './map/Map';
+
+// misc
 
 var oldL = window.L;
 export function noConflict() {
