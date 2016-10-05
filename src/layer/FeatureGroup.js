@@ -1,3 +1,7 @@
+
+import {LayerGroup} from './LayerGroup';
+import {LatLngBounds} from '../geo/LatLngBounds';
+
 /*
  * @class FeatureGroup
  * @aka L.FeatureGroup
@@ -20,7 +24,7 @@
  * ```
  */
 
-L.FeatureGroup = L.LayerGroup.extend({
+export var FeatureGroup = LayerGroup.extend({
 
 	addLayer: function (layer) {
 		if (this.hasLayer(layer)) {
@@ -29,7 +33,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		layer.addEventParent(this);
 
-		L.LayerGroup.prototype.addLayer.call(this, layer);
+		LayerGroup.prototype.addLayer.call(this, layer);
 
 		// @event layeradd: LayerEvent
 		// Fired when a layer is added to this `FeatureGroup`
@@ -46,7 +50,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 		layer.removeEventParent(this);
 
-		L.LayerGroup.prototype.removeLayer.call(this, layer);
+		LayerGroup.prototype.removeLayer.call(this, layer);
 
 		// @event layerremove: LayerEvent
 		// Fired when a layer is removed from this `FeatureGroup`
@@ -74,7 +78,7 @@ L.FeatureGroup = L.LayerGroup.extend({
 	// @method getBounds(): LatLngBounds
 	// Returns the LatLngBounds of the Feature Group (created from bounds and coordinates of its children).
 	getBounds: function () {
-		var bounds = new L.LatLngBounds();
+		var bounds = new LatLngBounds();
 
 		for (var id in this._layers) {
 			var layer = this._layers[id];
@@ -86,6 +90,6 @@ L.FeatureGroup = L.LayerGroup.extend({
 
 // @factory L.featureGroup(layers: Layer[])
 // Create a feature group, optionally given an initial set of layers.
-L.featureGroup = function (layers) {
-	return new L.FeatureGroup(layers);
+export var featureGroup = function (layers) {
+	return new FeatureGroup(layers);
 };

@@ -1,3 +1,9 @@
+
+import {Layer} from './Layer';
+import {setOptions, bind} from '../core/Util';
+import {toLatLng} from '../geo/LatLng';
+import {toPoint} from '../geometry/Point';
+
 /*
  * @class DivOverlay
  * @inherits Layer
@@ -6,7 +12,7 @@
  */
 
 // @namespace DivOverlay
-L.DivOverlay = L.Layer.extend({
+export var DivOverlay = Layer.extend({
 
 	// @section
 	// @aka DivOverlay options
@@ -26,7 +32,7 @@ L.DivOverlay = L.Layer.extend({
 	},
 
 	initialize: function (options, source) {
-		L.setOptions(this, options);
+		setOptions(this, options);
 
 		this._source = source;
 	},
@@ -56,7 +62,7 @@ L.DivOverlay = L.Layer.extend({
 	onRemove: function (map) {
 		if (map._fadeAnimated) {
 			L.DomUtil.setOpacity(this._container, 0);
-			this._removeTimeout = setTimeout(L.bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
+			this._removeTimeout = setTimeout(bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
 		} else {
 			L.DomUtil.remove(this._container);
 		}
@@ -72,7 +78,7 @@ L.DivOverlay = L.Layer.extend({
 	// @method setLatLng(latlng: LatLng): this
 	// Sets the geographical point where the popup will open.
 	setLatLng: function (latlng) {
-		this._latlng = L.latLng(latlng);
+		this._latlng = toLatLng(latlng);
 		if (this._map) {
 			this._updatePosition();
 			this._adjustPan();
@@ -173,7 +179,7 @@ L.DivOverlay = L.Layer.extend({
 		if (!this._map) { return; }
 
 		var pos = this._map.latLngToLayerPoint(this._latlng),
-		    offset = L.point(this.options.offset),
+		    offset = toPoint(this.options.offset),
 		    anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {

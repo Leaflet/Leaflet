@@ -1,3 +1,7 @@
+
+import {Layer} from './Layer';
+import {stamp} from '../core/Util';
+
 /*
  * @class LayerGroup
  * @aka L.LayerGroup
@@ -16,7 +20,7 @@
  * ```
  */
 
-L.LayerGroup = L.Layer.extend({
+export var LayerGroup = Layer.extend({
 
 	initialize: function (layers) {
 		this._layers = {};
@@ -147,13 +151,13 @@ L.LayerGroup = L.Layer.extend({
 	// @method getLayerId(layer: Layer): Number
 	// Returns the internal ID for a layer
 	getLayerId: function (layer) {
-		return L.stamp(layer);
+		return stamp(layer);
 	}
 });
 
 
 // @factory L.layerGroup(layers: Layer[])
 // Create a layer group, optionally given an initial set of layers.
-L.layerGroup = function (layers) {
-	return new L.LayerGroup(layers);
+export var layerGroup = function (layers) {
+	return new LayerGroup(layers);
 };
