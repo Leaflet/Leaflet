@@ -1,3 +1,9 @@
+
+import {Layer} from './Layer';
+import {setOptions, falseFn, bind} from '../core/Util';
+import {toLatLngBounds} from '../geo/LatLngBounds';
+import {Bounds} from '../geometry/Bounds';
+
 /*
  * @class ImageOverlay
  * @aka L.ImageOverlay
@@ -14,7 +20,7 @@
  * ```
  */
 
-L.ImageOverlay = L.Layer.extend({
+export var ImageOverlay = Layer.extend({
 
 	// @section
 	// @aka ImageOverlay options
@@ -42,9 +48,9 @@ L.ImageOverlay = L.Layer.extend({
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
 		this._url = url;
-		this._bounds = L.latLngBounds(bounds);
+		this._bounds = toLatLngBounds(bounds);
 
-		L.setOptions(this, options);
+		setOptions(this, options);
 	},
 
 	onAdd: function () {
@@ -157,10 +163,10 @@ L.ImageOverlay = L.Layer.extend({
 		var img = this._image = L.DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
-		img.onselectstart = L.Util.falseFn;
-		img.onmousemove = L.Util.falseFn;
+		img.onselectstart = falseFn;
+		img.onmousemove = falseFn;
 
-		img.onload = L.bind(this.fire, this, 'load');
+		img.onload = bind(this.fire, this, 'load');
 
 		if (this.options.crossOrigin) {
 			img.crossOrigin = '';
@@ -179,7 +185,7 @@ L.ImageOverlay = L.Layer.extend({
 
 	_reset: function () {
 		var image = this._image,
-		    bounds = new L.Bounds(
+		    bounds = new Bounds(
 		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		    size = bounds.getSize();
@@ -198,6 +204,6 @@ L.ImageOverlay = L.Layer.extend({
 // @factory L.imageOverlay(imageUrl: String, bounds: LatLngBounds, options?: ImageOverlay options)
 // Instantiates an image overlay object given the URL of the image and the
 // geographical bounds it is tied to.
-L.imageOverlay = function (url, bounds, options) {
-	return new L.ImageOverlay(url, bounds, options);
+export var imageOverlay = function (url, bounds, options) {
+	return new ImageOverlay(url, bounds, options);
 };

@@ -82,6 +82,10 @@ export {CRS};
 // layer
 
 export {Layer} from './layer/Layer';
+export {DivOverlay} from './layer/DivOverlay';
+export {LayerGroup, layerGroup} from './layer/LayerGroup';
+export {FeatureGroup, featureGroup} from './layer/FeatureGroup';
+export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
 
 // map
 
