@@ -1,3 +1,12 @@
+
+import {DivOverlay} from './DivOverlay';
+import {stopPropagation, stop, on as onDOMEvent} from '../dom/DomEvent';
+import {Point, toPoint} from '../geometry/Point';
+import {Map} from '../map/Map';
+import {Layer} from './Layer';
+import {FeatureGroup} from './FeatureGroup';
+import {setOptions} from '../core/Util';
+
 /*
  * @class Popup
  * @inherits DivOverlay
@@ -26,7 +35,7 @@
 
 
 // @namespace Popup
-L.Popup = L.DivOverlay.extend({
+export var Popup = DivOverlay.extend({
 
 	// @section
 	// @aka Popup options
@@ -92,7 +101,7 @@ L.Popup = L.DivOverlay.extend({
 	},
 
 	onAdd: function (map) {
-		L.DivOverlay.prototype.onAdd.call(this, map);
+		DivOverlay.prototype.onAdd.call(this, map);
 
 		// @namespace Map
 		// @section Popup events
@@ -109,13 +118,13 @@ L.Popup = L.DivOverlay.extend({
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
 			if (!(this._source instanceof L.Path)) {
-				this._source.on('preclick', L.DomEvent.stopPropagation);
+				this._source.on('preclick', stopPropagation);
 			}
 		}
 	},
 
 	onRemove: function (map) {
-		L.DivOverlay.prototype.onRemove.call(this, map);
+		DivOverlay.prototype.onRemove.call(this, map);
 
 		// @namespace Map
 		// @section Popup events
@@ -130,13 +139,13 @@ L.Popup = L.DivOverlay.extend({
 			// Fired when a popup bound to this layer is closed
 			this._source.fire('popupclose', {popup: this}, true);
 			if (!(this._source instanceof L.Path)) {
-				this._source.off('preclick', L.DomEvent.stopPropagation);
+				this._source.off('preclick', stopPropagation);
 			}
 		}
 	},
 
 	getEvents: function () {
-		var events = L.DivOverlay.prototype.getEvents.call(this);
+		var events = DivOverlay.prototype.getEvents.call(this);
 
 		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
@@ -166,7 +175,7 @@ L.Popup = L.DivOverlay.extend({
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
-			L.DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
+			onDOMEvent(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
 		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
@@ -175,7 +184,7 @@ L.Popup = L.DivOverlay.extend({
 		L.DomEvent
 			.disableClickPropagation(wrapper)
 			.disableScrollPropagation(this._contentNode)
-			.on(wrapper, 'contextmenu', L.DomEvent.stopPropagation);
+			.on(wrapper, 'contextmenu', stopPropagation);
 
 		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
@@ -224,14 +233,14 @@ L.Popup = L.DivOverlay.extend({
 		    marginBottom = parseInt(L.DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
 		    containerHeight = this._container.offsetHeight + marginBottom,
 		    containerWidth = this._containerWidth,
-		    layerPos = new L.Point(this._containerLeft, -containerHeight - this._containerBottom);
+		    layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
 
 		layerPos._add(L.DomUtil.getPosition(this._container));
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
-		    padding = L.point(this.options.autoPanPadding),
-		    paddingTL = L.point(this.options.autoPanPaddingTopLeft || padding),
-		    paddingBR = L.point(this.options.autoPanPaddingBottomRight || padding),
+		    padding = toPoint(this.options.autoPanPadding),
+		    paddingTL = toPoint(this.options.autoPanPaddingTopLeft || padding),
+		    paddingBR = toPoint(this.options.autoPanPaddingBottomRight || padding),
 		    size = map.getSize(),
 		    dx = 0,
 		    dy = 0;
@@ -262,12 +271,12 @@ L.Popup = L.DivOverlay.extend({
 
 	_onCloseButtonClick: function (e) {
 		this._close();
-		L.DomEvent.stop(e);
+		stop(e);
 	},
 
 	_getAnchor: function () {
 		// Where should we anchor the popup on the source layer?
-		return L.point(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
+		return toPoint(this._source && this._source._getPopupAnchor ? this._source._getPopupAnchor() : [0, 0]);
 	}
 
 });
@@ -275,8 +284,8 @@ L.Popup = L.DivOverlay.extend({
 // @namespace Popup
 // @factory L.popup(options?: Popup options, source?: Layer)
 // Instantiates a `Popup` object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the popup with a reference to the Layer to which it refers.
-L.popup = function (options, source) {
-	return new L.Popup(options, source);
+export var popup = function (options, source) {
+	return new Popup(options, source);
 };
 
 
@@ -285,22 +294,22 @@ L.popup = function (options, source) {
  * @option closePopupOnClick: Boolean = true
  * Set it to `false` if you don't want popups to close when user clicks the map.
  */
-L.Map.mergeOptions({
+Map.mergeOptions({
 	closePopupOnClick: true
 });
 
 
 // @namespace Map
 // @section Methods for Layers and Controls
-L.Map.include({
+Map.include({
 	// @method openPopup(popup: Popup): this
 	// Opens the specified popup while closing the previously opened (to make sure only one is opened at one time for usability).
 	// @alternative
 	// @method openPopup(content: String|HTMLElement, latlng: LatLng, options?: Popup options): this
 	// Creates a popup with the specified content and options and opens it in the given point on a map.
 	openPopup: function (popup, latlng, options) {
-		if (!(popup instanceof L.Popup)) {
-			popup = new L.Popup(options).setContent(popup);
+		if (!(popup instanceof Popup)) {
+			popup = new Popup(options).setContent(popup);
 		}
 
 		if (latlng) {
@@ -349,7 +358,7 @@ L.Map.include({
  */
 
 // @section Popup methods
-L.Layer.include({
+Layer.include({
 
 	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
 	// Binds a popup to the layer with the passed `content` and sets up the
@@ -357,13 +366,13 @@ L.Layer.include({
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindPopup: function (content, options) {
 
-		if (content instanceof L.Popup) {
-			L.setOptions(content, options);
+		if (content instanceof Popup) {
+			setOptions(content, options);
 			this._popup = content;
 			content._source = this;
 		} else {
 			if (!this._popup || options) {
-				this._popup = new L.Popup(options, this);
+				this._popup = new Popup(options, this);
 			}
 			this._popup.setContent(content);
 		}
@@ -398,12 +407,12 @@ L.Layer.include({
 	// @method openPopup(latlng?: LatLng): this
 	// Opens the bound popup at the specificed `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (layer, latlng) {
-		if (!(layer instanceof L.Layer)) {
+		if (!(layer instanceof Layer)) {
 			latlng = layer;
 			layer = this;
 		}
 
-		if (layer instanceof L.FeatureGroup) {
+		if (layer instanceof FeatureGroup) {
 			for (var id in this._layers) {
 				layer = this._layers[id];
 				break;
@@ -483,7 +492,7 @@ L.Layer.include({
 		}
 
 		// prevent map click
-		L.DomEvent.stop(e);
+		stop(e);
 
 		// if this inherits from Path its a vector and we can just
 		// open the popup at the new location

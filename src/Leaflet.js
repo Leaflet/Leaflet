@@ -86,6 +86,8 @@ export {DivOverlay} from './layer/DivOverlay';
 export {LayerGroup, layerGroup} from './layer/LayerGroup';
 export {FeatureGroup, featureGroup} from './layer/FeatureGroup';
 export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
+export {Popup, popup} from './layer/Popup';
+export {Tooltip, tooltip} from './layer/Tooltip';
 
 // map
 
