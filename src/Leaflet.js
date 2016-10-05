@@ -76,6 +76,10 @@ CRS.Simple = Simple;
 
 export {CRS};
 
+// layer
+
+export {Layer} from './layer/Layer';
+
 // map
 
 export {Map, createMap as map} from './map/Map';
