@@ -42,6 +42,9 @@ export {extend, bind, stamp, setOptions} from './core/Util';
 
 export {PosAnimation} from './dom/PosAnimation';
 
+import * as DomEvent from './dom/DomEvent';
+export {DomEvent};
+
 // geometry
 
 export {Point, toPoint as point} from './geometry/Point';
