@@ -201,7 +201,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 		</td><td>
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -2860,6 +2860,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 		</td>
 		<td>
 			<a href="https://github.com/MAD-GooZe">Alexey Gusev</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/route360/Leaflet.CondensedAttribution">Leaflet.CondensedAttribution</a>
+		</td>
+		<td>
+			An attribution plugin that makes long attributes visible on hover
+		</td>
+		<td>
+			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
 		</td>
 	</tr>
 </table>
