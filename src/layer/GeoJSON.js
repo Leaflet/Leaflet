@@ -285,6 +285,9 @@ var PointToGeoJSON = {
 	}
 };
 
+// @namespace Marker
+// @method toGeoJSON(): Object
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
 L.Marker.include(PointToGeoJSON);
 
 // @namespace CircleMarker
