@@ -1,7 +1,19 @@
 
-// Class inheritances in a format that 
+// Class inheritances in a format that
 // http://www.yuml.me/diagram/class/draw
 // understands and draws things from
+
+
+[L.Util]
+[L.Browser]
+[L.LatLng|lat;lng]
+[L.LatLngBounds] has 2 -.-> [L.LatLng]
+[L.Point|x;y]
+[L.Bounds] has 2 -.-> [L.Point]
+[L.DomUtil]
+[L.DomEvent]
+
+
 
 [L.Class|options|extend();include();initialize()]
 
@@ -83,14 +95,6 @@
 [L.DivOverlay] ^- [L.Popup]
 [L.DivOverlay] ^- [L.Tooltip]
 
+[L.Layer] ^- [L.ImageOverlay]
 
-
-[L.Util]
-[L.Browser]
-[L.LatLng|lat;lng]
-[L.LatLngBounds] has 2 -.-> [L.LatLng]
-[L.Point|x;y]
-[L.Bounds] has 2 -.-> [L.Point]
-[L.DomUtil]
-[L.DomEvent]
 
