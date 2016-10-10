@@ -8,9 +8,9 @@ a flat surface (and back). See [Map projection](http://en.wikipedia.org/wiki/Map
 The bounds where the projection is valid
 
 @method project(latlng: LatLng): Point
-Projects geographical coordinates into a 2D point.
+Projects geographical coordinates into a 2D point. Only accepts actual `L.LatLng` instances, not arrays.
 
 @method unproject(point: Point): LatLng
-The inverse of `project`. Projects a 2D point into a geographical location.
+The inverse of `project`. Projects a 2D point into a geographical location. Only accepts actual `L.Point` instances, not arrays.
 
 
