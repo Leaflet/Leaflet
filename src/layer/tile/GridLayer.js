@@ -1,3 +1,12 @@
+import {Layer} from '../Layer';
+import {mobile, ielt9, any3d, android, android23} from '../../core/Browser';
+import {setOptions, throttle, requestAnimFrame, cancelAnimFrame, falseFn,
+        bind, wrapNum} from '../../core/Util';
+import {remove, toFront, toBack, setOpacity, create, setTransform, addClass} from '../../dom/DomUtil';
+import {Point} from '../../geometry/Point';
+import {Bounds} from '../../geometry/Bounds';
+import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+
 /*
  * @class GridLayer
  * @inherits Layer
@@ -64,7 +73,7 @@
  */
 
 
-L.GridLayer = L.Layer.extend({
+export var GridLayer = Layer.extend({
 
 	// @section
 	// @aka GridLayer options
@@ -79,7 +88,7 @@ L.GridLayer = L.Layer.extend({
 
 		// @option updateWhenIdle: Boolean = depends
 		// If `false`, new tiles are loaded during panning, otherwise only after it (for better performance). `true` by default on mobile browsers, otherwise `false`.
-		updateWhenIdle: L.Browser.mobile,
+		updateWhenIdle: mobile,
 
 		// @option updateWhenZooming: Boolean = true
 		// By default, a smooth zoom animation (during a [touch zoom](#map-touchzoom) or a [`flyTo()`](#map-flyto)) will update grid layers every integer zoom level. Setting this option to `false` will update the grid layer only when the smooth animation ends.
@@ -127,7 +136,7 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	initialize: function (options) {
-		L.setOptions(this, options);
+		setOptions(this, options);
 	},
 
 	onAdd: function () {
@@ -146,7 +155,7 @@ L.GridLayer = L.Layer.extend({
 
 	onRemove: function (map) {
 		this._removeAllTiles();
-		L.DomUtil.remove(this._container);
+		remove(this._container);
 		map._removeZoomLimit(this);
 		this._container = null;
 		this._tileZoom = null;
@@ -156,7 +165,7 @@ L.GridLayer = L.Layer.extend({
 	// Brings the tile layer to the top of all tile layers.
 	bringToFront: function () {
 		if (this._map) {
-			L.DomUtil.toFront(this._container);
+			toFront(this._container);
 			this._setAutoZIndex(Math.max);
 		}
 		return this;
@@ -166,7 +175,7 @@ L.GridLayer = L.Layer.extend({
 	// Brings the tile layer to the bottom of all tile layers.
 	bringToBack: function () {
 		if (this._map) {
-			L.DomUtil.toBack(this._container);
+			toBack(this._container);
 			this._setAutoZIndex(Math.min);
 		}
 		return this;
@@ -222,7 +231,7 @@ L.GridLayer = L.Layer.extend({
 		if (!this.options.updateWhenIdle) {
 			// update tiles on move, but not more often than once per given interval
 			if (!this._onMove) {
-				this._onMove = L.Util.throttle(this._onMoveEnd, this.options.updateInterval, this);
+				this._onMove = throttle(this._onMoveEnd, this.options.updateInterval, this);
 			}
 
 			events.move = this._onMove;
@@ -250,7 +259,7 @@ L.GridLayer = L.Layer.extend({
 	// Normalizes the [tileSize option](#gridlayer-tilesize) into a point. Used by the `createTile()` method.
 	getTileSize: function () {
 		var s = this.options.tileSize;
-		return s instanceof L.Point ? s : new L.Point(s, s);
+		return s instanceof Point ? s : new Point(s, s);
 	},
 
 	_updateZIndex: function () {
@@ -284,9 +293,9 @@ L.GridLayer = L.Layer.extend({
 		if (!this._map) { return; }
 
 		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
-		if (L.Browser.ielt9) { return; }
+		if (ielt9) { return; }
 
-		L.DomUtil.setOpacity(this._container, this.options.opacity);
+		setOpacity(this._container, this.options.opacity);
 
 		var now = +new Date(),
 		    nextFrame = false,
@@ -298,7 +307,7 @@ L.GridLayer = L.Layer.extend({
 
 			var fade = Math.min(1, (now - tile.loaded) / 200);
 
-			L.DomUtil.setOpacity(tile.el, fade);
+			setOpacity(tile.el, fade);
 			if (fade < 1) {
 				nextFrame = true;
 			} else {
@@ -310,15 +319,15 @@ L.GridLayer = L.Layer.extend({
 		if (willPrune && !this._noPrune) { this._pruneTiles(); }
 
 		if (nextFrame) {
-			L.Util.cancelAnimFrame(this._fadeFrame);
-			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
+			cancelAnimFrame(this._fadeFrame);
+			this._fadeFrame = requestAnimFrame(this._updateOpacity, this);
 		}
 	},
 
 	_initContainer: function () {
 		if (this._container) { return; }
 
-		this._container = L.DomUtil.create('div', 'leaflet-layer ' + (this.options.className || ''));
+		this._container = create('div', 'leaflet-layer ' + (this.options.className || ''));
 		this._updateZIndex();
 
 		if (this.options.opacity < 1) {
@@ -339,7 +348,7 @@ L.GridLayer = L.Layer.extend({
 			if (this._levels[z].el.children.length || z === zoom) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
 			} else {
-				L.DomUtil.remove(this._levels[z].el);
+				remove(this._levels[z].el);
 				this._removeTilesAtZoom(z);
 				delete this._levels[z];
 			}
@@ -351,7 +360,7 @@ L.GridLayer = L.Layer.extend({
 		if (!level) {
 			level = this._levels[zoom] = {};
 
-			level.el = L.DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+			level.el = create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
 			level.el.style.zIndex = maxZoom;
 
 			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
@@ -360,7 +369,7 @@ L.GridLayer = L.Layer.extend({
 			this._setZoomTransform(level, map.getCenter(), map.getZoom());
 
 			// force the browser to consider the newly added element for transition
-			L.Util.falseFn(level.el.offsetWidth);
+			falseFn(level.el.offsetWidth);
 		}
 
 		this._level = level;
@@ -421,7 +430,7 @@ L.GridLayer = L.Layer.extend({
 
 	_invalidateAll: function () {
 		for (var z in this._levels) {
-			L.DomUtil.remove(this._levels[z].el);
+			remove(this._levels[z].el);
 			delete this._levels[z];
 		}
 		this._removeAllTiles();
@@ -536,10 +545,10 @@ L.GridLayer = L.Layer.extend({
 		    translate = level.origin.multiplyBy(scale)
 		        .subtract(this._map._getNewPixelOrigin(center, zoom)).round();
 
-		if (L.Browser.any3d) {
-			L.DomUtil.setTransform(level.el, translate, scale);
+		if (any3d) {
+			setTransform(level.el, translate, scale);
 		} else {
-			L.DomUtil.setPosition(level.el, translate);
+			setPosition(level.el, translate);
 		}
 	},
 
@@ -577,7 +586,7 @@ L.GridLayer = L.Layer.extend({
 		    pixelCenter = map.project(center, this._tileZoom).floor(),
 		    halfSize = map.getSize().divideBy(scale * 2);
 
-		return new L.Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
+		return new Bounds(pixelCenter.subtract(halfSize), pixelCenter.add(halfSize));
 	},
 
 	// Private method to load tiles in the grid's active zoom level according to map bounds
@@ -594,12 +603,12 @@ L.GridLayer = L.Layer.extend({
 		    tileCenter = tileRange.getCenter(),
 		    queue = [],
 		    margin = this.options.keepBuffer,
-		    noPruneRange = new L.Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
+		    noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
 		                              tileRange.getTopRight().add([margin, -margin]));
 
 		for (var key in this._tiles) {
 			var c = this._tiles[key].coords;
-			if (c.z !== this._tileZoom || !noPruneRange.contains(L.point(c.x, c.y))) {
+			if (c.z !== this._tileZoom || !noPruneRange.contains(new Point(c.x, c.y))) {
 				this._tiles[key].current = false;
 			}
 		}
@@ -611,7 +620,7 @@ L.GridLayer = L.Layer.extend({
 		// create a queue of coordinates to load tiles from
 		for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
 			for (var i = tileRange.min.x; i <= tileRange.max.x; i++) {
-				var coords = new L.Point(i, j);
+				var coords = new Point(i, j);
 				coords.z = this._tileZoom;
 
 				if (!this._isValidTile(coords)) { continue; }
@@ -664,7 +673,7 @@ L.GridLayer = L.Layer.extend({
 
 		// don't load tile if it doesn't intersect the bounds in options
 		var tileBounds = this._tileCoordsToBounds(coords);
-		return L.latLngBounds(this.options.bounds).overlaps(tileBounds);
+		return latLngBounds(this.options.bounds).overlaps(tileBounds);
 	},
 
 	_keyToBounds: function (key) {
@@ -682,7 +691,7 @@ L.GridLayer = L.Layer.extend({
 
 		    nw = map.unproject(nwPoint, coords.z),
 		    se = map.unproject(sePoint, coords.z),
-		    bounds = new L.LatLngBounds(nw, se);
+		    bounds = new LatLngBounds(nw, se);
 
 		if (!this.options.noWrap) {
 			map.wrapLatLngBounds(bounds);
@@ -699,7 +708,7 @@ L.GridLayer = L.Layer.extend({
 	// converts tile cache key to coordinates
 	_keyToTileCoords: function (key) {
 		var k = key.split(':'),
-		    coords = new L.Point(+k[0], +k[1]);
+		    coords = new Point(+k[0], +k[1]);
 		coords.z = +k[2];
 		return coords;
 	},
@@ -708,7 +717,7 @@ L.GridLayer = L.Layer.extend({
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
-		L.DomUtil.remove(tile.el);
+		remove(tile.el);
 
 		delete this._tiles[key];
 
@@ -721,23 +730,23 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_initTile: function (tile) {
-		L.DomUtil.addClass(tile, 'leaflet-tile');
+		addClass(tile, 'leaflet-tile');
 
 		var tileSize = this.getTileSize();
 		tile.style.width = tileSize.x + 'px';
 		tile.style.height = tileSize.y + 'px';
 
-		tile.onselectstart = L.Util.falseFn;
-		tile.onmousemove = L.Util.falseFn;
+		tile.onselectstart = falseFn;
+		tile.onmousemove = falseFn;
 
 		// update opacity on tiles in IE7-8 because of filter inheritance problems
-		if (L.Browser.ielt9 && this.options.opacity < 1) {
-			L.DomUtil.setOpacity(tile, this.options.opacity);
+		if (ielt9 && this.options.opacity < 1) {
+			setOpacity(tile, this.options.opacity);
 		}
 
 		// without this hack, tiles disappear after zoom on Chrome for Android
 		// https://github.com/Leaflet/Leaflet/issues/2078
-		if (L.Browser.android && !L.Browser.android23) {
+		if (android && !android23) {
 			tile.style.WebkitBackfaceVisibility = 'hidden';
 		}
 	},
@@ -746,7 +755,7 @@ L.GridLayer = L.Layer.extend({
 		var tilePos = this._getTilePos(coords),
 		    key = this._tileCoordsToKey(coords);
 
-		var tile = this.createTile(this._wrapCoords(coords), L.bind(this._tileReady, this, coords));
+		var tile = this.createTile(this._wrapCoords(coords), bind(this._tileReady, this, coords));
 
 		this._initTile(tile);
 
@@ -754,10 +763,10 @@ L.GridLayer = L.Layer.extend({
 		// we know that tile is async and will be ready later; otherwise
 		if (this.createTile.length < 2) {
 			// mark tile as ready, but delay one frame for opacity animation to happen
-			L.Util.requestAnimFrame(L.bind(this._tileReady, this, coords, null, tile));
+			requestAnimFrame(bind(this._tileReady, this, coords, null, tile));
 		}
 
-		L.DomUtil.setPosition(tile, tilePos);
+		setPosition(tile, tilePos);
 
 		// save tile in cache
 		this._tiles[key] = {
@@ -795,16 +804,16 @@ L.GridLayer = L.Layer.extend({
 
 		tile.loaded = +new Date();
 		if (this._map._fadeAnimated) {
-			L.DomUtil.setOpacity(tile.el, 0);
-			L.Util.cancelAnimFrame(this._fadeFrame);
-			this._fadeFrame = L.Util.requestAnimFrame(this._updateOpacity, this);
+			setOpacity(tile.el, 0);
+			cancelAnimFrame(this._fadeFrame);
+			this._fadeFrame = requestAnimFrame(this._updateOpacity, this);
 		} else {
 			tile.active = true;
 			this._pruneTiles();
 		}
 
 		if (!err) {
-			L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');
+			addClass(tile.el, 'leaflet-tile-loaded');
 
 			// @event tileload: TileEvent
 			// Fired when a tile loads.
@@ -820,12 +829,12 @@ L.GridLayer = L.Layer.extend({
 			// Fired when the grid layer loaded all visible tiles.
 			this.fire('load');
 
-			if (L.Browser.ielt9 || !this._map._fadeAnimated) {
-				L.Util.requestAnimFrame(this._pruneTiles, this);
+			if (ielt9 || !this._map._fadeAnimated) {
+				requestAnimFrame(this._pruneTiles, this);
 			} else {
 				// Wait a bit more than 0.2 secs (the duration of the tile fade-in)
 				// to trigger a pruning.
-				setTimeout(L.bind(this._pruneTiles, this), 250);
+				setTimeout(bind(this._pruneTiles, this), 250);
 			}
 		}
 	},
@@ -835,16 +844,16 @@ L.GridLayer = L.Layer.extend({
 	},
 
 	_wrapCoords: function (coords) {
-		var newCoords = new L.Point(
-			this._wrapX ? L.Util.wrapNum(coords.x, this._wrapX) : coords.x,
-			this._wrapY ? L.Util.wrapNum(coords.y, this._wrapY) : coords.y);
+		var newCoords = new Point(
+			this._wrapX ? wrapNum(coords.x, this._wrapX) : coords.x,
+			this._wrapY ? wrapNum(coords.y, this._wrapY) : coords.y);
 		newCoords.z = coords.z;
 		return newCoords;
 	},
 
 	_pxBoundsToTileRange: function (bounds) {
 		var tileSize = this.getTileSize();
-		return new L.Bounds(
+		return new Bounds(
 			bounds.min.unscaleBy(tileSize).floor(),
 			bounds.max.unscaleBy(tileSize).ceil().subtract([1, 1]));
 	},
@@ -859,6 +868,6 @@ L.GridLayer = L.Layer.extend({
 
 // @factory L.gridLayer(options?: GridLayer options)
 // Creates a new instance of GridLayer with the supplied options.
-L.gridLayer = function (options) {
-	return new L.GridLayer(options);
+export function gridLayer (options) {
+	return new GridLayer(options);
 };
