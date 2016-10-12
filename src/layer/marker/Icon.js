@@ -1,3 +1,8 @@
+import {Class} from '../../core/Class';
+import {setOptions} from '../../core/Util';
+import {toPoint as point} from '../../geometry/Point';
+import {retina} from '../../core/Browser';
+
 /*
  * @class Icon
  * @aka L.Icon
@@ -27,7 +32,7 @@
  *
  */
 
-L.Icon = L.Class.extend({
+export var Icon = Class.extend({
 
 	/* @section
 	 * @aka Icon options
@@ -67,7 +72,7 @@ L.Icon = L.Class.extend({
 	 */
 
 	initialize: function (options) {
-		L.setOptions(this, options);
+		setOptions(this, options);
 	},
 
 	// @method createIcon(oldIcon?: HTMLElement): HTMLElement
@@ -107,8 +112,8 @@ L.Icon = L.Class.extend({
 			sizeOption = [sizeOption, sizeOption];
 		}
 
-		var size = L.point(sizeOption),
-		    anchor = L.point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
+		var size = point(sizeOption),
+		    anchor = point(name === 'shadow' && options.shadowAnchor || options.iconAnchor ||
 		            size && size.divideBy(2, true));
 
 		img.className = 'leaflet-marker-' + name + ' ' + (options.className || '');
@@ -131,13 +136,13 @@ L.Icon = L.Class.extend({
 	},
 
 	_getIconUrl: function (name) {
-		return L.Browser.retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
+		return retina && this.options[name + 'RetinaUrl'] || this.options[name + 'Url'];
 	}
 });
 
 
 // @factory L.icon(options: Icon options)
 // Creates an icon instance with the given options.
-L.icon = function (options) {
-	return new L.Icon(options);
+export function icon (options) {
+	return new Icon(options);
 };

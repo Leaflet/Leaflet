@@ -45,6 +45,9 @@ export {PosAnimation} from './dom/PosAnimation';
 import * as DomEvent from './dom/DomEvent';
 export {DomEvent};
 
+import * as DomUtil from './dom/DomUtil';
+export {DomUtil};
+
 // geometry
 
 export {Point, toPoint as point} from './geometry/Point';
@@ -88,6 +91,12 @@ export {FeatureGroup, featureGroup} from './layer/FeatureGroup';
 export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
 export {Popup, popup} from './layer/Popup';
 export {Tooltip, tooltip} from './layer/Tooltip';
+
+export {Icon, icon} from './layer/marker/Icon';
+export {DivIcon, divIcon} from './layer/marker/DivIcon';
+import {IconDefault} from './layer/marker/Icon.Default';
+Icon.Default = IconDefault;
+export {Marker, marker} from './layer/marker/Marker';
 
 // map
 
