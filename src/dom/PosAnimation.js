@@ -1,4 +1,6 @@
 import {requestAnimFrame, cancelAnimFrame} from '../core/Util';
+import {Evented} from '../core/Events';
+import {getPosition, setPosition} from '../dom/DomUtil';
 
 /*
  * @class PosAnimation
@@ -17,7 +19,7 @@ import {requestAnimFrame, cancelAnimFrame} from '../core/Util';
  *
  */
 
-export var PosAnimation = L.Evented.extend({
+export var PosAnimation = Evented.extend({
 
 	// @method run(el: HTMLElement, newPos: Point, duration?: Number, easeLinearity?: Number)
 	// Run an animation of a given element to a new position, optionally setting
@@ -32,7 +34,7 @@ export var PosAnimation = L.Evented.extend({
 		this._duration = duration || 0.25;
 		this._easeOutPower = 1 / Math.max(easeLinearity || 0.5, 0.2);
 
-		this._startPos = L.DomUtil.getPosition(el);
+		this._startPos = getPosition(el);
 		this._offset = newPos.subtract(this._startPos);
 		this._startTime = +new Date();
 
@@ -75,7 +77,7 @@ export var PosAnimation = L.Evented.extend({
 		if (round) {
 			pos._round();
 		}
-		L.DomUtil.setPosition(this._el, pos);
+		setPosition(this._el, pos);
 
 		// @event step: Event
 		// Fired continuously during the animation.
