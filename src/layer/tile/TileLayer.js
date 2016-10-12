@@ -1,3 +1,10 @@
+import {GridLayer} from './GridLayer';
+import {retina, android, ielt9} from '../../core/Browser';
+import {setOptions, bind, template, extend, falseFn, emptyImageUrl} from '../../core/Util';
+import {on, off} from '../../dom/DomEvent';
+import {remove} from '../../dom/DomUtil';
+
+
 /*
  * @class TileLayer
  * @inherits GridLayer
@@ -29,7 +36,7 @@
  */
 
 
-L.TileLayer = L.GridLayer.extend({
+export var TileLayer = GridLayer.extend({
 
 	// @section
 	// @aka TileLayer options
@@ -81,10 +88,10 @@ L.TileLayer = L.GridLayer.extend({
 
 		this._url = url;
 
-		options = L.setOptions(this, options);
+		options = setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
+		if (options.detectRetina && retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 
@@ -104,7 +111,7 @@ L.TileLayer = L.GridLayer.extend({
 		}
 
 		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!L.Browser.android) {
+		if (!android) {
 			this.on('tileunload', this._onTileRemove);
 		}
 	},
@@ -127,8 +134,8 @@ L.TileLayer = L.GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		L.DomEvent.on(tile, 'load', L.bind(this._tileOnLoad, this, done, tile));
-		L.DomEvent.on(tile, 'error', L.bind(this._tileOnError, this, done, tile));
+		on(tile, 'load', bind(this._tileOnLoad, this, done, tile));
+		on(tile, 'error', bind(this._tileOnError, this, done, tile));
 
 		if (this.options.crossOrigin) {
 			tile.crossOrigin = '';
@@ -153,7 +160,7 @@ L.TileLayer = L.GridLayer.extend({
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl: function (coords) {
 		var data = {
-			r: L.Browser.retina ? '@2x' : '',
+			r: retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
@@ -167,13 +174,13 @@ L.TileLayer = L.GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return L.Util.template(this._url, L.extend(data, this.options));
+		return template(this._url, extend(data, this.options));
 	},
 
 	_tileOnLoad: function (done, tile) {
 		// For https://github.com/Leaflet/Leaflet/issues/3332
-		if (L.Browser.ielt9) {
-			setTimeout(L.bind(done, this, null, tile), 0);
+		if (ielt9) {
+			setTimeout(bind(done, this, null, tile), 0);
 		} else {
 			done(null, tile);
 		}
@@ -189,7 +196,7 @@ L.TileLayer = L.GridLayer.extend({
 
 	getTileSize: function () {
 		var map = this._map,
-		    tileSize = L.GridLayer.prototype.getTileSize.call(this),
+		    tileSize = GridLayer.prototype.getTileSize.call(this),
 		    zoom = this._tileZoom + this.options.zoomOffset,
 		    zoomN = this.options.maxNativeZoom;
 
@@ -229,12 +236,12 @@ L.TileLayer = L.GridLayer.extend({
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
-				tile.onload = L.Util.falseFn;
-				tile.onerror = L.Util.falseFn;
+				tile.onload = falseFn;
+				tile.onerror = falseFn;
 
 				if (!tile.complete) {
-					tile.src = L.Util.emptyImageUrl;
-					L.DomUtil.remove(tile);
+					tile.src = emptyImageUrl;
+					remove(tile);
 				}
 			}
 		}
@@ -245,6 +252,6 @@ L.TileLayer = L.GridLayer.extend({
 // @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 
-L.tileLayer = function (url, options) {
-	return new L.TileLayer(url, options);
+export function tileLayer (url, options) {
+	return new TileLayer(url, options);
 };

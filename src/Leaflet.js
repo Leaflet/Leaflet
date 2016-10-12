@@ -48,6 +48,8 @@ export {DomEvent};
 import * as DomUtil from './dom/DomUtil';
 export {DomUtil};
 
+export {Draggable} from './dom/Draggable';
+
 // geometry
 
 export {Point, toPoint as point} from './geometry/Point';
@@ -97,6 +99,12 @@ export {DivIcon, divIcon} from './layer/marker/DivIcon';
 import {IconDefault} from './layer/marker/Icon.Default';
 Icon.Default = IconDefault;
 export {Marker, marker} from './layer/marker/Marker';
+
+export {GridLayer, gridLayer} from './layer/tile/GridLayer';
+import {TileLayer, tileLayer} from './layer/tile/TileLayer';
+export {TileLayerWMS, tileLayerWMS} from './layer/tile/TileLayer.WMS';
+TileLayer.WMS = TileLayerWMS;
+tileLayer.wms = tileLayerWMS;
 
 // map
 
