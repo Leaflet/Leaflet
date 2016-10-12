@@ -37,6 +37,7 @@ export {Handler} from './core/Handler';
 import * as Util from './core/Util';
 export {Util};
 export {extend, bind, stamp, setOptions} from './core/Util';
+import {extend} from './core/Util';
 
 // dom
 
@@ -94,17 +95,22 @@ export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
 export {Popup, popup} from './layer/Popup';
 export {Tooltip, tooltip} from './layer/Tooltip';
 
-export {Icon, icon} from './layer/marker/Icon';
-export {DivIcon, divIcon} from './layer/marker/DivIcon';
+import {Icon} from './layer/marker/Icon';
+export {icon} from './layer/marker/Icon';
 import {IconDefault} from './layer/marker/Icon.Default';
 Icon.Default = IconDefault;
+export {Icon};
+
+export {DivIcon, divIcon} from './layer/marker/DivIcon';
 export {Marker, marker} from './layer/marker/Marker';
 
 export {GridLayer, gridLayer} from './layer/tile/GridLayer';
 import {TileLayer, tileLayer} from './layer/tile/TileLayer';
-export {TileLayerWMS, tileLayerWMS} from './layer/tile/TileLayer.WMS';
+import {TileLayerWMS, tileLayerWMS} from './layer/tile/TileLayer.WMS';
 TileLayer.WMS = TileLayerWMS;
 tileLayer.wms = tileLayerWMS;
+export {TileLayer, tileLayer};
+
 
 // map
 

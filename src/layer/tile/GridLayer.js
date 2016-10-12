@@ -2,7 +2,7 @@ import {Layer} from '../Layer';
 import {mobile, ielt9, any3d, android, android23} from '../../core/Browser';
 import {setOptions, throttle, requestAnimFrame, cancelAnimFrame, falseFn,
         bind, wrapNum} from '../../core/Util';
-import {remove, toFront, toBack, setOpacity, create, setTransform, addClass} from '../../dom/DomUtil';
+import {remove, toFront, toBack, setOpacity, create, setTransform, addClass, setPosition} from '../../dom/DomUtil';
 import {Point} from '../../geometry/Point';
 import {Bounds} from '../../geometry/Bounds';
 import {LatLngBounds, toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
