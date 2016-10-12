@@ -231,6 +231,7 @@ export var disableImageDrag;
 export var enableImageDrag;
 export var preventOutline;
 export var restoreOutline;
+let _outlineElement, _outlineStyle, _userSelect;
 
 (function () {
 	// prefix style property names
@@ -275,14 +276,14 @@ export var restoreOutline;
 		disableTextSelection = function () {
 			if (userSelectProperty) {
 				var style = document.documentElement.style;
-				this._userSelect = style[userSelectProperty];
+				_userSelect = style[userSelectProperty];
 				style[userSelectProperty] = 'none';
 			}
 		};
 		enableTextSelection = function () {
 			if (userSelectProperty) {
-				document.documentElement.style[userSelectProperty] = this._userSelect;
-				delete this._userSelect;
+				document.documentElement.style[userSelectProperty] = _userSelect;
+				_userSelect = undefined;
 			}
 		};
 	}
@@ -311,19 +312,19 @@ export var restoreOutline;
 		}
 		if (!element || !element.style) { return; }
 		restoreOutline();
-		this._outlineElement = element;
-		this._outlineStyle = element.style.outline;
+		_outlineElement = element;
+		_outlineStyle = element.style.outline;
 		element.style.outline = 'none';
-		on(window, 'keydown', restoreOutline, this);
+		on(window, 'keydown', restoreOutline);
 	};
 
 	// @function restoreOutline()
 	// Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
 	restoreOutline = function () {
-		if (!this._outlineElement) { return; }
-		this._outlineElement.style.outline = this._outlineStyle;
-		delete this._outlineElement;
-		delete this._outlineStyle;
-		off(window, 'keydown', restoreOutline, this);
+		if (!_outlineElement) { return; }
+		_outlineElement.style.outline = _outlineStyle;
+		_outlineElement = undefined;
+		_outlineStyle = undefined;
+		off(window, 'keydown', restoreOutline);
 	};
 })();
