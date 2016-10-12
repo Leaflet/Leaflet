@@ -1,3 +1,7 @@
+import {Layer} from '../Layer';
+import {setOptions} from '../../core/Util';
+import {touch} from '../../core/Browser';
+
 /*
  * @class Path
  * @aka L.Path
@@ -7,7 +11,7 @@
  * overlays (Polygon, Polyline, Circle). Do not use it directly. Extends `Layer`.
  */
 
-L.Path = L.Layer.extend({
+export var Path = Layer.extend({
 
 	// @section
 	// @aka Path options
@@ -94,7 +98,7 @@ L.Path = L.Layer.extend({
 	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle: function (style) {
-		L.setOptions(this, style);
+		setOptions(this, style);
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
 		}
@@ -131,6 +135,6 @@ L.Path = L.Layer.extend({
 
 	_clickTolerance: function () {
 		// used when doing hit detection for Canvas layers
-		return (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
+		return (this.options.stroke ? this.options.weight / 2 : 0) + (Browser.touch ? 10 : 0);
 	}
 });

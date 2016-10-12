@@ -1,11 +1,14 @@
 
 import {DivOverlay} from './DivOverlay';
-import {stopPropagation, stop, on as onDOMEvent} from '../dom/DomEvent';
+import {stopPropagation, stop, on, off, disableClickPropagation,
+        disableScrollPropagation} from '../dom/DomEvent';
+import {create, addClass, removeClass, setPosition, getStyle, getPosition} from '../dom/DomUtil';
 import {Point, toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
 import {setOptions} from '../core/Util';
+import {Path} from './vector/Path';
 
 /*
  * @class Popup
@@ -117,7 +120,7 @@ export var Popup = DivOverlay.extend({
 			this._source.fire('popupopen', {popup: this}, true);
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
-			if (!(this._source instanceof L.Path)) {
+			if (!(this._source instanceof Path)) {
 				this._source.on('preclick', stopPropagation);
 			}
 		}
@@ -138,7 +141,7 @@ export var Popup = DivOverlay.extend({
 			// @event popupclose: PopupEvent
 			// Fired when a popup bound to this layer is closed
 			this._source.fire('popupclose', {popup: this}, true);
-			if (!(this._source instanceof L.Path)) {
+			if (!(this._source instanceof Path)) {
 				this._source.off('preclick', stopPropagation);
 			}
 		}
@@ -166,28 +169,27 @@ export var Popup = DivOverlay.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-		    container = this._container = L.DomUtil.create('div',
+		    container = this._container = create('div',
 			prefix + ' ' + (this.options.className || '') +
 			' leaflet-zoom-animated');
 
 		if (this.options.closeButton) {
-			var closeButton = this._closeButton = L.DomUtil.create('a', prefix + '-close-button', container);
+			var closeButton = this._closeButton = create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
-			onDOMEvent(closeButton, 'click', this._onCloseButtonClick, this);
+			on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		var wrapper = this._wrapper = L.DomUtil.create('div', prefix + '-content-wrapper', container);
-		this._contentNode = L.DomUtil.create('div', prefix + '-content', wrapper);
+		var wrapper = this._wrapper = create('div', prefix + '-content-wrapper', container);
+		this._contentNode = create('div', prefix + '-content', wrapper);
 
-		L.DomEvent
-			.disableClickPropagation(wrapper)
-			.disableScrollPropagation(this._contentNode)
-			.on(wrapper, 'contextmenu', stopPropagation);
+		disableClickPropagation(wrapper);
+		disableScrollPropagation(this._contentNode);
+		on(wrapper, 'contextmenu', stopPropagation);
 
-		this._tipContainer = L.DomUtil.create('div', prefix + '-tip-container', container);
-		this._tip = L.DomUtil.create('div', prefix + '-tip', this._tipContainer);
+		this._tipContainer = create('div', prefix + '-tip-container', container);
+		this._tip = create('div', prefix + '-tip', this._tipContainer);
 	},
 
 	_updateLayout: function () {
@@ -212,9 +214,9 @@ export var Popup = DivOverlay.extend({
 
 		if (maxHeight && height > maxHeight) {
 			style.height = maxHeight + 'px';
-			L.DomUtil.addClass(container, scrolledClass);
+			addClass(container, scrolledClass);
 		} else {
-			L.DomUtil.removeClass(container, scrolledClass);
+			removeClass(container, scrolledClass);
 		}
 
 		this._containerWidth = this._container.offsetWidth;
@@ -223,19 +225,19 @@ export var Popup = DivOverlay.extend({
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 		    anchor = this._getAnchor();
-		L.DomUtil.setPosition(this._container, pos.add(anchor));
+		setPosition(this._container, pos.add(anchor));
 	},
 
 	_adjustPan: function () {
 		if (!this.options.autoPan || (this._map._panAnim && this._map._panAnim._inProgress)) { return; }
 
 		var map = this._map,
-		    marginBottom = parseInt(L.DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
+		    marginBottom = parseInt(getStyle(this._container, 'marginBottom'), 10) || 0,
 		    containerHeight = this._container.offsetHeight + marginBottom,
 		    containerWidth = this._containerWidth,
 		    layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		layerPos._add(L.DomUtil.getPosition(this._container));
+		layerPos._add(getPosition(this._container));
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
 		    padding = toPoint(this.options.autoPanPadding),
@@ -496,7 +498,7 @@ Layer.include({
 
 		// if this inherits from Path its a vector and we can just
 		// open the popup at the new location
-		if (layer instanceof L.Path) {
+		if (layer instanceof Path) {
 			this.openPopup(e.layer || e.target, e.latlng);
 			return;
 		}
