@@ -1,7 +1,7 @@
 import {TileLayer} from './TileLayer';
 import {extend, setOptions, getParamString} from '../../core/Util';
 import {retina} from '../../core/Browser';
-import {EPSG4326} from '../../geo/crs/CRS.EPSG4326'
+import {EPSG4326} from '../../geo/crs/CRS.EPSG4326';
 
 /*
  * @class TileLayer.WMS
@@ -129,6 +129,6 @@ export var TileLayerWMS = TileLayer.extend({
 
 // @factory L.tileLayer.wms(baseUrl: String, options: TileLayer.WMS options)
 // Instantiates a WMS tile layer object given a base URL of the WMS service and a WMS parameters/options object.
-export function tileLayerWMS (url, options) {
+export function tileLayerWMS(url, options) {
 	return new TileLayerWMS(url, options);
-};
+}
