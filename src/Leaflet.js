@@ -37,7 +37,6 @@ export {Handler} from './core/Handler';
 import * as Util from './core/Util';
 export {Util};
 export {extend, bind, stamp, setOptions} from './core/Util';
-import {extend} from './core/Util';
 
 // dom
 
@@ -114,6 +113,21 @@ export {TileLayer, tileLayer};
 
 // map
 
+import {Map} from './map/Map';
+import {BoxZoom} from './map/handler/Map.BoxZoom';
+Map.BoxZoom = BoxZoom;
+import {DoubleClickZoom} from './map/handler/Map.DoubleClickZoom';
+Map.DoubleClickZoom = DoubleClickZoom;
+import {Drag} from './map/handler/Map.Drag';
+Map.Drag = Drag;
+import {Keyboard} from './map/handler/Map.Keyboard';
+Map.Keyboard = Keyboard;
+import {ScrollWheelZoom} from './map/handler/Map.ScrollWheelZoom';
+Map.ScrollWheelZoom = ScrollWheelZoom;
+import {Tap} from './map/handler/Map.Tap';
+Map.Tap = Tap;
+import {TouchZoom} from './map/handler/Map.TouchZoom';
+Map.TouchZoom = TouchZoom;
 export {Map, createMap as map} from './map/Map';
 
 // misc

@@ -1,7 +1,7 @@
 import {GridLayer} from './GridLayer';
 import {retina, android, ielt9} from '../../core/Browser';
 import {setOptions, bind, template, extend, falseFn, emptyImageUrl} from '../../core/Util';
-import {on, off} from '../../dom/DomEvent';
+import {on} from '../../dom/DomEvent';
 import {remove} from '../../dom/DomUtil';
 
 

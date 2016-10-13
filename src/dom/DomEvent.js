@@ -74,15 +74,24 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-	if (pointer && type.indexOf('touch') === 0) {
-		this.addPointerListener(obj, type, handler, id);
+// // FIXME!!!!
+// // Needs DomEvent.Pointer.js
+// 	if (pointer && type.indexOf('touch') === 0) {
+// 		this.addPointerListener(obj, type, handler, id);
 
-	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener &&
-	           !(pointer && chrome)) {
-		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
-		// See #5180
-		this.addDoubleTapListener(obj, handler, id);
-	} else if ('addEventListener' in obj) {
+// 	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener &&
+// 	           !(pointer && chrome)) {
+// 		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
+// 		// See #5180
+// 		this.addDoubleTapListener(obj, handler, id);
+// 	} else if ('addEventListener' in obj) {
+
+// // FIXME!!!!
+// // Needs DomEvent.DoubleTap.js
+// 	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener) {
+// 		this.addDoubleTapListener(obj, handler, id);
+
+	/* } else */if ('addEventListener' in obj) {
 
 		if (type === 'mousewheel') {
 			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);

@@ -1,10 +1,19 @@
+import {Map} from '../Map';
+import {android23} from '../../core/Browser';
+import {Handler} from '../../core/Handler';
+import {Draggable} from '../../dom/Draggable';
+import {requestAnimFrame} from '../../core/Util';
+import {addClass, removeClass} from '../../dom/DomUtil';
+import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
+import {toBounds} from '../../geometry/Bounds';
+
 /*
  * L.Handler.MapDrag is used to make the map draggable (with panning inertia), enabled by default.
  */
 
 // @namespace Map
 // @section Interaction Options
-L.Map.mergeOptions({
+Map.mergeOptions({
 	// @option dragging: Boolean = true
 	// Whether the map be draggable with mouse/touch or not.
 	dragging: true,
@@ -15,7 +24,7 @@ L.Map.mergeOptions({
 	// the map builds momentum while dragging and continues moving in
 	// the same direction for some time. Feels especially nice on touch
 	// devices. Enabled by default unless running on old Android devices.
-	inertia: !L.Browser.android23,
+	inertia: !android23,
 
 	// @option inertiaDeceleration: Number = 3000
 	// The rate with which the inertial movement slows down, in pixels/second².
@@ -44,12 +53,12 @@ L.Map.mergeOptions({
 	maxBoundsViscosity: 0.0
 });
 
-L.Map.Drag = L.Handler.extend({
+export var Drag = Handler.extend({
 	addHooks: function () {
 		if (!this._draggable) {
 			var map = this._map;
 
-			this._draggable = new L.Draggable(map._mapPane, map._container);
+			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
 				down: this._onDown,
@@ -66,15 +75,15 @@ L.Map.Drag = L.Handler.extend({
 				map.whenReady(this._onZoomEnd, this);
 			}
 		}
-		L.DomUtil.addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
+		addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
 		this._draggable.enable();
 		this._positions = [];
 		this._times = [];
 	},
 
 	removeHooks: function () {
-		L.DomUtil.removeClass(this._map._container, 'leaflet-grab');
-		L.DomUtil.removeClass(this._map._container, 'leaflet-touch-drag');
+		removeClass(this._map._container, 'leaflet-grab');
+		removeClass(this._map._container, 'leaflet-touch-drag');
 		this._draggable.disable();
 	},
 
@@ -94,9 +103,9 @@ L.Map.Drag = L.Handler.extend({
 		var map = this._map;
 
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
-			var bounds = L.latLngBounds(this._map.options.maxBounds);
+			var bounds = latLngBounds(this._map.options.maxBounds);
 
-			this._offsetLimit = L.bounds(
+			this._offsetLimit = toBounds(
 				this._map.latLngToContainerPoint(bounds.getNorthWest()).multiplyBy(-1),
 				this._map.latLngToContainerPoint(bounds.getSouthEast()).multiplyBy(-1)
 					.add(this._map.getSize()));
@@ -207,7 +216,7 @@ L.Map.Drag = L.Handler.extend({
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
 
-				L.Util.requestAnimFrame(function () {
+				requestAnimFrame(function () {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,
@@ -223,4 +232,4 @@ L.Map.Drag = L.Handler.extend({
 // @section Handlers
 // @property dragging: Handler
 // Map dragging handler (by both mouse and touch).
-L.Map.addInitHook('addHandler', 'dragging', L.Map.Drag);
+Map.addInitHook('addHandler', 'dragging', Drag);

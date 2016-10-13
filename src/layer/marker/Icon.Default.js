@@ -1,5 +1,4 @@
 import {Icon} from './Icon';
-import {toPoint as point} from '../../geometry/Point';
 import {create, getStyle} from '../../dom/DomUtil';
 
 /*
@@ -32,15 +31,15 @@ export var IconDefault = Icon.extend({
 	},
 
 	_getIconUrl: function (name) {
-		if (!this.prototype.imagePath) {	// Deprecated, backwards-compatibility only
-			this.prototype.imagePath = this._detectIconPath();
+		if (!this.__proto__.imagePath) {	// Deprecated, backwards-compatibility only
+			this.__proto__.imagePath = this._detectIconPath();
 		}
 
 		// @option imagePath: String
 		// `Icon.Default` will try to auto-detect the absolute location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right absolute path.
-		return (this.options.imagePath || this.prototype.imagePath) + Icon.prototype._getIconUrl.call(this, name);
+		return (this.options.imagePath || this.__proto__.imagePath) + Icon.prototype._getIconUrl.call(this, name);
 	},
 
 	_detectIconPath: function () {

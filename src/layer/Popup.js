@@ -1,6 +1,6 @@
 
 import {DivOverlay} from './DivOverlay';
-import {stopPropagation, stop, on, off, disableClickPropagation,
+import {stopPropagation, stop, on, disableClickPropagation,
         disableScrollPropagation} from '../dom/DomEvent';
 import {create, addClass, removeClass, setPosition, getStyle, getPosition} from '../dom/DomUtil';
 import {Point, toPoint} from '../geometry/Point';
