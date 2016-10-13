@@ -12,6 +12,23 @@ import {on, off, preventDefault} from './DomEvent';
  */
 
 
+// @property TRANSFORM: String
+// Vendor-prefixed fransform style name (e.g. `'webkitTransform'` for WebKit).
+export var TRANSFORM = testProp(
+	['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
+
+// webkitTransition comes first because some browser versions that drop vendor prefix don't do
+// the same for the transitionend event, in particular the Android 4.1 stock browser
+
+// @property TRANSITION: String
+// Vendor-prefixed transform style name.
+export var TRANSITION = testProp(
+	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
+
+export var TRANSITION_END =
+	TRANSITION === 'webkitTransition' || TRANSITION === 'OTransition' ? TRANSITION + 'End' : 'transitionend';
+
+
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
@@ -215,26 +232,6 @@ export function getPosition(el) {
 	return el._leaflet_pos || new L.Point(0, 0);
 }
 
-
-// prefix style property names
-
-// @property TRANSFORM: String
-// Vendor-prefixed fransform style name (e.g. `'webkitTransform'` for WebKit).
-export var TRANSFORM = testProp(
-	['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
-
-
-// webkitTransition comes first because some browser versions that drop vendor prefix don't do
-// the same for the transitionend event, in particular the Android 4.1 stock browser
-
-// @property TRANSITION: String
-// Vendor-prefixed transform style name.
-export var TRANSITION = testProp(
-	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
-
-export var TRANSITION_END =
-	transition === 'webkitTransition' || transition === 'OTransition' ? transition + 'End' : 'transitionend';
-
 // @function disableTextSelection()
 // Prevents the user from generating `selectstart` DOM events, usually generated
 // when the user drags the mouse through a page with text. Used internally
@@ -277,13 +274,13 @@ if ('onselectstart' in document) {
 // for `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
 	on(window, 'dragstart', preventDefault);
-};
+}
 
 // @function enableImageDrag()
 // Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
 export function enableImageDrag() {
 	off(window, 'dragstart', preventDefault);
-};
+}
 
 var _outlineElement, _outlineStyle;
 // @function preventOutline(el: HTMLElement)
@@ -301,14 +298,14 @@ export function preventOutline(element) {
 	_outlineStyle = element.style.outline;
 	element.style.outline = 'none';
 	on(window, 'keydown', restoreOutline);
-};
+}
 
 // @function restoreOutline()
 // Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
-export function restoreOutline = function () {
+export function restoreOutline() {
 	if (!_outlineElement) { return; }
 	_outlineElement.style.outline = _outlineStyle;
 	_outlineElement = undefined;
 	_outlineStyle = undefined;
 	off(window, 'keydown', restoreOutline);
-};
+}

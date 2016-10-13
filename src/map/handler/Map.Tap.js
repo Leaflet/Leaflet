@@ -1,10 +1,19 @@
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
+import {on, off, preventDefault} from '../../dom/DomEvent';
+import {Point} from '../../geometry/Point';
+import {bind} from '../../core/Util';
+import {addClass, removeClass} from '../../dom/DomUtil';
+import {touch, pointer} from '../../core/Browser';
+
+
 /*
  * L.Map.Tap is used to enable mobile hacks like quick taps and long hold.
  */
 
 // @namespace Map
 // @section Interaction Options
-L.Map.mergeOptions({
+Map.mergeOptions({
 	// @section Touch interaction options
 	// @option tap: Boolean = true
 	// Enables mobile hacks for supporting instant taps (fixing 200ms click
@@ -17,19 +26,19 @@ L.Map.mergeOptions({
 	tapTolerance: 15
 });
 
-L.Map.Tap = L.Handler.extend({
+export var Tap = Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
+		on(this._map._container, 'touchstart', this._onDown, this);
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
+		off(this._map._container, 'touchstart', this._onDown, this);
 	},
 
 	_onDown: function (e) {
 		if (!e.touches) { return; }
 
-		L.DomEvent.preventDefault(e);
+		preventDefault(e);
 
 		this._fireClick = true;
 
@@ -43,15 +52,15 @@ L.Map.Tap = L.Handler.extend({
 		var first = e.touches[0],
 		    el = first.target;
 
-		this._startPos = this._newPos = new L.Point(first.clientX, first.clientY);
+		this._startPos = this._newPos = new Point(first.clientX, first.clientY);
 
 		// if touching a link, highlight it
 		if (el.tagName && el.tagName.toLowerCase() === 'a') {
-			L.DomUtil.addClass(el, 'leaflet-active');
+			addClass(el, 'leaflet-active');
 		}
 
 		// simulate long hold but setting a timeout
-		this._holdTimeout = setTimeout(L.bind(function () {
+		this._holdTimeout = setTimeout(bind(function () {
 			if (this._isTapValid()) {
 				this._fireClick = false;
 				this._onUp();
@@ -61,7 +70,7 @@ L.Map.Tap = L.Handler.extend({
 
 		this._simulateEvent('mousedown', first);
 
-		L.DomEvent.on(document, {
+		on(document, {
 			touchmove: this._onMove,
 			touchend: this._onUp
 		}, this);
@@ -70,7 +79,7 @@ L.Map.Tap = L.Handler.extend({
 	_onUp: function (e) {
 		clearTimeout(this._holdTimeout);
 
-		L.DomEvent.off(document, {
+		off(document, {
 			touchmove: this._onMove,
 			touchend: this._onUp
 		}, this);
@@ -81,7 +90,7 @@ L.Map.Tap = L.Handler.extend({
 			    el = first.target;
 
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
-				L.DomUtil.removeClass(el, 'leaflet-active');
+				removeClass(el, 'leaflet-active');
 			}
 
 			this._simulateEvent('mouseup', first);
@@ -99,7 +108,7 @@ L.Map.Tap = L.Handler.extend({
 
 	_onMove: function (e) {
 		var first = e.touches[0];
-		this._newPos = new L.Point(first.clientX, first.clientY);
+		this._newPos = new Point(first.clientX, first.clientY);
 		this._simulateEvent('mousemove', first);
 	},
 
@@ -122,6 +131,6 @@ L.Map.Tap = L.Handler.extend({
 // @section Handlers
 // @property tap: Handler
 // Mobile touch hacks (quick tap and touch hold) handler.
-if (L.Browser.touch && !L.Browser.pointer) {
-	L.Map.addInitHook('addHandler', 'tap', L.Map.Tap);
+if (touch && !pointer) {
+	Map.addInitHook('addHandler', 'tap', Tap);
 }

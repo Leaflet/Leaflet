@@ -26,11 +26,14 @@
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
   "scripts": {
+    "test-jake": "jake test",
     "test": "jake test",
-    "build": "jake build",
+    "build-jake": "jake build",
+    "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src",
-    "rollup": "rollup src/Leaflet.js -f umd -n L > dist/leaflet-rollup.js"
+    "rollup": "rollup src/Leaflet.js -f umd -n L -m -o dist/leaflet-rollup-src.js",
+    "uglify": "uglifyjs dist/leaflet-rollup-src.js -c -m -o dist/leaflet-rollup.js"
   },
   "eslintConfig": {
     "root": true,
@@ -44,8 +47,8 @@
     },
     "extends": "mourner",
     "parserOptions": {
-        "ecmaVersion": 6,
-        "sourceType": "module"
+      "ecmaVersion": 6,
+      "sourceType": "module"
     },
     "rules": {
       "linebreak-style": [

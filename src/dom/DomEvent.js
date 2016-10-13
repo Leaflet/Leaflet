@@ -74,13 +74,17 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-	if (pointer && type.indexOf('touch') === 0) {
-		this.addPointerListener(obj, type, handler, id);
+// // FIXME!!!!
+// // Needs DomEvent.Pointer.js
+// 	if (pointer && type.indexOf('touch') === 0) {
+// 		this.addPointerListener(obj, type, handler, id);
 
-	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener) {
-		this.addDoubleTapListener(obj, handler, id);
+// // FIXME!!!!
+// // Needs DomEvent.DoubleTap.js
+// 	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener) {
+// 		this.addDoubleTapListener(obj, handler, id);
 
-	} else if ('addEventListener' in obj) {
+	/* } else */if ('addEventListener' in obj) {
 
 		if (type === 'mousewheel') {
 			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
