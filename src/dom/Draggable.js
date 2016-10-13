@@ -23,20 +23,20 @@ import {Point} from '../geometry/Point';
  * ```
  */
 
-let _dragging = false;
-const START = touch ? 'touchstart mousedown' : 'mousedown';
-const END = {
+var _dragging = false;
+var START = touch ? 'touchstart mousedown' : 'mousedown';
+var END = {
 	mousedown: 'mouseup',
 	touchstart: 'touchend',
 	pointerdown: 'touchend',
 	MSPointerDown: 'touchend'
 };
-const MOVE= {
+var MOVE = {
 	mousedown: 'mousemove',
 	touchstart: 'touchmove',
 	pointerdown: 'touchmove',
 	MSPointerDown: 'touchmove'
-}
+};
 
 
 export var Draggable = Evented.extend({
@@ -192,7 +192,7 @@ export var Draggable = Evented.extend({
 		}
 
 		for (var i in MOVE) {
-			off(document, MOVE[i], this._onMove, this)
+			off(document, MOVE[i], this._onMove, this);
 			off(document, END[i], this._onUp, this);
 		}
 

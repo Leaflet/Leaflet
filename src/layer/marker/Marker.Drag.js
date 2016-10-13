@@ -1,5 +1,5 @@
 import {Handler} from '../../core/Handler';
-import {addClass, removeClass, setPosition, getPosition} from '../../dom/DomUtil'
+import {addClass, removeClass, setPosition, getPosition} from '../../dom/DomUtil';
 import {Draggable} from '../../dom/Draggable';
 
 /*

@@ -2,8 +2,8 @@ import {Layer} from '../Layer';
 import {IconDefault} from './Icon.Default';
 import {setOptions} from '../../core/Util';
 import {toLatLng as latLng} from '../../geo/LatLng';
-import {addClass, remove, setPosition, setOpacity} from '../../dom/DomUtil'
-import {MarkerDrag} from './Marker.Drag'
+import {addClass, remove, setPosition, setOpacity} from '../../dom/DomUtil';
+import {MarkerDrag} from './Marker.Drag';
 
 /*
  * @class Marker
@@ -343,6 +343,6 @@ export var Marker = Layer.extend({
 
 // @factory L.marker(latlng: LatLng, options? : Marker options)
 // Instantiates a Marker object given a geographical point and optionally an options object.
-export function marker (latlng, options) {
+export function marker(latlng, options) {
 	return new Marker(latlng, options);
-};
+}

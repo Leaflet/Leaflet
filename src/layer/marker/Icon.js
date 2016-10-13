@@ -143,6 +143,6 @@ export var Icon = Class.extend({
 
 // @factory L.icon(options: Icon options)
 // Creates an icon instance with the given options.
-export function icon (options) {
+export function icon(options) {
 	return new Icon(options);
-};
+}

@@ -876,6 +876,6 @@ export var GridLayer = Layer.extend({
 
 // @factory L.gridLayer(options?: GridLayer options)
 // Creates a new instance of GridLayer with the supplied options.
-export function gridLayer (options) {
+export function gridLayer(options) {
 	return new GridLayer(options);
-};
+}

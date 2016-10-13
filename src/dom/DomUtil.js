@@ -15,82 +15,78 @@ import {on, off, preventDefault} from './DomEvent';
 // @function get(id: String|HTMLElement): HTMLElement
 // Returns an element given its DOM id, or returns the element itself
 // if it was passed directly.
-export function get (id) {
+export function get(id) {
 	return typeof id === 'string' ? document.getElementById(id) : id;
-};
+}
 
 // @function getStyle(el: HTMLElement, styleAttrib: String): String
 // Returns the value for a certain style attribute on an element,
 // including computed values or values set through CSS.
-export function getStyle (el, style) {
-
+export function getStyle(el, style) {
 	var value = el.style[style] || (el.currentStyle && el.currentStyle[style]);
 
 	if ((!value || value === 'auto') && document.defaultView) {
 		var css = document.defaultView.getComputedStyle(el, null);
 		value = css ? css[style] : null;
 	}
-
 	return value === 'auto' ? null : value;
-};
+}
 
 // @function create(tagName: String, className?: String, container?: HTMLElement): HTMLElement
 // Creates an HTML element with `tagName`, sets its class to `className`, and optionally appends it to `container` element.
-export function create (tagName, className, container) {
-
+export function create(tagName, className, container) {
 	var el = document.createElement(tagName);
 	el.className = className || '';
 
 	if (container) {
 		container.appendChild(el);
 	}
-
 	return el;
-};
+}
 
 // @function remove(el: HTMLElement)
 // Removes `el` from its parent element
-export function remove (el) {
+export function remove(el) {
 	var parent = el.parentNode;
 	if (parent) {
 		parent.removeChild(el);
 	}
-};
+}
 
 // @function empty(el: HTMLElement)
 // Removes all of `el`'s children elements from `el`
-export function empty (el) {
+export function empty(el) {
 	while (el.firstChild) {
 		el.removeChild(el.firstChild);
 	}
-};
+}
 
 // @function toFront(el: HTMLElement)
 // Makes `el` the last children of its parent, so it renders in front of the other children.
-export function toFront (el) {
+export function toFront(el) {
 	el.parentNode.appendChild(el);
-};
+}
 
 // @function toBack(el: HTMLElement)
 // Makes `el` the first children of its parent, so it renders back from the other children.
-export function toBack (el) {
+export function toBack(el) {
 	var parent = el.parentNode;
 	parent.insertBefore(el, parent.firstChild);
-};
+}
 
 // @function hasClass(el: HTMLElement, name: String): Boolean
 // Returns `true` if the element's class attribute contains `name`.
-export function hasClass (el, name) {
+export function hasClass(el, name) {
 	if (el.classList !== undefined) {
 		return el.classList.contains(name);
 	}
 	var className = getClass(el);
 	return className.length > 0 && new RegExp('(^|\\s)' + name + '(\\s|$)').test(className);
-};
+}
 
 // @function addClass(el: HTMLElement, name: String)
 // Adds `name` to the element's class attribute.
-export function addClass (el, name) {
+export function addClass(el, name) {
 	if (el.classList !== undefined) {
 		var classes = L.Util.splitWords(name);
 		for (var i = 0, len = classes.length; i < len; i++) {
@@ -100,51 +96,49 @@ export function addClass (el, name) {
 		var className = getClass(el);
 		setClass(el, (className ? className + ' ' : '') + name);
 	}
-};
+}
 
 // @function removeClass(el: HTMLElement, name: String)
 // Removes `name` from the element's class attribute.
-export function removeClass (el, name) {
+export function removeClass(el, name) {
 	if (el.classList !== undefined) {
 		el.classList.remove(name);
 	} else {
 		setClass(el, L.Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 	}
-};
+}
 
 // @function setClass(el: HTMLElement, name: String)
 // Sets the element's class.
-export function setClass (el, name) {
+export function setClass(el, name) {
 	if (el.className.baseVal === undefined) {
 		el.className = name;
 	} else {
 		// in case of SVG element
 		el.className.baseVal = name;
 	}
-};
+}
 
 // @function getClass(el: HTMLElement): String
 // Returns the element's class.
-export function getClass (el) {
+export function getClass(el) {
 	return el.className.baseVal === undefined ? el.className : el.className.baseVal;
-};
+}
 
 // @function setOpacity(el: HTMLElement, opacity: Number)
 // Set the opacity of an element (including old IE support).
 // `opacity` must be a number from `0` to `1`.
-export function setOpacity (el, value) {
-
+export function setOpacity(el, value) {
 	if ('opacity' in el.style) {
 		el.style.opacity = value;
-
 	} else if ('filter' in el.style) {
 		_setOpacityIE(el, value);
 	}
-};
+}
 
-function _setOpacityIE (el, value) {
+function _setOpacityIE(el, value) {
 	var filter = false,
-		filterName = 'DXImageTransform.Microsoft.Alpha';
+	    filterName = 'DXImageTransform.Microsoft.Alpha';
 
 	// filters collection throws an error if we try to retrieve a filter that doesn't exist
 	try {
@@ -163,14 +157,13 @@ function _setOpacityIE (el, value) {
 	} else {
 		el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
 	}
-};
+}
 
 // @function testProp(props: String[]): String|false
 // Goes through the array of style names and returns the first name
 // that is a valid style name for an element. If no such name is found,
 // it returns false. Useful for vendor-prefixed styles like `transform`.
-export function testProp (props) {
-
+export function testProp(props) {
 	var style = document.documentElement.style;
 
 	for (var i = 0; i < props.length; i++) {
@@ -179,13 +172,13 @@ export function testProp (props) {
 		}
 	}
 	return false;
-};
+}
 
 // @function setTransform(el: HTMLElement, offset: Point, scale?: Number)
 // Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
-export function setTransform (el, offset, scale) {
+export function setTransform(el, offset, scale) {
 	var pos = offset || new L.Point(0, 0);
 
 	el.style[TRANSFORM] =
@@ -193,13 +186,13 @@ export function setTransform (el, offset, scale) {
 			'translate(' + pos.x + 'px,' + pos.y + 'px)' :
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
 		(scale ? ' scale(' + scale + ')' : '');
-};
+}
 
 // @function setPosition(el: HTMLElement, position: Point)
 // Sets the position of `el` to coordinates specified by `position`,
 // using CSS translate or top/left positioning depending on the browser
 // (used by Leaflet internally to position its layers).
-export function setPosition (el, point) { // (HTMLElement, Point[, Boolean])
+export function setPosition(el, point) {
 
 	/*eslint-disable */
 	el._leaflet_pos = point;
@@ -211,120 +204,111 @@ export function setPosition (el, point) { // (HTMLElement, Point[, Boolean])
 		el.style.left = point.x + 'px';
 		el.style.top = point.y + 'px';
 	}
-};
+}
 
 // @function getPosition(el: HTMLElement): Point
 // Returns the coordinates of an element previously positioned with setPosition.
-export function getPosition (el) {
+export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
 
 	return el._leaflet_pos || new L.Point(0, 0);
-};
+}
 
-export var TRANSFORM;
-export var TRANSITION;
-export var TRANSITION_END;
+
+// prefix style property names
+
+// @property TRANSFORM: String
+// Vendor-prefixed fransform style name (e.g. `'webkitTransform'` for WebKit).
+export var TRANSFORM = testProp(
+	['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
+
+
+// webkitTransition comes first because some browser versions that drop vendor prefix don't do
+// the same for the transitionend event, in particular the Android 4.1 stock browser
+
+// @property TRANSITION: String
+// Vendor-prefixed transform style name.
+export var TRANSITION = testProp(
+	['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
+
+export var TRANSITION_END =
+	transition === 'webkitTransition' || transition === 'OTransition' ? transition + 'End' : 'transitionend';
+
+// @function disableTextSelection()
+// Prevents the user from generating `selectstart` DOM events, usually generated
+// when the user drags the mouse through a page with text. Used internally
+// by Leaflet to override the behaviour of any click-and-drag interaction on
+// the map. Affects drag interactions on the whole document.
+
+// @function enableTextSelection()
+// Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
 export var disableTextSelection;
 export var enableTextSelection;
-export var disableImageDrag;
-export var enableImageDrag;
-export var preventOutline;
-export var restoreOutline;
-let _outlineElement, _outlineStyle, _userSelect;
-
-(function () {
-	// prefix style property names
-
-	// @property TRANSFORM: String
-	// Vendor-prefixed fransform style name (e.g. `'webkitTransform'` for WebKit).
-	TRANSFORM = testProp(
-			['transform', 'WebkitTransform', 'OTransform', 'MozTransform', 'msTransform']);
-
-
-	// webkitTransition comes first because some browser versions that drop vendor prefix don't do
-	// the same for the transitionend event, in particular the Android 4.1 stock browser
-
-	// @property TRANSITION: String
-	// Vendor-prefixed transform style name.
-	var transition = TRANSITION = testProp(
-			['webkitTransition', 'transition', 'OTransition', 'MozTransition', 'msTransition']);
-
-	TRANSITION_END =
-			transition === 'webkitTransition' || transition === 'OTransition' ? transition + 'End' : 'transitionend';
-
-	// @function disableTextSelection()
-	// Prevents the user from generating `selectstart` DOM events, usually generated
-	// when the user drags the mouse through a page with text. Used internally
-	// by Leaflet to override the behaviour of any click-and-drag interaction on
-	// the map. Affects drag interactions on the whole document.
-
-	// @function enableTextSelection()
-	// Cancels the effects of a previous [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection).
-	if ('onselectstart' in document) {
-		disableTextSelection = function () {
-			on(window, 'selectstart', preventDefault);
-		};
-		enableTextSelection = function () {
-			off(window, 'selectstart', preventDefault);
-		};
-
-	} else {
-		var userSelectProperty = testProp(
-			['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
-
-		disableTextSelection = function () {
-			if (userSelectProperty) {
-				var style = document.documentElement.style;
-				_userSelect = style[userSelectProperty];
-				style[userSelectProperty] = 'none';
-			}
-		};
-		enableTextSelection = function () {
-			if (userSelectProperty) {
-				document.documentElement.style[userSelectProperty] = _userSelect;
-				_userSelect = undefined;
-			}
-		};
-	}
-
-	// @function disableImageDrag()
-	// As [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection), but
-	// for `dragstart` DOM events, usually generated when the user drags an image.
-	disableImageDrag = function () {
-		on(window, 'dragstart', preventDefault);
+var _userSelect;
+if ('onselectstart' in document) {
+	disableTextSelection = function () {
+		on(window, 'selectstart', preventDefault);
 	};
-
-	// @function enableImageDrag()
-	// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
-	enableImageDrag = function () {
-		off(window, 'dragstart', preventDefault);
+	enableTextSelection = function () {
+		off(window, 'selectstart', preventDefault);
 	};
+} else {
+	var userSelectProperty = testProp(
+		['userSelect', 'WebkitUserSelect', 'OUserSelect', 'MozUserSelect', 'msUserSelect']);
 
-	// @function preventOutline(el: HTMLElement)
-	// Makes the [outline](https://developer.mozilla.org/docs/Web/CSS/outline)
-	// of the element `el` invisible. Used internally by Leaflet to prevent
-	// focusable elements from displaying an outline when the user performs a
-	// drag interaction on them.
-	preventOutline = function (element) {
-		while (element.tabIndex === -1) {
-			element = element.parentNode;
+	disableTextSelection = function () {
+		if (userSelectProperty) {
+			var style = document.documentElement.style;
+			_userSelect = style[userSelectProperty];
+			style[userSelectProperty] = 'none';
 		}
-		if (!element || !element.style) { return; }
-		restoreOutline();
-		_outlineElement = element;
-		_outlineStyle = element.style.outline;
-		element.style.outline = 'none';
-		on(window, 'keydown', restoreOutline);
 	};
+	enableTextSelection = function () {
+		if (userSelectProperty) {
+			document.documentElement.style[userSelectProperty] = _userSelect;
+			_userSelect = undefined;
+		}
+	};
+}
 
-	// @function restoreOutline()
-	// Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
-	restoreOutline = function () {
-		if (!_outlineElement) { return; }
-		_outlineElement.style.outline = _outlineStyle;
-		_outlineElement = undefined;
-		_outlineStyle = undefined;
-		off(window, 'keydown', restoreOutline);
-	};
-})();
+// @function disableImageDrag()
+// As [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection), but
+// for `dragstart` DOM events, usually generated when the user drags an image.
+export function disableImageDrag() {
+	on(window, 'dragstart', preventDefault);
+};
+
+// @function enableImageDrag()
+// Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
+export function enableImageDrag() {
+	off(window, 'dragstart', preventDefault);
+};
+
+var _outlineElement, _outlineStyle;
+// @function preventOutline(el: HTMLElement)
+// Makes the [outline](https://developer.mozilla.org/docs/Web/CSS/outline)
+// of the element `el` invisible. Used internally by Leaflet to prevent
+// focusable elements from displaying an outline when the user performs a
+// drag interaction on them.
+export function preventOutline(element) {
+	while (element.tabIndex === -1) {
+		element = element.parentNode;
+	}
+	if (!element || !element.style) { return; }
+	restoreOutline();
+	_outlineElement = element;
+	_outlineStyle = element.style.outline;
+	element.style.outline = 'none';
+	on(window, 'keydown', restoreOutline);
+};
+
+// @function restoreOutline()
+// Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
+export function restoreOutline = function () {
+	if (!_outlineElement) { return; }
+	_outlineElement.style.outline = _outlineStyle;
+	_outlineElement = undefined;
+	_outlineStyle = undefined;
+	off(window, 'keydown', restoreOutline);
+};

@@ -252,6 +252,6 @@ export var TileLayer = GridLayer.extend({
 // @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 
-export function tileLayer (url, options) {
+export function tileLayer(url, options) {
 	return new TileLayer(url, options);
-};
+}

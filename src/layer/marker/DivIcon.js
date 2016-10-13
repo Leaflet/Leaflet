@@ -62,6 +62,6 @@ export var DivIcon = Icon.extend({
 
 // @factory L.divIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
-export function divIcon (options) {
+export function divIcon(options) {
 	return new DivIcon(options);
-};
+}
