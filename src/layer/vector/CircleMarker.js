@@ -1,9 +1,5 @@
 import {Path} from './Path';
-import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
-import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
-import {Map} from '../../map/Map';
 import {toLatLng} from '../../geo/LatLng';
 import {Bounds} from '../../geometry/Bounds';
 

@@ -1,3 +1,12 @@
+import {Path} from './Path';
+import * as Util from '../../core/Util';
+import * as LineUtil from '../../geometry/LineUtil';
+import {LatLng, toLatLng} from '../../geo/LatLng';
+import {LatLngBounds} from '../../geo/LatLngBounds';
+import {Bounds} from '../../geometry/Bounds';
+import {Point} from '../../geometry/Point';
+import {Earth} from '../../geo/crs/CRS.Earth';
+
 /*
  * @class Polyline
  * @aka L.Polyline
@@ -36,7 +45,13 @@
  * ```
  */
 
-L.Polyline = L.Path.extend({
+function _flat (latlngs) {
+	// true if it's a flat array of latlngs; false if nested
+	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
+}
+
+
+export var Polyline = Path.extend({
 
 	// @section
 	// @aka Polyline options
@@ -52,7 +67,7 @@ L.Polyline = L.Path.extend({
 	},
 
 	initialize: function (latlngs, options) {
-		L.setOptions(this, options);
+		Util.setOptions(this, options);
 		this._setLatLngs(latlngs);
 	},
 
@@ -78,7 +93,7 @@ L.Polyline = L.Path.extend({
 	closestLayerPoint: function (p) {
 		var minDistance = Infinity,
 		    minPoint = null,
-		    closest = L.LineUtil._sqClosestPointOnSegment,
+		    closest = LineUtil._sqClosestPointOnSegment,
 		    p1, p2;
 
 		for (var j = 0, jLen = this._parts.length; j < jLen; j++) {
@@ -155,29 +170,29 @@ L.Polyline = L.Path.extend({
 	// a specific ring as a LatLng array (that you can earlier access with [`getLatLngs`](#polyline-getlatlngs)).
 	addLatLng: function (latlng, latlngs) {
 		latlngs = latlngs || this._defaultShape();
-		latlng = L.latLng(latlng);
+		latlng = toLatLng(latlng);
 		latlngs.push(latlng);
 		this._bounds.extend(latlng);
 		return this.redraw();
 	},
 
 	_setLatLngs: function (latlngs) {
-		this._bounds = new L.LatLngBounds();
+		this._bounds = new LatLngBounds();
 		this._latlngs = this._convertLatLngs(latlngs);
 	},
 
 	_defaultShape: function () {
-		return L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
+		return _flat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = L.Polyline._flat(latlngs);
+		    flat = _flat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
-				result[i] = L.latLng(latlngs[i]);
+				result[i] = toLatLng(latlngs[i]);
 				this._bounds.extend(result[i]);
 			} else {
 				result[i] = this._convertLatLngs(latlngs[i]);
@@ -188,12 +203,12 @@ L.Polyline = L.Path.extend({
 	},
 
 	_project: function () {
-		var pxBounds = new L.Bounds();
+		var pxBounds = new Bounds();
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
 		var w = this._clickTolerance(),
-		    p = new L.Point(w, w);
+		    p = new Point(w, w);
 
 		if (this._bounds.isValid() && pxBounds.isValid()) {
 			pxBounds.min._subtract(p);
@@ -204,7 +219,7 @@ L.Polyline = L.Path.extend({
 
 	// recursively turns latlngs into a set of rings with projected coordinates
 	_projectLatlngs: function (latlngs, result, projectedBounds) {
-		var flat = latlngs[0] instanceof L.LatLng,
+		var flat = latlngs[0] instanceof LatLng,
 		    len = latlngs.length,
 		    i, ring;
 
@@ -243,7 +258,7 @@ L.Polyline = L.Path.extend({
 			points = this._rings[i];
 
 			for (j = 0, len2 = points.length; j < len2 - 1; j++) {
-				segment = L.LineUtil.clipSegment(points[j], points[j + 1], bounds, j, true);
+				segment = LineUtil.clipSegment(points[j], points[j + 1], bounds, j, true);
 
 				if (!segment) { continue; }
 
@@ -265,7 +280,7 @@ L.Polyline = L.Path.extend({
 		    tolerance = this.options.smoothFactor;
 
 		for (var i = 0, len = parts.length; i < len; i++) {
-			parts[i] = L.LineUtil.simplify(parts[i], tolerance);
+			parts[i] = LineUtil.simplify(parts[i], tolerance);
 		}
 	},
 
@@ -287,11 +302,7 @@ L.Polyline = L.Path.extend({
 // optionally an options object. You can create a `Polyline` object with
 // multiple separate lines (`MultiPolyline`) by passing an array of arrays
 // of geographic points.
-L.polyline = function (latlngs, options) {
-	return new L.Polyline(latlngs, options);
+export function polyline(latlngs, options) {
+	return new Polyline(latlngs, options);
 };
 
-L.Polyline._flat = function (latlngs) {
-	// true if it's a flat array of latlngs; false if nested
-	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
-};
