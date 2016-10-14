@@ -1,3 +1,13 @@
+import {Path} from './Path';
+import * as DomUtil from '../../dom/DomUtil';
+import * as DomEvent from '../../dom/DomEvent';
+import * as Browser from '../../core/Browser';
+import * as Util from '../../core/Util';
+import {Map} from '../../map/Map';
+import {toLatLng} from '../../geo/LatLng';
+import {Bounds} from '../../geometry/Bounds';
+
+
 /*
  * @class CircleMarker
  * @aka L.CircleMarker
@@ -6,7 +16,7 @@
  * A circle of a fixed size with radius specified in pixels. Extends `Path`.
  */
 
-L.CircleMarker = L.Path.extend({
+export var CircleMarker = Path.extend({
 
 	// @section
 	// @aka CircleMarker options
@@ -19,15 +29,15 @@ L.CircleMarker = L.Path.extend({
 	},
 
 	initialize: function (latlng, options) {
-		L.setOptions(this, options);
-		this._latlng = L.latLng(latlng);
+		Util.setOptions(this, options);
+		this._latlng = toLatLng(latlng);
 		this._radius = this.options.radius;
 	},
 
 	// @method setLatLng(latLng: LatLng): this
 	// Sets the position of a circle marker to a new location.
 	setLatLng: function (latlng) {
-		this._latlng = L.latLng(latlng);
+		this._latlng = toLatLng(latlng);
 		this.redraw();
 		return this.fire('move', {latlng: this._latlng});
 	},
@@ -53,7 +63,7 @@ L.CircleMarker = L.Path.extend({
 
 	setStyle : function (options) {
 		var radius = options && options.radius || this._radius;
-		L.Path.prototype.setStyle.call(this, options);
+		Path.prototype.setStyle.call(this, options);
 		this.setRadius(radius);
 		return this;
 	},
@@ -68,7 +78,7 @@ L.CircleMarker = L.Path.extend({
 		    r2 = this._radiusY || r,
 		    w = this._clickTolerance(),
 		    p = [r + w, r2 + w];
-		this._pxBounds = new L.Bounds(this._point.subtract(p), this._point.add(p));
+		this._pxBounds = new Bounds(this._point.subtract(p), this._point.add(p));
 	},
 
 	_update: function () {
@@ -89,6 +99,6 @@ L.CircleMarker = L.Path.extend({
 
 // @factory L.circleMarker(latlng: LatLng, options?: CircleMarker options)
 // Instantiates a circle marker object given a geographical point, and an optional options object.
-L.circleMarker = function (latlng, options) {
-	return new L.CircleMarker(latlng, options);
+export function circleMarker(latlng, options) {
+	return new CircleMarker(latlng, options);
 };

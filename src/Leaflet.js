@@ -87,10 +87,12 @@ export {CRS};
 // layer
 
 export {Layer} from './layer/Layer';
-export {DivOverlay} from './layer/DivOverlay';
 export {LayerGroup, layerGroup} from './layer/LayerGroup';
 export {FeatureGroup, featureGroup} from './layer/FeatureGroup';
+
 export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
+
+export {DivOverlay} from './layer/DivOverlay';
 export {Popup, popup} from './layer/Popup';
 export {Tooltip, tooltip} from './layer/Tooltip';
 
@@ -103,12 +105,26 @@ export {Icon};
 export {DivIcon, divIcon} from './layer/marker/DivIcon';
 export {Marker, marker} from './layer/marker/Marker';
 
+// layer, tile
 export {GridLayer, gridLayer} from './layer/tile/GridLayer';
 import {TileLayer, tileLayer} from './layer/tile/TileLayer';
 import {TileLayerWMS, tileLayerWMS} from './layer/tile/TileLayer.WMS';
 TileLayer.WMS = TileLayerWMS;
 tileLayer.wms = tileLayerWMS;
 export {TileLayer, tileLayer};
+
+// layer, vector
+export {Renderer} from './layer/vector/Renderer';
+export {Canvas, canvas} from './layer/vector/Canvas';
+export {SVG, svg} from './layer/vector/SVG';
+/// TODO: VML
+import './layer/vector/Renderer.getRenderer';	// This is a bit of a hack, but needed because circular dependencies
+
+export {CircleMarker, circleMarker} from './layer/vector/CircleMarker';
+// export {Circle, circle} from './layer/vector/Circle';
+// export {Polyline, polyline} from './layer/vector/Polyline';
+// export {Polygon, polygon} from './layer/vector/Polygon';
+// export {Rectangle, rectangle} from './layer/vector/Rectangle';
 
 
 // map
@@ -128,6 +144,7 @@ import {Tap} from './map/handler/Map.Tap';
 Map.Tap = Tap;
 import {TouchZoom} from './map/handler/Map.TouchZoom';
 Map.TouchZoom = TouchZoom;
+
 export {Map, createMap as map} from './map/Map';
 
 // misc

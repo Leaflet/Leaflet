@@ -1,3 +1,5 @@
+import {create as svgCreate} from '../layer/vector/SVG.Util'
+
 /*
  * @namespace Browser
  * @aka L.Browser
@@ -105,6 +107,35 @@ export var mobileGecko = mobile && gecko;
 // @property retina: Boolean
 // `true` for browsers on a high-resolution "retina" screen.
 export var retina = (window.devicePixelRatio || (window.screen.deviceXDPI / window.screen.logicalXDPI)) > 1;
+
+
+// @property canvas: Boolean
+// `true` when the browser supports [`<canvas>`](https://developer.mozilla.org/docs/Web/API/Canvas_API).
+export var canvas = (function () {
+	return !!document.createElement('canvas').getContext;
+}());
+
+// @property svg: Boolean
+// `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
+export var svg = !!(document.createElementNS && svgCreate('svg').createSVGRect);
+
+// @property vml: Boolean
+// `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
+export var vml = !svg && (function () {
+	try {
+		var div = document.createElement('div');
+		div.innerHTML = '<v:shape adj="1"/>';
+
+		var shape = div.firstChild;
+		shape.style.behavior = 'url(#default#VML)';
+
+		return shape && (typeof shape.adj === 'object');
+
+	} catch (e) {
+		return false;
+	}
+}());
+
 
 function userAgentContains(str) {
 	return navigator.userAgent.toLowerCase().indexOf(str) >= 0;

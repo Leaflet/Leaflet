@@ -251,7 +251,7 @@ export function getWheelDelta(e) {
 
 var skipEvents = {};
 
-function fakeStop(e) {
+export function fakeStop(e) {
 	// fakes stopPropagation by setting a special event flag, checked/reset with skipped(e)
 	skipEvents[e.type] = true;
 }

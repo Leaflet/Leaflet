@@ -1,3 +1,12 @@
+import {Renderer} from './Renderer';
+import * as DomUtil from '../../dom/DomUtil';
+import * as DomEvent from '../../dom/DomEvent';
+import * as Browser from '../../core/Browser';
+import * as Util from '../../core/Util';
+import {Map} from '../../map/Map';
+import {create, pointsToPath} from './SVG.Util';
+export {create, pointsToPath};
+
 /*
  * @class SVG
  * @inherits Renderer
@@ -34,21 +43,22 @@
  * ```
  */
 
-L.SVG = L.Renderer.extend({
+
+export var SVG = Renderer.extend({
 
 	getEvents: function () {
-		var events = L.Renderer.prototype.getEvents.call(this);
+		var events = Renderer.prototype.getEvents.call(this);
 		events.zoomstart = this._onZoomStart;
 		return events;
 	},
 
 	_initContainer: function () {
-		this._container = L.SVG.create('svg');
+		this._container = create('svg');
 
 		// makes it possible to click through svg root; we'll reset it back in individual paths
 		this._container.setAttribute('pointer-events', 'none');
 
-		this._rootGroup = L.SVG.create('g');
+		this._rootGroup = create('g');
 		this._container.appendChild(this._rootGroup);
 	},
 
@@ -62,7 +72,7 @@ L.SVG = L.Renderer.extend({
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
-		L.Renderer.prototype._update.call(this);
+		Renderer.prototype._update.call(this);
 
 		var b = this._bounds,
 		    size = b.getSize(),
@@ -76,7 +86,7 @@ L.SVG = L.Renderer.extend({
 		}
 
 		// movement: update container viewBox so that we don't have to change coordinates of individual layers
-		L.DomUtil.setPosition(container, b.min);
+		DomUtil.setPosition(container, b.min);
 		container.setAttribute('viewBox', [b.min.x, b.min.y, size.x, size.y].join(' '));
 
 		this.fire('update');
@@ -85,17 +95,17 @@ L.SVG = L.Renderer.extend({
 	// methods below are called by vector layers implementations
 
 	_initPath: function (layer) {
-		var path = layer._path = L.SVG.create('path');
+		var path = layer._path = create('path');
 
 		// @namespace Path
 		// @option className: String = null
 		// Custom class name set on an element. Only for SVG renderer.
 		if (layer.options.className) {
-			L.DomUtil.addClass(path, layer.options.className);
+			DomUtil.addClass(path, layer.options.className);
 		}
 
 		if (layer.options.interactive) {
-			L.DomUtil.addClass(path, 'leaflet-interactive');
+			DomUtil.addClass(path, 'leaflet-interactive');
 		}
 
 		this._updateStyle(layer);
@@ -108,7 +118,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_removePath: function (layer) {
-		L.DomUtil.remove(layer._path);
+		DomUtil.remove(layer._path);
 		layer.removeInteractiveTarget(layer._path);
 		delete this._layers[L.stamp(layer)];
 	},
@@ -156,7 +166,7 @@ L.SVG = L.Renderer.extend({
 	},
 
 	_updatePoly: function (layer, closed) {
-		this._setPath(layer, L.SVG.pointsToPath(layer._parts, closed));
+		this._setPath(layer, pointsToPath(layer._parts, closed));
 	},
 
 	_updateCircle: function (layer) {
@@ -189,49 +199,11 @@ L.SVG = L.Renderer.extend({
 });
 
 
-// @namespace SVG; @section
-// There are several static functions which can be called without instantiating L.SVG:
-L.extend(L.SVG, {
-	// @function create(name: String): SVGElement
-	// Returns a instance of [SVGElement](https://developer.mozilla.org/docs/Web/API/SVGElement),
-	// corresponding to the class name passed. For example, using 'line' will return
-	// an instance of [SVGLineElement](https://developer.mozilla.org/docs/Web/API/SVGLineElement).
-	create: function (name) {
-		return document.createElementNS('http://www.w3.org/2000/svg', name);
-	},
-
-	// @function pointsToPath(rings: Point[], closed: Boolean): String
-	// Generates a SVG path string for multiple rings, with each ring turning
-	// into "M..L..L.." instructions
-	pointsToPath: function (rings, closed) {
-		var str = '',
-		    i, j, len, len2, points, p;
-
-		for (i = 0, len = rings.length; i < len; i++) {
-			points = rings[i];
-
-			for (j = 0, len2 = points.length; j < len2; j++) {
-				p = points[j];
-				str += (j ? 'L' : 'M') + p.x + ' ' + p.y;
-			}
-
-			// closes the ring for polygons; "x" is VML syntax
-			str += closed ? (L.Browser.svg ? 'z' : 'x') : '';
-		}
-
-		// SVG complains about empty path strings
-		return str || 'M0 0';
-	}
-});
-
-// @namespace Browser; @property svg: Boolean
-// `true` when the browser supports [SVG](https://developer.mozilla.org/docs/Web/SVG).
-L.Browser.svg = !!(document.createElementNS && L.SVG.create('svg').createSVGRect);
 
 
-// @namespace SVG
+
 // @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
-L.svg = function (options) {
-	return L.Browser.svg || L.Browser.vml ? new L.SVG(options) : null;
+export function svg(options) {
+	return Browser.svg || Browser.vml ? new SVG(options) : null;
 };

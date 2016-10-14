@@ -11,23 +11,6 @@
  * with old versions of Internet Explorer.
  */
 
-// @namespace Browser; @property vml: Boolean
-// `true` if the browser supports [VML](https://en.wikipedia.org/wiki/Vector_Markup_Language).
-L.Browser.vml = !L.Browser.svg && (function () {
-	try {
-		var div = document.createElement('div');
-		div.innerHTML = '<v:shape adj="1"/>';
-
-		var shape = div.firstChild;
-		shape.style.behavior = 'url(#default#VML)';
-
-		return shape && (typeof shape.adj === 'object');
-
-	} catch (e) {
-		return false;
-	}
-}());
-
 // redefine some SVG methods to handle VML syntax which is similar but with some differences
 L.SVG.include(!L.Browser.vml ? {} : {
 
