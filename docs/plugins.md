@@ -2670,6 +2670,15 @@ These plugins extend Leaflet event handling.
 	            <a href="https://github.com/MazeMap">MazeMap</a>
 	        </td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/perliedman/leaflet-touch-helper">Leaflet Touch Helper</a>
+		</td><td>
+			Makes it easy to touch vector overlays with thick fingers on a small display by adding a transparent, larger touch surface
+		</td><td>
+			<a href="https://github.com/perliedman">Per Liedman</a> / <a href="http://prominentedge.com/">Prominent Edge</a>
+		</td>
+	</tr>
 </table>
 
 
