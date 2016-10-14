@@ -2456,6 +2456,15 @@ Allow the user to measure distances or areas.
 			<a href="https://github.com/PowerPan">Johannes Rudolph</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ProminentEdge/leaflet-measure-path">Leaflet Measure Path</a>
+		</td><td>
+			Show measurements on paths; polylines, polygons and circles currently supported (<a href="http://prominentedge.com/leaflet-measure-path/">demo</a>)
+		</td><td>
+			<a href="https://github.com/perliedman">Per Liedman</a> / <a href="http://prominentedge.com/">Prominent Edge</a>
+		</td>
+	</tr>
 </table>
 
 
