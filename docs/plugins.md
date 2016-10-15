@@ -1236,6 +1236,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/adoroszlai">Doroszlai, Attila</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mikhailshilkov/leaflet-corridor">leaflet-corridor</a>
+		</td>
+		<td>
+			Renders a polyline with width fixed in meters, not in pixels; adjusts width depending on zoom level (<a href="http://mikhail.io/demos/leaflet-corridor/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/mikhailshilkov">Mikhail Shilkov</a>
+		</td>
+	</tr>
 </table>
 
 
