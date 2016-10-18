@@ -1,6 +1,6 @@
 import {Map} from '../../map/Map';
 import {Canvas, canvas} from './Canvas';
-import {SVG, svg} from './SVG'
+import {SVG, svg} from './SVG';
 
 Map.include({
 	// @namespace Map; @method getRenderer(layer: Path): Renderer

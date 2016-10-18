@@ -50,15 +50,15 @@ export function closestPointOnSegment(p, p1, p2) {
 function _simplifyDP(points, sqTolerance) {
 
 	var len = points.length,
-		ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
-		markers = new ArrayConstructor(len);
+	ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
+	markers = new ArrayConstructor(len);
 
 	markers[0] = markers[len - 1] = 1;
 
 	_simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
 
 	var i,
-		newPoints = [];
+	newPoints = [];
 
 	for (i = 0; i < len; i++) {
 		if (markers[i]) {
@@ -72,7 +72,7 @@ function _simplifyDP(points, sqTolerance) {
 function _simplifyDPStep(points, markers, sqTolerance, first, last) {
 
 	var maxSqDist = 0,
-		index, i, sqDist;
+	index, i, sqDist;
 
 	for (i = first + 1; i <= last - 1; i++) {
 		sqDist = _sqClosestPointOnSegment(points[i], points[first], points[last], true);
@@ -116,9 +116,9 @@ var _lastCode;
 // points that are on the screen or near, increasing performance.
 export function clipSegment(a, b, bounds, useLastCode, round) {
 	var codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
-		codeB = _getBitCode(b, bounds),
+	codeB = _getBitCode(b, bounds),
 
-		codeOut, p, newCode;
+	codeOut, p, newCode;
 
 	// save 2nd code to avoid calculating it on the next segment
 	_lastCode = codeB;
@@ -149,12 +149,12 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 	}
 }
 
-function _getEdgeIntersection(a, b, code, bounds, round) {
+export function _getEdgeIntersection(a, b, code, bounds, round) {
 	var dx = b.x - a.x,
-		dy = b.y - a.y,
-		min = bounds.min,
-		max = bounds.max,
-		x, y;
+	dy = b.y - a.y,
+	min = bounds.min,
+	max = bounds.max,
+	x, y;
 
 	if (code & 8) { // top
 		x = a.x + dx * (max.y - a.y) / dy;
@@ -176,7 +176,7 @@ function _getEdgeIntersection(a, b, code, bounds, round) {
 	return new Point(x, y, round);
 }
 
-function _getBitCode(p, bounds) {
+export function _getBitCode(p, bounds) {
 	var code = 0;
 
 	if (p.x < bounds.min.x) { // left
@@ -197,18 +197,18 @@ function _getBitCode(p, bounds) {
 // square distance (to avoid unnecessary Math.sqrt calls)
 function _sqDist(p1, p2) {
 	var dx = p2.x - p1.x,
-		dy = p2.y - p1.y;
+	dy = p2.y - p1.y;
 	return dx * dx + dy * dy;
 }
 
 // return closest point on segment or distance to that point
 export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 	var x = p1.x,
-		y = p1.y,
-		dx = p2.x - x,
-		dy = p2.y - y,
-		dot = dx * dx + dy * dy,
-		t;
+	y = p1.y,
+	dx = p2.x - x,
+	dy = p2.y - y,
+	dot = dx * dx + dy * dy,
+	t;
 
 	if (dot > 0) {
 		t = ((p.x - x) * dx + (p.y - y) * dy) / dot;
@@ -226,4 +226,10 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 	dy = p.y - y;
 
 	return sqDist ? dx * dx + dy * dy : new Point(x, y);
+}
+
+
+export function _flat(latlngs) {
+	// true if it's a flat array of latlngs; false if nested
+	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 }

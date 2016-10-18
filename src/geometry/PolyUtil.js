@@ -1,9 +1,9 @@
+import * as LineUtil from './LineUtil';
+
 /*
  * @namespace PolyUtil
  * Various utility functions for polygon geometries.
  */
-
-L.PolyUtil = {};
 
 /* @function clipPolygon(points: Point[], bounds: Bounds, round?: Boolean): Point[]
  * Clips the polygon geometry defined by the given `points` by the given bounds (using the [Sutherland-Hodgeman algorithm](https://en.wikipedia.org/wiki/Sutherland%E2%80%93Hodgman_algorithm)).
@@ -11,16 +11,15 @@ L.PolyUtil = {};
  * performance. Note that polygon points needs different algorithm for clipping
  * than polyline, so there's a seperate method for it.
  */
-L.PolyUtil.clipPolygon = function (points, bounds, round) {
+export function clipPolygon(points, bounds, round) {
 	var clippedPoints,
 	    edges = [1, 4, 2, 8],
 	    i, j, k,
 	    a, b,
-	    len, edge, p,
-	    lu = L.LineUtil;
+	    len, edge, p;
 
 	for (i = 0, len = points.length; i < len; i++) {
-		points[i]._code = lu._getBitCode(points[i], bounds);
+		points[i]._code = LineUtil._getBitCode(points[i], bounds);
 	}
 
 	// for each edge (left, bottom, right, top)
@@ -36,16 +35,16 @@ L.PolyUtil.clipPolygon = function (points, bounds, round) {
 			if (!(a._code & edge)) {
 				// if b is outside the clip window (a->b goes out of screen)
 				if (b._code & edge) {
-					p = lu._getEdgeIntersection(b, a, edge, bounds, round);
-					p._code = lu._getBitCode(p, bounds);
+					p = LineUtil._getEdgeIntersection(b, a, edge, bounds, round);
+					p._code = LineUtil._getBitCode(p, bounds);
 					clippedPoints.push(p);
 				}
 				clippedPoints.push(a);
 
 			// else if b is inside the clip window (a->b enters the screen)
 			} else if (!(b._code & edge)) {
-				p = lu._getEdgeIntersection(b, a, edge, bounds, round);
-				p._code = lu._getBitCode(p, bounds);
+				p = LineUtil._getEdgeIntersection(b, a, edge, bounds, round);
+				p._code = LineUtil._getBitCode(p, bounds);
 				clippedPoints.push(p);
 			}
 		}
@@ -53,4 +52,4 @@ L.PolyUtil.clipPolygon = function (points, bounds, round) {
 	}
 
 	return points;
-};
+}

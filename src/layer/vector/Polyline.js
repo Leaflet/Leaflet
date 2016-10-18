@@ -5,7 +5,6 @@ import {LatLng, toLatLng} from '../../geo/LatLng';
 import {LatLngBounds} from '../../geo/LatLngBounds';
 import {Bounds} from '../../geometry/Bounds';
 import {Point} from '../../geometry/Point';
-import {Earth} from '../../geo/crs/CRS.Earth';
 
 /*
  * @class Polyline
@@ -44,11 +43,6 @@ import {Earth} from '../../geo/crs/CRS.Earth';
  * ];
  * ```
  */
-
-function _flat (latlngs) {
-	// true if it's a flat array of latlngs; false if nested
-	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
-}
 
 
 export var Polyline = Path.extend({
@@ -182,13 +176,13 @@ export var Polyline = Path.extend({
 	},
 
 	_defaultShape: function () {
-		return _flat(this._latlngs) ? this._latlngs : this._latlngs[0];
+		return LineUtil._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = _flat(latlngs);
+		    flat = LineUtil._flat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
@@ -294,6 +288,28 @@ export var Polyline = Path.extend({
 
 	_updatePath: function () {
 		this._renderer._updatePoly(this);
+	},
+
+	// Needed by the `Canvas` renderer for interactivity
+	_containsPoint: function (p, closed) {
+		var i, j, k, len, len2, part,
+		    w = this._clickTolerance();
+
+		if (!this._pxBounds.contains(p)) { return false; }
+
+		// hit detection for polylines
+		for (i = 0, len = this._parts.length; i < len; i++) {
+			part = this._parts[i];
+
+			for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
+				if (!closed && (j === 0)) { continue; }
+
+				if (LineUtil.pointToSegmentDistance(p, part[k], part[j]) <= w) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 });
 
@@ -304,5 +320,5 @@ export var Polyline = Path.extend({
 // of geographic points.
 export function polyline(latlngs, options) {
 	return new Polyline(latlngs, options);
-};
+}
 

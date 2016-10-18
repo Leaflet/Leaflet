@@ -1,9 +1,6 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
-import * as DomEvent from '../../dom/DomEvent';
 import * as Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
-import {Map} from '../../map/Map';
 import {create, pointsToPath} from './SVG.Util';
 export {create, pointsToPath};
 
@@ -206,4 +203,4 @@ export var SVG = Renderer.extend({
 // Creates a SVG renderer with the given options.
 export function svg(options) {
 	return Browser.svg || Browser.vml ? new SVG(options) : null;
-};
+}

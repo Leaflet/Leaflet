@@ -117,15 +117,19 @@ export {TileLayer, tileLayer};
 export {Renderer} from './layer/vector/Renderer';
 export {Canvas, canvas} from './layer/vector/Canvas';
 export {SVG, svg} from './layer/vector/SVG';
-/// TODO: VML
+// / TODO: VML
 import './layer/vector/Renderer.getRenderer';	// This is a bit of a hack, but needed because circular dependencies
 
 export {CircleMarker, circleMarker} from './layer/vector/CircleMarker';
 export {Circle, circle} from './layer/vector/Circle';
 export {Polyline, polyline} from './layer/vector/Polyline';
-// export {Polygon, polygon} from './layer/vector/Polygon';
-// export {Rectangle, rectangle} from './layer/vector/Rectangle';
+export {Polygon, polygon} from './layer/vector/Polygon';
+export {Rectangle, rectangle} from './layer/vector/Rectangle';
 
+import * as LineUtil from './geometry/LineUtil';
+export {LineUtil};
+import * as PolyUtil from './geometry/LineUtil';
+export {PolyUtil};
 
 // map
 

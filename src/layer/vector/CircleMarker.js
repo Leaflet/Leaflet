@@ -89,6 +89,11 @@ export var CircleMarker = Path.extend({
 
 	_empty: function () {
 		return this._radius && !this._renderer._bounds.intersects(this._pxBounds);
+	},
+
+	// Needed by the `Canvas` renderer for interactivity
+	_containsPoint: function (p) {
+		return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
 	}
 });
 
@@ -97,4 +102,4 @@ export var CircleMarker = Path.extend({
 // Instantiates a circle marker object given a geographical point, and an optional options object.
 export function circleMarker(latlng, options) {
 	return new CircleMarker(latlng, options);
-};
+}

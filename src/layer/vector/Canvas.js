@@ -3,7 +3,6 @@ import * as DomUtil from '../../dom/DomUtil';
 import * as DomEvent from '../../dom/DomEvent';
 import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
-import {Map} from '../../map/Map';
 
 /*
  * @class Canvas
@@ -452,56 +451,6 @@ export var Canvas = Renderer.extend({
 
 // @factory L.canvas(options?: Renderer options)
 // Creates a Canvas renderer with the given options.
-export function canvas (options) {
+export function canvas(options) {
 	return Browser.canvas ? new L.Canvas(options) : null;
-};
-
-/// FIXME!!!!
-// Polyline.prototype._containsPoint = function (p, closed) {
-// 	var i, j, k, len, len2, part,
-// 	    w = this._clickTolerance();
-//
-// 	if (!this._pxBounds.contains(p)) { return false; }
-//
-// 	// hit detection for polylines
-// 	for (i = 0, len = this._parts.length; i < len; i++) {
-// 		part = this._parts[i];
-//
-// 		for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
-// 			if (!closed && (j === 0)) { continue; }
-//
-// 			if (LineUtil.pointToSegmentDistance(p, part[k], part[j]) <= w) {
-// 				return true;
-// 			}
-// 		}
-// 	}
-// 	return false;
-// };
-//
-// Polygon.prototype._containsPoint = function (p) {
-// 	var inside = false,
-// 	    part, p1, p2, i, j, k, len, len2;
-//
-// 	if (!this._pxBounds.contains(p)) { return false; }
-//
-// 	// ray casting algorithm for detecting if point is in polygon
-// 	for (i = 0, len = this._parts.length; i < len; i++) {
-// 		part = this._parts[i];
-//
-// 		for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
-// 			p1 = part[j];
-// 			p2 = part[k];
-//
-// 			if (((p1.y > p.y) !== (p2.y > p.y)) && (p.x < (p2.x - p1.x) * (p.y - p1.y) / (p2.y - p1.y) + p1.x)) {
-// 				inside = !inside;
-// 			}
-// 		}
-// 	}
-//
-// 	// also check if it's on polygon stroke
-// 	return inside || Polyline.prototype._containsPoint.call(this, p, true);
-// };
-//
-// CircleMarker.prototype._containsPoint = function (p) {
-// 	return p.distanceTo(this._point) <= this._radius + this._clickTolerance();
-// };
+}

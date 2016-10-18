@@ -3,7 +3,6 @@ import {Path} from './Path';
 import * as Util from '../../core/Util';
 import {toLatLng} from '../../geo/LatLng';
 import {LatLngBounds} from '../../geo/LatLngBounds';
-import {Bounds} from '../../geometry/Bounds';
 import {Earth} from '../../geo/crs/CRS.Earth';
 
 
@@ -109,6 +108,6 @@ export var Circle = CircleMarker.extend({
 // @factory L.circle(latlng: LatLng, radius: Number, options?: Circle options)
 // Obsolete way of instantiating a circle, for compatibility with 0.7.x code.
 // Do not use in new applications or plugins.
-export function circle (latlng, options, legacyOptions) {
+export function circle(latlng, options, legacyOptions) {
 	return new Circle(latlng, options, legacyOptions);
-};
+}
