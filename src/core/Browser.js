@@ -1,4 +1,4 @@
-import {create as svgCreate} from '../layer/vector/SVG.Util';
+import {svgCreate} from '../layer/vector/SVG.Util';
 
 /*
  * @namespace Browser

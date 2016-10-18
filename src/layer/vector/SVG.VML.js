@@ -11,8 +11,8 @@
  * with old versions of Internet Explorer.
  */
 
-// redefine some SVG methods to handle VML syntax which is similar but with some differences
-L.SVG.include(!L.Browser.vml ? {} : {
+// mixin to redefine some SVG methods to handle VML syntax which is similar but with some differences
+export var vmlMixin = {
 
 	_initContainer: function () {
 		this._container = L.DomUtil.create('div', 'leaflet-vml-container');
@@ -121,19 +121,17 @@ L.SVG.include(!L.Browser.vml ? {} : {
 	_bringToBack: function (layer) {
 		L.DomUtil.toBack(layer._container);
 	}
-});
+};
 
-if (L.Browser.vml) {
-	L.SVG.create = (function () {
-		try {
-			document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
-			return function (name) {
-				return document.createElement('<lvml:' + name + ' class="lvml">');
-			};
-		} catch (e) {
-			return function (name) {
-				return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
-			};
-		}
-	})();
-}
+export var vmlCreate = (function () {
+	try {
+		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
+		return function (name) {
+			return document.createElement('<lvml:' + name + ' class="lvml">');
+		};
+	} catch (e) {
+		return function (name) {
+			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+		};
+	}
+})();

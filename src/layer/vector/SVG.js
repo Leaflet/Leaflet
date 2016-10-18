@@ -1,8 +1,11 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
 import * as Browser from '../../core/Browser';
-import {create, pointsToPath} from './SVG.Util';
-export {create, pointsToPath};
+import {svgCreate, pointsToPath} from './SVG.Util';
+export {pointsToPath};
+import {vmlMixin, vmlCreate} from './SVG.VML';
+
+export var create = Browser.vml ? vmlCreate : svgCreate;
 
 /*
  * @class SVG
@@ -39,7 +42,6 @@ export {create, pointsToPath};
  * var circle = L.circle( center, { renderer: myRenderer } );
  * ```
  */
-
 
 export var SVG = Renderer.extend({
 
@@ -195,9 +197,9 @@ export var SVG = Renderer.extend({
 	}
 });
 
-
-
-
+if (Browser.vml) {
+	SVG.include(vmlMixin);
+}
 
 // @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
