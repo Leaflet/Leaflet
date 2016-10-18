@@ -89,6 +89,14 @@ export {CRS};
 export {Layer} from './layer/Layer';
 export {LayerGroup, layerGroup} from './layer/LayerGroup';
 export {FeatureGroup, featureGroup} from './layer/FeatureGroup';
+import {GeoJSON, geoJSON, geoJson, geometryToLayer, coordsToLatLng, coordsToLatLngs, latLngToCoords, latLngsToCoords, getFeature, asFeature} from './layer/GeoJSON';
+GeoJSON.geometryToLayer = geometryToLayer;
+GeoJSON.coordsToLatLng = coordsToLatLng;
+GeoJSON.coordsToLatLngs = coordsToLatLngs;
+GeoJSON.latLngToCoords = latLngToCoords;
+GeoJSON.latLngsToCoords = latLngsToCoords;
+GeoJSON.getFeature = getFeature;
+GeoJSON.asFeature = asFeature;
 
 export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
 
@@ -117,7 +125,6 @@ export {TileLayer, tileLayer};
 export {Renderer} from './layer/vector/Renderer';
 export {Canvas, canvas} from './layer/vector/Canvas';
 export {SVG, svg} from './layer/vector/SVG';
-// / TODO: VML
 import './layer/vector/Renderer.getRenderer';	// This is a bit of a hack, but needed because circular dependencies
 
 export {CircleMarker, circleMarker} from './layer/vector/CircleMarker';

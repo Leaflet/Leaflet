@@ -1,6 +1,8 @@
 import {Point} from '../geometry/Point';
 import {stamp, splitWords} from '../core/Util';
 import {pointer, touch, android, win, chrome, gecko, edge} from '../core/Browser';
+import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
+import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
 
 /*
  * @namespace DomEvent
@@ -74,24 +76,16 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-// // FIXME!!!!
-// // Needs DomEvent.Pointer.js
-// 	if (pointer && type.indexOf('touch') === 0) {
-// 		this.addPointerListener(obj, type, handler, id);
+	if (pointer && type.indexOf('touch') === 0) {
+		// Needs DomEvent.Pointer.js
+		addPointerListener(obj, type, handler, id);
 
-// 	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener &&
-// 	           !(pointer && chrome)) {
-// 		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
-// 		// See #5180
-// 		this.addDoubleTapListener(obj, handler, id);
-// 	} else if ('addEventListener' in obj) {
+	} else if (touch && (type === 'dblclick') && addDoubleTapListener && !(pointer && chrome)) {
+		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
+		// See #5180
+		addDoubleTapListener(obj, handler, id);
 
-// // FIXME!!!!
-// // Needs DomEvent.DoubleTap.js
-// 	} else if (touch && (type === 'dblclick') && this.addDoubleTapListener) {
-// 		this.addDoubleTapListener(obj, handler, id);
-
-	/* } else */if ('addEventListener' in obj) {
+	} else if ('addEventListener' in obj) {
 
 		if (type === 'mousewheel') {
 			obj.addEventListener('onwheel' in obj ? 'wheel' : 'mousewheel', handler, false);
@@ -130,10 +124,10 @@ function removeOne(obj, type, fn, context) {
 	if (!handler) { return this; }
 
 	if (pointer && type.indexOf('touch') === 0) {
-		this.removePointerListener(obj, type, id);
+		removePointerListener(obj, type, id);
 
-	} else if (touch && (type === 'dblclick') && this.removeDoubleTapListener) {
-		this.removeDoubleTapListener(obj, id);
+	} else if (touch && (type === 'dblclick') && removeDoubleTapListener) {
+		removeDoubleTapListener(obj, id);
 
 	} else if ('removeEventListener' in obj) {
 
