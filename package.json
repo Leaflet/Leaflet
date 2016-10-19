@@ -5,7 +5,7 @@
   "devDependencies": {
     "eslint": "^3.5.0 <3.6.0",
     "eslint-config-mourner": "^2.0.1",
-    "git-rev": "^0.2.1",
+    "git-rev-sync": "^1.8.0",
     "happen": "~0.3.1",
     "jake": "~8.0.12",
     "karma": "^1.3.0",
@@ -21,6 +21,8 @@
     "phantomjs-prebuilt": "^2.1.12",
     "prosthetic-hand": "^1.3.1",
     "rollup": "^0.36.1",
+    "rollup-plugin-es3": "^1.0.3",
+    "rollup-plugin-json": "^2.0.2",
     "rollup-watch": "^2.5.0",
     "source-map": "^0.5.6",
     "uglify-js": "~2.7.3"
@@ -35,8 +37,8 @@
     "release": "./build/publish.sh",
     "lint": "eslint src",
     "lintfix": "eslint src --fix",
-    "rollup": "rollup src/Leaflet.js -f umd -n L -m -o dist/leaflet-rollup-src.js",
-    "watch": "rollup src/Leaflet.js -f umd -n L -m -w -c build/rollup-watch-config.js -o debug/leaflet-rollup-src.js",
+    "rollup": "rollup -c build/rollup-config.js",
+    "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-rollup-src.js -c -m -o dist/leaflet-rollup.js"
   },
   "eslintConfig": {

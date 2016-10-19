@@ -1,5 +1,6 @@
 
-export var version = '1.0.2';
+import {version} from '../package.json';
+export {version};
 
 // control
 
@@ -30,7 +31,7 @@ export {Class} from './core/Class';
 
 import {Evented} from './core/Events';
 export {Evented};
-export var Mixin = {Events: Evented.prototype};
+// export var Mixin = {Events: Evented.prototype};
 
 export {Handler} from './core/Handler';
 
