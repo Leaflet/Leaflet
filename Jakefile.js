@@ -14,7 +14,7 @@ For a custom build, open build/build.html in the browser and follow the instruct
 
 var build = require('./build/build.js'),
     buildDocs = require('./build/docs'),
-    git = require('git-rev');
+    git = require('git-rev-sync');
 
 function hint(msg, args) {
 	return function () {
@@ -29,16 +29,14 @@ function hint(msg, args) {
 
 // Returns the version string in package.json, plus a semver build metadata if
 // this is not an official release
-function calculateVersion(officialRelease, callback) {
+function calculateVersion(officialRelease) {
 
 	var version = require('./package.json').version;
 
 	if (officialRelease) {
-		callback(version);
+		return version;
 	} else {
-		git.short(function(str) {
-			callback (version + '+' + str);
-		});
+		return version + '+' + git.short();
 	}
 }
 
@@ -50,9 +48,7 @@ task('lintspec', {async: true}, hint('Checking for specs JS errors...', 'spec/su
 
 desc('Combine and compress Leaflet source files');
 task('build', {async: true}, function (compsBase32, buildName, officialRelease) {
-	calculateVersion(officialRelease, function(v){
-		build.build(complete, v, compsBase32, buildName);
-	});
+	build.build(complete, calculateVersion(officialRelease), compsBase32, buildName);
 });
 
 desc('Run PhantomJS tests');

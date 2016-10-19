@@ -1,3 +1,6 @@
+var es3 = require('rollup-plugin-es3');
+var json = require('rollup-plugin-json');
+
 // Karma configuration
 module.exports = function (config) {
 
@@ -47,7 +50,10 @@ module.exports = function (config) {
 		},
 		rollupPreprocessor: {
 			rollup: {
-				plugins: []
+				plugins: [
+// 					es3(),
+					json()
+				]
 			},
 			bundle: {
 				format: 'umd',
