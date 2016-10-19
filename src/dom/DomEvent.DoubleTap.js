@@ -10,7 +10,7 @@ var _touchstart = Browser.msPointer ? 'MSPointerDown' : Browser.pointer ? 'point
     _pre = '_leaflet_';
 
 // inspired by Zepto touch code by Thomas Fuchs
-export function addDoubleTapListener (obj, handler, id) {
+export function addDoubleTapListener(obj, handler, id) {
 	var last, touch,
 	    doubleTap = false,
 	    delay = 250;
@@ -37,9 +37,8 @@ export function addDoubleTapListener (obj, handler, id) {
 
 	function onTouchEnd() {
 		if (doubleTap && !touch.cancelBubble) {
-			if (L.Browser.pointer) {
-				if ((!L.Browser.edge) || e.pointerType === 'mouse') { return; }
-
+			if (Browser.pointer) {
+				if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
 				// work around .type being readonly with MSPointer* events
 				var newTouch = {},
 				    prop, i;
@@ -56,28 +55,19 @@ export function addDoubleTapListener (obj, handler, id) {
 	obj[_pre + _touchend + id] = onTouchEnd;
 	obj[_pre + 'dblclick' + id] = handler;
 
-<<<<<<< HEAD
-		// On some platforms (notably, chrome<55 on win10 + touchscreen + mouse),
-		// the browser doesn't fire touchend/pointerup events but does fire
-		// native dblclicks. See #4127.
-		// Edge 14 also fires native dblclicks, but only for pointerType mouse, see #5180.
-		obj.addEventListener('dblclick', handler, false);
-=======
 	obj.addEventListener(_touchstart, onTouchStart, false);
 	obj.addEventListener(_touchend, onTouchEnd, false);
->>>>>>> ES6-ify: DomEvent.Pointer, DomEvent.DoubleTap
 
-	// On some platforms (notably, chrome on win10 + touchscreen + mouse),
+	// On some platforms (notably, chrome<55 on win10 + touchscreen + mouse),
 	// the browser doesn't fire touchend/pointerup events but does fire
 	// native dblclicks. See #4127.
-	if (!Browser.edge) {
-		obj.addEventListener('dblclick', handler, false);
-	}
+	// Edge 14 also fires native dblclicks, but only for pointerType mouse, see #5180.
+	obj.addEventListener('dblclick', handler, false);
 
 	return this;
 }
 
-export function removeDoubleTapListener (obj, id) {
+export function removeDoubleTapListener(obj, id) {
 	var touchstart = obj[_pre + _touchstart + id],
 	    touchend = obj[_pre + _touchend + id],
 	    dblclick = obj[_pre + 'dblclick' + id];

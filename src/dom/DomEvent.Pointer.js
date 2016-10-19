@@ -1,15 +1,16 @@
 import {preventDefault} from './DomEvent';
 import * as Util from '../core/Util';
+import * as Browser from '../core/Browser';
 
 /*
  * Extends L.DomEvent to provide touch support for Internet Explorer and Windows-based devices.
  */
 
 
-var POINTER_DOWN =   L.Browser.msPointer ? 'MSPointerDown'   : 'pointerdown',
-    POINTER_MOVE =   L.Browser.msPointer ? 'MSPointerMove'   : 'pointermove',
-    POINTER_UP =     L.Browser.msPointer ? 'MSPointerUp'     : 'pointerup',
-    POINTER_CANCEL = L.Browser.msPointer ? 'MSPointerCancel' : 'pointercancel',
+var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown',
+    POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove',
+    POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup',
+    POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel',
     TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'],
 
     _pointers = {},
@@ -21,7 +22,7 @@ export var _pointersCount = 0;
 // Provides a touch events wrapper for (ms)pointer events.
 // ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
-export function addPointerListener (obj, type, handler, id) {
+export function addPointerListener(obj, type, handler, id) {
 
 	if (type === 'touchstart') {
 		_addPointerStart(obj, handler, id);
@@ -36,7 +37,7 @@ export function addPointerListener (obj, type, handler, id) {
 	return this;
 }
 
-export function removePointerListener (obj, type, id) {
+export function removePointerListener(obj, type, id) {
 	var handler = obj['_leaflet_' + type + id];
 
 	if (type === 'touchstart') {
@@ -53,7 +54,7 @@ export function removePointerListener (obj, type, id) {
 	return this;
 }
 
-function _addPointerStart (obj, handler, id) {
+function _addPointerStart(obj, handler, id) {
 	var onDown = Util.bind(function (e) {
 		if (e.pointerType !== 'mouse' && e.pointerType !== e.MSPOINTER_TYPE_MOUSE && e.pointerType !== e.MSPOINTER_TYPE_MOUSE) {
 			// In IE11, some touch events needs to fire for form controls, or
@@ -84,23 +85,23 @@ function _addPointerStart (obj, handler, id) {
 	}
 }
 
-function _globalPointerDown (e) {
+function _globalPointerDown(e) {
 	_pointers[e.pointerId] = e;
 	_pointersCount++;
 }
 
-function _globalPointerMove (e) {
+function _globalPointerMove(e) {
 	if (_pointers[e.pointerId]) {
 		_pointers[e.pointerId] = e;
 	}
 }
 
-function _globalPointerUp (e) {
+function _globalPointerUp(e) {
 	delete _pointers[e.pointerId];
 	_pointersCount--;
 }
 
-function _handlePointer (e, handler) {
+function _handlePointer(e, handler) {
 	e.touches = [];
 	for (var i in _pointers) {
 		e.touches.push(_pointers[i]);
@@ -110,7 +111,7 @@ function _handlePointer (e, handler) {
 	handler(e);
 }
 
-function _addPointerMove (obj, handler, id) {
+function _addPointerMove(obj, handler, id) {
 	var onMove = function (e) {
 		// don't fire touch moves when mouse isn't down
 		if ((e.pointerType === e.MSPOINTER_TYPE_MOUSE || e.pointerType === 'mouse') && e.buttons === 0) { return; }
@@ -122,7 +123,7 @@ function _addPointerMove (obj, handler, id) {
 	obj.addEventListener(POINTER_MOVE, onMove, false);
 }
 
-function _addPointerEnd (obj, handler, id) {
+function _addPointerEnd(obj, handler, id) {
 	var onUp = function (e) {
 		this._handlePointer(e, handler);
 	};

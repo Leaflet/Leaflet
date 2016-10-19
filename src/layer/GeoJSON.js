@@ -1,3 +1,4 @@
+import {LayerGroup} from './LayerGroup';
 import {FeatureGroup} from './FeatureGroup';
 import * as Util from '../core/Util';
 import {Marker} from './marker/Marker';
@@ -160,14 +161,14 @@ export var GeoJSON = FeatureGroup.extend({
 // Creates a `Layer` from a given GeoJSON feature. Can use a custom
 // [`pointToLayer`](#geojson-pointtolayer) and/or [`coordsToLatLng`](#geojson-coordstolatlng)
 // functions if provided as options.
-export function geometryToLayer (geojson, options) {
+export function geometryToLayer(geojson, options) {
 
 	var geometry = geojson.type === 'Feature' ? geojson.geometry : geojson,
-		coords = geometry ? geometry.coordinates : null,
-		layers = [],
-		pointToLayer = options && options.pointToLayer,
-		coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
-		latlng, latlngs, i, len;
+	    coords = geometry ? geometry.coordinates : null,
+	    layers = [],
+	    pointToLayer = options && options.pointToLayer,
+	    coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
+	    latlng, latlngs, i, len;
 
 	if (!coords && !geometry) {
 		return null;
@@ -217,7 +218,7 @@ export function geometryToLayer (geojson, options) {
 // @function coordsToLatLng(coords: Array): LatLng
 // Creates a `LatLng` object from an array of 2 numbers (longitude, latitude)
 // or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.
-export function coordsToLatLng (coords) {
+export function coordsToLatLng(coords) {
 	return new LatLng(coords[1], coords[0], coords[2]);
 }
 
@@ -225,7 +226,7 @@ export function coordsToLatLng (coords) {
 // Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array.
 // `levelsDeep` specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
 // Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
-export function coordsToLatLngs (coords, levelsDeep, coordsToLatLng) {
+export function coordsToLatLngs(coords, levelsDeep, coordsToLatLng) {
 	var latlngs = [];
 
 	for (var i = 0, len = coords.length, latlng; i < len; i++) {
@@ -241,7 +242,7 @@ export function coordsToLatLngs (coords, levelsDeep, coordsToLatLng) {
 
 // @function latLngToCoords(latlng: LatLng): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
-export function latLngToCoords (latlng) {
+export function latLngToCoords(latlng) {
 	return latlng.alt !== undefined ?
 			[latlng.lng, latlng.lat, latlng.alt] :
 			[latlng.lng, latlng.lat];
@@ -250,7 +251,7 @@ export function latLngToCoords (latlng) {
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
-export function latLngsToCoords (latlngs, levelsDeep, closed) {
+export function latLngsToCoords(latlngs, levelsDeep, closed) {
 	var coords = [];
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
@@ -266,7 +267,7 @@ export function latLngsToCoords (latlngs, levelsDeep, closed) {
 	return coords;
 }
 
-export function getFeature (layer, newGeometry) {
+export function getFeature(layer, newGeometry) {
 	return layer.feature ?
 			Util.extend({}, layer.feature, {geometry: newGeometry}) :
 			asFeature(newGeometry);
@@ -346,7 +347,7 @@ Polygon.include({
 
 
 // @namespace LayerGroup
-L.LayerGroup.include({
+LayerGroup.include({
 	toMultiPoint: function () {
 		var coords = [];
 
@@ -399,9 +400,9 @@ L.LayerGroup.include({
 // Creates a GeoJSON layer. Optionally accepts an object in
 // [GeoJSON format](http://geojson.org/geojson-spec.html) to display on the map
 // (you can alternatively add it later with `addData` method) and an `options` object.
-export function geoJSON (geojson, options) {
+export function geoJSON(geojson, options) {
 	return new GeoJSON(geojson, options);
-};
+}
 
 // Backward compatibility.
 export var geoJson = geoJSON;

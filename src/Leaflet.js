@@ -97,6 +97,7 @@ GeoJSON.latLngToCoords = latLngToCoords;
 GeoJSON.latLngsToCoords = latLngsToCoords;
 GeoJSON.getFeature = getFeature;
 GeoJSON.asFeature = asFeature;
+export {GeoJSON, geoJSON, geoJson};
 
 export {ImageOverlay, imageOverlay} from './layer/ImageOverlay';
 
