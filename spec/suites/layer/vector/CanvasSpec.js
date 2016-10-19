@@ -157,4 +157,36 @@ describe('Canvas', function () {
 		});
 	});
 
+	it('removes vector on next animation frame', function (done) {
+		var layer = L.circle([0, 0]).addTo(map),
+		    layerId = L.stamp(layer),
+		    canvas = map.getRenderer(layer);
+
+		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+
+		map.removeLayer(layer);
+		// Defer check due to how Canvas renderer manages layer removal.
+		L.Util.requestAnimFrame(function () {
+			expect(canvas._layers.hasOwnProperty(layerId)).to.be(false);
+			done();
+		}, this);
+	});
+
+	it('adds vectors even if they have been removed just before', function (done) {
+		var layer = L.circle([0, 0]).addTo(map),
+		    layerId = L.stamp(layer),
+		    canvas = map.getRenderer(layer);
+
+		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+
+		map.removeLayer(layer);
+		map.addLayer(layer);
+		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
+		L.Util.requestAnimFrame(function () {
+			expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+			done();
+		}, this);
+	});
+
 });
