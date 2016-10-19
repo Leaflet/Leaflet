@@ -76,6 +76,25 @@ npm install
 You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder).
 For a custom build with selected components, open `build/build.html` in the browser and follow the instructions from there.
 
+#### Setting up `rollup`
+
+FIXME: this needs better wording.
+
+```
+npm install
+```
+or
+```
+yarn install
+```
+
+To generate a static build: run `npm run-script rollup` or `yarn run rollup`.
+
+To generate a build and watch for changes: `npm run-script watch` or `yarn run rollup`.
+
+Using the files in `debug/`, or running the unit tests (`spec/index.html`) in a graphical browser requires generating a build and watch for changes.
+
+
 ### Making Changes to Leaflet Source
 
 If you're not yet familiar with the way GitHub works (forking, pull requests, etc.),

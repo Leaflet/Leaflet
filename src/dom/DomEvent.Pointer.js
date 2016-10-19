@@ -125,7 +125,7 @@ function _addPointerMove(obj, handler, id) {
 
 function _addPointerEnd(obj, handler, id) {
 	var onUp = function (e) {
-		this._handlePointer(e, handler);
+		_handlePointer(e, handler);
 	};
 
 	obj['_leaflet_touchend' + id] = onUp;

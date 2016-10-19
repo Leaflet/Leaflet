@@ -3,7 +3,7 @@ var fs = require('fs'),
     zlib = require('zlib'),
     SourceNode = require( 'source-map' ).SourceNode;
 
-    deps = require('./deps.js').deps;
+//     deps = require('./deps.js').deps;
 
 function getFiles(compsBase32) {
 	var memo = {},

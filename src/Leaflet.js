@@ -136,7 +136,7 @@ export {Rectangle, rectangle} from './layer/vector/Rectangle';
 
 import * as LineUtil from './geometry/LineUtil';
 export {LineUtil};
-import * as PolyUtil from './geometry/LineUtil';
+import * as PolyUtil from './geometry/PolyUtil';
 export {PolyUtil};
 
 // map

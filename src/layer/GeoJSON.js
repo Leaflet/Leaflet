@@ -167,7 +167,7 @@ export function geometryToLayer(geojson, options) {
 	    coords = geometry ? geometry.coordinates : null,
 	    layers = [],
 	    pointToLayer = options && options.pointToLayer,
-	    coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
+	    _coordsToLatLng = options && options.coordsToLatLng || coordsToLatLng,
 	    latlng, latlngs, i, len;
 
 	if (!coords && !geometry) {
@@ -176,29 +176,29 @@ export function geometryToLayer(geojson, options) {
 
 	switch (geometry.type) {
 	case 'Point':
-		latlng = coordsToLatLng(coords);
+		latlng = _coordsToLatLng(coords);
 		return pointToLayer ? pointToLayer(geojson, latlng) : new Marker(latlng);
 
 	case 'MultiPoint':
 		for (i = 0, len = coords.length; i < len; i++) {
-			latlng = coordsToLatLng(coords[i]);
+			latlng = _coordsToLatLng(coords[i]);
 			layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new Marker(latlng));
 		}
 		return new FeatureGroup(layers);
 
 	case 'LineString':
 	case 'MultiLineString':
-		latlngs = this.coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, coordsToLatLng);
+		latlngs = coordsToLatLngs(coords, geometry.type === 'LineString' ? 0 : 1, _coordsToLatLng);
 		return new Polyline(latlngs, options);
 
 	case 'Polygon':
 	case 'MultiPolygon':
-		latlngs = this.coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, coordsToLatLng);
+		latlngs = coordsToLatLngs(coords, geometry.type === 'Polygon' ? 1 : 2, _coordsToLatLng);
 		return new Polygon(latlngs, options);
 
 	case 'GeometryCollection':
 		for (i = 0, len = geometry.geometries.length; i < len; i++) {
-			var layer = this.geometryToLayer({
+			var layer = geometryToLayer({
 				geometry: geometry.geometries[i],
 				type: 'Feature',
 				properties: geojson.properties
@@ -226,13 +226,13 @@ export function coordsToLatLng(coords) {
 // Creates a multidimensional array of `LatLng`s from a GeoJSON coordinates array.
 // `levelsDeep` specifies the nesting level (0 is for an array of points, 1 for an array of arrays of points, etc., 0 by default).
 // Can use a custom [`coordsToLatLng`](#geojson-coordstolatlng) function.
-export function coordsToLatLngs(coords, levelsDeep, coordsToLatLng) {
+export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 	var latlngs = [];
 
 	for (var i = 0, len = coords.length, latlng; i < len; i++) {
 		latlng = levelsDeep ?
-				this.coordsToLatLngs(coords[i], levelsDeep - 1, coordsToLatLng) :
-				(coordsToLatLng || this.coordsToLatLng)(coords[i]);
+				coordsToLatLngs(coords[i], levelsDeep - 1, _coordsToLatLng) :
+				(_coordsToLatLng || coordsToLatLng)(coords[i]);
 
 		latlngs.push(latlng);
 	}

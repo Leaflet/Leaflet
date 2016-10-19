@@ -21,6 +21,7 @@
     "phantomjs-prebuilt": "^2.1.12",
     "prosthetic-hand": "^1.3.1",
     "rollup": "^0.36.1",
+    "rollup-watch": "^2.5.0",
     "source-map": "^0.5.6",
     "uglify-js": "~2.7.3"
   },
@@ -33,7 +34,9 @@
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src",
+    "lintfix": "eslint src --fix",
     "rollup": "rollup src/Leaflet.js -f umd -n L -m -o dist/leaflet-rollup-src.js",
+    "watch": "rollup src/Leaflet.js -f umd -n L -m -w -c build/rollup-watch-config.js -o debug/leaflet-rollup-src.js",
     "uglify": "uglifyjs dist/leaflet-rollup-src.js -c -m -o dist/leaflet-rollup.js"
   },
   "eslintConfig": {
