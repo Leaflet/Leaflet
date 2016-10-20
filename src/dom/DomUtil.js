@@ -184,28 +184,37 @@ L.DomUtil = {
 	// Resets the 3D CSS transform of `el` so it is translated by `offset` pixels
 	// and optionally scaled by `scale`. Does not have an effect if the
 	// browser doesn't support 3D CSS transforms.
-	setTransform: function (el, offset, scale) {
+	setTransform: function (el, offset, scale, bearing, pivot) {
 		var pos = offset || new L.Point(0, 0);
 
-		el.style[L.DomUtil.TRANSFORM] =
-			(L.Browser.ie3d ?
+		if (!bearing) {
+			el.style[L.DomUtil.TRANSFORM] =
+				(L.Browser.ie3d ?
 				'translate(' + pos.x + 'px,' + pos.y + 'px)' :
 				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
-			(scale ? ' scale(' + scale + ')' : '');
+				(scale ? ' scale(' + scale + ')' : '');
+		} else {
+			pos = pos.rotateFrom(bearing, pivot);
+
+			el.style[L.DomUtil.TRANSFORM] =
+				'translate3d(' + pos.x + 'px,' + pos.y + 'px' + ',0)' +
+				(scale ? ' scale(' + scale + ')' : '') +
+				' rotate(' + bearing + 'rad)';
+		}
 	},
 
 	// @function setPosition(el: HTMLElement, position: Point)
 	// Sets the position of `el` to coordinates specified by `position`,
 	// using CSS translate or top/left positioning depending on the browser
 	// (used by Leaflet internally to position its layers).
-	setPosition: function (el, point) { // (HTMLElement, Point[, Boolean])
+	setPosition: function (el, point, bearing, pivot) { // (HTMLElement, Point[, Boolean])
 
 		/*eslint-disable */
 		el._leaflet_pos = point;
 		/*eslint-enable */
 
 		if (L.Browser.any3d) {
-			L.DomUtil.setTransform(el, point);
+			L.DomUtil.setTransform(el, point, undefined, bearing, pivot);
 		} else {
 			el.style.left = point.x + 'px';
 			el.style.top = point.y + 'px';
@@ -219,7 +228,11 @@ L.DomUtil = {
 		// so it's safe to cache the position for performance
 
 		return el._leaflet_pos || new L.Point(0, 0);
-	}
+	},
+
+	// Constants for rotation
+	DEG_TO_RAD: Math.PI / 180,
+	RAD_TO_DEG: 180 / Math.PI
 };
 
 

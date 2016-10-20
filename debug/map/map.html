@@ -23,9 +23,12 @@
 			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
 
-		var map = L.map('map')
-				.setView([50.5, 30.51], 15)
-				.addLayer(osm);
+		var map = L.map('map', {
+            rotate: true,
+        }).addLayer(osm);
+
+        map.setView([50.5, 30.51], 15)
+        map.setBearing(45);
 
 		var markers = new L.FeatureGroup();
 
