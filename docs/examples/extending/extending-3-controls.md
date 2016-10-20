@@ -62,11 +62,11 @@ Depending on the type of event, a map handler can attach event listeners to the 
 
 ## Controls
 
-You already know controls - the zoom control in the top left corner, the scale at the bottom right, the layer switcher at the top right. At their core, a `L.Control` is a HTML Element which is at a static position in the map container.
+You already know controls - the zoom control in the top left corner, the scale at the bottom left, the layer switcher at the top right. At their core, an `L.Control` is an HTML Element that is at a static position in the map container.
 
-To make a control, simply inherit from `L.Control` and implement `onAdd()` and `onRemove()`. These methods work in a similar way to their `L.Layer` counterparts (they run whenever the control is added to or removed from the map), except that `onAdd()` must return the instance of `HTMLElement` that represents the control - adding it to the map is done automatically, and so it's removing it.
+To make a control, simply inherit from `L.Control` and implement `onAdd()` and `onRemove()`. These methods work in a similar way to their `L.Layer` counterparts (they run whenever the control is added to or removed from the map), except that `onAdd()` must return an instance of `HTMLElement` representing the control. Adding the element to the map is done automatically, and so is removing it.
 
-The most simple example of a custom control would be a watermark, which is just an image:
+The simplest example of a custom control would be a watermark, which is just an image:
 
 	L.Control.Watermark = L.Control.extend({
 		onAdd: function(map) {
@@ -91,7 +91,7 @@ The most simple example of a custom control would be a watermark, which is just 
 
 {% include frame.html url="watermark.html" %}
 
-If you custom control has interactive elements such as clickable buttons, remember to use `L.DomEvent.on()` inside `onAdd()` and `L.DomEvent.off()` inside `onRemove()`.
+If your custom control has interactive elements such as clickable buttons, remember to use `L.DomEvent.on()` inside `onAdd()` and `L.DomEvent.off()` inside `onRemove()`.
 
 If your custom control consists of more than one HTML element (like `L.Control.Zoom`, which has two buttons), you'll have to create the whole hierarchy of elements and return the topmost container.
 
