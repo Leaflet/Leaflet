@@ -89,7 +89,9 @@ L.Canvas = L.Renderer.extend({
 		this._layers[L.stamp(layer)] = layer;
 	},
 
-	_addPath: L.Util.falseFn,
+	_addPath: function (layer) {
+		layer._removed = false;
+	},
 
 	_removePath: function (layer) {
 		layer._removed = true;
