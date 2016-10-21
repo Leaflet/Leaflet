@@ -231,7 +231,7 @@ L.Canvas = L.Renderer.extend({
 
 		ctx.globalCompositeOperation = clear ? 'destination-out' : 'source-over';
 
-		if (options.fill) {
+		if (options.fill || clear) {
 			ctx.globalAlpha = clear ? 1 : options.fillOpacity;
 			ctx.fillStyle = options.fillColor || options.color;
 			ctx.fill(options.fillRule || 'evenodd');
