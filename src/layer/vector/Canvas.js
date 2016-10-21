@@ -288,15 +288,19 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_handleMouseHover: function (e, point) {
-		var id, layer;
+		var id, layer, candidateHoveredLayer;
 
 		for (id in this._drawnLayers) {
 			layer = this._drawnLayers[id];
 			if (layer.options.interactive && layer._containsPoint(point)) {
-				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
-				this._fireEvent([layer], e, 'mouseover');
-				this._hoveredLayer = layer;
+				candidateHoveredLayer = layer;
 			}
+		}
+
+		if (candidateHoveredLayer && candidateHoveredLayer !== this._hoveredLayer) {
+			L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
+			this._fireEvent([candidateHoveredLayer], e, 'mouseover');
+			this._hoveredLayer = candidateHoveredLayer;
 		}
 
 		if (this._hoveredLayer) {
