@@ -362,6 +362,18 @@ Sometimes you don't want to load a map, just big custom images. **Really** big o
 			<a href="https://github.com/aparshin">Alexander Parshin</a>
 		</td>
 	</tr>
+	<tr>
+	  <td>
+	    <a href="https://github.com/commenthol/leaflet-rastercoords">leaflet-rastercoords</a>
+	  </td><td>
+	    Renders large tiled images generated with
+	    <a href="http://github.com/commenthol/gdal2tiles-leaflet">gdal2tiles-leaflet</a>.
+	    Image raster coordinates can be used to set markers, etc.
+	    (<a href="http://commenthol.github.io/leaflet-rastercoords">demo</a>).
+	  </td><td>
+	    <a href="https://github.com/commenthol">Commenthol</a>
+	  </td>
+	</tr>
 </table>
 
 
