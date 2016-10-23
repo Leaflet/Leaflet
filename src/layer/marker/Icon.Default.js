@@ -33,7 +33,8 @@ L.Icon.Default = L.Icon.extend({
 		// `L.Icon.Default` will try to auto-detect the absolute location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right absolute path.
-		return (this.options.imagePath || L.Icon.Default.imagePath) + L.Icon.prototype._getIconUrl.call(this, name);
+		var path = this.options.imagePath || L.Icon.Default.imagePath;
+		return path.indexOf("data:") === 0 ? path : path + L.Icon.prototype._getIconUrl.call(this, name);
 	},
 
 	_detectIconPath: function () {
@@ -44,6 +45,6 @@ L.Icon.Default = L.Icon.extend({
 		document.body.removeChild(el);
 
 		return path.indexOf('url') === 0 ?
-			path.replace(/^url\([\"\']?/, '').replace(/marker-icon\.png[\"\']?\)$/, '') : '';
+			path.replace(/^url\([\"\']?/, '').replace(/(marker-icon\.png)?[\"\']?\)$/, '') : '';
 	}
 });
