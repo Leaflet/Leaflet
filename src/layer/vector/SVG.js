@@ -189,11 +189,11 @@ export var SVG = Renderer.extend({
 
 	// SVG does not have the concept of zIndex so we resort to changing the DOM order of elements
 	_bringToFront: function (layer) {
-		L.DomUtil.toFront(layer._path);
+		DomUtil.toFront(layer._path);
 	},
 
 	_bringToBack: function (layer) {
-		L.DomUtil.toBack(layer._path);
+		DomUtil.toBack(layer._path);
 	}
 });
 

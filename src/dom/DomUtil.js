@@ -1,4 +1,7 @@
-import {on, off, preventDefault} from './DomEvent';
+import * as DomEvent from './DomEvent';
+import * as Util from '../core/Util';
+import {Point} from '../geometry/Point';
+import * as Browser from '../core/Browser';
 
 /*
  * @namespace DomUtil
@@ -105,7 +108,7 @@ export function hasClass(el, name) {
 // Adds `name` to the element's class attribute.
 export function addClass(el, name) {
 	if (el.classList !== undefined) {
-		var classes = L.Util.splitWords(name);
+		var classes = Util.splitWords(name);
 		for (var i = 0, len = classes.length; i < len; i++) {
 			el.classList.add(classes[i]);
 		}
@@ -121,7 +124,7 @@ export function removeClass(el, name) {
 	if (el.classList !== undefined) {
 		el.classList.remove(name);
 	} else {
-		setClass(el, L.Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
+		setClass(el, Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
 	}
 }
 
@@ -196,10 +199,10 @@ export function testProp(props) {
 // and optionally scaled by `scale`. Does not have an effect if the
 // browser doesn't support 3D CSS transforms.
 export function setTransform(el, offset, scale) {
-	var pos = offset || new L.Point(0, 0);
+	var pos = offset || new Point(0, 0);
 
 	el.style[TRANSFORM] =
-		(L.Browser.ie3d ?
+		(Browser.ie3d ?
 			'translate(' + pos.x + 'px,' + pos.y + 'px)' :
 			'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
 		(scale ? ' scale(' + scale + ')' : '');
@@ -215,7 +218,7 @@ export function setPosition(el, point) {
 	el._leaflet_pos = point;
 	/*eslint-enable */
 
-	if (L.Browser.any3d) {
+	if (Browser.any3d) {
 		setTransform(el, point);
 	} else {
 		el.style.left = point.x + 'px';
@@ -229,7 +232,7 @@ export function getPosition(el) {
 	// this method is only used for elements previously positioned using setPosition,
 	// so it's safe to cache the position for performance
 
-	return el._leaflet_pos || new L.Point(0, 0);
+	return el._leaflet_pos || new Point(0, 0);
 }
 
 // @function disableTextSelection()
@@ -245,10 +248,10 @@ export var enableTextSelection;
 var _userSelect;
 if ('onselectstart' in document) {
 	disableTextSelection = function () {
-		on(window, 'selectstart', preventDefault);
+		DomEvent.on(window, 'selectstart', DomEvent.preventDefault);
 	};
 	enableTextSelection = function () {
-		off(window, 'selectstart', preventDefault);
+		DomEvent.off(window, 'selectstart', DomEvent.preventDefault);
 	};
 } else {
 	var userSelectProperty = testProp(
@@ -273,13 +276,13 @@ if ('onselectstart' in document) {
 // As [`L.DomUtil.disableTextSelection`](#domutil-disabletextselection), but
 // for `dragstart` DOM events, usually generated when the user drags an image.
 export function disableImageDrag() {
-	on(window, 'dragstart', preventDefault);
+	DomEvent.on(window, 'dragstart', DomEvent.preventDefault);
 }
 
 // @function enableImageDrag()
 // Cancels the effects of a previous [`L.DomUtil.disableImageDrag`](#domutil-disabletextselection).
 export function enableImageDrag() {
-	off(window, 'dragstart', preventDefault);
+	DomEvent.off(window, 'dragstart', DomEvent.preventDefault);
 }
 
 var _outlineElement, _outlineStyle;
@@ -297,7 +300,7 @@ export function preventOutline(element) {
 	_outlineElement = element;
 	_outlineStyle = element.style.outline;
 	element.style.outline = 'none';
-	on(window, 'keydown', restoreOutline);
+	DomEvent.on(window, 'keydown', restoreOutline);
 }
 
 // @function restoreOutline()
@@ -307,5 +310,5 @@ export function restoreOutline() {
 	_outlineElement.style.outline = _outlineStyle;
 	_outlineElement = undefined;
 	_outlineStyle = undefined;
-	off(window, 'keydown', restoreOutline);
+	DomEvent.off(window, 'keydown', restoreOutline);
 }

@@ -28,6 +28,9 @@ import {
 	skipped as skippedDOMEvent
 } from '../dom/DomEvent';
 
+import * as DomUtil from '../dom/DomUtil';
+import {PosAnimation} from '../dom/PosAnimation';
+
 /*
  * @class Map
  * @aka L.Map
@@ -168,14 +171,14 @@ export var Map = Evented.extend({
 		this.callInitHooks();
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
-		this._zoomAnimated = L.DomUtil.TRANSITION && isAny3D && !isMobileOpera &&
+		this._zoomAnimated = DomUtil.TRANSITION && isAny3D && !isMobileOpera &&
 				this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
 		if (this._zoomAnimated) {
 			this._createAnimProxy();
-			onDOMEvent(this._proxy, L.DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+			onDOMEvent(this._proxy, DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
 
 		this._addLayers(this.options.layers);
@@ -330,7 +333,7 @@ export var Map = Evented.extend({
 		}
 
 		if (!this._panAnim) {
-			this._panAnim = new L.PosAnimation();
+			this._panAnim = new PosAnimation();
 
 			this._panAnim.on({
 				'step': this._onPanTransitionStep,
@@ -345,7 +348,7 @@ export var Map = Evented.extend({
 
 		// animate pan unless animate: false specified
 		if (options.animate !== false) {
-			L.DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
+			DomUtil.addClass(this._mapPane, 'leaflet-pan-anim');
 
 			var newPos = this._getMapPanePos().subtract(offset).round();
 			this._panAnim.run(this._mapPane, newPos, options.duration || 0.25, options.easeLinearity);
@@ -719,7 +722,7 @@ export var Map = Evented.extend({
 			this._containerId = undefined;
 		}
 
-		L.DomUtil.remove(this._mapPane);
+		DomUtil.remove(this._mapPane);
 
 		if (this._clearControlPos) {
 			this._clearControlPos();
@@ -748,7 +751,7 @@ export var Map = Evented.extend({
 	// as a children of the main map pane if not set.
 	createPane: function (name, container) {
 		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
-		    pane = L.DomUtil.create('div', className, container || this._mapPane);
+		    pane = DomUtil.create('div', className, container || this._mapPane);
 
 		if (name) {
 			this._panes[name] = pane;
@@ -1026,7 +1029,7 @@ export var Map = Evented.extend({
 	// map initialization methods
 
 	_initContainer: function (id) {
-		var container = this._container = L.DomUtil.get(id);
+		var container = this._container = DomUtil.get(id);
 
 		if (!container) {
 			throw new Error('Map container not found.');
@@ -1043,14 +1046,14 @@ export var Map = Evented.extend({
 
 		this._fadeAnimated = this.options.fadeAnimation && isAny3D;
 
-		L.DomUtil.addClass(container, 'leaflet-container' +
+		DomUtil.addClass(container, 'leaflet-container' +
 			(isTouch ? ' leaflet-touch' : '') +
 			(isRetina ? ' leaflet-retina' : '') +
 			(isIELT9 ? ' leaflet-oldie' : '') +
 			(isSafari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
-		var position = L.DomUtil.getStyle(container, 'position');
+		var position = DomUtil.getStyle(container, 'position');
 
 		if (position !== 'absolute' && position !== 'relative' && position !== 'fixed') {
 			container.style.position = 'relative';
@@ -1080,7 +1083,7 @@ export var Map = Evented.extend({
 		// Pane that contains all other map panes
 
 		this._mapPane = this.createPane('mapPane', this._container);
-		L.DomUtil.setPosition(this._mapPane, new Point(0, 0));
+		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		// @pane tilePane: HTMLElement = 200
 		// Pane for `GridLayer`s and `TileLayer`s
@@ -1102,8 +1105,8 @@ export var Map = Evented.extend({
 		this.createPane('popupPane');
 
 		if (!this.options.markerZoomAnimation) {
-			L.DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
-			L.DomUtil.addClass(panes.shadowPane, 'leaflet-zoom-hide');
+			DomUtil.addClass(panes.markerPane, 'leaflet-zoom-hide');
+			DomUtil.addClass(panes.shadowPane, 'leaflet-zoom-hide');
 		}
 	},
 
@@ -1112,7 +1115,7 @@ export var Map = Evented.extend({
 
 	// @section Map state change events
 	_resetView: function (center, zoom) {
-		L.DomUtil.setPosition(this._mapPane, new Point(0, 0));
+		DomUtil.setPosition(this._mapPane, new Point(0, 0));
 
 		var loading = !this._loaded;
 		this._loaded = true;
@@ -1195,7 +1198,7 @@ export var Map = Evented.extend({
 	},
 
 	_rawPanBy: function (offset) {
-		L.DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
+		DomUtil.setPosition(this._mapPane, this._getMapPanePos().subtract(offset));
 	},
 
 	_getZoomSpan: function () {
@@ -1311,7 +1314,7 @@ export var Map = Evented.extend({
 
 		if (type === 'mousedown') {
 			// prevents outline when clicking on keyboard-focusable element
-			L.DomUtil.preventOutline(e.target || e.srcElement);
+			DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
 		this._fireDOMEvent(e, type);
@@ -1347,7 +1350,7 @@ export var Map = Evented.extend({
 		};
 
 		if (e.type !== 'keypress') {
-			var isMarker = target instanceof L.Marker;
+			var isMarker = (target.options && 'icon' in target.options);
 			data.containerPoint = isMarker ?
 					this.latLngToContainerPoint(target.getLatLng()) : this.mouseEventToContainerPoint(e);
 			data.layerPoint = this.containerPointToLayerPoint(data.containerPoint);
@@ -1391,7 +1394,7 @@ export var Map = Evented.extend({
 	// private methods for getting map state
 
 	_getMapPanePos: function () {
-		return L.DomUtil.getPosition(this._mapPane) || new Point(0, 0);
+		return DomUtil.getPosition(this._mapPane) || new Point(0, 0);
 	},
 
 	_moved: function () {
@@ -1418,7 +1421,7 @@ export var Map = Evented.extend({
 
 	_latLngBoundsToNewLayerBounds: function (latLngBounds, zoom, center) {
 		var topLeft = this._getNewPixelOrigin(center, zoom);
-		return L.bounds([
+		return toBounds([
 			this.project(latLngBounds.getSouthWest(), zoom)._subtract(topLeft),
 			this.project(latLngBounds.getNorthWest(), zoom)._subtract(topLeft),
 			this.project(latLngBounds.getSouthEast(), zoom)._subtract(topLeft),
@@ -1502,7 +1505,7 @@ export var Map = Evented.extend({
 	},
 
 	_onPanTransitionEnd: function () {
-		L.DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
+		DomUtil.removeClass(this._mapPane, 'leaflet-pan-anim');
 		this.fire('moveend');
 	},
 
@@ -1520,14 +1523,14 @@ export var Map = Evented.extend({
 
 	_createAnimProxy: function () {
 
-		var proxy = this._proxy = L.DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
+		var proxy = this._proxy = DomUtil.create('div', 'leaflet-proxy leaflet-zoom-animated');
 		this._panes.mapPane.appendChild(proxy);
 
 		this.on('zoomanim', function (e) {
-			var prop = L.DomUtil.TRANSFORM,
+			var prop = DomUtil.TRANSFORM,
 			    transform = proxy.style[prop];
 
-			L.DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
+			DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
 
 			// workaround for case when transform is the same and so transitionend event is not fired
 			if (transform === proxy.style[prop] && this._animatingZoom) {
@@ -1538,7 +1541,7 @@ export var Map = Evented.extend({
 		this.on('load moveend', function () {
 			var c = this.getCenter(),
 			    z = this.getZoom();
-			L.DomUtil.setTransform(proxy, this.project(c, z), this.getZoomScale(z, 1));
+			DomUtil.setTransform(proxy, this.project(c, z), this.getZoomScale(z, 1));
 		}, this);
 	},
 
@@ -1586,7 +1589,7 @@ export var Map = Evented.extend({
 			this._animateToCenter = center;
 			this._animateToZoom = zoom;
 
-			L.DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
+			DomUtil.addClass(this._mapPane, 'leaflet-zoom-anim');
 		}
 
 		// @event zoomanim: ZoomAnimEvent
@@ -1604,7 +1607,7 @@ export var Map = Evented.extend({
 	_onZoomTransitionEnd: function () {
 		if (!this._animatingZoom) { return; }
 
-		L.DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
+		DomUtil.removeClass(this._mapPane, 'leaflet-zoom-anim');
 
 		this._animatingZoom = false;
 

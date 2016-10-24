@@ -3,6 +3,7 @@ import {Layer} from './Layer';
 import {setOptions, falseFn, bind} from '../core/Util';
 import {toLatLngBounds} from '../geo/LatLngBounds';
 import {Bounds} from '../geometry/Bounds';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class ImageOverlay
@@ -59,7 +60,7 @@ export var ImageOverlay = Layer.extend({
 		}
 
 		if (this.options.interactive) {
-			L.DomUtil.addClass(this._image, 'leaflet-interactive');
+			DomUtil.addClass(this._image, 'leaflet-interactive');
 			this.addInteractiveTarget(this._image);
 		}
 
@@ -68,7 +69,7 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	onRemove: function () {
-		L.DomUtil.remove(this._image);
+		DomUtil.remove(this._image);
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);
 		}
@@ -96,7 +97,7 @@ export var ImageOverlay = Layer.extend({
 	// Brings the layer to the top of all overlays.
 	bringToFront: function () {
 		if (this._map) {
-			L.DomUtil.toFront(this._image);
+			DomUtil.toFront(this._image);
 		}
 		return this;
 	},
@@ -105,7 +106,7 @@ export var ImageOverlay = Layer.extend({
 	// Brings the layer to the bottom of all overlays.
 	bringToBack: function () {
 		if (this._map) {
-			L.DomUtil.toBack(this._image);
+			DomUtil.toBack(this._image);
 		}
 		return this;
 	},
@@ -158,7 +159,7 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	_initImage: function () {
-		var img = this._image = L.DomUtil.create('img',
+		var img = this._image = DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
 		img.onselectstart = falseFn;
@@ -178,7 +179,7 @@ export var ImageOverlay = Layer.extend({
 		var scale = this._map.getZoomScale(e.zoom),
 		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
-		L.DomUtil.setTransform(this._image, offset, scale);
+		DomUtil.setTransform(this._image, offset, scale);
 	},
 
 	_reset: function () {
@@ -188,14 +189,14 @@ export var ImageOverlay = Layer.extend({
 		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
 		    size = bounds.getSize();
 
-		L.DomUtil.setPosition(image, bounds.min);
+		DomUtil.setPosition(image, bounds.min);
 
 		image.style.width  = size.x + 'px';
 		image.style.height = size.y + 'px';
 	},
 
 	_updateOpacity: function () {
-		L.DomUtil.setOpacity(this._image, this.options.opacity);
+		DomUtil.setOpacity(this._image, this.options.opacity);
 	}
 });
 

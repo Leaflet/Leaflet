@@ -59,7 +59,7 @@ export var opera12 = 'OTransition' in style;
 export var win = navigator.platform.indexOf('Win') === 0;
 
 // @property ie3d: Boolean; `true` for all Internet Explorer versions supporting CSS transforms.
-export var ie32 = ie && ('transition' in style);
+export var ie3d = ie && ('transition' in style);
 
 // @property webkit3d: Boolean; `true` for webkit-based browsers supporting CSS transforms.
 export var webkit3d = ('WebKitCSSMatrix' in window) && ('m11' in new window.WebKitCSSMatrix()) && !android23;
@@ -69,7 +69,7 @@ export var gecko3d = 'MozPerspective' in style;
 
 // @property any3d: Boolean
 // `true` for all browsers supporting CSS transforms.
-export var any3d = !window.L_DISABLE_3D && (ie32 || webkit3d || gecko3d) && !opera12 && !phantom;
+export var any3d = !window.L_DISABLE_3D && (ie3d || webkit3d || gecko3d) && !opera12 && !phantom;
 
 // @property mobile: Boolean; `true` for all browsers running in a mobile device.
 export var mobile = typeof orientation !== 'undefined' || userAgentContains('mobile');

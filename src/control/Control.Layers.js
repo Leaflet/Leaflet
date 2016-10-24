@@ -1,7 +1,9 @@
 
 import {Control} from './Control';
-import {setOptions, stamp, bind} from '../core/Util';
-import {touch, android} from '../core/Browser';
+import * as Util from '../core/Util';
+import * as Browser from '../core/Browser';
+import * as DomEvent from '../dom/DomEvent';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class Control.Layers
@@ -76,7 +78,7 @@ export var Layers = Control.extend({
 	},
 
 	initialize: function (baseLayers, overlays, options) {
-		setOptions(this, options);
+		Util.setOptions(this, options);
 
 		this._layers = [];
 		this._lastZIndex = 0;
@@ -128,7 +130,7 @@ export var Layers = Control.extend({
 	removeLayer: function (layer) {
 		layer.off('add remove', this._onLayerChange, this);
 
-		var obj = this._getLayer(stamp(layer));
+		var obj = this._getLayer(Util.stamp(layer));
 		if (obj) {
 			this._layers.splice(this._layers.indexOf(obj), 1);
 		}
@@ -138,14 +140,14 @@ export var Layers = Control.extend({
 	// @method expand(): this
 	// Expand the control container if collapsed.
 	expand: function () {
-		L.DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
+		DomUtil.addClass(this._container, 'leaflet-control-layers-expanded');
 		this._form.style.height = null;
 		var acceptableHeight = this._map.getSize().y - (this._container.offsetTop + 50);
 		if (acceptableHeight < this._form.clientHeight) {
-			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
+			DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
 			this._form.style.height = acceptableHeight + 'px';
 		} else {
-			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
+			DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
 		}
 		this._checkDisabledLayers();
 		return this;
@@ -154,48 +156,48 @@ export var Layers = Control.extend({
 	// @method collapse(): this
 	// Collapse the control container if expanded.
 	collapse: function () {
-		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+		DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
 		return this;
 	},
 
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
-		    container = this._container = L.DomUtil.create('div', className),
+		    container = this._container = DomUtil.create('div', className);
 		    collapsed = this.options.collapsed;
 
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
 
-		L.DomEvent.disableClickPropagation(container);
-		if (!touch) {
-			L.DomEvent.disableScrollPropagation(container);
+		DomEvent.disableClickPropagation(container);
+		if (!Browser.touch) {
+			DomEvent.disableScrollPropagation(container);
 		}
 
-		var form = this._form = L.DomUtil.create('form', className + '-list');
+		var form = this._form = DomUtil.create('form', className + '-list');
 			this._map.on('click', this.collapse, this);
 
 			if (!android) {
-				L.DomEvent.on(container, {
+				DomEvent.on(container, {
 					mouseenter: this.expand,
 					mouseleave: this.collapse
 				}, this);
 			}
 		}
 
-		var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
+		var link = this._layersLink = DomUtil.create('a', className + '-toggle', container);
 		link.href = '#';
 		link.title = 'Layers';
 
-		if (touch) {
-			L.DomEvent
+		if (Browser.touch) {
+			DomEvent
 				.on(link, 'click', L.DomEvent.stop)
 				.on(link, 'click', this.expand, this);
 		} else {
-			L.DomEvent.on(link, 'focus', this.expand, this);
+			DomEvent.on(link, 'focus', this.expand, this);
 		}
 
 		// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
-		L.DomEvent.on(form, 'click', function () {
+		DomEvent.on(form, 'click', function () {
 			setTimeout(bind(this._onInputClick, this), 0);
 		}, this);
 
@@ -205,9 +207,9 @@ export var Layers = Control.extend({
 			this.expand();
 		}
 
-		this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
-		this._separator = L.DomUtil.create('div', className + '-separator', form);
-		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
+		this._baseLayersList = DomUtil.create('div', className + '-base', form);
+		this._separator = DomUtil.create('div', className + '-separator', form);
+		this._overlaysList = DomUtil.create('div', className + '-overlays', form);
 
 		container.appendChild(form);
 	},
@@ -215,7 +217,7 @@ export var Layers = Control.extend({
 	_getLayer: function (id) {
 		for (var i = 0; i < this._layers.length; i++) {
 
-			if (this._layers[i] && stamp(this._layers[i].layer) === id) {
+			if (this._layers[i] && Util.stamp(this._layers[i].layer) === id) {
 				return this._layers[i];
 			}
 		}
@@ -245,8 +247,8 @@ export var Layers = Control.extend({
 	_update: function () {
 		if (!this._container) { return this; }
 
-		L.DomUtil.empty(this._baseLayersList);
-		L.DomUtil.empty(this._overlaysList);
+		DomUtil.empty(this._baseLayersList);
+		DomUtil.empty(this._overlaysList);
 
 		var baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
 
@@ -274,7 +276,7 @@ export var Layers = Control.extend({
 			this._update();
 		}
 
-		var obj = this._getLayer(stamp(e.target));
+		var obj = this._getLayer(Util.stamp(e.target));
 
 		// @namespace Map
 		// @section Layer events
@@ -320,9 +322,9 @@ export var Layers = Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
-		input.layerId = stamp(obj.layer);
+		input.layerId = Util.stamp(obj.layer);
 
-		L.DomEvent.on(input, 'click', this._onInputClick, this);
+		DomEvent.on(input, 'click', this._onInputClick, this);
 
 		var name = document.createElement('span');
 		name.innerHTML = ' ' + obj.name;

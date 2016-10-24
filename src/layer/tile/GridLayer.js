@@ -442,7 +442,7 @@ export var GridLayer = Layer.extend({
 		var x2 = Math.floor(x / 2),
 		    y2 = Math.floor(y / 2),
 		    z2 = z - 1,
-		    coords2 = new L.Point(+x2, +y2);
+		    coords2 = new Point(+x2, +y2);
 		coords2.z = +z2;
 
 		var key = this._tileCoordsToKey(coords2),
@@ -468,7 +468,7 @@ export var GridLayer = Layer.extend({
 		for (var i = 2 * x; i < 2 * x + 2; i++) {
 			for (var j = 2 * y; j < 2 * y + 2; j++) {
 
-				var coords = new L.Point(i, j);
+				var coords = new Point(i, j);
 				coords.z = z + 1;
 
 				var key = this._tileCoordsToKey(coords),

@@ -1,11 +1,12 @@
 
+import * as Browser from '../core/Browser';
 import {DivOverlay} from './DivOverlay';
-import {touch} from '../core/Browser';
 import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
 import {setOptions} from '../core/Util';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class Tooltip
@@ -106,7 +107,7 @@ export var Tooltip = DivOverlay.extend({
 	getEvents: function () {
 		var events = DivOverlay.prototype.getEvents.call(this);
 
-		if (touch && !this.options.permanent) {
+		if (Browser.touch && !this.options.permanent) {
 			events.preclick = this._close;
 		}
 
@@ -123,7 +124,7 @@ export var Tooltip = DivOverlay.extend({
 		var prefix = 'leaflet-tooltip',
 		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
-		this._contentNode = this._container = L.DomUtil.create('div', className);
+		this._contentNode = this._container = DomUtil.create('div', className);
 	},
 
 	_updateLayout: function () {},
@@ -155,12 +156,12 @@ export var Tooltip = DivOverlay.extend({
 			pos = pos.subtract(toPoint(tooltipWidth + anchor.x - offset.x, tooltipHeight / 2 - anchor.y - offset.y, true));
 		}
 
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-right');
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-left');
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-top');
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
-		L.DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
-		L.DomUtil.setPosition(container, pos);
+		DomUtil.removeClass(container, 'leaflet-tooltip-right');
+		DomUtil.removeClass(container, 'leaflet-tooltip-left');
+		DomUtil.removeClass(container, 'leaflet-tooltip-top');
+		DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
+		DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
+		DomUtil.setPosition(container, pos);
 	},
 
 	_updatePosition: function () {
@@ -172,7 +173,7 @@ export var Tooltip = DivOverlay.extend({
 		this.options.opacity = opacity;
 
 		if (this._container) {
-			L.DomUtil.setOpacity(this._container, opacity);
+			DomUtil.setOpacity(this._container, opacity);
 		}
 	},
 
@@ -298,7 +299,7 @@ Layer.include({
 			if (this._tooltip.options.sticky) {
 				events.mousemove = this._moveTooltip;
 			}
-			if (L.Browser.touch) {
+			if (Browser.touch) {
 				events.click = this._openTooltip;
 			}
 		} else {
@@ -341,7 +342,7 @@ Layer.include({
 			// Tooltip container may not be defined if not permanent and never
 			// opened.
 			if (this._tooltip.options.interactive && this._tooltip._container) {
-				L.DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
+				DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
 				this.addInteractiveTarget(this._tooltip._container);
 			}
 		}
@@ -355,7 +356,7 @@ Layer.include({
 		if (this._tooltip) {
 			this._tooltip._close();
 			if (this._tooltip.options.interactive && this._tooltip._container) {
-				L.DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
+				DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
 				this.removeInteractiveTarget(this._tooltip._container);
 			}
 		}

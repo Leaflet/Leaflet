@@ -3,6 +3,7 @@ import {Layer} from './Layer';
 import {setOptions, bind} from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 import {toPoint} from '../geometry/Point';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class DivOverlay
@@ -45,7 +46,7 @@ export var DivOverlay = Layer.extend({
 		}
 
 		if (map._fadeAnimated) {
-			L.DomUtil.setOpacity(this._container, 0);
+			DomUtil.setOpacity(this._container, 0);
 		}
 
 		clearTimeout(this._removeTimeout);
@@ -53,7 +54,7 @@ export var DivOverlay = Layer.extend({
 		this.update();
 
 		if (map._fadeAnimated) {
-			L.DomUtil.setOpacity(this._container, 1);
+			DomUtil.setOpacity(this._container, 1);
 		}
 
 		this.bringToFront();
@@ -61,10 +62,10 @@ export var DivOverlay = Layer.extend({
 
 	onRemove: function (map) {
 		if (map._fadeAnimated) {
-			L.DomUtil.setOpacity(this._container, 0);
-			this._removeTimeout = setTimeout(bind(L.DomUtil.remove, L.DomUtil, this._container), 200);
+			DomUtil.setOpacity(this._container, 0);
+			this._removeTimeout = setTimeout(bind(DomUtil.remove, undefined, this._container), 200);
 		} else {
-			L.DomUtil.remove(this._container);
+			DomUtil.remove(this._container);
 		}
 	},
 
@@ -144,7 +145,7 @@ export var DivOverlay = Layer.extend({
 	// Brings this popup in front of other popups (in the same map pane).
 	bringToFront: function () {
 		if (this._map) {
-			L.DomUtil.toFront(this._container);
+			DomUtil.toFront(this._container);
 		}
 		return this;
 	},
@@ -153,7 +154,7 @@ export var DivOverlay = Layer.extend({
 	// Brings this popup to the back of other popups (in the same map pane).
 	bringToBack: function () {
 		if (this._map) {
-			L.DomUtil.toBack(this._container);
+			DomUtil.toBack(this._container);
 		}
 		return this;
 	},
@@ -183,7 +184,7 @@ export var DivOverlay = Layer.extend({
 		    anchor = this._getAnchor();
 
 		if (this._zoomAnimated) {
-			L.DomUtil.setPosition(this._container, pos.add(anchor));
+			DomUtil.setPosition(this._container, pos.add(anchor));
 		} else {
 			offset = offset.add(pos).add(anchor);
 		}

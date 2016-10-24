@@ -1,4 +1,5 @@
 import {Point} from './Point';
+import * as Util from '../core/Util';
 
 
 /*
@@ -231,5 +232,5 @@ export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 
 export function _flat(latlngs) {
 	// true if it's a flat array of latlngs; false if nested
-	return !L.Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
+	return !Util.isArray(latlngs[0]) || (typeof latlngs[0][0] !== 'object' && typeof latlngs[0][0] !== 'undefined');
 }

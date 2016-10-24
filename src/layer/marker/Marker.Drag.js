@@ -1,5 +1,5 @@
 import {Handler} from '../../core/Handler';
-import {addClass, removeClass, setPosition, getPosition} from '../../dom/DomUtil';
+import * as DomUtil from '../../dom/DomUtil';
 import {Draggable} from '../../dom/Draggable';
 
 /*
@@ -38,7 +38,7 @@ export var MarkerDrag = Handler.extend({
 			dragend: this._onDragEnd
 		}, this).enable();
 
-		addClass(icon, 'leaflet-marker-draggable');
+		DomUtil.addClass(icon, 'leaflet-marker-draggable');
 	},
 
 	removeHooks: function () {
@@ -49,7 +49,7 @@ export var MarkerDrag = Handler.extend({
 		}, this).disable();
 
 		if (this._marker._icon) {
-			removeClass(this._marker._icon, 'leaflet-marker-draggable');
+			DomUtil.removeClass(this._marker._icon, 'leaflet-marker-draggable');
 		}
 	},
 
@@ -75,12 +75,12 @@ export var MarkerDrag = Handler.extend({
 	_onDrag: function (e) {
 		var marker = this._marker,
 		    shadow = marker._shadow,
-		    iconPos = getPosition(marker._icon),
+		iconPos = DomUtil.getPosition(marker._icon),
 		    latlng = marker._map.layerPointToLatLng(iconPos);
 
 		// update shadow position
 		if (shadow) {
-			setPosition(shadow, iconPos);
+			DomUtil.setPosition(shadow, iconPos);
 		}
 
 		marker._latlng = latlng;

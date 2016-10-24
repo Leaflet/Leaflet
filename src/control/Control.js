@@ -1,7 +1,8 @@
 
 import {Class} from '../core/Class';
 import {Map} from '../map/Map';
-import {setOptions} from '../core/Util';
+import * as Util from '../core/Util';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class Control
@@ -23,7 +24,7 @@ export var Control = Class.extend({
 	},
 
 	initialize: function (options) {
-		setOptions(this, options);
+		Util.setOptions(this, options);
 	},
 
 	/* @section
@@ -70,7 +71,7 @@ export var Control = Class.extend({
 		    pos = this.getPosition(),
 		    corner = map._controlCorners[pos];
 
-		L.DomUtil.addClass(container, 'leaflet-control');
+		DomUtil.addClass(container, 'leaflet-control');
 
 		if (pos.indexOf('bottom') !== -1) {
 			corner.insertBefore(container, corner.firstChild);
@@ -88,7 +89,7 @@ export var Control = Class.extend({
 			return this;
 		}
 
-		L.DomUtil.remove(this._container);
+		DomUtil.remove(this._container);
 
 		if (this.onRemove) {
 			this.onRemove(this._map);
@@ -145,12 +146,12 @@ Map.include({
 		var corners = this._controlCorners = {},
 		    l = 'leaflet-',
 		    container = this._controlContainer =
-		            L.DomUtil.create('div', l + 'control-container', this._container);
+		            DomUtil.create('div', l + 'control-container', this._container);
 
 		function createCorner(vSide, hSide) {
 			var className = l + vSide + ' ' + l + hSide;
 
-			corners[vSide + hSide] = L.DomUtil.create('div', className, container);
+			corners[vSide + hSide] = DomUtil.create('div', className, container);
 		}
 
 		createCorner('top', 'left');
@@ -160,6 +161,6 @@ Map.include({
 	},
 
 	_clearControlPos: function () {
-		L.DomUtil.remove(this._controlContainer);
+		DomUtil.remove(this._controlContainer);
 	}
 });

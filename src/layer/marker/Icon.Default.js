@@ -1,5 +1,5 @@
 import {Icon} from './Icon';
-import {create, getStyle} from '../../dom/DomUtil';
+import * as DomUtil from '../../dom/DomUtil';
 
 /*
  * @miniclass Icon.Default (Icon)
@@ -43,9 +43,9 @@ export var IconDefault = Icon.extend({
 	},
 
 	_detectIconPath: function () {
-		var el = create('div',  'leaflet-default-icon-path', document.body);
-		var path = getStyle(el, 'background-image') ||
-		           getStyle(el, 'backgroundImage');	// IE8
+		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+		var path = DomUtil.getStyle(el, 'background-image') ||
+		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);
 

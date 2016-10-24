@@ -1,6 +1,6 @@
 import {Point} from '../geometry/Point';
-import {stamp, splitWords} from '../core/Util';
-import {pointer, touch, android, win, chrome, gecko, edge} from '../core/Browser';
+import * as Util from '../core/Util';
+import * as Browser from '../core/Browser';
 import {addPointerListener, removePointerListener} from './DomEvent.Pointer';
 import {addDoubleTapListener, removeDoubleTapListener} from './DomEvent.DoubleTap';
 
@@ -27,7 +27,7 @@ export function on(obj, types, fn, context) {
 			addOne(obj, type, types[type], fn);
 		}
 	} else {
-		types = splitWords(types);
+		types = Util.splitWords(types);
 
 		for (var i = 0, len = types.length; i < len; i++) {
 			addOne(obj, types[i], fn, context);
@@ -53,7 +53,7 @@ export function off(obj, types, fn, context) {
 			removeOne(obj, type, types[type], fn);
 		}
 	} else {
-		types = splitWords(types);
+		types = Util.splitWords(types);
 
 		for (var i = 0, len = types.length; i < len; i++) {
 			removeOne(obj, types[i], fn, context);
@@ -66,7 +66,7 @@ export function off(obj, types, fn, context) {
 var eventsKey = '_leaflet_events';
 
 function addOne(obj, type, fn, context) {
-	var id = type + stamp(fn) + (context ? '_' + stamp(context) : '');
+	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');
 
 	if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
 
@@ -76,11 +76,12 @@ function addOne(obj, type, fn, context) {
 
 	var originalHandler = handler;
 
-	if (pointer && type.indexOf('touch') === 0) {
+	if (Browser.pointer && type.indexOf('touch') === 0) {
 		// Needs DomEvent.Pointer.js
 		addPointerListener(obj, type, handler, id);
 
-	} else if (touch && (type === 'dblclick') && addDoubleTapListener && !(pointer && chrome)) {
+	} else if (Browser.touch && (type === 'dblclick') && addDoubleTapListener &&
+	           !(Browser.pointer && Browser.chrome)) {
 		// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
 		// See #5180
 		addDoubleTapListener(obj, handler, id);
@@ -100,7 +101,7 @@ function addOne(obj, type, fn, context) {
 			obj.addEventListener(type === 'mouseenter' ? 'mouseover' : 'mouseout', handler, false);
 
 		} else {
-			if (type === 'click' && android) {
+			if (type === 'click' && Browser.android) {
 				handler = function (e) {
 					filterClick(e, originalHandler);
 				};
@@ -118,15 +119,15 @@ function addOne(obj, type, fn, context) {
 
 function removeOne(obj, type, fn, context) {
 
-	var id = type + stamp(fn) + (context ? '_' + stamp(context) : ''),
+	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : ''),
 	    handler = obj[eventsKey] && obj[eventsKey][id];
 
 	if (!handler) { return this; }
 
-	if (pointer && type.indexOf('touch') === 0) {
+	if (Browser.pointer && type.indexOf('touch') === 0) {
 		removePointerListener(obj, type, id);
 
-	} else if (touch && (type === 'dblclick') && removeDoubleTapListener) {
+	} else if (Browser.touch && (type === 'dblclick') && removeDoubleTapListener) {
 		removeDoubleTapListener(obj, id);
 
 	} else if ('removeEventListener' in obj) {
@@ -223,8 +224,8 @@ export function getMousePosition(e, container) {
 // Chrome on Win scrolls double the pixels as in other platforms (see #4538),
 // and Firefox scrolls device pixels, not CSS pixels
 var wheelPxFactor =
-	(win && chrome) ? 2 :
-	gecko ? window.devicePixelRatio : 1;
+	(Browser.win && Browser.chrome) ? 2 :
+	Browser.gecko ? window.devicePixelRatio : 1;
 
 // @function getWheelDelta(ev: DOMEvent): Number
 // Gets normalized wheel delta from a mousewheel DOM event, in vertical
@@ -232,7 +233,7 @@ var wheelPxFactor =
 // Events from pointing devices without precise scrolling are mapped to
 // a best guess of 60 pixels.
 export function getWheelDelta(e) {
-	return (edge) ? e.wheelDeltaY / 2 : // Don't trust window-geometry-based delta
+	return (Browser.edge) ? e.wheelDeltaY / 2 : // Don't trust window-geometry-based delta
 	       (e.deltaY && e.deltaMode === 0) ? -e.deltaY / wheelPxFactor : // Pixels
 	       (e.deltaY && e.deltaMode === 1) ? -e.deltaY * 20 : // Lines
 	       (e.deltaY && e.deltaMode === 2) ? -e.deltaY * 60 : // Pages

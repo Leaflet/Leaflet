@@ -1,4 +1,4 @@
-import {preventDefault} from './DomEvent';
+import * as DomEvent from './DomEvent';
 import * as Util from '../core/Util';
 import * as Browser from '../core/Browser';
 
@@ -61,7 +61,7 @@ function _addPointerStart(obj, handler, id) {
 			// the controls will stop working. We keep a whitelist of tag names that
 			// need these events. For other target tags, we prevent default on the event.
 			if (TAG_WHITE_LIST.indexOf(e.target.tagName) < 0) {
-				preventDefault(e);
+				DomEvent.preventDefault(e);
 			} else {
 				return;
 			}

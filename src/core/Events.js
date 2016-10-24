@@ -1,5 +1,5 @@
 import {Class} from './Class';
-import {bind, extend, stamp, splitWords, falseFn} from './Util';
+import * as Util from './Util';
 
 /*
  * @class Evented
@@ -47,7 +47,7 @@ export var Evented = Class.extend({
 
 		} else {
 			// types can be a string of space-separated words
-			types = splitWords(types);
+			types = Util.splitWords(types);
 
 			for (var i = 0, len = types.length; i < len; i++) {
 				this._on(types[i], fn, context);
@@ -80,7 +80,7 @@ export var Evented = Class.extend({
 			}
 
 		} else {
-			types = splitWords(types);
+			types = Util.splitWords(types);
 
 			for (var i = 0, len = types.length; i < len; i++) {
 				this._off(types[i], fn, context);
@@ -134,7 +134,7 @@ export var Evented = Class.extend({
 		if (!fn) {
 			// Set all removed listeners to noop so they are not called if remove happens in fire
 			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].fn = falseFn;
+				listeners[i].fn = Util.falseFn;
 			}
 			// clear all listeners for a type if function isn't specified
 			delete this._events[type];
@@ -154,7 +154,7 @@ export var Evented = Class.extend({
 				if (l.fn === fn) {
 
 					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = falseFn;
+					l.fn = Util.falseFn;
 
 					if (this._firingCount) {
 						/* copy array in case events are being fired */
@@ -175,7 +175,7 @@ export var Evented = Class.extend({
 	fire: function (type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
-		var event = extend({}, data, {type: type, target: this});
+		var event = Util.extend({}, data, {type: type, target: this});
 
 		if (this._events) {
 			var listeners = this._events[type];
@@ -225,7 +225,7 @@ export var Evented = Class.extend({
 			return this;
 		}
 
-		var handler = bind(function () {
+		var handler = Util.bind(function () {
 			this
 			    .off(types, fn, context)
 			    .off(types, handler, context);
@@ -241,7 +241,7 @@ export var Evented = Class.extend({
 	// Adds an event parent - an `Evented` that will receive propagated events
 	addEventParent: function (obj) {
 		this._eventParents = this._eventParents || {};
-		this._eventParents[stamp(obj)] = obj;
+		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
 	},
 
@@ -249,14 +249,14 @@ export var Evented = Class.extend({
 	// Removes an event parent, so it will stop receiving propagated events
 	removeEventParent: function (obj) {
 		if (this._eventParents) {
-			delete this._eventParents[stamp(obj)];
+			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
 	},
 
 	_propagateEvent: function (e) {
 		for (var id in this._eventParents) {
-			this._eventParents[id].fire(e.type, extend({layer: e.target}, e), true);
+			this._eventParents[id].fire(e.type, Util.extend({layer: e.target}, e), true);
 		}
 	}
 });

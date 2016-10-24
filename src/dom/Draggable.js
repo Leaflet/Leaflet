@@ -1,10 +1,8 @@
 import {Evented} from '../core/Events';
-import {touch} from '../core/Browser';
-import {on, off, preventDefault} from '../dom/DomEvent';
-import {hasClass, preventOutline, disableImageDrag, disableTextSelection,
-        addClass, removeClass, getPosition, setPosition,
-        enableImageDrag, enableTextSelection} from '../dom/DomUtil';
-import {requestAnimFrame, cancelAnimFrame} from '../core/Util';
+import * as Browser from '../core/Browser';
+import * as DomEvent from './DomEvent';
+import * as DomUtil from './DomUtil';
+import * as Util from '../core/Util';
 import {Point} from '../geometry/Point';
 
 /*
@@ -24,7 +22,7 @@ import {Point} from '../geometry/Point';
  */
 
 var _dragging = false;
-var START = touch ? 'touchstart mousedown' : 'mousedown';
+var START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
 var END = {
 	mousedown: 'mouseup',
 	touchstart: 'touchend',
@@ -61,7 +59,7 @@ export var Draggable = Evented.extend({
 	enable: function () {
 		if (this._enabled) { return; }
 
-		on(this._dragStartTarget, START, this._onDown, this);
+		DomEvent.on(this._dragStartTarget, START, this._onDown, this);
 
 		this._enabled = true;
 	},
@@ -71,17 +69,13 @@ export var Draggable = Evented.extend({
 	disable: function () {
 		if (!this._enabled) { return; }
 
-<<<<<<< HEAD
 		// If we're currently dragging this draggable,
 		// disabling it counts as first ending the drag.
 		if (L.Draggable._dragging === this) {
 			this.finishDrag();
 		}
 
-		L.DomEvent.off(this._dragStartTarget, L.Draggable.START, this._onDown, this);
-=======
-		off(this._dragStartTarget, START, this._onDown, this);
->>>>>>> WIP: ES6-ify marker, icon, domutil, draggable.
+		DomEvent.off(this._dragStartTarget, START, this._onDown, this);
 
 		this._enabled = false;
 		this._moved = false;
@@ -97,22 +91,17 @@ export var Draggable = Evented.extend({
 
 		this._moved = false;
 
-		if (hasClass(this._element, 'leaflet-zoom-anim')) { return; }
+		if (DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
-<<<<<<< HEAD
-		if (L.Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
-		L.Draggable._dragging = this;  // Prevent dragging multiple objects at once.
-=======
 		if (_dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
-		_dragging = true;  // Prevent dragging multiple objects at once.
->>>>>>> WIP: ES6-ify marker, icon, domutil, draggable.
+		_dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
-			preventOutline(this._element);
+			DomUtil.preventOutline(this._element);
 		}
 
-		disableImageDrag();
-		disableTextSelection();
+		DomUtil.disableImageDrag();
+		DomUtil.disableTextSelection();
 
 		if (this._moving) { return; }
 
@@ -124,8 +113,8 @@ export var Draggable = Evented.extend({
 
 		this._startPoint = new Point(first.clientX, first.clientY);
 
-		on(document, MOVE[e.type], this._onMove, this);
-		on(document, END[e.type], this._onUp, this);
+		DomEvent.on(document, MOVE[e.type], this._onMove, this);
+		DomEvent.on(document, END[e.type], this._onUp, this);
 	},
 
 	_onMove: function (e) {
@@ -148,7 +137,7 @@ export var Draggable = Evented.extend({
 		if (!offset.x && !offset.y) { return; }
 		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
 
-		preventDefault(e);
+		DomEvent.preventDefault(e);
 
 		if (!this._moved) {
 			// @event dragstart: Event
@@ -156,9 +145,9 @@ export var Draggable = Evented.extend({
 			this.fire('dragstart');
 
 			this._moved = true;
-			this._startPos = getPosition(this._element).subtract(offset);
+			this._startPos = DomUtil.getPosition(this._element).subtract(offset);
 
-			addClass(document.body, 'leaflet-dragging');
+			DomUtil.addClass(document.body, 'leaflet-dragging');
 
 			this._lastTarget = e.target || e.srcElement;
 			// IE and Edge do not give the <use> element, so fetch it
@@ -166,15 +155,15 @@ export var Draggable = Evented.extend({
 			if ((window.SVGElementInstance) && (this._lastTarget instanceof SVGElementInstance)) {
 				this._lastTarget = this._lastTarget.correspondingUseElement;
 			}
-			addClass(this._lastTarget, 'leaflet-drag-target');
+			DomUtil.addClass(this._lastTarget, 'leaflet-drag-target');
 		}
 
 		this._newPos = this._startPos.add(offset);
 		this._moving = true;
 
-		cancelAnimFrame(this._animRequest);
+		Util.cancelAnimFrame(this._animRequest);
 		this._lastEvent = e;
-		this._animRequest = requestAnimFrame(this._updatePosition, this, true);
+		this._animRequest = Util.requestAnimFrame(this._updatePosition, this, true);
 	},
 
 	_updatePosition: function () {
@@ -184,7 +173,7 @@ export var Draggable = Evented.extend({
 		// Fired continuously during dragging *before* each corresponding
 		// update of the element's position.
 		this.fire('predrag', e);
-		setPosition(this._element, this._newPos);
+		DomUtil.setPosition(this._element, this._newPos);
 
 		// @event drag: Event
 		// Fired continuously during dragging.
@@ -202,24 +191,24 @@ export var Draggable = Evented.extend({
 	},
 
 	finishDrag: function () {
-		removeClass(document.body, 'leaflet-dragging');
+		DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {
-			removeClass(this._lastTarget, 'leaflet-drag-target');
+			DomUtil.removeClass(this._lastTarget, 'leaflet-drag-target');
 			this._lastTarget = null;
 		}
 
 		for (var i in MOVE) {
-			off(document, MOVE[i], this._onMove, this);
-			off(document, END[i], this._onUp, this);
+			DomEvent.off(document, MOVE[i], this._onMove, this);
+			DomEvent.off(document, END[i], this._onUp, this);
 		}
 
-		enableImageDrag();
-		enableTextSelection();
+		DomUtil.enableImageDrag();
+		DomUtil.enableTextSelection();
 
 		if (this._moved && this._moving) {
 			// ensure drag is not fired after dragend
-			cancelAnimFrame(this._animRequest);
+			Util.cancelAnimFrame(this._animRequest);
 
 			// @event dragend: DragEndEvent
 			// Fired when the drag ends.

@@ -2,7 +2,7 @@ import {Layer} from '../Layer';
 import {IconDefault} from './Icon.Default';
 import {setOptions} from '../../core/Util';
 import {toLatLng as latLng} from '../../geo/LatLng';
-import {addClass, remove, setPosition, setOpacity} from '../../dom/DomUtil';
+import * as DomUtil from '../../dom/DomUtil';
 import {MarkerDrag} from './Marker.Drag';
 
 /*
@@ -191,7 +191,7 @@ export var Marker = Layer.extend({
 			}
 		}
 
-		addClass(icon, classToAdd);
+		DomUtil.addClass(icon, classToAdd);
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
@@ -215,7 +215,7 @@ export var Marker = Layer.extend({
 		}
 
 		if (newShadow) {
-			addClass(newShadow, classToAdd);
+			DomUtil.addClass(newShadow, classToAdd);
 			newShadow.alt = '';
 		}
 		this._shadow = newShadow;
@@ -243,7 +243,7 @@ export var Marker = Layer.extend({
 			});
 		}
 
-		remove(this._icon);
+		DomUtil.remove(this._icon);
 		this.removeInteractiveTarget(this._icon);
 
 		this._icon = null;
@@ -251,16 +251,16 @@ export var Marker = Layer.extend({
 
 	_removeShadow: function () {
 		if (this._shadow) {
-			remove(this._shadow);
+			DomUtil.remove(this._shadow);
 		}
 		this._shadow = null;
 	},
 
 	_setPos: function (pos) {
-		setPosition(this._icon, pos);
+		DomUtil.setPosition(this._icon, pos);
 
 		if (this._shadow) {
-			setPosition(this._shadow, pos);
+			DomUtil.setPosition(this._shadow, pos);
 		}
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
@@ -282,7 +282,7 @@ export var Marker = Layer.extend({
 
 		if (!this.options.interactive) { return; }
 
-		addClass(this._icon, 'leaflet-interactive');
+		DomUtil.addClass(this._icon, 'leaflet-interactive');
 
 		this.addInteractiveTarget(this._icon);
 
@@ -315,10 +315,10 @@ export var Marker = Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		setOpacity(this._icon, opacity);
+		DomUtil.setOpacity(this._icon, opacity);
 
 		if (this._shadow) {
-			setOpacity(this._shadow, opacity);
+			DomUtil.setOpacity(this._shadow, opacity);
 		}
 	},
 

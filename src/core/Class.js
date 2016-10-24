@@ -1,4 +1,4 @@
-import {create, extend} from './Util.js';
+import * as Util from './Util';
 
 // @class Class
 // @aka L.Class
@@ -28,7 +28,7 @@ Class.extend = function (props) {
 
 	var parentProto = NewClass.__super__ = this.prototype;
 
-	var proto = create(parentProto);
+	var proto = Util.create(parentProto);
 	proto.constructor = NewClass;
 
 	NewClass.prototype = proto;
@@ -42,23 +42,23 @@ Class.extend = function (props) {
 
 	// mix static properties into the class
 	if (props.statics) {
-		extend(NewClass, props.statics);
+		Util.extend(NewClass, props.statics);
 		delete props.statics;
 	}
 
 	// mix includes into the prototype
 	if (props.includes) {
-		extend.apply(null, [proto].concat(props.includes));
+		Util.extend.apply(null, [proto].concat(props.includes));
 		delete props.includes;
 	}
 
 	// merge options
 	if (proto.options) {
-		props.options = extend(create(proto.options), props.options);
+		props.options = Util.extend(Util.create(proto.options), props.options);
 	}
 
 	// mix given properties into the prototype
-	extend(proto, props);
+	Util.extend(proto, props);
 
 	proto._initHooks = [];
 
@@ -85,14 +85,14 @@ Class.extend = function (props) {
 // @function include(properties: Object): this
 // [Includes a mixin](#class-includes) into the current class.
 Class.include = function (props) {
-	extend(this.prototype, props);
+	Util.extend(this.prototype, props);
 	return this;
 };
 
 // @function mergeOptions(options: Object): this
 // [Merges `options`](#class-options) into the defaults of the class.
 Class.mergeOptions = function (options) {
-	extend(this.prototype.options, options);
+	Util.extend(this.prototype.options, options);
 	return this;
 };
 

@@ -62,7 +62,7 @@ export function stamp(obj) {
 // `fn` will be called no more than one time per given amount of `time`. The arguments
 // received by the bound function will be any arguments passed when binding the
 // function, followed by any arguments passed when invoking the bound function.
-// Has an `L.bind` shortcut.
+// Has an `L.throttle` shortcut.
 export function throttle(fn, time, context) {
 	var lock, args, wrapperFn, later;
 

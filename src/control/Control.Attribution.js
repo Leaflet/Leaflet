@@ -1,7 +1,9 @@
 
 import {Control} from './Control';
 import {Map} from '../map/Map';
-import {setOptions} from '../core/Util';
+import * as Util from '../core/Util';
+import * as DomEvent from '../dom/DomEvent';
+import * as DomUtil from '../dom/DomUtil';
 
 /*
  * @class Control.Attribution
@@ -23,17 +25,15 @@ export var Attribution = Control.extend({
 	},
 
 	initialize: function (options) {
-		setOptions(this, options);
+		Util.setOptions(this, options);
 
 		this._attributions = {};
 	},
 
 	onAdd: function (map) {
 		map.attributionControl = this;
-		this._container = L.DomUtil.create('div', 'leaflet-control-attribution');
-		if (L.DomEvent) {
-			L.DomEvent.disableClickPropagation(this._container);
-		}
+		this._container = DomUtil.create('div', 'leaflet-control-attribution');
+		DomEvent.disableClickPropagation(this._container);
 
 		// TODO ugly, refactor
 		for (var i in map._layers) {
