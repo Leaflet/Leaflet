@@ -1247,6 +1247,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/mikhailshilkov">Mikhail Shilkov</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yakitoritabetai/Leaflet.LabelTextCollision">Leaflet.LabelTextCollision</a>
+		</td>
+		<td>
+			Leaflet.LabelTextCollision is a plug-in to display without colliding labels to leaflet. (<a href="https://yakitoritabetai.github.io/Leaflet.LabelTextCollision/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/yakitoritabetai">Kenta Hakoishi</a>
+		</td>
+	</tr>
 </table>
 
 
