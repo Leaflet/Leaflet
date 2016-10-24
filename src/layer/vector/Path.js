@@ -1,5 +1,5 @@
 import {Layer} from '../Layer';
-import {setOptions} from '../../core/Util';
+import * as Util from '../../core/Util';
 import {touch} from '../../core/Browser';
 
 /*
@@ -98,7 +98,7 @@ export var Path = Layer.extend({
 	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle: function (style) {
-		setOptions(this, style);
+		Util.setOptions(this, style);
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
 		}

@@ -1,6 +1,5 @@
-
 import {Layer} from './Layer';
-import {setOptions, falseFn, bind} from '../core/Util';
+import * as Util from '../core/Util';
 import {toLatLngBounds} from '../geo/LatLngBounds';
 import {Bounds} from '../geometry/Bounds';
 import * as DomUtil from '../dom/DomUtil';
@@ -47,7 +46,7 @@ export var ImageOverlay = Layer.extend({
 		this._url = url;
 		this._bounds = toLatLngBounds(bounds);
 
-		setOptions(this, options);
+		Util.setOptions(this, options);
 	},
 
 	onAdd: function () {
@@ -162,10 +161,10 @@ export var ImageOverlay = Layer.extend({
 		var img = this._image = DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
-		img.onselectstart = falseFn;
-		img.onmousemove = falseFn;
+		img.onselectstart = Util.falseFn;
+		img.onmousemove = Util.falseFn;
 
-		img.onload = bind(this.fire, this, 'load');
+		img.onload = Util.bind(this.fire, this, 'load');
 
 		if (this.options.crossOrigin) {
 			img.crossOrigin = '';

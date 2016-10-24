@@ -1,9 +1,9 @@
 import {Map} from '../Map';
-import {android23} from '../../core/Browser';
+import * as Browser from '../../core/Browser';
 import {Handler} from '../../core/Handler';
 import {Draggable} from '../../dom/Draggable';
-import {requestAnimFrame} from '../../core/Util';
-import {addClass, removeClass} from '../../dom/DomUtil';
+import * as Util from '../../core/Util';
+import * as DomUtil from '../../dom/DomUtil';
 import {toLatLngBounds as latLngBounds} from '../../geo/LatLngBounds';
 import {toBounds} from '../../geometry/Bounds';
 
@@ -24,7 +24,7 @@ Map.mergeOptions({
 	// the map builds momentum while dragging and continues moving in
 	// the same direction for some time. Feels especially nice on touch
 	// devices. Enabled by default unless running on old Android devices.
-	inertia: !android23,
+	inertia: !Browser.android23,
 
 	// @option inertiaDeceleration: Number = 3000
 	// The rate with which the inertial movement slows down, in pixels/second².
@@ -75,15 +75,15 @@ export var Drag = Handler.extend({
 				map.whenReady(this._onZoomEnd, this);
 			}
 		}
-		addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
+		DomUtil.addClass(this._map._container, 'leaflet-grab leaflet-touch-drag');
 		this._draggable.enable();
 		this._positions = [];
 		this._times = [];
 	},
 
 	removeHooks: function () {
-		removeClass(this._map._container, 'leaflet-grab');
-		removeClass(this._map._container, 'leaflet-touch-drag');
+		DomUtil.removeClass(this._map._container, 'leaflet-grab');
+		DomUtil.removeClass(this._map._container, 'leaflet-touch-drag');
 		this._draggable.disable();
 	},
 
@@ -216,7 +216,7 @@ export var Drag = Handler.extend({
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
 
-				requestAnimFrame(function () {
+				Util.requestAnimFrame(function () {
 					map.panBy(offset, {
 						duration: decelerationDuration,
 						easeLinearity: ease,

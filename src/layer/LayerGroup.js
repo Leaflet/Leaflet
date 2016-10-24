@@ -1,6 +1,6 @@
 
 import {Layer} from './Layer';
-import {stamp} from '../core/Util';
+import * as Util from '../core/Util';
 
 /*
  * @class LayerGroup
@@ -151,7 +151,7 @@ export var LayerGroup = Layer.extend({
 	// @method getLayerId(layer: Layer): Number
 	// Returns the internal ID for a layer
 	getLayerId: function (layer) {
-		return stamp(layer);
+		return Util.stamp(layer);
 	}
 });
 

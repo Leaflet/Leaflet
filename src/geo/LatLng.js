@@ -1,4 +1,4 @@
-import {isArray, formatNum} from '../core/Util';
+import * as Util from '../core/Util';
 import {Earth} from './crs/CRS.Earth';
 import {toLatLngBounds} from './LatLngBounds';
 
@@ -62,8 +62,8 @@ LatLng.prototype = {
 	// Returns a string representation of the point (for debugging purposes).
 	toString: function (precision) {
 		return 'LatLng(' +
-		        formatNum(this.lat, precision) + ', ' +
-		        formatNum(this.lng, precision) + ')';
+		        Util.formatNum(this.lat, precision) + ', ' +
+		        Util.formatNum(this.lng, precision) + ')';
 	},
 
 	// @method distanceTo(otherLatLng: LatLng): Number
@@ -111,7 +111,7 @@ export function toLatLng(a, b, c) {
 	if (a instanceof LatLng) {
 		return a;
 	}
-	if (isArray(a) && typeof a[0] !== 'object') {
+	if (Util.isArray(a) && typeof a[0] !== 'object') {
 		if (a.length === 3) {
 			return new LatLng(a[0], a[1], a[2]);
 		}

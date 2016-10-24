@@ -1,7 +1,7 @@
 import {Earth} from './CRS.Earth';
 import {SphericalMercator} from '../projection/Projection.SphericalMercator';
 import {Transformation} from '../../geometry/Transformation';
-import {extend} from '../../core/Util';
+import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -12,7 +12,7 @@ import {extend} from '../../core/Util';
  * Map's `crs` option.
  */
 
-export var EPSG3857 = extend({}, Earth, {
+export var EPSG3857 = Util.extend({}, Earth, {
 	code: 'EPSG:3857',
 	projection: SphericalMercator,
 
@@ -22,6 +22,6 @@ export var EPSG3857 = extend({}, Earth, {
 	}())
 });
 
-export var EPSG900913 = extend({}, EPSG3857, {
+export var EPSG900913 = Util.extend({}, EPSG3857, {
 	code: 'EPSG:900913'
 });

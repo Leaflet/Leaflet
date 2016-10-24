@@ -1,10 +1,10 @@
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
-import {on, off, preventDefault} from '../../dom/DomEvent';
+import * as DomEvent from '../../dom/DomEvent';
 import {Point} from '../../geometry/Point';
-import {bind} from '../../core/Util';
-import {addClass, removeClass} from '../../dom/DomUtil';
-import {touch, pointer} from '../../core/Browser';
+import * as Util from '../../core/Util';
+import * as DomUtil from '../../dom/DomUtil';
+import * as Browser from '../../core/Browser';
 
 
 /*
@@ -28,17 +28,17 @@ Map.mergeOptions({
 
 export var Tap = Handler.extend({
 	addHooks: function () {
-		on(this._map._container, 'touchstart', this._onDown, this);
+		DomEvent.on(this._map._container, 'touchstart', this._onDown, this);
 	},
 
 	removeHooks: function () {
-		off(this._map._container, 'touchstart', this._onDown, this);
+		DomEvent.off(this._map._container, 'touchstart', this._onDown, this);
 	},
 
 	_onDown: function (e) {
 		if (!e.touches) { return; }
 
-		preventDefault(e);
+		DomEvent.preventDefault(e);
 
 		this._fireClick = true;
 
@@ -56,11 +56,11 @@ export var Tap = Handler.extend({
 
 		// if touching a link, highlight it
 		if (el.tagName && el.tagName.toLowerCase() === 'a') {
-			addClass(el, 'leaflet-active');
+			DomUtil.addClass(el, 'leaflet-active');
 		}
 
 		// simulate long hold but setting a timeout
-		this._holdTimeout = setTimeout(bind(function () {
+		this._holdTimeout = setTimeout(Util.bind(function () {
 			if (this._isTapValid()) {
 				this._fireClick = false;
 				this._onUp();
@@ -70,7 +70,7 @@ export var Tap = Handler.extend({
 
 		this._simulateEvent('mousedown', first);
 
-		on(document, {
+		DomEvent.on(document, {
 			touchmove: this._onMove,
 			touchend: this._onUp
 		}, this);
@@ -79,7 +79,7 @@ export var Tap = Handler.extend({
 	_onUp: function (e) {
 		clearTimeout(this._holdTimeout);
 
-		off(document, {
+		DomEvent.off(document, {
 			touchmove: this._onMove,
 			touchend: this._onUp
 		}, this);
@@ -90,7 +90,7 @@ export var Tap = Handler.extend({
 			    el = first.target;
 
 			if (el && el.tagName && el.tagName.toLowerCase() === 'a') {
-				removeClass(el, 'leaflet-active');
+				DomUtil.removeClass(el, 'leaflet-active');
 			}
 
 			this._simulateEvent('mouseup', first);
@@ -131,6 +131,6 @@ export var Tap = Handler.extend({
 // @section Handlers
 // @property tap: Handler
 // Mobile touch hacks (quick tap and touch hold) handler.
-if (touch && !pointer) {
+if (Browser.touch && !Browser.pointer) {
 	Map.addInitHook('addHandler', 'tap', Tap);
 }

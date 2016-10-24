@@ -1,13 +1,11 @@
-
 import {DivOverlay} from './DivOverlay';
-import {stopPropagation, stop, on, disableClickPropagation,
-        disableScrollPropagation} from '../dom/DomEvent';
-import {create, addClass, removeClass, setPosition, getStyle, getPosition} from '../dom/DomUtil';
+import * as DomEvent from '../dom/DomEvent';
+import * as DomUtil from '../dom/DomUtil';
 import {Point, toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
-import {setOptions} from '../core/Util';
+import * as Util from '../core/Util';
 import {Path} from './vector/Path';
 
 /*
@@ -121,7 +119,7 @@ export var Popup = DivOverlay.extend({
 			// For non-path layers, we toggle the popup when clicking
 			// again the layer, so prevent the map to reopen it.
 			if (!(this._source instanceof Path)) {
-				this._source.on('preclick', stopPropagation);
+				this._source.on('preclick', DomEvent.stopPropagation);
 			}
 		}
 	},
@@ -142,7 +140,7 @@ export var Popup = DivOverlay.extend({
 			// Fired when a popup bound to this layer is closed
 			this._source.fire('popupclose', {popup: this}, true);
 			if (!(this._source instanceof Path)) {
-				this._source.off('preclick', stopPropagation);
+				this._source.off('preclick', DomEvent.stopPropagation);
 			}
 		}
 	},
@@ -169,27 +167,27 @@ export var Popup = DivOverlay.extend({
 
 	_initLayout: function () {
 		var prefix = 'leaflet-popup',
-		    container = this._container = create('div',
+		    container = this._container = DomUtil.create('div',
 			prefix + ' ' + (this.options.className || '') +
 			' leaflet-zoom-animated');
 
 		if (this.options.closeButton) {
-			var closeButton = this._closeButton = create('a', prefix + '-close-button', container);
+			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
 			closeButton.href = '#close';
 			closeButton.innerHTML = '&#215;';
 
-			on(closeButton, 'click', this._onCloseButtonClick, this);
+			DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
 		}
 
-		var wrapper = this._wrapper = create('div', prefix + '-content-wrapper', container);
-		this._contentNode = create('div', prefix + '-content', wrapper);
+		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
+		this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
 
-		disableClickPropagation(wrapper);
-		disableScrollPropagation(this._contentNode);
-		on(wrapper, 'contextmenu', stopPropagation);
+		DomEvent.disableClickPropagation(wrapper);
+		DomEvent.disableScrollPropagation(this._contentNode);
+		DomEvent.on(wrapper, 'contextmenu', DomEvent.stopPropagation);
 
-		this._tipContainer = create('div', prefix + '-tip-container', container);
-		this._tip = create('div', prefix + '-tip', this._tipContainer);
+		this._tipContainer = DomUtil.create('div', prefix + '-tip-container', container);
+		this._tip = DomUtil.create('div', prefix + '-tip', this._tipContainer);
 	},
 
 	_updateLayout: function () {
@@ -214,9 +212,9 @@ export var Popup = DivOverlay.extend({
 
 		if (maxHeight && height > maxHeight) {
 			style.height = maxHeight + 'px';
-			addClass(container, scrolledClass);
+			DomUtil.addClass(container, scrolledClass);
 		} else {
-			removeClass(container, scrolledClass);
+			DomUtil.removeClass(container, scrolledClass);
 		}
 
 		this._containerWidth = this._container.offsetWidth;
@@ -225,19 +223,19 @@ export var Popup = DivOverlay.extend({
 	_animateZoom: function (e) {
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 		    anchor = this._getAnchor();
-		setPosition(this._container, pos.add(anchor));
+		DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
 	_adjustPan: function () {
 		if (!this.options.autoPan || (this._map._panAnim && this._map._panAnim._inProgress)) { return; }
 
 		var map = this._map,
-		    marginBottom = parseInt(getStyle(this._container, 'marginBottom'), 10) || 0,
+		    marginBottom = parseInt(DomUtil.getStyle(this._container, 'marginBottom'), 10) || 0,
 		    containerHeight = this._container.offsetHeight + marginBottom,
 		    containerWidth = this._containerWidth,
 		    layerPos = new Point(this._containerLeft, -containerHeight - this._containerBottom);
 
-		layerPos._add(getPosition(this._container));
+		layerPos._add(DomUtil.getPosition(this._container));
 
 		var containerPos = map.layerPointToContainerPoint(layerPos),
 		    padding = toPoint(this.options.autoPanPadding),
@@ -273,7 +271,7 @@ export var Popup = DivOverlay.extend({
 
 	_onCloseButtonClick: function (e) {
 		this._close();
-		stop(e);
+		DomEvent.stop(e);
 	},
 
 	_getAnchor: function () {
@@ -369,7 +367,7 @@ Layer.include({
 	bindPopup: function (content, options) {
 
 		if (content instanceof Popup) {
-			setOptions(content, options);
+			Util.setOptions(content, options);
 			this._popup = content;
 			content._source = this;
 		} else {
@@ -494,7 +492,7 @@ Layer.include({
 		}
 
 		// prevent map click
-		stop(e);
+		DomEvent.stop(e);
 
 		// if this inherits from Path its a vector and we can just
 		// open the popup at the new location

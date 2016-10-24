@@ -1,8 +1,8 @@
 import {GridLayer} from './GridLayer';
-import {retina, android, ielt9} from '../../core/Browser';
-import {setOptions, bind, template, extend, falseFn, emptyImageUrl} from '../../core/Util';
-import {on} from '../../dom/DomEvent';
-import {remove} from '../../dom/DomUtil';
+import * as Browser from '../../core/Browser';
+import * as Util from '../../core/Util';
+import * as DomEvent from '../../dom/DomEvent';
+import * as DomUtil from '../../dom/DomUtil';
 
 
 /*
@@ -94,10 +94,10 @@ export var TileLayer = GridLayer.extend({
 
 		this._url = url;
 
-		options = setOptions(this, options);
+		options = Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && retina && options.maxZoom > 0) {
+		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 
@@ -117,7 +117,7 @@ export var TileLayer = GridLayer.extend({
 		}
 
 		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!android) {
+		if (!Browser.android) {
 			this.on('tileunload', this._onTileRemove);
 		}
 	},
@@ -140,8 +140,8 @@ export var TileLayer = GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		on(tile, 'load', bind(this._tileOnLoad, this, done, tile));
-		on(tile, 'error', bind(this._tileOnError, this, done, tile));
+		DomEvent.on(tile, 'load', Util.bind(this._tileOnLoad, this, done, tile));
+		DomEvent.on(tile, 'error', Util.bind(this._tileOnError, this, done, tile));
 
 		if (this.options.crossOrigin) {
 			tile.crossOrigin = '';
@@ -172,7 +172,7 @@ export var TileLayer = GridLayer.extend({
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl: function (coords) {
 		var data = {
-			r: retina ? '@2x' : '',
+			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
@@ -186,13 +186,13 @@ export var TileLayer = GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return template(this._url, extend(data, this.options));
+		return Util.template(this._url, Util.extend(data, this.options));
 	},
 
 	_tileOnLoad: function (done, tile) {
 		// For https://github.com/Leaflet/Leaflet/issues/3332
-		if (ielt9) {
-			setTimeout(bind(done, this, null, tile), 0);
+		if (Browser.ielt9) {
+			setTimeout(Util.bind(done, this, null, tile), 0);
 		} else {
 			done(null, tile);
 		}
@@ -267,12 +267,12 @@ export var TileLayer = GridLayer.extend({
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
-				tile.onload = falseFn;
-				tile.onerror = falseFn;
+				tile.onload = Util.falseFn;
+				tile.onerror = Util.falseFn;
 
 				if (!tile.complete) {
-					tile.src = emptyImageUrl;
-					remove(tile);
+					tile.src = Util.emptyImageUrl;
+					DomUtil.remove(tile);
 				}
 			}
 		}

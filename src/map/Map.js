@@ -1,33 +1,12 @@
-import {
-	bind, extend, setOptions, stamp, indexOf,
-	requestAnimFrame, cancelAnimFrame
-} from '../core/Util';
-
+import * as Util from '../core/Util';
 import {Evented} from '../core/Events';
 import {EPSG3857} from '../geo/crs/CRS.EPSG3857';
 import {Point, toPoint} from '../geometry/Point';
 import {Bounds, toBounds} from '../geometry/Bounds';
 import {LatLng, toLatLng} from '../geo/LatLng';
 import {LatLngBounds, toLatLngBounds} from '../geo/LatLngBounds';
-
-import {
-	any3d as isAny3D,
-	mobileOpera as isMobileOpera,
-	touch as isTouch,
-	retina as isRetina,
-	ielt9 as isIELT9,
-	safari as isSafari
-} from '../core/Browser';
-
-import {
-	on as onDOMEvent,
-	off as offDOMEvent,
-	isExternalTarget,
-	getMousePosition,
-	preventDefault,
-	skipped as skippedDOMEvent
-} from '../dom/DomEvent';
-
+import * as Browser from '../core/Browser';
+import * as DomEvent from '../dom/DomEvent';
 import * as DomUtil from '../dom/DomUtil';
 import {PosAnimation} from '../dom/PosAnimation';
 
@@ -141,13 +120,13 @@ export var Map = Evented.extend({
 	},
 
 	initialize: function (id, options) { // (HTMLElement or String, Object)
-		options = setOptions(this, options);
+		options = Util.setOptions(this, options);
 
 		this._initContainer(id);
 		this._initLayout();
 
 		// hack for https://github.com/Leaflet/Leaflet/issues/1980
-		this._onResize = bind(this._onResize, this);
+		this._onResize = Util.bind(this._onResize, this);
 
 		this._initEvents();
 
@@ -171,14 +150,14 @@ export var Map = Evented.extend({
 		this.callInitHooks();
 
 		// don't animate on browsers without hardware-accelerated transitions or old Android/Opera
-		this._zoomAnimated = DomUtil.TRANSITION && isAny3D && !isMobileOpera &&
+		this._zoomAnimated = DomUtil.TRANSITION && Browser.any3d && !Browser.mobileOpera &&
 				this.options.zoomAnimation;
 
 		// zoom transitions run with the same duration for all layers, so if one of transitionend events
 		// happens after starting zoom animation (propagating to the map pane), we know that it ended globally
 		if (this._zoomAnimated) {
 			this._createAnimProxy();
-			onDOMEvent(this._proxy, DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
+			DomEvent.on(this._proxy, DomUtil.TRANSITION_END, this._catchTransitionEnd, this);
 		}
 
 		this._addLayers(this.options.layers);
@@ -201,8 +180,8 @@ export var Map = Evented.extend({
 		if (this._loaded && !options.reset && options !== true) {
 
 			if (options.animate !== undefined) {
-				options.zoom = extend({animate: options.animate}, options.zoom);
-				options.pan = extend({animate: options.animate, duration: options.duration}, options.pan);
+				options.zoom = Util.extend({animate: options.animate}, options.zoom);
+				options.pan = Util.extend({animate: options.animate, duration: options.duration}, options.pan);
 			}
 
 			// try animating pan or zoom
@@ -236,14 +215,14 @@ export var Map = Evented.extend({
 	// @method zoomIn(delta?: Number, options?: Zoom options): this
 	// Increases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
 	zoomIn: function (delta, options) {
-		delta = delta || (isAny3D ? this.options.zoomDelta : 1);
+		delta = delta || (Browser.any3d ? this.options.zoomDelta : 1);
 		return this.setZoom(this._zoom + delta, options);
 	},
 
 	// @method zoomOut(delta?: Number, options?: Zoom options): this
 	// Decreases the zoom of the map by `delta` ([`zoomDelta`](#map-zoomdelta) by default).
 	zoomOut: function (delta, options) {
-		delta = delta || (isAny3D ? this.options.zoomDelta : 1);
+		delta = delta || (Browser.any3d ? this.options.zoomDelta : 1);
 		return this.setZoom(this._zoom - delta, options);
 	},
 
@@ -366,7 +345,7 @@ export var Map = Evented.extend({
 	flyTo: function (targetCenter, targetZoom, options) {
 
 		options = options || {};
-		if (options.animate === false || !isAny3D) {
+		if (options.animate === false || !Browser.any3d) {
 			return this.setView(targetCenter, targetZoom, options);
 		}
 
@@ -421,7 +400,7 @@ export var Map = Evented.extend({
 			    s = easeOut(t) * S;
 
 			if (t <= 1) {
-				this._flyToFrame = requestAnimFrame(frame, this);
+				this._flyToFrame = Util.requestAnimFrame(frame, this);
 
 				this._move(
 					this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
@@ -525,7 +504,7 @@ export var Map = Evented.extend({
 	invalidateSize: function (options) {
 		if (!this._loaded) { return this; }
 
-		options = extend({
+		options = Util.extend({
 			animate: false,
 			pan: true
 		}, options === true ? {animate: true} : options);
@@ -553,7 +532,7 @@ export var Map = Evented.extend({
 
 			if (options.debounceMoveend) {
 				clearTimeout(this._sizeTimer);
-				this._sizeTimer = setTimeout(bind(this.fire, this, 'moveend'), 200);
+				this._sizeTimer = setTimeout(Util.bind(this.fire, this, 'moveend'), 200);
 			} else {
 				this.fire('moveend');
 			}
@@ -590,7 +569,7 @@ export var Map = Evented.extend({
 	// See `Locate options` for more details.
 	locate: function (options) {
 
-		options = this._locateOptions = extend({
+		options = this._locateOptions = Util.extend({
 			timeout: 10000,
 			watch: false
 			// setView: false
@@ -607,8 +586,8 @@ export var Map = Evented.extend({
 			return this;
 		}
 
-		var onResponse = bind(this._handleGeolocationResponse, this),
-		    onError = bind(this._handleGeolocationError, this);
+		var onResponse = Util.bind(this._handleGeolocationResponse, this),
+		    onError = Util.bind(this._handleGeolocationError, this);
 
 		if (options.watch) {
 			this._locationWatchId =
@@ -818,7 +797,7 @@ export var Map = Evented.extend({
 		    se = bounds.getSouthEast(),
 		    size = this.getSize().subtract(padding),
 		    boundsSize = toBounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
-		    snap = isAny3D ? this.options.zoomSnap : 1;
+		    snap = Browser.any3d ? this.options.zoomSnap : 1;
 
 		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
 		zoom = this.getScaleZoom(scale, zoom);
@@ -1008,7 +987,7 @@ export var Map = Evented.extend({
 	// Given a MouseEvent object, returns the pixel coordinate relative to the
 	// map container where the event took place.
 	mouseEventToContainerPoint: function (e) {
-		return getMousePosition(e, this._container);
+		return DomEvent.getMousePosition(e, this._container);
 	},
 
 	// @method mouseEventToLayerPoint(ev: MouseEvent): Point
@@ -1037,20 +1016,20 @@ export var Map = Evented.extend({
 			throw new Error('Map container is already initialized.');
 		}
 
-		onDOMEvent(container, 'scroll', this._onScroll, this);
-		this._containerId = stamp(container);
+		DomEvent.on(container, 'scroll', this._onScroll, this);
+		this._containerId = Util.stamp(container);
 	},
 
 	_initLayout: function () {
 		var container = this._container;
 
-		this._fadeAnimated = this.options.fadeAnimation && isAny3D;
+		this._fadeAnimated = this.options.fadeAnimation && Browser.any3d;
 
 		DomUtil.addClass(container, 'leaflet-container' +
-			(isTouch ? ' leaflet-touch' : '') +
-			(isRetina ? ' leaflet-retina' : '') +
-			(isIELT9 ? ' leaflet-oldie' : '') +
-			(isSafari ? ' leaflet-safari' : '') +
+			(Browser.touch ? ' leaflet-touch' : '') +
+			(Browser.retina ? ' leaflet-retina' : '') +
+			(Browser.ielt9 ? ' leaflet-oldie' : '') +
+			(Browser.safari ? ' leaflet-safari' : '') +
 			(this._fadeAnimated ? ' leaflet-fade-anim' : ''));
 
 		var position = DomUtil.getStyle(container, 'position');
@@ -1190,7 +1169,7 @@ export var Map = Evented.extend({
 	},
 
 	_stop: function () {
-		cancelAnimFrame(this._flyToFrame);
+		Util.cancelAnimFrame(this._flyToFrame);
 		if (this._panAnim) {
 			this._panAnim.stop();
 		}
@@ -1222,9 +1201,9 @@ export var Map = Evented.extend({
 	// @section Interaction events
 	_initEvents: function (remove) {
 		this._targets = {};
-		this._targets[stamp(this._container)] = this;
+		this._targets[Util.stamp(this._container)] = this;
 
-		var onOff = remove ? offDOMEvent : onDOMEvent;
+		var onOff = remove ? DomEvent.off : DomEvent.on;
 
 		// @event click: MouseEvent
 		// Fired when the user clicks (or taps) the map.
@@ -1254,14 +1233,14 @@ export var Map = Evented.extend({
 			onOff(window, 'resize', this._onResize, this);
 		}
 
-		if (isAny3D && this.options.transform3DLimit) {
+		if (Browser.any3d && this.options.transform3DLimit) {
 			(remove ? this.off : this.on).call(this, 'moveend', this._onMoveEnd);
 		}
 	},
 
 	_onResize: function () {
-		cancelAnimFrame(this._resizeRequest);
-		this._resizeRequest = requestAnimFrame(
+		Util.cancelAnimFrame(this._resizeRequest);
+		this._resizeRequest = Util.requestAnimFrame(
 		        function () { this.invalidateSize({debounceMoveend: true}); }, this);
 	},
 
@@ -1287,28 +1266,28 @@ export var Map = Evented.extend({
 		    dragging = false;
 
 		while (src) {
-			target = this._targets[stamp(src)];
+			target = this._targets[Util.stamp(src)];
 			if (target && (type === 'click' || type === 'preclick') && !e._simulated && this._draggableMoved(target)) {
 				// Prevent firing click after you just dragged an object.
 				dragging = true;
 				break;
 			}
 			if (target && target.listens(type, true)) {
-				if (isHover && !isExternalTarget(src, e)) { break; }
+				if (isHover && !DomEvent.isExternalTarget(src, e)) { break; }
 				targets.push(target);
 				if (isHover) { break; }
 			}
 			if (src === this._container) { break; }
 			src = src.parentNode;
 		}
-		if (!targets.length && !dragging && !isHover && isExternalTarget(src, e)) {
+		if (!targets.length && !dragging && !isHover && DomEvent.isExternalTarget(src, e)) {
 			targets = [this];
 		}
 		return targets;
 	},
 
 	_handleDOMEvent: function (e) {
-		if (!this._loaded || skippedDOMEvent(e)) { return; }
+		if (!this._loaded || DomEvent.skipped(e)) { return; }
 
 		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
 
@@ -1328,7 +1307,7 @@ export var Map = Evented.extend({
 			// Fired before mouse click on the map (sometimes useful when you
 			// want something to happen on click before any existing click
 			// handlers start running).
-			var synth = extend({}, e);
+			var synth = Util.extend({}, e);
 			synth.type = 'preclick';
 			this._fireDOMEvent(synth, synth.type, targets);
 		}
@@ -1342,7 +1321,7 @@ export var Map = Evented.extend({
 
 		var target = targets[0];
 		if (type === 'contextmenu' && target.listens(type, true)) {
-			preventDefault(e);
+			DomEvent.preventDefault(e);
 		}
 
 		var data = {
@@ -1360,7 +1339,7 @@ export var Map = Evented.extend({
 		for (var i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.nonBubblingEvents && indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
+				(targets[i].options.nonBubblingEvents && Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
 		}
 	},
 
@@ -1493,7 +1472,7 @@ export var Map = Evented.extend({
 	_limitZoom: function (zoom) {
 		var min = this.getMinZoom(),
 		    max = this.getMaxZoom(),
-		    snap = isAny3D ? this.options.zoomSnap : 1;
+		    snap = Browser.any3d ? this.options.zoomSnap : 1;
 		if (snap) {
 			zoom = Math.round(zoom / snap) * snap;
 		}
@@ -1572,7 +1551,7 @@ export var Map = Evented.extend({
 		// don't animate if the zoom origin isn't within one screen from the current center, unless forced
 		if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
 
-		requestAnimFrame(function () {
+		Util.requestAnimFrame(function () {
 			this
 			    ._moveStart(true)
 			    ._animateZoom(center, zoom, true);
@@ -1601,7 +1580,7 @@ export var Map = Evented.extend({
 		});
 
 		// Work around webkit not firing 'transitionend', see https://github.com/Leaflet/Leaflet/issues/3689, 2693
-		setTimeout(bind(this._onZoomTransitionEnd, this), 250);
+		setTimeout(Util.bind(this._onZoomTransitionEnd, this), 250);
 	},
 
 	_onZoomTransitionEnd: function () {
@@ -1614,7 +1593,7 @@ export var Map = Evented.extend({
 		this._move(this._animateToCenter, this._animateToZoom);
 
 		// This anim frame should prevent an obscure iOS webkit tile loading race condition.
-		requestAnimFrame(function () {
+		Util.requestAnimFrame(function () {
 			this._moveEnd(true);
 		}, this);
 	}

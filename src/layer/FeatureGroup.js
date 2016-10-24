@@ -1,4 +1,3 @@
-
 import {LayerGroup} from './LayerGroup';
 import {LatLngBounds} from '../geo/LatLngBounds';
 

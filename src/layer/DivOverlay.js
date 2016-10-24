@@ -1,6 +1,5 @@
-
 import {Layer} from './Layer';
-import {setOptions, bind} from '../core/Util';
+import * as Util from '../core/Util';
 import {toLatLng} from '../geo/LatLng';
 import {toPoint} from '../geometry/Point';
 import * as DomUtil from '../dom/DomUtil';
@@ -33,7 +32,7 @@ export var DivOverlay = Layer.extend({
 	},
 
 	initialize: function (options, source) {
-		setOptions(this, options);
+		Util.setOptions(this, options);
 
 		this._source = source;
 	},
@@ -63,7 +62,7 @@ export var DivOverlay = Layer.extend({
 	onRemove: function (map) {
 		if (map._fadeAnimated) {
 			DomUtil.setOpacity(this._container, 0);
-			this._removeTimeout = setTimeout(bind(DomUtil.remove, undefined, this._container), 200);
+			this._removeTimeout = setTimeout(Util.bind(DomUtil.remove, undefined, this._container), 200);
 		} else {
 			DomUtil.remove(this._container);
 		}

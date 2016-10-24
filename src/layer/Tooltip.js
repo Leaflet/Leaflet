@@ -5,7 +5,7 @@ import {toPoint} from '../geometry/Point';
 import {Map} from '../map/Map';
 import {Layer} from './Layer';
 import {FeatureGroup} from './FeatureGroup';
-import {setOptions} from '../core/Util';
+import * as Util from '../core/Util';
 import * as DomUtil from '../dom/DomUtil';
 
 /*
@@ -255,7 +255,7 @@ Layer.include({
 	bindTooltip: function (content, options) {
 
 		if (content instanceof Tooltip) {
-			setOptions(content, options);
+			Util.setOptions(content, options);
 			this._tooltip = content;
 			content._source = this;
 		} else {

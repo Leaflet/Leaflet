@@ -1,7 +1,7 @@
 import {Map} from '../Map';
 import {Handler} from '../../core/Handler';
-import {on, off, stop, getWheelDelta} from '../../dom/DomEvent';
-import {bind} from '../../core/Util';
+import * as DomEvent from '../../dom/DomEvent';
+import * as Util from '../../core/Util';
 
 /*
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
@@ -30,17 +30,17 @@ Map.mergeOptions({
 
 export var ScrollWheelZoom = Handler.extend({
 	addHooks: function () {
-		on(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
 
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		off(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll, this);
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = getWheelDelta(e);
+		var delta = DomEvent.getWheelDelta(e);
 
 		var debounce = this._map.options.wheelDebounceTime;
 
@@ -54,9 +54,9 @@ export var ScrollWheelZoom = Handler.extend({
 		var left = Math.max(debounce - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(bind(this._performZoom, this), left);
+		this._timer = setTimeout(Util.bind(this._performZoom, this), left);
 
-		stop(e);
+		DomEvent.stop(e);
 	},
 
 	_performZoom: function () {

@@ -1,7 +1,8 @@
 
 import {Bounds} from '../../geometry/Bounds';
 import {LatLng} from '../LatLng';
-import {wrapNum} from '../../core/Util';
+import {LatLngBounds} from '../LatLngBounds';
+import * as Util from '../../core/Util';
 
 /*
  * @namespace CRS
@@ -103,12 +104,12 @@ export var CRS = {
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+		var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
 		return new LatLng(lat, lng, alt);
-	}
+	},
 
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
 	// Returns a `LatLngBounds` with the same size as the given one, ensuring

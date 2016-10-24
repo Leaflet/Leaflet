@@ -1,6 +1,6 @@
 import {Layer} from '../Layer';
 import {IconDefault} from './Icon.Default';
-import {setOptions} from '../../core/Util';
+import * as Util from '../../core/Util';
 import {toLatLng as latLng} from '../../geo/LatLng';
 import * as DomUtil from '../../dom/DomUtil';
 import {MarkerDrag} from './Marker.Drag';
@@ -76,7 +76,7 @@ export var Marker = Layer.extend({
 	 */
 
 	initialize: function (latlng, options) {
-		setOptions(this, options);
+		Util.setOptions(this, options);
 		this._latlng = latLng(latlng);
 	},
 
