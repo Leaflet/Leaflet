@@ -12,6 +12,46 @@ describe('ListenerCollection', function () {
 		});
 	});
 
+	describe('#each', function () {
+		it('invoke a function for each member, with _members as array', function () {
+			var obj = new L.ListenerCollection(),
+			    i = 0;
+			for (i = 0; i < L.ListenerCollection.MIN_OBJECT - 1; i++) {
+				obj.add({fn: sinon.spy()});
+			}
+			for (i = 0; i < obj._members.length; i++) {
+				expect(obj._members[i].fn.called).to.be(false);
+			}
+			obj.each(function (listener) {
+				listener.fn();
+			});
+			for (i = 0; i < obj._members.length; i++) {
+				expect(obj._members[i].fn.calledOnce).to.be(true);
+			}
+		});
+
+		it('invoke a function for each member, with _members as object', function () {
+			var obj = new L.ListenerCollection(),
+			    i = 0;
+			for (i = 0; i < L.ListenerCollection.MAX_ARRAY + 1; i++) {
+				obj.add({fn: sinon.spy()});
+			}
+			for (i in obj._members) {
+				if (obj._members.hasOwnProperty(i)) {
+					expect(obj._members[i].fn.called).to.be(false);
+				}
+			}
+			obj.each(function (listener) {
+				listener.fn();
+			});
+			for (i in obj._members) {
+				if (obj._members.hasOwnProperty(i)) {
+					expect(obj._members[i].fn.calledOnce).to.be(true);
+				}
+			}
+		});
+	});
+
 	describe('#_switchToArray', function () {
 		it('does nothing if _members is an array', function () {
 			var obj = new L.ListenerCollection(),
@@ -462,6 +502,15 @@ describe('ListenerCollection', function () {
 			expect(obj.find(lis3)).to.be(lis3);
 		});
 
+		it('changes removing listener function to noop', function () {
+			var obj = new L.ListenerCollection(),
+			    lis = {fn: sinon.spy()};
+
+			obj.add(lis);
+			expect(obj.remove(lis)).to.be(true);
+			expect(lis.fn).to.be(L.Util.falseFn);
+		});
+
 		it('switches back _members to an array if needed', function () {
 			var obj = new L.ListenerCollection(),
 			    lisArray = [],
@@ -479,6 +528,95 @@ describe('ListenerCollection', function () {
 			expect(obj.count()).to.be(L.ListenerCollection.MIN_OBJECT);
 			obj.remove(lisArray[i + 1]);
 			expect(obj._switchToArray.calledOnce).to.be(true);
+		});
+	});
+
+	describe('#removeAll', function () {
+		it('does not remove anything if collection is empty', function () {
+			var obj = new L.ListenerCollection();
+			expect(obj.count()).to.be(0);
+			expect(obj.removeAll()).to.be(false);
+			expect(obj.count()).to.be(0);
+		});
+
+		it('removes everything, with _members as array', function () {
+			var obj = new L.ListenerCollection();
+			for (var i = 0; i < L.ListenerCollection.MIN_OBJECT - 1; i++) { // add elements until we are sure _members has switched to an object
+				obj.add({fn: sinon.spy()});
+			}
+			expect(obj.removeAll()).to.be(true);
+			expect(obj.count()).to.be(0);
+		});
+
+		it('removes everything, with _members as object', function () {
+			var obj = new L.ListenerCollection();
+			for (var i = 0; i < L.ListenerCollection.MAX_ARRAY + 1; i++) { // add elements until we are sure _members has switched to an object
+				obj.add({fn: sinon.spy()});
+			}
+			expect(obj.removeAll()).to.be(true);
+			expect(obj.count()).to.be(0);
+		});
+
+		it('changes all the listener functions to noop before removing them', function () {
+			var obj = new L.ListenerCollection(),
+			    lisArray = [],
+			    i = 0;
+			for (i = 0; i < L.ListenerCollection.MAX_ARRAY + 1; i++) { // add elements until we are sure _members has switched to an object
+				var lis = {fn: sinon.spy()};
+				obj.add(lis);
+				lisArray.push(lis);
+			}
+			expect(obj.removeAll()).to.be(true);
+			for (i = 0; i < lisArray.length; i++) {
+				expect(lisArray[i].fn).to.be(L.Util.falseFn);
+			}
+		});
+
+		it('switches back _members to an array if needed', function () {
+			var obj = new L.ListenerCollection(),
+			    lisArray = [];
+			for (var i = 0; i < L.ListenerCollection.MAX_ARRAY + 1; i++) { // add elements until we are sure _members has switched to an object
+				var lis = {fn: sinon.spy()};
+				obj.add(lis);
+				lisArray.push(lis);
+			}
+			expect(obj._arrayMembers).to.be(false);
+			expect(obj.removeAll()).to.be(true);
+			expect(obj._arrayMembers).to.be(true);
+		});
+	});
+
+	describe('#copyMembers', function () {
+		it("replaces _members with a clone of it, when _memebers is array", function () {
+			var obj = new L.ListenerCollection(),
+			    oldMembers,
+			    i = 0;
+			for (i = 0; i < L.ListenerCollection.MIN_OBJECT - 1; i++) { // add elements until we are sure _members has switched to an object
+				obj.add({fn: sinon.spy(), ctx: {}});
+			}
+			oldMembers = obj._members;
+			obj.copyMembers();
+			expect(obj._members).to.not.be(oldMembers);
+			for (i = 0; i < oldMembers.length; i++) {
+				expect(oldMembers[i]).to.be(obj._members[i]);
+			}
+		});
+
+		it("replaces _members with a clone of it, when _memebers is object", function () {
+			var obj = new L.ListenerCollection(),
+			    oldMembers,
+			    i = 0;
+			for (i = 0; i < L.ListenerCollection.MAX_ARRAY + 1; i++) {
+				obj.add({fn: sinon.spy(), ctx: {}});
+			}
+			oldMembers = obj._members;
+			obj.copyMembers();
+			expect(obj._members).to.not.be(oldMembers);
+			for (var key in oldMembers) {
+				if (oldMembers.hasOwnProperty(key)) {
+					expect(oldMembers[key]).to.be(obj._members[key]);
+				}
+			}
 		});
 	});
 
