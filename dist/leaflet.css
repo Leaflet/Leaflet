@@ -378,6 +378,9 @@
 .leaflet-default-icon-path {
 	background-image: url(images/marker-icon.png);
 	}
+.leaflet-default-shadow-path {
+	background-image: url(images/marker-shadow.png);
+}
 
 
 /* attribution and scale controls */

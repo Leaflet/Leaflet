@@ -25,26 +25,26 @@ L.Icon.Default = L.Icon.extend({
 	},
 
 	_getIconUrl: function (name) {
-		if (!L.Icon.Default.imagePath) {	// Deprecated, backwards-compatibility only
-			L.Icon.Default.imagePath = this._detectIconPath();
-		}
+		// if (!L.Icon.Default.imagePath) {	// Deprecated, backwards-compatibility only
+		L.Icon.Default.imagePath = this._detectIconPath(name);
+		// }
 
 		// @option imagePath: String
 		// `L.Icon.Default` will try to auto-detect the absolute location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right absolute path.
 		var path = this.options.imagePath || L.Icon.Default.imagePath;
-		return path.indexOf("data:") === 0 ? path : path + L.Icon.prototype._getIconUrl.call(this, name);
+		return path.indexOf('data:') === 0 ? path : path + L.Icon.prototype._getIconUrl.call(this, name);
 	},
 
-	_detectIconPath: function () {
-		var el = L.DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+	_detectIconPath: function (name) {
+		var el = L.DomUtil.create('div',  'leaflet-default-' + name + '-path', document.body);
 		var path = L.DomUtil.getStyle(el, 'background-image') ||
 		           L.DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);
-
+		var re2 = new RegExp('(marker-' + name + '\.png)?[\\"\\\']?\\)$');
 		return path.indexOf('url') === 0 ?
-			path.replace(/^url\([\"\']?/, '').replace(/(marker-icon\.png)?[\"\']?\)$/, '') : '';
+			path.replace(/^url\([\"\']?/, '').replace(re2, '') : '';
 	}
 });
