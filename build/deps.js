@@ -3,6 +3,7 @@ var deps = {
 		src: ['Leaflet.js',
 		      'core/Util.js',
 		      'core/Class.js',
+          'core/ListenerCollection.js',
 		      'core/Events.js',
 		      'core/Browser.js',
 		      'geometry/Point.js',
