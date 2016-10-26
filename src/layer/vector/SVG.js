@@ -99,6 +99,7 @@ L.SVG = L.Renderer.extend({
 		}
 
 		this._updateStyle(layer);
+		this._layers[L.stamp(layer)] = layer;
 	},
 
 	_addPath: function (layer) {
@@ -109,6 +110,7 @@ L.SVG = L.Renderer.extend({
 	_removePath: function (layer) {
 		L.DomUtil.remove(layer._path);
 		layer.removeInteractiveTarget(layer._path);
+		delete this._layers[L.stamp(layer)];
 	},
 
 	_updatePath: function (layer) {
