@@ -46,10 +46,12 @@ L.Renderer = L.Layer.extend({
 
 		this.getPane().appendChild(this._container);
 		this._update();
+		this.on('update', this._updatePaths, this);
 	},
 
 	onRemove: function () {
 		L.DomUtil.remove(this._container);
+		this.off('update', this._updatePaths, this);
 	},
 
 	getEvents: function () {
@@ -102,6 +104,12 @@ L.Renderer = L.Layer.extend({
 	_onZoomEnd: function () {
 		for (var id in this._layers) {
 			this._layers[id]._project();
+		}
+	},
+
+	_updatePaths: function () {
+		for (var id in this._layers) {
+			this._layers[id]._update();
 		}
 	},
 
