@@ -7,8 +7,11 @@
  * no icon is specified. Points to the blue marker image distributed with Leaflet
  * releases.
  *
- * In order to change the default icon, just change the properties of `L.Icon.Default.prototype.options`
+ * In order to customize the default icon, just change the properties of `L.Icon.Default.prototype.options`
  * (which is a set of `Icon options`).
+ *
+ * If you want to _completely_ replace the default icon, override the
+ * `L.Marker.prototype.options.icon` with your own icon instead.
  */
 
 L.Icon.Default = L.Icon.extend({
