@@ -7,12 +7,29 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch.
 
+## 1.0.2 (date TBD)
+
+### Bug fixes
+
+* Fix CSS for marker shadows when `max-width` is already set (by [@brunob](https://github.com/brunob), [#5046](https://github.com/Leaflet/Leaflet/pull/5046)).
+* Fix canvas redraw when style updates fill and/or weight (by [@perliedman](https://github.com/perliedman), [#5034](https://github.com/Leaflet/Leaflet/pull/5034)).
+* Prevent canvas from firing multiple `mouseover` events for same layer (by [@perliedman](https://github.com/perliedman), [#5033](https://github.com/Leaflet/Leaflet/pull/5033)).
+* Fixed a race condition when removing and adding `L.Canvas` vectors during a zoom animation (by @ghybs) [#5011](https://github.com/Leaflet/Leaflet/pull/5011).
+* Fix zoom animation of ImageOverlay when CRS's Y axis is flipped (by [@perliedman](https://github.com/perliedman), [#4993](https://github.com/Leaflet/Leaflet/pull/4993)).
+
+### Improvements
+
+* Improve performance when adding lots of `L.Path`s by refactoring away event logic (by [@IvanSanchez](https://github.com/IvanSanchez)) [#5054](https://github.com/Leaflet/Leaflet/pull/5054))].
+* Several minor documentation improvements by [@Jmuccigr](https://github.com/Jmuccigr), [@serdarkacka](https://github.com/serdarkacka), [@erickzhao](https://github.com/erickzhao), [@IvanSanchez](https://github.com/IvanSanchez), [@perliedman](https://github.com/perliedman), [@joukewitteveen](https://github.com/joukewitteveen).
+* Code reorganization: Extensions for `L.Marker` and `L.Map` no longer have a separate file (by [@mourner](https://github.com/mourner)).
+* Removed a duplicated unit test ([@yohanboniface](https://github.com/yohanboniface)).
+
 ## 1.0.1 (September 30, 2016)
 
 ### Bug fixes
 
-* Fixed vector rendering regression in IE8 (by [@perliedman](https://github.com/perliedman)). [#4656](https://github.com/Leaflet/Leaflet/pull/4956)
-* Fixed Webpack error when bundling Leaflet's CSS (by [@jefbarn](https://github.com/jefbarn)). [#4679](https://github.com/Leaflet/Leaflet/pull/4979)
+* Fixed vector rendering regression in IE8 (by [@perliedman](https://github.com/perliedman)) [#4656](https://github.com/Leaflet/Leaflet/pull/4956).
+* Fixed Webpack error when bundling Leaflet's CSS (by [@jefbarn](https://github.com/jefbarn)) [#4679](https://github.com/Leaflet/Leaflet/pull/4979).
 
 ## 1.0.0 (September 26, 2016)
 
