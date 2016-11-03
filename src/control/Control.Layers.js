@@ -136,6 +136,7 @@ L.Control.Layers = L.Control.extend({
 	// Collapse the control container if expanded.
 	collapse: function () {
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+		if (!this._layersLink) { this._initToggler(); }
 		return this;
 	},
 
@@ -154,32 +155,7 @@ L.Control.Layers = L.Control.extend({
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
 		if (this.options.collapsed) {
-			if (!L.Browser.android) {
-				L.DomEvent.on(container, {
-					mouseenter: this.expand,
-					mouseleave: this.collapse
-				}, this);
-			}
-
-			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
-			link.href = '#';
-			link.title = 'Layers';
-
-			if (L.Browser.touch) {
-				L.DomEvent
-				    .on(link, 'click', L.DomEvent.stop)
-				    .on(link, 'click', this.expand, this);
-			} else {
-				L.DomEvent.on(link, 'focus', this.expand, this);
-			}
-
-			// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
-			L.DomEvent.on(form, 'click', function () {
-				setTimeout(L.bind(this._onInputClick, this), 0);
-			}, this);
-
-			this._map.on('click', this.collapse, this);
-			// TODO keyboard accessibility
+			this._initToggler();
 		} else {
 			this.expand();
 		}
@@ -189,6 +165,35 @@ L.Control.Layers = L.Control.extend({
 		this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
 		container.appendChild(form);
+	},
+
+	_initToggler: function () {
+		if (!L.Browser.android) {
+			L.DomEvent.on(this._container, {
+				mouseenter: this.expand,
+				 mouseleave: this.collapse
+			}, this);
+		}
+
+		var link = this._layersLink = L.DomUtil.create('a', 'leaflet-control-layers-toggle', this._container);
+		link.href = '#';
+		link.title = 'Layers';
+
+		if (L.Browser.touch) {
+			L.DomEvent
+			.on(link, 'click', L.DomEvent.stop)
+			.on(link, 'click', this.expand, this);
+		} else {
+			L.DomEvent.on(link, 'focus', this.expand, this);
+		}
+
+		// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
+		L.DomEvent.on(this._form, 'click', function () {
+			setTimeout(L.bind(this._onInputClick, this), 0);
+		}, this);
+
+		this._map.on('click', this.collapse, this);
+		// TODO keyboard accessibility
 	},
 
 	_getLayer: function (id) {
