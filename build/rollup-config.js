@@ -1,8 +1,6 @@
 
 // Config file for running Rollup in "normal" mode (non-watch)
 
-// Needed to create files loadable by IE8
-import es3 from 'rollup-plugin-es3'
 import json from 'rollup-plugin-json'
 
 import gitRev from 'git-rev-sync'
@@ -26,8 +24,8 @@ export default {
 	entry: 'src/Leaflet.js',
 	dest: 'dist/leaflet-rollup-src.js',
 	plugins: [
-// 		es3(),
 		json()
 	],
-	sourceMap: true
+	sourceMap: true,
+	legacy: true // Needed to create files loadable by IE8
 };
