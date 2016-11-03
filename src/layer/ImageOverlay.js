@@ -31,10 +31,6 @@ L.ImageOverlay = L.Layer.extend({
 		// If `true`, the image overlay will emit [mouse events](#interactive-layer) when clicked or hovered.
 		interactive: false,
 
-		// @option attribution: String = null
-		// An optional string containing HTML to be shown on the `Attribution control`
-		attribution: null,
-
 		// @option crossOrigin: Boolean = false
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
 		crossOrigin: false
@@ -126,10 +122,6 @@ L.ImageOverlay = L.Layer.extend({
 			this._reset();
 		}
 		return this;
-	},
-
-	getAttribution: function () {
-		return this.options.attribution;
 	},
 
 	getEvents: function () {
