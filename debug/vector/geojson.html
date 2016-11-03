@@ -136,10 +136,10 @@
 
 		geojson = L.geoJson(statesData, {
 			style: style,
-			onEachFeature: onEachFeature
+			onEachFeature: onEachFeature,
+			attribution: 'Population data &copy; <a href="http://census.gov/">US Census Bureau</a>'
 		});
 
-		geojson.getAttribution = function() { return 'Population data &copy; <a href="http://census.gov/">US Census Bureau</a>' };
 		geojson.addTo(map);
 
 
