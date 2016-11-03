@@ -209,15 +209,15 @@ L.LatLngBounds.prototype = {
 		return [this.getWest(), this.getSouth(), this.getEast(), this.getNorth()].join(',');
 	},
 
-	// @method equals(otherBounds: LatLngBounds): Boolean
-	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds.
-	equals: function (bounds) {
+	// @method equals(otherBounds: LatLngBounds, maxMargin?: Number): Boolean
+	// Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overriden by setting `maxMargin` to a small number.
+	equals: function (bounds, maxMargin) {
 		if (!bounds) { return false; }
 
 		bounds = L.latLngBounds(bounds);
 
-		return this._southWest.equals(bounds.getSouthWest()) &&
-		       this._northEast.equals(bounds.getNorthEast());
+		return this._southWest.equals(bounds.getSouthWest(), maxMargin) &&
+		       this._northEast.equals(bounds.getNorthEast(), maxMargin);
 	},
 
 	// @method isValid(): Boolean
