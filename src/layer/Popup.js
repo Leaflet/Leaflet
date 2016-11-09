@@ -262,6 +262,9 @@ L.Popup = L.DivOverlay.extend({
 
 	_onCloseButtonClick: function (e) {
 		this._close();
+		if (this._source._icon) {
+			this._source._icon.focus();
+		}
 		L.DomEvent.stop(e);
 	},
 
