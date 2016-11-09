@@ -63,6 +63,27 @@ L.DomEvent = {
 		return this;
 	},
 
+	once: function (el, types, fn, context) {
+
+		if (typeof types === 'object') {
+			for (var type in types) {
+				L.DomEvent.once(el, type, types[type], fn);
+			}
+			return L.DomEvent;
+		}
+
+		var handler = L.bind(function () {
+			L.DomEvent
+			    .off(el, types, fn, context)
+			    .off(el, types, handler, context);
+		}, L.DomEvent);
+
+		// add a listener that's executed once and removed after that
+		return L.DomEvent
+		    .on(el, types, fn, context)
+		    .on(el, types, handler, context);
+	},
+
 	_on: function (obj, type, fn, context) {
 		var id = type + L.stamp(fn) + (context ? '_' + L.stamp(context) : '');
 
