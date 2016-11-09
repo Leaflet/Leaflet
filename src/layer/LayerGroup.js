@@ -121,6 +121,23 @@ L.LayerGroup = L.Layer.extend({
 		return this;
 	},
 
+	// @method eachSingleLayerRecursive(fn: Function, context?: Object): this
+	// Iterates over child **non-group** layers, recursively through child layer groups (if any).
+	eachSingleLayerRecursive: function (method, context) {
+		var thisLayers = this._layers,
+		    layer;
+
+		for (var i in thisLayers) {
+			layer = thisLayers[i];
+			if (layer.eachSingleLayerRecursive) {
+				layer.eachSingleLayerRecursive(method, context);
+			} else {
+				method.call(context, layer);
+			}
+		}
+		return this;
+	},
+
 	// @method getLayer(id: Number): Layer
 	// Returns the layer with the given internal ID.
 	getLayer: function (id) {
@@ -136,6 +153,30 @@ L.LayerGroup = L.Layer.extend({
 			layers.push(this._layers[i]);
 		}
 		return layers;
+	},
+
+	// @method getSingleLayersRecursive(): Layer[]
+	// Returns an array of all **non-group** child layers, recursively through child layer groups (if any).
+	getSingleLayersRecursive: function () {
+		var layers = [];
+
+		this._getSingleLayersIntoArrayRecursive(layers);
+
+		return layers;
+	},
+
+	_getSingleLayersIntoArrayRecursive: function (outputArray) {
+		var thisLayers = this._layers,
+		    layer;
+
+		for (var i in thisLayers) {
+			layer = thisLayers[i];
+			if (layer._getSingleLayersIntoArrayRecursive) {
+				layer._getSingleLayersIntoArrayRecursive(outputArray);
+			} else {
+				outputArray.push(layer);
+			}
+		}
 	},
 
 	// @method setZIndex(zIndex: Number): this

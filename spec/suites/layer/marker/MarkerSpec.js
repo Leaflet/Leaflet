@@ -305,4 +305,12 @@ describe("Marker", function () {
 		});
 
 	});
+
+	describe("#toSingleLayersArray", function () {
+		it('returns an array with this marker only', function () {
+			var marker = L.marker([0, 0]);
+
+			expect(marker.toSingleLayersArray()).to.eql([marker]);
+		});
+	});
 });
