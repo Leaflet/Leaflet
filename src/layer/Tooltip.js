@@ -138,6 +138,8 @@ L.Tooltip = L.DivOverlay.extend({
 			pos = pos.subtract(L.point(tooltipWidth / 2 - offset.x, -offset.y));
 		} else if (direction === 'center') {
 			pos = pos.subtract(L.point(tooltipWidth / 2 + offset.x, tooltipHeight / 2 - anchor.y + offset.y));
+		} else if (direction === 'corner') {
+			pos = pos.add(L.point(offset.x + anchor.x, offset.y + anchor.y));
 		} else if (direction === 'right' || direction === 'auto' && tooltipPoint.x < centerPoint.x) {
 			direction = 'right';
 			pos = pos.add([offset.x + anchor.x, anchor.y - tooltipHeight / 2 + offset.y]);
