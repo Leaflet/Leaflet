@@ -201,10 +201,10 @@ L.TileLayer = L.GridLayer.extend({
 
 	getTileSize: function () {
 		var map = this._map,
-		    tileSize = L.GridLayer.prototype.getTileSize.call(this),
-		    zoom = this._tileZoom + this.options.zoomOffset,
-			minNativeZoom = this.options.minNativeZoom,
-		    maxNativeZoom = this.options.maxNativeZoom;
+		tileSize = L.GridLayer.prototype.getTileSize.call(this),
+		zoom = this._tileZoom + this.options.zoomOffset,
+		minNativeZoom = this.options.minNativeZoom,
+		maxNativeZoom = this.options.maxNativeZoom;
 
 		// decrease tile size when scaling below minNativeZoom
 		if (minNativeZoom !== null && zoom < minNativeZoom) {
@@ -212,7 +212,7 @@ L.TileLayer = L.GridLayer.extend({
 		}
 
 		// increase tile size when scaling above maxNativeZoom
-		if(maxNativeZoom !== null && zoom > maxNativeZoom){
+		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
 			return tileSize.divideBy(map.getZoomScale(maxNativeZoom, zoom)).round();
 		}
 
@@ -225,11 +225,11 @@ L.TileLayer = L.GridLayer.extend({
 
 	_getZoomForUrl: function () {
 		var zoom = this._tileZoom,
-			maxZoom = this.options.maxZoom,
-			zoomReverse = this.options.zoomReverse,
-			zoomOffset = this.options.zoomOffset,
-			minNativeZoom = this.options.minNativeZoom,
-			maxNativeZoom = this.options.maxNativeZoom;
+		maxZoom = this.options.maxZoom,
+		zoomReverse = this.options.zoomReverse,
+		zoomOffset = this.options.zoomOffset,
+		minNativeZoom = this.options.minNativeZoom,
+		maxNativeZoom = this.options.maxNativeZoom;
 
 		if (zoomReverse) {
 			zoom = maxZoom - zoom;
@@ -242,7 +242,7 @@ L.TileLayer = L.GridLayer.extend({
 		}
 
 		// increase tile size when scaling above maxNativeZoom
-		if(maxNativeZoom !== null && zoom > maxNativeZoom) {
+		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
 			return maxNativeZoom;
 		}
 
