@@ -295,6 +295,20 @@ describe("Map", function () {
 
 			expect(map.getMaxZoom()).to.be(15);
 		});
+
+		it("map's zoom is adjusted to layer's minZoom even if initialized with smaller value", function () {
+			var map = L.map(document.createElement("div"), {zoom: 10});
+			L.tileLayer("{z}{x}{y}", {minZoom: 15}).addTo(map);
+
+			expect(map.getZoom()).to.be(15);
+		});
+
+		it("map's zoom is adjusted to layer's maxZoom even if initialized with larger value", function () {
+			var map = L.map(document.createElement("div"), {zoom: 20});
+			L.tileLayer("{z}{x}{y}", {maxZoom: 15}).addTo(map);
+
+			expect(map.getZoom()).to.be(15);
+		});
 	});
 
 	describe("#hasLayer", function () {
