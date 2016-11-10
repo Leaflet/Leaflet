@@ -241,7 +241,6 @@ L.TileLayer = L.GridLayer.extend({
 			return minNativeZoom;
 		}
 
-		// increase tile size when scaling above maxNativeZoom
 		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
 			return maxNativeZoom;
 		}
