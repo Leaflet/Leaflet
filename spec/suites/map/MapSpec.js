@@ -281,6 +281,20 @@ describe("Map", function () {
 			expect(map.getMinZoom()).to.be(2);
 			expect(map.getMaxZoom()).to.be(20);
 		});
+
+		it("layer minZoom overrides map zoom if map has no minZoom set and layer minZoom is bigger than map zoom", function () {
+			var map = L.map(document.createElement("div"), {zoom: 10});
+			L.tileLayer("{z}{x}{y}", {minZoom: 15}).addTo(map);
+
+			expect(map.getMinZoom()).to.be(15);
+		});
+
+		it("layer maxZoom overrides map zoom if map has no maxZoom set and layer maxZoom is smaller than map zoom", function () {
+			var map = L.map(document.createElement("div"), {zoom: 20});
+			L.tileLayer("{z}{x}{y}", {maxZoom: 15}).addTo(map);
+
+			expect(map.getMaxZoom()).to.be(15);
+		});
 	});
 
 	describe("#hasLayer", function () {
