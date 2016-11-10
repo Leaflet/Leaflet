@@ -98,7 +98,6 @@ Also, please make sure that you have [line endings configured properly](https://
 
 Happy coding!
 
-
 ### Using RollupJS
 
 The source javascript code for Leaflet is a few dozen files, in the `src/` directory.
@@ -112,12 +111,11 @@ development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
 for deployment.
 
 When developing (or bugfixing) core Leaflet functionalities, it's common to use
-the webpages in the `debug/` directory, and run thee unit tests (`spec/index.html`)
+the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
 in a graphical browser. This requires regenerating the bundled files quickly.
 
 In order to do so, run `npm run-script watch` or `yarn run rollup`. This will keep
 on rebuilding the bundles whenever any source file changes.
-
 
 ## Running the Tests
 
