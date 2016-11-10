@@ -16,6 +16,8 @@ An in-progress version being developed on the `master` branch.
 * Prevent canvas from firing multiple `mouseover` events for same layer (by [@perliedman](https://github.com/perliedman), [#5033](https://github.com/Leaflet/Leaflet/pull/5033)).
 * Fixed a race condition when removing and adding `L.Canvas` vectors during a zoom animation (by @ghybs) [#5011](https://github.com/Leaflet/Leaflet/pull/5011).
 * Fix zoom animation of ImageOverlay when CRS's Y axis is flipped (by [@perliedman](https://github.com/perliedman), [#4993](https://github.com/Leaflet/Leaflet/pull/4993)).
+* Fix encoding/decoding of GeoJSON `FeatureCollection`s (by [@IvanSanchez](https://github.com/IvanSanchez), [#5045](https://github.com/Leaflet/Leaflet/issues/5045)).
+* Fix `minZoom`/`maxZoom` late inizialization (by [@IvanSanchez](https://github.com/IvanSanchez), [#4916](https://github.com/Leaflet/Leaflet/pull/4916).
 
 ### Improvements
 
