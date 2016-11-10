@@ -62,7 +62,11 @@ L.Draggable = L.Evented.extend({
 	disable: function () {
 		if (!this._enabled) { return; }
 
-		if (this._lastTarget) { this._onUp({}); }
+		// If we're currently dragging this draggable,
+		// disabling it counts as first ending the drag.
+		if (L.Draggable._dragging === this) {
+			this._onUp({});
+		}
 
 		L.DomEvent.off(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
 
@@ -83,7 +87,7 @@ L.Draggable = L.Evented.extend({
 		if (L.DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
 		if (L.Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
-		L.Draggable._dragging = true;  // Prevent dragging multiple objects at once.
+		L.Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
 			L.DomUtil.preventOutline(this._element);
