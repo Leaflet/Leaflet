@@ -270,14 +270,13 @@ L.Canvas = L.Renderer.extend({
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		var point = this._map.mouseEventToLayerPoint(e);
-		this._handleMouseOut(e, point);
 		this._handleMouseHover(e, point);
 	},
 
 
-	_handleMouseOut: function (e, point) {
+	_handleMouseOut: function (e) {
 		var layer = this._hoveredLayer;
-		if (layer && (e.type === 'mouseout' || !layer._containsPoint(point))) {
+		if (layer) {
 			// if we're leaving the layer, fire mouseout
 			L.DomUtil.removeClass(this._container, 'leaflet-interactive');
 			this._fireEvent([layer], e, 'mouseout');
@@ -295,10 +294,14 @@ L.Canvas = L.Renderer.extend({
 			}
 		}
 
-		if (candidateHoveredLayer && candidateHoveredLayer !== this._hoveredLayer) {
-			L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
-			this._fireEvent([candidateHoveredLayer], e, 'mouseover');
-			this._hoveredLayer = candidateHoveredLayer;
+		if (candidateHoveredLayer !== this._hoveredLayer) {
+			this._handleMouseOut(e);
+
+			if (candidateHoveredLayer) {
+				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
+				this._fireEvent([candidateHoveredLayer], e, 'mouseover');
+				this._hoveredLayer = candidateHoveredLayer;
+			}
 		}
 
 		if (this._hoveredLayer) {
