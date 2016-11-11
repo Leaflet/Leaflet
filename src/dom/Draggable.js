@@ -65,7 +65,7 @@ L.Draggable = L.Evented.extend({
 		// If we're currently dragging this draggable,
 		// disabling it counts as first ending the drag.
 		if (L.Draggable._dragging === this) {
-			this._onUp({});
+			this.finishDrag();
 		}
 
 		L.DomEvent.off(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
@@ -181,7 +181,10 @@ L.Draggable = L.Evented.extend({
 		// Also ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (e._simulated || !this._enabled) { return; }
+		this.finishDrag();
+	},
 
+	finishDrag: function () {
 		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {
@@ -212,4 +215,5 @@ L.Draggable = L.Evented.extend({
 		this._moving = false;
 		L.Draggable._dragging = false;
 	}
+
 });
