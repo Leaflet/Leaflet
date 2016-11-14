@@ -92,7 +92,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_removePath: function (layer) {
-		layer._removed = true;
+		delete this._layers[L.stamp(layer)];
 		this._requestRedraw(layer);
 	},
 
@@ -136,14 +136,22 @@ L.Canvas = L.Renderer.extend({
 	_redraw: function () {
 		this._redrawRequest = null;
 
-		this._draw(true); // clear layers in redraw bounds
+		this._clear(); // clear layers in redraw bounds
 		this._draw(); // draw layers
 
 		this._redrawBounds = null;
 	},
 
-	_draw: function (clear) {
-		this._clear = clear;
+	_clear: function() {
+		var bounds = this._redrawBounds;
+		if (bounds) {
+			this._ctx.clearRect(bounds.min.x, bounds.min.y, bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y);
+		} else {
+			this._ctx.clearRect(0, 0, this._container.width, this._container.height);
+		}
+	},
+
+	_draw: function () {
 		var layer, bounds = this._redrawBounds;
 		this._ctx.save();
 		if (bounds) {
@@ -156,10 +164,6 @@ L.Canvas = L.Renderer.extend({
 			layer = this._layers[id];
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
-			}
-			if (clear && layer._removed) {
-				delete layer._removed;
-				delete this._layers[id];
 			}
 		}
 		this._ctx.restore();  // Restore state before clipping.
@@ -224,22 +228,21 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_fillStroke: function (ctx, layer) {
-		var clear = this._clear,
-		    options = layer.options;
+		var options = layer.options;
 
-		ctx.globalCompositeOperation = clear ? 'destination-out' : 'source-over';
+		ctx.globalCompositeOperation = 'source-over';
 
-		if (options.fill || clear) {
-			ctx.globalAlpha = clear ? 1 : options.fillOpacity;
+		if (options.fill) {
+			ctx.globalAlpha = options.fillOpacity;
 			ctx.fillStyle = options.fillColor || options.color;
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
 		if (options.stroke && options.weight !== 0) {
-			ctx.globalAlpha = clear ? 1 : options.opacity;
+			ctx.globalAlpha = options.opacity;
 
 			// if clearing shape, do it with the previously drawn line width
-			layer._prevWeight = ctx.lineWidth = clear ? layer._prevWeight + 1 : options.weight;
+			layer._prevWeight = ctx.lineWidth = options.weight;
 
 			ctx.strokeStyle = options.color;
 			ctx.lineCap = options.lineCap;

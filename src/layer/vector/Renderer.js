@@ -93,23 +93,38 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_reset: function () {
+		var layer;
+
 		this._update();
 		this._updateTransform(this._center, this._zoom);
 
 		for (var id in this._layers) {
-			this._layers[id]._reset();
+			layer = this._layers[id];
+			if (!layer._removed) {
+				layer._reset();
+			}
 		}
 	},
 
 	_onZoomEnd: function () {
+		var layer;
+
 		for (var id in this._layers) {
-			this._layers[id]._project();
+			layer = this._layers[id];
+			if (!layer._removed) {
+				layer._project();
+			}
 		}
 	},
 
 	_updatePaths: function () {
+		var layer;
+
 		for (var id in this._layers) {
-			this._layers[id]._update();
+			layer = this._layers[id];
+			if (!layer._removed) {
+				layer._update();
+			}
 		}
 	},
 
