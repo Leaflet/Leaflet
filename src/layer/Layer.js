@@ -260,5 +260,12 @@ L.Map.include({
 		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire('zoomlevelschange');
 		}
+
+		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+			this.setZoom(this._layersMaxZoom);
+		}
+		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
+			this.setZoom(this._layersMinZoom);
+		}
 	}
 });

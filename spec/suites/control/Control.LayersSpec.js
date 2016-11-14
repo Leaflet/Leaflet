@@ -128,4 +128,16 @@ describe("Control.Layers", function () {
 		});
 	});
 
+	describe("is created with an expand link", function ()  {
+		it("when collapsed", function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
+		});
+
+		it("when not collapsed", function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
+		});
+	});
+
 });

@@ -146,6 +146,12 @@ L.TileLayer = L.GridLayer.extend({
 		*/
 		tile.alt = '';
 
+		/*
+		 Set role="presentation" to force screen readers to ignore this
+		 https://www.w3.org/TR/wai-aria/roles#textalternativecomputation
+		*/
+		tile.setAttribute('role', 'presentation');
+
 		tile.src = this.getTileUrl(coords);
 
 		return tile;
