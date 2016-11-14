@@ -5,7 +5,7 @@ title: Extending Leaflet, New Handlers and Controls
 
 <br>
 
-This tutorial assumes you've read the [theory of Leaflet class inheritance](/examples/extending/extending-1-classes.html).
+This tutorial assumes you've read the [theory of Leaflet class inheritance](../../examples/extending/extending-1-classes.html).
 
 In Leaflet, a "layer" is anything that moves with the map. In contraposition to that, a "control" is a HTML element that remains static relative to the map container, and a "handler" is a piece of invisible code that changes the map's behaviour.
 
