@@ -3462,6 +3462,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/gregallensworth">Greg Allensworth</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mstahv/v-leaflet">V-Leaflet</a>
+		</td><td>
+			Use Leaflet as a component for the <a href='https://vaadin.com/home'>Vaadin</a> Java/HTML framework.
+		</td><td>
+			<a href="https://github.com/mstahv">Matti Tahvonen</a>
+		</td>
+	</tr>
 </table>
 
 
