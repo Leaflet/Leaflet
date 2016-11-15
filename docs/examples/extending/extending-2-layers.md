@@ -5,7 +5,7 @@ title: Extending Leaflet, New Layers
 
 <br>
 
-This tutorial assumes you've read the [theory of Leaflet class inheritance](../../examples/extending/extending-1-classes.html).
+This tutorial assumes you've read the [theory of Leaflet class inheritance](./extending-1-classes.html).
 
 In Leaflet, a "layer" is anything that moves around when the map is moved around. Before seeing how to create them from scratch, it's easier to explain how to do simple extensions.
 
