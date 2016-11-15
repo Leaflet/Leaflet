@@ -5,7 +5,7 @@ title: Extending Leaflet, New Handlers and Controls
 
 <br>
 
-This tutorial assumes you've read the [theory of Leaflet class inheritance](examples/extending/extending-1-classes.html).
+This tutorial assumes you've read the [theory of Leaflet class inheritance](./extending-1-classes.html).
 
 In Leaflet, a "layer" is anything that moves with the map. In contraposition to that, a "control" is a HTML element that remains static relative to the map container, and a "handler" is a piece of invisible code that changes the map's behaviour.
 
@@ -19,11 +19,11 @@ Handlers are relatively simple: they just need a `addHooks()` method (which runs
 		addHooks: function() {
 			L.DomEvent.on(document, 'eventname', this._doSomething, this);
 		},
-	
+
 		removeHooks: function() {
 			L.DomEvent.off(document, 'eventname', this._doSomething, this);
 		},
-		
+
 		_doSomething: function(event) { … }
 	});
 
@@ -33,11 +33,11 @@ This can be illustrated with a simple handler to pan the map when a mobile devic
 		addHooks: function() {
 			L.DomEvent.on(window, 'deviceorientation', this._tilt, this);
 		},
-	
+
 		removeHooks: function() {
 			L.DomEvent.off(window, 'deviceorientation', this._tilt, this);
 		},
-		
+
 		_tilt: function(ev) {
 			// Treat Gamma angle as horizontal pan (1 degree = 1 pixel) and Beta angle as vertical pan
 			this._map.panBy( L.point( ev.gamma, ev.beta ) );
@@ -49,7 +49,7 @@ The handler can be attached to the map using `map.addHandler('tilt', L.TiltHandl
 	L.Map.addInitHook('addHandler', 'tilt', L.TiltHandler);
 
 Our handler can now be enabled by running `map.tilt.enable()` and disabled by `map.tilt.disable()`
-	
+
 Moreover, if the map has a property named the same as the handler, then that handler will be enabled by default if that options is `true`, so this will enable our handler by default:
 
 	var map = L.map('mapDiv', { tilt: true });
@@ -71,13 +71,13 @@ The simplest example of a custom control would be a watermark, which is just an 
 	L.Control.Watermark = L.Control.extend({
 		onAdd: function(map) {
 			var img = L.DomUtil.create('img');
-			
+
 			img.src = '../../docs/images/logo.png';
 			img.style.width = '200px';
-			
+
 			return img;
 		},
-		
+
 		onRemove: function(map) {
 			// Nothing to do here
 		}
@@ -86,7 +86,7 @@ The simplest example of a custom control would be a watermark, which is just an 
 	L.control.watermark = function(opts) {
 		return new L.Control.Watermark(opts);
 	}
-	
+
 	L.control.watermark({ position: 'bottomleft' }).addTo(map);
 
 {% include frame.html url="watermark.html" %}
