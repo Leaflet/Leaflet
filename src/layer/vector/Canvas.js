@@ -145,7 +145,8 @@ L.Canvas = L.Renderer.extend({
 	_clear: function() {
 		var bounds = this._redrawBounds;
 		if (bounds) {
-			this._ctx.clearRect(bounds.min.x, bounds.min.y, bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y);
+			var size = bounds.getSize();
+			this._ctx.clearRect(bounds.min.x, bounds.min.y, size.x, size.y);
 		} else {
 			this._ctx.clearRect(0, 0, this._container.width, this._container.height);
 		}
@@ -155,8 +156,9 @@ L.Canvas = L.Renderer.extend({
 		var layer, bounds = this._redrawBounds;
 		this._ctx.save();
 		if (bounds) {
+			var size = bounds.getSize();
 			this._ctx.beginPath();
-			this._ctx.rect(bounds.min.x, bounds.min.y, bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y);
+			this._ctx.rect(bounds.min.x, bounds.min.y, size.x - 1, size.y);
 			this._ctx.clip();
 		}
 
@@ -230,7 +232,7 @@ L.Canvas = L.Renderer.extend({
 	_fillStroke: function (ctx, layer) {
 		var options = layer.options;
 
-		ctx.globalCompositeOperation = 'source-over';
+		//ctx.globalCompositeOperation = 'source-over';
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
@@ -240,10 +242,7 @@ L.Canvas = L.Renderer.extend({
 
 		if (options.stroke && options.weight !== 0) {
 			ctx.globalAlpha = options.opacity;
-
-			// if clearing shape, do it with the previously drawn line width
-			layer._prevWeight = ctx.lineWidth = options.weight;
-
+			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;
 			ctx.lineCap = options.lineCap;
 			ctx.lineJoin = options.lineJoin;
