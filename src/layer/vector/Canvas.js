@@ -51,6 +51,15 @@ L.Canvas = L.Renderer.extend({
 		this._ctx = container.getContext('2d');
 	},
 
+	_updatePaths: function () {
+		var layer;
+		for (var id in this._layers) {
+			layer = this._layers[id];
+			layer._update();
+			this._requestRedraw(layer);
+		}
+	},
+
 	_update: function () {
 		if (this._map._animatingZoom && this._bounds) { return; }
 
@@ -88,7 +97,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_addPath: function (layer) {
-		layer._removed = false;
+		this._requestRedraw(layer);
 	},
 
 	_removePath: function (layer) {
@@ -98,7 +107,7 @@ L.Canvas = L.Renderer.extend({
 
 	_updatePath: function (layer) {
 		this._redrawBounds = layer._pxBounds;
-		this._draw(true);
+		this._clear();
 		layer._project();
 		layer._update();
 		this._draw();
@@ -127,8 +136,8 @@ L.Canvas = L.Renderer.extend({
 
 		var padding = (layer.options.weight || 0) + 1;
 		this._redrawBounds = this._redrawBounds || new L.Bounds();
-		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
-		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
+		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding])._floor());
+		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding])._ceil());
 
 		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
 	},
@@ -158,9 +167,11 @@ L.Canvas = L.Renderer.extend({
 		if (bounds) {
 			var size = bounds.getSize();
 			this._ctx.beginPath();
-			this._ctx.rect(bounds.min.x, bounds.min.y, size.x - 1, size.y);
+			this._ctx.rect(bounds.min.x, bounds.min.y, size.x, size.y);
 			this._ctx.clip();
 		}
+
+		this._drawing = true;
 
 		for (var id in this._layers) {
 			layer = this._layers[id];
@@ -168,10 +179,14 @@ L.Canvas = L.Renderer.extend({
 				layer._updatePath();
 			}
 		}
+
+		this._drawing = false;
+
 		this._ctx.restore();  // Restore state before clipping.
 	},
 
 	_updatePoly: function (layer, closed) {
+		if (!this._drawing) return;
 
 		var i, j, len2, p,
 		    parts = layer._parts,
@@ -205,7 +220,7 @@ L.Canvas = L.Renderer.extend({
 
 	_updateCircle: function (layer) {
 
-		if (layer._empty()) { return; }
+		if (!this._drawing || layer._empty()) { return; }
 
 		var p = layer._point,
 		    ctx = this._ctx,
@@ -231,8 +246,6 @@ L.Canvas = L.Renderer.extend({
 
 	_fillStroke: function (ctx, layer) {
 		var options = layer.options;
-
-		//ctx.globalCompositeOperation = 'source-over';
 
 		if (options.fill) {
 			ctx.globalAlpha = options.fillOpacity;
