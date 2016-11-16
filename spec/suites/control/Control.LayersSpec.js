@@ -177,12 +177,12 @@ describe("Control.Layers", function () {
 			var markerC = L.marker([0, 2]).addTo(map);
 
 			var layersCtrl = L.control.layers({
-				'Base One': baseLayerOne,
-				'Base Two': baseLayerTwo
+				'Base Two': baseLayerTwo,
+				'Base One': baseLayerOne
 			}, {
 				'Marker A': markerA,
-				'Marker B': markerB,
-				'Marker C': markerC
+				'Marker C': markerC,
+				'Marker B': markerB
 			}, {
 				sortLayers: true
 			}).addTo(map);

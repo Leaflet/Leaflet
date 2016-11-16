@@ -67,7 +67,7 @@ L.Control.Layers = L.Control.extend({
 		// `sortFunction(layerA, layerB, nameA, nameB)`.
 		// By default, it sorts layers alphabetically by their name.
 		sortFunction: function (layerA, layerB, nameA, nameB) {
-			return nameA - nameB;
+			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
 		}
 	},
 
