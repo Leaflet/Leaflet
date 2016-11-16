@@ -361,10 +361,11 @@ describe('L.Layer#_popup', function () {
 		expect(map.hasLayer(popup)).to.be(true);
 	});
 
-	it("throws an error when there is no popup", function () {
+	it("should not give an error when the marker has no popup", function () {
 		expect(function () {
 			marker.isPopupOpen();
-		}).to.throwException();
+		}).to.not.throwException();
+		expect(marker.isPopupOpen()).to.be(false);
 	});
 
 	it("should show a popup as closed if it's never opened", function () {
@@ -382,11 +383,12 @@ describe('L.Layer#_popup', function () {
 		expect(marker.isPopupOpen()).to.be(false);
 	});
 
-	it("throws an error when the popup is unbound", function () {
+	it("should show the popup as closed if it's unbound", function () {
 		marker.bindPopup("new layer").openPopup().unbindPopup();
 		expect(function () {
 			marker.isPopupOpen();
-		}).to.throwException();
+		}).to.not.throwException();
+		expect(marker.isPopupOpen()).to.be(false);
 	});
 
 });
