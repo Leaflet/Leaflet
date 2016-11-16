@@ -152,7 +152,7 @@ L.Canvas = L.Renderer.extend({
 		this._redrawBounds = null;
 	},
 
-	_clear: function() {
+	_clear: function () {
 		var bounds = this._redrawBounds;
 		if (bounds) {
 			var size = bounds.getSize();
@@ -187,7 +187,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_updatePoly: function (layer, closed) {
-		if (!this._drawing) return;
+		if (!this._drawing) { return; }
 
 		var i, j, len2, p,
 		    parts = layer._parts,
