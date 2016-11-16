@@ -53,11 +53,12 @@ L.Canvas = L.Renderer.extend({
 
 	_updatePaths: function () {
 		var layer;
+		this._redrawBounds = null;
 		for (var id in this._layers) {
 			layer = this._layers[id];
 			layer._update();
-			this._requestRedraw(layer);
 		}
+		this._redraw();
 	},
 
 	_update: function () {
