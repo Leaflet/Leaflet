@@ -291,6 +291,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/geobricks/">Geobricks</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.TileLayer.MBTiles">Leaflet.TileLayer.MBTiles</a>
+		</td><td>
+			Loads [`.mbtiles`](https://github.com/mapbox/mbtiles-spec) tilesets.
+		</td><td>
+			<a href="https://github.com/IvanSanchez/">Geobricks</a>
+		</td>
+	</tr>
 </table>
 
 
