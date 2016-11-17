@@ -215,12 +215,15 @@ L.Control.Layers = L.Control.extend({
 		}
 	},
 
-	_addLayer: function (layer, name, overlay) {
+	_addLayer: function (obj, name, overlay) {
+		var layer = obj instanceof L.Layer ? obj : obj.layer;
+
 		layer.on('add remove', this._onLayerChange, this);
 
 		this._layers.push({
 			layer: layer,
 			name: name,
+			className: obj.className,
 			overlay: overlay
 		});
 
@@ -304,6 +307,10 @@ L.Control.Layers = L.Control.extend({
 		var label = document.createElement('label'),
 		    checked = this._map.hasLayer(obj.layer),
 		    input;
+
+		if (obj.className) {
+			label.className = obj.className;
+		}
 
 		if (obj.overlay) {
 			input = document.createElement('input');
