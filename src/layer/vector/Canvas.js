@@ -115,8 +115,16 @@ L.Canvas = L.Renderer.extend({
 		var next = order.next;
 		var prev = order.prev;
 
-		if (next) { next.prev = prev; }
-		if (prev) { prev.next = next; }
+		if (next) {
+			next.prev = prev;
+		} else {
+			this._drawLast = prev;
+		}
+		if (prev) {
+			prev.next = next;
+		} else {
+			this._drawFirst = next;
+		}
 
 		delete layer._order;
 
