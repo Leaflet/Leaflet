@@ -160,7 +160,7 @@ L.Canvas = L.Renderer.extend({
 		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
 	},
 
-	_extendRedrawBounds(layer) {
+	_extendRedrawBounds: function (layer) {
 		var padding = (layer.options.weight || 0) + 1;
 		this._redrawBounds = this._redrawBounds || new L.Bounds();
 		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
@@ -353,7 +353,7 @@ L.Canvas = L.Renderer.extend({
 		this._map._fireDOMEvent(e, type || e.type, layers);
 	},
 
-	_bringToFront: function(layer) {
+	_bringToFront: function (layer) {
 		var order = layer._order;
 		var next = order.next;
 		var prev = order.prev;
@@ -367,7 +367,7 @@ L.Canvas = L.Renderer.extend({
 		if (prev) {
 			prev.next = next;
 		} else if (next) {
-			// Update first entry unless this is the 
+			// Update first entry unless this is the
 			// signle entry
 			this._drawFirst = next;
 		}
@@ -381,7 +381,7 @@ L.Canvas = L.Renderer.extend({
 		this._requestRedraw(layer);
 	},
 
-	_bringToBack: function(layer) {
+	_bringToBack: function (layer) {
 		var order = layer._order;
 		var next = order.next;
 		var prev = order.prev;
@@ -395,7 +395,7 @@ L.Canvas = L.Renderer.extend({
 		if (next) {
 			next.prev = prev;
 		} else if (prev) {
-			// Update last entry unless this is the 
+			// Update last entry unless this is the
 			// signle entry
 			this._drawLast = prev;
 		}
