@@ -297,7 +297,7 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 		</td><td>
 			Loads <a href="https://github.com/mapbox/mbtiles-spec"><code>.mbtiles</code></a> tilesets.
 		</td><td>
-			<a href="https://github.com/IvanSanchez/">Geobricks</a>
+			<a href="https://github.com/IvanSanchez/">Iván Sánchez</a>
 		</td>
 	</tr>
 </table>
