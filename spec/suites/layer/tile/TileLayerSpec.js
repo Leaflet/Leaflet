@@ -378,4 +378,93 @@ describe('TileLayer', function () {
 			});
 		});
 	});
+
+	describe('minNativeZoom', function () {
+		before(function () {
+			div = document.createElement('div');
+			div.style.width = '400px';
+			div.style.height = '400px';
+			div.style.visibility = 'hidden';
+
+			document.body.appendChild(div);
+
+			map = L.map(div).setView([0, 0], 0);
+		});
+
+		it('returns downscaled tileSize when zoom is lower than minNativeZoom (zoom = 0, minNativeZoom = 1)', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				minNativeZoom: 1,
+				tileSize: 256
+			}).addTo(map);
+			map.setView([0, 0], 0);
+			expect(map.getZoom()).to.equal(0);
+			expect(layer.getTileSize().x).to.equal(128);
+			expect(layer.getTileSize().y).to.equal(128);
+		});
+
+		it('returns regular tileSize when zoom is equal to minNativeZoom (zoom = 1, minNativeZoom = 1)', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				minNativeZoom: 1,
+				tileSize: 256
+			}).addTo(map);
+			map.setView([0, 0], 1);
+			expect(map.getZoom()).to.equal(1);
+			expect(layer.getTileSize().x).to.equal(256);
+			expect(layer.getTileSize().y).to.equal(256);
+		});
+
+		it('returns regular tileSize when zoom is greater than minNativeZoom (zoom = 2, minNativeZoom = 1)', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				minNativeZoom: 1,
+				tileSize: 256
+			}).addTo(map);
+			map.setView([0, 0], 2);
+			expect(map.getZoom()).to.equal(2);
+			expect(layer.getTileSize().x).to.equal(256);
+			expect(layer.getTileSize().y).to.equal(256);
+		});
+	});
+
+	describe('maxNativeZoom', function () {
+		before(function () {
+			div = document.createElement('div');
+			div.style.width = '400px';
+			div.style.height = '400px';
+			div.style.visibility = 'hidden';
+
+			document.body.appendChild(div);
+
+			map = L.map(div).setView([0, 0], 0);
+		});
+
+		it('returns upscaled tileSize when zoom is higher than maxNativeZoom (zoom = 2, maxNativeZoom = 1)', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				maxNativeZoom: 1,
+				tileSize: 256
+			}).addTo(map);
+			map.setView([0, 0], 2);
+			expect(layer.getTileSize().x).to.equal(512);
+			expect(layer.getTileSize().y).to.equal(512);
+		});
+
+		it('returns regular tileSize when zoom is equal to minNativeZoom (zoom = 1, maxNativeZoom = 1)', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				maxNativeZoom: 1,
+				tileSize: 256
+			}).addTo(map);
+			map.setView([0, 0], 1);
+			expect(layer.getTileSize().x).to.equal(256);
+			expect(layer.getTileSize().y).to.equal(256);
+		});
+
+		it('returns regular tileSize when zoom is lower than minNativeZoom (zoom = 0, maxNativeZoom = 1)', function () {
+			var layer = L.tileLayer('http://{s}.example.com/{z}/{-y}/{x}.png', {
+				maxNativeZoom: 1,
+				tileSize: 256
+			}).addTo(map);
+			map.setView([0, 0], 0);
+			expect(layer.getTileSize().x).to.equal(256);
+			expect(layer.getTileSize().y).to.equal(256);
+		});
+	});
 });

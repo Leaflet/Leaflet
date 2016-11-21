@@ -291,6 +291,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/geobricks/">Geobricks</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.TileLayer.MBTiles">Leaflet.TileLayer.MBTiles</a>
+		</td><td>
+			Loads <a href="https://github.com/mapbox/mbtiles-spec"><code>.mbtiles</code></a> tilesets.
+		</td><td>
+			<a href="https://github.com/IvanSanchez/">Iván Sánchez</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -3460,6 +3469,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			Trigger a jQuery UI dialog/modal using an on-map control.
 		</td><td>
 			<a href="https://github.com/gregallensworth">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mstahv/v-leaflet">V-Leaflet</a>
+		</td><td>
+			Use Leaflet as a component for the <a href='https://vaadin.com/home'>Vaadin</a> Java/HTML framework.
+		</td><td>
+			<a href="https://github.com/mstahv">Matti Tahvonen</a>
 		</td>
 	</tr>
 </table>
