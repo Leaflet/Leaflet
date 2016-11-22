@@ -140,6 +140,46 @@ describe("Control.Layers", function () {
 		});
 	});
 
+	describe("collapse when collapsed: true", function () {
+		it('expands when mouse is over', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+		it('collapses when mouse is out', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			happen.once(layersCtrl._container, {type:'mouseout'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
+		});
+		it('collapses when map is clicked', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			map.setView([0, 0], 0);
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.click(map._container);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
+		});
+	});
+
+	describe("does not collapse when collapsed: false", function () {
+		it('does not collapse when mouse enters or leaves', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.once(layersCtrl._container, {type:'mouseout'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+		it('does not collapse when map is clicked', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			map.setView([0, 0], 0);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.click(map._container);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+	});
+
 	describe("sortLayers", function () {
 		beforeEach(function () {
 			map.setView([0, 0], 14);
