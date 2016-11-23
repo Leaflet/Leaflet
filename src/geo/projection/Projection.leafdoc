@@ -4,7 +4,7 @@
 An object with methods for projecting geographical coordinates of the world onto
 a flat surface (and back). See [Map projection](http://en.wikipedia.org/wiki/Map_projection).
 
-@property bounds: LatLngBounds
+@property bounds: Bounds
 The bounds where the projection is valid
 
 @method project(latlng: LatLng): Point
