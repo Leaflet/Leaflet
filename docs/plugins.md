@@ -3164,7 +3164,7 @@ The following plugins use external services to calculate driving or walking rout
     		<td>
     			<a href="https://github.com/BKGiser/Leaflet.Routing.Amap">Leaflet.Routing.Amap</a>
     		</td><td>
-    		    This is a routing implementation from AMap(高德地图),you need set a location points and key first,Leaflet.Routing.Amap will generates colorful route. Because of most china map use unique Projection , include AMap, this should be attention.so I import Project class for projection transform.
+		Control for route search using <a href="http://www.amap.com/">AMap(高德地图)</a> as a backend. Supports the Chinese BD09 and GCJ02 coordinate systems, colourful lines, and turn-by-turn popups.
     		</td><td>
     			<a href="https://github.com/BKGiser">Jack Good</a>
     		</td>
