@@ -3159,6 +3159,16 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.nearest.place/">Nearest!</a>
 		</td>
 	</tr>
+	
+	<tr>
+    		<td>
+    			<a href="https://github.com/BKGiser/Leaflet.Routing.Amap">Leaflet.Routing.Amap</a>
+    		</td><td>
+    		    This is a routing implementation from AMap(高德地图),you need set a location points and key first,Leaflet.Routing.Amap will generates colorful route. Because of most china map use unique Projection , include AMap, this should be attention.so I import Project class for projection transform.
+    		</td><td>
+    			<a href="https://github.com/BKGiser">Jack Good</a>
+    		</td>
+    	</tr>
 </table>
 
 
