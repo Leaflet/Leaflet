@@ -5,7 +5,7 @@ An object with methods for projecting geographical coordinates of the world onto
 a flat surface (and back). See [Map projection](http://en.wikipedia.org/wiki/Map_projection).
 
 @property bounds: Bounds
-The bounds where the projection is valid
+The bounds (specified in CRS units) where the projection is valid
 
 @method project(latlng: LatLng): Point
 Projects geographical coordinates into a 2D point. Only accepts actual `L.LatLng` instances, not arrays.
