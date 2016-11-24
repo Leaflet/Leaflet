@@ -148,7 +148,7 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "main": "my-plugin.js",
   "author": "You",
   "license": "IST",
-  "dependencies": {
+  "peerDependencies": {
     "leaflet": "^1.0.0"
   }
 }
