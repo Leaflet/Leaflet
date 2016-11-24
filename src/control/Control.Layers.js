@@ -156,7 +156,8 @@ L.Control.Layers = L.Control.extend({
 
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
-		    container = this._container = L.DomUtil.create('div', className);
+		    container = this._container = L.DomUtil.create('div', className),
+		    collapsed = this.options.collapsed;
 
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
@@ -168,11 +169,15 @@ L.Control.Layers = L.Control.extend({
 
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
-		if (!L.Browser.android) {
-			L.DomEvent.on(container, {
-				mouseenter: this.expand,
-				mouseleave: this.collapse
-			}, this);
+		if (collapsed) {
+			this._map.on('click', this.collapse, this);
+
+			if (!L.Browser.android) {
+				L.DomEvent.on(container, {
+					mouseenter: this.expand,
+					mouseleave: this.collapse
+				}, this);
+			}
 		}
 
 		var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
@@ -192,10 +197,9 @@ L.Control.Layers = L.Control.extend({
 			setTimeout(L.bind(this._onInputClick, this), 0);
 		}, this);
 
-		this._map.on('click', this.collapse, this);
 		// TODO keyboard accessibility
 
-		if (!this.options.collapsed) {
+		if (!collapsed) {
 			this.expand();
 		}
 
