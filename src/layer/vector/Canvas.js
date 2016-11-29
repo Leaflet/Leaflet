@@ -187,10 +187,8 @@ L.Canvas = L.Renderer.extend({
 	_clear: function () {
 		var bounds = this._redrawBounds;
 		if (bounds) {
-			bounds.min.x = Math.floor(bounds.min.x);
-			bounds.min.y = Math.floor(bounds.min.y);
-			bounds.max.x = Math.ceil(bounds.max.x);
-			bounds.max.y = Math.ceil(bounds.max.y);
+			bounds.min._floor();
+			bounds.max._ceil();
 
 			var size = bounds.getSize();
 			this._ctx.clearRect(bounds.min.x, bounds.min.y, size.x, size.y);
