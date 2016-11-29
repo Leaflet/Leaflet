@@ -295,9 +295,9 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 		<td>
 			<a href="https://gitlab.com/IvanSanchez/Leaflet.TileLayer.MBTiles">Leaflet.TileLayer.MBTiles</a>
 		</td><td>
-			Loads [`.mbtiles`](https://github.com/mapbox/mbtiles-spec) tilesets.
+			Loads <a href="https://github.com/mapbox/mbtiles-spec"><code>.mbtiles</code></a> tilesets.
 		</td><td>
-			<a href="https://github.com/IvanSanchez/">Geobricks</a>
+			<a href="https://github.com/IvanSanchez/">Iván Sánchez</a>
 		</td>
 	</tr>
 </table>
@@ -3159,6 +3159,16 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.nearest.place/">Nearest!</a>
 		</td>
 	</tr>
+	
+	<tr>
+    		<td>
+    			<a href="https://github.com/BKGiser/Leaflet.Routing.Amap">Leaflet.Routing.Amap</a>
+    		</td><td>
+		Control for route search using <a href="http://www.amap.com/">AMap(高德地图)</a> as a backend. Supports the Chinese BD09 and GCJ02 coordinate systems, colourful lines, and turn-by-turn popups.
+    		</td><td>
+    			<a href="https://github.com/BKGiser">Jack Good</a>
+    		</td>
+    	</tr>
 </table>
 
 

@@ -6,9 +6,9 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.0</strong>.</p>
+<p>This reference reflects <strong>Leaflet 1.0.2</strong>.</p>
 
-<p>Docs for the 1.0.2 version are <a href='reference-1.0.2.html'>available here</a>.
+<p>Docs for the 1.0.0 and 1.0.1 versions are <a href='reference-1.0.0.html'>available here</a>.
 
 <p>Docs for the legacy 0.7.x versions are <a href='reference.html'>available here</a>.
 
@@ -386,6 +386,19 @@ or <a href="#canvas"><code>L.Canvas</code></a> by default depending on browser s
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='map-zoomanimation'>
+		<td><code><b>zoomAnimation</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Whether the map zoom animation is enabled. By default it&#39;s enabled
+in all browsers that support CSS3 Transitions except Android.</td>
+	</tr>
+	<tr id='map-zoomanimationthreshold'>
+		<td><code><b>zoomAnimationThreshold</b></code></td>
+		<td><code>Number</code>
+		<td><code>4</code></td>
+		<td>Won&#39;t animate zoom if the zoom difference exceeds this value.</td>
+	</tr>
 	<tr id='map-fadeanimation'>
 		<td><code><b>fadeAnimation</b></code></td>
 		<td><code>Boolean</code>
@@ -408,19 +421,6 @@ enabled in all browsers that support CSS3 Transitions except Android.</td>
 		<td>Defines the maximum size of a CSS translation transform. The default
 value should not be changed unless a web browser positions layers in
 the wrong place after doing a large <code>panBy</code>.</td>
-	</tr>
-	<tr id='map-zoomanimation'>
-		<td><code><b>zoomAnimation</b></code></td>
-		<td><code>Boolean</code>
-		<td><code>true</code></td>
-		<td>Whether the map zoom animation is enabled. By default it&#39;s enabled
-in all browsers that support CSS3 Transitions except Android.</td>
-	</tr>
-	<tr id='map-zoomanimationthreshold'>
-		<td><code><b>zoomAnimationThreshold</b></code></td>
-		<td><code>Number</code>
-		<td><code>4</code></td>
-		<td>Won&#39;t animate zoom if the zoom difference exceeds this value.</td>
 	</tr>
 </tbody></table>
 
@@ -770,6 +770,31 @@ dragging the map).</td>
 
 </section><section class='collapsable'>
 
+<h4 id='map-location-events'>Location events</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-locationerror'>
+		<td><code><b>locationerror</b>
+		<td><code><a href='#errorevent'>ErrorEvent</a></code></td>
+		<td>Fired when geolocation (using the <a href="#map-locate"><code>locate</code></a> method) failed.</td>
+	</tr>
+	<tr id='map-locationfound'>
+		<td><code><b>locationfound</b>
+		<td><code><a href='#locationevent'>LocationEvent</a></code></td>
+		<td>Fired when geolocation (using the <a href="#map-locate"><code>locate</code></a> method)
+went successfully.</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
 <h4 id='map-interaction-events'>Interaction events</h4>
 
 
@@ -839,7 +864,7 @@ handlers start running).</td>
 
 </section><section class='collapsable'>
 
-<h4 id='map-animation-options'>Animation Options</h4>
+<h4 id='map-other-methods'>Other Methods</h4>
 
 
 <table><thead>
@@ -853,31 +878,6 @@ handlers start running).</td>
 		<td><code><b>zoomanim</b>
 		<td><code><a href='#zoomanimevent'>ZoomAnimEvent</a></code></td>
 		<td>Fired on every frame of a zoom animation</td>
-	</tr>
-</tbody></table>
-
-</section><section class='collapsable'>
-
-<h4 id='map-location-events'>Location events</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-locationerror'>
-		<td><code><b>locationerror</b>
-		<td><code><a href='#errorevent'>ErrorEvent</a></code></td>
-		<td>Fired when geolocation (using the <a href="#map-locate"><code>locate</code></a> method) failed.</td>
-	</tr>
-	<tr id='map-locationfound'>
-		<td><code><b>locationfound</b>
-		<td><code><a href='#locationevent'>LocationEvent</a></code></td>
-		<td>Fired when geolocation (using the <a href="#map-locate"><code>locate</code></a> method)
-went successfully.</td>
 	</tr>
 </tbody></table>
 
@@ -1075,6 +1075,20 @@ zoom level possible.</p>
 		<td><p>Pans the map by a given number of pixels (animated).</p>
 </td>
 	</tr>
+	<tr id='map-flyto'>
+		<td><code><b>flyTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the view of the map (geographical center and zoom) performing a smooth
+pan-zoom animation.</p>
+</td>
+	</tr>
+	<tr id='map-flytobounds'>
+		<td><code><b>flyToBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>, <nobr>&lt;<a href='#fitbounds-options'>fitBounds options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the view of the map with a smooth animation like <a href="#map-flyto"><code>flyTo</code></a>,
+but takes a bounds parameter like <a href="#map-fitbounds"><code>fitBounds</code></a>.</p>
+</td>
+	</tr>
 	<tr id='map-setmaxbounds'>
 		<td><code><b>setMaxBounds</b>(<nobr>&lt;<a href='#bounds'>Bounds</a>&gt;</nobr> <i>bounds</i>)</nobr></code></td>
 		<td><code>this</code></td>
@@ -1124,18 +1138,38 @@ pan by default.</p>
 		<td><p>Stops the currently running <code>panTo</code> or <code>flyTo</code> animation, if any.</p>
 </td>
 	</tr>
-	<tr id='map-flyto'>
-		<td><code><b>flyTo</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>zoom?</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='map-geolocation-methods'>Geolocation methods</h4>
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='map-locate'>
+		<td><code><b>locate</b>(<nobr>&lt;<a href='#locate-options'>Locate options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the view of the map (geographical center and zoom) performing a smooth
-pan-zoom animation.</p>
+		<td><p>Tries to locate the user using the Geolocation API, firing a <a href="#map-locationfound"><code>locationfound</code></a>
+event with location data on success or a <a href="#map-locationerror"><code>locationerror</code></a> event on failure,
+and optionally sets the map view to the user&#39;s location with respect to
+detection accuracy (or to the world view if geolocation failed).
+Note that, if your page doesn&#39;t use HTTPS, this method will fail in
+modern browsers (<a href="https://sites.google.com/a/chromium.org/dev/Home/chromium-security/deprecating-powerful-features-on-insecure-origins">Chrome 50 and newer</a>)
+See <a href="#locate-options"><code>Locate options</code></a> for more details.</p>
 </td>
 	</tr>
-	<tr id='map-flytobounds'>
-		<td><code><b>flyToBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>, <nobr>&lt;<a href='#fitbounds-options'>fitBounds options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+	<tr id='map-stoplocate'>
+		<td><code><b>stopLocate</b>()</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Sets the view of the map with a smooth animation like <a href="#map-flyto"><code>flyTo</code></a>,
-but takes a bounds parameter like <a href="#map-fitbounds"><code>fitBounds</code></a>.</p>
+		<td><p>Stops watching location previously initiated by <code>map.locate({watch: true})</code>
+and aborts resetting the map view if map.locate was called with
+<code>{setView: true}</code>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -1405,40 +1439,6 @@ event took place.</p>
 	</tr>
 </tbody></table>
 
-</section><section class='collapsable'>
-
-<h4 id='map-geolocation-methods'>Geolocation methods</h4>
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='map-locate'>
-		<td><code><b>locate</b>(<nobr>&lt;<a href='#locate-options'>Locate options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Tries to locate the user using the Geolocation API, firing a <a href="#map-locationfound"><code>locationfound</code></a>
-event with location data on success or a <a href="#map-locationerror"><code>locationerror</code></a> event on failure,
-and optionally sets the map view to the user&#39;s location with respect to
-detection accuracy (or to the world view if geolocation failed).
-Note that, if your page doesn&#39;t use HTTPS, this method will fail in
-modern browsers (<a href="https://sites.google.com/a/chromium.org/dev/Home/chromium-security/deprecating-powerful-features-on-insecure-origins">Chrome 50 and newer</a>)
-See <a href="#locate-options"><code>Locate options</code></a> for more details.</p>
-</td>
-	</tr>
-	<tr id='map-stoplocate'>
-		<td><code><b>stopLocate</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Stops watching location previously initiated by <code>map.locate({watch: true})</code>
-and aborts resetting the map view if map.locate was called with
-<code>{setView: true}</code>.</p>
-</td>
-	</tr>
-</tbody></table>
-
 </section>
 
 
@@ -1492,7 +1492,7 @@ and aborts resetting the map view if map.locate was called with
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='map-listens'>
@@ -1827,7 +1827,7 @@ which always does the latter).</td>
 		<td><code>0.25</code></td>
 		<td>The curvature factor of panning animation easing (third parameter of the
 <a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
-the less the more bowed the curve.</td>
+and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='pan-options-nomovestart'>
 		<td><code><b>noMoveStart</b></code></td>
@@ -1908,7 +1908,7 @@ without animation.</td>
 		<td><code>0.25</code></td>
 		<td>The curvature factor of panning animation easing (third parameter of the
 <a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
-the less the more bowed the curve.</td>
+and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='zoom/pan-options-nomovestart'>
 		<td><code><b>noMoveStart</b></code></td>
@@ -2032,7 +2032,7 @@ without animation.</td>
 		<td><code>0.25</code></td>
 		<td>The curvature factor of panning animation easing (third parameter of the
 <a href="http://cubic-bezier.com/">Cubic Bezier curve</a>). 1.0 means linear animation,
-the less the more bowed the curve.</td>
+and the smaller this number, the more bowed the curve.</td>
 	</tr>
 	<tr id='fitbounds-options-nomovestart'>
 		<td><code><b>noMoveStart</b></code></td>
@@ -2198,6 +2198,34 @@ panning inertia).</td>
 	</div>
 </div>
 
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><section>
 <h3 id='marker-event'>Events</h3>
 
@@ -2205,6 +2233,7 @@ panning inertia).</td>
 
 
 
+<div class='section-comments'>In addition to <a href="#layer">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popup">popup methods</a> like bindPopup() you can also use the following methods:</div>
 
 <table><thead>
 	<tr>
@@ -2416,7 +2445,6 @@ for a second (also called long press).</td>
 
 
 
-<div class='section-comments'>In addition to <a href="#layer">shared layer methods</a> like <code>addTo()</code> and <code>remove()</code> and <a href="#popup">popup methods</a> like bindPopup() you can also use the following methods:</div>
 
 <table><thead>
 	<tr>
@@ -2425,6 +2453,12 @@ for a second (also called long press).</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
+	<tr id='marker-togeojson'>
+		<td><code><b>toGeoJSON</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the marker (as a GeoJSON <a href="#point"><code>Point</code></a> Feature).</p>
+</td>
+	</tr>
 	<tr id='marker-getlatlng'>
 		<td><code><b>getLatLng</b>()</nobr></code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
@@ -2459,6 +2493,57 @@ for a second (also called long press).</td>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='marker-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='marker-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='marker-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='marker-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='marker-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
@@ -2603,51 +2688,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='marker-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='marker-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='marker-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='marker-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -2697,7 +2737,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='marker-listens'>
@@ -2975,6 +3015,34 @@ of the popup when opening it on some overlays.</td>
 	</div>
 </div>
 
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><section>
 <h3 id=''>Events</h3>
 
@@ -3155,6 +3223,57 @@ of the popup when opening it on some overlays.</td>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='popup-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='popup-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='popup-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='popup-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='popup-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -3297,51 +3416,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='popup-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='popup-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='popup-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='popup-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -3391,7 +3465,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='popup-listens'>
@@ -3605,6 +3679,34 @@ position on the map.</td>
 	</div>
 </div>
 
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tooltip-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><section>
 <h3 id=''>Events</h3>
 
@@ -3709,6 +3811,57 @@ position on the map.</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tooltip-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='tooltip-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='tooltip-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='tooltip-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='tooltip-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
@@ -3853,51 +4006,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='tooltip-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='tooltip-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='tooltip-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='tooltip-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -3947,7 +4055,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tooltip-listens'>
@@ -4107,6 +4215,14 @@ properties. The event might can optionally be propagated to event parents.</p>
 the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
 from <code>maxNativeZoom</code> level and auto-scaled.</td>
 	</tr>
+	<tr id='tilelayer-minnativezoom'>
+		<td><code><b>minNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>Minimum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
+from <code>minNativeZoom</code> level and auto-scaled.</td>
+	</tr>
 	<tr id='tilelayer-subdomains'>
 		<td><code><b>subdomains</b></code></td>
 		<td><code>String|String[]</code>
@@ -4200,12 +4316,6 @@ from <code>maxNativeZoom</code> level and auto-scaled.</td>
 		<td><code>200</code></td>
 		<td>Tiles will not update more than once every <code>updateInterval</code> milliseconds when panning.</td>
 	</tr>
-	<tr id='tilelayer-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code>
-		<td><code>null</code></td>
-		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
-	</tr>
 	<tr id='tilelayer-zindex'>
 		<td><code><b>zIndex</b></code></td>
 		<td><code>Number</code>
@@ -4243,6 +4353,34 @@ effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 		<td><code>Number</code>
 		<td><code>2</code></td>
 		<td>When panning the map, keep this many rows and columns of tiles before unloading them.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -4483,12 +4621,6 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 		<td><p>Brings the tile layer to the bottom of all tile layers.</p>
 </td>
 	</tr>
-	<tr id='tilelayer-getattribution'>
-		<td><code><b>getAttribution</b>()</nobr></code></td>
-		<td><code>String</code></td>
-		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
 	<tr id='tilelayer-getcontainer'>
 		<td><code><b>getContainer</b>()</nobr></code></td>
 		<td><code>HTMLElement</code></td>
@@ -4523,6 +4655,57 @@ Classes extending <a href="#tilelayer"><code>TileLayer</code></a> can override t
 		<td><code><b>getTileSize</b>()</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Normalizes the <a href="#gridlayer-tilesize">tileSize option</a> into a point. Used by the <code>createTile()</code> method.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='tilelayer-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='tilelayer-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='tilelayer-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='tilelayer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -4674,51 +4857,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='tilelayer-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='tilelayer-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='tilelayer-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -4768,7 +4906,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-listens'>
@@ -4987,6 +5125,14 @@ map CRS. Don&#39;t change this if you&#39;re not sure what it means.</td>
 the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
 from <code>maxNativeZoom</code> level and auto-scaled.</td>
 	</tr>
+	<tr id='tilelayer-wms-minnativezoom'>
+		<td><code><b>minNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>null</code></td>
+		<td>Minimum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
+from <code>minNativeZoom</code> level and auto-scaled.</td>
+	</tr>
 	<tr id='tilelayer-wms-subdomains'>
 		<td><code><b>subdomains</b></code></td>
 		<td><code>String|String[]</code>
@@ -5081,12 +5227,6 @@ from <code>maxNativeZoom</code> level and auto-scaled.</td>
 		<td><code>200</code></td>
 		<td>Tiles will not update more than once every <code>updateInterval</code> milliseconds when panning.</td>
 	</tr>
-	<tr id='tilelayer-wms-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code>
-		<td><code>null</code></td>
-		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
-	</tr>
 	<tr id='tilelayer-wms-zindex'>
 		<td><code><b>zIndex</b></code></td>
 		<td><code>Number</code>
@@ -5124,6 +5264,34 @@ effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 		<td><code>Number</code>
 		<td><code>2</code></td>
 		<td>When panning the map, keep this many rows and columns of tiles before unloading them.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -5369,12 +5537,6 @@ callback is called when the tile has been loaded.</p>
 		<td><p>Brings the tile layer to the bottom of all tile layers.</p>
 </td>
 	</tr>
-	<tr id='tilelayer-wms-getattribution'>
-		<td><code><b>getAttribution</b>()</nobr></code></td>
-		<td><code>String</code></td>
-		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
 	<tr id='tilelayer-wms-getcontainer'>
 		<td><code><b>getContainer</b>()</nobr></code></td>
 		<td><code>HTMLElement</code></td>
@@ -5409,6 +5571,57 @@ callback is called when the tile has been loaded.</p>
 		<td><code><b>getTileSize</b>()</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Normalizes the <a href="#gridlayer-tilesize">tileSize option</a> into a point. Used by the <code>createTile()</code> method.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='tilelayer-wms-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='tilelayer-wms-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='tilelayer-wms-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='tilelayer-wms-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='tilelayer-wms-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -5560,51 +5773,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='tilelayer-wms-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='tilelayer-wms-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -5654,7 +5822,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='tilelayer-wms-listens'>
@@ -5802,12 +5970,6 @@ geographical bounds it is tied to.</td>
 		<td><code>false</code></td>
 		<td>If <code>true</code>, the image overlay will emit <a href="#interactive-layer">mouse events</a> when clicked or hovered.</td>
 	</tr>
-	<tr id='imageoverlay-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code>
-		<td><code>null</code></td>
-		<td>An optional string containing HTML to be shown on the <code>Attribution control</code></td>
-	</tr>
 	<tr id='imageoverlay-crossorigin'>
 		<td><code><b>crossOrigin</b></code></td>
 		<td><code>Boolean</code>
@@ -5840,6 +6002,12 @@ geographical bounds it is tied to.</td>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='imageoverlay-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -6045,6 +6213,57 @@ for a second (also called long press).</td>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='imageoverlay-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -6187,51 +6406,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='imageoverlay-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='imageoverlay-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -6281,7 +6455,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-listens'>
@@ -6509,6 +6683,12 @@ precedence over the map&#39;s <a href="#map-renderer">default renderer</a>.</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='path-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -6713,6 +6893,57 @@ for a second (also called long press).</td>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='path-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='path-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='path-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='path-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='path-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -6855,51 +7086,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='path-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='path-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='path-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='path-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -6949,7 +7135,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='path-listens'>
@@ -7273,6 +7459,12 @@ precedence over the map&#39;s <a href="#map-renderer">default renderer</a>.</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='polyline-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -7542,6 +7734,57 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 </div>
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='polyline-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='polyline-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='polyline-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='polyline-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='polyline-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -7684,51 +7927,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='polyline-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='polyline-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='polyline-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='polyline-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -7778,7 +7976,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='polyline-listens'>
@@ -8109,6 +8307,12 @@ precedence over the map&#39;s <a href="#map-renderer">default renderer</a>.</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='polygon-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -8399,6 +8603,57 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 </div>
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='polygon-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='polygon-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='polygon-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='polygon-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='polygon-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -8541,51 +8796,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='polygon-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='polygon-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='polygon-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='polygon-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -8635,7 +8845,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='polygon-listens'>
@@ -8948,6 +9158,12 @@ precedence over the map&#39;s <a href="#map-renderer">default renderer</a>.</td>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='rectangle-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -9266,6 +9482,57 @@ a specific ring as a LatLng array (that you can earlier access with <a href="#po
 </div>
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='rectangle-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='rectangle-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='rectangle-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='rectangle-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='rectangle-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -9408,51 +9675,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='rectangle-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='rectangle-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='rectangle-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='rectangle-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -9502,7 +9724,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='rectangle-listens'>
@@ -9583,7 +9805,7 @@ It&#39;s an approximation and starts to diverge from a real circle closer to pol
 
 
 
-<pre><code class="lang-js">L.circle([50.5, 30.5], 200).addTo(map);
+<pre><code class="lang-js">L.circle([50.5, 30.5], {radius: 200}).addTo(map);
 </code></pre>
 
 
@@ -9803,6 +10025,12 @@ precedence over the map&#39;s <a href="#map-renderer">default renderer</a>.</td>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='circle-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -10086,6 +10314,57 @@ for a second (also called long press).</td>
 </div>
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='circle-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='circle-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='circle-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='circle-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='circle-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -10228,51 +10507,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='circle-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='circle-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='circle-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='circle-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -10322,7 +10556,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='circle-listens'>
@@ -10600,6 +10834,12 @@ precedence over the map&#39;s <a href="#map-renderer">default renderer</a>.</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='circlemarker-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -10766,7 +11006,6 @@ for a second (also called long press).</td>
 
 
 
-<div class='section-comments'>There are several static functions which can be called without instantiating L.GeoJSON:</div>
 
 <table><thead>
 	<tr>
@@ -10847,6 +11086,57 @@ for a second (also called long press).</td>
 		<td><code><b>bringToBack</b>()</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Brings the layer to the bottom of all path layers.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='circlemarker-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='circlemarker-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='circlemarker-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='circlemarker-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='circlemarker-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -10998,51 +11288,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='circlemarker-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='circlemarker-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='circlemarker-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='circlemarker-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -11092,7 +11337,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='circlemarker-listens'>
@@ -11184,7 +11429,7 @@ this case.</p>
 
 <p>Use SVG by default for all paths in the map:</p>
 <pre><code class="lang-js">var map = L.map(&#39;map&#39;, {
-    renderer: L.svg();
+    renderer: L.svg()
 });
 </code></pre>
 <p>Use a SVG renderer with extra padding for specific vector geometries:</p>
@@ -11278,6 +11523,12 @@ e.g. 0.1 would be 10% of map view in each direction</td>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='svg-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -11416,6 +11667,57 @@ its map has moved</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='svg-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='svg-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='svg-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='svg-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='svg-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
@@ -11560,51 +11862,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='svg-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='svg-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='svg-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='svg-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -11654,7 +11911,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='svg-listens'>
@@ -11869,6 +12126,12 @@ e.g. 0.1 would be 10% of map view in each direction</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='canvas-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -12006,6 +12269,57 @@ its map has moved</td>
 
 
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='canvas-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='canvas-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='canvas-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='canvas-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='canvas-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
@@ -12150,51 +12464,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='canvas-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='canvas-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='canvas-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='canvas-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -12244,7 +12513,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='canvas-listens'>
@@ -12386,6 +12655,12 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='layergroup-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -12591,6 +12866,57 @@ implement <code>methodName</code>.</p>
 
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layergroup-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='layergroup-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='layergroup-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='layergroup-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='layergroup-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -12733,51 +13059,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='layergroup-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='layergroup-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='layergroup-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='layergroup-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -12827,7 +13108,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='layergroup-listens'>
@@ -12975,6 +13256,12 @@ and custom events.</li>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='featuregroup-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -13249,6 +13536,57 @@ implement <code>methodName</code>.</p>
 </div>
 
 <div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='featuregroup-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='featuregroup-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='featuregroup-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='featuregroup-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='featuregroup-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -13391,51 +13729,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='featuregroup-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='featuregroup-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='featuregroup-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='featuregroup-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -13485,7 +13778,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-listens'>
@@ -13659,12 +13952,14 @@ The default is to do nothing with the newly created layers:
 		<td><code><b>filter</b></code></td>
 		<td><code>Function</code>
 		<td><code>*</code></td>
-		<td>A <code>Function</code> that will be used to decide whether to show a feature or not.
-The default is to show all features:
+		<td>A <code>Function</code> that will be used to decide whether to include a feature or not.
+The default is to include all features:
 <pre><code class="lang-js">function (geoJsonFeature) {
     return true;
 }
-</code></pre></td>
+</code></pre>
+<p>Note: dynamically changing the <code>filter</code> option will have effect only on newly
+added data. It will <em>not</em> re-evaluate already included features.</p></td>
 	</tr>
 	<tr id='geojson-coordstolatlng'>
 		<td><code><b>coordsToLatLng</b></code></td>
@@ -13699,6 +13994,12 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='geojson-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -13837,9 +14138,41 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 </div>
 
 </section><section>
-<h3 id=''>Methods</h3>
+<h3 id='geojson-method'>Methods</h3>
+
+<section >
 
 
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='geojson-adddata'>
+		<td><code><b>addData</b>(<i>data</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a GeoJSON object to the layer.</p>
+</td>
+	</tr>
+	<tr id='geojson-resetstyle'>
+		<td><code><b>resetStyle</b>(<i>layer</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Resets the given vector layer&#39;s style to the original GeoJSON style, useful for resetting style after hover events.</p>
+</td>
+	</tr>
+	<tr id='geojson-setstyle'>
+		<td><code><b>setStyle</b>(<i>style</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Changes styles of GeoJSON vector layers with the given style function.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section>
 
 
 <div class='accordion'>
@@ -13857,12 +14190,6 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='geojson-setstyle'>
-		<td><code><b>setStyle</b>(<nobr>&lt;<a href='#path-option'>Path options</a>&gt;</nobr> <i>style</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the given path options to each layer of the group that has a <code>setStyle</code> method.</p>
-</td>
-	</tr>
 	<tr id='geojson-bringtofront'>
 		<td><code><b>bringToFront</b>()</nobr></code></td>
 		<td><code>this</code></td>
@@ -13978,6 +14305,57 @@ implement <code>methodName</code>.</p>
 		<td><code><b>getLayerId</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
 		<td><code>Number</code></td>
 		<td><p>Returns the internal ID for a layer</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='geojson-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='geojson-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='geojson-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='geojson-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='geojson-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -14129,51 +14507,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='geojson-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='geojson-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='geojson-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='geojson-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -14223,7 +14556,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='geojson-listens'>
@@ -14299,6 +14632,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 
 
+<div class='section-comments'>There are several static functions which can be called without instantiating L.GeoJSON:</div>
 
 <table><thead>
 	<tr>
@@ -14307,21 +14641,6 @@ properties. The event might can optionally be propagated to event parents.</p>
 		<th>Description</th>
 	</tr>
 	</thead><tbody>
-	<tr id='geojson-adddata'>
-		<td><code><b>addData</b>(<i>data</i>)</nobr></code></td>
-		<td><code><a href='#layer'>Layer</a></code></td>
-		<td>Adds a GeoJSON object to the layer.</td>
-	</tr>
-	<tr id='geojson-resetstyle'>
-		<td><code><b>resetStyle</b>(<i>layer</i>)</nobr></code></td>
-		<td><code><a href='#layer'>Layer</a></code></td>
-		<td>Resets the given vector layer&#39;s style to the original GeoJSON style, useful for resetting style after hover events.</td>
-	</tr>
-	<tr id='geojson-setstyle'>
-		<td><code><b>setStyle</b>(<i>style</i>)</nobr></code></td>
-		<td><code><a href='#layer'>Layer</a></code></td>
-		<td>Changes styles of GeoJSON vector layers with the given style function.</td>
-	</tr>
 	<tr id='geojson-geometrytolayer'>
 		<td><code><b>geometryToLayer</b>(<nobr>&lt;Object&gt;</nobr> <i>featureData</i>, <nobr>&lt;<a href='#geojson-option'>GeoJSON options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code><a href='#layer'>Layer</a></code></td>
@@ -14494,12 +14813,6 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 		<td><code>200</code></td>
 		<td>Tiles will not update more than once every <code>updateInterval</code> milliseconds when panning.</td>
 	</tr>
-	<tr id='gridlayer-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code>
-		<td><code>null</code></td>
-		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
-	</tr>
 	<tr id='gridlayer-zindex'>
 		<td><code><b>zIndex</b></code></td>
 		<td><code>Number</code>
@@ -14554,6 +14867,34 @@ effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 </section><section>
 <h3 id='gridlayer-event'>Events</h3>
@@ -14725,12 +15066,6 @@ effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
 		<td><p>Brings the tile layer to the bottom of all tile layers.</p>
 </td>
 	</tr>
-	<tr id='gridlayer-getattribution'>
-		<td><code><b>getAttribution</b>()</nobr></code></td>
-		<td><code>String</code></td>
-		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
 	<tr id='gridlayer-getcontainer'>
 		<td><code><b>getContainer</b>()</nobr></code></td>
 		<td><code>HTMLElement</code></td>
@@ -14794,6 +15129,57 @@ is specified, it must be called when the tile has finished loading and drawing.<
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='gridlayer-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='gridlayer-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='gridlayer-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='gridlayer-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='gridlayer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
@@ -14938,51 +15324,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='gridlayer-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='gridlayer-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='gridlayer-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='gridlayer-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -15032,7 +15373,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='gridlayer-listens'>
@@ -15251,9 +15592,9 @@ map.panTo(L.latLng(50, 30));
 
 
 
-<pre><code class="lang-js">var southWest = L.latLng(40.712, -74.227),
-northEast = L.latLng(40.774, -74.125),
-bounds = L.latLngBounds(southWest, northEast);
+<pre><code class="lang-js">var corner1 = L.latLng(40.712, -74.227),
+corner2 = L.latLng(40.774, -74.125),
+bounds = L.latLngBounds(corner1, corner2);
 </code></pre>
 <p>All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:</p>
 <pre><code class="lang-js">map.fitBounds([
@@ -15261,6 +15602,7 @@ bounds = L.latLngBounds(southWest, northEast);
     [40.774, -74.125]
 ]);
 </code></pre>
+<p>Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners <em>outside</em> the [-180, 180] degrees longitude range.</p>
 
 
 
@@ -15282,8 +15624,8 @@ bounds = L.latLngBounds(southWest, northEast);
 	</tr>
 	</thead><tbody>
 	<tr id='latlngbounds-l-latlngbounds'>
-		<td><code><b>L.latLngBounds</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>southWest</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>northEast</i>)</nobr></code></td>
-		<td>Creates a <a href="#latlngbounds"><code>LatLngBounds</code></a> object by defining south-west and north-east corners of the rectangle.</td>
+		<td><code><b>L.latLngBounds</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>corner1</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>corner2</i>)</nobr></code></td>
+		<td>Creates a <a href="#latlngbounds"><code>LatLngBounds</code></a> object by defining two diagonally opposite corners of the rectangle.</td>
 	</tr>
 	<tr id='latlngbounds-l-latlngbounds'>
 		<td><code><b>L.latLngBounds</b>(<nobr>&lt;LatLng[]&gt;</nobr> <i>latlngs</i>)</nobr></code></td>
@@ -15584,6 +15926,36 @@ each coordinate of <code>scale</code>.</p>
 		<td><code>String</code></td>
 		<td><p>Returns a string representation of the point for debugging purposes.</p>
 </td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+</section><section>
+<h3 id='point-property'>Properties</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='point-x'>
+		<td><code><b>x</b>
+		<td><code>Number</code></td>
+		<td>The <code>x</code> coordinate of the point</td>
+	</tr>
+	<tr id='point-y'>
+		<td><code><b>y</b>
+		<td><code>Number</code></td>
+		<td>The <code>y</code> coordinate of the point</td>
 	</tr>
 </tbody></table>
 
@@ -15906,6 +16278,12 @@ as iconAnchor if not specified).</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='icon-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -16043,6 +16421,57 @@ styled according to the options.</p>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='icon-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='icon-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='icon-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='icon-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='icon-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
@@ -16187,51 +16616,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='icon-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='icon-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='icon-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -16281,7 +16665,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='icon-listens'>
@@ -16362,8 +16746,10 @@ properties. The event might can optionally be propagated to event parents.</p>
 <div class='section-comments'>A trivial subclass of <a href="#icon"><code>Icon</code></a>, represents the icon to use in <a href="#marker"><code>Marker</code></a>s when
 no icon is specified. Points to the blue marker image distributed with Leaflet
 releases.
-In order to change the default icon, just change the properties of <code>L.Icon.Default.prototype.options</code>
-(which is a set of <a href="#icon-option"><code>Icon options</code></a>).</div>
+In order to customize the default icon, just change the properties of <code>L.Icon.Default.prototype.options</code>
+(which is a set of <a href="#icon-option"><code>Icon options</code></a>).
+If you want to <em>completely</em> replace the default icon, override the
+<code>L.Marker.prototype.options.icon</code> with your own icon instead.</div>
 
 <table><thead>
 	<tr>
@@ -16573,6 +16959,12 @@ as iconAnchor if not specified).</td>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
 	</tr>
+	<tr id='divicon-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
 </tbody></table>
 
 </section></div>
@@ -16710,6 +17102,57 @@ styled according to the options.</p>
 		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>oldIcon?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>As <code>createIcon</code>, but for the shadow beneath it.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divicon-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='divicon-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='divicon-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='divicon-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='divicon-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -16861,51 +17304,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 </div>
 
 <div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='divicon-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='divicon-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='divicon-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
 	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
 	<div class='accordion-overflow'>
 		<div class='accordion-content'><section >
@@ -16955,7 +17353,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='divicon-listens'>
@@ -17442,6 +17840,23 @@ L.control.layers(baseLayers, overlays).addTo(map);
 		<td><code>Boolean</code>
 		<td><code>false</code></td>
 		<td>If <code>true</code>, the base layers in the control will be hidden when there is only one.</td>
+	</tr>
+	<tr id='control-layers-sortlayers'>
+		<td><code><b>sortLayers</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>Whether to sort the layers. When <code>false</code>, layers will keep the order
+in which they were added to the control.</td>
+	</tr>
+	<tr id='control-layers-sortfunction'>
+		<td><code><b>sortFunction</b></code></td>
+		<td><code>Function</code>
+		<td><code>*</code></td>
+		<td>A <a href="https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort">compare function</a>
+that will be used for sorting the layers, when <code>sortLayers</code> is <code>true</code>.
+The function receives both the <a href="#layer"><code>L.Layer</code></a> instances and their names, as in
+<code>sortFunction(layerA, layerB, nameA, nameB)</code>.
+By default, it sorts layers alphabetically by their name.</td>
 	</tr>
 </tbody></table>
 
@@ -18127,14 +18542,14 @@ the reverse. Used by Leaflet in its projections code.</p>
 		<td><code><b>transform</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>, <nobr>&lt;Number&gt;</nobr> <i>scale?</i>)</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Returns a transformed point, optionally multiplied by the given scale.
-Only accepts real <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
+Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 	<tr id='transformation-untransform'>
 		<td><code><b>untransform</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>, <nobr>&lt;Number&gt;</nobr> <i>scale?</i>)</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Returns the reverse transformation of the given point, optionally divided
-by the given scale. Only accepts real <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
+by the given scale. Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -18679,7 +19094,7 @@ argument of the <a href="http://cubic-bezier.com/#0,0,.5,1">cubic bezier curve</
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='posanimation-listens'>
@@ -18950,7 +19365,7 @@ update of the element&#39;s position.</td>
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='draggable-listens'>
@@ -19114,7 +19529,7 @@ values convenient:</p>
         myOption2: &#39;bar&#39;
     }
 });
-var MyChildClass = L.Class.extend({
+var MyChildClass = MyClass.extend({
     options: {
         myOption1: &#39;baz&#39;,
         myOption3: 5
@@ -19314,7 +19729,7 @@ map.off(&#39;click&#39;, onClick);
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='evented-listens'>
@@ -19425,6 +19840,12 @@ layer.remove();
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='layer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -19547,6 +19968,57 @@ layer.remove();
 		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='layer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section><section class='collapsable'>
+
+<h4 id='layer-extension-methods'>Extension methods</h4>
+
+<div class='section-comments'>Every layer should extend from <a href="#layer"><code>L.Layer</code></a> and (re-)implement the following methods.</div>
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='layer-onadd'>
+		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</p>
+</td>
+	</tr>
+	<tr id='layer-onremove'>
+		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</p>
+</td>
+	</tr>
+	<tr id='layer-getevents'>
+		<td><code><b>getEvents</b>()</nobr></code></td>
+		<td><code>Object</code></td>
+		<td><p>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#evented-addeventlistener"><code>addEventListener</code></a>. The event handlers in this object will be automatically added and removed from the map with your layer.</p>
+</td>
+	</tr>
+	<tr id='layer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>This optional method should return a string containing HTML to be shown on the <code>Attribution control</code> whenever the layer is visible.</p>
+</td>
+	</tr>
+	<tr id='layer-beforeadd'>
+		<td><code><b>beforeAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Optional method. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>, before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -19690,51 +20162,6 @@ the layer as the first argument and should return a <code>String</code> or <code
 	</tr>
 </tbody></table>
 
-</section><section class='collapsable'>
-
-<h4 id='layer-extension-methods'>Extension methods</h4>
-
-<div class='section-comments'>Every layer should extend from <a href="#layer"><code>L.Layer</code></a> and (re-)implement the following methods.</div>
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='layer-onadd'>
-		<td><code><b>onAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Should contain code that creates DOM elements for the layer, adds them to <code>map panes</code> where they should belong and puts listeners on relevant map events. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>.</p>
-</td>
-	</tr>
-	<tr id='layer-onremove'>
-		<td><code><b>onRemove</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Should contain all clean up code that removes the layer&#39;s elements from the DOM and removes listeners previously added in <a href="#layer-onadd"><code>onAdd</code></a>. Called on <a href="#map-removelayer"><code>map.removeLayer(layer)</code></a>.</p>
-</td>
-	</tr>
-	<tr id='layer-getevents'>
-		<td><code><b>getEvents</b>()</nobr></code></td>
-		<td><code>Object</code></td>
-		<td><p>This optional method should return an object like <code>{ viewreset: this._reset }</code> for <a href="#evented-addeventlistener"><code>addEventListener</code></a>. The event handlers in this object will be automatically added and removed from the map with your layer.</p>
-</td>
-	</tr>
-	<tr id='layer-getattribution'>
-		<td><code><b>getAttribution</b>()</nobr></code></td>
-		<td><code>String</code></td>
-		<td><p>This optional method should return a string containing HTML to be shown on the <code>Attribution control</code> whenever the layer is visible.</p>
-</td>
-	</tr>
-	<tr id='layer-beforeadd'>
-		<td><code><b>beforeAdd</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Optional method. Called on <a href="#map-addlayer"><code>map.addLayer(layer)</code></a>, before the layer is added to the map, before events are initialized, without waiting until the map is in a usable state. Use for early initialization only.</p>
-</td>
-	</tr>
-</tbody></table>
-
 </section>
 
 
@@ -19788,7 +20215,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='layer-listens'>
@@ -19909,6 +20336,12 @@ Use the <a href="#evented-method">event handling methods</a> to handle these eve
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='interactive-layer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -20105,6 +20538,12 @@ for a second (also called long press).</td>
 		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='interactive-layer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -20305,7 +20744,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='interactive-layer-listens'>
@@ -20571,13 +21010,13 @@ a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_project
 	<tr id='projection-project'>
 		<td><code><b>project</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
-		<td><p>Projects geographical coordinates into a 2D point.</p>
+		<td><p>Projects geographical coordinates into a 2D point. Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 	<tr id='projection-unproject'>
 		<td><code><b>unproject</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>)</nobr></code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>The inverse of <code>project</code>. Projects a 2D point into a geographical location.</p>
+		<td><p>The inverse of <code>project</code>. Projects a 2D point into a geographical location. Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -20804,7 +21243,12 @@ Map&#39;s <a href="#crs"><code>crs</code></a> option.</td>
 	</tr>
 	<tr id='crs-l-crs-epsg4326'>
 		<td><code><b>L.CRS.EPSG4326</b></code></td>
-		<td>A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.</td>
+		<td>A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.
+Leaflet 1.0.x complies with the <a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification#global-geodetic">TMS coordinate scheme for EPSG:4326</a>,
+which is a breaking change from 0.7.x behaviour.  If you are using a <a href="#tilelayer"><code>TileLayer</code></a>
+with this CRS, ensure that there are two 256x256 pixel tiles covering the
+whole earth at zoom level zero, and that the tile coordinate origin is (-180,+90),
+or (-180,-90) for <code>TileLayer</code>s with <a href="#tilelayer-tms">the <code>tms</code> option</a> set.</td>
 	</tr>
 	<tr id='crs-l-crs-earth'>
 		<td><code><b>L.CRS.Earth</b></code></td>
@@ -20882,6 +21326,12 @@ e.g. 0.1 would be 10% of map view in each direction</td>
 		<td><code>String</code>
 		<td><code>&#x27;overlayPane&#x27;</code></td>
 		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='renderer-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
 	</tr>
 </tbody></table>
 
@@ -21051,6 +21501,12 @@ its map has moved</td>
 		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='renderer-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -21251,7 +21707,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='renderer-listens'>
@@ -22253,6 +22709,34 @@ of the popup when opening it on some overlays.</td>
 </section>
 
 
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='divoverlay-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><section>
 <h3 id=''>Events</h3>
 
@@ -22395,6 +22879,12 @@ of the popup when opening it on some overlays.</td>
 		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='divoverlay-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -22595,7 +23085,7 @@ the layer as the first argument and should return a <code>String</code> or <code
 		<td><code>this</code></td>
 		<td><p>Fires an event of the specified type. You can optionally provide an data
 object — the first argument of the listener function will contain its
-properties. The event might can optionally be propagated to event parents.</p>
+properties. The event can optionally be propagated to event parents.</p>
 </td>
 	</tr>
 	<tr id='divoverlay-listens'>
@@ -22710,8 +23200,9 @@ var Leaflet = L.noConflict();
 
 
 
+
 	<div class="footer">
-		<p>© 2016 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+		<p>© 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 	</div>
 
 	</div>
