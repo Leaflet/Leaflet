@@ -108,7 +108,9 @@ L.GridLayer = L.Layer.extend({
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
 		// GridLayer will only be displayed once at low zoom levels. Has no
-		// effect when the [map CRS](#map-crs) doesn't wrap around.
+		// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
+		// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
+		// tiles outside the CRS limits.
 		noWrap: false,
 
 		// @option pane: String = 'tilePane'
