@@ -3490,6 +3490,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/mstahv">Matti Tahvonen</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gwidgets/gwty-leaflet">gwty-leaflet</a>
+		</td><td>
+			A Java/GWT JsInterop wrapper for Leaflet. It allows using Leaflet in Java the same way as from a javascript script.  
+		</td><td>
+			<a href="https://github.com/zak905">Zakaria Amine</a>
+		</td>
+	</tr>
 </table>
 
 
