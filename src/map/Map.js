@@ -255,7 +255,7 @@ L.Map = L.Evented.extend({
 		};
 	},
 
-	// @method fitBounds(bounds: LatLngBounds, options: fitBounds options): this
+	// @method fitBounds(bounds: LatLngBounds, options?: fitBounds options): this
 	// Sets a map view that contains the given geographical bounds with the
 	// maximum zoom level possible.
 	fitBounds: function (bounds, options) {
