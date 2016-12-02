@@ -603,5 +603,4 @@ describe('Events', function () {
 			expect(obj.listens('test')).to.be(false);
 		});
 	});
-
 });

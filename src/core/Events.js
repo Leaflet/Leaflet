@@ -1,3 +1,4 @@
+
 /*
  * @class Evented
  * @aka L.Evented
@@ -93,48 +94,30 @@ L.Evented = L.Class.extend({
 		this._events = this._events || {};
 
 		/* get/init listeners for type */
-		var typeListeners = this._events[type];
-		if (!typeListeners) {
-			typeListeners = [];
-			this._events[type] = typeListeners;
+		if (!this._events[type]) {
+			this._events[type] = new L.ListenerCollection();
 		}
 
 		if (context === this) {
 			// Less memory footprint.
 			context = undefined;
 		}
-		var newListener = {fn: fn, ctx: context},
-		    listeners = typeListeners;
 
-		// check if fn already there
-		for (var i = 0, len = listeners.length; i < len; i++) {
-			if (listeners[i].fn === fn && listeners[i].ctx === context) {
-				return;
-			}
-		}
-
-		listeners.push(newListener);
-		typeListeners.count++;
+		this._events[type].add({fn: fn, ctx: context});
 	},
 
 	_off: function (type, fn, context) {
-		var listeners,
-		    i,
-		    len;
-
 		if (!this._events) { return; }
 
-		listeners = this._events[type];
+		var listeners = this._events[type];
 
 		if (!listeners) {
 			return;
 		}
 
 		if (!fn) {
-			// Set all removed listeners to noop so they are not called if remove happens in fire
-			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].fn = L.Util.falseFn;
-			}
+			listeners.removeAll();
+
 			// clear all listeners for a type if function isn't specified
 			delete this._events[type];
 			return;
@@ -146,24 +129,11 @@ L.Evented = L.Class.extend({
 
 		if (listeners) {
 
-			// find fn and remove it
-			for (i = 0, len = listeners.length; i < len; i++) {
-				var l = listeners[i];
-				if (l.ctx !== context) { continue; }
-				if (l.fn === fn) {
-
-					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = L.Util.falseFn;
-
-					if (this._firingCount) {
-						/* copy array in case events are being fired */
-						this._events[type] = listeners = listeners.slice();
-					}
-					listeners.splice(i, 1);
-
-					return;
-				}
+			if (this._firingCount) {
+				listeners.copyMembers();
 			}
+
+			listeners.remove({fn: fn, ctx: context});
 		}
 	},
 
@@ -181,10 +151,10 @@ L.Evented = L.Class.extend({
 
 			if (listeners) {
 				this._firingCount = (this._firingCount + 1) || 1;
-				for (var i = 0, len = listeners.length; i < len; i++) {
-					var l = listeners[i];
-					l.fn.call(l.ctx || this, event);
-				}
+				var defaultCtx = this;
+				listeners.each(function (l) {
+					l.fn.call(l.ctx || defaultCtx, event);
+				});
 
 				this._firingCount--;
 			}
@@ -202,7 +172,7 @@ L.Evented = L.Class.extend({
 	// Returns `true` if a particular event type has any listeners attached to it.
 	listens: function (type, propagate) {
 		var listeners = this._events && this._events[type];
-		if (listeners && listeners.length) { return true; }
+		if (listeners && listeners.count()) { return true; }
 
 		if (propagate) {
 			// also check parents for listeners if event propagates
