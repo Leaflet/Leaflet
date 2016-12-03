@@ -26,6 +26,16 @@ describe('LineUtil', function () {
 			expect(segment2[1]).to.eql(new L.Point(15, 5));
 		});
 
+		it('clips a segment by bounds when a and b are point tuples', function () {
+			var a = [0, 0];
+			var b = [15, 15];
+
+			var segment = L.LineUtil.clipSegment(a, b, bounds);
+
+			expect(segment[0]).to.eql(new L.Point(5, 5));
+			expect(segment[1]).to.eql(new L.Point(10, 10));
+		});
+
 		it('uses last bit code and reject segments out of bounds', function () {
 			var a = new L.Point(15, 15);
 			var b = new L.Point(25, 20);
@@ -53,6 +63,7 @@ describe('LineUtil', function () {
 	describe('#pointToSegmentDistance & #closestPointOnSegment', function () {
 
 		var p1 = new L.Point(0, 10);
+		var p1Tuple = [0, 10];
 		var p2 = new L.Point(10, 0);
 		var p = new L.Point(0, 0);
 
@@ -60,8 +71,16 @@ describe('LineUtil', function () {
 			expect(L.LineUtil.pointToSegmentDistance(p, p1, p2)).to.eql(Math.sqrt(200) / 2);
 		});
 
+		it('calculates a non NaN distance from point to segment when p1 is a tuple', function () {
+			expect(L.LineUtil.pointToSegmentDistance(p, p1Tuple, p2)).to.eql(Math.sqrt(200) / 2);
+		});
+
 		it('calculates point closest to segment', function () {
 			expect(L.LineUtil.closestPointOnSegment(p, p1, p2)).to.eql(new L.Point(5, 5));
+		});
+
+		it('calculates point closest to segment with x and y not set to undefined when p1 is a tuple', function () {
+			expect(L.LineUtil.closestPointOnSegment(p, p1Tuple, p2)).to.eql(new L.Point(5, 5));
 		});
 	});
 
@@ -75,6 +94,26 @@ describe('LineUtil', function () {
 				new L.Point(1, 0),
 				new L.Point(1.999, 0.999),
 				new L.Point(2, 1)
+			];
+
+			var simplified = L.LineUtil.simplify(points, 0.1);
+
+			expect(simplified).to.eql([
+				new L.Point(0, 0),
+				new L.Point(1, 0),
+				new L.Point(2, 1)
+			]);
+		});
+
+		it('simplifies polylines built with point tuples and returns array of leaflet points', function () {
+			var points = [
+				[0, 0],
+				[0.01, 0],
+				[0.5, 0.01],
+				[0.7, 0],
+				[1, 0],
+				[1.999, 0.999],
+				[2, 1]
 			];
 
 			var simplified = L.LineUtil.simplify(points, 0.1);

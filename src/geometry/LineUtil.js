@@ -39,7 +39,7 @@ L.LineUtil = {
 		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
-	// @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
+	// @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Point
 	// Returns the closest point from a point `p` on a segment `p1` to `p2`.
 	closestPointOnSegment: function (p, p1, p2) {
 		return this._sqClosestPointOnSegment(p, p1, p2);
@@ -61,7 +61,7 @@ L.LineUtil = {
 
 		for (i = 0; i < len; i++) {
 			if (markers[i]) {
-				newPoints.push(points[i]);
+				newPoints.push(L.point(points[i]));
 			}
 		}
 
@@ -113,6 +113,9 @@ L.LineUtil = {
 	// (modifying the segment points directly!). Used by Leaflet to only show polyline
 	// points that are on the screen or near, increasing performance.
 	clipSegment: function (a, b, bounds, useLastCode, round) {
+		a = L.point(a);
+		b = L.point(b);
+
 		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
 		    codeB = this._getBitCode(b, bounds),
 
@@ -194,6 +197,9 @@ L.LineUtil = {
 
 	// square distance (to avoid unnecessary Math.sqrt calls)
 	_sqDist: function (p1, p2) {
+		p1 = L.point(p1);
+		p2 = L.point(p2);
+
 		var dx = p2.x - p1.x,
 		    dy = p2.y - p1.y;
 		return dx * dx + dy * dy;
@@ -201,6 +207,10 @@ L.LineUtil = {
 
 	// return closest point on segment or distance to that point
 	_sqClosestPointOnSegment: function (p, p1, p2, sqDist) {
+		p = L.point(p);
+		p1 = L.point(p1);
+		p2 = L.point(p2);
+
 		var x = p1.x,
 		    y = p1.y,
 		    dx = p2.x - x,
