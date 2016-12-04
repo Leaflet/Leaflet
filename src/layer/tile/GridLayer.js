@@ -684,8 +684,18 @@ L.GridLayer = L.Layer.extend({
 		    se = map.unproject(sePoint, coords.z);
 
 		if (!this.options.noWrap) {
-			nw = map.wrapLatLng(nw);
-			se = map.wrapLatLng(se);
+			var newNw = map.wrapLatLng(nw);
+			var newSe = map.wrapLatLng(se);
+
+			if (!newNw.equals(nw)) {
+				se.lat += (newNw.lat - nw.lat);
+				se.lng += (newNw.lng - nw.lng);
+				nw = newNw;
+			} else if (!newSe.equals(se)) {
+				nw.lat += (newSe.lat - se.lat);
+				nw.lng += (newSe.lng - se.lng);
+				se = newSe;
+			}
 		}
 
 		return new L.LatLngBounds(nw, se);
