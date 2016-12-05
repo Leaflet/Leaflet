@@ -104,7 +104,7 @@ L.CRS = {
 		    alt = latlng.alt;
 
 		return L.latLng(lat, lng, alt);
-	}
+	},
 
 	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
 	// Returns a `LatLngBounds` with the same size as the given one, ensuring
