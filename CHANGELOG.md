@@ -21,7 +21,7 @@ An in-progress version being developed on the `master` branch.
 * Fix styling of custom SVG markers by making stricter CSS selectors (by [@jwoyame](https://github.com/jwoyame)) [#4597](https://github.com/Leaflet/Leaflet/pull/4597).
 * Fix order of `mouseover`/`mouseout` events on overlapping `L.Canvas` layers (by [@perliedman](https://github.com/perliedman)), [#5090](https://github.com/Leaflet/Leaflet/pull/5090).
 * Fix drag behaviour when a draggable marker is removed in mid-drag (by [@IvanSanchez](https://github.com/IvanSanchez), [#5063](https://github.com/Leaflet/Leaflet/pull/5063).
-* Fix `L.Control.Layers.collapse()` on initially uncollapsed layer controls (by [@perliedman](https://github.com/perliedman)), [#5087](https://github.com/Leaflet/Leaflet/pull/5087).
+* Fix `L.Control.Layers.collapse()` on initially uncollapsed layer controls (by [@perliedman](https://github.com/perliedman)), [#5131](https://github.com/Leaflet/Leaflet/pull/5131).
 * Fix blurriness of `L.Tooltip` by rounding up pixel coordinates (by [@ashmigelski](https://github.com/ashmigelski)), [#5089](https://github.com/Leaflet/Leaflet/pull/5089).
 * Fix click events on overlapping geometries when using `L.Canvas` (by [@perliedman](https://github.com/perliedman)), [#5100](https://github.com/Leaflet/Leaflet/pull/5100).
 
