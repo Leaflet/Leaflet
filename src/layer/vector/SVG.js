@@ -82,6 +82,15 @@ L.SVG = L.Renderer.extend({
 		this.fire('update');
 	},
 
+	_reset: function () {
+		this._update();
+		this._updateTransform(this._center, this._zoom);
+
+		for (var id in this._layers) {
+			this._layers[id]._reset();
+		}
+	},
+
 	// methods below are called by vector layers implementations
 
 	_initPath: function (layer) {

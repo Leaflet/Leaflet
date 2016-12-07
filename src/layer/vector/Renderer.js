@@ -92,15 +92,6 @@ L.Renderer = L.Layer.extend({
 		}
 	},
 
-	_reset: function () {
-		this._update();
-		this._updateTransform(this._center, this._zoom);
-
-		for (var id in this._layers) {
-			this._layers[id]._reset();
-		}
-	},
-
 	_onZoomEnd: function () {
 		for (var id in this._layers) {
 			this._layers[id]._project();
