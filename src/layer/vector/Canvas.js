@@ -51,6 +51,8 @@ L.Canvas = L.Renderer.extend({
 		if (this._shift.x || this._shift.y) {
 			for (var id in this._layers) {
 				layer = this._layers[id];
+				// projection can be replaced by applying -this._shift translation
+				// on layers projected coordinates and bounds
 				layer._project();
 			}
 		}
