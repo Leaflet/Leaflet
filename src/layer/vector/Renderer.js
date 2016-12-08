@@ -45,8 +45,8 @@ L.Renderer = L.Layer.extend({
 		}
 
 		this.getPane().appendChild(this._container);
-		this._update();
 		this.on('update', this._updatePaths, this);
+		this._update();
 	},
 
 	onRemove: function () {
