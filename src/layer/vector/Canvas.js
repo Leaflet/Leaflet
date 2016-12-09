@@ -341,7 +341,7 @@ export var Canvas = Renderer.extend({
 			}
 		}
 		if (clickedLayer)  {
-			L.DomEvent._fakeStop(e);
+			DomEvent.fakeStop(e);
 			this._fireEvent([clickedLayer], e);
 		}
 	},

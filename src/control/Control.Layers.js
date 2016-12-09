@@ -162,7 +162,7 @@ export var Layers = Control.extend({
 
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
-		    container = this._container = DomUtil.create('div', className);
+		    container = this._container = DomUtil.create('div', className),
 		    collapsed = this.options.collapsed;
 
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
@@ -174,9 +174,11 @@ export var Layers = Control.extend({
 		}
 
 		var form = this._form = DomUtil.create('form', className + '-list');
+
+		if (collapsed) {
 			this._map.on('click', this.collapse, this);
 
-			if (!android) {
+			if (!Browser.android) {
 				DomEvent.on(container, {
 					mouseenter: this.expand,
 					mouseleave: this.collapse
@@ -189,16 +191,15 @@ export var Layers = Control.extend({
 		link.title = 'Layers';
 
 		if (Browser.touch) {
-			DomEvent
-				.on(link, 'click', L.DomEvent.stop)
-				.on(link, 'click', this.expand, this);
+			DomEvent.on(link, 'click', DomEvent.stop);
+			DomEvent.on(link, 'click', this.expand, this);
 		} else {
 			DomEvent.on(link, 'focus', this.expand, this);
 		}
 
 		// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
 		DomEvent.on(form, 'click', function () {
-			setTimeout(bind(this._onInputClick, this), 0);
+			setTimeout(Util.bind(this._onInputClick, this), 0);
 		}, this);
 
 		// TODO keyboard accessibility

@@ -275,7 +275,7 @@ export function getFeature(layer, newGeometry) {
 
 // @function asFeature(geojson: Object): Object
 // Normalize GeoJSON geometries/features into GeoJSON features.
-export function asFeature (geojson) {
+export function asFeature(geojson) {
 	if (geojson.type === 'Feature' || geojson.type === 'FeatureCollection') {
 		return geojson;
 	}
