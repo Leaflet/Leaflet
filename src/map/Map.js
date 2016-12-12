@@ -946,7 +946,7 @@ L.Map = L.Evented.extend({
 		return L.point(point).add(this._getMapPanePos());
 	},
 
-	// @method containerPointToLatLng(point: Point): Point
+	// @method containerPointToLatLng(point: Point): LatLng
 	// Given a pixel coordinate relative to the map container, returns
 	// the corresponding geographical coordinate (for the current zoom level).
 	containerPointToLatLng: function (point) {
