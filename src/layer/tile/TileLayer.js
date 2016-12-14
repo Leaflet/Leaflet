@@ -193,7 +193,7 @@ L.TileLayer = L.GridLayer.extend({
 
 	_tileOnError: function (done, tile, e) {
 		var errorUrl = this.options.errorTileUrl;
-		if (errorUrl) {
+		if (errorUrl && tile.src !== errorUrl) {
 			tile.src = errorUrl;
 		}
 		done(e, tile);
