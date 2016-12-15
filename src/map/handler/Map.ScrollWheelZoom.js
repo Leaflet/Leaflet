@@ -73,9 +73,9 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		if (!delta) { return; }
 
 		if (map.options.scrollWheelZoom === 'center') {
-			map.setZoom(zoom + delta);
+			map.setZoom(zoom + delta, {}, 'user');
 		} else {
-			map.setZoomAround(this._lastMousePos, zoom + delta);
+			map.setZoomAround(this._lastMousePos, zoom + delta, {}, 'user');
 		}
 	}
 });

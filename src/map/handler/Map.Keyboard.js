@@ -147,14 +147,14 @@ L.Map.Keyboard = L.Handler.extend({
 				offset = L.point(offset).multiplyBy(3);
 			}
 
-			map.panBy(offset);
+			map.panBy(offset, 'user');
 
 			if (map.options.maxBounds) {
-				map.panInsideBounds(map.options.maxBounds);
+				map.panInsideBounds(map.options.maxBounds, {}, 'user');
 			}
 
 		} else if (key in this._zoomKeys) {
-			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
+			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key], {}, 'user');
 
 		} else if (key === 27) {
 			map.closePopup();

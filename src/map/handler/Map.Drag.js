@@ -184,7 +184,7 @@ L.Map.Drag = L.Handler.extend({
 		map.fire('dragend', e);
 
 		if (noInertia) {
-			map.fire('moveend');
+			map.fire('moveend', {source: 'user'});
 
 		} else {
 
@@ -202,7 +202,7 @@ L.Map.Drag = L.Handler.extend({
 			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
 
 			if (!offset.x && !offset.y) {
-				map.fire('moveend');
+				map.fire('moveend', {source: 'user'});
 
 			} else {
 				offset = map._limitOffset(offset, map.options.maxBounds);
@@ -213,7 +213,7 @@ L.Map.Drag = L.Handler.extend({
 						easeLinearity: ease,
 						noMoveStart: true,
 						animate: true
-					});
+					}, 'user');
 				});
 			}
 		}

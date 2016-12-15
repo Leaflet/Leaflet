@@ -113,9 +113,9 @@ L.Map.TouchZoom = L.Handler.extend({
 
 		// Pinch updates GridLayers' levels only when zoomSnap is off, so zoomSnap becomes noUpdate.
 		if (this._map.options.zoomAnimation) {
-			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.zoomSnap);
+			this._map._animateZoom(this._center, this._map._limitZoom(this._zoom), true, this._map.options.zoomSnap, 'user');
 		} else {
-			this._map._resetView(this._center, this._map._limitZoom(this._zoom));
+			this._map._resetView(this._center, this._map._limitZoom(this._zoom), 'user');
 		}
 	}
 });
