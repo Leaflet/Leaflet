@@ -1929,7 +1929,7 @@ Plugins that search for overlays and enhance how to display information about th
 		<td>
 			<a href="https://github.com/yafred/leaflet-responsive-popup">leaflet-responsive-popup</a>
 		</td><td>
-			This plugin overrides L.Popup to remove the need to move the map to be able to see the content of the popup. 
+			Removes the need to move the map to be able to see the content of the popup. 
 		</td><td>
 			<a href="https://github.com/yafred">YaFred</a>
 		</td>
