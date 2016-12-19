@@ -784,7 +784,7 @@ L.Map = L.Evented.extend({
 		    nw = bounds.getNorthWest(),
 		    se = bounds.getSouthEast(),
 		    size = this.getSize().subtract(padding),
-		    boundsSize = this.project(se, zoom).subtract(this.project(nw, zoom)),
+		    boundsSize = L.bounds(this.project(se, zoom), this.project(nw, zoom)).getSize(),
 		    snap = L.Browser.any3d ? this.options.zoomSnap : 1;
 
 		var scale = Math.min(size.x / boundsSize.x, size.y / boundsSize.y);
