@@ -217,7 +217,7 @@ describe("Map", function () {
 
 			var padding = L.point(-50, -50);
 			map.setZoom(16);
-			expect(map.getBoundsZoom(bounds, false, padding)).to.eql(7);
+			expect(map.getBoundsZoom(bounds, false, padding)).to.eql(9);
 		});
 	});
 
