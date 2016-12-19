@@ -212,9 +212,8 @@ describe("Map", function () {
 			var projectedSE = L.point(7800503.059925064, 6440062.353052008);
 			var projectedNW = L.point(7801987.203481699, 6425186.447901004);
 			var crsMock = sinon.mock(map.options.crs);
-			crsMock.expects("latLngToPoint").withArgs(bounds.getNorthWest()).returns(projectedNW);
-			crsMock.expects("latLngToPoint").withArgs(bounds.getSouthEast()).returns(projectedSE);
-
+			crsMock.expects("project").withArgs(bounds.getNorthWest()).returns(projectedNW);
+			crsMock.expects("project").withArgs(bounds.getSouthEast()).returns(projectedSE);
 
 			var padding = L.point(-50, -50);
 			map.setZoom(16);
