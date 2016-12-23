@@ -1,3 +1,6 @@
+import * as DomUtil from '../../dom/DomUtil';
+import {Renderer} from './Renderer';
+
 /*
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
@@ -15,23 +18,23 @@
 export var vmlMixin = {
 
 	_initContainer: function () {
-		this._container = L.DomUtil.create('div', 'leaflet-vml-container');
+		this._container = DomUtil.create('div', 'leaflet-vml-container');
 	},
 
-	_update: function () {
-		if (this._map._animatingZoom) { return; }
-		L.Renderer.prototype._update.call(this);
-		this.fire('update');
-	},
+// 	_update: function () {
+// 		if (this._map._animatingZoom) { return; }
+// 		Renderer.prototype._update.call(this);
+// 		this.fire('update');
+// 	},
 
 	_initPath: function (layer) {
-		var container = layer._container = L.SVG.create('shape');
+		var container = layer._container = vmlCreate('shape');
 
-		L.DomUtil.addClass(container, 'leaflet-vml-shape ' + (this.options.className || ''));
+		DomUtil.addClass(container, 'leaflet-vml-shape ' + (this.options.className || ''));
 
 		container.coordsize = '1 1';
 
-		layer._path = L.SVG.create('path');
+		layer._path = vmlCreate('path');
 		container.appendChild(layer._path);
 
 		this._updateStyle(layer);
@@ -49,7 +52,7 @@ export var vmlMixin = {
 
 	_removePath: function (layer) {
 		var container = layer._container;
-		L.DomUtil.remove(container);
+		DomUtil.remove(container);
 		layer.removeInteractiveTarget(container);
 		delete this._layers[L.stamp(layer)];
 	},
@@ -65,7 +68,7 @@ export var vmlMixin = {
 
 		if (options.stroke) {
 			if (!stroke) {
-				stroke = layer._stroke = L.SVG.create('stroke');
+				stroke = layer._stroke = vmlCreate('stroke');
 			}
 			container.appendChild(stroke);
 			stroke.weight = options.weight + 'px';
@@ -89,7 +92,7 @@ export var vmlMixin = {
 
 		if (options.fill) {
 			if (!fill) {
-				fill = layer._fill = L.SVG.create('fill');
+				fill = layer._fill = vmlCreate('fill');
 			}
 			container.appendChild(fill);
 			fill.color = options.fillColor || options.color;
@@ -115,11 +118,11 @@ export var vmlMixin = {
 	},
 
 	_bringToFront: function (layer) {
-		L.DomUtil.toFront(layer._container);
+		DomUtil.toFront(layer._container);
 	},
 
 	_bringToBack: function (layer) {
-		L.DomUtil.toBack(layer._container);
+		DomUtil.toBack(layer._container);
 	}
 };
 
