@@ -5,6 +5,21 @@ import {Renderer} from './Renderer';
  * Thanks to Dmitry Baranovsky and his Raphael library for inspiration!
  */
 
+
+export var vmlCreate = (function () {
+	try {
+		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
+		return function (name) {
+			return document.createElement('<lvml:' + name + ' class="lvml">');
+		};
+	} catch (e) {
+		return function (name) {
+			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
+		};
+	}
+})();
+
+
 /*
  * @class SVG
  *
@@ -21,11 +36,11 @@ export var vmlMixin = {
 		this._container = DomUtil.create('div', 'leaflet-vml-container');
 	},
 
-// 	_update: function () {
-// 		if (this._map._animatingZoom) { return; }
-// 		Renderer.prototype._update.call(this);
-// 		this.fire('update');
-// 	},
+	_update: function () {
+		if (this._map._animatingZoom) { return; }
+		Renderer.prototype._update.call(this);
+		this.fire('update');
+	},
 
 	_initPath: function (layer) {
 		var container = layer._container = vmlCreate('shape');
@@ -125,16 +140,3 @@ export var vmlMixin = {
 		DomUtil.toBack(layer._container);
 	}
 };
-
-export var vmlCreate = (function () {
-	try {
-		document.namespaces.add('lvml', 'urn:schemas-microsoft-com:vml');
-		return function (name) {
-			return document.createElement('<lvml:' + name + ' class="lvml">');
-		};
-	} catch (e) {
-		return function (name) {
-			return document.createElement('<' + name + ' xmlns="urn:schemas-microsoft.com:vml" class="lvml">');
-		};
-	}
-})();
