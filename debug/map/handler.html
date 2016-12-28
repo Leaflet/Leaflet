@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leaflet debug page</title>
+
+    <link rel="stylesheet" href="../../dist/leaflet.css" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="../css/screen.css" />
+
+    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../leaflet-include.js"></script>
+
+    <script>
+        // demo handler
+        L.DemoPlugin = L.Handler.extend({
+            options: {
+                what: 'caffe',
+                radius: 500
+            },
+            initialize: function (map, options) { // (Map, Object)
+                this._map = map;
+                L.Util.setOptions(this, options);
+            },
+            addHooks: function() {
+                this._map.on('click', this._searchFirms, this);
+            },
+            removeHooks: function() {
+                this._map.off('click', this._searchFirms, this);
+            },
+            _searchFirms: function(e) { // (MouseEvent)
+                console.log('search ' + this.options.what + ' in radius ' + this.options.radius + ' meters');
+            }
+        });
+        L.Map.addInitHook('addHandler', 'demoPlugin', L.DemoPlugin);
+    </script>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <script type="text/javascript">
+        var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+        var map = L.map('map', {
+            center: L.latLng(54.98, 82.89),
+            zoom: 15,
+            demoPlugin: { // now we can set options for the handler
+                what: 'shop',
+                radius: 400
+            }
+        });
+
+        map.addLayer(osm);
+    </script>
+</body>
+</html>

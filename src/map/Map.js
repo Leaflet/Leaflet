@@ -657,11 +657,13 @@ L.Map = L.Evented.extend({
 	addHandler: function (name, HandlerClass) {
 		if (!HandlerClass) { return this; }
 
-		var handler = this[name] = new HandlerClass(this);
+		var options = this.options[name],
+			param = (options === Object(options)) ? options : null,
+			handler = this[name] = new HandlerClass(this, param);
 
 		this._handlers.push(handler);
 
-		if (this.options[name]) {
+		if (options) {
 			handler.enable();
 		}
 

@@ -8,8 +8,9 @@
 // Abstract class for map interaction handlers
 
 L.Handler = L.Class.extend({
-	initialize: function (map) {
+	initialize: function (map, options) { // (Map, Object)
 		this._map = map;
+		L.Util.setOptions(this, options);
 	},
 
 	// @method enable(): this
