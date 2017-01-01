@@ -1341,6 +1341,9 @@ L.Map = L.Evented.extend({
 	// a view (center and zoom) and at least one layer, or immediately
 	// if it's already initialized, optionally passing a function context.
 	whenReady: function (callback, context) {
+    if (!callback) {
+      return this;
+    }
 		if (this._loaded) {
 			callback.call(context || this, {target: this});
 		} else {
