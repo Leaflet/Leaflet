@@ -1279,6 +1279,18 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/yakitoritabetai">Kenta Hakoishi</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ggolikov/Leaflet.Viewpoint">Leaflet.Viewpoint</a>
+		</td>
+		<td>
+			Displays circleMarker with multiple directions.
+			Useful to show photos taken from one point. (<a href="https://ggolikov.github.io/Leaflet.Viewpoint/example/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/ggolikov">Grigory Golikov</a>
+		</td>
+	</tr>
 </table>
 
 
