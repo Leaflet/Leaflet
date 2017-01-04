@@ -33,7 +33,11 @@ L.ImageOverlay = L.Layer.extend({
 
 		// @option crossOrigin: Boolean = false
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
-		crossOrigin: false
+		crossOrigin: false,
+
+		// @option zIndex: Number = 1
+		// specifies the z-index of the image overlay
+		zIndex: 1
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -151,6 +155,14 @@ L.ImageOverlay = L.Layer.extend({
 		return this._image;
 	},
 
+	// @method: setZIndex(value: Number) : this
+	// Sets the Z-Index of the overlay
+	setZIndex: function (value) {
+		this.options.zIndex = value;
+		this._updateZIndex();
+		return this;
+	},
+
 	_initImage: function () {
 		var img = this._image = L.DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
@@ -162,6 +174,10 @@ L.ImageOverlay = L.Layer.extend({
 
 		if (this.options.crossOrigin) {
 			img.crossOrigin = '';
+		}
+
+		if (this.options.zIndex) {
+			this._updateZIndex();
 		}
 
 		img.src = this._url;
@@ -190,6 +206,12 @@ L.ImageOverlay = L.Layer.extend({
 
 	_updateOpacity: function () {
 		L.DomUtil.setOpacity(this._image, this.options.opacity);
+	},
+
+	_updateZIndex: function () {
+		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
+			this._image.style.zIndex = this.options.zIndex;
+		}
 	}
 });
 
