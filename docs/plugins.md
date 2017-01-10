@@ -2770,6 +2770,16 @@ Buttons, sliders, toolbars, sidebars, and panels.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/yigityuce/Leaflet.Control.Custom">Leaflet.Control.Custom</a>
+		</td><td>
+			Fully customizable Leaflet control panel with HTML element.
+			<a href="https://yigityuce.github.io/Leaflet.Control.Custom/examples/index.html"> Demo</a>
+		</td><td>
+			<a href="https://github.com/yigityuce">Yiğit Yüce</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/CliffCloud/Leaflet.EasyButton">L.EasyButton</a>
 		</td><td>
 			In one line, add a Font Awesome control button with attached click events.
