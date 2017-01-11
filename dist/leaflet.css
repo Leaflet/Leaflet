@@ -305,8 +305,8 @@
 	}
 
 .leaflet-touch .leaflet-bar a {
-	width: 30px;
-	height: 30px;
+	width: 34px;
+	height: 34px;
 	line-height: 30px;
 	}
 
@@ -436,17 +436,6 @@
 	}
 .leaflet-control-scale-line:not(:first-child):not(:last-child) {
 	border-bottom: 2px solid #777;
-	}
-
-.leaflet-touch .leaflet-control-attribution,
-.leaflet-touch .leaflet-control-layers,
-.leaflet-touch .leaflet-bar {
-	box-shadow: none;
-	}
-.leaflet-touch .leaflet-control-layers,
-.leaflet-touch .leaflet-bar {
-	border: 2px solid rgba(0,0,0,0.2);
-	background-clip: padding-box;
 	}
 
 
