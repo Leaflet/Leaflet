@@ -1135,7 +1135,7 @@ L.Map = L.Evented.extend({
 	},
 
 	_moveEnd: function (zoomChanged, source) {
-		param = {source: source || 'leaflet'};
+		var param = {source: source || 'leaflet'};
 		// @event zoomend: Event
 		// Fired when the map has changed, after any animations.
 		if (zoomChanged) {
