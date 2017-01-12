@@ -17,7 +17,7 @@ L.extend(L.DomEvent, {
 			var count;
 
 			if (L.Browser.pointer) {
-				if (!L.Browser.edge && e.pointerType === 'mouse') {
+				if ((!L.Browser.edge) || e.pointerType === 'mouse') {
 					return;
 				}
 				count = L.DomEvent._pointersCount;
