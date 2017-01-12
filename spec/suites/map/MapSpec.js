@@ -178,6 +178,7 @@ describe("Map", function () {
 	describe("#getBoundsZoom", function () {
 		var halfLength = 0.00025;
 		var bounds = [[-halfLength, -halfLength], [halfLength, halfLength]];
+		var wideBounds = [[-halfLength, -halfLength * 10], [halfLength, halfLength * 10]];
 		var padding = [100, 100];
 		var height = '400px';
 
@@ -218,6 +219,14 @@ describe("Map", function () {
 			var padding = L.point(-50, -50);
 			map.setZoom(16);
 			expect(map.getBoundsZoom(bounds, false, padding)).to.eql(9);
+		});
+
+		it("respects the 'inside' parameter", function () {
+			var container = map.getContainer();
+			container.style.height = height;
+			document.body.appendChild(container);
+			expect(map.getBoundsZoom(wideBounds, false, padding)).to.be.equal(17);
+			expect(map.getBoundsZoom(wideBounds, true, padding)).to.be.equal(20);
 		});
 	});
 
