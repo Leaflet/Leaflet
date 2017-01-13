@@ -994,6 +994,10 @@ L.Map = L.Evented.extend({
 			throw new Error('Map container is already initialized.');
 		}
 
+		if (L.Browser.ie3d && !L.DomUtil.getStyle(container, 'z-index')) {
+			container.style['z-index'] = -1;
+		}
+
 		L.DomEvent.addListener(container, 'scroll', this._onScroll, this);
 		this._containerId = L.Util.stamp(container);
 	},
