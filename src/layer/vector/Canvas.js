@@ -37,7 +37,7 @@ L.Canvas = L.Renderer.extend({
 		return events;
 	},
 
-	_onViewPreReset: function() {
+	_onViewPreReset: function () {
 		this._postponeUpdatePaths = true;
 	},
 
@@ -103,7 +103,7 @@ L.Canvas = L.Renderer.extend({
 		this.fire('update');
 	},
 
-	_reset: function() {
+	_reset: function () {
 		L.Renderer.prototype._reset.call(this);
 
 		if (this._postponeUpdatePaths) {
