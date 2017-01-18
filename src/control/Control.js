@@ -155,6 +155,11 @@ L.Map.include({
 	},
 
 	_clearControlPos: function () {
+		for (var i in this._controlCorners) {
+			L.DomUtil.remove(this._controlCorners[i]);
+		}
 		L.DomUtil.remove(this._controlContainer);
+		delete this._controlCorners;
+		delete this._controlContainer;
 	}
 });

@@ -17,7 +17,6 @@ L.extend(L.DomEvent, {
 	// ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
 	addPointerListener: function (obj, type, handler, id) {
-
 		if (type === 'touchstart') {
 			this._addPointerStart(obj, handler, id);
 

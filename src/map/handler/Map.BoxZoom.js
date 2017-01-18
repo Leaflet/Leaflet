@@ -17,6 +17,7 @@ L.Map.BoxZoom = L.Handler.extend({
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
+		map.on('unload', this._destroy, this);
 	},
 
 	addHooks: function () {
@@ -29,6 +30,11 @@ L.Map.BoxZoom = L.Handler.extend({
 
 	moved: function () {
 		return this._moved;
+	},
+
+	_destroy: function () {
+		L.DomUtil.remove(this._pane);
+		delete this._pane;
 	},
 
 	_resetState: function () {

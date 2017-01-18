@@ -52,6 +52,13 @@ L.SVG = L.Renderer.extend({
 		this._container.appendChild(this._rootGroup);
 	},
 
+	_destroyContainer: function () {
+		L.DomUtil.remove(this._container);
+		L.DomEvent.off(this._container);
+		delete this._container;
+		delete this._rootGroup;
+	},
+
 	_onZoomStart: function () {
 		// Drag-then-pinch interactions might mess up the center and zoom.
 		// In this case, the easiest way to prevent this is re-do the renderer

@@ -46,18 +46,27 @@ L.DomEvent = {
 	// @alternative
 	// @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 	// Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+
+	// @alternative
+	// @function off(el: HTMLElement): this
+	// Removes all known event listeners
 	off: function (obj, types, fn, context) {
 
 		if (typeof types === 'object') {
 			for (var type in types) {
 				this._off(obj, type, types[type], fn);
 			}
-		} else {
+		} else if (types) {
 			types = L.Util.splitWords(types);
 
 			for (var i = 0, len = types.length; i < len; i++) {
 				this._off(obj, types[i], fn, context);
 			}
+		} else {
+			for (var j in obj[eventsKey]) {
+				this._off(obj, j, obj[eventsKey][j]);
+			}
+			delete obj[eventsKey];
 		}
 
 		return this;

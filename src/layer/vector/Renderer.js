@@ -50,8 +50,8 @@ L.Renderer = L.Layer.extend({
 	},
 
 	onRemove: function () {
-		L.DomUtil.remove(this._container);
 		this.off('update', this._updatePaths, this);
+		this._destroyContainer();
 	},
 
 	getEvents: function () {
