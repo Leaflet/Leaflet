@@ -77,7 +77,10 @@ L.DomEvent = {
 		if (L.Browser.pointer && type.indexOf('touch') === 0) {
 			this.addPointerListener(obj, type, handler, id);
 
-		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
+		} else if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener &&
+		           !(L.Browser.pointer && L.Browser.chrome) ) {
+			// Chrome >55 does not need the synthetic dblclicks from addDoubleTapListener
+			// See #5180
 			this.addDoubleTapListener(obj, handler, id);
 
 		} else if ('addEventListener' in obj) {

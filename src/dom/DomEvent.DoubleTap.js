@@ -17,9 +17,7 @@ L.extend(L.DomEvent, {
 			var count;
 
 			if (L.Browser.pointer) {
-				if ((!L.Browser.edge) || e.pointerType === 'mouse') {
-					return;
-				}
+				if (e.pointerType === 'mouse') { return; }
 				count = L.DomEvent._pointersCount;
 			} else {
 				count = e.touches.length;
@@ -38,6 +36,8 @@ L.extend(L.DomEvent, {
 		function onTouchEnd() {
 			if (doubleTap && !touch.cancelBubble) {
 				if (L.Browser.pointer) {
+					if (e.pointerType === 'mouse') { return; }
+
 					// work around .type being readonly with MSPointer* events
 					var newTouch = {},
 					    prop, i;
@@ -65,12 +65,11 @@ L.extend(L.DomEvent, {
 		obj.addEventListener(touchstart, onTouchStart, false);
 		obj.addEventListener(touchend, onTouchEnd, false);
 
-		// On some platforms (notably, chrome on win10 + touchscreen + mouse),
+		// On some platforms (notably, chrome<55 on win10 + touchscreen + mouse),
 		// the browser doesn't fire touchend/pointerup events but does fire
 		// native dblclicks. See #4127.
-		if (!L.Browser.edge) {
-			obj.addEventListener('dblclick', handler, false);
-		}
+		// Edge 14 also fires native dblclicks, but only for pointerType mouse, see #5180.
+		obj.addEventListener('dblclick', handler, false);
 
 		return this;
 	},
