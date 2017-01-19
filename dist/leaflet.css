@@ -622,3 +622,8 @@
 	margin-left: -12px;
 	border-right-color: #fff;
 	}
+.leaflet-span {
+	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	display: block;
+	position: absolute;
+}
