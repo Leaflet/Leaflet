@@ -53,7 +53,22 @@ L.Control.Layers = L.Control.extend({
 
 		// @option hideSingleBase: Boolean = false
 		// If `true`, the base layers in the control will be hidden when there is only one.
-		hideSingleBase: false
+		hideSingleBase: false,
+
+		// @option sortLayers: Boolean = false
+		// Whether to sort the layers. When `false`, layers will keep the order
+		// in which they were added to the control.
+		sortLayers: false,
+
+		// @option sortFunction: Function = *
+		// A [compare function](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/sort)
+		// that will be used for sorting the layers, when `sortLayers` is `true`.
+		// The function receives both the `L.Layer` instances and their names, as in
+		// `sortFunction(layerA, layerB, nameA, nameB)`.
+		// By default, it sorts layers alphabetically by their name.
+		sortFunction: function (layerA, layerB, nameA, nameB) {
+			return nameA < nameB ? -1 : (nameB < nameA ? 1 : 0);
+		}
 	},
 
 	initialize: function (baseLayers, overlays, options) {
@@ -141,7 +156,8 @@ L.Control.Layers = L.Control.extend({
 
 	_initLayout: function () {
 		var className = 'leaflet-control-layers',
-		    container = this._container = L.DomUtil.create('div', className);
+		    container = this._container = L.DomUtil.create('div', className),
+		    collapsed = this.options.collapsed;
 
 		// makes this work on IE touch devices by stopping it from firing a mouseout event when the touch is released
 		container.setAttribute('aria-haspopup', true);
@@ -153,34 +169,37 @@ L.Control.Layers = L.Control.extend({
 
 		var form = this._form = L.DomUtil.create('form', className + '-list');
 
-		if (this.options.collapsed) {
+		if (collapsed) {
+			this._map.on('click', this.collapse, this);
+
 			if (!L.Browser.android) {
 				L.DomEvent.on(container, {
 					mouseenter: this.expand,
 					mouseleave: this.collapse
 				}, this);
 			}
+		}
 
-			var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
-			link.href = '#';
-			link.title = 'Layers';
+		var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
+		link.href = '#';
+		link.title = 'Layers';
 
-			if (L.Browser.touch) {
-				L.DomEvent
-				    .on(link, 'click', L.DomEvent.stop)
-				    .on(link, 'click', this.expand, this);
-			} else {
-				L.DomEvent.on(link, 'focus', this.expand, this);
-			}
-
-			// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
-			L.DomEvent.on(form, 'click', function () {
-				setTimeout(L.bind(this._onInputClick, this), 0);
-			}, this);
-
-			this._map.on('click', this.collapse, this);
-			// TODO keyboard accessibility
+		if (L.Browser.touch) {
+			L.DomEvent
+			    .on(link, 'click', L.DomEvent.stop)
+			    .on(link, 'click', this.expand, this);
 		} else {
+			L.DomEvent.on(link, 'focus', this.expand, this);
+		}
+
+		// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
+		L.DomEvent.on(form, 'click', function () {
+			setTimeout(L.bind(this._onInputClick, this), 0);
+		}, this);
+
+		// TODO keyboard accessibility
+
+		if (!collapsed) {
 			this.expand();
 		}
 
@@ -208,6 +227,12 @@ L.Control.Layers = L.Control.extend({
 			name: name,
 			overlay: overlay
 		});
+
+		if (this.options.sortLayers) {
+			this._layers.sort(L.bind(function (a, b) {
+				return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
+			}, this));
+		}
 
 		if (this.options.autoZIndex && layer.setZIndex) {
 			this._lastZIndex++;

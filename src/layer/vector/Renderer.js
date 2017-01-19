@@ -32,6 +32,7 @@ L.Renderer = L.Layer.extend({
 	initialize: function (options) {
 		L.setOptions(this, options);
 		L.stamp(this);
+		this._layers = this._layers || {};
 	},
 
 	onAdd: function () {
@@ -45,17 +46,20 @@ L.Renderer = L.Layer.extend({
 
 		this.getPane().appendChild(this._container);
 		this._update();
+		this.on('update', this._updatePaths, this);
 	},
 
 	onRemove: function () {
 		L.DomUtil.remove(this._container);
+		this.off('update', this._updatePaths, this);
 	},
 
 	getEvents: function () {
 		var events = {
 			viewreset: this._reset,
 			zoom: this._onZoom,
-			moveend: this._update
+			moveend: this._update,
+			zoomend: this._onZoomEnd
 		};
 		if (this._zoomAnimated) {
 			events.zoomanim = this._onAnimZoom;
@@ -91,6 +95,22 @@ L.Renderer = L.Layer.extend({
 	_reset: function () {
 		this._update();
 		this._updateTransform(this._center, this._zoom);
+
+		for (var id in this._layers) {
+			this._layers[id]._reset();
+		}
+	},
+
+	_onZoomEnd: function () {
+		for (var id in this._layers) {
+			this._layers[id]._project();
+		}
+	},
+
+	_updatePaths: function () {
+		for (var id in this._layers) {
+			this._layers[id]._update();
+		}
 	},
 
 	_update: function () {

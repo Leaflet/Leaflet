@@ -99,7 +99,7 @@ var MyClass = L.Class.extend({
     }
 });
 
-var MyChildClass = L.Class.extend({
+var MyChildClass = MyClass.extend({
     options: {
         myOption1: 'baz',
         myOption3: 5

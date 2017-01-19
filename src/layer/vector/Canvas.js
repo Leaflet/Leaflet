@@ -35,8 +35,6 @@ L.Canvas = L.Renderer.extend({
 	onAdd: function () {
 		L.Renderer.prototype.onAdd.call(this);
 
-		this._layers = this._layers || {};
-
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
@@ -51,6 +49,16 @@ L.Canvas = L.Renderer.extend({
 			.on(container, 'mouseout', this._handleMouseOut, this);
 
 		this._ctx = container.getContext('2d');
+	},
+
+	_updatePaths: function () {
+		var layer;
+		this._redrawBounds = null;
+		for (var id in this._layers) {
+			layer = this._layers[id];
+			layer._update();
+		}
+		this._redraw();
 	},
 
 	_update: function () {
@@ -87,22 +95,53 @@ L.Canvas = L.Renderer.extend({
 	_initPath: function (layer) {
 		this._updateDashArray(layer);
 		this._layers[L.stamp(layer)] = layer;
+
+		var order = layer._order = {
+			layer: layer,
+			prev: this._drawLast,
+			next: null
+		};
+		if (this._drawLast) { this._drawLast.next = order; }
+		this._drawLast = order;
+		this._drawFirst = this._drawFirst || this._drawLast;
 	},
 
-	_addPath: L.Util.falseFn,
+	_addPath: function (layer) {
+		this._requestRedraw(layer);
+	},
 
 	_removePath: function (layer) {
-		layer._removed = true;
+		var order = layer._order;
+		var next = order.next;
+		var prev = order.prev;
+
+		if (next) {
+			next.prev = prev;
+		} else {
+			this._drawLast = prev;
+		}
+		if (prev) {
+			prev.next = next;
+		} else {
+			this._drawFirst = next;
+		}
+
+		delete layer._order;
+
+		delete this._layers[L.stamp(layer)];
+
 		this._requestRedraw(layer);
 	},
 
 	_updatePath: function (layer) {
-		this._redrawBounds = layer._pxBounds;
-		this._draw(true);
+		// Redraw the union of the layer's old pixel
+		// bounds and the new pixel bounds.
+		this._extendRedrawBounds(layer);
 		layer._project();
 		layer._update();
-		this._draw();
-		this._redrawBounds = null;
+		// The redraw will extend the redraw bounds
+		// with the new pixel bounds.
+		this._requestRedraw(layer);
 	},
 
 	_updateStyle: function (layer) {
@@ -125,47 +164,67 @@ L.Canvas = L.Renderer.extend({
 	_requestRedraw: function (layer) {
 		if (!this._map) { return; }
 
+		this._extendRedrawBounds(layer);
+		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
+	},
+
+	_extendRedrawBounds: function (layer) {
 		var padding = (layer.options.weight || 0) + 1;
 		this._redrawBounds = this._redrawBounds || new L.Bounds();
 		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
 		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
-
-		this._redrawRequest = this._redrawRequest || L.Util.requestAnimFrame(this._redraw, this);
 	},
 
 	_redraw: function () {
 		this._redrawRequest = null;
 
-		this._draw(true); // clear layers in redraw bounds
+		if (this._redrawBounds) {
+			this._redrawBounds.min._floor();
+			this._redrawBounds.max._ceil();
+		}
+
+		this._clear(); // clear layers in redraw bounds
 		this._draw(); // draw layers
 
 		this._redrawBounds = null;
 	},
 
-	_draw: function (clear) {
-		this._clear = clear;
+	_clear: function () {
+		var bounds = this._redrawBounds;
+		if (bounds) {
+			var size = bounds.getSize();
+			this._ctx.clearRect(bounds.min.x, bounds.min.y, size.x, size.y);
+		} else {
+			this._ctx.clearRect(0, 0, this._container.width, this._container.height);
+		}
+	},
+
+	_draw: function () {
 		var layer, bounds = this._redrawBounds;
 		this._ctx.save();
 		if (bounds) {
+			var size = bounds.getSize();
 			this._ctx.beginPath();
-			this._ctx.rect(bounds.min.x, bounds.min.y, bounds.max.x - bounds.min.x, bounds.max.y - bounds.min.y);
+			this._ctx.rect(bounds.min.x, bounds.min.y, size.x, size.y);
 			this._ctx.clip();
 		}
 
-		for (var id in this._layers) {
-			layer = this._layers[id];
+		this._drawing = true;
+
+		for (var order = this._drawFirst; order; order = order.next) {
+			layer = order.layer;
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
 				layer._updatePath();
 			}
-			if (clear && layer._removed) {
-				delete layer._removed;
-				delete this._layers[id];
-			}
 		}
+
+		this._drawing = false;
+
 		this._ctx.restore();  // Restore state before clipping.
 	},
 
 	_updatePoly: function (layer, closed) {
+		if (!this._drawing) { return; }
 
 		var i, j, len2, p,
 		    parts = layer._parts,
@@ -199,7 +258,7 @@ L.Canvas = L.Renderer.extend({
 
 	_updateCircle: function (layer) {
 
-		if (layer._empty()) { return; }
+		if (!this._drawing || layer._empty()) { return; }
 
 		var p = layer._point,
 		    ctx = this._ctx,
@@ -224,23 +283,17 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_fillStroke: function (ctx, layer) {
-		var clear = this._clear,
-		    options = layer.options;
-
-		ctx.globalCompositeOperation = clear ? 'destination-out' : 'source-over';
+		var options = layer.options;
 
 		if (options.fill) {
-			ctx.globalAlpha = clear ? 1 : options.fillOpacity;
+			ctx.globalAlpha = options.fillOpacity;
 			ctx.fillStyle = options.fillColor || options.color;
 			ctx.fill(options.fillRule || 'evenodd');
 		}
 
 		if (options.stroke && options.weight !== 0) {
-			ctx.globalAlpha = clear ? 1 : options.opacity;
-
-			// if clearing shape, do it with the previously drawn line width
-			layer._prevWeight = ctx.lineWidth = clear ? layer._prevWeight + 1 : options.weight;
-
+			ctx.globalAlpha = options.opacity;
+			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;
 			ctx.lineCap = options.lineCap;
 			ctx.lineJoin = options.lineJoin;
@@ -252,17 +305,17 @@ L.Canvas = L.Renderer.extend({
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
 	_onClick: function (e) {
-		var point = this._map.mouseEventToLayerPoint(e), layers = [], layer;
+		var point = this._map.mouseEventToLayerPoint(e), layer, clickedLayer;
 
-		for (var id in this._layers) {
-			layer = this._layers[id];
+		for (var order = this._drawFirst; order; order = order.next) {
+			layer = order.layer;
 			if (layer.options.interactive && layer._containsPoint(point) && !this._map._draggableMoved(layer)) {
-				L.DomEvent._fakeStop(e);
-				layers.push(layer);
+				clickedLayer = layer;
 			}
 		}
-		if (layers.length)  {
-			this._fireEvent(layers, e);
+		if (clickedLayer)  {
+			L.DomEvent._fakeStop(e);
+			this._fireEvent([clickedLayer], e);
 		}
 	},
 
@@ -270,14 +323,13 @@ L.Canvas = L.Renderer.extend({
 		if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
 
 		var point = this._map.mouseEventToLayerPoint(e);
-		this._handleMouseOut(e, point);
 		this._handleMouseHover(e, point);
 	},
 
 
-	_handleMouseOut: function (e, point) {
+	_handleMouseOut: function (e) {
 		var layer = this._hoveredLayer;
-		if (layer && (e.type === 'mouseout' || !layer._containsPoint(point))) {
+		if (layer) {
 			// if we're leaving the layer, fire mouseout
 			L.DomUtil.removeClass(this._container, 'leaflet-interactive');
 			this._fireEvent([layer], e, 'mouseout');
@@ -286,14 +338,22 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_handleMouseHover: function (e, point) {
-		var id, layer;
+		var layer, candidateHoveredLayer;
 
-		for (id in this._drawnLayers) {
-			layer = this._drawnLayers[id];
+		for (var order = this._drawFirst; order; order = order.next) {
+			layer = order.layer;
 			if (layer.options.interactive && layer._containsPoint(point)) {
+				candidateHoveredLayer = layer;
+			}
+		}
+
+		if (candidateHoveredLayer !== this._hoveredLayer) {
+			this._handleMouseOut(e);
+
+			if (candidateHoveredLayer) {
 				L.DomUtil.addClass(this._container, 'leaflet-interactive'); // change cursor
-				this._fireEvent([layer], e, 'mouseover');
-				this._hoveredLayer = layer;
+				this._fireEvent([candidateHoveredLayer], e, 'mouseover');
+				this._hoveredLayer = candidateHoveredLayer;
 			}
 		}
 
@@ -306,10 +366,61 @@ L.Canvas = L.Renderer.extend({
 		this._map._fireDOMEvent(e, type || e.type, layers);
 	},
 
-	// TODO _bringToFront & _bringToBack, pretty tricky
+	_bringToFront: function (layer) {
+		var order = layer._order;
+		var next = order.next;
+		var prev = order.prev;
 
-	_bringToFront: L.Util.falseFn,
-	_bringToBack: L.Util.falseFn
+		if (next) {
+			next.prev = prev;
+		} else {
+			// Already last
+			return;
+		}
+		if (prev) {
+			prev.next = next;
+		} else if (next) {
+			// Update first entry unless this is the
+			// signle entry
+			this._drawFirst = next;
+		}
+
+		order.prev = this._drawLast;
+		this._drawLast.next = order;
+
+		order.next = null;
+		this._drawLast = order;
+
+		this._requestRedraw(layer);
+	},
+
+	_bringToBack: function (layer) {
+		var order = layer._order;
+		var next = order.next;
+		var prev = order.prev;
+
+		if (prev) {
+			prev.next = next;
+		} else {
+			// Already first
+			return;
+		}
+		if (next) {
+			next.prev = prev;
+		} else if (prev) {
+			// Update last entry unless this is the
+			// signle entry
+			this._drawLast = prev;
+		}
+
+		order.prev = null;
+
+		order.next = this._drawFirst;
+		this._drawFirst.prev = order;
+		this._drawFirst = order;
+
+		this._requestRedraw(layer);
+	}
 });
 
 // @namespace Browser; @property canvas: Boolean

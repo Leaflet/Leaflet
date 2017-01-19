@@ -20,18 +20,15 @@
     <script type="text/javascript">
         map = L.map('map', { center: [0, 0], zoom: 3, maxZoom: 4 });
 
-        L.Icon.Default.imagePath = 'http://cdn.leafletjs.com/leaflet-0.7.3/images';
-
-
         var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     			attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     		}).addTo(map);
 
         L.DomUtil.get('removeAdd').onclick = function() {
-            map.removeLayer(tileLayer);
+            map.removeLayer(osm);
 
             setTimeout(function() {
-                map.addLayer(tileLayer);
+                map.addLayer(osm);
             }, 1000);
 
 

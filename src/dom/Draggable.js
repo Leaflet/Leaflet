@@ -62,6 +62,12 @@ L.Draggable = L.Evented.extend({
 	disable: function () {
 		if (!this._enabled) { return; }
 
+		// If we're currently dragging this draggable,
+		// disabling it counts as first ending the drag.
+		if (L.Draggable._dragging === this) {
+			this.finishDrag();
+		}
+
 		L.DomEvent.off(this._dragStartTarget, L.Draggable.START.join(' '), this._onDown, this);
 
 		this._enabled = false;
@@ -80,8 +86,8 @@ L.Draggable = L.Evented.extend({
 
 		if (L.DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
-		if (L.Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches) || !this._enabled) { return; }
-		L.Draggable._dragging = true;  // Prevent dragging multiple objects at once.
+		if (L.Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		L.Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
 			L.DomUtil.preventOutline(this._element);
@@ -175,7 +181,10 @@ L.Draggable = L.Evented.extend({
 		// Also ignore the event if disabled; this happens in IE11
 		// under some circumstances, see #3666.
 		if (e._simulated || !this._enabled) { return; }
+		this.finishDrag();
+	},
 
+	finishDrag: function () {
 		L.DomUtil.removeClass(document.body, 'leaflet-dragging');
 
 		if (this._lastTarget) {
@@ -206,4 +215,5 @@ L.Draggable = L.Evented.extend({
 		this._moving = false;
 		L.Draggable._dragging = false;
 	}
+
 });

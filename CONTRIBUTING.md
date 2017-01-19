@@ -122,7 +122,7 @@ To generate a detailed report about test coverage (which helps tremendously when
 jake test --cov
 ```
 
-After that, open `spec/coverage/<environment>/index.html` in a browser to see the report.
+After that, open `coverage/<environment>/index.html` in a browser to see the report.
 From there you can click through folders/files to get details on their individual coverage.
 
 ## Improving Documentation

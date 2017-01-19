@@ -53,13 +53,15 @@ L.GeoJSON = L.FeatureGroup.extend({
 	 * ```
 	 *
 	 * @option filter: Function = *
-	 * A `Function` that will be used to decide whether to show a feature or not.
-	 * The default is to show all features:
+	 * A `Function` that will be used to decide whether to include a feature or not.
+	 * The default is to include all features:
 	 * ```js
 	 * function (geoJsonFeature) {
 	 * 	return true;
 	 * }
 	 * ```
+	 * Note: dynamically changing the `filter` option will have effect only on newly
+	 * added data. It will _not_ re-evaluate already included features.
 	 *
 	 * @option coordsToLatLng: Function = *
 	 * A `Function` that will be used for converting GeoJSON coordinates to `LatLng`s.
@@ -76,7 +78,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		}
 	},
 
-	// @function addData( <GeoJSON> data ): Layer
+	// @method addData( <GeoJSON> data ): this
 	// Adds a GeoJSON object to the layer.
 	addData: function (geojson) {
 		var features = L.Util.isArray(geojson) ? geojson : geojson.features,
@@ -113,7 +115,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		return this.addLayer(layer);
 	},
 
-	// @function resetStyle( <Path> layer ): Layer
+	// @method resetStyle( <Path> layer ): this
 	// Resets the given vector layer's style to the original GeoJSON style, useful for resetting style after hover events.
 	resetStyle: function (layer) {
 		// reset any custom styles
@@ -122,7 +124,7 @@ L.GeoJSON = L.FeatureGroup.extend({
 		return this;
 	},
 
-	// @function setStyle( <Function> style ): Layer
+	// @method setStyle( <Function> style ): this
 	// Changes styles of GeoJSON vector layers with the given style function.
 	setStyle: function (style) {
 		return this.eachLayer(function (layer) {
@@ -262,7 +264,7 @@ L.extend(L.GeoJSON, {
 	// @function asFeature(geojson: Object): Object
 	// Normalize GeoJSON geometries/features into GeoJSON features.
 	asFeature: function (geojson) {
-		if (geojson.type === 'Feature') {
+		if (geojson.type === 'Feature' || geojson.type === 'FeatureCollection') {
 			return geojson;
 		}
 
@@ -283,6 +285,9 @@ var PointToGeoJSON = {
 	}
 };
 
+// @namespace Marker
+// @method toGeoJSON(): Object
+// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the marker (as a GeoJSON `Point` Feature).
 L.Marker.include(PointToGeoJSON);
 
 // @namespace CircleMarker

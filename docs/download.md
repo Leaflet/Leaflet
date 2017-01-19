@@ -12,8 +12,8 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.0/leaflet.zip">Leaflet 1.0.0</a></td>
-		<td>Stable version, released on September 27, 2016.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.2/leaflet.zip">Leaflet 1.0.2</a></td>
+		<td>Stable version, released on November 21, 2016.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.1-dev</a></td>
@@ -35,8 +35,8 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.0.0/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"></script>
 
 ### Using a Downloaded Version of Leaflet
 
@@ -51,6 +51,14 @@ Unzip the downloaded archive to your website's directory and add this to the `he
 
     <link rel="stylesheet" href="/path/to/leaflet.css" />
     <script src="/path/to/leaflet.js"></script> <!-- or use leaflet-src.js --!>
+
+### Using a JavaScript package manager
+
+If you use the [`npm` package manager](https://www.npmjs.com/), you can fetch a local copy of Leaflet by running:
+
+    npm install leaflet
+
+You will find a copy of the Leaflet release files in `node_modules/leaflet/dist`.
 
 ### Leaflet Source Code
 
@@ -74,8 +82,3 @@ npm install</code></pre>
 Now that you have everything installed, run `jake build` inside the Leaflet directory.
 This will combine and compress the Leaflet source files, saving the build to the `dist` folder.
 
-### Building a Custom Version of Leaflet
-
-To make a custom build of the library with only the things you need,
-open `build/build.html` page of the Leaflet source code contents, choose the components
-(it figures out dependencies for you) and then run the command generated with it.

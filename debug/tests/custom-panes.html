@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+	
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<link rel="stylesheet" href="../css/screen.css" />
+	
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+	
+	<style>
+		body { max-width: 1200px }
+		#mapSvg { width: 500px; height: 500px; margin: 20px }
+		#mapCanvas { width: 500px; height: 500px; margin: 20px }
+		.left { float: left; text-align: center }
+		.right { float: right; text-align: center }
+	</style>
+</head>
+<body>
+
+	<div class="right">
+		<h1>Canvas</h1>
+		<div id="mapCanvas"></div>
+	</div>
+	<div class="left">
+		<h1>SVG</h1>
+		<div id="mapSvg"></div>
+	</div>
+
+	<script type="text/javascript">
+
+		function makeMap(container, options) {
+			var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+				osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+			var map = L.map(container, options)
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+				map.createPane('custom1');
+				map.createPane('custom2');
+				map.getPane('custom1').style.zIndex = 601;
+				map.getPane('custom2').style.zIndex = 701;
+
+				var panes = ['overlayPane', 'custom1', 'custom2'];
+
+			function makeFeatures(i) {
+				L.marker([50.505-i*0.005, 30.51]).addTo(map);
+				L.circleMarker([50.505-i*0.005, 30.51], { radius: 30, pane: panes[i] })
+					.bindPopup(function(layer) {
+						return 'Pane: ' + panes[i];
+					})
+					.addTo(map);
+			}
+
+			for (var i = 0; i < 3; i++)
+				makeFeatures(i);
+		}
+
+		makeMap('mapSvg');
+		makeMap('mapCanvas', { preferCanvas: true });
+
+	</script>
+</body>
+</html>

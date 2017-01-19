@@ -19,7 +19,9 @@ var deps = {
 		      'geo/crs/CRS.EPSG3857.js',
 		      'geo/crs/CRS.EPSG4326.js',
 		      'map/Map.js',
-		      'layer/Layer.js'
+		      'layer/Layer.js',
+		      'dom/DomEvent.js',
+		      'dom/PosAnimation.js'
 		      ],
 		desc: 'The core of the library, including OOP, events, DOM facilities, basic units, projections (EPSG:3857 and EPSG:4326) and the base Map class.'
 	},
@@ -70,9 +72,7 @@ var deps = {
 	Popup: {
 		src: [
 			'layer/DivOverlay.js',
-			'layer/Popup.js',
-			'layer/Layer.Popup.js',
-			'layer/marker/Marker.Popup.js'
+			'layer/Popup.js'
 		],
 		deps: ['Marker'],
 		desc: 'Used to display the map popup (used mostly for binding HTML data to markers and paths on click).'
@@ -80,9 +80,7 @@ var deps = {
 
 	Tooltip: {
 		src: [
-			'layer/Tooltip.js',
-			'layer/Layer.Tooltip.js',
-			'layer/marker/Marker.Tooltip.js'
+			'layer/Tooltip.js'
 		],
 		deps: ['Popup', 'Marker'],
 		desc: 'Used to display the map tooltip (used mostly for binding short descriptions to markers and paths on mouseover).'
@@ -234,31 +232,6 @@ var deps = {
 		src: ['control/Control.js',
 		      'control/Control.Layers.js'],
 		desc: 'Layer Switcher control.'
-	},
-
-	AnimationPan: {
-		src: [
-			'dom/DomEvent.js',
-			'dom/PosAnimation.js',
-			'map/anim/Map.PanAnimation.js'
-			],
-		heading: 'Animation',
-		desc: 'Core panning animation support.'
-	},
-
-	AnimationZoom: {
-		src: [
-			'map/anim/Map.ZoomAnimation.js',
-			'map/anim/Map.FlyTo.js'
-			],
-		deps: ['AnimationPan'],
-		desc: 'Smooth zooming animation. Works only on browsers that support CSS3 Transitions.'
-	},
-
-	Geolocation: {
-		src: ['map/ext/Map.Geolocation.js'],
-		desc: 'Adds Map#locate method and related events to make geolocation easier.',
-		heading: 'Misc'
 	}
 };
 

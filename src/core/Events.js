@@ -114,7 +114,6 @@ L.Evented = L.Class.extend({
 		}
 
 		listeners.push(newListener);
-		typeListeners.count++;
 	},
 
 	_off: function (type, fn, context) {
@@ -170,7 +169,7 @@ L.Evented = L.Class.extend({
 	// @method fire(type: String, data?: Object, propagate?: Boolean): this
 	// Fires an event of the specified type. You can optionally provide an data
 	// object — the first argument of the listener function will contain its
-	// properties. The event might can optionally be propagated to event parents.
+	// properties. The event can optionally be propagated to event parents.
 	fire: function (type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 

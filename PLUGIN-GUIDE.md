@@ -45,7 +45,7 @@ after pushing, it'll be published as `http://<user>.github.io/<repo>`.
 
 ### Readme
 
-The next thing you need to have is a descriptive `README.md` in the root of the repo (or a link to a website with a similar content).
+The next thing you need to have is a [good `README.md`](https://github.com/noffle/art-of-readme) in the root of the repo (or a link to a website with a similar content).
 At a minimum it should contain the following items:
 
 - name of the plugin
@@ -148,7 +148,7 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "main": "my-plugin.js",
   "author": "You",
   "license": "IST",
-  "dependencies": {
+  "peerDependencies": {
     "leaflet": "^1.0.0"
   }
 }

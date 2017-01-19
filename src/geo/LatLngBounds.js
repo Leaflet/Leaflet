@@ -7,9 +7,9 @@
  * @example
  *
  * ```js
- * var southWest = L.latLng(40.712, -74.227),
- * northEast = L.latLng(40.774, -74.125),
- * bounds = L.latLngBounds(southWest, northEast);
+ * var corner1 = L.latLng(40.712, -74.227),
+ * corner2 = L.latLng(40.774, -74.125),
+ * bounds = L.latLngBounds(corner1, corner2);
  * ```
  *
  * All Leaflet methods that accept LatLngBounds objects also accept them in a simple Array form (unless noted otherwise), so the bounds example above can be passed like this:
@@ -20,12 +20,14 @@
  * 	[40.774, -74.125]
  * ]);
  * ```
+ *
+ * Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners _outside_ the [-180, 180] degrees longitude range.
  */
 
-L.LatLngBounds = function (southWest, northEast) { // (LatLng, LatLng) or (LatLng[])
-	if (!southWest) { return; }
+L.LatLngBounds = function (corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
+	if (!corner1) { return; }
 
-	var latlngs = northEast ? [southWest, northEast] : southWest;
+	var latlngs = corner2 ? [corner1, corner2] : corner1;
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		this.extend(latlngs[i]);
@@ -148,7 +150,7 @@ L.LatLngBounds.prototype = {
 	// @method contains (latlng: LatLng): Boolean
 	// Returns `true` if the rectangle contains the given point.
 	contains: function (obj) { // (LatLngBounds) or (LatLng) -> Boolean
-		if (typeof obj[0] === 'number' || obj instanceof L.LatLng) {
+		if (typeof obj[0] === 'number' || obj instanceof L.LatLng || 'lat' in obj) {
 			obj = L.latLng(obj);
 		} else {
 			obj = L.latLngBounds(obj);
@@ -227,8 +229,8 @@ L.LatLngBounds.prototype = {
 
 // TODO International date line?
 
-// @factory L.latLngBounds(southWest: LatLng, northEast: LatLng)
-// Creates a `LatLngBounds` object by defining south-west and north-east corners of the rectangle.
+// @factory L.latLngBounds(corner1: LatLng, corner2: LatLng)
+// Creates a `LatLngBounds` object by defining two diagonally opposite corners of the rectangle.
 
 // @alternative
 // @factory L.latLngBounds(latlngs: LatLng[])

@@ -79,6 +79,12 @@ L.Control.Zoom = L.Control.extend({
 		link.href = '#';
 		link.title = title;
 
+		/*
+		 * Will force screen readers like VoiceOver to read this as "Zoom in - button"
+		 */
+		link.setAttribute('role', 'button');
+		link.setAttribute('aria-label', title);
+
 		L.DomEvent
 		    .on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
 		    .on(link, 'click', L.DomEvent.stop)

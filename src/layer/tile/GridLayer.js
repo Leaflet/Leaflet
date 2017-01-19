@@ -89,10 +89,6 @@ L.GridLayer = L.Layer.extend({
 		// Tiles will not update more than once every `updateInterval` milliseconds when panning.
 		updateInterval: 200,
 
-		// @option attribution: String = null
-		// String to be shown in the attribution control, describes the layer data, e.g. "© Mapbox".
-		attribution: null,
-
 		// @option zIndex: Number = 1
 		// The explicit zIndex of the tile layer.
 		zIndex: 1,
@@ -112,7 +108,9 @@ L.GridLayer = L.Layer.extend({
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
 		// GridLayer will only be displayed once at low zoom levels. Has no
-		// effect when the [map CRS](#map-crs) doesn't wrap around.
+		// effect when the [map CRS](#map-crs) doesn't wrap around. Can be used
+		// in combination with [`bounds`](#gridlayer-bounds) to prevent requesting
+		// tiles outside the CRS limits.
 		noWrap: false,
 
 		// @option pane: String = 'tilePane'
@@ -172,12 +170,6 @@ L.GridLayer = L.Layer.extend({
 			this._setAutoZIndex(Math.min);
 		}
 		return this;
-	},
-
-	// @method getAttribution: String
-	// Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
-	getAttribution: function () {
-		return this.options.attribution;
 	},
 
 	// @method getContainer: HTMLElement
@@ -639,7 +631,7 @@ L.GridLayer = L.Layer.extend({
 		});
 
 		if (queue.length !== 0) {
-			// if its the first batch of tiles to load
+			// if it's the first batch of tiles to load
 			if (!this._loading) {
 				this._loading = true;
 				// @event loading: Event
@@ -689,14 +681,14 @@ L.GridLayer = L.Layer.extend({
 		    sePoint = nwPoint.add(tileSize),
 
 		    nw = map.unproject(nwPoint, coords.z),
-		    se = map.unproject(sePoint, coords.z);
+		    se = map.unproject(sePoint, coords.z),
+		    bounds = new L.LatLngBounds(nw, se);
 
 		if (!this.options.noWrap) {
-			nw = map.wrapLatLng(nw);
-			se = map.wrapLatLng(se);
+			map.wrapLatLngBounds(bounds);
 		}
 
-		return new L.LatLngBounds(nw, se);
+		return bounds;
 	},
 
 	// converts tile coordinates to key for the tile cache
@@ -811,14 +803,16 @@ L.GridLayer = L.Layer.extend({
 			this._pruneTiles();
 		}
 
-		L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');
+		if (!err) {
+			L.DomUtil.addClass(tile.el, 'leaflet-tile-loaded');
 
-		// @event tileload: TileEvent
-		// Fired when a tile loads.
-		this.fire('tileload', {
-			tile: tile.el,
-			coords: coords
-		});
+			// @event tileload: TileEvent
+			// Fired when a tile loads.
+			this.fire('tileload', {
+				tile: tile.el,
+				coords: coords
+			});
+		}
 
 		if (this._noTilesToLoad()) {
 			this._loading = false;

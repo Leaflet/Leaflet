@@ -200,6 +200,25 @@ describe("Map", function () {
 			map.options.zoomSnap = 0;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.within(19.6864560, 19.6864561);
 		});
+
+		it("getBoundsZoom does not return Infinity when projected SE - NW has negative components", function () {
+			var container = map.getContainer();
+			container.style.height = 369;
+			container.style.width = 1048;
+			document.body.appendChild(container);
+			var bounds = L.latLngBounds(L.latLng([62.18475569507688, 6.926335173954951]), L.latLng([62.140483526511694, 6.923933370740089]));
+
+			// The following coordinates are bounds projected with proj4leaflet crs = EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs
+			var projectedSE = L.point(7800503.059925064, 6440062.353052008);
+			var projectedNW = L.point(7801987.203481699, 6425186.447901004);
+			var crsMock = sinon.mock(map.options.crs);
+			crsMock.expects("project").withArgs(bounds.getNorthWest()).returns(projectedNW);
+			crsMock.expects("project").withArgs(bounds.getSouthEast()).returns(projectedSE);
+
+			var padding = L.point(-50, -50);
+			map.setZoom(16);
+			expect(map.getBoundsZoom(bounds, false, padding)).to.eql(9);
+		});
 	});
 
 	describe('#setMaxBounds', function () {
@@ -280,6 +299,34 @@ describe("Map", function () {
 
 			expect(map.getMinZoom()).to.be(2);
 			expect(map.getMaxZoom()).to.be(20);
+		});
+
+		it("layer minZoom overrides map zoom if map has no minZoom set and layer minZoom is bigger than map zoom", function () {
+			var map = L.map(document.createElement("div"), {zoom: 10});
+			L.tileLayer("{z}{x}{y}", {minZoom: 15}).addTo(map);
+
+			expect(map.getMinZoom()).to.be(15);
+		});
+
+		it("layer maxZoom overrides map zoom if map has no maxZoom set and layer maxZoom is smaller than map zoom", function () {
+			var map = L.map(document.createElement("div"), {zoom: 20});
+			L.tileLayer("{z}{x}{y}", {maxZoom: 15}).addTo(map);
+
+			expect(map.getMaxZoom()).to.be(15);
+		});
+
+		it("map's zoom is adjusted to layer's minZoom even if initialized with smaller value", function () {
+			var map = L.map(document.createElement("div"), {zoom: 10});
+			L.tileLayer("{z}{x}{y}", {minZoom: 15}).addTo(map);
+
+			expect(map.getZoom()).to.be(15);
+		});
+
+		it("map's zoom is adjusted to layer's maxZoom even if initialized with larger value", function () {
+			var map = L.map(document.createElement("div"), {zoom: 20});
+			L.tileLayer("{z}{x}{y}", {maxZoom: 15}).addTo(map);
+
+			expect(map.getZoom()).to.be(15);
 		});
 	});
 
