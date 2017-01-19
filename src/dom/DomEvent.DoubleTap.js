@@ -17,7 +17,7 @@ L.extend(L.DomEvent, {
 			var count;
 
 			if (L.Browser.pointer) {
-				if (e.pointerType === 'mouse') { return; }
+				if ((!L.Browser.edge) || e.pointerType === 'mouse') { return; }
 				count = L.DomEvent._pointersCount;
 			} else {
 				count = e.touches.length;
@@ -33,10 +33,10 @@ L.extend(L.DomEvent, {
 			last = now;
 		}
 
-		function onTouchEnd() {
+		function onTouchEnd(e) {
 			if (doubleTap && !touch.cancelBubble) {
 				if (L.Browser.pointer) {
-					if (e.pointerType === 'mouse') { return; }
+					if ((!L.Browser.edge) || e.pointerType === 'mouse') { return; }
 
 					// work around .type being readonly with MSPointer* events
 					var newTouch = {},
