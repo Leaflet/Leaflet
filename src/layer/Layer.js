@@ -35,7 +35,7 @@ L.Layer = L.Evented.extend({
 
 		// @option attribution: String = null
 		// String to be shown in the attribution control, describes the layer data, e.g. "© Mapbox".
-		attribution: null,
+		attribution: null
 	},
 
 	/* @section
