@@ -17,7 +17,7 @@ L.extend(L.DomEvent, {
 			var count;
 
 			if (L.Browser.pointer) {
-				if ((!L.Browser.edge) || e.pointerType === 'mouse') {
+				if (!L.Browser.edge) {
 					return;
 				}
 				count = L.DomEvent._pointersCount;
@@ -51,6 +51,7 @@ L.extend(L.DomEvent, {
 				touch.type = 'dblclick';
 				handler(touch);
 				last = null;
+				doubleTap = false;
 			}
 		}
 
