@@ -129,6 +129,9 @@
 
 		// @property touch: Boolean
 		// `true` for all browsers supporting [touch events](https://developer.mozilla.org/docs/Web/API/Touch_events).
+		// This does not necessarily mean that the browser is running in a computer with
+		// a touchscreen, it only means that the browser is capable of understanding
+		// touch events.
 		touch: !!touch,
 
 		// @property msPointer: Boolean
