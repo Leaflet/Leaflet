@@ -1291,6 +1291,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/react-map/leaflet.magicMarker">Leaflet.magicMarker</a>
+		</td>
+		<td>
+			Adding magical animation effect to a marker while loading.(<a href="https://react-map.github.io/leaflet.magicMarker/">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/react-map">Sylvenas</a>
+		</td>
+	</tr>
 </table>
 
 
