@@ -209,6 +209,7 @@ L.Marker = L.Layer.extend({
 
 		if (newShadow) {
 			L.DomUtil.addClass(newShadow, classToAdd);
+			newShadow.alt = '';
 		}
 		this._shadow = newShadow;
 
