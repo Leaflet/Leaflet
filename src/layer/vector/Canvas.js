@@ -92,6 +92,15 @@ L.Canvas = L.Renderer.extend({
 		this.fire('update');
 	},
 
+	_reset: function () {
+		for (var id in this._layers) {
+			this._layers[id]._reset();
+		}
+
+		this._updateTransform(this._center, this._zoom);
+		this._update();
+	},
+
 	_initPath: function (layer) {
 		this._updateDashArray(layer);
 		this._layers[L.stamp(layer)] = layer;
