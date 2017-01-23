@@ -38,6 +38,7 @@ L.Canvas = L.Renderer.extend({
 	},
 
 	_onViewPreReset: function () {
+		// Set a flag so that a viewprereset+moveend+viewreset only updates&redraws once
 		this._postponeUpdatePaths = true;
 	},
 
