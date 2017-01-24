@@ -15,13 +15,18 @@ L.CircleMarker = L.Path.extend({
 
 		// @option radius: Number = 10
 		// Radius of the circle marker, in pixels
-		radius: 10
+		radius: 10,
+
+		// @option opacity: Number = 1.0
+		// The opacity of the marker
+		opacity: 1
 	},
 
 	initialize: function (latlng, options) {
 		L.setOptions(this, options);
 		this._latlng = L.latLng(latlng);
 		this._radius = this.options.radius;
+		this._opacity = this.options.opacity;
 	},
 
 	// @method setLatLng(latLng: LatLng): this
@@ -53,9 +58,24 @@ L.CircleMarker = L.Path.extend({
 
 	setStyle : function (options) {
 		var radius = options && options.radius || this._radius;
+		var opacity = options && options.opacity || this._opacity;
 		L.Path.prototype.setStyle.call(this, options);
 		this.setRadius(radius);
+		this.setOpacity(opacity);
 		return this;
+	},
+
+	setOpacity: function (opacity) {
+		this.options.opacity = this._opacity = opacity;
+		if (this._map) {
+			this._updateOpacity();
+		}
+
+		return this;
+	},
+
+	getOpacity: function () {
+		return this._opacity;
 	},
 
 	_project: function () {
@@ -69,6 +89,12 @@ L.CircleMarker = L.Path.extend({
 		    w = this._clickTolerance(),
 		    p = [r + w, r2 + w];
 		this._pxBounds = new L.Bounds(this._point.subtract(p), this._point.add(p));
+	},
+
+	_updateOpacity: function () {
+		var opacity = this.options.opacity;
+
+		L.DomUtil.setOpacity(this._path, opacity);
 	},
 
 	_update: function () {
