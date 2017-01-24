@@ -100,9 +100,9 @@ L.Control.Layers = L.Control.extend({
 	onRemove: function () {
 		this._map.off('zoomend', this._checkDisabledLayers, this);
 
-		for (var i = 0; i < this._layers.length; i++) {
-			this._layers[i].layer.off('add remove', this._onLayerChange, this);
-		}
+		this.eachLayer(function (obj) {
+			obj.layer.off('add remove', this._onLayerChange, this);
+		});
 	},
 
 	// @method addBaseLayer(layer: Layer, name: String): this
@@ -152,6 +152,14 @@ L.Control.Layers = L.Control.extend({
 	collapse: function () {
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
 		return this;
+	},
+
+	// @method eachLayer(fn: Function, context?: Object)
+	// Loop over the layers. Override it if you want better control over the order.
+	eachLayer: function (method, context) {
+		for (var i = 0; i < this._layers.length; i++) {
+			method.call(context || this, this._layers[i]);
+		}
 	},
 
 	_initLayout: function () {
@@ -212,7 +220,6 @@ L.Control.Layers = L.Control.extend({
 
 	_getLayer: function (id) {
 		for (var i = 0; i < this._layers.length; i++) {
-
 			if (this._layers[i] && L.stamp(this._layers[i].layer) === id) {
 				return this._layers[i];
 			}
@@ -246,15 +253,14 @@ L.Control.Layers = L.Control.extend({
 		L.DomUtil.empty(this._baseLayersList);
 		L.DomUtil.empty(this._overlaysList);
 
-		var baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
+		var baseLayersPresent, overlaysPresent, baseLayersCount = 0;
 
-		for (i = 0; i < this._layers.length; i++) {
-			obj = this._layers[i];
+		this.eachLayer(function (obj) {
 			this._addItem(obj);
 			overlaysPresent = overlaysPresent || obj.overlay;
 			baseLayersPresent = baseLayersPresent || !obj.overlay;
 			baseLayersCount += !obj.overlay ? 1 : 0;
-		}
+		});
 
 		// Hide base layers section if there's only one layer.
 		if (this.options.hideSingleBase) {
