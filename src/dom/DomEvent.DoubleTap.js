@@ -35,7 +35,7 @@ export function addDoubleTapListener(obj, handler, id) {
 		last = now;
 	}
 
-	function onTouchEnd() {
+	function onTouchEnd(e) {
 		if (doubleTap && !touch.cancelBubble) {
 			if (Browser.pointer) {
 				if ((!Browser.edge) || e.pointerType === 'mouse') { return; }
@@ -43,6 +43,10 @@ export function addDoubleTapListener(obj, handler, id) {
 				var newTouch = {},
 				    prop, i;
 
+				for (i in touch) {
+					prop = touch[i];
+					newTouch[i] = prop && prop.bind ? prop.bind(touch) : prop;
+				}
 				touch = newTouch;
 			}
 			touch.type = 'dblclick';

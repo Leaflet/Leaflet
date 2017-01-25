@@ -117,18 +117,18 @@ export var CRS = {
 	// Only accepts actual `L.LatLngBounds` instances, not arrays.
 	wrapLatLngBounds: function (bounds) {
 		var center = bounds.getCenter(),
-		newCenter = this.wrapLatLng(center),
-		latShift = center.lat - newCenter.lat,
-		lngShift = center.lng - newCenter.lng;
+		    newCenter = this.wrapLatLng(center),
+		    latShift = center.lat - newCenter.lat,
+		    lngShift = center.lng - newCenter.lng;
 
 		if (latShift === 0 && lngShift === 0) {
 			return bounds;
 		}
 
 		var sw = bounds.getSouthWest(),
-		ne = bounds.getNorthEast(),
-		newSw = new LatLng({lat: sw.lat - latShift, lng: sw.lng - lngShift}),
-		newNe = new LatLng({lat: ne.lat - latShift, lng: ne.lng - lngShift});
+		    ne = bounds.getNorthEast(),
+		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
+		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
 
 		return new LatLngBounds(newSw, newNe);
 	}
