@@ -13,7 +13,7 @@ L.CRS.EPSG3857 = L.extend({}, L.CRS.Earth, {
 
 	transformation: (function () {
 		var scale = 0.5 / (Math.PI * L.Projection.SphericalMercator.R);
-		return new L.Transformation(scale, 0.5, -scale, 0.5);
+		return L.transformation(scale, 0.5, -scale, 0.5);
 	}())
 });
 

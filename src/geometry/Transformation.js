@@ -9,7 +9,7 @@
  * @example
  *
  * ```js
- * var transformation = new L.Transformation(2, 5, -1, 10),
+ * var transformation = L.transformation(2, 5, -1, 10),
  * 	p = L.point(1, 2),
  * 	p2 = transformation.transform(p), //  L.point(7, 8)
  * 	p3 = transformation.untransform(p2); //  L.point(1, 2)
@@ -17,13 +17,25 @@
  */
 
 
-// factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
+// factory new L.Transformation(a: Number|Number[], b?: Number, c?: Number, d?: Number)
 // Creates a `Transformation` object with the given coefficients.
 L.Transformation = function (a, b, c, d) {
-	this._a = a;
-	this._b = b;
-	this._c = c;
-	this._d = d;
+	// very conservative way to allow a only. not sure if needed.
+  if (L.Util.isArray(a) && a.length === 4 && !b && !c && !d) {
+  	// use array properties
+    this._a = a[0];
+    this._b = a[1];
+    this._c = a[2];
+    this._d = a[3];
+    return;
+  }
+	// standard behavior, not sure if default values are helpful? Documentation implies 
+	// that b, c and d are optional, so some kind of default value (or a better 
+	// documentation) is needed
+	this._a = a || 1;
+	this._b = b || 0;
+	this._c = c || -1;
+	this._d = d || 0;
 };
 
 L.Transformation.prototype = {
@@ -51,4 +63,12 @@ L.Transformation.prototype = {
 		        (point.x / scale - this._b) / this._a,
 		        (point.y / scale - this._d) / this._c);
 	}
+};
+
+// factory L.transformation(a: Number|Number[], b?: Number, c?: Number, d?: Number)
+
+// @factory L.transformation(a: Number|Number[], b?: Number, c?: Number, d?: Number)
+// Instantiates a Transformation object with the given coefficients.
+L.transformation = function (a, b, c, d) {
+	return new L.Transformation(a, b, c, d);
 };
