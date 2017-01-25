@@ -163,7 +163,7 @@ L.Control.Layers = L.Control.extend({
 		container.setAttribute('aria-haspopup', true);
 
 		L.DomEvent.disableClickPropagation(container);
-		if (!L.Browser.touch) {
+		if ((L.Browser.chrome && L.Browser.pointer) || !L.Browser.touch) {
 			L.DomEvent.disableScrollPropagation(container);
 		}
 
