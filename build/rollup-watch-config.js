@@ -3,7 +3,7 @@
 // This adds a sanity check to help ourselves to run 'rollup -w' as needed.
 
 // Needed to create files loadable by IE8
-import json from 'rollup-plugin-json'
+import rollupGitVersion from 'rollup-plugin-git-version'
 
 import gitRev from 'git-rev-sync'
 
@@ -36,7 +36,7 @@ export default {
 	entry: 'src/Leaflet.js',
 	dest: 'debug/leaflet-rollup-src.js',
 	plugins: [
-		json()
+		rollupGitVersion()
 	],
 	sourceMap: true,
 	legacy: true // Needed to create files loadable by IE8
