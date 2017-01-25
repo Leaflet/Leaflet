@@ -38,7 +38,7 @@
     "lintfix": "eslint src --fix",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
-    "uglify": "uglifyjs dist/leaflet-rollup-src.js -c -m -o dist/leaflet-rollup.js"
+    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js"
   },
   "eslintConfig": {
     "root": true,

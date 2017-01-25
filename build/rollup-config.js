@@ -22,7 +22,7 @@ export default {
 	moduleName: 'L',
 	banner: banner,
 	entry: 'src/Leaflet.js',
-	dest: 'dist/leaflet-rollup-src.js',
+	dest: 'dist/leaflet-src.js',
 	plugins: [
 		json()
 	],
