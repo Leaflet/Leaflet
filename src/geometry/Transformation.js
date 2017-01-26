@@ -17,25 +17,21 @@
  */
 
 
-// factory new L.Transformation(a: Number|Number[], b?: Number, c?: Number, d?: Number)
+// factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
 // Creates a `Transformation` object with the given coefficients.
 L.Transformation = function (a, b, c, d) {
-	// very conservative way to allow a only. not sure if needed.
-  if (L.Util.isArray(a) && a.length === 4 && !b && !c && !d) {
-  	// use array properties
-    this._a = a[0];
-    this._b = a[1];
-    this._c = a[2];
-    this._d = a[3];
-    return;
-  }
-	// standard behavior, not sure if default values are helpful? Documentation implies 
-	// that b, c and d are optional, so some kind of default value (or a better 
-	// documentation) is needed
-	this._a = a || 1;
-	this._b = b || 0;
-	this._c = c || -1;
-	this._d = d || 0;
+	if (L.Util.isArray(a)) {
+		// use array properties
+		this._a = a[0];
+		this._b = a[1];
+		this._c = a[2];
+		this._d = a[3];
+		return;
+	}
+	this._a = a;
+	this._b = b;
+	this._c = c;
+	this._d = d;
 };
 
 L.Transformation.prototype = {
@@ -60,15 +56,21 @@ L.Transformation.prototype = {
 	untransform: function (point, scale) {
 		scale = scale || 1;
 		return new L.Point(
-		        (point.x / scale - this._b) / this._a,
-		        (point.y / scale - this._d) / this._c);
+						(point.x / scale - this._b) / this._a,
+						(point.y / scale - this._d) / this._c);
 	}
 };
 
-// factory L.transformation(a: Number|Number[], b?: Number, c?: Number, d?: Number)
+// factory L.transformation(a: Number, b: Number, c: Number, d: Number)
 
-// @factory L.transformation(a: Number|Number[], b?: Number, c?: Number, d?: Number)
+// @factory L.transformation(a: Number, b: Number, c: Number, d: Number)
 // Instantiates a Transformation object with the given coefficients.
+
+// @alternative
+// @factory L.transformation(coefficients: Array): Transformation
+// Expects an coeficients array of the form
+// `[a: Number, b: Number, c: Number, d: Number]`.
+
 L.transformation = function (a, b, c, d) {
 	return new L.Transformation(a, b, c, d);
 };
