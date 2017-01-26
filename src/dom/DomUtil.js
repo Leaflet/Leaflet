@@ -188,9 +188,7 @@ L.DomUtil = {
 		var pos = offset || new L.Point(0, 0);
 
 		el.style[L.DomUtil.TRANSFORM] =
-			(L.Browser.ie3d ?
-				'translate(' + pos.x + 'px,' + pos.y + 'px)' :
-				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
+			'translate(' + pos.x + 'px,' + pos.y + 'px)' +
 			(scale ? ' scale(' + scale + ')' : '');
 	},
 
