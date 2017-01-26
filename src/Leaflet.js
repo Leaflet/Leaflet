@@ -129,6 +129,7 @@ export {Canvas, canvas} from './layer/vector/Canvas';
 export {SVG, svg} from './layer/vector/SVG';
 import './layer/vector/Renderer.getRenderer';	// This is a bit of a hack, but needed because circular dependencies
 
+export {Path} from './layer/vector/Path';
 export {CircleMarker, circleMarker} from './layer/vector/CircleMarker';
 export {Circle, circle} from './layer/vector/Circle';
 export {Polyline, polyline} from './layer/vector/Polyline';
