@@ -156,7 +156,7 @@ L.extend(L.GeoJSON, {
 		    layers = [],
 		    pointToLayer = options && options.pointToLayer,
 		    coordsToLatLng = options && options.coordsToLatLng || this.coordsToLatLng,
-		    latlng, latlngs, i, len;
+		    latlng, latlngs, i, len, myIcon;
 
 		if (!coords && !geometry) {
 			return null;
@@ -164,13 +164,20 @@ L.extend(L.GeoJSON, {
 
 		switch (geometry.type) {
 		case 'Point':
+			if (options.icon) {
+				myIcon = L.icon(options.icon);
+				options.icon = myIcon;
+			}
 			latlng = coordsToLatLng(coords);
-			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng);
-
+			return pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng, options);
 		case 'MultiPoint':
+			if (options.icon) {
+				myIcon = L.icon(options.icon);
+				options.icon = myIcon;
+			}
 			for (i = 0, len = coords.length; i < len; i++) {
 				latlng = coordsToLatLng(coords[i]);
-				layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng));
+				layers.push(pointToLayer ? pointToLayer(geojson, latlng) : new L.Marker(latlng, options));
 			}
 			return new L.FeatureGroup(layers);
 
