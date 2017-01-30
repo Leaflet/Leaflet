@@ -80,7 +80,12 @@ L.TileLayer = L.GridLayer.extend({
 
 		// @option crossOrigin: Boolean = false
 		// If true, all tiles will have their crossOrigin attribute set to ''. This is needed if you want to access tile pixel data.
-		crossOrigin: false
+		crossOrigin: false,
+
+		// @option dumpToCanvas: Boolean = true
+		// Whether to dump loaded tiles to a `<canvas>` to prevent some rendering
+		// artifacts. (Disabled by default in IE)
+		dumpToCanvas: L.Browser.canvas && !L.Browser.ie
 	},
 
 	initialize: function (url, options) {
