@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script type="text/javascript" src="../../build/deps.js"></script>
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<button onclick="change()">Change map container size</button>
+	<div id="count"></div>
+	<div id="map"></div>
+
+	<script type="text/javascript">
+
+		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map', { trackContainerMutation: true })
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+		var markers = new L.FeatureGroup();
+
+		function populate() {
+			for (var i = 0; i < 10; i++) {
+				L.marker(getRandomLatLng(map)).addTo(markers);
+			}
+			return false;
+		}
+
+		markers.bindPopup("<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Donec odio. Quisque volutpat mattis eros. Nullam malesuada erat ut turpis. Suspendisse urna nibh, viverra non, semper suscipit, posuere a, pede.</p><p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque.</p>").addTo(map);
+
+		populate();
+
+		function change() {
+			var div = document.getElementById('map');
+			div.style.height = (400 + (Math.random() * 200)) + 'px';
+			div.style.width = (600 + (Math.random() * 200)) + 'px';
+		}
+
+		var count = 0;
+
+		map.on('resize', function(){
+			document.getElementById('count').innerHTML = 'invalidateSize() called ' + ++count + ' times';
+		});
+
+	</script>
+</body>
+</html>
