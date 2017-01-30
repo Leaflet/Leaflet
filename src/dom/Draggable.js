@@ -39,9 +39,11 @@ L.Draggable = L.Evented.extend({
 		}
 	},
 
-	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline: Boolean)
+	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline) {
+	initialize: function (element, dragStartTarget, preventOutline, options) {
+		L.setOptions(this, options);
+
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
