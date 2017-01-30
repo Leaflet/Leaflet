@@ -26,11 +26,11 @@ export function simplify(points, tolerance) {
 
 	var sqTolerance = tolerance * tolerance;
 
-	// stage 1: vertex reduction
-	points = _reducePoints(points, sqTolerance);
+	    // stage 1: vertex reduction
+	    points = _reducePoints(points, sqTolerance);
 
-	// stage 2: Douglas-Peucker simplification
-	points = _simplifyDP(points, sqTolerance);
+	    // stage 2: Douglas-Peucker simplification
+	    points = _simplifyDP(points, sqTolerance);
 
 	return points;
 }
@@ -51,15 +51,15 @@ export function closestPointOnSegment(p, p1, p2) {
 function _simplifyDP(points, sqTolerance) {
 
 	var len = points.length,
-	ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
-	markers = new ArrayConstructor(len);
+	    ArrayConstructor = typeof Uint8Array !== undefined + '' ? Uint8Array : Array,
+	    markers = new ArrayConstructor(len);
 
-	markers[0] = markers[len - 1] = 1;
+	    markers[0] = markers[len - 1] = 1;
 
 	_simplifyDPStep(points, markers, sqTolerance, 0, len - 1);
 
 	var i,
-	newPoints = [];
+	    newPoints = [];
 
 	for (i = 0; i < len; i++) {
 		if (markers[i]) {
@@ -117,12 +117,12 @@ var _lastCode;
 // points that are on the screen or near, increasing performance.
 export function clipSegment(a, b, bounds, useLastCode, round) {
 	var codeA = useLastCode ? _lastCode : _getBitCode(a, bounds),
-	codeB = _getBitCode(b, bounds),
+	    codeB = _getBitCode(b, bounds),
 
-	codeOut, p, newCode;
+	    codeOut, p, newCode;
 
-	// save 2nd code to avoid calculating it on the next segment
-	_lastCode = codeB;
+	    // save 2nd code to avoid calculating it on the next segment
+	    _lastCode = codeB;
 
 	while (true) {
 		// if a,b is inside the clip window (trivial accept)
@@ -152,10 +152,10 @@ export function clipSegment(a, b, bounds, useLastCode, round) {
 
 export function _getEdgeIntersection(a, b, code, bounds, round) {
 	var dx = b.x - a.x,
-	dy = b.y - a.y,
-	min = bounds.min,
-	max = bounds.max,
-	x, y;
+	    dy = b.y - a.y,
+	    min = bounds.min,
+	    max = bounds.max,
+	    x, y;
 
 	if (code & 8) { // top
 		x = a.x + dx * (max.y - a.y) / dy;
@@ -198,18 +198,18 @@ export function _getBitCode(p, bounds) {
 // square distance (to avoid unnecessary Math.sqrt calls)
 function _sqDist(p1, p2) {
 	var dx = p2.x - p1.x,
-	dy = p2.y - p1.y;
+	    dy = p2.y - p1.y;
 	return dx * dx + dy * dy;
 }
 
 // return closest point on segment or distance to that point
 export function _sqClosestPointOnSegment(p, p1, p2, sqDist) {
 	var x = p1.x,
-	y = p1.y,
-	dx = p2.x - x,
-	dy = p2.y - y,
-	dot = dx * dx + dy * dy,
-	t;
+	    y = p1.y,
+	    dx = p2.x - x,
+	    dy = p2.y - y,
+	    dot = dx * dx + dy * dy,
+	    t;
 
 	if (dot > 0) {
 		t = ((p.x - x) * dx + (p.y - y) * dy) / dot;
