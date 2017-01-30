@@ -45,8 +45,9 @@ L.Renderer = L.Layer.extend({
 		}
 
 		this.getPane().appendChild(this._container);
-		this._update();
+		this._origin = this._map.getPixelOrigin();
 		this.on('update', this._updatePaths, this);
+		this._update();
 	},
 
 	onRemove: function () {
@@ -102,6 +103,7 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_onZoomEnd: function () {
+		this._origin = this._map.getPixelOrigin();
 		for (var id in this._layers) {
 			this._layers[id]._project();
 		}
@@ -124,6 +126,9 @@ L.Renderer = L.Layer.extend({
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
+		var newOrigin = this._map.getPixelOrigin();
+		this._shift = newOrigin.subtract(this._origin);
+		this._origin = newOrigin;
 	}
 });
 

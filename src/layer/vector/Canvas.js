@@ -42,13 +42,7 @@ L.Canvas = L.Renderer.extend({
 		this._postponeUpdatePaths = true;
 	},
 
-	onAdd: function () {
-		L.Renderer.prototype.onAdd.call(this);
-
-		// Redraw vectors since canvas is cleared upon removal,
-		// in case of removing the renderer itself from the map.
-		this._draw();
-	},
+	_reset: function () {},
 
 	_initContainer: function () {
 		var container = this._container = document.createElement('canvas');
@@ -66,9 +60,13 @@ L.Canvas = L.Renderer.extend({
 
 		var layer;
 		this._redrawBounds = null;
-		for (var id in this._layers) {
-			layer = this._layers[id];
-			layer._update();
+		if (this._shift.x || this._shift.y) {
+			for (var id in this._layers) {
+				layer = this._layers[id];
+				// projection can be replaced by applying -this._shift translation
+				// on layers projected coordinates and bounds
+				layer._project();
+			}
 		}
 		this._redraw();
 	},
@@ -235,7 +233,7 @@ L.Canvas = L.Renderer.extend({
 		for (var order = this._drawFirst; order; order = order.next) {
 			layer = order.layer;
 			if (!bounds || (layer._pxBounds && layer._pxBounds.intersects(bounds))) {
-				layer._updatePath();
+				layer._update();
 			}
 		}
 
