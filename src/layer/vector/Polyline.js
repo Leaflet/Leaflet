@@ -54,6 +54,11 @@ L.Polyline = L.Path.extend({
 	initialize: function (latlngs, options) {
 		L.setOptions(this, options);
 		this._setLatLngs(latlngs);
+
+	    // 0: init
+		// 1: projected
+		// 2: clipped/simplified/painted
+		this._state = 0;
 	},
 
 	// @method getLatLngs(): LatLng[]
@@ -189,6 +194,8 @@ L.Polyline = L.Path.extend({
 
 	_project: function () {
 		var pxBounds = new L.Bounds();
+
+		this._state = 1;
 		this._rings = [];
 		this._projectLatlngs(this._latlngs, this._rings, pxBounds);
 
@@ -272,9 +279,14 @@ L.Polyline = L.Path.extend({
 	_update: function () {
 		if (!this._map) { return; }
 
+		/* don't clip/simplifiy/path if already done */
+		if (this.options.noClip && this._state === 2) { return; }
+
 		this._clipPoints();
 		this._simplifyPoints();
 		this._updatePath();
+
+		this._state = 2;
 	},
 
 	_updatePath: function () {
