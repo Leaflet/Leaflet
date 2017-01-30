@@ -35,6 +35,7 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 	},
 
 	_onWheelScroll: function (e) {
+		if (this._map.options.scrollWheelZoom === 'shiftkey' && !e.shiftKey) { return false; }
 		var delta = L.DomEvent.getWheelDelta(e);
 
 		var debounce = this._map.options.wheelDebounceTime;
