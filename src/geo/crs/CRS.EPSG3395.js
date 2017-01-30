@@ -15,6 +15,6 @@ export var EPSG3395 = Util.extend({}, Earth, {
 
 	transformation: (function () {
 		var scale = 0.5 / (Math.PI * Mercator.R);
-		return new Transformation(scale, 0.5, -scale, 0.5);
+		return toTransformation(scale, 0.5, -scale, 0.5);
 	}())
 });

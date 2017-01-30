@@ -73,6 +73,6 @@ Transformation.prototype = {
 // Expects an coeficients array of the form
 // `[a: Number, b: Number, c: Number, d: Number]`.
 
-export function toTransformation = function (a, b, c, d) {
-	return new toTransformation(a, b, c, d);
-};
+export function toTransformation(a, b, c, d) {
+	return new Transformation(a, b, c, d);
+}
