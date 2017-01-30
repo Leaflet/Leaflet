@@ -140,6 +140,7 @@ L.Control.Layers = L.Control.extend({
 		if (acceptableHeight < this._form.clientHeight) {
 			L.DomUtil.addClass(this._form, 'leaflet-control-layers-scrollbar');
 			this._form.style.height = acceptableHeight + 'px';
+			L.DomEvent.on(this._form, 'wheel', L.DomEvent.stopPropagation);
 		} else {
 			L.DomUtil.removeClass(this._form, 'leaflet-control-layers-scrollbar');
 		}
@@ -151,6 +152,7 @@ L.Control.Layers = L.Control.extend({
 	// Collapse the control container if expanded.
 	collapse: function () {
 		L.DomUtil.removeClass(this._container, 'leaflet-control-layers-expanded');
+		L.DomEvent.off(this._form, 'wheel', L.DomEvent.stopPropagation);
 		return this;
 	},
 
