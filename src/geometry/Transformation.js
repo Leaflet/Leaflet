@@ -1,4 +1,5 @@
 import {Point} from './Point';
+import * as Util from '../core/Util';
 
 /*
  * @class Transformation
@@ -22,7 +23,7 @@ import {Point} from './Point';
 // factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
 // Creates a `Transformation` object with the given coefficients.
 export function Transformation(a, b, c, d) {
-	if (L.Util.isArray(a)) {
+	if (Util.isArray(a)) {
 		// use array properties
 		this._a = a[0];
 		this._b = a[1];

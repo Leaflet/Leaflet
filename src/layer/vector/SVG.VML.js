@@ -1,4 +1,5 @@
 import * as DomUtil from '../../dom/DomUtil';
+import * as Util from '../../core/Util';
 import {Renderer} from './Renderer';
 
 /*
@@ -53,7 +54,7 @@ export var vmlMixin = {
 		container.appendChild(layer._path);
 
 		this._updateStyle(layer);
-		this._layers[L.stamp(layer)] = layer;
+		this._layers[Util.stamp(layer)] = layer;
 	},
 
 	_addPath: function (layer) {
@@ -69,7 +70,7 @@ export var vmlMixin = {
 		var container = layer._container;
 		DomUtil.remove(container);
 		layer.removeInteractiveTarget(container);
-		delete this._layers[L.stamp(layer)];
+		delete this._layers[Util.stamp(layer)];
 	},
 
 	_updateStyle: function (layer) {
@@ -91,7 +92,7 @@ export var vmlMixin = {
 			stroke.opacity = options.opacity;
 
 			if (options.dashArray) {
-				stroke.dashStyle = L.Util.isArray(options.dashArray) ?
+				stroke.dashStyle = Util.isArray(options.dashArray) ?
 				    options.dashArray.join(' ') :
 				    options.dashArray.replace(/( *, *)/g, ' ');
 			} else {
