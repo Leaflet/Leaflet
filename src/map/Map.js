@@ -1217,7 +1217,7 @@ L.Map = L.Evented.extend({
 		// @event keypress: KeyboardEvent
 		// Fired when the user presses a key from the keyboard while the map is focused.
 		L.DomEvent[onOff](this._container, 'click dblclick mousedown mouseup ' +
-			'mouseover mouseout mousemove contextmenu keypress', this._handleDOMEvent, this);
+			'mouseover mouseout mousemove contextmenu keypress touchstart touchmove touchend', this._handleDOMEvent, this);
 
 		if (this.options.trackResize) {
 			L.DomEvent[onOff](window, 'resize', this._onResize, this);

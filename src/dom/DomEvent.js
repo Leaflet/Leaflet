@@ -217,15 +217,19 @@ L.DomEvent = {
 	// Gets normalized mouse position from a DOM event relative to the
 	// `container` or to the whole page if not specified.
 	getMousePosition: function (e, container) {
+		var evt = e;
+		if (evt.touches) {
+			evt = evt.touches[0] || evt.changedTouches[0];
+		}
 		if (!container) {
-			return new L.Point(e.clientX, e.clientY);
+			return new L.Point(evt.clientX, evt.clientY);
 		}
 
 		var rect = container.getBoundingClientRect();
 
 		return new L.Point(
-			e.clientX - rect.left - container.clientLeft,
-			e.clientY - rect.top - container.clientTop);
+			evt.clientX - rect.left - container.clientLeft,
+			evt.clientY - rect.top - container.clientTop);
 	},
 
 	// Chrome on Win scrolls double the pixels as in other platforms (see #4538),
