@@ -9,7 +9,7 @@
  * @example
  *
  * ```js
- * var transformation = new L.Transformation(2, 5, -1, 10),
+ * var transformation = L.transformation(2, 5, -1, 10),
  * 	p = L.point(1, 2),
  * 	p2 = transformation.transform(p), //  L.point(7, 8)
  * 	p3 = transformation.untransform(p2); //  L.point(1, 2)
@@ -20,6 +20,14 @@
 // factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
 // Creates a `Transformation` object with the given coefficients.
 L.Transformation = function (a, b, c, d) {
+	if (L.Util.isArray(a)) {
+		// use array properties
+		this._a = a[0];
+		this._b = a[1];
+		this._c = a[2];
+		this._d = a[3];
+		return;
+	}
 	this._a = a;
 	this._b = b;
 	this._c = c;
@@ -48,7 +56,21 @@ L.Transformation.prototype = {
 	untransform: function (point, scale) {
 		scale = scale || 1;
 		return new L.Point(
-		        (point.x / scale - this._b) / this._a,
-		        (point.y / scale - this._d) / this._c);
+						(point.x / scale - this._b) / this._a,
+						(point.y / scale - this._d) / this._c);
 	}
+};
+
+// factory L.transformation(a: Number, b: Number, c: Number, d: Number)
+
+// @factory L.transformation(a: Number, b: Number, c: Number, d: Number)
+// Instantiates a Transformation object with the given coefficients.
+
+// @alternative
+// @factory L.transformation(coefficients: Array): Transformation
+// Expects an coeficients array of the form
+// `[a: Number, b: Number, c: Number, d: Number]`.
+
+L.transformation = function (a, b, c, d) {
+	return new L.Transformation(a, b, c, d);
 };
