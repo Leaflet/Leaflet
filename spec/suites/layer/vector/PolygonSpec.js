@@ -12,7 +12,7 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon(latLngs);
 
-			expect(L.Polyline._flat(polygon._latlngs)).to.be(false);
+			expect(L.LineUtil._flat(polygon._latlngs)).to.be(false);
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 

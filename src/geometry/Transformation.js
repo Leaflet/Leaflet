@@ -1,3 +1,6 @@
+import {Point} from './Point';
+import * as Util from '../core/Util';
+
 /*
  * @class Transformation
  * @aka L.Transformation
@@ -19,8 +22,8 @@
 
 // factory new L.Transformation(a: Number, b: Number, c: Number, d: Number)
 // Creates a `Transformation` object with the given coefficients.
-L.Transformation = function (a, b, c, d) {
-	if (L.Util.isArray(a)) {
+export function Transformation(a, b, c, d) {
+	if (Util.isArray(a)) {
 		// use array properties
 		this._a = a[0];
 		this._b = a[1];
@@ -32,9 +35,9 @@ L.Transformation = function (a, b, c, d) {
 	this._b = b;
 	this._c = c;
 	this._d = d;
-};
+}
 
-L.Transformation.prototype = {
+Transformation.prototype = {
 	// @method transform(point: Point, scale?: Number): Point
 	// Returns a transformed point, optionally multiplied by the given scale.
 	// Only accepts actual `L.Point` instances, not arrays.
@@ -55,9 +58,9 @@ L.Transformation.prototype = {
 	// by the given scale. Only accepts actual `L.Point` instances, not arrays.
 	untransform: function (point, scale) {
 		scale = scale || 1;
-		return new L.Point(
-						(point.x / scale - this._b) / this._a,
-						(point.y / scale - this._d) / this._c);
+		return new Point(
+		        (point.x / scale - this._b) / this._a,
+		        (point.y / scale - this._d) / this._c);
 	}
 };
 
@@ -71,6 +74,6 @@ L.Transformation.prototype = {
 // Expects an coeficients array of the form
 // `[a: Number, b: Number, c: Number, d: Number]`.
 
-L.transformation = function (a, b, c, d) {
-	return new L.Transformation(a, b, c, d);
-};
+export function toTransformation(a, b, c, d) {
+	return new Transformation(a, b, c, d);
+}
