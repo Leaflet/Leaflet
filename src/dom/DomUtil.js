@@ -185,7 +185,7 @@ L.DomUtil = {
 	// and optionally scaled by `scale`. Does not have an effect if the
 	// browser doesn't support 3D CSS transforms.
 	setTransform: function (el, offset, scale) {
-		var pos = offset || new L.Point(0, 0);
+		var pos = offset ? L.point(offset) : new L.Point(0, 0);
 
 		el.style[L.DomUtil.TRANSFORM] =
 			(L.Browser.ie3d ?
@@ -198,17 +198,18 @@ L.DomUtil = {
 	// Sets the position of `el` to coordinates specified by `position`,
 	// using CSS translate or top/left positioning depending on the browser
 	// (used by Leaflet internally to position its layers).
-	setPosition: function (el, point) { // (HTMLElement, Point[, Boolean])
+	setPosition: function (el, point) {
+		var pos = L.point(point);
 
 		/*eslint-disable */
-		el._leaflet_pos = point;
+		el._leaflet_pos = pos;
 		/*eslint-enable */
 
 		if (L.Browser.any3d) {
-			L.DomUtil.setTransform(el, point);
+			L.DomUtil.setTransform(el, pos);
 		} else {
-			el.style.left = point.x + 'px';
-			el.style.top = point.y + 'px';
+			el.style.left = pos.x + 'px';
+			el.style.top = pos.y + 'px';
 		}
 	},
 

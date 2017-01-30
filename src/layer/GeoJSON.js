@@ -231,12 +231,14 @@ L.extend(L.GeoJSON, {
 	// @function latLngToCoords(latlng: LatLng): Array
 	// Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 	latLngToCoords: function (latlng) {
-		return latlng.alt !== undefined ?
-				[latlng.lng, latlng.lat, latlng.alt] :
-				[latlng.lng, latlng.lat];
+		var _latlng = L.latLng(latlng);
+
+		return _latlng.alt !== undefined ?
+				[_latlng.lng, _latlng.lat, _latlng.alt] :
+				[_latlng.lng, _latlng.lat];
 	},
 
-	// @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
+	// @function latLngsToCoords(latlngs: LatLng[], levelsDeep?: Number, closed?: Boolean): Array
 	// Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 	// `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
 	latLngsToCoords: function (latlngs, levelsDeep, closed) {

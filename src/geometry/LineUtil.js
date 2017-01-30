@@ -16,6 +16,7 @@ L.LineUtil = {
 	// Used for a huge performance boost when processing/displaying Leaflet polylines for
 	// each zoom level and also reducing visual noise. tolerance affects the amount of
 	// simplification (lesser value means higher quality but slower and with more points).
+	// Only accepts real L.Point instances, not arrays.
 	// Also released as a separated micro-library [Simplify.js](http://mourner.github.com/simplify-js/).
 	simplify: function (points, tolerance) {
 		if (!tolerance || !points.length) {
@@ -35,12 +36,14 @@ L.LineUtil = {
 
 	// @function pointToSegmentDistance(p: Point, p1: Point, p2: Point): Number
 	// Returns the distance between point `p` and segment `p1` to `p2`.
+	// Only accepts real L.Point instances, not arrays.
 	pointToSegmentDistance:  function (p, p1, p2) {
 		return Math.sqrt(this._sqClosestPointOnSegment(p, p1, p2, true));
 	},
 
 	// @function closestPointOnSegment(p: Point, p1: Point, p2: Point): Number
 	// Returns the closest point from a point `p` on a segment `p1` to `p2`.
+	// Only accepts real L.Point instances, not arrays.
 	closestPointOnSegment: function (p, p1, p2) {
 		return this._sqClosestPointOnSegment(p, p1, p2);
 	},
@@ -112,6 +115,7 @@ L.LineUtil = {
 	// [Cohen-Sutherland algorithm](https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm)
 	// (modifying the segment points directly!). Used by Leaflet to only show polyline
 	// points that are on the screen or near, increasing performance.
+	// Only accepts real L.Point instances, not arrays.
 	clipSegment: function (a, b, bounds, useLastCode, round) {
 		var codeA = useLastCode ? this._lastCode : this._getBitCode(a, bounds),
 		    codeB = this._getBitCode(b, bounds),

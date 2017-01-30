@@ -15,11 +15,15 @@ L.Projection = {};
 
 L.Projection.LonLat = {
 	project: function (latlng) {
-		return new L.Point(latlng.lng, latlng.lat);
+		var _latlng = L.latLng(latlng);
+
+		return new L.Point(_latlng.lng, _latlng.lat);
 	},
 
 	unproject: function (point) {
-		return new L.LatLng(point.y, point.x);
+		var _point = L.point(point);
+
+		return new L.LatLng(_point.y, _point.x);
 	},
 
 	bounds: L.bounds([-180, -90], [180, 90])
