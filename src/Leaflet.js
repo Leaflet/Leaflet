@@ -55,7 +55,7 @@ export {Draggable} from './dom/Draggable';
 
 export {Point, toPoint as point} from './geometry/Point';
 export {Bounds, toBounds as bounds} from './geometry/Bounds';
-export {Transformation} from './geometry/Transformation';
+export {Transformation, toTransformation as transformation} from './geometry/Transformation';
 
 // geo
 
