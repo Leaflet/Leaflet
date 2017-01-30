@@ -102,6 +102,10 @@ L.Map = L.Evented.extend({
 		// Values smaller than `1` (e.g. `0.5`) allow for greater granularity.
 		zoomDelta: 1,
 
+		// @option zoomDeltaFactor: Number = 3
+		// Defines a multiplier for a zoomDelta option when zooming is being done with a pressed SHIFT key
+		zoomDeltaFactor: 3,
+
 		// @option trackResize: Boolean = true
 		// Whether the map automatically handles browser window resize to update itself.
 		trackResize: true
