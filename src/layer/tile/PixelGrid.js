@@ -283,9 +283,6 @@ export var PixelGrid = GridLayer.extend({
 		// Where in the canvas should this tile go?
 		var offset = toPoint(coords.x, coords.y).subtract(level.canvasRange.min).scaleBy(this.getTileSize());
 
-// 		console.log('Should dump tile to canvas:', tile);
-// 		console.log('Dumping:', coords, "at", offset );
-
 		level.ctx.drawImage(imageSource, offset.x, offset.y, tileSize.x, tileSize.y);
 
 		// TODO: Clear the pixels of other levels' canvases where they overlap
