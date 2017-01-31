@@ -2470,6 +2470,15 @@ Display two maps at once. One of them might be a different size and zoom level, 
 			<a href="https://github.com/chriswhong">Chris Whong</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/leaflet-clonelayer">leaflet-clonelayer</a>
+		</td><td>
+			Clone Leaflet layers to allow reuse across different maps in the same runtime.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
 </table>
 
 
