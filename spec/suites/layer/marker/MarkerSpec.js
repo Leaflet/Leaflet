@@ -108,28 +108,18 @@ describe("Marker", function () {
 			map.removeLayer(marker);
 			// Dragging is still enabled, we should be able to disable it,
 			// even if marker is off the map.
-			marker.dragging.disable();
+			expect(marker.dragging).to.be(undefined);
+			marker.options.draggable = false;
 			map.addLayer(marker);
 
 			map.removeLayer(marker);
 
 			// We should also be able to enable dragging while off the map
-			marker.dragging.enable();
-			expect(marker.dragging.enabled()).to.be(true);
+			expect(marker.dragging).to.be(undefined);
+			marker.options.draggable = true;
 
 			map.addLayer(marker);
 			expect(marker.dragging.enabled()).to.be(true);
-		});
-
-		it("doesn't break when enabling dragging while off the map", function () {
-			// This causes a different error to the similar test above
-			var marker = new L.Marker([0, 0]);
-			map.addLayer(marker);
-			marker.dragging.enable();
-			marker.dragging.disable();
-			map.removeLayer(marker);
-
-			marker.dragging.enable();
 		});
 
 		it("changes the icon to another DivIcon", function () {
