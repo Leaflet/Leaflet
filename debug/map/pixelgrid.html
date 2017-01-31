@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+	<style>
+		#map {
+			position: absolute;
+			width: 100vw;
+			height: calc( 100vh - 5em );
+			bottom: 0px;
+
+			background: cyan;
+		}
+		body {margin: 0}
+	</style>
+</head>
+<body>
+	There should be no gaps between the tiles.
+
+	<div id="map" class="map"></div>
+
+	<script type="text/javascript">
+		var mapopts =  {
+			center: [35, -122],
+			zoom : 5.5,
+			zoomSnap: 0.1,
+			zoomDelta: 0.1,
+		};
+
+		var map = L.map('map', mapopts);
+
+		var cartoAttrib = '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy;        <a href="https://carto.com/attribution">CARTO</a>';
+
+		var darkMatter1 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+			attribution: cartoAttrib,
+		}).addTo(map);
+
+		var darkMatter2 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+			attribution: cartoAttrib,
+			dumpToCanvas: false	// Disable the PixelGrid logic
+		});
+
+		var darkMatter3 = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/dark_all/{z}/{x}/{y}.png', {
+			attribution: cartoAttrib,
+			opacity: 0.5
+		});
+
+		L.control.layers({
+			'PixelGrid': darkMatter1,
+			'Legacy TileLayer': darkMatter2,
+			'PixelGrid 50% opacity': darkMatter3
+		}, {}, {
+			collapsed: false
+		}).addTo(map);
+
+	</script>
+</body>
+</html>

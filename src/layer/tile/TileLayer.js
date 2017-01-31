@@ -1,4 +1,4 @@
-import {GridLayer} from './GridLayer';
+import {PixelGrid} from './PixelGrid';
 import * as Browser from '../../core/Browser';
 import * as Util from '../../core/Util';
 import * as DomEvent from '../../dom/DomEvent';
@@ -7,9 +7,9 @@ import * as DomUtil from '../../dom/DomUtil';
 
 /*
  * @class TileLayer
- * @inherits GridLayer
+ * @inherits PixelGrid
  * @aka L.TileLayer
- * Used to load and display tile layers on the map. Extends `GridLayer`.
+ * Used to load and display tile layers on the map. Extends `PixelGrid`.
  *
  * @example
  *
@@ -36,7 +36,7 @@ import * as DomUtil from '../../dom/DomUtil';
  */
 
 
-export var TileLayer = GridLayer.extend({
+export var TileLayer = PixelGrid.extend({
 
 	// @section
 	// @aka TileLayer options
