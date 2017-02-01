@@ -29,13 +29,13 @@ Class.extend = function (className, props) {
 	className = className.replace(/\W/, '');	// Remove spaces and non-letters
 
 	var NewClass = eval('var NewClass = function ' + className + '() {' +
-	// call the constructor
-	'if (this.initialize){ this.initialize.apply(this, arguments);}' +
+		// call the constructor
+		'if (this.initialize){ this.initialize.apply(this, arguments);}' +
 
-	// call all constructor hooks
-	'this.callInitHooks();' +
+		// call all constructor hooks
+		'this.callInitHooks();' +
 
-	'};NewClass;'); //
+		'};NewClass;'); //
 
 	var parentProto = NewClass.__super__ = this.prototype;
 
