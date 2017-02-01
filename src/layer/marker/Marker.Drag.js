@@ -17,7 +17,7 @@ import {Draggable} from '../../dom/Draggable';
  * ```
  *
  * @property dragging: Handler
- * Marker dragging handler (by both mouse and touch).
+ * Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set [`marker.options.draggable`](#marker-draggable)).
  */
 
 export var MarkerDrag = Handler.extend({
