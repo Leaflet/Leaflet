@@ -107,7 +107,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 		<td>
 			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
 		</td><td>
-			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Stamen, Esri, etc.
+			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, Stamen, Esri, etc.
 		</td><td>
 			<a href="https://github.com/leaflet-extras">leaflet-extras members</a>
 		</td>
@@ -2468,6 +2468,15 @@ Display two maps at once. One of them might be a different size and zoom level, 
 			Simple minimap control that places a 3D Globe in the corner of your map, centered on the same location as the main map (<a href='http://chriswhong.github.io/leaflet-globeminimap/example/'>demo</a>).
 		</td><td>
 			<a href="https://github.com/chriswhong">Chris Whong</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/leaflet-clonelayer">leaflet-clonelayer</a>
+		</td><td>
+			Clone Leaflet layers to allow reuse across different maps in the same runtime.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
 		</td>
 	</tr>
 </table>
