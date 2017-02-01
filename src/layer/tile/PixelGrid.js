@@ -1,7 +1,6 @@
 
 import {GridLayer} from './GridLayer';
 import * as Browser from '../../core/Browser';
-import * as Util from '../../core/Util';
 import * as DomUtil from '../../dom/DomUtil';
 import {toPoint} from '../../geometry/Point';
 import {toBounds} from '../../geometry/Bounds';
@@ -30,56 +29,24 @@ export var PixelGrid = GridLayer.extend({
 		dumpToCanvas: Browser.canvas && !Browser.ie
 	},
 
-	// Full rewrite of GridLayer._updateLevels to support dumpToCanvas
-	_updateLevels: function () {
-		var zoom = this._tileZoom,
-		    maxZoom = this.options.maxZoom,
-		    dump = this.options.dumpToCanvas;
-
-		if (zoom === undefined) { return undefined; }
-
-		for (var z in this._levels) {
-			if (this._levels[z].el.children.length || z === zoom) {
-				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
-				if (dump) {
-					this._levels[z].canvas.style.zIndex = maxZoom - Math.abs(zoom - z);
-				}
-			} else {
-				DomUtil.remove(this._levels[z].el);
-				if (dump) {
-					DomUtil.remove(this._levels[z].canvas);
-				}
-				this._removeTilesAtZoom(z);
-				delete this._levels[z];
-			}
+	_onUpdateLevel: function (z, zoom) {
+		if (this.options.dumpToCanvas) {
+			this._levels[z].canvas.style.zIndex = this.options.maxZoom - Math.abs(zoom - z);
 		}
+	},
 
-		var level = this._levels[zoom],
-		    map = this._map;
-
-		if (!level) {
-			level = this._levels[zoom] = {};
-
-			level.el = DomUtil.create('div', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-			level.el.style.zIndex = maxZoom;
-
-			level.origin = map.project(map.unproject(map.getPixelOrigin()), zoom).round();
-			level.zoom = zoom;
-
-			this._setZoomTransform(level, map.getCenter(), map.getZoom());
-
-			// force the browser to consider the newly added element for transition
-			Util.falseFn(level.el.offsetWidth);
-
-			if (dump) {
-				level.canvas = DomUtil.create('canvas', 'leaflet-tile-container leaflet-zoom-animated', this._container);
-				level.ctx = level.canvas.getContext('2d');
-				this._resetCanvasSize(level);
-			}
+	_onRemoveLevel: function (z) {
+		if (this.options.dumpToCanvas) {
+			DomUtil.remove(this._levels[z].canvas);
 		}
+	},
 
-		this._level = level;
-		return level;
+	_onCreateLevel: function (level) {
+		if (this.options.dumpToCanvas) {
+			level.canvas = DomUtil.create('canvas', 'leaflet-tile-container leaflet-zoom-animated', this._container);
+			level.ctx = level.canvas.getContext('2d');
+			this._resetCanvasSize(level);
+		}
 	},
 
 	_removeTile: function (key) {
@@ -97,20 +64,6 @@ export var PixelGrid = GridLayer.extend({
 		}
 
 		GridLayer.prototype._removeTile.call(this, key);
-	},
-
-	// Full rewrite of GridLayer._invalidateAll to support dumpToCanvas
-	_invalidateAll: function () {
-		for (var z in this._levels) {
-			DomUtil.remove(this._levels[z].el);
-			if (this.options.dumpToCanvas) {
-				DomUtil.remove(this._levels[z].canvas);
-			}
-			delete this._levels[z];
-		}
-		this._removeAllTiles();
-
-		this._tileZoom = null;
 	},
 
 	_resetCanvasSize: function (level) {
@@ -209,47 +162,9 @@ export var PixelGrid = GridLayer.extend({
 		}
 	},
 
-	_updateOpacity: function () {
-		if (!this._map) { return; }
+	_onOpaqueTile: function (tile) {
+		if (!this.options.dumpToCanvas) { return; }
 
-		// IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
-		if (Browser.ielt9) { return; }
-
-		DomUtil.setOpacity(this._container, this.options.opacity);
-
-		var now = +new Date(),
-		    nextFrame = false,
-		    willPrune = false;
-
-		for (var key in this._tiles) {
-			var tile = this._tiles[key];
-			if (!tile.current || !tile.loaded) { continue; }
-
-			var fade = Math.min(1, (now - tile.loaded) / 200);
-
-			DomUtil.setOpacity(tile.el, fade);
-			if (fade < 1) {
-				nextFrame = true;
-			} else {
-				if (tile.active) {
-					willPrune = true;
-				} else if (this.options.dumpToCanvas) {
-					// Tile is dumped into the canvas when it's fully opaque
-					this._dumpTileToCanvas(tile);
-				}
-				tile.active = true;
-			}
-		}
-
-		if (willPrune && !this._noPrune) { this._pruneTiles(); }
-
-		if (nextFrame) {
-			Util.cancelAnimFrame(this._fadeFrame);
-			this._fadeFrame = Util.requestAnimFrame(this._updateOpacity, this);
-		}
-	},
-
-	_dumpTileToCanvas: function (tile) {
 		this.dumpPixels(tile.coords, tile.el);
 
 		// Do not remove the tile itself, as it is needed to check if the whole
