@@ -169,9 +169,7 @@ export var Layers = Control.extend({
 		container.setAttribute('aria-haspopup', true);
 
 		DomEvent.disableClickPropagation(container);
-		if (!Browser.touch) {
-			DomEvent.disableScrollPropagation(container);
-		}
+		DomEvent.disableScrollPropagation(container);
 
 		var form = this._form = DomUtil.create('form', className + '-list');
 
