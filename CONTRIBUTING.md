@@ -72,9 +72,11 @@ To set up the Leaflet build system, install Node then run the following commands
 npm install -g jake
 npm install
 ```
-
-You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder).
-For a custom build with selected components, open `build/build.html` in the browser and follow the instructions from there.
+or, if you prefer [`yarn`](https://yarnpkg.com/) over `npm`:
+```
+yarn install -g jake
+yarn install
+```
 
 ### Making Changes to Leaflet Source
 
@@ -95,6 +97,25 @@ so that the build system knows about them.
 Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
 
 Happy coding!
+
+### Using RollupJS
+
+The source javascript code for Leaflet is a few dozen files, in the `src/` directory.
+But normally, Leaflet is loaded in a web browser as just one javascript file.
+
+In order to create this file, run `npm run-script rollup` or `yarn run rollup`.
+
+You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
+`dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
+development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
+for deployment.
+
+When developing (or bugfixing) core Leaflet functionalities, it's common to use
+the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
+in a graphical browser. This requires regenerating the bundled files quickly.
+
+In order to do so, run `npm run-script watch` or `yarn run rollup`. This will keep
+on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
 
@@ -158,7 +179,8 @@ code for every method, option or property there is a special code comment docume
 that feature. In order to edit the API documentation, just edit these comments in the
 source code.
 
-In order to generate the documentation, just run
+In order to generate the documentation, make sure that the development dependencies
+are installed (run either `npm install` or `yarn install`), then just run
 
 ```
 jake docs

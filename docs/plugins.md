@@ -107,7 +107,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 		<td>
 			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
 		</td><td>
-			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Stamen, Esri, etc.
+			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, Stamen, Esri, etc.
 		</td><td>
 			<a href="https://github.com/leaflet-extras">leaflet-extras members</a>
 		</td>
@@ -1291,6 +1291,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/react-map/leaflet.magicMarker">Leaflet.magicMarker</a>
+		</td>
+		<td>
+			Adding magical animation effect to a marker while loading.(<a href="https://react-map.github.io/leaflet.magicMarker/">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/react-map">Sylvenas</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1602,6 +1613,15 @@ Powerful multi-purpose libraries for data visualization.
 			Allows using Leaflet from within <a href="https://en.wikipedia.org/wiki/R_%28programming_language%29">R</a> programs, a programming language popular for statistical analysis and data mining.
 		</td><td>
 			<a href="https://github.com/rstudio/">RStudio team</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/react-map/leaflet.migrationLayer">leaflet.migrationLayer</a>
+		</td><td>
+			leafet.migrationLayer is used to show migration data such as population,flight,vehicle,traffic and so on.Data visualization on map.<a href="https://react-map.github.io/leaflet.migrationLayer">demo</a>
+		</td><td>
+			<a href="https://github.com/react-map">Sylvenas</a>
 		</td>
 	</tr>
 </table>
@@ -2448,6 +2468,15 @@ Display two maps at once. One of them might be a different size and zoom level, 
 			Simple minimap control that places a 3D Globe in the corner of your map, centered on the same location as the main map (<a href='http://chriswhong.github.io/leaflet-globeminimap/example/'>demo</a>).
 		</td><td>
 			<a href="https://github.com/chriswhong">Chris Whong</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/leaflet-clonelayer">leaflet-clonelayer</a>
+		</td><td>
+			Clone Leaflet layers to allow reuse across different maps in the same runtime.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
 		</td>
 	</tr>
 </table>

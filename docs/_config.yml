@@ -5,4 +5,4 @@ markdown: kramdown
 kramdown:
   entity_output: as_input
 
-latest_leaflet_version: 1.0.2
+latest_leaflet_version: 1.0.3
