@@ -3035,6 +3035,15 @@ Print or export your map.
 			<a href="https://github.com/tmcw">Tom MacWright</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rowanwins/leaflet-easyPrint">Leaflet-easyPrint</a>
+		</td><td>
+			A simple plugin which adds an icon to print your Leaflet map.
+		</td><td>
+			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
+		</td>
+	</tr>
 </table>
 
 

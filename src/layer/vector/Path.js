@@ -128,7 +128,7 @@ export var Path = Layer.extend({
 	},
 
 	_reset: function () {
-		// defined in children classes
+		// defined in child classes
 		this._project();
 		this._update();
 	},

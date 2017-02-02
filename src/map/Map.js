@@ -726,8 +726,8 @@ export var Map = Evented.extend({
 	// @section Other Methods
 	// @method createPane(name: String, container?: HTMLElement): HTMLElement
 	// Creates a new [map pane](#map-pane) with the given name if it doesn't exist already,
-	// then returns it. The pane is created as a children of `container`, or
-	// as a children of the main map pane if not set.
+	// then returns it. The pane is created as a child of `container`, or
+	// as a child of the main map pane if not set.
 	createPane: function (name, container) {
 		var className = 'leaflet-pane' + (name ? ' leaflet-' + name.replace('Pane', '') + '-pane' : ''),
 		    pane = DomUtil.create('div', className, container || this._mapPane);
