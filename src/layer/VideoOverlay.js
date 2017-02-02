@@ -64,6 +64,6 @@ export var VideoOverlay = ImageOverlay.extend({
 // @factory L.videoOverlay(videoUrl: String|Array, bounds: LatLngBounds, options?: VideoOverlay options)
 // Instantiates an image overlay object given the URL of the video (or array of URLs) and the
 // geographical bounds it is tied to.
-export function videoOverlay (url, bounds, options) {
+export function videoOverlay(url, bounds, options) {
 	return new L.VideoOverlay(url, bounds, options);
-};
+}
