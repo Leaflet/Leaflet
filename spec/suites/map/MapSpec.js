@@ -188,17 +188,36 @@ describe("Map", function () {
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19);
 		});
 
-		it("returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers", function () {
+		it.skipInPhantom("returns multiples of zoomSnap when zoomSnap > 0 on any3d browsers", function () {
 			var container = map.getContainer();
 			container.style.height = height;
 			document.body.appendChild(container);
-			L.Browser.any3d = true;
+// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.options.zoomSnap = 0.5;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.5);
 			map.options.zoomSnap = 0.2;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.6);
 			map.options.zoomSnap = 0;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.within(19.6864560, 19.6864561);
+		});
+
+		it("getBoundsZoom does not return Infinity when projected SE - NW has negative components", function () {
+			var container = map.getContainer();
+			container.style.height = 369;
+			container.style.width = 1048;
+			document.body.appendChild(container);
+			var bounds = L.latLngBounds(L.latLng([62.18475569507688, 6.926335173954951]), L.latLng([62.140483526511694, 6.923933370740089]));
+
+			// The following coordinates are bounds projected with proj4leaflet crs = EPSG:25833', '+proj=utm +zone=33 +ellps=GRS80 +units=m +no_defs
+			var projectedSE = L.point(7800503.059925064, 6440062.353052008);
+			var projectedNW = L.point(7801987.203481699, 6425186.447901004);
+			var crsMock = sinon.mock(map.options.crs);
+			crsMock.expects("project").withArgs(bounds.getNorthWest()).returns(projectedNW);
+			crsMock.expects("project").withArgs(bounds.getSouthEast()).returns(projectedSE);
+
+			var padding = L.point(-50, -50);
+			map.setZoom(16);
+			expect(map.getBoundsZoom(bounds, false, padding)).to.eql(9);
 		});
 	});
 
@@ -751,8 +770,8 @@ describe("Map", function () {
 			map.zoomOut(null, {animate: false});
 		});
 
-		it('zoomIn ignores the zoomDelta option on non-any3d browsers', function (done) {
-			L.Browser.any3d = false;
+		it.skipInNonPhantom('zoomIn ignores the zoomDelta option on non-any3d browsers', function (done) {
+// 			L.Browser.any3d = false;	// L.Browser is frozen since ES6ication
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.once('zoomend', function () {
@@ -763,8 +782,8 @@ describe("Map", function () {
 			map.zoomIn(null, {animate: false});
 		});
 
-		it('zoomIn respects the zoomDelta option on any3d browsers', function (done) {
-			L.Browser.any3d = true;
+		it.skipInPhantom('zoomIn respects the zoomDelta option on any3d browsers', function (done) {
+// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -776,8 +795,8 @@ describe("Map", function () {
 			map.zoomIn(null, {animate: false});
 		});
 
-		it('zoomOut respects the zoomDelta option on any3d browsers', function (done) {
-			L.Browser.any3d = true;
+		it.skipInPhantom('zoomOut respects the zoomDelta option on any3d browsers', function (done) {
+// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -789,7 +808,7 @@ describe("Map", function () {
 			map.zoomOut(null, {animate: false});
 		});
 
-		it('zoomIn snaps to zoomSnap on any3d browsers', function (done) {
+		it.skipInPhantom('zoomIn snaps to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.setView(center, 10);
 			map.once('zoomend', function () {
@@ -797,11 +816,11 @@ describe("Map", function () {
 				expect(map.getCenter()).to.eql(center);
 				done();
 			});
-			L.Browser.any3d = true;
+// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.zoomIn(0.22, {animate: false});
 		});
 
-		it('zoomOut snaps to zoomSnap on any3d browsers', function (done) {
+		it.skipInPhantom('zoomOut snaps to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
 			map.setView(center, 10);
 			map.once('zoomend', function () {
@@ -809,7 +828,7 @@ describe("Map", function () {
 				expect(map.getCenter()).to.eql(center);
 				done();
 			});
-			L.Browser.any3d = true;
+// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.zoomOut(0.22, {animate: false});
 		});
 	});
@@ -851,9 +870,9 @@ describe("Map", function () {
 			map.fitBounds(bounds, {animate: false});
 		});
 
-		it('Snaps zoom to zoomSnap on any3d browsers', function (done) {
+		it.skipInPhantom('Snaps zoom to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
-			L.Browser.any3d = true;
+// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.once('zoomend', function () {
 				expect(map.getZoom()).to.eql(2.75);
 				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
@@ -862,9 +881,9 @@ describe("Map", function () {
 			map.fitBounds(bounds, {animate: false});
 		});
 
-		it('Ignores zoomSnap on non-any3d browsers', function (done) {
+		it.skipInNonPhantom('Ignores zoomSnap on non-any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
-			L.Browser.any3d = false;
+// 			L.Browser.any3d = false;	// L.Browser is frozen since ES6ication
 			map.once('zoomend', function () {
 				expect(map.getZoom()).to.eql(2);
 				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);

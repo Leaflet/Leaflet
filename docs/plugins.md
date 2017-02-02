@@ -107,7 +107,7 @@ Ready-to-go basemaps, with little or no configuration at all.
 		<td>
 			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
 		</td><td>
-			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, MapQuest, Stamen, Esri, etc.
+			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, Stamen, Esri, etc.
 		</td><td>
 			<a href="https://github.com/leaflet-extras">leaflet-extras members</a>
 		</td>
@@ -1279,6 +1279,29 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/yakitoritabetai">Kenta Hakoishi</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ggolikov/Leaflet.Viewpoint">Leaflet.Viewpoint</a>
+		</td>
+		<td>
+			Displays circleMarker with multiple directions.
+			Useful to show photos taken from one point. (<a href="https://ggolikov.github.io/Leaflet.Viewpoint/example/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/ggolikov">Grigory Golikov</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/react-map/leaflet.magicMarker">Leaflet.magicMarker</a>
+		</td>
+		<td>
+			Adding magical animation effect to a marker while loading.(<a href="https://react-map.github.io/leaflet.magicMarker/">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/react-map">Sylvenas</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1590,6 +1613,15 @@ Powerful multi-purpose libraries for data visualization.
 			Allows using Leaflet from within <a href="https://en.wikipedia.org/wiki/R_%28programming_language%29">R</a> programs, a programming language popular for statistical analysis and data mining.
 		</td><td>
 			<a href="https://github.com/rstudio/">RStudio team</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/react-map/leaflet.migrationLayer">leaflet.migrationLayer</a>
+		</td><td>
+			leafet.migrationLayer is used to show migration data such as population,flight,vehicle,traffic and so on.Data visualization on map.<a href="https://react-map.github.io/leaflet.migrationLayer">demo</a>
+		</td><td>
+			<a href="https://github.com/react-map">Sylvenas</a>
 		</td>
 	</tr>
 </table>
@@ -1923,6 +1955,15 @@ Plugins that search for overlays and enhance how to display information about th
 			Add google places search into map
 		</td><td>
 			<a href="https://github.com/Twista">Michal Haták</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yafred/leaflet-responsive-popup">leaflet-responsive-popup</a>
+		</td><td>
+			Removes the need to move the map to be able to see the content of the popup. 
+		</td><td>
+			<a href="https://github.com/yafred">YaFred</a>
 		</td>
 	</tr>
 </table>
@@ -2429,6 +2470,15 @@ Display two maps at once. One of them might be a different size and zoom level, 
 			<a href="https://github.com/chriswhong">Chris Whong</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jieter/leaflet-clonelayer">leaflet-clonelayer</a>
+		</td><td>
+			Clone Leaflet layers to allow reuse across different maps in the same runtime.
+		</td><td>
+			<a href="https://github.com/jieter">Jieter</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2506,6 +2556,15 @@ Allow the user to measure distances or areas.
 			Show measurements on paths; polylines, polygons and circles currently supported (<a href="http://prominentedge.com/leaflet-measure-path/">demo</a>)
 		</td><td>
 			<a href="https://github.com/perliedman">Per Liedman</a> / <a href="http://prominentedge.com/">Prominent Edge</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/NLTGit/Leaflet.LinearMeasurement">Leaflet.LinearMeasurement</a>
+		</td><td>
+			Leaflet Linear Measurement plugin that creates polylines with incremental measures along the path. (<a href="https://nltgit.github.io/Leaflet.LinearMeasurement/">demo</a>)
+		</td><td>
+			<a href="http://www.newlighttechnologies.com/">New Light Technologies</a>
 		</td>
 	</tr>
 </table>
@@ -2740,6 +2799,16 @@ Buttons, sliders, toolbars, sidebars, and panels.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/yigityuce/Leaflet.Control.Custom">Leaflet.Control.Custom</a>
+		</td><td>
+			Fully customizable Leaflet control panel with HTML element.
+			<a href="https://yigityuce.github.io/Leaflet.Control.Custom/examples/index.html"> Demo</a>
+		</td><td>
+			<a href="https://github.com/yigityuce">Yiğit Yüce</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/CliffCloud/Leaflet.EasyButton">L.EasyButton</a>
 		</td><td>
 			In one line, add a Font Awesome control button with attached click events.
@@ -2964,6 +3033,15 @@ Print or export your map.
 			Export images out of Leaflet maps without a server component, by using Canvas and CORS.
 		</td><td>
 			<a href="https://github.com/tmcw">Tom MacWright</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rowanwins/leaflet-easyPrint">Leaflet-easyPrint</a>
+		</td><td>
+			A simple plugin which adds an icon to print your Leaflet map.
+		</td><td>
+			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
 		</td>
 	</tr>
 </table>
@@ -3488,6 +3566,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			Use Leaflet as a component for the <a href='https://vaadin.com/home'>Vaadin</a> Java/HTML framework.
 		</td><td>
 			<a href="https://github.com/mstahv">Matti Tahvonen</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gwidgets/gwty-leaflet">gwty-leaflet</a>
+		</td><td>
+			A Java/GWT JsInterop wrapper for Leaflet. It allows using Leaflet in Java the same way as from a javascript script.  
+		</td><td>
+			<a href="https://github.com/zak905">Zakaria Amine</a>
 		</td>
 	</tr>
 </table>

@@ -1,3 +1,6 @@
+import {Polygon} from './Polygon';
+import {toLatLngBounds} from '../../geo/LatLngBounds';
+
 /*
  * L.Rectangle extends Polygon and creates a rectangle when passed a LatLngBounds object.
  */
@@ -25,9 +28,9 @@
  */
 
 
-L.Rectangle = L.Polygon.extend({
+export var Rectangle = Polygon.extend({
 	initialize: function (latLngBounds, options) {
-		L.Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
+		Polygon.prototype.initialize.call(this, this._boundsToLatLngs(latLngBounds), options);
 	},
 
 	// @method setBounds(latLngBounds: LatLngBounds): this
@@ -37,7 +40,7 @@ L.Rectangle = L.Polygon.extend({
 	},
 
 	_boundsToLatLngs: function (latLngBounds) {
-		latLngBounds = L.latLngBounds(latLngBounds);
+		latLngBounds = toLatLngBounds(latLngBounds);
 		return [
 			latLngBounds.getSouthWest(),
 			latLngBounds.getNorthWest(),
@@ -49,6 +52,6 @@ L.Rectangle = L.Polygon.extend({
 
 
 // @factory L.rectangle(latLngBounds: LatLngBounds, options?: Polyline options)
-L.rectangle = function (latLngBounds, options) {
-	return new L.Rectangle(latLngBounds, options);
-};
+export function rectangle(latLngBounds, options) {
+	return new Rectangle(latLngBounds, options);
+}

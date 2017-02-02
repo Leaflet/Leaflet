@@ -391,4 +391,15 @@ describe('L.Layer#_popup', function () {
 		expect(marker.isPopupOpen()).to.be(false);
 	});
 
+	it('does not throw is popup is inmediately closed', function (done) {
+
+		map.on('popupopen', function (ev) {
+			marker.closePopup();
+		});
+
+		expect(function () {
+			marker.bindPopup("new layer").openPopup();
+			done();
+		}).to.not.throwException();
+	});
 });

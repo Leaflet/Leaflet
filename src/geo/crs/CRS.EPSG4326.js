@@ -1,3 +1,8 @@
+import {Earth} from './CRS.Earth';
+import {LonLat} from '../projection/Projection.LonLat';
+import {toTransformation} from '../../geometry/Transformation';
+import * as Util from '../../core/Util';
+
 /*
  * @namespace CRS
  * @crs L.CRS.EPSG4326
@@ -11,8 +16,8 @@
  * or (-180,-90) for `TileLayer`s with [the `tms` option](#tilelayer-tms) set.
  */
 
-L.CRS.EPSG4326 = L.extend({}, L.CRS.Earth, {
+export var EPSG4326 = Util.extend({}, Earth, {
 	code: 'EPSG:4326',
-	projection: L.Projection.LonLat,
-	transformation: new L.Transformation(1 / 180, 1, -1 / 180, 0.5)
+	projection: LonLat,
+	transformation: toTransformation(1 / 180, 1, -1 / 180, 0.5)
 });

@@ -1,7 +1,13 @@
+
+import {Bounds} from '../../geometry/Bounds';
+import {LatLng} from '../LatLng';
+import {LatLngBounds} from '../LatLngBounds';
+import * as Util from '../../core/Util';
+
 /*
- * @class CRS
- * @aka L.CRS
- * Abstract class that defines coordinate reference systems for projecting
+ * @namespace CRS
+ * @crs L.CRS.Base
+ * Object that defines coordinate reference systems for projecting
  * geographical points into pixel (screen) coordinates and back (and to
  * coordinates in other units for [WMS](https://en.wikipedia.org/wiki/Web_Map_Service) services). See
  * [spatial reference system](http://en.wikipedia.org/wiki/Coordinate_reference_system).
@@ -11,7 +17,7 @@
  * [Proj4Leaflet](https://github.com/kartena/Proj4Leaflet) plugin.
  */
 
-L.CRS = {
+export var CRS = {
 	// @method latLngToPoint(latlng: LatLng, zoom: Number): Point
 	// Projects geographical coordinates into pixel coordinates for a given zoom.
 	latLngToPoint: function (latlng, zoom) {
@@ -70,7 +76,7 @@ L.CRS = {
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
 
-		return L.bounds(min, max);
+		return new Bounds(min, max);
 	},
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -98,10 +104,32 @@ L.CRS = {
 	// Returns a `LatLng` where lat and lng has been wrapped according to the
 	// CRS's `wrapLat` and `wrapLng` properties, if they are outside the CRS's bounds.
 	wrapLatLng: function (latlng) {
-		var lng = this.wrapLng ? L.Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
-		    lat = this.wrapLat ? L.Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
+		var lng = this.wrapLng ? Util.wrapNum(latlng.lng, this.wrapLng, true) : latlng.lng,
+		    lat = this.wrapLat ? Util.wrapNum(latlng.lat, this.wrapLat, true) : latlng.lat,
 		    alt = latlng.alt;
 
-		return L.latLng(lat, lng, alt);
+		return new LatLng(lat, lng, alt);
+	},
+
+	// @method wrapLatLngBounds(bounds: LatLngBounds): LatLngBounds
+	// Returns a `LatLngBounds` with the same size as the given one, ensuring
+	// that its center is within the CRS's bounds.
+	// Only accepts actual `L.LatLngBounds` instances, not arrays.
+	wrapLatLngBounds: function (bounds) {
+		var center = bounds.getCenter(),
+		    newCenter = this.wrapLatLng(center),
+		    latShift = center.lat - newCenter.lat,
+		    lngShift = center.lng - newCenter.lng;
+
+		if (latShift === 0 && lngShift === 0) {
+			return bounds;
+		}
+
+		var sw = bounds.getSouthWest(),
+		    ne = bounds.getNorthEast(),
+		    newSw = new LatLng(sw.lat - latShift, sw.lng - lngShift),
+		    newNe = new LatLng(ne.lat - latShift, ne.lng - lngShift);
+
+		return new LatLngBounds(newSw, newNe);
 	}
 };
