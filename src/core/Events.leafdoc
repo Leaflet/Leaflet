@@ -127,7 +127,7 @@ The tooltip that was opened or closed.
 @property distance: Number
 The distance in pixels the draggable element was moved by.
 
-@miniclass ZoomAnimEvent (Event ojects)
+@miniclass ZoomAnimEvent (Event objects)
 @inherits Event
 @property center: LatLng; The current center of the map
 @property zoom: Number; The current zoom level of the map

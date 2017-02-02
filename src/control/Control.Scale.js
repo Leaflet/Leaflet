@@ -1,3 +1,7 @@
+
+import {Control} from './Control';
+import * as DomUtil from '../dom/DomUtil';
+
 /*
  * @class Control.Scale
  * @aka L.Control.Scale
@@ -12,7 +16,7 @@
  * ```
  */
 
-L.Control.Scale = L.Control.extend({
+export var Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
 	options: {
@@ -36,7 +40,7 @@ L.Control.Scale = L.Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-scale',
-		    container = L.DomUtil.create('div', className),
+		    container = DomUtil.create('div', className),
 		    options = this.options;
 
 		this._addScales(options, className + '-line', container);
@@ -53,10 +57,10 @@ L.Control.Scale = L.Control.extend({
 
 	_addScales: function (options, className, container) {
 		if (options.metric) {
-			this._mScale = L.DomUtil.create('div', className, container);
+			this._mScale = DomUtil.create('div', className, container);
 		}
 		if (options.imperial) {
-			this._iScale = L.DomUtil.create('div', className, container);
+			this._iScale = DomUtil.create('div', className, container);
 		}
 	},
 
@@ -123,6 +127,6 @@ L.Control.Scale = L.Control.extend({
 
 // @factory L.control.scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-L.control.scale = function (options) {
-	return new L.Control.Scale(options);
+export var scale = function (options) {
+	return new Scale(options);
 };
