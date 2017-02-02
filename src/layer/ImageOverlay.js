@@ -42,7 +42,7 @@ export var ImageOverlay = Layer.extend({
 		crossOrigin: false,
 
 		// @option zIndex: Number = 1
-		// specifies the z-index of the image overlay
+		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the tile layer.
 		zIndex: 1
 	},
 
@@ -162,7 +162,7 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	// @method: setZIndex(value: Number) : this
-	// Sets the Z-Index of the overlay
+	// Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
 	setZIndex: function (value) {
 		this.options.zIndex = value;
 		this._updateZIndex();
