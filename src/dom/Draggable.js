@@ -40,15 +40,19 @@ var MOVE = {
 export var Draggable = Evented.extend({
 
 	options: {
+		// @section
+		// @aka Draggable options
 		// @option clickTolerance: Number = 3
 		// The max number of pixels a user can shift the mouse pointer during a click
 		// for it to be considered a valid click (as opposed to a mouse drag).
 		clickTolerance: 3
 	},
 
-	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline: Boolean)
+	// @constructor L.Draggable(el: HTMLElement, dragHandle?: HTMLElement, preventOutline?: Boolean, options?: Draggable options)
 	// Creates a `Draggable` object for moving `el` when you start dragging the `dragHandle` element (equals `el` itself by default).
-	initialize: function (element, dragStartTarget, preventOutline) {
+	initialize: function (element, dragStartTarget, preventOutline, options) {
+		Util.setOptions(this, options);
+
 		this._element = element;
 		this._dragStartTarget = dragStartTarget || element;
 		this._preventOutline = preventOutline;
