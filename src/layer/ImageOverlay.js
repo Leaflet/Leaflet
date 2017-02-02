@@ -168,7 +168,8 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	// @method getElement(): HTMLElement
-	// Get the img element that represents the ImageOverlay on the map
+	// Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
+	// used by this overlay.
 	getElement: function () {
 		return this._image;
 	},

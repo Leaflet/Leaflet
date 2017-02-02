@@ -12,6 +12,7 @@ This file just defines the order of the classes in the docs.
 @class TileLayer
 @class TileLayer.WMS
 @class ImageOverlay
+@class VideoOverlay
 
 @class Path
 @class Polyline
