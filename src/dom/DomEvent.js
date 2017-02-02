@@ -37,6 +37,8 @@ export function on(obj, types, fn, context) {
 	return this;
 }
 
+var eventsKey = '_leaflet_events';
+
 // @function off(el: HTMLElement, types: String, fn: Function, context?: Object): this
 // Removes a previously added listener function. If no function is specified,
 // it will remove all the listeners of that particular DOM event from the element.
@@ -46,24 +48,29 @@ export function on(obj, types, fn, context) {
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
+
+// @alternative
+// @function off(el: HTMLElement): this
+// Removes all known event listeners
 export function off(obj, types, fn, context) {
 
 	if (typeof types === 'object') {
 		for (var type in types) {
 			removeOne(obj, type, types[type], fn);
 		}
-	} else {
+	} else if (types) {
 		types = Util.splitWords(types);
 
 		for (var i = 0, len = types.length; i < len; i++) {
 			removeOne(obj, types[i], fn, context);
 		}
+	} else {
+		for (var j in obj[eventsKey]) {
+			removeOne(obj, j, obj[eventsKey][j]);
+		}
+		delete obj[eventsKey];
 	}
-
-	return this;
 }
-
-var eventsKey = '_leaflet_events';
 
 function addOne(obj, type, fn, context) {
 	var id = type + Util.stamp(fn) + (context ? '_' + Util.stamp(context) : '');

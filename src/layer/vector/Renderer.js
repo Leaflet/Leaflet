@@ -58,8 +58,8 @@ export var Renderer = Layer.extend({
 	},
 
 	onRemove: function () {
-		DomUtil.remove(this._container);
 		this.off('update', this._updatePaths, this);
+		this._destroyContainer();
 	},
 
 	getEvents: function () {
