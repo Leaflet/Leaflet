@@ -5,7 +5,7 @@ title: Extending Leaflet, New Layers
 
 <br>
 
-This tutorial assumes you've read the [theory of Leaflet class inheritance](examples/extending/extending-1-classes.html).
+This tutorial assumes you've read the [theory of Leaflet class inheritance](./extending-1-classes.html).
 
 In Leaflet, a "layer" is anything that moves around when the map is moved around. Before seeing how to create them from scratch, it's easier to explain how to do simple extensions.
 
@@ -30,7 +30,7 @@ Let's illustrate with a custom `L.TileLayer` that will display random kitten ima
     L.tileLayer.kitten = function() {
         return new L.TileLayer.Kitten();
     }
-    
+
     L.tileLayer.kitten().addTo(map);
 
 {% include frame.html url="kittenlayer.html" %}
@@ -65,7 +65,7 @@ And then, include that file when showing a map:
 	</script>
 	…
 
-    
+
 ### `L.GridLayer` and DOM elements
 
 Another extension method is `L.GridLayer.createTile()`. Where `L.TileLayer` assumes that there is a grid of images (as `<img>` elements), `L.GridLayer` doesn't assume that - it allows creating grids of any kind of [HTML Elements](https://developer.mozilla.org/en-US/docs/Web/HTML/Element).
@@ -82,11 +82,11 @@ An example of a custom `GridLayer` is showing the tile coordinates in a `<div>`.
 			return tile;
 		}
 	});
-	
+
 	L.gridLayer.debugCoords = function(opts) {
 		return new L.GridLayer.DebugCoords(opts);
 	};
-	
+
 	map.addLayer( L.gridLayer.debugCoords() );
 
 
@@ -96,11 +96,11 @@ If the element has to do some asynchronous initialization, then use the second f
 		var tile = document.createElement('div');
 		tile.innerHTML = [coords.x, coords.y, coords.z].join(', ');
 		tile.style.outline = '1px solid red';
-		
+
 		setTimeout(function () {
 			done(null, tile);	// Syntax is 'done(error, tile)'
 		}, 500 + Math.random() * 1500);
-		
+
 		return tile;
 	}
 
@@ -113,19 +113,19 @@ A very basic `<canvas>` `GridLayer` looks like:
 	L.GridLayer.CanvasCircles = L.GridLayer.extend({
 		createTile: function (coords) {
 			var tile = document.createElement('canvas');
-			
+
 			var tileSize = this.getTileSize();
 			tile.setAttribute('width', tileSize.x);
 			tile.setAttribute('height', tileSize.y);
-			
+
 			var ctx = tile.getContext('2d');
-			
+
 			// Draw whatever is needed in the canvas context
 			// For example, circles which get bigger as we zoom in
 			ctx.beginPath();
 			ctx.arc(tileSize.x/2, tileSize.x/2, 4 + coords.z*4, 0, 2*Math.PI, false);
 			ctx.fill();
-			
+
 			return tile;
 		}
 	});
@@ -168,26 +168,26 @@ In other words: the map calls the `onAdd()` method of the layer, then the layer 
 		onAdd: function(map) {
 			var pane = map.getPane(this.options.pane);
 			this._container = L.DomUtil.create(…);
-			
+
 			pane.appendChild(this._container);
-			
+
 			// Calculate initial position of container with `L.Map.latLngToLayerPoint()`, `getPixelOrigin()` and/or `getPixelBounds()`
-			
+
 			L.DomUtil.setPosition(this._container, point);
-			
+
 			// Add and position children elements if needed
-			
+
 			map.on('zoomend viewreset', this._update, this);
 		},
-		
+
 		onRemove: function(map) {
 			L.DomUtil.remove(this._container);
 			map.off('zoomend viewreset', this._update, this);
 		},
-		
+
 		_update: function() {
 			// Recalculate position of container
-			
+
 			L.DomUtil.setPosition(this._container, point);        
 
 			// Add/remove/reposition children elements if needed

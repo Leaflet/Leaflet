@@ -25,10 +25,10 @@
     		}).addTo(map);
 
         L.DomUtil.get('removeAdd').onclick = function() {
-            map.removeLayer(tileLayer);
+            map.removeLayer(osm);
 
             setTimeout(function() {
-                map.addLayer(tileLayer);
+                map.addLayer(osm);
             }, 1000);
 
 

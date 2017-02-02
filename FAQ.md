@@ -47,7 +47,7 @@ and [MapQuest Open](http://developer.mapquest.com/web/products/open/map) provide
 
 The problem with Google is that its [Terms of Use](https://developers.google.com/maps/terms) forbid any means of tile access other than through the Google Maps API.
 
-You can add the Google Maps API as a Leaflet layer with a [plugin](https://github.com/shramov/leaflet-plugins). But note that the map experience will not be perfect, because Leaflet will just act as a proxy to the Google Maps JS engine, so you won't get all the performance and usability benefits of using Leaflet when the Google layer is on.
+You can add the Google Maps API as a Leaflet layer with the [GoogleMutant plugin](https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant). But note that the map experience will not be perfect, because Leaflet must wait for the Google Maps JS engine to load the map tiles, so you might experience glitches and lagging when using it.
 
 #### I want to roll my own OSM tile server for Leaflet, where do I start?
 

@@ -128,4 +128,139 @@ describe("Control.Layers", function () {
 		});
 	});
 
+	describe("is created with an expand link", function ()  {
+		it("when collapsed", function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
+		});
+
+		it("when not collapsed", function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			expect(map._container.querySelector('.leaflet-control-layers-toggle')).to.be.ok();
+		});
+	});
+
+	describe("collapse when collapsed: true", function () {
+		it('expands when mouse is over', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+		it('collapses when mouse is out', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			happen.once(layersCtrl._container, {type:'mouseout'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
+		});
+		it('collapses when map is clicked', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: true}).addTo(map);
+			map.setView([0, 0], 0);
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.click(map._container);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.not.be.ok();
+		});
+	});
+
+	describe("does not collapse when collapsed: false", function () {
+		it('does not collapse when mouse enters or leaves', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.once(layersCtrl._container, {type:'mouseover'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.once(layersCtrl._container, {type:'mouseout'});
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+		it('does not collapse when map is clicked', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}).addTo(map);
+			map.setView([0, 0], 0);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+			happen.click(map._container);
+			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
+		});
+	});
+
+	describe("sortLayers", function () {
+		beforeEach(function () {
+			map.setView([0, 0], 14);
+		});
+
+		it("keeps original order by default", function () {
+			var baseLayerOne = L.tileLayer('').addTo(map);
+			var baseLayerTwo = L.tileLayer('').addTo(map);
+			var markerC = L.marker([0, 2]).addTo(map);
+			var markerB = L.marker([0, 1]).addTo(map);
+			var markerA = L.marker([0, 0]).addTo(map);
+
+			var layersCtrl = L.control.layers({
+				'Base One': baseLayerOne,
+				'Base Two': baseLayerTwo
+			}, {
+				'Marker C': markerC,
+				'Marker B': markerB,
+				'Marker A': markerA
+			}).addTo(map);
+
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
+			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
+			expect(elems[2].innerHTML.trim()).to.be.equal('Marker C');
+			expect(elems[3].innerHTML.trim()).to.be.equal('Marker B');
+			expect(elems[4].innerHTML.trim()).to.be.equal('Marker A');
+		});
+
+		it("sorts alphabetically if no function is specified", function () {
+			var baseLayerOne = L.tileLayer('').addTo(map);
+			var baseLayerTwo = L.tileLayer('').addTo(map);
+			var markerA = L.marker([0, 0]).addTo(map);
+			var markerB = L.marker([0, 1]).addTo(map);
+			var markerC = L.marker([0, 2]).addTo(map);
+
+			var layersCtrl = L.control.layers({
+				'Base Two': baseLayerTwo,
+				'Base One': baseLayerOne
+			}, {
+				'Marker A': markerA,
+				'Marker C': markerC,
+				'Marker B': markerB
+			}, {
+				sortLayers: true
+			}).addTo(map);
+
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			expect(elems[0].innerHTML.trim()).to.be.equal('Base One');
+			expect(elems[1].innerHTML.trim()).to.be.equal('Base Two');
+			expect(elems[2].innerHTML.trim()).to.be.equal('Marker A');
+			expect(elems[3].innerHTML.trim()).to.be.equal('Marker B');
+			expect(elems[4].innerHTML.trim()).to.be.equal('Marker C');
+		});
+
+		it("uses the compare function to sort layers", function () {
+			var baseLayerOne = L.tileLayer('', {customOption: 999}).addTo(map);
+			var baseLayerTwo = L.tileLayer('', {customOption: 998}).addTo(map);
+			var markerA = L.marker([0, 0], {customOption: 102}).addTo(map);
+			var markerB = L.marker([0, 1], {customOption: 100}).addTo(map);
+			var markerC = L.marker([0, 2], {customOption: 101}).addTo(map);
+
+			var layersCtrl = L.control.layers({
+				'Base One': baseLayerOne,
+				'Base Two': baseLayerTwo
+			}, {
+				'Marker A': markerA,
+				'Marker B': markerB,
+				'Marker C': markerC
+			}, {
+				sortLayers: true,
+				sortFunction: function (a, b) { return a.options.customOption - b.options.customOption; }
+			}).addTo(map);
+
+			var elems = map.getContainer().querySelectorAll('div.leaflet-control-layers label span');
+			expect(elems[0].innerHTML.trim()).to.be.equal('Base Two');
+			expect(elems[1].innerHTML.trim()).to.be.equal('Base One');
+			expect(elems[2].innerHTML.trim()).to.be.equal('Marker B');
+			expect(elems[3].innerHTML.trim()).to.be.equal('Marker C');
+			expect(elems[4].innerHTML.trim()).to.be.equal('Marker A');
+		});
+	});
+
 });

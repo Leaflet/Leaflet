@@ -12,8 +12,8 @@ bodyclass: download-page
 		<th>Description</th>
 	</tr>
 	<tr>
-		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.1/leaflet.zip">Leaflet 1.0.1</a></td>
-		<td>Stable version, released on September 30, 2016.</td>
+		<td><a href="http://cdn.leafletjs.com/leaflet/v1.0.3/leaflet.zip">Leaflet 1.0.3</a></td>
+		<td>Stable version, released on January 23, 2017.</td>
 	</tr>
 	<tr>
 		<td><a href="https://leafletjs-cdn.s3.amazonaws.com/content/leaflet/master/leaflet.zip">Leaflet 1.1-dev</a></td>
@@ -52,6 +52,14 @@ Unzip the downloaded archive to your website's directory and add this to the `he
     <link rel="stylesheet" href="/path/to/leaflet.css" />
     <script src="/path/to/leaflet.js"></script> <!-- or use leaflet-src.js --!>
 
+### Using a JavaScript package manager
+
+If you use the [`npm` package manager](https://www.npmjs.com/), you can fetch a local copy of Leaflet by running:
+
+    npm install leaflet
+
+You will find a copy of the Leaflet release files in `node_modules/leaflet/dist`.
+
 ### Leaflet Source Code
 
 These download packages above only contain the library itself.
@@ -74,8 +82,3 @@ npm install</code></pre>
 Now that you have everything installed, run `jake build` inside the Leaflet directory.
 This will combine and compress the Leaflet source files, saving the build to the `dist` folder.
 
-### Building a Custom Version of Leaflet
-
-To make a custom build of the library with only the things you need,
-open `build/build.html` page of the Leaflet source code contents, choose the components
-(it figures out dependencies for you) and then run the command generated with it.

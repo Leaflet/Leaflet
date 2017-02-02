@@ -6,10 +6,7 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.0</strong>.</p>
-
-<p>Docs for the legacy 0.7.x versions are <a href='reference.html'>available here</a>.
-
+<p>This reference reflects <strong>Leaflet 1.0.0</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
 			<h4>Map</h4>
@@ -4025,7 +4022,7 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 
 
-<pre><code class="lang-js">L.tileLayer(&#39;http://{s}.tile.osm.org/{z}/{x}/{y}.png?{foo}&#39;, {foo: &#39;bar&#39;}).addTo(map);
+<pre><code class="lang-js">L.tileLayer(&#39;http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png?{foo}&#39;, {foo: &#39;bar&#39;}).addTo(map);
 </code></pre>
 
 
@@ -7029,9 +7026,9 @@ properties. The event might can optionally be propagated to event parents.</p>
 
 <pre><code class="lang-js">// create a red polyline from an array of LatLng points
 var latlngs = [
-    [-122.68, 45.51],
-    [-122.43, 37.77],
-    [-118.2, 34.04]
+    [45.51, -122.68],
+    [37.77, -122.43],
+    [34.04, -118.2]
 ];
 var polyline = L.polyline(latlngs, {color: &#39;red&#39;}).addTo(map);
 // zoom the map to the polyline
@@ -7040,12 +7037,12 @@ map.fitBounds(polyline.getBounds());
 <p>You can also pass a multi-dimensional array to represent a <code>MultiPolyline</code> shape:</p>
 <pre><code class="lang-js">// create a red polyline from an array of arrays of LatLng points
 var latlngs = [
-    [[-122.68, 45.51],
-     [-122.43, 37.77],
-     [-118.2, 34.04]],
-    [[-73.91, 40.78],
-     [-87.62, 41.83],
-     [-96.72, 32.76]]
+    [[45.51, -122.68],
+     [37.77, -122.43],
+     [34.04, -118.2]],
+    [[40.78, -73.91],
+     [41.83, -87.62],
+     [32.76, -96.72]]
 ];
 </code></pre>
 
@@ -7858,25 +7855,25 @@ Note that points you pass when creating a polygon shouldn&#39;t have an addition
 
 
 <pre><code class="lang-js">// create a red polygon from an array of LatLng points
-var latlngs = [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]];
+var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
 var polygon = L.polygon(latlngs, {color: &#39;red&#39;}).addTo(map);
 // zoom the map to the polygon
 map.fitBounds(polygon.getBounds());
 </code></pre>
 <p>You can also pass an array of arrays of latlngs, with the first array representing the outer shape and the other arrays representing holes in the outer shape:</p>
 <pre><code class="lang-js">var latlngs = [
-  [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
-  [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+  [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
+  [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
 ];
 </code></pre>
 <p>Additionally, you can pass a multi-dimensional array to represent a MultiPolygon shape.</p>
 <pre><code class="lang-js">var latlngs = [
   [ // first polygon
-    [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
-    [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+    [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
+    [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
   ],
   [ // second polygon
-    [[-109.05, 37],[-109.03, 41],[-102.05, 41],[-102.04, 37],[-109.05, 38]]
+    [[41, -111.03],[45, -111.04],[45, -104.05],[41, -104.05]]
   ]
 ];
 </code></pre>

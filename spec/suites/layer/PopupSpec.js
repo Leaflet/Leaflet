@@ -328,3 +328,78 @@ describe("L.Map#openPopup", function () {
 	});
 
 });
+
+describe('L.Layer#_popup', function () {
+	var c, map, marker;
+
+	beforeEach(function () {
+		c = document.createElement('div');
+		c.style.width = '400px';
+		c.style.height = '400px';
+		map = new L.Map(c);
+		map.setView(new L.LatLng(55.8, 37.6), 6);
+		marker = L.marker(L.latLng(55.8, 37.6)).addTo(map);
+	});
+
+	afterEach(function () {
+		if (document.body.contains(c)) {
+			document.body.removeChild(c);
+		}
+	});
+
+	it("only adds a popup to the map when opened", function () {
+		marker.bindPopup("new layer");
+		expect(map.hasLayer(marker.getPopup())).to.be(false);
+		marker.openPopup();
+		expect(map.hasLayer(marker.getPopup())).to.be(true);
+	});
+
+	it("keeps an open popup on the map when it's unbound from the layer", function () {
+		marker.bindPopup("new layer").openPopup();
+		var popup = marker.getPopup();
+		marker.unbindPopup();
+		expect(map.hasLayer(popup)).to.be(true);
+	});
+
+	it("should not give an error when the marker has no popup", function () {
+		expect(function () {
+			marker.isPopupOpen();
+		}).to.not.throwException();
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it("should show a popup as closed if it's never opened", function () {
+		marker.bindPopup("new layer");
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it("should show a popup as opend if it's opened", function () {
+		marker.bindPopup("new layer").openPopup();
+		expect(marker.isPopupOpen()).to.be(true);
+	});
+
+	it("should show a popup as closed if it's opened and closed", function () {
+		marker.bindPopup("new layer").openPopup().closePopup();
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it("should show the popup as closed if it's unbound", function () {
+		marker.bindPopup("new layer").openPopup().unbindPopup();
+		expect(function () {
+			marker.isPopupOpen();
+		}).to.not.throwException();
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it('does not throw is popup is inmediately closed', function (done) {
+
+		map.on('popupopen', function (ev) {
+			marker.closePopup();
+		});
+
+		expect(function () {
+			marker.bindPopup("new layer").openPopup();
+			done();
+		}).to.not.throwException();
+	});
+});

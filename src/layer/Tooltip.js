@@ -1,3 +1,13 @@
+
+import * as Browser from '../core/Browser';
+import {DivOverlay} from './DivOverlay';
+import {toPoint} from '../geometry/Point';
+import {Map} from '../map/Map';
+import {Layer} from './Layer';
+import {FeatureGroup} from './FeatureGroup';
+import * as Util from '../core/Util';
+import * as DomUtil from '../dom/DomUtil';
+
 /*
  * @class Tooltip
  * @inherits DivOverlay
@@ -20,7 +30,7 @@
 
 
 // @namespace Tooltip
-L.Tooltip = L.DivOverlay.extend({
+export var Tooltip = DivOverlay.extend({
 
 	// @section
 	// @aka Tooltip options
@@ -58,7 +68,7 @@ L.Tooltip = L.DivOverlay.extend({
 	},
 
 	onAdd: function (map) {
-		L.DivOverlay.prototype.onAdd.call(this, map);
+		DivOverlay.prototype.onAdd.call(this, map);
 		this.setOpacity(this.options.opacity);
 
 		// @namespace Map
@@ -77,7 +87,7 @@ L.Tooltip = L.DivOverlay.extend({
 	},
 
 	onRemove: function (map) {
-		L.DivOverlay.prototype.onRemove.call(this, map);
+		DivOverlay.prototype.onRemove.call(this, map);
 
 		// @namespace Map
 		// @section Tooltip events
@@ -95,9 +105,9 @@ L.Tooltip = L.DivOverlay.extend({
 	},
 
 	getEvents: function () {
-		var events = L.DivOverlay.prototype.getEvents.call(this);
+		var events = DivOverlay.prototype.getEvents.call(this);
 
-		if (L.Browser.touch && !this.options.permanent) {
+		if (Browser.touch && !this.options.permanent) {
 			events.preclick = this._close;
 		}
 
@@ -114,7 +124,7 @@ L.Tooltip = L.DivOverlay.extend({
 		var prefix = 'leaflet-tooltip',
 		    className = prefix + ' ' + (this.options.className || '') + ' leaflet-zoom-' + (this._zoomAnimated ? 'animated' : 'hide');
 
-		this._contentNode = this._container = L.DomUtil.create('div', className);
+		this._contentNode = this._container = DomUtil.create('div', className);
 	},
 
 	_updateLayout: function () {},
@@ -129,29 +139,29 @@ L.Tooltip = L.DivOverlay.extend({
 		    direction = this.options.direction,
 		    tooltipWidth = container.offsetWidth,
 		    tooltipHeight = container.offsetHeight,
-		    offset = L.point(this.options.offset),
+		    offset = toPoint(this.options.offset),
 		    anchor = this._getAnchor();
 
 		if (direction === 'top') {
-			pos = pos.add(L.point(-tooltipWidth / 2 + offset.x, -tooltipHeight + offset.y + anchor.y));
+			pos = pos.add(toPoint(-tooltipWidth / 2 + offset.x, -tooltipHeight + offset.y + anchor.y, true));
 		} else if (direction === 'bottom') {
-			pos = pos.subtract(L.point(tooltipWidth / 2 - offset.x, -offset.y));
+			pos = pos.subtract(toPoint(tooltipWidth / 2 - offset.x, -offset.y, true));
 		} else if (direction === 'center') {
-			pos = pos.subtract(L.point(tooltipWidth / 2 + offset.x, tooltipHeight / 2 - anchor.y + offset.y));
+			pos = pos.subtract(toPoint(tooltipWidth / 2 + offset.x, tooltipHeight / 2 - anchor.y + offset.y, true));
 		} else if (direction === 'right' || direction === 'auto' && tooltipPoint.x < centerPoint.x) {
 			direction = 'right';
-			pos = pos.add([offset.x + anchor.x, anchor.y - tooltipHeight / 2 + offset.y]);
+			pos = pos.add(toPoint(offset.x + anchor.x, anchor.y - tooltipHeight / 2 + offset.y, true));
 		} else {
 			direction = 'left';
-			pos = pos.subtract(L.point(tooltipWidth + anchor.x - offset.x, tooltipHeight / 2 - anchor.y - offset.y));
+			pos = pos.subtract(toPoint(tooltipWidth + anchor.x - offset.x, tooltipHeight / 2 - anchor.y - offset.y, true));
 		}
 
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-right');
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-left');
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-top');
-		L.DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
-		L.DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
-		L.DomUtil.setPosition(container, pos);
+		DomUtil.removeClass(container, 'leaflet-tooltip-right');
+		DomUtil.removeClass(container, 'leaflet-tooltip-left');
+		DomUtil.removeClass(container, 'leaflet-tooltip-top');
+		DomUtil.removeClass(container, 'leaflet-tooltip-bottom');
+		DomUtil.addClass(container, 'leaflet-tooltip-' + direction);
+		DomUtil.setPosition(container, pos);
 	},
 
 	_updatePosition: function () {
@@ -163,7 +173,7 @@ L.Tooltip = L.DivOverlay.extend({
 		this.options.opacity = opacity;
 
 		if (this._container) {
-			L.DomUtil.setOpacity(this._container, opacity);
+			DomUtil.setOpacity(this._container, opacity);
 		}
 	},
 
@@ -174,7 +184,7 @@ L.Tooltip = L.DivOverlay.extend({
 
 	_getAnchor: function () {
 		// Where should we anchor the tooltip on the source layer?
-		return L.point(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
+		return toPoint(this._source && this._source._getTooltipAnchor && !this.options.sticky ? this._source._getTooltipAnchor() : [0, 0]);
 	}
 
 });
@@ -182,13 +192,13 @@ L.Tooltip = L.DivOverlay.extend({
 // @namespace Tooltip
 // @factory L.tooltip(options?: Tooltip options, source?: Layer)
 // Instantiates a Tooltip object given an optional `options` object that describes its appearance and location and an optional `source` object that is used to tag the tooltip with a reference to the Layer to which it refers.
-L.tooltip = function (options, source) {
-	return new L.Tooltip(options, source);
+export var tooltip = function (options, source) {
+	return new Tooltip(options, source);
 };
 
 // @namespace Map
 // @section Methods for Layers and Controls
-L.Map.include({
+Map.include({
 
 	// @method openTooltip(tooltip: Tooltip): this
 	// Opens the specified tooltip.
@@ -196,8 +206,8 @@ L.Map.include({
 	// @method openTooltip(content: String|HTMLElement, latlng: LatLng, options?: Tooltip options): this
 	// Creates a tooltip with the specified content and options and open it.
 	openTooltip: function (tooltip, latlng, options) {
-		if (!(tooltip instanceof L.Tooltip)) {
-			tooltip = new L.Tooltip(options).setContent(tooltip);
+		if (!(tooltip instanceof Tooltip)) {
+			tooltip = new Tooltip(options).setContent(tooltip);
 		}
 
 		if (latlng) {
@@ -236,7 +246,7 @@ L.Map.include({
  */
 
 // @section Tooltip methods
-L.Layer.include({
+Layer.include({
 
 	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
 	// Binds a tooltip to the layer with the passed `content` and sets up the
@@ -244,13 +254,13 @@ L.Layer.include({
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindTooltip: function (content, options) {
 
-		if (content instanceof L.Tooltip) {
-			L.setOptions(content, options);
+		if (content instanceof Tooltip) {
+			Util.setOptions(content, options);
 			this._tooltip = content;
 			content._source = this;
 		} else {
 			if (!this._tooltip || options) {
-				this._tooltip = L.tooltip(options, this);
+				this._tooltip = new Tooltip(options, this);
 			}
 			this._tooltip.setContent(content);
 
@@ -289,7 +299,7 @@ L.Layer.include({
 			if (this._tooltip.options.sticky) {
 				events.mousemove = this._moveTooltip;
 			}
-			if (L.Browser.touch) {
+			if (Browser.touch) {
 				events.click = this._openTooltip;
 			}
 		} else {
@@ -302,12 +312,12 @@ L.Layer.include({
 	// @method openTooltip(latlng?: LatLng): this
 	// Opens the bound tooltip at the specificed `latlng` or at the default tooltip anchor if no `latlng` is passed.
 	openTooltip: function (layer, latlng) {
-		if (!(layer instanceof L.Layer)) {
+		if (!(layer instanceof Layer)) {
 			latlng = layer;
 			layer = this;
 		}
 
-		if (layer instanceof L.FeatureGroup) {
+		if (layer instanceof FeatureGroup) {
 			for (var id in this._layers) {
 				layer = this._layers[id];
 				break;
@@ -332,7 +342,7 @@ L.Layer.include({
 			// Tooltip container may not be defined if not permanent and never
 			// opened.
 			if (this._tooltip.options.interactive && this._tooltip._container) {
-				L.DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
+				DomUtil.addClass(this._tooltip._container, 'leaflet-clickable');
 				this.addInteractiveTarget(this._tooltip._container);
 			}
 		}
@@ -346,7 +356,7 @@ L.Layer.include({
 		if (this._tooltip) {
 			this._tooltip._close();
 			if (this._tooltip.options.interactive && this._tooltip._container) {
-				L.DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
+				DomUtil.removeClass(this._tooltip._container, 'leaflet-clickable');
 				this.removeInteractiveTarget(this._tooltip._container);
 			}
 		}

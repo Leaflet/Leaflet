@@ -1,3 +1,6 @@
+import {Icon} from './Icon';
+import * as DomUtil from '../../dom/DomUtil';
+
 /*
  * @miniclass Icon.Default (Icon)
  * @aka L.Icon.Default
@@ -14,7 +17,7 @@
  * `L.Marker.prototype.options.icon` with your own icon instead.
  */
 
-L.Icon.Default = L.Icon.extend({
+export var IconDefault = Icon.extend({
 
 	options: {
 		iconUrl:       'marker-icon.png',
@@ -28,21 +31,21 @@ L.Icon.Default = L.Icon.extend({
 	},
 
 	_getIconUrl: function (name) {
-		if (!L.Icon.Default.imagePath) {	// Deprecated, backwards-compatibility only
-			L.Icon.Default.imagePath = this._detectIconPath();
+		if (!IconDefault.imagePath) {	// Deprecated, backwards-compatibility only
+			IconDefault.imagePath = this._detectIconPath();
 		}
 
 		// @option imagePath: String
-		// `L.Icon.Default` will try to auto-detect the absolute location of the
+		// `Icon.Default` will try to auto-detect the absolute location of the
 		// blue icon images. If you are placing these images in a non-standard
 		// way, set this option to point to the right absolute path.
-		return (this.options.imagePath || L.Icon.Default.imagePath) + L.Icon.prototype._getIconUrl.call(this, name);
+		return (this.options.imagePath || IconDefault.imagePath) + Icon.prototype._getIconUrl.call(this, name);
 	},
 
 	_detectIconPath: function () {
-		var el = L.DomUtil.create('div',  'leaflet-default-icon-path', document.body);
-		var path = L.DomUtil.getStyle(el, 'background-image') ||
-		           L.DomUtil.getStyle(el, 'backgroundImage');	// IE8
+		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
+		var path = DomUtil.getStyle(el, 'background-image') ||
+		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
 
 		document.body.removeChild(el);
 
