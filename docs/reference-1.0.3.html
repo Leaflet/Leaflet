@@ -6,8 +6,7 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.2</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
-
+<p>This reference reflects <strong>Leaflet 1.0.3</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
@@ -357,7 +356,7 @@ sure what it means.</td>
 		<td><code><a href='#latlngbounds'>LatLngBounds</a></code>
 		<td><code>null</code></td>
 		<td>When this option is set, the map restricts the view to the given
-geographical bounds, bouncing the user back when he tries to pan
+geographical bounds, bouncing the user back if the user tries to pan
 outside the view. To set the restriction dynamically, use
 <a href="#map-setmaxbounds"><code>setMaxBounds</code></a> method.</td>
 	</tr>
@@ -1047,7 +1046,7 @@ stationary (e.g. used internally for scroll zoom and double-click zoom).</p>
 </td>
 	</tr>
 	<tr id='map-fitbounds'>
-		<td><code><b>fitBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>, <nobr>&lt;<a href='#fitbounds-options'>fitBounds options</a>&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td><code><b>fitBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>, <nobr>&lt;<a href='#fitbounds-options'>fitBounds options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Sets a map view that contains the given geographical bounds with the
 maximum zoom level possible.</p>
@@ -1378,6 +1377,16 @@ By default this means longitude is wrapped around the dateline so its
 value is between -180 and +180 degrees.</p>
 </td>
 	</tr>
+	<tr id='map-wraplatlngbounds'>
+		<td><code><b>wrapLatLngBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>)</nobr></code></td>
+		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
+		<td><p>Returns a <a href="#latlngbounds"><code>LatLngBounds</code></a> with the same size as the given one, ensuring that
+its center is within the CRS&#39;s bounds.
+By default this means the center longitude is wrapped around the dateline so its
+value is between -180 and +180 degrees, and the majority of the bounds
+overlaps the CRS&#39;s bounds.</p>
+</td>
+	</tr>
 	<tr id='map-distance'>
 		<td><code><b>distance</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng1</i>, <nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng2</i>)</nobr></code></td>
 		<td><code>Number</code></td>
@@ -1401,7 +1410,7 @@ returns the corresponding pixel coordinate relative to the map container.</p>
 	</tr>
 	<tr id='map-containerpointtolatlng'>
 		<td><code><b>containerPointToLatLng</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>)</nobr></code></td>
-		<td><code><a href='#point'>Point</a></code></td>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>Given a pixel coordinate relative to the map container, returns
 the corresponding geographical coordinate (for the current zoom level).</p>
 </td>
@@ -4331,7 +4340,9 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td><code>false</code></td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
 GridLayer will only be displayed once at low zoom levels. Has no
-effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
+effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around. Can be used
+in combination with <a href="#gridlayer-bounds"><a href="#bounds"><code>bounds</code></a></a> to prevent requesting
+tiles outside the CRS limits.</td>
 	</tr>
 	<tr id='tilelayer-pane'>
 		<td><code><b>pane</b></code></td>
@@ -5242,7 +5253,9 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td><code>false</code></td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
 GridLayer will only be displayed once at low zoom levels. Has no
-effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
+effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around. Can be used
+in combination with <a href="#gridlayer-bounds"><a href="#bounds"><code>bounds</code></a></a> to prevent requesting
+tiles outside the CRS limits.</td>
 	</tr>
 	<tr id='tilelayer-wms-pane'>
 		<td><code><b>pane</b></code></td>
@@ -6202,6 +6215,24 @@ for a second (also called long press).</td>
 		<td><code><b>setUrl</b>(<nobr>&lt;String&gt;</nobr> <i>url</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Changes the URL of the image.</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-setbounds'>
+		<td><code><b>setBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Update the bounds that this ImageOverlay covers</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-getbounds'>
+		<td><code><b>getBounds</b>()</nobr></code></td>
+		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
+		<td><p>Get the bounds that this ImageOverlay covers</p>
+</td>
+	</tr>
+	<tr id='imageoverlay-getelement'>
+		<td><code><b>getElement</b>()</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Get the img element that represents the ImageOverlay on the map</p>
 </td>
 	</tr>
 </tbody></table>
@@ -14840,7 +14871,9 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 		<td><code>false</code></td>
 		<td>Whether the layer is wrapped around the antimeridian. If <code>true</code>, the
 GridLayer will only be displayed once at low zoom levels. Has no
-effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around.</td>
+effect when the <a href="#map-crs">map CRS</a> doesn&#39;t wrap around. Can be used
+in combination with <a href="#gridlayer-bounds"><a href="#bounds"><code>bounds</code></a></a> to prevent requesting
+tiles outside the CRS limits.</td>
 	</tr>
 	<tr id='gridlayer-pane'>
 		<td><code><b>pane</b></code></td>
@@ -15535,7 +15568,7 @@ map.panTo(L.latLng(50, 30));
 	<tr id='latlng-tobounds'>
 		<td><code><b>toBounds</b>(<nobr>&lt;Number&gt;</nobr> <i>sizeInMeters</i>)</nobr></code></td>
 		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
-		<td><p>Returns a new <a href="#latlngbounds"><code>LatLngBounds</code></a> object in which each boundary is <code>sizeInMeters</code> meters apart from the <a href="#latlng"><code>LatLng</code></a>.</p>
+		<td><p>Returns a new <a href="#latlngbounds"><code>LatLngBounds</code></a> object in which each boundary is <code>sizeInMeters/2</code> meters apart from the <a href="#latlng"><code>LatLng</code></a>.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -18302,7 +18335,10 @@ By default, it sorts layers alphabetically by their name.</td>
 	<tr id='browser-touch'>
 		<td><code><b>touch</b>
 		<td><code>Boolean</code></td>
-		<td><code>true</code> for all browsers supporting <a href="https://developer.mozilla.org/docs/Web/API/Touch_events">touch events</a>.</td>
+		<td><code>true</code> for all browsers supporting <a href="https://developer.mozilla.org/docs/Web/API/Touch_events">touch events</a>.
+This does not necessarily mean that the browser is running in a computer with
+a touchscreen, it only means that the browser is capable of understanding
+touch events.</td>
 	</tr>
 	<tr id='browser-mspointer'>
 		<td><code><b>msPointer</b>
@@ -21038,8 +21074,8 @@ a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_project
 	</thead><tbody>
 	<tr id='projection-bounds'>
 		<td><code><b>bounds</b>
-		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
-		<td>The bounds where the projection is valid</td>
+		<td><code><a href='#bounds'>Bounds</a></code></td>
+		<td>The bounds (specified in CRS units) where the projection is valid</td>
 	</tr>
 </tbody></table>
 
@@ -21164,7 +21200,16 @@ factor of <code>scale</code>.</p>
 		<td><code><b>wrapLatLng</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</nobr></code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>Returns a <a href="#latlng"><code>LatLng</code></a> where lat and lng has been wrapped according to the
-CRS&#39;s <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outside the CRS&#39;s bounds.</p>
+CRS&#39;s <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outside the CRS&#39;s bounds.
+Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not arrays.</p>
+</td>
+	</tr>
+	<tr id='crs-wraplatlngbounds'>
+		<td><code><b>wrapLatLngBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>)</nobr></code></td>
+		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
+		<td><p>Returns a <a href="#latlngbounds"><code>LatLngBounds</code></a> with the same size as the given one, ensuring
+that its center is within the CRS&#39;s bounds.
+Only accepts actual <a href="#latlngbounds"><code>L.LatLngBounds</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -22654,6 +22699,74 @@ information about the event. For example:</p>
 		<td>The event type (e.g. <code>&#39;click&#39;</code>).</td>
 	</tr>
 	<tr id='dragendevent-target'>
+		<td><code><b>target</b>
+		<td><code>Object</code></td>
+		<td>The object that fired the event.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><span id='zoomanimevent'></span>
+
+<section>
+<h3 id='zoomanimevent-property'>ZoomAnimEvent</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='zoomanimevent-center'>
+		<td><code><b>center</b>
+		<td><code><a href='#latlng'>LatLng</a></code></td>
+		<td>The current center of the map</td>
+	</tr>
+	<tr id='zoomanimevent-zoom'>
+		<td><code><b>zoom</b>
+		<td><code>Number</code></td>
+		<td>The current zoom level of the map</td>
+	</tr>
+	<tr id='zoomanimevent-noupdate'>
+		<td><code><b>noUpdate</b>
+		<td><code>Boolean</code></td>
+		<td>Whether layers should update their contents due to this event</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Properties inherited from <a href='#event'>Event</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Property</th>
+		<th>Type</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='zoomanimevent-type'>
+		<td><code><b>type</b>
+		<td><code>String</code></td>
+		<td>The event type (e.g. <code>&#39;click&#39;</code>).</td>
+	</tr>
+	<tr id='zoomanimevent-target'>
 		<td><code><b>target</b>
 		<td><code>Object</code></td>
 		<td>The object that fired the event.</td>

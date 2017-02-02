@@ -1,14 +1,17 @@
 describe('Path', function () {
+
+	// The following two tests are skipped, as the ES6-ifycation of Leaflet
+	// means that L.Path is no longer visible.
 	describe('#bringToBack', function () {
 		it('is a no-op for layers not on a map', function () {
-			var path = new L.Path();
+			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToBack()).to.equal(path);
 		});
 	});
 
 	describe('#bringToFront', function () {
 		it('is a no-op for layers not on a map', function () {
-			var path = new L.Path();
+			var path = new L.Polyline([[1, 2], [3, 4], [5, 6]]);
 			expect(path.bringToFront()).to.equal(path);
 		});
 	});

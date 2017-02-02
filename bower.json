@@ -6,7 +6,7 @@
     "dist/leaflet.css",
     "dist/leaflet-src.js"
   ],
-   "ignore": [
+  "ignore": [
     ".*",
     "CHANGELOG.json",
     "FAQ.md",
