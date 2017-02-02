@@ -716,9 +716,18 @@ export var Map = Evented.extend({
 			this.fire('unload');
 		}
 
-		for (var i in this._layers) {
+		var i;
+		for (i in this._layers) {
 			this._layers[i].remove();
 		}
+		for (i in this._panes) {
+			L.DomUtil.remove(this._panes[i]);
+		}
+
+		this._layers = [];
+		this._panes = [];
+		delete this._mapPane;
+		delete this._renderer;
 
 		return this;
 	},
@@ -1507,12 +1516,12 @@ export var Map = Evented.extend({
 
 		this.on('zoomanim', function (e) {
 			var prop = DomUtil.TRANSFORM,
-			    transform = proxy.style[prop];
+			    transform = this._proxy.style[prop];
 
-			DomUtil.setTransform(proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
+			DomUtil.setTransform(this._proxy, this.project(e.center, e.zoom), this.getZoomScale(e.zoom, 1));
 
 			// workaround for case when transform is the same and so transitionend event is not fired
-			if (transform === proxy.style[prop] && this._animatingZoom) {
+			if (transform === this._proxy.style[prop] && this._animatingZoom) {
 				this._onZoomTransitionEnd();
 			}
 		}, this);
@@ -1520,8 +1529,15 @@ export var Map = Evented.extend({
 		this.on('load moveend', function () {
 			var c = this.getCenter(),
 			    z = this.getZoom();
-			DomUtil.setTransform(proxy, this.project(c, z), this.getZoomScale(z, 1));
+			DomUtil.setTransform(this._proxy, this.project(c, z), this.getZoomScale(z, 1));
 		}, this);
+
+		this._on('unload', this._destroyAnimProxy, this);
+	},
+
+	_destroyAnimProxy: function () {
+		L.DomUtil.remove(this._proxy);
+		delete this._proxy;
 	},
 
 	_catchTransitionEnd: function (e) {

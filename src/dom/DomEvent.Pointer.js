@@ -23,7 +23,6 @@ export var _pointersCount = 0;
 // ref http://www.w3.org/TR/pointerevents/ https://www.w3.org/Bugs/Public/show_bug.cgi?id=22890
 
 export function addPointerListener(obj, type, handler, id) {
-
 	if (type === 'touchstart') {
 		_addPointerStart(obj, handler, id);
 
