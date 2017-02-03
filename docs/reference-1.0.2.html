@@ -2958,13 +2958,19 @@ off of the screen while it is open.</td>
 		<td><code>true</code></td>
 		<td>Controls the presence of a close button in the popup.</td>
 	</tr>
+	<tr id='popup-closeonclick'>
+		<td><code><b>closeOnClick</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>*</code></td>
+		<td>Set it if you want to override the default behavior of the popup closing when user clicks
+on the map. Defaults to the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option.</td>
+	</tr>
 	<tr id='popup-autoclose'>
 		<td><code><b>autoClose</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you want to override the default behavior of
-the popup closing when user clicks the map (set globally by
-the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option).</td>
+the popup closing when another popup is opened.</td>
 	</tr>
 	<tr id='popup-classname'>
 		<td><code><b>className</b></code></td>
