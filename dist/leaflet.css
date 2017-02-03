@@ -60,6 +60,12 @@
 	-ms-touch-action: none;
 	touch-action: none;
 }
+.leaflet-container {
+	-webkit-tap-highlight-color: transparent;
+}
+.leaflet-container a {
+	-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);
+}
 .leaflet-tile {
 	filter: inherit;
 	visibility: hidden;
