@@ -9,14 +9,14 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../../build/deps.js"></script>
     <script src="../leaflet-include.js"></script>
 </head>
 <body>
 
     <div id="map"></div>
 
-    <script type="text/javascript">
+    <script>
         map = L.map('map', { center: [0, 0], zoom: 3, maxZoom: 4 });
 
         var markerStatic = new L.Marker([0, -10], {
