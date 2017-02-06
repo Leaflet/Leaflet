@@ -1302,6 +1302,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/react-map">Sylvenas</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/brandonxiang/leaflet.marker.highlight">Leaflet.Marker.Highlight</a>
+		</td>
+		<td>
+			Adding highlight performance for L.marker.(<a href="https://brandonxiang.github.io/leaflet.marker.highlight/examples/">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/brandonxiang">Brandon Xiang</a>
+		</td>
+	</tr>
 </table>
 
 
