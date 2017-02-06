@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script type="text/javascript" src="../../build/deps.js"></script>
+    <script src="../../build/deps.js"></script>
     <script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -17,7 +17,7 @@
     <div id="map"></div>
     <button id="removeAdd">Remove and Add Layer</button>
 
-    <script type="text/javascript">
+    <script>
         map = L.map('map', { center: [0, 0], zoom: 3, maxZoom: 4 });
 
         var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
