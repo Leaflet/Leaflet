@@ -39,11 +39,11 @@ export var ImageOverlay = Layer.extend({
 
 		// @option crossOrigin: Boolean = false
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
-		crossOrigin: false
+		crossOrigin: false,
 
 		// @option errorOverlayUrl: String = ''
 		// URL to the overlay image to show in place of the overlay that failed to load.
-		errorOverlayUrl: '',
+		errorOverlayUrl: ''
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -201,7 +201,7 @@ export var ImageOverlay = Layer.extend({
 
 	_updateOpacity: function () {
 		DomUtil.setOpacity(this._image, this.options.opacity);
-	}
+	},
 
 	_overlayOnError: function () {
 		var errorUrl = this.options.errorOverlayUrl;
