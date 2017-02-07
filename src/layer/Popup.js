@@ -89,7 +89,7 @@ export var Popup = DivOverlay.extend({
 
 		// @option closeOnClick: Boolean = *
 		// Set it if you want to override the default behavior of the popup closing when user clicks
-		// on the map. Defaults to the Map's [closePopupOnClick](#map-closepopuponclick) option.
+		// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
 
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
