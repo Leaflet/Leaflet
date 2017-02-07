@@ -84,9 +84,12 @@ export var Popup = DivOverlay.extend({
 
 		// @option autoClose: Boolean = true
 		// Set it to `false` if you want to override the default behavior of
-		// the popup closing when user clicks the map (set globally by
-		// the Map's [closePopupOnClick](#map-closepopuponclick) option).
+		// the popup closing when another popup is opened.
 		autoClose: true,
+
+		// @option closeOnClick: Boolean = *
+		// Set it if you want to override the default behavior of the popup closing when user clicks
+		// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
 
 		// @option className: String = ''
 		// A custom CSS class name to assign to the popup.
@@ -148,7 +151,7 @@ export var Popup = DivOverlay.extend({
 	getEvents: function () {
 		var events = DivOverlay.prototype.getEvents.call(this);
 
-		if ('closeOnClick' in this.options ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
+		if (this.options.closeOnClick !== undefined ? this.options.closeOnClick : this._map.options.closePopupOnClick) {
 			events.preclick = this._close;
 		}
 
