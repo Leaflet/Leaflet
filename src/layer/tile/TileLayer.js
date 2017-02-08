@@ -49,18 +49,6 @@ export var TileLayer = GridLayer.extend({
 		// Maximum zoom number.
 		maxZoom: 18,
 
-		// @option maxNativeZoom: Number = null
-		// Maximum zoom number the tile source has available. If it is specified,
-		// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
-		// from `maxNativeZoom` level and auto-scaled.
-		maxNativeZoom: null,
-
-		// @option minNativeZoom: Number = null
-		// Minimum zoom number the tile source has available. If it is specified,
-		// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
-		// from `minNativeZoom` level and auto-scaled.
-		minNativeZoom: null,
-
 		// @option subdomains: String|String[] = 'abc'
 		// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
 		subdomains: 'abc',
@@ -206,26 +194,6 @@ export var TileLayer = GridLayer.extend({
 		done(e, tile);
 	},
 
-	getTileSize: function () {
-		var map = this._map,
-		    tileSize = GridLayer.prototype.getTileSize.call(this),
-		    zoom = this._tileZoom + this.options.zoomOffset,
-		    minNativeZoom = this.options.minNativeZoom,
-		    maxNativeZoom = this.options.maxNativeZoom;
-
-		// decrease tile size when scaling below minNativeZoom
-		if (minNativeZoom !== null && zoom < minNativeZoom) {
-			return tileSize.divideBy(map.getZoomScale(minNativeZoom, zoom)).round();
-		}
-
-		// increase tile size when scaling above maxNativeZoom
-		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
-			return tileSize.divideBy(map.getZoomScale(maxNativeZoom, zoom)).round();
-		}
-
-		return tileSize;
-	},
-
 	_onTileRemove: function (e) {
 		e.tile.onload = null;
 	},
@@ -234,25 +202,13 @@ export var TileLayer = GridLayer.extend({
 		var zoom = this._tileZoom,
 		maxZoom = this.options.maxZoom,
 		zoomReverse = this.options.zoomReverse,
-		zoomOffset = this.options.zoomOffset,
-		minNativeZoom = this.options.minNativeZoom,
-		maxNativeZoom = this.options.maxNativeZoom;
+		zoomOffset = this.options.zoomOffset;
 
 		if (zoomReverse) {
 			zoom = maxZoom - zoom;
 		}
 
-		zoom += zoomOffset;
-
-		if (minNativeZoom !== null && zoom < minNativeZoom) {
-			return minNativeZoom;
-		}
-
-		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
-			return maxNativeZoom;
-		}
-
-		return zoom;
+		return zoom + zoomOffset;
 	},
 
 	_getSubdomain: function (tilePoint) {

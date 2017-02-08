@@ -113,6 +113,18 @@ export var GridLayer = Layer.extend({
 		// The maximum zoom level that tiles will be loaded at.
 		maxZoom: undefined,
 
+		// @option maxNativeZoom: Number = undefined
+		// Maximum zoom number the tile source has available. If it is specified,
+		// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
+		// from `maxNativeZoom` level and auto-scaled.
+		maxNativeZoom: undefined,
+
+		// @option minNativeZoom: Number = undefined
+		// Minimum zoom number the tile source has available. If it is specified,
+		// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
+		// from `minNativeZoom` level and auto-scaled.
+		minNativeZoom: undefined,
+
 		// @option noWrap: Boolean = false
 		// Whether the layer is wrapped around the antimeridian. If `true`, the
 		// GridLayer will only be displayed once at low zoom levels. Has no
@@ -497,8 +509,22 @@ export var GridLayer = Layer.extend({
 		this._setView(e.center, e.zoom, true, e.noUpdate);
 	},
 
+	_clampZoom: function (zoom) {
+		var options = this.options;
+
+		if (undefined !== options.minNativeZoom && zoom < options.minNativeZoom) {
+			return options.minNativeZoom;
+		}
+
+		if (undefined !== options.maxNativeZoom && options.maxNativeZoom < zoom) {
+			return options.maxNativeZoom;
+		}
+
+		return zoom;
+	},
+
 	_setView: function (center, zoom, noPrune, noUpdate) {
-		var tileZoom = Math.round(zoom);
+		var tileZoom = this._clampZoom(Math.round(zoom));
 		if ((this.options.maxZoom !== undefined && tileZoom > this.options.maxZoom) ||
 		    (this.options.minZoom !== undefined && tileZoom < this.options.minZoom)) {
 			tileZoom = undefined;
@@ -592,7 +618,7 @@ export var GridLayer = Layer.extend({
 	_update: function (center) {
 		var map = this._map;
 		if (!map) { return; }
-		var zoom = map.getZoom();
+		var zoom = this._clampZoom(map.getZoom());
 
 		if (center === undefined) { center = map.getCenter(); }
 		if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
