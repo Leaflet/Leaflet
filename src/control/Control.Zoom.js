@@ -91,7 +91,7 @@ export var Zoom = Control.extend({
 		link.setAttribute('role', 'button');
 		link.setAttribute('aria-label', title);
 
-		DomEvent.on(link, 'mousedown dblclick', DomEvent.stopPropagation);
+		DomEvent.disableClickPropagation(link);
 		DomEvent.on(link, 'click', DomEvent.stop);
 		DomEvent.on(link, 'click', fn, this);
 		DomEvent.on(link, 'click', this._refocusOnMap, this);
