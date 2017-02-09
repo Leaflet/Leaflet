@@ -35,8 +35,8 @@
     "build-jake": "jake build",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
-    "lint": "eslint src",
-    "lintfix": "eslint src --fix",
+    "lint": "eslint src; eslint spec/suites",
+    "lintfix": "eslint src --fix; eslint spec/suites --fix; ",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js"
