@@ -1,4 +1,3 @@
-// var es3 = require('rollup-plugin-es3');
 var json = require('rollup-plugin-json');
 
 // Karma configuration
@@ -26,7 +25,7 @@ module.exports = function (config) {
 		basePath: '../',
 
 		plugins: [
-			'karma-rollup-preprocessor',
+			'karma-rollup-plugin',
 			'karma-mocha',
 			'karma-coverage',
 			'karma-phantomjs-launcher',
@@ -49,17 +48,11 @@ module.exports = function (config) {
 			'src/Leaflet.js': ['rollup']
 		},
 		rollupPreprocessor: {
-			rollup: {
-				plugins: [
-// 					es3(),
-					json()
-				]
-			},
-			bundle: {
-				format: 'umd',
-				moduleName: 'L'
-// 				sourceMap: 'inline'
-			}
+			plugins: [
+				json()
+			],
+			format: 'umd',
+			moduleName: 'L'
 		},
 
 		// test results reporter to use
