@@ -101,6 +101,36 @@ describe("Map.Keyboard", function () {
 		});
 	});
 
+	describe("does not move the map if disabled", function () {
+		it("no zoom in", function (done) {
+
+			map.keyboard.disable();
+
+			happen.keydown(document,  {keyCode: 171});	// 171 = +
+			happen.keypress(document, {keyCode: 171});
+			happen.keyup(document,    {keyCode: 171});
+
+			setTimeout(function () {
+				expect(map.getZoom()).to.eql(5);
+				done();
+			}, 300);
+		});
+
+		it("no move north", function (done) {
+
+			map.keyboard.disable();
+
+			happen.keydown(document,  {keyCode: 38});	// 38 = cursor up
+			happen.keypress(document, {keyCode: 38});
+			happen.keyup(document,    {keyCode: 38});
+
+			setTimeout(function () {
+				expect(map.getCenter().lat).to.eql(0);
+				done();
+			}, 300);
+		});
+	});
+
 
 	describe("popup closing", function () {
 		it("closes a popup when pressing escape", function () {
