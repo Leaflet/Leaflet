@@ -1,6 +1,9 @@
 export {Renderer} from './Renderer';
 export {Canvas, canvas} from './Canvas';
-export {SVG, svg} from './SVG';
+import {SVG, create, pointsToPath, svg} from './SVG';
+SVG.create = create;
+SVG.pointsToPath = pointsToPath;
+export {SVG, svg};
 import './Renderer.getRenderer';	// This is a bit of a hack, but needed because circular dependencies
 
 export {Path} from './Path';
