@@ -2206,7 +2206,15 @@ Change the way the user can interactively move around the map.
 			<a href="http://www.kartena.se/">Kartena</a>
 		</td>
 	</tr>
-
+	<tr>
+		<td>
+			<a href="https://github.com/flaviocarmo/Leaflet.zoominfo/">Leaflet.zoominfo</a>
+		</td><td>
+			A leaflet zoomcontrol plugin with map zoom level information.
+		</td><td>
+			<a href="https://github.com/flaviocarmo">Flávio Carmo</a>
+		</td>
+	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/slara/Leaflet.BorderPan">Leaflet.BorderPan</a>
