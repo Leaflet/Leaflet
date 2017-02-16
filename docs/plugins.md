@@ -2210,7 +2210,7 @@ Change the way the user can interactively move around the map.
 		<td>
 			<a href="https://github.com/flaviocarmo/Leaflet.zoominfo/">Leaflet.zoominfo</a>
 		</td><td>
-			A leaflet zoomcontrol plugin with map zoom level information.
+			A zoom control which displays the current zoom level.
 		</td><td>
 			<a href="https://github.com/flaviocarmo">Flávio Carmo</a>
 		</td>
