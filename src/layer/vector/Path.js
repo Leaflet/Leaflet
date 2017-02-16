@@ -28,6 +28,10 @@ export var Path = Layer.extend({
 		// Stroke width in pixels
 		weight: 3,
 
+		// @option clickTolerance: Number = 0
+		// Enlarges the clickable area of the path. Doesn't work on `SVG`-powered layers.
+		clickTolerance: 0,
+
 		// @option opacity: Number = 1.0
 		// Stroke opacity
 		opacity: 1,
@@ -135,6 +139,6 @@ export var Path = Layer.extend({
 
 	_clickTolerance: function () {
 		// used when doing hit detection for Canvas layers
-		return (this.options.stroke ? this.options.weight / 2 : 0) + (touch ? 10 : 0);
+		return this.options.clickTolerance + (this.options.stroke ? this.options.weight / 2 : 0) + (touch ? 10 : 0);
 	}
 });
