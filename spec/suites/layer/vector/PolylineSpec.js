@@ -144,30 +144,6 @@ describe('Polyline', function () {
 
 	});
 
-	describe('#_flat', function () {
-		var layer = L.polyline([]);
-
-		it('should return true for an array of LatLngs', function () {
-			expect(L.Polyline._flat([L.latLng([0, 0])])).to.be(true);
-		});
-
-		it('should return true for an array of LatLngs arrays', function () {
-			expect(L.Polyline._flat([[0, 0]])).to.be(true);
-		});
-
-		it('should return true for an empty array', function () {
-			expect(L.Polyline._flat([])).to.be(true);
-		});
-
-		it('should return false for a nested array of LatLngs', function () {
-			expect(L.Polyline._flat([[L.latLng([0, 0])]])).to.be(false);
-		});
-
-		it('should return false for a nested empty array', function () {
-			expect(L.Polyline._flat([[]])).to.be(false);
-		});
-
-	});
 
 	describe("#_defaultShape", function () {
 

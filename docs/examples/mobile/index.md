@@ -29,7 +29,7 @@ Also, we need to tell the mobile browser to disable unwanted scaling of the page
 
 ### Initializing the map
 
-We'll now initialize the map in the JavaScript code like we did in the [quick start guide](../quick-start/quick-start.html), showing the whole world:
+We'll now initialize the map in the JavaScript code like we did in the [quick start guide](../quick-start/), showing the whole world:
 
 <pre><code class="javascript">var map = L.map('map').fitWorld();
 

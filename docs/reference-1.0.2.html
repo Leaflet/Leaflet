@@ -6,11 +6,8 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.2</strong>.</p>
+<p>This reference reflects <strong>Leaflet 1.0.2</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
-<p>Docs for the 1.0.0 and 1.0.1 versions are <a href='reference-1.0.0.html'>available here</a>.
-
-<p>Docs for the legacy 0.7.x versions are <a href='reference.html'>available here</a>.
 
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
@@ -2961,13 +2958,19 @@ off of the screen while it is open.</td>
 		<td><code>true</code></td>
 		<td>Controls the presence of a close button in the popup.</td>
 	</tr>
+	<tr id='popup-closeonclick'>
+		<td><code><b>closeOnClick</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>*</code></td>
+		<td>Set it if you want to override the default behavior of the popup closing when user clicks
+on the map. Defaults to the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option.</td>
+	</tr>
 	<tr id='popup-autoclose'>
 		<td><code><b>autoClose</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you want to override the default behavior of
-the popup closing when user clicks the map (set globally by
-the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option).</td>
+the popup closing when another popup is opened.</td>
 	</tr>
 	<tr id='popup-classname'>
 		<td><code><b>className</b></code></td>
@@ -7217,9 +7220,9 @@ properties. The event can optionally be propagated to event parents.</p>
 
 <pre><code class="lang-js">// create a red polyline from an array of LatLng points
 var latlngs = [
-    [-122.68, 45.51],
-    [-122.43, 37.77],
-    [-118.2, 34.04]
+    [45.51, -122.68],
+    [37.77, -122.43],
+    [34.04, -118.2]
 ];
 var polyline = L.polyline(latlngs, {color: &#39;red&#39;}).addTo(map);
 // zoom the map to the polyline
@@ -7228,12 +7231,12 @@ map.fitBounds(polyline.getBounds());
 <p>You can also pass a multi-dimensional array to represent a <code>MultiPolyline</code> shape:</p>
 <pre><code class="lang-js">// create a red polyline from an array of arrays of LatLng points
 var latlngs = [
-    [[-122.68, 45.51],
-     [-122.43, 37.77],
-     [-118.2, 34.04]],
-    [[-73.91, 40.78],
-     [-87.62, 41.83],
-     [-96.72, 32.76]]
+    [[45.51, -122.68],
+     [37.77, -122.43],
+     [34.04, -118.2]],
+    [[40.78, -73.91],
+     [41.83, -87.62],
+     [32.76, -96.72]]
 ];
 </code></pre>
 
@@ -8058,25 +8061,25 @@ Note that points you pass when creating a polygon shouldn&#39;t have an addition
 
 
 <pre><code class="lang-js">// create a red polygon from an array of LatLng points
-var latlngs = [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]];
+var latlngs = [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]];
 var polygon = L.polygon(latlngs, {color: &#39;red&#39;}).addTo(map);
 // zoom the map to the polygon
 map.fitBounds(polygon.getBounds());
 </code></pre>
 <p>You can also pass an array of arrays of latlngs, with the first array representing the outer shape and the other arrays representing holes in the outer shape:</p>
 <pre><code class="lang-js">var latlngs = [
-  [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
-  [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+  [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
+  [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
 ];
 </code></pre>
 <p>Additionally, you can pass a multi-dimensional array to represent a MultiPolygon shape.</p>
 <pre><code class="lang-js">var latlngs = [
   [ // first polygon
-    [[-111.03, 41],[-111.04, 45],[-104.05, 45],[-104.05, 41]], // outer ring
-    [[-108.58,37.29],[-108.58,40.71],[-102.50,40.71],[-102.50,37.29]] // hole
+    [[37, -109.05],[41, -109.03],[41, -102.05],[37, -102.04]], // outer ring
+    [[37.29, -108.58],[40.71, -108.58],[40.71, -102.50],[37.29, -102.50]] // hole
   ],
   [ // second polygon
-    [[-109.05, 37],[-109.03, 41],[-102.05, 41],[-102.04, 37],[-109.05, 38]]
+    [[41, -111.03],[45, -111.04],[45, -104.05],[41, -104.05]]
   ]
 ];
 </code></pre>

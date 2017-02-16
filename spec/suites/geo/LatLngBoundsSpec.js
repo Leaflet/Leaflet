@@ -75,6 +75,14 @@ describe('LatLngBounds', function () {
 			expect(a.equals([[14, 13], [30, 40]])).to.eql(false);
 			expect(a.equals(null)).to.eql(false);
 		});
+
+		it("returns true if compared objects are equal within a certain margin", function () {
+			expect(a.equals([[15, 11], [29, 41]], 1)).to.eql(true);
+		});
+
+		it("returns false if compared objects are not equal within a certain margin", function () {
+			expect(a.equals([[15, 11], [29, 41]], 0.5)).to.eql(false);
+		});
 	});
 
 	describe('#isValid', function () {
@@ -138,9 +146,19 @@ describe('LatLngBounds', function () {
 	});
 
 	describe('#contains', function () {
-		it('returns true if contains latlng point', function () {
+		it('returns true if contains latlng point as array', function () {
 			expect(a.contains([16, 20])).to.eql(true);
 			expect(L.latLngBounds(a).contains([5, 20])).to.eql(false);
+		});
+
+		it('returns true if contains latlng point as {lat:, lng:} object', function () {
+			expect(a.contains({lat: 16, lng: 20})).to.eql(true);
+			expect(L.latLngBounds(a).contains({lat: 5, lng: 20})).to.eql(false);
+		});
+
+		it('returns true if contains latlng point as L.LatLng instance', function () {
+			expect(a.contains(L.latLng([16, 20]))).to.eql(true);
+			expect(L.latLngBounds(a).contains(L.latLng([5, 20]))).to.eql(false);
 		});
 
 		it('returns true if contains bounds', function () {
