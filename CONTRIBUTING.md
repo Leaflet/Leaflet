@@ -154,7 +154,7 @@ and is automatically generated from a set of HTML and Markdown files by [Jekyll]
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
 browse the [`docs/ directory`](https://github.com/Leaflet/Leaflet/tree/master/docs),
-choose a certain file for editing (e.g. `plugins.html` for the list of Leaflet plugins),
+choose a certain file for editing (e.g. `plugins.md` for the list of Leaflet plugins),
 click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
 
