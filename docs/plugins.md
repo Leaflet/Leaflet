@@ -77,7 +77,7 @@ While Leaflet is meant to be as lightweight as possible, and focuses on a core s
 		<h4>Integration</h4>
 		<ul>
 			<li><a href="#frameworks--build-systems">Frameworks &amp; build systems</a></li>
-			<li><a href="#suprdsup-party-integration">3<sup>rd</sup> party</a></li>
+			<li><a href="#3rd-party-integration">3<sup>rd</sup> party</a></li>
 		</ul>
 		<hr>
 		<a href="#develop-your-own">Develop your own</a>
