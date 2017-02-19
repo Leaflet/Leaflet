@@ -1043,11 +1043,11 @@ These plugins provide new markers or news ways of converting abstract data into 
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/tomaszbrue/leaflet.boatmarker">Leaflet.BoatMarker</a>
+			<a href="https://github.com/thomasbrueggemann/leaflet.boatmarker">Leaflet.BoatMarker</a>
 		</td><td>
-			A boat marker using HTML Canvas for displaying yachts and sailboats with heading and wind information. <a href="http://thomasbrueggemann.github.io/leaflet.boatmarker/">Demo</a>.
+			A boat marker using HTML Canvas for displaying yachts and sailboats with heading and optional wind information. <a href="http://thomasbrueggemann.github.io/leaflet.boatmarker/">Demo</a>.
 		</td><td>
-			<a href="https://github.com/tomaszbrue">Thomas Brüggemann</a>
+			<a href="https://github.com/thomasbrueggemann">Thomas Brüggemann</a>
 		</td>
 	</tr>
 	<tr>
@@ -1972,7 +1972,7 @@ Plugins that search for overlays and enhance how to display information about th
 		<td>
 			<a href="https://github.com/yafred/leaflet-responsive-popup">leaflet-responsive-popup</a>
 		</td><td>
-			Removes the need to move the map to be able to see the content of the popup. 
+			Removes the need to move the map to be able to see the content of the popup.
 		</td><td>
 			<a href="https://github.com/yafred">YaFred</a>
 		</td>
@@ -3256,7 +3256,7 @@ The following plugins use external services to calculate driving or walking rout
 			<a href="http://www.nearest.place/">Nearest!</a>
 		</td>
 	</tr>
-	
+
 	<tr>
     		<td>
     			<a href="https://github.com/BKGiser/Leaflet.Routing.Amap">Leaflet.Routing.Amap</a>
