@@ -178,6 +178,52 @@ describe("Control.Layers", function () {
 			happen.click(map._container);
 			expect(map._container.querySelector('.leaflet-control-layers-expanded')).to.be.ok();
 		});
+		it('is scrollable if necessary when added on map', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}),
+			    div = document.createElement('div'),
+			    i = 0;
+
+			// Need to create a DIV with specified height and insert it into DOM, so that the browser
+			// gives it an actual size.
+			map.remove();
+			div.style.height = div.style.width = '200px';
+			document.body.appendChild(div);
+			map = L.map(div);
+
+			for (; i < 20; i += 1) {
+				// Default text size: 12px => 12 * 20 = 240px height (not even considering padding/margin).
+				layersCtrl.addOverlay(L.marker([0, 0]), i);
+			}
+
+			layersCtrl.addTo(map);
+
+			expect(div.clientHeight).to.be.greaterThan(0); // Make sure first that the map container has a height, otherwise this test is useless.
+			expect(div.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
+			expect(layersCtrl._form.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
+		});
+		it('becomes scrollable if necessary when too many layers are added while it is already on map', function () {
+			var layersCtrl = L.control.layers(null, null, {collapsed: false}),
+			    div = document.createElement('div'),
+			    i = 0;
+
+			// Need to create a DIV with specified height and insert it into DOM, so that the browser
+			// gives it an actual size.
+			map.remove();
+			div.style.height = div.style.width = '200px';
+			document.body.appendChild(div);
+			map = L.map(div);
+
+			layersCtrl.addTo(map);
+			expect(layersCtrl._form.classList.contains('leaflet-control-layers-scrollbar')).to.be(false);
+
+			for (; i < 20; i += 1) {
+				// Default text size: 12px => 12 * 20 = 240px height (not even considering padding/margin).
+				layersCtrl.addOverlay(L.marker([0, 0]), i);
+			}
+
+			expect(div.clientHeight).to.be.greaterThan(layersCtrl._container.clientHeight);
+			expect(layersCtrl._form.classList.contains('leaflet-control-layers-scrollbar')).to.be(true);
+		});
 	});
 
 	describe("sortLayers", function () {
