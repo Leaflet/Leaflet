@@ -45,6 +45,8 @@ export function bind(fn, obj) {
 	};
 }
 
+// @property lastId: Number
+// Last unique ID used by [`stamp()`](#util-stamp)
 export var lastId = 0;
 
 // @function stamp(obj: Object): Number
