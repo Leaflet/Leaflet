@@ -45,7 +45,7 @@ export function bind(fn, obj) {
 	};
 }
 
-var lastId = 0;
+export var lastId = 0;
 
 // @function stamp(obj: Object): Number
 // Returns the unique ID of an object, assiging it one if it doesn't have it.
