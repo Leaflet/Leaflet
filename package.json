@@ -39,7 +39,7 @@
     "lintfix": "eslint src --fix; eslint spec/suites --fix; ",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
-    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js"
+    "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map"
   },
   "eslintConfig": {
     "root": true,
