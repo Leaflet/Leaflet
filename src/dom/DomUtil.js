@@ -186,9 +186,11 @@ L.DomUtil = {
 	// browser doesn't support 3D CSS transforms.
 	setTransform: function (el, offset, scale) {
 		var pos = offset || new L.Point(0, 0);
-
+		el.style.willChange = scale !== 1 ? 'auto' : 'transform';
 		el.style[L.DomUtil.TRANSFORM] =
-			(L.Browser.ie3d ?
+			// we don't want to use `translate3d` for webkit since it causes white lines while panning
+			// https://bugs.chromium.org/p/chromium/issues/detail?id=600120#c15
+			(L.Browser.ie3d || L.Browser.webkit3d ?
 				'translate(' + pos.x + 'px,' + pos.y + 'px)' :
 				'translate3d(' + pos.x + 'px,' + pos.y + 'px,0)') +
 			(scale ? ' scale(' + scale + ')' : '');
