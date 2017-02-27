@@ -792,6 +792,15 @@ Load dynamic data which is updated in the map, or load GIS vector data in non-st
 			<a href="https://github.com/BenjaminVadant/">Benjamin VADANT</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://www.micello.com/documentation/maps-sdk-leaflet">Micello Indoor Maps</a>
+		</td><td>
+			Display Micello's detailed indoor maps using Micello's feature rich Leaflet plugin SDK.
+		</td><td>
+			<a href="https://micello.com">Micello, Inc.</a>
+		</td>
+	</tr>
 </table>
 
 
