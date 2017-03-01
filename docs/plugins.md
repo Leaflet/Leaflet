@@ -1904,6 +1904,17 @@ Plugins that search for overlays and enhance how to display information about th
 		</td>
 	</tr>
 	<tr>
+        	<td>
+            		<a href="https://github.com/8to5Developer/leaflet-custom-searchbox">leaflet-custom-searchbox</a>
+        	</td>
+		<td>
+            		A google map style search box which includes a side panel slider control.
+        	</td>
+		<td>
+		        <a href="https://github.com/8to5Developer/">A.D</a> 
+			</td>
+          </tr>
+	<tr>
 		<td>
 			<a href="http://erictheise.github.com/rrose">Leaflet.Rrose</a>
 		</td><td>
