@@ -39,7 +39,11 @@ export var ImageOverlay = Layer.extend({
 
 		// @option crossOrigin: Boolean = false
 		// If true, the image will have its crossOrigin attribute set to ''. This is needed if you want to access image pixel data.
-		crossOrigin: false
+		crossOrigin: false,
+
+		// @option zIndex: Number = 1
+		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the tile layer.
+		zIndex: 1
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -157,6 +161,14 @@ export var ImageOverlay = Layer.extend({
 		return this._image;
 	},
 
+	// @method: setZIndex(value: Number) : this
+	// Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
+	setZIndex: function (value) {
+		this.options.zIndex = value;
+		this._updateZIndex();
+		return this;
+	},
+
 	_initImage: function () {
 		var img = this._image = DomUtil.create('img',
 				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
@@ -168,6 +180,10 @@ export var ImageOverlay = Layer.extend({
 
 		if (this.options.crossOrigin) {
 			img.crossOrigin = '';
+		}
+
+		if (this.options.zIndex) {
+			this._updateZIndex();
 		}
 
 		img.src = this._url;
@@ -196,6 +212,12 @@ export var ImageOverlay = Layer.extend({
 
 	_updateOpacity: function () {
 		DomUtil.setOpacity(this._image, this.options.opacity);
+	},
+
+	_updateZIndex: function () {
+		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
+			this._image.style.zIndex = this.options.zIndex;
+		}
 	}
 });
 
