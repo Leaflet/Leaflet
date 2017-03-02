@@ -70,15 +70,16 @@ export var Circle = CircleMarker.extend({
 		var lng = this._latlng.lng,
 		    lat = this._latlng.lat,
 		    map = this._map,
-		    crs = map.options.crs;
+		    crs = map.options.crs,
+		    zoom = this._renderer._zoom;
 
 		if (crs.distance === Earth.distance) {
 			var d = Math.PI / 180,
 			    latR = (this._mRadius / Earth.R) / d,
-			    top = map.project([lat + latR, lng]),
-			    bottom = map.project([lat - latR, lng]),
+			    top = map.project([lat + latR, lng], zoom),
+			    bottom = map.project([lat - latR, lng], zoom),
 			    p = top.add(bottom).divideBy(2),
-			    lat2 = map.unproject(p).lat,
+			    lat2 = map.unproject(p, zoom).lat,
 			    lngR = Math.acos((Math.cos(latR * d) - Math.sin(lat * d) * Math.sin(lat2 * d)) /
 			            (Math.cos(lat * d) * Math.cos(lat2 * d))) / d;
 
@@ -86,8 +87,8 @@ export var Circle = CircleMarker.extend({
 				lngR = latR / Math.cos(Math.PI / 180 * lat); // Fallback for edge case, #2425
 			}
 
-			this._point = p.subtract(map.getPixelOrigin());
-			this._radius = isNaN(lngR) ? 0 : Math.max(Math.round(p.x - map.project([lat2, lng - lngR]).x), 1);
+			this._point = p.subtract(this._renderer._pixelOrigin);
+			this._radius = isNaN(lngR) ? 0 : Math.max(Math.round(p.x - map.project([lat2, lng - lngR], zoom).x, zoom), 1);
 			this._radiusY = Math.max(Math.round(p.y - top.y), 1);
 
 		} else {
