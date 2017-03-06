@@ -1601,6 +1601,15 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/flowfyre/Leaflet.FlowEcharts">Leaflet.FlowEcharts</a>
+		</td><td>
+			A plugin for Leaflet to load <a href="https://github.com/ecomfe/echarts">echarts</a> map and make big data visualization easier. Compatible with Leaflet 0.7.x and 1.x.
+		</td><td>
+			<a href="https://github.com/flowfyre">flowfyre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/wandergis/leaflet-echarts">leaflet-echarts</a>
 		</td><td>
 			A plugin for Leaflet to load <a href="https://github.com/ecomfe/echarts">echarts</a> map and make big data visualization easier.
