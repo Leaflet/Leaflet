@@ -362,7 +362,7 @@ LayerGroup.include({
 	},
 
 	// @method toGeoJSON(): Object
-	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `GeometryCollection`).
+	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
 	toGeoJSON: function () {
 
 		var type = this.feature && this.feature.geometry && this.feature.geometry.type;
@@ -377,7 +377,17 @@ LayerGroup.include({
 		this.eachLayer(function (layer) {
 			if (layer.toGeoJSON) {
 				var json = layer.toGeoJSON();
-				jsons.push(isGeometryCollection ? json.geometry : asFeature(json));
+				if (isGeometryCollection) {
+					jsons.push(json.geometry);
+				} else {
+					var feature = asFeature(json);
+					// Squash nested feature collections
+					if (feature.type === 'FeatureCollection') {
+						jsons.push.apply(jsons, feature.features);
+					} else {
+						jsons.push(feature);
+					}
+				}
 			}
 		});
 
