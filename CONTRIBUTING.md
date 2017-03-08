@@ -74,7 +74,7 @@ npm install
 ```
 or, if you prefer [`yarn`](https://yarnpkg.com/) over `npm`:
 ```
-yarn install -g jake
+yarn global add jake
 yarn install
 ```
 
