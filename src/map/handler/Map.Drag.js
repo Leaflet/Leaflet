@@ -96,12 +96,12 @@ export var Drag = Handler.extend({
 	},
 
 	_onDown: function () {
-		this._map._stop();
 	},
 
 	_onDragStart: function () {
 		var map = this._map;
 
+		map._stop();
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
 			var bounds = latLngBounds(this._map.options.maxBounds);
 
