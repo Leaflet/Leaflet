@@ -61,7 +61,6 @@ export var Drag = Handler.extend({
 			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
-				down: this._onDown,
 				dragstart: this._onDragStart,
 				drag: this._onDrag,
 				dragend: this._onDragEnd
@@ -93,9 +92,6 @@ export var Drag = Handler.extend({
 
 	moving: function () {
 		return this._draggable && this._draggable._moving;
-	},
-
-	_onDown: function () {
 	},
 
 	_onDragStart: function () {
