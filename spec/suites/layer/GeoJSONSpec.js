@@ -356,4 +356,17 @@ describe("L.LayerGroup#toGeoJSON", function () {
 			features: []
 		});
 	});
+
+	it('should return only one FeatureCollection for nested LayerGroups', function () {
+		var layerGroup = new L.LayerGroup([
+			new L.LayerGroup([new L.Marker([-41.3330287, 173.2008273])]),
+			new L.Marker([-41.273356, 173.287278])
+		]);
+
+		var geoJSON = layerGroup.toGeoJSON();
+
+		expect(geoJSON.features.length).to.eql(2);
+		expect(geoJSON.features[0].type).to.eql("Feature");
+		expect(geoJSON.features[1].type).to.eql("Feature");
+	});
 });

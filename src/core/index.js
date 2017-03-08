@@ -3,8 +3,9 @@ export {Browser};
 
 export {Class} from './Class';
 
-export {Evented} from './Events';
-// export var Mixin = {Events: Evented.prototype};
+import {Evented} from './Events';
+export {Evented};
+export var Mixin = {Events: Evented.prototype};
 
 export {Handler} from './Handler';
 

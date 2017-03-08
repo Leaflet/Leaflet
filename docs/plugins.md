@@ -2811,6 +2811,15 @@ These plugins extend Leaflet event handling.
 			<a href="https://github.com/perliedman">Per Liedman</a> / <a href="http://prominentedge.com/">Prominent Edge</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/geoloep/Leaflet.ClickTolerance">Leaflet.ClickTolerance</a>
+		</td><td>
+			This plugin allows you to increase the click tolerance of canvas powered layers, making it possible to increase the clickable area of vector layers beyond their visible extent. Useful when your features are difficult to click otherwise.
+		</td><td>
+			<a href="https://github.com/geoloep">Geoloep</a>
+		</td>
+	</tr>
 </table>
 
 
