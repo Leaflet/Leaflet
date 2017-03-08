@@ -61,7 +61,6 @@ export var Drag = Handler.extend({
 			this._draggable = new Draggable(map._mapPane, map._container);
 
 			this._draggable.on({
-				down: this._onDown,
 				dragstart: this._onDragStart,
 				drag: this._onDrag,
 				dragend: this._onDragEnd
@@ -95,13 +94,10 @@ export var Drag = Handler.extend({
 		return this._draggable && this._draggable._moving;
 	},
 
-	_onDown: function () {
-		this._map._stop();
-	},
-
 	_onDragStart: function () {
 		var map = this._map;
 
+		map._stop();
 		if (this._map.options.maxBounds && this._map.options.maxBoundsViscosity) {
 			var bounds = latLngBounds(this._map.options.maxBounds);
 
