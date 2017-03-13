@@ -826,8 +826,8 @@ export var Map = Evented.extend({
 	getSize: function () {
 		if (!this._size || this._sizeChanged) {
 			this._size = new Point(
-				this._container.clientWidth || 0,
-				this._container.clientHeight || 0);
+				this._container.getBoundingClientRect().width || 0,
+				this._container.getBoundingClientRect().height || 0);
 
 			this._sizeChanged = false;
 		}
