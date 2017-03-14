@@ -1,0 +1,143 @@
+
+basemapProviders: [
+ {
+   name: "leaflet-providers",
+   repo: "https://github.com/leaflet-extras/leaflet-providers",
+   description: "Contains configurations for various free tile
+        providers & OSM, OpenCycleMap, Stamen, Esri, etc.",
+   author: "leaflet-extras members",
+   author-url: "https://github.com/leaflet-extras",
+   npm: "leaflet-providers",
+   demo: "https://leaflet-extras.github.io/leaflet-providers/preview/index.html",
+   worksWith.v0.7: true,
+   worksWith.v1.0: true,
+   },
+ {
+   name: "Leaflet.KoreanTmsProviders",
+   repo: "https://github.com/tontita/Leaflet.KoreanTmsProviders",
+   description: "Contains configurations for various (South) Korean tile providers —
+        Daum, Naver, VWorld, etc.",
+   author: "Seong Choi",
+   author-url: "https://github.com/tontita",
+   npm: ,
+   demo: "https://tontita.github.io/Leaflet.KoreanTmsProviders/",
+   worksWith.v0.7: ,
+   worksWith.v1.0: ,
+ },
+ {
+   name: "Leaflet.ChineseTmsProviders",
+   repo: "https://github.com/htoooth/Leaflet.ChineseTmsProviders",
+   description: "Contains configurations for various Chinese tile providers —
+        TianDiTu, MapABC, GaoDe, etc.",
+   author: "Tao Huang",
+   author-url: "https://github.com/htoooth",
+   npm: ,
+   demo: ,
+   worksWith.v0.7: ,
+   worksWith.v1.0: ,
+ },
+ {
+   name: "Esri Leaflet",
+   repo: "http://esri.github.io/esri-leaflet",
+   description: "A set of tools for using ArcGIS services with Leaflet. Support
+        for map services, feature layers, ArcGIS Online tiles and more.",
+   author: "Patrick Arlt",
+   author-url: "https://github.com/patrickarlt",
+   npm: "esri-leaflet",
+   demo: "https://esri.github.io/esri-leaflet/examples/",
+   worksWith.v0.7: ,
+   worksWith.v1.0: true,
+ },
+ {
+   name: "Leaflet.GIBS",
+   repo: "https://github.com/aparshin/leaflet-GIBS",
+   description: "<a href='https://earthdata.nasa.gov/gibs'>NASA EOSDIS GIBS</a>
+        imagery integration. The plugin provides
+        <a href='https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products'>96 daily updated layers</a>
+        with satellite imagery and science parameters.",
+   author: "Alexander Parshin",
+   author-url: "https://github.com/aparshin",
+   npm: "leaflet-gibs",
+   demo: "http://aparshin.github.io/leaflet-GIBS/examples/",
+   worksWith.v0.7: true,
+   worksWith.v1.0: ,
+ },
+ {
+   name: "L.TileLayer.Kartverket",
+   repo: "https://github.com/knreise/L.TileLayer.Kartverket",
+   description: "Provides easy setup of the tile layers from <a href='http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/'>Kartverket</a> (The Norwegian Mapping Authority)",
+   author: "Atle Frenvik Sveen",
+   author-url: "https://github.com/atlefren",
+   npm: "L.TileLayer.Kartverket",
+   demo: "https://knreise.github.io/L.TileLayer.Kartverket/example.html",
+   worksWith.v0.7: true,
+   worksWith.v1.0: ,
+ },
+ {
+   name: "Leaflet.Spain.WMS",
+   repo: "https://github.com/sigdeletras/Leaflet.Spain.WMS",
+   description: "Provides easy setup for several Web Map Services (WMS) layers for
+        Spain (PNOA, IGN base, Catastro, etc), from Spanish mapping agencies.",
+   author: "Patricio Soriano",
+   author-url: "https://github.com/sigdeletras",
+   npm: ,
+   demo: "https://sigdeletras.github.io/Leaflet.Spain.WMS/examples/",
+   worksWith.v0.7: true,
+   worksWith.v1.0: true,
+ },
+ {
+   name: "PolarMap.js",
+   repo: "https://github.com/GeoSensorWebLab/polarmap.js",
+   description: "JavaScript library for displaying tiles from <a href='http://webmap.arcticconnect.org'>ArcticWebMap</a>,
+        a free tile provider with OSM data in multiple Arctic polar projections.
+        Includes lower-level API for deeper integration with other Leaflet plugins.",
+   author: "GeoSensorWeb Lab",
+   author-url: "https://github.com/geosensorweblab",
+   npm: "polarmap",
+   demo: "http://webmap.arcticconnect.org/polarmap.js/examples/PolarMap/quick-start/index.html#ac_3573/4/90.00/0.00",
+   worksWith.v0.7: true,
+   worksWith.v1.0: true,
+ },
+ {
+   name: "Bing Maps Layer",
+   repo: "https://github.com/gmaclennan/leaflet-bing-layer",
+   description: "Add <a href='https://msdn.microsoft.com/en-us/library/ff701721.aspx'>Bing Maps tiles</a>
+        to your Leaflet Map.",
+   author: "Gregor MacLennan",
+   author-url: "https://github.com/gmaclennan",
+   npm: "leaflet-bing-layer",
+   demo: "https://gmaclennan.github.io/leaflet-bing-layer/",
+   worksWith.v0.7: false,
+   worksWith.v1.0: true,
+ },
+ {
+   name: "L.TileLayer.HERE",
+   repo: "https://gitlab.com/IvanSanchez/Leaflet.TileLayer.HERE",
+   description: "Displays map tiles from HERE maps.",
+   author: "Iván Sánchez",
+   author-url: "https://gitlab.com/IvanSanchez",
+   npm: ,
+   demo: "https://ivansanchez.gitlab.io/Leaflet.TileLayer.HERE/demo.html",
+   worksWith.v0.7: ,
+   worksWith.v1.0: true,
+ },
+ {
+   name: "L.GridLayer.GoogleMutant",
+   repo: "https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant",
+   description: "Displays Google maps (with minimal artifacts thanks to a
+        <a href='https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver'>DOM mutation observer</a>
+        technique)",
+   author: "Iván Sánchez",
+   author-url: "https://gitlab.com/IvanSanchez",
+   npm: "leaflet.gridlayer.googlemutant",
+   demo: "http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html",
+   worksWith.v0.7: false,
+   worksWith.v1.0: true,
+ },
+
+]
+
+
+
+
+

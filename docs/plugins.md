@@ -103,106 +103,47 @@ The following plugins allow loading different maps and provide functionality to 
 Ready-to-go basemaps, with little or no configuration at all.
 
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
+
+{% for plugin in site.data.plugins.basemapProviders %}
+
 	<tr>
 		<td>
-			<a href="https://github.com/leaflet-extras/leaflet-providers">leaflet-providers</a>
+			<a href="{{ plugin.repo }}">{{ plugin.name }}</a>
+			{% if plugin.npm %}<div style='font-size:70%'><tt>npm install {{plugin.npm}}</tt></div>{% endif %}
 		</td><td>
-			Contains configurations for various free tile providers &mdash; OSM, OpenCycleMap, Stamen, Esri, etc.
+			<div>{{ plugin.description }}</div>
+
+			{% if plugin.demo %}<div><a href='{{ plugin.demo }}'>Demo</a>.</div>{% endif %}
+
+			<div>
+			{% case plugin['worksWith.v0.7'] %}
+			{% when nil %}
+				<img src='https://img.shields.io/badge/Leaflet%200.7-%3F%3F%3F-a0a0a0.svg?colorA=C0C0C0&colorB=A0A0A0'/>
+			{% when true %}
+				<img src='https://img.shields.io/badge/Leaflet%200.7-yes-yellowgreen.svg?colorA=C0C0C0'/>
+			{% else %}
+				<img src='https://img.shields.io/badge/Leaflet%200.7-no-800000.svg?colorA=C0C0C0'/>
+			{% endcase %}
+
+			{% case plugin['worksWith.v1.0'] %}
+			{% when nil %}
+				<img src='https://img.shields.io/badge/Leaflet%201.0-%3F%3F%3F-a0a0a0.svg?colorA=C0C0C0&colorB=A0A0A0'/>
+			{% when true %}
+				<img src='https://img.shields.io/badge/Leaflet%201.0-yes-yellowgreen.svg?colorA=C0C0C0'/>
+			{% else %}
+				<img src='https://img.shields.io/badge/Leaflet%201.0-no-800000.svg?colorA=C0C0C0'/>
+			{% endcase %}
+			</div>
+
+
 		</td><td>
-			<a href="https://github.com/leaflet-extras">leaflet-extras members</a>
+			<a href="{{ plugin.author-url }}">{{ plugin.author }}</a>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/tontita/Leaflet.KoreanTmsProviders">Leaflet.KoreanTmsProviders</a>
-		</td><td>
-			Contains configurations for various (South) Korean tile providers — Daum, Naver, VWorld, etc.
-		</td><td>
-			<a href="https://github.com/tontita/">Seong Choi</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/htoooth/Leaflet.ChineseTmsProviders">Leaflet.ChineseTmsProviders</a>
-		</td><td>
-			Contains configurations for various Chinese tile providers — TianDiTu, MapABC, GaoDe, etc.
-		</td><td>
-			<a href="https://github.com/htoooth/">Tao Huang</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="http://esri.github.io/esri-leaflet">Esri Leaflet</a>
-		</td><td>
-			A set of tools for using ArcGIS services with Leaflet. Support for map services, feature layers, ArcGIS Online tiles and more.
-		</td><td>
-			<a href="https://github.com/patrickarlt/">Patrick Arlt</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/aparshin/leaflet-GIBS">Leaflet.GIBS</a>
-		</td><td>
-			 <a href="https://earthdata.nasa.gov/gibs">NASA EOSDIS GIBS</a> imagery integration. The plugin provides <a href="https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products">96 daily updated layers</a> with satellite imagery and science parameters. <a href="http://aparshin.github.io/leaflet-GIBS/examples/">Demo</a>.
-		</td><td>
-			<a href="https://github.com/aparshin">Alexander Parshin</a>
-		</td>
-	</tr>
-        <tr>
-		<td>
-			<a href="https://github.com/knreise/L.TileLayer.Kartverket">L.TileLayer.Kartverket</a>
-		</td><td>
-			Provides easy setup of the tile layers from <a href="http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/">Kartverket</a> (The Norwegian Mapping Authority)
-		</td><td>
-			<a href="https://github.com/knreise">Kultur og naturreise</a> / <a href="https://github.com/atlefren">Atle Frenvik Sveen</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/sigdeletras/Leaflet.Spain.WMS">Leaflet.Spain.WMS</a>
-		</td><td>
-			Provides easy setup for several Web Map Services (WMS) layers for Spain (PNOA, IGN base, Catastro, etc), from Spanish mapping agencies.
-		</td><td>
-			<a href="https://github.com/sigdeletras">Patricio Soriano</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/GeoSensorWebLab/polarmap.js">PolarMap.js</a>
-		</td><td>
-			JavaScript library for displaying tiles from <a href="http://webmap.arcticconnect.org">ArcticWebMap</a>, a free tile provider with OSM data in multiple Arctic polar projections. Includes lower-level API for deeper integration with other Leaflet plugins.
-		</td><td>
-			<a href="https://github.com/geosensorweblab">GeoSensorWeb Lab</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/gmaclennan/leaflet-bing-layer">Bing Maps Layer</a>
-		</td><td>
-			Add <a href="https://msdn.microsoft.com/en-us/library/ff701721.aspx">Bing Maps tiles</a> to your Leaflet Map. Requires Leaflet v1.0.0.beta.2 or later.
-		</td><td>
-			<a href="https://github.com/gmaclennan">Gregor MacLennan</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://gitlab.com/IvanSanchez/Leaflet.TileLayer.HERE">L.TileLayer.HERE</a>
-		</td><td>
-			Displays map tiles from HERE maps (<a href="https://ivansanchez.gitlab.io/Leaflet.TileLayer.HERE/demo.html">demo</a>).
-		</td><td>
-			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
-		</td>
-	</tr>
-	<tr>
-		<td>
-			<a href="https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant">L.GridLayer.GoogleMutant</a>
-		</td><td>
-			Displays Google maps (with minimal artifacts thanks to a <a href='https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver'>DOM mutation observer</a> technique) (<a href="http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html">demo</a>).
-		</td><td>
-			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
-		</td>
-	</tr>
+{% endfor %}
+
 </table>
+
 
 
 
@@ -1950,7 +1891,7 @@ Plugins that search for overlays and enhance how to display information about th
             		A google map style search box which includes a side panel slider control.
         	</td>
 		<td>
-		        <a href="https://github.com/8to5Developer/">A.D</a> 
+		        <a href="https://github.com/8to5Developer/">A.D</a>
 			</td>
           </tr>
 	<tr>
@@ -3668,7 +3609,7 @@ Ease your development integrating Leaflet into a development framework or automa
 		<td>
 			<a href="https://github.com/gwidgets/gwty-leaflet">gwty-leaflet</a>
 		</td><td>
-			A Java/GWT JsInterop wrapper for Leaflet. It allows using Leaflet in Java the same way as from a javascript script.  
+			A Java/GWT JsInterop wrapper for Leaflet. It allows using Leaflet in Java the same way as from a javascript script.
 		</td><td>
 			<a href="https://github.com/zak905">Zakaria Amine</a>
 		</td>
@@ -3748,4 +3689,4 @@ Leaflet keeps it simple. If you can think of a feature that is not required by a
 
 There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
 
-Once your plugin is ready, you can submit it to this list: just send a pull request with the addition to [/docs/plugins.md](https://github.com/Leaflet/Leaflet/blob/master/docs/plugins.md) to our GitHub repository.
+Once your plugin is ready, you can submit it to this list: just send a pull request with the addition to [/docs/_data/plugins.yaml](https://github.com/Leaflet/Leaflet/blob/master/docs/_data/plugins.yaml) to our GitHub repository.
