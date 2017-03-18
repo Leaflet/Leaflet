@@ -2525,7 +2525,7 @@ Allow the user to measure distances or areas.
 		<td>
 			<a href="https://github.com/ppete2/Leaflet.PolylineMeasure">Leaflet.PolylineMeasure</a>
 		</td><td>
-			 Plugin to measure distances of simple lines as well as of complex polylines. <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo.html">(Demo)</a>
+			 Measure distances of simple lines as well as of complex polylines. <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo.html">(Demo)</a>
 		</td><td>
 			<a href="https://github.com/ppete2">PPete</a>
 		</td>
