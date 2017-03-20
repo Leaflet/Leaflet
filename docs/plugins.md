@@ -2523,6 +2523,15 @@ Allow the user to measure distances or areas.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/ppete2/Leaflet.PolylineMeasure">Leaflet.PolylineMeasure</a>
+		</td><td>
+			 Measure distances of simple lines as well as of complex polylines. <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo_metric.html">(Demo metric)</a>, <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo_imperial.html">(Demo imperial)</a>
+		</td><td>
+			<a href="https://github.com/ppete2">PPete</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/makinacorpus/Leaflet.MeasureControl">Leaflet.MeasureControl</a>
 		</td><td>
 			A simple tool to measure distances on maps (*relies on Leaflet.Draw*).
