@@ -200,9 +200,9 @@ shown in the previous section!
 Other ways of setting the zoom are:
 
 * [`setView(center, zoom)`](../../reference-1.0.3.html#map-setview), which also sets the map center
-* [`flyTo(center, zoom)`](../../reference-1.0.3.html#map-flyto), like `setView` but with a smooth animation.
-* [`zoomIn()` / `zoomIn(delta)`](../../reference-1.0.3.html#map-zoomin), zooms in `delta` zoom levels, `1` by default.
-* [`zoomOut()` / `zoomOut(delta)`](../../reference-1.0.3.html#map-zoomout), zooms out `delta` zoom levels, `1` by default.
+* [`flyTo(center, zoom)`](../../reference-1.0.3.html#map-flyto), like `setView` but with a smooth animation
+* [`zoomIn()` / `zoomIn(delta)`](../../reference-1.0.3.html#map-zoomin), zooms in `delta` zoom levels, `1` by default
+* [`zoomOut()` / `zoomOut(delta)`](../../reference-1.0.3.html#map-zoomout), zooms out `delta` zoom levels, `1` by default
 * [`setZoomAround(fixedPoint, zoom)`](../../reference-1.0.3.html#map-setzoomaround), sets the zoom level while keeping a point fixed (what scrollwheel zooming does)
 * [`fitBounds(bounds)`](../../reference-1.0.3.html#map-fitbounds), automatically calculates the zoom to fit a rectangular area on the map
 
@@ -243,14 +243,14 @@ snap back to `0.75`. The same happens with `map.fitBounds(bounds)`, or when endi
 a pinch-zoom gesture on a touchscreen.
 
 `zoomSnap` can be set to zero. This means that Leaflet will <strong>not</strong>
-snap the zoom level
+snap the zoom level.
 
 There is another important map option related to `zoomSnap`: [the `zoomDelta` option](http://leafletjs.com/reference-1.0.3.html#map-zoomdelta).
 This controls how many zoom levels to zoom in/out when using the zoom buttons
 (from the default [`L.Control.Zoom`](http://leafletjs.com/reference-1.0.3.html#control-zoom))
 or the `+`/`-` keys in your keyboard.
 
-For the mousewheel zoom, the [`wheelPxPerZoomLevel`](http://leafletjs.com/reference-1.0.3.html#map-wheelpxperzoomlevel))
+For the mousewheel zoom, the [`wheelPxPerZoomLevel`](http://leafletjs.com/reference-1.0.3.html#map-wheelpxperzoomlevel)
 option controls how fast the mousewheel zooms in our out.
 
 Here is an example with `zoomSnap` set to zero:
