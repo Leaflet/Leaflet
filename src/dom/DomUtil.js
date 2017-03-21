@@ -174,7 +174,7 @@ function _setOpacityIE(el, value) {
 	if (filter) {
 		filter.Enabled = (value !== 100);
 		filter.Opacity = value;
-	} else {
+	} else if (!el.name == 'Error') {
 		el.style.filter += ' progid:' + filterName + '(opacity=' + value + ')';
 	}
 }
