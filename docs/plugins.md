@@ -475,6 +475,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/frogcat/leaflet-tilelayer-colorpicker">Leaflet.TileLayer.ColorPicker</a>
+		</td><td>
+			A Leaflet TileLayer with getColor(latLng). Demos: <a href="https://frogcat.github.io/leaflet-tilelayer-colorpicker/">color picker</a>, <a href="https://frogcat.github.io/leaflet-tilelayer-colorpicker/mapbox-terrain-rgb.html">elevation picker with mapbox terrain-RGB</a>
+		</td><td>
+			<a href="https://github.com/frogcat">Yuzo Matsuzawa</a>
+		</td>
+	</tr>
 </table>
 
 
