@@ -168,6 +168,8 @@ export var ImageOverlay = Layer.extend({
 		img.onselectstart = Util.falseFn;
 		img.onmousemove = Util.falseFn;
 
+		// @event load: Event
+		// Fired when the ImageOverlay layer has loaded its image
 		img.onload = Util.bind(this.fire, this, 'load');
 		img.onerror = Util.bind(this._overlayOnError, this, 'error');
 
@@ -204,9 +206,14 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	_overlayOnError: function () {
+		// @event error: Event
+		// Fired when the ImageOverlay layer has loaded its image
+		this.fire('error');
+
 		var errorUrl = this.options.errorOverlayUrl;
 		if (errorUrl && this._url !== errorUrl) {
 			this._url = errorUrl;
+			this._image.src = errorUrl;
 		}
 	}
 });
