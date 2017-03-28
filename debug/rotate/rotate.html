@@ -101,16 +101,16 @@
 			<td class='long'>Negative pixel coords of the (0,0) CRS point relative to _rotatePane</td></tr>
 	</table>
 
-	<input type="range" min="0" max="360" step="1" name="rho" id='rho_input' /><span id='rho'></span>
+	<input type="range" min="0" max="360" value="0" step="1" name="rho" id='rho_input' /><span id='rho'></span>
 
 	<div>
-		<button onclick="map.setBearing(0);" > 0</button>
-		<button onclick="map.setBearing(15);">15</button>
-		<button onclick="map.setBearing(30);">30</button>
-		<button onclick="map.setBearing(45);">45</button>
-		<button onclick="map.setBearing(60);">60</button>
-		<button onclick="map.setBearing(75);">75</button>
-		<button onclick="map.setBearing(90);">90</button>
+		<button onclick="rotateFromButton(0);" > 0</button>
+		<button onclick="rotateFromButton(15);">15</button>
+		<button onclick="rotateFromButton(30);">30</button>
+		<button onclick="rotateFromButton(45);">45</button>
+		<button onclick="rotateFromButton(60);">60</button>
+		<button onclick="rotateFromButton(75);">75</button>
+		<button onclick="rotateFromButton(90);">90</button>
 	</div>
 
 	<div>
@@ -180,6 +180,10 @@
 			map.setBearing(angle);
 		}
 
+		function rotateFromButton(angle) {
+			document.getElementById('rho_input').valueAsNumber = angle;
+			map.setBearing(angle);
+		}
 
 		map.on('move rotate zoomend', function(ev) {
 			var panePos = this._getMapPanePos();
