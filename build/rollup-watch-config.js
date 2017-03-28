@@ -34,7 +34,7 @@ export default {
 	moduleName: 'L',
 	banner: warningCode,
 	entry: 'src/Leaflet.js',
-	dest: 'debug/leaflet-rollup-src.js',
+	dest: 'dist/leaflet-src.js',
 	plugins: [
 		rollupGitVersion()
 	],

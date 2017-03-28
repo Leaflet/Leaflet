@@ -9,7 +9,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -29,9 +28,21 @@
 
 		var markers = new L.FeatureGroup();
 
+		function getRandomLatLng(llbounds) {
+			var s = llbounds.getSouth(),
+			    n = llbounds.getNorth(),
+			    w = llbounds.getWest(),
+			    e = llbounds.getEast();
+
+			return L.latLng(
+				s + (Math.random() * (n - s)),
+				w + (Math.random() * (e - w))
+			)
+		}
+
 		function populate() {
 			for (var i = 0; i < 10; i++) {
-				L.marker(getRandomLatLng(map)).addTo(markers);
+				L.marker(getRandomLatLng(map.getBounds())).addTo(markers);
 			}
 			return false;
 		}

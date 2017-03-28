@@ -7,7 +7,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -31,8 +30,20 @@
 
 		L.control.scale().addTo(map);
 
+		function getRandomLatLng(llbounds) {
+			var s = llbounds.getSouth(),
+			    n = llbounds.getNorth(),
+			    w = llbounds.getWest(),
+			    e = llbounds.getEast();
+
+			return L.latLng(
+				s + (Math.random() * (n - s)),
+				w + (Math.random() * (e - w))
+			)
+		}
+
 		for (var i = 0; i < 1000; i++) {
-			L.marker(getRandomLatLng(map)).addTo(map);
+			L.marker(getRandomLatLng(map.getBounds())).addTo(map);
 		}
 
 

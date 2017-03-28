@@ -9,7 +9,6 @@
 
   <link rel="stylesheet" href="../css/screen.css" />
 
-  <script src="../../build/deps.js"></script>
   <script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -26,18 +25,30 @@
         .setView([50.5, 30.51], 15)
         .addLayer(osm);
 
+    function getRandomLatLng(llbounds) {
+      var s = llbounds.getSouth(),
+          n = llbounds.getNorth(),
+          w = llbounds.getWest(),
+          e = llbounds.getEast();
+
+      return L.latLng(
+        s + (Math.random() * (n - s)),
+        w + (Math.random() * (e - w))
+      )
+    }
+
     var features = new L.FeatureGroup([
-      L.marker(getRandomLatLng(map)),
+      L.marker(getRandomLatLng(map.getBounds())),
       L.polyline([
-        getRandomLatLng(map),
-        getRandomLatLng(map),
-        getRandomLatLng(map)
+        getRandomLatLng(map.getBounds()),
+        getRandomLatLng(map.getBounds()),
+        getRandomLatLng(map.getBounds())
       ]),
       L.polygon([
-        getRandomLatLng(map),
-        getRandomLatLng(map),
-        getRandomLatLng(map),
-        getRandomLatLng(map)
+        getRandomLatLng(map.getBounds()),
+        getRandomLatLng(map.getBounds()),
+        getRandomLatLng(map.getBounds()),
+        getRandomLatLng(map.getBounds())
       ])
     ]);
 
@@ -49,23 +60,23 @@
     content.innerText = 'I\'m a red polygon';
 
     var polygon = L.polygon([
-      getRandomLatLng(map),
-      getRandomLatLng(map),
-      getRandomLatLng(map),
-      getRandomLatLng(map)
+      getRandomLatLng(map.getBounds()),
+      getRandomLatLng(map.getBounds()),
+      getRandomLatLng(map.getBounds()),
+      getRandomLatLng(map.getBounds())
     ], {
       color: 'red'
     }).bindPopup(content).addTo(map);
 
     var polyline = L.polyline([
-      getRandomLatLng(map),
-      getRandomLatLng(map),
-      getRandomLatLng(map)
+      getRandomLatLng(map.getBounds()),
+      getRandomLatLng(map.getBounds()),
+      getRandomLatLng(map.getBounds())
     ], {
       color: 'red'
     }).bindPopup('I\'m a red polyline').addTo(map);
 
-    var marker = L.circleMarker(getRandomLatLng(map), {
+    var marker = L.circleMarker(getRandomLatLng(map.getBounds()), {
       color: 'red',
       radius: 25
     }).bindPopup('I\'m a red circle').addTo(map);

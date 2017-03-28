@@ -1,1 +1,1 @@
-leaflet-rollup-src.js
+../dist/leaflet-src.js
