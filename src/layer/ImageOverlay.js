@@ -43,7 +43,11 @@ export var ImageOverlay = Layer.extend({
 
 		// @option errorOverlayUrl: String = ''
 		// URL to the overlay image to show in place of the overlay that failed to load.
-		errorOverlayUrl: ''
+		errorOverlayUrl: '',
+
+		// @option zIndex: Number = 1
+		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the tile layer.
+		zIndex: 1
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -149,6 +153,14 @@ export var ImageOverlay = Layer.extend({
 		return events;
 	},
 
+	// @method: setZIndex(value: Number) : this
+	// Changes the [zIndex](#imageoverlay-zindex) of the image overlay.
+	setZIndex: function (value) {
+		this.options.zIndex = value;
+		this._updateZIndex();
+		return this;
+	},
+
 	// @method getBounds(): LatLngBounds
 	// Get the bounds that this ImageOverlay covers
 	getBounds: function () {
@@ -177,6 +189,10 @@ export var ImageOverlay = Layer.extend({
 			img.crossOrigin = '';
 		}
 
+		if (this.options.zIndex) {
+			this._updateZIndex();
+		}
+
 		img.src = this._url;
 		img.alt = this.options.alt;
 	},
@@ -203,6 +219,12 @@ export var ImageOverlay = Layer.extend({
 
 	_updateOpacity: function () {
 		DomUtil.setOpacity(this._image, this.options.opacity);
+	},
+
+	_updateZIndex: function () {
+		if (this._image && this.options.zIndex !== undefined && this.options.zIndex !== null) {
+			this._image.style.zIndex = this.options.zIndex;
+		}
 	},
 
 	_overlayOnError: function () {

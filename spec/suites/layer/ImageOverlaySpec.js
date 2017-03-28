@@ -27,7 +27,7 @@ describe('ImageOverlay', function () {
 			c.style.height = '400px';
 			document.body.appendChild(c);
 			map = new L.Map(c);
-			map.setView(new L.LatLng(55.8, 37.6), 6);
+			map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initilized
 
 			overlay = L.imageOverlay(blankUrl, [[40.712216, -74.22655], [40.773941, -74.12544]], {
 				errorOverlayUrl: errorUrl
@@ -56,25 +56,82 @@ describe('ImageOverlay', function () {
 
 		describe('when loaded', function () {
 			it('should raise the load event', function () {
-				var loadraised = false;
-				overlay.once('load', function () { loadraised = true; });
+				var loadRaised = sinon.spy();
+				overlay.once('load', loadRaised);
 				raiseImageEvent('load');
-				expect(loadraised).to.be(true);
+				expect(loadRaised.called).to.be(true);
 			});
 		});
 
 		describe('when load fails', function () {
 			it('should raise the error event', function () {
-				var errorRaised = false;
-				overlay.once('error', function () { errorRaised = true; });
+				var errorRaised  = sinon.spy();
+				overlay.once('error', errorRaised);
 				raiseImageEvent('error');
-				expect(errorRaised).to.be(true);
+				expect(errorRaised.called).to.be(true);
 			});
 			it('should change the image to errorOverlayUrl', function () {
 				raiseImageEvent('error');
 				expect(overlay._url).to.be(errorUrl);
 				expect(overlay._image.src).to.be(errorUrl);
 			});
+		});
+	});
+
+	describe('#setZIndex', function () {
+
+		var div, map;
+		var corner1 = L.latLng(40.712, -74.227),
+		corner2 = L.latLng(40.774, -74.125),
+		bounds = L.latLngBounds(corner1, corner2);
+
+		beforeEach(function () {
+			div = document.createElement('div');
+			div.style.width = '800px';
+			div.style.height = '600px';
+			div.style.visibility = 'hidden';
+
+			document.body.appendChild(div);
+
+			map = L.map(div);
+			map.setView([0, 0], 1);	// view needs to be set so when layer is added it is initilized
+		});
+
+		afterEach(function () {
+			document.body.removeChild(div);
+		});
+
+		it('sets the z-index of the image', function () {
+			var overlay = L.imageOverlay();
+			overlay.setZIndex(10);
+			expect(overlay.options.zIndex).to.equal(10);
+		});
+
+		it('should update the z-index of the image if it has allready been added to the map', function () {
+			var overlay = L.imageOverlay('', bounds);
+			overlay.addTo(map);
+			expect(overlay._image.style.zIndex).to.be('1');
+
+			overlay.setZIndex('10');
+			expect(overlay._image.style.zIndex).to.be('10');
+		});
+
+		it('should set the z-index of the image when it is added to the map', function () {
+			var overlay = L.imageOverlay('', bounds);
+			overlay.setZIndex('10');
+			overlay.addTo(map);
+			expect(overlay._image.style.zIndex).to.be('10');
+		});
+
+		it('should use the z-index specified in options', function () {
+			var overlay = L.imageOverlay('', bounds, {zIndex: 20});
+			overlay.addTo(map);
+			expect(overlay._image.style.zIndex).to.be('20');
+		});
+
+		it('should be fluent', function () {
+			var overlay = L.imageOverlay();
+			expect(overlay.setZIndex()).to.equal(overlay);
 		});
 	});
 });
