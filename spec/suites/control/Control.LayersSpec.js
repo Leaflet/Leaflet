@@ -29,6 +29,26 @@ describe("Control.Layers", function () {
 			expect(spy.args[1][0].layer).to.be(baseLayers["Layer 2"]);
 		});
 
+		it("works after removing and readding the Control.Layers to the map", function () {
+			var baseLayers = {"Layer 1": L.tileLayer(''), "Layer 2": L.tileLayer('')},
+			    layers = L.control.layers(baseLayers).addTo(map),
+			    spy = sinon.spy();
+
+			map.on('baselayerchange', spy);
+
+			map.removeControl(layers);
+			map.addControl(layers);
+
+			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
+			expect(spy.called).to.be.ok();
+			expect(spy.args[0][0].name).to.be("Layer 1");
+			expect(spy.args[0][0].layer).to.be(baseLayers["Layer 1"]);
+			happen.click(layers._baseLayersList.getElementsByTagName("input")[1]);
+			expect(spy.calledTwice).to.be.ok();
+			expect(spy.args[1][0].name).to.be("Layer 2");
+			expect(spy.args[1][0].layer).to.be(baseLayers["Layer 2"]);
+		});
+
 		it("is not fired on input that doesn't change the base layer", function () {
 			var overlays = {"Marker 1": L.marker([0, 0]), "Marker 2": L.marker([0, 0])},
 			    layers = L.control.layers({}, overlays).addTo(map),
@@ -121,6 +141,17 @@ describe("Control.Layers", function () {
 			var baseLayer = L.tileLayer('').addTo(map);
 			var layersCtrl = L.control.layers({'Base': baseLayer}).addTo(map);
 			map.removeControl(layersCtrl);
+
+			expect(function () {
+				map.removeLayer(baseLayer);
+			}).to.not.throwException();
+		});
+
+		it("and layers in the control can still be removed when added after removing control from map", function () {
+			var baseLayer = L.tileLayer('').addTo(map);
+			var layersCtrl = L.control.layers().addTo(map);
+			map.removeControl(layersCtrl);
+			layersCtrl.addBaseLayer(baseLayer, 'Base');
 
 			expect(function () {
 				map.removeLayer(baseLayer);
