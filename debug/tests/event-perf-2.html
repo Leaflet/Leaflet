@@ -9,7 +9,6 @@
 
     <link rel="stylesheet" href="../css/screen.css" />
 
-    <script src="../../build/deps.js"></script>
     <script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -41,6 +40,18 @@
             clicks++;
         });
 
+        function getRandomLatLng(llbounds) {
+            var s = llbounds.getSouth(),
+                n = llbounds.getNorth(),
+                w = llbounds.getWest(),
+                e = llbounds.getEast();
+
+            return L.latLng(
+                s + (Math.random() * (n - s)),
+                w + (Math.random() * (e - w))
+            )
+        }
+
         function shuffleMarkers() {
             var marker;
             if (markerArr.length > 2000) {
@@ -48,7 +59,7 @@
                 marker = markerArr.splice(i, 1)[0];
                 markers.removeLayer(marker);
             } else {
-                marker = L.marker(getRandomLatLng(map))
+                marker = L.marker(getRandomLatLng(map.getBounds()))
                     .on('mouseover', function() {
                         marker.setZIndexOffset(10000);
                     })

@@ -9,7 +9,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -35,12 +34,23 @@
 			return function(ev) { document.getElementById('perf').innerHTML = ('Event on marker ' + i + ': ' + ev.type); }
 		}
 
+		function getRandomLatLng(llbounds) {
+			var s = llbounds.getSouth(),
+			    n = llbounds.getNorth(),
+			    w = llbounds.getWest(),
+			    e = llbounds.getEast();
+
+			return L.latLng(
+				s + (Math.random() * (n - s)),
+				w + (Math.random() * (e - w))
+			)
+		}
 
 		function populate() {
 			var start = performance ? performance.now() : 0;
 
 			for (var i = 0; i < 100; i++) {
-				L.marker(getRandomLatLng(map)).addTo(markers).on('dblclick', getEventHandler(i));
+				L.marker(getRandomLatLng(map.getBounds())).addTo(markers).on('dblclick', getEventHandler(i));
 			}
 
 			var end = performance ? performance.now() : 0;
