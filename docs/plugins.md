@@ -1322,6 +1322,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/brandonxiang">Brandon Xiang</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/nypl-spacetime/Leaflet.GeotagPhoto">Leaflet.GeotagPhoto</a>
+		</td>
+		<td>
+			Leaflet plugin for photo geotagging, with two modes: camera and crosshair (<a href="http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html">Demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/bertspaan">Bert Spaan</a>
+		</td>
+	</tr>
 </table>
 
 
