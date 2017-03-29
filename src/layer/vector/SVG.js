@@ -119,6 +119,7 @@ export var SVG = Renderer.extend({
 	},
 
 	_addPath: function (layer) {
+		if (!this._rootGroup) { this._initContainer(); }
 		this._rootGroup.appendChild(layer._path);
 		layer.addInteractiveTarget(layer._path);
 	},
