@@ -653,6 +653,7 @@ export var GridLayer = Layer.extend({
 				var tile = this._tiles[this._tileCoordsToKey(coords)];
 				if (tile) {
 					tile.current = true;
+					tile.active = true;
 				} else {
 					queue.push(coords);
 				}
