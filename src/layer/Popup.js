@@ -215,12 +215,9 @@ L.Popup = L.DivOverlay.extend({
 		var pos = this._map._latLngToNewLayerPoint(this._latlng, e.zoom, e.center),
 			anchor = this._getAnchor();
 		if (this._map._rotate) {
-			var offset = L.point(this.options.offset);
-			var popupAnchor = pos.add([-this._containerLeft, this._container.offsetHeight + this._tipContainer.offsetHeight - offset.y]);
-			L.DomUtil.setPosition(this._container, pos.add(anchor), -this._map._bearing || 0, popupAnchor);
-		} else {
-			L.DomUtil.setPosition(this._container, pos.add(anchor));
+			pos = this._map.rotatedPointToMapPanePoint(pos);
 		}
+		L.DomUtil.setPosition(this._container, pos.add(anchor));
 	},
 
 	_adjustPan: function () {
@@ -234,7 +231,7 @@ L.Popup = L.DivOverlay.extend({
 
 		layerPos._add(L.DomUtil.getPosition(this._container));
 
-		var containerPos = map.layerPointToContainerPoint(layerPos),
+		var containerPos = layerPos._add(this._map._getMapPanePos()),
 		    padding = L.point(this.options.autoPanPadding),
 		    paddingTL = L.point(this.options.autoPanPaddingTopLeft || padding),
 		    paddingBR = L.point(this.options.autoPanPaddingBottomRight || padding),

@@ -60,8 +60,10 @@
 		marker1.bindPopup(loremIpsum + '<p>Kyiv</p>').addTo(map);
 		marker2.bindPopup(loremIpsum + '<p>Lnd</p>').addTo(map);
 		marker3.bindPopup(loremIpsum + '<p>DC</p>').addTo(map);
-		marker4.bindPopup(loremIpsum + '<p>DF</p>').addTo(map);
+		marker4.bindPopup(loremIpsum + '<p>SF</p>').addTo(map);
 		marker5.bindPopup(loremIpsum + '<p>Trd</p>').addTo(map);
+
+		marker1.bindTooltip("Kyiv", {direction: 'right', permanent: true});
 
 		function rotate(ev) {
 			if (ev.buttons === 0) return;

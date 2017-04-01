@@ -124,12 +124,7 @@ L.Draggable = L.Evented.extend({
 
 		var first = (e.touches && e.touches.length === 1 ? e.touches[0] : e),
 		    newPoint = new L.Point(first.clientX, first.clientY),
-		    offset = newPoint.subtract(this._startPoint),
-		    bearing = this._mapBearing || 0;
-
-		if (bearing) {
-			offset = offset.rotate(-bearing);
-		}
+		    offset = newPoint.subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
 		if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }

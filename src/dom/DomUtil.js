@@ -188,6 +188,7 @@ L.DomUtil = {
 		var pos = offset || new L.Point(0, 0);
 
 		if (!bearing) {
+			pos._round();
 			el.style[L.DomUtil.TRANSFORM] =
 				(L.Browser.ie3d ?
 				'translate(' + pos.x + 'px,' + pos.y + 'px)' :

@@ -67,30 +67,25 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		    .fire('movestart')
 		    .fire('dragstart');
 		if (this._marker._map._rotate){
-			this._draggable.updateMapBearing(this._marker._map._bearing);	
+			this._draggable.updateMapBearing(this._marker._map._bearing);
 		}
 	},
 
 	_onDrag: function (e) {
 		var marker = this._marker,
 		    shadow = marker._shadow,
-		    iconPos = L.DomUtil.getPosition(marker._icon),
-		    latlng = marker._map.layerPointToLatLng(iconPos);
-
-		if (marker._map._rotate) {
-			var iconAnchor = marker.options.icon.options.iconAnchor;
-			L.DomUtil.setPosition(marker._icon, iconPos, -marker._map._bearing, iconPos.add(iconAnchor));
-		}
+		    iconPos = L.DomUtil.getPosition(marker._icon);
 
 		// update shadow position
 		if (shadow) {
-			if (marker._map._rotate) {
-				var shadowAnchor = marker.options.icon.options.shadowAnchor ? iconPos.add(marker.options.icon.options.shadowAnchor) : iconPos.add(iconAnchor);
-				L.DomUtil.setPosition(shadow, iconPos, -marker._map._bearing || 0, shadowAnchor);
-			} else {
-				L.DomUtil.setPosition(shadow, iconPos);
-			}
+			L.DomUtil.setPosition(shadow, iconPos);
 		}
+
+		if (marker._map._rotate) {
+			// Reverse calculation from mapPane coordinates to rotatePane coordinates
+			iconPos = marker._map.mapPanePointToRotatedPoint(iconPos);
+		}
+		latlng = marker._map.layerPointToLatLng(iconPos);
 
 		marker._latlng = latlng;
 		e.latlng = latlng;
@@ -106,6 +101,8 @@ L.Handler.MarkerDrag = L.Handler.extend({
 	_onDragEnd: function (e) {
 		// @event dragend: DragEndEvent
 		// Fired when the user stops dragging the marker.
+
+		this._marker.update();
 
 		// @event moveend: Event
 		// Fired when the marker stops moving (because of dragging).
