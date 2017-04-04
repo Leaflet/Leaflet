@@ -88,8 +88,14 @@ description="How the default map panes work to display overlays on top of tiles,
 %}
 
 
-=======
+{% include tutorial_link.html
+page="video-overlay/"
+thumbnail="video-overlay/thumbnail.gif"
+title="Showing video files"
+description="Leaflet can help you display videos somewhere on the map."
+%}
 
+***
 
 The following tutorials cover how to create plugins for Leaflet, and are intended only for developers experienced in Javascript:
 
