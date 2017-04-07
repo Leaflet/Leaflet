@@ -297,7 +297,7 @@ export function preventOutline(element) {
 	while (element.tabIndex === -1) {
 		element = element.parentNode;
 	}
-	if (!element || !element.style) { return; }
+	if (!element.style) { return; }
 	restoreOutline();
 	_outlineElement = element;
 	_outlineStyle = element.style.outline;
