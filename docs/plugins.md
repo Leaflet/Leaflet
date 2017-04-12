@@ -1655,6 +1655,15 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/react-map">Sylvenas</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://ibesora.github.io/Leaflet.Quadtree/">Leaflet.Quadtree</a>
+		</td><td>
+			Leaflet.Quadtree is used to retrieve visible data inside given bounds
+		</td><td>
+			<a href="https://github.com/ibesora">ibesora</a>
+		</td>
+	</tr>
 </table>
 
 
