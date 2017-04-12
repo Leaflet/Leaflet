@@ -26,8 +26,7 @@ import * as Util from './Util';
  * ```
  */
 
-export var Evented = Class.extend({
-
+export var Events = {
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
@@ -259,31 +258,31 @@ export var Evented = Class.extend({
 			this._eventParents[id].fire(e.type, Util.extend({layer: e.target}, e), true);
 		}
 	}
-});
-
-var proto = Evented.prototype;
+};
 
 // aliases; we should ditch those eventually
 
 // @method addEventListener(…): this
 // Alias to [`on(…)`](#evented-on)
-proto.addEventListener = proto.on;
+Events.addEventListener = Events.on;
 
 // @method removeEventListener(…): this
 // Alias to [`off(…)`](#evented-off)
 
 // @method clearAllEventListeners(…): this
 // Alias to [`off()`](#evented-off)
-proto.removeEventListener = proto.clearAllEventListeners = proto.off;
+Events.removeEventListener = Events.clearAllEventListeners = Events.off;
 
 // @method addOneTimeEventListener(…): this
 // Alias to [`once(…)`](#evented-once)
-proto.addOneTimeEventListener = proto.once;
+Events.addOneTimeEventListener = Events.once;
 
 // @method fireEvent(…): this
 // Alias to [`fire(…)`](#evented-fire)
-proto.fireEvent = proto.fire;
+Events.fireEvent = Events.fire;
 
 // @method hasEventListeners(…): Boolean
 // Alias to [`listens(…)`](#evented-listens)
-proto.hasEventListeners = proto.listens;
+Events.hasEventListeners = Events.listens;
+
+export var Evented = Class.extend(Events);
