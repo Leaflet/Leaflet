@@ -721,7 +721,7 @@ export var Map = Evented.extend({
 			this._layers[i].remove();
 		}
 		for (i in this._panes) {
-			L.DomUtil.remove(this._panes[i]);
+			DomUtil.remove(this._panes[i]);
 		}
 
 		this._layers = [];
@@ -955,7 +955,7 @@ export var Map = Evented.extend({
 	// value is between -180 and +180 degrees, and the majority of the bounds
 	// overlaps the CRS's bounds.
 	wrapLatLngBounds: function (latlng) {
-		return this.options.crs.wrapLatLngBounds(L.latLngBounds(latlng));
+		return this.options.crs.wrapLatLngBounds(toLatLngBounds(latlng));
 	},
 
 	// @method distance(latlng1: LatLng, latlng2: LatLng): Number
@@ -1538,7 +1538,7 @@ export var Map = Evented.extend({
 	},
 
 	_destroyAnimProxy: function () {
-		L.DomUtil.remove(this._proxy);
+		DomUtil.remove(this._proxy);
 		delete this._proxy;
 	},
 

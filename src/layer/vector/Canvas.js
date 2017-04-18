@@ -39,7 +39,7 @@ import {Bounds} from '../../geometry/Bounds';
 
 export var Canvas = Renderer.extend({
 	getEvents: function () {
-		var events = L.Renderer.prototype.getEvents.call(this);
+		var events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
 		return events;
 	},
@@ -69,8 +69,8 @@ export var Canvas = Renderer.extend({
 
 	_destroyContainer: function () {
 		delete this._ctx;
-		L.DomUtil.remove(this._container);
-		L.DomEvent.off(this._container);
+		DomUtil.remove(this._container);
+		DomEvent.off(this._container);
 		delete this._container;
 	},
 
@@ -118,7 +118,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_reset: function () {
-		L.Renderer.prototype._reset.call(this);
+		Renderer.prototype._reset.call(this);
 
 		if (this._postponeUpdatePaths) {
 			this._postponeUpdatePaths = false;

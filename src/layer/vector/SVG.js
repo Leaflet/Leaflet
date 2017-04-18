@@ -1,6 +1,8 @@
 import {Renderer} from './Renderer';
 import * as DomUtil from '../../dom/DomUtil';
+import * as DomEvent from '../../dom/DomEvent';
 import * as Browser from '../../core/Browser';
+import {stamp} from '../../core/Util';
 import {svgCreate, pointsToPath} from './SVG.Util';
 export {pointsToPath};
 import {vmlMixin, vmlCreate} from './SVG.VML';
@@ -62,8 +64,8 @@ export var SVG = Renderer.extend({
 	},
 
 	_destroyContainer: function () {
-		L.DomUtil.remove(this._container);
-		L.DomEvent.off(this._container);
+		DomUtil.remove(this._container);
+		DomEvent.off(this._container);
 		delete this._container;
 		delete this._rootGroup;
 	},
@@ -115,7 +117,7 @@ export var SVG = Renderer.extend({
 		}
 
 		this._updateStyle(layer);
-		this._layers[L.stamp(layer)] = layer;
+		this._layers[stamp(layer)] = layer;
 	},
 
 	_addPath: function (layer) {
@@ -127,7 +129,7 @@ export var SVG = Renderer.extend({
 	_removePath: function (layer) {
 		DomUtil.remove(layer._path);
 		layer.removeInteractiveTarget(layer._path);
-		delete this._layers[L.stamp(layer)];
+		delete this._layers[stamp(layer)];
 	},
 
 	_updatePath: function (layer) {
