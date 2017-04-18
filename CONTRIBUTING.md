@@ -4,8 +4,11 @@ Contributing to Leaflet
  1. [Getting Involved](#getting-involved)
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
- 4. [Improving Documentation](#improving-documentation)
- 5. [Code of Conduct](#code-of-conduct)
+ 4. [Running the Tests](#running-the-tests)
+ 5. [Code Coverage](#code-coverage)
+ 6. [Improving Documentation](#improving-documentation)
+ 7. [Code of Conduct](#code-of-conduct)
+ 8. [Thank You](#thank-you)
 
 ## Getting Involved
 

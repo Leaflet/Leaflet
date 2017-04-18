@@ -202,7 +202,7 @@ export var Map = Evented.extend({
 		return this;
 	},
 
-	// @method setZoom(zoom: Number, options: Zoom/pan options): this
+	// @method setZoom(zoom: Number, options?: Zoom/pan options): this
 	// Sets the zoom of the map.
 	setZoom: function (zoom, options) {
 		if (!this._loaded) {
