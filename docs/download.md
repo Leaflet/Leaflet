@@ -38,19 +38,30 @@ it straight away, place this in the `head` of your HTML code:
     <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"></script>
 
+To avoid potential security problems, we recommend and encourage enabling
+[subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
+when using Leaflet from a CDN:
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
+      integrity="{{site.integrity_hash_css}}"
+      crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
+      integrity="{{site.integrity_hash_uglified}}"
+      crossorigin=""></script>
+
 ### Using a Downloaded Version of Leaflet
 
 Inside the archives downloaded from the above links, you will see four things:
 
 - `leaflet.js` - This is the minified Leaflet JavaScript code.
-- `leaflet-src.js` - This is the readable, unminified Leaflet JavaScript, which is sometimes helpful for debugging.
+- `leaflet-src.js` - This is the readable, unminified Leaflet JavaScript, which is sometimes helpful for debugging. <small>(The integrity hash for this file is <nobr><tt>{{site.integrity_hash_source}}</tt></nobr>)</small>
 - `leaflet.css` - This is the stylesheet for Leaflet.
 - `images` - This is a folder that contains images referenced by `leaflet.css`. It must be in the same directory as `leaflet.css`.
 
 Unzip the downloaded archive to your website's directory and add this to the `head` of your HTML code:
 
     <link rel="stylesheet" href="/path/to/leaflet.css" />
-    <script src="/path/to/leaflet.js"></script> <!-- or use leaflet-src.js --!>
+    <script src="/path/to/leaflet.js"></script>
 
 ### Using a JavaScript package manager
 
