@@ -271,10 +271,6 @@ export var Canvas = Renderer.extend({
 
 		ctx.beginPath();
 
-		if (ctx.setLineDash) {
-			ctx.setLineDash(layer.options && layer.options._dashArray || []);
-		}
-
 		for (i = 0; i < len; i++) {
 			for (j = 0, len2 = parts[i].length; j < len2; j++) {
 				p = parts[i][j];
@@ -326,6 +322,9 @@ export var Canvas = Renderer.extend({
 		}
 
 		if (options.stroke && options.weight !== 0) {
+			if (ctx.setLineDash) {
+				ctx.setLineDash(layer.options && layer.options._dashArray || []);
+			}
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;
