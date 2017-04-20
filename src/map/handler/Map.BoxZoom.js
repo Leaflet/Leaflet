@@ -41,7 +41,7 @@ export var BoxZoom = Handler.extend({
 	},
 
 	_destroy: function () {
-		L.DomUtil.remove(this._pane);
+		DomUtil.remove(this._pane);
 		delete this._pane;
 	},
 
