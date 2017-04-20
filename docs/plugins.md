@@ -3654,6 +3654,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			<a href="https://github.com/zak905">Zakaria Amine</a>
 		</td>
 	</tr>
+        <tr>
+		<td>
+			<a href="https://github.com/gherardovarando/leaflet-map-builder">Leaflet Map Builder</a>
+		</td><td>
+			It populates a leaflet map from a configuration object, can also creates zoom, layers, attribution and           draw controls. <a href="https://gherardovarando.github.io/leaflet-map-builder/"> demo </a>.
+		</td><td>
+			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
+		</td>
+	</tr>
 </table>
 
 
