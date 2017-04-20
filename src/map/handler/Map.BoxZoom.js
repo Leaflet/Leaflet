@@ -51,16 +51,19 @@ export var BoxZoom = Handler.extend({
 		this._moved = false;
 	},
 
+	_clearDeferredResetState: function () {
+		if (this._resetStateTimeout !== 0) {
+			clearTimeout(this._resetStateTimeout);
+			this._resetStateTimeout = 0;
+		}
+	},
+
 	_onMouseDown: function (e) {
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
 		// Clear the deferred resetState if it hasn't executed yet, otherwise it
 		// will interrupt the interaction and orphan a box element in the container.
-		if (this._resetStateTimeout !== 0) {
-			clearTimeout(this._resetStateTimeout);
-			this._resetStateTimeout = 0;
-		}
-
+		this._clearDeferredResetState();
 		this._resetState();
 
 		DomUtil.disableTextSelection();
@@ -122,9 +125,7 @@ export var BoxZoom = Handler.extend({
 		if (!this._moved) { return; }
 		// Postpone to next JS tick so internal click event handling
 		// still see it as "moved".
-		if (this._resetStateTimeout !== 0) {
-			clearTimeout(this._resetStateTimeout);
-		}
+		this._clearDeferredResetState();
 		this._resetStateTimeout = setTimeout(Util.bind(this._resetState, this), 0);
 
 		var bounds = new LatLngBounds(
