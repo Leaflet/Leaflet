@@ -1664,6 +1664,16 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/ibesora">ibesora</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer">Leaflet.Canvas-Flowmap-Layer</a>
+		</td><td>
+			A LeafletJS custom map layer for mapping the flow of objects, ideas, people, etc. with Bezier curves rendered on the HTML canvas.
+		</td><td>
+			<a href="https://github.com/jwasilgeo">Jacob Wasilkowski</a>
+			<a href="https://github.com/sarahbellum">Sarah Bell</a>
+		</td>
+	</tr>
 </table>
 
 
