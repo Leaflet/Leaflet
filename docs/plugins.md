@@ -1670,7 +1670,7 @@ Powerful multi-purpose libraries for data visualization.
 		</td><td>
 			A LeafletJS custom map layer for mapping the flow of objects, ideas, people, etc. with Bezier curves rendered on the HTML canvas.
 		</td><td>
-			<a href="https://github.com/jwasilgeo">Jacob Wasilkowski</a>
+			<a href="https://github.com/jwasilgeo">Jacob Wasilkowski</a>,
 			<a href="https://github.com/sarahbellum">Sarah Bell</a>
 		</td>
 	</tr>
