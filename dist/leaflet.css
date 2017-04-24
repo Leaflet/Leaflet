@@ -145,6 +145,13 @@
 	-o-transform: translateX(-50%);
 	-moz-transform: translateX(-50%);
 	}
+.leaflet-middle.leaflet-center {
+	transform: translate(-50%,-50%) !important;
+	-ms-transform: translate(-50%,-50%) !important;
+	-webkit-transform: translate(-50%,-50%) !important;
+	-o-transform: translate(-50%,-50%) !important;
+	-moz-transform: translate(-50%,-50%) !important;
+	}
 .leaflet-control {
 	float: left;
 	clear: both;
