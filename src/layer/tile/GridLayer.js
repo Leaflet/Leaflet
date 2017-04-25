@@ -635,7 +635,7 @@ export var GridLayer = Layer.extend({
 		if (tileRange.min.x === Infinity ||
 		    tileRange.min.y === Infinity ||
 		    tileRange.max.x === Infinity ||
-		    tileRange.max.y === Infinity ) { throw new Error('Attempted to load an infinite number of tiles'); }
+		    tileRange.max.y === Infinity) { throw new Error('Attempted to load an infinite number of tiles'); }
 
 		for (var key in this._tiles) {
 			var c = this._tiles[key].coords;
