@@ -942,7 +942,7 @@ describe('GridLayer', function () {
 			expect(function () {
 				map.setCenter([Infinity, Infinity]);
 				L.gridLayer().addTo(map);
-			}).to.not.throwError('Attempted to load an infinite number of tiles');
+			}).to.throwError('Attempted to load an infinite number of tiles');
 		});
 
 		it("Throws error on map center at minus Infinity longitude", function () {
