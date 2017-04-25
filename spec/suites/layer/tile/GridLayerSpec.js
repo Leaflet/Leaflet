@@ -937,6 +937,20 @@ describe('GridLayer', function () {
 		});
 	});
 
+	describe("Sanity checks for infinity", function () {
+		it("Throws error on map center at plus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([Infinity, Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
 
+		it("Throws error on map center at minus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([-Infinity, -Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
+	});
 
 });
