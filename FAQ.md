@@ -32,7 +32,7 @@ Popular commercial options, free up to a particular number of requests, include
 [Bing Maps](http://www.microsoft.com/maps/choose-your-bing-maps-API.aspx) (using a [plugin](https://github.com/shramov/leaflet-plugins)),
 [Esri ArcGIS](http://www.esri.com/software/arcgis/arcgisonline/maps/maps-and-map-layers) ([official plugin](https://github.com/Esri/esri-leaflet)),
 [MapQuest](https://developer.mapquest.com/products) ([official plugins](https://developer.mapquest.com/documentation/leaflet-plugins))
-and [Nokia Here](http://developer.here.com/web-experiences).
+and [Here Maps](https://developer.here.com/).
 
 Always be sure to **read the terms of use** of a chosen tile provider, **know its limitations**, and **attribute it properly** in your app.
 
