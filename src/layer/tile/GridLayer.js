@@ -648,6 +648,12 @@ export var GridLayer = Layer.extend({
 		    noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
 		                              tileRange.getTopRight().add([margin, -margin]));
 
+		// Sanity check: panic if the tile range contains Infinity somewhere.
+		if (!(isFinite(tileRange.min.x) &&
+		      isFinite(tileRange.min.y) &&
+		      isFinite(tileRange.max.x) &&
+		      isFinite(tileRange.max.y))) { throw new Error('Attempted to load an infinite number of tiles'); }
+
 		for (var key in this._tiles) {
 			var c = this._tiles[key].coords;
 			if (c.z !== this._tileZoom || !noPruneRange.contains(new Point(c.x, c.y))) {
