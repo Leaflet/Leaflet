@@ -90,6 +90,18 @@ describe('Bounds', function () {
 		});
 	});
 
+	describe('#getTopLeft', function () {
+		it('returns the proper bounds top-left value', function () {
+			expect(a.getTopLeft()).to.eql(new L.Point(14, 12)); // left, top
+		});
+	});
+
+	describe('#getBottomRight', function () {
+		it('returns the proper bounds bottom-right value', function () {
+			expect(a.getBottomRight()).to.eql(new L.Point(30, 40)); // left, bottom
+		});
+	});
+
 	describe('L.bounds factory', function () {
 		it('creates bounds from array of number arrays', function () {
 			var bounds = L.bounds([[14, 12], [30, 40]]);
