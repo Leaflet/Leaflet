@@ -78,6 +78,18 @@ describe('Bounds', function () {
 		});
 	});
 
+	describe('#getBottomLeft', function () {
+		it('returns the proper bounds bottom-left value', function () {
+			expect(a.getBottomLeft()).to.eql(new L.Point(14, 40)); // left, bottom
+		});
+	});
+
+	describe('#getTopRight', function () {
+		it('returns the proper bounds top-right value', function () {
+			expect(a.getTopRight()).to.eql(new L.Point(30, 12)); // right, top
+		});
+	});
+
 	describe('L.bounds factory', function () {
 		it('creates bounds from array of number arrays', function () {
 			var bounds = L.bounds([[14, 12], [30, 40]]);
