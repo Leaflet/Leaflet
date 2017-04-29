@@ -144,11 +144,11 @@ Bounds.prototype = {
 };
 
 
-// @factory L.bounds(topLeft: Point, bottomRight: Point)
-// Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).
+// @factory L.bounds(corner1: Point, corner2: Point)
+// Creates a Bounds object from two corners coordinate pairs.
 // @alternative
 // @factory L.bounds(points: Point[])
-// Creates a Bounds object from the points it contains
+// Creates a Bounds object from the given array of points.
 export function toBounds(a, b) {
 	if (!a || a instanceof Bounds) {
 		return a;
