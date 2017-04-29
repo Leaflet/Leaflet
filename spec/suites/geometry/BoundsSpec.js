@@ -3,12 +3,12 @@ describe('Bounds', function () {
 
 	beforeEach(function () {
 		a = new L.Bounds(
-			new L.Point(14, 12),
-			new L.Point(30, 40));
+			new L.Point(14, 12), // left, top
+			new L.Point(30, 40)); // right, bottom
 		b = new L.Bounds([
-			new L.Point(20, 12),
-			new L.Point(14, 20),
-			new L.Point(30, 40)
+			new L.Point(20, 12), // center, top
+			new L.Point(14, 20), // left, middle
+			new L.Point(30, 40) // right, bottom
 		]);
 		c = new L.Bounds();
 	});
