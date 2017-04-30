@@ -74,13 +74,13 @@ Bounds.prototype = {
 	},
 
 	// @method getTopLeft(): Point
-	// Returns the top-left point of the bounds.
+	// Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
 	getTopLeft: function () {
 		return this.min; // left, top
 	},
 
 	// @method getBottomRight(): Point
-	// Returns the bottom-right point of the bounds.
+	// Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
 	getBottomRight: function () {
 		return this.max; // right, bottom
 	},
