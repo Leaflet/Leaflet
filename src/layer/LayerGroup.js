@@ -127,6 +127,14 @@ export var LayerGroup = Layer.extend({
 		}
 		return this;
 	},
+	
+	getBounds: function () {
+		var bounds = new L.LatLngBounds();
+		this.eachLayer(function (layer) {
+			bounds.extend(layer instanceof L.Marker ? layer.getLatLng() : layer.getBounds());
+		}, this);
+		return bounds;
+	},
 
 	// @method getLayer(id: Number): Layer
 	// Returns the layer with the given internal ID.
