@@ -110,6 +110,9 @@
 
 /* control positioning */
 
+.leaflet-control-container {
+	position:static;
+}
 .leaflet-control {
 	position: relative;
 	z-index: 800;
