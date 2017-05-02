@@ -37,7 +37,7 @@ export var Events = {
 	on: function (types, fn, context) {
 
 		// types can be a map of types/handlers
-		if (typeof types === 'object') {
+		if (types instanceof Object && !(types instanceof Array)) {
 			for (var type in types) {
 				// we don't process space-separated events here for performance;
 				// it's a hot path since Layer uses the on(obj) syntax
@@ -73,7 +73,7 @@ export var Events = {
 			// clear all listeners if called without arguments
 			delete this._events;
 
-		} else if (typeof types === 'object') {
+		} else if (types instanceof Object && !(types instanceof Array)) {
 			for (var type in types) {
 				this._off(type, types[type], fn);
 			}
@@ -217,7 +217,7 @@ export var Events = {
 	// Behaves as [`on(…)`](#evented-on), except the listener will only get fired once and then removed.
 	once: function (types, fn, context) {
 
-		if (typeof types === 'object') {
+		if (types instanceof Object && !(types instanceof Array)) {
 			for (var type in types) {
 				this.once(type, types[type], fn);
 			}
