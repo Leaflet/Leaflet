@@ -290,6 +290,8 @@ export var Canvas = Renderer.extend({
 
 		if (!this._drawing || layer._empty()) { return; }
 
+		this._drawnLayers[layer._leaflet_id] = layer;
+
 		var p = layer._point,
 		    ctx = this._ctx,
 		    r = layer._radius,
