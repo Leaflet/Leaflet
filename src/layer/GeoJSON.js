@@ -103,6 +103,9 @@ export var GeoJSON = FeatureGroup.extend({
 				if (feature.geometries || feature.geometry || feature.features || feature.coordinates) {
 					this.addData(feature);
 				}
+				
+				if (i === len - 1 && typeof this.options.onComplete === 'function') this.options.onComplete(this._layers);
+				
 			}
 			return this;
 		}
