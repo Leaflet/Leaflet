@@ -35,6 +35,10 @@
 	height: 1600px;
 	-webkit-transform-origin: 0 0;
 	}
+/* workaround for white lines showing up in Webkit browsers. See #3575 */
+.leaflet-tile-container img {
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.05);
+}
 .leaflet-marker-icon,
 .leaflet-marker-shadow {
 	display: block;
