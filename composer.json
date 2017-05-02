@@ -1,0 +1,38 @@
+{
+  "name": "leaflet/leaflet",
+  "description": ":leaves: JavaScript library for mobile-friendly interactive maps",
+  "type": "component",
+  "homepage": "http://leafletjs.com/",
+  "keywords": [
+    "gis",
+    "map"
+  ],
+  "licenses": [
+    {
+      "type": "BSD-2-Clause",
+      "url": "https://github.com/Leaflet/Leaflet/blob/master/LICENSE"
+    }
+  ],
+  "author": {
+    "url": "http://agafonkin.com/en/",
+    "name": "Vladimir Agafonkin"
+  },
+  "support": {
+    "issues": "https://github.com/Leaflet/Leaflet/issues",
+    "forum": "https://stackoverflow.com/questions/tagged/leaflet",
+    "source": "https://github.com/Leaflet/Leaflet",
+    "docs": "http://leafletjs.com/reference.html"
+  },
+  "extra": {
+    "component": {
+      "scripts": [
+        "dist/leaflet-src.js"
+      ],
+      "files": [
+        "dist/leaflet.js",
+        "dist/leaflet.css",
+        "dist/images/*.png"
+      ]
+    }
+  }
+}
