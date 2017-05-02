@@ -16,7 +16,7 @@ For **Leaflet downloads** (including the built master version), check out the [d
 We're happy to meet new contributors.
 If you want to **get involved** with Leaflet development, check out the [contribution guide][contribute].
 Let's make the best mapping library that will ever exist,
-and push the limits of what's possible with online maps!
+and push the limits of what's possible with online maps !
 
 [![Build Status](https://travis-ci.org/Leaflet/Leaflet.svg?branch=master)](https://travis-ci.org/Leaflet/Leaflet)
 
