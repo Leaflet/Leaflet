@@ -111,7 +111,7 @@ export function falseFn() { return false; }
 // @function formatNum(num: Number, digits?: Number): Number
 // Returns the number `num` rounded to `digits` decimals, or to 5 decimals by default.
 export function formatNum(num, digits) {
-	var pow = Math.pow(10, digits || 5);
+	var pow = Math.pow(10, (digits === undefined ? 6 : digits));
 	return Math.round(num * pow) / pow;
 }
 
