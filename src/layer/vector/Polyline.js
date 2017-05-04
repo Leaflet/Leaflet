@@ -295,7 +295,7 @@ export var Polyline = Path.extend({
 		var i, j, k, len, len2, part,
 		    w = this._clickTolerance();
 
-		if (!this._pxBounds.contains(p)) { return false; }
+		if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
 
 		// hit detection for polylines
 		for (i = 0, len = this._parts.length; i < len; i++) {
