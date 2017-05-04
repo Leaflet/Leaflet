@@ -736,6 +736,16 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/daniellsu/">Dan Brown</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ngageoint/geopackage-js/tree/master/leaflet">Leaflet-GeoPackage</a>
+		</td><td>
+			Load <a href="http://www.geopackage.org/">GeoPackage</a> Tile and Feature Layers.
+		</td><td>
+			<a href="https://github.com/danielbarela">Daniel Barela</a>,
+			<a href="https://github.com/ngageoint">NGA</a>
+		</td>
+	</tr>
 </table>
 
 
