@@ -229,6 +229,25 @@ describe('Popup', function () {
 		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
 	});
 
+	it("prevents an underlying map click for Layer", function () {
+		var layer = new L.Polygon([[55.8, 37.6], [55.9, 37.7], [56.0, 37.8]]).addTo(map);
+		layer.bindPopup("layer popup");
+
+		var mapClicked = false;
+		map.on('click', function (e) {
+			mapClicked = true;
+			new L.Popup()
+				.setLatLng(e.latlng)
+				.setContent("map popup")
+				.openOn(map);
+		});
+
+		expect(map.hasLayer(layer._popup)).to.be(false);
+		happen.click(layer._path);
+		expect(mapClicked).to.be(false);
+		expect(map.hasLayer(layer._popup)).to.be(true);
+	});
+
 });
 
 describe("L.Map#openPopup", function () {
@@ -296,16 +315,91 @@ describe("L.Map#openPopup", function () {
 		map.openPopup(p);
 		expect(map.hasLayer(p)).to.be(true);
 		map.on('drag', spy);
-		var hand = new Hand({timing: 'fastframe'});
+		var hand = new Hand({
+			timing: 'fastframe',
+			onStop: function () {
+				expect(spy.called).to.be(true);
+				expect(map.hasLayer(p)).to.be(true);
+				done();
+			}});
 		var mouse = hand.growFinger('mouse');
 		mouse.moveTo(coords.left + 100, coords.left + 100, 0)
 			.down().moveBy(10, 10, 20).up();
-
-		setTimeout(function () {
-			expect(spy.called).to.be(true);
-			expect(map.hasLayer(p)).to.be(true);
-			done();
-		}, 100);
 	});
 
+});
+
+describe('L.Layer#_popup', function () {
+	var c, map, marker;
+
+	beforeEach(function () {
+		c = document.createElement('div');
+		c.style.width = '400px';
+		c.style.height = '400px';
+		map = new L.Map(c);
+		map.setView(new L.LatLng(55.8, 37.6), 6);
+		marker = L.marker(L.latLng(55.8, 37.6)).addTo(map);
+	});
+
+	afterEach(function () {
+		if (document.body.contains(c)) {
+			document.body.removeChild(c);
+		}
+	});
+
+	it("only adds a popup to the map when opened", function () {
+		marker.bindPopup("new layer");
+		expect(map.hasLayer(marker.getPopup())).to.be(false);
+		marker.openPopup();
+		expect(map.hasLayer(marker.getPopup())).to.be(true);
+	});
+
+	it("keeps an open popup on the map when it's unbound from the layer", function () {
+		marker.bindPopup("new layer").openPopup();
+		var popup = marker.getPopup();
+		marker.unbindPopup();
+		expect(map.hasLayer(popup)).to.be(true);
+	});
+
+	it("should not give an error when the marker has no popup", function () {
+		expect(function () {
+			marker.isPopupOpen();
+		}).to.not.throwException();
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it("should show a popup as closed if it's never opened", function () {
+		marker.bindPopup("new layer");
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it("should show a popup as opend if it's opened", function () {
+		marker.bindPopup("new layer").openPopup();
+		expect(marker.isPopupOpen()).to.be(true);
+	});
+
+	it("should show a popup as closed if it's opened and closed", function () {
+		marker.bindPopup("new layer").openPopup().closePopup();
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it("should show the popup as closed if it's unbound", function () {
+		marker.bindPopup("new layer").openPopup().unbindPopup();
+		expect(function () {
+			marker.isPopupOpen();
+		}).to.not.throwException();
+		expect(marker.isPopupOpen()).to.be(false);
+	});
+
+	it('does not throw is popup is inmediately closed', function (done) {
+
+		map.on('popupopen', function (ev) {
+			marker.closePopup();
+		});
+
+		expect(function () {
+			marker.bindPopup("new layer").openPopup();
+			done();
+		}).to.not.throwException();
+	});
 });

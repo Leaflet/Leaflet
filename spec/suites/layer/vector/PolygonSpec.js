@@ -12,7 +12,7 @@ describe('Polygon', function () {
 
 			var polygon = new L.Polygon(latLngs);
 
-			expect(L.Polyline._flat(polygon._latlngs)).to.be(false);
+			expect(L.LineUtil._flat(polygon._latlngs)).to.be(false);
 			expect(polygon.getLatLngs()).to.eql(polygon._latlngs);
 		});
 
@@ -160,6 +160,16 @@ describe('Polygon', function () {
 			var layer = new L.Polygon(latlngs).addTo(map);
 			map.setZoom(0);  // Make the polygon disappear in screen.
 			expect(layer.getCenter()).to.be.nearLatLng(L.latLng([0, 0]));
+		});
+
+		it('throws error if not yet added to map', function () {
+			expect(function () {
+				var latlngs = [
+					[[0, 0], [10, 0], [10, 10], [0, 10]]
+				];
+				var layer = new L.Polygon(latlngs);
+				var center = layer.getCenter();
+			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
 	});

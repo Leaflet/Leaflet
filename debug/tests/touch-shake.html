@@ -11,7 +11,6 @@
 
 
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 
 	<script src="../../node_modules/prosthetic-hand/dist/prosthetic-hand.js"></script>
@@ -74,7 +73,7 @@
 	// Map bounds
 	L.rectangle(bounds,{
 		fill: false,
-		stroke: 3,
+		weight: 3,
 		color: 'black'
 	}).addTo(map);
 

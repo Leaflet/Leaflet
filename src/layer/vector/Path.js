@@ -1,13 +1,17 @@
+import {Layer} from '../Layer';
+import * as Util from '../../core/Util';
+import {touch} from '../../core/Browser';
+
 /*
  * @class Path
  * @aka L.Path
- * @inherits Layer
+ * @inherits Interactive layer
  *
  * An abstract class that contains options and constants shared between vector
  * overlays (Polygon, Polyline, Circle). Do not use it directly. Extends `Layer`.
  */
 
-L.Path = L.Layer.extend({
+export var Path = Layer.extend({
 
 	// @section
 	// @aka Path options
@@ -62,8 +66,7 @@ L.Path = L.Layer.extend({
 
 		// className: '',
 
-		// @option interactive: Boolean = true
-		// If `false`, the vector will not emit mouse events and will act as a part of the underlying map.
+		// Option inherited from "Interactive layer" abstract class
 		interactive: true
 	},
 
@@ -83,14 +86,6 @@ L.Path = L.Layer.extend({
 		this._renderer._removePath(this);
 	},
 
-	getEvents: function () {
-		return {
-			zoomend: this._project,
-			moveend: this._update,
-			viewreset: this._reset
-		};
-	},
-
 	// @method redraw(): this
 	// Redraws the layer. Sometimes useful after you changed the coordinates that the path uses.
 	redraw: function () {
@@ -103,7 +98,7 @@ L.Path = L.Layer.extend({
 	// @method setStyle(style: Path options): this
 	// Changes the appearance of a Path based on the options in the `Path options` object.
 	setStyle: function (style) {
-		L.setOptions(this, style);
+		Util.setOptions(this, style);
 		if (this._renderer) {
 			this._renderer._updateStyle(this);
 		}
@@ -133,13 +128,13 @@ L.Path = L.Layer.extend({
 	},
 
 	_reset: function () {
-		// defined in children classes
+		// defined in child classes
 		this._project();
 		this._update();
 	},
 
 	_clickTolerance: function () {
 		// used when doing hit detection for Canvas layers
-		return (this.options.stroke ? this.options.weight / 2 : 0) + (L.Browser.touch ? 10 : 0);
+		return (this.options.stroke ? this.options.weight / 2 : 0) + (touch ? 10 : 0);
 	}
 });

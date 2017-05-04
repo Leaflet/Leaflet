@@ -1,3 +1,6 @@
+import {Evented} from '../core/Events';
+import {Map} from '../map/Map';
+import * as Util from '../core/Util';
 
 /*
  * @class Layer
@@ -24,14 +27,18 @@
  */
 
 
-L.Layer = L.Evented.extend({
+export var Layer = Evented.extend({
 
 	// Classes extending `L.Layer` will inherit the following options:
 	options: {
 		// @option pane: String = 'overlayPane'
 		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
 		pane: 'overlayPane',
-		nonBubblingEvents: []  // Array of events that should not be bubbled to DOM parents (like the map)
+		nonBubblingEvents: [],  // Array of events that should not be bubbled to DOM parents (like the map),
+
+		// @option attribution: String = null
+		// String to be shown in the attribution control, describes the layer data, e.g. "© Mapbox".
+		attribution: null
 	},
 
 	/* @section
@@ -67,13 +74,19 @@ L.Layer = L.Evented.extend({
 	},
 
 	addInteractiveTarget: function (targetEl) {
-		this._map._targets[L.stamp(targetEl)] = this;
+		this._map._targets[Util.stamp(targetEl)] = this;
 		return this;
 	},
 
 	removeInteractiveTarget: function (targetEl) {
-		delete this._map._targets[L.stamp(targetEl)];
+		delete this._map._targets[Util.stamp(targetEl)];
 		return this;
+	},
+
+	// @method getAttribution: String
+	// Used by the `attribution control`, returns the [attribution option](#gridlayer-attribution).
+	getAttribution: function () {
+		return this.options.attribution;
 	},
 
 	_layerAdd: function (e) {
@@ -86,13 +99,17 @@ L.Layer = L.Evented.extend({
 		this._zoomAnimated = map._zoomAnimated;
 
 		if (this.getEvents) {
-			map.on(this.getEvents(), this);
+			var events = this.getEvents();
+			map.on(events, this);
+			this.once('remove', function () {
+				map.off(events, this);
+			}, this);
 		}
 
 		this.onAdd(map);
 
-		if (this.getAttribution && this._map.attributionControl) {
-			this._map.attributionControl.addAttribution(this.getAttribution());
+		if (this.getAttribution && map.attributionControl) {
+			map.attributionControl.addAttribution(this.getAttribution());
 		}
 
 		this.fire('add');
@@ -112,7 +129,7 @@ L.Layer = L.Evented.extend({
  * Should contain all clean up code that removes the layer's elements from the DOM and removes listeners previously added in [`onAdd`](#layer-onadd). Called on [`map.removeLayer(layer)`](#map-removelayer).
  *
  * @method getEvents(): Object
- * This optional method should return an object like `{ viewreset: this._reset }` for [`addEventListener`](#event-addeventlistener). These events will be automatically added and removed from the map with your layer.
+ * This optional method should return an object like `{ viewreset: this._reset }` for [`addEventListener`](#evented-addeventlistener). The event handlers in this object will be automatically added and removed from the map with your layer.
  *
  * @method getAttribution(): String
  * This optional method should return a string containing HTML to be shown on the `Attribution control` whenever the layer is visible.
@@ -133,11 +150,11 @@ L.Layer = L.Evented.extend({
  *
  * @section Methods for Layers and Controls
  */
-L.Map.include({
+Map.include({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the map
 	addLayer: function (layer) {
-		var id = L.stamp(layer);
+		var id = Util.stamp(layer);
 		if (this._layers[id]) { return this; }
 		this._layers[id] = layer;
 
@@ -155,7 +172,7 @@ L.Map.include({
 	// @method removeLayer(layer: Layer): this
 	// Removes the given layer from the map.
 	removeLayer: function (layer) {
-		var id = L.stamp(layer);
+		var id = Util.stamp(layer);
 
 		if (!this._layers[id]) { return this; }
 
@@ -165,10 +182,6 @@ L.Map.include({
 
 		if (layer.getAttribution && this.attributionControl) {
 			this.attributionControl.removeAttribution(layer.getAttribution());
-		}
-
-		if (layer.getEvents) {
-			this.off(layer.getEvents(), layer);
 		}
 
 		delete this._layers[id];
@@ -186,7 +199,7 @@ L.Map.include({
 	// @method hasLayer(layer: Layer): Boolean
 	// Returns `true` if the given layer is currently added to the map
 	hasLayer: function (layer) {
-		return !!layer && (L.stamp(layer) in this._layers);
+		return !!layer && (Util.stamp(layer) in this._layers);
 	},
 
 	/* @method eachLayer(fn: Function, context?: Object): this
@@ -205,7 +218,7 @@ L.Map.include({
 	},
 
 	_addLayers: function (layers) {
-		layers = layers ? (L.Util.isArray(layers) ? layers : [layers]) : [];
+		layers = layers ? (Util.isArray(layers) ? layers : [layers]) : [];
 
 		for (var i = 0, len = layers.length; i < len; i++) {
 			this.addLayer(layers[i]);
@@ -214,13 +227,13 @@ L.Map.include({
 
 	_addZoomLimit: function (layer) {
 		if (isNaN(layer.options.maxZoom) || !isNaN(layer.options.minZoom)) {
-			this._zoomBoundLayers[L.stamp(layer)] = layer;
+			this._zoomBoundLayers[Util.stamp(layer)] = layer;
 			this._updateZoomLevels();
 		}
 	},
 
 	_removeZoomLimit: function (layer) {
-		var id = L.stamp(layer);
+		var id = Util.stamp(layer);
 
 		if (this._zoomBoundLayers[id]) {
 			delete this._zoomBoundLayers[id];
@@ -249,6 +262,13 @@ L.Map.include({
 		// to adding or removing a layer.
 		if (oldZoomSpan !== this._getZoomSpan()) {
 			this.fire('zoomlevelschange');
+		}
+
+		if (this.options.maxZoom === undefined && this._layersMaxZoom && this.getZoom() > this._layersMaxZoom) {
+			this.setZoom(this._layersMaxZoom);
+		}
+		if (this.options.minZoom === undefined && this._layersMinZoom && this.getZoom() < this._layersMinZoom) {
+			this.setZoom(this._layersMinZoom);
 		}
 	}
 });

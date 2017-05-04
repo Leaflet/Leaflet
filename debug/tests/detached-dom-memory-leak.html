@@ -5,15 +5,14 @@
 	<link rel="stylesheet" href="../../dist/leaflet.css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../css/screen.css" />
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 	<script>
 	var map,
-	    mapDiv,
-	    osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
+		mapDiv,
+		osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png');
 
 
-	recreateMap = function(){
+	var recreateMap = function(){
 		// destroy previous map and div
 
 		if(map) map.remove();	// This will destroy all DOM childs from layers and controls

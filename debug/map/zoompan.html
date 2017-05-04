@@ -19,7 +19,6 @@
 	}
 	</style>
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -44,7 +43,7 @@
 		<tr><td>on grid load</td><td id='load'></td></tr>
 	</div>
 
-	<script type="text/javascript">
+	<script>
 
 		var kyiv = [50.5, 30.5],
 			lnd = [51.51, -0.12],
@@ -65,7 +64,7 @@
 		var path = new L.Polyline([kyiv, trd, lnd, mad, dc, sf]).addTo(map);
 
 		var marker1 = L.marker(kyiv).addTo(map),
-			marker2 = L.marker(lnd).addTo(map);
+			marker2 = L.marker(lnd).addTo(map),
 			marker3 = L.marker(dc).addTo(map),
 			marker4 = L.marker(sf).addTo(map),
 			marker5 = L.marker(trd).addTo(map),

@@ -45,7 +45,7 @@ after pushing, it'll be published as `http://<user>.github.io/<repo>`.
 
 ### Readme
 
-The next thing you need to have is a descriptive `README.md` in the root of the repo (or a link to a website with a similar content).
+The next thing you need to have is a [good `README.md`](https://github.com/noffle/art-of-readme) in the root of the repo (or a link to a website with a similar content).
 At a minimum it should contain the following items:
 
 - name of the plugin
@@ -148,14 +148,14 @@ Here is an example of a `package.json` file for a Leaflet plugin.
   "main": "my-plugin.js",
   "author": "You",
   "license": "IST",
-  "dependencies": {
+  "peerDependencies": {
     "leaflet": "^1.0.0"
   }
 }
 ```
 
 If possible, do not commit your minified files (e.g. `dist`) to a repo; this can
-lead to confussion when trying to debug the wrong file. Instead, use `npm` to 
+lead to confussion when trying to debug the wrong file. Instead, use `npm` to
 trigger a build/minification just before publishing your package with a
 [`prepublish` script](https://docs.npmjs.com/misc/scripts#common-uses), for example:
 
@@ -169,16 +169,16 @@ trigger a build/minification just before publishing your package with a
 }
 ```
 
-You can then use the [`.gitignore`](https://help.github.com/articles/ignoring-files/) 
-file to make sure the minified files are not versioned, and an 
-[empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package) 
+You can then use the [`.gitignore`](https://help.github.com/articles/ignoring-files/)
+file to make sure the minified files are not versioned, and an
+[empty `.npmignore`](https://docs.npmjs.com/misc/developers#keeping-files-out-of-your-package)
 to ensure that they are published to NPM.
 
 ## Module Loaders
 
 Module loaders such as [RequireJS](http://requirejs.org/) and [Browserify](http://browserify.org/) implement module systems like AMD (Asynchronous Module Definition) and CommonJS to allow developers to modularize and load their code.
 
-You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/returnExportsGlobal.js)
+You can add support for AMD/CommonJS loaders to your Leaflet plugin by following this pattern based on the [Universal Module  Definition](https://github.com/umdjs/umd/blob/master/templates/returnExportsGlobal.js)
 
 ```js
 (function (factory, window) {
@@ -186,7 +186,7 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
     // define an AMD module that relies on 'leaflet'
     if (typeof define === 'function' && define.amd) {
         define(['leaflet'], factory);
-    
+
     // define a Common JS module that relies on 'leaflet'
     } else if (typeof exports === 'object') {
         module.exports = factory(require('leaflet'));
@@ -210,13 +210,12 @@ Now your plugin is available as an AMD and CommonJS module and can used used in 
 
 ## Adding to the plugins list
 
-Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so: 
+Once your plugin is published, it is a good idea to add it to the [Leaflet plugins list](http://leafletjs.com/plugins.html). To do so:
 
 * [Fork](https://help.github.com/articles/fork-a-repo/) the Leaflet repo.
-* Clone your repo locally, and switch to the [`gh-pages` branch](https://github.com/Leaflet/Leaflet/tree/gh-pages).
-* In the `plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
+* In the `docs/plugins.md` file, find the section your plugin should go in, and add a table row with information and links about your plugin.
 * Commit the code to your fork.
-* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your `gh-pages` branch to Leaflet's `gh-pages` branch.
+* [Open a pull request](https://help.github.com/articles/creating-a-pull-request/) from your fork to Leaflet's original repo.
 
-Once the pull request is done, a Leaflet maintainer will have a quick look at your 
+Once the pull request is done, a Leaflet maintainer will have a quick look at your
 plugin and, if everything looks right, your plugin will appear in the list shortly thereafter.

@@ -1,0 +1,19 @@
+exclude: [build, debug, node_modules, spec, src, CNAME, Jakefile.js, reference-tpl.html, CHANGELOG.md, README.md, LICENSE, DOCS-TODO.md]
+
+markdown: kramdown
+
+kramdown:
+  entity_output: as_input
+
+latest_leaflet_version: 1.0.3
+
+gems:
+  - jekyll-redirect-from
+
+# Integrity hashes for both leaflet.js and leaflet-src.js
+# These will be shown in the downloads page
+# See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+integrity_hash_css: "sha512-07I2e+7D8p6he1SIM+1twR5TIrhUQn9+I6yjqD53JQjFiMf8EtC93ty0/5vJTZGF8aAocvHYNEDJajGdNx1IsQ=="
+integrity_hash_source: "sha512-WXoSHqw/t26DszhdMhOXOkI7qCiv5QWXhH9R7CgvgZMHz1ImlkVQ3uNsiQKu5wwbbxtPzFXd1hK4tzno2VqhpA=="
+integrity_hash_uglified: "sha512-A7vV8IFfih/D732iSSKi20u/ooOfj/AGehOKq0f4vLT1Zr2Y+RX7C+w8A1gaSasGtRUZpF/NZgzSAu4/Gc41Lg=="
+
