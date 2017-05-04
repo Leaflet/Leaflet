@@ -203,10 +203,12 @@ export var Canvas = Renderer.extend({
 	},
 
 	_extendRedrawBounds: function (layer) {
-		var padding = (layer.options.weight || 0) + 1;
-		this._redrawBounds = this._redrawBounds || new Bounds();
-		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
-		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
+		if (layer._pxBounds) {
+			var padding = (layer.options.weight || 0) + 1;
+			this._redrawBounds = this._redrawBounds || new Bounds();
+			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
+			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
+		}
 	},
 
 	_redraw: function () {
