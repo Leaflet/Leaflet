@@ -358,7 +358,7 @@ export var Layers = Control.extend({
 	},
 
 	_onInputClick: function () {
-		var inputs = this._form.getElementsByTagName('input'),
+		var inputs = this._form.getElementsByClassName('leaflet-control-layers-selector'),
 		    input, layer, hasLayer;
 		var addedLayers = [],
 		    removedLayers = [];
@@ -392,7 +392,7 @@ export var Layers = Control.extend({
 	},
 
 	_checkDisabledLayers: function () {
-		var inputs = this._form.getElementsByTagName('input'),
+		var inputs = this._form.getElementsByClassName('leaflet-control-layers-selector'),
 		    input,
 		    layer,
 		    zoom = this._map.getZoom();
