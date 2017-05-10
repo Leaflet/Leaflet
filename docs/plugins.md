@@ -988,6 +988,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/iatkin">Ilya Atkin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/rowanwins/Leaflet.SvgShapeMarkers">Leaflet.SvgShapeMarkers</a>
+		</td><td>
+			Additional SVG marker types for shapes such as triangle, diamond and square.
+		</td><td>
+			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
+		</td>
+	</tr>
     	<tr>
 		<td>
 			<a href="https://github.com/marslan390/BeautifyMarker">Leaflet.BeautifyMarkers</a>
