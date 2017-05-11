@@ -73,6 +73,18 @@ Bounds.prototype = {
 		return new Point(this.max.x, this.min.y);
 	},
 
+	// @method getTopLeft(): Point
+	// Returns the top-left point of the bounds (i.e. [`this.min`](#bounds-min)).
+	getTopLeft: function () {
+		return this.min; // left, top
+	},
+
+	// @method getBottomRight(): Point
+	// Returns the bottom-right point of the bounds (i.e. [`this.max`](#bounds-max)).
+	getBottomRight: function () {
+		return this.max; // right, bottom
+	},
+
 	// @method getSize(): Point
 	// Returns the size of the given bounds
 	getSize: function () {
