@@ -1,143 +1,3195 @@
-
-basemapProviders: [
- {
-   name: "leaflet-providers",
-   repo: "https://github.com/leaflet-extras/leaflet-providers",
-   description: "Contains configurations for various free tile
-        providers & OSM, OpenCycleMap, Stamen, Esri, etc.",
-   author: "leaflet-extras members",
-   author-url: "https://github.com/leaflet-extras",
-   npm: "leaflet-providers",
-   demo: "https://leaflet-extras.github.io/leaflet-providers/preview/index.html",
-   worksWith.v0.7: true,
-   worksWith.v1.0: true,
-   },
- {
-   name: "Leaflet.KoreanTmsProviders",
-   repo: "https://github.com/tontita/Leaflet.KoreanTmsProviders",
-   description: "Contains configurations for various (South) Korean tile providers —
-        Daum, Naver, VWorld, etc.",
-   author: "Seong Choi",
-   author-url: "https://github.com/tontita",
-   npm: ,
-   demo: "https://tontita.github.io/Leaflet.KoreanTmsProviders/",
-   worksWith.v0.7: ,
-   worksWith.v1.0: ,
- },
- {
-   name: "Leaflet.ChineseTmsProviders",
-   repo: "https://github.com/htoooth/Leaflet.ChineseTmsProviders",
-   description: "Contains configurations for various Chinese tile providers —
-        TianDiTu, MapABC, GaoDe, etc.",
-   author: "Tao Huang",
-   author-url: "https://github.com/htoooth",
-   npm: ,
-   demo: ,
-   worksWith.v0.7: ,
-   worksWith.v1.0: ,
- },
- {
-   name: "Esri Leaflet",
-   repo: "http://esri.github.io/esri-leaflet",
-   description: "A set of tools for using ArcGIS services with Leaflet. Support
-        for map services, feature layers, ArcGIS Online tiles and more.",
-   author: "Patrick Arlt",
-   author-url: "https://github.com/patrickarlt",
-   npm: "esri-leaflet",
-   demo: "https://esri.github.io/esri-leaflet/examples/",
-   worksWith.v0.7: ,
-   worksWith.v1.0: true,
- },
- {
-   name: "Leaflet.GIBS",
-   repo: "https://github.com/aparshin/leaflet-GIBS",
-   description: "<a href='https://earthdata.nasa.gov/gibs'>NASA EOSDIS GIBS</a>
-        imagery integration. The plugin provides
-        <a href='https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products'>96 daily updated layers</a>
-        with satellite imagery and science parameters.",
-   author: "Alexander Parshin",
-   author-url: "https://github.com/aparshin",
-   npm: "leaflet-gibs",
-   demo: "http://aparshin.github.io/leaflet-GIBS/examples/",
-   worksWith.v0.7: true,
-   worksWith.v1.0: ,
- },
- {
-   name: "L.TileLayer.Kartverket",
-   repo: "https://github.com/knreise/L.TileLayer.Kartverket",
-   description: "Provides easy setup of the tile layers from <a href='http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/'>Kartverket</a> (The Norwegian Mapping Authority)",
-   author: "Atle Frenvik Sveen",
-   author-url: "https://github.com/atlefren",
-   npm: "L.TileLayer.Kartverket",
-   demo: "https://knreise.github.io/L.TileLayer.Kartverket/example.html",
-   worksWith.v0.7: true,
-   worksWith.v1.0: ,
- },
- {
-   name: "Leaflet.Spain.WMS",
-   repo: "https://github.com/sigdeletras/Leaflet.Spain.WMS",
-   description: "Provides easy setup for several Web Map Services (WMS) layers for
-        Spain (PNOA, IGN base, Catastro, etc), from Spanish mapping agencies.",
-   author: "Patricio Soriano",
-   author-url: "https://github.com/sigdeletras",
-   npm: ,
-   demo: "https://sigdeletras.github.io/Leaflet.Spain.WMS/examples/",
-   worksWith.v0.7: true,
-   worksWith.v1.0: true,
- },
- {
-   name: "PolarMap.js",
-   repo: "https://github.com/GeoSensorWebLab/polarmap.js",
-   description: "JavaScript library for displaying tiles from <a href='http://webmap.arcticconnect.org'>ArcticWebMap</a>,
-        a free tile provider with OSM data in multiple Arctic polar projections.
-        Includes lower-level API for deeper integration with other Leaflet plugins.",
-   author: "GeoSensorWeb Lab",
-   author-url: "https://github.com/geosensorweblab",
-   npm: "polarmap",
-   demo: "http://webmap.arcticconnect.org/polarmap.js/examples/PolarMap/quick-start/index.html#ac_3573/4/90.00/0.00",
-   worksWith.v0.7: true,
-   worksWith.v1.0: true,
- },
- {
-   name: "Bing Maps Layer",
-   repo: "https://github.com/gmaclennan/leaflet-bing-layer",
-   description: "Add <a href='https://msdn.microsoft.com/en-us/library/ff701721.aspx'>Bing Maps tiles</a>
-        to your Leaflet Map.",
-   author: "Gregor MacLennan",
-   author-url: "https://github.com/gmaclennan",
-   npm: "leaflet-bing-layer",
-   demo: "https://gmaclennan.github.io/leaflet-bing-layer/",
-   worksWith.v0.7: false,
-   worksWith.v1.0: true,
- },
- {
-   name: "L.TileLayer.HERE",
-   repo: "https://gitlab.com/IvanSanchez/Leaflet.TileLayer.HERE",
-   description: "Displays map tiles from HERE maps.",
-   author: "Iván Sánchez",
-   author-url: "https://gitlab.com/IvanSanchez",
-   npm: ,
-   demo: "https://ivansanchez.gitlab.io/Leaflet.TileLayer.HERE/demo.html",
-   worksWith.v0.7: ,
-   worksWith.v1.0: true,
- },
- {
-   name: "L.GridLayer.GoogleMutant",
-   repo: "https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant",
-   description: "Displays Google maps (with minimal artifacts thanks to a
-        <a href='https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver'>DOM mutation observer</a>
-        technique)",
-   author: "Iván Sánchez",
-   author-url: "https://gitlab.com/IvanSanchez",
-   npm: "leaflet.gridlayer.googlemutant",
-   demo: "http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html",
-   worksWith.v0.7: false,
-   worksWith.v1.0: true,
- },
-
-]
-
-
-
-
+categories:
+- description: The following plugins allow loading different maps and provide functionality
+    to tile and image layers.
+  name: Tile & image layers
+  subcategories:
+  - description: Ready-to-go basemaps, with little or no configuration at all.
+    name: Basemap providers
+    plugins:
+    - author: leaflet-extras members
+      author-url: https://github.com/leaflet-extras
+      description: "\n\t\t\tContains configurations for various free tile providers\
+        \ \u2014 OSM, OpenCycleMap, Stamen, Esri, etc.\n\t\t"
+      homepage: https://github.com/leaflet-extras/leaflet-providers
+      name: leaflet-providers
+      npm: leaflet-providers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-22T20:53:07Z'
+    - author: Seong Choi
+      author-url: https://github.com/tontita/
+      description: "\n\t\t\tContains configurations for various (South) Korean tile\
+        \ providers \u2014 Daum, Naver, VWorld, etc.\n\t\t"
+      homepage: https://github.com/tontita/Leaflet.KoreanTmsProviders
+      name: Leaflet.KoreanTmsProviders
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-12-21T02:13:15Z'
+    - author: Tao Huang
+      author-url: https://github.com/htoooth/
+      description: "\n\t\t\tContains configurations for various Chinese tile providers\
+        \ \u2014 TianDiTu, MapABC, GaoDe, etc.\n\t\t"
+      homepage: https://github.com/htoooth/Leaflet.ChineseTmsProviders
+      name: Leaflet.ChineseTmsProviders
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-05-06T12:45:09Z'
+    - author: Patrick Arlt
+      author-url: https://github.com/patrickarlt/
+      description: "\n\t\t\tA set of tools for using ArcGIS services with Leaflet.\
+        \ Support for map services, feature layers, ArcGIS Online tiles and more.\n\
+        \t\t"
+      homepage: http://esri.github.io/esri-leaflet
+      name: Esri Leaflet
+      npm: esri-leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-10T23:25:47Z'
+    - author: Alexander Parshin
+      author-url: https://github.com/aparshin
+      description: "\n <a href=\"https://earthdata.nasa.gov/gibs\">NASA EOSDIS GIBS</a>\
+        \  imagery integration. The plugin provides  <a href=\"https://wiki.earthdata.nasa.gov/display/GIBS/GIBS+Available+Imagery+Products\"\
+        >96 daily updated layers</a>  with satellite imagery and science parameters.\
+        \  <a href=\"http://aparshin.github.io/leaflet-GIBS/examples/\">Demo</a> .\n\
+        \t\t"
+      homepage: https://github.com/aparshin/leaflet-GIBS
+      name: Leaflet.GIBS
+      npm: leaflet-gibs
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-15T01:01:01Z'
+    - author: Kultur og naturreise
+      author-url: https://github.com/knreise
+      description: "\n\t\t\tProvides easy setup of the tile layers from  <a href=\"\
+        http://kartverket.no/Kart/Gratis-kartdata/Cache-tjenester/\">Kartverket</a>\
+        \  (The Norwegian Mapping Authority)\n\t\t"
+      homepage: https://github.com/knreise/L.TileLayer.Kartverket
+      name: L.TileLayer.Kartverket
+      npm: L.TileLayer.Kartverket
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-10-14T14:51:44Z'
+    - author: Patricio Soriano
+      author-url: https://github.com/sigdeletras
+      description: "\n\t\t\tProvides easy setup for several Web Map Services (WMS)\
+        \ layers for Spain (PNOA, IGN base, Catastro, etc), from Spanish mapping agencies.\n\
+        \t\t"
+      homepage: https://github.com/sigdeletras/Leaflet.Spain.WMS
+      name: Leaflet.Spain.WMS
+      plugin_era: '0.7'
+      pushed_at: '2015-06-16T09:24:25Z'
+    - author: GeoSensorWeb Lab
+      author-url: https://github.com/geosensorweblab
+      description: "\n\t\t\tJavaScript library for displaying tiles from  <a href=\"\
+        http://webmap.arcticconnect.org\">ArcticWebMap</a> , a free tile provider\
+        \ with OSM data in multiple Arctic polar projections. Includes lower-level\
+        \ API for deeper integration with other Leaflet plugins.\n\t\t"
+      homepage: https://github.com/GeoSensorWebLab/polarmap.js
+      name: PolarMap.js
+      npm: polarmap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-06-10T20:05:14Z'
+    - author: Gregor MacLennan
+      author-url: https://github.com/gmaclennan
+      description: "\n\t\t\tAdd  <a href=\"https://msdn.microsoft.com/en-us/library/ff701721.aspx\"\
+        >Bing Maps tiles</a>  to your Leaflet Map. Requires Leaflet v1.0.0.beta.2\
+        \ or later.\n\t\t"
+      homepage: https://github.com/gmaclennan/leaflet-bing-layer
+      name: Bing Maps Layer
+      npm: leaflet-bing-layer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-17T03:48:49Z'
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tDisplays map tiles from HERE maps ( <a href=\"https://ivansanchez.gitlab.io/Leaflet.TileLayer.HERE/demo.html\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://gitlab.com/IvanSanchez/Leaflet.TileLayer.HERE
+      name: L.TileLayer.HERE
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tDisplays Google maps (with minimal artifacts thanks to\
+        \ a  <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver\"\
+        >DOM mutation observer</a>  technique) ( <a href=\"http://ivansanchez.gitlab.io/Leaflet.GridLayer.GoogleMutant/demo.html\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://gitlab.com/IvanSanchez/Leaflet.GridLayer.GoogleMutant
+      name: L.GridLayer.GoogleMutant
+      npm: leaflet.gridlayer.googlemutant
+  - description: Plugins for loading basemaps or GIS raster layers in common (albeit
+      non-default) formats.
+    name: Basemap formats
+    plugins:
+    - author: Alexandre Melard
+      author-url: https://github.com/mylen
+      description: "Add WMTS (IGN) layering for leaflet.\n\t\t"
+      homepage: https://github.com/mylen/leaflet.TileLayer.WMTS
+      name: leaflet.TileLayer.WMTS
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-17T08:49:36Z'
+    - author: AZGS
+      author-url: https://github.com/azgs
+      description: "\n\t\t\tA set of small plugins for Leaflet, including WFS-GeoJSON\
+        \ layer with filtering, a hover control for GeoJSON, and an Esri tile layer.\n\
+        \t\t"
+      homepage: https://github.com/azgs/azgs-leaflet
+      name: azgs-leaflet
+      plugin_era: really old
+      pushed_at: '2012-05-02T00:22:23Z'
+    - author: S. Andrew Sheppard
+      author-url: https://github.com/sheppard/
+      description: "\n\t\t\tEnhanced WMS support for Leaflet, including single-tile/untiled\
+        \ layers, shared WMS sources, and layer identify via GetFeatureInfo.\n\t\t"
+      homepage: https://github.com/heigeo/leaflet.wms
+      name: leaflet.wms
+      npm: leaflet.wms
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-29T16:59:32Z'
+    - author: Andrzej Zaborowski
+      author-url: https://github.com/balrog-kun/
+      description: "\n\t\t\tTileLayer with  <a href=\"http://bellard.org/bpg/\">.bpg</a>\
+        \  image format decoding.\n\t\t"
+      homepage: https://github.com/balrog-kun/Leaflet.bpg
+      name: Leaflet.bpg
+      npm: leaflet.bpg
+      plugin_era: '0.7'
+      pushed_at: '2015-03-16T01:46:35Z'
+    - author: Glen Robertson
+      author-url: https://github.com/glenrobertson
+      description: "\n\t\t\tA TileLayer for GeoJSON tiles.\n\t\t"
+      homepage: https://github.com/glenrobertson/leaflet-tilelayer-geojson/
+      name: TileLayer.GeoJSON
+      npm: leaflet-tilelayer-geojson
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-21T04:14:55Z'
+    - author: Per Liedman
+      author-url: https://github.com/perliedman
+      description: "\n\t\t\tAdds support for the  <a href=\"https://github.com/mapbox/TileJSON\"\
+        >TileJSON</a>  specification to Leaflet.\n\t\t"
+      homepage: https://github.com/kartena/leaflet-tilejson
+      name: leaflet-tilejson
+      npm: leaflet-tilejson
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-19T21:23:06Z'
+    - author: Vizzuality
+      author-url: http://vizzuality.com/
+      description: "\n\t\t\tOfficial  <a href=\"http://cartodb.com/\">CartoDB</a>\
+        \  plugin for Leaflet.\n\t\t"
+      homepage: http://vizzuality.github.com/cartodb-leaflet/
+      name: cartodb-leaflet
+      npm: cartdo-leaflet
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-03-30T10:48:37Z'
+    - author: Eugene Mikhalev
+      author-url: https://github.com/emikhalev/
+      description: "\n\t\t\tAdds support for 2GIS tile layer\n\t\t"
+      homepage: https://github.com/emikhalev/leaflet-2gis
+      name: Leaflet-2gis
+      plugin_era: '0.7'
+      pushed_at: '2014-12-19T13:52:52Z'
+    - author: Geobricks
+      author-url: https://github.com/geobricks/
+      description: "\n\t\t\tExtends the L.GeoJSON layer using Google polyline encoding\
+        \ algorithm, allowing an optimized data transfer.\n\t\t"
+      homepage: https://github.com/geobricks/Leaflet.GeoJSON.Encoded
+      name: Leaflet GeoJSON Encoded
+      npm: Leaflet.GeoJSON.Encoded
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-08T23:29:19Z'
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez/
+      description: "\n\t\t\tLoads  <a href=\"https://github.com/mapbox/mbtiles-spec\"\
+        ><code>.mbtiles</code></a>  tilesets.\n\t\t"
+      homepage: https://gitlab.com/IvanSanchez/Leaflet.TileLayer.MBTiles
+      name: Leaflet.TileLayer.MBTiles
+      npm: Leaflet.TileLayer.MBTiles
+  - description: None
+    name: Non-map base layers
+    plugins:
+    - author: "Bj\xF8rn Sandvik"
+      author-url: https://github.com/turban
+      description: "\n\t\t\tA TileLayer for Zoomify images.\n\t\t"
+      homepage: https://github.com/turban/Leaflet.Zoomify
+      name: TileLayer.Zoomify
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-07-15T22:48:58Z'
+    - author: Al Farisi
+      author-url: https://github.com/alfarisi
+      description: "\n\t\t\tA TileLayer for DeepZoom images.\n\t\t"
+      homepage: https://github.com/alfarisi/leaflet-deepzoom
+      name: TileLayer.DeepZoom
+      plugin_era: '0.7'
+      pushed_at: '2014-04-27T13:53:25Z'
+    - author: Dan Sherman
+      author-url: https://github.com/namrehs
+      description: "\n\t\t\tA TileLayer for Gigapan images.\n\t\t"
+      homepage: https://github.com/namrehs/Leaflet.Gigapan
+      name: TileLayer.Gigapan
+      plugin_era: '0.7'
+      pushed_at: '2015-03-04T04:52:04Z'
+    - author: Emmanuel Bertin
+      author-url: https://github.com/ebertin
+      description: "Add support for  <a href=\"http://iipimage.sourceforge.net/\"\
+        >IIPImage</a>  layers in Leaflet.\n\t\t"
+      homepage: https://github.com/astromatic/Leaflet.TileLayer.IIP
+      name: Leaflet.TileLayer.IIP
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-07-28T11:11:56Z'
+    - author: Jack Reed
+      author-url: https://github.com/mejackreed
+      description: "\n\t\t\tA  <a href=\"http://iiif.io/\">IIIF</a>  (International\
+        \ Image Interoperability Framework) viewer for Leaflet. See the  <a href=\"\
+        http://mejackreed.github.io/Leaflet-IIIF/examples/example.html\">demo</a>\
+        \ .\n\t\t"
+      homepage: https://github.com/mejackreed/Leaflet-IIIF
+      name: Leaflet-IIIF
+      npm: leaflet-iiif
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-25T19:07:50Z'
+    - author: Alexander Parshin
+      author-url: https://github.com/aparshin
+      description: "\n\t\t\tRenders some fractals (Mandelbrot set, Julia set and some\
+        \ others) using 2D canvas ( <a href=\"http://aparshin.github.io/leaflet-fractal/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/aparshin/leaflet-fractal
+      name: leaflet-fractal
+      plugin_era: '0.7'
+      pushed_at: '2014-10-17T05:41:40Z'
+    - author: Commenthol
+      author-url: https://github.com/commenthol
+      description: "\n\t    Renders large tiled images generated with\n\t     <a href=\"\
+        http://github.com/commenthol/gdal2tiles-leaflet\">gdal2tiles-leaflet</a> .\n\
+        \t    Image raster coordinates can be used to set markers, etc.\n\t    ( <a\
+        \ href=\"http://commenthol.github.io/leaflet-rastercoords\">demo</a> ).\n\t\
+        \  "
+      homepage: https://github.com/commenthol/leaflet-rastercoords
+      name: leaflet-rastercoords
+      npm: leaflet-rastercoords
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-07T20:22:25Z'
+  - description: The following plugins change the way that tile or image layers are
+      displayed in the map.
+    name: Tile/image display
+    plugins:
+    - author: Alexander Parshin
+      author-url: https://github.com/aparshin
+      description: "\n\t\t\tAllows you to draw tile layers with arbitrary polygonal\
+        \ boundary. HTML5 Canvas is used for rendering.\n\t\t"
+      homepage: https://github.com/aparshin/leaflet-boundary-canvas
+      name: TileLayer.BoundaryCanvas
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-23T13:03:49Z'
+    - author: Ilya Zverev
+      author-url: https://github.com/Zverik
+      description: "\n\t\t\tA regular TileLayer with grayscale makeover.\n\t\t"
+      homepage: https://github.com/Zverik/leaflet-grayscale/
+      name: TileLayer.Grayscale
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-29T20:49:57Z'
+    - author: Alexander Parshin
+      author-url: https://github.com/aparshin
+      description: "Add support of image overlays with arbitrary perspective transformation.\n\
+        \t\t"
+      homepage: https://github.com/ScanEx/Leaflet.imageTransform
+      name: Leaflet.ImageTransform
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-26T11:29:19Z'
+    - author: Jared Dominguez
+      author-url: https://github.com/lizardtechblog/
+      description: "\n\t\t\tSimple Leaflet controls to adjust the opacity of a map\
+        \ layer.\n\t\t"
+      homepage: https://github.com/lizardtechblog/Leaflet.OpacityControls
+      name: Leaflet.OpacityControls
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-09-30T05:24:26Z'
+    - author: Public Lab
+      author-url: https://github.com/publiclab
+      description: "\n\t\t\tEnable users to  <a href=\"https://publiclab.github.io/Leaflet.DistortableImage/examples/\"\
+        >scale, rotate, and distort images</a>  on Leaflet maps.\n\t\t"
+      homepage: https://github.com/publiclab/Leaflet.DistortableImage
+      name: Leaflet.DistortableImage
+      npm: leaflet-distortableimage
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-21T19:15:06Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tDisplays rotated, scaled and skewed (but not rubbersheeted)\
+        \ ImageOverlays, given three control points. ( <a href=\"http://ivansanchez.github.io/Leaflet.ImageOverlay.Rotated/demo.html\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/IvanSanchez/Leaflet.ImageOverlay.Rotated
+      name: Leaflet.ImageOverlay.Rotate
+      npm: leaflet-imageoverlay-rotated
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-20T09:15:25Z'
+    - author: Yuzo Matsuzawa
+      author-url: https://github.com/frogcat
+      description: "\n\t\t\tA TileLayer with mask effect ( <a href=\"http://frogcat.github.io/leaflet-tilelayer-mask/default/\"\
+        >demo</a> )\n\t\t"
+      homepage: https://github.com/frogcat/leaflet-tilelayer-mask
+      name: Leaflet.TileLayer.Mask
+      npm: leaflet-tilelayer-mask
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-24T10:36:45Z'
+    - author: GreenInfo Network
+      author-url: https://github.com/GreenInfo-Network/
+      description: "\n\t\t\tA TileLayer which can filter and replace pixels by RGB\
+        \ code.\n\t\t\t <br/> \n <a href=\"http://greeninfo-network.github.io/L.TileLayer.PixelFilter/demo1.html\"\
+        >demo 1</a>  \u2022  <a href=\"http://greeninfo-network.github.io/L.TileLayer.PixelFilter/demo2.html\"\
+        >demo 2</a> \n"
+      homepage: https://github.com/GreenInfo-Network/L.TileLayer.PixelFilter/
+      name: Leaflet.TileLayer.PixelFilter
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-09T21:42:06Z'
+    - author: Digital Democracy
+      author-url: http://www.digital-democracy.org
+      description: "\n\t\t\tA Leaflet control to add a split screen to compare two\
+        \ map overlays ( <a href=\"http://lab.digital-democracy.org/leaflet-side-by-side/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/digidem/leaflet-side-by-side
+      name: Leaflet.Control.SideBySide
+      npm: leaflet-side-by-side
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-06T21:09:41Z'
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tApplies custom WebGL shaders to each tile in a tilelayer.\
+        \ Demos:  <a href=\"http://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/demo-mandelbrot.html\"\
+        >Mandelbrot set</a> ,  <a href=\"http://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/demo-antitoner.html\"\
+        >manipulate tile colours</a> ,  <a href=\"http://ivansanchez.gitlab.io/Leaflet.TileLayer.GL/demo/demo-floow.html\"\
+        >elevation with terrain-RBG tiles</a> .\n\t\t"
+      homepage: https://gitlab.com/IvanSanchez/Leaflet.TileLayer.GL
+      name: Leaflet.TileLayer.GL
+      npm: leaflet.tilelayer.gl
+    - author: Yuzo Matsuzawa
+      author-url: https://github.com/frogcat
+      description: "\n\t\t\tA Leaflet TileLayer with getColor(latLng). Demos:  <a\
+        \ href=\"https://frogcat.github.io/leaflet-tilelayer-colorpicker/\">color\
+        \ picker</a> ,  <a href=\"https://frogcat.github.io/leaflet-tilelayer-colorpicker/mapbox-terrain-rgb.html\"\
+        >elevation picker with mapbox terrain-RGB</a> \n"
+      homepage: https://github.com/frogcat/leaflet-tilelayer-colorpicker
+      name: Leaflet.TileLayer.ColorPicker
+      npm: leaflet-tilelayer-colorpicker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-21T09:28:44Z'
+  - description: The following plugins change the way that tile layers are loaded
+      into the map.
+    name: Tile Load
+    plugins:
+    - author: Mattias Bengtsson
+      author-url: https://github.com/mattiasb
+      description: "\n\t\t\tAllows to compose a TileLayer from several tile sources.\
+        \ Each source is active only on a defined set of zoomlevels.\n\t\t"
+      homepage: https://github.com/mattiasb/Leaflet.MultiTileLayer
+      name: Leaflet.MultiTileLayer
+      plugin_era: '0.5'
+      pushed_at: '2013-02-25T16:34:13Z'
+    - author: Ishmael Smyrnow
+      author-url: https://github.com/ismyrnow
+      description: "\n\t\t\tAllows you to define tile layer URLs using a function.\
+        \ Even works with asynchronous sources, using promises.\n\t\t"
+      homepage: https://github.com/ismyrnow/Leaflet.functionaltilelayer
+      name: Leaflet.FunctionalTileLayer
+      npm: leaflet.functionaltilelayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-06T06:33:45Z'
+    - author: Greg Allensworth
+      author-url: https://github.com/gregallensworth
+      description: "\n\t\t\tFor use with Cordova/Phonegap, adds tile caching onto\
+        \ local device storage, switching between offline and online mode.\n\t\t"
+      homepage: https://github.com/gregallensworth/L.TileLayer.Cordova
+      name: TileLayer.Cordova
+      npm: leaflet-tilelayer-cordova
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-07T16:38:59Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tAllows all Leaflet TileLayers to cache into PouchDB for\
+        \ offline use.\n\t\t"
+      homepage: https://github.com/MazeMap/Leaflet.TileLayer.PouchDBCached
+      name: TileLayer.PouchDBCached
+      npm: leaflet.tilelayer.pouchdbcached
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-16T09:38:48Z'
+    - author: Eric Brelsford
+      author-url: https://github.com/ebrelsford/
+      description: "\n\t\t\tA simple control that adds a loading indicator as tiles\
+        \ and other data are loaded.\n\t\t"
+      homepage: https://github.com/ebrelsford/Leaflet.loading
+      name: Leaflet.loading
+      npm: leaflet-loading
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-18T18:59:23Z'
+    - author: Alex Paterson
+      author-url: https://github.com/TolonUK
+      description: "\n\t\t\tBuffer tiles beyond the edge of the viewport, for Leaflet\
+        \ 1.0.  <a href=\"http://www.tolon.co.uk/Leaflet.EdgeBuffer/comparison.html\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/TolonUK/Leaflet.EdgeBuffer
+      name: Leaflet.EdgeBuffer
+      npm: leaflet-edgebuffer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-07T18:13:26Z'
+    - author: ghybs
+      author-url: https://github.com/ghybs
+      description: "\n\t\t\tReplaces missing Tiles (HTTP 404 Not Found Error) by scaled\
+        \ up equivalent Tiles from lower zooms.\n\t\t"
+      homepage: https://github.com/ghybs/Leaflet.TileLayer.Fallback
+      name: Leaflet.TileLayer.Fallback
+      npm: leaflet.tilelayer.fallback
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-19T08:00:08Z'
+    - author: G. Lathoud
+      author-url: http://glat.info
+      description: "\n\t\t\t`FeatureGroup` that supports the `\"loading\"` and `\"\
+        load\"` events (for v0.7.*).\n\t\t"
+      homepage: https://github.com/Outdooractive/Leaflet.FeatureGroup.LoadEvents
+      name: Leaflet.FeatureGroup.LoadEvents
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-05-04T06:55:38Z'
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tFades out grid layers and tilelayers when they are removed,\
+        \ making basemap changes smoother (for 1.0.0).  <a href=\"http://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://gitlab.com/IvanSanchez/Leaflet.GridLayer.FadeOut
+      name: Leaflet.GridLayer.FadeOut
+      npm: leaflet.gridlayer.fadeout
+  - description: None
+    name: Vector tiles
+    plugins:
+    - author: SpatialDev
+      author-url: http://spatialdev.com/
+      description: "\n\t\t\tA Leaflet Plugin that renders Mapbox Vector Tiles on canvas.\
+        \ See  <a href=\"http://spatialserver.github.io/Leaflet.MapboxVectorTile/examples/confetti.html\"\
+        >demo</a> . Compatible with Leaflet 0.7.x only.\n\t\t"
+      homepage: https://github.com/SpatialServer/Leaflet.MapboxVectorTile
+      name: Leaflet.MapboxVectorTile
+      npm: leaflet-mapbox-vector-tile
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-03T22:24:52Z'
+    - author: Tristan Davies
+      author-url: http://tristan.io/
+      description: "\n\t\t\tRender vector tiles on canvas with leaflet (geojson, topojson,\
+        \ and protobuf). See  <a href=\"http://tristan.io/hoverboard/\">demo</a> .\
+        \ Compatible with Leaflet 0.7.x only.\n\t\t"
+      homepage: https://github.com/devTristan/hoverboard
+      name: Hoverboard
+      npm: leaflet-hoverboard
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-10T21:29:46Z'
+    - author: Mapbox
+      author-url: https://www.mapbox.com/
+      description: "\n\t\t\tEfficient library for slicing GeoJSON data into vector\
+        \ tiles on the fly.\n\t\t"
+      homepage: https://github.com/mapbox/geojson-vt
+      name: geojson-vt
+      npm: geojson-vt
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-14T18:38:39Z'
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tDisplay gridded vector data (GeoJSON or TopoJSON sliced\
+        \ with geojson-vt, or protobuf vector tiles) in Leaflet 1.0.0. See  <a href=\"\
+        https://github.com/IvanSanchez/Leaflet.VectorGrid#demo\">demos</a> . Not compatible\
+        \ with 0.7.x.\n\t\t"
+      homepage: https://github.com/IvanSanchez/Leaflet.VectorGrid
+      name: Leaflet.VectorGrid
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-26T09:30:45Z'
+- description: 'The following plugins provide new ways of loading overlay data (GIS
+    vector data): points, lines and polygons.'
+  name: Overlay data
+  subcategories:
+  - description: Load your own data from various GIS formats.
+    name: Overlay data formats
+    plugins:
+    - author: Mapbox
+      author-url: https://github.com/mapbox
+      description: "\n\t\t\tLoads & converts CSV, KML, GPX, TopoJSON, WKT formats\
+        \ for Leaflet.\n\t\t"
+      homepage: https://github.com/mapbox/leaflet-omnivore
+      name: leaflet-omnivore
+      npm: '@mapbox/leaflet-omnivore'
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-20T19:02:39Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/leplatrem
+      description: "\n\t\t\tLoads files (GeoJSON, GPX, KML) into the map using the\
+        \ HTML5 FileReader API (i.e. locally without server).\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.FileLayer
+      name: Leaflet.FileLayer
+      npm: leaflet-filelayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-12T08:42:11Z'
+    - author: "Iv\xE1n Eixarch"
+      author-url: https://github.com/joker-x
+      description: "\n\t\t\tLeaflet plugin for loading a CSV file as geoJSON layer.\n\
+        \t\t"
+      homepage: https://github.com/joker-x/Leaflet.geoCSV
+      name: Leaflet.geoCSV
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-08-09T16:11:46Z'
+    - author: Calvin Metcalf
+      author-url: https://github.com/calvinmetcalf
+      description: "\n\t\t\tPut a shapefile onto your map as a layer.\n\t\t"
+      homepage: https://github.com/calvinmetcalf/leaflet.shapefile
+      name: Leaflet.Shapefile
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-27T15:18:53Z'
+    - author: Calvin Metcalf
+      author-url: https://github.com/calvinmetcalf
+      description: "\n\t\t\tPut an ESRI File GeoDatabase onto your map as a layer.\n\
+        \t\t"
+      homepage: https://github.com/calvinmetcalf/leaflet.filegdb
+      name: Leaflet.FileGDB
+      plugin_era: '0.6'
+      pushed_at: '2013-11-01T17:36:48Z'
+    - author: Jieter
+      author-url: https://github.com/jieter
+      description: "\n\t\t\tUse encoded polylines in Leaflet.\n\t\t"
+      homepage: https://github.com/jieter/Leaflet.encoded
+      name: Leaflet.encoded
+      npm: polyline-encoded
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-23T11:32:01Z'
+    - author: Maxime Petazzoni
+      author-url: https://github.com/mpetazzoni/
+      description: "\n\t\t\tGPX layer, targeted at sporting activities by providing\
+        \ access to information such as distance, moving time, pace, elevation, heart\
+        \ rate, etc.\n\t\t"
+      homepage: https://github.com/mpetazzoni/leaflet-gpx
+      name: Leaflet GPX
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-10T18:18:01Z'
+    - author: K. Arthur Endsley
+      author-url: https://github.com/arthur-e/
+      description: "\n\t\t\tA modest library for translating between Well-Known Text\
+        \ (WKT) and Leaflet geometry objects (e.g. between L.marker() instances and\
+        \ \"POINT()\" strings).\n\t\t"
+      homepage: http://arthur-e.github.com/Wicket/
+      name: Wicket
+      npm: wicket
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-17T14:11:45Z'
+    - author: Tom Chadwin
+      author-url: https://github.com/tomchadwin
+      description: "\n\t\t\tA  <a href=\"http://qgis.org/\">QGIS</a>  plugin to make\
+        \ webmaps without coding.\n\t\t"
+      homepage: https://github.com/tomchadwin/qgis2web
+      name: qgis2web
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-14T22:11:55Z'
+    - author: Flexberry
+      author-url: https://github.com/Flexberry/
+      description: "\n <a href=\"http://www.opengeospatial.org/standards/wfs\">WFS</a>\
+        \  client layer with transaction support\n\t\t"
+      homepage: https://github.com/Flexberry/Leaflet-WFST
+      name: Leaflet-WFST
+      npm: Leaflet-WFST
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-25T17:00:23Z'
+    - author: Dan Brown
+      author-url: https://github.com/daniellsu/
+      description: "\n\t\t\tA new, more GIS-like scalebar with alternating black/white\
+        \ bars.\n\t\t"
+      homepage: https://github.com/daniellsu/leaflet-betterscale
+      name: Leaflet-BetterScale
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-04T16:31:11Z'
+    - author: Daniel Barela
+      author-url: https://github.com/danielbarela
+      description: "\n\t\t\tLoad  <a href=\"http://www.geopackage.org/\">GeoPackage</a>\
+        \  Tile and Feature Layers.\n\t\t"
+      homepage: https://github.com/ngageoint/geopackage-js/tree/master/leaflet
+      name: Leaflet-GeoPackage
+  - description: Load dynamic data which is updated in the map, or load GIS vector
+      data in non-standard ways.
+    name: Dynamic/custom data loading
+    plugins:
+    - author: Per Liedman
+      author-url: https://github.com/perliedman/
+      description: "\n\t\t\tPut realtime data on a Leaflet map: live tracking GPS\
+        \ units, sensor data or just about anything.\n\t\t"
+      homepage: https://github.com/perliedman/leaflet-realtime
+      name: Leaflet Realtime
+      npm: leaflet-realtime
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-12T12:12:28Z'
+    - author: Calvin Metcalf
+      author-url: https://github.com/calvinmetcalf/
+      description: "\n\t\t\tAdd GeoJSON data via ajax or jsonp.\n\t\t"
+      homepage: https://github.com/calvinmetcalf/leaflet-ajax
+      name: Leaflet Ajax
+      npm: leaflet-ajax
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-13T12:43:21Z'
+    - author: Martijn Grendelman
+      author-url: https://github.com/tinuzz/
+      description: "\n\t\t\tPeriodically ('live') update something on a map ( <a href=\"\
+        https://www.grendelman.net/leaflet/\">Demo</a> )\n\t\t"
+      homepage: https://github.com/tinuzz/leaflet-liveupdate
+      name: Leaflet.Liveupdate
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-16T21:34:07Z'
+    - author: Calvin Metcalf
+      author-url: https://github.com/calvinmetcalf/
+      description: "\n\t\t\tUse PouchDB to sync CouchDB data to local storage (indexedDB),\
+        \ to just add couchDB data or as just a less confusing implementation of indexedDB.\n\
+        \t\t"
+      homepage: https://github.com/calvinmetcalf/leaflet.pouch
+      name: Leaflet.Pouch
+      npm: leaflet-pouch
+      plugin_era: '0.5'
+      pushed_at: '2013-04-25T18:01:21Z'
+    - author: Christopher Baines
+      author-url: https://github.com/cbaines
+      description: "\n\t\t\tCreate indoor maps.\n\t\t"
+      homepage: https://github.com/cbaines/leaflet-indoor
+      name: Leaflet.Indoor
+      plugin_era: '0.7'
+      pushed_at: '2015-06-03T06:29:21Z'
+    - author: Benjamin VADANT
+      author-url: https://github.com/BenjaminVadant/
+      description: "\n\t\t\tAdd an auto updating GeoJSON data Layer via ajax post\
+        \ requests.\n\t\t"
+      homepage: https://github.com/BenjaminVadant/leaflet-ugeojson
+      name: Leaflet uGeoJSON
+      npm: leaflet-ugeojson
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-03T19:14:17Z'
+  - description: These plugins create useful overlays from scratch, no loading required.
+    name: Synthetic overlays
+    plugins:
+    - author: "Bj\xF8rn Sandvik"
+      author-url: https://github.com/turban
+      description: "\n\t\t\tDraws a grid of latitude and longitude lines.\n\t\t"
+      homepage: https://github.com/turban/Leaflet.Graticule
+      name: Leaflet.Graticule
+      plugin_era: '0.7'
+      pushed_at: '2015-07-10T18:40:59Z'
+    - author: Andrew Blakey
+      author-url: https://github.com/ablakey
+      description: "\n\t\t\tDraws a grid lines for L.CRS.Simple coordinate system.\n\
+        \t\t"
+      homepage: https://github.com/ablakey/Leaflet.SimpleGraticule
+      name: Leaflet.SimpleGraticule
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-03-15T14:35:28Z'
+    - author: "J\xF6rg Dietrich"
+      author-url: https://github.com/joergdietrich
+      description: "Overlay day and night regions on a map.\n\t\t"
+      homepage: https://github.com/joergdietrich/Leaflet.Terminator
+      name: Leaflet.Terminator
+      plugin_era: '0.7'
+      pushed_at: '2015-03-17T11:21:24Z'
+    - author: CloudyBay
+      author-url: https://github.com/cloudybay/
+      description: "\n\t\t\tCreate a Canvas as ImageOverlay to draw the Lat/Lon Graticule,\
+        \ and show the grid tick label at the edges of the map. <a href=\"https://cloudybay.github.io/leaflet.latlng-graticule/example/\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/cloudybay/leaflet.latlng-graticule
+      name: leaflet.latlng-graticule
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-07-18T05:40:13Z'
+  - description: None
+    name: Data providers
+    plugins:
+    - author: Jason Sanford
+      author-url: http://geojason.info
+      description: "\n\t\t\tAllows to easily create vector layers from a number of\
+        \ geo web services, such as ArcGIS Server, Arc2Earth, GeoIQ, CartoDB and GIS\
+        \ Cloud.\n\t\t"
+      homepage: http://geojason.info/leaflet-vector-layers/
+      name: Leaflet Vector Layers
+    - author: kartenkarsten
+      author-url: https://github.com/kartenkarsten
+      description: "\n      Easily include data from the  <a href=\"http://overpass-api.de\"\
+        >overpass api</a> .\n\t\t"
+      homepage: https://github.com/kartenkarsten/leaflet-layer-overpass/
+      name: Leaflet Layer Overpass
+      npm: leaflet-layer-overpass
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-04T19:55:59Z'
+    - author: Kr1
+      author-url: https://github.com/kr1/
+      description: "\n\t\t\tA layer with Points of interest from Wikipedia - loaded\
+        \ via ajax from DBpedia's SPARQL endpoint.\n\t\t"
+      homepage: https://github.com/kr1/Leaflet.dbpediaLayer/
+      name: Leaflet.dbpediaLayer
+      npm: leaflet.dbpedialayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-16T22:03:14Z'
+    - author: Matthew Barker
+      author-url: https://github.com/MatthewBarker
+      description: "\n\t\t\tA leaflet plugin to display Wikipedia API entries on a\
+        \ map layer.\n\t\t"
+      homepage: https://github.com/MatthewBarker/leaflet-wikipedia
+      name: Leaflet-Wikipedia
+      npm: leaflet-wikipedia
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-09-01T10:02:42Z'
+- description: The following plugins provide new ways of displaying overlay data information.
+  name: Overlay display
+  subcategories:
+  - description: These plugins provide new markers or news ways of converting abstract
+      data into images in your screen. Leaflet users versed in GIS also know these
+      as symbolizers.
+    name: Markers & renderers
+    plugins:
+    - author: JD Fergason
+      author-url: https://github.com/jdfergason
+      description: "\n\t\t\tLeaflet.ellipse place ellipses on map by specifying center\
+        \ point, semi-major axis,\n\t\t\tsemi-minor axis, and tilt degrees from west.\n\
+        \t\t"
+      homepage: https://github.com/jdfergason/Leaflet.Ellipse
+      name: Leaflet.ellipse
+      npm: leaflet-ellipse
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-17T00:45:55Z'
+    - author: Jacob Toye
+      author-url: https://github.com/jacobtoye
+      description: "\n\t\t\tAdds text labels to map markers and vector layers.\n\t\
+        \t"
+      homepage: https://github.com/Leaflet/Leaflet.label
+      name: Leaflet.label
+      npm: leaflet.label
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-10T19:49:38Z'
+    - author: Jieter
+      author-url: https://github.com/jieter
+      description: "\n\t\t\tAdds functionality to  <code>L.Circle</code>  to draw\
+        \ semicircles.\n\t\t"
+      homepage: https://github.com/jieter/Leaflet-semicircle
+      name: Leaflet-semicircle
+      npm: leaflet-semicircle
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-06T02:03:26Z'
+    - author: Benjamin Becquet
+      author-url: https://github.com/bbecquet
+      description: "\n\t\t\tAllows you to draw patterns (like dashes, arrows or evenly\
+        \ spaced Markers) along Polylines or coordinate paths.\n\t\t"
+      homepage: https://github.com/bbecquet/Leaflet.PolylineDecorator
+      name: Leaflet.PolylineDecorator
+      npm: leaflet-polylinedecorator
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-05T16:52:26Z'
+    - author: Calvin Metcalf
+      author-url: https://github.com/calvinmetcalf
+      description: "\n\t\t\tUse sprite based icons in your markers.\n\t\t"
+      homepage: https://github.com/leaflet-extras/leaflet.sprite
+      name: Leaflet.Sprite
+      npm: leaflet-sprite
+      plugin_era: '0.7'
+      pushed_at: '2014-09-16T20:14:28Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/leplatrem
+      description: "\n\t\t\tAllows you to draw text along Polylines.\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.TextPath
+      name: Leaflet.TextPath
+      npm: leaflet-textpath
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-05T10:07:28Z'
+    - author: Ilya Atkin
+      author-url: https://github.com/iatkin
+      description: "\n\t\t\tA simple and customizable SVG icon with no external dependencies.\
+        \ Also included is a convenience Marker class and two example subclasses.\
+        \  <a href=\"http://iatkin.github.io/leaflet-svgicon/\">Customizable demo\
+        \ with example subclasses</a> \n"
+      homepage: https://github.com/iatkin/leaflet-svgicon
+      name: Leaflet-SVGIcon
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-22T17:53:00Z'
+    - author: Muhammad Arslan Sajid
+      author-url: https://github.com/marslan390
+      description: "\n\t\t\tLightweight plugin that adds colorful iconic markers without\
+        \ image and gives full control of style to end user (i.e. Unlimited colors\
+        \ and CSS styling).\n\t\t"
+      homepage: https://github.com/marslan390/BeautifyMarker
+      name: Leaflet.BeautifyMarkers
+      npm: beautifymarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-19T10:30:46Z'
+    - author: Lennard Voogdt
+      author-url: http://www.lennardvoogdt.nl
+      description: "\n\t\t\tColorful, iconic & retina-proof markers based on the Font\
+        \ Awesome icons/Twitter Bootstrap icons\n\t\t"
+      homepage: https://github.com/lvoogdt/Leaflet.awesome-markers
+      name: Leaflet.Awesome-Markers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-24T19:25:46Z'
+    - author: Cory Silva
+      author-url: http://www.corysilva.com
+      description: "\n\t\t\tShameless copy of Awesome-Markers with more shapes, colors\
+        \ and semantic-ui support\n\t\t"
+      homepage: https://github.com/coryasilva/Leaflet.ExtraMarkers
+      name: Leaflet.Extra-Markers
+      npm: Leaflet.extra-markers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-02T20:28:18Z'
+    - author: James Seppi
+      author-url: https://github.com/jseppi
+      description: "Create markers using  <a href=\"https://www.mapbox.com/maki/\"\
+        >Maki Icons</a>  from MapBox.\n\t\t"
+      homepage: https://github.com/jseppi/Leaflet.MakiMarkers
+      name: Leaflet.MakiMarkers
+      npm: leaflet-makimarkers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-16T18:16:28Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tUse icon font glyphs in your markers (from Font Awesome,\
+        \ Material Design Icons, Glyphicons,\n\t\t\tMetro UI icons, Elusive, and other\
+        \ icon fonts). ( <a href=\"https://ivansanchez.github.io/Leaflet.Icon.Glyph/demo.html\"\
+        >demo</a> )\n\t\t"
+      homepage: https://github.com/IvanSanchez/Leaflet.Icon.Glyph
+      name: Leaflet.Icon.Glyph
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-02T13:09:28Z'
+    - author: "Fr\xE9d\xE9ric Bonifas"
+      author-url: https://github.com/fredericbonifas
+      description: "\n\t\t\tShow symbols at the extremities of polylines, using SVG\
+        \ markers.\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.LineExtremities
+      name: Leaflet.LineExtremities
+      npm: leaflet-lineextremities
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-05-20T09:17:43Z'
+    - author: Mathias Schneider
+      author-url: https://github.com/hiasinho
+      description: "\n\t\t\tVector SVG markers for Leaflet, with an option for Font\
+        \ Awesome/Twitter Bootstrap icons.\n\t\t"
+      homepage: https://github.com/hiasinho/Leaflet.vector-markers
+      name: Leaflet.VectorMarkers
+      npm: Leaflet.vector-markers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-20T01:37:30Z'
+    - author: Tyler Eastman
+      author-url: https://github.com/teastman
+      description: "\n\t\t\tAdd support for pattern fills on Paths.\n\t\t"
+      homepage: https://github.com/teastman/Leaflet.pattern
+      name: Leaflet.pattern
+      npm: leaflet.pattern
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-06-29T20:40:09Z'
+    - author: "Thomas Br\xFCggemann"
+      author-url: https://github.com/thomasbrueggemann
+      description: "\n\t\t\tA boat marker using HTML Canvas for displaying yachts\
+        \ and sailboats with heading and optional wind information.  <a href=\"http://thomasbrueggemann.github.io/leaflet.boatmarker/\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/thomasbrueggemann/leaflet.boatmarker
+      name: Leaflet.BoatMarker
+      npm: leaflet.boatmarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-19T19:30:21Z'
+    - author: Jonatan Heyman
+      author-url: http://heyman.info
+      description: "\n\t\t\tPlugin for plotting a marker representing a user - or\
+        \ multiple users - on a map,\n\t\t\twith support for drawing an accuraccy\
+        \ circle. Can be seen in action on\n\t\t\t <a href=\"http://longitude.me\"\
+        >Longitude.me</a> .\n\t\t"
+      homepage: https://github.com/heyman/leaflet-usermarker
+      name: leaflet-usermarker
+      npm: leaflet-usermarker
+      plugin_era: '0.7'
+      pushed_at: '2015-02-17T14:37:30Z'
+    - author: Alexander Burtsev
+      author-url: https://github.com/albburtsev/
+      description: "\n <a href=\"http://wiki.openstreetmap.org/wiki/Geojson_CSS\"\
+        >Geojson CSS</a>  implementation for Leaflet.\n\t\t"
+      homepage: https://github.com/albburtsev/Leaflet.geojsonCSS
+      name: Leaflet.geojsonCSS
+      npm: Leaflet.geojsonCSS
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-21T19:08:05Z'
+    - author: Jan Marsch
+      author-url: https://github.com/kekscom/
+      description: "\n\t\t\tAmazing JS library for visualizing 3D OSM building geometry\
+        \ on top of Leaflet.\n\t\t"
+      homepage: http://osmbuildings.org/
+      name: OSM Buildings
+    - author: Gerald Pape
+      author-url: https://github.com/ubergesundheit
+      description: "\n\t\t\tPlugin to indicate the existence of Features outside of\
+        \ the current view.\n\t\t"
+      homepage: https://github.com/ubergesundheit/Leaflet.EdgeMarker
+      name: Leaflet.EdgeMarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-09T17:28:52Z'
+    - author: Gismartwaredev
+      author-url: https://github.com/gismartwaredev
+      description: "\n\t\t\tAllows to manage orientation of markers dynamically.\n\
+        \t\t"
+      homepage: https://github.com/gismartwaredev/leaflet.orientedMarker
+      name: Leaflet.orientedMarker
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-03-16T11:34:30Z'
+    - author: mapshakers
+      author-url: https://github.com/mapshakers
+      description: "\n\t\t\tRenders pulsing icon using CSS3. It can be used for location\
+        \ marker.\n\t\t"
+      homepage: https://github.com/mapshakers/leaflet-icon-pulse
+      name: leaflet-icon-pulse
+      npm: leaflet-pulse-icon
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-13T19:27:18Z'
+    - author: mapshakers
+      author-url: https://github.com/mapshakers
+      description: "\n\t\t\tSet of cartographic font icons based on  <a href=\"http://www.mapkeyicons.com\"\
+        >mapkeyicons</a> .\n\t\t"
+      homepage: https://github.com/mapshakers/leaflet-mapkey-icon
+      name: leaflet-mapkey-icon
+      npm: leaflet-mapkey-icon
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-09-09T14:13:00Z'
+    - author: "Bj\xF8rn Sandvik"
+      author-url: https://github.com/turban
+      description: "\n\t\t\tPlugin to show geotagged photos on a Leaflet map.  <a\
+        \ href=\"http://turban.github.io/Leaflet.Photo/examples/picasa.html\">Demo</a>\
+        \ .\n\t\t"
+      homepage: https://github.com/turban/Leaflet.Photo
+      name: Leaflet.Photo
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-08-29T03:55:14Z'
+    - author: elfalem
+      author-url: https://github.com/elfalem
+      description: "\n\t\t\tA Leaflet plugin for drawing B\xE9zier curves and other\
+        \ complex shapes.  <a href=\"http://elfalem.github.io/Leaflet.curve/\">Demo</a>\
+        \ .\n\t\t"
+      homepage: https://github.com/elfalem/Leaflet.curve
+      name: Leaflet.curve
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-03T01:43:08Z'
+    - author: Alexey Gusev
+      author-url: https://github.com/MAD-GooZe
+      description: "\n\t\t\tThis plugin adds L.Polyline.Arc function which wraps arc.js\
+        \ functionality for creation of Great Cirlce arcs.\n\t\t"
+      homepage: https://github.com/MAD-GooZe/Leaflet.Arc
+      name: Leaflet.Arc
+      npm: leaflet-arc
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-03T08:22:32Z'
+    - author: Tim Wisniewski
+      author-url: http://timwis.com
+      description: "\n\t\t\tExtends L.geoJson to add a choropleth visualization (color\
+        \ scale based on value).  <a href=\"http://timwis.com/leaflet-choropleth/examples/basic\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/timwis/leaflet-choropleth
+      name: leaflet-choropleth
+      npm: leaflet-choropleth
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-11T21:41:30Z'
+    - author: Tim Leerhoff
+      author-url: https://github.com/lethexa
+      description: "\n                        This marker provides a tracksymbol with\
+        \ orientation, velocity-vector and configurable shape.\n                "
+      homepage: https://github.com/lethexa/leaflet-tracksymbol
+      name: leaflet-tracksymbol
+      npm: leaflet-tracksymbol
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-17T18:02:03Z'
+    - author: Johannes Rudolph
+      author-url: https://github.com/powerpan
+      description: "\n                        AIS Extension for leaflet-tracksymbol\
+        \ It displays AIS Contacts on the Map.\n                "
+      homepage: https://github.com/PowerPan/leaflet-ais-tracksymbol
+      name: leaflet-ais-tracksymbol
+      npm: leaflet-ais-tracksymbol
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-18T06:34:53Z'
+    - author: Johannes Rudolph
+      author-url: https://github.com/powerpan
+      description: "\n                        Adds a Seach Box for your Leaflet Map\
+        \ and Your [leaflet-ais-trackymbol](https://github.com/PowerPan/leaflet-ais-tracksymbol)\n\
+        \                "
+      homepage: https://github.com/PowerPan/leaflet-ais-tracksymbol-search
+      name: leaflet-ais-tracksymbol-search
+      npm: leaflet-ais-tracksymbol-search
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-13T08:42:02Z'
+    - author: Christian Guyette
+      author-url: https://github.com/wwwouaiebe
+      description: "\n\t\t\tPins are markers that can be added and edited on the map\
+        \ by the end user.  <a href=\"http://wwwouaiebe.github.io/leaflet.marker.pin/\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/wwwouaiebe/leaflet.marker.pin
+      name: leaflet.marker.pin
+      npm: leaflet.marker.pin
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-20T08:27:32Z'
+    - author: "Iv\xE1n S\xE1nchez"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tA pure Leaflet implementation of CartoDB's \" <a href=\"\
+        http://blog.cartodb.com/stacking-chips-a-map-hack/\">stacked chips</a> \"\
+        \ symbolizer.  <a href=\"http://ivansanchez.github.io/Leaflet.Marker.Stack/demos/color_ramps.html\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/IvanSanchez/Leaflet.Marker.Stack
+      name: Leaflet.Marker.Stack
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-05-02T11:47:26Z'
+    - author: CloudyBay
+      author-url: https://github.com/cloudybay/
+      description: "\n\t\t\tExtend the Polygon Object to fill SVG Path element with\
+        \ an image pattern. <a href=\"http://lwsu.github.io/leaflet-polygon-fillPattern/example/\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/cloudybay/leaflet-polygon-fillPattern
+      name: leaflet-polygon.fillPattern
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-03T04:16:46Z'
+    - author: Benjamin Becquet
+      author-url: https://github.com/bbecquet
+      description: "\n\t\t\tAdds to  <code>L.Polyline</code>  the ability to be shifted\
+        \ with a relative pixel offset, without modifying its actual  <code>LatLng</code>\
+        \ s. The offset value can be either negative or positive, for left- or right-side\
+        \ offset, and remains constant across zoom levels ( <a href=\"http://bbecquet.github.io/Leaflet.PolylineOffset/examples/example.html\"\
+        >basic demo</a> ).\n\t\t"
+      homepage: https://github.com/bbecquet/Leaflet.PolylineOffset
+      name: Leaflet Polyline Offset
+      npm: leaflet-polylineoffset
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-24T06:59:22Z'
+    - author: Alexander Milevski
+      author-url: https://github.com/w8r/
+      description: "\n\t\t\tSpecial type of SVG marker with a label inside and draggable\
+        \ around the anchor point ( <a href=\"https://w8r.github.io/leaflet-labeled-circle/demo/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/w8r/leaflet-labeled-circle
+      name: leaflet-labeled-circle
+      npm: leaflet-labeled-circle
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-03T14:38:26Z'
+    - author: Dag Jomar Mersland
+      author-url: https://github.com/dagjomar/
+      description: "\n\t\t\tAdd markers that moves with a parallax-effect relative\
+        \ to the map when panning ( <a href=\"https://dagjomar.github.io/Leaflet.ParallaxMarker/\"\
+        >demos / examples</a> ).\n\t\t"
+      homepage: https://github.com/dagjomar/Leaflet.ParallaxMarker
+      name: Leaflet.ParallaxMarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-11T07:09:59Z'
+    - author: Doroszlai, Attila
+      author-url: https://github.com/adoroszlai
+      description: "\n\t\t\tAllows displaying markers along a route (L.Polyline) at\
+        \ equivalent distances (eg. one per mile) ( <a href=\"http://adoroszlai.github.io/leaflet-distance-markers/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/adoroszlai/leaflet-distance-markers
+      name: leaflet-distance-markers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-03T07:23:18Z'
+    - author: Mikhail Shilkov
+      author-url: https://github.com/mikhailshilkov
+      description: "\n\t\t\tRenders a polyline with width fixed in meters, not in\
+        \ pixels; adjusts width depending on zoom level ( <a href=\"http://mikhail.io/demos/leaflet-corridor/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/mikhailshilkov/leaflet-corridor
+      name: leaflet-corridor
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-07T21:29:53Z'
+    - author: Kenta Hakoishi
+      author-url: https://github.com/yakitoritabetai
+      description: "\n\t\t\tDisplays labels on paths (polylines, polygons, circles)\
+        \ avoiding label collision. ( <a href=\"https://yakitoritabetai.github.io/Leaflet.LabelTextCollision/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/yakitoritabetai/Leaflet.LabelTextCollision
+      name: Leaflet.LabelTextCollision
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-14T02:46:55Z'
+    - author: Grigory Golikov
+      author-url: https://github.com/ggolikov
+      description: "\n\t\t\tDisplays circleMarker with multiple directions.\n\t\t\t\
+        Useful to show photos taken from one point. ( <a href=\"https://ggolikov.github.io/Leaflet.Viewpoint/example/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/ggolikov/Leaflet.Viewpoint
+      name: Leaflet.Viewpoint
+      npm: leaflet-viewpoint
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-06T22:43:41Z'
+    - author: Sylvenas
+      author-url: https://github.com/react-map
+      description: "\n\t\t\tAdding magical animation effect to a marker while loading.(\
+        \ <a href=\"https://react-map.github.io/leaflet.magicMarker/\">Demo</a> ).\n\
+        \t\t"
+      homepage: https://github.com/react-map/leaflet.magicMarker
+      name: Leaflet.magicMarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-24T23:58:36Z'
+    - author: Brandon Xiang
+      author-url: https://github.com/brandonxiang
+      description: "\n\t\t\tAdding highlight performance for L.marker.( <a href=\"\
+        https://brandonxiang.github.io/leaflet.marker.highlight/examples/\">Demo</a>\
+        \ ).\n\t\t"
+      homepage: https://github.com/brandonxiang/leaflet.marker.highlight
+      name: Leaflet.Marker.Highlight
+      npm: leaflet.marker.highlight
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-19T01:03:39Z'
+    - author: Bert Spaan
+      author-url: https://github.com/bertspaan
+      description: "\n\t\t\tPlugin for photo geotagging, with two modes: camera and\
+        \ crosshair ( <a href=\"http://spacetime.nypl.org/Leaflet.GeotagPhoto/examples/camera.html\"\
+        >Demo</a> ).\n\t\t"
+      homepage: https://github.com/nypl-spacetime/Leaflet.GeotagPhoto
+      name: Leaflet.GeotagPhoto
+      npm: leaflet-geotag-photo
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-08T15:58:17Z'
+  - description: None
+    name: Overlay animations
+    plugins:
+    - author: Aaron Ogle
+      author-url: https://github.com/atogle
+      description: "\n\t\t\tAnimate a marker along a polyline.\n\t\t"
+      homepage: https://github.com/openplans/Leaflet.AnimatedMarker
+      name: Leaflet.AnimatedMarker
+      npm: leaflet.AnimatedMarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-18T21:41:20Z'
+    - author: Maxime Hadjinlian
+      author-url: https://github.com/maximeh
+      description: "\n\t\t\tMake a marker bounce when you add it to a map.\n\t\t"
+      homepage: https://github.com/maximeh/leaflet.bouncemarker
+      name: Leaflet.BounceMarker
+      npm: leaflet.BounceMarker
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-11T13:00:14Z'
+    - author: Alexei KLENIN
+      author-url: https://github.com/hosuaby
+      description: "\n\t\t\tSmooth animation of marker bouncing for Leaflet.\n\t\t"
+      homepage: https://github.com/hosuaby/Leaflet.SmoothMarkerBouncing
+      name: Leaflet.SmoothMarkerBouncing
+      npm: leaflet.smooth_marker_bouncing
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-29T22:49:23Z'
+    - author: Ewoken
+      author-url: https://github.com/ewoken
+      description: "\n\t\t\tAllow to move markers along a polyline with custom durations.\n\
+        \t\t"
+      homepage: https://github.com/ewoken/Leaflet.MovingMarker
+      name: Leaflet.MovingMarker
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-22T19:57:32Z'
+    - author: Brian Reavis
+      author-url: https://github.com/brianreavis
+      description: "\n\t\t\tTransition in/out markers with CSS3 transitions. It supports\
+        \ jitter\n\t\t\tfor staggering markers into view to prevent visual overload.\
+        \ See the  <a href=\"http://naturalatlas.github.io/leaflet-transitionedicon/\"\
+        >demo</a> .\n\t\t"
+      homepage: https://github.com/naturalatlas/leaflet-transitionedicon
+      name: Leaflet.TransitionedIcon
+      npm: leaflet-transitionedicon
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-17T12:22:54Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tAnimates (poly)lines into existence, as if they were being\
+        \ slowly drawn from start to end.\n\t\t"
+      homepage: https://github.com/IvanSanchez/Leaflet.Polyline.SnakeAnim
+      name: Leaflet.Polyline.SnakeAnim
+      npm: leaflet.polyline.snakeanim
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-24T09:58:30Z'
+    - author: Rubens Pinheiro
+      author-url: https://github.com/rubenspgcavalcante
+      description: "\n\t\t\tLeaflet.AntPath put a flux animation (like ants walking)\
+        \ into a Polyline.\n\t\t\t( <a href=\"http://rubenspgcavalcante.github.io/leaflet-ant-path/\"\
+        >demo</a> )\n\t\t"
+      homepage: https://github.com/rubenspgcavalcante/leaflet-ant-path
+      name: Leaflet.AntPath
+      npm: leaflet-ant-path
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-12T08:27:12Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://gitlab.com/u/IvanSanchez
+      description: "\n\t\t\tSmoothly move (slide) markers to a new location. ( <a\
+        \ href=\"http://ivansanchez.gitlab.io/Leaflet.Marker.SlideTo/demo.html\">demo</a>\
+        \ )\n\t\t"
+      homepage: https://gitlab.com/IvanSanchez/Leaflet.Marker.SlideTo
+      name: Leaflet.Marker.SlideTo
+      npm: leaflet.marker.slideto
+  - description: When you are displaying a lot of data, these plugins will make your
+      map look cleaner.
+    name: Clustering/Decluttering
+    plugins:
+    - author: Dave Leaver
+      author-url: https://github.com/danzel
+      description: "\n\t\t\tBeautiful, sophisticated, high performance marker clustering\
+        \ solution with smooth animations and lots of great features.  <em>Recommended!</em>\
+        \ \n"
+      homepage: https://github.com/Leaflet/Leaflet.markercluster
+      name: Leaflet.markercluster
+      npm: leaflet.markercluster
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-26T22:09:28Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tProvides collision detection for groups of markers. Unlike\
+        \ clustering, this takes into account the shape & size of the markers.\n\t\
+        \t"
+      homepage: https://github.com/MazeMap/Leaflet.LayerGroup.Collision
+      name: Leaflet.LayerGroup.Collision
+      npm: leaflet.layergroup.collision
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-11T10:53:38Z'
+    - author: George MacKerron
+      author-url: http://mackerron.com
+      description: "\n\t\t\tDeals with overlapping markers in a Google Earth-inspired\
+        \ way by gracefully springing them apart on click.\n\t\t"
+      homepage: https://github.com/jawj/OverlappingMarkerSpiderfier-Leaflet
+      name: Overlapping Marker Spiderfier
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-11T14:02:23Z'
+    - author: Antoine Pultier
+      author-url: https://github.com/yellowiscool
+      description: "\n\t\t\tFast and realtime marker clustering library.\n\t\t"
+      homepage: https://github.com/SINTEF-9012/PruneCluster
+      name: PruneCluster
+      npm: PruneCluster
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-12T08:33:43Z'
+    - author: Oliver Roick
+      author-url: https://github.com/oliverroick
+      description: "\n\t\t\tDeflates lines and polygons to a marker when their screen\
+        \ size becomes too small in lower zoom levels.\n\t\t"
+      homepage: https://github.com/oliverroick/Leaflet.Deflate
+      name: Leaflet.Deflate
+      npm: Leaflet.Deflate
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-16T16:07:52Z'
+    - author: Andreas Kiefer
+      author-url: https://github.com/andy-kay
+      description: "\n\t\t\tCreate grid-based clusters in realtime.\n\t\t"
+      homepage: https://github.com/andy-kay/Leaflet.GridCluster
+      name: Leaflet.GridCluster
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-07-19T09:14:04Z'
+    - author: Nicholas Hallahan
+      author-url: https://github.com/hallahan
+      description: "\n\t\t\tQuick point clustering library with D3 categorization.\n\
+        \t\t"
+      homepage: https://github.com/spatialdev/q-cluster
+      name: q-cluster
+      npm: npmt
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-06-13T18:25:37Z'
+    - author: EPP
+      author-url: https://github.com/Eclipse1979
+      description: "\n\t\t\tA FeatureGroup that does not show any more than a certain\
+        \ amount of markers visible in the viewport. ( <a href=\"http://eclipse1979.github.io/Leaflet.ConditionalLayer/example/leaflet-conditionalLayer2.html\"\
+        >Demo</a> )\n\t\t"
+      homepage: https://github.com/Eclipse1979/leaflet-conditionalLayer
+      name: Leaflet.ConditionalLayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-23T08:28:43Z'
+    - author: ghybs
+      author-url: https://github.com/ghybs
+      description: "\n\t\t\tA simple plugin to create Feature Groups that add their\
+        \ child layers into a parent group. Typical usage is to switch them through\
+        \ L.Control.Layers to dynamically add/remove groups of markers from Leaflet.markercluster.\
+        \  <a href=\"http://ghybs.github.io/Leaflet.FeatureGroup.SubGroup/examples/subGroup-markercluster-controlLayers-realworld.388.html\"\
+        >Demo</a> .\n\t\t"
+      homepage: https://github.com/ghybs/Leaflet.FeatureGroup.SubGroup
+      name: Leaflet.FeatureGroup.SubGroup
+      npm: leaflet.featuregroup.subgroup
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-13T20:21:25Z'
+  - description: These plugins create heatmaps and heatmap-like visualizations from
+      vector data.
+    name: Heatmaps
+    plugins:
+    - author: Dominik Moritz
+      author-url: https://github.com/domoritz
+      description: "\n\t\t\tCanvas layer that can be used to visualize coverage.\n\
+        \t\t"
+      homepage: https://github.com/domoritz/leaflet-maskcanvas
+      name: MaskCanvas
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-18T02:50:01Z'
+    - author: Sun Ning
+      author-url: https://github.com/sunng87
+      description: "\n\t\t\tSimple heatmap api based on HTML5 canvas.\n\t\t"
+      homepage: https://github.com/sunng87/heatcanvas
+      name: HeatCanvas
+      npm: heatcanvas
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-23T14:01:11Z'
+    - author: Patrick Wied
+      author-url: https://github.com/pa7
+      description: "\n\t\t\tJavaScript Library for HTML5 canvas based heatmaps.\n\n\
+        \t\t\tIts Leaflet layer implementation supports large datasets because it\
+        \ is tile based and uses a quadtree index to store the data.\n\t\t"
+      homepage: http://www.patrick-wied.at/static/heatmapjs/example-heatmap-leaflet.html
+      name: heatmap.js
+    - author: Daniele Piccone
+      author-url: https://github.com/dpiccone
+      description: "\n\t\t\tLightweight and versatile heatmap layer based on CSS3\
+        \ and divIcons\n\n\t\t"
+      homepage: https://github.com/dpiccone/leaflet-div-heatmap
+      name: Leaflet divHeatmap
+      npm: leaflet-div-heatmap
+      plugin_era: '0.7'
+      pushed_at: '2014-03-19T19:48:22Z'
+    - author: Benjamin J DeLong
+      author-url: https://twitter.com/bozdoz
+      description: "\n\t\t\tHigh performance Javascript heatmap plugin using WebGL.\n\
+        \n\t\t"
+      homepage: http://ursudio.com/webgl-heatmap-leaflet/
+      name: WebGL Heatmap
+    - author: Vladimir Agafonkin
+      author-url: https://github.com/mourner
+      description: "\n\t\t\tA tiny, simple and fast Leaflet heatmap plugin. Uses \
+        \ <a href=\"https://github.com/mourner/simpleheat\">simpleheat</a>  under\
+        \ the hood, additionally clustering points into a grid for performance. (\
+        \ <a href=\"http://leaflet.github.io/Leaflet.heat/demo\">Demo</a> )\n\n\t\t"
+      homepage: https://github.com/Leaflet/Leaflet.heat
+      name: Leaflet.heat
+      npm: leaflet.heat
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-24T00:52:07Z'
+  - description: Powerful multi-purpose libraries for data visualization.
+    name: DataViz
+    plugins:
+    - author: Dynamic Methods
+      author-url: https://github.com/dynmeth
+      description: "\n\t\t\tAllows you to use  <a href=\"http://raphaeljs.com/\">Raphael</a>\
+        \  as a layer on a Leaflet map for advanced animations and visualizations.\n\
+        \t\t"
+      homepage: http://dynmeth.github.com/RaphaelLayer/
+      name: RaphaelLayer
+      npm: RaphaelLayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-04-21T01:12:36Z'
+    - author: Scott Fairgrieve
+      author-url: https://github.com/sfairgrieve
+      description: "\n\t\t\tNew markers, layers, and utility classes for easy thematic\
+        \ mapping and data visualization.\n\t\t"
+      homepage: http://humangeo.github.com/leaflet-dvf/
+      name: Leaflet Data Visualization Framework
+      npm: leaflet-dvf
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-08T18:51:28Z'
+    - author: Kirill Zhuravlev
+      author-url: https://github.com/xEviL
+      description: "\n\t\t\tSVG overlay class for using with  <a href=\"http://d3js.org\"\
+        >D3</a>  library. Supports zoom animation and scaling without need to redraw\
+        \ the layer.\n\t\t"
+      homepage: https://github.com/teralytics/Leaflet.D3SvgOverlay
+      name: Leaflet.D3SvgOverlay
+      npm: leaflet-d3-svg-overlay
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-10T13:28:47Z'
+    - author: Tom MacWright
+      author-url: https://github.com/tmcw
+      description: "\n\t\t\tBinding from Mapbox GL JS to the Leaflet API\n\t\t"
+      homepage: https://github.com/mapbox/mapbox-gl-leaflet
+      name: mapbox-gl-leaflet
+      npm: mapbox-gl-leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-22T12:25:55Z'
+    - author: wandergis
+      author-url: https://github.com/wandergis
+      description: "\n\t\t\tA plugin for Leaflet to load  <a href=\"https://github.com/ecomfe/echarts\"\
+        >echarts</a>  map and make big data visualization easier.\n\t\t"
+      homepage: https://github.com/wandergis/leaflet-echarts
+      name: leaflet-echarts
+      npm: leaflet-echarts
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-08T03:44:25Z'
+    - author: Atle Frenvik Sveen
+      author-url: https://github.com/atlefren
+      description: "\n\t\t\tA jQuery plugin to display several map locations as the\
+        \ user scrolls through paragraphs.\n\t\t"
+      homepage: https://github.com/atlefren/storymap
+      name: jquery-storymap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-30T11:45:05Z'
+    - author: RStudio team
+      author-url: https://github.com/rstudio/
+      description: "\n\t\t\tAllows using Leaflet from within  <a href=\"https://en.wikipedia.org/wiki/R_%28programming_language%29\"\
+        >R</a>  programs, a programming language popular for statistical analysis\
+        \ and data mining.\n\t\t"
+      homepage: https://github.com/rstudio/leaflet
+      name: Leaflet for R
+      npm: leaflet-r-package
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-04T16:20:50Z'
+    - author: Sylvenas
+      author-url: https://github.com/react-map
+      description: "\n\t\t\tleafet.migrationLayer is used to show migration data such\
+        \ as population,flight,vehicle,traffic and so on.Data visualization on map.\
+        \ <a href=\"https://react-map.github.io/leaflet.migrationLayer\">demo</a>\
+        \ \n"
+      homepage: https://github.com/react-map/leaflet.migrationLayer
+      name: leaflet.migrationLayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-26T13:06:17Z'
+    - author: ibesora
+      author-url: https://github.com/ibesora
+      description: "\n\t\t\tLeaflet.Quadtree is used to retrieve visible data inside\
+        \ given bounds\n\t\t"
+      homepage: https://ibesora.github.io/Leaflet.Quadtree/
+      name: Leaflet.Quadtree
+      npm: leaflet-quadtree
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-10T19:41:13Z'
+- description: 'The following plugins enable users to interact with overlay data:
+    edit geometries, select areas or features, interact with the time dimension, search
+    features and display information about them.'
+  name: Interaction with geometries/features
+  subcategories:
+  - description: Allows users to create, draw, edit and/or delete points, lines and
+      polygons.
+    name: Edit geometries
+    plugins:
+    - author: Sumit Kumar
+      author-url: https://github.com/codeofsumit
+      description: "\n\t\t\tGeometry Management for Leaflet 1.0. Draw, Edit, Drag\
+        \ and Snap Polylines, Polygons, LayerGroups and geoJSON.\n\t\t"
+      homepage: https://github.com/codeofsumit/leaflet.pm
+      name: Leaflet.PM
+      npm: leaflet.pm
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-07T11:24:07Z'
+    - author: Wildhoney
+      author-url: https://github.com/Wildhoney
+      description: "\n\t\t\tZoopla inspired freehand polygon creation using Leaflet.js\
+        \ and D3.\n\t\t"
+      homepage: https://github.com/Wildhoney/Leaflet.FreeDraw
+      name: Leaflet.FreeDraw
+      npm: leaflet-freedraw
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-04T08:32:33Z'
+    - author: Nathan Mahdavi
+      author-url: https://github.com/scripter-co
+      description: "\n\t\t\tleaflet-plotter allows you to create routes using a leaflet\
+        \ powered map. You can click on the mid-points to create a new, draggable\
+        \ point.\n\t\t"
+      homepage: https://github.com/scripter-co/leaflet-plotter
+      name: Leaflet.plotter
+      plugin_era: '0.7'
+      pushed_at: '2015-04-06T07:27:21Z'
+    - author: Tomo Krajina
+      author-url: https://github.com/tkrajina
+      description: "Editable polylines: move existing points, add new points and split\
+        \ polylines.\n\t\t"
+      homepage: https://github.com/tkrajina/leaflet-editable-polyline
+      name: Leaflet.Editable.Polyline
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-10-13T16:57:54Z'
+    - author: Jacob Toye
+      author-url: https://github.com/jacobtoye
+      description: "\n\t\t\tEnables drawing features like polylines, polygons, rectangles,\
+        \ circles and markers through a very nice user-friendly interface with icons\
+        \ and hints.  <em>Recommended!</em> \n"
+      homepage: https://github.com/Leaflet/Leaflet.draw
+      name: Leaflet.draw
+      npm: leaflet-draw
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-13T01:04:29Z'
+    - author: Kartena
+      author-url: http://www.kartena.se/
+      description: "\n\t\t\tA set of plugins that includes circle editing, measuring\
+        \ tool, and label for polygon sides.\n\t\t"
+      homepage: https://github.com/kartena/Leaflet.EditableHandlers
+      name: Leaflet.EditableHandlers
+      plugin_era: '0.7'
+      pushed_at: '2014-11-06T10:18:24Z'
+    - author: Dennis Wilhelm
+      author-url: https://github.com/dwilhelm89
+      description: "\n\t\t\tEnables editing the styles of features (lines, polygons,\
+        \ etc) and markers with a GUI.\n\t\t"
+      homepage: https://github.com/dwilhelm89/Leaflet.StyleEditor
+      name: Leaflet.StyleEditor
+      npm: Leaflet.StyleEditor
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-13T21:19:22Z'
+    - author: Jared Dominguez
+      author-url: https://github.com/jdomingu
+      description: "\n\t\t\tA light-weight Leaflet plugin for adding and deleting\
+        \ markers.\n\t\t"
+      homepage: https://github.com/jdomingu/Leaflet.SimpleMarkers
+      name: Leaflet.SimpleMarkers
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-04-14T07:15:50Z'
+    - author: Yohan Boniface
+      author-url: http://yohanboniface.me/
+      description: "\n\t\t\tLightweight fully customisable and controlable drawing/editing\
+        \ plugin.\n\t\t"
+      homepage: https://github.com/yohanboniface/Leaflet.Editable
+      name: Leaflet.Editable
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-05T13:12:36Z'
+    - author: Alexander Milevski
+      author-url: https://github.com/w8r/
+      description: "\n\t\t\tDrag handler and interaction for polygons and polylines\
+        \ ( <a href=\"https://w8r.github.io/Leaflet.Path.Drag\">Demo</a> )\n\t\t"
+      homepage: https://github.com/w8r/Leaflet.Path.Drag
+      name: Leaflet.Path.Drag
+      npm: leaflet-path-drag
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-02T10:43:03Z'
+    - author: Alexander Milevski
+      author-url: https://github.com/w8r/
+      description: "\n\t\t\tScale & rotate handler and interaction for polygons and\
+        \ polylines ( <a href=\"https://w8r.github.io/Leaflet.Path.Transform\">Demo</a>\
+        \ )\n\t\t"
+      homepage: https://github.com/w8r/Leaflet.Path.Transform
+      name: Leaflet.Path.Transform
+      npm: leaflet-path-transform
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-24T19:03:49Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/leplatrem
+      description: "\n\t\t\tEnables snapping of draggable markers to polylines and\
+        \ other layers.\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.Snap
+      name: Leaflet.Snap
+      npm: leaflet-snap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-19T04:49:47Z'
+    - author: Antoine Pultier
+      author-url: https://github.com/yellowiscool
+      description: "\n\t\t\tBitmap painting plugin designed for touch devices.\n\t\
+        \t"
+      homepage: https://github.com/SINTEF-9012/Leaflet.MapPaint
+      name: Leaflet.MapPaint
+      npm: MapPaint
+      plugin_era: '0.7'
+      pushed_at: '2015-04-14T07:26:15Z'
+    - author: Yohan Boniface
+      author-url: http://yohanboniface.me/
+      description: "\n\t\t\tCreate/update/delete Map, Marker, Polygon, Polyline...\
+        \ and expose them for backend storage with an API.\n\t\t"
+      homepage: https://github.com/yohanboniface/Leaflet.Storage
+      name: Leaflet.Storage
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-23T16:45:40Z'
+    - author: Wildhoney
+      author-url: https://github.com/Wildhoney
+      description: "\n\t\t\tL.Pather is a freehand polyline creator that simplifies\
+        \ the polyline for mutability. Requires D3 support.\n\t\t"
+      homepage: https://github.com/Wildhoney/L.Pather
+      name: Leaflet.Pather
+      npm: leaflet-pather
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-06T19:14:36Z'
+    - author: Justin Manley
+      author-url: https://github.com/manleyjster
+      description: "\n\t\t\tExtension for Leaflet.draw enabling users to  <a href=\"\
+        http://manleyjster.github.io/Leaflet.Illustrate/examples/0.0.2/simple/\">type\
+        \ annotations directly on maps</a> .\n\t\t"
+      homepage: https://github.com/manleyjster/Leaflet.Illustrate
+      name: Leaflet.Illustrate
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-05T15:17:49Z'
+    - author: Konrad Klimczak
+      author-url: https://github.com/kklimczak
+      description: "\n\t\t\tEnable attaching of markers to other layers during draw\
+        \ or edit features with Leaflet.Draw.\n\t\t"
+      homepage: https://github.com/kklimczak/Leaflet.Pin
+      name: Leaflet.Pin
+      npm: leaflet.pin
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-04T15:04:31Z'
+  - description: Most data is two-dimensional (latitude and longitude), but some data
+      has more dimensions (altitude and/or time). The following plugins help users
+      navigate these extra dimensions.
+    name: Time & elevation
+    plugins:
+    - author: ICTS SOCIB
+      author-url: http://www.socib.eu
+      description: "\n\t\t\tAdd time dimension capabilities on a Leaflet map.  <a\
+        \ href=\"http://apps.socib.es/Leaflet.TimeDimension/examples/index.html\"\
+        >Demos</a> \n"
+      homepage: https://github.com/socib/Leaflet.TimeDimension
+      name: Leaflet.TimeDimension
+      npm: leaflet-timedimension
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-18T09:46:49Z'
+    - author: Dennis Wilhelm
+      author-url: https://github.com/dwilhelm89
+      description: "\n\t\t\tThe Leaflet Time-Slider enables you to dynamically add\
+        \ and remove Markers on a map by using a JQuery UI slider\n\t\t"
+      homepage: https://github.com/dwilhelm89/LeafletSlider
+      name: Leaflet Time-Slider
+      npm: LeafletSlider
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-30T15:20:51Z'
+    - author: Nicholas Hallahan
+      author-url: http://theoutpost.io
+      description: "\n\t\t\tPlay back time-stamped GPS Tracks synchronized to a clock.\n\
+        \t\t"
+      homepage: https://github.com/hallahan/LeafletPlayback
+      name: LeafletPlayback
+      npm: LeafletPlayback
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-10T23:29:31Z'
+    - author: Jonathan Skeate
+      author-url: https://github.com/skeate
+      description: "\n\t\t\tDisplay arbitrary GeoJSON on a map with a timeline slider\
+        \ and play button.\n\t\t"
+      homepage: https://github.com/skeate/Leaflet.timeline
+      name: Leaflet.timeline
+      npm: leaflet.timeline
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-15T01:50:49Z'
+    - author: Felix Bache
+      author-url: https://github.com/MrMufflon
+      description: "\n\t\t\tA Leaflet plugin to view interactive height profiles of\
+        \ GeoJSON lines using  <a href=\"http://d3js.org/\">d3</a> .\n\t\t"
+      homepage: https://github.com/MrMufflon/Leaflet.Elevation
+      name: Leaflet.Elevation
+      npm: leaflet.elevation
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-03T10:09:21Z'
+    - author: iosphere
+      author-url: https://github.com/iosphere
+      description: "\n\t\t\tA Leaflet plugin for drawing gradients along polylines.\n\
+        \t\t"
+      homepage: https://github.com/iosphere/Leaflet.hotline
+      name: Leaflet.hotline
+      npm: leaflet-hotline
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-16T10:06:00Z'
+  - description: Plugins that search for overlays and enhance how to display information
+      about them.
+    name: Search & popups
+    plugins:
+    - author: Antoine Riche
+      author-url: http://www.naomap.fr
+      description: "\n\t\t\tA control that provides a panel to search features in\
+        \ a GeoJSON layer using the lightweight fuzzy search Fuse.js\n\t\t"
+      homepage: https://github.com/naomap/leaflet-fusesearch
+      name: leaflet-fusesearch
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-27T13:51:27Z'
+    - author: Stefano Cudini
+      author-url: http://labs.easyblog.it
+      description: "\n\t\t\tA control for search Markers/Features location by custom\
+        \ property in LayerGroup/GeoJSON. Support AJAX/JSONP, Autocompletion and 3rd\
+        \ party service\n\t\t"
+      homepage: https://github.com/stefanocudini/leaflet-search
+      name: Leaflet Search
+      npm: leaflet-search
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-27T02:40:41Z'
+    - author: A.D
+      author-url: https://github.com/8to5Developer/
+      description: "\n            \t\tA google map style search box which includes\
+        \ a side panel slider control.\n        \t"
+      homepage: https://github.com/8to5Developer/leaflet-custom-searchbox
+      name: leaflet-custom-searchbox
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-28T21:27:06Z'
+    - author: Eric Theise
+      author-url: http://www.linkedin.com/in/erictheise
+      description: "\n\t\t\tA Leaflet Plugin for Edge Cases.  For use when you want\
+        \ popups on  <em>mouseover</em> , not  <em>click</em> , and\n\t\t\tyou need\
+        \ popup tips to reorient as you get close to the edges of your map.\n\t\t"
+      homepage: http://erictheise.github.com/rrose
+      name: Leaflet.Rrose
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-04T20:35:44Z'
+    - author: Dave Leaver
+      author-url: https://github.com/danzel
+      description: "\n\t\t\tProvides a utfgrid interaction handler for leaflet a very\
+        \ small footprint.\n\t\t"
+      homepage: https://github.com/danzel/Leaflet.utfgrid
+      name: Leaflet.utfgrid
+      npm: leaflet.utfgrid
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-21T21:08:56Z'
+    - author: Yohan Boniface
+      author-url: http://yohanboniface.me
+      description: "\n\t\t\tVery simple but extendable Leaflet plugin to display OSM\
+        \ POIs data on map click.\n\t\t"
+      homepage: https://github.com/yohanboniface/Leaflet.RevealOSM
+      name: Leaflet.RevealOSM
+      plugin_era: '0.5'
+      pushed_at: '2013-05-28T13:06:41Z'
+    - author: Per Liedman
+      author-url: http://github.com/perliedman
+      description: "\n\t\t\tFind interesting features near a location using Mapbox\
+        \ Vector Tiles data, to add\n\t\t\tinteractive functionality to a tile layer\
+        \ with speed and limited bandwidth.\n\t\t"
+      homepage: https://github.com/perliedman/leaflet-underneath
+      name: Leaflet Underneath
+      npm: leaflet-underneath
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-01T11:39:51Z'
+    - author: "Yunus Emre \xD6zkaya"
+      author-url: https://github.com/utahemre
+      description: "\n\t\t\tLeaflet Autocomplete For Remote Searching with GeoJSON\
+        \ Services.\n\t\t"
+      homepage: https://github.com/utahemre/Leaflet.GeoJSONAutocomplete
+      name: Leaflet.GeoJSONAutocomplete
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-11-30T08:45:46Z'
+    - author: Mehmet Aydemir
+      author-url: https://github.com/maydemirx
+      description: "\n\t\t\tLeafLet marker filtering by tags\n\t\t"
+      homepage: https://github.com/maydemirx/leaflet-tag-filter-button
+      name: L.tagFilterButton
+      npm: leaflet-tag-filter-button
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-08T07:40:29Z'
+    - author: "Michal Hat\xE1k"
+      author-url: https://github.com/Twista
+      description: "\n\t\t\tAdd google places search into map\n\t\t"
+      homepage: https://github.com/Twista/leaflet-google-places-autocomplete
+      name: Leaflet-gplaces-autocomplete
+      npm: leaflet-google-places-autocomplete
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-20T09:01:12Z'
+    - author: YaFred
+      author-url: https://github.com/yafred
+      description: "\n\t\t\tRemoves the need to move the map to be able to see the\
+        \ content of the popup.\n\t\t"
+      homepage: https://github.com/yafred/leaflet-responsive-popup
+      name: leaflet-responsive-popup
+      npm: leaflet-responsive-popup
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-19T06:58:11Z'
+  - description: These plugins help users select either overlays or areas in the map.
+    name: Area/overlay selection
+    plugins:
+    - author: Jonatan Heyman
+      author-url: http://heyman.info
+      description: "\n\t\t\tA fixed positioned, resizable rectangle for selecting\
+        \ an area on the map.\n\t\t"
+      homepage: https://github.com/heyman/leaflet-areaselect/
+      name: Leaflet.AreaSelect
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-19T08:35:09Z'
+    - author: Robert Kajic
+      author-url: https://github.com/kajic
+      description: "\n\t\t\tA draggable/resizable rectangle for selecting an area\
+        \ on the map.\n\t\t"
+      homepage: https://github.com/kajic/leaflet-locationfilter/
+      name: leaflet-locationfilter
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-08T10:07:11Z'
+    - author: Alexander Milevski
+      author-url: https://github.com/w8r
+      description: "\n\t\t\tFast LineString(polyline) partial selection tool: select\
+        \ a stretch between two points in a complex path.  <a href=\"https://w8r.github.io/L.Control.LineStringSelect\"\
+        >Demo</a> \n"
+      homepage: https://github.com/w8r/L.Control.LineStringSelect
+      name: L.Control.LineStringSelect
+      npm: leaflet-linestring-select
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-17T11:09:57Z'
+    - author: Aaron Ogle
+      author-url: https://github.com/atogle
+      description: "Use a configurable centerpoint marker to select any geometry type\
+        \ from a GeoJSON layer.\n\t\t"
+      homepage: https://github.com/openplans/Leaflet.FeatureSelect
+      name: Leaflet.FeatureSelect
+      plugin_era: '0.7'
+      pushed_at: '2014-01-04T01:40:17Z'
+    - author: Stefano Cudini
+      author-url: http://labs.easyblog.it/stefano-cudini/
+      description: "\n\t\t\tLeaflet Control for selection from GeoJSON feature in\
+        \ a interactive list and map( <a href=\"http://labs.easyblog.it/maps/leaflet-geojson-selector/\"\
+        >Demo</a> ).\n\t\t"
+      homepage: https://github.com/stefanocudini/leaflet-geojson-selector
+      name: Leaflet GeoJSON Selector
+      npm: leaflet-geojson-selector
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-29T15:55:59Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tAllows querying which layer is under a screen coordinate\
+        \ ( <a href=\"http://ivansanchez.github.io/Leaflet.CheapLayerAt/demo.html\"\
+        >Demo</a> ).\n\t\t"
+      homepage: https://github.com/IvanSanchez/Leaflet.CheapLayerAt
+      name: Leaflet.CheapLayerAt
+      npm: leaflet.cheaplayerat
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-03T09:03:11Z'
+- description: New ways to interact with the map itself.
+  name: Map interaction
+  subcategories:
+  - description: None
+    name: Layer switching controls
+    plugins:
+    - author: Alex Ebadirad
+      author-url: https://github.com/aebadirad
+      description: "\n\t\t\tAutomatically pull layers from multiple mapservers and\
+        \ organize/search them with user controlled overlay zindex management.\n\t\
+        \t"
+      homepage: https://github.com/aebadirad/Leaflet.AutoLayers
+      name: Leaflet.AutoLayers
+      npm: Leaflet.AutoLayers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-16T18:24:02Z'
+    - author: vogdb
+      author-url: https://github.com/vogdb
+      description: "\n\t\t\ta Leaflet plugin which adds new control to switch between\
+        \ different layers on the map. New control replaces L.Control.Layers radio\
+        \ button panel with select tag.\n\t\t"
+      homepage: https://github.com/vogdb/SelectLayersControl
+      name: Leaflet.SelectLayers
+      npm: leaflet.select-layers
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-08-05T10:36:35Z'
+    - author: Davi Custodio
+      author-url: https://github.com/davicustodio
+      description: "\n\t\t\tA Leaflet plugin that implements the management and control\
+        \ of layers by organization into categories or groups.\n\t\t"
+      homepage: https://github.com/davicustodio/Leaflet.StyledLayerControl
+      name: Leaflet.StyledLayerControl
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-20T14:28:43Z'
+    - author: Ishmael Smyrnow
+      author-url: https://github.com/ismyrnow
+      description: "\n\t\t\tLeaflet layer control with support for grouping overlays\
+        \ together.\n\t\t"
+      homepage: https://github.com/ismyrnow/Leaflet.groupedlayercontrol
+      name: Leaflet.GroupedLayerControl
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-03T06:59:49Z'
+    - author: Michael Salgado
+      author-url: https://github.com/elesdoar/
+      description: "\n\t\t\tAdds the ability to change overlay order in the layers\
+        \ control.\n\t\t"
+      homepage: http://elesdoar.github.io/leaflet-control-orderlayers/
+      name: Leaflet Control Order Layers
+      npm: leaflet.control.orderlayers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-09T00:11:26Z'
+    - author: Robbie Trencheny
+      author-url: http://robbie.io/
+      description: "\n\t\t\tLeaflet Control Layers extended for groups of categorized\
+        \ layers\n\t\t"
+      homepage: https://github.com/robbiet480/leaflet-categorized-layers
+      name: Leaflet Categorized Layers
+      npm: leaflet-categorized-layers
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-11-02T21:05:57Z'
+    - author: Stefano Cudini
+      author-url: http://labs.easyblog.it
+      description: "\n\t\t\tLeaflet Control Layers extended for group of layers and\
+        \ icons legend\n\t\t"
+      homepage: https://github.com/stefanocudini/leaflet-panel-layers
+      name: Leaflet Panel Layers
+      npm: leaflet-panel-layers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-08T16:22:55Z'
+    - author: Chris Calip
+      author-url: https://github.com/chriscalip
+      description: "\n\t\t\tLeaflet layer control with stylable checkboxes and radio\
+        \ buttons.\n\t\t"
+      homepage: https://github.com/chriscalip/L.UniformControl
+      name: Leaflet.UniformControl
+      plugin_era: '0.7'
+      pushed_at: '2014-03-25T01:45:00Z'
+    - author: Alexander Zverev
+      author-url: https://github.com/zverev
+      description: "\n\t\t\tLeaflet control that displays base layers as small icons\
+        \ ( <a href=\"http://scanex.github.io/Leaflet-IconLayers/examples\">demo</a>\
+        \ ).\n\t\t"
+      homepage: https://github.com/ScanEx/Leaflet-IconLayers
+      name: Leaflet-IconLayers
+      npm: leaflet-iconlayers
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-11T15:51:41Z'
+    - author: Alexander Arakelyan
+      author-url: https://github.com/bambrikii
+      description: "\n\t\t\tLeaflet control allows to switch layers on and off, display\
+        \ them in a tree-like way ( <a href=\"http://rawgit.com/bambrikii/leaflet-layer-tree-plugin/master/examples/basic-example.htm\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/bambrikii/leaflet-layer-tree-plugin
+      name: Leafet.LayerTreePlugin
+      npm: leaflet-layer-tree-plugin
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-07T21:43:15Z'
+    - author: Brendan Ward
+      author-url: https://github.com/brendan-ward
+      description: "\n\t\t\tA basemap chooser with a preview image from the tile stack.\n\
+        \t\t\t <a href=\"http://consbio.github.io/Leaflet.Basemaps/\">Example</a>\
+        \ \n"
+      homepage: https://github.com/consbio/Leaflet.Basemaps
+      name: Leaflet.Basemaps
+      npm: leaflet-basemaps
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-15T20:23:58Z'
+  - description: Change the way the user can interactively move around the map.
+    name: Interactive pan/zoom
+    plugins:
+    - author: Kartena
+      author-url: http://www.kartena.se/
+      description: "\n\t\t\tA simple panning control.\n\t\t"
+      homepage: http://kartena.github.com/Leaflet.Pancontrol/
+      name: Leaflet.Pancontrol
+      npm: leaflet.pancontrol
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-08T07:53:28Z'
+    - author: Greg Allensworth
+      author-url: https://github.com/gregallensworth/L.Control.BoxZoom
+      description: "\n\t\t\tA visible, clickable control to perform a box zoom.\n\t\
+        \t"
+      homepage: https://github.com/gregallensworth/L.Control.BoxZoom
+      name: Leaflet.BoxZoom
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-22T16:42:20Z'
+    - author: Kartena
+      author-url: http://www.kartena.se/
+      description: "\n\t\t\tA zoom slider control.\n\t\t"
+      homepage: http://kartena.github.com/Leaflet.zoomslider/
+      name: Leaflet.zoomslider
+      npm: leaflet.zoomslider
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-10T20:36:25Z'
+    - author: "Fl\xE1vio Carmo"
+      author-url: https://github.com/flaviocarmo
+      description: "\n\t\t\tA zoom control which displays the current zoom level.\n\
+        \t\t"
+      homepage: https://github.com/flaviocarmo/Leaflet.zoominfo/
+      name: Leaflet.zoominfo
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-15T20:22:48Z'
+    - author: "Sebasti\xE1n Lara"
+      author-url: https://github.com/slara
+      description: "\n\t\t\tA Leaflet plugin to pan by clicking on map borders.\n\t\
+        \t"
+      homepage: https://github.com/slara/Leaflet.BorderPan
+      name: Leaflet.BorderPan
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-27T10:06:57Z'
+    - author: Antoine Pultier
+      author-url: https://github.com/yellowiscool
+      description: "\n\t\t\tInteraction handler providing support for gamepads.\n\t\
+        \t"
+      homepage: https://github.com/SINTEF-9012/Leaflet.GameController
+      name: Leaflet GameController
+      plugin_era: '0.7'
+      pushed_at: '2014-07-10T12:02:03Z'
+    - author: Adam Ratcliffe
+      author-url: https://github.com/aratcliffe/
+      description: "\n\t\t\t Interaction handler for touch devices enabling zooming\
+        \ out with a two finger tap.\n\t\t"
+      homepage: https://github.com/aratcliffe/Leaflet.twofingerzoom
+      name: Leaflet.twofingerZoom
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-02T01:43:07Z'
+    - author: Brendan Ward
+      author-url: https://github.com/brendan-ward
+      description: "\n\t\t\tA lightweight zoom box control: draw a box around the\
+        \ area you want to zoom to.  <a href=\"https://consbio.github.io/Leaflet.ZoomBox\"\
+        >Demo</a> \n"
+      homepage: https://github.com/consbio/Leaflet.ZoomBox
+      name: Leaflet.ZoomBox
+      npm: leaflet-zoombox
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-08T14:51:52Z'
+    - author: Ilya Zverev
+      author-url: https://github.com/zverik
+      description: "\n\t\t\tPlugins to limit available zoom levels to a given list,\
+        \ either by\n\t\t\trestricting zooming or by interpolating tiles.\n\t\t"
+      homepage: https://github.com/Zverik/Leaflet.LimitZoom
+      name: Leaflet LimitZoom
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-29T09:44:38Z'
+    - author: Mike O'Toole
+      author-url: https://github.com/mikeotoole/
+      description: "\n\t\t\t Interaction handler enabling zooming out with double\
+        \ right click.\n\t\t"
+      homepage: https://github.com/GhostGroup/Leaflet.DoubleRightClickZoom
+      name: Leaflet.DoubleRightClickZoom
+      npm: leaflet.rightclickzoom
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-10-02T16:27:44Z'
+    - author: Masashi Takeshita
+      author-url: https://github.com/unbam
+      description: "\n\t\t\tA simple zoom label control.\n\t\t"
+      homepage: https://github.com/unbam/Leaflet.ZoomLabel
+      name: Leaflet.ZoomLabel
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-12-28T06:56:48Z'
+  - description: Change the way the user is moved around the map, by jumping to predefined/stored
+      places.
+    name: Bookmarked pan/zoom
+    plugins:
+    - author: Dariusz Pawlak
+      author-url: https://github.com/pwldp/
+      description: "\n\t\t\tA simple control that adds a button to change view and\
+        \ zoom to predefinied values in options.\n\t\t"
+      homepage: https://github.com/pwldp/leaflet.viewcenter
+      name: Leaflet.viewcenter
+      plugin_era: '0.7'
+      pushed_at: '2015-06-05T17:18:23Z'
+    - author: Alan Shaw
+      author-url: https://github.com/alanshaw/
+      description: "\n\t\t\tAdds a button to the zoom control that allows you to zoom\
+        \ to the map minimum zoom level in a single click.\n\t\t"
+      homepage: https://github.com/alanshaw/leaflet-zoom-min/
+      name: leaflet-zoom-min
+      npm: leaflet-zoom-min
+      plugin_era: '0.7'
+      pushed_at: '2015-05-18T18:33:41Z'
+    - author: David C
+      author-url: https://github.com/davidchouse
+      description: "\n\t\t\tLeaflet control for simple back, forward and home navigation.\n\
+        \t\t"
+      homepage: https://github.com/davidchouse/Leaflet.NavBar
+      name: Leaflet Navigation Toolbar
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-02T00:39:14Z'
+    - author: Ivan Ignatyev
+      author-url: https://github.com/mithron
+      description: "\n\t\t\tA control to jump between predefined locations and zooms.\n\
+        \t\t"
+      homepage: https://github.com/mithron/leaflet.locationlist
+      name: Leaflet Locationlist
+      plugin_era: '0.7'
+      pushed_at: '2014-11-25T15:16:05Z'
+    - author: Alex Nguyen
+      author-url: https://github.com/nguyenning
+      description: "\n\t\t\tA control that returns to the original start extent of\
+        \ the map.  Similar to the  <a href=\"https://developers.arcgis.com/javascript/jssamples/widget_home.html\"\
+        >HomeButton</a>  widget.\n\t\t"
+      homepage: https://github.com/nguyenning/Leaflet.defaultextent
+      name: Leaflet.defaultextent
+      npm: leaflet.defaultextent
+      plugin_era: '0.7'
+      pushed_at: '2014-10-12T04:59:07Z'
+    - author: Alexander Milevski
+      author-url: https://github.com/w8r/
+      description: "\n\t\t\tControl for adding and navigating between user-created\
+        \ bookmarks on the map.\n\t\t"
+      homepage: https://github.com/w8r/Leaflet.Bookmarks
+      name: Leaflet.Bookmarks
+      npm: leaflet-bookmarks
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-17T07:31:24Z'
+    - author: Mor Yariv
+      author-url: https://github.com/florpor
+      description: "\n\t\t\tA control that can show a predefined extent while saving\
+        \ the current one so it can be jumped back to.\n\t\t"
+      homepage: https://github.com/florpor/Leaflet.ShowAll
+      name: Leaflet.ShowAll
+      plugin_era: '0.7'
+      pushed_at: '2014-09-29T13:38:32Z'
+    - author: Florian Brucker
+      author-url: https://github.com/torfsen
+      description: "\n\t\t\tZoom control with a home button for resetting the view\
+        \ ( <a href=\"http://torfsen.github.io/leaflet.zoomhome/\">Demo</a> )\n\t\t"
+      homepage: https://github.com/torfsen/leaflet.zoomhome
+      name: Leaflet.zoomhome
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-27T19:25:48Z'
+    - author: Chris Scott
+      author-url: https://github.com/cscott530
+      description: "\n\t\t\tTrack history of map movements and zoom locations similar\
+        \ to a browser.\n\t\t"
+      homepage: https://github.com/cscott530/leaflet-history
+      name: Leaflet-History
+      npm: leaflet-history
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-24T13:51:06Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/leplatrem
+      description: "\n\t\t\tStores and restores map view using localStorage.\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.RestoreView
+      name: Leaflet.RestoreView
+      npm: leaflet.restoreview
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-21T15:55:17Z'
+    - author: Michael Lawrence Evans
+      author-url: https://github.com/mlevans
+      description: "\n\t\t\tPlugin for persisting map state and browsing history through\
+        \ the URL hash.\n\t\t"
+      homepage: https://github.com/mlevans/leaflet-hash
+      name: leaflet-hash
+      npm: leaflet-hash
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-27T08:44:45Z'
+  - description: Allows display of the map in full-screen mode.
+    name: Fullscreen controls
+    plugins:
+    - author: mapbox
+      author-url: https://github.com/mapbox
+      description: "\n\t\t\tA fullscreen button control by mapbox\n\t\t"
+      homepage: https://github.com/mapbox/Leaflet.fullscreen
+      name: Leaflet.fullscreen
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-26T14:46:53Z'
+    - author: Bruno B
+      author-url: https://github.com/brunob/
+      description: "\n\t\t\tAnother fullscreen button control but for modern browsers,\
+        \ using HTML5 Fullscreen API.\n\t\t"
+      homepage: http://brunob.github.com/leaflet.fullscreen
+      name: leaflet.fullscreen
+      npm: leaflet.fullscreen
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-03T21:01:02Z'
+    - author: Eli Dupuis
+      author-url: https://github.com/elidupuis
+      description: "\n\t\t\tA fullscreen button control.\n\t\t"
+      homepage: http://elidupuis.github.com/leaflet.zoomfs
+      name: leaflet.zoomfs
+      plugin_era: '0.6'
+      pushed_at: '2013-07-28T19:21:50Z'
+  - description: Display two maps at once. One of them might be a different size and
+      zoom level, usable as a minimap to aid with navigation.
+    name: Minimaps & synced maps
+    plugins:
+    - author: "Bj\xF8rn Sandvik"
+      author-url: https://github.com/turban
+      description: "\n\t\t\tSynchronized view of two maps.\n\t\t"
+      homepage: https://github.com/turban/Leaflet.Sync
+      name: Leaflet.Sync
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-13T17:40:30Z'
+    - author: Robert Nordan
+      author-url: https://github.com/robpvn
+      description: "\n\t\t\tA small minimap showing the map at a different scale to\
+        \ aid navigation.\n\t\t"
+      homepage: https://github.com/Norkart/Leaflet-MiniMap
+      name: Leaflet.MiniMap
+      npm: leaflet-minimap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-28T07:42:43Z'
+    - author: Benjamin Becquet
+      author-url: https://github.com/bbecquet/
+      description: "\n\t\t\tAllows you to display a small portion of the map at another\
+        \ zoom level, either at a fixed position or linked to the mouse movement,\
+        \ for a magnifying glass effect.\n\t\t"
+      homepage: https://github.com/bbecquet/Leaflet.MagnifyingGlass
+      name: Leaflet.MagnifyingGlass
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-12T17:28:22Z'
+    - author: Jieter
+      author-url: https://github.com/jieter
+      description: "\n\t\t\tExtends the default Leaflet layers control with synced\
+        \ minimaps.\n\t\t"
+      homepage: http://jieter.github.io/Leaflet.layerscontrol-minimap/
+      name: Leaflet.layerscontrol-minimap
+      npm: leaflet.layerscontrol-minimap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-05T19:13:59Z'
+    - author: Chris Whong
+      author-url: https://github.com/chriswhong
+      description: "\n\t\t\tSimple minimap control that places a 3D Globe in the corner\
+        \ of your map, centered on the same location as the main map ( <a href=\"\
+        http://chriswhong.github.io/leaflet-globeminimap/example/\">demo</a> ).\n\t\
+        \t"
+      homepage: https://github.com/chriswhong/leaflet-globeminimap/
+      name: Leaflet.GlobeMiniMap
+      npm: leaflet-globe-minimap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-04T02:31:38Z'
+    - author: Jieter
+      author-url: https://github.com/jieter
+      description: "\n\t\t\tClone Leaflet layers to allow reuse across different maps\
+        \ in the same runtime.\n\t\t"
+      homepage: https://github.com/jieter/leaflet-clonelayer
+      name: leaflet-clonelayer
+      npm: leaflet-clonelayer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-31T15:26:31Z'
+  - description: Allow the user to measure distances or areas.
+    name: Measurement
+    plugins:
+    - author: PPete
+      author-url: https://github.com/ppete2
+      description: "\n\t\t\t Measure distances of simple lines as well as of complex\
+        \ polylines.  <a href=\"https://ppete2.github.io/Leaflet.PolylineMeasure/demo_metric.html\"\
+        >(Demo metric)</a> ,  <a href=\"https://ppete2.github.io/Leaflet.PolylineMeasure/demo_imperial.html\"\
+        >(Demo imperial)</a> \n"
+      homepage: https://github.com/ppete2/Leaflet.PolylineMeasure
+      name: Leaflet.PolylineMeasure
+      npm: leaflet.polylinemeasure
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-26T08:03:09Z'
+    - author: Makina Corpus
+      author-url: https://github.com/makinacorpus/
+      description: "\n\t\t\tA simple tool to measure distances on maps (*relies on\
+        \ Leaflet.Draw*).\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.MeasureControl
+      name: Leaflet.MeasureControl
+      npm: leaflet.measurecontrol
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-20T16:10:58Z'
+    - author: Ondrej Zvara
+      author-url: https://github.com/zvaraondrej
+      description: "\n\t\t\t Control for measuring element's area.\n\t\t"
+      homepage: https://github.com/zvaraondrej/Leaflet.MeasureAreaControl
+      name: Leaflet.MeasureAreaControl
+      npm: Leaflet.MeasureAreaControl
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-11-21T14:57:46Z'
+    - author: LJA GIS
+      author-url: https://github.com/ljagis
+      description: "\n\t\t\tCoordinate, linear, and area measure control for Leaflet\
+        \ maps\n\t\t"
+      homepage: https://github.com/ljagis/leaflet-measure
+      name: leaflet-measure
+      npm: leaflet-measure
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-31T13:40:16Z'
+    - author: Erik Escoffier
+      author-url: https://github.com/nerik
+      description: "\n\t\t\tAnimated graphic scale control ( <a href=\"http://nerik.github.io/leaflet-graphicscale/demo/\"\
+        >demo</a> ).\n\t\t"
+      homepage: https://github.com/nerik/leaflet-graphicscale
+      name: leaflet-graphicscale
+      npm: leaflet-graphicscale
+      plugin_era: '0.7'
+      pushed_at: '2015-06-17T11:19:40Z'
+    - author: Marc Chasse
+      author-url: https://github.com/MarcChasse
+      description: "\n\t\t\tDisplay a Scale Factor (e.g. 1:50,000) for Leaflet maps\
+        \ ( <a href=\"https://marcchasse.github.io/leaflet.ScaleFactor/\">Demo</a>\
+        \ )\n\t\t"
+      homepage: https://github.com/MarcChasse/leaflet.ScaleFactor
+      name: Leaflet.ScaleFactor
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-06T14:02:26Z'
+    - author: Johannes Rudolph
+      author-url: https://github.com/PowerPan
+      description: "\n\t\t\tDisplay a Nauticscale on Leaflet maps\n\t\t"
+      homepage: https://github.com/PowerPan/leaflet.nauticscale
+      name: Leaflet.nauticscale
+      npm: leaflet.nauticscale
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-15T13:36:37Z'
+    - author: Per Liedman
+      author-url: https://github.com/perliedman
+      description: "\n\t\t\tShow measurements on paths; polylines, polygons and circles\
+        \ currently supported ( <a href=\"http://prominentedge.com/leaflet-measure-path/\"\
+        >demo</a> )\n\t\t"
+      homepage: https://github.com/ProminentEdge/leaflet-measure-path
+      name: Leaflet Measure Path
+      npm: leaflet-measure-path
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-30T19:34:37Z'
+    - author: New Light Technologies
+      author-url: http://www.newlighttechnologies.com/
+      description: "\n\t\t\tLeaflet Linear Measurement plugin that creates polylines\
+        \ with incremental measures along the path. ( <a href=\"https://nltgit.github.io/Leaflet.LinearMeasurement/\"\
+        >demo</a> )\n\t\t"
+      homepage: https://github.com/NLTGit/Leaflet.LinearMeasurement
+      name: Leaflet.LinearMeasurement
+      npm: leaflet-linear-measurement
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-26T21:18:23Z'
+    - author: Goker Tanrisever
+      author-url: https://github.com/gokertanrisever
+      description: "\n\t\t\tA simple leaflet plugin to measure true bearing and distance\
+        \ between clicked points. ( <a href=\"https://gokertanrisever.github.io/leaflet-ruler/\"\
+        >Demo</a> )\n\t\t"
+      homepage: https://github.com/gokertanrisever/leaflet-ruler
+      name: leaflet-ruler
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-12T05:27:28Z'
+  - description: Show the geographical coordinates under the mouse cursor in different
+      ways.
+    name: Mouse coordinates
+    plugins:
+    - author: Ardhi Lukianto
+      author-url: https://github.com/ardhi
+      description: "\n\t\t\tA simple MousePosition control that displays geographic\
+        \ coordinates of the mouse pointer, as it is moved about the map\n\t\t"
+      homepage: https://github.com/ardhi/Leaflet.MousePosition
+      name: Leaflet.MousePosition
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-07T13:00:14Z'
+    - author: Felix Bache
+      author-url: https://github.com/MrMufflon
+      description: "\n\t\t\tA simple Leaflet plugin viewing the mouse LatLng-coordinates.\
+        \ Also views a marker with coordinate popup on userinput.\n\t\t"
+      homepage: https://github.com/MrMufflon/Leaflet.Coordinates
+      name: Leaflet.Coordinates
+      npm: leaflet.coordinates
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-07T13:12:52Z'
+    - author: Michal Zimmermann
+      author-url: https://github.com/zimmicz
+      description: "\n\t\t\tCaptures mouseclick and displays its coordinates with\
+        \ easy way to copy them.\n\t\t"
+      homepage: https://github.com/zimmicz/Leaflet-Coordinates-Control
+      name: Leaflet Coordinates Control
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-12T06:36:51Z'
+    - author: Mahmood Dehghan
+      author-url: https://github.com/mahmoodvcs
+      description: "\n\t\t\tDisplays NAC coordinate of the mouse pointer on mouse\
+        \ move ( <a href=\"http://mahmoodvcs.github.io/Leaflet.NACCoordinates/\">Demo</a>\
+        \ )\n\t\t"
+      homepage: https://github.com/mahmoodvcs/Leaflet.NACCoordinates
+      name: Leaflet.NACCoordinates
+      plugin_era: '0.7'
+      pushed_at: '2015-02-18T18:15:50Z'
+    - author: Johannes Rudolph
+      author-url: https://github.com/PowerPan
+      description: "\n\t\t\tDisplays the Mouse Coordinate in a Box.\n\t\t\tMultiple\
+        \ Formats Are Possible\n\t\t\t <ul>\n<li>GPS</li>\n<li>UTM</li>\n<li>UTMREF\
+        \ / MGRS</li>\n<li>QTH</li>\n</ul> \n"
+      homepage: https://github.com/PowerPan/leaflet.mouseCoordinate
+      name: Leaflet.mouseCoordinates
+      npm: leaflet.mousecoordinate
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-19T14:06:53Z'
+    - author: Stefano Cudini
+      author-url: https://github.com/stefanocudini/
+      description: "\n\t\t\tSimple location picker with mini Leaflet map ( <a href=\"\
+        http://labs.easyblog.it/maps/leaflet-locationpicker/\">Demo</a> )\n\t\t"
+      homepage: https://github.com/stefanocudini/leaflet-locationpicker
+      name: Leaflet Location Picker
+      npm: leaflet-locationpicker
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-09-04T10:01:46Z'
+    - author: Xisco Guaita
+      author-url: https://github.com/xguaita
+      description: "\n\t\t\tA Leaflet control to display the coordinates of the map\
+        \ center, especially useful on touch/mobile devices. ( <a href=\"http://xguaita.github.io/Leaflet.MapCenterCoord/\"\
+        >Doc &amp; demos</a> )\n\t\t"
+      homepage: https://github.com/xguaita/Leaflet.MapCenterCoord
+      name: Leaflet.MapCenterCoord
+      npm: Leaflet.MapCenterCoord
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-28T17:23:01Z'
+    - author: Martin Atukunda
+      author-url: https://github.com/matlads
+      description: "\n\t\t\tDisplays the  <a href=\"http://www.mapcode.com\">Mapcode</a>\
+        \  of the mouse pointer on mouse move ( <a href=\"http://matlads.github.io/Leaflet.Mapcodes/\"\
+        >Demo</a> )\n\t\t"
+      homepage: https://github.com/matlads/Leaflet.Mapcodes
+      name: Leaflet.Mapcodes
+      npm: Leaflet.Mapcodes
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-05-05T21:02:35Z'
+  - description: These plugins extend Leaflet event handling.
+    name: Events
+    plugins:
+    - author: atstp
+      author-url: https://github.com/atstp
+      description: "\n\t\t\tAvoid unwanted scroll capturing.\n\t\t\t <a href=\"https://cliffcloud.github.io/Leaflet.Sleep\"\
+        > Demo</a> \n"
+      homepage: https://github.com/CliffCloud/Leaflet.Sleep
+      name: L.Sleep
+      npm: leaflet-sleep
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-20T19:19:47Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/makinacorpus/
+      description: "\n\t\t\tAdds a new event ``mouseintent``, that differs from ``mouseover``\
+        \ since it reflects user\n\t\t\tintentions to aim a particular layer.\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.OverIntent
+      name: Leaflet.OverIntent
+      npm: leaflet-overintent
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-12T10:02:11Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/makinacorpus/
+      description: "\n\t\t\tTrigger mouse events when cursor is \"almost\" over a\
+        \ layer.\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.AlmostOver
+      name: Leaflet.AlmostOver
+      npm: leaflet-almostover
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-21T15:32:15Z'
+    - author: Mappy
+      author-url: https://github.com/Mappy
+      description: "\n\t\t\tThis plugin allows you to use a smaller portion of the\
+        \ map as an active area.\n\t\t\tAll positioning methods (setView, fitBounds,\
+        \ setZoom) will be applied on this portion instead of the all map.\n\t\t"
+      homepage: https://github.com/Mappy/Leaflet-active-area
+      name: Leaflet-active-area
+      npm: leaflet-active-area
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-01T10:50:13Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tInspired by Leaflet-active-area, automatically detects\
+        \ the largest area of the map not covered by any map controls and applies\
+        \ setView, fitBounds, setZoom, getBounds to that area.\n\t\t"
+      homepage: https://github.com/MazeMap/Leaflet.ControlledBounds
+      name: Leaflet.ControlledBounds
+      npm: Leaflet.ControlledBounds
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-10T16:34:23Z'
+    - author: Guillaume Lathoud
+      author-url: http://glat.info
+      description: "\n\t\t\tExtend  <code>L.Map</code>  to fire a  <code>singleclick</code>\
+        \  event ( <a href=\"http://outdooractive.github.io/leaflet-singleclick_0.7/\"\
+        >demo</a> ). Compatible with Leaflet 0.7.x only.\n\t\t"
+      homepage: https://github.com/Outdooractive/leaflet-singleclick_0.7
+      name: singleclick
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-06T14:33:50Z'
+    - author: "Iv\xE1n S\xE1nchez Ortega"
+      author-url: https://github.com/IvanSanchez
+      description: "\n\t\t\tExtend  <code>L.Evented</code>  to fire a  <code>singleclick</code>\
+        \  event ( <a href=\"https://mazemap.github.io/Leaflet.singleclick/\">demo</a>\
+        \ ). Compatible with Leaflet 1.0.0-beta1 and greater only.\n\t\t"
+      homepage: https://github.com/MazeMap/Leaflet.singleclick
+      name: singleclick
+      plugin_era: 1.0-beta.2
+      pushed_at: '2015-10-19T13:29:47Z'
+    - author: Dag Jomar Mersland
+      author-url: https://github.com/dagjomar
+      description: "\n\t            Adds visual feedback when user clicks/taps the\
+        \ map ( <a href=\"https://github.com/MazeMap/Leaflet.VisualClick/\">demo</a>\
+        \ ).\n\t            Useful when further action is delayed by server requests,\
+        \ or implementation of Leaflet.singleclick.\n\t            Or just because\
+        \ it looks cool :)\n\t            Only tested with Leaflet 1.0.0-beta1.\n\t\
+        \        "
+      homepage: https://github.com/MazeMap/Leaflet.VisualClick
+      name: Leaflet.VisualClick
+      npm: leaflet.visualclick
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-22T11:40:07Z'
+    - author: Per Liedman
+      author-url: https://github.com/perliedman
+      description: "\n\t\t\tMakes it easy to touch vector overlays with thick fingers\
+        \ on a small display by adding a transparent, larger touch surface\n\t\t"
+      homepage: https://github.com/perliedman/leaflet-touch-helper
+      name: Leaflet Touch Helper
+      npm: leaflet-touch-helper
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-01T11:39:46Z'
+    - author: Geoloep
+      author-url: https://github.com/geoloep
+      description: "\n\t\t\tThis plugin allows you to increase the click tolerance\
+        \ of canvas powered layers, making it possible to increase the clickable area\
+        \ of vector layers beyond their visible extent. Useful when your features\
+        \ are difficult to click otherwise.\n\t\t"
+      homepage: https://github.com/geoloep/Leaflet.ClickTolerance
+      name: Leaflet.ClickTolerance
+      npm: leaflet-clicktolerance
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-09T09:44:56Z'
+  - description: Buttons, sliders, toolbars, sidebars, and panels.
+    name: User interface
+    plugins:
+    - author: "Yi\u011Fit Y\xFCce"
+      author-url: https://github.com/yigityuce
+      description: "\n\t\t\tFully customizable Leaflet control panel with HTML element.\n\
+        \t\t\t <a href=\"https://yigityuce.github.io/Leaflet.Control.Custom/examples/index.html\"\
+        > Demo</a> \n"
+      homepage: https://github.com/yigityuce/Leaflet.Control.Custom
+      name: Leaflet.Control.Custom
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-17T07:31:49Z'
+    - author: atstp
+      author-url: https://github.com/atstp
+      description: "\n\t\t\tIn one line, add a Font Awesome control button with attached\
+        \ click events.\n\t\t\t <a href=\"https://cliffcloud.github.io/Leaflet.EasyButton\"\
+        > Demo</a> \n"
+      homepage: https://github.com/CliffCloud/Leaflet.EasyButton
+      name: L.EasyButton
+      npm: leaflet-easybutton
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-23T09:24:56Z'
+    - author: Adam Ratcliffe
+      author-url: https://github.com/aratcliffe/
+      description: "\n\t\t\tA context menu for Leaflet.\n\t\t"
+      homepage: https://github.com/aratcliffe/Leaflet.contextmenu
+      name: Leaflet.contextmenu
+      npm: leaflet-contextmenu
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-06T20:29:55Z'
+    - author: Anika Halota
+      author-url: https://github.com/ahalota/
+      description: "\n\t\t\tControl with menu of all countries, and an event listener\
+        \ that returns\n\t\t\tthe selected country as a GeoJSON feature ( <a href=\"\
+        http://ahalota.github.io/Leaflet.CountrySelect/demo.html\">demo</a> )\n\t\t"
+      homepage: https://github.com/ahalota/Leaflet.CountrySelect/
+      name: Leaflet.CountrySelect
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-26T19:39:35Z'
+    - author: Tobias Bieniek
+      author-url: https://github.com/turbo87/
+      description: "\n\t\t\tA responsive sidebar plugin.\n\t\t"
+      homepage: https://github.com/turbo87/leaflet-sidebar/
+      name: leaflet-sidebar
+      npm: leaflet-sidebar
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-03-19T20:03:36Z'
+    - author: Tobias Bieniek
+      author-url: https://github.com/turbo87/
+      description: "\n\t\t\tAnother responsive sidebar plugin. This time with tabs!\n\
+        \t\t"
+      homepage: https://github.com/turbo87/sidebar-v2/
+      name: sidebar-v2
+      npm: sidebar-v2
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-03T23:17:54Z'
+    - author: Martijn Grendelman
+      author-url: https://github.com/tinuzz/
+      description: "\n\t\t\tDisplay a temporary text message on a map ( <a href=\"\
+        https://www.grendelman.net/leaflet/\">Demo</a> )\n\t\t"
+      homepage: https://github.com/tinuzz/leaflet-messagebox
+      name: Leaflet.Messagebox
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-15T20:15:33Z'
+    - author: Yohan Boniface
+      author-url: http://yohanboniface.me
+      description: "\n\t\t\tCreate illustrated and interactive legends for your background\
+        \ layers.\n\t\t"
+      homepage: https://github.com/yohanboniface/Leaflet.TileLegend
+      name: Leaflet.TileLegend
+      plugin_era: '0.7'
+      pushed_at: '2014-09-23T15:09:17Z'
+    - author: Justin Manley
+      author-url: https://github.com/manleyjster
+      description: "\n\t\t\tFlexible, extensible toolbars for Leaflet maps. View an\
+        \ example  <a href=\"http://leaflet.github.io/Leaflet.toolbar/examples/popup.html\"\
+        >here</a> .\n\t\t"
+      homepage: https://github.com/Leaflet/Leaflet.toolbar
+      name: Leaflet.toolbar
+      npm: leaflet-toolbar
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-19T15:14:35Z'
+    - author: Greg Allensworth
+      author-url: https://github.com/gregallensworth/
+      description: "\n\t\t\tA simple, attractive, interactive control to put your\
+        \ logo and link in the corner of your map.\n\t\t"
+      homepage: https://github.com/gregallensworth/L.Control.Credits
+      name: L.Credits
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-04T20:59:29Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/leplatrem
+      description: "\n\t\t\tShows a nice spinner on the map using  <a href=\"http://fgnass.github.com/spin.js/\"\
+        >Spin.js</a> ,\n\t\t\tfor asynchronous data load, like with  <a href=\"https://github.com/calvinmetcalf/leaflet-ajax\"\
+        >Leaflet Ajax</a> .\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.Spin
+      name: Leaflet.Spin
+      npm: leaflet-spin
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-30T13:19:38Z'
+    - author: Osk
+      author-url: https://github.com/oskosk
+      description: "\n\t\t\tA Leaflet plugin for adding a weather widget to the map\
+        \ using OpenWeatherMap API ( <a href=\"http://oskosk.github.io/Leaflet.Weather/\"\
+        >Demo</a> ).\n\t\t"
+      homepage: https://github.com/oskosk/Leaflet.Weather
+      name: Leaflet Weather
+      npm: Leaflet.Weather
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-30T10:31:12Z'
+    - author: David Albrecht
+      author-url: https://github.com/dalbrx
+      description: "\n\t\t\tA Leaflet plugin to add a resizable and scrollable control\
+        \ to the map ( <a href=\"http://dalbrx.github.io/Leaflet.ResizableControl/\"\
+        >Demo</a> ).\n\t\t"
+      homepage: https://github.com/dalbrx/Leaflet.ResizableControl
+      name: Leaflet ResizableControl
+      npm: Leaflet.ResizableControl
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-06-10T22:24:20Z'
+    - author: EPP
+      author-url: https://github.com/Eclipse1979
+      description: "\n\t\t\tAdds a  <code>&lt;input type=\"range\"&gt;</code>  slider\
+        \ that calls a function every time its input is changed ( <a href=\"https://github.com/Eclipse1979/leaflet-slider\"\
+        >Demo</a> )\n\t\t"
+      homepage: https://github.com/Eclipse1979/leaflet-slider
+      name: Leaflet.Slider
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-10T11:14:41Z'
+    - author: mapshakers
+      author-url: https://github.com/mapshakers
+      description: "\n\t\tCreates modal/modeless, draggable, responsive, customisable\
+        \ window in your map.\n\t\t"
+      homepage: https://github.com/mapshakers/leaflet-control-window
+      name: leaflet-control-window
+      npm: leaflet-control-window
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-06T08:15:49Z'
+    - author: "Yunus Emre \xD6zkaya"
+      author-url: https://github.com/utahemre
+      description: "\n\t\t\tDisplays coordinated images in map bounds.\n\t\t"
+      homepage: https://github.com/utahemre/Leaflet.CoordinatedImagePreview
+      name: Leaflet.CoordinatedImagePreview
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-01-28T21:56:42Z'
+    - author: Masashi Takeshita
+      author-url: https://github.com/unbam
+      description: "\n\t\t\tA simple slide menu for Leaflet.\n\t\t"
+      homepage: https://github.com/unbam/Leaflet.SlideMenu
+      name: Leaflet.SlideMenu
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-08T11:59:28Z'
+    - author: NBT Solutions
+      author-url: https://github.com/NBTSolutions
+      description: "\n\t\t\tA simple resizable, movable, customizable dialog box.\
+        \ ( <a href=\"http://nbtsolutions.github.io/Leaflet.Dialog/\">Demo</a> )\n\
+        \t\t"
+      homepage: https://github.com/NBTSolutions/Leaflet.Dialog
+      name: Leaflet.Dialog
+      npm: leaflet-dialog
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-02T22:29:08Z'
+    - author: Alexey Gusev
+      author-url: https://github.com/MAD-GooZe
+      description: "\n\t\t\tOverrides default zoom control buttons with Twitter Bootstrap\
+        \ styled ones\n\t\t"
+      homepage: https://github.com/MAD-GooZe/Leaflet.BootstrapZoom
+      name: Leaflet.BootstrapZoom
+      npm: leaflet-bootstrap-zoom
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-06T08:57:54Z'
+    - author: Motion Intelligence GmbH
+      author-url: http://www.motionintelligence.net/
+      description: "\n\t\t\tAn attribution plugin that makes long attributes visible\
+        \ on hover\n\t\t"
+      homepage: https://github.com/route360/Leaflet.CondensedAttribution
+      name: Leaflet.CondensedAttribution
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-07T13:57:36Z'
+  - description: Print or export your map.
+    name: Print/export
+    plugins:
+    - author: Adam Ratcliffe
+      author-url: https://github.com/aratcliffe
+      description: "\n\t\t\tImplements the Mapfish print protocol allowing a Leaflet\
+        \ map to be printed using either the Mapfish or GeoServer print module.\n\t\
+        \t"
+      homepage: https://github.com/aratcliffe/Leaflet.print
+      name: Leaflet.print
+      npm: leaflet.print
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-19T05:39:52Z'
+    - author: Tom MacWright
+      author-url: https://github.com/tmcw
+      description: "\n\t\t\tExport images out of Leaflet maps without a server component,\
+        \ by using Canvas and CORS.\n\t\t"
+      homepage: https://github.com/mapbox/leaflet-image
+      name: Leaflet-image
+      npm: leaflet-image
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-26T15:26:13Z'
+    - author: Rowan Winsemius
+      author-url: https://github.com/rowanwins
+      description: "\n\t\t\tA simple plugin which adds an icon to print your Leaflet\
+        \ map.\n\t\t"
+      homepage: https://github.com/rowanwins/leaflet-easyPrint
+      name: Leaflet-easyPrint
+      npm: leaflet-easyprint
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-01T10:37:26Z'
+  - description: "Plugins that extend Leaflet\u2019s geolocation capabilities."
+    name: Geolocation
+    plugins:
+    - author: atstp
+      author-url: https://github.com/atstp
+      description: "\n\t\t\tAllow users to send and receive a marker with a message.\n\
+        \t\t\t <a href=\"https://cliffcloud.github.io/Leaflet.LocationShare\"> Demo</a>\
+        \ \n"
+      homepage: https://github.com/CliffCloud/Leaflet.LocationShare
+      name: L.LocationShare
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-05-18T23:17:04Z'
+    - author: Dominik Moritz
+      author-url: https://github.com/domoritz
+      description: "\n\t\t\tA customizable locate control.\n\t\t"
+      homepage: https://github.com/domoritz/leaflet-locatecontrol
+      name: Leaflet.Locate
+      npm: leaflet.locatecontrol
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-12T12:12:10Z'
+    - author: Stefano Cudini
+      author-url: http://labs.easyblog.it/
+      description: "\n\t\t\tA leaflet control plugin to build a simple rotating compass\n\
+        \t\t"
+      homepage: https://github.com/stefanocudini/leaflet-compass
+      name: Leaflet Control Compass
+      npm: leaflet-compass
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-30T03:07:12Z'
+    - author: Michael Schmidt-Voigt
+      author-url: https://github.com/M165437
+      description: "\n\t\t\tLeaflet.AccuratePosition aims to provide a desired device\
+        \ location accuracy.\n\t\t"
+      homepage: https://github.com/M165437/Leaflet.AccuratePosition
+      name: Leaflet.AccuratePosition
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-17T17:59:41Z'
+- description: The following plugins perform several sorts of geoprocessing (mathematical
+    and topological operations on points, lines and polygons).
+  name: Miscellaneous
+  subcategories:
+  - description: The following plugins perform several sorts of geoprocessing (mathematical
+      and topological operations on points, lines and polygons).
+    name: Geoprocessing
+    plugins:
+    - author: Kartena
+      author-url: http://www.kartena.se/
+      description: "\n <a href=\"http://trac.osgeo.org/proj4js/\">Proj4js</a>  integration\
+        \ plugin, allowing you to use all kinds of weird projections in Leaflet.\n\
+        \t\t"
+      homepage: https://github.com/kartena/Proj4Leaflet
+      name: Proj4Leaflet
+      npm: proj4leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-04T10:19:16Z'
+    - author: Dane Springmeyer
+      author-url: https://github.com/springmeyer
+      description: "\n\t\t\tA JS library for drawing great circle routes that can\
+        \ be used with Leaflet.\n\t\t"
+      homepage: https://github.com/springmeyer/arc.js
+      name: arc.js
+      npm: arc
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-04-17T06:06:59Z'
+    - author: Tom MacWright
+      author-url: https://github.com/tmcw
+      description: "\n\t\t\tSimple point in polygon calculation using  <a href=\"\
+        https://github.com/substack/point-in-polygon\">point-in-polygon</a> .\n\t\t"
+      homepage: https://github.com/tmcw/leaflet-pip
+      name: Leaflet-pip
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-02T23:48:44Z'
+    - author: Benjamin Becquet
+      author-url: https://github.com/bbecquet
+      description: "\n\t\t\tA collection of utilities for Leaflet geometries (linear\
+        \ referencing, etc.)\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.GeometryUtil
+      name: Leaflet.GeometryUtil
+      npm: leaflet-geometryutil
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-26T13:20:18Z'
+    - author: Alexander Milevski
+      author-url: https://github.com/w8r
+      description: "\n\t\t\tGreiner-Hormann algorithm for polygon clipping and binary\
+        \ operations, adapted for use with Leaflet.\n\t\t"
+      homepage: https://github.com/w8r/GreinerHormann
+      name: Greiner-Hormann
+      npm: greiner-hormann
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-08-22T12:45:45Z'
+    - author: Henry Thasler
+      author-url: https://github.com/henrythasler
+      description: "\n\t\t\tDraw geodesic (poly)lines. A geodesic line is the shortest\
+        \ path between two given positions on the earth surface. and You can also\
+        \ calculate the exact distance between two given points on the map.\n\t\t"
+      homepage: https://github.com/henrythasler/Leaflet.Geodesic
+      name: Leaflet.Geodesic
+      npm: Leaflet.Geodesic
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-11-05T09:13:09Z'
+    - author: Jonathan Skeate
+      author-url: https://github.com/skeate
+      description: "\n\t\t\tEnables buffering of shapes drawn with Leaflet.draw.\n\
+        \t\t"
+      homepage: https://github.com/skeate/Leaflet.buffer
+      name: Leaflet.buffer
+      npm: leaflet-buffer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-15T01:05:51Z'
+    - author: Mathieu Leplatre
+      author-url: https://github.com/leplatrem
+      description: "\n\t\t\tAn efficient spatial index for features and layers, using\
+        \  <a href=\"https://github.com/imbcmdth/RTree\">RTree.js</a> .\n\t\t"
+      homepage: https://github.com/makinacorpus/Leaflet.LayerIndex
+      name: Leaflet.LayerIndex
+      npm: leaflet-layerindex
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-17T19:18:27Z'
+    - author: Mapzen
+      author-url: http://mapzen.com/
+      description: "\n\t\t\tLeaflet plugin for visualizing spatial prefix trees, quadtree\
+        \ and geohash. See  <a href=\"http://mapzen.github.io/leaflet-spatial-prefix-tree/\"\
+        >demo</a> \n"
+      homepage: https://github.com/mapzen/leaflet-spatial-prefix-tree
+      name: leaflet-spatial-prefix-tree
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-03-17T18:15:42Z'
+  - description: The following plugins use external services to calculate driving
+      or walking routes.
+    name: Routing
+    plugins:
+    - author: Per Liedman
+      author-url: https://github.com/perliedman
+      description: "\n\t\t\tControl for route search with via points, displaying itinerary\
+        \ and alternative routes. Uses\n\t\t\t <a href=\"http://project-osrm.org/\"\
+        >OSRM</a>  by default, but also supports\n\t\t\t <a href=\"https://graphhopper.com/\"\
+        >GraphHopper</a> ,\n\t\t\t <a href=\"https://www.mapbox.com/developers/api/directions/\"\
+        >Mapbox Directions API</a>  and more.\n\t\t"
+      homepage: http://www.liedman.net/leaflet-routing-machine/
+      name: Leaflet Routing Machine
+    - author: Norwegian Trekking Association
+      author-url: https://github.com/turistforeningen
+      description: "\n\t\t\tLeaflet controller and interface for routing paths between\
+        \ waypoints using any user provided routing service.\n\t\t"
+      homepage: https://github.com/Turistforeningen/leaflet-routing
+      name: Leaflet.Routing
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-30T11:28:43Z'
+    - author: Motion Intelligence GmbH
+      author-url: http://www.motionintelligence.net/
+      description: "\n\t\t\tRoute360\xB0 visualizes the area which is reachable from\
+        \ a set of starting points in a given time and gives detailed routing information\
+        \ (walk, bike, car and  <b>public transportation</b> ) to targets.\n\t\t"
+      homepage: https://github.com/route360/r360-js
+      name: "Route360\xB0"
+      npm: route360
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-13T07:08:32Z'
+    - author: Nearest!
+      author-url: http://www.nearest.place/
+      description: "\n\t\t\tThis is a Leaflet implementation of the RouteBoxer Class\
+        \ from Google. The Leaflet \t\tRouteBoxer class generates a set of L.LatLngBounds\
+        \ objects that are guaranteed to cover every point within a specified distance\
+        \ of a path.\n\t\t"
+      homepage: https://github.com/StephanGeorg/leaflet-routeboxer
+      name: Leaflet RouteBoxer
+      npm: leaflet-routeboxer
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-07T20:23:00Z'
+    - author: Jack Good
+      author-url: https://github.com/BKGiser
+      description: "\n\t\tControl for route search using  <a href=\"http://www.amap.com/\"\
+        >AMap(\u9AD8\u5FB7\u5730\u56FE)</a>  as a backend. Supports the Chinese BD09\
+        \ and GCJ02 coordinate systems, colourful lines, and turn-by-turn popups.\n\
+        \    \t\t"
+      homepage: https://github.com/BKGiser/Leaflet.Routing.Amap
+      name: Leaflet.Routing.Amap
+      npm: Leaflet.Routing.Amap
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-28T07:26:25Z'
+  - description: External services that transform an address or the name of a place
+      into latitude and longitude (or vice versa).
+    name: Geocoding
+    plugins:
+    - author: Stephan Meijer
+      author-url: https://github.com/smeijer
+      description: "\n\t\t\tSmall geocoding plugin that brings address searching/lookup\
+        \ (aka geosearching) to Leaflet. <br/> \n\t\t\tComes with support for Google,\
+        \ OpenStreetMap Nominatim, Bing, Esri and Nokia. Easily extensible.\n\t\t"
+      homepage: https://github.com/smeijer/L.GeoSearch
+      name: Leaflet GeoSearch
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-15T11:46:29Z'
+    - author: Karsten Hinz
+      author-url: https://github.com/k4r573n
+      description: "\n\t\t\tA simple geocoder that uses OpenstreetMap Nominatim to\
+        \ locate places by address.\n\t\t"
+      homepage: https://github.com/k4r573n/leaflet-control-osm-geocoder
+      name: Leaflet Control OSM Geocoder
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-02-22T21:42:15Z'
+    - author: Samuel Piquet
+      author-url: https://github.com/sa3m
+      description: "\n\t\t\tA simple geocoder control that uses Bing to locate places.\n\
+        \t\t"
+      homepage: https://github.com/sa3m/leaflet-control-bing-geocoder
+      name: Leaflet Control Bing Geocoder
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-14T15:33:23Z'
+    - author: Per Liedman
+      author-url: https://github.com/perliedman
+      description: "\n\t\t\tA clean and extensible control for both geocoding and\
+        \ reverse geocoding. Builtin support for\n\t\t\tNominatim, Bing, MapQuest,\
+        \ Mapbox, What3Words, Google and Photon. Easy to extend to other providers.\n\
+        \t\t"
+      homepage: https://github.com/perliedman/leaflet-control-geocoder
+      name: Leaflet Control Geocoder
+      npm: leaflet-control-geocoder
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-14T15:33:22Z'
+    - author: Jakub Dostal
+      author-url: https://github.com/jakubdostal
+      description: "\n\t\t\tA simple plugin that allows finding the approximate location\
+        \ of IP addresses and map centering on said location.\n\t\t"
+      homepage: https://github.com/jakubdostal/leaflet-geoip
+      name: Leaflet GeoIP Locator
+      plugin_era: '0.7'
+      pushed_at: '2014-12-01T11:16:16Z'
+    - author: Patrick Arlt
+      author-url: https://github.com/patrickarlt/
+      description: "\n\t\t\tA geocoding control with suggestions powered by the ArcGIS\
+        \ Online geocoder.\n\t\t"
+      homepage: https://github.com/Esri/esri-leaflet-geocoder
+      name: Esri Leaflet Geocoder
+      npm: esri-leaflet-geocoder
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-22T22:48:57Z'
+    - author: OpenCage
+      author-url: https://github.com/opencagedata
+      description: "\n\t\t\tA search plugin plugin that uses  <a href=\"http://geocoder.opencagedata.com/\"\
+        >OpenCage Data's geocoding API</a> .\n\t\t"
+      homepage: https://github.com/lokku/leaflet-opencage-search
+      name: Leaflet.OpenCage.Search
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-17T07:15:49Z'
+    - author: Brendan Ward
+      author-url: https://github.com/brendan-ward
+      description: "\n\t\t\tA lightweight geocoding control powered by  <a href=\"\
+        http://www.geonames.org/\">GeoNames</a> .   <a href=\"https://consbio.github.io/Leaflet.Geonames\"\
+        >Demo</a> \n"
+      homepage: https://github.com/consbio/Leaflet.Geonames
+      name: Leaflet.Geonames
+      npm: leaflet-geonames
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-27T20:30:29Z'
+    - author: Lou Huang
+      author-url: https://github.com/louh
+      description: "\n\t\t\tA geocoding control using  <a href=\"https://mapzen.com/projects/search\"\
+        >Mapzen Search</a>  or any hosted service powered by the  <a href=\"https://github.com/pelias/api\"\
+        >Pelias Geocoder API</a> .   <a href=\"https://mapzen.github.io/leaflet-geocoder/\"\
+        >Demo</a> \n"
+      homepage: https://github.com/mapzen/leaflet-geocoder
+      name: Mapzen Search Leaflet Geocoder
+      npm: leaflet-geocoder-mapzen
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-25T21:13:20Z'
+  - description: Sets of plugins that span several categories.
+    name: Plugin collections
+    plugins:
+    - author: Pavel Shramov
+      author-url: https://github.com/shramov
+      description: "\n\t\t\tA set of plugins for: GPX, KML, TOPOJSON layers; Bing\
+        \ tile layer; Yandex layers (implemented with their APIs), and permalink control.\n\
+        \t\t"
+      homepage: https://github.com/shramov/leaflet-plugins
+      name: Plugins by Pavel Shramov
+      npm: leaflet-plugins
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-25T10:12:35Z'
+    - author: SVoyt
+      author-url: https://github.com/SVoyt
+      description: "\n\t\t\tTools for using Spectrum Spatial Server services with\
+        \ leaflet. This plugin supports: map service, tile service, feature service.\
+        \ It has layers, legend and feature controls.\n\t\t"
+      homepage: https://github.com/Estimap/Spectrum4Leaflet
+      name: Spectrum4Leaflet
+      npm: leaflet-spectrum-spatial
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-10-27T16:31:35Z'
+    - author: Ilya Zverev
+      author-url: https://github.com/zverik
+      description: "\n\t\t\tSeven plugins for various features, independent of the\
+        \ MapBBCode library.\n\t\t\tFrom circular and popup icons to buttons, layer\
+        \ switcher, better search and attribution.\n\t\t"
+      homepage: http://mapbbcode.org/leaflet.html
+      name: MapBBCode-related leaflet plugins
+- description: Ease your development integrating Leaflet into a development framework
+    or automating some of the javascript/CSS work for complex applications.
+  name: Integration
+  subcategories:
+  - description: Ease your development integrating Leaflet into a development framework
+      or automating some of the javascript/CSS work for complex applications.
+    name: Frameworks & build systems
+    plugins:
+    - author: Moritz Klack
+      author-url: https://github.com/moklick
+      description: "\n\t\t\tYeoman generator that scaffolds out a basic Leaflet map\
+        \ application.\n\t\t"
+      homepage: https://github.com/moklick/generator-leaflet
+      name: Leaflet Yeoman Generator
+      npm: generator-leaflet
+      plugin_era: '0.7'
+      pushed_at: '2014-12-16T20:30:27Z'
+    - author: Paul Le Cam
+      author-url: http://paullecam.github.io/
+      description: "\n <a href=\"https://facebook.github.io/react/\">React</a>  components\
+        \ for Leaflet maps.\n\t\t"
+      homepage: https://github.com/PaulLeCam/react-leaflet
+      name: react-leaflet
+      npm: react-leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-10T08:52:07Z'
+    - author: Calvin Metcalf
+      author-url: https://github.com/calvinmetcalf
+      description: "\n\t\t\tAdd the main Leaflet CSS files (or any css) from within\
+        \ JavaScript, be gone conditional comments.\n\t\t"
+      homepage: https://github.com/leaflet-extras/leaflet.css
+      name: Leaflet.CSS
+      npm: leaflet-css
+      plugin_era: '0.6'
+      pushed_at: '2013-10-17T15:21:29Z'
+    - author: Alexander Nossum
+      author-url: https://github.com/alexanno
+      description: "\n\t\t\tProvide a json file or service response with a configuration\
+        \ of layers and markers to automatically set up a Leaflet client.\n\t\t"
+      homepage: https://github.com/Norkart/Leaflet-LayerConfig
+      name: Leaflet LayerConfig
+      npm: leaflet-layerconfig
+      plugin_era: '0.7'
+      pushed_at: '2014-12-05T07:46:44Z'
+    - author: Yohan Boniface
+      author-url: http://yohanboniface.me
+      description: "\n\t\t\tInternationalization for Leaflet plugins.\n\t\t"
+      homepage: https://github.com/yohanboniface/Leaflet.i18n
+      name: Leaflet.i18n
+      npm: leaflet-i18n
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-04-10T09:44:05Z'
+    - author: Dag Jomar Mersland
+      author-url: https://github.com/dagjomar
+      description: "\n\t\t\tAdd zoom level css class to map element for easy style\
+        \ updates based on zoom levels\n\t\t"
+      homepage: https://github.com/dagjomar/Leaflet.ZoomCSS
+      name: Leaflet ZoomLevel CSS Class
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-24T14:00:45Z'
+    - author: Hein Rutjes
+      author-url: http://www.gloey.nl
+      description: "\n\t\t\tIntegrate Leaflet in applications made with the  <a href=\"\
+        famo.us\">famo.us</a>  web framework.\n\t\t"
+      homepage: https://github.com/IjzerenHein/famous-map
+      name: famous-map
+      npm: famous-map
+      plugin_era: '0.7'
+      pushed_at: '2015-05-08T09:51:04Z'
+    - author: David Rubert
+      author-url: https://github.com/tombatossals
+      description: "\n\t\t\tIntegrate Leaflet in applications made with the  <a href=\"\
+        http://angularjs.org/\">AngularJS</a>  web framework.\n\t\t"
+      homepage: https://github.com/tombatossals/angular-leaflet-directive
+      name: Angular Leaflet directive
+      npm: angular-leaflet-directive
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-31T21:13:44Z'
+    - author: "Martin Tesa\u0159"
+      author-url: https://github.com/mattesCZ
+      description: "\n\t\t\tTiny LeafletJS map directive for your AngularJS apps.\n\
+        \t\t"
+      homepage: https://github.com/CleverMaps/tiny-leaflet-directive
+      name: Tiny Leaflet Directive
+      npm: tiny-leaflet-directive
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-12-09T09:14:13Z'
+    - author: Grant Harris
+      author-url: https://github.com/grantHarris
+      description: "\n\t\t\tUse AngularJS in your Leaflet popups. Extends the built-in\
+        \ L.popup.\n\t\t"
+      homepage: https://github.com/grantHarris/leaflet-popup-angular
+      name: Leaflet Popup Angular
+      npm: leaflet-popup-angular
+      plugin_era: 1.0-rc.1
+      pushed_at: '2016-09-28T22:34:34Z'
+    - author: Grant Harris
+      author-url: https://github.com/grantHarris
+      description: "\n\t\t\tInsert and use Angularized HTML code in your Leaflet map\
+        \ as a Leaflet control.\n\t\t"
+      homepage: https://github.com/grantHarris/leaflet-control-angular
+      name: Leaflet Control Angular
+      npm: leaflet-control-angular
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-14T19:54:10Z'
+    - author: Hendrik Brummermann
+      author-url: https://github.com/nhnb
+      description: "\n\t\t\tIntegrate Leaflet in applications made with the  <a href=\"\
+        https://www.polymer-project.org/\">Polymer &gt;= 1.0</a>  web component framework.\n\
+        \t\t"
+      homepage: https://github.com/leaflet-extras/leaflet-map
+      name: <leaflet-map>
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-18T13:04:27Z'
+    - author: Prateek Saxena
+      author-url: https://github.com/prtksxna
+      description: "\n\t\t\tIntegrate Leaflet in applications made with the  <a href=\"\
+        https://www.polymer-project.org/0.5/\">Polymer 0.5</a>  web framework.\n\t\
+        \t"
+      homepage: https://github.com/prtksxna/leaflet-map-component
+      name: Leaflet map component
+      plugin_era: '0.7'
+      pushed_at: '2015-03-02T10:53:29Z'
+    - author: Leonardo Ciocari
+      author-url: https://github.com/themrleon
+      description: "\n\t\t\tA JavaServer Faces wrapper for Leaflet.\n\t\t"
+      homepage: https://github.com/themrleon/JSF2Leaf
+      name: JSF2Leaf
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-21T20:50:17Z'
+    - author: Miguel Andrade
+      author-url: https://github.com/miguelcobain
+      description: "\n\t\t\tEasy and declarative mapping for  <a href=\"http://emberjs.com/\"\
+        >Ember.js</a>  using Leaflet.\n\t\t"
+      homepage: http://www.ember-leaflet.com/
+      name: ember-leaflet
+    - author: Bevan Hunt
+      author-url: https://github.com/bevanhunt
+      description: "\n\t\t\tProvides a Meteor package to quickly build real-time cross-platform\
+        \ map apps.\n\t\t"
+      homepage: https://github.com/bevanhunt/meteor-leaflet
+      name: meteor-leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-01-31T19:30:12Z'
+    - author: Greg Allensworth
+      author-url: https://github.com/gregallensworth
+      description: "\n\t\t\tTrigger a Bootstrap modal using an on-map control.\n\t\
+        \t"
+      homepage: https://github.com/gregallensworth/L.Control.BootstrapModal
+      name: L.Control.BootstrapModal
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-15T20:00:35Z'
+    - author: Greg Allensworth
+      author-url: https://github.com/gregallensworth
+      description: "\n\t\t\tTrigger a jQuery UI dialog/modal using an on-map control.\n\
+        \t\t"
+      homepage: https://github.com/gregallensworth/L.Control.jQueryDialog
+      name: L.Control.jQueryDialog
+      plugin_era: 1.0-beta.2
+      pushed_at: '2016-02-23T17:33:57Z'
+    - author: Matti Tahvonen
+      author-url: https://github.com/mstahv
+      description: "\n\t\t\tUse Leaflet as a component for the  <a href=\"https://vaadin.com/home\"\
+        >Vaadin</a>  Java/HTML framework.\n\t\t"
+      homepage: https://github.com/mstahv/v-leaflet
+      name: V-Leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-03-05T18:42:33Z'
+    - author: Zakaria Amine
+      author-url: https://github.com/zak905
+      description: "\n\t\t\tA Java/GWT JsInterop wrapper for Leaflet. It allows using\
+        \ Leaflet in Java the same way as from a javascript script.  \n\t\t"
+      homepage: https://github.com/gwidgets/gwty-leaflet
+      name: gwty-leaflet
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-05-15T18:34:01Z'
+    - author: Gherardo Varando
+      author-url: https://github.com/gherardovarando
+      description: "\n\t\t\tIt populates a leaflet map from a configuration object,\
+        \ can also creates zoom, layers, attribution and           draw controls.\
+        \  <a href=\"https://gherardovarando.github.io/leaflet-map-builder/\"> demo\
+        \ </a> .\n\t\t"
+      homepage: https://github.com/gherardovarando/leaflet-map-builder
+      name: Leaflet Map Builder
+      npm: leaflet-map-builder
+      plugin_era: 1.0-rc.1
+      pushed_at: '2017-04-12T12:02:39Z'
+  - description: The following plugins integrate Leaflet into third party services
+      or websites.
+    name: None
+    plugins:
+    - author: Yohan Boniface
+      author-url: http://yohanboniface.me
+      description: "\n\t\t\tAdd a control with links to open the current map view\
+        \ on main OSM editors.\n\t\t"
+      homepage: https://github.com/yohanboniface/Leaflet.EditInOSM
+      name: Leaflet.EditInOSM
+      npm: leaflet-editinosm
+      plugin_era: 1.0-beta.1
+      pushed_at: '2015-08-31T05:07:35Z'
+    - author: Robert Harm
+      author-url: http://www.harm.co.at/
+      description: "\n\t\t\tA WordPress plugin that enables users to pin, organize\
+        \ and share their favorite places and tracks through their WordPress powered\
+        \ site.\n\t\t"
+      homepage: http://www.mapsmarker.com/
+      name: Maps Marker Pro
+    - author: Benjamin J DeLong
+      author-url: https://twitter.com/bozdoz
+      description: "\n\t\t\tInteractive and flexible shortcode to create multiple\
+        \ maps in posts and pages,\n\t\t\tand to add multiple markers on those maps.\n\
+        \t\t"
+      homepage: http://wordpress.org/plugins/leaflet-map/
+      name: WordPress Leaflet Map
+    - author: Sparkgeo
+      author-url: http://www.sparkgeo.com/
+      description: "\n\t\t\tAnalytics platform for web maps. Track map activities,\
+        \ layer load times, marker clicks, and more!\n\t\t"
+      homepage: https://maptiks.com
+      name: Maptiks
+    - author: Marzee Labs
+      author-url: http://marzeelabs.org
+      description: "\n\t\t\tA Drupal (7.x and 8.x) module to integrate Leaflet maps\
+        \ in your Drupal site. Contains a field formatter to show a map for fields\
+        \ containing geospatial data, Views integration to plot data on a map, and\
+        \ a lightweight and easy to use API. Currently used by over 10.000 sites.\n\
+        \t\t"
+      homepage: http://drupal.org/project/leaflet
+      name: Leaflet for Drupal
+- description: "Leaflet keeps it simple. If you can think of a feature that is not\
+    \ required by all of Leaflet users, and you can write the javascript code in a\
+    \ reusable way, you\u2019ve got yourself a Leaflet plugin already."
+  name: Develop your own
+  subcategories: []
 
