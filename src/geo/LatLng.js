@@ -65,6 +65,17 @@ LatLng.prototype = {
 		        Util.formatNum(this.lat, precision) + ', ' +
 		        Util.formatNum(this.lng, precision) + ')';
 	},
+	
+	toUrlValue: function(/*Number*/ precision) {
+		
+		precision = parseInt(precision);
+		
+		if (isNaN(precision)) {
+			precision = 6;	
+		}
+		
+		return L.Util.formatNum(this.lat, precision) + ',' + L.Util.formatNum(this.lng, precision)
+	}
 
 	// @method distanceTo(otherLatLng: LatLng): Number
 	// Returns the distance (in meters) to the given `LatLng` calculated using the [Haversine formula](http://en.wikipedia.org/wiki/Haversine_formula).
