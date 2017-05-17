@@ -206,6 +206,7 @@
 .leaflet-zoomPixelated
 {
 	-ms-interpolation-mode: nearest-neighbor; /*IE 7+ (non-standard property)*/
+	-ms-interpolation-mode: nearest-neighbor;
 	image-rendering: -webkit-optimize-contrast; /*// Safari 6, UC Browser 9.9*/
 	image-rendering: -webkit-crisp-edges; /*// Safari 7+*/
 	image-rendering: -moz-crisp-edges; /*// Firefox 3.6+*/
