@@ -104,7 +104,7 @@ export function toBack(el) {
 // @function hasClass(el: HTMLElement, name: String): Boolean
 // Returns `true` if the element's class attribute contains `name`.
 export function hasClass(el, name) {
-	if (el.classList !== undefined) {
+	if ('classList' in el) {
 		return el.classList.contains(name);
 	}
 	var className = getClass(el);
@@ -114,7 +114,7 @@ export function hasClass(el, name) {
 // @function addClass(el: HTMLElement, name: String)
 // Adds `name` to the element's class attribute.
 export function addClass(el, name) {
-	if (el.classList !== undefined) {
+	if ('classList' in el) {
 		var classes = Util.splitWords(name);
 		for (var i = 0, len = classes.length; i < len; i++) {
 			el.classList.add(classes[i]);
@@ -128,7 +128,7 @@ export function addClass(el, name) {
 // @function removeClass(el: HTMLElement, name: String)
 // Removes `name` from the element's class attribute.
 export function removeClass(el, name) {
-	if (el.classList !== undefined) {
+	if ('classList' in el) {
 		el.classList.remove(name);
 	} else {
 		setClass(el, Util.trim((' ' + getClass(el) + ' ').replace(' ' + name + ' ', ' ')));
