@@ -1343,6 +1343,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/bertspaan">Bert Spaan</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://gitlab.com/IvanSanchez/Leaflet.GLMarkers">Leaflet.GLMarkers</a>
+		</td><td>
+			Display thousands of markers with custom WebGL shaders, optionally animated. (<a href='http://https://ivansanchez.gitlab.io/Leaflet.GLMarkers/demo/repl.html'>demo</a>)
+		</td><td>
+			<a href="https://gitlab.com/IvanSanchez">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1950,7 +1959,7 @@ Plugins that search for overlays and enhance how to display information about th
             		A google map style search box which includes a side panel slider control.
         	</td>
 		<td>
-		        <a href="https://github.com/8to5Developer/">A.D</a> 
+		        <a href="https://github.com/8to5Developer/">A.D</a>
 			</td>
           </tr>
 	<tr>
@@ -3668,7 +3677,7 @@ Ease your development integrating Leaflet into a development framework or automa
 		<td>
 			<a href="https://github.com/gwidgets/gwty-leaflet">gwty-leaflet</a>
 		</td><td>
-			A Java/GWT JsInterop wrapper for Leaflet. It allows using Leaflet in Java the same way as from a javascript script.  
+			A Java/GWT JsInterop wrapper for Leaflet. It allows using Leaflet in Java the same way as from a javascript script.
 		</td><td>
 			<a href="https://github.com/zak905">Zakaria Amine</a>
 		</td>
