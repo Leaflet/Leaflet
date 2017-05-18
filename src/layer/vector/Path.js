@@ -69,10 +69,10 @@ export var Path = Layer.extend({
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
 
-		// @option bubblingEvents: Boolean = true
+		// @option bubblingMouseEvents: Boolean = true
 		// When `true`, a mouse event on this path will trigger the same event on the map
 		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
-		bubblingEvents: true
+		bubblingMouseEvents: true
 	},
 
 	beforeAdd: function (map) {
