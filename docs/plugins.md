@@ -2645,6 +2645,15 @@ Allow the user to measure distances or areas.
 			<a href="http://www.newlighttechnologies.com/">New Light Technologies</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gokertanrisever/leaflet-ruler">leaflet-ruler</a>
+		</td><td>
+			A simple leaflet plugin to measure true bearing and distance between clicked points. (<a href="https://gokertanrisever.github.io/leaflet-ruler/">Demo</a>)
+		</td><td>
+			<a href="https://github.com/gokertanrisever">Goker Tanrisever</a>
+		</td>
+	</tr>
 </table>
 
 
