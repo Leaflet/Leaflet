@@ -122,37 +122,21 @@ describe("Marker", function () {
 			expect(marker.dragging.enabled()).to.be(true);
 		});
 
-		it("changes the icon to another DivIcon", function () {
+		it("changes the icon to another DivIcon which is a DOM element", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
 			var customElement = document.createElement('p');
 			customElement.innerHTML = 'InnerTextFromCustomNode';
 			map.addLayer(marker);
 
 			var beforeIcon = marker._icon;
-			marker.setIcon(new L.DivIcon({element: customElement}));
+			marker.setIcon(new L.DivIcon({html: customElement}));
 			var afterIcon = marker._icon;
 
 			expect(beforeIcon).to.be(afterIcon);
 			expect(afterIcon.innerHTML).to.contain('<p>InnerTextFromCustomNode</p>');
 		});
 
-		it("changes the icon to another DivIcon but should set the html one if both element and html are given", function () {
-			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner3Text'})});
-			var customElement = document.createElement('p');
-			customElement.innerHTML = 'InnerTextFromCustomNode';
-			map.addLayer(marker);
-
-			var beforeIcon = marker._icon;
-			marker.setIcon(new L.DivIcon({html: 'Inner3Text'}));
-			marker.setIcon(new L.DivIcon({element: customElement}));
-			var afterIcon = marker._icon;
-
-			expect(beforeIcon).to.be(afterIcon);
-			expect(marker._icon.innerHTML).to.not.contain('Inner3Text');
-			expect(afterIcon.innerHTML).to.contain('<p>InnerTextFromCustomNode</p>');
-		});
-
-		it("changes the icon to another DivIcon which is an DOM element", function () {
+		it("changes the icon to another DivIcon", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 

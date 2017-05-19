@@ -29,13 +29,9 @@ export var DivIcon = Icon.extend({
 		// iconAnchor: (Point),
 		// popupAnchor: (Point),
 
-		// @option html: String = ''
+		// @option html: String|DOM Element = ''
 		// Custom HTML code to put inside the div element, empty by default.
 		html: false,
-
-		// @option element: DOM element = ''
-		// Custom DOM element to append inside the div element, empty by default. If html is also passed. The passed html wil be set.
-		element: false,
 
 		// @option bgPos: Point = [0, 0]
 		// Optional relative position of the background, in pixels
@@ -48,10 +44,12 @@ export var DivIcon = Icon.extend({
 		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
-		div.innerHTML = options.html !== false ? options.html : '';
-
-		if (options.element !== false && options.html === false && options.element.nodeType === 1) {
-			div.appendChild(options.element);
+		if (options.html === false) {
+			div.innerHTML = '';
+		} else if (typeof options.html === 'object' && options.html.nodeType === 1) {
+			div.appendChild(options.html);
+		} else {
+			div.innerHTML = options.html;
 		}
 
 		if (options.bgPos) {
