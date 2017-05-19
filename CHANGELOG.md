@@ -58,7 +58,7 @@ An in-progress version being developed on the `master` branch.
 * Docs: remove `iframe` borders on examples ([#5327](https://github.com/leaflet/leaflet/issues/5327)) (by [tariqksoliman](https://github.com/tariqksoliman))
 * Pull `min`/`maxNativeZoom` from `TileLayer` into `GridLayer`, as per [#5316](https://github.com/leaflet/leaflet/issues/5316). ([#5319](https://github.com/leaflet/leaflet/issues/5319) by [jkuebart](https://github.com/jkuebart))
 * Disable click propagation on zoom control buttons, fixes [#5308](https://github.com/leaflet/leaflet/issues/5308) ([#5318](https://github.com/leaflet/leaflet/issues/5318) by [perliedman](https://github.com/perliedman))
-* Add CSS for `-webkit-tap-highlight-color`, fixes [#5302](https://github.com/leaflet/leaflet/issues/5302) by [IvanSanchez](https://github.com/IvanSanchez))
+* Add CSS for `-webkit-tap-highlight-color`, fixes [#5302](https://github.com/leaflet/leaflet/issues/5302) ([#5303](https://github.com/leaflet/leaflet/issues/5303) by [IvanSanchez](https://github.com/IvanSanchez))
 * Removed type attribute in HTML5 files ([#5309](https://github.com/leaflet/leaflet/issues/5309) by [uzerus](https://github.com/uzerus))
 * add margin to `LatLngBounds.equals` method ([#5071](https://github.com/leaflet/leaflet/issues/5071) by [miguelcobain](https://github.com/miguelcobain))
 * add `L.Draggable` options and fix docstring ([#5301](https://github.com/leaflet/leaflet/issues/5301) by [IvanSanchez](https://github.com/IvanSanchez))
