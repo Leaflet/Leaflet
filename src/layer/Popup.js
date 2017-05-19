@@ -383,7 +383,7 @@ Layer.include({
 		if (!this._popupHandlersAdded) {
 			this.on({
 				click: this._openPopup,
-				keypress: this._popupKeypressHandler,
+				keypress: this._onKeyPress,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -399,7 +399,7 @@ Layer.include({
 		if (this._popup) {
 			this.off({
 				click: this._openPopup,
-				keypress: this._popupKeypressHandler,
+				keypress: this._onKeyPress,
 				remove: this.closePopup,
 				move: this._movePopup
 			});
@@ -519,7 +519,7 @@ Layer.include({
 		this._popup.setLatLng(e.latlng);
 	},
 
-	_popupKeypressHandler: function (e) {
+	_onKeyPress: function (e) {
 		if (e.originalEvent.keyCode === 13) {
 			this._openPopup(e);
 		}
