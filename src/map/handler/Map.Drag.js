@@ -204,7 +204,7 @@ export var Drag = Handler.extend({
 			    limitedSpeedVector = speedVector.multiplyBy(limitedSpeed / speed),
 
 			    decelerationDuration = limitedSpeed / (options.inertiaDeceleration * ease),
-			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2).round();
+			    offset = limitedSpeedVector.multiplyBy(-decelerationDuration / 2);
 
 			if (!offset.x && !offset.y) {
 				map.fire('moveend');
