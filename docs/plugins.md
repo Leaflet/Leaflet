@@ -3756,6 +3756,15 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="http://marzeelabs.org">Marzee Labs</a>, and more maintainers listed at <a href="http://drupal.org/project/leaflet">drupal.org</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://lapizistik.github.io/leaflet-easymap/">Leaflet Easymap</a>
+		</td><td>
+			Include a map in your HTML page without one line of programming. A data-driven Javascript module.
+		</td><td>
+			<a href="https://github.com/Lapizistik">Klaus Stein</a>
+		</td>
+	</tr>
 </table>
 
 
