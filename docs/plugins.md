@@ -300,6 +300,17 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/IvanSanchez/">Iván Sánchez</a>
 		</td>
 	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/IHCantabria/Leaflet.CanvasLayer.Field">Leaflet.CanvasLayer.Field</a>
+		</td><td>
+			Loads and styles raster files (geotiff & asciigrid formats).
+            It includes a <code>ScalarField</code> layer (for DTM, temperature...) and 
+			<code>VectorFieldAnim</code> (an animated layer for wind, currents...). See the <a href="https://ihcantabria.github.io/Leaflet.CanvasLayer.Field/">examples</a>
+		</td><td>
+			<a href="https://github.com/VictorVelarde">Víctor Velarde</a>
+		</td>
+	</tr>
 </table>
 
 
