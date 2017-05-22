@@ -300,6 +300,17 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/IvanSanchez/">Iván Sánchez</a>
 		</td>
 	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/IHCantabria/Leaflet.CanvasLayer.Field">Leaflet.CanvasLayer.Field</a>
+		</td><td>
+			Loads and styles raster files (geotiff & asciigrid formats).
+            It includes a <code>ScalarField</code> layer (for DTM, temperature...) and 
+			<code>VectorFieldAnim</code> (an animated layer for wind, currents...). See the <a href="https://ihcantabria.github.io/Leaflet.CanvasLayer.Field/">examples</a>
+		</td><td>
+			<a href="https://github.com/VictorVelarde">Víctor Velarde</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2254,6 +2265,15 @@ Change the way the user can interactively move around the map.
 			A visible, clickable control to perform a box zoom.
 		</td><td>
 			<a href="https://github.com/gregallensworth/L.Control.BoxZoom">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/elrobis/L.Control.ZoomBar">L.Control.ZoomBar</a>
+		</td><td>
+			An extended version of Leaflet's native Zoom control with Home and Zoom-to-Area buttons. <a href="https://elrobis.github.io/L.Control.ZoomBar/">Demo</a>
+		</td><td>
+			<a href="http://cartometric.com/blog/">Elijah Robison</a>
 		</td>
 	</tr>
 	<tr>
