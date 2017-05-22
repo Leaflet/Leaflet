@@ -495,6 +495,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/frogcat">Yuzo Matsuzawa</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/hnrchrdl/leaflet-tilelayer-colorizr">Leaflet.TileLayer.Colorizr</a>
+		</td><td>
+			A Leaflet TileLayer which can modify colors by RGBA code. Demos: coming soon.
+		</td><td>
+			<a href="https://github.com/hnrchrdl">Hinrich Riedel</a>
+		</td>
+	</tr>
 </table>
 
 
