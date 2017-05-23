@@ -134,6 +134,7 @@ describe("Marker", function () {
 
 			expect(beforeIcon).to.be(afterIcon);
 			expect(afterIcon.innerHTML).to.contain('<p>InnerTextFromCustomNode</p>');
+			expect(afterIcon.innerHTML).to.not.contain('Inner1Text');
 		});
 
 		it("changes the icon to another DivIcon", function () {
