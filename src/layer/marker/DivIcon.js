@@ -29,7 +29,7 @@ export var DivIcon = Icon.extend({
 		// iconAnchor: (Point),
 		// popupAnchor: (Point),
 
-		// @option html: String|DOM Element = ''
+		// @option html: String|HTMLElement = ''
 		// Custom HTML code to put inside the div element, empty by default.
 		html: false,
 
