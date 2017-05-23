@@ -18,9 +18,9 @@ An in-progress version being developed on the `master` branch.
 ### Docs & Web Site
 
 * `reference.html` now always points to latest stable docs ([#5490](https://github.com/leaflet/leaflet/issues/5490) by [IvanSanchez](https://github.com/IvanSanchez), [#5493](https://github.com/leaflet/leaflet/issues/5493) by [alyhegazy](https://github.com/alyhegazy))
-* subresource integrity information and scripts ([#5468](https://github.com/leaflet/leaflet/issues/5468) by [IvanSanchez](https://github.com/IvanSanchez))
+* Subresource integrity information and scripts ([#5468](https://github.com/leaflet/leaflet/issues/5468) by [IvanSanchez](https://github.com/IvanSanchez))
 * New tutorial on zooming (by [IvanSanchez](https://github.com/IvanSanchez), [#5007](https://github.com/leaflet/leaflet/issues/5007))
-* minor documentation improvements by [perliedman](https://github.com/perliedman), [veltman](https://github.com/veltman), [FDMS](https://github.com/FDMS), [ghybs](https://github.com/ghybs), [RichardLitt](https://github.com/RichardLitt), [gatsbimantico](https://github.com/gatsbimantico), [daturkel](https://github.com/daturkel), [jgravois](https://github.com/jgravois), [geografa](https://github.com/geografa), [BjoernSchilberg](https://github.com/BjoernSchilberg), [IvanSanchez](https://github.com/IvanSanchez), [bozdoz](https://github.com/bozdoz), [zemadz](https://github.com/zemadz), [danzel](https://github.com/danzel), [jieter](https://github.com/jieter) and [massic80](https://github.com/massic80)
+* Minor documentation improvements by [perliedman](https://github.com/perliedman), [veltman](https://github.com/veltman), [FDMS](https://github.com/FDMS), [ghybs](https://github.com/ghybs), [RichardLitt](https://github.com/RichardLitt), [gatsbimantico](https://github.com/gatsbimantico), [daturkel](https://github.com/daturkel), [jgravois](https://github.com/jgravois), [geografa](https://github.com/geografa), [BjoernSchilberg](https://github.com/BjoernSchilberg), [IvanSanchez](https://github.com/IvanSanchez), [bozdoz](https://github.com/bozdoz), [zemadz](https://github.com/zemadz), [danzel](https://github.com/danzel), [jieter](https://github.com/jieter) and [massic80](https://github.com/massic80)
 
 ### ES6 / Rollup
 
@@ -37,7 +37,7 @@ An in-progress version being developed on the `master` branch.
 * Sanity check to prevent loading tiles when bounds are `Infinity` ([#5478](https://github.com/leaflet/leaflet/issues/5478), [#5479](https://github.com/leaflet/leaflet/issues/5479) by [IvanSanchez](https://github.com/IvanSanchez))
 * Fix box zoom race condition ([#5452](https://github.com/leaflet/leaflet/issues/5452) by [ppaskaris](https://github.com/ppaskaris))
 * On update set current tiles active to avoid pruning ([#5381](https://github.com/leaflet/leaflet/issues/5381)) ([#5431](https://github.com/leaflet/leaflet/issues/5431) by [oliverheilig](https://github.com/oliverheilig))
-* make `L.Mixin.Events` a simple object instead of a prototype so it doesn't have a 'constructor' property, fixes [#5451](https://github.com/leaflet/leaflet/issues/5451) ([#5453](https://github.com/leaflet/leaflet/issues/5453) by [luiscamachopt](https://github.com/luiscamachopt))
+* Make `L.Mixin.Events` a simple object instead of a prototype so it doesn't have a 'constructor' property, fixes [#5451](https://github.com/leaflet/leaflet/issues/5451) ([#5453](https://github.com/leaflet/leaflet/issues/5453) by [luiscamachopt](https://github.com/luiscamachopt))
 * Canvas: call `ctx.setLineDash` in `_fillStroke` [#5182](https://github.com/leaflet/leaflet/issues/5182) ([#5454](https://github.com/leaflet/leaflet/issues/5454) by [TeXitoi](https://github.com/TeXitoi))
 * Only rearrange DOM in `toFront`/`toBack` if needed, fixes [#4050](https://github.com/leaflet/leaflet/issues/4050) ([#5465](https://github.com/leaflet/leaflet/issues/5465) by [perliedman](https://github.com/perliedman))
 * Push back keyboard navigation order of `L.Popup`'s close button ([#5461](https://github.com/leaflet/leaflet/issues/5461) by [Mirodil](https://github.com/Mirodil))
@@ -45,7 +45,7 @@ An in-progress version being developed on the `master` branch.
 * Add new class `L.VideoOverlay` ([#4988](https://github.com/leaflet/leaflet/issues/4988) by [IvanSanchez](https://github.com/IvanSanchez))
 * Added z-index support to ImageOverlay ([#5418](https://github.com/leaflet/leaflet/issues/5418) by [Saulzi](https://github.com/Saulzi))
 * Added error event to `ImageOverlay` layer and added tests for the new ([#5416](https://github.com/leaflet/leaflet/issues/5416) by [Saulzi](https://github.com/Saulzi))
-* Error handler in `ImageOverlay` for 404 links ([#5307](https://github.com/leaflet/leaflet/issues/5307))
+* Error handler in `ImageOverlay` for 404 links ([#5307](https://github.com/leaflet/leaflet/issues/5307)) by [APwhitehat](https://github.com/APwhitehat))
 * Ensure renderer's container is initialized when a path is added to map ([#5404](https://github.com/leaflet/leaflet/issues/5404) by [IvanSanchez](https://github.com/IvanSanchez))
 * Layers Control only add layer events to layers when we are on the map. Fixes [#5421](https://github.com/leaflet/leaflet/issues/5421) ([#5422](https://github.com/leaflet/leaflet/issues/5422) by [danzel](https://github.com/danzel))
 * Layers Control can now become scrollable even if `collapsed: false`, fixes [#5328](https://github.com/leaflet/leaflet/issues/5328) ([#5348](https://github.com/leaflet/leaflet/issues/5348) by [ghybs](https://github.com/ghybs))
@@ -53,15 +53,14 @@ An in-progress version being developed on the `master` branch.
 * fix invalid GeoJSON produced by nested `LayerGroups` ([#5359](https://github.com/leaflet/leaflet/issues/5359) by [Resonance1584](https://github.com/Resonance1584))
 * Update toolbar inner border radius ([#5361](https://github.com/leaflet/leaflet/issues/5361) by [newmanw](https://github.com/newmanw))
 * Export `lastId` in `Util` ([#5349](https://github.com/leaflet/leaflet/issues/5349) by [DenisCarriere](https://github.com/DenisCarriere))
-* Couple tests for `Map.Keyboard.disable()` (by [IvanSanchez](https://github.com/IvanSanchez))
-* Do not stop keypress on escape if no popup is open (by [IvanSanchez](https://github.com/IvanSanchez))
+* Do not stop keypress on escape if no popup is open, plus unit tests ([#5331](https://github.com/leaflet/leaflet/issues/5331) (by [IvanSanchez](https://github.com/IvanSanchez))
 * Docs: remove `iframe` borders on examples ([#5327](https://github.com/leaflet/leaflet/issues/5327)) (by [tariqksoliman](https://github.com/tariqksoliman))
 * Pull `min`/`maxNativeZoom` from `TileLayer` into `GridLayer`, as per [#5316](https://github.com/leaflet/leaflet/issues/5316). ([#5319](https://github.com/leaflet/leaflet/issues/5319) by [jkuebart](https://github.com/jkuebart))
 * Disable click propagation on zoom control buttons, fixes [#5308](https://github.com/leaflet/leaflet/issues/5308) ([#5318](https://github.com/leaflet/leaflet/issues/5318) by [perliedman](https://github.com/perliedman))
 * Add CSS for `-webkit-tap-highlight-color`, fixes [#5302](https://github.com/leaflet/leaflet/issues/5302) ([#5303](https://github.com/leaflet/leaflet/issues/5303) by [IvanSanchez](https://github.com/IvanSanchez))
 * Removed type attribute in HTML5 files ([#5309](https://github.com/leaflet/leaflet/issues/5309) by [uzerus](https://github.com/uzerus))
-* add margin to `LatLngBounds.equals` method ([#5071](https://github.com/leaflet/leaflet/issues/5071) by [miguelcobain](https://github.com/miguelcobain))
-* add `L.Draggable` options and fix docstring ([#5301](https://github.com/leaflet/leaflet/issues/5301) by [IvanSanchez](https://github.com/IvanSanchez))
+* Add margin to `LatLngBounds.equals` method ([#5071](https://github.com/leaflet/leaflet/issues/5071) by [miguelcobain](https://github.com/miguelcobain))
+* Add `L.Draggable` options and fix docstring ([#5301](https://github.com/leaflet/leaflet/issues/5301) by [IvanSanchez](https://github.com/IvanSanchez))
 * Fix max/min calculation for `getBoundsZoom`, fixes [#5136](https://github.com/leaflet/leaflet/issues/5136) ([#5137](https://github.com/leaflet/leaflet/issues/5137) by [IvanSanchez](https://github.com/IvanSanchez))
 * Scrubbing of detached DOM elements, prevents memory leaks; fixes [#5263](https://github.com/leaflet/leaflet/issues/5263) ([#5265](https://github.com/leaflet/leaflet/issues/5265) by [IvanSanchez](https://github.com/IvanSanchez))
 * Remove `marker.dragging` when not on the map, fixes [#5293](https://github.com/leaflet/leaflet/issues/5293) ([#5295](https://github.com/leaflet/leaflet/issues/5295) by [danzel](https://github.com/danzel))
