@@ -243,15 +243,10 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 // @function latLngToCoords(latlng: LatLng): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 export function latLngToCoords(latlng, precision) {
-	if (precision) {
-		return latlng.alt !== undefined ?
+	precision = precision || 6;
+	return latlng.alt !== undefined ?
 			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
 			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
-	} else {
-		return latlng.alt !== undefined ?
-			[latlng.lng, latlng.lat, latlng.alt] :
-			[latlng.lng, latlng.lat];
-	}
 }
 
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array

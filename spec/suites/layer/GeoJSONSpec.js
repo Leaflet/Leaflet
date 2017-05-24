@@ -386,7 +386,26 @@ describe("L.LayerGroup#toGeoJSON", function () {
 			}]
 		};
 
-		expect(L.geoJSON(json).toGeoJSON()).to.eql(json);
+		var expected = {
+			"type": "FeatureCollection",
+			"features": [{
+				"type": "Feature",
+				"geometry": {
+					"type": "GeometryCollection",
+					"geometries": [{
+						"type": "LineString",
+						"coordinates": [[-122.442559, 37.806664], [-122.442838, 37.806636]]
+					}, {
+						"type": "LineString",
+						"coordinates": [[-122.442551, 37.806626], [-122.442834, 37.8066]]
+					}]
+				},
+				"properties": {
+					"name": "SF Marina Harbor Master"
+				}
+			}]
+		};
+		expect(L.geoJSON(json).toGeoJSON()).to.eql(expected);
 	});
 
 	it('roundtrips MultiPoint features', function () {
@@ -404,7 +423,20 @@ describe("L.LayerGroup#toGeoJSON", function () {
 			}]
 		};
 
-		expect(L.geoJSON(json).toGeoJSON()).to.eql(json);
+		var expected = {
+			"type": "FeatureCollection",
+			"features": [{
+				"type": "Feature",
+				"geometry": {
+					"type": "MultiPoint",
+					"coordinates": [[-122.442559, 37.806664], [-122.442838, 37.806636]]
+				},
+				"properties": {
+					"name": "Test MultiPoints"
+				}
+			}]
+		};
+		expect(L.geoJSON(json).toGeoJSON()).to.eql(expected);
 	});
 
 	it("omits layers which do not implement toGeoJSON", function () {
