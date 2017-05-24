@@ -24,7 +24,7 @@ export var Marker = Layer.extend({
 	// @aka Marker options
 	options: {
 		// @option icon: Icon = *
-		// Icon class to use for rendering the marker.
+		// Icon instance to use for rendering the marker.
 		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
 		// If not specified, a common instance of `L.Icon.Default` is used.
 		icon: new IconDefault(),
