@@ -78,7 +78,7 @@ describe("L.Marker#toGeoJSON", function () {
 		var marker = new L.Marker([10.123456, 20.123456, 30.123456]);
 		expect(marker.toGeoJSON(3).geometry).to.eql({
 			type: 'Point',
-			coordinates: [20.1, 10.1, 30.1]
+			coordinates: [20.123, 10.123, 30.123]
 		});
 	});
 });
@@ -104,7 +104,7 @@ describe("L.Circle#toGeoJSON", function () {
 		var circle = new L.Circle([10.1234, 20.1234, 30.1234], 100);
 		expect(circle.toGeoJSON(3).geometry).to.eql({
 			type: 'Point',
-			coordinates: [20.1, 10.1, 30.1]
+			coordinates: [20.123, 10.123, 30.123]
 		});
 	});
 });
@@ -130,7 +130,7 @@ describe("L.CircleMarker#toGeoJSON", function () {
 		var marker = new L.CircleMarker([10.1234, 20.1234]);
 		expect(marker.toGeoJSON(3).geometry).to.eql({
 			type: 'Point',
-			coordinates: [20.1, 10.1]
+			coordinates: [20.123, 10.123]
 		});
 	});
 });
@@ -156,7 +156,7 @@ describe("L.Polyline#toGeoJSON", function () {
 		var polyline = new L.Polyline([[10.1234, 20.1234, 30.1234], [2.1234, 5.1234, 10.1234]]);
 		expect(polyline.toGeoJSON(3).geometry).to.eql({
 			type: 'LineString',
-			coordinates: [[20.1, 10.1, 30.1], [5.12, 2.12, 10.1]]
+			coordinates: [[20.123, 10.123, 30.123], [5.123, 2.123, 10.123]]
 		});
 	});
 });
@@ -189,8 +189,8 @@ describe("L.Polyline (multi) #toGeoJSON", function () {
 		expect(multiPolyline.toGeoJSON(3).geometry).to.eql({
 			type: 'MultiLineString',
 			coordinates: [
-				[[20.1, 10.1, 30.1], [5.12, 2.12, 10.1]],
-				[[2.12, 1.12, 3.12], [5.12, 4.12, 6.12]]
+				[[20.123, 10.123, 30.123], [5.123, 2.123, 10.123]],
+				[[2.123, 1.123, 3.123], [5.123, 4.123, 6.123]]
 			]
 		});
 	});
@@ -259,7 +259,7 @@ describe("L.Polygon#toGeoJSON", function () {
 		var polygon = new L.Polygon([[1.1234, 2.1234], [3.1234, 4.1234], [5.1234, 6.1234]]);
 		expect(polygon.toGeoJSON(3).geometry).to.eql({
 			type: 'Polygon',
-			coordinates: [[[2.12, 1.12], [4.12, 3.12], [6.12, 5.12], [2.12, 1.12]]]
+			coordinates: [[[2.123, 1.123], [4.123, 3.123], [6.123, 5.123], [2.123, 1.123]]]
 		});
 	});
 });
@@ -311,7 +311,7 @@ describe("L.Polygon (multi) #toGeoJSON", function () {
 		expect(multiPolygon.toGeoJSON(3).geometry).to.eql({
 			type: 'MultiPolygon',
 			coordinates: [
-				[[[2.12, 1.12], [4.12, 3.12], [6.12, 5.12], [2.12, 1.12]]]
+				[[[2.123, 1.123], [4.123, 3.123], [6.123, 5.123], [2.123, 1.123]]]
 			]
 		});
 	});
@@ -389,7 +389,7 @@ describe("L.LayerGroup#toGeoJSON", function () {
 		expect(L.geoJSON(json).toGeoJSON()).to.eql(json);
 	});
 
-	it('roundtrips MiltiPoint features', function () {
+	it('roundtrips MultiPoint features', function () {
 		var json = {
 			"type": "FeatureCollection",
 			"features": [{
