@@ -34,11 +34,12 @@ export var Layer = Evented.extend({
 		// @option pane: String = 'overlayPane'
 		// By default the layer will be added to the map's [overlay pane](#map-overlaypane). Overriding this option will cause the layer to be placed on another pane by default.
 		pane: 'overlayPane',
-		nonBubblingEvents: [],  // Array of events that should not be bubbled to DOM parents (like the map),
 
 		// @option attribution: String = null
 		// String to be shown in the attribution control, describes the layer data, e.g. "© Mapbox".
-		attribution: null
+		attribution: null,
+
+		bubblingMouseEvents: true
 	},
 
 	/* @section
