@@ -266,11 +266,13 @@ export var Layers = Control.extend({
 		var baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
 
 		for (i = 0; i < this._layers.length; i++) {
-			obj = this._layers[i];
-			this._addItem(obj);
-			overlaysPresent = overlaysPresent || obj.overlay;
-			baseLayersPresent = baseLayersPresent || !obj.overlay;
-			baseLayersCount += !obj.overlay ? 1 : 0;
+			if (this._layers.hasOwnProperty(i)) {
+				obj = this._layers[i];
+				this._addItem(obj);
+				overlaysPresent = overlaysPresent || obj.overlay;
+				baseLayersPresent = baseLayersPresent || !obj.overlay;
+				baseLayersCount += !obj.overlay ? 1 : 0;
+			}
 		}
 
 		// Hide base layers section if there's only one layer.
