@@ -196,15 +196,9 @@
 	visibility: hidden;
 	}
 
+/* zoom imageoverlay pixelated */
 
-/* cursors */
-
-.leaflet-interactive {
-	cursor: pointer;
-	}
-
-.leaflet-zoomPixelated
-{
+.leaflet-zoompixelated{
 	-ms-interpolation-mode: nearest-neighbor; /*IE 7+ (non-standard property)*/
 	-ms-interpolation-mode: nearest-neighbor;
 	image-rendering: -webkit-optimize-contrast; /*// Safari 6, UC Browser 9.9*/
@@ -213,6 +207,13 @@
 	image-rendering: -o-crisp-edges; /*// Opera 12*/
 	image-rendering: pixelated; /*// Chrome 41+ and Opera 26+*/
 }
+
+/* cursors */
+
+.leaflet-interactive {
+	cursor: pointer;
+	}
+
 .leaflet-grab {
 	cursor: -webkit-grab;
 	cursor:    -moz-grab;

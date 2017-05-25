@@ -49,9 +49,9 @@ export var ImageOverlay = Layer.extend({
 		// The explicit [zIndex](https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index) of the tile layer.
 		zIndex: 1,
 
-		// @option zoomPixelated: String = ''
+		// @option zoomPixelated:  Boolean = false
 		// The explicit [zoomPixelated](https://developer.mozilla.org/zh-CN/docs/Web/CSS/image-rendering) of the tile layer.
-		zoomPixelated: 'NN'
+		zoomPixelated: false
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -71,8 +71,7 @@ export var ImageOverlay = Layer.extend({
 		}
 
 
-		if (this.options.zoomPixelated === 'NN')
-		{
+		if (this.options.zoomPixelated){
 			DomUtil.addClass(this._image, 'leaflet-zoomPixelated');
 		}
 
