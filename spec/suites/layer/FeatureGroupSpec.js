@@ -83,4 +83,15 @@
 			expect(fg.hasLayer(marker)).to.be(false);
 		});
 	});
+	describe('bringToFront', function () {
+		it('brings to front included markers', function () {
+			var fg = L.featureGroup().addTo(map),
+			    marker1 = L.marker([0, 0]).addTo(fg),
+				marker2 = L.marker([0, 0]).addTo(map);
+
+			expect(marker1._icon.style.zIndex).not.to.be.greaterThan(marker2._icon.style.zIndex);
+			fg.bringToFront();
+			expect(marker1._icon.style.zIndex).to.be.greaterThan(marker2._icon.style.zIndex);
+		});
+	});
 });
