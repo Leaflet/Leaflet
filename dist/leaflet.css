@@ -198,7 +198,7 @@
 
 /* zoom imageoverlay pixelated */
 
-.leaflet-zoompixelated{
+.leaflet-zoom-pixelated{
 	-ms-interpolation-mode: nearest-neighbor; /*IE 7+ (non-standard property)*/
 	-ms-interpolation-mode: nearest-neighbor;
 	image-rendering: -webkit-optimize-contrast; /*// Safari 6, UC Browser 9.9*/

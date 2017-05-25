@@ -1,7 +1,7 @@
-import {Layer} from './Layer';
+import { Layer } from './Layer';
 import * as Util from '../core/Util';
-import {toLatLngBounds} from '../geo/LatLngBounds';
-import {Bounds} from '../geometry/Bounds';
+import { toLatLngBounds } from '../geo/LatLngBounds';
+import { Bounds } from '../geometry/Bounds';
 import * as DomUtil from '../dom/DomUtil';
 
 /*
@@ -71,8 +71,8 @@ export var ImageOverlay = Layer.extend({
 		}
 
 
-		if (this.options.zoomPixelated){
-			DomUtil.addClass(this._image, 'leaflet-zoomPixelated');
+		if (this.options.zoomPixelated) {
+			DomUtil.addClass(this._image, 'leaflet-zoom-pixelated');
 		}
 
 		if (this.options.interactive) {
@@ -185,7 +185,7 @@ export var ImageOverlay = Layer.extend({
 
 	_initImage: function () {
 		var img = this._image = DomUtil.create('img',
-				'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
+			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
 		img.onselectstart = Util.falseFn;
 		img.onmousemove = Util.falseFn;
@@ -209,21 +209,21 @@ export var ImageOverlay = Layer.extend({
 
 	_animateZoom: function (e) {
 		var scale = this._map.getZoomScale(e.zoom),
-		    offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
+			offset = this._map._latLngBoundsToNewLayerBounds(this._bounds, e.zoom, e.center).min;
 
 		DomUtil.setTransform(this._image, offset, scale);
 	},
 
 	_reset: function () {
 		var image = this._image,
-		    bounds = new Bounds(
-		        this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
-		        this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
-		    size = bounds.getSize();
+			bounds = new Bounds(
+				this._map.latLngToLayerPoint(this._bounds.getNorthWest()),
+				this._map.latLngToLayerPoint(this._bounds.getSouthEast())),
+			size = bounds.getSize();
 
 		DomUtil.setPosition(image, bounds.min);
 
-		image.style.width  = size.x + 'px';
+		image.style.width = size.x + 'px';
 		image.style.height = size.y + 'px';
 	},
 
