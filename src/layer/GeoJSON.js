@@ -243,7 +243,7 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 // @function latLngToCoords(latlng: LatLng, precision?: Number): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
 export function latLngToCoords(latlng, precision) {
-	precision = precision || 6;
+	precision = typeof precision === 'number' ? precision : 6;
 	return latlng.alt !== undefined ?
 			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
 			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
