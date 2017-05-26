@@ -49,7 +49,12 @@ export var IconDefault = Icon.extend({
 
 		document.body.removeChild(el);
 
-		return path.indexOf('url') === 0 ?
-			path.replace(/^url\([\"\']?/, '').replace(/marker-icon\.png[\"\']?\)$/, '') : '';
+		if (path === null || path.indexOf('url') !== 0) {
+			path = '';
+		} else {
+			path.replace(/^url\([\"\']?/, '').replace(/marker-icon\.png[\"\']?\)$/, '');
+		}
+
+		return path;
 	}
 });
