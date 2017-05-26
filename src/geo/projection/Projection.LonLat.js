@@ -12,7 +12,7 @@ import {Point} from '../../geometry/Point';
  * Equirectangular, or Plate Carree projection — the most simple projection,
  * mostly used by GIS enthusiasts. Directly maps `x` as longitude, and `y` as
  * latitude. Also suitable for flat worlds, e.g. game maps. Used by the
- * `EPSG:3395` and `Simple` CRS.
+ * `EPSG:4326` and `Simple` CRS.
  */
 
 export var LonLat = {
