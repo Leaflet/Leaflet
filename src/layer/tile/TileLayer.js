@@ -104,6 +104,10 @@ export var TileLayer = GridLayer.extend({
 			options.subdomains = options.subdomains.split('');
 		}
 
+		if (this.options.crs) {
+			this._supportCrs();
+		}
+
 		// for https://github.com/Leaflet/Leaflet/issues/137
 		if (!Browser.android) {
 			this.on('tileunload', this._onTileRemove);
@@ -230,6 +234,75 @@ export var TileLayer = GridLayer.extend({
 					tile.src = Util.emptyImageUrl;
 					DomUtil.remove(tile);
 				}
+			}
+		}
+	},
+
+	_supportCrs: function () {
+		var self = this,
+			objSync = {},
+			fn = self._supportCrs,
+			fnOverride = fn.fn_list || ['_reset', '_update'],
+			ltNameProps = fn.leftPoint_propNames || ['_initialTopLeftPoint', '_pixelOrigin'],
+			override,
+			f, fnName,
+			overrideBuilder = function () {
+				return function contextFn() {
+
+					objSync.running = !!objSync.running;
+
+					var params = objSync.running ? contextFn.caller.arguments : arguments;
+
+					if (!objSync.running) {
+
+						var result,
+							m = self._map,
+							o = m && m.options,
+							z = m && m.getZoom(),
+							newCrs = self.options.crs,
+							oldCrs = o && o.crs,
+							oldLt,
+							fnMap = function(a, b, c) {
+								for (var i = 0; i < b.length; i++) {
+									if (b[i] in a) {
+										a[b[i]] = c(b[i], a[b[i]]);
+									}
+								}
+							};
+
+						if (m && !(newCrs === oldCrs)) {
+							oldLt  = oldLt || {};
+							fnMap(m, ltNameProps, function(key, value) {
+								oldLt[key] = value;
+								return newCrs.latLngToPoint(oldCrs.pointToLatLng(value, z), z).round();
+							});
+							o.crs = newCrs;
+						}
+
+						objSync.running = true;
+						result = contextFn.original.apply(self, params);
+						objSync.running = false;
+
+						if (oldLt) {
+							fnMap(m, ltNameProps, function(key) {
+								return oldLt[key];
+							});
+							o.crs = oldCrs;
+						}
+
+						return result;
+					}
+
+					return contextFn.original.apply(self, params);
+				};
+			};
+
+		for (f in fnOverride) {
+			fnName = fnOverride[f];
+			if (fnName in self) {
+				override = overrideBuilder();
+				override.original = self[fnName];
+				self[fnName] = override;
 			}
 		}
 	}
