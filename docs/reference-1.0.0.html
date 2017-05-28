@@ -20805,7 +20805,7 @@ Map&#39;s <a href="#crs"><code>crs</code></a> option.</td>
 	</tr>
 	<tr id='crs-l-crs-epsg4326'>
 		<td><code><b>L.CRS.EPSG4326</b></code></td>
-		<td>A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.</td>
+		<td>A common CRS among GIS enthusiasts. Uses simple Equirectangular projection.  Please be aware that Leaflet 1.0.x complies with the <a href="https://wiki.osgeo.org/wiki/Tile_Map_Service_Specification#global-geodetic">TMS way of doing EPSG:4326</a> which is a breaking change from 0.7.x behaviour.  At the initial zoom level two 256x256 pixel tiles covering the whole earth, with an orign of (-180,-90) are expected.</td>
 	</tr>
 	<tr id='crs-l-crs-earth'>
 		<td><code><b>L.CRS.Earth</b></code></td>
