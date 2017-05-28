@@ -71,7 +71,7 @@ export var CRS = {
 	getProjectedBounds: function (zoom) {
 		if (this.infinite) { return null; }
 
-		var b = this.projection.bounds,
+		var b = this.options.bounds,
 		    s = this.scale(zoom),
 		    min = this.transformation.transform(b.min, s),
 		    max = this.transformation.transform(b.max, s);
