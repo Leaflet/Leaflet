@@ -240,24 +240,25 @@ export function coordsToLatLngs(coords, levelsDeep, _coordsToLatLng) {
 	return latlngs;
 }
 
-// @function latLngToCoords(latlng: LatLng): Array
+// @function latLngToCoords(latlng: LatLng, precision?: Number): Array
 // Reverse of [`coordsToLatLng`](#geojson-coordstolatlng)
-export function latLngToCoords(latlng) {
+export function latLngToCoords(latlng, precision) {
+	precision = typeof precision === 'number' ? precision : 6;
 	return latlng.alt !== undefined ?
-			[latlng.lng, latlng.lat, latlng.alt] :
-			[latlng.lng, latlng.lat];
+			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision), Util.formatNum(latlng.alt, precision)] :
+			[Util.formatNum(latlng.lng, precision), Util.formatNum(latlng.lat, precision)];
 }
 
 // @function latLngsToCoords(latlngs: Array, levelsDeep?: Number, closed?: Boolean): Array
 // Reverse of [`coordsToLatLngs`](#geojson-coordstolatlngs)
 // `closed` determines whether the first point should be appended to the end of the array to close the feature, only used when `levelsDeep` is 0. False by default.
-export function latLngsToCoords(latlngs, levelsDeep, closed) {
+export function latLngsToCoords(latlngs, levelsDeep, closed, precision) {
 	var coords = [];
 
 	for (var i = 0, len = latlngs.length; i < len; i++) {
 		coords.push(levelsDeep ?
-			latLngsToCoords(latlngs[i], levelsDeep - 1, closed) :
-			latLngToCoords(latlngs[i]));
+			latLngsToCoords(latlngs[i], levelsDeep - 1, closed, precision) :
+			latLngToCoords(latlngs[i], precision));
 	}
 
 	if (!levelsDeep && closed) {
@@ -288,10 +289,10 @@ export function asFeature(geojson) {
 }
 
 var PointToGeoJSON = {
-	toGeoJSON: function () {
+	toGeoJSON: function (precision) {
 		return getFeature(this, {
 			type: 'Point',
-			coordinates: latLngToCoords(this.getLatLng())
+			coordinates: latLngToCoords(this.getLatLng(), precision)
 		});
 	}
 };
@@ -312,10 +313,10 @@ CircleMarker.include(PointToGeoJSON);
 // @method toGeoJSON(): Object
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
-	toGeoJSON: function () {
+	toGeoJSON: function (precision) {
 		var multi = !LineUtil._flat(this._latlngs);
 
-		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0);
+		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
 
 		return getFeature(this, {
 			type: (multi ? 'Multi' : '') + 'LineString',
@@ -328,11 +329,11 @@ Polyline.include({
 // @method toGeoJSON(): Object
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
-	toGeoJSON: function () {
+	toGeoJSON: function (precision) {
 		var holes = !LineUtil._flat(this._latlngs),
 		    multi = holes && !LineUtil._flat(this._latlngs[0]);
 
-		var coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true);
+		var coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
 
 		if (!holes) {
 			coords = [coords];
@@ -348,11 +349,11 @@ Polygon.include({
 
 // @namespace LayerGroup
 LayerGroup.include({
-	toMultiPoint: function () {
+	toMultiPoint: function (precision) {
 		var coords = [];
 
 		this.eachLayer(function (layer) {
-			coords.push(layer.toGeoJSON().geometry.coordinates);
+			coords.push(layer.toGeoJSON(precision).geometry.coordinates);
 		});
 
 		return getFeature(this, {
@@ -363,12 +364,12 @@ LayerGroup.include({
 
 	// @method toGeoJSON(): Object
 	// Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the layer group (as a GeoJSON `FeatureCollection`, `GeometryCollection`, or `MultiPoint`).
-	toGeoJSON: function () {
+	toGeoJSON: function (precision) {
 
 		var type = this.feature && this.feature.geometry && this.feature.geometry.type;
 
 		if (type === 'MultiPoint') {
-			return this.toMultiPoint();
+			return this.toMultiPoint(precision);
 		}
 
 		var isGeometryCollection = type === 'GeometryCollection',
@@ -376,7 +377,7 @@ LayerGroup.include({
 
 		this.eachLayer(function (layer) {
 			if (layer.toGeoJSON) {
-				var json = layer.toGeoJSON();
+				var json = layer.toGeoJSON(precision);
 				if (isGeometryCollection) {
 					jsons.push(json.geometry);
 				} else {
