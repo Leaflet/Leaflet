@@ -142,7 +142,6 @@ export var Layers = Control.extend({
 		layer.off('add remove', this._onLayerChange, this);
 
 		var obj = this._getLayer(Util.stamp(layer));
-		this._layerControlInputs = [];
 		if (obj) {
 			this._layers.splice(this._layers.indexOf(obj), 1);
 		}
@@ -265,6 +264,7 @@ export var Layers = Control.extend({
 		DomUtil.empty(this._baseLayersList);
 		DomUtil.empty(this._overlaysList);
 
+		this._layerControlInputs = [];
 		var baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
 
 		for (i = 0; i < this._layers.length; i++) {
