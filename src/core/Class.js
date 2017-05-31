@@ -35,7 +35,7 @@ Class.extend = function (props) {
 
 	// inherit parent's statics
 	for (var i in this) {
-		if (this.hasOwnProperty(i) && i !== 'prototype') {
+		if (this.hasOwnProperty(i) && i !== 'prototype' && i !== '__super__') {
 			NewClass[i] = this[i];
 		}
 	}
@@ -114,7 +114,7 @@ Class.addInitHook = function (fn) { // (Function) || (String, args...)
 function checkDeprecatedMixinEvents(includes) {
 	if (!L || !L.Mixin) { return; }
 
-	includes = L.Util.isArray(includes) ? includes : [includes];
+	includes = Util.isArray(includes) ? includes : [includes];
 
 	for (var i = 0; i < includes.length; i++) {
 		if (includes[i] === L.Mixin.Events) {

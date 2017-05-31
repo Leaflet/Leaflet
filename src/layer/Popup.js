@@ -174,14 +174,6 @@ export var Popup = DivOverlay.extend({
 			prefix + ' ' + (this.options.className || '') +
 			' leaflet-zoom-animated');
 
-		if (this.options.closeButton) {
-			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
-			closeButton.href = '#close';
-			closeButton.innerHTML = '&#215;';
-
-			DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
-		}
-
 		var wrapper = this._wrapper = DomUtil.create('div', prefix + '-content-wrapper', container);
 		this._contentNode = DomUtil.create('div', prefix + '-content', wrapper);
 
@@ -191,6 +183,14 @@ export var Popup = DivOverlay.extend({
 
 		this._tipContainer = DomUtil.create('div', prefix + '-tip-container', container);
 		this._tip = DomUtil.create('div', prefix + '-tip', this._tipContainer);
+
+		if (this.options.closeButton) {
+			var closeButton = this._closeButton = DomUtil.create('a', prefix + '-close-button', container);
+			closeButton.href = '#close';
+			closeButton.innerHTML = '&#215;';
+
+			DomEvent.on(closeButton, 'click', this._onCloseButtonClick, this);
+		}
 	},
 
 	_updateLayout: function () {

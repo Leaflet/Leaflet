@@ -1,4 +1,6 @@
 import {ImageOverlay} from './ImageOverlay';
+import * as DomUtil from '../dom/DomUtil';
+import * as Util from '../core/Util';
 
 /*
  * @class VideoOverlay
@@ -34,22 +36,22 @@ export var VideoOverlay = ImageOverlay.extend({
 	},
 
 	_initImage: function () {
-		var vid = this._image = L.DomUtil.create('video',
+		var vid = this._image = DomUtil.create('video',
 			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
 
-		vid.onselectstart = L.Util.falseFn;
-		vid.onmousemove = L.Util.falseFn;
+		vid.onselectstart = Util.falseFn;
+		vid.onmousemove = Util.falseFn;
 
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
-		vid.onloadeddata = L.bind(this.fire, this, 'load');
+		vid.onloadeddata = Util.bind(this.fire, this, 'load');
 
-		if (!L.Util.isArray(this._url)) { this._url = [this._url]; }
+		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
 		vid.autoplay = !!this.options.autoplay;
 		vid.loop = !!this.options.loop;
 		for (var i = 0; i < this._url.length; i++) {
-			var source = L.DomUtil.create('source');
+			var source = DomUtil.create('source');
 			source.src = this._url[i];
 			vid.appendChild(source);
 		}
@@ -65,5 +67,5 @@ export var VideoOverlay = ImageOverlay.extend({
 // Instantiates an image overlay object given the URL of the video (or array of URLs) and the
 // geographical bounds it is tied to.
 export function videoOverlay(url, bounds, options) {
-	return new L.VideoOverlay(url, bounds, options);
+	return new VideoOverlay(url, bounds, options);
 }

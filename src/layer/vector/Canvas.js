@@ -39,7 +39,7 @@ import {Bounds} from '../../geometry/Bounds';
 
 export var Canvas = Renderer.extend({
 	getEvents: function () {
-		var events = L.Renderer.prototype.getEvents.call(this);
+		var events = Renderer.prototype.getEvents.call(this);
 		events.viewprereset = this._onViewPreReset;
 		return events;
 	},
@@ -69,8 +69,8 @@ export var Canvas = Renderer.extend({
 
 	_destroyContainer: function () {
 		delete this._ctx;
-		L.DomUtil.remove(this._container);
-		L.DomEvent.off(this._container);
+		DomUtil.remove(this._container);
+		DomEvent.off(this._container);
 		delete this._container;
 	},
 
@@ -118,7 +118,7 @@ export var Canvas = Renderer.extend({
 	},
 
 	_reset: function () {
-		L.Renderer.prototype._reset.call(this);
+		Renderer.prototype._reset.call(this);
 
 		if (this._postponeUpdatePaths) {
 			this._postponeUpdatePaths = false;
@@ -203,10 +203,12 @@ export var Canvas = Renderer.extend({
 	},
 
 	_extendRedrawBounds: function (layer) {
-		var padding = (layer.options.weight || 0) + 1;
-		this._redrawBounds = this._redrawBounds || new Bounds();
-		this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
-		this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
+		if (layer._pxBounds) {
+			var padding = (layer.options.weight || 0) + 1;
+			this._redrawBounds = this._redrawBounds || new Bounds();
+			this._redrawBounds.extend(layer._pxBounds.min.subtract([padding, padding]));
+			this._redrawBounds.extend(layer._pxBounds.max.add([padding, padding]));
+		}
 	},
 
 	_redraw: function () {
@@ -271,10 +273,6 @@ export var Canvas = Renderer.extend({
 
 		ctx.beginPath();
 
-		if (ctx.setLineDash) {
-			ctx.setLineDash(layer.options && layer.options._dashArray || []);
-		}
-
 		for (i = 0; i < len; i++) {
 			for (j = 0, len2 = parts[i].length; j < len2; j++) {
 				p = parts[i][j];
@@ -326,6 +324,9 @@ export var Canvas = Renderer.extend({
 		}
 
 		if (options.stroke && options.weight !== 0) {
+			if (ctx.setLineDash) {
+				ctx.setLineDash(layer.options && layer.options._dashArray || []);
+			}
 			ctx.globalAlpha = options.opacity;
 			ctx.lineWidth = options.weight;
 			ctx.strokeStyle = options.color;

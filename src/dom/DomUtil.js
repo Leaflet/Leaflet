@@ -86,14 +86,19 @@ export function empty(el) {
 // @function toFront(el: HTMLElement)
 // Makes `el` the last child of its parent, so it renders in front of the other children.
 export function toFront(el) {
-	el.parentNode.appendChild(el);
+	var parent = el.parentNode;
+	if (parent.lastChild !== el) {
+		parent.appendChild(el);
+	}
 }
 
 // @function toBack(el: HTMLElement)
 // Makes `el` the first child of its parent, so it renders behind the other children.
 export function toBack(el) {
 	var parent = el.parentNode;
-	parent.insertBefore(el, parent.firstChild);
+	if (parent.firstChild !== el) {
+		parent.insertBefore(el, parent.firstChild);
+	}
 }
 
 // @function hasClass(el: HTMLElement, name: String): Boolean

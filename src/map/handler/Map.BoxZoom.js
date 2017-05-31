@@ -25,6 +25,7 @@ export var BoxZoom = Handler.extend({
 		this._map = map;
 		this._container = map._container;
 		this._pane = map._panes.overlayPane;
+		this._resetStateTimeout = 0;
 		map.on('unload', this._destroy, this);
 	},
 
@@ -41,17 +42,28 @@ export var BoxZoom = Handler.extend({
 	},
 
 	_destroy: function () {
-		L.DomUtil.remove(this._pane);
+		DomUtil.remove(this._pane);
 		delete this._pane;
 	},
 
 	_resetState: function () {
+		this._resetStateTimeout = 0;
 		this._moved = false;
+	},
+
+	_clearDeferredResetState: function () {
+		if (this._resetStateTimeout !== 0) {
+			clearTimeout(this._resetStateTimeout);
+			this._resetStateTimeout = 0;
+		}
 	},
 
 	_onMouseDown: function (e) {
 		if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
 
+		// Clear the deferred resetState if it hasn't executed yet, otherwise it
+		// will interrupt the interaction and orphan a box element in the container.
+		this._clearDeferredResetState();
 		this._resetState();
 
 		DomUtil.disableTextSelection();
@@ -113,7 +125,8 @@ export var BoxZoom = Handler.extend({
 		if (!this._moved) { return; }
 		// Postpone to next JS tick so internal click event handling
 		// still see it as "moved".
-		setTimeout(Util.bind(this._resetState, this), 0);
+		this._clearDeferredResetState();
+		this._resetStateTimeout = setTimeout(Util.bind(this._resetState, this), 0);
 
 		var bounds = new LatLngBounds(
 		        this._map.containerPointToLatLng(this._startPoint),
