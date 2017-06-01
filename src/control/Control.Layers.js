@@ -80,6 +80,7 @@ export var Layers = Control.extend({
 	initialize: function (baseLayers, overlays, options) {
 		Util.setOptions(this, options);
 
+		this._layerControlInputs = [];
 		this._layers = [];
 		this._lastZIndex = 0;
 		this._handlingClick = false;
@@ -263,6 +264,7 @@ export var Layers = Control.extend({
 		DomUtil.empty(this._baseLayersList);
 		DomUtil.empty(this._overlaysList);
 
+		this._layerControlInputs = [];
 		var baseLayersPresent, overlaysPresent, i, obj, baseLayersCount = 0;
 
 		for (i = 0; i < this._layers.length; i++) {
@@ -335,6 +337,7 @@ export var Layers = Control.extend({
 			input = this._createRadioElement('leaflet-base-layers', checked);
 		}
 
+		this._layerControlInputs.push(input);
 		input.layerId = Util.stamp(obj.layer);
 
 		DomEvent.on(input, 'click', this._onInputClick, this);
@@ -358,7 +361,7 @@ export var Layers = Control.extend({
 	},
 
 	_onInputClick: function () {
-		var inputs = this._form.getElementsByTagName('input'),
+		var inputs = this._layerControlInputs,
 		    input, layer, hasLayer;
 		var addedLayers = [],
 		    removedLayers = [];
@@ -392,7 +395,7 @@ export var Layers = Control.extend({
 	},
 
 	_checkDisabledLayers: function () {
-		var inputs = this._form.getElementsByTagName('input'),
+		var inputs = this._layerControlInputs,
 		    input,
 		    layer,
 		    zoom = this._map.getZoom();
