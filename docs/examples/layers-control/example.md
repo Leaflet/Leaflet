@@ -3,7 +3,7 @@ layout: tutorial_frame
 title: Layers Control Tutorial
 ---
 <script>
-	var cities = new L.LayerGroup();
+	var cities = L.layerGroup();
 
 	L.marker([39.61, -105.02]).bindPopup('This is Littleton, CO.').addTo(cities),
 	L.marker([39.74, -104.99]).bindPopup('This is Denver, CO.').addTo(cities),

@@ -29,7 +29,7 @@ export var DivIcon = Icon.extend({
 		// iconAnchor: (Point),
 		// popupAnchor: (Point),
 
-		// @option html: String = ''
+		// @option html: String|HTMLElement = ''
 		// Custom HTML code to put inside the div element, empty by default.
 		html: false,
 
@@ -44,7 +44,13 @@ export var DivIcon = Icon.extend({
 		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
-		div.innerHTML = options.html !== false ? options.html : '';
+		if (options.html === false) {
+			div.innerHTML = '';
+		} else if (typeof options.html === 'object' && options.html.nodeType === 1) {
+			div.appendChild(options.html);
+		} else {
+			div.innerHTML = options.html;
+		}
 
 		if (options.bgPos) {
 			var bgPos = point(options.bgPos);

@@ -842,6 +842,17 @@ describe("Map", function () {
 		});
 	});
 
+	describe('#_getBoundsCenterZoom', function () {
+		var center = L.latLng(50.5, 30.51);
+
+		it('Returns valid center on empty bounds in unitialized map', function () {
+			// Edge case from #5153
+			var centerAndZoom = map._getBoundsCenterZoom([center, center]);
+			expect(centerAndZoom.center).to.eql(center);
+			expect(centerAndZoom.zoom).to.eql(Infinity);
+		});
+	});
+
 	describe('#fitBounds', function () {
 		var center = L.latLng(50.5, 30.51),
 		    bounds = L.latLngBounds(L.latLng(1, 102), L.latLng(11, 122)),
