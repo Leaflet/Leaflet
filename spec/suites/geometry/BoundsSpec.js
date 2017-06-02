@@ -3,12 +3,12 @@ describe('Bounds', function () {
 
 	beforeEach(function () {
 		a = new L.Bounds(
-			new L.Point(14, 12),
-			new L.Point(30, 40));
+			new L.Point(14, 12), // left, top
+			new L.Point(30, 40)); // right, bottom
 		b = new L.Bounds([
-			new L.Point(20, 12),
-			new L.Point(14, 20),
-			new L.Point(30, 40)
+			new L.Point(20, 12), // center, top
+			new L.Point(14, 20), // left, middle
+			new L.Point(30, 40) // right, bottom
 		]);
 		c = new L.Bounds();
 	});
@@ -75,6 +75,30 @@ describe('Bounds', function () {
 		it('returns true if bounds intersect', function () {
 			expect(a.intersects(b)).to.be(true);
 			expect(a.intersects(new L.Bounds(new L.Point(100, 100), new L.Point(120, 120)))).to.eql(false);
+		});
+	});
+
+	describe('#getBottomLeft', function () {
+		it('returns the proper bounds bottom-left value', function () {
+			expect(a.getBottomLeft()).to.eql(new L.Point(14, 40)); // left, bottom
+		});
+	});
+
+	describe('#getTopRight', function () {
+		it('returns the proper bounds top-right value', function () {
+			expect(a.getTopRight()).to.eql(new L.Point(30, 12)); // right, top
+		});
+	});
+
+	describe('#getTopLeft', function () {
+		it('returns the proper bounds top-left value', function () {
+			expect(a.getTopLeft()).to.eql(new L.Point(14, 12)); // left, top
+		});
+	});
+
+	describe('#getBottomRight', function () {
+		it('returns the proper bounds bottom-right value', function () {
+			expect(a.getBottomRight()).to.eql(new L.Point(30, 40)); // left, bottom
 		});
 	});
 

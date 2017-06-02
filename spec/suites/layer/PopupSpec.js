@@ -248,6 +248,18 @@ describe('Popup', function () {
 		expect(map.hasLayer(layer._popup)).to.be(true);
 	});
 
+
+	it("can open a popup with enter keypress when marker has focus", function () {
+		var layer = new L.Marker([55.8, 37.6]).addTo(map);
+		layer.bindPopup("layer popup");
+
+		happen.keypress(layer._icon, {
+			keyCode: 13
+		});
+
+		expect(map.hasLayer(layer._popup)).to.be(true);
+	});
+
 });
 
 describe("L.Map#openPopup", function () {

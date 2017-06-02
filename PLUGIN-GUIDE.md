@@ -205,7 +205,7 @@ You can add support for AMD/CommonJS loaders to your Leaflet plugin by following
 }, window));
 ```
 
-Now your plugin is available as an AMD and CommonJS module and can used used in module loaders like Browserify and RequireJS.
+Now your plugin is available as an AMD and CommonJS module and can be used in module loaders like Browserify and RequireJS.
 
 
 ## Adding to the plugins list

@@ -11,7 +11,7 @@ var freeBus = {
                 ]
             },
             "properties": {
-                "popupContent": "This is free bus that will take you across downtown.",
+                "popupContent": "This is a free bus line that will take you across downtown.",
                 "underConstruction": false
             },
             "id": 1
@@ -26,7 +26,7 @@ var freeBus = {
                 ]
             },
             "properties": {
-                "popupContent": "This is free bus that will take you across downtown.",
+                "popupContent": "This is a free bus line that will take you across downtown.",
                 "underConstruction": true
             },
             "id": 2
@@ -41,7 +41,7 @@ var freeBus = {
                 ]
             },
             "properties": {
-                "popupContent": "This is free bus that will take you across downtown.",
+                "popupContent": "This is a free bus line that will take you across downtown.",
                 "underConstruction": false
             },
             "id": 3
