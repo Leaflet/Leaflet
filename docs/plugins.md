@@ -1703,6 +1703,15 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/ibesora">ibesora</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/manubb/Leaflet.PixiOverlay">Leaflet.PixiOverlay</a>
+		</td><td>
+			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>.
+		</td><td>
+			<a href="https://github.com/manubb">Manuel Baclet</a>
+		</td>
+	</tr>
 </table>
 
 
