@@ -31,7 +31,7 @@ var map = L.map('map', {rotate: true, touchRotate: true})
 Code for these examples is hosted in the [debug/rotate folder](https://github.com/fnicollet/Leaflet/tree/rotate-master/debug/rotate)
 
 ## Installation
-To use this branch, you will need to build it. Follow the steps of the Leaflet guide for [Building Leaflet from the Source](http://leafletjs.com/download.html#building-leaflet-from-the-source). Then get the JavaScript file from the dist folder.
+To use this branch, you will need to checkout and build it. Follow the steps of the Leaflet guide for [Building Leaflet from the Source](http://leafletjs.com/download.html#building-leaflet-from-the-source). Then get the JavaScript file from the dist folder.
 
 ## Motivation
 Map rotation is the most request features on leaflet's feature suggestion website, see [Map rotation](https://leaflet.uservoice.com/forums/150880-ideas-and-suggestions-for-leaflet/suggestions/5587738-map-rotation) and a Github issue which started in 2011 [rotation of map and contents to x degress](https://github.com/Leaflet/Leaflet/issues/268). 
