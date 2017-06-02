@@ -3800,7 +3800,7 @@ The following plugins integrate Leaflet into third party services or websites.
 
 ## Develop your own
 
-Leaflet keeps it simple. If you can think of a feature that is not required by all of Leaflet users, and you can write the javascript code in a reusable way, you've got yourself a Leaflet plugin already.
+Leaflet keeps it simple. If you can think of a feature that is not required by all Leaflet users, and you can write the JavaScript code in a reusable way, you've got yourself a Leaflet plugin already.
 
 There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
 
