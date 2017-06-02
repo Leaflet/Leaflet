@@ -18,8 +18,9 @@ Map.mergeOptions({
 
 	// @option wheelDebounceTime: Number = 40
 	// Limits the rate at which a wheel can fire (in milliseconds). By default
-	// user can't zoom via wheel more often than once per 40 ms.
-	wheelDebounceTime: 40,
+	// user can't zoom via wheel more often than once per 40 ms, or 250ms in
+	// desktop Safari.
+	wheelDebounceTime: (L.Browser.safari && !L.Browser.mobile) ? 250 : 40,
 
 	// @option wheelPxPerZoomLevel: Number = 60
 	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
@@ -39,12 +40,24 @@ export var ScrollWheelZoom = Handler.extend({
 		DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll, this);
 	},
 
+	_updateDelta: (L.Browser.safari && !L.Browser.mobile) ?
+	function (newDelta) {
+		// In desktop safari, use the largest delta during a `wheelDebounceTime`
+		if (Math.abs(newDelta) > Math.abs(this._delta)) {
+			this._delta = newDelta;
+		}
+	} :
+	function (newDelta) {
+		// In non-desktop-safari, accumulate the scroll deltas
+		this._delta += newDelta;
+	},
+
 	_onWheelScroll: function (e) {
 		var delta = DomEvent.getWheelDelta(e);
 
 		var debounce = this._map.options.wheelDebounceTime;
 
-		this._delta += delta;
+		this._updateDelta(delta);
 		this._lastMousePos = this._map.mouseEventToContainerPoint(e);
 
 		if (!this._startTime) {
