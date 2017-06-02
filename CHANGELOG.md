@@ -14,13 +14,14 @@ An in-progress version being developed on the `master` branch.
 * Add deprecation notice for `L.Mixin.Events`, fixes [#5358](https://github.com/leaflet/leaflet/issues/5358) ([#5365](https://github.com/leaflet/leaflet/issues/5365)) (by [perliedman](https://github.com/perliedman))
 * Turn `nonBubblingEvents` into a documented boolean option ([#4883](https://github.com/leaflet/leaflet/issues/4883) by [IvanSanchez](https://github.com/IvanSanchez))
 * Add `L.transformation` factory, allow creation from array ([#5282](https://github.com/leaflet/leaflet/issues/5282) by [anetz89](https://github.com/anetz89))
+* `toGeoJSON` methods now default to a precision of six decimals (as recommended in the [GeoJSON spec](https://tools.ietf.org/html/rfc7946#section-11.2)), precision is settable through a method parameter ([#5544](https://github.com/leaflet/leaflet/pull/5544) by [mattgrande](https://github.com/mattgrande))
 
 ### Docs & Web Site
 
 * `reference.html` now always points to latest stable docs ([#5490](https://github.com/leaflet/leaflet/issues/5490) by [IvanSanchez](https://github.com/IvanSanchez), [#5493](https://github.com/leaflet/leaflet/issues/5493) by [alyhegazy](https://github.com/alyhegazy))
 * Subresource integrity information and scripts ([#5468](https://github.com/leaflet/leaflet/issues/5468) by [IvanSanchez](https://github.com/IvanSanchez))
 * New tutorial on zooming (by [IvanSanchez](https://github.com/IvanSanchez), [#5007](https://github.com/leaflet/leaflet/issues/5007))
-* Minor documentation improvements by [perliedman](https://github.com/perliedman), [veltman](https://github.com/veltman), [FDMS](https://github.com/FDMS), [ghybs](https://github.com/ghybs), [RichardLitt](https://github.com/RichardLitt), [gatsbimantico](https://github.com/gatsbimantico), [daturkel](https://github.com/daturkel), [jgravois](https://github.com/jgravois), [geografa](https://github.com/geografa), [BjoernSchilberg](https://github.com/BjoernSchilberg), [IvanSanchez](https://github.com/IvanSanchez), [bozdoz](https://github.com/bozdoz), [zemadz](https://github.com/zemadz), [danzel](https://github.com/danzel), [jieter](https://github.com/jieter) and [massic80](https://github.com/massic80)
+* Minor documentation improvements by [perliedman](https://github.com/perliedman), [veltman](https://github.com/veltman), [FDMS](https://github.com/FDMS), [ghybs](https://github.com/ghybs), [RichardLitt](https://github.com/RichardLitt), [gatsbimantico](https://github.com/gatsbimantico), [daturkel](https://github.com/daturkel), [jgravois](https://github.com/jgravois), [geografa](https://github.com/geografa), [BjoernSchilberg](https://github.com/BjoernSchilberg), [IvanSanchez](https://github.com/IvanSanchez), [bozdoz](https://github.com/bozdoz), [zemadz](https://github.com/zemadz), [danzel](https://github.com/danzel), [jieter](https://github.com/jieter), [massic80](https://github.com/massic80), [jjimenezshaw](https://github.com/jjimenezshaw) and [hnrchrdl](https://github.com/hnrchrdl)
 
 ### ES6 / Rollup
 
@@ -65,6 +66,9 @@ An in-progress version being developed on the `master` branch.
 * Scrubbing of detached DOM elements, prevents memory leaks; fixes [#5263](https://github.com/leaflet/leaflet/issues/5263) ([#5265](https://github.com/leaflet/leaflet/issues/5265) by [IvanSanchez](https://github.com/IvanSanchez))
 * Remove `marker.dragging` when not on the map, fixes [#5293](https://github.com/leaflet/leaflet/issues/5293) ([#5295](https://github.com/leaflet/leaflet/issues/5295) by [danzel](https://github.com/danzel))
 * Stop scroll propagation in `L.Layers.Control` in chrome>55 ([#5280](https://github.com/leaflet/leaflet/issues/5280) by [IvanSanchez](https://github.com/IvanSanchez))
+* Allow HTML inputs in layer control's labels, fixes [#5116](https://github.com/leaflet/leaflet/issues/5116) ([#51165544](https://github.com/leaflet/leaflet/issues/5544) by [iZucken](https://github.com/iZucken))
+* Fix possible null reference when auto detecting icon default path, fixes [#5534](https://github.com/leaflet/leaflet/issues/5534) ([#5535](https://github.com/leaflet/leaflet/issues/5535) by [williamscs](https://github.com/williamscs))
+* Don't turn enter keypress into map clicks, fixes [#5499](https://github.com/leaflet/leaflet/issues/5499) ([#5507](https://github.com/leaflet/leaflet/issues/5507) by [perliedman](https://github.com/perliedman))
 
 ## 1.0.3 (January 23, 2017)
 
