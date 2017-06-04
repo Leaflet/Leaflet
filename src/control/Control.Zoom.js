@@ -26,9 +26,9 @@ export var Zoom = Control.extend({
 		// The title set on the 'zoom in' button.
 		zoomInTitle: 'Zoom in',
 
-		// @option zoomOutText: String = '-'
+		// @option zoomOutText: String = '&#x2212;'
 		// The text set on the 'zoom out' button.
-		zoomOutText: '-',
+		zoomOutText: '&#x2212;',
 
 		// @option zoomOutTitle: String = 'Zoom out'
 		// The title set on the 'zoom out' button.
