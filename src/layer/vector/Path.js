@@ -97,6 +97,7 @@ export var Path = Layer.extend({
 		if (this._map) {
 			this._renderer._updatePath(this);
 		}
+		this.fire('redraw');
 		return this;
 	},
 
