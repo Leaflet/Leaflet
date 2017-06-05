@@ -860,6 +860,15 @@ These plugins create useful overlays from scratch, no loading required.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/jonshutt/Leaflet.OS.Graticule">L.OS.Graticule</a>
+		</td><td>
+			Overlays UK Ordinance Survey (OS) 1km grid sqaures and labels.
+		</td><td>
+			<a href="https://github.com/jonshutt">Jon Shutt</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/joergdietrich/Leaflet.Terminator">Leaflet.Terminator</a>
 		</td><td>Overlay day and night regions on a map.
 		</td><td>
