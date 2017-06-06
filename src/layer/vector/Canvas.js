@@ -81,6 +81,7 @@ export var Canvas = Renderer.extend({
 		this._redrawBounds = null;
 		for (var id in this._layers) {
 			layer = this._layers[id];
+			layer._project();
 			layer._update();
 		}
 		this._redraw();
