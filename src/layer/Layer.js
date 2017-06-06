@@ -177,6 +177,8 @@ Map.include({
 
 		if (!this._layers[id]) { return this; }
 
+		delete this._layers[id];
+
 		if (this._loaded) {
 			layer.onRemove(this);
 		}
@@ -184,8 +186,6 @@ Map.include({
 		if (layer.getAttribution && this.attributionControl) {
 			this.attributionControl.removeAttribution(layer.getAttribution());
 		}
-
-		delete this._layers[id];
 
 		if (this._loaded) {
 			this.fire('layerremove', {layer: layer});
