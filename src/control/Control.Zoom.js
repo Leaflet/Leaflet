@@ -1,6 +1,7 @@
 
 import {Control} from './Control';
 import {Map} from '../map/Map';
+import * as Browser from '../core/Browser';
 import * as DomUtil from '../dom/DomUtil';
 import * as DomEvent from '../dom/DomEvent';
 
@@ -91,10 +92,12 @@ export var Zoom = Control.extend({
 		link.setAttribute('role', 'button');
 		link.setAttribute('aria-label', title);
 
+		var eventName = Browser.touch ? 'touchstart' : 'click';
+
 		DomEvent.disableClickPropagation(link);
-		DomEvent.on(link, 'click', DomEvent.stop);
-		DomEvent.on(link, 'click', fn, this);
-		DomEvent.on(link, 'click', this._refocusOnMap, this);
+		DomEvent.on(link, eventName, DomEvent.stop);
+		DomEvent.on(link, eventName, fn, this);
+		DomEvent.on(link, eventName, this._refocusOnMap, this);
 
 		return link;
 	},
