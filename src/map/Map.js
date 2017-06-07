@@ -1124,12 +1124,12 @@ export var Map = Evented.extend({
 		this
 			._moveStart(zoomChanged)
 			._move(center, zoom)
-			._moveEnd(zoomChanged);
 
 		// @event viewreset: Event
 		// Fired when the map needs to redraw its content (this usually happens
 		// on map zoom or load). Very useful for creating custom overlays.
-		this.fire('viewreset');
+			.fire('viewreset')
+			._moveEnd(zoomChanged);
 
 		// @event load: Event
 		// Fired when the map is initialized (when its center and zoom are set
