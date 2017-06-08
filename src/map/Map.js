@@ -163,6 +163,11 @@ export var Map = Evented.extend({
 		this._addLayers(this.options.layers);
 	},
 
+	destroy: function () {
+		if (this.options.trackResize) {
+			L.DomEvent.off(window, 'resize', this._onResize);
+		}
+	},
 
 	// @section Methods for modifying map state
 
