@@ -715,6 +715,8 @@ export var Map = Evented.extend({
 		}
 
 		this._clearHandlers();
+		
+		this.callDestroyHooks();
 
 		if (this._loaded) {
 			// @section Map state change events
