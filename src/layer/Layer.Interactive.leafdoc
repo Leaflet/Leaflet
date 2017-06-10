@@ -8,6 +8,10 @@ Use the [event handling methods](#evented-method) to handle these events.
 @option interactive: Boolean = true
 If `false`, the layer will not emit mouse events and will act as a part of the underlying map.
 
+@option bubblingMouseEvents: Boolean = true
+When `true`, a mouse event on this layer will trigger the same event on the map
+(unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+
 @section Mouse events
 
 @event click: MouseEvent

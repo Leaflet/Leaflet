@@ -322,7 +322,11 @@ export var GridLayer = Layer.extend({
 			if (fade < 1) {
 				nextFrame = true;
 			} else {
-				if (tile.active) { willPrune = true; }
+				if (tile.active) {
+					willPrune = true;
+				} else {
+					this._onOpaqueTile(tile);
+				}
 				tile.active = true;
 			}
 		}
@@ -334,6 +338,8 @@ export var GridLayer = Layer.extend({
 			this._fadeFrame = Util.requestAnimFrame(this._updateOpacity, this);
 		}
 	},
+
+	_onOpaqueTile: Util.falseFn,
 
 	_initContainer: function () {
 		if (this._container) { return; }
@@ -358,9 +364,11 @@ export var GridLayer = Layer.extend({
 		for (var z in this._levels) {
 			if (this._levels[z].el.children.length || z === zoom) {
 				this._levels[z].el.style.zIndex = maxZoom - Math.abs(zoom - z);
+				this._onUpdateLevel(z);
 			} else {
 				DomUtil.remove(this._levels[z].el);
 				this._removeTilesAtZoom(z);
+				this._onRemoveLevel(z);
 				delete this._levels[z];
 			}
 		}
@@ -381,12 +389,20 @@ export var GridLayer = Layer.extend({
 
 			// force the browser to consider the newly added element for transition
 			Util.falseFn(level.el.offsetWidth);
+
+			this._onCreateLevel(level);
 		}
 
 		this._level = level;
 
 		return level;
 	},
+
+	_onUpdateLevel: Util.falseFn,
+
+	_onRemoveLevel: Util.falseFn,
+
+	_onCreateLevel: Util.falseFn,
 
 	_pruneTiles: function () {
 		if (!this._map) {
@@ -442,6 +458,7 @@ export var GridLayer = Layer.extend({
 	_invalidateAll: function () {
 		for (var z in this._levels) {
 			DomUtil.remove(this._levels[z].el);
+			this._onRemoveLevel(z);
 			delete this._levels[z];
 		}
 		this._removeAllTiles();
@@ -630,6 +647,12 @@ export var GridLayer = Layer.extend({
 		    margin = this.options.keepBuffer,
 		    noPruneRange = new Bounds(tileRange.getBottomLeft().subtract([margin, -margin]),
 		                              tileRange.getTopRight().add([margin, -margin]));
+
+		// Sanity check: panic if the tile range contains Infinity somewhere.
+		if (!(isFinite(tileRange.min.x) &&
+		      isFinite(tileRange.min.y) &&
+		      isFinite(tileRange.max.x) &&
+		      isFinite(tileRange.max.y))) { throw new Error('Attempted to load an infinite number of tiles'); }
 
 		for (var key in this._tiles) {
 			var c = this._tiles[key].coords;

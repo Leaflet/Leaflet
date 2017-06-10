@@ -255,6 +255,13 @@ export var Map = Evented.extend({
 
 		zoom = (typeof options.maxZoom === 'number') ? Math.min(options.maxZoom, zoom) : zoom;
 
+		if (zoom === Infinity) {
+			return {
+				center: bounds.getCenter(),
+				zoom: zoom
+			};
+		}
+
 		var paddingOffset = paddingBR.subtract(paddingTL).divideBy(2),
 
 		    swPoint = this.project(bounds.getSouthWest(), zoom),
@@ -1300,15 +1307,17 @@ export var Map = Evented.extend({
 	_handleDOMEvent: function (e) {
 		if (!this._loaded || DomEvent.skipped(e)) { return; }
 
-		var type = e.type === 'keypress' && e.keyCode === 13 ? 'click' : e.type;
+		var type = e.type;
 
-		if (type === 'mousedown') {
+		if (type === 'mousedown' || type === 'keypress') {
 			// prevents outline when clicking on keyboard-focusable element
 			DomUtil.preventOutline(e.target || e.srcElement);
 		}
 
 		this._fireDOMEvent(e, type);
 	},
+
+	_mouseEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 
 	_fireDOMEvent: function (e, type, targets) {
 
@@ -1350,7 +1359,7 @@ export var Map = Evented.extend({
 		for (var i = 0; i < targets.length; i++) {
 			targets[i].fire(type, data, true);
 			if (data.originalEvent._stopped ||
-				(targets[i].options.nonBubblingEvents && Util.indexOf(targets[i].options.nonBubblingEvents, type) !== -1)) { return; }
+				(targets[i].options.bubblingMouseEvents === false && Util.indexOf(this._mouseEvents, type) !== -1)) { return; }
 		}
 	},
 

@@ -24,7 +24,7 @@ Note that the white area in the images is actually transparent.
 
 ### Creating an icon
 
-Marker icons in Leaflet are defined by [L.Icon](../reference.html#icon) objects, which are passed as an option when creating markers. Let's create a green leaf icon:
+Marker icons in Leaflet are defined by [L.Icon](../../reference.html#icon) objects, which are passed as an option when creating markers. Let's create a green leaf icon:
 
 	var greenIcon = L.icon({
 		iconUrl: 'leaf-green.png',
