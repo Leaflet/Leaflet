@@ -118,7 +118,7 @@
 	}
 .leaflet-top,
 .leaflet-bottom,
-.leaflet-middle {
+.leaflet-vertical-center {
 	position: absolute;
 	z-index: 1000;
 	pointer-events: none;
@@ -135,7 +135,7 @@
 .leaflet-left {
 	left: 0;
 	}
-.leaflet-middle {
+.leaflet-vertical-center {
 	top: 50%;
 	transform: translateY(-50%);
 	-ms-transform: translateY(-50%);
@@ -143,7 +143,7 @@
 	-o-transform: translateY(-50%);
 	-moz-transform: translateY(-50%);
 	}
-.leaflet-center {
+.leaflet-horizontal-center {
 	left: 50%;
 	transform: translateX(-50%);
 	-ms-transform: translateX(-50%);
@@ -151,7 +151,7 @@
 	-o-transform: translateX(-50%);
 	-moz-transform: translateX(-50%);
 	}
-.leaflet-middle.leaflet-center {
+.leaflet-vertical-center.leaflet-horizontal-center {
 	transform: translate(-50%,-50%) !important;
 	-ms-transform: translate(-50%,-50%) !important;
 	-webkit-transform: translate(-50%,-50%) !important;
@@ -177,7 +177,7 @@
 .leaflet-right .leaflet-control {
 	margin-right: 10px;
 	}
-.leaflet-center .leaflet-control {
+.leaflet-horizontal-center .leaflet-control {
 	float: none;
 	display: inline-block;
 	}
