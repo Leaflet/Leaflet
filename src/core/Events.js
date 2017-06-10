@@ -1,3 +1,6 @@
+import {Class} from './Class';
+import * as Util from './Util';
+
 /*
  * @class Evented
  * @aka L.Evented
@@ -23,9 +26,7 @@
  * ```
  */
 
-
-L.Evented = L.Class.extend({
-
+export var Events = {
 	/* @method on(type: String, fn: Function, context?: Object): this
 	 * Adds a listener function (`fn`) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. `'click dblclick'`).
 	 *
@@ -45,7 +46,7 @@ L.Evented = L.Class.extend({
 
 		} else {
 			// types can be a string of space-separated words
-			types = L.Util.splitWords(types);
+			types = Util.splitWords(types);
 
 			for (var i = 0, len = types.length; i < len; i++) {
 				this._on(types[i], fn, context);
@@ -78,7 +79,7 @@ L.Evented = L.Class.extend({
 			}
 
 		} else {
-			types = L.Util.splitWords(types);
+			types = Util.splitWords(types);
 
 			for (var i = 0, len = types.length; i < len; i++) {
 				this._off(types[i], fn, context);
@@ -132,7 +133,7 @@ L.Evented = L.Class.extend({
 		if (!fn) {
 			// Set all removed listeners to noop so they are not called if remove happens in fire
 			for (i = 0, len = listeners.length; i < len; i++) {
-				listeners[i].fn = L.Util.falseFn;
+				listeners[i].fn = Util.falseFn;
 			}
 			// clear all listeners for a type if function isn't specified
 			delete this._events[type];
@@ -152,7 +153,7 @@ L.Evented = L.Class.extend({
 				if (l.fn === fn) {
 
 					// set the removed listener to noop so that's not called if remove happens in fire
-					l.fn = L.Util.falseFn;
+					l.fn = Util.falseFn;
 
 					if (this._firingCount) {
 						/* copy array in case events are being fired */
@@ -173,7 +174,7 @@ L.Evented = L.Class.extend({
 	fire: function (type, data, propagate) {
 		if (!this.listens(type, propagate)) { return this; }
 
-		var event = L.Util.extend({}, data, {type: type, target: this});
+		var event = Util.extend({}, data, {type: type, target: this});
 
 		if (this._events) {
 			var listeners = this._events[type];
@@ -223,7 +224,7 @@ L.Evented = L.Class.extend({
 			return this;
 		}
 
-		var handler = L.bind(function () {
+		var handler = Util.bind(function () {
 			this
 			    .off(types, fn, context)
 			    .off(types, handler, context);
@@ -239,7 +240,7 @@ L.Evented = L.Class.extend({
 	// Adds an event parent - an `Evented` that will receive propagated events
 	addEventParent: function (obj) {
 		this._eventParents = this._eventParents || {};
-		this._eventParents[L.stamp(obj)] = obj;
+		this._eventParents[Util.stamp(obj)] = obj;
 		return this;
 	},
 
@@ -247,43 +248,41 @@ L.Evented = L.Class.extend({
 	// Removes an event parent, so it will stop receiving propagated events
 	removeEventParent: function (obj) {
 		if (this._eventParents) {
-			delete this._eventParents[L.stamp(obj)];
+			delete this._eventParents[Util.stamp(obj)];
 		}
 		return this;
 	},
 
 	_propagateEvent: function (e) {
 		for (var id in this._eventParents) {
-			this._eventParents[id].fire(e.type, L.extend({layer: e.target}, e), true);
+			this._eventParents[id].fire(e.type, Util.extend({layer: e.target}, e), true);
 		}
 	}
-});
-
-var proto = L.Evented.prototype;
+};
 
 // aliases; we should ditch those eventually
 
 // @method addEventListener(…): this
 // Alias to [`on(…)`](#evented-on)
-proto.addEventListener = proto.on;
+Events.addEventListener = Events.on;
 
 // @method removeEventListener(…): this
 // Alias to [`off(…)`](#evented-off)
 
 // @method clearAllEventListeners(…): this
 // Alias to [`off()`](#evented-off)
-proto.removeEventListener = proto.clearAllEventListeners = proto.off;
+Events.removeEventListener = Events.clearAllEventListeners = Events.off;
 
 // @method addOneTimeEventListener(…): this
 // Alias to [`once(…)`](#evented-once)
-proto.addOneTimeEventListener = proto.once;
+Events.addOneTimeEventListener = Events.once;
 
 // @method fireEvent(…): this
 // Alias to [`fire(…)`](#evented-fire)
-proto.fireEvent = proto.fire;
+Events.fireEvent = Events.fire;
 
 // @method hasEventListeners(…): Boolean
 // Alias to [`listens(…)`](#evented-listens)
-proto.hasEventListeners = proto.listens;
+Events.hasEventListeners = Events.listens;
 
-L.Mixin = {Events: proto};
+export var Evented = Class.extend(Events);

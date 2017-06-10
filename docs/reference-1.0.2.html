@@ -6,11 +6,8 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.2</strong>.</p>
+<p>This reference reflects <strong>Leaflet 1.0.2</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
-<p>Docs for the 1.0.0 and 1.0.1 versions are <a href='reference-1.0.0.html'>available here</a>.
-
-<p>Docs for the legacy 0.7.x versions are <a href='reference.html'>available here</a>.
 
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
@@ -2961,13 +2958,19 @@ off of the screen while it is open.</td>
 		<td><code>true</code></td>
 		<td>Controls the presence of a close button in the popup.</td>
 	</tr>
+	<tr id='popup-closeonclick'>
+		<td><code><b>closeOnClick</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>*</code></td>
+		<td>Set it if you want to override the default behavior of the popup closing when user clicks
+on the map. Defaults to the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option.</td>
+	</tr>
 	<tr id='popup-autoclose'>
 		<td><code><b>autoClose</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you want to override the default behavior of
-the popup closing when user clicks the map (set globally by
-the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option).</td>
+the popup closing when another popup is opened.</td>
 	</tr>
 	<tr id='popup-classname'>
 		<td><code><b>className</b></code></td>

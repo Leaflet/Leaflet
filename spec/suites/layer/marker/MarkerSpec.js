@@ -108,8 +108,32 @@ describe("Marker", function () {
 			map.removeLayer(marker);
 			// Dragging is still enabled, we should be able to disable it,
 			// even if marker is off the map.
-			marker.dragging.disable();
+			expect(marker.dragging).to.be(undefined);
+			marker.options.draggable = false;
 			map.addLayer(marker);
+
+			map.removeLayer(marker);
+
+			// We should also be able to enable dragging while off the map
+			expect(marker.dragging).to.be(undefined);
+			marker.options.draggable = true;
+
+			map.addLayer(marker);
+			expect(marker.dragging.enabled()).to.be(true);
+		});
+
+		it("changes the icon to another DivIcon which is a DOM element", function () {
+			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
+			var customElement = document.createElement('p');
+			customElement.innerHTML = 'InnerTextFromCustomNode';
+			map.addLayer(marker);
+
+			var beforeIcon = marker._icon;
+			marker.setIcon(new L.DivIcon({html: customElement}));
+			var afterIcon = marker._icon;
+
+			expect(beforeIcon).to.be(afterIcon);
+			expect(afterIcon.innerHTML).to.contain('<p>InnerTextFromCustomNode</p>');
 		});
 
 		it("changes the icon to another DivIcon", function () {

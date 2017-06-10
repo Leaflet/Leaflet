@@ -34,13 +34,13 @@
 	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
 
 	<!-- Leaflet -->
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.css" />
-	<script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version }}/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
 
 	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
 
 	<script>
-		ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw';
+		ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 		MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
 			'Imagery © <a href="http://mapbox.com">Mapbox</a>';
@@ -73,7 +73,7 @@
 		{% if page.title == 'Documentation' %}
 			<span>Docs</span>
 		{% else %}
-			<a href="{{ root }}reference-1.0.2.html">Docs</a>
+			<a href="{{ root }}reference-1.0.3.html">Docs</a>
 		{% endif %}
 	</li>
 	<li>
@@ -105,7 +105,7 @@
 {{ content }}
 
 <div class="footer">
-	<p>&copy; 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+	<p>&copy; 2017 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 </div>
 
 </div>
@@ -154,6 +154,6 @@
 	})();
 </script>
 
-<script type="text/javascript" src="{{ root }}docs/js/docs.js"></script>
+<script src="{{ root }}docs/js/docs.js"></script>
 </body>
 </html>

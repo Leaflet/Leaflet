@@ -4,8 +4,11 @@ Contributing to Leaflet
  1. [Getting Involved](#getting-involved)
  2. [Reporting Bugs](#reporting-bugs)
  3. [Contributing Code](#contributing-code)
- 4. [Improving Documentation](#improving-documentation)
- 5. [Code of Conduct](#code-of-conduct)
+ 4. [Running the Tests](#running-the-tests)
+ 5. [Code Coverage](#code-coverage)
+ 6. [Improving Documentation](#improving-documentation)
+ 7. [Code of Conduct](#code-of-conduct)
+ 8. [Thank You](#thank-you)
 
 ## Getting Involved
 
@@ -72,9 +75,11 @@ To set up the Leaflet build system, install Node then run the following commands
 npm install -g jake
 npm install
 ```
-
-You can build minified Leaflet by running `jake` (it will be built from source in the `dist` folder).
-For a custom build with selected components, open `build/build.html` in the browser and follow the instructions from there.
+or, if you prefer [`yarn`](https://yarnpkg.com/) over `npm`:
+```
+yarn global add jake
+yarn install
+```
 
 ### Making Changes to Leaflet Source
 
@@ -95,6 +100,25 @@ so that the build system knows about them.
 Also, please make sure that you have [line endings configured properly](https://help.github.com/articles/dealing-with-line-endings) in Git! Otherwise the diff will show that all lines of a file were changed even if you touched only one.
 
 Happy coding!
+
+### Using RollupJS
+
+The source javascript code for Leaflet is a few dozen files, in the `src/` directory.
+But normally, Leaflet is loaded in a web browser as just one javascript file.
+
+In order to create this file, run `npm run-script rollup` or `yarn run rollup`.
+
+You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
+`dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
+development. `dist/leaflet.js` is uglified and thus is smaller, so it's better
+for deployment.
+
+When developing (or bugfixing) core Leaflet functionalities, it's common to use
+the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
+in a graphical browser. This requires regenerating the bundled files quickly.
+
+In order to do so, run `npm run-script watch` or `yarn run rollup`. This will keep
+on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
 
@@ -133,7 +157,7 @@ and is automatically generated from a set of HTML and Markdown files by [Jekyll]
 The easiest way to make little improvements such as fixing typos without even leaving the browser
 is by editing one of the files with the online GitHub editor:
 browse the [`docs/ directory`](https://github.com/Leaflet/Leaflet/tree/master/docs),
-choose a certain file for editing (e.g. `plugins.html` for the list of Leaflet plugins),
+choose a certain file for editing (e.g. `plugins.md` for the list of Leaflet plugins),
 click the Edit button, make changes and follow instructions from there.
 Once it gets merged, the changes will immediately appear on the website.
 
@@ -158,7 +182,8 @@ code for every method, option or property there is a special code comment docume
 that feature. In order to edit the API documentation, just edit these comments in the
 source code.
 
-In order to generate the documentation, just run
+In order to generate the documentation, make sure that the development dependencies
+are installed (run either `npm install` or `yarn install`), then just run
 
 ```
 jake docs

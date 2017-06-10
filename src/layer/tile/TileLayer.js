@@ -1,3 +1,10 @@
+import {GridLayer} from './GridLayer';
+import * as Browser from '../../core/Browser';
+import * as Util from '../../core/Util';
+import * as DomEvent from '../../dom/DomEvent';
+import * as DomUtil from '../../dom/DomUtil';
+
+
 /*
  * @class TileLayer
  * @inherits GridLayer
@@ -29,7 +36,7 @@
  */
 
 
-L.TileLayer = L.GridLayer.extend({
+export var TileLayer = GridLayer.extend({
 
 	// @section
 	// @aka TileLayer options
@@ -41,18 +48,6 @@ L.TileLayer = L.GridLayer.extend({
 		// @option maxZoom: Number = 18
 		// Maximum zoom number.
 		maxZoom: 18,
-
-		// @option maxNativeZoom: Number = null
-		// Maximum zoom number the tile source has available. If it is specified,
-		// the tiles on all zoom levels higher than `maxNativeZoom` will be loaded
-		// from `maxNativeZoom` level and auto-scaled.
-		maxNativeZoom: null,
-
-		// @option minNativeZoom: Number = null
-		// Minimum zoom number the tile source has available. If it is specified,
-		// the tiles on all zoom levels lower than `minNativeZoom` will be loaded
-		// from `minNativeZoom` level and auto-scaled.
-		minNativeZoom: null,
 
 		// @option subdomains: String|String[] = 'abc'
 		// Subdomains of the tile service. Can be passed in the form of one string (where each letter is a subdomain name) or an array of strings.
@@ -87,10 +82,10 @@ L.TileLayer = L.GridLayer.extend({
 
 		this._url = url;
 
-		options = L.setOptions(this, options);
+		options = Util.setOptions(this, options);
 
 		// detecting retina displays, adjusting tileSize and zoom levels
-		if (options.detectRetina && L.Browser.retina && options.maxZoom > 0) {
+		if (options.detectRetina && Browser.retina && options.maxZoom > 0) {
 
 			options.tileSize = Math.floor(options.tileSize / 2);
 
@@ -110,7 +105,7 @@ L.TileLayer = L.GridLayer.extend({
 		}
 
 		// for https://github.com/Leaflet/Leaflet/issues/137
-		if (!L.Browser.android) {
+		if (!Browser.android) {
 			this.on('tileunload', this._onTileRemove);
 		}
 	},
@@ -133,8 +128,8 @@ L.TileLayer = L.GridLayer.extend({
 	createTile: function (coords, done) {
 		var tile = document.createElement('img');
 
-		L.DomEvent.on(tile, 'load', L.bind(this._tileOnLoad, this, done, tile));
-		L.DomEvent.on(tile, 'error', L.bind(this._tileOnError, this, done, tile));
+		DomEvent.on(tile, 'load', Util.bind(this._tileOnLoad, this, done, tile));
+		DomEvent.on(tile, 'error', Util.bind(this._tileOnError, this, done, tile));
 
 		if (this.options.crossOrigin) {
 			tile.crossOrigin = '';
@@ -165,7 +160,7 @@ L.TileLayer = L.GridLayer.extend({
 	// Classes extending `TileLayer` can override this function to provide custom tile URL naming schemes.
 	getTileUrl: function (coords) {
 		var data = {
-			r: L.Browser.retina ? '@2x' : '',
+			r: Browser.retina ? '@2x' : '',
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
@@ -179,13 +174,13 @@ L.TileLayer = L.GridLayer.extend({
 			data['-y'] = invertedY;
 		}
 
-		return L.Util.template(this._url, L.extend(data, this.options));
+		return Util.template(this._url, Util.extend(data, this.options));
 	},
 
 	_tileOnLoad: function (done, tile) {
 		// For https://github.com/Leaflet/Leaflet/issues/3332
-		if (L.Browser.ielt9) {
-			setTimeout(L.bind(done, this, null, tile), 0);
+		if (Browser.ielt9) {
+			setTimeout(Util.bind(done, this, null, tile), 0);
 		} else {
 			done(null, tile);
 		}
@@ -199,26 +194,6 @@ L.TileLayer = L.GridLayer.extend({
 		done(e, tile);
 	},
 
-	getTileSize: function () {
-		var map = this._map,
-		tileSize = L.GridLayer.prototype.getTileSize.call(this),
-		zoom = this._tileZoom + this.options.zoomOffset,
-		minNativeZoom = this.options.minNativeZoom,
-		maxNativeZoom = this.options.maxNativeZoom;
-
-		// decrease tile size when scaling below minNativeZoom
-		if (minNativeZoom !== null && zoom < minNativeZoom) {
-			return tileSize.divideBy(map.getZoomScale(minNativeZoom, zoom)).round();
-		}
-
-		// increase tile size when scaling above maxNativeZoom
-		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
-			return tileSize.divideBy(map.getZoomScale(maxNativeZoom, zoom)).round();
-		}
-
-		return tileSize;
-	},
-
 	_onTileRemove: function (e) {
 		e.tile.onload = null;
 	},
@@ -227,25 +202,13 @@ L.TileLayer = L.GridLayer.extend({
 		var zoom = this._tileZoom,
 		maxZoom = this.options.maxZoom,
 		zoomReverse = this.options.zoomReverse,
-		zoomOffset = this.options.zoomOffset,
-		minNativeZoom = this.options.minNativeZoom,
-		maxNativeZoom = this.options.maxNativeZoom;
+		zoomOffset = this.options.zoomOffset;
 
 		if (zoomReverse) {
 			zoom = maxZoom - zoom;
 		}
 
-		zoom += zoomOffset;
-
-		if (minNativeZoom !== null && zoom < minNativeZoom) {
-			return minNativeZoom;
-		}
-
-		if (maxNativeZoom !== null && zoom > maxNativeZoom) {
-			return maxNativeZoom;
-		}
-
-		return zoom;
+		return zoom + zoomOffset;
 	},
 
 	_getSubdomain: function (tilePoint) {
@@ -260,12 +223,12 @@ L.TileLayer = L.GridLayer.extend({
 			if (this._tiles[i].coords.z !== this._tileZoom) {
 				tile = this._tiles[i].el;
 
-				tile.onload = L.Util.falseFn;
-				tile.onerror = L.Util.falseFn;
+				tile.onload = Util.falseFn;
+				tile.onerror = Util.falseFn;
 
 				if (!tile.complete) {
-					tile.src = L.Util.emptyImageUrl;
-					L.DomUtil.remove(tile);
+					tile.src = Util.emptyImageUrl;
+					DomUtil.remove(tile);
 				}
 			}
 		}
@@ -276,6 +239,6 @@ L.TileLayer = L.GridLayer.extend({
 // @factory L.tilelayer(urlTemplate: String, options?: TileLayer options)
 // Instantiates a tile layer object given a `URL template` and optionally an options object.
 
-L.tileLayer = function (url, options) {
-	return new L.TileLayer(url, options);
-};
+export function tileLayer(url, options) {
+	return new TileLayer(url, options);
+}

@@ -75,6 +75,14 @@ describe('LatLngBounds', function () {
 			expect(a.equals([[14, 13], [30, 40]])).to.eql(false);
 			expect(a.equals(null)).to.eql(false);
 		});
+
+		it("returns true if compared objects are equal within a certain margin", function () {
+			expect(a.equals([[15, 11], [29, 41]], 1)).to.eql(true);
+		});
+
+		it("returns false if compared objects are not equal within a certain margin", function () {
+			expect(a.equals([[15, 11], [29, 41]], 0.5)).to.eql(false);
+		});
 	});
 
 	describe('#isValid', function () {

@@ -1,3 +1,6 @@
+import {Icon} from './Icon';
+import {toPoint as point} from '../../geometry/Point';
+
 /*
  * @class DivIcon
  * @aka L.DivIcon
@@ -17,7 +20,7 @@
  * By default, it has a 'leaflet-div-icon' CSS class and is styled as a little white square with a shadow.
  */
 
-L.DivIcon = L.Icon.extend({
+export var DivIcon = Icon.extend({
 	options: {
 		// @section
 		// @aka DivIcon options
@@ -26,7 +29,7 @@ L.DivIcon = L.Icon.extend({
 		// iconAnchor: (Point),
 		// popupAnchor: (Point),
 
-		// @option html: String = ''
+		// @option html: String|HTMLElement = ''
 		// Custom HTML code to put inside the div element, empty by default.
 		html: false,
 
@@ -41,10 +44,16 @@ L.DivIcon = L.Icon.extend({
 		var div = (oldIcon && oldIcon.tagName === 'DIV') ? oldIcon : document.createElement('div'),
 		    options = this.options;
 
-		div.innerHTML = options.html !== false ? options.html : '';
+		if (options.html === false) {
+			div.innerHTML = '';
+		} else if (typeof options.html === 'object' && options.html.nodeType === 1) {
+			div.appendChild(options.html);
+		} else {
+			div.innerHTML = options.html;
+		}
 
 		if (options.bgPos) {
-			var bgPos = L.point(options.bgPos);
+			var bgPos = point(options.bgPos);
 			div.style.backgroundPosition = (-bgPos.x) + 'px ' + (-bgPos.y) + 'px';
 		}
 		this._setIconStyles(div, 'icon');
@@ -59,6 +68,6 @@ L.DivIcon = L.Icon.extend({
 
 // @factory L.divIcon(options: DivIcon options)
 // Creates a `DivIcon` instance with the given options.
-L.divIcon = function (options) {
-	return new L.DivIcon(options);
-};
+export function divIcon(options) {
+	return new DivIcon(options);
+}

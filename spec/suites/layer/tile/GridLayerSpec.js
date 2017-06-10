@@ -232,7 +232,7 @@ describe('GridLayer', function () {
 			});
 		});
 
-		describe("when a tilelayer is removed from a map", function () {
+		describe("when a gridlayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [
 					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
@@ -261,6 +261,57 @@ describe('GridLayer', function () {
 					expect(map.getMaxZoom()).to.be(Infinity);
 				});
 			});
+		});
+	});
+
+
+	describe("min/maxNativeZoom option", function () {
+		it("calls createTile() with maxNativeZoom when map zoom is larger", function (done) {
+			map.setView([0, 0], 10);
+
+			var grid = L.gridLayer({
+				maxNativeZoom: 5
+			});
+			var tileCount = 0;
+
+			grid.createTile = function (coords) {
+				expect(coords.z).to.be(5);
+				tileCount++;
+				return document.createElement('div');
+			};
+			grid.on('load', function () {
+				if (tileCount > 0) {
+					done();
+				} else {
+					done('No tiles loaded');
+				}
+			});
+
+			map.addLayer(grid);
+		});
+
+		it("calls createTile() with minNativeZoom when map zoom is smaller", function (done) {
+			map.setView([0, 0], 3);
+
+			var grid = L.gridLayer({
+				minNativeZoom: 5
+			});
+			var tileCount = 0;
+
+			grid.createTile = function (coords) {
+				expect(coords.z).to.be(5);
+				tileCount++;
+				return document.createElement('div');
+			};
+			grid.on('load', function () {
+				if (tileCount > 0) {
+					done();
+				} else {
+					done('No tiles loaded');
+				}
+			});
+
+			map.addLayer(grid);
 		});
 	});
 
@@ -886,6 +937,20 @@ describe('GridLayer', function () {
 		});
 	});
 
+	describe("Sanity checks for infinity", function () {
+		it("Throws error on map center at plus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([Infinity, Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
 
+		it("Throws error on map center at minus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([-Infinity, -Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
+	});
 
 });
