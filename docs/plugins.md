@@ -1714,6 +1714,16 @@ Powerful multi-purpose libraries for data visualization.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer">Leaflet.Canvas-Flowmap-Layer</a>
+		</td><td>
+			A LeafletJS custom map layer for mapping the flow of objects, ideas, people, etc. with Bezier curves rendered on the HTML canvas.
+		</td><td>
+			<a href="https://github.com/jwasilgeo">Jacob Wasilkowski</a>,
+			<a href="https://github.com/sarahbellum">Sarah Bell</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
 			<a href="https://github.com/manubb/Leaflet.PixiOverlay">Leaflet.PixiOverlay</a>
 		</td><td>
 			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>. (<a href="https://manubb.github.io/Leaflet.PixiOverlay/us-cities.html">demo</a>)
