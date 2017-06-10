@@ -18,8 +18,8 @@ export var Control = Class.extend({
 	// @aka Control options
 	options: {
 		// @option position: String = 'topright'
-		// The position of the control (one of the map corners). Possible values are `'topleft'`,
-		// `'topright'`, `'bottomleft'` or `'bottomright'`
+		// The position of the control. Possible values are `'topleft'`, `'topright'`, `'topcenter'`,
+		// `'bottomleft'`, `'bottomright'`, `'bottomcenter'`, `'middleleft'`, `'middleright'` or `'middlecenter'`
 		position: 'topright'
 	},
 
@@ -156,8 +156,13 @@ Map.include({
 
 		createCorner('top', 'left');
 		createCorner('top', 'right');
+		createCorner('top', 'center');
 		createCorner('bottom', 'left');
 		createCorner('bottom', 'right');
+		createCorner('bottom', 'center');
+		createCorner('middle', 'left');
+		createCorner('middle', 'right');
+		createCorner('middle', 'center');
 	},
 
 	_clearControlPos: function () {

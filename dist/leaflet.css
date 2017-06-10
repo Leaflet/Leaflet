@@ -117,7 +117,8 @@
 	pointer-events: auto;
 	}
 .leaflet-top,
-.leaflet-bottom {
+.leaflet-bottom,
+.leaflet-middle {
 	position: absolute;
 	z-index: 1000;
 	pointer-events: none;
@@ -133,6 +134,29 @@
 	}
 .leaflet-left {
 	left: 0;
+	}
+.leaflet-middle {
+	top: 50%;
+	transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	-webkit-transform: translateY(-50%);
+	-o-transform: translateY(-50%);
+	-moz-transform: translateY(-50%);
+	}
+.leaflet-center {
+	left: 50%;
+	transform: translateX(-50%);
+	-ms-transform: translateX(-50%);
+	-webkit-transform: translateX(-50%);
+	-o-transform: translateX(-50%);
+	-moz-transform: translateX(-50%);
+	}
+.leaflet-middle.leaflet-center {
+	transform: translate(-50%,-50%) !important;
+	-ms-transform: translate(-50%,-50%) !important;
+	-webkit-transform: translate(-50%,-50%) !important;
+	-o-transform: translate(-50%,-50%) !important;
+	-moz-transform: translate(-50%,-50%) !important;
 	}
 .leaflet-control {
 	float: left;
@@ -152,6 +176,10 @@
 	}
 .leaflet-right .leaflet-control {
 	margin-right: 10px;
+	}
+.leaflet-center .leaflet-control {
+	float: none;
+	display: inline-block;
 	}
 
 
