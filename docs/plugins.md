@@ -1726,7 +1726,7 @@ Powerful multi-purpose libraries for data visualization.
     <td>
 			<a href="https://github.com/manubb/Leaflet.PixiOverlay">Leaflet.PixiOverlay</a>
 		</td><td>
-			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>. (<a href="https://manubb.github.io/Leaflet.PixiOverlay/us-cities.html">demo</a>)
+			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>. (<a href="https://manubb.github.io/Leaflet.PixiOverlay/demo.html">demo</a>)
 		</td><td>
 			<a href="https://github.com/manubb">Manuel Baclet</a>
 		</td>
