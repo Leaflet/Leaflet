@@ -237,7 +237,6 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/sheppard/">S. Andrew Sheppard</a><br>(<a href="https://github.com/heigeo/">HEI Geo</a>)
 		</td>
 	</tr>
-	</tr>
 	<tr>
 		<td>
 			<a href="https://github.com/stuartmatthews/Leaflet.NonTiledLayer.WCS">Leaflet.NonTiledLayer.WCS</a>
