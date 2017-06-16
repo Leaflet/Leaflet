@@ -311,6 +311,16 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/VictorVelarde">Víctor Velarde</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stuartmatthews/leaflet-geotiff">leaflet-geotiff</a>
+		</td><td>
+			Display raster data from geoTIFF files as images or direction arrows.  Rasters can be styled and queried in the client.  An optional clipping mask can be applied, e.g. to restrict DEMs to land areas.  See the <a href="https://stuartmatthews.github.io/leaflet-geotiff/">demo</a>.
+		</td><td>
+			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
+		</td>
+	</tr>
+    
 </table>
 
 
