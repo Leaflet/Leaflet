@@ -1,3 +1,7 @@
+import {LatLng} from '../LatLng';
+import {Bounds} from '../../geometry/Bounds';
+import {Point} from '../../geometry/Point';
+
 /*
  * @namespace Projection
  * @projection L.Projection.SphericalMercator
@@ -7,7 +11,7 @@
  * a sphere. Used by the `EPSG:3857` CRS.
  */
 
-L.Projection.SphericalMercator = {
+export var SphericalMercator = {
 
 	R: 6378137,
 	MAX_LATITUDE: 85.0511287798,
@@ -18,7 +22,7 @@ L.Projection.SphericalMercator = {
 		    lat = Math.max(Math.min(max, latlng.lat), -max),
 		    sin = Math.sin(lat * d);
 
-		return new L.Point(
+		return new Point(
 				this.R * latlng.lng * d,
 				this.R * Math.log((1 + sin) / (1 - sin)) / 2);
 	},
@@ -26,13 +30,13 @@ L.Projection.SphericalMercator = {
 	unproject: function (point) {
 		var d = 180 / Math.PI;
 
-		return new L.LatLng(
+		return new LatLng(
 			(2 * Math.atan(Math.exp(point.y / this.R)) - (Math.PI / 2)) * d,
 			point.x * d / this.R);
 	},
 
 	bounds: (function () {
 		var d = 6378137 * Math.PI;
-		return L.bounds([-d, -d], [d, d]);
+		return new Bounds([-d, -d], [d, d]);
 	})()
 };

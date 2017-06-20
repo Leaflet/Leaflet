@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% capture title %}{% if page.title %}{{ page.title }} - {% elsif post.title %}{{ post.title }} - {% endif %}{% endcapture %}
+
+	<title>{{ title }}Leaflet - a JavaScript library for interactive maps</title>
+
+	<meta charset="utf-8" />
+
+	{% if title == '' %}
+	<meta property="og:title" content="Leaflet — an open-source JavaScript library for interactive maps" />
+	<meta property="og:description" content="Leaflet is a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps." />
+	<meta property="og:image" content="http://leafletjs.com/docs/images/logo.png" />
+
+	<meta itemprop="name" content="Leaflet">
+	<meta itemprop="description" content="Leaflet — a modern, lightweight open-source JavaScript library for mobile-friendly interactive maps.">
+	<meta itemprop="image" content="http://leafletjs.com/docs/images/logo.png">
+	{% endif %}
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	{% capture root %}{% if page.root %}{{ page.root }}{% else %}{{ layout.root }}{% endif %}{% endcapture %}
+
+	<link rel="shortcut icon" type="image/x-icon" href="{{ root }}docs/images/favicon.ico" />
+
+	<link href="http://leafletjs.com/atom.xml" type="application/atom+xml" rel="alternate" title="Leaflet Dev Blog Atom Feed" />
+
+	<link rel="stylesheet" href="{{ root }}docs/css/normalize.css" />
+	<link rel="stylesheet" href="{{ root }}docs/css/main.css" />
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700,300' rel='stylesheet' type='text/css'>
+
+	<script src="{{ root }}docs/highlight/highlight.pack.js"></script>
+	<link rel="stylesheet" href="{{ root }}docs/highlight/styles/github-gist.css" />
+
+	<!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" integrity="{{site.integrity_hash_css}}" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js" integrity="{{site.integrity_hash_uglified}}" crossorigin=""></script>
+
+	{% if page.css %}<style>{{ page.css }}</style>{% endif %}
+
+	<script>
+		ACCESS_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+		MB_ATTR = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+			'Imagery © <a href="http://mapbox.com">Mapbox</a>';
+		MB_URL = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + ACCESS_TOKEN;
+		OSM_URL = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+		OSM_ATTRIB = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+	</script>
+</head>
+<body{% if page.bodyclass %} class="{{ page.bodyclass }}"{% endif %}>
+
+<h1><a href="http://leafletjs.com"><img src="{{ root }}docs/images/logo.png" alt="Leaflet" width="300" /></a></h1>
+<h3 class="tagline">an open-source JavaScript library<br> for mobile-friendly interactive maps</h3>
+
+<ul class="nav">
+	<li>
+		{% if page.title == nil %}
+			<span>Overview</span>
+		{% else %}
+			<a href="{{ root }}index.html">Overview</a>
+		{% endif %}
+	</li>
+	<li>
+		{% if page.title == 'Tutorials' %}
+			<span>Tutorials</span>
+		{% else %}
+			<a href="{{ root }}examples.html"{% if page.tutorial == true %} class="active"{% endif %}>Tutorials</a>
+		{% endif %}
+	</li>
+	<li>
+		{% if page.title == 'Documentation' %}
+			<span>Docs</span>
+		{% else %}
+			<a href="{{ root }}reference-1.0.3.html">Docs</a>
+		{% endif %}
+	</li>
+	<li>
+		{% if page.title == 'Download' %}
+			<span>Download</span>
+		{% else %}
+			<a href="{{ root }}download.html">Download</a>
+		{% endif %}
+	</li>
+	<li>
+		{% if page.title == 'Plugins' %}
+			<span>Plugins</span>
+		{% else %}
+			<a href="{{ root }}plugins.html">Plugins</a>
+		{% endif %}
+	</li>
+	<li>
+		{% if page.title == 'Blog' %}
+			<span>Blog</span>
+		{% else %}
+			<a href="{{ root }}blog.html"{% if page.post == true %} class="active"{% endif %}>Blog</a>
+		{% endif %}
+	</li>
+</ul>
+
+<div class="container">
+
+
+{{ content }}
+
+<div class="footer">
+	<p>&copy; 2017 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps &copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+</div>
+
+</div>
+
+<nav class="ext-links">
+  <a class="ext-link twitter" href="http://twitter.com/LeafletJS" title="Follow LeafletJS on Twitter"><img alt="Follow LeafletJS on Twitter" src="{{root}}docs/images/twitter-round.png" width="46" /></a>
+  <a class="ext-link github" href="http://github.com/Leaflet/Leaflet" title="View Source on GitHub"><img alt="View Source on GitHub" src="{{root}}docs/images/github-round.png" width="46" /></a>
+  <a class="ext-link forum" href="https://stackoverflow.com/questions/tagged/leaflet" title="Ask for help on Stack Overflow"><img alt="Leaflet questions on Stack Overflow" src="{{root}}docs/images/forum-round.png" width="46" /></a>
+</nav>
+
+<script>
+	hljs.configure({tabReplace: '    '});
+	hljs.initHighlighting();
+
+	(function () {
+		if (document.body.className.indexOf('api-page') !== -1) {
+			var headers = document.getElementsByTagName('h2');
+
+			for (var i = 0, len = headers.length; i < len; i++) {
+				if (headers[i].id) {
+					headers[i].onclick = function(e) {
+						if (e.offsetX < 0) {
+							window.location.hash = '#' + this.id;
+						}
+					};
+				}
+			}
+		}
+	})();
+</script>
+
+<script>
+	var _gaq = _gaq || [];
+	_gaq.push([ '_setAccount', 'UA-4147697-4' ]);
+	_gaq.push([ '_trackPageview' ]);
+
+	(function() {
+		var ga = document.createElement('script');
+		ga.type = 'text/javascript';
+		ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl'
+				: 'http://www')
+				+ '.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(ga, s);
+	})();
+</script>
+
+<script src="{{ root }}docs/js/docs.js"></script>
+</body>
+</html>

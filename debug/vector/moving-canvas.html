@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Leaflet debug page</title>
+
+	<link rel="stylesheet" href="../../dist/leaflet.css" />
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="../css/screen.css" />
+
+	<script src="../leaflet-include.js"></script>
+</head>
+<body>
+
+	<div id="map"></div>
+
+	<script>
+
+		var osmUrl = 'http://api.tiles.mapbox.com/v4/mapbox.light/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
+			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+			osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+
+		var map = L.map('map', {preferCanvas: true})
+				.setView([50.5, 30.51], 15)
+				.addLayer(osm);
+
+		var markers = [];
+		var colors = ['red', 'green', 'blue', 'purple', 'cyan', 'yellow'];
+		for (var i = 0; i < 20; i++) {
+			markers.push(L.circleMarker([50.5, 30.51], {color: colors[i % colors.length]}).addTo(map));
+		}
+
+		function update() {
+			var t = new Date().getTime() / 1000;
+			markers.forEach(function(marker, i) {
+				var v = t * (1 + i / 10) + (12.5 * i) / 180 * Math.PI;
+				marker.setLatLng([
+					50.5 + (i % 2 ? 1 : -1) * Math.sin(v) * 0.005,
+					30.51 + (i % 3 ? 1 : -1) * Math.cos(v) * 0.005,
+					]);
+			});
+
+			L.Util.requestAnimFrame(update);
+		}
+
+		update();
+	</script>
+</body>
+</html>

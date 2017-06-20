@@ -135,7 +135,7 @@ describe('GridLayer', function () {
 		});
 
 		// Passes on Firefox, but fails on phantomJS: done is never called.
-		it.skipInPhantom('only creates tiles for visible area on zoom in', function (done) {
+		it('only creates tiles for visible area on zoom in', function (done) {
 			map.remove();
 			map = L.map(div);
 			map.setView([0, 0], 10);
@@ -232,7 +232,7 @@ describe('GridLayer', function () {
 			});
 		});
 
-		describe("when a tilelayer is removed from a map", function () {
+		describe("when a gridlayer is removed from a map", function () {
 			it("has its zoomlevels updated to only fit the layers it currently has", function () {
 				var tiles = [
 					L.gridLayer({minZoom: 10, maxZoom: 15}).addTo(map),
@@ -261,6 +261,57 @@ describe('GridLayer', function () {
 					expect(map.getMaxZoom()).to.be(Infinity);
 				});
 			});
+		});
+	});
+
+
+	describe("min/maxNativeZoom option", function () {
+		it("calls createTile() with maxNativeZoom when map zoom is larger", function (done) {
+			map.setView([0, 0], 10);
+
+			var grid = L.gridLayer({
+				maxNativeZoom: 5
+			});
+			var tileCount = 0;
+
+			grid.createTile = function (coords) {
+				expect(coords.z).to.be(5);
+				tileCount++;
+				return document.createElement('div');
+			};
+			grid.on('load', function () {
+				if (tileCount > 0) {
+					done();
+				} else {
+					done('No tiles loaded');
+				}
+			});
+
+			map.addLayer(grid);
+		});
+
+		it("calls createTile() with minNativeZoom when map zoom is smaller", function (done) {
+			map.setView([0, 0], 3);
+
+			var grid = L.gridLayer({
+				minNativeZoom: 5
+			});
+			var tileCount = 0;
+
+			grid.createTile = function (coords) {
+				expect(coords.z).to.be(5);
+				tileCount++;
+				return document.createElement('div');
+			};
+			grid.on('load', function () {
+				if (tileCount > 0) {
+					done();
+				} else {
+					done('No tiles loaded');
+				}
+			});
+
+			map.addLayer(grid);
 		});
 	});
 
@@ -816,4 +867,90 @@ describe('GridLayer', function () {
 			clock.tick(250);
 		});
 	});
+
+	describe("nowrap option", function () {
+		it("When false, uses same coords at zoom 0 for all tiles", function (done) {
+
+			var grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256),
+				noWrap: false
+			});
+			var loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 0);
+
+			grid.on('load', function () {
+				expect(loadedTileKeys).to.eql(["0:0:0", "0:0:0", "0:0:0", "0:0:0", "0:0:0"]);
+				done();
+			});
+		});
+
+		it("When true, uses different coords at zoom level 0 for all tiles", function (done) {
+
+			var grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256),
+				noWrap: true
+			});
+			var loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 0);
+
+			grid.on('load', function () {
+				expect(loadedTileKeys).to.eql(['0:0:0', '-1:0:0', '1:0:0', '-2:0:0', '2:0:0']);
+				done();
+			});
+		});
+
+		it("When true and with bounds, loads just one tile at zoom level 0", function (done) {
+
+			var grid = L.gridLayer({
+				attribution: 'Grid Layer',
+				tileSize: L.point(256, 256),
+				bounds: [[-90, -180], [90, 180]],
+				noWrap: true
+			});
+			var loadedTileKeys = [];
+
+			grid.createTile = function (coords) {
+				loadedTileKeys.push(coords.x + ':' + coords.y + ':' + coords.z);
+				return document.createElement('div');
+			};
+
+			map.addLayer(grid).setView([0, 0], 0);
+
+			grid.on('load', function () {
+				expect(loadedTileKeys).to.eql(['0:0:0']);
+				done();
+			});
+		});
+	});
+
+	describe("Sanity checks for infinity", function () {
+		it("Throws error on map center at plus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([Infinity, Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
+
+		it("Throws error on map center at minus Infinity longitude", function () {
+			expect(function () {
+				map.setCenter([-Infinity, -Infinity]);
+				L.gridLayer().addTo(map);
+			}).to.throwError('Attempted to load an infinite number of tiles');
+		});
+	});
+
 });

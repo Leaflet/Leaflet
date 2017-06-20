@@ -135,32 +135,15 @@ describe('Polyline', function () {
 			expect(polyline.getCenter()).to.be.nearLatLng(L.latLng([0, 0]), 1e-2);
 		});
 
-	});
-
-	describe('#_flat', function () {
-		var layer = L.polyline([]);
-
-		it('should return true for an array of LatLngs', function () {
-			expect(L.Polyline._flat([L.latLng([0, 0])])).to.be(true);
-		});
-
-		it('should return true for an array of LatLngs arrays', function () {
-			expect(L.Polyline._flat([[0, 0]])).to.be(true);
-		});
-
-		it('should return true for an empty array', function () {
-			expect(L.Polyline._flat([])).to.be(true);
-		});
-
-		it('should return false for a nested array of LatLngs', function () {
-			expect(L.Polyline._flat([[L.latLng([0, 0])]])).to.be(false);
-		});
-
-		it('should return false for a nested empty array', function () {
-			expect(L.Polyline._flat([[]])).to.be(false);
+		it('throws error if not yet added to map', function () {
+			expect(function () {
+				var polyline = new L.Polyline([[0, 0], [0, 0.090]]);
+				var center = polyline.getCenter();
+			}).to.throwException('Must add layer to map before using getCenter()');
 		});
 
 	});
+
 
 	describe("#_defaultShape", function () {
 

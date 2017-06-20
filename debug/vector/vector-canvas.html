@@ -7,7 +7,6 @@
 
 	<link rel="stylesheet" href="../css/screen.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -89,6 +88,14 @@
 		group.addLayer(line);
 
 		polygon.bindPopup('I am a polygon');
+
+		var circleMarker2 = new L.CircleMarker([25.5, 0], {
+			dashArray: '5, 5',
+			fillColor: 'red',
+			color: 'green',
+			renderer: canvas
+		});
+		group.addLayer(circleMarker2);
 
 		map.addLayer(group);
 

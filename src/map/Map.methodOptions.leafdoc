@@ -73,7 +73,7 @@ Duration of animated panning, in seconds.
 @option easeLinearity: Number = 0.25
 The curvature factor of panning animation easing (third parameter of the
 [Cubic Bezier curve](http://cubic-bezier.com/)). 1.0 means linear animation,
-the less the more bowed the curve.
+and the smaller this number, the more bowed the curve.
 
 @option noMoveStart: Boolean = false
 If `true`, panning won't fire `movestart` event on start (used internally for

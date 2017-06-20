@@ -1,3 +1,10 @@
+import {Layer} from '../Layer';
+import {IconDefault} from './Icon.Default';
+import * as Util from '../../core/Util';
+import {toLatLng as latLng} from '../../geo/LatLng';
+import * as DomUtil from '../../dom/DomUtil';
+import {MarkerDrag} from './Marker.Drag';
+
 /*
  * @class Marker
  * @inherits Interactive layer
@@ -11,14 +18,16 @@
  * ```
  */
 
-L.Marker = L.Layer.extend({
+export var Marker = Layer.extend({
 
 	// @section
 	// @aka Marker options
 	options: {
 		// @option icon: Icon = *
-		// Icon class to use for rendering the marker. See [Icon documentation](#L.Icon) for details on how to customize the marker icon. Set to new `L.Icon.Default()` by default.
-		icon: new L.Icon.Default(),
+		// Icon instance to use for rendering the marker.
+		// See [Icon documentation](#L.Icon) for details on how to customize the marker icon.
+		// If not specified, a common instance of `L.Icon.Default` is used.
+		icon: new IconDefault(),
 
 		// Option inherited from "Interactive layer" abstract class
 		interactive: true,
@@ -59,8 +68,10 @@ L.Marker = L.Layer.extend({
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
 
-		// FIXME: shadowPane is no longer a valid option
-		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu']
+		// @option bubblingMouseEvents: Boolean = false
+		// When `true`, a mouse event on this marker will trigger the same event on the map
+		// (unless [`L.DomEvent.stopPropagation`](#domevent-stoppropagation) is used).
+		bubblingMouseEvents: false
 	},
 
 	/* @section
@@ -69,21 +80,30 @@ L.Marker = L.Layer.extend({
 	 */
 
 	initialize: function (latlng, options) {
-		L.setOptions(this, options);
-		this._latlng = L.latLng(latlng);
+		Util.setOptions(this, options);
+		this._latlng = latLng(latlng);
 	},
 
 	onAdd: function (map) {
 		this._zoomAnimated = this._zoomAnimated && map.options.markerZoomAnimation;
 
+		if (this._zoomAnimated) {
+			map.on('zoomanim', this._animateZoom, this);
+		}
+
 		this._initIcon();
 		this.update();
 	},
 
-	onRemove: function () {
+	onRemove: function (map) {
 		if (this.dragging && this.dragging.enabled()) {
 			this.options.draggable = true;
 			this.dragging.removeHooks();
+		}
+		delete this.dragging;
+
+		if (this._zoomAnimated) {
+			map.off('zoomanim', this._animateZoom, this);
 		}
 
 		this._removeIcon();
@@ -91,16 +111,10 @@ L.Marker = L.Layer.extend({
 	},
 
 	getEvents: function () {
-		var events = {
+		return {
 			zoom: this.update,
 			viewreset: this.update
 		};
-
-		if (this._zoomAnimated) {
-			events.zoomanim = this._animateZoom;
-		}
-
-		return events;
 	},
 
 	// @method getLatLng: LatLng
@@ -113,7 +127,7 @@ L.Marker = L.Layer.extend({
 	// Changes the marker position to the given point.
 	setLatLng: function (latlng) {
 		var oldLatLng = this._latlng;
-		this._latlng = L.latLng(latlng);
+		this._latlng = latLng(latlng);
 		this.update();
 
 		// @event move: Event
@@ -182,7 +196,7 @@ L.Marker = L.Layer.extend({
 			}
 		}
 
-		L.DomUtil.addClass(icon, classToAdd);
+		DomUtil.addClass(icon, classToAdd);
 
 		if (options.keyboard) {
 			icon.tabIndex = '0';
@@ -206,7 +220,8 @@ L.Marker = L.Layer.extend({
 		}
 
 		if (newShadow) {
-			L.DomUtil.addClass(newShadow, classToAdd);
+			DomUtil.addClass(newShadow, classToAdd);
+			newShadow.alt = '';
 		}
 		this._shadow = newShadow;
 
@@ -233,7 +248,7 @@ L.Marker = L.Layer.extend({
 			});
 		}
 
-		L.DomUtil.remove(this._icon);
+		DomUtil.remove(this._icon);
 		this.removeInteractiveTarget(this._icon);
 
 		this._icon = null;
@@ -241,16 +256,16 @@ L.Marker = L.Layer.extend({
 
 	_removeShadow: function () {
 		if (this._shadow) {
-			L.DomUtil.remove(this._shadow);
+			DomUtil.remove(this._shadow);
 		}
 		this._shadow = null;
 	},
 
 	_setPos: function (pos) {
-		L.DomUtil.setPosition(this._icon, pos);
+		DomUtil.setPosition(this._icon, pos);
 
 		if (this._shadow) {
-			L.DomUtil.setPosition(this._shadow, pos);
+			DomUtil.setPosition(this._shadow, pos);
 		}
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
@@ -272,18 +287,18 @@ L.Marker = L.Layer.extend({
 
 		if (!this.options.interactive) { return; }
 
-		L.DomUtil.addClass(this._icon, 'leaflet-interactive');
+		DomUtil.addClass(this._icon, 'leaflet-interactive');
 
 		this.addInteractiveTarget(this._icon);
 
-		if (L.Handler.MarkerDrag) {
+		if (MarkerDrag) {
 			var draggable = this.options.draggable;
 			if (this.dragging) {
 				draggable = this.dragging.enabled();
 				this.dragging.disable();
 			}
 
-			this.dragging = new L.Handler.MarkerDrag(this);
+			this.dragging = new MarkerDrag(this);
 
 			if (draggable) {
 				this.dragging.enable();
@@ -305,10 +320,10 @@ L.Marker = L.Layer.extend({
 	_updateOpacity: function () {
 		var opacity = this.options.opacity;
 
-		L.DomUtil.setOpacity(this._icon, opacity);
+		DomUtil.setOpacity(this._icon, opacity);
 
 		if (this._shadow) {
-			L.DomUtil.setOpacity(this._shadow, opacity);
+			DomUtil.setOpacity(this._shadow, opacity);
 		}
 	},
 
@@ -318,6 +333,14 @@ L.Marker = L.Layer.extend({
 
 	_resetZIndex: function () {
 		this._updateZIndex(0);
+	},
+
+	_getPopupAnchor: function () {
+		return this.options.icon.options.popupAnchor || [0, 0];
+	},
+
+	_getTooltipAnchor: function () {
+		return this.options.icon.options.tooltipAnchor || [0, 0];
 	}
 });
 
@@ -326,6 +349,6 @@ L.Marker = L.Layer.extend({
 
 // @factory L.marker(latlng: LatLng, options? : Marker options)
 // Instantiates a Marker object given a geographical point and optionally an options object.
-L.marker = function (latlng, options) {
-	return new L.Marker(latlng, options);
-};
+export function marker(latlng, options) {
+	return new Marker(latlng, options);
+}
