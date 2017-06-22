@@ -106,11 +106,11 @@ export var GridLayer = Layer.extend({
 		bounds: null,
 
 		// @option minZoom: Number = 0
-		// The minimum zoom level that tiles will be loaded at. By default the entire map.
+		// The minimum zoom level down to which this layer will be displayed (included).
 		minZoom: 0,
 
 		// @option maxZoom: Number = undefined
-		// The maximum zoom level that tiles will be loaded at.
+		// The maximum zoom level up to which this layer will be displayed (included).
 		maxZoom: undefined,
 
 		// @option maxNativeZoom: Number = undefined
