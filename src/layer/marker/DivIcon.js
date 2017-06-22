@@ -47,6 +47,7 @@ export var DivIcon = Icon.extend({
 		if (options.html === false) {
 			div.innerHTML = '';
 		} else if (typeof options.html === 'object' && options.html.nodeType === 1) {
+			div.innerHTML	= '';
 			div.appendChild(options.html);
 		} else {
 			div.innerHTML = options.html;
