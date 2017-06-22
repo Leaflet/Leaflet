@@ -106,11 +106,11 @@ export var GridLayer = Layer.extend({
 		bounds: null,
 
 		// @option minZoom: Number = 0
-		// The minimum zoom level down to which this layer will be displayed (included).
+		// The minimum zoom level down to which this layer will be displayed (inclusive).
 		minZoom: 0,
 
 		// @option maxZoom: Number = undefined
-		// The maximum zoom level up to which this layer will be displayed (included).
+		// The maximum zoom level up to which this layer will be displayed (inclusive).
 		maxZoom: undefined,
 
 		// @option maxNativeZoom: Number = undefined
