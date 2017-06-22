@@ -239,6 +239,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/stuartmatthews/Leaflet.NonTiledLayer.WCS">Leaflet.NonTiledLayer.WCS</a>
+		</td><td>
+			Display raster data from Web Coverage Services.  Rasters can be styled and queried in the client.  See the <a href="https://stuartmatthews.github.io/Leaflet.NonTiledLayer.WCS/">demo</a>.
+		</td><td>
+			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/balrog-kun/Leaflet.bpg">Leaflet.bpg</a>
 		</td><td>
 			TileLayer with <a href="http://bellard.org/bpg/">.bpg</a> image format decoding.
@@ -311,6 +320,16 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/VictorVelarde">Víctor Velarde</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stuartmatthews/leaflet-geotiff">leaflet-geotiff</a>
+		</td><td>
+			Display raster data from geoTIFF files as images or direction arrows.  Rasters can be styled and queried in the client.  An optional clipping mask can be applied, e.g. to restrict DEMs to land areas.  See the <a href="https://stuartmatthews.github.io/leaflet-geotiff/">demo</a>.
+		</td><td>
+			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
+		</td>
+	</tr>
+    
 </table>
 
 
@@ -1726,7 +1745,7 @@ Powerful multi-purpose libraries for data visualization.
     <td>
 			<a href="https://github.com/manubb/Leaflet.PixiOverlay">Leaflet.PixiOverlay</a>
 		</td><td>
-			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>. (<a href="https://manubb.github.io/Leaflet.PixiOverlay/us-cities.html">demo</a>)
+			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>. (<a href="https://manubb.github.io/Leaflet.PixiOverlay/demo.html">demo</a>)
 		</td><td>
 			<a href="https://github.com/manubb">Manuel Baclet</a>
 		</td>

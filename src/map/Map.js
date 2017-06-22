@@ -46,12 +46,16 @@ export var Map = Evented.extend({
 		// Initial map zoom level
 		zoom: undefined,
 
-		// @option minZoom: Number = undefined
-		// Minimum zoom level of the map. Overrides any `minZoom` option set on map layers.
+		// @option minZoom: Number = *
+		// Minimum zoom level of the map.
+		// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
+		// the lowest of their `minZoom` options will be used instead.
 		minZoom: undefined,
 
-		// @option maxZoom: Number = undefined
-		// Maximum zoom level of the map. Overrides any `maxZoom` option set on map layers.
+		// @option maxZoom: Number = *
+		// Maximum zoom level of the map.
+		// If not specified and at least one `GridLayer` or `TileLayer` is in the map,
+		// the highest of their `maxZoom` options will be used instead.
 		maxZoom: undefined,
 
 		// @option layers: Layer[] = []
