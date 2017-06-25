@@ -1,0 +1,480 @@
+ <!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> map projections </title>
+ <style>
+ html,
+ body {
+ height: 100%;
+ margin: 0;
+ padding: 0;
+ }
+
+ #o {
+ height: 100%;
+
+
+
+
+ ​ width ​:  50%;
+
+ /* NOTE: type ​: ​ 'text' ; placeholder : "embed instagram​  " ​​; onblur : " Objects()";
+,
+ */
+
+
+} /* */
+ </style>
+  <link rel="stylesheet" href="./dist/leaflet.css">
+ <script src="./dist/leaflet-src.js">
+ </script>
+
+
+</head>
+
+<body>
+
+ <div id="o">
+u
+ </div>
+<iframe visibility ="hidden" id="uu" width="Infowindow1" height="Infowindow1">
+ </iframe>
+
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  var Objects;
+
+ var ee1;
+ var ee2;
+ var e1;
+ var e2;
+ var ee;
+ var db2;
+ var Markers2;
+        var markers1;
+        var m;
+        var map;
+        var e;
+        var Marker1;
+        var Marker2;
+        var markers;
+        var o;
+        var marker1to2;
+        var embed2;
+        var ee;
+
+
+
+        var ee3;
+        var embed3;
+        var Infowindow1;
+        var content2;
+        var Infowindow2;
+var n
+           ;
+        var content1;
+        var marker1to2;
+
+
+
+
+
+
+
+
+
+
+var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+ attribution: '&amp;copy; &lt;a href="http://osm.org/copyright"&gt;OpenStreetMap&lt;/a&gt; contributors'
+})
+
+
+ ;
+
+ var latlng =
+   L.latLng ( 0 , 0 );
+
+ o = L.map('o', {
+ zoom : 8,
+ center: latlng
+, }) . addLayer(osm
+  )
+  ;
+
+
+
+
+
+
+
+
+
+        ee1 = 0;
+        ee2 = 0;
+        e1 = 2;
+        e2 = 0;
+        db1 = 0;
+        ee = 0;
+        db2 = 0;
+        Markers2 = [];
+    n      = 0 ;
+
+
+
+
+         u = 0;
+        Marker1 = 0;
+        Marker2 = 0;
+
+ Marker1 = L.marker(
+ o.getCenter ( ) , {
+ draggable: true,
+ clickable: true
+ });
+
+
+
+
+
+
+ markers
+ = { };
+ Infowindow1 = 0;
+ content2 = ' ';
+ Infowindow2
+ = 0;
+
+ content1 = content2;
+
+
+
+ // node Db.js
+
+
+var bn = console.log( "package" );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ markers = {
+ m: Marker1,
+ embed1: document.getElementById('embed1'),
+ embed2: document.getElementById('embed2'),
+ tre: Date.now(),
+ marker1to2: 1
+
+ };
+
+
+
+
+ Markers1 = [ ];
+ Markers1
+ [0] = markers;
+ Markers2[0] = markers;
+
+
+
+
+
+
+
+
+
+ content1 =
+
+ ' <div id="content"> <div id="u"> the embed of either tmblr instagram twitter <input id = "embed1" > </div> <div id="u"> <input id= ​"embed2" > </div> <div id="u "><input id = "u11" > </div> <div id="u"> <input id= ​"u22 " > </div> </ div > ';
+
+ content2 = ' <div id = "content"> <div id = "    .embed   .. "> < /div > <div id ="  .  .  "> </div > < /div > ';
+
+
+
+
+
+
+
+
+
+
+ Objects = function( ) {
+
+
+ Markers1[Markers1.length - 1] = markers;
+
+
+
+
+
+
+
+
+
+
+
+
+
+ /*
+
+ ( var methodes in markers )
+{
+
+ for (1 ; . . methodes . toString ( ) . slice ( 0, 4 ) = 'embed' ; ) {
+
+ /* */
+for ( methodes = 0; methodes <   n ; ++methodes)
+{
+
+
+
+
+
+document . getElementByType ( "iframe" ) .setAttribute ( 'href' ,
+  [ '/'
+
+,markers . tre
+, '/' , markers.m.getLatLng . toString ( )
+
+, '/' ,eval ( " markers. "
+
+
+,'embed' , methodes
+
+
+
+
+    )
+
+, '/' ] .join( '' ) ) ;
+
+
+ }
+
+ }  ;
+
+
+
+
+ /*
+ window .onunload = function(
+ Markers1 ) {
+
+
+
+
+
+
+
+
+
+ */
+
+
+
+ Marker2 = L.marker(
+
+
+ Markers2[ee].m.latLng, {
+ draggable: false
+ });
+
+
+
+ /*
+
+ for (ee = 0; ee < Markers2.length; ee++) {
+
+
+ var m2 = Markers2[ee] . m ;
+
+ o . addLayer ( m2 )
+
+
+ ;
+
+ };
+
+
+ /* */
+
+
+ o.on('click', function(e ) {
+
+
+
+
+ var m1 = Markers1 [ ee ] ;
+
+
+
+
+
+
+
+for ( lengthv = 0; lengthv           = 0;          )
+{
+
+
+
+
+
+
+
+ for ( ; Markers1 . length != Infowindow1  ; )
+ {
+
+
+ for ( ee = 0 ; ee < Markers1.length
+ ; ee ++) {
+for ( ;
+
+
+
+
+o .hasLayer ( m1. m ) == false ;
+ )
+{
+
+
+
+ o . addLayer( m1.m ) ;
+}
+
+
+}
+
+
+
+
+
+
+
+
+ Markers1[ Markers1.length ]
+ = markers ;
+             LENGTH ; ++ )
+
+    /*   */
+}
+
+ o.addLayer( m1.m );
+ Marker1.setLatLng(e.latlng);
+ Marker1.bindPopup( content1).openPopup();
+
+
+
+
+
+
+
+
+
+
+    } });
+
+ Marker1.on("popupclose", Objects() );
+
+ Marker1.on('click', function( ) {
+
+ Marker1.bindPopup(content1).openPopup();
+ });
+ Marker2.on('click', function(e) {
+
+ for (ee = 0; ee < Markers2.length; ee++) {
+ for (; Markers2[ee].m.latlng ==
+ e.latlng;) {
+
+ document.getElementById('ee1 ').value = Markers2[ee].markers.embed2;
+ document.getElementById('ee3 ').value = Markers2[ee].markers.embed3;
+
+
+ document.getElementById('ee2 ').value = Markers2[ee].markers.embed2;
+ document.getElementById('ee3 ').value = Markers2[ee].markers.embed3;
+
+ }
+ }
+            Marker2.bindPopup(content2).openPopup();
+
+
+
+
+
+
+
+
+
+ });
+
+
+   </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </body>
+
+
+
+
+
+
+
+
+
+</html>
