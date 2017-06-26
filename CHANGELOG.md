@@ -21,12 +21,19 @@ An in-progress version being developed on the `master` branch.
 * `reference.html` now always points to latest stable docs ([#5490](https://github.com/leaflet/leaflet/issues/5490) by [IvanSanchez](https://github.com/IvanSanchez), [#5493](https://github.com/leaflet/leaflet/issues/5493) by [alyhegazy](https://github.com/alyhegazy))
 * Subresource integrity information and scripts ([#5468](https://github.com/leaflet/leaflet/issues/5468) by [IvanSanchez](https://github.com/IvanSanchez))
 * New tutorial on zooming (by [IvanSanchez](https://github.com/IvanSanchez), [#5007](https://github.com/leaflet/leaflet/issues/5007))
-* Minor documentation improvements by [perliedman](https://github.com/perliedman), [veltman](https://github.com/veltman), [FDMS](https://github.com/FDMS), [ghybs](https://github.com/ghybs), [RichardLitt](https://github.com/RichardLitt), [gatsbimantico](https://github.com/gatsbimantico), [daturkel](https://github.com/daturkel), [jgravois](https://github.com/jgravois), [geografa](https://github.com/geografa), [BjoernSchilberg](https://github.com/BjoernSchilberg), [IvanSanchez](https://github.com/IvanSanchez), [bozdoz](https://github.com/bozdoz), [zemadz](https://github.com/zemadz), [danzel](https://github.com/danzel), [jieter](https://github.com/jieter), [massic80](https://github.com/massic80), [jjimenezshaw](https://github.com/jjimenezshaw) and [hnrchrdl](https://github.com/hnrchrdl)
+* Minor documentation improvements by [perliedman](https://github.com/perliedman), [veltman](https://github.com/veltman), [FDMS](https://github.com/FDMS), [ghybs](https://github.com/ghybs), [RichardLitt](https://github.com/RichardLitt), [gatsbimantico](https://github.com/gatsbimantico), [daturkel](https://github.com/daturkel), [jgravois](https://github.com/jgravois), [geografa](https://github.com/geografa), [BjoernSchilberg](https://github.com/BjoernSchilberg), [IvanSanchez](https://github.com/IvanSanchez), [bozdoz](https://github.com/bozdoz), [zemadz](https://github.com/zemadz), [danzel](https://github.com/danzel), [jieter](https://github.com/jieter), [massic80](https://github.com/massic80), [jjimenezshaw](https://github.com/jjimenezshaw), [hnrchrdl](https://github.com/hnrchrdl) and [RayBB](https://github.com/RayBB)
 
 ### ES6 / Rollup
 
 * ES6 modules & Rollup ([#4989](https://github.com/leaflet/leaflet/issues/4989)) (by [mourner](https://github.com/mourner) and [IvanSanchez](https://github.com/IvanSanchez))
 * Additional fixes, testing and cleanup of ES6 code by [thachhoang](https://github.com/thachhoang), [danzel](https://github.com/danzel), [jkuebart](https://github.com/jkuebart), [simon04](https://github.com/simon04), [perliedman](https://github.com/perliedman), [luiscamachopt](https://github.com/luiscamachopt) and [Trufi](https://github.com/Trufi) ([#5373](https://github.com/leaflet/leaflet/issues/5373), [#5417](https://github.com/leaflet/leaflet/issues/5417), [#5351](https://github.com/leaflet/leaflet/issues/5351), [#5330](https://github.com/leaflet/leaflet/issues/5330), [#5329](https://github.com/leaflet/leaflet/issues/5329), [#5489](https://github.com/leaflet/leaflet/issues/5489), [#5504](https://github.com/leaflet/leaflet/issues/5504), [#5456](https://github.com/leaflet/leaflet/issues/5456), [#5463](https://github.com/leaflet/leaflet/issues/5463))
+
+### Improvements
+
+* Add new class `L.VideoOverlay` ([#4988](https://github.com/leaflet/leaflet/issues/4988) by [IvanSanchez](https://github.com/IvanSanchez))
+* Added z-index support to ImageOverlay ([#5418](https://github.com/leaflet/leaflet/issues/5418) by [Saulzi](https://github.com/Saulzi))
+* Added error event to `ImageOverlay` layer and added tests for the new ([#5416](https://github.com/leaflet/leaflet/issues/5416) by [Saulzi](https://github.com/Saulzi))
+* Add `className` option for `ImageOverlay` ([#5555](https://github.com/leaflet/leaflet/issues/5555) by [perliedman](https://github.com/perliedman))
 
 ### Bug fixes
 
@@ -43,9 +50,6 @@ An in-progress version being developed on the `master` branch.
 * Only rearrange DOM in `toFront`/`toBack` if needed, fixes [#4050](https://github.com/leaflet/leaflet/issues/4050) ([#5465](https://github.com/leaflet/leaflet/issues/5465) by [perliedman](https://github.com/perliedman))
 * Push back keyboard navigation order of `L.Popup`'s close button ([#5461](https://github.com/leaflet/leaflet/issues/5461) by [Mirodil](https://github.com/Mirodil))
 * Remove spurious check in `DomUtil.preventOutline` ([#5435](https://github.com/leaflet/leaflet/issues/5435) by [qjas](https://github.com/qjas))
-* Add new class `L.VideoOverlay` ([#4988](https://github.com/leaflet/leaflet/issues/4988) by [IvanSanchez](https://github.com/IvanSanchez))
-* Added z-index support to ImageOverlay ([#5418](https://github.com/leaflet/leaflet/issues/5418) by [Saulzi](https://github.com/Saulzi))
-* Added error event to `ImageOverlay` layer and added tests for the new ([#5416](https://github.com/leaflet/leaflet/issues/5416) by [Saulzi](https://github.com/Saulzi))
 * Error handler in `ImageOverlay` for 404 links ([#5307](https://github.com/leaflet/leaflet/issues/5307)) by [APwhitehat](https://github.com/APwhitehat))
 * Ensure renderer's container is initialized when a path is added to map ([#5404](https://github.com/leaflet/leaflet/issues/5404) by [IvanSanchez](https://github.com/IvanSanchez))
 * Layers Control only add layer events to layers when we are on the map. Fixes [#5421](https://github.com/leaflet/leaflet/issues/5421) ([#5422](https://github.com/leaflet/leaflet/issues/5422) by [danzel](https://github.com/danzel))
@@ -69,6 +73,7 @@ An in-progress version being developed on the `master` branch.
 * Allow HTML inputs in layer control's labels, fixes [#5116](https://github.com/leaflet/leaflet/issues/5116) ([#51165544](https://github.com/leaflet/leaflet/issues/5544) by [iZucken](https://github.com/iZucken))
 * Fix possible null reference when auto detecting icon default path, fixes [#5534](https://github.com/leaflet/leaflet/issues/5534) ([#5535](https://github.com/leaflet/leaflet/issues/5535) by [williamscs](https://github.com/williamscs))
 * Don't turn enter keypress into map clicks, fixes [#5499](https://github.com/leaflet/leaflet/issues/5499) ([#5507](https://github.com/leaflet/leaflet/issues/5507) by [perliedman](https://github.com/perliedman))
+* Use minus character instead of hyphen in the zoom control ([#5501](https://github.com/leaflet/leaflet/issues/5501) by [damianmoore](https://github.com/damianmoore))
 
 ## 1.0.3 (January 23, 2017)
 
