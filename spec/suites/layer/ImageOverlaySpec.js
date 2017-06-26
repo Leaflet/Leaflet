@@ -30,7 +30,8 @@ describe('ImageOverlay', function () {
 			map.setView(new L.LatLng(55.8, 37.6), 6);	// view needs to be set so when layer is added it is initilized
 
 			overlay = L.imageOverlay(blankUrl, [[40.712216, -74.22655], [40.773941, -74.12544]], {
-				errorOverlayUrl: errorUrl
+				errorOverlayUrl: errorUrl,
+				className: 'my-custom-image-class'
 			});
 			map.addLayer(overlay);
 
@@ -74,6 +75,12 @@ describe('ImageOverlay', function () {
 				raiseImageEvent('error');
 				expect(overlay._url).to.be(errorUrl);
 				expect(overlay._image.src).to.be(errorUrl);
+			});
+		});
+
+		describe('className', function () {
+			it('should set image\'s class', function () {
+				expect(L.DomUtil.hasClass(overlay._image, 'my-custom-image-class')).to.be(true);
 			});
 		});
 	});

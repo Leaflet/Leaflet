@@ -239,6 +239,15 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/stuartmatthews/Leaflet.NonTiledLayer.WCS">Leaflet.NonTiledLayer.WCS</a>
+		</td><td>
+			Display raster data from Web Coverage Services.  Rasters can be styled and queried in the client.  See the <a href="https://stuartmatthews.github.io/Leaflet.NonTiledLayer.WCS/">demo</a>.
+		</td><td>
+			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/balrog-kun/Leaflet.bpg">Leaflet.bpg</a>
 		</td><td>
 			TileLayer with <a href="http://bellard.org/bpg/">.bpg</a> image format decoding.
@@ -300,6 +309,27 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/IvanSanchez/">Iván Sánchez</a>
 		</td>
 	</tr>
+    <tr>
+		<td>
+			<a href="https://github.com/IHCantabria/Leaflet.CanvasLayer.Field">Leaflet.CanvasLayer.Field</a>
+		</td><td>
+			Loads and styles raster files (geotiff & asciigrid formats).
+            It includes a <code>ScalarField</code> layer (for DTM, temperature...) and
+			<code>VectorFieldAnim</code> (an animated layer for wind, currents...). See the <a href="https://ihcantabria.github.io/Leaflet.CanvasLayer.Field/">examples</a>
+		</td><td>
+			<a href="https://github.com/VictorVelarde">Víctor Velarde</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/stuartmatthews/leaflet-geotiff">leaflet-geotiff</a>
+		</td><td>
+			Display raster data from geoTIFF files as images or direction arrows.  Rasters can be styled and queried in the client.  An optional clipping mask can be applied, e.g. to restrict DEMs to land areas.  See the <a href="https://stuartmatthews.github.io/leaflet-geotiff/">demo</a>.
+		</td><td>
+			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
+		</td>
+	</tr>
+    
 </table>
 
 
@@ -482,6 +512,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			A Leaflet TileLayer with getColor(latLng). Demos: <a href="https://frogcat.github.io/leaflet-tilelayer-colorpicker/">color picker</a>, <a href="https://frogcat.github.io/leaflet-tilelayer-colorpicker/mapbox-terrain-rgb.html">elevation picker with mapbox terrain-RGB</a>
 		</td><td>
 			<a href="https://github.com/frogcat">Yuzo Matsuzawa</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/hnrchrdl/leaflet-tilelayer-colorizr">Leaflet.TileLayer.Colorizr</a>
+		</td><td>
+			A Leaflet TileLayer which can modify colors by RGBA code. Demos: coming soon.
+		</td><td>
+			<a href="https://github.com/hnrchrdl">Hinrich Riedel</a>
 		</td>
 	</tr>
 </table>
@@ -836,6 +875,15 @@ These plugins create useful overlays from scratch, no loading required.
 			Draws a grid lines for L.CRS.Simple coordinate system.
 		</td><td>
 			<a href="https://github.com/ablakey">Andrew Blakey</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jonshutt/Leaflet.OS.Graticule">L.OS.Graticule</a>
+		</td><td>
+			Overlays UK Ordinance Survey (OS) 1km grid sqaures and labels.
+		</td><td>
+			<a href="https://github.com/jonshutt">Jon Shutt</a>
 		</td>
 	</tr>
 	<tr>
@@ -1683,6 +1731,25 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/ibesora">ibesora</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jwasilgeo/Leaflet.Canvas-Flowmap-Layer">Leaflet.Canvas-Flowmap-Layer</a>
+		</td><td>
+			A LeafletJS custom map layer for mapping the flow of objects, ideas, people, etc. with Bezier curves rendered on the HTML canvas.
+		</td><td>
+			<a href="https://github.com/jwasilgeo">Jacob Wasilkowski</a>,
+			<a href="https://github.com/sarahbellum">Sarah Bell</a>
+    </td>
+  </tr>
+  <tr>
+    <td>
+			<a href="https://github.com/manubb/Leaflet.PixiOverlay">Leaflet.PixiOverlay</a>
+		</td><td>
+			A Leaflet overlay class for drawing and animating with <a href="http://www.pixijs.com/">Pixi.js</a>. (<a href="https://manubb.github.io/Leaflet.PixiOverlay/demo.html">demo</a>)
+		</td><td>
+			<a href="https://github.com/manubb">Manuel Baclet</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2254,6 +2321,15 @@ Change the way the user can interactively move around the map.
 			A visible, clickable control to perform a box zoom.
 		</td><td>
 			<a href="https://github.com/gregallensworth/L.Control.BoxZoom">Greg Allensworth</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/elrobis/L.Control.ZoomBar">L.Control.ZoomBar</a>
+		</td><td>
+			An extended version of Leaflet's native Zoom control with Home and Zoom-to-Area buttons. <a href="https://elrobis.github.io/L.Control.ZoomBar/">Demo</a>
+		</td><td>
+			<a href="http://cartometric.com/blog/">Elijah Robison</a>
 		</td>
 	</tr>
 	<tr>
@@ -3149,6 +3225,15 @@ Print or export your map.
 			<a href="https://github.com/rowanwins">Rowan Winsemius</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/Igor-Vladyka/leaflet.browser.print">leaflet.browser.print</a>
+		</td><td>
+			Allows users to print full page map directly from the browser.
+		</td><td>
+			<a href="https://github.com/Igor-Vladyka">Igor Vladyka</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -3747,13 +3832,22 @@ The following plugins integrate Leaflet into third party services or websites.
 			<a href="http://marzeelabs.org">Marzee Labs</a>, and more maintainers listed at <a href="http://drupal.org/project/leaflet">drupal.org</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://lapizistik.github.io/leaflet-easymap/">Leaflet Easymap</a>
+		</td><td>
+			Include a map in your HTML page without one line of programming. A data-driven Javascript module.
+		</td><td>
+			<a href="https://github.com/Lapizistik">Klaus Stein</a>
+		</td>
+	</tr>
 </table>
 
 
 
 ## Develop your own
 
-Leaflet keeps it simple. If you can think of a feature that is not required by all of Leaflet users, and you can write the javascript code in a reusable way, you've got yourself a Leaflet plugin already.
+Leaflet keeps it simple. If you can think of a feature that is not required by all Leaflet users, and you can write the JavaScript code in a reusable way, you've got yourself a Leaflet plugin already.
 
 There are no hard requirements on how to create your own plugin, but all developers are encouraged to read the recommendations in the [plugin guide](https://github.com/Leaflet/Leaflet/blob/master/PLUGIN-GUIDE.md).
 

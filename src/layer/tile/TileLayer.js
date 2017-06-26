@@ -42,11 +42,11 @@ export var TileLayer = GridLayer.extend({
 	// @aka TileLayer options
 	options: {
 		// @option minZoom: Number = 0
-		// Minimum zoom number.
+		// The minimum zoom level down to which this layer will be displayed (inclusive).
 		minZoom: 0,
 
 		// @option maxZoom: Number = 18
-		// Maximum zoom number.
+		// The maximum zoom level up to which this layer will be displayed (inclusive).
 		maxZoom: 18,
 
 		// @option subdomains: String|String[] = 'abc'

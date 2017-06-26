@@ -73,7 +73,7 @@ describe("Marker", function () {
 			expect(icon.style.height).to.be(expectedXY + 'px');
 		});
 
-		it("changes the icon to another image", function () {
+		it("changes the icon to another image while re-using the IMG element", function () {
 			var marker = new L.Marker([0, 0], {icon: icon1});
 			map.addLayer(marker);
 
@@ -81,7 +81,7 @@ describe("Marker", function () {
 			marker.setIcon(icon2);
 			var afterIcon = marker._icon;
 
-			expect(beforeIcon).to.be(afterIcon);
+			expect(beforeIcon).to.be(afterIcon); // Check that the <IMG> element is re-used
 			expect(afterIcon.src).to.contain(icon2._getIconUrl('icon'));
 		});
 
@@ -122,7 +122,7 @@ describe("Marker", function () {
 			expect(marker.dragging.enabled()).to.be(true);
 		});
 
-		it("changes the icon to another DivIcon", function () {
+		it("changes the DivIcon to another DivIcon, while re-using the DIV element", function () {
 			var marker = new L.Marker([0, 0], {icon: new L.DivIcon({html: 'Inner1Text'})});
 			map.addLayer(marker);
 
@@ -130,7 +130,7 @@ describe("Marker", function () {
 			marker.setIcon(new L.DivIcon({html: 'Inner2Text'}));
 			var afterIcon = marker._icon;
 
-			expect(beforeIcon).to.be(afterIcon);
+			expect(beforeIcon).to.be(afterIcon); // Check that the <DIV> element is re-used
 			expect(afterIcon.innerHTML).to.contain('Inner2Text');
 		});
 
@@ -151,7 +151,7 @@ describe("Marker", function () {
 
 			marker.setIcon(icon1);
 
-			expect(oldIcon).to.not.be(marker._icon);
+			expect(oldIcon).to.not.be(marker._icon); // Check that the _icon is NOT re-used
 			expect(oldIcon.parentNode).to.be(null);
 
 			if (L.Browser.retina) {
@@ -169,7 +169,7 @@ describe("Marker", function () {
 
 			marker.setIcon(new L.DivIcon({html: 'Inner1Text'}));
 
-			expect(oldIcon).to.not.be(marker._icon);
+			expect(oldIcon).to.not.be(marker._icon); // Check that the _icon is NOT re-used
 			expect(oldIcon.parentNode).to.be(null);
 
 			expect(marker._icon.innerHTML).to.contain('Inner1Text');

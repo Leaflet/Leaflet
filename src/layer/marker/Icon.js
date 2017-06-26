@@ -6,7 +6,6 @@ import {retina} from '../../core/Browser';
 /*
  * @class Icon
  * @aka L.Icon
- * @inherits Layer
  *
  * Represents an icon to provide when creating a marker.
  *
