@@ -83,6 +83,10 @@ table td code b {
 	font-weight: normal;
 }
 
+iframe {
+	border: none;
+}
+
 
 /* headings */
 
@@ -1079,4 +1083,10 @@ iframe[src*='youtube.com'] {
 .no-break {
 	display: inline-block;
 	width: 100%;
+}
+
+.announcement {
+	background: #eee;
+	padding: 5px 10px;
+	border-radius: 10px;
 }
