@@ -202,6 +202,16 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+        <td>
+        	<a href="http://iclient.supermapol.com">SuperMap iClient</a>
+        </td><td>
+        SuperMap iClient is a set of GIS client application development kit for using SuperMap services with Leaflet.
+         Support for SuperMap iServer/iExpress/iPortal/Online tiles, services and more.
+        </td><td>
+        	<a href="https://github.com/SuperMap">SuperMap</a>
+        </td>
+    </tr>
 </table>
 
 
