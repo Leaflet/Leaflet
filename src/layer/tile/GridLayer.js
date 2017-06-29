@@ -88,7 +88,8 @@ export var GridLayer = Layer.extend({
 		// @option updateWhenIdle: Boolean = (depends)
 		// Load new tiles only when panning ends.
 		// `true` by default on mobile browsers, in order to avoid too many requests and keep smooth navigation.
-		// `false` otherwise in order to display new tiles during panning, which can be extensive on desktop browsers.
+		// `false` otherwise in order to display new tiles _during_ panning, since it is easy to pan outside the
+		// [`keepBuffer`](#gridlayer-keepbuffer) option in desktop browsers.
 		updateWhenIdle: Browser.mobile,
 
 		// @option updateWhenZooming: Boolean = true
