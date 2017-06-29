@@ -75,7 +75,7 @@ export var Draggable = Evented.extend({
 
 		// If we're currently dragging this draggable,
 		// disabling it counts as first ending the drag.
-		if (this._dragging === this) {
+		if (_dragging === this) {
 			this.finishDrag();
 		}
 
