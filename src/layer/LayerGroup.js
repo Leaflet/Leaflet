@@ -159,7 +159,7 @@ export var LayerGroup = Layer.extend({
 });
 
 
-// @factory L.layerGroup(layers: Layer[])
+// @factory L.layerGroup(layers?: Layer[])
 // Create a layer group, optionally given an initial set of layers.
 export var layerGroup = function (layers) {
 	return new LayerGroup(layers);
