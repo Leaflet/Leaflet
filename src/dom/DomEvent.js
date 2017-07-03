@@ -70,6 +70,8 @@ export function off(obj, types, fn, context) {
 		}
 		delete obj[eventsKey];
 	}
+
+	return this;
 }
 
 function addOne(obj, type, fn, context) {
