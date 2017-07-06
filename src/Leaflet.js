@@ -1,29 +1,35 @@
 
-var L = {
-	version: 'dev'
-};
+import {version} from '../package.json';
+export {version};
 
-function expose() {
-	var oldL = window.L;
+// control
+export * from './control/index';
 
-	L.noConflict = function () {
-		window.L = oldL;
-		return this;
-	};
+// core
+export * from './core/index';
 
-	window.L = L;
+// dom
+export * from './dom/index';
+
+// geometry
+export * from './geometry/index';
+
+// geo
+export * from './geo/index';
+
+// layer
+export * from './layer/index';
+
+// map
+export * from './map/index';
+
+// misc
+
+var oldL = window.L;
+export function noConflict() {
+	window.L = oldL;
+	return this;
 }
 
-// define Leaflet for Node module pattern loaders, including Browserify
-if (typeof module === 'object' && typeof module.exports === 'object') {
-	module.exports = L;
-
-// define Leaflet as an AMD module
-} else if (typeof define === 'function' && define.amd) {
-	define(L);
-}
-
-// define Leaflet as a global L variable, saving the original L to restore later if needed
-if (typeof window !== 'undefined') {
-	expose();
-}
+// Always export us to window global (see #2364)
+window.L = exports;

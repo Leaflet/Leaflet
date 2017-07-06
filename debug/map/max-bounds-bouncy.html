@@ -9,7 +9,6 @@
 
 	<link rel="stylesheet" href="../css/mobile.css" />
 
-	<script type="text/javascript" src="../../build/deps.js"></script>
 	<script src="../leaflet-include.js"></script>
 </head>
 <body>
@@ -19,7 +18,7 @@
 	<div id="map1" style="float: left; width:45%; height: 80%;"></div>
 	<div id="map2" style="float: left; width:45%; height: 80%;"></div>
 
-	<script type="text/javascript">
+	<script>
 
 		var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
 			osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -44,8 +43,8 @@
 		});
 
 		var latlngs = L.rectangle(bounds).getLatLngs();
-		L.polyline(latlngs.concat([latlngs[0]])).addTo(map1);
-		L.polyline(latlngs.concat([latlngs[0]])).addTo(map2);
+		L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map1);
+		L.polyline(latlngs[0].concat(latlngs[0][0])).addTo(map2);
 
 	</script>
 </body>

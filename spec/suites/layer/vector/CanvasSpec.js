@@ -73,6 +73,51 @@ describe('Canvas', function () {
 			map.off("click", spy);
 		});
 
+		it("should fire preclick before click", function () {
+			var clickSpy = sinon.spy();
+			var preclickSpy = sinon.spy();
+			layer.on('click', clickSpy);
+			layer.on('preclick', preclickSpy);
+			layer.once('preclick', function (e) {
+				expect(clickSpy.called).to.be(false);
+			});
+			happen.at('click', 50, 50);  // Click on the layer.
+			expect(clickSpy.callCount).to.eql(1);
+			expect(preclickSpy.callCount).to.eql(1);
+			happen.at('click', 150, 150);  // Click outside layer.
+			expect(clickSpy.callCount).to.eql(1);
+			expect(preclickSpy.callCount).to.eql(1);
+			layer.off();
+		});
+
+		it("should not fire click when dragging the map on top of it", function (done) {
+			var downSpy = sinon.spy();
+			var clickSpy = sinon.spy();
+			var preclickSpy = sinon.spy();
+			layer.on('click', clickSpy);
+			layer.on('preclick', preclickSpy);
+			layer.on('mousedown', downSpy);
+			var hand = new Hand({
+				timing: 'fastframe',
+				onStop: function () {
+					// Prosthetic does not fire a click when we down+up, but it real world
+					// browsers would, so let's simulate it.
+					happen.at('click', 70, 60);
+					expect(downSpy.called).to.be(true);
+					expect(clickSpy.called).to.be(false);
+					expect(preclickSpy.called).to.be(false);
+					layer.off();
+					done();
+				}
+			});
+			var mouse = hand.growFinger('mouse');
+
+			// We move 5 pixels first to overcome the 3-pixel threshold of
+			// L.Draggable.
+			mouse.moveTo(50, 50, 0)
+				.down().moveBy(20, 10, 200).up();
+		});
+
 	});
 
 	describe("#events(interactive=false)", function () {
@@ -110,6 +155,38 @@ describe('Canvas', function () {
 				dashArray: "5,5"
 			});
 		});
+	});
+
+	it('removes vector on next animation frame', function (done) {
+		var layer = L.circle([0, 0]).addTo(map),
+		    layerId = L.stamp(layer),
+		    canvas = map.getRenderer(layer);
+
+		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+
+		map.removeLayer(layer);
+		// Defer check due to how Canvas renderer manages layer removal.
+		L.Util.requestAnimFrame(function () {
+			expect(canvas._layers.hasOwnProperty(layerId)).to.be(false);
+			done();
+		}, this);
+	});
+
+	it('adds vectors even if they have been removed just before', function (done) {
+		var layer = L.circle([0, 0]).addTo(map),
+		    layerId = L.stamp(layer),
+		    canvas = map.getRenderer(layer);
+
+		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+
+		map.removeLayer(layer);
+		map.addLayer(layer);
+		expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+		// Re-perform a deferred check due to how Canvas renderer manages layer removal.
+		L.Util.requestAnimFrame(function () {
+			expect(canvas._layers.hasOwnProperty(layerId)).to.be(true);
+			done();
+		}, this);
 	});
 
 });

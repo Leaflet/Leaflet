@@ -1,10 +1,15 @@
+import {Map} from '../Map';
+import {Handler} from '../../core/Handler';
+import * as DomEvent from '../../dom/DomEvent';
+import * as Util from '../../core/Util';
+
 /*
  * L.Handler.ScrollWheelZoom is used by L.Map to enable mouse scroll wheel zoom on the map.
  */
 
 // @namespace Map
 // @section Interaction Options
-L.Map.mergeOptions({
+Map.mergeOptions({
 	// @section Mousewheel options
 	// @option scrollWheelZoom: Boolean|String = true
 	// Whether the map can be zoomed by using the mouse wheel. If passed `'center'`,
@@ -16,26 +21,26 @@ L.Map.mergeOptions({
 	// user can't zoom via wheel more often than once per 40 ms.
 	wheelDebounceTime: 40,
 
-	// @option wheelPxPerZoomLevel: Number = 50
+	// @option wheelPxPerZoomLevel: Number = 60
 	// How many scroll pixels (as reported by [L.DomEvent.getWheelDelta](#domevent-getwheeldelta))
 	// mean a change of one full zoom level. Smaller values will make wheel-zooming
 	// faster (and vice versa).
-	wheelPxPerZoomLevel: 50
+	wheelPxPerZoomLevel: 60
 });
 
-L.Map.ScrollWheelZoom = L.Handler.extend({
+export var ScrollWheelZoom = Handler.extend({
 	addHooks: function () {
-		L.DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		DomEvent.on(this._map._container, 'mousewheel', this._onWheelScroll, this);
 
 		this._delta = 0;
 	},
 
 	removeHooks: function () {
-		L.DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll, this);
+		DomEvent.off(this._map._container, 'mousewheel', this._onWheelScroll, this);
 	},
 
 	_onWheelScroll: function (e) {
-		var delta = L.DomEvent.getWheelDelta(e);
+		var delta = DomEvent.getWheelDelta(e);
 
 		var debounce = this._map.options.wheelDebounceTime;
 
@@ -49,9 +54,9 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 		var left = Math.max(debounce - (+new Date() - this._startTime), 0);
 
 		clearTimeout(this._timer);
-		this._timer = setTimeout(L.bind(this._performZoom, this), left);
+		this._timer = setTimeout(Util.bind(this._performZoom, this), left);
 
-		L.DomEvent.stop(e);
+		DomEvent.stop(e);
 	},
 
 	_performZoom: function () {
@@ -83,4 +88,4 @@ L.Map.ScrollWheelZoom = L.Handler.extend({
 // @section Handlers
 // @property scrollWheelZoom: Handler
 // Scroll wheel zoom handler.
-L.Map.addInitHook('addHandler', 'scrollWheelZoom', L.Map.ScrollWheelZoom);
+Map.addInitHook('addHandler', 'scrollWheelZoom', ScrollWheelZoom);

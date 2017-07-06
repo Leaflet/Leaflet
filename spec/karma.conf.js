@@ -1,25 +1,31 @@
+var json = require('rollup-plugin-json');
+
 // Karma configuration
 module.exports = function (config) {
 
-	var libSources = require(__dirname+'/../build/build.js').getFiles();
+// 	var libSources = require(__dirname + '/../build/build.js').getFiles();
 
 	var files = [
 		"spec/sinon.js",
-		"spec/expect.js"
-	].concat(libSources, [
+		"spec/expect.js",
+
+		"src/Leaflet.js",
+
 		"spec/after.js",
 		"node_modules/happen/happen.js",
 		"node_modules/prosthetic-hand/dist/prosthetic-hand.js",
 		"spec/suites/SpecHelper.js",
 		"spec/suites/**/*.js",
-		{pattern: "dist/images/*.png", included: false}
-	]);
+		"dist/*.css",
+		{pattern: "dist/images/*.png", included: false, serve: true}
+	];
 
 	config.set({
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
 
 		plugins: [
+			'karma-rollup-plugin',
 			'karma-mocha',
 			'karma-coverage',
 			'karma-phantomjs-launcher',
@@ -32,7 +38,22 @@ module.exports = function (config) {
 
 		// list of files / patterns to load in the browser
 		files: files,
+		proxies: {
+			'/base/dist/images/': 'dist/images/'
+		},
 		exclude: [],
+
+		// Rollup the ES6 Leaflet sources into just one file, before tests
+		preprocessors: {
+			'src/Leaflet.js': ['rollup']
+		},
+		rollupPreprocessor: {
+			plugins: [
+				json()
+			],
+			format: 'umd',
+			moduleName: 'L'
+		},
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
@@ -59,7 +80,21 @@ module.exports = function (config) {
 		// - Safari (only Mac)
 		// - PhantomJS
 		// - IE (only Windows)
-		browsers: ['PhantomJS'],
+		browsers: ['PhantomJSCustom'],
+
+		customLaunchers: {
+			'PhantomJSCustom': {
+				base: 'PhantomJS',
+				flags: ['--load-images=true'],
+				options: {
+					onCallback: function (data) {
+						if (data.render) {
+							page.render(data.render);
+						}
+					}
+				}
+			}
+		},
 
 		// If browser does not capture in given timeout [ms], kill it
 		captureTimeout: 5000,
