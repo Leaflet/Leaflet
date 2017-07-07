@@ -2649,7 +2649,7 @@ Allow the user to measure distances or areas.
 		<td>
 			<a href="https://github.com/ppete2/Leaflet.PolylineMeasure">Leaflet.PolylineMeasure</a>
 		</td><td>
-			 Measure great-circle distances of simple lines as well as of complex polylines. <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo1.html">(Demo 1)</a>, <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo2.html">(Demo 2)</a>, <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo3.html">(Demo 3)</a>
+			 Measure great-circle distances of simple lines as well as of complex polylines. (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo1.html">Demo 1</a>), (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo2.html">Demo 2</a>), (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo3.html">Demo 3</a>)
 		</td><td>
 			<a href="https://github.com/ppete2">PPete</a>
 		</td>
