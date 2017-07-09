@@ -19,8 +19,9 @@ Before writing any code for the map, you need to do the following preparation st
 		  integrity="{{site.integrity_hash_css}}"
 		  crossorigin=""/>
 
- * Include Leaflet JavaScript file:
+ * Include Leaflet JavaScript file **after** Leaflet's CSS:
 
+		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		<script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
 		  integrity="{{site.integrity_hash_uglified}}"
 		  crossorigin=""></script>
