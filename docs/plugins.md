@@ -329,7 +329,7 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
 		</td>
 	</tr>
-    
+
 </table>
 
 
@@ -1398,6 +1398,18 @@ These plugins provide new markers or news ways of converting abstract data into 
 			Display thousands of markers with custom WebGL shaders, optionally animated. (<a href='http://https://ivansanchez.gitlab.io/Leaflet.GLMarkers/demo/repl.html'>demo</a>)
 		</td><td>
 			<a href="https://gitlab.com/IvanSanchez">Iván Sánchez Ortega</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ggolikov/Leaflet.River">Leaflet.River</a>
+		</td>
+		<td>
+			Draw lines with different width (like rivers) on a map.
+			Useful when you want to show how rivers 'flow' on the map (<a href="https://ggolikov.github.io/Leaflet.River/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
 </table>
