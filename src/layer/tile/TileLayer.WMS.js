@@ -102,10 +102,10 @@ export var TileLayerWMS = TileLayer.extend({
 		  se = this._crs.project(tileBounds[1]);
 		// in polar projections NS lat/lon box might reversed (S 'above' N) so check and swap if need be
 		if (se.y > nw.y) {
-		  var temp = nw;
-		  nw = se;
-		  se = temp;
-                }
+			var temp = nw;
+			nw = se;
+			se = temp;
+		}
 		var    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 			   [se.y, nw.x, nw.y, se.x] :
 			   [nw.x, se.y, se.x, nw.y]).join(','),
