@@ -29,6 +29,8 @@
     "uglify-js": "~2.7.3"
   },
   "main": "dist/leaflet-src.js",
+  "module": "src/index",
+  "jsnext:main": "src/index",
   "style": "dist/leaflet.css",
   "scripts": {
     "test-jake": "jake test",
