@@ -98,23 +98,19 @@ export var TileLayerWMS = TileLayer.extend({
 	getTileUrl: function (coords) {
 
 		var tileBounds = this._tileCoordsToNwSe(coords),
-		   nw = this._crs.project(tileBounds[0]),
-		   se = this._crs.project(tileBounds[1]);
-            
-                if (se.y > nw.y){
+		var nw = this._crs.project(tileBounds[0]),
+		var se = this._crs.project(tileBounds[1]);
+                if (se.y > nw.y) {
                     var temp = nw;
                     nw = se;
                     se = temp;
                 }
-
 		var    bbox = (this._wmsVersion >= 1.3 && this._crs === L.CRS.EPSG4326 ?
 			   [se.y, nw.x, nw.y, se.x] :
 			   [nw.x, se.y, se.x, nw.y]).join(','),
-
-		   url = L.TileLayer.prototype.getTileUrl.call(this, coords);
-
+		url = L.TileLayer.prototype.getTileUrl.call(this, coords);
 		return url +
-			L.Util.getParamString(this.wmsParams, url, this.options.uppercase) +
+			getParamString(this.wmsParams, url, this.options.uppercase) +
 			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
 	},
 
