@@ -731,26 +731,30 @@ export var GridLayer = Layer.extend({
 		return this._tileCoordsToBounds(this._keyToTileCoords(key));
 	},
 
-	// converts tile coordinates to its geographical bounds
-	_tileCoordsToBounds: function (coords) {
-
+_tileCoordsToNwSe: function (coords){
 		var map = this._map,
-		    tileSize = this.getTileSize(),
+		   tileSize = this.getTileSize(),
 
-		    nwPoint = coords.scaleBy(tileSize),
-		    sePoint = nwPoint.add(tileSize),
+		   nwPoint = coords.scaleBy(tileSize),
+		   sePoint = nwPoint.add(tileSize),
 
-		    nw = map.unproject(nwPoint, coords.z),
-		    se = map.unproject(sePoint, coords.z),
-		    bounds = new LatLngBounds(nw, se);
+		   nw = map.unproject(nwPoint, coords.z),
+		   se = map.unproject(sePoint, coords.z);
+                    return [nw,se];
+        },
+        
+	// converts tile coordinates to its geographical bounds
+_tileCoordsToBounds: function (coords) {
+
+            var bp = _tileCoordsToNwSe(coords),
+            bounds = new L.LatLngBounds(bp[0], bp[1]);
 
 		if (!this.options.noWrap) {
 			bounds = map.wrapLatLngBounds(bounds);
 		}
 
 		return bounds;
-	},
-
+}
 	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
 		return coords.x + ':' + coords.y + ':' + coords.z;
