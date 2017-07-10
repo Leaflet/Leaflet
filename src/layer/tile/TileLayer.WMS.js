@@ -105,7 +105,6 @@ export var TileLayerWMS = TileLayer.extend({
                     var temp = nw;
                     nw = se;
                     se = temp;
-                    console.log("Switch Y");
                 }
 
 		var    bbox = (this._wmsVersion >= 1.3 && this._crs === L.CRS.EPSG4326 ?
