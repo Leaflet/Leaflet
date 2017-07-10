@@ -116,7 +116,7 @@ export var TileLayerWMS = TileLayer.extend({
 		return url +
 			L.Util.getParamString(this.wmsParams, url, this.options.uppercase) +
 			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
-	}
+	},
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
