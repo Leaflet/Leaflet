@@ -746,7 +746,7 @@ export var GridLayer = Layer.extend({
 	// converts tile coordinates to its geographical bounds
 	_tileCoordsToBounds: function (coords) {
 		var bp = this._tileCoordsToNwSe(coords),
-		bounds = new latLngBounds(bp[0], bp[1]);
+		bounds = new LatLngBounds(bp[0], bp[1]);
 
 		if (!this.options.noWrap) {
 			bounds = this._map.wrapLatLngBounds(bounds);
