@@ -98,8 +98,8 @@ export var TileLayerWMS = TileLayer.extend({
 	getTileUrl: function (coords) {
 
 		var tileBounds = this._tileCoordsToNwSe(coords),
-		var nw = this._crs.project(tileBounds[0]),
-		var se = this._crs.project(tileBounds[1]);
+		  nw = this._crs.project(tileBounds[0]),
+		  se = this._crs.project(tileBounds[1]);
                 if (se.y > nw.y) {
                     var temp = nw;
                     nw = se;
