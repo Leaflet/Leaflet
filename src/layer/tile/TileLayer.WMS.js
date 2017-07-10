@@ -100,12 +100,13 @@ export var TileLayerWMS = TileLayer.extend({
 		var tileBounds = this._tileCoordsToNwSe(coords),
 		  nw = this._crs.project(tileBounds[0]),
 		  se = this._crs.project(tileBounds[1]);
-                if (se.y > nw.y) {
-                    var temp = nw;
-                    nw = se;
-                    se = temp;
+		// in polar projections NS lat/lon box might reversed (S 'above' N) so check and swap if need be
+		if (se.y > nw.y) {
+		  var temp = nw;
+		  nw = se;
+		  se = temp;
                 }
-		var    bbox = (this._wmsVersion >= 1.3 && this._crs === L.CRS.EPSG4326 ?
+		var    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
 			   [se.y, nw.x, nw.y, se.x] :
 			   [nw.x, se.y, se.x, nw.y]).join(','),
 		url = L.TileLayer.prototype.getTileUrl.call(this, coords);
