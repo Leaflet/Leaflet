@@ -741,12 +741,12 @@ export var GridLayer = Layer.extend({
 		nw = map.unproject(nwPoint, coords.z),
 		se = map.unproject(sePoint, coords.z);
 		return [nw, se];
-        },
-        
+	},
+
 	// converts tile coordinates to its geographical bounds
 	_tileCoordsToBounds: function (coords) {
-		var bp = _tileCoordsToNwSe(coords),
-		bounds = new L.LatLngBounds(bp[0], bp[1]);
+		var bp = this._tileCoordsToNwSe(coords),
+		bounds = new latLngBounds(bp[0], bp[1]);
 
 		if (!this.options.noWrap) {
 			bounds = this._map.wrapLatLngBounds(bounds);
