@@ -97,20 +97,27 @@ export var TileLayerWMS = TileLayer.extend({
 
 	getTileUrl: function (coords) {
 
-		var tileBounds = this._tileCoordsToBounds(coords),
-		    nw = this._crs.project(tileBounds.getNorthWest()),
-		    se = this._crs.project(tileBounds.getSouthEast()),
+		var tileBounds = this._tileCoordsToNwSe(coords),
+		   nw = this._crs.project(tileBounds[0]),
+		   se = this._crs.project(tileBounds[1]);
+            
+                if (se.y > nw.y){
+                    var temp = nw;
+                    nw = se;
+                    se = temp;
+                    console.log("Switch Y");
+                }
 
-		    bbox = (this._wmsVersion >= 1.3 && this._crs === EPSG4326 ?
-			    [se.y, nw.x, nw.y, se.x] :
-			    [nw.x, se.y, se.x, nw.y]).join(','),
+		var    bbox = (this._wmsVersion >= 1.3 && this._crs === L.CRS.EPSG4326 ?
+			   [se.y, nw.x, nw.y, se.x] :
+			   [nw.x, se.y, se.x, nw.y]).join(','),
 
-		    url = TileLayer.prototype.getTileUrl.call(this, coords);
+		   url = L.TileLayer.prototype.getTileUrl.call(this, coords);
 
 		return url +
-			getParamString(this.wmsParams, url, this.options.uppercase) +
+			L.Util.getParamString(this.wmsParams, url, this.options.uppercase) +
 			(this.options.uppercase ? '&BBOX=' : '&bbox=') + bbox;
-	},
+	}
 
 	// @method setParams(params: Object, noRedraw?: Boolean): this
 	// Merges an object with the new parameters and re-requests tiles on the current screen (unless `noRedraw` was set to true).
