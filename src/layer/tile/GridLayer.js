@@ -731,7 +731,7 @@ export var GridLayer = Layer.extend({
 		return this._tileCoordsToBounds(this._keyToTileCoords(key));
 	},
 
-_tileCoordsToNwSe: function (coords){
+	_tileCoordsToNwSe: function (coords){
 		var map = this._map,
 		   tileSize = this.getTileSize(),
 
@@ -744,7 +744,7 @@ _tileCoordsToNwSe: function (coords){
         },
         
 	// converts tile coordinates to its geographical bounds
-_tileCoordsToBounds: function (coords) {
+	_tileCoordsToBounds: function (coords) {
 
             var bp = _tileCoordsToNwSe(coords),
             bounds = new L.LatLngBounds(bp[0], bp[1]);
@@ -754,7 +754,7 @@ _tileCoordsToBounds: function (coords) {
 		}
 
 		return bounds;
-}
+	},
 	// converts tile coordinates to key for the tile cache
 	_tileCoordsToKey: function (coords) {
 		return coords.x + ':' + coords.y + ':' + coords.z;
