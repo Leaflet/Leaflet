@@ -736,9 +736,8 @@ export var GridLayer = Layer.extend({
 		    tileSize = this.getTileSize(),
 		    nwPoint = coords.scaleBy(tileSize),
 		    sePoint = nwPoint.add(tileSize),
-
-		nw = map.unproject(nwPoint, coords.z),
-		se = map.unproject(sePoint, coords.z);
+		    nw = map.unproject(nwPoint, coords.z),
+		    se = map.unproject(sePoint, coords.z);
 		return [nw, se];
 	},
 
