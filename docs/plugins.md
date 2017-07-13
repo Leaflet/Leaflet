@@ -3201,7 +3201,7 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="https://github.com/consbio/Leaflet.HtmlLegend">Leaflet.HtmlLegend</a>
 		</td>
 		<td>
-			A simple Leaflet plugin for creating legends using HTML elements
+			A simple Leaflet plugin for creating legends using HTML elements. <a href="https://consbio.github.io/Leaflet.HtmlLegend/">Demo</a>.
 		</td>
 		<td>
 			<a href="https://github.com/ka7eh">Kaveh Karimi</a>
