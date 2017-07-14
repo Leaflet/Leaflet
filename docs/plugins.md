@@ -3405,7 +3405,7 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 		<td>
 			<a href="https://github.com/jjimenezshaw/Leaflet.UTM">Leaflet.UTM</a>
 		</td><td>
-			A simple way to convert L.LatLng into UTM (WGS84) and vice versa. UTM string format easily configurable. See <a href="https://jjimenezshaw.github.io/Leaflet.UTM/examples/input.html">demo</a>
+			A simple way to convert L.LatLng into UTM (WGS84) and vice versa. UTM string format easily configurable. It does not depend on any other plugin or 3rd party. See <a href="https://jjimenezshaw.github.io/Leaflet.UTM/examples/input.html">demo</a>
 		</td><td>
 			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
 		</td>
