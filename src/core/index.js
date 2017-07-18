@@ -10,6 +10,6 @@ export var Mixin = {Events: Events};
 
 export {Handler} from './Handler';
 
-import * as Util from './Util';
+import Util from './Util';
 export {Util};
 export {extend, bind, stamp, setOptions} from './Util';
