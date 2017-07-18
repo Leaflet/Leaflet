@@ -523,6 +523,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/hnrchrdl">Hinrich Riedel</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.UTFGrid">Leaflet.UTFGrid</a>
+		</td><td>
+			Provides UTF-8 Grid support for Leaflet >= 1.0.  Includes basic mouseover support plus ability to highlight feature from UTFGrid on hover (<a href="https://consbio.github.io/Leaflet.UTFGrid/">demo</a>).
+		</td><td>
+			<a href="https://github.com/brendan-ward">Brendan Ward</a>
+		</td>
+	</tr>	
 </table>
 
 
