@@ -30,6 +30,11 @@
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
+  "files": [
+    "dist",
+    "src",
+    "!dist/leaflet.zip"
+  ],
   "scripts": {
     "test-jake": "jake test",
     "test": "jake test",
