@@ -1903,6 +1903,15 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/willfarrell/Leaflet.Clipper">Leaflet.Clipper</a>
+		</td><td>
+			Allows Union, Difference, Xor, and Intersection operations on two polygons. (<a href="https://willfarrell.github.io/Leaflet.Clipper">Demo</a>)
+		</td><td>
+			<a href="https://github.com/willfarrell">will Farrell</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/SINTEF-9012/Leaflet.MapPaint">Leaflet.MapPaint</a>
 		</td>
 		<td>
