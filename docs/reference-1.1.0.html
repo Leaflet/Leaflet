@@ -6,8 +6,7 @@ bodyclass: api-page
 
 <h2>API Reference</h2>
 
-<p>This reference reflects <strong>Leaflet 1.0.3</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
-
+<p>This reference reflects <strong>Leaflet 1.1.0</strong>. Check <a href='reference-versions.html'>this list</a> if you are using a different version of Leaflet.</p>
 
 	<div id="toc" class="clearfix">
 		<div class="toc-col map-col">
@@ -44,6 +43,7 @@ bodyclass: api-page
 				<li><a href="#tilelayer">TileLayer</a></li>
 				<li><a href="#tilelayer-wms">TileLayer.WMS</a></li>
 				<li><a href="#imageoverlay">ImageOverlay</a></li>
+				<li><a href="#videooverlay">VideoOverlay</a></li>
 			</ul>
 			<h4>Vector Layers</h4>
 			<ul>
@@ -337,14 +337,18 @@ sure what it means.</td>
 	<tr id='map-minzoom'>
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code>
-		<td><code>undefined</code></td>
-		<td>Minimum zoom level of the map. Overrides any <code>minZoom</code> option set on map layers.</td>
+		<td><code>*</code></td>
+		<td>Minimum zoom level of the map.
+If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
+the lowest of their <code>minZoom</code> options will be used instead.</td>
 	</tr>
 	<tr id='map-maxzoom'>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code>
-		<td><code>undefined</code></td>
-		<td>Maximum zoom level of the map. Overrides any <code>maxZoom</code> option set on map layers.</td>
+		<td><code>*</code></td>
+		<td>Maximum zoom level of the map.
+If not specified and at least one <a href="#gridlayer"><code>GridLayer</code></a> or <a href="#tilelayer"><code>TileLayer</code></a> is in the map,
+the highest of their <code>maxZoom</code> options will be used instead.</td>
 	</tr>
 	<tr id='map-layers'>
 		<td><code><b>layers</b></code></td>
@@ -1016,7 +1020,7 @@ animation options.</p>
 </td>
 	</tr>
 	<tr id='map-setzoom'>
-		<td><code><b>setZoom</b>(<nobr>&lt;Number&gt;</nobr> <i>zoom</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options</i>)</nobr></code></td>
+		<td><code><b>setZoom</b>(<nobr>&lt;Number&gt;</nobr> <i>zoom</i>, <nobr>&lt;<a href='#zoom/pan-options'>Zoom/pan options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Sets the zoom of the map.</p>
 </td>
@@ -1067,7 +1071,7 @@ zoom level possible.</p>
 </td>
 	</tr>
 	<tr id='map-panby'>
-		<td><code><b>panBy</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>offset</i>)</nobr></code></td>
+		<td><code><b>panBy</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>offset</i>, <nobr>&lt;<a href='#pan-options'>Pan options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td><code>this</code></td>
 		<td><p>Pans the map by a given number of pixels (animated).</p>
 </td>
@@ -1199,8 +1203,8 @@ and aborts resetting the map view if map.locate was called with
 		<td><code><b>createPane</b>(<nobr>&lt;String&gt;</nobr> <i>name</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>container?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>Creates a new <a href="#map-pane">map pane</a> with the given name if it doesn&#39;t exist already,
-then returns it. The pane is created as a children of <code>container</code>, or
-as a children of the main map pane if not set.</p>
+then returns it. The pane is created as a child of <code>container</code>, or
+as a child of the main map pane if not set.</p>
 </td>
 	</tr>
 	<tr id='map-getpane'>
@@ -2116,7 +2120,9 @@ panning inertia).</td>
 		<td><code><b>icon</b></code></td>
 		<td><code><a href='#icon'>Icon</a></code>
 		<td><code>*</code></td>
-		<td>Icon class to use for rendering the marker. See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon. If not specified, a new <a href="#icon-default"><code>L.Icon.Default</code></a> is used.</td>
+		<td>Icon instance to use for rendering the marker.
+See <a href="#icon">Icon documentation</a> for details on how to customize the marker icon.
+If not specified, a common instance of <a href="#icon-default"><code>L.Icon.Default</code></a> is used.</td>
 	</tr>
 	<tr id='marker-draggable'>
 		<td><code><b>draggable</b></code></td>
@@ -2171,6 +2177,13 @@ panning inertia).</td>
 		<td><code>String</code>
 		<td><code>&#x27;markerPane&#x27;</code></td>
 		<td><code>Map pane</code> where the markers icon will be added.</td>
+	</tr>
+	<tr id='marker-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>When <code>true</code>, a mouse event on this marker will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 </tbody></table>
 
@@ -2834,7 +2847,7 @@ properties. The event can optionally be propagated to event parents.</p>
 	<tr id='marker-dragging'>
 		<td><code><b>dragging</b>
 		<td><code><a href='#handler'>Handler</a></code></td>
-		<td>Marker dragging handler (by both mouse and touch).</td>
+		<td>Marker dragging handler (by both mouse and touch). Only valid when the marker is on the map (Otherwise set <a href="#marker-draggable"><code>marker.options.draggable</code></a>).</td>
 	</tr>
 </tbody></table>
 
@@ -2968,19 +2981,19 @@ off of the screen while it is open.</td>
 		<td><code>true</code></td>
 		<td>Controls the presence of a close button in the popup.</td>
 	</tr>
-	<tr id='popup-closeonclick'>
-		<td><code><b>closeOnClick</b></code></td>
-		<td><code>Boolean</code>
-		<td><code>*</code></td>
-		<td>Set it if you want to override the default behavior of the popup closing when user clicks
-on the map. Defaults to the Map&#39;s <a href="#map-closepopuponclick">closePopupOnClick</a> option.</td>
-	</tr>
 	<tr id='popup-autoclose'>
 		<td><code><b>autoClose</b></code></td>
 		<td><code>Boolean</code>
 		<td><code>true</code></td>
 		<td>Set it to <code>false</code> if you want to override the default behavior of
 the popup closing when another popup is opened.</td>
+	</tr>
+	<tr id='popup-closeonclick'>
+		<td><code><b>closeOnClick</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>*</code></td>
+		<td>Set it if you want to override the default behavior of the popup closing when user clicks
+on the map. Defaults to the map&#39;s <a href="#map-closepopuponclick"><code>closePopupOnClick</code></a> option.</td>
 	</tr>
 	<tr id='popup-classname'>
 		<td><code><b>className</b></code></td>
@@ -4212,29 +4225,13 @@ properties. The event can optionally be propagated to event parents.</p>
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code>
 		<td><code>0</code></td>
-		<td>Minimum zoom number.</td>
+		<td>The minimum zoom level down to which this layer will be displayed (inclusive).</td>
 	</tr>
 	<tr id='tilelayer-maxzoom'>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code>
 		<td><code>18</code></td>
-		<td>Maximum zoom number.</td>
-	</tr>
-	<tr id='tilelayer-maxnativezoom'>
-		<td><code><b>maxNativeZoom</b></code></td>
-		<td><code>Number</code>
-		<td><code>null</code></td>
-		<td>Maximum zoom number the tile source has available. If it is specified,
-the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
-from <code>maxNativeZoom</code> level and auto-scaled.</td>
-	</tr>
-	<tr id='tilelayer-minnativezoom'>
-		<td><code><b>minNativeZoom</b></code></td>
-		<td><code>Number</code>
-		<td><code>null</code></td>
-		<td>Minimum zoom number the tile source has available. If it is specified,
-the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
-from <code>minNativeZoom</code> level and auto-scaled.</td>
+		<td>The maximum zoom level up to which this layer will be displayed (inclusive).</td>
 	</tr>
 	<tr id='tilelayer-subdomains'>
 		<td><code><b>subdomains</b></code></td>
@@ -4340,6 +4337,22 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td><code><a href='#latlngbounds'>LatLngBounds</a></code>
 		<td><code>undefined</code></td>
 		<td>If set, tiles will only be loaded inside the set <a href="#latlngbounds"><code>LatLngBounds</code></a>.</td>
+	</tr>
+	<tr id='tilelayer-maxnativezoom'>
+		<td><code><b>maxNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>undefined</code></td>
+		<td>Maximum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
+from <code>maxNativeZoom</code> level and auto-scaled.</td>
+	</tr>
+	<tr id='tilelayer-minnativezoom'>
+		<td><code><b>minNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>undefined</code></td>
+		<td>Minimum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
+from <code>minNativeZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr id='tilelayer-nowrap'>
 		<td><code><b>noWrap</b></code></td>
@@ -5124,29 +5137,13 @@ map CRS. Don&#39;t change this if you&#39;re not sure what it means.</td>
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code>
 		<td><code>0</code></td>
-		<td>Minimum zoom number.</td>
+		<td>The minimum zoom level down to which this layer will be displayed (inclusive).</td>
 	</tr>
 	<tr id='tilelayer-wms-maxzoom'>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code>
 		<td><code>18</code></td>
-		<td>Maximum zoom number.</td>
-	</tr>
-	<tr id='tilelayer-wms-maxnativezoom'>
-		<td><code><b>maxNativeZoom</b></code></td>
-		<td><code>Number</code>
-		<td><code>null</code></td>
-		<td>Maximum zoom number the tile source has available. If it is specified,
-the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
-from <code>maxNativeZoom</code> level and auto-scaled.</td>
-	</tr>
-	<tr id='tilelayer-wms-minnativezoom'>
-		<td><code><b>minNativeZoom</b></code></td>
-		<td><code>Number</code>
-		<td><code>null</code></td>
-		<td>Minimum zoom number the tile source has available. If it is specified,
-the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
-from <code>minNativeZoom</code> level and auto-scaled.</td>
+		<td>The maximum zoom level up to which this layer will be displayed (inclusive).</td>
 	</tr>
 	<tr id='tilelayer-wms-subdomains'>
 		<td><code><b>subdomains</b></code></td>
@@ -5253,6 +5250,22 @@ from <code>minNativeZoom</code> level and auto-scaled.</td>
 		<td><code><a href='#latlngbounds'>LatLngBounds</a></code>
 		<td><code>undefined</code></td>
 		<td>If set, tiles will only be loaded inside the set <a href="#latlngbounds"><code>LatLngBounds</code></a>.</td>
+	</tr>
+	<tr id='tilelayer-wms-maxnativezoom'>
+		<td><code><b>maxNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>undefined</code></td>
+		<td>Maximum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
+from <code>maxNativeZoom</code> level and auto-scaled.</td>
+	</tr>
+	<tr id='tilelayer-wms-minnativezoom'>
+		<td><code><b>minNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>undefined</code></td>
+		<td>Minimum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
+from <code>minNativeZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr id='tilelayer-wms-nowrap'>
 		<td><code><b>noWrap</b></code></td>
@@ -5993,10 +6006,57 @@ geographical bounds it is tied to.</td>
 		<td><code>false</code></td>
 		<td>If true, the image will have its crossOrigin attribute set to &#39;&#39;. This is needed if you want to access image pixel data.</td>
 	</tr>
+	<tr id='imageoverlay-erroroverlayurl'>
+		<td><code><b>errorOverlayUrl</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>URL to the overlay image to show in place of the overlay that failed to load.</td>
+	</tr>
+	<tr id='imageoverlay-zindex'>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code>
+		<td><code>1</code></td>
+		<td>The explicit <a href="https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index">zIndex</a> of the tile layer.</td>
+	</tr>
+	<tr id='imageoverlay-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>A custom class name to assign to the image. Empty by default.</td>
+	</tr>
 </tbody></table>
 
 </section>
 
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='imageoverlay-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
 
 <div class='accordion'>
 	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
@@ -6033,9 +6093,33 @@ geographical bounds it is tied to.</td>
 </div>
 
 </section><section>
-<h3 id=''>Events</h3>
+<h3 id='imageoverlay-event'>Events</h3>
+
+<section >
 
 
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='imageoverlay-load'>
+		<td><code><b>load</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the ImageOverlay layer has loaded its image</td>
+	</tr>
+	<tr id='imageoverlay-error'>
+		<td><code><b>error</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the ImageOverlay layer has loaded its image</td>
+	</tr>
+</tbody></table>
+
+</section>
 
 
 <div class='accordion'>
@@ -6227,7 +6311,8 @@ for a second (also called long press).</td>
 	<tr id='imageoverlay-setbounds'>
 		<td><code><b>setBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>)</nobr></code></td>
 		<td><code>this</code></td>
-		<td><p>Update the bounds that this ImageOverlay covers</p>
+		<td><p>Update the bounds that this ImageOverlay covers
+Changes the <a href="#imageoverlay-zindex">zIndex</a> of the image overlay.</p>
 </td>
 	</tr>
 	<tr id='imageoverlay-getbounds'>
@@ -6239,7 +6324,8 @@ for a second (also called long press).</td>
 	<tr id='imageoverlay-getelement'>
 		<td><code><b>getElement</b>()</nobr></code></td>
 		<td><code>HTMLElement</code></td>
-		<td><p>Get the img element that represents the ImageOverlay on the map</p>
+		<td><p>Returns the instance of <a href="https://developer.mozilla.org/docs/Web/API/HTMLImageElement"><code>HTMLImageElement</code></a>
+used by this overlay.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -6559,10 +6645,835 @@ properties. The event can optionally be propagated to event parents.</p>
 	</div>
 </div>
 
+</section><h2 id='videooverlay'>VideoOverlay</h2><p>Used to load and display a video player over specific bounds of the map. Extends <a href="#imageoverlay"><code>ImageOverlay</code></a>.
+A video overlay uses the <a href="https://developer.mozilla.org/docs/Web/HTML/Element/video"><code>&lt;video&gt;</code></a>
+HTML5 element.</p>
+
+<section>
+<h3 id='videooverlay-example'>Usage example</h3>
+
+<section >
+
+
+
+
+
+<pre><code class="lang-js">var videoUrl = &#39;https://www.mapbox.com/bites/00188/patricia_nasa.webm&#39;,
+    imageBounds = [[ 32, -130], [ 13, -100]];
+L.imageOverlay(imageUrl, imageBounds).addTo(map);
+</code></pre>
+
+
+
+</section>
+
+
+</section><section>
+<h3 id='videooverlay-factory'>Creation</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-l-videooverlay'>
+		<td><code><b>L.videoOverlay</b>(<nobr>&lt;String|Array&gt;</nobr> <i>videoUrl</i>, <nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>, <nobr>&lt;<a href='#videooverlay-option'>VideoOverlay options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Instantiates an image overlay object given the URL of the video (or array of URLs) and the
+geographical bounds it is tied to.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+</section><section>
+<h3 id='videooverlay-option'>Options</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-autoplay'>
+		<td><code><b>autoplay</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Whether the video starts playing automatically when loaded.</td>
+	</tr>
+	<tr id='videooverlay-loop'>
+		<td><code><b>loop</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>Whether the video will loop back to the beginning when played.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#imageoverlay'>ImageOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-opacity'>
+		<td><code><b>opacity</b></code></td>
+		<td><code>Number</code>
+		<td><code>1.0</code></td>
+		<td>The opacity of the image overlay.</td>
+	</tr>
+	<tr id='videooverlay-alt'>
+		<td><code><b>alt</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>Text for the <code>alt</code> attribute of the image (useful for accessibility).</td>
+	</tr>
+	<tr id='videooverlay-interactive'>
+		<td><code><b>interactive</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If <code>true</code>, the image overlay will emit <a href="#interactive-layer">mouse events</a> when clicked or hovered.</td>
+	</tr>
+	<tr id='videooverlay-crossorigin'>
+		<td><code><b>crossOrigin</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>false</code></td>
+		<td>If true, the image will have its crossOrigin attribute set to &#39;&#39;. This is needed if you want to access image pixel data.</td>
+	</tr>
+	<tr id='videooverlay-erroroverlayurl'>
+		<td><code><b>errorOverlayUrl</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>URL to the overlay image to show in place of the overlay that failed to load.</td>
+	</tr>
+	<tr id='videooverlay-zindex'>
+		<td><code><b>zIndex</b></code></td>
+		<td><code>Number</code>
+		<td><code>1</code></td>
+		<td>The explicit <a href="https://developer.mozilla.org/docs/Web/CSS/CSS_Positioning/Understanding_z_index">zIndex</a> of the tile layer.</td>
+	</tr>
+	<tr id='videooverlay-classname'>
+		<td><code><b>className</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;&#x27;</code></td>
+		<td>A custom class name to assign to the image. Empty by default.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Option</th>
+		<th>Type</th>
+		<th>Default</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-pane'>
+		<td><code><b>pane</b></code></td>
+		<td><code>String</code>
+		<td><code>&#x27;overlayPane&#x27;</code></td>
+		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
+	</tr>
+	<tr id='videooverlay-attribution'>
+		<td><code><b>attribution</b></code></td>
+		<td><code>String</code>
+		<td><code>null</code></td>
+		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id='videooverlay-event'>Events</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-load'>
+		<td><code><b>load</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the video has finished loading the first frame</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#imageoverlay'>ImageOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-error'>
+		<td><code><b>error</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired when the ImageOverlay layer has loaded its image</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Mouse events inherited from <a href='#interactive-layer'>Interactive layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-click'>
+		<td><code><b>click</b>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user clicks (or taps) the layer.</td>
+	</tr>
+	<tr id='videooverlay-dblclick'>
+		<td><code><b>dblclick</b>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user double-clicks (or double-taps) the layer.</td>
+	</tr>
+	<tr id='videooverlay-mousedown'>
+		<td><code><b>mousedown</b>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user pushes the mouse button on the layer.</td>
+	</tr>
+	<tr id='videooverlay-mouseover'>
+		<td><code><b>mouseover</b>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse enters the layer.</td>
+	</tr>
+	<tr id='videooverlay-mouseout'>
+		<td><code><b>mouseout</b>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the mouse leaves the layer.</td>
+	</tr>
+	<tr id='videooverlay-contextmenu'>
+		<td><code><b>contextmenu</b>
+		<td><code><a href='#mouseevent'>MouseEvent</a></code></td>
+		<td>Fired when the user right-clicks on the layer, prevents
+default browser context menu from showing if there are listeners on
+this event. Also fired on mobile when the user holds a single touch
+for a second (also called long press).</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-add'>
+		<td><code><b>add</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired after the layer is added to a map</td>
+	</tr>
+	<tr id='videooverlay-remove'>
+		<td><code><b>remove</b>
+		<td><code><a href='#event'>Event</a></code></td>
+		<td>Fired after the layer is removed from a map</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-popupopen'>
+		<td><code><b>popupopen</b>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup bound to this layer is opened</td>
+	</tr>
+	<tr id='videooverlay-popupclose'>
+		<td><code><b>popupclose</b>
+		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
+		<td>Fired when a popup bound to this layer is closed</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Tooltip events inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Event</th>
+		<th>Data</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-tooltipopen'>
+		<td><code><b>tooltipopen</b>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip bound to this layer is opened.</td>
+	</tr>
+	<tr id='videooverlay-tooltipclose'>
+		<td><code><b>tooltipclose</b>
+		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
+		<td>Fired when a tooltip bound to this layer is closed.</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+</section><section>
+<h3 id='videooverlay-method'>Methods</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-getelement'>
+		<td><code><b>getElement</b>()</nobr></code></td>
+		<td><code>HTMLVideoElement</code></td>
+		<td><p>Returns the instance of <a href="https://developer.mozilla.org/docs/Web/API/HTMLVideoElement"><code>HTMLVideoElement</code></a>
+used by this overlay.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#imageoverlay'>ImageOverlay</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-setopacity'>
+		<td><code><b>setOpacity</b>(<nobr>&lt;Number&gt;</nobr> <i>opacity</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the opacity of the overlay.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-bringtofront'>
+		<td><code><b>bringToFront</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Brings the layer to the top of all overlays.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-bringtoback'>
+		<td><code><b>bringToBack</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Brings the layer to the bottom of all overlays.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-seturl'>
+		<td><code><b>setUrl</b>(<nobr>&lt;String&gt;</nobr> <i>url</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Changes the URL of the image.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-setbounds'>
+		<td><code><b>setBounds</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>bounds</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Update the bounds that this ImageOverlay covers
+Changes the <a href="#imageoverlay-zindex">zIndex</a> of the image overlay.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-getbounds'>
+		<td><code><b>getBounds</b>()</nobr></code></td>
+		<td><code><a href='#latlngbounds'>LatLngBounds</a></code></td>
+		<td><p>Get the bounds that this ImageOverlay covers</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-addto'>
+		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds the layer to the given map</p>
+</td>
+	</tr>
+	<tr id='videooverlay-remove'>
+		<td><code><b>remove</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the map it is currently active on.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-removefrom'>
+		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the layer from the given map</p>
+</td>
+	</tr>
+	<tr id='videooverlay-getpane'>
+		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
+		<td><code>HTMLElement</code></td>
+		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-getattribution'>
+		<td><code><b>getAttribution</b>()</nobr></code></td>
+		<td><code>String</code></td>
+		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-bindpopup'>
+		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
+neccessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-unbindpopup'>
+		<td><code><b>unbindPopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-openpopup'>
+		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound popup at the specificed <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-closepopup'>
+		<td><code><b>closePopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the popup bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-togglepopup'>
+		<td><code><b>togglePopup</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-ispopupopen'>
+		<td><code><b>isPopupOpen</b>()</nobr></code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-setpopupcontent'>
+		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the popup bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-getpopup'>
+		<td><code><b>getPopup</b>()</nobr></code></td>
+		<td><code><a href='#popup'>Popup</a></code></td>
+		<td><p>Returns the popup bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-bindtooltip'>
+		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
+neccessary event listeners. If a <code>Function</code> is passed it will receive
+the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-unbindtooltip'>
+		<td><code><b>unbindTooltip</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes the tooltip previously bound with <code>bindTooltip</code>.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-opentooltip'>
+		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Opens the bound tooltip at the specificed <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-closetooltip'>
+		<td><code><b>closeTooltip</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Closes the tooltip bound to this layer if it is open.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-toggletooltip'>
+		<td><code><b>toggleTooltip</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Opens or closes the tooltip bound to this layer depending on its current state.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-istooltipopen'>
+		<td><code><b>isTooltipOpen</b>()</nobr></code></td>
+		<td><code>boolean</code></td>
+		<td><p>Returns <code>true</code> if the tooltip bound to this layer is currently open.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-settooltipcontent'>
+		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Sets the content of the tooltip bound to this layer.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-gettooltip'>
+		<td><code><b>getTooltip</b>()</nobr></code></td>
+		<td><code><a href='#tooltip'>Tooltip</a></code></td>
+		<td><p>Returns the tooltip bound to this layer.</p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
+<div class='accordion'>
+	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
+	<div class='accordion-overflow'>
+		<div class='accordion-content'><section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Method</th>
+		<th>Returns</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='videooverlay-on'>
+		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</p>
+</td>
+	</tr>
+	<tr id='videooverlay-on'>
+		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></p>
+</td>
+	</tr>
+	<tr id='videooverlay-off'>
+		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-off'>
+		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes a set of type/listener pairs.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-off'>
+		<td><code><b>off</b>()</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes all listeners to all events on the object.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-fire'>
+		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Fires an event of the specified type. You can optionally provide an data
+object — the first argument of the listener function will contain its
+properties. The event can optionally be propagated to event parents.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-listens'>
+		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-once'>
+		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</p>
+</td>
+	</tr>
+	<tr id='videooverlay-addeventparent'>
+		<td><code><b>addEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Adds an event parent - an <a href="#evented"><code>Evented</code></a> that will receive propagated events</p>
+</td>
+	</tr>
+	<tr id='videooverlay-removeeventparent'>
+		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
+</td>
+	</tr>
+	<tr id='videooverlay-addeventlistener'>
+		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='videooverlay-removeeventlistener'>
+		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='videooverlay-clearalleventlisteners'>
+		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
+</td>
+	</tr>
+	<tr id='videooverlay-addonetimeeventlistener'>
+		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='videooverlay-fireevent'>
+		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
+</td>
+	</tr>
+	<tr id='videooverlay-haseventlisteners'>
+		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
+</td>
+	</tr>
+</tbody></table>
+
+</section></div>
+	</div>
+</div>
+
 </section><h2 id='path'>Path</h2><p>An abstract class that contains options and constants shared between vector
 overlays (Polygon, Polyline, Circle). Do not use it directly. Extends <a href="#layer"><code>Layer</code></a>.</p>
 
 <section>
+<h3 id='path-factory'>Creation</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='path-l-svg'>
+		<td><code><b>L.svg</b>(<nobr>&lt;<a href='#renderer-option'>Renderer options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
+		<td>Creates a SVG renderer with the given options.</td>
+	</tr>
+</tbody></table>
+
+</section>
+
+
+</section><section>
 <h3 id='path-option'>Options</h3>
 
 <section >
@@ -6649,6 +7560,13 @@ overlays (Polygon, Polyline, Circle). Do not use it directly. Extends <a href="#
 		<td><code>String</code>
 		<td><code>&#x27;evenodd&#x27;</code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
+	</tr>
+	<tr id='path-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 	<tr id='path-renderer'>
 		<td><code><b>renderer</b></code></td>
@@ -7424,6 +8342,13 @@ better performance and smoother look, and less means more accurate representatio
 		<td><code>String</code>
 		<td><code>&#x27;evenodd&#x27;</code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
+	</tr>
+	<tr id='polyline-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 	<tr id='polyline-renderer'>
 		<td><code><b>renderer</b></code></td>
@@ -8272,6 +9197,13 @@ better performance and smoother look, and less means more accurate representatio
 		<td><code>String</code>
 		<td><code>&#x27;evenodd&#x27;</code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
+	</tr>
+	<tr id='polygon-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 	<tr id='polygon-renderer'>
 		<td><code><b>renderer</b></code></td>
@@ -9124,6 +10056,13 @@ better performance and smoother look, and less means more accurate representatio
 		<td><code>String</code>
 		<td><code>&#x27;evenodd&#x27;</code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
+	</tr>
+	<tr id='rectangle-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
 	</tr>
 	<tr id='rectangle-renderer'>
 		<td><code><b>renderer</b></code></td>
@@ -9992,6 +10931,13 @@ Do not use in new applications or plugins.</td>
 		<td><code>&#x27;evenodd&#x27;</code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
 	</tr>
+	<tr id='circle-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
 	<tr id='circle-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code>
@@ -10800,6 +11746,13 @@ properties. The event can optionally be propagated to event parents.</p>
 		<td><code>&#x27;evenodd&#x27;</code></td>
 		<td>A string that defines <a href="https://developer.mozilla.org/docs/Web/SVG/Attribute/fill-rule">how the inside of a shape</a> is determined.</td>
 	</tr>
+	<tr id='circlemarker-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this path will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
 	<tr id='circlemarker-renderer'>
 		<td><code><b>renderer</b></code></td>
 		<td><code><a href='#renderer'>Renderer</a></code>
@@ -11475,29 +12428,6 @@ var circle = L.circle( center, { renderer: myRenderer } );
 </code></pre>
 
 
-
-</section>
-
-
-</section><section>
-<h3 id='svg-factory'>Creation</h3>
-
-<section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Factory</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='svg-l-svg'>
-		<td><code><b>L.svg</b>(<nobr>&lt;<a href='#renderer-option'>Renderer options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td>Creates a SVG renderer with the given options.</td>
-	</tr>
-</tbody></table>
 
 </section>
 
@@ -12820,7 +13750,7 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 	<tr id='layergroup-togeojson'>
 		<td><code><b>toGeoJSON</b>()</nobr></code></td>
 		<td><code>Object</code></td>
-		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the layer group (as a GeoJSON <code>GeometryCollection</code>).</p>
+		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='layergroup-addlayer'>
@@ -12845,6 +13775,12 @@ well. Extends <a href="#layer"><code>Layer</code></a>.</p>
 		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
 		<td><code>Boolean</code></td>
 		<td><p>Returns <code>true</code> if the given layer is currently added to the group.</p>
+</td>
+	</tr>
+	<tr id='layergroup-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;Number&gt;</nobr> <i>id</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the given internal ID is currently added to the group.</p>
 </td>
 	</tr>
 	<tr id='layergroup-clearlayers'>
@@ -13489,7 +14425,7 @@ and custom events.</li>
 	<tr id='featuregroup-togeojson'>
 		<td><code><b>toGeoJSON</b>()</nobr></code></td>
 		<td><code>Object</code></td>
-		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the layer group (as a GeoJSON <code>GeometryCollection</code>).</p>
+		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='featuregroup-addlayer'>
@@ -13514,6 +14450,12 @@ and custom events.</li>
 		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
 		<td><code>Boolean</code></td>
 		<td><p>Returns <code>true</code> if the given layer is currently added to the group.</p>
+</td>
+	</tr>
+	<tr id='featuregroup-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;Number&gt;</nobr> <i>id</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the given internal ID is currently added to the group.</p>
 </td>
 	</tr>
 	<tr id='featuregroup-clearlayers'>
@@ -14267,7 +15209,7 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 	<tr id='geojson-togeojson'>
 		<td><code><b>toGeoJSON</b>()</nobr></code></td>
 		<td><code>Object</code></td>
-		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the layer group (as a GeoJSON <code>GeometryCollection</code>).</p>
+		<td><p>Returns a <a href="http://en.wikipedia.org/wiki/GeoJSON"><a href="#geojson"><code>GeoJSON</code></a></a> representation of the layer group (as a GeoJSON <code>FeatureCollection</code>, <code>GeometryCollection</code>, or <code>MultiPoint</code>).</p>
 </td>
 	</tr>
 	<tr id='geojson-addlayer'>
@@ -14292,6 +15234,12 @@ The default is the <code>coordsToLatLng</code> static method.</td>
 		<td><code><b>hasLayer</b>(<nobr>&lt;<a href='#layer'>Layer</a>&gt;</nobr> <i>layer</i>)</nobr></code></td>
 		<td><code>Boolean</code></td>
 		<td><p>Returns <code>true</code> if the given layer is currently added to the group.</p>
+</td>
+	</tr>
+	<tr id='geojson-haslayer'>
+		<td><code><b>hasLayer</b>(<nobr>&lt;Number&gt;</nobr> <i>id</i>)</nobr></code></td>
+		<td><code>Boolean</code></td>
+		<td><p>Returns <code>true</code> if the given internal ID is currently added to the group.</p>
 </td>
 	</tr>
 	<tr id='geojson-clearlayers'>
@@ -14697,7 +15645,7 @@ or 3 numbers (longitude, latitude, altitude) used in GeoJSON for points.</td>
 Can use a custom <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a> function.</td>
 	</tr>
 	<tr id='geojson-latlngtocoords'>
-		<td><code><b>latLngToCoords</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</nobr></code></td>
+		<td><code><b>latLngToCoords</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>, <nobr>&lt;Number&gt;</nobr> <i>precision?</i>)</nobr></code></td>
 		<td><code>Array</code></td>
 		<td>Reverse of <a href="#geojson-coordstolatlng"><code>coordsToLatLng</code></a></td>
 	</tr>
@@ -14864,13 +15812,29 @@ GridLayer can be extended to create a tiled grid of HTML elements like <code>&lt
 		<td><code><b>minZoom</b></code></td>
 		<td><code>Number</code>
 		<td><code>0</code></td>
-		<td>The minimum zoom level that tiles will be loaded at. By default the entire map.</td>
+		<td>The minimum zoom level down to which this layer will be displayed (inclusive).</td>
 	</tr>
 	<tr id='gridlayer-maxzoom'>
 		<td><code><b>maxZoom</b></code></td>
 		<td><code>Number</code>
 		<td><code>undefined</code></td>
-		<td>The maximum zoom level that tiles will be loaded at.</td>
+		<td>The maximum zoom level up to which this layer will be displayed (inclusive).</td>
+	</tr>
+	<tr id='gridlayer-maxnativezoom'>
+		<td><code><b>maxNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>undefined</code></td>
+		<td>Maximum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels higher than <code>maxNativeZoom</code> will be loaded
+from <code>maxNativeZoom</code> level and auto-scaled.</td>
+	</tr>
+	<tr id='gridlayer-minnativezoom'>
+		<td><code><b>minNativeZoom</b></code></td>
+		<td><code>Number</code>
+		<td><code>undefined</code></td>
+		<td>Minimum zoom number the tile source has available. If it is specified,
+the tiles on all zoom levels lower than <code>minNativeZoom</code> will be loaded
+from <code>minNativeZoom</code> level and auto-scaled.</td>
 	</tr>
 	<tr id='gridlayer-nowrap'>
 		<td><code><b>noWrap</b></code></td>
@@ -15791,9 +16755,9 @@ bounds = L.latLngBounds(corner1, corner2);
 </td>
 	</tr>
 	<tr id='latlngbounds-equals'>
-		<td><code><b>equals</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>otherBounds</i>)</nobr></code></td>
+		<td><code><b>equals</b>(<nobr>&lt;<a href='#latlngbounds'>LatLngBounds</a>&gt;</nobr> <i>otherBounds</i>, <nobr>&lt;Number&gt;</nobr> <i>maxMargin?</i>)</nobr></code></td>
 		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if the rectangle is equivalent (within a small margin of error) to the given bounds.</p>
+		<td><p>Returns <code>true</code> if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overriden by setting <code>maxMargin</code> to a small number.</p>
 </td>
 	</tr>
 	<tr id='latlngbounds-isvalid'>
@@ -16038,12 +17002,12 @@ bounds = L.bounds(p1, p2);
 	</tr>
 	</thead><tbody>
 	<tr id='bounds-l-bounds'>
-		<td><code><b>L.bounds</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>topLeft</i>, <nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>bottomRight</i>)</nobr></code></td>
-		<td>Creates a Bounds object from two coordinates (usually top-left and bottom-right corners).</td>
+		<td><code><b>L.bounds</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>corner1</i>, <nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>corner2</i>)</nobr></code></td>
+		<td>Creates a Bounds object from two corners coordinate pairs.</td>
 	</tr>
 	<tr id='bounds-l-bounds'>
 		<td><code><b>L.bounds</b>(<nobr>&lt;Point[]&gt;</nobr> <i>points</i>)</nobr></code></td>
-		<td>Creates a Bounds object from the points it contains</td>
+		<td>Creates a Bounds object from the given array of points.</td>
 	</tr>
 </tbody></table>
 
@@ -16087,6 +17051,18 @@ bounds = L.bounds(p1, p2);
 		<td><code><b>getTopRight</b>()</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
 		<td><p>Returns the top-right point of the bounds.</p>
+</td>
+	</tr>
+	<tr id='bounds-gettopleft'>
+		<td><code><b>getTopLeft</b>()</nobr></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><p>Returns the top-left point of the bounds (i.e. <a href="#bounds-min"><code>this.min</code></a>).</p>
+</td>
+	</tr>
+	<tr id='bounds-getbottomright'>
+		<td><code><b>getBottomRight</b>()</nobr></code></td>
+		<td><code><a href='#point'>Point</a></code></td>
+		<td><p>Returns the bottom-right point of the bounds (i.e. <a href="#bounds-max"><code>this.max</code></a>).</p>
 </td>
 	</tr>
 	<tr id='bounds-getsize'>
@@ -16293,139 +17269,6 @@ as iconAnchor if not specified).</td>
 </section>
 
 
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-pane'>
-		<td><code><b>pane</b></code></td>
-		<td><code>String</code>
-		<td><code>&#x27;overlayPane&#x27;</code></td>
-		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
-	</tr>
-	<tr id='icon-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code>
-		<td><code>null</code></td>
-		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-</section><section>
-<h3 id=''>Events</h3>
-
-
-
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-add'>
-		<td><code><b>add</b>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired after the layer is added to a map</td>
-	</tr>
-	<tr id='icon-remove'>
-		<td><code><b>remove</b>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired after the layer is removed from a map</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-popupopen'>
-		<td><code><b>popupopen</b>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup bound to this layer is opened</td>
-	</tr>
-	<tr id='icon-popupclose'>
-		<td><code><b>popupclose</b>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup bound to this layer is closed</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Tooltip events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-tooltipopen'>
-		<td><code><b>tooltipopen</b>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip bound to this layer is opened.</td>
-	</tr>
-	<tr id='icon-tooltipclose'>
-		<td><code><b>tooltipclose</b>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip bound to this layer is closed.</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
 </section><section>
 <h3 id='icon-method'>Methods</h3>
 
@@ -16459,318 +17302,6 @@ styled according to the options.</p>
 </section>
 
 
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='icon-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='icon-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='icon-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-	<tr id='icon-getattribution'>
-		<td><code><b>getAttribution</b>()</nobr></code></td>
-		<td><code>String</code></td>
-		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-neccessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='icon-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='icon-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specificed <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='icon-closepopup'>
-		<td><code><b>closePopup</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='icon-togglepopup'>
-		<td><code><b>togglePopup</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='icon-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</nobr></code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='icon-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='icon-getpopup'>
-		<td><code><b>getPopup</b>()</nobr></code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-bindtooltip'>
-		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-neccessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='icon-unbindtooltip'>
-		<td><code><b>unbindTooltip</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the tooltip previously bound with <code>bindTooltip</code>.</p>
-</td>
-	</tr>
-	<tr id='icon-opentooltip'>
-		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specificed <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='icon-closetooltip'>
-		<td><code><b>closeTooltip</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the tooltip bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='icon-toggletooltip'>
-		<td><code><b>toggleTooltip</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the tooltip bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='icon-istooltipopen'>
-		<td><code><b>isTooltipOpen</b>()</nobr></code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the tooltip bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='icon-settooltipcontent'>
-		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='icon-gettooltip'>
-		<td><code><b>getTooltip</b>()</nobr></code></td>
-		<td><code><a href='#tooltip'>Tooltip</a></code></td>
-		<td><p>Returns the tooltip bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='icon-on'>
-		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</p>
-</td>
-	</tr>
-	<tr id='icon-on'>
-		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></p>
-</td>
-	</tr>
-	<tr id='icon-off'>
-		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</p>
-</td>
-	</tr>
-	<tr id='icon-off'>
-		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes a set of type/listener pairs.</p>
-</td>
-	</tr>
-	<tr id='icon-off'>
-		<td><code><b>off</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes all listeners to all events on the object.</p>
-</td>
-	</tr>
-	<tr id='icon-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
-object — the first argument of the listener function will contain its
-properties. The event can optionally be propagated to event parents.</p>
-</td>
-	</tr>
-	<tr id='icon-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
-</td>
-	</tr>
-	<tr id='icon-once'>
-		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</p>
-</td>
-	</tr>
-	<tr id='icon-addeventparent'>
-		<td><code><b>addEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds an event parent - an <a href="#evented"><code>Evented</code></a> that will receive propagated events</p>
-</td>
-	</tr>
-	<tr id='icon-removeeventparent'>
-		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='icon-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='icon-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='icon-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='icon-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='icon-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='icon-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
 </section><span id='icon-default'></span>
 
 <section>
@@ -16800,7 +17331,7 @@ If you want to <em>completely</em> replace the default icon, override the
 		<td><code><b>imagePath</b></code></td>
 		<td><code>String</code>
 		<td><code></code></td>
-		<td><a href="#icon-default"><code>L.Icon.Default</code></a> will try to auto-detect the absolute location of the
+		<td><a href="#icon-default"><code>Icon.Default</code></a> will try to auto-detect the absolute location of the
 blue icon images. If you are placing these images in a non-standard
 way, set this option to point to the right absolute path.</td>
 	</tr>
@@ -16974,139 +17505,6 @@ as iconAnchor if not specified).</td>
 	</div>
 </div>
 
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Options inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Option</th>
-		<th>Type</th>
-		<th>Default</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-pane'>
-		<td><code><b>pane</b></code></td>
-		<td><code>String</code>
-		<td><code>&#x27;overlayPane&#x27;</code></td>
-		<td>By default the layer will be added to the map&#39;s <a href="#map-overlaypane">overlay pane</a>. Overriding this option will cause the layer to be placed on another pane by default.</td>
-	</tr>
-	<tr id='divicon-attribution'>
-		<td><code><b>attribution</b></code></td>
-		<td><code>String</code>
-		<td><code>null</code></td>
-		<td>String to be shown in the attribution control, describes the layer data, e.g. &quot;© Mapbox&quot;.</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-</section><section>
-<h3 id=''>Events</h3>
-
-
-
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-add'>
-		<td><code><b>add</b>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired after the layer is added to a map</td>
-	</tr>
-	<tr id='divicon-remove'>
-		<td><code><b>remove</b>
-		<td><code><a href='#event'>Event</a></code></td>
-		<td>Fired after the layer is removed from a map</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-popupopen'>
-		<td><code><b>popupopen</b>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup bound to this layer is opened</td>
-	</tr>
-	<tr id='divicon-popupclose'>
-		<td><code><b>popupclose</b>
-		<td><code><a href='#popupevent'>PopupEvent</a></code></td>
-		<td>Fired when a popup bound to this layer is closed</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Tooltip events inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Event</th>
-		<th>Data</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-tooltipopen'>
-		<td><code><b>tooltipopen</b>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip bound to this layer is opened.</td>
-	</tr>
-	<tr id='divicon-tooltipclose'>
-		<td><code><b>tooltipclose</b>
-		<td><code><a href='#tooltipevent'>TooltipEvent</a></code></td>
-		<td>Fired when a tooltip bound to this layer is closed.</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
 </section><section>
 <h3 id=''>Methods</h3>
 
@@ -17139,318 +17537,6 @@ styled according to the options.</p>
 		<td><code><b>createShadow</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>oldIcon?</i>)</nobr></code></td>
 		<td><code>HTMLElement</code></td>
 		<td><p>As <code>createIcon</code>, but for the shadow beneath it.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-addto'>
-		<td><code><b>addTo</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds the layer to the given map</p>
-</td>
-	</tr>
-	<tr id='divicon-remove'>
-		<td><code><b>remove</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the map it is currently active on.</p>
-</td>
-	</tr>
-	<tr id='divicon-removefrom'>
-		<td><code><b>removeFrom</b>(<nobr>&lt;<a href='#map'>Map</a>&gt;</nobr> <i>map</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the layer from the given map</p>
-</td>
-	</tr>
-	<tr id='divicon-getpane'>
-		<td><code><b>getPane</b>(<nobr>&lt;String&gt;</nobr> <i>name?</i>)</nobr></code></td>
-		<td><code>HTMLElement</code></td>
-		<td><p>Returns the <code>HTMLElement</code> representing the named pane on the map. If <code>name</code> is omitted, returns the pane for this layer.</p>
-</td>
-	</tr>
-	<tr id='divicon-getattribution'>
-		<td><code><b>getAttribution</b>()</nobr></code></td>
-		<td><code>String</code></td>
-		<td><p>Used by the <code>attribution control</code>, returns the <a href="#gridlayer-attribution">attribution option</a>.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Popup methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-bindpopup'>
-		<td><code><b>bindPopup</b>(<nobr>&lt;String|HTMLElement|Function|Popup&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#popup-option'>Popup options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a popup to the layer with the passed <code>content</code> and sets up the
-neccessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='divicon-unbindpopup'>
-		<td><code><b>unbindPopup</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the popup previously bound with <code>bindPopup</code>.</p>
-</td>
-	</tr>
-	<tr id='divicon-openpopup'>
-		<td><code><b>openPopup</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound popup at the specificed <a href="#latlng"><code>latlng</code></a> or at the default popup anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='divicon-closepopup'>
-		<td><code><b>closePopup</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the popup bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='divicon-togglepopup'>
-		<td><code><b>togglePopup</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the popup bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='divicon-ispopupopen'>
-		<td><code><b>isPopupOpen</b>()</nobr></code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the popup bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='divicon-setpopupcontent'>
-		<td><code><b>setPopupContent</b>(<nobr>&lt;String|HTMLElement|Popup&gt;</nobr> <i>content</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the popup bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='divicon-getpopup'>
-		<td><code><b>getPopup</b>()</nobr></code></td>
-		<td><code><a href='#popup'>Popup</a></code></td>
-		<td><p>Returns the popup bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Tooltip methods inherited from <a href='#layer'>Layer</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-bindtooltip'>
-		<td><code><b>bindTooltip</b>(<nobr>&lt;String|HTMLElement|Function|Tooltip&gt;</nobr> <i>content</i>, <nobr>&lt;<a href='#tooltip-option'>Tooltip options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Binds a tooltip to the layer with the passed <code>content</code> and sets up the
-neccessary event listeners. If a <code>Function</code> is passed it will receive
-the layer as the first argument and should return a <code>String</code> or <code>HTMLElement</code>.</p>
-</td>
-	</tr>
-	<tr id='divicon-unbindtooltip'>
-		<td><code><b>unbindTooltip</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes the tooltip previously bound with <code>bindTooltip</code>.</p>
-</td>
-	</tr>
-	<tr id='divicon-opentooltip'>
-		<td><code><b>openTooltip</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens the bound tooltip at the specificed <a href="#latlng"><code>latlng</code></a> or at the default tooltip anchor if no <code>latlng</code> is passed.</p>
-</td>
-	</tr>
-	<tr id='divicon-closetooltip'>
-		<td><code><b>closeTooltip</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Closes the tooltip bound to this layer if it is open.</p>
-</td>
-	</tr>
-	<tr id='divicon-toggletooltip'>
-		<td><code><b>toggleTooltip</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Opens or closes the tooltip bound to this layer depending on its current state.</p>
-</td>
-	</tr>
-	<tr id='divicon-istooltipopen'>
-		<td><code><b>isTooltipOpen</b>()</nobr></code></td>
-		<td><code>boolean</code></td>
-		<td><p>Returns <code>true</code> if the tooltip bound to this layer is currently open.</p>
-</td>
-	</tr>
-	<tr id='divicon-settooltipcontent'>
-		<td><code><b>setTooltipContent</b>(<nobr>&lt;String|HTMLElement|Tooltip&gt;</nobr> <i>content</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Sets the content of the tooltip bound to this layer.</p>
-</td>
-	</tr>
-	<tr id='divicon-gettooltip'>
-		<td><code><b>getTooltip</b>()</nobr></code></td>
-		<td><code><a href='#tooltip'>Tooltip</a></code></td>
-		<td><p>Returns the tooltip bound to this layer.</p>
-</td>
-	</tr>
-</tbody></table>
-
-</section></div>
-	</div>
-</div>
-
-<div class='accordion'>
-	<label><span class='expander'>▶</span> Methods inherited from <a href='#evented'>Evented</a></label>
-	<div class='accordion-overflow'>
-		<div class='accordion-content'><section >
-
-
-
-
-<table><thead>
-	<tr>
-		<th>Method</th>
-		<th>Returns</th>
-		<th>Description</th>
-	</tr>
-	</thead><tbody>
-	<tr id='divicon-on'>
-		<td><code><b>on</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds a listener function (<code>fn</code>) to a particular event type of the object. You can optionally specify the context of the listener (object the this keyword will point to). You can also pass several space-separated types (e.g. <code>&#39;click dblclick&#39;</code>).</p>
-</td>
-	</tr>
-	<tr id='divicon-on'>
-		<td><code><b>on</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></p>
-</td>
-	</tr>
-	<tr id='divicon-off'>
-		<td><code><b>off</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Function&gt;</nobr> <i>fn?</i>, <nobr>&lt;Object&gt;</nobr> <i>context?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes a previously added listener function. If no function is specified, it will remove all the listeners of that particular event from the object. Note that if you passed a custom context to <code>on</code>, you must pass the same context to <code>off</code> in order to remove the listener.</p>
-</td>
-	</tr>
-	<tr id='divicon-off'>
-		<td><code><b>off</b>(<nobr>&lt;Object&gt;</nobr> <i>eventMap</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes a set of type/listener pairs.</p>
-</td>
-	</tr>
-	<tr id='divicon-off'>
-		<td><code><b>off</b>()</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes all listeners to all events on the object.</p>
-</td>
-	</tr>
-	<tr id='divicon-fire'>
-		<td><code><b>fire</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>, <nobr>&lt;Object&gt;</nobr> <i>data?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>propagate?</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Fires an event of the specified type. You can optionally provide an data
-object — the first argument of the listener function will contain its
-properties. The event can optionally be propagated to event parents.</p>
-</td>
-	</tr>
-	<tr id='divicon-listens'>
-		<td><code><b>listens</b>(<nobr>&lt;String&gt;</nobr> <i>type</i>)</nobr></code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Returns <code>true</code> if a particular event type has any listeners attached to it.</p>
-</td>
-	</tr>
-	<tr id='divicon-once'>
-		<td><code><b>once</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Behaves as <a href="#evented-on"><code>on(…)</code></a>, except the listener will only get fired once and then removed.</p>
-</td>
-	</tr>
-	<tr id='divicon-addeventparent'>
-		<td><code><b>addEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Adds an event parent - an <a href="#evented"><code>Evented</code></a> that will receive propagated events</p>
-</td>
-	</tr>
-	<tr id='divicon-removeeventparent'>
-		<td><code><b>removeEventParent</b>(<nobr>&lt;<a href='#evented'>Evented</a>&gt;</nobr> <i>obj</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Removes an event parent, so it will stop receiving propagated events</p>
-</td>
-	</tr>
-	<tr id='divicon-addeventlistener'>
-		<td><code><b>addEventListener</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-on"><code>on(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divicon-removeeventlistener'>
-		<td><code><b>removeEventListener</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divicon-clearalleventlisteners'>
-		<td><code><b>clearAllEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-off"><code>off()</code></a></p>
-</td>
-	</tr>
-	<tr id='divicon-addonetimeeventlistener'>
-		<td><code><b>addOneTimeEventListener</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-once"><code>once(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divicon-fireevent'>
-		<td><code><b>fireEvent</b>(<i>…</i>)</nobr></code></td>
-		<td><code>this</code></td>
-		<td><p>Alias to <a href="#evented-fire"><code>fire(…)</code></a></p>
-</td>
-	</tr>
-	<tr id='divicon-haseventlisteners'>
-		<td><code><b>hasEventListeners</b>(<i>…</i>)</nobr></code></td>
-		<td><code>Boolean</code></td>
-		<td><p>Alias to <a href="#evented-listens"><code>listens(…)</code></a></p>
 </td>
 	</tr>
 </tbody></table>
@@ -17515,8 +17601,9 @@ properties. The event can optionally be propagated to event parents.</p>
 	<tr id='control-zoom-zoomouttext'>
 		<td><code><b>zoomOutText</b></code></td>
 		<td><code>String</code>
-		<td><code>&#x27;-&#x27;</code></td>
-		<td>The text set on the &#39;zoom out&#39; button.</td>
+		<td><code>&#x27;&amp;#x2212</code></td>
+		<td>&#39;
+The text set on the &#39;zoom out&#39; button.</td>
 	</tr>
 	<tr id='control-zoom-zoomouttitle'>
 		<td><code><b>zoomOutTitle</b></code></td>
@@ -17785,7 +17872,7 @@ properties. The event can optionally be propagated to event parents.</p>
 	</div>
 </div>
 
-</section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control.html">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
+</section><h2 id='control-layers'>Control.Layers</h2><p>The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the <a href="http://leafletjs.com/examples/layers-control/">detailed example</a>). Extends <a href="#control"><code>Control</code></a>.</p>
 
 <section>
 <h3 id='control-layers-example'>Usage example</h3>
@@ -18259,11 +18346,6 @@ By default, it sorts layers alphabetically by their name.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for webkit-based browsers like Chrome and Safari (including mobile versions).</td>
 	</tr>
-	<tr id='browser-gecko'>
-		<td><code><b>gecko</b>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for gecko-based browsers like Firefox.</td>
-	</tr>
 	<tr id='browser-android'>
 		<td><code><b>android</b>
 		<td><code>Boolean</code></td>
@@ -18274,15 +18356,30 @@ By default, it sorts layers alphabetically by their name.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for browsers running on Android 2 or Android 3.</td>
 	</tr>
+	<tr id='browser-opera'>
+		<td><code><b>opera</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for the Opera browser</td>
+	</tr>
 	<tr id='browser-chrome'>
 		<td><code><b>chrome</b>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for the Chrome browser.</td>
 	</tr>
+	<tr id='browser-gecko'>
+		<td><code><b>gecko</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for gecko-based browsers like Firefox.</td>
+	</tr>
 	<tr id='browser-safari'>
 		<td><code><b>safari</b>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for the Safari browser.</td>
+	</tr>
+	<tr id='browser-opera12'>
+		<td><code><b>opera12</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for the Opera browser supporting CSS transforms (version 12 or later).</td>
 	</tr>
 	<tr id='browser-win'>
 		<td><code><b>win</b>
@@ -18304,11 +18401,6 @@ By default, it sorts layers alphabetically by their name.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for gecko-based browsers supporting CSS transforms.</td>
 	</tr>
-	<tr id='browser-opera12'>
-		<td><code><b>opera12</b>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Opera browser supporting CSS transforms (version 12 or later).</td>
-	</tr>
 	<tr id='browser-any3d'>
 		<td><code><b>any3d</b>
 		<td><code>Boolean</code></td>
@@ -18329,24 +18421,6 @@ By default, it sorts layers alphabetically by their name.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for all webkit-based browsers in a mobile device supporting CSS transforms.</td>
 	</tr>
-	<tr id='browser-mobileopera'>
-		<td><code><b>mobileOpera</b>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for the Opera browser in a mobile device.</td>
-	</tr>
-	<tr id='browser-mobilegecko'>
-		<td><code><b>mobileGecko</b>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for gecko-based browsers running in a mobile device.</td>
-	</tr>
-	<tr id='browser-touch'>
-		<td><code><b>touch</b>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> for all browsers supporting <a href="https://developer.mozilla.org/docs/Web/API/Touch_events">touch events</a>.
-This does not necessarily mean that the browser is running in a computer with
-a touchscreen, it only means that the browser is capable of understanding
-touch events.</td>
-	</tr>
 	<tr id='browser-mspointer'>
 		<td><code><b>msPointer</b>
 		<td><code>Boolean</code></td>
@@ -18356,6 +18430,24 @@ touch events.</td>
 		<td><code><b>pointer</b>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> for all browsers supporting <a href="https://msdn.microsoft.com/en-us/library/dn433244%28v=vs.85%29.aspx">pointer events</a>.</td>
+	</tr>
+	<tr id='browser-touch'>
+		<td><code><b>touch</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for all browsers supporting <a href="https://developer.mozilla.org/docs/Web/API/Touch_events">touch events</a>.
+This does not necessarily mean that the browser is running in a computer with
+a touchscreen, it only means that the browser is capable of understanding
+touch events.</td>
+	</tr>
+	<tr id='browser-mobileopera'>
+		<td><code><b>mobileOpera</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for the Opera browser in a mobile device.</td>
+	</tr>
+	<tr id='browser-mobilegecko'>
+		<td><code><b>mobileGecko</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> for gecko-based browsers running in a mobile device.</td>
 	</tr>
 	<tr id='browser-retina'>
 		<td><code><b>retina</b>
@@ -18367,15 +18459,15 @@ touch events.</td>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> when the browser supports <a href="https://developer.mozilla.org/docs/Web/API/Canvas_API"><code>&lt;canvas&gt;</code></a>.</td>
 	</tr>
-	<tr id='browser-vml'>
-		<td><code><b>vml</b>
-		<td><code>Boolean</code></td>
-		<td><code>true</code> if the browser supports <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>.</td>
-	</tr>
 	<tr id='browser-svg'>
 		<td><code><b>svg</b>
 		<td><code>Boolean</code></td>
 		<td><code>true</code> when the browser supports <a href="https://developer.mozilla.org/docs/Web/SVG">SVG</a>.</td>
+	</tr>
+	<tr id='browser-vml'>
+		<td><code><b>vml</b>
+		<td><code>Boolean</code></td>
+		<td><code>true</code> if the browser supports <a href="https://en.wikipedia.org/wiki/Vector_Markup_Language">VML</a>.</td>
 	</tr>
 </tbody></table>
 
@@ -18428,7 +18520,7 @@ Has a <code>L.bind()</code> shortcut.</td>
 <code>fn</code> will be called no more than one time per given amount of <code>time</code>. The arguments
 received by the bound function will be any arguments passed when binding the
 function, followed by any arguments passed when invoking the bound function.
-Has an <code>L.bind</code> shortcut.</td>
+Has an <code>L.throttle</code> shortcut.</td>
 	</tr>
 	<tr id='util-wrapnum'>
 		<td><code><b>wrapNum</b>(<nobr>&lt;Number&gt;</nobr> <i>num</i>, <nobr>&lt;Number[]&gt;</nobr> <i>range</i>, <nobr>&lt;Boolean&gt;</nobr> <i>includeMax?</i>)</nobr></code></td>
@@ -18552,13 +18644,41 @@ the reverse. Used by Leaflet in its projections code.</p>
 
 
 
-<pre><code class="lang-js">var transformation = new L.Transformation(2, 5, -1, 10),
+<pre><code class="lang-js">var transformation = L.transformation(2, 5, -1, 10),
     p = L.point(1, 2),
     p2 = transformation.transform(p), //  L.point(7, 8)
     p3 = transformation.untransform(p2); //  L.point(1, 2)
 </code></pre>
 
 
+
+</section>
+
+
+</section><section>
+<h3 id='transformation-factory'>Creation</h3>
+
+<section >
+
+
+
+
+<table><thead>
+	<tr>
+		<th>Factory</th>
+		<th>Description</th>
+	</tr>
+	</thead><tbody>
+	<tr id='transformation-l-transformation'>
+		<td><code><b>L.transformation</b>(<nobr>&lt;Number&gt;</nobr> <i>a</i>, <nobr>&lt;Number&gt;</nobr> <i>b</i>, <nobr>&lt;Number&gt;</nobr> <i>c</i>, <nobr>&lt;Number&gt;</nobr> <i>d</i>)</nobr></code></td>
+		<td>Instantiates a Transformation object with the given coefficients.</td>
+	</tr>
+	<tr id='transformation-l-transformation'>
+		<td><code><b>L.transformation</b>(<nobr>&lt;Array&gt;</nobr> <i>coefficients</i>)</nobr></code></td>
+		<td>Expects an coeficients array of the form
+<code>[a: Number, b: Number, c: Number, d: Number]</code>.</td>
+	</tr>
+</tbody></table>
 
 </section>
 
@@ -18721,6 +18841,11 @@ context to <code>off</code> in order to remove the listener.</td>
 		<td><code>this</code></td>
 		<td>Removes a set of type/listener pairs, e.g. <code>{click: onClick, mousemove: onMouseMove}</code></td>
 	</tr>
+	<tr id='domevent-off'>
+		<td><code><b>off</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
+		<td><code>this</code></td>
+		<td>Removes all known event listeners</td>
+	</tr>
 	<tr id='domevent-stoppropagation'>
 		<td><code><b>stopPropagation</b>(<nobr>&lt;DOMEvent&gt;</nobr> <i>ev</i>)</nobr></code></td>
 		<td><code>this</code></td>
@@ -18834,12 +18959,12 @@ including computed values or values set through CSS.</td>
 	<tr id='domutil-tofront'>
 		<td><code><b>toFront</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
 		<td><code></code></td>
-		<td>Makes <code>el</code> the last children of its parent, so it renders in front of the other children.</td>
+		<td>Makes <code>el</code> the last child of its parent, so it renders in front of the other children.</td>
 	</tr>
 	<tr id='domutil-toback'>
 		<td><code><b>toBack</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>)</nobr></code></td>
 		<td><code></code></td>
-		<td>Makes <code>el</code> the first children of its parent, so it renders back from the other children.</td>
+		<td>Makes <code>el</code> the first child of its parent, so it renders behind the other children.</td>
 	</tr>
 	<tr id='domutil-hasclass'>
 		<td><code><b>hasClass</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;String&gt;</nobr> <i>name</i>)</nobr></code></td>
@@ -18958,12 +19083,17 @@ drag interaction on them.</td>
 	<tr id='domutil-transform'>
 		<td><code><b>TRANSFORM</b>
 		<td><code>String</code></td>
-		<td>Vendor-prefixed fransform style name (e.g. <code>&#39;webkitTransform&#39;</code> for WebKit).</td>
+		<td>Vendor-prefixed transform style name (e.g. <code>&#39;webkitTransform&#39;</code> for WebKit).</td>
 	</tr>
 	<tr id='domutil-transition'>
 		<td><code><b>TRANSITION</b>
 		<td><code>String</code></td>
-		<td>Vendor-prefixed transform style name.</td>
+		<td>Vendor-prefixed transition style name.</td>
+	</tr>
+	<tr id='domutil-transition_end'>
+		<td><code><b>TRANSITION_END</b>
+		<td><code>String</code></td>
+		<td>Vendor-prefixed transitionend event name.</td>
 	</tr>
 </tbody></table>
 
@@ -19240,7 +19370,7 @@ draggable.enable();
 	</tr>
 	</thead><tbody>
 	<tr id='draggable-l-draggable'>
-		<td><code><b>L.Draggable</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>dragHandle?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>preventOutline</i>)</nobr></code></td>
+		<td><code><b>L.Draggable</b>(<nobr>&lt;HTMLElement&gt;</nobr> <i>el</i>, <nobr>&lt;HTMLElement&gt;</nobr> <i>dragHandle?</i>, <nobr>&lt;Boolean&gt;</nobr> <i>preventOutline?</i>, <nobr>&lt;<a href='#draggable-option'>Draggable options</a>&gt;</nobr> <i>options?</i>)</nobr></code></td>
 		<td>Creates a <a href="#draggable"><code>Draggable</code></a> object for moving <code>el</code> when you start dragging the <code>dragHandle</code> element (equals <code>el</code> itself by default).</td>
 	</tr>
 </tbody></table>
@@ -20350,6 +20480,13 @@ Use the <a href="#evented-method">event handling methods</a> to handle these eve
 		<td><code>true</code></td>
 		<td>If <code>false</code>, the layer will not emit mouse events and will act as a part of the underlying map.</td>
 	</tr>
+	<tr id='interactive-layer-bubblingmouseevents'>
+		<td><code><b>bubblingMouseEvents</b></code></td>
+		<td><code>Boolean</code>
+		<td><code>true</code></td>
+		<td>When <code>true</code>, a mouse event on this layer will trigger the same event on the map
+(unless <a href="#domevent-stoppropagation"><code>L.DomEvent.stopPropagation</code></a> is used).</td>
+	</tr>
 </tbody></table>
 
 </section>
@@ -21050,13 +21187,15 @@ a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_project
 	<tr id='projection-project'>
 		<td><code><b>project</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</nobr></code></td>
 		<td><code><a href='#point'>Point</a></code></td>
-		<td><p>Projects geographical coordinates into a 2D point. Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not arrays.</p>
+		<td><p>Projects geographical coordinates into a 2D point.
+Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 	<tr id='projection-unproject'>
 		<td><code><b>unproject</b>(<nobr>&lt;<a href='#point'>Point</a>&gt;</nobr> <i>point</i>)</nobr></code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
-		<td><p>The inverse of <code>project</code>. Projects a 2D point into a geographical location. Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
+		<td><p>The inverse of <code>project</code>. Projects a 2D point into a geographical location.
+Only accepts actual <a href="#point"><code>L.Point</code></a> instances, not arrays.</p>
 </td>
 	</tr>
 </tbody></table>
@@ -21109,7 +21248,7 @@ a flat surface (and back). See <a href="http://en.wikipedia.org/wiki/Map_project
 		<td>Equirectangular, or Plate Carree projection — the most simple projection,
 mostly used by GIS enthusiasts. Directly maps <code>x</code> as longitude, and <code>y</code> as
 latitude. Also suitable for flat worlds, e.g. game maps. Used by the
-<code>EPSG:3395</code> and <code>Simple</code> CRS.</td>
+<code>EPSG:4326</code> and <code>Simple</code> CRS.</td>
 	</tr>
 	<tr id='projection-l-projection-mercator'>
 		<td><code><b>L.Projection.Mercator</b></code></td>
@@ -21126,14 +21265,7 @@ a sphere. Used by the <code>EPSG:3857</code> CRS.</td>
 </section>
 
 
-</section><h2 id='crs'>CRS</h2><p>Abstract class that defines coordinate reference systems for projecting
-geographical points into pixel (screen) coordinates and back (and to
-coordinates in other units for <a href="https://en.wikipedia.org/wiki/Web_Map_Service">WMS</a> services). See
-<a href="http://en.wikipedia.org/wiki/Coordinate_reference_system">spatial reference system</a>.
-Leaflet defines the most usual CRSs by default. If you want to use a
-CRS not defined by default, take a look at the
-<a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.</p>
-
+</section><h2 id='crs'>CRS</h2>
 <section>
 <h3 id='crs-method'>Methods</h3>
 
@@ -21207,8 +21339,7 @@ factor of <code>scale</code>.</p>
 		<td><code><b>wrapLatLng</b>(<nobr>&lt;<a href='#latlng'>LatLng</a>&gt;</nobr> <i>latlng</i>)</nobr></code></td>
 		<td><code><a href='#latlng'>LatLng</a></code></td>
 		<td><p>Returns a <a href="#latlng"><code>LatLng</code></a> where lat and lng has been wrapped according to the
-CRS&#39;s <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outside the CRS&#39;s bounds.
-Only accepts actual <a href="#latlng"><code>L.LatLng</code></a> instances, not arrays.</p>
+CRS&#39;s <code>wrapLat</code> and <code>wrapLng</code> properties, if they are outside the CRS&#39;s bounds.</p>
 </td>
 	</tr>
 	<tr id='crs-wraplatlngbounds'>
@@ -21312,6 +21443,16 @@ meters.</td>
 May be used for maps of flat surfaces (e.g. game maps). Note that the <code>y</code>
 axis should still be inverted (going from bottom to top). <code>distance()</code> returns
 simple euclidean distance.</td>
+	</tr>
+	<tr id='crs-l-crs-base'>
+		<td><code><b>L.CRS.Base</b></code></td>
+		<td>Object that defines coordinate reference systems for projecting
+geographical points into pixel (screen) coordinates and back (and to
+coordinates in other units for <a href="https://en.wikipedia.org/wiki/Web_Map_Service">WMS</a> services). See
+<a href="http://en.wikipedia.org/wiki/Coordinate_reference_system">spatial reference system</a>.
+Leaflet defines the most usual CRSs by default. If you want to use a
+CRS not defined by default, take a look at the
+<a href="https://github.com/kartena/Proj4Leaflet">Proj4Leaflet</a> plugin.</td>
 	</tr>
 </tbody></table>
 
@@ -23319,7 +23460,7 @@ var Leaflet = L.noConflict();
 
 
 	<div class="footer">
-		<p>© 2015 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
+		<p>© 2017 <a href="http://agafonkin.com/en">Vladimir Agafonkin</a>. Maps © <a 	href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors.</p>
 	</div>
 
 	</div>

@@ -10,7 +10,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Layers
  * @inherits Control
  *
- * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control.html)). Extends `Control`.
+ * The layers control gives users the ability to switch between different base layers and switch overlays on/off (check out the [detailed example](http://leafletjs.com/examples/layers-control/)). Extends `Control`.
  *
  * @example
  *
@@ -245,7 +245,7 @@ export var Layers = Control.extend({
 		});
 
 		if (this.options.sortLayers) {
-			this._layers.sort(L.bind(function (a, b) {
+			this._layers.sort(Util.bind(function (a, b) {
 				return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
 			}, this));
 		}

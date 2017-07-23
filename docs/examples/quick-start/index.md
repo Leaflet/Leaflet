@@ -19,8 +19,9 @@ Before writing any code for the map, you need to do the following preparation st
 		  integrity="{{site.integrity_hash_css}}"
 		  crossorigin=""/>
 
- * Include Leaflet JavaScript file:
+ * Include Leaflet JavaScript file **after** Leaflet's CSS:
 
+		<!-- Make sure you put this AFTER Leaflet's CSS -->
 		<script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"
 		  integrity="{{site.integrity_hash_uglified}}"
 		  crossorigin=""></script>
@@ -49,18 +50,18 @@ By default (as we didn't pass any options when creating the map instance), all m
 
 Note that `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](http://leafletjs.com/reference.html#url-template) for the tile images (get yours at [Mapbox](http://mapbox.com)), the attribution text and the maximum zoom level of the layer:
+Next we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](http://leafletjs.com/reference.html#url-template) for the tile images, the attribution text and the maximum zoom level of the layer. In this example we'll use the `mapbox.streets` tiles from [Mapbox's "Classic maps"](https://www.mapbox.com/api-documentation/#maps) (in order to use tiles from Mapbox, you must also [request an access token](https://www.mapbox.com/studio/account/tokens/)).
 
 <pre><code class="javascript">L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://mapbox.com"&gt;Mapbox&lt;/a&gt;</span>',
 	maxZoom: 18,
-	id: '<a href="https://www.mapbox.com/projects/">your.mapbox.project.id</a>',
-	accessToken: '<a href="https://www.mapbox.com/account/apps/">your.mapbox.public.access.token</a>'
+	id: 'mapbox.streets',
+	accessToken: 'your.mapbox.access.token'
 }).addTo(mymap);</code></pre>
 
 Make sure all the code is called after the `div` and `leaflet.js` inclusion. That's it! You have a working Leaflet map now.
 
-It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles, and it doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to (we'd recommend Mapbox though, it looks beautiful).
+It's worth noting that Leaflet is provider-agnostic, meaning that it doesn't enforce a particular choice of providers for tiles. You can try replacing `mapbox.streets` with `mapbox.satellite`, and see what happens. Also, Leaflet doesn't even contain a single provider-specific line of code, so you're free to use other providers if you need to (we'd suggest Mapbox though, it looks beautiful).
 
 
 ### Markers, circles and polygons

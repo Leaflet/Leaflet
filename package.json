@@ -1,6 +1,6 @@
 {
   "name": "leaflet",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "description": "JavaScript library for mobile-friendly interactive maps",
   "devDependencies": {
     "eslint": "^3.5.0 <3.6.0",
@@ -30,6 +30,11 @@
   },
   "main": "dist/leaflet-src.js",
   "style": "dist/leaflet.css",
+  "files": [
+    "dist",
+    "src",
+    "!dist/leaflet.zip"
+  ],
   "scripts": {
     "test-jake": "jake test",
     "test": "jake test",

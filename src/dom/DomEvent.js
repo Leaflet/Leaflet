@@ -70,6 +70,8 @@ export function off(obj, types, fn, context) {
 		}
 		delete obj[eventsKey];
 	}
+
+	return this;
 }
 
 function addOne(obj, type, fn, context) {
@@ -179,7 +181,8 @@ export function stopPropagation(e) {
 // @function disableScrollPropagation(el: HTMLElement): this
 // Adds `stopPropagation` to the element's `'mousewheel'` events (plus browser variants).
 export function disableScrollPropagation(el) {
-	return addOne(el, 'mousewheel', stopPropagation);
+	addOne(el, 'mousewheel', stopPropagation);
+	return this;
 }
 
 // @function disableClickPropagation(el: HTMLElement): this

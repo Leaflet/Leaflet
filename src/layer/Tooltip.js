@@ -250,7 +250,7 @@ Layer.include({
 
 	// @method bindTooltip(content: String|HTMLElement|Function|Tooltip, options?: Tooltip options): this
 	// Binds a tooltip to the layer with the passed `content` and sets up the
-	// neccessary event listeners. If a `Function` is passed it will receive
+	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindTooltip: function (content, options) {
 

@@ -365,7 +365,7 @@ Layer.include({
 
 	// @method bindPopup(content: String|HTMLElement|Function|Popup, options?: Popup options): this
 	// Binds a popup to the layer with the passed `content` and sets up the
-	// neccessary event listeners. If a `Function` is passed it will receive
+	// necessary event listeners. If a `Function` is passed it will receive
 	// the layer as the first argument and should return a `String` or `HTMLElement`.
 	bindPopup: function (content, options) {
 
