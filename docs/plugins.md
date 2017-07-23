@@ -523,6 +523,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/hnrchrdl">Hinrich Riedel</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.UTFGrid">Leaflet.UTFGrid</a>
+		</td><td>
+			Provides UTF-8 Grid support for Leaflet >= 1.0.  Includes basic mouseover support plus ability to highlight feature from UTFGrid on hover (<a href="https://consbio.github.io/Leaflet.UTFGrid/">demo</a>).
+		</td><td>
+			<a href="https://github.com/brendan-ward">Brendan Ward</a>
+		</td>
+	</tr>	
 </table>
 
 
@@ -3399,6 +3408,15 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 			Leaflet plugin for visualizing spatial prefix trees, quadtree and geohash. See <a href="http://mapzen.github.io/leaflet-spatial-prefix-tree/">demo</a>
 		</td><td>
 			<a href="http://mapzen.com/">Mapzen</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jjimenezshaw/Leaflet.UTM">Leaflet.UTM</a>
+		</td><td>
+			A simple way to convert L.LatLng into UTM (WGS84) and vice versa. UTM string format easily configurable. It does not depend on any other plugin or 3rd party. See <a href="https://jjimenezshaw.github.io/Leaflet.UTM/examples/input.html">demo</a>
+		</td><td>
+			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
 		</td>
 	</tr>
 </table>
