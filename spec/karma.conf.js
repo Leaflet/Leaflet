@@ -25,7 +25,7 @@ module.exports = function (config) {
 		basePath: '../',
 
 		plugins: [
-			'karma-rollup-plugin',
+			'karma-rollup-preprocessor',
 			'karma-mocha',
 			'karma-coverage',
 			'karma-phantomjs-launcher',

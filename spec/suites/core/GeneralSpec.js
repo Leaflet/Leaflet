@@ -8,4 +8,10 @@ describe('General', function () {
 
 		expect(L.noConflict()).to.eql(leaflet);
 	});
+
+	describe('namespace extension', function () {
+		L.Util.foo = 'bar';
+
+		expect(L.Util.foo).to.eql('bar');
+	});
 });
