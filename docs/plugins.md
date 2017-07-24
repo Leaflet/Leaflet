@@ -202,6 +202,16 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+        <td>
+        	<a href="https://supermap.github.io/supermap-leaflet">SuperMap Leaflet</a>
+        </td><td>
+         SuperMap Leaflet is a Leaflet plugins for working with SuperMap service types.
+         Support for SuperMap services, tiles and more.
+        </td><td>
+        	<a href="https://github.com/SuperMap">SuperMap</a>
+        </td>
+    </tr>
 </table>
 
 
