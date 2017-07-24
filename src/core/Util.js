@@ -236,3 +236,27 @@ export function cancelAnimFrame(id) {
 		cancelFn.call(window, id);
 	}
 }
+
+export default {
+	cancelAnimFrame: cancelAnimFrame,
+	requestAnimFrame: requestAnimFrame,
+	cancelFn: cancelFn,
+	requestFn: requestFn,
+	emptyImageUrl: emptyImageUrl,
+	isArray: isArray,
+	indexOf: indexOf,
+	template: template,
+	getParamString: getParamString,
+	setOptions: setOptions,
+	splitWords: splitWords,
+	trim: trim,
+	formatNum: formatNum,
+	falseFn: falseFn,
+	wrapNum: wrapNum,
+	throttle: throttle,
+	lastId: lastId,
+	stamp: stamp,
+	bind: bind,
+	create: create,
+	extend: extend
+};
