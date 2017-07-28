@@ -314,7 +314,7 @@ CircleMarker.include(PointToGeoJSON);
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polyline (as a GeoJSON `LineString` or `MultiLineString` Feature).
 Polyline.include({
 	toGeoJSON: function (precision) {
-		var multi = !LineUtil._flat(this._latlngs);
+		var multi = !LineUtil.isFlat(this._latlngs);
 
 		var coords = latLngsToCoords(this._latlngs, multi ? 1 : 0, false, precision);
 
@@ -330,8 +330,8 @@ Polyline.include({
 // Returns a [`GeoJSON`](http://en.wikipedia.org/wiki/GeoJSON) representation of the polygon (as a GeoJSON `Polygon` or `MultiPolygon` Feature).
 Polygon.include({
 	toGeoJSON: function (precision) {
-		var holes = !LineUtil._flat(this._latlngs),
-		    multi = holes && !LineUtil._flat(this._latlngs[0]);
+		var holes = !LineUtil.isFlat(this._latlngs),
+		    multi = holes && !LineUtil.isFlat(this._latlngs[0]);
 
 		var coords = latLngsToCoords(this._latlngs, multi ? 2 : holes ? 1 : 0, true, precision);
 
