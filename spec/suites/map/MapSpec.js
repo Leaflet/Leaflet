@@ -1152,6 +1152,17 @@ describe("Map", function () {
 			happen.click(layer._icon);
 		});
 
+		it('does not preventDefault on touches when no other listener catches simulated events', function () {
+			var checkNotPrevented = function (e) {
+				L.DomEvent.off(map._container.parentNode, 'touchstart', checkNotPrevented);
+				expect(e.defaultPrevented).not.to.be.ok();
+			};
+
+			map.dragging.disable();
+			var spy = sinon.spy();
+			L.DomEvent.on(map._container.parentNode, 'touchstart', checkNotPrevented);
+			happen.touchstart(map._container, {touches: [{target: map._container}]});
+		});
 	});
 
 	describe('#getScaleZoom && #getZoomScale', function () {
