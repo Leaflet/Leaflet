@@ -16,8 +16,8 @@ import * as Util from '../core/Util';
  *
  * ```js
  * var videoUrl = 'https://www.mapbox.com/bites/00188/patricia_nasa.webm',
- * 	imageBounds = [[ 32, -130], [ 13, -100]];
- * L.imageOverlay(imageUrl, imageBounds).addTo(map);
+ * 	videoBounds = [[ 32, -130], [ 13, -100]];
+ * L.VideoOverlay(videoUrl, videoBounds ).addTo(map);
  * ```
  */
 
@@ -36,8 +36,11 @@ export var VideoOverlay = ImageOverlay.extend({
 	},
 
 	_initImage: function () {
-		var vid = this._image = DomUtil.create('video',
-			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : ''));
+		var wasElementSupplied = this._url.tagName === 'VIDEO';
+		var vid = this._image = wasElementSupplied ? this._url : DomUtil.create('video');
+
+		vid.class = vid.class || '';
+		vid.class += 'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '');
 
 		vid.onselectstart = Util.falseFn;
 		vid.onmousemove = Util.falseFn;
@@ -45,6 +48,8 @@ export var VideoOverlay = ImageOverlay.extend({
 		// @event load: Event
 		// Fired when the video has finished loading the first frame
 		vid.onloadeddata = Util.bind(this.fire, this, 'load');
+
+		if (wasElementSupplied) { return; }
 
 		if (!Util.isArray(this._url)) { this._url = [this._url]; }
 
@@ -63,9 +68,10 @@ export var VideoOverlay = ImageOverlay.extend({
 });
 
 
-// @factory L.videoOverlay(videoUrl: String|Array, bounds: LatLngBounds, options?: VideoOverlay options)
-// Instantiates an image overlay object given the URL of the video (or array of URLs) and the
+// @factory L.videoOverlay(video: String|Array|HTMLVideoElement, bounds: LatLngBounds, options?: VideoOverlay options)
+// Instantiates an image overlay object given the URL of the video (or array of URLs, or even a video element) and the
 // geographical bounds it is tied to.
-export function videoOverlay(url, bounds, options) {
-	return new VideoOverlay(url, bounds, options);
+
+export function videoOverlay(video, bounds, options) {
+	return new VideoOverlay(video, bounds, options);
 }
