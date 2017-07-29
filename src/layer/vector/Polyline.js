@@ -176,13 +176,13 @@ export var Polyline = Path.extend({
 	},
 
 	_defaultShape: function () {
-		return LineUtil._flat(this._latlngs) ? this._latlngs : this._latlngs[0];
+		return LineUtil.isFlat(this._latlngs) ? this._latlngs : this._latlngs[0];
 	},
 
 	// recursively convert latlngs input into actual LatLng instances; calculate bounds along the way
 	_convertLatLngs: function (latlngs) {
 		var result = [],
-		    flat = LineUtil._flat(latlngs);
+		    flat = LineUtil.isFlat(latlngs);
 
 		for (var i = 0, len = latlngs.length; i < len; i++) {
 			if (flat) {
@@ -322,3 +322,5 @@ export function polyline(latlngs, options) {
 	return new Polyline(latlngs, options);
 }
 
+// Retrocompat. Allow plugins to support Leaflet versions before and after 1.1.
+Polyline._flat = LineUtil._flat;
