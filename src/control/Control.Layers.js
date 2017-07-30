@@ -373,7 +373,7 @@ export var Layers = Control.extend({
 			layer = this._getLayer(input.layerId).layer;
 			hasLayer = this._map.hasLayer(layer);
 
-			if (input.checked && !hasLayer) {
+			if (input.checked) {
 				addedLayers.push(layer);
 
 			} else if (!input.checked && hasLayer) {
@@ -386,7 +386,9 @@ export var Layers = Control.extend({
 			this._map.removeLayer(removedLayers[i]);
 		}
 		for (i = 0; i < addedLayers.length; i++) {
-			this._map.addLayer(addedLayers[i]);
+			if (!this._map.hasLayer(layer)) {
+				this._map.addLayer(addedLayers[i]);
+			}
 		}
 
 		this._handlingClick = false;
