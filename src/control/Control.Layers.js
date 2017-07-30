@@ -386,7 +386,7 @@ export var Layers = Control.extend({
 			this._map.removeLayer(removedLayers[i]);
 		}
 		for (i = 0; i < addedLayers.length; i++) {
-			if (!this._map.hasLayer(layer)) {
+			if (!this._map.hasLayer(addedLayers[i])) {
 				this._map.addLayer(addedLayers[i]);
 			}
 		}
