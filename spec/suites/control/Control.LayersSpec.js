@@ -130,6 +130,33 @@ describe("Control.Layers", function () {
 
 			expect(layers._layers.length).to.be.equal(1);
 		});
+
+		it("having repeated layers works as expected", function () {
+			document.body.appendChild(map._container);
+			var layerA = L.tileLayer(''), layerB = L.tileLayer(''),
+			    baseLayers = {"Layer 1": layerA, "Layer 2": layerB, "Layer 3": layerA},
+			    layers = L.control.layers(baseLayers).addTo(map);
+
+			function checkInputs(idx) {
+				var inputs = map._container.querySelectorAll('.leaflet-control-layers-base input');
+				for (var i = 0; i < inputs.length; i++) {
+					expect(inputs[i].checked === (idx === i)).to.be.ok();
+				}
+			}
+
+			happen.click(layers._baseLayersList.getElementsByTagName("input")[1]);
+			checkInputs(1);
+			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(layerB);
+			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(undefined);
+			happen.click(layers._baseLayersList.getElementsByTagName("input")[0]);
+			checkInputs(0);
+			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(layerA);
+			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(undefined);
+			happen.click(layers._baseLayersList.getElementsByTagName("input")[2]);
+			checkInputs(2);
+			expect(map._layers[L.Util.stamp(layerA)]).to.be.equal(layerA);
+			expect(map._layers[L.Util.stamp(layerB)]).to.be.equal(undefined);
+		});
 	});
 
 	describe("is removed cleanly", function () {
