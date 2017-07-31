@@ -206,11 +206,6 @@ export var Layers = Control.extend({
 			DomEvent.on(link, 'focus', this.expand, this);
 		}
 
-		// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
-		DomEvent.on(form, 'click', function () {
-			setTimeout(Util.bind(this._onInputClick, this), 0);
-		}, this);
-
 		// TODO keyboard accessibility
 
 		if (!collapsed) {
