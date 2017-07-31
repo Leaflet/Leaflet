@@ -184,11 +184,19 @@ export var Drag = Handler.extend({
 		var map = this._map,
 		    options = map.options,
 
-		    noInertia = !options.inertia || this._times.length < 2;
+		    noInertia = !options.inertia || this._times.length < 2,
+
+			// Check if drag is slowing down
+		    slowingRatio = 2.5,
+		    length = this._positions.length,
+		    secondToLastPoint = this._positions[length - 2],
+		    thirdToLastPoint = this._positions[length - 3],
+		    slowingDown = secondToLastPoint && thirdToLastPoint &&
+						  slowingRatio * this._lastPos.distanceTo(secondToLastPoint) <= secondToLastPoint.distanceTo(thirdToLastPoint);
 
 		map.fire('dragend', e);
 
-		if (noInertia) {
+		if (noInertia || slowingDown) {
 			map.fire('moveend');
 
 		} else {
