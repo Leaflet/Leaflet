@@ -206,8 +206,6 @@ export var Layers = Control.extend({
 			DomEvent.on(link, 'focus', this.expand, this);
 		}
 
-		// TODO keyboard accessibility
-
 		if (!collapsed) {
 			this.expand();
 		}
