@@ -59,6 +59,14 @@ L.Marker = L.Layer.extend({
 		// `Map pane` where the markers icon will be added.
 		pane: 'markerPane',
 
+		// @option rotation: Number = 0
+		// Rotation of this marker in rad
+		rotation: 0,
+
+		// @option rotateWithView: Boolean = false
+		// Rotate this marker when map rotates
+		rotateWithView: false,
+
 		// FIXME: shadowPane is no longer a valid option
 		nonBubblingEvents: ['click', 'dblclick', 'mouseover', 'mouseout', 'contextmenu'],
 	},
@@ -255,10 +263,15 @@ L.Marker = L.Layer.extend({
 			pos = this._map.rotatedPointToMapPanePoint(pos);
 		}
 
-		L.DomUtil.setPosition(this._icon, pos);
+		var bearing = this.options.rotation || 0;
+		if (this.options.rotateWithView) {
+			bearing += this._map._bearing;
+		}
+
+		L.DomUtil.setPosition(this._icon, pos, bearing, pos);
 
 		if (this._shadow) {
-			L.DomUtil.setPosition(this._shadow, pos);
+			L.DomUtil.setPosition(this._shadow, pos, bearing, pos);
 		}
 
 		this._zIndex = pos.y + this.options.zIndexOffset;
@@ -308,6 +321,11 @@ L.Marker = L.Layer.extend({
 		}
 
 		return this;
+	},
+
+	setRotation: function (rotation) {
+		this.options.rotation = rotation;
+		this.update();
 	},
 
 	_updateOpacity: function () {

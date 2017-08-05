@@ -45,13 +45,10 @@ L.Renderer = L.Layer.extend({
 
 		this.getPane().appendChild(this._container);
 		this._update();
-
-		this._map.on('rotate', this._update, this);
 	},
 
 	onRemove: function () {
 		L.DomUtil.remove(this._container);
-		this._map.off('rotate', this._update, this);
 	},
 
 	getEvents: function () {
@@ -90,7 +87,8 @@ L.Renderer = L.Layer.extend({
 	},
 
 	_update: function () {
-		// update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Update pixel bounds of renderer container (for positioning/sizing/clipping later)
+		// Subclasses are responsible of firing the 'update' event.
 		var p = this.options.padding,
 		    map = this._map,
 		    size = this._map.getSize(),
@@ -111,8 +109,6 @@ L.Renderer = L.Layer.extend({
 
 		this._center = this._map.getCenter();
 		this._zoom = this._map.getZoom();
-
-		this.fire('update');
 	}
 });
 

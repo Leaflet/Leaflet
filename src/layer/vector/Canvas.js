@@ -87,6 +87,9 @@ L.Canvas = L.Renderer.extend({
 
 		// translate so we use the same path coordinates after canvas element moves
 		this._ctx.translate(-b.min.x, -b.min.y);
+
+		// Tell paths to redraw themselves
+		this.fire('update');
 	},
 
 	_initPath: function (layer) {

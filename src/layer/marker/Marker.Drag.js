@@ -73,11 +73,12 @@ L.Handler.MarkerDrag = L.Handler.extend({
 
 	_onDrag: function (e) {
 		var marker = this._marker,
+		    rotated_marker = marker.options.rotation || marker.options.rotateWithView,
 		    shadow = marker._shadow,
 		    iconPos = L.DomUtil.getPosition(marker._icon);
 
 		// update shadow position
-		if (shadow) {
+		if (!rotated_marker && shadow) {
 			L.DomUtil.setPosition(shadow, iconPos);
 		}
 
@@ -91,10 +92,12 @@ L.Handler.MarkerDrag = L.Handler.extend({
 		e.latlng = latlng;
 		e.oldLatLng = this._oldLatLng;
 
+		if (rotated_marker) marker.setLatLng(latlng); // use `setLatLng` to presisit rotation. low efficiency
+		else marker.fire('move', e); // `setLatLng` will trig 'move' event. we imitate here.
+
 		// @event drag: Event
 		// Fired repeatedly while the user drags the marker.
 		marker
-		    .fire('move', e)
 		    .fire('drag', e);
 	},
 

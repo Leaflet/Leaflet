@@ -187,7 +187,20 @@ L.Point.prototype = {
 
 	rotateFrom: function(theta, pivot) {
 		if (!theta) { return this; }
-		return this.clone().subtract(pivot).rotate(theta).add(pivot);
+		// Rotate around (pivot.x, pivot.y) by:
+		// 1. subtract (pivot.x, pivot.y)
+		// 2. rotate around (0, 0)
+		// 3. add (pivot.x, pivot.y) back
+		// same as `this.subtract(pivot).rotate(theta).add(pivot)`
+		var sinTheta = Math.sin(theta);
+		var cosTheta = Math.cos(theta);
+		var cx = pivot.x, cy = pivot.y;
+		var x = this.x - cx, y = this.y - cy;
+
+		return new L.Point(
+			x * cosTheta - y * sinTheta + cx,
+			x * sinTheta + y * cosTheta + cy
+		);
 	}
 };
 
