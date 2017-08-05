@@ -136,7 +136,7 @@ export var ImageOverlay = Layer.extend({
 	// @method setBounds(bounds: LatLngBounds): this
 	// Update the bounds that this ImageOverlay covers
 	setBounds: function (bounds) {
-		this._bounds = bounds;
+		this._bounds = toLatLngBounds(bounds);
 
 		if (this._map) {
 			this._reset();
