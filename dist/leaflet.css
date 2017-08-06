@@ -366,6 +366,7 @@
 	}
 .leaflet-control-layers-scrollbar {
 	overflow-y: scroll;
+	overflow-x: hidden;
 	padding-right: 5px;
 	}
 .leaflet-control-layers-selector {
