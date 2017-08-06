@@ -804,6 +804,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/ngageoint">NGA</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gherardovarando/leaflet-csvtiles">Leaflet-CsvTiles</a>
+		</td><td>
+		Load points from tiled csv files, using the amazing <a href="http://papaparse.com/">PapaParse</a> library. <a href="https://gherardovarando.github.io/leaflet-csvtiles/demo/index.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
+		</td>
+	</tr>
 </table>
 
 
