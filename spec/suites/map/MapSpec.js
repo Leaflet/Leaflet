@@ -419,6 +419,13 @@ describe("Map", function () {
 			map.addLayer(layer);
 		});
 
+		it("throws if adding something which is not a layer", function () {
+			var control = L.control.layers();
+			expect(function () {
+				map.addLayer(control);
+			}).to.throwError();
+		});
+
 		describe("When the first layer is added to a map", function () {
 			it("fires a zoomlevelschange event", function () {
 				var spy = sinon.spy();
