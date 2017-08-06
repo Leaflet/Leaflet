@@ -129,15 +129,19 @@ export var Drag = Handler.extend({
 			this._positions.push(pos);
 			this._times.push(time);
 
-			if (time - this._times[0] > 50) {
-				this._positions.shift();
-				this._times.shift();
-			}
+			this._prunePositions(time);
 		}
 
 		this._map
 		    .fire('move', e)
 		    .fire('drag', e);
+	},
+
+	_prunePositions: function (time) {
+		while (this._positions.length > 1 && time - this._times[0] > 50) {
+			this._positions.shift();
+			this._times.shift();
+		}
 	},
 
 	_onZoomEnd: function () {
@@ -192,6 +196,7 @@ export var Drag = Handler.extend({
 			map.fire('moveend');
 
 		} else {
+			this._prunePositions(+new Date());
 
 			var direction = this._lastPos.subtract(this._positions[0]),
 			    duration = (this._lastTime - this._times[0]) / 1000,
