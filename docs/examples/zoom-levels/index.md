@@ -177,7 +177,7 @@ At high zoom levels, the scale changes very little, and is not noticeable.
 
 ## Controlling the zoom
 
-A leaflet map has a several ways to control the zoom level shown, but the most obvious
+A leaflet map has several ways to control the zoom level shown, but the most obvious
 one is [`setZoom()`](../../reference-1.0.3.html#map-setzoom). For example, `map.setZoom(0);`
 will set the zoom level of `map` to `0`.
 
