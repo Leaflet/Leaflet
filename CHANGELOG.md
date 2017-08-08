@@ -12,12 +12,16 @@ An in-progress version being developed on the `master` branch.
 ### API Changes
 
 * Make `L.LineUtil._flat` public as `L.LineUtil.isFlat` ([#5667](https://github.com/leaflet/leaflet/issue/5667) by [yohanboniface](https://github.com/yohanboniface))
+* `L.ImageOverlay`'s `setBounds` method accepts an array of points, not only a `L.LatLngBounds` instance ([#5687](https://github.com/Leaflet/Leaflet/pull/5687) by [ronikar](https://github.com/ronikar)
 
 ### Improvements
 
 * `VideoOverlay` accepts `VideoElement` ([#5661](https://github.com/leaflet/leaflet/issue/5661) by [eavidan-0](https://github.com/eavidan-0))
-* Documentation improvements by [ghybs](https://github.com/ghybs), [thachhoang](https://github.com/thachhoang), [colbin8r](https://github.com/colbin8r), [Timmmm](https://github.com/Timmmm) and [cyrilf](https://github.com/cyrilf)
+* Documentation improvements by [ghybs](https://github.com/ghybs), [thachhoang](https://github.com/thachhoang), [colbin8r](https://github.com/colbin8r), [Timmmm](https://github.com/Timmmm), [cyrilf](https://github.com/cyrilf) and [JonDum](https://github.com/JonDum)
 * Filter published files on npm ([#5626](https://github.com/leaflet/leaflet/issue/5626) by [TrySound](https://github.com/TrySound)), [e7o-de](https://github.com/e7o-de)
+* Throw an error if trying to use `addLayer` with something that is not a `Layer` ([#5689](https://github.com/Leaflet/Leaflet/pull/5689) by [perliedman](https://github.com/perliedman))
+* Ensure copyright banner is kept in the minified `leaflet.js` ([#5682](https://github.com/Leaflet/Leaflet/pull/5682) by [jgravois](https://github.com/jgravois))
+* 
 
 ### Bug fixes
 
