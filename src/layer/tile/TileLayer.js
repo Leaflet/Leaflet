@@ -229,6 +229,7 @@ export var TileLayer = GridLayer.extend({
 				if (!tile.complete) {
 					tile.src = Util.emptyImageUrl;
 					DomUtil.remove(tile);
+					delete this._tiles[i];
 				}
 			}
 		}
