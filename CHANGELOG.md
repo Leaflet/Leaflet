@@ -7,7 +7,7 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch.
 
-## 1.2.0 (release date TBD)
+## 1.2.0 (release date 2017-08-08)
 
 ### API Changes
 
