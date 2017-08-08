@@ -46,7 +46,7 @@ export var Marker = Layer.extend({
 
 		// @option autoPanSpeed: Number = 100
 		// Numer of pixels the map should move by.
-		autoPanSpeed: 100,
+		autoPanSpeed: 10,
 
 		// @option keyboard: Boolean = true
 		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
