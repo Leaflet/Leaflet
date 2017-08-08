@@ -7,6 +7,32 @@ Leaflet Changelog
 
 An in-progress version being developed on the `master` branch.
 
+## 1.2.0 (release date 2017-08-08)
+
+### API Changes
+
+* Make `L.LineUtil._flat` public as `L.LineUtil.isFlat` ([#5667](https://github.com/leaflet/leaflet/issue/5667) by [yohanboniface](https://github.com/yohanboniface))
+* `L.ImageOverlay`'s `setBounds` method accepts an array of points, not only a `L.LatLngBounds` instance ([#5687](https://github.com/Leaflet/Leaflet/pull/5687) by [ronikar](https://github.com/ronikar)
+
+### Improvements
+
+* `VideoOverlay` accepts `VideoElement` ([#5661](https://github.com/leaflet/leaflet/issue/5661) by [eavidan-0](https://github.com/eavidan-0))
+* Documentation improvements by [ghybs](https://github.com/ghybs), [thachhoang](https://github.com/thachhoang), [colbin8r](https://github.com/colbin8r), [Timmmm](https://github.com/Timmmm), [cyrilf](https://github.com/cyrilf) and [JonDum](https://github.com/JonDum)
+* Filter published files on npm ([#5626](https://github.com/leaflet/leaflet/issue/5626) by [TrySound](https://github.com/TrySound)), [e7o-de](https://github.com/e7o-de)
+* Throw an error if trying to use `addLayer` with something that is not a `Layer` ([#5689](https://github.com/Leaflet/Leaflet/pull/5689) by [perliedman](https://github.com/perliedman))
+* Ensure copyright banner is kept in the minified `leaflet.js` ([#5682](https://github.com/Leaflet/Leaflet/pull/5682) by [jgravois](https://github.com/jgravois))
+* 
+
+### Bug fixes
+
+* Fix non-extendable objects regression of 1.1.0 ([#5658](https://github.com/Leaflet/Leaflet/pull/5658) by [mourner](https://github.com/mourner))
+* `Control.Layers` properly handles adding the same layer multiple times, as well as cleanup ([#5672](https://github.com/leaflet/leaflet/issue/5672), [#5684](https://github.com/leaflet/leaflet/issue/5684) and [#5673](https://github.com/leaflet/leaflet/issue/5673) by [jjimenezshaw](https://github.com/jjimenezshaw))
+* Make `L.Draggable._dragging` public again ([#5659](https://github.com/leaflet/leaflet/issue/5659) by [yohanboniface](https://github.com/yohanboniface))
+* `DomEvent.off` returns `this` ([#5601](https://github.com/leaflet/leaflet/issue/5601) by [jelhan](https://github.com/jelhan))
+* Don't use functions from the global `L` internally ([#5596](https://github.com/leaflet/leaflet/issue/5596) by [atd-schubert](https://github.com/atd-schubert))
+* Return `this` instead of `addOne` in `DomEvent.disableScrollPropagation` ([#5595](https://github.com/leaflet/leaflet/issue/5595) by [Eschon](https://github.com/Eschon))
+
+
 ## 1.1.0 (2017-06-27)
 
 ### API changes
