@@ -121,18 +121,23 @@ export var Drag = Handler.extend({
 		}
 	},
 
+	_rememberTimeAndPosition: function () {
+		var time = this._lastTime = +new Date(),
+		    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
+
+		this._positions.push(pos);
+		this._times.push(time);
+
+		// Remove all data points older than 50 ms
+		while (time - this._times[0] > 50) {
+			this._positions.shift();
+			this._times.shift();
+		}
+	},
+
 	_onDrag: function (e) {
 		if (this._map.options.inertia) {
-			var time = this._lastTime = +new Date(),
-			    pos = this._lastPos = this._draggable._absPos || this._draggable._newPos;
-
-			this._positions.push(pos);
-			this._times.push(time);
-
-			if (time - this._times[0] > 50) {
-				this._positions.shift();
-				this._times.shift();
-			}
+			this._rememberTimeAndPosition();
 		}
 
 		this._map
@@ -182,9 +187,13 @@ export var Drag = Handler.extend({
 
 	_onDragEnd: function (e) {
 		var map = this._map,
-		    options = map.options,
+		    options = map.options;
 
-		    noInertia = !options.inertia || this._times.length < 2;
+		if (options.inertia && !L.Browser.touch) {
+			this._rememberTimeAndPosition();
+		}
+
+		var noInertia = !options.inertia || this._times.length < 2;
 
 		map.fire('dragend', e);
 
