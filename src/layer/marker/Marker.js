@@ -36,6 +36,18 @@ export var Marker = Layer.extend({
 		// Whether the marker is draggable with mouse/touch or not.
 		draggable: false,
 
+		// @option autoPan: Boolean = false
+		// Set it to `true` if you want the map to do panning animation when marker hits the edges.
+		autoPan: false,
+
+		// @option autoPanPadding: Point = Point(5, 5)
+		// Equivalent of setting both top left and bottom right autopan padding to the same value.
+		autoPanPadding: [50, 50],
+
+		// @option autoPanSpeed: Number = 100
+		// Numer of pixels the map should move by.
+		autoPanSpeed: 10,
+
 		// @option keyboard: Boolean = true
 		// Whether the marker can be tabbed to with a keyboard and clicked by pressing enter.
 		keyboard: true,
