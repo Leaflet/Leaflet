@@ -100,6 +100,15 @@ task('docs', {}, function() {
 	buildDocs();
 });
 
+desc('Run Typescript tests');
+task('typescript', {async: true}, function() {
+	console.log('Checking for Typescript errors...');
+	jake.exec('./node_modules/typescript/bin/tsc type-definitions/leaflet-tests.ts --noImplicitAny --noEmit', {printStdout: true}, function() {
+		console.log('\tCheck passed.\n');
+		complete();
+	});
+});
+
 task('default', ['test', 'build']);
 
 jake.addListener('complete', function () {
