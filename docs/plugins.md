@@ -1682,6 +1682,16 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="https://github.com/mourner">Vladimir Agafonkin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mejackreed/leaflet-solr-heatmap">Leaflet-Solr-Heatmap</a>
+		</td><td>
+			A Leaflet plugin for rendering heatmaps and clusters from <a href='https://lucene.apache.org/solr/guide/6_6/spatial-search.html#SpatialSearch-HeatmapFaceting'>Solr's Heatmap Faceting</a>. High performance for millions of points or polygons.
+		</td><td>
+			<a href="https://github.com/mejackreed">Jack Reed</a> / 
+			<a href="https://github.com/spacemansteve">Steve McDonald</a>
+		</td>
+	</tr>
 </table>
 
 
