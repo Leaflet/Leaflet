@@ -416,7 +416,7 @@ export var Canvas = Renderer.extend({
 			prev.next = next;
 		} else if (next) {
 			// Update first entry unless this is the
-			// signle entry
+			// single entry
 			this._drawFirst = next;
 		}
 
@@ -444,7 +444,7 @@ export var Canvas = Renderer.extend({
 			next.prev = prev;
 		} else if (prev) {
 			// Update last entry unless this is the
-			// signle entry
+			// single entry
 			this._drawLast = prev;
 		}
 

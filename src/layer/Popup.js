@@ -410,7 +410,7 @@ Layer.include({
 	},
 
 	// @method openPopup(latlng?: LatLng): this
-	// Opens the bound popup at the specificed `latlng` or at the default popup anchor if no `latlng` is passed.
+	// Opens the bound popup at the specified `latlng` or at the default popup anchor if no `latlng` is passed.
 	openPopup: function (layer, latlng) {
 		if (!(layer instanceof Layer)) {
 			latlng = layer;

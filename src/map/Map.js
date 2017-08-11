@@ -673,7 +673,7 @@ export var Map = Evented.extend({
 	},
 
 	// TODO handler.addTo
-	// TODO Appropiate docs section?
+	// TODO Appropriate docs section?
 	// @section Other Methods
 	// @method addHandler(name: String, HandlerClass: Function): this
 	// Adds a new `Handler` to the map, given its name and constructor function.

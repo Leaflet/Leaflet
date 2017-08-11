@@ -5,7 +5,7 @@ import * as Util from '../core/Util';
 /*
  * @namespace LineUtil
  *
- * Various utility functions for polyine points processing, used by Leaflet internally to make polylines lightning-fast.
+ * Various utility functions for polyline points processing, used by Leaflet internally to make polylines lightning-fast.
  */
 
 // Simplify polyline with vertex reduction and Douglas-Peucker simplification.
