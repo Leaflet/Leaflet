@@ -53,7 +53,7 @@ export function bind(fn, obj) {
 export var lastId = 0;
 
 // @function stamp(obj: Object): Number
-// Returns the unique ID of an object, assiging it one if it doesn't have it.
+// Returns the unique ID of an object, assigning it one if it doesn't have it.
 export function stamp(obj) {
 	/*eslint-disable */
 	obj._leaflet_id = obj._leaflet_id || ++lastId;

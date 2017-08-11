@@ -71,7 +71,7 @@ Transformation.prototype = {
 
 // @alternative
 // @factory L.transformation(coefficients: Array): Transformation
-// Expects an coeficients array of the form
+// Expects an coefficients array of the form
 // `[a: Number, b: Number, c: Number, d: Number]`.
 
 export function toTransformation(a, b, c, d) {

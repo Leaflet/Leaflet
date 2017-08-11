@@ -40,12 +40,12 @@ export var Marker = Layer.extend({
 		// Set it to `true` if you want the map to do panning animation when marker hits the edges.
 		autoPan: false,
 
-		// @option autoPanPadding: Point = Point(5, 5)
+		// @option autoPanPadding: Point = Point(50, 50)
 		// Equivalent of setting both top left and bottom right autopan padding to the same value.
 		autoPanPadding: [50, 50],
 
-		// @option autoPanSpeed: Number = 100
-		// Numer of pixels the map should move by.
+		// @option autoPanSpeed: Number = 10
+		// Number of pixels the map should move by.
 		autoPanSpeed: 10,
 
 		// @option keyboard: Boolean = true
