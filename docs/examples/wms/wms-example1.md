@@ -9,7 +9,7 @@ title: WMS example
 		zoom: 3
 	});
 
-	var wmsLayer = L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+	var wmsLayer = L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
 		layers: 'ne:ne'
 	}).addTo(map);
 
