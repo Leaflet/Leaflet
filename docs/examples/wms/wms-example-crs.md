@@ -10,7 +10,7 @@ title: WMS example
 		crs: L.CRS.EPSG4326
 	});
 
-	var wmsLayer = L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+	var wmsLayer = L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
 		layers: 'nasa:bluemarble'
 	}).addTo(map);
 
