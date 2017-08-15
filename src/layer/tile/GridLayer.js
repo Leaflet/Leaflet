@@ -745,7 +745,7 @@ export var GridLayer = Layer.extend({
 		    bounds = new LatLngBounds(nw, se);
 
 		if (!this.options.noWrap) {
-			map.wrapLatLngBounds(bounds);
+			bounds = map.wrapLatLngBounds(bounds);
 		}
 
 		return bounds;
