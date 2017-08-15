@@ -12,18 +12,9 @@ const rev = gitRev.short();
 
 const version = require('../package.json').version + '+' + branch + '.' + rev;
 
-const now = (new Date()).getTime();
-const limit = now + 5 * 60 * 1000;	// 5 minutes, in milliseconds
-
-const warningCode = `
-if ((new Date()).getTime() > ` + limit + `) {
-	var msg = "This rollupjs bundle is potentially old. Make sure you're running 'npm run-script watch' or 'yarn run watch'.";
-	alert(msg);
-	// throw new Error(msg);
-}
-
+const banner = `
 /*
- * Leaflet ` + version + `, a JS library for interactive maps. http://leafletjs.com
+ * Leaflet ${version}, a JS library for interactive maps. http://leafletjs.com
  * (c) 2010-2016 Vladimir Agafonkin, (c) 2010-2011 CloudMade
  */
 
@@ -32,7 +23,7 @@ if ((new Date()).getTime() > ` + limit + `) {
 export default {
 	format: 'umd',
 	moduleName: 'L',
-	banner: warningCode,
+	banner,
 	entry: 'src/Leaflet.js',
 	dest: 'dist/leaflet-src.js',
 	plugins: [
