@@ -768,6 +768,12 @@ export var GridLayer = Layer.extend({
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
+		// Cancels any pending http requests associated with the tile
+		// unless we're on Android's stock browser,
+		// see https://github.com/Leaflet/Leaflet/issues/137
+		if (!Browser.androidStock) {
+			tile.el.setAttribute('src', Util.emptyImageUrl);
+		}
 		DomUtil.remove(tile.el);
 
 		delete this._tiles[key];
