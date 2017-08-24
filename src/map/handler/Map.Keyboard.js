@@ -141,9 +141,9 @@ export var Keyboard = Handler.extend({
 		if (e.altKey || e.ctrlKey || e.metaKey) { return; }
 
 		var key = e.keyCode,
-				map = this._map,
-				mapPopup = map._popup,
-				offset;
+		map = this._map,
+		mapPopup = map._popup,
+		offset;
 
 		if (key in this._panKeys) {
 
