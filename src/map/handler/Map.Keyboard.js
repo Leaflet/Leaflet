@@ -142,7 +142,6 @@ export var Keyboard = Handler.extend({
 
 		var key = e.keyCode,
 		map = this._map,
-		mapPopup = map._popup,
 		offset;
 
 		if (key in this._panKeys) {
@@ -163,7 +162,7 @@ export var Keyboard = Handler.extend({
 		} else if (key in this._zoomKeys) {
 			map.setZoom(map.getZoom() + (e.shiftKey ? 3 : 1) * this._zoomKeys[key]);
 
-		} else if (key === 27 && mapPopup && mapPopup.options.closeOnEscapeKey) {
+		} else if (key === 27 && map._popup && map._popup.options.closeOnEscapeKey) {
 			map.closePopup();
 
 		} else {
