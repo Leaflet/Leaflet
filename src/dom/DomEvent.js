@@ -209,7 +209,7 @@ export function preventDefault(e) {
 	return this;
 }
 
-// @function stop(ev): this
+// @function stop(ev: DOMEvent): this
 // Does `stopPropagation` and `preventDefault` at the same time.
 export function stop(e) {
 	preventDefault(e);
