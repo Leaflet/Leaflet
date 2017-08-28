@@ -953,11 +953,11 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartenkarsten/leaflet-layer-overpass/">Leaflet Layer Overpass</a>
+			<a href="https://github.com/GuillaumeAmat/leaflet-overpass-layer">Leaflet Overpass Layer</a>
 		</td><td>
       Easily include data from the <a href="http://overpass-api.de">overpass api</a>.
 		</td><td>
-			<a href="https://github.com/kartenkarsten">kartenkarsten</a>
+			<a href="https://github.com/GuillaumeAmat">Guillaume AMAT</a>
 		</td>
 	</tr>
 	<tr>
