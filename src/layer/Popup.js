@@ -87,6 +87,11 @@ export var Popup = DivOverlay.extend({
 		// the popup closing when another popup is opened.
 		autoClose: true,
 
+		// @option closeOnEscapeKey: Boolean = true
+		// Set it to `false` if you want to override the default behavior of
+		// the ESC key for closing of the popup.
+		closeOnEscapeKey: true,
+
 		// @option closeOnClick: Boolean = *
 		// Set it if you want to override the default behavior of the popup closing when user clicks
 		// on the map. Defaults to the map's [`closePopupOnClick`](#map-closepopuponclick) option.
