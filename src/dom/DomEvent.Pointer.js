@@ -7,14 +7,14 @@ import * as Browser from '../core/Browser';
  */
 
 
-var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown',
-    POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove',
-    POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup',
-    POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel',
-    TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'],
+var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
+var POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
+var POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
+var POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
+var TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'];
 
-    _pointers = {},
-    _pointerDocListener = false;
+var _pointers = {};
+var _pointerDocListener = false;
 
 // DomEvent.DoubleTap needs to know about this
 export var _pointersCount = 0;

@@ -52,7 +52,7 @@ module.exports = function (config) {
 				json()
 			],
 			format: 'umd',
-			moduleName: 'L'
+			name: 'L'
 		},
 
 		// test results reporter to use

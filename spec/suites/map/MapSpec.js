@@ -193,7 +193,7 @@ describe("Map", function () {
 			var container = map.getContainer();
 			container.style.height = height;
 			document.body.appendChild(container);
-// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
+			// L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
 			map.options.zoomSnap = 0.5;
 			expect(map.getBoundsZoom(bounds, false, padding)).to.be.equal(19.5);
 			map.options.zoomSnap = 0.2;
@@ -787,7 +787,7 @@ describe("Map", function () {
 		});
 
 		it.skipInNonPhantom('zoomIn ignores the zoomDelta option on non-any3d browsers', function (done) {
-// 			L.Browser.any3d = false;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = false;
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.once('zoomend', function () {
@@ -799,7 +799,7 @@ describe("Map", function () {
 		});
 
 		it.skipInPhantom('zoomIn respects the zoomDelta option on any3d browsers', function (done) {
-// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = true;
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -812,7 +812,7 @@ describe("Map", function () {
 		});
 
 		it.skipInPhantom('zoomOut respects the zoomDelta option on any3d browsers', function (done) {
-// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = true;
 			map.options.zoomSnap = 0.25;
 			map.options.zoomDelta = 0.25;
 			map.setView(center, 10);
@@ -832,7 +832,7 @@ describe("Map", function () {
 				expect(map.getCenter()).to.eql(center);
 				done();
 			});
-// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = true;
 			map.zoomIn(0.22, {animate: false});
 		});
 
@@ -844,7 +844,7 @@ describe("Map", function () {
 				expect(map.getCenter()).to.eql(center);
 				done();
 			});
-// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = true;
 			map.zoomOut(0.22, {animate: false});
 		});
 	});
@@ -888,7 +888,7 @@ describe("Map", function () {
 
 		it.skipInPhantom('Snaps zoom to zoomSnap on any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
-// 			L.Browser.any3d = true;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = true;
 			map.once('zoomend', function () {
 				expect(map.getZoom()).to.eql(2.75);
 				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
@@ -899,7 +899,7 @@ describe("Map", function () {
 
 		it.skipInNonPhantom('Ignores zoomSnap on non-any3d browsers', function (done) {
 			map.options.zoomSnap = 0.25;
-// 			L.Browser.any3d = false;	// L.Browser is frozen since ES6ication
+			L.Browser.any3d = false;
 			map.once('zoomend', function () {
 				expect(map.getZoom()).to.eql(2);
 				expect(map.getCenter().equals(boundsCenter, 0.05)).to.eql(true);
