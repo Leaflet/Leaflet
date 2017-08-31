@@ -141,7 +141,7 @@ describe("Map.Keyboard", function () {
 			expect(popup.isOpen()).to.be(true);
 
 			happen.keydown(document,  {keyCode: 27});	// 27 = Esc
-// 			happen.keypress(document, {keyCode: 27});
+			// happen.keypress(document, {keyCode: 27});
 			happen.keyup(document,    {keyCode: 27});
 
 			expect(popup.isOpen()).to.be(false);

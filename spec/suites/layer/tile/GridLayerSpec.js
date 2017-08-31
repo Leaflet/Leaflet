@@ -341,12 +341,12 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;
@@ -545,7 +545,7 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming in 10-11", function (done) {
 
-// 			grid.on('tileload tileunload tileloadstart load', logTiles);
+			// grid.on('tileload tileunload tileloadstart load', logTiles);
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -553,7 +553,7 @@ describe('GridLayer', function () {
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
 
-// 				grid.on('load', logTiles);
+				// grid.on('load', logTiles);
 				grid.on('load', function () {
 
 					// We're one frame into the zoom animation, there are
@@ -618,7 +618,7 @@ describe('GridLayer', function () {
 		// browsers due to CSS animations!
 		it.skipInPhantom("Loads 32, unloads 16 tiles zooming out 11-10", function (done) {
 
-// 			grid.on('tileload tileunload load', logTiles);
+			// grid.on('tileload tileunload load', logTiles);
 
 			grid.on('load', function () {
 				expect(counts.tileloadstart).to.be(16);
@@ -626,11 +626,11 @@ describe('GridLayer', function () {
 				expect(counts.tileunload).to.be(0);
 				grid.off('load');
 
-// 				grid.on('load', logTiles);
+				// grid.on('load', logTiles);
 				grid.on('load', function () {
 
 					grid.off('load');
-// 					grid.on('load', logTiles);
+					// grid.on('load', logTiles);
 
 					// We're one frame into the zoom animation, there are
 					// 16 tiles for z11 plus 4 tiles for z10 covering the
@@ -717,9 +717,9 @@ describe('GridLayer', function () {
 
 				map.flyTo(trd, 12, {animate: true});
 
-// 				map.on('_frame', function () {
-// 					console.log('frame', counts);
-// 				});
+				// map.on('_frame', function () {
+				// 	console.log('frame', counts);
+				// });
 
 				runFrames(500);
 			});
@@ -756,12 +756,12 @@ describe('GridLayer', function () {
 			};
 
 			grid.on('tileload tileunload tileerror tileloadstart', function (ev) {
-// 				console.log(ev.type);
+				// console.log(ev.type);
 				counts[ev.type]++;
 			});
-// 			grid.on('tileunload', function (ev) {
-// 				console.log(ev.type, ev.coords, counts);
-// 			});
+			// grid.on('tileunload', function (ev) {
+			// 	console.log(ev.type, ev.coords, counts);
+			// });
 
 			map.options.fadeAnimation = false;
 			map.options.zoomAnimation = false;

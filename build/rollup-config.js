@@ -28,7 +28,7 @@ const banner = `/* @preserve
 
 export default {
 	format: 'umd',
-	moduleName: 'L',
+	name: 'L',
 	banner: banner,
 	entry: 'src/Leaflet.js',
 	dest: 'dist/leaflet-src.js',

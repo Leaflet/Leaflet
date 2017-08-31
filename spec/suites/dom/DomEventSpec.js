@@ -5,7 +5,7 @@ describe('DomEvent', function () {
 		if (document.createEvent) {
 			var e = document.createEvent('MouseEvents');
 			e.initMouseEvent('click', true, true, window,
-					0, 0, 0, 0, 0, false, false, false, false, 0, null);
+				0, 0, 0, 0, 0, false, false, false, false, 0, null);
 			return el.dispatchEvent(e);
 		} else if (el.fireEvent) {
 			return el.fireEvent('onclick');
