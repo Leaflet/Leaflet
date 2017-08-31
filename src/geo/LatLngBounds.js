@@ -77,7 +77,9 @@ LatLngBounds.prototype = {
 	},
 
 	// @method pad(bufferRatio: Number): LatLngBounds
-	// Returns bigger bounds created by extending the current bounds by a given percentage in each direction.
+	// Returns bounds created by extending or retracting the current bounds by a given ratio in each direction.
+	// For example, a ratio of 0.5 extends the bounds by 50% in each direction.
+	// Negative values will retract the bounds.
 	pad: function (bufferRatio) {
 		var sw = this._southWest,
 		    ne = this._northEast,
