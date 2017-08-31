@@ -2643,7 +2643,7 @@ L.TileLayer = L.Class.extend({
 
 	_reset: function (e) {
 		for (var key in this._tiles) {
-			this.fire('tileunload', { tile: this._tiles[key] });
+			this._removeTile(key);
 		}
 
 		this._tiles = {};
