@@ -81,8 +81,8 @@ LatLngBounds.prototype = {
 	pad: function (bufferRatio) {
 		var sw = this._southWest,
 		    ne = this._northEast,
-		    heightBuffer = Math.abs(sw.lat - ne.lat) * (bufferRatio/100),
-		    widthBuffer = Math.abs(sw.lng - ne.lng) * (bufferRatio/100);
+		    heightBuffer = Math.abs(sw.lat - ne.lat) * (bufferRatio / 100),
+		    widthBuffer = Math.abs(sw.lng - ne.lng) * (bufferRatio / 100);
 
 		return new LatLngBounds(
 		        new LatLng(sw.lat - heightBuffer, sw.lng - widthBuffer),
