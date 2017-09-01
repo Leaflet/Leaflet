@@ -149,6 +149,7 @@ export var Map = Evented.extend({
 		this._handlers = [];
 		this._layers = {};
 		this._zoomBoundLayers = {};
+		this._canvasRenderers = [];
 		this._sizeChanged = true;
 
 		this.callInitHooks();
@@ -1649,6 +1650,17 @@ export var Map = Evented.extend({
 		Util.requestAnimFrame(function () {
 			this._moveEnd(true);
 		}, this);
+	},
+
+	_registerCanvasRenderer: function(layer) {
+		this._canvasRenderers.push(layer);
+	},
+
+	_forwardCanvasEvent: function(layer, e) {
+		if (this._canvasRenderers.indexOf(layer) > 0) {
+			// forward to the renderer *below* the renderer the originally received the event
+			this._canvasRenderers[pos - 1];._dispatchEvent(e);
+		}
 	}
 });
 

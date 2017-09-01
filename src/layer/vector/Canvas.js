@@ -52,6 +52,9 @@ export var Canvas = Renderer.extend({
 	onAdd: function () {
 		Renderer.prototype.onAdd.call(this);
 
+		// add this renderer so the map can quickly reference it
+		this._map._registerCanvasRenderer(this);
+
 		// Redraw vectors since canvas is cleared upon removal,
 		// in case of removing the renderer itself from the map.
 		this._draw();
@@ -339,6 +342,17 @@ export var Canvas = Renderer.extend({
 	// Canvas obviously doesn't have mouse events for individual drawn objects,
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
+	_dispatchEvent: function(e) {
+		switch(e.type) {
+			case 'mousemove':
+				this._onMouseMove(e);
+				break;
+			case 'click':
+				this._onClick(e);
+				break;
+		}
+	},
+
 	_onClick: function (e) {
 		var point = this._map.mouseEventToLayerPoint(e), layer, clickedLayer;
 
@@ -351,6 +365,10 @@ export var Canvas = Renderer.extend({
 		if (clickedLayer)  {
 			DomEvent.fakeStop(e);
 			this._fireEvent([clickedLayer], e);
+		}
+		else {
+			// layer wasn't found, send to map to find if other canvas layers can handle event
+			this._map._forwardCanvasEvent(this, e);
 		}
 	},
 
@@ -390,6 +408,11 @@ export var Canvas = Renderer.extend({
 				this._fireEvent([candidateHoveredLayer], e, 'mouseover');
 				this._hoveredLayer = candidateHoveredLayer;
 			}
+		}
+
+		// if no layer was found, forward it to the next canvas renderer if it exists
+		if (!candidateHoveredLayer) {
+			this._map._forwardCanvasEvent(this, e);
 		}
 
 		if (this._hoveredLayer) {
