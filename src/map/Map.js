@@ -1657,7 +1657,8 @@ export var Map = Evented.extend({
 	},
 
 	_forwardCanvasEvent: function (layer, e) {
-		if (this._canvasRenderers.indexOf(layer) > 0) {
+		var pos = this._canvasRenderers.indexOf(layer);
+		if (pos > 0) {
 			// forward to the renderer *below* the renderer the originally received the event
 			this._canvasRenderers[pos - 1]._dispatchEvent(e);
 		}
