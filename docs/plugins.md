@@ -633,6 +633,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/robertomlsoares/leaflet-offline">leaflet-offline</a>
+		</td><td>
+			Allows the use of offline tiles in a customizable way while falling back to the normal TileLayer when necessary. <a href="https://robertomlsoares.github.io/leaflet-offline/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/robertomlsoares">Roberto Soares</a>
+		</td>
+	</tr>
 </table>
 
 
