@@ -342,14 +342,14 @@ export var Canvas = Renderer.extend({
 	// Canvas obviously doesn't have mouse events for individual drawn objects,
 	// so we emulate that by calculating what's under the mouse on mousemove/click manually
 
-	_dispatchEvent: function(e) {
-		switch(e.type) {
-			case 'mousemove':
-				this._onMouseMove(e);
-				break;
-			case 'click':
-				this._onClick(e);
-				break;
+	_dispatchEvent: function (e) {
+		switch (e.type) {
+		case 'mousemove':
+			this._onMouseMove(e);
+			break;
+		case 'click':
+			this._onClick(e);
+			break;
 		}
 	},
 
@@ -365,8 +365,7 @@ export var Canvas = Renderer.extend({
 		if (clickedLayer)  {
 			DomEvent.fakeStop(e);
 			this._fireEvent([clickedLayer], e);
-		}
-		else {
+		}	else {
 			// layer wasn't found, send to map to find if other canvas layers can handle event
 			this._map._forwardCanvasEvent(this, e);
 		}
