@@ -52,6 +52,10 @@ export var ImageOverlay = Layer.extend({
 		// @option className: String = ''
 		// A custom class name to assign to the image. Empty by default.
 		className: '',
+
+		// @option useObjectTag: Boolean = false
+		// Nest the image in an object tag. For SVG elements it allows access to the SVG DOM.
+		useObjectTag: false,
 	},
 
 	initialize: function (url, bounds, options) { // (String, LatLngBounds, Object)
@@ -77,6 +81,19 @@ export var ImageOverlay = Layer.extend({
 
 		this.getPane().appendChild(this._image);
 		this._reset();
+
+		// In Chrome, the object tag needs to be redrawn after a zoom for some reason.
+		// This causes an unfortunate one-frame flicker.
+		if(this.options.useObjectTag && L.Browser.chrome) {
+			this._zoomEndListener = function() {
+				if(this._image) {
+					this._image.style.display = 'none';
+					this._image.style.display = 'block';
+				}
+			};
+			this._zoomEndListener = this._zoomEndListener.bind(this);
+			this._map.on('zoomend', this._zoomEndListener);
+		}
 	},
 
 	onRemove: function () {
@@ -84,6 +101,7 @@ export var ImageOverlay = Layer.extend({
 		if (this.options.interactive) {
 			this.removeInteractiveTarget(this._image);
 		}
+		this._map.off('zoomend', this._zoomEndListener);
 	},
 
 	// @method setOpacity(opacity: Number): this
@@ -172,14 +190,14 @@ export var ImageOverlay = Layer.extend({
 	},
 
 	// @method getElement(): HTMLElement
-	// Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement)
+	// Returns the instance of [`HTMLImageElement`](https://developer.mozilla.org/docs/Web/API/HTMLImageElement), or [`HtmlObjectElement`](https://developer.mozilla.org/en-US/docs/Web/API/HTMLObjectElement) if `options.useObjectTag` was used.
 	// used by this overlay.
 	getElement: function () {
 		return this._image;
 	},
 
 	_initImage: function () {
-		var img = this._image = DomUtil.create('img',
+		var img = this._image = DomUtil.create(this.options.useObjectTag ? 'object' : 'img',
 			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '') +
 			 (this.options.className || ''));
 
@@ -199,7 +217,12 @@ export var ImageOverlay = Layer.extend({
 			this._updateZIndex();
 		}
 
-		img.src = this._url;
+		if(!this.options.useObjectTag) {
+			img.src = this._url;
+		} else {
+			img.data = this._url;
+		}
+
 		img.alt = this.options.alt;
 	},
 
