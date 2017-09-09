@@ -197,8 +197,12 @@ describe('Popup', function () {
 	it("should take into account icon popupAnchor option", function () {
 		var autoPanBefore = L.Popup.prototype.options.autoPan;
 		L.Popup.prototype.options.autoPan = false;
-		var popupAnchorBefore = L.Icon.Default.prototype.options.popupAnchor;
-		L.Icon.Default.prototype.options.popupAnchor = [0, 0];
+
+		// Default icon options are now applied per instance, not on the L.Icon.Default.prototype.
+		var markerDefaultIconOptions = L.Marker.prototype.options.icon.options,
+		    popupAnchorBefore = markerDefaultIconOptions.popupAnchor;
+
+		markerDefaultIconOptions.popupAnchor = [0, 0];
 
 		var latlng = new L.LatLng(55.8, 37.6),
 		    offset = new L.Point(20, 30),
@@ -226,7 +230,7 @@ describe('Popup', function () {
 		expect(offsetBottom + offset.y).to.eql(defaultBottom);
 
 		L.Popup.prototype.options.autoPan = autoPanBefore;
-		L.Icon.Default.prototype.options.popupAnchor = popupAnchorBefore;
+		markerDefaultIconOptions.popupAnchor = popupAnchorBefore;
 	});
 
 	it("prevents an underlying map click for Layer", function () {
