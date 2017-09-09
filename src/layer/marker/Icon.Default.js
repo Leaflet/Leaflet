@@ -71,8 +71,8 @@ export var IconDefault = Icon.extend({
 // Retrieve icon option values from CSS (icon or shadow).
 function _detectIconOptions(className, imagePath) {
 	var el = DomUtil.create('div',  className, document.body),
-	    bgImage = _getStyle(el, 'background-image'),
-	    urls = _extractUrls(bgImage, imagePath),
+	    urlsContainer = _getStyle(el, 'cursor'),
+	    urls = _extractUrls(urlsContainer, imagePath),
 	    iconX = parseInt(_getStyle(el, 'width'), 10),
 	    iconY = parseInt(_getStyle(el, 'height'), 10),
 	    anchorNX = parseInt(_getStyle(el, 'margin-left'), 10),
@@ -100,14 +100,14 @@ function _detectDivOverlayOptions(className) {
 // Read the CSS url (could be path or inline base64), may be multiple
 // First: normal icon
 // Second: Retina icon
-function _extractUrls(bgImage, imagePath) {
+function _extractUrls(urlsContainer, imagePath) {
 	var re = /url\(['"]?([^"']*?)['"]?\)/gi, // Match anything between url( and ), possibly with single or double quotes.
 	    urls = [],
-	    m = re.exec(bgImage);
+	    m = re.exec(urlsContainer);
 
 	while (m) {
 		urls.push(_replaceUrl(m[1], imagePath));
-		m = re.exec(bgImage);
+		m = re.exec(urlsContainer);
 	}
 
 	return urls;
