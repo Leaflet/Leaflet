@@ -12,6 +12,11 @@ describe("Marker", function () {
 
 		map = L.map(div).setView([0, 0], 0);
 		icon1 = new L.Icon.Default();
+
+		// Force initialization of Default Icon options, so that we can use icon1.options right away.
+		// Default iconUrl and shadowUrl are no longer hard coded in JS, but retrieved from CSS.
+		icon1._getIconUrl('icon');
+
 		icon2 = new L.Icon.Default({
 			iconUrl: icon1.options.iconUrl + '?2',
 			shadowUrl: icon1.options.shadowUrl + '?2'
