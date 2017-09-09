@@ -30,4 +30,28 @@ describe("Icon.Default", function () {
 		document.body.removeChild(div);
 	});
 
+	it("uses imagePath option if specified", function () {
+		// No need for a map in this test.
+		// This also avoids printing a warning in console due to HTML 404 resource not found.
+		var iconDefault = L.Marker.prototype.options.icon;
+		var iconDefaultOptions = iconDefault.options;
+
+		// Force re-evaluation of IconDefault options from CSS, using imagePath.
+		iconDefault._needsInit = true;
+		iconDefaultOptions.imagePath = 'IconDefault/dummy/imagePath/';
+		iconDefaultOptions.iconUrl = null;
+
+		var marker = new L.Marker([0, 0]);
+
+		var path = marker.options.icon._getIconUrl('icon');
+
+		// 'marker-icon.png' is now defined in CSS.
+		expect(path).to.be('IconDefault/dummy/imagePath/marker-icon.png');
+
+		// Force re-evaluation of IconDefault options from CSS, without imagePath.
+		iconDefault._needsInit = true;
+		delete iconDefaultOptions.imagePath;
+		delete iconDefaultOptions.iconUrl;
+	});
+
 });
