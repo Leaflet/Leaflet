@@ -19,42 +19,116 @@ import * as DomUtil from '../../dom/DomUtil';
 
 export var IconDefault = Icon.extend({
 
+	// All other options to be initialized at first call to _getIconUrl,
+	// assuming it will be called before trying to read other options.
 	options: {
-		iconUrl:       'marker-icon.png',
-		iconRetinaUrl: 'marker-icon-2x.png',
-		shadowUrl:     'marker-shadow.png',
-		iconSize:    [25, 41],
-		iconAnchor:  [12, 41],
-		popupAnchor: [1, -34],
-		tooltipAnchor: [16, -28],
-		shadowSize:  [41, 41]
+		classNamePrefix: 'leaflet-default-icon-'
 	},
 
+	_needsInit: true,
+
+	// Override to make sure options are retrieved from CSS.
 	_getIconUrl: function (name) {
-		if (!IconDefault.imagePath) {	// Deprecated, backwards-compatibility only
-			IconDefault.imagePath = this._detectIconPath();
+		if (this._needsInit) {
+			// @option imagePath: String
+			// `Icon.Default` will try to auto-detect the absolute location of
+			// the blue icon images. If you are placing these images in a
+			// non-standard way, set this option to point to the right absolute
+			// path, before any marker is added to a map.
+			// Caution: do not use this option with inline base64 image(s).
+			var imagePath = this.options.imagePath || IconDefault.imagePath;
+
+			// Modifying imagePath option after _getIconUrl has been called
+			// once in this instance of IconDefault will no longer have any
+			// effect.
+			this._initializeOptions(imagePath);
 		}
 
-		// @option imagePath: String
-		// `Icon.Default` will try to auto-detect the absolute location of the
-		// blue icon images. If you are placing these images in a non-standard
-		// way, set this option to point to the right absolute path.
-		return (this.options.imagePath || IconDefault.imagePath) + Icon.prototype._getIconUrl.call(this, name);
+		return Icon.prototype._getIconUrl.call(this, name);
 	},
 
-	_detectIconPath: function () {
-		var el = DomUtil.create('div',  'leaflet-default-icon-path', document.body);
-		var path = DomUtil.getStyle(el, 'background-image') ||
-		           DomUtil.getStyle(el, 'backgroundImage');	// IE8
+	// Initialize all necessary options for this instance.
+	_initializeOptions: function (imagePath) {
+		this._setOptions('icon', _detectIconOptions, imagePath);
+		this._setOptions('shadow', _detectIconOptions, imagePath);
+		this._setOptions('popup', _detectDivOverlayOptions);
+		this._setOptions('tooltip', _detectDivOverlayOptions);
+		this._needsInit = false;
+	},
 
-		document.body.removeChild(el);
+	// Retrieve values from CSS and assign to this instance options.
+	_setOptions: function (name, detectorFn, imagePath) {
+		var prefix = this.options.classNamePrefix,
+		    optionValues = detectorFn(prefix + name, imagePath),
+		    options = this.options;
 
-		if (path === null || path.indexOf('url') !== 0) {
-			path = '';
-		} else {
-			path = path.replace(/^url\(["']?/, '').replace(/marker-icon\.png["']?\)$/, '');
+		for (var optionName in optionValues) {
+			options[name + optionName] = options[name + optionName] || optionValues[optionName];
 		}
-
-		return path;
 	}
 });
+
+// Retrieve icon option values from CSS (icon or shadow).
+function _detectIconOptions(className, imagePath) {
+	var el = DomUtil.create('div',  className, document.body),
+	    bgImage = _getStyle(el, 'background-image'),
+	    urls = _extractUrls(bgImage, imagePath),
+	    iconX = parseInt(_getStyle(el, 'width'), 10),
+	    iconY = parseInt(_getStyle(el, 'height'), 10),
+	    anchorNX = parseInt(_getStyle(el, 'margin-left'), 10),
+	    anchorNY = parseInt(_getStyle(el, 'margin-top'), 10);
+
+	return {
+		Url: urls[0],
+		RetinaUrl: urls[1],
+		Size: [iconX, iconY],
+		Anchor: [-anchorNX, -anchorNY]
+	};
+}
+
+// Retrieve anchor option values from CSS (popup or tooltip).
+function _detectDivOverlayOptions(className) {
+	var el = DomUtil.create('div', className, document.body),
+	    anchorX = parseInt(_getStyle(el, 'margin-left'), 10),
+	    anchorY = parseInt(_getStyle(el, 'margin-top'), 10);
+
+	return {
+		Anchor: [anchorX, anchorY]
+	};
+}
+
+// Read the CSS url (could be path or inline base64), may be multiple
+// First: normal icon
+// Second: Retina icon
+function _extractUrls(bgImage, imagePath) {
+	var re = /url\(['"]?([^"']*?)['"]?\)/gi, // Match anything between url( and ), possibly with single or double quotes.
+	    urls = [],
+	    m = re.exec(bgImage);
+
+	while (m) {
+		urls.push(_replaceUrl(m[1], imagePath));
+		m = re.exec(bgImage);
+	}
+
+	return urls;
+}
+
+// If imagePath is set, use it to replace anything before the last slash (/)
+// occurrence (inclusive).
+// Caution: will give unexpected result if url is inline base64 data
+// => do not specify imagePath in that case!
+function _replaceUrl(url, imagePath) {
+	return imagePath ? imagePath + url.substr(url.lastIndexOf('/') + 1) : url;
+}
+
+// Factorize style reading fallback for IE8.
+function _getStyle(el, style) {
+	return DomUtil.getStyle(el, style) || DomUtil.getStyle(el, _kebabToCamelCase(style));
+}
+
+// Convert kebab-case CSS property name to camelCase for IE currentStyle.
+function _kebabToCamelCase(prop) {
+	return prop.replace(/-(\w)/g, function (str, w) {
+		return w.toUpperCase();
+	});
+}
