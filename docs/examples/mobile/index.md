@@ -19,8 +19,8 @@ First we'll take a look at the HTML &amp; CSS code of the page. To make our map 
 		margin: 0;
 	}
 	html, body, #map {
-		height: 100vh;
-		width: 100vw;
+		height: 100%;
+		width: 100%;
 	}
 
 Also, we need to tell the mobile browser to disable unwanted scaling of the page and set it to its actual size by placing the following line in the `head` section or our HTML page:

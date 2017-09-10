@@ -13,8 +13,8 @@ title: Leaflet class diagram
 		maxBounds: bounds
 	});
 
-	map.getContainer().style.width = '100vw';
-	map.getContainer().style.height= '100vh';
+	map.getContainer().style.width = '100%';
+	map.getContainer().style.height= '100%';
 	document.body.style.margin = 0;
 
 	var image = L.imageOverlay('class-diagram.png', bounds).addTo(map);
