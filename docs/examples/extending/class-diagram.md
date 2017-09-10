@@ -13,7 +13,7 @@ title: Leaflet class diagram
 		maxBounds: bounds
 	});
 
-	map.getContainer().style.width = '100%';
+	map.getContainer().style.width = '100vw';
 	map.getContainer().style.height= '100%';
 	document.body.style.margin = 0;
 

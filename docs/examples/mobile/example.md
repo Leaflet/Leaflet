@@ -7,7 +7,7 @@ css: "body {
 	}
 	html, body, #map {
 		height: 100%;
-		width: 100%;
+		width: 100vw;
 	}"
 ---
 <script>
