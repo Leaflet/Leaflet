@@ -6,8 +6,8 @@ css: "body {
 		margin: 0;
 	}
 	html, body, #map {
-		height: 100vh;
-		width: 100vw;
+		height: 100%;
+		width: 100%;
 	}"
 ---
 <script>
