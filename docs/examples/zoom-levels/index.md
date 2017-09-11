@@ -107,7 +107,7 @@ When we represent the world at zoom level **zero**, it's 256 pixels wide and hig
 </div>
 </div>
 
-At each zoom level, each tile is divided in four, and its Size(tileSize, length of the edge) doubles, quadrupling the area. (in other words, the width and height of the world is <code>256·2<sup>zoomlevel</sup></code> pixels):
+At each zoom level, each tile is divided in four, and its size (length of the edge, given by the `tileSize` option) doubles, quadrupling the area. (in other words, the width and height of the world is <code>256·2<sup>zoomlevel</sup></code> pixels):
 
 <table><tr><td>
 <div class='tiles small' style='text-align: center'>
