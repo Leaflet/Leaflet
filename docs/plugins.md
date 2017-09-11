@@ -1455,7 +1455,7 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td>
 		<td>
 			Popup a speech bubble with the arrow that follow points,layer, markers ...
-			 (<a href="hhttps://sybri.github.io/demo/Leaflet.SpeechBubble/demo.html">demo</a>).
+			 (<a href="https://sybri.github.io/demo/Leaflet.SpeechBubble/demo.html">demo</a>).
 		</td>
 		<td>
 			<a href="https://github.com/sybri">Sylvain BRISSY</a>
