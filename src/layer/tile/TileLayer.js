@@ -188,7 +188,7 @@ export var TileLayer = GridLayer.extend({
 
 	_tileOnError: function (done, tile, e) {
 		var errorUrl = this.options.errorTileUrl;
-		if (errorUrl && tile.src !== errorUrl) {
+		if (errorUrl && tile.getAttribute('value') !== errorUrl) {
 			tile.src = errorUrl;
 		}
 		done(e, tile);
