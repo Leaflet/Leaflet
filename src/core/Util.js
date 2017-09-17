@@ -58,7 +58,7 @@ export function stamp(obj) {
 	/*eslint-disable */
 	obj._leaflet_id = obj._leaflet_id || ++lastId;
 	return obj._leaflet_id;
-	/*eslint-enable */
+	/* eslint-enable */
 }
 
 // @function throttle(fn: Function, time: Number, context: Object): Function
