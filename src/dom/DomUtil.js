@@ -223,7 +223,7 @@ export function setPosition(el, point) {
 
 	/*eslint-disable */
 	el._leaflet_pos = point;
-	/*eslint-enable */
+	/* eslint-enable */
 
 	if (Browser.any3d) {
 		setTransform(el, point);
