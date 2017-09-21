@@ -161,8 +161,8 @@ export var LayerGroup = Layer.extend({
 });
 
 
-// @factory L.layerGroup(layers?: Layer[])
-// Create a layer group, optionally given an initial set of layers.
-export var layerGroup = function (layers) {
-	return new LayerGroup(layers);
+// @factory L.layerGroup(layers?: Layer[], options?: Object)
+// Create a layer group, optionally given an initial set of layers and an `options` object.
+export var layerGroup = function (layers, options) {
+	return new LayerGroup(layers, options);
 };
