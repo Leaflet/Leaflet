@@ -918,7 +918,7 @@ These plugins create useful overlays from scratch, no loading required.
 		<td>
 			<a href="https://github.com/jonshutt/Leaflet.OS.Graticule">L.OS.Graticule</a>
 		</td><td>
-			Overlays UK Ordinance Survey (OS) 1km grid sqaures and labels.
+			Overlays UK Ordinance Survey (OS) 1km grid squares and labels.
 		</td><td>
 			<a href="https://github.com/jonshutt">Jon Shutt</a>
 		</td>
