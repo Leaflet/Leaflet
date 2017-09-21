@@ -22,7 +22,9 @@ import * as Util from '../core/Util';
 
 export var LayerGroup = Layer.extend({
 
-	initialize: function (layers) {
+	initialize: function (layers, options) {
+		Util.setOptions(this, options);
+
 		this._layers = {};
 
 		var i, len;
