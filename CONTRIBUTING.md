@@ -104,7 +104,7 @@ Happy coding!
 The source javascript code for Leaflet is a few dozen files, in the `src/` directory.
 But normally, Leaflet is loaded in a web browser as just one javascript file.
 
-In order to create this file, run `npm run-script rollup` or `yarn run rollup`.
+In order to create this file, run `npm run rollup` or `yarn run rollup`.
 
 You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
 `dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
@@ -115,7 +115,7 @@ When developing (or bugfixing) core Leaflet functionalities, it's common to use
 the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
 in a graphical browser. This requires regenerating the bundled files quickly.
 
-In order to do so, run `npm run-script watch` or `yarn run rollup`. This will keep
+In order to do so, run `npm run watch` or `yarn run rollup`. This will keep
 on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
