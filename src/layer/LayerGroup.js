@@ -85,18 +85,13 @@ export var LayerGroup = Layer.extend({
 	// additional parameters. Has no effect if the layers contained do not
 	// implement `methodName`.
 	invoke: function (methodName) {
-		var args = Array.prototype.slice.call(arguments, 1),
-		    i, layer;
+		var args = Array.prototype.slice.call(arguments, 1);
 
-		for (i in this._layers) {
-			layer = this._layers[i];
-
+		return this.eachLayer(function (layer) {
 			if (layer[methodName]) {
 				layer[methodName].apply(layer, args);
 			}
-		}
-
-		return this;
+		});
 	},
 
 	onAdd: function (map) {

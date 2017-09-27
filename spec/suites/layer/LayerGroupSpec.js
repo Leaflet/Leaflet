@@ -92,4 +92,20 @@
 			L.geoJson(layerGroup.toGeoJSON());
 		});
 	});
+
+	describe("#invoke", function () {
+		it('should invoke `setOpacity` method on every layer', function () {
+			var layers = [
+				L.marker([0, 0]),
+				L.marker([1, 1])
+			];
+			var lg = L.layerGroup(layers);
+			var opacity = 0.5;
+
+			expect(layers[0].options.opacity).to.not.eql(opacity);
+			lg.invoke('setOpacity', opacity);
+			expect(layers[0].options.opacity).to.eql(opacity);
+			expect(layers[1].options.opacity).to.eql(opacity);
+		});
+	});
 });
