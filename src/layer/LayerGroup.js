@@ -77,10 +77,7 @@ export var LayerGroup = Layer.extend({
 	// @method clearLayers(): this
 	// Removes all the layers from the group.
 	clearLayers: function () {
-		for (var i in this._layers) {
-			this.removeLayer(this._layers[i]);
-		}
-		return this;
+		return this.eachLayer(this.removeLayer, this);
 	},
 
 	// @method invoke(methodName: String, …): this
