@@ -135,10 +135,7 @@ export var LayerGroup = Layer.extend({
 	// Returns an array of all the layers added to the group.
 	getLayers: function () {
 		var layers = [];
-
-		for (var i in this._layers) {
-			layers.push(this._layers[i]);
-		}
+		this.eachLayer(layers.push, layers);
 		return layers;
 	},
 
