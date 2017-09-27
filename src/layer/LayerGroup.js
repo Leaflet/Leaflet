@@ -100,15 +100,11 @@ export var LayerGroup = Layer.extend({
 	},
 
 	onAdd: function (map) {
-		for (var i in this._layers) {
-			map.addLayer(this._layers[i]);
-		}
+		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
-		for (var i in this._layers) {
-			map.removeLayer(this._layers[i]);
-		}
+		this.eachLayer(map.removeLayer, map);
 	},
 
 	// @method eachLayer(fn: Function, context?: Object): this
