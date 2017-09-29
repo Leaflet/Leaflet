@@ -1,11 +1,8 @@
-
 // Config file for running Rollup in "normal" mode (non-watch)
 
 import rollupGitVersion from 'rollup-plugin-git-version'
 import json from 'rollup-plugin-json'
-
 import gitRev from 'git-rev-sync'
-
 
 let version = require('../package.json').version;
 let release;
@@ -20,21 +17,23 @@ if (process.env.NODE_ENV === 'release') {
 	version += '+' + branch + '.' + rev;
 }
 
-
 const banner = `/* @preserve
- * Leaflet ` + version + `, a JS library for interactive maps. http://leafletjs.com
+ * Leaflet ${version}, a JS library for interactive maps. http://leafletjs.com
  * (c) 2010-2017 Vladimir Agafonkin, (c) 2010-2011 CloudMade
- */`;
+ */
+`;
 
 export default {
-	format: 'umd',
-	name: 'L',
-	banner: banner,
-	entry: 'src/Leaflet.js',
-	dest: 'dist/leaflet-src.js',
+	input: 'src/Leaflet.js',
+	output: {
+		file: 'dist/leaflet-src.js',
+		format: 'umd',
+		name: 'L',
+		banner: banner,
+		sourcemap: true,
+		legacy: true // Needed to create files loadable by IE8
+	},
 	plugins: [
-		release ? json() : rollupGitVersion(),
-	],
-	sourceMap: true,
-	legacy: true // Needed to create files loadable by IE8
+		release ? json() : rollupGitVersion()
+	]
 };
