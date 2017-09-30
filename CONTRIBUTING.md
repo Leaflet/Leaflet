@@ -68,7 +68,7 @@ please consider submitting another pull request with the corresponding [document
 
 ### Setting up the Build System
 
-The Leaflet build system uses [Node](http://nodejs.org/), and the [Jake](http://jakejs.com/) Javascript build tool.
+The Leaflet build system uses [Node](http://nodejs.org/).
 To set up the Leaflet build system, install Node then run the following commands in the project root to install dependencies:
 
 ```

@@ -85,11 +85,10 @@ which installs easily and works well across all major platforms.
 Here are the steps to set it up:
 
  1. [Download and install Node](http://nodejs.org)
- 2. Run the following commands in the command line:
+ 2. Run the following command in the command line:
 
- <pre><code>npm install -g jake
-npm install</code></pre>
+ <pre><code>npm install</code></pre>
 
-Now that you have everything installed, run `jake build` inside the Leaflet directory.
+Now that you have everything installed, run `npm run build` inside the Leaflet directory.
 This will combine and compress the Leaflet source files, saving the build to the `dist` folder.
 

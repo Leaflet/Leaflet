@@ -12,7 +12,7 @@ Documentation for the release process of Leaflet.
     * [Leaflet NPM package page](https://www.npmjs.com/package/leaflet)
     * files on [Leaflet unpkg page](https://unpkg.com/leaflet@latest/)
 8. Update API docs:
-    * run `jake docs`
+    * run `npm run docs`
     * Copy the built docs from `dist/reference-X.Y.Z.html` to `docs/reference-X.Y.Z.html`
     * Update the built docs header to use Jekyll style; see commit [11d716f0964d8bc0d058ca09e9ba8003451b4b8d](https://github.com/Leaflet/Leaflet/commit/11d716f0964d8bc0d058ca09e9ba8003451b4b8d) as reference for the needed changes
     * Commit the new docs to the release branch
