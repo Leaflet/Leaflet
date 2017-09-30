@@ -7,13 +7,12 @@ To use, install Node, then run the following commands in the project root:
     npm install
 
 To check the code for errors and build Leaflet from source, run "jake".
-To run the tests, run "jake test". To build the documentation, run "jake docs".
+To run the tests, run "jake test".
 
 For a custom build, open build/build.html in the browser and follow the instructions.
 */
 
-var buildDocs = require('./build/docs'),
-    git = require('git-rev-sync'),
+var git = require('git-rev-sync'),
     path = require('path');
 
 function hint(msg, args) {
@@ -93,11 +92,6 @@ task('test', ['lint', 'lintspec'], {async: true}, function () {
 		 }
 	 });
 	 server.start();
-});
-
-desc('Build documentation');
-task('docs', {}, function() {
-	buildDocs();
 });
 
 task('default', ['test', 'build']);

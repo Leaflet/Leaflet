@@ -36,7 +36,7 @@
     "!dist/leaflet.zip"
   ],
   "scripts": {
-    "docs": "jake docs",
+    "docs": "./build/docs.js",
     "test-jake": "jake test",
     "test": "jake test",
     "build-jake": "jake build",

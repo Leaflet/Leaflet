@@ -1,4 +1,4 @@
-
+#!/usr/bin/env nodejs
 var packageDef = require('../package.json');
 
 function buildDocs() {
@@ -34,4 +34,8 @@ function buildDocs() {
 	fs.writeFileSync('dist/reference-' + packageDef.version + '.html', out);
 }
 
-module.exports = buildDocs;
+if (require.main === module) {
+	buildDocs();
+} else {
+	module.exports = buildDocs;
+}
