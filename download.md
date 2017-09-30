@@ -35,12 +35,26 @@ so please read the changelog carefully when upgrading to it.
 The latest stable Leaflet release is hosted on a CDN &mdash; to start using
 it straight away, place this in the `head` of your HTML code:
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"></script>
+
+    <!-- or --> 
+
     <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"></script>
 
 To avoid potential security problems, we recommend and encourage enabling
 [subresource integrity](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)
 when using Leaflet from a CDN:
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
+      integrity="{{site.integrity_hash_css}}"
+      crossorigin=""/>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.js"></script
+      integrity="{{site.integrity_hash_uglified}}"
+      crossorigin=""></script>
+
+    <!-- or -->
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@{{ site.latest_leaflet_version}}/dist/leaflet.css"
       integrity="{{site.integrity_hash_css}}"
