@@ -37,7 +37,7 @@
   ],
   "scripts": {
     "docs": "./build/docs.js",
-    "test": "jake test",
+    "test": "./test.js",
     "build": "npm run rollup && npm run uglify",
     "release": "./build/publish.sh",
     "lint": "eslint src; eslint spec/suites",
