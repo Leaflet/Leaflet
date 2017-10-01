@@ -1,4 +1,5 @@
-#!/usr/bin/env js
+#!/usr/bin/env node
+
 var packageDef = require('../package.json');
 
 function buildDocs() {

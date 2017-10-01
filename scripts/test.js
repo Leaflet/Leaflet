@@ -1,4 +1,4 @@
-#!/usr/bin/env js
+#!/usr/bin/env node
 
 var path = require('path'),
 		CLIEngine = require('eslint').CLIEngine,
