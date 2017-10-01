@@ -4,7 +4,7 @@ var path = require('path'),
 		CLIEngine = require('eslint').CLIEngine,
 		eslintCli = new CLIEngine(),
 		karma = require('karma'),
-		testConfig = {configFile : path.join(__dirname, './spec/karma.conf.js')};
+		testConfig = {configFile : path.join(__dirname, '../spec/karma.conf.js')};
 
 function lint(message, target) {
 	console.log(message);

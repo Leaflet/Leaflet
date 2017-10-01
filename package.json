@@ -35,16 +35,16 @@
     "!dist/leaflet.zip"
   ],
   "scripts": {
-    "docs": "./build/docs.js",
-    "test": "./test.js",
+    "docs": "./scripts/build-docs.js",
+    "test": "./scripts/test.js",
     "build": "npm run rollup && npm run uglify",
-    "release": "./build/publish.sh",
+    "release": "./scripts/publish.sh",
     "lint": "eslint src; eslint spec/suites",
     "lintfix": "eslint src --fix; eslint spec/suites --fix;",
     "rollup": "rollup -c build/rollup-config.js",
     "watch": "rollup -w -c build/rollup-watch-config.js",
     "uglify": "uglifyjs dist/leaflet-src.js -c -m -o dist/leaflet.js --source-map filename=dist/leaflet.js.map --in-source-map dist/leaflet-src.js.map --source-map-url leaflet.js.map --comments",
-    "integrity": "./build/integrity.js"
+    "integrity": "./scripts/integrity.js"
   },
   "eslintConfig": {
     "root": true,
