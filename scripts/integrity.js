@@ -1,4 +1,4 @@
-#!/usr/bin/env nodejs
+#!/usr/bin/env js
 // This script calculates the integrity hashes of the files in dist/ , and
 // **overwrites** the values in the documentation.
 
