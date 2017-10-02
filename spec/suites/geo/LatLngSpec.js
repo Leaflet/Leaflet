@@ -54,6 +54,7 @@ describe('LatLng', function () {
 		it('formats a string', function () {
 			var a = new L.LatLng(10.333333333, 20.2222222);
 			expect(a.toString(3)).to.eql('LatLng(10.333, 20.222)');
+			expect(a.toString()).to.eql('LatLng(10.333333, 20.222222)');
 		});
 	});
 
