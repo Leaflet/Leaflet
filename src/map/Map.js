@@ -440,12 +440,12 @@ L.Map = L.Evented.extend({
 	// @method setMinZoom(zoom: Number): this
 	// Sets the lower limit for the available zoom levels (see the [minZoom](#map-minzoom) option).
 	setMinZoom: function (zoom) {
-		var pZoom = this.options.minZoom;
+		var oldZoom = this.options.minZoom;
 
 		this.options.minZoom = zoom;
 
 		if (this._loaded) {
-			if (pZoom !== zoom) {
+			if (oldZoom !== zoom) {
 				this.fire('zoomlevelschange');
 			}
 
@@ -460,12 +460,12 @@ L.Map = L.Evented.extend({
 	// @method setMaxZoom(zoom: Number): this
 	// Sets the upper limit for the available zoom levels (see the [maxZoom](#map-maxzoom) option).
 	setMaxZoom: function (zoom) {
-		var pZoom = this.options.maxZoom;
+		var oldZoom = this.options.maxZoom;
 
 		this.options.maxZoom = zoom;
 
 		if (this._loaded) {
-			if (pZoom !== zoom) {
+			if (oldZoom !== zoom) {
 				this.fire('zoomlevelschange');
 			}
 
