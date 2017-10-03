@@ -445,7 +445,7 @@ L.Map = L.Evented.extend({
 
 		if (this._loaded && oldZoom !== zoom) {
 			this.fire('zoomlevelschange');
-			
+
 			if (this.getZoom() < this.options.minZoom) {
 				return this.setZoom(zoom);
 			}
@@ -462,7 +462,7 @@ L.Map = L.Evented.extend({
 
 		if (this._loaded && oldZoom !== zoom) {
 			this.fire('zoomlevelschange');
-			
+
 			if (this.getZoom() > this.options.maxZoom) {
 				return this.setZoom(zoom);
 			}
