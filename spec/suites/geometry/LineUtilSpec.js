@@ -87,4 +87,77 @@ describe('LineUtil', function () {
 		});
 	});
 
+	describe('#isCrossMeridian', function () {
+		it('returns true if the line between two latLngs crosses either the Prime Meridian or the International Date Line', function () {
+			expect(L.LineUtil.isCrossMeridian(L.latLng([50, -70]), L.latLng([52, 90]))).to.eql(true);
+		});
+
+		it('returns true if the line between two latLngs crosses either the Prime Meridian or the International Date Line', function () {
+			expect(L.LineUtil.isCrossMeridian(L.latLng([50, -2]), L.latLng([52, 1]))).to.eql(true);
+		});
+
+		it('returns true if the line between two latLngs crosses either the Prime Meridian or the International Date Line', function () {
+			expect(L.LineUtil.isCrossMeridian(L.latLng([50, -180]), L.latLng([52, 180]))).to.eql(true);
+		});
+
+		it('returns false if the line between two latLngs does not cross either the Prime Meridian or the International Date Line', function () {
+			expect(L.LineUtil.isCrossMeridian(L.latLng([50, 70]), L.latLng([52, 90]))).to.eql(false);
+		});
+
+		it('returns false if the line between two latLngs does not cross either the Prime Meridian or the International Date Line', function () {
+			expect(L.LineUtil.isCrossMeridian(L.latLng([50, 0]), L.latLng([52, 180]))).to.eql(false);
+		});
+
+		it('returns false if the line between two latLngs does not cross either the Prime Meridian or the International Date Line', function () {
+			expect(L.LineUtil.isCrossMeridian(L.latLng([50, 0]), L.latLng([52, -180]))).to.eql(false);
+		});
+	});
+
+	describe('#sign', function () {
+		it('returns NaN if the value is not a number.', function () {
+			expect(isNaN(L.LineUtil.sign('number'))).to.eql(true);
+		});
+
+		it('returns NaN if the value is null.', function () {
+			expect(isNaN(L.LineUtil.sign(null))).to.eql(true);
+		});
+
+		it('returns 0 if the value is 0.', function () {
+			expect(L.LineUtil.sign(0)).to.eql(0);
+		});
+
+		it('returns 1 if the value is positive.', function () {
+			expect(L.LineUtil.sign(3.14)).to.eql(1);
+		});
+
+		it('returns -1 if the value is negative.', function () {
+			expect(L.LineUtil.sign(-180)).to.eql(-1);
+		});
+	});
+
+	describe('#calculateAntimeridianLat', function () {
+		it('Calculates the International Date Line latitude crossing point between two LatLngs with the same lat.', function () {
+			var latLngA = L.latLng([50, -70]);
+			var latLngB = L.latLng([50, 90]);
+			expect(L.LineUtil.calculateAntimeridianLat(latLngA, latLngB)).to.eql(50);
+		});
+
+		it('Calculates the International Date Line latitude crossing point between two evenly spaced LatLngs.', function () {
+			var latLngA = L.latLng([55, -90]);
+			var latLngB = L.latLng([50, 90]);
+			expect(L.LineUtil.calculateAntimeridianLat(latLngA, latLngB)).to.eql(52.5);
+		});
+
+		it('Calculates the International Date Line latitude crossing point between two LatLngs.', function () {
+			var latLngA = L.latLng([50, -70]);
+			var latLngB = L.latLng([56, 90]);
+			expect(L.LineUtil.calculateAntimeridianLat(latLngA, latLngB)).to.eql(53.3);
+		});
+
+		it('Calculates the International Date Line latitude crossing point between two LatLngs where one is at the International Date Line.', function () {
+			var latLngA = L.latLng([50, -180]);
+			var latLngB = L.latLng([70, 90]);
+			expect(L.LineUtil.calculateAntimeridianLat(latLngA, latLngB)).to.eql(50);
+		});
+	});
 });

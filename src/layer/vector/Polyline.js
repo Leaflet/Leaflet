@@ -245,7 +245,7 @@ export var Polyline = Path.extend({
 		}
 	},
 
-	// Adds the latlng to the current ring and expands the pojected bounds.
+	// Adds the latlng to the current ring and expands the projected bounds.
 	_pushLatLng: function (ring, projectedBounds, latlng) {
 		ring.push(this._map.latLngToLayerPoint(latlng));
 		projectedBounds.extend(ring[ring.length - 1]);
@@ -257,7 +257,6 @@ export var Polyline = Path.extend({
 		 Math.abs(latLngA.lng) > 90 &&
 		 Math.abs(latLngB.lng) > 90;
 	},
-
 
 	// returns the latlng to compare the current latlng to.
 	_getCompareLatLng: function (i, len, latlngs) {
