@@ -14,7 +14,7 @@ title: Leaflet class diagram
 	});
 
 	map.getContainer().style.width = '100vw';
-	map.getContainer().style.height= '100%';
+	map.getContainer().style.height= '100vh';
 	document.body.style.margin = 0;
 
 	var image = L.imageOverlay('class-diagram.png', bounds).addTo(map);
