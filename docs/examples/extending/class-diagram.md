@@ -1,11 +1,7 @@
 ---
 layout: tutorial_frame
 title: Leaflet class diagram
-css: "body {
-            margin: 0;
-        }
-
-        #map {
+css: "#map {
             width: 100vw;
             height: 100%;
         }"
