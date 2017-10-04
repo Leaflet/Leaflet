@@ -139,7 +139,7 @@ This makes the states highlight nicely on hover and gives us the ability to add 
 
 ### Custom Info Control
 
-We could use the usual popups on click to show information about different states, but we'll choose a different route --- showing it on state hover inside a [custom control](../../reference.html#icontrol).
+We could use the usual popups on click to show information about different states, but we'll choose a different route --- showing it on state hover inside a [custom control](../../reference.html#control).
 
 Here's the code for our control:
 
