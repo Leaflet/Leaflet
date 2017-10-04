@@ -7,12 +7,6 @@ kramdown:
 
 latest_leaflet_version: 1.2.0
 
-gems:
-  - jekyll-redirect-from
-  
-whitelist:
-  - jekyll-redirect-from
-
 # Integrity hashes for both leaflet.js and leaflet-src.js
 # These will be shown in the downloads page
 # See https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
