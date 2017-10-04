@@ -38,7 +38,7 @@ Then, we'll define the geographical bounds that the video will cover. This is an
 
 	var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
-If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`]((../../reference.html#latlngbounds)):
+If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](../../reference.html#rectangle):
 
 	L.rectangle(bounds).addTo(map);
 
