@@ -164,7 +164,7 @@ export var TileLayer = GridLayer.extend({
 			s: this._getSubdomain(coords),
 			x: coords.x,
 			y: coords.y,
-			z: this._getZoomForUrl()
+			z: coords.z ? coords.z : this._getZoomForUrl()
 		};
 		if (this._map && !this._map.options.crs.infinite) {
 			var invertedY = this._globalTileRange.max.y - coords.y;
