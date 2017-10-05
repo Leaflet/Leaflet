@@ -69,4 +69,4 @@ If you have `setView` option set to true and the geolocation failed, it will set
 
 Now the example is complete --- try it on your mobile phone: [View the full example &rarr;](example.html)
 
-Next steps would be to take a look at the detailed [documentation](../../reference.html) and browse [other examples](../../examples.html).
+Next steps would be to take a look at the detailed [documentation](/reference.html) and browse [other examples](../../examples.html).
