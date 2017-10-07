@@ -5,7 +5,7 @@ css: "body {
 		padding: 0;
 		margin: 0;
 	}
-	html, body, #map {
+	#map {
 		height: 100%;
 		width: 100vw;
 	}"

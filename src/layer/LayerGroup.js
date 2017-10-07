@@ -77,10 +77,7 @@ export var LayerGroup = Layer.extend({
 	// @method clearLayers(): this
 	// Removes all the layers from the group.
 	clearLayers: function () {
-		for (var i in this._layers) {
-			this.removeLayer(this._layers[i]);
-		}
-		return this;
+		return this.eachLayer(this.removeLayer, this);
 	},
 
 	// @method invoke(methodName: String, …): this
@@ -103,15 +100,11 @@ export var LayerGroup = Layer.extend({
 	},
 
 	onAdd: function (map) {
-		for (var i in this._layers) {
-			map.addLayer(this._layers[i]);
-		}
+		this.eachLayer(map.addLayer, map);
 	},
 
 	onRemove: function (map) {
-		for (var i in this._layers) {
-			map.removeLayer(this._layers[i]);
-		}
+		this.eachLayer(map.removeLayer, map);
 	},
 
 	// @method eachLayer(fn: Function, context?: Object): this
@@ -138,10 +131,7 @@ export var LayerGroup = Layer.extend({
 	// Returns an array of all the layers added to the group.
 	getLayers: function () {
 		var layers = [];
-
-		for (var i in this._layers) {
-			layers.push(this._layers[i]);
-		}
+		this.eachLayer(layers.push, layers);
 		return layers;
 	},
 

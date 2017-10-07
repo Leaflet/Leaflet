@@ -33,7 +33,7 @@ title: Using GeoJSON with Leaflet
 
 <h3>The GeoJSON layer</h3>
 
-<p>GeoJSON objects are added to the map through a <a href="http://leafletjs.com/reference.html#geojson">GeoJSON layer</a>. To create it and add it to a map, we can use the following code:</p>
+<p>GeoJSON objects are added to the map through a <a href="/reference.html#geojson">GeoJSON layer</a>. To create it and add it to a map, we can use the following code:</p>
 
 <pre><code>L.geoJSON(geojsonFeature).addTo(map);</code></pre>
 
@@ -119,7 +119,7 @@ L.geoJSON(states, {
 
 <h4>pointToLayer</h4>
 
-<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="http://leafletjs.com/reference.html#geojson-options">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="http://leafletjs.com/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="http://leafletjs.com/reference.html#marker">Marker</a> or <a href="http://leafletjs.com/reference.html#circlemarker">CircleMarker</a>.</p>
+<p>Points are handled differently than polylines and polygons. By default simple markers are drawn for GeoJSON Points. We can alter this by passing a <code>pointToLayer</code> function in a <a href="/reference.html#geojson">GeoJSON options</a> object when creating the GeoJSON layer. This function is passed a <a href="/reference.html#latlng">LatLng</a> and should return an instance of ILayer, in this case likely a <a href="/reference.html#marker">Marker</a> or <a href="/reference.html#circlemarker">CircleMarker</a>.</p>
 
 <p>Here we're using the <code>pointToLayer</code> option to create a CircleMarker:</p>
 

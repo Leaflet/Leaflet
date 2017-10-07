@@ -34,11 +34,11 @@ First of all, create a Leaflet map and add a background `L.TileLayer` in the usu
 		attribution: ...
 	}).addTo(map);
 
-Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](../../reference.html#latlngbounds), which is a rectangular shape:
+Then, we'll define the geographical bounds that the video will cover. This is an instance of [`L.LatLngBounds`](/reference.html#latlngbounds), which is a rectangular shape:
 
 	var bounds = L.latLngBounds([[ 32, -130], [ 13, -100]]);
 
-If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`]((../../reference.html#latlngbounds)):
+If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`](/reference.html#rectangle):
 
 	L.rectangle(bounds).addTo(map);
 
@@ -49,7 +49,7 @@ If you want to see the area covered by a `LatLngBounds`, use a [`L.Rectangle`]((
 
 ### Adding the video overlay
 
-Adding a video overlay works very similar to adding a image overlay. For just one image, [`L.ImageOverlay`s](../../reference.html#imageoverlay) is used like this:
+Adding a video overlay works very similar to adding a image overlay. For just one image, [`L.ImageOverlay`s](/reference.html#imageoverlay) is used like this:
 
 	var overlay = L.imageOverlay( imageUrl, bounds, options );
 
