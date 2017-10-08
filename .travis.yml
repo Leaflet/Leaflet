@@ -2,6 +2,9 @@ sudo: false
 language: node_js
 node_js:
   - node
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
 addons:
   artifacts:
     paths:
@@ -20,6 +23,7 @@ env:
       XW1hzORAtSpTgTKkQwel5gRMDy6SotzeSRsVV2jQCn46VIMx8G/J5nOI+ImL
       yeoH12PhCR0h39dM7mq8TYJo5DHwvbotI5nQhpMruSt8eMFbym8nGiqQh806
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
+script: npm test -- --ff
 after_success:
   - npm run build
   - cd dist && zip -x .DS_Store -r leaflet.zip . && cd ..
