@@ -11,6 +11,7 @@ addons:
     - dist
     target_paths:
     - content/leaflet/${NAME}
+  chrome: stable
 env:
   global:
   - ARTIFACTS_BUCKET=leafletjs-cdn
@@ -25,6 +26,7 @@ env:
       fSJXkxmQ4MAjUdNFDIirBHhdZme8q3PueFzJ+5odFMvPGn/aITQ=
 script:
   - npm test
+  - npm test -- --chrome
   - npm test -- --ff
 after_success:
   - npm run build
