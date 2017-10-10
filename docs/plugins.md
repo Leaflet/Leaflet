@@ -1461,6 +1461,17 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/sybri">Sylvain BRISSY</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://wbkd.github.io/leaflet-swoopy/">Leaflet Swoopy</a>
+		</td>
+		<td>
+			A plugin for creating customizable swoopy arrow annotations.
+		</td>
+		<td>
+			<a href="https://webkid.io">webkid</a>
+		</td>
+	</tr>
 </table>
 
 
