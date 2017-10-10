@@ -180,7 +180,7 @@ export var ImageOverlay = Layer.extend({
 
 	_initImage: function () {
 		var img = this._image = DomUtil.create('img',
-			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated' : '') +
+			'leaflet-image-layer ' + (this._zoomAnimated ? 'leaflet-zoom-animated ' : '') +
 			 (this.options.className || ''));
 
 		img.onselectstart = Util.falseFn;
