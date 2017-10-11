@@ -21,7 +21,6 @@ An in-progress version being developed on the `master` branch.
 * Filter published files on npm ([#5626](https://github.com/leaflet/leaflet/issues/5626) by [TrySound](https://github.com/TrySound)), [e7o-de](https://github.com/e7o-de)
 * Throw an error if trying to use `addLayer` with something that is not a `Layer` ([#5689](https://github.com/Leaflet/Leaflet/pull/5689) by [perliedman](https://github.com/perliedman))
 * Ensure copyright banner is kept in the minified `leaflet.js` ([#5682](https://github.com/Leaflet/Leaflet/pull/5682) by [jgravois](https://github.com/jgravois))
-* 
 
 ### Bug fixes
 
