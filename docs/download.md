@@ -55,6 +55,8 @@ Leaflet is available on the following free CDN's:
 - cdnjs: https://cdnjs.com/libraries/leaflet
 - jsDelivr: https://www.jsdelivr.com/package/npm/leaflet?path=dist
 
+_Disclaimer: these services are external to Leaflet; for questions or support, please contact them directly._
+
 ### Using a Downloaded Version of Leaflet
 
 Inside the archives downloaded from the above links, you will see four things:
