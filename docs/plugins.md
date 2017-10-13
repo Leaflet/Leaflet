@@ -2625,15 +2625,6 @@ Change the way the user is moved around the map, by jumping to predefined/stored
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
 		</td>
 	</tr>
-	<tr>
-		<td>
-			<a href="https://github.com/mlevans/leaflet-hash">leaflet-hash</a>
-		</td><td>
-			Plugin for persisting map state and browsing history through the URL hash.
-		</td><td>
-			<a href="https://github.com/mlevans">Michael Lawrence Evans</a>
-		</td>
-	</tr>
 </table>
 
 
