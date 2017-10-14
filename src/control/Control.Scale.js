@@ -16,7 +16,7 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-var Scale = Control.extend({
+export var Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
 	options: {
@@ -153,6 +153,6 @@ var Scale = Control.extend({
 
 // @factory L.control.scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-var scale = function (options) {
+export var scale = function (options) {
 	return new Scale(options);
 };
