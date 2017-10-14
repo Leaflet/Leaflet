@@ -43,7 +43,7 @@ export var Scale = Control.extend({
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-scale',
-		    container = create$1('div', className),
+		    container = DomUtil.create('div', className),
 		    options = this.options;
 
 		this._addScales(options, className + '-line', container);
