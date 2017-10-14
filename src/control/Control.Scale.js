@@ -7,7 +7,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Scale
  * @inherits Control
  *
- * A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
+ * A simple scale control that shows the scale of the current center of screen in metric (m/km), imperial (mi/ft) and nautic (nmi) systems. Extends `Control`.
  *
  * @example
  *
@@ -16,7 +16,7 @@ import * as DomUtil from '../dom/DomUtil';
  * ```
  */
 
-export var Scale = Control.extend({
+var Scale = Control.extend({
 	// @section
 	// @aka Control.Scale options
 	options: {
@@ -34,13 +34,16 @@ export var Scale = Control.extend({
 		// Whether to show the imperial scale line (mi/ft).
 		imperial: true
 
+		// @option nautic: Boolean = False
+		// Whether to show the nautic scale line (nmi).
+
 		// @option updateWhenIdle: Boolean = false
 		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
 	},
 
 	onAdd: function (map) {
 		var className = 'leaflet-control-scale',
-		    container = DomUtil.create('div', className),
+		    container = create$1('div', className),
 		    options = this.options;
 
 		this._addScales(options, className + '-line', container);
@@ -57,10 +60,13 @@ export var Scale = Control.extend({
 
 	_addScales: function (options, className, container) {
 		if (options.metric) {
-			this._mScale = DomUtil.create('div', className, container);
+			this._mScale = create$1('div', className, container);
 		}
 		if (options.imperial) {
-			this._iScale = DomUtil.create('div', className, container);
+			this._iScale = create$1('div', className, container);
+		}
+		if (options.nautic) {
+			this._nScale = create$1('div', className, container);
 		}
 	},
 
@@ -69,8 +75,8 @@ export var Scale = Control.extend({
 		    y = map.getSize().y / 2;
 
 		var maxMeters = map.distance(
-			map.containerPointToLatLng([0, y]),
-			map.containerPointToLatLng([this.options.maxWidth, y]));
+				map.containerPointToLatLng([0, y]),
+				map.containerPointToLatLng([this.options.maxWidth, y]));
 
 		this._updateScales(maxMeters);
 	},
@@ -81,6 +87,9 @@ export var Scale = Control.extend({
 		}
 		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
+		}
+		if (this.options.nautic && maxMeters) {
+			this._updateNautic(maxMeters);
 		}
 	},
 
@@ -106,27 +115,44 @@ export var Scale = Control.extend({
 		}
 	},
 
+	_updateNautic: function (maxMeters) {
+		var maxNauticMiles = maxMeters / 1852, nauticMiles;
+
+		nauticMiles = this._getRoundNum(maxNauticMiles);
+
+		this._updateScale(this._nScale, nauticMiles + ' nmi', nauticMiles / maxNauticMiles);
+	},
+
 	_updateScale: function (scale, text, ratio) {
 		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
 		scale.innerHTML = text;
 	},
 
 	_getRoundNum: function (num) {
-		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
-		    d = num / pow10;
-
+		if (num >= 1) {
+			var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
+					d = num / pow10;
+		}
+		else {
+			var pow10 = 1, d = num;
+			while (d < 1) {
+				d *= 10;
+				pow10 *= 10;
+			}
+		} 
+			
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
 		    d >= 3 ? 3 :
-		    d >= 2 ? 2 : 1;
-
-		return pow10 * d;
+			d >= 2 ? 2 : 1;
+			
+		return num >= 1 ? pow10 * d : d / pow10;
 	}
 });
 
 
 // @factory L.control.scale(options?: Control.Scale options)
 // Creates an scale control with the given options.
-export var scale = function (options) {
+var scale = function (options) {
 	return new Scale(options);
 };
