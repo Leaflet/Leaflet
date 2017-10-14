@@ -204,7 +204,7 @@ describe('TileLayer', function () {
 		beforeEach(function () {
 			clock = sinon.useFakeTimers();
 
-			kittenLayer = kittenLayerFactory({ keepBuffer: 0 });
+			kittenLayer = kittenLayerFactory({keepBuffer: 0});
 
 			counts = {
 				tileload: 0,
