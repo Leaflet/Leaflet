@@ -75,8 +75,8 @@ export var Scale = Control.extend({
 		    y = map.getSize().y / 2;
 
 		var maxMeters = map.distance(
-				map.containerPointToLatLng([0, y]),
-				map.containerPointToLatLng([this.options.maxWidth, y]));
+			map.containerPointToLatLng([0, y]),
+			map.containerPointToLatLng([this.options.maxWidth, y]));
 
 		this._updateScales(maxMeters);
 	},
@@ -129,23 +129,24 @@ export var Scale = Control.extend({
 	},
 
 	_getRoundNum: function (num) {
+		var pow10, d;
 		if (num >= 1) {
-			var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
-					d = num / pow10;
-		}
-		else {
-			var pow10 = 1, d = num;
+			pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
+			d = num / pow10;
+		} else {
+			pow10 = 1;
+			d = num;
 			while (d < 1) {
 				d *= 10;
 				pow10 *= 10;
 			}
-		} 
+		}
 			
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
 		    d >= 3 ? 3 :
-			d >= 2 ? 2 : 1;
-			
+		    d >= 2 ? 2 : 1;
+		
 		return num >= 1 ? pow10 * d : d / pow10;
 	}
 });
