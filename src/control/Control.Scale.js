@@ -131,7 +131,7 @@ export var Scale = Control.extend({
 	_getRoundNum: function (num) {
 		var pow10, d;
 		if (num >= 1) {
-			pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
+			pow10 = Math.pow(10, (Math.floor(num) + '').length - 1);
 			d = num / pow10;
 		} else {
 			pow10 = 1;
@@ -141,12 +141,12 @@ export var Scale = Control.extend({
 				pow10 *= 10;
 			}
 		}
-			
+		
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
 		    d >= 3 ? 3 :
 		    d >= 2 ? 2 : 1;
-		
+
 		return num >= 1 ? pow10 * d : d / pow10;
 	}
 });
