@@ -58,9 +58,9 @@ export var IconDefault = Icon.extend({
 
 	// Retrieve values from CSS and assign to this instance options.
 	_setOptions: function (name, detectorFn, imagePath) {
-		var prefix = this.options.classNamePrefix,
-		    optionValues = detectorFn(prefix + name, imagePath),
-		    options = this.options;
+		var options = this.options,
+		    prefix = options.classNamePrefix,
+		    optionValues = detectorFn(prefix + name, imagePath);
 
 		for (var optionName in optionValues) {
 			options[name + optionName] = options[name + optionName] || optionValues[optionName];
