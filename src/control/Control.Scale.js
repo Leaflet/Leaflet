@@ -60,13 +60,13 @@ export var Scale = Control.extend({
 
 	_addScales: function (options, className, container) {
 		if (options.metric) {
-			this._mScale = create$1('div', className, container);
+			this._mScale = DomUtil.create('div', className, container);
 		}
 		if (options.imperial) {
-			this._iScale = create$1('div', className, container);
+			this._iScale = DomUtil.create('div', className, container);
 		}
 		if (options.nautic) {
-			this._nScale = create$1('div', className, container);
+			this._nScale = DomUtil.create('div', className, container);
 		}
 	},
 
