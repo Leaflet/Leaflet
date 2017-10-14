@@ -141,7 +141,6 @@ export var Scale = Control.extend({
 				pow10 *= 10;
 			}
 		}
-		
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
 		    d >= 3 ? 3 :
