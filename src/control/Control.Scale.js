@@ -7,7 +7,7 @@ import * as DomUtil from '../dom/DomUtil';
  * @aka L.Control.Scale
  * @inherits Control
  *
- * A simple scale control that shows the scale of the current center of screen in metric (m/km) and imperial (mi/ft) systems. Extends `Control`.
+ * A simple scale control that shows the scale of the current center of screen in metric (m/km), imperial (mi/ft) and nautic (nmi) systems. Extends `Control`.
  *
  * @example
  *
@@ -33,6 +33,9 @@ export var Scale = Control.extend({
 		// @option imperial: Boolean = True
 		// Whether to show the imperial scale line (mi/ft).
 		imperial: true
+
+		// @option nautic: Boolean = False
+		// Whether to show the nautic scale line (nmi).
 
 		// @option updateWhenIdle: Boolean = false
 		// If `true`, the control is updated on [`moveend`](#map-moveend), otherwise it's always up-to-date (updated on [`move`](#map-move)).
@@ -62,6 +65,9 @@ export var Scale = Control.extend({
 		if (options.imperial) {
 			this._iScale = DomUtil.create('div', className, container);
 		}
+		if (options.nautic) {
+			this._nScale = DomUtil.create('div', className, container);
+		}
 	},
 
 	_update: function () {
@@ -81,6 +87,9 @@ export var Scale = Control.extend({
 		}
 		if (this.options.imperial && maxMeters) {
 			this._updateImperial(maxMeters);
+		}
+		if (this.options.nautic && maxMeters) {
+			this._updateNautic(maxMeters);
 		}
 	},
 
@@ -106,21 +115,38 @@ export var Scale = Control.extend({
 		}
 	},
 
+	_updateNautic: function (maxMeters) {
+		var maxNauticMiles = maxMeters / 1852, nauticMiles;
+
+		nauticMiles = this._getRoundNum(maxNauticMiles);
+
+		this._updateScale(this._nScale, nauticMiles + ' nmi', nauticMiles / maxNauticMiles);
+	},
+
 	_updateScale: function (scale, text, ratio) {
 		scale.style.width = Math.round(this.options.maxWidth * ratio) + 'px';
 		scale.innerHTML = text;
 	},
 
 	_getRoundNum: function (num) {
-		var pow10 = Math.pow(10, (Math.floor(num) + '').length - 1),
-		    d = num / pow10;
-
+		var pow10, d;
+		if (num >= 1) {
+			pow10 = Math.pow(10, (Math.floor(num) + '').length - 1);
+			d = num / pow10;
+		} else {
+			pow10 = 1;
+			d = num;
+			while (d < 1) {
+				d *= 10;
+				pow10 *= 10;
+			}
+		}
 		d = d >= 10 ? 10 :
 		    d >= 5 ? 5 :
 		    d >= 3 ? 3 :
 		    d >= 2 ? 2 : 1;
 
-		return pow10 * d;
+		return num >= 1 ? pow10 * d : d / pow10;
 	}
 });
 
