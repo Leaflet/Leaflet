@@ -918,7 +918,7 @@ These plugins create useful overlays from scratch, no loading required.
 		<td>
 			<a href="https://github.com/jonshutt/Leaflet.OS.Graticule">L.OS.Graticule</a>
 		</td><td>
-			Overlays UK Ordinance Survey (OS) 1km grid sqaures and labels.
+			Overlays UK Ordinance Survey (OS) 1km grid squares and labels.
 		</td><td>
 			<a href="https://github.com/jonshutt">Jon Shutt</a>
 		</td>
@@ -1447,6 +1447,29 @@ These plugins provide new markers or news ways of converting abstract data into 
 		</td>
 		<td>
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sybri/Leaflet.SpeechBubble/">Leaflet.SpeechBubble</a>
+		</td>
+		<td>
+			Popup a speech bubble with the arrow that follow points,layer, markers ...
+			 (<a href="https://sybri.github.io/demo/Leaflet.SpeechBubble/demo.html">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/sybri">Sylvain BRISSY</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://wbkd.github.io/leaflet-swoopy/">Leaflet Swoopy</a>
+		</td>
+		<td>
+			A plugin for creating customizable swoopy arrow annotations.
+		</td>
+		<td>
+			<a href="https://webkid.io">webkid</a>
 		</td>
 	</tr>
 </table>

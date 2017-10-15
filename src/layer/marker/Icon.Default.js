@@ -31,9 +31,9 @@ export var IconDefault = Icon.extend({
 	_getIconUrl: function (name) {
 		if (this._needsInit) {
 			// @option imagePath: String
-			// `Icon.Default` will try to auto-detect the absolute location of
+			// `Icon.Default` will try to auto-detect the location of
 			// the blue icon images. If you are placing these images in a
-			// non-standard way, set this option to point to the right absolute
+			// non-standard way, set this option to point to the right
 			// path, before any marker is added to a map.
 			// Caution: do not use this option with inline base64 image(s).
 			var imagePath = this.options.imagePath || IconDefault.imagePath;

@@ -178,7 +178,7 @@ export var Marker = Layer.extend({
 
 	update: function () {
 
-		if (this._icon) {
+		if (this._icon && this._map) {
 			var pos = this._map.latLngToLayerPoint(this._latlng).round();
 			this._setPos(pos);
 		}

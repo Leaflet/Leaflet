@@ -1,6 +1,10 @@
 ---
 layout: tutorial_frame
 title: Leaflet class diagram
+css: "#map {
+            width: 100vw;
+            height: 100%;
+        }"
 ---
 <script type='text/javascript'>
 
@@ -12,10 +16,6 @@ title: Leaflet class diagram
 		minZoom: -4,
 		maxBounds: bounds
 	});
-
-	map.getContainer().style.width = '100vw';
-	map.getContainer().style.height= '100vh';
-	document.body.style.margin = 0;
 
 	var image = L.imageOverlay('class-diagram.png', bounds).addTo(map);
 

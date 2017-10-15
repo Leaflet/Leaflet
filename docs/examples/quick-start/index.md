@@ -50,7 +50,7 @@ By default (as we didn't pass any options when creating the map instance), all m
 
 Note that `setView` call also returns the map object --- most Leaflet methods act like this when they don't return an explicit value, which allows convenient jQuery-like method chaining.
 
-Next we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](http://leafletjs.com/reference.html#url-template) for the tile images, the attribution text and the maximum zoom level of the layer. In this example we'll use the `mapbox.streets` tiles from [Mapbox's "Classic maps"](https://www.mapbox.com/api-documentation/#maps) (in order to use tiles from Mapbox, you must also [request an access token](https://www.mapbox.com/studio/account/tokens/)).
+Next we'll add a tile layer to add to our map, in this case it's a Mapbox Streets tile layer. Creating a tile layer usually involves setting the [URL template](/reference.html#url-template) for the tile images, the attribution text and the maximum zoom level of the layer. In this example we'll use the `mapbox.streets` tiles from [Mapbox's "Classic maps"](https://www.mapbox.com/api-documentation/#maps) (in order to use tiles from Mapbox, you must also [request an access token](https://www.mapbox.com/studio/account/tokens/)).
 
 <pre><code class="javascript">L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 	attribution: 'Map data &amp;copy; <span class="text-cut" data-cut="[&hellip;]">&lt;a href="http://openstreetmap.org"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="http://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery &copy; &lt;a href="http://mapbox.com"&gt;Mapbox&lt;/a&gt;</span>',
@@ -123,7 +123,7 @@ Every time something happens in Leaflet, e.g. user clicks on a marker or map zoo
 
 	mymap.on('click', onMapClick);
 
-Each object has its own set of events --- see [documentation](../../reference.html) for details. The first argument of the listener function is an event object --- it contains useful information about the event that happened. For example, map click event object (`e` in the example above) has `latlng` property which is a location at which the click occured.
+Each object has its own set of events --- see [documentation](/reference.html) for details. The first argument of the listener function is an event object --- it contains useful information about the event that happened. For example, map click event object (`e` in the example above) has `latlng` property which is a location at which the click occured.
 
 Let's improve our example by using a popup instead of an alert:
 
@@ -140,5 +140,5 @@ Let's improve our example by using a popup instead of an alert:
 
 Try clicking on the map and you will see the coordinates in a popup. <a target="_blank" href="example.html">View the full example &rarr;</a>
 
-Now you've learned Leaflet basics and can start building map apps straight away! Don't forget to take a look at the detailed <a href="../../reference.html">documentation</a> or <a href="../../examples.html">other examples</a>.
+Now you've learned Leaflet basics and can start building map apps straight away! Don't forget to take a look at the detailed <a href="/reference.html">documentation</a> or <a href="../../examples.html">other examples</a>.
 
