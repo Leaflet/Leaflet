@@ -778,6 +778,8 @@ describe('GridLayer', function () {
 				runFrames(500);
 			});
 
+			grid.options.keepBuffer = 0;
+
 			map.addLayer(grid).setView(mad, 12);
 			clock.tick(250);
 		});
