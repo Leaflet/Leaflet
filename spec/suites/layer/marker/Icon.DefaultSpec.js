@@ -94,22 +94,17 @@ describe("Icon.Default", function () {
 		expect(iconDefaultOptions.shadowAnchor).to.be(newOptions.shadowAnchor);
 
 		// Reset default options and re-force re-evaluation.
-		_deleteIconOptions(L.Icon.Default.prototype.options);
+		_deleteIconOptions(L.Icon.Default.prototype.options, newOptions);
 
 		// Re-instantiate a new Default Icon, for next tests to use default values (i.e. the ones from CSS).
 		L.Marker.mergeOptions({
 			icon: new L.Icon.Default()
 		});
 
-		function _deleteIconOptions(iconOptions) {
-			delete iconOptions.iconUrl;
-			delete iconOptions.iconRetinaUrl;
-			delete iconOptions.iconSize;
-			delete iconOptions.iconAnchor;
-			delete iconOptions.shadowUrl;
-			delete iconOptions.shadowRetinaUrl;
-			delete iconOptions.shadowSize;
-			delete iconOptions.shadowAnchor;
+		function _deleteIconOptions(iconOptions, keysObj) {
+			for (var key in keysObj) {
+				delete iconOptions[key];
+			}
 		}
 	});
 
