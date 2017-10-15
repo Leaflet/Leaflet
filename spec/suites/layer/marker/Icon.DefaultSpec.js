@@ -57,29 +57,23 @@ describe("Icon.Default", function () {
 	it("uses options set on L.Icon.Default.prototype (for backward compatibility)", function () {
 		// No need for a map in this test.
 		// This also avoids printing a warning in console due to HTML 404 resource not found.
-		var iconUrl = 'dummy/icon.png';
-		var iconRetinaUrl = 'dummy/iconRetina.png';
-		var iconSize = [100, 200];
-		var iconAnchor = [50, 75];
-		var shadowUrl = 'dummy/shadow.png';
-		var shadowRetinaUrl = 'dummy/shadowRetina.png';
-		var shadowSize = [110, 210];
-		var shadowAnchor = [55, 80];
+		var newOptions = {
+			iconUrl: 'dummy/icon.png',
+			iconRetinaUrl: 'dummy/iconRetina.png',
+			iconSize: [100, 200],
+			iconAnchor: [50, 75],
+			shadowUrl: 'dummy/shadow.png',
+			shadowRetinaUrl: 'dummy/shadowRetina.png',
+			shadowSize: [110, 210],
+			shadowAnchor: [55, 80]
+		};
 
 		// Add options to L.Icon.Default.prototype like what previous apps may have done.
-		L.Icon.Default.mergeOptions({
-			iconUrl: iconUrl,
-			iconRetinaUrl: iconRetinaUrl,
-			iconSize: iconSize,
-			iconAnchor: iconAnchor,
-			shadowUrl: shadowUrl,
-			shadowRetinaUrl: shadowRetinaUrl,
-			shadowSize: shadowSize,
-			shadowAnchor: shadowAnchor
-		});
+		L.Icon.Default.mergeOptions(newOptions);
 
 		// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
 		var iconDefault = new L.Icon.Default();
+		var iconDefaultOptions = iconDefault.options;
 
 		L.Marker.mergeOptions({
 			icon: iconDefault
@@ -90,14 +84,14 @@ describe("Icon.Default", function () {
 		marker.options.icon._getIconUrl('icon');
 
 		// Make sure it used the specified default options instead of the ones from CSS.
-		expect(iconDefault.options.iconUrl).to.be(iconUrl);
-		expect(iconDefault.options.iconRetinaUrl).to.be(iconRetinaUrl);
-		expect(iconDefault.options.iconSize).to.be(iconSize);
-		expect(iconDefault.options.iconAnchor).to.be(iconAnchor);
-		expect(iconDefault.options.shadowUrl).to.be(shadowUrl);
-		expect(iconDefault.options.shadowRetinaUrl).to.be(shadowRetinaUrl);
-		expect(iconDefault.options.shadowSize).to.be(shadowSize);
-		expect(iconDefault.options.shadowAnchor).to.be(shadowAnchor);
+		expect(iconDefaultOptions.iconUrl).to.be(newOptions.iconUrl);
+		expect(iconDefaultOptions.iconRetinaUrl).to.be(newOptions.iconRetinaUrl);
+		expect(iconDefaultOptions.iconSize).to.be(newOptions.iconSize);
+		expect(iconDefaultOptions.iconAnchor).to.be(newOptions.iconAnchor);
+		expect(iconDefaultOptions.shadowUrl).to.be(newOptions.shadowUrl);
+		expect(iconDefaultOptions.shadowRetinaUrl).to.be(newOptions.shadowRetinaUrl);
+		expect(iconDefaultOptions.shadowSize).to.be(newOptions.shadowSize);
+		expect(iconDefaultOptions.shadowAnchor).to.be(newOptions.shadowAnchor);
 
 		// Reset default options and re-force re-evaluation.
 		_deleteIconOptions(L.Icon.Default.prototype.options);
