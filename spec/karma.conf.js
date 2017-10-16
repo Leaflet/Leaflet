@@ -20,6 +20,14 @@ module.exports = function (config) {
 		{pattern: "dist/images/*.png", included: false, serve: true}
 	];
 
+	var preprocessors = {};
+
+	if (config.cov) {
+		preprocessors['src/**/*.js'] = ['coverage'];
+	}
+
+	preprocessors['src/Leaflet.js'] = ['rollup'];
+
 	config.set({
 		// base path, that will be used to resolve files and exclude
 		basePath: '../',
@@ -44,9 +52,7 @@ module.exports = function (config) {
 		exclude: [],
 
 		// Rollup the ES6 Leaflet sources into just one file, before tests
-		preprocessors: {
-			'src/Leaflet.js': ['rollup']
-		},
+		preprocessors: preprocessors,
 		rollupPreprocessor: {
 			plugins: [
 				json()
@@ -57,7 +63,9 @@ module.exports = function (config) {
 
 		// test results reporter to use
 		// possible values: 'dots', 'progress', 'junit', 'growl', 'coverage'
-		reporters: ['dots'],
+		reporters: config.cov ? ['dots', 'coverage'] : ['dots'],
+
+		coverageReporter: config.cov ? {type : 'html', dir : 'coverage/'} : null,
 
 		// web server port
 		port: 9876,

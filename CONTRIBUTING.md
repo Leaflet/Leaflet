@@ -127,13 +127,13 @@ install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
 then run:
 
 ```
-npm run test
+npm test
 ```
 
 To run all the tests in actual browsers at the same time, you can do:
 
 ```
-npm run test -- --ff --chrome --safari --ie
+npm test -- --browsers Firefox,Chrome,Safari,IE
 ```
 
 To run the tests in a browser manually, open `spec/index.html`.
@@ -143,7 +143,7 @@ To run the tests in a browser manually, open `spec/index.html`.
 To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
 
 ```
-npm run test -- --cov
+npm test -- --cov
 ```
 
 After that, open `coverage/<environment>/index.html` in a browser to see the report.

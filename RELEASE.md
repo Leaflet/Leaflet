@@ -19,7 +19,7 @@ Documentation for the release process of Leaflet.
 9. Update `docs/reference.html` to redirect to the new version and commit the change to the release branch
 10. Update integrity hashes:
     * Checkout the release tag (`git checkout vX.Y.Z`)
-    * Run `npm run integrity` or simply `node ./scripts/integrity.js` if you're not on Debian
+    * Run `npm run integrity` or simply `node ./build/integrity.js` if you're not on Debian
     * Copy the hashes and update `integrity_hash_css`, `integrity_hash_source` and `integrity_hash_uglified` in `docs/_config.yml`; commit changes to the release branch
 11. Update link to latest release in `docs/download.html`, and commit to the release branch
 12. Update `latest_leaflet_version` in `docs/_config.yml` and commit to the release branch
