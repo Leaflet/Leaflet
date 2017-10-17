@@ -49,11 +49,7 @@ when using Leaflet from a CDN:
       integrity="{{site.integrity_hash_uglified}}"
       crossorigin=""></script>
 
-Leaflet is available on the following free CDN's:
-
-- unpkg: https://unpkg.com/leaflet/dist/
-- cdnjs: https://cdnjs.com/libraries/leaflet
-- jsDelivr: https://www.jsdelivr.com/package/npm/leaflet?path=dist
+Leaflet is available on the following free CDN's:  [unpkg](https://unpkg.com/leaflet/dist/), [cdnjs](https://cdnjs.com/libraries/leaflet), [jsDelivr](https://www.jsdelivr.com/package/npm/leaflet?path=dist)
 
 _Disclaimer: these services are external to Leaflet; for questions or support, please contact them directly._
 
