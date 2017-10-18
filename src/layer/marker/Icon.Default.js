@@ -37,6 +37,7 @@ export var IconDefault = Icon.extend({
 			// path, before any marker is added to a map.
 			// Caution: do not use this option with inline base64 image(s).
 			var imagePath = this.options.imagePath || IconDefault.imagePath;
+			// Deprecated (IconDefault.imagePath), backwards-compatibility only
 
 			// Modifying imagePath option after _getIconUrl has been called
 			// once in this instance of IconDefault will no longer have any
