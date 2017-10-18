@@ -71,7 +71,7 @@ export var IconDefault = Icon.extend({
 // Retrieve icon option values from CSS (icon or shadow).
 function _detectIconOptions(className, imagePath) {
 	var el = DomUtil.create('div',  className, document.body),
-	    urlsContainer = _getStyle(el, 'cursor'),
+	    urlsContainer = _getBkgImageOrCursor(el),
 	    urls = _extractUrls(urlsContainer, imagePath),
 	    iconX = parseInt(_getStyle(el, 'width'), 10),
 	    iconY = parseInt(_getStyle(el, 'height'), 10),
@@ -124,6 +124,17 @@ function _replaceUrl(url, imagePath) {
 // Factorize style reading fallback for IE8.
 function _getStyle(el, style) {
 	return DomUtil.getStyle(el, style) || DomUtil.getStyle(el, _kebabToCamelCase(style));
+}
+
+// When Firefox high contrast (colours override) option is enabled,
+// "background-image" is overridden by the browser as "none".
+// In that case, fallback to "cursor". But keep "background-image"
+// as primary source because IE expects cursor URL as relative to HTML page
+// instead of relative to CSS file.
+function _getBkgImageOrCursor(el) {
+	var bkgImage = _getStyle(el, 'background-image');
+
+	return bkgImage && bkgImage !== 'none' ? bkgImage : _getStyle(el, 'cursor');
 }
 
 // Convert kebab-case CSS property name to camelCase for IE currentStyle.

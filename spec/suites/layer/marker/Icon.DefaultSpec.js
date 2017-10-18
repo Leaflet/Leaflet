@@ -108,4 +108,61 @@ describe("Icon.Default", function () {
 		}
 	});
 
+	it("fallsback to cursor CSS rule in case background-image is empty (for FF high contrast option)", function () {
+
+		var className = 'leaflet-default-icon-icon';
+		var el = L.DomUtil.create('div',  className, document.body);
+		var previousBkgImage = L.DomUtil.getStyle(el, 'background-image');
+		var previousCursor = L.DomUtil.getStyle(el, 'cursor');
+		var newCursorFilename = 'dummy-cursor-icon.png';
+		var newCursorUrl = 'dummy/path/to/' + newCursorFilename;
+
+		// As specified in: https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/after.js#L1
+		// Caution: in case of error, the printed path will be proxied as specified in:
+		// https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/karma.conf.js#L42
+		var expectedImagePath = '/base/dist/images/';
+
+		try {
+			expect(L.DomUtil.getStyle(el, 'background-image')).to.be.ok();
+
+			// Modify the CSS rules.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: none');
+			// This will print a 404 warning unfortunately…
+			addCSSRule(document.styleSheets[0], '.' + className, 'cursor: url(' + newCursorUrl  + '), auto');
+
+			// Make sure the new CSS rule is applied.
+			expect(L.DomUtil.getStyle(el, 'background-image')).to.equal('none');
+			var newCursorRule = L.DomUtil.getStyle(el, 'cursor');
+			expect(new RegExp(newCursorUrl).test(newCursorRule)).to.be.ok();
+
+			// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
+			var iconDefault = new L.Icon.Default();
+
+			iconDefault._getIconUrl('icon');
+			expect(iconDefault.options.iconUrl).to.be(expectedImagePath + newCursorFilename);
+
+		} finally {
+			// Reset the CSS rules.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: ' + previousBkgImage);
+			addCSSRule(document.styleSheets[0], '.' + className, 'cursor: ' + previousCursor);
+		}
+
+
+		function addCSSRule(sheet, selector, rules, index) {
+			if (sheet.insertRule) {
+				// https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule
+				if (typeof index !== 'number') {
+					index = sheet.cssRules.length;
+				}
+				sheet.insertRule(selector + '{' + rules + '}', index);
+			} else if (sheet.addRule) {
+				sheet.addRule(selector, rules, index);
+			} else {
+				console.log('cannot add CSS rule');
+			}
+		}
+	});
+
 });

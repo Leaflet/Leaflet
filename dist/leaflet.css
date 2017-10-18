@@ -386,12 +386,14 @@
 
 /* Default icon options */
 .leaflet-default-icon-icon {
+	background-image: url(images/marker-icon.png), url(images/marker-icon-2x.png); /* normal[, Retina] */
 	cursor: url(images/marker-icon.png), url(images/marker-icon-2x.png), auto; /* normal[, Retina], auto for compliance with cursor syntax */
 	width: 25px;
 	height: 41px;
 	margin: -41px -12px; /* margin top and left to reversely position iconAnchor */
 	}
 .leaflet-default-icon-shadow {
+	background-image: url(images/marker-shadow.png); /* normal[, Retina] */
 	cursor: url(images/marker-shadow.png), auto; /* normal[, Retina], auto */
 	width: 41px;
 	height: 41px;
