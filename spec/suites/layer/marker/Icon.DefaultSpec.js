@@ -75,31 +75,24 @@ describe("Icon.Default", function () {
 		var iconDefault = new L.Icon.Default();
 		var iconDefaultOptions = iconDefault.options;
 
-		L.Marker.mergeOptions({
-			icon: iconDefault
-		});
+		iconDefault._getIconUrl('icon');
 
-		var marker = new L.Marker([0, 0]);
-		// Force retrieval of Default Icon options from CSS.
-		marker.options.icon._getIconUrl('icon');
-
-		// Make sure it used the specified default options instead of the ones from CSS.
-		expect(iconDefaultOptions.iconUrl).to.be(newOptions.iconUrl);
-		expect(iconDefaultOptions.iconRetinaUrl).to.be(newOptions.iconRetinaUrl);
-		expect(iconDefaultOptions.iconSize).to.be(newOptions.iconSize);
-		expect(iconDefaultOptions.iconAnchor).to.be(newOptions.iconAnchor);
-		expect(iconDefaultOptions.shadowUrl).to.be(newOptions.shadowUrl);
-		expect(iconDefaultOptions.shadowRetinaUrl).to.be(newOptions.shadowRetinaUrl);
-		expect(iconDefaultOptions.shadowSize).to.be(newOptions.shadowSize);
-		expect(iconDefaultOptions.shadowAnchor).to.be(newOptions.shadowAnchor);
-
-		// Reset default options and re-force re-evaluation.
-		_deleteIconOptions(L.Icon.Default.prototype.options, newOptions);
-
-		// Re-instantiate a new Default Icon, for next tests to use default values (i.e. the ones from CSS).
-		L.Marker.mergeOptions({
-			icon: new L.Icon.Default()
-		});
+		try {
+			// Make sure it used the specified default options instead of the ones from CSS.
+			expect(iconDefaultOptions.iconUrl).to.be(newOptions.iconUrl);
+			expect(iconDefaultOptions.iconRetinaUrl).to.be(newOptions.iconRetinaUrl);
+			expect(iconDefaultOptions.iconSize).to.be(newOptions.iconSize);
+			expect(iconDefaultOptions.iconAnchor).to.be(newOptions.iconAnchor);
+			expect(iconDefaultOptions.shadowUrl).to.be(newOptions.shadowUrl);
+			expect(iconDefaultOptions.shadowRetinaUrl).to.be(newOptions.shadowRetinaUrl);
+			expect(iconDefaultOptions.shadowSize).to.be(newOptions.shadowSize);
+			expect(iconDefaultOptions.shadowAnchor).to.be(newOptions.shadowAnchor);
+		} finally {
+			// Reset default options and re-force re-evaluation.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			_deleteIconOptions(L.Icon.Default.prototype.options, newOptions);
+		}
 
 		function _deleteIconOptions(iconOptions, keysObj) {
 			for (var key in keysObj) {
