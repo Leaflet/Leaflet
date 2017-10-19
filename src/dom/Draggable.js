@@ -6,18 +6,12 @@ L.Draggable = L.Class.extend({
 	includes: L.Mixin.Events,
 
 	statics: {
-		START: L.Browser.touch ? ['touchstart', 'mousedown'] : ['mousedown'],
+		START: ['mousedown'],
 		END: {
-			mousedown: 'mouseup',
-			touchstart: 'touchend',
-			pointerdown: 'touchend',
-			MSPointerDown: 'touchend'
+			mousedown: 'mouseup'
 		},
 		MOVE: {
-			mousedown: 'mousemove',
-			touchstart: 'touchmove',
-			pointerdown: 'touchmove',
-			MSPointerDown: 'touchmove'
+			mousedown: 'mousemove'
 		}
 	},
 
@@ -82,7 +76,6 @@ L.Draggable = L.Class.extend({
 		    offset = newPoint.subtract(this._startPoint);
 
 		if (!offset.x && !offset.y) { return; }
-		if (L.Browser.touch && Math.abs(offset.x) + Math.abs(offset.y) < 3) { return; }
 
 		L.DomEvent.preventDefault(e);
 

@@ -7,10 +7,6 @@ L.Polyline.include(!L.Path.CANVAS ? {} : {
 		var i, j, k, len, len2, dist, part,
 		    w = this.options.weight / 2;
 
-		if (L.Browser.touch) {
-			w += 10; // polyline click tolerance on touch devices
-		}
-
 		for (i = 0, len = this._parts.length; i < len; i++) {
 			part = this._parts[i];
 			for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
