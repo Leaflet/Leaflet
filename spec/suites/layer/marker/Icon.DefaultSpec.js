@@ -138,8 +138,9 @@ describe("Icon.Default", function () {
 			// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
 			var iconDefault = new L.Icon.Default();
 
-			iconDefault._getIconUrl('icon');
-			expect(iconDefault.options.iconUrl).to.be(expectedImagePath + newCursorFilename);
+			var path = iconDefault._getIconUrl('icon');
+			expect(iconDefault.options.iconUrl).to.be(newCursorFilename);
+			expect(path).to.be(expectedImagePath + newCursorFilename);
 
 		} finally {
 			// Reset the CSS rules.
