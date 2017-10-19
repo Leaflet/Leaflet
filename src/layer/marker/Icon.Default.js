@@ -29,23 +29,23 @@ export var IconDefault = Icon.extend({
 
 	// Override to make sure options are retrieved from CSS.
 	_getIconUrl: function (name) {
-		if (this._needsInit) {
-			// @option imagePath: String
-			// `Icon.Default` will try to auto-detect the location of
-			// the blue icon images. If you are placing these images in a
-			// non-standard way, set this option to point to the right
-			// path, before any marker is added to a map.
-			// Caution: do not use this option with inline base64 image(s).
-			var imagePath = this.options.imagePath || IconDefault.imagePath;
-			// Deprecated (IconDefault.imagePath), backwards-compatibility only
+		// @option imagePath: String
+		// `Icon.Default` will try to auto-detect the location of
+		// the blue icon images. If you are placing these images in a
+		// non-standard way, set this option to point to the right
+		// path, before any marker is added to a map.
+		// Caution: do not use this option with inline base64 image(s).
+		var imagePath = this.options.imagePath || IconDefault.imagePath || '';
+		// Deprecated (IconDefault.imagePath), backwards-compatibility only
 
+		if (this._needsInit) {
 			// Modifying imagePath option after _getIconUrl has been called
 			// once in this instance of IconDefault will no longer have any
 			// effect.
 			this._initializeOptions(imagePath);
 		}
 
-		return Icon.prototype._getIconUrl.call(this, name);
+		return imagePath + Icon.prototype._getIconUrl.call(this, name);
 	},
 
 	// Initialize all necessary options for this instance.
@@ -107,19 +107,20 @@ function _extractUrls(urlsContainer, imagePath) {
 	    m = re.exec(urlsContainer);
 
 	while (m) {
-		urls.push(_replaceUrl(m[1], imagePath));
+		// Keep the entire URL from CSS rule, so that each image can have its own full URL.
+		// Except in the case imagePath is provided: remove the path part (i.e. keep only the file name).
+		urls.push(imagePath ? _stripPath(m[1]) : m[1]);
 		m = re.exec(urlsContainer);
 	}
 
 	return urls;
 }
 
-// If imagePath is set, use it to replace anything before the last slash (/)
-// occurrence (inclusive).
+// Remove anything before the last slash (/) occurrence (inclusive).
 // Caution: will give unexpected result if url is inline base64 data
 // => do not specify imagePath in that case!
-function _replaceUrl(url, imagePath) {
-	return imagePath ? imagePath + url.substr(url.lastIndexOf('/') + 1) : url;
+function _stripPath(url) {
+	return url.substr(url.lastIndexOf('/') + 1);
 }
 
 // Factorize style reading fallback for IE8.
