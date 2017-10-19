@@ -34,16 +34,17 @@ describe("Icon.Default", function () {
 		// No need for a map in this test.
 		// This also avoids printing a warning in console due to HTML 404 resource not found.
 		// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
-		var iconDefault = new L.Icon.Default();
-		var iconDefaultOptions = iconDefault.options;
-
-		iconDefaultOptions.imagePath = 'IconDefault/dummy/imagePath/';
+		var iconFilenameInCSS = 'marker-icon.png';
+		var imagePath = 'IconDefault/dummy/imagePath/';
+		var iconDefault = new L.Icon.Default({
+			imagePath: imagePath
+		});
 
 		var path = iconDefault._getIconUrl('icon');
 
 		// 'marker-icon.png' is now defined in CSS.
-		expect(iconDefaultOptions.iconUrl).to.be('marker-icon.png');
-		expect(path).to.be('IconDefault/dummy/imagePath/marker-icon.png');
+		expect(iconDefault.options.iconUrl).to.be(iconFilenameInCSS);
+		expect(path).to.be(imagePath + iconFilenameInCSS);
 	});
 
 	it("uses imagePath and iconUrl options", function () {
