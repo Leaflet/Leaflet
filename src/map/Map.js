@@ -1109,7 +1109,7 @@ export var Map = Evented.extend({
 		// Pane for `Icon`s of `Marker`s
 		this.createPane('markerPane');
 		// @pane tooltipPane: HTMLElement = 650
-		// Pane for tooltip.
+		// Pane for `Tooltip`s.
 		this.createPane('tooltipPane');
 		// @pane popupPane: HTMLElement = 700
 		// Pane for `Popup`s.
