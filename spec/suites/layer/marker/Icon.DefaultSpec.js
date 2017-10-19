@@ -30,6 +30,42 @@ describe("Icon.Default", function () {
 		document.body.removeChild(div);
 	});
 
+	it("retrieves full icon URL if no imagePath is specified", function () {
+		// As specified in: https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/after.js#L1
+		var previousImagePath = L.Icon.Default.imagePath;
+
+		// Caution: in case of error, the printed path will be proxied as specified in:
+		// https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/karma.conf.js#L42
+		var cssFilePath = '/base/dist/';
+
+		// Unfortunately previousImagePath is exactly like the actual path that should be retrieved.
+		// In order to make sure we read the full URL, without depending on imagePath, we will also
+		// make sure there is a localhost.
+		var localhost = '^http://localhost(.)*?';
+		var cssFilePathFull = localhost + cssFilePath;
+
+		try {
+			L.Icon.Default.imagePath = null;
+
+			var iconDefault = new L.Icon.Default();
+			var iconDefaultOptions = iconDefault.options;
+
+			var path = iconDefault._getIconUrl('icon');
+
+			// Images URL are now defined in CSS.
+			expect(new RegExp(cssFilePathFull + 'images/marker-icon.png$').test(path)).to.be.ok();
+			expect(new RegExp(cssFilePathFull + 'images/marker-icon.png$').test(iconDefaultOptions.iconUrl)).to.be.ok();
+			expect(new RegExp(cssFilePathFull + 'images/marker-icon-2x.png$').test(iconDefaultOptions.iconRetinaUrl)).to.be.ok();
+			expect(new RegExp(cssFilePathFull + 'images/marker-shadow.png$').test(iconDefaultOptions.shadowUrl)).to.be.ok();
+			expect(iconDefaultOptions.shadowRetinaUrl).to.be.an('undefined');
+		} finally {
+			// Restore imagePath.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			L.Icon.Default.imagePath = previousImagePath;
+		}
+	});
+
 	it("uses imagePath option if specified", function () {
 		// No need for a map in this test.
 		// This also avoids printing a warning in console due to HTML 404 resource not found.
