@@ -74,10 +74,10 @@ function _detectIconOptions(className, imagePath) {
 	var el = DomUtil.create('div',  className, document.body),
 	    urlsContainer = _getBkgImageOrCursor(el),
 	    urls = _extractUrls(urlsContainer, imagePath),
-	    iconX = parseInt(_getStyle(el, 'width'), 10),
-	    iconY = parseInt(_getStyle(el, 'height'), 10),
-	    anchorNX = parseInt(_getStyle(el, 'margin-left'), 10),
-	    anchorNY = parseInt(_getStyle(el, 'margin-top'), 10);
+	    iconX = _getStyleInt(el, 'width'),
+	    iconY = _getStyleInt(el, 'height'),
+	    anchorNX = _getStyleInt(el, 'margin-left'),
+	    anchorNY = _getStyleInt(el, 'margin-top');
 
 	return {
 		Url: urls[0],
@@ -90,8 +90,8 @@ function _detectIconOptions(className, imagePath) {
 // Retrieve anchor option values from CSS (popup or tooltip).
 function _detectDivOverlayOptions(className) {
 	var el = DomUtil.create('div', className, document.body),
-	    anchorX = parseInt(_getStyle(el, 'margin-left'), 10),
-	    anchorY = parseInt(_getStyle(el, 'margin-top'), 10);
+	    anchorX = _getStyleInt(el, 'margin-left'),
+	    anchorY = _getStyleInt(el, 'margin-top');
 
 	return {
 		Anchor: [anchorX, anchorY]
@@ -121,6 +121,10 @@ function _extractUrls(urlsContainer, imagePath) {
 // => do not specify imagePath in that case!
 function _stripPath(url) {
 	return url.substr(url.lastIndexOf('/') + 1);
+}
+
+function _getStyleInt(el, style) {
+	return parseInt(_getStyle(el, style), 10);
 }
 
 // Factorize style reading fallback for IE8.
