@@ -8,7 +8,7 @@ L.Map.mergeOptions({
 	inertia: !L.Browser.android23,
 	inertiaDeceleration: 3400, // px/s^2
 	inertiaMaxSpeed: Infinity, // px/s
-	inertiaThreshold: L.Browser.touch ? 32 : 18, // ms
+	inertiaThreshold: 18, // ms
 	easeLinearity: 0.25,
 
 	// TODO refactor, move to CRS

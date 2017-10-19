@@ -19,9 +19,6 @@ L.DomEvent = {
 		if (L.Browser.pointer && type.indexOf('touch') === 0) {
 			return this.addPointerListener(obj, type, handler, id);
 		}
-		if (L.Browser.touch && (type === 'dblclick') && this.addDoubleTapListener) {
-			this.addDoubleTapListener(obj, handler, id);
-		}
 
 		if ('addEventListener' in obj) {
 
@@ -71,9 +68,6 @@ L.DomEvent = {
 
 		if (L.Browser.pointer && type.indexOf('touch') === 0) {
 			this.removePointerListener(obj, type, id);
-		} else if (L.Browser.touch && (type === 'dblclick') && this.removeDoubleTapListener) {
-			this.removeDoubleTapListener(obj, id);
-
 		} else if ('removeEventListener' in obj) {
 
 			if (type === 'mousewheel') {

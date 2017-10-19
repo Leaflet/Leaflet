@@ -92,6 +92,10 @@ L.TileLayer = L.Class.extend({
 	},
 
 	onRemove: function (map) {
+		for (key in this._tiles) {
+			this._removeTile(key);
+		}
+
 		this._container.parentNode.removeChild(this._container);
 
 		map.off({
@@ -173,7 +177,7 @@ L.TileLayer = L.Class.extend({
 
 	redraw: function () {
 		if (this._map) {
-			this._reset({hard: true});
+			this._reset({ hard: true });
 			this._update();
 		}
 		return this;
@@ -188,8 +192,8 @@ L.TileLayer = L.Class.extend({
 	_setAutoZIndex: function (pane, compare) {
 
 		var layers = pane.children,
-		    edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
-		    zIndex, i, len;
+			edgeZIndex = -compare(Infinity, -Infinity), // -Infinity for max, Infinity for min
+			zIndex, i, len;
 
 		for (i = 0, len = layers.length; i < len; i++) {
 
@@ -203,12 +207,12 @@ L.TileLayer = L.Class.extend({
 		}
 
 		this.options.zIndex = this._container.style.zIndex =
-		        (isFinite(edgeZIndex) ? edgeZIndex : 0) + compare(1, -1);
+			(isFinite(edgeZIndex) ? edgeZIndex : 0) + compare(1, -1);
 	},
 
 	_updateOpacity: function () {
 		var i,
-		    tiles = this._tiles;
+			tiles = this._tiles;
 
 		if (L.Browser.ielt9) {
 			for (i in tiles) {
@@ -247,7 +251,7 @@ L.TileLayer = L.Class.extend({
 
 	_reset: function (e) {
 		for (var key in this._tiles) {
-			this.fire('tileunload', {tile: this._tiles[key]});
+			this._removeTile(key);
 		}
 
 		this._tiles = {};
@@ -268,9 +272,9 @@ L.TileLayer = L.Class.extend({
 
 	_getTileSize: function () {
 		var map = this._map,
-		    zoom = map.getZoom() + this.options.zoomOffset,
-		    zoomN = this.options.maxNativeZoom,
-		    tileSize = this.options.tileSize;
+			zoom = map.getZoom() + this.options.zoomOffset,
+			zoomN = this.options.maxNativeZoom,
+			tileSize = this.options.tileSize;
 
 		if (zoomN && zoom > zoomN) {
 			tileSize = Math.round(map.getZoomScale(zoom) / map.getZoomScale(zoomN) * tileSize);
@@ -284,17 +288,17 @@ L.TileLayer = L.Class.extend({
 		if (!this._map) { return; }
 
 		var map = this._map,
-		    bounds = map.getPixelBounds(),
-		    zoom = map.getZoom(),
-		    tileSize = this._getTileSize();
+			bounds = map.getPixelBounds(),
+			zoom = map.getZoom(),
+			tileSize = this._getTileSize();
 
 		if (zoom > this.options.maxZoom || zoom < this.options.minZoom) {
 			return;
 		}
 
 		var tileBounds = L.bounds(
-		        bounds.min.divideBy(tileSize)._floor(),
-		        bounds.max.divideBy(tileSize)._floor());
+			bounds.min.divideBy(tileSize)._floor(),
+			bounds.max.divideBy(tileSize)._floor());
 
 		this._addTilesFromCenterOut(tileBounds);
 
@@ -305,7 +309,7 @@ L.TileLayer = L.Class.extend({
 
 	_addTilesFromCenterOut: function (bounds) {
 		var queue = [],
-		    center = bounds.getCenter();
+			center = bounds.getCenter();
 
 		var j, i, point;
 
@@ -361,10 +365,10 @@ L.TileLayer = L.Class.extend({
 
 		if (options.bounds) {
 			var tileSize = this._getTileSize(),
-			    nwPoint = tilePoint.multiplyBy(tileSize),
-			    sePoint = nwPoint.add([tileSize, tileSize]),
-			    nw = this._map.unproject(nwPoint),
-			    se = this._map.unproject(sePoint);
+				nwPoint = tilePoint.multiplyBy(tileSize),
+				sePoint = nwPoint.add([tileSize, tileSize]),
+				nw = this._map.unproject(nwPoint),
+				se = this._map.unproject(sePoint);
 
 			// TODO temporary hack, will be removed after refactoring projections
 			// https://github.com/Leaflet/Leaflet/issues/1618
@@ -397,7 +401,7 @@ L.TileLayer = L.Class.extend({
 	_removeTile: function (key) {
 		var tile = this._tiles[key];
 
-		this.fire('tileunload', {tile: tile, url: tile.src});
+		this.fire('tileunload', { tile: tile, url: tile.src });
 
 		if (this.options.reuseTiles) {
 			L.DomUtil.removeClass(tile, 'leaflet-tile-loaded');
@@ -441,7 +445,7 @@ L.TileLayer = L.Class.extend({
 	_getZoomForUrl: function () {
 
 		var options = this.options,
-		    zoom = this._map.getZoom();
+			zoom = this._map.getZoom();
 
 		if (options.zoomReverse) {
 			zoom = options.maxZoom - zoom;
@@ -454,7 +458,7 @@ L.TileLayer = L.Class.extend({
 
 	_getTilePos: function (tilePoint) {
 		var origin = this._map.getPixelOrigin(),
-		    tileSize = this._getTileSize();
+			tileSize = this._getTileSize();
 
 		return tilePoint.multiplyBy(tileSize).subtract(origin);
 	},
@@ -472,7 +476,7 @@ L.TileLayer = L.Class.extend({
 
 	_getWrapTileNum: function () {
 		var crs = this._map.options.crs,
-		    size = crs.getSize(this._map.getZoom());
+			size = crs.getSize(this._map.getZoom());
 		return size.divideBy(this._getTileSize())._floor();
 	},
 
@@ -507,7 +511,7 @@ L.TileLayer = L.Class.extend({
 	},
 
 	// Override if data stored on a tile needs to be cleaned up before reuse
-	_resetTile: function (/*tile*/) {},
+	_resetTile: function (/*tile*/) { },
 
 	_createTile: function () {
 		var tile = L.DomUtil.create('img', 'leaflet-tile');
@@ -528,12 +532,12 @@ L.TileLayer = L.Class.extend({
 	},
 
 	_loadTile: function (tile, tilePoint) {
-		tile._layer  = this;
-		tile.onload  = this._tileOnLoad;
+		tile._layer = this;
+		tile.onload = this._tileOnLoad;
 		tile.onerror = this._tileOnError;
 
 		this._adjustTilePoint(tilePoint);
-		tile.src     = this.getTileUrl(tilePoint);
+		tile.src = this.getTileUrl(tilePoint);
 
 		this.fire('tileloadstart', {
 			tile: tile,

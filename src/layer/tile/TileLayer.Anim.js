@@ -40,7 +40,7 @@ L.TileLayer.include({
 	_clearBgBuffer: function () {
 		var map = this._map;
 
-		if (map && !map._animatingZoom && !map.touchZoom._zooming) {
+		if (map && !map._animatingZoom) {
 			this._bgBuffer.innerHTML = '';
 			this._bgBuffer.style[L.DomUtil.TRANSFORM] = '';
 		}
