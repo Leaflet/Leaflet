@@ -48,10 +48,6 @@ var eventsKey = '_leaflet_events';
 // @alternative
 // @function off(el: HTMLElement, eventMap: Object, context?: Object): this
 // Removes a set of type/listener pairs, e.g. `{click: onClick, mousemove: onMouseMove}`
-
-// @alternative
-// @function off(el: HTMLElement): this
-// Removes all known event listeners
 export function off(obj, types, fn, context) {
 
 	if (typeof types === 'object') {
