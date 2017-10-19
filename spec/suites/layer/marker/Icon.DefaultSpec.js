@@ -145,6 +145,39 @@ describe("Icon.Default", function () {
 		}
 	});
 
+	it("is compatible with data URL / base64 image (no imagePath)", function () {
+		// As specified in: https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/after.js#L1
+		var previousImagePath = L.Icon.Default.imagePath;
+
+		var className = 'leaflet-default-icon-icon';
+		var el = L.DomUtil.create('div',  className, document.body);
+		var previousBkgImage = L.DomUtil.getStyle(el, 'background-image');
+		var dataUri = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+		try {
+			L.Icon.Default.imagePath = null;
+
+			// Modify the CSS rules.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: url(' + dataUri + ')');
+
+			var iconDefault = new L.Icon.Default();
+			var iconDefaultOptions = iconDefault.options;
+
+			var path = iconDefault._getIconUrl('icon');
+
+			expect(path).to.be(dataUri);
+			expect(iconDefaultOptions.iconUrl).to.be(dataUri);
+		} finally {
+			// Restore imagePath.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			L.Icon.Default.imagePath = previousImagePath;
+
+			// Reset the CSS rules.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: ' + previousBkgImage);
+		}
+	});
+
 	it("fallsback to cursor CSS rule in case background-image is empty (for FF high contrast option)", function () {
 
 		var className = 'leaflet-default-icon-icon';
@@ -186,21 +219,21 @@ describe("Icon.Default", function () {
 			addCSSRule(document.styleSheets[0], '.' + className, 'background: ' + previousBkgImage);
 			addCSSRule(document.styleSheets[0], '.' + className, 'cursor: ' + previousCursor);
 		}
-
-
-		function addCSSRule(sheet, selector, rules, index) {
-			if (sheet.insertRule) {
-				// https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule
-				if (typeof index !== 'number') {
-					index = sheet.cssRules.length;
-				}
-				sheet.insertRule(selector + '{' + rules + '}', index);
-			} else if (sheet.addRule) {
-				sheet.addRule(selector, rules, index);
-			} else {
-				console.log('cannot add CSS rule');
-			}
-		}
 	});
 
 });
+
+
+function addCSSRule(sheet, selector, rules, index) {
+	if (sheet.insertRule) {
+		// https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule
+		if (typeof index !== 'number') {
+			index = sheet.cssRules.length;
+		}
+		sheet.insertRule(selector + '{' + rules + '}', index);
+	} else if (sheet.addRule) {
+		sheet.addRule(selector, rules, index);
+	} else {
+		console.log('cannot add CSS rule');
+	}
+}
