@@ -27,6 +27,10 @@ export function Point(x, y, round) {
 	this.y = (round ? Math.round(y) : y);
 }
 
+var trunc = Math.trunc || function (v) {
+	return v > 0 ? Math.floor(v) : Math.ceil(v);
+};
+
 Point.prototype = {
 
 	// @method clone(): Point
@@ -134,6 +138,18 @@ Point.prototype = {
 	_ceil: function () {
 		this.x = Math.ceil(this.x);
 		this.y = Math.ceil(this.y);
+		return this;
+	},
+
+	// @method ceil(): Point
+	// Returns a copy of the current point with truncated coordinates (rounded towards zero).
+	trunc: function () {
+		return this.clone()._trunc();
+	},
+
+	_trunc: function () {
+		this.x = trunc(this.x);
+		this.y = trunc(this.y);
 		return this;
 	},
 
