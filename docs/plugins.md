@@ -1832,6 +1832,18 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/manubb">Manuel Baclet</a>
 		</td>
 	</tr>
+	 <tr>
+        <td>
+    		<a href="https://github.com/danwild/leaflet-velocity">leaflet-velocity</a>
+    	</td>
+    	<td>
+            Visualise velocity layers with leaflet.
+            <a href="https://danwild.github.io/leaflet-velocity">Demo here.</a>
+        </td>
+        <td>
+            <a href="https://github.com/danwild">Dan Wild</a>
+        </td>
+    </tr>
 </table>
 
 
