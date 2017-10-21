@@ -2205,6 +2205,15 @@ These plugins help users select either overlays or areas in the map.
 <table class="plugins"><tr><th>Plugin</th><th>Description</th><th>Maintainer</th></tr>
 	<tr>
 		<td>
+			<a href="https://github.com/sandropibia/Leaflet.SelectAreaFeature/">Leaflet.SelectAreaFeature</a>
+		</td><td>
+			Selecting feature layers on a map by drawing an area.
+		</td><td>
+			<a href="http://pezzo.org">Sandro Pibia</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/heyman/leaflet-areaselect/">Leaflet.AreaSelect</a>
 		</td><td>
 			A fixed positioned, resizable rectangle for selecting an area on the map.
