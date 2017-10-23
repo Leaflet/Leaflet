@@ -30,4 +30,210 @@ describe("Icon.Default", function () {
 		document.body.removeChild(div);
 	});
 
+	it("retrieves full icon URL if no imagePath is specified", function () {
+		// As specified in: https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/after.js#L1
+		var previousImagePath = L.Icon.Default.imagePath;
+
+		// Caution: in case of error, the printed path will be proxied as specified in:
+		// https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/karma.conf.js#L42
+		var cssFilePath = '/base/dist/';
+
+		// Unfortunately previousImagePath is exactly like the actual path that should be retrieved.
+		// In order to make sure we read the full URL, without depending on imagePath, we will also
+		// make sure there is a localhost.
+		var localhost = '^http://localhost(.)*?';
+		var cssFilePathFull = localhost + cssFilePath;
+
+		try {
+			L.Icon.Default.imagePath = null;
+
+			var iconDefault = new L.Icon.Default();
+			var iconDefaultOptions = iconDefault.options;
+
+			var path = iconDefault._getIconUrl('icon');
+
+			// Images URL are now defined in CSS.
+			expect(new RegExp(cssFilePathFull + 'images/marker-icon.png$').test(path)).to.be.ok();
+			expect(new RegExp(cssFilePathFull + 'images/marker-icon.png$').test(iconDefaultOptions.iconUrl)).to.be.ok();
+			expect(new RegExp(cssFilePathFull + 'images/marker-icon-2x.png$').test(iconDefaultOptions.iconRetinaUrl)).to.be.ok();
+			expect(new RegExp(cssFilePathFull + 'images/marker-shadow.png$').test(iconDefaultOptions.shadowUrl)).to.be.ok();
+			expect(iconDefaultOptions.shadowRetinaUrl).to.be.an('undefined');
+		} finally {
+			// Restore imagePath.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			L.Icon.Default.imagePath = previousImagePath;
+		}
+	});
+
+	it("uses imagePath option if specified", function () {
+		// No need for a map in this test.
+		// This also avoids printing a warning in console due to HTML 404 resource not found.
+		// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
+		var iconFilenameInCSS = 'marker-icon.png';
+		var imagePath = 'IconDefault/dummy/imagePath/';
+		var iconDefault = new L.Icon.Default({
+			imagePath: imagePath
+		});
+
+		var path = iconDefault._getIconUrl('icon');
+
+		// 'marker-icon.png' is now defined in CSS.
+		expect(iconDefault.options.iconUrl).to.be(iconFilenameInCSS);
+		expect(path).to.be(imagePath + iconFilenameInCSS);
+	});
+
+	it("uses imagePath and iconUrl options", function () {
+		// No need for a map in this test.
+		// This also avoids printing a warning in console due to HTML 404 resource not found.
+		// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
+		var options = {
+			iconUrl: 'extra/path/to/marker.png',
+			imagePath: 'IconDefault/dummy/imagePath/'
+		};
+		var iconDefault = new L.Icon.Default(options);
+
+		var path = iconDefault._getIconUrl('icon');
+
+		expect(path).to.be(options.imagePath + options.iconUrl);
+	});
+
+	it("uses options set on L.Icon.Default.prototype (for backward compatibility)", function () {
+		// No need for a map in this test.
+		// This also avoids printing a warning in console due to HTML 404 resource not found.
+		var newOptions = {
+			iconUrl: 'dummy/icon.png',
+			iconRetinaUrl: 'dummy/iconRetina.png',
+			iconSize: [100, 200],
+			iconAnchor: [50, 75],
+			shadowUrl: 'dummy/shadow.png',
+			shadowRetinaUrl: 'dummy/shadowRetina.png',
+			shadowSize: [110, 210],
+			shadowAnchor: [55, 80]
+		};
+
+		// Add options to L.Icon.Default.prototype like what previous apps may have done.
+		L.Icon.Default.mergeOptions(newOptions);
+
+		// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
+		var iconDefault = new L.Icon.Default();
+		var iconDefaultOptions = iconDefault.options;
+
+		iconDefault._getIconUrl('icon');
+
+		try {
+			// Make sure it used the specified default options instead of the ones from CSS.
+			expect(iconDefaultOptions.iconUrl).to.be(newOptions.iconUrl);
+			expect(iconDefaultOptions.iconRetinaUrl).to.be(newOptions.iconRetinaUrl);
+			expect(iconDefaultOptions.iconSize).to.be(newOptions.iconSize);
+			expect(iconDefaultOptions.iconAnchor).to.be(newOptions.iconAnchor);
+			expect(iconDefaultOptions.shadowUrl).to.be(newOptions.shadowUrl);
+			expect(iconDefaultOptions.shadowRetinaUrl).to.be(newOptions.shadowRetinaUrl);
+			expect(iconDefaultOptions.shadowSize).to.be(newOptions.shadowSize);
+			expect(iconDefaultOptions.shadowAnchor).to.be(newOptions.shadowAnchor);
+		} finally {
+			// Reset default options and re-force re-evaluation.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			_deleteIconOptions(L.Icon.Default.prototype.options, newOptions);
+		}
+
+		function _deleteIconOptions(iconOptions, keysObj) {
+			for (var key in keysObj) {
+				delete iconOptions[key];
+			}
+		}
+	});
+
+	it("is compatible with data URL / base64 image (no imagePath)", function () {
+		// As specified in: https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/after.js#L1
+		var previousImagePath = L.Icon.Default.imagePath;
+
+		var className = 'leaflet-default-icon-icon';
+		var el = L.DomUtil.create('div',  className, document.body);
+		var previousBkgImage = L.DomUtil.getStyle(el, 'background-image');
+		var dataUri = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+
+		try {
+			L.Icon.Default.imagePath = null;
+
+			// Modify the CSS rules.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: url(' + dataUri + ')');
+
+			var iconDefault = new L.Icon.Default();
+			var iconDefaultOptions = iconDefault.options;
+
+			var path = iconDefault._getIconUrl('icon');
+
+			expect(path).to.be(dataUri);
+			expect(iconDefaultOptions.iconUrl).to.be(dataUri);
+		} finally {
+			// Restore imagePath.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			L.Icon.Default.imagePath = previousImagePath;
+
+			// Reset the CSS rules.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: ' + previousBkgImage);
+		}
+	});
+
+	it("fallsback to cursor CSS rule in case background-image is empty (for FF high contrast option)", function () {
+
+		var className = 'leaflet-default-icon-icon';
+		var el = L.DomUtil.create('div',  className, document.body);
+		var previousBkgImage = L.DomUtil.getStyle(el, 'background-image');
+		var previousCursor = L.DomUtil.getStyle(el, 'cursor');
+		var newCursorFilename = 'dummy-cursor-icon.png';
+		var newCursorUrl = 'dummy/path/to/' + newCursorFilename;
+
+		// As specified in: https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/after.js#L1
+		// Caution: in case of error, the printed path will be proxied as specified in:
+		// https://github.com/Leaflet/Leaflet/blob/v1.2.0/spec/karma.conf.js#L42
+		var expectedImagePath = '/base/dist/images/';
+
+		try {
+			expect(L.DomUtil.getStyle(el, 'background-image')).to.be.ok();
+
+			// Modify the CSS rules.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: none');
+			// This will print a 404 warning unfortunately…
+			addCSSRule(document.styleSheets[0], '.' + className, 'cursor: url(' + newCursorUrl  + '), auto');
+
+			// Make sure the new CSS rule is applied.
+			expect(L.DomUtil.getStyle(el, 'background-image')).to.equal('none');
+			var newCursorRule = L.DomUtil.getStyle(el, 'cursor');
+			expect(new RegExp(newCursorUrl).test(newCursorRule)).to.be.ok();
+
+			// Re-instantiate a new Default Icon, so that its options will be evaluated just now.
+			var iconDefault = new L.Icon.Default();
+
+			var path = iconDefault._getIconUrl('icon');
+			expect(iconDefault.options.iconUrl).to.be(newCursorFilename);
+			expect(path).to.be(expectedImagePath + newCursorFilename);
+
+		} finally {
+			// Reset the CSS rules.
+			// Make so in a `finally` block so that it is executed even if the above test expectations fail,
+			// and they do not affect next tests. Similar to specifying an `after` block.
+			addCSSRule(document.styleSheets[0], '.' + className, 'background: ' + previousBkgImage);
+			addCSSRule(document.styleSheets[0], '.' + className, 'cursor: ' + previousCursor);
+		}
+	});
+
 });
+
+
+function addCSSRule(sheet, selector, rules, index) {
+	if (sheet.insertRule) {
+		// https://developer.mozilla.org/en-US/docs/Web/API/CSSStyleSheet/insertRule
+		if (typeof index !== 'number') {
+			index = sheet.cssRules.length;
+		}
+		sheet.insertRule(selector + '{' + rules + '}', index);
+	} else if (sheet.addRule) {
+		sheet.addRule(selector, rules, index);
+	} else {
+		console.log('cannot add CSS rule');
+	}
+}
