@@ -11,7 +11,7 @@ In this example, you'll learn how to create a fullscreen map tuned for mobile de
 
 ### Preparing the page
 
-First we'll take a look at the HTML &amp; CSS code of the page. To make our map `div` element stretch to all available space (fullscreen), we can use the following CSS code:
+First we'll take a look at the HTML &amp; CSS code of the page. To make our map `div` element stretch to all available space (fullscreen), we can use the following CSS code (note: In this example we use percentage for height. While vh is arguably better, due to a bug with Google Chrome on mobile.):
 
 {: .css}
 	body {
@@ -19,7 +19,7 @@ First we'll take a look at the HTML &amp; CSS code of the page. To make our map 
 		margin: 0;
 	}
 	html, body, #map {
-		height: 100vh;
+		height: 100%;
 		width: 100vw;
 	}
 
@@ -69,4 +69,4 @@ If you have `setView` option set to true and the geolocation failed, it will set
 
 Now the example is complete --- try it on your mobile phone: [View the full example &rarr;](example.html)
 
-Next steps would be to take a look at the detailed [documentation](../../reference.html) and browse [other examples](../../examples.html).
+Next steps would be to take a look at the detailed [documentation](/reference.html) and browse [other examples](../../examples.html).

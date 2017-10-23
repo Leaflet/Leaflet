@@ -21,7 +21,6 @@ import {Point} from '../geometry/Point';
  * ```
  */
 
-var _dragging = false;
 var START = Browser.touch ? 'touchstart mousedown' : 'mousedown';
 var END = {
 	mousedown: 'mouseup',
@@ -75,7 +74,7 @@ export var Draggable = Evented.extend({
 
 		// If we're currently dragging this draggable,
 		// disabling it counts as first ending the drag.
-		if (L.Draggable._dragging === this) {
+		if (Draggable._dragging === this) {
 			this.finishDrag();
 		}
 
@@ -97,8 +96,8 @@ export var Draggable = Evented.extend({
 
 		if (DomUtil.hasClass(this._element, 'leaflet-zoom-anim')) { return; }
 
-		if (_dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
-		_dragging = this;  // Prevent dragging multiple objects at once.
+		if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+		Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
 		if (this._preventOutline) {
 			DomUtil.preventOutline(this._element);
@@ -222,7 +221,7 @@ export var Draggable = Evented.extend({
 		}
 
 		this._moving = false;
-		_dragging = false;
+		Draggable._dragging = false;
 	}
 
 });

@@ -109,13 +109,13 @@ export var Polygon = Polyline.extend({
 
 	_setLatLngs: function (latlngs) {
 		Polyline.prototype._setLatLngs.call(this, latlngs);
-		if (LineUtil._flat(this._latlngs)) {
+		if (LineUtil.isFlat(this._latlngs)) {
 			this._latlngs = [this._latlngs];
 		}
 	},
 
 	_defaultShape: function () {
-		return LineUtil._flat(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0];
+		return LineUtil.isFlat(this._latlngs[0]) ? this._latlngs[0] : this._latlngs[0][0];
 	},
 
 	_clipPoints: function () {

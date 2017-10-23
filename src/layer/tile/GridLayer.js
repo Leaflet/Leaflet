@@ -85,8 +85,11 @@ export var GridLayer = Layer.extend({
 		// Opacity of the tiles. Can be used in the `createTile()` function.
 		opacity: 1,
 
-		// @option updateWhenIdle: Boolean = depends
-		// If `false`, new tiles are loaded during panning, otherwise only after it (for better performance). `true` by default on mobile browsers, otherwise `false`.
+		// @option updateWhenIdle: Boolean = (depends)
+		// Load new tiles only when panning ends.
+		// `true` by default on mobile browsers, in order to avoid too many requests and keep smooth navigation.
+		// `false` otherwise in order to display new tiles _during_ panning, since it is easy to pan outside the
+		// [`keepBuffer`](#gridlayer-keepbuffer) option in desktop browsers.
 		updateWhenIdle: Browser.mobile,
 
 		// @option updateWhenZooming: Boolean = true
@@ -258,7 +261,7 @@ export var GridLayer = Layer.extend({
 	// @section Extension methods
 	// Layers extending `GridLayer` shall reimplement the following method.
 	// @method createTile(coords: Object, done?: Function): HTMLElement
-	// Called only internally, must be overriden by classes extending `GridLayer`.
+	// Called only internally, must be overridden by classes extending `GridLayer`.
 	// Returns the `HTMLElement` corresponding to the given `coords`. If the `done` callback
 	// is specified, it must be called when the tile has finished loading and drawing.
 	createTile: function () {
@@ -673,7 +676,10 @@ export var GridLayer = Layer.extend({
 
 				if (!this._isValidTile(coords)) { continue; }
 
-				if (!this._tiles[this._tileCoordsToKey(coords)]) {
+				var tile = this._tiles[this._tileCoordsToKey(coords)];
+				if (tile) {
+					tile.current = true;
+				} else {
 					queue.push(coords);
 				}
 			}
@@ -739,7 +745,7 @@ export var GridLayer = Layer.extend({
 		    bounds = new LatLngBounds(nw, se);
 
 		if (!this.options.noWrap) {
-			map.wrapLatLngBounds(bounds);
+			bounds = map.wrapLatLngBounds(bounds);
 		}
 
 		return bounds;
@@ -762,6 +768,12 @@ export var GridLayer = Layer.extend({
 		var tile = this._tiles[key];
 		if (!tile) { return; }
 
+		// Cancels any pending http requests associated with the tile
+		// unless we're on Android's stock browser,
+		// see https://github.com/Leaflet/Leaflet/issues/137
+		if (!Browser.androidStock) {
+			tile.el.setAttribute('src', Util.emptyImageUrl);
+		}
 		DomUtil.remove(tile.el);
 
 		delete this._tiles[key];

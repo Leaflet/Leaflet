@@ -23,8 +23,8 @@ export var SphericalMercator = {
 		    sin = Math.sin(lat * d);
 
 		return new Point(
-				this.R * latlng.lng * d,
-				this.R * Math.log((1 + sin) / (1 - sin)) / 2);
+			this.R * latlng.lng * d,
+			this.R * Math.log((1 + sin) / (1 - sin)) / 2);
 	},
 
 	unproject: function (point) {

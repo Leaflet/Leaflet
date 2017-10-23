@@ -202,6 +202,16 @@ Ready-to-go basemaps, with little or no configuration at all.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+        <td>
+        	<a href="https://supermap.github.io/supermap-leaflet">SuperMap Leaflet</a>
+        </td><td>
+         SuperMap Leaflet is a Leaflet plugins for working with SuperMap service types.
+         Support for SuperMap services, tiles and more.
+        </td><td>
+        	<a href="https://github.com/SuperMap">SuperMap</a>
+        </td>
+    </tr>
 </table>
 
 
@@ -329,7 +339,7 @@ Plugins for loading basemaps or GIS raster layers in common (albeit non-default)
 			<a href="https://github.com/stuartmatthews">Stuart Matthews</a>
 		</td>
 	</tr>
-    
+
 </table>
 
 
@@ -523,6 +533,15 @@ The following plugins change the way that tile or image layers are displayed in 
 			<a href="https://github.com/hnrchrdl">Hinrich Riedel</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.UTFGrid">Leaflet.UTFGrid</a>
+		</td><td>
+			Provides UTF-8 Grid support for Leaflet >= 1.0.  Includes basic mouseover support plus ability to highlight feature from UTFGrid on hover (<a href="https://consbio.github.io/Leaflet.UTFGrid/">demo</a>).
+		</td><td>
+			<a href="https://github.com/brendan-ward">Brendan Ward</a>
+		</td>
+	</tr>	
 </table>
 
 
@@ -612,6 +631,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			Fades out grid layers and tilelayers when they are removed, making basemap changes smoother (for 1.0.0). <a href="http://ivansanchez.gitlab.io/Leaflet.GridLayer.FadeOut/demo.html">Demo</a>.
 		</td><td>
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/robertomlsoares/leaflet-offline">leaflet-offline</a>
+		</td><td>
+			Allows the use of offline tiles in a customizable way while falling back to the normal TileLayer when necessary. <a href="https://robertomlsoares.github.io/leaflet-offline/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/robertomlsoares">Roberto Soares</a>
 		</td>
 	</tr>
 </table>
@@ -785,6 +813,15 @@ Load your own data from various GIS formats.
 			<a href="https://github.com/ngageoint">NGA</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/gherardovarando/leaflet-csvtiles">Leaflet-CsvTiles</a>
+		</td><td>
+		Load points from tiled csv files, using the amazing <a href="http://papaparse.com/">PapaParse</a> library. <a href="https://gherardovarando.github.io/leaflet-csvtiles/demo/index.html">Demo</a>.
+		</td><td>
+			<a href="https://github.com/gherardovarando">Gherardo Varando</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -881,7 +918,7 @@ These plugins create useful overlays from scratch, no loading required.
 		<td>
 			<a href="https://github.com/jonshutt/Leaflet.OS.Graticule">L.OS.Graticule</a>
 		</td><td>
-			Overlays UK Ordinance Survey (OS) 1km grid sqaures and labels.
+			Overlays UK Ordinance Survey (OS) 1km grid squares and labels.
 		</td><td>
 			<a href="https://github.com/jonshutt">Jon Shutt</a>
 		</td>
@@ -925,11 +962,11 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartenkarsten/leaflet-layer-overpass/">Leaflet Layer Overpass</a>
+			<a href="https://github.com/GuillaumeAmat/leaflet-overpass-layer">Leaflet Overpass Layer</a>
 		</td><td>
       Easily include data from the <a href="http://overpass-api.de">overpass api</a>.
 		</td><td>
-			<a href="https://github.com/kartenkarsten">kartenkarsten</a>
+			<a href="https://github.com/GuillaumeAmat">Guillaume AMAT</a>
 		</td>
 	</tr>
 	<tr>
@@ -1400,6 +1437,41 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://gitlab.com/IvanSanchez">Iván Sánchez Ortega</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/ggolikov/Leaflet.River">Leaflet.River</a>
+		</td>
+		<td>
+			Draw lines with different width (like rivers) on a map.
+			Useful when you want to show how rivers 'flow' on the map (<a href="https://ggolikov.github.io/Leaflet.River/">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/ggolikov">Grigory Golikov</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sybri/Leaflet.SpeechBubble/">Leaflet.SpeechBubble</a>
+		</td>
+		<td>
+			Popup a speech bubble with the arrow that follow points,layer, markers ...
+			 (<a href="https://sybri.github.io/demo/Leaflet.SpeechBubble/demo.html">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/sybri">Sylvain BRISSY</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://wbkd.github.io/leaflet-swoopy/">Leaflet Swoopy</a>
+		</td>
+		<td>
+			A plugin for creating customizable swoopy arrow annotations.
+		</td>
+		<td>
+			<a href="https://webkid.io">webkid</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1642,6 +1714,16 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 			<a href="https://github.com/mourner">Vladimir Agafonkin</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/mejackreed/leaflet-solr-heatmap">Leaflet-Solr-Heatmap</a>
+		</td><td>
+			A Leaflet plugin for rendering heatmaps and clusters from <a href='https://lucene.apache.org/solr/guide/6_6/spatial-search.html#SpatialSearch-HeatmapFaceting'>Solr's Heatmap Faceting</a>. High performance for millions of points or polygons.
+		</td><td>
+			<a href="https://github.com/mejackreed">Jack Reed</a> / 
+			<a href="https://github.com/spacemansteve">Steve McDonald</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1750,6 +1832,18 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/manubb">Manuel Baclet</a>
 		</td>
 	</tr>
+	 <tr>
+        <td>
+    		<a href="https://github.com/danwild/leaflet-velocity">leaflet-velocity</a>
+    	</td>
+    	<td>
+            Visualise velocity layers with leaflet.
+            <a href="https://danwild.github.io/leaflet-velocity">Demo here.</a>
+        </td>
+        <td>
+            <a href="https://github.com/danwild">Dan Wild</a>
+        </td>
+    </tr>
 </table>
 
 
@@ -1772,7 +1866,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 		<td>
 			<a href="https://github.com/codeofsumit/leaflet.pm">Leaflet.PM</a>
 		</td><td>
-			Geometry Management for Leaflet 1.0. Draw, Edit, Drag and Snap Polylines, Polygons, LayerGroups and geoJSON.
+			Geometry Management for Leaflet 1.0. Draw, Edit, Cut, Drag and Snap Markers, Circles, Polylines, Polygons, LayerGroups and geoJSON. Supports holes in polygons, snapping and more. (<a href="https://leafletpm.now.sh">Demo</a>)
 		</td><td>
 			<a href="https://github.com/codeofsumit">Sumit Kumar</a>
 		</td>
@@ -1878,6 +1972,15 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 			Enables snapping of draggable markers to polylines and other layers.
 		</td><td>
 			<a href="https://github.com/leplatrem">Mathieu Leplatre</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/willfarrell/Leaflet.Clipper">Leaflet.Clipper</a>
+		</td><td>
+			Allows Union, Difference, Xor, and Intersection operations on two polygons. (<a href="https://willfarrell.github.io/Leaflet.Clipper">Demo</a>)
+		</td><td>
+			<a href="https://github.com/willfarrell">will Farrell</a>
 		</td>
 	</tr>
 	<tr>
@@ -2297,6 +2400,24 @@ The following plugins enhance or extend `L.Control.Layers`.
 			<a href="https://github.com/brendan-ward">Brendan Ward</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jjimenezshaw/Leaflet.Control.Layers.Tree">Leaflet.Control.Layers.Tree</a>
+		</td><td>
+			L.Control.Layers extension that supports a Tree structure, both for base and overlay layers. Simple and highly configurable. See <a href="https://jjimenezshaw.github.io/Leaflet.Control.Layers.Tree/examples/">demos</a>
+		</td><td>
+			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/vogdb/Leaflet.ActiveLayers">Leaflet.ActiveLayers</a>
+		</td><td>
+			Adds new L.Control.ActiveLayers with functionality to get currently active layers on the map.
+		</td><td>
+			<a href="https://github.com/vogdb">vogdb</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -2649,7 +2770,7 @@ Allow the user to measure distances or areas.
 		<td>
 			<a href="https://github.com/ppete2/Leaflet.PolylineMeasure">Leaflet.PolylineMeasure</a>
 		</td><td>
-			 Measure distances of simple lines as well as of complex polylines. <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo_metric.html">(Demo metric)</a>, <a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo_imperial.html">(Demo imperial)</a>
+			 Measure great-circle distances of simple lines as well as of complex polylines. (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo1.html">Demo 1</a>), (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo2.html">Demo 2</a>), (<a href="https://ppete2.github.io/Leaflet.PolylineMeasure/demo3.html">Demo 3</a>)
 		</td><td>
 			<a href="https://github.com/ppete2">PPete</a>
 		</td>
@@ -3184,6 +3305,17 @@ Buttons, sliders, toolbars, sidebars, and panels.
 			<a href="http://www.motionintelligence.net/">Motion Intelligence GmbH</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/consbio/Leaflet.HtmlLegend">Leaflet.HtmlLegend</a>
+		</td>
+		<td>
+			A simple Leaflet plugin for creating legends using HTML elements. <a href="https://consbio.github.io/Leaflet.HtmlLegend/">Demo</a>.
+		</td>
+		<td>
+			<a href="https://github.com/ka7eh">Kaveh Karimi</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -3376,6 +3508,15 @@ The following plugins perform several sorts of geoprocessing (mathematical and t
 			Leaflet plugin for visualizing spatial prefix trees, quadtree and geohash. See <a href="http://mapzen.github.io/leaflet-spatial-prefix-tree/">demo</a>
 		</td><td>
 			<a href="http://mapzen.com/">Mapzen</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/jjimenezshaw/Leaflet.UTM">Leaflet.UTM</a>
+		</td><td>
+			A simple way to convert L.LatLng into UTM (WGS84) and vice versa. UTM string format easily configurable. It does not depend on any other plugin or 3rd party. See <a href="https://jjimenezshaw.github.io/Leaflet.UTM/examples/input.html">demo</a>
+		</td><td>
+			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
 		</td>
 	</tr>
 </table>

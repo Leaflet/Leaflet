@@ -10,19 +10,19 @@ title: WMS example
 	});
 
 	var basemaps = {
-		Countries: L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+		Countries: L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
 			layers: 'ne:ne_10m_admin_0_countries'
 		}),
 
-		Boundaries: L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+		Boundaries: L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
 			layers: 'ne:ne_10m_admin_0_boundary_lines_land'
 		}),
 
-		'Countries, then boundaries': L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+		'Countries, then boundaries': L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
 			layers: 'ne:ne_10m_admin_0_countries,ne:ne_10m_admin_0_boundary_lines_land'
 		}),
 
-		'Boundaries, then countries': L.tileLayer.wms('http://demo.opengeo.org/geoserver/ows?', {
+		'Boundaries, then countries': L.tileLayer.wms('https://demo.boundlessgeo.com/geoserver/ows?', {
 			layers: 'ne:ne_10m_admin_0_boundary_lines_land,ne:ne_10m_admin_0_countries'
 		})
 	};

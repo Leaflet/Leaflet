@@ -45,8 +45,8 @@ export var Layer = Evented.extend({
 	/* @section
 	 * Classes extending `L.Layer` will inherit the following methods:
 	 *
-	 * @method addTo(map: Map): this
-	 * Adds the layer to the given map
+	 * @method addTo(map: Map|LayerGroup): this
+	 * Adds the layer to the given map or layer group.
 	 */
 	addTo: function (map) {
 		map.addLayer(this);
@@ -155,6 +155,10 @@ Map.include({
 	// @method addLayer(layer: Layer): this
 	// Adds the given layer to the map
 	addLayer: function (layer) {
+		if (!layer._layerAdd) {
+			throw new Error('The provided object is not a Layer.');
+		}
+
 		var id = Util.stamp(layer);
 		if (this._layers[id]) { return this; }
 		this._layers[id] = layer;

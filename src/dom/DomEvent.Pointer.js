@@ -7,14 +7,14 @@ import * as Browser from '../core/Browser';
  */
 
 
-var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown',
-    POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove',
-    POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup',
-    POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel',
-    TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'],
+var POINTER_DOWN =   Browser.msPointer ? 'MSPointerDown'   : 'pointerdown';
+var POINTER_MOVE =   Browser.msPointer ? 'MSPointerMove'   : 'pointermove';
+var POINTER_UP =     Browser.msPointer ? 'MSPointerUp'     : 'pointerup';
+var POINTER_CANCEL = Browser.msPointer ? 'MSPointerCancel' : 'pointercancel';
+var TAG_WHITE_LIST = ['INPUT', 'SELECT', 'OPTION'];
 
-    _pointers = {},
-    _pointerDocListener = false;
+var _pointers = {};
+var _pointerDocListener = false;
 
 // DomEvent.DoubleTap needs to know about this
 export var _pointersCount = 0;
@@ -55,7 +55,7 @@ export function removePointerListener(obj, type, id) {
 
 function _addPointerStart(obj, handler, id) {
 	var onDown = Util.bind(function (e) {
-		if (e.pointerType !== 'mouse' && e.pointerType !== e.MSPOINTER_TYPE_MOUSE && e.pointerType !== e.MSPOINTER_TYPE_MOUSE) {
+		if (e.pointerType !== 'mouse' && e.MSPOINTER_TYPE_MOUSE && e.pointerType !== e.MSPOINTER_TYPE_MOUSE) {
 			// In IE11, some touch events needs to fire for form controls, or
 			// the controls will stop working. We keep a whitelist of tag names that
 			// need these events. For other target tags, we prevent default on the event.

@@ -5,8 +5,8 @@ css: "body {
 		padding: 0;
 		margin: 0;
 	}
-	html, body, #map {
-		height: 100vh;
+	#map {
+		height: 100%;
 		width: 100vw;
 	}"
 ---

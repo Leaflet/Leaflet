@@ -206,13 +206,6 @@ export var Layers = Control.extend({
 			DomEvent.on(link, 'focus', this.expand, this);
 		}
 
-		// work around for Firefox Android issue https://github.com/Leaflet/Leaflet/issues/2033
-		DomEvent.on(form, 'click', function () {
-			setTimeout(Util.bind(this._onInputClick, this), 0);
-		}, this);
-
-		// TODO keyboard accessibility
-
 		if (!collapsed) {
 			this.expand();
 		}
@@ -245,7 +238,7 @@ export var Layers = Control.extend({
 		});
 
 		if (this.options.sortLayers) {
-			this._layers.sort(L.bind(function (a, b) {
+			this._layers.sort(Util.bind(function (a, b) {
 				return this.options.sortFunction(a.layer, b.layer, a.name, b.name);
 			}, this));
 		}
@@ -362,7 +355,7 @@ export var Layers = Control.extend({
 
 	_onInputClick: function () {
 		var inputs = this._layerControlInputs,
-		    input, layer, hasLayer;
+		    input, layer;
 		var addedLayers = [],
 		    removedLayers = [];
 
@@ -371,22 +364,24 @@ export var Layers = Control.extend({
 		for (var i = inputs.length - 1; i >= 0; i--) {
 			input = inputs[i];
 			layer = this._getLayer(input.layerId).layer;
-			hasLayer = this._map.hasLayer(layer);
 
-			if (input.checked && !hasLayer) {
+			if (input.checked) {
 				addedLayers.push(layer);
-
-			} else if (!input.checked && hasLayer) {
+			} else if (!input.checked) {
 				removedLayers.push(layer);
 			}
 		}
 
 		// Bugfix issue 2318: Should remove all old layers before readding new ones
 		for (i = 0; i < removedLayers.length; i++) {
-			this._map.removeLayer(removedLayers[i]);
+			if (this._map.hasLayer(removedLayers[i])) {
+				this._map.removeLayer(removedLayers[i]);
+			}
 		}
 		for (i = 0; i < addedLayers.length; i++) {
-			this._map.addLayer(addedLayers[i]);
+			if (!this._map.hasLayer(addedLayers[i])) {
+				this._map.addLayer(addedLayers[i]);
+			}
 		}
 
 		this._handlingClick = false;

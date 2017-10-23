@@ -141,10 +141,25 @@ describe("Map.Keyboard", function () {
 			expect(popup.isOpen()).to.be(true);
 
 			happen.keydown(document,  {keyCode: 27});	// 27 = Esc
-// 			happen.keypress(document, {keyCode: 27});
+			// happen.keypress(document, {keyCode: 27});
 			happen.keyup(document,    {keyCode: 27});
 
 			expect(popup.isOpen()).to.be(false);
+		});
+	});
+
+	describe("popup closing disabled", function () {
+		it("close of popup when pressing escape disabled via options", function () {
+
+			var popup = L.popup({closeOnEscapeKey: false}).setLatLng([0, 0]).setContent('Null Island');
+			map.openPopup(popup);
+
+			expect(popup.isOpen()).to.be(true);
+
+			happen.keydown(document,  {keyCode: 27});
+			happen.keyup(document,    {keyCode: 27});
+
+			expect(popup.isOpen()).to.be(true);
 		});
 	});
 
