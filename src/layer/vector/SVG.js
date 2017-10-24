@@ -211,6 +211,7 @@ if (Browser.vml) {
 	SVG.include(vmlMixin);
 }
 
+// @namespace SVG
 // @factory L.svg(options?: Renderer options)
 // Creates a SVG renderer with the given options.
 export function svg(options) {
