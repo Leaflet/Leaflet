@@ -3828,6 +3828,15 @@ Ease your development integrating Leaflet into a development framework or automa
 	</tr>
 	<tr>
 		<td>
+			<a href="https://github.com/yagajs/leaflet-ng2">YAGA leaflet-ng2</a>
+		</td><td>
+			Granular integration into Angular2/4.
+		</td><td>
+			<a href="https://github.com/yagajs">YAGA Development Team</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
 			<a href="https://github.com/leaflet-extras/leaflet-map">&lt;leaflet-map&gt;</a>
 		</td><td>
 			Integrate Leaflet in applications made with the <a href='https://www.polymer-project.org/'>Polymer &gt;= 1.0</a> web component framework.
