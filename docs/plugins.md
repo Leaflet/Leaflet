@@ -1832,6 +1832,18 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/manubb">Manuel Baclet</a>
 		</td>
 	</tr>
+	 <tr>
+        <td>
+    		<a href="https://github.com/danwild/leaflet-velocity">leaflet-velocity</a>
+    	</td>
+    	<td>
+            Visualise velocity layers with leaflet.
+            <a href="https://danwild.github.io/leaflet-velocity">Demo here.</a>
+        </td>
+        <td>
+            <a href="https://github.com/danwild">Dan Wild</a>
+        </td>
+    </tr>
 </table>
 
 
@@ -2395,6 +2407,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 			L.Control.Layers extension that supports a Tree structure, both for base and overlay layers. Simple and highly configurable. See <a href="https://jjimenezshaw.github.io/Leaflet.Control.Layers.Tree/examples/">demos</a>
 		</td><td>
 			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/vogdb/Leaflet.ActiveLayers">Leaflet.ActiveLayers</a>
+		</td><td>
+			Adds new L.Control.ActiveLayers with functionality to get currently active layers on the map.
+		</td><td>
+			<a href="https://github.com/vogdb">vogdb</a>
 		</td>
 	</tr>
 </table>
