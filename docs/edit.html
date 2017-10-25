@@ -7,7 +7,7 @@
     <body>
         <script>
 
-            const config = {
+            var config = {
                 provider: 'plunker',
                 title: 'Leaflet',
                 description: "Leaflet is the leading open-source JavaScript library for mobile-friendly interactive maps. Weighing just about 37 KB of gzipped JS code, it has all the mapping features most developers ever need.",
@@ -18,11 +18,11 @@
                 js: "var map = new L.Map('leaflet', {\n\tlayers: [\n\t\tnew L.TileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {\n\t\t\t'attribution': 'Map data © <a href=\"http://openstreetmap.org\">OpenStreetMap</a> contributors'\n\t\t})\n\t],\n\tcenter: [0, 0],\n\tzoom: 0\n});"
             };
 
-            const hash = location.hash.substr(1);
+            var hash = location.hash.substr(1);
 
             if (hash) {
-                hash.split(';').forEach((str) => {
-                    const arg = str.split(':');
+                hash.split(';').forEach(function (str) {
+                    var arg = str.split(':');
                     config[arg[0]] = arg[1];
                 });
             }
@@ -39,11 +39,11 @@
             }
 
             function createForm (action) {
-                const form = document.createElement('form');
+                var form = document.createElement('form');
                 form.setAttribute('method', 'post');
                 form.setAttribute('action', action);
                 form.createInput = function (name, value) {
-                    const input = document.createElement('input');
+                    var input = document.createElement('input');
                     input.setAttribute('type', 'hidden');
                     input.setAttribute('name', name);
                     input.setAttribute('value', value);
@@ -53,7 +53,7 @@
                 return form;
             }
 
-            let form;
+            var form;
 
             if (config.provider === 'plunker') {
                 form = createForm('https://plnkr.co/edit/?p=preview');
