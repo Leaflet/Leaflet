@@ -122,11 +122,18 @@ describe('GridLayer', function () {
 	});
 
 	describe('#createTile', function () {
+		var grid;
 
 		beforeEach(function () {
 			// Simpler sizes to test.
 			div.style.width = '512px';
 			div.style.height = '512px';
+
+			map.remove();
+			map = L.map(div);
+			map.setView([0, 0], 10);
+
+			grid = L.gridLayer();
 		});
 
 		afterEach(function () {
@@ -136,12 +143,7 @@ describe('GridLayer', function () {
 
 		// Passes on Firefox, but fails on phantomJS: done is never called.
 		it('only creates tiles for visible area on zoom in', function (done) {
-			map.remove();
-			map = L.map(div);
-			map.setView([0, 0], 10);
-
-			var grid = L.gridLayer(),
-			    count = 0,
+			var count = 0,
 			    loadCount = 0;
 			grid.createTile = function (coords) {
 				count++;
@@ -159,6 +161,58 @@ describe('GridLayer', function () {
 			};
 			grid.on('load', onLoad);
 			map.addLayer(grid);
+		});
+
+		describe('when done() is called with an error parameter', function () {
+			var keys;
+
+			beforeEach(function () {
+				keys = [];
+				grid.createTile = function (coords, done) {
+					var tile = document.createElement('div');
+					keys.push(this._tileCoordsToKey(coords));
+					done('error', tile);
+					return tile;
+				};
+			});
+
+			it('does not raise tileload events', function (done) {
+				var tileLoadRaised = sinon.spy();
+				grid.on('tileload', tileLoadRaised);
+				grid.on('tileerror', function () {
+					if (keys.length === 4) {
+						expect(tileLoadRaised.notCalled).to.be(true);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
+
+			it('raises tileerror events', function (done) {
+				var tileErrorRaised = sinon.spy();
+				grid.on('tileerror', function () {
+					tileErrorRaised();
+					if (keys.length === 4) {
+						expect(tileErrorRaised.callCount).to.be(4);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
+
+			it('does not add the .leaflet-tile-loaded class to tile elements', function (done) {
+				var count = 0;
+				grid.on('tileerror', function (e) {
+					if (!L.DomUtil.hasClass(e.tile, 'leaflet-tile-loaded')) {
+						count++;
+					}
+					if (keys.length === 4) {
+						expect(count).to.be(4);
+						done();
+					}
+				});
+				map.addLayer(grid);
+			});
 		});
 
 	});
@@ -724,6 +778,8 @@ describe('GridLayer', function () {
 				runFrames(500);
 			});
 
+			grid.options.keepBuffer = 0;
+
 			map.addLayer(grid).setView(mad, 12);
 			clock.tick(250);
 		});
@@ -952,5 +1008,4 @@ describe('GridLayer', function () {
 			}).to.throwError('Attempted to load an infinite number of tiles');
 		});
 	});
-
 });

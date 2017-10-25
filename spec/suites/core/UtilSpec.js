@@ -84,7 +84,8 @@ describe('Util', function () {
 	describe('#formatNum', function () {
 		it('formats numbers with a given precision', function () {
 			expect(L.Util.formatNum(13.12325555, 3)).to.eql(13.123);
-			expect(L.Util.formatNum(13.12325555)).to.eql(13.12326);
+			expect(L.Util.formatNum(13.12325555)).to.eql(13.123256);
+			expect(L.Util.formatNum(13.12325555, 0)).to.eql(13);
 		});
 	});
 
