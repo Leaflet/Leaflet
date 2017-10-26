@@ -47,6 +47,7 @@
 .leaflet-container .leaflet-tile-pane img,
 .leaflet-container img.leaflet-image-layer {
 	max-width: none !important;
+	max-height: none !important;
 	}
 
 .leaflet-container.leaflet-touch-zoom {

@@ -68,7 +68,7 @@ describe("Projection.SphericalMercator", function () {
 
 			// from https://github.com/Leaflet/Leaflet/issues/1578
 			expect(p.project(new L.LatLng(51.9371170300465, 80.11230468750001)))
-					.near(new L.Point(8918060.96409, 6788763.38325));
+				.near(new L.Point(8918060.96409, 6788763.38325));
 		});
 	});
 

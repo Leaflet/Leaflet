@@ -69,15 +69,13 @@ please consider submitting another pull request with the corresponding [document
 ### Setting up the Build System
 
 The Leaflet build system uses [Node](http://nodejs.org/), and the [Jake](http://jakejs.com/) Javascript build tool.
-To set up the Leaflet build system, install Node then run the following commands in the project root to install Jake:
+To set up the Leaflet build system, install Node then run the following commands in the project root to install dependencies:
 
 ```
-npm install -g jake
 npm install
 ```
 or, if you prefer [`yarn`](https://yarnpkg.com/) over `npm`:
 ```
-yarn global add jake
 yarn install
 ```
 
@@ -93,7 +91,7 @@ Please do not commit to the `master` branch, or your unrelated changes will go i
 You should also follow the code style and whitespace conventions of the original codebase.
 In particular, use tabs for indentation and spaces for alignment.
 
-Before committing your changes, run `jake lint` to catch any JS errors in the code and fix them.
+Before committing your changes, run `npm run lint` to catch any JS errors in the code and fix them.
 If you add any new files to the Leaflet source, make sure to also add them to `build/deps.js`
 so that the build system knows about them.
 
@@ -106,7 +104,7 @@ Happy coding!
 The source javascript code for Leaflet is a few dozen files, in the `src/` directory.
 But normally, Leaflet is loaded in a web browser as just one javascript file.
 
-In order to create this file, run `npm run-script rollup` or `yarn run rollup`.
+In order to create this file, run `npm run rollup` or `yarn run rollup`.
 
 You'll find `dist/leaflet-src.js` and `dist/leaflet.js`. The difference is that
 `dist/leaflet-src.js` has sourcemaps and it's not uglified, so it's better for
@@ -117,7 +115,7 @@ When developing (or bugfixing) core Leaflet functionalities, it's common to use
 the webpages in the `debug/` directory, and run the unit tests (`spec/index.html`)
 in a graphical browser. This requires regenerating the bundled files quickly.
 
-In order to do so, run `npm run-script watch` or `yarn run rollup`. This will keep
+In order to do so, run `npm run watch` or `yarn run rollup`. This will keep
 on rebuilding the bundles whenever any source file changes.
 
 ## Running the Tests
@@ -127,13 +125,13 @@ install [PhantomJS](http://phantomjs.org/) (and make sure it's in your `PATH`),
 then run:
 
 ```
-jake test
+npm run test
 ```
 
 To run all the tests in actual browsers at the same time, you can do:
 
 ```
-jake test --ff --chrome --safari --ie
+npm run test -- --ff --chrome --safari --ie
 ```
 
 To run the tests in a browser manually, open `spec/index.html`.
@@ -143,7 +141,7 @@ To run the tests in a browser manually, open `spec/index.html`.
 To generate a detailed report about test coverage (which helps tremendously when working on test improvements), run:
 
 ```
-jake test --cov
+npm run test -- --cov
 ```
 
 After that, open `coverage/<environment>/index.html` in a browser to see the report.
@@ -186,7 +184,7 @@ In order to generate the documentation, make sure that the development dependenc
 are installed (run either `npm install` or `yarn install`), then just run
 
 ```
-jake docs
+npm run docs
 ```
 
 and you'll find a `.html` file in the `dist/` directory.

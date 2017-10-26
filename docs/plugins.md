@@ -633,6 +633,15 @@ The following plugins change the way that tile layers are loaded into the map.
 			<a href="https://github.com/IvanSanchez">Iván Sánchez</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/robertomlsoares/leaflet-offline">leaflet-offline</a>
+		</td><td>
+			Allows the use of offline tiles in a customizable way while falling back to the normal TileLayer when necessary. <a href="https://robertomlsoares.github.io/leaflet-offline/">Demo</a>.
+		</td><td>
+			<a href="https://github.com/robertomlsoares">Roberto Soares</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -909,7 +918,7 @@ These plugins create useful overlays from scratch, no loading required.
 		<td>
 			<a href="https://github.com/jonshutt/Leaflet.OS.Graticule">L.OS.Graticule</a>
 		</td><td>
-			Overlays UK Ordinance Survey (OS) 1km grid sqaures and labels.
+			Overlays UK Ordinance Survey (OS) 1km grid squares and labels.
 		</td><td>
 			<a href="https://github.com/jonshutt">Jon Shutt</a>
 		</td>
@@ -953,11 +962,11 @@ Load overlay data from third-party-services. See also [basemap providers](#basem
 	</tr>
 	<tr>
 		<td>
-			<a href="https://github.com/kartenkarsten/leaflet-layer-overpass/">Leaflet Layer Overpass</a>
+			<a href="https://github.com/GuillaumeAmat/leaflet-overpass-layer">Leaflet Overpass Layer</a>
 		</td><td>
       Easily include data from the <a href="http://overpass-api.de">overpass api</a>.
 		</td><td>
-			<a href="https://github.com/kartenkarsten">kartenkarsten</a>
+			<a href="https://github.com/GuillaumeAmat">Guillaume AMAT</a>
 		</td>
 	</tr>
 	<tr>
@@ -1440,6 +1449,29 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="https://github.com/ggolikov">Grigory Golikov</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/sybri/Leaflet.SpeechBubble/">Leaflet.SpeechBubble</a>
+		</td>
+		<td>
+			Popup a speech bubble with the arrow that follow points,layer, markers ...
+			 (<a href="https://sybri.github.io/demo/Leaflet.SpeechBubble/demo.html">demo</a>).
+		</td>
+		<td>
+			<a href="https://github.com/sybri">Sylvain BRISSY</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://wbkd.github.io/leaflet-swoopy/">Leaflet Swoopy</a>
+		</td>
+		<td>
+			A plugin for creating customizable swoopy arrow annotations.
+		</td>
+		<td>
+			<a href="https://webkid.io">webkid</a>
+		</td>
+	</tr>
 </table>
 
 
@@ -1800,6 +1832,18 @@ Powerful multi-purpose libraries for data visualization.
 			<a href="https://github.com/manubb">Manuel Baclet</a>
 		</td>
 	</tr>
+	 <tr>
+        <td>
+    		<a href="https://github.com/danwild/leaflet-velocity">leaflet-velocity</a>
+    	</td>
+    	<td>
+            Visualise velocity layers with leaflet.
+            <a href="https://danwild.github.io/leaflet-velocity">Demo here.</a>
+        </td>
+        <td>
+            <a href="https://github.com/danwild">Dan Wild</a>
+        </td>
+    </tr>
 </table>
 
 
@@ -1822,7 +1866,7 @@ Allows users to create, draw, edit and/or delete points, lines and polygons.
 		<td>
 			<a href="https://github.com/codeofsumit/leaflet.pm">Leaflet.PM</a>
 		</td><td>
-			Geometry Management for Leaflet 1.0. Draw, Edit, Drag and Snap Polylines, Polygons, LayerGroups and geoJSON.
+			Geometry Management for Leaflet 1.0. Draw, Edit, Cut, Drag and Snap Markers, Circles, Polylines, Polygons, LayerGroups and geoJSON. Supports holes in polygons, snapping and more. (<a href="https://leafletpm.now.sh">Demo</a>)
 		</td><td>
 			<a href="https://github.com/codeofsumit">Sumit Kumar</a>
 		</td>
@@ -2363,6 +2407,15 @@ The following plugins enhance or extend `L.Control.Layers`.
 			L.Control.Layers extension that supports a Tree structure, both for base and overlay layers. Simple and highly configurable. See <a href="https://jjimenezshaw.github.io/Leaflet.Control.Layers.Tree/examples/">demos</a>
 		</td><td>
 			<a href="https://github.com/jjimenezshaw/">Javier Jimenez Shaw</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/vogdb/Leaflet.ActiveLayers">Leaflet.ActiveLayers</a>
+		</td><td>
+			Adds new L.Control.ActiveLayers with functionality to get currently active layers on the map.
+		</td><td>
+			<a href="https://github.com/vogdb">vogdb</a>
 		</td>
 	</tr>
 </table>
@@ -3771,6 +3824,15 @@ Ease your development integrating Leaflet into a development framework or automa
 			Insert and use Angularized HTML code in your Leaflet map as a Leaflet control.
 		</td><td>
 			<a href="https://github.com/grantHarris">Grant Harris</a>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/yagajs/leaflet-ng2">YAGA leaflet-ng2</a>
+		</td><td>
+			Granular integration into Angular2/4.
+		</td><td>
+			<a href="https://github.com/yagajs">YAGA Development Team</a>
 		</td>
 	</tr>
 	<tr>

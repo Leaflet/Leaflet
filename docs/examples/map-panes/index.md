@@ -7,7 +7,7 @@ title: Working with map panes
 
 In Leaflet, map panes group layers together implicitly, without the developer knowing about it. This grouping allows web browsers to work with several layers at once in a more efficient way than working with layers individually.
 
-Map panes use the [z-index CSS property](https://developer.mozilla.org/docs/Web/CSS/z-index) to always show some layers on top of others. The [default order](../../reference.html#map-panes) is:
+Map panes use the [z-index CSS property](https://developer.mozilla.org/docs/Web/CSS/z-index) to always show some layers on top of others. The [default order](/reference.html#map-pane) is:
 
 * `TileLayer`s and `GridLayer`s
 * `Path`s, like lines, polylines, circles, or `GeoJSON` layers.

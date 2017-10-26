@@ -69,11 +69,12 @@ export var MarkerDrag = Handler.extend({
 		    padding = this._marker.options.autoPanPadding,
 		    iconPos = L.DomUtil.getPosition(marker._icon),
 		    bounds = map.getPixelBounds(),
-		    origin = map.getPixelOrigin(),
-		    panBounds = toBounds(
-				bounds.min._subtract(origin).add(padding),
-				bounds.max._subtract(origin).subtract(padding)
-			);
+		    origin = map.getPixelOrigin();
+
+		var panBounds = toBounds(
+			bounds.min._subtract(origin).add(padding),
+			bounds.max._subtract(origin).subtract(padding)
+		);
 
 		if (!panBounds.contains(iconPos)) {
 			// Compute incremental movement
