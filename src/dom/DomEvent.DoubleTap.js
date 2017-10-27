@@ -10,6 +10,9 @@ var _touchend = Browser.msPointer ? 'MSPointerUp' : Browser.pointer ? 'pointerup
 var _pre = '_leaflet_';
 
 function browserFiresNativeDblClick(e) {
+	// See https://github.com/w3c/pointerevents/issues/171
+	// Note however, that Chrome stopped firing native dblclick for
+	// touch since that issue was written.
 	return Browser.ie || e.pointerType === 'mouse';
 }
 
