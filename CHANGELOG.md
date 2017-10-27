@@ -3,11 +3,7 @@ Leaflet Changelog
 
 (all changes without author notice are by [@mourner](https://github.com/mourner))
 
-## master
-
-An in-progress version being developed on the `master` branch.
-
-## 1.2.0 (release date 2017-08-08)
+## 1.2.0 (2017-08-08)
 
 ### API Changes
 
@@ -100,7 +96,7 @@ An in-progress version being developed on the `master` branch.
 * Don't turn enter keypress into map clicks, fixes [#5499](https://github.com/Leaflet/Leaflet/issues/5499) ([#5507](https://github.com/Leaflet/Leaflet/issues/5507) by [perliedman](https://github.com/perliedman))
 * Use minus character instead of hyphen in the zoom control ([#5501](https://github.com/Leaflet/Leaflet/issues/5501) by [damianmoore](https://github.com/damianmoore))
 
-## 1.0.3 (January 23, 2017)
+## 1.0.3 (2017-01-23)
 
 ### Bug fixes
 
@@ -127,7 +123,7 @@ An in-progress version being developed on the `master` branch.
 * Several minor documentation improvements by [@IvanSanchez](https://github.com/IvanSanchez), [@jieter](https://github.com/jieter), [@alonsogarciapablo](https://github.com/alonsogarciapablo), [@jasonoverland](https://github.com/jasonoverland), [@danzel](https://github.com/danzel), [@ghybs](https://github.com/ghybs), [@Ralf8686](https://github.com/Ralf8686), [@geoloep](https://github.com/geoloep)
 * Add an `alt` attribute to the `<img>`s of marker shadows (by [@topicus](https://github.com/topicus), [#5259](https://github.com/Leaflet/Leaflet/pull/5259)).
 
-## 1.0.2 (November 21, 2016)
+## 1.0.2 (2016-11-21)
 
 ### Bug fixes
 
@@ -159,14 +155,14 @@ An in-progress version being developed on the `master` branch.
 * Removed a duplicated unit test ([@yohanboniface](https://github.com/yohanboniface)).
 * Accesibility improvements (ARIA/screenreader related) on map tiles (by [@patrickarlt](https://github.com/patrickarlt)) [#5092](https://github.com/Leaflet/Leaflet/pull/5092).
 
-## 1.0.1 (September 30, 2016)
+## 1.0.1 (2016-09-30)
 
 ### Bug fixes
 
 * Fixed vector rendering regression in IE8 (by [@perliedman](https://github.com/perliedman)) [#4656](https://github.com/Leaflet/Leaflet/pull/4956).
 * Fixed Webpack error when bundling Leaflet's CSS (by [@jefbarn](https://github.com/jefbarn)) [#4679](https://github.com/Leaflet/Leaflet/pull/4979).
 
-## 1.0.0 (September 26, 2016)
+## 1.0.0 (2016-09-26)
 
 ### API changes
 
@@ -191,7 +187,7 @@ An in-progress version being developed on the `master` branch.
 * Do not fail when closing a tooltip which is not in a map (by [@yohanboniface](https://github.com/yohanboniface)) [#4937](https://github.com/Leaflet/Leaflet/pull/4937)
 
 
-## 1.0-rc3 (August 5, 2016)
+## 1.0-rc3 (2016-08-05)
 
 ### API changes
 - `L.Tooltip` `offset` option now defaults to `[0, 0]` (by [@yohanboniface](https://github.com/yohanboniface)) [#4773](https://github.com/Leaflet/Leaflet/pull/4773)
@@ -209,7 +205,7 @@ An in-progress version being developed on the `master` branch.
 - Fixed `popupopen` and `popupclose` not being fired when clicking on path with an open popup (by [@yohanboniface](https://github.com/yohanboniface)) [#4788](https://github.com/Leaflet/Leaflet/pull/4788)
 
 
-## 1.0-rc2 (July 18, 2016)
+## 1.0-rc2 (2016-07-18)
 
 ### API changes
 * Make `L.Handler.enable`/`disable` return `this` (by [@yohanboniface](https://github.com/yohanboniface)) [#4708](https://github.com/Leaflet/Leaflet/pull/4708)
@@ -248,7 +244,7 @@ An in-progress version being developed on the `master` branch.
 * Better handling of `markerZoomAnimation` event hooks (by [@IvanSanchez](https://github.com/IvanSanchez)) [#4460](https://github.com/Leaflet/Leaflet/pull/4460)
 
 
-## 1.0-rc1 (April 18, 2016)
+## 1.0-rc1 (2016-04-18)
 
 ### API changes
 * Make `L.Control.Layers.collapse`/`expand` public methods (by [@yohanboniface](https://github.com/yohanboniface)) [#4370](https://github.com/Leaflet/Leaflet/pull/4370)
@@ -336,7 +332,7 @@ An in-progress version being developed on the `master` branch.
 * Replace links to google groups with ones to GIS StackExchange (by [@IvanSanchez](https://github.com/IvanSanchez)) [#3886](https://github.com/Leaflet/Leaflet/pull/3886)
 
 
-## 1.0-beta2 (October 14, 2015)
+## 1.0-beta2 (2015-10-14)
 
 Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vast majority of changes are small fixes to problems that are triggered in very specific situations or conditions, a few API consolidation changes, and a few browser workarounds.
 
@@ -404,7 +400,7 @@ Beta 2 fixes over 50 bugs that were reported by users trying out beta 1. The vas
 * Fix duration not passed through from setView to panBy (by [@yohanboniface](https://github.com/yohanboniface)) [#3300](https://github.com/Leaflet/Leaflet/issues/3300)
 
 
-## 1.0-beta1 (July 14, 2015)
+## 1.0-beta1 (2015-07-14)
 
 The first beta of the huge, long-awaited Leaflet 1.0 release.
 
@@ -640,7 +636,7 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 * Fixed the build system to work in non-git Leaflet folder (by [@cschwarz](https://github.com/cschwarz)). [#2758](https://github.com/Leaflet/Leaflet/pull/2758)
 
 
-## 0.7.7 (October 26, 2015)
+## 0.7.7 (2015-10-26)
 
 * Fixed a regression that could sometimes cause tiles to disappear when pinch-zooming on iOS devices.
 * Fixed a regression related to msPointer detection in IE10 (affecting Leaflet.draw and some other plugins) (by @danzel) #3842 #3839 #3804
@@ -651,12 +647,12 @@ Animation code in Leaflet had undergone a major rewrite (main PR: [#2382](https:
 Note tha we skipped 0.7.6 version for which we accidentally published a broken build to NPM.
 
 
-## 0.7.5 (September 2, 2015)
+## 0.7.5 (2015-09-02)
 
 * Fixed a regression that broke animation in Leaflet.markercluster. [#3796](https://github.com/Leaflet/Leaflet/issues/3796)
 
 
-## 0.7.4 (September 1, 2015)
+## 0.7.4 (2015-09-01)
 
 * Fixed a bug introduced by a recent Chrome update that caused the map not to react to interactions until all tiles are loaded. [#3689](https://github.com/Leaflet/Leaflet/issues/3689)
 * Fixed a bug where tile layers were not respecting their `minZoom` or `maxZoom` options (by [@ivansanchez](https://github.com/ivansanchez)) [#3778](https://github.com/Leaflet/Leaflet/pull/3778)
@@ -671,7 +667,7 @@ Note tha we skipped 0.7.6 version for which we accidentally published a broken b
 * Updated bower definitions to comply with best practices (by [@guptaso2](https://github.com/guptaso2)) [#2726](https://github.com/Leaflet/Leaflet/pull/2726) [#3448](https://github.com/Leaflet/Leaflet/pull/3448)
 
 
-## 0.7.3 (May 23, 2014)
+## 0.7.3 (2014-05-23)
 
 * Added proper **bower** and **component** support (by [@calvinmetcalf](https://github.com/calvinmetcalf)). [#2561](https://github.com/Leaflet/Leaflet/pull/2561) [#1903](https://github.com/Leaflet/Leaflet/issues/1903)
 * Fixed a bug where dragging the map outside the window caused an error on FF. [#2610](https://github.com/Leaflet/Leaflet/issues/2610)
@@ -684,14 +680,14 @@ Note tha we skipped 0.7.6 version for which we accidentally published a broken b
 * Fixed a bug where you could end up with fractional zoom after pinch-zooming in some cases (by [@danzel](https://github.com/danzel). [#2400](https://github.com/Leaflet/Leaflet/pull/2400) [#1943](https://github.com/Leaflet/Leaflet/issues/1934)
 
 
-## 0.7.2 (January 17, 2014)
+## 0.7.2 (2014-01-17)
 
 * Fixed a bug that appeared with **Chrome 32 update** that made all **mouse events shifted on scrolled pages**. [#2352](https://github.com/Leaflet/Leaflet/issues/2352)
 * Fixed a bug that could break tile loading when using non-standard tile sizes. [#2288](https://github.com/Leaflet/Leaflet/issues/2288)
 * Fixed a bug where `maxNativeZoom` option didn't work with TMS tile layers (by [@perliedman](https://github.com/perliedman)). [#2321](https://github.com/Leaflet/Leaflet/issues/2321) [#2314](https://github.com/Leaflet/Leaflet/issues/2314)
 
 
-## 0.7.1 (December 6, 2013)
+## 0.7.1 (2013-12-06)
 
 * Fixed a bug where pinch-zooming quickly could occasionally leave the map at a fractional zoom thus breaking tile loading (by [@danzel](https://github.com/danzel)). [#2269](https://github.com/Leaflet/Leaflet/pull/2269) [#2255](https://github.com/Leaflet/Leaflet/issues/2255) [#1934](https://github.com/Leaflet/Leaflet/issues/1934)
 * Fixed tile flickering issues on some old Android 2/3 devices by disabling buggy hardware accelerated CSS there (by [@danzel](https://github.com/danzel)). [#2216](https://github.com/Leaflet/Leaflet/pull/2216) [#2198](https://github.com/Leaflet/Leaflet/issues/2198)
@@ -701,7 +697,7 @@ Note tha we skipped 0.7.6 version for which we accidentally published a broken b
 * Fixed a regression where `FeatureGroup` containing other group overwrote original `e.layer` value in mouse events (by [@gumballhead](https://github.com/gumballhead)). [#2253](https://github.com/Leaflet/Leaflet/pull/2253) [#2252](https://github.com/Leaflet/Leaflet/issues/2252)
 * Fixed a regression where `CircleMarker` `setLatLngs` didn't return `this` (by [@radicalbiscuit](https://github.com/radicalbiscuit)). [#2206](https://github.com/Leaflet/Leaflet/pull/2206)
 
-## 0.7 (November 18, 2013)
+## 0.7 (2013-11-18)
 
 ### Improvements
 
@@ -840,12 +836,12 @@ Note tha we skipped 0.7.6 version for which we accidentally published a broken b
 * Fixed a bug where attribution control that was added to a map after attributed layers didn't have the corresponding attributions (by [@snkashis](https://github.com/snkashis)). [#2177](https://github.com/Leaflet/Leaflet/issues/2177) [#2178](https://github.com/Leaflet/Leaflet/pull/2178)
 
 
-## 0.6.4 (July 25, 2013)
+## 0.6.4 (2013-07-25)
 
 * Fixed a regression where `fitBounds` and `setMaxBounds` could freeze the browser in some situations. [#1895](https://github.com/Leaflet/Leaflet/issues/1895) [1866](https://github.com/Leaflet/Leaflet/issues/1866)
 * Fixed a bug where click on a map on a page with horizontal scroll caused the page to scroll right (by [@mstrelan](https://github.com/mstrelan)). [#1901](https://github.com/Leaflet/Leaflet/issues/1901)
 
-## 0.6.3 (July 17, 2013)
+## 0.6.3 (2013-07-17)
 
 ### Regression fixes
 
@@ -878,20 +874,20 @@ Note tha we skipped 0.7.6 version for which we accidentally published a broken b
 
 * Leaflet builds (*.js files in the `dist` folder) were removed from the repo and are now done automatically on each commit for `master` and `stable` branches by [Travis CI](travis-ci.org/Leaflet/Leaflet). The download links are on the [Leafet download page](http://leafletjs.com/download.html).
 
-## 0.6.2 (June 28, 2013)
+## 0.6.2 (2013-06-28)
 
  * Fixed a bug that caused wrong tile layers stacking order when using opacity < 1 (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1804](https://github.com/Leaflet/Leaflet/issues/1804) [#1790](https://github.com/Leaflet/Leaflet/issues/1790) [#1667](https://github.com/Leaflet/Leaflet/issues/1667)
  * Fixed a regression that caused tiles selection when double-clicking absolutely positioned maps with vector layers in it in Firefox (WTF!) (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1807](https://github.com/Leaflet/Leaflet/issues/1807)
  * Fixed a regression with a wrong cursor when dragging a map with vector layers, and tiles becoming selected on double click (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1800](https://github.com/Leaflet/Leaflet/issues/1800)
  * Fixed a regression that caused flickering of tiles near map border on zoom animation in Chrome.
 
-## 0.6.1 (June 27, 2013)
+## 0.6.1 (2013-06-27)
 
  * Fixed a regression with mouse wheel zooming too fast on Firefox (by [@jfirebaugh](https://github.com/jfirebaugh)). [#1788](https://github.com/Leaflet/Leaflet/issues/1788)
  * Fixed a regression with broken zooming on maps with EPSG3395 projection. [#1796](https://github.com/Leaflet/Leaflet/issues/1796)
  * Fixed a bug where zoom buttons inherited Bootstrap link hover styles. [#1791](https://github.com/Leaflet/Leaflet/issues/1791)
 
-## 0.6 (June 26, 2013)
+## 0.6 (2013-06-26)
 
 ### Breaking changes
 
@@ -1066,12 +1062,12 @@ Note tha we skipped 0.7.6 version for which we accidentally published a broken b
  * Fixed a bug with removing previously set `Map` `maxBounds` (by [@jec006](https://github.com/jec006)). [#1749](https://github.com/Leaflet/Leaflet/issues/1749) [#1750](https://github.com/Leaflet/Leaflet/issues/1750)
 
 
-## 0.5.1 (February 6, 2013)
+## 0.5.1 (2013-02-06)
 
  * Fixed a regression with `GeoJSON` not accepting arrays of `FeatureCollection` (by [@snkashis](https://github.com/snkashis)). [#1299](https://github.com/Leaflet/Leaflet/pull/1299) [#1298](https://github.com/Leaflet/Leaflet/issues/1298)
  * Fixed a regression with `CirleMarker` `setRadius` not working if called before adding the layer to the map (by [@danzel](https://github.com/danzel)). [#1342](https://github.com/Leaflet/Leaflet/issues/1342) [#1297](https://github.com/Leaflet/Leaflet/issues/1297)
 
-## 0.5 (January 17, 2013)
+## 0.5 (2013-01-17)
 
 ### Breaking changes
 
@@ -1191,12 +1187,12 @@ Be sure to read through these changes to avoid any issues when upgrading from ol
  * Fixed array type checking in the code to be more consistent in a cross-frame environment (by [@oslek](https://github.com/oslek)). [#1279](https://github.com/Leaflet/Leaflet/pull/1279)
  * Fixed a bug with `-` key not working in Firefox 15+ (thanks to [@mattesCZ](https://github.com/mattesCZ)). [#869](https://github.com/Leaflet/Leaflet/issues/869)
 
-## 0.4.5 (October 25, 2012)
+## 0.4.5 (2012-10-25)
 
  * Fixed a bug with **wonky zoom animation in IE10** (by [@danzel](https://github.com/danzel)). [#1007](https://github.com/Leaflet/Leaflet/pull/1007)
  * Fixed a bug with **wonky zoom animation in Chrome 23+** (by [@danzel](https://github.com/danzel)). [#1060](https://github.com/Leaflet/Leaflet/pull/1060) [#1056](https://github.com/Leaflet/Leaflet/issues/1056)
 
-## 0.4.4 (August 7, 2012)
+## 0.4.4 (2012-08-07)
 
 ### Improvements
 
@@ -1213,19 +1209,19 @@ Be sure to read through these changes to avoid any issues when upgrading from ol
  * Fixed a bug where `Path` `bringToFront` and `bringToBack` didn't return `this`.
  * Removed zoom out on Win/Meta key binding (since it interferes with global keyboard shortcuts). [#869](https://github.com/Leaflet/Leaflet/issues/869)
 
-## 0.4.2 (August 1, 2012)
+## 0.4.2 (2012-08-01)
 
  * Fixed a bug where layers control radio buttons would not work correctly in IE7 (by [@danzel](https://github.com/danzel)). [#862](https://github.com/Leaflet/Leaflet/pull/862)
  * Fixed a bug where `FeatureGroup` `removeLayer` would unbind popups of removed layers even if the popups were not put by the group (affected [Leaflet.markercluster](https://github.com/danzel/Leaflet.markercluster) plugin) (by [@danzel](https://github.com/danzel)). [#861](https://github.com/Leaflet/Leaflet/pull/861)
 
-## 0.4.1 (July 31, 2012)
+## 0.4.1 (2012-07-31)
 
  * Fixed a bug that caused marker shadows appear as opaque black in IE6-8. [#850](https://github.com/Leaflet/Leaflet/issues/850)
  * Fixed a bug with incorrect calculation of scale by the scale control. [#852](https://github.com/Leaflet/Leaflet/issues/852)
  * Fixed broken L.tileLayer.wms class factory (by [@mattcurrie](https://github.com/mattcurrie)). [#856](https://github.com/Leaflet/Leaflet/issues/856)
  * Improved retina detection for `TileLayer` `detectRetina` option (by [@sxua](https://github.com/sxua)). [#854](https://github.com/Leaflet/Leaflet/issues/854)
 
-## 0.4 (July 30, 2012)
+## 0.4 (2012-07-30)
 
 ### API simplification
 
@@ -1390,12 +1386,12 @@ Icon API was improved to be more flexible, but one of the changes is backwards-i
  * Fixed a bug where `clearLayers` for vector layers on a Canvas backend (e.g. on Android 2) would take unreasonable amount of time. [#785](https://github.com/Leaflet/Leaflet/issues/785)
  * Fixed a bug where `setLatLngs` and similar methods on vector layers on a Canvas backend would not update the layers immediately. [#732](https://github.com/Leaflet/Leaflet/issues/732)
 
-## 0.3.1 (February 14, 2012)
+## 0.3.1 (2012-02-14)
 
  * Fixed a regression where default marker icons wouldn't work if Leaflet include url contained a query string.
  * Fixed a regression where tiles sometimes flickered with black on panning in iOS.
 
-## 0.3 (February 13, 2012)
+## 0.3 (2012-02-13)
 
 ### Major features
 
