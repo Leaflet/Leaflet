@@ -541,7 +541,7 @@ The following plugins change the way that tile or image layers are displayed in 
 		</td><td>
 			<a href="https://github.com/brendan-ward">Brendan Ward</a>
 		</td>
-	</tr>	
+	</tr>
 </table>
 
 
@@ -1257,6 +1257,15 @@ These plugins provide new markers or news ways of converting abstract data into 
 			<a href="http://timwis.com">Tim Wisniewski</a>
 		</td>
 	</tr>
+	<tr>
+		<td>
+			<a href="https://github.com/eJuke/Leaflet.Canvas-Markers">Leaflet.Canvas-Markers</a>
+		</td><td>
+			Displays markers on canvas instead of DOM.
+		</td><td>
+			<a href="https://github.com/eJuke">Evgeniy Voynov</a>
+		</td>
+	</tr>
         <tr>
                 <td>
                         <a href="https://github.com/lethexa/leaflet-tracksymbol">leaflet-tracksymbol</a>
@@ -1720,7 +1729,7 @@ These plugins create heatmaps and heatmap-like visualizations from vector data.
 		</td><td>
 			A Leaflet plugin for rendering heatmaps and clusters from <a href='https://lucene.apache.org/solr/guide/6_6/spatial-search.html#SpatialSearch-HeatmapFaceting'>Solr's Heatmap Faceting</a>. High performance for millions of points or polygons.
 		</td><td>
-			<a href="https://github.com/mejackreed">Jack Reed</a> / 
+			<a href="https://github.com/mejackreed">Jack Reed</a> /
 			<a href="https://github.com/spacemansteve">Steve McDonald</a>
 		</td>
 	</tr>
