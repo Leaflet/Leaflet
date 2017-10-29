@@ -19,6 +19,10 @@ import {Point, toPoint} from './Point';
  * ```js
  * otherBounds.intersects([[10, 10], [40, 60]]);
  * ```
+ *
+ * Note that `Bounds` does not inherit from Leafet's `Class` object,
+ * which means new classes can't inherit from it, and new methods
+ * can't be added to it with the `include` function.
  */
 
 export function Bounds(a, b) {

@@ -24,6 +24,10 @@ import {LatLng, toLatLng} from './LatLng';
  * ```
  *
  * Caution: if the area crosses the antimeridian (often confused with the International Date Line), you must specify corners _outside_ the [-180, 180] degrees longitude range.
+ *
+ * Note that `LatLngBounds` does not inherit from Leafet's `Class` object,
+ * which means new classes can't inherit from it, and new methods
+ * can't be added to it with the `include` function.
  */
 
 export function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])

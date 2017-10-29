@@ -133,6 +133,12 @@ var a = new MyClass({bla: 10});
 a.options; // {foo: 'bar', bla: 10}
 ```
 
+Note that the options object allows any keys, not just
+the options defined by the class and its base classes.
+This means you can use the options object to store
+application specific information, as long as you avoid
+keys that are already used by the class in question.
+
 @section Includes
 @example
 
